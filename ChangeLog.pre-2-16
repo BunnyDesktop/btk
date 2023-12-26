@@ -4,7 +4,7 @@
 	to relying on commit messages to provide change history. Please
 	see README.commits for guidance on the expected message format.
 
-2009-03-29  Christian Persch  <chpe@gnome.org>
+2009-03-29  Christian Persch  <chpe@bunny.org>
 
 	Bug 577224 – crash when setting new icon after setting icon in
 	btkstatusicon
@@ -13,7 +13,7 @@
 	(btk_status_icon_set_from_gicon): Retain a reference when setting
 	from a GIcon, and use g_object_unref on GIcon, not g_free.
 
-2009-03-27  Behdad Esfahbod  <behdad@gnome.org>
+2009-03-27  Behdad Esfahbod  <behdad@bunny.org>
 
 	Bug 437533 – Implement draw_shape BangoRenderer method
 
@@ -69,7 +69,7 @@
 	* docs/reference/btk/tmpl/btkdialog.sgml: Add id attribute to 
 	BtkBuilder UI sample.
 
-2009-03-21  Cody Russell  <bratsche@gnome.org>
+2009-03-21  Cody Russell  <bratsche@bunny.org>
 
 	Bug 538840 – [Win32] BTK menu theming could be improved
 
@@ -368,7 +368,7 @@
 	* btk/btktextview.c (btk_text_view_set_buffer): always set
 	text_view->layout's buffer, also if it's NULL.
 
-2009-02-25  Tristan Van Berkom <tvb@gnome.org>
+2009-02-25  Tristan Van Berkom <tvb@bunny.org>
 
 	Bug 572904 – BtkRadioAction broken in trunk
 
@@ -376,7 +376,7 @@
 	notify the action's active state (this prevents toggle type proxies
 	used with radio actions from deactivating when pressed a second time).
 
-2009-02-25  Xan Lopez  <xan@gnome.org>
+2009-02-25  Xan Lopez  <xan@bunny.org>
 
         Bug 495320 - BtkRange does not use bdk_event_request_motions
 
@@ -624,7 +624,7 @@
 	* bdk/x11/bdkscreen-x11.c: Go back to using randr for monitor
 	information, if we have XRRGetScreenResourcesCurrent.
 :
-2009-02-12  Cody Russell  <bratsche@gnome.org>
+2009-02-12  Cody Russell  <bratsche@bunny.org>
 
 	Bug 571576 – bdk_pixbuf_save_to_stream() broken
 
@@ -699,7 +699,7 @@
 	* docs/reference/btk/migrating-BtkEntry-icons.sgml:
 	Fix the enumerated name in the migration document.
 
-2009-02-09  Cody Russell  <bratsche@gnome.org>
+2009-02-09  Cody Russell  <bratsche@bunny.org>
 
 	* bdk/win32/bdkwin32.h: Add potentially missing #defines for
 	XBUTTON1, etc.  Fixes the build that was broken in r21746.
@@ -715,7 +715,7 @@
 
 2009-02-06  Matthias Clasen  <mclasen@redhat.com>
 
-	Make the new BtkAction code work with PolicyKit-gnome's use of actions.
+	Make the new BtkAction code work with PolicyKit-bunny's use of actions.
 
 	* btk/btkaction.c (btk_action_[un]block_activate_from): Block
 	the action.
@@ -753,13 +753,13 @@
 
 	* NEWS: Updates
 
-2009-02-01  Behdad Esfahbod  <behdad@gnome.org>
+2009-02-01  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btksettings.c (btk_settings_class_init): Change the
 	"btk-fontconfig-timestamp" property from int to uint.  Doesn't affect
 	anything in practice, except that  it overflows years later...
 
-2009-02-01  Behdad Esfahbod  <behdad@gnome.org>
+2009-02-01  Behdad Esfahbod  <behdad@bunny.org>
 
 	Bug 569635 – fontchooser should reload list of families/styles on
 	theme change
@@ -1392,13 +1392,13 @@
 
 2009-01-20  Federico Mena Quintero  <federico@novell.com>
 
-	http://bugzilla.gnome.org/show_bug.cgi?id=545980 -
+	http://bugzilla.bunny.org/show_bug.cgi?id=545980 -
 	BtkFileChooserEntry should handle URIs
 
 	* btk/btkfilesystem.c (_btk_file_system_parse): Detect URI schemes
 	and parse the full URI.
 	(has_uri_scheme): New function, stolen from the old
-	btkfilesystemgnomevfs.c.
+	btkfilesystembunnyvfs.c.
 
 	Patch by Carlos Garnacho <carlos@imendio.com>:
 
@@ -1597,7 +1597,7 @@
 	* btk/btktoolbar.c: Remove second inclusion of btktoolbar.h.
         Patch by Enrico Tröger.
 
-2009-01-16  Cody Russell  <bratsche@gnome.org>
+2009-01-16  Cody Russell  <bratsche@bunny.org>
 
 	Bug 567944 – [Win32] Sorted treeview columns can be unreadable
 
@@ -1636,7 +1636,7 @@
 	* btk/btktextview.c: Make the im-module property documentation more 
 	expansive.
 
-2009-01-15  Diego Escalante Urrelo  <diegoe@gnome.org>
+2009-01-15  Diego Escalante Urrelo  <diegoe@bunny.org>
 
 	Bug 562701 – BtkEntryCompletion popup sizes its rows wrong
 	when they span for more than one line.
@@ -2129,7 +2129,7 @@
 	* btk/btkstatusicon.c (button_callback): Fix the build.
 	Patch by Christian Dywan.
 
-2008-12-19  Cody Russell  <bratsche@gnome.org>
+2008-12-19  Cody Russell  <bratsche@bunny.org>
 
 	Bug 85292 – add an icon to btkentry
 
@@ -2382,7 +2382,7 @@
 	* modules/printbackends/test/btkprintbackendtest.c: Clean up
 	includes. 
 
-2008-12-07  Behdad Esfahbod  <behdad@gnome.org>
+2008-12-07  Behdad Esfahbod  <behdad@bunny.org>
 
 	Bug 563547 – Update bdkx11 atom precache table
 
@@ -2405,7 +2405,7 @@
 	* btk/btkstatusicon.c:
 	Add missing space in btk-doc deprecated syntax
 
-2008-12-03  Simos Xenitellis  <simos@gnome.org>
+2008-12-03  Simos Xenitellis  <simos@bunny.org>
 
 	Bug 557420 – Some compose sequences don't work anymore (or only in
 	a specific order)
@@ -2432,7 +2432,7 @@
 	* btk/btkpapersize.c: Call the btk_paper_size_new_from_ppd() with width
 	and height in points.
 
-2008-12-02  Carlos Garcia Campos  <carlosgc@gnome.org>
+2008-12-02  Carlos Garcia Campos  <carlosgc@bunny.org>
 
 	Bug 562878 – password save incorrectly set in btkmountoperation
 
@@ -2499,7 +2499,7 @@
 	https://bugzilla.novell.com/show_bug.cgi?id=447004.  Patch by
 	Ricardo Cruz <rpmcruz@alunos.dcc.fc.up.pt>
 
-2008-11-29  Christian Persch  <chpe@gnome.org>
+2008-11-29  Christian Persch  <chpe@bunny.org>
 
 	* btk/btkselection.c: Typo fix.
 
@@ -2525,7 +2525,7 @@
 	* btk/btk-builder-convert:
 	Avoid using sorted() which is only present in python 2.
 
-2008-11-24  Tristan Van Berkom <tvb@gnome.org>
+2008-11-24  Tristan Van Berkom <tvb@bunny.org>
 
 	* btk/btkalignment.c: Bug 561539 - Fix warnings when size allocations
 	fall short of border width and padding.
@@ -2685,7 +2685,7 @@
 	function calls, fix broken indentation and remove trailing
 	whitespace.
 
-2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+2008-11-06  Tristan Van Berkom <tvb@bunny.org>
 
 	* btk/btkmenuitem.c: Made buildable and added support for adding
 	children of type "submenu"
@@ -2705,7 +2705,7 @@
 	* docs/reference/btk/tmpl/btkmenuitem.sgml: Updated docs for
 	buildable submenus and accel groups.
 
-2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+2008-11-06  Tristan Van Berkom <tvb@bunny.org>
 
 	* btk/btkmenuitem.[ch]: added new apis
 	btk_menu_item_[set/get]_label() and
@@ -2723,12 +2723,12 @@
 	write-only "accel-group" properties. constructors cleaned up to
 	use g_object_new().
 
-2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+2008-11-06  Tristan Van Berkom <tvb@bunny.org>
 
 	* btk/btkbuilder.h: Fixed a crasher in
 	BTK_BUILDER_WARN_INVALID_CHILD_TYPE()
 
-2008-11-06  Tristan Van Berkom <tvb@gnome.org>
+2008-11-06  Tristan Van Berkom <tvb@bunny.org>
 
 	* btk/btklabel.c: btk_label_set_attributes() now applies attributes
 	on top of any markup or mnemonic attributes (bug 558409).
@@ -2787,7 +2787,7 @@
 	* btk/btk.symbols:
 	* btk/btkstatusicon.[hc]: Add new tooltip api.
 
-2008-11-03  Christian Persch  <chpe@gnome.org>
+2008-11-03  Christian Persch  <chpe@bunny.org>
 
 	Bug 558001 – btk_icon_view_enable_model_drag_[source|dest] problem
 
@@ -2985,7 +2985,7 @@
 	* btk/btkrecentchoosermenu.c:
 	* btk/btkvolumebutton.c: Use C_() instead of Q_(). String change!
 
-2008-10-26  Christian Persch  <chpe@gnome.org>
+2008-10-26  Christian Persch  <chpe@bunny.org>
 
 	Bug 557065 – btkcellrendererpixbuf spams console over and over with
 	'could not load image' warnings
@@ -3008,7 +3008,7 @@
 	* btk/btkclipboard.c (btk_clipboard_set_contents): Remove cached
 	targets. Pointed out by Evan Stade
 
-2008-10-24  Tristan Van Berkom  <tvb@gnome.org>
+2008-10-24  Tristan Van Berkom  <tvb@bunny.org>
 
 	* btk/btkwidget.c: Added a note about BtkWidget:has-tooltip in
 	the docs for BtkWidget::query-tooltip.
@@ -3053,7 +3053,7 @@
 	change in bunnylib to not add the fallback icon, but is useful
 	in other cases too.
 
-2008-10-22  Behdad Esfahbod  <behdad@gnome.org>
+2008-10-22  Behdad Esfahbod  <behdad@bunny.org>
 
 	Bug 555920 – btkentry.c passes wrong enum to
 	bango_layout_set_alignment()
@@ -3097,7 +3097,7 @@
 	order, add prototypes and namespace to static functions, add
 	g_return_if_fail()s which were missing all over the place.
 
-2008-10-20  Christian Persch  <chpe@gnome.org>
+2008-10-20  Christian Persch  <chpe@bunny.org>
 
 	Bug 557059 – crash when compositing emblems with icon
 
@@ -3176,7 +3176,7 @@
 	* test/testfilechooser.c: Fix option parsing so that -a and
 	--action work correctly.
 
-2008-10-13  Christian Persch <chpe@gnome.org>
+2008-10-13  Christian Persch <chpe@bunny.org>
 
 	Bug 555386 – format not a string literal and no format arguments
 
@@ -3188,13 +3188,13 @@
 	* modules/other/bail/bailtextview.c
 	* tests/testmerge.c: Use printf safely.
 
-2008-10-13  Christian Persch <chpe@gnome.org>
+2008-10-13  Christian Persch <chpe@bunny.org>
 
 	Bug 555724 – btkcellrendereraccel not initialised correctly
 
 	* btk/btkcellrendereraccel.c: Initialise the cell text.
 
-2008-10-12  Simos Xenitellis  <simos@gnome.org>
+2008-10-12  Simos Xenitellis  <simos@bunny.org>
 
 	Bug 555625 – Updated btk_compose_seqs_compact table 
 	(btkimcontextsimpleseqs.h)
@@ -3229,7 +3229,7 @@
 	* btk/btkwidget.c (btk_widget_real_grab_focus):
         Actually test for BTK_IS_WINDOW *and* BTK_WIDGET_TOPLEVEL
 
-2008-10-10  Behdad Esfahbod  <behdad@gnome.org>
+2008-10-10  Behdad Esfahbod  <behdad@bunny.org>
 
 	Bug 551355 – [PATCH] Make bunnylib build with libtool 2.2
 
@@ -3241,7 +3241,7 @@
 	* bdk/quartz/bdkkeys-quartz.c: (bdk_keymap_get_caps_lock_state)
 	Add empty stub to fix linking.
 
-2008-10-10  Simos Xenitellis  <simos@gnome.org>
+2008-10-10  Simos Xenitellis  <simos@bunny.org>
 
 	Bug 555000 – Wrong treatment on non-spacing marks dead keys in 
 	BtkIMContextSimple
@@ -3299,7 +3299,7 @@
 	created UIs, and support <popup accelerators="true"> in the XML
 	for the same purpose.
 
-2008-10-09  Simos Xenitellis  <simos@gnome.org>
+2008-10-09  Simos Xenitellis  <simos@bunny.org>
 
 	Bug 554192 – double press on the "circumflex" dead key 
 	(standard french 105 keyboard) no longer produces the "^" character
@@ -3308,7 +3308,7 @@
 	Changed the order, put check_compact_table() first, then 
 	check_algorithmically().
 
-2008-10-08  Christian Persch  <chpe@gnome.org>
+2008-10-08  Christian Persch  <chpe@bunny.org>
 
         Bug 554702 – btkfilesystem leaks GError
 
@@ -3397,7 +3397,7 @@
 
 	Implement the utility window type hint. Such windows are kept on
 	top of other windows of the same process. Makes GIMP's toolbox and
-	dock windows behave more like in GNOME under metacity. Apply the
+	dock windows behave more like in BUNNY under metacity. Apply the
 	same logic also to windows marked with the dialog window type
 	hint, and windows that are transient for some other window. I'll
 	call such windows "transient-type" below.
@@ -3543,7 +3543,7 @@
 	is actually needed, more specifically whether the function needs
 	to differentiate between "Caps Lock" and "Shift Lock" semantics?
 
-2008-10-01  Simos Xenitellis  <simos@gnome.org>
+2008-10-01  Simos Xenitellis  <simos@bunny.org>
 
 	Bug 554506 – combining diacritics broken, became deadkeys
 
@@ -3678,7 +3678,7 @@
 	* modules/input/btkimcontextxim.c: Correct the spot location
 	for on-the-spot style.
 
-2008-09-27  Denis Washington  <denisw@svn.gnome.org>
+2008-09-27  Denis Washington  <denisw@svn.bunny.org>
 
 	* btk/btkiconview.c: only draw keyboard focus when keyboard navigation
 	is used, like BtkTreeView. (Bug #553575)
@@ -3743,7 +3743,7 @@
 	get the content-type, since it is used later on. 
 	Pointed out by Davyd Madeley.
 
-2008-09-26  Cody Russell  <bratsche@gnome.org>
+2008-09-26  Cody Russell  <bratsche@bunny.org>
 
 	Bug 553917 – Typo in bdkwindow-win32.c
 
@@ -3772,7 +3772,7 @@
 	* btk/btkeventbox.c: events return gboolean not gint, reindented
 	static prototypes.
 
-2008-09-24  Johan Dahlin  <johan@gnome.org>
+2008-09-24  Johan Dahlin  <johan@bunny.org>
 
 	Bug 553385 – btk-builder-convert creates untranslated combobox models
 
@@ -3812,7 +3812,7 @@
 	* btk/btktreeview.c (grab_focus_and_unset_draw_keyfocus),
 	(btk_tree_view_focus): Honor BTK_WIDGET_CAN_FOCUS properly
 
-2008-09-24  Denis Washington  <denisw@svn.gnome.org>
+2008-09-24  Denis Washington  <denisw@svn.bunny.org>
 
 	* btk/btkiconview.c: draw focus as a rectangle around the
 	complete item, not just the text. (Bug #38254)
@@ -3912,7 +3912,7 @@
 	* btk/btk.symbols:
 	* docs/reference/btk/btk-sections.txt: Add the new function.
 
-2008-09-19  Christian Persch  <chpe@gnome.org>
+2008-09-19  Christian Persch  <chpe@bunny.org>
  
  	Bug 552837 – mem leak in btkimmulticontext
  

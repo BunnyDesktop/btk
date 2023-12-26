@@ -34,7 +34,7 @@
 2005-08-11  Matthias Clasen  <mclasen@redhat.com>
 
 	* btk/btkfilechooserdefault.c: Work around some problems
-	with the gnome-vfs backends which could lead to crashes
+	with the bunny-vfs backends which could lead to crashes
 	in the bookmark handling.  (#310270, Diego Gonzalez, patch
 	by Michael Meeks)
 
@@ -112,7 +112,7 @@
 	* btk/btksizegroup.c (get_size_groups, set_size_groups): Use
 	g_quark_from_static_string here. 
 
-2005-08-08  Christian Persch  <chpe@cvs.gnome.org>
+2005-08-08  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkmenutoolbutton.c: (btk_menu_tool_button_state_changed),
 	(btk_menu_tool_button_class_init), (popup_menu_under_arrow),
@@ -125,7 +125,7 @@
 
 	* bdk/bdk.symbols: Make the last change compile.
 
-2005-08-08  Christian Persch  <chpe@cvs.gnome.org>
+2005-08-08  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkmenutoolbutton.c:
 	(btk_menu_tool_button_construct_contents),
@@ -159,7 +159,7 @@ Fri Aug  5 16:54:19 2005  Søren Sandmann  <sandmann@redhat.com>
 
 	* configure.in: Require bairo 0.6
 
-2005-08-04  Christian Persch  <chpe@cvs.gnome.org>
+2005-08-04  Christian Persch  <chpe@cvs.bunny.org>
 
 	* configure.in: Remove "te" since it breaks the build.
 
@@ -1321,7 +1321,7 @@ Thu Jun 30 14:17:24 2005  Manish Singh  <yosh@gimp.org>
 	* btk/btk[hv]ruler.c (btk_[hv]ruler_draw_ticks): 
 	Fix indentation.
 
-2005-06-27  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btkhruler.c: (btk_hruler_draw_ticks): Fix leaks
 	* btk/btkvruler.c: (btk_vruler_draw_ticks): Same
@@ -1541,7 +1541,7 @@ Sun Jun 26 00:04:36 2005  Manish Singh  <yosh@gimp.org>
 	between the stable branch and HEAD, which sneaked in with
 	the bookmark renaming.  
 
-2005-06-22  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-22  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btkhsv.c: (btk_hsv_expose): Don't leak the bairo context
 	Closes bug #308581.
@@ -2012,7 +2012,7 @@ Thu Jun 16 15:33:42 2005  Manish Singh  <yosh@gimp.org>
 	Free the data of the row before overwriting it.  (#307490,
 	Kjartan Maraas)
 
-2005-06-13  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-13  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btkcalendar.c: (calendar_paint_arrow): Don't
 	leak the bairo context. Closes bug #307426.
@@ -2037,7 +2037,7 @@ Thu Jun 16 15:33:42 2005  Manish Singh  <yosh@gimp.org>
 	* btk/btkselection.c (btk_target_list_add_image_targets): 
 	Don't leak the format names.  (#307190, Morten Welinder)
 
-2005-06-12  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-12  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* bdk/x11/bdkasync.c: (send_event_handler): Plug
 	a leak. Closes bug #307281.
@@ -2112,7 +2112,7 @@ Fri Jun 10 19:06:03 2005  Manish Singh  <yosh@gimp.org>
 	pg_bg_color.
 	(struct _BtkTextTag): Add pg_bg_color_set.
 
-2005-06-10  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* bdk/bdkbairo.c: (bdk_bairo_set_source_pixbuf): Destroy the
 	bairo surface when done with it. Plugs a fairly large leak in
@@ -2239,7 +2239,7 @@ Fri Jun 10 19:06:03 2005  Manish Singh  <yosh@gimp.org>
 	* btk/btkfilesystem.c (btk_file_info_get_display_key): Use
 	g_utf8_collate_key_for_filename().
 
-2005-06-07  Kjartan Maraas  <kmaraas@gnome.org>
+2005-06-07  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btkfilechooserbutton.c: (update_label_and_image):
 	Merge leak fix from stable. Bug 306754.
@@ -2639,7 +2639,7 @@ Sat May 14 00:07:46 2005  Manish Singh  <yosh@gimp.org>
 
 	* bdk/bdkrgb.c: Fill in alpha bits with 1s. (Based on patch from
 	Keith Packard,
-	http://mail.gnome.org/archives/btk-devel-list/2004-June/msg00080.html)
+	http://mail.bunny.org/archives/btk-devel-list/2004-June/msg00080.html)
 
 	* bdk/x11/bdkdrawable-x11.c (bdk_x11_drawable_get_picture):
 	Implement again, without using Xft.
@@ -2967,7 +2967,7 @@ Wed May  4 13:21:41 2005  Søren Sandmann  <sandmann@redhat.com>
 	Merged from btk-2-6:
 
 	* btk/btkfilechooserdefault.c (pending_select_paths_process):
-	Patch from Christian Neumair <chris@gnome-de.org>; only select the
+	Patch from Christian Neumair <chris@bunny-de.org>; only select the
 	first row if we are in OPEN mode.  The only other case we were
 	letting pass through was SELECT_FOLDER, but selecting the first
 	row when changing folders confuses people when folders are
@@ -3157,7 +3157,7 @@ Mon Apr  4 19:13:23 2005  Jonathan Blandford  <jrb@redhat.com>
 	* btk/btktreeview.c (btk_tree_view_expand_all): change to use
 	btk_tree_view_real_expand_row() instead of doing this by hand.
 
-2005-04-04  Johan Dahlin  <johan@gnome.org>
+2005-04-04  Johan Dahlin  <johan@bunny.org>
 
 	* btk/btktextbuffer.c: (btk_text_buffer_class_init),
 	(btk_text_buffer_set_property), (btk_text_buffer_get_property),
@@ -3185,7 +3185,7 @@ Mon Apr  4 14:33:55 2005  Manish Singh  <yosh@gimp.org>
 	of just drawing the center for prelight. (Fixes inconsistent
 	drawing in BtkTreeView.)
 
-2005-04-04  Johan Dahlin  <johan@gnome.org>
+2005-04-04  Johan Dahlin  <johan@bunny.org>
 
 	* btk/btk.symbols: Remove symbols accidentally added.
 	* btk/btkentryprivate.h: Add boolean property popup_set_width
@@ -4945,7 +4945,7 @@ Mon Jan 17 16:44:36 2005  Jonathan Blandford  <jrb@redhat.com>
 	ancestor of the window containing the pointer that has a cursor
 	defined. (#163035, Ivan Wong)
 
-2005-01-09  Anders Carlsson <andersca@gnome.org>
+2005-01-09  Anders Carlsson <andersca@bunny.org>
 
 	* btk/btkcellrenderertext.c: (get_size):
 	* btk/btklabel.c: (btk_label_size_request):

@@ -1,5 +1,5 @@
-BTK+ is part of the GNOME git repository. At the current time, any
-person with write access to the GNOME repository, can make changes to
+BTK+ is part of the BUNNY git repository. At the current time, any
+person with write access to the BUNNY repository, can make changes to
 BTK+. This is a good thing, in that it encourages many people to work
 on BTK+, and progress can be made quickly. However, BTK+ is a fairly
 large and complicated package that many other things depend on, so to
@@ -14,8 +14,8 @@ people committing to BTK+ to follow a few rules:
    somebody may know a better way to do things.
 
    If you are making changes to BTK+, you should be subscribed
-   to btk-devel-list@gnome.org. (Subscription address:
-   btk-devel-list-request@gnome.org.) This is a good place to ask
+   to btk-devel-list@bunny.org. (Subscription address:
+   btk-devel-list-request@bunny.org.) This is a good place to ask
    about intended changes.
 
    #btk+ on GIMPNet (irc.gimp.org, irc.us.gimp.org, irc.eu.gimp.org, ...)

@@ -817,7 +817,7 @@ Overview of Changes from BTK+ 2.23.2 to 2.23.3
  634882 Usage of deprecated GLib API (g_source_get_current_time)
  635307 iconcache: Ensure we don't lose data on power loss
  635588 Clicking URL to be opened freezes the application for seconds
- 636832 anoncvs.gnome.org does not exist
+ 636832 anoncvs.bunny.org does not exist
  637069 Custom print settings set in custom-widget-apply are lost
  637156 Optimize btk_widget_shape_combine_rebunnyion (widget, NULL, ...)
 
@@ -1095,7 +1095,7 @@ Overview of Changes from BTK+ 2.21.2 to 2.21.3
  bdk_image_get_pixels
 
 * Bugs fixed:
- 522756 gnome-appearance-properties crashed with SIGSEGV...
+ 522756 bunny-appearance-properties crashed with SIGSEGV...
  615666 BTK_OBJECT_FLAGS() should be deprecated
  621136 BtkCalendar: Some functions always return TRUE
  621250 Missing accessors for BtkRange has_stepper_X
@@ -1298,7 +1298,7 @@ Overview of Changes from BTK+ 2.19.5 to 2.19.6
 ==============================================
 
 * Bugs fixed:
- 610701 gnome-shell crashes frequently
+ 610701 bunny-shell crashes frequently
  604799 Crash when button is pressed.
  609744 crash at parse_data_for_row_pseudocolor
  600789 bdk/bdkwindow.c "find_native_sibling_above" will crash
@@ -1386,8 +1386,8 @@ Overview of Changes from BTK+ 2.19.3 to 2.19.4
  607082 Add accessors for sealed BtkRange members
  567729 Add BtkToolPalette
  591102 bdk_pixbuf_save() creates a zero-size file...
- 600865 gnome-panel crashed with "BadPixmap...
- 601412 action area presence makes gnome-terminal window grow...
+ 600865 bunny-panel crashed with "BadPixmap...
+ 601412 action area presence makes bunny-terminal window grow...
  603144 Suspected wrong builtin page size: Chinese PRC6 and...
  606009 weirdness with clipping in abiword - csw
  606698 Misplaced declaration of btk_print_job_set_status
@@ -2537,7 +2537,7 @@ Overview of Changes from BTK+ 2.15.3 to 2.15.4
 ==============================================
 
 * BtkAction:
- - More compatibility fixes to make PolicyKit-gnome work
+ - More compatibility fixes to make PolicyKit-bunny work
 
 * BtkFileChooserButton:
  - Don't emit file-set when the dialog is canceled. But emit it
@@ -2772,7 +2772,7 @@ Overview of Changes from BTK+ 2.14.x to 2.15.0
 
 * BtkStatusIcon
  - Uses an extension of the tray icon spec to negotiate RGBA support.
-   This is also supported by the GNOME panel. For details, see the
+   This is also supported by the BUNNY panel. For details, see the
    section on "Visual and bckground pixmap handling" in the System
    Tray Protocol Specification.
  - Supports scroll events, middle clicks and rich tooltips
@@ -3128,7 +3128,7 @@ Overview of Changes from BTK+ 2.13.6 to 2.13.7
  545031 list of recently used files is created world-readable
  535573 Deadlock in bdkeventloop-quartz.c:poll_func()
  546771 Add writable property "visited" to BtkLinkButton
- 546756 gnome-panel crashed with SIGSEGV in g_type_check_...
+ 546756 bunny-panel crashed with SIGSEGV in g_type_check_...
  547027 menus are broken
  544863 btkquartz.h not included in released 2.13.5 package
  547211 Duplicated mnemonic
@@ -3304,7 +3304,7 @@ Overview of Changes from BTK+ 2.13.4 to 2.13.5
 Overview of Changes from BTK+ 2.13.3 to 2.13.4
 ==============================================
 
-* Merge the GSEAL branch (see http://live.gnome.org/BTK+/3.0/Tasks)
+* Merge the GSEAL branch (see http://live.bunny.org/BTK+/3.0/Tasks)
 
 * BtkScaleButton has an orientation property 
 
@@ -3312,7 +3312,7 @@ Overview of Changes from BTK+ 2.13.3 to 2.13.4
  538519 BtkCellRendererPixbuf doesn't allow unsetting the icon anymore
  538362 Get Win32 icons back in the file chooser
  538182 bango_bairo_context_update_layout is not noop after...
- 508751 gnome-terminal crashed with SIGSEGV after keypress
+ 508751 bunny-terminal crashed with SIGSEGV after keypress
  419737 The file chooser clears the filename entry in SAVE/CREATE_FOLDER...
  538784 Don't change the filename in the name entry in CREATE_FOLDER...
  538395 btk_combo_box_append_text() on non-compliant model segfaults
@@ -3447,8 +3447,8 @@ Overview of Changes from BTK+ 2.13.0 to 2.13.1
    signal and the lower-level bdk_window_redirect_to_drawable() and
    bdk_window_remove_redirection() functions
 
- * Add btk_show_uri(), a replacement for gnome_vfs_url_show() and
-   gnome_url_show()
+ * Add btk_show_uri(), a replacement for bunny_vfs_url_show() and
+   bunny_url_show()
 
  * Add a "changed" signal to BtkCellRendererCombo
  
@@ -3645,7 +3645,7 @@ Overview of Changes from BTK+ 2.11.6 to 2.12.0
  463773 Openoffice and flash run into a deadlock when used with KDE
  468801 fluffle segfaults when selecting targa image
  473441 [patch] Ungrab windows when bdk_window_destroy() is calle...
- 473954 gnome-background-properties: crash on drag-n-drop to "Add...
+ 473954 bunny-background-properties: crash on drag-n-drop to "Add...
  461945 totem outputs errors in terminal
  348493 _bdk_quartz_copy_to_image needs implementing for pixmaps
  405868 Missing implementation of bdk_window_get_geometry()
@@ -3666,7 +3666,7 @@ Overview of Changes from BTK+ 2.11.6 to 2.12.0
  460272 BtkFrame publishes incorrect defaults for "label-xalign"
  460534 No expose events if input swamps main loop with scrolled ...
  461225 btk_tree_view_set_tooltip_cell() documentation: cell
- 463907 'Recent Documents' is broken in gnome-panel 2.19.5
+ 463907 'Recent Documents' is broken in bunny-panel 2.19.5
  464528 bdk_rectangle_union() and bdk_rectangle_intersect() shoul...
  465039 "keynav-failed" signal not emitted when treeview has just...
  467003 tooltips do not pick up theme changes
@@ -3781,7 +3781,7 @@ Overview of Changes from BTK+ 2.11.5 to 2.11.6
 * Bug fixes:
  452598 crash in Evolution: Added an Evolution attac...
  447966 Add builder support for BdkPixbuf properties
- 453033 gnome-panel crashed with SIGSEGV in idle_populate_func()
+ 453033 bunny-panel crashed with SIGSEGV in idle_populate_func()
  453365 bdk_pixbuf_get_file_info crashes on tif files
  361781 BtkViewport size request includes xthickness/ythickness f...
  427899 BtkFrame's label may exceed the frame area
@@ -3790,7 +3790,7 @@ Overview of Changes from BTK+ 2.11.5 to 2.11.6
  437281 btk_button_set_image destroyes the old image
  448604 btk+ printbackends build fix
  449311 BtkVolumeButton should use new tooltip API
- 451164 I translate gnome-desktop. But i have no svn account and ...
+ 451164 I translate bunny-desktop. But i have no svn account and ...
  451575 (API) Changes needed for BtkTooltips deprecation
  452425 Setting "tooltip-text" property to NULL has bad effects
  452861 btk_label_set_pattern() is not working anymore
@@ -4866,7 +4866,7 @@ Overview of Changes from BTK+ 2.8.x to 2.9.0
 Overview of Changes from BTK+ 2.8.1 to BTK+ 2.8.2
 =================================================
 * Fix a crash with custom icon themes, which affected
-  the gnome-theme-manager. [Kjartan Maraas]
+  the bunny-theme-manager. [Kjartan Maraas]
 * Make sure font and cursor settings are propagated down
   to the screen initially. [Frederic Crozat]
 
@@ -5516,7 +5516,7 @@ Overview of Changes from BTK+ 2.5.3 to BTK+ 2.5.4
 Overview of Changes from BTK+ 2.5.2 to BTK+ 2.5.3
 =================================================
 * BtkFileChooser
- - Work better with older version of the gnome-vfs backend [Zack Cerza]
+ - Work better with older version of the bunny-vfs backend [Zack Cerza]
  - Keynav improvements [Jonathan Blandford]
  - Make position of pathbar down button stable [Jonathan]
  - Make autocompletion less annoying in save mode [Owen Taylor]
@@ -6069,7 +6069,7 @@ Overview of Changes in BTK+-2.3.1
  - Add a BtkFileSystemWin32 [Hans]
  - Use BtkEntryCompletion in BtkFileChooserEntry 
  - Add a render_icon to BtkFileSystemIface to allow the 
-   GnomeVFS backend to supply appropriate icons
+   BunnyVFS backend to supply appropriate icons
  - Improve selection handling in bookmarks list [Federico, Owen Taylor]
  - Support drops on the bookmarks list
  - Display error dialogs on failed operations
@@ -6124,7 +6124,7 @@ Overview of Changes from BTK+-2.2.x to BTK+-2.3.0
    Federico Mena Quintero]
  - New combo box widgets: BtkComboBox, BtkComboBoxEntry [Kristian Rietveld]
  - New "disclosure triangle" widget: BtkExpander [Mark McLoughlin]
- - "Picker button" widgets based on code from libgnomeui: 
+ - "Picker button" widgets based on code from libbunnyui: 
    BtkFontButton, BtkColorButton [Matthias Clasen]
 
 * Widget improvements:
@@ -6311,7 +6311,7 @@ Overview of Changes in BTK+ 2.2.3
  - Fix problem with XEMBED (BtkPlug) clients that don't take focus stealing
    focus [Owen]
  - Accept color drops with wrong format from KDE [Matthias]
-* Fix problem from gnome-theme-manager playing tricks and
+* Fix problem from bunny-theme-manager playing tricks and
   making event->window a pixmap. [Anders Carlsson]
 * Ignore Caps-lock when matching accelerators
 * Fix 5-year-old bug where toplevels didn't fully refresh properly
@@ -6447,7 +6447,7 @@ Overview of Changes in BTK+ 2.1.5
   - Fix UTF-8 operation, so that non-ASCII works [Kang Jeong-Hee]
   - Use g_utf8_collate() not strcmp for sorting [Gregory Merchan]
 * Only close dialogs on Escape if they have a cancel button. [James Willcox]
-* Fix problem with resizing gnome-terminal popup [Soeren Sandmann]
+* Fix problem with resizing bunny-terminal popup [Soeren Sandmann]
 * Add Home/End/Page_Up/Page_Down keybindings for menus [Owen,
   Narayana Pattipati, Marius Andreiana]
 * Xinerama fixes for BtkMenu [Matthias Clasen]
@@ -7041,7 +7041,7 @@ Overview of Changes in BTK+ 1.3.11
   functions (Owen, Damian Ivereigh)
 * Fixes to BtkPlug/BtkSocket (Michael Meeks, Owen)
 * Change button ordering in standard dialogs to correspond to 
-  GNOME usability project proposal (Gregory Merchan)
+  BUNNY usability project proposal (Gregory Merchan)
 * Add support for context sensitivity in input methods (Owen)
 * Hook up btk_im_context_set_use_preedit() (Hidetoshi Tajima)
 * Fix bdk_window_scroll() and other aspects of big windows (Owen)
@@ -7601,7 +7601,7 @@ What is new in BTK+ 1.1.6:
 * BTK_POLICY_NEVER is implemented for scrolled windows now.
 * Lots of API clean ups.
 * Incremental freezing abilities.
-* Integrated widgets from the GNOME tree: BtkLayout, BtkPlug and BtkSocket.
+* Integrated widgets from the BUNNY tree: BtkLayout, BtkPlug and BtkSocket.
 * New window functions for transient relationship, default size, and 
   geometry hints
 * Default rc files are now read in (<sysconfdir/etc/btkrc and ~/.btkrc)

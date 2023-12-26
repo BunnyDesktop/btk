@@ -419,7 +419,7 @@ Tue Dec 10 12:57:00 2002  Owen Taylor  <otaylor@redhat.com>
 Tue Dec 10 12:40:30 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* btk/btkmenuitem.c, btk/btkstyle.c, btk/btkrc.c: new default
-	color scheme based on the GNOME stock icon palette. (#80691,
+	color scheme based on the BUNNY stock icon palette. (#80691,
 	Tuomas Kuosmanen, Garrett LeSage, Owen Taylor)
 
 	* btk/btknotebook.c (btk_notebook_real_remove): take a new
@@ -695,7 +695,7 @@ Wed Dec  4 14:31:46 2002  Owen Taylor  <otaylor@redhat.com>
 	some g_return_if_fail() to catch selection == None more 
 	gracefully than an X error.
 
-2002-12-04  Christian Neumair  <chris@gnome-de.org>
+2002-12-04  Christian Neumair  <chris@bunny-de.org>
 
 	* btk/btkcellrendertoggle.c: Fixed typo in property
 	description.
@@ -1295,7 +1295,7 @@ Sun Nov 17 13:45:08 2002  Manish Singh  <yosh@gimp.org>
 	* btk/btktreeitem.c (btk_tree_item_add_pixmaps): remove some
 	deprecated BDK usage.
 
-Sun Nov 17 10:49:28 2002  Jonathan Blandford  <jrb@gnome.org>
+Sun Nov 17 10:49:28 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btksettings.c (btk_settings_get_property): remove bogus
 	gvalue initialization/freeing.
@@ -1331,7 +1331,7 @@ Sun Nov 17 10:49:28 2002  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btk.def: Remove obsolete entries.
 
-Fri Nov 15 19:12:56 2002  Jonathan Blandford  <jrb@gnome.org>
+Fri Nov 15 19:12:56 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btksettings.c: Allow g_object_set to work with BtkSettings.
 
@@ -3600,15 +3600,15 @@ Tue Sep 24 15:35:42 2002  HideToshi Tajima  <hidetoshi.tajima@sun.com>
 	btk-im-status-style to BtkSettings.
 	* po/POTFILES.in: added modules/input/btkimcontextxim.c
 
-	With the other patch for gnome-control-center,
+	With the other patch for bunny-control-center,
 	the preedit and status styles of BTK+ input method are
 	configurable with associated gconf schemas keys:
-	"/desktop/gnome/interface/btk-im-preedit-style"
-	"/desktop/gnome/interface/btk-im-status-style"
+	"/desktop/bunny/interface/btk-im-preedit-style"
+	"/desktop/bunny/interface/btk-im-status-style"
 
 	Both are set to "callback" by default, and platform's 
 	packging can have different default by changing
-	libgnome's desktop_gnome_interface.schemas.
+	libbunny's desktop_bunny_interface.schemas.
 
 2002-09-25  Matthias Clasen  <maclas@gmx.de>
 
@@ -4709,7 +4709,7 @@ Fri Jul  5 20:18:23 2002  Owen Taylor  <otaylor@redhat.com>
 	with insensitive menu items and keynav. (#85796,
 	reported by Bill Haneman and others.)
 
-Fri Jul  5 02:50:24 2002  Jonathan Blandford  <jrb@gnome.org>
+Fri Jul  5 02:50:24 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btktreeview.c (btk_tree_view_collapse_all): fix warning.
 	(btk_tree_view_search_iter): fix warning, #85884
@@ -4736,7 +4736,7 @@ Fri Jul  5 12:51:39 2002  Kristian Rietveld  <kris@btk.org>
 	Use hyphen instead of underscore in signal names in calls to
 	g_signal_connect_swapped (Fixes bug #86339)
 
-Tue Jul  2 00:33:26 2002  Jonathan Blandford  <jrb@gnome.org>
+Tue Jul  2 00:33:26 2002  Jonathan Blandford  <jrb@bunny.org>
 
     * btk/btktreeview.c (validate_visible_area): only validate the
       visible area if we've ever been requisitioned.
@@ -5138,7 +5138,7 @@ Wed Jun 12 14:18:45 2002  Owen Taylor  <otaylor@redhat.com>
 	* btk/btktextlayout.c (btk_text_layout_finalize): Don't leak
 	one_display_cache.  (#84424)
 
-Fri Jun  7 23:11:42 2002  Jonathan Blandford  <jrb@gnome.org>
+Fri Jun  7 23:11:42 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btktreeview.c (btk_tree_view_real_expand_row): Fix sizing
 	bug.
@@ -5328,7 +5328,7 @@ Tue Jun  4 19:18:20 2002  Kristian Rietveld  <kris@btk.org>
 	* bdk/bdkpixbuf-drawable.c (rgb565msb): Fix the MSB -> MSB case.
 	Fixes #79190.
 
-Sat Jun  1 10:43:28 2002  Jonathan Blandford  <jrb@gnome.org>
+Sat Jun  1 10:43:28 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btkcellrenderertoggle.c (btk_cell_renderer_toggle_render): 
 	add missing flag, #83796
@@ -6188,7 +6188,7 @@ Sat Apr 27 13:49:53 2002  Owen Taylor  <otaylor@redhat.com>
 	* bdk/linux-fb/bdkproperty-fb.c (bdk_property_get):
 	Fix silly bug, noticed by Sven Neumann.
 
-Sun Apr 28 22:43:55 2002  Jonathan Blandford  <jrb@gnome.org>
+Sun Apr 28 22:43:55 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btktreemodelsort.c (btk_tree_model_sort_set_sort_func): Fix
 	so that you can set a new sort func.
@@ -6626,7 +6626,7 @@ Tue Apr  9 19:01:28 2002  Owen Taylor  <otaylor@redhat.com>
         Fix problems with HandleBox and focusing - #78232
 
 	* btk/btkwidget.c (btk_widget_translate_coordinates): Handle
-	BtkHandleBox / GnomeDock style window heirarchy / widget
+	BtkHandleBox / BunnyDock style window heirarchy / widget
 	heirarchy disconnects. :-(. 
 
 	* btk/btkcontainer.c: Handle failures from
@@ -6705,7 +6705,7 @@ Fri Apr  5 18:24:24 2002  Kristian Rietveld  <kris@btk.org>
 	cellrenderer after clearing the attributes of the renderer (fixes
 	#75592)
 
-Fri Apr  5 05:55:14 2002  Jonathan Blandford  <jrb@gnome.org>
+Fri Apr  5 05:55:14 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btktreeview.c (btk_tree_view_grab_focus): implement.
 	  (btk_tree_view_move_cursor_up_down): check for focus

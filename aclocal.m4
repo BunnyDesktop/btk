@@ -775,7 +775,7 @@ AC_DEFUN([BTK_DOC_CHECK],
   dnl Use AC_CHECK_PROG to avoid the check target using an absolute path that
   dnl may not be writable by the user. Currently, automake requires that the
   dnl test name must end in '.test'.
-  dnl https://bugzilla.gnome.org/show_bug.cgi?id=701638
+  dnl https://bugzilla.bunny.org/show_bug.cgi?id=701638
   AC_CHECK_PROG([BTKDOC_CHECK],[btkdoc-check],[btkdoc-check.test])
   AC_PATH_PROG([BTKDOC_CHECK_PATH],[btkdoc-check])
   AC_PATH_PROGS([BTKDOC_REBASE],[btkdoc-rebase],[true])

@@ -276,7 +276,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	X structures, to avoid valgrind warnings about uninitialized
 	memory.  (#349382, David Baron)
 
-2006-08-14  Emmanuele Bassi  <ebassi@gnome.org>
+2006-08-14  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchooser.c:
 	(btk_recent_chooser_add_filter),
@@ -312,7 +312,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* bdk/directfb/bdkgeometry-directfb.c
 	Fix scroll call to use rebunnyion
 
-2006-08-10  Emmanuele Bassi  <ebassi@gnome.org>
+2006-08-10  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchoosermenu.c:
 	(btk_recent_chooser_menu_finalize): Remove the idle
@@ -403,7 +403,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkdnd-quartz.c (btk_drag_dest_set): call btk_drag_dest_unset()
 	instead of disconnecting the old signal connections here.
 
-2006-08-07  Emmanuele Bassi  <ebassi@gnome.org>
+2006-08-07  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchooserdefault.c:
 	(_btk_recent_chooser_default_init): Show non existing
@@ -477,7 +477,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	Protect against tree_view being NULL.  (#348652, Patrick K. O'Brian,
 	Chris Wilson)
 
-2006-08-03  Emmanuele Bassi  <ebassi@gnome.org>
+2006-08-03  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchoosermenu.c:
 	(set_recent_managet), (btk_recent_chooser_menu_populate),
@@ -540,7 +540,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* bdk/quartz/bdkmain-quartz.c: (_bdk_windowing_init): No need to
 	get the current process ID, use the right constant instead.
 
-2006-07-28  Emmanuele Bassi  <ebassi@gnome.org>
+2006-07-28  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentmanager.c (btk_recent_manager_init): Add the
 	timeout for polling the file; change the default polling
@@ -688,7 +688,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkrecentchoosermenu.c (btk_recent_chooser_menu_finalize):
 	fix typo to make it compile again.
 
-2006-07-20  Emmanuele Bassi  <ebassi@gnome.org>
+2006-07-20  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchoosermenu.c:
 	(btk_recent_chooser_menu_finalize): Correctly chain up the
@@ -806,7 +806,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	set_filename(); it was overwriting it with $cwd.
 
 	This is the same fix for
-	http://bugzilla.gnome.org/show_bug.cgi?id=347066
+	http://bugzilla.bunny.org/show_bug.cgi?id=347066
 
 	* tests/autotestfilechooser.c: (test_black_box): Added black-box
 	test for set_filename() and set_current_name().
@@ -991,7 +991,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* bdk/directfb/bdkwindow-directfb.c
 	Finally removed uneeded pixmap buffering now implements BdkPainter
 
-2006-07-11  Emmanuele Bassi  <ebassi@gnome.org>
+2006-07-11  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchooser.c (btk_recent_chooser_set_show_numbers),
 	(btk_recent_chooser_get_show_numbers): Check if the chooser
@@ -1012,7 +1012,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkfilechooserbutton.c: Fix some memory handling
 	issues.  (#347043, Chris Wilson)
 
-2006-07-10  Emmanuele Bassi  <ebassi@gnome.org>
+2006-07-10  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchooserdefault.c (scan_for_uri_cb): Do not
 	leak the URI returned by the model; select the row when
@@ -1062,7 +1062,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkfilechooserbutton.c (update_label_and_image): Don't
 	leak an empty list.  (#346970, Chris Wilson)
 
-2006-07-08  Behdad Esfahbod  <behdad@gnome.org>
+2006-07-08  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkbango.c (layout_iter_get_line_clip_rebunnyion),
 	(bdk_bango_layout_line_get_clip_rebunnyion),
@@ -1096,7 +1096,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	for the home directory.  (#346498, Dennis Cranston,
 	patch by Andreas Köhler)
 
-2006-07-06  Behdad Esfahbod  <behdad@gnome.org>
+2006-07-06  Behdad Esfahbod  <behdad@bunny.org>
 
 	* configure.in: Drop required Bango version down to 1.12.0. (#346597)
 
@@ -1410,7 +1410,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkprintoperation.c: (btk_print_operation_class_init): 
 	Correctly register the done signal - it sends an enum, not an int.
 
-2006-06-20  Christian Persch  <chpe@cvs.gnome.org>
+2006-06-20  Christian Persch  <chpe@cvs.bunny.org>
 	
 	* configure.in
 	* btk/Makefile.am
@@ -1422,7 +1422,7 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	R modules/printbackends/pdf/*:
 	Rename "pdf" backend to "file" backend. Step 2 from bug #339592.
 
-2006-06-20  Christian Persch  <chpe@cvs.gnome.org>
+2006-06-20  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkprinteroptionwidget.c: (filesave_changed_cb),
 	(alternative_set), (construct_widgets): Convert input to filename
@@ -1454,14 +1454,14 @@ Thu Aug 17 16:19:35 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkprintsettings.h: 
 	* btk/btkprintsettings.c: Remove unused print-to-file setting.
 
-2006-06-20  Carlos Garnacho  <carlosg@gnome.org>
+2006-06-20  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c (btk_notebook_stop_reorder): unset the pressed
 	button here.
 	(btk_notebook_grab_notify): stop reorder when the widget becomes
 	shadowed. Fixes bug #335873
 
-2006-06-18  Christian Persch  <chpe@cvs.gnome.org>
+2006-06-18  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkdialog.c: (btk_dialog_class_init): Set default action area
 	spacing to HIG-compliant 6px. Bug #345106, follow-up from bug #163850.
@@ -1656,7 +1656,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkprintoperation-unix.c: Set the GENERATE_PDF capability
 	when creating a print dialog.  (noted by Yevgen Muntyan)
 
-2006-06-15  Carlos Garnacho  <carlosg@gnome.org>
+2006-06-15  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c (btk_notebook_motion_notify): use
 	bdk_window_get_pointer() to get pointer coordinates, but limit its
@@ -1808,7 +1808,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkprogressbar.c: Defer updating of the offscreen
 	pixmap until expose.  (#344543, Chris Wilson)
 
-2006-06-11  Emmanuele Bassi  <ebassi@gnome.org>
+2006-06-11  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentchooserdefault.c
 	(get_is_recent_filtered):
@@ -2032,7 +2032,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	(btk_printer_cups_finalize):  Fix a C99ism.
 	(#344123, Jens Ganseuer)
 
-2006-06-06  Behdad Esfahbod  <behdad@gnome.org>
+2006-06-06  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkbango.c (bdk_bango_layout_line_get_clip_rebunnyion): Correct
 	rounding of rect members.  Improved docs.  (#337603)
@@ -2064,7 +2064,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* bdk/x11/bdkfont-x11.c (_bdk_font_destroy): Remove the right
 	XID from the xid table.  (#341327, Sampo Savolainen, Tim Janik)
 
-2006-06-04  Behdad Esfahbod  <behdad@gnome.org>
+2006-06-04  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkprintoperationpreview.h: Add missing G_END_DECLS (#343838)
 
@@ -2186,7 +2186,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* tests/print-editor.c:
 	Test using an custom print preview widget.
 
-2006-06-02  Emmanuele Bassi  <ebassi@gnome.org>
+2006-06-02  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentmanager.c
 	(btk_recent_info_get_application_info): Fix a typo (spotted by
@@ -2307,7 +2307,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btktreeviewcolumn.c (btk_tree_view_column_update_button): only
 	check sort column id if connected to sortable model.
 
-2006-05-30  Behdad Esfahbod  <behdad@gnome.org>
+2006-05-30  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkbango.c (draw_error_underline): Fix offset to center the
 	underline in requested rectangle. (Ported from bango fix.)
@@ -2339,7 +2339,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btktreeview.c (btk_tree_view_move_cursor_left_right): make
 	cursor movement to left/right work correctly in RTL mode.
 
-2006-05-28  Behdad Esfahbod  <behdad@gnome.org>
+2006-05-28  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkrectangle.c (bdk_rectangle_union, bdk_rectangle_intersect):
 	Note in docs that @dest can be the same as @src1 or @src2. (#343233,
@@ -2632,7 +2632,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	* tests/print-editor.c:
 	Allow setting of font using custom widgets in the print dialog.
 
-2006-05-22  Behdad Esfahbod  <behdad@gnome.org>
+2006-05-22  Behdad Esfahbod  <behdad@bunny.org>
 
 	Rollback the following changes, to fix it the proper way in Bango:
 
@@ -2646,7 +2646,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	_bdk_screen_get_font_map() instead of setting resolution on the
 	BangoBairoContext.  (#342529)
 
-2006-05-22  Emmanuele Bassi  <ebassi@gnome.org>
+2006-05-22  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/btkrecentmanager.h:
 	* btk/btkrecentmanager.c
@@ -2683,7 +2683,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 
 	* bdk/x11/bdkdisplay-x11.c: Several cleanups.
 	
-2006-05-21  Behdad Esfahbod  <behdad@gnome.org>
+2006-05-21  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkinternals.h:
 	* bdk/bdkscreen.c (bdk_screen_class_init), (bdk_screen_finalize),
@@ -2721,7 +2721,7 @@ Fri Jun 16 11:49:53 2006  Tim Janik  <timj@imendio.com>
 	boundary case in scrolling where a tab was not shown.  (#168105,
 	Hiroyuki Ikezoe, patch by Kouhei Sutou)
 
-2006-05-19  Damon Chaplin  <damon@gnome.org>
+2006-05-19  Damon Chaplin  <damon@bunny.org>
 
 	* btk/btkfontsel.c (btk_font_selection_init): use
 	batk_relation_add_target() to add the targets, since it sets up weak
@@ -2982,7 +2982,7 @@ Mon May 15 15:12:05 2006  Søren Sandmann  <sandmann@redhat.com>
 	with widgets after that. This fixes bug #340401.
 	More n_pages renames.
 
-2006-05-11  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-05-11  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/btkrecentmanager.h: Remove the error parameter to the
 	btk_recent_manager_add() and btk_recent_manager_add_full()
@@ -2999,7 +2999,7 @@ Mon May 15 15:12:05 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* demos/btk-demo/printing.c (do_printing): Add a BtkPrintOperation demo.
 
-2006-05-11  Carlos Garcia Campos  <carlosgc@gnome.org>
+2006-05-11  Carlos Garcia Campos  <carlosgc@bunny.org>
 
 	* btk/btkfilechooserembed.c: use I_() instead of _() when creating
 	response-requested signal. Fixes bug #341416
@@ -3016,7 +3016,7 @@ Mon May 15 15:12:05 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* bdk/bdkkeysyms.h: Consistently use lowercase in hex numbers.
 
-2006-05-10  Carlos Garnacho  <carlosg@gnome.org>
+2006-05-10  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c: check that tab_label is not NULL before checking
 	that it's notebook's child. Closes #341247.
@@ -3049,7 +3049,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	make the _CUPS_MAP_ATTR_STR macro not dup the string so we don't
 	leak 
 
-2006-05-10  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-05-10  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* btk/paper_names.c: Correct #11 Envelope typo.
 
@@ -3066,7 +3066,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btk.symbols:
 	* btk/btkmessagedialog.[hc]: Add an image property.  (#337306, Alex Graveley)
 
-2006-05-09  Carlos Garnacho  <carlosg@gnome.org>
+2006-05-09  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c: create an independent BdkWindow to behave nicely
 	during reordering with tab_labels with their own window, also use
@@ -3100,7 +3100,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkwindow.c: 
 	* btk/btkrange.c: Fix doc typos.
 
-2006-05-08  Francisco Javier F. Serrador  <serrador@cvs.gnome.org>
+2006-05-08  Francisco Javier F. Serrador  <serrador@cvs.bunny.org>
 
 	* btk/btkprintunixdialog.c (btk_print_unix_dialog_class_init):
 	Corrected a duplicate word.
@@ -3130,7 +3130,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	* bdk/bdkwindow.c (bdk_window_get_toplevels): Fix a wrong
 	reference in the docs.  (#340870, Ed Catmur)
 
-2006-05-05  Christian Persch  <chpe@cvs.gnome.org>
+2006-05-05  Christian Persch  <chpe@cvs.bunny.org>
 
 	* modules/printbackends/cups/btkprintbackendcups.c:
 	* modules/printbackends/lpr/btkprintbackendlpr.c:
@@ -3442,7 +3442,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkprinter.[hc]: Don't use virtual as a parameter name.
 	(#340394, Christian Persch)
 
-2006-05-02  Christian Persch  <chpe@cvs.gnome.org>
+2006-05-02  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkpagesetupunixdialog.c:
 	* btk/btkprintcontext.c: 
@@ -3556,7 +3556,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	of the ::size-changed signal, and improve its documentation.
 	(#340112, Christian Persch)
 
-2006-04-29  Behdad Esfahbod  <behdad@gnome.org>
+2006-04-29  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkwidget.c (btk_widget_create_bango_layout)
 	(btk_widget_get/create_bango_context): Change colormap to font map in
@@ -3578,7 +3578,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	* btk/btkcellrenderertext.c (get_size): Use _static variants when
 	copying and merging short-lived Bango layouts. (#340033, Morten Welinder)
 
-2006-04-28  Behdad Esfahbod  <behdad@gnome.org>
+2006-04-28  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkwidget.c (btk_widget_create_bango_layout): Fix typo in
 	docs. (#340063)
@@ -3598,7 +3598,7 @@ Wed May 10 15:57:53 2006  Tim Janik  <timj@imendio.com>
 	resp. text view is destroyed (for example when there is a
 	clipboard manager running on app exit) (bug #339195).
 
-2006-04-27  Behdad Esfahbod  <behdad@gnome.org>
+2006-04-27  Behdad Esfahbod  <behdad@bunny.org>
 
 	* bdk/bdkbango.c (bdk_bango_renderer_draw_glyphs): Cast to double
 	before dividing by BANGO_SCALE. (#334582)
@@ -4030,13 +4030,13 @@ Tue Apr 25 10:25:28 2006  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btkiconcache.c: Apply a patch by Paolo Borelli to factor
 	out a strip_suffix() function and save some memory.  (#338307)
 
-2006-04-18  Carlos Garnacho  <carlosg@gnome.org>
+2006-04-18  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c (btk_notebook_pages_allocate): removed wrong
 	condition check that caused tab labels not to be drawn under certain
 	circumstances. Bug #338734.
 
-2006-04-17  Kjartan Maraas  <kmaraas@gnome.org>
+2006-04-17  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* configure.in: Remove obsolete entry for no_NO
 	* po-properties/no.po: And the translation
@@ -4047,7 +4047,7 @@ Tue Apr 25 10:25:28 2006  Søren Sandmann  <sandmann@redhat.com>
 	* demos/btk-demo/colorsel.c (expose_event_callback): Small formatting
 	fix.
 
-2006-04-17  Christian Persch  <chpe@cvs.gnome.org>
+2006-04-17  Christian Persch  <chpe@cvs.bunny.org>
 
 	* btk/btkdnd.c: (btk_drag_dest_set), (btk_drag_dest_set_proxy): Fix
 	UMR in btk_drag_dest_motion. Bug #338725.
@@ -4172,7 +4172,7 @@ Tue Apr 25 10:25:28 2006  Søren Sandmann  <sandmann@redhat.com>
 	a patch from David Trowbridge to improve the positioning of the
 	search popup.  (#338047)
 
-2006-04-11  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-04-11  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/btkrecentmanager.c (btk_recent_manager_init)
 	(btk_recent_manager_new): Remove the unneeded setting of the
@@ -4361,7 +4361,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btkruler.c: Remove unused strings from the ruler_metrics 
 	structs, to avoid relocations.  (#336917, Stephane Chauveau)
 
-2006-04-02  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-04-02  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/btkrecentmanager.c (btk_recent_manager_set_filename): Build
 	the items list after setting the storage file.
@@ -4369,11 +4369,11 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btkrecentmanager.c (display_closed): Use the right string
 	for unsetting the default manager object from the screen.	
 
-2006-04-01  Behdad Esfahbod  <behdad@gnome.org>
+2006-04-01  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkfilesel.c (btk_file_selection_get_filename): Oops. (#336784)
 
-2006-04-01  Behdad Esfahbod  <behdad@gnome.org>
+2006-04-01  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkfilesel.c (btk_file_selection_get_filename): Use a GString
 	instead of static buffer to reduce .bss by 8kb. (#336784)
@@ -4383,29 +4383,29 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* modules/engines/ms-windows/msw_style.c (draw_hline): Emulate WinXP's
 	drawing of menu separators
 	
-2006-03-31  Behdad Esfahbod  <behdad@gnome.org>
+2006-03-31  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkrecentmanager.c: Convert filenames to UTF-8 before printing
 	them out in warning messages. (#336770, Morten Welinder)
 
-2006-03-31  Behdad Esfahbod  <behdad@gnome.org>
+2006-03-31  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkrecentmanager.c (btk_recent_info_last_application): Update
 	last_stamp inside the look. (#336771, Morten Welinder)
 
-2006-03-31  Behdad Esfahbod  <behdad@gnome.org>
+2006-03-31  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkrecentchoosermenu.c (btk_recent_chooser_menu_get_property):
 	Add missing break. (#336769, Morten Welinder)
 
-2006-03-31  Behdad Esfahbod  <behdad@gnome.org>
+2006-03-31  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkfilesystem.c (btk_file_system_get_bookmark_label):
 	* btk/btklinkbutton.c (btk_link_button_new_with_label): Return NULL
 	instead of FALSE in g_return_val_if_fail in a pointer-returning
 	function. (#336764, Morten Welinder)
 
-2006-04-01  Gora Mohanty  <gmohanty@cvs.gnome.org>
+2006-04-01  Gora Mohanty  <gmohanty@cvs.bunny.org>
 
 	* configure.in: Added 'or' (Oriya) to ALL_LINGUAS.
 
@@ -4424,7 +4424,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btkiconcache.c (_btk_icon_cache_get_icon_data): Use the slice
 	allocator for BtkIconData and UnthemedIcon structs.
 
-2006-03-30  Behdad Esfahbod  <behdad@gnome.org>
+2006-03-30  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkcalendar.c: Fix translation comments for localizable
 	digit formats. (fixes bug #336650)
@@ -4461,7 +4461,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* bdk/directfb/bdkpixmap-directfb.c implement
 	    (bdk_pixmap_foreign_new_for_screen)
 
-2006-03-30  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-30  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	Add documentation for the BtkLinkButton (#336592)
 
@@ -4469,7 +4469,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	of the BtkLinkButton.
 
 	* docs/reference/btk/migrating-BtkLinkButton.sgml: Guidelines
-	for migrating code from GnomeHRef to the BtkLinkButton.
+	for migrating code from BunnyHRef to the BtkLinkButton.
 
 	* docs/reference/btk/btk-docs.sgml:
 	* docs/reference/btk/Makefile.am: Build glue for the porting
@@ -4487,11 +4487,11 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btk.symbols:
 	* btk/btkrecent*.c: Fix some symbol aliasing glitches.
 
-2006-03-29  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-29  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/btkrecentchoosermenu.c: Make btkalias.h the last included file.
 
-2006-03-29  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-29  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/btk.symbols: Fix a typo that broke aliasing rules.
 
@@ -4499,7 +4499,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 
 	* bdk/quartz/bdkproperty-quartz.c: Add missing CLIPBOARD atom.
 
-2006-03-29  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-29  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* docs/reference/btk/migrating-BtkRecentChooser.sgml: Add a migration
 	guide for porting to the new BtkRecent stuff from the old EggRecent
@@ -4518,12 +4518,12 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	* docs/reference/btk/Makefile.am: Build glue for add BtkRecent to
 	the reference guide.
 
-2006-03-29  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-29  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* tests/Makefile.am:
 	* tests/testrecentchooser.c: Add a test suite for BtkRecentChooser.
 
-2006-03-29  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-03-29  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	Import BtkRecent* from libegg.
 
@@ -4583,7 +4583,7 @@ Tue Apr  4 12:25:36 2006  Søren Sandmann  <sandmann@redhat.com>
 	we might become grab-shadowed during a selection drag.
 	(#74620, Li Yuan)
 
-2006-03-28  Sven Herzberg  <herzi@gnome-de.org>
+2006-03-28  Sven Herzberg  <herzi@bunny-de.org>
 
         reviewed by: Tim Janik
 	
@@ -4682,7 +4682,7 @@ Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 	
 	* tests/testrc.c: Tests for widget_class path matching
 
-2006-03-23  Carlos Garnacho  <carlosg@gnome.org>
+2006-03-23  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btkdnd.c (btk_drag_dest_motion): make sure that bdk_drag_event()
 	is called when track_motion is TRUE to receive drag_motion and
@@ -4693,7 +4693,7 @@ Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 	* btk/btknotebook.c (btk_notebook_remove): Emit the ::page-removed
 	signal after removing the page.  (#335238, Christian Persch)
 
-2006-03-22  Carlos Garnacho  <carlosg@gnome.org>
+2006-03-22  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btkexpander.c: Make it to expand when hovering during DnD
 
@@ -4738,7 +4738,7 @@ Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 
 	* btk/btkcellrendererspin.c: fix typo in #include.
 
-2006-03-22  Carlos Garnacho  <carlosg@gnome.org>
+2006-03-22  Carlos Garnacho  <carlosg@bunny.org>
 
 	* btk/btknotebook.c: send a BtkWidget** instead of a BtkNotebookPage*
 	when doing tabs DnD, this allows DnD interaction with other widgets,
@@ -4889,7 +4889,7 @@ Fri Mar 24 14:53:20 2006  Tim Janik  <timj@imendio.com>
 
 2006-03-19  Matthias Clasen  <mclasen@redhat.com>
 
-	* MAINTAINERS: Add this, at the request of the GNOME sysadmin team.
+	* MAINTAINERS: Add this, at the request of the BUNNY sysadmin team.
 
 	* AUTHORS: Updates, typo fix
 
@@ -5079,7 +5079,7 @@ Thu Mar  9 14:29:43 2006  Tim Janik  <timj@btk.org>
 
 	* btk/btk.symbols: No btk_tray_icon_get_type on Win32.
 
-2006-03-08  Carlos Garnacho  <carlosg@gnome.org>
+2006-03-08  Carlos Garnacho  <carlosg@bunny.org>
 
 	Rename ::tab-added and ::tab-removed signals to ::page-added and
 	::page-removed for not conflicting with other tab reordering
@@ -5691,7 +5691,7 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 
 	Work around https://bugs.freedesktop.org/show_bug.cgi?id=4320,
 	which used to be our own
-	http://bugzilla.gnome.org/show_bug.cgi?id=314616.  If one uses a
+	http://bugzilla.bunny.org/show_bug.cgi?id=314616.  If one uses a
 	pixmap for a pattern in Bairo, and sets the pattern to
 	BAIRO_EXTEND_REPEAT; and if the destination surface is also a
 	pixmap, Bairo does a slow copy instead of using XCopyArea().  So,
@@ -5778,7 +5778,7 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 
 	* docs/tools/widgets.c: Add BtkAssistant.
 
-2006-01-28  Behdad Esfahbod  <behdad@gnome.org>
+2006-01-28  Behdad Esfahbod  <behdad@bunny.org>
 
 	* configure.in: If major.minor of required and available bunnylib versions
 	are the same, add -DG_DISABLE_DEPRECATED to BUNNYLIB_CFLAGS. (bug #328617)
@@ -5815,7 +5815,7 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 	(tree_view_keybinding_cb): Likewise.
 	(trap_activate_cb): Likewise.
 
-2006-01-25  Behdad Esfahbod  <behdad@gnome.org>
+2006-01-25  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkcalendar.c (btk_calendar_size_request): Use translated format
 	strings for L10n in size calculation too.
@@ -5827,14 +5827,14 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 
 	* tests/prop-editor.c: Introspect child properties. too.
 
-2006-01-25  Behdad Esfahbod  <behdad@gnome.org>
+2006-01-25  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btkcalendar.c (calendar_paint_week_numbers, calendar_paint_day):
 	Use contexed translated strings calendar:week:digits|%d and
 	calendar:day:digits|%d to let translators choose localized digits for
 	week and day numbers. (bug #317171, Hamed Malek)
 
-2006-01-25  Behdad Esfahbod  <behdad@gnome.org>
+2006-01-25  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btklabel.c (get_layout_location): Use logical extents of the
 	layout instead of ink extents.  According to Bango docs, that's what
@@ -5874,7 +5874,7 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 
 2006-01-23  Matthias Clasen  <mclasen@redhat.com>
 
-	Add BtkLinkButton, a port of GnomeHRef.  (#314808, Emmanuele Bassi)
+	Add BtkLinkButton, a port of BunnyHRef.  (#314808, Emmanuele Bassi)
 	
 	* btk/btklinkbutton.h: 
 	* btk/btklinkbutton.c: New files.
@@ -5896,7 +5896,7 @@ Fri Feb 17 14:20:29 2006  Tim Janik  <timj@imendio.com>
 	* btk/btktreemodel.c (btk_tree_model_base_init): don't copy
 	tree paths when emitting signals. (#325041, Matthias Clasen).
 
-2006-01-23  Behdad Esfahbod  <behdad@gnome.org>
+2006-01-23  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btklabel.c (get_layout_location): Fix misalignment of RTL
 	text in ellipsized BtkLabel: use layout width if set, otherwise
@@ -6722,9 +6722,9 @@ Thu Dec 22 16:01:27 2005  Tim Janik  <timj@imendio.com>
 2005-12-14  Rodney Dawes  <dobey@novell.com>
 
 	* btk/btkfilesystemunix.c (btk_file_system_unix_volume_render_icon):
-	Default to "drive-harddisk" and then fall back to gnome-dev-harddisk
+	Default to "drive-harddisk" and then fall back to bunny-dev-harddisk
 	(get_icon_for_mime_type): Look up the mime type icons according to the
-	Icon Naming Specification and then fall back to the gnome-mime- prefix
+	Icon Naming Specification and then fall back to the bunny-mime- prefix
 	for the mime type icons
 
 	Fixes #323655
@@ -6824,7 +6824,7 @@ Tue Dec 13 09:47:20 2005  Tim Janik  <timj@btk.org>
 	* btk/btkfilesystemunix.c (cb_fill_in_mime_type): Fix a C99ism,
 	spotted by Crispin Flowerday.
 
-2005-12-06  Behdad Esfahbod  <behdad@gnome.org>
+2005-12-06  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btksettings.c (settings_update_font_options): Turn metrics
 	hinting on (part of #307196)
@@ -7121,7 +7121,7 @@ Wed Nov 23 18:55:47 2005  Tim Janik  <timj@imendio.com>
 	* btk/btksettings.c (btk_settings_class_init): Add some docs
 	about btk-color-scheme.
 
-2005-11-23  Behdad Esfahbod  <behdad@gnome.org>
+2005-11-23  Behdad Esfahbod  <behdad@bunny.org>
 
 	* configure.in (enable_explicit_deps): Fix typo when checking
 	libtool config deplibs_check_method. Moreover, enable explicit
@@ -7483,7 +7483,7 @@ Wed Nov 23 18:55:47 2005  Tim Janik  <timj@imendio.com>
 	* btk/btktextdisplay.c (on_renderer_display_closed): fixed signature
 	of this callback.
 
-2005-11-10  Simos Xenitellis  <simos@gnome.org>
+2005-11-10  Simos Xenitellis  <simos@bunny.org>
 
 	* configure.in: Added Tatar (tt) to ALL_LINGUAS.
 
@@ -7538,7 +7538,7 @@ Wed Nov  9 16:29:42 2005  Tim Janik  <timj@imendio.com>
 	the client area's position and size stay constant.
 
 	btk-demo's color selector dialog is now non-resizable like on X11
-	(I tested with metacity in GNOME). Torn off menus are shrinkable
+	(I tested with metacity in BUNNY). Torn off menus are shrinkable
 	vertically but have a maximum size, and are not maximizable or
 	minimizable, like on X11.
 
@@ -8473,10 +8473,10 @@ Tue Nov  1 16:18:24 2005  Tim Janik  <timj@imendio.com>
 	back to true dynamic linking of FlashWindowEx. Makes btk+ work on NT4.0
 	again - if compiled properly.
 
-	* tests/teststatusicon.c : don't use GNOME icons for testing, but icons
+	* tests/teststatusicon.c : don't use BUNNY icons for testing, but icons
 	already coming with Btk+. Makes it compile on win32.
 
-2005-09-18  Guilherme de S. Pastore  <gpastore@cvs.gnome.org>
+2005-09-18  Guilherme de S. Pastore  <gpastore@cvs.bunny.org>
 
 	* README.cvs-commits: fixed some tiny typos
 
@@ -8524,7 +8524,7 @@ Thu Sep 15 15:27:55 2005  Tim Janik  <timj@imendio.com>
 	(browse_files_model_finished_loading_cb): Likewise, for when the
 	chooser is finished loading.
 
-2005-09-14  Tristan Van Berkom <tvb@cvs.gnome.org>
+2005-09-14  Tristan Van Berkom <tvb@cvs.bunny.org>
 
 	* btk/btkcolorbutton.c: Check "color" argument in 
 	btk_color_button_set_color ()
@@ -9057,7 +9057,7 @@ Thu Sep 15 15:27:55 2005  Tim Janik  <timj@imendio.com>
 	Wielaard)
 
 	* btk/btkfilesystemunix.c (btk_file_system_unix_volume_render_icon): 
-	Use gnome-dev-harddisk for volumes, not gnome-fs-blockdev.  (#314382,
+	Use bunny-dev-harddisk for volumes, not bunny-fs-blockdev.  (#314382,
 	Sebastien Bacher)
 	
 	* NEWS: Updates

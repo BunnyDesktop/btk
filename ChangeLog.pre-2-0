@@ -1371,7 +1371,7 @@ Fri Feb 22 20:28:18 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (ALL_LINGUAS): Add "cy" to the language list.
 
-2002-02-23  Jody Goldberg <jody@gnome.org>
+2002-02-23  Jody Goldberg <jody@bunny.org>
 
 	* btk/btkaccelgroup.c (btk_accel_group_connect) : lower case the
 	  key_val.
@@ -2005,7 +2005,7 @@ Fri Feb 15 19:38:00 2002  Kristian Rietveld  <kris@btk.org>
 	handle, not the whole widget. #71530.
 	(btk_paned_leave): Likewise.
 
-2002-02-14  Jody Goldberg <jody@gnome.org>
+2002-02-14  Jody Goldberg <jody@bunny.org>
 
 	* btk/btkrange.c (btk_range_class_init) : add new signal
 	  'adjust_bounds' to potentialy change the bounds before assigning the
@@ -2265,7 +2265,7 @@ Sun Feb 10 12:32:44 2002  Owen Taylor  <otaylor@redhat.com>
 	* tests/testbtk.c (create_list) : don't try to load btkenums.h
 	from the current directory use ../btk/btkenums.h instead
 
-2002-02-10  Kjartan Maraas  <kmaraas@gnome.org>
+2002-02-10  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btksizegroup.c: Fix a double "The" typo in a string.
 	
@@ -3492,7 +3492,7 @@ Fri Jan 18 23:01:37 2002  Owen Taylor  <otaylor@redhat.com>
 2002-01-17  Raja R Harinath  <harinath@cs.umn.edu>
 
 	Simplify Makefiles. 
-	<URL: http://bugzilla.gnome.org/show_bug.cgi?id=68969>
+	<URL: http://bugzilla.bunny.org/show_bug.cgi?id=68969>
 	* bdk/Makefile.am: Remove use of automake conditionals to pick
 	library to build.
 	* btk/Makefile.am: Likewise.
@@ -3663,7 +3663,7 @@ Wed Jan 16 10:18:42 2002  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkmenushell.c (btk_real_menu_shell_move_current):
 	Avoid unexpected warning message when navigating menu (#68517)
 
-2002-01-15  Jody Goldberg <jody@gnome.org>
+2002-01-15  Jody Goldberg <jody@bunny.org>
 
 	* btk/btklayout.c (btk_layout_realize) : It is possible that a
 	BtkLayout may have been scrolled _before_ it was realized.
@@ -3757,7 +3757,7 @@ Mon Jan 14 16:35:58 2002  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkwindow.c (btk_window_move_resize): Unset 
 	initial_pos_set after the first configure request.
 
-2002-01-13  Jody Goldberg <jody@gnome.org>
+2002-01-13  Jody Goldberg <jody@bunny.org>
 
         * btk/btktexttag.c (get_color_arg) : set_boxed will copy the color
 	  and will use a mem_chunk to do it.  Avoid an unnecessary copy, a
@@ -4625,7 +4625,7 @@ Tue Dec 18 16:07:28 2001  Owen Taylor  <otaylor@redhat.com>
 	* btk/btktextutil.h, btk/btktextutil.c: private utilities to be
 	used in BtkEntry and BtkTextView - may become public later.	
 
-2001-12-16  Kjartan Maraas  <kmaraas@gnome.org>
+2001-12-16  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btkprogressbar.c: Fix a typo.
 	* btk/btkpaned.c: Fix a typo.
@@ -9473,7 +9473,7 @@ Sun Aug 26 20:00:00 2001  Owen Taylor  <otaylor@redhat.com>
 	* demos/btk-demo/menus.c tests/testbtk.c: Switch to 
 	btk_menu_item_set_right_justified.
  
-2001-08-27  Jens Finke <jens@gnome.org>
+2001-08-27  Jens Finke <jens@bunny.org>
 
 	* btk+.spec.in: Updated to match gpp requirements, reworked the
 	files section to make it work with 1.3.x releases.
@@ -10076,7 +10076,7 @@ Fri Aug 10 16:55:53 2001  Tim Janik  <timj@btk.org>
 
 	* modules/input/btkimcontextxim.c (mb_to_utf8), xim_text_to_utf8):
 	Skip g_convert when to_codeset and from_codeset are both 'UTF-8'
-	(gnome bugzilla #58202)
+	(bunny bugzilla #58202)
 
 2001-08-06  Havoc Pennington  <hp@pobox.com>
  
@@ -10301,7 +10301,7 @@ Fri Jul 27 11:31:15 2001  Jonathan Blandford  <jrb@redhat.com>
 	doesn't set a colormap with the wrong depth
 
 
-2001-07-22  Anders Carlsson  <andersca@gnome.org>
+2001-07-22  Anders Carlsson  <andersca@bunny.org>
 
 	* btk/btktreeview.c (btk_tree_view_class_init): Replace the
 	expander_height and expander_width properties with a single
@@ -10680,7 +10680,7 @@ Wed Jul  4 22:35:40 2001  Owen Taylor  <otaylor@redhat.com>
 	  btk/btkwidget.c:
 	Check BTK_WIDGET_TOPLEVEL(btk_widget_get_toplevel (widget)),
 	not BTK_WIDGET_GET_ANCESTOR ... see 
-	http://mail.gnome.org/archives/btk-devel-list/2001-July/msg00072.html.
+	http://mail.bunny.org/archives/btk-devel-list/2001-July/msg00072.html.
 	Indicate the best practice in the docs for btk_widget_get_toplevel().
 
 	* btk/btkwidget.[ch]: Expose a private _btk_widget_hierarchy_changed(),
@@ -11203,7 +11203,7 @@ Wed Jun 27 19:40:31 2001  Jonathan Blandford  <jrb@redhat.com>
 	(btk_tree_view_real_expand_row): remove	totally braindead code.
 	(btk_tree_view_real_collapse_row): ditto.
 
-2001-06-27  Kjartan Maraas  <kmaraas@gnome.org>
+2001-06-27  Kjartan Maraas  <kmaraas@bunny.org>
 
 	* btk/btktreeviewcolumn.c: Fix a typo.
 	
@@ -11301,7 +11301,7 @@ Sun Jun 24 21:34:32 2001  Owen Taylor  <otaylor@redhat.com>
 	is used for BTK_STOCK_DND, but it is a bit too small.)
 
 	* btk/stock-icons/stock_dnd_multiple.png
-	btk/stock-icons/Makefile.am: New stock icon moved from gnome-libs.
+	btk/stock-icons/Makefile.am: New stock icon moved from bunny-libs.
 
 	* btk/btkdnd.c (btk_drag_source_event_cb): Only return
 	TRUE when starting a drag. In other cases, we are
@@ -12937,7 +12937,7 @@ Sun Apr 29 03:02:02 2001  Tim Janik  <timj@btk.org>
 
 	* btk/btkcolorsel.c (btk_color_selection_set_change_palette_hook):
 	new function, replaces the get/set palette stuff. This function 
-	is intended for use by libgnomeui which should set the hook to a
+	is intended for use by libbunnyui which should set the hook to a
 	thing which sets the palette in GConf, and we need the
 	GConf-to-xsettings proxy which will result in the change being
 	propagated back to the BTK app.
@@ -15173,7 +15173,7 @@ Wed Feb 28 19:10:43 2001  Owen Taylor  <otaylor@redhat.com>
 
 	(Test case provided by Daniel Elstner:
 
-        http://mail.gnome.org/archives/btk-list/2001-February/msg00359.html)
+        http://mail.bunny.org/archives/btk-list/2001-February/msg00359.html)
 
 Fri Feb 23 15:06:48 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -16378,7 +16378,7 @@ Wed Jan 31 16:21:42 2001  Owen Taylor  <otaylor@redhat.com>
 	The solution here isn't perfect - you get an extraneous
 	emission of "toggle", which could conceivably confuse an app,
 	but better than the current situation. LXR search seems to
-	indicate that no apps in GNOME CVS connect to "toggle".
+	indicate that no apps in BUNNY CVS connect to "toggle".
 
 Wed Jan 31 15:46:13 2001  Owen Taylor  <otaylor@redhat.com>
 
@@ -21296,7 +21296,7 @@ Mon Sep 25 15:05:17 2000  Owen Taylor  <otaylor@redhat.com>
 2000-09-29  Martin Baulig  <baulig@suse.de>
 
 	* bdk-pixbuf.pc.in: Renamed to gdb-pixbuf-2.0.pc.in to avoid
-	confusion with the BdkPixbuf of the GNOME 1.x platform.
+	confusion with the BdkPixbuf of the BUNNY 1.x platform.
 
 2000-09-29  Havoc Pennington  <hp@pobox.com>
 
@@ -22140,7 +22140,7 @@ Fri Jul 21 15:28:13 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkscrolledwindow.[ch] (btk_scrolled_window_set_shadow_type):
 	Add function to set the shadow type of a window, to allow
-	putting a shadow around widgets such as BtkLayout or GnomeCanvas
+	putting a shadow around widgets such as BtkLayout or BunnyCanvas
 	which don't draw their own frame.
 
 Fri Jul 21 16:34:42 BST 2000  Tony Gale <gale@btk.org>
@@ -24951,7 +24951,7 @@ Wed Jan 26 19:01:56 2000  Owen Taylor  <otaylor@redhat.com>
 	(Bug #2956,
 	 patch from Steve Ratcliffe <steve@parabola.demon.co.uk>)
 
-2000-01-27  Shirasaki Yasuhiro  <yasuhiro@gnome.gr.jp>
+2000-01-27  Shirasaki Yasuhiro  <yasuhiro@bunny.gr.jp>
 
 	* acinclude.m4 (AM_BTK_WITH_NLS): Add -lintl to libs
 	when checking for dcgettext, if we've found we needed
@@ -25164,7 +25164,7 @@ Sat Feb 26 11:46:25 GMT 2000  Tony Gale <gale@btk.org>
 2000-02-25  Jonathan Blandford  <jrb@redhat.com>
 
 	* docs/make-todo (lineno): let title and logo be configurable so
-	that GNOME can use this script too.
+	that BUNNY can use this script too.
 
 	* TODO.xml: added logourl and a title
 
@@ -25826,7 +25826,7 @@ Wed Sep 15 02:52:19 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btkwidget.c (btk_widget_event): Added workaround
 	for old widgets that don't propagate draws to all
-	children. (Namely gnome-dock for gnome-libs <= 1.0.16)
+	children. (Namely bunny-dock for bunny-libs <= 1.0.16)
 
 Tue Sep 14 19:22:19 1999  Tim Janik  <timj@btk.org>
 
@@ -26264,7 +26264,7 @@ Thu Aug 26 14:14:42 1999  Tim Janik  <timj@btk.org>
 
 	* btk/btkwidget.c (btk_widget_size_allocate): reactivated the sanity
 	checks that ensure that a widget's allocation is at least 1 in width
-	and height. (GNOME note: this doesn't affect old panel code anymore,
+	and height. (BUNNY note: this doesn't affect old panel code anymore,
 	because BtkSocket will request width and height of at least 1 since
 	Fri Jul 23).
 
@@ -27277,7 +27277,7 @@ Sat Oct 30 13:17:18 BST 1999 Tony Gale <gale@btk.org>
 
 	* btk/btktoolbar.h, btk/btktoolbar.c: Added horizontal icon/text
 	layout support (as mentioned on
-	http://www.jcinteractive.com/gnome-ui/software/widgets/)
+	http://www.jcinteractive.com/bunny-ui/software/widgets/)
 
 Wed Oct  6 12:46:17 PDT 1999 Manish Singh <yosh@gimp.org>
 
