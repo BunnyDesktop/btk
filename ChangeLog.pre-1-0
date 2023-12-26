@@ -93,7 +93,7 @@ Sat Apr 11 02:01:31 1998  Owen Taylor  <owt1@cornell.edu>
 Sat Apr 11 01:41:55 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* btk/btktext.c (expose_text): Fixed a sign problem 
-	(typedef gint guint!). Added some checks to make sure things
+	(typedef bint buint!). Added some checks to make sure things
 	are positive.
 
 Sat Apr 11 05:51:22 1998  Tim Janik  <timj@btk.org>
@@ -299,7 +299,7 @@ Sun Apr  5 19:30:23 1998  Owen Taylor  <owt1@cornell.edu>
 	button labels from vanishing when the invoked operation blocks.
 
 	* btk/btkbox.c (btk_box_remove): Assigning BTK_WIDGET_VISIBLE (widget)
-	to a gboolean (char) is _bad_. BTK_VISIBLE == 256.
+	to a bboolean (char) is _bad_. BTK_VISIBLE == 256.
 
 Sun Apr  5 15:08:25 1998  Owen Taylor  <owt1@cornell.edu>
 
@@ -851,7 +851,7 @@ Tue Mar 17 01:55:00 1998  Owen Taylor  <owt1@cornell.edu>
 	  btk/testselection.c: signedness fixups
 
 	* btk/btkcontainer.c: Fixed implicit cast between
-	  gpointer and func pointer by changing.
+	  bpointer and func pointer by changing.
 
 	* btk/btkcombo.c, btk/btkentry.c, btk/btktext.c:
 	  static void forward declaration vs. void actual fixed
@@ -1047,7 +1047,7 @@ Sat Mar 14 13:26:09 1998  Owen Taylor  <owt1@cornell.edu>
 	* btk/btkentry.c btk/btktext.c: Some cleanups of signedness
           warnings
 
-	* btk/btkhandlebox.h: Changed gint ... : 1 to guint ... : 1
+	* btk/btkhandlebox.h: Changed bint ... : 1 to buint ... : 1
 	 
 1998-03-14  Federico Mena Quintero  <federico@nuclecu.unam.mx>
 
@@ -1209,7 +1209,7 @@ Wed Mar 11 14:36:48 PST 1998 Shawn T. Amundson <amundson@gimp.org>
 Thu Mar 12 10:49:38 1998  Tim Janik  <timj@gimp.org>
 
 	* btk/btkmain.h: 
-	* btk/btkmain.c: changed handler tags to be of type guint, reflecting
+	* btk/btkmain.c: changed handler tags to be of type buint, reflecting
 	the internal tag handling.
 
 	* btk/btkcurve.h: macro fixups.
@@ -1303,7 +1303,7 @@ Tue Mar 10 13:34:29 1998  Owen Taylor  <owt1@cornell.edu>
 	  position for middle button clicks.
 
 	* btk/btktext.c btk/btkentry.c:
-	  - Fixes for deleting characters (don't subtract guints and get
+	  - Fixes for deleting characters (don't subtract buints and get
 	    negative numbers!)
 	  - Reset cursor_virtual_x when moving by words and lines
 	  - Extra sanity checks
@@ -1399,41 +1399,41 @@ Mon Mar  9 15:48:10 1998  Tim Janik  <timj@gimp.org>
 	* btk/btkwidget.c: 
 	* btk/btktogglebutton.c: 
 	* btk/btkwindow.c: 
-	made the <widget>_signals[] arrays of type guint rather than gint.
+	made the <widget>_signals[] arrays of type buint rather than bint.
 
 	* btk/btkwidget.c (btk_widget_get_ancestor): made widget_type a BtkType.
 
 	* btk/btkcombo.h:
-	handler ids need to be of type guint (entry_change_id, list_change_id).
+	handler ids need to be of type buint (entry_change_id, list_change_id).
 
 	* btk/btkaccelerator.c:
-	changed signal_num to signal_id and typed it guint.
+	changed signal_num to signal_id and typed it buint.
 
-	* btk/btkmain.c: made btk_ndebug_keys a guint.
+	* btk/btkmain.c: made btk_ndebug_keys a buint.
 
 	* btk/btkmenu.h: 
 	* btk/btkmenu.c:
-	(btk_menu_popup): made button a guint.
-	(btk_menu_set_active): made index a guint.
+	(btk_menu_popup): made button a buint.
+	(btk_menu_set_active): made index a buint.
 
 	* btk/btkmenuitem.h: 
 	* btk/btkmenuitem.c: 
-	made accelerator_signal a guint.
+	made accelerator_signal a buint.
 
 	* btk/btkoptionmenu.h:
 	* btk/btkoptionmenu.c:
-	(btk_option_menu_set_history): made index a guint.
+	(btk_option_menu_set_history): made index a buint.
 
 	* btk/btksignal.h: 
 	* btk/btksignal.c: 
 	* btk/btkobject.h: 
-	* btk/btkobject.c: changed a bunch of prototypes to take guints rather
-	than gints. also made some conversions from guint to BtkType, left over
+	* btk/btkobject.c: changed a bunch of prototypes to take buints rather
+	than bints. also made some conversions from buint to BtkType, left over
  	from when the fundamental-types system was introduced.
 
 	* btk/btkobject.h: 
-	* btk/btkobject.c: made object_data_id_index and obj_count guints.
-	made *signals and nsignals guints in BtkObjectClass.
+	* btk/btkobject.c: made object_data_id_index and obj_count buints.
+	made *signals and nsignals buints in BtkObjectClass.
 
 Mon Mar  9 13:36:53 GMT 1998 Tony Gale  <gale@gimp.org>
 
@@ -1669,7 +1669,7 @@ Thu Mar  5 01:22:06 1998  Owen Taylor  <owt1@cornell.edu>
 	  Check for position at end of line.
 
 	* btk/btkinputdialog.h (struct _BtkInputDialogClass): 
-	  removed 'gpointer data' arguments from default handler
+	  removed 'bpointer data' arguments from default handler
 	  structures.
 
 Wed Mar  4 20:06:47 1998  Miguel de Icaza  <miguel@nuclecu.unam.mx>
@@ -1709,8 +1709,8 @@ Mon Mar  2 17:48:38 1998  Owen Taylor  <owt1@cornell.edu>
 
 	* btk/btkmain.c: An actual bug! (in deprecated btk_input_add_interp)
 
-	* btk/btknotebook.h: Bitfields must be gint or guint. (and should
-	  be guint)
+	* btk/btknotebook.h: Bitfields must be bint or buint. (and should
+	  be buint)
 
 	* btk/btkstatusbar.c: trailing ';'
 
@@ -1756,9 +1756,9 @@ Sun Mar  1 22:59:09 1998  Tim Janik  <timj@gimp.org>
  	emissions which will not be caught by the compiler. your callbacks
  	should look like:
   	void  message_text_popped (BtkStatusbar   *statusbar,
-				   guint           context_id,
-	                           const gchar    *text,
-				   gpointer        func_data);
+				   buint           context_id,
+	                           const bchar    *text,
+				   bpointer        func_data);
 
 	* btk/btkwidget.c (btk_widget_set_rc_style): eliminated bug about
 	initial signal emission.
@@ -2042,7 +2042,7 @@ Sat Feb 21 14:49:17 1998  Tim Janik  <timj@gimp.org>
  	btk_toolbar_append_item, btk_toolbar_prepend_item,
  	btk_toolbar_insert_item, btk_toolbar_append_widget,
 	btk_toolbar_prepend_widget, btk_toolbar_insert_widget: take an additional
- 	gchar *tooltip_private_text as argument to fully support the underlying
+ 	bchar *tooltip_private_text as argument to fully support the underlying
 	call to btk_tooltip_set_tip.
 
 Fri Feb 20 06:40:00 1998  Tim Janik  <timj@gimp.org>
@@ -2158,8 +2158,8 @@ Thu Feb 19 05:40:51 1998  Tim Janik  <timj@gimp.org>
 	- emission of BtkNotebook:switch_page and all page changes
 	also the signature for the BtkNotebook:switch_page signal changed,
 	callbacks should now look like:
-	gint notebook_switch_page (BtkWidget *widget,   BtkNotebookPage *page,
-                                   gint       page_num, gpointer         data);
+	bint notebook_switch_page (BtkWidget *widget,   BtkNotebookPage *page,
+                                   bint       page_num, bpointer         data);
 
 Wed Feb 18 01:09:56 PST 1998  Jay Painter <jpaint@serv.net>
 	* bdk/bdk.c: fixed ambigous else compiler warning
@@ -2354,7 +2354,7 @@ Tue Feb 10 07:12:07 1998  Tim Janik  <timj@gimp.org>
         disconnected handlers are simply marked as blocked and get an id of 0
         which is an invalid signal handler id.
         the handler->id has been changed to have 28 significant bits (using
-        alignment gaps), since 65536 (old range: guint16) signal connections
+        alignment gaps), since 65536 (old range: buint16) signal connections
         (as a total) can easily be reached by complex applications.
         this whole handler thingy is at least as tedious as writing doubly
         linked list implementations ;)
@@ -3199,7 +3199,7 @@ Tue Jan  6 17:07:29 1998  Owen Taylor  <owt1@cornell.edu>
 	   Added new btk_entry_select_rebunnyion () call.
 
 Sat Jan  3 20:23:25 1998  Owen Taylor  <owt1@cornell.edu>
-	* bunnylib/bunnylib.h: Changed guint32 -> guint for bitfields. 
+	* bunnylib/bunnylib.h: Changed buint32 -> buint for bitfields. 
 	  (Bitfields must be int or unsigned int?)
 
 Sat Jan  3 15:39:45 PST 1998 Jay Painter <jpaint@serv.net>
@@ -4096,7 +4096,7 @@ Fri Sep  5 20:49:37 1997  Marius Vollmer  <mvo@zagadka.ping.de>
 	Thru out: Changed BTK_ARG_* to the appropriate BTK_TYPE_*.
   	Changed access to BtkArg structure to the appropriate BTK_VALUE_*
  	or BTK_RETLOC_* macro.  Changed BtkArgType to BtkType.  Changed
- 	some guints to BtkType.
+ 	some buints to BtkType.
 
 	General changes in btk/ to support interpreters:
 

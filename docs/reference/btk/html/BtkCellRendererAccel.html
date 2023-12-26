@@ -61,7 +61,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkCellRendererAccel.html#BtkCellRendererAccel--accel-key" title="The “accel-key” property">accel-key</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -76,7 +76,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkCellRendererAccel.html#BtkCellRendererAccel--keycode" title="The “keycode” property">keycode</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -126,7 +126,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkCellRendererAccel.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkCellRenderer.html" title="BtkCellRenderer">BtkCellRenderer</a>
@@ -193,11 +193,11 @@ btk_cell_renderer_accel_new (<em class="parameter"><code><span class="type">void
 <a name="BtkCellRendererAccel.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkCellRendererAccel--accel-key"></a><h3>The <code class="literal">“accel-key”</code> property</h3>
-<pre class="programlisting">  “accel-key”                <span class="type">guint</span></pre>
+<pre class="programlisting">  “accel-key”                <span class="type">buint</span></pre>
 <p>The keyval of the accelerator.</p>
 <p>Owner: BtkCellRendererAccel</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
@@ -226,13 +226,13 @@ in the same way as they are in menus.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCellRendererAccel--keycode"></a><h3>The <code class="literal">“keycode”</code> property</h3>
-<pre class="programlisting">  “keycode”                  <span class="type">guint</span></pre>
+<pre class="programlisting">  “keycode”                  <span class="type">buint</span></pre>
 <p>The hardware keycode of the accelerator. Note that the hardware keycode is
 only relevant if the key does not have a keyval. Normally, the keyboard
 configuration should assign keyvals to all keys.</p>
 <p>Owner: BtkCellRendererAccel</p>
 <p>Flags: Read / Write</p>
-<p>Allowed values: &lt;= G_MAXINT</p>
+<p>Allowed values: &lt;= B_MAXINT</p>
 <p>Default value: 0</p>
 <p class="since">Since: <a class="link" href="api-index-2-10.html#api-index-2.10">2.10</a></p>
 </div>
@@ -244,7 +244,7 @@ configuration should assign keyvals to all keys.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCellRendererAccel.html" title="BtkCellRendererAccel"><span class="type">BtkCellRendererAccel</span></a> *accel,
                <span class="type">char</span>                 *path_string,
-               <span class="type">gpointer</span>              user_data)</pre>
+               <span class="type">bpointer</span>              user_data)</pre>
 <p>Gets emitted when the user has removed the accelerator.</p>
 <div class="refsect3">
 <a name="BtkCellRendererAccel-accel-cleared.parameters"></a><h4>Parameters</h4>
@@ -282,10 +282,10 @@ user_function (<a class="link" href="BtkCellRendererAccel.html" title="BtkCellRe
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCellRendererAccel.html" title="BtkCellRendererAccel"><span class="type">BtkCellRendererAccel</span></a> *accel,
                <span class="type">char</span>                 *path_string,
-               <span class="type">guint</span>                 accel_key,
+               <span class="type">buint</span>                 accel_key,
                <a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a>       accel_mods,
-               <span class="type">guint</span>                 hardware_keycode,
-               <span class="type">gpointer</span>              user_data)</pre>
+               <span class="type">buint</span>                 hardware_keycode,
+               <span class="type">bpointer</span>              user_data)</pre>
 <p>Gets emitted when the user has selected a new accelerator.</p>
 <div class="refsect3">
 <a name="BtkCellRendererAccel-accel-edited.parameters"></a><h4>Parameters</h4>

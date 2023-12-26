@@ -25,7 +25,7 @@
 #include <bunnylib.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 typedef enum
@@ -56,7 +56,7 @@ typedef struct _BtkRBTreeView BtkRBTreeView;
 
 typedef void (*BtkRBTreeTraverseFunc) (BtkRBTree  *tree,
                                        BtkRBNode  *node,
-                                       gpointer  data);
+                                       bpointer  data);
 
 struct _BtkRBTree
 {
@@ -68,7 +68,7 @@ struct _BtkRBTree
 
 struct _BtkRBNode
 {
-  guint flags : 14;
+  buint flags : 14;
 
   /* We keep track of whether the aggregate count of children plus 1
    * for the node itself comes to an even number.  The parity flag is
@@ -80,7 +80,7 @@ struct _BtkRBNode
    * but that would use extra memory.
    */
 
-  guint parity : 1;
+  buint parity : 1;
   
   BtkRBNode *left;
   BtkRBNode *right;
@@ -89,14 +89,14 @@ struct _BtkRBNode
   /* count is the number of nodes beneath us, plus 1 for ourselves.
    * i.e. node->left->count + node->right->count + 1
    */
-  gint count;
+  bint count;
   
   /* this is the total of sizes of
    * node->left, node->right, our own height, and the height
    * of all trees in ->children, iff children exists because
    * the thing is expanded.
    */
-  gint offset;
+  bint offset;
 
   /* Child trees */
   BtkRBTree *children;
@@ -106,8 +106,8 @@ struct _BtkRBNode
 #define BTK_RBNODE_GET_COLOR(node)		(node?(((node->flags&BTK_RBNODE_RED)==BTK_RBNODE_RED)?BTK_RBNODE_RED:BTK_RBNODE_BLACK):BTK_RBNODE_BLACK)
 #define BTK_RBNODE_SET_COLOR(node,color) 	if((node->flags&color)!=color)node->flags=node->flags^(BTK_RBNODE_RED|BTK_RBNODE_BLACK)
 #define BTK_RBNODE_GET_HEIGHT(node) 		(node->offset-(node->left->offset+node->right->offset+(node->children?node->children->root->offset:0)))
-#define BTK_RBNODE_SET_FLAG(node, flag)   	G_STMT_START{ (node->flags|=flag); }G_STMT_END
-#define BTK_RBNODE_UNSET_FLAG(node, flag) 	G_STMT_START{ (node->flags&=~(flag)); }G_STMT_END
+#define BTK_RBNODE_SET_FLAG(node, flag)   	B_STMT_START{ (node->flags|=flag); }B_STMT_END
+#define BTK_RBNODE_UNSET_FLAG(node, flag) 	B_STMT_START{ (node->flags&=~(flag)); }B_STMT_END
 #define BTK_RBNODE_FLAG_SET(node, flag) 	(node?(((node->flags&flag)==flag)?TRUE:FALSE):FALSE)
 
 
@@ -117,22 +117,22 @@ void       _btk_rbtree_remove           (BtkRBTree              *tree);
 void       _btk_rbtree_destroy          (BtkRBTree              *tree);
 BtkRBNode *_btk_rbtree_insert_before    (BtkRBTree              *tree,
 					 BtkRBNode              *node,
-					 gint                    height,
-					 gboolean                valid);
+					 bint                    height,
+					 bboolean                valid);
 BtkRBNode *_btk_rbtree_insert_after     (BtkRBTree              *tree,
 					 BtkRBNode              *node,
-					 gint                    height,
-					 gboolean                valid);
+					 bint                    height,
+					 bboolean                valid);
 void       _btk_rbtree_remove_node      (BtkRBTree              *tree,
 					 BtkRBNode              *node);
 void       _btk_rbtree_reorder          (BtkRBTree              *tree,
-					 gint                   *new_order,
-					 gint                    length);
+					 bint                   *new_order,
+					 bint                    length);
 BtkRBNode *_btk_rbtree_find_count       (BtkRBTree              *tree,
-					 gint                    count);
+					 bint                    count);
 void       _btk_rbtree_node_set_height  (BtkRBTree              *tree,
 					 BtkRBNode              *node,
-					 gint                    height);
+					 bint                    height);
 void       _btk_rbtree_node_mark_invalid(BtkRBTree              *tree,
 					 BtkRBNode              *node);
 void       _btk_rbtree_node_mark_valid  (BtkRBTree              *tree,
@@ -140,21 +140,21 @@ void       _btk_rbtree_node_mark_valid  (BtkRBTree              *tree,
 void       _btk_rbtree_column_invalid   (BtkRBTree              *tree);
 void       _btk_rbtree_mark_invalid     (BtkRBTree              *tree);
 void       _btk_rbtree_set_fixed_height (BtkRBTree              *tree,
-					 gint                    height,
-					 gboolean                mark_valid);
-gint       _btk_rbtree_node_find_offset (BtkRBTree              *tree,
+					 bint                    height,
+					 bboolean                mark_valid);
+bint       _btk_rbtree_node_find_offset (BtkRBTree              *tree,
 					 BtkRBNode              *node);
-gint       _btk_rbtree_node_find_parity (BtkRBTree              *tree,
+bint       _btk_rbtree_node_find_parity (BtkRBTree              *tree,
 					 BtkRBNode              *node);
-gint       _btk_rbtree_find_offset      (BtkRBTree              *tree,
-					 gint                    offset,
+bint       _btk_rbtree_find_offset      (BtkRBTree              *tree,
+					 bint                    offset,
 					 BtkRBTree             **new_tree,
 					 BtkRBNode             **new_node);
 void       _btk_rbtree_traverse         (BtkRBTree              *tree,
 					 BtkRBNode              *node,
 					 GTraverseType           order,
 					 BtkRBTreeTraverseFunc   func,
-					 gpointer                data);
+					 bpointer                data);
 BtkRBNode *_btk_rbtree_next             (BtkRBTree              *tree,
 					 BtkRBNode              *node);
 BtkRBNode *_btk_rbtree_prev             (BtkRBTree              *tree,
@@ -168,17 +168,17 @@ void       _btk_rbtree_prev_full        (BtkRBTree              *tree,
 					 BtkRBTree             **new_tree,
 					 BtkRBNode             **new_node);
 
-gint       _btk_rbtree_get_depth        (BtkRBTree              *tree);
+bint       _btk_rbtree_get_depth        (BtkRBTree              *tree);
 
 /* This func checks the integrity of the tree */
 #ifdef G_ENABLE_DEBUG  
-void       _btk_rbtree_test             (const gchar            *where,
+void       _btk_rbtree_test             (const bchar            *where,
                                          BtkRBTree              *tree);
 void       _btk_rbtree_debug_spew       (BtkRBTree              *tree);
 #endif
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_RBTREE_H__ */

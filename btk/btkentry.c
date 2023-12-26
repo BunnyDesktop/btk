@@ -88,22 +88,22 @@ static GQuark          quark_capslock_feedback = 0;
 
 typedef struct _BtkEntryPrivate BtkEntryPrivate;
 
-#define BTK_ENTRY_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY, BtkEntryPrivate))
+#define BTK_ENTRY_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ENTRY, BtkEntryPrivate))
 
 typedef struct
 {
   BdkWindow *window;
-  gchar *tooltip;
-  guint insensitive    : 1;
-  guint nonactivatable : 1;
-  guint prelight       : 1;
-  guint in_drag        : 1;
-  guint pressed        : 1;
+  bchar *tooltip;
+  buint insensitive    : 1;
+  buint nonactivatable : 1;
+  buint prelight       : 1;
+  buint in_drag        : 1;
+  buint pressed        : 1;
 
   BtkImageType  storage_type;
   BdkPixbuf    *pixbuf;
-  gchar        *stock_id;
-  gchar        *icon_name;
+  bchar        *stock_id;
+  bchar        *icon_name;
   GIcon        *gicon;
 
   BtkTargetList *target_list;
@@ -114,39 +114,39 @@ struct _BtkEntryPrivate
 {
   BtkEntryBuffer* buffer;
 
-  gfloat xalign;
-  gint insert_pos;
-  guint blink_time;  /* time in msec the cursor has blinked since last user event */
-  guint interior_focus          : 1;
-  guint real_changed            : 1;
-  guint invisible_char_set      : 1;
-  guint caps_lock_warning       : 1;
-  guint caps_lock_warning_shown : 1;
-  guint change_count            : 8;
-  guint progress_pulse_mode     : 1;
-  guint progress_pulse_way_back : 1;
+  bfloat xalign;
+  bint insert_pos;
+  buint blink_time;  /* time in msec the cursor has blinked since last user event */
+  buint interior_focus          : 1;
+  buint real_changed            : 1;
+  buint invisible_char_set      : 1;
+  buint caps_lock_warning       : 1;
+  buint caps_lock_warning_shown : 1;
+  buint change_count            : 8;
+  buint progress_pulse_mode     : 1;
+  buint progress_pulse_way_back : 1;
 
-  gint focus_width;
+  bint focus_width;
   BtkShadowType shadow_type;
 
-  gdouble progress_fraction;
-  gdouble progress_pulse_fraction;
-  gdouble progress_pulse_current;
+  bdouble progress_fraction;
+  bdouble progress_pulse_fraction;
+  bdouble progress_pulse_current;
 
   EntryIconInfo *icons[MAX_ICONS];
-  gint icon_margin;
-  gint start_x;
-  gint start_y;
+  bint icon_margin;
+  bint start_x;
+  bint start_y;
 
-  gchar *im_module;
+  bchar *im_module;
 };
 
 typedef struct _BtkEntryPasswordHint BtkEntryPasswordHint;
 
 struct _BtkEntryPasswordHint
 {
-  gint position;      /* Position (in text) of the last password hint */
-  guint source_id;    /* Timeout source id */
+  bint position;      /* Position (in text) of the last password hint */
+  buint source_id;    /* Timeout source id */
 };
 
 typedef struct _BtkEntryCapslockFeedback BtkEntryCapslockFeedback;
@@ -221,7 +221,7 @@ enum {
   PROP_EDITING_CANCELED
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 typedef enum {
   CURSOR_STANDARD,
@@ -235,21 +235,21 @@ typedef enum
   DISPLAY_BLANK         /* In invisible mode, nothing shown at all */
 } DisplayMode;
 
-/* GObject, BtkObject methods
+/* BObject, BtkObject methods
  */
 static void   btk_entry_editable_init        (BtkEditableClass     *iface);
 static void   btk_entry_cell_editable_init   (BtkCellEditableIface *iface);
-static void   btk_entry_set_property         (GObject          *object,
-                                              guint             prop_id,
-                                              const GValue     *value,
-                                              GParamSpec       *pspec);
-static void   btk_entry_get_property         (GObject          *object,
-                                              guint             prop_id,
-                                              GValue           *value,
-                                              GParamSpec       *pspec);
-static void   btk_entry_finalize             (GObject          *object);
+static void   btk_entry_set_property         (BObject          *object,
+                                              buint             prop_id,
+                                              const BValue     *value,
+                                              BParamSpec       *pspec);
+static void   btk_entry_get_property         (BObject          *object,
+                                              buint             prop_id,
+                                              BValue           *value,
+                                              BParamSpec       *pspec);
+static void   btk_entry_finalize             (BObject          *object);
 static void   btk_entry_destroy              (BtkObject        *object);
-static void   btk_entry_dispose              (GObject          *object);
+static void   btk_entry_dispose              (BObject          *object);
 
 /* BtkWidget methods
  */
@@ -265,33 +265,33 @@ static void   btk_entry_draw_frame           (BtkWidget        *widget,
                                               BdkEventExpose   *event);
 static void   btk_entry_draw_progress        (BtkWidget        *widget,
                                               BdkEventExpose   *event);
-static gint   btk_entry_expose               (BtkWidget        *widget,
+static bint   btk_entry_expose               (BtkWidget        *widget,
 					      BdkEventExpose   *event);
-static gint   btk_entry_button_press         (BtkWidget        *widget,
+static bint   btk_entry_button_press         (BtkWidget        *widget,
 					      BdkEventButton   *event);
-static gint   btk_entry_button_release       (BtkWidget        *widget,
+static bint   btk_entry_button_release       (BtkWidget        *widget,
 					      BdkEventButton   *event);
-static gint   btk_entry_enter_notify         (BtkWidget        *widget,
+static bint   btk_entry_enter_notify         (BtkWidget        *widget,
                                               BdkEventCrossing *event);
-static gint   btk_entry_leave_notify         (BtkWidget        *widget,
+static bint   btk_entry_leave_notify         (BtkWidget        *widget,
                                               BdkEventCrossing *event);
-static gint   btk_entry_motion_notify        (BtkWidget        *widget,
+static bint   btk_entry_motion_notify        (BtkWidget        *widget,
 					      BdkEventMotion   *event);
-static gint   btk_entry_key_press            (BtkWidget        *widget,
+static bint   btk_entry_key_press            (BtkWidget        *widget,
 					      BdkEventKey      *event);
-static gint   btk_entry_key_release          (BtkWidget        *widget,
+static bint   btk_entry_key_release          (BtkWidget        *widget,
 					      BdkEventKey      *event);
-static gint   btk_entry_focus_in             (BtkWidget        *widget,
+static bint   btk_entry_focus_in             (BtkWidget        *widget,
 					      BdkEventFocus    *event);
-static gint   btk_entry_focus_out            (BtkWidget        *widget,
+static bint   btk_entry_focus_out            (BtkWidget        *widget,
 					      BdkEventFocus    *event);
 static void   btk_entry_grab_focus           (BtkWidget        *widget);
 static void   btk_entry_style_set            (BtkWidget        *widget,
 					      BtkStyle         *previous_style);
-static gboolean btk_entry_query_tooltip      (BtkWidget        *widget,
-                                              gint              x,
-                                              gint              y,
-                                              gboolean          keyboard_tip,
+static bboolean btk_entry_query_tooltip      (BtkWidget        *widget,
+                                              bint              x,
+                                              bint              y,
+                                              bboolean          keyboard_tip,
                                               BtkTooltip       *tooltip);
 static void   btk_entry_direction_changed    (BtkWidget        *widget,
 					      BtkTextDirection  previous_dir);
@@ -300,31 +300,31 @@ static void   btk_entry_state_changed        (BtkWidget        *widget,
 static void   btk_entry_screen_changed       (BtkWidget        *widget,
 					      BdkScreen        *old_screen);
 
-static gboolean btk_entry_drag_drop          (BtkWidget        *widget,
+static bboolean btk_entry_drag_drop          (BtkWidget        *widget,
                                               BdkDragContext   *context,
-                                              gint              x,
-                                              gint              y,
-                                              guint             time);
-static gboolean btk_entry_drag_motion        (BtkWidget        *widget,
+                                              bint              x,
+                                              bint              y,
+                                              buint             time);
+static bboolean btk_entry_drag_motion        (BtkWidget        *widget,
 					      BdkDragContext   *context,
-					      gint              x,
-					      gint              y,
-					      guint             time);
+					      bint              x,
+					      bint              y,
+					      buint             time);
 static void     btk_entry_drag_leave         (BtkWidget        *widget,
 					      BdkDragContext   *context,
-					      guint             time);
+					      buint             time);
 static void     btk_entry_drag_data_received (BtkWidget        *widget,
 					      BdkDragContext   *context,
-					      gint              x,
-					      gint              y,
+					      bint              x,
+					      bint              y,
 					      BtkSelectionData *selection_data,
-					      guint             info,
-					      guint             time);
+					      buint             info,
+					      buint             time);
 static void     btk_entry_drag_data_get      (BtkWidget        *widget,
 					      BdkDragContext   *context,
 					      BtkSelectionData *selection_data,
-					      guint             info,
-					      guint             time);
+					      buint             info,
+					      buint             time);
 static void     btk_entry_drag_data_delete   (BtkWidget        *widget,
 					      BdkDragContext   *context);
 static void     btk_entry_drag_begin         (BtkWidget        *widget,
@@ -336,24 +336,24 @@ static void     btk_entry_drag_end           (BtkWidget        *widget,
 /* BtkEditable method implementations
  */
 static void     btk_entry_insert_text          (BtkEditable *editable,
-						const gchar *new_text,
-						gint         new_text_length,
-						gint        *position);
+						const bchar *new_text,
+						bint         new_text_length,
+						bint        *position);
 static void     btk_entry_delete_text          (BtkEditable *editable,
-						gint         start_pos,
-						gint         end_pos);
-static gchar *  btk_entry_get_chars            (BtkEditable *editable,
-						gint         start_pos,
-						gint         end_pos);
+						bint         start_pos,
+						bint         end_pos);
+static bchar *  btk_entry_get_chars            (BtkEditable *editable,
+						bint         start_pos,
+						bint         end_pos);
 static void     btk_entry_real_set_position    (BtkEditable *editable,
-						gint         position);
-static gint     btk_entry_get_position         (BtkEditable *editable);
+						bint         position);
+static bint     btk_entry_get_position         (BtkEditable *editable);
 static void     btk_entry_set_selection_bounds (BtkEditable *editable,
-						gint         start,
-						gint         end);
-static gboolean btk_entry_get_selection_bounds (BtkEditable *editable,
-						gint        *start,
-						gint        *end);
+						bint         start,
+						bint         end);
+static bboolean btk_entry_get_selection_bounds (BtkEditable *editable,
+						bint        *start,
+						bint        *end);
 
 /* BtkCellEditable method implementations
  */
@@ -363,21 +363,21 @@ static void btk_entry_start_editing (BtkCellEditable *cell_editable,
 /* Default signal handlers
  */
 static void btk_entry_real_insert_text   (BtkEditable     *editable,
-					  const gchar     *new_text,
-					  gint             new_text_length,
-					  gint            *position);
+					  const bchar     *new_text,
+					  bint             new_text_length,
+					  bint            *position);
 static void btk_entry_real_delete_text   (BtkEditable     *editable,
-					  gint             start_pos,
-					  gint             end_pos);
+					  bint             start_pos,
+					  bint             end_pos);
 static void btk_entry_move_cursor        (BtkEntry        *entry,
 					  BtkMovementStep  step,
-					  gint             count,
-					  gboolean         extend_selection);
+					  bint             count,
+					  bboolean         extend_selection);
 static void btk_entry_insert_at_cursor   (BtkEntry        *entry,
-					  const gchar     *str);
+					  const bchar     *str);
 static void btk_entry_delete_from_cursor (BtkEntry        *entry,
 					  BtkDeleteType    type,
-					  gint             count);
+					  bint             count);
 static void btk_entry_backspace          (BtkEntry        *entry);
 static void btk_entry_cut_clipboard      (BtkEntry        *entry);
 static void btk_entry_copy_clipboard     (BtkEntry        *entry);
@@ -385,7 +385,7 @@ static void btk_entry_paste_clipboard    (BtkEntry        *entry);
 static void btk_entry_toggle_overwrite   (BtkEntry        *entry);
 static void btk_entry_select_all         (BtkEntry        *entry);
 static void btk_entry_real_activate      (BtkEntry        *entry);
-static gboolean btk_entry_popup_menu     (BtkWidget       *widget);
+static bboolean btk_entry_popup_menu     (BtkWidget       *widget);
 
 static void keymap_direction_changed     (BdkKeymap       *keymap,
 					  BtkEntry        *entry);
@@ -396,51 +396,51 @@ static void remove_capslock_feedback     (BtkEntry        *entry);
 /* IM Context Callbacks
  */
 static void     btk_entry_commit_cb               (BtkIMContext *context,
-						   const gchar  *str,
+						   const bchar  *str,
 						   BtkEntry     *entry);
 static void     btk_entry_preedit_changed_cb      (BtkIMContext *context,
 						   BtkEntry     *entry);
-static gboolean btk_entry_retrieve_surrounding_cb (BtkIMContext *context,
+static bboolean btk_entry_retrieve_surrounding_cb (BtkIMContext *context,
 						   BtkEntry     *entry);
-static gboolean btk_entry_delete_surrounding_cb   (BtkIMContext *context,
-						   gint          offset,
-						   gint          n_chars,
+static bboolean btk_entry_delete_surrounding_cb   (BtkIMContext *context,
+						   bint          offset,
+						   bint          n_chars,
 						   BtkEntry     *entry);
 
 /* Internal routines
  */
 static void         btk_entry_enter_text               (BtkEntry       *entry,
-                                                        const gchar    *str);
+                                                        const bchar    *str);
 static void         btk_entry_set_positions            (BtkEntry       *entry,
-							gint            current_pos,
-							gint            selection_bound);
+							bint            current_pos,
+							bint            selection_bound);
 static void         btk_entry_draw_text                (BtkEntry       *entry);
 static void         btk_entry_draw_cursor              (BtkEntry       *entry,
 							CursorType      type);
 static BangoLayout *btk_entry_ensure_layout            (BtkEntry       *entry,
-                                                        gboolean        include_preedit);
+                                                        bboolean        include_preedit);
 static void         btk_entry_reset_layout             (BtkEntry       *entry);
 static void         btk_entry_queue_draw               (BtkEntry       *entry);
 static void         btk_entry_recompute                (BtkEntry       *entry);
-static gint         btk_entry_find_position            (BtkEntry       *entry,
-							gint            x);
+static bint         btk_entry_find_position            (BtkEntry       *entry,
+							bint            x);
 static void         btk_entry_get_cursor_locations     (BtkEntry       *entry,
 							CursorType      type,
-							gint           *strong_x,
-							gint           *weak_x);
+							bint           *strong_x,
+							bint           *weak_x);
 static void         btk_entry_adjust_scroll            (BtkEntry       *entry);
-static gint         btk_entry_move_visually            (BtkEntry       *editable,
-							gint            start,
-							gint            count);
-static gint         btk_entry_move_logically           (BtkEntry       *entry,
-							gint            start,
-							gint            count);
-static gint         btk_entry_move_forward_word        (BtkEntry       *entry,
-							gint            start,
-                                                        gboolean        allow_whitespace);
-static gint         btk_entry_move_backward_word       (BtkEntry       *entry,
-							gint            start,
-                                                        gboolean        allow_whitespace);
+static bint         btk_entry_move_visually            (BtkEntry       *editable,
+							bint            start,
+							bint            count);
+static bint         btk_entry_move_logically           (BtkEntry       *entry,
+							bint            start,
+							bint            count);
+static bint         btk_entry_move_forward_word        (BtkEntry       *entry,
+							bint            start,
+                                                        bboolean        allow_whitespace);
+static bint         btk_entry_move_backward_word       (BtkEntry       *entry,
+							bint            start,
+                                                        bboolean        allow_whitespace);
 static void         btk_entry_delete_whitespace        (BtkEntry       *entry);
 static void         btk_entry_select_word              (BtkEntry       *entry);
 static void         btk_entry_select_line              (BtkEntry       *entry);
@@ -449,46 +449,46 @@ static void         btk_entry_paste                    (BtkEntry       *entry,
 static void         btk_entry_update_primary_selection (BtkEntry       *entry);
 static void         btk_entry_do_popup                 (BtkEntry       *entry,
 							BdkEventButton *event);
-static gboolean     btk_entry_mnemonic_activate        (BtkWidget      *widget,
-							gboolean        group_cycling);
+static bboolean     btk_entry_mnemonic_activate        (BtkWidget      *widget,
+							bboolean        group_cycling);
 static void         btk_entry_check_cursor_blink       (BtkEntry       *entry);
 static void         btk_entry_pend_cursor_blink        (BtkEntry       *entry);
 static void         btk_entry_reset_blink_time         (BtkEntry       *entry);
 static void         btk_entry_get_text_area_size       (BtkEntry       *entry,
-							gint           *x,
-							gint           *y,
-							gint           *width,
-							gint           *height);
+							bint           *x,
+							bint           *y,
+							bint           *width,
+							bint           *height);
 static void         get_text_area_size                 (BtkEntry       *entry,
-							gint           *x,
-							gint           *y,
-							gint           *width,
-							gint           *height);
+							bint           *x,
+							bint           *y,
+							bint           *width,
+							bint           *height);
 static void         get_widget_window_size             (BtkEntry       *entry,
-							gint           *x,
-							gint           *y,
-							gint           *width,
-							gint           *height);
+							bint           *x,
+							bint           *y,
+							bint           *width,
+							bint           *height);
 static void         btk_entry_move_adjustments         (BtkEntry             *entry);
 static void         btk_entry_ensure_pixbuf            (BtkEntry             *entry,
                                                         BtkEntryIconPosition  icon_pos);
 
 
 /* Completion */
-static gint         btk_entry_completion_timeout       (gpointer            data);
-static gboolean     btk_entry_completion_key_press     (BtkWidget          *widget,
+static bint         btk_entry_completion_timeout       (bpointer            data);
+static bboolean     btk_entry_completion_key_press     (BtkWidget          *widget,
 							BdkEventKey        *event,
-							gpointer            user_data);
+							bpointer            user_data);
 static void         btk_entry_completion_changed       (BtkWidget          *entry,
-							gpointer            user_data);
-static gboolean     check_completion_callback          (BtkEntryCompletion *completion);
+							bpointer            user_data);
+static bboolean     check_completion_callback          (BtkEntryCompletion *completion);
 static void         clear_completion_callback          (BtkEntry           *entry,
-							GParamSpec         *pspec);
-static gboolean     accept_completion_callback         (BtkEntry           *entry);
+							BParamSpec         *pspec);
+static bboolean     accept_completion_callback         (BtkEntry           *entry);
 static void         completion_insert_text_callback    (BtkEntry           *entry,
-							const gchar        *text,
-							gint                length,
-							gint                position,
+							const bchar        *text,
+							bint                length,
+							bint                position,
 							BtkEntryCompletion *completion);
 static void         disconnect_completion_signals      (BtkEntry           *entry,
 							BtkEntryCompletion *completion);
@@ -501,22 +501,22 @@ static void         emit_changed                       (BtkEntry *entry);
 
 
 static void         buffer_inserted_text               (BtkEntryBuffer *buffer, 
-                                                        guint           position,
-                                                        const gchar    *chars,
-                                                        guint           n_chars,
+                                                        buint           position,
+                                                        const bchar    *chars,
+                                                        buint           n_chars,
                                                         BtkEntry       *entry);
 static void         buffer_deleted_text                (BtkEntryBuffer *buffer, 
-                                                        guint           position,
-                                                        guint           n_chars,
+                                                        buint           position,
+                                                        buint           n_chars,
                                                         BtkEntry       *entry);
 static void         buffer_notify_text                 (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_notify_length               (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_notify_max_length           (BtkEntryBuffer *buffer, 
-                                                        GParamSpec     *spec,
+                                                        BParamSpec     *spec,
                                                         BtkEntry       *entry);
 static void         buffer_connect_signals             (BtkEntry       *entry);
 static void         buffer_disconnect_signals          (BtkEntry       *entry);
@@ -531,31 +531,31 @@ G_DEFINE_TYPE_WITH_CODE (BtkEntry, btk_entry, BTK_TYPE_WIDGET,
 
 static void
 add_move_binding (BtkBindingSet  *binding_set,
-		  guint           keyval,
-		  guint           modmask,
+		  buint           keyval,
+		  buint           modmask,
 		  BtkMovementStep step,
-		  gint            count)
+		  bint            count)
 {
   g_return_if_fail ((modmask & BDK_SHIFT_MASK) == 0);
   
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, FALSE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, FALSE);
 
   /* Selection-extending version */
   btk_binding_entry_add_signal (binding_set, keyval, modmask | BDK_SHIFT_MASK,
 				"move-cursor", 3,
-				G_TYPE_ENUM, step,
-				G_TYPE_INT, count,
-				G_TYPE_BOOLEAN, TRUE);
+				B_TYPE_ENUM, step,
+				B_TYPE_INT, count,
+				B_TYPE_BOOLEAN, TRUE);
 }
 
 static void
 btk_entry_class_init (BtkEntryClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class;
   BtkObjectClass *btk_object_class;
   BtkBindingSet *binding_set;
@@ -715,7 +715,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                                      P_("Width in chars"),
                                                      P_("Number of characters to leave space for in the entry"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -725,7 +725,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                                      P_("Scroll offset"),
                                                      P_("Number of pixels of the entry scrolled off the screen to the left"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READABLE));
 
@@ -815,7 +815,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                                       P_("Text length"),
                                                       P_("Length of the text currently in the entry"),
                                                       0, 
-                                                      G_MAXUINT16,
+                                                      B_MAXUINT16,
                                                       0,
                                                       BTK_PARAM_READABLE));
   /**
@@ -989,7 +989,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                    g_param_spec_object ("primary-icon-gicon",
                                                         P_("Primary GIcon"),
                                                         P_("GIcon for primary icon"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
   
   /**
@@ -1004,7 +1004,7 @@ btk_entry_class_init (BtkEntryClass *class)
                                    g_param_spec_object ("secondary-icon-gicon",
                                                         P_("Secondary GIcon"),
                                                         P_("GIcon for secondary icon"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
   
   /**
@@ -1281,12 +1281,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[POPULATE_POPUP] =
     g_signal_new (I_("populate-popup"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkEntryClass, populate_popup),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU);
   
  /* Action signals */
@@ -1306,12 +1306,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ACTIVATE] =
     g_signal_new (I_("activate"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   widget_class->activate_signal = signals[ACTIVATE];
 
   /**
@@ -1343,15 +1343,15 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[MOVE_CURSOR] = 
     g_signal_new (I_("move-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, move_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT_BOOLEAN,
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_MOVEMENT_STEP,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkEntry::insert-at-cursor:
@@ -1367,13 +1367,13 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[INSERT_AT_CURSOR] = 
     g_signal_new (I_("insert-at-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, insert_at_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
 
   /**
    * BtkEntry::delete-from-cursor:
@@ -1395,14 +1395,14 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[DELETE_FROM_CURSOR] = 
     g_signal_new (I_("delete-from-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, delete_from_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_DELETE_TYPE,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /**
    * BtkEntry::backspace:
@@ -1417,12 +1417,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[BACKSPACE] =
     g_signal_new (I_("backspace"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, backspace),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::cut-clipboard:
@@ -1437,12 +1437,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[CUT_CLIPBOARD] =
     g_signal_new (I_("cut-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, cut_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::copy-clipboard:
@@ -1457,12 +1457,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[COPY_CLIPBOARD] =
     g_signal_new (I_("copy-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, copy_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::paste-clipboard:
@@ -1478,12 +1478,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[PASTE_CLIPBOARD] =
     g_signal_new (I_("paste-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, paste_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::toggle-overwrite:
@@ -1497,12 +1497,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[TOGGLE_OVERWRITE] =
     g_signal_new (I_("toggle-overwrite"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkEntryClass, toggle_overwrite),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkEntry::icon-press:
@@ -1517,12 +1517,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ICON_PRESS] =
     g_signal_new (I_("icon-press"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM_BOXED,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ENTRY_ICON_POSITION,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
   
@@ -1539,12 +1539,12 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[ICON_RELEASE] =
     g_signal_new (I_("icon-release"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
                   _btk_marshal_VOID__ENUM_BOXED,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ENTRY_ICON_POSITION,
                   BDK_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -1561,13 +1561,13 @@ btk_entry_class_init (BtkEntryClass *class)
    */
   signals[PREEDIT_CHANGED] =
     g_signal_new_class_handler (I_("preedit-changed"),
-                                G_OBJECT_CLASS_TYPE (bobject_class),
+                                B_OBJECT_CLASS_TYPE (bobject_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 NULL,
                                 NULL, NULL,
                                 _btk_marshal_VOID__STRING,
-                                G_TYPE_NONE, 1,
-                                G_TYPE_STRING);
+                                B_TYPE_NONE, 1,
+                                B_TYPE_STRING);
 
 
   /*
@@ -1630,36 +1630,36 @@ btk_entry_class_init (BtkEntryClass *class)
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);  
+                                B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);  
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, -1,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, -1,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_BUFFER_ENDS,
-                                G_TYPE_INT, 1,
-				G_TYPE_BOOLEAN, TRUE);  
+                                B_TYPE_INT, 1,
+				B_TYPE_BOOLEAN, TRUE);  
   /* Unselect all 
    */
   btk_binding_entry_add_signal (binding_set, BDK_backslash, BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_VISUAL_POSITIONS,
-                                G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
                                 "move-cursor", 3,
                                 BTK_TYPE_MOVEMENT_STEP, BTK_MOVEMENT_VISUAL_POSITIONS,
-                                G_TYPE_INT, 0,
-				G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_INT, 0,
+				B_TYPE_BOOLEAN, FALSE);
 
   /* Activate
    */
@@ -1673,13 +1673,13 @@ btk_entry_class_init (BtkEntryClass *class)
   /* Deleting text */
   btk_binding_entry_add_signal (binding_set, BDK_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, 0,
 				"backspace", 0);
@@ -1690,18 +1690,18 @@ btk_entry_class_init (BtkEntryClass *class)
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, -1);
 
   /* Cut/copy/paste */
 
@@ -1780,10 +1780,10 @@ btk_entry_cell_editable_init (BtkCellEditableIface *iface)
 }
 
 static void
-btk_entry_set_property (GObject         *object,
-                        guint            prop_id,
-                        const GValue    *value,
-                        GParamSpec      *pspec)
+btk_entry_set_property (BObject         *object,
+                        buint            prop_id,
+                        const BValue    *value,
+                        BParamSpec      *pspec)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (object);
   BtkEntry *entry = BTK_ENTRY (object);
@@ -1792,12 +1792,12 @@ btk_entry_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_BUFFER:
-      btk_entry_set_buffer (entry, g_value_get_object (value));
+      btk_entry_set_buffer (entry, b_value_get_object (value));
       break;
 
     case PROP_EDITABLE:
       {
-        gboolean new_value = g_value_get_boolean (value);
+        bboolean new_value = b_value_get_boolean (value);
 
       	if (new_value != entry->editable)
 	  {
@@ -1823,192 +1823,192 @@ btk_entry_set_property (GObject         *object,
       break;
 
     case PROP_MAX_LENGTH:
-      btk_entry_set_max_length (entry, g_value_get_int (value));
+      btk_entry_set_max_length (entry, b_value_get_int (value));
       break;
       
     case PROP_VISIBILITY:
-      btk_entry_set_visibility (entry, g_value_get_boolean (value));
+      btk_entry_set_visibility (entry, b_value_get_boolean (value));
       break;
 
     case PROP_HAS_FRAME:
-      btk_entry_set_has_frame (entry, g_value_get_boolean (value));
+      btk_entry_set_has_frame (entry, b_value_get_boolean (value));
       break;
 
     case PROP_INNER_BORDER:
-      btk_entry_set_inner_border (entry, g_value_get_boxed (value));
+      btk_entry_set_inner_border (entry, b_value_get_boxed (value));
       break;
 
     case PROP_INVISIBLE_CHAR:
-      btk_entry_set_invisible_char (entry, g_value_get_uint (value));
+      btk_entry_set_invisible_char (entry, b_value_get_uint (value));
       break;
 
     case PROP_ACTIVATES_DEFAULT:
-      btk_entry_set_activates_default (entry, g_value_get_boolean (value));
+      btk_entry_set_activates_default (entry, b_value_get_boolean (value));
       break;
 
     case PROP_WIDTH_CHARS:
-      btk_entry_set_width_chars (entry, g_value_get_int (value));
+      btk_entry_set_width_chars (entry, b_value_get_int (value));
       break;
 
     case PROP_TEXT:
-      btk_entry_set_text (entry, g_value_get_string (value));
+      btk_entry_set_text (entry, b_value_get_string (value));
       break;
 
     case PROP_XALIGN:
-      btk_entry_set_alignment (entry, g_value_get_float (value));
+      btk_entry_set_alignment (entry, b_value_get_float (value));
       break;
 
     case PROP_TRUNCATE_MULTILINE:
-      entry->truncate_multiline = g_value_get_boolean (value);
+      entry->truncate_multiline = b_value_get_boolean (value);
       break;
 
     case PROP_SHADOW_TYPE:
-      priv->shadow_type = g_value_get_enum (value);
+      priv->shadow_type = b_value_get_enum (value);
       break;
 
     case PROP_OVERWRITE_MODE:
-      btk_entry_set_overwrite_mode (entry, g_value_get_boolean (value));
+      btk_entry_set_overwrite_mode (entry, b_value_get_boolean (value));
       break;
 
     case PROP_INVISIBLE_CHAR_SET:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
         priv->invisible_char_set = TRUE;
       else
         btk_entry_unset_invisible_char (entry);
       break;
 
     case PROP_CAPS_LOCK_WARNING:
-      priv->caps_lock_warning = g_value_get_boolean (value);
+      priv->caps_lock_warning = b_value_get_boolean (value);
       break;
 
     case PROP_PROGRESS_FRACTION:
-      btk_entry_set_progress_fraction (entry, g_value_get_double (value));
+      btk_entry_set_progress_fraction (entry, b_value_get_double (value));
       break;
 
     case PROP_PROGRESS_PULSE_STEP:
-      btk_entry_set_progress_pulse_step (entry, g_value_get_double (value));
+      btk_entry_set_progress_pulse_step (entry, b_value_get_double (value));
       break;
 
     case PROP_PIXBUF_PRIMARY:
       btk_entry_set_icon_from_pixbuf (entry,
                                       BTK_ENTRY_ICON_PRIMARY,
-                                      g_value_get_object (value));
+                                      b_value_get_object (value));
       break;
 
     case PROP_PIXBUF_SECONDARY:
       btk_entry_set_icon_from_pixbuf (entry,
                                       BTK_ENTRY_ICON_SECONDARY,
-                                      g_value_get_object (value));
+                                      b_value_get_object (value));
       break;
 
     case PROP_STOCK_PRIMARY:
       btk_entry_set_icon_from_stock (entry,
                                      BTK_ENTRY_ICON_PRIMARY,
-                                     g_value_get_string (value));
+                                     b_value_get_string (value));
       break;
 
     case PROP_STOCK_SECONDARY:
       btk_entry_set_icon_from_stock (entry,
                                      BTK_ENTRY_ICON_SECONDARY,
-                                     g_value_get_string (value));
+                                     b_value_get_string (value));
       break;
 
     case PROP_ICON_NAME_PRIMARY:
       btk_entry_set_icon_from_icon_name (entry,
                                          BTK_ENTRY_ICON_PRIMARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_ICON_NAME_SECONDARY:
       btk_entry_set_icon_from_icon_name (entry,
                                          BTK_ENTRY_ICON_SECONDARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_GICON_PRIMARY:
       btk_entry_set_icon_from_gicon (entry,
                                      BTK_ENTRY_ICON_PRIMARY,
-                                     g_value_get_object (value));
+                                     b_value_get_object (value));
       break;
 
     case PROP_GICON_SECONDARY:
       btk_entry_set_icon_from_gicon (entry,
                                      BTK_ENTRY_ICON_SECONDARY,
-                                     g_value_get_object (value));
+                                     b_value_get_object (value));
       break;
 
     case PROP_ACTIVATABLE_PRIMARY:
       btk_entry_set_icon_activatable (entry,
                                       BTK_ENTRY_ICON_PRIMARY,
-                                      g_value_get_boolean (value));
+                                      b_value_get_boolean (value));
       break;
 
     case PROP_ACTIVATABLE_SECONDARY:
       btk_entry_set_icon_activatable (entry,
                                       BTK_ENTRY_ICON_SECONDARY,
-                                      g_value_get_boolean (value));
+                                      b_value_get_boolean (value));
       break;
 
     case PROP_SENSITIVE_PRIMARY:
       btk_entry_set_icon_sensitive (entry,
                                     BTK_ENTRY_ICON_PRIMARY,
-                                    g_value_get_boolean (value));
+                                    b_value_get_boolean (value));
       break;
 
     case PROP_SENSITIVE_SECONDARY:
       btk_entry_set_icon_sensitive (entry,
                                     BTK_ENTRY_ICON_SECONDARY,
-                                    g_value_get_boolean (value));
+                                    b_value_get_boolean (value));
       break;
 
     case PROP_TOOLTIP_TEXT_PRIMARY:
       btk_entry_set_icon_tooltip_text (entry,
                                        BTK_ENTRY_ICON_PRIMARY,
-                                       g_value_get_string (value));
+                                       b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_TEXT_SECONDARY:
       btk_entry_set_icon_tooltip_text (entry,
                                        BTK_ENTRY_ICON_SECONDARY,
-                                       g_value_get_string (value));
+                                       b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_MARKUP_PRIMARY:
       btk_entry_set_icon_tooltip_markup (entry,
                                          BTK_ENTRY_ICON_PRIMARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_TOOLTIP_MARKUP_SECONDARY:
       btk_entry_set_icon_tooltip_markup (entry,
                                          BTK_ENTRY_ICON_SECONDARY,
-                                         g_value_get_string (value));
+                                         b_value_get_string (value));
       break;
 
     case PROP_IM_MODULE:
       g_free (priv->im_module);
-      priv->im_module = g_value_dup_string (value);
+      priv->im_module = b_value_dup_string (value);
       if (BTK_IS_IM_MULTICONTEXT (entry->im_context))
         btk_im_multicontext_set_context_id (BTK_IM_MULTICONTEXT (entry->im_context), priv->im_module);
       break;
 
     case PROP_EDITING_CANCELED:
-      entry->editing_canceled = g_value_get_boolean (value);
+      entry->editing_canceled = b_value_get_boolean (value);
       break;
 
     case PROP_SCROLL_OFFSET:
     case PROP_CURSOR_POSITION:
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_entry_get_property (GObject         *object,
-                        guint            prop_id,
-                        GValue          *value,
-                        GParamSpec      *pspec)
+btk_entry_get_property (BObject         *object,
+                        buint            prop_id,
+                        BValue          *value,
+                        BParamSpec      *pspec)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (object);
   BtkEntry *entry = BTK_ENTRY (object);
@@ -2016,204 +2016,204 @@ btk_entry_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_BUFFER:
-      g_value_set_object (value, btk_entry_get_buffer (entry));
+      b_value_set_object (value, btk_entry_get_buffer (entry));
       break;
 
     case PROP_CURSOR_POSITION:
-      g_value_set_int (value, entry->current_pos);
+      b_value_set_int (value, entry->current_pos);
       break;
 
     case PROP_SELECTION_BOUND:
-      g_value_set_int (value, entry->selection_bound);
+      b_value_set_int (value, entry->selection_bound);
       break;
 
     case PROP_EDITABLE:
-      g_value_set_boolean (value, entry->editable);
+      b_value_set_boolean (value, entry->editable);
       break;
 
     case PROP_MAX_LENGTH:
-      g_value_set_int (value, btk_entry_buffer_get_max_length (get_buffer (entry)));
+      b_value_set_int (value, btk_entry_buffer_get_max_length (get_buffer (entry)));
       break;
 
     case PROP_VISIBILITY:
-      g_value_set_boolean (value, entry->visible);
+      b_value_set_boolean (value, entry->visible);
       break;
 
     case PROP_HAS_FRAME:
-      g_value_set_boolean (value, entry->has_frame);
+      b_value_set_boolean (value, entry->has_frame);
       break;
 
     case PROP_INNER_BORDER:
-      g_value_set_boxed (value, btk_entry_get_inner_border (entry));
+      b_value_set_boxed (value, btk_entry_get_inner_border (entry));
       break;
 
     case PROP_INVISIBLE_CHAR:
-      g_value_set_uint (value, entry->invisible_char);
+      b_value_set_uint (value, entry->invisible_char);
       break;
 
     case PROP_ACTIVATES_DEFAULT:
-      g_value_set_boolean (value, entry->activates_default);
+      b_value_set_boolean (value, entry->activates_default);
       break;
 
     case PROP_WIDTH_CHARS:
-      g_value_set_int (value, entry->width_chars);
+      b_value_set_int (value, entry->width_chars);
       break;
 
     case PROP_SCROLL_OFFSET:
-      g_value_set_int (value, entry->scroll_offset);
+      b_value_set_int (value, entry->scroll_offset);
       break;
 
     case PROP_TEXT:
-      g_value_set_string (value, btk_entry_get_text (entry));
+      b_value_set_string (value, btk_entry_get_text (entry));
       break;
 
     case PROP_XALIGN:
-      g_value_set_float (value, btk_entry_get_alignment (entry));
+      b_value_set_float (value, btk_entry_get_alignment (entry));
       break;
 
     case PROP_TRUNCATE_MULTILINE:
-      g_value_set_boolean (value, entry->truncate_multiline);
+      b_value_set_boolean (value, entry->truncate_multiline);
       break;
 
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, priv->shadow_type);
+      b_value_set_enum (value, priv->shadow_type);
       break;
 
     case PROP_OVERWRITE_MODE:
-      g_value_set_boolean (value, entry->overwrite_mode);
+      b_value_set_boolean (value, entry->overwrite_mode);
       break;
 
     case PROP_TEXT_LENGTH:
-      g_value_set_uint (value, btk_entry_buffer_get_length (get_buffer (entry)));
+      b_value_set_uint (value, btk_entry_buffer_get_length (get_buffer (entry)));
       break;
 
     case PROP_INVISIBLE_CHAR_SET:
-      g_value_set_boolean (value, priv->invisible_char_set);
+      b_value_set_boolean (value, priv->invisible_char_set);
       break;
 
     case PROP_IM_MODULE:
-      g_value_set_string (value, priv->im_module);
+      b_value_set_string (value, priv->im_module);
       break;
 
     case PROP_CAPS_LOCK_WARNING:
-      g_value_set_boolean (value, priv->caps_lock_warning);
+      b_value_set_boolean (value, priv->caps_lock_warning);
       break;
 
     case PROP_PROGRESS_FRACTION:
-      g_value_set_double (value, priv->progress_fraction);
+      b_value_set_double (value, priv->progress_fraction);
       break;
 
     case PROP_PROGRESS_PULSE_STEP:
-      g_value_set_double (value, priv->progress_pulse_fraction);
+      b_value_set_double (value, priv->progress_pulse_fraction);
       break;
 
     case PROP_PIXBUF_PRIMARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_pixbuf (entry,
                                                      BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_PIXBUF_SECONDARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_pixbuf (entry,
                                                      BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_STOCK_PRIMARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_stock (entry,
                                                     BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_STOCK_SECONDARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_stock (entry,
                                                     BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_ICON_NAME_PRIMARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_name (entry,
                                                    BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_ICON_NAME_SECONDARY:
-      g_value_set_string (value,
+      b_value_set_string (value,
                           btk_entry_get_icon_name (entry,
                                                    BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_GICON_PRIMARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_gicon (entry,
                                                     BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_GICON_SECONDARY:
-      g_value_set_object (value,
+      b_value_set_object (value,
                           btk_entry_get_icon_gicon (entry,
                                                     BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_STORAGE_TYPE_PRIMARY:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_entry_get_icon_storage_type (entry, 
                                                          BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_STORAGE_TYPE_SECONDARY:
-      g_value_set_enum (value,
+      b_value_set_enum (value,
                         btk_entry_get_icon_storage_type (entry, 
                                                          BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_ACTIVATABLE_PRIMARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_activatable (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_ACTIVATABLE_SECONDARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_activatable (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_SENSITIVE_PRIMARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_sensitive (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_SENSITIVE_SECONDARY:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            btk_entry_get_icon_sensitive (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_TOOLTIP_TEXT_PRIMARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_text (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_TOOLTIP_TEXT_SECONDARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_text (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_TOOLTIP_MARKUP_PRIMARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_markup (entry, BTK_ENTRY_ICON_PRIMARY));
       break;
 
     case PROP_TOOLTIP_MARKUP_SECONDARY:
-      g_value_take_string (value,
+      b_value_take_string (value,
                            btk_entry_get_icon_tooltip_markup (entry, BTK_ENTRY_ICON_SECONDARY));
       break;
 
     case PROP_EDITING_CANCELED:
-      g_value_set_boolean (value,
+      b_value_set_boolean (value,
                            entry->editing_canceled);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -2223,7 +2223,7 @@ find_invisible_char (BtkWidget *widget)
 {
   BangoLayout *layout;
   BangoAttrList *attr_list;
-  gint i;
+  bint i;
   gunichar invisible_chars [] = {
     0,
     0x25cf, /* BLACK CIRCLE */
@@ -2247,8 +2247,8 @@ find_invisible_char (BtkWidget *widget)
 
   for (i = (invisible_chars[0] != 0 ? 0 : 1); i < G_N_ELEMENTS (invisible_chars); i++)
     {
-      gchar text[7] = { 0, };
-      gint len, count;
+      bchar text[7] = { 0, };
+      bint len, count;
 
       len = g_unichar_to_utf8 (invisible_chars[i], text);
       bango_layout_set_text (layout, text, len);
@@ -2312,7 +2312,7 @@ btk_entry_init (BtkEntry *entry)
 
 }
 
-static gint
+static bint
 get_icon_width (BtkEntry             *entry,
                 BtkEntryIconPosition  icon_pos)
 {
@@ -2320,7 +2320,7 @@ get_icon_width (BtkEntry             *entry,
   EntryIconInfo *icon_info = priv->icons[icon_pos];
   BdkScreen *screen;
   BtkSettings *settings;
-  gint menu_icon_width;
+  bint menu_icon_width;
 
   if (!icon_info || icon_info->pixbuf == NULL)
     return 0;
@@ -2341,7 +2341,7 @@ get_icon_allocations (BtkEntry      *entry,
 
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint x, y, width, height;
+  bint x, y, width, height;
 
   get_text_area_size (entry, &x, &y, &width, &height);
 
@@ -2380,7 +2380,7 @@ begin_change (BtkEntry *entry)
 
   priv->change_count++;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 }
 
 static void
@@ -2391,7 +2391,7 @@ end_change (BtkEntry *entry)
  
   g_return_if_fail (priv->change_count > 0);
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 
   priv->change_count--;
 
@@ -2442,7 +2442,7 @@ btk_entry_destroy (BtkObject *object)
 }
 
 static void
-btk_entry_dispose (GObject *object)
+btk_entry_dispose (BObject *object)
 {
   BtkEntry *entry = BTK_ENTRY (object);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -2465,16 +2465,16 @@ btk_entry_dispose (GObject *object)
   g_signal_handlers_disconnect_by_func (keymap, keymap_state_changed, entry);
   g_signal_handlers_disconnect_by_func (keymap, keymap_direction_changed, entry);
 
-  G_OBJECT_CLASS (btk_entry_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_entry_parent_class)->dispose (object);
 }
 
 static void
-btk_entry_finalize (GObject *object)
+btk_entry_finalize (BObject *object)
 {
   BtkEntry *entry = BTK_ENTRY (object);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   EntryIconInfo *icon_info = NULL;
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -2504,7 +2504,7 @@ btk_entry_finalize (GObject *object)
 
   g_free (priv->im_module);
 
-  G_OBJECT_CLASS (btk_entry_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_entry_parent_class)->finalize (object);
 }
 
 static DisplayMode
@@ -2519,22 +2519,22 @@ btk_entry_get_display_mode (BtkEntry *entry)
   return DISPLAY_INVISIBLE;
 }
 
-static gchar*
+static bchar*
 btk_entry_get_display_text (BtkEntry *entry,
-                            gint      start_pos,
-                            gint      end_pos)
+                            bint      start_pos,
+                            bint      end_pos)
 {
   BtkEntryPasswordHint *password_hint;
   BtkEntryPrivate *priv;
   gunichar invisible_char;
-  const gchar *start;
-  const gchar *end;
-  const gchar *text;
-  gchar char_str[7];
-  gint char_len;
+  const bchar *start;
+  const bchar *end;
+  const bchar *text;
+  bchar char_str[7];
+  bint char_len;
   GString *str;
-  guint length;
-  gint i;
+  buint length;
+  bint i;
 
   priv = BTK_ENTRY_GET_PRIVATE (entry);
   text = btk_entry_buffer_get_text (get_buffer (entry));
@@ -2570,7 +2570,7 @@ btk_entry_get_display_text (BtkEntry *entry,
        * character visible.
        */
 
-      password_hint = g_object_get_qdata (G_OBJECT (entry), quark_password_hint);
+      password_hint = g_object_get_qdata (B_OBJECT (entry), quark_password_hint);
       for (i = start_pos; i < end_pos; ++i)
         {
           if (password_hint && i == password_hint->position)
@@ -2596,7 +2596,7 @@ update_cursors (BtkWidget *widget)
   EntryIconInfo *icon_info = NULL;
   BdkDisplay *display;
   BdkCursor *cursor;
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -2634,7 +2634,7 @@ realize_icon_info (BtkWidget            *widget,
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   EntryIconInfo *icon_info = priv->icons[icon_pos];
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   g_return_if_fail (icon_info != NULL);
 
@@ -2691,7 +2691,7 @@ btk_entry_map (BtkWidget *widget)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   EntryIconInfo *icon_info = NULL;
-  gint i;
+  bint i;
 
   if (btk_widget_get_realized (widget) && !btk_widget_get_mapped (widget))
     {
@@ -2715,7 +2715,7 @@ btk_entry_unmap (BtkWidget *widget)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   EntryIconInfo *icon_info = NULL;
-  gint i;
+  bint i;
 
   if (btk_widget_get_mapped (widget))
     {
@@ -2739,7 +2739,7 @@ btk_entry_realize (BtkWidget *widget)
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   int i;
 
   btk_widget_set_realized (widget, TRUE);
@@ -2817,14 +2817,14 @@ btk_entry_unrealize (BtkWidget *widget)
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   BtkClipboard *clipboard;
   EntryIconInfo *icon_info;
-  gint i;
+  bint i;
 
   btk_entry_reset_layout (entry);
   
   btk_im_context_set_client_window (entry->im_context, NULL);
 
   clipboard = btk_widget_get_clipboard (widget, BDK_SELECTION_PRIMARY);
-  if (btk_clipboard_get_owner (clipboard) == G_OBJECT (entry))
+  if (btk_clipboard_get_owner (clipboard) == B_OBJECT (entry))
     btk_clipboard_clear (clipboard);
   
   if (entry->text_area)
@@ -2857,8 +2857,8 @@ btk_entry_unrealize (BtkWidget *widget)
 
 void
 _btk_entry_get_borders (BtkEntry *entry,
-			gint     *xborder,
-			gint     *yborder)
+			bint     *xborder,
+			bint     *yborder)
 {
   BtkWidget *widget = BTK_WIDGET (entry);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
@@ -2888,7 +2888,7 @@ btk_entry_size_request (BtkWidget      *widget,
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   BangoFontMetrics *metrics;
-  gint xborder, yborder;
+  bint xborder, yborder;
   BtkBorder inner_border;
   BangoContext *context;
   int icon_widths = 0;
@@ -2910,9 +2910,9 @@ btk_entry_size_request (BtkWidget      *widget,
     requisition->width = MIN_ENTRY_WIDTH + xborder * 2 + inner_border.left + inner_border.right;
   else
     {
-      gint char_width = bango_font_metrics_get_approximate_char_width (metrics);
-      gint digit_width = bango_font_metrics_get_approximate_digit_width (metrics);
-      gint char_pixels = (MAX (char_width, digit_width) + BANGO_SCALE - 1) / BANGO_SCALE;
+      bint char_width = bango_font_metrics_get_approximate_char_width (metrics);
+      bint digit_width = bango_font_metrics_get_approximate_digit_width (metrics);
+      bint char_pixels = (MAX (char_width, digit_width) + BANGO_SCALE - 1) / BANGO_SCALE;
       
       requisition->width = char_pixels * entry->width_chars + xborder * 2 + inner_border.left + inner_border.right;
     }
@@ -2937,7 +2937,7 @@ place_windows (BtkEntry *entry)
 {
   BtkWidget *widget = BTK_WIDGET (entry);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint x, y, width, height;
+  bint x, y, width, height;
   BtkAllocation primary;
   BtkAllocation secondary;
   EntryIconInfo *icon_info = NULL;
@@ -2969,15 +2969,15 @@ place_windows (BtkEntry *entry)
 
 static void
 btk_entry_get_text_area_size (BtkEntry *entry,
-                              gint     *x,
-			      gint     *y,
-			      gint     *width,
-			      gint     *height)
+                              bint     *x,
+			      bint     *y,
+			      bint     *width,
+			      bint     *height)
 {
   BtkWidget *widget = BTK_WIDGET (entry);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
-  gint frame_height;
-  gint xborder, yborder;
+  bint frame_height;
+  bint xborder, yborder;
   BtkRequisition requisition;
 
   btk_widget_get_child_requisition (widget, &requisition);
@@ -3006,10 +3006,10 @@ btk_entry_get_text_area_size (BtkEntry *entry,
 
 static void
 get_text_area_size (BtkEntry *entry,
-                    gint     *x,
-                    gint     *y,
-                    gint     *width,
-                    gint     *height)
+                    bint     *x,
+                    bint     *y,
+                    bint     *width,
+                    bint     *height)
 {
   BtkEntryClass *class;
 
@@ -3024,10 +3024,10 @@ get_text_area_size (BtkEntry *entry,
 
 static void
 get_widget_window_size (BtkEntry *entry,
-                        gint     *x,
-                        gint     *y,
-                        gint     *width,
-                        gint     *height)
+                        bint     *x,
+                        bint     *y,
+                        bint     *width,
+                        bint     *height)
 {
   BtkRequisition requisition;
   BtkWidget *widget = BTK_WIDGET (entry);
@@ -3063,7 +3063,7 @@ _btk_entry_effective_inner_border (BtkEntry  *entry,
 {
   BtkBorder *tmp_border;
 
-  tmp_border = g_object_get_qdata (G_OBJECT (entry), quark_inner_border);
+  tmp_border = g_object_get_qdata (B_OBJECT (entry), quark_inner_border);
 
   if (tmp_border)
     {
@@ -3097,7 +3097,7 @@ btk_entry_size_allocate (BtkWidget     *widget,
        * backwards compatibility reasons) the realization here to
        * be affected by the usize of the entry, if set
        */
-      gint x, y, width, height;
+      bint x, y, width, height;
       BtkEntryCompletion* completion;
 
       get_widget_window_size (entry, &x, &y, &width, &height);
@@ -3116,16 +3116,16 @@ btk_entry_size_allocate (BtkWidget     *widget,
 static void
 colorshift_pixbuf (BdkPixbuf *dest,
                    BdkPixbuf *src,
-                   gint       shift)
+                   bint       shift)
 {
-  gint i, j;
-  gint width, height, has_alpha, src_rowstride, dest_rowstride;
-  guchar *target_pixels;
-  guchar *original_pixels;
-  guchar *pix_src;
-  guchar *pix_dest;
+  bint i, j;
+  bint width, height, has_alpha, src_rowstride, dest_rowstride;
+  buchar *target_pixels;
+  buchar *original_pixels;
+  buchar *pix_src;
+  buchar *pix_dest;
   int val;
-  guchar r, g, b;
+  buchar r, g, b;
 
   has_alpha       = bdk_pixbuf_get_has_alpha (src);
   width           = bdk_pixbuf_get_width (src);
@@ -3161,13 +3161,13 @@ colorshift_pixbuf (BdkPixbuf *dest,
     }
 }
 
-static gboolean
+static bboolean
 should_prelight (BtkEntry             *entry,
                  BtkEntryIconPosition  icon_pos)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   EntryIconInfo *icon_info = priv->icons[icon_pos];
-  gboolean prelight;
+  bboolean prelight;
 
   if (!icon_info) 
     return FALSE;
@@ -3193,7 +3193,7 @@ draw_icon (BtkWidget            *widget,
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   EntryIconInfo *icon_info = priv->icons[icon_pos];
   BdkPixbuf *pixbuf;
-  gint x, y, width, height;
+  bint x, y, width, height;
   bairo_t *cr;
 
   if (!icon_info)
@@ -3218,7 +3218,7 @@ draw_icon (BtkWidget            *widget,
   if (bdk_pixbuf_get_height (pixbuf) > height)
     {
       BdkPixbuf *temp_pixbuf;
-      gint scale;
+      bint scale;
 
       scale = height - 2 * priv->icon_margin;
       temp_pixbuf = bdk_pixbuf_scale_simple (pixbuf, scale, scale,
@@ -3267,8 +3267,8 @@ btk_entry_draw_frame (BtkWidget      *widget,
                       BdkEventExpose *event)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
-  gint x = 0, y = 0, width, height;
-  gboolean state_hint;
+  bint x = 0, y = 0, width, height;
+  bboolean state_hint;
   BtkStateType state;
 
   width = bdk_window_get_width (widget->window);
@@ -3278,7 +3278,7 @@ btk_entry_draw_frame (BtkWidget      *widget,
    * width equals widget->window's width */
   if (BTK_IS_SPIN_BUTTON (widget))
     {
-      gint xborder, yborder;
+      bint xborder, yborder;
 
       btk_entry_get_text_area_size (BTK_ENTRY (widget), &x, NULL, &width, NULL);
       _btk_entry_get_borders (BTK_ENTRY (widget), &xborder, &yborder);
@@ -3325,10 +3325,10 @@ btk_entry_draw_frame (BtkWidget      *widget,
 
 static void
 get_progress_area (BtkWidget *widget,
-                   gint       *x,
-                   gint       *y,
-                   gint       *width,
-                   gint       *height)
+                   bint       *x,
+                   bint       *y,
+                   bint       *width,
+                   bint       *height)
 {
   BtkEntryPrivate *private = BTK_ENTRY_GET_PRIVATE (widget);
   BtkEntry *entry = BTK_ENTRY (widget);
@@ -3358,18 +3358,18 @@ get_progress_area (BtkWidget *widget,
 
   if (private->progress_pulse_mode)
     {
-      gdouble value = private->progress_pulse_current;
+      bdouble value = private->progress_pulse_current;
 
-      *x += (gint) floor(value * (*width));
-      *width = (gint) ceil(private->progress_pulse_fraction * (*width));
+      *x += (bint) floor(value * (*width));
+      *width = (bint) ceil(private->progress_pulse_fraction * (*width));
     }
   else if (private->progress_fraction > 0)
     {
-      gdouble value = private->progress_fraction;
+      bdouble value = private->progress_fraction;
 
       if (btk_widget_get_direction (BTK_WIDGET (entry)) == BTK_TEXT_DIR_RTL)
         {
-          gint bar_width;
+          bint bar_width;
 
           bar_width = floor(value * (*width) + 0.5);
           *x += *width - bar_width;
@@ -3377,7 +3377,7 @@ get_progress_area (BtkWidget *widget,
         }
       else
         {
-          *width = (gint) floor(value * (*width) + 0.5);
+          *width = (bint) floor(value * (*width) + 0.5);
         }
     }
   else
@@ -3391,7 +3391,7 @@ static void
 btk_entry_draw_progress (BtkWidget      *widget,
                          BdkEventExpose *event)
 {
-  gint x, y, width, height;
+  bint x, y, width, height;
   BtkStateType state;
 
   get_progress_area (widget, &x, &y, &width, &height);
@@ -3401,7 +3401,7 @@ btk_entry_draw_progress (BtkWidget      *widget,
 
   if (event->window != widget->window)
     {
-      gint pos_x, pos_y;
+      bint pos_x, pos_y;
 
       bdk_window_get_position (event->window, &pos_x, &pos_y);
 
@@ -3420,12 +3420,12 @@ btk_entry_draw_progress (BtkWidget      *widget,
                  width, height);
 }
 
-static gint
+static bint
 btk_entry_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
-  gboolean state_hint;
+  bboolean state_hint;
   BtkStateType state;
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
 
@@ -3442,7 +3442,7 @@ btk_entry_expose (BtkWidget      *widget,
     }
   else if (entry->text_area == event->window)
     {
-      gint width, height;
+      bint width, height;
 
       width = bdk_window_get_width (entry->text_area);
       height = bdk_window_get_height (entry->text_area);
@@ -3475,7 +3475,7 @@ btk_entry_expose (BtkWidget      *widget,
 
           if (icon_info != NULL && event->window == icon_info->window)
             {
-              gint width, height;
+              bint width, height;
 
               width = bdk_window_get_width (icon_info->window);
               height = bdk_window_get_height (icon_info->window);
@@ -3496,13 +3496,13 @@ btk_entry_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_entry_enter_notify (BtkWidget *widget,
                         BdkEventCrossing *event)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -3523,13 +3523,13 @@ btk_entry_enter_notify (BtkWidget *widget,
     return FALSE;
 }
 
-static gint
+static bint
 btk_entry_leave_notify (BtkWidget        *widget,
                         BdkEventCrossing *event)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -3556,25 +3556,25 @@ btk_entry_leave_notify (BtkWidget        *widget,
 
 static void
 btk_entry_get_pixel_ranges (BtkEntry  *entry,
-			    gint     **ranges,
-			    gint      *n_ranges)
+			    bint     **ranges,
+			    bint      *n_ranges)
 {
-  gint start_char, end_char;
+  bint start_char, end_char;
 
   if (btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &start_char, &end_char))
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, TRUE);
       BangoLayoutLine *line = bango_layout_get_lines_readonly (layout)->data;
       const char *text = bango_layout_get_text (layout);
-      gint start_index = g_utf8_offset_to_pointer (text, start_char) - text;
-      gint end_index = g_utf8_offset_to_pointer (text, end_char) - text;
-      gint real_n_ranges, i;
+      bint start_index = g_utf8_offset_to_pointer (text, start_char) - text;
+      bint end_index = g_utf8_offset_to_pointer (text, end_char) - text;
+      bint real_n_ranges, i;
 
       bango_layout_line_get_x_ranges (line, start_index, end_index, ranges, &real_n_ranges);
 
       if (ranges)
 	{
-	  gint *r = *ranges;
+	  bint *r = *ranges;
 	  
 	  for (i = 0; i < real_n_ranges; ++i)
 	    {
@@ -3595,13 +3595,13 @@ btk_entry_get_pixel_ranges (BtkEntry  *entry,
     }
 }
 
-static gboolean
+static bboolean
 in_selection (BtkEntry *entry,
-	      gint	x)
+	      bint	x)
 {
-  gint *ranges;
-  gint n_ranges, i;
-  gint retval = FALSE;
+  bint *ranges;
+  bint n_ranges, i;
+  bint retval = FALSE;
 
   btk_entry_get_pixel_ranges (entry, &ranges, &n_ranges);
 
@@ -3618,7 +3618,7 @@ in_selection (BtkEntry *entry,
   return retval;
 }
 	      
-static gint
+static bint
 btk_entry_button_press (BtkWidget      *widget,
 			BdkEventButton *event)
 {
@@ -3626,9 +3626,9 @@ btk_entry_button_press (BtkWidget      *widget,
   BtkEditable *editable = BTK_EDITABLE (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   EntryIconInfo *icon_info = NULL;
-  gint tmp_pos;
-  gint sel_start, sel_end;
-  gint i;
+  bint tmp_pos;
+  bint sel_start, sel_end;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -3682,7 +3682,7 @@ btk_entry_button_press (BtkWidget      *widget,
     }
   else if (event->button == 1)
     {
-      gboolean have_selection = btk_editable_get_selection_bounds (editable, &sel_start, &sel_end);
+      bboolean have_selection = btk_editable_get_selection_bounds (editable, &sel_start, &sel_end);
       
       entry->select_words = FALSE;
       entry->select_lines = FALSE;
@@ -3704,8 +3704,8 @@ btk_entry_button_press (BtkWidget      *widget,
 	    }
 	  else
 	    {
-	      gboolean extend_to_left;
-	      gint start, end;
+	      bboolean extend_to_left;
+	      bint start, end;
 
 	      /* Figure out what click selects and extend current selection */
 	      switch (event->type)
@@ -3805,14 +3805,14 @@ btk_entry_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_entry_button_release (BtkWidget      *widget,
 			  BdkEventButton *event)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   EntryIconInfo *icon_info = NULL;
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -3823,7 +3823,7 @@ btk_entry_button_release (BtkWidget      *widget,
 
       if (event->window == icon_info->window)
         {
-          gint width, height;
+          bint width, height;
 
           width = bdk_window_get_width (icon_info->window);
           height = bdk_window_get_height (icon_info->window);
@@ -3850,7 +3850,7 @@ btk_entry_button_release (BtkWidget      *widget,
 
   if (entry->in_drag)
     {
-      gint tmp_pos = btk_entry_find_position (entry, entry->drag_start_x);
+      bint tmp_pos = btk_entry_find_position (entry, entry->drag_start_x);
 
       btk_editable_set_position (BTK_EDITABLE (entry), tmp_pos);
 
@@ -3864,12 +3864,12 @@ btk_entry_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-static gchar *
+static bchar *
 _btk_entry_get_selected_text (BtkEntry *entry)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint         start_text, end_text;
-  gchar       *text = NULL;
+  bint         start_text, end_text;
+  bchar       *text = NULL;
 
   if (btk_editable_get_selection_bounds (editable, &start_text, &end_text))
     text = btk_editable_get_chars (editable, start_text, end_text);
@@ -3877,7 +3877,7 @@ _btk_entry_get_selected_text (BtkEntry *entry)
   return text;
 }
 
-static gint
+static bint
 btk_entry_motion_notify (BtkWidget      *widget,
 			 BdkEventMotion *event)
 {
@@ -3885,8 +3885,8 @@ btk_entry_motion_notify (BtkWidget      *widget,
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
   EntryIconInfo *icon_info = NULL;
   BdkDragContext *context;
-  gint tmp_pos;
-  gint i;
+  bint tmp_pos;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -3945,8 +3945,8 @@ btk_entry_motion_notify (BtkWidget      *widget,
         {
           BdkDragContext *context;
           BtkTargetList  *target_list = btk_target_list_new (NULL, 0);
-          guint actions = entry->editable ? BDK_ACTION_COPY | BDK_ACTION_MOVE : BDK_ACTION_COPY;
-          gchar *text = NULL;
+          buint actions = entry->editable ? BDK_ACTION_COPY | BDK_ACTION_MOVE : BDK_ACTION_COPY;
+          bchar *text = NULL;
           BdkPixmap *pixmap = NULL;
 
           btk_target_list_add_text_targets (target_list, 0);
@@ -3978,7 +3978,7 @@ btk_entry_motion_notify (BtkWidget      *widget,
     }
   else
     {
-      gint height;
+      bint height;
 
       height = bdk_window_get_height (entry->text_area);
 
@@ -3991,9 +3991,9 @@ btk_entry_motion_notify (BtkWidget      *widget,
       
       if (entry->select_words) 
 	{
-	  gint min, max;
-	  gint old_min, old_max;
-	  gint pos, bound;
+	  bint min, max;
+	  bint old_min, old_max;
+	  bint pos, bound;
 	  
 	  min = btk_entry_move_backward_word (entry, tmp_pos, TRUE);
 	  max = btk_entry_move_forward_word (entry, tmp_pos, TRUE);
@@ -4059,7 +4059,7 @@ btk_entry_obscure_mouse_cursor (BtkEntry *entry)
   entry->mouse_cursor_obscured = TRUE;  
 }
 
-static gint
+static bint
 btk_entry_key_press (BtkWidget   *widget,
 		     BdkEventKey *event)
 {
@@ -4105,7 +4105,7 @@ btk_entry_key_press (BtkWidget   *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_entry_key_release (BtkWidget   *widget,
 		       BdkEventKey *event)
 {
@@ -4123,7 +4123,7 @@ btk_entry_key_release (BtkWidget   *widget,
   return BTK_WIDGET_CLASS (btk_entry_parent_class)->key_release_event (widget, event);
 }
 
-static gint
+static bint
 btk_entry_focus_in (BtkWidget     *widget,
 		    BdkEventFocus *event)
 {
@@ -4152,7 +4152,7 @@ btk_entry_focus_in (BtkWidget     *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_entry_focus_out (BtkWidget     *widget,
 		     BdkEventFocus *event)
 {
@@ -4187,7 +4187,7 @@ static void
 btk_entry_grab_focus (BtkWidget *widget)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
-  gboolean select_on_focus;
+  bboolean select_on_focus;
 
   BTK_WIDGET_CLASS (btk_entry_parent_class)->grab_focus (widget);
 
@@ -4221,7 +4221,7 @@ btk_entry_state_changed (BtkWidget      *widget,
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   BdkCursor *cursor;
-  gint i;
+  bint i;
 
   if (btk_widget_get_realized (widget))
     {
@@ -4269,9 +4269,9 @@ btk_entry_screen_changed (BtkWidget *widget,
  */
 static void
 btk_entry_insert_text (BtkEditable *editable,
-		       const gchar *new_text,
-		       gint         new_text_length,
-		       gint        *position)
+		       const bchar *new_text,
+		       bint         new_text_length,
+		       bint        *position)
 {
   g_object_ref (editable);
 
@@ -4287,8 +4287,8 @@ btk_entry_insert_text (BtkEditable *editable,
 
 static void
 btk_entry_delete_text (BtkEditable *editable,
-		       gint         start_pos,
-		       gint         end_pos)
+		       bint         start_pos,
+		       bint         end_pos)
 {
   g_object_ref (editable);
 
@@ -4297,15 +4297,15 @@ btk_entry_delete_text (BtkEditable *editable,
   g_object_unref (editable);
 }
 
-static gchar *    
+static bchar *    
 btk_entry_get_chars      (BtkEditable   *editable,
-			  gint           start_pos,
-			  gint           end_pos)
+			  bint           start_pos,
+			  bint           end_pos)
 {
   BtkEntry *entry = BTK_ENTRY (editable);
-  const gchar *text;
-  gint text_length;
-  gint start_index, end_index;
+  const bchar *text;
+  bint text_length;
+  bint start_index, end_index;
 
   text = btk_entry_buffer_get_text (get_buffer (entry));
   text_length = btk_entry_buffer_get_length (get_buffer (entry));
@@ -4324,11 +4324,11 @@ btk_entry_get_chars      (BtkEditable   *editable,
 
 static void
 btk_entry_real_set_position (BtkEditable *editable,
-			     gint         position)
+			     bint         position)
 {
   BtkEntry *entry = BTK_ENTRY (editable);
 
-  guint length;
+  buint length;
 
   length = btk_entry_buffer_get_length (get_buffer (entry));
   if (position < 0 || position > length)
@@ -4342,7 +4342,7 @@ btk_entry_real_set_position (BtkEditable *editable,
     }
 }
 
-static gint
+static bint
 btk_entry_get_position (BtkEditable *editable)
 {
   return BTK_ENTRY (editable)->current_pos;
@@ -4350,11 +4350,11 @@ btk_entry_get_position (BtkEditable *editable)
 
 static void
 btk_entry_set_selection_bounds (BtkEditable *editable,
-				gint         start,
-				gint         end)
+				bint         start,
+				bint         end)
 {
   BtkEntry *entry = BTK_ENTRY (editable);
-  guint length;
+  buint length;
 
   length = btk_entry_buffer_get_length (get_buffer (entry));
   if (start < 0)
@@ -4371,10 +4371,10 @@ btk_entry_set_selection_bounds (BtkEditable *editable,
   btk_entry_update_primary_selection (entry);
 }
 
-static gboolean
+static bboolean
 btk_entry_get_selection_bounds (BtkEditable *editable,
-				gint        *start,
-				gint        *end)
+				bint        *start,
+				bint        *end)
 {
   BtkEntry *entry = BTK_ENTRY (editable);
 
@@ -4388,7 +4388,7 @@ static void
 icon_theme_changed (BtkEntry *entry)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -4424,9 +4424,9 @@ btk_entry_style_set (BtkWidget *widget,
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint focus_width;
-  gboolean interior_focus;
-  gint i;
+  bint focus_width;
+  bboolean interior_focus;
+  bint i;
 
   btk_widget_style_get (widget,
 			"focus-line-width", &focus_width,
@@ -4460,16 +4460,16 @@ btk_entry_style_set (BtkWidget *widget,
 /* BtkCellEditable method implementations
  */
 static void
-btk_cell_editable_entry_activated (BtkEntry *entry, gpointer data)
+btk_cell_editable_entry_activated (BtkEntry *entry, bpointer data)
 {
   btk_cell_editable_editing_done (BTK_CELL_EDITABLE (entry));
   btk_cell_editable_remove_widget (BTK_CELL_EDITABLE (entry));
 }
 
-static gboolean
+static bboolean
 btk_cell_editable_key_press_event (BtkEntry    *entry,
 				   BdkEventKey *key_event,
-				   gpointer     data)
+				   bpointer     data)
 {
   if (key_event->keyval == BDK_Escape)
     {
@@ -4514,8 +4514,8 @@ btk_entry_password_hint_free (BtkEntryPasswordHint *password_hint)
 }
 
 
-static gboolean
-btk_entry_remove_password_hint (gpointer data)
+static bboolean
+btk_entry_remove_password_hint (bpointer data)
 {
   BtkEntryPasswordHint *password_hint = g_object_get_qdata (data, quark_password_hint);
   password_hint->position = -1;
@@ -4529,12 +4529,12 @@ btk_entry_remove_password_hint (gpointer data)
  */
 static void
 btk_entry_real_insert_text (BtkEditable *editable,
-			    const gchar *new_text,
-			    gint         new_text_length,
-			    gint        *position)
+			    const bchar *new_text,
+			    bint         new_text_length,
+			    bint        *position)
 {
-  guint n_inserted;
-  gint n_chars;
+  buint n_inserted;
+  bint n_chars;
 
   n_chars = g_utf8_strlen (new_text, new_text_length);
 
@@ -4557,8 +4557,8 @@ btk_entry_real_insert_text (BtkEditable *editable,
 
 static void
 btk_entry_real_delete_text (BtkEditable *editable,
-                            gint         start_pos,
-                            gint         end_pos)
+                            bint         start_pos,
+                            bint         end_pos)
 {
   /*
    * The actual deletion from the buffer. This will end up firing the
@@ -4577,14 +4577,14 @@ btk_entry_real_delete_text (BtkEditable *editable,
  */
 static void
 buffer_inserted_text (BtkEntryBuffer *buffer,
-                      guint           position,
-                      const gchar    *chars,
-                      guint           n_chars,
+                      buint           position,
+                      const bchar    *chars,
+                      buint           n_chars,
                       BtkEntry       *entry)
 {
-  guint password_hint_timeout;
-  guint current_pos;
-  gint selection_bound;
+  buint password_hint_timeout;
+  buint current_pos;
+  bint selection_bound;
 
   current_pos = entry->current_pos;
   if (current_pos > position)
@@ -4605,12 +4605,12 @@ buffer_inserted_text (BtkEntryBuffer *buffer,
 
       if (password_hint_timeout > 0)
         {
-          BtkEntryPasswordHint *password_hint = g_object_get_qdata (G_OBJECT (entry),
+          BtkEntryPasswordHint *password_hint = g_object_get_qdata (B_OBJECT (entry),
                                                                     quark_password_hint);
           if (!password_hint)
             {
               password_hint = g_slice_new0 (BtkEntryPasswordHint);
-              g_object_set_qdata_full (G_OBJECT (entry), quark_password_hint, password_hint,
+              g_object_set_qdata_full (B_OBJECT (entry), quark_password_hint, password_hint,
                                        (GDestroyNotify)btk_entry_password_hint_free);
             }
 
@@ -4625,13 +4625,13 @@ buffer_inserted_text (BtkEntryBuffer *buffer,
 
 static void
 buffer_deleted_text (BtkEntryBuffer *buffer,
-                     guint           position,
-                     guint           n_chars,
+                     buint           position,
+                     buint           n_chars,
                      BtkEntry       *entry)
 {
-  guint end_pos = position + n_chars;
-  gint selection_bound;
-  guint current_pos;
+  buint end_pos = position + n_chars;
+  bint selection_bound;
+  buint current_pos;
 
   current_pos = entry->current_pos;
   if (current_pos > position)
@@ -4649,7 +4649,7 @@ buffer_deleted_text (BtkEntryBuffer *buffer,
   /* Disable the password hint if one exists. */
   if (!entry->visible)
     {
-      BtkEntryPasswordHint *password_hint = g_object_get_qdata (G_OBJECT (entry),
+      BtkEntryPasswordHint *password_hint = g_object_get_qdata (B_OBJECT (entry),
                                                                 quark_password_hint);
       if (password_hint)
         {
@@ -4663,37 +4663,37 @@ buffer_deleted_text (BtkEntryBuffer *buffer,
 
 static void
 buffer_notify_text (BtkEntryBuffer *buffer,
-                    GParamSpec     *spec,
+                    BParamSpec     *spec,
                     BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
-  entry->text = (gchar*)btk_entry_buffer_get_text (buffer);
+  entry->text = (bchar*)btk_entry_buffer_get_text (buffer);
 
   btk_entry_recompute (entry);
   emit_changed (entry);
-  g_object_notify (G_OBJECT (entry), "text");
+  g_object_notify (B_OBJECT (entry), "text");
 }
 
 static void
 buffer_notify_length (BtkEntryBuffer *buffer,
-                      GParamSpec     *spec,
+                      BParamSpec     *spec,
                       BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
   entry->text_length = btk_entry_buffer_get_length (buffer);
 
-  g_object_notify (G_OBJECT (entry), "text-length");
+  g_object_notify (B_OBJECT (entry), "text-length");
 }
 
 static void
 buffer_notify_max_length (BtkEntryBuffer *buffer,
-                          GParamSpec     *spec,
+                          BParamSpec     *spec,
                           BtkEntry       *entry)
 {
   /* COMPAT: Deprecated, not used. This struct field will be removed in BTK+ 3.x */
   entry->text_max_length = btk_entry_buffer_get_max_length (buffer);
 
-  g_object_notify (G_OBJECT (entry), "max-length");
+  g_object_notify (B_OBJECT (entry), "max-length");
 }
 
 static void
@@ -4721,17 +4721,17 @@ buffer_disconnect_signals (BtkEntry *entry)
  * end of the selection we should go to when the user hits the left or
  * right arrow key.
  */
-static gint
+static bint
 get_better_cursor_x (BtkEntry *entry,
-		     gint      offset)
+		     bint      offset)
 {
   BdkKeymap *keymap = bdk_keymap_get_for_display (btk_widget_get_display (BTK_WIDGET (entry)));
   BangoDirection keymap_direction = bdk_keymap_get_direction (keymap);
-  gboolean split_cursor;
+  bboolean split_cursor;
   
   BangoLayout *layout = btk_entry_ensure_layout (entry, TRUE);
-  const gchar *text = bango_layout_get_text (layout);
-  gint index = g_utf8_offset_to_pointer (text, offset) - text;
+  const bchar *text = bango_layout_get_text (layout);
+  bint index = g_utf8_offset_to_pointer (text, offset) - text;
   
   BangoRectangle strong_pos, weak_pos;
   
@@ -4750,10 +4750,10 @@ get_better_cursor_x (BtkEntry *entry,
 static void
 btk_entry_move_cursor (BtkEntry       *entry,
 		       BtkMovementStep step,
-		       gint            count,
-		       gboolean        extend_selection)
+		       bint            count,
+		       bboolean        extend_selection)
 {
-  gint new_pos = entry->current_pos;
+  bint new_pos = entry->current_pos;
   BtkEntryPrivate *priv;
 
   _btk_entry_reset_im_context (entry);
@@ -4767,8 +4767,8 @@ btk_entry_move_cursor (BtkEntry       *entry,
 	{
 	case BTK_MOVEMENT_VISUAL_POSITIONS:
 	  {
-	    gint current_x = get_better_cursor_x (entry, entry->current_pos);
-	    gint bound_x = get_better_cursor_x (entry, entry->selection_bound);
+	    bint current_x = get_better_cursor_x (entry, entry->current_pos);
+	    bint bound_x = get_better_cursor_x (entry, entry->selection_bound);
 
 	    if (count <= 0)
 	      new_pos = current_x < bound_x ? entry->current_pos : entry->selection_bound;
@@ -4886,10 +4886,10 @@ btk_entry_move_cursor (BtkEntry       *entry,
 
 static void
 btk_entry_insert_at_cursor (BtkEntry    *entry,
-			    const gchar *str)
+			    const bchar *str)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint pos = entry->current_pos;
+  bint pos = entry->current_pos;
 
   if (entry->editable)
     {
@@ -4903,12 +4903,12 @@ btk_entry_insert_at_cursor (BtkEntry    *entry,
 static void
 btk_entry_delete_from_cursor (BtkEntry       *entry,
 			      BtkDeleteType   type,
-			      gint            count)
+			      bint            count)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint start_pos = entry->current_pos;
-  gint end_pos = entry->current_pos;
-  gint old_n_bytes = btk_entry_buffer_get_bytes (get_buffer (entry));
+  bint start_pos = entry->current_pos;
+  bint end_pos = entry->current_pos;
+  bint old_n_bytes = btk_entry_buffer_get_bytes (get_buffer (entry));
   
   _btk_entry_reset_im_context (entry);
 
@@ -4991,7 +4991,7 @@ static void
 btk_entry_backspace (BtkEntry *entry)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint prev_pos;
+  bint prev_pos;
 
   _btk_entry_reset_im_context (entry);
 
@@ -5013,16 +5013,16 @@ btk_entry_backspace (BtkEntry *entry)
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       bango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
       /* Deleting parts of characters */
       if (log_attrs[entry->current_pos].backspace_deletes_character)
 	{
-	  gchar *cluster_text;
-	  gchar *normalized_text;
-          glong  len;
+	  bchar *cluster_text;
+	  bchar *normalized_text;
+          blong  len;
 
 	  cluster_text = btk_entry_get_display_text (entry, prev_pos,
 	                                             entry->current_pos);
@@ -5034,7 +5034,7 @@ btk_entry_backspace (BtkEntry *entry)
           btk_editable_delete_text (editable, prev_pos, entry->current_pos);
 	  if (len > 1)
 	    {
-	      gint pos = entry->current_pos;
+	      bint pos = entry->current_pos;
 
 	      btk_editable_insert_text (editable, normalized_text,
 					g_utf8_offset_to_pointer (normalized_text, len - 1) - normalized_text,
@@ -5064,8 +5064,8 @@ static void
 btk_entry_copy_clipboard (BtkEntry *entry)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint start, end;
-  gchar *str;
+  bint start, end;
+  bchar *str;
 
   if (btk_editable_get_selection_bounds (editable, &start, &end))
     {
@@ -5087,7 +5087,7 @@ static void
 btk_entry_cut_clipboard (BtkEntry *entry)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint start, end;
+  bint start, end;
 
   if (!entry->visible)
     {
@@ -5121,7 +5121,7 @@ static void
 btk_entry_delete_cb (BtkEntry *entry)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint start, end;
+  bint start, end;
 
   if (entry->editable)
     {
@@ -5181,7 +5181,7 @@ keymap_direction_changed (BdkKeymap *keymap,
 
 static void
 btk_entry_commit_cb (BtkIMContext *context,
-		     const gchar  *str,
+		     const bchar  *str,
 		     BtkEntry     *entry)
 {
   if (entry->editable)
@@ -5194,8 +5194,8 @@ btk_entry_preedit_changed_cb (BtkIMContext *context,
 {
   if (entry->editable)
     {
-      gchar *preedit_string;
-      gint cursor_pos;
+      bchar *preedit_string;
+      bint cursor_pos;
       
       btk_im_context_get_preedit_string (entry->im_context,
                                          &preedit_string, NULL,
@@ -5210,11 +5210,11 @@ btk_entry_preedit_changed_cb (BtkIMContext *context,
     }
 }
 
-static gboolean
+static bboolean
 btk_entry_retrieve_surrounding_cb (BtkIMContext *context,
 			       BtkEntry         *entry)
 {
-  gchar *text;
+  bchar *text;
 
   /* XXXX ??? does this even make sense when text is not visible? Should we return FALSE? */
   text = btk_entry_get_display_text (entry, 0, -1);
@@ -5225,10 +5225,10 @@ btk_entry_retrieve_surrounding_cb (BtkIMContext *context,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_entry_delete_surrounding_cb (BtkIMContext *slave,
-				 gint          offset,
-				 gint          n_chars,
+				 bint          offset,
+				 bint          n_chars,
 				 BtkEntry     *entry)
 {
   if (entry->editable)
@@ -5245,12 +5245,12 @@ btk_entry_delete_surrounding_cb (BtkIMContext *slave,
 /* Used for im_commit_cb and inserting Unicode chars */
 static void
 btk_entry_enter_text (BtkEntry       *entry,
-                      const gchar    *str)
+                      const bchar    *str)
 {
   BtkEditable *editable = BTK_EDITABLE (entry);
-  gint tmp_pos;
-  gboolean old_need_im_reset;
-  guint text_length;
+  bint tmp_pos;
+  bboolean old_need_im_reset;
+  buint text_length;
 
   old_need_im_reset = entry->need_im_reset;
   entry->need_im_reset = FALSE;
@@ -5279,12 +5279,12 @@ btk_entry_enter_text (BtkEntry       *entry,
  */
 static void
 btk_entry_set_positions (BtkEntry *entry,
-			 gint      current_pos,
-			 gint      selection_bound)
+			 bint      current_pos,
+			 bint      selection_bound)
 {
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
   
   if (current_pos != -1 &&
       entry->current_pos != current_pos)
@@ -5292,7 +5292,7 @@ btk_entry_set_positions (BtkEntry *entry,
       entry->current_pos = current_pos;
       changed = TRUE;
 
-      g_object_notify (G_OBJECT (entry), "cursor-position");
+      g_object_notify (B_OBJECT (entry), "cursor-position");
     }
 
   if (selection_bound != -1 &&
@@ -5301,10 +5301,10 @@ btk_entry_set_positions (BtkEntry *entry,
       entry->selection_bound = selection_bound;
       changed = TRUE;
       
-      g_object_notify (G_OBJECT (entry), "selection-bound");
+      g_object_notify (B_OBJECT (entry), "selection-bound");
     }
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 
   if (changed) 
     {
@@ -5327,9 +5327,9 @@ static void
 update_im_cursor_location (BtkEntry *entry)
 {
   BdkRectangle area;
-  gint strong_x;
-  gint strong_xoffset;
-  gint area_width, area_height;
+  bint strong_x;
+  bint strong_xoffset;
+  bint area_width, area_height;
 
   btk_entry_get_cursor_locations (entry, CURSOR_STANDARD, &strong_x, NULL);
   btk_entry_get_text_area_size (entry, NULL, NULL, &area_width, &area_height);
@@ -5351,8 +5351,8 @@ update_im_cursor_location (BtkEntry *entry)
   btk_im_context_set_cursor_location (entry->im_context, &area);
 }
 
-static gboolean
-recompute_idle_func (gpointer data)
+static bboolean
+recompute_idle_func (bpointer data)
 {
   BtkEntry *entry;
 
@@ -5386,18 +5386,18 @@ btk_entry_recompute (BtkEntry *entry)
 
 static BangoLayout *
 btk_entry_create_layout (BtkEntry *entry,
-			 gboolean  include_preedit)
+			 bboolean  include_preedit)
 {
   BtkWidget *widget = BTK_WIDGET (entry);
   BangoLayout *layout = btk_widget_create_bango_layout (widget, NULL);
   BangoAttrList *tmp_attrs = bango_attr_list_new ();
 
-  gchar *preedit_string = NULL;
-  gint preedit_length = 0;
+  bchar *preedit_string = NULL;
+  bint preedit_length = 0;
   BangoAttrList *preedit_attrs = NULL;
 
-  gchar *display;
-  guint n_bytes;
+  bchar *display;
+  buint n_bytes;
 
   bango_layout_set_single_paragraph_mode (layout, TRUE);
 
@@ -5414,7 +5414,7 @@ btk_entry_create_layout (BtkEntry *entry,
   if (preedit_length)
     {
       GString *tmp_string = g_string_new (display);
-      gint cursor_index = g_utf8_offset_to_pointer (display, entry->current_pos) - display;
+      bint cursor_index = g_utf8_offset_to_pointer (display, entry->current_pos) - display;
       
       g_string_insert (tmp_string, cursor_index, preedit_string);
       
@@ -5477,7 +5477,7 @@ btk_entry_create_layout (BtkEntry *entry,
 
 static BangoLayout *
 btk_entry_ensure_layout (BtkEntry *entry,
-                         gboolean  include_preedit)
+                         bboolean  include_preedit)
 {
   if (entry->preedit_length > 0 &&
       !include_preedit != !entry->cache_includes_preedit)
@@ -5494,14 +5494,14 @@ btk_entry_ensure_layout (BtkEntry *entry,
 
 static void
 get_layout_position (BtkEntry *entry,
-                     gint     *x,
-                     gint     *y)
+                     bint     *x,
+                     bint     *y)
 {
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gint area_width, area_height;
+  bint area_width, area_height;
   BtkBorder inner_border;
-  gint y_pos;
+  bint y_pos;
   BangoLayoutLine *line;
   
   layout = btk_entry_ensure_layout (entry, TRUE);
@@ -5540,8 +5540,8 @@ draw_text_with_color (BtkEntry *entry, bairo_t *cr, BdkColor *default_color)
 {
   BangoLayout *layout = btk_entry_ensure_layout (entry, TRUE);
   BtkWidget *widget;
-  gint x, y;
-  gint start_pos, end_pos;
+  bint x, y;
+  bint start_pos, end_pos;
 
   widget = BTK_WIDGET (entry);
 
@@ -5555,8 +5555,8 @@ draw_text_with_color (BtkEntry *entry, bairo_t *cr, BdkColor *default_color)
 
   if (btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &start_pos, &end_pos))
     {
-      gint *ranges;
-      gint n_ranges, i;
+      bint *ranges;
+      bint n_ranges, i;
       BangoRectangle logical_rect;
       BdkColor *selection_color, *text_color;
       BtkBorder inner_border;
@@ -5611,9 +5611,9 @@ btk_entry_draw_text (BtkEntry *entry)
   if (btk_widget_is_drawable (widget))
     {
       BdkColor text_color, bar_text_color;
-      gint pos_x, pos_y;
-      gint width, height;
-      gint progress_x, progress_y, progress_width, progress_height;
+      bint pos_x, pos_y;
+      bint width, height;
+      bint progress_x, progress_y, progress_width, progress_height;
       BtkStateType state;
 
       state = BTK_STATE_SELECTED;
@@ -5673,9 +5673,9 @@ btk_entry_draw_text (BtkEntry *entry)
 static void
 draw_insertion_cursor (BtkEntry      *entry,
 		       BdkRectangle  *cursor_location,
-		       gboolean       is_primary,
+		       bboolean       is_primary,
 		       BangoDirection direction,
-		       gboolean       draw_arrow)
+		       bboolean       draw_arrow)
 {
   BtkWidget *widget = BTK_WIDGET (entry);
   BtkTextDirection text_dir;
@@ -5701,14 +5701,14 @@ btk_entry_draw_cursor (BtkEntry  *entry,
   if (btk_widget_is_drawable (widget))
     {
       BdkRectangle cursor_location;
-      gboolean split_cursor;
+      bboolean split_cursor;
       BangoRectangle cursor_rect;
       BtkBorder inner_border;
-      gint xoffset;
-      gint text_area_height;
-      gint cursor_index;
-      gboolean block;
-      gboolean block_at_line_end;
+      bint xoffset;
+      bint text_area_height;
+      bint cursor_index;
+      bboolean block;
+      bboolean block_at_line_end;
       BangoLayout *layout;
       const char *text;
 
@@ -5729,11 +5729,11 @@ btk_entry_draw_cursor (BtkEntry  *entry,
 
       if (!block)
         {
-          gint strong_x, weak_x;
+          bint strong_x, weak_x;
           BangoDirection dir1 = BANGO_DIRECTION_NEUTRAL;
           BangoDirection dir2 = BANGO_DIRECTION_NEUTRAL;
-          gint x1 = 0;
-          gint x2 = 0;
+          bint x1 = 0;
+          bint x2 = 0;
 
           btk_entry_get_cursor_locations (entry, type, &strong_x, &weak_x);
 
@@ -5783,7 +5783,7 @@ btk_entry_draw_cursor (BtkEntry  *entry,
           BdkColor cursor_color;
           BdkRectangle rect;
           bairo_t *cr;
-          gint x, y;
+          bint x, y;
 
           get_layout_position (entry, &x, &y);
 
@@ -5869,7 +5869,7 @@ btk_entry_reset_im_context (BtkEntry *entry)
  *
  * Since: 2.22
  */
-gboolean
+bboolean
 btk_entry_im_context_filter_keypress (BtkEntry    *entry,
                                       BdkEventKey *event)
 {
@@ -5879,17 +5879,17 @@ btk_entry_im_context_filter_keypress (BtkEntry    *entry,
 }
 
 
-static gint
+static bint
 btk_entry_find_position (BtkEntry *entry,
-			 gint      x)
+			 bint      x)
 {
   BangoLayout *layout;
   BangoLayoutLine *line;
-  gint index;
-  gint pos;
-  gint trailing;
-  const gchar *text;
-  gint cursor_index;
+  bint index;
+  bint pos;
+  bint trailing;
+  const bchar *text;
+  bint cursor_index;
   
   layout = btk_entry_ensure_layout (entry, TRUE);
   text = bango_layout_get_text (layout);
@@ -5918,8 +5918,8 @@ btk_entry_find_position (BtkEntry *entry,
 static void
 btk_entry_get_cursor_locations (BtkEntry   *entry,
 				CursorType  type,
-				gint       *strong_x,
-				gint       *weak_x)
+				bint       *strong_x,
+				bint       *weak_x)
 {
   DisplayMode mode = btk_entry_get_display_mode (entry);
 
@@ -5935,9 +5935,9 @@ btk_entry_get_cursor_locations (BtkEntry   *entry,
   else
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, TRUE);
-      const gchar *text = bango_layout_get_text (layout);
+      const bchar *text = bango_layout_get_text (layout);
       BangoRectangle strong_pos, weak_pos;
-      gint index;
+      bint index;
   
       if (type == CURSOR_STANDARD)
 	{
@@ -5953,7 +5953,7 @@ btk_entry_get_cursor_locations (BtkEntry   *entry,
 		index += entry->preedit_length;
 	      else
 		{
-		  gint preedit_len_chars = g_utf8_strlen (text, -1) - btk_entry_buffer_get_length (get_buffer (entry));
+		  bint preedit_len_chars = g_utf8_strlen (text, -1) - btk_entry_buffer_get_length (get_buffer (entry));
 		  index += preedit_len_chars * g_unichar_to_utf8 (entry->invisible_char, NULL);
 		}
 	    }
@@ -5973,12 +5973,12 @@ static void
 btk_entry_adjust_scroll (BtkEntry *entry)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
-  gint min_offset, max_offset;
-  gint text_area_width, text_width;
+  bint min_offset, max_offset;
+  bint text_area_width, text_width;
   BtkBorder inner_border;
-  gint strong_x, weak_x;
-  gint strong_xoffset, weak_xoffset;
-  gfloat xalign;
+  bint strong_x, weak_x;
+  bint strong_xoffset, weak_xoffset;
+  bfloat xalign;
   BangoLayout *layout;
   BangoLayoutLine *line;
   BangoRectangle logical_rect;
@@ -6061,7 +6061,7 @@ btk_entry_adjust_scroll (BtkEntry *entry)
       entry->scroll_offset += weak_xoffset - text_area_width;
     }
 
-  g_object_notify (G_OBJECT (entry), "scroll-offset");
+  g_object_notify (B_OBJECT (entry), "scroll-offset");
 }
 
 static void
@@ -6069,11 +6069,11 @@ btk_entry_move_adjustments (BtkEntry *entry)
 {
   BangoContext *context;
   BangoFontMetrics *metrics;
-  gint x, layout_x, border_x, border_y;
-  gint char_width;
+  bint x, layout_x, border_x, border_y;
+  bint char_width;
   BtkAdjustment *adjustment;
 
-  adjustment = g_object_get_qdata (G_OBJECT (entry), quark_cursor_hadjustment);
+  adjustment = g_object_get_qdata (B_OBJECT (entry), quark_cursor_hadjustment);
   if (!adjustment)
     return;
 
@@ -6096,14 +6096,14 @@ btk_entry_move_adjustments (BtkEntry *entry)
 			     x + (char_width + 2));  /* one char + cursor + one pixel after */
 }
 
-static gint
+static bint
 btk_entry_move_visually (BtkEntry *entry,
-			 gint      start,
-			 gint      count)
+			 bint      start,
+			 bint      count)
 {
-  gint index;
+  bint index;
   BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
-  const gchar *text;
+  const bchar *text;
 
   text = bango_layout_get_text (layout);
   
@@ -6112,8 +6112,8 @@ btk_entry_move_visually (BtkEntry *entry,
   while (count != 0)
     {
       int new_index, new_trailing;
-      gboolean split_cursor;
-      gboolean strong;
+      bboolean split_cursor;
+      bboolean strong;
 
       g_object_get (btk_widget_get_settings (BTK_WIDGET (entry)),
 		    "btk-split-cursor", &split_cursor,
@@ -6142,7 +6142,7 @@ btk_entry_move_visually (BtkEntry *entry,
 
       if (new_index < 0)
         index = 0;
-      else if (new_index != G_MAXINT)
+      else if (new_index != B_MAXINT)
         index = new_index;
       
       while (new_trailing--)
@@ -6152,13 +6152,13 @@ btk_entry_move_visually (BtkEntry *entry,
   return g_utf8_pointer_to_offset (text, text + index);
 }
 
-static gint
+static bint
 btk_entry_move_logically (BtkEntry *entry,
-			  gint      start,
-			  gint      count)
+			  bint      start,
+			  bint      count)
 {
-  gint new_pos = start;
-  guint length;
+  bint new_pos = start;
+  buint length;
 
   length = btk_entry_buffer_get_length (get_buffer (entry));
 
@@ -6171,7 +6171,7 @@ btk_entry_move_logically (BtkEntry *entry,
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       bango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
@@ -6198,13 +6198,13 @@ btk_entry_move_logically (BtkEntry *entry,
   return new_pos;
 }
 
-static gint
+static bint
 btk_entry_move_forward_word (BtkEntry *entry,
-			     gint      start,
-                             gboolean  allow_whitespace)
+			     bint      start,
+                             bboolean  allow_whitespace)
 {
-  gint new_pos = start;
-  guint length;
+  bint new_pos = start;
+  buint length;
 
   length = btk_entry_buffer_get_length (get_buffer (entry));
 
@@ -6217,7 +6217,7 @@ btk_entry_move_forward_word (BtkEntry *entry,
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       bango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
       
@@ -6234,12 +6234,12 @@ btk_entry_move_forward_word (BtkEntry *entry,
 }
 
 
-static gint
+static bint
 btk_entry_move_backward_word (BtkEntry *entry,
-			      gint      start,
-                              gboolean  allow_whitespace)
+			      bint      start,
+                              bboolean  allow_whitespace)
 {
-  gint new_pos = start;
+  bint new_pos = start;
 
   /* Prevent any leak of information */
   if (btk_entry_get_display_mode (entry) != DISPLAY_NORMAL)
@@ -6250,7 +6250,7 @@ btk_entry_move_backward_word (BtkEntry *entry,
     {
       BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
       BangoLogAttr *log_attrs;
-      gint n_attrs;
+      bint n_attrs;
 
       bango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
@@ -6272,8 +6272,8 @@ btk_entry_delete_whitespace (BtkEntry *entry)
 {
   BangoLayout *layout = btk_entry_ensure_layout (entry, FALSE);
   BangoLogAttr *log_attrs;
-  gint n_attrs;
-  gint start, end;
+  bint n_attrs;
+  bint start, end;
 
   bango_layout_get_log_attrs (layout, &log_attrs, &n_attrs);
 
@@ -6295,8 +6295,8 @@ btk_entry_delete_whitespace (BtkEntry *entry)
 static void
 btk_entry_select_word (BtkEntry *entry)
 {
-  gint start_pos = btk_entry_move_backward_word (entry, entry->current_pos, TRUE);
-  gint end_pos = btk_entry_move_forward_word (entry, entry->current_pos, TRUE);
+  bint start_pos = btk_entry_move_backward_word (entry, entry->current_pos, TRUE);
+  bint end_pos = btk_entry_move_forward_word (entry, entry->current_pos, TRUE);
 
   btk_editable_select_rebunnyion (BTK_EDITABLE (entry), start_pos, end_pos);
 }
@@ -6307,10 +6307,10 @@ btk_entry_select_line (BtkEntry *entry)
   btk_editable_select_rebunnyion (BTK_EDITABLE (entry), 0, -1);
 }
 
-static gint
-truncate_multiline (const gchar *text)
+static bint
+truncate_multiline (const bchar *text)
 {
-  gint length;
+  bint length;
 
   for (length = 0;
        text[length] && text[length] != '\n' && text[length] != '\r';
@@ -6321,8 +6321,8 @@ truncate_multiline (const gchar *text)
 
 static void
 paste_received (BtkClipboard *clipboard,
-		const gchar  *text,
-		gpointer      data)
+		const bchar  *text,
+		bpointer      data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
   BtkEditable *editable = BTK_EDITABLE (entry);
@@ -6330,7 +6330,7 @@ paste_received (BtkClipboard *clipboard,
       
   if (entry->button == 2)
     {
-      gint pos, start, end;
+      bint pos, start, end;
       pos = priv->insert_pos;
       btk_editable_get_selection_bounds (editable, &start, &end);
       if (!((start <= pos && pos <= end) || (end <= pos && pos <= start)))
@@ -6339,9 +6339,9 @@ paste_received (BtkClipboard *clipboard,
       
   if (text)
     {
-      gint pos, start, end;
-      gint length = -1;
-      gboolean popup_completion;
+      bint pos, start, end;
+      bint length = -1;
+      bboolean popup_completion;
       BtkEntryCompletion *completion;
 
       completion = btk_entry_get_completion (entry);
@@ -6391,15 +6391,15 @@ btk_entry_paste (BtkEntry *entry,
 static void
 primary_get_cb (BtkClipboard     *clipboard,
 		BtkSelectionData *selection_data,
-		guint             info,
-		gpointer          data)
+		buint             info,
+		bpointer          data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
-  gint start, end;
+  bint start, end;
   
   if (btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &start, &end))
     {
-      gchar *str = btk_entry_get_display_text (entry, start, end);
+      bchar *str = btk_entry_get_display_text (entry, start, end);
       btk_selection_data_set_text (selection_data, str, -1);
       g_free (str);
     }
@@ -6407,7 +6407,7 @@ primary_get_cb (BtkClipboard     *clipboard,
 
 static void
 primary_clear_cb (BtkClipboard *clipboard,
-		  gpointer      data)
+		  bpointer      data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
 
@@ -6420,8 +6420,8 @@ btk_entry_update_primary_selection (BtkEntry *entry)
   BtkTargetList *list;
   BtkTargetEntry *targets;
   BtkClipboard *clipboard;
-  gint start, end;
-  gint n_targets;
+  bint start, end;
+  bint n_targets;
 
   if (!btk_widget_get_realized (BTK_WIDGET (entry)))
     return;
@@ -6436,12 +6436,12 @@ btk_entry_update_primary_selection (BtkEntry *entry)
   if (btk_editable_get_selection_bounds (BTK_EDITABLE (entry), &start, &end))
     {
       if (!btk_clipboard_set_with_owner (clipboard, targets, n_targets,
-					 primary_get_cb, primary_clear_cb, G_OBJECT (entry)))
+					 primary_get_cb, primary_clear_cb, B_OBJECT (entry)))
 	primary_clear_cb (clipboard, entry);
     }
   else
     {
-      if (btk_clipboard_get_owner (clipboard) == G_OBJECT (entry))
+      if (btk_clipboard_get_owner (clipboard) == B_OBJECT (entry))
 	btk_clipboard_clear (clipboard);
     }
 
@@ -6459,7 +6459,7 @@ btk_entry_clear (BtkEntry             *entry,
   if (!icon_info || icon_info->storage_type == BTK_IMAGE_EMPTY)
     return;
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   /* Explicitly check, as the pointer may become invalidated
    * during destruction.
@@ -6476,21 +6476,21 @@ btk_entry_clear (BtkEntry             *entry,
   switch (icon_info->storage_type)
     {
     case BTK_IMAGE_PIXBUF:
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-pixbuf" : "secondary-icon-pixbuf");
       break;
 
     case BTK_IMAGE_STOCK:
       g_free (icon_info->stock_id);
       icon_info->stock_id = NULL;
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-stock" : "secondary-icon-stock");
       break;
 
     case BTK_IMAGE_ICON_NAME:
       g_free (icon_info->icon_name);
       icon_info->icon_name = NULL;
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-name" : "secondary-icon-name");
       break;
 
@@ -6500,7 +6500,7 @@ btk_entry_clear (BtkEntry             *entry,
           g_object_unref (icon_info->gicon);
           icon_info->gicon = NULL;
         }
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-gicon" : "secondary-icon-gicon");
       break;
 
@@ -6510,10 +6510,10 @@ btk_entry_clear (BtkEntry             *entry,
     }
 
   icon_info->storage_type = BTK_IMAGE_EMPTY;
-  g_object_notify (G_OBJECT (entry),
+  g_object_notify (B_OBJECT (entry),
                    icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-storage-type" : "secondary-icon-storage-type");
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 static void
@@ -6528,7 +6528,7 @@ btk_entry_ensure_pixbuf (BtkEntry             *entry,
   BtkStateType state;
   BtkWidget *widget;
   BdkScreen *screen;
-  gint width, height;
+  bint width, height;
 
   if (!icon_info || icon_info->pixbuf)
     return;
@@ -6674,7 +6674,7 @@ btk_entry_new_with_buffer (BtkEntryBuffer *buffer)
  * Deprecated: 2.0: Use btk_entry_set_max_length() instead.
  **/
 BtkWidget*
-btk_entry_new_with_max_length (gint max)
+btk_entry_new_with_max_length (bint max)
 {
   BtkEntry *entry;
 
@@ -6737,7 +6737,7 @@ btk_entry_set_buffer (BtkEntry       *entry,
                       BtkEntryBuffer *buffer)
 {
   BtkEntryPrivate *priv;
-  GObject *obj;
+  BObject *obj;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -6771,7 +6771,7 @@ btk_entry_set_buffer (BtkEntry       *entry,
       entry->text_max_length = btk_entry_buffer_get_max_length (priv->buffer);
     }
 
-  obj = G_OBJECT (entry);
+  obj = B_OBJECT (entry);
   g_object_freeze_notify (obj);
   g_object_notify (obj, "buffer");
   g_object_notify (obj, "text");
@@ -6825,9 +6825,9 @@ btk_entry_get_text_window (BtkEntry *entry)
  */
 void
 btk_entry_set_text (BtkEntry    *entry,
-		    const gchar *text)
+		    const bchar *text)
 {
-  gint tmp_pos;
+  bint tmp_pos;
   BtkEntryCompletion *completion;
   BtkEntryPrivate *priv;
 
@@ -6866,10 +6866,10 @@ btk_entry_set_text (BtkEntry    *entry,
  */
 void
 btk_entry_append_text (BtkEntry *entry,
-		       const gchar *text)
+		       const bchar *text)
 {
   BtkEntryPrivate *priv;
-  gint tmp_pos;
+  bint tmp_pos;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   g_return_if_fail (text != NULL);
@@ -6890,9 +6890,9 @@ btk_entry_append_text (BtkEntry *entry,
  */
 void
 btk_entry_prepend_text (BtkEntry *entry,
-			const gchar *text)
+			const bchar *text)
 {
-  gint tmp_pos;
+  bint tmp_pos;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   g_return_if_fail (text != NULL);
@@ -6917,7 +6917,7 @@ btk_entry_prepend_text (BtkEntry *entry,
  */
 void
 btk_entry_set_position (BtkEntry *entry,
-			gint      position)
+			bint      position)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -6941,7 +6941,7 @@ btk_entry_set_position (BtkEntry *entry,
  */
 void
 btk_entry_set_visibility (BtkEntry *entry,
-			  gboolean visible)
+			  bboolean visible)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -6951,7 +6951,7 @@ btk_entry_set_visibility (BtkEntry *entry,
     {
       entry->visible = visible;
 
-      g_object_notify (G_OBJECT (entry), "visibility");
+      g_object_notify (B_OBJECT (entry), "visibility");
       btk_entry_recompute (entry);
     }
 }
@@ -6965,7 +6965,7 @@ btk_entry_set_visibility (BtkEntry *entry,
  *
  * Return value: %TRUE if the text is currently visible
  **/
-gboolean
+bboolean
 btk_entry_get_visibility (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), FALSE);
@@ -6999,14 +6999,14 @@ btk_entry_set_invisible_char (BtkEntry *entry,
   if (!priv->invisible_char_set)
     {
       priv->invisible_char_set = TRUE;
-      g_object_notify (G_OBJECT (entry), "invisible-char-set");
+      g_object_notify (B_OBJECT (entry), "invisible-char-set");
     }
 
   if (ch == entry->invisible_char)
     return;
 
   entry->invisible_char = ch;
-  g_object_notify (G_OBJECT (entry), "invisible-char");
+  g_object_notify (B_OBJECT (entry), "invisible-char");
   btk_entry_recompute (entry);  
 }
 
@@ -7057,10 +7057,10 @@ btk_entry_unset_invisible_char (BtkEntry *entry)
   if (entry->invisible_char != ch)
     {
       entry->invisible_char = ch;
-      g_object_notify (G_OBJECT (entry), "invisible-char");
+      g_object_notify (B_OBJECT (entry), "invisible-char");
     }
 
-  g_object_notify (G_OBJECT (entry), "invisible-char-set");
+  g_object_notify (B_OBJECT (entry), "invisible-char-set");
   btk_entry_recompute (entry);
 }
 
@@ -7077,7 +7077,7 @@ btk_entry_unset_invisible_char (BtkEntry *entry)
  */
 void
 btk_entry_set_editable (BtkEntry *entry,
-			gboolean  editable)
+			bboolean  editable)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -7095,7 +7095,7 @@ btk_entry_set_editable (BtkEntry *entry,
  **/
 void
 btk_entry_set_overwrite_mode (BtkEntry *entry,
-                              gboolean  overwrite)
+                              bboolean  overwrite)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
   
@@ -7104,7 +7104,7 @@ btk_entry_set_overwrite_mode (BtkEntry *entry,
   
   btk_entry_toggle_overwrite (entry);
 
-  g_object_notify (G_OBJECT (entry), "overwrite-mode");
+  g_object_notify (B_OBJECT (entry), "overwrite-mode");
 }
 
 /**
@@ -7117,7 +7117,7 @@ btk_entry_set_overwrite_mode (BtkEntry *entry,
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_entry_get_overwrite_mode (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), FALSE);
@@ -7143,7 +7143,7 @@ btk_entry_get_overwrite_mode (BtkEntry *entry)
  *      storage in the widget and must not be freed, modified or
  *      stored.
  **/
-const gchar*
+const bchar*
 btk_entry_get_text (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
@@ -7166,8 +7166,8 @@ btk_entry_get_text (BtkEntry *entry)
  */
 void       
 btk_entry_select_rebunnyion  (BtkEntry       *entry,
-			  gint            start,
-			  gint            end)
+			  bint            start,
+			  bint            end)
 {
   btk_editable_select_rebunnyion (BTK_EDITABLE (entry), start, end);
 }
@@ -7191,7 +7191,7 @@ btk_entry_select_rebunnyion  (BtkEntry       *entry,
  **/
 void
 btk_entry_set_max_length (BtkEntry     *entry,
-                          gint          max)
+                          bint          max)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
   btk_entry_buffer_set_max_length (get_buffer (entry), max);
@@ -7213,7 +7213,7 @@ btk_entry_set_max_length (BtkEntry     *entry,
  * Return value: the maximum allowed number of characters
  *               in #BtkEntry, or 0 if there is no maximum.
  **/
-gint
+bint
 btk_entry_get_max_length (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), 0);
@@ -7238,7 +7238,7 @@ btk_entry_get_max_length (BtkEntry *entry)
  *
  * Since: 2.14
  **/
-guint16
+buint16
 btk_entry_get_text_length (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), 0);
@@ -7261,7 +7261,7 @@ btk_entry_get_text_length (BtkEntry *entry)
  **/
 void
 btk_entry_set_activates_default (BtkEntry *entry,
-                                 gboolean  setting)
+                                 bboolean  setting)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
   setting = setting != FALSE;
@@ -7269,7 +7269,7 @@ btk_entry_set_activates_default (BtkEntry *entry,
   if (setting != entry->activates_default)
     {
       entry->activates_default = setting;
-      g_object_notify (G_OBJECT (entry), "activates-default");
+      g_object_notify (B_OBJECT (entry), "activates-default");
     }
 }
 
@@ -7281,7 +7281,7 @@ btk_entry_set_activates_default (BtkEntry *entry,
  * 
  * Return value: %TRUE if the entry will activate the default widget
  **/
-gboolean
+bboolean
 btk_entry_get_activates_default (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), FALSE);
@@ -7302,14 +7302,14 @@ btk_entry_get_activates_default (BtkEntry *entry)
  **/
 void
 btk_entry_set_width_chars (BtkEntry *entry,
-                           gint      n_chars)
+                           bint      n_chars)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
   if (entry->width_chars != n_chars)
     {
       entry->width_chars = n_chars;
-      g_object_notify (G_OBJECT (entry), "width-chars");
+      g_object_notify (B_OBJECT (entry), "width-chars");
       btk_widget_queue_resize (BTK_WIDGET (entry));
     }
 }
@@ -7322,7 +7322,7 @@ btk_entry_set_width_chars (BtkEntry *entry,
  * 
  * Return value: number of chars to request space for, or negative if unset
  **/
-gint
+bint
 btk_entry_get_width_chars (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), 0);
@@ -7339,7 +7339,7 @@ btk_entry_get_width_chars (BtkEntry *entry)
  **/
 void
 btk_entry_set_has_frame (BtkEntry *entry,
-                         gboolean  setting)
+                         bboolean  setting)
 {
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -7350,7 +7350,7 @@ btk_entry_set_has_frame (BtkEntry *entry,
 
   btk_widget_queue_resize (BTK_WIDGET (entry));
   entry->has_frame = setting;
-  g_object_notify (G_OBJECT (entry), "has-frame");
+  g_object_notify (B_OBJECT (entry), "has-frame");
 }
 
 /**
@@ -7361,7 +7361,7 @@ btk_entry_set_has_frame (BtkEntry *entry,
  * 
  * Return value: whether the entry has a beveled frame
  **/
-gboolean
+bboolean
 btk_entry_get_has_frame (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), FALSE);
@@ -7394,13 +7394,13 @@ btk_entry_set_inner_border (BtkEntry        *entry,
   btk_widget_queue_resize (BTK_WIDGET (entry));
 
   if (border)
-    g_object_set_qdata_full (G_OBJECT (entry), quark_inner_border,
+    g_object_set_qdata_full (B_OBJECT (entry), quark_inner_border,
                              btk_border_copy (border),
                              (GDestroyNotify) btk_border_free);
   else
-    g_object_set_qdata (G_OBJECT (entry), quark_inner_border, NULL);
+    g_object_set_qdata (B_OBJECT (entry), quark_inner_border, NULL);
 
-  g_object_notify (G_OBJECT (entry), "inner-border");
+  g_object_notify (B_OBJECT (entry), "inner-border");
 }
 
 /**
@@ -7419,7 +7419,7 @@ btk_entry_get_inner_border (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  return g_object_get_qdata (G_OBJECT (entry), quark_inner_border);
+  return g_object_get_qdata (B_OBJECT (entry), quark_inner_border);
 }
 
 /**
@@ -7464,13 +7464,13 @@ btk_entry_get_layout (BtkEntry *entry)
  * 
  * Return value: byte index into the entry contents
  **/
-gint
+bint
 btk_entry_layout_index_to_text_index (BtkEntry *entry,
-                                      gint      layout_index)
+                                      bint      layout_index)
 {
   BangoLayout *layout;
-  const gchar *text;
-  gint cursor_index;
+  const bchar *text;
+  bint cursor_index;
   
   g_return_val_if_fail (BTK_IS_ENTRY (entry), 0);
 
@@ -7500,13 +7500,13 @@ btk_entry_layout_index_to_text_index (BtkEntry *entry,
  * 
  * Return value: byte index into the entry layout text
  **/
-gint
+bint
 btk_entry_text_index_to_layout_index (BtkEntry *entry,
-                                      gint      text_index)
+                                      bint      text_index)
 {
   BangoLayout *layout;
-  const gchar *text;
-  gint cursor_index;
+  const bchar *text;
+  bint cursor_index;
   g_return_val_if_fail (BTK_IS_ENTRY (entry), 0);
 
   layout = btk_entry_ensure_layout (entry, TRUE);
@@ -7548,10 +7548,10 @@ btk_entry_text_index_to_layout_index (BtkEntry *entry,
  **/
 void
 btk_entry_get_layout_offsets (BtkEntry *entry,
-                              gint     *x,
-                              gint     *y)
+                              bint     *x,
+                              bint     *y)
 {
-  gint text_area_x, text_area_y;
+  bint text_area_x, text_area_y;
   
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -7582,7 +7582,7 @@ btk_entry_get_layout_offsets (BtkEntry *entry,
  * Since: 2.4
  **/
 void
-btk_entry_set_alignment (BtkEntry *entry, gfloat xalign)
+btk_entry_set_alignment (BtkEntry *entry, bfloat xalign)
 {
   BtkEntryPrivate *priv;
   
@@ -7601,7 +7601,7 @@ btk_entry_set_alignment (BtkEntry *entry, gfloat xalign)
 
       btk_entry_recompute (entry);
 
-      g_object_notify (G_OBJECT (entry), "xalign");
+      g_object_notify (B_OBJECT (entry), "xalign");
     }
 }
 
@@ -7615,7 +7615,7 @@ btk_entry_set_alignment (BtkEntry *entry, gfloat xalign)
  *
  * Since: 2.4
  **/
-gfloat
+bfloat
 btk_entry_get_alignment (BtkEntry *entry)
 {
   BtkEntryPrivate *priv;
@@ -7655,7 +7655,7 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   if (pixbuf)
     g_object_ref (pixbuf);
@@ -7669,13 +7669,13 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-pixbuf");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-pixbuf");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-pixbuf");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-pixbuf");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7687,7 +7687,7 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7706,11 +7706,11 @@ btk_entry_set_icon_from_pixbuf (BtkEntry             *entry,
 void
 btk_entry_set_icon_from_stock (BtkEntry             *entry,
                                BtkEntryIconPosition  icon_pos,
-                               const gchar          *stock_id)
+                               const bchar          *stock_id)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
-  gchar *new_id;
+  bchar *new_id;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   g_return_if_fail (IS_VALID_ICON_POSITION (icon_pos));
@@ -7720,7 +7720,7 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   btk_widget_ensure_style (BTK_WIDGET (entry));
 
@@ -7736,13 +7736,13 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-stock");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-stock");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-stock");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-stock");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7754,7 +7754,7 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7776,11 +7776,11 @@ btk_entry_set_icon_from_stock (BtkEntry             *entry,
 void
 btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
                                    BtkEntryIconPosition  icon_pos,
-                                   const gchar          *icon_name)
+                                   const bchar          *icon_name)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
-  gchar *new_name;
+  bchar *new_name;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
   g_return_if_fail (IS_VALID_ICON_POSITION (icon_pos));
@@ -7790,7 +7790,7 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   btk_widget_ensure_style (BTK_WIDGET (entry));
 
@@ -7806,13 +7806,13 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-name");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-name");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-name");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-name");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7824,7 +7824,7 @@ btk_entry_set_icon_from_icon_name (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7858,7 +7858,7 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
   if ((icon_info = priv->icons[icon_pos]) == NULL)
     icon_info = construct_icon_info (BTK_WIDGET (entry), icon_pos);
 
-  g_object_freeze_notify (G_OBJECT (entry));
+  g_object_freeze_notify (B_OBJECT (entry));
 
   /* need to ref before clearing */
   if (icon)
@@ -7873,13 +7873,13 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
 
       if (icon_pos == BTK_ENTRY_ICON_PRIMARY)
         {
-          g_object_notify (G_OBJECT (entry), "primary-icon-gicon");
-          g_object_notify (G_OBJECT (entry), "primary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "primary-icon-gicon");
+          g_object_notify (B_OBJECT (entry), "primary-icon-storage-type");
         }
       else
         {
-          g_object_notify (G_OBJECT (entry), "secondary-icon-gicon");
-          g_object_notify (G_OBJECT (entry), "secondary-icon-storage-type");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-gicon");
+          g_object_notify (B_OBJECT (entry), "secondary-icon-storage-type");
         }
 
       if (btk_widget_get_mapped (BTK_WIDGET (entry)))
@@ -7891,7 +7891,7 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
   if (btk_widget_get_visible (BTK_WIDGET (entry)))
     btk_widget_queue_resize (BTK_WIDGET (entry));
 
-  g_object_thaw_notify (G_OBJECT (entry));
+  g_object_thaw_notify (B_OBJECT (entry));
 }
 
 /**
@@ -7907,7 +7907,7 @@ btk_entry_set_icon_from_gicon (BtkEntry             *entry,
 void
 btk_entry_set_icon_activatable (BtkEntry             *entry,
                                 BtkEntryIconPosition  icon_pos,
-                                gboolean              activatable)
+                                bboolean              activatable)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
@@ -7929,7 +7929,7 @@ btk_entry_set_icon_activatable (BtkEntry             *entry,
       if (btk_widget_get_realized (BTK_WIDGET (entry)))
         update_cursors (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-activatable" : "secondary-icon-activatable");
     }
 }
@@ -7945,7 +7945,7 @@ btk_entry_set_icon_activatable (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 btk_entry_get_icon_activatable (BtkEntry             *entry,
                                 BtkEntryIconPosition  icon_pos)
 {
@@ -8045,7 +8045,7 @@ btk_entry_get_icon_gicon (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_entry_get_icon_stock (BtkEntry             *entry,
                           BtkEntryIconPosition  icon_pos)
 {
@@ -8078,7 +8078,7 @@ btk_entry_get_icon_stock (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-const gchar *
+const bchar *
 btk_entry_get_icon_name (BtkEntry             *entry,
                          BtkEntryIconPosition  icon_pos)
 {
@@ -8111,7 +8111,7 @@ btk_entry_get_icon_name (BtkEntry             *entry,
 void
 btk_entry_set_icon_sensitive (BtkEntry             *entry,
                               BtkEntryIconPosition  icon_pos,
-                              gboolean              sensitive)
+                              bboolean              sensitive)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
@@ -8136,7 +8136,7 @@ btk_entry_set_icon_sensitive (BtkEntry             *entry,
 
       btk_widget_queue_draw (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry),
+      g_object_notify (B_OBJECT (entry),
                        icon_pos == BTK_ENTRY_ICON_PRIMARY ? "primary-icon-sensitive" : "secondary-icon-sensitive");
     }
 }
@@ -8152,7 +8152,7 @@ btk_entry_set_icon_sensitive (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 btk_entry_get_icon_sensitive (BtkEntry             *entry,
                               BtkEntryIconPosition  icon_pos)
 {
@@ -8216,10 +8216,10 @@ btk_entry_get_icon_storage_type (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-gint
+bint
 btk_entry_get_icon_at_pos (BtkEntry *entry,
-                           gint      x,
-                           gint      y)
+                           bint      x,
+                           bint      y)
 {
   BtkAllocation primary;
   BtkAllocation secondary;
@@ -8303,12 +8303,12 @@ btk_entry_set_icon_drag_source (BtkEntry             *entry,
  *
  * Since: 2.16
  */
-gint
+bint
 btk_entry_get_current_icon_drag_source (BtkEntry *entry)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info = NULL;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (BTK_IS_ENTRY (entry), -1);
 
@@ -8367,8 +8367,8 @@ btk_entry_get_icon_window (BtkEntry             *entry,
 static void
 ensure_has_tooltip (BtkEntry *entry)
 {
-  gchar *text = btk_widget_get_tooltip_text (BTK_WIDGET (entry));
-  gboolean has_tooltip = text != NULL;
+  bchar *text = btk_widget_get_tooltip_text (BTK_WIDGET (entry));
+  bboolean has_tooltip = text != NULL;
 
   if (!has_tooltip)
     {
@@ -8407,13 +8407,13 @@ ensure_has_tooltip (BtkEntry *entry)
  * 
  * Since: 2.16
  */
-gchar *
+bchar *
 btk_entry_get_icon_tooltip_text (BtkEntry             *entry,
                                  BtkEntryIconPosition  icon_pos)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
-  gchar *text = NULL;
+  bchar *text = NULL;
 
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
   g_return_val_if_fail (IS_VALID_ICON_POSITION (icon_pos), NULL);
@@ -8456,7 +8456,7 @@ btk_entry_get_icon_tooltip_text (BtkEntry             *entry,
 void
 btk_entry_set_icon_tooltip_text (BtkEntry             *entry,
                                  BtkEntryIconPosition  icon_pos,
-                                 const gchar          *tooltip)
+                                 const bchar          *tooltip)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
@@ -8496,7 +8496,7 @@ btk_entry_set_icon_tooltip_text (BtkEntry             *entry,
  * 
  * Since: 2.16
  */
-gchar *
+bchar *
 btk_entry_get_icon_tooltip_markup (BtkEntry             *entry,
                                    BtkEntryIconPosition  icon_pos)
 {
@@ -8535,7 +8535,7 @@ btk_entry_get_icon_tooltip_markup (BtkEntry             *entry,
 void
 btk_entry_set_icon_tooltip_markup (BtkEntry             *entry,
                                    BtkEntryIconPosition  icon_pos,
-                                   const gchar          *tooltip)
+                                   const bchar          *tooltip)
 {
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
@@ -8562,17 +8562,17 @@ btk_entry_set_icon_tooltip_markup (BtkEntry             *entry,
   ensure_has_tooltip (entry);
 }
 
-static gboolean
+static bboolean
 btk_entry_query_tooltip (BtkWidget  *widget,
-                         gint        x,
-                         gint        y,
-                         gboolean    keyboard_tip,
+                         bint        x,
+                         bint        y,
+                         bboolean    keyboard_tip,
                          BtkTooltip *tooltip)
 {
   BtkEntry *entry;
   BtkEntryPrivate *priv;
   EntryIconInfo *icon_info;
-  gint icon_pos;
+  bint icon_pos;
 
   entry = BTK_ENTRY (widget);
   priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -8608,14 +8608,14 @@ static void
 activate_cb (BtkWidget *menuitem,
 	     BtkEntry  *entry)
 {
-  const gchar *signal = g_object_get_data (G_OBJECT (menuitem), "btk-signal");
+  const bchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (entry, signal);
 }
 
 
-static gboolean
+static bboolean
 btk_entry_mnemonic_activate (BtkWidget *widget,
-			     gboolean   group_cycling)
+			     bboolean   group_cycling)
 {
   btk_widget_grab_focus (widget);
   return TRUE;
@@ -8624,13 +8624,13 @@ btk_entry_mnemonic_activate (BtkWidget *widget,
 static void
 append_action_signal (BtkEntry     *entry,
 		      BtkWidget    *menu,
-		      const gchar  *stock_id,
-		      const gchar  *signal,
-                      gboolean      sensitive)
+		      const bchar  *stock_id,
+		      const bchar  *signal,
+                      bboolean      sensitive)
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (activate_cb), entry);
 
@@ -8649,10 +8649,10 @@ popup_menu_detach (BtkWidget *attach_widget,
 
 static void
 popup_position_func (BtkMenu   *menu,
-                     gint      *x,
-                     gint      *y,
-                     gboolean  *push_in,
-                     gpointer	user_data)
+                     bint      *x,
+                     bint      *y,
+                     bboolean  *push_in,
+                     bpointer	user_data)
 {
   BtkEntry *entry = BTK_ENTRY (user_data);
   BtkWidget *widget = BTK_WIDGET (entry);
@@ -8660,7 +8660,7 @@ popup_position_func (BtkMenu   *menu,
   BtkRequisition menu_req;
   BdkRectangle monitor;
   BtkBorder inner_border;
-  gint monitor_num, strong_x, height;
+  bint monitor_num, strong_x, height;
  
   g_return_if_fail (btk_widget_get_realized (widget));
 
@@ -8696,7 +8696,7 @@ popup_position_func (BtkMenu   *menu,
 
 static void
 unichar_chosen_func (const char *text,
-                     gpointer    data)
+                     bpointer    data)
 {
   BtkEntry *entry = BTK_ENTRY (data);
 
@@ -8707,14 +8707,14 @@ unichar_chosen_func (const char *text,
 typedef struct
 {
   BtkEntry *entry;
-  gint button;
-  guint time;
+  bint button;
+  buint time;
 } PopupInfo;
 
 static void
 popup_targets_received (BtkClipboard     *clipboard,
 			BtkSelectionData *data,
-			gpointer          user_data)
+			bpointer          user_data)
 {
   PopupInfo *info = user_data;
   BtkEntry *entry = info->entry;
@@ -8722,11 +8722,11 @@ popup_targets_received (BtkClipboard     *clipboard,
   if (btk_widget_get_realized (BTK_WIDGET (entry)))
     {
       DisplayMode mode;
-      gboolean clipboard_contains_text;
+      bboolean clipboard_contains_text;
       BtkWidget *menuitem;
       BtkWidget *submenu;
-      gboolean show_input_method_menu;
-      gboolean show_unicode_menu;
+      bboolean show_input_method_menu;
+      bboolean show_unicode_menu;
       
       clipboard_contains_text = btk_selection_data_targets_include_text (data);
       if (entry->popup_menu)
@@ -8860,7 +8860,7 @@ btk_entry_do_popup (BtkEntry       *entry,
 				  info);
 }
 
-static gboolean
+static bboolean
 btk_entry_popup_menu (BtkWidget *widget)
 {
   btk_entry_do_popup (BTK_ENTRY (widget), NULL);
@@ -8872,7 +8872,7 @@ btk_entry_drag_begin (BtkWidget      *widget,
                       BdkDragContext *context)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -8910,7 +8910,7 @@ btk_entry_drag_end (BtkWidget      *widget,
                     BdkDragContext *context)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
-  gint i;
+  bint i;
 
   for (i = 0; i < MAX_ICONS; i++)
     {
@@ -8924,7 +8924,7 @@ btk_entry_drag_end (BtkWidget      *widget,
 static void
 btk_entry_drag_leave (BtkWidget        *widget,
 		      BdkDragContext   *context,
-		      guint             time)
+		      buint             time)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
 
@@ -8932,12 +8932,12 @@ btk_entry_drag_leave (BtkWidget        *widget,
   btk_widget_queue_draw (widget);
 }
 
-static gboolean
+static bboolean
 btk_entry_drag_drop  (BtkWidget        *widget,
 		      BdkDragContext   *context,
-		      gint              x,
-		      gint              y,
-		      guint             time)
+		      bint              x,
+		      bint              y,
+		      buint             time)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BdkAtom target = BDK_NONE;
@@ -8953,18 +8953,18 @@ btk_entry_drag_drop  (BtkWidget        *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_entry_drag_motion (BtkWidget        *widget,
 		       BdkDragContext   *context,
-		       gint              x,
-		       gint              y,
-		       guint             time)
+		       bint              x,
+		       bint              y,
+		       buint             time)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkWidget *source_widget;
   BdkDragAction suggested_action;
-  gint new_position, old_position;
-  gint sel1, sel2;
+  bint new_position, old_position;
+  bint sel1, sel2;
   
   x -= widget->style->xthickness;
   y -= widget->style->ythickness;
@@ -9018,26 +9018,26 @@ btk_entry_drag_motion (BtkWidget        *widget,
 static void
 btk_entry_drag_data_received (BtkWidget        *widget,
 			      BdkDragContext   *context,
-			      gint              x,
-			      gint              y,
+			      bint              x,
+			      bint              y,
 			      BtkSelectionData *selection_data,
-			      guint             info,
-			      guint             time)
+			      buint             info,
+			      buint             time)
 {
   BtkEntry *entry = BTK_ENTRY (widget);
   BtkEditable *editable = BTK_EDITABLE (widget);
-  gchar *str;
+  bchar *str;
 
-  str = (gchar *) btk_selection_data_get_text (selection_data);
+  str = (bchar *) btk_selection_data_get_text (selection_data);
 
   x -= widget->style->xthickness;
   y -= widget->style->ythickness;
 
   if (str && entry->editable)
     {
-      gint new_position;
-      gint sel1, sel2;
-      gint length = -1;
+      bint new_position;
+      bint sel1, sel2;
+      bint length = -1;
 
       if (entry->truncate_multiline)
         length = truncate_multiline (str);
@@ -9073,11 +9073,11 @@ static void
 btk_entry_drag_data_get (BtkWidget        *widget,
 			 BdkDragContext   *context,
 			 BtkSelectionData *selection_data,
-			 guint             info,
-			 guint             time)
+			 buint             info,
+			 buint             time)
 {
-  gint sel_start, sel_end;
-  gint i;
+  bint sel_start, sel_end;
+  bint i;
 
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   BtkEditable *editable = BTK_EDITABLE (widget);
@@ -9096,7 +9096,7 @@ btk_entry_drag_data_get (BtkWidget        *widget,
 
   if (btk_editable_get_selection_bounds (editable, &sel_start, &sel_end))
     {
-      gchar *str = btk_entry_get_display_text (BTK_ENTRY (widget), sel_start, sel_end);
+      bchar *str = btk_entry_get_display_text (BTK_ENTRY (widget), sel_start, sel_end);
 
       btk_selection_data_set_text (selection_data, str, -1);
       
@@ -9109,8 +9109,8 @@ static void
 btk_entry_drag_data_delete (BtkWidget      *widget,
 			    BdkDragContext *context)
 {
-  gint sel_start, sel_end;
-  gint i;
+  bint sel_start, sel_end;
+  bint i;
 
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (widget);
   BtkEditable *editable = BTK_EDITABLE (widget);
@@ -9143,7 +9143,7 @@ btk_entry_drag_data_delete (BtkWidget      *widget,
 #define CURSOR_PEND_MULTIPLIER 3
 #define CURSOR_DIVIDER 3
 
-static gboolean
+static bboolean
 cursor_blinks (BtkEntry *entry)
 {
   if (btk_widget_has_focus (BTK_WIDGET (entry)) &&
@@ -9151,7 +9151,7 @@ cursor_blinks (BtkEntry *entry)
       entry->selection_bound == entry->current_pos)
     {
       BtkSettings *settings;
-      gboolean blink;
+      bboolean blink;
 
       settings = btk_widget_get_settings (BTK_WIDGET (entry));
       g_object_get (settings, "btk-cursor-blink", &blink, NULL);
@@ -9162,22 +9162,22 @@ cursor_blinks (BtkEntry *entry)
     return FALSE;
 }
 
-static gint
+static bint
 get_cursor_time (BtkEntry *entry)
 {
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (entry));
-  gint time;
+  bint time;
 
   g_object_get (settings, "btk-cursor-blink-time", &time, NULL);
 
   return time;
 }
 
-static gint
+static bint
 get_cursor_blink_timeout (BtkEntry *entry)
 {
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (entry));
-  gint timeout;
+  bint timeout;
 
   g_object_get (settings, "btk-cursor-blink-timeout", &timeout, NULL);
 
@@ -9217,12 +9217,12 @@ hide_cursor (BtkEntry *entry)
 /*
  * Blink!
  */
-static gint
-blink_cb (gpointer data)
+static bint
+blink_cb (bpointer data)
 {
   BtkEntry *entry;
   BtkEntryPrivate *priv; 
-  gint blink_timeout;
+  bint blink_timeout;
 
   entry = BTK_ENTRY (data);
   priv = BTK_ENTRY_GET_PRIVATE (entry);
@@ -9242,7 +9242,7 @@ blink_cb (gpointer data)
   
   blink_timeout = get_cursor_blink_timeout (entry);
   if (priv->blink_time > 1000 * blink_timeout && 
-      blink_timeout < G_MAXINT/1000) 
+      blink_timeout < B_MAXINT/1000) 
     {
       /* we've blinked enough without the user doing anything, stop blinking */
       show_cursor (entry);
@@ -9325,8 +9325,8 @@ btk_entry_reset_blink_time (BtkEntry *entry)
 
 
 /* completion */
-static gint
-btk_entry_completion_timeout (gpointer data)
+static bint
+btk_entry_completion_timeout (bpointer data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (data);
 
@@ -9336,10 +9336,10 @@ btk_entry_completion_timeout (gpointer data)
       g_utf8_strlen (btk_entry_get_text (BTK_ENTRY (completion->priv->entry)), -1)
       >= completion->priv->minimum_key_length)
     {
-      gint matches;
-      gint actions;
+      bint matches;
+      bint actions;
       BtkTreeSelection *s;
-      gboolean popup_single;
+      bboolean popup_single;
 
       btk_entry_completion_complete (completion);
       matches = btk_tree_model_iter_n_children (BTK_TREE_MODEL (completion->priv->filter_model), NULL);
@@ -9369,8 +9369,8 @@ btk_entry_completion_timeout (gpointer data)
   return FALSE;
 }
 
-static inline gboolean
-keyval_is_cursor_move (guint keyval)
+static inline bboolean
+keyval_is_cursor_move (buint keyval)
 {
   if (keyval == BDK_Up || keyval == BDK_KP_Up)
     return TRUE;
@@ -9387,12 +9387,12 @@ keyval_is_cursor_move (guint keyval)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_entry_completion_key_press (BtkWidget   *widget,
                                 BdkEventKey *event,
-                                gpointer     user_data)
+                                bpointer     user_data)
 {
-  gint matches, actions = 0;
+  bint matches, actions = 0;
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
 
   if (!btk_widget_get_mapped (completion->priv->popup_window))
@@ -9490,7 +9490,7 @@ btk_entry_completion_key_press (BtkWidget   *widget,
               BtkTreeIter child_iter;
               BtkTreeModel *model = NULL;
               BtkTreeSelection *sel;
-              gboolean entry_set;
+              bboolean entry_set;
 
               sel = btk_tree_view_get_selection (BTK_TREE_VIEW (completion->priv->tree_view));
               if (!btk_tree_selection_get_selected (sel, &model, &iter))
@@ -9533,7 +9533,7 @@ btk_entry_completion_key_press (BtkWidget   *widget,
            event->keyval == BDK_Right ||
            event->keyval == BDK_KP_Right) 
     {
-      gboolean retval = TRUE;
+      bboolean retval = TRUE;
 
       _btk_entry_reset_im_context (BTK_ENTRY (widget));
       _btk_entry_completion_popdown (completion);
@@ -9595,14 +9595,14 @@ keypress_completion_out:
       BtkTreeModel *child_model;
       BtkTreeIter child_iter;
       BtkTreeSelection *sel;
-      gboolean retval = TRUE;
+      bboolean retval = TRUE;
 
       _btk_entry_reset_im_context (BTK_ENTRY (widget));
       _btk_entry_completion_popdown (completion);
 
       if (completion->priv->current_selected < matches)
         {
-          gboolean entry_set;
+          bboolean entry_set;
 
           sel = btk_tree_view_get_selection (BTK_TREE_VIEW (completion->priv->tree_view));
           if (btk_tree_selection_get_selected (sel, &model, &iter))
@@ -9616,7 +9616,7 @@ keypress_completion_out:
 
               if (!entry_set)
                 {
-                  gchar *str = NULL;
+                  bchar *str = NULL;
 
                   btk_tree_model_get (model, &iter,
                                       completion->priv->text_column, &str,
@@ -9660,7 +9660,7 @@ keypress_completion_out:
 
 static void
 btk_entry_completion_changed (BtkWidget *entry,
-                              gpointer   user_data)
+                              bpointer   user_data)
 {
   BtkEntryCompletion *completion = BTK_ENTRY_COMPLETION (user_data);
 
@@ -9692,7 +9692,7 @@ btk_entry_completion_changed (BtkWidget *entry,
                    completion);
 }
 
-static gboolean
+static bboolean
 check_completion_callback (BtkEntryCompletion *completion)
 {
   completion->priv->check_completion_idle = NULL;
@@ -9705,7 +9705,7 @@ check_completion_callback (BtkEntryCompletion *completion)
 
 static void
 clear_completion_callback (BtkEntry   *entry,
-			   GParamSpec *pspec)
+			   BParamSpec *pspec)
 {
   BtkEntryCompletion *completion = btk_entry_get_completion (entry);
 
@@ -9717,7 +9717,7 @@ clear_completion_callback (BtkEntry   *entry,
     completion->priv->has_completion = FALSE;
 }
 
-static gboolean
+static bboolean
 accept_completion_callback (BtkEntry *entry)
 {
   BtkEntryCompletion *completion = btk_entry_get_completion (entry);
@@ -9734,9 +9734,9 @@ accept_completion_callback (BtkEntry *entry)
 
 static void
 completion_insert_text_callback (BtkEntry           *entry,
-				 const gchar        *text,
-				 gint                length,
-				 gint                position,
+				 const bchar        *text,
+				 bint                length,
+				 bint                position,
 				 BtkEntryCompletion *completion)
 {
   if (!completion->priv->inline_completion)
@@ -9749,7 +9749,7 @@ completion_insert_text_callback (BtkEntry           *entry,
       g_source_set_priority (completion->priv->check_completion_idle, G_PRIORITY_HIGH);
       g_source_set_closure (completion->priv->check_completion_idle,
 			    g_cclosure_new_object (G_CALLBACK (check_completion_callback),
-						   G_OBJECT (completion)));
+						   B_OBJECT (completion)));
       g_source_attach (completion->priv->check_completion_idle, NULL);
     }
 }
@@ -9852,7 +9852,7 @@ btk_entry_set_completion (BtkEntry           *entry,
 
   if (!completion)
     {
-      g_object_set_data (G_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), NULL);
+      g_object_set_data (B_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), NULL);
       return;
     }
 
@@ -9861,7 +9861,7 @@ btk_entry_set_completion (BtkEntry           *entry,
 
   connect_completion_signals (entry, completion);    
   completion->priv->entry = BTK_WIDGET (entry);
-  g_object_set_data (G_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), completion);
+  g_object_set_data (B_OBJECT (entry), I_(BTK_ENTRY_COMPLETION_KEY), completion);
 }
 
 /**
@@ -9882,7 +9882,7 @@ btk_entry_get_completion (BtkEntry *entry)
 
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  completion = BTK_ENTRY_COMPLETION (g_object_get_data (G_OBJECT (entry),
+  completion = BTK_ENTRY_COMPLETION (g_object_get_data (B_OBJECT (entry),
                                      BTK_ENTRY_COMPLETION_KEY));
 
   return completion;
@@ -9915,7 +9915,7 @@ btk_entry_set_cursor_hadjustment (BtkEntry      *entry,
   if (adjustment)
     g_object_ref (adjustment);
 
-  g_object_set_qdata_full (G_OBJECT (entry), 
+  g_object_set_qdata_full (B_OBJECT (entry), 
                            quark_cursor_hadjustment,
                            adjustment, 
                            g_object_unref);
@@ -9938,7 +9938,7 @@ btk_entry_get_cursor_hadjustment (BtkEntry *entry)
 {
   g_return_val_if_fail (BTK_IS_ENTRY (entry), NULL);
 
-  return g_object_get_qdata (G_OBJECT (entry), quark_cursor_hadjustment);
+  return g_object_get_qdata (B_OBJECT (entry), quark_cursor_hadjustment);
 }
 
 /**
@@ -9954,13 +9954,13 @@ btk_entry_get_cursor_hadjustment (BtkEntry *entry)
  */
 void
 btk_entry_set_progress_fraction (BtkEntry *entry,
-                                 gdouble   fraction)
+                                 bdouble   fraction)
 {
   BtkWidget       *widget;
   BtkEntryPrivate *private;
-  gdouble          old_fraction;
-  gint x, y, width, height;
-  gint old_x, old_y, old_width, old_height;
+  bdouble          old_fraction;
+  bint x, y, width, height;
+  bint old_x, old_y, old_width, old_height;
 
   g_return_if_fail (BTK_IS_ENTRY (entry));
 
@@ -9990,7 +9990,7 @@ btk_entry_set_progress_fraction (BtkEntry *entry,
     }
 
   if (fraction != old_fraction)
-    g_object_notify (G_OBJECT (entry), "progress-fraction");
+    g_object_notify (B_OBJECT (entry), "progress-fraction");
 }
 
 /**
@@ -10004,7 +10004,7 @@ btk_entry_set_progress_fraction (BtkEntry *entry,
  *
  * Since: 2.16
  */
-gdouble
+bdouble
 btk_entry_get_progress_fraction (BtkEntry *entry)
 {
   BtkEntryPrivate *private;
@@ -10028,7 +10028,7 @@ btk_entry_get_progress_fraction (BtkEntry *entry)
  */
 void
 btk_entry_set_progress_pulse_step (BtkEntry *entry,
-                                   gdouble   fraction)
+                                   bdouble   fraction)
 {
   BtkEntryPrivate *private;
 
@@ -10044,7 +10044,7 @@ btk_entry_set_progress_pulse_step (BtkEntry *entry,
 
       btk_widget_queue_draw (BTK_WIDGET (entry));
 
-      g_object_notify (G_OBJECT (entry), "progress-pulse-step");
+      g_object_notify (B_OBJECT (entry), "progress-pulse-step");
     }
 }
 
@@ -10058,7 +10058,7 @@ btk_entry_set_progress_pulse_step (BtkEntry *entry,
  *
  * Since: 2.16
  */
-gdouble
+bdouble
 btk_entry_get_progress_pulse_step (BtkEntry *entry)
 {
   BtkEntryPrivate *private;
@@ -10130,7 +10130,7 @@ btk_entry_progress_pulse (BtkEntry *entry)
 
 static void
 show_capslock_feedback (BtkEntry    *entry,
-                        const gchar *text)
+                        const bchar *text)
 {
   BtkEntryPrivate *priv = BTK_ENTRY_GET_PRIVATE (entry);
 

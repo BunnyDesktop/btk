@@ -142,7 +142,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTree.html#btk-tree-child-position" title="btk_tree_child_position ()">btk_tree_child_position</a> <span class="c_punctuation">()</span>
@@ -231,7 +231,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkTree.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -304,7 +304,7 @@ btk_tree_prepend (<em class="parameter"><code><a class="link" href="BtkTree.html
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_insert (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *tree_item</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_insert</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -320,8 +320,8 @@ btk_tree_remove_items (<em class="parameter"><code><a class="link" href="BtkTree
 <a name="btk-tree-clear-items"></a><h3>btk_tree_clear_items ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_clear_items (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> start</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> end</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> start</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> end</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_clear_items</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -329,7 +329,7 @@ btk_tree_clear_items (<em class="parameter"><code><a class="link" href="BtkTree.
 <a name="btk-tree-select-item"></a><h3>btk_tree_select_item ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_select_item (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> item</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> item</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_select_item</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -337,7 +337,7 @@ btk_tree_select_item (<em class="parameter"><code><a class="link" href="BtkTree.
 <a name="btk-tree-unselect-item"></a><h3>btk_tree_unselect_item ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_unselect_item (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> item</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> item</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_unselect_item</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -359,7 +359,7 @@ btk_tree_unselect_child (<em class="parameter"><code><a class="link" href="BtkTr
 <hr>
 <div class="refsect2">
 <a name="btk-tree-child-position"></a><h3>btk_tree_child_position ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_tree_child_position (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
                          <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_child_position</code> is deprecated and should not be used in newly-written code.</p></div>
@@ -385,7 +385,7 @@ btk_tree_set_view_mode (<em class="parameter"><code><a class="link" href="BtkTre
 <a name="btk-tree-set-view-lines"></a><h3>btk_tree_set_view_lines ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_set_view_lines (<em class="parameter"><code><a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree</code></em>,
-                         <em class="parameter"><code><span class="type">gboolean</span> flag</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bboolean</span> flag</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_tree_set_view_lines</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -439,7 +439,7 @@ btk_tree_remove_item (<em class="parameter"><code><a class="link" href="BtkTree.
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a>   *tree,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -447,7 +447,7 @@ user_function (<a class="link" href="BtkTree.html" title="BtkTree"><span class="
 <a name="BtkTree-selection-changed"></a><h3>The <code class="literal">“selection-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a> *tree,
-               <span class="type">gpointer</span> user_data)</pre>
+               <span class="type">bpointer</span> user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -456,7 +456,7 @@ user_function (<a class="link" href="BtkTree.html" title="BtkTree"><span class="
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTree.html" title="BtkTree"><span class="type">BtkTree</span></a>   *tree,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

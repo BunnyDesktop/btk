@@ -42,24 +42,24 @@ typedef struct _BdkAxisInfo      BdkAxisInfo;
 struct _BdkAxisInfo
 {
   /* reported x resolution */
-  gint xresolution;
+  bint xresolution;
 
   /* reported x minimum/maximum values */
-  gint xmin_value, xmax_value;
+  bint xmin_value, xmax_value;
 
   /* calibrated resolution (for aspect ration) - only relative values
      between axes used */
-  gint resolution;
+  bint resolution;
 
   /* calibrated minimum/maximum values */
-  gint min_value, max_value;
+  bint min_value, max_value;
 };
 
 #define BDK_INPUT_NUM_EVENTC 6
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkInputWindow
@@ -71,15 +71,15 @@ struct _BdkInputWindow
   BdkExtensionMode mode;
 
   /* position relative to root window */
-  gint root_x;
-  gint root_y;
+  bint root_x;
+  bint root_y;
 
   /* rectangles relative to window of windows obscuring this one */
   BdkRectangle *obscuring;
-  gint num_obscuring;
+  bint num_obscuring;
 
   /* Is there a pointer grab for this window ? */
-  gint grabbed;
+  bint grabbed;
 };
 
 /* Global data */
@@ -89,20 +89,20 @@ struct _BdkInputWindow
 extern GList *_bdk_input_devices;
 extern GList *_bdk_input_windows;
 
-extern gint   _bdk_input_ignore_core;
+extern bint   _bdk_input_ignore_core;
 
 /* Function declarations */
 
 /* The following functions are provided by each implementation
  */
-gint             _bdk_input_window_none_event(BdkEvent          *event,
-                                              gchar             *msg);
+bint             _bdk_input_window_none_event(BdkEvent          *event,
+                                              bchar             *msg);
 void             _bdk_input_configure_event  (BdkEventConfigure *event,
                                               BdkWindow         *window);
 void             _bdk_input_enter_event      (BdkEventCrossing  *event,
                                               BdkWindow         *window);
-gint             _bdk_input_other_event      (BdkEvent          *event,
-                                              gchar             *msg,
+bint             _bdk_input_other_event      (BdkEvent          *event,
+                                              bchar             *msg,
                                               BdkWindow         *window);
 
 /* These should be in bdkinternals.h */
@@ -111,26 +111,26 @@ BdkInputWindow  * bdk_input_window_find      (BdkWindow         *window);
 
 void              bdk_input_window_destroy   (BdkWindow         *window);
 
-gint             _bdk_input_enable_window    (BdkWindow         *window,
+bint             _bdk_input_enable_window    (BdkWindow         *window,
                                               BdkDevice         *bdkdev);
-gint             _bdk_input_disable_window   (BdkWindow         *window,
+bint             _bdk_input_disable_window   (BdkWindow         *window,
                                               BdkDevice         *bdkdev);
-gint             _bdk_input_grab_pointer     (BdkWindow         *window,
-                                              gint               owner_events,
+bint             _bdk_input_grab_pointer     (BdkWindow         *window,
+                                              bint               owner_events,
                                               BdkEventMask       event_mask,
                                               BdkWindow         *confine_to,
-                                              guint32            time);
-void             _bdk_input_ungrab_pointer   (guint32            time);
-gboolean         _bdk_device_get_history     (BdkDevice         *device,
+                                              buint32            time);
+void             _bdk_input_ungrab_pointer   (buint32            time);
+bboolean         _bdk_device_get_history     (BdkDevice         *device,
                                               BdkWindow         *window,
-                                              guint32            start,
-                                              guint32            stop,
+                                              buint32            start,
+                                              buint32            stop,
                                               BdkTimeCoord    ***events,
-                                              gint              *n_events);
+                                              bint              *n_events);
 
-gint             bdk_input_common_init        (gint              include_core);
-gint             bdk_input_common_other_event (BdkEvent         *event,
-                                               gchar            *msg,
+bint             bdk_input_common_init        (bint              include_core);
+bint             bdk_input_common_other_event (BdkEvent         *event,
+                                               bchar            *msg,
                                                BdkInputWindow   *input_window,
                                                BdkWindow        *window);
 

@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_BOX                        (bail_box_get_type ())
-#define BAIL_BOX(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOX, BailBox))
-#define BAIL_BOX_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BOX, BailBoxClass))
-#define BAIL_IS_BOX(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOX))
-#define BAIL_IS_BOX_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOX))
-#define BAIL_BOX_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOX, BailBoxClass))
+#define BAIL_BOX(obj)                        (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BOX, BailBox))
+#define BAIL_BOX_CLASS(klass)                (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BOX, BailBoxClass))
+#define BAIL_IS_BOX(obj)                     (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BOX))
+#define BAIL_IS_BOX_CLASS(klass)             (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BOX))
+#define BAIL_BOX_GET_CLASS(obj)              (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BOX, BailBoxClass))
 
 typedef struct _BailBox              BailBox;
 typedef struct _BailBoxClass         BailBoxClass;
@@ -46,6 +46,6 @@ struct _BailBoxClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_BOX_H__ */

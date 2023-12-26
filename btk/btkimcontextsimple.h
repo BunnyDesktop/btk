@@ -27,15 +27,15 @@
 #include <btk/btkimcontext.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_IM_CONTEXT_SIMPLE              (btk_im_context_simple_get_type ())
-#define BTK_IM_CONTEXT_SIMPLE(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimple))
-#define BTK_IM_CONTEXT_SIMPLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimpleClass))
-#define BTK_IS_IM_CONTEXT_SIMPLE(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE))
-#define BTK_IS_IM_CONTEXT_SIMPLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_SIMPLE))
-#define BTK_IM_CONTEXT_SIMPLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimpleClass))
+#define BTK_IM_CONTEXT_SIMPLE(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimple))
+#define BTK_IM_CONTEXT_SIMPLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimpleClass))
+#define BTK_IS_IM_CONTEXT_SIMPLE(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE))
+#define BTK_IS_IM_CONTEXT_SIMPLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_SIMPLE))
+#define BTK_IM_CONTEXT_SIMPLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_SIMPLE, BtkIMContextSimpleClass))
 
 
 typedef struct _BtkIMContextSimple       BtkIMContextSimple;
@@ -49,12 +49,12 @@ struct _BtkIMContextSimple
 
   GSList *GSEAL (tables);
 
-  guint GSEAL (compose_buffer[BTK_MAX_COMPOSE_LEN + 1]);
+  buint GSEAL (compose_buffer[BTK_MAX_COMPOSE_LEN + 1]);
   gunichar GSEAL (tentative_match);
-  gint GSEAL (tentative_match_len);
+  bint GSEAL (tentative_match_len);
 
-  guint GSEAL (in_hex_sequence) : 1;
-  guint GSEAL (modifiers_dropped) : 1;
+  buint GSEAL (in_hex_sequence) : 1;
+  buint GSEAL (modifiers_dropped) : 1;
 };
 
 struct _BtkIMContextSimpleClass
@@ -62,16 +62,16 @@ struct _BtkIMContextSimpleClass
   BtkIMContextClass parent_class;
 };
 
-GType         btk_im_context_simple_get_type  (void) G_GNUC_CONST;
+GType         btk_im_context_simple_get_type  (void) B_GNUC_CONST;
 BtkIMContext *btk_im_context_simple_new       (void);
 
 void          btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
-					       guint16            *data,
-					       gint                max_seq_len,
-					       gint                n_seqs);
+					       buint16            *data,
+					       bint                max_seq_len,
+					       bint                n_seqs);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_IM_CONTEXT_SIMPLE_H__ */

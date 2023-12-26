@@ -33,14 +33,14 @@
 
 #include <btk/btkcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PANED                  (btk_paned_get_type ())
-#define BTK_PANED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
-#define BTK_PANED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PANED, BtkPanedClass))
-#define BTK_IS_PANED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PANED))
-#define BTK_IS_PANED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PANED))
-#define BTK_PANED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PANED, BtkPanedClass))
+#define BTK_PANED(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PANED, BtkPaned))
+#define BTK_PANED_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PANED, BtkPanedClass))
+#define BTK_IS_PANED(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PANED))
+#define BTK_IS_PANED_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PANED))
+#define BTK_PANED_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PANED, BtkPanedClass))
 
 
 typedef struct _BtkPaned        BtkPaned;
@@ -61,42 +61,42 @@ struct _BtkPaned
   /*< private >*/
   BdkRectangle GSEAL (handle_pos);
 
-  gint GSEAL (child1_size);
-  gint GSEAL (last_allocation);
-  gint GSEAL (min_position);
-  gint GSEAL (max_position);
+  bint GSEAL (child1_size);
+  bint GSEAL (last_allocation);
+  bint GSEAL (min_position);
+  bint GSEAL (max_position);
 
-  guint GSEAL (position_set) : 1;
-  guint GSEAL (in_drag) : 1;
-  guint GSEAL (child1_shrink) : 1;
-  guint GSEAL (child1_resize) : 1;
-  guint GSEAL (child2_shrink) : 1;
-  guint GSEAL (child2_resize) : 1;
-  guint GSEAL (orientation) : 1;
-  guint GSEAL (in_recursion) : 1;
-  guint GSEAL (handle_prelit) : 1;
+  buint GSEAL (position_set) : 1;
+  buint GSEAL (in_drag) : 1;
+  buint GSEAL (child1_shrink) : 1;
+  buint GSEAL (child1_resize) : 1;
+  buint GSEAL (child2_shrink) : 1;
+  buint GSEAL (child2_resize) : 1;
+  buint GSEAL (orientation) : 1;
+  buint GSEAL (in_recursion) : 1;
+  buint GSEAL (handle_prelit) : 1;
 
   BtkWidget *GSEAL (last_child1_focus);
   BtkWidget *GSEAL (last_child2_focus);
   BtkPanedPrivate *GSEAL (priv);
 
-  gint GSEAL (drag_pos);
-  gint GSEAL (original_position);
+  bint GSEAL (drag_pos);
+  bint GSEAL (original_position);
 };
 
 struct _BtkPanedClass
 {
   BtkContainerClass parent_class;
 
-  gboolean (* cycle_child_focus)   (BtkPaned      *paned,
-				    gboolean       reverse);
-  gboolean (* toggle_handle_focus) (BtkPaned      *paned);
-  gboolean (* move_handle)         (BtkPaned      *paned,
+  bboolean (* cycle_child_focus)   (BtkPaned      *paned,
+				    bboolean       reverse);
+  bboolean (* toggle_handle_focus) (BtkPaned      *paned);
+  bboolean (* move_handle)         (BtkPaned      *paned,
 				    BtkScrollType  scroll);
-  gboolean (* cycle_handle_focus)  (BtkPaned      *paned,
-				    gboolean       reverse);
-  gboolean (* accept_position)     (BtkPaned	  *paned);
-  gboolean (* cancel_position)     (BtkPaned	  *paned);
+  bboolean (* cycle_handle_focus)  (BtkPaned      *paned,
+				    bboolean       reverse);
+  bboolean (* accept_position)     (BtkPaned	  *paned);
+  bboolean (* cancel_position)     (BtkPaned	  *paned);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -106,23 +106,23 @@ struct _BtkPanedClass
 };
 
 
-GType       btk_paned_get_type     (void) G_GNUC_CONST;
+GType       btk_paned_get_type     (void) B_GNUC_CONST;
 void        btk_paned_add1         (BtkPaned       *paned,
                                     BtkWidget      *child);
 void        btk_paned_add2         (BtkPaned       *paned,
                                     BtkWidget      *child);
 void        btk_paned_pack1        (BtkPaned       *paned,
                                     BtkWidget      *child,
-                                    gboolean        resize,
-                                    gboolean        shrink);
+                                    bboolean        resize,
+                                    bboolean        shrink);
 void        btk_paned_pack2        (BtkPaned       *paned,
                                     BtkWidget      *child,
-                                    gboolean        resize,
-                                    gboolean        shrink);
+                                    bboolean        resize,
+                                    bboolean        shrink);
 
-gint        btk_paned_get_position (BtkPaned       *paned);
+bint        btk_paned_get_position (BtkPaned       *paned);
 void        btk_paned_set_position (BtkPaned       *paned,
-                                    gint            position);
+                                    bint            position);
 
 BtkWidget * btk_paned_get_child1   (BtkPaned       *paned);
 BtkWidget * btk_paned_get_child2   (BtkPaned       *paned);
@@ -132,13 +132,13 @@ BdkWindow * btk_paned_get_handle_window (BtkPaned  *paned);
 #ifndef BTK_DISABLE_DEPRECATED
 /* Internal function */
 void    btk_paned_compute_position (BtkPaned  *paned,
-                                    gint       allocation,
-                                    gint       child1_req,
-                                    gint       child2_req);
+                                    bint       allocation,
+                                    bint       child1_req,
+                                    bint       child2_req);
 #define	btk_paned_gutter_size(p,s)		(void) 0
 #define	btk_paned_set_gutter_size(p,s)		(void) 0
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PANED_H__ */

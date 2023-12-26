@@ -33,14 +33,14 @@
 #include <btk/btkoldeditable.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TEXT                  (btk_text_get_type ())
-#define BTK_TEXT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT, BtkText))
-#define BTK_TEXT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT, BtkTextClass))
-#define BTK_IS_TEXT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT))
-#define BTK_IS_TEXT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT))
-#define BTK_TEXT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT, BtkTextClass))
+#define BTK_TEXT(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT, BtkText))
+#define BTK_TEXT_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT, BtkTextClass))
+#define BTK_IS_TEXT(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT))
+#define BTK_IS_TEXT_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT))
+#define BTK_TEXT_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT, BtkTextClass))
 
 
 typedef struct _BtkTextFont       BtkTextFont;
@@ -54,10 +54,10 @@ struct _BtkPropertyMark
   GList* property;
 
   /* Offset into that property. */
-  guint offset;
+  buint offset;
 
   /* Current index. */
-  guint index;
+  buint index;
 };
 
 struct _BtkText
@@ -78,44 +78,44 @@ struct _BtkText
 
   /* The text, a single segment of text a'la emacs, with a gap
    * where insertion occurs. */
-  union { BdkWChar *wc; guchar  *ch; } text;
+  union { BdkWChar *wc; buchar  *ch; } text;
   /* The allocated length of the text segment. */
-  guint text_len;
+  buint text_len;
   /* The gap position, index into address where a char
    * should be inserted. */
-  guint gap_position;
+  buint gap_position;
   /* The gap size, s.t. *(text + gap_position + gap_size) is
    * the first valid character following the gap. */
-  guint gap_size;
+  buint gap_size;
   /* The last character position, index into address where a
    * character should be appeneded.  Thus, text_end - gap_size
    * is the length of the actual data. */
-  guint text_end;
+  buint text_end;
 			/* LINE START CACHE */
 
   /* A cache of line-start information.  Data is a LineParam*. */
   GList *line_start_cache;
   /* Index to the start of the first visible line. */
-  guint first_line_start_index;
+  buint first_line_start_index;
   /* The number of pixels cut off of the top line. */
-  guint first_cut_pixels;
+  buint first_cut_pixels;
   /* First visible horizontal pixel. */
-  guint first_onscreen_hor_pixel;
+  buint first_onscreen_hor_pixel;
   /* First visible vertical pixel. */
-  guint first_onscreen_ver_pixel;
+  buint first_onscreen_ver_pixel;
 
 			     /* FLAGS */
 
   /* True iff this buffer is wrapping lines, otherwise it is using a
    * horizontal scrollbar. */
-  guint line_wrap : 1;
-  guint word_wrap : 1;
+  buint line_wrap : 1;
+  buint word_wrap : 1;
  /* If a fontset is supplied for the widget, use_wchar become true,
    * and we use BdkWchar as the encoding of text. */
-  guint use_wchar : 1;
+  buint use_wchar : 1;
 
   /* Frozen, don't do updates. @@@ fixme */
-  guint freeze_count;
+  buint freeze_count;
 			/* TEXT PROPERTIES */
 
   /* A doubly-linked-list containing TextProperty objects. */
@@ -130,22 +130,22 @@ struct _BtkText
 
 			  /* SCRATCH AREA */
 
-  union { BdkWChar *wc; guchar *ch; } scratch_buffer;
-  guint   scratch_buffer_len;
+  union { BdkWChar *wc; buchar *ch; } scratch_buffer;
+  buint   scratch_buffer_len;
 
 			   /* SCROLLING */
 
-  gint last_ver_value;
+  bint last_ver_value;
 
 			     /* CURSOR */
 
-  gint            cursor_pos_x;       /* Position of cursor. */
-  gint            cursor_pos_y;       /* Baseline of line cursor is drawn on. */
+  bint            cursor_pos_x;       /* Position of cursor. */
+  bint            cursor_pos_y;       /* Baseline of line cursor is drawn on. */
   BtkPropertyMark cursor_mark;        /* Where it is in the buffer. */
   BdkWChar        cursor_char;        /* Character to redraw. */
-  gchar           cursor_char_offset; /* Distance from baseline of the font. */
-  gint            cursor_virtual_x;   /* Where it would be if it could be. */
-  gint            cursor_drawn_level; /* How many people have undrawn. */
+  bchar           cursor_char_offset; /* Distance from baseline of the font. */
+  bint            cursor_virtual_x;   /* Where it would be if it could be. */
+  bint            cursor_drawn_level; /* How many people have undrawn. */
 
 			  /* Current Line */
 
@@ -154,14 +154,14 @@ struct _BtkText
 			   /* Tab Stops */
 
   GList *tab_stops;
-  gint default_tab_width;
+  bint default_tab_width;
 
   BtkTextFont *current_font;	/* Text font for current style */
 
   /* Timer used for auto-scrolling off ends */
-  gint timer;
+  bint timer;
   
-  guint button;			/* currently pressed mouse button */
+  buint button;			/* currently pressed mouse button */
   BdkGC *bg_gc;			/* gc for drawing background pixmap */
 };
 
@@ -175,22 +175,22 @@ struct _BtkTextClass
 };
 
 
-GType      btk_text_get_type        (void) G_GNUC_CONST;
+GType      btk_text_get_type        (void) B_GNUC_CONST;
 BtkWidget* btk_text_new             (BtkAdjustment *hadj,
 				     BtkAdjustment *vadj);
 void       btk_text_set_editable    (BtkText       *text,
-				     gboolean       editable);
+				     bboolean       editable);
 void       btk_text_set_word_wrap   (BtkText       *text,
-				     gboolean       word_wrap);
+				     bboolean       word_wrap);
 void       btk_text_set_line_wrap   (BtkText       *text,
-				     gboolean       line_wrap);
+				     bboolean       line_wrap);
 void       btk_text_set_adjustments (BtkText       *text,
 				     BtkAdjustment *hadj,
 				     BtkAdjustment *vadj);
 void       btk_text_set_point       (BtkText       *text,
-				     guint          index);
-guint      btk_text_get_point       (BtkText       *text);
-guint      btk_text_get_length      (BtkText       *text);
+				     buint          index);
+buint      btk_text_get_point       (BtkText       *text);
+buint      btk_text_get_length      (BtkText       *text);
 void       btk_text_freeze          (BtkText       *text);
 void       btk_text_thaw            (BtkText       *text);
 void       btk_text_insert          (BtkText        *text,
@@ -198,11 +198,11 @@ void       btk_text_insert          (BtkText        *text,
 				     const BdkColor *fore,
 				     const BdkColor *back,
 				     const char     *chars,
-				     gint            length);
-gboolean   btk_text_backward_delete (BtkText       *text,
-				     guint          nchars);
-gboolean   btk_text_forward_delete  (BtkText       *text,
-				     guint          nchars);
+				     bint            length);
+bboolean   btk_text_backward_delete (BtkText       *text,
+				     buint          nchars);
+bboolean   btk_text_forward_delete  (BtkText       *text,
+				     buint          nchars);
 
 #define BTK_TEXT_INDEX(t, index)	(((t)->use_wchar) \
 	? ((index) < (t)->gap_position ? (t)->text.wc[index] : \
@@ -210,7 +210,7 @@ gboolean   btk_text_forward_delete  (BtkText       *text,
 	: ((index) < (t)->gap_position ? (t)->text.ch[index] : \
 					(t)->text.ch[(index)+(t)->gap_size]))
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_H__ */
 

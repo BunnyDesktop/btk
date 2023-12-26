@@ -129,7 +129,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gulong</span>
+<span class="returnvalue">bulong</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-BdkRGB.html#bdk-rgb-xpixel-from-rgb" title="bdk_rgb_xpixel_from_rgb ()">bdk_rgb_xpixel_from_rgb</a> <span class="c_punctuation">()</span>
@@ -177,7 +177,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-BdkRGB.html#bdk-rgb-ditherable" title="bdk_rgb_ditherable ()">bdk_rgb_ditherable</a> <span class="c_punctuation">()</span>
@@ -185,7 +185,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-BdkRGB.html#bdk-rgb-colormap-ditherable" title="bdk_rgb_colormap_ditherable ()">bdk_rgb_colormap_ditherable</a> <span class="c_punctuation">()</span>
@@ -247,13 +247,13 @@ bdk_rgb_init (<em class="parameter"><code><span class="type">void</span></code><
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_rgb_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                    <em class="parameter"><code>const <span class="type">guchar</span> *rgb_buf</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>);</pre>
+                    <em class="parameter"><code>const <span class="type">buchar</span> *rgb_buf</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_rgb_image</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -262,15 +262,15 @@ bdk_draw_rgb_image (<em class="parameter"><code><a class="link" href="bdk2-Drawi
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_rgb_image_dithalign (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                               <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                               <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                              <em class="parameter"><code>const <span class="type">guchar</span> *rgb_buf</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> xdith</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> ydith</code></em>);</pre>
+                              <em class="parameter"><code>const <span class="type">buchar</span> *rgb_buf</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> xdith</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> ydith</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_rgb_image_dithalign</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -279,13 +279,13 @@ bdk_draw_rgb_image_dithalign (<em class="parameter"><code><a class="link" href="
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_indexed_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                         <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                         <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                        <em class="parameter"><code>const <span class="type">guchar</span> *buf</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>,
+                        <em class="parameter"><code>const <span class="type">buchar</span> *buf</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>,
                         <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbCmap" title="struct BdkRgbCmap"><span class="type">BdkRgbCmap</span></a> *cmap</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_indexed_image</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -295,13 +295,13 @@ bdk_draw_indexed_image (<em class="parameter"><code><a class="link" href="bdk2-D
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_gray_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                     <em class="parameter"><code>const <span class="type">guchar</span> *buf</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>);</pre>
+                     <em class="parameter"><code>const <span class="type">buchar</span> *buf</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_gray_image</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -310,13 +310,13 @@ bdk_draw_gray_image (<em class="parameter"><code><a class="link" href="bdk2-Draw
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_rgb_32_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                        <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                        <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                       <em class="parameter"><code>const <span class="type">guchar</span> *buf</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">buchar</span> *buf</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_rgb_32_image</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -325,15 +325,15 @@ bdk_draw_rgb_32_image (<em class="parameter"><code><a class="link" href="bdk2-Dr
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_rgb_32_image_dithalign (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                                  <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dith</code></em>,
-                                 <em class="parameter"><code>const <span class="type">guchar</span> *buf</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> rowstride</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> xdith</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> ydith</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">buchar</span> *buf</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> rowstride</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> xdith</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> ydith</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_rgb_32_image_dithalign</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Bairo handles colors automatically.</p>
@@ -414,8 +414,8 @@ where image should go</p></td>
 <div class="refsect2">
 <a name="bdk-rgb-cmap-new"></a><h3>bdk_rgb_cmap_new ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-BdkRGB.html#BdkRgbCmap" title="struct BdkRgbCmap"><span class="returnvalue">BdkRgbCmap</span></a> *
-bdk_rgb_cmap_new (<em class="parameter"><code><span class="type">guint32</span> *colors</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> n_colors</code></em>);</pre>
+bdk_rgb_cmap_new (<em class="parameter"><code><span class="type">buint32</span> *colors</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> n_colors</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_cmap_new</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -430,7 +430,7 @@ bdk_rgb_cmap_free (<em class="parameter"><code><a class="link" href="bdk2-BdkRGB
 <a name="bdk-rgb-gc-set-foreground"></a><h3>bdk_rgb_gc_set_foreground ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_rgb_gc_set_foreground (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                           <em class="parameter"><code><span class="type">guint32</span> rgb</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">buint32</span> rgb</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_gc_set_foreground</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -438,14 +438,14 @@ bdk_rgb_gc_set_foreground (<em class="parameter"><code><a class="link" href="bdk
 <a name="bdk-rgb-gc-set-background"></a><h3>bdk_rgb_gc_set_background ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_rgb_gc_set_background (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                           <em class="parameter"><code><span class="type">guint32</span> rgb</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">buint32</span> rgb</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_gc_set_background</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-rgb-xpixel-from-rgb"></a><h3>bdk_rgb_xpixel_from_rgb ()</h3>
-<pre class="programlisting"><span class="returnvalue">gulong</span>
-bdk_rgb_xpixel_from_rgb (<em class="parameter"><code><span class="type">guint32</span> rgb</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">bulong</span>
+bdk_rgb_xpixel_from_rgb (<em class="parameter"><code><span class="type">buint32</span> rgb</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_xpixel_from_rgb</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -499,14 +499,14 @@ functions, there's no need for <a class="link" href="bdk2-BdkRGB.html#bdk-rgb-fi
 <div class="refsect2">
 <a name="bdk-rgb-set-install"></a><h3>bdk_rgb_set_install ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_rgb_set_install (<em class="parameter"><code><span class="type">gboolean</span> install</code></em>);</pre>
+bdk_rgb_set_install (<em class="parameter"><code><span class="type">bboolean</span> install</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_set_install</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-rgb-set-min-colors"></a><h3>bdk_rgb_set_min_colors ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_rgb_set_min_colors (<em class="parameter"><code><span class="type">gint</span> min_colors</code></em>);</pre>
+bdk_rgb_set_min_colors (<em class="parameter"><code><span class="type">bint</span> min_colors</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_set_min_colors</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -553,14 +553,14 @@ function.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-rgb-ditherable"></a><h3>bdk_rgb_ditherable ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rgb_ditherable (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_ditherable</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-rgb-colormap-ditherable"></a><h3>bdk_rgb_colormap_ditherable ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_rgb_colormap_ditherable (<em class="parameter"><code><a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColormap" title="BdkColormap"><span class="type">BdkColormap</span></a> *cmap</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_colormap_ditherable</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -568,7 +568,7 @@ bdk_rgb_colormap_ditherable (<em class="parameter"><code><a class="link" href="b
 <div class="refsect2">
 <a name="bdk-rgb-set-verbose"></a><h3>bdk_rgb_set_verbose ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_rgb_set_verbose (<em class="parameter"><code><span class="type">gboolean</span> verbose</code></em>);</pre>
+bdk_rgb_set_verbose (<em class="parameter"><code><span class="type">bboolean</span> verbose</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_rgb_set_verbose</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 </div>
@@ -608,8 +608,8 @@ bdk_rgb_set_verbose (<em class="parameter"><code><span class="type">gboolean</sp
 <div class="refsect2">
 <a name="BdkRgbCmap"></a><h3>struct BdkRgbCmap</h3>
 <pre class="programlisting">struct BdkRgbCmap {
-  guint32 colors[256];
-  gint n_colors;
+  buint32 colors[256];
+  bint n_colors;
 };
 </pre>
 <div class="warning"><p><code class="literal">BdkRgbCmap</code> is deprecated and should not be used in newly-written code.</p></div>

@@ -162,7 +162,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkRadioMenuItem.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -200,7 +200,7 @@ btk_radio_menu_item_new (<em class="parameter"><code><span class="type">GSList</
 <a name="btk-radio-menu-item-new-with-label"></a><h3>btk_radio_menu_item_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_menu_item_new_with_label (<em class="parameter"><code><span class="type">GSList</span> *group</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> whose child is a simple <a class="link" href="BtkLabel.html" title="BtkLabel"><span class="type">BtkLabel</span></a>.</p>
 <div class="refsect3">
 <a name="btk-radio-menu-item-new-with-label.parameters"></a><h4>Parameters</h4>
@@ -235,7 +235,7 @@ btk_radio_menu_item_new_with_label (<em class="parameter"><code><span class="typ
 <a name="btk-radio-menu-item-new-with-mnemonic"></a><h3>btk_radio_menu_item_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_menu_item_new_with_mnemonic (<em class="parameter"><code><span class="type">GSList</span> *group</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                       <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> containing a label. The label
 will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
 in <em class="parameter"><code>label</code></em>
@@ -304,7 +304,7 @@ btk_radio_menu_item_new_from_widget (<em class="parameter"><code><a class="link"
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_menu_item_new_with_label_from_widget
                                (<em class="parameter"><code><a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> *group</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new BtkRadioMenuItem whose child is a simple BtkLabel.
 The new <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> is added to the same group as <em class="parameter"><code>group</code></em>
 .</p>
@@ -343,7 +343,7 @@ The new <a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><s
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_radio_menu_item_new_with_mnemonic_from_widget
                                (<em class="parameter"><code><a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> *group</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new BtkRadioMenuItem containing a label. The label will be
 created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores in label
 indicate the mnemonic for the menu item.</p>
@@ -447,7 +447,7 @@ btk_radio_menu_item_get_group (<em class="parameter"><code><a class="link" href=
 <a name="BtkRadioMenuItem-group-changed"></a><h3>The <code class="literal">“group-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkRadioMenuItem.html" title="BtkRadioMenuItem"><span class="type">BtkRadioMenuItem</span></a> *radiomenuitem,
-               <span class="type">gpointer</span>          user_data)</pre>
+               <span class="type">bpointer</span>          user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

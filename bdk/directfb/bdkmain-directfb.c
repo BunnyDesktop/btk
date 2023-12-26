@@ -64,18 +64,18 @@ _bdk_windowing_init (void)
 }
 
 void
-bdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (bboolean use_xshm)
 {
 }
 
-gboolean
+bboolean
 bdk_get_use_xshm (void)
 {
   return FALSE;
 }
 
 void
-_bdk_windowing_display_set_sm_client_id (BdkDisplay *display,const gchar *sm_client_id)
+_bdk_windowing_display_set_sm_client_id (BdkDisplay *display,const bchar *sm_client_id)
 {
   g_message ("bdk_set_sm_client_id() is unimplemented.");
 }
@@ -101,7 +101,7 @@ _bdk_windowing_exit (void)
   _bdk_display = NULL;
 }
 
-gchar *
+bchar *
 bdk_get_display (void)
 {
   return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
@@ -109,7 +109,7 @@ bdk_get_display (void)
 
 
 /* utils */
-static const guint type_masks[] =
+static const buint type_masks[] =
   {
     BDK_STRUCTURE_MASK,        /* BDK_DELETE            =  0, */
     BDK_STRUCTURE_MASK,        /* BDK_DESTROY           =  1, */
@@ -149,7 +149,7 @@ BdkWindow *
 bdk_directfb_other_event_window (BdkWindow    *window,
                                  BdkEventType  type)
 {
-  guint32    evmask;
+  buint32    evmask;
   BdkWindow *w;
 
   w = window;
@@ -158,7 +158,7 @@ bdk_directfb_other_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;
@@ -176,7 +176,7 @@ BdkWindow *
 bdk_directfb_pointer_event_window (BdkWindow    *window,
                                    BdkEventType  type)
 {
-  guint            evmask;
+  buint            evmask;
   BdkModifierType  mask;
   BdkWindow       *w;
 
@@ -225,7 +225,7 @@ bdk_directfb_pointer_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;
@@ -256,7 +256,7 @@ BdkWindow *
 bdk_directfb_keyboard_event_window (BdkWindow    *window,
                                     BdkEventType  type)
 {
-  guint32    evmask;
+  buint32    evmask;
   BdkWindow *w;
 
   if (_bdk_directfb_keyboard_grab_window &&
@@ -271,7 +271,7 @@ bdk_directfb_keyboard_event_window (BdkWindow    *window,
       /* Huge hack, so that we don't propagate events to BtkWindow->frame */
       if ((w != window) &&
           (BDK_WINDOW_OBJECT (w)->window_type != BDK_WINDOW_CHILD) &&
-          (g_object_get_data (G_OBJECT (w), "bdk-window-child-handler")))
+          (g_object_get_data (B_OBJECT (w), "bdk-window-child-handler")))
         break;
 
       evmask = BDK_WINDOW_OBJECT (w)->event_mask;
@@ -290,7 +290,7 @@ bdk_directfb_event_fill (BdkEvent     *event,
                          BdkWindow    *window,
                          BdkEventType  type)
 {
-  guint32 the_time = bdk_directfb_get_time ();
+  buint32 the_time = bdk_directfb_get_time ();
 
   event->any.type       = type;
   event->any.window     = g_object_ref (window);
@@ -373,7 +373,7 @@ bdk_error_trap_push (void)
 {
 }
 
-gint
+bint
 bdk_error_trap_pop (void)
 {
   return 0;
@@ -381,8 +381,8 @@ bdk_error_trap_pop (void)
 
 BdkGrabStatus
 bdk_keyboard_grab (BdkWindow *window,
-                   gint       owner_events,
-                   guint32    time)
+                   bint       owner_events,
+                   buint32    time)
 {
   return bdk_directfb_keyboard_grab (bdk_display_get_default(),
                                      window,
@@ -417,11 +417,11 @@ bdk_keyboard_grab (BdkWindow *window,
 BdkGrabStatus
 _bdk_windowing_pointer_grab (BdkWindow    *window,
                              BdkWindow    *native,
-                             gboolean      owner_events,
+                             bboolean      owner_events,
                              BdkEventMask  event_mask,
                              BdkWindow    *confine_to,
                              BdkCursor    *cursor,
-                             guint32       time)
+                             buint32       time)
 {
   g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
   g_return_val_if_fail (confine_to == NULL || BDK_IS_WINDOW (confine_to), 0);

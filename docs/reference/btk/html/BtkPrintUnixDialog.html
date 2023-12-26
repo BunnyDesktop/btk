@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPrintUnixDialog.html#btk-print-unix-dialog-get-current-page" title="btk_print_unix_dialog_get_current_page ()">btk_print_unix_dialog_get_current_page</a> <span class="c_punctuation">()</span>
@@ -124,7 +124,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPrintUnixDialog.html#btk-print-unix-dialog-get-support-selection" title="btk_print_unix_dialog_get_support_selection ()">btk_print_unix_dialog_get_support_selection</a> <span class="c_punctuation">()</span>
@@ -140,7 +140,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPrintUnixDialog.html#btk-print-unix-dialog-get-has-selection" title="btk_print_unix_dialog_get_has_selection ()">btk_print_unix_dialog_get_has_selection</a> <span class="c_punctuation">()</span>
@@ -156,7 +156,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPrintUnixDialog.html#btk-print-unix-dialog-get-embed-page-setup" title="btk_print_unix_dialog_get_embed_page_setup ()">btk_print_unix_dialog_get_embed_page_setup</a> <span class="c_punctuation">()</span>
@@ -164,7 +164,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkPrintUnixDialog.html#btk-print-unix-dialog-get-page-setup-set" title="btk_print_unix_dialog_get_page_setup_set ()">btk_print_unix_dialog_get_page_setup_set</a> <span class="c_punctuation">()</span>
@@ -204,12 +204,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPrintUnixDialog.html#BtkPrintUnixDialog--embed-page-setup" title="The “embed-page-setup” property">embed-page-setup</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPrintUnixDialog.html#BtkPrintUnixDialog--has-selection" title="The “has-selection” property">has-selection</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -237,7 +237,7 @@
 <td class="property_flags">Read</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkPrintUnixDialog.html#BtkPrintUnixDialog--support-selection" title="The “support-selection” property">support-selection</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -265,7 +265,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkPrintUnixDialog.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -295,7 +295,7 @@ BtkPrintUnixDialog implements
 <div class="refsect2">
 <a name="btk-print-unix-dialog-new"></a><h3>btk_print_unix_dialog_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_print_unix_dialog_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+btk_print_unix_dialog_new (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a>.</p>
 <div class="refsect3">
@@ -392,7 +392,7 @@ btk_print_unix_dialog_get_page_setup (<em class="parameter"><code><a class="link
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_print_unix_dialog_set_current_page
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> current_page</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> current_page</code></em>);</pre>
 <p>Sets the current page number. If <em class="parameter"><code>current_page</code></em>
  is not -1, this enables
 the current page choice for the range of pages to print.</p>
@@ -423,7 +423,7 @@ the current page choice for the range of pages to print.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-print-unix-dialog-get-current-page"></a><h3>btk_print_unix_dialog_get_current_page ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_print_unix_dialog_get_current_page
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>);</pre>
 <p>Gets the current page of the <span class="type">BtkPrintDialog</span>.</p>
@@ -585,7 +585,7 @@ btk_print_unix_dialog_add_custom_tab (<em class="parameter"><code><a class="link
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_print_unix_dialog_set_support_selection
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> support_selection</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> support_selection</code></em>);</pre>
 <p>Sets whether the print dialog allows user to print a selection.</p>
 <div class="refsect3">
 <a name="btk-print-unix-dialog-set-support-selection.parameters"></a><h4>Parameters</h4>
@@ -614,7 +614,7 @@ btk_print_unix_dialog_set_support_selection
 <hr>
 <div class="refsect2">
 <a name="btk-print-unix-dialog-get-support-selection"></a><h3>btk_print_unix_dialog_get_support_selection ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_print_unix_dialog_get_support_selection
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>);</pre>
 <p>Gets the value of <span class="type">“support-selection”</span> property.</p>
@@ -645,7 +645,7 @@ btk_print_unix_dialog_get_support_selection
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_print_unix_dialog_set_has_selection
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> has_selection</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> has_selection</code></em>);</pre>
 <p>Sets whether a selection exists.</p>
 <div class="refsect3">
 <a name="btk-print-unix-dialog-set-has-selection.parameters"></a><h4>Parameters</h4>
@@ -674,7 +674,7 @@ btk_print_unix_dialog_set_has_selection
 <hr>
 <div class="refsect2">
 <a name="btk-print-unix-dialog-get-has-selection"></a><h3>btk_print_unix_dialog_get_has_selection ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_print_unix_dialog_get_has_selection
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>);</pre>
 <p>Gets the value of <span class="type">“has-selection”</span> property.</p>
@@ -705,7 +705,7 @@ btk_print_unix_dialog_get_has_selection
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_print_unix_dialog_set_embed_page_setup
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> embed</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> embed</code></em>);</pre>
 <p>Embed page size combo box and orientation combo box into page setup page.</p>
 <div class="refsect3">
 <a name="btk-print-unix-dialog-set-embed-page-setup.parameters"></a><h4>Parameters</h4>
@@ -734,7 +734,7 @@ btk_print_unix_dialog_set_embed_page_setup
 <hr>
 <div class="refsect2">
 <a name="btk-print-unix-dialog-get-embed-page-setup"></a><h3>btk_print_unix_dialog_get_embed_page_setup ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_print_unix_dialog_get_embed_page_setup
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>);</pre>
 <p>Gets the value of <span class="type">“embed-page-setup”</span> property.</p>
@@ -762,7 +762,7 @@ btk_print_unix_dialog_get_embed_page_setup
 <hr>
 <div class="refsect2">
 <a name="btk-print-unix-dialog-get-page-setup-set"></a><h3>btk_print_unix_dialog_get_page_setup_set ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_print_unix_dialog_get_page_setup_set
                                (<em class="parameter"><code><a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a> *dialog</code></em>);</pre>
 <p>Gets the page setup that is used by the <a class="link" href="BtkPrintUnixDialog.html" title="BtkPrintUnixDialog"><span class="type">BtkPrintUnixDialog</span></a>.</p>
@@ -939,7 +939,7 @@ btk_print_unix_dialog_get_manual_capabilities
 <hr>
 <div class="refsect2">
 <a name="BtkPrintUnixDialog--embed-page-setup"></a><h3>The <code class="literal">“embed-page-setup”</code> property</h3>
-<pre class="programlisting">  “embed-page-setup”         <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “embed-page-setup”         <span class="type">bboolean</span></pre>
 <p>TRUE if page setup combos are embedded in BtkPrintUnixDialog.</p>
 <p>Owner: BtkPrintUnixDialog</p>
 <p>Flags: Read / Write</p>
@@ -948,7 +948,7 @@ btk_print_unix_dialog_get_manual_capabilities
 <hr>
 <div class="refsect2">
 <a name="BtkPrintUnixDialog--has-selection"></a><h3>The <code class="literal">“has-selection”</code> property</h3>
-<pre class="programlisting">  “has-selection”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-selection”            <span class="type">bboolean</span></pre>
 <p>Whether the application has a selection.</p>
 <p>Owner: BtkPrintUnixDialog</p>
 <p>Flags: Read / Write</p>
@@ -989,7 +989,7 @@ btk_print_unix_dialog_get_manual_capabilities
 <hr>
 <div class="refsect2">
 <a name="BtkPrintUnixDialog--support-selection"></a><h3>The <code class="literal">“support-selection”</code> property</h3>
-<pre class="programlisting">  “support-selection”        <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “support-selection”        <span class="type">bboolean</span></pre>
 <p>Whether the dialog supports selection.</p>
 <p>Owner: BtkPrintUnixDialog</p>
 <p>Flags: Read / Write</p>

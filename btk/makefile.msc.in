@@ -548,8 +548,8 @@ btk_extra_sources = \
 btk.def: btk.symbols makefile.msc
 	echo EXPORTS > btk.def
 	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES \
-		-DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= \
-		-DG_GNUC_PRINTF=;G_GNUC_PRINTF btk.symbols >> btk.def
+		-DB_GNUC_MALLOC= -DB_GNUC_CONST= -DB_GNUC_NULL_TERMINATED= -DB_GNUC_NORETURN= \
+		-DB_GNUC_PRINTF=;B_GNUC_PRINTF btk.symbols >> btk.def
 
 btkalias.h: btk.symbols
 	$(PERL) makebtkalias.pl < btk.symbols > btkalias.h
@@ -563,11 +563,11 @@ btktypebuiltins.h: $(btk_public_h_sources) makefile.msc
 	echo #ifndef __BTK_TYPE_BUILTINS_H__ > btktypebuiltins.h
 	echo #define __BTK_TYPE_BUILTINS_H__ >> btktypebuiltins.h
 	echo #include "bunnylib-object.h" >> btktypebuiltins.h
-	echo G_BEGIN_DECLS >> btktypebuiltins.h
+	echo B_BEGIN_DECLS >> btktypebuiltins.h
 	$(PERL) $(BUNNYLIB)\bobject\bunnylib-mkenums \
 		--fprod "/* enumerations from \"@filename@\" */\n" \
 		--vhead "GType @enum_name@_get_type (void);\n#define BTK_TYPE_@ENUMSHORT@ (@enum_name@_get_type())\n" \
-		--ftail "G_END_DECLS\n\n#endif /* __BTK_TYPE_BUILTINS_H__ */" \
+		--ftail "B_END_DECLS\n\n#endif /* __BTK_TYPE_BUILTINS_H__ */" \
 		$(btk_public_h_sources) >> btktypebuiltins.h
 
 btktypebuiltins.c: $(btk_public_h_sources) makefile.msc

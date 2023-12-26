@@ -45,7 +45,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="BtkTreeSortable.html#BtkTreeIterCompareFunc" title="BtkTreeIterCompareFunc ()">*BtkTreeIterCompareFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -61,7 +61,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSortable.html#btk-tree-sortable-get-sort-column-id" title="btk_tree_sortable_get_sort_column_id ()">btk_tree_sortable_get_sort_column_id</a> <span class="c_punctuation">()</span>
@@ -93,7 +93,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSortable.html#btk-tree-sortable-has-default-sort-func" title="btk_tree_sortable_has_default_sort_func ()">btk_tree_sortable_has_default_sort_func</a> <span class="c_punctuation">()</span>
@@ -146,7 +146,7 @@
 <a name="BtkTreeSortable.prerequisites"></a><h2>Prerequisites</h2>
 <p>
 BtkTreeSortable requires
- <a class="link" href="BtkTreeModel.html" title="BtkTreeModel">BtkTreeModel</a> and  GObject.</p>
+ <a class="link" href="BtkTreeModel.html" title="BtkTreeModel">BtkTreeModel</a> and  BObject.</p>
 </div>
 <div class="refsect1">
 <a name="BtkTreeSortable.implementations"></a><h2>Known Implementations</h2>
@@ -166,11 +166,11 @@ BtkTreeSortable is implemented by
 <a name="BtkTreeSortable.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BtkTreeIterCompareFunc"></a><h3>BtkTreeIterCompareFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 <span class="c_punctuation">(</span>*BtkTreeIterCompareFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *a</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *b</code></em>,
-                           <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -198,9 +198,9 @@ btk_tree_sortable_sort_column_changed (<em class="parameter"><code><a class="lin
 <hr>
 <div class="refsect2">
 <a name="btk-tree-sortable-get-sort-column-id"></a><h3>btk_tree_sortable_get_sort_column_id ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_sortable_get_sort_column_id (<em class="parameter"><code><a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable</code></em>,
-                                      <em class="parameter"><code><span class="type">gint</span> *sort_column_id</code></em>,
+                                      <em class="parameter"><code><span class="type">bint</span> *sort_column_id</code></em>,
                                       <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkSortType" title="enum BtkSortType"><span class="type">BtkSortType</span></a> *order</code></em>);</pre>
 <p>Fills in <em class="parameter"><code>sort_column_id</code></em>
  and <em class="parameter"><code>order</code></em>
@@ -247,7 +247,7 @@ column ids.</p>
 <a name="btk-tree-sortable-set-sort-column-id"></a><h3>btk_tree_sortable_set_sort_column_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_sortable_set_sort_column_id (<em class="parameter"><code><a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable</code></em>,
-                                      <em class="parameter"><code><span class="type">gint</span> sort_column_id</code></em>,
+                                      <em class="parameter"><code><span class="type">bint</span> sort_column_id</code></em>,
                                       <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkSortType" title="enum BtkSortType"><span class="type">BtkSortType</span></a> order</code></em>);</pre>
 <p>Sets the current sort column to be <em class="parameter"><code>sort_column_id</code></em>
 . The <em class="parameter"><code>sortable</code></em>
@@ -305,9 +305,9 @@ a regular column id, or one of the following special values:</p>
 <a name="btk-tree-sortable-set-sort-func"></a><h3>btk_tree_sortable_set_sort_func ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_sortable_set_sort_func (<em class="parameter"><code><a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> sort_column_id</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> sort_column_id</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeSortable.html#BtkTreeIterCompareFunc" title="BtkTreeIterCompareFunc ()"><span class="type">BtkTreeIterCompareFunc</span></a> sort_func</code></em>,
-                                 <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                 <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>,
                                  <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Sets the comparison function used when sorting to be <em class="parameter"><code>sort_func</code></em>
 . If the
@@ -362,7 +362,7 @@ the model will sort using this function.</p>
 btk_tree_sortable_set_default_sort_func
                                (<em class="parameter"><code><a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeSortable.html#BtkTreeIterCompareFunc" title="BtkTreeIterCompareFunc ()"><span class="type">BtkTreeIterCompareFunc</span></a> sort_func</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>,
                                 <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Sets the default comparison function used when sorting to be <em class="parameter"><code>sort_func</code></em>
 .  
@@ -414,7 +414,7 @@ is <a href="https://developer.bunny.org/btk4/BtkTreeSortable.html#BTK-TREE-SORTA
 <hr>
 <div class="refsect2">
 <a name="btk-tree-sortable-has-default-sort-func"></a><h3>btk_tree_sortable_has_default_sort_func ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_sortable_has_default_sort_func
                                (<em class="parameter"><code><a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the model has a default sort function. This is used
@@ -457,22 +457,22 @@ go back to the default state, or not.</p>
   void     (* sort_column_changed)   (BtkTreeSortable        *sortable);
 
   /* virtual table */
-  gboolean (* get_sort_column_id)    (BtkTreeSortable        *sortable,
-				      gint                   *sort_column_id,
+  bboolean (* get_sort_column_id)    (BtkTreeSortable        *sortable,
+				      bint                   *sort_column_id,
 				      BtkSortType            *order);
   void     (* set_sort_column_id)    (BtkTreeSortable        *sortable,
-				      gint                    sort_column_id,
+				      bint                    sort_column_id,
 				      BtkSortType             order);
   void     (* set_sort_func)         (BtkTreeSortable        *sortable,
-				      gint                    sort_column_id,
+				      bint                    sort_column_id,
 				      BtkTreeIterCompareFunc  func,
-				      gpointer                data,
+				      bpointer                data,
 				      GDestroyNotify          destroy);
   void     (* set_default_sort_func) (BtkTreeSortable        *sortable,
 				      BtkTreeIterCompareFunc  func,
-				      gpointer                data,
+				      bpointer                data,
 				      GDestroyNotify          destroy);
-  gboolean (* has_default_sort_func) (BtkTreeSortable        *sortable);
+  bboolean (* has_default_sort_func) (BtkTreeSortable        *sortable);
 };
 </pre>
 </div>
@@ -483,7 +483,7 @@ go back to the default state, or not.</p>
 <a name="BtkTreeSortable-sort-column-changed"></a><h3>The <code class="literal">“sort-column-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTreeSortable.html" title="BtkTreeSortable"><span class="type">BtkTreeSortable</span></a> *sortable,
-               <span class="type">gpointer</span>         user_data)</pre>
+               <span class="type">bpointer</span>         user_data)</pre>
 <p>The ::sort-column-changed signal is emitted when the sort column
 or sort order of <em class="parameter"><code>sortable</code></em>
  is changed. The signal is emitted before

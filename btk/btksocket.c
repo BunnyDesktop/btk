@@ -114,9 +114,9 @@
 
 /* Forward declararations */
 
-static void     btk_socket_finalize             (GObject          *object);
-static void     btk_socket_notify               (GObject          *object,
-						 GParamSpec       *pspec);
+static void     btk_socket_finalize             (BObject          *object);
+static void     btk_socket_notify               (BObject          *object,
+						 BParamSpec       *pspec);
 static void     btk_socket_realize              (BtkWidget        *widget);
 static void     btk_socket_unrealize            (BtkWidget        *widget);
 static void     btk_socket_size_request         (BtkWidget        *widget,
@@ -126,24 +126,24 @@ static void     btk_socket_size_allocate        (BtkWidget        *widget,
 static void     btk_socket_hierarchy_changed    (BtkWidget        *widget,
 						 BtkWidget        *old_toplevel);
 static void     btk_socket_grab_notify          (BtkWidget        *widget,
-						 gboolean          was_grabbed);
-static gboolean btk_socket_key_event            (BtkWidget        *widget,
+						 bboolean          was_grabbed);
+static bboolean btk_socket_key_event            (BtkWidget        *widget,
 						 BdkEventKey      *event);
-static gboolean btk_socket_focus                (BtkWidget        *widget,
+static bboolean btk_socket_focus                (BtkWidget        *widget,
 						 BtkDirectionType  direction);
 static void     btk_socket_remove               (BtkContainer     *container,
 						 BtkWidget        *widget);
 static void     btk_socket_forall               (BtkContainer     *container,
-						 gboolean          include_internals,
+						 bboolean          include_internals,
 						 BtkCallback       callback,
-						 gpointer          callback_data);
+						 bpointer          callback_data);
 
 
 /* Local data */
 
 typedef struct
 {
-  guint			 accel_key;
+  buint			 accel_key;
   BdkModifierType	 accel_mods;
 } GrabbedKey;
 
@@ -153,7 +153,7 @@ enum {
   LAST_SIGNAL
 }; 
 
-static guint socket_signals[LAST_SIGNAL] = { 0 };
+static buint socket_signals[LAST_SIGNAL] = { 0 };
 
 /*
  * _btk_socket_get_private:
@@ -166,20 +166,20 @@ static guint socket_signals[LAST_SIGNAL] = { 0 };
 BtkSocketPrivate *
 _btk_socket_get_private (BtkSocket *socket)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (socket, BTK_TYPE_SOCKET, BtkSocketPrivate);
+  return B_TYPE_INSTANCE_GET_PRIVATE (socket, BTK_TYPE_SOCKET, BtkSocketPrivate);
 }
 
 G_DEFINE_TYPE (BtkSocket, btk_socket, BTK_TYPE_CONTAINER)
 
 static void
-btk_socket_finalize (GObject *object)
+btk_socket_finalize (BObject *object)
 {
   BtkSocket *socket = BTK_SOCKET (object);
   
   g_object_unref (socket->accel_group);
   socket->accel_group = NULL;
 
-  G_OBJECT_CLASS (btk_socket_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_socket_parent_class)->finalize (object);
 }
 
 static void
@@ -187,9 +187,9 @@ btk_socket_class_init (BtkSocketClass *class)
 {
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = (GObjectClass *) class;
+  bobject_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -224,12 +224,12 @@ btk_socket_class_init (BtkSocketClass *class)
    */
   socket_signals[PLUG_ADDED] =
     g_signal_new (I_("plug-added"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSocketClass, plug_added),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkSocket::plug-removed:
@@ -243,12 +243,12 @@ btk_socket_class_init (BtkSocketClass *class)
    */
   socket_signals[PLUG_REMOVED] =
     g_signal_new (I_("plug-removed"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkSocketClass, plug_removed),
                   _btk_boolean_handled_accumulator, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
 
   g_type_class_add_private (bobject_class, sizeof (BtkSocketPrivate));
 }
@@ -269,7 +269,7 @@ btk_socket_init (BtkSocket *socket)
   socket->active = FALSE;
 
   socket->accel_group = btk_accel_group_new ();
-  g_object_set_data (G_OBJECT (socket->accel_group), I_("btk-socket"), socket);
+  g_object_set_data (B_OBJECT (socket->accel_group), I_("btk-socket"), socket);
 }
 
 /**
@@ -395,7 +395,7 @@ btk_socket_realize (BtkWidget *widget)
 {
   BtkSocket *socket = BTK_SOCKET (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -570,17 +570,17 @@ btk_socket_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 activate_key (BtkAccelGroup  *accel_group,
-	      GObject        *acceleratable,
-	      guint           accel_key,
+	      BObject        *acceleratable,
+	      buint           accel_key,
 	      BdkModifierType accel_mods,
 	      GrabbedKey     *grabbed_key)
 {
   BdkEvent *bdk_event = btk_get_current_event ();
   
-  BtkSocket *socket = g_object_get_data (G_OBJECT (accel_group), "btk-socket");
-  gboolean retval = FALSE;
+  BtkSocket *socket = g_object_get_data (B_OBJECT (accel_group), "btk-socket");
+  bboolean retval = FALSE;
 
   if (bdk_event && bdk_event->type == BDK_KEY_PRESS && socket->plug_window)
     {
@@ -594,10 +594,10 @@ activate_key (BtkAccelGroup  *accel_group,
   return retval;
 }
 
-static gboolean
+static bboolean
 find_accel_key (BtkAccelKey *key,
 		GClosure    *closure,
-		gpointer     data)
+		bpointer     data)
 {
   GrabbedKey *grabbed_key = data;
   
@@ -617,7 +617,7 @@ find_accel_key (BtkAccelKey *key,
  */
 void
 _btk_socket_add_grabbed_key (BtkSocket       *socket,
-			     guint            keyval,
+			     buint            keyval,
 			     BdkModifierType  modifiers)
 {
   GClosure *closure;
@@ -656,7 +656,7 @@ _btk_socket_add_grabbed_key (BtkSocket       *socket,
  */
 void
 _btk_socket_remove_grabbed_key (BtkSocket      *socket,
-				guint           keyval,
+				buint           keyval,
 				BdkModifierType modifiers)
 {
   if (!btk_accel_group_disconnect_key (socket->accel_group, keyval, modifiers))
@@ -667,7 +667,7 @@ _btk_socket_remove_grabbed_key (BtkSocket      *socket,
 static void
 socket_update_focus_in (BtkSocket *socket)
 {
-  gboolean focus_in = FALSE;
+  bboolean focus_in = FALSE;
 
   if (socket->plug_window)
     {
@@ -690,7 +690,7 @@ socket_update_focus_in (BtkSocket *socket)
 static void
 socket_update_active (BtkSocket *socket)
 {
-  gboolean active = FALSE;
+  bboolean active = FALSE;
 
   if (socket->plug_window)
     {
@@ -750,7 +750,7 @@ btk_socket_hierarchy_changed (BtkWidget *widget,
 
 static void
 btk_socket_grab_notify (BtkWidget *widget,
-			gboolean   was_grabbed)
+			bboolean   was_grabbed)
 {
   BtkSocket *socket = BTK_SOCKET (widget);
 
@@ -758,7 +758,7 @@ btk_socket_grab_notify (BtkWidget *widget,
     _btk_socket_windowing_update_modality (socket, !was_grabbed);
 }
 
-static gboolean
+static bboolean
 btk_socket_key_event (BtkWidget   *widget,
                       BdkEventKey *event)
 {
@@ -775,8 +775,8 @@ btk_socket_key_event (BtkWidget   *widget,
 }
 
 static void
-btk_socket_notify (GObject    *object,
-		   GParamSpec *pspec)
+btk_socket_notify (BObject    *object,
+		   BParamSpec *pspec)
 {
   if (!strcmp (pspec->name, "is-focus"))
     return;
@@ -793,7 +793,7 @@ btk_socket_notify (GObject    *object,
  */
 void
 _btk_socket_claim_focus (BtkSocket *socket,
-			 gboolean   send_event)
+			 bboolean   send_event)
 {
   BtkWidget *widget = BTK_WIDGET (socket);
 
@@ -807,7 +807,7 @@ _btk_socket_claim_focus (BtkSocket *socket,
   btk_widget_set_can_focus (widget, FALSE);
 }
 
-static gboolean
+static bboolean
 btk_socket_focus (BtkWidget       *widget,
 		  BtkDirectionType direction)
 {
@@ -840,9 +840,9 @@ btk_socket_remove (BtkContainer *container,
 
 static void
 btk_socket_forall (BtkContainer *container,
-		   gboolean      include_internals,
+		   bboolean      include_internals,
 		   BtkCallback   callback,
-		   gpointer      callback_data)
+		   bpointer      callback_data)
 {
   BtkSocket *socket = BTK_SOCKET (container);
 
@@ -863,11 +863,11 @@ btk_socket_forall (BtkContainer *container,
 void
 _btk_socket_add_window (BtkSocket       *socket,
 			BdkNativeWindow  xid,
-			gboolean         need_reparent)
+			bboolean         need_reparent)
 {
   BtkWidget *widget = BTK_WIDGET (socket);
   BdkDisplay *display = btk_widget_get_display (widget);
-  gpointer user_data = NULL;
+  bpointer user_data = NULL;
   
   socket->plug_window = bdk_window_lookup_for_display (display, xid);
 
@@ -883,7 +883,7 @@ _btk_socket_add_window (BtkSocket       *socket,
 
       if (!BTK_IS_PLUG (child_widget))
 	{
-	  g_warning (G_STRLOC ": Can't add non-BtkPlug to BtkSocket");
+	  g_warning (B_STRLOC ": Can't add non-BtkPlug to BtkSocket");
 	  socket->plug_window = NULL;
 	  bdk_error_trap_pop ();
 	  

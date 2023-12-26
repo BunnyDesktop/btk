@@ -21,7 +21,7 @@
 #include <math.h>
 
 static void
-spin_ythickness_cb (BtkSpinButton *spin, gpointer user_data)
+spin_ythickness_cb (BtkSpinButton *spin, bpointer user_data)
 {
   BtkWidget *frame = user_data;
   BtkRcStyle *rcstyle;
@@ -35,7 +35,7 @@ spin_ythickness_cb (BtkSpinButton *spin, gpointer user_data)
 }
 
 static void
-spin_xthickness_cb (BtkSpinButton *spin, gpointer user_data)
+spin_xthickness_cb (BtkSpinButton *spin, bpointer user_data)
 {
   BtkWidget *frame = user_data;
   BtkRcStyle *rcstyle;
@@ -53,8 +53,8 @@ spin_xthickness_cb (BtkSpinButton *spin, gpointer user_data)
 
 #define EPSILON 1e-10
 
-static gdouble
-double_normalize (gdouble n)
+static bdouble
+double_normalize (bdouble n)
 {
   if (fabs (1.0 - n) < EPSILON)
     n = 1.0;
@@ -67,14 +67,14 @@ double_normalize (gdouble n)
 static void
 spin_xalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble xalign = double_normalize (btk_spin_button_get_value (spin));
+  bdouble xalign = double_normalize (btk_spin_button_get_value (spin));
   btk_frame_set_label_align (frame, xalign, frame->label_yalign);
 }
 
 static void
 spin_yalign_cb (BtkSpinButton *spin, BtkFrame *frame)
 {
-  gdouble yalign = double_normalize (btk_spin_button_get_value (spin));
+  bdouble yalign = double_normalize (btk_spin_button_get_value (spin));
   btk_frame_set_label_align (frame, frame->label_xalign, yalign);
 }
 
@@ -89,7 +89,7 @@ int main (int argc, char **argv)
   btk_container_set_border_width (BTK_CONTAINER (window), 5);
   btk_window_set_default_size (BTK_WINDOW (window), 300, 300);
 
-  g_signal_connect (G_OBJECT (window), "delete-event", btk_main_quit, NULL);
+  g_signal_connect (B_OBJECT (window), "delete-event", btk_main_quit, NULL);
 
   vbox = btk_vbox_new (FALSE, 5);
   btk_container_add (BTK_CONTAINER (window), vbox);
@@ -108,7 +108,7 @@ int main (int argc, char **argv)
   btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 0, 1);
 
   xthickness_spin = btk_spin_button_new_with_range (0, 250, 1);
-  g_signal_connect (G_OBJECT (xthickness_spin), "value-changed", G_CALLBACK (spin_xthickness_cb), frame);
+  g_signal_connect (B_OBJECT (xthickness_spin), "value-changed", G_CALLBACK (spin_xthickness_cb), frame);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (xthickness_spin), frame->style->xthickness);
   btk_table_attach_defaults (BTK_TABLE (table), xthickness_spin, 1, 2, 0, 1);
 
@@ -117,7 +117,7 @@ int main (int argc, char **argv)
   btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 1, 2);
 
   ythickness_spin = btk_spin_button_new_with_range (0, 250, 1);
-  g_signal_connect (G_OBJECT (ythickness_spin), "value-changed", G_CALLBACK (spin_ythickness_cb), frame);
+  g_signal_connect (B_OBJECT (ythickness_spin), "value-changed", G_CALLBACK (spin_ythickness_cb), frame);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (ythickness_spin), frame->style->ythickness);
   btk_table_attach_defaults (BTK_TABLE (table), ythickness_spin, 1, 2, 1, 2);
 
@@ -126,7 +126,7 @@ int main (int argc, char **argv)
   btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 2, 3);
 
   xalign_spin = btk_spin_button_new_with_range (0.0, 1.0, 0.1);
-  g_signal_connect (G_OBJECT (xalign_spin), "value-changed", G_CALLBACK (spin_xalign_cb), frame);
+  g_signal_connect (B_OBJECT (xalign_spin), "value-changed", G_CALLBACK (spin_xalign_cb), frame);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (xalign_spin), BTK_FRAME (frame)->label_xalign);
   btk_table_attach_defaults (BTK_TABLE (table), xalign_spin, 1, 2, 2, 3);
 
@@ -135,7 +135,7 @@ int main (int argc, char **argv)
   btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 3, 4);
 
   yalign_spin = btk_spin_button_new_with_range (0.0, 1.0, 0.1);
-  g_signal_connect (G_OBJECT (yalign_spin), "value-changed", G_CALLBACK (spin_yalign_cb), frame);
+  g_signal_connect (B_OBJECT (yalign_spin), "value-changed", G_CALLBACK (spin_yalign_cb), frame);
   btk_spin_button_set_value (BTK_SPIN_BUTTON (yalign_spin), BTK_FRAME (frame)->label_yalign);
   btk_table_attach_defaults (BTK_TABLE (table), yalign_spin, 1, 2, 3, 4);
 

@@ -46,21 +46,21 @@ struct _BtkSeparatorPrivate
   BtkOrientation orientation;
 };
 
-#define BTK_SEPARATOR_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SEPARATOR, BtkSeparatorPrivate))
+#define BTK_SEPARATOR_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SEPARATOR, BtkSeparatorPrivate))
 
 
-static void       btk_separator_set_property (GObject        *object,
-                                              guint           prop_id,
-                                              const GValue   *value,
-                                              GParamSpec     *pspec);
-static void       btk_separator_get_property (GObject        *object,
-                                              guint           prop_id,
-                                              GValue         *value,
-                                              GParamSpec     *pspec);
+static void       btk_separator_set_property (BObject        *object,
+                                              buint           prop_id,
+                                              const BValue   *value,
+                                              BParamSpec     *pspec);
+static void       btk_separator_get_property (BObject        *object,
+                                              buint           prop_id,
+                                              BValue         *value,
+                                              BParamSpec     *pspec);
 
 static void       btk_separator_size_request (BtkWidget      *widget,
                                               BtkRequisition *requisition);
-static gboolean   btk_separator_expose       (BtkWidget      *widget,
+static bboolean   btk_separator_expose       (BtkWidget      *widget,
                                               BdkEventExpose *event);
 
 
@@ -72,7 +72,7 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkSeparator, btk_separator, BTK_TYPE_WIDGET,
 static void
 btk_separator_class_init (BtkSeparatorClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
   object_class->set_property = btk_separator_set_property;
@@ -103,40 +103,40 @@ btk_separator_init (BtkSeparator *separator)
 }
 
 static void
-btk_separator_set_property (GObject      *object,
-                            guint         prop_id,
-                            const GValue *value,
-                            GParamSpec   *pspec)
+btk_separator_set_property (BObject      *object,
+                            buint         prop_id,
+                            const BValue *value,
+                            BParamSpec   *pspec)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      private->orientation = g_value_get_enum (value);
+      private->orientation = b_value_get_enum (value);
       btk_widget_queue_resize (BTK_WIDGET (object));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_separator_get_property (GObject    *object,
-                            guint       prop_id,
-                            GValue     *value,
-                            GParamSpec *pspec)
+btk_separator_get_property (BObject    *object,
+                            buint       prop_id,
+                            BValue     *value,
+                            BParamSpec *pspec)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, private->orientation);
+      b_value_set_enum (value, private->orientation);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -146,9 +146,9 @@ btk_separator_size_request (BtkWidget      *widget,
                             BtkRequisition *requisition)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
-  gboolean wide_separators;
-  gint     separator_width;
-  gint     separator_height;
+  bboolean wide_separators;
+  bint     separator_width;
+  bint     separator_height;
 
   btk_widget_style_get (widget,
                         "wide-separators",  &wide_separators,
@@ -175,14 +175,14 @@ btk_separator_size_request (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_separator_expose (BtkWidget      *widget,
                       BdkEventExpose *event)
 {
   BtkSeparatorPrivate *private = BTK_SEPARATOR_GET_PRIVATE (widget);
-  gboolean wide_separators;
-  gint     separator_width;
-  gint     separator_height;
+  bboolean wide_separators;
+  bint     separator_width;
+  bint     separator_height;
 
   if (!btk_widget_is_drawable (widget))
     return FALSE;

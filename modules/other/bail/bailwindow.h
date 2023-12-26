@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_WINDOW                        (bail_window_get_type ())
-#define BAIL_WINDOW(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WINDOW, BailWindow))
-#define BAIL_WINDOW_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_WINDOW, BailWindowClass))
-#define BAIL_IS_WINDOW(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_WINDOW))
-#define BAIL_IS_WINDOW_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_WINDOW))
-#define BAIL_WINDOW_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_WINDOW, BailWindowClass))
+#define BAIL_WINDOW(obj)                        (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WINDOW, BailWindow))
+#define BAIL_WINDOW_CLASS(klass)                (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_WINDOW, BailWindowClass))
+#define BAIL_IS_WINDOW(obj)                     (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_WINDOW))
+#define BAIL_IS_WINDOW_CLASS(klass)             (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_WINDOW))
+#define BAIL_WINDOW_GET_CLASS(obj)              (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_WINDOW, BailWindowClass))
 
 typedef struct _BailWindow                   BailWindow;
 typedef struct _BailWindowClass              BailWindowClass;
@@ -38,8 +38,8 @@ struct _BailWindow
 {
   BailContainer parent;
 
-  guint name_change_handler;
-  gchar *previous_name;
+  buint name_change_handler;
+  bchar *previous_name;
 };
 
 GType bail_window_get_type (void);
@@ -49,6 +49,6 @@ struct _BailWindowClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_WINDOW_H__ */

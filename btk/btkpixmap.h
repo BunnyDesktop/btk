@@ -32,14 +32,14 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PIXMAP			 (btk_pixmap_get_type ())
-#define BTK_PIXMAP(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
-#define BTK_PIXMAP_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PIXMAP, BtkPixmapClass))
-#define BTK_IS_PIXMAP(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PIXMAP))
-#define BTK_IS_PIXMAP_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PIXMAP))
-#define BTK_PIXMAP_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PIXMAP, BtkPixmapClass))
+#define BTK_PIXMAP(obj)			 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
+#define BTK_PIXMAP_CLASS(klass)		 (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PIXMAP, BtkPixmapClass))
+#define BTK_IS_PIXMAP(obj)		 (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PIXMAP))
+#define BTK_IS_PIXMAP_CLASS(klass)	 (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PIXMAP))
+#define BTK_PIXMAP_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PIXMAP, BtkPixmapClass))
 
 
 typedef struct _BtkPixmap	BtkPixmap;
@@ -53,7 +53,7 @@ struct _BtkPixmap
   BdkBitmap *mask;
 
   BdkPixmap *pixmap_insensitive;
-  guint build_insensitive : 1;
+  buint build_insensitive : 1;
 };
 
 struct _BtkPixmapClass
@@ -62,7 +62,7 @@ struct _BtkPixmapClass
 };
 
 
-GType	   btk_pixmap_get_type	 (void) G_GNUC_CONST;
+GType	   btk_pixmap_get_type	 (void) B_GNUC_CONST;
 BtkWidget* btk_pixmap_new	 (BdkPixmap  *pixmap,
 				  BdkBitmap  *mask);
 void	   btk_pixmap_set	 (BtkPixmap  *pixmap,
@@ -73,10 +73,10 @@ void	   btk_pixmap_get	 (BtkPixmap  *pixmap,
 				  BdkBitmap **mask);
 
 void       btk_pixmap_set_build_insensitive (BtkPixmap *pixmap,
-		                             gboolean   build);
+		                             bboolean   build);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PIXMAP_H__ */
 

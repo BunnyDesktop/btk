@@ -79,7 +79,7 @@
 
 #include <btk/btktextlayout.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* A semi-public header intended for use by code that also
  * uses BtkTextLayout
@@ -98,15 +98,15 @@ void btk_text_layout_draw (BtkTextLayout        *layout,
                            BtkWidget            *widget,
                            BdkDrawable          *drawable,
 			   BdkGC                *cursor_gc,
-                           gint                  x_offset,
-                           gint                  y_offset,
-                           gint                  x,
-                           gint                  y,
-                           gint                  width,
-                           gint                  height,
+                           bint                  x_offset,
+                           bint                  y_offset,
+                           bint                  x,
+                           bint                  y,
+                           bint                  width,
+                           bint                  height,
                            GList               **widgets);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_TEXT_DISPLAY_H__ */

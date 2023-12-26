@@ -21,17 +21,17 @@
 #include "bdkdnd.h"
 #include "bdkprivate-quartz.h"
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
   BdkDragContextPrivate *private = BDK_DRAG_CONTEXT_PRIVATE (context);
  
   g_free (private);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -45,7 +45,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
 
@@ -72,7 +72,7 @@ bdk_drag_context_get_type (void)
         (GInstanceInitFunc) bdk_drag_context_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkDragContext",
                                             &object_info,
 					    0);
@@ -120,15 +120,15 @@ bdk_drag_begin (BdkWindow     *window,
   return _bdk_quartz_drag_source_context;
 }
 
-gboolean        
+bboolean        
 bdk_drag_motion (BdkDragContext *context,
 		 BdkWindow      *dest_window,
 		 BdkDragProtocol protocol,
-		 gint            x_root, 
-		 gint            y_root,
+		 bint            x_root, 
+		 bint            y_root,
 		 BdkDragAction   suggested_action,
 		 BdkDragAction   possible_actions,
-		 guint32         time)
+		 buint32         time)
 {
   /* FIXME: Implement */
   return FALSE;
@@ -147,8 +147,8 @@ void
 bdk_drag_find_window_for_screen (BdkDragContext  *context,
 				 BdkWindow       *drag_window,
 				 BdkScreen       *screen,
-				 gint             x_root,
-				 gint             y_root,
+				 bint             x_root,
+				 bint             y_root,
 				 BdkWindow      **dest_window,
 				 BdkDragProtocol *protocol)
 {
@@ -157,14 +157,14 @@ bdk_drag_find_window_for_screen (BdkDragContext  *context,
 
 void
 bdk_drag_drop (BdkDragContext *context,
-	       guint32         time)
+	       buint32         time)
 {
   /* FIXME: Implement */
 }
 
 void
 bdk_drag_abort (BdkDragContext *context,
-		guint32         time)
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
   
@@ -174,15 +174,15 @@ bdk_drag_abort (BdkDragContext *context,
 void             
 bdk_drag_status (BdkDragContext   *context,
 		 BdkDragAction     action,
-		 guint32           time)
+		 buint32           time)
 {
   context->action = action;
 }
 
 void 
 bdk_drop_reply (BdkDragContext   *context,
-		gboolean          ok,
-		guint32           time)
+		bboolean          ok,
+		buint32           time)
 {
   g_return_if_fail (context != NULL);
 
@@ -191,8 +191,8 @@ bdk_drop_reply (BdkDragContext   *context,
 
 void             
 bdk_drop_finish (BdkDragContext   *context,
-		 gboolean          success,
-		 guint32           time)
+		 bboolean          success,
+		 buint32           time)
 {
   /* FIXME: Implement */
 }
@@ -210,7 +210,7 @@ bdk_drag_get_selection (BdkDragContext *context)
   return BDK_NONE;
 }
 
-gboolean 
+bboolean 
 bdk_drag_drop_succeeded (BdkDragContext *context)
 {
   /* FIXME: Implement */

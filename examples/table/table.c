@@ -4,15 +4,15 @@
 /* Our callback.
  * The data passed to this function is printed to stdout */
 static void callback( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (char *) data);
 }
 
 /* This callback quits the program */
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -53,7 +53,7 @@ int main( int   argc,
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 1" as its argument */
     g_signal_connect (button, "clicked",
-	              G_CALLBACK (callback), (gpointer) "button 1");
+	              G_CALLBACK (callback), (bpointer) "button 1");
 
 
     /* Insert button 1 into the upper left quadrant of the table */
@@ -68,7 +68,7 @@ int main( int   argc,
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 2" as its argument */
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (callback), (gpointer) "button 2");
+                      G_CALLBACK (callback), (bpointer) "button 2");
     /* Insert button 2 into the upper right quadrant of the table */
     btk_table_attach_defaults (BTK_TABLE (table), button, 1, 2, 0, 1);
 

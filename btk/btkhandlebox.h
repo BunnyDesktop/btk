@@ -40,14 +40,14 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HANDLE_BOX            (btk_handle_box_get_type ())
-#define BTK_HANDLE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
-#define BTK_HANDLE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
-#define BTK_IS_HANDLE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HANDLE_BOX))
-#define BTK_IS_HANDLE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HANDLE_BOX))
-#define BTK_HANDLE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
+#define BTK_HANDLE_BOX(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
+#define BTK_HANDLE_BOX_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
+#define BTK_IS_HANDLE_BOX(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HANDLE_BOX))
+#define BTK_IS_HANDLE_BOX_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HANDLE_BOX))
+#define BTK_HANDLE_BOX_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
 
 
 typedef struct _BtkHandleBox       BtkHandleBox;
@@ -60,18 +60,18 @@ struct _BtkHandleBox
   BdkWindow      *GSEAL (bin_window);	/* parent window for children */
   BdkWindow      *GSEAL (float_window);
   BtkShadowType   GSEAL (shadow_type);
-  guint           GSEAL (handle_position) : 2;
-  guint           GSEAL (float_window_mapped) : 1;
-  guint           GSEAL (child_detached) : 1;
-  guint           GSEAL (in_drag) : 1;
-  guint           GSEAL (shrink_on_detach) : 1;
+  buint           GSEAL (handle_position) : 2;
+  buint           GSEAL (float_window_mapped) : 1;
+  buint           GSEAL (child_detached) : 1;
+  buint           GSEAL (in_drag) : 1;
+  buint           GSEAL (shrink_on_detach) : 1;
 
   signed int      GSEAL (snap_edge : 3); /* -1 == unset */
 
   /* Variables used during a drag
    */
-  gint            GSEAL (deskoff_x); /* Offset between root relative coords */
-  gint            GSEAL (deskoff_y); /* and deskrelative coords             */
+  bint            GSEAL (deskoff_x); /* Offset between root relative coords */
+  bint            GSEAL (deskoff_y); /* and deskrelative coords             */
 
   BtkAllocation   GSEAL (attach_allocation);
   BtkAllocation   GSEAL (float_allocation);
@@ -94,7 +94,7 @@ struct _BtkHandleBoxClass
 };
 
 
-GType         btk_handle_box_get_type             (void) G_GNUC_CONST;
+GType         btk_handle_box_get_type             (void) B_GNUC_CONST;
 BtkWidget*    btk_handle_box_new                  (void);
 void          btk_handle_box_set_shadow_type      (BtkHandleBox    *handle_box,
                                                    BtkShadowType    type);
@@ -105,8 +105,8 @@ BtkPositionType btk_handle_box_get_handle_position(BtkHandleBox    *handle_box);
 void          btk_handle_box_set_snap_edge        (BtkHandleBox    *handle_box,
 						   BtkPositionType  edge);
 BtkPositionType btk_handle_box_get_snap_edge      (BtkHandleBox    *handle_box);
-gboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
+bboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HANDLE_BOX_H__ */

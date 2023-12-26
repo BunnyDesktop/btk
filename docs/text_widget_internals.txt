@@ -170,7 +170,7 @@ Views of the BTree (BtkTextLayout)
 
 Each BTree has one or more views that display the tree.  Originally
 there was some idea that a view could be any object, so there are some
-"gpointer view_id" left in the code. However, at some point we decided
+"bpointer view_id" left in the code. However, at some point we decided
 that all views had to be a BtkTextLayout and so the btree does assume
 that from time to time.
 

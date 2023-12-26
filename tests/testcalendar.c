@@ -32,7 +32,7 @@ typedef struct _CalendarData
 {
   BtkWidget *calendar_widget;
   BtkWidget *flag_checkboxes[6];
-  gboolean  settings[6];
+  bboolean  settings[6];
   BtkWidget *font_dialog;
   BtkWidget *window;
   BtkWidget *prev2_sig;
@@ -42,7 +42,7 @@ typedef struct _CalendarData
 
   GHashTable    *details_table;
   BtkTextBuffer *details_buffer;
-  guint          details_changed;
+  buint          details_changed;
 } CalendarData;
 
 enum
@@ -61,10 +61,10 @@ enum
 static void
 calendar_date_to_string (CalendarData *data,
 			      char         *buffer,
-			      gint          buff_len)
+			      bint          buff_len)
 {
   GDate *date;
-  guint year, month, day;
+  buint year, month, day;
 
   btk_calendar_get_date (BTK_CALENDAR(data->window),
 			 &year, &month, &day);
@@ -76,23 +76,23 @@ calendar_date_to_string (CalendarData *data,
 
 static void
 calendar_set_detail (CalendarData *data,
-                     guint         year,
-                     guint         month,
-                     guint         day,
-                     gchar        *detail)
+                     buint         year,
+                     buint         month,
+                     buint         day,
+                     bchar        *detail)
 {
-  gchar *key = g_strdup_printf ("%04d-%02d-%02d", year, month + 1, day);
+  bchar *key = g_strdup_printf ("%04d-%02d-%02d", year, month + 1, day);
   g_hash_table_replace (data->details_table, key, detail);
 }
 
-static gchar*
+static bchar*
 calendar_get_detail (CalendarData *data,
-                     guint         year,
-                     guint         month,
-                     guint         day)
+                     buint         year,
+                     buint         month,
+                     buint         day)
 {
-  const gchar *detail;
-  gchar *key;
+  const bchar *detail;
+  bchar *key;
 
   key = g_strdup_printf ("%04d-%02d-%02d", year, month + 1, day);
   detail = g_hash_table_lookup (data->details_table, key);
@@ -104,8 +104,8 @@ calendar_get_detail (CalendarData *data,
 static void
 calendar_update_details (CalendarData *data)
 {
-  guint year, month, day;
-  gchar *detail;
+  buint year, month, day;
+  bchar *detail;
 
   btk_calendar_get_date (BTK_CALENDAR (data->calendar_widget), &year, &month, &day);
   detail = calendar_get_detail (data, year, month, day);
@@ -121,7 +121,7 @@ static void
 calendar_set_signal_strings (char         *sig_str,
 				  CalendarData *data)
 {
-  const gchar *prev_sig;
+  const bchar *prev_sig;
 
   prev_sig = btk_label_get_text (BTK_LABEL (data->prev_sig));
   btk_label_set_text (BTK_LABEL (data->prev2_sig), prev_sig);
@@ -158,7 +158,7 @@ calendar_day_selected_double_click (BtkWidget    *widget,
                                          CalendarData *data)
 {
   char buffer[256] = "day_selected_double_click: ";
-  guint day;
+  buint day;
 
   calendar_date_to_string (data, buffer+27, 256-27);
   calendar_set_signal_strings (buffer, data);
@@ -217,7 +217,7 @@ calendar_next_year (BtkWidget    *widget,
 static void
 calendar_set_flags (CalendarData *calendar)
 {
-  gint options = 0, i;
+  bint options = 0, i;
 
   for (i = 0; i < G_N_ELEMENTS (calendar->settings); i++)
     if (calendar->settings[i])
@@ -231,7 +231,7 @@ static void
 calendar_toggle_flag (BtkWidget    *toggle,
                       CalendarData *calendar)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < G_N_ELEMENTS (calendar->flag_checkboxes); i++)
     if (calendar->flag_checkboxes[i] == toggle)
@@ -259,12 +259,12 @@ void calendar_select_font (BtkWidget    *button,
 	}
 }
 
-static gchar*
+static bchar*
 calendar_detail_cb (BtkCalendar *calendar,
-                    guint        year,
-                    guint        month,
-                    guint        day,
-                    gpointer     data)
+                    buint        year,
+                    buint        month,
+                    buint        day,
+                    bpointer     data)
 {
   return calendar_get_detail (data, year, month, day);
 }
@@ -274,8 +274,8 @@ calendar_details_changed (BtkTextBuffer *buffer,
                           CalendarData  *data)
 {
   BtkTextIter start, end;
-  guint year, month, day;
-  gchar *detail;
+  buint year, month, day;
+  bchar *detail;
 
   btk_text_buffer_get_start_iter(buffer, &start);
   btk_text_buffer_get_end_iter(buffer, &end);
@@ -298,13 +298,13 @@ demonstrate_details (CalendarData *data)
 {
   static char *rainbow[] = { "#900", "#980", "#390", "#095", "#059", "#309", "#908" };
   BtkCalendar *calendar = BTK_CALENDAR (data->calendar_widget);
-  gint row, col;
+  bint row, col;
 
   for (row = 0; row < 6; ++row)
     for (col = 0; col < 7; ++col)
       {
-        gint year, month, day;
-        gchar *detail;
+        bint year, month, day;
+        bchar *detail;
     
         year = calendar->year;
         month = calendar->month;
@@ -357,8 +357,8 @@ calendar_toggle_details (BtkWidget    *widget,
 static BtkWidget*
 create_expander (const char *caption,
                  BtkWidget  *child,
-                 gdouble     xscale,
-                 gdouble     yscale)
+                 bdouble     xscale,
+                 bdouble     yscale)
 {
   BtkWidget *expander = btk_expander_new ("");
   BtkWidget *label = btk_expander_get_label_widget (BTK_EXPANDER (expander));
@@ -376,8 +376,8 @@ create_expander (const char *caption,
 static BtkWidget*
 create_frame (const char *caption,
               BtkWidget  *child,
-              gdouble     xscale,
-              gdouble     yscale)
+              bdouble     xscale,
+              bdouble     yscale)
 {
   BtkWidget *frame = btk_frame_new ("");
   BtkWidget *label = btk_frame_get_label_widget (BTK_FRAME (frame));
@@ -397,7 +397,7 @@ static void
 detail_width_changed (BtkSpinButton *button,
                       CalendarData  *data)
 {
-  gint value = (gint) btk_spin_button_get_value (button);
+  bint value = (bint) btk_spin_button_get_value (button);
   btk_calendar_set_detail_width_chars (BTK_CALENDAR (data->calendar_widget), value);
 }
 
@@ -405,7 +405,7 @@ static void
 detail_height_changed (BtkSpinButton *button,
                       CalendarData  *data)
 {
-  gint value = (gint) btk_spin_button_get_value (button);
+  bint value = (bint) btk_spin_button_get_value (button);
   btk_calendar_set_detail_height_rows (BTK_CALENDAR (data->calendar_widget), value);
 }
 
@@ -420,11 +420,11 @@ create_calendar(void)
 
   BtkSizeGroup *size;
   BtkStyle *style;
-  gchar *font;
-  gint i;
+  bchar *font;
+  bint i;
   
   struct {
-    gboolean init;
+    bboolean init;
     char *label;
   } flags[] =
     {

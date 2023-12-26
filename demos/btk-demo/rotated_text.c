@@ -19,8 +19,8 @@ const char text[] = "I ♥ BTK+";
 static void
 fancy_shape_renderer (bairo_t        *cr,
 		      BangoAttrShape *attr,
-		      gboolean        do_path,
-		      gpointer        data)
+		      bboolean        do_path,
+		      bpointer        data)
 {
   double x, y;
   bairo_get_current_point (cr, &x, &y);
@@ -30,7 +30,7 @@ fancy_shape_renderer (bairo_t        *cr,
 	       (double) attr->ink_rect.width  / BANGO_SCALE,
 	       (double) attr->ink_rect.height / BANGO_SCALE);
 
-  switch (GPOINTER_TO_UINT (attr->data))
+  switch (BPOINTER_TO_UINT (attr->data))
     {
     case 0x2665: /* U+2665 BLACK HEART SUIT */
       {
@@ -78,7 +78,7 @@ create_fancy_attr_list_for_layout (BangoLayout *layout)
       
       attr = bango_attr_shape_new_with_data (&ink_rect,
 					     &logical_rect,
-					     GUINT_TO_POINTER (g_utf8_get_char (p)),
+					     BUINT_TO_POINTER (g_utf8_get_char (p)),
 					     NULL, NULL);
 
       attr->start_index = p - text;
@@ -90,10 +90,10 @@ create_fancy_attr_list_for_layout (BangoLayout *layout)
   return attrs;
 }
 
-static gboolean
+static bboolean
 rotated_text_expose_event (BtkWidget      *widget,
 			   BdkEventExpose *event,
-			   gpointer	   data)
+			   bpointer	   data)
 {
 #define RADIUS 150
 #define N_WORDS 5

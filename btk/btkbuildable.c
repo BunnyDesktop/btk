@@ -44,7 +44,7 @@
 
 
 typedef BtkBuildableIface BtkBuildableInterface;
-G_DEFINE_INTERFACE (BtkBuildable, btk_buildable, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (BtkBuildable, btk_buildable, B_TYPE_OBJECT)
 
 static void
 btk_buildable_default_init (BtkBuildableInterface *iface)
@@ -62,7 +62,7 @@ btk_buildable_default_init (BtkBuildableInterface *iface)
  **/
 void
 btk_buildable_set_name (BtkBuildable *buildable,
-                        const gchar  *name)
+                        const bchar  *name)
 {
   BtkBuildableIface *iface;
 
@@ -74,7 +74,7 @@ btk_buildable_set_name (BtkBuildable *buildable,
   if (iface->set_name)
     (* iface->set_name) (buildable, name);
   else
-    g_object_set_data_full (G_OBJECT (buildable),
+    g_object_set_data_full (B_OBJECT (buildable),
 			    "btk-builder-name",
 			    g_strdup (name),
 			    g_free);
@@ -94,7 +94,7 @@ btk_buildable_set_name (BtkBuildable *buildable,
  *
  * Since: 2.12
  **/
-const gchar *
+const bchar *
 btk_buildable_get_name (BtkBuildable *buildable)
 {
   BtkBuildableIface *iface;
@@ -106,7 +106,7 @@ btk_buildable_get_name (BtkBuildable *buildable)
   if (iface->get_name)
     return (* iface->get_name) (buildable);
   else
-    return (const gchar*)g_object_get_data (G_OBJECT (buildable),
+    return (const bchar*)g_object_get_data (B_OBJECT (buildable),
 					    "btk-builder-name");
 }
 
@@ -125,8 +125,8 @@ btk_buildable_get_name (BtkBuildable *buildable)
 void
 btk_buildable_add_child (BtkBuildable *buildable,
 			 BtkBuilder   *builder,
-			 GObject      *child,
-			 const gchar  *type)
+			 BObject      *child,
+			 const bchar  *type)
 {
   BtkBuildableIface *iface;
 
@@ -153,8 +153,8 @@ btk_buildable_add_child (BtkBuildable *buildable,
 void
 btk_buildable_set_buildable_property (BtkBuildable *buildable,
 				      BtkBuilder   *builder,
-				      const gchar  *name,
-				      const GValue *value)
+				      const bchar  *name,
+				      const BValue *value)
 {
   BtkBuildableIface *iface;
 
@@ -167,7 +167,7 @@ btk_buildable_set_buildable_property (BtkBuildable *buildable,
   if (iface->set_buildable_property)
     (* iface->set_buildable_property) (buildable, builder, name, value);
   else
-    g_object_set_property (G_OBJECT (buildable), name, value);
+    g_object_set_property (B_OBJECT (buildable), name, value);
 }
 
 /**
@@ -212,10 +212,10 @@ btk_buildable_parser_finished (BtkBuildable *buildable,
  *
  * Since: 2.12
  **/
-GObject *
+BObject *
 btk_buildable_construct_child (BtkBuildable *buildable,
                                BtkBuilder   *builder,
-                               const gchar  *name)
+                               const bchar  *name)
 {
   BtkBuildableIface *iface;
 
@@ -246,13 +246,13 @@ btk_buildable_construct_child (BtkBuildable *buildable,
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 btk_buildable_custom_tag_start (BtkBuildable  *buildable,
                                 BtkBuilder    *builder,
-                                GObject       *child,
-                                const gchar   *tagname,
+                                BObject       *child,
+                                const bchar   *tagname,
                                 GMarkupParser *parser,
-                                gpointer      *data)
+                                bpointer      *data)
 {
   BtkBuildableIface *iface;
 
@@ -273,7 +273,7 @@ btk_buildable_custom_tag_start (BtkBuildable  *buildable,
  * @builder: #BtkBuilder used to construct this object
  * @child: (allow-none): child object or %NULL for non-child tags
  * @tagname: name of tag
- * @data: (type gpointer): user data that will be passed in to parser functions
+ * @data: (type bpointer): user data that will be passed in to parser functions
  *
  * This is called at the end of each custom element handled by 
  * the buildable.
@@ -283,9 +283,9 @@ btk_buildable_custom_tag_start (BtkBuildable  *buildable,
 void
 btk_buildable_custom_tag_end (BtkBuildable  *buildable,
                               BtkBuilder    *builder,
-                              GObject       *child,
-                              const gchar   *tagname,
-                              gpointer      *data)
+                              BObject       *child,
+                              const bchar   *tagname,
+                              bpointer      *data)
 {
   BtkBuildableIface *iface;
 
@@ -314,9 +314,9 @@ btk_buildable_custom_tag_end (BtkBuildable  *buildable,
 void
 btk_buildable_custom_finished (BtkBuildable  *buildable,
 			       BtkBuilder    *builder,
-			       GObject       *child,
-			       const gchar   *tagname,
-			       gpointer       data)
+			       BObject       *child,
+			       const bchar   *tagname,
+			       bpointer       data)
 {
   BtkBuildableIface *iface;
 
@@ -340,10 +340,10 @@ btk_buildable_custom_finished (BtkBuildable  *buildable,
  *
  * Since: 2.12
  **/
-GObject *
+BObject *
 btk_buildable_get_internal_child (BtkBuildable *buildable,
                                   BtkBuilder   *builder,
-                                  const gchar  *childname)
+                                  const bchar  *childname)
 {
   BtkBuildableIface *iface;
 

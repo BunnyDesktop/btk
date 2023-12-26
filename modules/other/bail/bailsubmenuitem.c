@@ -25,24 +25,24 @@
 static void         bail_sub_menu_item_class_init       (BailSubMenuItemClass *klass);
 static void         bail_sub_menu_item_init             (BailSubMenuItem *item);
 static void         bail_sub_menu_item_real_initialize  (BatkObject      *obj,
-                                                         gpointer       data);
+                                                         bpointer       data);
 
 static void         batk_selection_interface_init        (BatkSelectionIface  *iface);
-static gboolean     bail_sub_menu_item_add_selection    (BatkSelection   *selection,
-                                                         gint           i);
-static gboolean     bail_sub_menu_item_clear_selection  (BatkSelection   *selection);
+static bboolean     bail_sub_menu_item_add_selection    (BatkSelection   *selection,
+                                                         bint           i);
+static bboolean     bail_sub_menu_item_clear_selection  (BatkSelection   *selection);
 static BatkObject*   bail_sub_menu_item_ref_selection    (BatkSelection   *selection,
-                                                         gint           i);
-static gint         bail_sub_menu_item_get_selection_count
+                                                         bint           i);
+static bint         bail_sub_menu_item_get_selection_count
                                                         (BatkSelection   *selection);
-static gboolean     bail_sub_menu_item_is_child_selected
+static bboolean     bail_sub_menu_item_is_child_selected
                                                         (BatkSelection   *selection,
-                                                         gint           i);
-static gboolean     bail_sub_menu_item_remove_selection (BatkSelection   *selection,
-                                                         gint           i);
-static gint         menu_item_add_btk                   (BtkContainer   *container,
+                                                         bint           i);
+static bboolean     bail_sub_menu_item_remove_selection (BatkSelection   *selection,
+                                                         bint           i);
+static bint         menu_item_add_btk                   (BtkContainer   *container,
                                                          BtkWidget      *widget);
-static gint         menu_item_remove_btk                (BtkContainer   *container,
+static bint         menu_item_remove_btk                (BtkContainer   *container,
                                                          BtkWidget      *widget);
 
 G_DEFINE_TYPE_WITH_CODE (BailSubMenuItem, bail_sub_menu_item, BAIL_TYPE_MENU_ITEM,
@@ -63,7 +63,7 @@ bail_sub_menu_item_init (BailSubMenuItem *item)
 
 static void
 bail_sub_menu_item_real_initialize (BatkObject *obj,
-                                   gpointer   data)
+                                   bpointer   data)
 {
   BtkWidget *submenu;
 
@@ -87,7 +87,7 @@ bail_sub_menu_item_real_initialize (BatkObject *obj,
 BatkObject*
 bail_sub_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_MENU_ITEM (widget), NULL);
@@ -115,13 +115,13 @@ batk_selection_interface_init (BatkSelectionIface *iface)
    */
 }
 
-static gboolean
+static bboolean
 bail_sub_menu_item_add_selection (BatkSelection *selection,
-                                  gint          i)
+                                  bint          i)
 {
   BtkMenuShell *shell;
   GList *item;
-  guint length;
+  buint length;
   BtkWidget *widget;
   BtkWidget *submenu;
 
@@ -145,7 +145,7 @@ bail_sub_menu_item_add_selection (BatkSelection *selection,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 bail_sub_menu_item_clear_selection (BatkSelection   *selection)
 {
   BtkMenuShell *shell;
@@ -167,7 +167,7 @@ bail_sub_menu_item_clear_selection (BatkSelection   *selection)
 
 static BatkObject*
 bail_sub_menu_item_ref_selection (BatkSelection   *selection,
-                                  gint           i)
+                                  bint           i)
 {
   BtkMenuShell *shell;
   BatkObject *obj;
@@ -198,7 +198,7 @@ bail_sub_menu_item_ref_selection (BatkSelection   *selection,
     }
 }
 
-static gint
+static bint
 bail_sub_menu_item_get_selection_count (BatkSelection   *selection)
 {
   BtkMenuShell *shell;
@@ -223,12 +223,12 @@ bail_sub_menu_item_get_selection_count (BatkSelection   *selection)
     return 1;
 }
 
-static gboolean
+static bboolean
 bail_sub_menu_item_is_child_selected (BatkSelection   *selection,
-                                       gint           i)
+                                       bint           i)
 {
   BtkMenuShell *shell;
-  gint j;
+  bint j;
   BtkWidget *widget;
   BtkWidget *submenu;
 
@@ -249,9 +249,9 @@ bail_sub_menu_item_is_child_selected (BatkSelection   *selection,
   return (j==i);   
 }
 
-static gboolean
+static bboolean
 bail_sub_menu_item_remove_selection (BatkSelection   *selection,
-                                  gint           i)
+                                  bint           i)
 {
   BtkMenuShell *shell;
   BtkWidget *widget;
@@ -281,7 +281,7 @@ bail_sub_menu_item_remove_selection (BatkSelection   *selection,
   return TRUE;
 }
 
-static gint
+static bint
 menu_item_add_btk (BtkContainer *container,
                    BtkWidget	*widget)
 {
@@ -289,7 +289,7 @@ menu_item_add_btk (BtkContainer *container,
   BatkObject *batk_parent;
   BatkObject *batk_child;
   BailContainer *bail_container;
-  gint index;
+  bint index;
 
   g_return_val_if_fail (BTK_IS_MENU (container), 1);
 
@@ -300,7 +300,7 @@ menu_item_add_btk (BtkContainer *container,
       batk_child = btk_widget_get_accessible (widget);
 
       bail_container = BAIL_CONTAINER (batk_parent);
-      g_object_notify (G_OBJECT (batk_child), "accessible_parent");
+      g_object_notify (B_OBJECT (batk_child), "accessible_parent");
 
       g_list_free (bail_container->children);
       bail_container->children = btk_container_get_children (container);
@@ -311,7 +311,7 @@ menu_item_add_btk (BtkContainer *container,
   return 1;
 }
 
-static gint
+static bint
 menu_item_remove_btk (BtkContainer *container,
                       BtkWidget	   *widget)
 {
@@ -320,8 +320,8 @@ menu_item_remove_btk (BtkContainer *container,
   BatkObject *batk_child;
   BailContainer *bail_container;
   BatkPropertyValues values = { NULL };
-  gint index;
-  gint list_length;
+  bint index;
+  bint list_length;
 
   g_return_val_if_fail (BTK_IS_MENU (container), 1);
 
@@ -332,8 +332,8 @@ menu_item_remove_btk (BtkContainer *container,
       batk_child = btk_widget_get_accessible (widget);
 
       bail_container = BAIL_CONTAINER (batk_parent);
-      g_value_init (&values.old_value, G_TYPE_POINTER);
-      g_value_set_pointer (&values.old_value, batk_parent);
+      b_value_init (&values.old_value, B_TYPE_POINTER);
+      b_value_set_pointer (&values.old_value, batk_parent);
       values.property_name = "accessible-parent";
       g_signal_emit_by_name (batk_child,
                              "property_change::accessible-parent", &values, NULL);

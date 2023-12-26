@@ -42,17 +42,17 @@
 BdkDisplayDFB *_bdk_display = NULL;
 BdkScreen     *_bdk_screen  = NULL;
 
-gboolean bdk_directfb_apply_focus_opacity = FALSE;
-gboolean bdk_directfb_enable_color_keying = FALSE;
+bboolean bdk_directfb_apply_focus_opacity = FALSE;
+bboolean bdk_directfb_enable_color_keying = FALSE;
 DFBColor bdk_directfb_bg_color            = { 0, 0, 0, 0 };
 DFBColor bdk_directfb_bg_color_key        = { 0, 0, 0, 0 };
-gboolean bdk_directfb_monochrome_fonts    = FALSE;
+bboolean bdk_directfb_monochrome_fonts    = FALSE;
 
 BdkWindow    *_bdk_directfb_pointer_grab_window        = NULL;
 BdkWindow    *_bdk_directfb_keyboard_grab_window       = NULL;
 BdkWindow    *_bdk_directfb_pointer_grab_confine       = NULL;
-gboolean      _bdk_directfb_pointer_grab_owner_events  = FALSE;
-gboolean      _bdk_directfb_keyboard_grab_owner_events = FALSE;
+bboolean      _bdk_directfb_pointer_grab_owner_events  = FALSE;
+bboolean      _bdk_directfb_keyboard_grab_owner_events = FALSE;
 BdkEventMask  _bdk_directfb_pointer_grab_events        = 0;
 BdkEventMask  _bdk_directfb_keyboard_grab_events       = 0;
 BdkCursor    *_bdk_directfb_pointer_grab_cursor        = NULL;

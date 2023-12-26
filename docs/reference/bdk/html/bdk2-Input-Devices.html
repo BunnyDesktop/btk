@@ -48,7 +48,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Input-Devices.html#bdk-device-get-name" title="bdk_device_get_name ()">bdk_device_get_name</a> <span class="c_punctuation">()</span>
@@ -72,7 +72,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Input-Devices.html#bdk-device-set-mode" title="bdk_device_set_mode ()">bdk_device_set_mode</a> <span class="c_punctuation">()</span>
@@ -136,7 +136,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Input-Devices.html#bdk-device-get-history" title="bdk_device_get_history ()">bdk_device_get_history</a> <span class="c_punctuation">()</span>
@@ -152,7 +152,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Input-Devices.html#bdk-device-get-axis" title="bdk_device_get_axis ()">bdk_device_get_axis</a> <span class="c_punctuation">()</span>
@@ -160,7 +160,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Input-Devices.html#bdk-device-get-n-axes" title="bdk_device_get_n_axes ()">bdk_device_get_n_axes</a> <span class="c_punctuation">()</span>
@@ -245,7 +245,7 @@ The list is statically allocated and should not be freed.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-device-get-name"></a><h3>bdk_device_get_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 bdk_device_get_name (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>);</pre>
 <p>Determines the name of the device.</p>
 <div class="refsect3">
@@ -306,7 +306,7 @@ bdk_device_get_source (<em class="parameter"><code><a class="link" href="bdk2-In
 <hr>
 <div class="refsect2">
 <a name="bdk-device-set-mode"></a><h3>bdk_device_set_mode ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_device_set_mode (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkInputMode" title="enum BdkInputMode"><span class="type">BdkInputMode</span></a> mode</code></em>);</pre>
 </div>
@@ -342,8 +342,8 @@ bdk_device_get_mode (<em class="parameter"><code><a class="link" href="bdk2-Inpu
 <a name="bdk-device-set-key"></a><h3>bdk_device_set_key ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_device_set_key (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> index_</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                    <em class="parameter"><code><span class="type">buint</span> index_</code></em>,
+                    <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkModifierType" title="enum BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 </div>
 <hr>
@@ -351,8 +351,8 @@ bdk_device_set_key (<em class="parameter"><code><a class="link" href="bdk2-Input
 <a name="bdk-device-get-key"></a><h3>bdk_device_get_key ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_device_get_key (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> index</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> *keyval</code></em>,
+                    <em class="parameter"><code><span class="type">buint</span> index</code></em>,
+                    <em class="parameter"><code><span class="type">buint</span> *keyval</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkModifierType" title="enum BdkModifierType"><span class="type">BdkModifierType</span></a> *modifiers</code></em>);</pre>
 <p>If <em class="parameter"><code>index</code></em>
  has a valid keyval, this function will
@@ -398,7 +398,7 @@ fill in <em class="parameter"><code>keyval</code></em>
 <a name="bdk-device-set-axis-use"></a><h3>bdk_device_set_axis_use ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_device_set_axis_use (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> index_</code></em>,
+                         <em class="parameter"><code><span class="type">buint</span> index_</code></em>,
                          <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkAxisUse" title="enum BdkAxisUse"><span class="type">BdkAxisUse</span></a> use</code></em>);</pre>
 </div>
 <hr>
@@ -406,7 +406,7 @@ bdk_device_set_axis_use (<em class="parameter"><code><a class="link" href="bdk2-
 <a name="bdk-device-get-axis-use"></a><h3>bdk_device_get_axis_use ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Input-Devices.html#BdkAxisUse" title="enum BdkAxisUse"><span class="returnvalue">BdkAxisUse</span></a>
 bdk_device_get_axis_use (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> index</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">buint</span> index</code></em>);</pre>
 <p>Returns the axis use for <em class="parameter"><code>index</code></em>
 .</p>
 <div class="refsect3">
@@ -455,7 +455,7 @@ display and should not be freed.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_device_get_state (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> *axes</code></em>,
+                      <em class="parameter"><code><span class="type">bdouble</span> *axes</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkModifierType" title="enum BdkModifierType"><span class="type">BdkModifierType</span></a> *mask</code></em>);</pre>
 <p>Gets the current state of a device.</p>
 <div class="refsect3">
@@ -496,13 +496,13 @@ or <code class="literal">NULL</code>.</p></td>
 <hr>
 <div class="refsect2">
 <a name="bdk-device-get-history"></a><h3>bdk_device_get_history ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_device_get_history (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
                         <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                        <em class="parameter"><code><span class="type">guint32</span> start</code></em>,
-                        <em class="parameter"><code><span class="type">guint32</span> stop</code></em>,
+                        <em class="parameter"><code><span class="type">buint32</span> start</code></em>,
+                        <em class="parameter"><code><span class="type">buint32</span> stop</code></em>,
                         <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkTimeCoord" title="struct BdkTimeCoord"><span class="type">BdkTimeCoord</span></a> ***events</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *n_events</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> *n_events</code></em>);</pre>
 <p>Obtains the motion history for a device; given a starting and
 ending timestamp, return all events in the motion history for
 the device in the given range of time. Some windowing systems
@@ -563,7 +563,7 @@ at least one event was found.</p>
 <a name="bdk-device-free-history"></a><h3>bdk_device_free_history ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_device_free_history (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkTimeCoord" title="struct BdkTimeCoord"><span class="type">BdkTimeCoord</span></a> **events</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> n_events</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bint</span> n_events</code></em>);</pre>
 <p>Frees an array of <a class="link" href="bdk2-Input-Devices.html#BdkTimeCoord" title="struct BdkTimeCoord"><span class="type">BdkTimeCoord</span></a> that was returned by <a class="link" href="bdk2-Input-Devices.html#bdk-device-get-history" title="bdk_device_get_history ()"><code class="function">bdk_device_get_history()</code></a>.</p>
 <div class="refsect3">
 <a name="bdk-device-free-history.parameters"></a><h4>Parameters</h4>
@@ -591,11 +591,11 @@ bdk_device_free_history (<em class="parameter"><code><a class="link" href="bdk2-
 <hr>
 <div class="refsect2">
 <a name="bdk-device-get-axis"></a><h3>bdk_device_get_axis ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_device_get_axis (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>,
-                     <em class="parameter"><code><span class="type">gdouble</span> *axes</code></em>,
+                     <em class="parameter"><code><span class="type">bdouble</span> *axes</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkAxisUse" title="enum BdkAxisUse"><span class="type">BdkAxisUse</span></a> use</code></em>,
-                     <em class="parameter"><code><span class="type">gdouble</span> *value</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bdouble</span> *value</code></em>);</pre>
 <p>Interprets an array of double as axis values for a given device,
 and locates the value in the array for a given axis use.</p>
 <div class="refsect3">
@@ -638,7 +638,7 @@ and locates the value in the array for a given axis use.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-device-get-n-axes"></a><h3>bdk_device_get_n_axes ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_device_get_n_axes (<em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkDevice" title="struct BdkDevice"><span class="type">BdkDevice</span></a> *device</code></em>);</pre>
 <p>Gets the number of axes of a device.</p>
 <div class="refsect3">
@@ -668,7 +668,7 @@ bdk_device_get_n_axes (<em class="parameter"><code><a class="link" href="bdk2-In
 <a name="bdk-input-set-extension-events"></a><h3>bdk_input_set_extension_events ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_input_set_extension_events (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> mask</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> mask</code></em>,
                                 <em class="parameter"><code><a class="link" href="bdk2-Input-Devices.html#BdkExtensionMode" title="enum BdkExtensionMode"><span class="type">BdkExtensionMode</span></a> mode</code></em>);</pre>
 </div>
 </div>
@@ -677,18 +677,18 @@ bdk_input_set_extension_events (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="BdkDevice"></a><h3>struct BdkDevice</h3>
 <pre class="programlisting">struct BdkDevice {
-  GObject parent_instance;
+  BObject parent_instance;
   /* All fields are read-only */
 
-  gchar *GSEAL (name);
+  bchar *GSEAL (name);
   BdkInputSource GSEAL (source);
   BdkInputMode GSEAL (mode);
-  gboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
+  bboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
 
-  gint GSEAL (num_axes);
+  bint GSEAL (num_axes);
   BdkDeviceAxis *GSEAL (axes);
 
-  gint GSEAL (num_keys);
+  bint GSEAL (num_keys);
   BdkDeviceKey *GSEAL (keys);
 };
 </pre>
@@ -764,7 +764,7 @@ bdk_input_set_extension_events (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="BdkDeviceKey"></a><h3>struct BdkDeviceKey</h3>
 <pre class="programlisting">struct BdkDeviceKey {
-  guint keyval;
+  buint keyval;
   BdkModifierType modifiers;
 };
 </pre>
@@ -774,8 +774,8 @@ bdk_input_set_extension_events (<em class="parameter"><code><a class="link" href
 <a name="BdkDeviceAxis"></a><h3>struct BdkDeviceAxis</h3>
 <pre class="programlisting">struct BdkDeviceAxis {
   BdkAxisUse use;
-  gdouble    min;
-  gdouble    max;
+  bdouble    min;
+  bdouble    max;
 };
 </pre>
 </div>
@@ -839,8 +839,8 @@ bdk_input_set_extension_events (<em class="parameter"><code><a class="link" href
 <div class="refsect2">
 <a name="BdkTimeCoord"></a><h3>struct BdkTimeCoord</h3>
 <pre class="programlisting">struct BdkTimeCoord {
-  guint32 time;
-  gdouble axes[BDK_MAX_TIMECOORD_AXES];
+  buint32 time;
+  bdouble axes[BDK_MAX_TIMECOORD_AXES];
 };
 </pre>
 </div>

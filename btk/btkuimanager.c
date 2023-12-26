@@ -72,7 +72,7 @@ typedef struct _Node Node;
 struct _Node {
   NodeType type;
 
-  gchar *name;
+  bchar *name;
 
   GQuark action_name;
   BtkAction *action;
@@ -81,14 +81,14 @@ struct _Node {
 
   GList *uifiles;
 
-  guint dirty : 1;
-  guint expand : 1;  /* used for separators */
-  guint popup_accels : 1;
-  guint always_show_image_set : 1; /* used for menu items */
-  guint always_show_image     : 1; /* used for menu items */
+  buint dirty : 1;
+  buint expand : 1;  /* used for separators */
+  buint popup_accels : 1;
+  buint always_show_image_set : 1; /* used for menu items */
+  buint always_show_image     : 1; /* used for menu items */
 };
 
-#define BTK_UI_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerPrivate))
+#define BTK_UI_MANAGER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerPrivate))
 
 struct _BtkUIManagerPrivate 
 {
@@ -97,11 +97,11 @@ struct _BtkUIManagerPrivate
   GNode *root_node;
   GList *action_groups;
 
-  guint last_merge_id;
+  buint last_merge_id;
 
-  guint update_tag;  
+  buint update_tag;  
 
-  gboolean add_tearoffs;
+  bboolean add_tearoffs;
 };
 
 #define NODE_INFO(node) ((Node *)node->data)
@@ -110,65 +110,65 @@ typedef struct _NodeUIReference NodeUIReference;
 
 struct _NodeUIReference 
 {
-  guint merge_id;
+  buint merge_id;
   GQuark action_quark;
 };
 
-static void        btk_ui_manager_finalize        (GObject           *object);
-static void        btk_ui_manager_set_property    (GObject           *object,
-                                                   guint              prop_id,
-                                                   const GValue      *value,
-                                                   GParamSpec        *pspec);
-static void        btk_ui_manager_get_property    (GObject           *object,
-                                                   guint              prop_id,
-                                                   GValue            *value,
-                                                   GParamSpec        *pspec);
+static void        btk_ui_manager_finalize        (BObject           *object);
+static void        btk_ui_manager_set_property    (BObject           *object,
+                                                   buint              prop_id,
+                                                   const BValue      *value,
+                                                   BParamSpec        *pspec);
+static void        btk_ui_manager_get_property    (BObject           *object,
+                                                   buint              prop_id,
+                                                   BValue            *value,
+                                                   BParamSpec        *pspec);
 static BtkWidget * btk_ui_manager_real_get_widget (BtkUIManager      *manager,
-                                                   const gchar       *path);
+                                                   const bchar       *path);
 static BtkAction * btk_ui_manager_real_get_action (BtkUIManager      *manager,
-                                                   const gchar       *path);
+                                                   const bchar       *path);
 static void        queue_update                   (BtkUIManager      *self);
 static void        dirty_all_nodes                (BtkUIManager      *self);
 static void        mark_node_dirty                (GNode             *node);
 static GNode     * get_child_node                 (BtkUIManager      *self,
                                                    GNode             *parent,
 						   GNode             *sibling,
-                                                   const gchar       *childname,
-                                                   gint               childname_length,
+                                                   const bchar       *childname,
+                                                   bint               childname_length,
                                                    NodeType           node_type,
-                                                   gboolean           create,
-                                                   gboolean           top);
+                                                   bboolean           create,
+                                                   bboolean           top);
 static GNode     * get_node                       (BtkUIManager      *self,
-                                                   const gchar       *path,
+                                                   const bchar       *path,
                                                    NodeType           node_type,
-                                                   gboolean           create);
-static gboolean    free_node                      (GNode             *node);
+                                                   bboolean           create);
+static bboolean    free_node                      (GNode             *node);
 static void        node_prepend_ui_reference      (GNode             *node,
-                                                   guint              merge_id,
+                                                   buint              merge_id,
                                                    GQuark             action_quark);
 static void        node_remove_ui_reference       (GNode             *node,
-                                                   guint              merge_id);
+                                                   buint              merge_id);
 
 /* BtkBuildable */
 static void btk_ui_manager_buildable_init      (BtkBuildableIface *iface);
 static void btk_ui_manager_buildable_add_child (BtkBuildable  *buildable,
 						BtkBuilder    *builder,
-						GObject       *child,
-						const gchar   *type);
-static GObject* btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
+						BObject       *child,
+						const bchar   *type);
+static BObject* btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
 							  BtkBuilder   *builder,
-							  const gchar  *name);
-static gboolean btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
+							  const bchar  *name);
+static bboolean btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
 							   BtkBuilder    *builder,
-							   GObject       *child,
-							   const gchar   *tagname,
+							   BObject       *child,
+							   const bchar   *tagname,
 							   GMarkupParser *parser,
-							   gpointer      *data);
+							   bpointer      *data);
 static void     btk_ui_manager_buildable_custom_tag_end (BtkBuildable 	 *buildable,
 							 BtkBuilder   	 *builder,
-							 GObject      	 *child,
-							 const gchar  	 *tagname,
-							 gpointer     	 *data);
+							 BObject      	 *child,
+							 const bchar  	 *tagname,
+							 bpointer     	 *data);
 
 
 
@@ -190,18 +190,18 @@ enum
   PROP_UI
 };
 
-static guint ui_manager_signals[LAST_SIGNAL] = { 0 };
+static buint ui_manager_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_CODE (BtkUIManager, btk_ui_manager, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkUIManager, btk_ui_manager, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_ui_manager_buildable_init))
 
 static void
 btk_ui_manager_class_init (BtkUIManagerClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->finalize = btk_ui_manager_finalize;
   bobject_class->set_property = btk_ui_manager_set_property;
@@ -250,12 +250,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[ADD_WIDGET] =
     g_signal_new (I_("add-widget"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, add_widget),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, 
+		  B_TYPE_NONE, 1, 
 		  BTK_TYPE_WIDGET);
 
   /**
@@ -269,12 +269,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[ACTIONS_CHANGED] =
     g_signal_new (I_("actions-changed"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, actions_changed),  
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   /**
    * BtkUIManager::connect-proxy:
@@ -293,12 +293,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[CONNECT_PROXY] =
     g_signal_new (I_("connect-proxy"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, connect_proxy),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2, 
+		  B_TYPE_NONE, 2, 
 		  BTK_TYPE_ACTION,
 		  BTK_TYPE_WIDGET);
 
@@ -315,12 +315,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[DISCONNECT_PROXY] =
     g_signal_new (I_("disconnect-proxy"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, disconnect_proxy),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ACTION,
 		  BTK_TYPE_WIDGET);
 
@@ -339,12 +339,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[PRE_ACTIVATE] =
     g_signal_new (I_("pre-activate"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, pre_activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_ACTION);
 
   /**
@@ -362,12 +362,12 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
    */
   ui_manager_signals[POST_ACTIVATE] =
     g_signal_new (I_("post-activate"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
 		  G_STRUCT_OFFSET (BtkUIManagerClass, post_activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_ACTION);
 
   klass->add_widget = NULL;
@@ -384,7 +384,7 @@ btk_ui_manager_class_init (BtkUIManagerClass *klass)
 static void
 btk_ui_manager_init (BtkUIManager *self)
 {
-  guint merge_id;
+  buint merge_id;
   GNode *node;
 
   self->private_data = BTK_UI_MANAGER_GET_PRIVATE (self);
@@ -404,7 +404,7 @@ btk_ui_manager_init (BtkUIManager *self)
 }
 
 static void
-btk_ui_manager_finalize (GObject *object)
+btk_ui_manager_finalize (BObject *object)
 {
   BtkUIManager *self = BTK_UI_MANAGER (object);
   
@@ -428,7 +428,7 @@ btk_ui_manager_finalize (GObject *object)
   g_object_unref (self->private_data->accel_group);
   self->private_data->accel_group = NULL;
 
-  G_OBJECT_CLASS (btk_ui_manager_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_ui_manager_parent_class)->finalize (object);
 }
 
 static void
@@ -443,11 +443,11 @@ btk_ui_manager_buildable_init (BtkBuildableIface *iface)
 static void
 btk_ui_manager_buildable_add_child (BtkBuildable  *buildable,
 				    BtkBuilder    *builder,
-				    GObject       *child,
-				    const gchar   *type)
+				    BObject       *child,
+				    const bchar   *type)
 {
   BtkUIManager *self = BTK_UI_MANAGER (buildable);
-  guint pos;
+  buint pos;
 
   g_return_if_fail (BTK_IS_ACTION_GROUP (child));
 
@@ -473,8 +473,8 @@ child_hierarchy_changed_cb (BtkWidget *widget,
     return;
   
   group = btk_ui_manager_get_accel_group (uimgr);
-  groups = btk_accel_groups_from_object (G_OBJECT (toplevel));
-  if (g_slist_find (groups, group) == NULL)
+  groups = btk_accel_groups_from_object (B_OBJECT (toplevel));
+  if (b_slist_find (groups, group) == NULL)
     btk_window_add_accel_group (BTK_WINDOW (toplevel), group);
 
   g_signal_handlers_disconnect_by_func (widget,
@@ -482,10 +482,10 @@ child_hierarchy_changed_cb (BtkWidget *widget,
 					uimgr);
 }
 
-static GObject *
+static BObject *
 btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
 					  BtkBuilder   *builder,
-					  const gchar  *id)
+					  const bchar  *id)
 {
   BtkWidget *widget;
   char *name;
@@ -507,49 +507,49 @@ btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
 }
 
 static void
-btk_ui_manager_set_property (GObject         *object,
-			     guint            prop_id,
-			     const GValue    *value,
-			     GParamSpec      *pspec)
+btk_ui_manager_set_property (BObject         *object,
+			     buint            prop_id,
+			     const BValue    *value,
+			     BParamSpec      *pspec)
 {
   BtkUIManager *self = BTK_UI_MANAGER (object);
  
   switch (prop_id)
     {
     case PROP_ADD_TEAROFFS:
-      btk_ui_manager_set_add_tearoffs (self, g_value_get_boolean (value));
+      btk_ui_manager_set_add_tearoffs (self, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_ui_manager_get_property (GObject         *object,
-			     guint            prop_id,
-			     GValue          *value,
-			     GParamSpec      *pspec)
+btk_ui_manager_get_property (BObject         *object,
+			     buint            prop_id,
+			     BValue          *value,
+			     BParamSpec      *pspec)
 {
   BtkUIManager *self = BTK_UI_MANAGER (object);
 
   switch (prop_id)
     {
     case PROP_ADD_TEAROFFS:
-      g_value_set_boolean (value, self->private_data->add_tearoffs);
+      b_value_set_boolean (value, self->private_data->add_tearoffs);
       break;
     case PROP_UI:
-      g_value_take_string (value, btk_ui_manager_get_ui (self));
+      b_value_take_string (value, btk_ui_manager_get_ui (self));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static BtkWidget *
 btk_ui_manager_real_get_widget (BtkUIManager *self,
-                                const gchar  *path)
+                                const bchar  *path)
 {
   GNode *node;
 
@@ -567,7 +567,7 @@ btk_ui_manager_real_get_widget (BtkUIManager *self,
 
 static BtkAction *
 btk_ui_manager_real_get_action (BtkUIManager *self,
-                                const gchar  *path)
+                                const bchar  *path)
 {
   GNode *node;
 
@@ -611,7 +611,7 @@ btk_ui_manager_new (void)
  *
  * Since: 2.4
  **/
-gboolean 
+bboolean 
 btk_ui_manager_get_add_tearoffs (BtkUIManager *self)
 {
   g_return_val_if_fail (BTK_IS_UI_MANAGER (self), FALSE);
@@ -635,7 +635,7 @@ btk_ui_manager_get_add_tearoffs (BtkUIManager *self)
  **/
 void 
 btk_ui_manager_set_add_tearoffs (BtkUIManager *self,
-				 gboolean      add_tearoffs)
+				 bboolean      add_tearoffs)
 {
   g_return_if_fail (BTK_IS_UI_MANAGER (self));
 
@@ -647,7 +647,7 @@ btk_ui_manager_set_add_tearoffs (BtkUIManager *self,
       
       dirty_all_nodes (self);
 
-      g_object_notify (G_OBJECT (self), "add-tearoffs");
+      g_object_notify (B_OBJECT (self), "add-tearoffs");
     }
 }
 
@@ -700,7 +700,7 @@ cb_proxy_post_activate (BtkActionGroup *group,
 void
 btk_ui_manager_insert_action_group (BtkUIManager   *self,
 				    BtkActionGroup *action_group, 
-				    gint            pos)
+				    bint            pos)
 {
 #ifdef G_ENABLE_DEBUG
   GList *l;
@@ -844,7 +844,7 @@ btk_ui_manager_get_accel_group (BtkUIManager *self)
  **/
 BtkWidget *
 btk_ui_manager_get_widget (BtkUIManager *self,
-			   const gchar  *path)
+			   const bchar  *path)
 {
   g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
   g_return_val_if_fail (path != NULL, NULL);
@@ -859,7 +859,7 @@ typedef struct {
 
 static void
 collect_toplevels (GNode   *node, 
-		   gpointer user_data)
+		   bpointer user_data)
 {
   ToplevelData *data = user_data;
 
@@ -869,15 +869,15 @@ collect_toplevels (GNode   *node,
 	{
 	case NODE_TYPE_MENUBAR:
 	  if (data->types & BTK_UI_MANAGER_MENUBAR)
-	data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
+	data->list = b_slist_prepend (data->list, NODE_INFO (node)->proxy);
 	  break;
 	case NODE_TYPE_TOOLBAR:
       if (data->types & BTK_UI_MANAGER_TOOLBAR)
-	data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
+	data->list = b_slist_prepend (data->list, NODE_INFO (node)->proxy);
       break;
 	case NODE_TYPE_POPUP:
 	  if (data->types & BTK_UI_MANAGER_POPUP)
-	    data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
+	    data->list = b_slist_prepend (data->list, NODE_INFO (node)->proxy);
 	  break;
 	default: ;
 	}
@@ -894,7 +894,7 @@ collect_toplevels (GNode   *node,
  * Obtains a list of all toplevel widgets of the requested types.
  *
  * Return value: (element-type BtkWidget) (transfer container): a newly-allocated #GSList of
- * all toplevel widgets of the requested types.  Free the returned list with g_slist_free().
+ * all toplevel widgets of the requested types.  Free the returned list with b_slist_free().
  *
  * Since: 2.4
  **/
@@ -936,7 +936,7 @@ btk_ui_manager_get_toplevels (BtkUIManager         *self,
  **/
 BtkAction *
 btk_ui_manager_get_action (BtkUIManager *self,
-			   const gchar  *path)
+			   const bchar  *path)
 {
   g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
   g_return_val_if_fail (path != NULL, NULL);
@@ -944,7 +944,7 @@ btk_ui_manager_get_action (BtkUIManager *self,
   return BTK_UI_MANAGER_GET_CLASS (self)->get_action (self, path);
 }
 
-static gboolean
+static bboolean
 node_is_dead (GNode *node)
 {
   GNode *child;
@@ -965,11 +965,11 @@ static GNode *
 get_child_node (BtkUIManager *self, 
 		GNode        *parent,
 		GNode        *sibling,
-		const gchar  *childname, 
-		gint          childname_length,
+		const bchar  *childname, 
+		bint          childname_length,
 		NodeType      node_type,
-		gboolean      create, 
-		gboolean      top)
+		bboolean      create, 
+		bboolean      top)
 {
   GNode *child = NULL;
 
@@ -1069,11 +1069,11 @@ get_child_node (BtkUIManager *self,
 
 static GNode *
 get_node (BtkUIManager *self, 
-	  const gchar  *path,
+	  const bchar  *path,
 	  NodeType      node_type, 
-	  gboolean      create)
+	  bboolean      create)
 {
-  const gchar *pos, *end;
+  const bchar *pos, *end;
   GNode *parent, *node;
   
   if (strncmp ("/ui", path, 3) == 0)
@@ -1084,8 +1084,8 @@ get_node (BtkUIManager *self,
   parent = node = NULL;
   while (pos < end)
     {
-      const gchar *slash;
-      gsize length;
+      const bchar *slash;
+      bsize length;
 
       slash = strchr (pos, '/');
       if (slash)
@@ -1109,12 +1109,12 @@ get_node (BtkUIManager *self,
 }
 
 static void
-node_ui_reference_free (gpointer data)
+node_ui_reference_free (bpointer data)
 {
   g_slice_free (NodeUIReference, data);
 }
 
-static gboolean
+static bboolean
 free_node (GNode *node)
 {
   Node *info = NODE_INFO (node);
@@ -1145,7 +1145,7 @@ free_node (GNode *node)
  *
  * Since: 2.4
  **/
-guint
+buint
 btk_ui_manager_new_merge_id (BtkUIManager *self)
 {
   self->private_data->last_merge_id++;
@@ -1155,7 +1155,7 @@ btk_ui_manager_new_merge_id (BtkUIManager *self)
 
 static void
 node_prepend_ui_reference (GNode  *gnode,
-			   guint   merge_id, 
+			   buint   merge_id, 
 			   GQuark  action_quark)
 {
   Node *node = NODE_INFO (gnode);
@@ -1178,7 +1178,7 @@ node_prepend_ui_reference (GNode  *gnode,
 
 static void
 node_remove_ui_reference (GNode  *gnode,
-			  guint  merge_id)
+			  buint  merge_id)
 {
   Node *node = NODE_INFO (gnode);
   GList *p;
@@ -1223,30 +1223,30 @@ struct _ParseContext
 
   GNode *current;
 
-  guint merge_id;
+  buint merge_id;
 };
 
 static void
 start_element_handler (GMarkupParseContext *context,
-		       const gchar         *element_name,
-		       const gchar        **attribute_names,
-		       const gchar        **attribute_values,
-		       gpointer             user_data,
+		       const bchar         *element_name,
+		       const bchar        **attribute_names,
+		       const bchar        **attribute_values,
+		       bpointer             user_data,
 		       GError             **error)
 {
   ParseContext *ctx = user_data;
   BtkUIManager *self = ctx->self;
 
-  gint i;
-  const gchar *node_name;
-  const gchar *action;
+  bint i;
+  const bchar *node_name;
+  const bchar *action;
   GQuark action_quark;
-  gboolean top;
-  gboolean expand = FALSE;
-  gboolean accelerators = FALSE;
-  gboolean always_show_image_set = FALSE, always_show_image = FALSE;
+  bboolean top;
+  bboolean expand = FALSE;
+  bboolean accelerators = FALSE;
+  bboolean always_show_image_set = FALSE, always_show_image = FALSE;
 
-  gboolean raise_error = TRUE;
+  bboolean raise_error = TRUE;
 
   node_name = NULL;
   action = NULL;
@@ -1430,7 +1430,7 @@ start_element_handler (GMarkupParseContext *context,
 	  !strcmp (element_name, "separator"))
 	{
 	  GNode *node;
-	  gint length;
+	  bint length;
 
 	  if (ctx->state == STATE_TOOLBAR)
 	    ctx->state = STATE_TOOLITEM;
@@ -1495,7 +1495,7 @@ start_element_handler (GMarkupParseContext *context,
     }
   if (raise_error)
     {
-      gint line_number, char_number;
+      bint line_number, char_number;
  
       g_markup_parse_context_get_position (context,
 					   &line_number, &char_number);
@@ -1510,8 +1510,8 @@ start_element_handler (GMarkupParseContext *context,
 
 static void
 end_element_handler (GMarkupParseContext *context,
-		     const gchar         *element_name,
-		     gpointer             user_data,
+		     const bchar         *element_name,
+		     bpointer             user_data,
 		     GError             **error)
 {
   ParseContext *ctx = user_data;
@@ -1551,7 +1551,7 @@ end_element_handler (GMarkupParseContext *context,
 static void
 cleanup (GMarkupParseContext *context,
 	 GError              *error,
-	 gpointer             user_data)
+	 bpointer             user_data)
 {
   ParseContext *ctx = user_data;
 
@@ -1562,7 +1562,7 @@ cleanup (GMarkupParseContext *context,
   btk_ui_manager_remove_ui (ctx->self, ctx->merge_id);
 }
 
-static gboolean
+static bboolean
 xml_isspace (char c)
 {
   return c == ' ' || c == '\t' || c == '\n' || c == '\r';
@@ -1570,13 +1570,13 @@ xml_isspace (char c)
 
 static void 
 text_handler (GMarkupParseContext *context,
-	      const gchar         *text,
-	      gsize                text_len,  
-	      gpointer             user_data,
+	      const bchar         *text,
+	      bsize                text_len,  
+	      bpointer             user_data,
 	      GError             **error)
 {
-  const gchar *p;
-  const gchar *end;
+  const bchar *p;
+  const bchar *end;
 
   p = text;
   end = text + text_len;
@@ -1585,7 +1585,7 @@ text_handler (GMarkupParseContext *context,
   
   if (p != end)
     {
-      gint line_number, char_number;
+      bint line_number, char_number;
       
       g_markup_parse_context_get_position (context,
 					   &line_number, &char_number);
@@ -1606,11 +1606,11 @@ static const GMarkupParser ui_parser = {
   cleanup
 };
 
-static guint
+static buint
 add_ui_from_string (BtkUIManager *self,
-		    const gchar  *buffer, 
-		    gssize        length,
-		    gboolean      needs_root,
+		    const bchar  *buffer, 
+		    bssize        length,
+		    bboolean      needs_root,
 		    GError      **error)
 {
   ParseContext ctx = { 0 };
@@ -1641,7 +1641,7 @@ add_ui_from_string (BtkUIManager *self,
 
   queue_update (self);
 
-  g_object_notify (G_OBJECT (self), "ui");
+  g_object_notify (B_OBJECT (self), "ui");
 
   return ctx.merge_id;
 
@@ -1669,15 +1669,15 @@ add_ui_from_string (BtkUIManager *self,
  *
  * Since: 2.4
  **/
-guint
+buint
 btk_ui_manager_add_ui_from_string (BtkUIManager *self,
-				   const gchar  *buffer, 
-				   gssize        length,
+				   const bchar  *buffer, 
+				   bssize        length,
 				   GError      **error)
 {
-  gboolean needs_root = TRUE;
-  const gchar *p;
-  const gchar *end;
+  bboolean needs_root = TRUE;
+  const bchar *p;
+  const bchar *end;
 
   g_return_val_if_fail (BTK_IS_UI_MANAGER (self), 0);
   g_return_val_if_fail (buffer != NULL, 0);
@@ -1711,14 +1711,14 @@ btk_ui_manager_add_ui_from_string (BtkUIManager *self,
  *
  * Since: 2.4
  **/
-guint
+buint
 btk_ui_manager_add_ui_from_file (BtkUIManager *self,
-				 const gchar  *filename,
+				 const bchar  *filename,
 				 GError      **error)
 {
-  gchar *buffer;
-  gsize length;
-  guint res;
+  bchar *buffer;
+  bsize length;
+  buint res;
 
   g_return_val_if_fail (BTK_IS_UI_MANAGER (self), 0);
 
@@ -1756,12 +1756,12 @@ btk_ui_manager_add_ui_from_file (BtkUIManager *self,
  **/
 void
 btk_ui_manager_add_ui (BtkUIManager        *self,
-		       guint                merge_id,
-		       const gchar         *path,
-		       const gchar         *name,
-		       const gchar         *action,
+		       buint                merge_id,
+		       const bchar         *path,
+		       const bchar         *name,
+		       const bchar         *action,
 		       BtkUIManagerItemType type,
-		       gboolean             top)
+		       bboolean             top)
 {
   GNode *node;
   GNode *sibling;
@@ -1889,14 +1889,14 @@ btk_ui_manager_add_ui (BtkUIManager        *self,
 
   queue_update (self);
 
-  g_object_notify (G_OBJECT (self), "ui");      
+  g_object_notify (B_OBJECT (self), "ui");      
 }
 
-static gboolean
+static bboolean
 remove_ui (GNode   *node, 
-	   gpointer user_data)
+	   bpointer user_data)
 {
-  guint merge_id = GPOINTER_TO_UINT (user_data);
+  buint merge_id = BPOINTER_TO_UINT (user_data);
 
   node_remove_ui_reference (node, merge_id);
 
@@ -1914,17 +1914,17 @@ remove_ui (GNode   *node,
  **/
 void
 btk_ui_manager_remove_ui (BtkUIManager *self, 
-			  guint         merge_id)
+			  buint         merge_id)
 {
   g_return_if_fail (BTK_IS_UI_MANAGER (self));
 
   g_node_traverse (self->private_data->root_node, 
 		   G_POST_ORDER, G_TRAVERSE_ALL, -1,
-		   remove_ui, GUINT_TO_POINTER (merge_id));
+		   remove_ui, BUINT_TO_POINTER (merge_id));
 
   queue_update (self);
 
-  g_object_notify (G_OBJECT (self), "ui");      
+  g_object_notify (B_OBJECT (self), "ui");      
 }
 
 /* -------------------- Updates -------------------- */
@@ -1932,7 +1932,7 @@ btk_ui_manager_remove_ui (BtkUIManager *self,
 
 static BtkAction *
 get_action_by_name (BtkUIManager *merge, 
-		    const gchar  *action_name)
+		    const bchar  *action_name)
 {
   GList *tmp;
 
@@ -1954,13 +1954,13 @@ get_action_by_name (BtkUIManager *merge,
   return NULL;
 }
 
-static gboolean
+static bboolean
 find_menu_position (GNode      *node, 
 		    BtkWidget **menushell_p, 
-		    gint       *pos_p)
+		    bint       *pos_p)
 {
   BtkWidget *menushell;
-  gint pos = 0;
+  bint pos = 0;
 
   g_return_val_if_fail (node != NULL, FALSE);
   g_return_val_if_fail (NODE_INFO (node)->type == NODE_TYPE_MENU ||
@@ -2002,7 +2002,7 @@ find_menu_position (GNode      *node,
 			      NODE_INFO (parent)->proxy) + 1;
 	  break;
 	default:
-	  g_warning ("%s: bad parent node type %d", G_STRLOC,
+	  g_warning ("%s: bad parent node type %d", B_STRLOC,
 		     NODE_INFO (parent)->type);
 	  return FALSE;
 	}
@@ -2036,13 +2036,13 @@ find_menu_position (GNode      *node,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 find_toolbar_position (GNode      *node, 
 		       BtkWidget **toolbar_p, 
-		       gint       *pos_p)
+		       bint       *pos_p)
 {
   BtkWidget *toolbar;
-  gint pos;
+  bint pos;
 
   g_return_val_if_fail (node != NULL, FALSE);
   g_return_val_if_fail (NODE_INFO (node)->type == NODE_TYPE_TOOLBAR ||
@@ -2070,7 +2070,7 @@ find_toolbar_position (GNode      *node,
 					    BTK_TOOL_ITEM (NODE_INFO (parent)->proxy)) + 1;
 	  break;
 	default:
-	  g_warning ("%s: bad parent node type %d", G_STRLOC,
+	  g_warning ("%s: bad parent node type %d", B_STRLOC,
 		     NODE_INFO (parent)->type);
 	  return FALSE;
 	}
@@ -2117,11 +2117,11 @@ find_toolbar_position (GNode      *node,
  *
  * Return value: whether @menu is empty.
  **/
-gboolean
+bboolean
 _btk_menu_is_empty (BtkWidget *menu)
 {
   GList *children, *cur;
-  gboolean result = TRUE;
+  bboolean result = TRUE;
 
   g_return_val_if_fail (menu == NULL || BTK_IS_MENU (menu), TRUE);
 
@@ -2167,8 +2167,8 @@ update_smart_separators (BtkWidget *proxy)
 
   if (parent) 
     {
-      gboolean visible;
-      gboolean empty;
+      bboolean visible;
+      bboolean empty;
       GList *children, *cur, *last;
       BtkWidget *filler;
 
@@ -2189,8 +2189,8 @@ update_smart_separators (BtkWidget *proxy)
 	  else if (BTK_IS_SEPARATOR_MENU_ITEM (cur->data) ||
 		   BTK_IS_SEPARATOR_TOOL_ITEM (cur->data))
 	    {
-	      gint mode = 
-		GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cur->data), 
+	      bint mode = 
+		BPOINTER_TO_INT (g_object_get_data (B_OBJECT (cur->data), 
 						    "btk-separator-mode"));
 	      switch (mode) 
 		{
@@ -2255,13 +2255,13 @@ update_smart_separators (BtkWidget *proxy)
 static void
 update_node (BtkUIManager *self, 
 	     GNode        *node,
-	     gboolean      in_popup,
-             gboolean      popup_accels)
+	     bboolean      in_popup,
+             bboolean      popup_accels)
 {
   Node *info;
   GNode *child;
   BtkAction *action;
-  const gchar *action_name;
+  const bchar *action_name;
   NodeUIReference *ref;
   
 #ifdef DEBUG_UI_MANAGER
@@ -2382,7 +2382,7 @@ update_node (BtkUIManager *self,
 
 	/* remove the proxy if it is of the wrong type ... */
 	if (info->proxy &&  
-	    G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
+	    B_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
 	  {
 	    if (BTK_IS_MENU_ITEM (info->proxy))
 	      {
@@ -2425,9 +2425,9 @@ update_node (BtkUIManager *self,
                 btk_widget_set_no_show_all (tearoff, TRUE);
                 btk_menu_shell_append (BTK_MENU_SHELL (menu), tearoff);
                 filler = btk_menu_item_new_with_label (_("Empty"));
-                g_object_set_data (G_OBJECT (filler),
+                g_object_set_data (B_OBJECT (filler),
                                    I_("btk-empty-menu-item"),
-                                   GINT_TO_POINTER (TRUE));
+                                   BINT_TO_POINTER (TRUE));
                 btk_widget_set_sensitive (filler, FALSE);
                 btk_widget_set_no_show_all (filler, TRUE);
                 btk_menu_shell_append (BTK_MENU_SHELL (menu), filler);
@@ -2443,7 +2443,7 @@ update_node (BtkUIManager *self,
 	    else
 	      {
 		BtkWidget *menushell;
-		gint pos;
+		bint pos;
 		
 		if (find_menu_position (node, &menushell, &pos))
                   {
@@ -2522,24 +2522,24 @@ update_node (BtkUIManager *self,
       if (info->proxy == NULL)
 	{
 	  BtkWidget *menushell;
-	  gint pos;
+	  bint pos;
 	  
 	  if (find_menu_position (node, &menushell, &pos))
             {
 	      info->proxy = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->proxy);
-	      g_object_set_data (G_OBJECT (info->proxy),
+	      g_object_set_data (B_OBJECT (info->proxy),
 	  		         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
+			         BINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
 	      btk_widget_set_no_show_all (info->proxy, TRUE);
 	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 	 			     NODE_INFO (node)->proxy, pos);
 	  
 	      info->extra = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->extra);
-	      g_object_set_data (G_OBJECT (info->extra),
+	      g_object_set_data (B_OBJECT (info->extra),
 			         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
+			         BINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
 	      btk_widget_set_no_show_all (info->extra, TRUE);
 	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 				     NODE_INFO (node)->extra, pos + 1);
@@ -2569,7 +2569,7 @@ update_node (BtkUIManager *self,
       if (info->proxy == NULL)
 	{
 	  BtkWidget *toolbar;
-	  gint pos;
+	  bint pos;
 	  BtkToolItem *item;    
 	  
 	  if (find_toolbar_position (node, &toolbar, &pos))
@@ -2578,18 +2578,18 @@ update_node (BtkUIManager *self,
 	      btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, pos);
 	      info->proxy = BTK_WIDGET (item);
 	      g_object_ref_sink (info->proxy);
-	      g_object_set_data (G_OBJECT (info->proxy),
+	      g_object_set_data (B_OBJECT (info->proxy),
 			         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
+			         BINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
 	      btk_widget_set_no_show_all (info->proxy, TRUE);
 	  
 	      item = btk_separator_tool_item_new ();
 	      btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, pos+1);
 	      info->extra = BTK_WIDGET (item);
 	      g_object_ref_sink (info->extra);
-	      g_object_set_data (G_OBJECT (info->extra),
+	      g_object_set_data (B_OBJECT (info->extra),
 			         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
+			         BINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
 	      btk_widget_set_no_show_all (info->extra, TRUE);
             }
 	}
@@ -2597,7 +2597,7 @@ update_node (BtkUIManager *self,
     case NODE_TYPE_MENUITEM:
       /* remove the proxy if it is of the wrong type ... */
       if (info->proxy &&  
-	  G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
+	  B_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
 	{
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
@@ -2612,7 +2612,7 @@ update_node (BtkUIManager *self,
       if (info->proxy == NULL)
 	{
 	  BtkWidget *menushell;
-	  gint pos;
+	  bint pos;
 	  
 	  if (find_menu_position (node, &menushell, &pos))
             {
@@ -2655,7 +2655,7 @@ update_node (BtkUIManager *self,
     case NODE_TYPE_TOOLITEM:
       /* remove the proxy if it is of the wrong type ... */
       if (info->proxy && 
-	  G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->toolbar_item_type)
+	  B_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->toolbar_item_type)
 	{
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
@@ -2670,7 +2670,7 @@ update_node (BtkUIManager *self,
       if (info->proxy == NULL)
 	{
 	  BtkWidget *toolbar;
-	  gint pos;
+	  bint pos;
 	  
 	  if (find_toolbar_position (node, &toolbar, &pos))
             {
@@ -2701,8 +2701,8 @@ update_node (BtkUIManager *self,
 	  NODE_INFO (node->parent)->type == NODE_TYPE_TOOLBAR_PLACEHOLDER)
 	{
 	  BtkWidget *toolbar;
-	  gint pos;
-	  gint separator_mode;
+	  bint pos;
+	  bint separator_mode;
 	  BtkToolItem *item;
 
 	  if (BTK_IS_SEPARATOR_TOOL_ITEM (info->proxy))
@@ -2729,16 +2729,16 @@ update_node (BtkUIManager *self,
 	      else
 	        separator_mode = SEPARATOR_MODE_SMART;
 	  
-	      g_object_set_data (G_OBJECT (info->proxy),
+	      g_object_set_data (B_OBJECT (info->proxy),
 			         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (separator_mode));
+			         BINT_TO_POINTER (separator_mode));
 	      btk_widget_show (info->proxy);
             }
 	}
       else
 	{
 	  BtkWidget *menushell;
-	  gint pos;
+	  bint pos;
 	  
 	  if (BTK_IS_SEPARATOR_MENU_ITEM (info->proxy))
 	    {
@@ -2753,9 +2753,9 @@ update_node (BtkUIManager *self,
               info->proxy = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->proxy);
 	      btk_widget_set_no_show_all (info->proxy, TRUE);
-	      g_object_set_data (G_OBJECT (info->proxy),
+	      g_object_set_data (B_OBJECT (info->proxy),
 			         I_("btk-separator-mode"),
-			         GINT_TO_POINTER (SEPARATOR_MODE_SMART));
+			         BINT_TO_POINTER (SEPARATOR_MODE_SMART));
 	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 				     info->proxy, pos);
 	      btk_widget_show (info->proxy);
@@ -2809,7 +2809,7 @@ update_node (BtkUIManager *self,
     }
 }
 
-static gboolean
+static bboolean
 do_updates (BtkUIManager *self)
 {
   /* this function needs to check through the tree for dirty nodes.
@@ -2831,7 +2831,7 @@ do_updates (BtkUIManager *self)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 do_updates_idle (BtkUIManager *self)
 {
   do_updates (self);
@@ -2883,9 +2883,9 @@ btk_ui_manager_ensure_update (BtkUIManager *self)
     }
 }
 
-static gboolean
+static bboolean
 dirty_traverse_func (GNode   *node,
-		     gpointer data)
+		     bpointer data)
 {
   NODE_INFO (node)->dirty = TRUE;
   return FALSE;
@@ -2910,7 +2910,7 @@ mark_node_dirty (GNode *node)
     NODE_INFO (p)->dirty = TRUE;  
 }
 
-static const gchar *
+static const bchar *
 open_tag_format (NodeType type)
 {
   switch (type)
@@ -2931,7 +2931,7 @@ open_tag_format (NodeType type)
     }
 }
 
-static const gchar *
+static const bchar *
 close_tag_format (NodeType type)
 {
   switch (type)
@@ -2951,13 +2951,13 @@ close_tag_format (NodeType type)
 static void
 print_node (BtkUIManager *self,
 	    GNode        *node,
-	    gint          indent_level,
+	    bint          indent_level,
 	    GString      *buffer)
 {
   Node  *mnode;
   GNode *child;
-  const gchar *open_fmt;
-  const gchar *close_fmt;
+  const bchar *open_fmt;
+  const bchar *close_fmt;
 
   mnode = node->data;
 
@@ -2985,13 +2985,13 @@ print_node (BtkUIManager *self,
     g_string_append_printf (buffer, close_fmt, indent_level, "");
 }
 
-static gboolean
+static bboolean
 btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
 					   BtkBuilder    *builder,
-					   GObject       *child,
-					   const gchar   *tagname,
+					   BObject       *child,
+					   const bchar   *tagname,
 					   GMarkupParser *parser,
-					   gpointer      *data)
+					   bpointer      *data)
 {
   if (child)
     return FALSE;
@@ -3019,12 +3019,12 @@ btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_ui_manager_buildable_custom_tag_end (BtkBuildable *buildable,
 					 BtkBuilder   *builder,
-					 GObject      *child,
-					 const gchar  *tagname,
-					 gpointer     *data)
+					 BObject      *child,
+					 const bchar  *tagname,
+					 bpointer     *data)
 {
   queue_update (BTK_UI_MANAGER (buildable));
-  g_object_notify (G_OBJECT (buildable), "ui");
+  g_object_notify (B_OBJECT (buildable), "ui");
   g_free (data);
 }
 
@@ -3039,7 +3039,7 @@ btk_ui_manager_buildable_custom_tag_end (BtkBuildable *buildable,
  *
  * Since: 2.4
  **/
-gchar *
+bchar *
 btk_ui_manager_get_ui (BtkUIManager *self)
 {
   GString *buffer;
@@ -3057,13 +3057,13 @@ btk_ui_manager_get_ui (BtkUIManager *self)
 
 #undef btk_ui_manager_add_ui_from_file
 
-guint
+buint
 btk_ui_manager_add_ui_from_file (BtkUIManager *self,
-				 const gchar  *filename,
+				 const bchar  *filename,
 				 GError      **error)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
-  guint retval;
+  bchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, error);
+  buint retval;
 
   if (utf8_filename == NULL)
     return 0;

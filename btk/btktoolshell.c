@@ -50,7 +50,7 @@ btk_tool_shell_get_type (void)
 
   if (!type)
     {
-      type = g_type_register_static_simple (G_TYPE_INTERFACE, I_("BtkToolShell"),
+      type = g_type_register_static_simple (B_TYPE_INTERFACE, I_("BtkToolShell"),
                                             sizeof (BtkToolShellIface),
                                             NULL, 0, NULL, 0);
       g_type_interface_add_prerequisite (type, BTK_TYPE_WIDGET);
@@ -191,7 +191,7 @@ btk_tool_shell_get_text_orientation (BtkToolShell *shell)
  *
  * Since: 2.20
  **/
-gfloat
+bfloat
 btk_tool_shell_get_text_alignment (BtkToolShell *shell)
 {
   BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);

@@ -26,8 +26,8 @@
 #include <stdio.h>
 
 static BtkWidget *
-create_menu (gint     depth,
-	     gboolean tearoff)
+create_menu (bint     depth,
+	     bboolean tearoff)
 {
   BtkWidget *menu;
   BtkWidget *menuitem;
@@ -65,12 +65,12 @@ create_menu (gint     depth,
   return menu;
 }
 
-static gboolean
-change_item (gpointer user_data)
+static bboolean
+change_item (bpointer user_data)
 {
   BtkWidget *widget;
   BtkMenuShell *shell = BTK_MENU_SHELL (user_data);
-  static gint step = 0;
+  static bint step = 0;
 
   if (((step++ / 40) % 2) == 0)
     {

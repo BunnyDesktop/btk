@@ -45,7 +45,7 @@ main (int argc, char *argv[])
   BdkRectangle embedded_rect;
   BdkPoint *attach_points;
   int n_attach_points;
-  const gchar *display_name;
+  const bchar *display_name;
   char *context;
   char *themename;
   GList *list;

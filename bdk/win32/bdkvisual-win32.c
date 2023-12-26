@@ -32,24 +32,24 @@
 #include "bdkscreen.h" /* bdk_screen_get_default() */
 #include "bdkprivate-win32.h"
 
-static void  bdk_visual_decompose_mask (gulong     mask,
-					gint      *shift,
-					gint      *prec);
+static void  bdk_visual_decompose_mask (bulong     mask,
+					bint      *shift,
+					bint      *prec);
 
 static BdkVisual *system_visual = NULL;
 
-static gint available_depths[1];
+static bint available_depths[1];
 
 static BdkVisualType available_types[1];
 
 static void
-bdk_visual_finalize (GObject *object)
+bdk_visual_finalize (BObject *object)
 {
   g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-bdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (BObjectClass *class)
 {
   class->finalize = bdk_visual_finalize;
 }
@@ -74,7 +74,7 @@ bdk_visual_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkVisual",
                                             &object_info, 0);
     }
@@ -96,10 +96,10 @@ _bdk_visual_init (void)
   } bmi;
   HBITMAP hbm;
 
-  const gint rastercaps = GetDeviceCaps (_bdk_display_hdc, RASTERCAPS);
+  const bint rastercaps = GetDeviceCaps (_bdk_display_hdc, RASTERCAPS);
   const int numcolors = GetDeviceCaps (_bdk_display_hdc, NUMCOLORS);
-  gint bitspixel = GetDeviceCaps (_bdk_display_hdc, BITSPIXEL);
-  gint map_entries = 0;
+  bint bitspixel = GetDeviceCaps (_bdk_display_hdc, BITSPIXEL);
+  bint map_entries = 0;
 
   system_visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
@@ -109,7 +109,7 @@ _bdk_visual_init (void)
   if (rastercaps & RC_PALETTE)
     {
       const int sizepalette = GetDeviceCaps (_bdk_display_hdc, SIZEPALETTE);
-      gchar *max_colors = getenv ("BDK_WIN32_MAX_COLORS");
+      bchar *max_colors = getenv ("BDK_WIN32_MAX_COLORS");
       system_visual->type = BDK_VISUAL_PSEUDO_COLOR;
 
       BDK_NOTE (COLORMAP, g_print ("SIZEPALETTE=%d\n", sizepalette));
@@ -297,7 +297,7 @@ _bdk_visual_init (void)
   available_types[0] = system_visual->type;
 }
 
-gint
+bint
 bdk_visual_get_best_depth (void)
 {
   return available_depths[0];
@@ -322,7 +322,7 @@ bdk_visual_get_best (void)
 }
 
 BdkVisual*
-bdk_visual_get_best_with_depth (gint depth)
+bdk_visual_get_best_with_depth (bint depth)
 {
   if (depth == system_visual->depth)
     return (BdkVisual*) system_visual;
@@ -340,7 +340,7 @@ bdk_visual_get_best_with_type (BdkVisualType visual_type)
 }
 
 BdkVisual*
-bdk_visual_get_best_with_both (gint          depth,
+bdk_visual_get_best_with_both (bint          depth,
 			       BdkVisualType visual_type)
 {
   if ((depth == system_visual->depth) && (visual_type == system_visual->type))
@@ -350,8 +350,8 @@ bdk_visual_get_best_with_both (gint          depth,
 }
 
 void
-bdk_query_depths  (gint **depths,
-		   gint  *count)
+bdk_query_depths  (bint **depths,
+		   bint  *count)
 {
   *count = 1;
   *depths = available_depths;
@@ -359,7 +359,7 @@ bdk_query_depths  (gint **depths,
 
 void
 bdk_query_visual_types (BdkVisualType **visual_types,
-			gint           *count)
+			bint           *count)
 {
   *count = 1;
   *visual_types = available_types;
@@ -368,7 +368,7 @@ bdk_query_visual_types (BdkVisualType **visual_types,
 GList*
 bdk_screen_list_visuals (BdkScreen *screen)
 {
-  return g_list_append (NULL, (gpointer) system_visual);
+  return g_list_append (NULL, (bpointer) system_visual);
 }
 
 BdkScreen *
@@ -380,9 +380,9 @@ bdk_visual_get_screen (BdkVisual *visual)
 }
 
 static void
-bdk_visual_decompose_mask (gulong  mask,
-			   gint   *shift,
-			   gint   *prec)
+bdk_visual_decompose_mask (bulong  mask,
+			   bint   *shift,
+			   bint   *prec)
 {
   *shift = 0;
   *prec = 0;

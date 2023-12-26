@@ -34,7 +34,7 @@
 #include <bdk/bdkcolor.h>
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkGCValues	      BdkGCValues;
 typedef struct _BdkGCClass	      BdkGCClass;
@@ -168,39 +168,39 @@ struct _BdkGCValues
   BdkPixmap	   *stipple;
   BdkPixmap	   *clip_mask;
   BdkSubwindowMode  subwindow_mode;
-  gint		    ts_x_origin;
-  gint		    ts_y_origin;
-  gint		    clip_x_origin;
-  gint		    clip_y_origin;
-  gint		    graphics_exposures;
-  gint		    line_width;
+  bint		    ts_x_origin;
+  bint		    ts_y_origin;
+  bint		    clip_x_origin;
+  bint		    clip_y_origin;
+  bint		    graphics_exposures;
+  bint		    line_width;
   BdkLineStyle	    line_style;
   BdkCapStyle	    cap_style;
   BdkJoinStyle	    join_style;
 };
 
 #define BDK_TYPE_GC              (bdk_gc_get_type ())
-#define BDK_GC(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC, BdkGC))
-#define BDK_GC_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC, BdkGCClass))
-#define BDK_IS_GC(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC))
-#define BDK_IS_GC_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC))
-#define BDK_GC_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC, BdkGCClass))
+#define BDK_GC(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC, BdkGC))
+#define BDK_GC_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC, BdkGCClass))
+#define BDK_IS_GC(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC))
+#define BDK_IS_GC_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC))
+#define BDK_GC_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC, BdkGCClass))
 
 struct _BdkGC
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
-  gint GSEAL (clip_x_origin);
-  gint GSEAL (clip_y_origin);
-  gint GSEAL (ts_x_origin);
-  gint GSEAL (ts_y_origin);
+  bint GSEAL (clip_x_origin);
+  bint GSEAL (clip_y_origin);
+  bint GSEAL (ts_x_origin);
+  bint GSEAL (ts_y_origin);
 
   BdkColormap *GSEAL (colormap);
 };
 
 struct _BdkGCClass 
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   void (*get_values)     (BdkGC          *gc,
 			  BdkGCValues    *values);
@@ -208,9 +208,9 @@ struct _BdkGCClass
 			  BdkGCValues    *values,
 			  BdkGCValuesMask mask);
   void (*set_dashes)     (BdkGC          *gc,
-			  gint	          dash_offset,
-			  gint8           dash_list[],
-			  gint            n);
+			  bint	          dash_offset,
+			  bint8           dash_list[],
+			  bint            n);
   
   /* Padding for future expansion */
   void         (*_bdk_reserved1)  (void);
@@ -221,7 +221,7 @@ struct _BdkGCClass
 
 
 #ifndef BDK_DISABLE_DEPRECATED
-GType  bdk_gc_get_type            (void) G_GNUC_CONST;
+GType  bdk_gc_get_type            (void) B_GNUC_CONST;
 BdkGC *bdk_gc_new		  (BdkDrawable	    *drawable);
 BdkGC *bdk_gc_new_with_values	  (BdkDrawable	    *drawable,
 				   BdkGCValues	    *values,
@@ -250,11 +250,11 @@ void   bdk_gc_set_tile		  (BdkGC	    *gc,
 void   bdk_gc_set_stipple	  (BdkGC	    *gc,
 				   BdkPixmap	    *stipple);
 void   bdk_gc_set_ts_origin	  (BdkGC	    *gc,
-				   gint		     x,
-				   gint		     y);
+				   bint		     x,
+				   bint		     y);
 void   bdk_gc_set_clip_origin	  (BdkGC	    *gc,
-				   gint		     x,
-				   gint		     y);
+				   bint		     x,
+				   bint		     y);
 void   bdk_gc_set_clip_mask	  (BdkGC	    *gc,
 				   BdkBitmap	    *mask);
 void   bdk_gc_set_clip_rectangle  (BdkGC	    *gc,
@@ -264,19 +264,19 @@ void   bdk_gc_set_clip_rebunnyion	  (BdkGC	    *gc,
 void   bdk_gc_set_subwindow	  (BdkGC	    *gc,
 				   BdkSubwindowMode  mode);
 void   bdk_gc_set_exposures	  (BdkGC	    *gc,
-				   gboolean	     exposures);
+				   bboolean	     exposures);
 void   bdk_gc_set_line_attributes (BdkGC	    *gc,
-				   gint		     line_width,
+				   bint		     line_width,
 				   BdkLineStyle	     line_style,
 				   BdkCapStyle	     cap_style,
 				   BdkJoinStyle	     join_style);
 void   bdk_gc_set_dashes          (BdkGC            *gc,
-				   gint	             dash_offset,
-				   gint8             dash_list[],
-				   gint              n);
+				   bint	             dash_offset,
+				   bint8             dash_list[],
+				   bint              n);
 void   bdk_gc_offset              (BdkGC            *gc,
-				   gint              x_offset,
-				   gint              y_offset);
+				   bint              x_offset,
+				   bint              y_offset);
 void   bdk_gc_copy		  (BdkGC	    *dst_gc,
 				   BdkGC	    *src_gc);
 
@@ -293,6 +293,6 @@ BdkScreen *  bdk_gc_get_screen	     (BdkGC          *gc);
 #define bdk_gc_destroy                 g_object_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_H__ */

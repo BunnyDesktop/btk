@@ -60,7 +60,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkEventBox.html#btk-event-box-get-above-child" title="btk_event_box_get_above_child ()">btk_event_box_get_above_child</a> <span class="c_punctuation">()</span>
@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkEventBox.html#btk-event-box-get-visible-window" title="btk_event_box_get_visible_window ()">btk_event_box_get_visible_window</a> <span class="c_punctuation">()</span>
@@ -95,12 +95,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkEventBox.html#BtkEventBox--above-child" title="The “above-child” property">above-child</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkEventBox.html#BtkEventBox--visible-window" title="The “visible-window” property">visible-window</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -122,7 +122,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkEventBox.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -157,7 +157,7 @@ btk_event_box_new (<em class="parameter"><code><span class="type">void</span></c
 <a name="btk-event-box-set-above-child"></a><h3>btk_event_box_set_above_child ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_event_box_set_above_child (<em class="parameter"><code><a class="link" href="BtkEventBox.html" title="BtkEventBox"><span class="type">BtkEventBox</span></a> *event_box</code></em>,
-                               <em class="parameter"><code><span class="type">gboolean</span> above_child</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bboolean</span> above_child</code></em>);</pre>
 <p>Set whether the event box window is positioned above the windows of its child,
 as opposed to below it. If the window is above, all events inside the
 event box will go to the event box. If the window is below, events
@@ -191,7 +191,7 @@ to its parents.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-event-box-get-above-child"></a><h3>btk_event_box_get_above_child ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_event_box_get_above_child (<em class="parameter"><code><a class="link" href="BtkEventBox.html" title="BtkEventBox"><span class="type">BtkEventBox</span></a> *event_box</code></em>);</pre>
 <p>Returns whether the event box window is above or below the
 windows of its child. See <a class="link" href="BtkEventBox.html#btk-event-box-set-above-child" title="btk_event_box_set_above_child ()"><code class="function">btk_event_box_set_above_child()</code></a> for
@@ -223,7 +223,7 @@ of its child.</p>
 <a name="btk-event-box-set-visible-window"></a><h3>btk_event_box_set_visible_window ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_event_box_set_visible_window (<em class="parameter"><code><a class="link" href="BtkEventBox.html" title="BtkEventBox"><span class="type">BtkEventBox</span></a> *event_box</code></em>,
-                                  <em class="parameter"><code><span class="type">gboolean</span> visible_window</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bboolean</span> visible_window</code></em>);</pre>
 <p>Set whether the event box uses a visible or invisible child
 window. The default is to use visible windows.</p>
 <p>In an invisible window event box, the window that the
@@ -284,7 +284,7 @@ descendant windows, not just at the same place on the screen.
 <hr>
 <div class="refsect2">
 <a name="btk-event-box-get-visible-window"></a><h3>btk_event_box_get_visible_window ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_event_box_get_visible_window (<em class="parameter"><code><a class="link" href="BtkEventBox.html" title="BtkEventBox"><span class="type">BtkEventBox</span></a> *event_box</code></em>);</pre>
 <p>Returns whether the event box has a visible window.
 See <a class="link" href="BtkEventBox.html#btk-event-box-set-visible-window" title="btk_event_box_set_visible_window ()"><code class="function">btk_event_box_set_visible_window()</code></a> for details.</p>
@@ -321,7 +321,7 @@ See <a class="link" href="BtkEventBox.html#btk-event-box-set-visible-window" tit
 <a name="BtkEventBox.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkEventBox--above-child"></a><h3>The <code class="literal">“above-child”</code> property</h3>
-<pre class="programlisting">  “above-child”              <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “above-child”              <span class="type">bboolean</span></pre>
 <p>Whether the event-trapping window of the eventbox is above the window of the child widget as opposed to below it.</p>
 <p>Owner: BtkEventBox</p>
 <p>Flags: Read / Write</p>
@@ -330,7 +330,7 @@ See <a class="link" href="BtkEventBox.html#btk-event-box-set-visible-window" tit
 <hr>
 <div class="refsect2">
 <a name="BtkEventBox--visible-window"></a><h3>The <code class="literal">“visible-window”</code> property</h3>
-<pre class="programlisting">  “visible-window”           <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “visible-window”           <span class="type">bboolean</span></pre>
 <p>Whether the event box is visible, as opposed to invisible and only used to trap events.</p>
 <p>Owner: BtkEventBox</p>
 <p>Flags: Read / Write</p>

@@ -23,20 +23,20 @@
 
 #include <btk/btktextbuffer.h>
 
-guint8 * _btk_text_buffer_serialize_rich_text   (BtkTextBuffer     *register_buffer,
+buint8 * _btk_text_buffer_serialize_rich_text   (BtkTextBuffer     *register_buffer,
                                                  BtkTextBuffer     *content_buffer,
                                                  const BtkTextIter *start,
                                                  const BtkTextIter *end,
-                                                 gsize             *length,
-                                                 gpointer           user_data);
+                                                 bsize             *length,
+                                                 bpointer           user_data);
 
-gboolean _btk_text_buffer_deserialize_rich_text (BtkTextBuffer     *register_buffer,
+bboolean _btk_text_buffer_deserialize_rich_text (BtkTextBuffer     *register_buffer,
                                                  BtkTextBuffer     *content_buffer,
                                                  BtkTextIter       *iter,
-                                                 const guint8      *data,
-                                                 gsize              length,
-                                                 gboolean           create_tags,
-                                                 gpointer           user_data,
+                                                 const buint8      *data,
+                                                 bsize              length,
+                                                 bboolean           create_tags,
+                                                 bpointer           user_data,
                                                  GError           **error);
 
 

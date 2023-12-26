@@ -43,7 +43,7 @@ btk_tree_drag_source_get_type (void)
 	NULL
       };
 
-      our_type = g_type_register_static (G_TYPE_INTERFACE, 
+      our_type = g_type_register_static (B_TYPE_INTERFACE, 
 					 I_("BtkTreeDragSource"),
 					 &our_info, 0);
     }
@@ -72,7 +72,7 @@ btk_tree_drag_dest_get_type (void)
 	NULL
       };
 
-      our_type = g_type_register_static (G_TYPE_INTERFACE, I_("BtkTreeDragDest"), &our_info, 0);
+      our_type = g_type_register_static (B_TYPE_INTERFACE, I_("BtkTreeDragDest"), &our_info, 0);
     }
   
   return our_type;
@@ -89,7 +89,7 @@ btk_tree_drag_dest_get_type (void)
  *
  * Return value: %TRUE if the row can be dragged
  **/
-gboolean
+bboolean
 btk_tree_drag_source_row_draggable (BtkTreeDragSource *drag_source,
                                     BtkTreePath       *path)
 {
@@ -120,7 +120,7 @@ btk_tree_drag_source_row_draggable (BtkTreeDragSource *drag_source,
  * 
  * Return value: %TRUE if the row was successfully deleted
  **/
-gboolean
+bboolean
 btk_tree_drag_source_drag_data_delete (BtkTreeDragSource *drag_source,
                                        BtkTreePath       *path)
 {
@@ -146,7 +146,7 @@ btk_tree_drag_source_drag_data_delete (BtkTreeDragSource *drag_source,
  * 
  * Return value: %TRUE if data of the required type was provided 
  **/
-gboolean
+bboolean
 btk_tree_drag_source_drag_data_get    (BtkTreeDragSource *drag_source,
                                        BtkTreePath       *path,
                                        BtkSelectionData  *selection_data)
@@ -175,7 +175,7 @@ btk_tree_drag_source_drag_data_get    (BtkTreeDragSource *drag_source,
  * 
  * Return value: whether a new row was created before position @dest
  **/
-gboolean
+bboolean
 btk_tree_drag_dest_drag_data_received (BtkTreeDragDest  *drag_dest,
                                        BtkTreePath      *dest,
                                        BtkSelectionData *selection_data)
@@ -204,7 +204,7 @@ btk_tree_drag_dest_drag_data_received (BtkTreeDragDest  *drag_dest,
  * 
  * Return value: %TRUE if a drop is possible before @dest_path
  **/
-gboolean
+bboolean
 btk_tree_drag_dest_row_drop_possible (BtkTreeDragDest   *drag_dest,
                                       BtkTreePath       *dest_path,
 				      BtkSelectionData  *selection_data)
@@ -223,7 +223,7 @@ typedef struct _TreeRowData TreeRowData;
 struct _TreeRowData
 {
   BtkTreeModel *model;
-  gchar path[4];
+  bchar path[4];
 };
 
 /**
@@ -237,15 +237,15 @@ struct _TreeRowData
  * 
  * Return value: %TRUE if the #BtkSelectionData had the proper target type to allow us to set a tree row
  **/
-gboolean
+bboolean
 btk_tree_set_row_drag_data (BtkSelectionData *selection_data,
 			    BtkTreeModel     *tree_model,
 			    BtkTreePath      *path)
 {
   TreeRowData *trd;
-  gchar *path_str;
-  gint len;
-  gint struct_size;
+  bchar *path_str;
+  bint len;
+  bint struct_size;
   
   g_return_val_if_fail (selection_data != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), FALSE);
@@ -300,7 +300,7 @@ btk_tree_set_row_drag_data (BtkSelectionData *selection_data,
  * Return value: %TRUE if @selection_data had target type %BTK_TREE_MODEL_ROW and
  *  is otherwise valid
  **/
-gboolean
+bboolean
 btk_tree_get_row_drag_data (BtkSelectionData  *selection_data,
 			    BtkTreeModel     **tree_model,
 			    BtkTreePath      **path)

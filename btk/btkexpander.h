@@ -30,14 +30,14 @@
 
 #include <btk/btkbin.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_EXPANDER            (btk_expander_get_type ())
-#define BTK_EXPANDER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EXPANDER, BtkExpander))
-#define BTK_EXPANDER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EXPANDER, BtkExpanderClass))
-#define BTK_IS_EXPANDER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EXPANDER))
-#define BTK_IS_EXPANDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EXPANDER))
-#define BTK_EXPANDER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EXPANDER, BtkExpanderClass))
+#define BTK_EXPANDER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EXPANDER, BtkExpander))
+#define BTK_EXPANDER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EXPANDER, BtkExpanderClass))
+#define BTK_IS_EXPANDER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EXPANDER))
+#define BTK_IS_EXPANDER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EXPANDER))
+#define BTK_EXPANDER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EXPANDER, BtkExpanderClass))
 
 typedef struct _BtkExpander        BtkExpander;
 typedef struct _BtkExpanderClass   BtkExpanderClass;
@@ -60,39 +60,39 @@ struct _BtkExpanderClass
   void        (* activate) (BtkExpander *expander);
 };
 
-GType                 btk_expander_get_type          (void) G_GNUC_CONST;
+GType                 btk_expander_get_type          (void) B_GNUC_CONST;
 
-BtkWidget            *btk_expander_new               (const gchar *label);
-BtkWidget            *btk_expander_new_with_mnemonic (const gchar *label);
+BtkWidget            *btk_expander_new               (const bchar *label);
+BtkWidget            *btk_expander_new_with_mnemonic (const bchar *label);
 
 void                  btk_expander_set_expanded      (BtkExpander *expander,
-						      gboolean     expanded);
-gboolean              btk_expander_get_expanded      (BtkExpander *expander);
+						      bboolean     expanded);
+bboolean              btk_expander_get_expanded      (BtkExpander *expander);
 
 /* Spacing between the expander/label and the child */
 void                  btk_expander_set_spacing       (BtkExpander *expander,
-						      gint         spacing);
-gint                  btk_expander_get_spacing       (BtkExpander *expander);
+						      bint         spacing);
+bint                  btk_expander_get_spacing       (BtkExpander *expander);
 
 void                  btk_expander_set_label         (BtkExpander *expander,
-						      const gchar *label);
-const gchar *         btk_expander_get_label         (BtkExpander *expander);
+						      const bchar *label);
+const bchar *         btk_expander_get_label         (BtkExpander *expander);
 
 void                  btk_expander_set_use_underline (BtkExpander *expander,
-						      gboolean     use_underline);
-gboolean              btk_expander_get_use_underline (BtkExpander *expander);
+						      bboolean     use_underline);
+bboolean              btk_expander_get_use_underline (BtkExpander *expander);
 
 void                  btk_expander_set_use_markup    (BtkExpander *expander,
-						      gboolean    use_markup);
-gboolean              btk_expander_get_use_markup    (BtkExpander *expander);
+						      bboolean    use_markup);
+bboolean              btk_expander_get_use_markup    (BtkExpander *expander);
 
 void                  btk_expander_set_label_widget  (BtkExpander *expander,
 						      BtkWidget   *label_widget);
 BtkWidget            *btk_expander_get_label_widget  (BtkExpander *expander);
 void                  btk_expander_set_label_fill    (BtkExpander *expander,
-						      gboolean     label_fill);
-gboolean              btk_expander_get_label_fill    (BtkExpander *expander);
+						      bboolean     label_fill);
+bboolean              btk_expander_get_label_fill    (BtkExpander *expander);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_EXPANDER_H__ */

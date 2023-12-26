@@ -4,11 +4,11 @@
 
 static void selection_received( BtkWidget        *widget,
                                 BtkSelectionData *selection_data,
-                                gpointer          data );
+                                bpointer          data );
 
 /* Signal handler invoked when user clicks on the "Get Targets" button */
 static void get_targets( BtkWidget *widget,
-                         gpointer data )
+                         bpointer data )
 {
   static BdkAtom targets_atom = BDK_NONE;
   BtkWidget *window = (BtkWidget *)data;
@@ -25,7 +25,7 @@ static void get_targets( BtkWidget *widget,
 /* Signal handler called when the selections owner returns the data */
 static void selection_received( BtkWidget        *widget,
                                 BtkSelectionData *selection_data,
-                                gpointer          data )
+                                bpointer          data )
 {
   BdkAtom *atoms;
   GList *item_list;
@@ -84,7 +84,7 @@ int main( int   argc,
   btk_container_add (BTK_CONTAINER (window), button);
 
   g_signal_connect (button, "clicked",
-		    G_CALLBACK (get_targets), (gpointer) window);
+		    G_CALLBACK (get_targets), (bpointer) window);
   g_signal_connect (window, "selection-received",
 		    G_CALLBACK (selection_received), NULL);
 

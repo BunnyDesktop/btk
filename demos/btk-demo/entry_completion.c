@@ -16,7 +16,7 @@ create_completion_model (void)
   BtkListStore *store;
   BtkTreeIter iter;
   
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
 
   /* Append one word */
   btk_list_store_append (store, &iter);

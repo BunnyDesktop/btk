@@ -31,33 +31,33 @@
 #define BUNNY_ACCESSIBILITY_ENV "BUNNY_ACCESSIBILITY"
 #define NO_BAIL_ENV "NO_BAIL"
 
-static gboolean bail_focus_watcher      (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
-                                         const GValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_select_watcher     (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
-                                         const GValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_deselect_watcher   (GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
-                                         const GValue          *param_values,
-                                         gpointer               data);
-static gboolean bail_switch_page_watcher(GSignalInvocationHint *ihint,
-                                         guint                  n_param_values,
-                                         const GValue          *param_values,
-                                         gpointer               data);
+static bboolean bail_focus_watcher      (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
+                                         const BValue          *param_values,
+                                         bpointer               data);
+static bboolean bail_select_watcher     (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
+                                         const BValue          *param_values,
+                                         bpointer               data);
+static bboolean bail_deselect_watcher   (GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
+                                         const BValue          *param_values,
+                                         bpointer               data);
+static bboolean bail_switch_page_watcher(GSignalInvocationHint *ihint,
+                                         buint                  n_param_values,
+                                         const BValue          *param_values,
+                                         bpointer               data);
 static BatkObject* bail_get_accessible_for_widget (BtkWidget    *widget,
-                                                  gboolean     *transient);
+                                                  bboolean     *transient);
 static void     bail_finish_select       (BtkWidget            *widget);
 static void     bail_map_cb              (BtkWidget            *widget);
 static void     bail_map_submenu_cb      (BtkWidget            *widget);
-static gint     bail_focus_idle_handler  (gpointer             data);
+static bint     bail_focus_idle_handler  (bpointer             data);
 static void     bail_focus_notify        (BtkWidget            *widget);
 static void     bail_focus_notify_when_idle (BtkWidget            *widget);
 
 static void     bail_focus_tracker_init (void);
-static void     bail_focus_object_destroyed (gpointer data);
+static void     bail_focus_object_destroyed (bpointer data);
 static void     bail_focus_tracker (BatkObject *object);
 static void     bail_set_focus_widget (BtkWidget *focus_widget,
                                        BtkWidget *widget); 
@@ -66,11 +66,11 @@ static void     bail_set_focus_object (BatkObject *focus_obj,
 
 BtkWidget* focus_widget = NULL;
 static BtkWidget* next_focus_widget = NULL;
-static gboolean was_deselect = FALSE;
+static bboolean was_deselect = FALSE;
 static BtkWidget* subsequent_focus_widget = NULL;
 static BtkWidget* focus_before_menu = NULL;
-static guint focus_notify_handler = 0;    
-static guint focus_tracker_id = 0;
+static buint focus_notify_handler = 0;    
+static buint focus_tracker_id = 0;
 static GQuark quark_focus_object = 0;
 
 BAIL_IMPLEMENT_FACTORY (BAIL_TYPE_OBJECT, BailObject, bail_object, BTK_TYPE_OBJECT)
@@ -120,7 +120,7 @@ BAIL_IMPLEMENT_FACTORY_WITH_FUNC_DUMMY (BAIL_TYPE_TEXT_CELL, BailTextCell, bail_
 
 static BatkObject*
 bail_get_accessible_for_widget (BtkWidget *widget,
-                                gboolean  *transient)
+                                bboolean  *transient)
 {
   BatkObject *obj = NULL;
   GType bunny_canvas;
@@ -143,7 +143,7 @@ bail_get_accessible_for_widget (BtkWidget *widget,
   else if (BTK_IS_NOTEBOOK (widget)) 
     {
       BtkNotebook *notebook;
-      gint page_num = -1;
+      bint page_num = -1;
 
       notebook = BTK_NOTEBOOK (widget);
       /*
@@ -162,19 +162,19 @@ bail_get_accessible_for_widget (BtkWidget *widget,
     }
   else if (BTK_CHECK_TYPE ((widget), bunny_canvas))
     {
-      GObject *focused_item;
-      GValue value = {0, };
+      BObject *focused_item;
+      BValue value = {0, };
 
-      g_value_init (&value, G_TYPE_OBJECT);
-      g_object_get_property (G_OBJECT (widget), "focused_item", &value);
-      focused_item = g_value_get_object (&value);
+      b_value_init (&value, B_TYPE_OBJECT);
+      g_object_get_property (B_OBJECT (widget), "focused_item", &value);
+      focused_item = b_value_get_object (&value);
 
       if (focused_item)
         {
           BatkObject *tmp;
 
-          obj = batk_bobject_accessible_for_object (G_OBJECT (focused_item));
-          tmp = g_object_get_qdata (G_OBJECT (obj), quark_focus_object);
+          obj = batk_bobject_accessible_for_object (B_OBJECT (focused_item));
+          tmp = g_object_get_qdata (B_OBJECT (obj), quark_focus_object);
           if (tmp != NULL)
             obj = tmp;
         }
@@ -193,7 +193,7 @@ bail_get_accessible_for_widget (BtkWidget *widget,
       BatkObject *focus_object;
 
       obj = btk_widget_get_accessible (widget);
-      focus_object = g_object_get_qdata (G_OBJECT (obj), quark_focus_object);
+      focus_object = g_object_get_qdata (B_OBJECT (obj), quark_focus_object);
       /*
        * We check whether the object for this focus_object has been deleted.
        * This can happen when navigating to an empty directory in nautilus. 
@@ -211,20 +211,20 @@ bail_get_accessible_for_widget (BtkWidget *widget,
   return obj;
 }
 
-static gboolean
+static bboolean
 bail_focus_watcher (GSignalInvocationHint *ihint,
-                    guint                  n_param_values,
-                    const GValue          *param_values,
-                    gpointer               data)
+                    buint                  n_param_values,
+                    const BValue          *param_values,
+                    bpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BdkEvent *event;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BTK_IS_WIDGET(object), FALSE);
 
-  event = g_value_get_boxed (param_values + 1);
+  event = b_value_get_boxed (param_values + 1);
   widget = BTK_WIDGET (object);
 
   if (event->type == BDK_FOCUS_CHANGE) 
@@ -250,7 +250,7 @@ bail_focus_watcher (GSignalInvocationHint *ihint,
                         {
                           void *vp_focus_before_menu = &focus_before_menu;
                           focus_before_menu = window->focus_widget;
-                          g_object_add_weak_pointer (G_OBJECT (focus_before_menu), vp_focus_before_menu);
+                          g_object_add_weak_pointer (B_OBJECT (focus_before_menu), vp_focus_before_menu);
                         }
 
                       return TRUE;
@@ -334,16 +334,16 @@ bail_focus_watcher (GSignalInvocationHint *ihint,
   return TRUE; 
 }
 
-static gboolean
+static bboolean
 bail_select_watcher (GSignalInvocationHint *ihint,
-                     guint                  n_param_values,
-                     const GValue          *param_values,
-                     gpointer               data)
+                     buint                  n_param_values,
+                     const BValue          *param_values,
+                     bpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BTK_IS_WIDGET(object), FALSE);
 
   widget = BTK_WIDGET (object);
@@ -375,7 +375,7 @@ bail_finish_select (BtkWidget *widget)
            * If the submenu is not visble, wait until it is before
            * reporting focus on the menu item.
            */
-          gulong handler_id;
+          bulong handler_id;
 
           handler_id = g_signal_handler_find (menu_item->submenu,
                                               G_SIGNAL_MATCH_FUNC,
@@ -383,7 +383,7 @@ bail_finish_select (BtkWidget *widget)
                                                                BTK_TYPE_WINDOW),
                                               0,
                                               NULL,
-                                              (gpointer) bail_map_submenu_cb,
+                                              (bpointer) bail_map_submenu_cb,
                                               NULL); 
           if (!handler_id)
             g_signal_connect (menu_item->submenu, "map",
@@ -404,7 +404,7 @@ bail_finish_select (BtkWidget *widget)
         {
           void *vp_next_focus_widget = &next_focus_widget;
           g_source_remove (focus_notify_handler);
-          g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+          g_object_remove_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
 	  next_focus_widget = NULL;
           focus_notify_handler = 0;
           was_deselect = FALSE;
@@ -420,7 +420,7 @@ bail_finish_select (BtkWidget *widget)
     {
       void *vp_focus_before_menu = &focus_before_menu;
       focus_before_menu = focus_widget;
-      g_object_add_weak_pointer (G_OBJECT (focus_before_menu), vp_focus_before_menu);
+      g_object_add_weak_pointer (B_OBJECT (focus_before_menu), vp_focus_before_menu);
 
     } 
   bail_focus_notify_when_idle (widget);
@@ -445,17 +445,17 @@ bail_map_submenu_cb (BtkWidget *widget)
 }
 
 
-static gboolean
+static bboolean
 bail_deselect_watcher (GSignalInvocationHint *ihint,
-                       guint                  n_param_values,
-                       const GValue          *param_values,
-                       gpointer               data)
+                       buint                  n_param_values,
+                       const BValue          *param_values,
+                       bpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BtkWidget *menu_shell;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BTK_IS_WIDGET(object), FALSE);
 
   widget = BTK_WIDGET (object);
@@ -494,17 +494,17 @@ bail_deselect_watcher (GSignalInvocationHint *ihint,
   return TRUE; 
 }
 
-static gboolean 
+static bboolean 
 bail_switch_page_watcher (GSignalInvocationHint *ihint,
-                          guint                  n_param_values,
-                          const GValue          *param_values,
-                          gpointer               data)
+                          buint                  n_param_values,
+                          const BValue          *param_values,
+                          bpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BtkNotebook *notebook;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BTK_IS_WIDGET(object), FALSE);
 
   widget = BTK_WIDGET (object);
@@ -520,8 +520,8 @@ bail_switch_page_watcher (GSignalInvocationHint *ihint,
   return TRUE;
 }
 
-static gboolean
-bail_focus_idle_handler (gpointer data)
+static bboolean
+bail_focus_idle_handler (bpointer data)
 {
   focus_notify_handler = 0;
   /*
@@ -535,7 +535,7 @@ bail_focus_idle_handler (gpointer data)
   else
     {
       void *vp_next_focus_widget = &next_focus_widget;
-      g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+      g_object_remove_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
       next_focus_widget = NULL;
     }
     
@@ -548,20 +548,20 @@ static void
 bail_focus_notify (BtkWidget *widget)
 {
   BatkObject *batk_obj;
-  gboolean transient;
+  bboolean transient;
 
   if (widget != focus_widget)
     {
       if (focus_widget)
         {
           void *vp_focus_widget = &focus_widget;
-          g_object_remove_weak_pointer (G_OBJECT (focus_widget), vp_focus_widget);
+          g_object_remove_weak_pointer (B_OBJECT (focus_widget), vp_focus_widget);
         }
       focus_widget = widget;
       if (focus_widget)
         {
           void *vp_focus_widget = &focus_widget;
-          g_object_add_weak_pointer (G_OBJECT (focus_widget), vp_focus_widget);
+          g_object_add_weak_pointer (B_OBJECT (focus_widget), vp_focus_widget);
           /*
            * The UI may not have been updated yet; e.g. in btkhtml2
            * html_view_layout() is called in a idle handler
@@ -569,7 +569,7 @@ bail_focus_notify (BtkWidget *widget)
           if (focus_widget == focus_before_menu)
             {
               void *vp_focus_before_menu = &focus_before_menu;
-              g_object_remove_weak_pointer (G_OBJECT (focus_before_menu), vp_focus_before_menu);
+              g_object_remove_weak_pointer (B_OBJECT (focus_before_menu), vp_focus_before_menu);
               focus_before_menu = NULL;
             }
         }
@@ -629,7 +629,7 @@ bail_focus_notify_when_idle (BtkWidget *widget)
           if (next_focus_widget)
 	    {
 	      void *vp_next_focus_widget = &next_focus_widget;
-	      g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+	      g_object_remove_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
 	      next_focus_widget = NULL;
 	    }
         }
@@ -644,7 +644,7 @@ bail_focus_notify_when_idle (BtkWidget *widget)
     {
       void *vp_next_focus_widget = &next_focus_widget;
       next_focus_widget = widget;
-      g_object_add_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+      g_object_add_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
     }
   else
     {
@@ -655,7 +655,7 @@ bail_focus_notify_when_idle (BtkWidget *widget)
       if (next_focus_widget)
         {
           void *vp_next_focus_widget = &next_focus_widget;
-          g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+          g_object_remove_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
           next_focus_widget = NULL;
         }
     }
@@ -663,18 +663,18 @@ bail_focus_notify_when_idle (BtkWidget *widget)
   focus_notify_handler = bdk_threads_add_idle (bail_focus_idle_handler, widget);
 }
 
-static gboolean
+static bboolean
 bail_deactivate_watcher (GSignalInvocationHint *ihint,
-                         guint                  n_param_values,
-                         const GValue          *param_values,
-                         gpointer               data)
+                         buint                  n_param_values,
+                         const BValue          *param_values,
+                         bpointer               data)
 {
-  GObject *object;
+  BObject *object;
   BtkWidget *widget;
   BtkMenuShell *shell;
   BtkWidget *focus = NULL;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
   g_return_val_if_fail (BTK_IS_WIDGET(object), FALSE);
   widget = BTK_WIDGET (object);
 
@@ -695,7 +695,7 @@ bail_deactivate_watcher (GSignalInvocationHint *ihint,
     {
       void *vp_next_focus_widget = &next_focus_widget;
       g_source_remove (focus_notify_handler);
-      g_object_remove_weak_pointer (G_OBJECT (next_focus_widget), vp_next_focus_widget);
+      g_object_remove_weak_pointer (B_OBJECT (next_focus_widget), vp_next_focus_widget);
       next_focus_widget = NULL;
       focus_notify_handler = 0;
       was_deselect = FALSE;
@@ -708,7 +708,7 @@ bail_deactivate_watcher (GSignalInvocationHint *ihint,
 static void
 bail_focus_tracker_init (void)
 {
-  static gboolean  emission_hooks_added = FALSE;
+  static bboolean  emission_hooks_added = FALSE;
 
   if (!emission_hooks_added)
     {
@@ -764,11 +764,11 @@ bail_focus_tracker_init (void)
 }
 
 static void
-bail_focus_object_destroyed (gpointer data)
+bail_focus_object_destroyed (bpointer data)
 {
-  GObject *obj;
+  BObject *obj;
 
-  obj = G_OBJECT (data);
+  obj = B_OBJECT (data);
   g_object_set_qdata (obj, quark_focus_object, NULL);
   g_object_unref (obj); 
 }
@@ -805,14 +805,14 @@ bail_focus_tracker (BatkObject *focus_object)
         }
       else
         {
-          old_focus_object = g_object_get_qdata (G_OBJECT (focus_object), quark_focus_object);
+          old_focus_object = g_object_get_qdata (B_OBJECT (focus_object), quark_focus_object);
           if (old_focus_object)
             {
-              g_object_weak_unref (G_OBJECT (old_focus_object),
+              g_object_weak_unref (B_OBJECT (old_focus_object),
                                    (GWeakNotify) bail_focus_object_destroyed,
                                    focus_object);
-              g_object_set_qdata (G_OBJECT (focus_object), quark_focus_object, NULL);
-              g_object_unref (G_OBJECT (focus_object));
+              g_object_set_qdata (B_OBJECT (focus_object), quark_focus_object, NULL);
+              g_object_unref (B_OBJECT (focus_object));
             }
         }
     }
@@ -836,11 +836,11 @@ bail_set_focus_object (BatkObject *focus_obj,
 {
   BatkObject *old_focus_obj;
 
-  old_focus_obj = g_object_get_qdata (G_OBJECT (obj), quark_focus_object);
+  old_focus_obj = g_object_get_qdata (B_OBJECT (obj), quark_focus_object);
   if (old_focus_obj != obj)
     {
       if (old_focus_obj)
-        g_object_weak_unref (G_OBJECT (old_focus_obj),
+        g_object_weak_unref (B_OBJECT (old_focus_obj),
                              (GWeakNotify) bail_focus_object_destroyed,
                              obj);
       else
@@ -848,14 +848,14 @@ bail_set_focus_object (BatkObject *focus_obj,
          * We call g_object_ref as if obj is destroyed 
          * while the weak reference exists then destroying the 
          * focus_obj would cause bail_focus_object_destroyed to be 
-         * called when obj is not a valid GObject.
+         * called when obj is not a valid BObject.
          */
         g_object_ref (obj);
 
-      g_object_weak_ref (G_OBJECT (focus_obj),
+      g_object_weak_ref (B_OBJECT (focus_obj),
                          (GWeakNotify) bail_focus_object_destroyed,
                          obj);
-      g_object_set_qdata (G_OBJECT (obj), quark_focus_object, focus_obj);
+      g_object_set_qdata (B_OBJECT (obj), quark_focus_object, focus_obj);
     }
 }
 
@@ -872,7 +872,7 @@ static void
 bail_accessibility_module_init (void)
 {
   const char *env_a_t_support;
-  gboolean a_t_support = FALSE;
+  bboolean a_t_support = FALSE;
 
   if (bail_initialized)
     {
@@ -979,10 +979,10 @@ bunny_accessibility_module_shutdown (void)
 }
 
 int
-btk_module_init (gint *argc, char** argv[])
+btk_module_init (bint *argc, char** argv[])
 {
   const char* env_no_bail;
-  gboolean no_bail = FALSE;
+  bboolean no_bail = FALSE;
 
   env_no_bail = g_getenv (NO_BAIL_ENV);
   if (env_no_bail)

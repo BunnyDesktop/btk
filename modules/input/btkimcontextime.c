@@ -73,41 +73,41 @@ struct _BtkIMContextIMEPrivate
   LPVOID read_str;
   DWORD read_str_len;
 
-  guint32 dead_key_keyval;
+  buint32 dead_key_keyval;
 };
 
 
-/* GObject class methods */
+/* BObject class methods */
 static void btk_im_context_ime_class_init (BtkIMContextIMEClass *class);
 static void btk_im_context_ime_init       (BtkIMContextIME      *context_ime);
-static void btk_im_context_ime_dispose    (GObject              *obj);
-static void btk_im_context_ime_finalize   (GObject              *obj);
+static void btk_im_context_ime_dispose    (BObject              *obj);
+static void btk_im_context_ime_finalize   (BObject              *obj);
 
-static void btk_im_context_ime_set_property (GObject      *object,
-                                             guint         prop_id,
-                                             const GValue *value,
-                                             GParamSpec   *pspec);
-static void btk_im_context_ime_get_property (GObject      *object,
-                                             guint         prop_id,
-                                             GValue       *value,
-                                             GParamSpec   *pspec);
+static void btk_im_context_ime_set_property (BObject      *object,
+                                             buint         prop_id,
+                                             const BValue *value,
+                                             BParamSpec   *pspec);
+static void btk_im_context_ime_get_property (BObject      *object,
+                                             buint         prop_id,
+                                             BValue       *value,
+                                             BParamSpec   *pspec);
 
 /* BtkIMContext's virtual functions */
 static void btk_im_context_ime_set_client_window   (BtkIMContext *context,
                                                     BdkWindow    *client_window);
-static gboolean btk_im_context_ime_filter_keypress (BtkIMContext   *context,
+static bboolean btk_im_context_ime_filter_keypress (BtkIMContext   *context,
                                                     BdkEventKey    *event);
 static void btk_im_context_ime_reset               (BtkIMContext   *context);
 static void btk_im_context_ime_get_preedit_string  (BtkIMContext   *context,
-                                                    gchar         **str,
+                                                    bchar         **str,
                                                     BangoAttrList **attrs,
-                                                    gint           *cursor_pos);
+                                                    bint           *cursor_pos);
 static void btk_im_context_ime_focus_in            (BtkIMContext   *context);
 static void btk_im_context_ime_focus_out           (BtkIMContext   *context);
 static void btk_im_context_ime_set_cursor_location (BtkIMContext   *context,
                                                     BdkRectangle   *area);
 static void btk_im_context_ime_set_use_preedit     (BtkIMContext   *context,
-                                                    gboolean        use_preedit);
+                                                    bboolean        use_preedit);
 
 /* BtkIMContextIME's private functions */
 static void btk_im_context_ime_set_preedit_font (BtkIMContext    *context);
@@ -115,16 +115,16 @@ static void btk_im_context_ime_set_preedit_font (BtkIMContext    *context);
 static BdkFilterReturn
 btk_im_context_ime_message_filter               (BdkXEvent       *xevent,
                                                  BdkEvent        *event,
-                                                 gpointer         data);
+                                                 bpointer         data);
 static void get_window_position                 (BdkWindow       *win,
-                                                 gint            *x,
-                                                 gint            *y);
+                                                 bint            *x,
+                                                 bint            *y);
 static void cb_client_widget_hierarchy_changed  (BtkWidget       *widget,
                                                  BtkWidget       *widget2,
                                                  BtkIMContextIME *context_ime);
 
 GType btk_type_im_context_ime = 0;
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 
 void
@@ -152,7 +152,7 @@ static void
 btk_im_context_ime_class_init (BtkIMContextIMEClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
@@ -197,7 +197,7 @@ btk_im_context_ime_init (BtkIMContextIME *context_ime)
 
 
 static void
-btk_im_context_ime_dispose (GObject *obj)
+btk_im_context_ime_dispose (BObject *obj)
 {
   BtkIMContext *context = BTK_IM_CONTEXT (obj);
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
@@ -207,13 +207,13 @@ btk_im_context_ime_dispose (GObject *obj)
 
   FREE_PREEDIT_BUFFER (context_ime);
 
-  if (G_OBJECT_CLASS (parent_class)->dispose)
-    G_OBJECT_CLASS (parent_class)->dispose (obj);
+  if (B_OBJECT_CLASS (parent_class)->dispose)
+    B_OBJECT_CLASS (parent_class)->dispose (obj);
 }
 
 
 static void
-btk_im_context_ime_finalize (GObject *obj)
+btk_im_context_ime_finalize (BObject *obj)
 {
   /* BtkIMContext *context = BTK_IM_CONTEXT (obj); */
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (obj);
@@ -221,16 +221,16 @@ btk_im_context_ime_finalize (GObject *obj)
   g_free (context_ime->priv);
   context_ime->priv = NULL;
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (obj);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
 
 static void
-btk_im_context_ime_set_property (GObject      *object,
-                                 guint         prop_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
+btk_im_context_ime_set_property (BObject      *object,
+                                 buint         prop_id,
+                                 const BValue *value,
+                                 BParamSpec   *pspec)
 {
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
@@ -245,10 +245,10 @@ btk_im_context_ime_set_property (GObject      *object,
 
 
 static void
-btk_im_context_ime_get_property (GObject    *object,
-                                 guint       prop_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
+btk_im_context_ime_get_property (BObject    *object,
+                                 buint       prop_id,
+                                 BValue     *value,
+                                 BParamSpec *pspec)
 {
   BtkIMContextIME *context_ime = BTK_IM_CONTEXT_IME (object);
 
@@ -303,8 +303,8 @@ btk_im_context_ime_set_client_window (BtkIMContext *context,
 }
 
 static gunichar
-_btk_im_context_ime_dead_key_unichar (guint    keyval,
-                                      gboolean spacing)
+_btk_im_context_ime_dead_key_unichar (buint    keyval,
+                                      bboolean spacing)
 {
   switch (keyval)
     {
@@ -341,7 +341,7 @@ static void
 _btk_im_context_ime_commit_unichar (BtkIMContextIME *context_ime,
                                     gunichar         c)
 {
-  gchar utf8[10];
+  bchar utf8[10];
   int len;
 
   if (context_ime->priv->dead_key_keyval != 0)
@@ -361,13 +361,13 @@ _btk_im_context_ime_commit_unichar (BtkIMContextIME *context_ime,
   context_ime->priv->dead_key_keyval = 0;
 }
 
-static gboolean
+static bboolean
 btk_im_context_ime_filter_keypress (BtkIMContext *context,
                                     BdkEventKey  *event)
 {
   BtkIMContextIME *context_ime;
-  gboolean retval = FALSE;
-  guint32 c;
+  bboolean retval = FALSE;
+  buint32 c;
 
   g_return_val_if_fail (BTK_IS_IM_CONTEXT_IME (context), FALSE);
   g_return_val_if_fail (event, FALSE);
@@ -452,13 +452,13 @@ btk_im_context_ime_reset (BtkIMContext *context)
 }
 
 
-static gchar *
-get_utf8_preedit_string (BtkIMContextIME *context_ime, gint *pos_ret)
+static bchar *
+get_utf8_preedit_string (BtkIMContextIME *context_ime, bint *pos_ret)
 {
-  gchar *utf8str = NULL;
+  bchar *utf8str = NULL;
   HWND hwnd;
   HIMC himc;
-  gint pos = 0;
+  bint pos = 0;
 
   if (pos_ret)
     *pos_ret = 0;
@@ -473,13 +473,13 @@ get_utf8_preedit_string (BtkIMContextIME *context_ime, gint *pos_ret)
 
   if (context_ime->preediting)
     {
-      glong len;
+      blong len;
 
       len = ImmGetCompositionStringW (himc, GCS_COMPSTR, NULL, 0);
       if (len > 0)
 	{
 	  GError *error = NULL;
-	  gpointer buf = g_alloca (len);
+	  bpointer buf = g_alloca (len);
 
 	  ImmGetCompositionStringW (himc, GCS_COMPSTR, buf, len);
 	  len /= 2;
@@ -519,7 +519,7 @@ get_utf8_preedit_string (BtkIMContextIME *context_ime, gint *pos_ret)
 
 
 static BangoAttrList *
-get_bango_attr_list (BtkIMContextIME *context_ime, const gchar *utf8str)
+get_bango_attr_list (BtkIMContextIME *context_ime, const bchar *utf8str)
 {
   BangoAttrList *attrs = bango_attr_list_new ();
   HWND hwnd;
@@ -535,10 +535,10 @@ get_bango_attr_list (BtkIMContextIME *context_ime, const gchar *utf8str)
 
   if (context_ime->preediting)
     {
-      const gchar *schr = utf8str, *echr;
-      guint8 *buf;
-      guint16 f_red, f_green, f_blue, b_red, b_green, b_blue;
-      glong len, spos = 0, epos, sidx = 0, eidx;
+      const bchar *schr = utf8str, *echr;
+      buint8 *buf;
+      buint16 f_red, f_green, f_blue, b_red, b_green, b_blue;
+      blong len, spos = 0, epos, sidx = 0, eidx;
       BangoAttribute *attr;
 
       /*
@@ -621,12 +621,12 @@ get_bango_attr_list (BtkIMContextIME *context_ime, const gchar *utf8str)
 
 static void
 btk_im_context_ime_get_preedit_string (BtkIMContext   *context,
-                                       gchar         **str,
+                                       bchar         **str,
                                        BangoAttrList **attrs,
-                                       gint           *cursor_pos)
+                                       bint           *cursor_pos)
 {
-  gchar *utf8str = NULL;
-  gint pos = 0;
+  bchar *utf8str = NULL;
+  bint pos = 0;
   BtkIMContextIME *context_ime;
 
   context_ime = BTK_IM_CONTEXT_IME (context);
@@ -688,7 +688,7 @@ btk_im_context_ime_focus_in (BtkIMContext *context)
     }
 
   /* trace reparenting (probably no need) */
-  bdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
+  bdk_window_get_user_data (context_ime->client_window, (bpointer) & widget);
   if (BTK_IS_WIDGET (widget))
     {
       g_signal_connect (widget, "hierarchy-changed",
@@ -751,7 +751,7 @@ btk_im_context_ime_focus_out (BtkIMContext *context)
 
   if (ImmGetOpenStatus (himc))
     {
-      gboolean preediting = context_ime->preediting;
+      bboolean preediting = context_ime->preediting;
 
       if (preediting)
         {
@@ -786,11 +786,11 @@ btk_im_context_ime_focus_out (BtkIMContext *context)
     }
 
   /* remove signal handler */
-  bdk_window_get_user_data (context_ime->client_window, (gpointer) & widget);
+  bdk_window_get_user_data (context_ime->client_window, (bpointer) & widget);
   if (BTK_IS_WIDGET (widget))
     {
       g_signal_handlers_disconnect_by_func
-        (G_OBJECT (widget),
+        (B_OBJECT (widget),
          G_CALLBACK (cb_client_widget_hierarchy_changed), context_ime);
     }
 
@@ -820,7 +820,7 @@ static void
 btk_im_context_ime_set_cursor_location (BtkIMContext *context,
                                         BdkRectangle *area)
 {
-  gint wx = 0, wy = 0;
+  bint wx = 0, wy = 0;
   BtkIMContextIME *context_ime;
   COMPOSITIONFORM cf;
   HWND hwnd;
@@ -852,7 +852,7 @@ btk_im_context_ime_set_cursor_location (BtkIMContext *context,
 
 static void
 btk_im_context_ime_set_use_preedit (BtkIMContext *context,
-                                    gboolean      use_preedit)
+                                    bboolean      use_preedit)
 {
   BtkIMContextIME *context_ime;
 
@@ -885,7 +885,7 @@ btk_im_context_ime_set_preedit_font (BtkIMContext *context)
   HWND hwnd;
   HIMC himc;
   HKL ime = GetKeyboardLayout (0);
-  const gchar *lang;
+  const bchar *lang;
   gunichar wc;
   BangoContext *bango_context;
   BangoFont *font;
@@ -897,7 +897,7 @@ btk_im_context_ime_set_preedit_font (BtkIMContext *context)
   if (!context_ime->client_window)
     return;
 
-  bdk_window_get_user_data (context_ime->client_window, (gpointer) &widget);
+  bdk_window_get_user_data (context_ime->client_window, (bpointer) &widget);
   if (!BTK_IS_WIDGET (widget))
     return;
 
@@ -992,7 +992,7 @@ ERROR_OUT:
 static BdkFilterReturn
 btk_im_context_ime_message_filter (BdkXEvent *xevent,
                                    BdkEvent  *event,
-                                   gpointer   data)
+                                   bpointer   data)
 {
   BtkIMContext *context;
   BtkIMContextIME *context_ime;
@@ -1017,7 +1017,7 @@ btk_im_context_ime_message_filter (BdkXEvent *xevent,
     {
     case WM_IME_COMPOSITION:
       {
-        gint wx = 0, wy = 0;
+        bint wx = 0, wy = 0;
         CANDIDATEFORM cf;
 
         get_window_position (context_ime->client_window, &wx, &wy);
@@ -1049,15 +1049,15 @@ btk_im_context_ime_message_filter (BdkXEvent *xevent,
 
         if (msg->lParam & GCS_RESULTSTR)
           {
-            gsize len;
-            gchar *utf8str = NULL;
+            bsize len;
+            bchar *utf8str = NULL;
             GError *error = NULL;
 
 	    len = ImmGetCompositionStringW (himc, GCS_RESULTSTR, NULL, 0);
 
             if (len > 0)
               {
-		gpointer buf = g_alloca (len);
+		bpointer buf = g_alloca (len);
 		ImmGetCompositionStringW (himc, GCS_RESULTSTR, buf, len);
 		len /= 2;
 		utf8str = g_utf16_to_utf8 (buf, len, NULL, NULL, &error);
@@ -1122,10 +1122,10 @@ btk_im_context_ime_message_filter (BdkXEvent *xevent,
  * x and y must be initialized to 0.
  */
 static void
-get_window_position (BdkWindow *win, gint *x, gint *y)
+get_window_position (BdkWindow *win, bint *x, bint *y)
 {
   BdkWindow *parent, *toplevel;
-  gint wx, wy;
+  bint wx, wy;
 
   g_return_if_fail (BDK_IS_WINDOW (win));
   g_return_if_fail (x && y);

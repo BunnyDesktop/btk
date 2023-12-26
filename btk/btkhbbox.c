@@ -31,8 +31,8 @@
 #include "btkalias.h"
 
 
-static gint default_spacing = 30;
-static gint default_layout_style = BTK_BUTTONBOX_EDGE;
+static bint default_spacing = 30;
+static bint default_layout_style = BTK_BUTTONBOX_EDGE;
 
 G_DEFINE_TYPE (BtkHButtonBox, btk_hbutton_box, BTK_TYPE_BUTTON_BOX)
 
@@ -58,7 +58,7 @@ btk_hbutton_box_new (void)
 /* set default value for spacing */
 
 void
-btk_hbutton_box_set_spacing_default (gint spacing)
+btk_hbutton_box_set_spacing_default (bint spacing)
 {
   default_spacing = spacing;
 }
@@ -77,7 +77,7 @@ btk_hbutton_box_set_layout_default (BtkButtonBoxStyle layout)
 
 /* get default value for spacing */
 
-gint
+bint
 btk_hbutton_box_get_spacing_default (void)
 {
   return default_spacing;

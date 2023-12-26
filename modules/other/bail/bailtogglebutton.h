@@ -22,14 +22,14 @@
 
 #include <bail/bailbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TOGGLE_BUTTON              (bail_toggle_button_get_type ())
-#define BAIL_TOGGLE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButton))
-#define BAIL_TOGGLE_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
-#define BAIL_IS_TOGGLE_BUTTON(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TOGGLE_BUTTON))
-#define BAIL_IS_TOGGLE_BUTTON_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TOGGLE_BUTTON))
-#define BAIL_TOGGLE_BUTTON_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
+#define BAIL_TOGGLE_BUTTON(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButton))
+#define BAIL_TOGGLE_BUTTON_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
+#define BAIL_IS_TOGGLE_BUTTON(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TOGGLE_BUTTON))
+#define BAIL_IS_TOGGLE_BUTTON_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TOGGLE_BUTTON))
+#define BAIL_TOGGLE_BUTTON_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TOGGLE_BUTTON, BailToggleButtonClass))
 
 typedef struct _BailToggleButton              BailToggleButton;
 typedef struct _BailToggleButtonClass         BailToggleButtonClass;
@@ -46,6 +46,6 @@ struct _BailToggleButtonClass
   BailButtonClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TOGGLE_BUTTON_H__ */

@@ -96,11 +96,11 @@ typedef struct TagInfo {
 typedef struct _NodeData NodeData;
 
 struct _NodeData {
-  gpointer view_id;
+  bpointer view_id;
   NodeData *next;
 
   /* Height and width of this node */
-  gint height;
+  bint height;
   signed int width : 24;
 
   /* boolean indicating whether the lines below this node are in need of validation.
@@ -109,7 +109,7 @@ struct _NodeData {
    * width/height on the lines needs recomputing, not whether the totals
    * need recomputing.
    */
-  guint valid : 8;		/* Actually a boolean */
+  buint valid : 8;		/* Actually a boolean */
 };
 
 
@@ -163,7 +163,7 @@ struct _BtkTextBTreeNode {
 typedef struct _BTreeView BTreeView;
 
 struct _BTreeView {
-  gpointer view_id;
+  bpointer view_id;
   BtkTextLayout *layout;
   BTreeView *next;
   BTreeView *prev;
@@ -177,13 +177,13 @@ struct _BtkTextBTree {
   BtkTextBTreeNode *root_node;          /* Pointer to root of B-tree. */
   BtkTextTagTable *table;
   GHashTable *mark_table;
-  guint refcount;
+  buint refcount;
   BtkTextMark *insert_mark;
   BtkTextMark *selection_bound_mark;
   BtkTextBuffer *buffer;
   BTreeView *views;
   GSList *tag_infos;
-  gulong tag_changed_handler;
+  bulong tag_changed_handler;
 
   /* Incremented when a segment with a byte size > 0
    * is added to or removed from the tree (i.e. the
@@ -191,16 +191,16 @@ struct _BtkTextBTree {
    * have been added or removed). This invalidates
    * all outstanding iterators.
    */
-  guint chars_changed_stamp;
+  buint chars_changed_stamp;
   /* Incremented when any segments are added or deleted;
    * this makes outstanding iterators recalculate their
    * pointed-to segment and segment offset.
    */
-  guint segments_changed_stamp;
+  buint segments_changed_stamp;
 
   /* Cache the last line in the buffer */
   BtkTextLine *last_line;
-  guint last_line_stamp;
+  buint last_line_stamp;
 
   /* Cache the next-to-last line in the buffer,
    * containing the end iterator
@@ -209,8 +209,8 @@ struct _BtkTextBTree {
   BtkTextLineSegment *end_iter_segment;
   int end_iter_segment_byte_index;
   int end_iter_segment_char_offset;
-  guint end_iter_line_stamp;
-  guint end_iter_segment_stamp;
+  buint end_iter_line_stamp;
+  buint end_iter_segment_stamp;
   
   GHashTable *child_anchor_table;
 };
@@ -248,18 +248,18 @@ struct _BtkTextBTree {
  */
 
 static BTreeView        *btk_text_btree_get_view                 (BtkTextBTree     *tree,
-                                                                  gpointer          view_id);
+                                                                  bpointer          view_id);
 static void              btk_text_btree_rebalance                (BtkTextBTree     *tree,
                                                                   BtkTextBTreeNode *node);
 static BtkTextLine     * get_last_line                           (BtkTextBTree     *tree);
 static void              post_insert_fixup                       (BtkTextBTree     *tree,
                                                                   BtkTextLine      *insert_line,
-                                                                  gint              char_count_delta,
-                                                                  gint              line_count_delta);
+                                                                  bint              char_count_delta,
+                                                                  bint              line_count_delta);
 static void              btk_text_btree_node_adjust_toggle_count (BtkTextBTreeNode *node,
                                                                   BtkTextTagInfo   *info,
-                                                                  gint              adjust);
-static gboolean          btk_text_btree_node_has_tag             (BtkTextBTreeNode *node,
+                                                                  bint              adjust);
+static bboolean          btk_text_btree_node_has_tag             (BtkTextBTreeNode *node,
                                                                   BtkTextTag       *tag);
 
 static void             segments_changed                (BtkTextBTree     *tree);
@@ -271,43 +271,43 @@ static void             btk_text_line_destroy           (BtkTextBTree     *tree,
 static void             btk_text_line_set_parent        (BtkTextLine      *line,
                                                          BtkTextBTreeNode *node);
 static void             btk_text_btree_node_remove_data (BtkTextBTreeNode *node,
-                                                         gpointer          view_id);
+                                                         bpointer          view_id);
 
 
-static NodeData         *node_data_new          (gpointer  view_id);
+static NodeData         *node_data_new          (bpointer  view_id);
 static void              node_data_destroy      (NodeData *nd);
 static void              node_data_list_destroy (NodeData *nd);
 static NodeData         *node_data_find         (NodeData *nd,
-                                                 gpointer  view_id);
+                                                 bpointer  view_id);
 
 static BtkTextBTreeNode     *btk_text_btree_node_new                  (void);
 #if 0
 static void                  btk_text_btree_node_invalidate_downward  (BtkTextBTreeNode *node);
 #endif
 static void                  btk_text_btree_node_invalidate_upward    (BtkTextBTreeNode *node,
-                                                                       gpointer          view_id);
+                                                                       bpointer          view_id);
 static NodeData *            btk_text_btree_node_check_valid          (BtkTextBTreeNode *node,
-                                                                       gpointer          view_id);
+                                                                       bpointer          view_id);
 static NodeData *            btk_text_btree_node_check_valid_downward (BtkTextBTreeNode *node,
-                                                                       gpointer          view_id);
+                                                                       bpointer          view_id);
 static void                  btk_text_btree_node_check_valid_upward   (BtkTextBTreeNode *node,
-                                                                       gpointer          view_id);
+                                                                       bpointer          view_id);
 
 static void                  btk_text_btree_node_remove_view         (BTreeView        *view,
                                                                       BtkTextBTreeNode *node,
-                                                                      gpointer          view_id);
+                                                                      bpointer          view_id);
 static void                  btk_text_btree_node_destroy             (BtkTextBTree     *tree,
                                                                       BtkTextBTreeNode *node);
 static void                  btk_text_btree_node_free_empty          (BtkTextBTree *tree,
                                                                       BtkTextBTreeNode *node);
 static NodeData         *    btk_text_btree_node_ensure_data         (BtkTextBTreeNode *node,
-                                                                      gpointer          view_id);
+                                                                      bpointer          view_id);
 static void                  btk_text_btree_node_remove_data         (BtkTextBTreeNode *node,
-                                                                      gpointer          view_id);
+                                                                      bpointer          view_id);
 static void                  btk_text_btree_node_get_size            (BtkTextBTreeNode *node,
-                                                                      gpointer          view_id,
-                                                                      gint             *width,
-                                                                      gint             *height);
+                                                                      bpointer          view_id,
+                                                                      bint             *width,
+                                                                      bint             *height);
 static BtkTextBTreeNode *    btk_text_btree_node_common_parent       (BtkTextBTreeNode *node1,
                                                                       BtkTextBTreeNode *node2);
 static void get_tree_bounds       (BtkTextBTree     *tree,
@@ -315,7 +315,7 @@ static void get_tree_bounds       (BtkTextBTree     *tree,
                                    BtkTextIter      *end);
 static void tag_changed_cb        (BtkTextTagTable  *table,
                                    BtkTextTag       *tag,
-                                   gboolean          size_changed,
+                                   bboolean          size_changed,
                                    BtkTextBTree     *tree);
 static void cleanup_line          (BtkTextLine      *line);
 static void recompute_node_counts (BtkTextBTree     *tree,
@@ -343,7 +343,7 @@ static void            btk_text_btree_remove_tag_info       (BtkTextBTree   *tre
 static void redisplay_rebunnyion (BtkTextBTree      *tree,
                               const BtkTextIter *start,
                               const BtkTextIter *end,
-                              gboolean           cursors_only);
+                              bboolean           cursors_only);
 
 /* Inline thingies */
 
@@ -536,13 +536,13 @@ _btk_text_btree_get_buffer (BtkTextBTree *tree)
   return tree->buffer;
 }
 
-guint
+buint
 _btk_text_btree_get_chars_changed_stamp (BtkTextBTree *tree)
 {
   return tree->chars_changed_stamp;
 }
 
-guint
+buint
 _btk_text_btree_get_segments_changed_stamp (BtkTextBTree *tree)
 {
   return tree->segments_changed_stamp;
@@ -743,7 +743,7 @@ _btk_text_btree_delete (BtkTextIter *start,
   BtkTextLine *end_line;
   BtkTextLine *line;
   BtkTextLine *deleted_lines = NULL;        /* List of lines we've deleted */
-  gint start_byte_offset;
+  bint start_byte_offset;
 
   g_return_if_fail (start != NULL);
   g_return_if_fail (end != NULL);
@@ -758,7 +758,7 @@ _btk_text_btree_delete (BtkTextIter *start,
     _btk_text_btree_check (tree);
   
   /* Broadcast the need for redisplay before we break the iterators */
-  DV (g_print ("invalidating due to deleting some text (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to deleting some text (%s)\n", B_STRLOC));
   _btk_text_btree_invalidate_rebunnyion (tree, start, end, FALSE);
 
   /* Save the byte offset so we can reset the iterators */
@@ -806,7 +806,7 @@ _btk_text_btree_delete (BtkTextIter *start,
   curnode = curline->parent;
   while (seg != last_seg)
     {
-      gint char_count = 0;
+      bint char_count = 0;
 
       if (seg == NULL)
         {
@@ -995,8 +995,8 @@ _btk_text_btree_delete (BtkTextIter *start,
         {
           BtkTextLineData *ld;
 
-          gint deleted_width = 0;
-          gint deleted_height = 0;
+          bint deleted_width = 0;
+          bint deleted_height = 0;
 
           line = deleted_lines;
           while (line)
@@ -1088,8 +1088,8 @@ _btk_text_btree_delete (BtkTextIter *start,
 
 void
 _btk_text_btree_insert (BtkTextIter *iter,
-                        const gchar *text,
-                        gint         len)
+                        const bchar *text,
+                        bint         len)
 {
   BtkTextLineSegment *prev_seg;     /* The segment just before the first
                                      * new segment (NULL means new segment
@@ -1103,18 +1103,18 @@ _btk_text_btree_insert (BtkTextIter *iter,
   BtkTextLineSegment *seg;
   BtkTextLine *newline;
   int chunk_len;                        /* # characters in current chunk. */
-  gint sol;                           /* start of line */
-  gint eol;                           /* Pointer to character just after last
+  bint sol;                           /* start of line */
+  bint eol;                           /* Pointer to character just after last
                                        * one in current chunk.
                                        */
-  gint delim;                          /* index of paragraph delimiter */
+  bint delim;                          /* index of paragraph delimiter */
   int line_count_delta;                /* Counts change to total number of
                                         * lines in file.
                                         */
 
   int char_count_delta;                /* change to number of chars */
   BtkTextBTree *tree;
-  gint start_byte_index;
+  bint start_byte_index;
   BtkTextLine *start_line;
 
   g_return_if_fail (text != NULL);
@@ -1243,7 +1243,7 @@ _btk_text_btree_insert (BtkTextIter *iter,
        above. FIXME */
     btk_text_iter_forward_chars (&end, char_count_delta);
 
-    DV (g_print ("invalidating due to inserting some text (%s)\n", G_STRLOC));
+    DV (g_print ("invalidating due to inserting some text (%s)\n", B_STRLOC));
     _btk_text_btree_invalidate_rebunnyion (tree, &start, &end, FALSE);
 
 
@@ -1263,7 +1263,7 @@ insert_pixbuf_or_widget_segment (BtkTextIter        *iter,
   BtkTextLineSegment *prevPtr;
   BtkTextLine *line;
   BtkTextBTree *tree;
-  gint start_byte_offset;
+  bint start_byte_offset;
 
   line = _btk_text_iter_get_text_line (iter);
   tree = _btk_text_iter_get_btree (iter);
@@ -1293,7 +1293,7 @@ insert_pixbuf_or_widget_segment (BtkTextIter        *iter,
   *iter = start;
   btk_text_iter_forward_char (iter); /* skip forward past the segment */
 
-  DV (g_print ("invalidating due to inserting pixbuf/widget (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to inserting pixbuf/widget (%s)\n", B_STRLOC));
   _btk_text_btree_invalidate_rebunnyion (tree, &start, iter, FALSE);
 }
      
@@ -1317,7 +1317,7 @@ _btk_text_btree_insert_child_anchor (BtkTextIter        *iter,
 
   if (anchor->segment != NULL)
     {
-      g_warning (G_STRLOC": Same child anchor can't be inserted twice");
+      g_warning (B_STRLOC": Same child anchor can't be inserted twice");
       return;
     }
   
@@ -1353,10 +1353,10 @@ _btk_text_btree_unregister_child_anchor (BtkTextChildAnchor *anchor)
 
 static BtkTextLine*
 find_line_by_y (BtkTextBTree *tree, BTreeView *view,
-                BtkTextBTreeNode *node, gint y, gint *line_top,
+                BtkTextBTreeNode *node, bint y, bint *line_top,
                 BtkTextLine *last_line)
 {
-  gint current_y = 0;
+  bint current_y = 0;
 
   if (btk_debug_flags & BTK_DEBUG_TEXT)
     _btk_text_btree_check (tree);
@@ -1394,8 +1394,8 @@ find_line_by_y (BtkTextBTree *tree, BTreeView *view,
 
       while (child != NULL)
         {
-          gint width;
-          gint height;
+          bint width;
+          bint height;
 
           btk_text_btree_node_get_size (child, view->view_id,
                                         &width, &height);
@@ -1417,14 +1417,14 @@ find_line_by_y (BtkTextBTree *tree, BTreeView *view,
 
 BtkTextLine *
 _btk_text_btree_find_line_by_y (BtkTextBTree *tree,
-                                gpointer      view_id,
-                                gint          ypixel,
-                                gint         *line_top_out)
+                                bpointer      view_id,
+                                bint          ypixel,
+                                bint         *line_top_out)
 {
   BtkTextLine *line;
   BTreeView *view;
   BtkTextLine *last_line;
-  gint line_top = 0;
+  bint line_top = 0;
 
   view = btk_text_btree_get_view (tree, view_id);
   g_return_val_if_fail (view != NULL, NULL);
@@ -1440,12 +1440,12 @@ _btk_text_btree_find_line_by_y (BtkTextBTree *tree,
   return line;
 }
 
-static gint
+static bint
 find_line_top_in_line_list (BtkTextBTree *tree,
                             BTreeView *view,
                             BtkTextLine *line,
                             BtkTextLine *target_line,
-                            gint y)
+                            bint y)
 {
   while (line != NULL)
     {
@@ -1467,12 +1467,12 @@ find_line_top_in_line_list (BtkTextBTree *tree,
   return 0;
 }
 
-gint
+bint
 _btk_text_btree_find_line_top (BtkTextBTree *tree,
                               BtkTextLine *target_line,
-                              gpointer view_id)
+                              bpointer view_id)
 {
-  gint y = 0;
+  bint y = 0;
   BTreeView *view;
   GSList *nodes;
   GSList *iter;
@@ -1486,7 +1486,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
   node = target_line->parent;
   while (node != NULL)
     {
-      nodes = g_slist_prepend (nodes, node);
+      nodes = b_slist_prepend (nodes, node);
       node = node->parent;
     }
 
@@ -1497,7 +1497,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
 
       if (node->level == 0)
         {
-          g_slist_free (nodes);
+          b_slist_free (nodes);
           return find_line_top_in_line_list (tree, view,
                                              node->children.line,
                                              target_line, y);
@@ -1514,8 +1514,8 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
 
           while (child != NULL)
             {
-              gint width;
-              gint height;
+              bint width;
+              bint height;
 
               if (child == target_node)
                 break;
@@ -1531,7 +1531,7 @@ _btk_text_btree_find_line_top (BtkTextBTree *tree,
                                        ran out of nodes */
         }
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   g_assert_not_reached (); /* we return when we find the target line */
@@ -1582,7 +1582,7 @@ _btk_text_btree_add_view (BtkTextBTree *tree,
 
 void
 _btk_text_btree_remove_view (BtkTextBTree *tree,
-                             gpointer      view_id)
+                             bpointer      view_id)
 {
   BTreeView *view;
   BtkTextLine *last_line;
@@ -1620,8 +1620,8 @@ _btk_text_btree_remove_view (BtkTextBTree *tree,
 
   btk_text_btree_node_remove_view (view, tree->root_node, view_id);
 
-  view->layout = (gpointer) 0xdeadbeef;
-  view->view_id = (gpointer) 0xdeadbeef;
+  view->layout = (bpointer) 0xdeadbeef;
+  view->view_id = (bpointer) 0xdeadbeef;
   
   g_free (view);
 }
@@ -1630,7 +1630,7 @@ void
 _btk_text_btree_invalidate_rebunnyion (BtkTextBTree      *tree,
                                    const BtkTextIter *start,
                                    const BtkTextIter *end,
-                                   gboolean           cursors_only)
+                                   bboolean           cursors_only)
 {
   BTreeView *view;
 
@@ -1649,9 +1649,9 @@ _btk_text_btree_invalidate_rebunnyion (BtkTextBTree      *tree,
 
 void
 _btk_text_btree_get_view_size (BtkTextBTree *tree,
-                              gpointer view_id,
-                              gint *width,
-                              gint *height)
+                              bpointer view_id,
+                              bint *width,
+                              bint *height)
 {
   g_return_if_fail (tree != NULL);
   g_return_if_fail (view_id != NULL);
@@ -1666,8 +1666,8 @@ _btk_text_btree_get_view_size (BtkTextBTree *tree,
 
 typedef struct {
   BtkTextIter *iters;
-  guint count;
-  guint alloced;
+  buint count;
+  buint alloced;
 } IterStack;
 
 static IterStack*
@@ -1695,7 +1695,7 @@ iter_stack_push (IterStack         *stack,
   stack->iters[stack->count-1] = *iter;
 }
 
-static gboolean
+static bboolean
 iter_stack_pop (IterStack   *stack, 
 		BtkTextIter *iter)
 {
@@ -1721,8 +1721,8 @@ iter_stack_invert (IterStack *stack)
 {
   if (stack->count > 0)
     {
-      guint i = 0;
-      guint j = stack->count - 1;
+      buint i = 0;
+      buint j = stack->count - 1;
       while (i < j)
         {
           BtkTextIter tmp;
@@ -1745,7 +1745,7 @@ queue_tag_redisplay (BtkTextBTree      *tree,
 {
   if (_btk_text_tag_affects_size (tag))
     {
-      DV (g_print ("invalidating due to size-affecting tag (%s)\n", G_STRLOC));
+      DV (g_print ("invalidating due to size-affecting tag (%s)\n", B_STRLOC));
       _btk_text_btree_invalidate_rebunnyion (tree, start, end, FALSE);
     }
   else if (_btk_text_tag_affects_nonsize_appearance (tag))
@@ -1761,11 +1761,11 @@ void
 _btk_text_btree_tag (const BtkTextIter *start_orig,
                      const BtkTextIter *end_orig,
                      BtkTextTag        *tag,
-                     gboolean           add)
+                     bboolean           add)
 {
   BtkTextLineSegment *seg, *prev;
   BtkTextLine *cleanupline;
-  gboolean toggled_on;
+  bboolean toggled_on;
   BtkTextLine *start_line;
   BtkTextLine *end_line;
   BtkTextIter iter;
@@ -2021,9 +2021,9 @@ _btk_text_btree_tag (const BtkTextIter *start_orig,
 
 static BtkTextLine*
 get_line_internal (BtkTextBTree *tree,
-                   gint          line_number,
-                   gint         *real_line_number,
-                   gboolean      include_last)
+                   bint          line_number,
+                   bint         *real_line_number,
+                   bboolean      include_last)
 {
   BtkTextBTreeNode *node;
   BtkTextLine *line;
@@ -2099,25 +2099,25 @@ _btk_text_btree_get_end_iter_line (BtkTextBTree *tree)
 
 BtkTextLine*
 _btk_text_btree_get_line (BtkTextBTree *tree,
-                          gint          line_number,
-                          gint         *real_line_number)
+                          bint          line_number,
+                          bint         *real_line_number)
 {
   return get_line_internal (tree, line_number, real_line_number, TRUE);
 }
 
 BtkTextLine*
 _btk_text_btree_get_line_no_last (BtkTextBTree      *tree,
-                                  gint               line_number,
-                                  gint              *real_line_number)
+                                  bint               line_number,
+                                  bint              *real_line_number)
 {
   return get_line_internal (tree, line_number, real_line_number, FALSE);
 }
 
 BtkTextLine*
 _btk_text_btree_get_line_at_char (BtkTextBTree      *tree,
-                                  gint               char_index,
-                                  gint              *line_start_index,
-                                  gint              *real_char_index)
+                                  bint               char_index,
+                                  bint              *line_start_index,
+                                  bint              *real_char_index)
 {
   BtkTextBTreeNode *node;
   BtkTextLine *line;
@@ -2202,7 +2202,7 @@ _btk_text_btree_get_line_at_char (BtkTextBTree      *tree,
  * _btk_text_attributes_fill_from_tags() */
 BtkTextTag**
 _btk_text_btree_get_tags (const BtkTextIter *iter,
-                         gint *num_tags)
+                         bint *num_tags)
 {
   BtkTextBTreeNode *node;
   BtkTextLine *siblingline;
@@ -2210,7 +2210,7 @@ _btk_text_btree_get_tags (const BtkTextIter *iter,
   int src, dst, index;
   TagInfo tagInfo;
   BtkTextLine *line;
-  gint byte_index;
+  bint byte_index;
 
 #define NUM_TAG_INFOS 10
 
@@ -2317,8 +2317,8 @@ _btk_text_btree_get_tags (const BtkTextIter *iter,
 
 static void
 copy_segment (GString *string,
-              gboolean include_hidden,
-              gboolean include_nonchars,
+              bboolean include_hidden,
+              bboolean include_nonchars,
               const BtkTextIter *start,
               const BtkTextIter *end)
 {
@@ -2333,9 +2333,9 @@ copy_segment (GString *string,
 
   if (seg->type == &btk_text_char_type)
     {
-      gboolean copy = TRUE;
-      gint copy_bytes = 0;
-      gint copy_start = 0;
+      bboolean copy = TRUE;
+      bint copy_bytes = 0;
+      bint copy_start = 0;
 
       /* Don't copy if we're invisible; segments are invisible/not
          as a whole, no need to check each char */
@@ -2351,7 +2351,7 @@ copy_segment (GString *string,
       if (seg == end_seg)
         {
           /* End is in the same segment; need to copy fewer bytes. */
-          gint end_byte = _btk_text_iter_get_segment_byte (end);
+          bint end_byte = _btk_text_iter_get_segment_byte (end);
 
           copy_bytes = end_byte - copy_start;
         }
@@ -2375,7 +2375,7 @@ copy_segment (GString *string,
   else if (seg->type == &btk_text_pixbuf_type ||
            seg->type == &btk_text_child_type)
     {
-      gboolean copy = TRUE;
+      bboolean copy = TRUE;
 
       if (!include_nonchars)
         {
@@ -2397,16 +2397,16 @@ copy_segment (GString *string,
     }
 }
 
-gchar*
+bchar*
 _btk_text_btree_get_text (const BtkTextIter *start_orig,
                          const BtkTextIter *end_orig,
-                         gboolean include_hidden,
-                         gboolean include_nonchars)
+                         bboolean include_hidden,
+                         bboolean include_nonchars)
 {
   BtkTextLineSegment *seg;
   BtkTextLineSegment *end_seg;
   GString *retval;
-  gchar *str;
+  bchar *str;
   BtkTextIter iter;
   BtkTextIter start;
   BtkTextIter end;
@@ -2443,7 +2443,7 @@ _btk_text_btree_get_text (const BtkTextIter *start_orig,
   return str;
 }
 
-gint
+bint
 _btk_text_btree_line_count (BtkTextBTree *tree)
 {
   /* Subtract bogus line at the end; we return a count
@@ -2451,7 +2451,7 @@ _btk_text_btree_line_count (BtkTextBTree *tree)
   return tree->root_node->num_lines - 1;
 }
 
-gint
+bint
 _btk_text_btree_char_count (BtkTextBTree *tree)
 {
   /* Exclude newline in bogus last line and the
@@ -2461,10 +2461,10 @@ _btk_text_btree_char_count (BtkTextBTree *tree)
 }
 
 #define LOTSA_TAGS 1000
-gboolean
+bboolean
 _btk_text_btree_char_is_invisible (const BtkTextIter *iter)
 {
-  gboolean invisible = FALSE;  /* if nobody says otherwise, it's visible */
+  bboolean invisible = FALSE;  /* if nobody says otherwise, it's visible */
 
   int deftagCnts[LOTSA_TAGS] = { 0, };
   int *tagCnts = deftagCnts;
@@ -2478,7 +2478,7 @@ _btk_text_btree_char_is_invisible (const BtkTextIter *iter)
   int i, index;
   BtkTextLine *line;
   BtkTextBTree *tree;
-  gint byte_index;
+  bint byte_index;
 
   line = _btk_text_iter_get_text_line (iter);
   tree = _btk_text_iter_get_btree (iter);
@@ -2612,7 +2612,7 @@ static void
 redisplay_rebunnyion (BtkTextBTree      *tree,
                   const BtkTextIter *start,
                   const BtkTextIter *end,
-                  gboolean           cursors_only)
+                  bboolean           cursors_only)
 {
   BTreeView *view;
   BtkTextLine *start_line, *end_line;
@@ -2630,7 +2630,7 @@ redisplay_rebunnyion (BtkTextBTree      *tree,
   view = tree->views;
   while (view != NULL)
     {
-      gint start_y, end_y;
+      bint start_y, end_y;
       BtkTextLineData *ld;
 
       start_y = _btk_text_btree_find_line_top (tree, start_line, view->view_id);
@@ -2662,7 +2662,7 @@ redisplay_mark (BtkTextLineSegment *mark)
 {
   BtkTextIter iter;
   BtkTextIter end;
-  gboolean cursor_only;
+  bboolean cursor_only;
 
   _btk_text_btree_get_iter_at_mark (mark->body.mark.tree,
                                    &iter,
@@ -2671,7 +2671,7 @@ redisplay_mark (BtkTextLineSegment *mark)
   end = iter;
   btk_text_iter_forward_char (&end);
 
-  DV (g_print ("invalidating due to moving visible mark (%s)\n", G_STRLOC));
+  DV (g_print ("invalidating due to moving visible mark (%s)\n", B_STRLOC));
   cursor_only = mark == mark->body.mark.tree->insert_mark->segment;
   _btk_text_btree_invalidate_rebunnyion (mark->body.mark.tree, &iter, &end, cursor_only);
 }
@@ -2697,11 +2697,11 @@ ensure_not_off_end (BtkTextBTree *tree,
 static BtkTextLineSegment*
 real_set_mark (BtkTextBTree      *tree,
                BtkTextMark       *existing_mark,
-               const gchar       *name,
-               gboolean           left_gravity,
+               const bchar       *name,
+               bboolean           left_gravity,
                const BtkTextIter *where,
-               gboolean           should_exist,
-               gboolean           redraw_selections)
+               bboolean           should_exist,
+               bboolean           redraw_selections)
 {
   BtkTextLineSegment *mark;
   BtkTextIter iter;
@@ -2820,10 +2820,10 @@ real_set_mark (BtkTextBTree      *tree,
 BtkTextMark*
 _btk_text_btree_set_mark (BtkTextBTree *tree,
                          BtkTextMark  *existing_mark,
-                         const gchar *name,
-                         gboolean left_gravity,
+                         const bchar *name,
+                         bboolean left_gravity,
                          const BtkTextIter *iter,
-                         gboolean should_exist)
+                         bboolean should_exist)
 {
   BtkTextLineSegment *seg;
 
@@ -2834,7 +2834,7 @@ _btk_text_btree_set_mark (BtkTextBTree *tree,
   return seg ? seg->body.mark.obj : NULL;
 }
 
-gboolean
+bboolean
 _btk_text_btree_get_selection_bounds (BtkTextBTree *tree,
                                      BtkTextIter  *start,
                                      BtkTextIter  *end)
@@ -2909,7 +2909,7 @@ _btk_text_btree_select_range (BtkTextBTree      *tree,
 
 void
 _btk_text_btree_remove_mark_by_name (BtkTextBTree *tree,
-                                    const gchar *name)
+                                    const bchar *name)
 {
   BtkTextMark *mark;
 
@@ -2962,14 +2962,14 @@ _btk_text_btree_remove_mark (BtkTextBTree *tree,
   _btk_text_btree_release_mark_segment (tree, segment);
 }
 
-gboolean
+bboolean
 _btk_text_btree_mark_is_insert (BtkTextBTree *tree,
                                 BtkTextMark *segment)
 {
   return segment == tree->insert_mark;
 }
 
-gboolean
+bboolean
 _btk_text_btree_mark_is_selection_bound (BtkTextBTree *tree,
                                          BtkTextMark *segment)
 {
@@ -2990,7 +2990,7 @@ _btk_text_btree_get_selection_bound (BtkTextBTree *tree)
 
 BtkTextMark*
 _btk_text_btree_get_mark_by_name (BtkTextBTree *tree,
-                                  const gchar *name)
+                                  const bchar *name)
 {
   BtkTextLineSegment *seg;
 
@@ -3016,7 +3016,7 @@ _btk_text_btree_get_mark_by_name (BtkTextBTree *tree,
  **/
 void
 btk_text_mark_set_visible (BtkTextMark       *mark,
-                           gboolean           setting)
+                           bboolean           setting)
 {
   BtkTextLineSegment *seg;
 
@@ -3156,7 +3156,7 @@ _btk_text_btree_last_could_contain_tag (BtkTextBTree *tree,
  * Lines
  */
 
-gint
+bint
 _btk_text_line_get_number (BtkTextLine *line)
 {
   BtkTextLine *line2;
@@ -3204,7 +3204,7 @@ _btk_text_line_get_number (BtkTextLine *line)
 
 static BtkTextLineSegment*
 find_toggle_segment_before_char (BtkTextLine *line,
-                                 gint char_in_line,
+                                 bint char_in_line,
                                  BtkTextTag *tag)
 {
   BtkTextLineSegment *seg;
@@ -3230,7 +3230,7 @@ find_toggle_segment_before_char (BtkTextLine *line,
 
 static BtkTextLineSegment*
 find_toggle_segment_before_byte (BtkTextLine *line,
-                                 gint byte_in_line,
+                                 bint byte_in_line,
                                  BtkTextTag *tag)
 {
   BtkTextLineSegment *seg;
@@ -3254,7 +3254,7 @@ find_toggle_segment_before_byte (BtkTextLine *line,
   return toggle_seg;
 }
 
-static gboolean
+static bboolean
 find_toggle_outside_current_line (BtkTextLine *line,
                                   BtkTextBTree *tree,
                                   BtkTextTag *tag)
@@ -3341,10 +3341,10 @@ find_toggle_outside_current_line (BtkTextLine *line,
 }
 
 /* FIXME this function is far too slow, for no good reason. */
-gboolean
+bboolean
 _btk_text_line_char_has_tag (BtkTextLine *line,
                              BtkTextBTree *tree,
-                             gint char_in_line,
+                             bint char_in_line,
                              BtkTextTag *tag)
 {
   BtkTextLineSegment *toggle_seg;
@@ -3365,10 +3365,10 @@ _btk_text_line_char_has_tag (BtkTextLine *line,
     return find_toggle_outside_current_line (line, tree, tag);
 }
 
-gboolean
+bboolean
 _btk_text_line_byte_has_tag (BtkTextLine *line,
                              BtkTextBTree *tree,
-                             gint byte_in_line,
+                             bint byte_in_line,
                              BtkTextTag *tag)
 {
   BtkTextLineSegment *toggle_seg;
@@ -3389,7 +3389,7 @@ _btk_text_line_byte_has_tag (BtkTextLine *line,
     return find_toggle_outside_current_line (line, tree, tag);
 }
 
-gboolean
+bboolean
 _btk_text_line_is_last (BtkTextLine *line,
                         BtkTextBTree *tree)
 {
@@ -3401,7 +3401,7 @@ ensure_end_iter_line (BtkTextBTree *tree)
 {
   if (tree->end_iter_line_stamp != tree->chars_changed_stamp)
     {
-      gint real_line;
+      bint real_line;
 	
        /* n_lines is without the magic line at the end */
       g_assert (_btk_text_btree_line_count (tree) >= 1);
@@ -3445,7 +3445,7 @@ ensure_end_iter_segment (BtkTextBTree *tree)
     }
 }
 
-gboolean
+bboolean
 _btk_text_line_contains_end_iter (BtkTextLine  *line,
                                   BtkTextBTree *tree)
 {
@@ -3454,7 +3454,7 @@ _btk_text_line_contains_end_iter (BtkTextLine  *line,
   return line == tree->end_iter_line;
 }
 
-gboolean
+bboolean
 _btk_text_btree_is_end (BtkTextBTree       *tree,
                         BtkTextLine        *line,
                         BtkTextLineSegment *seg,
@@ -3624,9 +3624,9 @@ _btk_text_line_add_data (BtkTextLine     *line,
     }
 }
 
-gpointer
+bpointer
 _btk_text_line_remove_data (BtkTextLine *line,
-                           gpointer view_id)
+                           bpointer view_id)
 {
   BtkTextLineData *prev;
   BtkTextLineData *iter;
@@ -3657,9 +3657,9 @@ _btk_text_line_remove_data (BtkTextLine *line,
     return NULL;
 }
 
-gpointer
+bpointer
 _btk_text_line_get_data (BtkTextLine *line,
-                         gpointer view_id)
+                         bpointer view_id)
 {
   BtkTextLineData *iter;
 
@@ -3694,11 +3694,11 @@ _btk_text_line_invalidate_wrap (BtkTextLine *line,
   btk_text_btree_node_invalidate_upward (line->parent, ld->view_id);
 }
 
-gint
+bint
 _btk_text_line_char_count (BtkTextLine *line)
 {
   BtkTextLineSegment *seg;
-  gint size;
+  bint size;
 
   size = 0;
   seg = line->segments;
@@ -3710,11 +3710,11 @@ _btk_text_line_char_count (BtkTextLine *line)
   return size;
 }
 
-gint
+bint
 _btk_text_line_byte_count (BtkTextLine *line)
 {
   BtkTextLineSegment *seg;
-  gint size;
+  bint size;
 
   size = 0;
   seg = line->segments;
@@ -3727,13 +3727,13 @@ _btk_text_line_byte_count (BtkTextLine *line)
   return size;
 }
 
-gint
+bint
 _btk_text_line_char_index (BtkTextLine *target_line)
 {
   GSList *node_stack = NULL;
   BtkTextBTreeNode *iter;
   BtkTextLine *line;
-  gint num_chars;
+  bint num_chars;
 
   /* Push all our parent nodes onto a stack */
   iter = target_line->parent;
@@ -3742,7 +3742,7 @@ _btk_text_line_char_index (BtkTextLine *target_line)
 
   while (iter != NULL)
     {
-      node_stack = g_slist_prepend (node_stack, iter);
+      node_stack = b_slist_prepend (node_stack, iter);
 
       iter = iter->parent;
     }
@@ -3764,7 +3764,7 @@ _btk_text_line_char_index (BtkTextLine *target_line)
 
       next_node = node_stack->next ?
         node_stack->next->data : NULL;
-      node_stack = g_slist_remove (node_stack, node_stack->data);
+      node_stack = b_slist_remove (node_stack, node_stack->data);
 
       if (iter->level == 0)
         {
@@ -3814,8 +3814,8 @@ _btk_text_line_char_index (BtkTextLine *target_line)
 
 BtkTextLineSegment*
 _btk_text_line_byte_to_segment (BtkTextLine *line,
-                               gint byte_offset,
-                               gint *seg_offset)
+                               bint byte_offset,
+                               bint *seg_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -3840,8 +3840,8 @@ _btk_text_line_byte_to_segment (BtkTextLine *line,
 
 BtkTextLineSegment*
 _btk_text_line_char_to_segment (BtkTextLine *line,
-                               gint char_offset,
-                               gint *seg_offset)
+                               bint char_offset,
+                               bint *seg_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -3866,8 +3866,8 @@ _btk_text_line_char_to_segment (BtkTextLine *line,
 
 BtkTextLineSegment*
 _btk_text_line_byte_to_any_segment (BtkTextLine *line,
-                                   gint byte_offset,
-                                   gint *seg_offset)
+                                   bint byte_offset,
+                                   bint *seg_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -3892,8 +3892,8 @@ _btk_text_line_byte_to_any_segment (BtkTextLine *line,
 
 BtkTextLineSegment*
 _btk_text_line_char_to_any_segment (BtkTextLine *line,
-                                   gint char_offset,
-                                   gint *seg_offset)
+                                   bint char_offset,
+                                   bint *seg_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -3916,11 +3916,11 @@ _btk_text_line_char_to_any_segment (BtkTextLine *line,
   return seg;
 }
 
-gint
+bint
 _btk_text_line_byte_to_char (BtkTextLine *line,
-                            gint byte_offset)
+                            bint byte_offset)
 {
-  gint char_offset;
+  bint char_offset;
   BtkTextLineSegment *seg;
 
   g_return_val_if_fail (line != NULL, 0);
@@ -3958,9 +3958,9 @@ _btk_text_line_byte_to_char (BtkTextLine *line,
     }
 }
 
-gint
+bint
 _btk_text_line_char_to_byte (BtkTextLine *line,
-                            gint         char_offset)
+                            bint         char_offset)
 {
   g_warning ("FIXME not implemented");
 
@@ -3969,19 +3969,19 @@ _btk_text_line_char_to_byte (BtkTextLine *line,
 
 /* FIXME sync with char_locate (or figure out a clean
    way to merge the two functions) */
-gboolean
+bboolean
 _btk_text_line_byte_locate (BtkTextLine *line,
-                            gint byte_offset,
+                            bint byte_offset,
                             BtkTextLineSegment **segment,
                             BtkTextLineSegment **any_segment,
-                            gint *seg_byte_offset,
-                            gint *line_byte_offset)
+                            bint *seg_byte_offset,
+                            bint *line_byte_offset)
 {
   BtkTextLineSegment *seg;
   BtkTextLineSegment *after_last_indexable;
   BtkTextLineSegment *last_indexable;
-  gint offset;
-  gint bytes_in_line;
+  bint offset;
+  bint bytes_in_line;
 
   g_return_val_if_fail (line != NULL, FALSE);
   g_return_val_if_fail (byte_offset >= 0, FALSE);
@@ -4016,7 +4016,7 @@ _btk_text_line_byte_locate (BtkTextLine *line,
     {
       /* We went off the end of the line */
       if (offset != 0)
-        g_warning ("%s: byte index off the end of the line", G_STRLOC);
+        g_warning ("%s: byte index off the end of the line", B_STRLOC);
 
       return FALSE;
     }
@@ -4046,19 +4046,19 @@ _btk_text_line_byte_locate (BtkTextLine *line,
 
 /* FIXME sync with byte_locate (or figure out a clean
    way to merge the two functions) */
-gboolean
+bboolean
 _btk_text_line_char_locate     (BtkTextLine     *line,
-                                gint              char_offset,
+                                bint              char_offset,
                                 BtkTextLineSegment **segment,
                                 BtkTextLineSegment **any_segment,
-                                gint             *seg_char_offset,
-                                gint             *line_char_offset)
+                                bint             *seg_char_offset,
+                                bint             *line_char_offset)
 {
   BtkTextLineSegment *seg;
   BtkTextLineSegment *after_last_indexable;
   BtkTextLineSegment *last_indexable;
-  gint offset;
-  gint chars_in_line;
+  bint offset;
+  bint chars_in_line;
 
   g_return_val_if_fail (line != NULL, FALSE);
   g_return_val_if_fail (char_offset >= 0, FALSE);
@@ -4093,7 +4093,7 @@ _btk_text_line_char_locate     (BtkTextLine     *line,
     {
       /* end of the line */
       if (offset != 0)
-        g_warning ("%s: char offset off the end of the line", G_STRLOC);
+        g_warning ("%s: char offset off the end of the line", B_STRLOC);
 
       return FALSE;
     }
@@ -4123,9 +4123,9 @@ _btk_text_line_char_locate     (BtkTextLine     *line,
 
 void
 _btk_text_line_byte_to_char_offsets (BtkTextLine *line,
-                                    gint byte_offset,
-                                    gint *line_char_offset,
-                                    gint *seg_char_offset)
+                                    bint byte_offset,
+                                    bint *line_char_offset,
+                                    bint *seg_char_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -4169,9 +4169,9 @@ _btk_text_line_byte_to_char_offsets (BtkTextLine *line,
 
 void
 _btk_text_line_char_to_byte_offsets (BtkTextLine *line,
-                                    gint char_offset,
-                                    gint *line_byte_offset,
-                                    gint *seg_byte_offset)
+                                    bint char_offset,
+                                    bint *line_byte_offset,
+                                    bint *seg_byte_offset)
 {
   BtkTextLineSegment *seg;
   int offset;
@@ -4221,7 +4221,7 @@ _btk_text_line_char_to_byte_offsets (BtkTextLine *line,
     }
 }
 
-static gint
+static bint
 node_compare (BtkTextBTreeNode *lhs,
               BtkTextBTreeNode *rhs)
 {
@@ -4230,7 +4230,7 @@ node_compare (BtkTextBTreeNode *lhs,
   BtkTextBTreeNode *common_parent;
   BtkTextBTreeNode *parent_of_lower;
   BtkTextBTreeNode *parent_of_higher;
-  gboolean lhs_is_lower;
+  bboolean lhs_is_lower;
   BtkTextBTreeNode *lower;
   BtkTextBTreeNode *higher;
 
@@ -4324,7 +4324,7 @@ _btk_text_line_next_could_contain_tag (BtkTextLine  *line,
 {
   BtkTextBTreeNode *node;
   BtkTextTagInfo *info;
-  gboolean below_tag_root;
+  bboolean below_tag_root;
 
   g_return_val_if_fail (line != NULL, NULL);
 
@@ -4401,7 +4401,7 @@ _btk_text_line_next_could_contain_tag (BtkTextLine  *line,
     }
   else
     {
-      gint ordering;
+      bint ordering;
 
       ordering = node_compare (line->parent, info->tag_root);
 
@@ -4480,7 +4480,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
   BtkTextBTreeNode *node;
   BtkTextBTreeNode *found_node = NULL;
   BtkTextTagInfo *info;
-  gboolean below_tag_root;
+  bboolean below_tag_root;
   BtkTextLine *prev;
   BtkTextBTreeNode *line_ancestor;
   BtkTextBTreeNode *line_ancestor_parent;
@@ -4561,7 +4561,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
 
           while (node != line_ancestor && node != NULL)
             {
-              child_nodes = g_slist_prepend (child_nodes, node);
+              child_nodes = b_slist_prepend (child_nodes, node);
 
               node = node->next;
             }
@@ -4577,14 +4577,14 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
               if (btk_text_btree_node_has_tag (this_node, tag))
                 {
                   found_node = this_node;
-                  g_slist_free (child_nodes);
+                  b_slist_free (child_nodes);
                   goto found;
                 }
 
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (child_nodes);
+          b_slist_free (child_nodes);
 
           /* Didn't find anything on this level; go up one level. */
           line_ancestor = line_ancestor_parent;
@@ -4596,7 +4596,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
     }
   else
     {
-      gint ordering;
+      bint ordering;
 
       ordering = node_compare (line->parent, info->tag_root);
 
@@ -4640,7 +4640,7 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
       node = node->children.node;
       while (node != NULL)
         {
-          child_nodes = g_slist_prepend (child_nodes, node);
+          child_nodes = b_slist_prepend (child_nodes, node);
           node = node->next;
         }
 
@@ -4656,10 +4656,10 @@ _btk_text_line_previous_could_contain_tag (BtkTextLine  *line,
               break;
             }
 
-          iter = g_slist_next (iter);
+          iter = b_slist_next (iter);
         }
 
-      g_slist_free (child_nodes);
+      b_slist_free (child_nodes);
 
       g_assert (node != NULL);
     }
@@ -4694,9 +4694,9 @@ get_last_line (BtkTextBTree *tree)
 {
   if (tree->last_line_stamp != tree->chars_changed_stamp)
     {
-      gint n_lines;
+      bint n_lines;
       BtkTextLine *line;
-      gint real_line;
+      bint real_line;
 
       n_lines = _btk_text_btree_line_count (tree);
 
@@ -4768,7 +4768,7 @@ static void
 cleanup_line (BtkTextLine *line)
 {
   BtkTextLineSegment *seg, **prev_p;
-  gboolean changed;
+  bboolean changed;
 
   /*
    * Make a pass over all of the segments in the line, giving each
@@ -4807,7 +4807,7 @@ cleanup_line (BtkTextLine *line)
  */
 
 static NodeData*
-node_data_new (gpointer view_id)
+node_data_new (bpointer view_id)
 {
   NodeData *nd;
   
@@ -4836,7 +4836,7 @@ node_data_list_destroy (NodeData *nd)
 
 static NodeData*
 node_data_find (NodeData *nd, 
-		gpointer  view_id)
+		bpointer  view_id)
 {
   while (nd != NULL)
     {
@@ -4872,7 +4872,7 @@ btk_text_btree_node_new (void)
 static void
 btk_text_btree_node_adjust_toggle_count (BtkTextBTreeNode  *node,
                                          BtkTextTagInfo  *info,
-                                         gint adjust)
+                                         bint adjust)
 {
   Summary *summary;
 
@@ -4903,7 +4903,7 @@ btk_text_btree_node_adjust_toggle_count (BtkTextBTreeNode  *node,
 /* Note that the tag root and above do not have summaries
    for the tag; only nodes below the tag root have
    the summaries. */
-static gboolean
+static bboolean
 btk_text_btree_node_has_tag (BtkTextBTreeNode *node, BtkTextTag *tag)
 {
   Summary *summary;
@@ -4971,7 +4971,7 @@ btk_text_btree_node_invalidate_downward (BtkTextBTreeNode *node)
 #endif
 
 static void
-btk_text_btree_node_invalidate_upward (BtkTextBTreeNode *node, gpointer view_id)
+btk_text_btree_node_invalidate_upward (BtkTextBTreeNode *node, bpointer view_id)
 {
   BtkTextBTreeNode *iter;
 
@@ -4991,7 +4991,7 @@ btk_text_btree_node_invalidate_upward (BtkTextBTreeNode *node, gpointer view_id)
         }
       else
         {
-          gboolean should_continue = FALSE;
+          bboolean should_continue = FALSE;
 
           nd = iter->node_data;
           while (nd != NULL)
@@ -5025,9 +5025,9 @@ btk_text_btree_node_invalidate_upward (BtkTextBTreeNode *node, gpointer view_id)
  *
  * Return value: %TRUE if the entire #BtkTextBTree is valid
  **/
-gboolean
+bboolean
 _btk_text_btree_is_valid (BtkTextBTree *tree,
-                         gpointer      view_id)
+                         bpointer      view_id)
 {
   NodeData *nd;
   g_return_val_if_fail (tree != NULL, FALSE);
@@ -5040,22 +5040,22 @@ typedef struct _ValidateState ValidateState;
 
 struct _ValidateState
 {
-  gint remaining_pixels;
-  gboolean in_validation;
-  gint y;
-  gint old_height;
-  gint new_height;
+  bint remaining_pixels;
+  bboolean in_validation;
+  bint y;
+  bint old_height;
+  bint new_height;
 };
 
 static void
 btk_text_btree_node_validate (BTreeView         *view,
                               BtkTextBTreeNode  *node,
-                              gpointer           view_id,
+                              bpointer           view_id,
                               ValidateState     *state)
 {
-  gint node_valid = TRUE;
-  gint node_width = 0;
-  gint node_height = 0;
+  bint node_valid = TRUE;
+  bint node_width = 0;
+  bint node_height = 0;
 
   NodeData *nd = btk_text_btree_node_ensure_data (node, view_id);
   g_return_if_fail (!nd->valid);
@@ -5227,13 +5227,13 @@ btk_text_btree_node_validate (BTreeView         *view,
  * Return value: %TRUE if a rebunnyion has been validated, %FALSE if the
  * entire tree was already valid.
  **/
-gboolean
+bboolean
 _btk_text_btree_validate (BtkTextBTree *tree,
-                         gpointer      view_id,
-                         gint          max_pixels,
-                         gint         *y,
-                         gint         *old_height,
-                         gint         *new_height)
+                         bpointer      view_id,
+                         bint          max_pixels,
+                         bint         *y,
+                         bint         *old_height,
+                         bint         *new_height)
 {
   BTreeView *view;
 
@@ -5274,14 +5274,14 @@ _btk_text_btree_validate (BtkTextBTree *tree,
 
 static void
 btk_text_btree_node_compute_view_aggregates (BtkTextBTreeNode *node,
-                                             gpointer          view_id,
-                                             gint             *width_out,
-                                             gint             *height_out,
-                                             gboolean         *valid_out)
+                                             bpointer          view_id,
+                                             bint             *width_out,
+                                             bint             *height_out,
+                                             bboolean         *valid_out)
 {
-  gint width = 0;
-  gint height = 0;
-  gboolean valid = TRUE;
+  bint width = 0;
+  bint height = 0;
+  bboolean valid = TRUE;
 
   if (node->level == 0)
     {
@@ -5335,12 +5335,12 @@ btk_text_btree_node_compute_view_aggregates (BtkTextBTreeNode *node,
  */
 static NodeData *
 btk_text_btree_node_check_valid (BtkTextBTreeNode *node,
-                                 gpointer          view_id)
+                                 bpointer          view_id)
 {
   NodeData *nd = btk_text_btree_node_ensure_data (node, view_id);
-  gboolean valid;
-  gint width;
-  gint height;
+  bboolean valid;
+  bint width;
+  bint height;
 
   btk_text_btree_node_compute_view_aggregates (node, view_id,
                                                &width, &height, &valid);
@@ -5353,7 +5353,7 @@ btk_text_btree_node_check_valid (BtkTextBTreeNode *node,
 
 static void
 btk_text_btree_node_check_valid_upward (BtkTextBTreeNode *node,
-                                        gpointer          view_id)
+                                        bpointer          view_id)
 {
   while (node)
     {
@@ -5364,7 +5364,7 @@ btk_text_btree_node_check_valid_upward (BtkTextBTreeNode *node,
 
 static NodeData *
 btk_text_btree_node_check_valid_downward (BtkTextBTreeNode *node,
-                                          gpointer          view_id)
+                                          bpointer          view_id)
 {
   if (node->level == 0)
     {
@@ -5409,7 +5409,7 @@ btk_text_btree_node_check_valid_downward (BtkTextBTreeNode *node,
 void
 _btk_text_btree_validate_line (BtkTextBTree     *tree,
                                BtkTextLine      *line,
-                               gpointer          view_id)
+                               bpointer          view_id)
 {
   BtkTextLineData *ld;
   BTreeView *view;
@@ -5430,7 +5430,7 @@ _btk_text_btree_validate_line (BtkTextBTree     *tree,
 }
 
 static void
-btk_text_btree_node_remove_view (BTreeView *view, BtkTextBTreeNode *node, gpointer view_id)
+btk_text_btree_node_remove_view (BTreeView *view, BtkTextBTreeNode *node, bpointer view_id)
 {
   if (node->level == 0)
     {
@@ -5517,7 +5517,7 @@ btk_text_btree_node_free_empty (BtkTextBTree *tree,
 }
 
 static NodeData*
-btk_text_btree_node_ensure_data (BtkTextBTreeNode *node, gpointer view_id)
+btk_text_btree_node_ensure_data (BtkTextBTreeNode *node, bpointer view_id)
 {
   NodeData *nd;
 
@@ -5544,7 +5544,7 @@ btk_text_btree_node_ensure_data (BtkTextBTreeNode *node, gpointer view_id)
 }
 
 static void
-btk_text_btree_node_remove_data (BtkTextBTreeNode *node, gpointer view_id)
+btk_text_btree_node_remove_data (BtkTextBTreeNode *node, bpointer view_id)
 {
   NodeData *nd;
   NodeData *prev;
@@ -5575,8 +5575,8 @@ btk_text_btree_node_remove_data (BtkTextBTreeNode *node, gpointer view_id)
 }
 
 static void
-btk_text_btree_node_get_size (BtkTextBTreeNode *node, gpointer view_id,
-                              gint *width, gint *height)
+btk_text_btree_node_get_size (BtkTextBTreeNode *node, bpointer view_id,
+                              bint *width, bint *height)
 {
   NodeData *nd;
 
@@ -5618,7 +5618,7 @@ btk_text_btree_node_common_parent (BtkTextBTreeNode *node1,
  */
 
 static BTreeView*
-btk_text_btree_get_view (BtkTextBTree *tree, gpointer view_id)
+btk_text_btree_get_view (BtkTextBTree *tree, bpointer view_id)
 {
   BTreeView *view;
 
@@ -5645,7 +5645,7 @@ get_tree_bounds (BtkTextBTree *tree,
 static void
 tag_changed_cb (BtkTextTagTable *table,
                 BtkTextTag      *tag,
-                gboolean         size_changed,
+                bboolean         size_changed,
                 BtkTextBTree    *tree)
 {
   if (size_changed)
@@ -5661,7 +5661,7 @@ tag_changed_cb (BtkTextTagTable *table,
         {
           /* Must be a last toggle if there was a first one. */
           _btk_text_btree_get_iter_at_last_toggle (tree, &end, tag);
-          DV (g_print ("invalidating due to tag change (%s)\n", G_STRLOC));
+          DV (g_print ("invalidating due to tag change (%s)\n", B_STRLOC));
           _btk_text_btree_invalidate_rebunnyion (tree, &start, &end, FALSE);
 
         }
@@ -5675,7 +5675,7 @@ tag_changed_cb (BtkTextTagTable *table,
 
       while (view != NULL)
         {
-          gint width, height;
+          bint width, height;
 
           _btk_text_btree_get_view_size (tree, view->view_id, &width, &height);
           btk_text_layout_changed (view->layout, 0, height, height);
@@ -5947,8 +5947,8 @@ btk_text_btree_rebalance (BtkTextBTree *tree,
 static void
 post_insert_fixup (BtkTextBTree *tree,
                    BtkTextLine *line,
-                   gint line_count_delta,
-                   gint char_count_delta)
+                   bint line_count_delta,
+                   bint char_count_delta)
 
 {
   BtkTextBTreeNode *node;
@@ -5991,7 +5991,7 @@ btk_text_btree_get_existing_tag_info (BtkTextBTree *tree,
       if (info->tag == tag)
         return info;
 
-      list = g_slist_next (list);
+      list = b_slist_next (list);
     }
 
   return NULL;
@@ -6016,7 +6016,7 @@ btk_text_btree_get_tag_info (BtkTextBTree *tree,
       info->tag_root = NULL;
       info->toggle_count = 0;
 
-      tree->tag_infos = g_slist_prepend (tree->tag_infos, info);
+      tree->tag_infos = b_slist_prepend (tree->tag_infos, info);
 
 #if 0
       g_print ("Created tag info %p for tag %s(%p)\n",
@@ -6058,7 +6058,7 @@ btk_text_btree_remove_tag_info (BtkTextBTree *tree,
               tree->tag_infos = list->next;
             }
           list->next = NULL;
-          g_slist_free (list);
+          b_slist_free (list);
 
           g_object_unref (info->tag);
 
@@ -6067,7 +6067,7 @@ btk_text_btree_remove_tag_info (BtkTextBTree *tree,
         }
 
       prev = list;
-      list = g_slist_next (list);
+      list = b_slist_next (list);
     }
 }
 
@@ -6264,7 +6264,7 @@ recompute_node_counts (BtkTextBTree *tree, BtkTextBTreeNode *node)
 void
 _btk_change_node_toggle_count (BtkTextBTreeNode *node,
                                BtkTextTagInfo   *info,
-                               gint              delta) /* may be negative */
+                               bint              delta) /* may be negative */
 {
   Summary *summary, *prevPtr;
   BtkTextBTreeNode *node2Ptr;
@@ -6324,7 +6324,7 @@ _btk_change_node_toggle_count (BtkTextBTreeNode *node,
                */
 
               g_error ("%s: bad toggle count (%d) max (%d)",
-                       G_STRLOC, summary->toggle_count, info->toggle_count);
+                       B_STRLOC, summary->toggle_count, info->toggle_count);
             }
 
           /*
@@ -6639,9 +6639,9 @@ btk_text_btree_node_view_check_consistency (BtkTextBTree     *tree,
                                             BtkTextBTreeNode *node,
                                             NodeData         *nd)
 {
-  gint width;
-  gint height;
-  gboolean valid;
+  bint width;
+  bint height;
+  bboolean valid;
   BTreeView *view;
   
   view = tree->views;
@@ -6896,11 +6896,11 @@ btk_text_btree_node_check_consistency (BtkTextBTree     *tree,
 }
 
 static void
-listify_foreach (BtkTextTag *tag, gpointer user_data)
+listify_foreach (BtkTextTag *tag, bpointer user_data)
 {
   GSList** listp = user_data;
 
-  *listp = g_slist_prepend (*listp, tag);
+  *listp = b_slist_prepend (*listp, tag);
 }
 
 static GSList*
@@ -7013,7 +7013,7 @@ _btk_text_btree_check (BtkTextBTree *tree)
         }
     }
 
-  g_slist_free (all_tags);
+  b_slist_free (all_tags);
 
   /*
    * Call a recursive procedure to do the main body of checks.
@@ -7119,7 +7119,7 @@ _btk_text_btree_spew (BtkTextBTree *tree)
         printf ("  tag `%s': root at %p, toggle count %d\n",
                 info->tag->name, info->tag_root, info->toggle_count);
 
-        list = g_slist_next (list);
+        list = b_slist_next (list);
       }
 
     if (tree->tag_infos == NULL)
@@ -7138,7 +7138,7 @@ _btk_text_btree_spew (BtkTextBTree *tree)
 void
 _btk_text_btree_spew_line_short (BtkTextLine *line, int indent)
 {
-  gchar * spaces;
+  bchar * spaces;
   BtkTextLineSegment *seg;
 
   spaces = g_strnfill (indent, ' ');
@@ -7153,8 +7153,8 @@ _btk_text_btree_spew_line_short (BtkTextLine *line, int indent)
     {
       if (seg->type == &btk_text_char_type)
         {
-          gchar* str = g_strndup (seg->body.chars, MIN (seg->byte_count, 10));
-          gchar* s;
+          bchar* str = g_strndup (seg->body.chars, MIN (seg->byte_count, 10));
+          bchar* s;
           s = str;
           while (*s)
             {
@@ -7196,7 +7196,7 @@ _btk_text_btree_spew_line_short (BtkTextLine *line, int indent)
 void
 _btk_text_btree_spew_node (BtkTextBTreeNode *node, int indent)
 {
-  gchar * spaces;
+  bchar * spaces;
   BtkTextBTreeNode *iter;
   Summary *s;
 
@@ -7263,7 +7263,7 @@ _btk_text_btree_spew_segment (BtkTextBTree* tree, BtkTextLineSegment * seg)
 
   if (seg->type == &btk_text_char_type)
     {
-      gchar* str = g_strndup (seg->body.chars, seg->byte_count);
+      bchar* str = g_strndup (seg->body.chars, seg->byte_count);
       printf ("       `%s'\n", str);
       g_free (str);
     }

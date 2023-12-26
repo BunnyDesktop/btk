@@ -4,9 +4,9 @@
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2004.
 # Žygimantas Beručka <zygis@bunny.org>, 2004-2007, 2010.
 # Mantas Kriaučiūnas <mantas@akl.lt>, 2006.
-# Gintautas Miliauskas <gintas@akl.lt>, 2007.
+# Gintautas Miliauskas <bintas@akl.lt>, 2007.
 # Rimas Kudelis <rq@akl.lt>, 2008, 2010.
-# Gintautas Miliauskas <gintautas@miliauskas.lt>, 2009.
+# Gintautas Miliauskas <bintautas@miliauskas.lt>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"

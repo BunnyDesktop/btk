@@ -51,19 +51,19 @@
 #define CHECK_DARK  (1.0 / 3.0)
 #define CHECK_LIGHT (2.0 / 3.0)
 
-#define BTK_COLOR_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonPrivate))
+#define BTK_COLOR_BUTTON_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonPrivate))
 
 struct _BtkColorButtonPrivate 
 {
   BtkWidget *draw_area; /* Widget where we draw the color sample */
   BtkWidget *cs_dialog; /* Color selection dialog */
   
-  gchar *title;         /* Title for the color selection window */
+  bchar *title;         /* Title for the color selection window */
   
   BdkColor color;
-  guint16 alpha;
+  buint16 alpha;
   
-  guint use_alpha : 1;  /* Use alpha or not */
+  buint use_alpha : 1;  /* Use alpha or not */
 };
 
 /* Properties */
@@ -84,15 +84,15 @@ enum
 };
 
 /* bobject signals */
-static void btk_color_button_finalize      (GObject             *object);
-static void btk_color_button_set_property  (GObject        *object,
-					    guint           param_id,
-					    const GValue   *value,
-					    GParamSpec     *pspec);
-static void btk_color_button_get_property  (GObject        *object,
-					    guint           param_id,
-					    GValue         *value,
-					    GParamSpec     *pspec);
+static void btk_color_button_finalize      (BObject             *object);
+static void btk_color_button_set_property  (BObject        *object,
+					    buint           param_id,
+					    const BValue   *value,
+					    BParamSpec     *pspec);
+static void btk_color_button_get_property  (BObject        *object,
+					    buint           param_id,
+					    BValue         *value,
+					    BParamSpec     *pspec);
 
 /* btkwidget signals */
 static void btk_color_button_state_changed (BtkWidget           *widget, 
@@ -104,26 +104,26 @@ static void btk_color_button_clicked       (BtkButton           *button);
 /* source side drag signals */
 static void btk_color_button_drag_begin (BtkWidget        *widget,
 					 BdkDragContext   *context,
-					 gpointer          data);
+					 bpointer          data);
 static void btk_color_button_drag_data_get (BtkWidget        *widget,
                                             BdkDragContext   *context,
                                             BtkSelectionData *selection_data,
-                                            guint             info,
-                                            guint             time,
+                                            buint             info,
+                                            buint             time,
                                             BtkColorButton   *color_button);
 
 /* target side drag signals */
 static void btk_color_button_drag_data_received (BtkWidget        *widget,
 						 BdkDragContext   *context,
-						 gint              x,
-						 gint              y,
+						 bint              x,
+						 bint              y,
 						 BtkSelectionData *selection_data,
-						 guint             info,
-						 guint32           time,
+						 buint             info,
+						 buint32           time,
 						 BtkColorButton   *color_button);
 
 
-static guint color_button_signals[LAST_SIGNAL] = { 0 };
+static buint color_button_signals[LAST_SIGNAL] = { 0 };
 
 static const BtkTargetEntry drop_types[] = { { "application/x-color", 0, 0 } };
 
@@ -132,11 +132,11 @@ G_DEFINE_TYPE (BtkColorButton, btk_color_button, BTK_TYPE_BUTTON)
 static void
 btk_color_button_class_init (BtkColorButtonClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkButtonClass *button_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
   widget_class = BTK_WIDGET_CLASS (klass);
   button_class = BTK_BUTTON_CLASS (klass);
 
@@ -223,17 +223,17 @@ btk_color_button_class_init (BtkColorButtonClass *klass)
    * Since: 2.4
    */
   color_button_signals[COLOR_SET] = g_signal_new (I_("color-set"),
-						  G_TYPE_FROM_CLASS (bobject_class),
+						  B_TYPE_FROM_CLASS (bobject_class),
 						  G_SIGNAL_RUN_FIRST,
 						  G_STRUCT_OFFSET (BtkColorButtonClass, color_set),
 						  NULL, NULL,
 						  _btk_marshal_VOID__VOID,
-						  G_TYPE_NONE, 0);
+						  B_TYPE_NONE, 0);
 
   g_type_class_add_private (bobject_class, sizeof (BtkColorButtonPrivate));
 }
 
-static gboolean
+static bboolean
 btk_color_button_has_alpha (BtkColorButton *color_button)
 {
   return color_button->priv->use_alpha &&
@@ -264,10 +264,10 @@ btk_color_button_get_checkered (void)
 }
 
 /* Handle exposure events for the color picker's drawing area */
-static gint
+static bint
 expose_event (BtkWidget      *widget, 
               BdkEventExpose *event, 
-              gpointer        data)
+              bpointer        data)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (data);
   BtkAllocation allocation;
@@ -332,14 +332,14 @@ btk_color_button_state_changed (BtkWidget   *widget,
 static void
 btk_color_button_drag_data_received (BtkWidget        *widget,
 				     BdkDragContext   *context,
-				     gint              x,
-				     gint              y,
+				     bint              x,
+				     bint              y,
 				     BtkSelectionData *selection_data,
-				     guint             info,
-				     guint32           time,
+				     buint             info,
+				     buint32           time,
 				     BtkColorButton   *color_button)
 {
-  guint16 *dropped;
+  buint16 *dropped;
 
   if (selection_data->length < 0)
     return;
@@ -354,7 +354,7 @@ btk_color_button_drag_data_received (BtkWidget        *widget,
     }
 
 
-  dropped = (guint16 *)selection_data->data;
+  dropped = (buint16 *)selection_data->data;
 
   color_button->priv->color.red = dropped[0];
   color_button->priv->color.green = dropped[1];
@@ -365,10 +365,10 @@ btk_color_button_drag_data_received (BtkWidget        *widget,
 
   g_signal_emit (color_button, color_button_signals[COLOR_SET], 0);
 
-  g_object_freeze_notify (G_OBJECT (color_button));
-  g_object_notify (G_OBJECT (color_button), "color");
-  g_object_notify (G_OBJECT (color_button), "alpha");
-  g_object_thaw_notify (G_OBJECT (color_button));
+  g_object_freeze_notify (B_OBJECT (color_button));
+  g_object_notify (B_OBJECT (color_button), "color");
+  g_object_notify (B_OBJECT (color_button), "alpha");
+  g_object_thaw_notify (B_OBJECT (color_button));
 }
 
 static void
@@ -376,7 +376,7 @@ set_color_icon (BdkDragContext *context,
 		BdkColor       *color)
 {
   BdkPixbuf *pixbuf;
-  guint32 pixel;
+  buint32 pixel;
 
   pixbuf = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE,
 			   8, 48, 32);
@@ -394,7 +394,7 @@ set_color_icon (BdkDragContext *context,
 static void
 btk_color_button_drag_begin (BtkWidget      *widget,
 			     BdkDragContext *context,
-			     gpointer        data)
+			     bpointer        data)
 {
   BtkColorButton *color_button = data;
   
@@ -405,11 +405,11 @@ static void
 btk_color_button_drag_data_get (BtkWidget        *widget,
 				BdkDragContext   *context,
 				BtkSelectionData *selection_data,
-				guint             info,
-				guint             time,
+				buint             info,
+				buint             time,
 				BtkColorButton   *color_button)
 {
-  guint16 dropped[4];
+  buint16 dropped[4];
 
   dropped[0] = color_button->priv->color.red;
   dropped[1] = color_button->priv->color.green;
@@ -417,7 +417,7 @@ btk_color_button_drag_data_get (BtkWidget        *widget,
   dropped[3] = color_button->priv->alpha;
 
   btk_selection_data_set (selection_data, selection_data->target,
-			  16, (guchar *)dropped, 8);
+			  16, (buchar *)dropped, 8);
 }
 
 static void
@@ -486,7 +486,7 @@ btk_color_button_init (BtkColorButton *color_button)
 }
 
 static void
-btk_color_button_finalize (GObject *object)
+btk_color_button_finalize (BObject *object)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (object);
 
@@ -497,7 +497,7 @@ btk_color_button_finalize (GObject *object)
   g_free (color_button->priv->title);
   color_button->priv->title = NULL;
 
-  G_OBJECT_CLASS (btk_color_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_color_button_parent_class)->finalize (object);
 }
 
 
@@ -538,7 +538,7 @@ btk_color_button_new_with_color (const BdkColor *color)
 
 static void
 dialog_ok_clicked (BtkWidget *widget, 
-		   gpointer   data)
+		   bpointer   data)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (data);
   BtkColorSelection *color_selection;
@@ -554,15 +554,15 @@ dialog_ok_clicked (BtkWidget *widget,
 
   g_signal_emit (color_button, color_button_signals[COLOR_SET], 0);
 
-  g_object_freeze_notify (G_OBJECT (color_button));
-  g_object_notify (G_OBJECT (color_button), "color");
-  g_object_notify (G_OBJECT (color_button), "alpha");
-  g_object_thaw_notify (G_OBJECT (color_button));
+  g_object_freeze_notify (B_OBJECT (color_button));
+  g_object_notify (B_OBJECT (color_button), "color");
+  g_object_notify (B_OBJECT (color_button), "alpha");
+  g_object_thaw_notify (B_OBJECT (color_button));
 }
 
-static gboolean
+static bboolean
 dialog_destroy (BtkWidget *widget, 
-		gpointer   data)
+		bpointer   data)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (data);
   
@@ -573,7 +573,7 @@ dialog_destroy (BtkWidget *widget,
 
 static void
 dialog_cancel_clicked (BtkWidget *widget,
-		       gpointer   data)
+		       bpointer   data)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (data);
   
@@ -655,7 +655,7 @@ btk_color_button_set_color (BtkColorButton *color_button,
 
   btk_widget_queue_draw (color_button->priv->draw_area);
   
-  g_object_notify (G_OBJECT (color_button), "color");
+  g_object_notify (B_OBJECT (color_button), "color");
 }
 
 
@@ -670,7 +670,7 @@ btk_color_button_set_color (BtkColorButton *color_button,
  **/
 void
 btk_color_button_set_alpha (BtkColorButton *color_button,
-			    guint16         alpha)
+			    buint16         alpha)
 {
   g_return_if_fail (BTK_IS_COLOR_BUTTON (color_button));
 
@@ -678,7 +678,7 @@ btk_color_button_set_alpha (BtkColorButton *color_button,
 
   btk_widget_queue_draw (color_button->priv->draw_area);
 
-  g_object_notify (G_OBJECT (color_button), "alpha");
+  g_object_notify (B_OBJECT (color_button), "alpha");
 }
 
 /**
@@ -711,7 +711,7 @@ btk_color_button_get_color (BtkColorButton *color_button,
  *
  * Since: 2.4
  **/
-guint16
+buint16
 btk_color_button_get_alpha (BtkColorButton *color_button)
 {
   g_return_val_if_fail (BTK_IS_COLOR_BUTTON (color_button), 0);
@@ -730,7 +730,7 @@ btk_color_button_get_alpha (BtkColorButton *color_button)
  */
 void
 btk_color_button_set_use_alpha (BtkColorButton *color_button, 
-				gboolean        use_alpha)
+				bboolean        use_alpha)
 {
   g_return_if_fail (BTK_IS_COLOR_BUTTON (color_button));
 
@@ -742,7 +742,7 @@ btk_color_button_set_use_alpha (BtkColorButton *color_button,
 
       btk_widget_queue_draw (color_button->priv->draw_area);
 
-      g_object_notify (G_OBJECT (color_button), "use-alpha");
+      g_object_notify (B_OBJECT (color_button), "use-alpha");
     }
 }
 
@@ -756,7 +756,7 @@ btk_color_button_set_use_alpha (BtkColorButton *color_button,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_color_button_get_use_alpha (BtkColorButton *color_button)
 {
   g_return_val_if_fail (BTK_IS_COLOR_BUTTON (color_button), FALSE);
@@ -776,9 +776,9 @@ btk_color_button_get_use_alpha (BtkColorButton *color_button)
  */
 void
 btk_color_button_set_title (BtkColorButton *color_button, 
-			    const gchar    *title)
+			    const bchar    *title)
 {
-  gchar *old_title;
+  bchar *old_title;
 
   g_return_if_fail (BTK_IS_COLOR_BUTTON (color_button));
 
@@ -790,7 +790,7 @@ btk_color_button_set_title (BtkColorButton *color_button,
     btk_window_set_title (BTK_WINDOW (color_button->priv->cs_dialog), 
 			  color_button->priv->title);
   
-  g_object_notify (G_OBJECT (color_button), "title");
+  g_object_notify (B_OBJECT (color_button), "title");
 }
 
 /**
@@ -803,7 +803,7 @@ btk_color_button_set_title (BtkColorButton *color_button,
  *
  * Since: 2.4
  */
-const gchar *
+const bchar *
 btk_color_button_get_title (BtkColorButton *color_button)
 {
   g_return_val_if_fail (BTK_IS_COLOR_BUTTON (color_button), NULL);
@@ -812,38 +812,38 @@ btk_color_button_get_title (BtkColorButton *color_button)
 }
 
 static void
-btk_color_button_set_property (GObject      *object,
-			       guint         param_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+btk_color_button_set_property (BObject      *object,
+			       buint         param_id,
+			       const BValue *value,
+			       BParamSpec   *pspec)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (object);
 
   switch (param_id) 
     {
     case PROP_USE_ALPHA:
-      btk_color_button_set_use_alpha (color_button, g_value_get_boolean (value));
+      btk_color_button_set_use_alpha (color_button, b_value_get_boolean (value));
       break;
     case PROP_TITLE:
-      btk_color_button_set_title (color_button, g_value_get_string (value));
+      btk_color_button_set_title (color_button, b_value_get_string (value));
       break;
     case PROP_COLOR:
-      btk_color_button_set_color (color_button, g_value_get_boxed (value));
+      btk_color_button_set_color (color_button, b_value_get_boxed (value));
       break;
     case PROP_ALPHA:
-      btk_color_button_set_alpha (color_button, g_value_get_uint (value));
+      btk_color_button_set_alpha (color_button, b_value_get_uint (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
 
 static void
-btk_color_button_get_property (GObject    *object,
-			       guint       param_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+btk_color_button_get_property (BObject    *object,
+			       buint       param_id,
+			       BValue     *value,
+			       BParamSpec *pspec)
 {
   BtkColorButton *color_button = BTK_COLOR_BUTTON (object);
   BdkColor color;
@@ -851,20 +851,20 @@ btk_color_button_get_property (GObject    *object,
   switch (param_id) 
     {
     case PROP_USE_ALPHA:
-      g_value_set_boolean (value, btk_color_button_get_use_alpha (color_button));
+      b_value_set_boolean (value, btk_color_button_get_use_alpha (color_button));
       break;
     case PROP_TITLE:
-      g_value_set_string (value, btk_color_button_get_title (color_button));
+      b_value_set_string (value, btk_color_button_get_title (color_button));
       break;
     case PROP_COLOR:
       btk_color_button_get_color (color_button, &color);
-      g_value_set_boxed (value, &color);
+      b_value_set_boxed (value, &color);
       break;
     case PROP_ALPHA:
-      g_value_set_uint (value, btk_color_button_get_alpha (color_button));
+      b_value_set_uint (value, btk_color_button_get_alpha (color_button));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }

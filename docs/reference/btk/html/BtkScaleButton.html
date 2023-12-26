@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkScaleButton.html#btk-scale-button-get-value" title="btk_scale_button_get_value ()">btk_scale_button_get_value</a> <span class="c_punctuation">()</span>
@@ -209,7 +209,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkScaleButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -240,10 +240,10 @@ BtkScaleButton implements
 <a name="btk-scale-button-new"></a><h3>btk_scale_button_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_scale_button_new (<em class="parameter"><code><a class="link" href="btk2-Themeable-Stock-Images.html#BtkIconSize" title="enum BtkIconSize"><span class="type">BtkIconSize</span></a> size</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> min</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> max</code></em>,
-                      <em class="parameter"><code><span class="type">gdouble</span> step</code></em>,
-                      <em class="parameter"><code>const <span class="type">gchar</span> **icons</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bdouble</span> min</code></em>,
+                      <em class="parameter"><code><span class="type">bdouble</span> max</code></em>,
+                      <em class="parameter"><code><span class="type">bdouble</span> step</code></em>,
+                      <em class="parameter"><code>const <span class="type">bchar</span> **icons</code></em>);</pre>
 <p>Creates a <a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a>, with a range between <em class="parameter"><code>min</code></em>
  and <em class="parameter"><code>max</code></em>
 , with
@@ -333,7 +333,7 @@ See <a class="link" href="BtkRange.html#btk-range-set-adjustment" title="btk_ran
 <a name="btk-scale-button-set-icons"></a><h3>btk_scale_button_set_icons ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_button_set_icons (<em class="parameter"><code><a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button</code></em>,
-                            <em class="parameter"><code>const <span class="type">gchar</span> **icons</code></em>);</pre>
+                            <em class="parameter"><code>const <span class="type">bchar</span> **icons</code></em>);</pre>
 <p>Sets the icons to be used by the scale button.
 For details, see the <a class="link" href="BtkScaleButton.html#BtkScaleButton--icons" title="The “icons” property"><span class="type">“icons”</span></a> property.</p>
 <div class="refsect3">
@@ -365,7 +365,7 @@ For details, see the <a class="link" href="BtkScaleButton.html#BtkScaleButton--i
 <a name="btk-scale-button-set-value"></a><h3>btk_scale_button_set_value ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_button_set_value (<em class="parameter"><code><a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button</code></em>,
-                            <em class="parameter"><code><span class="type">gdouble</span> value</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bdouble</span> value</code></em>);</pre>
 <p>Sets the current value of the scale; if the value is outside
 the minimum or maximum range values, it will be clamped to fit
 inside them. The scale button emits the <a class="link" href="BtkScaleButton.html#BtkScaleButton-value-changed" title="The “value-changed” signal"><span class="type">“value-changed”</span></a>
@@ -426,7 +426,7 @@ See <a class="link" href="BtkRange.html#btk-range-get-adjustment" title="btk_ran
 <hr>
 <div class="refsect2">
 <a name="btk-scale-button-get-value"></a><h3>btk_scale_button_get_value ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_scale_button_get_value (<em class="parameter"><code><a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button</code></em>);</pre>
 <p>Gets the current value of the scale button.</p>
 <div class="refsect3">
@@ -665,7 +665,7 @@ better for the users.</p>
 <a name="BtkScaleButton-popdown"></a><h3>The <code class="literal">“popdown”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::popdown signal is a</p>
 keybinding signal<p>which gets emitted to popdown the scale widget.</p>
 <p>The default binding for this signal is Escape.</p>
@@ -699,7 +699,7 @@ keybinding signal<p>which gets emitted to popdown the scale widget.</p>
 <a name="BtkScaleButton-popup"></a><h3>The <code class="literal">“popup”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::popup signal is a</p>
 keybinding signal<p>which gets emitted to popup the scale widget.</p>
 <p>The default bindings for this signal are Space, Enter and Return.</p>
@@ -734,7 +734,7 @@ keybinding signal<p>which gets emitted to popup the scale widget.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkScaleButton.html" title="BtkScaleButton"><span class="type">BtkScaleButton</span></a> *button,
                <span class="type">double</span>          value,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::value-changed signal is emitted when the value field has
 changed.</p>
 <div class="refsect3">

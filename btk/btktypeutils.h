@@ -35,11 +35,11 @@
  */
 #include <btk/btktypebuiltins.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* urg */
 #define BTK_TYPE_IDENTIFIER (btk_identifier_get_type ())
-GType btk_identifier_get_type (void) G_GNUC_CONST;
+GType btk_identifier_get_type (void) B_GNUC_CONST;
 
 /* --- typedefs --- */
 /* here we come with some necessary forward declarations for structures and
@@ -48,18 +48,18 @@ GType btk_identifier_get_type (void) G_GNUC_CONST;
 typedef struct _BtkArg	       	     BtkArg;
 typedef struct _BtkObject   	     BtkObject; /* object forward declaration */
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
-typedef gboolean (*BtkFunction)	    (gpointer      data);
+typedef bboolean (*BtkFunction)	    (bpointer      data);
 typedef void (*BtkCallbackMarshal)  (BtkObject    *object,
-				     gpointer      data,
-				     guint         n_args,
+				     bpointer      data,
+				     buint         n_args,
 				     BtkArg       *args);
 #endif
 
 /* This used to be defined in btkitemfactory.h, but moved over here after
  * the complete deprecation of that header
  */
-typedef gchar * (*BtkTranslateFunc) (const gchar  *path,
-				     gpointer      func_data);
+typedef bchar * (*BtkTranslateFunc) (const bchar  *path,
+				     bpointer      func_data);
 
 
 /* Everything below is deprecated and superseded by GType API
@@ -72,47 +72,47 @@ typedef gchar * (*BtkTranslateFunc) (const gchar  *path,
  * compatibility
  */
 
-#define BTK_TYPE_INVALID G_TYPE_INVALID
-#define BTK_TYPE_NONE    G_TYPE_NONE
-#define BTK_TYPE_ENUM    G_TYPE_ENUM
-#define BTK_TYPE_FLAGS   G_TYPE_FLAGS
+#define BTK_TYPE_INVALID B_TYPE_INVALID
+#define BTK_TYPE_NONE    B_TYPE_NONE
+#define BTK_TYPE_ENUM    B_TYPE_ENUM
+#define BTK_TYPE_FLAGS   B_TYPE_FLAGS
 
 /* BtkArg types */
-#define BTK_TYPE_CHAR    G_TYPE_CHAR
-#define BTK_TYPE_UCHAR   G_TYPE_UCHAR
-#define BTK_TYPE_BOOL    G_TYPE_BOOLEAN
-#define BTK_TYPE_INT     G_TYPE_INT
-#define BTK_TYPE_UINT    G_TYPE_UINT
-#define BTK_TYPE_LONG    G_TYPE_LONG
-#define BTK_TYPE_ULONG   G_TYPE_ULONG
-#define BTK_TYPE_FLOAT   G_TYPE_FLOAT
-#define BTK_TYPE_DOUBLE  G_TYPE_DOUBLE
-#define BTK_TYPE_STRING  G_TYPE_STRING
-#define BTK_TYPE_BOXED   G_TYPE_BOXED
-#define BTK_TYPE_POINTER G_TYPE_POINTER
+#define BTK_TYPE_CHAR    B_TYPE_CHAR
+#define BTK_TYPE_UCHAR   B_TYPE_UCHAR
+#define BTK_TYPE_BOOL    B_TYPE_BOOLEAN
+#define BTK_TYPE_INT     B_TYPE_INT
+#define BTK_TYPE_UINT    B_TYPE_UINT
+#define BTK_TYPE_LONG    B_TYPE_LONG
+#define BTK_TYPE_ULONG   B_TYPE_ULONG
+#define BTK_TYPE_FLOAT   B_TYPE_FLOAT
+#define BTK_TYPE_DOUBLE  B_TYPE_DOUBLE
+#define BTK_TYPE_STRING  B_TYPE_STRING
+#define BTK_TYPE_BOXED   B_TYPE_BOXED
+#define BTK_TYPE_POINTER B_TYPE_POINTER
 
 typedef GType BtkFundamentalType;
 
 /* --- type macros --- */
-#define BTK_CLASS_NAME(class)		(g_type_name (G_TYPE_FROM_CLASS (class)))
-#define BTK_CLASS_TYPE(class)		(G_TYPE_FROM_CLASS (class))
+#define BTK_CLASS_NAME(class)		(g_type_name (B_TYPE_FROM_CLASS (class)))
+#define BTK_CLASS_TYPE(class)		(B_TYPE_FROM_CLASS (class))
 #define BTK_TYPE_IS_OBJECT(type)	(g_type_is_a ((type), BTK_TYPE_OBJECT))
 
 /* outdated macros that really shouldn't e used anymore,
  * use the GLib type system instead
  */
-#define	BTK_TYPE_FUNDAMENTAL_LAST        (G_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
-#define	BTK_TYPE_FUNDAMENTAL_MAX         (G_TYPE_FUNDAMENTAL_MAX)
+#define	BTK_TYPE_FUNDAMENTAL_LAST        (B_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
+#define	BTK_TYPE_FUNDAMENTAL_MAX         (B_TYPE_FUNDAMENTAL_MAX)
 
-#define	BTK_FUNDAMENTAL_TYPE	G_TYPE_FUNDAMENTAL
+#define	BTK_FUNDAMENTAL_TYPE	B_TYPE_FUNDAMENTAL
 #define BTK_STRUCT_OFFSET	G_STRUCT_OFFSET
 
 /* bunnylib macro wrappers (compatibility) */
-#define	BTK_CHECK_CAST		G_TYPE_CHECK_INSTANCE_CAST
-#define	BTK_CHECK_CLASS_CAST	G_TYPE_CHECK_CLASS_CAST
-#define BTK_CHECK_GET_CLASS	G_TYPE_INSTANCE_GET_CLASS
-#define	BTK_CHECK_TYPE		G_TYPE_CHECK_INSTANCE_TYPE
-#define	BTK_CHECK_CLASS_TYPE	G_TYPE_CHECK_CLASS_TYPE
+#define	BTK_CHECK_CAST		B_TYPE_CHECK_INSTANCE_CAST
+#define	BTK_CHECK_CLASS_CAST	B_TYPE_CHECK_CLASS_CAST
+#define BTK_CHECK_GET_CLASS	B_TYPE_INSTANCE_GET_CLASS
+#define	BTK_CHECK_TYPE		B_TYPE_CHECK_INSTANCE_TYPE
+#define	BTK_CHECK_CLASS_TYPE	B_TYPE_CHECK_CLASS_TYPE
 
 /* bunnylib type wrappers (compatibility) */
 
@@ -123,7 +123,7 @@ typedef GBaseInitFunc           BtkClassInitFunc;
 typedef GInstanceInitFunc       BtkObjectInitFunc;
 typedef GSignalCMarshaller      BtkSignalMarshaller;
 
-typedef void (*BtkDestroyNotify)    (gpointer data);
+typedef void (*BtkDestroyNotify)    (bpointer data);
 typedef void (*BtkSignalFunc)       (void);
 
 #define BTK_SIGNAL_FUNC(f)	    G_CALLBACK(f)
@@ -138,33 +138,33 @@ typedef void (*BtkSignalFunc)       (void);
 struct _BtkArg
 {
   GType type;
-  gchar *name;
+  bchar *name;
 
   /* this union only defines the required storage types for
-   * the possibile values, thus there is no gint enum_data field,
-   * because that would just be a mere alias for gint int_data.
+   * the possibile values, thus there is no bint enum_data field,
+   * because that would just be a mere alias for bint int_data.
    * use the BTK_VALUE_*() and BTK_RETLOC_*() macros to access
    * the discrete memebers.
    */
   union {
     /* flat values */
-    gchar char_data;
-    guchar uchar_data;
-    gboolean bool_data;
-    gint int_data;
-    guint uint_data;
-    glong long_data;
-    gulong ulong_data;
-    gfloat float_data;
-    gdouble double_data;
-    gchar *string_data;
+    bchar char_data;
+    buchar uchar_data;
+    bboolean bool_data;
+    bint int_data;
+    buint uint_data;
+    blong long_data;
+    bulong ulong_data;
+    bfloat float_data;
+    bdouble double_data;
+    bchar *string_data;
     BtkObject *object_data;
-    gpointer pointer_data;
+    bpointer pointer_data;
 
     /* structured values */
     struct {
       GCallback f;
-      gpointer d;
+      bpointer d;
     } signal_data;
   } d;
 };
@@ -198,21 +198,21 @@ struct _BtkArg
  * pointer types, because return values need to be
  * passed by reference
  */
-#define BTK_RETLOC_CHAR(a)	((gchar*)	(a).d.pointer_data)
-#define BTK_RETLOC_UCHAR(a)	((guchar*)	(a).d.pointer_data)
-#define BTK_RETLOC_BOOL(a)	((gboolean*)	(a).d.pointer_data)
-#define BTK_RETLOC_INT(a)	((gint*)	(a).d.pointer_data)
-#define BTK_RETLOC_UINT(a)	((guint*)	(a).d.pointer_data)
-#define BTK_RETLOC_LONG(a)	((glong*)	(a).d.pointer_data)
-#define BTK_RETLOC_ULONG(a)	((gulong*)	(a).d.pointer_data)
-#define BTK_RETLOC_FLOAT(a)	((gfloat*)	(a).d.pointer_data)
-#define BTK_RETLOC_DOUBLE(a)	((gdouble*)	(a).d.pointer_data)
-#define BTK_RETLOC_STRING(a)	((gchar**)	(a).d.pointer_data)
-#define BTK_RETLOC_ENUM(a)	((gint*)	(a).d.pointer_data)
-#define BTK_RETLOC_FLAGS(a)	((guint*)	(a).d.pointer_data)
-#define BTK_RETLOC_BOXED(a)	((gpointer*)	(a).d.pointer_data)
+#define BTK_RETLOC_CHAR(a)	((bchar*)	(a).d.pointer_data)
+#define BTK_RETLOC_UCHAR(a)	((buchar*)	(a).d.pointer_data)
+#define BTK_RETLOC_BOOL(a)	((bboolean*)	(a).d.pointer_data)
+#define BTK_RETLOC_INT(a)	((bint*)	(a).d.pointer_data)
+#define BTK_RETLOC_UINT(a)	((buint*)	(a).d.pointer_data)
+#define BTK_RETLOC_LONG(a)	((blong*)	(a).d.pointer_data)
+#define BTK_RETLOC_ULONG(a)	((bulong*)	(a).d.pointer_data)
+#define BTK_RETLOC_FLOAT(a)	((bfloat*)	(a).d.pointer_data)
+#define BTK_RETLOC_DOUBLE(a)	((bdouble*)	(a).d.pointer_data)
+#define BTK_RETLOC_STRING(a)	((bchar**)	(a).d.pointer_data)
+#define BTK_RETLOC_ENUM(a)	((bint*)	(a).d.pointer_data)
+#define BTK_RETLOC_FLAGS(a)	((buint*)	(a).d.pointer_data)
+#define BTK_RETLOC_BOXED(a)	((bpointer*)	(a).d.pointer_data)
 #define BTK_RETLOC_OBJECT(a)	((BtkObject**)	(a).d.pointer_data)
-#define BTK_RETLOC_POINTER(a)	((gpointer*)	(a).d.pointer_data)
+#define BTK_RETLOC_POINTER(a)	((bpointer*)	(a).d.pointer_data)
 /* BTK_RETLOC_SIGNAL() - no such thing */
 
 /* type registration, it is recommended to use
@@ -223,21 +223,21 @@ typedef struct _BtkTypeInfo BtkTypeInfo;
 
 struct _BtkTypeInfo
 {
-  gchar			*type_name;
-  guint			 object_size;
-  guint			 class_size;
+  bchar			*type_name;
+  buint			 object_size;
+  buint			 class_size;
   BtkClassInitFunc	 class_init_func;
   BtkObjectInitFunc	 object_init_func;
-  gpointer		 reserved_1;
-  gpointer		 reserved_2;
+  bpointer		 reserved_1;
+  bpointer		 reserved_2;
   BtkClassInitFunc	 base_class_init_func;
 };
 
 void            btk_type_init   (GTypeDebugFlags    debug_flags);
 BtkType         btk_type_unique (BtkType            parent_type,
                                  const BtkTypeInfo *btkinfo);
-gpointer        btk_type_class  (BtkType            type);
-gpointer        btk_type_new    (BtkType            type);
+bpointer        btk_type_class  (BtkType            type);
+bpointer        btk_type_new    (BtkType            type);
 
 /* --- compatibility defines --- */
 #define	btk_type_name(type)		 g_type_name (type)
@@ -253,12 +253,12 @@ typedef GFlagsValue BtkFlagValue;
 BtkEnumValue*	btk_type_enum_get_values	(BtkType	 enum_type);
 BtkFlagValue*	btk_type_flags_get_values	(BtkType	 flags_type);
 BtkEnumValue*	btk_type_enum_find_value	(BtkType	 enum_type,
-						 const gchar	*value_name);
+						 const bchar	*value_name);
 BtkFlagValue*	btk_type_flags_find_value	(BtkType	 flags_type,
-						 const gchar	*value_name);
+						 const bchar	*value_name);
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TYPE_UTILS_H__ */

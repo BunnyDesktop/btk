@@ -4772,7 +4772,7 @@ Tue Jun 18 17:02:48 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/Makefile.am (BTKDOC_CFLAGS, BTKDOC_LIBS): set these. 
 
-	* bdk/bdk.types: Add types derived from GObject, so that they get
+	* bdk/bdk.types: Add types derived from BObject, so that they get
 	an object hierarchy section.
 
 2002-05-01  Matthias Clasen  <maclas@gmx.de>
@@ -5061,7 +5061,7 @@ Tue Jan 29 23:41:31 2002  Owen Taylor  <otaylor@redhat.com>
 
 Mon Jan 21 23:39:42 2002  Jonathan Blandford  <jrb@redhat.com>
 
-	* btk/tmpl/btkfixed.sgml: change guint16 to gint to reflect
+	* btk/tmpl/btkfixed.sgml: change buint16 to bint to reflect
 	changes in the code, found by Jody Goldberg <jody@bunny.org>
 
 2002-01-19  Havoc Pennington  <hp@pobox.com>
@@ -5628,7 +5628,7 @@ Mon Nov 12 23:06:38 2001  Tim Janik  <timj@btk.org>
 2001-10-28  Anders Carlsson  <andersca@gnu.org>
 
 	* btk/tmpl/btkadjustment.sgml: Update struct member docs
-	since they're gdouble now instead of gfloat. Fixes #55699.
+	since they're bdouble now instead of bfloat. Fixes #55699.
 
 2001-10-28  Matthias Clasen  <matthiasc@poet.de>
 
@@ -5686,7 +5686,7 @@ Fri Oct 26 11:54:53 2001  Owen Taylor  <otaylor@redhat.com>
 	correct behavior. This fixes #58798.
 
 	* btk/btk-sections.txt: Update BtkStyle since it's now a
-	GObject and not a struct. This fixes #55807. 
+	BObject and not a struct. This fixes #55807. 
 
 Thu Oct 18 16:40:00 2001  Jonathan Blandford  <jrb@redhat.com>
 

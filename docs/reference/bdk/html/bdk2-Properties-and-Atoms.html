@@ -53,7 +53,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-text-property-to-text-list" title="bdk_text_property_to_text_list ()">bdk_text_property_to_text_list</a> <span class="c_punctuation">()</span>
@@ -61,7 +61,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-text-property-to-text-list-for-display" title="bdk_text_property_to_text_list_for_display ()">bdk_text_property_to_text_list_for_display</a> <span class="c_punctuation">()</span>
@@ -77,7 +77,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-text-property-to-utf8-list" title="bdk_text_property_to_utf8_list ()">bdk_text_property_to_utf8_list</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-text-property-to-utf8-list-for-display" title="bdk_text_property_to_utf8_list_for_display ()">bdk_text_property_to_utf8_list_for_display</a> <span class="c_punctuation">()</span>
@@ -93,7 +93,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-string-to-compound-text" title="bdk_string_to_compound_text ()">bdk_string_to_compound_text</a> <span class="c_punctuation">()</span>
@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-string-to-compound-text-for-display" title="bdk_string_to_compound_text_for_display ()">bdk_string_to_compound_text_for_display</a> <span class="c_punctuation">()</span>
@@ -117,7 +117,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-utf8-to-string-target" title="bdk_utf8_to_string_target ()">bdk_utf8_to_string_target</a> <span class="c_punctuation">()</span>
@@ -125,7 +125,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-utf8-to-compound-text" title="bdk_utf8_to_compound_text ()">bdk_utf8_to_compound_text</a> <span class="c_punctuation">()</span>
@@ -133,7 +133,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-utf8-to-compound-text-for-display" title="bdk_utf8_to_compound_text_for_display ()">bdk_utf8_to_compound_text_for_display</a> <span class="c_punctuation">()</span>
@@ -157,7 +157,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-atom-name" title="bdk_atom_name ()">bdk_atom_name</a> <span class="c_punctuation">()</span>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-property-get" title="bdk_property_get ()">bdk_property_get</a> <span class="c_punctuation">()</span>
@@ -237,25 +237,25 @@
 <hr>
 <div class="refsect2">
 <a name="bdk-text-property-to-text-list"></a><h3>bdk_text_property_to_text_list ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_text_property_to_text_list (<em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> encoding</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> format</code></em>,
-                                <em class="parameter"><code>const <span class="type">guchar</span> *text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> length</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> ***list</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> format</code></em>,
+                                <em class="parameter"><code>const <span class="type">buchar</span> *text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> length</code></em>,
+                                <em class="parameter"><code><span class="type">bchar</span> ***list</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_text_property_to_text_list</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-text-property-to-text-list-for-display"></a><h3>bdk_text_property_to_text_list_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_text_property_to_text_list_for_display
                                (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                                 <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> encoding</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> format</code></em>,
-                                <em class="parameter"><code>const <span class="type">guchar</span> *text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> length</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> ***list</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> format</code></em>,
+                                <em class="parameter"><code>const <span class="type">buchar</span> *text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> length</code></em>,
+                                <em class="parameter"><code><span class="type">bchar</span> ***list</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_text_property_to_text_list_for_display</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
 <p>Use <a href="https://developer.bunny.org/bdk4/bdk4-X-Window-System-Interaction.html#bdk-x11-display-text-property-to-text-list"><code class="function">bdk_x11_display_text_property_to_text_list()</code></a></p>
@@ -321,18 +321,18 @@ if the conversion failed. </p>
 <div class="refsect2">
 <a name="bdk-free-text-list"></a><h3>bdk_free_text_list ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_free_text_list (<em class="parameter"><code><span class="type">gchar</span> **list</code></em>);</pre>
+bdk_free_text_list (<em class="parameter"><code><span class="type">bchar</span> **list</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_free_text_list</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-text-property-to-utf8-list"></a><h3>bdk_text_property_to_utf8_list ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_text_property_to_utf8_list (<em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> encoding</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> format</code></em>,
-                                <em class="parameter"><code>const <span class="type">guchar</span> *text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> length</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> ***list</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> format</code></em>,
+                                <em class="parameter"><code>const <span class="type">buchar</span> *text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> length</code></em>,
+                                <em class="parameter"><code><span class="type">bchar</span> ***list</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_text_property_to_utf8_list</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Convert a text property in the giving encoding to
 a list of UTF-8 strings.</p>
@@ -384,14 +384,14 @@ list.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-text-property-to-utf8-list-for-display"></a><h3>bdk_text_property_to_utf8_list_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_text_property_to_utf8_list_for_display
                                (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                                 <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> encoding</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> format</code></em>,
-                                <em class="parameter"><code>const <span class="type">guchar</span> *text</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> length</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> ***list</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> format</code></em>,
+                                <em class="parameter"><code>const <span class="type">buchar</span> *text</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> length</code></em>,
+                                <em class="parameter"><code><span class="type">bchar</span> ***list</code></em>);</pre>
 <p>Converts a text property in the given encoding to
 a list of UTF-8 strings.</p>
 <div class="refsect3">
@@ -448,25 +448,25 @@ list.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-string-to-compound-text"></a><h3>bdk_string_to_compound_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
-bdk_string_to_compound_text (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+<pre class="programlisting"><span class="returnvalue">bint</span>
+bdk_string_to_compound_text (<em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>,
                              <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> *encoding</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> *format</code></em>,
-                             <em class="parameter"><code><span class="type">guchar</span> **ctext</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> *length</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bint</span> *format</code></em>,
+                             <em class="parameter"><code><span class="type">buchar</span> **ctext</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> *length</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_string_to_compound_text</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-string-to-compound-text-for-display"></a><h3>bdk_string_to_compound_text_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_string_to_compound_text_for_display
                                (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>,
                                 <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> *encoding</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *format</code></em>,
-                                <em class="parameter"><code><span class="type">guchar</span> **ctext</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *length</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> *format</code></em>,
+                                <em class="parameter"><code><span class="type">buchar</span> **ctext</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> *length</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_string_to_compound_text_for_display</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
 <p>Use <a href="https://developer.bunny.org/bdk4/bdk4-X-Window-System-Interaction.html#bdk-x11-display-string-to-compound-text"><code class="function">bdk_x11_display_string_to_compound_text()</code></a></p>
@@ -527,14 +527,14 @@ locale into a form suitable for storing in a window property.</p>
 <div class="refsect2">
 <a name="bdk-free-compound-text"></a><h3>bdk_free_compound_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_free_compound_text (<em class="parameter"><code><span class="type">guchar</span> *ctext</code></em>);</pre>
+bdk_free_compound_text (<em class="parameter"><code><span class="type">buchar</span> *ctext</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_free_compound_text</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-utf8-to-string-target"></a><h3>bdk_utf8_to_string_target ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
-bdk_utf8_to_string_target (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
+bdk_utf8_to_string_target (<em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>);</pre>
 <p>Converts an UTF-8 string into the best possible representation
 as a STRING. The representation of characters not in STRING
 is not specified; it may be as pseudo-escape sequences
@@ -565,12 +565,12 @@ limits like memory or file descriptors are exceeded.)</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-utf8-to-compound-text"></a><h3>bdk_utf8_to_compound_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-bdk_utf8_to_compound_text (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
+bdk_utf8_to_compound_text (<em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>,
                            <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> *encoding</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *format</code></em>,
-                           <em class="parameter"><code><span class="type">guchar</span> **ctext</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> *length</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bint</span> *format</code></em>,
+                           <em class="parameter"><code><span class="type">buchar</span> **ctext</code></em>,
+                           <em class="parameter"><code><span class="type">bint</span> *length</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_utf8_to_compound_text</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Convert from UTF-8 to compound text.</p>
 <div class="refsect3">
@@ -621,13 +621,13 @@ false.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-utf8-to-compound-text-for-display"></a><h3>bdk_utf8_to_compound_text_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_utf8_to_compound_text_for_display (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                                       <em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>,
                                        <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> *encoding</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> *format</code></em>,
-                                       <em class="parameter"><code><span class="type">guchar</span> **ctext</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> *length</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bint</span> *format</code></em>,
+                                       <em class="parameter"><code><span class="type">buchar</span> **ctext</code></em>,
+                                       <em class="parameter"><code><span class="type">bint</span> *length</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_utf8_to_compound_text_for_display</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
 <p>Use <a href="https://developer.bunny.org/bdk4/bdk4-X-Window-System-Interaction.html#bdk-x11-display-utf8-to-compound-text"><code class="function">bdk_x11_display_utf8_to_compound_text()</code></a></p>
@@ -688,14 +688,14 @@ stored in <em class="parameter"><code>ctext</code></em>
 <div class="refsect2">
 <a name="bdk-atom-intern"></a><h3>bdk_atom_intern ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="returnvalue">BdkAtom</span></a>
-bdk_atom_intern (<em class="parameter"><code>const <span class="type">gchar</span> *atom_name</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> only_if_exists</code></em>);</pre>
+bdk_atom_intern (<em class="parameter"><code>const <span class="type">bchar</span> *atom_name</code></em>,
+                 <em class="parameter"><code><span class="type">bboolean</span> only_if_exists</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-atom-intern-static-string"></a><h3>bdk_atom_intern_static_string ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="returnvalue">BdkAtom</span></a>
-bdk_atom_intern_static_string (<em class="parameter"><code>const <span class="type">gchar</span> *atom_name</code></em>);</pre>
+bdk_atom_intern_static_string (<em class="parameter"><code>const <span class="type">bchar</span> *atom_name</code></em>);</pre>
 <p>Finds or creates an atom corresponding to a given string.</p>
 <p>Note that this function is identical to <a class="link" href="bdk2-Properties-and-Atoms.html#bdk-atom-intern" title="bdk_atom_intern ()"><code class="function">bdk_atom_intern()</code></a> except
 that if a new <a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> is created the string itself is used rather 
@@ -730,23 +730,23 @@ BTK+ theme engines).</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-atom-name"></a><h3>bdk_atom_name ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 bdk_atom_name (<em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> atom</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-property-get"></a><h3>bdk_property_get ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_property_get (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> property</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> type</code></em>,
-                  <em class="parameter"><code><span class="type">gulong</span> offset</code></em>,
-                  <em class="parameter"><code><span class="type">gulong</span> length</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> pdelete</code></em>,
+                  <em class="parameter"><code><span class="type">bulong</span> offset</code></em>,
+                  <em class="parameter"><code><span class="type">bulong</span> length</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> pdelete</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> *actual_property_type</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> *actual_format</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> *actual_length</code></em>,
-                  <em class="parameter"><code><span class="type">guchar</span> **data</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> *actual_format</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> *actual_length</code></em>,
+                  <em class="parameter"><code><span class="type">buchar</span> **data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -755,10 +755,10 @@ bdk_property_get (<em class="parameter"><code><a class="link" href="bdk2-Windows
 bdk_property_change (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> property</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> type</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> format</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> format</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkPropMode" title="enum BdkPropMode"><span class="type">BdkPropMode</span></a> mode</code></em>,
-                     <em class="parameter"><code>const <span class="type">guchar</span> *data</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> nelements</code></em>);</pre>
+                     <em class="parameter"><code>const <span class="type">buchar</span> *data</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> nelements</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">

@@ -6,10 +6,10 @@
 #include <btk/btk.h>
 
 static BtkWidget *
-create_bbox (gint  horizontal,
+create_bbox (bint  horizontal,
 	     char *title, 
-	     gint  spacing,
-	     gint  layout)
+	     bint  spacing,
+	     bint  layout)
 {
   BtkWidget *frame;
   BtkWidget *bbox;

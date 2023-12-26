@@ -35,14 +35,14 @@
 #include <btk/btkcolorsel.h>
 #include <btk/btkvbox.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_COLOR_SELECTION_DIALOG            (btk_color_selection_dialog_get_type ())
-#define BTK_COLOR_SELECTION_DIALOG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialog))
-#define BTK_COLOR_SELECTION_DIALOG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
-#define BTK_IS_COLOR_SELECTION_DIALOG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG))
-#define BTK_IS_COLOR_SELECTION_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG))
-#define BTK_COLOR_SELECTION_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
+#define BTK_COLOR_SELECTION_DIALOG(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialog))
+#define BTK_COLOR_SELECTION_DIALOG_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
+#define BTK_IS_COLOR_SELECTION_DIALOG(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG))
+#define BTK_IS_COLOR_SELECTION_DIALOG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_SELECTION_DIALOG))
+#define BTK_COLOR_SELECTION_DIALOG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_SELECTION_DIALOG, BtkColorSelectionDialogClass))
 
 
 typedef struct _BtkColorSelectionDialog       BtkColorSelectionDialog;
@@ -72,11 +72,11 @@ struct _BtkColorSelectionDialogClass
 
 
 /* ColorSelectionDialog */
-GType      btk_color_selection_dialog_get_type            (void) G_GNUC_CONST;
-BtkWidget* btk_color_selection_dialog_new                 (const gchar *title);
+GType      btk_color_selection_dialog_get_type            (void) B_GNUC_CONST;
+BtkWidget* btk_color_selection_dialog_new                 (const bchar *title);
 BtkWidget* btk_color_selection_dialog_get_color_selection (BtkColorSelectionDialog *colorsel);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_COLOR_SELECTION_DIALOG_H__ */

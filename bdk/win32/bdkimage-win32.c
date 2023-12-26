@@ -32,12 +32,12 @@
 #include "bdkprivate-win32.h"
 
 static GList *image_list = NULL;
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 static void bdk_win32_image_destroy (BdkImage      *image);
 static void bdk_image_init          (BdkImage      *image);
 static void bdk_image_class_init    (BdkImageClass *klass);
-static void bdk_image_finalize      (GObject       *object);
+static void bdk_image_finalize      (BObject       *object);
 
 GType
 bdk_image_get_type (void)
@@ -59,7 +59,7 @@ bdk_image_get_type (void)
         (GInstanceInitFunc) bdk_image_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkImage",
                                             &object_info, 0);
     }
@@ -76,7 +76,7 @@ bdk_image_init (BdkImage *image)
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -84,13 +84,13 @@ bdk_image_class_init (BdkImageClass *klass)
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image = BDK_IMAGE (object);
 
   bdk_win32_image_destroy (image);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 void
@@ -112,10 +112,10 @@ _bdk_image_exit (void)
 
 static BdkImage *
 _bdk_win32_new_image (BdkVisual *visual,
-		      gint       width,
-		      gint       height,
-		      gint       depth,
-		      guchar    *bits)
+		      bint       width,
+		      bint       height,
+		      bint       depth,
+		      buchar    *bits)
 {
   BdkImage *image;
 
@@ -165,15 +165,15 @@ _bdk_win32_new_image (BdkVisual *visual,
 
 BdkImage *
 bdk_image_new_bitmap (BdkVisual *visual,
-		      gpointer   data,
-		      gint       w,
-		      gint       h)
+		      bpointer   data,
+		      bint       w,
+		      bint       h)
 {
   BdkPixmap *pixmap;
   BdkImage *image;
-  guchar *bits;
-  gint data_bpl = (w-1)/8 + 1;
-  gint i;
+  buchar *bits;
+  bint data_bpl = (w-1)/8 + 1;
+  bint i;
 
   pixmap = bdk_pixmap_new (NULL, w, h, 1);
 
@@ -190,7 +190,7 @@ bdk_image_new_bitmap (BdkVisual *visual,
   if (data_bpl != image->bpl)
     {
       for (i = 0; i < h; i++)
-	memmove ((guchar *) image->mem + i*image->bpl, ((guchar *) data) + i*data_bpl, data_bpl);
+	memmove ((buchar *) image->mem + i*image->bpl, ((buchar *) data) + i*data_bpl, data_bpl);
     }
   else
     memmove (image->mem, data, data_bpl*h);
@@ -208,13 +208,13 @@ BdkImage*
 _bdk_image_new_for_depth (BdkScreen    *screen,
 			  BdkImageType  type,
 			  BdkVisual    *visual,
-			  gint          width,
-			  gint          height,
-			  gint          depth)
+			  bint          width,
+			  bint          height,
+			  bint          depth)
 {
   BdkPixmap *pixmap;
   BdkImage *image;
-  guchar *bits;
+  buchar *bits;
 
   g_return_val_if_fail (!visual || BDK_IS_VISUAL (visual), NULL);
   g_return_val_if_fail (visual || depth != -1, NULL);
@@ -241,12 +241,12 @@ _bdk_image_new_for_depth (BdkScreen    *screen,
 BdkImage*
 _bdk_win32_copy_to_image (BdkDrawable    *drawable,
 			  BdkImage       *image,
-			  gint            src_x,
-			  gint            src_y,
-			  gint            dest_x,
-			  gint            dest_y,
-			  gint            width,
-			  gint            height)
+			  bint            src_x,
+			  bint            src_y,
+			  bint            dest_x,
+			  bint            dest_y,
+			  bint            width,
+			  bint            height)
 {
   BdkGC *gc;
   BdkScreen *screen = bdk_drawable_get_screen (drawable);
@@ -271,12 +271,12 @@ _bdk_win32_copy_to_image (BdkDrawable    *drawable,
   return image;
 }
 
-guint32
+buint32
 bdk_image_get_pixel (BdkImage *image,
-		     gint      x,
-		     gint      y)
+		     bint      x,
+		     bint      y)
 {
-  guchar *pixelp;
+  buchar *pixelp;
 
   g_return_val_if_fail (image != NULL, 0);
   g_return_val_if_fail (x >= 0 && x < image->width, 0);
@@ -286,18 +286,18 @@ bdk_image_get_pixel (BdkImage *image,
       return 0;
 
   if (image->depth == 1)
-    return (((guchar *) image->mem)[y * image->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
+    return (((buchar *) image->mem)[y * image->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
 
   if (image->depth == 4)
     {
-      pixelp = (guchar *) image->mem + y * image->bpl + (x >> 1);
+      pixelp = (buchar *) image->mem + y * image->bpl + (x >> 1);
       if (x&1)
 	return (*pixelp) & 0x0F;
 
       return (*pixelp) >> 4;
     }
     
-  pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
+  pixelp = (buchar *) image->mem + y * image->bpl + x * image->bpp;
       
   switch (image->bpp)
     {
@@ -320,11 +320,11 @@ bdk_image_get_pixel (BdkImage *image,
 
 void
 bdk_image_put_pixel (BdkImage *image,
-		     gint       x,
-		     gint       y,
-		     guint32    pixel)
+		     bint       x,
+		     bint       y,
+		     buint32    pixel)
 {
-  guchar *pixelp;
+  buchar *pixelp;
 
   g_return_if_fail (image != NULL);
   g_return_if_fail (x >= 0 && x < image->width);
@@ -336,12 +336,12 @@ bdk_image_put_pixel (BdkImage *image,
   GdiFlush ();
   if (image->depth == 1)
     if (pixel & 1)
-      ((guchar *) image->mem)[y * image->bpl + (x >> 3)] |= (1 << (7 - (x & 0x7)));
+      ((buchar *) image->mem)[y * image->bpl + (x >> 3)] |= (1 << (7 - (x & 0x7)));
     else
-      ((guchar *) image->mem)[y * image->bpl + (x >> 3)] &= ~(1 << (7 - (x & 0x7)));
+      ((buchar *) image->mem)[y * image->bpl + (x >> 3)] &= ~(1 << (7 - (x & 0x7)));
   else if (image->depth == 4)
     {
-      pixelp = (guchar *) image->mem + y * image->bpl + (x >> 1);
+      pixelp = (buchar *) image->mem + y * image->bpl + (x >> 1);
 
       if (x&1)
 	{
@@ -356,7 +356,7 @@ bdk_image_put_pixel (BdkImage *image,
     }
   else
     {
-      pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
+      pixelp = (buchar *) image->mem + y * image->bpl + x * image->bpp;
       
       /* Windows is always LSB, no need to check image->byte_order. */
       switch (image->bpp)
@@ -396,9 +396,9 @@ bdk_win32_image_destroy (BdkImage *image)
   image->windowing_data = NULL;
 }
 
-gint
+bint
 _bdk_windowing_get_bits_for_depth (BdkDisplay *display,
-                                   gint        depth)
+                                   bint        depth)
 {
   g_return_val_if_fail (display == bdk_display_get_default (), 0);
 

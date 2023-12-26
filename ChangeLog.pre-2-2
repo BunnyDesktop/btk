@@ -89,7 +89,7 @@ Mon Dec 16 21:39:28 2002  Owen Taylor  <otaylor@redhat.com>
 Mon Dec 16 16:18:15 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btktexttag.c (btk_text_tag_get_property): Get rid
-	of incorrect calls to g_value_init(). (#100669, Johan
+	of incorrect calls to b_value_init(). (#100669, Johan
 	Dahlin, James Henstridge)
 
 Mon Dec 16 17:20:02 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
@@ -870,7 +870,7 @@ Tue Nov 26 22:06:29 2002  Kristian Rietveld  <kris@btk.org>
 	(btk_tree_view_real_toggle_cursor_row),
 	(btk_tree_view_real_expand_collapse_cursor_row),
 	(btk_tree_view_real_start_interactive_search): change the return
-	type from void to gboolean, update prototypes, functions, signals and
+	type from void to bboolean, update prototypes, functions, signals and
 	entries in BtkTreeViewClass,
 	(btk_tree_view_class_init): add select_cursor_row binding for
 	enter key,
@@ -1139,7 +1139,7 @@ Tue Nov 19 17:05:51 2002 Manish Singh  <yosh@gimp.org>
 	use of deprecated btk_check_menu_item_set_show_toggle (it is a noop
 	now).
 
-	* btk/btkmain.c: replaced deprecated BTK_TYPE_* with G_TYPE_*.
+	* btk/btkmain.c: replaced deprecated BTK_TYPE_* with B_TYPE_*.
 
 	* btk/btkobject.c: replaced various deprecated functions. In set and
 	get_property, use g_object_{set,get}_data with "user_data" instead
@@ -1147,7 +1147,7 @@ Tue Nov 19 17:05:51 2002 Manish Singh  <yosh@gimp.org>
 
 	* btk/btkprogress.h: API declared if BTK_COMPILATION
 
-	* btk/btkprogress.c: port get_type to GObject API.
+	* btk/btkprogress.c: port get_type to BObject API.
 
 	* btk/btktypeutils.h: declare BtkArg stuff and btk_type_init,
 	if BTK_COMPILATION.
@@ -2594,7 +2594,7 @@ Wed Oct 16 14:32:43 2002  Owen Taylor  <otaylor@redhat.com>
 	bdk/win32/bdkdrawable-win32.c bdk/linux-fb/bdkdrawable-fb2.c
 	bdk/linux-fb/bdkprivate-fb.h:
 	Make 'filled' arguments for draw_arc/polygon/rectangle
-	gboolean not gint. (#94976)
+	bboolean not bint. (#94976)
 	
 Wed Oct 16 17:11:46 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 
@@ -2670,7 +2670,7 @@ Tue Oct 15 00:33:59 2002  Kristian Rietveld  <kris@btk.org>
 	Compiler warning fixage, (#85858, #85859, #85860, #85872)
 
 	* btk/btkcellrendererpixbuf (btk_cell_renderer_pixbuf_render):
-	s/guint/BtkCellRendererState/.
+	s/buint/BtkCellRendererState/.
 	
 	* btk/btkcellrenderertext.c (btk_cell_renderer_text_render):
 	ditto.
@@ -2679,7 +2679,7 @@ Tue Oct 15 00:33:59 2002  Kristian Rietveld  <kris@btk.org>
 	(btk_cell_renderer_toggle_activate): ditto.
 
 	* btk/btkliststore.c (btk_list_store_get_flags): a
-	s/guint/BtkTreeModelFlags/ on the return type.
+	s/buint/BtkTreeModelFlags/ on the return type.
 
 Mon Oct 14 15:10:34 2002  Owen Taylor  <otaylor@redhat.com>
 
@@ -3572,12 +3572,12 @@ Tue Sep 24 23:33:48 2002  Manish Singh  <yosh@gimp.org>
 	when returning filenames for btk_file_selection_get_selections
 	(#86567)
 
-	* btk/btkclipboard.c: BtkClipboard struct should have a GObject
-	in it, not a GObjectClass
+	* btk/btkclipboard.c: BtkClipboard struct should have a BObject
+	in it, not a BObjectClass
 
 Tue Sep 24 18:18:36 2002  Owen Taylor  <otaylor@redhat.com>
 
-	* btk/btkclipboard.[ch]: Make a GObject (#75970, James
+	* btk/btkclipboard.[ch]: Make a BObject (#75970, James
 	Henstridge)
 
 Tue Sep 24 19:45:55 2002  Owen Taylor  <otaylor@redhat.com>
@@ -3699,7 +3699,7 @@ Tue Sep 24 05:26:31 2002  Owen Taylor  <otaylor@redhat.com>
 	* bdk/bdk.h bdk/bdkdisplay.c bdk/linux-fb/bdkevents-fb.c 
 	bdk/x11/bdkevents-x11.c  bdk/win32/bdkevents-win32.c:
 	Change the window parameter for 
-	bdk_event_send_client_message[_for_display] from guint32
+	bdk_event_send_client_message[_for_display] from buint32
 	to BdkNativeWindow. (#79979)
 
 Tue Sep 24 05:16:25 2002  Owen Taylor  <otaylor@redhat.com>
@@ -3777,11 +3777,11 @@ Mon Sep 23 16:48:46 2002  Owen Taylor  <otaylor@redhat.com>
 Mon Sep 23 14:58:04 2002  Owen Taylor  <otaylor@redhat.com>
  
  	* btk/btkhandlebox.h btk/btktextbtree.[ch]:
- 	Use 'signed int' not 'gint' for signed bitfields.
+ 	Use 'signed int' not 'bint' for signed bitfields.
  	(#93020, Vitaly Tishkov)
  
  	* btk/btktextlayout.h btk/btktextbtree.[ch]: 
- 	Fix some 'gint' bitfields that should have been
+ 	Fix some 'bint' bitfields that should have been
  	unsigned.
 	
 Mon Sep 23 12:24:14 2002  Owen Taylor  <otaylor@redhat.com>
@@ -3826,7 +3826,7 @@ Sun Sep 22 18:22:37 2002  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkbox.c (btk_box_get_type): 
 	* btk/btkbin.c (btk_bin_get_type): 
 	* btk/btkobject.c (btk_object_get_type): Mark abstract types as
-	G_TYPE_FLAG_ABSTRACT.  (#72383)
+	B_TYPE_FLAG_ABSTRACT.  (#72383)
 
 2002-09-21  Tor Lillqvist  <tml@iki.fi>
 
@@ -4376,7 +4376,7 @@ Mon Aug  5 14:50:13 2002  Owen Taylor  <otaylor@redhat.com>
 	cast from BtkSignalRunType to GSignalFlags. (#85875)
 
 	* btk/btkitemfactory.c (btk_item_factory_add_item): Fix
-	use of guint instead of BdkModifierType (#85871)
+	use of buint instead of BdkModifierType (#85871)
 
 	* btk/btkimmulticontext.c (btk_im_multicontext_append_menuitems): 
 	Fix signed/unsigned problem (#85870)
@@ -4697,7 +4697,7 @@ Wed Jul 10 14:27:14 2002  Owen Taylor  <otaylor@redhat.com>
 	* modules/input/btkimcontextxim.c btk/btkcolorsel.c 
 	btk/btkdialog.c btk/btktextbtree.c: Fix some cases
 	where signal connection IDs where being assigned to 
-	guint rather than gulong. (part of #87281, Shivram U)
+	buint rather than bulong. (part of #87281, Shivram U)
 
 Fri Jul  5 20:18:23 2002  Owen Taylor  <otaylor@redhat.com>
 
@@ -4891,7 +4891,7 @@ Tue Jun 18 12:04:10 2002  Owen Taylor  <otaylor@redhat.com>
 Tue Jun 18 11:46:33 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* bdk/x11/bdkwindow-x11.c (get_move_resize_data): Add
-	a gboolean create argument, so we don't create the
+	a bboolean create argument, so we don't create the
 	structure unless we actually emulate move-resize
 	drags.
 
@@ -5300,10 +5300,10 @@ Tue Jun  4 19:24:41 2002  Kristian Rietveld  <kris@btk.org>
 
 	Discussed in #76249.
 
-	* btk/btkliststore.[ch]: made btk_list_store_remove return a gboolean,
+	* btk/btkliststore.[ch]: made btk_list_store_remove return a bboolean,
 	added btk_list_store_iter_is_valid.
 
-	* btk/btktreestore.[ch]: made btk_tree_store_remove return a gboolean,
+	* btk/btktreestore.[ch]: made btk_tree_store_remove return a bboolean,
 	added btk_tree_store_iter_is_valid.
 
 	* btk/btktreemodelsort.[ch]: added VALID_ITER macro as in liststore
@@ -5375,21 +5375,21 @@ Thu May 30 07:59:38 2002  Soeren Sandmann  <sandmann@daimi.au.dk>
 	Fixes for #83190
 
 	* btk/btktreedatalist.h (_BtkTreeDataList::data): Add missing
-	fields to anonymous union: glong, gulong, gint64 and guint64.
+	fields to anonymous union: blong, bulong, bint64 and buint64.
 	This is an internal header file, so it should not affect ABI
 	or API compatibility.
 
 	* btk/btktreedatalist.c (_btk_tree_data_list_node_to_value):
-	Implement missing support for glong, gulong, gint64 and guint64
+	Implement missing support for blong, bulong, bint64 and buint64
 	fundamental types.  Use data.v_uint instead of data.v_int for
-	G_TYPE_FLAGS, as GValue does.
+	B_TYPE_FLAGS, as BValue does.
 	(_btk_tree_data_list_value_to_node): ditto
 	(_btk_tree_data_list_node_copy): Add case labels for missing
 	fundamental types, and reorder them to match the other functions.
 	(btk_tree_data_list_compare_func): Implement comparison for
-	glong, gulong, gint64 and guint64.  Use g_value_get_enum()
-	for G_TYPE_ENUM and g_value_get_flags() for G_TYPE_FLAGS, rather
-	than accessing them as gint/guint.  The G_VALUE_HOLDS() check
+	blong, bulong, bint64 and buint64.  Use b_value_get_enum()
+	for B_TYPE_ENUM and b_value_get_flags() for B_TYPE_FLAGS, rather
+	than accessing them as bint/buint.  The G_VALUE_HOLDS() check
 	probably won't like this.
 
 2002-05-24  Dave Camp  <dave@ximian.com>

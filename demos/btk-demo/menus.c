@@ -30,8 +30,8 @@
 #include <stdio.h>
 
 static BtkWidget *
-create_menu (gint     depth,
-	     gboolean tearoff)
+create_menu (bint     depth,
+	     bboolean tearoff)
 {
   BtkWidget *menu;
   BtkWidget *menuitem;

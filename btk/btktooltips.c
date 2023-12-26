@@ -51,7 +51,7 @@
 #define STICKY_REVERT_DELAY 1000    /* Delay before sticky tooltips revert
 				     * to normal
                                      */
-#define BTK_TOOLTIPS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsPrivate))
+#define BTK_TOOLTIPS_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsPrivate))
 
 typedef struct _BtkTooltipsPrivate BtkTooltipsPrivate;
 
@@ -61,16 +61,16 @@ struct _BtkTooltipsPrivate
 };
 
 
-static void btk_tooltips_finalize          (GObject         *object);
+static void btk_tooltips_finalize          (BObject         *object);
 static void btk_tooltips_destroy           (BtkObject       *object);
 
 static void btk_tooltips_destroy_data      (BtkTooltipsData *tooltipsdata);
 
 static void btk_tooltips_widget_remove     (BtkWidget       *widget,
-                                            gpointer         data);
+                                            bpointer         data);
 
-static const gchar  tooltips_data_key[] = "_BtkTooltipsData";
-static const gchar  tooltips_info_key[] = "_BtkTooltipsInfo";
+static const bchar  tooltips_data_key[] = "_BtkTooltipsData";
+static const bchar  tooltips_info_key[] = "_BtkTooltipsInfo";
 
 G_DEFINE_TYPE (BtkTooltips, btk_tooltips, BTK_TYPE_OBJECT)
 
@@ -78,7 +78,7 @@ static void
 btk_tooltips_class_init (BtkTooltipsClass *class)
 {
   BtkObjectClass *object_class = (BtkObjectClass *) class;
-  GObjectClass *bobject_class = (GObjectClass *) class;
+  BObjectClass *bobject_class = (BObjectClass *) class;
 
   bobject_class->finalize = btk_tooltips_finalize;
 
@@ -111,13 +111,13 @@ btk_tooltips_init (BtkTooltips *tooltips)
 }
 
 static void
-btk_tooltips_finalize (GObject *object)
+btk_tooltips_finalize (BObject *object)
 {
   BtkTooltipsPrivate *private = BTK_TOOLTIPS_GET_PRIVATE (object);
 
   g_hash_table_destroy (private->tips_data_table);
 
-  G_OBJECT_CLASS (btk_tooltips_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tooltips_parent_class)->finalize (object);
 }
 
 BtkTooltips *
@@ -136,7 +136,7 @@ btk_tooltips_destroy_data (BtkTooltipsData *tooltipsdata)
 					btk_tooltips_widget_remove,
 					tooltipsdata);
 
-  g_object_set_data (G_OBJECT (tooltipsdata->widget), I_(tooltips_data_key), NULL);
+  g_object_set_data (B_OBJECT (tooltipsdata->widget), I_(tooltips_data_key), NULL);
   g_object_unref (tooltipsdata->widget);
   g_free (tooltipsdata);
 }
@@ -195,7 +195,7 @@ btk_tooltips_disable (BtkTooltips *tooltips)
 
 void
 btk_tooltips_set_delay (BtkTooltips *tooltips,
-                        guint         delay)
+                        buint         delay)
 {
   g_return_if_fail (tooltips != NULL);
 
@@ -207,7 +207,7 @@ btk_tooltips_data_get (BtkWidget       *widget)
 {
   g_return_val_if_fail (widget != NULL, NULL);
 
-  return g_object_get_data (G_OBJECT (widget), tooltips_data_key);
+  return g_object_get_data (B_OBJECT (widget), tooltips_data_key);
 }
 
 
@@ -224,8 +224,8 @@ btk_tooltips_data_get (BtkWidget       *widget)
 void
 btk_tooltips_set_tip (BtkTooltips *tooltips,
 		      BtkWidget   *widget,
-		      const gchar *tip_text,
-		      const gchar *tip_private)
+		      const bchar *tip_text,
+		      const bchar *tip_private)
 {
   BtkTooltipsData *tooltipsdata;
 
@@ -270,7 +270,7 @@ btk_tooltips_set_tip (BtkTooltips *tooltips,
       g_hash_table_insert (BTK_TOOLTIPS_GET_PRIVATE (tooltips)->tips_data_table,
                            widget, tooltipsdata);
 
-      g_object_set_data (G_OBJECT (widget), I_(tooltips_data_key),
+      g_object_set_data (B_OBJECT (widget), I_(tooltips_data_key),
                          tooltipsdata);
 
       g_signal_connect (widget, "destroy",
@@ -283,7 +283,7 @@ btk_tooltips_set_tip (BtkTooltips *tooltips,
 
 static void
 btk_tooltips_widget_remove (BtkWidget *widget,
-			    gpointer   data)
+			    bpointer   data)
 {
   BtkTooltipsData *tooltipsdata = (BtkTooltipsData*) data;
   BtkTooltips *tooltips = tooltipsdata->tooltips;
@@ -312,17 +312,17 @@ btk_tooltips_widget_remove (BtkWidget *widget,
  *
  * Deprecated: 2.12:
  **/
-gboolean
+bboolean
 btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
                                        BtkTooltips **tooltips,
                                        BtkWidget   **current_widget)
 {
   BtkTooltips  *current_tooltips;  
-  gboolean has_tips;
+  bboolean has_tips;
 
   g_return_val_if_fail (BTK_IS_WINDOW (tip_window), FALSE);
 
-  current_tooltips = g_object_get_data (G_OBJECT (tip_window), tooltips_info_key);
+  current_tooltips = g_object_get_data (B_OBJECT (tip_window), tooltips_info_key);
 
   has_tips = current_tooltips != NULL;
 

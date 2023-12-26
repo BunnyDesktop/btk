@@ -97,9 +97,9 @@ bdk_font_unref (BdkFont *font)
  * 
  * Return value: the width of the string in pixels.
  **/
-gint
+bint
 bdk_string_width (BdkFont     *font,
-		  const gchar *string)
+		  const bchar *string)
 {
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (string != NULL, -1);
@@ -118,9 +118,9 @@ bdk_string_width (BdkFont     *font,
  *
  * Deprecated: 2.2: Use bdk_text_extents() instead.
  **/
-gint
+bint
 bdk_char_width (BdkFont *font,
-		gchar    character)
+		bchar    character)
 {
   g_return_val_if_fail (font != NULL, -1);
 
@@ -137,7 +137,7 @@ bdk_char_width (BdkFont *font,
  * 
  * Return value: the width of the character in pixels.
  **/
-gint
+bint
 bdk_char_width_wc (BdkFont *font,
 		   BdkWChar character)
 {
@@ -159,9 +159,9 @@ bdk_char_width_wc (BdkFont *font,
  * 
  * Return value: the right bearing of the string in pixels.
  **/
-gint
+bint
 bdk_string_measure (BdkFont     *font,
-                    const gchar *string)
+                    const bchar *string)
 {
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (string != NULL, -1);
@@ -183,12 +183,12 @@ bdk_string_measure (BdkFont     *font,
  **/
 void
 bdk_string_extents (BdkFont     *font,
-		    const gchar *string,
-		    gint        *lbearing,
-		    gint        *rbearing,
-		    gint        *width,
-		    gint        *ascent,
-		    gint        *descent)
+		    const bchar *string,
+		    bint        *lbearing,
+		    bint        *rbearing,
+		    bint        *width,
+		    bint        *ascent,
+		    bint        *descent)
 {
   g_return_if_fail (font != NULL);
   g_return_if_fail (string != NULL);
@@ -212,12 +212,12 @@ bdk_string_extents (BdkFont     *font,
  * 
  * Return value: the right bearing of the string in pixels.
  **/
-gint
+bint
 bdk_text_measure (BdkFont     *font,
-                  const gchar *text,
-                  gint         text_length)
+                  const bchar *text,
+                  bint         text_length)
 {
-  gint rbearing;
+  bint rbearing;
 
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (text != NULL, -1);
@@ -238,9 +238,9 @@ bdk_text_measure (BdkFont     *font,
  * 
  * Return value: the right bearing of the character in pixels.
  **/
-gint
+bint
 bdk_char_measure (BdkFont *font,
-                  gchar    character)
+                  bchar    character)
 {
   g_return_val_if_fail (font != NULL, -1);
 
@@ -259,9 +259,9 @@ bdk_char_measure (BdkFont *font,
  * 
  * Return value: the height of the string in pixels.
  **/
-gint
+bint
 bdk_string_height (BdkFont     *font,
-		   const gchar *string)
+		   const bchar *string)
 {
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (string != NULL, -1);
@@ -282,12 +282,12 @@ bdk_string_height (BdkFont     *font,
  * 
  * Return value: the height of the string in pixels.
  **/
-gint
+bint
 bdk_text_height (BdkFont     *font,
-		 const gchar *text,
-		 gint         text_length)
+		 const bchar *text,
+		 bint         text_length)
 {
-  gint ascent, descent;
+  bint ascent, descent;
 
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (text != NULL, -1);
@@ -310,9 +310,9 @@ bdk_text_height (BdkFont     *font,
  *
  * Deprecated: 2.2: Use bdk_text_extents() instead.
  **/
-gint
+bint
 bdk_char_height (BdkFont *font,
-		 gchar    character)
+		 bchar    character)
 {
   g_return_val_if_fail (font != NULL, -1);
 
@@ -350,7 +350,7 @@ bdk_font_from_description (BangoFontDescription *font_desc)
  * Return value: a #BdkFont, or %NULL if the font could not be loaded.
  **/
 BdkFont*
-bdk_font_load (const gchar *font_name)
+bdk_font_load (const bchar *font_name)
 {  
    return bdk_font_load_for_display (bdk_display_get_default(), font_name);
 }

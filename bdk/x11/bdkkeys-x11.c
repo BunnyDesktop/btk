@@ -57,14 +57,14 @@ typedef struct _BdkKeymapX11   BdkKeymapX11;
 typedef struct _BdkKeymapClass BdkKeymapX11Class;
 
 #define BDK_TYPE_KEYMAP_X11          (bdk_keymap_x11_get_type ())
-#define BDK_KEYMAP_X11(object)       (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP_X11, BdkKeymapX11))
-#define BDK_IS_KEYMAP_X11(object)    (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP_X11))
+#define BDK_KEYMAP_X11(object)       (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP_X11, BdkKeymapX11))
+#define BDK_IS_KEYMAP_X11(object)    (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP_X11))
 
 typedef struct _DirectionCacheEntry DirectionCacheEntry;
 
 struct _DirectionCacheEntry
 {
-  guint serial;
+  buint serial;
   Atom group_atom;
   BangoDirection direction;
 };
@@ -73,26 +73,26 @@ struct _BdkKeymapX11
 {
   BdkKeymap     parent_instance;
 
-  gint min_keycode;
-  gint max_keycode;
+  bint min_keycode;
+  bint max_keycode;
   KeySym* keymap;
-  gint keysyms_per_keycode;
+  bint keysyms_per_keycode;
   XModifierKeymap* mod_keymap;
-  guint lock_keysym;
+  buint lock_keysym;
   BdkModifierType group_switch_mask;
   BdkModifierType num_lock_mask;
   BdkModifierType modmap[8];
   BangoDirection current_direction;
-  guint sun_keypad      : 1;
-  guint have_direction  : 1;
-  guint caps_lock_state : 1;
-  guint current_serial;
+  buint sun_keypad      : 1;
+  buint have_direction  : 1;
+  buint caps_lock_state : 1;
+  buint current_serial;
 
 #ifdef HAVE_XKB
   XkbDescPtr xkb_desc;
   /* We cache the directions */
   Atom current_group_atom;
-  guint current_cache_serial;
+  buint current_cache_serial;
   /* A cache of size four should be more than enough, people usually
    * have two groups around, and the xkb limit is four.  It still
    * works correct for more than four groups.  It's just the
@@ -108,7 +108,7 @@ struct _BdkKeymapX11
 static GType bdk_keymap_x11_get_type   (void);
 static void  bdk_keymap_x11_class_init (BdkKeymapX11Class *klass);
 static void  bdk_keymap_x11_init       (BdkKeymapX11      *keymap);
-static void  bdk_keymap_x11_finalize   (GObject           *object);
+static void  bdk_keymap_x11_finalize   (BObject           *object);
 
 static BdkKeymapClass *parent_class = NULL;
 
@@ -143,7 +143,7 @@ bdk_keymap_x11_get_type (void)
 static void
 bdk_keymap_x11_class_init (BdkKeymapX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -176,7 +176,7 @@ bdk_keymap_x11_init (BdkKeymapX11 *keymap)
 }
 
 static void
-bdk_keymap_x11_finalize (GObject *object)
+bdk_keymap_x11_finalize (BObject *object)
 {
   BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (object);
 
@@ -191,7 +191,7 @@ bdk_keymap_x11_finalize (GObject *object)
     XkbFreeKeyboard (keymap_x11->xkb_desc, XkbAllComponentsMask, True);
 #endif
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static inline void
@@ -209,7 +209,7 @@ update_modmap (Display      *display,
 	       BdkKeymapX11 *keymap_x11)
 {
   static struct {
-    const gchar *name;
+    const bchar *name;
     Atom atom;
     BdkModifierType mask;
   } vmods[] = {
@@ -219,7 +219,7 @@ update_modmap (Display      *display,
     { NULL, 0, 0 }
   };
 
-  gint i, j, k;
+  bint i, j, k;
 
   if (!vmods[0].atom)
     for (i = 0; vmods[i].name; i++)
@@ -314,17 +314,17 @@ bdk_keymap_get_for_display (BdkDisplay *display)
  * otherwise we lose a whole group of keys
  */
 #define KEYSYM_INDEX(keymap_impl, group, level) \
-  (2 * ((group) % (gint)((keymap_impl->keysyms_per_keycode + 1) / 2)) + (level))
+  (2 * ((group) % (bint)((keymap_impl->keysyms_per_keycode + 1) / 2)) + (level))
 #define KEYSYM_IS_KEYPAD(s) (((s) >= 0xff80 && (s) <= 0xffbd) || \
                              ((s) >= 0x11000000 && (s) <= 0x1100ffff))
 
-static gint
+static bint
 get_symbol (const KeySym *syms,
 	    BdkKeymapX11 *keymap_x11,
-	    gint group,
-	    gint level)
+	    bint group,
+	    bint level)
 {
-  gint index;
+  bint index;
 
   index = KEYSYM_INDEX(keymap_x11, group, level);
   if (index >= keymap_x11->keysyms_per_keycode)
@@ -336,11 +336,11 @@ get_symbol (const KeySym *syms,
 static void
 set_symbol (KeySym       *syms, 
 	    BdkKeymapX11 *keymap_x11, 
-	    gint          group, 
-	    gint          level, 
+	    bint          group, 
+	    bint          level, 
 	    KeySym        sym)
 {
-  gint index;
+  bint index;
 
   index = KEYSYM_INDEX(keymap_x11, group, level);
   if (index >= keymap_x11->keysyms_per_keycode)
@@ -362,9 +362,9 @@ update_keymaps (BdkKeymapX11 *keymap_x11)
   if (keymap_x11->keymap == NULL ||
       keymap_x11->current_serial != display_x11->keymap_serial)
     {
-      gint i;
-      gint map_size;
-      gint keycode;
+      bint i;
+      bint map_size;
+      bint keycode;
 
       keymap_x11->current_serial = display_x11->keymap_serial;
       
@@ -403,8 +403,8 @@ update_keymaps (BdkKeymapX11 *keymap_x11)
            */
           if (get_symbol (syms, keymap_x11, 0, 1) == 0)
             {
-              guint lower;
-              guint upper;
+              buint lower;
+              buint upper;
 
               bdk_keyval_convert_case (get_symbol (syms, keymap_x11, 0, 0), &lower, &upper);
               if (lower != upper)
@@ -434,10 +434,10 @@ update_keymaps (BdkKeymapX11 *keymap_x11)
       for (i = 0; i < map_size; i++)
         {
           /* Get the key code at this point in the map. */
-          gint keycode = keymap_x11->mod_keymap->modifiermap[i];
-          gint j;
+          bint keycode = keymap_x11->mod_keymap->modifiermap[i];
+          bint j;
           KeySym *syms;
-	  guint mask;
+	  buint mask;
 
           /* Ignore invalid keycodes. */
           if (keycode < keymap_x11->min_keycode ||
@@ -534,7 +534,7 @@ get_keymap (BdkKeymapX11 *keymap_x11)
   return keymap_x11->keymap;
 }
 
-#define GET_EFFECTIVE_KEYMAP(keymap) get_effective_keymap ((keymap), G_STRFUNC)
+#define GET_EFFECTIVE_KEYMAP(keymap) get_effective_keymap ((keymap), B_STRFUNC)
 
 static BdkKeymap *
 get_effective_keymap (BdkKeymap  *keymap,
@@ -554,15 +554,15 @@ get_effective_keymap (BdkKeymap  *keymap,
 #if HAVE_XKB
 static BangoDirection
 get_direction (XkbDescRec *xkb, 
-	       gint group)
+	       bint group)
 {
-  gint code;
+  bint code;
 
-  gint rtl_minus_ltr = 0; /* total number of RTL keysyms minus LTR ones */
+  bint rtl_minus_ltr = 0; /* total number of RTL keysyms minus LTR ones */
 
   for (code = xkb->min_key_code; code <= xkb->max_key_code; code++)
     {
-      gint level = 0;
+      bint level = 0;
       KeySym sym = XkbKeySymEntry (xkb, code, level, group);
       BangoDirection dir = bango_unichar_direction (bdk_keyval_to_unicode (sym));
 
@@ -588,15 +588,15 @@ get_direction (XkbDescRec *xkb,
 static BangoDirection
 get_direction_from_cache (BdkKeymapX11 *keymap_x11,
 			  XkbDescPtr xkb,
-			  gint group)
+			  bint group)
 {
   Atom group_atom = xkb->names->groups[group];
 
-  gboolean cache_hit = FALSE;
+  bboolean cache_hit = FALSE;
   DirectionCacheEntry *cache = keymap_x11->group_direction_cache;
 
   BangoDirection direction = BANGO_DIRECTION_NEUTRAL;
-  gint i;
+  bint i;
 
   if (keymap_x11->have_direction)
     {
@@ -627,7 +627,7 @@ get_direction_from_cache (BdkKeymapX11 *keymap_x11,
   /* insert in cache */
   if (!cache_hit)
     {
-      gint oldest = 0;
+      bint oldest = 0;
 
       direction = get_direction (xkb, group);
 
@@ -657,13 +657,13 @@ get_num_groups (BdkKeymap *keymap,
       return xkb->ctrls->num_groups;
 }
 
-static gboolean
+static bboolean
 update_direction (BdkKeymapX11 *keymap_x11,
-		  gint          group)
+		  bint          group)
 {
   XkbDescPtr xkb = get_xkb (keymap_x11);
   Atom group_atom;
-  gboolean had_direction;
+  bboolean had_direction;
   BangoDirection old_direction;
       
   had_direction = keymap_x11->have_direction;
@@ -682,11 +682,11 @@ update_direction (BdkKeymapX11 *keymap_x11,
   return !had_direction || old_direction != keymap_x11->current_direction;
 }
 
-static gboolean
+static bboolean
 update_lock_state (BdkKeymapX11 *keymap_x11,
-                   gint          locked_mods)
+                   bint          locked_mods)
 {
-  gboolean caps_lock_state;
+  bboolean caps_lock_state;
   
   caps_lock_state = keymap_x11->caps_lock_state;
 
@@ -784,7 +784,7 @@ bdk_keymap_get_direction (BdkKeymap *keymap)
  *
  * Since: 2.12
  **/
-gboolean
+bboolean
 bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
 {
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
@@ -797,8 +797,8 @@ bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
       int num_groups = get_num_groups (keymap, xkb);
 
       int i;
-      gboolean have_ltr_keyboard = FALSE;
-      gboolean have_rtl_keyboard = FALSE;
+      bboolean have_ltr_keyboard = FALSE;
+      bboolean have_rtl_keyboard = FALSE;
 
       for (i = 0; i < num_groups; i++)
       {
@@ -825,7 +825,7 @@ bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
   BdkKeymapX11 *keymap_x11;
@@ -862,11 +862,11 @@ bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
  *
  * Return value: %TRUE if keys were found and returned
  **/
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
-                                   guint          keyval,
+                                   buint          keyval,
                                    BdkKeymapKey **keys,
-                                   gint          *n_keys)
+                                   bint          *n_keys)
 {
   GArray *retval;
   BdkKeymapX11 *keymap_x11;
@@ -887,17 +887,17 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
       /* See sec 15.3.4 in XKB docs */
 
       XkbDescRec *xkb = get_xkb (keymap_x11);
-      gint keycode;
+      bint keycode;
       
       keycode = keymap_x11->min_keycode;
 
       while (keycode <= keymap_x11->max_keycode)
         {
-          gint max_shift_levels = XkbKeyGroupsWidth (xkb, keycode); /* "key width" */
-          gint group = 0;
-          gint level = 0;
-          gint total_syms = XkbKeyNumSyms (xkb, keycode);
-          gint i = 0;
+          bint max_shift_levels = XkbKeyGroupsWidth (xkb, keycode); /* "key width" */
+          bint group = 0;
+          bint level = 0;
+          bint total_syms = XkbKeyNumSyms (xkb, keycode);
+          bint i = 0;
           KeySym *entry;
 
           /* entry is an array with all syms for group 0, all
@@ -944,13 +944,13 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
 #endif
     {
       const KeySym *map = get_keymap (keymap_x11);
-      gint keycode;
+      bint keycode;
       
       keycode = keymap_x11->min_keycode;
       while (keycode <= keymap_x11->max_keycode)
         {
           const KeySym *syms = map + (keycode - keymap_x11->min_keycode) * keymap_x11->keysyms_per_keycode;
-          gint i = 0;
+          bint i = 0;
 
           while (i < keymap_x11->keysyms_per_keycode)
             {
@@ -1011,12 +1011,12 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
  *
  * Returns: %TRUE if there were any entries
  **/
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
-                                    guint          hardware_keycode,
+                                    buint          hardware_keycode,
                                     BdkKeymapKey **keys,
-                                    guint        **keyvals,
-                                    gint          *n_entries)
+                                    buint        **keyvals,
+                                    bint          *n_entries)
 {
   BdkKeymapX11 *keymap_x11;
   
@@ -1049,7 +1049,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
     key_array = NULL;
   
   if (keyvals)
-    keyval_array = g_array_new (FALSE, FALSE, sizeof (guint));
+    keyval_array = g_array_new (FALSE, FALSE, sizeof (buint));
   else
     keyval_array = NULL;
   
@@ -1059,11 +1059,11 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
       /* See sec 15.3.4 in XKB docs */
 
       XkbDescRec *xkb = get_xkb (keymap_x11);
-      gint max_shift_levels;
-      gint group = 0;
-      gint level = 0;
-      gint total_syms;
-      gint i = 0;
+      bint max_shift_levels;
+      bint group = 0;
+      bint level = 0;
+      bint total_syms;
+      bint i = 0;
       KeySym *entry;
       
       max_shift_levels = XkbKeyGroupsWidth (xkb, hardware_keycode); /* "key width" */
@@ -1110,7 +1110,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
     {
       const KeySym *map = get_keymap (keymap_x11);
       const KeySym *syms;
-      gint i = 0;
+      bint i = 0;
 
       syms = map + (hardware_keycode - keymap_x11->min_keycode) * keymap_x11->keysyms_per_keycode;
 
@@ -1147,7 +1147,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
   if (keyvals)
     {
       *n_entries = keyval_array->len;
-      *keyvals = (guint*) g_array_free (keyval_array, FALSE);
+      *keyvals = (buint*) g_array_free (keyval_array, FALSE);
     }
 
   return *n_entries > 0;
@@ -1170,7 +1170,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
  *
  * Return value: a keyval, or 0 if none was mapped to the given @key
  **/
-guint
+buint
 bdk_keymap_lookup_key (BdkKeymap          *keymap,
                        const BdkKeymapKey *key)
 {
@@ -1343,13 +1343,13 @@ MyEnhancedXkbTranslateKeyCode(register XkbDescPtr     xkb,
 /* Translates from keycode/state to keysymbol using the traditional interpretation
  * of the keyboard map. See section 12.7 of the Xlib reference manual
  */
-static guint
+static buint
 translate_keysym (BdkKeymapX11   *keymap_x11,
-		  guint           hardware_keycode,
-		  gint            group,
+		  buint           hardware_keycode,
+		  bint            group,
 		  BdkModifierType state,
-		  gint           *effective_group,
-		  gint           *effective_level)
+		  bint           *effective_group,
+		  bint           *effective_level)
 {
   const KeySym *map = get_keymap (keymap_x11);
   const KeySym *syms = map + (hardware_keycode - keymap_x11->min_keycode) * keymap_x11->keysyms_per_keycode;
@@ -1357,9 +1357,9 @@ translate_keysym (BdkKeymapX11   *keymap_x11,
 #define SYM(k,g,l) get_symbol (syms, k,g,l)
 
   BdkModifierType shift_modifiers;
-  gint shift_level;
-  guint tmp_keyval;
-  gint num_lock_index;
+  bint shift_level;
+  buint tmp_keyval;
+  bint num_lock_index;
 
   shift_modifiers = BDK_SHIFT_MASK;
   if (keymap_x11->lock_keysym == BDK_Shift_Lock)
@@ -1380,7 +1380,7 @@ translate_keysym (BdkKeymapX11   *keymap_x11,
       
       if (group != 0)
 	{
-	  gint i;
+	  bint i;
 	  
 	  for (i = 0; i < keymap_x11->keysyms_per_keycode; i++)
 	    if (KEYSYM_IS_KEYPAD (SYM (keymap_x11, 0, i)))
@@ -1414,7 +1414,7 @@ translate_keysym (BdkKeymapX11   *keymap_x11,
       
       if (keymap_x11->lock_keysym == BDK_Caps_Lock && (state & BDK_LOCK_MASK) != 0)
 	{
-	  guint upper = bdk_keyval_to_upper (tmp_keyval);
+	  buint upper = bdk_keyval_to_upper (tmp_keyval);
 	  if (upper != tmp_keyval)
 	    tmp_keyval = upper;
 	}
@@ -1501,19 +1501,19 @@ translate_keysym (BdkKeymapX11   *keymap_x11,
  *
  * Return value: %TRUE if there was a keyval bound to the keycode/state/group
  **/
-gboolean
+bboolean
 bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
-                                     guint            hardware_keycode,
+                                     buint            hardware_keycode,
                                      BdkModifierType  state,
-                                     gint             group,
-                                     guint           *keyval,
-                                     gint            *effective_group,
-                                     gint            *level,
+                                     bint             group,
+                                     buint           *keyval,
+                                     bint            *effective_group,
+                                     bint            *level,
                                      BdkModifierType *consumed_modifiers)
 {
   BdkKeymapX11 *keymap_x11;
   KeySym tmp_keyval = NoSymbol;
-  guint tmp_modifiers;
+  buint tmp_modifiers;
 
   g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (group < 4, FALSE);
@@ -1608,8 +1608,8 @@ bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
 
 /* Key handling not part of the keymap */
 
-gchar*
-bdk_keyval_name (guint	      keyval)
+bchar*
+bdk_keyval_name (buint	      keyval)
 {
   switch (keyval)
     {
@@ -1626,8 +1626,8 @@ bdk_keyval_name (guint	      keyval)
   return XKeysymToString (keyval);
 }
 
-guint
-bdk_keyval_from_name (const gchar *keyval_name)
+buint
+bdk_keyval_from_name (const bchar *keyval_name)
 {
   g_return_val_if_fail (keyval_name != NULL, 0);
   
@@ -1636,9 +1636,9 @@ bdk_keyval_from_name (const gchar *keyval_name)
 
 #ifdef HAVE_XCONVERTCASE
 void
-bdk_keyval_convert_case (guint symbol,
-			 guint *lower,
-			 guint *upper)
+bdk_keyval_convert_case (buint symbol,
+			 buint *lower,
+			 buint *upper)
 {
   KeySym xlower = 0;
   KeySym xupper = 0;
@@ -1663,7 +1663,7 @@ bdk_keyval_convert_case (guint symbol,
 }  
 #endif /* HAVE_XCONVERTCASE */
 
-gint
+bint
 _bdk_x11_get_group_for_state (BdkDisplay      *display,
 			      BdkModifierType  state)
 {
@@ -1757,12 +1757,12 @@ bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
     }
 }
 
-gboolean
+bboolean
 _bdk_keymap_key_is_modifier (BdkKeymap *keymap,
-			     guint      keycode)
+			     buint      keycode)
 {
   BdkKeymapX11 *keymap_x11;
-  gint i;
+  bint i;
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);  
   keymap_x11 = BDK_KEYMAP_X11 (keymap);
@@ -1812,16 +1812,16 @@ _bdk_keymap_key_is_modifier (BdkKeymap *keymap,
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
                                   BdkModifierType *state)
 {
   BdkKeymapX11 *keymap_x11;
-  const guint vmods[] = {
+  const buint vmods[] = {
     BDK_SUPER_MASK, BDK_HYPER_MASK, BDK_META_MASK
   };
   int i, j;
-  gboolean retval;
+  bboolean retval;
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
   keymap_x11 = BDK_KEYMAP_X11 (keymap);

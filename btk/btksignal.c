@@ -31,14 +31,14 @@
 
 
 /* --- functions --- */
-guint
-btk_signal_newv (const gchar         *name,
+buint
+btk_signal_newv (const bchar         *name,
 		 BtkSignalRunType     signal_flags,
 		 GType                object_type,
-		 guint                function_offset,
+		 buint                function_offset,
 		 GSignalCMarshaller   marshaller,
 		 GType                return_val,
-		 guint                n_params,
+		 buint                n_params,
 		 GType               *params)
 {
   GClosure *closure;
@@ -51,23 +51,23 @@ btk_signal_newv (const gchar         *name,
 			NULL, NULL, marshaller, return_val, n_params, params);
 }
 
-guint
-btk_signal_new (const gchar         *name,
+buint
+btk_signal_new (const bchar         *name,
 		BtkSignalRunType     signal_flags,
 		GType                object_type,
-		guint                function_offset,
+		buint                function_offset,
 		GSignalCMarshaller   marshaller,
 		GType                return_val,
-		guint                n_params,
+		buint                n_params,
 		...)
 {
   GType *params;
-  guint signal_id;
+  buint signal_id;
   
   if (n_params)
     {
       va_list args;
-      guint i;
+      buint i;
       
       params = g_new (GType, n_params);
       va_start (args, n_params);
@@ -92,32 +92,32 @@ btk_signal_new (const gchar         *name,
 
 void
 btk_signal_emit_stop_by_name (BtkObject   *object,
-			      const gchar *name)
+			      const bchar *name)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   
-  g_signal_stop_emission (object, g_signal_lookup (name, G_OBJECT_TYPE (object)), 0);
+  g_signal_stop_emission (object, g_signal_lookup (name, B_OBJECT_TYPE (object)), 0);
 }
 
 void
 btk_signal_connect_object_while_alive (BtkObject    *object,
-				       const gchar  *name,
+				       const bchar  *name,
 				       GCallback     func,
 				       BtkObject    *alive_object)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));
   
   g_signal_connect_closure_by_id (object,
-				  g_signal_lookup (name, G_OBJECT_TYPE (object)), 0,
-				  g_cclosure_new_object_swap (func, G_OBJECT (alive_object)),
+				  g_signal_lookup (name, B_OBJECT_TYPE (object)), 0,
+				  g_cclosure_new_object_swap (func, B_OBJECT (alive_object)),
 				  FALSE);
 }
 
 void
 btk_signal_connect_while_alive (BtkObject    *object,
-				const gchar  *name,
+				const bchar  *name,
 				GCallback     func,
-				gpointer      func_data,
+				bpointer      func_data,
 				BtkObject    *alive_object)
 {
   GClosure *closure;
@@ -125,28 +125,28 @@ btk_signal_connect_while_alive (BtkObject    *object,
   g_return_if_fail (BTK_IS_OBJECT (object));
 
   closure = g_cclosure_new (func, func_data, NULL);
-  g_object_watch_closure (G_OBJECT (alive_object), closure);
+  g_object_watch_closure (B_OBJECT (alive_object), closure);
   g_signal_connect_closure_by_id (object,
-				  g_signal_lookup (name, G_OBJECT_TYPE (object)), 0,
+				  g_signal_lookup (name, B_OBJECT_TYPE (object)), 0,
 				  closure,
 				  FALSE);
 }
 
-gulong
+bulong
 btk_signal_connect_full (BtkObject           *object,
-			 const gchar         *name,
+			 const bchar         *name,
 			 GCallback            func,
 			 BtkCallbackMarshal   unsupported,
-			 gpointer             data,
+			 bpointer             data,
 			 GDestroyNotify       destroy_func,
-			 gint                 object_signal,
-			 gint                 after)
+			 bint                 object_signal,
+			 bint                 after)
 {
   g_return_val_if_fail (BTK_IS_OBJECT (object), 0);
   g_return_val_if_fail (unsupported == NULL, 0);
   
   return g_signal_connect_closure_by_id (object,
-					 g_signal_lookup (name, G_OBJECT_TYPE (object)), 0,
+					 g_signal_lookup (name, B_OBJECT_TYPE (object)), 0,
 					 (object_signal
 					  ? g_cclosure_new_swap
 					  : g_cclosure_new) (func,
@@ -158,106 +158,106 @@ btk_signal_connect_full (BtkObject           *object,
 void
 btk_signal_compat_matched (BtkObject       *object,
 			   GCallback        func,
-			   gpointer         data,
+			   bpointer         data,
 			   GSignalMatchType match,
-			   guint            action)
+			   buint            action)
 {
-  guint n_handlers;
+  buint n_handlers;
   
   g_return_if_fail (BTK_IS_OBJECT (object));
 
   switch (action)
     {
-    case 0:  n_handlers = g_signal_handlers_disconnect_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
-    case 1:  n_handlers = g_signal_handlers_block_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
-    case 2:  n_handlers = g_signal_handlers_unblock_matched (object, match, 0, 0, NULL, (gpointer) func, data);	 break;
+    case 0:  n_handlers = g_signal_handlers_disconnect_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
+    case 1:  n_handlers = g_signal_handlers_block_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
+    case 2:  n_handlers = g_signal_handlers_unblock_matched (object, match, 0, 0, NULL, (bpointer) func, data);	 break;
     default: n_handlers = 0;										 break;
     }
   
   if (!n_handlers)
     g_warning ("unable to find signal handler for object(%s:%p) with func(%p) and data(%p)",
-	       G_OBJECT_TYPE_NAME (object), object, func, data);
+	       B_OBJECT_TYPE_NAME (object), object, func, data);
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_to_value (BtkArg *arg,
-		  GValue *value)
+		  BValue *value)
 {
-  switch (G_TYPE_FUNDAMENTAL (arg->type))
+  switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		g_value_set_char (value, BTK_VALUE_CHAR (*arg));	break;
-    case G_TYPE_UCHAR:		g_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));	break;
-    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, BTK_VALUE_BOOL (*arg));	break;
-    case G_TYPE_INT:		g_value_set_int (value, BTK_VALUE_INT (*arg));		break;
-    case G_TYPE_UINT:		g_value_set_uint (value, BTK_VALUE_UINT (*arg));	break;
-    case G_TYPE_LONG:		g_value_set_long (value, BTK_VALUE_LONG (*arg));	break;
-    case G_TYPE_ULONG:		g_value_set_ulong (value, BTK_VALUE_ULONG (*arg));	break;
-    case G_TYPE_ENUM:		g_value_set_enum (value, BTK_VALUE_ENUM (*arg));	break;
-    case G_TYPE_FLAGS:		g_value_set_flags (value, BTK_VALUE_FLAGS (*arg));	break;
-    case G_TYPE_FLOAT:		g_value_set_float (value, BTK_VALUE_FLOAT (*arg));	break;
-    case G_TYPE_DOUBLE:		g_value_set_double (value, BTK_VALUE_DOUBLE (*arg));	break;
-    case G_TYPE_STRING:		g_value_set_string (value, BTK_VALUE_STRING (*arg));	break;
-    case G_TYPE_BOXED:		g_value_set_boxed (value, BTK_VALUE_BOXED (*arg));	break;
-    case G_TYPE_POINTER:	g_value_set_pointer (value, BTK_VALUE_POINTER (*arg));	break;
-    case G_TYPE_OBJECT:		g_value_set_object (value, BTK_VALUE_POINTER (*arg));	break;
+    case B_TYPE_CHAR:		b_value_set_char (value, BTK_VALUE_CHAR (*arg));	break;
+    case B_TYPE_UCHAR:		b_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));	break;
+    case B_TYPE_BOOLEAN:	b_value_set_boolean (value, BTK_VALUE_BOOL (*arg));	break;
+    case B_TYPE_INT:		b_value_set_int (value, BTK_VALUE_INT (*arg));		break;
+    case B_TYPE_UINT:		b_value_set_uint (value, BTK_VALUE_UINT (*arg));	break;
+    case B_TYPE_LONG:		b_value_set_long (value, BTK_VALUE_LONG (*arg));	break;
+    case B_TYPE_ULONG:		b_value_set_ulong (value, BTK_VALUE_ULONG (*arg));	break;
+    case B_TYPE_ENUM:		b_value_set_enum (value, BTK_VALUE_ENUM (*arg));	break;
+    case B_TYPE_FLAGS:		b_value_set_flags (value, BTK_VALUE_FLAGS (*arg));	break;
+    case B_TYPE_FLOAT:		b_value_set_float (value, BTK_VALUE_FLOAT (*arg));	break;
+    case B_TYPE_DOUBLE:		b_value_set_double (value, BTK_VALUE_DOUBLE (*arg));	break;
+    case B_TYPE_STRING:		b_value_set_string (value, BTK_VALUE_STRING (*arg));	break;
+    case B_TYPE_BOXED:		b_value_set_boxed (value, BTK_VALUE_BOXED (*arg));	break;
+    case B_TYPE_POINTER:	b_value_set_pointer (value, BTK_VALUE_POINTER (*arg));	break;
+    case B_TYPE_OBJECT:		b_value_set_object (value, BTK_VALUE_POINTER (*arg));	break;
     default:
       return FALSE;
     }
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_static_to_value (BtkArg *arg,
-			 GValue *value)
+			 BValue *value)
 {
-  switch (G_TYPE_FUNDAMENTAL (arg->type))
+  switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		g_value_set_char (value, BTK_VALUE_CHAR (*arg));		break;
-    case G_TYPE_UCHAR:		g_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));		break;
-    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, BTK_VALUE_BOOL (*arg));		break;
-    case G_TYPE_INT:		g_value_set_int (value, BTK_VALUE_INT (*arg));			break;
-    case G_TYPE_UINT:		g_value_set_uint (value, BTK_VALUE_UINT (*arg));		break;
-    case G_TYPE_LONG:		g_value_set_long (value, BTK_VALUE_LONG (*arg));		break;
-    case G_TYPE_ULONG:		g_value_set_ulong (value, BTK_VALUE_ULONG (*arg));		break;
-    case G_TYPE_ENUM:		g_value_set_enum (value, BTK_VALUE_ENUM (*arg));		break;
-    case G_TYPE_FLAGS:		g_value_set_flags (value, BTK_VALUE_FLAGS (*arg));		break;
-    case G_TYPE_FLOAT:		g_value_set_float (value, BTK_VALUE_FLOAT (*arg));		break;
-    case G_TYPE_DOUBLE:		g_value_set_double (value, BTK_VALUE_DOUBLE (*arg));		break;
-    case G_TYPE_STRING:		g_value_set_static_string (value, BTK_VALUE_STRING (*arg));	break;
-    case G_TYPE_BOXED:		g_value_set_static_boxed (value, BTK_VALUE_BOXED (*arg));	break;
-    case G_TYPE_POINTER:	g_value_set_pointer (value, BTK_VALUE_POINTER (*arg));		break;
-    case G_TYPE_OBJECT:		g_value_set_object (value, BTK_VALUE_POINTER (*arg));		break;
+    case B_TYPE_CHAR:		b_value_set_char (value, BTK_VALUE_CHAR (*arg));		break;
+    case B_TYPE_UCHAR:		b_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));		break;
+    case B_TYPE_BOOLEAN:	b_value_set_boolean (value, BTK_VALUE_BOOL (*arg));		break;
+    case B_TYPE_INT:		b_value_set_int (value, BTK_VALUE_INT (*arg));			break;
+    case B_TYPE_UINT:		b_value_set_uint (value, BTK_VALUE_UINT (*arg));		break;
+    case B_TYPE_LONG:		b_value_set_long (value, BTK_VALUE_LONG (*arg));		break;
+    case B_TYPE_ULONG:		b_value_set_ulong (value, BTK_VALUE_ULONG (*arg));		break;
+    case B_TYPE_ENUM:		b_value_set_enum (value, BTK_VALUE_ENUM (*arg));		break;
+    case B_TYPE_FLAGS:		b_value_set_flags (value, BTK_VALUE_FLAGS (*arg));		break;
+    case B_TYPE_FLOAT:		b_value_set_float (value, BTK_VALUE_FLOAT (*arg));		break;
+    case B_TYPE_DOUBLE:		b_value_set_double (value, BTK_VALUE_DOUBLE (*arg));		break;
+    case B_TYPE_STRING:		b_value_set_static_string (value, BTK_VALUE_STRING (*arg));	break;
+    case B_TYPE_BOXED:		b_value_set_static_boxed (value, BTK_VALUE_BOXED (*arg));	break;
+    case B_TYPE_POINTER:	b_value_set_pointer (value, BTK_VALUE_POINTER (*arg));		break;
+    case B_TYPE_OBJECT:		b_value_set_object (value, BTK_VALUE_POINTER (*arg));		break;
     default:
       return FALSE;
     }
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_arg_set_from_value (BtkArg  *arg,
-			GValue  *value,
-			gboolean copy_string)
+			BValue  *value,
+			bboolean copy_string)
 {
-  switch (G_TYPE_FUNDAMENTAL (arg->type))
+  switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		BTK_VALUE_CHAR (*arg) = g_value_get_char (value);	break;
-    case G_TYPE_UCHAR:		BTK_VALUE_UCHAR (*arg) = g_value_get_uchar (value);	break;
-    case G_TYPE_BOOLEAN:	BTK_VALUE_BOOL (*arg) = g_value_get_boolean (value);	break;
-    case G_TYPE_INT:		BTK_VALUE_INT (*arg) = g_value_get_int (value);		break;
-    case G_TYPE_UINT:		BTK_VALUE_UINT (*arg) = g_value_get_uint (value);	break;
-    case G_TYPE_LONG:		BTK_VALUE_LONG (*arg) = g_value_get_long (value);	break;
-    case G_TYPE_ULONG:		BTK_VALUE_ULONG (*arg) = g_value_get_ulong (value);	break;
-    case G_TYPE_ENUM:		BTK_VALUE_ENUM (*arg) = g_value_get_enum (value);	break;
-    case G_TYPE_FLAGS:		BTK_VALUE_FLAGS (*arg) = g_value_get_flags (value);	break;
-    case G_TYPE_FLOAT:		BTK_VALUE_FLOAT (*arg) = g_value_get_float (value);	break;
-    case G_TYPE_DOUBLE:		BTK_VALUE_DOUBLE (*arg) = g_value_get_double (value);	break;
-    case G_TYPE_BOXED:		BTK_VALUE_BOXED (*arg) = g_value_get_boxed (value);	break;
-    case G_TYPE_POINTER:	BTK_VALUE_POINTER (*arg) = g_value_get_pointer (value);	break;
-    case G_TYPE_OBJECT:		BTK_VALUE_POINTER (*arg) = g_value_get_object (value);	break;
-    case G_TYPE_STRING:		if (copy_string)
-      BTK_VALUE_STRING (*arg) = g_value_dup_string (value);
+    case B_TYPE_CHAR:		BTK_VALUE_CHAR (*arg) = b_value_get_char (value);	break;
+    case B_TYPE_UCHAR:		BTK_VALUE_UCHAR (*arg) = b_value_get_uchar (value);	break;
+    case B_TYPE_BOOLEAN:	BTK_VALUE_BOOL (*arg) = b_value_get_boolean (value);	break;
+    case B_TYPE_INT:		BTK_VALUE_INT (*arg) = b_value_get_int (value);		break;
+    case B_TYPE_UINT:		BTK_VALUE_UINT (*arg) = b_value_get_uint (value);	break;
+    case B_TYPE_LONG:		BTK_VALUE_LONG (*arg) = b_value_get_long (value);	break;
+    case B_TYPE_ULONG:		BTK_VALUE_ULONG (*arg) = b_value_get_ulong (value);	break;
+    case B_TYPE_ENUM:		BTK_VALUE_ENUM (*arg) = b_value_get_enum (value);	break;
+    case B_TYPE_FLAGS:		BTK_VALUE_FLAGS (*arg) = b_value_get_flags (value);	break;
+    case B_TYPE_FLOAT:		BTK_VALUE_FLOAT (*arg) = b_value_get_float (value);	break;
+    case B_TYPE_DOUBLE:		BTK_VALUE_DOUBLE (*arg) = b_value_get_double (value);	break;
+    case B_TYPE_BOXED:		BTK_VALUE_BOXED (*arg) = b_value_get_boxed (value);	break;
+    case B_TYPE_POINTER:	BTK_VALUE_POINTER (*arg) = b_value_get_pointer (value);	break;
+    case B_TYPE_OBJECT:		BTK_VALUE_POINTER (*arg) = b_value_get_object (value);	break;
+    case B_TYPE_STRING:		if (copy_string)
+      BTK_VALUE_STRING (*arg) = b_value_dup_string (value);
     else
-      BTK_VALUE_STRING (*arg) = (char *) g_value_get_string (value);
+      BTK_VALUE_STRING (*arg) = (char *) b_value_get_string (value);
     break;
     default:
       return FALSE;
@@ -265,31 +265,31 @@ btk_arg_set_from_value (BtkArg  *arg,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 btk_argloc_set_from_value (BtkArg  *arg,
-			   GValue  *value,
-			   gboolean copy_string)
+			   BValue  *value,
+			   bboolean copy_string)
 {
-  switch (G_TYPE_FUNDAMENTAL (arg->type))
+  switch (B_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		*BTK_RETLOC_CHAR (*arg) = g_value_get_char (value);	  break;
-    case G_TYPE_UCHAR:		*BTK_RETLOC_UCHAR (*arg) = g_value_get_uchar (value);	  break;
-    case G_TYPE_BOOLEAN:	*BTK_RETLOC_BOOL (*arg) = g_value_get_boolean (value);	  break;
-    case G_TYPE_INT:		*BTK_RETLOC_INT (*arg) = g_value_get_int (value);	  break;
-    case G_TYPE_UINT:		*BTK_RETLOC_UINT (*arg) = g_value_get_uint (value);	  break;
-    case G_TYPE_LONG:		*BTK_RETLOC_LONG (*arg) = g_value_get_long (value);	  break;
-    case G_TYPE_ULONG:		*BTK_RETLOC_ULONG (*arg) = g_value_get_ulong (value);	  break;
-    case G_TYPE_ENUM:		*BTK_RETLOC_ENUM (*arg) = g_value_get_enum (value);	  break;
-    case G_TYPE_FLAGS:		*BTK_RETLOC_FLAGS (*arg) = g_value_get_flags (value);	  break;
-    case G_TYPE_FLOAT:		*BTK_RETLOC_FLOAT (*arg) = g_value_get_float (value);	  break;
-    case G_TYPE_DOUBLE:		*BTK_RETLOC_DOUBLE (*arg) = g_value_get_double (value);	  break;
-    case G_TYPE_BOXED:		*BTK_RETLOC_BOXED (*arg) = g_value_get_boxed (value);	  break;
-    case G_TYPE_POINTER:	*BTK_RETLOC_POINTER (*arg) = g_value_get_pointer (value); break;
-    case G_TYPE_OBJECT:		*BTK_RETLOC_POINTER (*arg) = g_value_get_object (value);  break;
-    case G_TYPE_STRING:		if (copy_string)
-      *BTK_RETLOC_STRING (*arg) = g_value_dup_string (value);
+    case B_TYPE_CHAR:		*BTK_RETLOC_CHAR (*arg) = b_value_get_char (value);	  break;
+    case B_TYPE_UCHAR:		*BTK_RETLOC_UCHAR (*arg) = b_value_get_uchar (value);	  break;
+    case B_TYPE_BOOLEAN:	*BTK_RETLOC_BOOL (*arg) = b_value_get_boolean (value);	  break;
+    case B_TYPE_INT:		*BTK_RETLOC_INT (*arg) = b_value_get_int (value);	  break;
+    case B_TYPE_UINT:		*BTK_RETLOC_UINT (*arg) = b_value_get_uint (value);	  break;
+    case B_TYPE_LONG:		*BTK_RETLOC_LONG (*arg) = b_value_get_long (value);	  break;
+    case B_TYPE_ULONG:		*BTK_RETLOC_ULONG (*arg) = b_value_get_ulong (value);	  break;
+    case B_TYPE_ENUM:		*BTK_RETLOC_ENUM (*arg) = b_value_get_enum (value);	  break;
+    case B_TYPE_FLAGS:		*BTK_RETLOC_FLAGS (*arg) = b_value_get_flags (value);	  break;
+    case B_TYPE_FLOAT:		*BTK_RETLOC_FLOAT (*arg) = b_value_get_float (value);	  break;
+    case B_TYPE_DOUBLE:		*BTK_RETLOC_DOUBLE (*arg) = b_value_get_double (value);	  break;
+    case B_TYPE_BOXED:		*BTK_RETLOC_BOXED (*arg) = b_value_get_boxed (value);	  break;
+    case B_TYPE_POINTER:	*BTK_RETLOC_POINTER (*arg) = b_value_get_pointer (value); break;
+    case B_TYPE_OBJECT:		*BTK_RETLOC_POINTER (*arg) = b_value_get_object (value);  break;
+    case B_TYPE_STRING:		if (copy_string)
+      *BTK_RETLOC_STRING (*arg) = b_value_dup_string (value);
     else
-      *BTK_RETLOC_STRING (*arg) = (char *) g_value_get_string (value);
+      *BTK_RETLOC_STRING (*arg) = (char *) b_value_get_string (value);
     break;
     default:
       return FALSE;
@@ -299,13 +299,13 @@ btk_argloc_set_from_value (BtkArg  *arg,
 
 void
 btk_signal_emitv (BtkObject *object,
-		  guint      signal_id,
+		  buint      signal_id,
 		  BtkArg    *args)
 {
   GSignalQuery query;
-  GValue params[SIGNAL_MAX_PARAMS + 1] = { { 0, }, };
-  GValue rvalue = { 0, };
-  guint i;
+  BValue params[SIGNAL_MAX_PARAMS + 1] = { { 0, }, };
+  BValue rvalue = { 0, };
+  buint i;
   
   g_return_if_fail (BTK_IS_OBJECT (object));
   
@@ -316,40 +316,40 @@ btk_signal_emitv (BtkObject *object,
   if (query.n_params > 0)
     g_return_if_fail (args != NULL);
   
-  g_value_init (params + 0, BTK_OBJECT_TYPE (object));
-  g_value_set_object (params + 0, G_OBJECT (object));
+  b_value_init (params + 0, BTK_OBJECT_TYPE (object));
+  b_value_set_object (params + 0, B_OBJECT (object));
   for (i = 0; i < query.n_params; i++)
     {
-      GValue *value = params + 1 + i;
+      BValue *value = params + 1 + i;
       BtkArg *arg = args + i;
       
-      g_value_init (value, arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
+      b_value_init (value, arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
       if (!btk_arg_static_to_value (arg, value))
 	{
 	  g_warning ("%s: failed to convert arg type `%s' to value type `%s'",
-		     G_STRLOC, g_type_name (arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
+		     B_STRLOC, g_type_name (arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
 		     g_type_name (G_VALUE_TYPE (value)));
 	  return;
 	}
     }
-  if (query.return_type != G_TYPE_NONE)
-    g_value_init (&rvalue, query.return_type);
+  if (query.return_type != B_TYPE_NONE)
+    b_value_init (&rvalue, query.return_type);
   
   g_signal_emitv (params, signal_id, 0, &rvalue);
   
-  if (query.return_type != G_TYPE_NONE)
+  if (query.return_type != B_TYPE_NONE)
     {
       btk_argloc_set_from_value (args + query.n_params, &rvalue, TRUE);
-      g_value_unset (&rvalue);
+      b_value_unset (&rvalue);
     }
   for (i = 0; i < query.n_params; i++)
-    g_value_unset (params + 1 + i);
-  g_value_unset (params + 0);
+    b_value_unset (params + 1 + i);
+  b_value_unset (params + 0);
 }
 
 void
 btk_signal_emit (BtkObject *object,
-		 guint      signal_id,
+		 buint      signal_id,
 		 ...)
 {
   va_list var_args;
@@ -357,13 +357,13 @@ btk_signal_emit (BtkObject *object,
   g_return_if_fail (BTK_IS_OBJECT (object));
 
   va_start (var_args, signal_id);
-  g_signal_emit_valist (G_OBJECT (object), signal_id, 0, var_args);
+  g_signal_emit_valist (B_OBJECT (object), signal_id, 0, var_args);
   va_end (var_args);
 }
 
 void
 btk_signal_emit_by_name (BtkObject   *object,
-			 const gchar *name,
+			 const bchar *name,
 			 ...)
 {
   GSignalQuery query;
@@ -376,13 +376,13 @@ btk_signal_emit_by_name (BtkObject   *object,
   g_return_if_fail (query.signal_id != 0);
   
   va_start (var_args, name);
-  g_signal_emit_valist (G_OBJECT (object), query.signal_id, 0, var_args);
+  g_signal_emit_valist (B_OBJECT (object), query.signal_id, 0, var_args);
   va_end (var_args);
 }
 
 void
 btk_signal_emitv_by_name (BtkObject   *object,
-			  const gchar *name,
+			  const bchar *name,
 			  BtkArg      *args)
 {
   g_return_if_fail (BTK_IS_OBJECT (object));

@@ -57,14 +57,14 @@ _btk_plug_windowing_set_focus (BtkPlug *plug)
 
 void
 _btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
-				     guint           accelerator_key,
+				     buint           accelerator_key,
 				     BdkModifierType accelerator_mods)
 {
 }
 
 void
 _btk_plug_windowing_remove_grabbed_key (BtkPlug        *plug,
-					guint           accelerator_key,
+					buint           accelerator_key,
 					BdkModifierType accelerator_mods)
 {
 }
@@ -78,7 +78,7 @@ _btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
 BdkFilterReturn
 _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 				 BdkEvent  *event,
-				 gpointer   data)
+				 bpointer   data)
 {
   return BDK_FILTER_CONTINUE;
 }

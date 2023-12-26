@@ -42,14 +42,14 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE_BUTTON                 (btk_scale_button_get_type ())
-#define BTK_SCALE_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButton))
-#define BTK_SCALE_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
-#define BTK_IS_SCALE_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE_BUTTON))
-#define BTK_IS_SCALE_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE_BUTTON))
-#define BTK_SCALE_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
+#define BTK_SCALE_BUTTON(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButton))
+#define BTK_SCALE_BUTTON_CLASS(klass)         (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
+#define BTK_IS_SCALE_BUTTON(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE_BUTTON))
+#define BTK_IS_SCALE_BUTTON_CLASS(klass)      (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE_BUTTON))
+#define BTK_SCALE_BUTTON_GET_CLASS(obj)       (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE_BUTTON, BtkScaleButtonClass))
 
 typedef struct _BtkScaleButton        BtkScaleButton;
 typedef struct _BtkScaleButtonClass   BtkScaleButtonClass;
@@ -72,7 +72,7 @@ struct _BtkScaleButtonClass
 
   /* signals */
   void	(* value_changed) (BtkScaleButton *button,
-                           gdouble         value);
+                           bdouble         value);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -81,17 +81,17 @@ struct _BtkScaleButtonClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_scale_button_get_type         (void) G_GNUC_CONST;
+GType            btk_scale_button_get_type         (void) B_GNUC_CONST;
 BtkWidget *      btk_scale_button_new              (BtkIconSize      size,
-                                                    gdouble          min,
-                                                    gdouble          max,
-                                                    gdouble          step,
-                                                    const gchar    **icons);
+                                                    bdouble          min,
+                                                    bdouble          max,
+                                                    bdouble          step,
+                                                    const bchar    **icons);
 void             btk_scale_button_set_icons        (BtkScaleButton  *button,
-                                                    const gchar    **icons);
-gdouble          btk_scale_button_get_value        (BtkScaleButton  *button);
+                                                    const bchar    **icons);
+bdouble          btk_scale_button_get_value        (BtkScaleButton  *button);
 void             btk_scale_button_set_value        (BtkScaleButton  *button,
-                                                    gdouble          value);
+                                                    bdouble          value);
 BtkAdjustment *  btk_scale_button_get_adjustment   (BtkScaleButton  *button);
 void             btk_scale_button_set_adjustment   (BtkScaleButton  *button,
                                                     BtkAdjustment   *adjustment);
@@ -107,6 +107,6 @@ void             btk_scale_button_set_orientation  (BtkScaleButton  *button,
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SCALE_BUTTON_H__ */

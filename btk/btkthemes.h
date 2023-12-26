@@ -33,16 +33,16 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_THEME_ENGINE             (btk_theme_engine_get_type ())
-#define BTK_THEME_ENGINE(theme_engine)    (G_TYPE_CHECK_INSTANCE_CAST ((theme_engine), BTK_TYPE_THEME_ENGINE, BtkThemeEngine))
-#define BTK_IS_THEME_ENGINE(theme_engine) (G_TYPE_CHECK_INSTANCE_TYPE ((theme_engine), BTK_TYPE_THEME_ENGINE))
+#define BTK_THEME_ENGINE(theme_engine)    (B_TYPE_CHECK_INSTANCE_CAST ((theme_engine), BTK_TYPE_THEME_ENGINE, BtkThemeEngine))
+#define BTK_IS_THEME_ENGINE(theme_engine) (B_TYPE_CHECK_INSTANCE_TYPE ((theme_engine), BTK_TYPE_THEME_ENGINE))
 
-GType           btk_theme_engine_get_type        (void) G_GNUC_CONST;
-BtkThemeEngine *btk_theme_engine_get             (const gchar     *name);
+GType           btk_theme_engine_get_type        (void) B_GNUC_CONST;
+BtkThemeEngine *btk_theme_engine_get             (const bchar     *name);
 BtkRcStyle     *btk_theme_engine_create_rc_style (BtkThemeEngine  *engine);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_THEMES_H__ */

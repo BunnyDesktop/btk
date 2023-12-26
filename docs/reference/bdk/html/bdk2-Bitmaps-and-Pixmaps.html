@@ -144,7 +144,7 @@
 </div>
 <div class="refsect1">
 <a name="bdk2-Bitmaps-and-Pixmaps.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> <a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable">BdkDrawable</a>
         <span class="lineart">╰──</span> BdkPixmap
 </pre>
@@ -163,18 +163,18 @@
 <a name="bdk-pixmap-new"></a><h3>bdk_pixmap_new ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="returnvalue">BdkPixmap</span></a> *
 bdk_pixmap_new (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> depth</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> height</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> depth</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bdk-bitmap-create-from-data"></a><h3>bdk_bitmap_create_from_data ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap" title="BdkBitmap"><span class="returnvalue">BdkBitmap</span></a> *
 bdk_bitmap_create_from_data (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *data</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                             <em class="parameter"><code>const <span class="type">bchar</span> *data</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_bitmap_create_from_data</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -182,10 +182,10 @@ bdk_bitmap_create_from_data (<em class="parameter"><code><a class="link" href="b
 <a name="bdk-pixmap-create-from-data"></a><h3>bdk_pixmap_create_from_data ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="returnvalue">BdkPixmap</span></a> *
 bdk_pixmap_create_from_data (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *data</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> depth</code></em>,
+                             <em class="parameter"><code>const <span class="type">bchar</span> *data</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> height</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> depth</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *fg</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *bg</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_pixmap_create_from_data</code> is deprecated and should not be used in newly-written code.</p></div>
@@ -197,7 +197,7 @@ bdk_pixmap_create_from_data (<em class="parameter"><code><a class="link" href="b
 bdk_pixmap_create_from_xpm (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                             <em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap" title="BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>,
                             <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *transparent_color</code></em>,
-                            <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);</pre>
+                            <em class="parameter"><code>const <span class="type">bchar</span> *filename</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_pixmap_create_from_xpm</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> instead. You can use
@@ -257,7 +257,7 @@ bdk_pixmap_colormap_create_from_xpm (<em class="parameter"><code><a class="link"
                                      <em class="parameter"><code><a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColormap" title="BdkColormap"><span class="type">BdkColormap</span></a> *colormap</code></em>,
                                      <em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap" title="BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>,
                                      <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *transparent_color</code></em>,
-                                     <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>);</pre>
+                                     <em class="parameter"><code>const <span class="type">bchar</span> *filename</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_pixmap_colormap_create_from_xpm</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> instead. You can use
@@ -324,7 +324,7 @@ in which case a default color will be used.</p></td>
 bdk_pixmap_create_from_xpm_d (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                               <em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap" title="BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>,
                               <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *transparent_color</code></em>,
-                              <em class="parameter"><code><span class="type">gchar</span> **data</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bchar</span> **data</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_pixmap_create_from_xpm_d</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> instead. You can use
@@ -384,7 +384,7 @@ bdk_pixmap_colormap_create_from_xpm_d (<em class="parameter"><code><a class="lin
                                        <em class="parameter"><code><a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColormap" title="BdkColormap"><span class="type">BdkColormap</span></a> *colormap</code></em>,
                                        <em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap" title="BdkBitmap"><span class="type">BdkBitmap</span></a> **mask</code></em>,
                                        <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *transparent_color</code></em>,
-                                       <em class="parameter"><code><span class="type">gchar</span> **data</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bchar</span> **data</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_pixmap_colormap_create_from_xpm_d</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> instead. You can use
@@ -450,8 +450,8 @@ in which case a default color will be used.</p></td>
 <a name="bdk-pixmap-get-size"></a><h3>bdk_pixmap_get_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_pixmap_get_size (<em class="parameter"><code><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bint</span> *width</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> *height</code></em>);</pre>
 <p>This function is purely to make it possible to query the size of pixmaps
 even when compiling without deprecated symbols and you must use pixmaps.
 It is identical to <a class="link" href="bdk2-Drawing-Primitives.html#bdk-drawable-get-size" title="bdk_drawable_get_size ()"><code class="function">bdk_drawable_get_size()</code></a>, but for pixmaps.</p>

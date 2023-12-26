@@ -52,83 +52,83 @@
 
 static void bdk_x11_draw_rectangle (BdkDrawable    *drawable,
 				    BdkGC          *gc,
-				    gboolean        filled,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height);
+				    bboolean        filled,
+				    bint            x,
+				    bint            y,
+				    bint            width,
+				    bint            height);
 static void bdk_x11_draw_arc       (BdkDrawable    *drawable,
 				    BdkGC          *gc,
-				    gboolean        filled,
-				    gint            x,
-				    gint            y,
-				    gint            width,
-				    gint            height,
-				    gint            angle1,
-				    gint            angle2);
+				    bboolean        filled,
+				    bint            x,
+				    bint            y,
+				    bint            width,
+				    bint            height,
+				    bint            angle1,
+				    bint            angle2);
 static void bdk_x11_draw_polygon   (BdkDrawable    *drawable,
 				    BdkGC          *gc,
-				    gboolean        filled,
+				    bboolean        filled,
 				    BdkPoint       *points,
-				    gint            npoints);
+				    bint            npoints);
 static void bdk_x11_draw_text      (BdkDrawable    *drawable,
 				    BdkFont        *font,
 				    BdkGC          *gc,
-				    gint            x,
-				    gint            y,
-				    const gchar    *text,
-				    gint            text_length);
+				    bint            x,
+				    bint            y,
+				    const bchar    *text,
+				    bint            text_length);
 static void bdk_x11_draw_text_wc   (BdkDrawable    *drawable,
 				    BdkFont        *font,
 				    BdkGC          *gc,
-				    gint            x,
-				    gint            y,
+				    bint            x,
+				    bint            y,
 				    const BdkWChar *text,
-				    gint            text_length);
+				    bint            text_length);
 static void bdk_x11_draw_drawable  (BdkDrawable    *drawable,
 				    BdkGC          *gc,
 				    BdkPixmap      *src,
-				    gint            xsrc,
-				    gint            ysrc,
-				    gint            xdest,
-				    gint            ydest,
-				    gint            width,
-				    gint            height,
+				    bint            xsrc,
+				    bint            ysrc,
+				    bint            xdest,
+				    bint            ydest,
+				    bint            width,
+				    bint            height,
 				    BdkDrawable    *original_src);
 static void bdk_x11_draw_points    (BdkDrawable    *drawable,
 				    BdkGC          *gc,
 				    BdkPoint       *points,
-				    gint            npoints);
+				    bint            npoints);
 static void bdk_x11_draw_segments  (BdkDrawable    *drawable,
 				    BdkGC          *gc,
 				    BdkSegment     *segs,
-				    gint            nsegs);
+				    bint            nsegs);
 static void bdk_x11_draw_lines     (BdkDrawable    *drawable,
 				    BdkGC          *gc,
 				    BdkPoint       *points,
-				    gint            npoints);
+				    bint            npoints);
 
 static void bdk_x11_draw_image     (BdkDrawable     *drawable,
                                     BdkGC           *gc,
                                     BdkImage        *image,
-                                    gint             xsrc,
-                                    gint             ysrc,
-                                    gint             xdest,
-                                    gint             ydest,
-                                    gint             width,
-                                    gint             height);
+                                    bint             xsrc,
+                                    bint             ysrc,
+                                    bint             xdest,
+                                    bint             ydest,
+                                    bint             width,
+                                    bint             height);
 static void bdk_x11_draw_pixbuf    (BdkDrawable     *drawable,
 				    BdkGC           *gc,
 				    BdkPixbuf       *pixbuf,
-				    gint             src_x,
-				    gint             src_y,
-				    gint             dest_x,
-				    gint             dest_y,
-				    gint             width,
-				    gint             height,
+				    bint             src_x,
+				    bint             src_y,
+				    bint             dest_x,
+				    bint             dest_y,
+				    bint             width,
+				    bint             height,
 				    BdkRgbDither     dither,
-				    gint             x_dither,
-				    gint             y_dither);
+				    bint             x_dither,
+				    bint             y_dither);
 
 static bairo_surface_t *bdk_x11_ref_bairo_surface (BdkDrawable *drawable);
      
@@ -136,11 +136,11 @@ static void bdk_x11_set_colormap   (BdkDrawable    *drawable,
                                     BdkColormap    *colormap);
 
 static BdkColormap* bdk_x11_get_colormap   (BdkDrawable    *drawable);
-static gint         bdk_x11_get_depth      (BdkDrawable    *drawable);
+static bint         bdk_x11_get_depth      (BdkDrawable    *drawable);
 static BdkScreen *  bdk_x11_get_screen	   (BdkDrawable    *drawable);
 static BdkVisual*   bdk_x11_get_visual     (BdkDrawable    *drawable);
 
-static void bdk_drawable_impl_x11_finalize   (GObject *object);
+static void bdk_drawable_impl_x11_finalize   (BObject *object);
 
 static const bairo_user_data_key_t bdk_x11_bairo_key;
 
@@ -150,7 +150,7 @@ static void
 _bdk_drawable_impl_x11_class_init (BdkDrawableImplX11Class *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->finalize = bdk_drawable_impl_x11_finalize;
   
@@ -185,11 +185,11 @@ _bdk_drawable_impl_x11_init (BdkDrawableImplX11 *impl)
 }
 
 static void
-bdk_drawable_impl_x11_finalize (GObject *object)
+bdk_drawable_impl_x11_finalize (BObject *object)
 {
   bdk_drawable_set_colormap (BDK_DRAWABLE (object), NULL);
 
-  G_OBJECT_CLASS (_bdk_drawable_impl_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_drawable_impl_x11_parent_class)->finalize (object);
 }
 
 /**
@@ -251,7 +251,7 @@ try_pixmap (Display *xdisplay,
   XFreePixmap (xdisplay, pixmap);
 }
 
-gboolean
+bboolean
 _bdk_x11_have_render (BdkDisplay *display)
 {
   Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
@@ -277,7 +277,7 @@ _bdk_x11_have_render (BdkDisplay *display)
 	    {
 	      int count;
 	      int *depths = XListDepths (xdisplay, screen, &count);
-	      gboolean has_8 = FALSE, has_32 = FALSE;
+	      bboolean has_8 = FALSE, has_32 = FALSE;
 
 	      if (depths)
 		{
@@ -368,16 +368,16 @@ bdk_x11_drawable_update_picture_clip (BdkDrawable *drawable,
   if (clip_rebunnyion)
     {
       BdkRebunnyionBox *boxes = clip_rebunnyion->rects;
-      gint n_boxes = clip_rebunnyion->numRects;
+      bint n_boxes = clip_rebunnyion->numRects;
       XRectangle *rects = g_new (XRectangle, n_boxes);
       int i;
 
       for (i=0; i < n_boxes; i++)
 	{
-	  rects[i].x = CLAMP (boxes[i].x1 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT);
-	  rects[i].y = CLAMP (boxes[i].y1 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT);
-	  rects[i].width = CLAMP (boxes[i].x2 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT) - rects[i].x;
-	  rects[i].height = CLAMP (boxes[i].y2 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT) - rects[i].y;
+	  rects[i].x = CLAMP (boxes[i].x1 + gc->clip_x_origin, B_MINSHORT, B_MAXSHORT);
+	  rects[i].y = CLAMP (boxes[i].y1 + gc->clip_y_origin, B_MINSHORT, B_MAXSHORT);
+	  rects[i].width = CLAMP (boxes[i].x2 + gc->clip_x_origin, B_MINSHORT, B_MAXSHORT) - rects[i].x;
+	  rects[i].height = CLAMP (boxes[i].y2 + gc->clip_y_origin, B_MINSHORT, B_MAXSHORT) - rects[i].y;
 	}
       
       XRenderSetPictureClipRectangles (xdisplay, picture,
@@ -389,7 +389,7 @@ bdk_x11_drawable_update_picture_clip (BdkDrawable *drawable,
     {
       XRenderPictureAttributes pa;
       BdkBitmap *mask;
-      gulong pa_mask;
+      bulong pa_mask;
 
       pa_mask = CPClipMask;
       if (gc && (mask = _bdk_gc_get_clip_mask (gc)))
@@ -445,11 +445,11 @@ bdk_x11_set_colormap (BdkDrawable *drawable,
 static void
 bdk_x11_draw_rectangle (BdkDrawable *drawable,
 			BdkGC       *gc,
-			gboolean     filled,
-			gint         x,
-			gint         y,
-			gint         width,
-			gint         height)
+			bboolean     filled,
+			bint         x,
+			bint         y,
+			bint         width,
+			bint         height)
 {
   BdkDrawableImplX11 *impl;
 
@@ -466,13 +466,13 @@ bdk_x11_draw_rectangle (BdkDrawable *drawable,
 static void
 bdk_x11_draw_arc (BdkDrawable *drawable,
 		  BdkGC       *gc,
-		  gboolean     filled,
-		  gint         x,
-		  gint         y,
-		  gint         width,
-		  gint         height,
-		  gint         angle1,
-		  gint         angle2)
+		  bboolean     filled,
+		  bint         x,
+		  bint         y,
+		  bint         width,
+		  bint         height,
+		  bint         angle1,
+		  bint         angle2)
 {
   BdkDrawableImplX11 *impl;
 
@@ -490,12 +490,12 @@ bdk_x11_draw_arc (BdkDrawable *drawable,
 static void
 bdk_x11_draw_polygon (BdkDrawable *drawable,
 		      BdkGC       *gc,
-		      gboolean     filled,
+		      bboolean     filled,
 		      BdkPoint    *points,
-		      gint         npoints)
+		      bint         npoints)
 {
   XPoint *tmp_points;
-  gint tmp_npoints, i;
+  bint tmp_npoints, i;
   BdkDrawableImplX11 *impl;
 
   impl = BDK_DRAWABLE_IMPL_X11 (drawable);
@@ -541,10 +541,10 @@ static void
 bdk_x11_draw_text (BdkDrawable *drawable,
 		   BdkFont     *font,
 		   BdkGC       *gc,
-		   gint         x,
-		   gint         y,
-		   const gchar *text,
-		   gint         text_length)
+		   bint         x,
+		   bint         y,
+		   const bchar *text,
+		   bint         text_length)
 {
   BdkDrawableImplX11 *impl;
   Display *xdisplay;
@@ -581,10 +581,10 @@ static void
 bdk_x11_draw_text_wc (BdkDrawable    *drawable,
 		      BdkFont	     *font,
 		      BdkGC	     *gc,
-		      gint	      x,
-		      gint	      y,
+		      bint	      x,
+		      bint	      y,
 		      const BdkWChar *text,
-		      gint	      text_length)
+		      bint	      text_length)
 {
   BdkDrawableImplX11 *impl;
   Display *xdisplay;
@@ -595,10 +595,10 @@ bdk_x11_draw_text_wc (BdkDrawable    *drawable,
   if (font->type == BDK_FONT_FONT)
     {
       XFontStruct *xfont = (XFontStruct *) BDK_FONT_XFONT (font);
-      gchar *text_8bit;
-      gint i;
+      bchar *text_8bit;
+      bint i;
       XSetFont(xdisplay, BDK_GC_GET_XGC (gc), xfont->fid);
-      text_8bit = g_new (gchar, text_length);
+      text_8bit = g_new (bchar, text_length);
       for (i=0; i<text_length; i++) text_8bit[i] = text[i];
       XDrawString (xdisplay, impl->xid,
                    BDK_GC_GET_XGC (gc), x, y, text_8bit, text_length);
@@ -615,7 +615,7 @@ bdk_x11_draw_text_wc (BdkDrawable    *drawable,
       else
 	{
 	  wchar_t *text_wchar;
-	  gint i;
+	  bint i;
 	  text_wchar = g_new (wchar_t, text_length);
 	  for (i=0; i<text_length; i++) text_wchar[i] = text[i];
 	  XwcDrawString (xdisplay, impl->xid,
@@ -632,12 +632,12 @@ static void
 bdk_x11_draw_drawable (BdkDrawable *drawable,
 		       BdkGC       *gc,
 		       BdkPixmap   *src,
-		       gint         xsrc,
-		       gint         ysrc,
-		       gint         xdest,
-		       gint         ydest,
-		       gint         width,
-		       gint         height,
+		       bint         xsrc,
+		       bint         ysrc,
+		       bint         xdest,
+		       bint         ydest,
+		       bint         width,
+		       bint         height,
 		       BdkDrawable *original_src)
 {
   int src_depth = bdk_drawable_get_depth (src);
@@ -718,7 +718,7 @@ static void
 bdk_x11_draw_points (BdkDrawable *drawable,
 		     BdkGC       *gc,
 		     BdkPoint    *points,
-		     gint         npoints)
+		     bint         npoints)
 {
   BdkDrawableImplX11 *impl;
 
@@ -737,7 +737,7 @@ bdk_x11_draw_points (BdkDrawable *drawable,
     }
   else
     {
-      gint i;
+      bint i;
       XPoint *tmp_points = g_new (XPoint, npoints);
 
       for (i=0; i<npoints; i++)
@@ -761,7 +761,7 @@ static void
 bdk_x11_draw_segments (BdkDrawable *drawable,
 		       BdkGC       *gc,
 		       BdkSegment  *segs,
-		       gint         nsegs)
+		       bint         nsegs)
 {
   BdkDrawableImplX11 *impl;
 
@@ -779,7 +779,7 @@ bdk_x11_draw_segments (BdkDrawable *drawable,
     }
   else
     {
-      gint i;
+      bint i;
       XSegment *tmp_segs = g_new (XSegment, nsegs);
 
       for (i=0; i<nsegs; i++)
@@ -803,9 +803,9 @@ static void
 bdk_x11_draw_lines (BdkDrawable *drawable,
 		    BdkGC       *gc,
 		    BdkPoint    *points,
-		    gint         npoints)
+		    bint         npoints)
 {
-  gint i;
+  bint i;
   XPoint *tmp_points = g_new (XPoint, npoints);
   BdkDrawableImplX11 *impl;
 
@@ -831,12 +831,12 @@ static void
 bdk_x11_draw_image     (BdkDrawable     *drawable,
                         BdkGC           *gc,
                         BdkImage        *image,
-                        gint             xsrc,
-                        gint             ysrc,
-                        gint             xdest,
-                        gint             ydest,
-                        gint             width,
-                        gint             height)
+                        bint             xsrc,
+                        bint             ysrc,
+                        bint             xdest,
+                        bint             ydest,
+                        bint             width,
+                        bint             height)
 {
   BdkDrawableImplX11 *impl;
 
@@ -854,7 +854,7 @@ bdk_x11_draw_image     (BdkDrawable     *drawable,
                xsrc, ysrc, xdest, ydest, width, height);
 }
 
-static gint
+static bint
 bdk_x11_get_depth (BdkDrawable *drawable)
 {
   /* This is a bit bogus but I'm not sure the other way is better */
@@ -871,7 +871,7 @@ get_impl_drawable (BdkDrawable *drawable)
     return ((BdkPixmapObject *)drawable)->impl;
   else
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return NULL;
     }
 }
@@ -939,7 +939,7 @@ bdk_x11_drawable_get_xid (BdkDrawable *drawable)
       
       if (!BDK_WINDOW_IS_X11 (window))
         {
-          g_warning (G_STRLOC " drawable is not a native X11 window");
+          g_warning (B_STRLOC " drawable is not a native X11 window");
           return None;
         }
       
@@ -949,7 +949,7 @@ bdk_x11_drawable_get_xid (BdkDrawable *drawable)
     impl = ((BdkPixmapObject *)drawable)->impl;
   else
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return None;
     }
 
@@ -1102,7 +1102,7 @@ select_format (BdkDisplay         *display,
 static void
 list_formats (XRenderPictFormat *pf)
 {
-  gint i;
+  bint i;
   
   for (i=0 ;; i++)
     {
@@ -1127,16 +1127,16 @@ list_formats (XRenderPictFormat *pf)
 #endif  
 
 void
-_bdk_x11_convert_to_format (guchar           *src_buf,
-                            gint              src_rowstride,
-                            guchar           *dest_buf,
-                            gint              dest_rowstride,
+_bdk_x11_convert_to_format (buchar           *src_buf,
+                            bint              src_rowstride,
+                            buchar           *dest_buf,
+                            bint              dest_rowstride,
                             BdkX11FormatType  dest_format,
                             BdkByteOrder      dest_byteorder,
-                            gint              width,
-                            gint              height)
+                            bint              width,
+                            bint              height)
 {
-  gint i;
+  bint i;
 
   for (i=0; i < height; i++)
     {
@@ -1151,12 +1151,12 @@ _bdk_x11_convert_to_format (guchar           *src_buf,
 	  }
 	case BDK_X11_FORMAT_ARGB_MASK:
 	  {
-	    guchar *row = src_buf + i * src_rowstride;
-	    if (((gsize)row & 3) != 0)
+	    buchar *row = src_buf + i * src_rowstride;
+	    if (((bsize)row & 3) != 0)
 	      {
-		guchar *p = row;
-		guint32 *q = (guint32 *)(dest_buf + i * dest_rowstride);
-		guchar *end = p + 4 * width;
+		buchar *p = row;
+		buint32 *q = (buint32 *)(dest_buf + i * dest_rowstride);
+		buchar *end = p + 4 * width;
 
 		while (p < end)
 		  {
@@ -1167,9 +1167,9 @@ _bdk_x11_convert_to_format (guchar           *src_buf,
 	      }
 	    else
 	      {
-		guint32 *p = (guint32 *)row;
-		guint32 *q = (guint32 *)(dest_buf + i * dest_rowstride);
-		guint32 *end = p + width;
+		buint32 *p = (buint32 *)row;
+		buint32 *q = (buint32 *)(dest_buf + i * dest_rowstride);
+		buint32 *end = p + width;
 
 #if G_BYTE_ORDER == G_LITTLE_ENDIAN	    
 		if (dest_byteorder == BDK_LSB_FIRST)
@@ -1229,12 +1229,12 @@ _bdk_x11_convert_to_format (guchar           *src_buf,
 	  }
 	case BDK_X11_FORMAT_ARGB:
 	  {
-	    guchar *p = (src_buf + i * src_rowstride);
-	    guchar *q = (dest_buf + i * dest_rowstride);
-	    guchar *end = p + 4 * width;
-	    guint t1,t2,t3;
+	    buchar *p = (src_buf + i * src_rowstride);
+	    buchar *q = (dest_buf + i * dest_rowstride);
+	    buchar *end = p + 4 * width;
+	    buint t1,t2,t3;
 	    
-#define MULT(d,c,a,t) G_STMT_START { t = c * a; d = ((t >> 8) + t) >> 8; } G_STMT_END
+#define MULT(d,c,a,t) B_STMT_START { t = c * a; d = ((t >> 8) + t) >> 8; } B_STMT_END
 	    
 	    if (dest_byteorder == BDK_LSB_FIRST)
 	      {
@@ -1276,12 +1276,12 @@ draw_with_images (BdkDrawable       *drawable,
 		  BdkX11FormatType   format_type,
 		  XRenderPictFormat *format,
 		  XRenderPictFormat *mask_format,
-		  guchar            *src_rgb,
-		  gint               src_rowstride,
-		  gint               dest_x,
-		  gint               dest_y,
-		  gint               width,
-		  gint               height)
+		  buchar            *src_rgb,
+		  bint               src_rowstride,
+		  bint               dest_x,
+		  bint               dest_y,
+		  bint               width,
+		  bint               height)
 {
   BdkScreen *screen = BDK_DRAWABLE_IMPL_X11 (drawable)->screen;
   Display *xdisplay = BDK_SCREEN_XDISPLAY (screen);
@@ -1291,7 +1291,7 @@ draw_with_images (BdkDrawable       *drawable,
   Picture pict;
   Picture dest_pict;
   Picture mask = None;
-  gint x0, y0;
+  bint x0, y0;
 
   pix = bdk_pixmap_new (bdk_screen_get_root_window (screen), width, height, 32);
 						  
@@ -1309,17 +1309,17 @@ draw_with_images (BdkDrawable       *drawable,
 
   for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
     {
-      gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+      bint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
       for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 	{
-	  gint xs0, ys0;
+	  bint xs0, ys0;
 	  
-	  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
+	  bint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 	  
 	  image = _bdk_image_get_scratch (screen, width1, height1, 32, &xs0, &ys0);
 	  
 	  _bdk_x11_convert_to_format (src_rgb + y0 * src_rowstride + 4 * x0, src_rowstride,
-                                      (guchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
+                                      (buchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
                                       format_type, image->byte_order, 
                                       width1, height1);
 
@@ -1349,7 +1349,7 @@ struct _ShmPixmapInfo
 };
 
 static void
-shm_pixmap_info_destroy (gpointer data)
+shm_pixmap_info_destroy (bpointer data)
 {
   ShmPixmapInfo *info = data;
 
@@ -1364,7 +1364,7 @@ shm_pixmap_info_destroy (gpointer data)
 
 #ifdef USE_SHM
 /* Returns FALSE if we can't get a shm pixmap */
-static gboolean
+static bboolean
 get_shm_pixmap_for_image (Display           *xdisplay,
 			  BdkImage          *image,
 			  XRenderPictFormat *format,
@@ -1378,7 +1378,7 @@ get_shm_pixmap_for_image (Display           *xdisplay,
   if (image->type != BDK_IMAGE_SHARED)
     return FALSE;
   
-  info = g_object_get_data (G_OBJECT (image), "bdk-x11-shm-pixmap");
+  info = g_object_get_data (B_OBJECT (image), "bdk-x11-shm-pixmap");
   if (!info)
     {
       *pix = _bdk_x11_image_get_shm_pixmap (image);
@@ -1398,7 +1398,7 @@ get_shm_pixmap_for_image (Display           *xdisplay,
       else
 	info->mask = None;
 
-      g_object_set_data_full (G_OBJECT (image), "bdk-x11-shm-pixmap", info,
+      g_object_set_data_full (B_OBJECT (image), "bdk-x11-shm-pixmap", info,
 	  shm_pixmap_info_destroy);
     }
 
@@ -1410,18 +1410,18 @@ get_shm_pixmap_for_image (Display           *xdisplay,
 }
 
 /* Returns FALSE if drawing with ShmPixmaps is not possible */
-static gboolean
+static bboolean
 draw_with_pixmaps (BdkDrawable       *drawable,
 		   BdkGC             *gc,
 		   BdkX11FormatType   format_type,
 		   XRenderPictFormat *format,
 		   XRenderPictFormat *mask_format,
-		   guchar            *src_rgb,
-		   gint               src_rowstride,
-		   gint               dest_x,
-		   gint               dest_y,
-		   gint               width,
-		   gint               height)
+		   buchar            *src_rgb,
+		   bint               src_rowstride,
+		   bint               dest_x,
+		   bint               dest_y,
+		   bint               width,
+		   bint               height)
 {
   Display *xdisplay = BDK_SCREEN_XDISPLAY (BDK_DRAWABLE_IMPL_X11 (drawable)->screen);
   BdkImage *image;
@@ -1429,18 +1429,18 @@ draw_with_pixmaps (BdkDrawable       *drawable,
   Picture pict;
   Picture dest_pict;
   Picture mask = None;
-  gint x0, y0;
+  bint x0, y0;
 
   dest_pict = bdk_x11_drawable_get_picture (drawable);
   
   for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
     {
-      gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+      bint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
       for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 	{
-	  gint xs0, ys0;
+	  bint xs0, ys0;
 	  
-	  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
+	  bint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 	  
 	  image = _bdk_image_get_scratch (BDK_DRAWABLE_IMPL_X11 (drawable)->screen,
 					  width1, height1, 32, &xs0, &ys0);
@@ -1448,7 +1448,7 @@ draw_with_pixmaps (BdkDrawable       *drawable,
 	    return FALSE;
 
 	  _bdk_x11_convert_to_format (src_rgb + y0 * src_rowstride + 4 * x0, src_rowstride,
-                                      (guchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
+                                      (buchar *)image->mem + ys0 * image->bpl + xs0 * image->bpp, image->bpl,
                                       format_type, image->byte_order, 
                                       width1, height1);
 
@@ -1466,21 +1466,21 @@ static void
 bdk_x11_draw_pixbuf (BdkDrawable     *drawable,
 		     BdkGC           *gc,
 		     BdkPixbuf       *pixbuf,
-		     gint             src_x,
-		     gint             src_y,
-		     gint             dest_x,
-		     gint             dest_y,
-		     gint             width,
-		     gint             height,
+		     bint             src_x,
+		     bint             src_y,
+		     bint             dest_x,
+		     bint             dest_y,
+		     bint             width,
+		     bint             height,
 		     BdkRgbDither     dither,
-		     gint             x_dither,
-		     gint             y_dither)
+		     bint             x_dither,
+		     bint             y_dither)
 {
   BdkX11FormatType format_type;
   XRenderPictFormat *format, *mask_format;
-  gint rowstride;
+  bint rowstride;
 #ifdef USE_SHM  
-  gboolean use_pixmaps = TRUE;
+  bboolean use_pixmaps = TRUE;
 #endif /* USE_SHM */
     
   format_type = select_format (bdk_drawable_get_display (drawable),

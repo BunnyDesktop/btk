@@ -22,9 +22,9 @@
 #include <btk/btk.h>
 
 typedef struct {
-  const gchar *string;
-  gboolean is_editable;
-  gint progress;
+  const bchar *string;
+  bboolean is_editable;
+  bint progress;
 } ListEntry;
 
 enum {
@@ -50,7 +50,7 @@ create_model (void)
 {
   BtkTreeStore *model;
   BtkTreeIter iter;
-  gint i;
+  bint i;
   BdkPixbuf *foo;
   BtkWidget *blah;
 
@@ -59,10 +59,10 @@ create_model (void)
   btk_widget_destroy (blah);
   
   model = btk_tree_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING,
-			      G_TYPE_BOOLEAN,
+			      B_TYPE_STRING,
+			      B_TYPE_BOOLEAN,
 			      BDK_TYPE_PIXBUF,
-			      G_TYPE_INT);
+			      B_TYPE_INT);
 
   for (i = 0; model_strings[i].string != NULL; i++)
     {
@@ -81,13 +81,13 @@ create_model (void)
 
 static void
 toggled (BtkCellRendererToggle *cell,
-	 gchar                 *path_string,
-	 gpointer               data)
+	 bchar                 *path_string,
+	 bpointer               data)
 {
   BtkTreeModel *model = BTK_TREE_MODEL (data);
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_string);
-  gboolean value;
+  bboolean value;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, IS_EDITABLE_COLUMN, &value, -1);
@@ -100,9 +100,9 @@ toggled (BtkCellRendererToggle *cell,
 
 static void
 edited (BtkCellRendererText *cell,
-	gchar               *path_string,
-	gchar               *new_text,
-	gpointer             data)
+	bchar               *path_string,
+	bchar               *new_text,
+	bpointer             data)
 {
   BtkTreeModel *model = BTK_TREE_MODEL (data);
   BtkTreeIter iter;
@@ -114,8 +114,8 @@ edited (BtkCellRendererText *cell,
   btk_tree_path_free (path);
 }
 
-static gboolean
-button_press_event (BtkWidget *widget, BdkEventButton *event, gpointer callback_data)
+static bboolean
+button_press_event (BtkWidget *widget, BdkEventButton *event, bpointer callback_data)
 {
 	/* Deselect if people click outside any row. */
 	if (event->window == btk_tree_view_get_bin_window (BTK_TREE_VIEW (widget))
@@ -128,8 +128,8 @@ button_press_event (BtkWidget *widget, BdkEventButton *event, gpointer callback_
 	return FALSE;
 }
 
-gint
-main (gint argc, gchar **argv)
+bint
+main (bint argc, bchar **argv)
 {
   BtkWidget *window;
   BtkWidget *scrolled_window;

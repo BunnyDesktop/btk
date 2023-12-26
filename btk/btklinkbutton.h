@@ -31,22 +31,22 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LINK_BUTTON		(btk_link_button_get_type ())
-#define BTK_LINK_BUTTON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButton))
-#define BTK_IS_LINK_BUTTON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LINK_BUTTON))
-#define BTK_LINK_BUTTON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LINK_BUTTON, BtkLinkButtonClass))
-#define BTK_IS_LINK_BUTTON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LINK_BUTTON))
-#define BTK_LINK_BUTTON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonClass))
+#define BTK_LINK_BUTTON(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButton))
+#define BTK_IS_LINK_BUTTON(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LINK_BUTTON))
+#define BTK_LINK_BUTTON_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LINK_BUTTON, BtkLinkButtonClass))
+#define BTK_IS_LINK_BUTTON_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LINK_BUTTON))
+#define BTK_LINK_BUTTON_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonClass))
 
 typedef struct _BtkLinkButton		BtkLinkButton;
 typedef struct _BtkLinkButtonClass	BtkLinkButtonClass;
 typedef struct _BtkLinkButtonPrivate	BtkLinkButtonPrivate;
 
 typedef void (*BtkLinkButtonUriFunc) (BtkLinkButton *button,
-				      const gchar   *link_,
-				      gpointer       user_data);
+				      const bchar   *link_,
+				      bpointer       user_data);
 
 struct _BtkLinkButton
 {
@@ -65,27 +65,27 @@ struct _BtkLinkButtonClass
   void (*_btk_padding4) (void);
 };
 
-GType                 btk_link_button_get_type          (void) G_GNUC_CONST;
+GType                 btk_link_button_get_type          (void) B_GNUC_CONST;
 
-BtkWidget *           btk_link_button_new               (const gchar   *uri);
-BtkWidget *           btk_link_button_new_with_label    (const gchar   *uri,
-						         const gchar   *label);
+BtkWidget *           btk_link_button_new               (const bchar   *uri);
+BtkWidget *           btk_link_button_new_with_label    (const bchar   *uri,
+						         const bchar   *label);
 
-const gchar *         btk_link_button_get_uri           (BtkLinkButton *link_button);
+const bchar *         btk_link_button_get_uri           (BtkLinkButton *link_button);
 void                  btk_link_button_set_uri           (BtkLinkButton *link_button,
-						         const gchar   *uri);
+						         const bchar   *uri);
 
 #ifndef BTK_DISABLE_DEPRECATED
 BtkLinkButtonUriFunc  btk_link_button_set_uri_hook      (BtkLinkButtonUriFunc func,
-							 gpointer             data,
+							 bpointer             data,
 							 GDestroyNotify       destroy);
 #endif
 
-gboolean              btk_link_button_get_visited       (BtkLinkButton *link_button);
+bboolean              btk_link_button_get_visited       (BtkLinkButton *link_button);
 void                  btk_link_button_set_visited       (BtkLinkButton *link_button,
-                                                         gboolean       visited);
+                                                         bboolean       visited);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LINK_BUTTON_H__ */

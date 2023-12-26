@@ -27,15 +27,15 @@
 #include <btk/btkcellrenderer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_CELL_RENDERER_TOGGLE			(btk_cell_renderer_toggle_get_type ())
-#define BTK_CELL_RENDERER_TOGGLE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggle))
-#define BTK_CELL_RENDERER_TOGGLE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggleClass))
-#define BTK_IS_CELL_RENDERER_TOGGLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE))
-#define BTK_IS_CELL_RENDERER_TOGGLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_TOGGLE))
-#define BTK_CELL_RENDERER_TOGGLE_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggleClass))
+#define BTK_CELL_RENDERER_TOGGLE(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggle))
+#define BTK_CELL_RENDERER_TOGGLE_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggleClass))
+#define BTK_IS_CELL_RENDERER_TOGGLE(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE))
+#define BTK_IS_CELL_RENDERER_TOGGLE_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_TOGGLE))
+#define BTK_CELL_RENDERER_TOGGLE_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_TOGGLE, BtkCellRendererToggleClass))
 
 typedef struct _BtkCellRendererToggle BtkCellRendererToggle;
 typedef struct _BtkCellRendererToggleClass BtkCellRendererToggleClass;
@@ -45,9 +45,9 @@ struct _BtkCellRendererToggle
   BtkCellRenderer parent;
 
   /*< private >*/
-  guint GSEAL (active) : 1;
-  guint GSEAL (activatable) : 1;
-  guint GSEAL (radio) : 1;
+  buint GSEAL (active) : 1;
+  buint GSEAL (activatable) : 1;
+  buint GSEAL (radio) : 1;
 };
 
 struct _BtkCellRendererToggleClass
@@ -55,7 +55,7 @@ struct _BtkCellRendererToggleClass
   BtkCellRendererClass parent_class;
 
   void (* toggled) (BtkCellRendererToggle *cell_renderer_toggle,
-		    const gchar                 *path);
+		    const bchar                 *path);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -64,22 +64,22 @@ struct _BtkCellRendererToggleClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_toggle_get_type       (void) G_GNUC_CONST;
+GType            btk_cell_renderer_toggle_get_type       (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_toggle_new            (void);
 
-gboolean         btk_cell_renderer_toggle_get_radio      (BtkCellRendererToggle *toggle);
+bboolean         btk_cell_renderer_toggle_get_radio      (BtkCellRendererToggle *toggle);
 void             btk_cell_renderer_toggle_set_radio      (BtkCellRendererToggle *toggle,
-                                                          gboolean               radio);
+                                                          bboolean               radio);
 
-gboolean        btk_cell_renderer_toggle_get_active      (BtkCellRendererToggle *toggle);
+bboolean        btk_cell_renderer_toggle_get_active      (BtkCellRendererToggle *toggle);
 void            btk_cell_renderer_toggle_set_active      (BtkCellRendererToggle *toggle,
-                                                          gboolean               setting);
+                                                          bboolean               setting);
 
-gboolean        btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle);
+bboolean        btk_cell_renderer_toggle_get_activatable (BtkCellRendererToggle *toggle);
 void            btk_cell_renderer_toggle_set_activatable (BtkCellRendererToggle *toggle,
-                                                          gboolean               setting);
+                                                          bboolean               setting);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_TOGGLE_H__ */

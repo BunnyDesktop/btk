@@ -268,7 +268,7 @@ Example code sequences that require reference wraps:
    for (list = item_list; list; list = list->next)
    {
      g_object_ref (BTK_WIDGET (list->data));
-     slist = g_slist_prepend (slist, list->data);
+     slist = b_slist_prepend (slist, list->data);
    }
    btk_list_remove_items (list, item_list);
    btk_list_append_items (other_list, item_list);
@@ -281,7 +281,7 @@ Example code sequences that require reference wraps:
      tmp = slist;
      slist = slist->next;
      g_object_unref (BTK_WIDGET (tmp->data));
-     g_slist_free_1 (tmp);
+     b_slist_free_1 (tmp);
    }
    
    /* Alternatively to the removal above you could just use

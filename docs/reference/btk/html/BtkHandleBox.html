@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkHandleBox.html#btk-handle-box-get-child-detached" title="btk_handle_box_get_child_detached ()">btk_handle_box_get_child_detached</a> <span class="c_punctuation">()</span>
@@ -120,7 +120,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkHandleBox.html#BtkHandleBox--child-detached" title="The “child-detached” property">child-detached</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -145,7 +145,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkHandleBox.html#BtkHandleBox--snap-edge-set" title="The “snap-edge-set” property">snap-edge-set</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -189,7 +189,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkHandleBox.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -325,7 +325,7 @@ is determined (as per default) from the handle position. </p>
 <hr>
 <div class="refsect2">
 <a name="btk-handle-box-get-child-detached"></a><h3>btk_handle_box_get_child_detached ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_handle_box_get_child_detached (<em class="parameter"><code><a class="link" href="BtkHandleBox.html" title="BtkHandleBox"><span class="type">BtkHandleBox</span></a> *handle_box</code></em>);</pre>
 <p>Whether the handlebox's child is currently detached.</p>
 <div class="refsect3">
@@ -361,7 +361,7 @@ btk_handle_box_get_child_detached (<em class="parameter"><code><a class="link" h
 <a name="BtkHandleBox.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkHandleBox--child-detached"></a><h3>The <code class="literal">“child-detached”</code> property</h3>
-<pre class="programlisting">  “child-detached”           <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “child-detached”           <span class="type">bboolean</span></pre>
 <p>A boolean value indicating whether the handlebox's child is attached or detached.</p>
 <p>Owner: BtkHandleBox</p>
 <p>Flags: Read</p>
@@ -406,7 +406,7 @@ btk_handle_box_get_child_detached (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="BtkHandleBox--snap-edge-set"></a><h3>The <code class="literal">“snap-edge-set”</code> property</h3>
-<pre class="programlisting">  “snap-edge-set”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “snap-edge-set”            <span class="type">bboolean</span></pre>
 <p>Whether to use the value from the snap_edge property or a value derived from handle_position.</p>
 <p>Owner: BtkHandleBox</p>
 <p>Flags: Read / Write</p>
@@ -420,7 +420,7 @@ btk_handle_box_get_child_detached (<em class="parameter"><code><a class="link" h
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkHandleBox.html" title="BtkHandleBox"><span class="type">BtkHandleBox</span></a> *handlebox,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>    *widget,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -429,7 +429,7 @@ user_function (<a class="link" href="BtkHandleBox.html" title="BtkHandleBox"><sp
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkHandleBox.html" title="BtkHandleBox"><span class="type">BtkHandleBox</span></a> *handlebox,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>    *widget,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

@@ -31,7 +31,7 @@ static void tictactoe_class_init          (TictactoeClass *klass);
 static void tictactoe_init                (Tictactoe      *ttt);
 static void tictactoe_toggle              (BtkWidget *widget, Tictactoe *ttt);
 
-static guint tictactoe_signals[LAST_SIGNAL] = { 0 };
+static buint tictactoe_signals[LAST_SIGNAL] = { 0 };
 
 GType
 tictactoe_get_type (void)
@@ -64,13 +64,13 @@ tictactoe_class_init (TictactoeClass *klass)
 {
   
   tictactoe_signals[TICTACTOE_SIGNAL] = g_signal_new ("tictactoe",
-					 G_TYPE_FROM_CLASS (klass),
+					 B_TYPE_FROM_CLASS (klass),
 	                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 	                                 G_STRUCT_OFFSET (TictactoeClass, tictactoe),
                                          NULL, 
                                          NULL,                
 					 g_cclosure_marshal_VOID__VOID,
-                                         G_TYPE_NONE, 0);
+                                         B_TYPE_NONE, 0);
 
 
 }
@@ -78,7 +78,7 @@ tictactoe_class_init (TictactoeClass *klass)
 static void
 tictactoe_init (Tictactoe *ttt)
 {
-  gint i,j;
+  bint i,j;
   
   btk_table_resize (BTK_TABLE (ttt), 3, 3);
   btk_table_set_homogeneous (BTK_TABLE (ttt), TRUE);
@@ -88,8 +88,8 @@ tictactoe_init (Tictactoe *ttt)
 	ttt->buttons[i][j] = btk_toggle_button_new ();
 	btk_table_attach_defaults (BTK_TABLE (ttt), ttt->buttons[i][j], 
 				   i, i+1, j, j+1);
-	g_signal_connect (G_OBJECT (ttt->buttons[i][j]), "toggled",
-			  G_CALLBACK (tictactoe_toggle), (gpointer) ttt);
+	g_signal_connect (B_OBJECT (ttt->buttons[i][j]), "toggled",
+			  G_CALLBACK (tictactoe_toggle), (bpointer) ttt);
 	btk_widget_set_size_request (ttt->buttons[i][j], 20, 20);
 	btk_widget_show (ttt->buttons[i][j]);
       }
@@ -109,12 +109,12 @@ tictactoe_clear (Tictactoe *ttt)
   for (i = 0; i<3; i++)
     for (j = 0; j<3; j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]), 
+	g_signal_handlers_block_matched (B_OBJECT (ttt->buttons[i][j]), 
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
 				      FALSE);
-	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_unblock_matched (B_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
                                            0, 0, NULL, NULL, ttt);
       }
@@ -149,7 +149,7 @@ tictactoe_toggle (BtkWidget *widget, Tictactoe *ttt)
       
       if (success && found)
 	{
-	  g_signal_emit (G_OBJECT (ttt), 
+	  g_signal_emit (B_OBJECT (ttt), 
 	                 tictactoe_signals[TICTACTOE_SIGNAL], 0);
 	  break;
 	}

@@ -54,7 +54,7 @@ enum
 };
   
 
-static void btk_table_finalize	    (GObject	    *object);
+static void btk_table_finalize	    (BObject	    *object);
 static void btk_table_size_request  (BtkWidget	    *widget,
 				     BtkRequisition *requisition);
 static void btk_table_size_allocate (BtkWidget	    *widget,
@@ -64,27 +64,27 @@ static void btk_table_add	    (BtkContainer   *container,
 static void btk_table_remove	    (BtkContainer   *container,
 				     BtkWidget	    *widget);
 static void btk_table_forall	    (BtkContainer   *container,
-				     gboolean	     include_internals,
+				     bboolean	     include_internals,
 				     BtkCallback     callback,
-				     gpointer	     callback_data);
-static void btk_table_get_property  (GObject         *object,
-				     guint            prop_id,
-				     GValue          *value,
-				     GParamSpec      *pspec);
-static void btk_table_set_property  (GObject         *object,
-				     guint            prop_id,
-				     const GValue    *value,
-				     GParamSpec      *pspec);
+				     bpointer	     callback_data);
+static void btk_table_get_property  (BObject         *object,
+				     buint            prop_id,
+				     BValue          *value,
+				     BParamSpec      *pspec);
+static void btk_table_set_property  (BObject         *object,
+				     buint            prop_id,
+				     const BValue    *value,
+				     BParamSpec      *pspec);
 static void btk_table_set_child_property (BtkContainer    *container,
 					  BtkWidget       *child,
-					  guint            property_id,
-					  const GValue    *value,
-					  GParamSpec      *pspec);
+					  buint            property_id,
+					  const BValue    *value,
+					  BParamSpec      *pspec);
 static void btk_table_get_child_property (BtkContainer    *container,
 					  BtkWidget       *child,
-					  guint            property_id,
-					  GValue          *value,
-					  GParamSpec      *pspec);
+					  buint            property_id,
+					  BValue          *value,
+					  BParamSpec      *pspec);
 static GType btk_table_child_type   (BtkContainer   *container);
 
 
@@ -103,7 +103,7 @@ G_DEFINE_TYPE (BtkTable, btk_table, BTK_TYPE_CONTAINER)
 static void
 btk_table_class_init (BtkTableClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (class);
   
@@ -232,10 +232,10 @@ btk_table_child_type (BtkContainer   *container)
 }
 
 static void
-btk_table_get_property (GObject      *object,
-			guint         prop_id,
-			GValue       *value,
-			GParamSpec   *pspec)
+btk_table_get_property (BObject      *object,
+			buint         prop_id,
+			BValue       *value,
+			BParamSpec   *pspec)
 {
   BtkTable *table;
 
@@ -244,31 +244,31 @@ btk_table_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_N_ROWS:
-      g_value_set_uint (value, table->nrows);
+      b_value_set_uint (value, table->nrows);
       break;
     case PROP_N_COLUMNS:
-      g_value_set_uint (value, table->ncols);
+      b_value_set_uint (value, table->ncols);
       break;
     case PROP_ROW_SPACING:
-      g_value_set_uint (value, table->row_spacing);
+      b_value_set_uint (value, table->row_spacing);
       break;
     case PROP_COLUMN_SPACING:
-      g_value_set_uint (value, table->column_spacing);
+      b_value_set_uint (value, table->column_spacing);
       break;
     case PROP_HOMOGENEOUS:
-      g_value_set_boolean (value, table->homogeneous);
+      b_value_set_boolean (value, table->homogeneous);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_table_set_property (GObject      *object,
-			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+btk_table_set_property (BObject      *object,
+			buint         prop_id,
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkTable *table;
 
@@ -277,22 +277,22 @@ btk_table_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_N_ROWS:
-      btk_table_resize (table, g_value_get_uint (value), table->ncols);
+      btk_table_resize (table, b_value_get_uint (value), table->ncols);
       break;
     case PROP_N_COLUMNS:
-      btk_table_resize (table, table->nrows, g_value_get_uint (value));
+      btk_table_resize (table, table->nrows, b_value_get_uint (value));
       break;
     case PROP_ROW_SPACING:
-      btk_table_set_row_spacings (table, g_value_get_uint (value));
+      btk_table_set_row_spacings (table, b_value_get_uint (value));
       break;
     case PROP_COLUMN_SPACING:
-      btk_table_set_col_spacings (table, g_value_get_uint (value));
+      btk_table_set_col_spacings (table, b_value_get_uint (value));
       break;
     case PROP_HOMOGENEOUS:
-      btk_table_set_homogeneous (table, g_value_get_boolean (value));
+      btk_table_set_homogeneous (table, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -300,9 +300,9 @@ btk_table_set_property (GObject      *object,
 static void
 btk_table_set_child_property (BtkContainer    *container,
 			      BtkWidget       *child,
-			      guint            property_id,
-			      const GValue    *value,
-			      GParamSpec      *pspec)
+			      buint            property_id,
+			      const BValue    *value,
+			      BParamSpec      *pspec)
 {
   BtkTable *table = BTK_TABLE (container);
   BtkTableChild *table_child;
@@ -325,48 +325,48 @@ btk_table_set_child_property (BtkContainer    *container,
   switch (property_id)
     {
     case CHILD_PROP_LEFT_ATTACH:
-      table_child->left_attach = g_value_get_uint (value);
+      table_child->left_attach = b_value_get_uint (value);
       if (table_child->right_attach <= table_child->left_attach)
 	table_child->right_attach = table_child->left_attach + 1;
       if (table_child->right_attach >= table->ncols)
 	btk_table_resize (table, table->nrows, table_child->right_attach);
       break;
     case CHILD_PROP_RIGHT_ATTACH:
-      table_child->right_attach = g_value_get_uint (value);
+      table_child->right_attach = b_value_get_uint (value);
       if (table_child->right_attach <= table_child->left_attach)
 	table_child->left_attach = table_child->right_attach - 1;
       if (table_child->right_attach >= table->ncols)
 	btk_table_resize (table, table->nrows, table_child->right_attach);
       break;
     case CHILD_PROP_TOP_ATTACH:
-      table_child->top_attach = g_value_get_uint (value);
+      table_child->top_attach = b_value_get_uint (value);
       if (table_child->bottom_attach <= table_child->top_attach)
 	table_child->bottom_attach = table_child->top_attach + 1;
       if (table_child->bottom_attach >= table->nrows)
 	btk_table_resize (table, table_child->bottom_attach, table->ncols);
       break;
     case CHILD_PROP_BOTTOM_ATTACH:
-      table_child->bottom_attach = g_value_get_uint (value);
+      table_child->bottom_attach = b_value_get_uint (value);
       if (table_child->bottom_attach <= table_child->top_attach)
 	table_child->top_attach = table_child->bottom_attach - 1;
       if (table_child->bottom_attach >= table->nrows)
 	btk_table_resize (table, table_child->bottom_attach, table->ncols);
       break;
     case CHILD_PROP_X_OPTIONS:
-      table_child->xexpand = (g_value_get_flags (value) & BTK_EXPAND) != 0;
-      table_child->xshrink = (g_value_get_flags (value) & BTK_SHRINK) != 0;
-      table_child->xfill = (g_value_get_flags (value) & BTK_FILL) != 0;
+      table_child->xexpand = (b_value_get_flags (value) & BTK_EXPAND) != 0;
+      table_child->xshrink = (b_value_get_flags (value) & BTK_SHRINK) != 0;
+      table_child->xfill = (b_value_get_flags (value) & BTK_FILL) != 0;
       break;
     case CHILD_PROP_Y_OPTIONS:
-      table_child->yexpand = (g_value_get_flags (value) & BTK_EXPAND) != 0;
-      table_child->yshrink = (g_value_get_flags (value) & BTK_SHRINK) != 0;
-      table_child->yfill = (g_value_get_flags (value) & BTK_FILL) != 0;
+      table_child->yexpand = (b_value_get_flags (value) & BTK_EXPAND) != 0;
+      table_child->yshrink = (b_value_get_flags (value) & BTK_SHRINK) != 0;
+      table_child->yfill = (b_value_get_flags (value) & BTK_FILL) != 0;
       break;
     case CHILD_PROP_X_PADDING:
-      table_child->xpadding = g_value_get_uint (value);
+      table_child->xpadding = b_value_get_uint (value);
       break;
     case CHILD_PROP_Y_PADDING:
-      table_child->ypadding = g_value_get_uint (value);
+      table_child->ypadding = b_value_get_uint (value);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -380,9 +380,9 @@ btk_table_set_child_property (BtkContainer    *container,
 static void
 btk_table_get_child_property (BtkContainer    *container,
 			      BtkWidget       *child,
-			      guint            property_id,
-			      GValue          *value,
-			      GParamSpec      *pspec)
+			      buint            property_id,
+			      BValue          *value,
+			      BParamSpec      *pspec)
 {
   BtkTable *table = BTK_TABLE (container);
   BtkTableChild *table_child;
@@ -405,32 +405,32 @@ btk_table_get_child_property (BtkContainer    *container,
   switch (property_id)
     {
     case CHILD_PROP_LEFT_ATTACH:
-      g_value_set_uint (value, table_child->left_attach);
+      b_value_set_uint (value, table_child->left_attach);
       break;
     case CHILD_PROP_RIGHT_ATTACH:
-      g_value_set_uint (value, table_child->right_attach);
+      b_value_set_uint (value, table_child->right_attach);
       break;
     case CHILD_PROP_TOP_ATTACH:
-      g_value_set_uint (value, table_child->top_attach);
+      b_value_set_uint (value, table_child->top_attach);
       break;
     case CHILD_PROP_BOTTOM_ATTACH:
-      g_value_set_uint (value, table_child->bottom_attach);
+      b_value_set_uint (value, table_child->bottom_attach);
       break;
     case CHILD_PROP_X_OPTIONS:
-      g_value_set_flags (value, (table_child->xexpand * BTK_EXPAND |
+      b_value_set_flags (value, (table_child->xexpand * BTK_EXPAND |
 				 table_child->xshrink * BTK_SHRINK |
 				 table_child->xfill * BTK_FILL));
       break;
     case CHILD_PROP_Y_OPTIONS:
-      g_value_set_flags (value, (table_child->yexpand * BTK_EXPAND |
+      b_value_set_flags (value, (table_child->yexpand * BTK_EXPAND |
 				 table_child->yshrink * BTK_SHRINK |
 				 table_child->yfill * BTK_FILL));
       break;
     case CHILD_PROP_X_PADDING:
-      g_value_set_uint (value, table_child->xpadding);
+      b_value_set_uint (value, table_child->xpadding);
       break;
     case CHILD_PROP_Y_PADDING:
-      g_value_set_uint (value, table_child->ypadding);
+      b_value_set_uint (value, table_child->ypadding);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -457,9 +457,9 @@ btk_table_init (BtkTable *table)
 }
 
 BtkWidget*
-btk_table_new (guint	rows,
-	       guint	columns,
-	       gboolean homogeneous)
+btk_table_new (buint	rows,
+	       buint	columns,
+	       bboolean homogeneous)
 {
   BtkTable *table;
 
@@ -479,8 +479,8 @@ btk_table_new (guint	rows,
 
 void
 btk_table_resize (BtkTable *table,
-		  guint     n_rows,
-		  guint     n_cols)
+		  buint     n_rows,
+		  buint     n_cols)
 {
   g_return_if_fail (BTK_IS_TABLE (table));
   g_return_if_fail (n_rows > 0 && n_rows <= 65535);
@@ -506,7 +506,7 @@ btk_table_resize (BtkTable *table,
       
       if (n_rows != table->nrows)
 	{
-	  guint i;
+	  buint i;
 
 	  i = table->nrows;
 	  table->nrows = n_rows;
@@ -523,12 +523,12 @@ btk_table_resize (BtkTable *table,
 	      table->rows[i].shrink = 0;
 	    }
 
-	  g_object_notify (G_OBJECT (table), "n-rows");
+	  g_object_notify (B_OBJECT (table), "n-rows");
 	}
 
       if (n_cols != table->ncols)
 	{
-	  guint i;
+	  buint i;
 
 	  i = table->ncols;
 	  table->ncols = n_cols;
@@ -545,7 +545,7 @@ btk_table_resize (BtkTable *table,
 	      table->cols[i].shrink = 0;
 	    }
 
-	  g_object_notify (G_OBJECT (table), "n-columns");
+	  g_object_notify (B_OBJECT (table), "n-columns");
 	}
     }
 }
@@ -553,14 +553,14 @@ btk_table_resize (BtkTable *table,
 void
 btk_table_attach (BtkTable	  *table,
 		  BtkWidget	  *child,
-		  guint		   left_attach,
-		  guint		   right_attach,
-		  guint		   top_attach,
-		  guint		   bottom_attach,
+		  buint		   left_attach,
+		  buint		   right_attach,
+		  buint		   top_attach,
+		  buint		   bottom_attach,
 		  BtkAttachOptions xoptions,
 		  BtkAttachOptions yoptions,
-		  guint		   xpadding,
-		  guint		   ypadding)
+		  buint		   xpadding,
+		  buint		   ypadding)
 {
   BtkTableChild *table_child;
   
@@ -602,10 +602,10 @@ btk_table_attach (BtkTable	  *table,
 void
 btk_table_attach_defaults (BtkTable  *table,
 			   BtkWidget *widget,
-			   guint      left_attach,
-			   guint      right_attach,
-			   guint      top_attach,
-			   guint      bottom_attach)
+			   buint      left_attach,
+			   buint      right_attach,
+			   buint      top_attach,
+			   buint      bottom_attach)
 {
   btk_table_attach (table, widget,
 		    left_attach, right_attach,
@@ -617,8 +617,8 @@ btk_table_attach_defaults (BtkTable  *table,
 
 void
 btk_table_set_row_spacing (BtkTable *table,
-			   guint     row,
-			   guint     spacing)
+			   buint     row,
+			   buint     spacing)
 {
   g_return_if_fail (BTK_IS_TABLE (table));
   g_return_if_fail (row < table->nrows);
@@ -642,9 +642,9 @@ btk_table_set_row_spacing (BtkTable *table,
  *
  * Return value: the row spacing
  **/
-guint
+buint
 btk_table_get_row_spacing (BtkTable *table,
-			   guint     row)
+			   buint     row)
 {
   g_return_val_if_fail (BTK_IS_TABLE (table), 0);
   g_return_val_if_fail (row < table->nrows - 1, 0);
@@ -654,8 +654,8 @@ btk_table_get_row_spacing (BtkTable *table,
 
 void
 btk_table_set_col_spacing (BtkTable *table,
-			   guint     column,
-			   guint     spacing)
+			   buint     column,
+			   buint     spacing)
 {
   g_return_if_fail (BTK_IS_TABLE (table));
   g_return_if_fail (column < table->ncols);
@@ -679,9 +679,9 @@ btk_table_set_col_spacing (BtkTable *table,
  *
  * Return value: the column spacing
  **/
-guint
+buint
 btk_table_get_col_spacing (BtkTable *table,
-			   guint     column)
+			   buint     column)
 {
   g_return_val_if_fail (BTK_IS_TABLE (table), 0);
   g_return_val_if_fail (column < table->ncols, 0);
@@ -691,9 +691,9 @@ btk_table_get_col_spacing (BtkTable *table,
 
 void
 btk_table_set_row_spacings (BtkTable *table,
-			    guint     spacing)
+			    buint     spacing)
 {
-  guint row;
+  buint row;
   
   g_return_if_fail (BTK_IS_TABLE (table));
   
@@ -704,7 +704,7 @@ btk_table_set_row_spacings (BtkTable *table,
   if (btk_widget_get_visible (BTK_WIDGET (table)))
     btk_widget_queue_resize (BTK_WIDGET (table));
 
-  g_object_notify (G_OBJECT (table), "row-spacing");
+  g_object_notify (B_OBJECT (table), "row-spacing");
 }
 
 /**
@@ -717,7 +717,7 @@ btk_table_set_row_spacings (BtkTable *table,
  *
  * Return value: the default row spacing
  **/
-guint
+buint
 btk_table_get_default_row_spacing (BtkTable *table)
 {
   g_return_val_if_fail (BTK_IS_TABLE (table), 0);
@@ -727,9 +727,9 @@ btk_table_get_default_row_spacing (BtkTable *table)
 
 void
 btk_table_set_col_spacings (BtkTable *table,
-			    guint     spacing)
+			    buint     spacing)
 {
-  guint col;
+  buint col;
   
   g_return_if_fail (BTK_IS_TABLE (table));
   
@@ -740,7 +740,7 @@ btk_table_set_col_spacings (BtkTable *table,
   if (btk_widget_get_visible (BTK_WIDGET (table)))
     btk_widget_queue_resize (BTK_WIDGET (table));
 
-  g_object_notify (G_OBJECT (table), "column-spacing");
+  g_object_notify (B_OBJECT (table), "column-spacing");
 }
 
 /**
@@ -753,7 +753,7 @@ btk_table_set_col_spacings (BtkTable *table,
  *
  * Return value: the default column spacing
  **/
-guint
+buint
 btk_table_get_default_col_spacing (BtkTable *table)
 {
   g_return_val_if_fail (BTK_IS_TABLE (table), 0);
@@ -763,7 +763,7 @@ btk_table_get_default_col_spacing (BtkTable *table)
 
 void
 btk_table_set_homogeneous (BtkTable *table,
-			   gboolean  homogeneous)
+			   bboolean  homogeneous)
 {
   g_return_if_fail (BTK_IS_TABLE (table));
 
@@ -775,7 +775,7 @@ btk_table_set_homogeneous (BtkTable *table,
       if (btk_widget_get_visible (BTK_WIDGET (table)))
 	btk_widget_queue_resize (BTK_WIDGET (table));
 
-      g_object_notify (G_OBJECT (table), "homogeneous");
+      g_object_notify (B_OBJECT (table), "homogeneous");
     }
 }
 
@@ -788,7 +788,7 @@ btk_table_set_homogeneous (BtkTable *table,
  *
  * Return value: %TRUE if the cells are all constrained to the same size
  **/
-gboolean
+bboolean
 btk_table_get_homogeneous (BtkTable *table)
 {
   g_return_val_if_fail (BTK_IS_TABLE (table), FALSE);
@@ -810,8 +810,8 @@ btk_table_get_homogeneous (BtkTable *table)
  **/
 void
 btk_table_get_size (BtkTable *table,
-                    guint    *rows,
-                    guint    *columns)
+                    buint    *rows,
+                    buint    *columns)
 {
   g_return_if_fail (BTK_IS_TABLE (table));
 
@@ -823,14 +823,14 @@ btk_table_get_size (BtkTable *table,
 }
 
 static void
-btk_table_finalize (GObject *object)
+btk_table_finalize (BObject *object)
 {
   BtkTable *table = BTK_TABLE (object);
 
   g_free (table->rows);
   g_free (table->cols);
   
-  G_OBJECT_CLASS (btk_table_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_table_parent_class)->finalize (object);
 }
 
 static void
@@ -838,7 +838,7 @@ btk_table_size_request (BtkWidget      *widget,
 			BtkRequisition *requisition)
 {
   BtkTable *table = BTK_TABLE (widget);
-  gint row, col;
+  bint row, col;
 
   requisition->width = 0;
   requisition->height = 0;
@@ -901,7 +901,7 @@ btk_table_remove (BtkContainer *container,
       
       if (child->widget == widget)
 	{
-	  gboolean was_visible = btk_widget_get_visible (widget);
+	  bboolean was_visible = btk_widget_get_visible (widget);
 	  
 	  btk_widget_unparent (widget);
 	  
@@ -917,9 +917,9 @@ btk_table_remove (BtkContainer *container,
 
 static void
 btk_table_forall (BtkContainer *container,
-		  gboolean	include_internals,
+		  bboolean	include_internals,
 		  BtkCallback	callback,
-		  gpointer	callback_data)
+		  bpointer	callback_data)
 {
   BtkTable *table = BTK_TABLE (container);
   BtkTableChild *child;
@@ -941,7 +941,7 @@ btk_table_size_request_init (BtkTable *table)
 {
   BtkTableChild *child;
   GList *children;
-  gint row, col;
+  bint row, col;
   
   for (row = 0; row < table->nrows; row++)
     {
@@ -976,8 +976,8 @@ btk_table_size_request_pass1 (BtkTable *table)
 {
   BtkTableChild *child;
   GList *children;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
   
   children = table->children;
   while (children)
@@ -1012,9 +1012,9 @@ btk_table_size_request_pass1 (BtkTable *table)
 static void
 btk_table_size_request_pass2 (BtkTable *table)
 {
-  gint max_width;
-  gint max_height;
-  gint row, col;
+  bint max_width;
+  bint max_height;
+  bint row, col;
   
   if (table->homogeneous)
     {
@@ -1038,9 +1038,9 @@ btk_table_size_request_pass3 (BtkTable *table)
 {
   BtkTableChild *child;
   GList *children;
-  gint width, height;
-  gint row, col;
-  gint extra;
+  bint width, height;
+  bint row, col;
+  bint extra;
   
   children = table->children;
   while (children)
@@ -1075,8 +1075,8 @@ btk_table_size_request_pass3 (BtkTable *table)
 	       */
 	      if (width < child_requisition.width + child->xpadding * 2)
 		{
-		  gint n_expand = 0;
-		  gboolean force_expand = FALSE;
+		  bint n_expand = 0;
+		  bboolean force_expand = FALSE;
 		  
 		  width = child_requisition.width + child->xpadding * 2 - width;
 
@@ -1126,8 +1126,8 @@ btk_table_size_request_pass3 (BtkTable *table)
 	       */
 	      if (height < child_requisition.height + child->ypadding * 2)
 		{
-		  gint n_expand = 0;
-		  gboolean force_expand = FALSE;
+		  bint n_expand = 0;
+		  bboolean force_expand = FALSE;
 		  
 		  height = child_requisition.height + child->ypadding * 2 - height;
 		  
@@ -1162,9 +1162,9 @@ btk_table_size_allocate_init (BtkTable *table)
 {
   BtkTableChild *child;
   GList *children;
-  gint row, col;
-  gint has_expand;
-  gint has_shrink;
+  bint row, col;
+  bint has_expand;
+  bint has_shrink;
   
   /* Initialize the rows and cols.
    *  By default, rows and cols do not expand and do shrink.
@@ -1354,13 +1354,13 @@ btk_table_size_allocate_init (BtkTable *table)
 static void
 btk_table_size_allocate_pass1 (BtkTable *table)
 {
-  gint real_width;
-  gint real_height;
-  gint width, height;
-  gint row, col;
-  gint nexpand;
-  gint nshrink;
-  gint extra;
+  bint real_width;
+  bint real_height;
+  bint width, height;
+  bint row, col;
+  bint nexpand;
+  bint nshrink;
+  bint extra;
   
   /* If we were allocated more space than we requested
    *  then we have to expand any expandable rows and columns
@@ -1437,7 +1437,7 @@ btk_table_size_allocate_pass1 (BtkTable *table)
        */
       if (width > real_width)
 	{
-	  gint total_nshrink = nshrink;
+	  bint total_nshrink = nshrink;
 
 	  extra = width - real_width;
 	  while (total_nshrink > 0 && extra > 0)
@@ -1446,9 +1446,9 @@ btk_table_size_allocate_pass1 (BtkTable *table)
 	      for (col = 0; col < table->ncols; col++)
 		if (table->cols[col].shrink)
 		  {
-		    gint allocation = table->cols[col].allocation;
+		    bint allocation = table->cols[col].allocation;
 
-		    table->cols[col].allocation = MAX (1, (gint) table->cols[col].allocation - extra / nshrink);
+		    table->cols[col].allocation = MAX (1, (bint) table->cols[col].allocation - extra / nshrink);
 		    extra -= allocation - table->cols[col].allocation;
 		    nshrink -= 1;
 		    if (table->cols[col].allocation < 2)
@@ -1530,7 +1530,7 @@ btk_table_size_allocate_pass1 (BtkTable *table)
        */
       if (height > real_height)
 	{
-	  gint total_nshrink = nshrink;
+	  bint total_nshrink = nshrink;
 	  
 	  extra = height - real_height;
 	  while (total_nshrink > 0 && extra > 0)
@@ -1539,9 +1539,9 @@ btk_table_size_allocate_pass1 (BtkTable *table)
 	      for (row = 0; row < table->nrows; row++)
 		if (table->rows[row].shrink)
 		  {
-		    gint allocation = table->rows[row].allocation;
+		    bint allocation = table->rows[row].allocation;
 		    
-		    table->rows[row].allocation = MAX (1, (gint) table->rows[row].allocation - extra / nshrink);
+		    table->rows[row].allocation = MAX (1, (bint) table->rows[row].allocation - extra / nshrink);
 		    extra -= allocation - table->rows[row].allocation;
 		    nshrink -= 1;
 		    if (table->rows[row].allocation < 2)
@@ -1560,10 +1560,10 @@ btk_table_size_allocate_pass2 (BtkTable *table)
 {
   BtkTableChild *child;
   GList *children;
-  gint max_width;
-  gint max_height;
-  gint x, y;
-  gint row, col;
+  bint max_width;
+  bint max_height;
+  bint x, y;
+  bint row, col;
   BtkAllocation allocation;
   BtkWidget *widget = BTK_WIDGET (table);
   
@@ -1611,7 +1611,7 @@ btk_table_size_allocate_pass2 (BtkTable *table)
 	  
 	  if (child->xfill)
 	    {
-	      allocation.width = MAX (1, max_width - (gint)child->xpadding * 2);
+	      allocation.width = MAX (1, max_width - (bint)child->xpadding * 2);
 	      allocation.x = x + (max_width - allocation.width) / 2;
 	    }
 	  else
@@ -1622,7 +1622,7 @@ btk_table_size_allocate_pass2 (BtkTable *table)
 	  
 	  if (child->yfill)
 	    {
-	      allocation.height = MAX (1, max_height - (gint)child->ypadding * 2);
+	      allocation.height = MAX (1, max_height - (bint)child->ypadding * 2);
 	      allocation.y = y + (max_height - allocation.height) / 2;
 	    }
 	  else

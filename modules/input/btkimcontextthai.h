@@ -24,16 +24,16 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 extern GType btk_type_im_context_thai;
 
 #define BTK_TYPE_IM_CONTEXT_THAI            (btk_type_im_context_thai)
-#define BTK_IM_CONTEXT_THAI(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThai))
-#define BTK_IM_CONTEXT_THAI_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
-#define BTK_IS_IM_CONTEXT_THAI(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_THAI))
-#define BTK_IS_IM_CONTEXT_THAI_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_THAI))
-#define BTK_IM_CONTEXT_THAI_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
+#define BTK_IM_CONTEXT_THAI(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThai))
+#define BTK_IM_CONTEXT_THAI_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
+#define BTK_IS_IM_CONTEXT_THAI(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_THAI))
+#define BTK_IS_IM_CONTEXT_THAI_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_THAI))
+#define BTK_IM_CONTEXT_THAI_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_THAI, BtkIMContextThaiClass))
 
 
 typedef struct _BtkIMContextThai       BtkIMContextThai;
@@ -72,6 +72,6 @@ BtkIMContextThaiISCMode
   btk_im_context_thai_set_isc_mode (BtkIMContextThai *context_thai,
                                     BtkIMContextThaiISCMode mode);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_THAI_H__ */

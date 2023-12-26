@@ -28,13 +28,13 @@ static BdkVisual *rgba_visual;
 static BdkVisual *gray_visual;
 
 static void
-bdk_visual_finalize (GObject *object)
+bdk_visual_finalize (BObject *object)
 {
   g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-bdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (BObjectClass *class)
 {
   class->finalize = bdk_visual_finalize;
 }
@@ -59,7 +59,7 @@ bdk_visual_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkVisual",
                                             &object_info, 0);
     }
@@ -68,9 +68,9 @@ bdk_visual_get_type (void)
 }
 
 static void
-bdk_visual_decompose_mask (gulong  mask,
-			   gint   *shift,
-			   gint   *prec)
+bdk_visual_decompose_mask (bulong  mask,
+			   bint   *shift,
+			   bint   *prec)
 {
   *shift = 0;
   *prec = 0;
@@ -89,7 +89,7 @@ bdk_visual_decompose_mask (gulong  mask,
 }
 
 static BdkVisual *
-create_standard_visual (gint depth)
+create_standard_visual (bint depth)
 {
   BdkVisual *visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
@@ -139,7 +139,7 @@ _bdk_visual_init (void)
 }
 
 /* We prefer the system visual for now ... */
-gint
+bint
 bdk_visual_get_best_depth (void)
 {
   return system_visual->depth;
@@ -172,7 +172,7 @@ bdk_visual_get_best (void)
 }
 
 BdkVisual*
-bdk_visual_get_best_with_depth (gint depth)
+bdk_visual_get_best_with_depth (bint depth)
 {
   BdkVisual *visual = NULL;
 
@@ -209,7 +209,7 @@ bdk_visual_get_best_with_type (BdkVisualType visual_type)
 }
 
 BdkVisual*
-bdk_visual_get_best_with_both (gint          depth,
+bdk_visual_get_best_with_both (bint          depth,
 			       BdkVisualType visual_type)
 {
   if (system_visual->depth == depth
@@ -227,8 +227,8 @@ bdk_visual_get_best_with_both (gint          depth,
 
 /* For these, we also prefer the system visual */
 void
-bdk_query_depths  (gint **depths,
-		   gint  *count)
+bdk_query_depths  (bint **depths,
+		   bint  *count)
 {
   *count = 1;
   *depths = &system_visual->depth;
@@ -236,7 +236,7 @@ bdk_query_depths  (gint **depths,
 
 void
 bdk_query_visual_types (BdkVisualType **visual_types,
-			gint           *count)
+			bint           *count)
 {
   *count = 1;
   *visual_types = &system_visual->type;

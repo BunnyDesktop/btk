@@ -48,7 +48,7 @@ enum {
 
 struct _BtkTrayIconPrivate
 {
-  guint stamp;
+  buint stamp;
   
   Atom selection_atom;
   Atom manager_atom;
@@ -57,25 +57,25 @@ struct _BtkTrayIconPrivate
   Atom visual_atom;
   Window manager_window;
   BdkVisual *manager_visual;
-  gboolean manager_visual_rgba;
+  bboolean manager_visual_rgba;
 
   BtkOrientation orientation;
 };
 
-static void btk_tray_icon_constructed   (GObject     *object);
-static void btk_tray_icon_dispose       (GObject     *object);
+static void btk_tray_icon_constructed   (BObject     *object);
+static void btk_tray_icon_dispose       (BObject     *object);
 
-static void btk_tray_icon_get_property  (GObject     *object,
-				 	 guint        prop_id,
-					 GValue      *value,
-					 GParamSpec  *pspec);
+static void btk_tray_icon_get_property  (BObject     *object,
+				 	 buint        prop_id,
+					 BValue      *value,
+					 BParamSpec  *pspec);
 
 static void     btk_tray_icon_realize   (BtkWidget   *widget);
 static void     btk_tray_icon_style_set (BtkWidget   *widget,
 					 BtkStyle    *previous_style);
-static gboolean btk_tray_icon_delete    (BtkWidget   *widget,
+static bboolean btk_tray_icon_delete    (BtkWidget   *widget,
 					 BdkEventAny *event);
-static gboolean btk_tray_icon_expose    (BtkWidget      *widget, 
+static bboolean btk_tray_icon_expose    (BtkWidget      *widget, 
 					 BdkEventExpose *event);
 
 static void btk_tray_icon_clear_manager_window     (BtkTrayIcon *icon);
@@ -84,7 +84,7 @@ static void btk_tray_icon_manager_window_destroyed (BtkTrayIcon *icon);
 
 static BdkFilterReturn btk_tray_icon_manager_filter (BdkXEvent *xevent,
 						     BdkEvent  *event,
-						     gpointer   user_data);
+						     bpointer   user_data);
 
 
 G_DEFINE_TYPE (BtkTrayIcon, btk_tray_icon, BTK_TYPE_PLUG)
@@ -92,7 +92,7 @@ G_DEFINE_TYPE (BtkTrayIcon, btk_tray_icon, BTK_TYPE_PLUG)
 static void
 btk_tray_icon_class_init (BtkTrayIconClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)class;
 
   bobject_class->get_property = btk_tray_icon_get_property;
@@ -119,7 +119,7 @@ btk_tray_icon_class_init (BtkTrayIconClass *class)
 static void
 btk_tray_icon_init (BtkTrayIcon *icon)
 {
-  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, BTK_TYPE_TRAY_ICON,
+  icon->priv = B_TYPE_INSTANCE_GET_PRIVATE (icon, BTK_TYPE_TRAY_ICON,
 					    BtkTrayIconPrivate);
   
   icon->priv->stamp = 1;
@@ -130,7 +130,7 @@ btk_tray_icon_init (BtkTrayIcon *icon)
 }
 
 static void
-btk_tray_icon_constructed (GObject *object)
+btk_tray_icon_constructed (BObject *object)
 {
   /* Do setup that depends on the screen; screen has been set at this point */
 
@@ -188,7 +188,7 @@ btk_tray_icon_clear_manager_window (BtkTrayIcon *icon)
 }
 
 static void
-btk_tray_icon_dispose (GObject *object)
+btk_tray_icon_dispose (BObject *object)
 {
   BtkTrayIcon *icon = BTK_TRAY_ICON (object);
   BtkWidget *widget = BTK_WIDGET (object);
@@ -198,36 +198,36 @@ btk_tray_icon_dispose (GObject *object)
 
   bdk_window_remove_filter (root_window, btk_tray_icon_manager_filter, icon);
 
-  G_OBJECT_CLASS (btk_tray_icon_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tray_icon_parent_class)->dispose (object);
 }
 
 static void
-btk_tray_icon_get_property (GObject    *object,
-			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+btk_tray_icon_get_property (BObject    *object,
+			    buint       prop_id,
+			    BValue     *value,
+			    BParamSpec *pspec)
 {
   BtkTrayIcon *icon = BTK_TRAY_ICON (object);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, icon->priv->orientation);
+      b_value_set_enum (value, icon->priv->orientation);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static gboolean
+static bboolean
 btk_tray_icon_expose (BtkWidget      *widget, 
 		      BdkEventExpose *event)
 {
   BtkTrayIcon *icon = BTK_TRAY_ICON (widget);
   BtkWidget *focus_child;
-  gint border_width, x, y, width, height;
-  gboolean retval = FALSE;
+  bint border_width, x, y, width, height;
+  bboolean retval = FALSE;
 
   if (icon->priv->manager_visual_rgba)
     {
@@ -279,11 +279,11 @@ btk_tray_icon_get_orientation_property (BtkTrayIcon *icon)
   Atom type;
   int format;
   union {
-	gulong *prop;
-	guchar *prop_ch;
+	bulong *prop;
+	buchar *prop_ch;
   } prop = { NULL };
-  gulong nitems;
-  gulong bytes_after;
+  bulong nitems;
+  bulong bytes_after;
   int error, result;
 
   g_assert (icon->priv->manager_window != None);
@@ -293,7 +293,7 @@ btk_tray_icon_get_orientation_property (BtkTrayIcon *icon)
   result = XGetWindowProperty (xdisplay,
 			       icon->priv->manager_window,
 			       icon->priv->orientation_atom,
-			       0, G_MAXLONG, FALSE,
+			       0, B_MAXLONG, FALSE,
 			       XA_CARDINAL,
 			       &type, &format, &nitems,
 			       &bytes_after, &(prop.prop_ch));
@@ -314,7 +314,7 @@ btk_tray_icon_get_orientation_property (BtkTrayIcon *icon)
 	{
 	  icon->priv->orientation = orientation;
 
-	  g_object_notify (G_OBJECT (icon), "orientation");
+	  g_object_notify (B_OBJECT (icon), "orientation");
 	}
     }
 
@@ -332,11 +332,11 @@ btk_tray_icon_get_visual_property (BtkTrayIcon *icon)
   Atom type;
   int format;
   union {
-	gulong *prop;
-	guchar *prop_ch;
+	bulong *prop;
+	buchar *prop_ch;
   } prop = { NULL };
-  gulong nitems;
-  gulong bytes_after;
+  bulong nitems;
+  bulong bytes_after;
   int error, result;
 
   g_assert (icon->priv->manager_window != None);
@@ -346,7 +346,7 @@ btk_tray_icon_get_visual_property (BtkTrayIcon *icon)
   result = XGetWindowProperty (xdisplay,
 			       icon->priv->manager_window,
 			       icon->priv->visual_atom,
-			       0, G_MAXLONG, FALSE,
+			       0, B_MAXLONG, FALSE,
 			       XA_VISUALID,
 			       &type, &format, &nitems,
 			       &bytes_after, &(prop.prop_ch));
@@ -383,7 +383,7 @@ btk_tray_icon_get_visual_property (BtkTrayIcon *icon)
 static BdkFilterReturn
 btk_tray_icon_manager_filter (BdkXEvent *xevent, 
 			      BdkEvent  *event, 
-			      gpointer   user_data)
+			      bpointer   user_data)
 {
   BtkTrayIcon *icon = user_data;
   XEvent *xev = (XEvent *)xevent;
@@ -458,7 +458,7 @@ btk_tray_icon_send_dock_request (BtkTrayIcon *icon)
 {
   BTK_NOTE (PLUGSOCKET,
 	    g_print ("BtkStatusIcon %p: sending dock request to manager window %lx\n",
-	    	     icon, (gulong) icon->priv->manager_window));
+	    	     icon, (bulong) icon->priv->manager_window));
 
   btk_tray_icon_send_manager_message (icon,
 				      SYSTEM_TRAY_REQUEST_DOCK,
@@ -477,7 +477,7 @@ btk_tray_icon_update_manager_window (BtkTrayIcon *icon)
 
   BTK_NOTE (PLUGSOCKET,
 	    g_print ("BtkStatusIcon %p: updating tray icon manager window, current manager window: %lx\n",
-		     icon, (gulong) icon->priv->manager_window));
+		     icon, (bulong) icon->priv->manager_window));
 
   if (icon->priv->manager_window != None)
     return;
@@ -503,7 +503,7 @@ btk_tray_icon_update_manager_window (BtkTrayIcon *icon)
 
       BTK_NOTE (PLUGSOCKET,
 		g_print ("BtkStatusIcon %p: is being managed by window %lx\n",
-				icon, (gulong) icon->priv->manager_window));
+				icon, (bulong) icon->priv->manager_window));
 
       bdkwin = bdk_window_lookup_for_display (display,
 					      icon->priv->manager_window);
@@ -549,7 +549,7 @@ btk_tray_icon_manager_window_destroyed (BtkTrayIcon *icon)
   btk_tray_icon_clear_manager_window (icon);
 }
 
-static gboolean
+static bboolean
 btk_tray_icon_delete (BtkWidget   *widget,
 		      BdkEventAny *event)
 {
@@ -559,7 +559,7 @@ btk_tray_icon_delete (BtkWidget   *widget,
 
   BTK_NOTE (PLUGSOCKET,
 	    g_print ("BtkStatusIcon %p: delete notify, tray manager window %lx\n",
-		     icon, (gulong) icon->priv->manager_window));
+		     icon, (bulong) icon->priv->manager_window));
 
   /* A bug in X server versions up to x.org 1.5.0 means that:
    * XFixesChangeSaveSet(...., SaveSetRoot, SaveSetUnmap) doesn't work properly
@@ -580,7 +580,7 @@ btk_tray_icon_set_colormap (BtkTrayIcon *icon)
   BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (icon));
   BdkColormap *colormap;
   BdkVisual *visual = icon->priv->manager_visual;
-  gboolean new_colormap = FALSE;
+  bboolean new_colormap = FALSE;
 
   /* To avoid uncertainty about colormaps, _NET_SYSTEM_TRAY_VISUAL is supposed
    * to be either the screen default visual or a TrueColor visual; ignore it
@@ -631,9 +631,9 @@ btk_tray_icon_realize (BtkWidget *widget)
   BTK_NOTE (PLUGSOCKET,
 	    g_print ("BtkStatusIcon %p: realized, window: %lx, socket window: %lx\n",
 		     widget,
-		     (gulong) BDK_WINDOW_XWINDOW (widget->window),
+		     (bulong) BDK_WINDOW_XWINDOW (widget->window),
 		     BTK_PLUG (icon)->socket_window ?
-			     (gulong) BDK_WINDOW_XWINDOW (BTK_PLUG (icon)->socket_window) : 0UL));
+			     (bulong) BDK_WINDOW_XWINDOW (BTK_PLUG (icon)->socket_window) : 0UL));
 
   if (icon->priv->manager_window != None)
     btk_tray_icon_send_dock_request (icon);
@@ -649,13 +649,13 @@ btk_tray_icon_style_set (BtkWidget   *widget,
    */
 }
 
-guint
+buint
 _btk_tray_icon_send_message (BtkTrayIcon *icon,
-			     gint         timeout,
-			     const gchar *message,
-			     gint         len)
+			     bint         timeout,
+			     const bchar *message,
+			     bint         len)
 {
-  guint stamp;
+  buint stamp;
   Display *xdisplay;
  
   g_return_val_if_fail (BTK_IS_TRAY_ICON (icon), 0);
@@ -712,7 +712,7 @@ _btk_tray_icon_send_message (BtkTrayIcon *icon,
 
 void
 _btk_tray_icon_cancel_message (BtkTrayIcon *icon,
-			       guint        id)
+			       buint        id)
 {
   g_return_if_fail (BTK_IS_TRAY_ICON (icon));
   g_return_if_fail (id > 0);
@@ -724,7 +724,7 @@ _btk_tray_icon_cancel_message (BtkTrayIcon *icon,
 
 BtkTrayIcon *
 _btk_tray_icon_new_for_screen (BdkScreen  *screen, 
-			       const gchar *name)
+			       const bchar *name)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
@@ -735,7 +735,7 @@ _btk_tray_icon_new_for_screen (BdkScreen  *screen,
 }
 
 BtkTrayIcon*
-_btk_tray_icon_new (const gchar *name)
+_btk_tray_icon_new (const bchar *name)
 {
   return g_object_new (BTK_TYPE_TRAY_ICON, 
 		       "title", name, 

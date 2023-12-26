@@ -8,13 +8,13 @@ static void _check_values (BatkObject *obj);
 static void _value_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 
-static guint id;
+static buint id;
 
 static void _value_change_handler (BatkObject   *obj,
                                    BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
-   GValue *value_back, val;
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+   BValue *value_back, val;
 
   value_back = &val;
     
@@ -28,7 +28,7 @@ static void _value_change_handler (BatkObject   *obj,
 	if(G_VALUE_HOLDS_DOUBLE (&values->new_value))
     {
 		g_print( "adjustment value changed : new value: %f\n", 
-		g_value_get_double (&values->new_value));
+		b_value_get_double (&values->new_value));
  	}
 
 	g_print("Now calling the BatkValue interface functions\n");
@@ -36,17 +36,17 @@ static void _value_change_handler (BatkObject   *obj,
   	batk_value_get_current_value (BATK_VALUE(obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_current_value returns %f\n",
-			g_value_get_double (value_back)	);
+			b_value_get_double (value_back)	);
 
   	batk_value_get_maximum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_maximum returns %f\n",
-			g_value_get_double (value_back));
+			b_value_get_double (value_back));
 
   	batk_value_get_minimum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
   	g_print ("batk_value_get_minimum returns %f\n", 
-			g_value_get_double (value_back));
+			b_value_get_double (value_back));
 	
  
     }
@@ -55,7 +55,7 @@ static void _value_change_handler (BatkObject   *obj,
 
 static void _traverse_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
 
   n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
@@ -65,15 +65,15 @@ static void _traverse_children (BatkObject *obj)
     child = batk_object_ref_accessible_child (obj, i);
     _add_handler (child);
     _traverse_children (child);
-    g_object_unref (G_OBJECT (child));
+    g_object_unref (B_OBJECT (child));
   }
 }
 
 static void _add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
-  gboolean found = FALSE;
-  gint i;
+  bboolean found = FALSE;
+  bint i;
 
   /*
    * We create a property handler for each object if one was not associated 
@@ -103,9 +103,9 @@ static void _add_handler (BatkObject *obj)
 
 static void _set_values (BatkObject *obj) {
 
-  GValue *value_back, val;
-  static gint count = 0;
-  gdouble double_value;
+  BValue *value_back, val;
+  static bint count = 0;
+  bdouble double_value;
 
   value_back = &val;
 
@@ -116,8 +116,8 @@ static void _set_values (BatkObject *obj) {
 
 	if(BATK_IS_TEXT(obj) && BATK_IS_EDITABLE_TEXT(obj)) {
 		if(count == 0) {	
-			gint x;
-			gchar* text;
+			bint x;
+			bchar* text;
 			count++;
 			x = batk_text_get_character_count (BATK_TEXT (obj));
   			text = batk_text_get_text (BATK_TEXT (obj), 0, x);
@@ -128,15 +128,15 @@ static void _set_values (BatkObject *obj) {
 			batk_value_get_current_value(BATK_VALUE(obj), value_back);
 			g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
 			g_print("batk_value_get_current_value returns %f\n", 
-				g_value_get_double( value_back));
+				b_value_get_double( value_back));
 			} 
 	} else {
-		memset (value_back, 0, sizeof (GValue));
-		g_value_init (value_back, G_TYPE_DOUBLE);
-		g_value_set_double (value_back, 10.0);	
+		memset (value_back, 0, sizeof (BValue));
+		b_value_init (value_back, B_TYPE_DOUBLE);
+		b_value_set_double (value_back, 10.0);	
 		if (batk_value_set_current_value (BATK_VALUE (obj), value_back))
 		{
- 			double_value = g_value_get_double (value_back);
+ 			double_value = b_value_get_double (value_back);
   			g_print("batk_value_set_current_value returns %f\n", 
 			double_value);
 		}
@@ -146,7 +146,7 @@ static void _set_values (BatkObject *obj) {
 
 static void _check_values (BatkObject *obj)
 {
-  static gint calls = 0;
+  static bint calls = 0;
   BatkRole role;
 
   g_print ("Start of _check_values\n");
@@ -183,7 +183,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testvalues Module loaded\n");
 

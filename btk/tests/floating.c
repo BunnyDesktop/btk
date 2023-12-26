@@ -19,7 +19,7 @@
 #undef BTK_DISABLE_DEPRECATED
 #include "../btk/btk.h"
 
-static gboolean destroyed = FALSE;
+static bboolean destroyed = FALSE;
 static void
 destroy (void)
 {
@@ -47,7 +47,7 @@ floating_tests (void)
   g_assert (!BTK_OBJECT_FLOATING (widget));
   g_assert (!g_object_is_floating (widget));
 
-  g_object_force_floating (G_OBJECT (widget));
+  g_object_force_floating (B_OBJECT (widget));
   g_assert (BTK_OBJECT_FLOATING (widget));
   g_assert (g_object_is_floating (widget));
 

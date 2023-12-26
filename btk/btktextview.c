@@ -102,24 +102,24 @@
 
 typedef struct _BtkTextViewPrivate BtkTextViewPrivate;
 
-#define BTK_TEXT_VIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewPrivate))
+#define BTK_TEXT_VIEW_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TEXT_VIEW, BtkTextViewPrivate))
 
 struct _BtkTextViewPrivate 
 {
-  guint blink_time;  /* time in msec the cursor has blinked since last user event */
-  guint im_spot_idle;
-  gchar *im_module;
-  guint scroll_after_paste : 1;
+  buint blink_time;  /* time in msec the cursor has blinked since last user event */
+  buint im_spot_idle;
+  bchar *im_module;
+  buint scroll_after_paste : 1;
 };
 
 
 struct _BtkTextPendingScroll
 {
   BtkTextMark   *mark;
-  gdouble        within_margin;
-  gboolean       use_align;
-  gdouble        xalign;
-  gdouble        yalign;
+  bdouble        within_margin;
+  bboolean       use_align;
+  bdouble        xalign;
+  bdouble        yalign;
 };
   
 enum
@@ -164,15 +164,15 @@ enum
 };
 
 static void btk_text_view_destroy              (BtkObject        *object);
-static void btk_text_view_finalize             (GObject          *object);
-static void btk_text_view_set_property         (GObject         *object,
-						guint            prop_id,
-						const GValue    *value,
-						GParamSpec      *pspec);
-static void btk_text_view_get_property         (GObject         *object,
-						guint            prop_id,
-						GValue          *value,
-						GParamSpec      *pspec);
+static void btk_text_view_finalize             (BObject          *object);
+static void btk_text_view_set_property         (BObject         *object,
+						buint            prop_id,
+						const BValue    *value,
+						BParamSpec      *pspec);
+static void btk_text_view_get_property         (BObject         *object,
+						buint            prop_id,
+						BValue          *value,
+						BParamSpec      *pspec);
 static void btk_text_view_size_request         (BtkWidget        *widget,
                                                 BtkRequisition   *requisition);
 static void btk_text_view_size_allocate        (BtkWidget        *widget,
@@ -184,35 +184,35 @@ static void btk_text_view_style_set            (BtkWidget        *widget,
 static void btk_text_view_direction_changed    (BtkWidget        *widget,
                                                 BtkTextDirection  previous_direction);
 static void btk_text_view_grab_notify          (BtkWidget        *widget,
-					        gboolean         was_grabbed);
+					        bboolean         was_grabbed);
 static void btk_text_view_state_changed        (BtkWidget        *widget,
 					        BtkStateType      previous_state);
 
-static gint btk_text_view_event                (BtkWidget        *widget,
+static bint btk_text_view_event                (BtkWidget        *widget,
                                                 BdkEvent         *event);
-static gint btk_text_view_key_press_event      (BtkWidget        *widget,
+static bint btk_text_view_key_press_event      (BtkWidget        *widget,
                                                 BdkEventKey      *event);
-static gint btk_text_view_key_release_event    (BtkWidget        *widget,
+static bint btk_text_view_key_release_event    (BtkWidget        *widget,
                                                 BdkEventKey      *event);
-static gint btk_text_view_button_press_event   (BtkWidget        *widget,
+static bint btk_text_view_button_press_event   (BtkWidget        *widget,
                                                 BdkEventButton   *event);
-static gint btk_text_view_button_release_event (BtkWidget        *widget,
+static bint btk_text_view_button_release_event (BtkWidget        *widget,
                                                 BdkEventButton   *event);
-static gint btk_text_view_focus_in_event       (BtkWidget        *widget,
+static bint btk_text_view_focus_in_event       (BtkWidget        *widget,
                                                 BdkEventFocus    *event);
-static gint btk_text_view_focus_out_event      (BtkWidget        *widget,
+static bint btk_text_view_focus_out_event      (BtkWidget        *widget,
                                                 BdkEventFocus    *event);
-static gint btk_text_view_motion_event         (BtkWidget        *widget,
+static bint btk_text_view_motion_event         (BtkWidget        *widget,
                                                 BdkEventMotion   *event);
-static gint btk_text_view_expose_event         (BtkWidget        *widget,
+static bint btk_text_view_expose_event         (BtkWidget        *widget,
                                                 BdkEventExpose   *expose);
 static void btk_text_view_draw_focus           (BtkWidget        *widget);
-static gboolean btk_text_view_focus            (BtkWidget        *widget,
+static bboolean btk_text_view_focus            (BtkWidget        *widget,
                                                 BtkDirectionType  direction);
 static void btk_text_view_move_focus           (BtkWidget        *widget,
                                                 BtkDirectionType  direction_type);
 static void btk_text_view_select_all           (BtkWidget        *widget,
-                                                gboolean          select);
+                                                bboolean          select);
 
 
 /* Source side drag signals */
@@ -223,60 +223,60 @@ static void btk_text_view_drag_end         (BtkWidget        *widget,
 static void btk_text_view_drag_data_get    (BtkWidget        *widget,
                                             BdkDragContext   *context,
                                             BtkSelectionData *selection_data,
-                                            guint             info,
-                                            guint             time);
+                                            buint             info,
+                                            buint             time);
 static void btk_text_view_drag_data_delete (BtkWidget        *widget,
                                             BdkDragContext   *context);
 
 /* Target side drag signals */
 static void     btk_text_view_drag_leave         (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  guint             time);
-static gboolean btk_text_view_drag_motion        (BtkWidget        *widget,
+                                                  buint             time);
+static bboolean btk_text_view_drag_motion        (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
-static gboolean btk_text_view_drag_drop          (BtkWidget        *widget,
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
+static bboolean btk_text_view_drag_drop          (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
 static void     btk_text_view_drag_data_received (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
+                                                  bint              x,
+                                                  bint              y,
                                                   BtkSelectionData *selection_data,
-                                                  guint             info,
-                                                  guint             time);
+                                                  buint             info,
+                                                  buint             time);
 
 static void btk_text_view_set_scroll_adjustments (BtkTextView   *text_view,
                                                   BtkAdjustment *hadj,
                                                   BtkAdjustment *vadj);
-static gboolean btk_text_view_popup_menu         (BtkWidget     *widget);
+static bboolean btk_text_view_popup_menu         (BtkWidget     *widget);
 
 static void btk_text_view_move_cursor       (BtkTextView           *text_view,
                                              BtkMovementStep        step,
-                                             gint                   count,
-                                             gboolean               extend_selection);
+                                             bint                   count,
+                                             bboolean               extend_selection);
 static void btk_text_view_page_horizontally (BtkTextView          *text_view,
-                                             gint                  count,
-                                             gboolean              extend_selection);
-static gboolean btk_text_view_move_viewport (BtkTextView           *text_view,
+                                             bint                  count,
+                                             bboolean              extend_selection);
+static bboolean btk_text_view_move_viewport (BtkTextView           *text_view,
                                              BtkScrollStep          step,
-                                             gint                   count);
+                                             bint                   count);
 static void btk_text_view_set_anchor       (BtkTextView           *text_view);
-static gboolean btk_text_view_scroll_pages (BtkTextView           *text_view,
-                                            gint                   count,
-                                            gboolean               extend_selection);
-static gboolean btk_text_view_scroll_hpages(BtkTextView           *text_view,
-                                            gint                   count,
-                                            gboolean               extend_selection);
+static bboolean btk_text_view_scroll_pages (BtkTextView           *text_view,
+                                            bint                   count,
+                                            bboolean               extend_selection);
+static bboolean btk_text_view_scroll_hpages(BtkTextView           *text_view,
+                                            bint                   count,
+                                            bboolean               extend_selection);
 static void btk_text_view_insert_at_cursor (BtkTextView           *text_view,
-                                            const gchar           *str);
+                                            const bchar           *str);
 static void btk_text_view_delete_from_cursor (BtkTextView           *text_view,
                                               BtkDeleteType          type,
-                                              gint                   count);
+                                              bint                   count);
 static void btk_text_view_backspace        (BtkTextView           *text_view);
 static void btk_text_view_cut_clipboard    (BtkTextView           *text_view);
 static void btk_text_view_copy_clipboard   (BtkTextView           *text_view);
@@ -300,7 +300,7 @@ static void     btk_text_view_check_keymap_direction (BtkTextView        *text_v
 static void     btk_text_view_start_selection_drag   (BtkTextView        *text_view,
                                                       const BtkTextIter  *iter,
                                                       BdkEventButton     *event);
-static gboolean btk_text_view_end_selection_drag     (BtkTextView        *text_view);
+static bboolean btk_text_view_end_selection_drag     (BtkTextView        *text_view);
 static void     btk_text_view_start_selection_dnd    (BtkTextView        *text_view,
                                                       const BtkTextIter  *iter,
                                                       BdkEventMotion     *event);
@@ -312,38 +312,38 @@ static void     btk_text_view_reset_blink_time       (BtkTextView        *text_v
 static void     btk_text_view_value_changed                (BtkAdjustment *adj,
 							    BtkTextView   *view);
 static void     btk_text_view_commit_handler               (BtkIMContext  *context,
-							    const gchar   *str,
+							    const bchar   *str,
 							    BtkTextView   *text_view);
 static void     btk_text_view_commit_text                  (BtkTextView   *text_view,
-                                                            const gchar   *text);
+                                                            const bchar   *text);
 static void     btk_text_view_preedit_changed_handler      (BtkIMContext  *context,
 							    BtkTextView   *text_view);
-static gboolean btk_text_view_retrieve_surrounding_handler (BtkIMContext  *context,
+static bboolean btk_text_view_retrieve_surrounding_handler (BtkIMContext  *context,
 							    BtkTextView   *text_view);
-static gboolean btk_text_view_delete_surrounding_handler   (BtkIMContext  *context,
-							    gint           offset,
-							    gint           n_chars,
+static bboolean btk_text_view_delete_surrounding_handler   (BtkIMContext  *context,
+							    bint           offset,
+							    bint           n_chars,
 							    BtkTextView   *text_view);
 
 static void btk_text_view_mark_set_handler       (BtkTextBuffer     *buffer,
                                                   const BtkTextIter *location,
                                                   BtkTextMark       *mark,
-                                                  gpointer           data);
+                                                  bpointer           data);
 static void btk_text_view_target_list_notify     (BtkTextBuffer     *buffer,
-                                                  const GParamSpec  *pspec,
-                                                  gpointer           data);
+                                                  const BParamSpec  *pspec,
+                                                  bpointer           data);
 static void btk_text_view_paste_done_handler     (BtkTextBuffer     *buffer,
                                                   BtkClipboard      *clipboard,
-                                                  gpointer           data);
+                                                  bpointer           data);
 static void btk_text_view_get_cursor_location    (BtkTextView       *text_view,
 						  BdkRectangle      *pos);
 static void btk_text_view_get_virtual_cursor_pos (BtkTextView       *text_view,
                                                   BtkTextIter       *cursor,
-                                                  gint              *x,
-                                                  gint              *y);
+                                                  bint              *x,
+                                                  bint              *y);
 static void btk_text_view_set_virtual_cursor_pos (BtkTextView       *text_view,
-                                                  gint               x,
-                                                  gint               y);
+                                                  bint               x,
+                                                  bint               y);
 
 static BtkAdjustment* get_hadjustment            (BtkTextView       *text_view);
 static BtkAdjustment* get_vadjustment            (BtkTextView       *text_view);
@@ -354,12 +354,12 @@ static void btk_text_view_do_popup               (BtkTextView       *text_view,
 static void cancel_pending_scroll                (BtkTextView   *text_view);
 static void btk_text_view_queue_scroll           (BtkTextView   *text_view,
                                                   BtkTextMark   *mark,
-                                                  gdouble        within_margin,
-                                                  gboolean       use_align,
-                                                  gdouble        xalign,
-                                                  gdouble        yalign);
+                                                  bdouble        within_margin,
+                                                  bboolean       use_align,
+                                                  bdouble        xalign,
+                                                  bdouble        yalign);
 
-static gboolean btk_text_view_flush_scroll         (BtkTextView *text_view);
+static bboolean btk_text_view_flush_scroll         (BtkTextView *text_view);
 static void     btk_text_view_update_adjustments   (BtkTextView *text_view);
 static void     btk_text_view_invalidate           (BtkTextView *text_view);
 static void     btk_text_view_flush_first_validate (BtkTextView *text_view);
@@ -372,9 +372,9 @@ static void btk_text_view_add    (BtkContainer *container,
 static void btk_text_view_remove (BtkContainer *container,
                                   BtkWidget    *child);
 static void btk_text_view_forall (BtkContainer *container,
-                                  gboolean      include_internals,
+                                  bboolean      include_internals,
                                   BtkCallback   callback,
-                                  gpointer      callback_data);
+                                  bpointer      callback_data);
 
 /* FIXME probably need the focus methods. */
 
@@ -386,13 +386,13 @@ struct _BtkTextViewChild
 
   BtkTextChildAnchor *anchor;
 
-  gint from_top_of_line;
-  gint from_left_of_buffer;
+  bint from_top_of_line;
+  bint from_left_of_buffer;
   
   /* These are ignored if anchor != NULL */
   BtkTextWindowType type;
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 static BtkTextViewChild* text_view_child_new_anchored      (BtkWidget          *child,
@@ -400,8 +400,8 @@ static BtkTextViewChild* text_view_child_new_anchored      (BtkWidget          *
 							    BtkTextLayout      *layout);
 static BtkTextViewChild* text_view_child_new_window        (BtkWidget          *child,
 							    BtkTextWindowType   type,
-							    gint                x,
-							    gint                y);
+							    bint                x,
+							    bint                y);
 static void              text_view_child_free              (BtkTextViewChild   *child);
 static void              text_view_child_set_parent_window (BtkTextView        *text_view,
 							    BtkTextViewChild   *child);
@@ -418,8 +418,8 @@ struct _BtkTextWindow
 
 static BtkTextWindow *text_window_new             (BtkTextWindowType  type,
                                                    BtkWidget         *widget,
-                                                   gint               width_request,
-                                                   gint               height_request);
+                                                   bint               width_request,
+                                                   bint               height_request);
 static void           text_window_free            (BtkTextWindow     *win);
 static void           text_window_realize         (BtkTextWindow     *win,
                                                    BtkWidget         *widget);
@@ -427,47 +427,47 @@ static void           text_window_unrealize       (BtkTextWindow     *win);
 static void           text_window_size_allocate   (BtkTextWindow     *win,
                                                    BdkRectangle      *rect);
 static void           text_window_scroll          (BtkTextWindow     *win,
-                                                   gint               dx,
-                                                   gint               dy);
+                                                   bint               dx,
+                                                   bint               dy);
 static void           text_window_invalidate_rect (BtkTextWindow     *win,
                                                    BdkRectangle      *rect);
 static void           text_window_invalidate_cursors (BtkTextWindow  *win);
 
-static gint           text_window_get_width       (BtkTextWindow     *win);
-static gint           text_window_get_height      (BtkTextWindow     *win);
+static bint           text_window_get_width       (BtkTextWindow     *win);
+static bint           text_window_get_height      (BtkTextWindow     *win);
 
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkTextView, btk_text_view, BTK_TYPE_CONTAINER)
 
 static void
 add_move_binding (BtkBindingSet  *binding_set,
-                  guint           keyval,
-                  guint           modmask,
+                  buint           keyval,
+                  buint           modmask,
                   BtkMovementStep step,
-                  gint            count)
+                  bint            count)
 {
   g_assert ((modmask & BDK_SHIFT_MASK) == 0);
 
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
                                 "move-cursor", 3,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count,
-                                G_TYPE_BOOLEAN, FALSE);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count,
+                                B_TYPE_BOOLEAN, FALSE);
 
   /* Selection-extending version */
   btk_binding_entry_add_signal (binding_set, keyval, modmask | BDK_SHIFT_MASK,
                                 "move-cursor", 3,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count,
-                                G_TYPE_BOOLEAN, TRUE);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count,
+                                B_TYPE_BOOLEAN, TRUE);
 }
 
 static void
 btk_text_view_class_init (BtkTextViewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (klass);
@@ -546,7 +546,7 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 						     P_("Pixels Above Lines"),
 						     P_("Pixels of blank space above paragraphs"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
  
@@ -556,7 +556,7 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 						     P_("Pixels Below Lines"),
 						     P_("Pixels of blank space below paragraphs"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
  
@@ -566,7 +566,7 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 						     P_("Pixels Inside Wrap"),
 						     P_("Pixels of blank space between wrapped lines in a paragraph"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -602,7 +602,7 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 						     P_("Left Margin"),
 						     P_("Width of the left margin in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -612,7 +612,7 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 						     P_("Right Margin"),
 						     P_("Width of the right margin in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -621,8 +621,8 @@ btk_text_view_class_init (BtkTextViewClass *klass)
                                    g_param_spec_int ("indent",
 						     P_("Indent"),
 						     P_("Amount to indent the paragraph, in pixels"),
-						     G_MININT,
-						     G_MAXINT,
+						     B_MININT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -731,15 +731,15 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[MOVE_CURSOR] = 
     g_signal_new (I_("move-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class), 
+		  B_OBJECT_CLASS_TYPE (bobject_class), 
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION, 
 		  G_STRUCT_OFFSET (BtkTextViewClass, move_cursor),
 		  NULL, NULL, 
 		  _btk_marshal_VOID__ENUM_INT_BOOLEAN, 
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_MOVEMENT_STEP, 
-		  G_TYPE_INT, 
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_INT, 
+		  B_TYPE_BOOLEAN);
 
   /**
    * BtkTextView::page-horizontally:
@@ -758,14 +758,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PAGE_HORIZONTALLY] =
     g_signal_new (I_("page-horizontally"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, page_horizontally),
 		  NULL, NULL,
 		  _btk_marshal_VOID__INT_BOOLEAN,
-		  G_TYPE_NONE, 2,
-		  G_TYPE_INT,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_NONE, 2,
+		  B_TYPE_INT,
+		  B_TYPE_BOOLEAN);
   
   /**
    * BtkTextView::move-viewport:
@@ -783,14 +783,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[MOVE_VIEWPORT] =
     g_signal_new_class_handler (I_("move-viewport"),
-                                G_OBJECT_CLASS_TYPE (bobject_class),
+                                B_OBJECT_CLASS_TYPE (bobject_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_move_viewport),
                                 NULL, NULL,
                                 _btk_marshal_VOID__ENUM_INT,
-                                G_TYPE_NONE, 2,
+                                B_TYPE_NONE, 2,
                                 BTK_TYPE_SCROLL_STEP,
-                                G_TYPE_INT);
+                                B_TYPE_INT);
 
   /**
    * BtkTextView::set-anchor:
@@ -806,12 +806,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */   
   signals[SET_ANCHOR] =
     g_signal_new (I_("set-anchor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, set_anchor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::insert-at-cursor:
@@ -827,13 +827,13 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[INSERT_AT_CURSOR] =
     g_signal_new (I_("insert-at-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, insert_at_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__STRING,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_STRING);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_STRING);
 
   /**
    * BtkTextView::delete-from-cursor:
@@ -856,14 +856,14 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[DELETE_FROM_CURSOR] =
     g_signal_new (I_("delete-from-cursor"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, delete_from_cursor),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_INT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_DELETE_TYPE,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /**
    * BtkTextView::backspace:
@@ -878,12 +878,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[BACKSPACE] =
     g_signal_new (I_("backspace"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, backspace),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::cut-clipboard:
@@ -898,12 +898,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[CUT_CLIPBOARD] =
     g_signal_new (I_("cut-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, cut_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::copy-clipboard:
@@ -918,12 +918,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[COPY_CLIPBOARD] =
     g_signal_new (I_("copy-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, copy_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::paste-clipboard:
@@ -939,12 +939,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PASTE_CLIPBOARD] =
     g_signal_new (I_("paste-clipboard"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, paste_clipboard),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::toggle-overwrite:
@@ -958,12 +958,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */ 
   signals[TOGGLE_OVERWRITE] =
     g_signal_new (I_("toggle-overwrite"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, toggle_overwrite),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::set-scroll-adjustments
@@ -976,12 +976,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[SET_SCROLL_ADJUSTMENTS] =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkTextViewClass, set_scroll_adjustments),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT,
 		  BTK_TYPE_ADJUSTMENT);
   widget_class->set_scroll_adjustments_signal = signals[SET_SCROLL_ADJUSTMENTS];
@@ -999,12 +999,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[POPULATE_POPUP] =
     g_signal_new (I_("populate-popup"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkTextViewClass, populate_popup),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_MENU);
   
   /**
@@ -1022,12 +1022,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[SELECT_ALL] =
     g_signal_new_class_handler (I_("select-all"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_select_all),
                                 NULL, NULL,
                                 _btk_marshal_VOID__BOOLEAN,
-                                G_TYPE_NONE, 1, G_TYPE_BOOLEAN);
+                                B_TYPE_NONE, 1, B_TYPE_BOOLEAN);
 
   /**
    * BtkTextView::toggle-cursor-visible:
@@ -1041,12 +1041,12 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */ 
   signals[TOGGLE_CURSOR_VISIBLE] =
     g_signal_new_class_handler (I_("toggle-cursor-visible"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 G_CALLBACK (btk_text_view_toggle_cursor_visible),
                                 NULL, NULL,
                                 _btk_marshal_VOID__VOID,
-                                G_TYPE_NONE, 0);
+                                B_TYPE_NONE, 0);
 
   /**
    * BtkTextView::preedit-changed:
@@ -1064,13 +1064,13 @@ btk_text_view_class_init (BtkTextViewClass *klass)
    */
   signals[PREEDIT_CHANGED] =
     g_signal_new_class_handler (I_("preedit-changed"),
-                                G_OBJECT_CLASS_TYPE (object_class),
+                                B_OBJECT_CLASS_TYPE (object_class),
                                 G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                                 NULL,
                                 NULL, NULL,
                                 _btk_marshal_VOID__STRING,
-                                G_TYPE_NONE, 1,
-                                G_TYPE_STRING);
+                                B_TYPE_NONE, 1,
+                                B_TYPE_STRING);
 
   /*
    * Key bindings
@@ -1178,31 +1178,31 @@ btk_text_view_class_init (BtkTextViewClass *klass)
   /* Select all */
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK,
 				"select-all", 1,
-  				G_TYPE_BOOLEAN, TRUE);
+  				B_TYPE_BOOLEAN, TRUE);
 
   btk_binding_entry_add_signal (binding_set, BDK_slash, BDK_CONTROL_MASK,
 				"select-all", 1,
-  				G_TYPE_BOOLEAN, TRUE);
+  				B_TYPE_BOOLEAN, TRUE);
   
   /* Unselect all */
   btk_binding_entry_add_signal (binding_set, BDK_backslash, BDK_CONTROL_MASK,
 				 "select-all", 1,
-				 G_TYPE_BOOLEAN, FALSE);
+				 B_TYPE_BOOLEAN, FALSE);
 
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				 "select-all", 1,
-				 G_TYPE_BOOLEAN, FALSE);
+				 B_TYPE_BOOLEAN, FALSE);
 
   /* Deleting text */
   btk_binding_entry_add_signal (binding_set, BDK_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, 0,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_CHARS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_CHARS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, 0,
 				"backspace", 0);
@@ -1213,33 +1213,33 @@ btk_text_view_class_init (BtkTextViewClass *klass)
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, 1);
   
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_WORD_ENDS,
+				B_TYPE_INT, -1);
 
   btk_binding_entry_add_signal (binding_set, BDK_Delete, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_KP_Delete, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, 1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, 1);
 
   btk_binding_entry_add_signal (binding_set, BDK_BackSpace, BDK_SHIFT_MASK | BDK_CONTROL_MASK,
 				"delete-from-cursor", 2,
-				G_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
-				G_TYPE_INT, -1);
+				B_TYPE_ENUM, BTK_DELETE_PARAGRAPH_ENDS,
+				B_TYPE_INT, -1);
 
   /* Cut/copy/paste */
 
@@ -1418,7 +1418,7 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
       GSList *tmp_list;
       GSList *copy;
 
-      copy = g_slist_copy (text_view->children);
+      copy = b_slist_copy (text_view->children);
       tmp_list = copy;
       while (tmp_list != NULL)
         {
@@ -1430,10 +1430,10 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
-      g_slist_free (copy);
+      b_slist_free (copy);
 
       g_signal_handlers_disconnect_by_func (text_view->buffer,
 					    btk_text_view_mark_set_handler,
@@ -1504,7 +1504,7 @@ btk_text_view_set_buffer (BtkTextView   *text_view,
 	}
     }
 
-  g_object_notify (G_OBJECT (text_view), "buffer");
+  g_object_notify (B_OBJECT (text_view), "buffer");
   
   if (btk_widget_get_visible (BTK_WIDGET (text_view)))
     btk_widget_queue_draw (BTK_WIDGET (text_view));
@@ -1561,8 +1561,8 @@ btk_text_view_get_buffer (BtkTextView *text_view)
 void
 btk_text_view_get_iter_at_location (BtkTextView *text_view,
                                     BtkTextIter *iter,
-                                    gint         x,
-                                    gint         y)
+                                    bint         x,
+                                    bint         y)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   g_return_if_fail (iter != NULL);
@@ -1600,9 +1600,9 @@ btk_text_view_get_iter_at_location (BtkTextView *text_view,
 void
 btk_text_view_get_iter_at_position (BtkTextView *text_view,
 				    BtkTextIter *iter,
-				    gint        *trailing,
-				    gint         x,
-				    gint         y)
+				    bint        *trailing,
+				    bint         x,
+				    bint         y)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   g_return_if_fail (iter != NULL);
@@ -1651,8 +1651,8 @@ btk_text_view_get_iter_location (BtkTextView       *text_view,
 void
 btk_text_view_get_line_yrange (BtkTextView       *text_view,
                                const BtkTextIter *iter,
-                               gint              *y,
-                               gint              *height)
+                               bint              *y,
+                               bint              *height)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   g_return_if_fail (btk_text_iter_get_buffer (iter) == get_buffer (text_view));
@@ -1681,8 +1681,8 @@ btk_text_view_get_line_yrange (BtkTextView       *text_view,
 void
 btk_text_view_get_line_at_y (BtkTextView *text_view,
                              BtkTextIter *target_iter,
-                             gint         y,
-                             gint        *line_top)
+                             bint         y,
+                             bint        *line_top)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -1694,8 +1694,8 @@ btk_text_view_get_line_at_y (BtkTextView *text_view,
                                  line_top);
 }
 
-static gboolean
-set_adjustment_clamped (BtkAdjustment *adj, gdouble val)
+static bboolean
+set_adjustment_clamped (BtkAdjustment *adj, bdouble val)
 {
   DV (g_print ("  Setting adj to raw value %g\n", val));
   
@@ -1745,24 +1745,24 @@ set_adjustment_clamped (BtkAdjustment *adj, gdouble val)
  *
  * Return value: %TRUE if scrolling occurred
  **/
-gboolean
+bboolean
 btk_text_view_scroll_to_iter (BtkTextView   *text_view,
                               BtkTextIter   *iter,
-                              gdouble        within_margin,
-                              gboolean       use_align,
-                              gdouble        xalign,
-                              gdouble        yalign)
+                              bdouble        within_margin,
+                              bboolean       use_align,
+                              bdouble        xalign,
+                              bdouble        yalign)
 {
   BdkRectangle rect;
   BdkRectangle screen;
-  gint screen_bottom;
-  gint screen_right;
-  gint scroll_dest;
+  bint screen_bottom;
+  bint screen_right;
+  bint scroll_dest;
   BtkWidget *widget;
-  gboolean retval = FALSE;
-  gint scroll_inc;
-  gint screen_xoffset, screen_yoffset;
-  gint current_x_scroll, current_y_scroll;
+  bboolean retval = FALSE;
+  bint scroll_inc;
+  bint screen_xoffset, screen_yoffset;
+  bint current_x_scroll, current_y_scroll;
 
   /* FIXME why don't we do the validate-at-scroll-destination thing
    * from flush_scroll in this function? I think it wasn't done before
@@ -1777,7 +1777,7 @@ btk_text_view_scroll_to_iter (BtkTextView   *text_view,
   
   widget = BTK_WIDGET (text_view);
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   btk_text_layout_get_iter_location (text_view->layout,
                                      iter,
@@ -1897,11 +1897,11 @@ btk_text_view_scroll_to_iter (BtkTextView   *text_view,
   
   if (retval)
     {
-      DV(g_print (">Actually scrolled ("G_STRLOC")\n"));
+      DV(g_print (">Actually scrolled ("B_STRLOC")\n"));
     }
   else
     {
-      DV(g_print (">Didn't end up scrolling ("G_STRLOC")\n"));
+      DV(g_print (">Didn't end up scrolling ("B_STRLOC")\n"));
     }
   
   return retval;
@@ -1930,15 +1930,15 @@ cancel_pending_scroll (BtkTextView *text_view)
 static void
 btk_text_view_queue_scroll (BtkTextView   *text_view,
                             BtkTextMark   *mark,
-                            gdouble        within_margin,
-                            gboolean       use_align,
-                            gdouble        xalign,
-                            gdouble        yalign)
+                            bdouble        within_margin,
+                            bboolean       use_align,
+                            bdouble        xalign,
+                            bdouble        yalign)
 {
   BtkTextIter iter;
   BtkTextPendingScroll *scroll;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   scroll = g_new (BtkTextPendingScroll, 1);
 
@@ -1961,17 +1961,17 @@ btk_text_view_queue_scroll (BtkTextView   *text_view,
   text_view->pending_scroll = scroll;
 }
 
-static gboolean
+static bboolean
 btk_text_view_flush_scroll (BtkTextView *text_view)
 {
   BtkTextIter iter;
   BtkTextPendingScroll *scroll;
-  gboolean retval;
+  bboolean retval;
   BtkWidget *widget;
 
   widget = BTK_WIDGET (text_view);
   
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   if (text_view->pending_scroll == NULL)
     {
@@ -1993,12 +1993,12 @@ btk_text_view_flush_scroll (BtkTextView *text_view)
    * in one place, but may push the target iter off the bottom of
    * the screen.
    */
-  DV(g_print (">Validating scroll destination ("G_STRLOC")\n"));
+  DV(g_print (">Validating scroll destination ("B_STRLOC")\n"));
   btk_text_layout_validate_yrange (text_view->layout, &iter,
                                    - (widget->allocation.height * 2),
                                    widget->allocation.height * 2);
   
-  DV(g_print (">Done validating scroll destination ("G_STRLOC")\n"));
+  DV(g_print (">Done validating scroll destination ("B_STRLOC")\n"));
 
   /* Ensure we have updated width/height */
   btk_text_view_update_adjustments (text_view);
@@ -2016,12 +2016,12 @@ btk_text_view_flush_scroll (BtkTextView *text_view)
 }
 
 static void
-btk_text_view_set_adjustment_upper (BtkAdjustment *adj, gdouble upper)
+btk_text_view_set_adjustment_upper (BtkAdjustment *adj, bdouble upper)
 {  
   if (upper != adj->upper)
     {
-      gdouble min = MAX (0.0, upper - adj->page_size);
-      gboolean value_changed = FALSE;
+      bdouble min = MAX (0.0, upper - adj->page_size);
+      bboolean value_changed = FALSE;
 
       adj->upper = upper;
 
@@ -2032,11 +2032,11 @@ btk_text_view_set_adjustment_upper (BtkAdjustment *adj, gdouble upper)
         }
 
       btk_adjustment_changed (adj);
-      DV(g_print(">Changed adj upper to %g ("G_STRLOC")\n", upper));
+      DV(g_print(">Changed adj upper to %g ("B_STRLOC")\n", upper));
       
       if (value_changed)
         {
-          DV(g_print(">Changed adj value because upper decreased ("G_STRLOC")\n"));
+          DV(g_print(">Changed adj value because upper decreased ("B_STRLOC")\n"));
 	  btk_adjustment_value_changed (adj);
         }
     }
@@ -2045,9 +2045,9 @@ btk_text_view_set_adjustment_upper (BtkAdjustment *adj, gdouble upper)
 static void
 btk_text_view_update_adjustments (BtkTextView *text_view)
 {
-  gint width = 0, height = 0;
+  bint width = 0, height = 0;
 
-  DV(g_print(">Updating adjustments ("G_STRLOC")\n"));
+  DV(g_print(">Updating adjustments ("B_STRLOC")\n"));
 
   if (text_view->layout)
     btk_text_layout_get_size (text_view->layout, &width, &height);
@@ -2091,7 +2091,7 @@ btk_text_view_update_adjustments (BtkTextView *text_view)
 static void
 btk_text_view_update_layout_width (BtkTextView *text_view)
 {
-  DV(g_print(">Updating layout width ("G_STRLOC")\n"));
+  DV(g_print(">Updating layout width ("B_STRLOC")\n"));
   
   btk_text_view_ensure_layout (text_view);
 
@@ -2120,8 +2120,8 @@ btk_text_view_update_im_spot_location (BtkTextView *text_view)
   btk_im_context_set_cursor_location (text_view->im_context, &area);
 }
 
-static gboolean
-do_update_im_spot_location (gpointer text_view)
+static bboolean
+do_update_im_spot_location (bpointer text_view)
 {
   BtkTextViewPrivate *priv;
 
@@ -2184,10 +2184,10 @@ flush_update_im_spot_location (BtkTextView *text_view)
 void
 btk_text_view_scroll_to_mark (BtkTextView *text_view,
                               BtkTextMark *mark,
-                              gdouble      within_margin,
-                              gboolean     use_align,
-                              gdouble      xalign,
-                              gdouble      yalign)
+                              bdouble      within_margin,
+                              bboolean     use_align,
+                              bdouble      xalign,
+                              bdouble      yalign)
 {  
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   g_return_if_fail (BTK_IS_TEXT_MARK (mark));
@@ -2237,7 +2237,7 @@ btk_text_view_scroll_mark_onscreen (BtkTextView *text_view,
   btk_text_view_scroll_to_mark (text_view, mark, 0.0, FALSE, 0.0, 0.0);
 }
 
-static gboolean
+static bboolean
 clamp_iter_onscreen (BtkTextView *text_view, BtkTextIter *iter)
 {
   BdkRectangle visible_rect;
@@ -2258,7 +2258,7 @@ clamp_iter_onscreen (BtkTextView *text_view, BtkTextIter *iter)
  *
  * Return value: %TRUE if the mark moved (wasn't already onscreen)
  **/
-gboolean
+bboolean
 btk_text_view_move_mark_onscreen (BtkTextView *text_view,
                                   BtkTextMark *mark)
 {
@@ -2336,7 +2336,7 @@ btk_text_view_set_wrap_mode (BtkTextView *text_view,
         }
     }
 
-  g_object_notify (G_OBJECT (text_view), "wrap-mode");
+  g_object_notify (B_OBJECT (text_view), "wrap-mode");
 }
 
 /**
@@ -2366,7 +2366,7 @@ btk_text_view_get_wrap_mode (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_editable (BtkTextView *text_view,
-                            gboolean     setting)
+                            bboolean     setting)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   setting = setting != FALSE;
@@ -2393,7 +2393,7 @@ btk_text_view_set_editable (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "editable");
+      g_object_notify (B_OBJECT (text_view), "editable");
     }
 }
 
@@ -2406,7 +2406,7 @@ btk_text_view_set_editable (BtkTextView *text_view,
  *
  * Return value: whether text is editable by default
  **/
-gboolean
+bboolean
 btk_text_view_get_editable (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), FALSE);
@@ -2424,7 +2424,7 @@ btk_text_view_get_editable (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_pixels_above_lines (BtkTextView *text_view,
-                                      gint         pixels_above_lines)
+                                      bint         pixels_above_lines)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2438,7 +2438,7 @@ btk_text_view_set_pixels_above_lines (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-above-lines");
+      g_object_notify (B_OBJECT (text_view), "pixels-above-lines");
     }
 }
 
@@ -2450,7 +2450,7 @@ btk_text_view_set_pixels_above_lines (BtkTextView *text_view,
  * 
  * Return value: default number of pixels above paragraphs
  **/
-gint
+bint
 btk_text_view_get_pixels_above_lines (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2469,7 +2469,7 @@ btk_text_view_get_pixels_above_lines (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_pixels_below_lines (BtkTextView *text_view,
-                                      gint         pixels_below_lines)
+                                      bint         pixels_below_lines)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2483,7 +2483,7 @@ btk_text_view_set_pixels_below_lines (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-below-lines");
+      g_object_notify (B_OBJECT (text_view), "pixels-below-lines");
     }
 }
 
@@ -2495,7 +2495,7 @@ btk_text_view_set_pixels_below_lines (BtkTextView *text_view,
  * 
  * Return value: default number of blank pixels below paragraphs
  **/
-gint
+bint
 btk_text_view_get_pixels_below_lines (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2514,7 +2514,7 @@ btk_text_view_get_pixels_below_lines (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_pixels_inside_wrap (BtkTextView *text_view,
-                                      gint         pixels_inside_wrap)
+                                      bint         pixels_inside_wrap)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2528,7 +2528,7 @@ btk_text_view_set_pixels_inside_wrap (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "pixels-inside-wrap");
+      g_object_notify (B_OBJECT (text_view), "pixels-inside-wrap");
     }
 }
 
@@ -2540,7 +2540,7 @@ btk_text_view_set_pixels_inside_wrap (BtkTextView *text_view,
  * 
  * Return value: default number of pixels of blank space between wrapped lines
  **/
-gint
+bint
 btk_text_view_get_pixels_inside_wrap (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2573,7 +2573,7 @@ btk_text_view_set_justification (BtkTextView     *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "justification");
+      g_object_notify (B_OBJECT (text_view), "justification");
     }
 }
 
@@ -2604,7 +2604,7 @@ btk_text_view_get_justification (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_left_margin (BtkTextView *text_view,
-                               gint         left_margin)
+                               bint         left_margin)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2618,7 +2618,7 @@ btk_text_view_set_left_margin (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "left-margin");
+      g_object_notify (B_OBJECT (text_view), "left-margin");
     }
 }
 
@@ -2631,7 +2631,7 @@ btk_text_view_set_left_margin (BtkTextView *text_view,
  * 
  * Return value: left margin in pixels
  **/
-gint
+bint
 btk_text_view_get_left_margin (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2649,7 +2649,7 @@ btk_text_view_get_left_margin (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_right_margin (BtkTextView *text_view,
-                                gint         right_margin)
+                                bint         right_margin)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2663,7 +2663,7 @@ btk_text_view_set_right_margin (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "right-margin");
+      g_object_notify (B_OBJECT (text_view), "right-margin");
     }
 }
 
@@ -2676,7 +2676,7 @@ btk_text_view_set_right_margin (BtkTextView *text_view,
  * 
  * Return value: right margin in pixels
  **/
-gint
+bint
 btk_text_view_get_right_margin (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2694,7 +2694,7 @@ btk_text_view_get_right_margin (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_indent (BtkTextView *text_view,
-                          gint         indent)
+                          bint         indent)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2708,7 +2708,7 @@ btk_text_view_set_indent (BtkTextView *text_view,
           btk_text_layout_default_style_changed (text_view->layout);
         }
 
-      g_object_notify (G_OBJECT (text_view), "indent");
+      g_object_notify (B_OBJECT (text_view), "indent");
     }
 }
 
@@ -2722,7 +2722,7 @@ btk_text_view_set_indent (BtkTextView *text_view,
  * 
  * Return value: number of pixels of indentation
  **/
-gint
+bint
 btk_text_view_get_indent (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), 0);
@@ -2761,7 +2761,7 @@ btk_text_view_set_tabs (BtkTextView   *text_view,
       btk_text_layout_default_style_changed (text_view->layout);
     }
 
-  g_object_notify (G_OBJECT (text_view), "tabs");
+  g_object_notify (B_OBJECT (text_view), "tabs");
 }
 
 /**
@@ -2801,7 +2801,7 @@ btk_text_view_toggle_cursor_visible (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_cursor_visible (BtkTextView *text_view,
-				  gboolean     setting)
+				  bboolean     setting)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -2820,7 +2820,7 @@ btk_text_view_set_cursor_visible (BtkTextView *text_view,
             }
         }
 
-      g_object_notify (G_OBJECT (text_view), "cursor-visible");
+      g_object_notify (B_OBJECT (text_view), "cursor-visible");
     }
 }
 
@@ -2832,7 +2832,7 @@ btk_text_view_set_cursor_visible (BtkTextView *text_view,
  *
  * Return value: whether the insertion mark is visible
  **/
-gboolean
+bboolean
 btk_text_view_get_cursor_visible (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), FALSE);
@@ -2850,7 +2850,7 @@ btk_text_view_get_cursor_visible (BtkTextView *text_view)
  *
  * Return value: %TRUE if the cursor had to be moved.
  **/
-gboolean
+bboolean
 btk_text_view_place_cursor_onscreen (BtkTextView *text_view)
 {
   BtkTextIter insert;
@@ -2874,7 +2874,7 @@ btk_text_view_remove_validate_idles (BtkTextView *text_view)
 {
   if (text_view->first_validate_idle != 0)
     {
-      DV (g_print ("Removing first validate idle: %s\n", G_STRLOC));
+      DV (g_print ("Removing first validate idle: %s\n", B_STRLOC));
       g_source_remove (text_view->first_validate_idle);
       text_view->first_validate_idle = 0;
     }
@@ -2915,7 +2915,7 @@ btk_text_view_destroy (BtkObject *object)
 }
 
 static void
-btk_text_view_finalize (GObject *object)
+btk_text_view_finalize (BObject *object)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -2957,14 +2957,14 @@ btk_text_view_finalize (GObject *object)
 
   g_free (priv->im_module);
 
-  G_OBJECT_CLASS (btk_text_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_view_parent_class)->finalize (object);
 }
 
 static void
-btk_text_view_set_property (GObject         *object,
-			    guint            prop_id,
-			    const GValue    *value,
-			    GParamSpec      *pspec)
+btk_text_view_set_property (BObject         *object,
+			    buint            prop_id,
+			    const BValue    *value,
+			    BParamSpec      *pspec)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -2975,79 +2975,79 @@ btk_text_view_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_PIXELS_ABOVE_LINES:
-      btk_text_view_set_pixels_above_lines (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_above_lines (text_view, b_value_get_int (value));
       break;
 
     case PROP_PIXELS_BELOW_LINES:
-      btk_text_view_set_pixels_below_lines (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_below_lines (text_view, b_value_get_int (value));
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
-      btk_text_view_set_pixels_inside_wrap (text_view, g_value_get_int (value));
+      btk_text_view_set_pixels_inside_wrap (text_view, b_value_get_int (value));
       break;
 
     case PROP_EDITABLE:
-      btk_text_view_set_editable (text_view, g_value_get_boolean (value));
+      btk_text_view_set_editable (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_WRAP_MODE:
-      btk_text_view_set_wrap_mode (text_view, g_value_get_enum (value));
+      btk_text_view_set_wrap_mode (text_view, b_value_get_enum (value));
       break;
       
     case PROP_JUSTIFICATION:
-      btk_text_view_set_justification (text_view, g_value_get_enum (value));
+      btk_text_view_set_justification (text_view, b_value_get_enum (value));
       break;
 
     case PROP_LEFT_MARGIN:
-      btk_text_view_set_left_margin (text_view, g_value_get_int (value));
+      btk_text_view_set_left_margin (text_view, b_value_get_int (value));
       break;
 
     case PROP_RIGHT_MARGIN:
-      btk_text_view_set_right_margin (text_view, g_value_get_int (value));
+      btk_text_view_set_right_margin (text_view, b_value_get_int (value));
       break;
 
     case PROP_INDENT:
-      btk_text_view_set_indent (text_view, g_value_get_int (value));
+      btk_text_view_set_indent (text_view, b_value_get_int (value));
       break;
 
     case PROP_TABS:
-      btk_text_view_set_tabs (text_view, g_value_get_boxed (value));
+      btk_text_view_set_tabs (text_view, b_value_get_boxed (value));
       break;
 
     case PROP_CURSOR_VISIBLE:
-      btk_text_view_set_cursor_visible (text_view, g_value_get_boolean (value));
+      btk_text_view_set_cursor_visible (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_OVERWRITE:
-      btk_text_view_set_overwrite (text_view, g_value_get_boolean (value));
+      btk_text_view_set_overwrite (text_view, b_value_get_boolean (value));
       break;
 
     case PROP_BUFFER:
-      btk_text_view_set_buffer (text_view, BTK_TEXT_BUFFER (g_value_get_object (value)));
+      btk_text_view_set_buffer (text_view, BTK_TEXT_BUFFER (b_value_get_object (value)));
       break;
 
     case PROP_ACCEPTS_TAB:
-      btk_text_view_set_accepts_tab (text_view, g_value_get_boolean (value));
+      btk_text_view_set_accepts_tab (text_view, b_value_get_boolean (value));
       break;
       
     case PROP_IM_MODULE:
       g_free (priv->im_module);
-      priv->im_module = g_value_dup_string (value);
+      priv->im_module = b_value_dup_string (value);
       if (BTK_IS_IM_MULTICONTEXT (text_view->im_context))
         btk_im_multicontext_set_context_id (BTK_IM_MULTICONTEXT (text_view->im_context), priv->im_module);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_text_view_get_property (GObject         *object,
-			    guint            prop_id,
-			    GValue          *value,
-			    GParamSpec      *pspec)
+btk_text_view_get_property (BObject         *object,
+			    buint            prop_id,
+			    BValue          *value,
+			    BParamSpec      *pspec)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
@@ -3058,67 +3058,67 @@ btk_text_view_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_PIXELS_ABOVE_LINES:
-      g_value_set_int (value, text_view->pixels_above_lines);
+      b_value_set_int (value, text_view->pixels_above_lines);
       break;
 
     case PROP_PIXELS_BELOW_LINES:
-      g_value_set_int (value, text_view->pixels_below_lines);
+      b_value_set_int (value, text_view->pixels_below_lines);
       break;
 
     case PROP_PIXELS_INSIDE_WRAP:
-      g_value_set_int (value, text_view->pixels_inside_wrap);
+      b_value_set_int (value, text_view->pixels_inside_wrap);
       break;
 
     case PROP_EDITABLE:
-      g_value_set_boolean (value, text_view->editable);
+      b_value_set_boolean (value, text_view->editable);
       break;
       
     case PROP_WRAP_MODE:
-      g_value_set_enum (value, text_view->wrap_mode);
+      b_value_set_enum (value, text_view->wrap_mode);
       break;
 
     case PROP_JUSTIFICATION:
-      g_value_set_enum (value, text_view->justify);
+      b_value_set_enum (value, text_view->justify);
       break;
 
     case PROP_LEFT_MARGIN:
-      g_value_set_int (value, text_view->left_margin);
+      b_value_set_int (value, text_view->left_margin);
       break;
 
     case PROP_RIGHT_MARGIN:
-      g_value_set_int (value, text_view->right_margin);
+      b_value_set_int (value, text_view->right_margin);
       break;
 
     case PROP_INDENT:
-      g_value_set_int (value, text_view->indent);
+      b_value_set_int (value, text_view->indent);
       break;
 
     case PROP_TABS:
-      g_value_set_boxed (value, text_view->tabs);
+      b_value_set_boxed (value, text_view->tabs);
       break;
 
     case PROP_CURSOR_VISIBLE:
-      g_value_set_boolean (value, text_view->cursor_visible);
+      b_value_set_boolean (value, text_view->cursor_visible);
       break;
 
     case PROP_BUFFER:
-      g_value_set_object (value, get_buffer (text_view));
+      b_value_set_object (value, get_buffer (text_view));
       break;
 
     case PROP_OVERWRITE:
-      g_value_set_boolean (value, text_view->overwrite_mode);
+      b_value_set_boolean (value, text_view->overwrite_mode);
       break;
 
     case PROP_ACCEPTS_TAB:
-      g_value_set_boolean (value, text_view->accepts_tab);
+      b_value_set_boolean (value, text_view->accepts_tab);
       break;
       
     case PROP_IM_MODULE:
-      g_value_set_string (value, priv->im_module);
+      b_value_set_string (value, priv->im_module);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -3129,9 +3129,9 @@ btk_text_view_size_request (BtkWidget      *widget,
 {
   BtkTextView *text_view;
   GSList *tmp_list;
-  gint focus_edge_width;
-  gint focus_width;
-  gboolean interior_focus;
+  bint focus_edge_width;
+  bint focus_width;
+  bboolean interior_focus;
   
   text_view = BTK_TEXT_VIEW (widget);
 
@@ -3204,7 +3204,7 @@ btk_text_view_size_request (BtkWidget      *widget,
           btk_widget_size_request (child->widget, &child_req);
         }
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -3213,7 +3213,7 @@ btk_text_view_compute_child_allocation (BtkTextView      *text_view,
                                         BtkTextViewChild *vc,
                                         BtkAllocation    *allocation)
 {
-  gint buffer_y;
+  bint buffer_y;
   BtkTextIter iter;
   BtkRequisition req;
   
@@ -3256,9 +3256,9 @@ btk_text_view_update_child_allocation (BtkTextView      *text_view,
 static void
 btk_text_view_child_allocated (BtkTextLayout *layout,
                                BtkWidget     *child,
-                               gint           x,
-                               gint           y,
-                               gpointer       data)
+                               bint           x,
+                               bint           y,
+                               bpointer       data)
 {
   BtkTextViewChild *vc = NULL;
   BtkTextView *text_view = data;
@@ -3268,7 +3268,7 @@ btk_text_view_child_allocated (BtkTextLayout *layout,
    * window coordinates, then size_allocate the child.
    */
 
-  vc = g_object_get_data (G_OBJECT (child),
+  vc = g_object_get_data (B_OBJECT (child),
                           "btk-text-view-child");
 
   g_assert (vc != NULL);
@@ -3286,7 +3286,7 @@ btk_text_view_allocate_children (BtkTextView *text_view)
 {
   GSList *tmp_list;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   tmp_list = text_view->children;
   while (tmp_list != NULL)
@@ -3338,7 +3338,7 @@ btk_text_view_allocate_children (BtkTextView *text_view)
           btk_widget_size_allocate (child->widget, &allocation);          
         }
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -3348,21 +3348,21 @@ btk_text_view_size_allocate (BtkWidget *widget,
 {
   BtkTextView *text_view;
   BtkTextIter first_para;
-  gint y;
-  gint width, height;
+  bint y;
+  bint width, height;
   BdkRectangle text_rect;
   BdkRectangle left_rect;
   BdkRectangle right_rect;
   BdkRectangle top_rect;
   BdkRectangle bottom_rect;
-  gint focus_edge_width;
-  gint focus_width;
-  gboolean interior_focus;
-  gboolean size_changed;
+  bint focus_edge_width;
+  bint focus_width;
+  bboolean interior_focus;
+  bboolean size_changed;
   
   text_view = BTK_TEXT_VIEW (widget);
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
 
   size_changed =
     widget->allocation.width != allocation->width ||
@@ -3539,7 +3539,7 @@ btk_text_view_validate_onscreen (BtkTextView *text_view)
 {
   BtkWidget *widget = BTK_WIDGET (text_view);
   
-  DV(g_print(">Validating onscreen ("G_STRLOC")\n"));
+  DV(g_print(">Validating onscreen ("B_STRLOC")\n"));
   
   if (SCREEN_HEIGHT (widget) > 0)
     {
@@ -3560,7 +3560,7 @@ btk_text_view_validate_onscreen (BtkTextView *text_view)
 
   text_view->onscreen_validated = TRUE;
 
-  DV(g_print(">Done validating onscreen, onscreen_validated = TRUE ("G_STRLOC")\n"));
+  DV(g_print(">Done validating onscreen, onscreen_validated = TRUE ("B_STRLOC")\n"));
   
   /* This can have the odd side effect of triggering a scroll, which should
    * flip "onscreen_validated" back to FALSE, but should also get us
@@ -3581,7 +3581,7 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
    * occurs during any of this process, a new first_validate_callback
    * will be installed, and we'll start again.
    */
-  DV (g_print ("removing first validate in %s\n", G_STRLOC));
+  DV (g_print ("removing first validate in %s\n", B_STRLOC));
   g_source_remove (text_view->first_validate_idle);
   text_view->first_validate_idle = 0;
   
@@ -3595,7 +3595,7 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
    */
   if (text_view->first_validate_idle != 0)
     {
-      DV(g_print(">Width change forced requeue ("G_STRLOC")\n"));
+      DV(g_print(">Width change forced requeue ("B_STRLOC")\n"));
     }
   else
     {
@@ -3609,14 +3609,14 @@ btk_text_view_flush_first_validate (BtkTextView *text_view)
           !text_view->onscreen_validated)
 	btk_text_view_validate_onscreen (text_view);
       
-      DV(g_print(">Leaving first validate idle ("G_STRLOC")\n"));
+      DV(g_print(">Leaving first validate idle ("B_STRLOC")\n"));
       
       g_assert (text_view->onscreen_validated);
     }
 }
 
-static gboolean
-first_validate_callback (gpointer data)
+static bboolean
+first_validate_callback (bpointer data)
 {
   BtkTextView *text_view = data;
 
@@ -3624,20 +3624,20 @@ first_validate_callback (gpointer data)
    * keep in sync with that.
    */
   
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
 
   btk_text_view_flush_first_validate (text_view);
   
   return FALSE;
 }
 
-static gboolean
-incremental_validate_callback (gpointer data)
+static bboolean
+incremental_validate_callback (bpointer data)
 {
   BtkTextView *text_view = data;
-  gboolean result = TRUE;
+  bboolean result = TRUE;
 
-  DV(g_print(G_STRLOC"\n"));
+  DV(g_print(B_STRLOC"\n"));
   
   btk_text_layout_validate (text_view->layout, 2000);
 
@@ -3655,7 +3655,7 @@ incremental_validate_callback (gpointer data)
 static void
 btk_text_view_invalidate (BtkTextView *text_view)
 {  
-  DV (g_print (">Invalidate, onscreen_validated = %d now FALSE ("G_STRLOC")\n",
+  DV (g_print (">Invalidate, onscreen_validated = %d now FALSE ("B_STRLOC")\n",
                text_view->onscreen_validated));
 
   text_view->onscreen_validated = FALSE;
@@ -3667,21 +3667,21 @@ btk_text_view_invalidate (BtkTextView *text_view)
   if (!text_view->first_validate_idle)
     {
       text_view->first_validate_idle = bdk_threads_add_idle_full (BTK_PRIORITY_RESIZE - 2, first_validate_callback, text_view, NULL);
-      DV (g_print (G_STRLOC": adding first validate idle %d\n",
+      DV (g_print (B_STRLOC": adding first validate idle %d\n",
                    text_view->first_validate_idle));
     }
       
   if (!text_view->incremental_validate_idle)
     {
       text_view->incremental_validate_idle = bdk_threads_add_idle_full (BTK_TEXT_VIEW_PRIORITY_VALIDATE, incremental_validate_callback, text_view, NULL);
-      DV (g_print (G_STRLOC": adding incremental validate idle %d\n",
+      DV (g_print (B_STRLOC": adding incremental validate idle %d\n",
                    text_view->incremental_validate_idle));
     }
 }
 
 static void
 invalidated_handler (BtkTextLayout *layout,
-                     gpointer       data)
+                     bpointer       data)
 {
   BtkTextView *text_view;
 
@@ -3693,10 +3693,10 @@ invalidated_handler (BtkTextLayout *layout,
 
 static void
 changed_handler (BtkTextLayout     *layout,
-                 gint               start_y,
-                 gint               old_height,
-                 gint               new_height,
-                 gpointer           data)
+                 bint               start_y,
+                 bint               old_height,
+                 bint               new_height,
+                 bpointer           data)
 {
   BtkTextView *text_view;
   BtkWidget *widget;
@@ -3706,7 +3706,7 @@ changed_handler (BtkTextLayout     *layout,
   text_view = BTK_TEXT_VIEW (data);
   widget = BTK_WIDGET (data);
   
-  DV(g_print(">Lines Validated ("G_STRLOC")\n"));
+  DV(g_print(">Lines Validated ("B_STRLOC")\n"));
 
   if (btk_widget_get_realized (widget))
     {      
@@ -3754,7 +3754,7 @@ changed_handler (BtkTextLayout     *layout,
   
   if (old_height != new_height)
     {
-      gboolean yoffset_changed = FALSE;
+      bboolean yoffset_changed = FALSE;
       GSList *tmp_list;
       int new_first_para_top;
       int old_first_para_top;
@@ -3786,7 +3786,7 @@ changed_handler (BtkTextLayout     *layout,
 
       if (yoffset_changed)
         {
-          DV(g_print ("Changing scroll position (%s)\n", G_STRLOC));
+          DV(g_print ("Changing scroll position (%s)\n", B_STRLOC));
           btk_adjustment_value_changed (get_vadjustment (text_view));
         }
 
@@ -3800,7 +3800,7 @@ changed_handler (BtkTextLayout     *layout,
           if (child->anchor)
             btk_text_view_update_child_allocation (text_view, child);
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
@@ -3829,7 +3829,7 @@ btk_text_view_realize (BtkWidget *widget)
 {
   BtkTextView *text_view;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   GSList *tmp_list;
   
   text_view = BTK_TEXT_VIEW (widget);
@@ -4083,7 +4083,7 @@ btk_text_view_unobscure_mouse_cursor (BtkTextView *text_view)
 
 static void
 btk_text_view_grab_notify (BtkWidget *widget,
-		 	   gboolean   was_grabbed)
+		 	   bboolean   was_grabbed)
 {
   if (!was_grabbed)
     {
@@ -4097,8 +4097,8 @@ btk_text_view_grab_notify (BtkWidget *widget,
  * Events
  */
 
-static gboolean
-get_event_coordinates (BdkEvent *event, gint *x, gint *y)
+static bboolean
+get_event_coordinates (BdkEvent *event, bint *x, bint *y)
 {
   if (event)
     switch (event->type)
@@ -4142,14 +4142,14 @@ get_event_coordinates (BdkEvent *event, gint *x, gint *y)
   return FALSE;
 }
 
-static gint
+static bint
 emit_event_on_tags (BtkWidget   *widget,
                     BdkEvent    *event,
                     BtkTextIter *iter)
 {
   GSList *tags;
   GSList *tmp;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   tags = btk_text_iter_get_tags (iter);
 
@@ -4158,25 +4158,25 @@ emit_event_on_tags (BtkWidget   *widget,
     {
       BtkTextTag *tag = tmp->data;
 
-      if (btk_text_tag_event (tag, G_OBJECT (widget), event, iter))
+      if (btk_text_tag_event (tag, B_OBJECT (widget), event, iter))
         {
           retval = TRUE;
           break;
         }
 
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
 
-  g_slist_free (tags);
+  b_slist_free (tags);
 
   return retval;
 }
 
-static gint
+static bint
 btk_text_view_event (BtkWidget *widget, BdkEvent *event)
 {
   BtkTextView *text_view;
-  gint x = 0, y = 0;
+  bint x = 0, y = 0;
 
   text_view = BTK_TEXT_VIEW (widget);
 
@@ -4218,15 +4218,15 @@ btk_text_view_event (BtkWidget *widget, BdkEvent *event)
     return FALSE;
 }
 
-static gint
+static bint
 btk_text_view_key_press_event (BtkWidget *widget, BdkEventKey *event)
 {
-  gboolean retval = FALSE;
-  gboolean obscure = FALSE;
+  bboolean retval = FALSE;
+  bboolean obscure = FALSE;
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
   BtkTextMark *insert;
   BtkTextIter iter;
-  gboolean can_insert;
+  bboolean can_insert;
   
   if (text_view->layout == NULL ||
       get_buffer (text_view) == NULL)
@@ -4300,7 +4300,7 @@ btk_text_view_key_press_event (BtkWidget *widget, BdkEventKey *event)
   return retval;
 }
 
-static gint
+static bint
 btk_text_view_key_release_event (BtkWidget *widget, BdkEventKey *event)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
@@ -4322,7 +4322,7 @@ btk_text_view_key_release_event (BtkWidget *widget, BdkEventKey *event)
     return BTK_WIDGET_CLASS (btk_text_view_parent_class)->key_release_event (widget, event);
 }
 
-static gint
+static bint
 btk_text_view_button_press_event (BtkWidget *widget, BdkEventButton *event)
 {
   BtkTextView *text_view;
@@ -4428,7 +4428,7 @@ btk_text_view_button_press_event (BtkWidget *widget, BdkEventButton *event)
   return FALSE;
 }
 
-static gint
+static bint
 btk_text_view_button_release_event (BtkWidget *widget, BdkEventButton *event)
 {
   BtkTextView *text_view;
@@ -4480,14 +4480,14 @@ keymap_direction_changed (BdkKeymap   *keymap,
   btk_text_view_check_keymap_direction (text_view);
 }
 
-static gint
+static bint
 btk_text_view_focus_in_event (BtkWidget *widget, BdkEventFocus *event)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
 
   btk_widget_queue_draw (widget);
 
-  DV(g_print (G_STRLOC": focus_in_event\n"));
+  DV(g_print (B_STRLOC": focus_in_event\n"));
 
   btk_text_view_reset_blink_time (text_view);
 
@@ -4511,7 +4511,7 @@ btk_text_view_focus_in_event (BtkWidget *widget, BdkEventFocus *event)
   return FALSE;
 }
 
-static gint
+static bint
 btk_text_view_focus_out_event (BtkWidget *widget, BdkEventFocus *event)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
@@ -4520,7 +4520,7 @@ btk_text_view_focus_out_event (BtkWidget *widget, BdkEventFocus *event)
 
   btk_widget_queue_draw (widget);
 
-  DV(g_print (G_STRLOC": focus_out_event\n"));
+  DV(g_print (B_STRLOC": focus_out_event\n"));
   
   if (text_view->cursor_visible && text_view->layout)
     {
@@ -4541,7 +4541,7 @@ btk_text_view_focus_out_event (BtkWidget *widget, BdkEventFocus *event)
   return FALSE;
 }
 
-static gint
+static bint
 btk_text_view_motion_event (BtkWidget *widget, BdkEventMotion *event)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
@@ -4551,8 +4551,8 @@ btk_text_view_motion_event (BtkWidget *widget, BdkEventMotion *event)
   if (event->window == text_view->text_window->bin_window &&
       text_view->drag_start_x >= 0)
     {
-      gint x = event->x;
-      gint y = event->y;
+      bint x = event->x;
+      bint y = event->y;
 
       bdk_event_request_motions (event);
 
@@ -4562,7 +4562,7 @@ btk_text_view_motion_event (BtkWidget *widget, BdkEventMotion *event)
 				    x, y))
         {
           BtkTextIter iter;
-          gint buffer_x, buffer_y;
+          bint buffer_x, buffer_y;
 
           btk_text_view_window_to_buffer_coords (text_view,
                                                  BTK_TEXT_WINDOW_TEXT,
@@ -4600,14 +4600,14 @@ btk_text_view_paint (BtkWidget      *widget,
 
   while (text_view->first_validate_idle != 0)
     {
-      DV (g_print (G_STRLOC": first_validate_idle: %d\n",
+      DV (g_print (B_STRLOC": first_validate_idle: %d\n",
                    text_view->first_validate_idle));
       btk_text_view_flush_first_validate (text_view);
     }
 
   if (!text_view->onscreen_validated)
     {
-      g_warning (G_STRLOC ": somehow some text lines were modified or scrolling occurred since the last validation of lines on the screen - may be a text widget bug.");
+      g_warning (B_STRLOC ": somehow some text lines were modified or scrolling occurred since the last validation of lines on the screen - may be a text widget bug.");
       g_assert_not_reached ();
     }
   
@@ -4645,7 +4645,7 @@ btk_text_view_paint (BtkWidget      *widget,
   g_list_free (child_exposes);
 }
 
-static gint
+static bint
 btk_text_view_expose_event (BtkWidget *widget, BdkEventExpose *event)
 {
   GSList *tmp_list;
@@ -4653,7 +4653,7 @@ btk_text_view_expose_event (BtkWidget *widget, BdkEventExpose *event)
   if (event->window == btk_text_view_get_window (BTK_TEXT_VIEW (widget),
                                                  BTK_TEXT_WINDOW_TEXT))
     {
-      DV(g_print (">Exposed ("G_STRLOC")\n"));
+      DV(g_print (">Exposed ("B_STRLOC")\n"));
       btk_text_view_paint (widget, &event->area, event);
     }
 
@@ -4685,7 +4685,7 @@ btk_text_view_expose_event (BtkWidget *widget, BdkEventExpose *event)
 static void
 btk_text_view_draw_focus (BtkWidget *widget)
 {
-  gboolean interior_focus;
+  bboolean interior_focus;
 
   /* We clear the focus if we are in interior focus mode. */
   btk_widget_style_get (widget,
@@ -4709,12 +4709,12 @@ btk_text_view_draw_focus (BtkWidget *widget)
     }
 }
 
-static gboolean
+static bboolean
 btk_text_view_focus (BtkWidget        *widget,
                      BtkDirectionType  direction)
 {
   BtkContainer *container;
-  gboolean result;
+  bboolean result;
   
   container = BTK_CONTAINER (widget);  
 
@@ -4784,12 +4784,12 @@ btk_text_view_remove (BtkContainer *container,
       if (vc->widget == child)
         break;
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
   g_assert (iter != NULL); /* be sure we had the child in the list */
 
-  text_view->children = g_slist_remove (text_view->children, vc);
+  text_view->children = b_slist_remove (text_view->children, vc);
 
   btk_widget_unparent (vc->widget);
 
@@ -4798,9 +4798,9 @@ btk_text_view_remove (BtkContainer *container,
 
 static void
 btk_text_view_forall (BtkContainer *container,
-                      gboolean      include_internals,
+                      bboolean      include_internals,
                       BtkCallback   callback,
-                      gpointer      callback_data)
+                      bpointer      callback_data)
 {
   GSList *iter;
   BtkTextView *text_view;
@@ -4811,7 +4811,7 @@ btk_text_view_forall (BtkContainer *container,
 
   text_view = BTK_TEXT_VIEW (container);
 
-  copy = g_slist_copy (text_view->children);
+  copy = b_slist_copy (text_view->children);
   iter = copy;
 
   while (iter != NULL)
@@ -4820,10 +4820,10 @@ btk_text_view_forall (BtkContainer *container,
 
       (* callback) (vc->widget, callback_data);
 
-      iter = g_slist_next (iter);
+      iter = b_slist_next (iter);
     }
 
-  g_slist_free (copy);
+  b_slist_free (copy);
 }
 
 #define CURSOR_ON_MULTIPLIER 2
@@ -4831,11 +4831,11 @@ btk_text_view_forall (BtkContainer *container,
 #define CURSOR_PEND_MULTIPLIER 3
 #define CURSOR_DIVIDER 3
 
-static gboolean
+static bboolean
 cursor_blinks (BtkTextView *text_view)
 {
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (text_view));
-  gboolean blink;
+  bboolean blink;
 
 #ifdef DEBUG_VALIDATION_AND_SCROLLING
   return FALSE;
@@ -4863,22 +4863,22 @@ cursor_blinks (BtkTextView *text_view)
   return FALSE;
 }
 
-static gint
+static bint
 get_cursor_time (BtkTextView *text_view)
 {
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (text_view));
-  gint time;
+  bint time;
 
   g_object_get (settings, "btk-cursor-blink-time", &time, NULL);
 
   return time;
 }
 
-static gint
+static bint
 get_cursor_blink_timeout (BtkTextView *text_view)
 {
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (text_view));
-  gint time;
+  bint time;
 
   g_object_get (settings, "btk-cursor-blink-timeout", &time, NULL);
 
@@ -4890,13 +4890,13 @@ get_cursor_blink_timeout (BtkTextView *text_view)
  * Blink!
  */
 
-static gint
-blink_cb (gpointer data)
+static bint
+blink_cb (bpointer data)
 {
   BtkTextView *text_view;
   BtkTextViewPrivate *priv;
-  gboolean visible;
-  gint blink_timeout;
+  bboolean visible;
+  bint blink_timeout;
 
   text_view = BTK_TEXT_VIEW (data);
   priv = BTK_TEXT_VIEW_GET_PRIVATE (text_view);
@@ -4919,7 +4919,7 @@ blink_cb (gpointer data)
 
   blink_timeout = get_cursor_blink_timeout (text_view);
   if (priv->blink_time > 1000 * blink_timeout &&
-      blink_timeout < G_MAXINT/1000) 
+      blink_timeout < B_MAXINT/1000) 
     {
       /* we've blinked enough without the user doing anything, stop blinking */
       visible = 0;
@@ -5029,12 +5029,12 @@ btk_text_view_reset_blink_time (BtkTextView *text_view)
  * Key binding handlers
  */
 
-static gboolean
+static bboolean
 btk_text_view_move_iter_by_lines (BtkTextView *text_view,
                                   BtkTextIter *newplace,
-                                  gint         count)
+                                  bint         count)
 {
-  gboolean ret = TRUE;
+  bboolean ret = TRUE;
 
   while (count < 0)
     {
@@ -5054,7 +5054,7 @@ btk_text_view_move_iter_by_lines (BtkTextView *text_view,
 static void
 move_cursor (BtkTextView       *text_view,
              const BtkTextIter *new_location,
-             gboolean           extend_selection)
+             bboolean           extend_selection)
 {
   if (extend_selection)
     btk_text_buffer_move_mark_by_name (get_buffer (text_view),
@@ -5066,7 +5066,7 @@ move_cursor (BtkTextView       *text_view,
   btk_text_view_check_cursor_blink (text_view);
 }
 
-static gboolean
+static bboolean
 iter_line_is_rtl (const BtkTextIter *iter)
 {
   BtkTextIter start, end;
@@ -5087,13 +5087,13 @@ iter_line_is_rtl (const BtkTextIter *iter)
 static void
 btk_text_view_move_cursor_internal (BtkTextView     *text_view,
                                     BtkMovementStep  step,
-                                    gint             count,
-                                    gboolean         extend_selection)
+                                    bint             count,
+                                    bboolean         extend_selection)
 {
   BtkTextIter insert;
   BtkTextIter newplace;
-  gboolean cancel_selection = FALSE;
-  gint cursor_x_pos = 0;
+  bboolean cancel_selection = FALSE;
+  bint cursor_x_pos = 0;
   BtkDirectionType leave_direction = -1;
 
   if (!text_view->cursor_visible) 
@@ -5172,7 +5172,7 @@ btk_text_view_move_cursor_internal (BtkTextView     *text_view,
 
   if (! extend_selection)
     {
-      gboolean move_forward = count > 0;
+      bboolean move_forward = count > 0;
       BtkTextIter sel_bound;
 
       btk_text_buffer_get_iter_at_mark (get_buffer (text_view), &sel_bound,
@@ -5309,7 +5309,7 @@ btk_text_view_move_cursor_internal (BtkTextView     *text_view,
 
   if (!btk_text_iter_equal (&insert, &newplace))
     {
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
 
@@ -5336,29 +5336,29 @@ btk_text_view_move_cursor_internal (BtkTextView     *text_view,
 static void
 btk_text_view_move_cursor (BtkTextView     *text_view,
                            BtkMovementStep  step,
-                           gint             count,
-                           gboolean         extend_selection)
+                           bint             count,
+                           bboolean         extend_selection)
 {
   btk_text_view_move_cursor_internal (text_view, step, count, extend_selection);
 }
 
 static void
 btk_text_view_page_horizontally (BtkTextView     *text_view,
-                                 gint             count,
-                                 gboolean         extend_selection)
+                                 bint             count,
+                                 bboolean         extend_selection)
 {
   btk_text_view_move_cursor_internal (text_view, BTK_MOVEMENT_HORIZONTAL_PAGES,
                                       count, extend_selection);
 }
 
 
-static gboolean
+static bboolean
 btk_text_view_move_viewport (BtkTextView     *text_view,
                              BtkScrollStep    step,
-                             gint             count)
+                             bint             count)
 {
   BtkAdjustment *adjustment;
-  gdouble increment;
+  bdouble increment;
   
   switch (step) 
     {
@@ -5410,20 +5410,20 @@ btk_text_view_set_anchor (BtkTextView *text_view)
   btk_text_buffer_create_mark (get_buffer (text_view), "anchor", &insert, TRUE);
 }
 
-static gboolean
+static bboolean
 btk_text_view_scroll_pages (BtkTextView *text_view,
-                            gint         count,
-                            gboolean     extend_selection)
+                            bint         count,
+                            bboolean     extend_selection)
 {
-  gdouble newval;
-  gdouble oldval;
+  bdouble newval;
+  bdouble oldval;
   BtkAdjustment *adj;
-  gint cursor_x_pos, cursor_y_pos;
+  bint cursor_x_pos, cursor_y_pos;
   BtkTextMark *insert_mark;
   BtkTextIter old_insert;
   BtkTextIter new_insert;
   BtkTextIter anchor;
-  gint y0, y1;
+  bint y0, y1;
 
   g_return_val_if_fail (text_view->vadjustment != NULL, FALSE);
   
@@ -5497,25 +5497,25 @@ btk_text_view_scroll_pages (BtkTextView *text_view,
   /* Adjust to have the cursor _entirely_ onscreen, move_mark_onscreen
    * only guarantees 1 pixel onscreen.
    */
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, insert_mark);
 
   return !btk_text_iter_equal (&old_insert, &new_insert);
 }
 
-static gboolean
+static bboolean
 btk_text_view_scroll_hpages (BtkTextView *text_view,
-                             gint         count,
-                             gboolean     extend_selection)
+                             bint         count,
+                             bboolean     extend_selection)
 {
-  gdouble newval;
-  gdouble oldval;
+  bdouble newval;
+  bdouble oldval;
   BtkAdjustment *adj;
-  gint cursor_x_pos, cursor_y_pos;
+  bint cursor_x_pos, cursor_y_pos;
   BtkTextMark *insert_mark;
   BtkTextIter old_insert;
   BtkTextIter new_insert;
-  gint y, height;
+  bint y, height;
   
   g_return_val_if_fail (text_view->hadjustment != NULL, FALSE);
 
@@ -5584,25 +5584,25 @@ btk_text_view_scroll_hpages (BtkTextView *text_view,
   /* Adjust to have the cursor _entirely_ onscreen, move_mark_onscreen
    * only guarantees 1 pixel onscreen.
    */
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, insert_mark);
 
   return !btk_text_iter_equal (&old_insert, &new_insert);
 }
 
-static gboolean
-whitespace (gunichar ch, gpointer user_data)
+static bboolean
+whitespace (gunichar ch, bpointer user_data)
 {
   return (ch == ' ' || ch == '\t');
 }
 
-static gboolean
-not_whitespace (gunichar ch, gpointer user_data)
+static bboolean
+not_whitespace (gunichar ch, bpointer user_data)
 {
   return !whitespace (ch, user_data);
 }
 
-static gboolean
+static bboolean
 find_whitepace_rebunnyion (const BtkTextIter *center,
                        BtkTextIter *start, BtkTextIter *end)
 {
@@ -5619,7 +5619,7 @@ find_whitepace_rebunnyion (const BtkTextIter *center,
 
 static void
 btk_text_view_insert_at_cursor (BtkTextView *text_view,
-                                const gchar *str)
+                                const bchar *str)
 {
   if (!btk_text_buffer_insert_interactive_at_cursor (get_buffer (text_view), str, -1,
                                                      text_view->editable))
@@ -5631,12 +5631,12 @@ btk_text_view_insert_at_cursor (BtkTextView *text_view,
 static void
 btk_text_view_delete_from_cursor (BtkTextView   *text_view,
                                   BtkDeleteType  type,
-                                  gint           count)
+                                  bint           count)
 {
   BtkTextIter insert;
   BtkTextIter start;
   BtkTextIter end;
-  gboolean leave_one = FALSE;
+  bboolean leave_one = FALSE;
 
   btk_text_view_reset_im_context (text_view);
 
@@ -5764,7 +5764,7 @@ btk_text_view_delete_from_cursor (BtkTextView   *text_view,
       btk_text_buffer_end_user_action (get_buffer (text_view));
       btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
 
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
     }
@@ -5794,7 +5794,7 @@ btk_text_view_backspace (BtkTextView *text_view)
 				 TRUE, text_view->editable))
     {
       btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view,
                                           btk_text_buffer_get_insert (get_buffer (text_view)));
     }
@@ -5813,7 +5813,7 @@ btk_text_view_cut_clipboard (BtkTextView *text_view)
   btk_text_buffer_cut_clipboard (get_buffer (text_view),
 				 clipboard,
 				 text_view->editable);
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view,
                                       btk_text_buffer_get_insert (get_buffer (text_view)));
 }
@@ -5845,7 +5845,7 @@ btk_text_view_paste_clipboard (BtkTextView *text_view)
 static void
 btk_text_view_paste_done_handler (BtkTextBuffer *buffer,
                                   BtkClipboard  *clipboard,
-                                  gpointer       data)
+                                  bpointer       data)
 {
   BtkTextView *text_view = data;
   BtkTextViewPrivate *priv;
@@ -5854,7 +5854,7 @@ btk_text_view_paste_done_handler (BtkTextBuffer *buffer,
 
   if (priv->scroll_after_paste)
     {
-      DV(g_print (G_STRLOC": scrolling onscreen\n"));
+      DV(g_print (B_STRLOC": scrolling onscreen\n"));
       btk_text_view_scroll_mark_onscreen (text_view, btk_text_buffer_get_insert (buffer));
     }
 
@@ -5878,7 +5878,7 @@ btk_text_view_toggle_overwrite (BtkTextView *text_view)
 
   btk_text_view_pend_cursor_blink (text_view);
 
-  g_object_notify (G_OBJECT (text_view), "overwrite");
+  g_object_notify (B_OBJECT (text_view), "overwrite");
 }
 
 /**
@@ -5891,7 +5891,7 @@ btk_text_view_toggle_overwrite (BtkTextView *text_view)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_view_get_overwrite (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), FALSE);
@@ -5910,7 +5910,7 @@ btk_text_view_get_overwrite (BtkTextView *text_view)
  **/
 void
 btk_text_view_set_overwrite (BtkTextView *text_view,
-			     gboolean     overwrite)
+			     bboolean     overwrite)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
   overwrite = overwrite != FALSE;
@@ -5935,7 +5935,7 @@ btk_text_view_set_overwrite (BtkTextView *text_view,
  **/
 void
 btk_text_view_set_accepts_tab (BtkTextView *text_view,
-			       gboolean     accepts_tab)
+			       bboolean     accepts_tab)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -5945,7 +5945,7 @@ btk_text_view_set_accepts_tab (BtkTextView *text_view,
     {
       text_view->accepts_tab = accepts_tab;
 
-      g_object_notify (G_OBJECT (text_view), "accepts-tab");
+      g_object_notify (B_OBJECT (text_view), "accepts-tab");
     }
 }
 
@@ -5961,7 +5961,7 @@ btk_text_view_set_accepts_tab (BtkTextView *text_view,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_text_view_get_accepts_tab (BtkTextView *text_view)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), FALSE);
@@ -5984,7 +5984,7 @@ btk_text_view_compat_move_focus (BtkTextView     *text_view,
     {
       /*  if this is a signal emission, chain up  */
 
-      gboolean retval;
+      bboolean retval;
 
       g_signal_chain_from_overridden_handler (text_view,
                                               direction_type, &retval);
@@ -6019,10 +6019,10 @@ btk_text_view_unselect (BtkTextView *text_view)
 static void
 get_iter_at_pointer (BtkTextView *text_view,
                      BtkTextIter *iter,
-		     gint        *x,
-		     gint        *y)
+		     bint        *x,
+		     bint        *y)
 {
-  gint xcoord, ycoord;
+  bint xcoord, ycoord;
   BdkModifierType state;
 
   bdk_window_get_pointer (text_view->text_window->bin_window,
@@ -6041,7 +6041,7 @@ get_iter_at_pointer (BtkTextView *text_view,
 
 static void
 move_mark_to_pointer_and_scroll (BtkTextView *text_view,
-                                 const gchar *mark_name)
+                                 const bchar *mark_name)
 {
   BtkTextIter newplace;
   BtkTextMark *mark;
@@ -6051,27 +6051,27 @@ move_mark_to_pointer_and_scroll (BtkTextView *text_view,
   mark = btk_text_buffer_get_mark (get_buffer (text_view), mark_name);
   
   /* This may invalidate the layout */
-  DV(g_print (G_STRLOC": move mark\n"));
+  DV(g_print (B_STRLOC": move mark\n"));
   
   btk_text_buffer_move_mark (get_buffer (text_view),
 			     mark,
 			     &newplace);
   
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view, mark);
 
   DV (g_print ("first validate idle leaving %s is %d\n",
-               G_STRLOC, text_view->first_validate_idle));
+               B_STRLOC, text_view->first_validate_idle));
 }
 
-static gboolean
-selection_scan_timeout (gpointer data)
+static bboolean
+selection_scan_timeout (bpointer data)
 {
   BtkTextView *text_view;
 
   text_view = BTK_TEXT_VIEW (data);
 
-  DV(g_print (G_STRLOC": calling move_mark_to_pointer_and_scroll\n"));
+  DV(g_print (B_STRLOC": calling move_mark_to_pointer_and_scroll\n"));
   btk_text_view_scroll_mark_onscreen (text_view, 
 				      btk_text_buffer_get_insert (get_buffer (text_view)));
 
@@ -6081,8 +6081,8 @@ selection_scan_timeout (gpointer data)
 #define UPPER_OFFSET_ANCHOR 0.8
 #define LOWER_OFFSET_ANCHOR 0.2
 
-static gboolean
-check_scroll (gdouble offset, BtkAdjustment *adj)
+static bboolean
+check_scroll (bdouble offset, BtkAdjustment *adj)
 {
   if ((offset > UPPER_OFFSET_ANCHOR &&
        adj->value + adj->page_size < adj->upper) ||
@@ -6093,13 +6093,13 @@ check_scroll (gdouble offset, BtkAdjustment *adj)
   return FALSE;
 }
 
-static gint
-drag_scan_timeout (gpointer data)
+static bint
+drag_scan_timeout (bpointer data)
 {
   BtkTextView *text_view;
   BtkTextIter newplace;
-  gint x, y, width, height;
-  gdouble pointer_xoffset, pointer_yoffset;
+  bint x, y, width, height;
+  bdouble pointer_xoffset, pointer_yoffset;
 
   text_view = BTK_TEXT_VIEW (data);
 
@@ -6111,8 +6111,8 @@ drag_scan_timeout (gpointer data)
                              text_view->dnd_mark,
                              &newplace);
 
-  pointer_xoffset = (gdouble) x / width;
-  pointer_yoffset = (gdouble) y / height;
+  pointer_xoffset = (bdouble) x / width;
+  pointer_yoffset = (bdouble) y / height;
 
   if (check_scroll (pointer_xoffset, text_view->hadjustment) ||
       check_scroll (pointer_yoffset, text_view->vadjustment))
@@ -6236,7 +6236,7 @@ selection_data_free (SelectionData *data)
   g_free (data);
 }
 
-static gint
+static bint
 selection_motion_event_handler (BtkTextView    *text_view, 
 				BdkEventMotion *event, 
 				SelectionData  *data)
@@ -6370,7 +6370,7 @@ btk_text_view_start_selection_drag (BtkTextView       *text_view,
 }
 
 /* returns whether we were really dragging */
-static gboolean
+static bboolean
 btk_text_view_end_selection_drag (BtkTextView    *text_view) 
 {
   if (text_view->selection_drag_handler == 0)
@@ -6417,7 +6417,7 @@ btk_text_view_check_keymap_direction (BtkTextView *text_view)
       BdkKeymap *keymap = bdk_keymap_get_for_display (btk_widget_get_display (BTK_WIDGET (text_view)));
       BtkTextDirection new_cursor_dir;
       BtkTextDirection new_keyboard_dir;
-      gboolean split_cursor;
+      bboolean split_cursor;
 
       g_object_get (settings,
 		    "btk-split-cursor", &split_cursor,
@@ -6451,7 +6451,7 @@ btk_text_view_ensure_layout (BtkTextView *text_view)
       BangoContext *ltr_context, *rtl_context;
       GSList *tmp_list;
 
-      DV(g_print(G_STRLOC"\n"));
+      DV(g_print(B_STRLOC"\n"));
       
       text_view->layout = btk_text_layout_new ();
 
@@ -6529,7 +6529,7 @@ btk_text_view_ensure_layout (BtkTextView *text_view)
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
       btk_text_view_invalidate (text_view);
@@ -6589,7 +6589,7 @@ btk_text_view_destroy_layout (BtkTextView *text_view)
               /* vc may now be invalid! */
             }
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
 
       btk_text_view_stop_cursor_blink (text_view);
@@ -6639,7 +6639,7 @@ btk_text_view_reset_im_context (BtkTextView *text_view)
  * and the default key event handling of the #BtkTextView.
  *
  * |[
- * static gboolean
+ * static bboolean
  * btk_foo_bar_key_press_event (BtkWidget   *widget,
  *                              BdkEventKey *event)
  * {
@@ -6659,7 +6659,7 @@ btk_text_view_reset_im_context (BtkTextView *text_view)
  *
  * Since: 2.22
  */
-gboolean
+bboolean
 btk_text_view_im_context_filter_keypress (BtkTextView  *text_view,
                                           BdkEventKey  *event)
 {
@@ -6675,7 +6675,7 @@ btk_text_view_im_context_filter_keypress (BtkTextView  *text_view,
 static void
 drag_begin_cb (BtkWidget      *widget,
                BdkDragContext *context,
-               gpointer        data)
+               bpointer        data)
 {
   BtkTextView   *text_view = BTK_TEXT_VIEW (widget);
   BtkTextBuffer *buffer = btk_text_view_get_buffer (text_view);
@@ -6740,8 +6740,8 @@ static void
 btk_text_view_drag_data_get (BtkWidget        *widget,
                              BdkDragContext   *context,
                              BtkSelectionData *selection_data,
-                             guint             info,
-                             guint             time)
+                             buint             info,
+                             buint             time)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
   BtkTextBuffer *buffer = btk_text_view_get_buffer (text_view);
@@ -6758,8 +6758,8 @@ btk_text_view_drag_data_get (BtkWidget        *widget,
     {
       BtkTextIter start;
       BtkTextIter end;
-      guint8 *str = NULL;
-      gsize len;
+      buint8 *str = NULL;
+      bsize len;
 
       if (btk_text_buffer_get_selection_bounds (buffer, &start, &end))
         {
@@ -6775,7 +6775,7 @@ btk_text_view_drag_data_get (BtkWidget        *widget,
           btk_selection_data_set (selection_data,
                                   selection_data->target,
                                   8, /* bytes */
-                                  (guchar *) str, len);
+                                  (buchar *) str, len);
           g_free (str);
         }
     }
@@ -6783,7 +6783,7 @@ btk_text_view_drag_data_get (BtkWidget        *widget,
     {
       BtkTextIter start;
       BtkTextIter end;
-      gchar *str = NULL;
+      bchar *str = NULL;
 
       if (btk_text_buffer_get_selection_bounds (buffer, &start, &end))
         {
@@ -6810,7 +6810,7 @@ btk_text_view_drag_data_delete (BtkWidget        *widget,
 static void
 btk_text_view_drag_leave (BtkWidget        *widget,
                           BdkDragContext   *context,
-                          guint             time)
+                          buint             time)
 {
   BtkTextView *text_view;
 
@@ -6824,19 +6824,19 @@ btk_text_view_drag_leave (BtkWidget        *widget,
   text_view->scroll_timeout = 0;
 }
 
-static gboolean
+static bboolean
 btk_text_view_drag_motion (BtkWidget        *widget,
                            BdkDragContext   *context,
-                           gint              x,
-                           gint              y,
-                           guint             time)
+                           bint              x,
+                           bint              y,
+                           buint             time)
 {
   BtkTextIter newplace;
   BtkTextView *text_view;
   BtkTextIter start;
   BtkTextIter end;
   BdkRectangle target_rect;
-  gint bx, by;
+  bint bx, by;
   BdkAtom target;
   BdkDragAction suggested_action = 0;
   
@@ -6921,12 +6921,12 @@ btk_text_view_drag_motion (BtkWidget        *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_text_view_drag_drop (BtkWidget        *widget,
                          BdkDragContext   *context,
-                         gint              x,
-                         gint              y,
-                         guint             time)
+                         bint              x,
+                         bint              y,
+                         buint             time)
 {
   BtkTextView *text_view;
   BtkTextIter drop_point;
@@ -6961,14 +6961,14 @@ insert_text_data (BtkTextView      *text_view,
                   BtkTextIter      *drop_point,
                   BtkSelectionData *selection_data)
 {
-  guchar *str;
+  buchar *str;
 
   str = btk_selection_data_get_text (selection_data);
 
   if (str)
     {
       if (!btk_text_buffer_insert_interactive (get_buffer (text_view),
-                                               drop_point, (gchar *) str, -1,
+                                               drop_point, (bchar *) str, -1,
                                                text_view->editable))
         {
           btk_widget_error_bell (BTK_WIDGET (text_view));
@@ -6981,15 +6981,15 @@ insert_text_data (BtkTextView      *text_view,
 static void
 btk_text_view_drag_data_received (BtkWidget        *widget,
                                   BdkDragContext   *context,
-                                  gint              x,
-                                  gint              y,
+                                  bint              x,
+                                  bint              y,
                                   BtkSelectionData *selection_data,
-                                  guint             info,
-                                  guint             time)
+                                  buint             info,
+                                  buint             time)
 {
   BtkTextIter drop_point;
   BtkTextView *text_view;
-  gboolean success = FALSE;
+  bboolean success = FALSE;
   BtkTextBuffer *buffer = NULL;
 
   text_view = BTK_TEXT_VIEW (widget);
@@ -7014,7 +7014,7 @@ btk_text_view_drag_data_received (BtkWidget        *widget,
     {
       BtkTextBuffer *src_buffer = NULL;
       BtkTextIter start, end;
-      gboolean copy_tags = TRUE;
+      bboolean copy_tags = TRUE;
 
       if (selection_data->length != sizeof (src_buffer))
         return;
@@ -7031,7 +7031,7 @@ btk_text_view_drag_data_received (BtkWidget        *widget,
         {
           /*  try to find a suitable rich text target instead  */
           BdkAtom *atoms;
-          gint     n_atoms;
+          bint     n_atoms;
           GList   *list;
           BdkAtom  target = BDK_NONE;
 
@@ -7041,10 +7041,10 @@ btk_text_view_drag_data_received (BtkWidget        *widget,
 
           for (list = bdk_drag_context_list_targets (context); list; list = g_list_next (list))
             {
-              gint i;
+              bint i;
 
               for (i = 0; i < n_atoms; i++)
-                if (GUINT_TO_POINTER (atoms[i]) == list->data)
+                if (BUINT_TO_POINTER (atoms[i]) == list->data)
                   {
                     target = atoms[i];
                     break;
@@ -7073,7 +7073,7 @@ btk_text_view_drag_data_received (BtkWidget        *widget,
                                                       text_view->editable);
           else
             {
-              gchar *str;
+              bchar *str;
 
               str = btk_text_iter_get_visible_text (&start, &end);
               btk_text_buffer_insert_interactive (buffer,
@@ -7086,13 +7086,13 @@ btk_text_view_drag_data_received (BtkWidget        *widget,
   else if (selection_data->length > 0 &&
            info == BTK_TEXT_BUFFER_TARGET_INFO_RICH_TEXT)
     {
-      gboolean retval;
+      bboolean retval;
       GError *error = NULL;
 
       retval = btk_text_buffer_deserialize (buffer, buffer,
                                             selection_data->target,
                                             &drop_point,
-                                            (guint8 *) selection_data->data,
+                                            (buint8 *) selection_data->data,
                                             selection_data->length,
                                             &error);
 
@@ -7184,7 +7184,7 @@ btk_text_view_set_scroll_adjustments (BtkTextView   *text_view,
                                       BtkAdjustment *hadj,
                                       BtkAdjustment *vadj)
 {
-  gboolean need_adjust = FALSE;
+  bboolean need_adjust = FALSE;
 
   if (hadj)
     g_return_if_fail (BTK_IS_ADJUSTMENT (hadj));
@@ -7256,7 +7256,7 @@ typedef struct
 
 static void
 adjust_allocation_recurse (BtkWidget *widget,
-			   gpointer   data)
+			   bpointer   data)
 {
   ScrollData *scroll_data = data;
 
@@ -7313,9 +7313,9 @@ btk_text_view_value_changed (BtkAdjustment *adj,
                              BtkTextView   *text_view)
 {
   BtkTextIter iter;
-  gint line_top;
-  gint dx = 0;
-  gint dy = 0;
+  bint line_top;
+  bint dx = 0;
+  bint dy = 0;
   
   /* Note that we oddly call this function with adj == NULL
    * sometimes
@@ -7323,13 +7323,13 @@ btk_text_view_value_changed (BtkAdjustment *adj,
   
   text_view->onscreen_validated = FALSE;
 
-  DV(g_print(">Scroll offset changed %s/%g, onscreen_validated = FALSE ("G_STRLOC")\n",
+  DV(g_print(">Scroll offset changed %s/%g, onscreen_validated = FALSE ("B_STRLOC")\n",
              adj == text_view->hadjustment ? "hadj" : adj == text_view->vadjustment ? "vadj" : "none",
              adj ? adj->value : 0.0));
   
   if (adj == text_view->hadjustment)
     {
-      dx = text_view->xoffset - (gint)adj->value;
+      dx = text_view->xoffset - (bint)adj->value;
       text_view->xoffset = adj->value;
 
       /* If the change is due to a size change we need 
@@ -7346,7 +7346,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
     }
   else if (adj == text_view->vadjustment)
     {
-      dy = text_view->yoffset - (gint)adj->value;
+      dy = text_view->yoffset - (bint)adj->value;
       text_view->yoffset = adj->value;
 
       if (text_view->layout)
@@ -7400,7 +7400,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
           if (child->anchor)
             adjust_allocation (child->widget, dx, dy);
           
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
@@ -7426,7 +7426,7 @@ btk_text_view_value_changed (BtkAdjustment *adj,
   /* process exposes */
   if (btk_widget_get_realized (BTK_WIDGET (text_view)))
     {
-      DV (g_print ("Processing updates (%s)\n", G_STRLOC));
+      DV (g_print ("Processing updates (%s)\n", B_STRLOC));
       
       if (text_view->left_window)
         bdk_window_process_updates (text_view->left_window->bin_window, TRUE);
@@ -7455,12 +7455,12 @@ btk_text_view_value_changed (BtkAdjustment *adj,
    */
   btk_text_view_update_im_spot_location (text_view);
   
-  DV(g_print(">End scroll offset changed handler ("G_STRLOC")\n"));
+  DV(g_print(">End scroll offset changed handler ("B_STRLOC")\n"));
 }
 
 static void
 btk_text_view_commit_handler (BtkIMContext  *context,
-                              const gchar   *str,
+                              const bchar   *str,
                               BtkTextView   *text_view)
 {
   btk_text_view_commit_text (text_view, str);
@@ -7468,9 +7468,9 @@ btk_text_view_commit_handler (BtkIMContext  *context,
 
 static void
 btk_text_view_commit_text (BtkTextView   *text_view,
-                           const gchar   *str)
+                           const bchar   *str)
 {
-  gboolean had_selection;
+  bboolean had_selection;
   
   btk_text_buffer_begin_user_action (get_buffer (text_view));
 
@@ -7511,7 +7511,7 @@ btk_text_view_commit_text (BtkTextView   *text_view,
   btk_text_buffer_end_user_action (get_buffer (text_view));
 
   btk_text_view_set_virtual_cursor_pos (text_view, -1, -1);
-  DV(g_print (G_STRLOC": scrolling onscreen\n"));
+  DV(g_print (B_STRLOC": scrolling onscreen\n"));
   btk_text_view_scroll_mark_onscreen (text_view,
                                       btk_text_buffer_get_insert (get_buffer (text_view)));
 }
@@ -7520,9 +7520,9 @@ static void
 btk_text_view_preedit_changed_handler (BtkIMContext *context,
 				       BtkTextView  *text_view)
 {
-  gchar *str;
+  bchar *str;
   BangoAttrList *attrs;
-  gint cursor_pos;
+  bint cursor_pos;
   BtkTextIter iter;
 
   btk_text_buffer_get_iter_at_mark (text_view->buffer, &iter,
@@ -7553,14 +7553,14 @@ out:
   g_free (str);
 }
 
-static gboolean
+static bboolean
 btk_text_view_retrieve_surrounding_handler (BtkIMContext  *context,
 					    BtkTextView   *text_view)
 {
   BtkTextIter start;
   BtkTextIter end;
-  gint pos;
-  gchar *text;
+  bint pos;
+  bchar *text;
 
   btk_text_buffer_get_iter_at_mark (text_view->buffer, &start,
 				    btk_text_buffer_get_insert (text_view->buffer));
@@ -7577,10 +7577,10 @@ btk_text_view_retrieve_surrounding_handler (BtkIMContext  *context,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_text_view_delete_surrounding_handler (BtkIMContext  *context,
-					  gint           offset,
-					  gint           n_chars,
+					  bint           offset,
+					  bint           n_chars,
 					  BtkTextView   *text_view)
 {
   BtkTextIter start;
@@ -7603,10 +7603,10 @@ static void
 btk_text_view_mark_set_handler (BtkTextBuffer     *buffer,
                                 const BtkTextIter *location,
                                 BtkTextMark       *mark,
-                                gpointer           data)
+                                bpointer           data)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (data);
-  gboolean need_reset = FALSE;
+  bboolean need_reset = FALSE;
 
   if (mark == btk_text_buffer_get_insert (buffer))
     {
@@ -7626,8 +7626,8 @@ btk_text_view_mark_set_handler (BtkTextBuffer     *buffer,
 
 static void
 btk_text_view_target_list_notify (BtkTextBuffer    *buffer,
-                                  const GParamSpec *pspec,
-                                  gpointer          data)
+                                  const BParamSpec *pspec,
+                                  bpointer          data)
 {
   BtkWidget     *widget = BTK_WIDGET (data);
   BtkTargetList *view_list;
@@ -7682,8 +7682,8 @@ btk_text_view_get_cursor_location  (BtkTextView   *text_view,
 static void
 btk_text_view_get_virtual_cursor_pos (BtkTextView *text_view,
                                       BtkTextIter *cursor,
-                                      gint        *x,
-                                      gint        *y)
+                                      bint        *x,
+                                      bint        *y)
 {
   BtkTextIter insert;
   BdkRectangle pos;
@@ -7717,8 +7717,8 @@ btk_text_view_get_virtual_cursor_pos (BtkTextView *text_view,
 
 static void
 btk_text_view_set_virtual_cursor_pos (BtkTextView *text_view,
-                                      gint         x,
-                                      gint         y)
+                                      bint         x,
+                                      bint         y)
 {
   BdkRectangle pos;
 
@@ -7738,20 +7738,20 @@ static void
 activate_cb (BtkWidget   *menuitem,
 	     BtkTextView *text_view)
 {
-  const gchar *signal = g_object_get_data (G_OBJECT (menuitem), "btk-signal");
+  const bchar *signal = g_object_get_data (B_OBJECT (menuitem), "btk-signal");
   g_signal_emit_by_name (text_view, signal);
 }
 
 static void
 append_action_signal (BtkTextView  *text_view,
 		      BtkWidget    *menu,
-		      const gchar  *stock_id,
-		      const gchar  *signal,
-                      gboolean      sensitive)
+		      const bchar  *stock_id,
+		      const bchar  *signal,
+                      bboolean      sensitive)
 {
   BtkWidget *menuitem = btk_image_menu_item_new_from_stock (stock_id, NULL);
 
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-signal"), (char *)signal);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (activate_cb), text_view);
 
@@ -7763,7 +7763,7 @@ append_action_signal (BtkTextView  *text_view,
 
 static void
 btk_text_view_select_all (BtkWidget *widget,
-			  gboolean select)
+			  bboolean select)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (widget);
   BtkTextBuffer *buffer;
@@ -7806,20 +7806,20 @@ popup_menu_detach (BtkWidget *attach_widget,
 
 static void
 popup_position_func (BtkMenu   *menu,
-                     gint      *x,
-                     gint      *y,
-                     gboolean  *push_in,
-                     gpointer	user_data)
+                     bint      *x,
+                     bint      *y,
+                     bboolean  *push_in,
+                     bpointer	user_data)
 {
   BtkTextView *text_view;
   BtkWidget *widget;
   BdkRectangle cursor_rect;
   BdkRectangle onscreen_rect;
-  gint root_x, root_y;
+  bint root_x, root_y;
   BtkTextIter iter;
   BtkRequisition req;      
   BdkScreen *screen;
-  gint monitor_num;
+  bint monitor_num;
   BdkRectangle monitor;
       
   text_view = BTK_TEXT_VIEW (user_data);
@@ -7881,14 +7881,14 @@ popup_position_func (BtkMenu   *menu,
 typedef struct
 {
   BtkTextView *text_view;
-  gint button;
-  guint time;
+  bint button;
+  buint time;
 } PopupInfo;
 
-static gboolean
+static bboolean
 range_contains_editable_text (const BtkTextIter *start,
                               const BtkTextIter *end,
-                              gboolean default_editability)
+                              bboolean default_editability)
 {
   BtkTextIter iter = *start;
 
@@ -7905,7 +7905,7 @@ range_contains_editable_text (const BtkTextIter *start,
 
 static void
 unichar_chosen_func (const char *text,
-                     gpointer    data)
+                     bpointer    data)
 {
   BtkTextView *text_view = BTK_TEXT_VIEW (data);
 
@@ -7915,7 +7915,7 @@ unichar_chosen_func (const char *text,
 static void
 popup_targets_received (BtkClipboard     *clipboard,
 			BtkSelectionData *data,
-			gpointer          user_data)
+			bpointer          user_data)
 {
   PopupInfo *info = user_data;
   BtkTextView *text_view = info->text_view;
@@ -7925,15 +7925,15 @@ popup_targets_received (BtkClipboard     *clipboard,
       /* We implicitely rely here on the fact that if we are pasting ourself, we'll
        * have text targets as well as the private BTK_TEXT_BUFFER_CONTENTS target.
        */
-      gboolean clipboard_contains_text;
+      bboolean clipboard_contains_text;
       BtkWidget *menuitem;
       BtkWidget *submenu;
-      gboolean have_selection;
-      gboolean can_insert;
+      bboolean have_selection;
+      bboolean can_insert;
       BtkTextIter iter;
       BtkTextIter sel_start, sel_end;
-      gboolean show_input_method_menu;
-      gboolean show_unicode_menu;
+      bboolean show_input_method_menu;
+      bboolean show_unicode_menu;
       
       clipboard_contains_text = btk_selection_data_targets_include_text (data);
 
@@ -8077,7 +8077,7 @@ btk_text_view_do_popup (BtkTextView    *text_view,
 				  info);
 }
 
-static gboolean
+static bboolean
 btk_text_view_popup_menu (BtkWidget *widget)
 {
   btk_text_view_do_popup (BTK_TEXT_VIEW (widget), NULL);  
@@ -8090,8 +8090,8 @@ btk_text_view_popup_menu (BtkWidget *widget)
 static BtkTextWindow*
 text_window_new (BtkTextWindowType  type,
                  BtkWidget         *widget,
-                 gint               width_request,
-                 gint               height_request)
+                 bint               width_request,
+                 bint               height_request)
 {
   BtkTextWindow *win;
 
@@ -8125,7 +8125,7 @@ text_window_realize (BtkTextWindow *win,
                      BtkWidget     *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   BdkCursor *cursor;
 
   attributes.window_type = BDK_WINDOW_CHILD;
@@ -8194,11 +8194,11 @@ text_window_realize (BtkTextWindow *win,
                                  &widget->style->bg[btk_widget_get_state (widget)]);
     }
 
-  g_object_set_qdata (G_OBJECT (win->window),
+  g_object_set_qdata (B_OBJECT (win->window),
                       g_quark_from_static_string ("btk-text-view-text-window"),
                       win);
 
-  g_object_set_qdata (G_OBJECT (win->bin_window),
+  g_object_set_qdata (B_OBJECT (win->bin_window),
                       g_quark_from_static_string ("btk-text-view-text-window"),
                       win);
 }
@@ -8239,8 +8239,8 @@ text_window_size_allocate (BtkTextWindow *win,
 
 static void
 text_window_scroll        (BtkTextWindow *win,
-                           gint           dx,
-                           gint           dy)
+                           bint           dx,
+                           bint           dy)
 {
   if (dx != 0 || dy != 0)
     {
@@ -8284,7 +8284,7 @@ text_window_invalidate_rect (BtkTextWindow *win,
       break;
 
     default:
-      g_warning ("%s: bug!", G_STRFUNC);
+      g_warning ("%s: bug!", B_STRFUNC);
       return;
       break;
     }
@@ -8309,10 +8309,10 @@ text_window_invalidate_cursors (BtkTextWindow *win)
   BtkTextIter  iter;
   BdkRectangle strong;
   BdkRectangle weak;
-  gboolean     draw_arrow;
-  gfloat       cursor_aspect_ratio;
-  gint         stem_width;
-  gint         arrow_width;
+  bboolean     draw_arrow;
+  bfloat       cursor_aspect_ratio;
+  bint         stem_width;
+  bint         arrow_width;
 
   btk_text_buffer_get_iter_at_mark (text_view->buffer, &iter,
                                     btk_text_buffer_get_insert (text_view->buffer));
@@ -8377,13 +8377,13 @@ text_window_invalidate_cursors (BtkTextWindow *win)
     }
 }
 
-static gint
+static bint
 text_window_get_width (BtkTextWindow *win)
 {
   return win->allocation.width;
 }
 
-static gint
+static bint
 text_window_get_height (BtkTextWindow *win)
 {
   return win->allocation.height;
@@ -8451,12 +8451,12 @@ btk_text_view_get_window (BtkTextView *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: You can't get BTK_TEXT_WINDOW_PRIVATE, it has \"PRIVATE\" in the name because it is private.", G_STRFUNC);
+      g_warning ("%s: You can't get BTK_TEXT_WINDOW_PRIVATE, it has \"PRIVATE\" in the name because it is private.", B_STRFUNC);
       return NULL;
       break;
     }
 
-  g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+  g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
   return NULL;
 }
 
@@ -8484,7 +8484,7 @@ btk_text_view_get_window_type (BtkTextView *text_view,
   if (window == BTK_WIDGET (text_view)->window)
     return BTK_TEXT_WINDOW_WIDGET;
 
-  win = g_object_get_qdata (G_OBJECT (window),
+  win = g_object_get_qdata (B_OBJECT (window),
                             g_quark_try_string ("btk-text-view-text-window"));
 
   if (win)
@@ -8497,10 +8497,10 @@ btk_text_view_get_window_type (BtkTextView *text_view,
 
 static void
 buffer_to_widget (BtkTextView      *text_view,
-                  gint              buffer_x,
-                  gint              buffer_y,
-                  gint             *window_x,
-                  gint             *window_y)
+                  bint              buffer_x,
+                  bint              buffer_y,
+                  bint             *window_x,
+                  bint             *window_y)
 {  
   if (window_x)
     {
@@ -8517,10 +8517,10 @@ buffer_to_widget (BtkTextView      *text_view,
 
 static void
 widget_to_text_window (BtkTextWindow *win,
-                       gint           widget_x,
-                       gint           widget_y,
-                       gint          *window_x,
-                       gint          *window_y)
+                       bint           widget_x,
+                       bint           widget_y,
+                       bint          *window_x,
+                       bint          *window_y)
 {
   if (window_x)
     *window_x = widget_x - win->allocation.x;
@@ -8532,10 +8532,10 @@ widget_to_text_window (BtkTextWindow *win,
 static void
 buffer_to_text_window (BtkTextView   *text_view,
                        BtkTextWindow *win,
-                       gint           buffer_x,
-                       gint           buffer_y,
-                       gint          *window_x,
-                       gint          *window_y)
+                       bint           buffer_x,
+                       bint           buffer_y,
+                       bint          *window_x,
+                       bint          *window_y)
 {
   if (win == NULL)
     {
@@ -8573,10 +8573,10 @@ buffer_to_text_window (BtkTextView   *text_view,
 void
 btk_text_view_buffer_to_window_coords (BtkTextView      *text_view,
                                        BtkTextWindowType win,
-                                       gint              buffer_x,
-                                       gint              buffer_y,
-                                       gint             *window_x,
-                                       gint             *window_y)
+                                       bint              buffer_x,
+                                       bint              buffer_y,
+                                       bint             *window_x,
+                                       bint             *window_y)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -8624,21 +8624,21 @@ btk_text_view_buffer_to_window_coords (BtkTextView      *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: can't get coords for private windows", G_STRFUNC);
+      g_warning ("%s: can't get coords for private windows", B_STRFUNC);
       break;
 
     default:
-      g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+      g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
       break;
     }
 }
 
 static void
 widget_to_buffer (BtkTextView *text_view,
-                  gint         widget_x,
-                  gint         widget_y,
-                  gint        *buffer_x,
-                  gint        *buffer_y)
+                  bint         widget_x,
+                  bint         widget_y,
+                  bint        *buffer_x,
+                  bint        *buffer_y)
 {  
   if (buffer_x)
     {
@@ -8655,10 +8655,10 @@ widget_to_buffer (BtkTextView *text_view,
 
 static void
 text_window_to_widget (BtkTextWindow *win,
-                       gint           window_x,
-                       gint           window_y,
-                       gint          *widget_x,
-                       gint          *widget_y)
+                       bint           window_x,
+                       bint           window_y,
+                       bint          *widget_x,
+                       bint          *widget_y)
 {
   if (widget_x)
     *widget_x = window_x + win->allocation.x;
@@ -8670,10 +8670,10 @@ text_window_to_widget (BtkTextWindow *win,
 static void
 text_window_to_buffer (BtkTextView   *text_view,
                        BtkTextWindow *win,
-                       gint           window_x,
-                       gint           window_y,
-                       gint          *buffer_x,
-                       gint          *buffer_y)
+                       bint           window_x,
+                       bint           window_y,
+                       bint          *buffer_x,
+                       bint          *buffer_y)
 {
   if (win == NULL)
     {
@@ -8713,10 +8713,10 @@ text_window_to_buffer (BtkTextView   *text_view,
 void
 btk_text_view_window_to_buffer_coords (BtkTextView      *text_view,
                                        BtkTextWindowType win,
-                                       gint              window_x,
-                                       gint              window_y,
-                                       gint             *buffer_x,
-                                       gint             *buffer_y)
+                                       bint              window_x,
+                                       bint              window_y,
+                                       bint             *buffer_x,
+                                       bint             *buffer_y)
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
 
@@ -8764,18 +8764,18 @@ btk_text_view_window_to_buffer_coords (BtkTextView      *text_view,
       break;
 
     case BTK_TEXT_WINDOW_PRIVATE:
-      g_warning ("%s: can't get coords for private windows", G_STRFUNC);
+      g_warning ("%s: can't get coords for private windows", B_STRFUNC);
       break;
 
     default:
-      g_warning ("%s: Unknown BtkTextWindowType", G_STRFUNC);
+      g_warning ("%s: Unknown BtkTextWindowType", B_STRFUNC);
       break;
     }
 }
 
 static void
 set_window_width (BtkTextView      *text_view,
-                  gint              width,
+                  bint              width,
                   BtkTextWindowType type,
                   BtkTextWindow   **winp)
 {
@@ -8814,7 +8814,7 @@ set_window_width (BtkTextView      *text_view,
 
 static void
 set_window_height (BtkTextView      *text_view,
-                   gint              height,
+                   bint              height,
                    BtkTextWindowType type,
                    BtkTextWindow   **winp)
 {
@@ -8868,7 +8868,7 @@ set_window_height (BtkTextView      *text_view,
 void
 btk_text_view_set_border_window_size (BtkTextView      *text_view,
                                       BtkTextWindowType type,
-                                      gint              size)
+                                      bint              size)
 
 {
   g_return_if_fail (BTK_IS_TEXT_VIEW (text_view));
@@ -8912,7 +8912,7 @@ btk_text_view_set_border_window_size (BtkTextView      *text_view,
  *
  * Return value: width of window
  **/
-gint
+bint
 btk_text_view_get_border_window_size (BtkTextView       *text_view,
 				      BtkTextWindowType  type)
 {
@@ -8971,7 +8971,7 @@ text_view_child_new_anchored (BtkWidget          *child,
   g_object_ref (vc->widget);
   g_object_ref (vc->anchor);
 
-  g_object_set_data (G_OBJECT (child),
+  g_object_set_data (B_OBJECT (child),
                      I_("btk-text-view-child"),
                      vc);
 
@@ -8983,8 +8983,8 @@ text_view_child_new_anchored (BtkWidget          *child,
 static BtkTextViewChild*
 text_view_child_new_window (BtkWidget          *child,
                             BtkTextWindowType   type,
-                            gint                x,
-                            gint                y)
+                            bint                x,
+                            bint                y)
 {
   BtkTextViewChild *vc;
 
@@ -9002,7 +9002,7 @@ text_view_child_new_window (BtkWidget          *child,
   vc->x = x;
   vc->y = y;
 
-  g_object_set_data (G_OBJECT (child),
+  g_object_set_data (B_OBJECT (child),
                      I_("btk-text-view-child"),
                      vc);
   
@@ -9012,7 +9012,7 @@ text_view_child_new_window (BtkWidget          *child,
 static void
 text_view_child_free (BtkTextViewChild *child)
 {
-  g_object_set_data (G_OBJECT (child->widget),
+  g_object_set_data (B_OBJECT (child->widget),
                      I_("btk-text-view-child"), NULL);
 
   if (child->anchor)
@@ -9047,7 +9047,7 @@ static void
 add_child (BtkTextView      *text_view,
            BtkTextViewChild *vc)
 {
-  text_view->children = g_slist_prepend (text_view->children,
+  text_view->children = b_slist_prepend (text_view->children,
                                          vc);
 
   if (btk_widget_get_realized (BTK_WIDGET (text_view)))
@@ -9116,8 +9116,8 @@ void
 btk_text_view_add_child_in_window (BtkTextView       *text_view,
                                    BtkWidget         *child,
                                    BtkTextWindowType  which_window,
-                                   gint               xpos,
-                                   gint               ypos)
+                                   bint               xpos,
+                                   bint               ypos)
 {
   BtkTextViewChild *vc;
 
@@ -9146,8 +9146,8 @@ btk_text_view_add_child_in_window (BtkTextView       *text_view,
 void
 btk_text_view_move_child (BtkTextView *text_view,
                           BtkWidget   *child,
-                          gint         xpos,
-                          gint         ypos)
+                          bint         xpos,
+                          bint         ypos)
 {
   BtkTextViewChild *vc;
 
@@ -9155,7 +9155,7 @@ btk_text_view_move_child (BtkTextView *text_view,
   g_return_if_fail (BTK_IS_WIDGET (child));
   g_return_if_fail (child->parent == (BtkWidget*) text_view);
 
-  vc = g_object_get_data (G_OBJECT (child),
+  vc = g_object_get_data (B_OBJECT (child),
                           "btk-text-view-child");
 
   g_assert (vc != NULL);
@@ -9191,7 +9191,7 @@ btk_text_view_move_child (BtkTextView *text_view,
  * 
  * Return value: %TRUE if @iter was moved and is not on the end iterator
  **/
-gboolean
+bboolean
 btk_text_view_forward_display_line (BtkTextView *text_view,
                                     BtkTextIter *iter)
 {
@@ -9219,7 +9219,7 @@ btk_text_view_forward_display_line (BtkTextView *text_view,
  * 
  * Return value: %TRUE if @iter was moved and is not on the end iterator
  **/
-gboolean
+bboolean
 btk_text_view_backward_display_line (BtkTextView *text_view,
                                      BtkTextIter *iter)
 {
@@ -9247,7 +9247,7 @@ btk_text_view_backward_display_line (BtkTextView *text_view,
  * 
  * Return value: %TRUE if @iter was moved and is not on the end iterator
  **/
-gboolean
+bboolean
 btk_text_view_forward_display_line_end (BtkTextView *text_view,
                                         BtkTextIter *iter)
 {
@@ -9275,7 +9275,7 @@ btk_text_view_forward_display_line_end (BtkTextView *text_view,
  * 
  * Return value: %TRUE if @iter was moved and is not on the end iterator
  **/
-gboolean
+bboolean
 btk_text_view_backward_display_line_start (BtkTextView *text_view,
                                            BtkTextIter *iter)
 {
@@ -9298,7 +9298,7 @@ btk_text_view_backward_display_line_start (BtkTextView *text_view,
  * 
  * Return value: %TRUE if @iter begins a wrapped line
  **/
-gboolean
+bboolean
 btk_text_view_starts_display_line (BtkTextView       *text_view,
                                    const BtkTextIter *iter)
 {
@@ -9331,10 +9331,10 @@ btk_text_view_starts_display_line (BtkTextView       *text_view,
  * 
  * Return value: %TRUE if @iter moved and is not on the end iterator
  **/
-gboolean
+bboolean
 btk_text_view_move_visually (BtkTextView *text_view,
                              BtkTextIter *iter,
-                             gint         count)
+                             bint         count)
 {
   g_return_val_if_fail (BTK_IS_TEXT_VIEW (text_view), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);

@@ -60,7 +60,7 @@ static BtkWidget *da;
 
 
 /* Loads the images for the demo and returns whether the operation succeeded */
-static gboolean
+static bboolean
 load_pixbufs (void)
 {
 	int i;
@@ -86,8 +86,8 @@ load_pixbufs (void)
 }
 
 /* Expose callback for the drawing area */
-static gint
-expose_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
+static bint
+expose_cb (BtkWidget *widget, BdkEventExpose *event, bpointer data)
 {
         bairo_t *cr;
          
@@ -106,8 +106,8 @@ expose_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
 static int frame_num;
 
 /* Timeout handler to regenerate the frame */
-static gint
-timeout (gpointer data)
+static bint
+timeout (bpointer data)
 {
 	double f;
 	int i;
@@ -175,11 +175,11 @@ timeout (gpointer data)
 	return TRUE;
 }
 
-static guint timeout_id;
+static buint timeout_id;
 
 /* Destroy handler for the window */
 static void
-destroy_cb (BtkObject *object, gpointer data)
+destroy_cb (BtkObject *object, bpointer data)
 {
 	g_source_remove (timeout_id);
 	timeout_id = 0;

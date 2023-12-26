@@ -32,7 +32,7 @@ do_builder (BtkWidget *do_widget)
 {
   static BtkWidget *window = NULL;
   GError *err = NULL;
-  gchar *filename;
+  bchar *filename;
   
   if (!window)
     {

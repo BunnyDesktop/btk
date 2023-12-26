@@ -48,10 +48,10 @@
 
 static void bdk_pixmap_impl_directfb_init       (BdkPixmapImplDirectFB      *pixmap);
 static void bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass);
-static void bdk_pixmap_impl_directfb_finalize   (GObject                    *object);
+static void bdk_pixmap_impl_directfb_finalize   (BObject                    *object);
 
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 G_DEFINE_TYPE (BdkPixmapImplDirectFB,
                bdk_pixmap_impl_directfb,
@@ -74,7 +74,7 @@ bdk_pixmap_impl_directfb_init (BdkPixmapImplDirectFB *impl)
 static void
 bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -82,17 +82,17 @@ bdk_pixmap_impl_directfb_class_init (BdkPixmapImplDirectFBClass *klass)
 }
 
 static void
-bdk_pixmap_impl_directfb_finalize (GObject *object)
+bdk_pixmap_impl_directfb_finalize (BObject *object)
 {
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 BdkPixmap *
 _bdk_pixmap_new (BdkDrawable *drawable,
-                 gint       width,
-                 gint       height,
-                 gint       depth)
+                 bint       width,
+                 bint       height,
+                 bint       depth)
 {
   DFBSurfacePixelFormat    format;
   IDirectFBSurface        *surface;
@@ -136,7 +136,7 @@ _bdk_pixmap_new (BdkDrawable *drawable,
       format = DSPF_RGB32;
       break;
     default:
-      g_message ("unimplemented %s for depth %d", G_STRFUNC, depth);
+      g_message ("unimplemented %s for depth %d", B_STRFUNC, depth);
       return NULL;
     }
 
@@ -162,9 +162,9 @@ _bdk_pixmap_new (BdkDrawable *drawable,
 
 BdkPixmap *
 _bdk_bitmap_create_from_data (BdkDrawable *drawable,
-                              const gchar *data,
-                              gint         width,
-                              gint         height)
+                              const bchar *data,
+                              bint         width,
+                              bint         height)
 {
   BdkPixmap *pixmap;
 
@@ -182,8 +182,8 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
   if (pixmap)
     {
-      guchar *dst;
-      gint    pitch;
+      buchar *dst;
+      bint    pitch;
 
       IDirectFBSurface *surface;
 
@@ -191,7 +191,7 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
       if (surface->Lock (surface, DSLF_WRITE, (void**)(&dst), &pitch) == DFB_OK)
         {
-          gint i, j;
+          bint i, j;
 
           for (i = 0; i < height; i++)
             {
@@ -215,10 +215,10 @@ _bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
 BdkPixmap *
 _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
-                              const gchar    *data,
-                              gint            width,
-                              gint            height,
-                              gint            depth,
+                              const bchar    *data,
+                              bint            width,
+                              bint            height,
+                              bint            depth,
                               const BdkColor *fg,
                               const BdkColor *bg)
 {
@@ -237,9 +237,9 @@ _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
   if (pixmap)
     {
       IDirectFBSurface *surface;
-      gchar            *dst;
-      gint              pitch;
-      gint              src_pitch;
+      bchar            *dst;
+      bint              pitch;
+      bint              src_pitch;
 
       depth = bdk_drawable_get_depth (pixmap);
       src_pitch = width * ((depth + 7) / 8);
@@ -249,7 +249,7 @@ _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
       if (surface->Lock (surface,
                          DSLF_WRITE, (void**)(&dst), &pitch) == DFB_OK)
         {
-          gint i;
+          bint i;
 
           for (i = 0; i < height; i++)
             {
@@ -281,9 +281,9 @@ bdk_pixmap_foreign_new_for_display (BdkDisplay *display, BdkNativeWindow anid)
 BdkPixmap *
 bdk_pixmap_foreign_new_for_screen (BdkScreen       *screen,
                                    BdkNativeWindow  anid,
-                                   gint             width,
-                                   gint             height,
-                                   gint             depth)
+                                   bint             width,
+                                   bint             height,
+                                   bint             depth)
 {
   /*Use the root drawable for now since only one screen */
   return bdk_pixmap_new (NULL, width, height, depth);

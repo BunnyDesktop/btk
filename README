@@ -135,7 +135,7 @@ Release notes for 2.12
   since 2.6 anyway.
 
 * The BtkTextBufferTargetInfo enumeration values have been changed from
-  G_MAXUINT-0, G_MAXUINT-1, G_MAXUINT-2, etc, to -1, -2, -3 to stay within
+  B_MAXUINT-0, B_MAXUINT-1, B_MAXUINT-2, etc, to -1, -2, -3 to stay within
   ANSI C limits.
 
 * A change in the handling of _NET_WM_USER_TIME properties on toplevel
@@ -250,7 +250,7 @@ Release notes for 2.10
   btk_range_set_[upper/lower]_stepper_sensitivity() functions to
   prevent the arrows from being rendered insensitive.
 
-* BtkObject now uses the "floating reference" support in GObject. 
+* BtkObject now uses the "floating reference" support in BObject. 
   BTK_OBJECT_IS_FLOATING() will still work, but direct checking
   of the BTK_FLOATING flag will no longer detect the floating 
   reference. Details about floating references can be found in the docs:

@@ -88,22 +88,22 @@ btk_test_init (int    *argcp,
 
 static GSList*
 test_find_widget_input_windows (BtkWidget *widget,
-                                gboolean   input_only)
+                                bboolean   input_only)
 {
   GList *node, *children;
   GSList *matches = NULL;
-  gpointer udata;
+  bpointer udata;
   bdk_window_get_user_data (widget->window, &udata);
   if (udata == widget && (!input_only || (BDK_IS_WINDOW (widget->window) && BDK_WINDOW_OBJECT (widget->window)->input_only)))
-    matches = g_slist_prepend (matches, widget->window);
+    matches = b_slist_prepend (matches, widget->window);
   children = bdk_window_get_children (btk_widget_get_parent_window (widget));
   for (node = children; node; node = node->next)
     {
       bdk_window_get_user_data (node->data, &udata);
       if (udata == widget && (!input_only || (BDK_IS_WINDOW (node->data) && BDK_WINDOW_OBJECT (node->data)->input_only)))
-        matches = g_slist_prepend (matches, node->data);
+        matches = b_slist_prepend (matches, node->data);
     }
-  return g_slist_reverse (matches);
+  return b_slist_reverse (matches);
 }
 
 /**
@@ -124,12 +124,12 @@ test_find_widget_input_windows (BtkWidget *widget,
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_test_widget_send_key (BtkWidget      *widget,
-                          guint           keyval,
+                          buint           keyval,
                           BdkModifierType modifiers)
 {
-  gboolean k1res, k2res;
+  bboolean k1res, k2res;
   GSList *iwindows = test_find_widget_input_windows (widget, FALSE);
   if (!iwindows)
     iwindows = test_find_widget_input_windows (widget, TRUE);
@@ -137,7 +137,7 @@ btk_test_widget_send_key (BtkWidget      *widget,
     return FALSE;
   k1res = bdk_test_simulate_key (iwindows->data, -1, -1, keyval, modifiers, BDK_KEY_PRESS);
   k2res = bdk_test_simulate_key (iwindows->data, -1, -1, keyval, modifiers, BDK_KEY_RELEASE);
-  g_slist_free (iwindows);
+  b_slist_free (iwindows);
   return k1res && k2res;
 }
 
@@ -160,12 +160,12 @@ btk_test_widget_send_key (BtkWidget      *widget,
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_test_widget_click (BtkWidget      *widget,
-                       guint           button,
+                       buint           button,
                        BdkModifierType modifiers)
 {
-  gboolean b1res, b2res;
+  bboolean b1res, b2res;
   GSList *iwindows = test_find_widget_input_windows (widget, FALSE);
   if (!iwindows)
     iwindows = test_find_widget_input_windows (widget, TRUE);
@@ -173,7 +173,7 @@ btk_test_widget_click (BtkWidget      *widget,
     return FALSE;
   b1res = bdk_test_simulate_button (iwindows->data, -1, -1, button, modifiers, BDK_BUTTON_PRESS);
   b2res = bdk_test_simulate_button (iwindows->data, -1, -1, button, modifiers, BDK_BUTTON_RELEASE);
-  g_slist_free (iwindows);
+  b_slist_free (iwindows);
   return b1res && b2res;
 }
 
@@ -191,15 +191,15 @@ btk_test_widget_click (BtkWidget      *widget,
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_test_spin_button_click (BtkSpinButton  *spinner,
-                            guint           button,
-                            gboolean        upwards)
+                            buint           button,
+                            bboolean        upwards)
 {
-  gboolean b1res = FALSE, b2res = FALSE;
+  bboolean b1res = FALSE, b2res = FALSE;
   if (spinner->panel)
     {
-      gint width, height, pos;
+      bint width, height, pos;
       bdk_drawable_get_size (spinner->panel, &width, &height);
       pos = upwards ? 0 : height - 1;
       b1res = bdk_test_simulate_button (spinner->panel, width - 1, pos, button, 0, BDK_BUTTON_PRESS);
@@ -227,11 +227,11 @@ btk_test_spin_button_click (BtkSpinButton  *spinner,
  **/
 BtkWidget*
 btk_test_find_label (BtkWidget    *widget,
-                     const gchar  *label_pattern)
+                     const bchar  *label_pattern)
 {
   if (BTK_IS_LABEL (widget))
     {
-      const gchar *text = btk_label_get_text (BTK_LABEL (widget));
+      const bchar *text = btk_label_get_text (BTK_LABEL (widget));
       if (g_pattern_match_simple (label_pattern, text))
         return widget;
     }
@@ -259,7 +259,7 @@ test_list_descendants (BtkWidget *widget,
       GList *node, *list = btk_container_get_children (BTK_CONTAINER (widget));
       for (node = list; node; node = node->next)
         {
-          if (!widget_type || g_type_is_a (G_OBJECT_TYPE (node->data), widget_type))
+          if (!widget_type || g_type_is_a (B_OBJECT_TYPE (node->data), widget_type))
             results = g_list_prepend (results, node->data);
           else
             results = g_list_concat (results, test_list_descendants (node->data, widget_type));
@@ -277,10 +277,10 @@ widget_geo_dist (BtkWidget *a,
   int ax0, ay0, ax1, ay1, bx0, by0, bx1, by1, xdist = 0, ydist = 0;
   if (!btk_widget_translate_coordinates (a, base, 0, 0, &ax0, &ay0) ||
       !btk_widget_translate_coordinates (a, base, a->allocation.width, a->allocation.height, &ax1, &ay1))
-    return -G_MAXINT;
+    return -B_MAXINT;
   if (!btk_widget_translate_coordinates (b, base, 0, 0, &bx0, &by0) ||
       !btk_widget_translate_coordinates (b, base, b->allocation.width, b->allocation.height, &bx1, &by1))
-    return +G_MAXINT;
+    return +B_MAXINT;
   if (bx0 >= ax1)
     xdist = bx0 - ax1;
   else if (ax0 >= bx1)
@@ -295,9 +295,9 @@ widget_geo_dist (BtkWidget *a,
 static int
 widget_geo_cmp (gconstpointer a,
                 gconstpointer b,
-                gpointer      user_data)
+                bpointer      user_data)
 {
-  gpointer *data = user_data;
+  bpointer *data = user_data;
   BtkWidget *wa = (void*) a, *wb = (void*) b, *toplevel = data[0], *base_widget = data[1];
   int adist = widget_geo_dist (wa, base_widget, toplevel);
   int bdist = widget_geo_dist (wb, base_widget, toplevel);
@@ -327,7 +327,7 @@ btk_test_find_sibling (BtkWidget *base_widget,
 {
   GList *siblings = NULL;
   BtkWidget *tmpwidget = base_widget;
-  gpointer data[2];
+  bpointer data[2];
   /* find all sibling candidates */
   while (tmpwidget)
     {
@@ -365,7 +365,7 @@ btk_test_find_sibling (BtkWidget *base_widget,
  **/
 BtkWidget*
 btk_test_find_widget (BtkWidget    *widget,
-                      const gchar  *label_pattern,
+                      const bchar  *label_pattern,
                       GType         widget_type)
 {
   BtkWidget *label = btk_test_find_label (widget, label_pattern);
@@ -439,7 +439,7 @@ btk_test_slider_get_value (BtkWidget *widget)
  **/
 void
 btk_test_text_set (BtkWidget   *widget,
-                   const gchar *string)
+                   const bchar *string)
 {
   if (BTK_IS_LABEL (widget))
     btk_label_set_text (BTK_LABEL (widget), string);
@@ -467,7 +467,7 @@ btk_test_text_set (BtkWidget   *widget,
  *
  * Since: 2.14
  **/
-gchar*
+bchar*
 btk_test_text_get (BtkWidget *widget)
 {
   if (BTK_IS_LABEL (widget))
@@ -505,7 +505,7 @@ btk_test_text_get (BtkWidget *widget)
  */
 BtkWidget*
 btk_test_create_widget (GType        widget_type,
-                        const gchar *first_property_name,
+                        const bchar *first_property_name,
                         ...)
 {
   BtkWidget *widget;
@@ -562,8 +562,8 @@ test_increment_intp (int *intp)
  * Since: 2.14
  **/
 BtkWidget*
-btk_test_display_button_window (const gchar *window_title,
-                                const gchar *dialog_text,
+btk_test_display_button_window (const bchar *window_title,
+                                const bchar *dialog_text,
                                 ...) /* NULL terminated list of (label, &int) pairs */
 {
   va_list var_args;
@@ -604,8 +604,8 @@ btk_test_display_button_window (const gchar *window_title,
  * Since: 2.14
  **/
 BtkWidget*
-btk_test_create_simple_window (const gchar *window_title,
-                               const gchar *dialog_text)
+btk_test_create_simple_window (const bchar *window_title,
+                               const bchar *dialog_text)
 {
   BtkWidget *window = btk_test_create_widget (BTK_TYPE_WINDOW, "title", window_title, NULL);
   BtkWidget *vbox = btk_test_create_widget (BTK_TYPE_VBOX, "parent", window, NULL);
@@ -616,7 +616,7 @@ btk_test_create_simple_window (const gchar *window_title,
 }
 
 static GType *all_registered_types = NULL;
-static guint  n_all_registered_types = 0;
+static buint  n_all_registered_types = 0;
 
 /**
  * btk_test_list_all_types
@@ -630,7 +630,7 @@ static guint  n_all_registered_types = 0;
  * Since: 2.14
  **/
 const GType*
-btk_test_list_all_types (guint *n_types)
+btk_test_list_all_types (buint *n_types)
 {
   if (n_types)
     *n_types = n_all_registered_types;
@@ -651,7 +651,7 @@ btk_test_register_all_types (void)
 {
   if (!all_registered_types)
     {
-      const guint max_btk_types = 999;
+      const buint max_btk_types = 999;
       GType *tp;
       all_registered_types = g_new0 (GType, max_btk_types);
       tp = all_registered_types;

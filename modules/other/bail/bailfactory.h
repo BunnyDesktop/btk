@@ -29,7 +29,7 @@
 { \
   BatkObject *accessible; \
 \
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object, TYPE), NULL); \
+  g_return_val_if_fail (B_TYPE_CHECK_INSTANCE_TYPE (object, TYPE), NULL); \
 \
   accessible = g_object_new (BAIL_TYPE, NULL); \
   batk_object_initialize (accessible, object); \
@@ -46,7 +46,7 @@ type_name##_factory_get_accessible_type (void) \
 } \
 \
 static BatkObject* \
-type_name##_factory_create_accessible (GObject *object) \
+type_name##_factory_create_accessible (BObject *object) \
 {
 
 #define _BAIL_IMPLEMENT_FACTORY_END(BAIL_TYPE, TypeName, type_name) \
@@ -62,7 +62,7 @@ type_name##_factory_class_init (BatkObjectFactoryClass *klass) \
 GType \
 type_name##_factory_get_type (void) \
 { \
-  static volatile gsize g_define_type_id__volatile = 0; \
+  static volatile bsize g_define_type_id__volatile = 0; \
   if (g_once_init_enter (&g_define_type_id__volatile)) \
     { \
       GType g_define_type_id = \
@@ -97,7 +97,7 @@ _BAIL_IMPLEMENT_FACTORY_END (BAIL_TYPE, TypeName, type_name)
 #define BAIL_IMPLEMENT_FACTORY_WITH_FUNC_DUMMY(BAIL_TYPE, TypeName, type_name, TYPE, create_accessible) \
 _BAIL_IMPLEMENT_FACTORY_BEGIN (BAIL_TYPE, TypeName, type_name) \
 { \
-  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object, TYPE), NULL);\
+  g_return_val_if_fail (B_TYPE_CHECK_INSTANCE_TYPE (object, TYPE), NULL);\
   return create_accessible (); \
 } \
 _BAIL_IMPLEMENT_FACTORY_END (BAIL_TYPE, TypeName, type_name)

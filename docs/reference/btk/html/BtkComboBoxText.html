@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkComboBoxText.html#btk-combo-box-text-get-active-text" title="btk_combo_box_text_get_active_text ()">btk_combo_box_text_get_active_text</a> <span class="c_punctuation">()</span>
@@ -115,7 +115,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkComboBoxText.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -220,7 +220,7 @@ strings. The combo box created by this function has an entry.</p>
 <a name="btk-combo-box-text-append-text"></a><h3>btk_combo_box_text_append_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_combo_box_text_append_text (<em class="parameter"><code><a class="link" href="BtkComboBoxText.html" title="BtkComboBoxText"><span class="type">BtkComboBoxText</span></a> *combo_box</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Appends <em class="parameter"><code>string</code></em>
  to the list of strings stored in <em class="parameter"><code>combo_box</code></em>
 .</p>
@@ -253,8 +253,8 @@ btk_combo_box_text_append_text (<em class="parameter"><code><a class="link" href
 <a name="btk-combo-box-text-insert-text"></a><h3>btk_combo_box_text_insert_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_combo_box_text_insert_text (<em class="parameter"><code><a class="link" href="BtkComboBoxText.html" title="BtkComboBoxText"><span class="type">BtkComboBoxText</span></a> *combo_box</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> position</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> position</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Inserts <em class="parameter"><code>string</code></em>
  at <em class="parameter"><code>position</code></em>
  in the list of strings stored in <em class="parameter"><code>combo_box</code></em>
@@ -294,7 +294,7 @@ btk_combo_box_text_insert_text (<em class="parameter"><code><a class="link" href
 <a name="btk-combo-box-text-prepend-text"></a><h3>btk_combo_box_text_prepend_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_combo_box_text_prepend_text (<em class="parameter"><code><a class="link" href="BtkComboBoxText.html" title="BtkComboBoxText"><span class="type">BtkComboBoxText</span></a> *combo_box</code></em>,
-                                 <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Prepends <em class="parameter"><code>string</code></em>
  to the list of strings stored in <em class="parameter"><code>combo_box</code></em>
 .</p>
@@ -327,7 +327,7 @@ btk_combo_box_text_prepend_text (<em class="parameter"><code><a class="link" hre
 <a name="btk-combo-box-text-remove"></a><h3>btk_combo_box_text_remove ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_combo_box_text_remove (<em class="parameter"><code><a class="link" href="BtkComboBoxText.html" title="BtkComboBoxText"><span class="type">BtkComboBoxText</span></a> *combo_box</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Removes the string at <em class="parameter"><code>position</code></em>
  from <em class="parameter"><code>combo_box</code></em>
 .</p>
@@ -358,7 +358,7 @@ btk_combo_box_text_remove (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-combo-box-text-get-active-text"></a><h3>btk_combo_box_text_get_active_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 btk_combo_box_text_get_active_text (<em class="parameter"><code><a class="link" href="BtkComboBoxText.html" title="BtkComboBoxText"><span class="type">BtkComboBoxText</span></a> *combo_box</code></em>);</pre>
 <p>Returns the currently active string in <em class="parameter"><code>combo_box</code></em>
 , or <code class="literal">NULL</code>

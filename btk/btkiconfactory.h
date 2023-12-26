@@ -34,29 +34,29 @@
 #include <bdk/bdk.h>
 #include <btk/btkrc.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkIconFactoryClass BtkIconFactoryClass;
 
 #define BTK_TYPE_ICON_FACTORY              (btk_icon_factory_get_type ())
-#define BTK_ICON_FACTORY(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ICON_FACTORY, BtkIconFactory))
-#define BTK_ICON_FACTORY_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
-#define BTK_IS_ICON_FACTORY(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ICON_FACTORY))
-#define BTK_IS_ICON_FACTORY_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_FACTORY))
-#define BTK_ICON_FACTORY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
+#define BTK_ICON_FACTORY(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_ICON_FACTORY, BtkIconFactory))
+#define BTK_ICON_FACTORY_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
+#define BTK_IS_ICON_FACTORY(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_ICON_FACTORY))
+#define BTK_IS_ICON_FACTORY_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_FACTORY))
+#define BTK_ICON_FACTORY_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_FACTORY, BtkIconFactoryClass))
 #define BTK_TYPE_ICON_SET                  (btk_icon_set_get_type ())
 #define BTK_TYPE_ICON_SOURCE               (btk_icon_source_get_type ())
 
 struct _BtkIconFactory
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   GHashTable *GSEAL (icons);
 };
 
 struct _BtkIconFactoryClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -71,19 +71,19 @@ struct _BtkIconFactoryClass
 #define btk_icon_source_get_filename btk_icon_source_get_filename_utf8
 #endif
 
-GType           btk_icon_factory_get_type (void) G_GNUC_CONST;
+GType           btk_icon_factory_get_type (void) B_GNUC_CONST;
 BtkIconFactory* btk_icon_factory_new      (void);
 void            btk_icon_factory_add      (BtkIconFactory *factory,
-                                           const gchar    *stock_id,
+                                           const bchar    *stock_id,
                                            BtkIconSet     *icon_set);
 BtkIconSet*     btk_icon_factory_lookup   (BtkIconFactory *factory,
-                                           const gchar    *stock_id);
+                                           const bchar    *stock_id);
 
 /* Manage the default icon factory stack */
 
 void        btk_icon_factory_add_default     (BtkIconFactory  *factory);
 void        btk_icon_factory_remove_default  (BtkIconFactory  *factory);
-BtkIconSet* btk_icon_factory_lookup_default  (const gchar     *stock_id);
+BtkIconSet* btk_icon_factory_lookup_default  (const bchar     *stock_id);
 
 /* Get preferred real size from registered semantic size.  Note that
  * themes SHOULD use this size, but they aren't required to; for size
@@ -97,26 +97,26 @@ BtkIconSet* btk_icon_factory_lookup_default  (const gchar     *stock_id);
  */
 
 #ifndef BDK_MULTIHEAD_SAFE
-gboolean btk_icon_size_lookup              (BtkIconSize  size,
-					    gint        *width,
-					    gint        *height);
+bboolean btk_icon_size_lookup              (BtkIconSize  size,
+					    bint        *width,
+					    bint        *height);
 #endif /* BDK_MULTIHEAD_SAFE */
-gboolean btk_icon_size_lookup_for_settings (BtkSettings *settings,
+bboolean btk_icon_size_lookup_for_settings (BtkSettings *settings,
 					    BtkIconSize  size,
-					    gint        *width,
-					    gint        *height);
+					    bint        *width,
+					    bint        *height);
 
-BtkIconSize           btk_icon_size_register       (const gchar *name,
-                                                    gint         width,
-                                                    gint         height);
-void                  btk_icon_size_register_alias (const gchar *alias,
+BtkIconSize           btk_icon_size_register       (const bchar *name,
+                                                    bint         width,
+                                                    bint         height);
+void                  btk_icon_size_register_alias (const bchar *alias,
                                                     BtkIconSize  target);
-BtkIconSize           btk_icon_size_from_name      (const gchar *name);
-const gchar *         btk_icon_size_get_name       (BtkIconSize  size);
+BtkIconSize           btk_icon_size_from_name      (const bchar *name);
+const bchar *         btk_icon_size_get_name       (BtkIconSize  size);
 
 /* Icon sets */
 
-GType       btk_icon_set_get_type        (void) G_GNUC_CONST;
+GType       btk_icon_set_get_type        (void) B_GNUC_CONST;
 BtkIconSet* btk_icon_set_new             (void);
 BtkIconSet* btk_icon_set_new_from_pixbuf (BdkPixbuf       *pixbuf);
 
@@ -141,33 +141,33 @@ void           btk_icon_set_add_source   (BtkIconSet          *icon_set,
 
 void           btk_icon_set_get_sizes    (BtkIconSet          *icon_set,
                                           BtkIconSize        **sizes,
-                                          gint                *n_sizes);
+                                          bint                *n_sizes);
 
-GType          btk_icon_source_get_type                 (void) G_GNUC_CONST;
+GType          btk_icon_source_get_type                 (void) B_GNUC_CONST;
 BtkIconSource* btk_icon_source_new                      (void);
 BtkIconSource* btk_icon_source_copy                     (const BtkIconSource *source);
 void           btk_icon_source_free                     (BtkIconSource       *source);
 
 void           btk_icon_source_set_filename             (BtkIconSource       *source,
-                                                         const gchar         *filename);
+                                                         const bchar         *filename);
 void           btk_icon_source_set_icon_name            (BtkIconSource       *source,
-                                                         const gchar         *icon_name);
+                                                         const bchar         *icon_name);
 void           btk_icon_source_set_pixbuf               (BtkIconSource       *source,
                                                          BdkPixbuf           *pixbuf);
 
-const gchar* btk_icon_source_get_filename  (const BtkIconSource *source);
-const gchar* btk_icon_source_get_icon_name (const BtkIconSource *source);
+const bchar* btk_icon_source_get_filename  (const BtkIconSource *source);
+const bchar* btk_icon_source_get_icon_name (const BtkIconSource *source);
 BdkPixbuf*            btk_icon_source_get_pixbuf    (const BtkIconSource *source);
 
 void             btk_icon_source_set_direction_wildcarded (BtkIconSource       *source,
-                                                           gboolean             setting);
+                                                           bboolean             setting);
 void             btk_icon_source_set_state_wildcarded     (BtkIconSource       *source,
-                                                           gboolean             setting);
+                                                           bboolean             setting);
 void             btk_icon_source_set_size_wildcarded      (BtkIconSource       *source,
-                                                           gboolean             setting);
-gboolean         btk_icon_source_get_size_wildcarded      (const BtkIconSource *source);
-gboolean         btk_icon_source_get_state_wildcarded     (const BtkIconSource *source);
-gboolean         btk_icon_source_get_direction_wildcarded (const BtkIconSource *source);
+                                                           bboolean             setting);
+bboolean         btk_icon_source_get_size_wildcarded      (const BtkIconSource *source);
+bboolean         btk_icon_source_get_state_wildcarded     (const BtkIconSource *source);
+bboolean         btk_icon_source_get_direction_wildcarded (const BtkIconSource *source);
 void             btk_icon_source_set_direction            (BtkIconSource       *source,
                                                            BtkTextDirection     direction);
 void             btk_icon_source_set_state                (BtkIconSource       *source,
@@ -184,6 +184,6 @@ void _btk_icon_set_invalidate_caches (void);
 GList* _btk_icon_factory_list_ids (void);
 void _btk_icon_factory_ensure_default_icons (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ICON_FACTORY_H__ */

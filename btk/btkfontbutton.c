@@ -45,18 +45,18 @@
 #include <string.h>
 #include <stdio.h>
 
-#define BTK_FONT_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButtonPrivate))
+#define BTK_FONT_BUTTON_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButtonPrivate))
 
 struct _BtkFontButtonPrivate 
 {
-  gchar         *title;
+  bchar         *title;
   
-  gchar         *fontname;
+  bchar         *fontname;
   
-  guint         use_font : 1;
-  guint         use_size : 1;
-  guint         show_style : 1;
-  guint         show_size : 1;
+  buint         use_font : 1;
+  buint         use_size : 1;
+  buint         show_style : 1;
+  buint         show_size : 1;
    
   BtkWidget     *font_dialog;
   BtkWidget     *inside;
@@ -83,42 +83,42 @@ enum
 };
 
 /* Prototypes */
-static void btk_font_button_finalize               (GObject            *object);
-static void btk_font_button_get_property           (GObject            *object,
-                                                    guint               param_id,
-                                                    GValue             *value,
-                                                    GParamSpec         *pspec);
-static void btk_font_button_set_property           (GObject            *object,
-                                                    guint               param_id,
-                                                    const GValue       *value,
-                                                    GParamSpec         *pspec);
+static void btk_font_button_finalize               (BObject            *object);
+static void btk_font_button_get_property           (BObject            *object,
+                                                    buint               param_id,
+                                                    BValue             *value,
+                                                    BParamSpec         *pspec);
+static void btk_font_button_set_property           (BObject            *object,
+                                                    buint               param_id,
+                                                    const BValue       *value,
+                                                    BParamSpec         *pspec);
 
 static void btk_font_button_clicked                 (BtkButton         *button);
 
 /* Dialog response functions */
 static void dialog_ok_clicked                       (BtkWidget         *widget,
-                                                     gpointer           data);
+                                                     bpointer           data);
 static void dialog_cancel_clicked                   (BtkWidget         *widget,
-                                                     gpointer           data);
+                                                     bpointer           data);
 static void dialog_destroy                          (BtkWidget         *widget,
-                                                     gpointer           data);
+                                                     bpointer           data);
 
 /* Auxiliary functions */
 static BtkWidget *btk_font_button_create_inside     (BtkFontButton     *gfs);
 static void btk_font_button_label_use_font          (BtkFontButton     *gfs);
 static void btk_font_button_update_font_info        (BtkFontButton     *gfs);
 
-static guint font_button_signals[LAST_SIGNAL] = { 0 };
+static buint font_button_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkFontButton, btk_font_button, BTK_TYPE_BUTTON)
 
 static void
 btk_font_button_class_init (BtkFontButtonClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkButtonClass *button_class;
   
-  bobject_class = (GObjectClass *) klass;
+  bobject_class = (BObjectClass *) klass;
   button_class = (BtkButtonClass *) klass;
 
   bobject_class->finalize = btk_font_button_finalize;
@@ -241,12 +241,12 @@ btk_font_button_class_init (BtkFontButtonClass *klass)
    * Since: 2.4
    */
   font_button_signals[FONT_SET] = g_signal_new (I_("font-set"),
-                                                G_TYPE_FROM_CLASS (bobject_class),
+                                                B_TYPE_FROM_CLASS (bobject_class),
                                                 G_SIGNAL_RUN_FIRST,
                                                 G_STRUCT_OFFSET (BtkFontButtonClass, font_set),
                                                 NULL, NULL,
                                                 g_cclosure_marshal_VOID__VOID,
-                                                G_TYPE_NONE, 0);
+                                                B_TYPE_NONE, 0);
   
   g_type_class_add_private (bobject_class, sizeof (BtkFontButtonPrivate));
 }
@@ -273,7 +273,7 @@ btk_font_button_init (BtkFontButton *font_button)
 
 
 static void
-btk_font_button_finalize (GObject *object)
+btk_font_button_finalize (BObject *object)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (object);
 
@@ -287,73 +287,73 @@ btk_font_button_finalize (GObject *object)
   g_free (font_button->priv->title);
   font_button->priv->title = NULL;
   
-  G_OBJECT_CLASS (btk_font_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_font_button_parent_class)->finalize (object);
 }
 
 static void
-btk_font_button_set_property (GObject      *object,
-                              guint         param_id,
-                              const GValue *value,
-                              GParamSpec   *pspec)
+btk_font_button_set_property (BObject      *object,
+                              buint         param_id,
+                              const BValue *value,
+                              BParamSpec   *pspec)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (object);
   
   switch (param_id) 
     {
     case PROP_TITLE:
-      btk_font_button_set_title (font_button, g_value_get_string (value));
+      btk_font_button_set_title (font_button, b_value_get_string (value));
       break;
     case PROP_FONT_NAME:
-      btk_font_button_set_font_name (font_button, g_value_get_string (value));
+      btk_font_button_set_font_name (font_button, b_value_get_string (value));
       break;
     case PROP_USE_FONT:
-      btk_font_button_set_use_font (font_button, g_value_get_boolean (value));
+      btk_font_button_set_use_font (font_button, b_value_get_boolean (value));
       break;
     case PROP_USE_SIZE:
-      btk_font_button_set_use_size (font_button, g_value_get_boolean (value));
+      btk_font_button_set_use_size (font_button, b_value_get_boolean (value));
       break;
     case PROP_SHOW_STYLE:
-      btk_font_button_set_show_style (font_button, g_value_get_boolean (value));
+      btk_font_button_set_show_style (font_button, b_value_get_boolean (value));
       break;
     case PROP_SHOW_SIZE:
-      btk_font_button_set_show_size (font_button, g_value_get_boolean (value));
+      btk_font_button_set_show_size (font_button, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
   }
 }
 
 static void
-btk_font_button_get_property (GObject    *object,
-                              guint       param_id,
-                              GValue     *value,
-                              GParamSpec *pspec)
+btk_font_button_get_property (BObject    *object,
+                              buint       param_id,
+                              BValue     *value,
+                              BParamSpec *pspec)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (object);
   
   switch (param_id) 
     {
     case PROP_TITLE:
-      g_value_set_string (value, btk_font_button_get_title (font_button));
+      b_value_set_string (value, btk_font_button_get_title (font_button));
       break;
     case PROP_FONT_NAME:
-      g_value_set_string (value, btk_font_button_get_font_name (font_button));
+      b_value_set_string (value, btk_font_button_get_font_name (font_button));
       break;
     case PROP_USE_FONT:
-      g_value_set_boolean (value, btk_font_button_get_use_font (font_button));
+      b_value_set_boolean (value, btk_font_button_get_use_font (font_button));
       break;
     case PROP_USE_SIZE:
-      g_value_set_boolean (value, btk_font_button_get_use_size (font_button));
+      b_value_set_boolean (value, btk_font_button_get_use_size (font_button));
       break;
     case PROP_SHOW_STYLE:
-      g_value_set_boolean (value, btk_font_button_get_show_style (font_button));
+      b_value_set_boolean (value, btk_font_button_get_show_style (font_button));
       break;
     case PROP_SHOW_SIZE:
-      g_value_set_boolean (value, btk_font_button_get_show_size (font_button));
+      b_value_set_boolean (value, btk_font_button_get_show_size (font_button));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 } 
@@ -385,7 +385,7 @@ btk_font_button_new (void)
  * Since: 2.4
  */
 BtkWidget *
-btk_font_button_new_with_font (const gchar *fontname)
+btk_font_button_new_with_font (const bchar *fontname)
 {
   return g_object_new (BTK_TYPE_FONT_BUTTON, "font-name", fontname, NULL);
 } 
@@ -401,9 +401,9 @@ btk_font_button_new_with_font (const gchar *fontname)
  */
 void
 btk_font_button_set_title (BtkFontButton *font_button, 
-                           const gchar   *title)
+                           const bchar   *title)
 {
-  gchar *old_title;
+  bchar *old_title;
   g_return_if_fail (BTK_IS_FONT_BUTTON (font_button));
   
   old_title = font_button->priv->title;
@@ -414,7 +414,7 @@ btk_font_button_set_title (BtkFontButton *font_button,
     btk_window_set_title (BTK_WINDOW (font_button->priv->font_dialog),
                           font_button->priv->title);
 
-  g_object_notify (G_OBJECT (font_button), "title");
+  g_object_notify (B_OBJECT (font_button), "title");
 } 
 
 /**
@@ -427,7 +427,7 @@ btk_font_button_set_title (BtkFontButton *font_button,
  *
  * Since: 2.4
  */
-const gchar*
+const bchar*
 btk_font_button_get_title (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), NULL);
@@ -445,7 +445,7 @@ btk_font_button_get_title (BtkFontButton *font_button)
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_font_button_get_use_font (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), FALSE);
@@ -464,7 +464,7 @@ btk_font_button_get_use_font (BtkFontButton *font_button)
  */
 void  
 btk_font_button_set_use_font (BtkFontButton *font_button,
-			      gboolean       use_font)
+			      bboolean       use_font)
 {
   g_return_if_fail (BTK_IS_FONT_BUTTON (font_button));
   
@@ -479,7 +479,7 @@ btk_font_button_set_use_font (BtkFontButton *font_button,
       else
 	btk_widget_set_style (font_button->priv->font_label, NULL);
  
-     g_object_notify (G_OBJECT (font_button), "use-font");
+     g_object_notify (B_OBJECT (font_button), "use-font");
     }
 } 
 
@@ -494,7 +494,7 @@ btk_font_button_set_use_font (BtkFontButton *font_button,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_font_button_get_use_size (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), FALSE);
@@ -513,7 +513,7 @@ btk_font_button_get_use_size (BtkFontButton *font_button)
  */
 void  
 btk_font_button_set_use_size (BtkFontButton *font_button,
-			      gboolean       use_size)
+			      bboolean       use_size)
 {
   g_return_if_fail (BTK_IS_FONT_BUTTON (font_button));
   
@@ -525,7 +525,7 @@ btk_font_button_set_use_size (BtkFontButton *font_button,
       if (font_button->priv->use_font)
         btk_font_button_label_use_font (font_button);
 
-      g_object_notify (G_OBJECT (font_button), "use-size");
+      g_object_notify (B_OBJECT (font_button), "use-size");
     }
 } 
 
@@ -539,7 +539,7 @@ btk_font_button_set_use_size (BtkFontButton *font_button,
  *
  * Since: 2.4
  **/
-gboolean 
+bboolean 
 btk_font_button_get_show_style (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), FALSE);
@@ -558,7 +558,7 @@ btk_font_button_get_show_style (BtkFontButton *font_button)
  */
 void
 btk_font_button_set_show_style (BtkFontButton *font_button,
-                                gboolean       show_style)
+                                bboolean       show_style)
 {
   g_return_if_fail (BTK_IS_FONT_BUTTON (font_button));
   
@@ -569,7 +569,7 @@ btk_font_button_set_show_style (BtkFontButton *font_button,
       
       btk_font_button_update_font_info (font_button);
   
-      g_object_notify (G_OBJECT (font_button), "show-style");
+      g_object_notify (B_OBJECT (font_button), "show-style");
     }
 } 
 
@@ -584,7 +584,7 @@ btk_font_button_set_show_style (BtkFontButton *font_button,
  *
  * Since: 2.4
  **/
-gboolean 
+bboolean 
 btk_font_button_get_show_size (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), FALSE);
@@ -603,7 +603,7 @@ btk_font_button_get_show_size (BtkFontButton *font_button)
  */
 void
 btk_font_button_set_show_size (BtkFontButton *font_button,
-                               gboolean       show_size)
+                               bboolean       show_size)
 {
   g_return_if_fail (BTK_IS_FONT_BUTTON (font_button));
   
@@ -619,7 +619,7 @@ btk_font_button_set_show_size (BtkFontButton *font_button,
       
       btk_font_button_update_font_info (font_button);
 
-      g_object_notify (G_OBJECT (font_button), "show-size");
+      g_object_notify (B_OBJECT (font_button), "show-size");
     }
 } 
 
@@ -639,7 +639,7 @@ btk_font_button_set_show_size (BtkFontButton *font_button,
  *
  * Since: 2.4
  */
-const gchar *
+const bchar *
 btk_font_button_get_font_name (BtkFontButton *font_button)
 {
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), NULL);
@@ -659,12 +659,12 @@ btk_font_button_get_font_name (BtkFontButton *font_button)
  *
  * Since: 2.4
  */
-gboolean 
+bboolean 
 btk_font_button_set_font_name (BtkFontButton *font_button,
-                               const gchar    *fontname)
+                               const bchar    *fontname)
 {
-  gboolean result;
-  gchar *old_fontname;
+  bboolean result;
+  bchar *old_fontname;
 
   g_return_val_if_fail (BTK_IS_FONT_BUTTON (font_button), FALSE);
   g_return_val_if_fail (fontname != NULL, FALSE);
@@ -684,7 +684,7 @@ btk_font_button_set_font_name (BtkFontButton *font_button,
   else
     result = FALSE;
 
-  g_object_notify (G_OBJECT (font_button), "font-name");
+  g_object_notify (B_OBJECT (font_button), "font-name");
 
   return result;
 }
@@ -735,7 +735,7 @@ btk_font_button_clicked (BtkButton *button)
 
 static void
 dialog_ok_clicked (BtkWidget *widget,
-		   gpointer   data)
+		   bpointer   data)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (data);
   
@@ -747,7 +747,7 @@ dialog_ok_clicked (BtkWidget *widget,
   /* Set label font */
   btk_font_button_update_font_info (font_button);
 
-  g_object_notify (G_OBJECT (font_button), "font-name");
+  g_object_notify (B_OBJECT (font_button), "font-name");
   
   /* Emit font_set signal */
   g_signal_emit (font_button, font_button_signals[FONT_SET], 0);
@@ -756,7 +756,7 @@ dialog_ok_clicked (BtkWidget *widget,
 
 static void
 dialog_cancel_clicked (BtkWidget *widget,
-		       gpointer   data)
+		       bpointer   data)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (data);
   
@@ -765,7 +765,7 @@ dialog_cancel_clicked (BtkWidget *widget,
 
 static void
 dialog_destroy (BtkWidget *widget,
-		gpointer   data)
+		bpointer   data)
 {
   BtkFontButton *font_button = BTK_FONT_BUTTON (data);
     
@@ -819,7 +819,7 @@ btk_font_button_label_use_font (BtkFontButton *font_button)
   bango_font_description_free (desc);
 }
 
-static gboolean
+static bboolean
 font_description_style_equal (const BangoFontDescription *a,
                               const BangoFontDescription *b)
 {
@@ -833,9 +833,9 @@ static void
 btk_font_button_update_font_info (BtkFontButton *font_button)
 {
   BangoFontDescription *desc;
-  const gchar *family;
-  gchar *style;
-  gchar *family_style;
+  const bchar *family;
+  bchar *style;
+  bchar *family_style;
   
   desc = bango_font_description_from_string (font_button->priv->fontname);
   family = bango_font_description_get_family (desc);
@@ -854,7 +854,7 @@ btk_font_button_update_font_info (BtkFontButton *font_button)
     {
       BangoFontFamily **families;
       BangoFontFace **faces;
-      gint n_families, n_faces, i;
+      bint n_families, n_faces, i;
 
       n_families = 0;
       families = NULL;
@@ -864,7 +864,7 @@ btk_font_button_update_font_info (BtkFontButton *font_button)
       faces = NULL;
       for (i = 0; i < n_families; i++) 
         {
-          const gchar *name = bango_font_family_get_name (families[i]);
+          const bchar *name = bango_font_family_get_name (families[i]);
           
           if (!g_ascii_strcasecmp (name, family)) 
             {
@@ -902,7 +902,7 @@ btk_font_button_update_font_info (BtkFontButton *font_button)
 
   if (font_button->priv->show_size) 
     {
-      gchar *size = g_strdup_printf ("%g",
+      bchar *size = g_strdup_printf ("%g",
                                      bango_font_description_get_size (desc) / (double)BANGO_SCALE);
       
       btk_label_set_text (BTK_LABEL (font_button->priv->size_label), size);

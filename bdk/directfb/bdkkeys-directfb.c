@@ -47,9 +47,9 @@ static struct bdk_key *bdk_keys_by_name = NULL;
 
 BdkModifierType  _bdk_directfb_modifiers = 0;
 
-static guint     *directfb_keymap        = NULL;
-static gint       directfb_min_keycode   = 0;
-static gint       directfb_max_keycode   = 0;
+static buint     *directfb_keymap        = NULL;
+static bint       directfb_min_keycode   = 0;
+static bint       directfb_max_keycode   = 0;
 
 
 /*
@@ -73,8 +73,8 @@ static gint       directfb_max_keycode   = 0;
  */
 static const struct bdk_key
 {
-  guint        keyval;
-  const gchar *name;
+  buint        keyval;
+  const bchar *name;
 } bdk_keys_by_keyval[] = {
   { BDK_space, "space" },
   { BDK_exclam, "exclam" },
@@ -1391,15 +1391,15 @@ static const struct bdk_key
 #define BDK_NUM_KEYS (G_N_ELEMENTS (bdk_keys_by_keyval))
 
 
-static gint
+static bint
 bdk_keys_keyval_compare (const void *pkey,
                          const void *pbase)
 {
-  return (*(gint *) pkey) - ((struct bdk_key *) pbase)->keyval;
+  return (*(bint *) pkey) - ((struct bdk_key *) pbase)->keyval;
 }
 
-gchar *
-bdk_keyval_name (guint keyval)
+bchar *
+bdk_keyval_name (buint keyval)
 {
   struct bdk_key *found;
 
@@ -1421,12 +1421,12 @@ bdk_keyval_name (guint keyval)
                    bdk_keys_keyval_compare);
 
   if (found)
-    return (gchar *) found->name;
+    return (bchar *) found->name;
   else
     return NULL;
 }
 
-static gint
+static bint
 bdk_key_compare_by_name (const void *a,
                          const void *b)
 {
@@ -1434,7 +1434,7 @@ bdk_key_compare_by_name (const void *a,
                  ((const struct bdk_key *) b)->name);
 }
 
-static gint
+static bint
 bdk_keys_name_compare (const void *pkey,
                        const void *pbase)
 {
@@ -1442,8 +1442,8 @@ bdk_keys_name_compare (const void *pkey,
                  ((const struct bdk_key *) pbase)->name);
 }
 
-guint
-bdk_keyval_from_name (const gchar *keyval_name)
+buint
+bdk_keyval_from_name (const bchar *keyval_name)
 {
   struct bdk_key *found;
 
@@ -1500,11 +1500,11 @@ bdk_directfb_convert_modifiers (DFBInputDeviceModifierMask dfbmod,
     _bdk_directfb_modifiers &= ~BDK_LOCK_MASK;
 }
 
-static guint
+static buint
 bdk_directfb_translate_key (DFBInputDeviceKeyIdentifier key_id,
                             DFBInputDeviceKeySymbol     key_symbol)
 {
-  guint keyval = BDK_VoidSymbol;
+  buint keyval = BDK_VoidSymbol;
 
   /* special case numpad */
   if (key_id >= DIKI_KP_DIV && key_id <= DIKI_KP_9)
@@ -1644,7 +1644,7 @@ void
 _bdk_directfb_keyboard_init (void)
 {
   DFBInputDeviceDescription  desc;
-  gint                       i, n, length;
+  bint                       i, n, length;
   IDirectFBInputDevice      *keyboard = _bdk_display->keyboard;
 
   if (!keyboard)
@@ -1664,7 +1664,7 @@ _bdk_directfb_keyboard_init (void)
   length = directfb_max_keycode - desc.min_keycode + 1;
 
 
-  directfb_keymap = g_new0 (guint, 4 * length);
+  directfb_keymap = g_new0 (buint, 4 * length);
 
   for (i = 0; i < length; i++)
     {
@@ -1696,8 +1696,8 @@ void
 bdk_directfb_translate_key_event (DFBWindowEvent *dfb_event,
                                   BdkEventKey    *event)
 {
-  gint  len;
-  gchar buf[6];
+  bint  len;
+  bchar buf[6];
 
   g_return_if_fail (dfb_event != NULL);
   g_return_if_fail (event != NULL);
@@ -1714,7 +1714,7 @@ bdk_directfb_translate_key_event (DFBWindowEvent *dfb_event,
      default keymap. */
   if (dfb_event->key_code == -1 && directfb_keymap)
     {
-      gint i;
+      bint i;
 
       for (i = directfb_min_keycode; i <= directfb_max_keycode; i++)
         {
@@ -1742,7 +1742,7 @@ bdk_directfb_translate_key_event (DFBWindowEvent *dfb_event,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
   IDirectFBInputDevice *keyboard = _bdk_display->keyboard;
@@ -1775,16 +1775,16 @@ bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
  *
  * Returns: %TRUE if there were any entries
  **/
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
-                                    guint          hardware_keycode,
+                                    buint          hardware_keycode,
                                     BdkKeymapKey **keys,
-                                    guint        **keyvals,
-                                    gint          *n_entries)
+                                    buint        **keyvals,
+                                    bint          *n_entries)
 {
-  gint num = 0;
-  gint i, j;
-  gint index;
+  bint num = 0;
+  bint i, j;
+  bint index;
 
   index = (hardware_keycode - directfb_min_keycode) * 4;
 
@@ -1811,7 +1811,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
     }
   if (keyvals)
     {
-      *keyvals = g_new (guint, num);
+      *keyvals = g_new (buint, num);
 
       for (i = 0, j = 0; num > 0 && i < 4; i++)
         if (directfb_keymap[index + i] != BDK_VoidSymbol)
@@ -1829,9 +1829,9 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
 
 static inline void
 append_keymap_key (GArray *array,
-                   guint   keycode,
-                   gint    group,
-                   gint    level)
+                   buint   keycode,
+                   bint    group,
+                   bint    level)
 {
   BdkKeymapKey key = { keycode, group, level };
 
@@ -1859,14 +1859,14 @@ append_keymap_key (GArray *array,
  *
  * Return value: %TRUE if keys were found and returned
  **/
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
-                                   guint          keyval,
+                                   buint          keyval,
                                    BdkKeymapKey **keys,
-                                   gint          *n_keys)
+                                   bint          *n_keys)
 {
   GArray *retval;
-  gint    i, j;
+  bint    i, j;
 
   g_return_val_if_fail (keys != NULL, FALSE);
   g_return_val_if_fail (n_keys != NULL, FALSE);
@@ -1878,7 +1878,7 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
        directfb_keymap && i <= directfb_max_keycode;
        i++)
     {
-      gint index = i - directfb_min_keycode;
+      bint index = i - directfb_min_keycode;
 
       for (j = 0; j < 4; j++)
         {
@@ -1903,22 +1903,22 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
   return (*n_keys > 0);
 }
 
-gboolean
+bboolean
 bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
-                                     guint            keycode,
+                                     buint            keycode,
                                      BdkModifierType  state,
-                                     gint             group,
-                                     guint           *keyval,
-                                     gint            *effective_group,
-                                     gint            *level,
+                                     bint             group,
+                                     buint           *keyval,
+                                     bint            *effective_group,
+                                     bint            *level,
                                      BdkModifierType *consumed_modifiers)
 {
   if (directfb_keymap &&
       (keycode >= directfb_min_keycode && keycode <= directfb_max_keycode) &&
       (group == 0 || group == 1))
     {
-      gint index = (keycode - directfb_min_keycode) * 4;
-      gint i     = (state & BDK_SHIFT_MASK) ? 1 : 0;
+      bint index = (keycode - directfb_min_keycode) * 4;
+      bint i     = (state & BDK_SHIFT_MASK) ? 1 : 0;
 
       if (directfb_keymap[index + i + 2 * group] != BDK_VoidSymbol)
         {
@@ -1995,7 +1995,7 @@ bdk_keymap_get_direction (BdkKeymap *keymap)
  *
  * Return value: a keyval, or 0 if none was mapped to the given @key
  **/
-guint
+buint
 bdk_keymap_lookup_key (BdkKeymap          *keymap,
                        const BdkKeymapKey *key)
 {
@@ -2010,7 +2010,7 @@ bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
   g_warning ("bdk_keymap_add_virtual_modifiers unimplemented \n");
 }
 
-gboolean
+bboolean
 bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
                                   BdkModifierType *state)
 {

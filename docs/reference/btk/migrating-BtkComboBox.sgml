@@ -99,7 +99,7 @@ BtkTreeIter iter;
 BtkCellRenderer *renderer;
 BtkWidget *combo_box;
 
-store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
+store = btk_list_store_new (2, BDK_TYPE_PIXBUF, B_TYPE_STRING);
 
 btk_list_store_append (store, &amp;iter);
 btk_list_store_set (store, &amp;iter, 0, pixbuf1, 1, "First Item", -1);

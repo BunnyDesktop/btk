@@ -43,7 +43,7 @@ typedef struct _BdkPredicate  BdkPredicate;
 struct _BdkPredicate
 {
   BdkEventFunc func;
-  gpointer data;
+  bpointer data;
 };
 
 typedef struct _BdkThreadsDispatch BdkThreadsDispatch;
@@ -51,7 +51,7 @@ typedef struct _BdkThreadsDispatch BdkThreadsDispatch;
 struct _BdkThreadsDispatch
 {
   GSourceFunc func;
-  gpointer data;
+  bpointer data;
   GDestroyNotify destroy;
 };
 
@@ -62,7 +62,7 @@ static int bdk_initialized = 0;			    /* 1 if the library is initialized,
 						     * 0 otherwise.
 						     */
 
-static gchar  *bdk_progclass = NULL;
+static bchar  *bdk_progclass = NULL;
 
 #ifdef G_ENABLE_DEBUG
 static const GDebugKey bdk_debug_keys[] = {
@@ -89,14 +89,14 @@ static const int bdk_ndebug_keys = G_N_ELEMENTS (bdk_debug_keys);
 #endif /* G_ENABLE_DEBUG */
 
 #ifdef G_ENABLE_DEBUG
-static gboolean
-bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
+static bboolean
+bdk_arg_debug_cb (const char *key, const char *value, bpointer user_data, GError **error)
 {
-  guint debug_value = g_parse_debug_string (value,
+  buint debub_value = g_parse_debug_string (value,
 					    (GDebugKey *) bdk_debug_keys,
 					    bdk_ndebug_keys);
 
-  if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
+  if (debub_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
@@ -104,19 +104,19 @@ bdk_arg_debug_cb (const char *key, const char *value, gpointer user_data, GError
       return FALSE;
     }
 
-  _bdk_debug_flags |= debug_value;
+  _bdk_debug_flags |= debub_value;
 
   return TRUE;
 }
 
-static gboolean
-bdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GError **error)
+static bboolean
+bdk_arg_no_debug_cb (const char *key, const char *value, bpointer user_data, GError **error)
 {
-  guint debug_value = g_parse_debug_string (value,
+  buint debub_value = g_parse_debug_string (value,
 					    (GDebugKey *) bdk_debug_keys,
 					    bdk_ndebug_keys);
 
-  if (debug_value == 0 && value != NULL && strcmp (value, "") != 0)
+  if (debub_value == 0 && value != NULL && strcmp (value, "") != 0)
     {
       g_set_error (error, 
 		   G_OPTION_ERROR, G_OPTION_ERROR_FAILED,
@@ -124,22 +124,22 @@ bdk_arg_no_debug_cb (const char *key, const char *value, gpointer user_data, GEr
       return FALSE;
     }
 
-  _bdk_debug_flags &= ~debug_value;
+  _bdk_debug_flags &= ~debub_value;
 
   return TRUE;
 }
 #endif /* G_ENABLE_DEBUG */
 
-static gboolean
-bdk_arg_class_cb (const char *key, const char *value, gpointer user_data, GError **error)
+static bboolean
+bdk_arg_class_cb (const char *key, const char *value, bpointer user_data, GError **error)
 {
   bdk_set_program_class (value);
 
   return TRUE;
 }
 
-static gboolean
-bdk_arg_name_cb (const char *key, const char *value, gpointer user_data, GError **error)
+static bboolean
+bdk_arg_name_cb (const char *key, const char *value, bpointer user_data, GError **error)
 {
   g_set_prgname (value);
 
@@ -198,7 +198,7 @@ bdk_pre_parse_libbtk_only (void)
   
 #ifdef G_ENABLE_DEBUG
   {
-    gchar *debug_string = getenv("BDK_DEBUG");
+    bchar *debug_string = getenv("BDK_DEBUG");
     if (debug_string != NULL)
       _bdk_debug_flags = g_parse_debug_string (debug_string,
 					      (GDebugKey *) bdk_debug_keys,
@@ -284,7 +284,7 @@ bdk_parse_args (int    *argc,
  *
  * Since: 2.2
  */
-const gchar *
+const bchar *
 bdk_get_display_arg_name (void)
 {
   if (!_bdk_display_arg_name)
@@ -360,7 +360,7 @@ bdk_display_open_default_libbtk_only (void)
  *
  *--------------------------------------------------------------
  */
-gboolean
+bboolean
 bdk_init_check (int    *argc,
 		char ***argv)
 {
@@ -406,7 +406,7 @@ bdk_init (int *argc, char ***argv)
  */
 
 void
-bdk_exit (gint errorcode)
+bdk_exit (bint errorcode)
 {
   exit (errorcode);
 }
@@ -522,11 +522,11 @@ bdk_threads_set_lock_functions (GCallback enter_fn,
   bdk_threads_unlock = leave_fn;
 }
 
-static gboolean
-bdk_threads_dispatch (gpointer data)
+static bboolean
+bdk_threads_dispatch (bpointer data)
 {
   BdkThreadsDispatch *dispatch = data;
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   BDK_THREADS_ENTER ();
 
@@ -539,7 +539,7 @@ bdk_threads_dispatch (gpointer data)
 }
 
 static void
-bdk_threads_dispatch_free (gpointer data)
+bdk_threads_dispatch_free (bpointer data)
 {
   BdkThreadsDispatch *dispatch = data;
 
@@ -569,8 +569,8 @@ bdk_threads_dispatch_free (gpointer data)
  * in thread B:
  *
  * |[
- * static gboolean
- * idle_callback (gpointer data)
+ * static bboolean
+ * idle_callback (bpointer data)
  * {
  *    /&ast; bdk_threads_enter(); would be needed for g_idle_add() &ast;/
  *
@@ -591,12 +591,12 @@ bdk_threads_dispatch_free (gpointer data)
  * }
  *
  * static void
- * some_widget_finalize (GObject *object)
+ * some_widget_finalize (BObject *object)
  * {
  *    SomeWidget *self = SOME_WIDGET (object);
  *    if (self->idle_id)
  *      g_source_remove (self->idle_id);
- *    G_OBJECT_CLASS (parent_class)->finalize (object);
+ *    B_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * ]|
  *
@@ -604,10 +604,10 @@ bdk_threads_dispatch_free (gpointer data)
  *
  * Since: 2.12
  */
-guint
-bdk_threads_add_idle_full (gint           priority,
+buint
+bdk_threads_add_idle_full (bint           priority,
 		           GSourceFunc    function,
-		           gpointer       data,
+		           bpointer       data,
 		           GDestroyNotify notify)
 {
   BdkThreadsDispatch *dispatch;
@@ -639,9 +639,9 @@ bdk_threads_add_idle_full (gint           priority,
  * 
  * Since: 2.12
  */
-guint
+buint
 bdk_threads_add_idle (GSourceFunc    function,
-		      gpointer       data)
+		      bpointer       data)
 {
   return bdk_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
                                     function, data, NULL);
@@ -675,7 +675,7 @@ bdk_threads_add_idle (GSourceFunc    function,
  * for BTK+ widgets for the following use case:
  *
  * |[
- * static gboolean timeout_callback (gpointer data)
+ * static bboolean timeout_callback (bpointer data)
  * {
  *    SomeWidget *self = data;
  *    
@@ -691,14 +691,14 @@ bdk_threads_add_idle (GSourceFunc    function,
  *    self->timeout_id = g_timeout_add (timeout_callback, self)
  * }
  *  
- * static void some_widget_finalize (GObject *object)
+ * static void some_widget_finalize (BObject *object)
  * {
  *    SomeWidget *self = SOME_WIDGET (object);
  *    
  *    if (self->timeout_id)
  *      g_source_remove (self->timeout_id);
  *    
- *    G_OBJECT_CLASS (parent_class)->finalize (object);
+ *    B_OBJECT_CLASS (parent_class)->finalize (object);
  * }
  * ]|
  *
@@ -706,11 +706,11 @@ bdk_threads_add_idle (GSourceFunc    function,
  * 
  * Since: 2.12
  */
-guint
-bdk_threads_add_timeout_full (gint           priority,
-                              guint          interval,
+buint
+bdk_threads_add_timeout_full (bint           priority,
+                              buint          interval,
                               GSourceFunc    function,
-                              gpointer       data,
+                              bpointer       data,
                               GDestroyNotify notify)
 {
   BdkThreadsDispatch *dispatch;
@@ -745,10 +745,10 @@ bdk_threads_add_timeout_full (gint           priority,
  *
  * Since: 2.12
  */
-guint
-bdk_threads_add_timeout (guint       interval,
+buint
+bdk_threads_add_timeout (buint       interval,
                          GSourceFunc function,
-                         gpointer    data)
+                         bpointer    data)
 {
   return bdk_threads_add_timeout_full (G_PRIORITY_DEFAULT,
                                        interval, function, data, NULL);
@@ -772,11 +772,11 @@ bdk_threads_add_timeout (guint       interval,
  * 
  * Since: 2.14
  */
-guint
-bdk_threads_add_timeout_seconds_full (gint           priority,
-                                      guint          interval,
+buint
+bdk_threads_add_timeout_seconds_full (bint           priority,
+                                      buint          interval,
                                       GSourceFunc    function,
-                                      gpointer       data,
+                                      bpointer       data,
                                       GDestroyNotify notify)
 {
   BdkThreadsDispatch *dispatch;
@@ -810,10 +810,10 @@ bdk_threads_add_timeout_seconds_full (gint           priority,
  *
  * Since: 2.14
  */
-guint
-bdk_threads_add_timeout_seconds (guint       interval,
+buint
+bdk_threads_add_timeout_seconds (buint       interval,
                                  GSourceFunc function,
-                                 gpointer    data)
+                                 bpointer    data)
 {
   return bdk_threads_add_timeout_seconds_full (G_PRIORITY_DEFAULT,
                                                interval, function, data, NULL);

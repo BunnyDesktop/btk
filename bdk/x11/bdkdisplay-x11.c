@@ -66,14 +66,14 @@
 #endif
 
 
-static void   bdk_display_x11_dispose            (GObject            *object);
-static void   bdk_display_x11_finalize           (GObject            *object);
+static void   bdk_display_x11_dispose            (BObject            *object);
+static void   bdk_display_x11_finalize           (BObject            *object);
 
 #ifdef HAVE_X11R6
 static void bdk_internal_connection_watch (Display  *display,
 					   XPointer  arg,
-					   gint      fd,
-					   gboolean  opening,
+					   bint      fd,
+					   bboolean  opening,
 					   XPointer *watch_data);
 #endif /* HAVE_X11R6 */
 
@@ -125,7 +125,7 @@ G_DEFINE_TYPE (BdkDisplayX11, _bdk_display_x11, BDK_TYPE_DISPLAY)
 static void
 _bdk_display_x11_class_init (BdkDisplayX11Class * class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   
   object_class->dispose = bdk_display_x11_dispose;
   object_class->finalize = bdk_display_x11_finalize;
@@ -147,21 +147,21 @@ _bdk_display_x11_init (BdkDisplayX11 *display)
  * Since: 2.2
  */
 BdkDisplay *
-bdk_display_open (const gchar *display_name)
+bdk_display_open (const bchar *display_name)
 {
   Display *xdisplay;
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
   BdkWindowAttr attr;
-  gint argc;
-  gchar *argv[1];
+  bint argc;
+  bchar *argv[1];
   const char *sm_client_id;
   
   XClassHint *class_hint;
-  gulong pid;
-  gint i;
-  gint ignore;
-  gint maj, min;
+  bulong pid;
+  bint i;
+  bint ignore;
+  bint maj, min;
 
   xdisplay = XOpenDisplay (display_name);
   if (!xdisplay)
@@ -306,7 +306,7 @@ bdk_display_open (const gchar *display_name)
 		   BDK_SCREEN_X11 (display_x11->default_screen)->xroot_window,
 		   &root, &child, &rootx, &rooty, &winx, &winy, &xmask);
     bdk_flush ();
-    if (G_UNLIKELY (bdk_error_trap_pop () == BadWindow)) 
+    if (B_UNLIKELY (bdk_error_trap_pop () == BadWindow)) 
       {
 	g_warning ("Connection to display %s appears to be untrusted. Pointer and keyboard grabs and inter-client communication may not work as expected.", bdk_display_get_name (display));
 	display_x11->trusted_client = FALSE;
@@ -341,15 +341,15 @@ bdk_display_open (const gchar *display_name)
   XChangeProperty (display_x11->xdisplay,
 		   display_x11->leader_window,
 		   bdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_PID"),
-		   XA_CARDINAL, 32, PropModeReplace, (guchar *) & pid, 1);
+		   XA_CARDINAL, 32, PropModeReplace, (buchar *) & pid, 1);
 
   /* We don't yet know a valid time. */
   display_x11->user_time = 0;
   
 #ifdef HAVE_XKB
   {
-    gint xkb_major = XkbMajorVersion;
-    gint xkb_minor = XkbMinorVersion;
+    bint xkb_major = XkbMajorVersion;
+    bint xkb_minor = XkbMinorVersion;
     if (XkbLibraryVersion (&xkb_major, &xkb_minor))
       {
         xkb_major = XkbMajorVersion;
@@ -424,15 +424,15 @@ typedef struct _BdkInternalConnection BdkInternalConnection;
 
 struct _BdkInternalConnection
 {
-  gint	         fd;
+  bint	         fd;
   GSource	*source;
   Display	*display;
 };
 
-static gboolean
+static bboolean
 process_internal_connection (BUNNYIOChannel  *bunnyioc,
 			     BUNNYIOCondition cond,
-			     gpointer     data)
+			     bpointer     data)
 {
   BdkInternalConnection *connection = (BdkInternalConnection *)data;
 
@@ -445,7 +445,7 @@ process_internal_connection (BUNNYIOChannel  *bunnyioc,
   return TRUE;
 }
 
-gulong
+bulong
 _bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
   return NextRequest (BDK_DISPLAY_XDISPLAY (display));
@@ -454,7 +454,7 @@ _bdk_windowing_window_get_next_serial (BdkDisplay *display)
 
 static BdkInternalConnection *
 bdk_add_connection_handler (Display *display,
-			    guint    fd)
+			    buint    fd)
 {
   BUNNYIOChannel *io_channel;
   BdkInternalConnection *connection;
@@ -486,8 +486,8 @@ bdk_remove_connection_handler (BdkInternalConnection *connection)
 static void
 bdk_internal_connection_watch (Display  *display,
 			       XPointer  arg,
-			       gint      fd,
-			       gboolean  opening,
+			       bint      fd,
+			       bboolean  opening,
 			       XPointer *watch_data)
 {
   if (opening)
@@ -508,12 +508,12 @@ bdk_internal_connection_watch (Display  *display,
  * 
  * Since: 2.2
  */
-const gchar *
+const bchar *
 bdk_display_get_name (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
-  return (gchar *) DisplayString (BDK_DISPLAY_X11 (display)->xdisplay);
+  return (bchar *) DisplayString (BDK_DISPLAY_X11 (display)->xdisplay);
 }
 
 /**
@@ -526,7 +526,7 @@ bdk_display_get_name (BdkDisplay *display)
  * 
  * Since: 2.2
  */
-gint
+bint
 bdk_display_get_n_screens (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -547,7 +547,7 @@ bdk_display_get_n_screens (BdkDisplay *display)
  */
 BdkScreen *
 bdk_display_get_screen (BdkDisplay *display, 
-			gint        screen_num)
+			bint        screen_num)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (ScreenCount (BDK_DISPLAY_X11 (display)->xdisplay) > screen_num, NULL);
@@ -573,12 +573,12 @@ bdk_display_get_default_screen (BdkDisplay *display)
   return BDK_DISPLAY_X11 (display)->default_screen;
 }
 
-gboolean
+bboolean
 _bdk_x11_display_is_root_window (BdkDisplay *display,
 				 Window      xroot_window)
 {
   BdkDisplayX11 *display_x11;
-  gint i;
+  bint i;
   
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
   
@@ -594,21 +594,21 @@ _bdk_x11_display_is_root_window (BdkDisplay *display,
 
 struct XPointerUngrabInfo {
   BdkDisplay *display;
-  guint32 time;
+  buint32 time;
 };
 
 static void
 pointer_ungrab_callback (BdkDisplay *display,
-			 gpointer data,
-			 gulong serial)
+			 bpointer data,
+			 bulong serial)
 {
   _bdk_display_pointer_grab_update (display, serial);
 }
 
 
 #define XSERVER_TIME_IS_LATER(time1, time2)                        \
-  ( (( time1 > time2 ) && ( time1 - time2 < ((guint32)-1)/2 )) ||  \
-    (( time1 < time2 ) && ( time2 - time1 > ((guint32)-1)/2 ))     \
+  ( (( time1 > time2 ) && ( time1 - time2 < ((buint32)-1)/2 )) ||  \
+    (( time1 < time2 ) && ( time2 - time1 > ((buint32)-1)/2 ))     \
   )
 
 /**
@@ -622,7 +622,7 @@ pointer_ungrab_callback (BdkDisplay *display,
  */
 void
 bdk_display_pointer_ungrab (BdkDisplay *display,
-			    guint32     time_)
+			    buint32     time_)
 {
   Display *xdisplay;
   BdkDisplayX11 *display_x11;
@@ -664,7 +664,7 @@ bdk_display_pointer_ungrab (BdkDisplay *display,
  */
 void
 bdk_display_keyboard_ungrab (BdkDisplay *display,
-			     guint32     time)
+			     buint32     time)
 {
   Display *xdisplay;
   BdkDisplayX11 *display_x11;
@@ -825,10 +825,10 @@ bdk_x11_display_ungrab (BdkDisplay *display)
 }
 
 static void
-bdk_display_x11_dispose (GObject *object)
+bdk_display_x11_dispose (BObject *object)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (object);
-  gint           i;
+  bint           i;
 
   g_list_foreach (display_x11->input_devices, (GFunc) g_object_run_dispose, NULL);
 
@@ -837,14 +837,14 @@ bdk_display_x11_dispose (GObject *object)
 
   _bdk_events_uninit (BDK_DISPLAY_OBJECT (object));
 
-  G_OBJECT_CLASS (_bdk_display_x11_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_display_x11_parent_class)->dispose (object);
 }
 
 static void
-bdk_display_x11_finalize (GObject *object)
+bdk_display_x11_finalize (BObject *object)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (object);
-  gint           i;
+  bint           i;
 
   /* Keymap */
   if (display_x11->keymap)
@@ -872,8 +872,8 @@ bdk_display_x11_finalize (GObject *object)
   g_list_free (display_x11->client_filters);
 
   /* List of event window extraction functions */
-  g_slist_foreach (display_x11->event_types, (GFunc)g_free, NULL);
-  g_slist_free (display_x11->event_types);
+  b_slist_foreach (display_x11->event_types, (GFunc)g_free, NULL);
+  b_slist_free (display_x11->event_types);
 
   /* input BdkDevice list */
   g_list_foreach (display_x11->input_devices, (GFunc) g_object_unref, NULL);
@@ -895,7 +895,7 @@ bdk_display_x11_finalize (GObject *object)
 
   XCloseDisplay (display_x11->xdisplay);
 
-  G_OBJECT_CLASS (_bdk_display_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_display_x11_parent_class)->finalize (object);
 }
 
 /**
@@ -937,7 +937,7 @@ BdkScreen *
 _bdk_x11_display_screen_for_xrootwin (BdkDisplay *display,
 				      Window      xrootwin)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < ScreenCount (BDK_DISPLAY_X11 (display)->xdisplay); i++)
     {
@@ -969,7 +969,7 @@ void
 _bdk_windowing_set_default_display (BdkDisplay *display)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
-  const gchar *startup_id;
+  const bchar *startup_id;
   
   if (!display)
     {
@@ -985,7 +985,7 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
   startup_id = g_getenv ("DESKTOP_STARTUP_ID");
   if (startup_id && *startup_id != '\0')
     {
-      gchar *time_str;
+      bchar *time_str;
 
       if (!g_utf8_validate (startup_id, -1, NULL))
 	g_warning ("DESKTOP_STARTUP_ID contains invalid UTF-8");
@@ -998,8 +998,8 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
       time_str = g_strrstr (startup_id, "_TIME");
       if (time_str != NULL)
         {
-	  gulong retval;
-          gchar *end;
+	  bulong retval;
+          bchar *end;
           errno = 0;
 
           /* Skip past the "_TIME" part */
@@ -1023,7 +1023,7 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
 		       bdk_x11_get_xatom_by_name_for_display (display, "_NET_STARTUP_ID"),
 		       bdk_x11_get_xatom_by_name_for_display (display, "UTF8_STRING"), 8,
 		       PropModeReplace,
-		       (guchar *)startup_id, strlen (startup_id));
+		       (buchar *)startup_id, strlen (startup_id));
     }
 }
 
@@ -1042,7 +1042,7 @@ broadcast_xmessage (BdkDisplay *display,
   Atom type_atom_begin;
   Window xwindow;
 
-  if (!G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return;
 
   {
@@ -1232,7 +1232,7 @@ bdk_notify_startup_complete (void)
  * Since: 2.12
  **/
 void
-bdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const bchar* startup_id)
 {
   BdkDisplay *display;
 
@@ -1257,7 +1257,7 @@ bdk_notify_startup_complete_with_id (const gchar* startup_id)
  *
  * Since: 2.6
  **/
-gboolean 
+bboolean 
 bdk_display_supports_selection_notification (BdkDisplay *display)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
@@ -1279,7 +1279,7 @@ bdk_display_supports_selection_notification (BdkDisplay *display)
  *
  * Since: 2.6
  **/
-gboolean
+bboolean
 bdk_display_request_selection_notification (BdkDisplay *display,
 					    BdkAtom     selection)
 
@@ -1318,7 +1318,7 @@ bdk_display_request_selection_notification (BdkDisplay *display,
  *
  * Since: 2.6
  */
-gboolean
+bboolean
 bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   Atom clipboard_manager;
@@ -1348,9 +1348,9 @@ bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 void
 bdk_display_store_clipboard (BdkDisplay    *display,
 			     BdkWindow     *clipboard_window,
-			     guint32        time_,
+			     buint32        time_,
 			     const BdkAtom *targets,
-			     gint           n_targets)
+			     bint           n_targets)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   Atom clipboard_manager, save_targets;
@@ -1378,7 +1378,7 @@ bdk_display_store_clipboard (BdkDisplay    *display,
 
 	  XChangeProperty (display_x11->xdisplay, BDK_WINDOW_XID (clipboard_window),
 			   property_name, XA_ATOM,
-			   32, PropModeReplace, (guchar *)xatoms, n_targets);
+			   32, PropModeReplace, (buchar *)xatoms, n_targets);
 	  g_free (xatoms);
 
 	}
@@ -1405,7 +1405,7 @@ bdk_display_store_clipboard (BdkDisplay    *display,
  *
  * Since: 2.8
  */
-guint32
+buint32
 bdk_x11_display_get_user_time (BdkDisplay *display)
 {
   return BDK_DISPLAY_X11 (display)->user_time;
@@ -1422,7 +1422,7 @@ bdk_x11_display_get_user_time (BdkDisplay *display)
  *
  * Since: 2.10
  */
-gboolean 
+bboolean 
 bdk_display_supports_shapes (BdkDisplay *display)
 {
   return BDK_DISPLAY_X11 (display)->have_shapes;
@@ -1439,7 +1439,7 @@ bdk_display_supports_shapes (BdkDisplay *display)
  *
  * Since: 2.10
  */
-gboolean 
+bboolean 
 bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   return BDK_DISPLAY_X11 (display)->have_input_shapes;
@@ -1456,7 +1456,7 @@ bdk_display_supports_input_shapes (BdkDisplay *display)
  *
  * Since: 2.12
  */
-const gchar *
+const bchar *
 bdk_x11_display_get_startup_notification_id (BdkDisplay *display)
 {
   return BDK_DISPLAY_X11 (display)->startup_notification_id;
@@ -1476,7 +1476,7 @@ bdk_x11_display_get_startup_notification_id (BdkDisplay *display)
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 bdk_display_supports_composite (BdkDisplay *display)
 {
   BdkDisplayX11 *x11_display = BDK_DISPLAY_X11 (display);

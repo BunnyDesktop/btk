@@ -25,7 +25,7 @@
 
 BdkFont*
 bdk_font_load_for_display (BdkDisplay  *display,
-			   const gchar *font_name)
+			   const bchar *font_name)
 {
   /* FIXME: Implement */
   return NULL;
@@ -41,21 +41,21 @@ bdk_font_from_description_for_display (BdkDisplay           *display,
 
 BdkFont *
 bdk_fontset_load_for_display (BdkDisplay  *display,
-			      const gchar *fontset_name)
+			      const bchar *fontset_name)
 {
   return NULL;
 }
 
 BdkFont*
-bdk_fontset_load (const gchar *fontset_name)
+bdk_fontset_load (const bchar *fontset_name)
 {
   return NULL;
 }
 
-gint
+bint
 bdk_text_width (BdkFont      *font,
-		const gchar  *text,
-		gint          text_length)
+		const bchar  *text,
+		bint          text_length)
 {
   /* FIXME: Implement */
   return -1;
@@ -63,21 +63,21 @@ bdk_text_width (BdkFont      *font,
 
 void
 bdk_text_extents (BdkFont     *font,
-                  const gchar *text,
-                  gint         text_length,
-		  gint        *lbearing,
-		  gint        *rbearing,
-		  gint        *width,
-		  gint        *ascent,
-		  gint        *descent)
+                  const bchar *text,
+                  bint         text_length,
+		  bint        *lbearing,
+		  bint        *rbearing,
+		  bint        *width,
+		  bint        *ascent,
+		  bint        *descent)
 {
   /* FIXME: Implement */
 }
 
-gint
+bint
 bdk_text_width_wc (BdkFont	  *font,
 		   const BdkWChar *text,
-		   gint		   text_length)
+		   bint		   text_length)
 {
   /* FIXME: Implement */
   return 0;
@@ -87,12 +87,12 @@ bdk_text_width_wc (BdkFont	  *font,
 void
 bdk_text_extents_wc (BdkFont        *font,
 		     const BdkWChar *text,
-		     gint            text_length,
-		     gint           *lbearing,
-		     gint           *rbearing,
-		     gint           *width,
-		     gint           *ascent,
-		     gint           *descent)
+		     bint            text_length,
+		     bint           *lbearing,
+		     bint           *rbearing,
+		     bint           *width,
+		     bint           *ascent,
+		     bint           *descent)
 {
   /* FIXME: Implement */
 }
@@ -103,22 +103,22 @@ _bdk_font_destroy (BdkFont *font)
   /* FIXME: Implement */
 }
 
-gint
+bint
 _bdk_font_strlen (BdkFont     *font,
-		  const gchar *str)
+		  const bchar *str)
 {
   /* FIXME: Implement */
   return -1;
 }
 
-gint
+bint
 bdk_font_id (const BdkFont *font)
 {
   /* FIXME: Implement */
   return 0;
 }
 
-gboolean
+bboolean
 bdk_font_equal (const BdkFont *fonta,
                 const BdkFont *fontb)
 {

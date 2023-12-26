@@ -388,7 +388,7 @@
 
 2005-12-13  Kristian Rietveld  <kris@imendio.com>
 
-	* btk/btkfilesystem.c: make the cancelled field an GObject property.
+	* btk/btkfilesystem.c: make the cancelled field an BObject property.
 
 2005-12-13  Kristian Rietveld  <kris@imendio.com>
 

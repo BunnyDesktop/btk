@@ -146,9 +146,9 @@ btk_assistant_set_page_side_image (BTK_ASSISTANT (assistant), page_widget, water
     </para>
 
     <programlisting>
-static gint
-forward_page_function (gint     current_page,
-                       gpointer data)
+static bint
+forward_page_function (bint     current_page,
+                       bpointer data)
 {
   switch (current_page)
     {

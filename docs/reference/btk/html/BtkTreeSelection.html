@@ -43,7 +43,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="BtkTreeSelection.html#BtkTreeSelectionFunc" title="BtkTreeSelectionFunc ()">*BtkTreeSelectionFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-get-user-data" title="btk_tree_selection_get_user_data ()">btk_tree_selection_get_user_data</a> <span class="c_punctuation">()</span>
@@ -107,7 +107,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-get-selected" title="btk_tree_selection_get_selected ()">btk_tree_selection_get_selected</a> <span class="c_punctuation">()</span>
@@ -131,7 +131,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-count-selected-rows" title="btk_tree_selection_count_selected_rows ()">btk_tree_selection_count_selected_rows</a> <span class="c_punctuation">()</span>
@@ -155,7 +155,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-path-is-selected" title="btk_tree_selection_path_is_selected ()">btk_tree_selection_path_is_selected</a> <span class="c_punctuation">()</span>
@@ -179,7 +179,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-iter-is-selected" title="btk_tree_selection_iter_is_selected ()">btk_tree_selection_iter_is_selected</a> <span class="c_punctuation">()</span>
@@ -250,7 +250,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkTreeSelection.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkTreeSelection
 </pre>
 </div>
@@ -266,12 +266,12 @@
 <a name="BtkTreeSelection.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BtkTreeSelectionFunc"></a><h3>BtkTreeSelectionFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 <span class="c_punctuation">(</span>*BtkTreeSelectionFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                          <em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                          <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>,
-                         <em class="parameter"><code><span class="type">gboolean</span> path_currently_selected</code></em>,
-                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bboolean</span> path_currently_selected</code></em>,
+                         <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -280,7 +280,7 @@
 <span class="c_punctuation">(</span>*BtkTreeSelectionForeachFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> *model</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -350,7 +350,7 @@ btk_tree_selection_get_mode (<em class="parameter"><code><a class="link" href="B
 btk_tree_selection_set_select_function
                                (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTreeSelection.html#BtkTreeSelectionFunc" title="BtkTreeSelectionFunc ()"><span class="type">BtkTreeSelectionFunc</span></a> func</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                 <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Sets the selection function.  If set, this function is called before any node
 is selected or unselected, giving some control over which nodes are selected.
@@ -421,7 +421,7 @@ btk_tree_selection_get_select_function
 <hr>
 <div class="refsect2">
 <a name="btk-tree-selection-get-user-data"></a><h3>btk_tree_selection_get_user_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 btk_tree_selection_get_user_data (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>);</pre>
 <p>Returns the user data for the selection function.</p>
 <p><span class="annotation">[<acronym title="Exposed in C code, not necessarily available in other languages."><span class="acronym">skip</span></acronym>]</span></p>
@@ -476,7 +476,7 @@ btk_tree_selection_get_tree_view (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="btk-tree-selection-get-selected"></a><h3>btk_tree_selection_get_selected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_selection_get_selected (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a> **model</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
@@ -529,7 +529,7 @@ use <em class="parameter"><code>selection</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tree_selection_selected_foreach (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkTreeSelection.html#BtkTreeSelectionForeachFunc" title="BtkTreeSelectionForeachFunc ()"><span class="type">BtkTreeSelectionForeachFunc</span></a> func</code></em>,
-                                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>Calls a function for each selected node. Note that you cannot modify
 the tree or selection from within this function. As a result,
 <a class="link" href="BtkTreeSelection.html#btk-tree-selection-get-selected-rows" title="btk_tree_selection_get_selected_rows ()"><code class="function">btk_tree_selection_get_selected_rows()</code></a> might be more useful.</p>
@@ -618,7 +618,7 @@ To do this, you can use <a class="link" href="BtkTreeModel.html#btk-tree-row-ref
 <hr>
 <div class="refsect2">
 <a name="btk-tree-selection-count-selected-rows"></a><h3>btk_tree_selection_count_selected_rows ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_tree_selection_count_selected_rows
                                (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>);</pre>
 <p>Returns the number of rows that have been selected in <em class="parameter"><code>tree</code></em>
@@ -709,7 +709,7 @@ btk_tree_selection_unselect_path (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="btk-tree-selection-path-is-selected"></a><h3>btk_tree_selection_path_is_selected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_selection_path_is_selected (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreePath"><span class="type">BtkTreePath</span></a> *path</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the row pointed to by <em class="parameter"><code>path</code></em>
@@ -807,7 +807,7 @@ btk_tree_selection_unselect_iter (<em class="parameter"><code><a class="link" hr
 <hr>
 <div class="refsect2">
 <a name="btk-tree-selection-iter-is-selected"></a><h3>btk_tree_selection_iter_is_selected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tree_selection_iter_is_selected (<em class="parameter"><code><a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *selection</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkTreeModel.html#BtkTreeIter"><span class="type">BtkTreeIter</span></a> *iter</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the row at <em class="parameter"><code>iter</code></em>
@@ -980,7 +980,7 @@ inclusive.</p>
 <a name="BtkTreeSelection-changed"></a><h3>The <code class="literal">“changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTreeSelection.html" title="BtkTreeSelection"><span class="type">BtkTreeSelection</span></a> *treeselection,
-               <span class="type">gpointer</span>          user_data)</pre>
+               <span class="type">bpointer</span>          user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

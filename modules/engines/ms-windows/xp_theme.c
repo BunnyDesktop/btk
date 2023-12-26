@@ -171,7 +171,7 @@ static const short element_part_map[XP_THEME_ELEMENT__SIZEOF] = {
 
 static HINSTANCE uxtheme_dll = NULL;
 static HTHEME open_themes[XP_THEME_CLASS__SIZEOF];
-static gboolean use_xp_theme = FALSE;
+static bboolean use_xp_theme = FALSE;
 
 typedef HRESULT (FAR PASCAL *GetThemeSysFontFunc)           (HTHEME hTheme, int iFontID, OUT LOGFONTW *plf);
 typedef int (FAR PASCAL *GetThemeSysSizeFunc)               (HTHEME hTheme, int iSizeId);
@@ -897,12 +897,12 @@ get_window_dc (BtkStyle *style,
 	       BdkWindow *window,
 	       BtkStateType state_type,
 	       XpDCInfo *dc_info_out,
-	       gint x, gint y, gint width, gint height,
+	       bint x, bint y, bint width, bint height,
 	       RECT *rect_out)
 {
   BdkDrawable *drawable = NULL;
   BdkGC *gc = style->dark_gc[state_type];
-  gint x_offset, y_offset;
+  bint x_offset, y_offset;
   
   dc_info_out->data = NULL;
   
@@ -933,7 +933,7 @@ release_window_dc (XpDCInfo *dc_info)
   bdk_win32_end_direct_draw_libbtk_only (dc_info->data);
 }
 
-gboolean
+bboolean
 xp_theme_draw (BdkWindow *win, XpThemeElement element, BtkStyle *style,
 	       int x, int y, int width, int height,
 	       BtkStateType state_type, BdkRectangle *area)
@@ -991,13 +991,13 @@ xp_theme_draw (BdkWindow *win, XpThemeElement element, BtkStyle *style,
   return TRUE;
 }
 
-gboolean
+bboolean
 xp_theme_is_active (void)
 {
   return use_xp_theme;
 }
 
-gboolean
+bboolean
 xp_theme_is_drawable (XpThemeElement element)
 {
   if (xp_theme_is_active ())
@@ -1006,10 +1006,10 @@ xp_theme_is_drawable (XpThemeElement element)
   return FALSE;
 }
 
-gboolean
+bboolean
 xp_theme_get_element_dimensions (XpThemeElement element,
 				 BtkStateType state_type,
-				 gint *cx, gint *cy)
+				 bint *cx, bint *cy)
 {
   HTHEME theme;
   SIZE part_size;
@@ -1055,7 +1055,7 @@ xp_theme_get_element_dimensions (XpThemeElement element,
   return TRUE;
 }
 
-gboolean
+bboolean
 xp_theme_get_system_font (XpThemeClass klazz, XpThemeFont fontId,
 			  OUT LOGFONTW *lf)
 {
@@ -1095,7 +1095,7 @@ xp_theme_get_system_font (XpThemeClass klazz, XpThemeFont fontId,
   return FALSE;
 }
 
-gboolean
+bboolean
 xp_theme_get_system_color (XpThemeClass klazz, int colorId,
 			   OUT DWORD *pColor)
 {
@@ -1112,7 +1112,7 @@ xp_theme_get_system_color (XpThemeClass klazz, int colorId,
   return FALSE;
 }
 
-gboolean
+bboolean
 xp_theme_get_system_metric (XpThemeClass klazz, int metricId, OUT int *pVal)
 {
   if (xp_theme_is_active () && get_theme_sys_metric_func != NULL)

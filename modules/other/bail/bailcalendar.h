@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CALENDAR                   (bail_calendar_get_type ())
-#define BAIL_CALENDAR(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CALENDAR, BailCalendar))
-#define BAIL_CALENDAR_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CALENDAR, BailCalendarClass))
-#define BAIL_IS_CALENDAR(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CALENDAR))
-#define BAIL_IS_CALENDAR_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CALENDAR))
-#define BAIL_CALENDAR_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CALENDAR, BailCalendarClass))
+#define BAIL_CALENDAR(obj)                   (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CALENDAR, BailCalendar))
+#define BAIL_CALENDAR_CLASS(klass)           (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CALENDAR, BailCalendarClass))
+#define BAIL_IS_CALENDAR(obj)                (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CALENDAR))
+#define BAIL_IS_CALENDAR_CLASS(klass)        (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CALENDAR))
+#define BAIL_CALENDAR_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CALENDAR, BailCalendarClass))
 
 typedef struct _BailCalendar              BailCalendar;
 typedef struct _BailCalendarClass         BailCalendarClass;
@@ -46,6 +46,6 @@ struct _BailCalendarClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CALENDAR_H__ */

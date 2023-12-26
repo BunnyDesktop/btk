@@ -31,11 +31,11 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION             (btk_printer_option_get_type ())
-#define BTK_PRINTER_OPTION(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION, BtkPrinterOption))
-#define BTK_IS_PRINTER_OPTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION))
+#define BTK_PRINTER_OPTION(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION, BtkPrinterOption))
+#define BTK_IS_PRINTER_OPTION(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION))
 
 typedef struct _BtkPrinterOption       BtkPrinterOption;
 typedef struct _BtkPrinterOptionClass  BtkPrinterOptionClass;
@@ -58,7 +58,7 @@ typedef enum {
 
 struct _BtkPrinterOption
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   char *name;
   char *display_text;
@@ -70,15 +70,15 @@ struct _BtkPrinterOption
   char **choices;
   char **choices_display;
   
-  gboolean activates_default;
+  bboolean activates_default;
 
-  gboolean has_conflict;
+  bboolean has_conflict;
   char *group;
 };
 
 struct _BtkPrinterOptionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*changed) (BtkPrinterOption *option);
 
@@ -92,7 +92,7 @@ struct _BtkPrinterOptionClass
   void (*_btk_reserved7) (void);
 };
 
-GType   btk_printer_option_get_type       (void) G_GNUC_CONST;
+GType   btk_printer_option_get_type       (void) B_GNUC_CONST;
 
 BtkPrinterOption *btk_printer_option_new                    (const char           *name,
 							     const char           *display_text,
@@ -100,24 +100,24 @@ BtkPrinterOption *btk_printer_option_new                    (const char         
 void              btk_printer_option_set                    (BtkPrinterOption     *option,
 							     const char           *value);
 void              btk_printer_option_set_has_conflict       (BtkPrinterOption     *option,
-							     gboolean              has_conflict);
+							     bboolean              has_conflict);
 void              btk_printer_option_clear_has_conflict     (BtkPrinterOption     *option);
 void              btk_printer_option_set_boolean            (BtkPrinterOption     *option,
-							     gboolean              value);
+							     bboolean              value);
 void              btk_printer_option_allocate_choices       (BtkPrinterOption     *option,
 							     int                   num);
 void              btk_printer_option_choices_from_array     (BtkPrinterOption     *option,
 							     int                   num_choices,
 							     char                 *choices[],
 							     char                 *choices_display[]);
-gboolean          btk_printer_option_has_choice             (BtkPrinterOption     *option,
+bboolean          btk_printer_option_has_choice             (BtkPrinterOption     *option,
 							    const char           *choice);
 void              btk_printer_option_set_activates_default (BtkPrinterOption     *option,
-							    gboolean              activates);
-gboolean          btk_printer_option_get_activates_default (BtkPrinterOption     *option);
+							    bboolean              activates);
+bboolean          btk_printer_option_get_activates_default (BtkPrinterOption     *option);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINTER_OPTION_H__ */
 

@@ -55,7 +55,7 @@
  * btk_button_box_set_layout().
  */
 
-static gint default_spacing = 10;
+static bint default_spacing = 10;
 static BtkButtonBoxStyle default_layout_style = BTK_BUTTONBOX_EDGE;
 
 G_DEFINE_TYPE (BtkVButtonBox, btk_vbutton_box, BTK_TYPE_BUTTON_BOX)
@@ -95,7 +95,7 @@ btk_vbutton_box_new (void)
  * Deprecated: 2.0: Use btk_box_set_spacing() instead.
  */
 void
-btk_vbutton_box_set_spacing_default (gint spacing)
+btk_vbutton_box_set_spacing_default (bint spacing)
 {
   default_spacing = spacing;
 }
@@ -127,7 +127,7 @@ btk_vbutton_box_set_layout_default (BtkButtonBoxStyle layout)
  *
  * Deprecated: 2.0: Use btk_box_get_spacing() instead.
  */
-gint
+bint
 btk_vbutton_box_get_spacing_default (void)
 {
   return default_spacing;

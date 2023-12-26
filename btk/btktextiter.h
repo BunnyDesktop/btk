@@ -34,7 +34,7 @@
 #include <btk/btktexttag.h>
 #include <btk/btktextchild.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum {
   BTK_TEXT_SEARCH_VISIBLE_ONLY = 1 << 0,
@@ -58,21 +58,21 @@ struct _BtkTextIter {
    * functions
    */
   /*< private >*/
-  gpointer dummy1;
-  gpointer dummy2;
-  gint dummy3;
-  gint dummy4;
-  gint dummy5;
-  gint dummy6;
-  gint dummy7;
-  gint dummy8;
-  gpointer dummy9;
-  gpointer dummy10;
-  gint dummy11;
-  gint dummy12;
+  bpointer dummy1;
+  bpointer dummy2;
+  bint dummy3;
+  bint dummy4;
+  bint dummy5;
+  bint dummy6;
+  bint dummy7;
+  bint dummy8;
+  bpointer dummy9;
+  bpointer dummy10;
+  bint dummy11;
+  bint dummy12;
   /* padding */
-  gint dummy13;
-  gpointer dummy14;
+  bint dummy13;
+  bpointer dummy14;
 };
 
 
@@ -87,19 +87,19 @@ BtkTextBuffer *btk_text_iter_get_buffer (const BtkTextIter *iter);
 BtkTextIter *btk_text_iter_copy     (const BtkTextIter *iter);
 void         btk_text_iter_free     (BtkTextIter       *iter);
 
-GType        btk_text_iter_get_type (void) G_GNUC_CONST;
+GType        btk_text_iter_get_type (void) B_GNUC_CONST;
 
 /*
  * Convert to different kinds of index
  */
 
-gint btk_text_iter_get_offset      (const BtkTextIter *iter);
-gint btk_text_iter_get_line        (const BtkTextIter *iter);
-gint btk_text_iter_get_line_offset (const BtkTextIter *iter);
-gint btk_text_iter_get_line_index  (const BtkTextIter *iter);
+bint btk_text_iter_get_offset      (const BtkTextIter *iter);
+bint btk_text_iter_get_line        (const BtkTextIter *iter);
+bint btk_text_iter_get_line_offset (const BtkTextIter *iter);
+bint btk_text_iter_get_line_index  (const BtkTextIter *iter);
 
-gint btk_text_iter_get_visible_line_offset (const BtkTextIter *iter);
-gint btk_text_iter_get_visible_line_index (const BtkTextIter *iter);
+bint btk_text_iter_get_visible_line_offset (const BtkTextIter *iter);
+bint btk_text_iter_get_visible_line_index (const BtkTextIter *iter);
 
 
 /*
@@ -110,16 +110,16 @@ gunichar btk_text_iter_get_char          (const BtkTextIter  *iter);
 /* includes the 0xFFFC char for pixmaps/widgets, so char offsets
  * into the returned string map properly into buffer char offsets
  */
-gchar   *btk_text_iter_get_slice         (const BtkTextIter  *start,
+bchar   *btk_text_iter_get_slice         (const BtkTextIter  *start,
                                           const BtkTextIter  *end);
 
 /* includes only text, no 0xFFFC */
-gchar   *btk_text_iter_get_text          (const BtkTextIter  *start,
+bchar   *btk_text_iter_get_text          (const BtkTextIter  *start,
                                           const BtkTextIter  *end);
 /* exclude invisible chars */
-gchar   *btk_text_iter_get_visible_slice (const BtkTextIter  *start,
+bchar   *btk_text_iter_get_visible_slice (const BtkTextIter  *start,
                                           const BtkTextIter  *end);
-gchar   *btk_text_iter_get_visible_text  (const BtkTextIter  *start,
+bchar   *btk_text_iter_get_visible_text  (const BtkTextIter  *start,
                                           const BtkTextIter  *end);
 
 BdkPixbuf* btk_text_iter_get_pixbuf (const BtkTextIter *iter);
@@ -131,154 +131,154 @@ BtkTextChildAnchor* btk_text_iter_get_child_anchor (const BtkTextIter *iter);
  * whether the list is of on-toggles or off-toggles)
  */
 GSList  *btk_text_iter_get_toggled_tags  (const BtkTextIter  *iter,
-                                          gboolean            toggled_on);
+                                          bboolean            toggled_on);
 
-gboolean btk_text_iter_begins_tag        (const BtkTextIter  *iter,
+bboolean btk_text_iter_begins_tag        (const BtkTextIter  *iter,
                                           BtkTextTag         *tag);
 
-gboolean btk_text_iter_ends_tag          (const BtkTextIter  *iter,
+bboolean btk_text_iter_ends_tag          (const BtkTextIter  *iter,
                                           BtkTextTag         *tag);
 
-gboolean btk_text_iter_toggles_tag       (const BtkTextIter  *iter,
+bboolean btk_text_iter_toggles_tag       (const BtkTextIter  *iter,
                                           BtkTextTag         *tag);
 
-gboolean btk_text_iter_has_tag           (const BtkTextIter   *iter,
+bboolean btk_text_iter_has_tag           (const BtkTextIter   *iter,
                                           BtkTextTag          *tag);
 GSList  *btk_text_iter_get_tags          (const BtkTextIter   *iter);
 
-gboolean btk_text_iter_editable          (const BtkTextIter   *iter,
-                                          gboolean             default_setting);
-gboolean btk_text_iter_can_insert        (const BtkTextIter   *iter,
-                                          gboolean             default_editability);
+bboolean btk_text_iter_editable          (const BtkTextIter   *iter,
+                                          bboolean             default_setting);
+bboolean btk_text_iter_can_insert        (const BtkTextIter   *iter,
+                                          bboolean             default_editability);
 
-gboolean btk_text_iter_starts_word        (const BtkTextIter   *iter);
-gboolean btk_text_iter_ends_word          (const BtkTextIter   *iter);
-gboolean btk_text_iter_inside_word        (const BtkTextIter   *iter);
-gboolean btk_text_iter_starts_sentence    (const BtkTextIter   *iter);
-gboolean btk_text_iter_ends_sentence      (const BtkTextIter   *iter);
-gboolean btk_text_iter_inside_sentence    (const BtkTextIter   *iter);
-gboolean btk_text_iter_starts_line        (const BtkTextIter   *iter);
-gboolean btk_text_iter_ends_line          (const BtkTextIter   *iter);
-gboolean btk_text_iter_is_cursor_position (const BtkTextIter   *iter);
+bboolean btk_text_iter_starts_word        (const BtkTextIter   *iter);
+bboolean btk_text_iter_ends_word          (const BtkTextIter   *iter);
+bboolean btk_text_iter_inside_word        (const BtkTextIter   *iter);
+bboolean btk_text_iter_starts_sentence    (const BtkTextIter   *iter);
+bboolean btk_text_iter_ends_sentence      (const BtkTextIter   *iter);
+bboolean btk_text_iter_inside_sentence    (const BtkTextIter   *iter);
+bboolean btk_text_iter_starts_line        (const BtkTextIter   *iter);
+bboolean btk_text_iter_ends_line          (const BtkTextIter   *iter);
+bboolean btk_text_iter_is_cursor_position (const BtkTextIter   *iter);
 
-gint     btk_text_iter_get_chars_in_line (const BtkTextIter   *iter);
-gint     btk_text_iter_get_bytes_in_line (const BtkTextIter   *iter);
+bint     btk_text_iter_get_chars_in_line (const BtkTextIter   *iter);
+bint     btk_text_iter_get_bytes_in_line (const BtkTextIter   *iter);
 
-gboolean       btk_text_iter_get_attributes (const BtkTextIter *iter,
+bboolean       btk_text_iter_get_attributes (const BtkTextIter *iter,
 					     BtkTextAttributes *values);
 BangoLanguage* btk_text_iter_get_language   (const BtkTextIter *iter);
-gboolean       btk_text_iter_is_end         (const BtkTextIter *iter);
-gboolean       btk_text_iter_is_start       (const BtkTextIter *iter);
+bboolean       btk_text_iter_is_end         (const BtkTextIter *iter);
+bboolean       btk_text_iter_is_start       (const BtkTextIter *iter);
 
 /*
  * Moving around the buffer
  */
 
-gboolean btk_text_iter_forward_char         (BtkTextIter *iter);
-gboolean btk_text_iter_backward_char        (BtkTextIter *iter);
-gboolean btk_text_iter_forward_chars        (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_backward_chars       (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_forward_line         (BtkTextIter *iter);
-gboolean btk_text_iter_backward_line        (BtkTextIter *iter);
-gboolean btk_text_iter_forward_lines        (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_backward_lines       (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_forward_word_end     (BtkTextIter *iter);
-gboolean btk_text_iter_backward_word_start  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_word_ends    (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_backward_word_starts (BtkTextIter *iter,
-                                             gint         count);
+bboolean btk_text_iter_forward_char         (BtkTextIter *iter);
+bboolean btk_text_iter_backward_char        (BtkTextIter *iter);
+bboolean btk_text_iter_forward_chars        (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_backward_chars       (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_forward_line         (BtkTextIter *iter);
+bboolean btk_text_iter_backward_line        (BtkTextIter *iter);
+bboolean btk_text_iter_forward_lines        (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_backward_lines       (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_forward_word_end     (BtkTextIter *iter);
+bboolean btk_text_iter_backward_word_start  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_word_ends    (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_backward_word_starts (BtkTextIter *iter,
+                                             bint         count);
                                              
-gboolean btk_text_iter_forward_visible_line   (BtkTextIter *iter);
-gboolean btk_text_iter_backward_visible_line  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_visible_lines  (BtkTextIter *iter,
-                                               gint         count);
-gboolean btk_text_iter_backward_visible_lines (BtkTextIter *iter,
-                                               gint         count);
+bboolean btk_text_iter_forward_visible_line   (BtkTextIter *iter);
+bboolean btk_text_iter_backward_visible_line  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_visible_lines  (BtkTextIter *iter,
+                                               bint         count);
+bboolean btk_text_iter_backward_visible_lines (BtkTextIter *iter,
+                                               bint         count);
 
-gboolean btk_text_iter_forward_visible_word_end     (BtkTextIter *iter);
-gboolean btk_text_iter_backward_visible_word_start  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_visible_word_ends    (BtkTextIter *iter,
-                                             gint         count);
-gboolean btk_text_iter_backward_visible_word_starts (BtkTextIter *iter,
-                                             gint         count);
+bboolean btk_text_iter_forward_visible_word_end     (BtkTextIter *iter);
+bboolean btk_text_iter_backward_visible_word_start  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_visible_word_ends    (BtkTextIter *iter,
+                                             bint         count);
+bboolean btk_text_iter_backward_visible_word_starts (BtkTextIter *iter,
+                                             bint         count);
 
-gboolean btk_text_iter_forward_sentence_end     (BtkTextIter *iter);
-gboolean btk_text_iter_backward_sentence_start  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_sentence_ends    (BtkTextIter *iter,
-                                                 gint         count);
-gboolean btk_text_iter_backward_sentence_starts (BtkTextIter *iter,
-                                                 gint         count);
+bboolean btk_text_iter_forward_sentence_end     (BtkTextIter *iter);
+bboolean btk_text_iter_backward_sentence_start  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_sentence_ends    (BtkTextIter *iter,
+                                                 bint         count);
+bboolean btk_text_iter_backward_sentence_starts (BtkTextIter *iter,
+                                                 bint         count);
 /* cursor positions are almost equivalent to chars, but not quite;
  * in some languages, you can't put the cursor between certain
  * chars. Also, you can't put the cursor between \r\n at the end
  * of a line.
  */
-gboolean btk_text_iter_forward_cursor_position   (BtkTextIter *iter);
-gboolean btk_text_iter_backward_cursor_position  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_cursor_positions  (BtkTextIter *iter,
-                                                  gint         count);
-gboolean btk_text_iter_backward_cursor_positions (BtkTextIter *iter,
-                                                  gint         count);
+bboolean btk_text_iter_forward_cursor_position   (BtkTextIter *iter);
+bboolean btk_text_iter_backward_cursor_position  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_cursor_positions  (BtkTextIter *iter,
+                                                  bint         count);
+bboolean btk_text_iter_backward_cursor_positions (BtkTextIter *iter,
+                                                  bint         count);
 
-gboolean btk_text_iter_forward_visible_cursor_position   (BtkTextIter *iter);
-gboolean btk_text_iter_backward_visible_cursor_position  (BtkTextIter *iter);
-gboolean btk_text_iter_forward_visible_cursor_positions  (BtkTextIter *iter,
-                                                          gint         count);
-gboolean btk_text_iter_backward_visible_cursor_positions (BtkTextIter *iter,
-                                                          gint         count);
+bboolean btk_text_iter_forward_visible_cursor_position   (BtkTextIter *iter);
+bboolean btk_text_iter_backward_visible_cursor_position  (BtkTextIter *iter);
+bboolean btk_text_iter_forward_visible_cursor_positions  (BtkTextIter *iter,
+                                                          bint         count);
+bboolean btk_text_iter_backward_visible_cursor_positions (BtkTextIter *iter,
+                                                          bint         count);
 
 
 void     btk_text_iter_set_offset         (BtkTextIter *iter,
-                                           gint         char_offset);
+                                           bint         char_offset);
 void     btk_text_iter_set_line           (BtkTextIter *iter,
-                                           gint         line_number);
+                                           bint         line_number);
 void     btk_text_iter_set_line_offset    (BtkTextIter *iter,
-                                           gint         char_on_line);
+                                           bint         char_on_line);
 void     btk_text_iter_set_line_index     (BtkTextIter *iter,
-                                           gint         byte_on_line);
+                                           bint         byte_on_line);
 void     btk_text_iter_forward_to_end     (BtkTextIter *iter);
-gboolean btk_text_iter_forward_to_line_end (BtkTextIter *iter);
+bboolean btk_text_iter_forward_to_line_end (BtkTextIter *iter);
 
 void     btk_text_iter_set_visible_line_offset (BtkTextIter *iter,
-                                                gint         char_on_line);
+                                                bint         char_on_line);
 void     btk_text_iter_set_visible_line_index  (BtkTextIter *iter,
-                                                gint         byte_on_line);
+                                                bint         byte_on_line);
 
 /* returns TRUE if a toggle was found; NULL for the tag pointer
  * means "any tag toggle", otherwise the next toggle of the
  * specified tag is located.
  */
-gboolean btk_text_iter_forward_to_tag_toggle (BtkTextIter *iter,
+bboolean btk_text_iter_forward_to_tag_toggle (BtkTextIter *iter,
                                               BtkTextTag  *tag);
 
-gboolean btk_text_iter_backward_to_tag_toggle (BtkTextIter *iter,
+bboolean btk_text_iter_backward_to_tag_toggle (BtkTextIter *iter,
                                                BtkTextTag  *tag);
 
-typedef gboolean (* BtkTextCharPredicate) (gunichar ch, gpointer user_data);
+typedef bboolean (* BtkTextCharPredicate) (gunichar ch, bpointer user_data);
 
-gboolean btk_text_iter_forward_find_char  (BtkTextIter          *iter,
+bboolean btk_text_iter_forward_find_char  (BtkTextIter          *iter,
                                            BtkTextCharPredicate  pred,
-                                           gpointer              user_data,
+                                           bpointer              user_data,
                                            const BtkTextIter    *limit);
-gboolean btk_text_iter_backward_find_char (BtkTextIter          *iter,
+bboolean btk_text_iter_backward_find_char (BtkTextIter          *iter,
                                            BtkTextCharPredicate  pred,
-                                           gpointer              user_data,
+                                           bpointer              user_data,
                                            const BtkTextIter    *limit);
 
-gboolean btk_text_iter_forward_search  (const BtkTextIter *iter,
-                                        const gchar       *str,
+bboolean btk_text_iter_forward_search  (const BtkTextIter *iter,
+                                        const bchar       *str,
                                         BtkTextSearchFlags flags,
                                         BtkTextIter       *match_start,
                                         BtkTextIter       *match_end,
                                         const BtkTextIter *limit);
 
-gboolean btk_text_iter_backward_search (const BtkTextIter *iter,
-                                        const gchar       *str,
+bboolean btk_text_iter_backward_search (const BtkTextIter *iter,
+                                        const bchar       *str,
                                         BtkTextSearchFlags flags,
                                         BtkTextIter       *match_start,
                                         BtkTextIter       *match_end,
@@ -288,11 +288,11 @@ gboolean btk_text_iter_backward_search (const BtkTextIter *iter,
 /*
  * Comparisons
  */
-gboolean btk_text_iter_equal           (const BtkTextIter *lhs,
+bboolean btk_text_iter_equal           (const BtkTextIter *lhs,
                                         const BtkTextIter *rhs);
-gint     btk_text_iter_compare         (const BtkTextIter *lhs,
+bint     btk_text_iter_compare         (const BtkTextIter *lhs,
                                         const BtkTextIter *rhs);
-gboolean btk_text_iter_in_range        (const BtkTextIter *iter,
+bboolean btk_text_iter_in_range        (const BtkTextIter *iter,
                                         const BtkTextIter *start,
                                         const BtkTextIter *end);
 
@@ -300,7 +300,7 @@ gboolean btk_text_iter_in_range        (const BtkTextIter *iter,
 void     btk_text_iter_order           (BtkTextIter *first,
                                         BtkTextIter *second);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

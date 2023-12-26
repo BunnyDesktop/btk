@@ -60,7 +60,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, CONTEXT_ID) == 0)
   {

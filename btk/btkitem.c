@@ -43,23 +43,23 @@ enum {
 
 
 static void btk_item_realize    (BtkWidget        *widget);
-static gint btk_item_enter      (BtkWidget        *widget,
+static bint btk_item_enter      (BtkWidget        *widget,
 				 BdkEventCrossing *event);
-static gint btk_item_leave      (BtkWidget        *widget,
+static bint btk_item_leave      (BtkWidget        *widget,
 				 BdkEventCrossing *event);
 
 
-static guint item_signals[LAST_SIGNAL] = { 0 };
+static buint item_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_ABSTRACT_TYPE (BtkItem, btk_item, BTK_TYPE_BIN)
 
 static void
 btk_item_class_init (BtkItemClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
 
   widget_class->realize = btk_item_realize;
@@ -72,28 +72,28 @@ btk_item_class_init (BtkItemClass *class)
 
   item_signals[SELECT] =
     g_signal_new (I_("select"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, select),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   item_signals[DESELECT] =
     g_signal_new (I_("deselect"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, deselect),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   item_signals[TOGGLE] =
     g_signal_new (I_("toggle"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkItemClass, toggle),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   widget_class->activate_signal = item_signals[TOGGLE];
 }
 
@@ -126,7 +126,7 @@ static void
 btk_item_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -155,7 +155,7 @@ btk_item_realize (BtkWidget *widget)
   bdk_window_set_back_pixmap (widget->window, NULL, TRUE);
 }
 
-static gint
+static bint
 btk_item_enter (BtkWidget        *widget,
 		BdkEventCrossing *event)
 {
@@ -165,7 +165,7 @@ btk_item_enter (BtkWidget        *widget,
   return btk_widget_event (widget->parent, (BdkEvent*) event);
 }
 
-static gint
+static bint
 btk_item_leave (BtkWidget        *widget,
 		BdkEventCrossing *event)
 {

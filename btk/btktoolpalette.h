@@ -30,14 +30,14 @@
 #include <btk/btkdnd.h>
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_PALETTE           (btk_tool_palette_get_type ())
-#define BTK_TOOL_PALETTE(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_PALETTE, BtkToolPalette))
-#define BTK_TOOL_PALETTE_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
-#define BTK_IS_TOOL_PALETTE(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
-#define BTK_IS_TOOL_PALETTE_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
-#define BTK_TOOL_PALETTE_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
+#define BTK_TOOL_PALETTE(obj)           (B_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_PALETTE, BtkToolPalette))
+#define BTK_TOOL_PALETTE_CLASS(cls)     (B_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
+#define BTK_IS_TOOL_PALETTE(obj)        (B_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
+#define BTK_IS_TOOL_PALETTE_CLASS(obj)  (B_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_PALETTE))
+#define BTK_TOOL_PALETTE_GET_CLASS(obj) (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_PALETTE, BtkToolPaletteClass))
 
 typedef struct _BtkToolPalette           BtkToolPalette;
 typedef struct _BtkToolPaletteClass      BtkToolPaletteClass;
@@ -85,24 +85,24 @@ struct _BtkToolPaletteClass
   void (*_btk_reserved6) (void);
 };
 
-GType                          btk_tool_palette_get_type              (void) G_GNUC_CONST;
+GType                          btk_tool_palette_get_type              (void) B_GNUC_CONST;
 BtkWidget*                     btk_tool_palette_new                   (void);
 
 void                           btk_tool_palette_set_group_position    (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gint                       position);
+                                                                       bint                       position);
 void                           btk_tool_palette_set_exclusive         (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gboolean                   exclusive);
+                                                                       bboolean                   exclusive);
 void                           btk_tool_palette_set_expand            (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group,
-                                                                       gboolean                   expand);
+                                                                       bboolean                   expand);
 
-gint                           btk_tool_palette_get_group_position    (BtkToolPalette            *palette,
+bint                           btk_tool_palette_get_group_position    (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
-gboolean                       btk_tool_palette_get_exclusive         (BtkToolPalette            *palette,
+bboolean                       btk_tool_palette_get_exclusive         (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
-gboolean                       btk_tool_palette_get_expand            (BtkToolPalette            *palette,
+bboolean                       btk_tool_palette_get_expand            (BtkToolPalette            *palette,
                                                                        BtkToolItemGroup          *group);
 
 void                           btk_tool_palette_set_icon_size         (BtkToolPalette            *palette,
@@ -116,11 +116,11 @@ BtkIconSize                    btk_tool_palette_get_icon_size         (BtkToolPa
 BtkToolbarStyle                btk_tool_palette_get_style             (BtkToolPalette            *palette);
 
 BtkToolItem*                   btk_tool_palette_get_drop_item         (BtkToolPalette            *palette,
-                                                                       gint                       x,
-                                                                       gint                       y);
+                                                                       bint                       x,
+                                                                       bint                       y);
 BtkToolItemGroup*              btk_tool_palette_get_drop_group        (BtkToolPalette            *palette,
-                                                                       gint                       x,
-                                                                       gint                       y);
+                                                                       bint                       x,
+                                                                       bint                       y);
 BtkWidget*                     btk_tool_palette_get_drag_item         (BtkToolPalette            *palette,
                                                                        const BtkSelectionData    *selection);
 
@@ -135,10 +135,10 @@ void                           btk_tool_palette_add_drag_dest         (BtkToolPa
 BtkAdjustment*                 btk_tool_palette_get_hadjustment       (BtkToolPalette            *palette);
 BtkAdjustment*                 btk_tool_palette_get_vadjustment       (BtkToolPalette            *palette);
 
-const BtkTargetEntry *         btk_tool_palette_get_drag_target_item  (void) G_GNUC_CONST;
-const BtkTargetEntry *         btk_tool_palette_get_drag_target_group (void) G_GNUC_CONST;
+const BtkTargetEntry *         btk_tool_palette_get_drag_target_item  (void) B_GNUC_CONST;
+const BtkTargetEntry *         btk_tool_palette_get_drag_target_group (void) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOL_PALETTE_H__ */

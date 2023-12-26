@@ -34,17 +34,17 @@
 #include <btk/btkbutton.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* BtkFontButton is a button widget that allow user to select a font.
  */
 
 #define BTK_TYPE_FONT_BUTTON             (btk_font_button_get_type ())
-#define BTK_FONT_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButton))
-#define BTK_FONT_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
-#define BTK_IS_FONT_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FONT_BUTTON))
-#define BTK_IS_FONT_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FONT_BUTTON))
-#define BTK_FONT_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
+#define BTK_FONT_BUTTON(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButton))
+#define BTK_FONT_BUTTON_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
+#define BTK_IS_FONT_BUTTON(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FONT_BUTTON))
+#define BTK_IS_FONT_BUTTON_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FONT_BUTTON))
+#define BTK_FONT_BUTTON_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
 
 typedef struct _BtkFontButton        BtkFontButton;
 typedef struct _BtkFontButtonClass   BtkFontButtonClass;
@@ -71,30 +71,30 @@ struct _BtkFontButtonClass {
 };
 
 
-GType                 btk_font_button_get_type       (void) G_GNUC_CONST;
+GType                 btk_font_button_get_type       (void) B_GNUC_CONST;
 BtkWidget            *btk_font_button_new            (void);
-BtkWidget            *btk_font_button_new_with_font  (const gchar   *fontname);
+BtkWidget            *btk_font_button_new_with_font  (const bchar   *fontname);
 
-const gchar *         btk_font_button_get_title      (BtkFontButton *font_button);
+const bchar *         btk_font_button_get_title      (BtkFontButton *font_button);
 void                  btk_font_button_set_title      (BtkFontButton *font_button,
-                                                      const gchar   *title);
-gboolean              btk_font_button_get_use_font   (BtkFontButton *font_button);
+                                                      const bchar   *title);
+bboolean              btk_font_button_get_use_font   (BtkFontButton *font_button);
 void                  btk_font_button_set_use_font   (BtkFontButton *font_button,
-                                                      gboolean       use_font);
-gboolean              btk_font_button_get_use_size   (BtkFontButton *font_button);
+                                                      bboolean       use_font);
+bboolean              btk_font_button_get_use_size   (BtkFontButton *font_button);
 void                  btk_font_button_set_use_size   (BtkFontButton *font_button,
-                                                      gboolean       use_size);
-const gchar *         btk_font_button_get_font_name  (BtkFontButton *font_button);
-gboolean              btk_font_button_set_font_name  (BtkFontButton *font_button,
-                                                      const gchar   *fontname);
-gboolean              btk_font_button_get_show_style (BtkFontButton *font_button);
+                                                      bboolean       use_size);
+const bchar *         btk_font_button_get_font_name  (BtkFontButton *font_button);
+bboolean              btk_font_button_set_font_name  (BtkFontButton *font_button,
+                                                      const bchar   *fontname);
+bboolean              btk_font_button_get_show_style (BtkFontButton *font_button);
 void                  btk_font_button_set_show_style (BtkFontButton *font_button,
-                                                      gboolean       show_style);
-gboolean              btk_font_button_get_show_size  (BtkFontButton *font_button);
+                                                      bboolean       show_style);
+bboolean              btk_font_button_get_show_size  (BtkFontButton *font_button);
 void                  btk_font_button_set_show_size  (BtkFontButton *font_button,
-                                                      gboolean       show_size);
+                                                      bboolean       show_size);
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FONT_BUTTON_H__ */

@@ -31,7 +31,7 @@ For example, BtkCList creates the module (module CList (submodule-of
 
 (type
  (alias some-unique-identifier)
- (in-module module-name)   ;; optional, gchar* is not in a module
+ (in-module module-name)   ;; optional, bchar* is not in a module
  (btk-type-id btk-type-system-id) ;; optional, absent if this is not
                                   ;; in the type system
  (is-parametric boolean)          ;; optional default to #f
@@ -42,9 +42,9 @@ For example, BtkCList creates the module (module CList (submodule-of
 Ex: (type
      (alias string)
      (btk-type-id BTK_TYPE_STRING)
-     (in-c-name "const gchar*")
-     (out-c-name "gchar**")      ;; actually I'm not sure how strings work out/inout
-     (inout-c-name "gchar*"))
+     (in-c-name "const bchar*")
+     (out-c-name "bchar**")      ;; actually I'm not sure how strings work out/inout
+     (inout-c-name "bchar*"))
 
  (type
      (alias list)
@@ -151,8 +151,8 @@ Ex:
     (c-name bdk_rgb_cmap_new)
     (return-type BdkRgbCmap)
     (caller-owns-return #t)   ;; perhaps this could be implied by is-constructor-of
-    (parameter in (type-and-name array-of-guint32 colors))
-    (parameter in (type-and-name gint n_colors)))
+    (parameter in (type-and-name array-of-buint32 colors))
+    (parameter in (type-and-name bint n_colors)))
 
 Ex:
   (function config_set_set_handler
@@ -160,7 +160,7 @@ Ex:
    (c-name bunny_config_set_set_handler)
    (parameter in (type-and-name native func)
                  (c-declaration "void (*func)(void*)"))
-   (parameter in (type-and-name gpointer data)))  
+   (parameter in (type-and-name bpointer data)))  
 
 ===
 (method method-name
@@ -172,7 +172,7 @@ Ex:
 Ex:
   (method set_text
      (of-object Label (Btk))
-     (parameter (type-and-name const-gchar* str)))
+     (parameter (type-and-name const-bchar* str)))
 
 ===
 (object-argument arg-name
@@ -207,8 +207,8 @@ Ex:
      (of-object CList (Btk))
      (run-first #t)
      ;; return type defaults to void
-     (parameter in (type-and-name gint row))
-     (parameter in (type-and-name gint column))
+     (parameter in (type-and-name bint row))
+     (parameter in (type-and-name bint column))
      (parameter in (type-and-name BdkEvent* event)))
 
 === 
@@ -289,10 +289,10 @@ Ex:
  (struct Rectangle
    (in-module (Bdk))
    (c-name BdkRectangle)
-   (field (type-and-name gint16 x) (access readwrite))
-   (field (type-and-name gint16 y) (access readwrite))
-   (field (type-and-name guint16 width) (access readwrite))
-   (field (type-and-name guint16 height) (access readwrite)))
+   (field (type-and-name bint16 x) (access readwrite))
+   (field (type-and-name bint16 y) (access readwrite))
+   (field (type-and-name buint16 width) (access readwrite))
+   (field (type-and-name buint16 height) (access readwrite)))
 
 Implies BdkRectangle type alias:
 
@@ -313,8 +313,8 @@ Ex:
 
  (user-function PrintFunc
     (in-module (Btk))
-    (parameter in (type-and-name gpointer func_data))
-    (parameter in (type-and-name gchar* str)))
+    (parameter in (type-and-name bpointer func_data))
+    (parameter in (type-and-name bchar* str)))
 
 ===
 
@@ -328,7 +328,7 @@ Ex:
  (typedef Type
    (in-module (Btk))
    (c-name BtkType)
-   (orig-type guint))
+   (orig-type buint))
 
 
 

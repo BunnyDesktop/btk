@@ -27,11 +27,11 @@
 typedef struct _ListSort ListSort;
 struct _ListSort
 {
-  const gchar *word_1;
-  const gchar *word_2;
-  const gchar *word_3;
-  const gchar *word_4;
-  gint number_1;
+  const bchar *word_1;
+  const bchar *word_2;
+  const bchar *word_3;
+  const bchar *word_4;
+  bint number_1;
 };
 
 static ListSort data[] =
@@ -72,12 +72,12 @@ enum
   NUM_COLUMNS
 };
 
-gboolean
+bboolean
 select_func (BtkTreeSelection  *selection,
 	     BtkTreeModel      *model,
 	     BtkTreePath       *path,
-	     gboolean           path_currently_selected,
-	     gpointer           data)
+	     bboolean           path_currently_selected,
+	     bpointer           data)
 {
   if (btk_tree_path_get_depth (path) > 1)
     return TRUE;
@@ -86,11 +86,11 @@ select_func (BtkTreeSelection  *selection,
 
 static void
 switch_search_method (BtkWidget *button,
-		      gpointer   tree_view)
+		      bpointer   tree_view)
 {
   if (!btk_tree_view_get_search_entry (BTK_TREE_VIEW (tree_view)))
     {
-      gpointer data = g_object_get_data (tree_view, "my-search-entry");
+      bpointer data = g_object_get_data (tree_view, "my-search-entry");
       btk_tree_view_set_search_entry (BTK_TREE_VIEW (tree_view), BTK_ENTRY (data));
     }
   else
@@ -110,7 +110,7 @@ main (int argc, char *argv[])
   BtkCellRenderer *renderer;
   BtkTreeViewColumn *column;
   BtkTreeIter iter;
-  gint i;
+  bint i;
 
   BtkWidget *entry, *button;
   BtkWidget *window2, *vbox2, *scrolled_window2, *tree_view2;
@@ -141,7 +141,7 @@ main (int argc, char *argv[])
   btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window), BTK_POLICY_AUTOMATIC, BTK_POLICY_AUTOMATIC);
   btk_box_pack_start (BTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
 
-  model = btk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT);
+  model = btk_tree_store_new (NUM_COLUMNS, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_INT);
 
 /*
   smodel = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (model));
@@ -150,7 +150,7 @@ main (int argc, char *argv[])
   tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (model));
 
   btk_tree_view_set_search_entry (BTK_TREE_VIEW (tree_view), BTK_ENTRY (entry));
-  g_object_set_data (G_OBJECT (tree_view), "my-search-entry", entry);
+  g_object_set_data (B_OBJECT (tree_view), "my-search-entry", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (switch_search_method), tree_view);
 
@@ -159,7 +159,7 @@ main (int argc, char *argv[])
   /* 12 iters now, 12 later... */
   for (i = 0; data[i].word_1 != NULL; i++)
     {
-      gint k;
+      bint k;
       BtkTreeIter child_iter;
 
 
@@ -388,7 +388,7 @@ main (int argc, char *argv[])
 
   for (i = 0; data[i].word_1 != NULL; i++)
     {
-      gint k;
+      bint k;
       
       btk_tree_store_prepend (BTK_TREE_STORE (model), &iter, NULL);
       btk_tree_store_set (BTK_TREE_STORE (model), &iter,

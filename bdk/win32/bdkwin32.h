@@ -35,7 +35,7 @@
 #include <windows.h>
 #include <commctrl.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifdef INSIDE_BDK_WIN32
 
@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 
 #endif
 
-#define BDK_ROOT_WINDOW()             ((guint32) HWND_DESKTOP)
+#define BDK_ROOT_WINDOW()             ((buint32) HWND_DESKTOP)
 #define BDK_DISPLAY()                 NULL
 
 
@@ -76,11 +76,11 @@ G_BEGIN_DECLS
 
 
 /* Return true if the BdkWindow is a win32 implemented window */
-gboolean      bdk_win32_window_is_win32 (BdkWindow *window);
+bboolean      bdk_win32_window_is_win32 (BdkWindow *window);
 HWND          bdk_win32_window_get_impl_hwnd (BdkWindow *window);
 
 /* Return the Bdk* for a particular HANDLE */
-gpointer      bdk_win32_handle_table_lookup (BdkNativeWindow handle);
+bpointer      bdk_win32_handle_table_lookup (BdkNativeWindow handle);
 
 /* Translate from drawable to Windows handle */
 HGDIOBJ       bdk_win32_drawable_get_handle (BdkDrawable *drawable);
@@ -103,7 +103,7 @@ void          bdk_win32_hdc_release  (BdkDrawable    *drawable,
 
 void          bdk_win32_selection_add_targets (BdkWindow  *owner,
 					       BdkAtom     selection,
-					       gint	   n_targets,
+					       bint	   n_targets,
 					       BdkAtom    *targets);
 
 /* For internal BTK use only */
@@ -113,10 +113,10 @@ void          bdk_win32_set_modal_dialog_libbtk_only (HWND window);
 
 BdkDrawable  *bdk_win32_begin_direct_draw_libbtk_only (BdkDrawable *drawable,
 						       BdkGC *gc,
-						       gpointer *priv_data,
-						       gint *x_offset_out,
-						       gint *y_offset_out);
-void          bdk_win32_end_direct_draw_libbtk_only (gpointer priv_data);
+						       bpointer *priv_data,
+						       bint *x_offset_out,
+						       bint *y_offset_out);
+void          bdk_win32_end_direct_draw_libbtk_only (bpointer priv_data);
 
 BdkWindow *   bdk_win32_window_foreign_new_for_display (BdkDisplay *display,
                                                         BdkNativeWindow anid);
@@ -124,6 +124,6 @@ BdkWindow *   bdk_win32_window_lookup_for_display (BdkDisplay *display,
                                                    BdkNativeWindow anid);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WIN32_H__ */

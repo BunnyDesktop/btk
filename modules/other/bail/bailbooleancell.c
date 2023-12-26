@@ -26,10 +26,10 @@ static void      bail_boolean_cell_class_init          (BailBooleanCellClass *kl
 static void      bail_boolean_cell_init                (BailBooleanCell *cell);
 /* Misc */
 
-static gboolean bail_boolean_cell_update_cache         (BailRendererCell     *cell,
-                                                        gboolean             emit_change_signal);
+static bboolean bail_boolean_cell_update_cache         (BailRendererCell     *cell,
+                                                        bboolean             emit_change_signal);
 
-gchar *bail_boolean_cell_property_list[] = {
+bchar *bail_boolean_cell_property_list[] = {
   "active",
   "radio",
   "sensitive",
@@ -55,7 +55,7 @@ bail_boolean_cell_init (BailBooleanCell *cell)
 BatkObject* 
 bail_boolean_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
   BailBooleanCell *boolean_cell;
@@ -77,16 +77,16 @@ bail_boolean_cell_new (void)
   return batk_object;
 }
 
-static gboolean
+static bboolean
 bail_boolean_cell_update_cache (BailRendererCell *cell, 
-                                gboolean         emit_change_signal)
+                                bboolean         emit_change_signal)
 {
   BailBooleanCell *boolean_cell = BAIL_BOOLEAN_CELL (cell);
-  gboolean rv = FALSE;
-  gboolean new_boolean;
-  gboolean new_sensitive;
+  bboolean rv = FALSE;
+  bboolean new_boolean;
+  bboolean new_sensitive;
 
-  g_object_get (G_OBJECT(cell->renderer), "active", &new_boolean,
+  g_object_get (B_OBJECT(cell->renderer), "active", &new_boolean,
                                           "sensitive", &new_sensitive, NULL);
 
   if (boolean_cell->cell_value != new_boolean)

@@ -29,28 +29,28 @@
 #include <btk/btk.h>
 #include <btk/btkprinter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_JOB                  (btk_print_job_get_type ())
-#define BTK_PRINT_JOB(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
-#define BTK_PRINT_JOB_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
-#define BTK_IS_PRINT_JOB(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_JOB))
-#define BTK_IS_PRINT_JOB_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_JOB))
-#define BTK_PRINT_JOB_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
+#define BTK_PRINT_JOB(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJob))
+#define BTK_PRINT_JOB_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
+#define BTK_IS_PRINT_JOB(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_JOB))
+#define BTK_IS_PRINT_JOB_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_JOB))
+#define BTK_PRINT_JOB_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_JOB, BtkPrintJobClass))
 
 typedef struct _BtkPrintJob          BtkPrintJob;
 typedef struct _BtkPrintJobClass     BtkPrintJobClass;
 typedef struct _BtkPrintJobPrivate   BtkPrintJobPrivate;
 
 typedef void (*BtkPrintJobCompleteFunc) (BtkPrintJob *print_job,
-                                         gpointer     user_data,
+                                         bpointer     user_data,
                                          GError      *error);
 
 struct _BtkPrinter;
 
 struct _BtkPrintJob
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrintJobPrivate *GSEAL (priv);
 
@@ -59,20 +59,20 @@ struct _BtkPrintJob
    */
   BtkPrintPages GSEAL (print_pages);
   BtkPageRange *GSEAL (page_ranges);
-  gint GSEAL (num_page_ranges);
+  bint GSEAL (num_page_ranges);
   BtkPageSet GSEAL (page_set);
-  gint GSEAL (num_copies);
-  gdouble GSEAL (scale);
-  guint GSEAL (rotate_to_orientation) : 1;
-  guint GSEAL (collate)               : 1;
-  guint GSEAL (reverse)               : 1;
-  guint GSEAL (number_up);
+  bint GSEAL (num_copies);
+  bdouble GSEAL (scale);
+  buint GSEAL (rotate_to_orientation) : 1;
+  buint GSEAL (collate)               : 1;
+  buint GSEAL (reverse)               : 1;
+  buint GSEAL (number_up);
   BtkNumberUpLayout GSEAL (number_up_layout);
 };
 
 struct _BtkPrintJobClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*status_changed) (BtkPrintJob *job);
 
@@ -86,28 +86,28 @@ struct _BtkPrintJobClass
   void (*_btk_reserved7) (void);
 };
 
-GType                    btk_print_job_get_type               (void) G_GNUC_CONST;
-BtkPrintJob             *btk_print_job_new                    (const gchar              *title,
+GType                    btk_print_job_get_type               (void) B_GNUC_CONST;
+BtkPrintJob             *btk_print_job_new                    (const bchar              *title,
 							       BtkPrinter               *printer,
 							       BtkPrintSettings         *settings,
 							       BtkPageSetup             *page_setup);
 BtkPrintSettings        *btk_print_job_get_settings           (BtkPrintJob              *job);
 BtkPrinter              *btk_print_job_get_printer            (BtkPrintJob              *job);
-const gchar *            btk_print_job_get_title              (BtkPrintJob              *job);
+const bchar *            btk_print_job_get_title              (BtkPrintJob              *job);
 BtkPrintStatus           btk_print_job_get_status             (BtkPrintJob              *job);
-gboolean                 btk_print_job_set_source_file        (BtkPrintJob              *job,
-							       const gchar              *filename,
+bboolean                 btk_print_job_set_source_file        (BtkPrintJob              *job,
+							       const bchar              *filename,
 							       GError                  **error);
 bairo_surface_t         *btk_print_job_get_surface            (BtkPrintJob              *job,
 							       GError                  **error);
 void                     btk_print_job_set_track_print_status (BtkPrintJob              *job,
-							       gboolean                  track_status);
-gboolean                 btk_print_job_get_track_print_status (BtkPrintJob              *job);
+							       bboolean                  track_status);
+bboolean                 btk_print_job_get_track_print_status (BtkPrintJob              *job);
 void                     btk_print_job_send                   (BtkPrintJob              *job,
 							       BtkPrintJobCompleteFunc   callback,
-							       gpointer                  user_data,
+							       bpointer                  user_data,
 							       GDestroyNotify            dnotify);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_JOB_H__ */

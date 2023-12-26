@@ -30,7 +30,7 @@
 #include <bdk/x11/bdkdrawable-x11.h>
 #include <bdk/bdkpixmap.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Pixmap implementation for X11
  */
@@ -39,20 +39,20 @@ typedef struct _BdkPixmapImplX11 BdkPixmapImplX11;
 typedef struct _BdkPixmapImplX11Class BdkPixmapImplX11Class;
 
 #define BDK_TYPE_PIXMAP_IMPL_X11              (bdk_pixmap_impl_x11_get_type ())
-#define BDK_PIXMAP_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11))
-#define BDK_PIXMAP_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
-#define BDK_IS_PIXMAP_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_X11))
-#define BDK_IS_PIXMAP_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_X11))
-#define BDK_PIXMAP_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
+#define BDK_PIXMAP_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11))
+#define BDK_PIXMAP_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
+#define BDK_IS_PIXMAP_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_X11))
+#define BDK_IS_PIXMAP_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_X11))
+#define BDK_PIXMAP_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_X11, BdkPixmapImplX11Class))
 
 struct _BdkPixmapImplX11
 {
   BdkDrawableImplX11 parent_instance;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
-  guint is_foreign : 1;
+  buint is_foreign : 1;
 };
  
 struct _BdkPixmapImplX11Class 
@@ -63,6 +63,6 @@ struct _BdkPixmapImplX11Class
 
 GType bdk_pixmap_impl_x11_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_X11_H__ */

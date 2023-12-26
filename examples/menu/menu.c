@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <btk/btk.h>
 
-static gboolean button_press (BtkWidget *, BdkEvent *);
-static void menuitem_response (gchar *);
+static bboolean button_press (BtkWidget *, BdkEvent *);
+static void menuitem_response (bchar *);
 
 int main( int   argc,
           char *argv[] )
@@ -54,7 +54,7 @@ int main( int   argc,
 	    /* Do something interesting when the menuitem is selected */
 	    g_signal_connect_swapped (menu_items, "activate",
 		                      G_CALLBACK (menuitem_response),
-                                      (gpointer) g_strdup (buf));
+                                      (bpointer) g_strdup (buf));
 
             /* Show the widget */
             btk_widget_show (menu_items);
@@ -108,7 +108,7 @@ int main( int   argc,
  * the button that was pressed.
  */
 
-static gboolean button_press( BtkWidget *widget,
+static bboolean button_press( BtkWidget *widget,
                               BdkEvent *event )
 {
 
@@ -128,7 +128,7 @@ static gboolean button_press( BtkWidget *widget,
 
 /* Print a string when a menu item is selected */
 
-static void menuitem_response( gchar *string )
+static void menuitem_response( bchar *string )
 {
     printf ("%s\n", string);
 }

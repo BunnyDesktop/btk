@@ -33,17 +33,17 @@ BdkDisplay	 *_bdk_display = NULL;
 BdkScreen	 *_bdk_screen = NULL;
 BdkWindow	 *_bdk_root = NULL;
 
-gint		  _bdk_num_monitors;
+bint		  _bdk_num_monitors;
 BdkWin32Monitor  *_bdk_monitors = NULL;
 
-gint		  _bdk_offset_x, _bdk_offset_y;
+bint		  _bdk_offset_x, _bdk_offset_y;
 
 HDC		  _bdk_display_hdc;
 HINSTANCE	  _bdk_dll_hinstance;
 HINSTANCE	  _bdk_app_hmodule;
 
 HKL		  _bdk_input_locale;
-gboolean	  _bdk_input_locale_is_ime;
+bboolean	  _bdk_input_locale_is_ime;
 UINT		  _bdk_input_codepage;
 
 BdkAtom           _bdk_selection;
@@ -75,12 +75,12 @@ UINT		  _cf_text_html;
 BdkWin32DndState  _dnd_target_state = BDK_WIN32_DND_NONE;
 BdkWin32DndState  _dnd_source_state = BDK_WIN32_DND_NONE;
 
-gint		  _bdk_input_ignore_wintab = FALSE;
-gint		  _bdk_max_colors = 0;
+bint		  _bdk_input_ignore_wintab = FALSE;
+bint		  _bdk_max_colors = 0;
 
-gboolean	  _modal_operation_in_progress = FALSE;
+bboolean	  _modal_operation_in_progress = FALSE;
 HWND              _modal_move_resize_window = NULL;
-gboolean	  _ignore_destroy_clipboard = FALSE;
+bboolean	  _ignore_destroy_clipboard = FALSE;
 
 HGLOBAL           _delayed_rendering_data = NULL;
 GHashTable       *_format_atom_table = NULL;

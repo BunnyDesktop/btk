@@ -35,15 +35,15 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_FRAME                  (btk_frame_get_type ())
-#define BTK_FRAME(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FRAME, BtkFrame))
-#define BTK_FRAME_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FRAME, BtkFrameClass))
-#define BTK_IS_FRAME(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FRAME))
-#define BTK_IS_FRAME_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FRAME))
-#define BTK_FRAME_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FRAME, BtkFrameClass))
+#define BTK_FRAME(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FRAME, BtkFrame))
+#define BTK_FRAME_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FRAME, BtkFrameClass))
+#define BTK_IS_FRAME(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FRAME))
+#define BTK_IS_FRAME_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FRAME))
+#define BTK_FRAME_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FRAME, BtkFrameClass))
 
 
 typedef struct _BtkFrame       BtkFrame;
@@ -54,9 +54,9 @@ struct _BtkFrame
   BtkBin bin;
 
   BtkWidget *GSEAL (label_widget);
-  gint16 GSEAL (shadow_type);
-  gfloat GSEAL (label_xalign);
-  gfloat GSEAL (label_yalign);
+  bint16 GSEAL (shadow_type);
+  bfloat GSEAL (label_xalign);
+  bfloat GSEAL (label_yalign);
 
   BtkAllocation GSEAL (child_allocation);
 };
@@ -69,28 +69,28 @@ struct _BtkFrameClass
 };
 
 
-GType      btk_frame_get_type         (void) G_GNUC_CONST;
-BtkWidget* btk_frame_new              (const gchar   *label);
+GType      btk_frame_get_type         (void) B_GNUC_CONST;
+BtkWidget* btk_frame_new              (const bchar   *label);
 
 void                  btk_frame_set_label (BtkFrame    *frame,
-					   const gchar *label);
-const gchar *btk_frame_get_label      (BtkFrame    *frame);
+					   const bchar *label);
+const bchar *btk_frame_get_label      (BtkFrame    *frame);
 
 void       btk_frame_set_label_widget (BtkFrame      *frame,
 				       BtkWidget     *label_widget);
 BtkWidget *btk_frame_get_label_widget (BtkFrame      *frame);
 void       btk_frame_set_label_align  (BtkFrame      *frame,
-				       gfloat         xalign,
-				       gfloat         yalign);
+				       bfloat         xalign,
+				       bfloat         yalign);
 void       btk_frame_get_label_align  (BtkFrame      *frame,
-				       gfloat        *xalign,
-				       gfloat        *yalign);
+				       bfloat        *xalign,
+				       bfloat        *yalign);
 void       btk_frame_set_shadow_type  (BtkFrame      *frame,
 				       BtkShadowType  type);
 BtkShadowType btk_frame_get_shadow_type (BtkFrame    *frame);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FRAME_H__ */

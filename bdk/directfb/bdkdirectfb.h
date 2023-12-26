@@ -44,7 +44,7 @@
 
 extern BdkWindow * _bdk_parent_root;
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_ROOT_WINDOW()      _bdk_parent_root
 
@@ -52,26 +52,26 @@ G_BEGIN_DECLS
 
 
 /* used for the --transparent-unfocused hack */
-extern gboolean            bdk_directfb_apply_focus_opacity;
+extern bboolean            bdk_directfb_apply_focus_opacity;
 
 /* used for the --enable-color-keying hack */
-extern gboolean            bdk_directfb_enable_color_keying;
+extern bboolean            bdk_directfb_enable_color_keying;
 extern DFBColor            bdk_directfb_bg_color;
 extern DFBColor            bdk_directfb_bg_color_key;
 
 /* to disable antialiasing */
-extern gboolean            bdk_directfb_monochrome_fonts;
+extern bboolean            bdk_directfb_monochrome_fonts;
 
 
 /* BTK+-DirectFB specific functions */
 
 void        bdk_directfb_window_set_opacity (BdkWindow *window,
-                                             guchar     opacity);
+                                             buchar     opacity);
 
 #ifndef BDK_DISABLE_DEPRECATED
 BdkWindow * bdk_directfb_window_new         (BdkWindow             *parent,
                                              BdkWindowAttr         *attributes,
-                                             gint                   attributes_mask,
+                                             bint                   attributes_mask,
                                              DFBWindowCapabilities  window_caps,
                                              DFBWindowOptions       window_options,
                                              DFBSurfaceCapabilities surface_caps);
@@ -86,6 +86,6 @@ BdkWindow *bdk_directfb_create_child_window (BdkWindow        *parent,
                                              IDirectFBSurface *subsurface);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DIRECTFB_H__ */

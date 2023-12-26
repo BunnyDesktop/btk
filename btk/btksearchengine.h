@@ -25,14 +25,14 @@
 
 #include "btkquery.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEARCH_ENGINE		(_btk_search_engine_get_type ())
-#define BTK_SEARCH_ENGINE(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngine))
-#define BTK_SEARCH_ENGINE_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
-#define BTK_IS_SEARCH_ENGINE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE))
-#define BTK_IS_SEARCH_ENGINE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE))
-#define BTK_SEARCH_ENGINE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
+#define BTK_SEARCH_ENGINE(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngine))
+#define BTK_SEARCH_ENGINE_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
+#define BTK_IS_SEARCH_ENGINE(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE))
+#define BTK_IS_SEARCH_ENGINE_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE))
+#define BTK_SEARCH_ENGINE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE, BtkSearchEngineClass))
 
 typedef struct _BtkSearchEngine BtkSearchEngine;
 typedef struct _BtkSearchEngineClass BtkSearchEngineClass;
@@ -40,21 +40,21 @@ typedef struct _BtkSearchEnginePrivate BtkSearchEnginePrivate;
 
 struct _BtkSearchEngine 
 {
-  GObject parent;
+  BObject parent;
 
   BtkSearchEnginePrivate *priv;
 };
 
 struct _BtkSearchEngineClass 
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
   
   /* VTable */
   void     (*set_query)       (BtkSearchEngine *engine, 
 			       BtkQuery        *query);
   void     (*start)           (BtkSearchEngine *engine);
   void     (*stop)            (BtkSearchEngine *engine);
-  gboolean (*is_indexed)      (BtkSearchEngine *engine);
+  bboolean (*is_indexed)      (BtkSearchEngine *engine);
   
   /* Signals */
   void     (*hits_added)      (BtkSearchEngine *engine, 
@@ -63,11 +63,11 @@ struct _BtkSearchEngineClass
 			       GList           *hits);
   void     (*finished)        (BtkSearchEngine *engine);
   void     (*error)           (BtkSearchEngine *engine, 
-			       const gchar     *error_message);
+			       const bchar     *error_message);
 };
 
 GType            _btk_search_engine_get_type        (void);
-gboolean         _btk_search_engine_enabled         (void);
+bboolean         _btk_search_engine_enabled         (void);
 
 BtkSearchEngine* _btk_search_engine_new             (void);
 
@@ -75,7 +75,7 @@ void             _btk_search_engine_set_query       (BtkSearchEngine *engine,
                                                      BtkQuery        *query);
 void	         _btk_search_engine_start           (BtkSearchEngine *engine);
 void	         _btk_search_engine_stop            (BtkSearchEngine *engine);
-gboolean         _btk_search_engine_is_indexed      (BtkSearchEngine *engine);
+bboolean         _btk_search_engine_is_indexed      (BtkSearchEngine *engine);
 
 void	         _btk_search_engine_hits_added      (BtkSearchEngine *engine, 
 						     GList           *hits);
@@ -83,8 +83,8 @@ void	         _btk_search_engine_hits_subtracted (BtkSearchEngine *engine,
 						     GList           *hits);
 void	         _btk_search_engine_finished        (BtkSearchEngine *engine);
 void	         _btk_search_engine_error           (BtkSearchEngine *engine, 
-						     const gchar     *error_message);
+						     const bchar     *error_message);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEARCH_ENGINE_H__ */

@@ -58,14 +58,14 @@ typedef struct _BdkErrorTrap  BdkErrorTrap;
 struct _BdkPredicate
 {
   BdkEventFunc func;
-  gpointer data;
+  bpointer data;
 };
 
 struct _BdkErrorTrap
 {
   int (*old_handler) (Display *, XErrorEvent *);
-  gint error_warnings;
-  gint error_code;
+  bint error_warnings;
+  bint error_code;
 };
 
 /* 
@@ -106,18 +106,18 @@ _bdk_windowing_init (void)
 }
 
 void
-bdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (bboolean use_xshm)
 {
 }
 
-gboolean
+bboolean
 bdk_get_use_xshm (void)
 {
   return BDK_DISPLAY_X11 (bdk_display_get_default ())->use_xshm;
 }
 
 static BdkGrabStatus
-bdk_x11_convert_grab_status (gint status)
+bdk_x11_convert_grab_status (bint status)
 {
   switch (status)
     {
@@ -140,8 +140,8 @@ bdk_x11_convert_grab_status (gint status)
 
 static void
 has_pointer_grab_callback (BdkDisplay *display,
-			   gpointer data,
-			   gulong serial)
+			   bpointer data,
+			   bulong serial)
 {
   _bdk_display_pointer_grab_update (display, serial);
 }
@@ -149,16 +149,16 @@ has_pointer_grab_callback (BdkDisplay *display,
 BdkGrabStatus
 _bdk_windowing_pointer_grab (BdkWindow *window,
 			     BdkWindow *native,
-			     gboolean owner_events,
+			     bboolean owner_events,
 			     BdkEventMask event_mask,
 			     BdkWindow *confine_to,
 			     BdkCursor *cursor,
-			     guint32 time)
+			     buint32 time)
 {
-  gint return_val;
+  bint return_val;
   BdkCursorPrivate *cursor_private;
   BdkDisplayX11 *display_x11;
-  guint xevent_mask;
+  buint xevent_mask;
   Window xwindow;
   Window xconfine_to;
   Cursor xcursor;
@@ -206,7 +206,7 @@ _bdk_windowing_pointer_grab (BdkWindow *window,
 					time);
 
   if (return_val == GrabSuccess ||
-      G_UNLIKELY (!display_x11->trusted_client && return_val == AlreadyGrabbed))
+      B_UNLIKELY (!display_x11->trusted_client && return_val == AlreadyGrabbed))
     {
       if (!BDK_WINDOW_DESTROYED (native))
 	{
@@ -258,10 +258,10 @@ _bdk_windowing_pointer_grab (BdkWindow *window,
 
 BdkGrabStatus
 bdk_keyboard_grab (BdkWindow *	   window,
-		   gboolean	   owner_events,
-		   guint32	   time)
+		   bboolean	   owner_events,
+		   buint32	   time)
 {
-  gint return_val;
+  bint return_val;
   unsigned long serial;
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
@@ -293,7 +293,7 @@ bdk_keyboard_grab (BdkWindow *	   window,
 				    owner_events,
 				    GrabModeAsync, GrabModeAsync,
 				    time);
-	if (G_UNLIKELY (!display_x11->trusted_client && 
+	if (B_UNLIKELY (!display_x11->trusted_client && 
 			return_val == AlreadyGrabbed))
 	  /* we can't grab the keyboard, but we can do a BTK-local grab */
 	  return_val = GrabSuccess;
@@ -322,7 +322,7 @@ bdk_keyboard_grab (BdkWindow *	   window,
  **/
 void
 _bdk_xgrab_check_unmap (BdkWindow *window,
-			gulong     serial)
+			bulong     serial)
 {
   BdkDisplay *display = bdk_drawable_get_display (window);
 
@@ -376,7 +376,7 @@ _bdk_xgrab_check_destroy (BdkWindow *window)
 
 void
 _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
-					 const gchar *sm_client_id)
+					 const bchar *sm_client_id)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
 
@@ -387,7 +387,7 @@ _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
     {
       XChangeProperty (display_x11->xdisplay, display_x11->leader_window,
 		       bdk_x11_get_xatom_by_name_for_display (display, "SM_CLIENT_ID"),
-		       XA_STRING, 8, PropModeReplace, (guchar *)sm_client_id,
+		       XA_STRING, 8, PropModeReplace, (buchar *)sm_client_id,
 		       strlen (sm_client_id));
     }
   else
@@ -410,7 +410,7 @@ _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
  * Since: 2.24
  */
 void
-bdk_x11_set_sm_client_id (const gchar *sm_client_id)
+bdk_x11_set_sm_client_id (const bchar *sm_client_id)
 {
   bdk_set_sm_client_id (sm_client_id);
 }
@@ -460,8 +460,8 @@ bdk_x_error (Display	 *display,
     {
       if (_bdk_error_warnings)
 	{
-	  gchar buf[64];
-          gchar *msg;
+	  bchar buf[64];
+          bchar *msg;
           
 	  XGetErrorText (display, error->error_code, buf, 63);
 
@@ -567,7 +567,7 @@ bdk_error_trap_push (void)
     }
   else
     {
-      node = g_slist_alloc ();
+      node = b_slist_alloc ();
       node->data = g_new (BdkErrorTrap, 1);
     }
 
@@ -592,12 +592,12 @@ bdk_error_trap_push (void)
  *     0, if no error occured, otherwise the error code.
  *************************************************************/
 
-gint
+bint
 bdk_error_trap_pop (void)
 {
   GSList *node;
   BdkErrorTrap *trap;
-  gint result;
+  bint result;
 
   g_return_val_if_fail (bdk_error_traps != NULL, 0);
 
@@ -617,7 +617,7 @@ bdk_error_trap_pop (void)
   return result;
 }
 
-gchar *
+bchar *
 bdk_get_display (void)
 {
   return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
@@ -638,14 +638,14 @@ bdk_get_display (void)
  * 
  * Return value: %TRUE if sending the event succeeded.
  **/
-gint 
+bint 
 _bdk_send_xevent (BdkDisplay *display,
 		  Window      window, 
-		  gboolean    propagate, 
-		  glong       event_mask,
+		  bboolean    propagate, 
+		  blong       event_mask,
 		  XEvent     *event_send)
 {
-  gboolean result;
+  bboolean result;
 
   if (display->closed)
     return FALSE;
@@ -663,21 +663,21 @@ _bdk_send_xevent (BdkDisplay *display,
 
 void
 _bdk_rebunnyion_get_xrectangles (const BdkRebunnyion *rebunnyion,
-                             gint             x_offset,
-                             gint             y_offset,
+                             bint             x_offset,
+                             bint             y_offset,
                              XRectangle     **rects,
-                             gint            *n_rects)
+                             bint            *n_rects)
 {
   XRectangle *rectangles = g_new (XRectangle, rebunnyion->numRects);
   BdkRebunnyionBox *boxes = rebunnyion->rects;
-  gint i;
+  bint i;
   
   for (i = 0; i < rebunnyion->numRects; i++)
     {
-      rectangles[i].x = CLAMP (boxes[i].x1 + x_offset, G_MINSHORT, G_MAXSHORT);
-      rectangles[i].y = CLAMP (boxes[i].y1 + y_offset, G_MINSHORT, G_MAXSHORT);
-      rectangles[i].width = CLAMP (boxes[i].x2 + x_offset, G_MINSHORT, G_MAXSHORT) - rectangles[i].x;
-      rectangles[i].height = CLAMP (boxes[i].y2 + y_offset, G_MINSHORT, G_MAXSHORT) - rectangles[i].y;
+      rectangles[i].x = CLAMP (boxes[i].x1 + x_offset, B_MINSHORT, B_MAXSHORT);
+      rectangles[i].y = CLAMP (boxes[i].y1 + y_offset, B_MINSHORT, B_MAXSHORT);
+      rectangles[i].width = CLAMP (boxes[i].x2 + x_offset, B_MINSHORT, B_MAXSHORT) - rectangles[i].x;
+      rectangles[i].height = CLAMP (boxes[i].y2 + y_offset, B_MINSHORT, B_MAXSHORT) - rectangles[i].y;
     }
 
   *rects = rectangles;
@@ -719,7 +719,7 @@ bdk_x11_ungrab_server (void)
  *   the --display command line option or the DISPLAY environment
  *   variable when bdk_init() calls XOpenDisplay().
  **/
-gint
+bint
 bdk_x11_get_default_screen (void)
 {
   return bdk_screen_get_number (bdk_screen_get_default ());

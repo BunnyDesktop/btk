@@ -75,11 +75,11 @@ enum
 
 typedef struct
 {
-  gint type;
+  bint type;
   union 
   {
     GType         class_type;
-    gchar        *class_name;
+    bchar        *class_name;
     GPatternSpec *pspec;
   } elt;
 } PathElt;
@@ -92,17 +92,17 @@ struct _BtkRcSet
   GSList       *path;
 
   BtkRcStyle   *rc_style;
-  gint          priority;
+  bint          priority;
 };
 
 struct _BtkRcFile
 {
   time_t mtime;
-  gchar *name;
-  gchar *canonical_name;
-  gchar *directory;
-  guint  reload    : 1;
-  guint  is_string : 1;	/* If TRUE, name is a string to parse with btk_rc_parse_string() */
+  bchar *name;
+  bchar *canonical_name;
+  bchar *directory;
+  buint  reload    : 1;
+  buint  is_string : 1;	/* If TRUE, name is a string to parse with btk_rc_parse_string() */
 };
 
 
@@ -117,21 +117,21 @@ struct _BtkRcContext
   /* The files we have parsed, to reread later if necessary */
   GSList *rc_files;
 
-  gchar *theme_name;
-  gchar *key_theme_name;
-  gchar *font_name;
+  bchar *theme_name;
+  bchar *key_theme_name;
+  bchar *font_name;
   
-  gchar **pixmap_path;
+  bchar **pixmap_path;
 
-  gint default_priority;
+  bint default_priority;
   BtkStyle *default_style;
 
   GHashTable *color_hash;
 
-  guint reloading : 1;
+  buint reloading : 1;
 };
 
-#define BTK_RC_STYLE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RC_STYLE, BtkRcStylePrivate))
+#define BTK_RC_STYLE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RC_STYLE, BtkRcStylePrivate))
 
 typedef struct _BtkRcStylePrivate BtkRcStylePrivate;
 
@@ -142,90 +142,90 @@ struct _BtkRcStylePrivate
 
 static BtkRcContext *btk_rc_context_get              (BtkSettings     *settings);
 
-static guint       btk_rc_style_hash                 (const gchar     *name);
-static gboolean    btk_rc_style_equal                (const gchar     *a,
-                                                      const gchar     *b);
-static guint       btk_rc_styles_hash                (const GSList    *rc_styles);
-static gboolean    btk_rc_styles_equal               (const GSList    *a,
+static buint       btk_rc_style_hash                 (const bchar     *name);
+static bboolean    btk_rc_style_equal                (const bchar     *a,
+                                                      const bchar     *b);
+static buint       btk_rc_styles_hash                (const GSList    *rc_styles);
+static bboolean    btk_rc_styles_equal               (const GSList    *a,
                                                       const GSList    *b);
 static BtkRcStyle* btk_rc_style_find                 (BtkRcContext    *context,
-						      const gchar     *name);
+						      const bchar     *name);
 static GSList *    btk_rc_styles_match               (GSList          *rc_styles,
                                                       GSList          *sets,
-                                                      guint            path_length,
-                                                      gchar           *path,
-                                                      gchar           *path_reversed);
+                                                      buint            path_length,
+                                                      bchar           *path,
+                                                      bchar           *path_reversed);
 static BtkStyle *  btk_rc_style_to_style             (BtkRcContext    *context,
 						      BtkRcStyle      *rc_style);
 static BtkStyle*   btk_rc_init_style                 (BtkRcContext    *context,
 						      GSList          *rc_styles);
 static void        btk_rc_parse_default_files        (BtkRcContext    *context);
 static void        btk_rc_parse_named                (BtkRcContext    *context,
-						      const gchar     *name,
-						      const gchar     *type);
+						      const bchar     *name,
+						      const bchar     *type);
 static void        btk_rc_context_parse_file         (BtkRcContext    *context,
-						      const gchar     *filename,
-						      gint             priority,
-                                                      gboolean         reload);
+						      const bchar     *filename,
+						      bint             priority,
+                                                      bboolean         reload);
 static void        btk_rc_parse_any                  (BtkRcContext    *context,
-						      const gchar     *input_name,
-                                                      gint             input_fd,
-                                                      const gchar     *input_string);
-static guint       btk_rc_parse_statement            (BtkRcContext    *context,
+						      const bchar     *input_name,
+                                                      bint             input_fd,
+                                                      const bchar     *input_string);
+static buint       btk_rc_parse_statement            (BtkRcContext    *context,
 						      GScanner        *scanner);
-static guint       btk_rc_parse_style                (BtkRcContext    *context,
+static buint       btk_rc_parse_style                (BtkRcContext    *context,
 						      GScanner        *scanner);
-static guint       btk_rc_parse_assignment           (GScanner        *scanner,
+static buint       btk_rc_parse_assignment           (GScanner        *scanner,
                                                       BtkRcStyle      *style,
 						      BtkRcProperty   *prop);
-static guint       btk_rc_parse_bg                   (GScanner        *scanner,
+static buint       btk_rc_parse_bg                   (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_fg                   (GScanner        *scanner,
+static buint       btk_rc_parse_fg                   (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_text                 (GScanner        *scanner,
+static buint       btk_rc_parse_text                 (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_base                 (GScanner        *scanner,
+static buint       btk_rc_parse_base                 (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_xthickness           (GScanner        *scanner,
+static buint       btk_rc_parse_xthickness           (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_ythickness           (GScanner        *scanner,
+static buint       btk_rc_parse_ythickness           (GScanner        *scanner,
                                                       BtkRcStyle      *style);
-static guint       btk_rc_parse_bg_pixmap            (BtkRcContext    *context,
+static buint       btk_rc_parse_bg_pixmap            (BtkRcContext    *context,
 						      GScanner        *scanner,
                                                       BtkRcStyle      *rc_style);
-static guint       btk_rc_parse_font                 (GScanner        *scanner,
+static buint       btk_rc_parse_font                 (GScanner        *scanner,
                                                       BtkRcStyle      *rc_style);
-static guint       btk_rc_parse_fontset              (GScanner        *scanner,
+static buint       btk_rc_parse_fontset              (GScanner        *scanner,
                                                       BtkRcStyle      *rc_style);
-static guint       btk_rc_parse_font_name            (GScanner        *scanner,
+static buint       btk_rc_parse_font_name            (GScanner        *scanner,
                                                       BtkRcStyle      *rc_style);
-static guint       btk_rc_parse_engine               (BtkRcContext    *context,
+static buint       btk_rc_parse_engine               (BtkRcContext    *context,
 						      GScanner        *scanner,
                                                       BtkRcStyle     **rc_style);
-static guint       btk_rc_parse_pixmap_path          (BtkRcContext    *context,
+static buint       btk_rc_parse_pixmap_path          (BtkRcContext    *context,
 						      GScanner        *scanner);
 static void        btk_rc_parse_pixmap_path_string   (BtkRcContext    *context,
 						      GScanner        *scanner,
-						      const gchar     *pix_path);
-static guint       btk_rc_parse_module_path          (GScanner        *scanner);
-static guint       btk_rc_parse_im_module_file       (GScanner        *scanner);
-static guint       btk_rc_parse_path_pattern         (BtkRcContext    *context,
+						      const bchar     *pix_path);
+static buint       btk_rc_parse_module_path          (GScanner        *scanner);
+static buint       btk_rc_parse_im_module_file       (GScanner        *scanner);
+static buint       btk_rc_parse_path_pattern         (BtkRcContext    *context,
 						      GScanner        *scanner);
-static guint       btk_rc_parse_stock                (BtkRcContext    *context,
+static buint       btk_rc_parse_stock                (BtkRcContext    *context,
 						      GScanner        *scanner,
                                                       BtkRcStyle      *rc_style,
                                                       BtkIconFactory  *factory);
-static guint       btk_rc_parse_logical_color        (GScanner        *scanner,
+static buint       btk_rc_parse_logical_color        (GScanner        *scanner,
                                                       BtkRcStyle      *rc_style,
                                                       GHashTable      *hash);
 
-static void        btk_rc_clear_hash_node            (gpointer         key,
-                                                      gpointer         data,
-                                                      gpointer         user_data);
+static void        btk_rc_clear_hash_node            (bpointer         key,
+                                                      bpointer         data,
+                                                      bpointer         user_data);
 static void        btk_rc_clear_styles               (BtkRcContext    *context);
 static void        btk_rc_add_initial_default_files  (void);
 
-static void        btk_rc_style_finalize             (GObject         *object);
+static void        btk_rc_style_finalize             (BObject         *object);
 static void        btk_rc_style_real_merge           (BtkRcStyle      *dest,
                                                       BtkRcStyle      *src);
 static BtkRcStyle* btk_rc_style_real_create_rc_style (BtkRcStyle      *rc_style);
@@ -233,13 +233,13 @@ static BtkStyle*   btk_rc_style_real_create_style    (BtkRcStyle      *rc_style)
 static void        btk_rc_style_copy_icons_and_colors(BtkRcStyle      *rc_style,
                                                       BtkRcStyle      *src_style,
                                                       BtkRcContext    *context);
-static gint	   btk_rc_properties_cmp	     (gconstpointer    bsearch_node1,
+static bint	   btk_rc_properties_cmp	     (gconstpointer    bsearch_node1,
 						      gconstpointer    bsearch_node2);
 static void        btk_rc_set_free                   (BtkRcSet        *rc_set);
 
 static void	   insert_rc_property		     (BtkRcStyle      *style,
 						      BtkRcProperty   *property,
-						      gboolean         replace);
+						      bboolean         replace);
 
 
 static const GScannerConfig btk_rc_scanner_config =
@@ -284,7 +284,7 @@ static const GScannerConfig btk_rc_scanner_config =
   FALSE			/* scope_0_fallback */,
 };
  
-static const gchar symbol_names[] = 
+static const bchar symbol_names[] = 
   "include\0"
   "NORMAL\0"
   "ACTIVE\0"
@@ -325,8 +325,8 @@ static const gchar symbol_names[] =
 
 static const struct
 {
-  guint name_offset;
-  guint token;
+  buint name_offset;
+  buint token;
 } symbols[] = {
   {   0, BTK_RC_TOKEN_INCLUDE },
   {   8, BTK_RC_TOKEN_NORMAL },
@@ -369,10 +369,10 @@ static const struct
 
 static GHashTable *realized_style_ht = NULL;
 
-static gchar *im_module_file = NULL;
+static bchar *im_module_file = NULL;
 
-static gint    max_default_files = 0;
-static gchar **btk_rc_default_files = NULL;
+static bint    max_default_files = 0;
+static bchar **btk_rc_default_files = NULL;
 
 /* A stack of information of RC files we are parsing currently.
  * The directories for these files are implicitely added to the end of
@@ -390,11 +390,11 @@ static GSList *rc_contexts;
 
 /* RC file handling */
 
-static gchar *
-btk_rc_make_default_dir (const gchar *type)
+static bchar *
+btk_rc_make_default_dir (const bchar *type)
 {
-  const gchar *var;
-  gchar *path;
+  const bchar *var;
+  bchar *path;
 
   var = g_getenv ("BTK_EXE_PREFIX");
 
@@ -417,11 +417,11 @@ btk_rc_make_default_dir (const gchar *type)
  * function is useful solely for utilities supplied with BTK+ and should
  * not be used by applications under normal circumstances.
  */
-gchar *
+bchar *
 btk_rc_get_im_module_path (void)
 {
-  gchar **paths = _btk_get_module_path ("immodules");
-  gchar *result = g_strjoinv (G_SEARCHPATH_SEPARATOR_S, paths);
+  bchar **paths = _btk_get_module_path ("immodules");
+  bchar *result = g_strjoinv (G_SEARCHPATH_SEPARATOR_S, paths);
   g_strfreev (paths);
 
   return result;
@@ -436,11 +436,11 @@ btk_rc_get_im_module_path (void)
  * of the <link linkend="im-module-file"><envar>BTK_IM_MODULE_FILE</envar></link>
  * environment variable for more details.
  */
-gchar *
+bchar *
 btk_rc_get_im_module_file (void)
 {
-  const gchar *var = g_getenv ("BTK_IM_MODULE_FILE");
-  gchar *result = NULL;
+  const bchar *var = g_getenv ("BTK_IM_MODULE_FILE");
+  bchar *result = NULL;
 
   if (var)
     result = g_strdup (var);
@@ -456,11 +456,11 @@ btk_rc_get_im_module_file (void)
   return result;
 }
 
-gchar *
+bchar *
 btk_rc_get_theme_dir (void)
 {
-  const gchar *var;
-  gchar *path;
+  const bchar *var;
+  bchar *path;
 
   var = g_getenv ("BTK_DATA_PREFIX");
 
@@ -482,7 +482,7 @@ btk_rc_get_theme_dir (void)
  * 
  * return value: the directory. (Must be freed with g_free())
  **/
-gchar *
+bchar *
 btk_rc_get_module_dir (void)
 {
   return btk_rc_make_default_dir ("engines");
@@ -491,16 +491,16 @@ btk_rc_get_module_dir (void)
 static void
 btk_rc_add_initial_default_files (void)
 {
-  static gint init = FALSE;
-  const gchar *var;
-  gchar *str;
-  gchar **files;
-  gint i;
+  static bint init = FALSE;
+  const bchar *var;
+  bchar *str;
+  bchar **files;
+  bint i;
 
   if (init)
     return;
  
-  btk_rc_default_files = g_new (gchar*, 10);
+  btk_rc_default_files = g_new (bchar*, 10);
   max_default_files = 10;
 
   btk_rc_default_files[0] = NULL;
@@ -521,9 +521,9 @@ btk_rc_add_initial_default_files (void)
     }
   else
     {
-      const gchar *home;
-      const gchar * const *config_dirs;
-      const gchar *config_dir;
+      const bchar *home;
+      const bchar * const *config_dirs;
+      const bchar *config_dir;
 
       str = g_build_filename (BTK_DATA_PREFIX, "share", "btk-2.0", "btkrc", NULL);
       btk_rc_add_default_file (str);
@@ -560,9 +560,9 @@ btk_rc_add_initial_default_files (void)
  * end of btk_init().
  **/
 void
-btk_rc_add_default_file (const gchar *filename)
+btk_rc_add_default_file (const bchar *filename)
 {
-  guint n;
+  buint n;
   
   btk_rc_add_initial_default_files ();
 
@@ -575,7 +575,7 @@ btk_rc_add_default_file (const gchar *filename)
   if (n == max_default_files)
     {
       max_default_files += 10;
-      btk_rc_default_files = g_renew (gchar*, btk_rc_default_files, max_default_files);
+      btk_rc_default_files = g_renew (bchar*, btk_rc_default_files, max_default_files);
     }
   
   btk_rc_default_files[n++] = g_strdup (filename);
@@ -590,9 +590,9 @@ btk_rc_add_default_file (const gchar *filename)
  * end of btk_init().
  **/
 void
-btk_rc_set_default_files (gchar **filenames)
+btk_rc_set_default_files (bchar **filenames)
 {
-  gint i;
+  bint i;
 
   btk_rc_add_initial_default_files ();
 
@@ -624,7 +624,7 @@ btk_rc_set_default_files (gchar **filenames)
  *     This memory is owned by BTK+ and must not be freed by the application.
  *     If you want to store this information, you should make a copy.
  **/
-gchar **
+bchar **
 btk_rc_get_default_files (void)
 {
   btk_rc_add_initial_default_files ();
@@ -634,11 +634,11 @@ btk_rc_get_default_files (void)
 
 static void
 btk_rc_settings_changed (BtkSettings  *settings,
-			 GParamSpec   *pspec,
+			 BParamSpec   *pspec,
 			 BtkRcContext *context)
 {
-  gchar *new_theme_name;
-  gchar *new_key_theme_name;
+  bchar *new_theme_name;
+  bchar *new_key_theme_name;
 
   if (context->reloading)
     return;
@@ -662,7 +662,7 @@ btk_rc_settings_changed (BtkSettings  *settings,
 
 static void
 btk_rc_font_name_changed (BtkSettings  *settings,
-                          GParamSpec   *pspec,
+                          BParamSpec   *pspec,
                           BtkRcContext *context)
 {
   if (!context->reloading)
@@ -671,7 +671,7 @@ btk_rc_font_name_changed (BtkSettings  *settings,
 
 static void
 btk_rc_color_hash_changed (BtkSettings  *settings,
-			   GParamSpec   *pspec,
+			   BParamSpec   *pspec,
 			   BtkRcContext *context)
 {
   GHashTable *old_hash;
@@ -730,7 +730,7 @@ btk_rc_context_get (BtkSettings *settings)
 
       context->default_priority = BTK_PATH_PRIO_RC;
 
-      rc_contexts = g_slist_prepend (rc_contexts, settings->rc_context);
+      rc_contexts = b_slist_prepend (rc_contexts, settings->rc_context);
     }
 
   return settings->rc_context;
@@ -755,7 +755,7 @@ btk_rc_clear_rc_files (BtkRcContext *context)
       list = list->next;
     }
   
-  g_slist_free (context->rc_files);
+  b_slist_free (context->rc_files);
   context->rc_files = NULL;
 }
 
@@ -793,7 +793,7 @@ _btk_rc_context_destroy (BtkSettings *settings)
   g_signal_handlers_disconnect_by_func (settings,
 					btk_rc_color_hash_changed, context);
 
-  rc_contexts = g_slist_remove (rc_contexts, context);
+  rc_contexts = b_slist_remove (rc_contexts, context);
 
   g_free (context);
 
@@ -802,12 +802,12 @@ _btk_rc_context_destroy (BtkSettings *settings)
 
 static void
 btk_rc_parse_named (BtkRcContext *context,
-		    const gchar  *name,
-		    const gchar  *type)
+		    const bchar  *name,
+		    const bchar  *type)
 {
-  gchar *path = NULL;
-  const gchar *home_dir;
-  gchar *subpath;
+  bchar *path = NULL;
+  const bchar *home_dir;
+  bchar *subpath;
 
   if (type)
     subpath = g_strconcat ("btk-2.0-", type,
@@ -831,7 +831,7 @@ btk_rc_parse_named (BtkRcContext *context,
 
   if (!path)
     {
-      gchar *theme_dir = btk_rc_get_theme_dir ();
+      bchar *theme_dir = btk_rc_get_theme_dir ();
       path = g_build_filename (theme_dir, name, subpath, NULL);
       g_free (theme_dir);
       
@@ -854,7 +854,7 @@ btk_rc_parse_named (BtkRcContext *context,
 static void
 btk_rc_parse_default_files (BtkRcContext *context)
 {
-  gint i;
+  bint i;
 
   btk_rc_add_initial_default_files ();
 
@@ -865,7 +865,7 @@ btk_rc_parse_default_files (BtkRcContext *context)
 void
 _btk_rc_init (void)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
 
   if (!initialized)
     {
@@ -918,13 +918,13 @@ _btk_rc_init (void)
   
 static void
 btk_rc_context_parse_string (BtkRcContext *context,
-			     const gchar  *rc_string)
+			     const bchar  *rc_string)
 {
   btk_rc_parse_any (context, "-", -1, rc_string);
 }
 
 void
-btk_rc_parse_string (const gchar *rc_string)
+btk_rc_parse_string (const bchar *rc_string)
 {
   BtkRcFile *rc_file;
   GSList *tmp_list;
@@ -939,7 +939,7 @@ btk_rc_parse_string (const gchar *rc_string)
   rc_file->mtime = 0;
   rc_file->reload = TRUE;
   
-  global_rc_files = g_slist_append (global_rc_files, rc_file);
+  global_rc_files = b_slist_append (global_rc_files, rc_file);
 
   for (tmp_list = rc_contexts; tmp_list; tmp_list = tmp_list->next)
     btk_rc_context_parse_string (tmp_list->data, rc_string);
@@ -948,7 +948,7 @@ btk_rc_parse_string (const gchar *rc_string)
 static BtkRcFile *
 add_to_rc_file_list (GSList     **rc_file_list,
 		     const char  *filename,
-		     gboolean     reload)
+		     bboolean     reload)
 {
   GSList *tmp_list;
   BtkRcFile *rc_file;
@@ -971,20 +971,20 @@ add_to_rc_file_list (GSList     **rc_file_list,
   rc_file->mtime = 0;
   rc_file->reload = reload;
   
-  *rc_file_list = g_slist_append (*rc_file_list, rc_file);
+  *rc_file_list = b_slist_append (*rc_file_list, rc_file);
   
   return rc_file;
 }
 
 static void
 btk_rc_context_parse_one_file (BtkRcContext *context,
-			       const gchar  *filename,
-			       gint          priority,
-			       gboolean      reload)
+			       const bchar  *filename,
+			       bint          priority,
+			       bboolean      reload)
 {
   BtkRcFile *rc_file;
   GStatBuf statbuf;
-  gint saved_priority;
+  bint saved_priority;
 
   g_return_if_fail (filename != NULL);
 
@@ -1001,7 +1001,7 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
 	rc_file->canonical_name = rc_file->name;
       else
 	{
-	  gchar *cwd;
+	  bchar *cwd;
 
 	  cwd = g_get_current_dir ();
 	  rc_file->canonical_name = g_build_filename (cwd, rc_file->name, NULL);
@@ -1013,12 +1013,12 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
 
   /* If the file is already being parsed (recursion), do nothing
    */
-  if (g_slist_find (current_files_stack, rc_file))
+  if (b_slist_find (current_files_stack, rc_file))
     return;
 
   if (!g_lstat (rc_file->canonical_name, &statbuf))
     {
-      gint fd;
+      bint fd;
       
       rc_file->mtime = statbuf.st_mtime;
 
@@ -1029,9 +1029,9 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
       /* Temporarily push information for this file on
        * a stack of current files while parsing it.
        */
-      current_files_stack = g_slist_prepend (current_files_stack, rc_file);
+      current_files_stack = b_slist_prepend (current_files_stack, rc_file);
       btk_rc_parse_any (context, filename, fd, NULL);
-      current_files_stack = g_slist_delete_link (current_files_stack,
+      current_files_stack = b_slist_delete_link (current_files_stack,
 						 current_files_stack);
 
       close (fd);
@@ -1041,13 +1041,13 @@ btk_rc_context_parse_one_file (BtkRcContext *context,
   context->default_priority = saved_priority;
 }
 
-static gchar *
-strchr_len (const gchar *str, gint len, char c)
+static bchar *
+strchr_len (const bchar *str, bint len, char c)
 {
   while (len--)
     {
       if (*str == c)
-	return (gchar *)str;
+	return (bchar *)str;
 
       str++;
     }
@@ -1057,16 +1057,16 @@ strchr_len (const gchar *str, gint len, char c)
 
 static void
 btk_rc_context_parse_file (BtkRcContext *context,
-			   const gchar  *filename,
-			   gint          priority,
-			   gboolean      reload)
+			   const bchar  *filename,
+			   bint          priority,
+			   bboolean      reload)
 {
-  gchar *locale_suffixes[2];
-  gint n_locale_suffixes = 0;
-  gchar *p;
-  gchar *locale;
-  gint length, j;
-  gboolean found = FALSE;
+  bchar *locale_suffixes[2];
+  bint n_locale_suffixes = 0;
+  bchar *p;
+  bchar *locale;
+  bint length, j;
+  bboolean found = FALSE;
 
   locale = _btk_get_lc_ctype ();
 
@@ -1101,7 +1101,7 @@ btk_rc_context_parse_file (BtkRcContext *context,
     {
       if (!found)
 	{
-	  gchar *name = g_strconcat (filename, ".", locale_suffixes[j], NULL);
+	  bchar *name = g_strconcat (filename, ".", locale_suffixes[j], NULL);
 	  if (g_file_test (name, G_FILE_TEST_EXISTS))
 	    {
 	      btk_rc_context_parse_one_file (context, name, priority, FALSE);
@@ -1116,7 +1116,7 @@ btk_rc_context_parse_file (BtkRcContext *context,
 }
 
 void
-btk_rc_parse (const gchar *filename)
+btk_rc_parse (const bchar *filename)
 {
   GSList *tmp_list;
   
@@ -1130,13 +1130,13 @@ btk_rc_parse (const gchar *filename)
 
 /* Handling of RC styles */
 
-G_DEFINE_TYPE (BtkRcStyle, btk_rc_style, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkRcStyle, btk_rc_style, B_TYPE_OBJECT)
 
 static void
 btk_rc_style_init (BtkRcStyle *style)
 {
   BtkRcStylePrivate *priv = BTK_RC_STYLE_GET_PRIVATE (style);
-  guint i;
+  buint i;
 
   style->name = NULL;
   style->font_desc = NULL;
@@ -1165,7 +1165,7 @@ btk_rc_style_init (BtkRcStyle *style)
 static void
 btk_rc_style_class_init (BtkRcStyleClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->finalize = btk_rc_style_finalize;
 
@@ -1178,12 +1178,12 @@ btk_rc_style_class_init (BtkRcStyleClass *klass)
 }
 
 static void
-btk_rc_style_finalize (GObject *object)
+btk_rc_style_finalize (BObject *object)
 {
   GSList *tmp_list1, *tmp_list2;
   BtkRcStyle *rc_style;
   BtkRcStylePrivate *rc_priv;
-  gint i;
+  bint i;
 
   rc_style = BTK_RC_STYLE (object);
   rc_priv = BTK_RC_STYLE_GET_PRIVATE (rc_style);
@@ -1214,7 +1214,7 @@ btk_rc_style_finalize (GObject *object)
           BtkRcStyle *other_style = tmp_list2->data;
 
           if (other_style != rc_style)
-            other_style->rc_style_lists = g_slist_remove_all (other_style->rc_style_lists,
+            other_style->rc_style_lists = b_slist_remove_all (other_style->rc_style_lists,
 							      rc_styles);
           tmp_list2 = tmp_list2->next;
         }
@@ -1222,34 +1222,34 @@ btk_rc_style_finalize (GObject *object)
       /* And from the hash table itself
        */
       g_hash_table_remove (realized_style_ht, rc_styles);
-      g_slist_free (rc_styles);
+      b_slist_free (rc_styles);
 
       tmp_list1 = tmp_list1->next;
     }
-  g_slist_free (rc_style->rc_style_lists);
+  b_slist_free (rc_style->rc_style_lists);
 
   if (rc_style->rc_properties)
     {
-      guint i;
+      buint i;
 
       for (i = 0; i < rc_style->rc_properties->len; i++)
 	{
 	  BtkRcProperty *node = &g_array_index (rc_style->rc_properties, BtkRcProperty, i);
 
 	  g_free (node->origin);
-	  g_value_unset (&node->value);
+	  b_value_unset (&node->value);
 	}
       g_array_free (rc_style->rc_properties, TRUE);
       rc_style->rc_properties = NULL;
     }
 
-  g_slist_foreach (rc_style->icon_factories, (GFunc) g_object_unref, NULL);
-  g_slist_free (rc_style->icon_factories);
+  b_slist_foreach (rc_style->icon_factories, (GFunc) g_object_unref, NULL);
+  b_slist_free (rc_style->icon_factories);
 
-  g_slist_foreach (rc_priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
-  g_slist_free (rc_priv->color_hashes);
+  b_slist_foreach (rc_priv->color_hashes, (GFunc) g_hash_table_unref, NULL);
+  b_slist_free (rc_priv->color_hashes);
 
-  G_OBJECT_CLASS (btk_rc_style_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_rc_style_parent_class)->finalize (object);
 }
 
 BtkRcStyle *
@@ -1312,8 +1312,8 @@ _btk_rc_style_unset_rc_property (BtkRcStyle *rc_style,
 
   if (node != NULL)
     {
-      guint index = node - (BtkRcProperty *) rc_style->rc_properties->data;
-      g_value_unset (&node->value);
+      buint index = node - (BtkRcProperty *) rc_style->rc_properties->data;
+      b_value_unset (&node->value);
       g_free (node->origin);
       g_array_remove_index (rc_style->rc_properties, index);
     }
@@ -1338,7 +1338,7 @@ btk_rc_style_unref (BtkRcStyle *rc_style)
 static BtkRcStyle *
 btk_rc_style_real_create_rc_style (BtkRcStyle *style)
 {
-  return g_object_new (G_OBJECT_TYPE (style), NULL);
+  return g_object_new (B_OBJECT_TYPE (style), NULL);
 }
 
 GSList *
@@ -1349,7 +1349,7 @@ _btk_rc_style_get_color_hashes (BtkRcStyle *rc_style)
   return priv->color_hashes;
 }
 
-static gint
+static bint
 btk_rc_properties_cmp (gconstpointer bsearch_node1,
 		       gconstpointer bsearch_node2)
 {
@@ -1365,9 +1365,9 @@ btk_rc_properties_cmp (gconstpointer bsearch_node1,
 static void
 insert_rc_property (BtkRcStyle    *style,
 		    BtkRcProperty *property,
-		    gboolean       replace)
+		    bboolean       replace)
 {
-  guint i;
+  buint i;
   BtkRcProperty *new_property = NULL;
   BtkRcProperty key = { 0, 0, NULL, { 0, }, };
 
@@ -1380,7 +1380,7 @@ insert_rc_property (BtkRcStyle    *style,
   i = 0;
   while (i < style->rc_properties->len)
     {
-      gint cmp = btk_rc_properties_cmp (&key, &g_array_index (style->rc_properties, BtkRcProperty, i));
+      bint cmp = btk_rc_properties_cmp (&key, &g_array_index (style->rc_properties, BtkRcProperty, i));
 
       if (cmp == 0)
 	{
@@ -1389,7 +1389,7 @@ insert_rc_property (BtkRcStyle    *style,
 	      new_property = &g_array_index (style->rc_properties, BtkRcProperty, i);
 	      
 	      g_free (new_property->origin);
-	      g_value_unset (&new_property->value);
+	      b_value_unset (&new_property->value);
 	      
 	      *new_property = key;
 	      break;
@@ -1410,15 +1410,15 @@ insert_rc_property (BtkRcStyle    *style,
     }
 
   new_property->origin = g_strdup (property->origin);
-  g_value_init (&new_property->value, G_VALUE_TYPE (&property->value));
-  g_value_copy (&property->value, &new_property->value);
+  b_value_init (&new_property->value, G_VALUE_TYPE (&property->value));
+  b_value_copy (&property->value, &new_property->value);
 }
 
 static void
 btk_rc_style_real_merge (BtkRcStyle *dest,
 			 BtkRcStyle *src)
 {
-  gint i;
+  bint i;
 
   for (i = 0; i < 5; i++)
     {
@@ -1466,7 +1466,7 @@ btk_rc_style_real_merge (BtkRcStyle *dest,
 
   if (src->rc_properties)
     {
-      guint i;
+      buint i;
 
       for (i = 0; i < src->rc_properties->len; i++)
 	insert_rc_property (dest,
@@ -1486,7 +1486,7 @@ btk_rc_style_prepend_empty_icon_factory (BtkRcStyle *rc_style)
 {
   BtkIconFactory *factory = btk_icon_factory_new ();
 
-  rc_style->icon_factories = g_slist_prepend (rc_style->icon_factories, factory);
+  rc_style->icon_factories = b_slist_prepend (rc_style->icon_factories, factory);
 }
 
 static void
@@ -1497,18 +1497,18 @@ btk_rc_style_prepend_empty_color_hash (BtkRcStyle *rc_style)
                                                    g_free,
                                                    (GDestroyNotify) bdk_color_free);
 
-  priv->color_hashes = g_slist_prepend (priv->color_hashes, hash);
+  priv->color_hashes = b_slist_prepend (priv->color_hashes, hash);
 }
 
 static void
 btk_rc_style_append_icon_factories (BtkRcStyle *rc_style,
                                     BtkRcStyle *src_style)
 {
-  GSList *concat = g_slist_copy (src_style->icon_factories);
+  GSList *concat = b_slist_copy (src_style->icon_factories);
 
-  g_slist_foreach (concat, (GFunc) g_object_ref, NULL);
+  b_slist_foreach (concat, (GFunc) g_object_ref, NULL);
 
-  rc_style->icon_factories = g_slist_concat (rc_style->icon_factories, concat);
+  rc_style->icon_factories = b_slist_concat (rc_style->icon_factories, concat);
 }
 
 static void
@@ -1517,11 +1517,11 @@ btk_rc_style_append_color_hashes (BtkRcStyle *rc_style,
 {
   BtkRcStylePrivate *priv     = BTK_RC_STYLE_GET_PRIVATE (rc_style);
   BtkRcStylePrivate *src_priv = BTK_RC_STYLE_GET_PRIVATE (src_style);
-  GSList            *concat   = g_slist_copy (src_priv->color_hashes);
+  GSList            *concat   = b_slist_copy (src_priv->color_hashes);
 
-  g_slist_foreach (concat, (GFunc) g_hash_table_ref, NULL);
+  b_slist_foreach (concat, (GFunc) g_hash_table_ref, NULL);
 
-  priv->color_hashes = g_slist_concat (priv->color_hashes, concat);
+  priv->color_hashes = b_slist_concat (priv->color_hashes, concat);
 }
 
 static void
@@ -1570,15 +1570,15 @@ btk_rc_style_copy_icons_and_colors (BtkRcStyle   *rc_style,
     {
       btk_rc_style_prepend_empty_color_hash (rc_style);
 
-      priv->color_hashes = g_slist_append (priv->color_hashes,
+      priv->color_hashes = b_slist_append (priv->color_hashes,
                                            g_hash_table_ref (context->color_hash));
     }
 }
 
 static void
-btk_rc_clear_hash_node (gpointer key, 
-			gpointer data, 
-			gpointer user_data)
+btk_rc_clear_hash_node (bpointer key, 
+			bpointer data, 
+			bpointer user_data)
 {
   g_object_unref (data);
 }
@@ -1610,15 +1610,15 @@ btk_rc_clear_styles (BtkRcContext *context)
     }
 
   btk_rc_free_rc_sets (context->rc_sets_widget);
-  g_slist_free (context->rc_sets_widget);
+  b_slist_free (context->rc_sets_widget);
   context->rc_sets_widget = NULL;
 
   btk_rc_free_rc_sets (context->rc_sets_widget_class);
-  g_slist_free (context->rc_sets_widget_class);
+  b_slist_free (context->rc_sets_widget_class);
   context->rc_sets_widget_class = NULL;
 
   btk_rc_free_rc_sets (context->rc_sets_class);
-  g_slist_free (context->rc_sets_class);
+  b_slist_free (context->rc_sets_class);
   context->rc_sets_class = NULL;
 }
 
@@ -1648,9 +1648,9 @@ btk_rc_reset_widgets (BtkSettings *settings)
 }
 
 static void
-btk_rc_clear_realized_style (gpointer key,
-			     gpointer value,
-			     gpointer data)
+btk_rc_clear_realized_style (bpointer key,
+			     bpointer value,
+			     bpointer data)
 {
   GSList *rc_styles = key;
   BtkStyle *style = value;
@@ -1662,12 +1662,12 @@ btk_rc_clear_realized_style (gpointer key,
     {
       BtkRcStyle *rc_style = tmp_list->data;
       
-      rc_style->rc_style_lists = g_slist_remove_all (rc_style->rc_style_lists,
+      rc_style->rc_style_lists = b_slist_remove_all (rc_style->rc_style_lists,
 						     rc_styles);
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (rc_styles);
+  b_slist_free (rc_styles);
 }
 
 /**
@@ -1691,7 +1691,7 @@ void
 btk_rc_reset_styles (BtkSettings *settings)
 {
   BtkRcContext *context;
-  gboolean reset = FALSE;
+  bboolean reset = FALSE;
 
   g_return_if_fail (BTK_IS_SETTINGS (settings));
 
@@ -1718,11 +1718,11 @@ btk_rc_reset_styles (BtkSettings *settings)
     btk_rc_reset_widgets (settings);
 }
 
-const gchar*
+const bchar*
 _btk_rc_context_get_default_font_name (BtkSettings *settings)
 {
   BtkRcContext *context;
-  gchar *new_font_name;
+  bchar *new_font_name;
   
   g_return_val_if_fail (BTK_IS_SETTINGS (settings), NULL);
 
@@ -1756,11 +1756,11 @@ _btk_rc_context_get_default_font_name (BtkSettings *settings)
  * 
  * Return value: %TRUE if the files were reread.
  **/
-gboolean
+bboolean
 btk_rc_reparse_all_for_settings (BtkSettings *settings,
-				 gboolean     force_load)
+				 bboolean     force_load)
 {
-  gboolean mtime_modified = FALSE;
+  bboolean mtime_modified = FALSE;
   BtkRcFile *rc_file;
   GSList *tmp_list;
   BtkRcContext *context;
@@ -1851,11 +1851,11 @@ btk_rc_reparse_all_for_settings (BtkSettings *settings,
  * 
  * Return value:  %TRUE if the files were reread.
  **/
-gboolean
+bboolean
 btk_rc_reparse_all (void)
 {
   GSList *tmp_list;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   for (tmp_list = rc_contexts; tmp_list; tmp_list = tmp_list->next)
     {
@@ -1870,9 +1870,9 @@ btk_rc_reparse_all (void)
 static GSList *
 btk_rc_styles_match (GSList       *rc_styles,
 		     GSList	  *sets,
-		     guint         path_length,
-		     gchar        *path,
-		     gchar        *path_reversed)
+		     buint         path_length,
+		     bchar        *path,
+		     bchar        *path_reversed)
 		     
 {
   BtkRcSet *rc_set;
@@ -1885,19 +1885,19 @@ btk_rc_styles_match (GSList       *rc_styles,
       if (rc_set->type == BTK_PATH_WIDGET_CLASS)
         {
           if (_btk_rc_match_widget_class (rc_set->path, path_length, path, path_reversed))
-	    rc_styles = g_slist_append (rc_styles, rc_set);
+	    rc_styles = b_slist_append (rc_styles, rc_set);
         }
       else
         {
           if (g_pattern_match (rc_set->pspec, path_length, path, path_reversed))
-	    rc_styles = g_slist_append (rc_styles, rc_set);
+	    rc_styles = b_slist_append (rc_styles, rc_set);
 	}
     }
 
   return rc_styles;
 }
 
-static gint
+static bint
 rc_set_compare (gconstpointer a, gconstpointer b)
 {
   const BtkRcSet *set_a = a;
@@ -1924,7 +1924,7 @@ sort_and_dereference_sets (GSList *styles)
    *
    * Now sort by priority, which has the highest precendence for sort order
    */
-  styles = g_slist_sort (styles, rc_set_compare);
+  styles = b_slist_sort (styles, rc_set_compare);
 
   /* Make styles->data = styles->data->rc_style
    */
@@ -1961,7 +1961,7 @@ btk_rc_get_style (BtkWidget *widget)
   GSList *rc_styles = NULL;
   BtkRcContext *context;
 
-  static guint rc_style_key_id = 0;
+  static buint rc_style_key_id = 0;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
@@ -1975,8 +1975,8 @@ btk_rc_get_style (BtkWidget *widget)
 
   if (context->rc_sets_widget)
     {
-      gchar *path, *path_reversed;
-      guint path_length;
+      bchar *path, *path_reversed;
+      buint path_length;
 
       btk_widget_path (widget, &path_length, &path, &path_reversed);
       rc_styles = btk_rc_styles_match (rc_styles, context->rc_sets_widget, path_length, path, path_reversed);
@@ -1986,8 +1986,8 @@ btk_rc_get_style (BtkWidget *widget)
   
   if (context->rc_sets_widget_class)
     {
-      gchar *path, *path_reversed;
-      guint path_length;
+      bchar *path, *path_reversed;
+      buint path_length;
 
       btk_widget_class_path (widget, &path_length, &path, &path_reversed);
       rc_styles = btk_rc_styles_match (rc_styles, context->rc_sets_widget_class, path_length, path, path_reversed);
@@ -1999,12 +1999,12 @@ btk_rc_get_style (BtkWidget *widget)
     {
       GType type;
 
-      type = G_TYPE_FROM_INSTANCE (widget);
+      type = B_TYPE_FROM_INSTANCE (widget);
       while (type)
 	{
-	  gchar *path;
-          gchar *path_reversed;
-	  guint path_length;
+	  bchar *path;
+          bchar *path_reversed;
+	  buint path_length;
 
 	  path = g_strdup (g_type_name (type));
 	  path_length = strlen (path);
@@ -2021,10 +2021,10 @@ btk_rc_get_style (BtkWidget *widget)
   
   rc_styles = sort_and_dereference_sets (rc_styles);
   
-  widget_rc_style = g_object_get_qdata (G_OBJECT (widget), rc_style_key_id);
+  widget_rc_style = g_object_get_qdata (B_OBJECT (widget), rc_style_key_id);
 
   if (widget_rc_style)
-    rc_styles = g_slist_prepend (rc_styles, widget_rc_style);
+    rc_styles = b_slist_prepend (rc_styles, widget_rc_style);
 
   if (rc_styles)
     return btk_rc_init_style (context, rc_styles);
@@ -2054,7 +2054,7 @@ btk_rc_get_style (BtkWidget *widget)
  * @class_path: (allow-none): the class path to use when looking up the style,
  *     or %NULL if no matching against the class path should be done.
  * @type: a type that will be used along with parent types of this type
- *     when matching against class styles, or #G_TYPE_NONE
+ *     when matching against class styles, or #B_TYPE_NONE
  *
  * Creates up a #BtkStyle from styles defined in a RC file by providing
  * the raw components used in matching. This function may be useful
@@ -2068,7 +2068,7 @@ btk_rc_get_style (BtkWidget *widget)
  *  btk_widget_class_path (widget, NULL, &class_path, NULL);
  *  btk_rc_get_style_by_paths (btk_widget_get_settings (widget), 
  *                             path, class_path,
- *                             G_OBJECT_TYPE (widget));
+ *                             B_OBJECT_TYPE (widget));
  * ]|
  * 
  * Return value: (transfer none): A style created by matching with the
@@ -2096,9 +2096,9 @@ btk_rc_get_style_by_paths (BtkSettings *settings,
 
   if (widget_path && context->rc_sets_widget)
     {
-      gchar *path;
-      gchar *path_reversed;
-      guint path_length;
+      bchar *path;
+      bchar *path_reversed;
+      buint path_length;
 
       path_length = strlen (widget_path);
       path = g_strdup (widget_path);
@@ -2112,9 +2112,9 @@ btk_rc_get_style_by_paths (BtkSettings *settings,
   
   if (class_path && context->rc_sets_widget_class)
     {
-      gchar *path;
-      gchar *path_reversed;
-      guint path_length;
+      bchar *path;
+      bchar *path_reversed;
+      buint path_length;
 
       path = g_strdup (class_path);
       path_length = strlen (class_path);
@@ -2126,13 +2126,13 @@ btk_rc_get_style_by_paths (BtkSettings *settings,
       g_free (path_reversed);
     }
 
-  if (type != G_TYPE_NONE && context->rc_sets_class)
+  if (type != B_TYPE_NONE && context->rc_sets_class)
     {
       while (type)
 	{
-	  gchar *path;
-          gchar *path_reversed;
-	  guint path_length;
+	  bchar *path;
+          bchar *path_reversed;
+	  buint path_length;
 
 	  path = g_strdup (g_type_name (type));
 	  path_length = strlen (path);
@@ -2158,12 +2158,12 @@ btk_rc_get_style_by_paths (BtkSettings *settings,
 static GSList *
 btk_rc_add_rc_sets (GSList      *slist,
 		    BtkRcStyle  *rc_style,
-		    const gchar *pattern,
+		    const bchar *pattern,
 		    BtkPathType  path_type)
 {
   BtkRcStyle *new_style;
   BtkRcSet *rc_set;
-  guint i;
+  buint i;
   
   new_style = btk_rc_style_new ();
   *new_style = *rc_style;
@@ -2190,12 +2190,12 @@ btk_rc_add_rc_sets (GSList      *slist,
   
   rc_set->rc_style = rc_style;
   
-  return g_slist_prepend (slist, rc_set);
+  return b_slist_prepend (slist, rc_set);
 }
 
 void
 btk_rc_add_widget_name_style (BtkRcStyle  *rc_style,
-			      const gchar *pattern)
+			      const bchar *pattern)
 {
   BtkRcContext *context;
   
@@ -2209,7 +2209,7 @@ btk_rc_add_widget_name_style (BtkRcStyle  *rc_style,
 
 void
 btk_rc_add_widget_class_style (BtkRcStyle  *rc_style,
-			       const gchar *pattern)
+			       const bchar *pattern)
 {
   BtkRcContext *context;
   
@@ -2223,7 +2223,7 @@ btk_rc_add_widget_class_style (BtkRcStyle  *rc_style,
 
 void
 btk_rc_add_class_style (BtkRcStyle  *rc_style,
-			const gchar *pattern)
+			const bchar *pattern)
 {
   BtkRcContext *context;
   
@@ -2243,13 +2243,13 @@ btk_rc_scanner_new (void)
 
 static void
 btk_rc_parse_any (BtkRcContext *context,
-		  const gchar  *input_name,
-		  gint		input_fd,
-		  const gchar  *input_string)
+		  const bchar  *input_name,
+		  bint		input_fd,
+		  const bchar  *input_string)
 {
   GScanner *scanner;
-  guint	   i;
-  gboolean done;
+  buint	   i;
+  bboolean done;
 
   scanner = btk_rc_scanner_new ();
   
@@ -2268,7 +2268,7 @@ btk_rc_parse_any (BtkRcContext *context,
   scanner->input_name = input_name;
 
   for (i = 0; i < G_N_ELEMENTS (symbols); i++)
-    g_scanner_scope_add_symbol (scanner, 0, symbol_names + symbols[i].name_offset, GINT_TO_POINTER (symbols[i].token));
+    g_scanner_scope_add_symbol (scanner, 0, symbol_names + symbols[i].name_offset, BINT_TO_POINTER (symbols[i].token));
   done = FALSE;
   while (!done)
     {
@@ -2276,14 +2276,14 @@ btk_rc_parse_any (BtkRcContext *context,
 	done = TRUE;
       else
 	{
-	  guint expected_token;
+	  buint expected_token;
 	  
 	  expected_token = btk_rc_parse_statement (context, scanner);
 
 	  if (expected_token != G_TOKEN_NONE)
 	    {
-	      const gchar *symbol_name = NULL;
-	      gchar *msg = NULL;
+	      const bchar *symbol_name = NULL;
+	      bchar *msg = NULL;
 
 	      if (scanner->scope_id == 0)
 		{
@@ -2295,7 +2295,7 @@ btk_rc_parse_any (BtkRcContext *context,
 		  if (expected_token > BTK_RC_TOKEN_INVALID &&
 		      expected_token < BTK_RC_TOKEN_LAST)
 		    {
-                      const gchar *sym = NULL;
+                      const bchar *sym = NULL;
 
 		      for (i = 0; i < G_N_ELEMENTS (symbols); i++)
 			if (symbols[i].token == expected_token)
@@ -2305,8 +2305,8 @@ btk_rc_parse_any (BtkRcContext *context,
 			msg = g_strconcat ("e.g. `", sym, "'", NULL);
 		    }
 
-		  if (scanner->token > (guint) BTK_RC_TOKEN_INVALID &&
-		      scanner->token < (guint) BTK_RC_TOKEN_LAST)
+		  if (scanner->token > (buint) BTK_RC_TOKEN_INVALID &&
+		      scanner->token < (buint) BTK_RC_TOKEN_LAST)
 		    {
 		      symbol_name = "???";
 		      for (i = 0; i < G_N_ELEMENTS (symbols); i++)
@@ -2331,22 +2331,22 @@ btk_rc_parse_any (BtkRcContext *context,
   g_scanner_destroy (scanner);
 }
 
-static guint	   
+static buint	   
 btk_rc_styles_hash (const GSList *rc_styles)
 {
-  guint result;
+  buint result;
   
   result = 0;
   while (rc_styles)
     {
-      result += (result << 9) + GPOINTER_TO_UINT (rc_styles->data);
+      result += (result << 9) + BPOINTER_TO_UINT (rc_styles->data);
       rc_styles = rc_styles->next;
     }
   
   return result;
 }
 
-static gboolean
+static bboolean
 btk_rc_styles_equal (const GSList *a,
 		     const GSList *b)
 {
@@ -2361,10 +2361,10 @@ btk_rc_styles_equal (const GSList *a,
   return (a == b);
 }
 
-static guint
-btk_rc_style_hash (const gchar *name)
+static buint
+btk_rc_style_hash (const bchar *name)
 {
-  guint result;
+  buint result;
   
   result = 0;
   while (*name)
@@ -2373,19 +2373,19 @@ btk_rc_style_hash (const gchar *name)
   return result;
 }
 
-static gboolean
-btk_rc_style_equal (const gchar *a,
-		    const gchar *b)
+static bboolean
+btk_rc_style_equal (const bchar *a,
+		    const bchar *b)
 {
   return (strcmp (a, b) == 0);
 }
 
 static BtkRcStyle*
 btk_rc_style_find (BtkRcContext *context,
-		   const gchar  *name)
+		   const bchar  *name)
 {
   if (context->rc_style_ht)
-    return g_hash_table_lookup (context->rc_style_ht, (gpointer) name);
+    return g_hash_table_lookup (context->rc_style_ht, (bpointer) name);
   else
     return NULL;
 }
@@ -2412,7 +2412,7 @@ btk_rc_init_style (BtkRcContext *context,
 		   GSList       *rc_styles)
 {
   BtkStyle *style = NULL;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (rc_styles != NULL, NULL);
   
@@ -2442,7 +2442,7 @@ btk_rc_init_style (BtkRcContext *context,
 	  BtkRcStyle *rc_style = tmp_styles->data;
           
 	  if (rc_style->engine_specified ||
-	      G_OBJECT_TYPE (rc_style) != rc_style_type)
+	      B_OBJECT_TYPE (rc_style) != rc_style_type)
 	    {
 	      base_style = rc_style;
 	      break;
@@ -2462,8 +2462,8 @@ btk_rc_init_style (BtkRcContext *context,
 	  proto_style_class->merge (proto_style, rc_style);	  
           
 	  /* Point from each rc_style to the list of styles */
-	  if (!g_slist_find (rc_style->rc_style_lists, rc_styles))
-	    rc_style->rc_style_lists = g_slist_prepend (rc_style->rc_style_lists, rc_styles);
+	  if (!b_slist_find (rc_style->rc_style_lists, rc_styles))
+	    rc_style->rc_style_lists = b_slist_prepend (rc_style->rc_style_lists, rc_styles);
 
           btk_rc_style_append_icon_factories (proto_style, rc_style);
           btk_rc_style_append_color_hashes (proto_style, rc_style);
@@ -2485,7 +2485,7 @@ btk_rc_init_style (BtkRcContext *context,
       g_hash_table_insert (realized_style_ht, rc_styles, style);
     }
   else
-    g_slist_free (rc_styles);
+    b_slist_free (rc_styles);
 
   return style;
 }
@@ -2494,7 +2494,7 @@ btk_rc_init_style (BtkRcContext *context,
  * Parsing functions *
  *********************/
 
-static gboolean
+static bboolean
 lookup_color (BtkRcStyle *style,
               const char *color_name,
               BdkColor   *color)
@@ -2519,13 +2519,13 @@ lookup_color (BtkRcStyle *style,
   return FALSE;
 }
 
-static guint
+static buint
 rc_parse_token_or_compound (GScanner   *scanner,
                             BtkRcStyle *style,
 			    GString    *gstring,
 			    GTokenType  delimiter)
 {
-  guint token = g_scanner_get_next_token (scanner);
+  buint token = g_scanner_get_next_token (scanner);
 
   /* we either scan a single token (skipping comments)
    * or a compund statement.
@@ -2535,13 +2535,13 @@ rc_parse_token_or_compound (GScanner   *scanner,
 
   switch (token)
     {
-      gchar *string;
+      bchar *string;
     case G_TOKEN_INT:
       g_string_append_printf (gstring, " 0x%lx", scanner->value.v_int);
       break;
     case G_TOKEN_FLOAT:
       {
-	gchar    fbuf[G_ASCII_DTOSTR_BUF_SIZE];
+	bchar    fbuf[G_ASCII_DTOSTR_BUF_SIZE];
 	g_ascii_formatd (fbuf,
 			 sizeof (fbuf),
 			 "%f",
@@ -2588,9 +2588,9 @@ rc_parse_token_or_compound (GScanner   *scanner,
       if (g_scanner_peek_next_token (scanner) == G_TOKEN_IDENTIFIER)
         {
           BdkColor color;
-          gchar    rbuf[G_ASCII_DTOSTR_BUF_SIZE];
-          gchar    gbuf[G_ASCII_DTOSTR_BUF_SIZE];
-          gchar    bbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar    rbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar    gbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar    bbuf[G_ASCII_DTOSTR_BUF_SIZE];
 
           g_scanner_get_next_token (scanner);
 
@@ -2632,7 +2632,7 @@ rc_parse_token_or_compound (GScanner   *scanner,
     return rc_parse_token_or_compound (scanner, style, gstring, delimiter);
 }
 
-static guint
+static buint
 btk_rc_parse_assignment (GScanner      *scanner,
                          BtkRcStyle    *style,
 			 BtkRcProperty *prop)
@@ -2644,15 +2644,15 @@ btk_rc_parse_assignment (GScanner      *scanner,
 #define MY_SCAN_IDENTIFIER_NULL FALSE
 #define MY_NUMBERS_2_INT        TRUE
 
-  gboolean scan_identifier      = scanner->config->scan_identifier;
-  gboolean scan_symbols         = scanner->config->scan_symbols;
-  gboolean identifier_2_string  = scanner->config->identifier_2_string;
-  gboolean char_2_token         = scanner->config->char_2_token;
-  gboolean scan_identifier_NULL = scanner->config->scan_identifier_NULL;
-  gboolean numbers_2_int        = scanner->config->numbers_2_int;
-  gboolean negate = FALSE;
-  gboolean is_color = FALSE;
-  guint    token;
+  bboolean scan_identifier      = scanner->config->scan_identifier;
+  bboolean scan_symbols         = scanner->config->scan_symbols;
+  bboolean identifier_2_string  = scanner->config->identifier_2_string;
+  bboolean char_2_token         = scanner->config->char_2_token;
+  bboolean scan_identifier_NULL = scanner->config->scan_identifier_NULL;
+  bboolean numbers_2_int        = scanner->config->numbers_2_int;
+  bboolean negate = FALSE;
+  bboolean is_color = FALSE;
+  buint    token;
 
   /* check that this is an assignment */
   if (g_scanner_get_next_token (scanner) != '=')
@@ -2701,14 +2701,14 @@ btk_rc_parse_assignment (GScanner      *scanner,
     {
     case G_TOKEN_INT:
       g_scanner_get_next_token (scanner);
-      g_value_init (&prop->value, G_TYPE_LONG);
-      g_value_set_long (&prop->value, negate ? -scanner->value.v_int : scanner->value.v_int);
+      b_value_init (&prop->value, B_TYPE_LONG);
+      b_value_set_long (&prop->value, negate ? -scanner->value.v_int : scanner->value.v_int);
       token = G_TOKEN_NONE;
       break;
     case G_TOKEN_FLOAT:
       g_scanner_get_next_token (scanner);
-      g_value_init (&prop->value, G_TYPE_DOUBLE);
-      g_value_set_double (&prop->value, negate ? -scanner->value.v_float : scanner->value.v_float);
+      b_value_init (&prop->value, B_TYPE_DOUBLE);
+      b_value_set_double (&prop->value, negate ? -scanner->value.v_float : scanner->value.v_float);
       token = G_TOKEN_NONE;
       break;
     case G_TOKEN_STRING:
@@ -2717,8 +2717,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
 	token = G_TOKEN_INT;
       else
 	{
-	  g_value_init (&prop->value, G_TYPE_STRING);
-	  g_value_set_string (&prop->value, scanner->value.v_string);
+	  b_value_init (&prop->value, B_TYPE_STRING);
+	  b_value_set_string (&prop->value, scanner->value.v_string);
 	  token = G_TOKEN_NONE;
 	}
       break;
@@ -2726,9 +2726,9 @@ btk_rc_parse_assignment (GScanner      *scanner,
       if (is_color)
         {
           BdkColor  color;
-          gchar     rbuf[G_ASCII_DTOSTR_BUF_SIZE];
-          gchar     gbuf[G_ASCII_DTOSTR_BUF_SIZE];
-          gchar     bbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar     rbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar     gbuf[G_ASCII_DTOSTR_BUF_SIZE];
+          bchar     bbuf[G_ASCII_DTOSTR_BUF_SIZE];
           GString  *gstring;
 
           g_scanner_get_next_token (scanner);
@@ -2755,8 +2755,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
                                                    "%0.4f",
                                                    color.blue / 65535.0));
 
-          g_value_init (&prop->value, G_TYPE_GSTRING);
-          g_value_take_boxed (&prop->value, gstring);
+          b_value_init (&prop->value, B_TYPE_GSTRING);
+          b_value_take_boxed (&prop->value, gstring);
           token = G_TOKEN_NONE;
           break;
         }
@@ -2767,7 +2767,7 @@ btk_rc_parse_assignment (GScanner      *scanner,
       if (!negate)
 	{
           GString  *gstring  = g_string_new (NULL);
-          gboolean  parse_on = TRUE;
+          bboolean  parse_on = TRUE;
 
           /*  allow identifier(foobar) to support color expressions  */
           if (token == G_TOKEN_IDENTIFIER)
@@ -2816,8 +2816,8 @@ btk_rc_parse_assignment (GScanner      *scanner,
 	  if (token == G_TOKEN_NONE)
 	    {
 	      g_string_append_c (gstring, ' ');
-	      g_value_init (&prop->value, G_TYPE_GSTRING);
-	      g_value_take_boxed (&prop->value, gstring);
+	      b_value_init (&prop->value, B_TYPE_GSTRING);
+	      b_value_take_boxed (&prop->value, gstring);
 	    }
 	  else
 	    g_string_free (gstring, TRUE);
@@ -2843,11 +2843,11 @@ btk_rc_parse_assignment (GScanner      *scanner,
   return token;
 }
 
-static gboolean
-is_c_identifier (const gchar *string)
+static bboolean
+is_c_identifier (const bchar *string)
 {
-  const gchar *p;
-  gboolean is_varname;
+  const bchar *p;
+  bboolean is_varname;
 
   is_varname = strchr ("_" G_CSET_a_2_z G_CSET_A_2_Z, string[0]) != NULL;
   for (p = string + 1; *p && is_varname; p++)
@@ -2859,7 +2859,7 @@ is_c_identifier (const gchar *string)
 static void
 parse_include_file (BtkRcContext *context,
 		    GScanner     *scanner,
-		    const gchar  *filename)
+		    const bchar  *filename)
 {
   char *to_parse = NULL;
   
@@ -2881,7 +2881,7 @@ parse_include_file (BtkRcContext *context,
       while (tmp_list)
 	{
 	  BtkRcFile *curfile = tmp_list->data;
-	  gchar *tmpname = g_build_filename (curfile->directory, filename, NULL);
+	  bchar *tmpname = g_build_filename (curfile->directory, filename, NULL);
 
 	  if (g_file_test (tmpname, G_FILE_TEST_EXISTS))
 	    {
@@ -2909,11 +2909,11 @@ parse_include_file (BtkRcContext *context,
 
 }
 
-static guint
+static buint
 btk_rc_parse_statement (BtkRcContext *context,
 			GScanner     *scanner)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_peek_next_token (scanner);
   switch (token)
@@ -2956,7 +2956,7 @@ btk_rc_parse_statement (BtkRcContext *context,
       if (is_c_identifier (scanner->next_value.v_identifier))
 	{
 	  BtkRcProperty prop = { 0, 0, NULL, { 0, }, };
-	  gchar *name;
+	  bchar *name;
 	  
 	  g_scanner_get_next_token (scanner); /* eat identifier */
 	  name = g_strdup (scanner->value.v_identifier);
@@ -2975,7 +2975,7 @@ btk_rc_parse_statement (BtkRcContext *context,
 	    }
 	  g_free (prop.origin);
 	  if (G_VALUE_TYPE (&prop.value))
-	    g_value_unset (&prop.value);
+	    b_value_unset (&prop.value);
 	  g_free (name);
 	  
 	  return token;
@@ -3015,7 +3015,7 @@ fixup_rc_sets (BtkRcContext *context,
   fixup_rc_set (context->rc_sets_class, orig, new);
 }
 
-static guint
+static buint
 btk_rc_parse_style (BtkRcContext *context,
 		    GScanner     *scanner)
 {
@@ -3023,8 +3023,8 @@ btk_rc_parse_style (BtkRcContext *context,
   BtkRcStyle *orig_style;
   BtkRcStyle *parent_style = NULL;
   BtkRcStylePrivate *rc_priv = NULL;
-  guint token;
-  gint i;
+  buint token;
+  bint i;
   BtkIconFactory *our_factory = NULL;
   GHashTable *our_hash = NULL;
 
@@ -3100,7 +3100,7 @@ btk_rc_parse_style (BtkRcContext *context,
 
 	  if (parent_style->rc_properties)
 	    {
-	      guint i;
+	      buint i;
 
 	      for (i = 0; i < parent_style->rc_properties->len; i++)
 		insert_rc_property (rc_style,
@@ -3190,7 +3190,7 @@ btk_rc_parse_style (BtkRcContext *context,
 	  if (is_c_identifier (scanner->next_value.v_identifier))
 	    {
 	      BtkRcProperty prop = { 0, 0, NULL, { 0, }, };
-	      gchar *name;
+	      bchar *name;
 
 	      g_scanner_get_next_token (scanner); /* eat type name */
 	      prop.type_name = g_quark_from_string (scanner->value.v_identifier);
@@ -3207,7 +3207,7 @@ btk_rc_parse_style (BtkRcContext *context,
 		  break;
 		}
 
-	      /* it's important that we do the same canonification as GParamSpecPool here */
+	      /* it's important that we do the same canonification as BParamSpecPool here */
 	      name = g_strdup (scanner->value.v_identifier);
 	      g_strcanon (name, G_CSET_DIGITS "-" G_CSET_a_2_z G_CSET_A_2_Z, '-');
 	      prop.property_name = g_quark_from_string (name);
@@ -3222,7 +3222,7 @@ btk_rc_parse_style (BtkRcContext *context,
 	      
 	      g_free (prop.origin);
 	      if (G_VALUE_TYPE (&prop.value))
-		g_value_unset (&prop.value);
+		b_value_unset (&prop.value);
 	    }
 	  else
 	    {
@@ -3303,12 +3303,12 @@ _btk_rc_style_lookup_rc_property (BtkRcStyle *rc_style,
   return node;
 }
 
-static guint
+static buint
 btk_rc_parse_bg (GScanner   *scanner,
 		 BtkRcStyle *style)
 {
   BtkStateType state;
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_BG)
@@ -3326,12 +3326,12 @@ btk_rc_parse_bg (GScanner   *scanner,
   return btk_rc_parse_color_full (scanner, style, &style->bg[state]);
 }
 
-static guint
+static buint
 btk_rc_parse_fg (GScanner   *scanner,
 		 BtkRcStyle *style)
 {
   BtkStateType state;
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_FG)
@@ -3349,12 +3349,12 @@ btk_rc_parse_fg (GScanner   *scanner,
   return btk_rc_parse_color_full (scanner, style, &style->fg[state]);
 }
 
-static guint
+static buint
 btk_rc_parse_text (GScanner   *scanner,
 		   BtkRcStyle *style)
 {
   BtkStateType state;
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_TEXT)
@@ -3372,12 +3372,12 @@ btk_rc_parse_text (GScanner   *scanner,
   return btk_rc_parse_color_full (scanner, style, &style->text[state]);
 }
 
-static guint
+static buint
 btk_rc_parse_base (GScanner   *scanner,
 		   BtkRcStyle *style)
 {
   BtkStateType state;
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_BASE)
@@ -3395,11 +3395,11 @@ btk_rc_parse_base (GScanner   *scanner,
   return btk_rc_parse_color_full (scanner, style, &style->base[state]);
 }
 
-static guint
+static buint
 btk_rc_parse_xthickness (GScanner   *scanner,
 			 BtkRcStyle *style)
 {
-  if (g_scanner_get_next_token (scanner) != (guint) BTK_RC_TOKEN_XTHICKNESS)
+  if (g_scanner_get_next_token (scanner) != (buint) BTK_RC_TOKEN_XTHICKNESS)
     return BTK_RC_TOKEN_XTHICKNESS;
 
   if (g_scanner_get_next_token (scanner) != G_TOKEN_EQUAL_SIGN)
@@ -3413,11 +3413,11 @@ btk_rc_parse_xthickness (GScanner   *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_ythickness (GScanner   *scanner,
 			 BtkRcStyle *style)
 {
-  if (g_scanner_get_next_token (scanner) != (guint) BTK_RC_TOKEN_YTHICKNESS)
+  if (g_scanner_get_next_token (scanner) != (buint) BTK_RC_TOKEN_YTHICKNESS)
     return BTK_RC_TOKEN_YTHICKNESS;
 
   if (g_scanner_get_next_token (scanner) != G_TOKEN_EQUAL_SIGN)
@@ -3431,14 +3431,14 @@ btk_rc_parse_ythickness (GScanner   *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_bg_pixmap (BtkRcContext *context,
 			GScanner     *scanner,
 			BtkRcStyle   *rc_style)
 {
   BtkStateType state;
-  guint token;
-  gchar *pixmap_file;
+  buint token;
+  bchar *pixmap_file;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_BG_PIXMAP)
@@ -3472,11 +3472,11 @@ btk_rc_parse_bg_pixmap (BtkRcContext *context,
   return G_TOKEN_NONE;
 }
 
-static gchar*
-btk_rc_check_pixmap_dir (const gchar *dir, 
-			 const gchar *pixmap_file)
+static bchar*
+btk_rc_check_pixmap_dir (const bchar *dir, 
+			 const bchar *pixmap_file)
 {
-  gchar *buf;
+  bchar *buf;
 
   buf = g_build_filename (dir, pixmap_file, NULL);
 
@@ -3501,13 +3501,13 @@ btk_rc_check_pixmap_dir (const gchar *dir,
  *
  * Return value: the filename. 
  **/
-gchar*
+bchar*
 btk_rc_find_pixmap_in_path (BtkSettings  *settings,
 			    GScanner     *scanner,
-			    const gchar  *pixmap_file)
+			    const bchar  *pixmap_file)
 {
-  gint i;
-  gchar *filename;
+  bint i;
+  bchar *filename;
   GSList *tmp_list;
 
   BtkRcContext *context = btk_rc_context_get (settings);
@@ -3552,17 +3552,17 @@ btk_rc_find_pixmap_in_path (BtkSettings  *settings,
  * Return value: The filename, if found (must be freed with g_free()),
  *   otherwise %NULL.
  **/
-gchar*
-btk_rc_find_module_in_path (const gchar *module_file)
+bchar*
+btk_rc_find_module_in_path (const bchar *module_file)
 {
   return _btk_find_module (module_file, "engines");
 }
 
-static guint
+static buint
 btk_rc_parse_font (GScanner   *scanner,
 		   BtkRcStyle *rc_style)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_FONT)
@@ -3581,11 +3581,11 @@ btk_rc_parse_font (GScanner   *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_fontset (GScanner	 *scanner,
 		      BtkRcStyle *rc_style)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_FONTSET)
@@ -3604,11 +3604,11 @@ btk_rc_parse_fontset (GScanner	 *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_font_name (GScanner   *scanner,
 			BtkRcStyle *rc_style)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_FONT_NAME)
@@ -3631,16 +3631,16 @@ btk_rc_parse_font_name (GScanner   *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint	   
+static buint	   
 btk_rc_parse_engine (BtkRcContext *context,
 		     GScanner	  *scanner,
 		     BtkRcStyle	 **rc_style)
 {
-  guint token;
+  buint token;
   BtkThemeEngine *engine;
-  guint result = G_TOKEN_NONE;
+  buint result = G_TOKEN_NONE;
   BtkRcStyle *new_style = NULL;
-  gboolean parsed_curlies = FALSE;
+  bboolean parsed_curlies = FALSE;
   BtkRcStylePrivate *rc_priv, *new_priv;
   
   token = g_scanner_get_next_token (scanner);
@@ -3667,7 +3667,7 @@ btk_rc_parse_engine (BtkRcContext *context,
 
       rc_priv = BTK_RC_STYLE_GET_PRIVATE (*rc_style);
 
-      if (G_OBJECT_TYPE (*rc_style) != BTK_TYPE_RC_STYLE)
+      if (B_OBJECT_TYPE (*rc_style) != BTK_TYPE_RC_STYLE)
 	{
 	  new_style = btk_rc_style_new ();
 	  btk_rc_style_real_merge (new_style, *rc_style);
@@ -3700,7 +3700,7 @@ btk_rc_parse_engine (BtkRcContext *context,
 	  
 	  rc_priv = BTK_RC_STYLE_GET_PRIVATE (*rc_style);
 	  new_style = btk_theme_engine_create_rc_style (engine);
-	  g_type_module_unuse (G_TYPE_MODULE (engine));
+	  g_type_module_unuse (B_TYPE_MODULE (engine));
 	  
 	  new_class = BTK_RC_STYLE_GET_CLASS (new_style);
 
@@ -3742,7 +3742,7 @@ btk_rc_parse_engine (BtkRcContext *context,
     {
       /* Skip over remainder, looking for nested {}'s
        */
-      guint count = 1;
+      buint count = 1;
       
       result = G_TOKEN_RIGHT_CURLY;
       while ((token = g_scanner_get_next_token (scanner)) != G_TOKEN_EOF)
@@ -3771,12 +3771,12 @@ btk_rc_parse_engine (BtkRcContext *context,
   return result;
 }
 
-guint
+buint
 btk_rc_parse_state (GScanner	 *scanner,
 		    BtkStateType *state)
 {
-  guint old_scope;
-  guint token;
+  buint old_scope;
+  buint token;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   g_return_val_if_fail (state != NULL, G_TOKEN_ERROR);
@@ -3822,12 +3822,12 @@ btk_rc_parse_state (GScanner	 *scanner,
   return G_TOKEN_NONE;
 }
 
-guint
+buint
 btk_rc_parse_priority (GScanner	           *scanner,
 		       BtkPathPriorityType *priority)
 {
-  guint old_scope;
-  guint token;
+  buint old_scope;
+  buint token;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   g_return_val_if_fail (priority != NULL, G_TOKEN_ERROR);
@@ -3887,7 +3887,7 @@ btk_rc_parse_priority (GScanner	           *scanner,
  * Returns: %G_TOKEN_NONE if parsing succeeded, otherwise the token
  *     that was expected but not found
  */
-guint
+buint
 btk_rc_parse_color (GScanner *scanner,
 		    BdkColor *color)
 {
@@ -3910,12 +3910,12 @@ btk_rc_parse_color (GScanner *scanner,
  *
  * Since: 2.12
  */
-guint
+buint
 btk_rc_parse_color_full (GScanner   *scanner,
                          BtkRcStyle *style,
                          BdkColor   *color)
 {
-  guint token;
+  buint token;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
 
@@ -3926,10 +3926,10 @@ btk_rc_parse_color_full (GScanner   *scanner,
   token = g_scanner_get_next_token (scanner);
   switch (token)
     {
-      gint token_int;
+      bint token_int;
       BdkColor c1, c2;
-      gboolean negate;
-      gdouble l;
+      bboolean negate;
+      bdouble l;
 
     case G_TOKEN_LEFT_CURLY:
       token = g_scanner_get_next_token (scanner);
@@ -4108,11 +4108,11 @@ btk_rc_parse_color_full (GScanner   *scanner,
     }
 }
 
-static guint
+static buint
 btk_rc_parse_pixmap_path (BtkRcContext *context,
 			  GScanner     *scanner)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_PIXMAP_PATH)
@@ -4130,16 +4130,16 @@ btk_rc_parse_pixmap_path (BtkRcContext *context,
 static void
 btk_rc_parse_pixmap_path_string (BtkRcContext *context,
 				 GScanner     *scanner,
-				 const gchar  *pix_path)
+				 const bchar  *pix_path)
 {
   g_strfreev (context->pixmap_path);
   context->pixmap_path = g_strsplit (pix_path, G_SEARCHPATH_SEPARATOR_S, -1);
 }
 
-static guint
+static buint
 btk_rc_parse_module_path (GScanner *scanner)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_MODULE_PATH)
@@ -4154,10 +4154,10 @@ btk_rc_parse_module_path (GScanner *scanner)
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_im_module_file (GScanner *scanner)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_IM_MODULE_FILE)
@@ -4174,14 +4174,14 @@ btk_rc_parse_im_module_file (GScanner *scanner)
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_path_pattern (BtkRcContext *context,
 			   GScanner     *scanner)
 {
-  guint token;
+  buint token;
   BtkPathType path_type;
-  gchar *pattern;
-  gboolean is_binding;
+  bchar *pattern;
+  bboolean is_binding;
   BtkPathPriorityType priority = context->default_priority;
   
   token = g_scanner_get_next_token (scanner);
@@ -4277,22 +4277,22 @@ btk_rc_parse_path_pattern (BtkRcContext *context,
       rc_set->priority = priority;
 
       if (path_type == BTK_PATH_WIDGET)
-	context->rc_sets_widget = g_slist_prepend (context->rc_sets_widget, rc_set);
+	context->rc_sets_widget = b_slist_prepend (context->rc_sets_widget, rc_set);
       else if (path_type == BTK_PATH_WIDGET_CLASS)
-	context->rc_sets_widget_class = g_slist_prepend (context->rc_sets_widget_class, rc_set);
+	context->rc_sets_widget_class = b_slist_prepend (context->rc_sets_widget_class, rc_set);
       else
-	context->rc_sets_class = g_slist_prepend (context->rc_sets_class, rc_set);
+	context->rc_sets_class = b_slist_prepend (context->rc_sets_class, rc_set);
     }
 
   g_free (pattern);
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_hash_key (GScanner  *scanner,
-                       gchar    **hash_key)
+                       bchar    **hash_key)
 {
-  guint token;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != G_TOKEN_LEFT_BRACE)
@@ -4315,14 +4315,14 @@ btk_rc_parse_hash_key (GScanner  *scanner,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_icon_source (BtkRcContext   *context,
 			  GScanner	 *scanner,
                           BtkIconSet     *icon_set,
-                          gboolean       *icon_set_valid)
+                          bboolean       *icon_set_valid)
 {
-  guint token;
-  gchar *full_filename;
+  buint token;
+  bchar *full_filename;
   BtkIconSource *source = NULL;
 
   token = g_scanner_get_next_token (scanner);
@@ -4503,16 +4503,16 @@ btk_rc_parse_icon_source (BtkRcContext   *context,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_stock (BtkRcContext   *context,
 		    GScanner       *scanner,
                     BtkRcStyle     *rc_style,
                     BtkIconFactory *factory)
 {
   BtkIconSet *icon_set = NULL;
-  gboolean icon_set_valid = FALSE;
-  gchar *stock_id = NULL;
-  guint token;
+  bboolean icon_set_valid = FALSE;
+  bchar *stock_id = NULL;
+  buint token;
   
   token = g_scanner_get_next_token (scanner);
   if (token != BTK_RC_TOKEN_STOCK)
@@ -4577,13 +4577,13 @@ btk_rc_parse_stock (BtkRcContext   *context,
   return G_TOKEN_NONE;
 }
 
-static guint
+static buint
 btk_rc_parse_logical_color (GScanner   *scanner,
                             BtkRcStyle *rc_style,
                             GHashTable *hash)
 {
-  gchar *color_id = NULL;
-  guint token;
+  bchar *color_id = NULL;
+  buint token;
   BdkColor color;
 
   token = g_scanner_get_next_token (scanner);
@@ -4619,16 +4619,16 @@ btk_rc_parse_logical_color (GScanner   *scanner,
 
 
 GSList *
-_btk_rc_parse_widget_class_path (const gchar *pattern)
+_btk_rc_parse_widget_class_path (const bchar *pattern)
 {
   GSList *result;
   PathElt *path_elt;
-  const gchar *current;
-  const gchar *class_start;
-  const gchar *class_end;
-  const gchar *pattern_end;
-  const gchar *pattern_start;
-  gchar *sub_pattern;
+  const bchar *current;
+  const bchar *class_start;
+  const bchar *class_end;
+  const bchar *pattern_end;
+  const bchar *pattern_start;
+  bchar *sub_pattern;
 
   result = NULL;
   current = pattern;
@@ -4649,7 +4649,7 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
           path_elt->elt.pspec = g_pattern_spec_new (sub_pattern);
           g_free (sub_pattern);
           
-          result = g_slist_prepend (result, path_elt);
+          result = b_slist_prepend (result, path_elt);
         }
       
       path_elt = g_new (PathElt, 1);
@@ -4660,7 +4660,7 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
       path_elt->type = PATH_ELT_UNRESOLVED;
       path_elt->elt.class_name = sub_pattern;
       
-      result = g_slist_prepend (result, path_elt);
+      result = b_slist_prepend (result, path_elt);
       
       current = class_end + 1;
     }
@@ -4672,15 +4672,15 @@ _btk_rc_parse_widget_class_path (const gchar *pattern)
       path_elt->type = PATH_ELT_PSPEC;
       path_elt->elt.pspec = g_pattern_spec_new (current);
       
-      result = g_slist_prepend (result, path_elt);
+      result = b_slist_prepend (result, path_elt);
     }
   
-  return g_slist_reverse (result);
+  return b_slist_reverse (result);
 }
 
 static void
-free_path_elt (gpointer data, 
-	       gpointer user_data)
+free_path_elt (bpointer data, 
+	       bpointer user_data)
 {
   PathElt *path_elt = data;
 
@@ -4704,8 +4704,8 @@ free_path_elt (gpointer data,
 void
 _btk_rc_free_widget_class_path (GSList *list)
 {
-  g_slist_foreach (list, free_path_elt, NULL);
-  g_slist_free (list);
+  b_slist_foreach (list, free_path_elt, NULL);
+  b_slist_free (list);
 }
 
 static void
@@ -4719,16 +4719,16 @@ btk_rc_set_free (BtkRcSet *rc_set)
   g_free (rc_set);
 }
 
-static gboolean
+static bboolean
 match_class (PathElt *path_elt, 
-	     gchar   *type_name)
+	     bchar   *type_name)
 {
   GType type;
   
   if (path_elt->type == PATH_ELT_UNRESOLVED)
     {
       type = g_type_from_name (path_elt->elt.class_name);
-      if (type != G_TYPE_INVALID)
+      if (type != B_TYPE_INVALID)
         {
           g_free (path_elt->elt.class_name);
           path_elt->elt.class_type = type;
@@ -4741,11 +4741,11 @@ match_class (PathElt *path_elt,
   return g_type_is_a (g_type_from_name (type_name), path_elt->elt.class_type);
 }
 
-static gboolean
+static bboolean
 match_widget_class_recursive (GSList *list, 
-			      guint   length, 
-			      gchar  *path, 
-			      gchar  *path_reversed)
+			      buint   length, 
+			      bchar  *path, 
+			      bchar  *path_reversed)
 {
   PathElt *path_elt;
   
@@ -4766,8 +4766,8 @@ match_widget_class_recursive (GSList *list,
 
   if (path_elt->type != PATH_ELT_PSPEC)
     {
-      gchar *class_start = path;
-      gchar *class_end;
+      bchar *class_start = path;
+      bchar *class_end;
       
       /* ignore leading dot */
       if (class_start[0] == '.')
@@ -4791,9 +4791,9 @@ match_widget_class_recursive (GSList *list,
             }
           else
             {
-              gboolean result;
-              gint new_length = length - (class_end - path);
-              gchar old_char = path_reversed[new_length];
+              bboolean result;
+              bint new_length = length - (class_end - path);
+              bchar old_char = path_reversed[new_length];
               
               class_end[0] = '.';
               
@@ -4808,9 +4808,9 @@ match_widget_class_recursive (GSList *list,
   else
     {
       PathElt *class_elt;
-      gchar *class_start;
-      gchar *class_end;
-      gboolean result = FALSE;
+      bchar *class_start;
+      bchar *class_end;
+      bboolean result = FALSE;
       
       /* If there is nothing after this (ie. no class match), 
        * just compare the pspec. 
@@ -4846,7 +4846,7 @@ match_widget_class_recursive (GSList *list,
           
           if (result)
             {
-              gchar old_char;
+              bchar old_char;
               result = FALSE;
               
               /* terminate the string in front of the class. It does not matter
@@ -4860,8 +4860,8 @@ match_widget_class_recursive (GSList *list,
                 {
                   if (class_end != NULL)
                     {
-                      gint new_length = length - (class_end - path);
-                      gchar path_reversed_char = path_reversed[new_length];
+                      bint new_length = length - (class_end - path);
+                      bchar path_reversed_char = path_reversed[new_length];
                       
                       path_reversed[new_length] = '\0';
                       
@@ -4888,11 +4888,11 @@ match_widget_class_recursive (GSList *list,
     }
 }
 
-gboolean
+bboolean
 _btk_rc_match_widget_class (GSList  *list,
-                            gint     length,
-                            gchar   *path,
-                            gchar   *path_reversed)
+                            bint     length,
+                            bchar   *path,
+                            bchar   *path_reversed)
 {
   return match_widget_class_recursive (list, length, path, path_reversed);
 }
@@ -4904,9 +4904,9 @@ _btk_rc_match_widget_class (GSList  *list,
 #undef btk_rc_add_default_file
 
 void
-btk_rc_add_default_file (const gchar *filename)
+btk_rc_add_default_file (const bchar *filename)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
+  bchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
 
   btk_rc_add_default_file_utf8 (utf8_filename);
 
@@ -4916,15 +4916,15 @@ btk_rc_add_default_file (const gchar *filename)
 #undef btk_rc_set_default_files
 
 void
-btk_rc_set_default_files (gchar **filenames)
+btk_rc_set_default_files (bchar **filenames)
 {
-  gchar **utf8_filenames;
+  bchar **utf8_filenames;
   int n = 0, i;
 
   while (filenames[n++] != NULL)
     ;
 
-  utf8_filenames = g_new (gchar *, n + 1);
+  utf8_filenames = g_new (bchar *, n + 1);
 
   for (i = 0; i < n; i++)
     utf8_filenames[i] = g_locale_to_utf8 (filenames[i], -1, NULL, NULL, NULL);
@@ -4939,9 +4939,9 @@ btk_rc_set_default_files (gchar **filenames)
 #undef btk_rc_parse
 
 void
-btk_rc_parse (const gchar *filename)
+btk_rc_parse (const bchar *filename)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
+  bchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
 
   btk_rc_parse_utf8 (utf8_filename);
 

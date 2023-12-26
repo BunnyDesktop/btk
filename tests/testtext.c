@@ -36,16 +36,16 @@
 typedef struct _Buffer Buffer;
 typedef struct _View View;
 
-static gint untitled_serial = 1;
+static bint untitled_serial = 1;
 
 GSList *active_window_stack = NULL;
 
 struct _Buffer
 {
-  gint refcount;
+  bint refcount;
   BtkTextBuffer *buffer;
   char *filename;
-  gint untitled_serial;
+  bint untitled_serial;
   BtkTextTag *invisible_tag;
   BtkTextTag *not_editable_tag;
   BtkTextTag *found_text_tag;
@@ -55,8 +55,8 @@ struct _Buffer
   BtkTextTag *margin_tag;
   BtkTextTag *custom_tabs_tag;
   GSList *color_tags;
-  guint color_cycle_timeout;
-  gdouble start_hue;
+  buint color_cycle_timeout;
+  bdouble start_hue;
 };
 
 struct _View
@@ -73,9 +73,9 @@ static void pop_active_window (void);
 static BtkWindow *get_active_window (void);
 
 static Buffer * create_buffer      (void);
-static gboolean check_buffer_saved (Buffer *buffer);
-static gboolean save_buffer        (Buffer *buffer);
-static gboolean save_as_buffer     (Buffer *buffer);
+static bboolean check_buffer_saved (Buffer *buffer);
+static bboolean save_buffer        (Buffer *buffer);
+static bboolean save_as_buffer     (Buffer *buffer);
 static char *   buffer_pretty_name (Buffer *buffer);
 static void     buffer_filename_set (Buffer *buffer);
 static void     buffer_search_forward (Buffer *buffer,
@@ -85,7 +85,7 @@ static void     buffer_search_backward (Buffer *buffer,
                                        const char *str,
                                        View *view);
 static void     buffer_set_colors      (Buffer  *buffer,
-                                        gboolean enabled);
+                                        bboolean enabled);
 static void     buffer_cycle_colors    (Buffer  *buffer);
 
 static View *view_from_widget (BtkWidget *widget);
@@ -104,14 +104,14 @@ static void
 push_active_window (BtkWindow *window)
 {
   g_object_ref (window);
-  active_window_stack = g_slist_prepend (active_window_stack, window);
+  active_window_stack = b_slist_prepend (active_window_stack, window);
 }
 
 static void
 pop_active_window (void)
 {
   g_object_unref (active_window_stack->data);
-  active_window_stack = g_slist_delete_link (active_window_stack, active_window_stack);
+  active_window_stack = b_slist_delete_link (active_window_stack, active_window_stack);
 }
 
 static BtkWindow *
@@ -127,14 +127,14 @@ get_active_window (void)
  * Filesel utility function
  */
 
-typedef gboolean (*FileselOKFunc) (const char *filename, gpointer data);
+typedef bboolean (*FileselOKFunc) (const char *filename, bpointer data);
 
 static void
 filesel_ok_cb (BtkWidget *button, BtkWidget *filesel)
 {
-  FileselOKFunc ok_func = (FileselOKFunc)g_object_get_data (G_OBJECT (filesel), "ok-func");
-  gpointer data = g_object_get_data (G_OBJECT (filesel), "ok-data");
-  gint *result = g_object_get_data (G_OBJECT (filesel), "ok-result");
+  FileselOKFunc ok_func = (FileselOKFunc)g_object_get_data (B_OBJECT (filesel), "ok-func");
+  bpointer data = g_object_get_data (B_OBJECT (filesel), "ok-data");
+  bint *result = g_object_get_data (B_OBJECT (filesel), "ok-result");
   
   btk_widget_hide (filesel);
   
@@ -147,15 +147,15 @@ filesel_ok_cb (BtkWidget *button, BtkWidget *filesel)
     btk_widget_show (filesel);
 }
 
-gboolean
+bboolean
 filesel_run (BtkWindow    *parent, 
 	     const char   *title,
 	     const char   *start_file,
 	     FileselOKFunc func,
-	     gpointer      data)
+	     bpointer      data)
 {
   BtkWidget *filesel = btk_file_selection_new (title);
-  gboolean result = FALSE;
+  bboolean result = FALSE;
 
   if (!parent)
     parent = get_active_window ();
@@ -167,9 +167,9 @@ filesel_run (BtkWindow    *parent,
     btk_file_selection_set_filename (BTK_FILE_SELECTION (filesel), start_file);
 
   
-  g_object_set_data (G_OBJECT (filesel), "ok-func", func);
-  g_object_set_data (G_OBJECT (filesel), "ok-data", data);
-  g_object_set_data (G_OBJECT (filesel), "ok-result", &result);
+  g_object_set_data (B_OBJECT (filesel), "ok-func", func);
+  g_object_set_data (B_OBJECT (filesel), "ok-data", data);
+  g_object_set_data (B_OBJECT (filesel), "ok-result", &result);
 
   g_signal_connect (BTK_FILE_SELECTION (filesel)->ok_button,
 		    "clicked",
@@ -193,21 +193,21 @@ filesel_run (BtkWindow    *parent,
  */
 
 static void
-msgbox_yes_cb (BtkWidget *widget, gboolean *result)
+msgbox_yes_cb (BtkWidget *widget, bboolean *result)
 {
   *result = 0;
   btk_object_destroy (BTK_OBJECT (btk_widget_get_toplevel (widget)));
 }
 
 static void
-msgbox_no_cb (BtkWidget *widget, gboolean *result)
+msgbox_no_cb (BtkWidget *widget, bboolean *result)
 {
   *result = 1;
   btk_object_destroy (BTK_OBJECT (btk_widget_get_toplevel (widget)));
 }
 
-static gboolean
-msgbox_key_press_cb (BtkWidget *widget, BdkEventKey *event, gpointer data)
+static bboolean
+msgbox_key_press_cb (BtkWidget *widget, BdkEventKey *event, bpointer data)
 {
   if (event->keyval == BDK_Escape)
     {
@@ -222,15 +222,15 @@ msgbox_key_press_cb (BtkWidget *widget, BdkEventKey *event, gpointer data)
 /* Don't copy this example, it's all crack-smoking - you can just use
  * BtkMessageDialog now
  */
-gint
+bint
 msgbox_run (BtkWindow  *parent,
 	    const char *message,
 	    const char *yes_button,
 	    const char *no_button,
 	    const char *cancel_button,
-	    gint default_index)
+	    bint default_index)
 {
-  gboolean result = -1;
+  bboolean result = -1;
   BtkWidget *dialog;
   BtkWidget *button;
   BtkWidget *label;
@@ -340,11 +340,11 @@ msgbox_run (BtkWindow  *parent,
 /*
  * Example buffer filling code
  */
-static gint
-blink_timeout (gpointer data)
+static bint
+blink_timeout (bpointer data)
 {
   BtkTextTag *tag;
-  static gboolean flip = FALSE;
+  static bboolean flip = FALSE;
   
   tag = BTK_TEXT_TAG (data);
 
@@ -358,11 +358,11 @@ blink_timeout (gpointer data)
 }
 #endif
 
-static gint
+static bint
 tag_event_handler (BtkTextTag *tag, BtkWidget *widget, BdkEvent *event,
-                  const BtkTextIter *iter, gpointer user_data)
+                  const BtkTextIter *iter, bpointer user_data)
 {
-  gint char_index;
+  bint char_index;
 
   char_index = btk_text_iter_get_offset (iter);
   
@@ -565,7 +565,7 @@ fill_example_buffer (BtkTextBuffer *buffer)
 
   g_object_ref (anchor);
   
-  g_object_set_data_full (G_OBJECT (buffer), "anchor", anchor,
+  g_object_set_data_full (B_OBJECT (buffer), "anchor", anchor,
                           (GDestroyNotify) g_object_unref);
   
   pixbuf = bdk_pixbuf_new_from_xpm_data (book_closed_xpm);
@@ -669,19 +669,19 @@ fill_example_buffer (BtkTextBuffer *buffer)
   btk_text_buffer_set_modified (buffer, FALSE);
 }
 
-gboolean
+bboolean
 fill_file_buffer (BtkTextBuffer *buffer, const char *filename)
 {
   FILE* f;
-  gchar buf[2048];
-  gint remaining = 0;
+  bchar buf[2048];
+  bint remaining = 0;
   BtkTextIter iter, end;
 
   f = fopen (filename, "r");
   
   if (f == NULL)
     {
-      gchar *err = g_strdup_printf ("Cannot open file '%s': %s",
+      bchar *err = g_strdup_printf ("Cannot open file '%s': %s",
 				    filename, g_strerror (errno));
       msgbox_run (NULL, err, "OK", NULL, NULL, 0);
       g_free (err);
@@ -691,7 +691,7 @@ fill_file_buffer (BtkTextBuffer *buffer, const char *filename)
   btk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
   while (!feof (f))
     {
-      gint count;
+      bint count;
       const char *leftover;
       int to_read = 2047  - remaining;
 
@@ -712,7 +712,7 @@ fill_file_buffer (BtkTextBuffer *buffer, const char *filename)
 
   if (remaining)
     {
-      gchar *err = g_strdup_printf ("Invalid UTF-8 data encountered reading file '%s'", filename);
+      bchar *err = g_strdup_printf ("Invalid UTF-8 data encountered reading file '%s'", filename);
       msgbox_run (NULL, err, "OK", NULL, NULL, 0);
       g_free (err);
     }
@@ -728,8 +728,8 @@ fill_file_buffer (BtkTextBuffer *buffer, const char *filename)
   return TRUE;
 }
 
-static gint
-delete_event_cb (BtkWidget *window, BdkEventAny *event, gpointer data)
+static bint
+delete_event_cb (BtkWidget *window, BdkEventAny *event, bpointer data)
 {
   View *view = view_from_widget (window);
 
@@ -760,26 +760,26 @@ view_from_widget (BtkWidget *widget)
   if (BTK_IS_MENU_ITEM (widget))
     {
       BtkItemFactory *item_factory = btk_item_factory_from_widget (widget);
-      return g_object_get_data (G_OBJECT (item_factory), "view");      
+      return g_object_get_data (B_OBJECT (item_factory), "view");      
     }
   else
     {
       BtkWidget *app = btk_widget_get_toplevel (widget);
-      return g_object_get_data (G_OBJECT (app), "view");
+      return g_object_get_data (B_OBJECT (app), "view");
     }
 }
 
 static void
-do_new (gpointer             callback_data,
-	guint                callback_action,
+do_new (bpointer             callback_data,
+	buint                callback_action,
 	BtkWidget           *widget)
 {
   create_view (create_buffer ());
 }
 
 static void
-do_new_view (gpointer             callback_data,
-	     guint                callback_action,
+do_new_view (bpointer             callback_data,
+	     buint                callback_action,
 	     BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -787,8 +787,8 @@ do_new_view (gpointer             callback_data,
   create_view (view->buffer);
 }
 
-gboolean
-open_ok_func (const char *filename, gpointer data)
+bboolean
+open_ok_func (const char *filename, bpointer data)
 {
   View *view = data;
   View *new_view = get_empty_view (view);
@@ -810,8 +810,8 @@ open_ok_func (const char *filename, gpointer data)
 }
 
 static void
-do_open (gpointer             callback_data,
-	 guint                callback_action,
+do_open (bpointer             callback_data,
+	 buint                callback_action,
 	 BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -822,8 +822,8 @@ do_open (gpointer             callback_data,
 }
 
 static void
-do_save_as (gpointer             callback_data,
-	    guint                callback_action,
+do_save_as (bpointer             callback_data,
+	    buint                callback_action,
 	    BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);  
@@ -834,8 +834,8 @@ do_save_as (gpointer             callback_data,
 }
 
 static void
-do_save (gpointer             callback_data,
-	 guint                callback_action,
+do_save (bpointer             callback_data,
+	 buint                callback_action,
 	 BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -849,8 +849,8 @@ do_save (gpointer             callback_data,
 }
 
 static void
-do_close   (gpointer             callback_data,
-	    guint                callback_action,
+do_close   (bpointer             callback_data,
+	    buint                callback_action,
 	    BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -861,8 +861,8 @@ do_close   (gpointer             callback_data,
 }
 
 static void
-do_exit    (gpointer             callback_data,
-	    guint                callback_action,
+do_exit    (bpointer             callback_data,
+	    buint                callback_action,
 	    BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -883,8 +883,8 @@ do_exit    (gpointer             callback_data,
 }
 
 static void
-do_example (gpointer             callback_data,
-	    guint                callback_action,
+do_example (bpointer             callback_data,
+	    buint                callback_action,
 	    BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -899,8 +899,8 @@ do_example (gpointer             callback_data,
 
 
 static void
-do_insert_and_scroll (gpointer             callback_data,
-                      guint                callback_action,
+do_insert_and_scroll (bpointer             callback_data,
+                      buint                callback_action,
                       BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -926,8 +926,8 @@ do_insert_and_scroll (gpointer             callback_data,
 }
 
 static void
-do_wrap_changed (gpointer             callback_data,
-		 guint                callback_action,
+do_wrap_changed (bpointer             callback_data,
+		 buint                callback_action,
 		 BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -936,8 +936,8 @@ do_wrap_changed (gpointer             callback_data,
 }
 
 static void
-do_direction_changed (gpointer             callback_data,
-		      guint                callback_action,
+do_direction_changed (bpointer             callback_data,
+		      buint                callback_action,
 		      BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -948,8 +948,8 @@ do_direction_changed (gpointer             callback_data,
 
 
 static void
-do_spacing_changed (gpointer             callback_data,
-                    guint                callback_action,
+do_spacing_changed (bpointer             callback_data,
+                    buint                callback_action,
                     BtkWidget           *widget)
 {
   View *view = view_from_widget (widget);
@@ -975,8 +975,8 @@ do_spacing_changed (gpointer             callback_data,
 }
 
 static void
-do_editable_changed (gpointer callback_data,
-                     guint callback_action,
+do_editable_changed (bpointer callback_data,
+                     buint callback_action,
                      BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -986,7 +986,7 @@ do_editable_changed (gpointer callback_data,
 
 static void
 change_cursor_color (BtkWidget *widget,
-		     gboolean   set)
+		     bboolean   set)
 {
   if (set)
     {
@@ -998,8 +998,8 @@ change_cursor_color (BtkWidget *widget,
 }
 
 static void
-do_cursor_visible_changed (gpointer callback_data,
-                           guint callback_action,
+do_cursor_visible_changed (bpointer callback_data,
+                           buint callback_action,
                            BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1021,8 +1021,8 @@ do_cursor_visible_changed (gpointer callback_data,
 }
 
 static void
-do_color_cycle_changed (gpointer callback_data,
-                        guint callback_action,
+do_color_cycle_changed (bpointer callback_data,
+                        buint callback_action,
                         BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1031,8 +1031,8 @@ do_color_cycle_changed (gpointer callback_data,
 }
 
 static void
-do_apply_editable (gpointer callback_data,
-                   guint callback_action,
+do_apply_editable (bpointer callback_data,
+                   buint callback_action,
                    BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1058,8 +1058,8 @@ do_apply_editable (gpointer callback_data,
 }
 
 static void
-do_apply_invisible (gpointer callback_data,
-                    guint callback_action,
+do_apply_invisible (bpointer callback_data,
+                    buint callback_action,
                     BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1085,8 +1085,8 @@ do_apply_invisible (gpointer callback_data,
 }
 
 static void
-do_apply_rise (gpointer callback_data,
-	       guint callback_action,
+do_apply_rise (bpointer callback_data,
+	       buint callback_action,
 	       BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1112,8 +1112,8 @@ do_apply_rise (gpointer callback_data,
 }
 
 static void
-do_apply_large (gpointer callback_data,
-		guint callback_action,
+do_apply_large (bpointer callback_data,
+		buint callback_action,
 		BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1139,8 +1139,8 @@ do_apply_large (gpointer callback_data,
 }
 
 static void
-do_apply_indent (gpointer callback_data,
-		 guint callback_action,
+do_apply_indent (bpointer callback_data,
+		 buint callback_action,
 		 BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1166,8 +1166,8 @@ do_apply_indent (gpointer callback_data,
 }
 
 static void
-do_apply_margin (gpointer callback_data,
-		 guint callback_action,
+do_apply_margin (bpointer callback_data,
+		 buint callback_action,
 		 BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1193,8 +1193,8 @@ do_apply_margin (gpointer callback_data,
 }
 
 static void
-do_apply_tabs (gpointer callback_data,
-               guint callback_action,
+do_apply_tabs (bpointer callback_data,
+               buint callback_action,
                BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1220,8 +1220,8 @@ do_apply_tabs (gpointer callback_data,
 }
 
 static void
-do_apply_colors (gpointer callback_data,
-                 guint callback_action,
+do_apply_colors (bpointer callback_data,
+                 buint callback_action,
                  BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1242,7 +1242,7 @@ do_apply_colors (gpointer callback_data,
               btk_text_buffer_remove_tag (view->buffer->buffer,
                                           tmp->data,
                                           &start, &end);              
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
         }
       else
@@ -1253,7 +1253,7 @@ do_apply_colors (gpointer callback_data,
           while (TRUE)
             {
               BtkTextIter next;
-              gboolean done = FALSE;
+              bboolean done = FALSE;
               
               next = start;
               btk_text_iter_forward_char (&next);
@@ -1274,7 +1274,7 @@ do_apply_colors (gpointer callback_data,
               if (done)
                 return;
               
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
               if (tmp == NULL)
                 tmp = buffer->color_tags;
             } 
@@ -1283,8 +1283,8 @@ do_apply_colors (gpointer callback_data,
 }
 
 static void
-do_remove_tags (gpointer callback_data,
-                guint callback_action,
+do_remove_tags (bpointer callback_data,
+                buint callback_action,
                 BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1300,23 +1300,23 @@ do_remove_tags (gpointer callback_data,
 }
 
 static void
-do_properties (gpointer callback_data,
-                guint callback_action,
+do_properties (bpointer callback_data,
+                buint callback_action,
                 BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
 
-  create_prop_editor (G_OBJECT (view->text_view), 0);
+  create_prop_editor (B_OBJECT (view->text_view), 0);
 }
 
 static void
 rich_text_store_populate (BtkListStore  *store,
                           BtkTextBuffer *buffer,
-                          gboolean       deserialize)
+                          bboolean       deserialize)
 {
   BdkAtom *formats;
-  gint     n_formats;
-  gint     i;
+  bint     n_formats;
+  bint     i;
 
   btk_list_store_clear (store);
 
@@ -1328,8 +1328,8 @@ rich_text_store_populate (BtkListStore  *store,
   for (i = 0; i < n_formats; i++)
     {
       BtkTreeIter  iter;
-      gchar       *mime_type;
-      gboolean     can_create_tags = FALSE;
+      bchar       *mime_type;
+      bboolean     can_create_tags = FALSE;
 
       mime_type = bdk_atom_name (formats[i]);
 
@@ -1352,7 +1352,7 @@ rich_text_store_populate (BtkListStore  *store,
 
 static void
 rich_text_paste_target_list_notify (BtkTextBuffer    *buffer,
-                                    const GParamSpec *pspec,
+                                    const BParamSpec *pspec,
                                     BtkListStore     *store)
 {
   rich_text_store_populate (store, buffer, TRUE);
@@ -1360,7 +1360,7 @@ rich_text_paste_target_list_notify (BtkTextBuffer    *buffer,
 
 static void
 rich_text_copy_target_list_notify (BtkTextBuffer    *buffer,
-                                   const GParamSpec *pspec,
+                                   const BParamSpec *pspec,
                                    BtkListStore     *store)
 {
   rich_text_store_populate (store, buffer, FALSE);
@@ -1368,7 +1368,7 @@ rich_text_copy_target_list_notify (BtkTextBuffer    *buffer,
 
 static void
 rich_text_can_create_tags_toggled (BtkCellRendererToggle *toggle,
-                                   const gchar           *path,
+                                   const bchar           *path,
                                    BtkTreeModel          *model)
 {
   BtkTreeIter iter;
@@ -1377,9 +1377,9 @@ rich_text_can_create_tags_toggled (BtkCellRendererToggle *toggle,
     {
       BtkTextBuffer *buffer;
       BdkAtom        format;
-      gboolean       can_create_tags;
+      bboolean       can_create_tags;
 
-      buffer = g_object_get_data (G_OBJECT (model), "buffer");
+      buffer = g_object_get_data (B_OBJECT (model), "buffer");
 
       btk_tree_model_get (model, &iter,
                           0, &format,
@@ -1406,11 +1406,11 @@ rich_text_unregister_clicked (BtkWidget   *button,
   if (btk_tree_selection_get_selected (sel, &model, &iter))
     {
       BtkTextBuffer *buffer;
-      gboolean       deserialize;
+      bboolean       deserialize;
       BdkAtom        format;
 
-      buffer = g_object_get_data (G_OBJECT (model), "buffer");
-      deserialize = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (model),
+      buffer = g_object_get_data (B_OBJECT (model), "buffer");
+      deserialize = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (model),
                                                         "deserialize"));
 
       btk_tree_model_get (model, &iter,
@@ -1452,11 +1452,11 @@ rich_text_register_clicked (BtkWidget   *button,
   if (btk_dialog_run (BTK_DIALOG (dialog)) == BTK_RESPONSE_OK)
     {
       BtkTreeModel  *model  = btk_tree_view_get_model (tv);
-      BtkTextBuffer *buffer = g_object_get_data (G_OBJECT (model), "buffer");
-      const gchar   *tagset = btk_entry_get_text (BTK_ENTRY (entry));
-      gboolean       deserialize;
+      BtkTextBuffer *buffer = g_object_get_data (B_OBJECT (model), "buffer");
+      const bchar   *tagset = btk_entry_get_text (BTK_ENTRY (entry));
+      bboolean       deserialize;
 
-      deserialize = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (model),
+      deserialize = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (model),
                                                         "deserialize"));
 
       if (tagset && ! strlen (tagset))
@@ -1472,8 +1472,8 @@ rich_text_register_clicked (BtkWidget   *button,
 }
 
 static void
-do_rich_text (gpointer callback_data,
-              guint deserialize,
+do_rich_text (bpointer callback_data,
+              buint deserialize,
               BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1499,13 +1499,13 @@ do_rich_text (gpointer callback_data,
                     NULL);
 
   store = btk_list_store_new (3,
-                              G_TYPE_POINTER,
-                              G_TYPE_STRING,
-                              G_TYPE_BOOLEAN);
+                              B_TYPE_POINTER,
+                              B_TYPE_STRING,
+                              B_TYPE_BOOLEAN);
 
-  g_object_set_data (G_OBJECT (store), "buffer", buffer);
-  g_object_set_data (G_OBJECT (store), "deserialize",
-                     GUINT_TO_POINTER (deserialize));
+  g_object_set_data (B_OBJECT (store), "buffer", buffer);
+  g_object_set_data (B_OBJECT (store), "deserialize",
+                     BUINT_TO_POINTER (deserialize));
 
   tv = btk_tree_view_new_with_model (BTK_TREE_MODEL (store));
   g_object_unref (store);
@@ -1559,11 +1559,11 @@ do_rich_text (gpointer callback_data,
   if (deserialize)
     g_signal_connect_object (buffer, "notify::paste-target-list",
                              G_CALLBACK (rich_text_paste_target_list_notify),
-                             G_OBJECT (store), 0);
+                             B_OBJECT (store), 0);
   else
     g_signal_connect_object (buffer, "notify::copy-target-list",
                              G_CALLBACK (rich_text_copy_target_list_notify),
-                             G_OBJECT (store), 0);
+                             B_OBJECT (store), 0);
 
   rich_text_store_populate (store, buffer, deserialize);
 
@@ -1577,12 +1577,12 @@ enum
 };
 
 static void
-dialog_response_callback (BtkWidget *dialog, gint response_id, gpointer data)
+dialog_response_callback (BtkWidget *dialog, bint response_id, bpointer data)
 {
   BtkTextBuffer *buffer;
   View *view = data;
   BtkTextIter start, end;
-  gchar *search_string;
+  bchar *search_string;
 
   if (response_id != RESPONSE_FORWARD &&
       response_id != RESPONSE_BACKWARD)
@@ -1591,7 +1591,7 @@ dialog_response_callback (BtkWidget *dialog, gint response_id, gpointer data)
       return;
     }
   
-  buffer = g_object_get_data (G_OBJECT (dialog), "buffer");
+  buffer = g_object_get_data (B_OBJECT (dialog), "buffer");
 
   btk_text_buffer_get_bounds (buffer, &start, &end);
   
@@ -1610,8 +1610,8 @@ dialog_response_callback (BtkWidget *dialog, gint response_id, gpointer data)
 }
 
 static void
-do_copy  (gpointer callback_data,
-          guint callback_action,
+do_copy  (bpointer callback_data,
+          buint callback_action,
           BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1624,8 +1624,8 @@ do_copy  (gpointer callback_data,
 }
 
 static void
-do_search (gpointer callback_data,
-           guint callback_action,
+do_search (bpointer callback_data,
+           buint callback_action,
            BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1652,7 +1652,7 @@ do_search (gpointer callback_data,
                     search_text,
                     TRUE, TRUE, 0);
 
-  g_object_set_data (G_OBJECT (dialog), "buffer", buffer);
+  g_object_set_data (B_OBJECT (dialog), "buffer", buffer);
   
   g_signal_connect (dialog,
                     "response",
@@ -1667,8 +1667,8 @@ do_search (gpointer callback_data,
 }
 
 static void
-do_select_all (gpointer callback_data,
-               guint callback_action,
+do_select_all (bpointer callback_data,
+               buint callback_action,
                BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1691,10 +1691,10 @@ typedef struct
   int button;
 } ChildMoveInfo;
 
-static gboolean
+static bboolean
 movable_child_callback (BtkWidget *child,
                         BdkEvent  *event,
-                        gpointer   data)
+                        bpointer   data)
 {
   ChildMoveInfo *info;
   BtkTextView *text_view;
@@ -1704,7 +1704,7 @@ movable_child_callback (BtkWidget *child,
   g_return_val_if_fail (BTK_IS_EVENT_BOX (child), FALSE);
   g_return_val_if_fail (btk_widget_get_parent (child) == BTK_WIDGET (text_view), FALSE);  
   
-  info = g_object_get_data (G_OBJECT (child),
+  info = g_object_get_data (B_OBJECT (child),
                             "testtext-move-info");
 
   if (info == NULL)
@@ -1713,7 +1713,7 @@ movable_child_callback (BtkWidget *child,
       info->start_x = -1;
       info->start_y = -1;
       info->button = -1;
-      g_object_set_data_full (G_OBJECT (child),
+      g_object_set_data_full (B_OBJECT (child),
                               "testtext-move-info",
                               info,
                               g_free);
@@ -1826,8 +1826,8 @@ add_movable_child (BtkTextView      *text_view,
 }
 
 static void
-do_add_children (gpointer callback_data,
-                 guint callback_action,
+do_add_children (bpointer callback_data,
+                 buint callback_action,
                  BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -1841,8 +1841,8 @@ do_add_children (gpointer callback_data,
 }
 
 static void
-do_add_focus_children (gpointer callback_data,
-                       guint callback_action,
+do_add_focus_children (bpointer callback_data,
+                       buint callback_action,
                        BtkWidget *widget)
 {
   View *view = view_from_widget (widget);
@@ -2011,14 +2011,14 @@ static BtkItemFactoryEntry menu_items[] =
   { "/Test/A_dd focusable children", NULL,    do_add_focus_children,  0, NULL },
 };
 
-static gboolean
+static bboolean
 save_buffer (Buffer *buffer)
 {
   BtkTextIter start, end;
-  gchar *chars;
-  gboolean result = FALSE;
-  gboolean have_backup = FALSE;
-  gchar *bak_filename;
+  bchar *chars;
+  bboolean result = FALSE;
+  bboolean have_backup = FALSE;
+  bchar *bak_filename;
   FILE *file;
 
   g_return_val_if_fail (buffer->filename != NULL, FALSE);
@@ -2029,7 +2029,7 @@ save_buffer (Buffer *buffer)
     {
       if (errno != ENOENT)
 	{
-	  gchar *err = g_strdup_printf ("Cannot back up '%s' to '%s': %s",
+	  bchar *err = g_strdup_printf ("Cannot back up '%s' to '%s': %s",
 					buffer->filename, bak_filename, g_strerror (errno));
 	  msgbox_run (NULL, err, "OK", NULL, NULL, 0);
 	  g_free (err);
@@ -2042,7 +2042,7 @@ save_buffer (Buffer *buffer)
   file = fopen (buffer->filename, "w");
   if (!file)
     {
-      gchar *err = g_strdup_printf ("Cannot back up '%s' to '%s': %s",
+      bchar *err = g_strdup_printf ("Cannot back up '%s' to '%s': %s",
 				    buffer->filename, bak_filename, g_strerror (errno));
       msgbox_run (NULL, err, "OK", NULL, NULL, 0);
     }
@@ -2056,7 +2056,7 @@ save_buffer (Buffer *buffer)
       if (fputs (chars, file) == EOF ||
 	  fclose (file) == EOF)
 	{
-	  gchar *err = g_strdup_printf ("Error writing to '%s': %s",
+	  bchar *err = g_strdup_printf ("Error writing to '%s': %s",
 					buffer->filename, g_strerror (errno));
 	  msgbox_run (NULL, err, "OK", NULL, NULL, 0);
 	  g_free (err);
@@ -2076,7 +2076,7 @@ save_buffer (Buffer *buffer)
     {
       if (rename (bak_filename, buffer->filename) != 0)
 	{
-	  gchar *err = g_strdup_printf ("Error restoring backup file '%s' to '%s': %s\nBackup left as '%s'",
+	  bchar *err = g_strdup_printf ("Error restoring backup file '%s' to '%s': %s\nBackup left as '%s'",
 					buffer->filename, bak_filename, g_strerror (errno), bak_filename);
 	  msgbox_run (NULL, err, "OK", NULL, NULL, 0);
 	  g_free (err);
@@ -2088,8 +2088,8 @@ save_buffer (Buffer *buffer)
   return result;
 }
 
-static gboolean
-save_as_ok_func (const char *filename, gpointer data)
+static bboolean
+save_as_ok_func (const char *filename, bpointer data)
 {
   Buffer *buffer = data;
   char *old_filename = buffer->filename;
@@ -2100,8 +2100,8 @@ save_as_ok_func (const char *filename, gpointer data)
 
       if (g_stat (filename, &statbuf) == 0)
 	{
-	  gchar *err = g_strdup_printf ("Ovewrite existing file '%s'?", filename);
-	  gint result = msgbox_run (NULL, err, "Yes", "No", NULL, 1);
+	  bchar *err = g_strdup_printf ("Ovewrite existing file '%s'?", filename);
+	  bint result = msgbox_run (NULL, err, "Yes", "No", NULL, 1);
 	  g_free (err);
 
 	  if (result != 0)
@@ -2125,20 +2125,20 @@ save_as_ok_func (const char *filename, gpointer data)
     }
 }
 
-static gboolean
+static bboolean
 save_as_buffer (Buffer *buffer)
 {
   return filesel_run (NULL, "Save File", NULL, save_as_ok_func, buffer);
 }
 
-static gboolean
+static bboolean
 check_buffer_saved (Buffer *buffer)
 {
   if (btk_text_buffer_get_modified (buffer->buffer))
     {
       char *pretty_name = buffer_pretty_name (buffer);
       char *msg = g_strdup_printf ("Save changes to '%s'?", pretty_name);
-      gint result;
+      bint result;
       
       g_free (pretty_name);
       
@@ -2163,7 +2163,7 @@ create_buffer (void)
 {
   Buffer *buffer;
   BangoTabArray *tabs;
-  gint i;
+  bint i;
   
   buffer = g_new (Buffer, 1);
 
@@ -2184,7 +2184,7 @@ create_buffer (void)
 
       tag = btk_text_buffer_create_tag (buffer->buffer, NULL, NULL);
       
-      buffer->color_tags = g_slist_prepend (buffer->color_tags, tag);
+      buffer->color_tags = b_slist_prepend (buffer->color_tags, tag);
       
       ++i;
     }
@@ -2227,7 +2227,7 @@ create_buffer (void)
 
   bango_tab_array_free (tabs);
   
-  buffers = g_slist_prepend (buffers, buffer);
+  buffers = b_slist_prepend (buffers, buffer);
   
   return buffer;
 }
@@ -2277,7 +2277,7 @@ static void
 buffer_search (Buffer     *buffer,
                const char *str,
                View       *view,
-               gboolean forward)
+               bboolean forward)
 {
   BtkTextIter iter;
   BtkTextIter start, end;
@@ -2371,7 +2371,7 @@ buffer_unref (Buffer *buffer)
   if (buffer->refcount == 0)
     {
       buffer_set_colors (buffer, FALSE);
-      buffers = g_slist_remove (buffers, buffer);
+      buffers = b_slist_remove (buffers, buffer);
       g_object_unref (buffer->buffer);
       g_free (buffer->filename);
       g_free (buffer);
@@ -2379,12 +2379,12 @@ buffer_unref (Buffer *buffer)
 }
 
 static void
-hsv_to_rgb (gdouble *h,
-	    gdouble *s,
-	    gdouble *v)
+hsv_to_rgb (bdouble *h,
+	    bdouble *s,
+	    bdouble *v)
 {
-  gdouble hue, saturation, value;
-  gdouble f, p, q, t;
+  bdouble hue, saturation, value;
+  bdouble f, p, q, t;
 
   if (*s == 0.0)
     {
@@ -2451,10 +2451,10 @@ hsv_to_rgb (gdouble *h,
 }
 
 static void
-hue_to_color (gdouble   hue,
+hue_to_color (bdouble   hue,
               BdkColor *color)
 {
-  gdouble h, s, v;
+  bdouble h, s, v;
 
   h = hue;
   s = 1.0;
@@ -2470,8 +2470,8 @@ hue_to_color (gdouble   hue,
 }
 
 
-static gint
-color_cycle_timeout (gpointer data)
+static bint
+color_cycle_timeout (bpointer data)
 {
   Buffer *buffer = data;
 
@@ -2482,10 +2482,10 @@ color_cycle_timeout (gpointer data)
 
 static void
 buffer_set_colors (Buffer  *buffer,
-                   gboolean enabled)
+                   bboolean enabled)
 {
   GSList *tmp;
-  gdouble hue = 0.0;
+  bdouble hue = 0.0;
 
   if (enabled && buffer->color_cycle_timeout == 0)
     buffer->color_cycle_timeout = bdk_threads_add_timeout (200, color_cycle_timeout, buffer);
@@ -2515,7 +2515,7 @@ buffer_set_colors (Buffer  *buffer,
 
       hue += 1.0 / N_COLORS;
       
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
 }
 
@@ -2523,7 +2523,7 @@ static void
 buffer_cycle_colors (Buffer *buffer)
 {
   GSList *tmp;
-  gdouble hue = buffer->start_hue;
+  bdouble hue = buffer->start_hue;
   
   tmp = buffer->color_tags;
   while (tmp != NULL)
@@ -2540,7 +2540,7 @@ buffer_cycle_colors (Buffer *buffer)
       if (hue > 1.0)
         hue = 0.0;
       
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
 
   buffer->start_hue += 1.0 / N_COLORS;
@@ -2551,7 +2551,7 @@ buffer_cycle_colors (Buffer *buffer)
 static void
 close_view (View *view)
 {
-  views = g_slist_remove (views, view);
+  views = b_slist_remove (views, view);
   buffer_unref (view->buffer);
   btk_widget_destroy (view->window);
   g_object_unref (view->item_factory);
@@ -2586,7 +2586,7 @@ static void
 cursor_set_callback (BtkTextBuffer     *buffer,
                      const BtkTextIter *location,
                      BtkTextMark       *mark,
-                     gpointer           user_data)
+                     bpointer           user_data)
 {
   BtkTextView *text_view;
 
@@ -2613,25 +2613,25 @@ cursor_set_callback (BtkTextBuffer     *buffer,
     }
 }
 
-static gint
+static bint
 tab_stops_expose (BtkWidget      *widget,
                   BdkEventExpose *event,
-                  gpointer        user_data)
+                  bpointer        user_data)
 {
-  gint first_x;
-  gint last_x;
-  gint i;
+  bint first_x;
+  bint last_x;
+  bint i;
   BdkWindow *top_win;
   BdkWindow *bottom_win;
   BtkTextView *text_view;
   BtkTextWindowType type;
   BdkDrawable *target;
-  gint *positions = NULL;
-  gint size;
+  bint *positions = NULL;
+  bint size;
   BtkTextAttributes *attrs;
   BtkTextIter insert;
   BtkTextBuffer *buffer;
-  gboolean in_pixels;
+  bboolean in_pixels;
   
   text_view = BTK_TEXT_VIEW (widget);
   
@@ -2704,7 +2704,7 @@ tab_stops_expose (BtkWidget      *widget,
   i = 0;
   while (i < size)
     {
-      gint pos;
+      bint pos;
 
       if (!in_pixels)
         positions[i] = BANGO_PIXELS (positions[i]);
@@ -2731,15 +2731,15 @@ tab_stops_expose (BtkWidget      *widget,
 
 static void
 get_lines (BtkTextView  *text_view,
-           gint          first_y,
-           gint          last_y,
+           bint          first_y,
+           bint          last_y,
            GArray       *buffer_coords,
            GArray       *numbers,
-           gint         *countp)
+           bint         *countp)
 {
   BtkTextIter iter;
-  gint count;
-  gint size;  
+  bint count;
+  bint size;  
 
   g_array_set_size (buffer_coords, 0);
   g_array_set_size (numbers, 0);
@@ -2755,8 +2755,8 @@ get_lines (BtkTextView  *text_view,
 
   while (!btk_text_iter_is_end (&iter))
     {
-      gint y, height;
-      gint line_num;
+      bint y, height;
+      bint line_num;
       
       btk_text_view_get_line_yrange (text_view, &iter, &y, &height);
 
@@ -2775,17 +2775,17 @@ get_lines (BtkTextView  *text_view,
   *countp = count;
 }
 
-static gint
+static bint
 line_numbers_expose (BtkWidget      *widget,
                      BdkEventExpose *event,
-                     gpointer        user_data)
+                     bpointer        user_data)
 {
-  gint count;
+  bint count;
   GArray *numbers;
   GArray *pixels;
-  gint first_y;
-  gint last_y;
-  gint i;
+  bint first_y;
+  bint last_y;
+  bint i;
   BdkWindow *left_win;
   BdkWindow *right_win;
   BangoLayout *layout;
@@ -2832,8 +2832,8 @@ line_numbers_expose (BtkWidget      *widget,
                                          NULL,
                                          &last_y);
 
-  numbers = g_array_new (FALSE, FALSE, sizeof (gint));
-  pixels = g_array_new (FALSE, FALSE, sizeof (gint));
+  numbers = g_array_new (FALSE, FALSE, sizeof (bint));
+  pixels = g_array_new (FALSE, FALSE, sizeof (bint));
   
   get_lines (text_view,
              first_y,
@@ -2849,17 +2849,17 @@ line_numbers_expose (BtkWidget      *widget,
   i = 0;
   while (i < count)
     {
-      gint pos;
-      gchar *str;
+      bint pos;
+      bchar *str;
       
       btk_text_view_buffer_to_window_coords (text_view,
                                              type,
                                              0,
-                                             g_array_index (pixels, gint, i),
+                                             g_array_index (pixels, bint, i),
                                              NULL,
                                              &pos);
 
-      str = g_strdup_printf ("%d", g_array_index (numbers, gint, i));
+      str = g_strdup_printf ("%d", g_array_index (numbers, bint, i));
 
       bango_layout_set_text (layout, str, -1);
 
@@ -2889,7 +2889,7 @@ line_numbers_expose (BtkWidget      *widget,
 
 static void
 selection_changed (BtkTextBuffer *buffer,
-		   GParamSpec    *pspec,
+		   BParamSpec    *pspec,
 		   BtkWidget     *copy_menu)
 {
   btk_widget_set_sensitive (copy_menu, btk_text_buffer_get_has_selection (buffer));
@@ -2904,20 +2904,20 @@ create_view (Buffer *buffer)
   BtkWidget *vbox;
   
   view = g_new0 (View, 1);
-  views = g_slist_prepend (views, view);
+  views = b_slist_prepend (views, view);
 
   view->buffer = buffer;
   buffer_ref (buffer);
   
   view->window = btk_window_new (BTK_WINDOW_TOPLEVEL);
-  g_object_set_data (G_OBJECT (view->window), "view", view);
+  g_object_set_data (B_OBJECT (view->window), "view", view);
   
   g_signal_connect (view->window, "delete_event",
 		    G_CALLBACK (delete_event_cb), NULL);
 
   view->accel_group = btk_accel_group_new ();
   view->item_factory = btk_item_factory_new (BTK_TYPE_MENU_BAR, "<main>", view->accel_group);
-  g_object_set_data (G_OBJECT (view->item_factory), "view", view);
+  g_object_set_data (B_OBJECT (view->item_factory), "view", view);
   
   btk_item_factory_create_items (view->item_factory, G_N_ELEMENTS (menu_items), menu_items, view);
 
@@ -3011,7 +3011,7 @@ view_add_example_widgets (View *view)
 
   buffer = view->buffer;
   
-  anchor = g_object_get_data (G_OBJECT (buffer->buffer),
+  anchor = g_object_get_data (B_OBJECT (buffer->buffer),
                               "anchor");
 
   if (anchor && !btk_text_child_anchor_get_deleted (anchor))

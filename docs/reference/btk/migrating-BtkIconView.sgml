@@ -82,7 +82,7 @@
 
         /* construct the BtkIconView */
         icon_view = btk_icon_view_new (<!-- -->);
-        store = btk_list_store_new (3, BDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_POINTER);
+        store = btk_list_store_new (3, BDK_TYPE_PIXBUF, B_TYPE_STRING, B_TYPE_POINTER);
 
         btk_icon_view_set_pixbuf_column (BTK_ICON_VIEW (icon_view), PIXBUF_COLUMN);
         btk_icon_view_set_text_column (BTK_ICON_VIEW (icon_view), TEXT_COLUMN);
@@ -107,8 +107,8 @@
     <informalexample><programlisting>
     void 
     set_icon_data (BtkIconView *icon_view,
-                   gint         idx,
-                   gpointer     data)
+                   bint         idx,
+                   bpointer     data)
     {
        BtkTreeModel *model;
        BtkTreeIter iter;
@@ -121,7 +121,7 @@
     }
     </programlisting></informalexample>
     assuming that your tree model has a <literal>DATA_COLUMN</literal> of type 
-    %G_TYPE_POINTER.
+    %B_TYPE_POINTER.
   </para>
 
   <para>

@@ -54,7 +54,7 @@
  */
 
 
-#define BTK_SPINNER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SPINNER, BtkSpinnerPrivate))
+#define BTK_SPINNER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SPINNER, BtkSpinnerPrivate))
 
 G_DEFINE_TYPE (BtkSpinner, btk_spinner, BTK_TYPE_DRAWING_AREA);
 
@@ -65,44 +65,44 @@ enum {
 
 struct _BtkSpinnerPrivate
 {
-  guint current;
-  guint num_steps;
-  guint cycle_duration;
-  gboolean active;
-  guint timeout;
+  buint current;
+  buint num_steps;
+  buint cycle_duration;
+  bboolean active;
+  buint timeout;
 };
 
 static void btk_spinner_class_init     (BtkSpinnerClass *klass);
 static void btk_spinner_init           (BtkSpinner      *spinner);
-static void btk_spinner_dispose        (GObject         *bobject);
+static void btk_spinner_dispose        (BObject         *bobject);
 static void btk_spinner_realize        (BtkWidget       *widget);
 static void btk_spinner_unrealize      (BtkWidget       *widget);
-static gboolean btk_spinner_expose     (BtkWidget       *widget,
+static bboolean btk_spinner_expose     (BtkWidget       *widget,
                                         BdkEventExpose  *event);
 static void btk_spinner_screen_changed (BtkWidget       *widget,
                                         BdkScreen       *old_screen);
 static void btk_spinner_style_set      (BtkWidget       *widget,
                                         BtkStyle        *prev_style);
-static void btk_spinner_get_property   (GObject         *object,
-                                        guint            param_id,
-                                        GValue          *value,
-                                        GParamSpec      *pspec);
-static void btk_spinner_set_property   (GObject         *object,
-                                        guint            param_id,
-                                        const GValue    *value,
-                                        GParamSpec      *pspec);
+static void btk_spinner_get_property   (BObject         *object,
+                                        buint            param_id,
+                                        BValue          *value,
+                                        BParamSpec      *pspec);
+static void btk_spinner_set_property   (BObject         *object,
+                                        buint            param_id,
+                                        const BValue    *value,
+                                        BParamSpec      *pspec);
 static void btk_spinner_set_active     (BtkSpinner      *spinner,
-                                        gboolean         active);
+                                        bboolean         active);
 static BatkObject *btk_spinner_get_accessible      (BtkWidget *widget);
 static GType      btk_spinner_accessible_get_type (void);
 
 static void
 btk_spinner_class_init (BtkSpinnerClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS(klass);
+  bobject_class = B_OBJECT_CLASS(klass);
   g_type_class_add_private (bobject_class, sizeof (BtkSpinnerPrivate));
   bobject_class->dispose = btk_spinner_dispose;
   bobject_class->get_property = btk_spinner_get_property;
@@ -143,7 +143,7 @@ btk_spinner_class_init (BtkSpinnerClass *klass)
                                                              P_("Number of steps"),
                                                              P_("The number of steps for the spinner to complete a full loop. The animation will complete a full cycle in one second by default (see #BtkSpinner:cycle-duration)."),
                                                              1,
-                                                             G_MAXUINT,
+                                                             B_MAXUINT,
                                                              12,
                                                              G_PARAM_READABLE));
 
@@ -159,16 +159,16 @@ btk_spinner_class_init (BtkSpinnerClass *klass)
                                                              P_("Animation duration"),
                                                              P_("The length of time in milliseconds for the spinner to complete a full loop"),
                                                              500,
-                                                             G_MAXUINT,
+                                                             B_MAXUINT,
                                                              1000,
                                                              G_PARAM_READABLE));
 }
 
 static void
-btk_spinner_get_property (GObject    *object,
-                          guint       param_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
+btk_spinner_get_property (BObject    *object,
+                          buint       param_id,
+                          BValue     *value,
+                          BParamSpec *pspec)
 {
   BtkSpinnerPrivate *priv;
 
@@ -177,26 +177,26 @@ btk_spinner_get_property (GObject    *object,
   switch (param_id)
     {
       case PROP_ACTIVE:
-        g_value_set_boolean (value, priv->active);
+        b_value_set_boolean (value, priv->active);
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
 static void
-btk_spinner_set_property (GObject      *object,
-                          guint         param_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+btk_spinner_set_property (BObject      *object,
+                          buint         param_id,
+                          const BValue *value,
+                          BParamSpec   *pspec)
 {
   switch (param_id)
     {
       case PROP_ACTIVE:
-        btk_spinner_set_active (BTK_SPINNER (object), g_value_get_boolean (value));
+        btk_spinner_set_active (BTK_SPINNER (object), b_value_get_boolean (value));
         break;
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
@@ -214,7 +214,7 @@ btk_spinner_init (BtkSpinner *spinner)
   btk_widget_set_has_window (BTK_WIDGET (spinner), FALSE);
 }
 
-static gboolean
+static bboolean
 btk_spinner_expose (BtkWidget      *widget,
                     BdkEventExpose *event)
 {
@@ -247,8 +247,8 @@ btk_spinner_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-btk_spinner_timeout (gpointer data)
+static bboolean
+btk_spinner_timeout (bpointer data)
 {
   BtkSpinnerPrivate *priv;
 
@@ -271,7 +271,7 @@ btk_spinner_add_timeout (BtkSpinner *spinner)
 
   priv = spinner->priv;
 
-  priv->timeout = bdk_threads_add_timeout ((guint) priv->cycle_duration / priv->num_steps, btk_spinner_timeout, spinner);
+  priv->timeout = bdk_threads_add_timeout ((buint) priv->cycle_duration / priv->num_steps, btk_spinner_timeout, spinner);
 }
 
 static void
@@ -351,7 +351,7 @@ btk_spinner_style_set (BtkWidget *widget,
 }
 
 static void
-btk_spinner_dispose (GObject *bobject)
+btk_spinner_dispose (BObject *bobject)
 {
   BtkSpinnerPrivate *priv;
 
@@ -362,11 +362,11 @@ btk_spinner_dispose (GObject *bobject)
       btk_spinner_remove_timeout (BTK_SPINNER (bobject));
     }
 
-  G_OBJECT_CLASS (btk_spinner_parent_class)->dispose (bobject);
+  B_OBJECT_CLASS (btk_spinner_parent_class)->dispose (bobject);
 }
 
 static void
-btk_spinner_set_active (BtkSpinner *spinner, gboolean active)
+btk_spinner_set_active (BtkSpinner *spinner, bboolean active)
 {
   BtkSpinnerPrivate *priv;
 
@@ -377,7 +377,7 @@ btk_spinner_set_active (BtkSpinner *spinner, gboolean active)
   if (priv->active != active)
     {
       priv->active = active;
-      g_object_notify (G_OBJECT (spinner), "active");
+      g_object_notify (B_OBJECT (spinner), "active");
 
       if (active && btk_widget_get_realized (BTK_WIDGET (spinner)) && priv->timeout == 0)
         {
@@ -397,7 +397,7 @@ btk_spinner_accessible_factory_get_accessible_type (void)
 }
 
 static BatkObject *
-btk_spinner_accessible_new (GObject *obj)
+btk_spinner_accessible_new (BObject *obj)
 {
   BatkObject *accessible;
 
@@ -410,7 +410,7 @@ btk_spinner_accessible_new (GObject *obj)
 }
 
 static BatkObject*
-btk_spinner_accessible_factory_create_accessible (GObject *obj)
+btk_spinner_accessible_factory_create_accessible (BObject *obj)
 {
   return btk_spinner_accessible_new (obj);
 }
@@ -453,7 +453,7 @@ static BatkObjectClass *a11y_parent_class = NULL;
 
 static void
 btk_spinner_accessible_initialize (BatkObject *accessible,
-                                   gpointer   widget)
+                                   bpointer   widget)
 {
   batk_object_set_name (accessible, C_("throbbing progress animation widget", "Spinner"));
   batk_object_set_description (accessible, _("Provides visual indication of progress"));
@@ -471,8 +471,8 @@ btk_spinner_accessible_class_init (BatkObjectClass *klass)
 
 static void
 btk_spinner_accessible_image_get_size (BatkImage *image,
-                                       gint     *width,
-                                       gint     *height)
+                                       bint     *width,
+                                       bint     *height)
 {
   BtkWidget *widget;
 
@@ -501,7 +501,7 @@ btk_spinner_accessible_get_type (void)
 
   /* Action interface
      Name etc. ... */
-  if (G_UNLIKELY (type == 0))
+  if (B_UNLIKELY (type == 0))
     {
       const GInterfaceInfo batk_image_info = {
               (GInterfaceInitFunc) btk_spinner_accessible_image_interface_init,
@@ -519,11 +519,11 @@ btk_spinner_accessible_get_type (void)
       factory = batk_registry_get_factory (batk_get_default_registry (),
                                           BTK_TYPE_IMAGE);
       if (!factory)
-        return G_TYPE_INVALID;
+        return B_TYPE_INVALID;
 
       parent_batk_type = batk_object_factory_get_accessible_type (factory);
       if (!parent_batk_type)
-        return G_TYPE_INVALID;
+        return B_TYPE_INVALID;
 
       /*
        * Figure out the size of the class and instance
@@ -550,7 +550,7 @@ btk_spinner_accessible_get_type (void)
 static BatkObject *
 btk_spinner_get_accessible (BtkWidget *widget)
 {
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   if (first_time)
     {

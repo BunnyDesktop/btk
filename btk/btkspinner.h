@@ -31,14 +31,14 @@
 
 #include <btk/btkdrawingarea.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SPINNER           (btk_spinner_get_type ())
-#define BTK_SPINNER(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPINNER, BtkSpinner))
-#define BTK_SPINNER_CLASS(obj)     (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_SPINNER,  BtkSpinnerClass))
-#define BTK_IS_SPINNER(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPINNER))
-#define BTK_IS_SPINNER_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE ((obj), BTK_TYPE_SPINNER))
-#define BTK_SPINNER_GET_CLASS      (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPINNER, BtkSpinnerClass))
+#define BTK_SPINNER(obj)           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPINNER, BtkSpinner))
+#define BTK_SPINNER_CLASS(obj)     (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_SPINNER,  BtkSpinnerClass))
+#define BTK_IS_SPINNER(obj)        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPINNER))
+#define BTK_IS_SPINNER_CLASS(obj)  (B_TYPE_CHECK_CLASS_TYPE ((obj), BTK_TYPE_SPINNER))
+#define BTK_SPINNER_GET_CLASS      (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPINNER, BtkSpinnerClass))
 
 typedef struct _BtkSpinner      BtkSpinner;
 typedef struct _BtkSpinnerClass BtkSpinnerClass;
@@ -55,11 +55,11 @@ struct _BtkSpinnerClass
   BtkDrawingAreaClass parent_class;
 };
 
-GType      btk_spinner_get_type  (void) G_GNUC_CONST;
+GType      btk_spinner_get_type  (void) B_GNUC_CONST;
 BtkWidget *btk_spinner_new (void);
 void       btk_spinner_start      (BtkSpinner *spinner);
 void       btk_spinner_stop       (BtkSpinner *spinner);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SPINNER_H__ */

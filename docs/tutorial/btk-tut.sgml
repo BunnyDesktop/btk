@@ -202,9 +202,9 @@ application.</para>
 btk_init (&amp;argc, &amp;argv);
 </programlisting>
 
-<para>calls the function btk_init(gint *argc, gchar ***argv) which will be called 
+<para>calls the function btk_init(bint *argc, bchar ***argv) which will be called 
 in all BTK applications. This sets up a few things for us such as the default visual 
-and color map and then proceeds to call bdk_init(gint *argc, gchar ***argv). 
+and color map and then proceeds to call bdk_init(bint *argc, bchar ***argv). 
 This function initializes the library for use, sets up default signal handlers, and 
 checks the arguments passed to your application on the command line, looking for
 one of the following:</para>
@@ -285,14 +285,14 @@ hello world a la BTK.</para>
 /* This is a callback function. The data arguments are ignored
  * in this example. More on callbacks below. */
 static void hello( BtkWidget *widget,
-                   gpointer   data )
+                   bpointer   data )
 {
     g_print ("Hello World\n");
 }
 
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     /* If you return FALSE in the "delete-event" signal handler,
      * BTK will emit the "destroy" signal. Returning TRUE means
@@ -310,7 +310,7 @@ static gboolean delete_event( BtkWidget *widget,
 
 /* Another callback */
 static void destroy( BtkWidget *widget,
-                     gpointer   data )
+                     bpointer   data )
 {
     btk_main_quit ();
 }
@@ -486,10 +486,10 @@ catch these signals and call the appropriate function. This is done by
 using a function such as:</para>
 
 <programlisting role="C">
-gulong g_signal_connect( gpointer      *object,
-                         const gchar   *name,
+bulong g_signal_connect( bpointer      *object,
+                         const bchar   *name,
                          GCallback     func,
-                         gpointer      func_data );
+                         bpointer      func_data );
 </programlisting>
 
 <para>where the first argument is the widget which will be emitting the
@@ -503,7 +503,7 @@ function", and should generally be of the form</para>
 <programlisting role="C">
 void callback_func( BtkWidget *widget,
                     ... /* other signal arguments */
-                    gpointer   callback_data );
+                    bpointer   callback_data );
 </programlisting>
 
 <para>where the first argument will be a pointer to the widget that emitted
@@ -517,10 +517,10 @@ different calling parameters.</para>
 <para>Another call used in the <emphasis>helloworld</emphasis> example, is:</para>
 
 <programlisting role="C">
-gulong g_signal_connect_swapped( gpointer     *object,
-                                 const gchar  *name,
+bulong g_signal_connect_swapped( bpointer     *object,
+                                 const bchar  *name,
                                  GCallback    func,
-                                 gpointer     *callback_data );
+                                 bpointer     *callback_data );
 </programlisting>
 
 <para>g_signal_connect_swapped() is the same as g_signal_connect() except
@@ -529,7 +529,7 @@ calling the handler. So when using this function to connect signals, the callbac
 should be of the form</para>
 
 <programlisting role="C">
-void callback_func( gpointer   callback_data,
+void callback_func( bpointer   callback_data,
                     ... /* other signal arguments */
                     BtkWidget *widget);
 </programlisting>
@@ -618,9 +618,9 @@ function for events has a slightly different form than that for
 signals:</para>
 
 <programlisting role="C">
-gint callback_func( BtkWidget *widget,
+bint callback_func( BtkWidget *widget,
                     BdkEvent  *event,
-                    gpointer   callback_data );
+                    bpointer   callback_data );
 </programlisting>
 
 <para>BdkEvent is a C <literal>union</literal> structure whose type will depend upon 
@@ -681,9 +681,9 @@ mouse is over the button and a mouse button is pressed, the function
 button_press_callback() will be called. This function may be declared as:</para>
 
 <programlisting role="C">
-static gboolean button_press_callback( BtkWidget      *widget, 
+static bboolean button_press_callback( BtkWidget      *widget, 
                                        BdkEventButton *event,
-                                       gpointer        data );
+                                       bpointer        data );
 </programlisting>
 
 <para>Note that we can declare the second argument as type
@@ -744,7 +744,7 @@ data argument to tell us which button was pressed.</para>
 
 <programlisting role="C">
 static void hello( BtkWidget *widget,
-                   gpointer   data )
+                   bpointer   data )
 {
     g_print ("Hello World\n");
 }
@@ -763,9 +763,9 @@ call our "destroy" signal handler.</para>
 
 
 <programlisting role="C">
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     g_print ("delete event occurred\n");
 
@@ -779,7 +779,7 @@ from btk_main when control is returned to it.</para>
 
 <programlisting role="C">
 static void destroy( BtkWidget *widget,
-                     gpointer   data )
+                     bpointer   data )
 {
     btk_main_quit ();
 }
@@ -957,12 +957,12 @@ callback, exiting BTK.</para>
 <title>Data Types</title>
 
 <para>There are a few things you probably noticed in the previous examples
-that need explaining. The gint, gchar, etc. that you see are typedefs
+that need explaining. The bint, bchar, etc. that you see are typedefs
 to int and char, respectively, that are part of the GLib system. This
 is done to get around that nasty dependency on the size of simple data
 types when doing calculations.</para>
 
-<para>A good example is "gint32" which will be typedef'd to a 32 bit integer
+<para>A good example is "bint32" which will be typedef'd to a 32 bit integer
 for any given platform, whether it be the 64 bit alpha, or the 32 bit
 i386. The typedefs are very straightforward and intuitive. They are
 all defined in <filename>bunnylib/bunnylib.h</filename> (which gets included from 
@@ -981,13 +981,13 @@ is an object.</para>
 <para>Lets take another look at the g_signal_connect() declaration.</para>
 
 <programlisting role="C">
-gulong g_signal_connect( gpointer object,
-                         const gchar *name,
+bulong g_signal_connect( bpointer object,
+                         const bchar *name,
                          GCallback func,
-                         gpointer func_data );
+                         bpointer func_data );
 </programlisting>
 
-<para>Notice the gulong return value? This is a tag that identifies your
+<para>Notice the bulong return value? This is a tag that identifies your
 callback function. As stated above, you may have as many callbacks per
 signal and per object as you need, and each will be executed in turn,
 in the order they were attached.</para>
@@ -995,8 +995,8 @@ in the order they were attached.</para>
 <para>This tag allows you to remove this callback from the list by using:</para>
 
 <programlisting role="C">
-void g_signal_handler_disconnect( gpointer object,
-                                  gulong   id );
+void g_signal_handler_disconnect( bpointer object,
+                                  bulong   id );
 </programlisting>
 
 <para>So, by passing in the widget you wish to remove the handler from, and
@@ -1008,19 +1008,19 @@ g_signal_handler_block() and g_signal_handler_unblock() family of
 functions.</para>
 
 <programlisting role="C">
-void g_signal_handler_block( gpointer object,
-                             gulong   id );
+void g_signal_handler_block( bpointer object,
+                             bulong   id );
 
-void g_signal_handlers_block_by_func( gpointer  object,
+void g_signal_handlers_block_by_func( bpointer  object,
                                       GCallback func,
-                                      gpointer  data );
+                                      bpointer  data );
 
-void g_signal_handler_unblock( gpointer object,
-                               gulong   id );
+void g_signal_handler_unblock( bpointer object,
+                               bulong   id );
 
-void g_signal_handlers_unblock_by_func( gpointer  object,
+void g_signal_handlers_unblock_by_func( bpointer  object,
                                         GCallback func,
-                                        gpointer  data );
+                                        bpointer  data );
 </programlisting>
 
 </sect1>
@@ -1049,15 +1049,15 @@ topic, packing widgets.</para>
 /* Our new improved callback.  The data passed to this function
  * is printed to stdout. */
 static void callback( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
-    g_print ("Hello again - %s was pressed\n", (gchar *) data);
+    g_print ("Hello again - %s was pressed\n", (bchar *) data);
 }
 
 /* another callback */
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -1104,7 +1104,7 @@ int main( int   argc,
     /* Now when the button is clicked, we call the "callback" function
      * with a pointer to "button 1" as its argument */
     g_signal_connect (button, "clicked",
-		      G_CALLBACK (callback), (gpointer) "button 1");
+		      G_CALLBACK (callback), (bpointer) "button 1");
 
     /* Instead of btk_container_add, we pack this button into the invisible
      * box, which has been packed into the window. */
@@ -1120,7 +1120,7 @@ int main( int   argc,
     /* Call the same callback function with a different argument,
      * passing a pointer to "button 2" instead. */
     g_signal_connect (button, "clicked",
-		      G_CALLBACK (callback), (gpointer) "button 2");
+		      G_CALLBACK (callback), (bpointer) "button 2");
 
     btk_box_pack_start(BTK_BOX (box1), button, TRUE, TRUE, 0);
 
@@ -1223,9 +1223,9 @@ same way (i.e., same arguments to the btk_box_pack_start() function).</para>
 <programlisting role="C">
 void btk_box_pack_start( BtkBox    *box,
                          BtkWidget *child,
-                         gboolean   expand,
-                         gboolean   fill,
-                         guint      padding );
+                         bboolean   expand,
+                         bboolean   fill,
+                         buint      padding );
 </programlisting>
 
 <para>The first argument is the box you are packing the object into, the
@@ -1249,8 +1249,8 @@ if the expand argument is also TRUE.</para>
 <para>When creating a new box, the function looks like this:</para>
 
 <programlisting role="C">
-BtkWidget *btk_hbox_new ( gboolean homogeneous,
-                          gint     spacing );
+BtkWidget *btk_hbox_new ( bboolean homogeneous,
+                          bint     spacing );
 </programlisting>
 
 <para>The homogeneous argument to btk_hbox_new() (and the same for
@@ -1289,9 +1289,9 @@ it. Compile it yourself and play with it.</para>
 #include &lt;stdlib.h&gt;
 #include "btk/btk.h"
 
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -1300,11 +1300,11 @@ static gboolean delete_event( BtkWidget *widget,
 /* Make a new hbox filled with button-labels. Arguments for the 
  * variables we're interested are passed in to this function. 
  * We do not show the box, but do show everything inside. */
-static BtkWidget *make_box( gboolean homogeneous,
-                            gint     spacing,
-                            gboolean expand,
-                            gboolean fill,
-                            guint    padding ) 
+static BtkWidget *make_box( bboolean homogeneous,
+                            bint     spacing,
+                            bboolean expand,
+                            bboolean fill,
+                            buint    padding ) 
 {
     BtkWidget *box;
     BtkWidget *button;
@@ -1593,9 +1593,9 @@ widgets may take up as many spaces as we specify.</para>
 <para>The first thing to look at, of course, is the btk_table_new() function:</para>
 
 <programlisting role="C">
-BtkWidget *btk_table_new( guint    rows,
-                          guint    columns,
-                          gboolean homogeneous );
+BtkWidget *btk_table_new( buint    rows,
+                          buint    columns,
+                          bboolean homogeneous );
 </programlisting>
 
 <para>The first argument is the number of rows to make in the table, while
@@ -1626,14 +1626,14 @@ To place a widget into a box, use the following function:</para>
 <programlisting role="C">
 void btk_table_attach( BtkTable         *table,
                        BtkWidget        *child,
-                       guint            left_attach,
-                       guint            right_attach,
-                       guint            top_attach,
-                       guint            bottom_attach,
+                       buint            left_attach,
+                       buint            right_attach,
+                       buint            top_attach,
+                       buint            bottom_attach,
                        BtkAttachOptions xoptions,
                        BtkAttachOptions yoptions,
-                       guint            xpadding,
-                       guint            ypadding );
+                       buint            xpadding,
+                       buint            ypadding );
 </programlisting>
 
 <para>The first argument ("table") is the table you've created and the
@@ -1690,10 +1690,10 @@ So, there's a shortcut:</para>
 <programlisting role="C">
 void btk_table_attach_defaults( BtkTable  *table,
                                 BtkWidget *widget,
-                                guint      left_attach,
-                                guint      right_attach,
-                                guint      top_attach,
-                                guint      bottom_attach );
+                                buint      left_attach,
+                                buint      right_attach,
+                                buint      top_attach,
+                                buint      bottom_attach );
 </programlisting>
 
 <para>The X and Y options default to <literal>BTK_FILL | BTK_EXPAND</literal>, 
@@ -1706,16 +1706,16 @@ the specified row or column.</para>
 
 <programlisting role="C">
 void btk_table_set_row_spacing( BtkTable *table,
-                                guint     row,
-                                guint     spacing );
+                                buint     row,
+                                buint     spacing );
 </programlisting>
 
 <para>and</para>
 
 <programlisting role="C">
 void btk_table_set_col_spacing ( BtkTable *table,
-                                 guint     column,
-                                 guint     spacing );
+                                 buint     column,
+                                 buint     spacing );
 </programlisting>
 
 <para>Note that for columns, the space goes to the right of the column, and
@@ -1725,14 +1725,14 @@ for rows, the space goes below the row.</para>
 
 <programlisting role="C">
 void btk_table_set_row_spacings( BtkTable *table,
-                                 guint    spacing );
+                                 buint    spacing );
 </programlisting>
 
 <para>And,</para>
 
 <programlisting role="C">
 void btk_table_set_col_spacings( BtkTable *table,
-                                 guint     spacing );
+                                 buint     spacing );
 </programlisting>
 
 <para>Note that with these calls, the last row and last column do not get
@@ -1767,15 +1767,15 @@ Which means it should look something like this:</para>
 /* Our callback.
  * The data passed to this function is printed to stdout */
 static void callback( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (char *) data);
 }
 
 /* This callback quits the program */
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data )
+                              bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -1816,7 +1816,7 @@ int main( int   argc,
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 1" as its argument */
     g_signal_connect (button, "clicked",
-	              G_CALLBACK (callback), (gpointer) "button 1");
+	              G_CALLBACK (callback), (bpointer) "button 1");
 
 
     /* Insert button 1 into the upper left quadrant of the table */
@@ -1831,7 +1831,7 @@ int main( int   argc,
     /* When the button is clicked, we call the "callback" function
      * with a pointer to "button 2" as its argument */
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (callback), (gpointer) "button 2");
+                      G_CALLBACK (callback), (bpointer) "button 2");
     /* Insert button 2 into the upper right quadrant of the table */
     btk_table_attach_defaults (BTK_TABLE (table), button, 1, 2, 0, 1);
 
@@ -1907,7 +1907,7 @@ is always done using macros that both test the ability to cast the
 given item, and perform the cast. Some common ones you will see are:</para>
 
 <programlisting role="C">
-  G_OBJECT (object)
+  B_OBJECT (object)
   BTK_WIDGET (widget)
   BTK_OBJECT (object)
   BTK_SIGNAL_FUNC (function)
@@ -1921,9 +1921,9 @@ examples, and can usually tell when to use them simply by looking at the
 function's declaration.</para>
 
 <para>As you can see below in the class hierarchy, all BtkWidgets are
-derived from the GObject base class. This means you can use a widget
+derived from the BObject base class. This means you can use a widget
 in any place the function asks for an object. Note that many functions
-accept a gpointer so there is no need to cast the type.</para>
+accept a bpointer so there is no need to cast the type.</para>
 
 <para>For example:</para>
 
@@ -1957,7 +1957,7 @@ function declarations.</para>
 widgets. (Deprecated widgets and auxiliary classes have been omitted.)</para>
 
 <programlisting role="C">
-GObject
+BObject
  |  
  BtkObject
   +BtkWidget
@@ -2137,8 +2137,8 @@ later in the tutorial.</para>
 /* Create a new hbox with an image and a label packed into it
  * and return the box. */
 
-static BtkWidget *xpm_label_box( gchar     *xpm_filename,
-                                 gchar     *label_text )
+static BtkWidget *xpm_label_box( bchar     *xpm_filename,
+                                 bchar     *label_text )
 {
     BtkWidget *box;
     BtkWidget *label;
@@ -2166,7 +2166,7 @@ static BtkWidget *xpm_label_box( gchar     *xpm_filename,
 
 /* Our usual callback function */
 static void callback( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (char *) data);
 }
@@ -2201,7 +2201,7 @@ int main( int   argc,
 
     /* Connect the "clicked" signal of the button to our callback */
     g_signal_connect (button, "clicked",
-		      G_CALLBACK (callback), (gpointer) "cool button");
+		      G_CALLBACK (callback), (bpointer) "cool button");
 
     /* This calls our box creating function */
     box = xpm_label_box ("info.xpm", "cool button");
@@ -2266,9 +2266,9 @@ and check buttons. I will point these out when we come to them.</para>
 <programlisting role="C">
 BtkWidget *btk_toggle_button_new( void );
 
-BtkWidget *btk_toggle_button_new_with_label( const gchar *label );
+BtkWidget *btk_toggle_button_new_with_label( const bchar *label );
 
-BtkWidget *btk_toggle_button_new_with_mnemonic( const gchar *label );
+BtkWidget *btk_toggle_button_new_with_mnemonic( const bchar *label );
 </programlisting>
 
 <para>As you can imagine, these work identically to the normal button widget
@@ -2288,7 +2288,7 @@ signal handler to catch the toggled signal, and access the structure
 to determine its state. The callback will look something like:</para>
 
 <programlisting role="C">
-void toggle_button_callback (BtkWidget *widget, gpointer data)
+void toggle_button_callback (BtkWidget *widget, bpointer data)
 {
     if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget))) 
     {
@@ -2306,7 +2306,7 @@ check buttons, use this function:</para>
 
 <programlisting role="C">
 void btk_toggle_button_set_active( BtkToggleButton *toggle_button,
-                                   gboolean        is_active );
+                                   bboolean        is_active );
 </programlisting>
 
 <para>The above call can be used to set the state of the toggle button, and
@@ -2320,7 +2320,7 @@ the state is actually changed, it causes the "clicked" and "toggled"
 signals to be emitted from the button.</para>
 
 <programlisting role="C">
-gboolean btk_toggle_button_get_active	(BtkToggleButton *toggle_button);
+bboolean btk_toggle_button_get_active	(BtkToggleButton *toggle_button);
 </programlisting>
 
 <para>This returns the current state of the toggle button as a boolean
@@ -2343,9 +2343,9 @@ off in applications.</para>
 <programlisting role="C">
 BtkWidget *btk_check_button_new( void );
 
-BtkWidget *btk_check_button_new_with_label ( const gchar *label );
+BtkWidget *btk_check_button_new_with_label ( const bchar *label );
 
-BtkWidget *btk_check_button_new_with_mnemonic ( const gchar *label );
+BtkWidget *btk_check_button_new_with_mnemonic ( const bchar *label );
 </programlisting>
 
 <para>The btk_check_button_new_with_label() function creates a check button 
@@ -2373,16 +2373,16 @@ BtkWidget *btk_radio_button_new( GSList *group );
 BtkWidget *btk_radio_button_new_from_widget( BtkRadioButton *group );
 
 BtkWidget *btk_radio_button_new_with_label( GSList *group,
-                                            const gchar  *label );
+                                            const bchar  *label );
 
 BtkWidget* btk_radio_button_new_with_label_from_widget( BtkRadioButton *group,
-                                                        const gchar    *label );
+                                                        const bchar    *label );
 
 BtkWidget *btk_radio_button_new_with_mnemonic( GSList *group,
-                                               const gchar  *label );
+                                               const bchar  *label );
 
 BtkWidget *btk_radio_button_new_with_mnemonic_from_widget( BtkRadioButton *group,
-                                                           const gchar  *label );
+                                                           const bchar  *label );
 
 </programlisting>
 
@@ -2427,7 +2427,7 @@ default depressed button with:</para>
 
 <programlisting role="C">
 void btk_toggle_button_set_active( BtkToggleButton *toggle_button,
-                                   gboolean        state );
+                                   bboolean        state );
 </programlisting>
 
 <para>This is described in the section on toggle buttons, and works in
@@ -2453,9 +2453,9 @@ the second will emit its "toggled" signal (to report becoming active).</para>
 #include &lt;bunnylib.h&gt;
 #include &lt;btk/btk.h&gt;
 
-static gboolean close_application( BtkWidget *widget,
+static bboolean close_application( BtkWidget *widget,
                                    BdkEvent  *event,
-                                   gpointer   data )
+                                   bpointer   data )
 {
   btk_main_quit ();
   return FALSE;
@@ -2586,12 +2586,12 @@ but some cases will be shown in later examples where you may need to
 create one yourself. You create an adjustment using:</para>
 
 <programlisting role="C">
-BtkObject *btk_adjustment_new( gdouble value,
-                               gdouble lower,
-                               gdouble upper,
-                               gdouble step_increment,
-                               gdouble page_increment,
-                               gdouble page_size );
+BtkObject *btk_adjustment_new( bdouble value,
+                               bdouble lower,
+                               bdouble upper,
+                               bdouble step_increment,
+                               bdouble page_increment,
+                               bdouble page_size );
 </programlisting>
 
 <para>The <literal>value</literal> argument is the initial value you want to give to the
@@ -2667,12 +2667,12 @@ struct _BtkAdjustment
 {
   BtkObject parent_instance;
   
-  gdouble lower;
-  gdouble upper;
-  gdouble value;
-  gdouble step_increment;
-  gdouble page_increment;
-  gdouble page_size;
+  bdouble lower;
+  bdouble upper;
+  bdouble value;
+  bdouble step_increment;
+  bdouble page_increment;
+  bdouble page_size;
 };
 </programlisting>
 
@@ -2681,7 +2681,7 @@ struct _BtkAdjustment
 inspect the <literal>value</literal> of an adjustment:</para>
 
 <programlisting role="C">
-gdouble	btk_adjustment_get_value( BtkAdjustment *adjustment);
+bdouble	btk_adjustment_get_value( BtkAdjustment *adjustment);
 </programlisting>
 
 <para>Since, when you set the <literal>value</literal> of an Adjustment, you generally
@@ -2690,7 +2690,7 @@ adjustment, BTK provides this convenience function to do this:</para>
 
 <programlisting role="C">
 void btk_adjustment_set_value( BtkAdjustment *adjustment,
-                               gdouble       value );
+                               bdouble       value );
 </programlisting>
 
 <para>As mentioned earlier, Adjustment is a subclass of Object just
@@ -2833,15 +2833,15 @@ horizontal scale widgets, respectively:</para>
 <programlisting role="C">
 BtkWidget *btk_vscale_new( BtkAdjustment *adjustment );
 
-BtkWidget *btk_vscale_new_with_range( gdouble min,
-                                      gdouble max,
-                                      gdouble step );
+BtkWidget *btk_vscale_new_with_range( bdouble min,
+                                      bdouble max,
+                                      bdouble step );
 
 BtkWidget *btk_hscale_new( BtkAdjustment *adjustment );
 
-BtkWidget *btk_hscale_new_with_range( gdouble min,
-                                      gdouble max,
-                                      gdouble step );
+BtkWidget *btk_hscale_new_with_range( bdouble min,
+                                      bdouble max,
+                                      bdouble step );
 </programlisting>
 
 <para>The <literal>adjustment</literal> argument can either be an adjustment which has
@@ -2869,7 +2869,7 @@ this with this function:</para>
 
 <programlisting role="C">
 void btk_scale_set_draw_value( BtkScale *scale,
-                               gboolean draw_value );
+                               bboolean draw_value );
 </programlisting>
 
 <para>As you might have guessed, <literal>draw_value</literal> is either <literal>TRUE</literal> or
@@ -2881,7 +2881,7 @@ change this with:</para>
 
 <programlisting role="C">
 void btk_scale_set_digits( BtkScale *scale,
-                            gint     digits );
+                            bint     digits );
 </programlisting>
 
 <para>where <literal>digits</literal> is the number of decimal places you want. You can
@@ -3088,8 +3088,8 @@ static void cb_update_menu_select( BtkWidget     *item,
 static void cb_digits_scale( BtkAdjustment *adj )
 {
     /* Set the number of decimal places to which adj->value is rounded */
-    btk_scale_set_digits (BTK_SCALE (hscale), (gint) adj->value);
-    btk_scale_set_digits (BTK_SCALE (vscale), (gint) adj->value);
+    btk_scale_set_digits (BTK_SCALE (hscale), (bint) adj->value);
+    btk_scale_set_digits (BTK_SCALE (vscale), (bint) adj->value);
 }
 
 static void cb_page_size( BtkAdjustment *get,
@@ -3118,15 +3118,15 @@ static void cb_draw_value( BtkToggleButton *button )
 
 /* Convenience functions */
 
-static BtkWidget *make_menu_item ( gchar     *name,
+static BtkWidget *make_menu_item ( bchar     *name,
                                    GCallback  callback,
-                                   gpointer   data )
+                                   bpointer   data )
 {
     BtkWidget *item;
   
     item = btk_menu_item_new_with_label (name);
     g_signal_connect (item, "activate",
-	              callback, (gpointer) data);
+	              callback, (bpointer) data);
     btk_widget_show (item);
 
     return item;
@@ -3228,19 +3228,19 @@ static void create_range_controls( void )
 
     item = make_menu_item ("Top",
                            G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_TOP));
+                           BINT_TO_POINTER (BTK_POS_TOP));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     item = make_menu_item ("Bottom", G_CALLBACK (cb_pos_menu_select), 
-                           GINT_TO_POINTER (BTK_POS_BOTTOM));
+                           BINT_TO_POINTER (BTK_POS_BOTTOM));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     item = make_menu_item ("Left", G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_LEFT));
+                           BINT_TO_POINTER (BTK_POS_LEFT));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     item = make_menu_item ("Right", G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_RIGHT));
+                           BINT_TO_POINTER (BTK_POS_RIGHT));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     btk_option_menu_set_menu (BTK_OPTION_MENU (opt), menu);
@@ -3264,17 +3264,17 @@ static void create_range_controls( void )
   
     item = make_menu_item ("Continuous",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_CONTINUOUS));
+                           BINT_TO_POINTER (BTK_UPDATE_CONTINUOUS));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     item = make_menu_item ("Discontinuous",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_DISCONTINUOUS));
+                           BINT_TO_POINTER (BTK_UPDATE_DISCONTINUOUS));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     item = make_menu_item ("Delayed",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_DELAYED));
+                           BINT_TO_POINTER (BTK_UPDATE_DELAYED));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
   
     btk_option_menu_set_menu (BTK_OPTION_MENU (opt), menu);
@@ -3315,7 +3315,7 @@ static void create_range_controls( void )
 
     adj2 = btk_adjustment_new (1.0, 1.0, 101.0, 1.0, 1.0, 0.0);
     g_signal_connect (adj2, "value_changed",
-                      G_CALLBACK (cb_page_size), (gpointer) adj1);
+                      G_CALLBACK (cb_page_size), (bpointer) adj1);
     scale = btk_hscale_new (BTK_ADJUSTMENT (adj2));
     btk_scale_set_digits (BTK_SCALE (scale), 0);
     btk_box_pack_start (BTK_BOX (box2), scale, TRUE, TRUE, 0);
@@ -3409,7 +3409,7 @@ the label string.</para>
 <para>To retrieve the current string, use:</para>
 
 <programlisting role="C">
-const gchar* btk_label_get_text( BtkLabel  *label );                    
+const bchar* btk_label_get_text( BtkLabel  *label );                    
 </programlisting>
 
 <para>Do not free the returned string, as it is used internally by BTK.</para>
@@ -3434,7 +3434,7 @@ automatically. This can be activated using:</para>
 
 <programlisting role="C">
 void btk_label_set_line_wrap (BtkLabel *label,
-                              gboolean  wrap);
+                              bboolean  wrap);
 </programlisting>
 
 <para>The <literal>wrap</literal> argument takes a TRUE or FALSE value.</para>
@@ -3444,7 +3444,7 @@ label:</para>
 
 <programlisting role="C">
 void       btk_label_set_pattern   (BtkLabel          *label,
-                                    const gchar       *pattern);
+                                    const bchar       *pattern);
 </programlisting>
 
 <para>The pattern argument indicates how the underlining should look. It
@@ -3740,8 +3740,8 @@ on, simply use this call to set it:</para>
 <programlisting role="C">
 void btk_tooltips_set_tip( BtkTooltips *tooltips,
                            BtkWidget   *widget,
-                           const gchar *tip_text,
-                           const gchar *tip_private );
+                           const bchar *tip_text,
+                           const bchar *tip_private );
 </programlisting>
 
 <para>The first argument is the tooltip you've already created, followed by
@@ -3804,7 +3804,7 @@ BtkWidget *btk_progress_bar_new( void );
 
 <programlisting role="C">
 void btk_progress_bar_set_fraction ( BtkProgressBar *pbar,
-                                     gdouble        fraction );
+                                     bdouble        fraction );
 </programlisting>
 
 <para>The first argument is the progress bar you wish to operate on, and the
@@ -3849,7 +3849,7 @@ function.</para>
 
 <programlisting role="C">
 void btk_progress_bar_set_pulse_step( BtkProgressBar *pbar,
-                                      gdouble         fraction );
+                                      bdouble         fraction );
 </programlisting>
 
 <para>When not in activity mode, the progress bar can also display a
@@ -3858,7 +3858,7 @@ function.</para>
 
 <programlisting role="C">
 void btk_progress_bar_set_text( BtkProgressBar *progress,
-                                const gchar    *text );
+                                const bchar    *text );
 </programlisting>
 
 <note><para>Note that btk_progress_set_text() doesn't support the printf()-like formatting
@@ -3871,7 +3871,7 @@ again with NULL as second argument.</para>
 following function. Do not free the returned string.</para>
 
 <programlisting role="C">
-const gchar *btk_progress_bar_get_text( BtkProgressBar *pbar );
+const bchar *btk_progress_bar_get_text( BtkProgressBar *pbar );
 </programlisting>
 
 <para>Progress Bars are usually used with timeouts or other such functions
@@ -3900,15 +3900,15 @@ typedef struct _ProgressData {
   BtkWidget *window;
   BtkWidget *pbar;
   int timer;
-  gboolean activity_mode;
+  bboolean activity_mode;
 } ProgressData;
 
 /* Update the value of the progress bar so that we get
  * some movement */
-static gboolean progress_timeout( gpointer data )
+static bboolean progress_timeout( bpointer data )
 {
   ProgressData *pdata = (ProgressData *)data;
-  gdouble new_val;
+  bdouble new_val;
   
   if (pdata-&gt;activity_mode) 
     btk_progress_bar_pulse (BTK_PROGRESS_BAR (pdata-&gt;pbar));
@@ -3935,7 +3935,7 @@ static gboolean progress_timeout( gpointer data )
 static void toggle_show_text( BtkWidget    *widget,
                               ProgressData *pdata )
 {
-  const gchar *text;
+  const bchar *text;
   
   text = btk_progress_bar_get_text (BTK_PROGRESS_BAR (pdata-&gt;pbar));
   if (text &amp;&amp; *text)
@@ -4007,7 +4007,7 @@ int main( int   argc,
 
     g_signal_connect (pdata-&gt;window, "destroy",
 	              G_CALLBACK (destroy_progress),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_window_set_title (BTK_WINDOW (pdata-&gt;window), "BtkProgressBar");
     btk_container_set_border_width (BTK_CONTAINER (pdata-&gt;window), 0);
 
@@ -4123,10 +4123,10 @@ other similar tasks. There are two functions to create a new Dialog.</para>
 <programlisting role="C">
 BtkWidget *btk_dialog_new( void );
 
-BtkWidget *btk_dialog_new_with_buttons( const gchar    *title,
+BtkWidget *btk_dialog_new_with_buttons( const bchar    *title,
                                         BtkWindow      *parent,
                                         BtkDialogFlags  flags, 
-                                        const gchar    *first_button_text,
+                                        const bchar    *first_button_text,
                                         ... );
 </programlisting>
 
@@ -4224,10 +4224,10 @@ are set for a ruler using</para>
 
 <programlisting role="C">
 void btk_ruler_set_range( BtkRuler *ruler,
-                          gdouble   lower,
-                          gdouble   upper,
-                          gdouble   position,
-                          gdouble   max_size );
+                          bdouble   lower,
+                          bdouble   upper,
+                          bdouble   position,
+                          bdouble   max_size );
 </programlisting>
 
 <para>The lower and upper arguments define the extent of the ruler, and
@@ -4289,9 +4289,9 @@ Placement of the drawing area and the rulers is done using a table.</para>
 #define YSIZE  400
 
 /* This routine gets control when the close button is clicked */
-static gboolean close_application( BtkWidget *widget,
+static bboolean close_application( BtkWidget *widget,
                                    BdkEvent  *event,
-                                   gpointer   data )
+                                   bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -4385,23 +4385,23 @@ BtkWidget *btk_statusbar_new( void );
 function with a short textual description of the context:</para>
 
 <programlisting role="C">
-guint btk_statusbar_get_context_id( BtkStatusbar *statusbar,
-                                    const gchar  *context_description );
+buint btk_statusbar_get_context_id( BtkStatusbar *statusbar,
+                                    const bchar  *context_description );
 </programlisting>
 
 <para>There are three functions that can operate on statusbars:</para>
 
 <programlisting role="C">
-guint btk_statusbar_push( BtkStatusbar *statusbar,
-                          guint         context_id,
-                          const gchar  *text );
+buint btk_statusbar_push( BtkStatusbar *statusbar,
+                          buint         context_id,
+                          const bchar  *text );
 
 void btk_statusbar_pop( BtkStatusbar *statusbar)
-                        guint         context_id );
+                        buint         context_id );
 
 void btk_statusbar_remove( BtkStatusbar *statusbar,
-                           guint         context_id,
-                           guint         message_id ); 
+                           buint         context_id,
+                           buint         message_id ); 
 </programlisting>
 
 <para>The first, btk_statusbar_push(), is used to add a new message to the
@@ -4419,9 +4419,9 @@ of the resize grip.</para>
 
 <programlisting role="C">
 void     btk_statusbar_set_has_resize_grip( BtkStatusbar *statusbar,
-					    gboolean      setting );
+					    bboolean      setting );
 
-gboolean btk_statusbar_get_has_resize_grip( BtkStatusbar *statusbar );
+bboolean btk_statusbar_get_has_resize_grip( BtkStatusbar *statusbar );
 </programlisting>
 
 <para>The following example creates a statusbar and two buttons, one for
@@ -4446,20 +4446,20 @@ back off.</para>
 BtkWidget *status_bar;
 
 static void push_item( BtkWidget *widget,
-                       gpointer   data )
+                       bpointer   data )
 {
   static int count = 1;
-  gchar *buff;
+  bchar *buff;
 
   buff = g_strdup_printf ("Item %d", count++);
-  btk_statusbar_push (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data), buff);
+  btk_statusbar_push (BTK_STATUSBAR (status_bar), BPOINTER_TO_INT (data), buff);
   g_free (buff);
 }
 
 static void pop_item( BtkWidget *widget,
-                      gpointer   data )
+                      bpointer   data )
 {
-  btk_statusbar_pop (BTK_STATUSBAR (status_bar), GPOINTER_TO_INT (data));
+  btk_statusbar_pop (BTK_STATUSBAR (status_bar), BPOINTER_TO_INT (data));
 }
 
 int main( int   argc,
@@ -4470,7 +4470,7 @@ int main( int   argc,
     BtkWidget *vbox;
     BtkWidget *button;
 
-    gint context_id;
+    bint context_id;
 
     btk_init (&amp;argc, &amp;argv);
 
@@ -4494,13 +4494,13 @@ int main( int   argc,
 
     button = btk_button_new_with_label ("push item");
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (push_item), GINT_TO_POINTER (context_id));
+                      G_CALLBACK (push_item), BINT_TO_POINTER (context_id));
     btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
     btk_widget_show (button);              
 
     button = btk_button_new_with_label ("pop last item");
     g_signal_connect (button, "clicked",
-                      G_CALLBACK (pop_item), GINT_TO_POINTER (context_id));
+                      G_CALLBACK (pop_item), BINT_TO_POINTER (context_id));
     btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 2);
     btk_widget_show (button);
 
@@ -4536,7 +4536,7 @@ within the Entry widget.</para>
 
 <programlisting role="C">
 void btk_entry_set_text( BtkEntry    *entry,
-                         const gchar *text );
+                         const bchar *text );
 </programlisting>
 
 <para>The function btk_entry_set_text() sets the contents of the Entry widget,
@@ -4549,7 +4549,7 @@ functions for manipulating the contents.
 following function. This is useful in the callback functions described below.</para>
 
 <programlisting role="C">
-const gchar *btk_entry_get_text( BtkEntry *entry );
+const bchar *btk_entry_get_text( BtkEntry *entry );
 </programlisting>
 
 <para>The value returned by this function is used internally, and must not
@@ -4560,7 +4560,7 @@ into it, we can change its editable state.</para>
 
 <programlisting role="C">
 void btk_editable_set_editable( BtkEditable *entry,
-                                gboolean     editable );
+                                bboolean     editable );
 </programlisting>
 
 <para>The function above allows us to toggle the editable state of the
@@ -4573,7 +4573,7 @@ following function, which also takes a boolean flag.</para>
 
 <programlisting role="C">
 void btk_entry_set_visibility( BtkEntry *entry,
-                               gboolean  visible );
+                               bboolean  visible );
 </programlisting>
 
 <para>A rebunnyion of the text may be set as selected by using the following
@@ -4582,8 +4582,8 @@ text in an Entry, making it easy for the user to remove it.</para>
 
 <programlisting role="C">
 void btk_editable_select_rebunnyion( BtkEditable *entry,
-                                 gint         start,
-                                 gint         end );
+                                 bint         start,
+                                 bint         end );
 </programlisting>
 
 <para>If we want to catch when the user has entered text, we can connect to
@@ -4612,7 +4612,7 @@ removed.</para>
 static void enter_callback( BtkWidget *widget,
                             BtkWidget *entry )
 {
-  const gchar *entry_text;
+  const bchar *entry_text;
   entry_text = btk_entry_get_text (BTK_ENTRY (entry));
   printf ("Entry contents: %s\n", entry_text);
 }
@@ -4640,7 +4640,7 @@ int main( int   argc,
     BtkWidget *entry;
     BtkWidget *button;
     BtkWidget *check;
-    gint tmp_pos;
+    bint tmp_pos;
 
     btk_init (&amp;argc, &amp;argv);
 
@@ -4734,12 +4734,12 @@ button can take. This makes for a powerful Spin Button widget.</para>
 function, which illustrates the information that it holds:</para>
 
 <programlisting role="C">
-BtkObject *btk_adjustment_new( gdouble value,
-                               gdouble lower,
-                               gdouble upper,
-                               gdouble step_increment,
-                               gdouble page_increment,
-                               gdouble page_size );
+BtkObject *btk_adjustment_new( bdouble value,
+                               bdouble lower,
+                               bdouble upper,
+                               bdouble step_increment,
+                               bdouble page_increment,
+                               bdouble page_size );
 </programlisting>
 
 <para>These attributes of an Adjustment are used by the Spin Button in the
@@ -4768,8 +4768,8 @@ buttons. Lets look at how to create a Spin Button:</para>
 
 <programlisting role="C">
 BtkWidget *btk_spin_button_new( BtkAdjustment *adjustment,
-                                gdouble        climb_rate,
-                                guint          digits );
+                                bdouble        climb_rate,
+                                buint          digits );
 </programlisting>
 
 <para>The <literal>climb_rate</literal> argument take a value between 0.0 and 1.0 and
@@ -4783,8 +4783,8 @@ function:</para>
 <programlisting role="C">
 void btk_spin_button_configure( BtkSpinButton *spin_button,
                                 BtkAdjustment *adjustment,
-                                gdouble        climb_rate,
-                                guint          digits );
+                                bdouble        climb_rate,
+                                buint          digits );
 </programlisting>
 
 <para>The <literal>spin_button</literal> argument specifies the Spin Button widget that is
@@ -4804,7 +4804,7 @@ BtkAdjustment *btk_spin_button_get_adjustment( BtkSpinButton *spin_button );
 
 <programlisting role="C">
 void btk_spin_button_set_digits( BtkSpinButton *spin_button,
-                                 guint          digits) ;
+                                 buint          digits) ;
 </programlisting>
 
 <para>The value that a Spin Button is currently displaying can be changed
@@ -4812,16 +4812,16 @@ using the following function:</para>
 
 <programlisting role="C">
 void btk_spin_button_set_value( BtkSpinButton *spin_button,
-                                gdouble        value );
+                                bdouble        value );
 </programlisting>
 
 <para>The current value of a Spin Button can be retrieved as either a
 floating point or integer value with the following functions:</para>
 
 <programlisting role="C">
-gdouble btk_spin_button_get_value ( BtkSpinButton *spin_button );
+bdouble btk_spin_button_get_value ( BtkSpinButton *spin_button );
 
-gint btk_spin_button_get_value_as_int( BtkSpinButton *spin_button );
+bint btk_spin_button_get_value_as_int( BtkSpinButton *spin_button );
 </programlisting>
 
 <para>If you want to alter the value of a Spin Button relative to its current
@@ -4830,7 +4830,7 @@ value, then the following function can be used:</para>
 <programlisting role="C">
 void btk_spin_button_spin( BtkSpinButton *spin_button,
                            BtkSpinType    direction,
-                           gdouble        increment );
+                           bdouble        increment );
 </programlisting>
 
 <para>The <literal>direction</literal> parameter can take one of the following values:</para>
@@ -4877,7 +4877,7 @@ the text box of a Spin Button:</para>
 
 <programlisting role="C">
 void btk_spin_button_set_numeric( BtkSpinButton *spin_button,
-                                  gboolean       numeric );
+                                  bboolean       numeric );
 </programlisting>
 
 <para>You can set whether a Spin Button will wrap around between the upper
@@ -4885,7 +4885,7 @@ and lower range values with the following function:</para>
 
 <programlisting role="C">
 void btk_spin_button_set_wrap( BtkSpinButton *spin_button,
-                               gboolean       wrap );
+                               bboolean       wrap );
 </programlisting>
 
 <para>You can set a Spin Button to round the value to the nearest
@@ -4895,7 +4895,7 @@ function:</para>
 
 <programlisting role="C">
 void btk_spin_button_set_snap_to_ticks( BtkSpinButton  *spin_button,
-                                        gboolean        snap_to_ticks );
+                                        bboolean        snap_to_ticks );
 </programlisting>
 
 <para>The update policy of a Spin Button can be changed with the following
@@ -4965,15 +4965,15 @@ static void change_digits( BtkWidget *widget,
 }
 
 static void get_value( BtkWidget *widget,
-                       gpointer data )
+                       bpointer data )
 {
-  gchar *buf;
+  bchar *buf;
   BtkLabel *label;
   BtkSpinButton *spin;
 
   spin = BTK_SPIN_BUTTON (spinner1);
-  label = BTK_LABEL (g_object_get_data (G_OBJECT (widget), "user_data"));
-  if (GPOINTER_TO_INT (data) == 1)
+  label = BTK_LABEL (g_object_get_data (B_OBJECT (widget), "user_data"));
+  if (BPOINTER_TO_INT (data) == 1)
     buf = g_strdup_printf ("%d", btk_spin_button_get_value_as_int (spin));
   else
     buf = g_strdup_printf ("%0.*f", spin-&gt;digits,
@@ -5127,17 +5127,17 @@ int main( int   argc,
   hbox = btk_hbox_new (FALSE, 0);
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, TRUE, 5);
   button = btk_button_new_with_label ("Value as Int");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
-		    GINT_TO_POINTER (1));
+		    BINT_TO_POINTER (1));
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
   
   button = btk_button_new_with_label ("Value as Float");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
-		    GINT_TO_POINTER (2));
+		    BINT_TO_POINTER (2));
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
   
   btk_box_pack_start (BTK_BOX (vbox), val_label, TRUE, TRUE, 0);
@@ -5220,7 +5220,7 @@ GList pointer, set it equal to NULL, then append strings to it with</para>
 
 <programlisting role="C">
 GList *g_list_append( GList *glist, 
-                      gpointer data );
+                      bpointer data );
 </programlisting>
 
 <para>It is important that you set the initial GList pointer to NULL. The
@@ -5252,13 +5252,13 @@ are accomplished with the functions: </para>
 
 <programlisting role="C">
 void btk_combo_set_use_arrows( BtkCombo *combo,
-                               gboolean  val );
+                               bboolean  val );
 
 void btk_combo_set_use_arrows_always( BtkCombo *combo,
-                                      gboolean  val );
+                                      bboolean  val );
 
 void btk_combo_set_case_sensitive( BtkCombo *combo,
-                                   gboolean  val );
+                                   bboolean  val );
 </programlisting>
 
 <para>btk_combo_set_use_arrows() lets the user change the value in the
@@ -5310,13 +5310,13 @@ accomplished using something like:</para>
 the entry function:</para>
 
 <programlisting role="C">
-gchar *btk_entry_get_text( BtkEntry *entry );
+bchar *btk_entry_get_text( BtkEntry *entry );
 </programlisting>
 
 <para>Such as:</para>
 
 <programlisting role="C">
-    gchar *string;
+    bchar *string;
 
     string = btk_entry_get_text (BTK_ENTRY (BTK_COMBO (combo)->entry));
 </programlisting>
@@ -5332,7 +5332,7 @@ box. Personally, I can't think of why you'd want to use it, but it
 does exist.</para>
 
 <!-- There is also a function to set the string on a particular item, void
-btk_combo_set_item_string(BtkCombo *combo, BtkItem *item, const gchar
+btk_combo_set_item_string(BtkCombo *combo, BtkItem *item, const bchar
 *item_value), but this requires that you have a pointer to the
 appropriate Item. Frankly, I have no idea how to do that.
 -->
@@ -5421,12 +5421,12 @@ left to right.</para>
 date:</para>
 
 <programlisting role="C">
-gint btk_calendar_select_month( BtkCalendar *calendar, 
-                                guint        month,
-                                guint        year );
+bint btk_calendar_select_month( BtkCalendar *calendar, 
+                                buint        month,
+                                buint        year );
 
 void btk_calendar_select_day( BtkCalendar *calendar,
-                              guint        day );
+                              buint        day );
 </programlisting>
 
 <para>The return value from <literal>btk_calendar_select_month()</literal> is a boolean
@@ -5442,11 +5442,11 @@ display. The following functions are provided to manipulate marked
 days:</para>
 
 <programlisting role="C">
-gint btk_calendar_mark_day( BtkCalendar *calendar,
-                            guint        day);
+bint btk_calendar_mark_day( BtkCalendar *calendar,
+                            buint        day);
 
-gint btk_calendar_unmark_day( BtkCalendar *calendar,
-                              guint        day);
+bint btk_calendar_unmark_day( BtkCalendar *calendar,
+                              buint        day);
 
 void btk_calendar_clear_marks( BtkCalendar *calendar);
 </programlisting>
@@ -5475,12 +5475,12 @@ selected date, month and/or year.</para>
 
 <programlisting role="C">
 void btk_calendar_get_date( BtkCalendar *calendar, 
-                            guint       *year,
-                            guint       *month,
-                            guint       *day );
+                            buint       *year,
+                            buint       *month,
+                            buint       *day );
 </programlisting>
 
-<para>This function requires you to pass the addresses of <literal>guint</literal>
+<para>This function requires you to pass the addresses of <literal>buint</literal>
 variables, into which the result will be placed. Passing <literal>NULL</literal> as
 a value will result in the corresponding value not being returned.</para>
 
@@ -5548,7 +5548,7 @@ example code.</para>
 
 typedef struct _CalendarData {
   BtkWidget *flag_checkboxes[5];
-  gboolean  settings[5];
+  bboolean  settings[5];
   BtkWidget *font_dialog;
   BtkWidget *window;
   BtkWidget *prev2_sig;
@@ -5571,10 +5571,10 @@ enum {
 
 static void calendar_date_to_string( CalendarData *data,
                                      char         *buffer,
-                                     gint          buff_len )
+                                     bint          buff_len )
 {
   GDate date;
-  guint year, month, day;
+  buint year, month, day;
 
   btk_calendar_get_date (BTK_CALENDAR (data-&gt;window),
 			 &amp;year, &amp;month, &amp;day);
@@ -5586,7 +5586,7 @@ static void calendar_date_to_string( CalendarData *data,
 static void calendar_set_signal_strings( char         *sig_str,
                                          CalendarData *data )
 {
-  const gchar *prev_sig;
+  const bchar *prev_sig;
 
   prev_sig = btk_label_get_text (BTK_LABEL (data-&gt;prev_sig));
   btk_label_set_text (BTK_LABEL (data-&gt;prev2_sig), prev_sig);
@@ -5618,7 +5618,7 @@ static void calendar_day_selected_double_click ( BtkWidget    *widget,
                                                  CalendarData *data )
 {
   char buffer[256] = "day_selected_double_click: ";
-  guint day;
+  buint day;
 
   calendar_date_to_string (data, buffer + 27, 256 - 27);
   calendar_set_signal_strings (buffer, data);
@@ -5672,8 +5672,8 @@ static void calendar_next_year( BtkWidget    *widget,
 
 static void calendar_set_flags( CalendarData *calendar )
 {
-  gint i;
-  gint options = 0;
+  bint i;
+  bint options = 0;
   for (i = 0;i &lt; 5; i++) 
     if (calendar-&gt;settings[i])
       {
@@ -5686,8 +5686,8 @@ static void calendar_set_flags( CalendarData *calendar )
 static void calendar_toggle_flag( BtkWidget    *toggle,
                                   CalendarData *calendar)
 {
-  gint i;
-  gint j;
+  bint i;
+  bint j;
   j = 0;
   for (i = 0; i &lt; 5; i++)
     if (calendar-&gt;flag_checkboxes[i] == toggle)
@@ -5765,7 +5765,7 @@ static void create_calendar( void )
   BtkWidget *label;
   BtkWidget *bbox;
   static CalendarData calendar_data;
-  gint i;
+  bint i;
   
   struct {
     char *label;
@@ -5967,7 +5967,7 @@ yourself. The ColorSelection widget inherits from the VBox
 widget.</para>
 
 <programlisting role="C">
-BtkWidget *btk_color_selection_dialog_new( const gchar *title );
+BtkWidget *btk_color_selection_dialog_new( const bchar *title );
 </programlisting>
 
 <para>This is the most common color selection constructor. It creates a
@@ -5980,7 +5980,7 @@ ColorSelectionDialog structure,
 
 <programlisting role="C">
 void btk_color_selection_set_has_opacity_control( BtkColorSelection *colorsel,
-                                                  gboolean           has_opacity );
+                                                  bboolean           has_opacity );
 </programlisting>
 
 <para>The color selection widget supports adjusting the opacity of a color
@@ -5993,7 +5993,7 @@ void btk_color_selection_set_current_color( BtkColorSelection *colorsel,
                                             BdkColor          *color );
 
 void btk_color_selection_set_current_alpha( BtkColorSelection *colorsel,
-                                            guint16            alpha );
+                                            buint16            alpha );
 </programlisting>
 
 <para>You can set the current color explicitly by calling 
@@ -6008,7 +6008,7 @@ void btk_color_selection_get_current_color( BtkColorSelection *colorsel,
 	                                    BdkColor *color );
 
 void btk_color_selection_get_current_alpha( BtkColorSelection *colorsel,
-                                            guint16           *alpha );
+                                            buint16           *alpha );
 </programlisting>
 
 <para>When you need to query the current color, typically when you've
@@ -6021,7 +6021,7 @@ Drag and drop
 <para>The color sample areas (right under the hue-saturation wheel) supports
 drag and drop. The type of drag and drop is "application/x-color". The
 message data consists of an array of 4 (or 5 if opacity is enabled)
-gdouble values, where the value at position 0 is 0.0 (opacity on) or
+bdouble values, where the value at position 0 is 0.0 (opacity on) or
 1.0 (opacity off) followed by the red, green and blue values at
 positions 1,2 and 3 respectively.  If opacity is enabled, the opacity
 is passed in the value at position 4.
@@ -6065,12 +6065,12 @@ static void color_changed_cb( BtkWidget         *widget,
 
 /* Drawingarea event handler */
 
-static gboolean area_event( BtkWidget *widget,
+static bboolean area_event( BtkWidget *widget,
                             BdkEvent  *event,
-                            gpointer   client_data )
+                            bpointer   client_data )
 {
-  gint handled = FALSE;
-  gint response;
+  bint handled = FALSE;
+  bint response;
   BtkColorSelection *colorsel;
 
   /* Check if we've received a button pressed event */
@@ -6093,7 +6093,7 @@ static gboolean area_event( BtkWidget *widget,
       /* Connect to the "color_changed" signal, set the client-data
        * to the colorsel widget */
       g_signal_connect (colorsel, "color_changed",
-                        G_CALLBACK (color_changed_cb), (gpointer) colorsel);
+                        G_CALLBACK (color_changed_cb), (bpointer) colorsel);
 
       /* Show the dialog */
       response = btk_dialog_run (BTK_DIALOG (colorseldlg));
@@ -6111,9 +6111,9 @@ static gboolean area_event( BtkWidget *widget,
 
 /* Close down and exit handler */
 
-static gboolean destroy_window( BtkWidget *widget,
+static bboolean destroy_window( BtkWidget *widget,
                                 BdkEvent  *event,
-                                gpointer   client_data )
+                                bpointer   client_data )
 {
   btk_main_quit ();
   return TRUE;
@@ -6121,8 +6121,8 @@ static gboolean destroy_window( BtkWidget *widget,
 
 /* Main */
 
-gint main( gint   argc,
-           gchar *argv[] )
+bint main( bint   argc,
+           bchar *argv[] )
 {
   BtkWidget *window;
 
@@ -6139,7 +6139,7 @@ gint main( gint   argc,
   /* Attach to the "delete" and "destroy" events so we can exit */
 
   g_signal_connect (window, "delete-event",
-                    G_CALLBACK (destroy_window), (gpointer) window);
+                    G_CALLBACK (destroy_window), (bpointer) window);
   
   /* Create drawingarea, set size and catch button events */
 
@@ -6155,7 +6155,7 @@ gint main( gint   argc,
   btk_widget_set_events (drawingarea, BDK_BUTTON_PRESS_MASK);
 
   g_signal_connect (BTK_OBJECT (drawingarea), "event", 
-	            BTK_SIGNAL_FUNC (area_event), (gpointer) drawingarea);
+	            BTK_SIGNAL_FUNC (area_event), (bpointer) drawingarea);
   
   /* Add drawingarea to window, then show them both */
 
@@ -6188,7 +6188,7 @@ great way to cut down on programming time.</para>
 <para>To create a new file selection box use:</para>
 
 <programlisting role="C">
-BtkWidget *btk_file_selection_new( const gchar *title );
+BtkWidget *btk_file_selection_new( const bchar *title );
 </programlisting>
 
 <para>To set the filename, for example to bring up a specific directory, or
@@ -6196,14 +6196,14 @@ give a default filename, use this function:</para>
 
 <programlisting role="C">
 void btk_file_selection_set_filename( BtkFileSelection *filesel,
-                                      const gchar      *filename );
+                                      const bchar      *filename );
 </programlisting>
 
 <para>To grab the text that the user has entered or clicked on, use this 
 function:</para>
 
 <programlisting role="C">
-gchar *btk_file_selection_get_filename( BtkFileSelection *filesel );
+bchar *btk_file_selection_get_filename( BtkFileSelection *filesel );
 </programlisting>
 
 <para>There are also pointers to the widgets contained within the file 
@@ -6262,7 +6262,7 @@ int main( int   argc,
 	              G_CALLBACK (btk_main_quit), NULL);
     /* Connect the ok_button to file_ok_sel function */
     g_signal_connect (BTK_FILE_SELECTION (filew)-&gt;ok_button,
-		      "clicked", G_CALLBACK (file_ok_sel), (gpointer) filew);
+		      "clicked", G_CALLBACK (file_ok_sel), (bpointer) filew);
     
     /* Connect the cancel_button to destroy the widget */
     g_signal_connect_swapped (BTK_FILE_SELECTION (filew)-&gt;cancel_button,
@@ -6406,16 +6406,16 @@ within the window.</para>
 <para>There are only two functions associated with the Alignment widget:</para>
 
 <programlisting role="C">
-BtkWidget* btk_alignment_new( gfloat xalign,
-                              gfloat yalign,
-                              gfloat xscale,
-                              gfloat yscale );
+BtkWidget* btk_alignment_new( bfloat xalign,
+                              bfloat yalign,
+                              bfloat xscale,
+                              bfloat yscale );
 
 void btk_alignment_set( BtkAlignment *alignment,
-                        gfloat        xalign,
-                        gfloat        yalign,
-                        gfloat        xscale,
-                        gfloat        yscale );
+                        bfloat        xalign,
+                        bfloat        yalign,
+                        bfloat        xscale,
+                        bfloat        yscale );
 </programlisting>
 
 <para>The first function creates a new Alignment widget with the specified
@@ -6454,13 +6454,13 @@ BtkWidget* btk_fixed_new( void );
 
 void btk_fixed_put( BtkFixed  *fixed,
                     BtkWidget *widget,
-                    gint       x,
-                    gint       y );
+                    bint       x,
+                    bint       y );
 
 void btk_fixed_move( BtkFixed  *fixed,
                      BtkWidget *widget,
-                     gint       x,
-                     gint       y );
+                     bint       x,
+                     bint       y );
 </programlisting>
 
 <para>The function btk_fixed_new() allows you to create a new Fixed
@@ -6474,9 +6474,9 @@ position.</para>
 
 <programlisting role="C">
 void btk_fixed_set_has_window( BtkFixed  *fixed,
-                               gboolean   has_window );
+                               bboolean   has_window );
 
-gboolean btk_fixed_get_has_window( BtkFixed *fixed );
+bboolean btk_fixed_get_has_window( BtkFixed *fixed );
 </programlisting>
 
 <para>Normally, Fixed widgets don't have their own X window. Since this is
@@ -6503,8 +6503,8 @@ realizing the widget.</para>
 /* I'm going to be lazy and use some global variables to
  * store the position of the widget within the fixed
  * container */
-gint x = 50;
-gint y = 50;
+bint x = 50;
+bint y = 50;
 
 /* This callback function moves the button to a new position
  * in the Fixed container. */
@@ -6523,7 +6523,7 @@ int main( int   argc,
   BtkWidget *window;
   BtkWidget *fixed;
   BtkWidget *button;
-  gint i;
+  bint i;
 
   /* Initialise BTK */
   btk_init (&amp;argc, &amp;argv);
@@ -6552,7 +6552,7 @@ int main( int   argc,
      * function move_button() passing it the Fixed Container as its
      * argument. */
     g_signal_connect (button, "clicked",
-		      G_CALLBACK (move_button), (gpointer) fixed);
+		      G_CALLBACK (move_button), (bpointer) fixed);
   
     /* This packs the button into the fixed containers window. */
     btk_fixed_put (BTK_FIXED (fixed), button, i*50, i*50);
@@ -6602,21 +6602,21 @@ following two functions:</para>
 <programlisting role="C">
 void btk_layout_put( BtkLayout *layout,
                      BtkWidget *widget,
-                     gint       x,
-                     gint       y );
+                     bint       x,
+                     bint       y );
 
 void btk_layout_move( BtkLayout *layout,
                       BtkWidget *widget,
-                      gint       x,
-                      gint       y );
+                      bint       x,
+                      bint       y );
 </programlisting>
 
 <para>The size of the Layout container can be set using the next function:</para>
 
 <programlisting role="C">
 void btk_layout_set_size( BtkLayout *layout,
-                          guint      width,
-                          guint      height );
+                          buint      width,
+                          buint      height );
 </programlisting>
 
 <para>The final four functions for use with Layout widgets are for
@@ -6647,7 +6647,7 @@ style of the box can be altered to suit.</para>
 <para>A Frame can be created with the following function:</para>
 
 <programlisting role="C">
-BtkWidget *btk_frame_new( const gchar *label );
+BtkWidget *btk_frame_new( const bchar *label );
 </programlisting>
 
 <para>The label is by default placed in the upper left hand corner of the
@@ -6657,15 +6657,15 @@ next function.</para>
 
 <programlisting role="C">
 void btk_frame_set_label( BtkFrame    *frame,
-                          const gchar *label );
+                          const bchar *label );
 </programlisting>
 
 <para>The position of the label can be changed using this function:</para>
 
 <programlisting role="C">
 void btk_frame_set_label_align( BtkFrame *frame,
-                                gfloat    xalign,
-                                gfloat    yalign );
+                                bfloat    xalign,
+                                bfloat    yalign );
 </programlisting>
 
 <para><literal>xalign</literal> and <literal>yalign</literal> take values between 0.0 and 1.0. <literal>xalign</literal>
@@ -6769,11 +6769,11 @@ the original image.</para>
 <para>To create a new aspect frame use:</para>
 
 <programlisting role="C">
-BtkWidget *btk_aspect_frame_new( const gchar *label,
-                                 gfloat       xalign,
-                                 gfloat       yalign,
-                                 gfloat       ratio,
-                                 gboolean     obey_child);
+BtkWidget *btk_aspect_frame_new( const bchar *label,
+                                 bfloat       xalign,
+                                 bfloat       yalign,
+                                 bfloat       ratio,
+                                 bboolean     obey_child);
 </programlisting>
    
 <para><literal>xalign</literal> and <literal>yalign</literal> specify alignment as with Alignment
@@ -6785,10 +6785,10 @@ Otherwise, it is given by <literal>ratio</literal>.</para>
 
 <programlisting role="C">
 void btk_aspect_frame_set( BtkAspectFrame *aspect_frame,
-                           gfloat          xalign,
-                           gfloat          yalign,
-                           gfloat          ratio,
-                           gboolean        obey_child);
+                           bfloat          xalign,
+                           bfloat          yalign,
+                           bfloat          ratio,
+                           bboolean        obey_child);
 </programlisting>
    
 <para>As an example, the following program uses an AspectFrame to present a
@@ -6930,7 +6930,7 @@ static BtkWidget *create_list( void )
 				    BTK_POLICY_AUTOMATIC, 
 				    BTK_POLICY_AUTOMATIC);
    
-    model = btk_list_store_new (1, G_TYPE_STRING);
+    model = btk_list_store_new (1, B_TYPE_STRING);
     tree_view = btk_tree_view_new ();
     btk_container_add (BTK_CONTAINER (scrolled_window), tree_view);
     btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
@@ -6938,7 +6938,7 @@ static BtkWidget *create_list( void )
    
     /* Add some messages to the window */
     for (i = 0; i &lt; 10; i++) {
-        gchar *msg = g_strdup_printf ("Message #%d", i);
+        bchar *msg = g_strdup_printf ("Message #%d", i);
         btk_list_store_append (BTK_LIST_STORE (model), &amp;iter);
         btk_list_store_set (BTK_LIST_STORE (model), 
 	                    &amp;iter,
@@ -7169,7 +7169,7 @@ new to you.</para>
 #include &lt;btk/btk.h&gt;
 
 static void destroy( BtkWidget *widget,
-                     gpointer   data )
+                     bpointer   data )
 {
     btk_main_quit ();
 }
@@ -7304,12 +7304,12 @@ for Button Boxes.</para>
 #include &lt;btk/btk.h&gt;
 
 /* Create a Button Box with the specified parameters */
-static BtkWidget *create_bbox( gint  horizontal,
+static BtkWidget *create_bbox( bint  horizontal,
                                char *title,
-                               gint  spacing,
-                               gint  child_w,
-                               gint  child_h,
-                               gint  layout )
+                               bint  spacing,
+                               bint  child_w,
+                               bint  child_h,
+                               bint  layout )
 {
   BtkWidget *frame;
   BtkWidget *bbox;
@@ -7457,7 +7457,7 @@ BtkWidget *btk_toolbar_append_item( BtkToolbar    *toolbar,
                                     const char    *tooltip_private_text,
                                     BtkWidget     *icon,
                                     BtkSignalFunc  callback,
-                                    gpointer       user_data );
+                                    bpointer       user_data );
 
 BtkWidget *btk_toolbar_prepend_item( BtkToolbar    *toolbar,
                                      const char    *text,
@@ -7465,7 +7465,7 @@ BtkWidget *btk_toolbar_prepend_item( BtkToolbar    *toolbar,
                                      const char    *tooltip_private_text,
                                      BtkWidget     *icon,
                                      BtkSignalFunc  callback,
-                                     gpointer       user_data );
+                                     bpointer       user_data );
 </programlisting>
 
 <para>If you want to use btk_toolbar_insert_item(), the only additional
@@ -7479,8 +7479,8 @@ BtkWidget *btk_toolbar_insert_item( BtkToolbar    *toolbar,
                                     const char    *tooltip_private_text,
                                     BtkWidget     *icon,
                                     BtkSignalFunc  callback,
-                                    gpointer       user_data,
-                                    gint           position );
+                                    bpointer       user_data,
+                                    bint           position );
 </programlisting>
 
 <para>To simplify adding spaces between toolbar items, you may use the
@@ -7492,7 +7492,7 @@ void btk_toolbar_append_space( BtkToolbar *toolbar );
 void btk_toolbar_prepend_space( BtkToolbar *toolbar );
 
 void btk_toolbar_insert_space( BtkToolbar *toolbar,
-                               gint        position );
+                               bint        position );
 </programlisting>
 
 <para>If it's required, the orientation of a toolbar and its style can be
@@ -7506,7 +7506,7 @@ void btk_toolbar_set_style( BtkToolbar      *toolbar,
                             BtkToolbarStyle  style );
 
 void btk_toolbar_set_tooltips( BtkToolbar *toolbar,
-                               gint        enable );
+                               bint        enable );
 </programlisting>
 
 <para>Where <literal>orientation</literal> is one of <literal>BTK_ORIENTATION_HORIZONTAL</literal> or
@@ -7524,9 +7524,9 @@ additional explanations):</para>
 
 /* This function is connected to the Close button or
  * closing the window from the WM */
-static gboolean delete_event( BtkWidget *widget,
+static bboolean delete_event( BtkWidget *widget,
                               BdkEvent *event,
-                              gpointer data )
+                              bpointer data )
 {
   btk_main_quit ();
   return FALSE;
@@ -7557,7 +7557,7 @@ clearer I put them all together.</para>
  * accordingly
  * ATTENTION: our toolbar is passed as data to callback ! */
 static void radio_event( BtkWidget *widget,
-                         gpointer data )
+                         bpointer data )
 {
   if (BTK_TOGGLE_BUTTON (text_button)->active) 
     btk_toolbar_set_style (BTK_TOOLBAR (data), BTK_TOOLBAR_TEXT);
@@ -7570,7 +7570,7 @@ static void radio_event( BtkWidget *widget,
 /* even easier, just check given toggle button and enable/disable 
  * tooltips */
 static void toggle_event( BtkWidget *widget,
-                          gpointer   data )
+                          bpointer   data )
 {
   btk_toolbar_set_tooltips (BTK_TOOLBAR (data),
                             BTK_TOGGLE_BUTTON (widget)->active );
@@ -7901,7 +7901,7 @@ position you want the page to be in the notebook.</para>
 void btk_notebook_insert_page( BtkNotebook *notebook,
                                BtkWidget   *child,
                                BtkWidget   *tab_label,
-                               gint         position );
+                               bint         position );
 </programlisting>
 
 <para>The parameters are the same as _append_ and _prepend_ except it
@@ -7914,7 +7914,7 @@ from the notebook.</para>
 
 <programlisting role="C">
 void btk_notebook_remove_page( BtkNotebook *notebook,
-                               gint         page_num );
+                               bint         page_num );
 </programlisting>
 
 <para>This function takes the page specified by <literal>page_num</literal> and removes it
@@ -7923,7 +7923,7 @@ from the widget pointed to by <literal>notebook</literal>.</para>
 <para>To find out what the current page is in a notebook use the function:</para>
 
 <programlisting role="C">
-gint btk_notebook_get_current_page( BtkNotebook *notebook );
+bint btk_notebook_get_current_page( BtkNotebook *notebook );
 </programlisting>
 
 <para>These next two functions are simple calls to move the notebook page
@@ -7946,7 +7946,7 @@ using this function, the notebook defaults to the first page.</para>
 
 <programlisting role="C">
 void btk_notebook_set_current_page( BtkNotebook *notebook,
-                                    gint         page_num );
+                                    bint         page_num );
 </programlisting>
 
 <para>The next two functions add or remove the notebook page tabs and the
@@ -7954,10 +7954,10 @@ notebook border respectively.</para>
 
 <programlisting role="C">
 void btk_notebook_set_show_tabs( BtkNotebook *notebook,
-                                 gboolean     show_tabs );
+                                 bboolean     show_tabs );
 
 void btk_notebook_set_show_border( BtkNotebook *notebook,
-                                   gboolean     show_border );
+                                   bboolean     show_border );
 </programlisting>
 
 <para>The next function is useful when the you have a large number of pages,
@@ -7966,7 +7966,7 @@ through using two arrow buttons.</para>
 
 <programlisting role="C">
 void btk_notebook_set_scrollable( BtkNotebook *notebook,
-                                  gboolean     scrollable );
+                                  bboolean     scrollable );
 </programlisting>
 
 <para><literal>show_tabs</literal>, <literal>show_border</literal> and <literal>scrollable</literal> can be either
@@ -8006,8 +8006,8 @@ static void rotate_book( BtkButton   *button,
 static void tabsborder_book( BtkButton   *button,
                              BtkNotebook *notebook )
 {
-    gint tval = FALSE;
-    gint bval = FALSE;
+    bint tval = FALSE;
+    bint bval = FALSE;
     if (notebook-&gt;show_tabs == 0)
 	    tval = TRUE; 
     if (notebook-&gt;show_border == 0)
@@ -8021,7 +8021,7 @@ static void tabsborder_book( BtkButton   *button,
 static void remove_book( BtkButton   *button,
                          BtkNotebook *notebook )
 {
-    gint page;
+    bint page;
     
     page = btk_notebook_get_current_page (notebook);
     btk_notebook_remove_page (notebook, page);
@@ -8030,9 +8030,9 @@ static void remove_book( BtkButton   *button,
     btk_widget_queue_draw (BTK_WIDGET (notebook));
 }
 
-static gboolean delete( BtkWidget *widget,
+static bboolean delete( BtkWidget *widget,
                         BtkWidget *event,
-                        gpointer   data )
+                        bpointer   data )
 {
     btk_main_quit ();
     return FALSE;
@@ -8282,15 +8282,15 @@ standard <literal>File</literal> menu, with the options <literal>Open</literal>,
     /* Attach the callback functions to the activate signal */
     g_signal_connect_swapped (open_item, "activate",
                               G_CALLBACK (menuitem_response),
-                              (gpointer) "file.open");
+                              (bpointer) "file.open");
     g_signal_connect_swapped (save_item, "activate",
                               G_CALLBACK (menuitem_response),
-                              (gpointer) "file.save");
+                              (bpointer) "file.save");
 
     /* We can attach the Quit menu item to our exit function */
     g_signal_connect_swapped (quit_item, "activate",
                               G_CALLBACK (destroy),
-                              (gpointer) "file.quit");
+                              (bpointer) "file.quit");
 
     /* We do need to show menu items */
     btk_widget_show (open_item);
@@ -8386,7 +8386,7 @@ example.  Take these steps:</para>
 <listitem><simpara>Create an event handling function. It needs to have the
 prototype</simpara>
 <programlisting role="C">
-static gboolean handler( BtkWidget *widget,
+static bboolean handler( BtkWidget *widget,
                          BdkEvent  *event );
 </programlisting>
 <simpara>and it will use the event to find out where to pop up the menu.</simpara>
@@ -8432,8 +8432,8 @@ by a menu bar, as shown in the sample code.</simpara>
 #include &lt;stdio.h&gt;
 #include &lt;btk/btk.h&gt;
 
-static gboolean button_press (BtkWidget *, BdkEvent *);
-static void menuitem_response (gchar *);
+static bboolean button_press (BtkWidget *, BdkEvent *);
+static void menuitem_response (bchar *);
 
 int main( int   argc,
           char *argv[] )
@@ -8484,7 +8484,7 @@ int main( int   argc,
 	    /* Do something interesting when the menuitem is selected */
 	    g_signal_connect_swapped (menu_items, "activate",
 		                      G_CALLBACK (menuitem_response), 
-                                      (gpointer) g_strdup (buf));
+                                      (bpointer) g_strdup (buf));
 
             /* Show the widget */
             btk_widget_show (menu_items);
@@ -8538,7 +8538,7 @@ int main( int   argc,
  * the button that was pressed.
  */
 
-static gboolean button_press( BtkWidget *widget,
+static bboolean button_press( BtkWidget *widget,
                               BdkEvent *event )
 {
 
@@ -8558,7 +8558,7 @@ static gboolean button_press( BtkWidget *widget,
 
 /* Print a string when a menu item is selected */
 
-static void menuitem_response( gchar *string )
+static void menuitem_response( bchar *string )
 {
     printf ("%s\n", string);
 }
@@ -8592,13 +8592,13 @@ menu is formed. The ItemFactory entry struct definition looks like this:</para>
 <programlisting role="C">
 struct _BtkItemFactoryEntry
 {
-  gchar *path;
-  gchar *accelerator;
+  bchar *path;
+  bchar *accelerator;
 
   BtkItemFactoryCallback callback;
-  guint                  callback_action;
+  buint                  callback_action;
 
-  gchar          *item_type;
+  bchar          *item_type;
 };
 </programlisting>
 
@@ -8685,8 +8685,8 @@ void callback( void )
 <para>otherwise it is of the form:</para>
 
 <programlisting role="C">
-void callback( gpointer    callback_data,
-               guint       callback_action,
+void callback( bpointer    callback_data,
+               buint       callback_action,
                BtkWidget  *widget )
 </programlisting>
 
@@ -8737,8 +8737,8 @@ Since <literal>callback_action</literal> is not zero print_state() is of the
 form:</para>
 
 <programlisting role="C">
-void print_state( gpointer    callback_data,
-                  guint       callback_action,
+void print_state( bpointer    callback_data,
+                  buint       callback_action,
                   BtkWidget  *widget )
 </programlisting>
 
@@ -8759,8 +8759,8 @@ calls the function change_resolution() with the parameter
 the form:</para>
 
 <programlisting role="C">
-void change_resolution(gpointer    callback_data,
-                       guint       callback_action,
+void change_resolution(bpointer    callback_data,
+                       buint       callback_action,
                        BtkWidget  *widget)
 </programlisting>
 
@@ -8804,7 +8804,7 @@ does this is:</para>
 
 <programlisting role="C">
 BtkItemFactory* btk_item_factory_new( BtkType        container_type,
-                                      const gchar   *path,
+                                      const bchar   *path,
                                       BtkAccelGroup *accel_group );
 </programlisting>
 
@@ -8838,9 +8838,9 @@ information into widgets the following function is used:</para>
 
 <programlisting role="C">
 void btk_item_factory_create_items( BtkItemFactory      *ifactory,
-                                    guint                n_entries,
+                                    buint                n_entries,
                                     BtkItemFactoryEntry *entries,
-                                    gpointer             callback_data );
+                                    bpointer             callback_data );
 </programlisting>
 
 <para><literal>*ifactory</literal> a pointer to the above created item factory.</para>
@@ -8868,7 +8868,7 @@ extracts the relevant widgets from the ItemFactory:</para>
 
 <programlisting role="C">
 BtkWidget* btk_item_factory_get_widget( BtkItemFactory *ifactory,
-                                        const gchar    *path );
+                                        const bchar    *path );
 </programlisting>
 
 <para>For instance if an ItemFactory has two entries "/File" and "/File/New",
@@ -8915,14 +8915,14 @@ section.</para>
 
 /* Obligatory basic callback */
 static void print_hello( BtkWidget *w,
-                         gpointer   data )
+                         bpointer   data )
 {
   g_message ("Hello, World!\n");
 }
 
 /* For the check button */
-static void print_toggle( gpointer   callback_data,
-                          guint      callback_action,
+static void print_toggle( bpointer   callback_data,
+                          buint      callback_action,
                           BtkWidget *menu_item )
 {
    g_message ("Check button state - %d\n",
@@ -8930,8 +8930,8 @@ static void print_toggle( gpointer   callback_data,
 }
 
 /* For the radio buttons */
-static void print_selected( gpointer   callback_data,
-                            guint      callback_action,
+static void print_selected( bpointer   callback_data,
+                            buint      callback_action,
                             BtkWidget *menu_item )
 {
    if(BTK_CHECK_MENU_ITEM(menu_item)-&gt;active)
@@ -8958,7 +8958,7 @@ static BtkItemFactoryEntry menu_items[] = {
   { "/_Help/About",   NULL,         NULL,           0, "&lt;Item&gt;" },
 };
 
-static gint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
+static bint nmenu_items = sizeof (menu_items) / sizeof (menu_items[0]);
 
 /* Returns a menubar widget made from the above menu */
 static BtkWidget *get_menubar_menu( BtkWidget  *window )
@@ -8986,7 +8986,7 @@ static BtkWidget *get_menubar_menu( BtkWidget  *window )
 }
 
 /* Popup the menu when the popup button is pressed */
-static gboolean popup_cb( BtkWidget *widget,
+static bboolean popup_cb( BtkWidget *widget,
                           BdkEvent *event,
                           BtkWidget *menu )
 {
@@ -9022,7 +9022,7 @@ BtkWidget *get_popup_menu( void )
    g_signal_connect (button,
                      "event",
                      G_CALLBACK(popup_cb),
-                     (gpointer) menu);
+                     (bpointer) menu);
 
    return button;
 }
@@ -9244,12 +9244,12 @@ used to set style, padding, size, etc.</para>
 void btk_widget_activate( BtkWidget *widget );
 
 void btk_widget_set_name( BtkWidget *widget,
-                          gchar     *name );
+                          bchar     *name );
 
-gchar *btk_widget_get_name( BtkWidget *widget );
+bchar *btk_widget_get_name( BtkWidget *widget );
 
 void btk_widget_set_sensitive( BtkWidget *widget,
-                               gboolean   sensitive );
+                               bboolean   sensitive );
 
 void btk_widget_set_style( BtkWidget *widget,
                            BtkStyle  *style );
@@ -9259,8 +9259,8 @@ BtkStyle *btk_widget_get_style( BtkWidget *widget );
 BtkStyle *btk_widget_get_default_style( void );
 
 void btk_widget_set_size_request( BtkWidget *widget,
-                                  gint       width,
-                                  gint       height );
+                                  bint       width,
+                                  bint       height );
 
 void btk_widget_grab_focus( BtkWidget *widget );
 
@@ -9285,9 +9285,9 @@ create a timeout function that will be called every "interval"
 milliseconds.</para>
 
 <programlisting role="C">
-gint g_timeout_add (guint32     interval,
+bint g_timeout_add (buint32     interval,
                     BtkFunction function,
-                    gpointer    data);
+                    bpointer    data);
 </programlisting>
 
 <para>The first argument is the number of milliseconds between calls to your
@@ -9297,7 +9297,7 @@ value is an integer "tag" which may be used to stop the timeout by
 calling:</para>
 
 <programlisting role="C">
-void g_source_remove (gint tag);
+void g_source_remove (bint tag);
 </programlisting>
 
 <para>You may also stop the timeout function by returning zero or FALSE from
@@ -9308,7 +9308,7 @@ i.e., TRUE.</para>
 <para>The declaration of your callback should look something like this:</para>
 
 <programlisting role="C">
-gint timeout_callback (gpointer data);
+bint timeout_callback (bpointer data);
 </programlisting>
 
 </sect1>
@@ -9323,10 +9323,10 @@ returned by open(2) or socket(2)). This is especially useful for
 networking applications. The function:</para>
 
 <programlisting role="C">
-gint bdk_input_add( gint              source,
+bint bdk_input_add( bint              source,
                     BdkInputCondition condition,
                     BdkInputFunction  function,
-                    gpointer          data );
+                    bpointer          data );
 </programlisting>
 
 <para>Where the first argument is the file descriptor you wish to have
@@ -9351,14 +9351,14 @@ satisfied, and the fourth is the data to pass to this function.</para>
 this file descriptor using the following function.</para>
 
 <programlisting role="C">
-void bdk_input_remove( gint tag );
+void bdk_input_remove( bint tag );
 </programlisting>
 
 <para>The callback function should be declared as:</para>
 
 <programlisting role="C">
-void input_callback( gpointer          data,
-                     gint              source, 
+void input_callback( bpointer          data,
+                     bint              source, 
                      BdkInputCondition condition );
 </programlisting>
 
@@ -9375,15 +9375,15 @@ What if you have a function which you want to be called when nothing
 else is happening ?</para>
 
 <programlisting role="C">
-gint btk_idle_add( BtkFunction function,
-                   gpointer    data );
+bint btk_idle_add( BtkFunction function,
+                   bpointer    data );
 </programlisting>
 
 <para>This causes BTK to call the specified function whenever nothing else
 is happening.</para>
 
 <programlisting role="C">
-void btk_idle_remove( gint tag );
+void btk_idle_remove( bint tag );
 </programlisting>
 
 <para>I won't explain the meaning of the arguments as they follow very much
@@ -9408,27 +9408,27 @@ called.</para>
 <title>Connecting and Disconnecting Signal Handlers</title>
 
 <programlisting role="C">
-gulong g_signal_connect( GObject     *object,
-                         const gchar *name,
+bulong g_signal_connect( BObject     *object,
+                         const bchar *name,
                          GCallback    func,
-                         gpointer     func_data );
+                         bpointer     func_data );
 
-gulong g_signal_connect_after( GObject       *object,
-                               const gchar   *name,
+bulong g_signal_connect_after( BObject       *object,
+                               const bchar   *name,
                                GCallback      func,
-                               gpointer       func_data );
+                               bpointer       func_data );
 
-gulong g_signal_connect_swapped( GObject       *object,
-                                 const gchar   *name,
+bulong g_signal_connect_swapped( BObject       *object,
+                                 const bchar   *name,
                                  GCallback      func,
-                                 GObject       *slot_object );
+                                 BObject       *slot_object );
 
-void g_signal_handler_disconnect( GObject *object,
-                                  gulong   handler_id );
+void g_signal_handler_disconnect( BObject *object,
+                                  bulong   handler_id );
 
-void g_signal_handlers_disconnect_by_func( GObject   *object,
+void g_signal_handlers_disconnect_by_func( BObject   *object,
                                            GCallback  func,
-                                           gpointer   data );
+                                           bpointer   data );
 </programlisting>
 
 </sect2>
@@ -9438,19 +9438,19 @@ void g_signal_handlers_disconnect_by_func( GObject   *object,
 <title>Blocking and Unblocking Signal Handlers</title>
 
 <programlisting role="C">
-void g_signal_handler_block( GObject *object,
-                             gulong   handler_id);
+void g_signal_handler_block( BObject *object,
+                             bulong   handler_id);
 
-void g_signal_handlers_block_by_func( GObject   *object,
+void g_signal_handlers_block_by_func( BObject   *object,
                                       GCallback  func,
-                                      gpointer   data );
+                                      bpointer   data );
 
-void g_signal_handler_unblock( GObject *object,
-                               gulong   handler_id );
+void g_signal_handler_unblock( BObject *object,
+                               bulong   handler_id );
 
-void g_signal_handler_unblock_by_func( GObject   *object,
+void g_signal_handler_unblock_by_func( BObject   *object,
                                        GCallback  func,
-                                       gpointer   data );
+                                       bpointer   data );
 </programlisting>
 
 </sect2>
@@ -9460,25 +9460,25 @@ void g_signal_handler_unblock_by_func( GObject   *object,
 <title>Emitting and Stopping Signals</title>
 
 <programlisting role="C">
-void g_signal_emit( GObject *object,
-                    guint      signal_id,
+void g_signal_emit( BObject *object,
+                    buint      signal_id,
                     ... );
 
-void g_signal_emit_by_name( GObject     *object,
-                            const gchar *name,
+void g_signal_emit_by_name( BObject     *object,
+                            const bchar *name,
                             ... );
 
-void g_signal_emitv( const GValue *instance_and_params,
-                     guint         signal_id,
+void g_signal_emitv( const BValue *instance_and_params,
+                     buint         signal_id,
                      GQuark        detail,
-                     GValue       *return_value );
+                     BValue       *return_value );
 
-void g_signal_stop_emission( GObject *object,
-                             guint    signal_id,
+void g_signal_stop_emission( BObject *object,
+                             buint    signal_id,
                              GQuark   detail );
 
-void g_signal_stop_emission_by_name( GObject   *object,
-                                     const gchar *detailed_signal );
+void g_signal_stop_emission_by_name( BObject   *object,
+                                     const bchar *detailed_signal );
 </programlisting>
 
 </sect2>
@@ -9588,10 +9588,10 @@ selections and targets are identified by atoms.</para>
 process, you call:</para>
 
 <programlisting role="C">
-gboolean btk_selection_convert( BtkWidget *widget, 
+bboolean btk_selection_convert( BtkWidget *widget, 
                                 BdkAtom    selection, 
                                 BdkAtom    target,
-                                guint32    time );
+                                buint32    time );
 </programlisting>
 
 <para>This <emphasis>converts</emphasis> the selection into the form specified by
@@ -9613,9 +9613,9 @@ struct _BtkSelectionData
   BdkAtom selection;
   BdkAtom target;
   BdkAtom type;
-  gint    format;
-  guchar *data;
-  gint    length;
+  bint    format;
+  buchar *data;
+  bint    length;
 };
 </programlisting>
 
@@ -9647,11 +9647,11 @@ converted.</para>
 
 static void selection_received( BtkWidget        *widget, 
                                 BtkSelectionData *selection_data, 
-                                gpointer          data );
+                                bpointer          data );
 
 /* Signal handler invoked when user clicks on the "Get Targets" button */
 static void get_targets( BtkWidget *widget,
-                         gpointer data )
+                         bpointer data )
 {
   static BdkAtom targets_atom = BDK_NONE;
   BtkWidget *window = (BtkWidget *)data;	
@@ -9668,7 +9668,7 @@ static void get_targets( BtkWidget *widget,
 /* Signal handler called when the selections owner returns the data */
 static void selection_received( BtkWidget        *widget,
                                 BtkSelectionData *selection_data, 
-                                gpointer          data )
+                                bpointer          data )
 {
   BdkAtom *atoms;
   GList *item_list;
@@ -9727,7 +9727,7 @@ int main( int   argc,
   btk_container_add (BTK_CONTAINER (window), button);
 
   g_signal_connect (button, "clicked",
-		    G_CALLBACK (get_targets), (gpointer) window);
+		    G_CALLBACK (get_targets), (bpointer) window);
   g_signal_connect (window, "selection_received",
 		    G_CALLBACK (selection_received), NULL);
 
@@ -9754,7 +9754,7 @@ each selection/target pair you will handle, you make a call to:</para>
 void btk_selection_add_target( BtkWidget           *widget, 
                                BdkAtom              selection,
                                BdkAtom              target,
-                               guint                info );
+                               buint                info );
 </programlisting>
 
 <para><literal>widget</literal>, <literal>selection</literal>, and <literal>target</literal> identify the requests
@@ -9767,8 +9767,8 @@ enumerator to identify the specific target within the callback function.</para>
 <programlisting role="C">
 void  "selection_get"( BtkWidget          *widget,
                        BtkSelectionData   *selection_data,
-                       guint               info,
-                       guint               time );
+                       buint               info,
+                       buint               time );
 </programlisting>
 
 <para>The BtkSelectionData is the same as above, but this time, we're
@@ -9782,9 +9782,9 @@ function:</para>
 <programlisting role="C">
 void btk_selection_data_set( BtkSelectionData *selection_data,
                              BdkAtom           type,
-                             gint              format,
-                             guchar           *data,
-                             gint              length );
+                             bint              format,
+                             buchar           *data,
+                             bint              length );
 </programlisting>
 
 <para>This function takes care of properly making a copy of the data so that
@@ -9795,9 +9795,9 @@ in the fields of the BtkSelectionData structure by hand.)</para>
 calling:</para>
 
 <programlisting role="C">
-gboolean btk_selection_owner_set( BtkWidget *widget,
+bboolean btk_selection_owner_set( BtkWidget *widget,
                                   BdkAtom    selection,
-                                  guint32    time );
+                                  buint32    time );
 </programlisting>
 
 <para>If another application claims ownership of the selection, you will
@@ -9823,7 +9823,7 @@ BtkWidget *selection_widget;
 
 /* Callback when the user toggles the selection */
 static void selection_toggled( BtkWidget *widget,
-                               gint      *have_selection )
+                               bint      *have_selection )
 {
   if (BTK_TOGGLE_BUTTON (widget)-&gt;active)
     {
@@ -9850,9 +9850,9 @@ static void selection_toggled( BtkWidget *widget,
 }
 
 /* Called when another application claims the selection */
-static gboolean selection_clear( BtkWidget         *widget,
+static bboolean selection_clear( BtkWidget         *widget,
                                  BdkEventSelection *event,
-                                 gint              *have_selection )
+                                 bint              *have_selection )
 {
   *have_selection = FALSE;
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (selection_button), FALSE);
@@ -9863,11 +9863,11 @@ static gboolean selection_clear( BtkWidget         *widget,
 /* Supplies the current time as the selection. */
 static void selection_handle( BtkWidget        *widget, 
                               BtkSelectionData *selection_data,
-                              guint             info,
-                              guint             time_stamp,
-                              gpointer          data )
+                              buint             info,
+                              buint             time_stamp,
+                              bpointer          data )
 {
-  gchar *timestr;
+  bchar *timestr;
   time_t current_time;
 
   current_time = time (NULL);
@@ -9905,16 +9905,16 @@ int main( int   argc,
   btk_widget_show (selection_button);
 
   g_signal_connect (selection_button, "toggled",
-		    G_CALLBACK (selection_toggled), (gpointer) &amp;have_selection);
+		    G_CALLBACK (selection_toggled), (bpointer) &amp;have_selection);
   g_signal_connect (selection_widget, "selection_clear_event",
-		    G_CALLBACK (selection_clear), (gpointer) &amp;have_selection);
+		    G_CALLBACK (selection_clear), (bpointer) &amp;have_selection);
 
   btk_selection_add_target (selection_widget,
 			    BDK_SELECTION_PRIMARY,
 			    BDK_SELECTION_TYPE_STRING,
 		            1);
   g_signal_connect (selection_widget, "selection_get",
-		    G_CALLBACK (selection_handle), (gpointer) &amp;have_selection);
+		    G_CALLBACK (selection_handle), (bpointer) &amp;have_selection);
 
   btk_widget_show (selection_button);
   btk_widget_show (window);
@@ -10048,7 +10048,7 @@ set of target types for a drag operation on a widget.</para>
 void btk_drag_source_set( BtkWidget            *widget,
                           BdkModifierType       start_button_mask,
                           const BtkTargetEntry *targets,
-                          gint                  n_targets,
+                          bint                  n_targets,
                           BdkDragAction         actions );
 </programlisting>
 
@@ -10076,9 +10076,9 @@ following structure:</para>
 
 <programlisting role="C">
 struct BtkTargetEntry {
-   gchar *target;
-   guint  flags;
-   guint  info;
+   bchar *target;
+   buint  flags;
+   buint  info;
  };
 </programlisting>
 
@@ -10112,32 +10112,32 @@ drag-and-drop operation.</para>
 <row>
 <entry align="left" valign="middle">drag_begin</entry>
 <entry align="left" valign="middle"><literal>void (*drag_begin)(BtkWidget *widget,
-BdkDragContext *dc, gpointer data)</literal></entry>
+BdkDragContext *dc, bpointer data)</literal></entry>
 </row>
 <row>
 <entry align="left" valign="middle">drag_motion</entry>
-<entry align="left" valign="middle"><literal>gboolean (*drag_motion)(BtkWidget *widget,
-BdkDragContext *dc, gint x, gint y, guint t, gpointer data)</literal></entry>
+<entry align="left" valign="middle"><literal>bboolean (*drag_motion)(BtkWidget *widget,
+BdkDragContext *dc, bint x, bint y, buint t, bpointer data)</literal></entry>
 </row>
 <row>
 <entry align="left" valign="middle">drag_data_get</entry>
 <entry align="left" valign="middle"><literal>void (*drag_data_get)(BtkWidget *widget,
-BdkDragContext *dc, BtkSelectionData *selection_data, guint info, guint t, gpointer data)</literal></entry>
+BdkDragContext *dc, BtkSelectionData *selection_data, buint info, buint t, bpointer data)</literal></entry>
 </row>
 <row>
 <entry align="left" valign="middle">drag_data_delete</entry>
 <entry align="left" valign="middle"><literal>void (*drag_data_delete)(BtkWidget *widget,
-BdkDragContext *dc, gpointer data)</literal></entry>
+BdkDragContext *dc, bpointer data)</literal></entry>
 </row>
 <row>
 <entry align="left" valign="middle">drag_drop</entry>
-<entry align="left" valign="middle"><literal>gboolean (*drag_drop)(BtkWidget *widget,
-BdkDragContext *dc, gint x, gint y, guint t, gpointer data)</literal></entry>
+<entry align="left" valign="middle"><literal>bboolean (*drag_drop)(BtkWidget *widget,
+BdkDragContext *dc, bint x, bint y, buint t, bpointer data)</literal></entry>
 </row>
 <row>
 <entry align="left" valign="middle">drag_end</entry>
 <entry align="left" valign="middle"><literal>void (*drag_end)(BtkWidget *widget,
-BdkDragContext *dc, gpointer data)</literal></entry>
+BdkDragContext *dc, bpointer data)</literal></entry>
 </row>
 </tbody>
 </tgroup>
@@ -10160,7 +10160,7 @@ that the widget can no longer receive drops.</para>
 void btk_drag_dest_set( BtkWidget            *widget,
                         BtkDestDefaults       flags,
                         const BtkTargetEntry *targets,
-                        gint                  n_targets,
+                        bint                  n_targets,
                         BdkDragAction         actions );
 
 void btk_drag_dest_unset( BtkWidget *widget );
@@ -10184,8 +10184,8 @@ drag-and-drop operation.</para>
 <row>
 <entry align="left" valign="middle">drag_data_received</entry>
 <entry align="left" valign="middle"><literal>void (*drag_data_received)(BtkWidget *widget,
-BdkDragContext *dc, gint x, gint y, BtkSelectionData *selection_data, guint info, guint t,
-gpointer data)</literal></entry>
+BdkDragContext *dc, bint x, bint y, BtkSelectionData *selection_data, buint info, buint t,
+bpointer data)</literal></entry>
 </row>
 </tbody>
 </tgroup>
@@ -10232,22 +10232,22 @@ not.</para>
 <para>Definitions for the extremes of many of the standard types are:</para>
 
 <programlisting role="C">
-G_MINFLOAT
-G_MAXFLOAT
-G_MINDOUBLE
-G_MAXDOUBLE
-G_MINSHORT
-G_MAXSHORT
-G_MAXUSHORT
-G_MININT
-G_MAXINT
-G_MAXUINT
-G_MINLONG
-G_MAXLONG
-G_MAXULONG
-G_MININT64
-G_MAXINT64
-G_MAXUINT64
+B_MINFLOAT
+B_MAXFLOAT
+B_MINDOUBLE
+B_MAXDOUBLE
+B_MINSHORT
+B_MAXSHORT
+B_MAXUSHORT
+B_MININT
+B_MAXINT
+B_MAXUINT
+B_MINLONG
+B_MAXLONG
+B_MAXULONG
+B_MININT64
+B_MAXINT64
+B_MAXUINT64
 </programlisting>
 
 <para>Also, the following typedefs. The ones left unspecified are dynamically set
@@ -10256,34 +10256,34 @@ pointer if you want to be portable! E.g., a pointer on an Alpha is 8
 bytes, but 4 on Intel 80x86 family CPUs.</para>
 
 <programlisting role="C">
-char   gchar;
-short  gshort;
-long   glong;
-int    gint;
-int    gboolean;
+char   bchar;
+short  bshort;
+long   blong;
+int    bint;
+int    bboolean;
 
-unsigned char   guchar;
-unsigned short  gushort;
-unsigned long   gulong;
-unsigned int    guint;
+unsigned char   buchar;
+unsigned short  bushort;
+unsigned long   bulong;
+unsigned int    buint;
 
-float   gfloat;
-double  gdouble;
+float   bfloat;
+double  bdouble;
 
-unsigned int  gsize;
-signed int    gssize;
+unsigned int  bsize;
+signed int    bssize;
 
-void*       gpointer;
+void*       bpointer;
 const void* gconstpointer;
 
-gint8
-guint8
-gint16
-guint16
-gint32
-guint32
-gint64
-guint64
+bint8
+buint8
+bint16
+buint16
+bint32
+buint32
+bint64
+buint64
 </programlisting>
 
 </sect1>
@@ -10296,9 +10296,9 @@ guint64
 standard doubly linked lists. Each element in the list contains a
 piece of data, together with pointers which link to the previous and
 next elements in the list. This enables easy movement in either
-direction through the list. The data item is of type "gpointer",
+direction through the list. The data item is of type "bpointer",
 which means the data can be a pointer to your real data or (through
-casting) a numeric value (but do not assume that int and gpointer have
+casting) a numeric value (but do not assume that int and bpointer have
 the same size!). These routines internally allocate list elements in
 blocks, which is more efficient than allocating elements individually.</para>
 
@@ -10315,7 +10315,7 @@ returned value!</para>
 
 <programlisting role="C">
 GList *g_list_append( GList    *list,
-                      gpointer  data );
+                      bpointer  data );
 </programlisting>
 
 <para>This adds a new element (with value <literal>data</literal>) onto the end of the
@@ -10323,7 +10323,7 @@ list.</para>
   
 <programlisting role="C">
 GList *g_list_prepend( GList    *list,
-                       gpointer  data );
+                       bpointer  data );
 </programlisting>
 
 <para>This adds a new element (with value <literal>data</literal>) to the beginning of the
@@ -10331,8 +10331,8 @@ list.</para>
 
 <programlisting role="C">
 GList *g_list_insert( GList    *list,
-                      gpointer  data,
-                      gint      position );
+                      bpointer  data,
+                      bint      position );
 </programlisting>
 
 <para>This inserts a new element (with value data) into the list at the
@@ -10341,7 +10341,7 @@ if position is less than 0, this is just like g_list_append().</para>
 
 <programlisting role="C">
 GList *g_list_remove( GList    *list,
-                      gpointer  data );
+                      bpointer  data );
 </programlisting>
 
 <para>This removes the element in the list with the value <literal>data</literal>;
@@ -10366,20 +10366,20 @@ GList *g_list_remove_link( GList *list,
 GList *g_list_reverse( GList *list );
 
 GList *g_list_nth( GList *list,
-                   gint   n );
+                   bint   n );
 			   
 GList *g_list_find( GList    *list,
-                    gpointer  data );
+                    bpointer  data );
 
 GList *g_list_last( GList *list );
 
 GList *g_list_first( GList *list );
 
-gint g_list_length( GList *list );
+bint g_list_length( GList *list );
 
 void g_list_foreach( GList    *list,
                      GFunc     func,
-                     gpointer  user_data );
+                     bpointer  user_data );
 </programlisting>
 
 </sect1>
@@ -10392,37 +10392,37 @@ void g_list_foreach( GList    *list,
 above. Here is a list of some of their operations:</para>
 
 <programlisting role="C">
-GSList *g_slist_append( GSList   *list,
-                        gpointer  data );
+GSList *b_slist_append( GSList   *list,
+                        bpointer  data );
 		
-GSList *g_slist_prepend( GSList   *list,
-                         gpointer  data );
+GSList *b_slist_prepend( GSList   *list,
+                         bpointer  data );
 			     
-GSList *g_slist_insert( GSList   *list,
-                        gpointer  data,
-		        gint      position );
+GSList *b_slist_insert( GSList   *list,
+                        bpointer  data,
+		        bint      position );
 			     
-GSList *g_slist_remove( GSList   *list,
-                        gpointer  data );
+GSList *b_slist_remove( GSList   *list,
+                        bpointer  data );
 			     
-GSList *g_slist_remove_link( GSList *list,
+GSList *b_slist_remove_link( GSList *list,
                              GSList *link );
 			     
-GSList *g_slist_reverse( GSList *list );
+GSList *b_slist_reverse( GSList *list );
 
-GSList *g_slist_nth( GSList *list,
-                     gint    n );
+GSList *b_slist_nth( GSList *list,
+                     bint    n );
 			     
-GSList *g_slist_find( GSList   *list,
-                      gpointer  data );
+GSList *b_slist_find( GSList   *list,
+                      bpointer  data );
 			     
-GSList *g_slist_last( GSList *list );
+GSList *b_slist_last( GSList *list );
 
-gint g_slist_length( GSList *list );
+bint b_slist_length( GSList *list );
 
-void g_slist_foreach( GSList   *list,
+void b_slist_foreach( GSList   *list,
                       GFunc     func,
-                      gpointer  user_data );
+                      bpointer  user_data );
 	
 </programlisting>
 
@@ -10433,7 +10433,7 @@ void g_slist_foreach( GSList   *list,
 <title>Memory Management</title>
 
 <programlisting role="C">
-gpointer g_malloc( gulong size );
+bpointer g_malloc( bulong size );
 </programlisting>
 
 <para>This is a replacement for malloc(). You do not need to check the return
@@ -10441,21 +10441,21 @@ value as it is done for you in this function. If the memory allocation
 fails for whatever reasons, your applications will be terminated.</para>
 
 <programlisting role="C">
-gpointer g_malloc0( gulong size );
+bpointer g_malloc0( bulong size );
 </programlisting>
 
 <para>Same as above, but zeroes the memory before returning a pointer to it.</para>
 
 <programlisting role="C">
-gpointer g_realloc( gpointer mem,
-                    gulong   size );
+bpointer g_realloc( bpointer mem,
+                    bulong   size );
 </programlisting>
 
 <para>Relocates "size" bytes of memory starting at "mem".  Obviously, the
 memory should have been previously allocated.</para>
 
 <programlisting role="C">
-void g_free( gpointer mem );
+void g_free( bpointer mem );
 </programlisting>
 
 <para>Frees memory. Easy one. If <literal>mem</literal> is NULL it simply returns.</para>
@@ -10468,7 +10468,7 @@ void g_mem_profile( void );
 MEM_PROFILE</literal> to the top of bunnylib/gmem.c and re-make and make install.</para>
 
 <programlisting role="C">
-void g_mem_check( gpointer mem );
+void g_mem_check( bpointer mem );
 </programlisting>
 
 <para>Checks that a memory location is valid. Requires you add <literal>#define
@@ -10497,8 +10497,8 @@ void g_timer_stop( GTimer  *timer );
 
 void g_timer_reset( GTimer  *timer );
 
-gdouble g_timer_elapsed( GTimer *timer,
-                         gulong *microseconds );
+bdouble g_timer_elapsed( GTimer *timer,
+                         bulong *microseconds );
 </programlisting>
 
 </sect1>
@@ -10517,8 +10517,8 @@ GStrings. GString itself has a simple public definition:</para>
 <programlisting role="C">
 struct GString 
 {
-  gchar *str; /* Points to the string's current \0-terminated value. */
-  gint len; /* Current length */
+  bchar *str; /* Points to the string's current \0-terminated value. */
+  bint len; /* Current length */
 };
 </programlisting>
 
@@ -10526,7 +10526,7 @@ struct GString
 a GString.</para>
 
 <programlisting role="C">
-GString *g_string_new( gchar *init );
+GString *g_string_new( bchar *init );
 </programlisting>
 
 <para>This constructs a GString, copying the string value of <literal>init</literal>
@@ -10535,7 +10535,7 @@ the argument for an initially empty GString.</para>
 
 <programlisting role="C">
 void g_string_free( GString *string,
-                    gint     free_segment );
+                    bint     free_segment );
 </programlisting>
 
 <para>This frees the memory for the given GString. If <literal>free_segment</literal> is
@@ -10543,7 +10543,7 @@ TRUE, then this also frees its character data.</para>
 
 <programlisting role="C">	     
 GString *g_string_assign( GString     *lval,
-                          const gchar *rval );
+                          const bchar *rval );
 </programlisting>
 
 <para>This copies the characters from rval into lval, destroying the
@@ -10556,26 +10556,26 @@ versions accept a character instead of a string):</para>
 	     
 <programlisting role="C">	     
 GString *g_string_truncate( GString *string,
-                            gint     len );
+                            bint     len );
 			     
 GString *g_string_append( GString *string,
-                          gchar   *val );
+                          bchar   *val );
 			    
 GString *g_string_append_c( GString *string,
-                            gchar    c );
+                            bchar    c );
 	
 GString *g_string_prepend( GString *string,
-                           gchar   *val );
+                           bchar   *val );
 			     
 GString *g_string_prepend_c( GString *string,
-                             gchar    c );
+                             bchar    c );
 	
 void g_string_sprintf( GString *string,
-                       gchar   *fmt,
+                       bchar   *fmt,
                        ...);
 	
 void g_string_sprintfa ( GString *string,
-                         gchar   *fmt,
+                         bchar   *fmt,
                          ... );
 </programlisting>
 
@@ -10586,14 +10586,14 @@ void g_string_sprintfa ( GString *string,
 <title>Utility and Error Functions</title>
 
 <programlisting role="C">
-gchar *g_strdup( const gchar *str );
+bchar *g_strdup( const bchar *str );
 </programlisting>
 
 <para>Replacement strdup function.  Copies the original strings contents to
 newly allocated memory, and returns a pointer to it.</para>
 
 <programlisting role="C">
-gchar *g_strerror( gint errnum );
+bchar *g_strerror( bint errnum );
 </programlisting>
 
 <para>I recommend using this for all error messages.  It's much nicer, and more
@@ -10610,7 +10610,7 @@ g_print("hello_world:open:%s:%s\n", filename, g_strerror(errno));
 </programlisting>
 
 <programlisting role="C">
-void g_error( gchar *format, ... );
+void g_error( bchar *format, ... );
 </programlisting>
 
 <para>Prints an error message. The format is just like printf, but it
@@ -10618,20 +10618,20 @@ prepends "** ERROR **: " to your message, and exits the program.
 Use only for fatal errors.</para>
 
 <programlisting role="C">
-void g_warning( gchar *format, ... );
+void g_warning( bchar *format, ... );
 </programlisting>
 
 <para>Same as above, but prepends "** WARNING **: ", and does not exit the
 program.</para>
 
 <programlisting role="C">
-void g_message( gchar *format, ... );
+void g_message( bchar *format, ... );
 </programlisting>
 
 <para>Prints "message: " prepended to the string you pass in.</para>
 
 <programlisting role="C">
-void g_print( gchar *format, ... );
+void g_print( bchar *format, ... );
 </programlisting>
 
 <para>Replacement for printf().</para>
@@ -10639,7 +10639,7 @@ void g_print( gchar *format, ... );
 <para>And our last function:</para>
 
 <programlisting role="C">
-gchar *g_strsignal( gint signum );
+bchar *g_strsignal( bint signum );
 </programlisting>
 
 <para>Prints out the name of the Unix system signal given the signal number.
@@ -10679,7 +10679,7 @@ use a call to:</para>
 
 <programlisting role="C">
 void btk_widget_set_name( BtkWidget *widget,
-                          gchar     *name );
+                          bchar     *name );
 </programlisting>
 
 <para>Passing your newly created widget as the first argument, and the name
@@ -11038,8 +11038,8 @@ struct _BtkButton
 
   BtkWidget *child;
 
-  guint in_button : 1;
-  guint button_down : 1;
+  buint in_button : 1;
+  buint button_down : 1;
 };
 </programlisting>
 
@@ -11099,7 +11099,7 @@ is natural to make our parent class the Table class.</para>
 <sect2>
 <title>The header file</title>
 
-<para>Each GObject class has a header file which declares the object and
+<para>Each BObject class has a header file which declares the object and
 class structures for that object, along with public functions. 
 A couple of features are worth pointing out. To prevent duplicate
 definitions, we wrap the entire header file in:</para>
@@ -11118,11 +11118,11 @@ definitions, we wrap the entire header file in:</para>
 <programlisting role="C">
 #include &lt;bunnylib.h&gt;
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 .
 .
 .
-G_END_DECLS
+B_END_DECLS
 </programlisting>
 
 <para>Along with the functions and structures, we declare five standard
@@ -11183,7 +11183,7 @@ tictactoe_get_type (void)
 struct _GTypeInfo
 {
   /* interface types, classed types, instantiated types */
-  guint16                class_size;
+  buint16                class_size;
    
   GBaseInitFunc          base_init;
   GBaseFinalizeFunc      base_finalize;
@@ -11194,8 +11194,8 @@ struct _GTypeInfo
   gconstpointer          class_data;
    
   /* instantiated types */
-  guint16                instance_size;
-  guint16                n_preallocs;
+  buint16                instance_size;
+  buint16                n_preallocs;
   GInstanceInitFunc      instance_init;
    
   /* value handling */
@@ -11226,18 +11226,18 @@ enum {
 };
 
 
-static guint tictactoe_signals[LAST_SIGNAL] = { 0 };
+static buint tictactoe_signals[LAST_SIGNAL] = { 0 };
 
 static void
 tictactoe_class_init (TictactoeClass *klass)
 {
   tictactoe_signals[TICTACTOE_SIGNAL] =
     g_signal_new ("tictactoe",
-                  G_TYPE_FROM_CLASS (klass),
+                  B_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (TictactoeClass, tictactoe),
                   NULL, NULL,
-                  g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+                  g_cclosure_marshal_VOID__VOID, B_TYPE_NONE, 0);
 }
 </programlisting>
 
@@ -11250,15 +11250,15 @@ things are going to get a bit complicated.</para>
 <para>The function:</para>
 
 <programlisting role="C">
-guint g_signal_new( const gchar         *signal_name,
+buint g_signal_new( const bchar         *signal_name,
                     GType                itype,
                     GSignalFlags         signal_flags,
-                    guint                class_offset,
+                    buint                class_offset,
                     GSignalAccumulator  *accumulator,
-                    gpointer             accu_data,
+                    bpointer             accu_data,
                     GSignalCMarshaller  *c_marshaller,
                     GType                return_type,
-                    guint                n_params,
+                    buint                n_params,
                     ...);
 </programlisting>
 
@@ -11311,27 +11311,27 @@ pre-supplied marshaller function <literal>g_cclosure_marshal_VOID__VOID</literal
 <para>When specifying types, the following standard types can be used:</para>
 
 <programlisting role="C">
-G_TYPE_INVALID
-G_TYPE_NONE
-G_TYPE_INTERFACE
-G_TYPE_CHAR
-G_TYPE_UCHAR
-G_TYPE_BOOLEAN
-G_TYPE_INT
-G_TYPE_UINT
-G_TYPE_LONG
-G_TYPE_ULONG
-G_TYPE_INT64
-G_TYPE_UINT64
-G_TYPE_ENUM
-G_TYPE_FLAGS
-G_TYPE_FLOAT
-G_TYPE_DOUBLE
-G_TYPE_STRING
-G_TYPE_POINTER
-G_TYPE_BOXED
-G_TYPE_PARAM
-G_TYPE_OBJECT
+B_TYPE_INVALID
+B_TYPE_NONE
+B_TYPE_INTERFACE
+B_TYPE_CHAR
+B_TYPE_UCHAR
+B_TYPE_BOOLEAN
+B_TYPE_INT
+B_TYPE_UINT
+B_TYPE_LONG
+B_TYPE_ULONG
+B_TYPE_INT64
+B_TYPE_UINT64
+B_TYPE_ENUM
+B_TYPE_FLAGS
+B_TYPE_FLOAT
+B_TYPE_DOUBLE
+B_TYPE_STRING
+B_TYPE_POINTER
+B_TYPE_BOXED
+B_TYPE_PARAM
+B_TYPE_OBJECT
 </programlisting>
 
 <para><literal>g_signal_new()</literal> returns a unique integer identifier for the
@@ -11356,7 +11356,7 @@ widgets, however, this function also creates the component widgets.</para>
 static void
 tictactoe_init (Tictactoe *ttt)
 {
-  gint i,j;
+  bint i,j;
 
   btk_table_resize (BTK_TABLE (ttt), 3, 3);
   btk_table_set_homogeneous (BTK_TABLE (ttt), TRUE);
@@ -11414,12 +11414,12 @@ tictactoe_clear (Tictactoe *ttt)
   for (i=0;i&lt;3;i++)
     for (j=0;j&lt;3;j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_block_matched (B_OBJECT (ttt->buttons[i][j]),
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt->buttons[i][j]),
 				     FALSE);
-	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_unblock_matched (B_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
                                            0, 0, NULL, NULL, ttt);
       }
@@ -11470,7 +11470,7 @@ tictactoe_toggle (BtkWidget *widget, Tictactoe *ttt)
 
 /* Invoked when a row, column or diagonal is completed */
 void
-win (BtkWidget *widget, gpointer data)
+win (BtkWidget *widget, bpointer data)
 {
   g_print ("Yay!\n");
   tictactoe_clear (TICTACTOE (widget));
@@ -11665,25 +11665,25 @@ struct _BtkDial
   BtkWidget widget;
 
   /* update policy (BTK_UPDATE_[CONTINUOUS/DELAYED/DISCONTINUOUS]) */
-  guint policy : 2;
+  buint policy : 2;
 
   /* Button currently pressed or 0 if none */
-  guint8 button;
+  buint8 button;
 
   /* Dimensions of dial components */
-  gint radius;
-  gint pointer_width;
+  bint radius;
+  bint pointer_width;
 
   /* ID of update timer, or 0 if none */
-  guint32 timer;
+  buint32 timer;
 
   /* Current angle */
-  gfloat angle;
+  bfloat angle;
 
   /* Old values from adjustment stored so we know when something changes */
-  gfloat old_value;
-  gfloat old_lower;
-  gfloat old_upper;
+  bfloat old_value;
+  bfloat old_lower;
+  bfloat old_upper;
 
   /* The adjustment object that stores the data for this dial */
   BtkAdjustment *adjustment;
@@ -11871,7 +11871,7 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   if (dial->adjustment)
     {
-      btk_signal_disconnect_by_data (BTK_OBJECT (dial->adjustment), (gpointer) dial);
+      btk_signal_disconnect_by_data (BTK_OBJECT (dial->adjustment), (bpointer) dial);
       btk_object_unref (BTK_OBJECT (dial->adjustment));
     }
 
@@ -11880,10 +11880,10 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   btk_signal_connect (BTK_OBJECT (adjustment), "changed",
 		      (BtkSignalFunc) btk_dial_adjustment_changed,
-		      (gpointer) dial);
+		      (bpointer) dial);
   btk_signal_connect (BTK_OBJECT (adjustment), "value_changed",
 		      (BtkSignalFunc) btk_dial_adjustment_value_changed,
-		      (gpointer) dial);
+		      (bpointer) dial);
 
   dial->old_value = adjustment->value;
   dial->old_lower = adjustment->lower;
@@ -11920,7 +11920,7 @@ btk_dial_realize (BtkWidget *widget)
 {
   BtkDial *dial;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BTK_IS_DIAL (widget));
@@ -12024,17 +12024,17 @@ three dimensional shading according to the colors stored in the
 widget's style.</para>
 
 <programlisting role="C">
-static gboolean
+static bboolean
 btk_dial_expose( BtkWidget      *widget,
 		 BdkEventExpose *event )
 {
   BtkDial *dial;
   BdkPoint points[3];
-  gdouble s,c;
-  gdouble theta;
-  gint xc, yc;
-  gint tick_length;
-  gint i;
+  bdouble s,c;
+  bdouble theta;
+  bint xc, yc;
+  bint tick_length;
+  bint i;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -12121,12 +12121,12 @@ set, "value_changed" events are either generated instantly
 button is released (<literal>BTK_UPDATE_DISCONTINUOUS</literal>).</para>
 
 <programlisting role="C">
-static gboolean
+static bboolean
 btk_dial_button_press( BtkWidget      *widget,
 		       BdkEventButton *event )
 {
   BtkDial *dial;
-  gint dx, dy;
+  bint dx, dy;
   double s, c;
   double d_parallel;
   double d_perpendicular;
@@ -12165,7 +12165,7 @@ btk_dial_button_press( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_button_release( BtkWidget      *widget,
 			 BdkEventButton *event )
 {
@@ -12194,13 +12194,13 @@ btk_dial_button_release( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_motion_notify( BtkWidget      *widget,
                         BdkEventMotion *event )
 {
   BtkDial *dial;
   BdkModifierType mods;
-  gint x, y, mask;
+  bint x, y, mask;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -12239,7 +12239,7 @@ btk_dial_motion_notify( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_timer( BtkDial *dial )
 {
   g_return_val_if_fail (dial != NULL, FALSE);
@@ -12252,10 +12252,10 @@ btk_dial_timer( BtkDial *dial )
 }
 
 static void
-btk_dial_update_mouse (BtkDial *dial, gint x, gint y)
+btk_dial_update_mouse (BtkDial *dial, bint x, bint y)
 {
-  gint xc, yc;
-  gfloat old_value;
+  bint xc, yc;
+  bfloat old_value;
 
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -12295,7 +12295,7 @@ btk_dial_update_mouse (BtkDial *dial, gint x, gint y)
 
 	      dial->timer = g_timeout_add (SCROLL_DELAY_LENGTH,
 				           (BtkFunction) btk_dial_timer,
-					   (gpointer) dial);
+					   (bpointer) dial);
 	    }
 	}
     }
@@ -12312,7 +12312,7 @@ calling <literal>btk_widget_draw()</literal>).</para>
 static void
 btk_dial_update (BtkDial *dial)
 {
-  gfloat new_value;
+  bfloat new_value;
   
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -12339,7 +12339,7 @@ btk_dial_update (BtkDial *dial)
 
 static void
 btk_dial_adjustment_changed (BtkAdjustment *adjustment,
-			      gpointer       data)
+			      bpointer       data)
 {
   BtkDial *dial;
 
@@ -12362,7 +12362,7 @@ btk_dial_adjustment_changed (BtkAdjustment *adjustment,
 
 static void
 btk_dial_adjustment_value_changed (BtkAdjustment *adjustment,
-				    gpointer       data)
+				    bpointer       data)
 {
   BtkDial *dial;
 
@@ -12483,11 +12483,11 @@ struct _BdkEventMotion
 {
   BdkEventType type;
   BdkWindow *window;
-  guint32 time;
-  gdouble x;
-  gdouble y;
+  buint32 time;
+  bdouble x;
+  bdouble y;
   ...
-  guint state;
+  buint state;
   ...
 };
 </programlisting>
@@ -12522,7 +12522,7 @@ the function:</para>
 
 <programlisting role="C">
 void btk_widget_set_events (BtkWidget *widget,
-                            gint      events);
+                            bint      events);
 </programlisting>
 
 <para>The second field specifies the events we are interested in. It
@@ -12609,8 +12609,8 @@ the position of the pointer using the function:</para>
 
 <programlisting role="C">
 BdkWindow*    bdk_window_get_pointer     (BdkWindow       *window,
-					  gint            *x,
-					  gint            *y,
+					  bint            *x,
+					  bint            *y,
 					  BdkModifierType *mask);
 </programlisting>
 
@@ -12643,7 +12643,7 @@ later. The "motion_notify_event" and "button_press_event" handlers
 are pretty simple:</para>
 
 <programlisting role="C">
-static gboolean
+static bboolean
 button_press_event( BtkWidget *widget, BdkEventButton *event )
 {
   if (event->button == 1 &amp;&amp; pixmap != NULL)
@@ -12652,7 +12652,7 @@ button_press_event( BtkWidget *widget, BdkEventButton *event )
   return TRUE;
 }
 
-static gboolean
+static bboolean
 motion_notify_event( BtkWidget *widget, BdkEventMotion *event )
 {
   int x, y;
@@ -12694,8 +12694,8 @@ BtkWidget* btk_drawing_area_new        (void);
 
 <programlisting role="C">
 void       btk_drawing_area_size       (BtkDrawingArea      *darea,
-					gint                 width,
-					gint                 height);
+					bint                 width,
+					bint                 height);
 </programlisting>
 
 <para>This default size can be overridden, as is true for all widgets,
@@ -12722,9 +12722,9 @@ relevant portions onto the screen.</para>
 
 <programlisting role="C">
 BdkPixmap* bdk_pixmap_new               (BdkDrawable *drawable,
-					 gint         width,
-					 gint         height,
-					 gint         depth);
+					 bint         width,
+					 bint         height,
+					 bint         depth);
 </programlisting>
 
 <para>The <literal>drawable</literal> parameter specifies a BDK
@@ -12745,7 +12745,7 @@ is originally created.</para>
 static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean
+static bboolean
 configure_event( BtkWidget *widget, BdkEventConfigure *event )
 {
   if (pixmap)
@@ -12775,7 +12775,7 @@ to redraw by using the event->area field of the exposure event):</para>
 
 <programlisting role="C">
 /* Redraw the screen from the backing pixmap */
-static gboolean
+static bboolean
 expose_event( BtkWidget *widget, BdkEventExpose *event )
 {
   bdk_draw_drawable(widget->window,
@@ -12863,7 +12863,7 @@ on the screen, is then:</para>
 <programlisting role="C">
 /* Draw a rectangle on the screen */
 static void
-draw_brush (BtkWidget *widget, gdouble x, gdouble y)
+draw_brush (BtkWidget *widget, bdouble x, bdouble y)
 {
   BdkRectangle update_rect;
 
@@ -12887,10 +12887,10 @@ we call the function:</para>
 
 <programlisting role="C">
 void       btk_widget_queue_draw_area (BtkWidget           *widget,
-			               gint                 x,
-			               gint                 y,
-			               gint                 width,
-			               gint                 height)
+			               bint                 x,
+			               bint                 y,
+			               bint                 width,
+			               bint                 height)
 </programlisting>
 
 <para>which notifies X that the area given by the <literal>x</literal>, 
@@ -12939,16 +12939,16 @@ struct _BdkEventMotion
 {
   BdkEventType type;
   BdkWindow *window;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble pressure;
-  gdouble xtilt;
-  gdouble ytilt;
-  guint state;
-  gint16 is_hint;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble pressure;
+  bdouble xtilt;
+  bdouble ytilt;
+  buint state;
+  bint16 is_hint;
   BdkInputSource source;
-  guint32 deviceid;
+  buint32 deviceid;
 };
 </programlisting>
 
@@ -13002,7 +13002,7 @@ it isn't present, and raises it to the top otherwise.</para>
 
 <programlisting role="C">
 void
-input_dialog_destroy (BtkWidget *w, gpointer data)
+input_dialog_destroy (BtkWidget *w, bpointer data)
 {
   *((BtkWidget **)data) = NULL;
 }
@@ -13066,12 +13066,12 @@ information.</para>
 
 <programlisting role="C">
 void bdk_input_window_get_pointer( BdkWindow       *window,
-                                   guint32         deviceid,
-                                   gdouble         *x,
-                                   gdouble         *y,
-                                   gdouble         *pressure,
-                                   gdouble         *xtilt,
-                                   gdouble         *ytilt,
+                                   buint32         deviceid,
+                                   bdouble         *x,
+                                   bdouble         *y,
+                                   bdouble         *pressure,
+                                   bdouble         *xtilt,
+                                   bdouble         *ytilt,
                                    BdkModifierType *mask);
 </programlisting>
 
@@ -13087,7 +13087,7 @@ doesn't change much - we just need to add code to deal with the
 extended information.</para>
 
 <programlisting role="C">
-static gboolean
+static bboolean
 button_press_event( BtkWidget *widget, BdkEventButton *event )
 {
   print_button_press (event->deviceid);
@@ -13098,11 +13098,11 @@ button_press_event( BtkWidget *widget, BdkEventButton *event )
   return TRUE;
 }
 
-static gboolean
+static bboolean
 motion_notify_event( BtkWidget *widget, BdkEventMotion *event )
 {
-  gdouble x, y;
-  gdouble pressure;
+  bdouble x, y;
+  bdouble pressure;
   BdkModifierType state;
 
   if (event->is_hint)
@@ -13133,7 +13133,7 @@ on the pressure.</para>
    and color on the type of device */
 static void
 draw_brush (BtkWidget *widget, BdkInputSource source,
-	    gdouble x, gdouble y, gdouble pressure)
+	    bdouble x, bdouble y, bdouble pressure)
 {
   BdkGC *gc;
   BdkRectangle update_rect;
@@ -13185,14 +13185,14 @@ as:</para>
 <programlisting role="C">
 struct _BdkDeviceInfo
 {
-  guint32 deviceid;
-  gchar *name;
+  buint32 deviceid;
+  bchar *name;
   BdkInputSource source;
   BdkInputMode mode;
-  gint has_cursor;
-  gint num_axes;
+  bint has_cursor;
+  bint num_axes;
   BdkAxisUse *axes;
-  gint num_keys;
+  bint num_keys;
   BdkDeviceKey *keys;
 };
 </programlisting>
@@ -13211,7 +13211,7 @@ the name of the device.</para>
 
 <programlisting role="C">
 static void
-print_button_press (guint32 deviceid)
+print_button_press (buint32 deviceid)
 {
   GList *tmp_list;
 
@@ -13463,7 +13463,7 @@ using the signals listed in this section.</para>
 
 <programlisting role="C">
 void BtkObject::destroy	(BtkObject *,
-                       	 gpointer);
+                       	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13474,176 +13474,176 @@ void BtkObject::destroy	(BtkObject *,
 
 <programlisting role="C">
 void BtkWidget::show	(BtkWidget *,
-                    	 gpointer);
+                    	 bpointer);
 void BtkWidget::hide	(BtkWidget *,
-                    	 gpointer);
+                    	 bpointer);
 void BtkWidget::map	(BtkWidget *,
-                   	 gpointer);
+                   	 bpointer);
 void BtkWidget::unmap	(BtkWidget *,
-                     	 gpointer);
+                     	 bpointer);
 void BtkWidget::realize	(BtkWidget *,
-                       	 gpointer);
+                       	 bpointer);
 void BtkWidget::unrealize	(BtkWidget *,
-                         	 gpointer);
+                         	 bpointer);
 void BtkWidget::draw	(BtkWidget *,
-                    	 ggpointer,
-                    	 gpointer);
+                    	 gbpointer,
+                    	 bpointer);
 void BtkWidget::draw-focus	(BtkWidget *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkWidget::draw-default	(BtkWidget *,
-                            	 gpointer);
+                            	 bpointer);
 void BtkWidget::size-request	(BtkWidget *,
-                            	 ggpointer,
-                            	 gpointer);
+                            	 gbpointer,
+                            	 bpointer);
 void BtkWidget::size-allocate	(BtkWidget *,
-                             	 ggpointer,
-                             	 gpointer);
+                             	 gbpointer,
+                             	 bpointer);
 void BtkWidget::state-changed	(BtkWidget *,
                              	 BtkStateType,
-                             	 gpointer);
+                             	 bpointer);
 void BtkWidget::parent-set	(BtkWidget *,
                           	 BtkObject *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkWidget::style-set	(BtkWidget *,
                          	 BtkStyle *,
-                         	 gpointer);
+                         	 bpointer);
 void BtkWidget::add-accelerator	(BtkWidget *,
-                               	 gguint,
+                               	 gbuint,
                                	 BtkAccelGroup *,
-                               	 gguint,
+                               	 gbuint,
                                	 BdkModifierType,
                                	 BtkAccelFlags,
-                               	 gpointer);
+                               	 bpointer);
 void BtkWidget::remove-accelerator	(BtkWidget *,
                                   	 BtkAccelGroup *,
-                                  	 gguint,
+                                  	 gbuint,
                                   	 BdkModifierType,
-                                  	 gpointer);
-gboolean BtkWidget::event	(BtkWidget *,
+                                  	 bpointer);
+bboolean BtkWidget::event	(BtkWidget *,
                          	 BdkEvent *,
-                         	 gpointer);
-gboolean BtkWidget::button-press-event	(BtkWidget *,
+                         	 bpointer);
+bboolean BtkWidget::button-press-event	(BtkWidget *,
                                       	 BdkEvent *,
-                                      	 gpointer);
-gboolean BtkWidget::button-release-event	(BtkWidget *,
+                                      	 bpointer);
+bboolean BtkWidget::button-release-event	(BtkWidget *,
                                         	 BdkEvent *,
-                                        	 gpointer);
-gboolean BtkWidget::motion-notify-event	(BtkWidget *,
+                                        	 bpointer);
+bboolean BtkWidget::motion-notify-event	(BtkWidget *,
                                        	 BdkEvent *,
-                                       	 gpointer);
-gboolean BtkWidget::delete-event	(BtkWidget *,
+                                       	 bpointer);
+bboolean BtkWidget::delete-event	(BtkWidget *,
                                 	 BdkEvent *,
-                                	 gpointer);
-gboolean BtkWidget::destroy-event	(BtkWidget *,
+                                	 bpointer);
+bboolean BtkWidget::destroy-event	(BtkWidget *,
                                  	 BdkEvent *,
-                                 	 gpointer);
-gboolean BtkWidget::expose-event	(BtkWidget *,
+                                 	 bpointer);
+bboolean BtkWidget::expose-event	(BtkWidget *,
                                 	 BdkEvent *,
-                                	 gpointer);
-gboolean BtkWidget::key-press-event	(BtkWidget *,
+                                	 bpointer);
+bboolean BtkWidget::key-press-event	(BtkWidget *,
                                    	 BdkEvent *,
-                                   	 gpointer);
-gboolean BtkWidget::key-release-event	(BtkWidget *,
+                                   	 bpointer);
+bboolean BtkWidget::key-release-event	(BtkWidget *,
                                      	 BdkEvent *,
-                                     	 gpointer);
-gboolean BtkWidget::enter-notify-event	(BtkWidget *,
+                                     	 bpointer);
+bboolean BtkWidget::enter-notify-event	(BtkWidget *,
                                       	 BdkEvent *,
-                                      	 gpointer);
-gboolean BtkWidget::leave-notify-event	(BtkWidget *,
+                                      	 bpointer);
+bboolean BtkWidget::leave-notify-event	(BtkWidget *,
                                       	 BdkEvent *,
-                                      	 gpointer);
-gboolean BtkWidget::configure-event	(BtkWidget *,
+                                      	 bpointer);
+bboolean BtkWidget::configure-event	(BtkWidget *,
                                    	 BdkEvent *,
-                                   	 gpointer);
-gboolean BtkWidget::focus-in-event	(BtkWidget *,
+                                   	 bpointer);
+bboolean BtkWidget::focus-in-event	(BtkWidget *,
                                   	 BdkEvent *,
-                                  	 gpointer);
-gboolean BtkWidget::focus-out-event	(BtkWidget *,
+                                  	 bpointer);
+bboolean BtkWidget::focus-out-event	(BtkWidget *,
                                    	 BdkEvent *,
-                                   	 gpointer);
-gboolean BtkWidget::map-event	(BtkWidget *,
+                                   	 bpointer);
+bboolean BtkWidget::map-event	(BtkWidget *,
                              	 BdkEvent *,
-                             	 gpointer);
-gboolean BtkWidget::unmap-event	(BtkWidget *,
+                             	 bpointer);
+bboolean BtkWidget::unmap-event	(BtkWidget *,
                                	 BdkEvent *,
-                               	 gpointer);
-gboolean BtkWidget::property-notify-event	(BtkWidget *,
+                               	 bpointer);
+bboolean BtkWidget::property-notify-event	(BtkWidget *,
                                          	 BdkEvent *,
-                                         	 gpointer);
-gboolean BtkWidget::selection-clear-event	(BtkWidget *,
+                                         	 bpointer);
+bboolean BtkWidget::selection-clear-event	(BtkWidget *,
                                          	 BdkEvent *,
-                                         	 gpointer);
-gboolean BtkWidget::selection-request-event	(BtkWidget *,
+                                         	 bpointer);
+bboolean BtkWidget::selection-request-event	(BtkWidget *,
                                            	 BdkEvent *,
-                                           	 gpointer);
-gboolean BtkWidget::selection-notify-event	(BtkWidget *,
+                                           	 bpointer);
+bboolean BtkWidget::selection-notify-event	(BtkWidget *,
                                           	 BdkEvent *,
-                                          	 gpointer);
+                                          	 bpointer);
 void BtkWidget::selection-get	(BtkWidget *,
                              	 BtkSelectionData *,
-                             	 gguint,
-                             	 gpointer);
+                             	 gbuint,
+                             	 bpointer);
 void BtkWidget::selection-received	(BtkWidget *,
                                   	 BtkSelectionData *,
-                                  	 gguint,
-                                  	 gpointer);
-gboolean BtkWidget::proximity-in-event	(BtkWidget *,
+                                  	 gbuint,
+                                  	 bpointer);
+bboolean BtkWidget::proximity-in-event	(BtkWidget *,
                                       	 BdkEvent *,
-                                      	 gpointer);
-gboolean BtkWidget::proximity-out-event	(BtkWidget *,
+                                      	 bpointer);
+bboolean BtkWidget::proximity-out-event	(BtkWidget *,
                                        	 BdkEvent *,
-                                       	 gpointer);
+                                       	 bpointer);
 void BtkWidget::drag-begin	(BtkWidget *,
                           	 BdkDragContext *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkWidget::drag-end	(BtkWidget *,
                         	 BdkDragContext *,
-                        	 gpointer);
+                        	 bpointer);
 void BtkWidget::drag-data-delete	(BtkWidget *,
                                 	 BdkDragContext *,
-                                	 gpointer);
+                                	 bpointer);
 void BtkWidget::drag-leave	(BtkWidget *,
                           	 BdkDragContext *,
-                          	 gguint,
-                          	 gpointer);
-gboolean BtkWidget::drag-motion	(BtkWidget *,
+                          	 gbuint,
+                          	 bpointer);
+bboolean BtkWidget::drag-motion	(BtkWidget *,
                                	 BdkDragContext *,
-                               	 ggint,
-                               	 ggint,
-                               	 gguint,
-                               	 gpointer);
-gboolean BtkWidget::drag-drop	(BtkWidget *,
+                               	 gbint,
+                               	 gbint,
+                               	 gbuint,
+                               	 bpointer);
+bboolean BtkWidget::drag-drop	(BtkWidget *,
                              	 BdkDragContext *,
-                             	 ggint,
-                             	 ggint,
-                             	 gguint,
-                             	 gpointer);
+                             	 gbint,
+                             	 gbint,
+                             	 gbuint,
+                             	 bpointer);
 void BtkWidget::drag-data-get	(BtkWidget *,
                              	 BdkDragContext *,
                              	 BtkSelectionData *,
-                             	 gguint,
-                             	 gguint,
-                             	 gpointer);
+                             	 gbuint,
+                             	 gbuint,
+                             	 bpointer);
 void BtkWidget::drag-data-received	(BtkWidget *,
                                   	 BdkDragContext *,
-                                  	 ggint,
-                                  	 ggint,
+                                  	 gbint,
+                                  	 gbint,
                                   	 BtkSelectionData *,
-                                  	 gguint,
-                                  	 gguint,
-                                  	 gpointer);
-gboolean BtkWidget::client-event	(BtkWidget *,
+                                  	 gbuint,
+                                  	 gbuint,
+                                  	 bpointer);
+bboolean BtkWidget::client-event	(BtkWidget *,
                                 	 BdkEvent *,
-                                	 gpointer);
-gboolean BtkWidget::no-expose-event	(BtkWidget *,
+                                	 bpointer);
+bboolean BtkWidget::no-expose-event	(BtkWidget *,
                                    	 BdkEvent *,
-                                   	 gpointer);
-gboolean BtkWidget::visibility-notify-event	(BtkWidget *,
+                                   	 bpointer);
+bboolean BtkWidget::visibility-notify-event	(BtkWidget *,
                                            	 BdkEvent *,
-                                           	 gpointer);
+                                           	 bpointer);
 void BtkWidget::debug-msg	(BtkWidget *,
                          	 BtkString *,
-                         	 gpointer);
+                         	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13654,7 +13654,7 @@ void BtkWidget::debug-msg	(BtkWidget *,
 
 <programlisting role="C">
 void BtkData::disconnect	(BtkData *,
-                        	 gpointer);
+                        	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13666,18 +13666,18 @@ void BtkData::disconnect	(BtkData *,
 <programlisting role="C">
 void BtkContainer::add	(BtkContainer *,
                       	 BtkWidget *,
-                      	 gpointer);
+                      	 bpointer);
 void BtkContainer::remove	(BtkContainer *,
                          	 BtkWidget *,
-                         	 gpointer);
+                         	 bpointer);
 void BtkContainer::check-resize	(BtkContainer *,
-                               	 gpointer);
+                               	 bpointer);
 BtkDirectionType BtkContainer::focus	(BtkContainer *,
                                     	 BtkDirectionType,
-                                    	 gpointer);
+                                    	 bpointer);
 void BtkContainer::set-focus-child	(BtkContainer *,
                                   	 BtkWidget *,
-                                  	 gpointer);
+                                  	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13688,19 +13688,19 @@ void BtkContainer::set-focus-child	(BtkContainer *,
 
 <programlisting role="C">
 void BtkCalendar::month-changed	(BtkCalendar *,
-                               	 gpointer);
+                               	 bpointer);
 void BtkCalendar::day-selected	(BtkCalendar *,
-                              	 gpointer);
+                              	 bpointer);
 void BtkCalendar::day-selected-double-click	(BtkCalendar *,
-                                           	 gpointer);
+                                           	 bpointer);
 void BtkCalendar::prev-month	(BtkCalendar *,
-                            	 gpointer);
+                            	 bpointer);
 void BtkCalendar::next-month	(BtkCalendar *,
-                            	 gpointer);
+                            	 bpointer);
 void BtkCalendar::prev-year	(BtkCalendar *,
-                           	 gpointer);
+                           	 bpointer);
 void BtkCalendar::next-year	(BtkCalendar *,
-                           	 gpointer);
+                           	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13711,53 +13711,53 @@ void BtkCalendar::next-year	(BtkCalendar *,
 
 <programlisting role="C">
 void BtkEditable::changed	(BtkEditable *,
-                         	 gpointer);
+                         	 bpointer);
 void BtkEditable::insert-text	(BtkEditable *,
                              	 BtkString *,
-                             	 ggint,
-                             	 ggpointer,
-                             	 gpointer);
+                             	 gbint,
+                             	 gbpointer,
+                             	 bpointer);
 void BtkEditable::delete-text	(BtkEditable *,
-                             	 ggint,
-                             	 ggint,
-                             	 gpointer);
+                             	 gbint,
+                             	 gbint,
+                             	 bpointer);
 void BtkEditable::activate	(BtkEditable *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkEditable::set-editable	(BtkEditable *,
-                              	 gboolean,
-                              	 gpointer);
+                              	 bboolean,
+                              	 bpointer);
 void BtkEditable::move-cursor	(BtkEditable *,
-                             	 ggint,
-                             	 ggint,
-                             	 gpointer);
+                             	 gbint,
+                             	 gbint,
+                             	 bpointer);
 void BtkEditable::move-word	(BtkEditable *,
-                           	 ggint,
-                           	 gpointer);
+                           	 gbint,
+                           	 bpointer);
 void BtkEditable::move-page	(BtkEditable *,
-                           	 ggint,
-                           	 ggint,
-                           	 gpointer);
+                           	 gbint,
+                           	 gbint,
+                           	 bpointer);
 void BtkEditable::move-to-row	(BtkEditable *,
-                             	 ggint,
-                             	 gpointer);
+                             	 gbint,
+                             	 bpointer);
 void BtkEditable::move-to-column	(BtkEditable *,
-                                	 ggint,
-                                	 gpointer);
+                                	 gbint,
+                                	 bpointer);
 void BtkEditable::kill-char	(BtkEditable *,
-                           	 ggint,
-                           	 gpointer);
+                           	 gbint,
+                           	 bpointer);
 void BtkEditable::kill-word	(BtkEditable *,
-                           	 ggint,
-                           	 gpointer);
+                           	 gbint,
+                           	 bpointer);
 void BtkEditable::kill-line	(BtkEditable *,
-                           	 ggint,
-                           	 gpointer);
+                           	 gbint,
+                           	 bpointer);
 void BtkEditable::cut-clipboard	(BtkEditable *,
-                               	 gpointer);
+                               	 bpointer);
 void BtkEditable::copy-clipboard	(BtkEditable *,
-                                	 gpointer);
+                                	 bpointer);
 void BtkEditable::paste-clipboard	(BtkEditable *,
-                                 	 gpointer);
+                                 	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13768,9 +13768,9 @@ void BtkEditable::paste-clipboard	(BtkEditable *,
 
 <programlisting role="C">
 void BtkNotebook::switch-page	(BtkNotebook *,
-                             	 ggpointer,
-                             	 gguint,
-                             	 gpointer);
+                             	 gbpointer,
+                             	 gbuint,
+                             	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13781,13 +13781,13 @@ void BtkNotebook::switch-page	(BtkNotebook *,
 
 <programlisting role="C">
 void BtkList::selection-changed	(BtkList *,
-                               	 gpointer);
+                               	 bpointer);
 void BtkList::select-child	(BtkList *,
                           	 BtkWidget *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkList::unselect-child	(BtkList *,
                             	 BtkWidget *,
-                            	 gpointer);
+                            	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13798,17 +13798,17 @@ void BtkList::unselect-child	(BtkList *,
 
 <programlisting role="C">
 void BtkMenuShell::deactivate	(BtkMenuShell *,
-                             	 gpointer);
+                             	 bpointer);
 void BtkMenuShell::selection-done	(BtkMenuShell *,
-                                 	 gpointer);
+                                 	 bpointer);
 void BtkMenuShell::move-current	(BtkMenuShell *,
                                	 BtkMenuDirectionType,
-                               	 gpointer);
+                               	 bpointer);
 void BtkMenuShell::activate-current	(BtkMenuShell *,
-                                   	 gboolean,
-                                   	 gpointer);
+                                   	 bboolean,
+                                   	 bpointer);
 void BtkMenuShell::cancel	(BtkMenuShell *,
-                         	 gpointer);
+                         	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13819,11 +13819,11 @@ void BtkMenuShell::cancel	(BtkMenuShell *,
 
 <programlisting role="C">
 void BtkToolbar::orientation-changed	(BtkToolbar *,
-                                    	 ggint,
-                                    	 gpointer);
+                                    	 gbint,
+                                    	 bpointer);
 void BtkToolbar::style-changed	(BtkToolbar *,
-                              	 ggint,
-                              	 gpointer);
+                              	 gbint,
+                              	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13834,15 +13834,15 @@ void BtkToolbar::style-changed	(BtkToolbar *,
 
 <programlisting role="C">
 void BtkButton::pressed	(BtkButton *,
-                       	 gpointer);
+                       	 bpointer);
 void BtkButton::released	(BtkButton *,
-                        	 gpointer);
+                        	 bpointer);
 void BtkButton::clicked	(BtkButton *,
-                       	 gpointer);
+                       	 bpointer);
 void BtkButton::enter	(BtkButton *,
-                     	 gpointer);
+                     	 bpointer);
 void BtkButton::leave	(BtkButton *,
-                     	 gpointer);
+                     	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13853,11 +13853,11 @@ void BtkButton::leave	(BtkButton *,
 
 <programlisting role="C">
 void BtkItem::select	(BtkItem *,
-                    	 gpointer);
+                    	 bpointer);
 void BtkItem::deselect	(BtkItem *,
-                      	 gpointer);
+                      	 bpointer);
 void BtkItem::toggle	(BtkItem *,
-                    	 gpointer);
+                    	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13868,8 +13868,8 @@ void BtkItem::toggle	(BtkItem *,
 
 <programlisting role="C">
 void BtkWindow::set-focus	(BtkWindow *,
-                         	 ggpointer,
-                         	 gpointer);
+                         	 gbpointer,
+                         	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13881,10 +13881,10 @@ void BtkWindow::set-focus	(BtkWindow *,
 <programlisting role="C">
 void BtkHandleBox::child-attached	(BtkHandleBox *,
                                  	 BtkWidget *,
-                                 	 gpointer);
+                                 	 bpointer);
 void BtkHandleBox::child-detached	(BtkHandleBox *,
                                  	 BtkWidget *,
-                                 	 gpointer);
+                                 	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13895,7 +13895,7 @@ void BtkHandleBox::child-detached	(BtkHandleBox *,
 
 <programlisting role="C">
 void BtkToggleButton::toggled	(BtkToggleButton *,
-                             	 gpointer);
+                             	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13906,9 +13906,9 @@ void BtkToggleButton::toggled	(BtkToggleButton *,
 
 <programlisting role="C">
 void BtkMenuItem::activate	(BtkMenuItem *,
-                          	 gpointer);
+                          	 bpointer);
 void BtkMenuItem::activate-item	(BtkMenuItem *,
-                               	 gpointer);
+                               	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13919,7 +13919,7 @@ void BtkMenuItem::activate-item	(BtkMenuItem *,
 
 <programlisting role="C">
 void BtkCheckMenuItem::toggled	(BtkCheckMenuItem *,
-                              	 gpointer);
+                              	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13930,11 +13930,11 @@ void BtkCheckMenuItem::toggled	(BtkCheckMenuItem *,
 
 <programlisting role="C">
 void BtkInputDialog::enable-device	(BtkInputDialog *,
-                                  	 ggint,
-                                  	 gpointer);
+                                  	 gbint,
+                                  	 bpointer);
 void BtkInputDialog::disable-device	(BtkInputDialog *,
-                                   	 ggint,
-                                   	 gpointer);
+                                   	 gbint,
+                                   	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13945,7 +13945,7 @@ void BtkInputDialog::disable-device	(BtkInputDialog *,
 
 <programlisting role="C">
 void BtkColorSelection::color-changed	(BtkColorSelection *,
-                                     	 gpointer);
+                                     	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13956,13 +13956,13 @@ void BtkColorSelection::color-changed	(BtkColorSelection *,
 
 <programlisting role="C">
 void BtkStatusbar::text-pushed	(BtkStatusbar *,
-                              	 gguint,
+                              	 gbuint,
                               	 BtkString *,
-                              	 gpointer);
+                              	 bpointer);
 void BtkStatusbar::text-popped	(BtkStatusbar *,
-                              	 gguint,
+                              	 gbuint,
                               	 BtkString *,
-                              	 gpointer);
+                              	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13973,7 +13973,7 @@ void BtkStatusbar::text-popped	(BtkStatusbar *,
 
 <programlisting role="C">
 void BtkCurve::curve-type-changed	(BtkCurve *,
-                                 	 gpointer);
+                                 	 bpointer);
 </programlisting>
 
 </sect1>
@@ -13984,9 +13984,9 @@ void BtkCurve::curve-type-changed	(BtkCurve *,
 
 <programlisting role="C">
 void BtkAdjustment::changed	(BtkAdjustment *,
-                           	 gpointer);
+                           	 bpointer);
 void BtkAdjustment::value-changed	(BtkAdjustment *,
-                                 	 gpointer);
+                                 	 bpointer);
 </programlisting>
 
 </sect1>
@@ -14196,7 +14196,7 @@ typedef enum
   BDK_SELECTION_NOTIFY  = 19,
   BDK_PROXIMITY_IN      = 20,
   BDK_PROXIMITY_OUT     = 21,
-  BDK_DRAG_BEGIN        = 22,
+  BDK_DRAB_BEGIN        = 22,
   BDK_DRAG_REQUEST      = 23,
   BDK_DROP_ENTER        = 24,
   BDK_DROP_LEAVE        = 25,
@@ -14221,23 +14221,23 @@ struct _BdkEventAny
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
 };
 
 struct _BdkEventExpose
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkRectangle area;
-  gint count; /* If non-zero, how many more events follow. */
+  bint count; /* If non-zero, how many more events follow. */
 };
 
 struct _BdkEventNoExpose
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   /* XXX: does anyone need the X major_code or minor_code fields? */
 };
 
@@ -14245,7 +14245,7 @@ struct _BdkEventVisibility
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkVisibilityState state;
 };
 
@@ -14253,55 +14253,55 @@ struct _BdkEventMotion
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble pressure;
-  gdouble xtilt;
-  gdouble ytilt;
-  guint state;
-  gint16 is_hint;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble pressure;
+  bdouble xtilt;
+  bdouble ytilt;
+  buint state;
+  bint16 is_hint;
   BdkInputSource source;
-  guint32 deviceid;
-  gdouble x_root, y_root;
+  buint32 deviceid;
+  bdouble x_root, y_root;
 };
 
 struct _BdkEventButton
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble pressure;
-  gdouble xtilt;
-  gdouble ytilt;
-  guint state;
-  guint button;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble pressure;
+  bdouble xtilt;
+  bdouble ytilt;
+  buint state;
+  buint button;
   BdkInputSource source;
-  guint32 deviceid;
-  gdouble x_root, y_root;
+  buint32 deviceid;
+  bdouble x_root, y_root;
 };
 
 struct _BdkEventKey
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  guint state;
-  guint keyval;
-  gint length;
-  gchar *string;
+  bint8 send_event;
+  buint32 time;
+  buint state;
+  buint keyval;
+  bint length;
+  bchar *string;
 };
 
 struct _BdkEventCrossing
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkWindow *subwindow;
   BdkNotifyType detail;
 };
@@ -14310,40 +14310,40 @@ struct _BdkEventFocus
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint16 in;
+  bint8 send_event;
+  bint16 in;
 };
 
 struct _BdkEventConfigure
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint16 x, y;
-  gint16 width;
-  gint16 height;
+  bint8 send_event;
+  bint16 x, y;
+  bint16 width;
+  bint16 height;
 };
 
 struct _BdkEventProperty
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom atom;
-  guint32 time;
-  guint state;
+  buint32 time;
+  buint state;
 };
 
 struct _BdkEventSelection
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom selection;
   BdkAtom target;
   BdkAtom property;
-  guint32 requestor;
-  guint32 time;
+  buint32 requestor;
+  buint32 time;
 };
 
 /* This event type will be used pretty rarely. It only is important
@@ -14353,50 +14353,50 @@ struct _BdkEventProximity
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
+  bint8 send_event;
+  buint32 time;
   BdkInputSource source;
-  guint32 deviceid;
+  buint32 deviceid;
 };
 
 struct _BdkEventDragRequest
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 requestor;
+  bint8 send_event;
+  buint32 requestor;
   union {
     struct {
-      guint protocol_version:4;
-      guint sendreply:1;
-      guint willaccept:1;
-      guint delete_data:1; /* Do *not* delete if link is sent, only
+      buint protocol_version:4;
+      buint sendreply:1;
+      buint willaccept:1;
+      buint delete_data:1; /* Do *not* delete if link is sent, only
                               if data is sent */
-      guint senddata:1;
-      guint reserved:22;
+      buint senddata:1;
+      buint reserved:22;
     } flags;
-    glong allflags;
+    blong allflags;
   } u;
-  guint8 isdrop; /* This bdk event can be generated by a couple of
+  buint8 isdrop; /* This bdk event can be generated by a couple of
                     X events - this lets the app know whether the
                     drop really occurred or we just set the data */
 
   BdkPoint drop_coords;
-  gchar *data_type;
-  guint32 timestamp;
+  bchar *data_type;
+  buint32 timestamp;
 };
 
 struct _BdkEventDragBegin
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   union {
     struct {
-      guint protocol_version:4;
-      guint reserved:28;
+      buint protocol_version:4;
+      buint reserved:28;
     } flags;
-    glong allflags;
+    blong allflags;
   } u;
 };
 
@@ -14404,16 +14404,16 @@ struct _BdkEventDropEnter
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 requestor;
+  bint8 send_event;
+  buint32 requestor;
   union {
     struct {
-      guint protocol_version:4;
-      guint sendreply:1;
-      guint extended_typelist:1;
-      guint reserved:26;
+      buint protocol_version:4;
+      buint sendreply:1;
+      buint extended_typelist:1;
+      buint reserved:26;
     } flags;
-    glong allflags;
+    blong allflags;
   } u;
 };
 
@@ -14421,14 +14421,14 @@ struct _BdkEventDropLeave
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 requestor;
+  bint8 send_event;
+  buint32 requestor;
   union {
     struct {
-      guint protocol_version:4;
-      guint reserved:28;
+      buint protocol_version:4;
+      buint reserved:28;
     } flags;
-    glong allflags;
+    blong allflags;
   } u;
 };
 
@@ -14436,20 +14436,20 @@ struct _BdkEventDropDataAvailable
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 requestor;
+  bint8 send_event;
+  buint32 requestor;
   union {
     struct {
-      guint protocol_version:4;
-      guint isdrop:1;
-      guint reserved:25;
+      buint protocol_version:4;
+      buint isdrop:1;
+      buint reserved:25;
     } flags;
-    glong allflags;
+    blong allflags;
   } u;
-  gchar *data_type; /* MIME type */
-  gulong data_numbytes;
-  gpointer data;
-  guint32 timestamp;
+  bchar *data_type; /* MIME type */
+  bulong data_numbytes;
+  bpointer data;
+  buint32 timestamp;
   BdkPoint coords;
 };
 
@@ -14457,9 +14457,9 @@ struct _BdkEventClient
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom message_type;
-  gushort data_format;
+  bushort data_format;
   union {
     char b[20];
     short s[10];
@@ -14471,7 +14471,7 @@ struct _BdkEventOther
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkXEvent *xevent;
 };
 </programlisting>
@@ -14521,13 +14521,13 @@ which are not included in complete form elsewhere.</para>
 #include &lt;btk/btktable.h&gt;
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define TICTACTOE_TYPE            (tictactoe_get_type ())
-#define TICTACTOE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
-#define TICTACTOE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
-#define IS_TICTACTOE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
-#define IS_TICTACTOE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
+#define TICTACTOE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), TICTACTOE_TYPE, Tictactoe))
+#define TICTACTOE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), TICTACTOE_TYPE, TictactoeClass))
+#define IS_TICTACTOE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), TICTACTOE_TYPE))
+#define IS_TICTACTOE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), TICTACTOE_TYPE))
 
 
 typedef struct _Tictactoe       Tictactoe;
@@ -14551,7 +14551,7 @@ GType          tictactoe_get_type        (void);
 BtkWidget*     tictactoe_new             (void);
 void	       tictactoe_clear           (Tictactoe *ttt);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __TICTACTOE_H__ */
 
@@ -14599,7 +14599,7 @@ static void tictactoe_class_init          (TictactoeClass *klass);
 static void tictactoe_init                (Tictactoe      *ttt);
 static void tictactoe_toggle              (BtkWidget *widget, Tictactoe *ttt);
 
-static guint tictactoe_signals[LAST_SIGNAL] = { 0 };
+static buint tictactoe_signals[LAST_SIGNAL] = { 0 };
 
 GType
 tictactoe_get_type (void)
@@ -14632,13 +14632,13 @@ tictactoe_class_init (TictactoeClass *klass)
 {
   
   tictactoe_signals[TICTACTOE_SIGNAL] = g_signal_new ("tictactoe",
-					 G_TYPE_FROM_CLASS (klass),
+					 B_TYPE_FROM_CLASS (klass),
 	                                 G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
 	                                 G_STRUCT_OFFSET (TictactoeClass, tictactoe),
                                          NULL, 
                                          NULL,                
 					 g_cclosure_marshal_VOID__VOID,
-                                         G_TYPE_NONE, 0);
+                                         B_TYPE_NONE, 0);
 
 
 }
@@ -14646,7 +14646,7 @@ tictactoe_class_init (TictactoeClass *klass)
 static void
 tictactoe_init (Tictactoe *ttt)
 {
-  gint i,j;
+  bint i,j;
   
   btk_table_resize (BTK_TABLE (ttt), 3, 3);
   btk_table_set_homogeneous (BTK_TABLE (ttt), TRUE);
@@ -14657,7 +14657,7 @@ tictactoe_init (Tictactoe *ttt)
 	btk_table_attach_defaults (BTK_TABLE (ttt), ttt-&gt;buttons[i][j], 
 				   i, i+1, j, j+1);
 	g_signal_connect (ttt-&gt;buttons[i][j], "toggled",
-			  G_CALLBACK (tictactoe_toggle), (gpointer) ttt);
+			  G_CALLBACK (tictactoe_toggle), (bpointer) ttt);
 	btk_widget_set_size_request (ttt-&gt;buttons[i][j], 20, 20);
 	btk_widget_show (ttt-&gt;buttons[i][j]);
       }
@@ -14677,12 +14677,12 @@ tictactoe_clear (Tictactoe *ttt)
   for (i = 0; i&lt;3; i++)
     for (j = 0; j&lt;3; j++)
       {
-	g_signal_handlers_block_matched (G_OBJECT (ttt-&gt;buttons[i][j]), 
+	g_signal_handlers_block_matched (B_OBJECT (ttt-&gt;buttons[i][j]), 
                                          G_SIGNAL_MATCH_DATA,
                                          0, 0, NULL, NULL, ttt);
 	btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (ttt-&gt;buttons[i][j]),
 				      FALSE);
-	g_signal_handlers_unblock_matched (G_OBJECT (ttt->buttons[i][j]),
+	g_signal_handlers_unblock_matched (B_OBJECT (ttt->buttons[i][j]),
                                            G_SIGNAL_MATCH_DATA,
                                            0, 0, NULL, NULL, ttt);
       }
@@ -14741,7 +14741,7 @@ tictactoe_toggle (BtkWidget *widget, Tictactoe *ttt)
 #include "tictactoe.h"
 
 void win( BtkWidget *widget,
-          gpointer   data )
+          bpointer   data )
 {
   g_print ("Yay!\n");
   tictactoe_clear (TICTACTOE (widget));
@@ -14842,26 +14842,26 @@ struct _BtkDial
   BtkWidget widget;
 
   /* update policy (BTK_UPDATE_[CONTINUOUS/DELAYED/DISCONTINUOUS]) */
-  guint policy : 2;
+  buint policy : 2;
 
   /* Button currently pressed or 0 if none */
-  guint8 button;
+  buint8 button;
 
   /* Dimensions of dial components */
-  gint radius;
-  gint pointer_width;
+  bint radius;
+  bint pointer_width;
 
   /* ID of update timer, or 0 if none */
-  guint32 timer;
+  buint32 timer;
 
   /* Current angle */
-  gfloat angle;
-  gfloat last_angle;
+  bfloat angle;
+  bfloat last_angle;
 
   /* Old values from adjustment stored so we know when something changes */
-  gfloat old_value;
-  gfloat old_lower;
-  gfloat old_upper;
+  bfloat old_value;
+  bfloat old_lower;
+  bfloat old_upper;
 
   /* The adjustment object that stores the data for this dial */
   BtkAdjustment *adjustment;
@@ -14937,22 +14937,22 @@ static void btk_dial_size_request             (BtkWidget        *widget,
                                                BtkRequisition   *requisition);
 static void btk_dial_size_allocate            (BtkWidget        *widget,
                                                BtkAllocation    *allocation);
-static gboolean btk_dial_expose               (BtkWidget        *widget,
+static bboolean btk_dial_expose               (BtkWidget        *widget,
                                                BdkEventExpose   *event);
-static gboolean btk_dial_button_press         (BtkWidget        *widget,
+static bboolean btk_dial_button_press         (BtkWidget        *widget,
                                                BdkEventButton   *event);
-static gboolean btk_dial_button_release       (BtkWidget        *widget,
+static bboolean btk_dial_button_release       (BtkWidget        *widget,
                                                BdkEventButton   *event);
-static gboolean btk_dial_motion_notify        (BtkWidget        *widget,
+static bboolean btk_dial_motion_notify        (BtkWidget        *widget,
                                                BdkEventMotion   *event);
-static gboolean btk_dial_timer                (BtkDial          *dial);
+static bboolean btk_dial_timer                (BtkDial          *dial);
 
-static void btk_dial_update_mouse             (BtkDial *dial, gint x, gint y);
+static void btk_dial_update_mouse             (BtkDial *dial, bint x, bint y);
 static void btk_dial_update                   (BtkDial *dial);
 static void btk_dial_adjustment_changed       (BtkAdjustment    *adjustment,
-						gpointer          data);
+						bpointer          data);
 static void btk_dial_adjustment_value_changed (BtkAdjustment    *adjustment,
-						gpointer          data);
+						bpointer          data);
 
 /* Local data */
 
@@ -15084,7 +15084,7 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   if (dial-&gt;adjustment)
     {
-      g_signal_handlers_disconnect_by_func (BTK_OBJECT (dial-&gt;adjustment), NULL, (gpointer) dial);
+      g_signal_handlers_disconnect_by_func (BTK_OBJECT (dial-&gt;adjustment), NULL, (bpointer) dial);
       g_object_unref (BTK_OBJECT (dial-&gt;adjustment));
     }
 
@@ -15093,10 +15093,10 @@ btk_dial_set_adjustment (BtkDial      *dial,
 
   g_signal_connect (BTK_OBJECT (adjustment), "changed",
 		    BTK_SIGNAL_FUNC (btk_dial_adjustment_changed),
-		    (gpointer) dial);
+		    (bpointer) dial);
   g_signal_connect (BTK_OBJECT (adjustment), "value_changed",
 		    BTK_SIGNAL_FUNC (btk_dial_adjustment_value_changed),
-		    (gpointer) dial);
+		    (bpointer) dial);
 
   dial-&gt;old_value = adjustment-&gt;value;
   dial-&gt;old_lower = adjustment-&gt;lower;
@@ -15110,7 +15110,7 @@ btk_dial_realize (BtkWidget *widget)
 {
   BtkDial *dial;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (BTK_IS_DIAL (widget));
@@ -15174,19 +15174,19 @@ btk_dial_size_allocate (BtkWidget     *widget,
   dial-&gt;pointer_width = dial-&gt;radius / 5;
 }
 
-static gboolean
+static bboolean
 btk_dial_expose( BtkWidget      *widget,
 		 BdkEventExpose *event )
 {
   BtkDial *dial;
   BdkPoint points[6];
-  gdouble s,c;
-  gdouble theta, last, increment;
+  bdouble s,c;
+  bdouble theta, last, increment;
   BtkStyle      *blankstyle;
-  gint xc, yc;
-  gint upper, lower;
-  gint tick_length;
-  gint i, inc;
+  bint xc, yc;
+  bint upper, lower;
+  bint tick_length;
+  bint i, inc;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -15263,7 +15263,7 @@ btk_dial_expose( BtkWidget      *widget,
 
   for (i = 0; i &lt;= inc; i++)
     {
-      theta = ((gfloat)i*M_PI / (18*inc/24.) - M_PI/6.);
+      theta = ((bfloat)i*M_PI / (18*inc/24.) - M_PI/6.);
 
       if ((theta - last) &lt; (increment))
 	continue;     
@@ -15313,12 +15313,12 @@ btk_dial_expose( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_button_press( BtkWidget      *widget,
 		       BdkEventButton *event )
 {
   BtkDial *dial;
-  gint dx, dy;
+  bint dx, dy;
   double s, c;
   double d_parallel;
   double d_perpendicular;
@@ -15357,7 +15357,7 @@ btk_dial_button_press( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_button_release( BtkWidget      *widget,
                          BdkEventButton *event )
 {
@@ -15386,13 +15386,13 @@ btk_dial_button_release( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_motion_notify( BtkWidget      *widget,
                         BdkEventMotion *event )
 {
   BtkDial *dial;
   BdkModifierType mods;
-  gint x, y, mask;
+  bint x, y, mask;
 
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_DIAL (widget), FALSE);
@@ -15431,7 +15431,7 @@ btk_dial_motion_notify( BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_dial_timer( BtkDial *dial )
 {
   g_return_val_if_fail (dial != NULL, FALSE);
@@ -15444,10 +15444,10 @@ btk_dial_timer( BtkDial *dial )
 }
 
 static void
-btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
+btk_dial_update_mouse( BtkDial *dial, bint x, bint y )
 {
-  gint xc, yc;
-  gfloat old_value;
+  bint xc, yc;
+  bfloat old_value;
 
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -15487,7 +15487,7 @@ btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
 
 	      dial-&gt;timer = g_timeout_add (SCROLL_DELAY_LENGTH,
 					   (BtkFunction) btk_dial_timer,
-					   (gpointer) dial);
+					   (bpointer) dial);
 	    }
 	}
     }
@@ -15496,7 +15496,7 @@ btk_dial_update_mouse( BtkDial *dial, gint x, gint y )
 static void
 btk_dial_update (BtkDial *dial)
 {
-  gfloat new_value;
+  bfloat new_value;
   
   g_return_if_fail (dial != NULL);
   g_return_if_fail (BTK_IS_DIAL (dial));
@@ -15523,7 +15523,7 @@ btk_dial_update (BtkDial *dial)
 
 static void
 btk_dial_adjustment_changed (BtkAdjustment *adjustment,
-			      gpointer       data)
+			      bpointer       data)
 {
   BtkDial *dial;
 
@@ -15546,7 +15546,7 @@ btk_dial_adjustment_changed (BtkAdjustment *adjustment,
 
 static void
 btk_dial_adjustment_value_changed (BtkAdjustment *adjustment,
-				    gpointer       data)
+				    bpointer       data)
 {
   BtkDial *dial;
 
@@ -15632,7 +15632,7 @@ int main( int   argc,
   btk_widget_show (label);
 
   g_signal_connect (adjustment, "value_changed",
-		    G_CALLBACK (value_changed), (gpointer) label);
+		    G_CALLBACK (value_changed), (bpointer) label);
   
   btk_widget_show (window);
   
@@ -15683,7 +15683,7 @@ int main( int   argc,
 static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean configure_event( BtkWidget         *widget,
+static bboolean configure_event( BtkWidget         *widget,
                                  BdkEventConfigure *event )
 {
   if (pixmap)
@@ -15704,7 +15704,7 @@ static gboolean configure_event( BtkWidget         *widget,
 }
 
 /* Redraw the screen from the backing pixmap */
-static gboolean expose_event( BtkWidget      *widget,
+static bboolean expose_event( BtkWidget      *widget,
                               BdkEventExpose *event )
 {
   bdk_draw_drawable (widget-&gt;window,
@@ -15719,8 +15719,8 @@ static gboolean expose_event( BtkWidget      *widget,
 
 /* Draw a rectangle on the screen */
 static void draw_brush( BtkWidget *widget,
-                        gdouble    x,
-                        gdouble    y)
+                        bdouble    x,
+                        bdouble    y)
 {
   BdkRectangle update_rect;
 
@@ -15738,7 +15738,7 @@ static void draw_brush( BtkWidget *widget,
 		              update_rect.width, update_rect.height);
 }
 
-static gboolean button_press_event( BtkWidget      *widget,
+static bboolean button_press_event( BtkWidget      *widget,
                                     BdkEventButton *event )
 {
   if (event-&gt;button == 1 &amp;&amp; pixmap != NULL)
@@ -15747,7 +15747,7 @@ static gboolean button_press_event( BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean motion_notify_event( BtkWidget *widget,
+static bboolean motion_notify_event( BtkWidget *widget,
                                      BdkEventMotion *event )
 {
   int x, y;
@@ -15874,7 +15874,7 @@ int main( int   argc,
 static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean
+static bboolean
 configure_event (BtkWidget *widget, BdkEventConfigure *event)
 {
   if (pixmap)
@@ -15895,7 +15895,7 @@ configure_event (BtkWidget *widget, BdkEventConfigure *event)
 }
 
 /* Redraw the screen from the backing pixmap */
-static gboolean
+static bboolean
 expose_event (BtkWidget *widget, BdkEventExpose *event)
 {
   bdk_draw_drawable (widget-&gt;window,
@@ -15912,7 +15912,7 @@ expose_event (BtkWidget *widget, BdkEventExpose *event)
    and color on the type of device */
 static void
 draw_brush (BtkWidget *widget, BdkInputSource source,
-            gdouble x, gdouble y, gdouble pressure)
+            bdouble x, bdouble y, bdouble pressure)
 {
   BdkGC *gc;
   BdkRectangle update_rect;
@@ -15950,13 +15950,13 @@ print_button_press (BdkDevice *device)
   g_print ("Button press on device '%s'\n", device-&gt;name);
 }
 
-static gboolean
+static bboolean
 button_press_event (BtkWidget *widget, BdkEventButton *event)
 {
   print_button_press (event-&gt;device);
   
   if (event-&gt;button == 1 &amp;&amp; pixmap != NULL) {
-    gdouble pressure;
+    bdouble pressure;
     bdk_event_get_axis ((BdkEvent *)event, BDK_AXIS_PRESSURE, &amp;pressure);
     draw_brush (widget, event-&gt;device-&gt;source, event-&gt;x, event-&gt;y, pressure);
   }
@@ -15964,11 +15964,11 @@ button_press_event (BtkWidget *widget, BdkEventButton *event)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 {
-  gdouble x, y;
-  gdouble pressure;
+  bdouble x, y;
+  bdouble pressure;
   BdkModifierType state;
 
   if (event-&gt;is_hint) 
@@ -15993,7 +15993,7 @@ motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 }
 
 void
-input_dialog_destroy (BtkWidget *w, gpointer data)
+input_dialog_destroy (BtkWidget *w, bpointer data)
 {
   *((BtkWidget **)data) = NULL;
 }
@@ -16008,7 +16008,7 @@ create_input_dialog ()
       inputd = btk_input_dialog_new();
 
       g_signal_connect (inputd, "destroy",
-                        G_CALLBACK (input_dialog_destroy), (gpointer) &amp;inputd);
+                        G_CALLBACK (input_dialog_destroy), (bpointer) &amp;inputd);
       g_signal_connect_swapped (BTK_INPUT_DIALOG (inputd)-&gt;close_button,
                                 "clicked",
                                 G_CALLBACK (btk_widget_hide),

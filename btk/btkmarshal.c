@@ -4,29 +4,29 @@
 #include <bunnylib-object.h>
 
 #ifdef G_ENABLE_DEBUG
-#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
-#define g_marshal_value_peek_char(v)     g_value_get_schar (v)
-#define g_marshal_value_peek_uchar(v)    g_value_get_uchar (v)
-#define g_marshal_value_peek_int(v)      g_value_get_int (v)
-#define g_marshal_value_peek_uint(v)     g_value_get_uint (v)
-#define g_marshal_value_peek_long(v)     g_value_get_long (v)
-#define g_marshal_value_peek_ulong(v)    g_value_get_ulong (v)
-#define g_marshal_value_peek_int64(v)    g_value_get_int64 (v)
-#define g_marshal_value_peek_uint64(v)   g_value_get_uint64 (v)
-#define g_marshal_value_peek_enum(v)     g_value_get_enum (v)
-#define g_marshal_value_peek_flags(v)    g_value_get_flags (v)
-#define g_marshal_value_peek_float(v)    g_value_get_float (v)
-#define g_marshal_value_peek_double(v)   g_value_get_double (v)
-#define g_marshal_value_peek_string(v)   (char*) g_value_get_string (v)
-#define g_marshal_value_peek_param(v)    g_value_get_param (v)
-#define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)
-#define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)
-#define g_marshal_value_peek_object(v)   g_value_get_object (v)
-#define g_marshal_value_peek_variant(v)  g_value_get_variant (v)
+#define g_marshal_value_peek_boolean(v)  b_value_get_boolean (v)
+#define g_marshal_value_peek_char(v)     b_value_get_schar (v)
+#define g_marshal_value_peek_uchar(v)    b_value_get_uchar (v)
+#define g_marshal_value_peek_int(v)      b_value_get_int (v)
+#define g_marshal_value_peek_uint(v)     b_value_get_uint (v)
+#define g_marshal_value_peek_long(v)     b_value_get_long (v)
+#define g_marshal_value_peek_ulong(v)    b_value_get_ulong (v)
+#define g_marshal_value_peek_int64(v)    b_value_get_int64 (v)
+#define g_marshal_value_peek_uint64(v)   b_value_get_uint64 (v)
+#define g_marshal_value_peek_enum(v)     b_value_get_enum (v)
+#define g_marshal_value_peek_flags(v)    b_value_get_flags (v)
+#define g_marshal_value_peek_float(v)    b_value_get_float (v)
+#define g_marshal_value_peek_double(v)   b_value_get_double (v)
+#define g_marshal_value_peek_string(v)   (char*) b_value_get_string (v)
+#define g_marshal_value_peek_param(v)    b_value_get_param (v)
+#define g_marshal_value_peek_boxed(v)    b_value_get_boxed (v)
+#define g_marshal_value_peek_pointer(v)  b_value_get_pointer (v)
+#define g_marshal_value_peek_object(v)   b_value_get_object (v)
+#define g_marshal_value_peek_variant(v)  b_value_get_variant (v)
 #else /* !G_ENABLE_DEBUG */
-/* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.
- *          Do not access GValues directly in your code. Instead, use the
- *          g_value_get_*() functions
+/* WARNING: This code accesses BValues directly, which is UNSUPPORTED API.
+ *          Do not access BValues directly in your code. Instead, use the
+ *          b_value_get_*() functions
  */
 #define g_marshal_value_peek_boolean(v)  (v)->data[0].v_int
 #define g_marshal_value_peek_char(v)     (v)->data[0].v_int
@@ -52,18 +52,18 @@
 /* BOOL:NONE (./btkmarshal.list:1) */
 void
 btk_marshal_BOOLEAN__VOID (GClosure     *closure,
-                           GValue       *return_value,
-                           guint         n_param_values,
-                           const GValue *param_values,
-                           gpointer      invocation_hint G_GNUC_UNUSED,
-                           gpointer      marshal_data)
+                           BValue       *return_value,
+                           buint         n_param_values,
+                           const BValue *param_values,
+                           bpointer      invocation_hint B_GNUC_UNUSED,
+                           bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__VOID) (gpointer data1,
-                                                  gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__VOID) (bpointer data1,
+                                                  bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__VOID callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 1);
@@ -71,11 +71,11 @@ btk_marshal_BOOLEAN__VOID (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__VOID) (marshal_data ? marshal_data : cc->callback);
@@ -83,25 +83,25 @@ btk_marshal_BOOLEAN__VOID (GClosure     *closure,
   v_return = callback (data1,
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER (./btkmarshal.list:2) */
 void
 btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
-                              GValue       *return_value,
-                              guint         n_param_values,
-                              const GValue *param_values,
-                              gpointer      invocation_hint G_GNUC_UNUSED,
-                              gpointer      marshal_data)
+                              BValue       *return_value,
+                              buint         n_param_values,
+                              const BValue *param_values,
+                              bpointer      invocation_hint B_GNUC_UNUSED,
+                              bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER) (gpointer data1,
-                                                     gpointer arg1,
-                                                     gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__POINTER) (bpointer data1,
+                                                     bpointer arg1,
+                                                     bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__POINTER callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 2);
@@ -109,11 +109,11 @@ btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -122,28 +122,28 @@ btk_marshal_BOOLEAN__POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 1),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,POINTER,INT,INT (./btkmarshal.list:3) */
 void
 btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
-                                              GValue       *return_value,
-                                              guint         n_param_values,
-                                              const GValue *param_values,
-                                              gpointer      invocation_hint G_GNUC_UNUSED,
-                                              gpointer      marshal_data)
+                                              BValue       *return_value,
+                                              buint         n_param_values,
+                                              const BValue *param_values,
+                                              bpointer      invocation_hint B_GNUC_UNUSED,
+                                              bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER_POINTER_INT_INT) (gpointer data1,
-                                                                     gpointer arg1,
-                                                                     gpointer arg2,
-                                                                     gint arg3,
-                                                                     gint arg4,
-                                                                     gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__POINTER_POINTER_INT_INT) (bpointer data1,
+                                                                     bpointer arg1,
+                                                                     bpointer arg2,
+                                                                     bint arg3,
+                                                                     bint arg4,
+                                                                     bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__POINTER_POINTER_INT_INT callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 5);
@@ -151,11 +151,11 @@ btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_POINTER_INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -167,27 +167,27 @@ btk_marshal_BOOLEAN__POINTER_POINTER_INT_INT (GClosure     *closure,
                        g_marshal_value_peek_int (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,INT,INT (./btkmarshal.list:4) */
 void
 btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
-                                      GValue       *return_value,
-                                      guint         n_param_values,
-                                      const GValue *param_values,
-                                      gpointer      invocation_hint G_GNUC_UNUSED,
-                                      gpointer      marshal_data)
+                                      BValue       *return_value,
+                                      buint         n_param_values,
+                                      const BValue *param_values,
+                                      bpointer      invocation_hint B_GNUC_UNUSED,
+                                      bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER_INT_INT) (gpointer data1,
-                                                             gpointer arg1,
-                                                             gint arg2,
-                                                             gint arg3,
-                                                             gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__POINTER_INT_INT) (bpointer data1,
+                                                             bpointer arg1,
+                                                             bint arg2,
+                                                             bint arg3,
+                                                             bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__POINTER_INT_INT callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 4);
@@ -195,11 +195,11 @@ btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -210,28 +210,28 @@ btk_marshal_BOOLEAN__POINTER_INT_INT (GClosure     *closure,
                        g_marshal_value_peek_int (param_values + 3),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,INT,INT,UINT (./btkmarshal.list:5) */
 void
 btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
-                                           GValue       *return_value,
-                                           guint         n_param_values,
-                                           const GValue *param_values,
-                                           gpointer      invocation_hint G_GNUC_UNUSED,
-                                           gpointer      marshal_data)
+                                           BValue       *return_value,
+                                           buint         n_param_values,
+                                           const BValue *param_values,
+                                           bpointer      invocation_hint B_GNUC_UNUSED,
+                                           bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER_INT_INT_UINT) (gpointer data1,
-                                                                  gpointer arg1,
-                                                                  gint arg2,
-                                                                  gint arg3,
-                                                                  guint arg4,
-                                                                  gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__POINTER_INT_INT_UINT) (bpointer data1,
+                                                                  bpointer arg1,
+                                                                  bint arg2,
+                                                                  bint arg3,
+                                                                  buint arg4,
+                                                                  bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__POINTER_INT_INT_UINT callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 5);
@@ -239,11 +239,11 @@ btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_INT_INT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -255,28 +255,28 @@ btk_marshal_BOOLEAN__POINTER_INT_INT_UINT (GClosure     *closure,
                        g_marshal_value_peek_uint (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* BOOL:POINTER,STRING,STRING,POINTER (./btkmarshal.list:6) */
 void
 btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
-                                                    GValue       *return_value,
-                                                    guint         n_param_values,
-                                                    const GValue *param_values,
-                                                    gpointer      invocation_hint G_GNUC_UNUSED,
-                                                    gpointer      marshal_data)
+                                                    BValue       *return_value,
+                                                    buint         n_param_values,
+                                                    const BValue *param_values,
+                                                    bpointer      invocation_hint B_GNUC_UNUSED,
+                                                    bpointer      marshal_data)
 {
-  typedef gboolean (*GMarshalFunc_BOOLEAN__POINTER_STRING_STRING_POINTER) (gpointer data1,
-                                                                           gpointer arg1,
-                                                                           gpointer arg2,
-                                                                           gpointer arg3,
-                                                                           gpointer arg4,
-                                                                           gpointer data2);
+  typedef bboolean (*GMarshalFunc_BOOLEAN__POINTER_STRING_STRING_POINTER) (bpointer data1,
+                                                                           bpointer arg1,
+                                                                           bpointer arg2,
+                                                                           bpointer arg3,
+                                                                           bpointer arg4,
+                                                                           bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_BOOLEAN__POINTER_STRING_STRING_POINTER callback;
-  gboolean v_return;
+  bboolean v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 5);
@@ -284,11 +284,11 @@ btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_BOOLEAN__POINTER_STRING_STRING_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -300,25 +300,25 @@ btk_marshal_BOOLEAN__POINTER_STRING_STRING_POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 4),
                        data2);
 
-  g_value_set_boolean (return_value, v_return);
+  b_value_set_boolean (return_value, v_return);
 }
 
 /* ENUM:ENUM (./btkmarshal.list:7) */
 void
 btk_marshal_ENUM__ENUM (GClosure     *closure,
-                        GValue       *return_value,
-                        guint         n_param_values,
-                        const GValue *param_values,
-                        gpointer      invocation_hint G_GNUC_UNUSED,
-                        gpointer      marshal_data)
+                        BValue       *return_value,
+                        buint         n_param_values,
+                        const BValue *param_values,
+                        bpointer      invocation_hint B_GNUC_UNUSED,
+                        bpointer      marshal_data)
 {
-  typedef gint (*GMarshalFunc_ENUM__ENUM) (gpointer data1,
-                                           gint arg1,
-                                           gpointer data2);
+  typedef bint (*GMarshalFunc_ENUM__ENUM) (bpointer data1,
+                                           bint arg1,
+                                           bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_ENUM__ENUM callback;
-  gint v_return;
+  bint v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 2);
@@ -326,11 +326,11 @@ btk_marshal_ENUM__ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_ENUM__ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -339,25 +339,25 @@ btk_marshal_ENUM__ENUM (GClosure     *closure,
                        g_marshal_value_peek_enum (param_values + 1),
                        data2);
 
-  g_value_set_enum (return_value, v_return);
+  b_value_set_enum (return_value, v_return);
 }
 
 /* INT:POINTER (./btkmarshal.list:8) */
 void
 btk_marshal_INT__POINTER (GClosure     *closure,
-                          GValue       *return_value,
-                          guint         n_param_values,
-                          const GValue *param_values,
-                          gpointer      invocation_hint G_GNUC_UNUSED,
-                          gpointer      marshal_data)
+                          BValue       *return_value,
+                          buint         n_param_values,
+                          const BValue *param_values,
+                          bpointer      invocation_hint B_GNUC_UNUSED,
+                          bpointer      marshal_data)
 {
-  typedef gint (*GMarshalFunc_INT__POINTER) (gpointer data1,
-                                             gpointer arg1,
-                                             gpointer data2);
+  typedef bint (*GMarshalFunc_INT__POINTER) (bpointer data1,
+                                             bpointer arg1,
+                                             bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_INT__POINTER callback;
-  gint v_return;
+  bint v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 2);
@@ -365,11 +365,11 @@ btk_marshal_INT__POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_INT__POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -378,27 +378,27 @@ btk_marshal_INT__POINTER (GClosure     *closure,
                        g_marshal_value_peek_pointer (param_values + 1),
                        data2);
 
-  g_value_set_int (return_value, v_return);
+  b_value_set_int (return_value, v_return);
 }
 
 /* INT:POINTER,CHAR,CHAR (./btkmarshal.list:9) */
 void
 btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
-                                    GValue       *return_value,
-                                    guint         n_param_values,
-                                    const GValue *param_values,
-                                    gpointer      invocation_hint G_GNUC_UNUSED,
-                                    gpointer      marshal_data)
+                                    BValue       *return_value,
+                                    buint         n_param_values,
+                                    const BValue *param_values,
+                                    bpointer      invocation_hint B_GNUC_UNUSED,
+                                    bpointer      marshal_data)
 {
-  typedef gint (*GMarshalFunc_INT__POINTER_CHAR_CHAR) (gpointer data1,
-                                                       gpointer arg1,
-                                                       gchar arg2,
-                                                       gchar arg3,
-                                                       gpointer data2);
+  typedef bint (*GMarshalFunc_INT__POINTER_CHAR_CHAR) (bpointer data1,
+                                                       bpointer arg1,
+                                                       bchar arg2,
+                                                       bchar arg3,
+                                                       bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_INT__POINTER_CHAR_CHAR callback;
-  gint v_return;
+  bint v_return;
 
   g_return_if_fail (return_value != NULL);
   g_return_if_fail (n_param_values == 4);
@@ -406,11 +406,11 @@ btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_INT__POINTER_CHAR_CHAR) (marshal_data ? marshal_data : cc->callback);
@@ -421,24 +421,24 @@ btk_marshal_INT__POINTER_CHAR_CHAR (GClosure     *closure,
                        g_marshal_value_peek_char (param_values + 3),
                        data2);
 
-  g_value_set_int (return_value, v_return);
+  b_value_set_int (return_value, v_return);
 }
 
 /* NONE:ENUM,FLOAT (./btkmarshal.list:13) */
 void
 btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
-                              GValue       *return_value G_GNUC_UNUSED,
-                              guint         n_param_values,
-                              const GValue *param_values,
-                              gpointer      invocation_hint G_GNUC_UNUSED,
-                              gpointer      marshal_data)
+                              BValue       *return_value B_GNUC_UNUSED,
+                              buint         n_param_values,
+                              const BValue *param_values,
+                              bpointer      invocation_hint B_GNUC_UNUSED,
+                              bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__ENUM_FLOAT) (gpointer data1,
-                                                 gint arg1,
-                                                 gfloat arg2,
-                                                 gpointer data2);
+  typedef void (*GMarshalFunc_VOID__ENUM_FLOAT) (bpointer data1,
+                                                 bint arg1,
+                                                 bfloat arg2,
+                                                 bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__ENUM_FLOAT callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -446,11 +446,11 @@ btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ENUM_FLOAT) (marshal_data ? marshal_data : cc->callback);
@@ -464,19 +464,19 @@ btk_marshal_VOID__ENUM_FLOAT (GClosure     *closure,
 /* NONE:ENUM,FLOAT,BOOL (./btkmarshal.list:14) */
 void
 btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
-                                      GValue       *return_value G_GNUC_UNUSED,
-                                      guint         n_param_values,
-                                      const GValue *param_values,
-                                      gpointer      invocation_hint G_GNUC_UNUSED,
-                                      gpointer      marshal_data)
+                                      BValue       *return_value B_GNUC_UNUSED,
+                                      buint         n_param_values,
+                                      const BValue *param_values,
+                                      bpointer      invocation_hint B_GNUC_UNUSED,
+                                      bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__ENUM_FLOAT_BOOLEAN) (gpointer data1,
-                                                         gint arg1,
-                                                         gfloat arg2,
-                                                         gboolean arg3,
-                                                         gpointer data2);
+  typedef void (*GMarshalFunc_VOID__ENUM_FLOAT_BOOLEAN) (bpointer data1,
+                                                         bint arg1,
+                                                         bfloat arg2,
+                                                         bboolean arg3,
+                                                         bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__ENUM_FLOAT_BOOLEAN callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -484,11 +484,11 @@ btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__ENUM_FLOAT_BOOLEAN) (marshal_data ? marshal_data : cc->callback);
@@ -503,18 +503,18 @@ btk_marshal_VOID__ENUM_FLOAT_BOOLEAN (GClosure     *closure,
 /* NONE:INT,INT (./btkmarshal.list:16) */
 void
 btk_marshal_VOID__INT_INT (GClosure     *closure,
-                           GValue       *return_value G_GNUC_UNUSED,
-                           guint         n_param_values,
-                           const GValue *param_values,
-                           gpointer      invocation_hint G_GNUC_UNUSED,
-                           gpointer      marshal_data)
+                           BValue       *return_value B_GNUC_UNUSED,
+                           buint         n_param_values,
+                           const BValue *param_values,
+                           bpointer      invocation_hint B_GNUC_UNUSED,
+                           bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__INT_INT) (gpointer data1,
-                                              gint arg1,
-                                              gint arg2,
-                                              gpointer data2);
+  typedef void (*GMarshalFunc_VOID__INT_INT) (bpointer data1,
+                                              bint arg1,
+                                              bint arg2,
+                                              bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__INT_INT callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -522,11 +522,11 @@ btk_marshal_VOID__INT_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__INT_INT) (marshal_data ? marshal_data : cc->callback);
@@ -540,19 +540,19 @@ btk_marshal_VOID__INT_INT (GClosure     *closure,
 /* NONE:INT,INT,POINTER (./btkmarshal.list:17) */
 void
 btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
-                                   GValue       *return_value G_GNUC_UNUSED,
-                                   guint         n_param_values,
-                                   const GValue *param_values,
-                                   gpointer      invocation_hint G_GNUC_UNUSED,
-                                   gpointer      marshal_data)
+                                   BValue       *return_value B_GNUC_UNUSED,
+                                   buint         n_param_values,
+                                   const BValue *param_values,
+                                   bpointer      invocation_hint B_GNUC_UNUSED,
+                                   bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__INT_INT_POINTER) (gpointer data1,
-                                                      gint arg1,
-                                                      gint arg2,
-                                                      gpointer arg3,
-                                                      gpointer data2);
+  typedef void (*GMarshalFunc_VOID__INT_INT_POINTER) (bpointer data1,
+                                                      bint arg1,
+                                                      bint arg2,
+                                                      bpointer arg3,
+                                                      bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__INT_INT_POINTER callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -560,11 +560,11 @@ btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__INT_INT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -579,18 +579,18 @@ btk_marshal_VOID__INT_INT_POINTER (GClosure     *closure,
 /* NONE:POINTER,INT (./btkmarshal.list:21) */
 void
 btk_marshal_VOID__POINTER_INT (GClosure     *closure,
-                               GValue       *return_value G_GNUC_UNUSED,
-                               guint         n_param_values,
-                               const GValue *param_values,
-                               gpointer      invocation_hint G_GNUC_UNUSED,
-                               gpointer      marshal_data)
+                               BValue       *return_value B_GNUC_UNUSED,
+                               buint         n_param_values,
+                               const BValue *param_values,
+                               bpointer      invocation_hint B_GNUC_UNUSED,
+                               bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_INT) (gpointer data1,
-                                                  gpointer arg1,
-                                                  gint arg2,
-                                                  gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_INT) (bpointer data1,
+                                                  bpointer arg1,
+                                                  bint arg2,
+                                                  bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_INT callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -598,11 +598,11 @@ btk_marshal_VOID__POINTER_INT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_INT) (marshal_data ? marshal_data : cc->callback);
@@ -616,18 +616,18 @@ btk_marshal_VOID__POINTER_INT (GClosure     *closure,
 /* NONE:POINTER,POINTER (./btkmarshal.list:22) */
 void
 btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
-                                   GValue       *return_value G_GNUC_UNUSED,
-                                   guint         n_param_values,
-                                   const GValue *param_values,
-                                   gpointer      invocation_hint G_GNUC_UNUSED,
-                                   gpointer      marshal_data)
+                                   BValue       *return_value B_GNUC_UNUSED,
+                                   buint         n_param_values,
+                                   const BValue *param_values,
+                                   bpointer      invocation_hint B_GNUC_UNUSED,
+                                   bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_POINTER) (gpointer data1,
-                                                      gpointer arg1,
-                                                      gpointer arg2,
-                                                      gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_POINTER) (bpointer data1,
+                                                      bpointer arg1,
+                                                      bpointer arg2,
+                                                      bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_POINTER callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -635,11 +635,11 @@ btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -653,19 +653,19 @@ btk_marshal_VOID__POINTER_POINTER (GClosure     *closure,
 /* NONE:POINTER,POINTER,POINTER (./btkmarshal.list:23) */
 void
 btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
-                                           GValue       *return_value G_GNUC_UNUSED,
-                                           guint         n_param_values,
-                                           const GValue *param_values,
-                                           gpointer      invocation_hint G_GNUC_UNUSED,
-                                           gpointer      marshal_data)
+                                           BValue       *return_value B_GNUC_UNUSED,
+                                           buint         n_param_values,
+                                           const BValue *param_values,
+                                           bpointer      invocation_hint B_GNUC_UNUSED,
+                                           bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_POINTER) (gpointer data1,
-                                                              gpointer arg1,
-                                                              gpointer arg2,
-                                                              gpointer arg3,
-                                                              gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_POINTER) (bpointer data1,
+                                                              bpointer arg1,
+                                                              bpointer arg2,
+                                                              bpointer arg3,
+                                                              bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_POINTER_POINTER callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -673,11 +673,11 @@ btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -692,19 +692,19 @@ btk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
 /* NONE:POINTER,STRING,STRING (./btkmarshal.list:24) */
 void
 btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
-                                         GValue       *return_value G_GNUC_UNUSED,
-                                         guint         n_param_values,
-                                         const GValue *param_values,
-                                         gpointer      invocation_hint G_GNUC_UNUSED,
-                                         gpointer      marshal_data)
+                                         BValue       *return_value B_GNUC_UNUSED,
+                                         buint         n_param_values,
+                                         const BValue *param_values,
+                                         bpointer      invocation_hint B_GNUC_UNUSED,
+                                         bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_STRING_STRING) (gpointer data1,
-                                                            gpointer arg1,
-                                                            gpointer arg2,
-                                                            gpointer arg3,
-                                                            gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_STRING_STRING) (bpointer data1,
+                                                            bpointer arg1,
+                                                            bpointer arg2,
+                                                            bpointer arg3,
+                                                            bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_STRING_STRING callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -712,11 +712,11 @@ btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_STRING_STRING) (marshal_data ? marshal_data : cc->callback);
@@ -731,18 +731,18 @@ btk_marshal_VOID__POINTER_STRING_STRING (GClosure     *closure,
 /* NONE:POINTER,UINT (./btkmarshal.list:25) */
 void
 btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
-                                GValue       *return_value G_GNUC_UNUSED,
-                                guint         n_param_values,
-                                const GValue *param_values,
-                                gpointer      invocation_hint G_GNUC_UNUSED,
-                                gpointer      marshal_data)
+                                BValue       *return_value B_GNUC_UNUSED,
+                                buint         n_param_values,
+                                const BValue *param_values,
+                                bpointer      invocation_hint B_GNUC_UNUSED,
+                                bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_UINT) (gpointer data1,
-                                                   gpointer arg1,
-                                                   guint arg2,
-                                                   gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_UINT) (bpointer data1,
+                                                   bpointer arg1,
+                                                   buint arg2,
+                                                   bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_UINT callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -750,11 +750,11 @@ btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -768,19 +768,19 @@ btk_marshal_VOID__POINTER_UINT (GClosure     *closure,
 /* NONE:POINTER,UINT,ENUM (./btkmarshal.list:26) */
 void
 btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
-                                     GValue       *return_value G_GNUC_UNUSED,
-                                     guint         n_param_values,
-                                     const GValue *param_values,
-                                     gpointer      invocation_hint G_GNUC_UNUSED,
-                                     gpointer      marshal_data)
+                                     BValue       *return_value B_GNUC_UNUSED,
+                                     buint         n_param_values,
+                                     const BValue *param_values,
+                                     bpointer      invocation_hint B_GNUC_UNUSED,
+                                     bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_UINT_ENUM) (gpointer data1,
-                                                        gpointer arg1,
-                                                        guint arg2,
-                                                        gint arg3,
-                                                        gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_UINT_ENUM) (bpointer data1,
+                                                        bpointer arg1,
+                                                        buint arg2,
+                                                        bint arg3,
+                                                        bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_UINT_ENUM callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -788,11 +788,11 @@ btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT_ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -807,20 +807,20 @@ btk_marshal_VOID__POINTER_UINT_ENUM (GClosure     *closure,
 /* NONE:POINTER,POINTER,UINT,UINT (./btkmarshal.list:27) */
 void
 btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
-                                             GValue       *return_value G_GNUC_UNUSED,
-                                             guint         n_param_values,
-                                             const GValue *param_values,
-                                             gpointer      invocation_hint G_GNUC_UNUSED,
-                                             gpointer      marshal_data)
+                                             BValue       *return_value B_GNUC_UNUSED,
+                                             buint         n_param_values,
+                                             const BValue *param_values,
+                                             bpointer      invocation_hint B_GNUC_UNUSED,
+                                             bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_UINT_UINT) (gpointer data1,
-                                                                gpointer arg1,
-                                                                gpointer arg2,
-                                                                guint arg3,
-                                                                guint arg4,
-                                                                gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_POINTER_UINT_UINT) (bpointer data1,
+                                                                bpointer arg1,
+                                                                bpointer arg2,
+                                                                buint arg3,
+                                                                buint arg4,
+                                                                bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_POINTER_UINT_UINT callback;
 
   g_return_if_fail (n_param_values == 5);
@@ -828,11 +828,11 @@ btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -848,22 +848,22 @@ btk_marshal_VOID__POINTER_POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:POINTER,INT,INT,POINTER,UINT,UINT (./btkmarshal.list:28) */
 void
 btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
-                                                     GValue       *return_value G_GNUC_UNUSED,
-                                                     guint         n_param_values,
-                                                     const GValue *param_values,
-                                                     gpointer      invocation_hint G_GNUC_UNUSED,
-                                                     gpointer      marshal_data)
+                                                     BValue       *return_value B_GNUC_UNUSED,
+                                                     buint         n_param_values,
+                                                     const BValue *param_values,
+                                                     bpointer      invocation_hint B_GNUC_UNUSED,
+                                                     bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_INT_INT_POINTER_UINT_UINT) (gpointer data1,
-                                                                        gpointer arg1,
-                                                                        gint arg2,
-                                                                        gint arg3,
-                                                                        gpointer arg4,
-                                                                        guint arg5,
-                                                                        guint arg6,
-                                                                        gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_INT_INT_POINTER_UINT_UINT) (bpointer data1,
+                                                                        bpointer arg1,
+                                                                        bint arg2,
+                                                                        bint arg3,
+                                                                        bpointer arg4,
+                                                                        buint arg5,
+                                                                        buint arg6,
+                                                                        bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_INT_INT_POINTER_UINT_UINT callback;
 
   g_return_if_fail (n_param_values == 7);
@@ -871,11 +871,11 @@ btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_INT_INT_POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -893,19 +893,19 @@ btk_marshal_VOID__POINTER_INT_INT_POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:POINTER,UINT,UINT (./btkmarshal.list:29) */
 void
 btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
-                                     GValue       *return_value G_GNUC_UNUSED,
-                                     guint         n_param_values,
-                                     const GValue *param_values,
-                                     gpointer      invocation_hint G_GNUC_UNUSED,
-                                     gpointer      marshal_data)
+                                     BValue       *return_value B_GNUC_UNUSED,
+                                     buint         n_param_values,
+                                     const BValue *param_values,
+                                     bpointer      invocation_hint B_GNUC_UNUSED,
+                                     bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__POINTER_UINT_UINT) (gpointer data1,
-                                                        gpointer arg1,
-                                                        guint arg2,
-                                                        guint arg3,
-                                                        gpointer data2);
+  typedef void (*GMarshalFunc_VOID__POINTER_UINT_UINT) (bpointer data1,
+                                                        bpointer arg1,
+                                                        buint arg2,
+                                                        buint arg3,
+                                                        bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__POINTER_UINT_UINT callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -913,11 +913,11 @@ btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__POINTER_UINT_UINT) (marshal_data ? marshal_data : cc->callback);
@@ -932,19 +932,19 @@ btk_marshal_VOID__POINTER_UINT_UINT (GClosure     *closure,
 /* NONE:STRING,INT,POINTER (./btkmarshal.list:32) */
 void
 btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
-                                      GValue       *return_value G_GNUC_UNUSED,
-                                      guint         n_param_values,
-                                      const GValue *param_values,
-                                      gpointer      invocation_hint G_GNUC_UNUSED,
-                                      gpointer      marshal_data)
+                                      BValue       *return_value B_GNUC_UNUSED,
+                                      buint         n_param_values,
+                                      const BValue *param_values,
+                                      bpointer      invocation_hint B_GNUC_UNUSED,
+                                      bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__STRING_INT_POINTER) (gpointer data1,
-                                                         gpointer arg1,
-                                                         gint arg2,
-                                                         gpointer arg3,
-                                                         gpointer data2);
+  typedef void (*GMarshalFunc_VOID__STRING_INT_POINTER) (bpointer data1,
+                                                         bpointer arg1,
+                                                         bint arg2,
+                                                         bpointer arg3,
+                                                         bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__STRING_INT_POINTER callback;
 
   g_return_if_fail (n_param_values == 4);
@@ -952,11 +952,11 @@ btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__STRING_INT_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -971,22 +971,22 @@ btk_marshal_VOID__STRING_INT_POINTER (GClosure     *closure,
 /* NONE:UINT,POINTER,UINT,ENUM,ENUM,POINTER (./btkmarshal.list:34) */
 void
 btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
-                                                       GValue       *return_value G_GNUC_UNUSED,
-                                                       guint         n_param_values,
-                                                       const GValue *param_values,
-                                                       gpointer      invocation_hint G_GNUC_UNUSED,
-                                                       gpointer      marshal_data)
+                                                       BValue       *return_value B_GNUC_UNUSED,
+                                                       buint         n_param_values,
+                                                       const BValue *param_values,
+                                                       bpointer      invocation_hint B_GNUC_UNUSED,
+                                                       bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER) (gpointer data1,
-                                                                          guint arg1,
-                                                                          gpointer arg2,
-                                                                          guint arg3,
-                                                                          gint arg4,
-                                                                          gint arg5,
-                                                                          gpointer arg6,
-                                                                          gpointer data2);
+  typedef void (*GMarshalFunc_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER) (bpointer data1,
+                                                                          buint arg1,
+                                                                          bpointer arg2,
+                                                                          buint arg3,
+                                                                          bint arg4,
+                                                                          bint arg5,
+                                                                          bpointer arg6,
+                                                                          bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER callback;
 
   g_return_if_fail (n_param_values == 7);
@@ -994,11 +994,11 @@ btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER) (marshal_data ? marshal_data : cc->callback);
@@ -1016,21 +1016,21 @@ btk_marshal_VOID__UINT_POINTER_UINT_ENUM_ENUM_POINTER (GClosure     *closure,
 /* NONE:UINT,POINTER,UINT,UINT,ENUM (./btkmarshal.list:35) */
 void
 btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
-                                               GValue       *return_value G_GNUC_UNUSED,
-                                               guint         n_param_values,
-                                               const GValue *param_values,
-                                               gpointer      invocation_hint G_GNUC_UNUSED,
-                                               gpointer      marshal_data)
+                                               BValue       *return_value B_GNUC_UNUSED,
+                                               buint         n_param_values,
+                                               const BValue *param_values,
+                                               bpointer      invocation_hint B_GNUC_UNUSED,
+                                               bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__UINT_POINTER_UINT_UINT_ENUM) (gpointer data1,
-                                                                  guint arg1,
-                                                                  gpointer arg2,
-                                                                  guint arg3,
-                                                                  guint arg4,
-                                                                  gint arg5,
-                                                                  gpointer data2);
+  typedef void (*GMarshalFunc_VOID__UINT_POINTER_UINT_UINT_ENUM) (bpointer data1,
+                                                                  buint arg1,
+                                                                  bpointer arg2,
+                                                                  buint arg3,
+                                                                  buint arg4,
+                                                                  bint arg5,
+                                                                  bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__UINT_POINTER_UINT_UINT_ENUM callback;
 
   g_return_if_fail (n_param_values == 6);
@@ -1038,11 +1038,11 @@ btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_POINTER_UINT_UINT_ENUM) (marshal_data ? marshal_data : cc->callback);
@@ -1059,18 +1059,18 @@ btk_marshal_VOID__UINT_POINTER_UINT_UINT_ENUM (GClosure     *closure,
 /* NONE:UINT,STRING (./btkmarshal.list:36) */
 void
 btk_marshal_VOID__UINT_STRING (GClosure     *closure,
-                               GValue       *return_value G_GNUC_UNUSED,
-                               guint         n_param_values,
-                               const GValue *param_values,
-                               gpointer      invocation_hint G_GNUC_UNUSED,
-                               gpointer      marshal_data)
+                               BValue       *return_value B_GNUC_UNUSED,
+                               buint         n_param_values,
+                               const BValue *param_values,
+                               bpointer      invocation_hint B_GNUC_UNUSED,
+                               bpointer      marshal_data)
 {
-  typedef void (*GMarshalFunc_VOID__UINT_STRING) (gpointer data1,
-                                                  guint arg1,
-                                                  gpointer arg2,
-                                                  gpointer data2);
+  typedef void (*GMarshalFunc_VOID__UINT_STRING) (bpointer data1,
+                                                  buint arg1,
+                                                  bpointer arg2,
+                                                  bpointer data2);
   GCClosure *cc = (GCClosure *) closure;
-  gpointer data1, data2;
+  bpointer data1, data2;
   GMarshalFunc_VOID__UINT_STRING callback;
 
   g_return_if_fail (n_param_values == 3);
@@ -1078,11 +1078,11 @@ btk_marshal_VOID__UINT_STRING (GClosure     *closure,
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
+      data2 = b_value_peek_pointer (param_values + 0);
     }
   else
     {
-      data1 = g_value_peek_pointer (param_values + 0);
+      data1 = b_value_peek_pointer (param_values + 0);
       data2 = closure->data;
     }
   callback = (GMarshalFunc_VOID__UINT_STRING) (marshal_data ? marshal_data : cc->callback);

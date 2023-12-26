@@ -24,14 +24,14 @@
 #include <bail/bailrenderercell.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TEXT_CELL            (bail_text_cell_get_type ())
-#define BAIL_TEXT_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_CELL, BailTextCell))
-#define BAIL_TEXT_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TEXT_CELL, BailTextCellClass))
-#define BAIL_IS_TEXT_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_CELL))
-#define BAIL_IS_TEXT_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_CELL))
-#define BAIL_TEXT_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_CELL, BailTextCellClass))
+#define BAIL_TEXT_CELL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_CELL, BailTextCell))
+#define BAIL_TEXT_CELL_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TEXT_CELL, BailTextCellClass))
+#define BAIL_IS_TEXT_CELL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_CELL))
+#define BAIL_IS_TEXT_CELL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_CELL))
+#define BAIL_TEXT_CELL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_CELL, BailTextCellClass))
 
 typedef struct _BailTextCell                  BailTextCell;
 typedef struct _BailTextCellClass             BailTextCellClass;
@@ -40,9 +40,9 @@ struct _BailTextCell
 {
   BailRendererCell parent;
   BailTextUtil *textutil;
-  gchar *cell_text;
-  gint caret_pos;
-  gint cell_length;
+  bchar *cell_text;
+  bint caret_pos;
+  bint cell_length;
 };
 
 GType bail_text_cell_get_type (void);
@@ -54,6 +54,6 @@ struct _BailTextCellClass
 
 BatkObject *bail_text_cell_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

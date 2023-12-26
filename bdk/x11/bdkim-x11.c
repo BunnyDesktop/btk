@@ -42,13 +42,13 @@
  * avoid trying to use multibyte conversion functions and
  * assume everything is 1-byte per character
  */
-static gboolean bdk_use_mb;
+static bboolean bdk_use_mb;
 
 void
 _bdk_x11_initialize_locale (void)
 {
   wchar_t result;
-  gchar *current_locale;
+  bchar *current_locale;
   static char *last_locale = NULL;
 
   bdk_use_mb = FALSE;
@@ -93,7 +93,7 @@ _bdk_x11_initialize_locale (void)
   return;
 }
 
-gchar*
+bchar*
 bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
@@ -127,10 +127,10 @@ find_a_display (void)
  * conversion failed. The returned string should be freed with g_free() when no
  * longer needed.
  **/
-gchar *
+bchar *
 bdk_wcstombs (const BdkWChar *src)
 {
-  gchar *mbstr;
+  bchar *mbstr;
 
   if (bdk_use_mb)
     {
@@ -140,7 +140,7 @@ bdk_wcstombs (const BdkWChar *src)
 
       if (sizeof(wchar_t) != sizeof(BdkWChar))
 	{
-	  gint i;
+	  bint i;
 	  wchar_t *src_alt;
 	  for (i=0; src[i]; i++);
 	  src_alt = g_new (wchar_t, i+1);
@@ -170,18 +170,18 @@ bdk_wcstombs (const BdkWChar *src)
        * We must copy the string into an area allocated by bunnylib, because
        * the string 'tpr.value' must be freed by XFree().
        */
-      mbstr = g_strdup((gchar *)tpr.value);
+      mbstr = g_strdup((bchar *)tpr.value);
       XFree (tpr.value);
     }
   else
     {
-      gint length = 0;
-      gint i;
+      bint length = 0;
+      bint i;
 
       while (src[length] != 0)
 	length++;
       
-      mbstr = g_new (gchar, length + 1);
+      mbstr = g_new (bchar, length + 1);
 
       for (i=0; i<length+1; i++)
 	mbstr[i] = src[i];
@@ -203,8 +203,8 @@ bdk_wcstombs (const BdkWChar *src)
  *   the conversion failed.
  **/
   
-gint
-bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
+bint
+bdk_mbstowcs (BdkWChar *dest, const bchar *src, bint dest_max)
 {
   if (bdk_use_mb)
     {
@@ -212,8 +212,8 @@ bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
       Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
       XTextProperty tpr;
       wchar_t **wstrs, *wstr_src;
-      gint num_wstrs;
-      gint len_cpy;
+      bint num_wstrs;
+      bint len_cpy;
       if (XmbTextListToTextProperty (xdisplay, (char **)&src, 1, XTextStyle,
 				     &tpr)
 	  != Success)
@@ -239,7 +239,7 @@ bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
     }
   else
     {
-      gint i;
+      bint i;
 
       for (i=0; i<dest_max && src[i]; i++)
 	dest[i] = src[i];

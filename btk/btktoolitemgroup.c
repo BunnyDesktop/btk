@@ -82,31 +82,31 @@ struct _BtkToolItemGroupPrivate
 
   GList             *children;
 
-  gboolean           animation;
-  gint64             animation_start;
+  bboolean           animation;
+  bint64             animation_start;
   GSource           *animation_timeout;
   BtkExpanderStyle   expander_style;
-  gint               expander_size;
-  gint               header_spacing;
+  bint               expander_size;
+  bint               header_spacing;
   BangoEllipsizeMode ellipsize;
 
-  gulong             focus_set_id;
+  bulong             focus_set_id;
   BtkWidget         *toplevel;
 
   BtkSettings       *settings;
-  gulong             settings_connection;
+  bulong             settings_connection;
 
-  guint              collapsed : 1;
+  buint              collapsed : 1;
 };
 
 struct _BtkToolItemGroupChild
 {
   BtkToolItem *item;
 
-  guint        homogeneous : 1;
-  guint        expand : 1;
-  guint        fill : 1;
-  guint        new_row : 1;
+  buint        homogeneous : 1;
+  buint        expand : 1;
+  buint        fill : 1;
+  buint        new_row : 1;
 };
 
 static void btk_tool_item_group_tool_shell_init (BtkToolShellIface *iface);
@@ -159,7 +159,7 @@ btk_tool_item_group_get_ellipsize_mode (BtkToolShell *shell)
   return BTK_TOOL_ITEM_GROUP (shell)->priv->ellipsize;
 }
 
-static gfloat
+static bfloat
 btk_tool_item_group_get_text_alignment (BtkToolShell *shell)
 {
   if (BTK_TOOLBAR_TEXT == btk_tool_item_group_get_style (shell) ||
@@ -190,7 +190,7 @@ static void
 animation_change_notify (BtkToolItemGroup *group)
 {
   BtkSettings *settings = group->priv->settings;
-  gboolean animation;
+  bboolean animation;
 
   if (settings)
     g_object_get (settings,
@@ -204,7 +204,7 @@ animation_change_notify (BtkToolItemGroup *group)
 
 static void
 btk_tool_item_group_settings_change_notify (BtkSettings      *settings,
-                                            const GParamSpec *pspec,
+                                            const BParamSpec *pspec,
                                             BtkToolItemGroup *group)
 {
   if (strcmp (pspec->name, "btk-enable-animations") == 0)
@@ -260,16 +260,16 @@ btk_tool_item_group_tool_shell_init (BtkToolShellIface *iface)
   iface->get_ellipsize_mode = btk_tool_item_group_get_ellipsize_mode;
 }
 
-static gboolean
+static bboolean
 btk_tool_item_group_header_expose_event_cb (BtkWidget      *widget,
                                             BdkEventExpose *event,
-                                            gpointer        data)
+                                            bpointer        data)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (data);
   BtkToolItemGroupPrivate* priv = group->priv;
   BtkExpanderStyle expander_style;
   BtkOrientation orientation;
-  gint x, y;
+  bint x, y;
   BtkTextDirection direction;
 
   orientation = btk_tool_shell_get_orientation (BTK_TOOL_SHELL (group));
@@ -307,7 +307,7 @@ btk_tool_item_group_header_expose_event_cb (BtkWidget      *widget,
 static void
 btk_tool_item_group_header_size_request_cb (BtkWidget      *widget,
                                             BtkRequisition *requisition,
-                                            gpointer        data)
+                                            bpointer        data)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (data);
   requisition->height = MAX (requisition->height, group->priv->expander_size);
@@ -315,7 +315,7 @@ btk_tool_item_group_header_size_request_cb (BtkWidget      *widget,
 
 static void
 btk_tool_item_group_header_clicked_cb (BtkButton *button,
-                                       gpointer   data)
+                                       bpointer   data)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (data);
   BtkToolItemGroupPrivate* priv = group->priv;
@@ -334,7 +334,7 @@ btk_tool_item_group_header_adjust_style (BtkToolItemGroup *group)
   BtkWidget *label_widget = btk_bin_get_child (BTK_BIN (alignment));
   BtkWidget *widget = BTK_WIDGET (group);
   BtkToolItemGroupPrivate* priv = group->priv;
-  gint dx = 0, dy = 0;
+  bint dx = 0, dy = 0;
   BtkTextDirection direction = btk_widget_get_direction (widget);
 
   btk_widget_style_get (widget,
@@ -379,7 +379,7 @@ btk_tool_item_group_init (BtkToolItemGroup *group)
 
   btk_widget_set_redraw_on_allocate (BTK_WIDGET (group), FALSE);
 
-  group->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (group,
+  group->priv = priv = B_TYPE_INSTANCE_GET_PRIVATE (group,
                                              BTK_TYPE_TOOL_ITEM_GROUP,
                                              BtkToolItemGroupPrivate);
 
@@ -419,80 +419,80 @@ btk_tool_item_group_init (BtkToolItemGroup *group)
 }
 
 static void
-btk_tool_item_group_set_property (GObject      *object,
-                                  guint         prop_id,
-                                  const GValue *value,
-                                  GParamSpec   *pspec)
+btk_tool_item_group_set_property (BObject      *object,
+                                  buint         prop_id,
+                                  const BValue *value,
+                                  BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
   switch (prop_id)
     {
       case PROP_LABEL:
-        btk_tool_item_group_set_label (group, g_value_get_string (value));
+        btk_tool_item_group_set_label (group, b_value_get_string (value));
         break;
 
       case PROP_LABEL_WIDGET:
-        btk_tool_item_group_set_label_widget (group, g_value_get_object (value));
+        btk_tool_item_group_set_label_widget (group, b_value_get_object (value));
 	break;
 
       case PROP_COLLAPSED:
-        btk_tool_item_group_set_collapsed (group, g_value_get_boolean (value));
+        btk_tool_item_group_set_collapsed (group, b_value_get_boolean (value));
         break;
 
       case PROP_ELLIPSIZE:
-        btk_tool_item_group_set_ellipsize (group, g_value_get_enum (value));
+        btk_tool_item_group_set_ellipsize (group, b_value_get_enum (value));
         break;
 
       case PROP_RELIEF:
-        btk_tool_item_group_set_header_relief (group, g_value_get_enum(value));
+        btk_tool_item_group_set_header_relief (group, b_value_get_enum(value));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_item_group_get_property (GObject    *object,
-                                  guint       prop_id,
-                                  GValue     *value,
-                                  GParamSpec *pspec)
+btk_tool_item_group_get_property (BObject    *object,
+                                  buint       prop_id,
+                                  BValue     *value,
+                                  BParamSpec *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
   switch (prop_id)
     {
       case PROP_LABEL:
-        g_value_set_string (value, btk_tool_item_group_get_label (group));
+        b_value_set_string (value, btk_tool_item_group_get_label (group));
         break;
 
       case PROP_LABEL_WIDGET:
-        g_value_set_object (value,
+        b_value_set_object (value,
 			    btk_tool_item_group_get_label_widget (group));
         break;
 
       case PROP_COLLAPSED:
-        g_value_set_boolean (value, btk_tool_item_group_get_collapsed (group));
+        b_value_set_boolean (value, btk_tool_item_group_get_collapsed (group));
         break;
 
       case PROP_ELLIPSIZE:
-        g_value_set_enum (value, btk_tool_item_group_get_ellipsize (group));
+        b_value_set_enum (value, btk_tool_item_group_get_ellipsize (group));
         break;
 
       case PROP_RELIEF:
-        g_value_set_enum (value, btk_tool_item_group_get_header_relief (group));
+        b_value_set_enum (value, btk_tool_item_group_get_header_relief (group));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_item_group_finalize (GObject *object)
+btk_tool_item_group_finalize (BObject *object)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
 
@@ -502,11 +502,11 @@ btk_tool_item_group_finalize (GObject *object)
       group->priv->children = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_item_group_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tool_item_group_parent_class)->finalize (object);
 }
 
 static void
-btk_tool_item_group_dispose (GObject *object)
+btk_tool_item_group_dispose (BObject *object)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (object);
   BtkToolItemGroupPrivate* priv = group->priv;
@@ -521,14 +521,14 @@ btk_tool_item_group_dispose (GObject *object)
       priv->toplevel = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_item_group_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tool_item_group_parent_class)->dispose (object);
 }
 
 static void
 btk_tool_item_group_get_item_size (BtkToolItemGroup *group,
                                    BtkRequisition   *item_size,
-                                   gboolean          homogeneous_only,
-                                   gint             *requested_rows)
+                                   bboolean          homogeneous_only,
+                                   bint             *requested_rows)
 {
   BtkWidget *parent = btk_widget_get_parent (BTK_WIDGET (group));
 
@@ -542,12 +542,12 @@ static void
 btk_tool_item_group_size_request (BtkWidget      *widget,
                                   BtkRequisition *requisition)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (widget);
   BtkToolItemGroupPrivate* priv = group->priv;
   BtkOrientation orientation;
   BtkRequisition item_size;
-  gint requested_rows;
+  bint requested_rows;
 
   if (priv->children && btk_tool_item_group_get_label_widget (group))
     {
@@ -573,7 +573,7 @@ btk_tool_item_group_size_request (BtkWidget      *widget,
   requisition->height += border_width * 2;
 }
 
-static gboolean
+static bboolean
 btk_tool_item_group_is_item_visible (BtkToolItemGroup      *group,
                                      BtkToolItemGroupChild *child)
 {
@@ -608,7 +608,7 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
                                      BtkAllocation  *allocation,
                                      BtkRequisition *inquery)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (widget);
   BtkToolItemGroupPrivate* priv = group->priv;
 
@@ -618,7 +618,7 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
   BtkOrientation orientation;
   BtkToolbarStyle style;
 
-  gint min_rows;
+  bint min_rows;
 
   orientation = btk_tool_shell_get_orientation (BTK_TOOL_SHELL (group));
   style = btk_tool_shell_get_style (BTK_TOOL_SHELL (group));
@@ -640,15 +640,15 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
   /* figure out the required columns (n_columns) and rows (n_rows) to place all items */
   if (!priv->collapsed || !priv->animation || priv->animation_timeout)
     {
-      guint n_columns;
-      gint n_rows;
+      buint n_columns;
+      bint n_rows;
       GList *it;
 
       if (BTK_ORIENTATION_VERTICAL == orientation)
         {
-          gboolean new_row = FALSE;
-          gint row = -1;
-          guint col = 0;
+          bboolean new_row = FALSE;
+          bint row = -1;
+          buint col = 0;
 
           item_area.width = allocation->width - 2 * border_width;
           n_columns = MAX (item_area.width / item_size.width, 1);
@@ -680,7 +680,7 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
               else
                 {
                   BtkRequisition req = {0, 0};
-                  guint width;
+                  buint width;
 
                   btk_widget_size_request (BTK_WIDGET (child->item), &req);
 
@@ -700,16 +700,16 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
         }
       else
         {
-          guint *row_min_width;
-          gint row = -1;
-          gboolean new_row = TRUE;
-          guint col = 0, min_col, max_col = 0, all_items = 0;
-          gint i;
+          buint *row_min_width;
+          bint row = -1;
+          bboolean new_row = TRUE;
+          buint col = 0, min_col, max_col = 0, all_items = 0;
+          bint i;
 
           item_area.height = allocation->height - 2 * border_width;
           n_rows = MAX (item_area.height / item_size.height, min_rows);
 
-          row_min_width = g_new0 (guint, n_rows);
+          row_min_width = g_new0 (buint, n_rows);
 
           /* calculate minimal and maximal required cols and minimal required rows */
           for (it = priv->children; it != NULL; it = it->next)
@@ -738,7 +738,7 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
               else
                 {
                   BtkRequisition req = {0, 0};
-                  guint width;
+                  buint width;
 
                   btk_widget_size_request (BTK_WIDGET (child->item), &req);
 
@@ -793,7 +793,7 @@ btk_tool_item_group_real_size_query (BtkWidget      *widget,
                   else
                     {
                       BtkRequisition req = {0, 0};
-                      guint width;
+                      buint width;
 
                       btk_widget_size_request (BTK_WIDGET (child->item), &req);
 
@@ -844,7 +844,7 @@ static void
 btk_tool_item_group_real_size_allocate (BtkWidget     *widget,
                                         BtkAllocation *allocation)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (widget);
   BtkToolItemGroupPrivate* priv = group->priv;
   BtkRequisition child_requisition;
@@ -858,8 +858,8 @@ btk_tool_item_group_real_size_allocate (BtkWidget     *widget,
 
   GList *it;
 
-  gint n_columns, n_rows = 1;
-  gint min_rows;
+  bint n_columns, n_rows = 1;
+  bint min_rows;
 
   BtkTextDirection direction = btk_widget_get_direction (widget);
 
@@ -940,12 +940,12 @@ btk_tool_item_group_real_size_allocate (BtkWidget     *widget,
   /* when expanded or in transition, place the tool items in a grid like layout */
   if (!priv->collapsed || !priv->animation || priv->animation_timeout)
     {
-      gint col = 0, row = 0;
+      bint col = 0, row = 0;
 
       for (it = priv->children; it != NULL; it = it->next)
         {
           BtkToolItemGroupChild *child = it->data;
-          gint col_child;
+          bint col_child;
 
           if (!btk_tool_item_group_is_item_visible (group, child))
             {
@@ -976,8 +976,8 @@ btk_tool_item_group_real_size_allocate (BtkWidget     *widget,
           /* calculate the position and size of the item */
           if (!child->homogeneous)
             {
-              gint col_width;
-              gint width;
+              bint col_width;
+              bint width;
 
               if (!child->expand)
                 col_width = udiv (child_requisition.width, item_size.width);
@@ -1050,7 +1050,7 @@ btk_tool_item_group_size_allocate (BtkWidget     *widget,
 static void
 btk_tool_item_group_set_focus_cb (BtkWidget *window,
                                   BtkWidget *widget,
-                                  gpointer   user_data)
+                                  bpointer   user_data)
 {
   BtkAdjustment *adjustment;
   BtkWidget *p;
@@ -1160,8 +1160,8 @@ static void
 btk_tool_item_group_realize (BtkWidget *widget)
 {
   BtkWidget *toplevel_window;
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
-  gint attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
+  bint attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
   BdkWindowAttr attributes;
   BdkDisplay *display;
 
@@ -1260,9 +1260,9 @@ btk_tool_item_group_remove (BtkContainer *container,
 
 static void
 btk_tool_item_group_forall (BtkContainer *container,
-                            gboolean      internals,
+                            bboolean      internals,
                             BtkCallback   callback,
-                            gpointer      callback_data)
+                            bpointer      callback_data)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (container);
   BtkToolItemGroupPrivate* priv = group->priv;
@@ -1293,10 +1293,10 @@ btk_tool_item_group_child_type (BtkContainer *container)
 static BtkToolItemGroupChild *
 btk_tool_item_group_get_child (BtkToolItemGroup  *group,
                                BtkToolItem       *item,
-                               gint              *position,
+                               bint              *position,
                                GList            **link)
 {
-  guint i;
+  buint i;
   GList *it;
 
   g_return_val_if_fail (BTK_IS_TOOL_ITEM_GROUP (group), NULL);
@@ -1324,10 +1324,10 @@ btk_tool_item_group_get_child (BtkToolItemGroup  *group,
 static void
 btk_tool_item_group_get_item_packing (BtkToolItemGroup *group,
                                       BtkToolItem      *item,
-                                      gboolean         *homogeneous,
-                                      gboolean         *expand,
-                                      gboolean         *fill,
-                                      gboolean         *new_row)
+                                      bboolean         *homogeneous,
+                                      bboolean         *expand,
+                                      bboolean         *fill,
+                                      bboolean         *new_row)
 {
   BtkToolItemGroupChild *child;
 
@@ -1354,13 +1354,13 @@ btk_tool_item_group_get_item_packing (BtkToolItemGroup *group,
 static void
 btk_tool_item_group_set_item_packing (BtkToolItemGroup *group,
                                       BtkToolItem      *item,
-                                      gboolean          homogeneous,
-                                      gboolean          expand,
-                                      gboolean          fill,
-                                      gboolean          new_row)
+                                      bboolean          homogeneous,
+                                      bboolean          expand,
+                                      bboolean          fill,
+                                      bboolean          new_row)
 {
   BtkToolItemGroupChild *child;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
 
   g_return_if_fail (BTK_IS_TOOL_ITEM_GROUP (group));
   g_return_if_fail (BTK_IS_TOOL_ITEM (item));
@@ -1407,13 +1407,13 @@ btk_tool_item_group_set_item_packing (BtkToolItemGroup *group,
 static void
 btk_tool_item_group_set_child_property (BtkContainer *container,
                                         BtkWidget    *child,
-                                        guint         prop_id,
-                                        const GValue *value,
-                                        GParamSpec   *pspec)
+                                        buint         prop_id,
+                                        const BValue *value,
+                                        BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (container);
   BtkToolItem *item = BTK_TOOL_ITEM (child);
-  gboolean homogeneous, expand, fill, new_row;
+  bboolean homogeneous, expand, fill, new_row;
 
   if (prop_id != CHILD_PROP_POSITION)
     btk_tool_item_group_get_item_packing (group, item,
@@ -1426,7 +1426,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
     {
       case CHILD_PROP_HOMOGENEOUS:
         btk_tool_item_group_set_item_packing (group, item,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               expand,
                                               fill,
                                               new_row);
@@ -1435,7 +1435,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
       case CHILD_PROP_EXPAND:
         btk_tool_item_group_set_item_packing (group, item,
                                               homogeneous,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               fill,
                                               new_row);
         break;
@@ -1444,7 +1444,7 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
         btk_tool_item_group_set_item_packing (group, item,
                                               homogeneous,
                                               expand,
-                                              g_value_get_boolean (value),
+                                              b_value_get_boolean (value),
                                               new_row);
         break;
 
@@ -1453,11 +1453,11 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
                                               homogeneous,
                                               expand,
                                               fill,
-                                              g_value_get_boolean (value));
+                                              b_value_get_boolean (value));
         break;
 
       case CHILD_PROP_POSITION:
-        btk_tool_item_group_set_item_position (group, item, g_value_get_int (value));
+        btk_tool_item_group_set_item_position (group, item, b_value_get_int (value));
         break;
 
       default:
@@ -1469,13 +1469,13 @@ btk_tool_item_group_set_child_property (BtkContainer *container,
 static void
 btk_tool_item_group_get_child_property (BtkContainer *container,
                                         BtkWidget    *child,
-                                        guint         prop_id,
-                                        GValue       *value,
-                                        GParamSpec   *pspec)
+                                        buint         prop_id,
+                                        BValue       *value,
+                                        BParamSpec   *pspec)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (container);
   BtkToolItem *item = BTK_TOOL_ITEM (child);
-  gboolean homogeneous, expand, fill, new_row;
+  bboolean homogeneous, expand, fill, new_row;
 
   if (prop_id != CHILD_PROP_POSITION)
     btk_tool_item_group_get_item_packing (group, item,
@@ -1487,23 +1487,23 @@ btk_tool_item_group_get_child_property (BtkContainer *container,
   switch (prop_id)
     {
       case CHILD_PROP_HOMOGENEOUS:
-        g_value_set_boolean (value, homogeneous);
+        b_value_set_boolean (value, homogeneous);
         break;
 
        case CHILD_PROP_EXPAND:
-        g_value_set_boolean (value, expand);
+        b_value_set_boolean (value, expand);
         break;
 
        case CHILD_PROP_FILL:
-        g_value_set_boolean (value, fill);
+        b_value_set_boolean (value, fill);
         break;
 
        case CHILD_PROP_NEW_ROW:
-        g_value_set_boolean (value, new_row);
+        b_value_set_boolean (value, new_row);
         break;
 
      case CHILD_PROP_POSITION:
-        g_value_set_int (value, btk_tool_item_group_get_item_position (group, item));
+        b_value_set_int (value, btk_tool_item_group_get_item_position (group, item));
         break;
 
       default:
@@ -1515,7 +1515,7 @@ btk_tool_item_group_get_child_property (BtkContainer *container,
 static void
 btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
 {
-  GObjectClass       *oclass = G_OBJECT_CLASS (cls);
+  BObjectClass       *oclass = B_OBJECT_CLASS (cls);
   BtkWidgetClass     *wclass = BTK_WIDGET_CLASS (cls);
   BtkContainerClass  *cclass = BTK_CONTAINER_CLASS (cls);
 
@@ -1578,7 +1578,7 @@ btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
                                                              P_("Expander Size"),
                                                              P_("Size of the expander arrow"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              DEFAULT_EXPANDER_SIZE,
                                                              BTK_PARAM_READABLE));
 
@@ -1587,7 +1587,7 @@ btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
                                                              P_("Header Spacing"),
                                                              P_("Spacing between expander arrow and caption"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              DEFAULT_HEADER_SPACING,
                                                              BTK_PARAM_READABLE));
 
@@ -1624,7 +1624,7 @@ btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
                                                                 P_("Position"),
                                                                 P_("Position of the item within this group"),
                                                                 0,
-                                                                G_MAXINT,
+                                                                B_MAXINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE));
 
@@ -1642,7 +1642,7 @@ btk_tool_item_group_class_init (BtkToolItemGroupClass *cls)
  * Since: 2.20
  */
 BtkWidget*
-btk_tool_item_group_new (const gchar *label)
+btk_tool_item_group_new (const bchar *label)
 {
   return g_object_new (BTK_TYPE_TOOL_ITEM_GROUP, "label", label, NULL);
 }
@@ -1659,7 +1659,7 @@ btk_tool_item_group_new (const gchar *label)
  */
 void
 btk_tool_item_group_set_label (BtkToolItemGroup *group,
-                               const gchar      *label)
+                               const bchar      *label)
 {
   g_return_if_fail (BTK_IS_TOOL_ITEM_GROUP (group));
 
@@ -1673,7 +1673,7 @@ btk_tool_item_group_set_label (BtkToolItemGroup *group,
       btk_tool_item_group_set_label_widget (group, child);
     }
 
-  g_object_notify (G_OBJECT (group), "label");
+  g_object_notify (B_OBJECT (group), "label");
 }
 
 /**
@@ -1726,10 +1726,10 @@ btk_tool_item_group_set_label_widget (BtkToolItemGroup *group,
   else
     btk_widget_hide (priv->header);
 
-  g_object_freeze_notify (G_OBJECT (group));
-  g_object_notify (G_OBJECT (group), "label-widget");
-  g_object_notify (G_OBJECT (group), "label");
-  g_object_thaw_notify (G_OBJECT (group));
+  g_object_freeze_notify (B_OBJECT (group));
+  g_object_notify (B_OBJECT (group), "label-widget");
+  g_object_notify (B_OBJECT (group), "label");
+  g_object_thaw_notify (B_OBJECT (group));
 }
 
 /**
@@ -1751,7 +1751,7 @@ btk_tool_item_group_set_header_relief (BtkToolItemGroup *group,
   btk_button_set_relief (BTK_BUTTON (group->priv->header), style);
 }
 
-static gint64
+static bint64
 btk_tool_item_group_get_animation_timestamp (BtkToolItemGroup *group)
 {
   return (g_source_get_time (group->priv->animation_timeout) -
@@ -1801,13 +1801,13 @@ btk_tool_item_group_force_expose (BtkToolItemGroup *group)
     }
 }
 
-static gboolean
-btk_tool_item_group_animation_cb (gpointer data)
+static bboolean
+btk_tool_item_group_animation_cb (bpointer data)
 {
   BtkToolItemGroup *group = BTK_TOOL_ITEM_GROUP (data);
   BtkToolItemGroupPrivate* priv = group->priv;
-  gint64 timestamp = btk_tool_item_group_get_animation_timestamp (group);
-  gboolean retval;
+  bint64 timestamp = btk_tool_item_group_get_animation_timestamp (group);
+  bboolean retval;
 
   BDK_THREADS_ENTER ();
 
@@ -1854,7 +1854,7 @@ btk_tool_item_group_animation_cb (gpointer data)
  */
 void
 btk_tool_item_group_set_collapsed (BtkToolItemGroup *group,
-                                   gboolean          collapsed)
+                                   bboolean          collapsed)
 {
   BtkWidget *parent;
   BtkToolItemGroupPrivate* priv;
@@ -1890,7 +1890,7 @@ btk_tool_item_group_set_collapsed (BtkToolItemGroup *group,
         }
 
       priv->collapsed = collapsed;
-      g_object_notify (G_OBJECT (group), "collapsed");
+      g_object_notify (B_OBJECT (group), "collapsed");
     }
 }
 
@@ -1913,7 +1913,7 @@ btk_tool_item_group_set_ellipsize (BtkToolItemGroup   *group,
     {
       group->priv->ellipsize = ellipsize;
       btk_tool_item_group_header_adjust_style (group);
-      g_object_notify (G_OBJECT (group), "ellipsize");
+      g_object_notify (B_OBJECT (group), "ellipsize");
       _btk_tool_item_group_palette_reconfigured (group);
     }
 }
@@ -1930,7 +1930,7 @@ btk_tool_item_group_set_ellipsize (BtkToolItemGroup   *group,
  *
  * Since: 2.20
  */
-const gchar*
+const bchar*
 btk_tool_item_group_get_label (BtkToolItemGroup *group)
 {
   BtkToolItemGroupPrivate *priv;
@@ -1974,7 +1974,7 @@ btk_tool_item_group_get_label_widget (BtkToolItemGroup *group)
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_tool_item_group_get_collapsed (BtkToolItemGroup *group)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM_GROUP (group), DEFAULT_COLLAPSED);
@@ -2032,7 +2032,7 @@ btk_tool_item_group_get_header_relief (BtkToolItemGroup   *group)
 void
 btk_tool_item_group_insert (BtkToolItemGroup *group,
                             BtkToolItem      *item,
-                            gint              position)
+                            bint              position)
 {
   BtkWidget *parent, *child_widget;
   BtkToolItemGroupChild *child;
@@ -2078,9 +2078,9 @@ btk_tool_item_group_insert (BtkToolItemGroup *group,
 void
 btk_tool_item_group_set_item_position (BtkToolItemGroup *group,
                                        BtkToolItem      *item,
-                                       gint              position)
+                                       bint              position)
 {
-  gint old_position;
+  bint old_position;
   GList *link;
   BtkToolItemGroupChild *child;
   BtkToolItemGroupPrivate* priv;
@@ -2117,11 +2117,11 @@ btk_tool_item_group_set_item_position (BtkToolItemGroup *group,
  *
  * Since: 2.20
  */
-gint
+bint
 btk_tool_item_group_get_item_position (BtkToolItemGroup *group,
                                        BtkToolItem      *item)
 {
-  gint position;
+  bint position;
 
   g_return_val_if_fail (BTK_IS_TOOL_ITEM_GROUP (group), -1);
   g_return_val_if_fail (BTK_IS_TOOL_ITEM (item), -1);
@@ -2142,7 +2142,7 @@ btk_tool_item_group_get_item_position (BtkToolItemGroup *group,
  *
  * Since: 2.20
  */
-guint
+buint
 btk_tool_item_group_get_n_items (BtkToolItemGroup *group)
 {
   g_return_val_if_fail (BTK_IS_TOOL_ITEM_GROUP (group), 0);
@@ -2163,7 +2163,7 @@ btk_tool_item_group_get_n_items (BtkToolItemGroup *group)
  */
 BtkToolItem*
 btk_tool_item_group_get_nth_item (BtkToolItemGroup *group,
-                                  guint             index)
+                                  buint             index)
 {
   BtkToolItemGroupChild *child;
 
@@ -2188,8 +2188,8 @@ btk_tool_item_group_get_nth_item (BtkToolItemGroup *group,
  */
 BtkToolItem*
 btk_tool_item_group_get_drop_item (BtkToolItemGroup *group,
-                                   gint              x,
-                                   gint              y)
+                                   bint              x,
+                                   bint              y)
 {
   BtkAllocation *allocation;
   BtkOrientation orientation;
@@ -2207,7 +2207,7 @@ btk_tool_item_group_get_drop_item (BtkToolItemGroup *group,
     {
       BtkToolItemGroupChild *child = it->data;
       BtkToolItem *item = child->item;
-      gint x0, y0;
+      bint x0, y0;
 
       if (!item || !btk_tool_item_group_is_item_visible (group, child))
         continue;
@@ -2228,13 +2228,13 @@ btk_tool_item_group_get_drop_item (BtkToolItemGroup *group,
 void
 _btk_tool_item_group_item_size_request (BtkToolItemGroup *group,
                                         BtkRequisition   *item_size,
-                                        gboolean          homogeneous_only,
-                                        gint             *requested_rows)
+                                        bboolean          homogeneous_only,
+                                        bint             *requested_rows)
 {
   BtkRequisition child_requisition;
   GList *it;
-  gint rows = 0;
-  gboolean new_row = TRUE;
+  bint rows = 0;
+  bboolean new_row = TRUE;
   BtkOrientation orientation;
   BtkToolbarStyle style;
 
@@ -2288,7 +2288,7 @@ _btk_tool_item_group_paint (BtkToolItemGroup *group,
     {
       BtkOrientation orientation = btk_tool_item_group_get_orientation (BTK_TOOL_SHELL (group));
       bairo_pattern_t *mask;
-      gdouble v0, v1;
+      bdouble v0, v1;
 
       if (BTK_ORIENTATION_VERTICAL == orientation)
         v1 = widget->allocation.height;
@@ -2334,11 +2334,11 @@ _btk_tool_item_group_paint (BtkToolItemGroup *group,
     bairo_paint (cr);
 }
 
-gint
+bint
 _btk_tool_item_group_get_size_for_limit (BtkToolItemGroup *group,
-                                         gint              limit,
-                                         gboolean          vertical,
-                                         gboolean          animation)
+                                         bint              limit,
+                                         bboolean          vertical,
+                                         bboolean          animation)
 {
   BtkRequisition requisition;
   BtkToolItemGroupPrivate* priv = group->priv;
@@ -2365,7 +2365,7 @@ _btk_tool_item_group_get_size_for_limit (BtkToolItemGroup *group,
 
       if (priv->animation_timeout && animation)
         {
-          gint64 timestamp = btk_tool_item_group_get_animation_timestamp (group);
+          bint64 timestamp = btk_tool_item_group_get_animation_timestamp (group);
 
           timestamp = MIN (timestamp, ANIMATION_DURATION);
 
@@ -2393,23 +2393,23 @@ _btk_tool_item_group_get_size_for_limit (BtkToolItemGroup *group,
   return (vertical ? requisition.height : requisition.width);
 }
 
-gint
+bint
 _btk_tool_item_group_get_height_for_width (BtkToolItemGroup *group,
-                                           gint              width)
+                                           bint              width)
 {
   return _btk_tool_item_group_get_size_for_limit (group, width, TRUE, group->priv->animation);
 }
 
-gint
+bint
 _btk_tool_item_group_get_width_for_height (BtkToolItemGroup *group,
-                                           gint              height)
+                                           bint              height)
 {
   return _btk_tool_item_group_get_size_for_limit (group, height, FALSE, TRUE);
 }
 
 static void
 btk_tool_palette_reconfigured_foreach_item (BtkWidget *child,
-                                            gpointer   data)
+                                            bpointer   data)
 {
   if (BTK_IS_TOOL_ITEM (child))
     btk_tool_item_toolbar_reconfigured (BTK_TOOL_ITEM (child));

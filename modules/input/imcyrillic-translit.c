@@ -61,7 +61,7 @@ cyrillic_translit_register_type (GTypeModule *module)
  * mode cryllic-translit; they allow entering all characters
  * in iso-8859-5
  */
-static guint16 cyrillic_compose_seqs[] = {
+static buint16 cyrillic_compose_seqs[] = {
   BDK_apostrophe,    0,      0,      0,      0,      0x44C, 	/* CYRILLIC SMALL LETTER SOFT SIGN */
   BDK_apostrophe,    BDK_apostrophe,      0,      0,      0,      0x42C, 	/* CYRILLIC CAPITAL LETTER SOFT SIGN */
   BDK_slash,    BDK_C,  BDK_H,      0,      0,      0x040B, /* CYRILLIC CAPITAL LETTER TSHE */
@@ -246,7 +246,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "cyrillic_translit") == 0)
     return g_object_new (type_cyrillic_translit, NULL);

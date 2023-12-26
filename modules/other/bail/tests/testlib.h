@@ -22,49 +22,49 @@ typedef struct
   BtkTextIter   outputIter;
 }OutputWindow;
 
-typedef void (*TLruntest) (BatkObject * obj, gint win_num);
+typedef void (*TLruntest) (BatkObject * obj, bint win_num);
 
 /* General purpose functions */
 
-gboolean		already_accessed_batk_object	(BatkObject	*obj);
+bboolean		already_accessed_batk_object	(BatkObject	*obj);
 BatkObject*		find_object_by_role		(BatkObject	*obj,
 							BatkRole		*role,
-							gint		num_roles);
+							bint		num_roles);
 BatkObject*		find_object_by_type		(BatkObject	*obj,
-							gchar		*type);
+							bchar		*type);
 BatkObject*		find_object_by_name_and_role	(BatkObject	*obj,
-						      	const gchar	*name,
+						      	const bchar	*name,
 							BatkRole		*roles,
-							gint		num_roles);
+							bint		num_roles);
 BatkObject*		find_object_by_accessible_name_and_role (BatkObject *obj,
-							const gchar	*name,
+							const bchar	*name,
 							BatkRole		*roles,
-							gint		num_roles);
+							bint		num_roles);
 void			display_children		(BatkObject	*obj,
-                                                        gint		depth,
-                                                        gint		child_number);
+                                                        bint		depth,
+                                                        bint		child_number);
 void			display_children_to_depth	(BatkObject	*obj,
-                                                        gint		to_depth,
-                                                        gint		depth,
-                                                        gint		child_number);
+                                                        bint		to_depth,
+                                                        bint		depth,
+                                                        bint		child_number);
 
 
 /* Test GUI functions */
 
-gint			create_windows			(BatkObject	*obj,
+bint			create_windows			(BatkObject	*obj,
 							TLruntest	runtest,
 							OutputWindow	**outwin);
-gboolean		add_test			(gint		window,
-							gchar 		*name,
-							gint		num_params,
-							gchar 		*parameter_names[],
-							gchar 		*default_names[]);
-void			set_output_buffer		(gchar 		*output);
-gchar			**tests_set			(gint		window,
+bboolean		add_test			(bint		window,
+							bchar 		*name,
+							bint		num_params,
+							bchar 		*parameter_names[],
+							bchar 		*default_names[]);
+void			set_output_buffer		(bchar 		*output);
+bchar			**tests_set			(bint		window,
 							int		*count);
-gchar			*get_arg_of_func		(gint		window,
-							gchar		*function_name,
-							gchar 		*arg_label);
+bchar			*get_arg_of_func		(bint		window,
+							bchar		*function_name,
+							bchar 		*arg_label);
 int			string_to_int			(const char	*the_string);
-gboolean		isVisibleDialog			(void);
+bboolean		isVisibleDialog			(void);
 

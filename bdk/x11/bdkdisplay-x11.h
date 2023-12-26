@@ -33,17 +33,17 @@
 #include <bdk/bdkinternals.h>
 #include <bdk/bdk.h>		/* For bdk_get_program_class() */
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayX11 BdkDisplayX11;
 typedef struct _BdkDisplayX11Class BdkDisplayX11Class;
 
 #define BDK_TYPE_DISPLAY_X11              (_bdk_display_x11_get_type())
-#define BDK_DISPLAY_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_X11, BdkDisplayX11))
-#define BDK_DISPLAY_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
-#define BDK_IS_DISPLAY_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_X11))
-#define BDK_IS_DISPLAY_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_X11))
-#define BDK_DISPLAY_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
+#define BDK_DISPLAY_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_X11, BdkDisplayX11))
+#define BDK_DISPLAY_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
+#define BDK_IS_DISPLAY_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_X11))
+#define BDK_IS_DISPLAY_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_X11))
+#define BDK_DISPLAY_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
 
 typedef enum 
 {
@@ -61,39 +61,39 @@ struct _BdkDisplayX11
 
   GSource *event_source;
 
-  gint grab_count;
+  bint grab_count;
 
   /* Keyboard related information */
 
-  gint xkb_event_type;
-  gboolean use_xkb;
+  bint xkb_event_type;
+  bboolean use_xkb;
   
   /* Whether we were able to turn on detectable-autorepeat using
    * XkbSetDetectableAutorepeat. If FALSE, we'll fall back
    * to checking the next event with XPending(). */
-  gboolean have_xkb_autorepeat;
+  bboolean have_xkb_autorepeat;
 
   BdkKeymap *keymap;
-  guint	    keymap_serial;
+  buint	    keymap_serial;
 
-  gboolean use_xshm;
-  gboolean have_shm_pixmaps;
+  bboolean use_xshm;
+  bboolean have_shm_pixmaps;
   BdkTristate have_render;
-  gboolean have_xfixes;
-  gint xfixes_event_base;
+  bboolean have_xfixes;
+  bint xfixes_event_base;
 
-  gboolean have_xcomposite;
-  gboolean have_xdamage;
-  gint xdamage_event_base;
+  bboolean have_xcomposite;
+  bboolean have_xdamage;
+  bint xdamage_event_base;
 
-  gboolean have_randr13;
-  gboolean have_randr15;
-  gint xrandr_event_base;
+  bboolean have_randr13;
+  bboolean have_randr15;
+  bint xrandr_event_base;
 
   /* If the SECURITY extension is in place, whether this client holds 
    * a trusted authorization and so is allowed to make various requests 
    * (grabs, properties etc.) Otherwise always TRUE. */
-  gboolean trusted_client;
+  bboolean trusted_client;
 
   /* drag and drop information */
   BdkDragContext *current_dest_drag;
@@ -103,7 +103,7 @@ struct _BdkDisplayX11
   Window motif_drag_window;
   BdkWindow *motif_drag_bdk_window;
   GList **motif_target_lists;
-  gint motif_n_target_lists;
+  bint motif_n_target_lists;
 
   /* Mapping to/from virtual atoms */
 
@@ -113,7 +113,7 @@ struct _BdkDisplayX11
   /* Session Management leader window see ICCCM */
   Window leader_window;
   BdkWindow *leader_bdk_window;
-  gboolean leader_window_title_set;
+  bboolean leader_window_title_set;
   
   /* list of filters for client messages */
   GList *client_filters;
@@ -135,20 +135,20 @@ struct _BdkDisplayX11
   GList *input_windows;
 
   /* Startup notification */
-  gchar *startup_notification_id;
+  bchar *startup_notification_id;
 
   /* Time of most recent user interaction. */
-  gulong user_time;
+  bulong user_time;
 
   /* Sets of atoms for DND */
-  guint base_dnd_atoms_precached : 1;
-  guint xdnd_atoms_precached : 1;
-  guint motif_atoms_precached : 1;
-  guint use_sync : 1;
+  buint base_dnd_atoms_precached : 1;
+  buint xdnd_atoms_precached : 1;
+  buint motif_atoms_precached : 1;
+  buint use_sync : 1;
 
-  guint have_shapes : 1;
-  guint have_input_shapes : 1;
-  gint shape_event_base;
+  buint have_shapes : 1;
+  buint have_input_shapes : 1;
+  bint shape_event_base;
 
   /* Alpha mask picture format */
   XRenderPictFormat *mask_format;
@@ -166,6 +166,6 @@ GType      _bdk_display_x11_get_type            (void);
 BdkScreen *_bdk_x11_display_screen_for_xrootwin (BdkDisplay *display,
 						 Window      xrootwin);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif				/* __BDK_DISPLAY_X11__ */

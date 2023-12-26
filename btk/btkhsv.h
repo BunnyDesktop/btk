@@ -38,14 +38,14 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HSV            (btk_hsv_get_type ())
-#define BTK_HSV(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
-#define BTK_HSV_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSV, BtkHSVClass))
-#define BTK_IS_HSV(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSV))
-#define BTK_IS_HSV_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSV))
-#define BTK_HSV_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSV, BtkHSVClass))
+#define BTK_HSV(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSV, BtkHSV))
+#define BTK_HSV_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSV, BtkHSVClass))
+#define BTK_IS_HSV(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSV))
+#define BTK_IS_HSV_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSV))
+#define BTK_HSV_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSV, BtkHSVClass))
 
 
 typedef struct _BtkHSV      BtkHSV;
@@ -56,7 +56,7 @@ struct _BtkHSV
   BtkWidget parent_instance;
 
   /* Private data */
-  gpointer GSEAL (priv);
+  bpointer GSEAL (priv);
 };
 
 struct _BtkHSVClass
@@ -78,38 +78,38 @@ struct _BtkHSVClass
 };
 
 
-GType      btk_hsv_get_type     (void) G_GNUC_CONST;
+GType      btk_hsv_get_type     (void) B_GNUC_CONST;
 BtkWidget* btk_hsv_new          (void);
 void       btk_hsv_set_color    (BtkHSV    *hsv,
 				 double     h,
 				 double     s,
 				 double     v);
 void       btk_hsv_get_color    (BtkHSV    *hsv,
-				 gdouble   *h,
-				 gdouble   *s,
-				 gdouble   *v);
+				 bdouble   *h,
+				 bdouble   *s,
+				 bdouble   *v);
 void       btk_hsv_set_metrics  (BtkHSV    *hsv,
-				 gint       size,
-				 gint       ring_width);
+				 bint       size,
+				 bint       ring_width);
 void       btk_hsv_get_metrics  (BtkHSV    *hsv,
-				 gint      *size,
-				 gint      *ring_width);
-gboolean   btk_hsv_is_adjusting (BtkHSV    *hsv);
+				 bint      *size,
+				 bint      *ring_width);
+bboolean   btk_hsv_is_adjusting (BtkHSV    *hsv);
 
 /* Convert colors between the RGB and HSV color spaces */
-void       btk_hsv_to_rgb       (gdouble    h,
-				 gdouble    s,
-				 gdouble    v,
-				 gdouble   *r,
-				 gdouble   *g,
-				 gdouble   *b);
-void       btk_rgb_to_hsv       (gdouble    r,
-				 gdouble    g,
-				 gdouble    b,
-				 gdouble   *h,
-				 gdouble   *s,
-				 gdouble   *v);
+void       btk_hsv_to_rgb       (bdouble    h,
+				 bdouble    s,
+				 bdouble    v,
+				 bdouble   *r,
+				 bdouble   *g,
+				 bdouble   *b);
+void       btk_rgb_to_hsv       (bdouble    r,
+				 bdouble    g,
+				 bdouble    b,
+				 bdouble   *h,
+				 bdouble   *s,
+				 bdouble   *v);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HSV_H__ */

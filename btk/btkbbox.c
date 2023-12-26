@@ -43,28 +43,28 @@ enum {
   CHILD_PROP_SECONDARY
 };
 
-static void btk_button_box_set_property       (GObject           *object,
-					       guint              prop_id,
-					       const GValue      *value,
-					       GParamSpec        *pspec);
-static void btk_button_box_get_property       (GObject           *object,
-					       guint              prop_id,
-					       GValue            *value,
-					       GParamSpec        *pspec);
+static void btk_button_box_set_property       (BObject           *object,
+					       buint              prop_id,
+					       const BValue      *value,
+					       BParamSpec        *pspec);
+static void btk_button_box_get_property       (BObject           *object,
+					       buint              prop_id,
+					       BValue            *value,
+					       BParamSpec        *pspec);
 static void btk_button_box_size_request       (BtkWidget         *widget,
                                                BtkRequisition    *requisition);
 static void btk_button_box_size_allocate      (BtkWidget         *widget,
                                                BtkAllocation     *allocation);
 static void btk_button_box_set_child_property (BtkContainer      *container,
 					       BtkWidget         *child,
-					       guint              property_id,
-					       const GValue      *value,
-					       GParamSpec        *pspec);
+					       buint              property_id,
+					       const BValue      *value,
+					       BParamSpec        *pspec);
 static void btk_button_box_get_child_property (BtkContainer      *container,
 					       BtkWidget         *child,
-					       guint              property_id,
-					       GValue            *value,
-					       GParamSpec        *pspec);
+					       buint              property_id,
+					       BValue            *value,
+					       BParamSpec        *pspec);
 
 #define DEFAULT_CHILD_MIN_WIDTH 85
 #define DEFAULT_CHILD_MIN_HEIGHT 27
@@ -77,10 +77,10 @@ static void
 btk_button_box_class_init (BtkButtonBoxClass *class)
 {
   BtkWidgetClass *widget_class;
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkContainerClass *container_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -101,7 +101,7 @@ btk_button_box_class_init (BtkButtonBoxClass *class)
 							     P_("Minimum child width"),
 							     P_("Minimum width of buttons inside the box"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_CHILD_MIN_WIDTH,
 							     BTK_PARAM_READABLE));
 
@@ -110,7 +110,7 @@ btk_button_box_class_init (BtkButtonBoxClass *class)
 							     P_("Minimum child height"),
 							     P_("Minimum height of buttons inside the box"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_CHILD_MIN_HEIGHT,
 							     BTK_PARAM_READABLE));
 
@@ -119,7 +119,7 @@ btk_button_box_class_init (BtkButtonBoxClass *class)
 							     P_("Child internal width padding"),
 							     P_("Amount to increase child's size on either side"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_CHILD_IPAD_X,
 							     BTK_PARAM_READABLE));
 
@@ -128,7 +128,7 @@ btk_button_box_class_init (BtkButtonBoxClass *class)
 							     P_("Child internal height padding"),
 							     P_("Amount to increase child's size on the top and bottom"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
                                                              DEFAULT_CHILD_IPAD_Y,
 							     BTK_PARAM_READABLE));
   g_object_class_install_property (bobject_class,
@@ -161,36 +161,36 @@ btk_button_box_init (BtkButtonBox *button_box)
 }
 
 static void
-btk_button_box_set_property (GObject         *object,
-			     guint            prop_id,
-			     const GValue    *value,
-			     GParamSpec      *pspec)
+btk_button_box_set_property (BObject         *object,
+			     buint            prop_id,
+			     const BValue    *value,
+			     BParamSpec      *pspec)
 {
   switch (prop_id)
     {
     case PROP_LAYOUT_STYLE:
       btk_button_box_set_layout (BTK_BUTTON_BOX (object),
-				 g_value_get_enum (value));
+				 b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_button_box_get_property (GObject         *object,
-			     guint            prop_id,
-			     GValue          *value,
-			     GParamSpec      *pspec)
+btk_button_box_get_property (BObject         *object,
+			     buint            prop_id,
+			     BValue          *value,
+			     BParamSpec      *pspec)
 {
   switch (prop_id)
     {
     case PROP_LAYOUT_STYLE:
-      g_value_set_enum (value, BTK_BUTTON_BOX (object)->layout_style);
+      b_value_set_enum (value, BTK_BUTTON_BOX (object)->layout_style);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -198,15 +198,15 @@ btk_button_box_get_property (GObject         *object,
 static void
 btk_button_box_set_child_property (BtkContainer    *container,
 				   BtkWidget       *child,
-				   guint            property_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec)
+				   buint            property_id,
+				   const BValue    *value,
+				   BParamSpec      *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_SECONDARY:
       btk_button_box_set_child_secondary (BTK_BUTTON_BOX (container), child,
-					  g_value_get_boolean (value));
+					  b_value_get_boolean (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -217,14 +217,14 @@ btk_button_box_set_child_property (BtkContainer    *container,
 static void
 btk_button_box_get_child_property (BtkContainer *container,
 				   BtkWidget    *child,
-				   guint         property_id,
-				   GValue       *value,
-				   GParamSpec   *pspec)
+				   buint         property_id,
+				   BValue       *value,
+				   BParamSpec   *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_SECONDARY:
-      g_value_set_boolean (value, 
+      b_value_set_boolean (value, 
 			   btk_button_box_get_child_secondary (BTK_BUTTON_BOX (container), 
 							       child));
       break;
@@ -238,7 +238,7 @@ btk_button_box_get_child_property (BtkContainer *container,
 
 void 
 btk_button_box_set_child_size (BtkButtonBox *widget, 
-                               gint width, gint height)
+                               bint width, bint height)
 {
   g_return_if_fail (BTK_IS_BUTTON_BOX (widget));
 
@@ -248,7 +248,7 @@ btk_button_box_set_child_size (BtkButtonBox *widget,
 
 void 
 btk_button_box_set_child_ipadding (BtkButtonBox *widget,
-                                   gint ipad_x, gint ipad_y)
+                                   bint ipad_x, bint ipad_y)
 {
   g_return_if_fail (BTK_IS_BUTTON_BOX (widget));
 
@@ -267,7 +267,7 @@ btk_button_box_set_layout (BtkButtonBox      *widget,
   if (widget->layout_style != layout_style)
     {
       widget->layout_style = layout_style;
-      g_object_notify (G_OBJECT (widget), "layout-style");
+      g_object_notify (B_OBJECT (widget), "layout-style");
       btk_widget_queue_resize (BTK_WIDGET (widget));
     }
 }
@@ -277,7 +277,7 @@ btk_button_box_set_layout (BtkButtonBox      *widget,
 
 void 
 btk_button_box_get_child_size (BtkButtonBox *widget,
-                               gint *width, gint *height)
+                               bint *width, bint *height)
 {
   g_return_if_fail (BTK_IS_BUTTON_BOX (widget));
   g_return_if_fail (width != NULL);
@@ -289,7 +289,7 @@ btk_button_box_get_child_size (BtkButtonBox *widget,
 
 void
 btk_button_box_get_child_ipadding (BtkButtonBox *widget,
-                                   gint* ipad_x, gint *ipad_y)
+                                   bint* ipad_x, bint *ipad_y)
 {
   g_return_if_fail (BTK_IS_BUTTON_BOX (widget));
   g_return_if_fail (ipad_x != NULL);
@@ -318,7 +318,7 @@ btk_button_box_get_layout (BtkButtonBox *widget)
  *
  * Since: 2.4
  **/
-gboolean 
+bboolean 
 btk_button_box_get_child_secondary (BtkButtonBox *widget,
 				    BtkWidget    *child)
 {
@@ -367,7 +367,7 @@ btk_button_box_get_child_secondary (BtkButtonBox *widget,
 void 
 btk_button_box_set_child_secondary (BtkButtonBox *widget, 
 				    BtkWidget    *child,
-				    gboolean      is_secondary)
+				    bboolean      is_secondary)
 {
   GList *list;
   
@@ -408,22 +408,22 @@ _btk_button_box_child_requisition (BtkWidget *widget,
   BtkButtonBox *bbox;
   BtkBoxChild *child;
   GList *children;
-  gint nchildren;
-  gint nsecondaries;
-  gint needed_width;
-  gint needed_height;
+  bint nchildren;
+  bint nsecondaries;
+  bint needed_width;
+  bint needed_height;
   BtkRequisition child_requisition;
-  gint ipad_w;
-  gint ipad_h;
-  gint width_default;
-  gint height_default;
-  gint ipad_x_default;
-  gint ipad_y_default;
+  bint ipad_w;
+  bint ipad_h;
+  bint width_default;
+  bint height_default;
+  bint ipad_x_default;
+  bint ipad_y_default;
   
-  gint child_min_width;
-  gint child_min_height;
-  gint ipad_x;
-  gint ipad_y;
+  bint child_min_width;
+  bint child_min_height;
+  bint ipad_x;
+  bint ipad_y;
   
   g_return_if_fail (BTK_IS_BUTTON_BOX (widget));
 
@@ -505,10 +505,10 @@ btk_button_box_size_request (BtkWidget      *widget,
 {
   BtkBox *box;
   BtkButtonBox *bbox;
-  gint nvis_children;
-  gint child_width;
-  gint child_height;
-  gint spacing;
+  bint nvis_children;
+  bint child_width;
+  bint child_height;
+  bint spacing;
   BtkButtonBoxStyle layout;
   BtkOrientation orientation;
 
@@ -580,20 +580,20 @@ btk_button_box_size_allocate (BtkWidget     *widget,
   BtkBoxChild *child;
   GList *children;
   BtkAllocation child_allocation;
-  gint nvis_children;
-  gint n_secondaries;
-  gint child_width;
-  gint child_height;
-  gint x = 0;
-  gint y = 0;
-  gint secondary_x = 0;
-  gint secondary_y = 0;
-  gint width = 0;
-  gint height = 0;
-  gint childspace;
-  gint childspacing = 0;
+  bint nvis_children;
+  bint n_secondaries;
+  bint child_width;
+  bint child_height;
+  bint x = 0;
+  bint y = 0;
+  bint secondary_x = 0;
+  bint secondary_y = 0;
+  bint width = 0;
+  bint height = 0;
+  bint childspace;
+  bint childspacing = 0;
   BtkButtonBoxStyle layout;
-  gint spacing;
+  bint spacing;
   BtkOrientation orientation;
 
   orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));

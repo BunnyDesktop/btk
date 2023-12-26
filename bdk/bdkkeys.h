@@ -33,16 +33,16 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkKeymapKey BdkKeymapKey;
 
 /* BdkKeymapKey is a hardware key that can be mapped to a keyval */
 struct _BdkKeymapKey
 {
-  guint keycode;
-  gint  group;
-  gint  level;
+  buint keycode;
+  bint  group;
+  bint  level;
 };
 
 /* A BdkKeymap defines the translation from keyboard state
@@ -57,28 +57,28 @@ typedef struct _BdkKeymap      BdkKeymap;
 typedef struct _BdkKeymapClass BdkKeymapClass;
 
 #define BDK_TYPE_KEYMAP              (bdk_keymap_get_type ())
-#define BDK_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP, BdkKeymap))
-#define BDK_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_KEYMAP, BdkKeymapClass))
-#define BDK_IS_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP))
-#define BDK_IS_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_KEYMAP))
-#define BDK_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_KEYMAP, BdkKeymapClass))
+#define BDK_KEYMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP, BdkKeymap))
+#define BDK_KEYMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_KEYMAP, BdkKeymapClass))
+#define BDK_IS_KEYMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP))
+#define BDK_IS_KEYMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_KEYMAP))
+#define BDK_KEYMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_KEYMAP, BdkKeymapClass))
 
 struct _BdkKeymap
 {
-  GObject     parent_instance;
+  BObject     parent_instance;
   BdkDisplay *GSEAL (display);
 };
 
 struct _BdkKeymapClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*direction_changed) (BdkKeymap *keymap);
   void (*keys_changed)      (BdkKeymap *keymap);
   void (*state_changed)     (BdkKeymap *keymap);
 };
 
-GType bdk_keymap_get_type (void) G_GNUC_CONST;
+GType bdk_keymap_get_type (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 BdkKeymap* bdk_keymap_get_default     (void);
@@ -86,49 +86,49 @@ BdkKeymap* bdk_keymap_get_default     (void);
 BdkKeymap* bdk_keymap_get_for_display (BdkDisplay *display);
 
 
-guint          bdk_keymap_lookup_key               (BdkKeymap           *keymap,
+buint          bdk_keymap_lookup_key               (BdkKeymap           *keymap,
 						    const BdkKeymapKey  *key);
-gboolean       bdk_keymap_translate_keyboard_state (BdkKeymap           *keymap,
-						    guint                hardware_keycode,
+bboolean       bdk_keymap_translate_keyboard_state (BdkKeymap           *keymap,
+						    buint                hardware_keycode,
 						    BdkModifierType      state,
-						    gint                 group,
-						    guint               *keyval,
-						    gint                *effective_group,
-						    gint                *level,
+						    bint                 group,
+						    buint               *keyval,
+						    bint                *effective_group,
+						    bint                *level,
 						    BdkModifierType     *consumed_modifiers);
-gboolean       bdk_keymap_get_entries_for_keyval   (BdkKeymap           *keymap,
-						    guint                keyval,
+bboolean       bdk_keymap_get_entries_for_keyval   (BdkKeymap           *keymap,
+						    buint                keyval,
 						    BdkKeymapKey       **keys,
-						    gint                *n_keys);
-gboolean       bdk_keymap_get_entries_for_keycode  (BdkKeymap           *keymap,
-						    guint                hardware_keycode,
+						    bint                *n_keys);
+bboolean       bdk_keymap_get_entries_for_keycode  (BdkKeymap           *keymap,
+						    buint                hardware_keycode,
 						    BdkKeymapKey       **keys,
-						    guint              **keyvals,
-						    gint                *n_entries);
+						    buint              **keyvals,
+						    bint                *n_entries);
 BangoDirection bdk_keymap_get_direction            (BdkKeymap           *keymap);
-gboolean       bdk_keymap_have_bidi_layouts        (BdkKeymap           *keymap);
-gboolean       bdk_keymap_get_caps_lock_state      (BdkKeymap           *keymap);
+bboolean       bdk_keymap_have_bidi_layouts        (BdkKeymap           *keymap);
+bboolean       bdk_keymap_get_caps_lock_state      (BdkKeymap           *keymap);
 void           bdk_keymap_add_virtual_modifiers    (BdkKeymap           *keymap,
                                                     BdkModifierType     *state);
-gboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
+bboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
                                                     BdkModifierType     *state);
 
 /* Key values
  */
-gchar*   bdk_keyval_name         (guint        keyval) G_GNUC_CONST;
-guint    bdk_keyval_from_name    (const gchar *keyval_name);
-void     bdk_keyval_convert_case (guint        symbol,
-				  guint       *lower,
-				  guint       *upper);
-guint    bdk_keyval_to_upper     (guint        keyval) G_GNUC_CONST;
-guint    bdk_keyval_to_lower     (guint        keyval) G_GNUC_CONST;
-gboolean bdk_keyval_is_upper     (guint        keyval) G_GNUC_CONST;
-gboolean bdk_keyval_is_lower     (guint        keyval) G_GNUC_CONST;
+bchar*   bdk_keyval_name         (buint        keyval) B_GNUC_CONST;
+buint    bdk_keyval_from_name    (const bchar *keyval_name);
+void     bdk_keyval_convert_case (buint        symbol,
+				  buint       *lower,
+				  buint       *upper);
+buint    bdk_keyval_to_upper     (buint        keyval) B_GNUC_CONST;
+buint    bdk_keyval_to_lower     (buint        keyval) B_GNUC_CONST;
+bboolean bdk_keyval_is_upper     (buint        keyval) B_GNUC_CONST;
+bboolean bdk_keyval_is_lower     (buint        keyval) B_GNUC_CONST;
 
-guint32  bdk_keyval_to_unicode   (guint        keyval) G_GNUC_CONST;
-guint    bdk_unicode_to_keyval   (guint32      wc) G_GNUC_CONST;
+buint32  bdk_keyval_to_unicode   (buint        keyval) B_GNUC_CONST;
+buint    bdk_unicode_to_keyval   (buint32      wc) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_KEYS_H__ */

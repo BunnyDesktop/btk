@@ -34,7 +34,7 @@
 #include <bairo.h>
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* The color type.
  *   A color consists of red, green and blue values in the
@@ -45,10 +45,10 @@ G_BEGIN_DECLS
  */
 struct _BdkColor
 {
-  guint32 pixel;
-  guint16 red;
-  guint16 green;
-  guint16 blue;
+  buint32 pixel;
+  buint16 red;
+  buint16 green;
+  buint16 blue;
 };
 
 /* The colormap type.
@@ -57,39 +57,39 @@ struct _BdkColor
 typedef struct _BdkColormapClass BdkColormapClass;
 
 #define BDK_TYPE_COLORMAP              (bdk_colormap_get_type ())
-#define BDK_COLORMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_COLORMAP, BdkColormap))
-#define BDK_COLORMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_COLORMAP, BdkColormapClass))
-#define BDK_IS_COLORMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_COLORMAP))
-#define BDK_IS_COLORMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_COLORMAP))
-#define BDK_COLORMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_COLORMAP, BdkColormapClass))
+#define BDK_COLORMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_COLORMAP, BdkColormap))
+#define BDK_COLORMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_COLORMAP, BdkColormapClass))
+#define BDK_IS_COLORMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_COLORMAP))
+#define BDK_IS_COLORMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_COLORMAP))
+#define BDK_COLORMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_COLORMAP, BdkColormapClass))
 
 #define BDK_TYPE_COLOR                 (bdk_color_get_type ())
 
 struct _BdkColormap
 {
   /*< private >*/
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
-  gint      GSEAL (size);
+  bint      GSEAL (size);
   BdkColor *GSEAL (colors);
 
   /*< private >*/
   BdkVisual *GSEAL (visual);
   
-  gpointer GSEAL (windowing_data);
+  bpointer GSEAL (windowing_data);
 };
 
 struct _BdkColormapClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
 };
 
-GType        bdk_colormap_get_type (void) G_GNUC_CONST;
+GType        bdk_colormap_get_type (void) B_GNUC_CONST;
 
 BdkColormap* bdk_colormap_new	  (BdkVisual   *visual,
-				   gboolean	allocate);
+				   bboolean	allocate);
 
 #ifndef BDK_DISABLE_DEPRECATED
 BdkColormap* bdk_colormap_ref	  (BdkColormap *cmap);
@@ -103,74 +103,74 @@ BdkColormap* bdk_colormap_get_system	        (void);
 BdkScreen *bdk_colormap_get_screen (BdkColormap *cmap);
 
 #ifndef BDK_DISABLE_DEPRECATED
-gint bdk_colormap_get_system_size  (void);
+bint bdk_colormap_get_system_size  (void);
 #endif
 
 #if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
 /* Used by bdk_colors_store () */
 void bdk_colormap_change (BdkColormap	*colormap,
-			  gint		 ncolors);
+			  bint		 ncolors);
 #endif 
 
-gint  bdk_colormap_alloc_colors   (BdkColormap    *colormap,
+bint  bdk_colormap_alloc_colors   (BdkColormap    *colormap,
 				   BdkColor       *colors,
-				   gint            n_colors,
-				   gboolean        writeable,
-				   gboolean        best_match,
-				   gboolean       *success);
-gboolean bdk_colormap_alloc_color (BdkColormap    *colormap,
+				   bint            n_colors,
+				   bboolean        writeable,
+				   bboolean        best_match,
+				   bboolean       *success);
+bboolean bdk_colormap_alloc_color (BdkColormap    *colormap,
 				   BdkColor       *color,
-				   gboolean        writeable,
-				   gboolean        best_match);
+				   bboolean        writeable,
+				   bboolean        best_match);
 void     bdk_colormap_free_colors (BdkColormap    *colormap,
 				   const BdkColor *colors,
-				   gint            n_colors);
+				   bint            n_colors);
 void     bdk_colormap_query_color (BdkColormap    *colormap,
-				   gulong          pixel,
+				   bulong          pixel,
 				   BdkColor       *result);
 
 BdkVisual *bdk_colormap_get_visual (BdkColormap *colormap);
 
 BdkColor *bdk_color_copy      (const BdkColor *color);
 void      bdk_color_free      (BdkColor       *color);
-gboolean  bdk_color_parse     (const gchar    *spec,
+bboolean  bdk_color_parse     (const bchar    *spec,
 			       BdkColor       *color);
-guint     bdk_color_hash      (const BdkColor *colora);
-gboolean  bdk_color_equal     (const BdkColor *colora,
+buint     bdk_color_hash      (const BdkColor *colora);
+bboolean  bdk_color_equal     (const BdkColor *colora,
 			       const BdkColor *colorb);
-gchar *   bdk_color_to_string (const BdkColor *color);
+bchar *   bdk_color_to_string (const BdkColor *color);
 
-GType     bdk_color_get_type (void) G_GNUC_CONST;
+GType     bdk_color_get_type (void) B_GNUC_CONST;
 
 /* The following functions are deprecated */
 #ifndef BDK_DISABLE_DEPRECATED
 void bdk_colors_store	 (BdkColormap	*colormap,
 			  BdkColor	*colors,
-			  gint		 ncolors);
-gint bdk_color_white	 (BdkColormap	*colormap,
+			  bint		 ncolors);
+bint bdk_color_white	 (BdkColormap	*colormap,
 			  BdkColor	*color);
-gint bdk_color_black	 (BdkColormap	*colormap,
+bint bdk_color_black	 (BdkColormap	*colormap,
 			  BdkColor	*color);
-gint bdk_color_alloc	 (BdkColormap	*colormap,
+bint bdk_color_alloc	 (BdkColormap	*colormap,
 			  BdkColor	*color);
-gint bdk_color_change	 (BdkColormap	*colormap,
+bint bdk_color_change	 (BdkColormap	*colormap,
 			  BdkColor	*color);
 #endif /* BDK_DISABLE_DEPRECATED */
 
 #if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
 /* Used by bdk_rgb_try_colormap () */
-gint bdk_colors_alloc	 (BdkColormap	*colormap,
-			  gboolean	 contiguous,
-			  gulong	*planes,
-			  gint		 nplanes,
-			  gulong	*pixels,
-			  gint		 npixels);
+bint bdk_colors_alloc	 (BdkColormap	*colormap,
+			  bboolean	 contiguous,
+			  bulong	*planes,
+			  bint		 nplanes,
+			  bulong	*pixels,
+			  bint		 npixels);
 void bdk_colors_free	 (BdkColormap	*colormap,
-			  gulong	*pixels,
-			  gint		 npixels,
-			  gulong	 planes);
+			  bulong	*pixels,
+			  bint		 npixels,
+			  bulong	 planes);
 #endif /* !BDK_DISABLE_DEPRECATED || BDK_COMPILATION */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_COLOR_H__ */

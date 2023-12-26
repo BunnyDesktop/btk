@@ -36,26 +36,26 @@ struct _BtkIMMulticontextPrivate
 {
   BdkWindow *client_window;
   BdkRectangle cursor_location;
-  gchar *context_id;
+  bchar *context_id;
 
-  guint use_preedit : 1;
-  guint have_cursor_location : 1;
-  guint focus_in : 1;
+  buint use_preedit : 1;
+  buint have_cursor_location : 1;
+  buint focus_in : 1;
 };
 
-static void     btk_im_multicontext_finalize           (GObject                 *object);
+static void     btk_im_multicontext_finalize           (BObject                 *object);
 
 static void     btk_im_multicontext_set_slave          (BtkIMMulticontext       *multicontext,
 							BtkIMContext            *slave,
-							gboolean                 finalizing);
+							bboolean                 finalizing);
 
 static void     btk_im_multicontext_set_client_window  (BtkIMContext            *context,
 							BdkWindow               *window);
 static void     btk_im_multicontext_get_preedit_string (BtkIMContext            *context,
-							gchar                  **str,
+							bchar                  **str,
 							BangoAttrList          **attrs,
-							gint                   *cursor_pos);
-static gboolean btk_im_multicontext_filter_keypress    (BtkIMContext            *context,
+							bint                   *cursor_pos);
+static bboolean btk_im_multicontext_filter_keypress    (BtkIMContext            *context,
 							BdkEventKey             *event);
 static void     btk_im_multicontext_focus_in           (BtkIMContext            *context);
 static void     btk_im_multicontext_focus_out          (BtkIMContext            *context);
@@ -63,14 +63,14 @@ static void     btk_im_multicontext_reset              (BtkIMContext            
 static void     btk_im_multicontext_set_cursor_location (BtkIMContext            *context,
 							BdkRectangle		*area);
 static void     btk_im_multicontext_set_use_preedit    (BtkIMContext            *context,
-							gboolean                 use_preedit);
-static gboolean btk_im_multicontext_get_surrounding    (BtkIMContext            *context,
-							gchar                  **text,
-							gint                    *cursor_index);
+							bboolean                 use_preedit);
+static bboolean btk_im_multicontext_get_surrounding    (BtkIMContext            *context,
+							bchar                  **text,
+							bint                    *cursor_index);
 static void     btk_im_multicontext_set_surrounding    (BtkIMContext            *context,
 							const char              *text,
-							gint                     len,
-							gint                     cursor_index);
+							bint                     len,
+							bint                     cursor_index);
 
 static void     btk_im_multicontext_preedit_start_cb        (BtkIMContext      *slave,
 							     BtkIMMulticontext *multicontext);
@@ -79,23 +79,23 @@ static void     btk_im_multicontext_preedit_end_cb          (BtkIMContext      *
 static void     btk_im_multicontext_preedit_changed_cb      (BtkIMContext      *slave,
 							     BtkIMMulticontext *multicontext);
 static void     btk_im_multicontext_commit_cb               (BtkIMContext      *slave,
-							     const gchar       *str,
+							     const bchar       *str,
 							     BtkIMMulticontext *multicontext);
-static gboolean btk_im_multicontext_retrieve_surrounding_cb (BtkIMContext      *slave,
+static bboolean btk_im_multicontext_retrieve_surrounding_cb (BtkIMContext      *slave,
 							     BtkIMMulticontext *multicontext);
-static gboolean btk_im_multicontext_delete_surrounding_cb   (BtkIMContext      *slave,
-							     gint               offset,
-							     gint               n_chars,
+static bboolean btk_im_multicontext_delete_surrounding_cb   (BtkIMContext      *slave,
+							     bint               offset,
+							     bint               n_chars,
 							     BtkIMMulticontext *multicontext);
 
-static const gchar *global_context_id = NULL;
+static const bchar *global_context_id = NULL;
 
 G_DEFINE_TYPE (BtkIMMulticontext, btk_im_multicontext, BTK_TYPE_IM_CONTEXT)
 
 static void
 btk_im_multicontext_class_init (BtkIMMulticontextClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
   
   im_context_class->set_client_window = btk_im_multicontext_set_client_window;
@@ -119,7 +119,7 @@ btk_im_multicontext_init (BtkIMMulticontext *multicontext)
 {
   multicontext->slave = NULL;
   
-  multicontext->priv = G_TYPE_INSTANCE_GET_PRIVATE (multicontext, BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextPrivate);
+  multicontext->priv = B_TYPE_INSTANCE_GET_PRIVATE (multicontext, BTK_TYPE_IM_MULTICONTEXT, BtkIMMulticontextPrivate);
   multicontext->priv->use_preedit = TRUE;
   multicontext->priv->have_cursor_location = FALSE;
   multicontext->priv->focus_in = FALSE;
@@ -139,7 +139,7 @@ btk_im_multicontext_new (void)
 }
 
 static void
-btk_im_multicontext_finalize (GObject *object)
+btk_im_multicontext_finalize (BObject *object)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (object);
   
@@ -147,16 +147,16 @@ btk_im_multicontext_finalize (GObject *object)
   g_free (multicontext->context_id);
   g_free (multicontext->priv->context_id);
 
-  G_OBJECT_CLASS (btk_im_multicontext_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_im_multicontext_parent_class)->finalize (object);
 }
 
 static void
 btk_im_multicontext_set_slave (BtkIMMulticontext *multicontext,
 			       BtkIMContext      *slave,
-			       gboolean           finalizing)
+			       bboolean           finalizing)
 {
   BtkIMMulticontextPrivate *priv = multicontext->priv;
-  gboolean need_preedit_changed = FALSE;
+  bboolean need_preedit_changed = FALSE;
   
   if (multicontext->slave)
     {
@@ -222,7 +222,7 @@ btk_im_multicontext_set_slave (BtkIMMulticontext *multicontext,
     g_signal_emit_by_name (multicontext, "preedit-changed");
 }
 
-static const gchar *
+static const bchar *
 get_effective_context_id (BtkIMMulticontext *multicontext)
 {
   if (multicontext->priv->context_id)
@@ -261,7 +261,7 @@ btk_im_multicontext_get_slave (BtkIMMulticontext *multicontext)
 
 static void
 im_module_setting_changed (BtkSettings *settings, 
-                           gpointer     data)
+                           bpointer     data)
 {
   global_context_id = NULL;
 }
@@ -275,7 +275,7 @@ btk_im_multicontext_set_client_window (BtkIMContext *context,
   BtkIMContext *slave;
   BdkScreen *screen;
   BtkSettings *settings;
-  gboolean connected;
+  bboolean connected;
 
   multicontext->priv->client_window = window;
 
@@ -284,14 +284,14 @@ btk_im_multicontext_set_client_window (BtkIMContext *context,
       screen = bdk_window_get_screen (window);
       settings = btk_settings_get_for_screen (screen);
 
-      connected = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (settings),
+      connected = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (settings),
                                                       "btk-im-module-connected"));
       if (!connected)
         {
           g_signal_connect (settings, "notify::btk-im-module",
                             G_CALLBACK (im_module_setting_changed), NULL);
-          g_object_set_data (G_OBJECT (settings), "btk-im-module-connected",
-                             GINT_TO_POINTER (TRUE));
+          g_object_set_data (B_OBJECT (settings), "btk-im-module-connected",
+                             BINT_TO_POINTER (TRUE));
 
           global_context_id = NULL;
         }
@@ -304,9 +304,9 @@ btk_im_multicontext_set_client_window (BtkIMContext *context,
 
 static void
 btk_im_multicontext_get_preedit_string (BtkIMContext   *context,
-					gchar         **str,
+					bchar         **str,
 					BangoAttrList **attrs,
-					gint           *cursor_pos)
+					bint           *cursor_pos)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (context);
   BtkIMContext *slave = btk_im_multicontext_get_slave (multicontext);
@@ -322,7 +322,7 @@ btk_im_multicontext_get_preedit_string (BtkIMContext   *context,
     }
 }
 
-static gboolean
+static bboolean
 btk_im_multicontext_filter_keypress (BtkIMContext *context,
 				     BdkEventKey  *event)
 {
@@ -339,8 +339,8 @@ btk_im_multicontext_filter_keypress (BtkIMContext *context,
       ch = bdk_keyval_to_unicode (event->keyval);
       if (ch != 0)
         {
-          gint len;
-          gchar buf[10];
+          bint len;
+          bchar buf[10];
 
           len = g_unichar_to_utf8 (ch, buf);
           buf[len] = '\0';
@@ -404,7 +404,7 @@ btk_im_multicontext_set_cursor_location (BtkIMContext   *context,
 
 static void
 btk_im_multicontext_set_use_preedit (BtkIMContext   *context,
-				     gboolean	    use_preedit)
+				     bboolean	    use_preedit)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (context);
   BtkIMContext *slave = btk_im_multicontext_get_slave (multicontext);
@@ -417,10 +417,10 @@ btk_im_multicontext_set_use_preedit (BtkIMContext   *context,
     btk_im_context_set_use_preedit (slave, use_preedit);
 }
 
-static gboolean
+static bboolean
 btk_im_multicontext_get_surrounding (BtkIMContext  *context,
-				     gchar        **text,
-				     gint          *cursor_index)
+				     bchar        **text,
+				     bint          *cursor_index)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (context);
   BtkIMContext *slave = btk_im_multicontext_get_slave (multicontext);
@@ -441,8 +441,8 @@ btk_im_multicontext_get_surrounding (BtkIMContext  *context,
 static void
 btk_im_multicontext_set_surrounding (BtkIMContext *context,
 				     const char   *text,
-				     gint          len,
-				     gint          cursor_index)
+				     bint          len,
+				     bint          cursor_index)
 {
   BtkIMMulticontext *multicontext = BTK_IM_MULTICONTEXT (context);
   BtkIMContext *slave = btk_im_multicontext_get_slave (multicontext);
@@ -474,30 +474,30 @@ btk_im_multicontext_preedit_changed_cb (BtkIMContext      *slave,
 
 static void
 btk_im_multicontext_commit_cb (BtkIMContext      *slave,
-			       const gchar       *str,
+			       const bchar       *str,
 			       BtkIMMulticontext *multicontext)
 {
   g_signal_emit_by_name (multicontext, "commit", str);
 }
 
-static gboolean
+static bboolean
 btk_im_multicontext_retrieve_surrounding_cb (BtkIMContext      *slave,
 					     BtkIMMulticontext *multicontext)
 {
-  gboolean result;
+  bboolean result;
   
   g_signal_emit_by_name (multicontext, "retrieve-surrounding", &result);
 
   return result;
 }
 
-static gboolean
+static bboolean
 btk_im_multicontext_delete_surrounding_cb (BtkIMContext      *slave,
-					   gint               offset,
-					   gint               n_chars,
+					   bint               offset,
+					   bint               n_chars,
 					   BtkIMMulticontext *multicontext)
 {
-  gboolean result;
+  bboolean result;
   
   g_signal_emit_by_name (multicontext, "delete-surrounding",
 			 offset, n_chars, &result);
@@ -511,7 +511,7 @@ activate_cb (BtkWidget         *menuitem,
 {
   if (BTK_CHECK_MENU_ITEM (menuitem)->active)
     {
-      const gchar *id = g_object_get_data (G_OBJECT (menuitem), "btk-context-id");
+      const bchar *id = g_object_get_data (B_OBJECT (menuitem), "btk-context-id");
 
       btk_im_multicontext_set_context_id (context, id);
     }
@@ -551,7 +551,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
 				      BtkMenuShell      *menushell)
 {
   const BtkIMContextInfo **contexts;
-  guint n_contexts, i;
+  buint n_contexts, i;
   GSList *group = NULL;
   BtkWidget *menuitem, *system_menuitem;
   const char *system_context_id; 
@@ -561,7 +561,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
   if (!context->priv->context_id)
     btk_check_menu_item_set_active (BTK_CHECK_MENU_ITEM (menuitem), TRUE);
   group = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (menuitem));
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"), NULL);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"), NULL);
   g_signal_connect (menuitem, "activate", G_CALLBACK (activate_cb), context);
 
   btk_widget_show (menuitem);
@@ -570,7 +570,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
   menuitem = btk_radio_menu_item_new_with_label (group, C_("input method menu", "None"));
   if (g_strcmp0 (context->priv->context_id, NONE_ID) == 0)
     btk_check_menu_item_set_active (BTK_CHECK_MENU_ITEM (menuitem), TRUE);
-  g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"), NONE_ID);
+  g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"), NONE_ID);
   g_signal_connect (menuitem, "activate", G_CALLBACK (activate_cb), context);
   btk_widget_show (menuitem);
   btk_menu_shell_append (menushell, menuitem);
@@ -584,7 +584,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
 
   for (i = 0; i < n_contexts; i++)
     {
-      const gchar *translated_name;
+      const bchar *translated_name;
 #ifdef ENABLE_NLS
       if (contexts[i]->domain && contexts[i]->domain[0])
 	{
@@ -657,7 +657,7 @@ btk_im_multicontext_append_menuitems (BtkIMMulticontext *context,
  
       group = btk_radio_menu_item_get_group (BTK_RADIO_MENU_ITEM (menuitem));
       
-      g_object_set_data (G_OBJECT (menuitem), I_("btk-context-id"),
+      g_object_set_data (B_OBJECT (menuitem), I_("btk-context-id"),
 			 (char *)contexts[i]->context_id);
       g_signal_connect (menuitem, "activate",
 			G_CALLBACK (activate_cb), context);

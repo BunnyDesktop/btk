@@ -15,11 +15,11 @@ static BtkWidget *window = NULL;
 typedef struct _StockItemInfo StockItemInfo;
 struct _StockItemInfo
 {
-  gchar *id;
+  bchar *id;
   BtkStockItem item;
   BdkPixbuf *small_icon;
-  gchar *macro;
-  gchar *accel_str;
+  bchar *macro;
+  bchar *accel_str;
 };
 
 /* Make StockItemInfo a boxed type so we can automatically
@@ -81,11 +81,11 @@ struct _StockItemDisplay
   BtkWidget *icon_image;
 };
 
-static gchar*
-id_to_macro (const gchar *id)
+static bchar*
+id_to_macro (const bchar *id)
 {
   GString *macro = NULL;
-  const gchar *cp;
+  const bchar *cp;
 
   /* btk-foo-bar -> BTK_STOCK_FOO_BAR */
 
@@ -121,10 +121,10 @@ create_model (void)
   GSList *ids;
   GSList *tmp_list;
   
-  store = btk_list_store_new (2, STOCK_ITEM_INFO_TYPE, G_TYPE_STRING);
+  store = btk_list_store_new (2, STOCK_ITEM_INFO_TYPE, B_TYPE_STRING);
 
   ids = btk_stock_list_ids ();
-  ids = g_slist_sort (ids, (GCompareFunc) strcmp);
+  ids = b_slist_sort (ids, (GCompareFunc) strcmp);
   tmp_list = ids;
   while (tmp_list != NULL)
     {
@@ -153,8 +153,8 @@ create_model (void)
       if (icon_set)
         {
           BtkIconSize *sizes = NULL;
-          gint n_sizes = 0;
-          gint i;
+          bint n_sizes = 0;
+          bint i;
           BtkIconSize size;
 
           /* See what sizes this stock icon really exists at */
@@ -181,7 +181,7 @@ create_model (void)
           if (size != BTK_ICON_SIZE_MENU)
             {
               /* Make the result the proper size for our thumbnail */
-              gint w, h;
+              bint w, h;
               BdkPixbuf *scaled;
               
               btk_icon_size_lookup (BTK_ICON_SIZE_MENU, &w, &h);
@@ -217,11 +217,11 @@ create_model (void)
       if (info.small_icon)
         g_object_unref (info.small_icon);
       
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
   
-  g_slist_foreach (ids, (GFunc)g_free, NULL);
-  g_slist_free (ids);
+  b_slist_foreach (ids, (GFunc)g_free, NULL);
+  b_slist_free (ids);
 
   return BTK_TREE_MODEL (store);
 }
@@ -234,15 +234,15 @@ get_largest_size (const char *id)
 {
   BtkIconSet *set = btk_icon_factory_lookup_default (id);
   BtkIconSize *sizes;
-  gint n_sizes, i;
+  bint n_sizes, i;
   BtkIconSize best_size = BTK_ICON_SIZE_INVALID;
-  gint best_pixels = 0;
+  bint best_pixels = 0;
 
   btk_icon_set_get_sizes (set, &sizes, &n_sizes);
 
   for (i = 0; i < n_sizes; i++)
     {
-      gint width, height;
+      bint width, height;
       
       btk_icon_size_lookup (sizes[i], &width, &height);
 
@@ -267,12 +267,12 @@ selection_changed (BtkTreeSelection *selection)
   BtkTreeIter iter;
   
   treeview = btk_tree_selection_get_tree_view (selection);
-  display = g_object_get_data (G_OBJECT (treeview), "stock-display");
+  display = g_object_get_data (B_OBJECT (treeview), "stock-display");
 
   if (btk_tree_selection_get_selected (selection, &model, &iter))
     {
       StockItemInfo *info;
-      gchar *str;
+      bchar *str;
       
       btk_tree_model_get (model, &iter,
                           0, &info,
@@ -324,7 +324,7 @@ macro_set_func_text (BtkTreeViewColumn *tree_column,
 		     BtkCellRenderer   *cell,
 		     BtkTreeModel      *model,
 		     BtkTreeIter       *iter,
-		     gpointer           data)
+		     bpointer           data)
 {
   StockItemInfo *info;
   
@@ -344,7 +344,7 @@ id_set_func (BtkTreeViewColumn *tree_column,
              BtkCellRenderer   *cell,
              BtkTreeModel      *model,
              BtkTreeIter       *iter,
-             gpointer           data)
+             bpointer           data)
 {
   StockItemInfo *info;
   
@@ -364,7 +364,7 @@ accel_set_func (BtkTreeViewColumn *tree_column,
                 BtkCellRenderer   *cell,
                 BtkTreeModel      *model,
                 BtkTreeIter       *iter,
-                gpointer           data)
+                bpointer           data)
 {
   StockItemInfo *info;
   
@@ -384,7 +384,7 @@ label_set_func (BtkTreeViewColumn *tree_column,
                 BtkCellRenderer   *cell,
                 BtkTreeModel      *model,
                 BtkTreeIter       *iter,
-                gpointer           data)
+                bpointer           data)
 {
   StockItemInfo *info;
   
@@ -499,7 +499,7 @@ do_stock_browser (BtkWidget *do_widget)
       btk_container_add (BTK_CONTAINER (frame), vbox);
 
       display = g_new (StockItemDisplay, 1);
-      g_object_set_data_full (G_OBJECT (treeview),
+      g_object_set_data_full (B_OBJECT (treeview),
                               "stock-display",
                               display,
                               g_free); /* free display with treeview */

@@ -30,11 +30,11 @@ structures to help iterate over text in the buffer.
 The gapped text segment is quite simple.  It's parameters are (all
 parameters I mention here are in the structure BtkText):
 
-  guchar* text;
-  guint text_len;
-  guint gap_position;
-  guint gap_size;
-  guint text_end;
+  buchar* text;
+  buint text_len;
+  buint gap_position;
+  buint gap_size;
+  buint text_end;
 
 TEXT is the buffer, TEXT_LEN is its allocated length.  TEXT_END is the
 length of the text, including the gap.  GAP_POSITION is the start of
@@ -56,7 +56,7 @@ contains:
   TextFont* font;
   BdkColor* back_color;
   BdkColor* fore_color;
-  guint length;
+  buint length;
 
 Currently, only font and color data are contained in the property
 list, but it can be extended by modifying the INSERT_TEXT_PROPERTY,
@@ -82,8 +82,8 @@ sort of cursor to keep track of the alignment of the property list and
 the absolute buffer offset.  The BtkPropertyMark structure contains:
 
   GList* property;
-  guint offset;
-  guint index;
+  buint offset;
+  buint index;
 
 PROPERTY is a pointer at the current property list element.  INDEX is
 the absolute buffer index, and OFFSET is the offset of INDEX from the
@@ -98,12 +98,12 @@ and computing property marks are:
 
  void advance_mark     (BtkPropertyMark* mark);
  void decrement_mark   (BtkPropertyMark* mark);
- void advance_mark_n   (BtkPropertyMark* mark, gint n);
- void decrement_mark_n (BtkPropertyMark* mark, gint n);
- void move_mark_n      (BtkPropertyMark* mark, gint n);
+ void advance_mark_n   (BtkPropertyMark* mark, bint n);
+ void decrement_mark_n (BtkPropertyMark* mark, bint n);
+ void move_mark_n      (BtkPropertyMark* mark, bint n);
 
- BtkPropertyMark find_mark      (BtkText* text, guint mark_position);
- BtkPropertyMark find_mark_near (BtkText* text, guint mark_position,
+ BtkPropertyMark find_mark      (BtkText* text, buint mark_position);
+ BtkPropertyMark find_mark_near (BtkText* text, buint mark_position,
                                  const BtkPropertyMark* near);
 
 ADVANCE_MARK and DECREMENT_MARK modify the mark by plus or minus one
@@ -125,11 +125,11 @@ line-wrap and no-line-wrap.  I suspect it would not be difficult to
 implement new policies for doing such things as justification.  The
 LineParams structure includes the following fields:
 
-  guint font_ascent;
-  guint font_descent;
-  guint pixel_width;
-  guint displayable_chars;
-  guint wraps : 1;
+  buint font_ascent;
+  buint font_descent;
+  buint pixel_width;
+  buint displayable_chars;
+  buint wraps : 1;
 
   PrevTabCont tab_cont;
   PrevTabCont tab_cont_next;
@@ -175,9 +175,9 @@ Tab stops are variable width.  A list of tab stops is contained in the
 BtkText structure:
 
   GList *tab_stops;
-  gint default_tab_width;
+  bint default_tab_width;
 
-The elements of tab_stops are integers casted to gpointer.  This is a
+The elements of tab_stops are integers casted to bpointer.  This is a
 little bogus, but works.  For example:
 
   text->default_tab_width = 4;
@@ -193,7 +193,7 @@ current font is used.  The PrevTabCont structure, of which two are
 stored per line, is used to compute the geometry of lines which may
 have wrapped and carried part of a tab with them:
 
-  guint pixel_offset;
+  buint pixel_offset;
   TabStopMark tab_start;
 
 PIXEL_OFFSET is the number of pixels at which the line should start,
@@ -202,7 +202,7 @@ only it keeps track of the mapping between line position (column) and
 the next tab stop.  A TabStopMark contains:
 
   GList* tab_stops;
-  gint to_next_tab;
+  bint to_next_tab;
 
 TAB_STOPS is a pointer into the TAB_STOPS field of the BtkText
 structure.  TO_NEXT_TAB is the number of characters before the next
@@ -223,15 +223,15 @@ void
 line_params_iterate (BtkText* text,
 		     const BtkPropertyMark* mark0,
 		     const PrevTabCont* tab_mark0,
-		     gboolean alloc,
-		     gpointer data,
+		     bboolean alloc,
+		     bpointer data,
 		     LineIteratorFunction iter);
 
 where LineIteratorFunction is:
 
-typedef gint (*LineIteratorFunction) (BtkText* text,
+typedef bint (*LineIteratorFunction) (BtkText* text,
                                       LineParams* lp,
-                                      gpointer data);
+                                      bpointer data);
 
 The arguments are a text widget (TEXT), the property mark at the
 beginning of the first line (MARK0), the tab stop mark at the
@@ -262,10 +262,10 @@ visible lines:
   GList *current_line;
   GList *line_start_cache;
 
-  guint first_line_start_index;
-  guint first_cut_pixels;
-  guint first_onscreen_hor_pixel;
-  guint first_onscreen_ver_pixel;
+  buint first_line_start_index;
+  buint first_cut_pixels;
+  buint first_onscreen_hor_pixel;
+  buint first_onscreen_ver_pixel;
 
 LINE_START_CACHE is a doubly linked list of LineParams.  CURRENT_LINE
 is a transient piece of data which is set in various places such as
@@ -310,12 +310,12 @@ indicate that a line wraps and is continued offscreen, respectively.
 
 Some flags:
 
-  guint has_cursor : 1;
-  guint is_editable : 1;
-  guint line_wrap : 1;
-  guint freeze : 1;
-  guint has_selection : 1;
-  guint own_selection : 1;
+  buint has_cursor : 1;
+  buint is_editable : 1;
+  buint line_wrap : 1;
+  buint freeze : 1;
+  buint has_selection : 1;
+  buint own_selection : 1;
 
 HAS_CURSOR is true iff the cursor is visible.  IS_EDITABLE is true iff
 the user is allowed to modify the buffer.  If IS_EDITABLE is false,
@@ -335,24 +335,24 @@ which may otherwise span the gap.  It is not strictly necessary
 but simplifies the drawing code because it does not need to deal with
 the gap.
 
-  guchar* scratch_buffer;
-  guint   scratch_buffer_len;
+  buchar* scratch_buffer;
+  buint   scratch_buffer_len;
 
 The last vertical scrollbar position.  Currently this looks the same
 as FIRST_ONSCREEN_VER_PIXEL.  I can't remember why I have two values.
 Perhaps someone should clean this up.
 
-  gint last_ver_value;
+  bint last_ver_value;
 
 The cursor:
 
-  gint            cursor_pos_x;
-  gint            cursor_pos_y;
+  bint            cursor_pos_x;
+  bint            cursor_pos_y;
   BtkPropertyMark cursor_mark;
-  gchar           cursor_char;
-  gchar           cursor_char_offset;
-  gint            cursor_virtual_x;
-  gint            cursor_drawn_level;
+  bchar           cursor_char;
+  bchar           cursor_char_offset;
+  bint            cursor_virtual_x;
+  bint            cursor_drawn_level;
 
 CURSOR_POS_X and CURSOR_POS_Y are the screen coordinates of the
 cursor.  CURSOR_MARK is the buffer position.  CURSOR_CHAR is

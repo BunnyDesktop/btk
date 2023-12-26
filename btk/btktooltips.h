@@ -33,14 +33,14 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOLTIPS                  (btk_tooltips_get_type ())
-#define BTK_TOOLTIPS(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIPS, BtkTooltips))
-#define BTK_TOOLTIPS_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
-#define BTK_IS_TOOLTIPS(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIPS))
-#define BTK_IS_TOOLTIPS_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOLTIPS))
-#define BTK_TOOLTIPS_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
+#define BTK_TOOLTIPS(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIPS, BtkTooltips))
+#define BTK_TOOLTIPS_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
+#define BTK_IS_TOOLTIPS(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIPS))
+#define BTK_IS_TOOLTIPS_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOLTIPS))
+#define BTK_TOOLTIPS_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsClass))
 
 
 typedef struct _BtkTooltips	 BtkTooltips;
@@ -51,8 +51,8 @@ struct _BtkTooltipsData
 {
   BtkTooltips *tooltips;
   BtkWidget *widget;
-  gchar *tip_text;
-  gchar *tip_private;
+  bchar *tip_text;
+  bchar *tip_private;
 };
 
 struct _BtkTooltips
@@ -65,11 +65,11 @@ struct _BtkTooltips
   BtkTooltipsData *active_tips_data;
   GList *tips_data_list; /* unused */
 
-  guint   delay : 30;
-  guint	  enabled : 1;
-  guint   have_grab : 1;
-  guint   use_sticky_delay : 1;
-  gint	  timer_tag;
+  buint   delay : 30;
+  buint	  enabled : 1;
+  buint   have_grab : 1;
+  buint   use_sticky_delay : 1;
+  bint	  timer_tag;
   GTimeVal last_popdown;
 };
 
@@ -84,25 +84,25 @@ struct _BtkTooltipsClass
   void (*_btk_reserved4) (void);
 };
 
-GType		 btk_tooltips_get_type	   (void) G_GNUC_CONST;
+GType		 btk_tooltips_get_type	   (void) B_GNUC_CONST;
 BtkTooltips*	 btk_tooltips_new	   (void);
 
 void		 btk_tooltips_enable	   (BtkTooltips   *tooltips);
 void		 btk_tooltips_disable	   (BtkTooltips   *tooltips);
 void		 btk_tooltips_set_delay	   (BtkTooltips   *tooltips,
-					    guint	   delay);
+					    buint	   delay);
 void		 btk_tooltips_set_tip	   (BtkTooltips   *tooltips,
 					    BtkWidget	  *widget,
-					    const gchar   *tip_text,
-					    const gchar   *tip_private);
+					    const bchar   *tip_text,
+					    const bchar   *tip_private);
 BtkTooltipsData* btk_tooltips_data_get	   (BtkWidget	  *widget);
 void             btk_tooltips_force_window (BtkTooltips   *tooltips);
 
-gboolean         btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
+bboolean         btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
                                                         BtkTooltips **tooltips,
                                                         BtkWidget   **current_widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOLTIPS_H__ */
 

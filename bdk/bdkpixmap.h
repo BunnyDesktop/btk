@@ -34,17 +34,17 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkdrawable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkPixmapObject BdkPixmapObject;
 typedef struct _BdkPixmapObjectClass BdkPixmapObjectClass;
 
 #define BDK_TYPE_PIXMAP              (bdk_pixmap_get_type ())
-#define BDK_PIXMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP, BdkPixmap))
-#define BDK_PIXMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
-#define BDK_IS_PIXMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP))
-#define BDK_IS_PIXMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP))
-#define BDK_PIXMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_PIXMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP, BdkPixmap))
+#define BDK_PIXMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_IS_PIXMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP))
+#define BDK_IS_PIXMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP))
+#define BDK_PIXMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
 #define BDK_PIXMAP_OBJECT(object)    ((BdkPixmapObject *) BDK_PIXMAP (object))
 
 struct _BdkPixmapObject
@@ -53,7 +53,7 @@ struct _BdkPixmapObject
   
   BdkDrawable *GSEAL (impl);  /* window-system-specific delegate object */
 
-  gint GSEAL (depth);
+  bint GSEAL (depth);
 };
 
 struct _BdkPixmapObjectClass
@@ -62,50 +62,50 @@ struct _BdkPixmapObjectClass
 
 };
 
-GType      bdk_pixmap_get_type          (void) G_GNUC_CONST;
+GType      bdk_pixmap_get_type          (void) B_GNUC_CONST;
 
 /* Pixmaps
  */
 BdkPixmap* bdk_pixmap_new		(BdkDrawable *drawable,
-					 gint	      width,
-					 gint	      height,
-					 gint	      depth);
+					 bint	      width,
+					 bint	      height,
+					 bint	      depth);
 #ifndef BDK_DISABLE_DEPRECATED
 BdkBitmap* bdk_bitmap_create_from_data	(BdkDrawable *drawable,
-					 const gchar *data,
-					 gint	      width,
-					 gint	      height);
+					 const bchar *data,
+					 bint	      width,
+					 bint	      height);
 BdkPixmap* bdk_pixmap_create_from_data	(BdkDrawable    *drawable,
-					 const gchar 	*data,
-					 gint	     	 width,
-					 gint	     	 height,
-					 gint	         depth,
+					 const bchar 	*data,
+					 bint	     	 width,
+					 bint	     	 height,
+					 bint	         depth,
 					 const BdkColor *fg,
 					 const BdkColor *bg);
 
 BdkPixmap* bdk_pixmap_create_from_xpm            (BdkDrawable    *drawable,
 						  BdkBitmap     **mask,
 						  const BdkColor *transparent_color,
-						  const gchar    *filename);
+						  const bchar    *filename);
 BdkPixmap* bdk_pixmap_colormap_create_from_xpm   (BdkDrawable    *drawable,
 						  BdkColormap    *colormap,
 						  BdkBitmap     **mask,
 						  const BdkColor *transparent_color,
-						  const gchar    *filename);
+						  const bchar    *filename);
 BdkPixmap* bdk_pixmap_create_from_xpm_d          (BdkDrawable    *drawable,
 						  BdkBitmap     **mask,
 						  const BdkColor *transparent_color,
-						  gchar         **data);
+						  bchar         **data);
 BdkPixmap* bdk_pixmap_colormap_create_from_xpm_d (BdkDrawable    *drawable,
 						  BdkColormap    *colormap,
 						  BdkBitmap     **mask,
 						  const BdkColor *transparent_color,
-						  gchar         **data);
+						  bchar         **data);
 #endif
 
 void          bdk_pixmap_get_size                (BdkPixmap      *pixmap,
-                                                  gint	         *width,
-                                                  gint  	 *height);
+                                                  bint	         *width,
+                                                  bint  	 *height);
 
 /* Functions to create/lookup pixmaps from their native equivalents
  */
@@ -120,9 +120,9 @@ BdkPixmap*    bdk_pixmap_lookup_for_display      (BdkDisplay      *display,
 						  BdkNativeWindow  anid);
 BdkPixmap*    bdk_pixmap_foreign_new_for_screen  (BdkScreen       *screen,
 						  BdkNativeWindow  anid,
-						  gint             width,
-                                                  gint             height,
-                                                  gint             depth);
+						  bint             width,
+                                                  bint             height,
+                                                  bint             depth);
 
 #ifndef BDK_DISABLE_DEPRECATED
 #define bdk_bitmap_ref                 g_object_ref
@@ -131,6 +131,6 @@ BdkPixmap*    bdk_pixmap_foreign_new_for_screen  (BdkScreen       *screen,
 #define bdk_pixmap_unref               g_object_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_H__ */

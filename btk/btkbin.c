@@ -47,9 +47,9 @@ static void btk_bin_add         (BtkContainer   *container,
 static void btk_bin_remove      (BtkContainer   *container,
 			         BtkWidget      *widget);
 static void btk_bin_forall      (BtkContainer   *container,
-				 gboolean	include_internals,
+				 bboolean	include_internals,
 				 BtkCallback     callback,
-				 gpointer        callback_data);
+				 bpointer        callback_data);
 static GType btk_bin_child_type (BtkContainer   *container);
 
 
@@ -83,7 +83,7 @@ btk_bin_child_type (BtkContainer *container)
   if (!BTK_BIN (container)->child)
     return BTK_TYPE_WIDGET;
   else
-    return G_TYPE_NONE;
+    return B_TYPE_NONE;
 }
 
 static void
@@ -97,10 +97,10 @@ btk_bin_add (BtkContainer *container,
       g_warning ("Attempting to add a widget with type %s to a %s, "
                  "but as a BtkBin subclass a %s can only contain one widget at a time; "
                  "it already contains a widget of type %s",
-                 g_type_name (G_OBJECT_TYPE (child)),
-                 g_type_name (G_OBJECT_TYPE (bin)),
-                 g_type_name (G_OBJECT_TYPE (bin)),
-                 g_type_name (G_OBJECT_TYPE (bin->child)));
+                 g_type_name (B_OBJECT_TYPE (child)),
+                 g_type_name (B_OBJECT_TYPE (bin)),
+                 g_type_name (B_OBJECT_TYPE (bin)),
+                 g_type_name (B_OBJECT_TYPE (bin->child)));
       return;
     }
 
@@ -113,7 +113,7 @@ btk_bin_remove (BtkContainer *container,
 		BtkWidget    *child)
 {
   BtkBin *bin = BTK_BIN (container);
-  gboolean widget_was_visible;
+  bboolean widget_was_visible;
 
   g_return_if_fail (bin->child == child);
 
@@ -131,9 +131,9 @@ btk_bin_remove (BtkContainer *container,
 
 static void
 btk_bin_forall (BtkContainer *container,
-		gboolean      include_internals,
+		bboolean      include_internals,
 		BtkCallback   callback,
-		gpointer      callback_data)
+		bpointer      callback_data)
 {
   BtkBin *bin = BTK_BIN (container);
 

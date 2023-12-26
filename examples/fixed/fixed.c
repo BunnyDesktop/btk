@@ -4,8 +4,8 @@
 /* I'm going to be lazy and use some global variables to
  * store the position of the widget within the fixed
  * container */
-gint x = 50;
-gint y = 50;
+bint x = 50;
+bint y = 50;
 
 /* This callback function moves the button to a new position
  * in the Fixed container. */
@@ -24,7 +24,7 @@ int main( int   argc,
   BtkWidget *window;
   BtkWidget *fixed;
   BtkWidget *button;
-  gint i;
+  bint i;
 
   /* Initialise BTK */
   btk_init (&argc, &argv);
@@ -34,7 +34,7 @@ int main( int   argc,
   btk_window_set_title (BTK_WINDOW (window), "Fixed Container");
 
   /* Here we connect the "destroy" event to a signal handler */ 
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (btk_main_quit), NULL);
  
   /* Sets the border width of the window. */
@@ -52,8 +52,8 @@ int main( int   argc,
     /* When the button receives the "clicked" signal, it will call the
      * function move_button() passing it the Fixed Container as its
      * argument. */
-    g_signal_connect (G_OBJECT (button), "clicked",
-		      G_CALLBACK (move_button), (gpointer) fixed);
+    g_signal_connect (B_OBJECT (button), "clicked",
+		      G_CALLBACK (move_button), (bpointer) fixed);
   
     /* This packs the button into the fixed containers window. */
     btk_fixed_put (BTK_FIXED (fixed), button, i*50, i*50);

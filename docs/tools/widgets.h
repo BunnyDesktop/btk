@@ -15,9 +15,9 @@ typedef enum
 typedef struct WidgetInfo
 {
   BtkWidget *window;
-  gchar *name;
-  gboolean no_focus;
-  gboolean include_decorations;
+  bchar *name;
+  bboolean no_focus;
+  bboolean include_decorations;
   WidgetSize size;
 } WidgetInfo;
 

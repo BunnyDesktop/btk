@@ -25,17 +25,17 @@
 #include <bunnylib-object.h>
 #include "btkprintbackend.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_TEST    (btk_print_backend_test_get_type ())
-#define BTK_PRINT_BACKEND_TEST(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_TEST, BtkPrintBackendTest))
-#define BTK_IS_PRINT_BACKEND_TEST(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_TEST))
+#define BTK_PRINT_BACKEND_TEST(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_TEST, BtkPrintBackendTest))
+#define BTK_IS_PRINT_BACKEND_TEST(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_TEST))
 
 typedef struct _BtkPrintBackendTest    BtkPrintBackendTest;
 
 BtkPrintBackend *btk_print_backend_test_new      (void);
-GType            btk_print_backend_test_get_type (void) G_GNUC_CONST;
+GType            btk_print_backend_test_get_type (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_BACKEND_TEST_H__ */

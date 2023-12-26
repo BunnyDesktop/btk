@@ -63,26 +63,26 @@ struct _BtkRulerPrivate
   BtkOrientation orientation;
 };
 
-#define BTK_RULER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RULER, BtkRulerPrivate))
+#define BTK_RULER_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RULER, BtkRulerPrivate))
 
 
-static void     btk_ruler_set_property    (GObject        *object,
-                                           guint            prop_id,
-                                           const GValue   *value,
-                                           GParamSpec     *pspec);
-static void     btk_ruler_get_property    (GObject        *object,
-                                           guint           prop_id,
-                                           GValue         *value,
-                                           GParamSpec     *pspec);
+static void     btk_ruler_set_property    (BObject        *object,
+                                           buint            prop_id,
+                                           const BValue   *value,
+                                           BParamSpec     *pspec);
+static void     btk_ruler_get_property    (BObject        *object,
+                                           buint           prop_id,
+                                           BValue         *value,
+                                           BParamSpec     *pspec);
 static void     btk_ruler_realize         (BtkWidget      *widget);
 static void     btk_ruler_unrealize       (BtkWidget      *widget);
 static void     btk_ruler_size_request    (BtkWidget      *widget,
                                            BtkRequisition *requisition);
 static void     btk_ruler_size_allocate   (BtkWidget      *widget,
                                            BtkAllocation  *allocation);
-static gboolean btk_ruler_motion_notify   (BtkWidget      *widget,
+static bboolean btk_ruler_motion_notify   (BtkWidget      *widget,
                                            BdkEventMotion *event);
-static gboolean btk_ruler_expose          (BtkWidget      *widget,
+static bboolean btk_ruler_expose          (BtkWidget      *widget,
                                            BdkEventExpose *event);
 static void     btk_ruler_make_pixmap     (BtkRuler       *ruler);
 static void     btk_ruler_real_draw_ticks (BtkRuler       *ruler);
@@ -105,7 +105,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkRuler, btk_ruler, BTK_TYPE_WIDGET,
 static void
 btk_ruler_class_init (BtkRulerClass *class)
 {
-  GObjectClass   *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass   *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class  = BTK_WIDGET_CLASS (class);
 
   bobject_class->set_property = btk_ruler_set_property;
@@ -130,8 +130,8 @@ btk_ruler_class_init (BtkRulerClass *class)
                                    g_param_spec_double ("lower",
 							P_("Lower"),
 							P_("Lower limit of ruler"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
 
@@ -140,8 +140,8 @@ btk_ruler_class_init (BtkRulerClass *class)
                                    g_param_spec_double ("upper",
 							P_("Upper"),
 							P_("Upper limit of ruler"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
 
@@ -150,8 +150,8 @@ btk_ruler_class_init (BtkRulerClass *class)
                                    g_param_spec_double ("position",
 							P_("Position"),
 							P_("Position of mark on the ruler"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
 
@@ -160,8 +160,8 @@ btk_ruler_class_init (BtkRulerClass *class)
                                    g_param_spec_double ("max-size",
 							P_("Max Size"),
 							P_("Maximum size of the ruler"),
-							-G_MAXDOUBLE,
-							G_MAXDOUBLE,
+							-B_MAXDOUBLE,
+							B_MAXDOUBLE,
 							0.0,
 							BTK_PARAM_READWRITE));  
   /**
@@ -207,10 +207,10 @@ btk_ruler_init (BtkRuler *ruler)
 }
 
 static void
-btk_ruler_set_property (GObject      *object,
- 			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+btk_ruler_set_property (BObject      *object,
+ 			buint         prop_id,
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkRuler *ruler = BTK_RULER (object);
   BtkRulerPrivate *private = BTK_RULER_GET_PRIVATE (ruler);
@@ -218,39 +218,39 @@ btk_ruler_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      private->orientation = g_value_get_enum (value);
+      private->orientation = b_value_get_enum (value);
       btk_widget_queue_resize (BTK_WIDGET (ruler));
       break;
     case PROP_LOWER:
-      btk_ruler_set_range (ruler, g_value_get_double (value), ruler->upper,
+      btk_ruler_set_range (ruler, b_value_get_double (value), ruler->upper,
 			   ruler->position, ruler->max_size);
       break;
     case PROP_UPPER:
-      btk_ruler_set_range (ruler, ruler->lower, g_value_get_double (value),
+      btk_ruler_set_range (ruler, ruler->lower, b_value_get_double (value),
 			   ruler->position, ruler->max_size);
       break;
     case PROP_POSITION:
       btk_ruler_set_range (ruler, ruler->lower, ruler->upper,
-			   g_value_get_double (value), ruler->max_size);
+			   b_value_get_double (value), ruler->max_size);
       break;
     case PROP_MAX_SIZE:
       btk_ruler_set_range (ruler, ruler->lower, ruler->upper,
-			   ruler->position,  g_value_get_double (value));
+			   ruler->position,  b_value_get_double (value));
       break;
     case PROP_METRIC:
-      btk_ruler_set_metric (ruler, g_value_get_enum (value));
+      btk_ruler_set_metric (ruler, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_ruler_get_property (GObject      *object,
-			guint         prop_id,
-			GValue       *value,
-			GParamSpec   *pspec)
+btk_ruler_get_property (BObject      *object,
+			buint         prop_id,
+			BValue       *value,
+			BParamSpec   *pspec)
 {
   BtkRuler *ruler = BTK_RULER (object);
   BtkRulerPrivate *private = BTK_RULER_GET_PRIVATE (ruler);
@@ -258,25 +258,25 @@ btk_ruler_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, private->orientation);
+      b_value_set_enum (value, private->orientation);
       break;
     case PROP_LOWER:
-      g_value_set_double (value, ruler->lower);
+      b_value_set_double (value, ruler->lower);
       break;
     case PROP_UPPER:
-      g_value_set_double (value, ruler->upper);
+      b_value_set_double (value, ruler->upper);
       break;
     case PROP_POSITION:
-      g_value_set_double (value, ruler->position);
+      b_value_set_double (value, ruler->position);
       break;
     case PROP_MAX_SIZE:
-      g_value_set_double (value, ruler->max_size);
+      b_value_set_double (value, ruler->max_size);
       break;
     case PROP_METRIC:
-      g_value_set_enum (value, btk_ruler_get_metric (ruler));
+      b_value_set_enum (value, btk_ruler_get_metric (ruler));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -292,7 +292,7 @@ btk_ruler_set_metric (BtkRuler      *ruler,
   if (btk_widget_is_drawable (BTK_WIDGET (ruler)))
     btk_widget_queue_draw (BTK_WIDGET (ruler));
 
-  g_object_notify (G_OBJECT (ruler), "metric");
+  g_object_notify (B_OBJECT (ruler), "metric");
 }
 
 /**
@@ -309,7 +309,7 @@ btk_ruler_set_metric (BtkRuler      *ruler,
 BtkMetricType
 btk_ruler_get_metric (BtkRuler *ruler)
 {
-  gint i;
+  bint i;
 
   g_return_val_if_fail (BTK_IS_RULER (ruler), 0);
 
@@ -338,35 +338,35 @@ btk_ruler_get_metric (BtkRuler *ruler)
  */
 void
 btk_ruler_set_range (BtkRuler *ruler,
-		     gdouble   lower,
-		     gdouble   upper,
-		     gdouble   position,
-		     gdouble   max_size)
+		     bdouble   lower,
+		     bdouble   upper,
+		     bdouble   position,
+		     bdouble   max_size)
 {
   g_return_if_fail (BTK_IS_RULER (ruler));
 
-  g_object_freeze_notify (G_OBJECT (ruler));
+  g_object_freeze_notify (B_OBJECT (ruler));
   if (ruler->lower != lower)
     {
       ruler->lower = lower;
-      g_object_notify (G_OBJECT (ruler), "lower");
+      g_object_notify (B_OBJECT (ruler), "lower");
     }
   if (ruler->upper != upper)
     {
       ruler->upper = upper;
-      g_object_notify (G_OBJECT (ruler), "upper");
+      g_object_notify (B_OBJECT (ruler), "upper");
     }
   if (ruler->position != position)
     {
       ruler->position = position;
-      g_object_notify (G_OBJECT (ruler), "position");
+      g_object_notify (B_OBJECT (ruler), "position");
     }
   if (ruler->max_size != max_size)
     {
       ruler->max_size = max_size;
-      g_object_notify (G_OBJECT (ruler), "max-size");
+      g_object_notify (B_OBJECT (ruler), "max-size");
     }
-  g_object_thaw_notify (G_OBJECT (ruler));
+  g_object_thaw_notify (B_OBJECT (ruler));
 
   if (btk_widget_is_drawable (BTK_WIDGET (ruler)))
     btk_widget_queue_draw (BTK_WIDGET (ruler));
@@ -389,10 +389,10 @@ btk_ruler_set_range (BtkRuler *ruler,
  **/
 void
 btk_ruler_get_range (BtkRuler *ruler,
-		     gdouble  *lower,
-		     gdouble  *upper,
-		     gdouble  *position,
-		     gdouble  *max_size)
+		     bdouble  *lower,
+		     bdouble  *upper,
+		     bdouble  *position,
+		     bdouble  *max_size)
 {
   g_return_if_fail (BTK_IS_RULER (ruler));
 
@@ -430,7 +430,7 @@ btk_ruler_realize (BtkWidget *widget)
 {
   BtkRuler *ruler;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   ruler = BTK_RULER (widget);
 
@@ -510,14 +510,14 @@ btk_ruler_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_ruler_motion_notify (BtkWidget      *widget,
                          BdkEventMotion *event)
 {
   BtkRuler *ruler = BTK_RULER (widget);
   BtkRulerPrivate *private = BTK_RULER_GET_PRIVATE (widget);
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 
   bdk_event_request_motions (event);
   x = event->x;
@@ -528,7 +528,7 @@ btk_ruler_motion_notify (BtkWidget      *widget,
   else
     ruler->position = ruler->lower + ((ruler->upper - ruler->lower) * y) / widget->allocation.height;
 
-  g_object_notify (G_OBJECT (ruler), "position");
+  g_object_notify (B_OBJECT (ruler), "position");
 
   /*  Make sure the ruler has been allocated already  */
   if (ruler->backing_store != NULL)
@@ -537,7 +537,7 @@ btk_ruler_motion_notify (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_ruler_expose (BtkWidget      *widget,
 		  BdkEventExpose *event)
 {
@@ -564,8 +564,8 @@ static void
 btk_ruler_make_pixmap (BtkRuler *ruler)
 {
   BtkWidget *widget;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   widget = BTK_WIDGET (ruler);
 
@@ -594,22 +594,22 @@ btk_ruler_real_draw_ticks (BtkRuler *ruler)
   BtkWidget *widget = BTK_WIDGET (ruler);
   BtkRulerPrivate *private = BTK_RULER_GET_PRIVATE (ruler);
   bairo_t *cr;
-  gint i, j;
-  gint width, height;
-  gint xthickness;
-  gint ythickness;
-  gint length, ideal_length;
-  gdouble lower, upper;		/* Upper and lower limits, in ruler units */
-  gdouble increment;		/* Number of pixels per unit */
-  gint scale;			/* Number of units per major unit */
-  gdouble subd_incr;
-  gdouble start, end, cur;
-  gchar unit_str[32];
-  gint digit_height;
-  gint digit_offset;
-  gint text_width;
-  gint text_height;
-  gint pos;
+  bint i, j;
+  bint width, height;
+  bint xthickness;
+  bint ythickness;
+  bint length, ideal_length;
+  bdouble lower, upper;		/* Upper and lower limits, in ruler units */
+  bdouble increment;		/* Number of pixels per unit */
+  bint scale;			/* Number of units per major unit */
+  bdouble subd_incr;
+  bdouble start, end, cur;
+  bchar unit_str[32];
+  bint digit_height;
+  bint digit_offset;
+  bint text_width;
+  bint text_height;
+  bint pos;
   BangoLayout *layout;
   BangoRectangle logical_rect, ink_rect;
 
@@ -672,7 +672,7 @@ btk_ruler_real_draw_ticks (BtkRuler *ruler)
   if ((upper - lower) == 0)
     goto out;
 
-  increment = (gdouble) width / (upper - lower);
+  increment = (bdouble) width / (upper - lower);
 
   /* determine the scale H
    *  We calculate the text size as for the vruler instead of using
@@ -712,8 +712,8 @@ btk_ruler_real_draw_ticks (BtkRuler *ruler)
   length = 0;
   for (i = MAXIMUM_SUBDIVIDE - 1; i >= 0; i--)
     {
-      subd_incr = (gdouble) ruler->metric->ruler_scale[scale] /
-	          (gdouble) ruler->metric->subdivide[i];
+      subd_incr = (bdouble) ruler->metric->ruler_scale[scale] /
+	          (bdouble) ruler->metric->subdivide[i];
       if (subd_incr * fabs(increment) <= MINIMUM_INCR)
 	continue;
 
@@ -807,12 +807,12 @@ btk_ruler_real_draw_pos (BtkRuler *ruler)
 {
   BtkWidget *widget = BTK_WIDGET (ruler);
   BtkRulerPrivate *private = BTK_RULER_GET_PRIVATE (ruler);
-  gint x, y;
-  gint width, height;
-  gint bs_width, bs_height;
-  gint xthickness;
-  gint ythickness;
-  gdouble increment;
+  bint x, y;
+  bint width, height;
+  bint bs_width, bs_height;
+  bint xthickness;
+  bint ythickness;
+  bdouble increment;
 
   if (btk_widget_is_drawable (widget))
     {
@@ -856,14 +856,14 @@ btk_ruler_real_draw_pos (BtkRuler *ruler)
 
           if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
-              increment = (gdouble) width / (ruler->upper - ruler->lower);
+              increment = (bdouble) width / (ruler->upper - ruler->lower);
 
               x = ROUND ((ruler->position - ruler->lower) * increment) + (xthickness - bs_width) / 2 - 1;
               y = (height + bs_height) / 2 + ythickness;
             }
           else
             {
-              increment = (gdouble) height / (ruler->upper - ruler->lower);
+              increment = (bdouble) height / (ruler->upper - ruler->lower);
 
               x = (width + bs_width) / 2 + xthickness;
               y = ROUND ((ruler->position - ruler->lower) * increment) + (ythickness - bs_height) / 2 - 1;

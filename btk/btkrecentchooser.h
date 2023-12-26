@@ -30,12 +30,12 @@
 #include <btk/btkrecentmanager.h>
 #include <btk/btkrecentfilter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_CHOOSER			(btk_recent_chooser_get_type ())
-#define BTK_RECENT_CHOOSER(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER, BtkRecentChooser))
-#define BTK_IS_RECENT_CHOOSER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER))
-#define BTK_RECENT_CHOOSER_GET_IFACE(inst)	(G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_RECENT_CHOOSER, BtkRecentChooserIface))
+#define BTK_RECENT_CHOOSER(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER, BtkRecentChooser))
+#define BTK_IS_RECENT_CHOOSER(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER))
+#define BTK_RECENT_CHOOSER_GET_IFACE(inst)	(B_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_RECENT_CHOOSER, BtkRecentChooserIface))
 
 /**
  * BtkRecentSortType:
@@ -59,9 +59,9 @@ typedef enum
   BTK_RECENT_SORT_CUSTOM
 } BtkRecentSortType;
 
-typedef gint (*BtkRecentSortFunc) (BtkRecentInfo *a,
+typedef bint (*BtkRecentSortFunc) (BtkRecentInfo *a,
 				   BtkRecentInfo *b,
-				   gpointer       user_data);
+				   bpointer       user_data);
 
 
 typedef struct _BtkRecentChooser      BtkRecentChooser; /* dummy */
@@ -85,15 +85,15 @@ struct _BtkRecentChooserIface
   /*
    * Methods
    */
-  gboolean          (* set_current_uri)    (BtkRecentChooser  *chooser,
-  					    const gchar       *uri,
+  bboolean          (* set_current_uri)    (BtkRecentChooser  *chooser,
+  					    const bchar       *uri,
   					    GError           **error);
-  gchar *           (* get_current_uri)    (BtkRecentChooser  *chooser);
-  gboolean          (* select_uri)         (BtkRecentChooser  *chooser,
-  					    const gchar       *uri,
+  bchar *           (* get_current_uri)    (BtkRecentChooser  *chooser);
+  bboolean          (* select_uri)         (BtkRecentChooser  *chooser,
+  					    const bchar       *uri,
   					    GError           **error);
   void              (* unselect_uri)       (BtkRecentChooser  *chooser,
-                                            const gchar       *uri);
+                                            const bchar       *uri);
   void              (* select_all)         (BtkRecentChooser  *chooser);
   void              (* unselect_all)       (BtkRecentChooser  *chooser);
   GList *           (* get_items)          (BtkRecentChooser  *chooser);
@@ -105,7 +105,7 @@ struct _BtkRecentChooserIface
   GSList *          (* list_filters)       (BtkRecentChooser  *chooser);
   void              (* set_sort_func)      (BtkRecentChooser  *chooser,
   					    BtkRecentSortFunc  sort_func,
-  					    gpointer           data,
+  					    bpointer           data,
   					    GDestroyNotify     destroy);
 
   /*
@@ -115,63 +115,63 @@ struct _BtkRecentChooserIface
   void		    (* selection_changed)  (BtkRecentChooser  *chooser);
 };
 
-GType   btk_recent_chooser_get_type    (void) G_GNUC_CONST;
+GType   btk_recent_chooser_get_type    (void) B_GNUC_CONST;
 
 /*
  * Configuration
  */
 void              btk_recent_chooser_set_show_private    (BtkRecentChooser  *chooser,
-							  gboolean           show_private);
-gboolean          btk_recent_chooser_get_show_private    (BtkRecentChooser  *chooser);
+							  bboolean           show_private);
+bboolean          btk_recent_chooser_get_show_private    (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_show_not_found  (BtkRecentChooser  *chooser,
-							  gboolean           show_not_found);
-gboolean          btk_recent_chooser_get_show_not_found  (BtkRecentChooser  *chooser);
+							  bboolean           show_not_found);
+bboolean          btk_recent_chooser_get_show_not_found  (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_select_multiple (BtkRecentChooser  *chooser,
-							  gboolean           select_multiple);
-gboolean          btk_recent_chooser_get_select_multiple (BtkRecentChooser  *chooser);
+							  bboolean           select_multiple);
+bboolean          btk_recent_chooser_get_select_multiple (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_limit           (BtkRecentChooser  *chooser,
-							  gint               limit);
-gint              btk_recent_chooser_get_limit           (BtkRecentChooser  *chooser);
+							  bint               limit);
+bint              btk_recent_chooser_get_limit           (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_local_only      (BtkRecentChooser  *chooser,
-							  gboolean           local_only);
-gboolean          btk_recent_chooser_get_local_only      (BtkRecentChooser  *chooser);
+							  bboolean           local_only);
+bboolean          btk_recent_chooser_get_local_only      (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_show_tips       (BtkRecentChooser  *chooser,
-							  gboolean           show_tips);
-gboolean          btk_recent_chooser_get_show_tips       (BtkRecentChooser  *chooser);
+							  bboolean           show_tips);
+bboolean          btk_recent_chooser_get_show_tips       (BtkRecentChooser  *chooser);
 #ifndef BTK_DISABLE_DEPRECATED
 void              btk_recent_chooser_set_show_numbers    (BtkRecentChooser  *chooser,
-							  gboolean           show_numbers);
-gboolean          btk_recent_chooser_get_show_numbers    (BtkRecentChooser  *chooser);
+							  bboolean           show_numbers);
+bboolean          btk_recent_chooser_get_show_numbers    (BtkRecentChooser  *chooser);
 #endif /* BTK_DISABLE_DEPRECATED */
 void              btk_recent_chooser_set_show_icons      (BtkRecentChooser  *chooser,
-							  gboolean           show_icons);
-gboolean          btk_recent_chooser_get_show_icons      (BtkRecentChooser  *chooser);
+							  bboolean           show_icons);
+bboolean          btk_recent_chooser_get_show_icons      (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_sort_type       (BtkRecentChooser  *chooser,
 							  BtkRecentSortType  sort_type);
 BtkRecentSortType btk_recent_chooser_get_sort_type       (BtkRecentChooser  *chooser);
 void              btk_recent_chooser_set_sort_func       (BtkRecentChooser  *chooser,
 							  BtkRecentSortFunc  sort_func,
-							  gpointer           sort_data,
+							  bpointer           sort_data,
 							  GDestroyNotify     data_destroy);
 
 /*
  * Items handling
  */
-gboolean       btk_recent_chooser_set_current_uri  (BtkRecentChooser  *chooser,
-						    const gchar       *uri,
+bboolean       btk_recent_chooser_set_current_uri  (BtkRecentChooser  *chooser,
+						    const bchar       *uri,
 						    GError           **error);
-gchar *        btk_recent_chooser_get_current_uri  (BtkRecentChooser  *chooser);
+bchar *        btk_recent_chooser_get_current_uri  (BtkRecentChooser  *chooser);
 BtkRecentInfo *btk_recent_chooser_get_current_item (BtkRecentChooser  *chooser);
-gboolean       btk_recent_chooser_select_uri       (BtkRecentChooser  *chooser,
-						    const gchar       *uri,
+bboolean       btk_recent_chooser_select_uri       (BtkRecentChooser  *chooser,
+						    const bchar       *uri,
 						    GError           **error);
 void           btk_recent_chooser_unselect_uri     (BtkRecentChooser  *chooser,
-					            const gchar       *uri);
+					            const bchar       *uri);
 void           btk_recent_chooser_select_all       (BtkRecentChooser  *chooser);
 void           btk_recent_chooser_unselect_all     (BtkRecentChooser  *chooser);
 GList *        btk_recent_chooser_get_items        (BtkRecentChooser  *chooser);
-gchar **       btk_recent_chooser_get_uris         (BtkRecentChooser  *chooser,
-						    gsize             *length);
+bchar **       btk_recent_chooser_get_uris         (BtkRecentChooser  *chooser,
+						    bsize             *length);
 
 /*
  * Filters
@@ -186,6 +186,6 @@ void 		 btk_recent_chooser_set_filter    (BtkRecentChooser *chooser,
 BtkRecentFilter *btk_recent_chooser_get_filter    (BtkRecentChooser *chooser);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_H__ */

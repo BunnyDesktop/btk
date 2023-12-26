@@ -152,7 +152,7 @@ bdkaliasdef.c: bdk.symbols
 bdk.def: bdk.symbols
 	echo EXPORTS > bdk.def
 	cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DBDK_WINDOWING_WIN32 -DALL_FILES \
-		-DG_GNUC_CONST= \
+		-DB_GNUC_CONST= \
 		bdk.symbols >> bdk.def
 
 libbdk-win32-$(BTK_VER)-0.dll : $(bdk_OBJECTS) bdk.def win32\bdk-win32.lib

@@ -50,7 +50,7 @@ static void
 icon_pressed_cb (SexyIconEntry         *entry,
                  SexyIconEntryPosition  position,
                  int                    button,
-                 gpointer               data)
+                 bpointer               data)
 {
   BtkMenu *menu = data;
 
@@ -65,7 +65,7 @@ static void
 icon_press_cb (BtkEntry             *entry,
                BtkEntryIconPosition  position,
                BdkEventButton       *event,
-               gpointer              data)
+               bpointer              data)
 {
   BtkMenu *menu = data;
 
@@ -102,9 +102,9 @@ icon_press_cb (BtkEntry             *entry,
 <informalexample><programlisting>
 static void
 icon_pressed_cb (BtkEntry       *entry,
-                 gint            position,
+                 bint            position,
                  BdkEventButton *event,
-                 gpointer        data)
+                 bpointer        data)
 {
   if (position == BTK_ENTRY_ICON_SECONDARY)
     btk_entry_set_text (entry, "");
@@ -112,10 +112,10 @@ icon_pressed_cb (BtkEntry       *entry,
 
 static void
 text_changed_cb (BtkEntry   *entry,
-                 GParamSpec *pspec,
+                 BParamSpec *pspec,
                  BtkWidget  *button)
 {
-  gboolean has_text;
+  bboolean has_text;
 
   has_text = btk_entry_get_text_length (entry) > 0;
   btk_entry_set_icon_sensitive (entry,

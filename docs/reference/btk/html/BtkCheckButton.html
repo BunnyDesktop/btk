@@ -106,7 +106,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkCheckButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -143,13 +143,13 @@ btk_check_button_new (<em class="parameter"><code><span class="type">void</span>
 <div class="refsect2">
 <a name="btk-check-button-new-with-label"></a><h3>btk_check_button_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_check_button_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_check_button_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-check-button-new-with-mnemonic"></a><h3>btk_check_button_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_check_button_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_check_button_new_with_mnemonic (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkCheckButton.html" title="BtkCheckButton"><span class="type">BtkCheckButton</span></a> containing a label. The label
 will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
 in <em class="parameter"><code>label</code></em>

@@ -36,7 +36,7 @@ typedef struct _BtkModuleInfo BtkModuleInfo;
 struct _BtkModuleInfo
 {
   GModule                 *module;
-  gint                     ref_count;
+  bint                     ref_count;
   BtkModuleInitFunc        init_func;
   BtkModuleDisplayInitFunc display_init_func;
   GSList                  *names;
@@ -44,23 +44,23 @@ struct _BtkModuleInfo
 
 static GSList *btk_modules = NULL;
 
-static gboolean default_display_opened = FALSE;
+static bboolean default_display_opened = FALSE;
 
 /* Saved argc, argv for delayed module initialization
  */
-static gint    btk_argc = 0;
-static gchar **btk_argv = NULL;
+static bint    btk_argc = 0;
+static bchar **btk_argv = NULL;
 
-static gchar **
+static bchar **
 get_module_path (void)
 {
-  const gchar *module_path_env;
-  const gchar *exe_prefix;
-  const gchar *home_dir;
-  gchar *home_btk_dir = NULL;
-  gchar *module_path;
-  gchar *default_dir;
-  static gchar **result = NULL;
+  const bchar *module_path_env;
+  const bchar *exe_prefix;
+  const bchar *home_dir;
+  bchar *home_btk_dir = NULL;
+  bchar *module_path;
+  bchar *default_dir;
+  static bchar **result = NULL;
 
   if (result)
     return result;
@@ -107,28 +107,28 @@ get_module_path (void)
  * 
  * Return value: the search path for the module type. Free with g_strfreev().
  **/
-gchar **
-_btk_get_module_path (const gchar *type)
+bchar **
+_btk_get_module_path (const bchar *type)
 {
-  gchar **paths = get_module_path();
-  gchar **path;
-  gchar **result;
-  gint count = 0;
+  bchar **paths = get_module_path();
+  bchar **path;
+  bchar **result;
+  bint count = 0;
 
   for (path = paths; *path; path++)
     count++;
 
-  result = g_new (gchar *, count * 4 + 1);
+  result = g_new (bchar *, count * 4 + 1);
 
   count = 0;
   for (path = get_module_path (); *path; path++)
     {
-      gint use_version, use_host;
+      bint use_version, use_host;
       
       for (use_version = TRUE; use_version >= FALSE; use_version--)
 	for (use_host = TRUE; use_host >= FALSE; use_host--)
 	  {
-	    gchar *tmp_dir;
+	    bchar *tmp_dir;
 	    
 	    if (use_version && use_host)
 	      tmp_dir = g_build_filename (*path, BTK_BINARY_VERSION, BTK_HOST, type, NULL);
@@ -150,15 +150,15 @@ _btk_get_module_path (const gchar *type)
 
 /* Like g_module_path, but use .la as the suffix
  */
-static gchar*
-module_build_la_path (const gchar *directory,
-		      const gchar *module_name)
+static bchar*
+module_build_la_path (const bchar *directory,
+		      const bchar *module_name)
 {
-  gchar *filename;
-  gchar *result;
+  bchar *filename;
+  bchar *result;
 	
   if (strncmp (module_name, "lib", 3) == 0)
-    filename = (gchar *)module_name;
+    filename = (bchar *)module_name;
   else
     filename =  g_strconcat ("lib", module_name, ".la", NULL);
 
@@ -184,13 +184,13 @@ module_build_la_path (const gchar *directory,
  * Return value: the pathname to the found module, or %NULL if it wasn't found.
  *  Free with g_free().
  **/
-gchar *
-_btk_find_module (const gchar *name,
-		  const gchar *type)
+bchar *
+_btk_find_module (const bchar *name,
+		  const bchar *type)
 {
-  gchar **paths;
-  gchar **path;
-  gchar *module_name = NULL;
+  bchar **paths;
+  bchar **path;
+  bchar *module_name = NULL;
 
   if (g_path_is_absolute (name))
     return g_strdup (name);
@@ -198,7 +198,7 @@ _btk_find_module (const gchar *name,
   paths = _btk_get_module_path (type);
   for (path = paths; *path; path++)
     {
-      gchar *tmp_name;
+      bchar *tmp_name;
 
       tmp_name = g_module_build_path (*path, name);
       if (g_file_test (tmp_name, G_FILE_TEST_EXISTS))
@@ -223,10 +223,10 @@ _btk_find_module (const gchar *name,
 }
 
 static GModule *
-find_module (const gchar *name)
+find_module (const bchar *name)
 {
   GModule *module;
-  gchar *module_name;
+  bchar *module_name;
 
   module_name = _btk_find_module (name, "modules");
   if (!module_name)
@@ -252,7 +252,7 @@ find_module (const gchar *name)
   return module;
 }
 
-static gint
+static bint
 cmp_module (BtkModuleInfo *info,
 	    GModule       *module)
 {
@@ -261,21 +261,21 @@ cmp_module (BtkModuleInfo *info,
 
 static GSList *
 load_module (GSList      *module_list,
-	     const gchar *name)
+	     const bchar *name)
 {
   BtkModuleInitFunc modinit_func;
-  gpointer modinit_func_ptr;
+  bpointer modinit_func_ptr;
   BtkModuleInfo *info = NULL;
   GModule *module = NULL;
   GSList *l;
-  gboolean success = FALSE;
+  bboolean success = FALSE;
   
   if (g_module_supported ())
     {
       for (l = btk_modules; l; l = l->next)
 	{
 	  info = l->data;
-	  if (g_slist_find_custom (info->names, name, 
+	  if (b_slist_find_custom (info->names, name, 
 				   (GCompareFunc)strcmp))
 	    {
 	      info->ref_count++;
@@ -305,7 +305,7 @@ load_module (GSList      *module_list,
 		  success = TRUE;
 		  info = NULL;
 
-		  temp = g_slist_find_custom (btk_modules, module,
+		  temp = b_slist_find_custom (btk_modules, module,
 			(GCompareFunc)cmp_module);
 		  if (temp != NULL)
 			info = temp->data;
@@ -314,14 +314,14 @@ load_module (GSList      *module_list,
 		    {
 		      info = g_new0 (BtkModuleInfo, 1);
 		      
-		      info->names = g_slist_prepend (info->names, g_strdup (name));
+		      info->names = b_slist_prepend (info->names, g_strdup (name));
 		      info->module = module;
 		      info->ref_count = 1;
 		      info->init_func = modinit_func;
 		      g_module_symbol (module, "btk_module_display_init",
-				       (gpointer *) &info->display_init_func);
+				       (bpointer *) &info->display_init_func);
 		      
-		      btk_modules = g_slist_append (btk_modules, info);
+		      btk_modules = b_slist_append (btk_modules, info);
 		      
 		      /* display_init == NULL indicates a non-multihead aware module.
 		       * For these, we delay the call to init_func until first display is 
@@ -341,13 +341,13 @@ load_module (GSList      *module_list,
 			      BdkDisplay *display = iter->data;
 			  (* info->display_init_func) (display);
 			    }
-			  g_slist_free (displays);
+			  b_slist_free (displays);
 			}
 		    }
 		  else
 		    {
 		      BTK_NOTE (MODULES, g_print ("Module already loaded, ignoring: %s\n", name));
-		      info->names = g_slist_prepend (info->names, g_strdup (name));
+		      info->names = b_slist_prepend (info->names, g_strdup (name));
 		      info->ref_count++;
 		      /* remove new reference count on module, we already have one */
 		      g_module_close (module);
@@ -359,16 +359,16 @@ load_module (GSList      *module_list,
 
   if (success)
     {
-      if (!g_slist_find (module_list, info))
+      if (!b_slist_find (module_list, info))
 	{
-	  module_list = g_slist_prepend (module_list, info);
+	  module_list = b_slist_prepend (module_list, info);
 	}
       else
         info->ref_count--;
     }
   else
    {
-      const gchar *error = g_module_error ();
+      const bchar *error = g_module_error ();
 
       g_message ("Failed to load module \"%s\"%s%s",
                  name, error ? ": " : "", error ? error : "");
@@ -390,11 +390,11 @@ btk_module_info_unref (BtkModuleInfo *info)
       BTK_NOTE (MODULES, 
 		g_print ("Unloading module: %s\n", g_module_name (info->module)));
 
-      btk_modules = g_slist_remove (btk_modules, info);
+      btk_modules = b_slist_remove (btk_modules, info);
       g_module_close (info->module);
       for (l = info->names; l; l = l->next)
 	g_free (l->data);
-      g_slist_free (info->names);
+      b_slist_free (info->names);
       g_free (info);
     }
 }
@@ -402,9 +402,9 @@ btk_module_info_unref (BtkModuleInfo *info)
 static GSList *
 load_modules (const char *module_str)
 {
-  gchar **module_names;
+  bchar **module_names;
   GSList *module_list = NULL;
-  gint i;
+  bint i;
 
   BTK_NOTE (MODULES, g_print ("Loading module list: %s\n", module_str));
 
@@ -412,7 +412,7 @@ load_modules (const char *module_str)
   for (i = 0; module_names[i]; i++) 
     module_list = load_module (module_list, module_names[i]);
 
-  module_list = g_slist_reverse (module_list);
+  module_list = b_slist_reverse (module_list);
   g_strfreev (module_names);
 
   return module_list;
@@ -446,11 +446,11 @@ default_display_notify_cb (BdkDisplayManager *display_manager)
 
 static void
 display_closed_cb (BdkDisplay *display,
-		   gboolean    is_error)
+		   bboolean    is_error)
 {
   BdkScreen *screen;
   BtkSettings *settings;
-  gint i;
+  bint i;
 
   for (i = 0; i < bdk_display_get_n_screens (display); i++)
     {
@@ -458,7 +458,7 @@ display_closed_cb (BdkDisplay *display,
 
       settings = btk_settings_get_for_screen (screen);
 
-      g_object_set_data_full (G_OBJECT (settings),
+      g_object_set_data_full (B_OBJECT (settings),
 			      I_("btk-modules"),
 			      NULL, NULL);
     }  
@@ -472,7 +472,7 @@ display_opened_cb (BdkDisplayManager *display_manager,
   GSList *slist;
   BdkScreen *screen;
   BtkSettings *settings;
-  gint i;
+  bint i;
 
   for (slist = btk_modules; slist; slist = slist->next)
     {
@@ -487,17 +487,17 @@ display_opened_cb (BdkDisplayManager *display_manager,
   
   for (i = 0; i < bdk_display_get_n_screens (display); i++)
     {
-      GValue value = { 0, };
+      BValue value = { 0, };
 
-      g_value_init (&value, G_TYPE_STRING);
+      b_value_init (&value, B_TYPE_STRING);
 
       screen = bdk_display_get_screen (display, i);
 
       if (bdk_screen_get_setting (screen, "btk-modules", &value))
 	{
 	  settings = btk_settings_get_for_screen (screen);
-	  _btk_modules_settings_changed (settings, g_value_get_string (&value));
-	  g_value_unset (&value);
+	  _btk_modules_settings_changed (settings, b_value_get_string (&value));
+	  b_value_unset (&value);
 	}
     }
 
@@ -508,12 +508,12 @@ display_opened_cb (BdkDisplayManager *display_manager,
 }
 
 void
-_btk_modules_init (gint        *argc, 
-		   gchar     ***argv, 
-		   const gchar *btk_modules_args)
+_btk_modules_init (bint        *argc, 
+		   bchar     ***argv, 
+		   const bchar *btk_modules_args)
 {
   BdkDisplayManager *display_manager;
-  gint i;
+  bint i;
 
   g_assert (btk_argv == NULL);
 
@@ -521,7 +521,7 @@ _btk_modules_init (gint        *argc,
     {
       /* store argc and argv for later use in mod initialization */
       btk_argc = *argc;
-      btk_argv = g_new (gchar *, *argc + 1);
+      btk_argv = g_new (bchar *, *argc + 1);
       for (i = 0; i < btk_argc; i++)
 	btk_argv [i] = g_strdup ((*argv) [i]);
       btk_argv [*argc] = NULL;
@@ -541,12 +541,12 @@ _btk_modules_init (gint        *argc,
      * or on the command line are always loaded, so we'll just leak 
      * the refcounts.
      */
-    g_slist_free (load_modules (btk_modules_args));
+    b_slist_free (load_modules (btk_modules_args));
   }
 }
 
 static void
-settings_destroy_notify (gpointer data)
+settings_destroy_notify (bpointer data)
 {
   GSList *iter, *modules = data;
 
@@ -555,12 +555,12 @@ settings_destroy_notify (gpointer data)
       BtkModuleInfo *info = iter->data;
       btk_module_info_unref (info);
     }
-  g_slist_free (modules);
+  b_slist_free (modules);
 }
 
 void
 _btk_modules_settings_changed (BtkSettings *settings, 
-			       const gchar *modules)
+			       const bchar *modules)
 {
   GSList *new_modules = NULL;
 
@@ -570,7 +570,7 @@ _btk_modules_settings_changed (BtkSettings *settings,
   if (modules && modules[0])
     new_modules = load_modules (modules);
 
-  g_object_set_data_full (G_OBJECT (settings),
+  g_object_set_data_full (B_OBJECT (settings),
 			  I_("btk-modules"),
 			  new_modules,
 			  settings_destroy_notify);

@@ -59,12 +59,12 @@ static void btk_list_class_init	     (BtkListClass   *klass);
 static void btk_list_init	     (BtkList	     *list);
 static void btk_list_set_arg         (BtkObject      *object,
 				      BtkArg         *arg,
-				      guint           arg_id);
+				      buint           arg_id);
 static void btk_list_get_arg         (BtkObject      *object,
 				      BtkArg         *arg,
-				      guint           arg_id);
+				      buint           arg_id);
 /*** BtkObject Methods ***/
-static void btk_list_dispose	     (GObject	     *object);
+static void btk_list_dispose	     (BObject	     *object);
 
 /*** BtkWidget Methods ***/
 static void btk_list_size_request    (BtkWidget	     *widget,
@@ -75,14 +75,14 @@ static void btk_list_realize	     (BtkWidget	     *widget);
 static void btk_list_unmap	     (BtkWidget	     *widget);
 static void btk_list_style_set	     (BtkWidget      *widget,
 				      BtkStyle       *previous_style);
-static gint btk_list_motion_notify   (BtkWidget      *widget,
+static bint btk_list_motion_notify   (BtkWidget      *widget,
 				      BdkEventMotion *event);
-static gint btk_list_button_press    (BtkWidget      *widget,
+static bint btk_list_button_press    (BtkWidget      *widget,
 				      BdkEventButton *event);
-static gint btk_list_button_release  (BtkWidget	     *widget,
+static bint btk_list_button_release  (BtkWidget	     *widget,
 				      BdkEventButton *event);
 
-static gboolean btk_list_focus       (BtkWidget        *widget,
+static bboolean btk_list_focus       (BtkWidget        *widget,
                                       BtkDirectionType  direction);
 
 /*** BtkContainer Methods ***/
@@ -91,9 +91,9 @@ static void btk_list_add	     (BtkContainer     *container,
 static void btk_list_remove	     (BtkContainer     *container,
 				      BtkWidget        *widget);
 static void btk_list_forall	     (BtkContainer     *container,
-				      gboolean          include_internals,
+				      bboolean          include_internals,
 				      BtkCallback       callback,
-				      gpointer          callback_data);
+				      bpointer          callback_data);
 static BtkType btk_list_child_type   (BtkContainer     *container);
 static void btk_list_set_focus_child (BtkContainer     *container,
 				      BtkWidget        *widget);
@@ -101,12 +101,12 @@ static void btk_list_set_focus_child (BtkContainer     *container,
 /*** BtkList Private Functions ***/
 static void btk_list_move_focus_child      (BtkList       *list,
 					    BtkScrollType  scroll_type,
-					    gfloat         position);
-static gint btk_list_horizontal_timeout    (BtkWidget     *list);
-static gint btk_list_vertical_timeout      (BtkWidget     *list);
+					    bfloat         position);
+static bint btk_list_horizontal_timeout    (BtkWidget     *list);
+static bint btk_list_vertical_timeout      (BtkWidget     *list);
 static void btk_list_remove_items_internal (BtkList       *list,
 					    GList         *items,
-					    gboolean       no_unref);
+					    bboolean       no_unref);
 
 /*** BtkList Selection Methods ***/
 static void btk_real_list_select_child	        (BtkList   *list,
@@ -116,15 +116,15 @@ static void btk_real_list_unselect_child        (BtkList   *list,
 
 /*** BtkList Selection Functions ***/
 static void btk_list_set_anchor                 (BtkList   *list,
-					         gboolean   add_mode,
-					         gint       anchor,
+					         bboolean   add_mode,
+					         bint       anchor,
 					         BtkWidget *undo_focus_child);
 static void btk_list_fake_unselect_all          (BtkList   *list,
 			                         BtkWidget *item);
 static void btk_list_fake_toggle_row            (BtkList   *list,
 					         BtkWidget *item);
 static void btk_list_update_extended_selection  (BtkList   *list,
-					         gint       row);
+					         bint       row);
 static void btk_list_reset_extended_selection   (BtkList   *list);
 
 /*** BtkListItem Signal Functions ***/
@@ -145,16 +145,16 @@ static void btk_list_signal_end_selection      (BtkListItem   *list_item,
 						BtkList       *list);
 static void btk_list_signal_extend_selection   (BtkListItem   *list_item,
 						BtkScrollType  scroll_type,
-						gfloat         position,
-						gboolean       auto_start_selection,
+						bfloat         position,
+						bboolean       auto_start_selection,
 						BtkList       *list);
 static void btk_list_signal_scroll_horizontal  (BtkListItem   *list_item,
 						BtkScrollType  scroll_type,
-						gfloat         position,
+						bfloat         position,
 						BtkList       *list);
 static void btk_list_signal_scroll_vertical    (BtkListItem   *list_item,
 						BtkScrollType  scroll_type,
-						gfloat         position,
+						bfloat         position,
 						BtkList       *list);
 static void btk_list_signal_toggle_add_mode    (BtkListItem   *list_item,
 						BtkList       *list);
@@ -171,12 +171,12 @@ static void btk_list_drag_begin (BtkWidget      *widget,
 
 
 static BtkContainerClass *parent_class = NULL;
-static guint list_signals[LAST_SIGNAL] = { 0 };
+static buint list_signals[LAST_SIGNAL] = { 0 };
 
-static const gchar vadjustment_key[] = "btk-vadjustment";
-static guint        vadjustment_key_id = 0;
-static const gchar hadjustment_key[] = "btk-hadjustment";
-static guint        hadjustment_key_id = 0;
+static const bchar vadjustment_key[] = "btk-vadjustment";
+static buint        vadjustment_key_id = 0;
+static const bchar hadjustment_key[] = "btk-hadjustment";
+static buint        hadjustment_key_id = 0;
 
 BtkType
 btk_list_get_type (void)
@@ -207,7 +207,7 @@ btk_list_get_type (void)
 static void
 btk_list_class_init (BtkListClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
@@ -305,7 +305,7 @@ btk_list_init (BtkList *list)
 static void
 btk_list_set_arg (BtkObject      *object,
 		  BtkArg         *arg,
-		  guint           arg_id)
+		  buint           arg_id)
 {
   BtkList *list = BTK_LIST (object);
   
@@ -320,7 +320,7 @@ btk_list_set_arg (BtkObject      *object,
 static void
 btk_list_get_arg (BtkObject      *object,
 		  BtkArg         *arg,
-		  guint           arg_id)
+		  buint           arg_id)
 {
   BtkList *list = BTK_LIST (object);
   
@@ -347,11 +347,11 @@ btk_list_new (void)
  * btk_list_dispose
  */
 static void
-btk_list_dispose (GObject *object)
+btk_list_dispose (BObject *object)
 {
   btk_list_clear_items (BTK_LIST (object), 0, -1);
 
-  G_OBJECT_CLASS (parent_class)->dispose (object);
+  B_OBJECT_CLASS (parent_class)->dispose (object);
 }
 
 
@@ -420,7 +420,7 @@ btk_list_size_allocate (BtkWidget     *widget,
     {
       child_allocation.x = BTK_CONTAINER (list)->border_width;
       child_allocation.y = BTK_CONTAINER (list)->border_width;
-      child_allocation.width = MAX (1, (gint)allocation->width -
+      child_allocation.width = MAX (1, (bint)allocation->width -
 				    child_allocation.x * 2);
 
       children = list->children;
@@ -449,7 +449,7 @@ static void
 btk_list_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -474,7 +474,7 @@ btk_list_realize (BtkWidget *widget)
 			     &widget->style->base[BTK_STATE_NORMAL]);
 }
 
-static gboolean
+static bboolean
 list_has_grab (BtkList *list)
 {
   return (BTK_WIDGET_HAS_GRAB (list) &&
@@ -503,7 +503,7 @@ btk_list_unmap (BtkWidget *widget)
   bdk_window_hide (widget->window);
 }
 
-static gint
+static bint
 btk_list_motion_notify (BtkWidget      *widget,
 			BdkEventMotion *event)
 {
@@ -512,11 +512,11 @@ btk_list_motion_notify (BtkWidget      *widget,
   BtkAdjustment *adj;
   BtkContainer *container;
   GList *work;
-  gint x;
-  gint y;
-  gint row = -1;
-  gint focus_row = 0;
-  gint length = 0;
+  bint x;
+  bint y;
+  bint row = -1;
+  bint focus_row = 0;
+  bint length = 0;
 
   if (!list->drag_selection || !list->children)
     return FALSE;
@@ -546,7 +546,7 @@ btk_list_motion_notify (BtkWidget      *widget,
 		(x > adj->value + adj->page_size &&
 		 adj->value >= adj->upper - adj->page_size)))
 	    {
-	      gdouble value;
+	      bdouble value;
 
 	      if (x < adj->value)
 		value = adj->value + (x - adj->value) / 2 - 1;
@@ -609,7 +609,7 @@ btk_list_motion_notify (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_list_button_press (BtkWidget      *widget,
 		       BdkEventButton *event)
 {
@@ -626,8 +626,8 @@ btk_list_button_press (BtkWidget      *widget,
 
   if (item && (item->parent == widget))
     {
-      gint last_focus_row;
-      gint focus_row;
+      bint last_focus_row;
+      bint focus_row;
 
       if (event->type == BDK_BUTTON_PRESS)
 	{
@@ -734,7 +734,7 @@ btk_list_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gint
+static bint
 btk_list_button_release (BtkWidget	*widget,
 			 BdkEventButton *event)
 {
@@ -835,9 +835,9 @@ btk_list_remove (BtkContainer *container,
 
 static void
 btk_list_forall (BtkContainer  *container,
-		 gboolean       include_internals,
+		 bboolean       include_internals,
 		 BtkCallback	callback,
-		 gpointer	callback_data)
+		 bpointer	callback_data)
 {
   BtkList *list = BTK_LIST (container);
   BtkWidget *child;
@@ -916,11 +916,11 @@ btk_list_set_focus_child (BtkContainer *container,
     }
 }
 
-static gboolean
+static bboolean
 btk_list_focus (BtkWidget        *widget,
 		BtkDirectionType  direction)
 {
-  gint return_val = FALSE;
+  bint return_val = FALSE;
   BtkContainer *container;
 
   container = BTK_CONTAINER (widget);
@@ -967,12 +967,12 @@ btk_list_focus (BtkWidget        *widget,
 void
 btk_list_insert_items (BtkList *list,
 		       GList   *items,
-		       gint	position)
+		       bint	position)
 {
   BtkWidget *widget;
   GList *tmp_list;
   GList *last;
-  gint nchildren;
+  bint nchildren;
 
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -1109,8 +1109,8 @@ btk_list_remove_items_no_unref (BtkList	 *list,
 
 void
 btk_list_clear_items (BtkList *list,
-		      gint     start,
-		      gint     end)
+		      bint     start,
+		      bint     end)
 {
   BtkContainer *container;
   BtkWidget *widget;
@@ -1118,8 +1118,8 @@ btk_list_clear_items (BtkList *list,
   GList *start_list;
   GList *end_list;
   GList *tmp_list;
-  guint nchildren;
-  gboolean grab_focus = FALSE;
+  buint nchildren;
+  bboolean grab_focus = FALSE;
 
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -1182,7 +1182,7 @@ btk_list_clear_items (BtkList *list,
       if (widget->state == BTK_STATE_SELECTED)
 	btk_list_unselect_child (list, widget);
 
-      btk_signal_disconnect_by_data (BTK_OBJECT (widget), (gpointer) list);
+      btk_signal_disconnect_by_data (BTK_OBJECT (widget), (bpointer) list);
       btk_widget_unparent (widget);
       
       if (widget == list->undo_focus_child)
@@ -1214,12 +1214,12 @@ btk_list_clear_items (BtkList *list,
     btk_widget_queue_resize (BTK_WIDGET (list));
 }
 
-gint
+bint
 btk_list_child_position (BtkList   *list,
 			 BtkWidget *child)
 {
   GList *children;
-  gint pos;
+  bint pos;
 
   g_return_val_if_fail (BTK_IS_LIST (list), -1);
   g_return_val_if_fail (child != NULL, -1);
@@ -1247,7 +1247,7 @@ btk_list_child_position (BtkList   *list,
 static void
 btk_list_remove_items_internal (BtkList	 *list,
 				GList	 *items,
-				gboolean  no_unref)
+				bboolean  no_unref)
 {
   BtkWidget *widget;
   BtkWidget *new_focus_child;
@@ -1255,7 +1255,7 @@ btk_list_remove_items_internal (BtkList	 *list,
   BtkContainer *container;
   GList *tmp_list;
   GList *work;
-  gboolean grab_focus = FALSE;
+  bboolean grab_focus = FALSE;
   
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -1317,7 +1317,7 @@ btk_list_remove_items_internal (BtkList	 *list,
 	    }
 	}
 
-      btk_signal_disconnect_by_data (BTK_OBJECT (widget), (gpointer) list);
+      btk_signal_disconnect_by_data (BTK_OBJECT (widget), (bpointer) list);
       list->children = g_list_remove (list->children, widget);
       btk_widget_unparent (widget);
 
@@ -1390,7 +1390,7 @@ btk_list_set_selection_mode (BtkList	      *list,
 
 void
 btk_list_select_item (BtkList *list,
-		      gint     item)
+		      bint     item)
 {
   GList *tmp_list;
 
@@ -1403,7 +1403,7 @@ btk_list_select_item (BtkList *list,
 
 void
 btk_list_unselect_item (BtkList *list,
-			gint	 item)
+			bint	 item)
 {
   GList *tmp_list;
 
@@ -1526,8 +1526,8 @@ btk_list_unselect_all (BtkList *list)
 void
 btk_list_extend_selection (BtkList       *list,
 			   BtkScrollType  scroll_type,
-			   gfloat         position,
-			   gboolean       auto_start_selection)
+			   bfloat         position,
+			   bboolean       auto_start_selection)
 {
   BtkContainer *container;
 
@@ -1541,7 +1541,7 @@ btk_list_extend_selection (BtkList       *list,
 
   if (auto_start_selection)
     {
-      gint focus_row;
+      bint focus_row;
 
       focus_row = g_list_index (list->children, container->focus_child);
       btk_list_set_anchor (list, list->add_mode, focus_row,
@@ -1580,7 +1580,7 @@ void
 btk_list_start_selection (BtkList *list)
 {
   BtkContainer *container;
-  gint focus_row;
+  bint focus_row;
 
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -1598,12 +1598,12 @@ btk_list_start_selection (BtkList *list)
 void
 btk_list_end_selection (BtkList *list)
 {
-  gint i;
-  gint e;
-  gboolean top_down;
+  bint i;
+  bint e;
+  bboolean top_down;
   GList *work;
   BtkWidget *item;
-  gint item_index;
+  bint item_index;
 
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -1720,7 +1720,7 @@ void
 btk_list_toggle_focus_row (BtkList *list)
 {
   BtkContainer *container;
-  gint focus_row;
+  bint focus_row;
 
   g_return_if_fail (list != 0);
   g_return_if_fail (BTK_IS_LIST (list));
@@ -1880,8 +1880,8 @@ btk_real_list_unselect_child (BtkList	*list,
  */
 static void
 btk_list_set_anchor (BtkList   *list,
-		     gboolean   add_mode,
-		     gint       anchor,
+		     bboolean   add_mode,
+		     bint       anchor,
 		     BtkWidget *undo_focus_child)
 {
   GList *work;
@@ -1950,15 +1950,15 @@ btk_list_fake_toggle_row (BtkList   *list,
 
 static void
 btk_list_update_extended_selection (BtkList *list,
-				    gint     row)
+				    bint     row)
 {
-  gint i;
+  bint i;
   GList *work;
-  gint s1 = -1;
-  gint s2 = -1;
-  gint e1 = -1;
-  gint e2 = -1;
-  gint length;
+  bint s1 = -1;
+  bint s2 = -1;
+  bint e1 = -1;
+  bint e2 = -1;
+  bint length;
 
   if (row < 0)
     row = 0;
@@ -2064,7 +2064,7 @@ btk_list_reset_extended_selection (BtkList *list)
 void
 btk_list_scroll_horizontal (BtkList       *list,
 			    BtkScrollType  scroll_type,
-			    gfloat         position)
+			    bfloat         position)
 {
   BtkAdjustment *adj;
 
@@ -2113,7 +2113,7 @@ btk_list_scroll_horizontal (BtkList       *list,
 void
 btk_list_scroll_vertical (BtkList       *list,
 			  BtkScrollType  scroll_type,
-			  gfloat         position)
+			  bfloat         position)
 {
   g_return_if_fail (BTK_IS_LIST (list));
 
@@ -2150,13 +2150,13 @@ btk_list_scroll_vertical (BtkList       *list,
 static void
 btk_list_move_focus_child (BtkList       *list,
 			   BtkScrollType  scroll_type,
-			   gfloat         position)
+			   bfloat         position)
 {
   BtkContainer *container;
   GList *work;
   BtkWidget *item;
   BtkAdjustment *adj;
-  gint new_value;
+  bint new_value;
 
   g_return_if_fail (list != 0);
   g_return_if_fail (BTK_IS_LIST (list));
@@ -2192,7 +2192,7 @@ btk_list_move_focus_child (BtkList       *list,
 
       if (adj)
 	{
-	  gboolean correct = FALSE;
+	  bboolean correct = FALSE;
 
 	  new_value = adj->value;
 
@@ -2237,7 +2237,7 @@ btk_list_move_focus_child (BtkList       *list,
 
       if (adj)
 	{
-	  gboolean correct = FALSE;
+	  bboolean correct = FALSE;
 
 	  new_value = adj->value;
 
@@ -2305,7 +2305,7 @@ do_fake_motion (BtkWidget *list)
   bdk_event_free (event);
 }
 
-static gint
+static bint
 btk_list_horizontal_timeout (BtkWidget *list)
 {
   BTK_LIST (list)->htimer = 0;
@@ -2314,7 +2314,7 @@ btk_list_horizontal_timeout (BtkWidget *list)
   return FALSE;
 }
 
-static gint
+static bint
 btk_list_vertical_timeout (BtkWidget *list)
 {
   BTK_LIST (list)->vtimer = 0;
@@ -2403,8 +2403,8 @@ btk_list_signal_end_selection (BtkListItem *list_item,
 static void
 btk_list_signal_extend_selection (BtkListItem   *list_item,
 				  BtkScrollType  scroll_type,
-				  gfloat         position,
-				  gboolean       auto_start_selection,
+				  bfloat         position,
+				  bboolean       auto_start_selection,
 				  BtkList       *list)
 {
   g_return_if_fail (BTK_IS_LIST_ITEM (list_item));
@@ -2417,7 +2417,7 @@ btk_list_signal_extend_selection (BtkListItem   *list_item,
 static void
 btk_list_signal_scroll_horizontal (BtkListItem   *list_item,
 				   BtkScrollType  scroll_type,
-				   gfloat         position,
+				   bfloat         position,
 				   BtkList       *list)
 {
   g_return_if_fail (BTK_IS_LIST_ITEM (list_item));
@@ -2429,7 +2429,7 @@ btk_list_signal_scroll_horizontal (BtkListItem   *list_item,
 static void
 btk_list_signal_scroll_vertical (BtkListItem   *list_item,
 				 BtkScrollType  scroll_type,
-				 gfloat         position,
+				 bfloat         position,
 				 BtkList       *list)
 {
   g_return_if_fail (BTK_IS_LIST_ITEM (list_item));

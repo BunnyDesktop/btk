@@ -28,50 +28,50 @@
 #include <btk/btktreemodel.h>
 #include <btk/btktreesortable.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TREE_MODEL_SORT			(btk_tree_model_sort_get_type ())
-#define BTK_TREE_MODEL_SORT(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSort))
-#define BTK_TREE_MODEL_SORT_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
-#define BTK_IS_TREE_MODEL_SORT(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_SORT))
-#define BTK_IS_TREE_MODEL_SORT_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_MODEL_SORT))
-#define BTK_TREE_MODEL_SORT_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
+#define BTK_TREE_MODEL_SORT(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSort))
+#define BTK_TREE_MODEL_SORT_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
+#define BTK_IS_TREE_MODEL_SORT(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_MODEL_SORT))
+#define BTK_IS_TREE_MODEL_SORT_CLASS(klass)		(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_MODEL_SORT))
+#define BTK_TREE_MODEL_SORT_GET_CLASS(obj)		(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_MODEL_SORT, BtkTreeModelSortClass))
 
 typedef struct _BtkTreeModelSort       BtkTreeModelSort;
 typedef struct _BtkTreeModelSortClass  BtkTreeModelSortClass;
 
 struct _BtkTreeModelSort
 {
-  GObject parent;
+  BObject parent;
 
   /* < private > */
-  gpointer GSEAL (root);
-  gint GSEAL (stamp);
-  guint GSEAL (child_flags);
+  bpointer GSEAL (root);
+  bint GSEAL (stamp);
+  buint GSEAL (child_flags);
   BtkTreeModel *GSEAL (child_model);
-  gint GSEAL (zero_ref_count);
+  bint GSEAL (zero_ref_count);
 
   /* sort information */
   GList *GSEAL (sort_list);
-  gint GSEAL (sort_column_id);
+  bint GSEAL (sort_column_id);
   BtkSortType GSEAL (order);
 
   /* default sort */
   BtkTreeIterCompareFunc GSEAL (default_sort_func);
-  gpointer GSEAL (default_sort_data);
+  bpointer GSEAL (default_sort_data);
   GDestroyNotify GSEAL (default_sort_destroy);
 
   /* signal ids */
-  guint GSEAL (changed_id);
-  guint GSEAL (inserted_id);
-  guint GSEAL (has_child_toggled_id);
-  guint GSEAL (deleted_id);
-  guint GSEAL (reordered_id);
+  buint GSEAL (changed_id);
+  buint GSEAL (inserted_id);
+  buint GSEAL (has_child_toggled_id);
+  buint GSEAL (deleted_id);
+  buint GSEAL (reordered_id);
 };
 
 struct _BtkTreeModelSortClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -81,13 +81,13 @@ struct _BtkTreeModelSortClass
 };
 
 
-GType         btk_tree_model_sort_get_type                   (void) G_GNUC_CONST;
+GType         btk_tree_model_sort_get_type                   (void) B_GNUC_CONST;
 BtkTreeModel *btk_tree_model_sort_new_with_model             (BtkTreeModel     *child_model);
 
 BtkTreeModel *btk_tree_model_sort_get_model                  (BtkTreeModelSort *tree_model);
 BtkTreePath  *btk_tree_model_sort_convert_child_path_to_path (BtkTreeModelSort *tree_model_sort,
 							      BtkTreePath      *child_path);
-gboolean      btk_tree_model_sort_convert_child_iter_to_iter (BtkTreeModelSort *tree_model_sort,
+bboolean      btk_tree_model_sort_convert_child_iter_to_iter (BtkTreeModelSort *tree_model_sort,
 							      BtkTreeIter      *sort_iter,
 							      BtkTreeIter      *child_iter);
 BtkTreePath  *btk_tree_model_sort_convert_path_to_child_path (BtkTreeModelSort *tree_model_sort,
@@ -97,10 +97,10 @@ void          btk_tree_model_sort_convert_iter_to_child_iter (BtkTreeModelSort *
 							      BtkTreeIter      *sorted_iter);
 void          btk_tree_model_sort_reset_default_sort_func    (BtkTreeModelSort *tree_model_sort);
 void          btk_tree_model_sort_clear_cache                (BtkTreeModelSort *tree_model_sort);
-gboolean      btk_tree_model_sort_iter_is_valid              (BtkTreeModelSort *tree_model_sort,
+bboolean      btk_tree_model_sort_iter_is_valid              (BtkTreeModelSort *tree_model_sort,
                                                               BtkTreeIter      *iter);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_MODEL_SORT_H__ */

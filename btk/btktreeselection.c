@@ -26,13 +26,13 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static void btk_tree_selection_finalize          (GObject               *object);
-static gint btk_tree_selection_real_select_all   (BtkTreeSelection      *selection);
-static gint btk_tree_selection_real_unselect_all (BtkTreeSelection      *selection);
-static gint btk_tree_selection_real_select_node  (BtkTreeSelection      *selection,
+static void btk_tree_selection_finalize          (BObject               *object);
+static bint btk_tree_selection_real_select_all   (BtkTreeSelection      *selection);
+static bint btk_tree_selection_real_unselect_all (BtkTreeSelection      *selection);
+static bint btk_tree_selection_real_select_node  (BtkTreeSelection      *selection,
 						  BtkRBTree             *tree,
 						  BtkRBNode             *node,
-						  gboolean               select);
+						  bboolean               select);
 
 enum
 {
@@ -40,28 +40,28 @@ enum
   LAST_SIGNAL
 };
 
-static guint tree_selection_signals [LAST_SIGNAL] = { 0 };
+static buint tree_selection_signals [LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BtkTreeSelection, btk_tree_selection, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTreeSelection, btk_tree_selection, B_TYPE_OBJECT)
 
 static void
 btk_tree_selection_class_init (BtkTreeSelectionClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass*) class;
+  object_class = (BObjectClass*) class;
 
   object_class->finalize = btk_tree_selection_finalize;
   class->changed = NULL;
 
   tree_selection_signals[CHANGED] =
     g_signal_new (I_("changed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkTreeSelectionClass, changed),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -71,7 +71,7 @@ btk_tree_selection_init (BtkTreeSelection *selection)
 }
 
 static void
-btk_tree_selection_finalize (GObject *object)
+btk_tree_selection_finalize (BObject *object)
 {
   BtkTreeSelection *selection = BTK_TREE_SELECTION (object);
 
@@ -84,7 +84,7 @@ btk_tree_selection_finalize (GObject *object)
     }
 
   /* chain parent_class' handler */
-  G_OBJECT_CLASS (btk_tree_selection_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tree_selection_parent_class)->finalize (object);
 }
 
 /**
@@ -183,7 +183,7 @@ btk_tree_selection_set_mode (BtkTreeSelection *selection,
     {
       BtkRBTree *tree = NULL;
       BtkRBNode *node = NULL;
-      gint selected = FALSE;
+      bint selected = FALSE;
       BtkTreePath *anchor_path = NULL;
 
       if (selection->tree_view->priv->anchor)
@@ -255,7 +255,7 @@ btk_tree_selection_get_mode (BtkTreeSelection *selection)
 void
 btk_tree_selection_set_select_function (BtkTreeSelection     *selection,
 					BtkTreeSelectionFunc  func,
-					gpointer              data,
+					bpointer              data,
 					GDestroyNotify        destroy)
 {
   g_return_if_fail (BTK_IS_TREE_SELECTION (selection));
@@ -300,7 +300,7 @@ btk_tree_selection_get_select_function (BtkTreeSelection *selection)
  *
  * Return value: The user data.
  **/
-gpointer
+bpointer
 btk_tree_selection_get_user_data (BtkTreeSelection *selection)
 {
   g_return_val_if_fail (BTK_IS_TREE_SELECTION (selection), NULL);
@@ -338,7 +338,7 @@ btk_tree_selection_get_tree_view (BtkTreeSelection *selection)
  *
  * Return value: TRUE, if there is a selected node.
  **/
-gboolean
+bboolean
 btk_tree_selection_get_selected (BtkTreeSelection  *selection,
 				 BtkTreeModel     **model,
 				 BtkTreeIter       *iter)
@@ -346,8 +346,8 @@ btk_tree_selection_get_selected (BtkTreeSelection  *selection,
   BtkRBTree *tree;
   BtkRBNode *node;
   BtkTreePath *anchor_path;
-  gboolean retval;
-  gboolean found_node;
+  bboolean retval;
+  bboolean found_node;
 
   g_return_val_if_fail (BTK_IS_TREE_SELECTION (selection), FALSE);
   g_return_val_if_fail (selection->type != BTK_SELECTION_MULTIPLE, FALSE);
@@ -481,7 +481,7 @@ btk_tree_selection_get_selected_rows (BtkTreeSelection   *selection,
 	}
       else
         {
-	  gboolean done = FALSE;
+	  bboolean done = FALSE;
 
 	  do
 	    {
@@ -520,9 +520,9 @@ btk_tree_selection_get_selected_rows (BtkTreeSelection   *selection,
 static void
 btk_tree_selection_count_selected_rows_helper (BtkRBTree *tree,
 					       BtkRBNode *node,
-					       gpointer   data)
+					       bpointer   data)
 {
-  gint *count = (gint *)data;
+  bint *count = (bint *)data;
 
   if (BTK_RBNODE_FLAG_SET (node, BTK_RBNODE_IS_SELECTED))
     (*count)++;
@@ -543,10 +543,10 @@ btk_tree_selection_count_selected_rows_helper (BtkRBTree *tree,
  * 
  * Since: 2.2
  **/
-gint
+bint
 btk_tree_selection_count_selected_rows (BtkTreeSelection *selection)
 {
-  gint count = 0;
+  bint count = 0;
 
   g_return_val_if_fail (BTK_IS_TREE_SELECTION (selection), 0);
   g_return_val_if_fail (selection->tree_view != NULL, 0);
@@ -575,9 +575,9 @@ btk_tree_selection_count_selected_rows (BtkTreeSelection *selection)
 
 /* btk_tree_selection_selected_foreach helper */
 static void
-model_changed (gpointer data)
+model_changed (bpointer data)
 {
-  gboolean *stop = (gboolean *)data;
+  bboolean *stop = (bboolean *)data;
 
   *stop = TRUE;
 }
@@ -595,7 +595,7 @@ model_changed (gpointer data)
 void
 btk_tree_selection_selected_foreach (BtkTreeSelection            *selection,
 				     BtkTreeSelectionForeachFunc  func,
-				     gpointer                     data)
+				     bpointer                     data)
 {
   BtkTreePath *path;
   BtkRBTree *tree;
@@ -603,8 +603,8 @@ btk_tree_selection_selected_foreach (BtkTreeSelection            *selection,
   BtkTreeIter iter;
   BtkTreeModel *model;
 
-  gulong inserted_id, deleted_id, reordered_id, changed_id;
-  gboolean stop = FALSE;
+  bulong inserted_id, deleted_id, reordered_id, changed_id;
+  bboolean stop = FALSE;
 
   g_return_if_fail (BTK_IS_TREE_SELECTION (selection));
   g_return_if_fail (selection->tree_view != NULL);
@@ -676,7 +676,7 @@ btk_tree_selection_selected_foreach (BtkTreeSelection            *selection,
 	}
       else
 	{
-	  gboolean done = FALSE;
+	  bboolean done = FALSE;
 
 	  do
 	    {
@@ -738,7 +738,7 @@ btk_tree_selection_select_path (BtkTreeSelection *selection,
 {
   BtkRBNode *node;
   BtkRBTree *tree;
-  gboolean ret;
+  bboolean ret;
   BtkTreeSelectMode mode = 0;
 
   g_return_if_fail (BTK_IS_TREE_SELECTION (selection));
@@ -778,7 +778,7 @@ btk_tree_selection_unselect_path (BtkTreeSelection *selection,
 {
   BtkRBNode *node;
   BtkRBTree *tree;
-  gboolean ret;
+  bboolean ret;
 
   g_return_if_fail (BTK_IS_TREE_SELECTION (selection));
   g_return_if_fail (selection->tree_view != NULL);
@@ -868,13 +868,13 @@ btk_tree_selection_unselect_iter (BtkTreeSelection *selection,
  * 
  * Return value: %TRUE if @path is selected.
  **/
-gboolean
+bboolean
 btk_tree_selection_path_is_selected (BtkTreeSelection *selection,
 				     BtkTreePath      *path)
 {
   BtkRBNode *node;
   BtkRBTree *tree;
-  gboolean ret;
+  bboolean ret;
 
   g_return_val_if_fail (BTK_IS_TREE_SELECTION (selection), FALSE);
   g_return_val_if_fail (path != NULL, FALSE);
@@ -904,12 +904,12 @@ btk_tree_selection_path_is_selected (BtkTreeSelection *selection,
  * 
  * Return value: %TRUE, if @iter is selected
  **/
-gboolean
+bboolean
 btk_tree_selection_iter_is_selected (BtkTreeSelection *selection,
 				     BtkTreeIter      *iter)
 {
   BtkTreePath *path;
-  gboolean retval;
+  bboolean retval;
 
   g_return_val_if_fail (BTK_IS_TREE_SELECTION (selection), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -930,13 +930,13 @@ btk_tree_selection_iter_is_selected (BtkTreeSelection *selection,
 /* Wish I was in python, right now... */
 struct _TempTuple {
   BtkTreeSelection *selection;
-  gint dirty;
+  bint dirty;
 };
 
 static void
 select_all_helper (BtkRBTree  *tree,
 		   BtkRBNode  *node,
-		   gpointer    data)
+		   bpointer    data)
 {
   struct _TempTuple *tuple = data;
 
@@ -956,7 +956,7 @@ select_all_helper (BtkRBTree  *tree,
 /* We have a real_{un,}select_all function that doesn't emit the signal, so we
  * can use it in other places without fear of the signal being emitted.
  */
-static gint
+static bint
 btk_tree_selection_real_select_all (BtkTreeSelection *selection)
 {
   struct _TempTuple *tuple;
@@ -1008,7 +1008,7 @@ btk_tree_selection_select_all (BtkTreeSelection *selection)
 static void
 unselect_all_helper (BtkRBTree  *tree,
 		     BtkRBNode  *node,
-		     gpointer    data)
+		     bpointer    data)
 {
   struct _TempTuple *tuple = data;
 
@@ -1024,7 +1024,7 @@ unselect_all_helper (BtkRBTree  *tree,
     }
 }
 
-static gboolean
+static bboolean
 btk_tree_selection_real_unselect_all (BtkTreeSelection *selection)
 {
   struct _TempTuple *tuple;
@@ -1112,16 +1112,16 @@ enum
   RANGE_UNSELECT
 };
 
-static gint
+static bint
 btk_tree_selection_real_modify_range (BtkTreeSelection *selection,
-                                      gint              mode,
+                                      bint              mode,
 				      BtkTreePath      *start_path,
 				      BtkTreePath      *end_path)
 {
   BtkRBNode *start_node, *end_node;
   BtkRBTree *start_tree, *end_tree;
   BtkTreePath *anchor_path = NULL;
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
 
   switch (btk_tree_path_compare (start_path, end_path))
     {
@@ -1167,7 +1167,7 @@ btk_tree_selection_real_modify_range (BtkTreeSelection *selection,
 	btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
       selection->tree_view->priv->anchor =
-	btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view),
+	btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view),
 	                                  selection->tree_view->priv->model,
 					  anchor_path);
     }
@@ -1249,13 +1249,13 @@ btk_tree_selection_unselect_range (BtkTreeSelection *selection,
     g_signal_emit (selection, tree_selection_signals[CHANGED], 0);
 }
 
-gboolean
+bboolean
 _btk_tree_selection_row_is_selectable (BtkTreeSelection *selection,
 				       BtkRBNode        *node,
 				       BtkTreePath      *path)
 {
   BtkTreeIter iter;
-  gboolean sensitive = FALSE;
+  bboolean sensitive = FALSE;
 
   if (!btk_tree_model_get_iter (selection->tree_view->priv->model, &iter, path))
     sensitive = TRUE;
@@ -1292,10 +1292,10 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 					  BtkRBTree        *tree,
 					  BtkTreePath      *path,
                                           BtkTreeSelectMode mode,
-					  gboolean          override_browse_mode)
+					  bboolean          override_browse_mode)
 {
-  gint flags;
-  gint dirty = FALSE;
+  bint flags;
+  bint dirty = FALSE;
   BtkTreePath *anchor_path = NULL;
 
   if (selection->type == BTK_SELECTION_NONE)
@@ -1348,7 +1348,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 		  if (btk_tree_selection_real_select_node (selection, tree, node, TRUE))
 		    {
 		      selection->tree_view->priv->anchor =
-			btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+			btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 		    }
 		}
 	    }
@@ -1361,7 +1361,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 		    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 		  selection->tree_view->priv->anchor =
-		    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+		    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 		}
 	    }
 	}
@@ -1375,7 +1375,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 	  dirty = btk_tree_selection_real_select_node (selection, tree, node, TRUE);
 	}
       else if ((mode & (BTK_TREE_SELECT_MODE_EXTEND | BTK_TREE_SELECT_MODE_TOGGLE)) == (BTK_TREE_SELECT_MODE_EXTEND | BTK_TREE_SELECT_MODE_TOGGLE))
@@ -1391,7 +1391,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 
 	  if ((flags & BTK_RBNODE_IS_SELECTED) == BTK_RBNODE_IS_SELECTED)
 	    dirty |= btk_tree_selection_real_select_node (selection, tree, node, FALSE);
@@ -1414,7 +1414,7 @@ _btk_tree_selection_internal_select_node (BtkTreeSelection *selection,
 	    btk_tree_row_reference_free (selection->tree_view->priv->anchor);
 
 	  selection->tree_view->priv->anchor =
-	    btk_tree_row_reference_new_proxy (G_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
+	    btk_tree_row_reference_new_proxy (B_OBJECT (selection->tree_view), selection->tree_view->priv->model, path);
 
 	  dirty |= btk_tree_selection_real_select_node (selection, tree, node, TRUE);
 	}
@@ -1437,13 +1437,13 @@ _btk_tree_selection_emit_changed (BtkTreeSelection *selection)
 /* NOTE: Any {un,}selection ever done _MUST_ be done through this function!
  */
 
-static gint
+static bint
 btk_tree_selection_real_select_node (BtkTreeSelection *selection,
 				     BtkRBTree        *tree,
 				     BtkRBNode        *node,
-				     gboolean          select)
+				     bboolean          select)
 {
-  gboolean toggle = FALSE;
+  bboolean toggle = FALSE;
   BtkTreePath *path = NULL;
 
   select = !! select;

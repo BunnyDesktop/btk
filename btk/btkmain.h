@@ -39,7 +39,7 @@
 #include <btk/btkwindow.h>
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Priorities for redrawing and resizing
  */
@@ -59,9 +59,9 @@ G_BEGIN_DECLS
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-typedef gint	(*BtkKeySnoopFunc)	    (BtkWidget	  *grab_widget,
+typedef bint	(*BtkKeySnoopFunc)	    (BtkWidget	  *grab_widget,
 					     BdkEventKey  *event,
-					     gpointer	   func_data);
+					     bpointer	   func_data);
 
 /* Btk version.
  */
@@ -75,36 +75,36 @@ typedef gint	(*BtkKeySnoopFunc)	    (BtkWidget	  *grab_widget,
 #define BTKMAIN_C_VAR extern
 #endif
 
-BTKMAIN_C_VAR const guint btk_major_version;
-BTKMAIN_C_VAR const guint btk_minor_version;
-BTKMAIN_C_VAR const guint btk_micro_version;
-BTKMAIN_C_VAR const guint btk_binary_age;
-BTKMAIN_C_VAR const guint btk_interface_age;
-const gchar* btk_check_version (guint	required_major,
-			        guint	required_minor,
-			        guint	required_micro);
+BTKMAIN_C_VAR const buint btk_major_version;
+BTKMAIN_C_VAR const buint btk_minor_version;
+BTKMAIN_C_VAR const buint btk_micro_version;
+BTKMAIN_C_VAR const buint btk_binary_age;
+BTKMAIN_C_VAR const buint btk_interface_age;
+const bchar* btk_check_version (buint	required_major,
+			        buint	required_minor,
+			        buint	required_micro);
 
 
 /* Initialization, exit, mainloop and miscellaneous routines
  */
 
-gboolean btk_parse_args           (int    *argc,
+bboolean btk_parse_args           (int    *argc,
 				   char ***argv);
 
 void     btk_init                 (int    *argc,
                                    char ***argv);
 
-gboolean btk_init_check           (int    *argc,
+bboolean btk_init_check           (int    *argc,
                                    char ***argv);
   
-gboolean btk_init_with_args       (int            *argc,
+bboolean btk_init_with_args       (int            *argc,
 				   char         ***argv,
 				   const char     *parameter_string,
 				   GOptionEntry   *entries,
 				   const char     *translation_domain,
 				   GError        **error);
 
-GOptionGroup *btk_get_option_group (gboolean open_default_display);
+GOptionGroup *btk_get_option_group (bboolean open_default_display);
   
 #ifdef G_PLATFORM_WIN32
 
@@ -116,7 +116,7 @@ void	 btk_init_abi_check       (int	  *argc,
 				   int     num_checks,
 				   size_t  sizeof_BtkWindow,
 				   size_t  sizeof_BtkBox);
-gboolean btk_init_check_abi_check (int	  *argc,
+bboolean btk_init_check_abi_check (int	  *argc,
 				   char	***argv,
 				   int     num_checks,
 				   size_t  sizeof_BtkWindow,
@@ -128,13 +128,13 @@ gboolean btk_init_check_abi_check (int	  *argc,
 #endif
 
 #ifndef BTK_DISABLE_DEPRECATED
-void     btk_exit                 (gint    error_code);
-gchar *        btk_set_locale           (void);
+void     btk_exit                 (bint    error_code);
+bchar *        btk_set_locale           (void);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 void           btk_disable_setlocale    (void);
 BangoLanguage *btk_get_default_language (void);
-gboolean       btk_events_pending       (void);
+bboolean       btk_events_pending       (void);
 
 /* The following is the event func BTK+ registers with BDK
  * we expose it mainly to allow filtering of events between
@@ -143,14 +143,14 @@ gboolean       btk_events_pending       (void);
 void 	   btk_main_do_event	   (BdkEvent           *event);
 
 void	   btk_main		   (void);
-guint	   btk_main_level	   (void);
+buint	   btk_main_level	   (void);
 void	   btk_main_quit	   (void);
-gboolean   btk_main_iteration	   (void);
+bboolean   btk_main_iteration	   (void);
 /* btk_main_iteration() calls btk_main_iteration_do(TRUE) */
-gboolean   btk_main_iteration_do   (gboolean blocking);
+bboolean   btk_main_iteration_do   (bboolean blocking);
 
-gboolean   btk_true		   (void) G_GNUC_CONST;
-gboolean   btk_false		   (void) G_GNUC_CONST;
+bboolean   btk_true		   (void) B_GNUC_CONST;
+bboolean   btk_false		   (void) B_GNUC_CONST;
 
 void	   btk_grab_add		   (BtkWidget	       *widget);
 BtkWidget* btk_grab_get_current	   (void);
@@ -158,57 +158,57 @@ void	   btk_grab_remove	   (BtkWidget	       *widget);
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
 void	   btk_init_add		   (BtkFunction	       function,
-				    gpointer	       data);
-void	   btk_quit_add_destroy	   (guint	       main_level,
+				    bpointer	       data);
+void	   btk_quit_add_destroy	   (buint	       main_level,
 				    BtkObject	      *object);
-guint	   btk_quit_add		   (guint	       main_level,
+buint	   btk_quit_add		   (buint	       main_level,
 				    BtkFunction	       function,
-				    gpointer	       data);
-guint	   btk_quit_add_full	   (guint	       main_level,
-				    BtkFunction	       function,
-				    BtkCallbackMarshal marshal,
-				    gpointer	       data,
-				    GDestroyNotify     destroy);
-void	   btk_quit_remove	   (guint	       quit_handler_id);
-void	   btk_quit_remove_by_data (gpointer	       data);
-guint	   btk_timeout_add	   (guint32	       interval,
-				    BtkFunction	       function,
-				    gpointer	       data);
-guint	   btk_timeout_add_full	   (guint32	       interval,
+				    bpointer	       data);
+buint	   btk_quit_add_full	   (buint	       main_level,
 				    BtkFunction	       function,
 				    BtkCallbackMarshal marshal,
-				    gpointer	       data,
+				    bpointer	       data,
 				    GDestroyNotify     destroy);
-void	   btk_timeout_remove	   (guint	       timeout_handler_id);
+void	   btk_quit_remove	   (buint	       quit_handler_id);
+void	   btk_quit_remove_by_data (bpointer	       data);
+buint	   btk_timeout_add	   (buint32	       interval,
+				    BtkFunction	       function,
+				    bpointer	       data);
+buint	   btk_timeout_add_full	   (buint32	       interval,
+				    BtkFunction	       function,
+				    BtkCallbackMarshal marshal,
+				    bpointer	       data,
+				    GDestroyNotify     destroy);
+void	   btk_timeout_remove	   (buint	       timeout_handler_id);
 
-guint	   btk_idle_add		   (BtkFunction	       function,
-				    gpointer	       data);
-guint	   btk_idle_add_priority   (gint	       priority,
+buint	   btk_idle_add		   (BtkFunction	       function,
+				    bpointer	       data);
+buint	   btk_idle_add_priority   (bint	       priority,
 				    BtkFunction	       function,
-				    gpointer	       data);
-guint	   btk_idle_add_full	   (gint	       priority,
+				    bpointer	       data);
+buint	   btk_idle_add_full	   (bint	       priority,
 				    BtkFunction	       function,
 				    BtkCallbackMarshal marshal,
-				    gpointer	       data,
+				    bpointer	       data,
 				    GDestroyNotify     destroy);
-void	   btk_idle_remove	   (guint	       idle_handler_id);
-void	   btk_idle_remove_by_data (gpointer	       data);
-guint	   btk_input_add_full	   (gint	       source,
+void	   btk_idle_remove	   (buint	       idle_handler_id);
+void	   btk_idle_remove_by_data (bpointer	       data);
+buint	   btk_input_add_full	   (bint	       source,
 				    BdkInputCondition  condition,
 				    BdkInputFunction   function,
 				    BtkCallbackMarshal marshal,
-				    gpointer	       data,
+				    bpointer	       data,
 				    GDestroyNotify     destroy);
-void	   btk_input_remove	   (guint	       input_handler_id);
+void	   btk_input_remove	   (buint	       input_handler_id);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-guint	   btk_key_snooper_install (BtkKeySnoopFunc snooper,
-				    gpointer	    func_data);
-void	   btk_key_snooper_remove  (guint	    snooper_handler_id);
+buint	   btk_key_snooper_install (BtkKeySnoopFunc snooper,
+				    bpointer	    func_data);
+void	   btk_key_snooper_remove  (buint	    snooper_handler_id);
 
 BdkEvent*       btk_get_current_event       (void);
-guint32         btk_get_current_event_time  (void);
-gboolean        btk_get_current_event_state (BdkModifierType *state);
+buint32         btk_get_current_event_time  (void);
+bboolean        btk_get_current_event_state (BdkModifierType *state);
 
 BtkWidget* btk_get_event_widget	   (BdkEvent	   *event);
 
@@ -218,16 +218,16 @@ BtkWidget* btk_get_event_widget	   (BdkEvent	   *event);
 void       btk_propagate_event     (BtkWidget         *widget,
 				    BdkEvent          *event);
 
-gboolean _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
-                                   GValue                *return_accu,
-                                   const GValue          *handler_return,
-                                   gpointer               dummy);
+bboolean _btk_boolean_handled_accumulator (GSignalInvocationHint *ihint,
+                                   BValue                *return_accu,
+                                   const BValue          *handler_return,
+                                   bpointer               dummy);
 
-gchar *_btk_get_lc_ctype (void);
+bchar *_btk_get_lc_ctype (void);
 
-gboolean _btk_module_has_mixed_deps (GModule *module);
+bboolean _btk_module_has_mixed_deps (GModule *module);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MAIN_H__ */

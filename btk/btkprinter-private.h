@@ -25,13 +25,13 @@
 #include <btk/btkunixprint.h>
 #include "btkprinteroptionset.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BtkPrinterOptionSet *_btk_printer_get_options               (BtkPrinter          *printer,
 							     BtkPrintSettings    *settings,
 							     BtkPageSetup        *page_setup,
 							     BtkPrintCapabilities capabilities);
-gboolean             _btk_printer_mark_conflicts            (BtkPrinter          *printer,
+bboolean             _btk_printer_mark_conflicts            (BtkPrinter          *printer,
 							     BtkPrinterOptionSet *options);
 void                 _btk_printer_get_settings_from_options (BtkPrinter          *printer,
 							     BtkPrinterOptionSet *options,
@@ -42,8 +42,8 @@ void                 _btk_printer_prepare_for_print         (BtkPrinter         
 							     BtkPageSetup        *page_setup);
 bairo_surface_t *    _btk_printer_create_bairo_surface      (BtkPrinter          *printer,
 							     BtkPrintSettings    *settings,
-							     gdouble              width,
-							     gdouble              height,
+							     bdouble              width,
+							     bdouble              height,
 							     BUNNYIOChannel          *cache_io);
 GHashTable *         _btk_printer_get_custom_widgets        (BtkPrinter          *printer);
 
@@ -51,5 +51,5 @@ GHashTable *         _btk_printer_get_custom_widgets        (BtkPrinter         
 void btk_print_job_set_status (BtkPrintJob   *job,
 			       BtkPrintStatus status);
 
-G_END_DECLS
+B_END_DECLS
 #endif /* __BTK_PRINT_OPERATION_PRIVATE_H__ */

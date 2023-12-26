@@ -33,14 +33,14 @@
 #include <btk/btkdrawingarea.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CURVE                  (btk_curve_get_type ())
-#define BTK_CURVE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CURVE, BtkCurve))
-#define BTK_CURVE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CURVE, BtkCurveClass))
-#define BTK_IS_CURVE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CURVE))
-#define BTK_IS_CURVE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CURVE))
-#define BTK_CURVE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CURVE, BtkCurveClass))
+#define BTK_CURVE(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CURVE, BtkCurve))
+#define BTK_CURVE_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CURVE, BtkCurveClass))
+#define BTK_IS_CURVE(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CURVE))
+#define BTK_IS_CURVE_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CURVE))
+#define BTK_CURVE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CURVE, BtkCurveClass))
 
 
 typedef struct _BtkCurve	BtkCurve;
@@ -51,24 +51,24 @@ struct _BtkCurve
 {
   BtkDrawingArea graph;
 
-  gint cursor_type;
-  gfloat min_x;
-  gfloat max_x;
-  gfloat min_y;
-  gfloat max_y;
+  bint cursor_type;
+  bfloat min_x;
+  bfloat max_x;
+  bfloat min_y;
+  bfloat max_y;
   BdkPixmap *pixmap;
   BtkCurveType curve_type;
-  gint height;                  /* (cached) graph height in pixels */
-  gint grab_point;              /* point currently grabbed */
-  gint last;
+  bint height;                  /* (cached) graph height in pixels */
+  bint grab_point;              /* point currently grabbed */
+  bint last;
 
   /* (cached) curve points: */
-  gint num_points;
+  bint num_points;
   BdkPoint *point;
 
   /* control points: */
-  gint num_ctlpoints;           /* number of control points */
-  gfloat (*ctlpoint)[2];        /* array of control points */
+  bint num_ctlpoints;           /* number of control points */
+  bfloat (*ctlpoint)[2];        /* array of control points */
 };
 
 struct _BtkCurveClass
@@ -85,21 +85,21 @@ struct _BtkCurveClass
 };
 
 
-GType		btk_curve_get_type	(void) G_GNUC_CONST;
+GType		btk_curve_get_type	(void) B_GNUC_CONST;
 BtkWidget*	btk_curve_new		(void);
 void		btk_curve_reset		(BtkCurve *curve);
-void		btk_curve_set_gamma	(BtkCurve *curve, gfloat gamma_);
+void		btk_curve_set_gamma	(BtkCurve *curve, bfloat gamma_);
 void		btk_curve_set_range	(BtkCurve *curve,
-					 gfloat min_x, gfloat max_x,
-					 gfloat min_y, gfloat max_y);
+					 bfloat min_x, bfloat max_x,
+					 bfloat min_y, bfloat max_y);
 void		btk_curve_get_vector	(BtkCurve *curve,
-					 int veclen, gfloat vector[]);
+					 int veclen, bfloat vector[]);
 void		btk_curve_set_vector	(BtkCurve *curve,
-					 int veclen, gfloat vector[]);
+					 int veclen, bfloat vector[]);
 void		btk_curve_set_curve_type (BtkCurve *curve, BtkCurveType type);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CURVE_H__ */
 

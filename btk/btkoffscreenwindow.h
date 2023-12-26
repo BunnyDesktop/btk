@@ -27,14 +27,14 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_OFFSCREEN_WINDOW         (btk_offscreen_window_get_type ())
-#define BTK_OFFSCREEN_WINDOW(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindow))
-#define BTK_OFFSCREEN_WINDOW_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST ((k), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindowClass))
-#define BTK_IS_OFFSCREEN_WINDOW(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_OFFSCREEN_WINDOW))
-#define BTK_IS_OFFSCREEN_WINDOW_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_OFFSCREEN_WINDOW))
-#define BTK_OFFSCREEN_WINDOW_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindowClass))
+#define BTK_OFFSCREEN_WINDOW(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindow))
+#define BTK_OFFSCREEN_WINDOW_CLASS(k)     (B_TYPE_CHECK_CLASS_CAST ((k), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindowClass))
+#define BTK_IS_OFFSCREEN_WINDOW(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_OFFSCREEN_WINDOW))
+#define BTK_IS_OFFSCREEN_WINDOW_CLASS(k)  (B_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_OFFSCREEN_WINDOW))
+#define BTK_OFFSCREEN_WINDOW_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_OFFSCREEN_WINDOW, BtkOffscreenWindowClass))
 
 typedef struct _BtkOffscreenWindow      BtkOffscreenWindow;
 typedef struct _BtkOffscreenWindowClass BtkOffscreenWindowClass;
@@ -49,12 +49,12 @@ struct _BtkOffscreenWindowClass
   BtkWindowClass parent_class;
 };
 
-GType      btk_offscreen_window_get_type   (void) G_GNUC_CONST;
+GType      btk_offscreen_window_get_type   (void) B_GNUC_CONST;
 
 BtkWidget *btk_offscreen_window_new        (void);
 BdkPixmap *btk_offscreen_window_get_pixmap (BtkOffscreenWindow *offscreen);
 BdkPixbuf *btk_offscreen_window_get_pixbuf (BtkOffscreenWindow *offscreen);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OFFSCREEN_WINDOW_H__ */

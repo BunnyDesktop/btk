@@ -23,7 +23,7 @@
 #ifndef __BTK_WIN32_EMBED_H__
 #define __BTK_WIN32_EMBED_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_WIN32_EMBED_PROTOCOL_VERSION 1
 
@@ -77,7 +77,7 @@ typedef enum {					/* send or post? */
  */
 #define BTK_WIN32_EMBED_FOCUS_WRAPAROUND         (1 << 0)
 
-guint _btk_win32_embed_message_type (BtkWin32EmbedMessageType type);
+buint _btk_win32_embed_message_type (BtkWin32EmbedMessageType type);
 void _btk_win32_embed_push_message (MSG *msg);
 void _btk_win32_embed_pop_message (void);
 void _btk_win32_embed_send (BdkWindow		    *recipient,
@@ -88,8 +88,8 @@ void _btk_win32_embed_send_focus_message (BdkWindow		  *recipient,
 					  BtkWin32EmbedMessageType message,
 					  WPARAM	           wparam);
 void     _btk_win32_embed_set_focus_wrapped  (void);
-gboolean _btk_win32_embed_get_focus_wrapped  (void);
+bboolean _btk_win32_embed_get_focus_wrapped  (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*  __BTK_WIN32_EMBED_H__ */

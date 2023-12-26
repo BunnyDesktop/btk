@@ -7,9 +7,9 @@
 #define YSIZE  400
 
 /* This routine gets control when the close button is clicked */
-static gboolean close_application( BtkWidget *widget,
+static bboolean close_application( BtkWidget *widget,
                                    BdkEvent  *event,
-                                   gpointer   data )
+                                   bpointer   data )
 {
     btk_main_quit ();
     return FALSE;

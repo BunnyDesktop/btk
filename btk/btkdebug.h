@@ -33,7 +33,7 @@
 
 #include <bunnylib.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef enum {
   BTK_DEBUG_MISC        = 1 << 0,
@@ -52,9 +52,9 @@ typedef enum {
 
 #ifdef G_ENABLE_DEBUG
 
-#define BTK_NOTE(type,action)                G_STMT_START { \
+#define BTK_NOTE(type,action)                B_STMT_START { \
     if (btk_debug_flags & BTK_DEBUG_##type)                 \
-       { action; };                          } G_STMT_END
+       { action; };                          } B_STMT_END
 
 #else /* !G_ENABLE_DEBUG */
 
@@ -72,8 +72,8 @@ typedef enum {
 #  define BTKVAR extern
 #endif
 
-BTKVAR guint btk_debug_flags;
+BTKVAR buint btk_debug_flags;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_DEBUG_H__ */

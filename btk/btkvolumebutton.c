@@ -49,15 +49,15 @@
 #define EPSILON (1e-10)
 
 
-static gboolean	cb_query_tooltip (BtkWidget       *button,
-                                  gint             x,
-                                  gint             y,
-                                  gboolean         keyboard_mode,
+static bboolean	cb_query_tooltip (BtkWidget       *button,
+                                  bint             x,
+                                  bint             y,
+                                  bboolean         keyboard_mode,
                                   BtkTooltip      *tooltip,
-                                  gpointer         user_data);
+                                  bpointer         user_data);
 static void	cb_value_changed (BtkVolumeButton *button,
-                                  gdouble          value,
-                                  gpointer         user_data);
+                                  bdouble          value,
+                                  bpointer         user_data);
 
 G_DEFINE_TYPE (BtkVolumeButton, btk_volume_button, BTK_TYPE_SCALE_BUTTON)
 
@@ -102,15 +102,15 @@ btk_volume_button_init (BtkVolumeButton *button)
   btk_scale_button_set_icons (sbutton, icons);
 
   adj = btk_adjustment_new (0., 0., 1., 0.02, 0.2, 0.);
-  g_object_set (G_OBJECT (button),
+  g_object_set (B_OBJECT (button),
 		"adjustment", adj,
 		"size", BTK_ICON_SIZE_SMALL_TOOLBAR,
 		"has-tooltip", TRUE,
 	       	NULL);
 
-  g_signal_connect (G_OBJECT (button), "query-tooltip",
+  g_signal_connect (B_OBJECT (button), "query-tooltip",
 		    G_CALLBACK (cb_query_tooltip), NULL);
-  g_signal_connect (G_OBJECT (button), "value-changed",
+  g_signal_connect (B_OBJECT (button), "value-changed",
 		    G_CALLBACK (cb_value_changed), NULL);
 }
 
@@ -128,22 +128,22 @@ btk_volume_button_init (BtkVolumeButton *button)
 BtkWidget *
 btk_volume_button_new (void)
 {
-  GObject *button;
+  BObject *button;
   button = g_object_new (BTK_TYPE_VOLUME_BUTTON, NULL);
   return BTK_WIDGET (button);
 }
 
-static gboolean
+static bboolean
 cb_query_tooltip (BtkWidget  *button,
-		  gint        x,
-		  gint        y,
-		  gboolean    keyboard_mode,
+		  bint        x,
+		  bint        y,
+		  bboolean    keyboard_mode,
 		  BtkTooltip *tooltip,
-		  gpointer    user_data)
+		  bpointer    user_data)
 {
   BtkScaleButton *scale_button = BTK_SCALE_BUTTON (button);
   BtkAdjustment *adj;
-  gdouble val;
+  bdouble val;
   char *str;
   BatkImage *image;
 
@@ -182,7 +182,7 @@ cb_query_tooltip (BtkWidget  *button,
 }
 
 static void
-cb_value_changed (BtkVolumeButton *button, gdouble value, gpointer user_data)
+cb_value_changed (BtkVolumeButton *button, bdouble value, bpointer user_data)
 {
   btk_widget_trigger_tooltip_query (BTK_WIDGET (button));
 }

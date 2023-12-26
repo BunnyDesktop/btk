@@ -39,14 +39,14 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SPIN_BUTTON                  (btk_spin_button_get_type ())
-#define BTK_SPIN_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
-#define BTK_SPIN_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
-#define BTK_IS_SPIN_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPIN_BUTTON))
-#define BTK_IS_SPIN_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SPIN_BUTTON))
-#define BTK_SPIN_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
+#define BTK_SPIN_BUTTON(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButton))
+#define BTK_SPIN_BUTTON_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
+#define BTK_IS_SPIN_BUTTON(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SPIN_BUTTON))
+#define BTK_IS_SPIN_BUTTON_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SPIN_BUTTON))
+#define BTK_SPIN_BUTTON_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SPIN_BUTTON, BtkSpinButtonClass))
 
 #define BTK_INPUT_ERROR -1
 
@@ -80,31 +80,31 @@ struct _BtkSpinButton
 
   BdkWindow *GSEAL (panel);
 
-  guint32 GSEAL (timer);
+  buint32 GSEAL (timer);
 
-  gdouble GSEAL (climb_rate);
-  gdouble GSEAL (timer_step);
+  bdouble GSEAL (climb_rate);
+  bdouble GSEAL (timer_step);
 
   BtkSpinButtonUpdatePolicy GSEAL (update_policy);
 
-  guint GSEAL (in_child) : 2;
-  guint GSEAL (click_child) : 2; /* valid: BTK_ARROW_UP=0, BTK_ARROW_DOWN=1 or 2=NONE/BOTH */
-  guint GSEAL (button) : 2;
-  guint GSEAL (need_timer) : 1;
-  guint GSEAL (timer_calls) : 3;
-  guint GSEAL (digits) : 10;
-  guint GSEAL (numeric) : 1;
-  guint GSEAL (wrap) : 1;
-  guint GSEAL (snap_to_ticks) : 1;
+  buint GSEAL (in_child) : 2;
+  buint GSEAL (click_child) : 2; /* valid: BTK_ARROW_UP=0, BTK_ARROW_DOWN=1 or 2=NONE/BOTH */
+  buint GSEAL (button) : 2;
+  buint GSEAL (need_timer) : 1;
+  buint GSEAL (timer_calls) : 3;
+  buint GSEAL (digits) : 10;
+  buint GSEAL (numeric) : 1;
+  buint GSEAL (wrap) : 1;
+  buint GSEAL (snap_to_ticks) : 1;
 };
 
 struct _BtkSpinButtonClass
 {
   BtkEntryClass parent_class;
 
-  gint (*input)  (BtkSpinButton *spin_button,
-		  gdouble       *new_value);
-  gint (*output) (BtkSpinButton *spin_button);
+  bint (*input)  (BtkSpinButton *spin_button,
+		  bdouble       *new_value);
+  bint (*output) (BtkSpinButton *spin_button);
   void (*value_changed) (BtkSpinButton *spin_button);
 
   /* Action signals for keybindings, do not connect to these */
@@ -120,20 +120,20 @@ struct _BtkSpinButtonClass
 };
 
 
-GType		btk_spin_button_get_type	   (void) G_GNUC_CONST;
+GType		btk_spin_button_get_type	   (void) B_GNUC_CONST;
 
 void		btk_spin_button_configure	   (BtkSpinButton  *spin_button,
 						    BtkAdjustment  *adjustment,
-						    gdouble	    climb_rate,
-						    guint	    digits);
+						    bdouble	    climb_rate,
+						    buint	    digits);
 
 BtkWidget*	btk_spin_button_new		   (BtkAdjustment  *adjustment,
-						    gdouble	    climb_rate,
-						    guint	    digits);
+						    bdouble	    climb_rate,
+						    buint	    digits);
 
-BtkWidget*	btk_spin_button_new_with_range	   (gdouble  min,
-						    gdouble  max,
-						    gdouble  step);
+BtkWidget*	btk_spin_button_new_with_range	   (bdouble  min,
+						    bdouble  max,
+						    bdouble  step);
 
 void		btk_spin_button_set_adjustment	   (BtkSpinButton  *spin_button,
 						    BtkAdjustment  *adjustment);
@@ -141,49 +141,49 @@ void		btk_spin_button_set_adjustment	   (BtkSpinButton  *spin_button,
 BtkAdjustment*	btk_spin_button_get_adjustment	   (BtkSpinButton  *spin_button);
 
 void		btk_spin_button_set_digits	   (BtkSpinButton  *spin_button,
-						    guint	    digits);
-guint           btk_spin_button_get_digits         (BtkSpinButton  *spin_button);
+						    buint	    digits);
+buint           btk_spin_button_get_digits         (BtkSpinButton  *spin_button);
 
 void		btk_spin_button_set_increments	   (BtkSpinButton  *spin_button,
-						    gdouble         step,
-						    gdouble         page);
+						    bdouble         step,
+						    bdouble         page);
 void            btk_spin_button_get_increments     (BtkSpinButton  *spin_button,
-						    gdouble        *step,
-						    gdouble        *page);
+						    bdouble        *step,
+						    bdouble        *page);
 
 void		btk_spin_button_set_range	   (BtkSpinButton  *spin_button,
-						    gdouble         min,
-						    gdouble         max);
+						    bdouble         min,
+						    bdouble         max);
 void            btk_spin_button_get_range          (BtkSpinButton  *spin_button,
-						    gdouble        *min,
-						    gdouble        *max);
+						    bdouble        *min,
+						    bdouble        *max);
 
-gdouble		btk_spin_button_get_value          (BtkSpinButton  *spin_button);
+bdouble		btk_spin_button_get_value          (BtkSpinButton  *spin_button);
 
-gint		btk_spin_button_get_value_as_int   (BtkSpinButton  *spin_button);
+bint		btk_spin_button_get_value_as_int   (BtkSpinButton  *spin_button);
 
 void		btk_spin_button_set_value	   (BtkSpinButton  *spin_button,
-						    gdouble	    value);
+						    bdouble	    value);
 
 void		btk_spin_button_set_update_policy  (BtkSpinButton  *spin_button,
 						    BtkSpinButtonUpdatePolicy  policy);
 BtkSpinButtonUpdatePolicy btk_spin_button_get_update_policy (BtkSpinButton *spin_button);
 
 void		btk_spin_button_set_numeric	   (BtkSpinButton  *spin_button,
-						    gboolean	    numeric);
-gboolean        btk_spin_button_get_numeric        (BtkSpinButton  *spin_button);
+						    bboolean	    numeric);
+bboolean        btk_spin_button_get_numeric        (BtkSpinButton  *spin_button);
 
 void		btk_spin_button_spin		   (BtkSpinButton  *spin_button,
 						    BtkSpinType     direction,
-						    gdouble	    increment);
+						    bdouble	    increment);
 
 void		btk_spin_button_set_wrap	   (BtkSpinButton  *spin_button,
-						    gboolean	    wrap);
-gboolean        btk_spin_button_get_wrap           (BtkSpinButton  *spin_button);
+						    bboolean	    wrap);
+bboolean        btk_spin_button_get_wrap           (BtkSpinButton  *spin_button);
 
 void		btk_spin_button_set_snap_to_ticks  (BtkSpinButton  *spin_button,
-						    gboolean	    snap_to_ticks);
-gboolean        btk_spin_button_get_snap_to_ticks  (BtkSpinButton  *spin_button);
+						    bboolean	    snap_to_ticks);
+bboolean        btk_spin_button_get_snap_to_ticks  (BtkSpinButton  *spin_button);
 void            btk_spin_button_update             (BtkSpinButton  *spin_button);
 
 
@@ -191,6 +191,6 @@ void            btk_spin_button_update             (BtkSpinButton  *spin_button)
 #define btk_spin_button_get_value_as_float btk_spin_button_get_value
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SPIN_BUTTON_H__ */

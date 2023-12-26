@@ -29,14 +29,14 @@
 #include <btk/btkcontainer.h>
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOL_ITEM_GROUP           (btk_tool_item_group_get_type ())
-#define BTK_TOOL_ITEM_GROUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroup))
-#define BTK_TOOL_ITEM_GROUP_CLASS(cls)     (G_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
-#define BTK_IS_TOOL_ITEM_GROUP(obj)        (G_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
-#define BTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (G_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
-#define BTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
+#define BTK_TOOL_ITEM_GROUP(obj)           (B_TYPE_CHECK_INSTANCE_CAST (obj, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroup))
+#define BTK_TOOL_ITEM_GROUP_CLASS(cls)     (B_TYPE_CHECK_CLASS_CAST (cls, BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
+#define BTK_IS_TOOL_ITEM_GROUP(obj)        (B_TYPE_CHECK_INSTANCE_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_IS_TOOL_ITEM_GROUP_CLASS(obj)  (B_TYPE_CHECK_CLASS_TYPE (obj, BTK_TYPE_TOOL_ITEM_GROUP))
+#define BTK_TOOL_ITEM_GROUP_GET_CLASS(obj) (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOOL_ITEM_GROUP, BtkToolItemGroupClass))
 
 typedef struct _BtkToolItemGroup        BtkToolItemGroup;
 typedef struct _BtkToolItemGroupClass   BtkToolItemGroupClass;
@@ -58,42 +58,42 @@ struct _BtkToolItemGroupClass
   BtkContainerClass parent_class;
 };
 
-GType                 btk_tool_item_group_get_type          (void) G_GNUC_CONST;
-BtkWidget*            btk_tool_item_group_new               (const gchar        *label);
+GType                 btk_tool_item_group_get_type          (void) B_GNUC_CONST;
+BtkWidget*            btk_tool_item_group_new               (const bchar        *label);
 
 void                  btk_tool_item_group_set_label         (BtkToolItemGroup   *group,
-                                                             const gchar        *label);
+                                                             const bchar        *label);
 void                  btk_tool_item_group_set_label_widget  (BtkToolItemGroup   *group,
                                                              BtkWidget          *label_widget);
 void                  btk_tool_item_group_set_collapsed      (BtkToolItemGroup  *group,
-                                                             gboolean            collapsed);
+                                                             bboolean            collapsed);
 void                  btk_tool_item_group_set_ellipsize     (BtkToolItemGroup   *group,
                                                              BangoEllipsizeMode  ellipsize);
 void                  btk_tool_item_group_set_header_relief (BtkToolItemGroup   *group,
                                                              BtkReliefStyle      style);
 
-const gchar *         btk_tool_item_group_get_label         (BtkToolItemGroup   *group);
+const bchar *         btk_tool_item_group_get_label         (BtkToolItemGroup   *group);
 BtkWidget            *btk_tool_item_group_get_label_widget  (BtkToolItemGroup   *group);
-gboolean              btk_tool_item_group_get_collapsed     (BtkToolItemGroup   *group);
+bboolean              btk_tool_item_group_get_collapsed     (BtkToolItemGroup   *group);
 BangoEllipsizeMode    btk_tool_item_group_get_ellipsize     (BtkToolItemGroup   *group);
 BtkReliefStyle        btk_tool_item_group_get_header_relief (BtkToolItemGroup   *group);
 
 void                  btk_tool_item_group_insert            (BtkToolItemGroup   *group,
                                                              BtkToolItem        *item,
-                                                             gint                position);
+                                                             bint                position);
 void                  btk_tool_item_group_set_item_position (BtkToolItemGroup   *group,
                                                              BtkToolItem        *item,
-                                                             gint                position);
-gint                  btk_tool_item_group_get_item_position (BtkToolItemGroup   *group,
+                                                             bint                position);
+bint                  btk_tool_item_group_get_item_position (BtkToolItemGroup   *group,
                                                              BtkToolItem        *item);
 
-guint                 btk_tool_item_group_get_n_items       (BtkToolItemGroup   *group);
+buint                 btk_tool_item_group_get_n_items       (BtkToolItemGroup   *group);
 BtkToolItem*          btk_tool_item_group_get_nth_item      (BtkToolItemGroup   *group,
-                                                             guint               index);
+                                                             buint               index);
 BtkToolItem*          btk_tool_item_group_get_drop_item     (BtkToolItemGroup   *group,
-                                                             gint                x,
-                                                             gint                y);
+                                                             bint                x,
+                                                             bint                y);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOL_ITEM_GROUP_H__ */

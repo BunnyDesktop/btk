@@ -35,14 +35,14 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TABLE			(btk_table_get_type ())
-#define BTK_TABLE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TABLE, BtkTable))
-#define BTK_TABLE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TABLE, BtkTableClass))
-#define BTK_IS_TABLE(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TABLE))
-#define BTK_IS_TABLE_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TABLE))
-#define BTK_TABLE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TABLE, BtkTableClass))
+#define BTK_TABLE(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TABLE, BtkTable))
+#define BTK_TABLE_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TABLE, BtkTableClass))
+#define BTK_IS_TABLE(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TABLE))
+#define BTK_IS_TABLE_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TABLE))
+#define BTK_TABLE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TABLE, BtkTableClass))
 
 
 typedef struct _BtkTable	BtkTable;
@@ -57,11 +57,11 @@ struct _BtkTable
   GList *GSEAL (children);
   BtkTableRowCol *GSEAL (rows);
   BtkTableRowCol *GSEAL (cols);
-  guint16 GSEAL (nrows);
-  guint16 GSEAL (ncols);
-  guint16 GSEAL (column_spacing);
-  guint16 GSEAL (row_spacing);
-  guint GSEAL (homogeneous) : 1;
+  buint16 GSEAL (nrows);
+  buint16 GSEAL (ncols);
+  buint16 GSEAL (column_spacing);
+  buint16 GSEAL (row_spacing);
+  buint GSEAL (homogeneous) : 1;
 };
 
 struct _BtkTableClass
@@ -72,80 +72,80 @@ struct _BtkTableClass
 struct _BtkTableChild
 {
   BtkWidget *widget;
-  guint16 left_attach;
-  guint16 right_attach;
-  guint16 top_attach;
-  guint16 bottom_attach;
-  guint16 xpadding;
-  guint16 ypadding;
-  guint xexpand : 1;
-  guint yexpand : 1;
-  guint xshrink : 1;
-  guint yshrink : 1;
-  guint xfill : 1;
-  guint yfill : 1;
+  buint16 left_attach;
+  buint16 right_attach;
+  buint16 top_attach;
+  buint16 bottom_attach;
+  buint16 xpadding;
+  buint16 ypadding;
+  buint xexpand : 1;
+  buint yexpand : 1;
+  buint xshrink : 1;
+  buint yshrink : 1;
+  buint xfill : 1;
+  buint yfill : 1;
 };
 
 struct _BtkTableRowCol
 {
-  guint16 requisition;
-  guint16 allocation;
-  guint16 spacing;
-  guint need_expand : 1;
-  guint need_shrink : 1;
-  guint expand : 1;
-  guint shrink : 1;
-  guint empty : 1;
+  buint16 requisition;
+  buint16 allocation;
+  buint16 spacing;
+  buint need_expand : 1;
+  buint need_shrink : 1;
+  buint expand : 1;
+  buint shrink : 1;
+  buint empty : 1;
 };
 
 
-GType	   btk_table_get_type	      (void) G_GNUC_CONST;
-BtkWidget* btk_table_new	      (guint		rows,
-				       guint		columns,
-				       gboolean		homogeneous);
+GType	   btk_table_get_type	      (void) B_GNUC_CONST;
+BtkWidget* btk_table_new	      (buint		rows,
+				       buint		columns,
+				       bboolean		homogeneous);
 void	   btk_table_resize	      (BtkTable	       *table,
-				       guint            rows,
-				       guint            columns);
+				       buint            rows,
+				       buint            columns);
 void	   btk_table_attach	      (BtkTable	       *table,
 				       BtkWidget       *child,
-				       guint		left_attach,
-				       guint		right_attach,
-				       guint		top_attach,
-				       guint		bottom_attach,
+				       buint		left_attach,
+				       buint		right_attach,
+				       buint		top_attach,
+				       buint		bottom_attach,
 				       BtkAttachOptions xoptions,
 				       BtkAttachOptions yoptions,
-				       guint		xpadding,
-				       guint		ypadding);
+				       buint		xpadding,
+				       buint		ypadding);
 void	   btk_table_attach_defaults  (BtkTable	       *table,
 				       BtkWidget       *widget,
-				       guint		left_attach,
-				       guint		right_attach,
-				       guint		top_attach,
-				       guint		bottom_attach);
+				       buint		left_attach,
+				       buint		right_attach,
+				       buint		top_attach,
+				       buint		bottom_attach);
 void	   btk_table_set_row_spacing  (BtkTable	       *table,
-				       guint		row,
-				       guint		spacing);
-guint      btk_table_get_row_spacing  (BtkTable        *table,
-				       guint            row);
+				       buint		row,
+				       buint		spacing);
+buint      btk_table_get_row_spacing  (BtkTable        *table,
+				       buint            row);
 void	   btk_table_set_col_spacing  (BtkTable	       *table,
-				       guint		column,
-				       guint		spacing);
-guint      btk_table_get_col_spacing  (BtkTable        *table,
-				       guint            column);
+				       buint		column,
+				       buint		spacing);
+buint      btk_table_get_col_spacing  (BtkTable        *table,
+				       buint            column);
 void	   btk_table_set_row_spacings (BtkTable	       *table,
-				       guint		spacing);
-guint      btk_table_get_default_row_spacing (BtkTable        *table);
+				       buint		spacing);
+buint      btk_table_get_default_row_spacing (BtkTable        *table);
 void	   btk_table_set_col_spacings (BtkTable	       *table,
-				       guint		spacing);
-guint      btk_table_get_default_col_spacing (BtkTable        *table);
+				       buint		spacing);
+buint      btk_table_get_default_col_spacing (BtkTable        *table);
 void	   btk_table_set_homogeneous  (BtkTable	       *table,
-				       gboolean		homogeneous);
-gboolean   btk_table_get_homogeneous  (BtkTable        *table);
+				       bboolean		homogeneous);
+bboolean   btk_table_get_homogeneous  (BtkTable        *table);
 void       btk_table_get_size         (BtkTable        *table,
-                                       guint           *rows,
-                                       guint           *columns);
+                                       buint           *rows,
+                                       buint           *columns);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TABLE_H__ */

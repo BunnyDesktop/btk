@@ -47,14 +47,14 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RULER            (btk_ruler_get_type ())
-#define BTK_RULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RULER, BtkRuler))
-#define BTK_RULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RULER, BtkRulerClass))
-#define BTK_IS_RULER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RULER))
-#define BTK_IS_RULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RULER))
-#define BTK_RULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RULER, BtkRulerClass))
+#define BTK_RULER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RULER, BtkRuler))
+#define BTK_RULER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RULER, BtkRulerClass))
+#define BTK_IS_RULER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RULER))
+#define BTK_IS_RULER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RULER))
+#define BTK_RULER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RULER, BtkRulerClass))
 
 
 typedef struct _BtkRuler        BtkRuler;
@@ -71,18 +71,18 @@ struct _BtkRuler
   BdkPixmap *GSEAL (backing_store);
   BdkGC *GSEAL (non_gr_exp_gc);		/* unused */
   BtkRulerMetric *GSEAL (metric);
-  gint GSEAL (xsrc);
-  gint GSEAL (ysrc);
-  gint GSEAL (slider_size);
+  bint GSEAL (xsrc);
+  bint GSEAL (ysrc);
+  bint GSEAL (slider_size);
 
   /* The upper limit of the ruler (in points) */
-  gdouble GSEAL (lower);
+  bdouble GSEAL (lower);
   /* The lower limit of the ruler */
-  gdouble GSEAL (upper);
+  bdouble GSEAL (upper);
   /* The position of the mark on the ruler */
-  gdouble GSEAL (position);
+  bdouble GSEAL (position);
   /* The maximum size of the ruler */
-  gdouble GSEAL (max_size);
+  bdouble GSEAL (max_size);
 };
 
 struct _BtkRulerClass
@@ -101,35 +101,35 @@ struct _BtkRulerClass
 
 struct _BtkRulerMetric
 {
-  gchar *metric_name;
-  gchar *abbrev;
+  bchar *metric_name;
+  bchar *abbrev;
   /* This should be points_per_unit. This is the size of the unit
    * in 1/72nd's of an inch and has nothing to do with screen pixels */
-  gdouble pixels_per_unit;
-  gdouble ruler_scale[10];
-  gint subdivide[5];        /* five possible modes of subdivision */
+  bdouble pixels_per_unit;
+  bdouble ruler_scale[10];
+  bint subdivide[5];        /* five possible modes of subdivision */
 };
 
 
-GType           btk_ruler_get_type   (void) G_GNUC_CONST;
+GType           btk_ruler_get_type   (void) B_GNUC_CONST;
 void            btk_ruler_set_metric (BtkRuler       *ruler,
                                       BtkMetricType   metric);
 BtkMetricType   btk_ruler_get_metric (BtkRuler       *ruler);
 void            btk_ruler_set_range  (BtkRuler       *ruler,
-                                      gdouble         lower,
-                                      gdouble         upper,
-                                      gdouble         position,
-                                      gdouble         max_size);
+                                      bdouble         lower,
+                                      bdouble         upper,
+                                      bdouble         position,
+                                      bdouble         max_size);
 void            btk_ruler_get_range  (BtkRuler       *ruler,
-                                      gdouble        *lower,
-                                      gdouble        *upper,
-                                      gdouble        *position,
-                                      gdouble        *max_size);
+                                      bdouble        *lower,
+                                      bdouble        *upper,
+                                      bdouble        *position,
+                                      bdouble        *max_size);
 
 void            btk_ruler_draw_ticks (BtkRuler       *ruler);
 void            btk_ruler_draw_pos   (BtkRuler       *ruler);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RULER_H__ */
 

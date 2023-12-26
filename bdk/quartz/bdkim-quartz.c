@@ -32,7 +32,7 @@
 #include "bdkinternals.h"
 #include "bdkprivate-quartz.h"
 
-gchar*
+bchar*
 bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
@@ -41,18 +41,18 @@ bdk_set_locale (void)
   return setlocale (LC_ALL, NULL);
 }
 
-gchar *
+bchar *
 bdk_wcstombs (const BdkWChar *src)
 {
-  gchar *mbstr;
+  bchar *mbstr;
 
-  gint length = 0;
-  gint i;
+  bint length = 0;
+  bint i;
 
   while (src[length] != 0)
     length++;
   
-  mbstr = g_new (gchar, length + 1);
+  mbstr = g_new (bchar, length + 1);
   
   for (i = 0; i < length + 1; i++)
     mbstr[i] = src[i];
@@ -60,10 +60,10 @@ bdk_wcstombs (const BdkWChar *src)
   return mbstr;
 }
 
-gint
-bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
+bint
+bdk_mbstowcs (BdkWChar *dest, const bchar *src, bint dest_max)
 {
-  gint i;
+  bint i;
   
   for (i = 0; i < dest_max && src[i]; i++)
     dest[i] = src[i];

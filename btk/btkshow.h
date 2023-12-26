@@ -27,13 +27,13 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
-gboolean btk_show_uri  (BdkScreen   *screen,
-                        const gchar *uri,
-                        guint32      timestamp,
+bboolean btk_show_uri  (BdkScreen   *screen,
+                        const bchar *uri,
+                        buint32      timestamp,
                         GError     **error);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SHOW_H__ */

@@ -39,17 +39,17 @@
 
 static void btk_builder_class_init     (BtkBuilderClass *klass);
 static void btk_builder_init           (BtkBuilder      *builder);
-static void btk_builder_finalize       (GObject         *object);
-static void btk_builder_set_property   (GObject         *object,
-                                        guint            prop_id,
-                                        const GValue    *value,
-                                        GParamSpec      *pspec);
-static void btk_builder_get_property   (GObject         *object,
-                                        guint            prop_id,
-                                        GValue          *value,
-                                        GParamSpec      *pspec);
+static void btk_builder_finalize       (BObject         *object);
+static void btk_builder_set_property   (BObject         *object,
+                                        buint            prop_id,
+                                        const BValue    *value,
+                                        BParamSpec      *pspec);
+static void btk_builder_get_property   (BObject         *object,
+                                        buint            prop_id,
+                                        BValue          *value,
+                                        BParamSpec      *pspec);
 static GType btk_builder_real_get_type_from_name (BtkBuilder  *builder,
-                                                  const gchar *type_name);
+                                                  const bchar *type_name);
 
 enum {
   PROP_0,
@@ -58,21 +58,21 @@ enum {
 
 struct _BtkBuilderPrivate
 {
-  gchar *domain;
+  bchar *domain;
   GHashTable *objects;
   GSList *delayed_properties;
   GSList *signals;
-  gchar *filename;
+  bchar *filename;
 };
 
-G_DEFINE_TYPE (BtkBuilder, btk_builder, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkBuilder, btk_builder, B_TYPE_OBJECT)
 
 static void
 btk_builder_class_init (BtkBuilderClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
-  bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->finalize = btk_builder_finalize;
   bobject_class->set_property = btk_builder_set_property;
@@ -104,7 +104,7 @@ btk_builder_class_init (BtkBuilderClass *klass)
 static void
 btk_builder_init (BtkBuilder *builder)
 {
-  builder->priv = G_TYPE_INSTANCE_GET_PRIVATE (builder, BTK_TYPE_BUILDER,
+  builder->priv = B_TYPE_INSTANCE_GET_PRIVATE (builder, BTK_TYPE_BUILDER,
                                                BtkBuilderPrivate);
   builder->priv->domain = NULL;
   builder->priv->objects = g_hash_table_new_full (g_str_hash, g_str_equal,
@@ -113,11 +113,11 @@ btk_builder_init (BtkBuilder *builder)
 
 
 /*
- * GObject virtual methods
+ * BObject virtual methods
  */
 
 static void
-btk_builder_finalize (GObject *object)
+btk_builder_finalize (BObject *object)
 {
   BtkBuilderPrivate *priv = BTK_BUILDER (object)->priv;
   
@@ -126,46 +126,46 @@ btk_builder_finalize (GObject *object)
   
   g_hash_table_destroy (priv->objects);
 
-  g_slist_foreach (priv->signals, (GFunc) _free_signal_info, NULL);
-  g_slist_free (priv->signals);
+  b_slist_foreach (priv->signals, (GFunc) _free_signal_info, NULL);
+  b_slist_free (priv->signals);
   
-  G_OBJECT_CLASS (btk_builder_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_builder_parent_class)->finalize (object);
 }
 
 static void
-btk_builder_set_property (GObject      *object,
-                          guint         prop_id,
-                          const GValue *value,
-                          GParamSpec   *pspec)
+btk_builder_set_property (BObject      *object,
+                          buint         prop_id,
+                          const BValue *value,
+                          BParamSpec   *pspec)
 {
   BtkBuilder *builder = BTK_BUILDER (object);
 
   switch (prop_id)
     {
     case PROP_TRANSLATION_DOMAIN:
-      btk_builder_set_translation_domain (builder, g_value_get_string (value));
+      btk_builder_set_translation_domain (builder, b_value_get_string (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_builder_get_property (GObject    *object,
-                          guint       prop_id,
-                          GValue     *value,
-                          GParamSpec *pspec)
+btk_builder_get_property (BObject    *object,
+                          buint       prop_id,
+                          BValue     *value,
+                          BParamSpec *pspec)
 {
   BtkBuilder *builder = BTK_BUILDER (object);
 
   switch (prop_id)
     {
     case PROP_TRANSLATION_DOMAIN:
-      g_value_set_string (value, builder->priv->domain);
+      b_value_set_string (value, builder->priv->domain);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -181,14 +181,14 @@ btk_builder_get_property (GObject    *object,
  *
  */
 static GType
-_btk_builder_resolve_type_lazily (const gchar *name)
+_btk_builder_resolve_type_lazily (const bchar *name)
 {
   static GModule *module = NULL;
   GTypeGetFunc func;
   GString *symbol_name = g_string_new ("");
   char c, *symbol;
   int i;
-  GType gtype = G_TYPE_INVALID;
+  GType gtype = B_TYPE_INVALID;
 
   if (!module)
     module = g_module_open (NULL, 0);
@@ -209,7 +209,7 @@ _btk_builder_resolve_type_lazily (const gchar *name)
   
   symbol = g_string_free (symbol_name, FALSE);
 
-  if (g_module_symbol (module, symbol, (gpointer)&func))
+  if (g_module_symbol (module, symbol, (bpointer)&func))
     gtype = func ();
   
   g_free (symbol);
@@ -223,12 +223,12 @@ _btk_builder_resolve_type_lazily (const gchar *name)
 
 static GType
 btk_builder_real_get_type_from_name (BtkBuilder  *builder, 
-                                     const gchar *type_name)
+                                     const bchar *type_name)
 {
   GType gtype;
 
   gtype = g_type_from_name (type_name);
-  if (gtype != G_TYPE_INVALID)
+  if (gtype != B_TYPE_INVALID)
     return gtype;
 
   return _btk_builder_resolve_type_lazily (type_name);
@@ -236,22 +236,22 @@ btk_builder_real_get_type_from_name (BtkBuilder  *builder,
 
 typedef struct
 {
-  gchar *object;
-  gchar *name;
-  gchar *value;
+  bchar *object;
+  bchar *name;
+  bchar *value;
 } DelayedProperty;
 
 static void
 btk_builder_get_parameters (BtkBuilder  *builder,
                             GType        object_type,
-                            const gchar *object_name,
+                            const bchar *object_name,
                             GSList      *properties,
                             GArray      **parameters,
                             GArray      **construct_parameters)
 {
   GSList *l;
-  GParamSpec *pspec;
-  GObjectClass *oclass;
+  BParamSpec *pspec;
+  BObjectClass *oclass;
   DelayedProperty *property;
   GError *error = NULL;
   
@@ -266,7 +266,7 @@ btk_builder_get_parameters (BtkBuilder  *builder,
       PropertyInfo *prop = (PropertyInfo*)l->data;
       GParameter parameter = { NULL };
 
-      pspec = g_object_class_find_property (G_OBJECT_CLASS (oclass),
+      pspec = g_object_class_find_property (B_OBJECT_CLASS (oclass),
                                             prop->name);
       if (!pspec)
         {
@@ -280,12 +280,12 @@ btk_builder_get_parameters (BtkBuilder  *builder,
       if (G_IS_PARAM_SPEC_OBJECT (pspec) &&
           (G_PARAM_SPEC_VALUE_TYPE (pspec) != BDK_TYPE_PIXBUF))
         {
-          GObject *object = btk_builder_get_object (builder, prop->data);
+          BObject *object = btk_builder_get_object (builder, prop->data);
 
           if (object)
             {
-              g_value_init (&parameter.value, G_OBJECT_TYPE (object));
-              g_value_set_object (&parameter.value, object);
+              b_value_init (&parameter.value, B_OBJECT_TYPE (object));
+              b_value_set_object (&parameter.value, object);
             }
           else 
             {
@@ -302,7 +302,7 @@ btk_builder_get_parameters (BtkBuilder  *builder,
               property->name = g_strdup (prop->name);
               property->value = g_strdup (prop->data);
               builder->priv->delayed_properties =
-                g_slist_prepend (builder->priv->delayed_properties, property);
+                b_slist_prepend (builder->priv->delayed_properties, property);
               continue;
             }
         }
@@ -326,13 +326,13 @@ btk_builder_get_parameters (BtkBuilder  *builder,
   g_type_class_unref (oclass);
 }
 
-static GObject *
+static BObject *
 btk_builder_get_internal_child (BtkBuilder  *builder,
                                 ObjectInfo  *info,
-                                const gchar *childname,
+                                const bchar *childname,
 				GError      **error)
 {
-  GObject *obj = NULL;
+  BObject *obj = NULL;
 
   while (!obj)
     {
@@ -364,22 +364,22 @@ btk_builder_get_internal_child (BtkBuilder  *builder,
   return obj;
 }
 
-GObject *
+BObject *
 _btk_builder_construct (BtkBuilder *builder,
                         ObjectInfo *info,
 			GError **error)
 {
   GArray *parameters, *construct_parameters;
   GType object_type;
-  GObject *obj;
+  BObject *obj;
   int i;
   BtkBuildableIface *iface;
-  gboolean custom_set_property;
+  bboolean custom_set_property;
   BtkBuildable *buildable;
 
   g_assert (info->class_name != NULL);
   object_type = btk_builder_get_type_from_name (builder, info->class_name);
-  if (object_type == G_TYPE_INVALID)
+  if (object_type == B_TYPE_INVALID)
     {
       g_set_error (error,
 		   BTK_BUILDER_ERROR,
@@ -397,7 +397,7 @@ _btk_builder_construct (BtkBuilder *builder,
 
   if (info->constructor)
     {
-      GObject *constructor;
+      BObject *constructor;
 
       constructor = btk_builder_get_object (builder, info->constructor);
       if (constructor == NULL)
@@ -421,7 +421,7 @@ _btk_builder_construct (BtkBuilder *builder,
     }
   else if (info->parent && ((ChildInfo*)info->parent)->internal_child != NULL)
     {
-      gchar *childname = ((ChildInfo*)info->parent)->internal_child;
+      bchar *childname = ((ChildInfo*)info->parent)->internal_child;
       obj = btk_builder_get_internal_child (builder, info, childname, error);
       if (!obj)
 	{
@@ -458,7 +458,7 @@ _btk_builder_construct (BtkBuilder *builder,
         {
           GParameter *param = &g_array_index (construct_parameters,
                                               GParameter, i);
-          g_value_unset (&param->value);
+          b_value_unset (&param->value);
         }
     }
   g_array_free (construct_parameters, TRUE);
@@ -485,12 +485,12 @@ _btk_builder_construct (BtkBuilder *builder,
 #if G_ENABLE_DEBUG
       if (btk_debug_flags & BTK_DEBUG_BUILDER)
         {
-          gchar *str = g_strdup_value_contents ((const GValue*)&param->value);
+          bchar *str = g_strdup_value_contents ((const BValue*)&param->value);
           g_print ("set %s: %s = %s\n", info->id, param->name, str);
           g_free (str);
         }
 #endif      
-      g_value_unset (&param->value);
+      b_value_unset (&param->value);
     }
   g_array_free (parameters, TRUE);
   
@@ -513,8 +513,8 @@ void
 _btk_builder_add (BtkBuilder *builder,
                   ChildInfo  *child_info)
 {
-  GObject *object;
-  GObject *parent;
+  BObject *object;
+  BObject *parent;
 
   /* Internal children are already added
    * Also prevent us from being called twice.
@@ -555,8 +555,8 @@ void
 _btk_builder_add_signals (BtkBuilder *builder,
 			  GSList     *signals)
 {
-  builder->priv->signals = g_slist_concat (builder->priv->signals,
-                                           g_slist_copy (signals));
+  builder->priv->signals = b_slist_concat (builder->priv->signals,
+                                           b_slist_copy (signals));
 }
 
 static void
@@ -564,17 +564,17 @@ btk_builder_apply_delayed_properties (BtkBuilder *builder)
 {
   GSList *l, *props;
   DelayedProperty *property;
-  GObject *object;
+  BObject *object;
   GType object_type;
-  GObjectClass *oclass;
-  GParamSpec *pspec;
+  BObjectClass *oclass;
+  BParamSpec *pspec;
 
   /* take the list over from the builder->priv.
    *
-   * g_slist_reverse does not copy the list, so the list now
+   * b_slist_reverse does not copy the list, so the list now
    * belongs to us (and we free it at the end of this function).
    */
-  props = g_slist_reverse (builder->priv->delayed_properties);
+  props = b_slist_reverse (builder->priv->delayed_properties);
   builder->priv->delayed_properties = NULL;
 
   for (l = props; l; l = l->next)
@@ -583,20 +583,20 @@ btk_builder_apply_delayed_properties (BtkBuilder *builder)
       object = g_hash_table_lookup (builder->priv->objects, property->object);
       g_assert (object != NULL);
 
-      object_type = G_OBJECT_TYPE (object);
-      g_assert (object_type != G_TYPE_INVALID);
+      object_type = B_OBJECT_TYPE (object);
+      g_assert (object_type != B_TYPE_INVALID);
 
       oclass = g_type_class_ref (object_type);
       g_assert (oclass != NULL);
 
-      pspec = g_object_class_find_property (G_OBJECT_CLASS (oclass),
+      pspec = g_object_class_find_property (B_OBJECT_CLASS (oclass),
                                             property->name);
       if (!pspec)
         g_warning ("Unknown property: %s.%s", g_type_name (object_type),
                    property->name);
       else
         {
-          GObject *obj;
+          BObject *obj;
 
           obj = g_hash_table_lookup (builder->priv->objects, property->value);
           if (!obj)
@@ -610,7 +610,7 @@ btk_builder_apply_delayed_properties (BtkBuilder *builder)
       g_slice_free (DelayedProperty, property);
       g_type_class_unref (oclass);
     }
-  g_slist_free (props);
+  b_slist_free (props);
 }
 
 void
@@ -651,13 +651,13 @@ btk_builder_new (void)
  *
  * Since: 2.12
  **/
-guint
+buint
 btk_builder_add_from_file (BtkBuilder   *builder,
-                           const gchar  *filename,
+                           const bchar  *filename,
                            GError      **error)
 {
-  gchar *buffer;
-  gsize length;
+  bchar *buffer;
+  bsize length;
   GError *tmp_error;
 
   g_return_val_if_fail (BTK_IS_BUILDER (builder), 0);
@@ -716,14 +716,14 @@ btk_builder_add_from_file (BtkBuilder   *builder,
  *
  * Since: 2.14
  **/
-guint
+buint
 btk_builder_add_objects_from_file (BtkBuilder   *builder,
-                                   const gchar  *filename,
-                                   gchar       **object_ids,
+                                   const bchar  *filename,
+                                   bchar       **object_ids,
                                    GError      **error)
 {
-  gchar *buffer;
-  gsize length;
+  bchar *buffer;
+  bsize length;
   GError *tmp_error;
 
   g_return_val_if_fail (BTK_IS_BUILDER (builder), 0);
@@ -775,10 +775,10 @@ btk_builder_add_objects_from_file (BtkBuilder   *builder,
  *
  * Since: 2.12
  **/
-guint
+buint
 btk_builder_add_from_string (BtkBuilder   *builder,
-                             const gchar  *buffer,
-                             gsize         length,
+                             const bchar  *buffer,
+                             bsize         length,
                              GError      **error)
 {
   GError *tmp_error;
@@ -830,11 +830,11 @@ btk_builder_add_from_string (BtkBuilder   *builder,
  *
  * Since: 2.14
  **/
-guint
+buint
 btk_builder_add_objects_from_string (BtkBuilder   *builder,
-                                     const gchar  *buffer,
-                                     gsize         length,
-                                     gchar       **object_ids,
+                                     const bchar  *buffer,
+                                     bsize         length,
+                                     bchar       **object_ids,
                                      GError      **error)
 {
   GError *tmp_error;
@@ -876,9 +876,9 @@ btk_builder_add_objects_from_string (BtkBuilder   *builder,
  *
  * Since: 2.12
  **/
-GObject *
+BObject *
 btk_builder_get_object (BtkBuilder  *builder,
-                        const gchar *name)
+                        const bchar *name)
 {
   g_return_val_if_fail (BTK_IS_BUILDER (builder), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -887,11 +887,11 @@ btk_builder_get_object (BtkBuilder  *builder,
 }
 
 static void
-object_add_to_list (gchar    *object_id,
-                    GObject  *object,
+object_add_to_list (bchar    *object_id,
+                    BObject  *object,
                     GSList  **list)
 {
-  *list = g_slist_prepend (*list, object);
+  *list = b_slist_prepend (*list, object);
 }
 
 /**
@@ -902,9 +902,9 @@ object_add_to_list (gchar    *object_id,
  * this function does not increment the reference counts of the returned
  * objects.
  *
- * Return value: (element-type GObject) (transfer container): a newly-allocated #GSList containing all the objects
+ * Return value: (element-type BObject) (transfer container): a newly-allocated #GSList containing all the objects
  *   constructed by the #BtkBuilder instance. It should be freed by
- *   g_slist_free()
+ *   b_slist_free()
  *
  * Since: 2.12
  **/
@@ -917,7 +917,7 @@ btk_builder_get_objects (BtkBuilder *builder)
 
   g_hash_table_foreach (builder->priv->objects, (GHFunc)object_add_to_list, &objects);
 
-  return g_slist_reverse (objects);
+  return b_slist_reverse (objects);
 }
 
 /**
@@ -932,9 +932,9 @@ btk_builder_get_objects (BtkBuilder *builder)
  **/
 void
 btk_builder_set_translation_domain (BtkBuilder  *builder,
-                                    const gchar *domain)
+                                    const bchar *domain)
 {
-  gchar *new_domain;
+  bchar *new_domain;
     
   g_return_if_fail (BTK_IS_BUILDER (builder));
 
@@ -942,7 +942,7 @@ btk_builder_set_translation_domain (BtkBuilder  *builder,
   g_free (builder->priv->domain);
   builder->priv->domain = new_domain;
 
-  g_object_notify (G_OBJECT (builder), "translation-domain");
+  g_object_notify (B_OBJECT (builder), "translation-domain");
 }
 
 /**
@@ -956,7 +956,7 @@ btk_builder_set_translation_domain (BtkBuilder  *builder,
  *
  * Since: 2.12
  **/
-const gchar *
+const bchar *
 btk_builder_get_translation_domain (BtkBuilder *builder)
 {
   g_return_val_if_fail (BTK_IS_BUILDER (builder), NULL);
@@ -966,22 +966,22 @@ btk_builder_get_translation_domain (BtkBuilder *builder)
 
 typedef struct {
   GModule *module;
-  gpointer data;
+  bpointer data;
 } connect_args;
 
 static void
 btk_builder_connect_signals_default (BtkBuilder    *builder,
-				     GObject       *object,
-				     const gchar   *signal_name,
-				     const gchar   *handler_name,
-				     GObject       *connect_object,
+				     BObject       *object,
+				     const bchar   *signal_name,
+				     const bchar   *handler_name,
+				     BObject       *connect_object,
 				     GConnectFlags  flags,
-				     gpointer       user_data)
+				     bpointer       user_data)
 {
   GCallback func;
   connect_args *args = (connect_args*)user_data;
   
-  if (!g_module_symbol (args->module, handler_name, (gpointer)&func))
+  if (!g_module_symbol (args->module, handler_name, (bpointer)&func))
     {
       g_warning ("Could not find signal handler '%s'", handler_name);
       return;
@@ -1018,7 +1018,7 @@ btk_builder_connect_signals_default (BtkBuilder    *builder,
  **/
 void
 btk_builder_connect_signals (BtkBuilder *builder,
-			     gpointer    user_data)
+			     bpointer    user_data)
 {
   connect_args *args;
   
@@ -1045,7 +1045,7 @@ btk_builder_connect_signals (BtkBuilder *builder,
  * @object: object to connect a signal to
  * @signal_name: name of the signal
  * @handler_name: name of the handler
- * @connect_object: a #GObject, if non-%NULL, use g_signal_connect_object()
+ * @connect_object: a #BObject, if non-%NULL, use g_signal_connect_object()
  * @flags: #GConnectFlags to use
  * @user_data: user data
  *
@@ -1073,11 +1073,11 @@ btk_builder_connect_signals (BtkBuilder *builder,
 void
 btk_builder_connect_signals_full (BtkBuilder            *builder,
                                   BtkBuilderConnectFunc  func,
-                                  gpointer               user_data)
+                                  bpointer               user_data)
 {
   GSList *l;
-  GObject *object;
-  GObject *connect_object;
+  BObject *object;
+  BObject *connect_object;
   
   g_return_if_fail (BTK_IS_BUILDER (builder));
   g_return_if_fail (func != NULL);
@@ -1085,7 +1085,7 @@ btk_builder_connect_signals_full (BtkBuilder            *builder,
   if (!builder->priv->signals)
     return;
 
-  builder->priv->signals = g_slist_reverse (builder->priv->signals);
+  builder->priv->signals = b_slist_reverse (builder->priv->signals);
   for (l = builder->priv->signals; l; l = l->next)
     {
       SignalInfo *signal = (SignalInfo*)l->data;
@@ -1113,21 +1113,21 @@ btk_builder_connect_signals_full (BtkBuilder            *builder,
 	    connect_object, signal->flags, user_data);
     }
 
-  g_slist_foreach (builder->priv->signals, (GFunc)_free_signal_info, NULL);
-  g_slist_free (builder->priv->signals);
+  b_slist_foreach (builder->priv->signals, (GFunc)_free_signal_info, NULL);
+  b_slist_free (builder->priv->signals);
   builder->priv->signals = NULL;
 }
 
 /**
  * btk_builder_value_from_string:
  * @builder: a #BtkBuilder
- * @pspec: the #GParamSpec for the property
+ * @pspec: the #BParamSpec for the property
  * @string: the string representation of the value
- * @value: (out): the #GValue to store the result in
+ * @value: (out): the #BValue to store the result in
  * @error: (allow-none): return location for an error, or %NULL
  *
  * This function demarshals a value from a string. This function
- * calls g_value_init() on the @value argument, so it need not be
+ * calls b_value_init() on the @value argument, so it need not be
  * initialised beforehand.
  *
  * This function can handle char, uchar, boolean, int, uint, long,
@@ -1142,11 +1142,11 @@ btk_builder_connect_signals_full (BtkBuilder            *builder,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_builder_value_from_string (BtkBuilder   *builder,
-			       GParamSpec   *pspec,
-                               const gchar  *string,
-                               GValue       *value,
+			       BParamSpec   *pspec,
+                               const bchar  *string,
+                               BValue       *value,
 			       GError      **error)
 {
   g_return_val_if_fail (BTK_IS_BUILDER (builder), FALSE);
@@ -1156,16 +1156,16 @@ btk_builder_value_from_string (BtkBuilder   *builder,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   /*
-   * GParamSpecUnichar has the internal type G_TYPE_UINT,
+   * BParamSpecUnichar has the internal type B_TYPE_UINT,
    * so we cannot handle this in the switch, do it separately
    */
   if (G_IS_PARAM_SPEC_UNICHAR (pspec))
     {
       gunichar c;
-      g_value_init (value, G_TYPE_UINT);
+      b_value_init (value, B_TYPE_UINT);
       c = g_utf8_get_char_validated (string, strlen (string));
       if (c > 0)
-        g_value_set_uint (value, c);
+        b_value_set_uint (value, c);
       return TRUE;
     }
 
@@ -1179,12 +1179,12 @@ btk_builder_value_from_string (BtkBuilder   *builder,
  * @builder: a #BtkBuilder
  * @type: the #GType of the value
  * @string: the string representation of the value
- * @value: (out): the #GValue to store the result in
+ * @value: (out): the #BValue to store the result in
  * @error: (allow-none): return location for an error, or %NULL
  *
  * Like btk_builder_value_from_string(), this function demarshals 
- * a value from a string, but takes a #GType instead of #GParamSpec.
- * This function calls g_value_init() on the @value argument, so it 
+ * a value from a string, but takes a #GType instead of #BParamSpec.
+ * This function calls b_value_init() on the @value argument, so it 
  * need not be initialised beforehand.
  *
  * Upon errors %FALSE will be returned and @error will be assigned a
@@ -1194,46 +1194,46 @@ btk_builder_value_from_string (BtkBuilder   *builder,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_builder_value_from_string_type (BtkBuilder   *builder,
 				    GType         type,
-                                    const gchar  *string,
-                                    GValue       *value,
+                                    const bchar  *string,
+                                    BValue       *value,
 				    GError      **error)
 {
-  gboolean ret = TRUE;
+  bboolean ret = TRUE;
 
-  g_return_val_if_fail (type != G_TYPE_INVALID, FALSE);
+  g_return_val_if_fail (type != B_TYPE_INVALID, FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
-  g_value_init (value, type);
+  b_value_init (value, type);
 
-  switch (G_TYPE_FUNDAMENTAL (type))
+  switch (B_TYPE_FUNDAMENTAL (type))
     {
-    case G_TYPE_CHAR:
-      g_value_set_char (value, string[0]);
+    case B_TYPE_CHAR:
+      b_value_set_char (value, string[0]);
       break;
-    case G_TYPE_UCHAR:
-      g_value_set_uchar (value, (guchar)string[0]);
+    case B_TYPE_UCHAR:
+      b_value_set_uchar (value, (buchar)string[0]);
       break;
-    case G_TYPE_BOOLEAN:
+    case B_TYPE_BOOLEAN:
       {
-        gboolean b;
+        bboolean b;
 
 	if (!_btk_builder_boolean_from_string (string, &b, error))
 	  {
 	    ret = FALSE;
 	    break;
           }
-        g_value_set_boolean (value, b);
+        b_value_set_boolean (value, b);
         break;
       }
-    case G_TYPE_INT:
-    case G_TYPE_LONG:
+    case B_TYPE_INT:
+    case B_TYPE_LONG:
       {
         long l;
-        gchar *endptr;
+        bchar *endptr;
         errno = 0;
         l = strtol (string, &endptr, 0);
         if (errno || endptr == string)
@@ -1247,16 +1247,16 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
             break;
           }
         if (G_VALUE_HOLDS_INT (value))
-          g_value_set_int (value, l);
+          b_value_set_int (value, l);
         else
-          g_value_set_long (value, l);
+          b_value_set_long (value, l);
         break;
       }
-    case G_TYPE_UINT:
-    case G_TYPE_ULONG:
+    case B_TYPE_UINT:
+    case B_TYPE_ULONG:
       {
-        gulong ul;
-        gchar *endptr;
+        bulong ul;
+        bchar *endptr;
         errno = 0;
         ul = strtoul (string, &endptr, 0);
         if (errno || endptr == string)
@@ -1270,39 +1270,39 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
             break;
           }
         if (G_VALUE_HOLDS_UINT (value))
-          g_value_set_uint (value, ul);
+          b_value_set_uint (value, ul);
         else 
-          g_value_set_ulong (value, ul);
+          b_value_set_ulong (value, ul);
         break;
       }
-    case G_TYPE_ENUM:
+    case B_TYPE_ENUM:
       {
-	gint enum_value;
+	bint enum_value;
 	if (!_btk_builder_enum_from_string (type, string, &enum_value, error))
 	  {
 	    ret = FALSE;
 	    break;
           }
-	g_value_set_enum (value, enum_value);
+	b_value_set_enum (value, enum_value);
 	break;
       }
-    case G_TYPE_FLAGS:
+    case B_TYPE_FLAGS:
       {
-	guint flags_value;
+	buint flags_value;
 
 	if (!_btk_builder_flags_from_string (type, string, &flags_value, error))
 	  {
 	    ret = FALSE;
 	    break;
           }
-	g_value_set_flags (value, flags_value);
+	b_value_set_flags (value, flags_value);
 	break;
       }
-    case G_TYPE_FLOAT:
-    case G_TYPE_DOUBLE:
+    case B_TYPE_FLOAT:
+    case B_TYPE_DOUBLE:
       {
-        gdouble d;
-        gchar *endptr;
+        bdouble d;
+        bchar *endptr;
         errno = 0;
         d = g_ascii_strtod (string, &endptr);
         if (errno || endptr == string)
@@ -1316,15 +1316,15 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
             break;
           }
         if (G_VALUE_HOLDS_FLOAT (value))
-          g_value_set_float (value, d);
+          b_value_set_float (value, d);
         else
-          g_value_set_double (value, d);
+          b_value_set_double (value, d);
         break;
       }
-    case G_TYPE_STRING:
-      g_value_set_string (value, string);
+    case B_TYPE_STRING:
+      b_value_set_string (value, string);
       break;
-    case G_TYPE_BOXED:
+    case B_TYPE_BOXED:
       if (G_VALUE_HOLDS (value, BDK_TYPE_COLOR))
         {
           BdkColor colour = { 0, };
@@ -1332,7 +1332,7 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
           if (bdk_color_parse (string, &colour) &&
               bdk_colormap_alloc_color (btk_widget_get_default_colormap (),
                                         &colour, FALSE, TRUE))
-            g_value_set_boxed (value, &colour);
+            b_value_set_boxed (value, &colour);
           else
             {
 	      g_set_error (error,
@@ -1343,10 +1343,10 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
               ret = FALSE;
             }
         }
-      else if (G_VALUE_HOLDS (value, G_TYPE_STRV))
+      else if (G_VALUE_HOLDS (value, B_TYPE_STRV))
         {
-          gchar **vector = g_strsplit (string, "\n", 0);
-          g_value_take_boxed (value, vector);
+          bchar **vector = g_strsplit (string, "\n", 0);
+          b_value_take_boxed (value, vector);
         }
       else
         {
@@ -1358,10 +1358,10 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
           ret = FALSE;
         }
       break;
-    case G_TYPE_OBJECT:
+    case B_TYPE_OBJECT:
       if (G_VALUE_HOLDS (value, BDK_TYPE_PIXBUF))
         {
-          gchar *filename;
+          bchar *filename;
           GError *tmp_error = NULL;
           BdkPixbuf *pixbuf;
        
@@ -1398,8 +1398,8 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
  
           if (pixbuf)
             {
-              g_value_set_object (value, pixbuf);
-              g_object_unref (G_OBJECT (pixbuf));
+              b_value_set_object (value, pixbuf);
+              g_object_unref (B_OBJECT (pixbuf));
             }
 
           g_free (filename);
@@ -1427,19 +1427,19 @@ btk_builder_value_from_string_type (BtkBuilder   *builder,
   return ret;
 }
 
-gboolean
+bboolean
 _btk_builder_enum_from_string (GType         type, 
-                               const gchar  *string,
-			       gint         *enum_value,
+                               const bchar  *string,
+			       bint         *enum_value,
 			       GError      **error)
 {
   GEnumClass *eclass;
   GEnumValue *ev;
-  gchar *endptr;
-  gint value;
-  gboolean ret;
+  bchar *endptr;
+  bint value;
+  bboolean ret;
   
-  g_return_val_if_fail (G_TYPE_IS_ENUM (type), FALSE);
+  g_return_val_if_fail (B_TYPE_IS_ENUM (type), FALSE);
   g_return_val_if_fail (string != NULL, FALSE);
   
   ret = TRUE;
@@ -1472,22 +1472,22 @@ _btk_builder_enum_from_string (GType         type,
   return ret;
 }
 
-gboolean
+bboolean
 _btk_builder_flags_from_string (GType         type, 
-                                const gchar  *string,
-				guint        *flags_value,
+                                const bchar  *string,
+				buint        *flags_value,
 				GError      **error)
 {
   GFlagsClass *fclass;
-  gchar *endptr, *prevptr;
-  guint i, j, value;
-  gchar *flagstr;
+  bchar *endptr, *prevptr;
+  buint i, j, value;
+  bchar *flagstr;
   GFlagsValue *fv;
-  const gchar *flag;
+  const bchar *flag;
   gunichar ch;
-  gboolean eos, ret;
+  bboolean eos, ret;
 
-  g_return_val_if_fail (G_TYPE_IS_FLAGS (type), FALSE);
+  g_return_val_if_fail (B_TYPE_IS_FLAGS (type), FALSE);
   g_return_val_if_fail (string != 0, FALSE);
 
   ret = TRUE;
@@ -1581,17 +1581,17 @@ _btk_builder_flags_from_string (GType         type,
  * #BtkBuilder has for that purpose. This is mainly used when
  * implementing the #BtkBuildable interface on a type.
  *
- * Returns: the #GType found for @type_name or #G_TYPE_INVALID 
+ * Returns: the #GType found for @type_name or #B_TYPE_INVALID 
  *   if no type was found
  *
  * Since: 2.12
  */
 GType
 btk_builder_get_type_from_name (BtkBuilder  *builder, 
-                                const gchar *type_name)
+                                const bchar *type_name)
 {
-  g_return_val_if_fail (BTK_IS_BUILDER (builder), G_TYPE_INVALID);
-  g_return_val_if_fail (type_name != NULL, G_TYPE_INVALID);
+  g_return_val_if_fail (BTK_IS_BUILDER (builder), B_TYPE_INVALID);
+  g_return_val_if_fail (type_name != NULL, B_TYPE_INVALID);
 
   return BTK_BUILDER_GET_CLASS (builder)->get_type_from_name (builder, type_name);
 }
@@ -1602,11 +1602,11 @@ btk_builder_error_quark (void)
   return g_quark_from_static_string ("btk-builder-error-quark");
 }
 
-gchar *
-_btk_builder_get_absolute_filename (BtkBuilder *builder, const gchar *string)
+bchar *
+_btk_builder_get_absolute_filename (BtkBuilder *builder, const bchar *string)
 {
-  gchar *filename;
-  gchar *dirname = NULL;
+  bchar *filename;
+  bchar *dirname = NULL;
   
   if (g_path_is_absolute (string))
     return g_strdup (string);

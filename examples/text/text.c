@@ -19,7 +19,7 @@ void text_toggle_word_wrap (BtkWidget *checkbutton,
 }
 
 void close_application( BtkWidget *widget,
-                        gpointer   data )
+                        bpointer   data )
 {
        btk_main_quit ();
 }
@@ -48,7 +48,7 @@ int main( int argc,
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   btk_widget_set_size_request (window, 600, 500);
   btk_window_set_policy (BTK_WINDOW (window), TRUE, TRUE, FALSE);  
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
                     G_CALLBACK (close_application),
                     NULL);
   btk_window_set_title (BTK_WINDOW (window), "Text Widget Example");
@@ -145,13 +145,13 @@ int main( int argc,
 
   check = btk_check_button_new_with_label ("Editable");
   btk_box_pack_start (BTK_BOX (hbox), check, FALSE, FALSE, 0);
-  g_signal_connect (G_OBJECT (check), "toggled",
+  g_signal_connect (B_OBJECT (check), "toggled",
                     G_CALLBACK (text_toggle_editable), text);
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), TRUE);
   btk_widget_show (check);
   check = btk_check_button_new_with_label ("Wrap Words");
   btk_box_pack_start (BTK_BOX (hbox), check, FALSE, TRUE, 0);
-  g_signal_connect (G_OBJECT (check), "toggled",
+  g_signal_connect (B_OBJECT (check), "toggled",
                     G_CALLBACK (text_toggle_word_wrap), text);
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), FALSE);
   btk_widget_show (check);
@@ -166,7 +166,7 @@ int main( int argc,
   btk_widget_show (box2);
   
   button = btk_button_new_with_label ("close");
-  g_signal_connect (G_OBJECT (button), "clicked",
+  g_signal_connect (B_OBJECT (button), "clicked",
 	            G_CALLBACK (close_application),
 	            NULL);
   btk_box_pack_start (BTK_BOX (box2), button, TRUE, TRUE, 0);

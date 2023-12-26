@@ -25,16 +25,16 @@
 
 #include <btk/btkrc.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* -- type macros --- */
 #define BTK_TYPE_SETTINGS             (btk_settings_get_type ())
-#define BTK_SETTINGS(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SETTINGS, BtkSettings))
-#define BTK_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SETTINGS, BtkSettingsClass))
-#define BTK_IS_SETTINGS(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SETTINGS))
-#define BTK_IS_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SETTINGS))
-#define BTK_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SETTINGS, BtkSettingsClass))
+#define BTK_SETTINGS(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SETTINGS, BtkSettings))
+#define BTK_SETTINGS_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SETTINGS, BtkSettingsClass))
+#define BTK_IS_SETTINGS(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SETTINGS))
+#define BTK_IS_SETTINGS_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SETTINGS))
+#define BTK_SETTINGS_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SETTINGS, BtkSettingsClass))
 
 
 /* --- typedefs --- */
@@ -46,7 +46,7 @@ typedef struct    _BtkSettingsPropertyValue BtkSettingsPropertyValue; /* Interna
 /* --- structures --- */
 struct _BtkSettings
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   GData  *GSEAL (queued_settings);	/* of type BtkSettingsValue* */
   BtkSettingsPropertyValue *GSEAL (property_values);
@@ -57,7 +57,7 @@ struct _BtkSettings
 
 struct _BtkSettingsClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BtkSettingsValue
@@ -65,75 +65,75 @@ struct _BtkSettingsValue
   /* origin should be something like "filename:linenumber" for rc files,
    * or e.g. "XProperty" for other sources
    */
-  gchar *origin;
+  bchar *origin;
 
   /* valid types are LONG, DOUBLE and STRING corresponding to the token parsed,
    * or a GSTRING holding an unparsed statement
    */
-  GValue value;
+  BValue value;
 };
 
 
 /* --- functions --- */
-GType		btk_settings_get_type		     (void) G_GNUC_CONST;
+GType		btk_settings_get_type		     (void) B_GNUC_CONST;
 #ifndef BDK_MULTIHEAD_SAFE
 BtkSettings*	btk_settings_get_default	     (void);
 #endif
 BtkSettings*	btk_settings_get_for_screen	     (BdkScreen *screen);
 
-void		btk_settings_install_property	     (GParamSpec         *pspec);
-void		btk_settings_install_property_parser (GParamSpec         *pspec,
+void		btk_settings_install_property	     (BParamSpec         *pspec);
+void		btk_settings_install_property_parser (BParamSpec         *pspec,
 						      BtkRcPropertyParser parser);
 
 /* --- precoded parsing functions --- */
-gboolean btk_rc_property_parse_color       (const GParamSpec *pspec,
+bboolean btk_rc_property_parse_color       (const BParamSpec *pspec,
 					    const GString    *gstring,
-					    GValue           *property_value);
-gboolean btk_rc_property_parse_enum        (const GParamSpec *pspec,
+					    BValue           *property_value);
+bboolean btk_rc_property_parse_enum        (const BParamSpec *pspec,
 					    const GString    *gstring,
-					    GValue           *property_value);
-gboolean btk_rc_property_parse_flags       (const GParamSpec *pspec,
+					    BValue           *property_value);
+bboolean btk_rc_property_parse_flags       (const BParamSpec *pspec,
 					    const GString    *gstring,
-					    GValue           *property_value);
-gboolean btk_rc_property_parse_requisition (const GParamSpec *pspec,
+					    BValue           *property_value);
+bboolean btk_rc_property_parse_requisition (const BParamSpec *pspec,
 					    const GString    *gstring,
-					    GValue           *property_value);
-gboolean btk_rc_property_parse_border      (const GParamSpec *pspec,
+					    BValue           *property_value);
+bboolean btk_rc_property_parse_border      (const BParamSpec *pspec,
 					    const GString    *gstring,
-					    GValue           *property_value);
+					    BValue           *property_value);
 
 /*< private >*/
 void		btk_settings_set_property_value	 (BtkSettings	*settings,
-						  const gchar	*name,
+						  const bchar	*name,
 						  const BtkSettingsValue *svalue);
 void		btk_settings_set_string_property (BtkSettings	*settings,
-						  const gchar	*name,
-						  const gchar	*v_string,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  const bchar	*v_string,
+						  const bchar   *origin);
 void		btk_settings_set_long_property	 (BtkSettings	*settings,
-						  const gchar	*name,
-						  glong		 v_long,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  blong		 v_long,
+						  const bchar   *origin);
 void		btk_settings_set_double_property (BtkSettings	*settings,
-						  const gchar	*name,
-						  gdouble	 v_double,
-						  const gchar   *origin);
+						  const bchar	*name,
+						  bdouble	 v_double,
+						  const bchar   *origin);
 
 
 /* implementation details */
 void _btk_settings_set_property_value_from_rc (BtkSettings            *settings,
-					       const gchar            *name,
+					       const bchar            *name,
 					       const BtkSettingsValue *svalue);
 void _btk_settings_reset_rc_values            (BtkSettings            *settings);
 
 void                _btk_settings_handle_event        (BdkEventSetting    *event);
 BtkRcPropertyParser _btk_rc_property_parser_from_type (GType               type);
-gboolean	    _btk_settings_parse_convert       (BtkRcPropertyParser parser,
-						       const GValue       *src_value,
-						       GParamSpec         *pspec,
-						       GValue	          *dest_value);
+bboolean	    _btk_settings_parse_convert       (BtkRcPropertyParser parser,
+						       const BValue       *src_value,
+						       BParamSpec         *pspec,
+						       BValue	          *dest_value);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SETTINGS_H__ */

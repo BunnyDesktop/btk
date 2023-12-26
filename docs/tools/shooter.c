@@ -29,7 +29,7 @@ static Window
 find_toplevel_window (Window xid)
 {
   Window root, parent, *children;
-  guint nchildren;
+  buint nchildren;
 
   do
     {
@@ -91,7 +91,7 @@ remove_shaped_area (BdkPixbuf *pixbuf,
 
       for (y = rectangles[i].y; y < rectangles[i].y + rectangles[i].height; y++)
 	{
-	  guchar *src_pixels, *dest_pixels;
+	  buchar *src_pixels, *dest_pixels;
 
 	  src_pixels = bdk_pixbuf_get_pixels (pixbuf) +
 	    y * bdk_pixbuf_get_rowstride (pixbuf) +
@@ -118,14 +118,14 @@ remove_shaped_area (BdkPixbuf *pixbuf,
 
 static BdkPixbuf *
 take_window_shot (Window   child,
-		  gboolean include_decoration)
+		  bboolean include_decoration)
 {
   BdkWindow *window;
   Display *disp;
   Window w, xid;
-  gint x_orig, y_orig;
-  gint x = 0, y = 0;
-  gint width, height;
+  bint x_orig, y_orig;
+  bint x = 0, y = 0;
+  bint width, height;
 
   BdkPixbuf *tmp, *tmp2;
   BdkPixbuf *retval;

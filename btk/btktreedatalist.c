@@ -42,19 +42,19 @@ _btk_tree_data_list_free (BtkTreeDataList *list,
 			  GType           *column_headers)
 {
   BtkTreeDataList *tmp, *next;
-  gint i = 0;
+  bint i = 0;
 
   tmp = list;
 
   while (tmp)
     {
       next = tmp->next;
-      if (g_type_is_a (column_headers [i], G_TYPE_STRING))
-	g_free ((gchar *) tmp->data.v_pointer);
-      else if (g_type_is_a (column_headers [i], G_TYPE_OBJECT) && tmp->data.v_pointer != NULL)
+      if (g_type_is_a (column_headers [i], B_TYPE_STRING))
+	g_free ((bchar *) tmp->data.v_pointer);
+      else if (g_type_is_a (column_headers [i], B_TYPE_OBJECT) && tmp->data.v_pointer != NULL)
 	g_object_unref (tmp->data.v_pointer);
-      else if (g_type_is_a (column_headers [i], G_TYPE_BOXED) && tmp->data.v_pointer != NULL)
-	g_boxed_free (column_headers [i], (gpointer) tmp->data.v_pointer);
+      else if (g_type_is_a (column_headers [i], B_TYPE_BOXED) && tmp->data.v_pointer != NULL)
+	g_boxed_free (column_headers [i], (bpointer) tmp->data.v_pointer);
 
       g_slice_free (BtkTreeDataList, tmp);
       i++;
@@ -62,37 +62,37 @@ _btk_tree_data_list_free (BtkTreeDataList *list,
     }
 }
 
-gboolean
+bboolean
 _btk_tree_data_list_check_type (GType type)
 {
-  gint i = 0;
+  bint i = 0;
   static const GType type_list[] =
   {
-    G_TYPE_BOOLEAN,
-    G_TYPE_CHAR,
-    G_TYPE_UCHAR,
-    G_TYPE_INT,
-    G_TYPE_UINT,
-    G_TYPE_LONG,
-    G_TYPE_ULONG,
-    G_TYPE_INT64,
-    G_TYPE_UINT64,
-    G_TYPE_ENUM,
-    G_TYPE_FLAGS,
-    G_TYPE_FLOAT,
-    G_TYPE_DOUBLE,
-    G_TYPE_STRING,
-    G_TYPE_POINTER,
-    G_TYPE_BOXED,
-    G_TYPE_OBJECT,
-    G_TYPE_INVALID
+    B_TYPE_BOOLEAN,
+    B_TYPE_CHAR,
+    B_TYPE_UCHAR,
+    B_TYPE_INT,
+    B_TYPE_UINT,
+    B_TYPE_LONG,
+    B_TYPE_ULONG,
+    B_TYPE_INT64,
+    B_TYPE_UINT64,
+    B_TYPE_ENUM,
+    B_TYPE_FLAGS,
+    B_TYPE_FLOAT,
+    B_TYPE_DOUBLE,
+    B_TYPE_STRING,
+    B_TYPE_POINTER,
+    B_TYPE_BOXED,
+    B_TYPE_OBJECT,
+    B_TYPE_INVALID
   };
 
-  if (! G_TYPE_IS_VALUE_TYPE (type))
+  if (! B_TYPE_IS_VALUE_TYPE (type))
     return FALSE;
 
 
-  while (type_list[i] != G_TYPE_INVALID)
+  while (type_list[i] != B_TYPE_INVALID)
     {
       if (g_type_is_a (type, type_list[i]))
 	return TRUE;
@@ -106,12 +106,12 @@ get_fundamental_type (GType type)
 {
   GType result;
 
-  result = G_TYPE_FUNDAMENTAL (type);
+  result = B_TYPE_FUNDAMENTAL (type);
 
-  if (result == G_TYPE_INTERFACE)
+  if (result == B_TYPE_INTERFACE)
     {
-      if (g_type_is_a (type, G_TYPE_OBJECT))
-	result = G_TYPE_OBJECT;
+      if (g_type_is_a (type, B_TYPE_OBJECT))
+	result = B_TYPE_OBJECT;
     }
 
   return result;
@@ -119,133 +119,133 @@ get_fundamental_type (GType type)
 void
 _btk_tree_data_list_node_to_value (BtkTreeDataList *list,
 				   GType            type,
-				   GValue          *value)
+				   BValue          *value)
 {
-  g_value_init (value, type);
+  b_value_init (value, type);
 
   switch (get_fundamental_type (type))
     {
-    case G_TYPE_BOOLEAN:
-      g_value_set_boolean (value, (gboolean) list->data.v_int);
+    case B_TYPE_BOOLEAN:
+      b_value_set_boolean (value, (bboolean) list->data.v_int);
       break;
-    case G_TYPE_CHAR:
-      g_value_set_char (value, (gchar) list->data.v_char);
+    case B_TYPE_CHAR:
+      b_value_set_char (value, (bchar) list->data.v_char);
       break;
-    case G_TYPE_UCHAR:
-      g_value_set_uchar (value, (guchar) list->data.v_uchar);
+    case B_TYPE_UCHAR:
+      b_value_set_uchar (value, (buchar) list->data.v_uchar);
       break;
-    case G_TYPE_INT:
-      g_value_set_int (value, (gint) list->data.v_int);
+    case B_TYPE_INT:
+      b_value_set_int (value, (bint) list->data.v_int);
       break;
-    case G_TYPE_UINT:
-      g_value_set_uint (value, (guint) list->data.v_uint);
+    case B_TYPE_UINT:
+      b_value_set_uint (value, (buint) list->data.v_uint);
       break;
-    case G_TYPE_LONG:
-      g_value_set_long (value, list->data.v_long);
+    case B_TYPE_LONG:
+      b_value_set_long (value, list->data.v_long);
       break;
-    case G_TYPE_ULONG:
-      g_value_set_ulong (value, list->data.v_ulong);
+    case B_TYPE_ULONG:
+      b_value_set_ulong (value, list->data.v_ulong);
       break;
-    case G_TYPE_INT64:
-      g_value_set_int64 (value, list->data.v_int64);
+    case B_TYPE_INT64:
+      b_value_set_int64 (value, list->data.v_int64);
       break;
-    case G_TYPE_UINT64:
-      g_value_set_uint64 (value, list->data.v_uint64);
+    case B_TYPE_UINT64:
+      b_value_set_uint64 (value, list->data.v_uint64);
       break;
-    case G_TYPE_ENUM:
-      g_value_set_enum (value, list->data.v_int);
+    case B_TYPE_ENUM:
+      b_value_set_enum (value, list->data.v_int);
       break;
-    case G_TYPE_FLAGS:
-      g_value_set_flags (value, list->data.v_uint);
+    case B_TYPE_FLAGS:
+      b_value_set_flags (value, list->data.v_uint);
       break;
-    case G_TYPE_FLOAT:
-      g_value_set_float (value, (gfloat) list->data.v_float);
+    case B_TYPE_FLOAT:
+      b_value_set_float (value, (bfloat) list->data.v_float);
       break;
-    case G_TYPE_DOUBLE:
-      g_value_set_double (value, (gdouble) list->data.v_double);
+    case B_TYPE_DOUBLE:
+      b_value_set_double (value, (bdouble) list->data.v_double);
       break;
-    case G_TYPE_STRING:
-      g_value_set_string (value, (gchar *) list->data.v_pointer);
+    case B_TYPE_STRING:
+      b_value_set_string (value, (bchar *) list->data.v_pointer);
       break;
-    case G_TYPE_POINTER:
-      g_value_set_pointer (value, (gpointer) list->data.v_pointer);
+    case B_TYPE_POINTER:
+      b_value_set_pointer (value, (bpointer) list->data.v_pointer);
       break;
-    case G_TYPE_BOXED:
-      g_value_set_boxed (value, (gpointer) list->data.v_pointer);
+    case B_TYPE_BOXED:
+      b_value_set_boxed (value, (bpointer) list->data.v_pointer);
       break;
-    case G_TYPE_OBJECT:
-      g_value_set_object (value, (GObject *) list->data.v_pointer);
+    case B_TYPE_OBJECT:
+      b_value_set_object (value, (BObject *) list->data.v_pointer);
       break;
     default:
-      g_warning ("%s: Unsupported type (%s) retrieved.", G_STRLOC, g_type_name (value->g_type));
+      g_warning ("%s: Unsupported type (%s) retrieved.", B_STRLOC, g_type_name (value->g_type));
       break;
     }
 }
 
 void
 _btk_tree_data_list_value_to_node (BtkTreeDataList *list,
-				   GValue          *value)
+				   BValue          *value)
 {
   switch (get_fundamental_type (G_VALUE_TYPE (value)))
     {
-    case G_TYPE_BOOLEAN:
-      list->data.v_int = g_value_get_boolean (value);
+    case B_TYPE_BOOLEAN:
+      list->data.v_int = b_value_get_boolean (value);
       break;
-    case G_TYPE_CHAR:
-      list->data.v_char = g_value_get_char (value);
+    case B_TYPE_CHAR:
+      list->data.v_char = b_value_get_char (value);
       break;
-    case G_TYPE_UCHAR:
-      list->data.v_uchar = g_value_get_uchar (value);
+    case B_TYPE_UCHAR:
+      list->data.v_uchar = b_value_get_uchar (value);
       break;
-    case G_TYPE_INT:
-      list->data.v_int = g_value_get_int (value);
+    case B_TYPE_INT:
+      list->data.v_int = b_value_get_int (value);
       break;
-    case G_TYPE_UINT:
-      list->data.v_uint = g_value_get_uint (value);
+    case B_TYPE_UINT:
+      list->data.v_uint = b_value_get_uint (value);
       break;
-    case G_TYPE_LONG:
-      list->data.v_long = g_value_get_long (value);
+    case B_TYPE_LONG:
+      list->data.v_long = b_value_get_long (value);
       break;
-    case G_TYPE_ULONG:
-      list->data.v_ulong = g_value_get_ulong (value);
+    case B_TYPE_ULONG:
+      list->data.v_ulong = b_value_get_ulong (value);
       break;
-    case G_TYPE_INT64:
-      list->data.v_int64 = g_value_get_int64 (value);
+    case B_TYPE_INT64:
+      list->data.v_int64 = b_value_get_int64 (value);
       break;
-    case G_TYPE_UINT64:
-      list->data.v_uint64 = g_value_get_uint64 (value);
+    case B_TYPE_UINT64:
+      list->data.v_uint64 = b_value_get_uint64 (value);
       break;
-    case G_TYPE_ENUM:
-      list->data.v_int = g_value_get_enum (value);
+    case B_TYPE_ENUM:
+      list->data.v_int = b_value_get_enum (value);
       break;
-    case G_TYPE_FLAGS:
-      list->data.v_uint = g_value_get_flags (value);
+    case B_TYPE_FLAGS:
+      list->data.v_uint = b_value_get_flags (value);
       break;
-    case G_TYPE_POINTER:
-      list->data.v_pointer = g_value_get_pointer (value);
+    case B_TYPE_POINTER:
+      list->data.v_pointer = b_value_get_pointer (value);
       break;
-    case G_TYPE_FLOAT:
-      list->data.v_float = g_value_get_float (value);
+    case B_TYPE_FLOAT:
+      list->data.v_float = b_value_get_float (value);
       break;
-    case G_TYPE_DOUBLE:
-      list->data.v_double = g_value_get_double (value);
+    case B_TYPE_DOUBLE:
+      list->data.v_double = b_value_get_double (value);
       break;
-    case G_TYPE_STRING:
+    case B_TYPE_STRING:
       g_free (list->data.v_pointer);
-      list->data.v_pointer = g_value_dup_string (value);
+      list->data.v_pointer = b_value_dup_string (value);
       break;
-    case G_TYPE_OBJECT:
+    case B_TYPE_OBJECT:
       if (list->data.v_pointer)
 	g_object_unref (list->data.v_pointer);
-      list->data.v_pointer = g_value_dup_object (value);
+      list->data.v_pointer = b_value_dup_object (value);
       break;
-    case G_TYPE_BOXED:
+    case B_TYPE_BOXED:
       if (list->data.v_pointer)
 	g_boxed_free (G_VALUE_TYPE (value), list->data.v_pointer);
-      list->data.v_pointer = g_value_dup_boxed (value);
+      list->data.v_pointer = b_value_dup_boxed (value);
       break;
     default:
-      g_warning ("%s: Unsupported type (%s) stored.", G_STRLOC, g_type_name (G_VALUE_TYPE (value)));
+      g_warning ("%s: Unsupported type (%s) stored.", B_STRLOC, g_type_name (G_VALUE_TYPE (value)));
       break;
     }
 }
@@ -263,32 +263,32 @@ _btk_tree_data_list_node_copy (BtkTreeDataList *list,
 
   switch (get_fundamental_type (type))
     {
-    case G_TYPE_BOOLEAN:
-    case G_TYPE_CHAR:
-    case G_TYPE_UCHAR:
-    case G_TYPE_INT:
-    case G_TYPE_UINT:
-    case G_TYPE_LONG:
-    case G_TYPE_ULONG:
-    case G_TYPE_INT64:
-    case G_TYPE_UINT64:
-    case G_TYPE_ENUM:
-    case G_TYPE_FLAGS:
-    case G_TYPE_POINTER:
-    case G_TYPE_FLOAT:
-    case G_TYPE_DOUBLE:
+    case B_TYPE_BOOLEAN:
+    case B_TYPE_CHAR:
+    case B_TYPE_UCHAR:
+    case B_TYPE_INT:
+    case B_TYPE_UINT:
+    case B_TYPE_LONG:
+    case B_TYPE_ULONG:
+    case B_TYPE_INT64:
+    case B_TYPE_UINT64:
+    case B_TYPE_ENUM:
+    case B_TYPE_FLAGS:
+    case B_TYPE_POINTER:
+    case B_TYPE_FLOAT:
+    case B_TYPE_DOUBLE:
       new_list->data = list->data;
       break;
-    case G_TYPE_STRING:
+    case B_TYPE_STRING:
       new_list->data.v_pointer = g_strdup (list->data.v_pointer);
       break;
-    case G_TYPE_OBJECT:
-    case G_TYPE_INTERFACE:
+    case B_TYPE_OBJECT:
+    case B_TYPE_INTERFACE:
       new_list->data.v_pointer = list->data.v_pointer;
       if (new_list->data.v_pointer)
 	g_object_ref (new_list->data.v_pointer);
       break;
-    case G_TYPE_BOXED:
+    case B_TYPE_BOXED:
       if (list->data.v_pointer)
 	new_list->data.v_pointer = g_boxed_copy (type, list->data.v_pointer);
       else
@@ -302,160 +302,160 @@ _btk_tree_data_list_node_copy (BtkTreeDataList *list,
   return new_list;
 }
 
-gint
+bint
 _btk_tree_data_list_compare_func (BtkTreeModel *model,
 				  BtkTreeIter  *a,
 				  BtkTreeIter  *b,
-				  gpointer      user_data)
+				  bpointer      user_data)
 {
-  gint column = GPOINTER_TO_INT (user_data);
+  bint column = BPOINTER_TO_INT (user_data);
   GType type = btk_tree_model_get_column_type (model, column);
-  GValue a_value = {0, };
-  GValue b_value = {0, };
-  gint retval;
-  const gchar *stra, *strb;
+  BValue a_value = {0, };
+  BValue b_value = {0, };
+  bint retval;
+  const bchar *stra, *strb;
 
   btk_tree_model_get_value (model, a, column, &a_value);
   btk_tree_model_get_value (model, b, column, &b_value);
 
   switch (get_fundamental_type (type))
     {
-    case G_TYPE_BOOLEAN:
-      if (g_value_get_boolean (&a_value) < g_value_get_boolean (&b_value))
+    case B_TYPE_BOOLEAN:
+      if (b_value_get_boolean (&a_value) < b_value_get_boolean (&b_value))
 	retval = -1;
-      else if (g_value_get_boolean (&a_value) == g_value_get_boolean (&b_value))
+      else if (b_value_get_boolean (&a_value) == b_value_get_boolean (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_CHAR:
-      if (g_value_get_char (&a_value) < g_value_get_char (&b_value))
+    case B_TYPE_CHAR:
+      if (b_value_get_char (&a_value) < b_value_get_char (&b_value))
 	retval = -1;
-      else if (g_value_get_char (&a_value) == g_value_get_char (&b_value))
+      else if (b_value_get_char (&a_value) == b_value_get_char (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_UCHAR:
-      if (g_value_get_uchar (&a_value) < g_value_get_uchar (&b_value))
+    case B_TYPE_UCHAR:
+      if (b_value_get_uchar (&a_value) < b_value_get_uchar (&b_value))
 	retval = -1;
-      else if (g_value_get_uchar (&a_value) == g_value_get_uchar (&b_value))
+      else if (b_value_get_uchar (&a_value) == b_value_get_uchar (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_INT:
-      if (g_value_get_int (&a_value) < g_value_get_int (&b_value))
+    case B_TYPE_INT:
+      if (b_value_get_int (&a_value) < b_value_get_int (&b_value))
 	retval = -1;
-      else if (g_value_get_int (&a_value) == g_value_get_int (&b_value))
+      else if (b_value_get_int (&a_value) == b_value_get_int (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_UINT:
-      if (g_value_get_uint (&a_value) < g_value_get_uint (&b_value))
+    case B_TYPE_UINT:
+      if (b_value_get_uint (&a_value) < b_value_get_uint (&b_value))
 	retval = -1;
-      else if (g_value_get_uint (&a_value) == g_value_get_uint (&b_value))
+      else if (b_value_get_uint (&a_value) == b_value_get_uint (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_LONG:
-      if (g_value_get_long (&a_value) < g_value_get_long (&b_value))
+    case B_TYPE_LONG:
+      if (b_value_get_long (&a_value) < b_value_get_long (&b_value))
 	retval = -1;
-      else if (g_value_get_long (&a_value) == g_value_get_long (&b_value))
+      else if (b_value_get_long (&a_value) == b_value_get_long (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_ULONG:
-      if (g_value_get_ulong (&a_value) < g_value_get_ulong (&b_value))
+    case B_TYPE_ULONG:
+      if (b_value_get_ulong (&a_value) < b_value_get_ulong (&b_value))
 	retval = -1;
-      else if (g_value_get_ulong (&a_value) == g_value_get_ulong (&b_value))
+      else if (b_value_get_ulong (&a_value) == b_value_get_ulong (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_INT64:
-      if (g_value_get_int64 (&a_value) < g_value_get_int64 (&b_value))
+    case B_TYPE_INT64:
+      if (b_value_get_int64 (&a_value) < b_value_get_int64 (&b_value))
 	retval = -1;
-      else if (g_value_get_int64 (&a_value) == g_value_get_int64 (&b_value))
+      else if (b_value_get_int64 (&a_value) == b_value_get_int64 (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_UINT64:
-      if (g_value_get_uint64 (&a_value) < g_value_get_uint64 (&b_value))
+    case B_TYPE_UINT64:
+      if (b_value_get_uint64 (&a_value) < b_value_get_uint64 (&b_value))
 	retval = -1;
-      else if (g_value_get_uint64 (&a_value) == g_value_get_uint64 (&b_value))
+      else if (b_value_get_uint64 (&a_value) == b_value_get_uint64 (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_ENUM:
+    case B_TYPE_ENUM:
       /* this is somewhat bogus. */
-      if (g_value_get_enum (&a_value) < g_value_get_enum (&b_value))
+      if (b_value_get_enum (&a_value) < b_value_get_enum (&b_value))
 	retval = -1;
-      else if (g_value_get_enum (&a_value) == g_value_get_enum (&b_value))
+      else if (b_value_get_enum (&a_value) == b_value_get_enum (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_FLAGS:
+    case B_TYPE_FLAGS:
       /* this is even more bogus. */
-      if (g_value_get_flags (&a_value) < g_value_get_flags (&b_value))
+      if (b_value_get_flags (&a_value) < b_value_get_flags (&b_value))
 	retval = -1;
-      else if (g_value_get_flags (&a_value) == g_value_get_flags (&b_value))
+      else if (b_value_get_flags (&a_value) == b_value_get_flags (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_FLOAT:
-      if (g_value_get_float (&a_value) < g_value_get_float (&b_value))
+    case B_TYPE_FLOAT:
+      if (b_value_get_float (&a_value) < b_value_get_float (&b_value))
 	retval = -1;
-      else if (g_value_get_float (&a_value) == g_value_get_float (&b_value))
+      else if (b_value_get_float (&a_value) == b_value_get_float (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_DOUBLE:
-      if (g_value_get_double (&a_value) < g_value_get_double (&b_value))
+    case B_TYPE_DOUBLE:
+      if (b_value_get_double (&a_value) < b_value_get_double (&b_value))
 	retval = -1;
-      else if (g_value_get_double (&a_value) == g_value_get_double (&b_value))
+      else if (b_value_get_double (&a_value) == b_value_get_double (&b_value))
 	retval = 0;
       else
 	retval = 1;
       break;
-    case G_TYPE_STRING:
-      stra = g_value_get_string (&a_value);
-      strb = g_value_get_string (&b_value);
+    case B_TYPE_STRING:
+      stra = b_value_get_string (&a_value);
+      strb = b_value_get_string (&b_value);
       if (stra == NULL) stra = "";
       if (strb == NULL) strb = "";
       retval = g_utf8_collate (stra, strb);
       break;
-    case G_TYPE_POINTER:
-    case G_TYPE_BOXED:
-    case G_TYPE_OBJECT:
+    case B_TYPE_POINTER:
+    case B_TYPE_BOXED:
+    case B_TYPE_OBJECT:
     default:
       g_warning ("Attempting to sort on invalid type %s\n", g_type_name (type));
       retval = FALSE;
       break;
     }
 
-  g_value_unset (&a_value);
-  g_value_unset (&b_value);
+  b_value_unset (&a_value);
+  b_value_unset (&b_value);
 
   return retval;
 }
 
 
 GList *
-_btk_tree_data_list_header_new (gint   n_columns,
+_btk_tree_data_list_header_new (bint   n_columns,
 				GType *types)
 {
   GList *retval = NULL;
 
-  gint i;
+  bint i;
 
   for (i = 0; i < n_columns; i ++)
     {
@@ -467,7 +467,7 @@ _btk_tree_data_list_header_new (gint   n_columns,
       header->sort_column_id = i;
       header->func = _btk_tree_data_list_compare_func;
       header->destroy = NULL;
-      header->data = GINT_TO_POINTER (i);
+      header->data = BINT_TO_POINTER (i);
     }
   return g_list_reverse (retval);
 }
@@ -496,7 +496,7 @@ _btk_tree_data_list_header_free (GList *list)
 
 BtkTreeDataSortHeader *
 _btk_tree_data_list_get_header (GList   *header_list,
-				gint     sort_column_id)
+				bint     sort_column_id)
 {
   BtkTreeDataSortHeader *header = NULL;
 
@@ -512,9 +512,9 @@ _btk_tree_data_list_get_header (GList   *header_list,
 
 GList *
 _btk_tree_data_list_set_header (GList                  *header_list,
-				gint                    sort_column_id,
+				bint                    sort_column_id,
 				BtkTreeIterCompareFunc  func,
-				gpointer                data,
+				bpointer                data,
 				GDestroyNotify          destroy)
 {
   GList *list = header_list;

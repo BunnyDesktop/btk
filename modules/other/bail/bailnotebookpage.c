@@ -27,22 +27,22 @@
 
 static void      bail_notebook_page_class_init      (BailNotebookPageClass     *klass);
 static void                  bail_notebook_page_init           (BailNotebookPage *page);
-static void                  bail_notebook_page_finalize       (GObject   *object);
+static void                  bail_notebook_page_finalize       (BObject   *object);
 static void                  bail_notebook_page_label_map_btk  (BtkWidget *widget,
-                                                                gpointer  data);
+                                                                bpointer  data);
 
-static const gchar*          bail_notebook_page_get_name       (BatkObject *accessible);
+static const bchar*          bail_notebook_page_get_name       (BatkObject *accessible);
 static BatkObject*            bail_notebook_page_get_parent     (BatkObject *accessible);
-static gint                  bail_notebook_page_get_n_children (BatkObject *accessible);
+static bint                  bail_notebook_page_get_n_children (BatkObject *accessible);
 static BatkObject*            bail_notebook_page_ref_child      (BatkObject *accessible,
-                                                                gint      i); 
-static gint                  bail_notebook_page_get_index_in_parent
+                                                                bint      i); 
+static bint                  bail_notebook_page_get_index_in_parent
                                                                (BatkObject *accessible);
 static BatkStateSet*          bail_notebook_page_ref_state_set  (BatkObject *accessible);
 
-static gint                  bail_notebook_page_notify          (GObject   *obj,
-                                                                 GParamSpec *pspec,
-                                                                 gpointer   user_data);
+static bint                  bail_notebook_page_notify          (BObject   *obj,
+                                                                 BParamSpec *pspec,
+                                                                 bpointer   user_data);
 static void                  bail_notebook_page_init_textutil   (BailNotebookPage      *notebook_page,
                                                                  BtkWidget             *label);
 
@@ -50,15 +50,15 @@ static void                  batk_component_interface_init      (BatkComponentIf
 
 static BatkObject*            bail_notebook_page_ref_accessible_at_point 
                                                                (BatkComponent *component,
-                                                                gint         x,
-                                                                gint         y,
+                                                                bint         x,
+                                                                bint         y,
                                                                 BatkCoordType coord_type);
 
 static void                  bail_notebook_page_get_extents    (BatkComponent *component,
-                                                                gint         *x,
-                                                                gint         *y,
-                                                                gint         *width,
-                                                                gint         *height,
+                                                                bint         *x,
+                                                                bint         *y,
+                                                                bint         *width,
+                                                                bint         *height,
                                                                 BatkCoordType coord_type);
 
 static BatkObject*            _bail_notebook_page_get_tab_label (BailNotebookPage *page);
@@ -66,49 +66,49 @@ static BatkObject*            _bail_notebook_page_get_tab_label (BailNotebookPag
 /* batktext.h */ 
 static void	  batk_text_interface_init	   (BatkTextIface	*iface);
 
-static gchar*	  bail_notebook_page_get_text	   (BatkText	      *text,
-                                                    gint	      start_pos,
-						    gint	      end_pos);
+static bchar*	  bail_notebook_page_get_text	   (BatkText	      *text,
+                                                    bint	      start_pos,
+						    bint	      end_pos);
 static gunichar	  bail_notebook_page_get_character_at_offset
                                                    (BatkText	      *text,
-						    gint	      offset);
-static gchar*     bail_notebook_page_get_text_before_offset
+						    bint	      offset);
+static bchar*     bail_notebook_page_get_text_before_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_notebook_page_get_text_at_offset
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_notebook_page_get_text_at_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_notebook_page_get_text_after_offset
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_notebook_page_get_text_after_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gint	  bail_notebook_page_get_character_count (BatkText	      *text);
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bint	  bail_notebook_page_get_character_count (BatkText	      *text);
 static void       bail_notebook_page_get_character_extents
                                                    (BatkText	      *text,
-						    gint 	      offset,
-		                                    gint 	      *x,
-                    		   	            gint 	      *y,
-                                		    gint 	      *width,
-                                     		    gint 	      *height,
+						    bint 	      offset,
+		                                    bint 	      *x,
+                    		   	            bint 	      *y,
+                                		    bint 	      *width,
+                                     		    bint 	      *height,
 			        		    BatkCoordType      coords);
-static gint      bail_notebook_page_get_offset_at_point
+static bint      bail_notebook_page_get_offset_at_point
                                                    (BatkText           *text,
-                                                    gint              x,
-                                                    gint              y,
+                                                    bint              x,
+                                                    bint              y,
 			                            BatkCoordType      coords);
 static BatkAttributeSet* bail_notebook_page_get_run_attributes 
                                                    (BatkText           *text,
-              					    gint 	      offset,
-                                                    gint 	      *start_offset,
-					            gint	      *end_offset);
+              					    bint 	      offset,
+                                                    bint 	      *start_offset,
+					            bint	      *end_offset);
 static BatkAttributeSet* bail_notebook_page_get_default_attributes
                                                    (BatkText           *text);
 static BtkWidget* get_label_from_notebook_page     (BailNotebookPage  *page);
@@ -122,7 +122,7 @@ G_DEFINE_TYPE_WITH_CODE (BailNotebookPage, bail_notebook_page, BATK_TYPE_OBJECT,
 static void
 bail_notebook_page_class_init (BailNotebookPageClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   
   class->get_name = bail_notebook_page_get_name;
@@ -140,8 +140,8 @@ bail_notebook_page_init (BailNotebookPage *page)
 {
 }
 
-static gint
-notify_child_added (gpointer data)
+static bint
+notify_child_added (bpointer data)
 {
   BailNotebookPage *page;
   BatkObject *batk_object, *batk_parent;
@@ -165,9 +165,9 @@ notify_child_added (gpointer data)
 
 BatkObject*
 bail_notebook_page_new (BtkNotebook *notebook, 
-                        gint        pagenum)
+                        bint        pagenum)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailNotebookPage *page;
   BtkWidget *child;
@@ -186,7 +186,7 @@ bail_notebook_page_new (BtkNotebook *notebook,
 
   page = BAIL_NOTEBOOK_PAGE (object);
   page->notebook = notebook;
-  g_object_add_weak_pointer (G_OBJECT (page->notebook), (gpointer *)&page->notebook);
+  g_object_add_weak_pointer (B_OBJECT (page->notebook), (bpointer *)&page->notebook);
   page->index = pagenum;
   list = g_list_nth (notebook->children, pagenum);
   page->page = list->data;
@@ -217,7 +217,7 @@ bail_notebook_page_new (BtkNotebook *notebook,
 
 static void
 bail_notebook_page_label_map_btk (BtkWidget *widget,
-                                  gpointer data)
+                                  bpointer data)
 {
   BailNotebookPage *page;
 
@@ -229,7 +229,7 @@ static void
 bail_notebook_page_init_textutil (BailNotebookPage *page,
                                   BtkWidget        *label)
 {
-  const gchar *label_text;
+  const bchar *label_text;
 
   if (page->textutil == NULL)
     {
@@ -243,10 +243,10 @@ bail_notebook_page_init_textutil (BailNotebookPage *page,
   bail_text_util_text_setup (page->textutil, label_text);
 }
 
-static gint
-bail_notebook_page_notify (GObject    *obj, 
-                           GParamSpec *pspec,
-                           gpointer   user_data)
+static bint
+bail_notebook_page_notify (BObject    *obj, 
+                           BParamSpec *pspec,
+                           bpointer   user_data)
 {
   BatkObject *batk_obj = BATK_OBJECT (user_data);
   BtkLabel *label;
@@ -254,7 +254,7 @@ bail_notebook_page_notify (GObject    *obj,
 
   if (strcmp (pspec->name, "label") == 0)
     {
-      const gchar* label_text;
+      const bchar* label_text;
 
       label = BTK_LABEL (obj);
 
@@ -268,7 +268,7 @@ bail_notebook_page_notify (GObject    *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -279,12 +279,12 @@ bail_notebook_page_notify (GObject    *obj,
 }
 
 static void
-bail_notebook_page_finalize (GObject *object)
+bail_notebook_page_finalize (BObject *object)
 {
   BailNotebookPage *page = BAIL_NOTEBOOK_PAGE (object);
 
   if (page->notebook)
-    g_object_remove_weak_pointer (G_OBJECT (page->notebook), (gpointer *)&page->notebook);
+    g_object_remove_weak_pointer (B_OBJECT (page->notebook), (bpointer *)&page->notebook);
 
   if (page->textutil)
     g_object_unref (page->textutil);
@@ -292,10 +292,10 @@ bail_notebook_page_finalize (GObject *object)
   if (page->notify_child_added_id)
     g_source_remove (page->notify_child_added_id);
 
-  G_OBJECT_CLASS (bail_notebook_page_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_notebook_page_parent_class)->finalize (object);
 }
 
-static const gchar*
+static const bchar*
 bail_notebook_page_get_name (BatkObject *accessible)
 {
   g_return_val_if_fail (BAIL_IS_NOTEBOOK_PAGE (accessible), NULL);
@@ -329,7 +329,7 @@ bail_notebook_page_get_parent (BatkObject *accessible)
   return btk_widget_get_accessible (BTK_WIDGET (page->notebook));
 }
 
-static gint
+static bint
 bail_notebook_page_get_n_children (BatkObject *accessible)
 {
   /* Notebook page has only one child */
@@ -340,7 +340,7 @@ bail_notebook_page_get_n_children (BatkObject *accessible)
 
 static BatkObject*
 bail_notebook_page_ref_child (BatkObject *accessible,
-                              gint i)
+                              bint i)
 {
   BtkWidget *child;
   BatkObject *child_obj;
@@ -362,7 +362,7 @@ bail_notebook_page_ref_child (BatkObject *accessible,
   return child_obj;
 }
 
-static gint
+static bint
 bail_notebook_page_get_index_in_parent (BatkObject *accessible)
 {
   BailNotebookPage *page;
@@ -428,8 +428,8 @@ batk_component_interface_init (BatkComponentIface *iface)
 
 static BatkObject*
 bail_notebook_page_ref_accessible_at_point (BatkComponent *component,
-                                            gint         x,
-                                            gint         y,
+                                            bint         x,
+                                            bint         y,
                                             BatkCoordType coord_type)
 {
   /*
@@ -445,10 +445,10 @@ bail_notebook_page_ref_accessible_at_point (BatkComponent *component,
 
 static void
 bail_notebook_page_get_extents (BatkComponent *component,
-                                gint         *x,
-                                gint         *y,
-                                gint         *width,
-                                gint         *height,
+                                bint         *x,
+                                bint         *y,
+                                bint         *width,
+                                bint         *height,
                                 BatkCoordType coord_type)
 {
   BatkObject *batk_label;
@@ -507,14 +507,14 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_notebook_page_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_notebook_page_get_text (BatkText *text,
-                             gint    start_pos,
-                             gint    end_pos)
+                             bint    start_pos,
+                             bint    end_pos)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
-  const gchar *label_text;
+  const bchar *label_text;
 
   notebook_page = BAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
@@ -536,12 +536,12 @@ bail_notebook_page_get_text (BatkText *text,
   }
 }
 
-static gchar*
+static bchar*
 bail_notebook_page_get_text_before_offset (BatkText         *text,
-     				           gint            offset,
+     				           bint            offset,
 				           BatkTextBoundary boundary_type,
-				           gint            *start_offset,
-				           gint            *end_offset)
+				           bint            *start_offset,
+				           bint            *end_offset)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
@@ -560,12 +560,12 @@ bail_notebook_page_get_text_before_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset); 
 }
 
-static gchar*
+static bchar*
 bail_notebook_page_get_text_at_offset (BatkText         *text,
-			               gint            offset,
+			               bint            offset,
 			               BatkTextBoundary boundary_type,
- 			               gint            *start_offset,
-			               gint            *end_offset)
+ 			               bint            *start_offset,
+			               bint            *end_offset)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
@@ -584,12 +584,12 @@ bail_notebook_page_get_text_at_offset (BatkText         *text,
                               boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_notebook_page_get_text_after_offset (BatkText         *text,
-				          gint            offset,
+				          bint            offset,
 				          BatkTextBoundary boundary_type,
-				          gint            *start_offset,
-				          gint            *end_offset)
+				          bint            *start_offset,
+				          bint            *end_offset)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
@@ -608,7 +608,7 @@ bail_notebook_page_get_text_after_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset);
 }
 
-static gint
+static bint
 bail_notebook_page_get_character_count (BatkText *text)
 {
   BtkWidget *label;
@@ -625,18 +625,18 @@ bail_notebook_page_get_character_count (BatkText *text)
 
 static void
 bail_notebook_page_get_character_extents (BatkText      *text,
-				          gint         offset,
-		                          gint         *x,
-                    		          gint         *y,
-                                          gint 	       *width,
-                                          gint 	       *height,
+				          bint         offset,
+		                          bint         *x,
+                    		          bint         *y,
+                                          bint 	       *width,
+                                          bint 	       *height,
 			                  BatkCoordType coords)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
   BangoRectangle char_rect;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
  
   notebook_page = BAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
@@ -653,16 +653,16 @@ bail_notebook_page_get_character_extents (BatkText      *text,
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
-static gint 
+static bint 
 bail_notebook_page_get_offset_at_point (BatkText      *text,
-                                        gint         x,
-                                        gint         y,
+                                        bint         x,
+                                        bint         y,
 	          		        BatkCoordType coords)
 { 
   BtkWidget *label;
   BailNotebookPage *notebook_page;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
 
   notebook_page = BAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);
@@ -689,9 +689,9 @@ bail_notebook_page_get_offset_at_point (BatkText      *text,
 
 static BatkAttributeSet*
 bail_notebook_page_get_run_attributes (BatkText *text,
-                                       gint    offset,
-                                       gint    *start_offset,
-	                               gint    *end_offset)
+                                       bint    offset,
+                                       bint    *start_offset,
+	                               bint    *end_offset)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
@@ -723,7 +723,7 @@ bail_notebook_page_get_run_attributes (BatkText *text,
 
   at_set = bail_misc_layout_get_run_attributes (at_set,
                                                 btk_label_get_layout (BTK_LABEL (label)),
-                                                (gchar *) btk_label_get_text (BTK_LABEL (label)),
+                                                (bchar *) btk_label_get_text (BTK_LABEL (label)),
                                                 offset,
                                                 start_offset,
                                                 end_offset);
@@ -751,12 +751,12 @@ bail_notebook_page_get_default_attributes (BatkText *text)
 
 static gunichar 
 bail_notebook_page_get_character_at_offset (BatkText *text,
-                                            gint    offset)
+                                            bint    offset)
 {
   BtkWidget *label;
   BailNotebookPage *notebook_page;
-  const gchar *string;
-  gchar *index;
+  const bchar *string;
+  bchar *index;
 
   notebook_page = BAIL_NOTEBOOK_PAGE (text);
   label = get_label_from_notebook_page (notebook_page);

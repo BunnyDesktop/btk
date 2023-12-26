@@ -48,7 +48,7 @@
 #include <bdk-pixbuf/bdk-pixbuf.h>
 #include "bdkalias.h"
 
-static guint theme_serial = 0;
+static buint theme_serial = 0;
 
 /* cursor_cache holds a cache of non-pixmap cursors to avoid expensive 
  * libXcursor searches, cursors are added to it but only removed when
@@ -72,7 +72,7 @@ struct cursor_cache_key
 static void
 add_to_cache (BdkCursorPrivate* cursor)
 {
-  cursor_cache = g_slist_prepend (cursor_cache, cursor);
+  cursor_cache = b_slist_prepend (cursor_cache, cursor);
 
   /* Take a ref so that if the caller frees it we still have it */
   bdk_cursor_ref ((BdkCursor*) cursor);
@@ -80,7 +80,7 @@ add_to_cache (BdkCursorPrivate* cursor)
 
 /* Returns 0 on a match
  */
-static gint
+static bint
 cache_compare_func (gconstpointer listelem, 
                     gconstpointer target)
 {
@@ -116,7 +116,7 @@ find_in_cache (BdkDisplay    *display,
   key.type = type;
   key.name = name;
 
-  res = g_slist_find_custom (cursor_cache, &key, cache_compare_func);
+  res = b_slist_find_custom (cursor_cache, &key, cache_compare_func);
 
   if (res)
     return (BdkCursorPrivate *) res->data;
@@ -144,13 +144,13 @@ _bdk_x11_cursor_display_finalize (BdkDisplay *display)
 	  /* Remove this item from the list */
 	  *(itemp) = item->next;
 	  olditem = item;
-	  item = g_slist_next (item);
-	  g_slist_free_1 (olditem);
+	  item = b_slist_next (item);
+	  b_slist_free_1 (olditem);
         } 
       else 
         {
 	  itemp = &(item->next);
-	  item = g_slist_next (item);
+	  item = b_slist_next (item);
 	}
     }
 }
@@ -363,8 +363,8 @@ bdk_cursor_new_from_pixmap (BdkPixmap      *source,
 			    BdkPixmap      *mask,
 			    const BdkColor *fg,
 			    const BdkColor *bg,
-			    gint            x,
-			    gint            y)
+			    bint            x,
+			    bint            y)
 {
   BdkCursorPrivate *private;
   BdkCursor *cursor;
@@ -499,11 +499,11 @@ bdk_cursor_get_image (BdkCursor *cursor)
   BdkCursorPrivate *private;
   XcursorImages *images = NULL;
   XcursorImage *image;
-  gint size;
-  gchar buf[32];
-  guchar *data, *p, tmp;
+  bint size;
+  bchar buf[32];
+  buchar *data, *p, tmp;
   BdkPixbuf *pixbuf;
-  gchar *theme;
+  bchar *theme;
   
   g_return_val_if_fail (cursor != NULL, NULL);
 
@@ -596,8 +596,8 @@ _bdk_x11_cursor_update_theme (BdkCursor *cursor)
 }
 
 static void
-update_cursor (gpointer data,
-	       gpointer user_data)
+update_cursor (bpointer data,
+	       bpointer user_data)
 {
   BdkCursor *cursor;
 
@@ -632,13 +632,13 @@ update_cursor (gpointer data,
  */
 void
 bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
-				  const gchar *theme,
-				  const gint   size)
+				  const bchar *theme,
+				  const bint   size)
 {
   BdkDisplayX11 *display_x11;
   Display *xdisplay;
-  gchar *old_theme;
-  gint old_size;
+  bchar *old_theme;
+  bint old_size;
 
   g_return_if_fail (BDK_IS_DISPLAY (display));
 
@@ -659,7 +659,7 @@ bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
   if (size > 0)
     XcursorSetDefaultSize (xdisplay, size);
     
-  g_slist_foreach (cursor_cache, update_cursor, NULL);
+  b_slist_foreach (cursor_cache, update_cursor, NULL);
 }
 
 #else
@@ -674,8 +674,8 @@ bdk_cursor_get_image (BdkCursor *cursor)
 
 void
 bdk_x11_display_set_cursor_theme (BdkDisplay  *display,
-				  const gchar *theme,
-				  const gint   size)
+				  const bchar *theme,
+				  const bint   size)
 {
   g_return_if_fail (BDK_IS_DISPLAY (display));
 }
@@ -692,11 +692,11 @@ _bdk_x11_cursor_update_theme (BdkCursor *cursor)
 
 static XcursorImage*
 create_cursor_image (BdkPixbuf *pixbuf,
-		     gint       x,
-		     gint       y)
+		     bint       x,
+		     bint       y)
 {
-  guint width, height, rowstride, n_channels;
-  guchar *pixels, *src;
+  buint width, height, rowstride, n_channels;
+  buchar *pixels, *src;
   XcursorImage *xcimage;
   XcursorPixel *dest;
 
@@ -716,7 +716,7 @@ create_cursor_image (BdkPixbuf *pixbuf,
 
   if (n_channels == 3)
     {
-      gint i, j;
+      bint i, j;
 
       for (j = 0; j < height; j++)
         {
@@ -733,7 +733,7 @@ create_cursor_image (BdkPixbuf *pixbuf,
   else
     {
       _bdk_x11_convert_to_format (pixels, rowstride,
-                                  (guchar *) dest, 4 * width,
+                                  (buchar *) dest, 4 * width,
                                   BDK_X11_FORMAT_ARGB,
                                   (G_BYTE_ORDER == G_BIG_ENDIAN) ?
                                   BDK_MSB_FIRST : BDK_LSB_FIRST,
@@ -777,8 +777,8 @@ create_cursor_image (BdkPixbuf *pixbuf,
 BdkCursor *
 bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
 			    BdkPixbuf  *pixbuf,
-			    gint        x,
-			    gint        y)
+			    bint        x,
+			    bint        y)
 {
   XcursorImage *xcimage;
   Cursor xcursor;
@@ -786,7 +786,7 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
   BdkCursor *cursor;
   const char *option;
   char *end;
-  gint64 value;
+  bint64 value;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
@@ -798,8 +798,8 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
       value = g_ascii_strtoll (option, &end, 10);
       if (errno == 0 &&
           end != option &&
-          value >= 0 && value < G_MAXINT)
-        x = (gint) value;
+          value >= 0 && value < B_MAXINT)
+        x = (bint) value;
     }
   if (y == -1 && (option = bdk_pixbuf_get_option (pixbuf, "y_hot")))
     {
@@ -808,8 +808,8 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
       value = g_ascii_strtoll (option, &end, 10);
       if (errno == 0 &&
           end != option &&
-          value >= 0 && value < G_MAXINT)
-        y = (gint) value;
+          value >= 0 && value < B_MAXINT)
+        y = (bint) value;
     }
 
   g_return_val_if_fail (0 <= x && x < bdk_pixbuf_get_width (pixbuf), NULL);
@@ -852,7 +852,7 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
  */
 BdkCursor*  
 bdk_cursor_new_from_name (BdkDisplay  *display,
-			  const gchar *name)
+			  const bchar *name)
 {
   Cursor xcursor;
   Display *xdisplay;
@@ -907,7 +907,7 @@ bdk_cursor_new_from_name (BdkDisplay  *display,
  *
  * Since: 2.4
  */
-gboolean 
+bboolean 
 bdk_display_supports_cursor_alpha (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -927,7 +927,7 @@ bdk_display_supports_cursor_alpha (BdkDisplay *display)
  *
  * Since: 2.4
  */
-gboolean 
+bboolean 
 bdk_display_supports_cursor_color (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -945,7 +945,7 @@ bdk_display_supports_cursor_color (BdkDisplay *display)
  *
  * Since: 2.4
  */
-guint     
+buint     
 bdk_display_get_default_cursor_size (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -958,13 +958,13 @@ bdk_display_get_default_cursor_size (BdkDisplay *display)
 BdkCursor *
 bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
 			    BdkPixbuf  *pixbuf,
-			    gint        x,
-			    gint        y)
+			    bint        x,
+			    bint        y)
 {
   BdkCursor *cursor;
   BdkPixmap *pixmap, *mask;
-  guint width, height, n_channels, rowstride, i, j;
-  guint8 *data, *mask_data, *pixels;
+  buint width, height, n_channels, rowstride, i, j;
+  buint8 *data, *mask_data, *pixels;
   BdkColor fg = { 0, 0, 0, 0 };
   BdkColor bg = { 0, 0xffff, 0xffff, 0xffff };
   BdkScreen *screen;
@@ -982,14 +982,14 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
   rowstride = bdk_pixbuf_get_rowstride (pixbuf);
   pixels = bdk_pixbuf_get_pixels (pixbuf);
 
-  data = g_new0 (guint8, (width + 7) / 8 * height);
-  mask_data = g_new0 (guint8, (width + 7) / 8 * height);
+  data = g_new0 (buint8, (width + 7) / 8 * height);
+  mask_data = g_new0 (buint8, (width + 7) / 8 * height);
 
   for (j = 0; j < height; j++)
     {
-      guint8 *src = pixels + j * rowstride;
-      guint8 *d = data + (width + 7) / 8 * j;
-      guint8 *md = mask_data + (width + 7) / 8 * j;
+      buint8 *src = pixels + j * rowstride;
+      buint8 *d = data + (width + 7) / 8 * j;
+      buint8 *md = mask_data + (width + 7) / 8 * j;
 	
       for (i = 0; i < width; i++)
 	{
@@ -1028,14 +1028,14 @@ bdk_cursor_new_from_pixbuf (BdkDisplay *display,
 
 BdkCursor*  
 bdk_cursor_new_from_name (BdkDisplay  *display,
-			  const gchar *name)
+			  const bchar *name)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
   return NULL;
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_alpha (BdkDisplay    *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -1043,7 +1043,7 @@ bdk_display_supports_cursor_alpha (BdkDisplay    *display)
   return FALSE;
 }
 
-gboolean 
+bboolean 
 bdk_display_supports_cursor_color (BdkDisplay    *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -1051,7 +1051,7 @@ bdk_display_supports_cursor_color (BdkDisplay    *display)
   return FALSE;
 }
 
-guint     
+buint     
 bdk_display_get_default_cursor_size (BdkDisplay    *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -1075,8 +1075,8 @@ bdk_display_get_default_cursor_size (BdkDisplay    *display)
  */
 void     
 bdk_display_get_maximal_cursor_size (BdkDisplay *display,
-				     guint       *width,
-				     guint       *height)
+				     buint       *width,
+				     buint       *height)
 {
   BdkScreen *screen;
   BdkWindow *window;

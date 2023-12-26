@@ -26,28 +26,28 @@
 
 void _btk_tool_palette_get_item_size           (BtkToolPalette   *palette,
                                                 BtkRequisition   *item_size,
-                                                gboolean          homogeneous_only,
-                                                gint             *requested_rows);
+                                                bboolean          homogeneous_only,
+                                                bint             *requested_rows);
 void _btk_tool_palette_child_set_drag_source   (BtkWidget        *widget,
-                                                gpointer          data);
+                                                bpointer          data);
 void _btk_tool_palette_set_expanding_child     (BtkToolPalette   *palette,
                                                 BtkWidget        *widget);
 
 void _btk_tool_item_group_palette_reconfigured (BtkToolItemGroup *group);
 void _btk_tool_item_group_item_size_request    (BtkToolItemGroup *group,
                                                 BtkRequisition   *item_size,
-                                                gboolean          homogeneous_only,
-                                                gint             *requested_rows);
-gint _btk_tool_item_group_get_height_for_width (BtkToolItemGroup *group,
-                                                gint              width);
-gint _btk_tool_item_group_get_width_for_height (BtkToolItemGroup *group,
-                                                gint              height);
+                                                bboolean          homogeneous_only,
+                                                bint             *requested_rows);
+bint _btk_tool_item_group_get_height_for_width (BtkToolItemGroup *group,
+                                                bint              width);
+bint _btk_tool_item_group_get_width_for_height (BtkToolItemGroup *group,
+                                                bint              height);
 void _btk_tool_item_group_paint                (BtkToolItemGroup *group,
                                                 bairo_t          *cr);
-gint _btk_tool_item_group_get_size_for_limit   (BtkToolItemGroup *group,
-                                                gint              limit,
-                                                gboolean          vertical,
-                                                gboolean          animation);
+bint _btk_tool_item_group_get_size_for_limit   (BtkToolItemGroup *group,
+                                                bint              limit,
+                                                bboolean          vertical,
+                                                bboolean          animation);
 
 
 BtkSizeGroup *_btk_tool_palette_get_size_group (BtkToolPalette   *palette);

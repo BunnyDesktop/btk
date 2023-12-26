@@ -93,7 +93,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkText.html#btk-text-get-point" title="btk_text_get_point ()">btk_text_get_point</a> <span class="c_punctuation">()</span>
@@ -101,7 +101,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkText.html#btk-text-get-length" title="btk_text_get_length ()">btk_text_get_length</a> <span class="c_punctuation">()</span>
@@ -133,7 +133,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkText.html#btk-text-backward-delete" title="btk_text_backward_delete ()">btk_text_backward_delete</a> <span class="c_punctuation">()</span>
@@ -141,7 +141,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkText.html#btk-text-forward-delete" title="btk_text_forward_delete ()">btk_text_forward_delete</a> <span class="c_punctuation">()</span>
@@ -172,7 +172,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkText.html#BtkText--line-wrap" title="The “line-wrap” property">line-wrap</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -183,7 +183,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkText.html#BtkText--word-wrap" title="The “word-wrap” property">word-wrap</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -230,7 +230,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkText.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -266,7 +266,7 @@ btk_text_new (<em class="parameter"><code><a class="link" href="BtkAdjustment.ht
 <a name="btk-text-set-editable"></a><h3>btk_text_set_editable ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_set_editable (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                       <em class="parameter"><code><span class="type">gboolean</span> editable</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bboolean</span> editable</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_set_editable</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -274,7 +274,7 @@ btk_text_set_editable (<em class="parameter"><code><a class="link" href="BtkText
 <a name="btk-text-set-word-wrap"></a><h3>btk_text_set_word_wrap ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_set_word_wrap (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                        <em class="parameter"><code><span class="type">gboolean</span> word_wrap</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bboolean</span> word_wrap</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_set_word_wrap</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -282,7 +282,7 @@ btk_text_set_word_wrap (<em class="parameter"><code><a class="link" href="BtkTex
 <a name="btk-text-set-line-wrap"></a><h3>btk_text_set_line_wrap ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_set_line_wrap (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                        <em class="parameter"><code><span class="type">gboolean</span> line_wrap</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bboolean</span> line_wrap</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_set_line_wrap</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -299,20 +299,20 @@ btk_text_set_adjustments (<em class="parameter"><code><a class="link" href="BtkT
 <a name="btk-text-set-point"></a><h3>btk_text_set_point ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_set_point (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                    <em class="parameter"><code><span class="type">guint</span> index</code></em>);</pre>
+                    <em class="parameter"><code><span class="type">buint</span> index</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_set_point</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-text-get-point"></a><h3>btk_text_get_point ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_text_get_point (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_get_point</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-text-get-length"></a><h3>btk_text_get_length ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_text_get_length (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_get_length</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -339,23 +339,23 @@ btk_text_insert (<em class="parameter"><code><a class="link" href="BtkText.html"
                  <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *fore</code></em>,
                  <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *back</code></em>,
                  <em class="parameter"><code>const <span class="type">char</span> *chars</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> length</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> length</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_insert</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-text-backward-delete"></a><h3>btk_text_backward_delete ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_text_backward_delete (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> nchars</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">buint</span> nchars</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_backward_delete</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-text-forward-delete"></a><h3>btk_text_forward_delete ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_text_forward_delete (<em class="parameter"><code><a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a> *text</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> nchars</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">buint</span> nchars</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_text_forward_delete</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -386,10 +386,10 @@ btk_text_forward_delete (<em class="parameter"><code><a class="link" href="BtkTe
   GList* property;
 
   /* Offset into that property. */
-  guint offset;
+  buint offset;
 
   /* Current index. */
-  guint index;
+  buint index;
 };
 </pre>
 <div class="warning"><p><code class="literal">BtkPropertyMark</code> is deprecated and should not be used in newly-written code.</p></div>
@@ -407,7 +407,7 @@ btk_text_forward_delete (<em class="parameter"><code><a class="link" href="BtkTe
 <hr>
 <div class="refsect2">
 <a name="BtkText--line-wrap"></a><h3>The <code class="literal">“line-wrap”</code> property</h3>
-<pre class="programlisting">  “line-wrap”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “line-wrap”                <span class="type">bboolean</span></pre>
 <p>Whether lines are wrapped at widget edges.</p>
 <p>Owner: BtkText</p>
 <p>Flags: Read / Write</p>
@@ -424,7 +424,7 @@ btk_text_forward_delete (<em class="parameter"><code><a class="link" href="BtkTe
 <hr>
 <div class="refsect2">
 <a name="BtkText--word-wrap"></a><h3>The <code class="literal">“word-wrap”</code> property</h3>
-<pre class="programlisting">  “word-wrap”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “word-wrap”                <span class="type">bboolean</span></pre>
 <p>Whether words are wrapped at widget edges.</p>
 <p>Owner: BtkText</p>
 <p>Flags: Read / Write</p>
@@ -439,7 +439,7 @@ btk_text_forward_delete (<em class="parameter"><code><a class="link" href="BtkTe
 user_function (<a class="link" href="BtkText.html" title="BtkText"><span class="type">BtkText</span></a>       *text,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg1,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg2,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Flags: Run Last</p>
 </div>
 </div>

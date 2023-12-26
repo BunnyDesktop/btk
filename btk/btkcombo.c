@@ -54,7 +54,7 @@
 
 #include "btkalias.h"
 
-static const gchar btk_combo_string_key[] = "btk-combo-string-value";
+static const bchar btk_combo_string_key[] = "btk-combo-string-value";
 
 #define COMBO_LIST_MAX_HEIGHT	(400)
 #define	EMPTY_LIST_HEIGHT	(15)
@@ -72,69 +72,69 @@ static void         btk_combo_realize		 (BtkWidget	   *widget);
 static void         btk_combo_unrealize		 (BtkWidget	   *widget);
 static void         btk_combo_destroy            (BtkObject        *combo);
 static BtkListItem *btk_combo_find               (BtkCombo         *combo);
-static gchar *      btk_combo_func               (BtkListItem      *li);
-static gboolean     btk_combo_focus_idle         (BtkCombo         *combo);
-static gint         btk_combo_entry_focus_out    (BtkEntry         *entry,
+static bchar *      btk_combo_func               (BtkListItem      *li);
+static bboolean     btk_combo_focus_idle         (BtkCombo         *combo);
+static bint         btk_combo_entry_focus_out    (BtkEntry         *entry,
 						  BdkEventFocus    *event,
 						  BtkCombo         *combo);
 static void         btk_combo_get_pos            (BtkCombo         *combo,
-						  gint             *x,
-						  gint             *y,
-						  gint             *height,
-						  gint             *width);
+						  bint             *x,
+						  bint             *y,
+						  bint             *height,
+						  bint             *width);
 static void         btk_combo_popup_list         (BtkCombo         *combo);
 static void         btk_combo_popdown_list       (BtkCombo         *combo);
 
 static void         btk_combo_activate           (BtkWidget        *widget,
 						  BtkCombo         *combo);
-static gboolean     btk_combo_popup_button_press (BtkWidget        *button,
+static bboolean     btk_combo_popup_button_press (BtkWidget        *button,
 						  BdkEventButton   *event,
 						  BtkCombo         *combo);
-static gboolean     btk_combo_popup_button_leave (BtkWidget        *button,
+static bboolean     btk_combo_popup_button_leave (BtkWidget        *button,
 						  BdkEventCrossing *event,
 						  BtkCombo         *combo);
 static void         btk_combo_update_entry       (BtkCombo         *combo);
 static void         btk_combo_update_list        (BtkEntry         *entry,
 						  BtkCombo         *combo);
-static gint         btk_combo_button_press       (BtkWidget        *widget,
+static bint         btk_combo_button_press       (BtkWidget        *widget,
 						  BdkEvent         *event,
 						  BtkCombo         *combo);
 static void         btk_combo_button_event_after (BtkWidget        *widget,
 						  BdkEvent         *event,
 						  BtkCombo         *combo);
-static gint         btk_combo_list_enter         (BtkWidget        *widget,
+static bint         btk_combo_list_enter         (BtkWidget        *widget,
 						  BdkEventCrossing *event,
 						  BtkCombo         *combo);
-static gint         btk_combo_list_key_press     (BtkWidget        *widget,
+static bint         btk_combo_list_key_press     (BtkWidget        *widget,
 						  BdkEventKey      *event,
 						  BtkCombo         *combo);
-static gint         btk_combo_entry_key_press    (BtkEntry         *widget,
+static bint         btk_combo_entry_key_press    (BtkEntry         *widget,
 						  BdkEventKey      *event,
 						  BtkCombo         *combo);
-static gint         btk_combo_window_key_press   (BtkWidget        *window,
+static bint         btk_combo_window_key_press   (BtkWidget        *window,
 						  BdkEventKey      *event,
 						  BtkCombo         *combo);
 static void         btk_combo_size_allocate      (BtkWidget        *widget,
 						  BtkAllocation   *allocation);
-static void         btk_combo_set_property       (GObject         *object,
-						  guint            prop_id,
-						  const GValue    *value,
-						  GParamSpec      *pspec);
-static void         btk_combo_get_property       (GObject         *object,
-						  guint            prop_id,
-						  GValue          *value,
-						  GParamSpec      *pspec);
+static void         btk_combo_set_property       (BObject         *object,
+						  buint            prop_id,
+						  const BValue    *value,
+						  BParamSpec      *pspec);
+static void         btk_combo_get_property       (BObject         *object,
+						  buint            prop_id,
+						  BValue          *value,
+						  BParamSpec      *pspec);
 
 G_DEFINE_TYPE (BtkCombo, btk_combo, BTK_TYPE_HBOX)
 
 static void
 btk_combo_class_init (BtkComboClass * klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *oclass;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass *) klass;
+  bobject_class = (BObjectClass *) klass;
   oclass = (BtkObjectClass *) klass;
   widget_class = (BtkWidgetClass *) klass;
 
@@ -206,7 +206,7 @@ static int
 btk_combo_entry_key_press (BtkEntry * entry, BdkEventKey * event, BtkCombo * combo)
 {
   GList *li;
-  guint state = event->state & btk_accelerator_get_default_mod_mask ();
+  buint state = event->state & btk_accelerator_get_default_mod_mask ();
 
   /* completion */
   if ((event->keyval == BDK_Tab ||  event->keyval == BDK_KP_Tab) &&
@@ -214,9 +214,9 @@ btk_combo_entry_key_press (BtkEntry * entry, BdkEventKey * event, BtkCombo * com
     {
       BtkEditable *editable = BTK_EDITABLE (entry);
       GCompletion * cmpl;
-      gchar* prefix;
-      gchar* nprefix = NULL;
-      gint pos;
+      bchar* prefix;
+      bchar* nprefix = NULL;
+      bint pos;
 
       if ( !BTK_LIST (combo->list)->children )
 	return FALSE;
@@ -295,7 +295,7 @@ btk_combo_window_key_press (BtkWidget   *window,
 			    BdkEventKey *event,
 			    BtkCombo    *combo)
 {
-  guint state = event->state & btk_accelerator_get_default_mod_mask ();
+  buint state = event->state & btk_accelerator_get_default_mod_mask ();
 
   if ((event->keyval == BDK_Return ||
        event->keyval == BDK_ISO_Enter ||
@@ -326,15 +326,15 @@ btk_combo_window_key_press (BtkWidget   *window,
 static BtkListItem *
 btk_combo_find (BtkCombo * combo)
 {
-  const gchar *text;
+  const bchar *text;
   BtkListItem *found = NULL;
-  gchar *ltext;
-  gchar *compare_text;
+  bchar *ltext;
+  bchar *compare_text;
   GList *clist;
 
   text = btk_entry_get_text (BTK_ENTRY (combo->entry));
   if (combo->case_sensitive)
-    compare_text = (gchar *)text;
+    compare_text = (bchar *)text;
   else
     compare_text = g_utf8_casefold (text, -1);
   
@@ -362,24 +362,24 @@ btk_combo_find (BtkCombo * combo)
   return found;
 }
 
-static gchar *
+static bchar *
 btk_combo_func (BtkListItem * li)
 {
   BtkWidget *label;
-  gchar *ltext = NULL;
+  bchar *ltext = NULL;
 
-  ltext = g_object_get_data (G_OBJECT (li), I_(btk_combo_string_key));
+  ltext = g_object_get_data (B_OBJECT (li), I_(btk_combo_string_key));
   if (!ltext)
     {
       label = BTK_BIN (li)->child;
       if (!label || !BTK_IS_LABEL (label))
 	return NULL;
-      ltext = (gchar *) btk_label_get_text (BTK_LABEL (label));
+      ltext = (bchar *) btk_label_get_text (BTK_LABEL (label));
     }
   return ltext;
 }
 
-static gint
+static bint
 btk_combo_focus_idle (BtkCombo * combo)
 {
   if (combo)
@@ -391,7 +391,7 @@ btk_combo_focus_idle (BtkCombo * combo)
   return FALSE;
 }
 
-static gint
+static bint
 btk_combo_entry_focus_out (BtkEntry * entry, BdkEventFocus * event, BtkCombo * combo)
 {
 
@@ -414,7 +414,7 @@ btk_combo_entry_focus_out (BtkEntry * entry, BdkEventFocus * event, BtkCombo * c
       focus_idle = g_idle_source_new ();
       g_source_set_closure (focus_idle,
 			    g_cclosure_new_object (G_CALLBACK (btk_combo_focus_idle),
-						   G_OBJECT (combo)));
+						   B_OBJECT (combo)));
       g_source_attach (focus_idle, NULL);
 	g_source_unref (focus_idle);
       
@@ -425,23 +425,23 @@ btk_combo_entry_focus_out (BtkEntry * entry, BdkEventFocus * event, BtkCombo * c
 }
 
 static void
-btk_combo_get_pos (BtkCombo * combo, gint * x, gint * y, gint * height, gint * width)
+btk_combo_get_pos (BtkCombo * combo, bint * x, bint * y, bint * height, bint * width)
 {
   BtkBin *popwin;
   BtkWidget *widget;
   BtkScrolledWindow *popup;
   
-  gint real_height;
+  bint real_height;
   BtkRequisition list_requisition;
-  gboolean show_hscroll = FALSE;
-  gboolean show_vscroll = FALSE;
-  gint avail_height;
-  gint min_height;
-  gint alloc_width;
-  gint work_height;
-  gint old_height;
-  gint old_width;
-  gint scrollbar_spacing;
+  bboolean show_hscroll = FALSE;
+  bboolean show_vscroll = FALSE;
+  bint avail_height;
+  bint min_height;
+  bint alloc_width;
+  bint work_height;
+  bint old_height;
+  bint old_width;
+  bint scrollbar_spacing;
   
   widget = BTK_WIDGET (combo);
   popup  = BTK_SCROLLED_WINDOW (combo->popup);
@@ -523,8 +523,8 @@ btk_combo_popup_list (BtkCombo *combo)
 {
   BtkWidget *toplevel;
   BtkList *list;
-  gint height, width, x, y;
-  gint old_width, old_height;
+  bint height, width, x, y;
+  bint old_width, old_height;
 
   old_width = combo->popwin->allocation.width;
   old_height  = combo->popwin->allocation.height;
@@ -601,9 +601,9 @@ btk_combo_popdown_list (BtkCombo *combo)
   btk_window_group_add_window (btk_window_get_group (NULL), BTK_WINDOW (combo->popwin));
 }
 
-static gboolean
+static bboolean
 popup_grab_on_window (BdkWindow *window,
-		      guint32    activate_time)
+		      buint32    activate_time)
 {
   if ((bdk_pointer_grab (window, TRUE,
 			 BDK_BUTTON_PRESS_MASK | BDK_BUTTON_RELEASE_MASK |
@@ -645,7 +645,7 @@ btk_combo_activate (BtkWidget        *widget,
   btk_grab_add (combo->popwin);
 }
 
-static gboolean
+static bboolean
 btk_combo_popup_button_press (BtkWidget        *button,
 			      BdkEventButton   *event,
 			      BtkCombo         *combo)
@@ -675,7 +675,7 @@ btk_combo_popup_button_press (BtkWidget        *button,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_combo_popup_button_leave (BtkWidget        *button,
 			      BdkEventCrossing *event,
 			      BtkCombo         *combo)
@@ -729,7 +729,7 @@ btk_combo_update_list (BtkEntry * entry, BtkCombo * combo)
   g_signal_handler_unblock (entry, combo->entry_change_id);
 }
 
-static gint
+static bint
 btk_combo_button_press (BtkWidget * widget, BdkEvent * event, BtkCombo * combo)
 {
   BtkWidget *child;
@@ -758,7 +758,7 @@ btk_combo_button_press (BtkWidget * widget, BdkEvent * event, BtkCombo * combo)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 is_within (BtkWidget *widget,
 	   BtkWidget *ancestor)
 {
@@ -805,7 +805,7 @@ btk_combo_button_event_after (BtkWidget *widget,
 
 static void
 find_child_foreach (BtkWidget *widget,
-		    gpointer   data)
+		    bpointer   data)
 {
   BdkEventButton *event = data;
 
@@ -826,7 +826,7 @@ find_child_window (BtkContainer   *container,
   btk_container_foreach (container, find_child_foreach, event);
 }
 
-static gint         
+static bint         
 btk_combo_list_enter (BtkWidget        *widget,
 		      BdkEventCrossing *event,
 		      BtkCombo         *combo)
@@ -840,7 +840,7 @@ btk_combo_list_enter (BtkWidget        *widget,
       (!BTK_WIDGET_HAS_GRAB (combo->list)))
     {
       BdkEvent *tmp_event = bdk_event_new (BDK_BUTTON_PRESS);
-      gint x, y;
+      bint x, y;
       BdkModifierType mask;
 
       btk_grab_remove (combo->popwin);
@@ -883,7 +883,7 @@ btk_combo_list_enter (BtkWidget        *widget,
 static int
 btk_combo_list_key_press (BtkWidget * widget, BdkEventKey * event, BtkCombo * combo)
 {
-  guint state = event->state & btk_accelerator_get_default_mod_mask ();
+  buint state = event->state & btk_accelerator_get_default_mod_mask ();
 
   if (event->keyval == BDK_Escape && state == 0)
     {
@@ -1035,28 +1035,28 @@ btk_combo_new (void)
 }
 
 void
-btk_combo_set_value_in_list (BtkCombo * combo, gboolean val, gboolean ok_if_empty)
+btk_combo_set_value_in_list (BtkCombo * combo, bboolean val, bboolean ok_if_empty)
 {
   g_return_if_fail (BTK_IS_COMBO (combo));
   val = val != FALSE;
   ok_if_empty = ok_if_empty != FALSE;
 
-  g_object_freeze_notify (G_OBJECT (combo));
+  g_object_freeze_notify (B_OBJECT (combo));
   if (combo->value_in_list != val)
     {
        combo->value_in_list = val;
-  g_object_notify (G_OBJECT (combo), "value-in-list");
+  g_object_notify (B_OBJECT (combo), "value-in-list");
     }
   if (combo->ok_if_empty != ok_if_empty)
     {
        combo->ok_if_empty = ok_if_empty;
-  g_object_notify (G_OBJECT (combo), "allow-empty");
+  g_object_notify (B_OBJECT (combo), "allow-empty");
     }
-  g_object_thaw_notify (G_OBJECT (combo));
+  g_object_thaw_notify (B_OBJECT (combo));
 }
 
 void
-btk_combo_set_case_sensitive (BtkCombo * combo, gboolean val)
+btk_combo_set_case_sensitive (BtkCombo * combo, bboolean val)
 {
   g_return_if_fail (BTK_IS_COMBO (combo));
   val = val != FALSE;
@@ -1064,12 +1064,12 @@ btk_combo_set_case_sensitive (BtkCombo * combo, gboolean val)
   if (combo->case_sensitive != val) 
     {
   combo->case_sensitive = val;
-  g_object_notify (G_OBJECT (combo), "case-sensitive");
+  g_object_notify (B_OBJECT (combo), "case-sensitive");
     }
 }
 
 void
-btk_combo_set_use_arrows (BtkCombo * combo, gboolean val)
+btk_combo_set_use_arrows (BtkCombo * combo, bboolean val)
 {
   g_return_if_fail (BTK_IS_COMBO (combo));
   val = val != FALSE;
@@ -1077,28 +1077,28 @@ btk_combo_set_use_arrows (BtkCombo * combo, gboolean val)
   if (combo->use_arrows != val) 
     {
   combo->use_arrows = val;
-  g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
+  g_object_notify (B_OBJECT (combo), "enable-arrow-keys");
     }
 }
 
 void
-btk_combo_set_use_arrows_always (BtkCombo * combo, gboolean val)
+btk_combo_set_use_arrows_always (BtkCombo * combo, bboolean val)
 {
   g_return_if_fail (BTK_IS_COMBO (combo));
   val = val != FALSE;
 
   if (combo->use_arrows_always != val) 
     {
-       g_object_freeze_notify (G_OBJECT (combo));
+       g_object_freeze_notify (B_OBJECT (combo));
   combo->use_arrows_always = val;
-       g_object_notify (G_OBJECT (combo), "enable-arrows-always");
+       g_object_notify (B_OBJECT (combo), "enable-arrows-always");
 
        if (combo->use_arrows != TRUE) 
          {
   combo->use_arrows = TRUE;
-  g_object_notify (G_OBJECT (combo), "enable-arrow-keys");
+  g_object_notify (B_OBJECT (combo), "enable-arrow-keys");
          }
-  g_object_thaw_notify (G_OBJECT (combo));
+  g_object_thaw_notify (B_OBJECT (combo));
     }
 }
 
@@ -1117,7 +1117,7 @@ btk_combo_set_popdown_strings (BtkCombo *combo,
   list = strings;
   while (list)
     {
-      li = btk_list_item_new_with_label ((gchar *) list->data);
+      li = btk_list_item_new_with_label ((bchar *) list->data);
       btk_widget_show (li);
       btk_container_add (BTK_CONTAINER (combo->list), li);
       list = list->next;
@@ -1127,12 +1127,12 @@ btk_combo_set_popdown_strings (BtkCombo *combo,
 void
 btk_combo_set_item_string (BtkCombo    *combo,
                            BtkItem     *item,
-                           const gchar *item_value)
+                           const bchar *item_value)
 {
   g_return_if_fail (BTK_IS_COMBO (combo));
   g_return_if_fail (item != NULL);
 
-  g_object_set_data_full (G_OBJECT (item), I_(btk_combo_string_key),
+  g_object_set_data_full (B_OBJECT (item), I_(btk_combo_string_key),
 			  g_strdup (item_value), g_free);
 }
 
@@ -1169,64 +1169,64 @@ btk_combo_disable_activate (BtkCombo *combo)
 }
 
 static void
-btk_combo_set_property (GObject      *object,
-			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+btk_combo_set_property (BObject      *object,
+			buint         prop_id,
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkCombo *combo = BTK_COMBO (object);
   
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
-      btk_combo_set_use_arrows (combo, g_value_get_boolean (value));
+      btk_combo_set_use_arrows (combo, b_value_get_boolean (value));
       break;
     case PROP_ENABLE_ARROWS_ALWAYS:
-      btk_combo_set_use_arrows_always (combo, g_value_get_boolean (value));
+      btk_combo_set_use_arrows_always (combo, b_value_get_boolean (value));
       break;
     case PROP_CASE_SENSITIVE:
-      btk_combo_set_case_sensitive (combo, g_value_get_boolean (value));
+      btk_combo_set_case_sensitive (combo, b_value_get_boolean (value));
       break;
     case PROP_ALLOW_EMPTY:
-      combo->ok_if_empty = g_value_get_boolean (value);
+      combo->ok_if_empty = b_value_get_boolean (value);
       break;
     case PROP_VALUE_IN_LIST:
-      combo->value_in_list = g_value_get_boolean (value);
+      combo->value_in_list = b_value_get_boolean (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
   
 }
 
 static void
-btk_combo_get_property (GObject    *object,
-			guint       prop_id,
-			GValue     *value,
-			GParamSpec *pspec)
+btk_combo_get_property (BObject    *object,
+			buint       prop_id,
+			BValue     *value,
+			BParamSpec *pspec)
 {
   BtkCombo *combo = BTK_COMBO (object);
   
   switch (prop_id)
     {
     case PROP_ENABLE_ARROW_KEYS:
-      g_value_set_boolean (value, combo->use_arrows);
+      b_value_set_boolean (value, combo->use_arrows);
       break;
     case PROP_ENABLE_ARROWS_ALWAYS:
-      g_value_set_boolean (value, combo->use_arrows_always);
+      b_value_set_boolean (value, combo->use_arrows_always);
       break;
     case PROP_CASE_SENSITIVE:
-      g_value_set_boolean (value, combo->case_sensitive);
+      b_value_set_boolean (value, combo->case_sensitive);
       break;
     case PROP_ALLOW_EMPTY:
-      g_value_set_boolean (value, combo->ok_if_empty);
+      b_value_set_boolean (value, combo->ok_if_empty);
       break;
     case PROP_VALUE_IN_LIST:
-      g_value_set_boolean (value, combo->value_in_list);
+      b_value_set_boolean (value, combo->value_in_list);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
    

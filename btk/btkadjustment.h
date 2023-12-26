@@ -35,14 +35,14 @@
 #include <bdk/bdk.h>
 #include <btk/btkobject.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ADJUSTMENT                  (btk_adjustment_get_type ())
-#define BTK_ADJUSTMENT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ADJUSTMENT, BtkAdjustment))
-#define BTK_ADJUSTMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ADJUSTMENT, BtkAdjustmentClass))
-#define BTK_IS_ADJUSTMENT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ADJUSTMENT))
-#define BTK_IS_ADJUSTMENT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ADJUSTMENT))
-#define BTK_ADJUSTMENT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ADJUSTMENT, BtkAdjustmentClass))
+#define BTK_ADJUSTMENT(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ADJUSTMENT, BtkAdjustment))
+#define BTK_ADJUSTMENT_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ADJUSTMENT, BtkAdjustmentClass))
+#define BTK_IS_ADJUSTMENT(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ADJUSTMENT))
+#define BTK_IS_ADJUSTMENT_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ADJUSTMENT))
+#define BTK_ADJUSTMENT_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ADJUSTMENT, BtkAdjustmentClass))
 
 
 typedef struct _BtkAdjustment	    BtkAdjustment;
@@ -52,12 +52,12 @@ struct _BtkAdjustment
 {
   BtkObject parent_instance;
 
-  gdouble GSEAL (lower);
-  gdouble GSEAL (upper);
-  gdouble GSEAL (value);
-  gdouble GSEAL (step_increment);
-  gdouble GSEAL (page_increment);
-  gdouble GSEAL (page_size);
+  bdouble GSEAL (lower);
+  bdouble GSEAL (upper);
+  bdouble GSEAL (value);
+  bdouble GSEAL (step_increment);
+  bdouble GSEAL (page_increment);
+  bdouble GSEAL (page_size);
 };
 
 struct _BtkAdjustmentClass
@@ -75,47 +75,47 @@ struct _BtkAdjustmentClass
 };
 
 
-GType	   btk_adjustment_get_type		(void) G_GNUC_CONST;
-BtkObject* btk_adjustment_new			(gdouble	  value,
-						 gdouble	  lower,
-						 gdouble	  upper,
-						 gdouble	  step_increment,
-						 gdouble	  page_increment,
-						 gdouble	  page_size);
+GType	   btk_adjustment_get_type		(void) B_GNUC_CONST;
+BtkObject* btk_adjustment_new			(bdouble	  value,
+						 bdouble	  lower,
+						 bdouble	  upper,
+						 bdouble	  step_increment,
+						 bdouble	  page_increment,
+						 bdouble	  page_size);
 
 void	   btk_adjustment_changed		(BtkAdjustment	 *adjustment);
 void	   btk_adjustment_value_changed		(BtkAdjustment	 *adjustment);
 void	   btk_adjustment_clamp_page		(BtkAdjustment	 *adjustment,
-						 gdouble	  lower,
-						 gdouble	  upper);
+						 bdouble	  lower,
+						 bdouble	  upper);
 
-gdouble	   btk_adjustment_get_value		(BtkAdjustment   *adjustment);
+bdouble	   btk_adjustment_get_value		(BtkAdjustment   *adjustment);
 void	   btk_adjustment_set_value		(BtkAdjustment	 *adjustment,
-						 gdouble	  value);
-gdouble    btk_adjustment_get_lower             (BtkAdjustment   *adjustment);
+						 bdouble	  value);
+bdouble    btk_adjustment_get_lower             (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_lower             (BtkAdjustment   *adjustment,
-                                                 gdouble          lower);
-gdouble    btk_adjustment_get_upper             (BtkAdjustment   *adjustment);
+                                                 bdouble          lower);
+bdouble    btk_adjustment_get_upper             (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_upper             (BtkAdjustment   *adjustment,
-                                                 gdouble          upper);
-gdouble    btk_adjustment_get_step_increment    (BtkAdjustment   *adjustment);
+                                                 bdouble          upper);
+bdouble    btk_adjustment_get_step_increment    (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_step_increment    (BtkAdjustment   *adjustment,
-                                                 gdouble          step_increment);
-gdouble    btk_adjustment_get_page_increment    (BtkAdjustment   *adjustment);
+                                                 bdouble          step_increment);
+bdouble    btk_adjustment_get_page_increment    (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_page_increment    (BtkAdjustment   *adjustment,
-                                                 gdouble          page_increment);
-gdouble    btk_adjustment_get_page_size         (BtkAdjustment   *adjustment);
+                                                 bdouble          page_increment);
+bdouble    btk_adjustment_get_page_size         (BtkAdjustment   *adjustment);
 void       btk_adjustment_set_page_size         (BtkAdjustment   *adjustment,
-                                                 gdouble          page_size);
+                                                 bdouble          page_size);
 
 void       btk_adjustment_configure             (BtkAdjustment   *adjustment,
-                                                 gdouble          value,
-						 gdouble          lower,
-						 gdouble          upper,
-						 gdouble          step_increment,
-						 gdouble          page_increment,
-						 gdouble          page_size);
+                                                 bdouble          value,
+						 bdouble          lower,
+						 bdouble          upper,
+						 bdouble          step_increment,
+						 bdouble          page_increment,
+						 bdouble          page_size);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ADJUSTMENT_H__ */

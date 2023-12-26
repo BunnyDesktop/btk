@@ -14,8 +14,8 @@ static BtkWidget *messagelabel = NULL;
 static void
 activate_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   BtkWidget *dialog;
 
@@ -38,14 +38,14 @@ activate_action (BtkAction *action)
 static void
 activate_radio_action (BtkAction *action, BtkRadioAction *current)
 {
-  const gchar *name = btk_action_get_name (BTK_ACTION (current));
-  const gchar *typename = G_OBJECT_TYPE_NAME (BTK_ACTION (current));
-  gboolean active = btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current));
-  gint value = btk_radio_action_get_current_value (BTK_RADIO_ACTION (current));
+  const bchar *name = btk_action_get_name (BTK_ACTION (current));
+  const bchar *typename = B_OBJECT_TYPE_NAME (BTK_ACTION (current));
+  bboolean active = btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current));
+  bint value = btk_radio_action_get_current_value (BTK_RADIO_ACTION (current));
 
   if (active)
     {
-      gchar *text;
+      bchar *text;
 
       text = g_strdup_printf ("You activated radio action: \"%s\" of type \"%s\".\n"
                               "Current value: %d",
@@ -62,9 +62,9 @@ about_cb (BtkAction *action,
 	  BtkWidget *window)
 {
   BdkPixbuf *pixbuf, *transparent;
-  gchar *filename;
+  bchar *filename;
 
-  const gchar *authors[] = {
+  const bchar *authors[] = {
     "Peter Mattis",
     "Spencer Kimball",
     "Josh MacDonald",
@@ -72,7 +72,7 @@ about_cb (BtkAction *action,
     NULL
   };
 
-  const gchar *documentors[] = {
+  const bchar *documentors[] = {
     "Owen Taylor",
     "Tony Gale",
     "Matthias Clasen <mclasen@redhat.com>",
@@ -80,7 +80,7 @@ about_cb (BtkAction *action,
     NULL
   };
 
-  const gchar *license =
+  const bchar *license =
     "This library is free software; you can redistribute it and/or\n"
     "modify it under the terms of the GNU Library General Public License as\n"
     "published by the Free Software Foundation; either version 2 of the\n"
@@ -182,7 +182,7 @@ static BtkActionEntry entries[] = {
     "BTK+",                                    /* tooltip */
     G_CALLBACK (activate_action) },
 };
-static guint n_entries = G_N_ELEMENTS (entries);
+static buint n_entries = G_N_ELEMENTS (entries);
 
 
 static BtkToggleActionEntry toggle_entries[] = {
@@ -192,7 +192,7 @@ static BtkToggleActionEntry toggle_entries[] = {
     G_CALLBACK (activate_action),
     TRUE },                                    /* is_active */
 };
-static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
+static buint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
 
 enum {
   COLOR_RED,
@@ -211,7 +211,7 @@ static BtkRadioActionEntry color_entries[] = {
     "_Blue", "<control>B",                     /* label, accelerator */
     "Sky", COLOR_BLUE },                       /* tooltip, value */
 };
-static guint n_color_entries = G_N_ELEMENTS (color_entries);
+static buint n_color_entries = G_N_ELEMENTS (color_entries);
 
 enum {
   SHAPE_SQUARE,
@@ -230,9 +230,9 @@ static BtkRadioActionEntry shape_entries[] = {
     "_Oval", "<control>O",                     /* label, accelerator */
     "Egg", SHAPE_OVAL },                       /* tooltip, value */
 };
-static guint n_shape_entries = G_N_ELEMENTS (shape_entries);
+static buint n_shape_entries = G_N_ELEMENTS (shape_entries);
 
-static const gchar *ui_info =
+static const bchar *ui_info =
 "<ui>"
 "  <menubar name='MenuBar'>"
 "    <menu action='FileMenu'>"
@@ -283,7 +283,7 @@ static const gchar *ui_info =
 static void
 register_stock_icons (void)
 {
-  static gboolean registered = FALSE;
+  static bboolean registered = FALSE;
 
   if (!registered)
     {
@@ -345,9 +345,9 @@ static void
 update_statusbar (BtkTextBuffer *buffer,
                   BtkStatusbar  *statusbar)
 {
-  gchar *msg;
-  gint row, col;
-  gint count;
+  bchar *msg;
+  bint row, col;
+  bint count;
   BtkTextIter iter;
 
   btk_statusbar_pop (statusbar, 0); /* clear any previous message,
@@ -375,7 +375,7 @@ static void
 mark_set_callback (BtkTextBuffer     *buffer,
                    const BtkTextIter *new_location,
                    BtkTextMark       *mark,
-                   gpointer           data)
+                   bpointer           data)
 {
   update_statusbar (buffer, BTK_STATUSBAR (data));
 }
@@ -388,7 +388,7 @@ update_resize_grip (BtkWidget           *widget,
   if (event->changed_mask & (BDK_WINDOW_STATE_MAXIMIZED |
 			     BDK_WINDOW_STATE_FULLSCREEN))
     {
-      gboolean maximized;
+      bboolean maximized;
 
       maximized = event->new_window_state & (BDK_WINDOW_STATE_MAXIMIZED |
 					     BDK_WINDOW_STATE_FULLSCREEN);
@@ -463,7 +463,7 @@ do_appwindow (BtkWidget *do_widget)
 					  NULL);
 
       merge = btk_ui_manager_new ();
-      g_object_set_data_full (G_OBJECT (window), "ui-manager", merge,
+      g_object_set_data_full (B_OBJECT (window), "ui-manager", merge,
 			      g_object_unref);
       btk_ui_manager_insert_action_group (merge, action_group, 0);
       btk_window_add_accel_group (BTK_WINDOW (window),

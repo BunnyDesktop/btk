@@ -241,7 +241,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-xid-table-lookup" title="bdk_xid_table_lookup ()">bdk_xid_table_lookup</a> <span class="c_punctuation">()</span>
@@ -249,7 +249,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-xid-table-lookup-for-display" title="bdk_xid_table_lookup_for_display ()">bdk_xid_table_lookup_for_display</a> <span class="c_punctuation">()</span>
@@ -309,7 +309,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint32</span>
+<span class="returnvalue">buint32</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-get-server-time" title="bdk_x11_get_server_time ()">bdk_x11_get_server_time</a> <span class="c_punctuation">()</span>
@@ -317,7 +317,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-net-wm-supports" title="bdk_net_wm_supports ()">bdk_net_wm_supports</a> <span class="c_punctuation">()</span>
@@ -325,7 +325,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-screen-supports-net-wm-hint" title="bdk_x11_screen_supports_net_wm_hint ()">bdk_x11_screen_supports_net_wm_hint</a> <span class="c_punctuation">()</span>
@@ -372,7 +372,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint32</span>
+<span class="returnvalue">buint32</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-display-get-user-time" title="bdk_x11_display_get_user_time ()">bdk_x11_display_get_user_time</a> <span class="c_punctuation">()</span>
@@ -427,7 +427,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-display-get-startup-notification-id" title="bdk_x11_display_get_startup_notification_id ()">bdk_x11_display_get_startup_notification_id</a> <span class="c_punctuation">()</span>
@@ -506,7 +506,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-font-get-xfont" title="bdk_x11_font_get_xfont ()">bdk_x11_font_get_xfont</a> <span class="c_punctuation">()</span>
@@ -538,7 +538,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-get-default-screen" title="bdk_x11_get_default_screen ()">bdk_x11_get_default_screen</a> <span class="c_punctuation">()</span>
@@ -657,14 +657,14 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-get-xatom-name" title="bdk_x11_get_xatom_name ()">bdk_x11_get_xatom_name</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-X-Window-System-Interaction.html#bdk-x11-get-xatom-name-for-display" title="bdk_x11_get_xatom_name_for_display ()">bdk_x11_get_xatom_name_for_display</a> <span class="c_punctuation">()</span>
@@ -1011,9 +1011,9 @@ native pixmap or <code class="literal">NULL</code> if the pixmap has been destro
 <pre class="programlisting"><a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="returnvalue">BdkPixmap</span></a> *
 bdk_pixmap_foreign_new_for_screen (<em class="parameter"><code><a class="link" href="BdkScreen.html" title="BdkScreen"><span class="type">BdkScreen</span></a> *screen</code></em>,
                                    <em class="parameter"><code><a class="link" href="bdk2-Event-Structures.html#BdkNativeWindow" title="BdkNativeWindow"><span class="type">BdkNativeWindow</span></a> anid</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> depth</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> height</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> depth</code></em>);</pre>
 <p>Wraps a native pixmap in a <a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a>.
 This may fail if the pixmap has been destroyed.</p>
 <p>For example in the X backend, a native pixmap handle is an Xlib</p>
@@ -1149,7 +1149,7 @@ newly created, if one doesn't exist already.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-xid-table-lookup"></a><h3>bdk_xid_table_lookup ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 bdk_xid_table_lookup (<em class="parameter"><code><span class="type">XID</span> xid</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_xid_table_lookup</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
@@ -1184,7 +1184,7 @@ with the X id.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-xid-table-lookup-for-display"></a><h3>bdk_xid_table_lookup_for_display ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 bdk_xid_table_lookup_for_display (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                                   <em class="parameter"><code><span class="type">XID</span> xid</code></em>);</pre>
 <div class="warning">
@@ -1413,7 +1413,7 @@ bdk_x11_lookup_xdisplay (<em class="parameter"><code><span class="type">Display<
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-get-server-time"></a><h3>bdk_x11_get_server_time ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint32</span>
+<pre class="programlisting"><span class="returnvalue">buint32</span>
 bdk_x11_get_server_time (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>);</pre>
 <p>Routine to get the current X server time stamp.</p>
 <div class="refsect3">
@@ -1441,7 +1441,7 @@ events mask or a hang will result.</p></td>
 <hr>
 <div class="refsect2">
 <a name="bdk-net-wm-supports"></a><h3>bdk_net_wm_supports ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_net_wm_supports (<em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> property</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_net_wm_supports</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
@@ -1475,7 +1475,7 @@ hint from the Extended Window Manager Hints Specification. See
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-screen-supports-net-wm-hint"></a><h3>bdk_x11_screen_supports_net_wm_hint ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_x11_screen_supports_net_wm_hint (<em class="parameter"><code><a class="link" href="BdkScreen.html" title="BdkScreen"><span class="type">BdkScreen</span></a> *screen</code></em>,
                                      <em class="parameter"><code><a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="BdkAtom"><span class="type">BdkAtom</span></a> property</code></em>);</pre>
 <p>This function is specific to the X11 backend of BDK, and indicates
@@ -1557,7 +1557,7 @@ and should not be freed.</p>
 <a name="bdk-x11-screen-get-monitor-output"></a><h3>bdk_x11_screen_get_monitor_output ()</h3>
 <pre class="programlisting"><span class="returnvalue">XID</span>
 bdk_x11_screen_get_monitor_output (<em class="parameter"><code><a class="link" href="BdkScreen.html" title="BdkScreen"><span class="type">BdkScreen</span></a> *screen</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> monitor_num</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> monitor_num</code></em>);</pre>
 <p>Gets the XID of the specified output/monitor.
 If the X server does not support version 1.2 of the RANDR
 extension, 0 is returned.</p>
@@ -1631,7 +1631,7 @@ object), or <code class="literal">NULL</code> if the visual ID wasn't found. </p
 <a name="bdk-x11-window-set-user-time"></a><h3>bdk_x11_window_set_user_time ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_x11_window_set_user_time (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
-                              <em class="parameter"><code><span class="type">guint32</span> timestamp</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">buint32</span> timestamp</code></em>);</pre>
 <p>The application can use this call to update the _NET_WM_USER_TIME
 property on a toplevel window.  This property stores an Xserver
 time which represents the time of the last user input event
@@ -1698,7 +1698,7 @@ window is already on all workspaces.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-display-get-user-time"></a><h3>bdk_x11_display_get_user_time ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint32</span>
+<pre class="programlisting"><span class="returnvalue">buint32</span>
 bdk_x11_display_get_user_time (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>);</pre>
 <p>Returns the timestamp of the last user interaction on 
 <em class="parameter"><code>display</code></em>
@@ -1925,7 +1925,7 @@ skipped in the output.)</p></td>
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-display-get-startup-notification-id"></a><h3>bdk_x11_display_get_startup_notification_id ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 bdk_x11_display_get_startup_notification_id
                                (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>);</pre>
 <p>Gets the startup notification ID for a display.</p>
@@ -2037,8 +2037,8 @@ bdk_x11_display_ungrab (<em class="parameter"><code><a class="link" href="BdkDis
 <a name="bdk-x11-display-set-cursor-theme"></a><h3>bdk_x11_display_set_cursor_theme ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_x11_display_set_cursor_theme (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                                  <em class="parameter"><code>const <span class="type">gchar</span> *theme</code></em>,
-                                  <em class="parameter"><code>const <span class="type">gint</span> size</code></em>);</pre>
+                                  <em class="parameter"><code>const <span class="type">bchar</span> *theme</code></em>,
+                                  <em class="parameter"><code>const <span class="type">bint</span> size</code></em>);</pre>
 <p>Sets the cursor theme from which the images for cursor
 should be taken. </p>
 <p>If the windowing system supports it, existing cursors created 
@@ -2084,8 +2084,8 @@ a previously set value </p></td>
 <a name="bdk-x11-register-standard-event-type"></a><h3>bdk_x11_register_standard_event_type ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_x11_register_standard_event_type (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                                      <em class="parameter"><code><span class="type">gint</span> event_base</code></em>,
-                                      <em class="parameter"><code><span class="type">gint</span> n_events</code></em>);</pre>
+                                      <em class="parameter"><code><span class="type">bint</span> event_base</code></em>,
+                                      <em class="parameter"><code><span class="type">bint</span> n_events</code></em>);</pre>
 <p>Registers interest in receiving extension events with type codes
 between <em class="parameter"><code>event_base</code></em>
  and <code class="literal">event_base + n_events - 1</code>.
@@ -2240,7 +2240,7 @@ bdk_x11_font_get_xdisplay (<em class="parameter"><code><a class="link" href="bdk
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-font-get-xfont"></a><h3>bdk_x11_font_get_xfont ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 bdk_x11_font_get_xfont (<em class="parameter"><code><a class="link" href="bdk2-Fonts.html#BdkFont" title="BdkFont"><span class="type">BdkFont</span></a> *font</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_x11_font_get_xfont</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Returns the X font belonging to a <a class="link" href="bdk2-Fonts.html#BdkFont" title="BdkFont"><span class="type">BdkFont</span></a>.</p>
@@ -2339,7 +2339,7 @@ bdk_x11_get_default_root_xwindow (<em class="parameter"><code><span class="type"
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-get-default-screen"></a><h3>bdk_x11_get_default_screen ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_x11_get_default_screen (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Gets the default BTK+ screen number.</p>
 <div class="refsect3">
@@ -2652,7 +2652,7 @@ bdk_x11_xatom_to_atom_for_display (<em class="parameter"><code><a class="link" h
 <div class="refsect2">
 <a name="bdk-x11-get-xatom-by-name"></a><h3>bdk_x11_get_xatom_by_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">Atom</span>
-bdk_x11_get_xatom_by_name (<em class="parameter"><code>const <span class="type">gchar</span> *atom_name</code></em>);</pre>
+bdk_x11_get_xatom_by_name (<em class="parameter"><code>const <span class="type">bchar</span> *atom_name</code></em>);</pre>
 <p>Returns the X atom for BDK's default display corresponding to <em class="parameter"><code>atom_name</code></em>
 .
 This function caches the result, so if called repeatedly it is much
@@ -2682,7 +2682,7 @@ faster than <code class="function">XInternAtom()</code>, which is a round trip t
 <a name="bdk-x11-get-xatom-by-name-for-display"></a><h3>bdk_x11_get_xatom_by_name_for_display ()</h3>
 <pre class="programlisting"><span class="returnvalue">Atom</span>
 bdk_x11_get_xatom_by_name_for_display (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gchar</span> *atom_name</code></em>);</pre>
+                                       <em class="parameter"><code>const <span class="type">bchar</span> *atom_name</code></em>);</pre>
 <p>Returns the X atom for a <a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> corresponding to <em class="parameter"><code>atom_name</code></em>
 .
 This function caches the result, so if called repeatedly it is much
@@ -2718,7 +2718,7 @@ faster than <code class="function">XInternAtom()</code>, which is a round trip t
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-get-xatom-name"></a><h3>bdk_x11_get_xatom_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 bdk_x11_get_xatom_name (<em class="parameter"><code><span class="type">Atom</span> xatom</code></em>);</pre>
 <p>Returns the name of an X atom for BDK's default display. This
 function is meant mainly for debugging, so for convenience, unlike
@@ -2750,7 +2750,7 @@ so it shouldn't be modifed or freed. </p>
 <hr>
 <div class="refsect2">
 <a name="bdk-x11-get-xatom-name-for-display"></a><h3>bdk_x11_get_xatom_name_for_display ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 bdk_x11_get_xatom_name_for_display (<em class="parameter"><code><a class="link" href="BdkDisplay.html" title="BdkDisplay"><span class="type">BdkDisplay</span></a> *display</code></em>,
                                     <em class="parameter"><code><span class="type">Atom</span> xatom</code></em>);</pre>
 <p>Returns the name of an X atom for its display. This
@@ -2791,7 +2791,7 @@ so it shouldn't be modifed or freed. </p>
 <div class="refsect2">
 <a name="bdk-x11-set-sm-client-id"></a><h3>bdk_x11_set_sm_client_id ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_x11_set_sm_client_id (<em class="parameter"><code>const <span class="type">gchar</span> *sm_client_id</code></em>);</pre>
+bdk_x11_set_sm_client_id (<em class="parameter"><code>const <span class="type">bchar</span> *sm_client_id</code></em>);</pre>
 <p>Sets the <code class="literal">SM_CLIENT_ID</code> property on the application's leader window so that
 the window manager can save the application's state using the X11R6 ICCCM
 session management protocol.</p>

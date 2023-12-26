@@ -37,21 +37,21 @@
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 static void     bdk_visual_add            (BdkVisual *visual);
-static void     bdk_visual_decompose_mask (gulong     mask,
-					   gint      *shift,
-					   gint      *prec);
-static guint    bdk_visual_hash           (Visual    *key);
-static gboolean bdk_visual_equal          (Visual    *a,
+static void     bdk_visual_decompose_mask (bulong     mask,
+					   bint      *shift,
+					   bint      *prec);
+static buint    bdk_visual_hash           (Visual    *key);
+static bboolean bdk_visual_equal          (Visual    *a,
 					   Visual    *b);
 
 
 #ifdef G_ENABLE_DEBUG
 
-static const gchar *const visual_names[] =
+static const bchar *const visual_names[] =
 {
   "static gray",
   "grayscale",
@@ -83,7 +83,7 @@ bdk_visual_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             g_intern_static_string ("BdkVisual"),
                                             &object_info, 0);
     }
@@ -95,7 +95,7 @@ bdk_visual_get_type (void)
 void
 _bdk_visual_init (BdkScreen *screen)
 {
-  static const gint possible_depths[8] = { 32, 30, 24, 16, 15, 8, 4, 1 };
+  static const bint possible_depths[8] = { 32, 30, 24, 16, 15, 8, 4, 1 };
   static const BdkVisualType possible_types[6] =
     {
       BDK_VISUAL_DIRECT_COLOR,
@@ -318,7 +318,7 @@ _bdk_visual_init (BdkScreen *screen)
  * 
  * Return value: best available depth
  **/
-gint
+bint
 bdk_visual_get_best_depth (void)
 {
   BdkScreen *screen = bdk_screen_get_default();
@@ -389,7 +389,7 @@ bdk_visual_get_best (void)
  * Return value: (transfer none): best visual for the given depth
  **/
 BdkVisual*
-bdk_visual_get_best_with_depth (gint depth)
+bdk_visual_get_best_with_depth (bint depth)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
   BdkVisual *return_val;
@@ -446,7 +446,7 @@ bdk_visual_get_best_with_type (BdkVisualType visual_type)
  *     @visual_type, or %NULL if none
  **/
 BdkVisual*
-bdk_visual_get_best_with_both (gint          depth,
+bdk_visual_get_best_with_both (bint          depth,
 			       BdkVisualType visual_type)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
@@ -479,8 +479,8 @@ bdk_visual_get_best_with_both (gint          depth,
  * 
  **/
 void
-bdk_query_depths  (gint **depths,
-		   gint  *count)
+bdk_query_depths  (bint **depths,
+		   bint  *count)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
   
@@ -502,7 +502,7 @@ bdk_query_depths  (gint **depths,
  **/
 void
 bdk_query_visual_types (BdkVisualType **visual_types,
-			gint           *count)
+			bint           *count)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
   
@@ -531,7 +531,7 @@ bdk_screen_list_visuals (BdkScreen *screen)
 {
   GList *list;
   BdkScreenX11 *screen_x11;
-  guint i;
+  buint i;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   screen_x11 = BDK_SCREEN_X11 (screen);
@@ -602,9 +602,9 @@ bdk_visual_add (BdkVisual *visual)
 }
 
 static void
-bdk_visual_decompose_mask (gulong  mask,
-			   gint   *shift,
-			   gint   *prec)
+bdk_visual_decompose_mask (bulong  mask,
+			   bint   *shift,
+			   bint   *prec)
 {
   *shift = 0;
   *prec = 0;
@@ -628,13 +628,13 @@ bdk_visual_decompose_mask (gulong  mask,
     }
 }
 
-static guint
+static buint
 bdk_visual_hash (Visual *key)
 {
   return key->visualid;
 }
 
-static gboolean
+static bboolean
 bdk_visual_equal (Visual *a,
 		  Visual *b)
 {

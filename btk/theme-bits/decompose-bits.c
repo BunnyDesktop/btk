@@ -25,9 +25,9 @@
 
 #define BYTES_PER_OUTPUT_LINE 15
 
-static gint
-output_byte (guchar byte,
-	     gint   online)
+static bint
+output_byte (buchar byte,
+	     bint   online)
 {
   if (online == BYTES_PER_OUTPUT_LINE)
     {
@@ -45,36 +45,36 @@ output_byte (guchar byte,
 
 static void
 do_part (BdkPixbuf  *pixbuf,
-	 gint        part1_index,
-	 gint        part2_index,
-	 gint        part3_index,
+	 bint        part1_index,
+	 bint        part2_index,
+	 bint        part3_index,
 	 const char *base_name,
 	 const char *part_name)
 {
-  const guchar *pixels = bdk_pixbuf_get_pixels (pixbuf);
-  const guchar *color1;
-  const guchar *color2;
-  const guchar *color3;
-  gint rowstride = bdk_pixbuf_get_rowstride (pixbuf);
-  gint n_channels = bdk_pixbuf_get_n_channels (pixbuf);
-  gint width = bdk_pixbuf_get_width (pixbuf);
-  gint height = bdk_pixbuf_get_height (pixbuf);
-  gint online = 0;
+  const buchar *pixels = bdk_pixbuf_get_pixels (pixbuf);
+  const buchar *color1;
+  const buchar *color2;
+  const buchar *color3;
+  bint rowstride = bdk_pixbuf_get_rowstride (pixbuf);
+  bint n_channels = bdk_pixbuf_get_n_channels (pixbuf);
+  bint width = bdk_pixbuf_get_width (pixbuf);
+  bint height = bdk_pixbuf_get_height (pixbuf);
+  bint online = 0;
 
   color1 = pixels + part1_index * n_channels;
   color2 = pixels + part2_index * n_channels;
   color3 = pixels + part3_index * n_channels;
   pixels += rowstride;
   
-  g_printf ("static const guchar %s_%s_bits[] = {\n", base_name, part_name);
+  g_printf ("static const buchar %s_%s_bits[] = {\n", base_name, part_name);
   g_printf ("  ");
 
   while (height--)
     {
-      guchar bit = 1;
-      guchar byte = 0;
-      const guchar *p = pixels;
-      gint n = width;
+      buchar bit = 1;
+      buchar byte = 0;
+      const buchar *p = pixels;
+      bint n = width;
 
       while (n--)
 	{
@@ -127,10 +127,10 @@ static const char *part_names[PART_LAST] = {
 
 int main (int argc, char **argv)
 {
-  gchar *progname = g_path_get_basename (argv[0]);
+  bchar *progname = g_path_get_basename (argv[0]);
   BdkPixbuf *pixbuf;
   GError *error = NULL;
-  gint i;
+  bint i;
 
   if (argc != 3)
     {

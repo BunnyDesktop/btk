@@ -50,25 +50,25 @@ enum {
 };
 
 
-static void   btk_preview_set_property  (GObject          *object,
-					 guint             prop_id,
-					 const GValue     *value,
-					 GParamSpec       *pspec);
-static void   btk_preview_get_property  (GObject          *object,
-					 guint             prop_id,
-					 GValue           *value,
-					 GParamSpec       *pspec);
-static void   btk_preview_finalize      (GObject          *object);
+static void   btk_preview_set_property  (BObject          *object,
+					 buint             prop_id,
+					 const BValue     *value,
+					 BParamSpec       *pspec);
+static void   btk_preview_get_property  (BObject          *object,
+					 buint             prop_id,
+					 BValue           *value,
+					 BParamSpec       *pspec);
+static void   btk_preview_finalize      (BObject          *object);
 static void   btk_preview_realize       (BtkWidget        *widget);
 static void   btk_preview_size_allocate (BtkWidget        *widget,
 					 BtkAllocation    *allocation);
-static gint   btk_preview_expose        (BtkWidget        *widget,
+static bint   btk_preview_expose        (BtkWidget        *widget,
 				         BdkEventExpose   *event);
 static void   btk_preview_make_buffer   (BtkPreview       *preview);
-static void   btk_fill_lookup_array     (guchar           *array);
+static void   btk_fill_lookup_array     (buchar           *array);
 
 static BtkPreviewClass *preview_class = NULL;
-static gint install_cmap = FALSE;
+static bint install_cmap = FALSE;
 
 
 G_DEFINE_TYPE (BtkPreview, btk_preview, BTK_TYPE_WIDGET)
@@ -76,7 +76,7 @@ G_DEFINE_TYPE (BtkPreview, btk_preview, BTK_TYPE_WIDGET)
 static void
 btk_preview_class_init (BtkPreviewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class;
 
   widget_class = (BtkWidgetClass*) klass;
@@ -106,29 +106,29 @@ btk_preview_class_init (BtkPreviewClass *klass)
 }
 
 static void
-btk_preview_set_property (GObject      *object,
-			  guint         prop_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
+btk_preview_set_property (BObject      *object,
+			  buint         prop_id,
+			  const BValue *value,
+			  BParamSpec   *pspec)
 {
   BtkPreview *preview = BTK_PREVIEW (object);
   
   switch (prop_id)
     {
     case PROP_EXPAND:
-      btk_preview_set_expand (preview, g_value_get_boolean (value));
+      btk_preview_set_expand (preview, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_preview_get_property (GObject      *object,
-			  guint         prop_id,
-			  GValue       *value,
-			  GParamSpec   *pspec)
+btk_preview_get_property (BObject      *object,
+			  buint         prop_id,
+			  BValue       *value,
+			  BParamSpec   *pspec)
 {
   BtkPreview *preview;
   
@@ -137,10 +137,10 @@ btk_preview_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_EXPAND:
-      g_value_set_boolean (value, preview->expand);
+      b_value_set_boolean (value, preview->expand);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -186,8 +186,8 @@ btk_preview_new (BtkPreviewType type)
 
 void
 btk_preview_size (BtkPreview *preview,
-		  gint        width,
-		  gint        height)
+		  bint        width,
+		  bint        height)
 {
   g_return_if_fail (BTK_IS_PREVIEW (preview));
 
@@ -206,17 +206,17 @@ void
 btk_preview_put (BtkPreview   *preview,
 		 BdkWindow    *window,
 		 BdkGC        *gc,
-		 gint          srcx,
-		 gint          srcy,
-		 gint          destx,
-		 gint          desty,
-		 gint          width,
-		 gint          height)
+		 bint          srcx,
+		 bint          srcy,
+		 bint          destx,
+		 bint          desty,
+		 bint          width,
+		 bint          height)
 {
   BdkRectangle r1, r2, r3;
-  guchar *src;
-  guint bpp;
-  guint rowstride;
+  buchar *src;
+  buint bpp;
+  buint rowstride;
 
   g_return_if_fail (BTK_IS_PREVIEW (preview));
   g_return_if_fail (window != NULL);
@@ -267,13 +267,13 @@ btk_preview_put (BtkPreview   *preview,
 
 void
 btk_preview_draw_row (BtkPreview *preview,
-		      guchar     *data,
-		      gint        x,
-		      gint        y,
-		      gint        w)
+		      buchar     *data,
+		      bint        x,
+		      bint        y,
+		      bint        w)
 {
-  guint bpp;
-  guint rowstride;
+  buint bpp;
+  buint rowstride;
 
   g_return_if_fail (BTK_IS_PREVIEW (preview));
   g_return_if_fail (data != NULL);
@@ -298,15 +298,15 @@ btk_preview_draw_row (BtkPreview *preview,
     memcpy (preview->buffer + y * rowstride + x * bpp, data, w * bpp);
   else
     {
-      guint i, size;
-      guchar *src, *dst;
-      guchar *lookup;
+      buint i, size;
+      buchar *src, *dst;
+      buchar *lookup;
 
       if (preview_class->info.lookup != NULL)
 	lookup = preview_class->info.lookup;
       else
 	{
-	  preview_class->info.lookup = g_new (guchar, 256);
+	  preview_class->info.lookup = g_new (buchar, 256);
 	  btk_fill_lookup_array (preview_class->info.lookup);
 	  lookup = preview_class->info.lookup;
 	}
@@ -320,7 +320,7 @@ btk_preview_draw_row (BtkPreview *preview,
 
 void
 btk_preview_set_expand (BtkPreview *preview,
-			gboolean    expand)
+			bboolean    expand)
 {
   g_return_if_fail (BTK_IS_PREVIEW (preview));
 
@@ -331,7 +331,7 @@ btk_preview_set_expand (BtkPreview *preview,
       preview->expand = expand;
       btk_widget_queue_resize (BTK_WIDGET (preview));
  
-      g_object_notify (G_OBJECT (preview), "expand"); 
+      g_object_notify (B_OBJECT (preview), "expand"); 
     }
 }
 
@@ -353,23 +353,23 @@ btk_preview_set_gamma (double _gamma)
 }
 
 void
-btk_preview_set_color_cube (guint nred_shades,
-			    guint ngreen_shades,
-			    guint nblue_shades,
-			    guint ngray_shades)
+btk_preview_set_color_cube (buint nred_shades,
+			    buint ngreen_shades,
+			    buint nblue_shades,
+			    buint ngray_shades)
 {
   /* unimplemented */
 }
 
 void
-btk_preview_set_install_cmap (gint _install_cmap)
+btk_preview_set_install_cmap (bint _install_cmap)
 {
   /* effectively unimplemented */
   install_cmap = _install_cmap;
 }
 
 void
-btk_preview_set_reserved (gint nreserved)
+btk_preview_set_reserved (bint nreserved)
 {
 
   /* unimplemented */
@@ -405,13 +405,13 @@ btk_preview_get_info (void)
 
 
 static void
-btk_preview_finalize (GObject *object)
+btk_preview_finalize (BObject *object)
 {
   BtkPreview *preview = BTK_PREVIEW (object);
 
   g_free (preview->buffer);
 
-  G_OBJECT_CLASS (btk_preview_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_preview_parent_class)->finalize (object);
 }
 
 static void
@@ -419,7 +419,7 @@ btk_preview_realize (BtkWidget *widget)
 {
   BtkPreview *preview = BTK_PREVIEW (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -455,7 +455,7 @@ btk_preview_size_allocate (BtkWidget        *widget,
 			   BtkAllocation    *allocation)
 {
   BtkPreview *preview = BTK_PREVIEW (widget);
-  gint width, height;
+  bint width, height;
 
   widget->allocation = *allocation;
 
@@ -479,12 +479,12 @@ btk_preview_size_allocate (BtkWidget        *widget,
     }
 }
 
-static gint
+static bint
 btk_preview_expose (BtkWidget      *widget,
 		    BdkEventExpose *event)
 {
   BtkPreview *preview;
-  gint width, height;
+  bint width, height;
 
   if (BTK_WIDGET_DRAWABLE (widget))
     {
@@ -507,8 +507,8 @@ static void
 btk_preview_make_buffer (BtkPreview *preview)
 {
   BtkWidget *widget;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   g_return_if_fail (BTK_IS_PREVIEW (preview));
 
@@ -537,7 +537,7 @@ btk_preview_make_buffer (BtkPreview *preview)
       preview->buffer_height = height;
 
       preview->rowstride = (preview->buffer_width * preview->bpp + 3) & -4;
-      preview->buffer = g_new0 (guchar,
+      preview->buffer = g_new0 (buchar,
 				preview->buffer_height *
 				preview->rowstride);
     }
@@ -545,7 +545,7 @@ btk_preview_make_buffer (BtkPreview *preview)
 
 /* This is used for implementing gamma. */
 static void
-btk_fill_lookup_array (guchar *array)
+btk_fill_lookup_array (buchar *array)
 {
   double one_over_gamma;
   double ind;

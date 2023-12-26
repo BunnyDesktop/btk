@@ -47,8 +47,8 @@ theme_create_rc_style (void)
  * is loaded and checks to see if we are compatible with the
  * version of BTK+ that loads us.
  */
-G_MODULE_EXPORT const gchar* g_module_check_init (GModule *module);
-const gchar*
+G_MODULE_EXPORT const bchar* g_module_check_init (GModule *module);
+const bchar*
 g_module_check_init (GModule *module)
 {
   return btk_check_version (BTK_MAJOR_VERSION,

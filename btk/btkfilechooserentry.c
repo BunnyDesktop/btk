@@ -39,9 +39,9 @@
 
 typedef struct _BtkFileChooserEntryClass BtkFileChooserEntryClass;
 
-#define BTK_FILE_CHOOSER_ENTRY_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
-#define BTK_IS_FILE_CHOOSER_ENTRY_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY))
-#define BTK_FILE_CHOOSER_ENTRY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
+#define BTK_FILE_CHOOSER_ENTRY_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
+#define BTK_IS_FILE_CHOOSER_ENTRY_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_ENTRY))
+#define BTK_FILE_CHOOSER_ENTRY_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_ENTRY, BtkFileChooserEntryClass))
 
 struct _BtkFileChooserEntryClass
 {
@@ -56,15 +56,15 @@ struct _BtkFileChooserEntry
 
   GFile *base_folder;
   GFile *current_folder_file;
-  gchar *dir_part;
-  gchar *file_part;
+  bchar *dir_part;
+  bchar *file_part;
 
   BtkTreeModel *completion_store;
 
-  guint current_folder_loaded : 1;
-  guint complete_on_load : 1;
-  guint eat_tabs       : 1;
-  guint local_only     : 1;
+  buint current_folder_loaded : 1;
+  buint complete_on_load : 1;
+  buint eat_tabs       : 1;
+  buint local_only     : 1;
 };
 
 enum
@@ -74,33 +74,33 @@ enum
   N_COLUMNS
 };
 
-static void     btk_file_chooser_entry_finalize       (GObject          *object);
-static void     btk_file_chooser_entry_dispose        (GObject          *object);
+static void     btk_file_chooser_entry_finalize       (BObject          *object);
+static void     btk_file_chooser_entry_dispose        (BObject          *object);
 static void     btk_file_chooser_entry_grab_focus     (BtkWidget        *widget);
-static gboolean btk_file_chooser_entry_tab_handler    (BtkWidget *widget,
+static bboolean btk_file_chooser_entry_tab_handler    (BtkWidget *widget,
 						       BdkEventKey *event);
-static gboolean btk_file_chooser_entry_focus_out_event (BtkWidget       *widget,
+static bboolean btk_file_chooser_entry_focus_out_event (BtkWidget       *widget,
 							BdkEventFocus   *event);
 
 #ifdef G_OS_WIN32
-static gint     insert_text_callback      (BtkFileChooserEntry *widget,
-					   const gchar         *new_text,
-					   gint                 new_text_length,
-					   gint                *position,
-					   gpointer             user_data);
+static bint     insert_text_callback      (BtkFileChooserEntry *widget,
+					   const bchar         *new_text,
+					   bint                 new_text_length,
+					   bint                *position,
+					   bpointer             user_data);
 static void     delete_text_callback      (BtkFileChooserEntry *widget,
-					   gint                 start_pos,
-					   gint                 end_pos,
-					   gpointer             user_data);
+					   bint                 start_pos,
+					   bint                 end_pos,
+					   bpointer             user_data);
 #endif
 
-static gboolean match_selected_callback   (BtkEntryCompletion  *completion,
+static bboolean match_selected_callback   (BtkEntryCompletion  *completion,
 					   BtkTreeModel        *model,
 					   BtkTreeIter         *iter,
 					   BtkFileChooserEntry *chooser_entry);
 
 static void set_complete_on_load (BtkFileChooserEntry *chooser_entry,
-                                  gboolean             complete_on_load);
+                                  bboolean             complete_on_load);
 static void refresh_current_folder_and_file_part (BtkFileChooserEntry *chooser_entry);
 static void set_completion_folder (BtkFileChooserEntry *chooser_entry,
                                    GFile               *folder,
@@ -122,14 +122,14 @@ btk_file_chooser_entry_get_completion_text (BtkFileChooserEntry *chooser_entry)
 }
 
 static void
-btk_file_chooser_entry_dispatch_properties_changed (GObject     *object,
-                                                    guint        n_pspecs,
-                                                    GParamSpec **pspecs)
+btk_file_chooser_entry_dispatch_properties_changed (BObject     *object,
+                                                    buint        n_pspecs,
+                                                    BParamSpec **pspecs)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
-  guint i;
+  buint i;
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispatch_properties_changed (object, n_pspecs, pspecs);
 
   /* Don't do this during or after disposal */
   if (btk_widget_get_parent (BTK_WIDGET (object)) != NULL)
@@ -154,7 +154,7 @@ btk_file_chooser_entry_dispatch_properties_changed (GObject     *object,
 static void
 _btk_file_chooser_entry_class_init (BtkFileChooserEntryClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
   bobject_class->finalize = btk_file_chooser_entry_finalize;
@@ -214,7 +214,7 @@ _btk_file_chooser_entry_init (BtkFileChooserEntry *chooser_entry)
 }
 
 static void
-btk_file_chooser_entry_finalize (GObject *object)
+btk_file_chooser_entry_finalize (BObject *object)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
 
@@ -227,28 +227,28 @@ btk_file_chooser_entry_finalize (GObject *object)
   g_free (chooser_entry->dir_part);
   g_free (chooser_entry->file_part);
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->finalize (object);
 }
 
 static void
-btk_file_chooser_entry_dispose (GObject *object)
+btk_file_chooser_entry_dispose (BObject *object)
 {
   BtkFileChooserEntry *chooser_entry = BTK_FILE_CHOOSER_ENTRY (object);
 
   set_completion_folder (chooser_entry, NULL, NULL);
 
-  G_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_btk_file_chooser_entry_parent_class)->dispose (object);
 }
 
 /* Match functions for the BtkEntryCompletion */
-static gboolean
+static bboolean
 match_selected_callback (BtkEntryCompletion  *completion,
                          BtkTreeModel        *model,
                          BtkTreeIter         *iter,
                          BtkFileChooserEntry *chooser_entry)
 {
   char *path;
-  gint pos;
+  bint pos;
 
   btk_tree_model_get (model, iter,
                       FULL_PATH_COLUMN, &path,
@@ -272,7 +272,7 @@ match_selected_callback (BtkEntryCompletion  *completion,
 
 static void
 set_complete_on_load (BtkFileChooserEntry *chooser_entry,
-                      gboolean             complete_on_load)
+                      bboolean             complete_on_load)
 {
   /* a completion was triggered, but we couldn't do it.
    * So no text was inserted when pressing tab, so we beep
@@ -283,13 +283,13 @@ set_complete_on_load (BtkFileChooserEntry *chooser_entry,
   chooser_entry->complete_on_load = complete_on_load;
 }
 
-static gboolean
+static bboolean
 is_valid_scheme_character (char c)
 {
   return g_ascii_isalnum (c) || c == '+' || c == '-' || c == '.';
 }
 
-static gboolean
+static bboolean
 has_uri_scheme (const char *str)
 {
   const char *p;
@@ -308,7 +308,7 @@ has_uri_scheme (const char *str)
 
 static GFile *
 btk_file_chooser_get_file_for_text (BtkFileChooserEntry *chooser_entry,
-                                    const gchar         *str)
+                                    const bchar         *str)
 {
   GFile *file;
 
@@ -322,7 +322,7 @@ btk_file_chooser_get_file_for_text (BtkFileChooserEntry *chooser_entry,
   return file;
 }
 
-static gboolean
+static bboolean
 is_directory_shortcut (const char *text)
 {
   return strcmp (text, ".") == 0 ||
@@ -362,7 +362,7 @@ explicitly_complete (BtkFileChooserEntry *chooser_entry)
   if (chooser_entry->completion_store)
     {
       char *completion, *text;
-      gsize completion_len, text_len;
+      bsize completion_len, text_len;
 
       text = btk_file_chooser_entry_get_completion_text (chooser_entry);
       text_len = strlen (text);
@@ -402,14 +402,14 @@ start_explicit_completion (BtkFileChooserEntry *chooser_entry)
     set_complete_on_load (chooser_entry, TRUE);
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_entry_tab_handler (BtkWidget *widget,
 				    BdkEventKey *event)
 {
   BtkFileChooserEntry *chooser_entry;
   BtkEditable *editable;
   BdkModifierType state;
-  gint start, end;
+  bint start, end;
 
   chooser_entry = BTK_FILE_CHOOSER_ENTRY (widget);
   editable = BTK_EDITABLE (widget);
@@ -436,7 +436,7 @@ btk_file_chooser_entry_tab_handler (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_file_chooser_entry_focus_out_event (BtkWidget     *widget,
 					BdkEventFocus *event)
 {
@@ -483,13 +483,13 @@ discard_completion_store (BtkFileChooserEntry *chooser_entry)
   chooser_entry->completion_store = NULL;
 }
 
-static gboolean
+static bboolean
 completion_store_set (BtkFileSystemModel  *model,
                       GFile               *file,
                       GFileInfo           *info,
                       int                  column,
-                      GValue              *value,
-                      gpointer             data)
+                      BValue              *value,
+                      bpointer             data)
 {
   BtkFileChooserEntry *chooser_entry = data;
 
@@ -505,7 +505,7 @@ completion_store_set (BtkFileSystemModel  *model,
       if (_btk_file_info_consider_as_directory (info))
         suffix = G_DIR_SEPARATOR_S;
 
-      g_value_take_string (value,
+      b_value_take_string (value,
 			   g_strconcat (prefix,
 					g_file_info_get_display_name (info),
 					suffix,
@@ -529,8 +529,8 @@ populate_completion_store (BtkFileChooserEntry *chooser_entry)
                                                 completion_store_set,
                                                 chooser_entry,
                                                 N_COLUMNS,
-                                                G_TYPE_STRING,
-                                                G_TYPE_STRING));
+                                                B_TYPE_STRING,
+                                                B_TYPE_STRING));
   g_signal_connect (chooser_entry->completion_store, "finished-loading",
 		    G_CALLBACK (finished_loading_cb), chooser_entry);
 
@@ -673,15 +673,15 @@ refresh_current_folder_and_file_part (BtkFileChooserEntry *chooser_entry)
 }
 
 #ifdef G_OS_WIN32
-static gint
+static bint
 insert_text_callback (BtkFileChooserEntry *chooser_entry,
-		      const gchar	  *new_text,
-		      gint       	   new_text_length,
-		      gint       	  *position,
-		      gpointer   	   user_data)
+		      const bchar	  *new_text,
+		      bint       	   new_text_length,
+		      bint       	  *position,
+		      bpointer   	   user_data)
 {
-  const gchar *colon = memchr (new_text, ':', new_text_length);
-  gint i;
+  const bchar *colon = memchr (new_text, ':', new_text_length);
+  bint i;
 
   /* Disallow these characters altogether */
   for (i = 0; i < new_text_length; i++)
@@ -716,9 +716,9 @@ insert_text_callback (BtkFileChooserEntry *chooser_entry,
 
 static void
 delete_text_callback (BtkFileChooserEntry *chooser_entry,
-		      gint                 start_pos,
-		      gint                 end_pos,
-		      gpointer             user_data)
+		      bint                 start_pos,
+		      bint                 end_pos,
+		      bpointer             user_data)
 {
   /* If deleting a drive letter, delete the colon, too */
   if (start_pos == 0 && end_pos == 1 &&
@@ -748,7 +748,7 @@ delete_text_callback (BtkFileChooserEntry *chooser_entry,
  * Return value: the newly created #BtkFileChooserEntry
  **/
 BtkWidget *
-_btk_file_chooser_entry_new (gboolean       eat_tabs)
+_btk_file_chooser_entry_new (bboolean       eat_tabs)
 {
   BtkFileChooserEntry *chooser_entry;
 
@@ -823,7 +823,7 @@ _btk_file_chooser_entry_get_current_folder (BtkFileChooserEntry *chooser_entry)
  * Return value: the entered filename - this value is owned by the
  *  chooser entry and must not be modified or freed.
  **/
-const gchar *
+const bchar *
 _btk_file_chooser_entry_get_file_part (BtkFileChooserEntry *chooser_entry)
 {
   const char *last_slash, *text;
@@ -904,7 +904,7 @@ _btk_file_chooser_entry_get_action (BtkFileChooserEntry *chooser_entry)
   return chooser_entry->action;
 }
 
-gboolean
+bboolean
 _btk_file_chooser_entry_get_is_folder (BtkFileChooserEntry *chooser_entry,
 				       GFile               *file)
 {
@@ -933,8 +933,8 @@ _btk_file_chooser_entry_get_is_folder (BtkFileChooserEntry *chooser_entry,
 void
 _btk_file_chooser_entry_select_filename (BtkFileChooserEntry *chooser_entry)
 {
-  const gchar *str, *ext;
-  glong len = -1;
+  const bchar *str, *ext;
+  blong len = -1;
 
   if (chooser_entry->action == BTK_FILE_CHOOSER_ACTION_SAVE)
     {
@@ -945,18 +945,18 @@ _btk_file_chooser_entry_select_filename (BtkFileChooserEntry *chooser_entry)
        len = g_utf8_pointer_to_offset (str, ext);
     }
 
-  btk_editable_select_rebunnyion (BTK_EDITABLE (chooser_entry), 0, (gint) len);
+  btk_editable_select_rebunnyion (BTK_EDITABLE (chooser_entry), 0, (bint) len);
 }
 
 void
 _btk_file_chooser_entry_set_local_only (BtkFileChooserEntry *chooser_entry,
-                                        gboolean             local_only)
+                                        bboolean             local_only)
 {
   chooser_entry->local_only = local_only;
   refresh_current_folder_and_file_part (chooser_entry);
 }
 
-gboolean
+bboolean
 _btk_file_chooser_entry_get_local_only (BtkFileChooserEntry *chooser_entry)
 {
   return chooser_entry->local_only;

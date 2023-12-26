@@ -24,7 +24,7 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * The BailCellParent interface should be supported by any object which
@@ -36,9 +36,9 @@ G_BEGIN_DECLS
  */
 
 #define BAIL_TYPE_CELL_PARENT            (bail_cell_parent_get_type ())
-#define BAIL_IS_CELL_PARENT(obj)         G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CELL_PARENT)
-#define BAIL_CELL_PARENT(obj)            G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL_PARENT, BailCellParent)
-#define BAIL_CELL_PARENT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BAIL_TYPE_CELL_PARENT, BailCellParentIface))
+#define BAIL_IS_CELL_PARENT(obj)         B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CELL_PARENT)
+#define BAIL_CELL_PARENT(obj)            B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL_PARENT, BailCellParent)
+#define BAIL_CELL_PARENT_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BAIL_TYPE_CELL_PARENT, BailCellParentIface))
 
 #ifndef _TYPEDEF_BAIL_CELL_PARENT_
 #define _TYPEDEF_BAIL_CELL_PARENT_
@@ -51,15 +51,15 @@ struct _BailCellParentIface
   GTypeInterface parent;
   void                  ( *get_cell_extents)      (BailCellParent        *parent,
                                                    BailCell              *cell,
-                                                   gint                  *x,
-                                                   gint                  *y,
-                                                   gint                  *width,
-                                                   gint                  *height,
+                                                   bint                  *x,
+                                                   bint                  *y,
+                                                   bint                  *width,
+                                                   bint                  *height,
                                                    BatkCoordType          coord_type);
   void                  ( *get_cell_area)         (BailCellParent        *parent,
                                                    BailCell              *cell,
                                                    BdkRectangle          *cell_rect);
-  gboolean              ( *grab_focus)            (BailCellParent        *parent,
+  bboolean              ( *grab_focus)            (BailCellParent        *parent,
                                                    BailCell              *cell);
 };
 
@@ -67,18 +67,18 @@ GType  bail_cell_parent_get_type               (void);
 
 void   bail_cell_parent_get_cell_extents       (BailCellParent        *parent,
                                                 BailCell              *cell,
-                                                gint                  *x,
-                                                gint                  *y,
-                                                gint                  *width,
-                                                gint                  *height,
+                                                bint                  *x,
+                                                bint                  *y,
+                                                bint                  *width,
+                                                bint                  *height,
                                                 BatkCoordType          coord_type
 );
 void  bail_cell_parent_get_cell_area           (BailCellParent        *parent,
                                                 BailCell              *cell,
                                                 BdkRectangle          *cell_rect);
-gboolean bail_cell_parent_grab_focus           (BailCellParent        *parent,
+bboolean bail_cell_parent_grab_focus           (BailCellParent        *parent,
                                                 BailCell              *cell);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CELL_PARENT_H__ */

@@ -21,8 +21,8 @@
 
 static void
 value_changed (BtkWidget *button,
-               gdouble volume,
-               gpointer user_data)
+               bdouble volume,
+               bpointer user_data)
 {
   g_message ("volume changed to %f", volume);
 }
@@ -46,14 +46,14 @@ toggle_orientation (BtkWidget *button,
 
 static void
 response_cb (BtkDialog *dialog,
-             gint       arg1,
-             gpointer   user_data)
+             bint       arg1,
+             bpointer   user_data)
 {
   btk_widget_destroy (BTK_WIDGET (dialog));
 }
 
-static gboolean
-show_error (gpointer data)
+static bboolean
+show_error (bpointer data)
 {
   BtkWindow *window = (BtkWindow *) data;
   BtkWidget *dialog;
@@ -65,7 +65,7 @@ show_error (gpointer data)
                                    BTK_MESSAGE_INFO,
                                    BTK_BUTTONS_CLOSE,
                                    "This should have unbroken the grab");
-  g_signal_connect (G_OBJECT (dialog),
+  g_signal_connect (B_OBJECT (dialog),
                     "response",
                     G_CALLBACK (response_cb), NULL);
   btk_widget_show (dialog);
@@ -90,7 +90,7 @@ main (int    argc,
   button2 = btk_volume_button_new ();
   box = btk_hbox_new (FALSE, 0);
 
-  g_signal_connect (G_OBJECT (button), "value-changed",
+  g_signal_connect (B_OBJECT (button), "value-changed",
                     G_CALLBACK (value_changed),
                     NULL);
 
@@ -101,10 +101,10 @@ main (int    argc,
   button3 = btk_button_new_with_label ("Toggle orientation");
   btk_container_add (BTK_CONTAINER (box), button3);
 
-  g_signal_connect (G_OBJECT (button3), "clicked",
+  g_signal_connect (B_OBJECT (button3), "clicked",
                     G_CALLBACK (toggle_orientation),
                     button);
-  g_signal_connect (G_OBJECT (button3), "clicked",
+  g_signal_connect (B_OBJECT (button3), "clicked",
                     G_CALLBACK (toggle_orientation),
                     button2);
 

@@ -27,11 +27,11 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_FILTER              (btk_file_filter_get_type ())
-#define BTK_FILE_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
-#define BTK_IS_FILE_FILTER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_FILTER))
+#define BTK_FILE_FILTER(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
+#define BTK_IS_FILE_FILTER(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_FILTER))
 
 typedef struct _BtkFileFilter     BtkFileFilter;
 typedef struct _BtkFileFilterInfo BtkFileFilterInfo;
@@ -43,41 +43,41 @@ typedef enum {
   BTK_FILE_FILTER_MIME_TYPE    = 1 << 3
 } BtkFileFilterFlags;
 
-typedef gboolean (*BtkFileFilterFunc) (const BtkFileFilterInfo *filter_info,
-				       gpointer                 data);
+typedef bboolean (*BtkFileFilterFunc) (const BtkFileFilterInfo *filter_info,
+				       bpointer                 data);
 
 struct _BtkFileFilterInfo
 {
   BtkFileFilterFlags contains;
 
-  const gchar *filename;
-  const gchar *uri;
-  const gchar *display_name;
-  const gchar *mime_type;
+  const bchar *filename;
+  const bchar *uri;
+  const bchar *display_name;
+  const bchar *mime_type;
 };
 
-GType btk_file_filter_get_type (void) G_GNUC_CONST;
+GType btk_file_filter_get_type (void) B_GNUC_CONST;
 
 BtkFileFilter *       btk_file_filter_new      (void);
 void                  btk_file_filter_set_name (BtkFileFilter *filter,
-						const gchar   *name);
-const gchar *         btk_file_filter_get_name (BtkFileFilter *filter);
+						const bchar   *name);
+const bchar *         btk_file_filter_get_name (BtkFileFilter *filter);
 
 void btk_file_filter_add_mime_type      (BtkFileFilter      *filter,
-					 const gchar        *mime_type);
+					 const bchar        *mime_type);
 void btk_file_filter_add_pattern        (BtkFileFilter      *filter,
-					 const gchar        *pattern);
+					 const bchar        *pattern);
 void btk_file_filter_add_pixbuf_formats (BtkFileFilter      *filter);
 void btk_file_filter_add_custom         (BtkFileFilter      *filter,
 					 BtkFileFilterFlags  needed,
 					 BtkFileFilterFunc   func,
-					 gpointer            data,
+					 bpointer            data,
 					 GDestroyNotify      notify);
 
 BtkFileFilterFlags btk_file_filter_get_needed (BtkFileFilter           *filter);
-gboolean           btk_file_filter_filter     (BtkFileFilter           *filter,
+bboolean           btk_file_filter_filter     (BtkFileFilter           *filter,
 					       const BtkFileFilterInfo *filter_info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_FILTER_H__ */

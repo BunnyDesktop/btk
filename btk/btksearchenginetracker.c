@@ -61,13 +61,13 @@ struct _BtkSearchEngineTrackerPrivate
   GDBusConnection *connection;
   GCancellable *cancellable;
   BtkQuery *query;
-  gboolean query_pending;
+  bboolean query_pending;
 };
 
 G_DEFINE_TYPE (BtkSearchEngineTracker, _btk_search_engine_tracker, BTK_TYPE_SEARCH_ENGINE);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
   BtkSearchEngineTracker *tracker;
 
@@ -94,7 +94,7 @@ finalize (GObject *object)
       tracker->priv->connection = NULL;
     }
 
-  G_OBJECT_CLASS (_btk_search_engine_tracker_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_search_engine_tracker_parent_class)->finalize (object);
 }
 
 static GDBusConnection *
@@ -156,9 +156,9 @@ get_connection (void)
 
 static void
 get_query_results (BtkSearchEngineTracker *engine,
-                   const gchar            *sparql,
+                   const bchar            *sparql,
                    GAsyncReadyCallback     callback,
-                   gpointer                user_data)
+                   bpointer                user_data)
 {
   g_dbus_connection_call (engine->priv->connection,
                           DBUS_SERVICE_RESOURCES,
@@ -176,10 +176,10 @@ get_query_results (BtkSearchEngineTracker *engine,
 
 /* Stolen from libtracker-common */
 static GList *
-string_list_to_gslist (gchar **strv)
+string_list_to_gslist (bchar **strv)
 {
   GList *list;
-  gsize i;
+  bsize i;
 
   list = NULL;
 
@@ -190,11 +190,11 @@ string_list_to_gslist (gchar **strv)
 }
 
 /* Stolen from libtracker-sparql */
-static gchar *
-sparql_escape_string (const gchar *literal)
+static bchar *
+sparql_escape_string (const bchar *literal)
 {
   GString *str;
-  const gchar *p;
+  const bchar *p;
 
   g_return_val_if_fail (literal != NULL, NULL);
 
@@ -203,13 +203,13 @@ sparql_escape_string (const gchar *literal)
 
   while (TRUE)
      {
-      gsize len;
+      bsize len;
 
       if (!((*p) != '\0'))
         break;
 
-      len = strcspn ((const gchar *) p, "\t\n\r\b\f\"\\");
-      g_string_append_len (str, (const gchar *) p, (gssize) ((glong) len));
+      len = strcspn ((const bchar *) p, "\t\n\r\b\f\"\\");
+      g_string_append_len (str, (const bchar *) p, (bssize) ((blong) len));
       p = p + len;
 
       switch (*p)
@@ -246,9 +246,9 @@ sparql_escape_string (const gchar *literal)
 
 static void
 sparql_append_string_literal (GString     *sparql,
-                              const gchar *str)
+                              const bchar *str)
 {
-  gchar *s;
+  bchar *s;
 
   s = sparql_escape_string (str);
 
@@ -261,9 +261,9 @@ sparql_append_string_literal (GString     *sparql,
 
 static void
 sparql_append_string_literal_lower_case (GString     *sparql,
-                                         const gchar *str)
+                                         const bchar *str)
 {
-  gchar *s;
+  bchar *s;
 
   s = g_utf8_strdown (str, -1);
   sparql_append_string_literal (sparql, s);
@@ -271,18 +271,18 @@ sparql_append_string_literal_lower_case (GString     *sparql,
 }
 
 static void
-query_callback (GObject      *object,
+query_callback (BObject      *object,
                 GAsyncResult *res,
-                gpointer      user_data)
+                bpointer      user_data)
 {
   BtkSearchEngineTracker *tracker;
   GList *hits;
   GVariant *reply;
   GVariant *r;
   GVariantIter iter;
-  gchar **result;
+  bchar **result;
   GError *error = NULL;
-  gint i, n;
+  bint i, n;
 
   bdk_threads_enter ();
 
@@ -309,15 +309,15 @@ query_callback (GObject      *object,
   r = g_variant_get_child_value (reply, 0);
   g_variant_iter_init (&iter, r);
   n = g_variant_iter_n_children (&iter);
-  result = g_new0 (gchar *, n + 1);
+  result = g_new0 (bchar *, n + 1);
   for (i = 0; i < n; i++)
     {
       GVariant *v;
-      const gchar **strv;
+      const bchar **strv;
 
       v = g_variant_iter_next_value (&iter);
       strv = g_variant_get_strv (v, NULL);
-      result[i] = (gchar*)strv[0];
+      result[i] = (bchar*)strv[0];
       g_free (strv);
     }
 
@@ -337,9 +337,9 @@ static void
 btk_search_engine_tracker_start (BtkSearchEngine *engine)
 {
   BtkSearchEngineTracker *tracker;
-  gchar *search_text;
+  bchar *search_text;
 #ifdef FTS_MATCHING
-  gchar *location_uri;
+  bchar *location_uri;
 #endif
   GString *sparql;
 
@@ -413,7 +413,7 @@ btk_search_engine_tracker_stop (BtkSearchEngine *engine)
     }
 }
 
-static gboolean
+static bboolean
 btk_search_engine_tracker_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;
@@ -439,10 +439,10 @@ btk_search_engine_tracker_set_query (BtkSearchEngine *engine,
 static void
 _btk_search_engine_tracker_class_init (BtkSearchEngineTrackerClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkSearchEngineClass *engine_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
 
   engine_class = BTK_SEARCH_ENGINE_CLASS (class);
@@ -458,7 +458,7 @@ _btk_search_engine_tracker_class_init (BtkSearchEngineTrackerClass *class)
 static void
 _btk_search_engine_tracker_init (BtkSearchEngineTracker *engine)
 {
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine,
+  engine->priv = B_TYPE_INSTANCE_GET_PRIVATE (engine,
                                               BTK_TYPE_SEARCH_ENGINE_TRACKER,
                                               BtkSearchEngineTrackerPrivate);
 }

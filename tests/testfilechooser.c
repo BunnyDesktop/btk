@@ -46,7 +46,7 @@ static BtkFileChooserAction action;
 static void
 print_current_folder (BtkFileChooser *chooser)
 {
-  gchar *uri;
+  bchar *uri;
 
   uri = btk_file_chooser_get_current_folder_uri (chooser);
   g_print ("Current folder changed :\n  %s\n", uri ? uri : "(null)");
@@ -62,17 +62,17 @@ print_selected (BtkFileChooser *chooser)
   g_print ("Selection changed :\n");
   for (tmp_list = uris; tmp_list; tmp_list = tmp_list->next)
     {
-      gchar *uri = tmp_list->data;
+      bchar *uri = tmp_list->data;
       g_print ("  %s\n", uri);
       g_free (uri);
     }
   g_print ("\n");
-  g_slist_free (uris);
+  b_slist_free (uris);
 }
 
 static void
 response_cb (BtkDialog *dialog,
-	     gint       response_id)
+	     bint       response_id)
 {
   if (response_id == BTK_RESPONSE_OK)
     {
@@ -92,7 +92,7 @@ response_cb (BtkDialog *dialog,
 	      g_free (l->data);
 	    }
 
-	  g_slist_free (list);
+	  b_slist_free (list);
 	}
       else
 	g_print ("No selected files\n");
@@ -103,11 +103,11 @@ response_cb (BtkDialog *dialog,
   btk_main_quit ();
 }
 
-static gboolean
+static bboolean
 no_backup_files_filter (const BtkFileFilterInfo *filter_info,
-			gpointer                 data)
+			bpointer                 data)
 {
-  gsize len = filter_info->display_name ? strlen (filter_info->display_name) : 0;
+  bsize len = filter_info->display_name ? strlen (filter_info->display_name) : 0;
   if (len > 0 && filter_info->display_name[len - 1] == '~')
     return 0;
   else
@@ -116,7 +116,7 @@ no_backup_files_filter (const BtkFileFilterInfo *filter_info,
 
 static void
 filter_changed (BtkFileChooserDialog *dialog,
-		gpointer              data)
+		bpointer              data)
 {
   g_print ("file filter changed\n");
 }
@@ -124,7 +124,7 @@ filter_changed (BtkFileChooserDialog *dialog,
 static char *
 format_time (time_t t)
 {
-  gchar buf[128];
+  bchar buf[128];
   struct tm tm_buf;
   time_t now = time (NULL);
   const char *format;
@@ -142,13 +142,13 @@ format_time (time_t t)
 }
 
 static char *
-format_size (gint64 size)
+format_size (bint64 size)
 {
-  if (size < (gint64)1024)
-    return g_strdup_printf ("%d bytes", (gint)size);
-  else if (size < (gint64)1024*1024)
+  if (size < (bint64)1024)
+    return g_strdup_printf ("%d bytes", (bint)size);
+  else if (size < (bint64)1024*1024)
     return g_strdup_printf ("%.1f K", size / (1024.));
-  else if (size < (gint64)1024*1024*1024)
+  else if (size < (bint64)1024*1024*1024)
     return g_strdup_printf ("%.1f M", size / (1024.*1024.));
   else
     return g_strdup_printf ("%.1f G", size / (1024.*1024.*1024.));
@@ -191,7 +191,7 @@ my_new_from_file_at_size (const char *filename,
 	int              info[2];
 	GStatBuf st;
 
-	guchar buffer [4096];
+	buchar buffer [4096];
 	int length;
 	FILE *f;
 
@@ -279,8 +279,8 @@ my_new_from_file_at_size (const char *filename,
 static void
 update_preview_cb (BtkFileChooser *chooser)
 {
-  gchar *filename = btk_file_chooser_get_preview_filename (chooser);
-  gboolean have_preview = FALSE;
+  bchar *filename = btk_file_chooser_get_preview_filename (chooser);
+  bboolean have_preview = FALSE;
 
   if (filename)
     {
@@ -301,9 +301,9 @@ update_preview_cb (BtkFileChooser *chooser)
 	  GStatBuf buf;
 	  if (g_stat (filename, &buf) == 0)
 	    {
-	      gchar *preview_text;
-	      gchar *size_str;
-	      gchar *modified_time;
+	      bchar *preview_text;
+	      bchar *size_str;
+	      bchar *modified_time;
 
 	      size_str = format_size (buf.st_size);
 	      modified_time = format_time (buf.st_mtime);
@@ -415,10 +415,10 @@ kill_dependent (BtkWindow *win, BtkObject *dep)
 
 static void
 notify_multiple_cb (BtkWidget  *dialog,
-		    GParamSpec *pspec,
+		    BParamSpec *pspec,
 		    BtkWidget  *button)
 {
-  gboolean multiple;
+  bboolean multiple;
 
   multiple = btk_file_chooser_get_select_multiple (BTK_FILE_CHOOSER (dialog));
 
@@ -427,7 +427,7 @@ notify_multiple_cb (BtkWidget  *dialog,
 
 static BtkFileChooserConfirmation
 confirm_overwrite_cb (BtkFileChooser *chooser,
-		      gpointer        data)
+		      bpointer        data)
 {
   BtkWidget *dialog;
   BtkWidget *button;
@@ -485,8 +485,8 @@ main (int argc, char **argv)
   BtkWidget *extra;
   BtkFileFilter *filter;
   BtkWidget *preview_vbox;
-  gboolean force_rtl = FALSE;
-  gboolean multiple = FALSE;
+  bboolean force_rtl = FALSE;
+  bboolean multiple = FALSE;
   char *action_arg = NULL;
   char *backend = NULL;
   char *initial_filename = NULL;
@@ -648,7 +648,7 @@ main (int argc, char **argv)
 
   /* Extra controls for manipulating the test environment
    */
-  prop_editor = create_prop_editor (G_OBJECT (dialog), BTK_TYPE_FILE_CHOOSER);
+  prop_editor = create_prop_editor (B_OBJECT (dialog), BTK_TYPE_FILE_CHOOSER);
 
   control_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 

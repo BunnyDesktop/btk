@@ -62,7 +62,7 @@ typedef struct {
   HGLOBAL devnames;
   HANDLE printerHandle;
   int job_id;
-  guint timeout_id;
+  buint timeout_id;
 
   bairo_surface_t *surface;
   BtkWidget *embed_widget;
@@ -416,15 +416,15 @@ paper_size_to_win32 (BtkPaperSize *paper_size)
   return 0;
 }
 
-static gchar*
+static bchar*
 get_default_printer (void)
 {
   wchar_t *win32_printer_name = NULL;
-  gchar *printer_name = NULL;
+  bchar *printer_name = NULL;
   DWORD needed;
 
   GetDefaultPrinterW (NULL, &needed);
-  win32_printer_name = g_malloc ((gsize) needed * sizeof (wchar_t));
+  win32_printer_name = g_malloc ((bsize) needed * sizeof (wchar_t));
   if (!GetDefaultPrinterW (win32_printer_name, &needed))
     {
       g_free (win32_printer_name);
@@ -505,7 +505,7 @@ win32_end_page (BtkPrintOperation *op,
   EndPage (op_win32->hdc);
 }
 
-static gboolean
+static bboolean
 win32_poll_status_timeout (BtkPrintOperation *op)
 {
   BtkPrintOperationWin32 *op_win32 = op->priv->platform_data;
@@ -527,8 +527,8 @@ win32_poll_status_timeout (BtkPrintOperation *op)
 
 static void
 win32_end_run (BtkPrintOperation *op,
-	       gboolean           wait,
-	       gboolean           cancelled)
+	       bboolean           wait,
+	       bboolean           cancelled)
 {
   BtkPrintOperationWin32 *op_win32 = op->priv->platform_data;
   LPDEVNAMES devnames;
@@ -572,7 +572,7 @@ static void
 win32_poll_status (BtkPrintOperation *op)
 {
   BtkPrintOperationWin32 *op_win32 = op->priv->platform_data;
-  guchar *data;
+  buchar *data;
   DWORD needed;
   JOB_INFO_1W *job_info;
   BtkPrintStatus status;
@@ -890,7 +890,7 @@ static void
 dialog_to_print_settings (BtkPrintOperation *op,
 			  LPPRINTDLGEXW printdlgex)
 {
-  guint i;
+  buint i;
   BtkPrintSettings *settings;
 
   settings = btk_print_settings_new ();
@@ -1229,7 +1229,7 @@ dialog_from_print_settings (BtkPrintOperation *op,
 
 typedef struct {
   IPrintDialogCallback iPrintDialogCallback;
-  gboolean set_hwnd;
+  bboolean set_hwnd;
   int ref_count;
 } PrintDialogCallback;
 
@@ -1337,7 +1337,7 @@ print_callback_new  (void)
 
 static  void
 plug_grab_notify (BtkWidget        *widget,
-		  gboolean          was_grabbed,
+		  bboolean          was_grabbed,
 		  BtkPrintOperation *op)
 {
   EnableWindow (GetAncestor (BDK_WINDOW_HWND (widget->window), GA_ROOT),
@@ -1356,7 +1356,7 @@ pageDlgProc (HWND wnd, UINT message, WPARAM wparam, LPARAM lparam)
       PROPSHEETPAGEW *page = (PROPSHEETPAGEW *)lparam;
       BtkWidget *plug;
 
-      op = BTK_PRINT_OPERATION ((gpointer)page->lParam);
+      op = BTK_PRINT_OPERATION ((bpointer)page->lParam);
       op_win32 = op->priv->platform_data;
 
       SetWindowLongPtrW (wnd, GWLP_USERDATA, (LONG_PTR)op);
@@ -1496,7 +1496,7 @@ create_page_setup (BtkPrintOperation *op)
 
 BtkPrintOperationResult
 btk_print_operation_run_without_dialog (BtkPrintOperation *op,
-					gboolean          *do_print)
+					bboolean          *do_print)
 {
   BtkPrintOperationResult result;
   BtkPrintOperationWin32 *op_win32;
@@ -1529,7 +1529,7 @@ btk_print_operation_run_without_dialog (BtkPrintOperation *op,
       /* No printer selected. Get the system default printer and store
        * it in settings.
        */
-      gchar *tmp_printer = get_default_printer ();
+      bchar *tmp_printer = get_default_printer ();
       if (!tmp_printer)
 	{
 	  result = BTK_PRINT_OPERATION_RESULT_ERROR;
@@ -1645,7 +1645,7 @@ btk_print_operation_run_without_dialog (BtkPrintOperation *op,
 BtkPrintOperationResult
 btk_print_operation_run_with_dialog (BtkPrintOperation *op,
 				     BtkWindow         *parent,
-				     gboolean          *do_print)
+				     bboolean          *do_print)
 {
   HRESULT hResult;
   LPPRINTDLGEXW printdlgex = NULL;
@@ -1881,9 +1881,9 @@ btk_print_operation_run_with_dialog (BtkPrintOperation *op,
 
 BtkPrintOperationResult
 _btk_print_operation_platform_backend_run_dialog (BtkPrintOperation *op,
-						  gboolean           show_dialog,
+						  bboolean           show_dialog,
 						  BtkWindow         *parent,
-						  gboolean          *do_print)
+						  bboolean          *do_print)
 {
   if (show_dialog)
     return btk_print_operation_run_with_dialog (op, parent, do_print);
@@ -1895,7 +1895,7 @@ void
 _btk_print_operation_platform_backend_launch_preview (BtkPrintOperation *op,
 						      bairo_surface_t   *surface,
 						      BtkWindow         *parent,
-						      const gchar       *filename)
+						      const bchar       *filename)
 {
   HDC dc;
   HENHMETAFILE metafile;
@@ -1935,9 +1935,9 @@ _btk_print_operation_platform_backend_preview_end_page (BtkPrintOperation *op,
 bairo_surface_t *
 _btk_print_operation_platform_backend_create_preview_surface (BtkPrintOperation *op,
 							      BtkPageSetup      *page_setup,
-							      gdouble           *dpi_x,
-							      gdouble           *dpi_y,
-							      gchar            **target)
+							      bdouble           *dpi_x,
+							      bdouble           *dpi_y,
+							      bchar            **target)
 {
   BtkPaperSize *paper_size;
   HDC metafile_dc;
@@ -1996,7 +1996,7 @@ btk_print_run_page_setup_dialog (BtkWindow        *parent,
 {
   LPPAGESETUPDLGW pagesetupdlg = NULL;
   BOOL res;
-  gboolean free_settings;
+  bboolean free_settings;
   const char *printer;
   BtkPaperSize *paper_size;
   DWORD measure_system;
@@ -2126,7 +2126,7 @@ btk_print_run_page_setup_dialog_async (BtkWindow            *parent,
 				       BtkPageSetup         *page_setup,
 				       BtkPrintSettings     *settings,
 				       BtkPageSetupDoneFunc  done_cb,
-				       gpointer              data)
+				       bpointer              data)
 {
   BtkPageSetup *new_page_setup;
 

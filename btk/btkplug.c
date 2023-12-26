@@ -57,11 +57,11 @@
  * </note>
  */
 
-static void            btk_plug_get_property          (GObject     *object,
-						       guint        prop_id,
-						       GValue      *value,
-						       GParamSpec  *pspec);
-static void            btk_plug_finalize              (GObject          *object);
+static void            btk_plug_get_property          (BObject     *object,
+						       buint        prop_id,
+						       BValue      *value,
+						       BParamSpec  *pspec);
+static void            btk_plug_finalize              (BObject          *object);
 static void            btk_plug_realize               (BtkWidget        *widget);
 static void            btk_plug_unrealize             (BtkWidget        *widget);
 static void            btk_plug_show                  (BtkWidget        *widget);
@@ -70,13 +70,13 @@ static void            btk_plug_map                   (BtkWidget        *widget)
 static void            btk_plug_unmap                 (BtkWidget        *widget);
 static void            btk_plug_size_allocate         (BtkWidget        *widget,
 						       BtkAllocation    *allocation);
-static gboolean        btk_plug_key_press_event       (BtkWidget        *widget,
+static bboolean        btk_plug_key_press_event       (BtkWidget        *widget,
 						       BdkEventKey      *event);
-static gboolean        btk_plug_focus_event           (BtkWidget        *widget,
+static bboolean        btk_plug_focus_event           (BtkWidget        *widget,
 						       BdkEventFocus    *event);
 static void            btk_plug_set_focus             (BtkWindow        *window,
 						       BtkWidget        *focus);
-static gboolean        btk_plug_focus                 (BtkWidget        *widget,
+static bboolean        btk_plug_focus                 (BtkWidget        *widget,
 						       BtkDirectionType  direction);
 static void            btk_plug_check_resize          (BtkContainer     *container);
 static void            btk_plug_keys_changed          (BtkWindow        *window);
@@ -85,7 +85,7 @@ static BtkBinClass *bin_class = NULL;
 
 typedef struct
 {
-  guint			 accelerator_key;
+  buint			 accelerator_key;
   BdkModifierType	 accelerator_mods;
 } GrabbedKey;
 
@@ -100,28 +100,28 @@ enum {
   LAST_SIGNAL
 }; 
 
-static guint plug_signals[LAST_SIGNAL] = { 0 };
+static buint plug_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkPlug, btk_plug, BTK_TYPE_WINDOW)
 
 static void
-btk_plug_get_property (GObject    *object,
-		       guint       prop_id,
-		       GValue     *value,
-		       GParamSpec *pspec)
+btk_plug_get_property (BObject    *object,
+		       buint       prop_id,
+		       BValue     *value,
+		       BParamSpec *pspec)
 {
   BtkPlug *plug = BTK_PLUG (object);
 
   switch (prop_id)
     {
     case PROP_EMBEDDED:
-      g_value_set_boolean (value, plug->socket_window != NULL);
+      b_value_set_boolean (value, plug->socket_window != NULL);
       break;
     case PROP_SOCKET_WINDOW:
-      g_value_set_object (value, plug->socket_window);
+      b_value_set_object (value, plug->socket_window);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -129,7 +129,7 @@ btk_plug_get_property (GObject    *object,
 static void
 btk_plug_class_init (BtkPlugClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)class;
   BtkWindowClass *window_class = (BtkWindowClass *)class;
   BtkContainerClass *container_class = (BtkContainerClass *)class;
@@ -196,12 +196,12 @@ btk_plug_class_init (BtkPlugClass *class)
    */ 
   plug_signals[EMBEDDED] =
     g_signal_new (I_("embedded"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPlugClass, embedded),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -216,7 +216,7 @@ btk_plug_init (BtkPlug *plug)
 
 static void
 btk_plug_set_is_child (BtkPlug  *plug,
-		       gboolean  is_child)
+		       bboolean  is_child)
 {
   g_assert (!BTK_WIDGET (plug)->parent);
       
@@ -293,7 +293,7 @@ btk_plug_get_id (BtkPlug *plug)
  *
  * Since: 2.14
  **/
-gboolean
+bboolean
 btk_plug_get_embedded (BtkPlug *plug)
 {
   g_return_val_if_fail (BTK_IS_PLUG (plug), FALSE);
@@ -331,7 +331,7 @@ _btk_plug_add_to_socket (BtkPlug   *plug,
 			 BtkSocket *socket_)
 {
   BtkWidget *widget;
-  gint w, h;
+  bint w, h;
   
   g_return_if_fail (BTK_IS_PLUG (plug));
   g_return_if_fail (BTK_IS_SOCKET (socket_));
@@ -347,7 +347,7 @@ _btk_plug_add_to_socket (BtkPlug   *plug,
   plug->socket_window = BTK_WIDGET (socket_)->window;
   g_object_ref (plug->socket_window);
   g_signal_emit (plug, plug_signals[EMBEDDED], 0);
-  g_object_notify (G_OBJECT (plug), "embedded");
+  g_object_notify (B_OBJECT (plug), "embedded");
 
   if (btk_widget_get_realized (widget))
     {
@@ -399,8 +399,8 @@ _btk_plug_remove_from_socket (BtkPlug   *plug,
 			      BtkSocket *socket_)
 {
   BtkWidget *widget;
-  gboolean result;
-  gboolean widget_was_visible;
+  bboolean result;
+  bboolean widget_was_visible;
 
   g_return_if_fail (BTK_IS_PLUG (plug));
   g_return_if_fail (BTK_IS_SOCKET (socket_));
@@ -491,7 +491,7 @@ btk_plug_construct_for_display (BtkPlug         *plug,
 {
   if (socket_id)
     {
-      gpointer user_data = NULL;
+      bpointer user_data = NULL;
 
       plug->socket_window = bdk_window_lookup_for_display (display, socket_id);
       if (plug->socket_window)
@@ -504,7 +504,7 @@ btk_plug_construct_for_display (BtkPlug         *plug,
 		_btk_plug_add_to_socket (plug, user_data);
 	      else
 		{
-		  g_warning (G_STRLOC "Can't create BtkPlug as child of non-BtkSocket");
+		  g_warning (B_STRLOC "Can't create BtkPlug as child of non-BtkSocket");
 		  plug->socket_window = NULL;
 		}
 	    }
@@ -517,7 +517,7 @@ btk_plug_construct_for_display (BtkPlug         *plug,
       if (plug->socket_window) {
 	g_signal_emit (plug, plug_signals[EMBEDDED], 0);
 
-        g_object_notify (G_OBJECT (plug), "embedded");
+        g_object_notify (B_OBJECT (plug), "embedded");
       }
     }
 }
@@ -561,7 +561,7 @@ btk_plug_new_for_display (BdkDisplay	  *display,
 }
 
 static void
-btk_plug_finalize (GObject *object)
+btk_plug_finalize (BObject *object)
 {
   BtkPlug *plug = BTK_PLUG (object);
 
@@ -571,7 +571,7 @@ btk_plug_finalize (GObject *object)
       plug->grabbed_keys = NULL;
     }
   
-  G_OBJECT_CLASS (btk_plug_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_plug_parent_class)->finalize (object);
 }
 
 static void
@@ -585,7 +585,7 @@ btk_plug_unrealize (BtkWidget *widget)
       g_object_unref (plug->socket_window);
       plug->socket_window = NULL;
 
-      g_object_notify (G_OBJECT (widget), "embedded");
+      g_object_notify (B_OBJECT (widget), "embedded");
     }
 
   if (!plug->same_app)
@@ -606,7 +606,7 @@ btk_plug_realize (BtkWidget *widget)
   BtkWindow *window = BTK_WINDOW (widget);
   BtkPlug *plug = BTK_PLUG (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -770,9 +770,9 @@ btk_plug_size_allocate (BtkWidget     *widget,
 	  
 	  child_allocation.x = child_allocation.y = BTK_CONTAINER (widget)->border_width;
 	  child_allocation.width =
-	    MAX (1, (gint)allocation->width - child_allocation.x * 2);
+	    MAX (1, (bint)allocation->width - child_allocation.x * 2);
 	  child_allocation.height =
-	    MAX (1, (gint)allocation->height - child_allocation.y * 2);
+	    MAX (1, (bint)allocation->height - child_allocation.y * 2);
 	  
 	  btk_widget_size_allocate (bin->child, &child_allocation);
 	}
@@ -780,7 +780,7 @@ btk_plug_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_plug_key_press_event (BtkWidget   *widget,
 			  BdkEventKey *event)
 {
@@ -790,7 +790,7 @@ btk_plug_key_press_event (BtkWidget   *widget,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_plug_focus_event (BtkWidget      *widget,
 		      BdkEventFocus  *event)
 {
@@ -816,11 +816,11 @@ btk_plug_set_focus (BtkWindow *window,
     _btk_plug_windowing_set_focus (plug);
 }
 
-static guint
+static buint
 grabbed_key_hash (gconstpointer a)
 {
   const GrabbedKey *key = a;
-  guint h;
+  buint h;
   
   h = key->accelerator_key << 16;
   h ^= key->accelerator_key >> 16;
@@ -829,7 +829,7 @@ grabbed_key_hash (gconstpointer a)
   return h;
 }
 
-static gboolean
+static bboolean
 grabbed_key_equal (gconstpointer a, gconstpointer b)
 {
   const GrabbedKey *keya = a;
@@ -840,7 +840,7 @@ grabbed_key_equal (gconstpointer a, gconstpointer b)
 }
 
 static void
-add_grabbed_key (gpointer key, gpointer val, gpointer data)
+add_grabbed_key (bpointer key, bpointer val, bpointer data)
 {
   GrabbedKey *grabbed_key = key;
   BtkPlug *plug = data;
@@ -855,9 +855,9 @@ add_grabbed_key (gpointer key, gpointer val, gpointer data)
 }
 
 static void
-add_grabbed_key_always (gpointer key,
-			gpointer val,
-			gpointer data)
+add_grabbed_key_always (bpointer key,
+			bpointer val,
+			bpointer data)
 {
   GrabbedKey *grabbed_key = key;
   BtkPlug *plug = data;
@@ -883,7 +883,7 @@ _btk_plug_add_all_grabbed_keys (BtkPlug *plug)
 }
 
 static void
-remove_grabbed_key (gpointer key, gpointer val, gpointer data)
+remove_grabbed_key (bpointer key, bpointer val, bpointer data)
 {
   GrabbedKey *grabbed_key = key;
   BtkPlug *plug = data;
@@ -899,10 +899,10 @@ remove_grabbed_key (gpointer key, gpointer val, gpointer data)
 
 static void
 keys_foreach (BtkWindow      *window,
-	      guint           keyval,
+	      buint           keyval,
 	      BdkModifierType modifiers,
-	      gboolean        is_mnemonic,
-	      gpointer        data)
+	      bboolean        is_mnemonic,
+	      bpointer        data)
 {
   GHashTable *new_grabbed_keys = data;
   GrabbedKey *key = g_slice_new (GrabbedKey);
@@ -914,7 +914,7 @@ keys_foreach (BtkWindow      *window,
 }
 
 static void
-grabbed_key_free (gpointer data)
+grabbed_key_free (bpointer data)
 {
   g_slice_free (GrabbedKey, data);
 }
@@ -942,7 +942,7 @@ btk_plug_keys_changed (BtkWindow *window)
     }
 }
 
-static gboolean
+static bboolean
 btk_plug_focus (BtkWidget        *widget,
 		BtkDirectionType  direction)
 {

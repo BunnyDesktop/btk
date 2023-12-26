@@ -34,7 +34,7 @@ fill_model (BtkTreeModel *model)
   char *str, *str2;
   BtkTreeIter iter;
   BtkListStore *store = BTK_LIST_STORE (model);
-  gint32 size;
+  bint32 size;
   
   pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
 
@@ -79,7 +79,7 @@ create_model (void)
 {
   BtkListStore *store;
   
-  store = btk_list_store_new (5, BDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  store = btk_list_store_new (5, BDK_TYPE_PIXBUF, B_TYPE_STRING, B_TYPE_INT, B_TYPE_STRING, B_TYPE_BOOLEAN);
 
   return BTK_TREE_MODEL (store);
 }
@@ -126,15 +126,15 @@ swap_rows (BtkWidget *button, BtkIconView *icon_list)
 }
 
 static void
-add_n_items (BtkIconView *icon_list, gint n)
+add_n_items (BtkIconView *icon_list, bint n)
 {
-  static gint count = NUMBER_OF_ITEMS;
+  static bint count = NUMBER_OF_ITEMS;
 
   BtkTreeIter iter;
   BtkListStore *store;
   BdkPixbuf *pixbuf;
-  gchar *str, *str2;
-  gint i;
+  bchar *str, *str2;
+  bint i;
 
   store = BTK_LIST_STORE (btk_icon_view_get_model (icon_list));
   pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
@@ -176,7 +176,7 @@ add_large (BtkWidget *button, BtkIconView *icon_list)
   BtkTreeIter iter;
 
   BdkPixbuf *pixbuf, *pb;
-  gchar *str;
+  bchar *str;
 
   store = BTK_LIST_STORE (btk_icon_view_get_model (icon_list));
   pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
@@ -277,7 +277,7 @@ item_activated (BtkIconView *icon_view,
 {
   BtkTreeIter iter;
   BtkTreeModel *model;
-  gchar *text;
+  bchar *text;
 
   model = btk_icon_view_get_model (icon_view);
   btk_tree_model_get_iter (model, &iter, path);
@@ -290,13 +290,13 @@ item_activated (BtkIconView *icon_view,
 
 static void
 toggled (BtkCellRendererToggle *cell,
-	 gchar                 *path_string,
-	 gpointer               data)
+	 bchar                 *path_string,
+	 bpointer               data)
 {
   BtkTreeModel *model = BTK_TREE_MODEL (data);
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_string);
-  gboolean value;
+  bboolean value;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, 4, &value, -1);
@@ -309,9 +309,9 @@ toggled (BtkCellRendererToggle *cell,
 
 static void
 edited (BtkCellRendererText *cell,
-	gchar               *path_string,
-	gchar               *new_text,
-	gpointer             data)
+	bchar               *path_string,
+	bchar               *new_text,
+	bpointer             data)
 {
   BtkTreeModel *model = BTK_TREE_MODEL (data);
   BtkTreeIter iter;
@@ -364,7 +364,7 @@ do_popup_menu (BtkWidget      *icon_list,
   data = g_new0 (ItemData, 1);
   data->icon_list = icon_view;
   data->path = path;
-  g_object_set_data_full (G_OBJECT (menu), "item-path", data, (GDestroyNotify)free_item_data);
+  g_object_set_data_full (B_OBJECT (menu), "item-path", data, (GDestroyNotify)free_item_data);
 
   menuitem = btk_menu_item_new_with_label ("Activate");
   btk_widget_show (menuitem);
@@ -387,7 +387,7 @@ do_popup_menu (BtkWidget      *icon_list,
 }
 	
 
-static gboolean
+static bboolean
 button_press_event_handler (BtkWidget      *widget, 
 			    BdkEventButton *event)
 {
@@ -401,7 +401,7 @@ button_press_event_handler (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 popup_menu_handler (BtkWidget *widget)
 {
   do_popup_menu (widget, NULL);
@@ -412,8 +412,8 @@ static const BtkTargetEntry item_targets[] = {
   { "BTK_TREE_MODEL_ROW", BTK_TARGET_SAME_APP, 0 }
 };
 	
-gint
-main (gint argc, gchar **argv)
+bint
+main (bint argc, bchar **argv)
 {
   BtkWidget *paned, *tv;
   BtkWidget *window, *icon_list, *scrolled_window;
@@ -541,7 +541,7 @@ main (gint argc, gchar **argv)
 					BDK_ACTION_MOVE);
 
 			      
-  prop_editor = create_prop_editor (G_OBJECT (icon_list), 0);
+  prop_editor = create_prop_editor (B_OBJECT (icon_list), 0);
   btk_widget_show_all (prop_editor);
   
   scrolled_window = btk_scrolled_window_new (NULL, NULL);

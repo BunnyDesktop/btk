@@ -29,14 +29,14 @@
 
 #include <btk/btktoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOGGLE_TOOL_BUTTON             (btk_toggle_tool_button_get_type ())
-#define BTK_TOGGLE_TOOL_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButton))
-#define BTK_TOGGLE_TOOL_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
-#define BTK_IS_TOGGLE_TOOL_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON))
-#define BTK_IS_TOGGLE_TOOL_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON))
-#define BTK_TOGGLE_TOOL_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
+#define BTK_TOGGLE_TOOL_BUTTON(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButton))
+#define BTK_TOGGLE_TOOL_BUTTON_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
+#define BTK_IS_TOGGLE_TOOL_BUTTON(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON))
+#define BTK_IS_TOGGLE_TOOL_BUTTON_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_TOOL_BUTTON))
+#define BTK_TOGGLE_TOOL_BUTTON_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonClass))
 
 typedef struct _BtkToggleToolButton        BtkToggleToolButton;
 typedef struct _BtkToggleToolButtonClass   BtkToggleToolButtonClass;
@@ -64,14 +64,14 @@ struct _BtkToggleToolButtonClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_toggle_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_toggle_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem *btk_toggle_tool_button_new            (void);
-BtkToolItem *btk_toggle_tool_button_new_from_stock (const gchar *stock_id);
+BtkToolItem *btk_toggle_tool_button_new_from_stock (const bchar *stock_id);
 
 void         btk_toggle_tool_button_set_active     (BtkToggleToolButton *button,
-						    gboolean             is_active);
-gboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
+						    bboolean             is_active);
+bboolean     btk_toggle_tool_button_get_active     (BtkToggleToolButton *button);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOGGLE_TOOL_BUTTON_H__ */

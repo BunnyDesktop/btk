@@ -25,14 +25,14 @@
 
 #include "btksearchengine.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEARCH_ENGINE_TRACKER		(_btk_search_engine_tracker_get_type ())
-#define BTK_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTracker))
-#define BTK_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
-#define BTK_IS_SEARCH_ENGINE_TRACKER(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER))
-#define BTK_IS_SEARCH_ENGINE_TRACKER_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER))
-#define BTK_SEARCH_ENGINE_TRACKER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
+#define BTK_SEARCH_ENGINE_TRACKER(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTracker))
+#define BTK_SEARCH_ENGINE_TRACKER_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
+#define BTK_IS_SEARCH_ENGINE_TRACKER(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER))
+#define BTK_IS_SEARCH_ENGINE_TRACKER_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEARCH_ENGINE_TRACKER))
+#define BTK_SEARCH_ENGINE_TRACKER_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEARCH_ENGINE_TRACKER, BtkSearchEngineTrackerClass))
 
 typedef struct _BtkSearchEngineTracker BtkSearchEngineTracker;
 typedef struct _BtkSearchEngineTrackerClass BtkSearchEngineTrackerClass;
@@ -54,6 +54,6 @@ GType            _btk_search_engine_tracker_get_type (void);
 
 BtkSearchEngine* _btk_search_engine_tracker_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEARCH_ENGINE_TRACKER_H__ */

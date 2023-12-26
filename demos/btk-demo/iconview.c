@@ -25,11 +25,11 @@ enum
 
 
 static BdkPixbuf *file_pixbuf, *folder_pixbuf;
-gchar *parent;
+bchar *parent;
 BtkToolItem *up_button;
 
 /* Loads the images for the demo and returns whether the operation succeeded */
-static gboolean
+static bboolean
 load_pixbufs (GError **error)
 {
   char *filename;
@@ -65,7 +65,7 @@ static void
 fill_store (BtkListStore *store)
 {
   GDir *dir;
-  const gchar *name;
+  const bchar *name;
   BtkTreeIter iter;
 
   /* First clear the store */
@@ -80,8 +80,8 @@ fill_store (BtkListStore *store)
   name = g_dir_read_name (dir);
   while (name != NULL)
     {
-      gchar *path, *display_name;
-      gboolean is_dir;
+      bchar *path, *display_name;
+      bboolean is_dir;
 
       /* We ignore hidden files that start with a '.' */
       if (name[0] != '.')
@@ -108,14 +108,14 @@ fill_store (BtkListStore *store)
   g_dir_close (dir);
 }
 
-static gint
+static bint
 sort_func (BtkTreeModel *model,
 	   BtkTreeIter  *a,
 	   BtkTreeIter  *b,
-	   gpointer      user_data)
+	   bpointer      user_data)
 {
-  gboolean is_dir_a, is_dir_b;
-  gchar *name_a, *name_b;
+  bboolean is_dir_a, is_dir_b;
+  bchar *name_a, *name_b;
   int ret;
 
   /* We need this function because we want to sort
@@ -154,10 +154,10 @@ create_store (void)
   BtkListStore *store;
 
   store = btk_list_store_new (NUM_COLS,
-			      G_TYPE_STRING,
-			      G_TYPE_STRING,
+			      B_TYPE_STRING,
+			      B_TYPE_STRING,
 			      BDK_TYPE_PIXBUF,
-			      G_TYPE_BOOLEAN);
+			      B_TYPE_BOOLEAN);
 
   /* Set sort column and function */
   btk_tree_sortable_set_default_sort_func (BTK_TREE_SORTABLE (store),
@@ -173,12 +173,12 @@ create_store (void)
 static void
 item_activated (BtkIconView *icon_view,
 		BtkTreePath *tree_path,
-		gpointer     user_data)
+		bpointer     user_data)
 {
   BtkListStore *store;
-  gchar *path;
+  bchar *path;
   BtkTreeIter iter;
-  gboolean is_dir;
+  bboolean is_dir;
 
   store = BTK_LIST_STORE (user_data);
 
@@ -207,10 +207,10 @@ item_activated (BtkIconView *icon_view,
 
 static void
 up_clicked (BtkToolItem *item,
-	    gpointer     user_data)
+	    bpointer     user_data)
 {
   BtkListStore *store;
-  gchar *dir_name;
+  bchar *dir_name;
 
   store = BTK_LIST_STORE (user_data);
 
@@ -228,7 +228,7 @@ up_clicked (BtkToolItem *item,
 
 static void
 home_clicked (BtkToolItem *item,
-	      gpointer     user_data)
+	      bpointer     user_data)
 {
   BtkListStore *store;
 

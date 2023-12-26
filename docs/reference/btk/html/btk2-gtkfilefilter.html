@@ -42,7 +42,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="btk2-btkfilefilter.html#BtkFileFilterFunc" title="BtkFileFilterFunc ()">*BtkFileFilterFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -65,7 +65,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="btk2-btkfilefilter.html#btk-file-filter-get-name" title="btk_file_filter_get_name ()">btk_file_filter_get_name</a> <span class="c_punctuation">()</span>
@@ -113,7 +113,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-btkfilefilter.html#btk-file-filter-filter" title="btk_file_filter_filter ()">btk_file_filter_filter</a> <span class="c_punctuation">()</span>
@@ -147,7 +147,7 @@
 </div>
 <div class="refsect1">
 <a name="btk2-btkfilefilter.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> BtkFileFilter
@@ -165,9 +165,9 @@
 <a name="btk2-btkfilefilter.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BtkFileFilterFunc"></a><h3>BtkFileFilterFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 <span class="c_punctuation">(</span>*BtkFileFilterFunc<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a class="link" href="btk2-btkfilefilter.html#BtkFileFilterInfo" title="struct BtkFileFilterInfo"><span class="type">BtkFileFilterInfo</span></a> *filter_info</code></em>,
-                      <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -205,7 +205,7 @@ that accepts any file, use:</p>
 <a name="btk-file-filter-set-name"></a><h3>btk_file_filter_set_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_file_filter_set_name (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+                          <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <p>Sets the human-readable name of the filter; this is the string
 that will be displayed in the file selector user interface if
 there is a selectable list of filters.</p>
@@ -237,7 +237,7 @@ to remove any existing name. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-file-filter-get-name"></a><h3>btk_file_filter_get_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_file_filter_get_name (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>);</pre>
 <p>Gets the human-readable name for the filter. See <a class="link" href="btk2-btkfilefilter.html#btk-file-filter-set-name" title="btk_file_filter_set_name ()"><code class="function">btk_file_filter_set_name()</code></a>.</p>
 <div class="refsect3">
@@ -268,7 +268,7 @@ be modified or freed.</p>
 <a name="btk-file-filter-add-mime-type"></a><h3>btk_file_filter_add_mime_type ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_file_filter_add_mime_type (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *mime_type</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *mime_type</code></em>);</pre>
 <p>Adds a rule allowing a given mime type to <em class="parameter"><code>filter</code></em>
 .</p>
 <div class="refsect3">
@@ -300,7 +300,7 @@ btk_file_filter_add_mime_type (<em class="parameter"><code><a class="link" href=
 <a name="btk-file-filter-add-pattern"></a><h3>btk_file_filter_add_pattern ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_file_filter_add_pattern (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *pattern</code></em>);</pre>
+                             <em class="parameter"><code>const <span class="type">bchar</span> *pattern</code></em>);</pre>
 <p>Adds a rule allowing a shell style glob to a filter.</p>
 <div class="refsect3">
 <a name="btk-file-filter-add-pattern.parameters"></a><h4>Parameters</h4>
@@ -357,7 +357,7 @@ by BdkPixbuf.</p>
 btk_file_filter_add_custom (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>,
                             <em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilterFlags" title="enum BtkFileFilterFlags"><span class="type">BtkFileFilterFlags</span></a> needed</code></em>,
                             <em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilterFunc" title="BtkFileFilterFunc ()"><span class="type">BtkFileFilterFunc</span></a> func</code></em>,
-                            <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                            <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                             <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>Adds rule to a filter that allows files based on a custom callback
 function. The bitfield <em class="parameter"><code>needed</code></em>
@@ -443,7 +443,7 @@ calling <a class="link" href="btk2-btkfilefilter.html#btk-file-filter-filter" ti
 <hr>
 <div class="refsect2">
 <a name="btk-file-filter-filter"></a><h3>btk_file_filter_filter ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_file_filter_filter (<em class="parameter"><code><a class="link" href="btk2-btkfilefilter.html#BtkFileFilter"><span class="type">BtkFileFilter</span></a> *filter</code></em>,
                         <em class="parameter"><code>const <a class="link" href="btk2-btkfilefilter.html#BtkFileFilterInfo" title="struct BtkFileFilterInfo"><span class="type">BtkFileFilterInfo</span></a> *filter_info</code></em>);</pre>
 <p>Tests whether a file should be displayed according to <em class="parameter"><code>filter</code></em>
@@ -496,10 +496,10 @@ about a file.</p></td>
 <pre class="programlisting">struct BtkFileFilterInfo {
   BtkFileFilterFlags contains;
 
-  const gchar *filename;
-  const gchar *uri;
-  const gchar *display_name;
-  const gchar *mime_type;
+  const bchar *filename;
+  const bchar *uri;
+  const bchar *display_name;
+  const bchar *mime_type;
 };
 </pre>
 </div>

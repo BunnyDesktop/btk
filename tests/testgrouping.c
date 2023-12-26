@@ -8,7 +8,7 @@ create_model (void)
   BtkTreeIter iter;
   BtkTreeIter parent;
 
-  store = btk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, B_TYPE_STRING);
 
   btk_tree_store_insert_with_values (store, &parent, NULL, 0,
 				     0, "Applications", -1);
@@ -62,7 +62,7 @@ set_color_func (BtkTreeViewColumn *column,
 		BtkCellRenderer   *cell,
 		BtkTreeModel      *model,
 		BtkTreeIter       *iter,
-		gpointer           data)
+		bpointer           data)
 {
   if (btk_tree_model_iter_has_child (model, iter))
     g_object_set (cell, "cell-background", "Grey", NULL);
@@ -84,12 +84,12 @@ tree_view_row_activated (BtkTreeView       *tree_view,
     btk_tree_view_expand_row (BTK_TREE_VIEW (tree_view), path, FALSE);
 }
 
-static gboolean
+static bboolean
 tree_view_select_func (BtkTreeSelection *selection,
 		       BtkTreeModel     *model,
 		       BtkTreePath      *path,
-		       gboolean          path_currently_selected,
-		       gpointer          data)
+		       bboolean          path_currently_selected,
+		       bpointer          data)
 {
   if (btk_tree_path_get_depth (path) > 1)
     return TRUE;

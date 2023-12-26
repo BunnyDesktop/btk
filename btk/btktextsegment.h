@@ -33,7 +33,7 @@
 #include <btk/btktextchild.h>
 #include <btk/btktextchildprivate.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * Segments: each line is divided into one or more segments, where each
@@ -50,13 +50,13 @@ typedef struct _BtkTextTagInfo BtkTextTagInfo;
 struct _BtkTextTagInfo {
   BtkTextTag *tag;
   BtkTextBTreeNode *tag_root; /* highest-level node containing the tag */
-  gint toggle_count;      /* total toggles of this tag below tag_root */
+  bint toggle_count;      /* total toggles of this tag below tag_root */
 };
 
 /* Body of a segment that toggles a tag on or off */
 struct _BtkTextToggleBody {
   BtkTextTagInfo *info;             /* Tag that starts or ends here. */
-  gboolean inNodeCounts;             /* TRUE means this toggle has been
+  bboolean inNodeCounts;             /* TRUE means this toggle has been
                                       * accounted for in node toggle
                                       * counts; FALSE means it hasn't, yet. */
 };
@@ -66,15 +66,15 @@ struct _BtkTextToggleBody {
 
 /* Split seg at index, returning list of two new segments, and freeing seg */
 typedef BtkTextLineSegment* (*BtkTextSegSplitFunc)      (BtkTextLineSegment *seg,
-                                                         gint                index);
+                                                         bint                index);
 
 /* Delete seg which is contained in line; if tree_gone, the tree is being
  * freed in its entirety, which may matter for some reason (?)
  * Return TRUE if the segment is not deleteable, e.g. a mark.
  */
-typedef gboolean            (*BtkTextSegDeleteFunc)     (BtkTextLineSegment *seg,
+typedef bboolean            (*BtkTextSegDeleteFunc)     (BtkTextLineSegment *seg,
                                                          BtkTextLine        *line,
-                                                         gboolean            tree_gone);
+                                                         bboolean            tree_gone);
 
 /* Called after segment structure of line changes, so segments can
  * cleanup (e.g. merge with adjacent segments). Returns a segment list
@@ -97,7 +97,7 @@ typedef void                (*BtkTextSegCheckFunc)      (BtkTextLineSegment *seg
 
 struct _BtkTextLineSegmentClass {
   char *name;                           /* Name of this kind of segment. */
-  gboolean leftGravity;                 /* If a segment has zero size (e.g. a
+  bboolean leftGravity;                 /* If a segment has zero size (e.g. a
                                          * mark or tag toggle), does it
                                          * attach to character to its left
                                          * or right?  1 means left, 0 means
@@ -154,19 +154,19 @@ struct _BtkTextLineSegment {
 
 BtkTextLineSegment  *btk_text_line_segment_split (const BtkTextIter *iter);
 
-BtkTextLineSegment *_btk_char_segment_new                  (const gchar    *text,
-                                                            guint           len);
-BtkTextLineSegment *_btk_char_segment_new_from_two_strings (const gchar    *text1,
-                                                            guint           len1,
-							    guint           chars1,
-                                                            const gchar    *text2,
-                                                            guint           len2,
-							    guint           chars2);
+BtkTextLineSegment *_btk_char_segment_new                  (const bchar    *text,
+                                                            buint           len);
+BtkTextLineSegment *_btk_char_segment_new_from_two_strings (const bchar    *text1,
+                                                            buint           len1,
+							    buint           chars1,
+                                                            const bchar    *text2,
+                                                            buint           len2,
+							    buint           chars2);
 BtkTextLineSegment *_btk_toggle_segment_new                (BtkTextTagInfo *info,
-                                                            gboolean        on);
+                                                            bboolean        on);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

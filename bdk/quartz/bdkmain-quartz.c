@@ -50,13 +50,13 @@ bdk_error_trap_push (void)
 {
 }
 
-gint
+bint
 bdk_error_trap_pop (void)
 {
   return 0;
 }
 
-gchar *
+bchar *
 bdk_get_display (void)
 {
   return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
@@ -69,31 +69,31 @@ bdk_notify_startup_complete (void)
 }
 
 void
-bdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const bchar* startup_id)
 {
   /* FIXME: Implement? */
 }
 
 void          
 bdk_window_set_startup_id (BdkWindow   *window,
-			   const gchar *startup_id)
+			   const bchar *startup_id)
 {
   /* FIXME: Implement? */
 }
 
 void
 _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
-					 const gchar *sm_client_id)
+					 const bchar *sm_client_id)
 {
 }
 
 void
-bdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (bboolean use_xshm)
 {
   /* Always on, since we're always on the local machine */
 }
 
-gboolean
+bboolean
 bdk_get_use_xshm (void)
 {
   return TRUE;

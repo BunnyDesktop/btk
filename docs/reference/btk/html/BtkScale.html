@@ -70,7 +70,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkScale.html#btk-scale-get-digits" title="btk_scale_get_digits ()">btk_scale_get_digits</a> <span class="c_punctuation">()</span>
@@ -78,7 +78,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkScale.html#btk-scale-get-draw-value" title="btk_scale_get_draw_value ()">btk_scale_get_draw_value</a> <span class="c_punctuation">()</span>
@@ -142,7 +142,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkScale.html#BtkScale--draw-value" title="The “draw-value” property">draw-value</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -207,7 +207,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkScale.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -237,7 +237,7 @@ BtkScale implements
 <a name="btk-scale-set-digits"></a><h3>btk_scale_set_digits ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_set_digits (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> digits</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> digits</code></em>);</pre>
 <p>Sets the number of decimal places that are displayed in the value. Also
 causes the value of the adjustment to be rounded to this number of digits,
 so the retrieved value matches the displayed one, if <a class="link" href="BtkScale.html#BtkScale--draw-value" title="The “draw-value” property"><span class="type">“draw-value”</span></a> is
@@ -272,7 +272,7 @@ e.g. use 1 to display 1.0, 2 to display 1.00, etc</p></td>
 <a name="btk-scale-set-draw-value"></a><h3>btk_scale_set_draw_value ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_set_draw_value (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>,
-                          <em class="parameter"><code><span class="type">gboolean</span> draw_value</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bboolean</span> draw_value</code></em>);</pre>
 <p>Specifies whether the current value is displayed as a string next 
 to the slider.</p>
 <div class="refsect3">
@@ -331,7 +331,7 @@ btk_scale_set_value_pos (<em class="parameter"><code><a class="link" href="BtkSc
 <hr>
 <div class="refsect2">
 <a name="btk-scale-get-digits"></a><h3>btk_scale_get_digits ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_scale_get_digits (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>);</pre>
 <p>Gets the number of decimal places that are displayed in the value.</p>
 <div class="refsect3">
@@ -357,7 +357,7 @@ btk_scale_get_digits (<em class="parameter"><code><a class="link" href="BtkScale
 <hr>
 <div class="refsect2">
 <a name="btk-scale-get-draw-value"></a><h3>btk_scale_get_draw_value ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_scale_get_draw_value (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>);</pre>
 <p>Returns whether the current value is displayed as a string 
 next to the slider.</p>
@@ -443,8 +443,8 @@ or <code class="literal">NULL</code> if the <a class="link" href="BtkScale.html#
 <a name="btk-scale-get-layout-offsets"></a><h3>btk_scale_get_layout_offsets ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_get_layout_offsets (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
-                              <em class="parameter"><code><span class="type">gint</span> *y</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bint</span> *x</code></em>,
+                              <em class="parameter"><code><span class="type">bint</span> *y</code></em>);</pre>
 <p>Obtains the coordinates where the scale will draw the 
 <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> representing the text in the scale. Remember
 when using the <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> function you need to convert to
@@ -485,9 +485,9 @@ values are undefined.</p>
 <a name="btk-scale-add-mark"></a><h3>btk_scale_add_mark ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_scale_add_mark (<em class="parameter"><code><a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale</code></em>,
-                    <em class="parameter"><code><span class="type">gdouble</span> value</code></em>,
+                    <em class="parameter"><code><span class="type">bdouble</span> value</code></em>,
                     <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPositionType" title="enum BtkPositionType"><span class="type">BtkPositionType</span></a> position</code></em>,
-                    <em class="parameter"><code>const <span class="type">gchar</span> *markup</code></em>);</pre>
+                    <em class="parameter"><code>const <span class="type">bchar</span> *markup</code></em>);</pre>
 <p>Adds a mark at <em class="parameter"><code>value</code></em>
 . </p>
 <p>A mark is indicated visually by drawing a tick mark next to the scale, 
@@ -579,7 +579,7 @@ btk_scale_clear_marks (<em class="parameter"><code><a class="link" href="BtkScal
 <hr>
 <div class="refsect2">
 <a name="BtkScale--draw-value"></a><h3>The <code class="literal">“draw-value”</code> property</h3>
-<pre class="programlisting">  “draw-value”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “draw-value”               <span class="type">bboolean</span></pre>
 <p>Whether the current value is displayed as a string next to the slider.</p>
 <p>Owner: BtkScale</p>
 <p>Flags: Read / Write</p>
@@ -624,7 +624,7 @@ btk_scale_clear_marks (<em class="parameter"><code><a class="link" href="BtkScal
 <pre class="programlisting"><span class="returnvalue">char</span>*
 user_function (<a class="link" href="BtkScale.html" title="BtkScale"><span class="type">BtkScale</span></a> *scale,
                <span class="type">double</span>    value,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>Signal which allows you to change how the scale value is displayed.
 Connect a signal handler which returns an allocated string representing
 
@@ -645,9 +645,9 @@ with "--&gt;1.0&lt;--".</p>
 5
 6
 7</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">gchar</span><span class="o">*</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">bchar</span><span class="o">*</span>
 <span class="nf">format_value_callback</span> <span class="p">(</span><span class="n">BtkScale</span> <span class="o">*</span><span class="n">scale</span><span class="p">,</span>
-                       <span class="n">gdouble</span>   <span class="n">value</span><span class="p">)</span>
+                       <span class="n">bdouble</span>   <span class="n">value</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">return</span> <span class="n">g_strdup_printf</span> <span class="p">(</span><span class="s">&quot;--&gt;%0.*g&lt;--&quot;</span><span class="p">,</span>
                           <span class="n">btk_scale_get_digits</span> <span class="p">(</span><span class="n">scale</span><span class="p">),</span> <span class="n">value</span><span class="p">);</span>

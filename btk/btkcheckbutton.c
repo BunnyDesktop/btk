@@ -40,7 +40,7 @@ static void btk_check_button_size_request        (BtkWidget           *widget,
 						  BtkRequisition      *requisition);
 static void btk_check_button_size_allocate       (BtkWidget           *widget,
 						  BtkAllocation       *allocation);
-static gint btk_check_button_expose              (BtkWidget           *widget,
+static bint btk_check_button_expose              (BtkWidget           *widget,
 						  BdkEventExpose      *event);
 static void btk_check_button_paint               (BtkWidget           *widget,
 						  BdkRectangle        *area);
@@ -69,7 +69,7 @@ btk_check_button_class_init (BtkCheckButtonClass *class)
 							     P_("Indicator Size"),
 							     P_("Size of check or radio indicator"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     INDICATOR_SIZE,
 							     BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
@@ -77,7 +77,7 @@ btk_check_button_class_init (BtkCheckButtonClass *class)
 							     P_("Indicator Spacing"),
 							     P_("Spacing around check or radio indicator"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     INDICATOR_SPACING,
 							     BTK_PARAM_READABLE));
 }
@@ -99,7 +99,7 @@ btk_check_button_new (void)
 
 
 BtkWidget*
-btk_check_button_new_with_label (const gchar *label)
+btk_check_button_new_with_label (const bchar *label)
 {
   return g_object_new (BTK_TYPE_CHECK_BUTTON, "label", label, NULL);
 }
@@ -115,7 +115,7 @@ btk_check_button_new_with_label (const gchar *label)
  * in @label indicate the mnemonic for the check button.
  **/
 BtkWidget*
-btk_check_button_new_with_mnemonic (const gchar *label)
+btk_check_button_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_CHECK_BUTTON, 
                        "label", label, 
@@ -135,10 +135,10 @@ btk_check_button_paint (BtkWidget    *widget,
   
   if (btk_widget_is_drawable (widget))
     {
-      gint border_width;
-      gint interior_focus;
-      gint focus_width;
-      gint focus_pad;
+      bint border_width;
+      bint interior_focus;
+      bint focus_width;
+      bint focus_pad;
 	  
       btk_widget_style_get (widget,
 			    "interior-focus", &interior_focus,
@@ -173,8 +173,8 @@ btk_check_button_paint (BtkWidget    *widget,
 
 void
 _btk_check_button_get_props (BtkCheckButton *check_button,
-			     gint           *indicator_size,
-			     gint           *indicator_spacing)
+			     bint           *indicator_size,
+			     bint           *indicator_spacing)
 {
   BtkWidget *widget =  BTK_WIDGET (check_button);
 
@@ -194,12 +194,12 @@ btk_check_button_size_request (BtkWidget      *widget,
   if (toggle_button->draw_indicator)
     {
       BtkWidget *child;
-      gint temp;
-      gint indicator_size;
-      gint indicator_spacing;
-      gint border_width = BTK_CONTAINER (widget)->border_width;
-      gint focus_width;
-      gint focus_pad;
+      bint temp;
+      bint indicator_size;
+      bint indicator_spacing;
+      bint border_width = BTK_CONTAINER (widget)->border_width;
+      bint focus_width;
+      bint focus_pad;
 
       btk_widget_style_get (BTK_WIDGET (widget),
 			    "focus-line-width", &focus_width,
@@ -247,10 +247,10 @@ btk_check_button_size_allocate (BtkWidget     *widget,
 
   if (toggle_button->draw_indicator)
     {
-      gint indicator_size;
-      gint indicator_spacing;
-      gint focus_width;
-      gint focus_pad;
+      bint indicator_size;
+      bint indicator_spacing;
+      bint focus_width;
+      bint focus_pad;
       
       _btk_check_button_get_props (check_button, &indicator_size, &indicator_spacing);
       btk_widget_style_get (widget,
@@ -267,7 +267,7 @@ btk_check_button_size_allocate (BtkWidget     *widget,
       if (BTK_BIN (button)->child && btk_widget_get_visible (BTK_BIN (button)->child))
 	{
 	  BtkRequisition child_requisition;
- 	  gint border_width = BTK_CONTAINER (widget)->border_width;
+ 	  bint border_width = BTK_CONTAINER (widget)->border_width;
 
 	  btk_widget_get_child_requisition (BTK_BIN (button)->child, &child_requisition);
  
@@ -297,7 +297,7 @@ btk_check_button_size_allocate (BtkWidget     *widget,
     BTK_WIDGET_CLASS (btk_check_button_parent_class)->size_allocate (widget, allocation);
 }
 
-static gint
+static bint
 btk_check_button_expose (BtkWidget      *widget,
 			 BdkEventExpose *event)
 {
@@ -350,12 +350,12 @@ btk_real_check_button_draw_indicator (BtkCheckButton *check_button,
   BtkToggleButton *toggle_button;
   BtkStateType state_type;
   BtkShadowType shadow_type;
-  gint x, y;
-  gint indicator_size;
-  gint indicator_spacing;
-  gint focus_width;
-  gint focus_pad;
-  gboolean interior_focus;
+  bint x, y;
+  bint indicator_size;
+  bint indicator_spacing;
+  bint focus_width;
+  bint focus_pad;
+  bboolean interior_focus;
 
   widget = BTK_WIDGET (check_button);
 

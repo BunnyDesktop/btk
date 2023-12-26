@@ -26,7 +26,7 @@
 #include <cups/http.h>
 #include <cups/ipp.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkCupsRequest        BtkCupsRequest;
 typedef struct _BtkCupsResult         BtkCupsResult;
@@ -84,25 +84,25 @@ struct _BtkCupsRequest
   http_status_t last_status;
   ipp_t *ipp_request;
 
-  gchar *server;
-  gchar *resource;
+  bchar *server;
+  bchar *resource;
   BUNNYIOChannel *data_io;
-  gint attempts;
+  bint attempts;
 
   BtkCupsResult *result;
 
-  gint state;
+  bint state;
   BtkCupsPollState poll_state;
-  guint64 bytes_received;
+  buint64 bytes_received;
 
-  gchar *password;
-  gchar *username;
+  bchar *password;
+  bchar *username;
 
-  gint own_http : 1;
-  gint need_password : 1;
-  gint need_auth_info : 1;
-  gchar **auth_info_required;
-  gchar **auth_info;
+  bint own_http : 1;
+  bint need_password : 1;
+  bint need_auth_info : 1;
+  bchar **auth_info_required;
+  bchar **auth_info;
   BtkCupsPasswordState password_state;
 };
 
@@ -113,7 +113,7 @@ struct _BtkCupsConnectionTest
   http_addrlist_t       *addrlist;
   http_addrlist_t       *current_addr;
   http_addrlist_t       *last_wrong_addr;
-  gint                   socket;
+  bint                   socket;
 #endif
 };
 
@@ -146,14 +146,14 @@ enum
 
 BtkCupsRequest        * btk_cups_request_new_with_username (http_t             *connection,
 							    BtkCupsRequestType  req_type,
-							    gint                operation_id,
+							    bint                operation_id,
 							    BUNNYIOChannel         *data_io,
 							    const char         *server,
 							    const char         *resource,
 							    const char         *username);
 BtkCupsRequest        * btk_cups_request_new               (http_t             *connection,
 							    BtkCupsRequestType  req_type,
-							    gint                operation_id,
+							    bint                operation_id,
 							    BUNNYIOChannel         *data_io,
 							    const char         *server,
 							    const char         *resource);
@@ -173,19 +173,19 @@ void                    btk_cups_request_ipp_add_strings   (BtkCupsRequest     *
 const char            * btk_cups_request_ipp_get_string    (BtkCupsRequest     *request,
 							    ipp_tag_t           tag,
 							    const char         *name);
-gboolean                btk_cups_request_read_write        (BtkCupsRequest     *request,
-                                                            gboolean            connect_only);
+bboolean                btk_cups_request_read_write        (BtkCupsRequest     *request,
+                                                            bboolean            connect_only);
 BtkCupsPollState        btk_cups_request_get_poll_state    (BtkCupsRequest     *request);
 void                    btk_cups_request_free              (BtkCupsRequest     *request);
 BtkCupsResult         * btk_cups_request_get_result        (BtkCupsRequest     *request);
-gboolean                btk_cups_request_is_done           (BtkCupsRequest     *request);
+bboolean                btk_cups_request_is_done           (BtkCupsRequest     *request);
 void                    btk_cups_request_encode_option     (BtkCupsRequest     *request,
-						            const gchar        *option,
-							    const gchar        *value);
+						            const bchar        *option,
+							    const bchar        *value);
 void                    btk_cups_request_set_ipp_version   (BtkCupsRequest     *request,
-							    gint                major,
-							    gint                minor);
-gboolean                btk_cups_result_is_error           (BtkCupsResult      *result);
+							    bint                major,
+							    bint                minor);
+bboolean                btk_cups_result_is_error           (BtkCupsResult      *result);
 ipp_t                 * btk_cups_result_get_response       (BtkCupsResult      *result);
 BtkCupsErrorType        btk_cups_result_get_error_type     (BtkCupsResult      *result);
 int                     btk_cups_result_get_error_status   (BtkCupsResult      *result);
@@ -196,5 +196,5 @@ BtkCupsConnectionTest * btk_cups_connection_test_new       (const char         *
 BtkCupsConnectionState  btk_cups_connection_test_get_state (BtkCupsConnectionTest *test);
 void                    btk_cups_connection_test_free      (BtkCupsConnectionTest *test);
 
-G_END_DECLS
+B_END_DECLS
 #endif 

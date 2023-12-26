@@ -39,7 +39,7 @@
 
 struct _BdkDisplayManager
 {
-  GObject parent_instance;
+  BObject parent_instance;
 };
 
 enum {
@@ -54,25 +54,25 @@ enum {
 };
 
 static void bdk_display_manager_class_init   (BdkDisplayManagerClass *klass);
-static void bdk_display_manager_set_property (GObject                *object,
-					      guint                   prop_id,
-					      const GValue           *value,
-					      GParamSpec             *pspec);
-static void bdk_display_manager_get_property (GObject                *object,
-					      guint                   prop_id,
-					      GValue                 *value,
-					      GParamSpec             *pspec);
+static void bdk_display_manager_set_property (BObject                *object,
+					      buint                   prop_id,
+					      const BValue           *value,
+					      BParamSpec             *pspec);
+static void bdk_display_manager_get_property (BObject                *object,
+					      buint                   prop_id,
+					      BValue                 *value,
+					      BParamSpec             *pspec);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 static BdkDisplay *default_display = NULL;
 
-G_DEFINE_TYPE (BdkDisplayManager, bdk_display_manager, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDisplayManager, bdk_display_manager, B_TYPE_OBJECT)
 
 static void
 bdk_display_manager_class_init (BdkDisplayManagerClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->set_property = bdk_display_manager_set_property;
   object_class->get_property = bdk_display_manager_get_property;
@@ -88,12 +88,12 @@ bdk_display_manager_class_init (BdkDisplayManagerClass *klass)
    */
   signals[DISPLAY_OPENED] =
     g_signal_new (g_intern_static_string ("display-opened"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkDisplayManagerClass, display_opened),
 		  NULL, NULL,
 		  _bdk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  1,
 		  BDK_TYPE_DISPLAY);
 
@@ -113,36 +113,36 @@ bdk_display_manager_init (BdkDisplayManager *manager)
 }
 
 static void
-bdk_display_manager_set_property (GObject      *object,
-				  guint         prop_id,
-				  const GValue *value,
-				  GParamSpec   *pspec)
+bdk_display_manager_set_property (BObject      *object,
+				  buint         prop_id,
+				  const BValue *value,
+				  BParamSpec   *pspec)
 {
   switch (prop_id)
     {
     case PROP_DEFAULT_DISPLAY:
       bdk_display_manager_set_default_display (BDK_DISPLAY_MANAGER (object),
-					       g_value_get_object (value));
+					       b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-bdk_display_manager_get_property (GObject      *object,
-				  guint         prop_id,
-				  GValue       *value,
-				  GParamSpec   *pspec)
+bdk_display_manager_get_property (BObject      *object,
+				  buint         prop_id,
+				  BValue       *value,
+				  BParamSpec   *pspec)
 {
   switch (prop_id)
     {
     case PROP_DEFAULT_DISPLAY:
-      g_value_set_object (value, default_display);
+      b_value_set_object (value, default_display);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -239,7 +239,7 @@ bdk_display_manager_set_default_display (BdkDisplayManager *display_manager,
 
   _bdk_windowing_set_default_display (display);
 
-  g_object_notify (G_OBJECT (display_manager), "default-display");
+  g_object_notify (B_OBJECT (display_manager), "default-display");
 }
 
 /**
@@ -249,7 +249,7 @@ bdk_display_manager_set_default_display (BdkDisplayManager *display_manager,
  * List all currently open displays.
  * 
  * Return value: (transfer container) (element-type BdkDisplay): a newly allocated
- * #GSList of #BdkDisplay objects. Free this list with g_slist_free() when you
+ * #GSList of #BdkDisplay objects. Free this list with b_slist_free() when you
  * are done with it.
  *
  * Since: 2.2
@@ -257,7 +257,7 @@ bdk_display_manager_set_default_display (BdkDisplayManager *display_manager,
 GSList *
 bdk_display_manager_list_displays (BdkDisplayManager *display_manager)
 {
-  return g_slist_copy (_bdk_displays);
+  return b_slist_copy (_bdk_displays);
 }
 
 #define __BDK_DISPLAY_MANAGER_C__

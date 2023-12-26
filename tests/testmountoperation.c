@@ -21,25 +21,25 @@
 #include "config.h"
 #include <btk/btk.h>
 
-static gboolean ask_question = FALSE;
-static gboolean anonymous = FALSE;
-static gboolean dont_ask_username = FALSE;
-static gboolean dont_ask_domain = FALSE;
-static gboolean dont_ask_password = FALSE;
-static gboolean dont_save_password = FALSE;
+static bboolean ask_question = FALSE;
+static bboolean anonymous = FALSE;
+static bboolean dont_ask_username = FALSE;
+static bboolean dont_ask_domain = FALSE;
+static bboolean dont_ask_password = FALSE;
+static bboolean dont_save_password = FALSE;
 
 
 static void
 got_reply (GMountOperation       *op,
            GMountOperationResult  result,
-           gpointer               user_data)
+           bpointer               user_data)
 {
   if (result == G_MOUNT_OPERATION_HANDLED)
     {
 
       if (ask_question)
         {
-          gint choice = g_mount_operation_get_choice (op);
+          bint choice = g_mount_operation_get_choice (op);
           g_print ("User chose: %d\n", choice);
         }
       else
@@ -96,7 +96,7 @@ int
 main (int argc, char *argv[])
 {
   GMountOperation *op;
-  gboolean force_rtl = FALSE;
+  bboolean force_rtl = FALSE;
   GError *error = NULL;
   GOptionEntry options[] = {
     { "ask-question", 'q', 0, G_OPTION_ARG_NONE, &ask_question, "Ask a question not a password.", NULL },

@@ -49,7 +49,7 @@
 				 *    unrelated code portions otherwise
 				 */
 
-#define BTK_SCALE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SCALE, BtkScalePrivate))
+#define BTK_SCALE_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SCALE, BtkScalePrivate))
 
 typedef struct _BtkScalePrivate BtkScalePrivate;
 
@@ -57,8 +57,8 @@ typedef struct _BtkScaleMark BtkScaleMark;
 
 struct _BtkScaleMark
 {
-  gdouble          value;
-  gchar           *markup;
+  bdouble          value;
+  bchar           *markup;
   BtkPositionType  position;
 };
 
@@ -80,16 +80,16 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL];
+static buint signals[LAST_SIGNAL];
 
-static void     btk_scale_set_property            (GObject        *object,
-                                                   guint           prop_id,
-                                                   const GValue   *value,
-                                                   GParamSpec     *pspec);
-static void     btk_scale_get_property            (GObject        *object,
-                                                   guint           prop_id,
-                                                   GValue         *value,
-                                                   GParamSpec     *pspec);
+static void     btk_scale_set_property            (BObject        *object,
+                                                   buint           prop_id,
+                                                   const BValue   *value,
+                                                   BParamSpec     *pspec);
+static void     btk_scale_get_property            (BObject        *object,
+                                                   buint           prop_id,
+                                                   BValue         *value,
+                                                   BParamSpec     *pspec);
 static void     btk_scale_size_request            (BtkWidget      *widget,
                                                    BtkRequisition *requisition);
 static void     btk_scale_style_set               (BtkWidget      *widget,
@@ -98,32 +98,32 @@ static void     btk_scale_get_range_border        (BtkRange       *range,
                                                    BtkBorder      *border);
 static void     btk_scale_get_mark_label_size     (BtkScale        *scale,
                                                    BtkPositionType  position,
-                                                   gint            *count1,
-                                                   gint            *width1,
-                                                   gint            *height1,
-                                                   gint            *count2,
-                                                   gint            *width2,
-                                                   gint            *height2);
-static void     btk_scale_finalize                (GObject        *object);
+                                                   bint            *count1,
+                                                   bint            *width1,
+                                                   bint            *height1,
+                                                   bint            *count2,
+                                                   bint            *width2,
+                                                   bint            *height2);
+static void     btk_scale_finalize                (BObject        *object);
 static void     btk_scale_screen_changed          (BtkWidget      *widget,
                                                    BdkScreen      *old_screen);
-static gboolean btk_scale_expose                  (BtkWidget      *widget,
+static bboolean btk_scale_expose                  (BtkWidget      *widget,
                                                    BdkEventExpose *event);
 static void     btk_scale_real_get_layout_offsets (BtkScale       *scale,
-                                                   gint           *x,
-                                                   gint           *y);
+                                                   bint           *x,
+                                                   bint           *y);
 static void     btk_scale_buildable_interface_init   (BtkBuildableIface *iface);
-static gboolean btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
+static bboolean btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
                                                       BtkBuilder    *builder,
-                                                      GObject       *child,
-                                                      const gchar   *tagname,
+                                                      BObject       *child,
+                                                      const bchar   *tagname,
                                                       GMarkupParser *parser,
-                                                      gpointer      *data);
+                                                      bpointer      *data);
 static void     btk_scale_buildable_custom_finished  (BtkBuildable  *buildable,
                                                       BtkBuilder    *builder,
-                                                      GObject       *child,
-                                                      const gchar   *tagname,
-                                                      gpointer       user_data);
+                                                      BObject       *child,
+                                                      const bchar   *tagname,
+                                                      bpointer       user_data);
 
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkScale, btk_scale, BTK_TYPE_RANGE,
@@ -131,12 +131,12 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkScale, btk_scale, BTK_TYPE_RANGE,
                                                          btk_scale_buildable_interface_init))
 
 
-static gint
-compare_marks (gconstpointer a, gconstpointer b, gpointer data)
+static bint
+compare_marks (gconstpointer a, gconstpointer b, bpointer data)
 {
-  gboolean inverted = GPOINTER_TO_INT (data);
+  bboolean inverted = BPOINTER_TO_INT (data);
   const BtkScaleMark *ma, *mb;
-  gint val;
+  bint val;
 
   val = inverted ? -1 : 1;
   ma = a; mb = b;
@@ -145,8 +145,8 @@ compare_marks (gconstpointer a, gconstpointer b, gpointer data)
 }
 
 static void
-btk_scale_notify (GObject    *object,
-                  GParamSpec *pspec)
+btk_scale_notify (BObject    *object,
+                  BParamSpec *pspec)
 {
   if (strcmp (pspec->name, "orientation") == 0)
     {
@@ -159,15 +159,15 @@ btk_scale_notify (GObject    *object,
       BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (object);
       BtkScaleMark *mark;
       GSList *m;
-      gint i, n;
-      gdouble *values;
+      bint i, n;
+      bdouble *values;
 
-      priv->marks = g_slist_sort_with_data (priv->marks,
+      priv->marks = b_slist_sort_with_data (priv->marks,
                                             compare_marks,
-                                            GINT_TO_POINTER (btk_range_get_inverted (BTK_RANGE (object))));
+                                            BINT_TO_POINTER (btk_range_get_inverted (BTK_RANGE (object))));
 
-      n = g_slist_length (priv->marks);
-      values = g_new (gdouble, n);
+      n = b_slist_length (priv->marks);
+      values = g_new (bdouble, n);
       for (m = priv->marks, i = 0; m; m = m->next, i++)
         {
           mark = m->data;
@@ -179,22 +179,22 @@ btk_scale_notify (GObject    *object,
       g_free (values);
     }
 
-  if (G_OBJECT_CLASS (btk_scale_parent_class)->notify)
-    G_OBJECT_CLASS (btk_scale_parent_class)->notify (object, pspec);
+  if (B_OBJECT_CLASS (btk_scale_parent_class)->notify)
+    B_OBJECT_CLASS (btk_scale_parent_class)->notify (object, pspec);
 }
 
 
-static gboolean
+static bboolean
 single_string_accumulator (GSignalInvocationHint *ihint,
-                           GValue                *return_accu,
-                           const GValue          *handler_return,
-                           gpointer               dummy)
+                           BValue                *return_accu,
+                           const BValue          *handler_return,
+                           bpointer               dummy)
 {
-  gboolean continue_emission;
-  const gchar *str;
+  bboolean continue_emission;
+  const bchar *str;
   
-  str = g_value_get_string (handler_return);
-  g_value_set_string (return_accu, str);
+  str = b_value_get_string (handler_return);
+  b_value_set_string (return_accu, str);
   continue_emission = str == NULL;
   
   return continue_emission;
@@ -209,12 +209,12 @@ single_string_accumulator (GSignalInvocationHint *ihint,
 static void
 btk_scale_class_init (BtkScaleClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkWidgetClass *widget_class;
   BtkRangeClass  *range_class;
   BtkBindingSet  *binding_set;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   range_class = (BtkRangeClass*) class;
   widget_class = (BtkWidgetClass*) class;
   
@@ -248,9 +248,9 @@ btk_scale_class_init (BtkScaleClass *class)
    * Here's an example signal handler which displays a value 1.0 as
    * with "--&gt;1.0&lt;--".
    * |[
-   * static gchar*
+   * static bchar*
    * format_value_callback (BtkScale *scale,
-   *                        gdouble   value)
+   *                        bdouble   value)
    * {
    *   return g_strdup_printf ("--&gt;&percnt;0.*g&lt;--",
    *                           btk_scale_get_digits (scale), value);
@@ -261,13 +261,13 @@ btk_scale_class_init (BtkScaleClass *class)
    */
   signals[FORMAT_VALUE] =
     g_signal_new (I_("format-value"),
-                  G_TYPE_FROM_CLASS (bobject_class),
+                  B_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkScaleClass, format_value),
                   single_string_accumulator, NULL,
                   _btk_marshal_STRING__DOUBLE,
-                  G_TYPE_STRING, 1,
-                  G_TYPE_DOUBLE);
+                  B_TYPE_STRING, 1,
+                  B_TYPE_DOUBLE);
 
   g_object_class_install_property (bobject_class,
                                    PROP_DIGITS,
@@ -301,7 +301,7 @@ btk_scale_class_init (BtkScaleClass *class)
 							     P_("Slider Length"),
 							     P_("Length of scale's slider"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     31,
 							     BTK_PARAM_READABLE));
 
@@ -310,7 +310,7 @@ btk_scale_class_init (BtkScaleClass *class)
 							     P_("Value spacing"),
 							     P_("Space between value text and the slider/trough area"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     2,
 							     BTK_PARAM_READABLE));
   
@@ -457,10 +457,10 @@ btk_scale_init (BtkScale *scale)
 }
 
 static void
-btk_scale_set_property (GObject      *object,
-			guint         prop_id,
-			const GValue *value,
-			GParamSpec   *pspec)
+btk_scale_set_property (BObject      *object,
+			buint         prop_id,
+			const BValue *value,
+			BParamSpec   *pspec)
 {
   BtkScale *scale;
 
@@ -469,25 +469,25 @@ btk_scale_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_DIGITS:
-      btk_scale_set_digits (scale, g_value_get_int (value));
+      btk_scale_set_digits (scale, b_value_get_int (value));
       break;
     case PROP_DRAW_VALUE:
-      btk_scale_set_draw_value (scale, g_value_get_boolean (value));
+      btk_scale_set_draw_value (scale, b_value_get_boolean (value));
       break;
     case PROP_VALUE_POS:
-      btk_scale_set_value_pos (scale, g_value_get_enum (value));
+      btk_scale_set_value_pos (scale, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_scale_get_property (GObject      *object,
-			guint         prop_id,
-			GValue       *value,
-			GParamSpec   *pspec)
+btk_scale_get_property (BObject      *object,
+			buint         prop_id,
+			BValue       *value,
+			BParamSpec   *pspec)
 {
   BtkScale *scale;
 
@@ -496,16 +496,16 @@ btk_scale_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_DIGITS:
-      g_value_set_int (value, scale->digits);
+      b_value_set_int (value, scale->digits);
       break;
     case PROP_DRAW_VALUE:
-      g_value_set_boolean (value, scale->draw_value);
+      b_value_set_boolean (value, scale->draw_value);
       break;
     case PROP_VALUE_POS:
-      g_value_set_enum (value, scale->value_pos);
+      b_value_set_enum (value, scale->value_pos);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -559,12 +559,12 @@ btk_scale_new (BtkOrientation  orientation,
  **/
 BtkWidget *
 btk_scale_new_with_range (BtkOrientation orientation,
-                          gdouble        min,
-                          gdouble        max,
-                          gdouble        step)
+                          bdouble        min,
+                          bdouble        max,
+                          bdouble        step)
 {
   BtkObject *adj;
-  gint digits;
+  bint digits;
 
   g_return_val_if_fail (min < max, NULL);
   g_return_val_if_fail (step != 0.0, NULL);
@@ -577,7 +577,7 @@ btk_scale_new_with_range (BtkOrientation orientation,
     }
   else
     {
-      digits = abs ((gint) floor (log10 (fabs (step))));
+      digits = abs ((bint) floor (log10 (fabs (step))));
       if (digits > 5)
         digits = 5;
     }
@@ -605,7 +605,7 @@ btk_scale_new_with_range (BtkOrientation orientation,
  */
 void
 btk_scale_set_digits (BtkScale *scale,
-		      gint      digits)
+		      bint      digits)
 {
   BtkRange *range;
   
@@ -624,7 +624,7 @@ btk_scale_set_digits (BtkScale *scale,
       _btk_scale_clear_layout (scale);
       btk_widget_queue_resize (BTK_WIDGET (scale));
 
-      g_object_notify (G_OBJECT (scale), "digits");
+      g_object_notify (B_OBJECT (scale), "digits");
     }
 }
 
@@ -636,7 +636,7 @@ btk_scale_set_digits (BtkScale *scale,
  *
  * Returns: the number of decimal places that are displayed
  */
-gint
+bint
 btk_scale_get_digits (BtkScale *scale)
 {
   g_return_val_if_fail (BTK_IS_SCALE (scale), -1);
@@ -654,7 +654,7 @@ btk_scale_get_digits (BtkScale *scale)
  */
 void
 btk_scale_set_draw_value (BtkScale *scale,
-			  gboolean  draw_value)
+			  bboolean  draw_value)
 {
   g_return_if_fail (BTK_IS_SCALE (scale));
 
@@ -672,7 +672,7 @@ btk_scale_set_draw_value (BtkScale *scale,
 
       btk_widget_queue_resize (BTK_WIDGET (scale));
 
-      g_object_notify (G_OBJECT (scale), "draw-value");
+      g_object_notify (B_OBJECT (scale), "draw-value");
     }
 }
 
@@ -685,7 +685,7 @@ btk_scale_set_draw_value (BtkScale *scale,
  *
  * Returns: whether the current value is displayed as a string
  */
-gboolean
+bboolean
 btk_scale_get_draw_value (BtkScale *scale)
 {
   g_return_val_if_fail (BTK_IS_SCALE (scale), FALSE);
@@ -717,7 +717,7 @@ btk_scale_set_value_pos (BtkScale        *scale,
       if (btk_widget_get_visible (widget) && btk_widget_get_mapped (widget))
 	btk_widget_queue_resize (widget);
 
-      g_object_notify (G_OBJECT (scale), "value-pos");
+      g_object_notify (B_OBJECT (scale), "value-pos");
     }
 }
 
@@ -744,7 +744,7 @@ btk_scale_get_range_border (BtkRange  *range,
   BtkScalePrivate *priv;
   BtkWidget *widget;
   BtkScale *scale;
-  gint w, h;
+  bint w, h;
   
   widget = BTK_WIDGET (range);
   scale = BTK_SCALE (range);
@@ -759,7 +759,7 @@ btk_scale_get_range_border (BtkRange  *range,
 
   if (scale->draw_value)
     {
-      gint value_spacing;
+      bint value_spacing;
       btk_widget_style_get (widget, "value-spacing", &value_spacing, NULL);
 
       switch (scale->value_pos)
@@ -781,9 +781,9 @@ btk_scale_get_range_border (BtkRange  *range,
 
   if (priv->marks)
     {
-      gint slider_width;
-      gint value_spacing;
-      gint n1, w1, h1, n2, w2, h2;
+      bint slider_width;
+      bint value_spacing;
+      bint n1, w1, h1, n2, w2, h2;
   
       btk_widget_style_get (widget, 
                             "slider-width", &slider_width,
@@ -813,8 +813,8 @@ btk_scale_get_range_border (BtkRange  *range,
 /* FIXME this could actually be static at the moment. */
 void
 _btk_scale_get_value_size (BtkScale *scale,
-                           gint     *width,
-                           gint     *height)
+                           bint     *width,
+                           bint     *height)
 {
   BtkRange *range;
 
@@ -824,7 +824,7 @@ _btk_scale_get_value_size (BtkScale *scale,
     {
       BangoLayout *layout;
       BangoRectangle logical_rect;
-      gchar *txt;
+      bchar *txt;
       
       range = BTK_RANGE (scale);
 
@@ -867,18 +867,18 @@ _btk_scale_get_value_size (BtkScale *scale,
 static void
 btk_scale_get_mark_label_size (BtkScale        *scale,
                                BtkPositionType  position,
-                               gint            *count1,
-                               gint            *width1,
-                               gint            *height1,
-                               gint            *count2,
-                               gint            *width2,
-                               gint            *height2)
+                               bint            *count1,
+                               bint            *width1,
+                               bint            *height1,
+                               bint            *count2,
+                               bint            *width2,
+                               bint            *height2)
 {
   BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
   BangoLayout *layout;
   BangoRectangle logical_rect;
   GSList *m;
-  gint w, h;
+  bint w, h;
 
   *count1 = *count2 = 0;
   *width1 = *width2 = 0;
@@ -925,7 +925,7 @@ static void
 btk_scale_style_set (BtkWidget *widget,
                      BtkStyle  *previous)
 {
-  gint slider_length;
+  bint slider_length;
   BtkRange *range;
 
   range = BTK_RANGE (widget);
@@ -953,8 +953,8 @@ btk_scale_size_request (BtkWidget      *widget,
                         BtkRequisition *requisition)
 {
   BtkRange *range = BTK_RANGE (widget);
-  gint n1, w1, h1, n2, w2, h2;
-  gint slider_length;
+  bint n1, w1, h1, n2, w2, h2;
+  bint slider_length;
 
   BTK_WIDGET_CLASS (btk_scale_parent_class)->size_request (widget, requisition);
   
@@ -978,14 +978,14 @@ btk_scale_size_request (BtkWidget      *widget,
     }
 }
 
-static gint
+static bint
 find_next_pos (BtkWidget      *widget,
                GSList          *list,
-               gint            *marks,
+               bint            *marks,
                BtkPositionType  pos)
 {
   GSList *m;
-  gint i;
+  bint i;
 
   for (m = list->next, i = 1; m; m = m->next, i++)
     {
@@ -1001,7 +1001,7 @@ find_next_pos (BtkWidget      *widget,
     return widget->allocation.height;
 }
 
-static gboolean
+static bboolean
 btk_scale_expose (BtkWidget      *widget,
                   BdkEventExpose *event)
 {
@@ -1009,11 +1009,11 @@ btk_scale_expose (BtkWidget      *widget,
   BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
   BtkRange *range = BTK_RANGE (scale);
   BtkStateType state_type;
-  gint *marks;
-  gint focus_padding;
-  gint slider_width;
-  gint value_spacing;
-  gint min_sep = 4;
+  bint *marks;
+  bint focus_padding;
+  bint slider_width;
+  bint value_spacing;
+  bint min_sep = 4;
 
   btk_widget_style_get (widget,
                         "focus-padding", &focus_padding,
@@ -1032,13 +1032,13 @@ btk_scale_expose (BtkWidget      *widget,
 
   if (priv->marks)
     {
-      gint i;
-      gint x1, x2, x3, y1, y2, y3;
+      bint i;
+      bint x1, x2, x3, y1, y2, y3;
       BangoLayout *layout;
       BangoRectangle logical_rect;
       GSList *m;
-      gint min_pos_before, min_pos_after;
-      gint min_pos, max_pos;
+      bint min_pos_before, min_pos_after;
+      bint min_pos, max_pos;
 
       _btk_range_get_stop_positions (range, &marks);
 
@@ -1159,7 +1159,7 @@ btk_scale_expose (BtkWidget      *widget,
   if (scale->draw_value)
     {
       BangoLayout *layout;
-      gint x, y;
+      bint x, y;
 
       layout = btk_scale_get_layout (scale);
       btk_scale_get_layout_offsets (scale, &x, &y);
@@ -1182,14 +1182,14 @@ btk_scale_expose (BtkWidget      *widget,
 
 static void
 btk_scale_real_get_layout_offsets (BtkScale *scale,
-                                   gint     *x,
-                                   gint     *y)
+                                   bint     *x,
+                                   bint     *y)
 {
   BtkWidget *widget = BTK_WIDGET (scale);
   BtkRange *range = BTK_RANGE (widget);
   BangoLayout *layout = btk_scale_get_layout (scale);
   BangoRectangle logical_rect;
-  gint value_spacing;
+  bint value_spacing;
 
   if (!layout)
     {
@@ -1280,11 +1280,11 @@ btk_scale_real_get_layout_offsets (BtkScale *scale,
  * 
  * Return value: formatted value
  */
-gchar*
+bchar*
 _btk_scale_format_value (BtkScale *scale,
-                         gdouble   value)
+                         bdouble   value)
 {
-  gchar *fmt = NULL;
+  bchar *fmt = NULL;
 
   g_signal_emit (scale,
                  signals[FORMAT_VALUE],
@@ -1300,14 +1300,14 @@ _btk_scale_format_value (BtkScale *scale,
 }
 
 static void
-btk_scale_finalize (GObject *object)
+btk_scale_finalize (BObject *object)
 {
   BtkScale *scale = BTK_SCALE (object);
 
   _btk_scale_clear_layout (scale);
   btk_scale_clear_marks (scale);
 
-  G_OBJECT_CLASS (btk_scale_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_scale_parent_class)->finalize (object);
 }
 
 /**
@@ -1327,7 +1327,7 @@ BangoLayout *
 btk_scale_get_layout (BtkScale *scale)
 {
   BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
-  gchar *txt;
+  bchar *txt;
 
   g_return_val_if_fail (BTK_IS_SCALE (scale), NULL);
 
@@ -1366,11 +1366,11 @@ btk_scale_get_layout (BtkScale *scale)
  */
 void 
 btk_scale_get_layout_offsets (BtkScale *scale,
-                              gint     *x,
-                              gint     *y)
+                              bint     *x,
+                              bint     *y)
 {
-  gint local_x = 0; 
-  gint local_y = 0;
+  bint local_x = 0; 
+  bint local_y = 0;
 
   g_return_if_fail (BTK_IS_SCALE (scale));
 
@@ -1420,8 +1420,8 @@ btk_scale_clear_marks (BtkScale *scale)
 
   g_return_if_fail (BTK_IS_SCALE (scale));
 
-  g_slist_foreach (priv->marks, (GFunc)btk_scale_mark_free, NULL);
-  g_slist_free (priv->marks);
+  b_slist_foreach (priv->marks, (GFunc)btk_scale_mark_free, NULL);
+  b_slist_free (priv->marks);
   priv->marks = NULL;
 
   _btk_range_set_stop_values (BTK_RANGE (scale), NULL, 0);
@@ -1455,29 +1455,29 @@ btk_scale_clear_marks (BtkScale *scale)
  */
 void
 btk_scale_add_mark (BtkScale        *scale,
-                    gdouble          value,
+                    bdouble          value,
                     BtkPositionType  position,
-                    const gchar     *markup)
+                    const bchar     *markup)
 {
   BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
   BtkScaleMark *mark;
   GSList *m;
-  gdouble *values;
-  gint n, i;
+  bdouble *values;
+  bint n, i;
 
   mark = g_new (BtkScaleMark, 1);
   mark->value = value;
   mark->markup = g_strdup (markup);
   mark->position = position;
  
-  priv->marks = g_slist_insert_sorted_with_data (priv->marks, mark,
+  priv->marks = b_slist_insert_sorted_with_data (priv->marks, mark,
                                                  (GCompareFunc) compare_marks,
-                                                 GINT_TO_POINTER (
+                                                 BINT_TO_POINTER (
                                                    btk_range_get_inverted (BTK_RANGE (scale)) 
                                                    ));
 
-  n = g_slist_length (priv->marks);
-  values = g_new (gdouble, n);
+  n = b_slist_length (priv->marks);
+  values = g_new (bdouble, n);
   for (m = priv->marks, i = 0; m; m = m->next, i++)
     {
       mark = m->data;
@@ -1510,11 +1510,11 @@ typedef struct
 
 typedef struct
 {
-  gdouble value;
+  bdouble value;
   BtkPositionType position;
   GString *markup;
-  gchar *context;
-  gboolean translatable;
+  bchar *context;
+  bboolean translatable;
 } MarkData;
 
 static void
@@ -1527,25 +1527,25 @@ mark_data_free (MarkData *data)
 
 static void
 marks_start_element (GMarkupParseContext *context,
-                     const gchar         *element_name,
-                     const gchar        **names,
-                     const gchar        **values,
-                     gpointer             user_data,
+                     const bchar         *element_name,
+                     const bchar        **names,
+                     const bchar        **values,
+                     bpointer             user_data,
                      GError             **error)
 {
   MarksSubparserData *parser_data = (MarksSubparserData*)user_data;
-  guint i;
-  gint line_number, char_number;
+  buint i;
+  bint line_number, char_number;
 
   if (strcmp (element_name, "marks") == 0)
    ;
   else if (strcmp (element_name, "mark") == 0)
     {
-      gdouble value = 0;
-      gboolean has_value = FALSE;
+      bdouble value = 0;
+      bboolean has_value = FALSE;
       BtkPositionType position = BTK_POS_BOTTOM;
-      const gchar *msg_context = NULL;
-      gboolean translatable = FALSE;
+      const bchar *msg_context = NULL;
+      bboolean translatable = FALSE;
       MarkData *mark;
 
       for (i = 0; names[i]; i++)
@@ -1563,22 +1563,22 @@ marks_start_element (GMarkupParseContext *context,
             msg_context = values[i];
           else if (strcmp (names[i], "value") == 0)
             {
-              GValue gvalue = { 0, };
+              BValue gvalue = { 0, };
 
-              if (!btk_builder_value_from_string_type (parser_data->builder, G_TYPE_DOUBLE, values[i], &gvalue, error))
+              if (!btk_builder_value_from_string_type (parser_data->builder, B_TYPE_DOUBLE, values[i], &gvalue, error))
                 return;
 
-              value = g_value_get_double (&gvalue);
+              value = b_value_get_double (&gvalue);
               has_value = TRUE;
             }
           else if (strcmp (names[i], "position") == 0)
             {
-              GValue gvalue = { 0, };
+              BValue gvalue = { 0, };
 
               if (!btk_builder_value_from_string_type (parser_data->builder, BTK_TYPE_POSITION_TYPE, values[i], &gvalue, error))
                 return;
 
-              position = g_value_get_enum (&gvalue);
+              position = b_value_get_enum (&gvalue);
             }
           else
             {
@@ -1617,7 +1617,7 @@ marks_start_element (GMarkupParseContext *context,
       mark->context = g_strdup (msg_context);
       mark->translatable = translatable;
 
-      parser_data->marks = g_slist_prepend (parser_data->marks, mark);
+      parser_data->marks = b_slist_prepend (parser_data->marks, mark);
     }
   else
     {
@@ -1636,9 +1636,9 @@ marks_start_element (GMarkupParseContext *context,
 
 static void
 marks_text (GMarkupParseContext  *context,
-            const gchar          *text,
-            gsize                 text_len,
-            gpointer              user_data,
+            const bchar          *text,
+            bsize                 text_len,
+            bpointer              user_data,
             GError              **error)
 {
   MarksSubparserData *data = (MarksSubparserData*)user_data;
@@ -1659,13 +1659,13 @@ static const GMarkupParser marks_parser =
   };
 
 
-static gboolean
+static bboolean
 btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
                                       BtkBuilder    *builder,
-                                      GObject       *child,
-                                      const gchar   *tagname,
+                                      BObject       *child,
+                                      const bchar   *tagname,
                                       GMarkupParser *parser,
-                                      gpointer      *data)
+                                      bpointer      *data)
 {
   MarksSubparserData *parser_data;
 
@@ -1690,9 +1690,9 @@ btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_scale_buildable_custom_finished (BtkBuildable *buildable,
                                      BtkBuilder   *builder,
-                                     GObject      *child,
-                                     const gchar  *tagname,
-                                     gpointer      user_data)
+                                     BObject      *child,
+                                     const bchar  *tagname,
+                                     bpointer      user_data)
 {
   BtkScale *scale = BTK_SCALE (buildable);
   MarksSubparserData *marks_data;
@@ -1700,7 +1700,7 @@ btk_scale_buildable_custom_finished (BtkBuildable *buildable,
   if (strcmp (tagname, "marks") == 0)
     {
       GSList *m;
-      gchar *markup;
+      bchar *markup;
 
       marks_data = (MarksSubparserData *)user_data;
 
@@ -1720,7 +1720,7 @@ btk_scale_buildable_custom_finished (BtkBuildable *buildable,
           mark_data_free (mdata);
         }
 
-      g_slist_free (marks_data->marks);
+      b_slist_free (marks_data->marks);
       g_slice_free (MarksSubparserData, marks_data);
     }
 }

@@ -185,7 +185,7 @@
 <pre class="programlisting">struct BdkEventAny {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
 };
 </pre>
 </div>
@@ -195,15 +195,15 @@
 <pre class="programlisting">struct BdkEventKey {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  guint state;
-  guint keyval;
-  gint length;
-  gchar *string;
-  guint16 hardware_keycode;
-  guint8 group;
-  guint is_modifier : 1;
+  bint8 send_event;
+  buint32 time;
+  buint state;
+  buint keyval;
+  bint length;
+  bchar *string;
+  buint16 hardware_keycode;
+  buint8 group;
+  buint is_modifier : 1;
 };
 </pre>
 </div>
@@ -213,15 +213,15 @@
 <pre class="programlisting">struct BdkEventButton {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble *axes;
-  guint state;
-  guint button;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble *axes;
+  buint state;
+  buint button;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 </pre>
 </div>
@@ -231,14 +231,14 @@
 <pre class="programlisting">struct BdkEventScroll {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  guint state;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  buint state;
   BdkScrollDirection direction;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 </pre>
 </div>
@@ -248,15 +248,15 @@
 <pre class="programlisting">struct BdkEventMotion {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble *axes;
-  guint state;
-  gint16 is_hint;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble *axes;
+  buint state;
+  bint16 is_hint;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 </pre>
 </div>
@@ -266,10 +266,10 @@
 <pre class="programlisting">struct BdkEventExpose {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkRectangle area;
   BdkRebunnyion *rebunnyion;
-  gint count; /* If non-zero, how many more events follow. */
+  bint count; /* If non-zero, how many more events follow. */
 };
 </pre>
 </div>
@@ -279,7 +279,7 @@
 <pre class="programlisting">struct BdkEventVisibility {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkVisibilityState state;
 };
 </pre>
@@ -290,17 +290,17 @@
 <pre class="programlisting">struct BdkEventCrossing {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkWindow *subwindow;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble x_root;
-  gdouble y_root;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble x_root;
+  bdouble y_root;
   BdkCrossingMode mode;
   BdkNotifyType detail;
-  gboolean focus;
-  guint state;
+  bboolean focus;
+  buint state;
 };
 </pre>
 </div>
@@ -310,8 +310,8 @@
 <pre class="programlisting">struct BdkEventFocus {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint16 in;
+  bint8 send_event;
+  bint16 in;
 };
 </pre>
 </div>
@@ -321,10 +321,10 @@
 <pre class="programlisting">struct BdkEventConfigure {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint x, y;
-  gint width;
-  gint height;
+  bint8 send_event;
+  bint x, y;
+  bint width;
+  bint height;
 };
 </pre>
 </div>
@@ -334,10 +334,10 @@
 <pre class="programlisting">struct BdkEventProperty {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom atom;
-  guint32 time;
-  guint state;
+  buint32 time;
+  buint state;
 };
 </pre>
 </div>
@@ -347,11 +347,11 @@
 <pre class="programlisting">struct BdkEventSelection {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom selection;
   BdkAtom target;
   BdkAtom property;
-  guint32 time;
+  buint32 time;
   BdkNativeWindow requestor;
 };
 </pre>
@@ -359,7 +359,7 @@
 <hr>
 <div class="refsect2">
 <a name="BdkNativeWindow"></a><h3>BdkNativeWindow</h3>
-<pre class="programlisting">typedef gpointer BdkNativeWindow;
+<pre class="programlisting">typedef bpointer BdkNativeWindow;
 </pre>
 </div>
 <hr>
@@ -368,11 +368,11 @@
 <pre class="programlisting">struct BdkEventDND {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkDragContext *context;
 
-  guint32 time;
-  gshort x_root, y_root;
+  buint32 time;
+  bshort x_root, y_root;
 };
 </pre>
 </div>
@@ -382,8 +382,8 @@
 <pre class="programlisting">struct BdkEventProximity {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
+  bint8 send_event;
+  buint32 time;
   BdkDevice *device;
 };
 </pre>
@@ -394,9 +394,9 @@
 <pre class="programlisting">struct BdkEventClient {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom message_type;
-  gushort data_format;
+  bushort data_format;
   union {
     char b[20];
     short s[10];
@@ -411,7 +411,7 @@
 <pre class="programlisting">struct BdkEventNoExpose {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
 };
 </pre>
 </div>
@@ -421,7 +421,7 @@
 <pre class="programlisting">struct BdkEventWindowState {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkWindowState changed_mask;
   BdkWindowState new_window_state;
 };
@@ -433,7 +433,7 @@
 <pre class="programlisting">struct BdkEventSetting {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkSettingAction action;
   char *name;
 };
@@ -445,12 +445,12 @@
 <pre class="programlisting">struct BdkEventOwnerChange {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkNativeWindow owner;
   BdkOwnerChange reason;
   BdkAtom selection;
-  guint32 time;
-  guint32 selection_time;
+  buint32 time;
+  buint32 selection_time;
 };
 </pre>
 </div>
@@ -460,9 +460,9 @@
 <pre class="programlisting">struct BdkEventGrabBroken {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gboolean keyboard;
-  gboolean implicit;
+  bint8 send_event;
+  bboolean keyboard;
+  bboolean implicit;
   BdkWindow *grab_window;
 };
 </pre>

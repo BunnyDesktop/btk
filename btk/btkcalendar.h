@@ -40,14 +40,14 @@
 #include <btk/btksignal.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CALENDAR                  (btk_calendar_get_type ())
-#define BTK_CALENDAR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CALENDAR, BtkCalendar))
-#define BTK_CALENDAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CALENDAR, BtkCalendarClass))
-#define BTK_IS_CALENDAR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CALENDAR))
-#define BTK_IS_CALENDAR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CALENDAR))
-#define BTK_CALENDAR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CALENDAR, BtkCalendarClass))
+#define BTK_CALENDAR(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CALENDAR, BtkCalendar))
+#define BTK_CALENDAR_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CALENDAR, BtkCalendarClass))
+#define BTK_IS_CALENDAR(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CALENDAR))
+#define BTK_IS_CALENDAR_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CALENDAR))
+#define BTK_CALENDAR_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CALENDAR, BtkCalendarClass))
 
 
 typedef struct _BtkCalendar	       BtkCalendar;
@@ -96,11 +96,11 @@ typedef enum
  * Return value: Newly allocated string with Bango markup with details
  * for the specified day, or %NULL.
  */
-typedef gchar* (*BtkCalendarDetailFunc) (BtkCalendar *calendar,
-                                         guint        year,
-                                         guint        month,
-                                         guint        day,
-                                         gpointer     user_data);
+typedef bchar* (*BtkCalendarDetailFunc) (BtkCalendar *calendar,
+                                         buint        year,
+                                         buint        month,
+                                         buint        day,
+                                         bpointer     user_data);
 
 struct _BtkCalendar
 {
@@ -109,29 +109,29 @@ struct _BtkCalendar
   BtkStyle  *GSEAL (header_style);
   BtkStyle  *GSEAL (label_style);
   
-  gint GSEAL (month);
-  gint GSEAL (year);
-  gint GSEAL (selected_day);
+  bint GSEAL (month);
+  bint GSEAL (year);
+  bint GSEAL (selected_day);
   
-  gint GSEAL (day_month[6][7]);
-  gint GSEAL (day[6][7]);
+  bint GSEAL (day_month[6][7]);
+  bint GSEAL (day[6][7]);
   
-  gint GSEAL (num_marked_dates);
-  gint GSEAL (marked_date[31]);
+  bint GSEAL (num_marked_dates);
+  bint GSEAL (marked_date[31]);
   BtkCalendarDisplayOptions  GSEAL (display_flags);
   BdkColor GSEAL (marked_date_color[31]);
   
   BdkGC *GSEAL (gc);			/* unused */
   BdkGC *GSEAL (xor_gc);		/* unused */
 
-  gint GSEAL (focus_row);
-  gint GSEAL (focus_col);
+  bint GSEAL (focus_row);
+  bint GSEAL (focus_col);
 
-  gint GSEAL (highlight_row);
-  gint GSEAL (highlight_col);
+  bint GSEAL (highlight_row);
+  bint GSEAL (highlight_col);
   
   BtkCalendarPrivate *GSEAL (priv);
-  gchar GSEAL (grow_space [32]);
+  bchar GSEAL (grow_space [32]);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -156,19 +156,19 @@ struct _BtkCalendarClass
 };
 
 
-GType	   btk_calendar_get_type	(void) G_GNUC_CONST;
+GType	   btk_calendar_get_type	(void) B_GNUC_CONST;
 BtkWidget* btk_calendar_new		(void);
 
-gboolean   btk_calendar_select_month	(BtkCalendar *calendar,
-					 guint	      month,
-					 guint	      year);
+bboolean   btk_calendar_select_month	(BtkCalendar *calendar,
+					 buint	      month,
+					 buint	      year);
 void	   btk_calendar_select_day	(BtkCalendar *calendar,
-					 guint	      day);
+					 buint	      day);
 
-gboolean   btk_calendar_mark_day	(BtkCalendar *calendar,
-					 guint	      day);
-gboolean   btk_calendar_unmark_day	(BtkCalendar *calendar,
-					 guint	      day);
+bboolean   btk_calendar_mark_day	(BtkCalendar *calendar,
+					 buint	      day);
+bboolean   btk_calendar_unmark_day	(BtkCalendar *calendar,
+					 buint	      day);
 void	   btk_calendar_clear_marks	(BtkCalendar *calendar);
 
 
@@ -182,28 +182,28 @@ void	   btk_calendar_display_options (BtkCalendar		  *calendar,
 #endif
 
 void	   btk_calendar_get_date	(BtkCalendar *calendar, 
-					 guint	     *year,
-					 guint	     *month,
-					 guint	     *day);
+					 buint	     *year,
+					 buint	     *month,
+					 buint	     *day);
 
 void       btk_calendar_set_detail_func (BtkCalendar           *calendar,
                                          BtkCalendarDetailFunc  func,
-                                         gpointer               data,
+                                         bpointer               data,
                                          GDestroyNotify         destroy);
 
 void       btk_calendar_set_detail_width_chars (BtkCalendar    *calendar,
-                                                gint            chars);
+                                                bint            chars);
 void       btk_calendar_set_detail_height_rows (BtkCalendar    *calendar,
-                                                gint            rows);
+                                                bint            rows);
 
-gint       btk_calendar_get_detail_width_chars (BtkCalendar    *calendar);
-gint       btk_calendar_get_detail_height_rows (BtkCalendar    *calendar);
+bint       btk_calendar_get_detail_width_chars (BtkCalendar    *calendar);
+bint       btk_calendar_get_detail_height_rows (BtkCalendar    *calendar);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void	   btk_calendar_freeze		(BtkCalendar *calendar);
 void	   btk_calendar_thaw		(BtkCalendar *calendar);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CALENDAR_H__ */

@@ -32,14 +32,14 @@
 
 #include <btk/btkcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SOCKET            (btk_socket_get_type ())
-#define BTK_SOCKET(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SOCKET, BtkSocket))
-#define BTK_SOCKET_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SOCKET, BtkSocketClass))
-#define BTK_IS_SOCKET(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SOCKET))
-#define BTK_IS_SOCKET_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SOCKET))
-#define BTK_SOCKET_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SOCKET, BtkSocketClass))
+#define BTK_SOCKET(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SOCKET, BtkSocket))
+#define BTK_SOCKET_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SOCKET, BtkSocketClass))
+#define BTK_IS_SOCKET(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SOCKET))
+#define BTK_IS_SOCKET_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SOCKET))
+#define BTK_SOCKET_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SOCKET, BtkSocketClass))
 
 
 typedef struct _BtkSocket        BtkSocket;
@@ -49,21 +49,21 @@ struct _BtkSocket
 {
   BtkContainer container;
 
-  guint16 GSEAL (request_width);
-  guint16 GSEAL (request_height);
-  guint16 GSEAL (current_width);
-  guint16 GSEAL (current_height);
+  buint16 GSEAL (request_width);
+  buint16 GSEAL (request_height);
+  buint16 GSEAL (current_width);
+  buint16 GSEAL (current_height);
 
   BdkWindow *GSEAL (plug_window);
   BtkWidget *GSEAL (plug_widget);
 
-  gshort GSEAL (xembed_version); /* -1 == not xembed */
-  guint GSEAL (same_app) : 1;
-  guint GSEAL (focus_in) : 1;
-  guint GSEAL (have_size) : 1;
-  guint GSEAL (need_map) : 1;
-  guint GSEAL (is_mapped) : 1;
-  guint GSEAL (active) : 1;
+  bshort GSEAL (xembed_version); /* -1 == not xembed */
+  buint GSEAL (same_app) : 1;
+  buint GSEAL (focus_in) : 1;
+  buint GSEAL (have_size) : 1;
+  buint GSEAL (need_map) : 1;
+  buint GSEAL (is_mapped) : 1;
+  buint GSEAL (active) : 1;
 
   BtkAccelGroup *GSEAL (accel_group);
   BtkWidget *GSEAL (toplevel);
@@ -74,7 +74,7 @@ struct _BtkSocketClass
   BtkContainerClass parent_class;
 
   void     (*plug_added)   (BtkSocket *socket_);
-  gboolean (*plug_removed) (BtkSocket *socket_);
+  bboolean (*plug_removed) (BtkSocket *socket_);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -84,7 +84,7 @@ struct _BtkSocketClass
 };
 
 
-GType          btk_socket_get_type (void) G_GNUC_CONST;
+GType          btk_socket_get_type (void) B_GNUC_CONST;
 BtkWidget*     btk_socket_new      (void);
 
 void            btk_socket_add_id (BtkSocket       *socket_,
@@ -97,6 +97,6 @@ void           btk_socket_steal    (BtkSocket      *socket_,
 				    BdkNativeWindow wid);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SOCKET_H__ */

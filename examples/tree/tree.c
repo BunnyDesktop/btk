@@ -5,9 +5,9 @@
 
 /* for all the BtkItem:: and BtkTreeItem:: signals */
 static void cb_itemsignal( BtkWidget *item,
-                           gchar     *signame )
+                           bchar     *signame )
 {
-  gchar *name;
+  bchar *name;
   BtkLabel *label;
 
   /* It's a Bin, so it has one child, which we know to be a
@@ -47,7 +47,7 @@ static void cb_selection_changed( BtkWidget *tree )
 
   i = BTK_TREE_SELECTION_OLD (tree);
   while (i) {
-    gchar *name;
+    bchar *name;
     BtkLabel *label;
     BtkWidget *item;
 
@@ -65,15 +65,15 @@ int main( int   argc,
           char *argv[] )
 {
   BtkWidget *window, *scrolled_win, *tree;
-  static gchar *itemnames[] = {"Foo", "Bar", "Baz", "Quux",
+  static bchar *itemnames[] = {"Foo", "Bar", "Baz", "Quux",
 			       "Maurice"};
-  gint i;
+  bint i;
 
   btk_init (&argc, &argv);
 
   /* a generic toplevel window */
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "delete_event",
+  g_signal_connect (B_OBJECT (window), "delete_event",
                     G_CALLBACK (btk_main_quit), NULL);
   btk_container_set_border_width (BTK_CONTAINER (window), 5);
 
@@ -90,11 +90,11 @@ int main( int   argc,
   tree = btk_tree_new ();
   g_print ("root tree is %p\n", tree);
   /* connect all BtkTree:: signals */
-  g_signal_connect (G_OBJECT (tree), "select_child",
+  g_signal_connect (B_OBJECT (tree), "select_child",
                     G_CALLBACK (cb_select_child), tree);
-  g_signal_connect (G_OBJECT (tree), "unselect_child",
+  g_signal_connect (B_OBJECT (tree), "unselect_child",
                     G_CALLBACK (cb_unselect_child), tree);
-  g_signal_connect (G_OBJECT(tree), "selection_changed",
+  g_signal_connect (B_OBJECT(tree), "selection_changed",
                     G_CALLBACK(cb_selection_changed), tree);
   /* Add it to the scrolled window */
   btk_scrolled_window_add_with_viewport (BTK_SCROLLED_WINDOW (scrolled_win),
@@ -107,20 +107,20 @@ int main( int   argc,
 
   for (i = 0; i < 5; i++){
     BtkWidget *subtree, *item;
-    gint j;
+    bint j;
 
     /* Create a tree item */
     item = btk_tree_item_new_with_label (itemnames[i]);
     /* Connect all BtkItem:: and BtkTreeItem:: signals */
-    g_signal_connect (G_OBJECT (item), "select",
+    g_signal_connect (B_OBJECT (item), "select",
                       G_CALLBACK (cb_itemsignal), "select");
-    g_signal_connect (G_OBJECT (item), "deselect",
+    g_signal_connect (B_OBJECT (item), "deselect",
                       G_CALLBACK (cb_itemsignal), "deselect");
-    g_signal_connect (G_OBJECT (item), "toggle",
+    g_signal_connect (B_OBJECT (item), "toggle",
                       G_CALLBACK (cb_itemsignal), "toggle");
-    g_signal_connect (G_OBJECT (item), "expand",
+    g_signal_connect (B_OBJECT (item), "expand",
                       G_CALLBACK (cb_itemsignal), "expand");
-    g_signal_connect (G_OBJECT (item), "collapse",
+    g_signal_connect (B_OBJECT (item), "collapse",
                       G_CALLBACK (cb_itemsignal), "collapse");
     /* Add it to the parent tree */
     btk_tree_append (BTK_TREE (tree), item);
@@ -134,9 +134,9 @@ int main( int   argc,
     /* This is still necessary if you want these signals to be called
        for the subtree's children.  Note that selection_change will be 
        signalled for the root tree regardless. */
-    g_signal_connect (G_OBJECT (subtree), "select_child",
+    g_signal_connect (B_OBJECT (subtree), "select_child",
 			G_CALLBACK (cb_select_child), subtree);
-    g_signal_connect (G_OBJECT (subtree), "unselect_child",
+    g_signal_connect (B_OBJECT (subtree), "unselect_child",
 			G_CALLBACK (cb_unselect_child), subtree);
     /* This has absolutely no effect, because it is completely ignored 
        in subtrees */
@@ -157,15 +157,15 @@ int main( int   argc,
       /* Create a subtree item, in much the same way */
       subitem = btk_tree_item_new_with_label (itemnames[j]);
       /* Connect all BtkItem:: and BtkTreeItem:: signals */
-      g_signal_connect (G_OBJECT (subitem), "select",
+      g_signal_connect (B_OBJECT (subitem), "select",
 			  G_CALLBACK (cb_itemsignal), "select");
-      g_signal_connect (G_OBJECT (subitem), "deselect",
+      g_signal_connect (B_OBJECT (subitem), "deselect",
 			  G_CALLBACK (cb_itemsignal), "deselect");
-      g_signal_connect (G_OBJECT (subitem), "toggle",
+      g_signal_connect (B_OBJECT (subitem), "toggle",
 			  G_CALLBACK (cb_itemsignal), "toggle");
-      g_signal_connect (G_OBJECT (subitem), "expand",
+      g_signal_connect (B_OBJECT (subitem), "expand",
 			  G_CALLBACK (cb_itemsignal), "expand");
-      g_signal_connect (G_OBJECT (subitem), "collapse",
+      g_signal_connect (B_OBJECT (subitem), "collapse",
 			  G_CALLBACK (cb_itemsignal), "collapse");
       g_print ("-> -> item %s->%p\n", itemnames[j], subitem);
       /* Add it to its parent tree */

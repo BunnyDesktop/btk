@@ -46,7 +46,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolItemGroup.html#btk-tool-item-group-get-collapsed" title="btk_tool_item_group_get_collapsed ()">btk_tool_item_group_get_collapsed</a> <span class="c_punctuation">()</span>
@@ -70,7 +70,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolItemGroup.html#btk-tool-item-group-get-item-position" title="btk_tool_item_group_get_item_position ()">btk_tool_item_group_get_item_position</a> <span class="c_punctuation">()</span>
@@ -78,14 +78,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolItemGroup.html#btk-tool-item-group-get-n-items" title="btk_tool_item_group_get_n_items ()">btk_tool_item_group_get_n_items</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkToolItemGroup.html#btk-tool-item-group-get-label" title="btk_tool_item_group_get_label ()">btk_tool_item_group_get_label</a> <span class="c_punctuation">()</span>
@@ -192,7 +192,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolItemGroup.html#BtkToolItemGroup--collapsed" title="The “collapsed” property">collapsed</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -231,22 +231,22 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolItemGroup.html#BtkToolItemGroup--c-expand" title="The “expand” child property">expand</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolItemGroup.html#BtkToolItemGroup--c-fill" title="The “fill” child property">fill</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolItemGroup.html#BtkToolItemGroup--c-homogeneous" title="The “homogeneous” child property">homogeneous</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkToolItemGroup.html#BtkToolItemGroup--c-new-row" title="The “new-row” child property">new-row</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -295,7 +295,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkToolItemGroup.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -324,7 +324,7 @@ categories and drag and drop support.</p>
 <a name="BtkToolItemGroup.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="btk-tool-item-group-get-collapsed"></a><h3>btk_tool_item_group_get_collapsed ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_tool_item_group_get_collapsed (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets whether <em class="parameter"><code>group</code></em>
  is collapsed or expanded.</p>
@@ -355,8 +355,8 @@ is collapsed, <code class="literal">FALSE</code> if it is expanded</p>
 <a name="btk-tool-item-group-get-drop-item"></a><h3>btk_tool_item_group_get_drop_item ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
 btk_tool_item_group_get_drop_item (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <p>Gets the tool item at position (x, y).</p>
 <div class="refsect3">
 <a name="btk-tool-item-group-get-drop-item.parameters"></a><h4>Parameters</h4>
@@ -424,7 +424,7 @@ btk_tool_item_group_get_ellipsize (<em class="parameter"><code><a class="link" h
 <hr>
 <div class="refsect2">
 <a name="btk-tool-item-group-get-item-position"></a><h3>btk_tool_item_group_get_item_position ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_tool_item_group_get_item_position (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
                                        <em class="parameter"><code><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="type">BtkToolItem</span></a> *item</code></em>);</pre>
 <p>Gets the position of <em class="parameter"><code>item</code></em>
@@ -465,7 +465,7 @@ is no child of <em class="parameter"><code>group</code></em>
 <hr>
 <div class="refsect2">
 <a name="btk-tool-item-group-get-n-items"></a><h3>btk_tool_item_group_get_n_items ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_tool_item_group_get_n_items (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets the number of tool items in <em class="parameter"><code>group</code></em>
 .</p>
@@ -494,7 +494,7 @@ btk_tool_item_group_get_n_items (<em class="parameter"><code><a class="link" hre
 <hr>
 <div class="refsect2">
 <a name="btk-tool-item-group-get-label"></a><h3>btk_tool_item_group_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_tool_item_group_get_label (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>);</pre>
 <p>Gets the label of <em class="parameter"><code>group</code></em>
 .</p>
@@ -558,7 +558,7 @@ See <a class="link" href="BtkToolItemGroup.html#btk-tool-item-group-set-label-wi
 <a name="btk-tool-item-group-get-nth-item"></a><h3>btk_tool_item_group_get_nth_item ()</h3>
 <pre class="programlisting"><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="returnvalue">BtkToolItem</span></a> *
 btk_tool_item_group_get_nth_item (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                                  <em class="parameter"><code><span class="type">guint</span> index</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">buint</span> index</code></em>);</pre>
 <p>Gets the tool item at <em class="parameter"><code>index</code></em>
  in group.</p>
 <div class="refsect3">
@@ -624,7 +624,7 @@ btk_tool_item_group_get_header_relief (<em class="parameter"><code><a class="lin
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_item_group_insert (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="type">BtkToolItem</span></a> *item</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Inserts <em class="parameter"><code>item</code></em>
  at <em class="parameter"><code>position</code></em>
  in the list of children of <em class="parameter"><code>group</code></em>
@@ -666,7 +666,7 @@ The position -1 means end of list.</p></td>
 <div class="refsect2">
 <a name="btk-tool-item-group-new"></a><h3>btk_tool_item_group_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_tool_item_group_new (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_tool_item_group_new (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new tool item group with label <em class="parameter"><code>label</code></em>
 .</p>
 <div class="refsect3">
@@ -695,7 +695,7 @@ btk_tool_item_group_new (<em class="parameter"><code>const <span class="type">gc
 <a name="btk-tool-item-group-set-collapsed"></a><h3>btk_tool_item_group_set_collapsed ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_item_group_set_collapsed (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> collapsed</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> collapsed</code></em>);</pre>
 <p>Sets whether the <em class="parameter"><code>group</code></em>
  should be collapsed or expanded.</p>
 <div class="refsect3">
@@ -762,7 +762,7 @@ should use</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_item_group_set_item_position (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
                                        <em class="parameter"><code><a class="link" href="BtkToolItem.html" title="BtkToolItem"><span class="type">BtkToolItem</span></a> *item</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 <p>Sets the position of <em class="parameter"><code>item</code></em>
  in the list of children of <em class="parameter"><code>group</code></em>
 .</p>
@@ -805,7 +805,7 @@ The position -1 means end of list.</p></td>
 <a name="btk-tool-item-group-set-label"></a><h3>btk_tool_item_group_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_tool_item_group_set_label (<em class="parameter"><code><a class="link" href="BtkToolItemGroup.html" title="BtkToolItemGroup"><span class="type">BtkToolItemGroup</span></a> *group</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets the label of the tool item group. The label is displayed in the header
 of the group.</p>
 <div class="refsect3">
@@ -910,7 +910,7 @@ See <a class="link" href="BtkButton.html#btk-button-set-relief" title="btk_butto
 <a name="BtkToolItemGroup.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkToolItemGroup--collapsed"></a><h3>The <code class="literal">“collapsed”</code> property</h3>
-<pre class="programlisting">  “collapsed”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “collapsed”                <span class="type">bboolean</span></pre>
 <p>Whether the group has been collapsed and items are hidden.</p>
 <p>Owner: BtkToolItemGroup</p>
 <p>Flags: Read / Write</p>
@@ -956,7 +956,7 @@ See <a class="link" href="BtkButton.html#btk-button-set-relief" title="btk_butto
 <a name="BtkToolItemGroup.child-property-details"></a><h2>Child Property Details</h2>
 <div class="refsect2">
 <a name="BtkToolItemGroup--c-expand"></a><h3>The <code class="literal">“expand”</code> child property</h3>
-<pre class="programlisting">  “expand”                   <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “expand”                   <span class="type">bboolean</span></pre>
 <p>Whether the item should receive extra space when the group grows.</p>
 <p>Owner: BtkToolItemGroup</p>
 <p>Flags: Read / Write</p>
@@ -965,7 +965,7 @@ See <a class="link" href="BtkButton.html#btk-button-set-relief" title="btk_butto
 <hr>
 <div class="refsect2">
 <a name="BtkToolItemGroup--c-fill"></a><h3>The <code class="literal">“fill”</code> child property</h3>
-<pre class="programlisting">  “fill”                     <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “fill”                     <span class="type">bboolean</span></pre>
 <p>Whether the item should fill the available space.</p>
 <p>Owner: BtkToolItemGroup</p>
 <p>Flags: Read / Write</p>
@@ -974,7 +974,7 @@ See <a class="link" href="BtkButton.html#btk-button-set-relief" title="btk_butto
 <hr>
 <div class="refsect2">
 <a name="BtkToolItemGroup--c-homogeneous"></a><h3>The <code class="literal">“homogeneous”</code> child property</h3>
-<pre class="programlisting">  “homogeneous”              <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “homogeneous”              <span class="type">bboolean</span></pre>
 <p>Whether the item should be the same size as other homogeneous items.</p>
 <p>Owner: BtkToolItemGroup</p>
 <p>Flags: Read / Write</p>
@@ -983,7 +983,7 @@ See <a class="link" href="BtkButton.html#btk-button-set-relief" title="btk_butto
 <hr>
 <div class="refsect2">
 <a name="BtkToolItemGroup--c-new-row"></a><h3>The <code class="literal">“new-row”</code> child property</h3>
-<pre class="programlisting">  “new-row”                  <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “new-row”                  <span class="type">bboolean</span></pre>
 <p>Whether the item should start a new row.</p>
 <p>Owner: BtkToolItemGroup</p>
 <p>Flags: Read / Write</p>

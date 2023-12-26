@@ -85,8 +85,8 @@ static const char bdk_settings_names[] =
 
 static const struct
 {
-  gint xsettings_offset;
-  gint bdk_offset;
+  bint xsettings_offset;
+  bint bdk_offset;
 } bdk_settings_map[] = {
   {    0,   20 },
   {   42,   66 },

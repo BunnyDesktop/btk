@@ -26,7 +26,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Bango interaction */
 
@@ -35,11 +35,11 @@ typedef struct _BdkBangoRendererClass   BdkBangoRendererClass;
 typedef struct _BdkBangoRendererPrivate BdkBangoRendererPrivate;
 
 #define BDK_TYPE_BANGO_RENDERER            (bdk_bango_renderer_get_type())
-#define BDK_BANGO_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_BANGO_RENDERER, BdkBangoRenderer))
-#define BDK_IS_BANGO_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_BANGO_RENDERER))
-#define BDK_BANGO_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
-#define BDK_IS_BANGO_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_BANGO_RENDERER))
-#define BDK_BANGO_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
+#define BDK_BANGO_RENDERER(object)         (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_BANGO_RENDERER, BdkBangoRenderer))
+#define BDK_IS_BANGO_RENDERER(object)      (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_BANGO_RENDERER))
+#define BDK_BANGO_RENDERER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
+#define BDK_IS_BANGO_RENDERER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_BANGO_RENDERER))
+#define BDK_BANGO_RENDERER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_BANGO_RENDERER, BdkBangoRendererClass))
 
 /**
  * BdkBangoRenderer:
@@ -86,7 +86,7 @@ struct _BdkBangoRendererClass
   BangoRendererClass parent_class;
 };
 
-GType bdk_bango_renderer_get_type (void) G_GNUC_CONST;
+GType bdk_bango_renderer_get_type (void) B_GNUC_CONST;
 
 BangoRenderer *bdk_bango_renderer_new         (BdkScreen *screen);
 BangoRenderer *bdk_bango_renderer_get_default (BdkScreen *screen);
@@ -121,15 +121,15 @@ void          bdk_bango_context_set_colormap   (BangoContext *context,
  */
 
 BdkRebunnyion    *bdk_bango_layout_line_get_clip_rebunnyion (BangoLayoutLine *line,
-                                                     gint             x_origin,
-                                                     gint             y_origin,
-                                                     const gint      *index_ranges,
-                                                     gint             n_ranges);
+                                                     bint             x_origin,
+                                                     bint             y_origin,
+                                                     const bint      *index_ranges,
+                                                     bint             n_ranges);
 BdkRebunnyion    *bdk_bango_layout_get_clip_rebunnyion      (BangoLayout     *layout,
-                                                     gint             x_origin,
-                                                     gint             y_origin,
-                                                     const gint      *index_ranges,
-                                                     gint             n_ranges);
+                                                     bint             x_origin,
+                                                     bint             y_origin,
+                                                     const bint      *index_ranges,
+                                                     bint             n_ranges);
 
 
 
@@ -148,7 +148,7 @@ struct _BdkBangoAttrStipple
 struct _BdkBangoAttrEmbossed
 {
   BangoAttribute attr;
-  gboolean embossed;
+  bboolean embossed;
 };
 
 struct _BdkBangoAttrEmbossColor
@@ -158,9 +158,9 @@ struct _BdkBangoAttrEmbossColor
 };
 
 BangoAttribute *bdk_bango_attr_stipple_new  (BdkBitmap *stipple);
-BangoAttribute *bdk_bango_attr_embossed_new (gboolean embossed);
+BangoAttribute *bdk_bango_attr_embossed_new (bboolean embossed);
 BangoAttribute *bdk_bango_attr_emboss_color_new (const BdkColor *color);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_FONT_H__ */

@@ -28,33 +28,33 @@
 
 #include <btk/btkselection.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CLIPBOARD            (btk_clipboard_get_type ())
-#define BTK_CLIPBOARD(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
-#define BTK_IS_CLIPBOARD(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIPBOARD))
+#define BTK_CLIPBOARD(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CLIPBOARD, BtkClipboard))
+#define BTK_IS_CLIPBOARD(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CLIPBOARD))
 
 typedef void (* BtkClipboardReceivedFunc)         (BtkClipboard     *clipboard,
 					           BtkSelectionData *selection_data,
-					           gpointer          data);
+					           bpointer          data);
 typedef void (* BtkClipboardTextReceivedFunc)     (BtkClipboard     *clipboard,
-					           const gchar      *text,
-					           gpointer          data);
+					           const bchar      *text,
+					           bpointer          data);
 typedef void (* BtkClipboardRichTextReceivedFunc) (BtkClipboard     *clipboard,
                                                    BdkAtom           format,
-					           const guint8     *text,
-                                                   gsize             length,
-					           gpointer          data);
+					           const buint8     *text,
+                                                   bsize             length,
+					           bpointer          data);
 typedef void (* BtkClipboardImageReceivedFunc)    (BtkClipboard     *clipboard,
 						   BdkPixbuf        *pixbuf,
-						   gpointer          data);
+						   bpointer          data);
 typedef void (* BtkClipboardURIReceivedFunc)      (BtkClipboard     *clipboard,
-						   gchar           **uris,
-						   gpointer          data);
+						   bchar           **uris,
+						   bpointer          data);
 typedef void (* BtkClipboardTargetsReceivedFunc)  (BtkClipboard     *clipboard,
 					           BdkAtom          *atoms,
-						   gint              n_atoms,
-					           gpointer          data);
+						   bint              n_atoms,
+					           bpointer          data);
 
 /* Should these functions have BtkClipboard *clipboard as the first argument?
  * right now for ClearFunc, you may have trouble determining _which_ clipboard
@@ -62,12 +62,12 @@ typedef void (* BtkClipboardTargetsReceivedFunc)  (BtkClipboard     *clipboard,
  */
 typedef void (* BtkClipboardGetFunc)          (BtkClipboard     *clipboard,
 					       BtkSelectionData *selection_data,
-					       guint             info,
-					       gpointer          user_data_or_owner);
+					       buint             info,
+					       bpointer          user_data_or_owner);
 typedef void (* BtkClipboardClearFunc)        (BtkClipboard     *clipboard,
-					       gpointer          user_data_or_owner);
+					       bpointer          user_data_or_owner);
 
-GType         btk_clipboard_get_type (void) G_GNUC_CONST;
+GType         btk_clipboard_get_type (void) B_GNUC_CONST;
 
 BtkClipboard *btk_clipboard_get_for_display (BdkDisplay   *display,
 					     BdkAtom       selection);
@@ -78,72 +78,72 @@ BtkClipboard *btk_clipboard_get             (BdkAtom       selection);
 BdkDisplay   *btk_clipboard_get_display     (BtkClipboard *clipboard);
 
 
-gboolean btk_clipboard_set_with_data  (BtkClipboard          *clipboard,
+bboolean btk_clipboard_set_with_data  (BtkClipboard          *clipboard,
 				       const BtkTargetEntry  *targets,
-				       guint                  n_targets,
+				       buint                  n_targets,
 				       BtkClipboardGetFunc    get_func,
 				       BtkClipboardClearFunc  clear_func,
-				       gpointer               user_data);
-gboolean btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
+				       bpointer               user_data);
+bboolean btk_clipboard_set_with_owner (BtkClipboard          *clipboard,
 				       const BtkTargetEntry  *targets,
-				       guint                  n_targets,
+				       buint                  n_targets,
 				       BtkClipboardGetFunc    get_func,
 				       BtkClipboardClearFunc  clear_func,
-				       GObject               *owner);
-GObject *btk_clipboard_get_owner      (BtkClipboard          *clipboard);
+				       BObject               *owner);
+BObject *btk_clipboard_get_owner      (BtkClipboard          *clipboard);
 void     btk_clipboard_clear          (BtkClipboard          *clipboard);
 void     btk_clipboard_set_text       (BtkClipboard          *clipboard,
-				       const gchar           *text,
-				       gint                   len);
+				       const bchar           *text,
+				       bint                   len);
 void     btk_clipboard_set_image      (BtkClipboard          *clipboard,
 				       BdkPixbuf             *pixbuf);
 
 void btk_clipboard_request_contents  (BtkClipboard                     *clipboard,
                                       BdkAtom                           target,
                                       BtkClipboardReceivedFunc          callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 void btk_clipboard_request_text      (BtkClipboard                     *clipboard,
                                       BtkClipboardTextReceivedFunc      callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 void btk_clipboard_request_rich_text (BtkClipboard                     *clipboard,
                                       BtkTextBuffer                    *buffer,
                                       BtkClipboardRichTextReceivedFunc  callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 void btk_clipboard_request_image     (BtkClipboard                     *clipboard,
                                       BtkClipboardImageReceivedFunc     callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 void btk_clipboard_request_uris      (BtkClipboard                     *clipboard,
                                       BtkClipboardURIReceivedFunc       callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 void btk_clipboard_request_targets   (BtkClipboard                     *clipboard,
                                       BtkClipboardTargetsReceivedFunc   callback,
-                                      gpointer                          user_data);
+                                      bpointer                          user_data);
 
 BtkSelectionData *btk_clipboard_wait_for_contents  (BtkClipboard  *clipboard,
                                                     BdkAtom        target);
-gchar *           btk_clipboard_wait_for_text      (BtkClipboard  *clipboard);
-guint8 *          btk_clipboard_wait_for_rich_text (BtkClipboard  *clipboard,
+bchar *           btk_clipboard_wait_for_text      (BtkClipboard  *clipboard);
+buint8 *          btk_clipboard_wait_for_rich_text (BtkClipboard  *clipboard,
                                                     BtkTextBuffer *buffer,
                                                     BdkAtom       *format,
-                                                    gsize         *length);
+                                                    bsize         *length);
 BdkPixbuf *       btk_clipboard_wait_for_image     (BtkClipboard  *clipboard);
-gchar **          btk_clipboard_wait_for_uris      (BtkClipboard  *clipboard);
-gboolean          btk_clipboard_wait_for_targets   (BtkClipboard  *clipboard,
+bchar **          btk_clipboard_wait_for_uris      (BtkClipboard  *clipboard);
+bboolean          btk_clipboard_wait_for_targets   (BtkClipboard  *clipboard,
                                                     BdkAtom      **targets,
-                                                    gint          *n_targets);
+                                                    bint          *n_targets);
 
-gboolean btk_clipboard_wait_is_text_available      (BtkClipboard  *clipboard);
-gboolean btk_clipboard_wait_is_rich_text_available (BtkClipboard  *clipboard,
+bboolean btk_clipboard_wait_is_text_available      (BtkClipboard  *clipboard);
+bboolean btk_clipboard_wait_is_rich_text_available (BtkClipboard  *clipboard,
                                                     BtkTextBuffer *buffer);
-gboolean btk_clipboard_wait_is_image_available     (BtkClipboard  *clipboard);
-gboolean btk_clipboard_wait_is_uris_available      (BtkClipboard  *clipboard);
-gboolean btk_clipboard_wait_is_target_available    (BtkClipboard  *clipboard,
+bboolean btk_clipboard_wait_is_image_available     (BtkClipboard  *clipboard);
+bboolean btk_clipboard_wait_is_uris_available      (BtkClipboard  *clipboard);
+bboolean btk_clipboard_wait_is_target_available    (BtkClipboard  *clipboard,
                                                     BdkAtom        target);
 
 
 void btk_clipboard_set_can_store (BtkClipboard         *clipboard,
 				  const BtkTargetEntry *targets,
-				  gint                  n_targets);
+				  bint                  n_targets);
 
 void btk_clipboard_store         (BtkClipboard   *clipboard);
 
@@ -152,6 +152,6 @@ void     _btk_clipboard_handle_event    (BdkEventOwnerChange *event);
 
 void     _btk_clipboard_store_all       (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CLIPBOARD_H__ */

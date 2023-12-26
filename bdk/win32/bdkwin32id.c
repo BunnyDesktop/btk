@@ -31,17 +31,17 @@
 
 static GHashTable *handle_ht = NULL;
 
-static guint
+static buint
 bdk_handle_hash (HANDLE *handle)
 {
 #ifdef _WIN64
-  return ((guint *) handle)[0] ^ ((guint *) handle)[1];
+  return ((buint *) handle)[0] ^ ((buint *) handle)[1];
 #else
-  return (guint) *handle;
+  return (buint) *handle;
 #endif
 }
 
-static gint
+static bint
 bdk_handle_equal (HANDLE *a,
 		  HANDLE *b)
 {
@@ -50,7 +50,7 @@ bdk_handle_equal (HANDLE *a,
 
 void
 bdk_win32_handle_table_insert (HANDLE  *handle,
-			       gpointer data)
+			       bpointer data)
 {
   g_return_if_fail (handle != NULL);
 
@@ -71,10 +71,10 @@ bdk_win32_handle_table_remove (HANDLE handle)
   g_hash_table_remove (handle_ht, &handle);
 }
 
-gpointer
+bpointer
 bdk_win32_handle_table_lookup (BdkNativeWindow handle)
 {
-  gpointer data = NULL;
+  bpointer data = NULL;
 
   if (handle_ht)
     data = g_hash_table_lookup (handle_ht, &handle);

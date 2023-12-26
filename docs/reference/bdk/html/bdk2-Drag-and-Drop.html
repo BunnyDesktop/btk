@@ -153,7 +153,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Drag-and-Drop.html#bdk-drag-motion" title="bdk_drag_motion ()">bdk_drag_motion</a> <span class="c_punctuation">()</span>
@@ -201,7 +201,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Drag-and-Drop.html#bdk-drag-drop-succeeded" title="bdk_drag_drop_succeeded ()">bdk_drag_drop_succeeded</a> <span class="c_punctuation">()</span>
@@ -273,7 +273,7 @@ bdk_drag_get_selection (<em class="parameter"><code><a class="link" href="bdk2-D
 <a name="bdk-drag-abort"></a><h3>bdk_drag_abort ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drag_abort (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Aborts a drag without dropping. </p>
 <p>This function is called by the drag source.</p>
 <div class="refsect3">
@@ -304,8 +304,8 @@ bdk_drag_abort (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-
 <a name="bdk-drop-reply"></a><h3>bdk_drop_reply ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drop_reply (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                <em class="parameter"><code><span class="type">gboolean</span> ok</code></em>,
-                <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bboolean</span> ok</code></em>,
+                <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Accepts or rejects a drop. </p>
 <p>This function is called by the drag destination in response
 to a drop initiated by the drag source.</p>
@@ -358,7 +358,7 @@ bdk_drag_context_new (<em class="parameter"><code><span class="type">void</span>
 <a name="bdk-drag-drop"></a><h3>bdk_drag_drop ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drag_drop (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-               <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+               <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Drops on the current destination.</p>
 <p>This function is called by the drag source.</p>
 <div class="refsect3">
@@ -390,8 +390,8 @@ bdk_drag_drop (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-D
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drag_find_window (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *drag_window</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x_root</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y_root</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> x_root</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y_root</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> **dest_window</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragProtocol" title="enum BdkDragProtocol"><span class="type">BdkDragProtocol</span></a> *protocol</code></em>);</pre>
 <div class="warning">
@@ -455,8 +455,8 @@ should be ignored, since it is put up by the drag source as an icon.</p></td>
 bdk_drag_find_window_for_screen (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                                  <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *drag_window</code></em>,
                                  <em class="parameter"><code><a class="link" href="BdkScreen.html" title="BdkScreen"><span class="type">BdkScreen</span></a> *screen</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> x_root</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> y_root</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> x_root</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> y_root</code></em>,
                                  <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> **dest_window</code></em>,
                                  <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragProtocol" title="enum BdkDragProtocol"><span class="type">BdkDragProtocol</span></a> *protocol</code></em>);</pre>
 <p>Finds the destination window and DND protocol to use at the
@@ -718,15 +718,15 @@ as list of <a class="link" href="bdk2-Properties-and-Atoms.html#BdkAtom" title="
 <hr>
 <div class="refsect2">
 <a name="bdk-drag-motion"></a><h3>bdk_drag_motion ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_drag_motion (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *dest_window</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragProtocol" title="enum BdkDragProtocol"><span class="type">BdkDragProtocol</span></a> protocol</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x_root</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y_root</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x_root</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y_root</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragAction" title="enum BdkDragAction"><span class="type">BdkDragAction</span></a> suggested_action</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragAction" title="enum BdkDragAction"><span class="type">BdkDragAction</span></a> possible_actions</code></em>,
-                 <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Updates the drag context when the pointer moves or the 
 set of actions changes.</p>
 <p>This function is called by the drag source.</p>
@@ -793,8 +793,8 @@ set of actions changes.</p>
 <a name="bdk-drop-finish"></a><h3>bdk_drop_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drop_finish (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> success</code></em>,
-                 <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bboolean</span> success</code></em>,
+                 <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Ends the drag operation after a drop.</p>
 <p>This function is called by the drag destination.</p>
 <div class="refsect3">
@@ -945,7 +945,7 @@ bdk_drag_context_unref (<em class="parameter"><code><a class="link" href="bdk2-D
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drag_status (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragAction" title="enum BdkDragAction"><span class="type">BdkDragAction</span></a> action</code></em>,
-                 <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 <p>Selects one of the actions offered by the drag source.</p>
 <p>This function is called by the drag destination in response to
 <a class="link" href="bdk2-Drag-and-Drop.html#bdk-drag-motion" title="bdk_drag_motion ()"><code class="function">bdk_drag_motion()</code></a> called by the drag source.</p>
@@ -981,7 +981,7 @@ or 0 to indicate that a drop will not be accepted.</p></td>
 <hr>
 <div class="refsect2">
 <a name="bdk-drag-drop-succeeded"></a><h3>bdk_drag_drop_succeeded ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 bdk_drag_drop_succeeded (<em class="parameter"><code><a class="link" href="bdk2-Drag-and-Drop.html#BdkDragContext" title="struct BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>);</pre>
 <p>Returns whether the dropped data has been successfully 
 transferred. This function is intended to be used while 
@@ -1065,11 +1065,11 @@ meaningless at other times.</p>
 <div class="refsect2">
 <a name="BdkDragContext"></a><h3>struct BdkDragContext</h3>
 <pre class="programlisting">struct BdkDragContext {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BdkDragProtocol GSEAL (protocol);
 
-  gboolean GSEAL (is_source);
+  bboolean GSEAL (is_source);
 
   BdkWindow *GSEAL (source_window);
   BdkWindow *GSEAL (dest_window);
@@ -1079,7 +1079,7 @@ meaningless at other times.</p>
   BdkDragAction GSEAL (suggested_action);
   BdkDragAction GSEAL (action);
 
-  guint32 GSEAL (start_time);
+  buint32 GSEAL (start_time);
 };
 </pre>
 </div>

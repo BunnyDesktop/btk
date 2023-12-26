@@ -63,7 +63,7 @@ struct _BtkSettingsValuePrivate
 
 struct _BtkSettingsPropertyValue
 {
-  GValue value;
+  BValue value;
   BtkSettingsSource source;
 };
 
@@ -143,19 +143,19 @@ enum {
 };
 
 /* --- prototypes --- */
-static void	btk_settings_finalize		 (GObject		*object);
-static void	btk_settings_get_property	 (GObject		*object,
-						  guint			 property_id,
-						  GValue		*value,
-						  GParamSpec		*pspec);
-static void	btk_settings_set_property	 (GObject		*object,
-						  guint			 property_id,
-						  const GValue		*value,
-						  GParamSpec		*pspec);
-static void	btk_settings_notify		 (GObject		*object,
-						  GParamSpec		*pspec);
-static guint	settings_install_property_parser (BtkSettingsClass      *class,
-						  GParamSpec            *pspec,
+static void	btk_settings_finalize		 (BObject		*object);
+static void	btk_settings_get_property	 (BObject		*object,
+						  buint			 property_id,
+						  BValue		*value,
+						  BParamSpec		*pspec);
+static void	btk_settings_set_property	 (BObject		*object,
+						  buint			 property_id,
+						  const BValue		*value,
+						  BParamSpec		*pspec);
+static void	btk_settings_notify		 (BObject		*object,
+						  BParamSpec		*pspec);
+static buint	settings_install_property_parser (BtkSettingsClass      *class,
+						  BParamSpec            *pspec,
 						  BtkRcPropertyParser    parser);
 static void    settings_update_double_click      (BtkSettings           *settings);
 static void    settings_update_modules           (BtkSettings           *settings);
@@ -164,71 +164,71 @@ static void    settings_update_modules           (BtkSettings           *setting
 static void    settings_update_cursor_theme      (BtkSettings           *settings);
 static void    settings_update_resolution        (BtkSettings           *settings);
 static void    settings_update_font_options      (BtkSettings           *settings);
-static gboolean settings_update_fontconfig       (BtkSettings           *settings);
+static bboolean settings_update_fontconfig       (BtkSettings           *settings);
 #endif
 static void    settings_update_color_scheme      (BtkSettings *settings);
 
 static void    merge_color_scheme                (BtkSettings           *settings, 
-						  const GValue          *value, 
+						  const BValue          *value, 
 						  BtkSettingsSource      source);
-static gchar  *get_color_scheme                  (BtkSettings           *settings);
+static bchar  *get_color_scheme                  (BtkSettings           *settings);
 static GHashTable *get_color_hash                (BtkSettings           *settings);
 
 /* the default palette for BtkColorSelelection */
-static const gchar default_color_palette[] =
+static const bchar default_color_palette[] =
   "black:white:gray50:red:purple:blue:light blue:green:yellow:orange:"
   "lavender:brown:goldenrod4:dodger blue:pink:light green:gray10:gray30:gray75:gray90";
 
 /* --- variables --- */
 static GQuark		 quark_property_parser = 0;
 static GSList           *object_list = NULL;
-static guint		 class_n_properties = 0;
+static buint		 class_n_properties = 0;
 
 
-G_DEFINE_TYPE (BtkSettings, btk_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkSettings, btk_settings, B_TYPE_OBJECT)
 
 /* --- functions --- */
 static void
 btk_settings_init (BtkSettings *settings)
 {
-  GParamSpec **pspecs, **p;
-  guint i = 0;
+  BParamSpec **pspecs, **p;
+  buint i = 0;
   
   g_datalist_init (&settings->queued_settings);
-  object_list = g_slist_prepend (object_list, settings);
+  object_list = b_slist_prepend (object_list, settings);
 
   /* build up property array for all yet existing properties and queue
    * notification for them (at least notification for internal properties
    * will instantly be caught)
    */
-  pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (settings), NULL);
+  pspecs = g_object_class_list_properties (B_OBJECT_GET_CLASS (settings), NULL);
   for (p = pspecs; *p; p++)
-    if ((*p)->owner_type == G_OBJECT_TYPE (settings))
+    if ((*p)->owner_type == B_OBJECT_TYPE (settings))
       i++;
   settings->property_values = g_new0 (BtkSettingsPropertyValue, i);
   i = 0;
-  g_object_freeze_notify (G_OBJECT (settings));
+  g_object_freeze_notify (B_OBJECT (settings));
   for (p = pspecs; *p; p++)
     {
-      GParamSpec *pspec = *p;
+      BParamSpec *pspec = *p;
 
-      if (pspec->owner_type != G_OBJECT_TYPE (settings))
+      if (pspec->owner_type != B_OBJECT_TYPE (settings))
 	continue;
-      g_value_init (&settings->property_values[i].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      b_value_init (&settings->property_values[i].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       g_param_value_set_default (pspec, &settings->property_values[i].value);
-      g_object_notify (G_OBJECT (settings), pspec->name);
+      g_object_notify (B_OBJECT (settings), pspec->name);
       settings->property_values[i].source = BTK_SETTINGS_SOURCE_DEFAULT;
       i++;
     }
-  g_object_thaw_notify (G_OBJECT (settings));
+  g_object_thaw_notify (B_OBJECT (settings));
   g_free (pspecs);
 }
 
 static void
 btk_settings_class_init (BtkSettingsClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
-  guint result;
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
+  buint result;
   
   bobject_class->finalize = btk_settings_finalize;
   bobject_class->get_property = btk_settings_get_property;
@@ -240,7 +240,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-double-click-time",
                                                                P_("Double Click Time"),
                                                                P_("Maximum time allowed between two clicks for them to be considered a double click (in milliseconds)"),
-                                                               0, G_MAXINT, 250,
+                                                               0, B_MAXINT, 250,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_DOUBLE_CLICK_TIME);
@@ -248,7 +248,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-double-click-distance",
                                                                P_("Double Click Distance"),
                                                                P_("Maximum distance allowed between two clicks for them to be considered a double click (in pixels)"),
-                                                               0, G_MAXINT, 5,
+                                                               0, B_MAXINT, 5,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_DOUBLE_CLICK_DISTANCE);
@@ -273,7 +273,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-cursor-blink-time",
                                                                P_("Cursor Blink Time"),
                                                                P_("Length of the cursor blink cycle, in milliseconds"),
-                                                               100, G_MAXINT, 1200,
+                                                               100, B_MAXINT, 1200,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_CURSOR_BLINK_TIME);
@@ -293,7 +293,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-cursor-blink-timeout",
                                                                P_("Cursor Blink Timeout"),
                                                                P_("Time after which the cursor stops blinking, in seconds"),
-                                                               1, G_MAXINT, G_MAXINT,
+                                                               1, B_MAXINT, B_MAXINT,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
   g_assert (result == PROP_CURSOR_BLINK_TIMEOUT);
@@ -358,7 +358,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-dnd-drag-threshold",
 							       P_("Drag threshold"),
 							       P_("Number of pixels the cursor can move before dragging"),
-							       1, G_MAXINT, 8,
+							       1, B_MAXINT, 8,
                                                                BTK_PARAM_READWRITE),
 					     NULL);
   g_assert (result == PROP_DND_DRAG_THRESHOLD);
@@ -524,7 +524,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-timeout-initial",
  							       P_("Start timeout"),
  							       P_("Starting value for timeouts, when button is pressed"),
- 							       0, G_MAXINT, DEFAULT_TIMEOUT_INITIAL,
+ 							       0, B_MAXINT, DEFAULT_TIMEOUT_INITIAL,
  							       BTK_PARAM_READWRITE),
 					     NULL);
 
@@ -534,7 +534,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-timeout-repeat",
  							       P_("Repeat timeout"),
  							       P_("Repeat value for timeouts, when button is pressed"),
- 							       0, G_MAXINT, DEFAULT_TIMEOUT_REPEAT,
+ 							       0, B_MAXINT, DEFAULT_TIMEOUT_REPEAT,
  							       BTK_PARAM_READWRITE),
 					     NULL);
 
@@ -544,7 +544,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-timeout-expand",
  							       P_("Expand timeout"),
  							       P_("Expand value for timeouts, when a widget is expanding a new rebunnyion"),
- 							       0, G_MAXINT, DEFAULT_TIMEOUT_EXPAND,
+ 							       0, B_MAXINT, DEFAULT_TIMEOUT_EXPAND,
  							       BTK_PARAM_READWRITE),
 					     NULL);
 
@@ -627,7 +627,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-tooltip-timeout",
 							       P_("Tooltip timeout"),
 							       P_("Timeout before tooltip is shown"),
-							       0, G_MAXINT,
+							       0, B_MAXINT,
 							       500,
 							       BTK_PARAM_READWRITE),
 					     NULL);
@@ -653,7 +653,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-tooltip-browse-timeout",
 							       P_("Tooltip browse timeout"),
 							       P_("Timeout before tooltip is shown when browse mode is enabled"),
-							       0, G_MAXINT,
+							       0, B_MAXINT,
 							       60,
 							       BTK_PARAM_READWRITE),
 					     NULL);
@@ -675,7 +675,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-tooltip-browse-mode-timeout",
  							       P_("Tooltip browse mode timeout"),
  							       P_("Timeout after which browse mode is disabled"),
- 							       0, G_MAXINT,
+ 							       0, B_MAXINT,
 							       500,
  							       BTK_PARAM_READWRITE),
 					     NULL);
@@ -752,7 +752,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_boxed ("color-hash",
                                                                  P_("Color Hash"),
                                                                  P_("A hash table representation of the color scheme."),
-                                                                 G_TYPE_HASH_TABLE,
+                                                                 B_TYPE_HASH_TABLE,
                                                                  BTK_PARAM_READABLE),
                                              NULL);
   g_assert (result == PROP_COLOR_HASH);
@@ -855,7 +855,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-recent-files-limit",
  							       P_("Recent Files Limit"),
  							       P_("Number of recently used files"),
- 							       -1, G_MAXINT,
+ 							       -1, B_MAXINT,
 							       50,
  							       BTK_PARAM_READWRITE),
 					     NULL);
@@ -895,7 +895,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_int ("btk-recent-files-max-age",
  							       P_("Recent Files Max Age"),
  							       P_("Maximum age of recently used files, in days"),
- 							       -1, G_MAXINT,
+ 							       -1, B_MAXINT,
 							       30,
  							       BTK_PARAM_READWRITE),
 					     NULL);
@@ -905,7 +905,7 @@ btk_settings_class_init (BtkSettingsClass *class)
 					     g_param_spec_uint ("btk-fontconfig-timestamp",
 								P_("Fontconfig configuration timestamp"),
 								P_("Timestamp of current fontconfig configuration"),
-								0, G_MAXUINT, 0,
+								0, B_MAXUINT, 0,
 								BTK_PARAM_READWRITE),
 					     NULL);
   
@@ -1096,7 +1096,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_uint ("btk-entry-password-hint-timeout",
                                                                 P_("Password Hint Timeout"),
                                                                 P_("How long to show the last input character in hidden entries"),
-                                                                0, G_MAXUINT,
+                                                                0, B_MAXUINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE),
                                              NULL);
@@ -1115,7 +1115,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-menu-bar-popup-delay",
                                                                P_("Delay before drop down menus appear"),
                                                                P_("Delay before the submenus of a menu bar appear"),
-                                                               0, G_MAXINT,
+                                                               0, B_MAXINT,
                                                                0,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
@@ -1152,7 +1152,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-menu-popup-delay",
                                                                P_("Delay before submenus appear"),
                                                                P_("Minimum time the pointer must stay over a menu item before the submenu appear"),
-                                                               0, G_MAXINT,
+                                                               0, B_MAXINT,
                                                                225,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
@@ -1162,7 +1162,7 @@ btk_settings_class_init (BtkSettingsClass *class)
                                              g_param_spec_int ("btk-menu-popdown-delay",
                                                                P_("Delay before hiding a submenu"),
                                                                P_("The time before hiding a submenu when the pointer is moving towards the submenu"),
-                                                               0, G_MAXINT,
+                                                               0, B_MAXINT,
                                                                1000,
                                                                BTK_PARAM_READWRITE),
                                              NULL);
@@ -1208,22 +1208,22 @@ btk_settings_class_init (BtkSettingsClass *class)
 }
 
 static void
-btk_settings_finalize (GObject *object)
+btk_settings_finalize (BObject *object)
 {
   BtkSettings *settings = BTK_SETTINGS (object);
-  guint i;
+  buint i;
 
-  object_list = g_slist_remove (object_list, settings);
+  object_list = b_slist_remove (object_list, settings);
 
   _btk_rc_context_destroy (settings);
 
   for (i = 0; i < class_n_properties; i++)
-    g_value_unset (&settings->property_values[i].value);
+    b_value_unset (&settings->property_values[i].value);
   g_free (settings->property_values);
   
   g_datalist_clear (&settings->queued_settings);
 
-  G_OBJECT_CLASS (btk_settings_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_settings_parent_class)->finalize (object);
 }
 
 /**
@@ -1243,12 +1243,12 @@ btk_settings_get_for_screen (BdkScreen *screen)
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  settings = g_object_get_data (G_OBJECT (screen), "btk-settings");
+  settings = g_object_get_data (B_OBJECT (screen), "btk-settings");
   if (!settings)
     {
       settings = g_object_new (BTK_TYPE_SETTINGS, NULL);
       settings->screen = screen;
-      g_object_set_data_full (G_OBJECT (screen), I_("btk-settings"), 
+      g_object_set_data_full (B_OBJECT (screen), I_("btk-settings"), 
 			      settings, g_object_unref);
 
       btk_rc_reparse_all_for_settings (settings, TRUE);
@@ -1285,14 +1285,14 @@ btk_settings_get_default (void)
 }
 
 static void
-btk_settings_set_property (GObject      *object,
-			   guint	 property_id,
-			   const GValue *value,
-			   GParamSpec   *pspec)
+btk_settings_set_property (BObject      *object,
+			   buint	 property_id,
+			   const BValue *value,
+			   BParamSpec   *pspec)
 {
   BtkSettings *settings = BTK_SETTINGS (object);
 
-  g_value_copy (value, &settings->property_values[property_id - 1].value);
+  b_value_copy (value, &settings->property_values[property_id - 1].value);
   settings->property_values[property_id - 1].source = BTK_SETTINGS_SOURCE_APPLICATION;
   
   if (pspec->param_id == PROP_COLOR_SCHEME)
@@ -1300,23 +1300,23 @@ btk_settings_set_property (GObject      *object,
 }
 
 static void
-btk_settings_get_property (GObject     *object,
-			   guint	property_id,
-			   GValue      *value,
-			   GParamSpec  *pspec)
+btk_settings_get_property (BObject     *object,
+			   buint	property_id,
+			   BValue      *value,
+			   BParamSpec  *pspec)
 {
   BtkSettings *settings = BTK_SETTINGS (object);
   GType value_type = G_VALUE_TYPE (value);
-  GType fundamental_type = G_TYPE_FUNDAMENTAL (value_type);
+  GType fundamental_type = B_TYPE_FUNDAMENTAL (value_type);
 
   /* handle internal properties */
   switch (property_id)
     {
     case PROP_COLOR_HASH:
-      g_value_set_boxed (value, get_color_hash (settings));
+      b_value_set_boxed (value, get_color_hash (settings));
       return;
     case PROP_COLOR_SCHEME:
-      g_value_take_string (value, get_color_scheme (settings));
+      b_value_take_string (value, get_color_scheme (settings));
       return;
     default: ;
     }
@@ -1325,67 +1325,67 @@ btk_settings_get_property (GObject     *object,
    * not as an int, since we support using names/nicks as the setting
    * value.
    */
-  if ((g_value_type_transformable (G_TYPE_INT, value_type) &&
-       !(fundamental_type == G_TYPE_ENUM || fundamental_type == G_TYPE_FLAGS)) ||
-      g_value_type_transformable (G_TYPE_STRING, G_VALUE_TYPE (value)) ||
-      g_value_type_transformable (BDK_TYPE_COLOR, G_VALUE_TYPE (value)))
+  if ((b_value_type_transformable (B_TYPE_INT, value_type) &&
+       !(fundamental_type == B_TYPE_ENUM || fundamental_type == B_TYPE_FLAGS)) ||
+      b_value_type_transformable (B_TYPE_STRING, G_VALUE_TYPE (value)) ||
+      b_value_type_transformable (BDK_TYPE_COLOR, G_VALUE_TYPE (value)))
     {
       if (settings->property_values[property_id - 1].source == BTK_SETTINGS_SOURCE_APPLICATION ||
 	  !bdk_screen_get_setting (settings->screen, pspec->name, value))
-        g_value_copy (&settings->property_values[property_id - 1].value, value);
+        b_value_copy (&settings->property_values[property_id - 1].value, value);
       else 
         g_param_value_validate (pspec, value);
     }
   else
     {
-      GValue val = { 0, };
+      BValue val = { 0, };
 
       /* Try to get xsetting as a string and parse it. */
       
-      g_value_init (&val, G_TYPE_STRING);
+      b_value_init (&val, B_TYPE_STRING);
 
       if (settings->property_values[property_id - 1].source == BTK_SETTINGS_SOURCE_APPLICATION ||
 	  !bdk_screen_get_setting (settings->screen, pspec->name, &val))
         {
-          g_value_copy (&settings->property_values[property_id - 1].value, value);
+          b_value_copy (&settings->property_values[property_id - 1].value, value);
         }
       else
         {
-          GValue tmp_value = { 0, };
-          GValue gstring_value = { 0, };
+          BValue tmp_value = { 0, };
+          BValue gstrinb_value = { 0, };
           BtkRcPropertyParser parser = (BtkRcPropertyParser) g_param_spec_get_qdata (pspec, quark_property_parser);
           
-          g_value_init (&gstring_value, G_TYPE_GSTRING);
-          g_value_take_boxed (&gstring_value,
-                              g_string_new (g_value_get_string (&val)));
+          b_value_init (&gstrinb_value, B_TYPE_GSTRING);
+          b_value_take_boxed (&gstrinb_value,
+                              g_string_new (b_value_get_string (&val)));
 
-          g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+          b_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
-          if (parser && _btk_settings_parse_convert (parser, &gstring_value,
+          if (parser && _btk_settings_parse_convert (parser, &gstrinb_value,
                                                      pspec, &tmp_value))
             {
-              g_value_copy (&tmp_value, value);
+              b_value_copy (&tmp_value, value);
               g_param_value_validate (pspec, value);
             }
           else
             {
-              g_value_copy (&settings->property_values[property_id - 1].value, value);
+              b_value_copy (&settings->property_values[property_id - 1].value, value);
             }
 
-          g_value_unset (&gstring_value);
-          g_value_unset (&tmp_value);
+          b_value_unset (&gstrinb_value);
+          b_value_unset (&tmp_value);
         }
 
-      g_value_unset (&val);
+      b_value_unset (&val);
     }
 }
 
 static void
-btk_settings_notify (GObject    *object,
-		     GParamSpec *pspec)
+btk_settings_notify (BObject    *object,
+		     BParamSpec *pspec)
 {
   BtkSettings *settings = BTK_SETTINGS (object);
-  guint property_id = pspec->param_id;
+  buint property_id = pspec->param_id;
 
   if (settings->screen == NULL) /* initialization */
     return;
@@ -1430,39 +1430,39 @@ btk_settings_notify (GObject    *object,
     }
 }
 
-gboolean
+bboolean
 _btk_settings_parse_convert (BtkRcPropertyParser parser,
-			     const GValue       *src_value,
-			     GParamSpec         *pspec,
-			     GValue	        *dest_value)
+			     const BValue       *src_value,
+			     BParamSpec         *pspec,
+			     BValue	        *dest_value)
 {
-  gboolean success = FALSE;
+  bboolean success = FALSE;
 
   g_return_val_if_fail (G_VALUE_HOLDS (dest_value, G_PARAM_SPEC_VALUE_TYPE (pspec)), FALSE);
 
   if (parser)
     {
       GString *gstring;
-      gboolean free_gstring = TRUE;
+      bboolean free_gstring = TRUE;
       
-      if (G_VALUE_HOLDS (src_value, G_TYPE_GSTRING))
+      if (G_VALUE_HOLDS (src_value, B_TYPE_GSTRING))
 	{
-	  gstring = g_value_get_boxed (src_value);
+	  gstring = b_value_get_boxed (src_value);
 	  free_gstring = FALSE;
 	}
       else if (G_VALUE_HOLDS_LONG (src_value))
 	{
 	  gstring = g_string_new (NULL);
-	  g_string_append_printf (gstring, "%ld", g_value_get_long (src_value));
+	  g_string_append_printf (gstring, "%ld", b_value_get_long (src_value));
 	}
       else if (G_VALUE_HOLDS_DOUBLE (src_value))
 	{
 	  gstring = g_string_new (NULL);
-	  g_string_append_printf (gstring, "%f", g_value_get_double (src_value));
+	  g_string_append_printf (gstring, "%f", b_value_get_double (src_value));
 	}
       else if (G_VALUE_HOLDS_STRING (src_value))
 	{
-	  gchar *tstr = g_strescape (g_value_get_string (src_value), NULL);
+	  bchar *tstr = g_strescape (b_value_get_string (src_value), NULL);
 	  
 	  gstring = g_string_new ("\"");
 	  g_string_append (gstring, tstr);
@@ -1471,7 +1471,7 @@ _btk_settings_parse_convert (BtkRcPropertyParser parser,
 	}
       else
 	{
-	  g_return_val_if_fail (G_VALUE_HOLDS (src_value, G_TYPE_GSTRING), FALSE);
+	  g_return_val_if_fail (G_VALUE_HOLDS (src_value, B_TYPE_GSTRING), FALSE);
 	  gstring = NULL; /* silence compiler */
 	}
 
@@ -1481,17 +1481,17 @@ _btk_settings_parse_convert (BtkRcPropertyParser parser,
       if (free_gstring)
 	g_string_free (gstring, TRUE);
     }
-  else if (G_VALUE_HOLDS (src_value, G_TYPE_GSTRING))
+  else if (G_VALUE_HOLDS (src_value, B_TYPE_GSTRING))
     {
-      if (G_VALUE_HOLDS (dest_value, G_TYPE_STRING))
+      if (G_VALUE_HOLDS (dest_value, B_TYPE_STRING))
 	{
-	  GString *gstring = g_value_get_boxed (src_value);
+	  GString *gstring = b_value_get_boxed (src_value);
 
-	  g_value_set_string (dest_value, gstring ? gstring->str : NULL);
+	  b_value_set_string (dest_value, gstring ? gstring->str : NULL);
 	  success = !g_param_value_validate (pspec, dest_value);
 	}
     }
-  else if (g_value_type_transformable (G_VALUE_TYPE (src_value), G_VALUE_TYPE (dest_value)))
+  else if (b_value_type_transformable (G_VALUE_TYPE (src_value), G_VALUE_TYPE (dest_value)))
     success = g_param_value_convert (pspec, src_value, dest_value, TRUE);
 
   return success;
@@ -1499,13 +1499,13 @@ _btk_settings_parse_convert (BtkRcPropertyParser parser,
 
 static void
 apply_queued_setting (BtkSettings             *data,
-		      GParamSpec              *pspec,
+		      BParamSpec              *pspec,
 		      BtkSettingsValuePrivate *qvalue)
 {
-  GValue tmp_value = { 0, };
+  BValue tmp_value = { 0, };
   BtkRcPropertyParser parser = (BtkRcPropertyParser) g_param_spec_get_qdata (pspec, quark_property_parser);
 
-  g_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  b_value_init (&tmp_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
   if (_btk_settings_parse_convert (parser, &qvalue->public.value,
 				   pspec, &tmp_value))
     {
@@ -1514,15 +1514,15 @@ apply_queued_setting (BtkSettings             *data,
 
       if (data->property_values[pspec->param_id - 1].source <= qvalue->source)
 	{
-          g_value_copy (&tmp_value, &data->property_values[pspec->param_id - 1].value);
+          b_value_copy (&tmp_value, &data->property_values[pspec->param_id - 1].value);
 	  data->property_values[pspec->param_id - 1].source = qvalue->source;
-          g_object_notify (G_OBJECT (data), g_param_spec_get_name (pspec));
+          g_object_notify (B_OBJECT (data), g_param_spec_get_name (pspec));
 	}
 
     }
   else
     {
-      gchar *debug = g_strdup_value_contents (&qvalue->public.value);
+      bchar *debug = g_strdup_value_contents (&qvalue->public.value);
       
       g_message ("%s: failed to retrieve property `%s' of type `%s' from rc file value \"%s\" of type `%s'",
 		 qvalue->public.origin ? qvalue->public.origin : "(for origin information, set BTK_DEBUG)",
@@ -1532,31 +1532,31 @@ apply_queued_setting (BtkSettings             *data,
 		 G_VALUE_TYPE_NAME (&tmp_value));
       g_free (debug);
     }
-  g_value_unset (&tmp_value);
+  b_value_unset (&tmp_value);
 }
 
-static guint
+static buint
 settings_install_property_parser (BtkSettingsClass   *class,
-				  GParamSpec         *pspec,
+				  BParamSpec         *pspec,
 				  BtkRcPropertyParser parser)
 {
   GSList *node, *next;
 
-  switch (G_TYPE_FUNDAMENTAL (G_PARAM_SPEC_VALUE_TYPE (pspec)))
+  switch (B_TYPE_FUNDAMENTAL (G_PARAM_SPEC_VALUE_TYPE (pspec)))
     {
-    case G_TYPE_BOOLEAN:
-    case G_TYPE_UCHAR:
-    case G_TYPE_CHAR:
-    case G_TYPE_UINT:
-    case G_TYPE_INT:
-    case G_TYPE_ULONG:
-    case G_TYPE_LONG:
-    case G_TYPE_FLOAT:
-    case G_TYPE_DOUBLE:
-    case G_TYPE_STRING:
-    case G_TYPE_ENUM:
+    case B_TYPE_BOOLEAN:
+    case B_TYPE_UCHAR:
+    case B_TYPE_CHAR:
+    case B_TYPE_UINT:
+    case B_TYPE_INT:
+    case B_TYPE_ULONG:
+    case B_TYPE_LONG:
+    case B_TYPE_FLOAT:
+    case B_TYPE_DOUBLE:
+    case B_TYPE_STRING:
+    case B_TYPE_ENUM:
       break;
-    case G_TYPE_BOXED:
+    case B_TYPE_BOXED:
       if (strcmp (g_param_spec_get_name (pspec), "color-hash") == 0)
         {
           break;
@@ -1565,14 +1565,14 @@ settings_install_property_parser (BtkSettingsClass   *class,
     default:
       if (!parser)
         {
-          g_warning (G_STRLOC ": parser needs to be specified for property \"%s\" of type `%s'",
+          g_warning (B_STRLOC ": parser needs to be specified for property \"%s\" of type `%s'",
                      pspec->name, g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
           return 0;
         }
     }
-  if (g_object_class_find_property (G_OBJECT_CLASS (class), pspec->name))
+  if (g_object_class_find_property (B_OBJECT_CLASS (class), pspec->name))
     {
-      g_warning (G_STRLOC ": an rc-data property \"%s\" already exists",
+      g_warning (B_STRLOC ": an rc-data property \"%s\" already exists",
 		 pspec->name);
       return 0;
     }
@@ -1580,8 +1580,8 @@ settings_install_property_parser (BtkSettingsClass   *class,
   for (node = object_list; node; node = node->next)
     g_object_freeze_notify (node->data);
 
-  g_object_class_install_property (G_OBJECT_CLASS (class), ++class_n_properties, pspec);
-  g_param_spec_set_qdata (pspec, quark_property_parser, (gpointer) parser);
+  g_object_class_install_property (B_OBJECT_CLASS (class), ++class_n_properties, pspec);
+  g_param_spec_set_qdata (pspec, quark_property_parser, (bpointer) parser);
 
   for (node = object_list; node; node = node->next)
     {
@@ -1590,10 +1590,10 @@ settings_install_property_parser (BtkSettingsClass   *class,
       
       settings->property_values = g_renew (BtkSettingsPropertyValue, settings->property_values, class_n_properties);
       settings->property_values[class_n_properties - 1].value.g_type = 0;
-      g_value_init (&settings->property_values[class_n_properties - 1].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      b_value_init (&settings->property_values[class_n_properties - 1].value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       g_param_value_set_default (pspec, &settings->property_values[class_n_properties - 1].value);
       settings->property_values[class_n_properties - 1].source = BTK_SETTINGS_SOURCE_DEFAULT;
-      g_object_notify (G_OBJECT (settings), pspec->name);
+      g_object_notify (B_OBJECT (settings), pspec->name);
       
       qvalue = g_datalist_get_data (&settings->queued_settings, pspec->name);
       if (qvalue)
@@ -1618,16 +1618,16 @@ _btk_rc_property_parser_from_type (GType type)
     return btk_rc_property_parse_requisition;
   else if (type == BTK_TYPE_BORDER)
     return btk_rc_property_parse_border;
-  else if (G_TYPE_FUNDAMENTAL (type) == G_TYPE_ENUM && G_TYPE_IS_DERIVED (type))
+  else if (B_TYPE_FUNDAMENTAL (type) == B_TYPE_ENUM && B_TYPE_IS_DERIVED (type))
     return btk_rc_property_parse_enum;
-  else if (G_TYPE_FUNDAMENTAL (type) == G_TYPE_FLAGS && G_TYPE_IS_DERIVED (type))
+  else if (B_TYPE_FUNDAMENTAL (type) == B_TYPE_FLAGS && B_TYPE_IS_DERIVED (type))
     return btk_rc_property_parse_flags;
   else
     return NULL;
 }
 
 void
-btk_settings_install_property (GParamSpec *pspec)
+btk_settings_install_property (BParamSpec *pspec)
 {
   static BtkSettingsClass *klass = NULL;
 
@@ -1644,7 +1644,7 @@ btk_settings_install_property (GParamSpec *pspec)
 }
 
 void
-btk_settings_install_property_parser (GParamSpec          *pspec,
+btk_settings_install_property_parser (BParamSpec          *pspec,
 				      BtkRcPropertyParser  parser)
 {
   static BtkSettingsClass *klass = NULL;
@@ -1659,32 +1659,32 @@ btk_settings_install_property_parser (GParamSpec          *pspec,
 }
 
 static void
-free_value (gpointer data)
+free_value (bpointer data)
 {
   BtkSettingsValuePrivate *qvalue = data;
   
-  g_value_unset (&qvalue->public.value);
+  b_value_unset (&qvalue->public.value);
   g_free (qvalue->public.origin);
   g_slice_free (BtkSettingsValuePrivate, qvalue);
 }
 
 static void
 btk_settings_set_property_value_internal (BtkSettings            *settings,
-					  const gchar            *prop_name,
+					  const bchar            *prop_name,
 					  const BtkSettingsValue *new_value,
 					  BtkSettingsSource       source)
 {
   BtkSettingsValuePrivate *qvalue;
-  GParamSpec *pspec;
-  gchar *name;
+  BParamSpec *pspec;
+  bchar *name;
   GQuark name_quark;
 
   if (!G_VALUE_HOLDS_LONG (&new_value->value) &&
       !G_VALUE_HOLDS_DOUBLE (&new_value->value) &&
       !G_VALUE_HOLDS_STRING (&new_value->value) &&
-      !G_VALUE_HOLDS (&new_value->value, G_TYPE_GSTRING))
+      !G_VALUE_HOLDS (&new_value->value, B_TYPE_GSTRING))
     {
-      g_warning (G_STRLOC ": value type invalid");
+      g_warning (B_STRLOC ": value type invalid");
       return;
     }
   
@@ -1702,20 +1702,20 @@ btk_settings_set_property_value_internal (BtkSettings            *settings,
   else
     {
       g_free (qvalue->public.origin);
-      g_value_unset (&qvalue->public.value);
+      b_value_unset (&qvalue->public.value);
     }
   qvalue->public.origin = g_strdup (new_value->origin);
-  g_value_init (&qvalue->public.value, G_VALUE_TYPE (&new_value->value));
-  g_value_copy (&new_value->value, &qvalue->public.value);
+  b_value_init (&qvalue->public.value, G_VALUE_TYPE (&new_value->value));
+  b_value_copy (&new_value->value, &qvalue->public.value);
   qvalue->source = source;
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (settings), g_quark_to_string (name_quark));
+  pspec = g_object_class_find_property (B_OBJECT_GET_CLASS (settings), g_quark_to_string (name_quark));
   if (pspec)
     apply_queued_setting (settings, pspec, qvalue);
 }
 
 void
 btk_settings_set_property_value (BtkSettings            *settings,
-				 const gchar            *prop_name,
+				 const bchar            *prop_name,
 				 const BtkSettingsValue *new_value)
 {
   g_return_if_fail (BTK_SETTINGS (settings));
@@ -1728,7 +1728,7 @@ btk_settings_set_property_value (BtkSettings            *settings,
 
 void
 _btk_settings_set_property_value_from_rc (BtkSettings            *settings,
-					  const gchar            *prop_name,
+					  const bchar            *prop_name,
 					  const BtkSettingsValue *new_value)
 {
   g_return_if_fail (BTK_SETTINGS (settings));
@@ -1741,9 +1741,9 @@ _btk_settings_set_property_value_from_rc (BtkSettings            *settings,
 
 void
 btk_settings_set_string_property (BtkSettings *settings,
-				  const gchar *name,
-				  const gchar *v_string,
-				  const gchar *origin)
+				  const bchar *name,
+				  const bchar *v_string,
+				  const bchar *origin)
 {
   BtkSettingsValue svalue = { NULL, { 0, }, };
 
@@ -1751,54 +1751,54 @@ btk_settings_set_string_property (BtkSettings *settings,
   g_return_if_fail (name != NULL);
   g_return_if_fail (v_string != NULL);
 
-  svalue.origin = (gchar*) origin;
-  g_value_init (&svalue.value, G_TYPE_STRING);
-  g_value_set_static_string (&svalue.value, v_string);
+  svalue.origin = (bchar*) origin;
+  b_value_init (&svalue.value, B_TYPE_STRING);
+  b_value_set_static_string (&svalue.value, v_string);
   btk_settings_set_property_value (settings, name, &svalue);
-  g_value_unset (&svalue.value);
+  b_value_unset (&svalue.value);
 }
 
 void
 btk_settings_set_long_property (BtkSettings *settings,
-				const gchar *name,
-				glong	     v_long,
-				const gchar *origin)
+				const bchar *name,
+				blong	     v_long,
+				const bchar *origin)
 {
   BtkSettingsValue svalue = { NULL, { 0, }, };
   
   g_return_if_fail (BTK_SETTINGS (settings));
   g_return_if_fail (name != NULL);
 
-  svalue.origin = (gchar*) origin;
-  g_value_init (&svalue.value, G_TYPE_LONG);
-  g_value_set_long (&svalue.value, v_long);
+  svalue.origin = (bchar*) origin;
+  b_value_init (&svalue.value, B_TYPE_LONG);
+  b_value_set_long (&svalue.value, v_long);
   btk_settings_set_property_value (settings, name, &svalue);
-  g_value_unset (&svalue.value);
+  b_value_unset (&svalue.value);
 }
 
 void
 btk_settings_set_double_property (BtkSettings *settings,
-				  const gchar *name,
-				  gdouble      v_double,
-				  const gchar *origin)
+				  const bchar *name,
+				  bdouble      v_double,
+				  const bchar *origin)
 {
   BtkSettingsValue svalue = { NULL, { 0, }, };
 
   g_return_if_fail (BTK_SETTINGS (settings));
   g_return_if_fail (name != NULL);
 
-  svalue.origin = (gchar*) origin;
-  g_value_init (&svalue.value, G_TYPE_DOUBLE);
-  g_value_set_double (&svalue.value, v_double);
+  svalue.origin = (bchar*) origin;
+  b_value_init (&svalue.value, B_TYPE_DOUBLE);
+  b_value_set_double (&svalue.value, v_double);
   btk_settings_set_property_value (settings, name, &svalue);
-  g_value_unset (&svalue.value);
+  b_value_unset (&svalue.value);
 }
 
 /**
  * btk_rc_property_parse_color:
- * @pspec: a #GParamSpec
+ * @pspec: a #BParamSpec
  * @gstring: the #GString to be parsed
- * @property_value: a #GValue which must hold #BdkColor values.
+ * @property_value: a #BValue which must hold #BdkColor values.
  * 
  * A #BtkRcPropertyParser for use with btk_settings_install_property_parser()
  * or btk_widget_class_install_style_property_parser() which parses a
@@ -1810,14 +1810,14 @@ btk_settings_set_double_property (BtkSettings *settings,
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #BdkColor.
  **/
-gboolean
-btk_rc_property_parse_color (const GParamSpec *pspec,
+bboolean
+btk_rc_property_parse_color (const BParamSpec *pspec,
 			     const GString    *gstring,
-			     GValue           *property_value)
+			     BValue           *property_value)
 {
   BdkColor color = { 0, 0, 0, 0, };
   GScanner *scanner;
-  gboolean success;
+  bboolean success;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (G_VALUE_HOLDS (property_value, BDK_TYPE_COLOR), FALSE);
@@ -1827,7 +1827,7 @@ btk_rc_property_parse_color (const GParamSpec *pspec,
   if (btk_rc_parse_color (scanner, &color) == G_TOKEN_NONE &&
       g_scanner_get_next_token (scanner) == G_TOKEN_EOF)
     {
-      g_value_set_boxed (property_value, &color);
+      b_value_set_boxed (property_value, &color);
       success = TRUE;
     }
   else
@@ -1839,9 +1839,9 @@ btk_rc_property_parse_color (const GParamSpec *pspec,
 
 /**
  * btk_rc_property_parse_enum:
- * @pspec: a #GParamSpec
+ * @pspec: a #BParamSpec
  * @gstring: the #GString to be parsed
- * @property_value: a #GValue which must hold enum values.
+ * @property_value: a #BValue which must hold enum values.
  * 
  * A #BtkRcPropertyParser for use with btk_settings_install_property_parser()
  * or btk_widget_class_install_style_property_parser() which parses a single
@@ -1854,12 +1854,12 @@ btk_rc_property_parse_color (const GParamSpec *pspec,
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #GEnumValue.
  **/
-gboolean
-btk_rc_property_parse_enum (const GParamSpec *pspec,
+bboolean
+btk_rc_property_parse_enum (const BParamSpec *pspec,
 			    const GString    *gstring,
-			    GValue           *property_value)
+			    BValue           *property_value)
 {
-  gboolean need_closing_brace = FALSE, success = FALSE;
+  bboolean need_closing_brace = FALSE, success = FALSE;
   GScanner *scanner;
   GEnumValue *enum_value = NULL;
 
@@ -1887,13 +1887,13 @@ btk_rc_property_parse_enum (const GParamSpec *pspec,
 	enum_value = g_enum_get_value_by_nick (class, scanner->value.v_identifier);
       if (enum_value)
 	{
-	  g_value_set_enum (property_value, enum_value->value);
+	  b_value_set_enum (property_value, enum_value->value);
 	  success = TRUE;
 	}
     }
   else if (scanner->token == G_TOKEN_INT)
     {
-      g_value_set_enum (property_value, scanner->value.v_int);
+      b_value_set_enum (property_value, scanner->value.v_int);
       success = TRUE;
     }
   if (need_closing_brace && g_scanner_get_next_token (scanner) != ')')
@@ -1906,10 +1906,10 @@ btk_rc_property_parse_enum (const GParamSpec *pspec,
   return success;
 }
 
-static guint
+static buint
 parse_flags_value (GScanner    *scanner,
 		   GFlagsClass *class,
-		   guint       *number)
+		   buint       *number)
 {
   g_scanner_get_next_token (scanner);
   if (scanner->token == G_TOKEN_IDENTIFIER)
@@ -1935,9 +1935,9 @@ parse_flags_value (GScanner    *scanner,
 
 /**
  * btk_rc_property_parse_flags:
- * @pspec: a #GParamSpec
+ * @pspec: a #BParamSpec
  * @gstring: the #GString to be parsed
- * @property_value: a #GValue which must hold flags values.
+ * @property_value: a #BValue which must hold flags values.
  * 
  * A #BtkRcPropertyParser for use with btk_settings_install_property_parser()
  * or btk_widget_class_install_style_property_parser() which parses flags. 
@@ -1949,13 +1949,13 @@ parse_flags_value (GScanner    *scanner,
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting flags value.
  **/
-gboolean
-btk_rc_property_parse_flags (const GParamSpec *pspec,
+bboolean
+btk_rc_property_parse_flags (const BParamSpec *pspec,
 			     const GString    *gstring,
-			     GValue           *property_value)
+			     BValue           *property_value)
 {
   GFlagsClass *class;
-   gboolean success = FALSE;
+   bboolean success = FALSE;
   GScanner *scanner;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
@@ -1969,20 +1969,20 @@ btk_rc_property_parse_flags (const GParamSpec *pspec,
   if (g_scanner_peek_next_token (scanner) == G_TOKEN_IDENTIFIER ||
       scanner->next_token == G_TOKEN_INT)
     {
-      guint token, flags_value = 0;
+      buint token, flags_value = 0;
       
       token = parse_flags_value (scanner, class, &flags_value);
 
       if (token == G_TOKEN_NONE && g_scanner_peek_next_token (scanner) == G_TOKEN_EOF)
 	{
 	  success = TRUE;
-	  g_value_set_flags (property_value, flags_value);
+	  b_value_set_flags (property_value, flags_value);
 	}
       
     }
   else if (g_scanner_get_next_token (scanner) == '(')
     {
-      guint token, flags_value = 0;
+      buint token, flags_value = 0;
 
       /* parse first value */
       token = parse_flags_value (scanner, class, &flags_value);
@@ -1995,7 +1995,7 @@ btk_rc_property_parse_flags (const GParamSpec *pspec,
       if (token == G_TOKEN_NONE && scanner->token == ')' &&
 	  g_scanner_peek_next_token (scanner) == G_TOKEN_EOF)
 	{
-	  g_value_set_flags (property_value, flags_value);
+	  b_value_set_flags (property_value, flags_value);
 	  success = TRUE;
 	}
     }
@@ -2004,11 +2004,11 @@ btk_rc_property_parse_flags (const GParamSpec *pspec,
   return success;
 }
 
-static gboolean
+static bboolean
 get_braced_int (GScanner *scanner,
-		gboolean  first,
-		gboolean  last,
-		gint     *value)
+		bboolean  first,
+		bboolean  last,
+		bint     *value)
 {
   if (first)
     {
@@ -2041,9 +2041,9 @@ get_braced_int (GScanner *scanner,
 
 /**
  * btk_rc_property_parse_requisition:
- * @pspec: a #GParamSpec
+ * @pspec: a #BParamSpec
  * @gstring: the #GString to be parsed
- * @property_value: a #GValue which must hold boxed values.
+ * @property_value: a #BValue which must hold boxed values.
  * 
  * A #BtkRcPropertyParser for use with btk_settings_install_property_parser()
  * or btk_widget_class_install_style_property_parser() which parses a
@@ -2053,14 +2053,14 @@ get_braced_int (GScanner *scanner,
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #BtkRequisition.
  **/
-gboolean
-btk_rc_property_parse_requisition  (const GParamSpec *pspec,
+bboolean
+btk_rc_property_parse_requisition  (const BParamSpec *pspec,
 				    const GString    *gstring,
-				    GValue           *property_value)
+				    BValue           *property_value)
 {
   BtkRequisition requisition;
   GScanner *scanner;
-  gboolean success = FALSE;
+  bboolean success = FALSE;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (G_VALUE_HOLDS_BOXED (property_value), FALSE);
@@ -2071,7 +2071,7 @@ btk_rc_property_parse_requisition  (const GParamSpec *pspec,
   if (get_braced_int (scanner, TRUE, FALSE, &requisition.width) &&
       get_braced_int (scanner, FALSE, TRUE, &requisition.height))
     {
-      g_value_set_boxed (property_value, &requisition);
+      b_value_set_boxed (property_value, &requisition);
       success = TRUE;
     }
 
@@ -2082,9 +2082,9 @@ btk_rc_property_parse_requisition  (const GParamSpec *pspec,
 
 /**
  * btk_rc_property_parse_border:
- * @pspec: a #GParamSpec
+ * @pspec: a #BParamSpec
  * @gstring: the #GString to be parsed
- * @property_value: a #GValue which must hold boxed values.
+ * @property_value: a #BValue which must hold boxed values.
  * 
  * A #BtkRcPropertyParser for use with btk_settings_install_property_parser()
  * or btk_widget_class_install_style_property_parser() which parses
@@ -2095,14 +2095,14 @@ btk_rc_property_parse_requisition  (const GParamSpec *pspec,
  * Return value: %TRUE if @gstring could be parsed and @property_value
  * has been set to the resulting #BtkBorder.
  **/
-gboolean
-btk_rc_property_parse_border (const GParamSpec *pspec,
+bboolean
+btk_rc_property_parse_border (const BParamSpec *pspec,
 			      const GString    *gstring,
-			      GValue           *property_value)
+			      BValue           *property_value)
 {
   BtkBorder border;
   GScanner *scanner;
-  gboolean success = FALSE;
+  bboolean success = FALSE;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (G_VALUE_HOLDS_BOXED (property_value), FALSE);
@@ -2115,7 +2115,7 @@ btk_rc_property_parse_border (const GParamSpec *pspec,
       get_braced_int (scanner, FALSE, FALSE, &border.top) &&
       get_braced_int (scanner, FALSE, TRUE, &border.bottom))
     {
-      g_value_set_boxed (property_value, &border);
+      b_value_set_boxed (property_value, &border);
       success = TRUE;
     }
 
@@ -2128,11 +2128,11 @@ void
 _btk_settings_handle_event (BdkEventSetting *event)
 {
   BtkSettings *settings;
-  GParamSpec *pspec;
-  guint property_id;
+  BParamSpec *pspec;
+  buint property_id;
 
   settings = btk_settings_get_for_screen (bdk_window_get_screen (event->window));
-  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (settings), event->name);
+  pspec = g_object_class_find_property (B_OBJECT_GET_CLASS (settings), event->name);
  
   if (pspec) 
     {
@@ -2140,28 +2140,28 @@ _btk_settings_handle_event (BdkEventSetting *event)
 
       if (property_id == PROP_COLOR_SCHEME)
         {
-          GValue value = { 0, };
+          BValue value = { 0, };
  
-          g_value_init (&value, G_TYPE_STRING);
+          b_value_init (&value, B_TYPE_STRING);
           if (!bdk_screen_get_setting (settings->screen, pspec->name, &value))
-            g_value_set_static_string (&value, "");
+            b_value_set_static_string (&value, "");
           merge_color_scheme (settings, &value, BTK_SETTINGS_SOURCE_XSETTING);
-          g_value_unset (&value);
+          b_value_unset (&value);
         }
-      g_object_notify (G_OBJECT (settings), pspec->name);
+      g_object_notify (B_OBJECT (settings), pspec->name);
    }
 }
 
 static void
 reset_rc_values_foreach (GQuark    key_id,
-			 gpointer  data,
-			 gpointer  user_data)
+			 bpointer  data,
+			 bpointer  user_data)
 {
   BtkSettingsValuePrivate *qvalue = data;
   GSList **to_reset = user_data;
 
   if (qvalue->source == BTK_SETTINGS_SOURCE_RC_FILE)
-    *to_reset = g_slist_prepend (*to_reset, GUINT_TO_POINTER (key_id));
+    *to_reset = b_slist_prepend (*to_reset, BUINT_TO_POINTER (key_id));
 }
 
 void
@@ -2169,8 +2169,8 @@ _btk_settings_reset_rc_values (BtkSettings *settings)
 {
   GSList *to_reset = NULL;
   GSList *tmp_list;
-  GParamSpec **pspecs, **p;
-  gint i;
+  BParamSpec **pspecs, **p;
+  bint i;
 
   /* Remove any queued settings
    */
@@ -2180,30 +2180,30 @@ _btk_settings_reset_rc_values (BtkSettings *settings)
 
   for (tmp_list = to_reset; tmp_list; tmp_list = tmp_list->next)
     {
-      GQuark key_id = GPOINTER_TO_UINT (tmp_list->data);
+      GQuark key_id = BPOINTER_TO_UINT (tmp_list->data);
       g_datalist_id_remove_data (&settings->queued_settings, key_id);
     }
 
-   g_slist_free (to_reset);
+   b_slist_free (to_reset);
 
   /* Now reset the active settings
    */
-  pspecs = g_object_class_list_properties (G_OBJECT_GET_CLASS (settings), NULL);
+  pspecs = g_object_class_list_properties (B_OBJECT_GET_CLASS (settings), NULL);
   i = 0;
 
-  g_object_freeze_notify (G_OBJECT (settings));
+  g_object_freeze_notify (B_OBJECT (settings));
   for (p = pspecs; *p; p++)
     {
       if (settings->property_values[i].source == BTK_SETTINGS_SOURCE_RC_FILE)
 	{
-	  GParamSpec *pspec = *p;
+	  BParamSpec *pspec = *p;
 
 	  g_param_value_set_default (pspec, &settings->property_values[i].value);
-	  g_object_notify (G_OBJECT (settings), pspec->name);
+	  g_object_notify (B_OBJECT (settings), pspec->name);
 	}
       i++;
     }
-  g_object_thaw_notify (G_OBJECT (settings));
+  g_object_thaw_notify (B_OBJECT (settings));
   g_free (pspecs);
 }
 
@@ -2213,8 +2213,8 @@ settings_update_double_click (BtkSettings *settings)
   if (bdk_screen_get_number (settings->screen) == 0)
     {
       BdkDisplay *display = bdk_screen_get_display (settings->screen);
-      gint double_click_time;
-      gint double_click_distance;
+      bint double_click_time;
+      bint double_click_distance;
   
       g_object_get (settings, 
 		    "btk-double-click-time", &double_click_time, 
@@ -2229,7 +2229,7 @@ settings_update_double_click (BtkSettings *settings)
 static void
 settings_update_modules (BtkSettings *settings)
 {
-  gchar *modules;
+  bchar *modules;
   
   g_object_get (settings, 
 		"btk-modules", &modules,
@@ -2245,8 +2245,8 @@ static void
 settings_update_cursor_theme (BtkSettings *settings)
 {
   BdkDisplay *display = bdk_screen_get_display (settings->screen);
-  gchar *theme = NULL;
-  gint size = 0;
+  bchar *theme = NULL;
+  bint size = 0;
   
   g_object_get (settings, 
 		"btk-cursor-theme-name", &theme,
@@ -2261,12 +2261,12 @@ settings_update_cursor_theme (BtkSettings *settings)
 static void
 settings_update_font_options (BtkSettings *settings)
 {
-  gint hinting;
-  gchar *hint_style_str;
+  bint hinting;
+  bchar *hint_style_str;
   bairo_hint_style_t hint_style = BAIRO_HINT_STYLE_NONE;
-  gint antialias;
+  bint antialias;
   bairo_antialias_t antialias_mode = BAIRO_ANTIALIAS_GRAY;
-  gchar *rgba_str;
+  bchar *rgba_str;
   bairo_subpixel_order_t subpixel_order = BAIRO_SUBPIXEL_ORDER_DEFAULT;
   bairo_font_options_t *options;
   
@@ -2332,13 +2332,13 @@ settings_update_font_options (BtkSettings *settings)
 }
 
 #ifdef BDK_WINDOWING_X11
-static gboolean
+static bboolean
 settings_update_fontconfig (BtkSettings *settings)
 {
-  static guint    last_update_timestamp;
-  static gboolean last_update_needed;
+  static buint    last_update_timestamp;
+  static bboolean last_update_needed;
 
-  guint timestamp;
+  buint timestamp;
 
   g_object_get (settings,
 		"btk-fontconfig-timestamp", &timestamp,
@@ -2351,7 +2351,7 @@ settings_update_fontconfig (BtkSettings *settings)
   if (timestamp != last_update_timestamp)
     {
       BangoFontMap *fontmap = bango_bairo_font_map_get_default ();
-      gboolean update_needed = FALSE;
+      bboolean update_needed = FALSE;
 
       /* bug 547680 */
       if (BANGO_IS_FC_FONT_MAP (fontmap) && !FcConfigUptoDate (NULL))
@@ -2372,7 +2372,7 @@ settings_update_fontconfig (BtkSettings *settings)
 static void
 settings_update_resolution (BtkSettings *settings)
 {
-  gint dpi_int;
+  bint dpi_int;
   double dpi;
   
   g_object_get (settings,
@@ -2391,13 +2391,13 @@ settings_update_resolution (BtkSettings *settings)
 typedef struct {
   GHashTable *color_hash;
   GHashTable *tables[BTK_SETTINGS_SOURCE_APPLICATION + 1];
-  gchar *lastentry[BTK_SETTINGS_SOURCE_APPLICATION + 1];
+  bchar *lastentry[BTK_SETTINGS_SOURCE_APPLICATION + 1];
 } ColorSchemeData;
 
 static void
 color_scheme_data_free (ColorSchemeData *data)
 {
-  gint i;
+  bint i;
 
   g_hash_table_unref (data->color_hash);
 
@@ -2414,28 +2414,28 @@ color_scheme_data_free (ColorSchemeData *data)
 static void
 settings_update_color_scheme (BtkSettings *settings)
 {
-  if (!g_object_get_data (G_OBJECT (settings), "btk-color-scheme"))
+  if (!g_object_get_data (B_OBJECT (settings), "btk-color-scheme"))
     {
       ColorSchemeData *data;
-      GValue value = { 0, };
+      BValue value = { 0, };
 
       data = g_slice_new0 (ColorSchemeData);
       data->color_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
 					        (GDestroyNotify) bdk_color_free);
-      g_object_set_data_full (G_OBJECT (settings), "btk-color-scheme",
+      g_object_set_data_full (B_OBJECT (settings), "btk-color-scheme",
 			      data, (GDestroyNotify) color_scheme_data_free); 
 
-      g_value_init (&value, G_TYPE_STRING);
+      b_value_init (&value, B_TYPE_STRING);
       if (bdk_screen_get_setting (settings->screen, "btk-color-scheme", &value))
         {
           merge_color_scheme (settings, &value, BTK_SETTINGS_SOURCE_XSETTING);
-          g_value_unset (&value);
+          b_value_unset (&value);
         }
    }
 }
 
-static gboolean
-add_color_to_hash (gchar      *name,
+static bboolean
+add_color_to_hash (bchar      *name,
 		   BdkColor   *color,
 		   GHashTable *target)
 {
@@ -2452,14 +2452,14 @@ add_color_to_hash (gchar      *name,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 add_colors_to_hash_from_string (GHashTable  *hash,
-				const gchar *colors)
+				const bchar *colors)
 {
-  gchar *s, *p, *name;
+  bchar *s, *p, *name;
   BdkColor color;
-  gboolean changed = FALSE;
-  gchar *copy;
+  bboolean changed = FALSE;
+  bchar *copy;
 
   copy = g_strdup (colors);
   s = copy;
@@ -2499,17 +2499,17 @@ add_colors_to_hash_from_string (GHashTable  *hash,
   return changed;
 }
 
-static gboolean
+static bboolean
 update_color_hash (ColorSchemeData   *data,
-		   const gchar       *str,
+		   const bchar       *str,
 		   BtkSettingsSource  source)
 {
-  gboolean changed = FALSE;
-  gint i;
+  bboolean changed = FALSE;
+  bint i;
   GHashTable *old_hash;
   GHashTableIter iter;
-  gpointer name;
-  gpointer color;
+  bpointer name;
+  bpointer color;
 
   if ((str == NULL || *str == '\0') &&
       (data->lastentry[source] == NULL || data->lastentry[source][0] == '\0'))
@@ -2576,7 +2576,7 @@ update_color_hash (ColorSchemeData   *data,
       else
         {
           GHashTableIter iter;
-          gpointer key, value, new_value;
+          bpointer key, value, new_value;
 
           g_hash_table_iter_init (&iter, old_hash);
           while (g_hash_table_iter_next (&iter, &key, &value))
@@ -2600,25 +2600,25 @@ update_color_hash (ColorSchemeData   *data,
 
 static void
 merge_color_scheme (BtkSettings       *settings, 
-		    const GValue      *value, 
+		    const BValue      *value, 
 		    BtkSettingsSource  source)
 {
   ColorSchemeData *data;
-  const gchar *colors;
+  const bchar *colors;
 
-  g_object_freeze_notify (G_OBJECT (settings));
+  g_object_freeze_notify (B_OBJECT (settings));
 
-  colors = g_value_get_string (value);
+  colors = b_value_get_string (value);
 
   settings_update_color_scheme (settings);
 
-  data = (ColorSchemeData *) g_object_get_data (G_OBJECT (settings),
+  data = (ColorSchemeData *) g_object_get_data (B_OBJECT (settings),
 						"btk-color-scheme");
   
   if (update_color_hash (data, colors, source))
-    g_object_notify (G_OBJECT (settings), "color-hash");
+    g_object_notify (B_OBJECT (settings), "color-hash");
 
-  g_object_thaw_notify (G_OBJECT (settings));
+  g_object_thaw_notify (B_OBJECT (settings));
 }
 
 static GHashTable *
@@ -2628,18 +2628,18 @@ get_color_hash (BtkSettings *settings)
 
   settings_update_color_scheme (settings);
   
-  data = (ColorSchemeData *)g_object_get_data (G_OBJECT (settings), 
+  data = (ColorSchemeData *)g_object_get_data (B_OBJECT (settings), 
 					       "btk-color-scheme");
 
   return data->color_hash;
 }
 
 static void 
-append_color_scheme (gpointer key,
-		     gpointer value,
-		     gpointer data)
+append_color_scheme (bpointer key,
+		     bpointer value,
+		     bpointer data)
 {
-  gchar *name = (gchar *)key;
+  bchar *name = (bchar *)key;
   BdkColor *color = (BdkColor *)value;
   GString *string = (GString *)data;
 
@@ -2647,7 +2647,7 @@ append_color_scheme (gpointer key,
 			  name, color->red, color->green, color->blue);
 }
 
-static gchar *
+static bchar *
 get_color_scheme (BtkSettings *settings)
 {
   ColorSchemeData *data;
@@ -2655,7 +2655,7 @@ get_color_scheme (BtkSettings *settings)
   
   settings_update_color_scheme (settings);
 
-  data = (ColorSchemeData *) g_object_get_data (G_OBJECT (settings),
+  data = (ColorSchemeData *) g_object_get_data (B_OBJECT (settings),
 						"btk-color-scheme");
 
   string = g_string_new ("");

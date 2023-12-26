@@ -33,11 +33,11 @@ static void       bail_text_view_class_init            (BailTextViewClass *klass
 static void       bail_text_view_init                  (BailTextView      *text_view);
 
 static void       bail_text_view_real_initialize       (BatkObject         *obj,
-                                                        gpointer          data);
-static void       bail_text_view_real_notify_btk       (GObject           *obj,
-                                                        GParamSpec        *pspec);
+                                                        bpointer          data);
+static void       bail_text_view_real_notify_btk       (BObject           *obj,
+                                                        BParamSpec        *pspec);
 
-static void       bail_text_view_finalize              (GObject           *object);
+static void       bail_text_view_finalize              (BObject           *object);
 
 static void       batk_text_interface_init              (BatkTextIface     *iface);
 
@@ -47,96 +47,96 @@ static BatkStateSet* bail_text_view_ref_state_set       (BatkObject        *acce
 
 /* batktext.h */
 
-static gchar*     bail_text_view_get_text_after_offset (BatkText          *text,
-                                                        gint             offset,
+static bchar*     bail_text_view_get_text_after_offset (BatkText          *text,
+                                                        bint             offset,
                                                         BatkTextBoundary  boundary_type,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
-static gchar*     bail_text_view_get_text_at_offset    (BatkText          *text,
-                                                        gint             offset,
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
+static bchar*     bail_text_view_get_text_at_offset    (BatkText          *text,
+                                                        bint             offset,
                                                         BatkTextBoundary  boundary_type,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
-static gchar*     bail_text_view_get_text_before_offset (BatkText         *text,
-                                                        gint             offset,
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
+static bchar*     bail_text_view_get_text_before_offset (BatkText         *text,
+                                                        bint             offset,
                                                         BatkTextBoundary  boundary_type,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
-static gchar*     bail_text_view_get_text              (BatkText*text,
-                                                        gint             start_offset,
-                                                        gint             end_offset);
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
+static bchar*     bail_text_view_get_text              (BatkText*text,
+                                                        bint             start_offset,
+                                                        bint             end_offset);
 static gunichar   bail_text_view_get_character_at_offset (BatkText        *text,
-                                                        gint             offset);
-static gint       bail_text_view_get_character_count   (BatkText          *text);
-static gint       bail_text_view_get_caret_offset      (BatkText          *text);
-static gboolean   bail_text_view_set_caret_offset      (BatkText          *text,
-                                                        gint             offset);
-static gint       bail_text_view_get_offset_at_point   (BatkText          *text,
-                                                        gint             x,
-                                                        gint             y,
+                                                        bint             offset);
+static bint       bail_text_view_get_character_count   (BatkText          *text);
+static bint       bail_text_view_get_caret_offset      (BatkText          *text);
+static bboolean   bail_text_view_set_caret_offset      (BatkText          *text,
+                                                        bint             offset);
+static bint       bail_text_view_get_offset_at_point   (BatkText          *text,
+                                                        bint             x,
+                                                        bint             y,
                                                         BatkCoordType     coords);
-static gint       bail_text_view_get_n_selections      (BatkText          *text);
-static gchar*     bail_text_view_get_selection         (BatkText          *text,
-                                                        gint             selection_num,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
-static gboolean   bail_text_view_add_selection         (BatkText          *text,
-                                                        gint             start_offset,
-                                                        gint             end_offset);
-static gboolean   bail_text_view_remove_selection      (BatkText          *text,
-                                                        gint             selection_num);
-static gboolean   bail_text_view_set_selection         (BatkText          *text,
-                                                        gint             selection_num,
-                                                        gint             start_offset,
-                                                        gint             end_offset);
+static bint       bail_text_view_get_n_selections      (BatkText          *text);
+static bchar*     bail_text_view_get_selection         (BatkText          *text,
+                                                        bint             selection_num,
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
+static bboolean   bail_text_view_add_selection         (BatkText          *text,
+                                                        bint             start_offset,
+                                                        bint             end_offset);
+static bboolean   bail_text_view_remove_selection      (BatkText          *text,
+                                                        bint             selection_num);
+static bboolean   bail_text_view_set_selection         (BatkText          *text,
+                                                        bint             selection_num,
+                                                        bint             start_offset,
+                                                        bint             end_offset);
 static void       bail_text_view_get_character_extents (BatkText          *text,
-                                                        gint             offset,
-                                                        gint             *x,
-                                                        gint             *y,
-                                                        gint             *width,
-                                                        gint             *height,
+                                                        bint             offset,
+                                                        bint             *x,
+                                                        bint             *y,
+                                                        bint             *width,
+                                                        bint             *height,
                                                         BatkCoordType     coords);
 static BatkAttributeSet *  bail_text_view_get_run_attributes 
                                                        (BatkText          *text,
-                                                        gint             offset,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
+                                                        bint             offset,
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
 static BatkAttributeSet *  bail_text_view_get_default_attributes 
                                                        (BatkText          *text);
 /* batkeditabletext.h */
 
 static void       batk_editable_text_interface_init     (BatkEditableTextIface *iface);
-static gboolean   bail_text_view_set_run_attributes    (BatkEditableText  *text,
+static bboolean   bail_text_view_set_run_attributes    (BatkEditableText  *text,
                                                         BatkAttributeSet  *attrib_set,
-                                                        gint             start_offset,
-                                                        gint             end_offset);
+                                                        bint             start_offset,
+                                                        bint             end_offset);
 static void       bail_text_view_set_text_contents     (BatkEditableText  *text,
-                                                        const gchar      *string);
+                                                        const bchar      *string);
 static void       bail_text_view_insert_text           (BatkEditableText  *text,
-                                                        const gchar      *string,
-                                                        gint             length,
-                                                        gint             *position);
+                                                        const bchar      *string,
+                                                        bint             length,
+                                                        bint             *position);
 static void       bail_text_view_copy_text             (BatkEditableText  *text,
-                                                        gint             start_pos,
-                                                        gint             end_pos);
+                                                        bint             start_pos,
+                                                        bint             end_pos);
 static void       bail_text_view_cut_text              (BatkEditableText  *text,
-                                                        gint             start_pos,
-                                                        gint             end_pos);
+                                                        bint             start_pos,
+                                                        bint             end_pos);
 static void       bail_text_view_delete_text           (BatkEditableText  *text,
-                                                        gint             start_pos,
-                                                        gint             end_pos);
+                                                        bint             start_pos,
+                                                        bint             end_pos);
 static void       bail_text_view_paste_text            (BatkEditableText  *text,
-                                                        gint             position);
+                                                        bint             position);
 static void       bail_text_view_paste_received        (BtkClipboard     *clipboard,
-                                                        const gchar      *text,
-                                                        gpointer         data);
+                                                        const bchar      *text,
+                                                        bpointer         data);
 /* BatkStreamableContent */
 static void       batk_streamable_content_interface_init    (BatkStreamableContentIface *iface);
-static gint       bail_streamable_content_get_n_mime_types (BatkStreamableContent *streamable);
-static const gchar* bail_streamable_content_get_mime_type (BatkStreamableContent *streamable,
-								    gint i);
+static bint       bail_streamable_content_get_n_mime_types (BatkStreamableContent *streamable);
+static const bchar* bail_streamable_content_get_mime_type (BatkStreamableContent *streamable,
+								    bint i);
 static BUNNYIOChannel* bail_streamable_content_get_stream       (BatkStreamableContent *streamable,
-							     const gchar *mime_type);
+							     const bchar *mime_type);
 /* getURI requires batk-1.12.0 or later
 static void       bail_streamable_content_get_uri          (BatkStreamableContent *streamable);
 */
@@ -145,37 +145,37 @@ static void       bail_streamable_content_get_uri          (BatkStreamableConten
 
 static void       _bail_text_view_insert_text_cb       (BtkTextBuffer    *buffer,
                                                         BtkTextIter      *arg1,
-                                                        gchar            *arg2,
-                                                        gint             arg3,
-                                                        gpointer         user_data);
+                                                        bchar            *arg2,
+                                                        bint             arg3,
+                                                        bpointer         user_data);
 static void       _bail_text_view_delete_range_cb      (BtkTextBuffer    *buffer,
                                                         BtkTextIter      *arg1,
                                                         BtkTextIter      *arg2,
-                                                        gpointer         user_data);
+                                                        bpointer         user_data);
 static void       _bail_text_view_changed_cb           (BtkTextBuffer    *buffer,
-                                                        gpointer         user_data);
+                                                        bpointer         user_data);
 static void       _bail_text_view_mark_set_cb          (BtkTextBuffer    *buffer,
                                                         BtkTextIter      *arg1,
                                                         BtkTextMark      *arg2,
-                                                        gpointer         user_data);
-static gchar*            get_text_near_offset          (BatkText          *text,
+                                                        bpointer         user_data);
+static bchar*            get_text_near_offset          (BatkText          *text,
                                                         BailOffsetType   function,
                                                         BatkTextBoundary  boundary_type,
-                                                        gint             offset,
-                                                        gint             *start_offset,
-                                                        gint             *end_offset);
-static gint             get_insert_offset              (BtkTextBuffer    *buffer);
-static gint             get_selection_bound            (BtkTextBuffer    *buffer);
+                                                        bint             offset,
+                                                        bint             *start_offset,
+                                                        bint             *end_offset);
+static bint             get_insert_offset              (BtkTextBuffer    *buffer);
+static bint             get_selection_bound            (BtkTextBuffer    *buffer);
 static void             emit_text_caret_moved          (BailTextView     *bail_text_view,
-                                                        gint             insert_offset);
-static gint             insert_idle_handler            (gpointer         data);
+                                                        bint             insert_offset);
+static bint             insert_idle_handler            (bpointer         data);
 
 typedef struct _BailTextViewPaste                       BailTextViewPaste;
 
 struct _BailTextViewPaste
 {
   BtkTextBuffer* buffer;
-  gint position;
+  bint position;
 };
 
 G_DEFINE_TYPE_WITH_CODE (BailTextView, bail_text_view, BAIL_TYPE_CONTAINER,
@@ -186,7 +186,7 @@ G_DEFINE_TYPE_WITH_CODE (BailTextView, bail_text_view, BAIL_TYPE_CONTAINER,
 static void
 bail_text_view_class_init (BailTextViewClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -244,7 +244,7 @@ setup_buffer (BtkTextView  *view,
 
 static void
 bail_text_view_real_initialize (BatkObject *obj,
-                                gpointer  data)
+                                bpointer  data)
 {
   BtkTextView *view;
   BailTextView *bail_view;
@@ -261,7 +261,7 @@ bail_text_view_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_text_view_finalize (GObject            *object)
+bail_text_view_finalize (BObject            *object)
 {
   BailTextView *text_view = BAIL_TEXT_VIEW (object);
 
@@ -269,17 +269,17 @@ bail_text_view_finalize (GObject            *object)
   if (text_view->insert_notify_handler)
     g_source_remove (text_view->insert_notify_handler);
 
-  G_OBJECT_CLASS (bail_text_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_text_view_parent_class)->finalize (object);
 }
 
 static void
-bail_text_view_real_notify_btk (GObject             *obj,
-                                GParamSpec          *pspec)
+bail_text_view_real_notify_btk (BObject             *obj,
+                                BParamSpec          *pspec)
 {
   if (!strcmp (pspec->name, "editable"))
     {
       BatkObject *batk_obj;
-      gboolean editable;
+      bboolean editable;
 
       batk_obj = btk_widget_get_accessible (BTK_WIDGET (obj));
       editable = btk_text_view_get_editable (BTK_TEXT_VIEW (obj));
@@ -345,10 +345,10 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_text_view_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_text_view_get_text (BatkText *text,
-                         gint    start_offset,
-                         gint    end_offset)
+                         bint    start_offset,
+                         bint    end_offset)
 {
   BtkTextView *view;
   BtkTextBuffer *buffer;
@@ -368,12 +368,12 @@ bail_text_view_get_text (BatkText *text,
   return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
-static gchar*
+static bchar*
 bail_text_view_get_text_after_offset (BatkText         *text,
-                                      gint            offset,
+                                      bint            offset,
                                       BatkTextBoundary boundary_type,
-                                      gint            *start_offset,
-                                      gint            *end_offset)
+                                      bint            *start_offset,
+                                      bint            *end_offset)
 {
   BtkWidget *widget;
 
@@ -387,12 +387,12 @@ bail_text_view_get_text_after_offset (BatkText         *text,
                                start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_text_view_get_text_at_offset (BatkText         *text,
-                                   gint            offset,
+                                   bint            offset,
                                    BatkTextBoundary boundary_type,
-                                   gint            *start_offset,
-                                   gint            *end_offset)
+                                   bint            *start_offset,
+                                   bint            *end_offset)
 {
   BtkWidget *widget;
 
@@ -406,12 +406,12 @@ bail_text_view_get_text_at_offset (BatkText         *text,
                                start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_text_view_get_text_before_offset (BatkText         *text,
-                                       gint            offset,
+                                       bint            offset,
                                        BatkTextBoundary boundary_type,
-                                       gint            *start_offset,
-                                       gint            *end_offset)
+                                       bint            *start_offset,
+                                       bint            *end_offset)
 {
   BtkWidget *widget;
 
@@ -427,12 +427,12 @@ bail_text_view_get_text_before_offset (BatkText         *text,
 
 static gunichar
 bail_text_view_get_character_at_offset (BatkText *text,
-                                        gint    offset)
+                                        bint    offset)
 {
   BtkWidget *widget;
   BtkTextIter start, end;
   BtkTextBuffer *buffer;
-  gchar *string;
+  bchar *string;
   gunichar unichar;
 
   widget = BTK_ACCESSIBLE (text)->widget;
@@ -452,7 +452,7 @@ bail_text_view_get_character_at_offset (BatkText *text,
   return unichar;
 }
 
-static gint
+static bint
 bail_text_view_get_character_count (BatkText *text)
 {
   BtkTextView *view;
@@ -469,7 +469,7 @@ bail_text_view_get_character_count (BatkText *text)
   return btk_text_buffer_get_char_count (buffer);
 }
 
-static gint
+static bint
 bail_text_view_get_caret_offset (BatkText *text)
 {
   BtkTextView *view;
@@ -484,9 +484,9 @@ bail_text_view_get_caret_offset (BatkText *text)
   return get_insert_offset (view->buffer);
 }
 
-static gboolean
+static bboolean
 bail_text_view_set_caret_offset (BatkText *text,
-                                 gint    offset)
+                                 bint    offset)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -507,16 +507,16 @@ bail_text_view_set_caret_offset (BatkText *text,
   return TRUE;
 }
 
-static gint
+static bint
 bail_text_view_get_offset_at_point (BatkText      *text,
-                                    gint         x,
-                                    gint         y,
+                                    bint         x,
+                                    bint         y,
                                     BatkCoordType coords)
 {
   BtkTextView *view;
   BtkTextBuffer *buffer;
   BtkTextIter loc_itr;
-  gint x_widget, y_widget, x_window, y_window, buff_x, buff_y;
+  bint x_widget, y_widget, x_window, y_window, buff_x, buff_y;
   BtkWidget *widget;
   BdkWindow *window;
   BdkRectangle rect;
@@ -570,11 +570,11 @@ bail_text_view_get_offset_at_point (BatkText      *text,
 
 static void
 bail_text_view_get_character_extents (BatkText      *text,
-                                      gint         offset,
-                                      gint         *x,
-                                      gint         *y,
-                                      gint         *width,
-                                      gint         *height,
+                                      bint         offset,
+                                      bint         *x,
+                                      bint         *y,
+                                      bint         *width,
+                                      bint         *height,
                                       BatkCoordType coords)
 {
   BtkTextView *view;
@@ -583,7 +583,7 @@ bail_text_view_get_character_extents (BatkText      *text,
   BtkWidget *widget;
   BdkRectangle rectangle;
   BdkWindow *window;
-  gint x_widget, y_widget, x_window, y_window;
+  bint x_widget, y_widget, x_window, y_window;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -626,9 +626,9 @@ bail_text_view_get_character_extents (BatkText      *text,
 
 static BatkAttributeSet*
 bail_text_view_get_run_attributes (BatkText *text,
-                                   gint    offset,
-                                   gint    *start_offset,
-                                   gint    *end_offset)
+                                   bint    offset,
+                                   bint    *start_offset,
+                                   bint    *end_offset)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -760,14 +760,14 @@ bail_text_view_get_default_attributes (BatkText *text)
   return attrib_set;
 }
 
-static gint
+static bint
 bail_text_view_get_n_selections (BatkText *text)
 {
   BtkTextView *view;
   BtkWidget *widget;
   BtkTextBuffer *buffer;
   BtkTextIter start, end;
-  gint select_start, select_end;
+  bint select_start, select_end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -787,11 +787,11 @@ bail_text_view_get_n_selections (BatkText *text)
      return 0;
 }
 
-static gchar*
+static bchar*
 bail_text_view_get_selection (BatkText *text,
-                              gint    selection_num,
-                              gint    *start_pos,
-                              gint    *end_pos)
+                              bint    selection_num,
+                              bint    *start_pos,
+                              bint    *end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -822,17 +822,17 @@ bail_text_view_get_selection (BatkText *text,
     return NULL;
 }
 
-static gboolean
+static bboolean
 bail_text_view_add_selection (BatkText *text,
-                              gint    start_pos,
-                              gint    end_pos)
+                              bint    start_pos,
+                              bint    end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
   BtkTextBuffer *buffer;
   BtkTextIter pos_itr;
   BtkTextIter start, end;
-  gint select_start, select_end;
+  bint select_start, select_end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -861,9 +861,9 @@ bail_text_view_add_selection (BatkText *text,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_text_view_remove_selection (BatkText *text,
-                                 gint    selection_num)
+                                 bint    selection_num)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -871,7 +871,7 @@ bail_text_view_remove_selection (BatkText *text,
   BtkTextMark *cursor_mark;
   BtkTextIter cursor_itr;
   BtkTextIter start, end;
-  gint select_start, select_end;
+  bint select_start, select_end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -902,18 +902,18 @@ bail_text_view_remove_selection (BatkText *text,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_text_view_set_selection (BatkText *text,
-                              gint    selection_num,
-                              gint    start_pos,
-                              gint    end_pos)
+                              bint    selection_num,
+                              bint    start_pos,
+                              bint    end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
   BtkTextBuffer *buffer;
   BtkTextIter pos_itr;
   BtkTextIter start, end;
-  gint select_start, select_end;
+  bint select_start, select_end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -961,11 +961,11 @@ batk_editable_text_interface_init (BatkEditableTextIface *iface)
   iface->set_run_attributes = bail_text_view_set_run_attributes;
 }
 
-static gboolean
+static bboolean
 bail_text_view_set_run_attributes (BatkEditableText *text,
                                    BatkAttributeSet *attrib_set,
-                                   gint            start_offset,
-                                   gint            end_offset)
+                                   bint            start_offset,
+                                   bint            end_offset)
 {
   BtkTextView *view;
   BtkTextBuffer *buffer;
@@ -973,9 +973,9 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
   BtkTextTag *tag;
   BtkTextIter start;
   BtkTextIter end;
-  gint j;
+  bint j;
   BdkColor *color;
-  gchar** RGB_vals;
+  bchar** RGB_vals;
   GSList *l;
 
   widget = BTK_ACCESSIBLE (text)->widget;
@@ -999,8 +999,8 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
 
   for (l = attrib_set; l; l = l->next)
     {
-      gchar *name;
-      gchar *value;
+      bchar *name;
+      bchar *value;
       BatkAttribute *at;
 
       at = l->data;
@@ -1009,55 +1009,55 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
       value = at->value;
 
       if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_LEFT_MARGIN)))
-        g_object_set (G_OBJECT (tag), "left_margin", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "left_margin", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_RIGHT_MARGIN)))
-        g_object_set (G_OBJECT (tag), "right_margin", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "right_margin", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_INDENT)))
-        g_object_set (G_OBJECT (tag), "indent", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "indent", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_ABOVE_LINES)))
-        g_object_set (G_OBJECT (tag), "pixels_above_lines", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_above_lines", atoi (value), NULL);
 
       else if (!strcmp(name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_BELOW_LINES)))
-        g_object_set (G_OBJECT (tag), "pixels_below_lines", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_below_lines", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_PIXELS_INSIDE_WRAP)))
-        g_object_set (G_OBJECT (tag), "pixels_inside_wrap", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "pixels_inside_wrap", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_SIZE)))
-        g_object_set (G_OBJECT (tag), "size", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "size", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_RISE)))
-        g_object_set (G_OBJECT (tag), "rise", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "rise", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_WEIGHT)))
-        g_object_set (G_OBJECT (tag), "weight", atoi (value), NULL);
+        g_object_set (B_OBJECT (tag), "weight", atoi (value), NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_BG_FULL_HEIGHT)))
         {
-          g_object_set (G_OBJECT (tag), "bg_full_height", 
+          g_object_set (B_OBJECT (tag), "bg_full_height", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_BG_FULL_HEIGHT, 0))),
                    NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_LANGUAGE)))
-        g_object_set (G_OBJECT (tag), "language", value, NULL);
+        g_object_set (B_OBJECT (tag), "language", value, NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_FAMILY_NAME)))
-        g_object_set (G_OBJECT (tag), "family", value, NULL);
+        g_object_set (B_OBJECT (tag), "family", value, NULL);
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_EDITABLE)))
         {
-          g_object_set (G_OBJECT (tag), "editable", 
+          g_object_set (B_OBJECT (tag), "editable", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_INVISIBLE)))
         {
-          g_object_set (G_OBJECT (tag), "invisible", 
+          g_object_set (B_OBJECT (tag), "invisible", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_EDITABLE, 0))),
                    NULL);
         }
@@ -1068,7 +1068,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_UNDERLINE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "underline", j, NULL);
+                  g_object_set (B_OBJECT (tag), "underline", j, NULL);
                   break;
                 }
             } 
@@ -1076,7 +1076,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_STRIKETHROUGH)))
         {
-          g_object_set (G_OBJECT (tag), "strikethrough", 
+          g_object_set (B_OBJECT (tag), "strikethrough", 
                    (strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STRIKETHROUGH, 0))),
                    NULL);
         }
@@ -1088,7 +1088,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
           color->red = atoi (RGB_vals[0]);
           color->green = atoi (RGB_vals[1]);
           color->blue = atoi (RGB_vals[2]);
-          g_object_set (G_OBJECT (tag), "background_bdk", color, NULL);
+          g_object_set (B_OBJECT (tag), "background_bdk", color, NULL);
         }
   
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_FG_COLOR)))
@@ -1098,7 +1098,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
           color->red = atoi (RGB_vals[0]);
           color->green = atoi (RGB_vals[1]);
           color->blue = atoi (RGB_vals[2]);
-          g_object_set (G_OBJECT (tag), "foreground_bdk", color, NULL);
+          g_object_set (B_OBJECT (tag), "foreground_bdk", color, NULL);
         }
 
       else if (!strcmp (name, batk_text_attribute_get_name (BATK_TEXT_ATTR_STRETCH)))
@@ -1107,7 +1107,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STRETCH, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "stretch", j, NULL);
+                  g_object_set (B_OBJECT (tag), "stretch", j, NULL);
                   break;
                 }
             }
@@ -1119,7 +1119,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_JUSTIFICATION, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "justification", j, NULL);
+                  g_object_set (B_OBJECT (tag), "justification", j, NULL);
                   break;
                 }
             }
@@ -1131,7 +1131,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_DIRECTION, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "direction", j, NULL);
+                  g_object_set (B_OBJECT (tag), "direction", j, NULL);
                   break;
                 }
             }
@@ -1143,7 +1143,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_VARIANT, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "variant", j, NULL);
+                  g_object_set (B_OBJECT (tag), "variant", j, NULL);
                   break;
                 }
             }
@@ -1155,7 +1155,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_WRAP_MODE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "wrap_mode", j, NULL);
+                  g_object_set (B_OBJECT (tag), "wrap_mode", j, NULL);
                   break;
                 }
             }
@@ -1167,7 +1167,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
             {
               if (!strcmp (value, batk_text_attribute_get_value (BATK_TEXT_ATTR_STYLE, j)))
                 {
-                  g_object_set (G_OBJECT (tag), "style", j, NULL);
+                  g_object_set (B_OBJECT (tag), "style", j, NULL);
                   break;
               }
             }
@@ -1184,7 +1184,7 @@ bail_text_view_set_run_attributes (BatkEditableText *text,
 
 static void
 bail_text_view_set_text_contents (BatkEditableText *text,
-                                  const gchar     *string)
+                                  const bchar     *string)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -1206,9 +1206,9 @@ bail_text_view_set_text_contents (BatkEditableText *text,
 
 static void
 bail_text_view_insert_text (BatkEditableText *text,
-                            const gchar     *string,
-                            gint            length,
-                            gint            *position)
+                            const bchar     *string,
+                            bint            length,
+                            bint            *position)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -1231,14 +1231,14 @@ bail_text_view_insert_text (BatkEditableText *text,
 
 static void
 bail_text_view_copy_text   (BatkEditableText *text,
-                            gint            start_pos,
-                            gint            end_pos)
+                            bint            start_pos,
+                            bint            end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
   BtkTextBuffer *buffer;
   BtkTextIter start, end;
-  gchar *str;
+  bchar *str;
   BtkClipboard *clipboard;
 
   widget = BTK_ACCESSIBLE (text)->widget;
@@ -1259,14 +1259,14 @@ bail_text_view_copy_text   (BatkEditableText *text,
 
 static void
 bail_text_view_cut_text (BatkEditableText *text,
-                         gint            start_pos,
-                         gint            end_pos)
+                         bint            start_pos,
+                         bint            end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
   BtkTextBuffer *buffer;
   BtkTextIter start, end;
-  gchar *str;
+  bchar *str;
   BtkClipboard *clipboard;
 
   widget = BTK_ACCESSIBLE (text)->widget;
@@ -1290,8 +1290,8 @@ bail_text_view_cut_text (BatkEditableText *text,
 
 static void
 bail_text_view_delete_text (BatkEditableText *text,
-                            gint            start_pos,
-                            gint            end_pos)
+                            bint            start_pos,
+                            bint            end_pos)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -1316,7 +1316,7 @@ bail_text_view_delete_text (BatkEditableText *text,
 
 static void
 bail_text_view_paste_text (BatkEditableText *text,
-                           gint            position)
+                           bint            position)
 {
   BtkTextView *view;
   BtkWidget *widget;
@@ -1346,8 +1346,8 @@ bail_text_view_paste_text (BatkEditableText *text,
 
 static void
 bail_text_view_paste_received (BtkClipboard *clipboard,
-                               const gchar  *text,
-                               gpointer     data)
+                               const bchar  *text,
+                               bpointer     data)
 {
   BailTextViewPaste* paste_struct = (BailTextViewPaste *)data;
   BtkTextIter pos_itr;
@@ -1372,15 +1372,15 @@ bail_text_view_paste_received (BtkClipboard *clipboard,
 static void 
 _bail_text_view_insert_text_cb (BtkTextBuffer *buffer,
                                 BtkTextIter   *arg1, 
-                                gchar         *arg2, 
-                                gint          arg3,
-                                gpointer      user_data)
+                                bchar         *arg2, 
+                                bint          arg3,
+                                bpointer      user_data)
 {
   BtkTextView *text = (BtkTextView *) user_data;
   BatkObject *accessible;
   BailTextView *bail_text_view;
-  gint position;
-  gint length;
+  bint position;
+  bint length;
 
   g_return_if_fail (arg3 > 0);
 
@@ -1429,13 +1429,13 @@ static void
 _bail_text_view_delete_range_cb (BtkTextBuffer *buffer,
                                  BtkTextIter   *arg1, 
                                  BtkTextIter   *arg2,
-                                 gpointer      user_data)
+                                 bpointer      user_data)
 {
   BtkTextView *text = (BtkTextView *) user_data;
   BatkObject *accessible;
   BailTextView *bail_text_view;
-  gint offset = btk_text_iter_get_offset (arg1);
-  gint length = btk_text_iter_get_offset (arg2) - offset;
+  bint offset = btk_text_iter_get_offset (arg1);
+  bint length = btk_text_iter_get_offset (arg2) - offset;
 
   accessible = btk_widget_get_accessible(BTK_WIDGET(text));
   bail_text_view = BAIL_TEXT_VIEW (accessible);
@@ -1468,7 +1468,7 @@ static void
 _bail_text_view_mark_set_cb (BtkTextBuffer *buffer,
                              BtkTextIter   *arg1, 
                              BtkTextMark   *arg2,
-                             gpointer      user_data)
+                             bpointer      user_data)
 {
   BtkTextView *text = (BtkTextView *) user_data;
   BatkObject *accessible;
@@ -1485,7 +1485,7 @@ _bail_text_view_mark_set_cb (BtkTextBuffer *buffer,
   if (mark_name && !strcmp(mark_name, "insert"))
     {
       int insert_offset, selection_bound;
-      gboolean selection_changed;
+      bboolean selection_changed;
 
       insert_offset = btk_text_iter_get_offset (arg1);
 
@@ -1524,7 +1524,7 @@ _bail_text_view_mark_set_cb (BtkTextBuffer *buffer,
 
 static void 
 _bail_text_view_changed_cb (BtkTextBuffer *buffer,
-                            gpointer      user_data)
+                            bpointer      user_data)
 {
   BtkTextView *text = (BtkTextView *) user_data;
   BatkObject *accessible;
@@ -1544,16 +1544,16 @@ _bail_text_view_changed_cb (BtkTextBuffer *buffer,
   bail_text_view->previous_selection_bound = get_selection_bound (buffer);
 }
 
-static gchar*
+static bchar*
 get_text_near_offset (BatkText          *text,
                       BailOffsetType   function,
                       BatkTextBoundary  boundary_type,
-                      gint             offset,
-                      gint             *start_offset,
-                      gint             *end_offset)
+                      bint             offset,
+                      bint             *start_offset,
+                      bint             *end_offset)
 {
   BtkTextView *view;
-  gpointer layout = NULL;
+  bpointer layout = NULL;
 
   view = BTK_TEXT_VIEW (BTK_ACCESSIBLE (text)->widget);
 
@@ -1570,7 +1570,7 @@ get_text_near_offset (BatkText          *text,
                                     start_offset, end_offset);
 }
 
-static gint
+static bint
 get_insert_offset (BtkTextBuffer *buffer)
 {
   BtkTextMark *cursor_mark;
@@ -1581,7 +1581,7 @@ get_insert_offset (BtkTextBuffer *buffer)
   return btk_text_iter_get_offset (&cursor_itr);
 }
 
-static gint
+static bint
 get_selection_bound (BtkTextBuffer *buffer)
 {
   BtkTextMark *selection_mark;
@@ -1594,7 +1594,7 @@ get_selection_bound (BtkTextBuffer *buffer)
 
 static void
 emit_text_caret_moved (BailTextView *bail_text_view,
-                       gint          insert_offset)
+                       bint          insert_offset)
 {
   /*
    * If we have text which has been inserted notify the user
@@ -1619,8 +1619,8 @@ emit_text_caret_moved (BailTextView *bail_text_view,
     }
 }
 
-static gint
-insert_idle_handler (gpointer data)
+static bint
+insert_idle_handler (bpointer data)
 {
   BailTextView *bail_text_view;
   BtkTextBuffer *buffer;
@@ -1657,14 +1657,14 @@ batk_streamable_content_interface_init    (BatkStreamableContentIface *iface)
   iface->get_stream = bail_streamable_content_get_stream;
 }
 
-static gint       bail_streamable_content_get_n_mime_types (BatkStreamableContent *streamable)
+static bint       bail_streamable_content_get_n_mime_types (BatkStreamableContent *streamable)
 {
-    gint n_mime_types = 0;
+    bint n_mime_types = 0;
 
     if (BAIL_IS_TEXT_VIEW (streamable) && BAIL_TEXT_VIEW (streamable)->textutil)
     {
 	int i;
-	gboolean advertises_plaintext = FALSE;
+	bboolean advertises_plaintext = FALSE;
 	BdkAtom *atoms =
 	     btk_text_buffer_get_serialize_formats (
 		BAIL_TEXT_VIEW (streamable)->textutil->buffer, 
@@ -1678,12 +1678,12 @@ static gint       bail_streamable_content_get_n_mime_types (BatkStreamableConten
     return n_mime_types;
 }
 
-static const gchar*
-bail_streamable_content_get_mime_type (BatkStreamableContent *streamable, gint i)
+static const bchar*
+bail_streamable_content_get_mime_type (BatkStreamableContent *streamable, bint i)
 {
     if (BAIL_IS_TEXT_VIEW (streamable) && BAIL_TEXT_VIEW (streamable)->textutil)
     {
-	gint n_mime_types = 0;
+	bint n_mime_types = 0;
 	BdkAtom *atoms;
 	atoms = btk_text_buffer_get_serialize_formats (
 	    BAIL_TEXT_VIEW (streamable)->textutil->buffer, 
@@ -1699,9 +1699,9 @@ bail_streamable_content_get_mime_type (BatkStreamableContent *streamable, gint i
 }
 
 static BUNNYIOChannel*       bail_streamable_content_get_stream       (BatkStreamableContent *streamable,
-								   const gchar *mime_type)
+								   const bchar *mime_type)
 {
-    gint i, n_mime_types = 0;
+    bint i, n_mime_types = 0;
     BdkAtom *atoms;
     if (!BAIL_IS_TEXT_VIEW (streamable) || !BAIL_TEXT_VIEW (streamable)->textutil)
 	return NULL;
@@ -1713,10 +1713,10 @@ static BUNNYIOChannel*       bail_streamable_content_get_stream       (BatkStrea
 	if (!strcmp ("text/plain", mime_type) ||
 	    !strcmp (bdk_atom_name (atoms[i]), mime_type)) {
 	    BtkTextBuffer *buffer;
-	    guint8 *cbuf;
+	    buint8 *cbuf;
 	    GError *err = NULL;
-	    gsize len, written;
-	    gchar tname[80];
+	    bsize len, written;
+	    bchar tname[80];
 	    BtkTextIter start, end;
 	    BUNNYIOChannel *bunnyio = NULL;
 	    int fd;
@@ -1725,7 +1725,7 @@ static BUNNYIOChannel*       bail_streamable_content_get_stream       (BatkStrea
 	    btk_text_buffer_get_iter_at_offset (buffer, &end, -1);
 	    if (!strcmp ("text/plain", mime_type)) 
 	    {
-		cbuf = (guint8*) btk_text_buffer_get_text (buffer, &start, &end, FALSE);
+		cbuf = (buint8*) btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 		len = strlen ((const char *) cbuf); 
 	    }
 	    else
@@ -1736,7 +1736,7 @@ static BUNNYIOChannel*       bail_streamable_content_get_stream       (BatkStrea
 	    fd = g_mkstemp (tname);
 	    bunnyio = g_io_channel_unix_new (fd);
 	    g_io_channel_set_encoding (bunnyio, NULL, &err);
-	    if (!err) g_io_channel_write_chars (bunnyio, (const char *) cbuf, (gssize) len, &written, &err);
+	    if (!err) g_io_channel_write_chars (bunnyio, (const char *) cbuf, (bssize) len, &written, &err);
 	    else g_message ("%s", err->message);
 	    if (!err) g_io_channel_seek_position (bunnyio, 0, G_SEEK_SET, &err);
 	    else g_message ("%s", err->message);

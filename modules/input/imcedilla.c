@@ -64,7 +64,7 @@ cedilla_register_type (GTypeModule *module)
  * and is particularly important for pt_BR, where the us-intl keyboard is
  * used extensively.
  */
-static guint16 cedilla_compose_seqs[] = {
+static buint16 cedilla_compose_seqs[] = {
   BDK_dead_acute,	BDK_C,	0,	0,	0,	0x00C7,	/* LATIN_CAPITAL_LETTER_C_WITH_CEDILLA */
   BDK_dead_acute,	BDK_c,	0,	0,	0,	0x00E7,	/* LATIN_SMALL_LETTER_C_WITH_CEDILLA */
   BDK_Multi_key,	BDK_apostrophe,	BDK_C,  0,      0,      0x00C7, /* LATIN_CAPITAL_LETTER_C_WITH_CEDILLA */
@@ -121,7 +121,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "cedilla") == 0)
     return g_object_new (type_cedilla, NULL);

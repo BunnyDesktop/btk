@@ -21,7 +21,7 @@
 
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /**
  * BdkWin32KeymapMatch:
@@ -49,20 +49,20 @@ typedef BdkKeymap BdkWin32Keymap;
 typedef struct _BdkWin32KeymapClass BdkWin32KeymapClass;
 
 #define BDK_TYPE_WIN32_KEYMAP              (bdk_win32_keymap_get_type())
-#define BDK_WIN32_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WIN32_KEYMAP, BdkWin32Keymap))
-#define BDK_WIN32_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
-#define BDK_IS_WIN32_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WIN32_KEYMAP))
-#define BDK_IS_WIN32_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WIN32_KEYMAP))
-#define BDK_WIN32_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
+#define BDK_WIN32_KEYMAP(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WIN32_KEYMAP, BdkWin32Keymap))
+#define BDK_WIN32_KEYMAP_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
+#define BDK_IS_WIN32_KEYMAP(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WIN32_KEYMAP))
+#define BDK_IS_WIN32_KEYMAP_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WIN32_KEYMAP))
+#define BDK_WIN32_KEYMAP_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WIN32_KEYMAP, BdkWin32KeymapClass))
 
 GType bdk_win32_keymap_get_type (void);
 
 BdkWin32KeymapMatch bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
-                                                    guint          *compose_buffer,
-                                                    gsize           compose_buffer_len,
-                                                    guint16        *output,
-                                                    gsize          *output_len);
+                                                    buint          *compose_buffer,
+                                                    bsize           compose_buffer_len,
+                                                    buint16        *output,
+                                                    bsize          *output_len);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WIN32_KEYMAP_H__ */

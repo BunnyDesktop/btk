@@ -62,7 +62,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkTextIter BtkTextIter;
 typedef struct _BtkTextTagTable BtkTextTagTable;
@@ -70,11 +70,11 @@ typedef struct _BtkTextTagTable BtkTextTagTable;
 typedef struct _BtkTextAttributes BtkTextAttributes;
 
 #define BTK_TYPE_TEXT_TAG            (btk_text_tag_get_type ())
-#define BTK_TEXT_TAG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG, BtkTextTag))
-#define BTK_TEXT_TAG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
-#define BTK_IS_TEXT_TAG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG))
-#define BTK_IS_TEXT_TAG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG))
-#define BTK_TEXT_TAG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
+#define BTK_TEXT_TAG(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG, BtkTextTag))
+#define BTK_TEXT_TAG_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
+#define BTK_IS_TEXT_TAG(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG))
+#define BTK_IS_TEXT_TAG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG))
+#define BTK_TEXT_TAG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG, BtkTextTagClass))
 
 #define BTK_TYPE_TEXT_ATTRIBUTES     (btk_text_attributes_get_type ())
 
@@ -83,7 +83,7 @@ typedef struct _BtkTextTagClass BtkTextTagClass;
 
 struct _BtkTextTag
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkTextTagTable *GSEAL (table);
 
@@ -108,41 +108,41 @@ struct _BtkTextTag
   /* Flags for whether a given value is set; if a value is unset, then
    * this tag does not affect it.
    */
-  guint GSEAL (bg_color_set) : 1;
-  guint GSEAL (bg_stipple_set) : 1;
-  guint GSEAL (fg_color_set) : 1;
-  guint GSEAL (scale_set) : 1;
-  guint GSEAL (fg_stipple_set) : 1;
-  guint GSEAL (justification_set) : 1;
-  guint GSEAL (left_margin_set) : 1;
-  guint GSEAL (indent_set) : 1;
-  guint GSEAL (rise_set) : 1;
-  guint GSEAL (strikethrough_set) : 1;
-  guint GSEAL (right_margin_set) : 1;
-  guint GSEAL (pixels_above_lines_set) : 1;
-  guint GSEAL (pixels_below_lines_set) : 1;
-  guint GSEAL (pixels_inside_wrap_set) : 1;
-  guint GSEAL (tabs_set) : 1;
-  guint GSEAL (underline_set) : 1;
-  guint GSEAL (wrap_mode_set) : 1;
-  guint GSEAL (bg_full_height_set) : 1;
-  guint GSEAL (invisible_set) : 1;
-  guint GSEAL (editable_set) : 1;
-  guint GSEAL (language_set) : 1;
-  guint GSEAL (pg_bg_color_set) : 1;
+  buint GSEAL (bg_color_set) : 1;
+  buint GSEAL (bg_stipple_set) : 1;
+  buint GSEAL (fg_color_set) : 1;
+  buint GSEAL (scale_set) : 1;
+  buint GSEAL (fg_stipple_set) : 1;
+  buint GSEAL (justification_set) : 1;
+  buint GSEAL (left_margin_set) : 1;
+  buint GSEAL (indent_set) : 1;
+  buint GSEAL (rise_set) : 1;
+  buint GSEAL (strikethrough_set) : 1;
+  buint GSEAL (right_margin_set) : 1;
+  buint GSEAL (pixels_above_lines_set) : 1;
+  buint GSEAL (pixels_below_lines_set) : 1;
+  buint GSEAL (pixels_inside_wrap_set) : 1;
+  buint GSEAL (tabs_set) : 1;
+  buint GSEAL (underline_set) : 1;
+  buint GSEAL (wrap_mode_set) : 1;
+  buint GSEAL (bg_full_height_set) : 1;
+  buint GSEAL (invisible_set) : 1;
+  buint GSEAL (editable_set) : 1;
+  buint GSEAL (language_set) : 1;
+  buint GSEAL (pg_bg_color_set) : 1;
 
   /* Whether these margins accumulate or override */
-  guint GSEAL (accumulative_margin) : 1;
+  buint GSEAL (accumulative_margin) : 1;
 
-  guint GSEAL (pad1) : 1;
+  buint GSEAL (pad1) : 1;
 };
 
 struct _BtkTextTagClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
-  gboolean (* event) (BtkTextTag        *tag,
-                      GObject           *event_object, /* widget, canvas item, whatever */
+  bboolean (* event) (BtkTextTag        *tag,
+                      BObject           *event_object, /* widget, canvas item, whatever */
                       BdkEvent          *event,        /* the event itself */
                       const BtkTextIter *iter);        /* location of event in buffer */
 
@@ -153,13 +153,13 @@ struct _BtkTextTagClass
   void (*_btk_reserved4) (void);
 };
 
-GType        btk_text_tag_get_type     (void) G_GNUC_CONST;
-BtkTextTag  *btk_text_tag_new          (const gchar       *name);
-gint         btk_text_tag_get_priority (BtkTextTag        *tag);
+GType        btk_text_tag_get_type     (void) B_GNUC_CONST;
+BtkTextTag  *btk_text_tag_new          (const bchar       *name);
+bint         btk_text_tag_get_priority (BtkTextTag        *tag);
 void         btk_text_tag_set_priority (BtkTextTag        *tag,
-                                        gint               priority);
-gboolean     btk_text_tag_event        (BtkTextTag        *tag,
-                                        GObject           *event_object,
+                                        bint               priority);
+bboolean     btk_text_tag_event        (BtkTextTag        *tag,
+                                        BObject           *event_object,
                                         BdkEvent          *event,
                                         const BtkTextIter *iter);
 
@@ -178,43 +178,43 @@ struct _BtkTextAppearance
   BdkBitmap *fg_stipple;
 
   /* super/subscript rise, can be negative */
-  gint rise;
+  bint rise;
 
   /*< private >*/
   /* I'm not sure this can really be used without breaking some things
    * an app might do :-/
    */
-  gpointer padding1;
+  bpointer padding1;
 
   /*< public >*/
-  guint underline : 4;          /* BangoUnderline */
-  guint strikethrough : 1;
+  buint underline : 4;          /* BangoUnderline */
+  buint strikethrough : 1;
 
   /* Whether to use background-related values; this is irrelevant for
    * the values struct when in a tag, but is used for the composite
    * values struct; it's true if any of the tags being composited
    * had background stuff set.
    */
-  guint draw_bg : 1;
+  buint draw_bg : 1;
   
   /* These are only used when we are actually laying out and rendering
    * a paragraph; not when a BtkTextAppearance is part of a
    * BtkTextAttributes.
    */
-  guint inside_selection : 1;
-  guint is_text : 1;
+  buint inside_selection : 1;
+  buint is_text : 1;
 
   /*< private >*/
-  guint pad1 : 1;
-  guint pad2 : 1;
-  guint pad3 : 1;
-  guint pad4 : 1;
+  buint pad1 : 1;
+  buint pad2 : 1;
+  buint pad3 : 1;
+  buint pad4 : 1;
 };
 
 struct _BtkTextAttributes
 {
   /*< private >*/
-  guint refcount;
+  buint refcount;
 
   /*< public >*/
   BtkTextAppearance appearance;
@@ -225,19 +225,19 @@ struct _BtkTextAttributes
   /* Individual chunks of this can be set/unset as a group */
   BangoFontDescription *font;
 
-  gdouble font_scale;
+  bdouble font_scale;
   
-  gint left_margin;
+  bint left_margin;
 
-  gint indent;  
+  bint indent;  
 
-  gint right_margin;
+  bint right_margin;
 
-  gint pixels_above_lines;
+  bint pixels_above_lines;
 
-  gint pixels_below_lines;
+  bint pixels_below_lines;
 
-  gint pixels_inside_wrap;
+  bint pixels_inside_wrap;
 
   BangoTabArray *tabs;
 
@@ -253,24 +253,24 @@ struct _BtkTextAttributes
 
   /*< public >*/
   /* hide the text  */
-  guint invisible : 1;
+  buint invisible : 1;
 
   /* Background is fit to full line height rather than
    * baseline +/- ascent/descent (font height)
    */
-  guint bg_full_height : 1;
+  buint bg_full_height : 1;
 
   /* can edit this text */
-  guint editable : 1;
+  buint editable : 1;
 
   /* colors are allocated etc. */
-  guint realized : 1;
+  buint realized : 1;
 
   /*< private >*/
-  guint pad1 : 1;
-  guint pad2 : 1;
-  guint pad3 : 1;
-  guint pad4 : 1;
+  buint pad1 : 1;
+  buint pad2 : 1;
+  buint pad3 : 1;
+  buint pad4 : 1;
 };
 
 BtkTextAttributes* btk_text_attributes_new         (void);
@@ -280,10 +280,10 @@ void               btk_text_attributes_copy_values (BtkTextAttributes *src,
 void               btk_text_attributes_unref       (BtkTextAttributes *values);
 BtkTextAttributes *btk_text_attributes_ref         (BtkTextAttributes *values);
 
-GType              btk_text_attributes_get_type    (void) G_GNUC_CONST;
+GType              btk_text_attributes_get_type    (void) B_GNUC_CONST;
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

@@ -35,14 +35,14 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_EVENT_BOX              (btk_event_box_get_type ())
-#define BTK_EVENT_BOX(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EVENT_BOX, BtkEventBox))
-#define BTK_EVENT_BOX_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
-#define BTK_IS_EVENT_BOX(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EVENT_BOX))
-#define BTK_IS_EVENT_BOX_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EVENT_BOX))
-#define BTK_EVENT_BOX_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
+#define BTK_EVENT_BOX(obj)              (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EVENT_BOX, BtkEventBox))
+#define BTK_EVENT_BOX_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
+#define BTK_IS_EVENT_BOX(obj)           (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EVENT_BOX))
+#define BTK_IS_EVENT_BOX_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EVENT_BOX))
+#define BTK_EVENT_BOX_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
 
 typedef struct _BtkEventBox	  BtkEventBox;
 typedef struct _BtkEventBoxClass  BtkEventBoxClass;
@@ -57,15 +57,15 @@ struct _BtkEventBoxClass
   BtkBinClass parent_class;
 };
 
-GType	   btk_event_box_get_type           (void) G_GNUC_CONST;
+GType	   btk_event_box_get_type           (void) B_GNUC_CONST;
 BtkWidget* btk_event_box_new                (void);
-gboolean   btk_event_box_get_visible_window (BtkEventBox *event_box);
+bboolean   btk_event_box_get_visible_window (BtkEventBox *event_box);
 void       btk_event_box_set_visible_window (BtkEventBox *event_box,
-					     gboolean     visible_window);
-gboolean   btk_event_box_get_above_child    (BtkEventBox *event_box);
+					     bboolean     visible_window);
+bboolean   btk_event_box_get_above_child    (BtkEventBox *event_box);
 void       btk_event_box_set_above_child    (BtkEventBox *event_box,
-					     gboolean     above_child);
+					     bboolean     above_child);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_EVENT_BOX_H__ */

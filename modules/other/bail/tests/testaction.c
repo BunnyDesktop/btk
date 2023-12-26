@@ -15,17 +15,17 @@ static void
 _check_object (BatkObject *obj)
 {
   const char *accessible_name;
-  const gchar * typename = NULL;
+  const bchar * typename = NULL;
 
   if (BTK_IS_ACCESSIBLE (obj))
   {
     BtkWidget* widget = NULL;
 
     widget = BTK_ACCESSIBLE (obj)->widget;
-    typename = g_type_name (G_OBJECT_TYPE (widget));
+    typename = g_type_name (B_OBJECT_TYPE (widget));
     g_print ("Widget type name: %s\n", typename ? typename : "NULL");
   }
-  typename = g_type_name (G_OBJECT_TYPE (obj));
+  typename = g_type_name (B_OBJECT_TYPE (obj));
   g_print ("Accessible type name: %s\n", typename ? typename : "NULL");
   accessible_name = batk_object_get_name (obj);
   if (accessible_name)
@@ -34,11 +34,11 @@ _check_object (BatkObject *obj)
   if (BATK_IS_ACTION (obj))
   {
     BatkAction *action = BATK_ACTION (obj);
-    gint n_actions, i;
-    const gchar *action_name;
-    const gchar *action_desc;
-    const gchar *action_binding;
-    const gchar *desc = "Test description";
+    bint n_actions, i;
+    const bchar *action_name;
+    const bchar *action_desc;
+    const bchar *action_binding;
+    const bchar *desc = "Test description";
  
     n_actions = batk_action_get_n_actions (action);
     g_print ("BatkAction supported number of actions: %d\n", n_actions);
@@ -77,7 +77,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testaction Module loaded\n");
 

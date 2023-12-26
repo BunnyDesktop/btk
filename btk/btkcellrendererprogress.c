@@ -34,7 +34,7 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-#define BTK_CELL_RENDERER_PROGRESS_GET_PRIVATE(object) (G_TYPE_INSTANCE_GET_PRIVATE ((object),                        \
+#define BTK_CELL_RENDERER_PROGRESS_GET_PRIVATE(object) (B_TYPE_INSTANCE_GET_PRIVATE ((object),                        \
                                                                                      BTK_TYPE_CELL_RENDERER_PROGRESS, \
                                                                                      BtkCellRendererProgressPrivate))
 
@@ -51,52 +51,52 @@ enum
 
 struct _BtkCellRendererProgressPrivate
 {
-  gint value;
-  gchar *text;
-  gchar *label;
-  gint min_h;
-  gint min_w;
-  gint pulse;
-  gint offset;
-  gfloat text_xalign;
-  gfloat text_yalign;
+  bint value;
+  bchar *text;
+  bchar *label;
+  bint min_h;
+  bint min_w;
+  bint pulse;
+  bint offset;
+  bfloat text_xalign;
+  bfloat text_yalign;
   BtkProgressBarOrientation orientation;
 };
 
-static void btk_cell_renderer_progress_finalize     (GObject                 *object);
-static void btk_cell_renderer_progress_get_property (GObject                 *object,
-						     guint                    param_id,
-						     GValue                  *value,
-						     GParamSpec              *pspec);
-static void btk_cell_renderer_progress_set_property (GObject                 *object,
-						     guint                    param_id,
-						     const GValue            *value,
-						     GParamSpec              *pspec);
+static void btk_cell_renderer_progress_finalize     (BObject                 *object);
+static void btk_cell_renderer_progress_get_property (BObject                 *object,
+						     buint                    param_id,
+						     BValue                  *value,
+						     BParamSpec              *pspec);
+static void btk_cell_renderer_progress_set_property (BObject                 *object,
+						     buint                    param_id,
+						     const BValue            *value,
+						     BParamSpec              *pspec);
 static void btk_cell_renderer_progress_set_value    (BtkCellRendererProgress *cellprogress,
-						     gint                     value);
+						     bint                     value);
 static void btk_cell_renderer_progress_set_text     (BtkCellRendererProgress *cellprogress,
-						     const gchar             *text);
+						     const bchar             *text);
 static void btk_cell_renderer_progress_set_pulse    (BtkCellRendererProgress *cellprogress,
-						     gint                     pulse);
+						     bint                     pulse);
 static void compute_dimensions                      (BtkCellRenderer         *cell,
 						     BtkWidget               *widget,
-						     const gchar             *text,
-						     gint                    *width,
-						     gint                    *height);
+						     const bchar             *text,
+						     bint                    *width,
+						     bint                    *height);
 static void btk_cell_renderer_progress_get_size     (BtkCellRenderer         *cell,
 						     BtkWidget               *widget,
 						     BdkRectangle            *cell_area,
-						     gint                    *x_offset,
-						     gint                    *y_offset,
-						     gint                    *width,
-						     gint                    *height);
+						     bint                    *x_offset,
+						     bint                    *y_offset,
+						     bint                    *width,
+						     bint                    *height);
 static void btk_cell_renderer_progress_render       (BtkCellRenderer         *cell,
 						     BdkWindow               *window,
 						     BtkWidget               *widget,
 						     BdkRectangle            *background_area,
 						     BdkRectangle            *cell_area,
 						     BdkRectangle            *expose_area,
-						     guint                    flags);
+						     buint                    flags);
 
      
 G_DEFINE_TYPE (BtkCellRendererProgress, btk_cell_renderer_progress, BTK_TYPE_CELL_RENDERER)
@@ -104,7 +104,7 @@ G_DEFINE_TYPE (BtkCellRendererProgress, btk_cell_renderer_progress, BTK_TYPE_CEL
 static void
 btk_cell_renderer_progress_class_init (BtkCellRendererProgressClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (klass);
   
   object_class->finalize = btk_cell_renderer_progress_finalize;
@@ -160,7 +160,7 @@ btk_cell_renderer_progress_class_init (BtkCellRendererProgressClass *klass)
    * bit.
    *
    * To indicate that the activity has not started yet, set the property
-   * to zero. To indicate completion, set the property to %G_MAXINT.
+   * to zero. To indicate completion, set the property to %B_MAXINT.
    *
    * Since: 2.12
    */
@@ -169,7 +169,7 @@ btk_cell_renderer_progress_class_init (BtkCellRendererProgressClass *klass)
                                    g_param_spec_int ("pulse",
                                                      P_("Pulse"),
                                                      P_("Set this to positive values to indicate that some progress is made, but you don't know how much."),
-                                                     -1, G_MAXINT, -1,
+                                                     -1, B_MAXINT, -1,
                                                      BTK_PARAM_READWRITE));
 
   /**
@@ -267,7 +267,7 @@ btk_cell_renderer_progress_new (void)
 }
 
 static void
-btk_cell_renderer_progress_finalize (GObject *object)
+btk_cell_renderer_progress_finalize (BObject *object)
 {
   BtkCellRendererProgress *cellprogress = BTK_CELL_RENDERER_PROGRESS (object);
   BtkCellRendererProgressPrivate *priv = cellprogress->priv;
@@ -275,14 +275,14 @@ btk_cell_renderer_progress_finalize (GObject *object)
   g_free (priv->text);
   g_free (priv->label);
   
-  G_OBJECT_CLASS (btk_cell_renderer_progress_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_cell_renderer_progress_parent_class)->finalize (object);
 }
 
 static void
-btk_cell_renderer_progress_get_property (GObject *object,
-					 guint param_id,
-					 GValue *value,
-					 GParamSpec *pspec)
+btk_cell_renderer_progress_get_property (BObject *object,
+					 buint param_id,
+					 BValue *value,
+					 BParamSpec *pspec)
 {
   BtkCellRendererProgress *cellprogress = BTK_CELL_RENDERER_PROGRESS (object);
   BtkCellRendererProgressPrivate *priv = cellprogress->priv;
@@ -290,33 +290,33 @@ btk_cell_renderer_progress_get_property (GObject *object,
   switch (param_id)
     {
     case PROP_VALUE:
-      g_value_set_int (value, priv->value);
+      b_value_set_int (value, priv->value);
       break;
     case PROP_TEXT:
-      g_value_set_string (value, priv->text);
+      b_value_set_string (value, priv->text);
       break;
     case PROP_PULSE:
-      g_value_set_int (value, priv->pulse);
+      b_value_set_int (value, priv->pulse);
       break;
     case PROP_TEXT_XALIGN:
-      g_value_set_float (value, priv->text_xalign);
+      b_value_set_float (value, priv->text_xalign);
       break;
     case PROP_TEXT_YALIGN:
-      g_value_set_float (value, priv->text_yalign);
+      b_value_set_float (value, priv->text_yalign);
       break;
     case PROP_ORIENTATION:
-      g_value_set_enum (value, priv->orientation);
+      b_value_set_enum (value, priv->orientation);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
 static void
-btk_cell_renderer_progress_set_property (GObject *object,
-					 guint param_id,
-					 const GValue *value,
-					 GParamSpec   *pspec)
+btk_cell_renderer_progress_set_property (BObject *object,
+					 buint param_id,
+					 const BValue *value,
+					 BParamSpec   *pspec)
 {
   BtkCellRendererProgress *cellprogress = BTK_CELL_RENDERER_PROGRESS (object);
   BtkCellRendererProgressPrivate *priv = cellprogress->priv;
@@ -325,27 +325,27 @@ btk_cell_renderer_progress_set_property (GObject *object,
     {
     case PROP_VALUE:
       btk_cell_renderer_progress_set_value (cellprogress, 
-					    g_value_get_int (value));
+					    b_value_get_int (value));
       break;
     case PROP_TEXT:
       btk_cell_renderer_progress_set_text (cellprogress,
-					   g_value_get_string (value));
+					   b_value_get_string (value));
       break;
     case PROP_PULSE:
       btk_cell_renderer_progress_set_pulse (cellprogress, 
-					    g_value_get_int (value));
+					    b_value_get_int (value));
       break;
     case PROP_TEXT_XALIGN:
-      priv->text_xalign = g_value_get_float (value);
+      priv->text_xalign = b_value_get_float (value);
       break;
     case PROP_TEXT_YALIGN:
-      priv->text_yalign = g_value_get_float (value);
+      priv->text_yalign = b_value_get_float (value);
       break;
     case PROP_ORIENTATION:
-      priv->orientation = g_value_get_enum (value);
+      priv->orientation = b_value_get_enum (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
     }
 }
 
@@ -353,7 +353,7 @@ static void
 recompute_label (BtkCellRendererProgress *cellprogress)
 {
   BtkCellRendererProgressPrivate *priv = cellprogress->priv;
-  gchar *label;
+  bchar *label;
 
   if (priv->text)
     label = g_strdup (priv->text);
@@ -368,7 +368,7 @@ recompute_label (BtkCellRendererProgress *cellprogress)
 
 static void
 btk_cell_renderer_progress_set_value (BtkCellRendererProgress *cellprogress, 
-				      gint                     value)
+				      bint                     value)
 {
   cellprogress->priv->value = value;
 
@@ -377,9 +377,9 @@ btk_cell_renderer_progress_set_value (BtkCellRendererProgress *cellprogress,
 
 static void
 btk_cell_renderer_progress_set_text (BtkCellRendererProgress *cellprogress, 
-				     const gchar             *text)
+				     const bchar             *text)
 {
-  gchar *new_text;
+  bchar *new_text;
 
   new_text = g_strdup (text);
   g_free (cellprogress->priv->text);
@@ -390,7 +390,7 @@ btk_cell_renderer_progress_set_text (BtkCellRendererProgress *cellprogress,
 
 static void
 btk_cell_renderer_progress_set_pulse (BtkCellRendererProgress *cellprogress, 
-				      gint                     pulse)
+				      bint                     pulse)
 {
    BtkCellRendererProgressPrivate *priv = cellprogress->priv;
 
@@ -410,9 +410,9 @@ btk_cell_renderer_progress_set_pulse (BtkCellRendererProgress *cellprogress,
 static void
 compute_dimensions (BtkCellRenderer *cell,
 		    BtkWidget       *widget, 
-		    const gchar     *text, 
-		    gint            *width, 
-		    gint            *height)
+		    const bchar     *text, 
+		    bint            *width, 
+		    bint            *height)
 {
   BangoRectangle logical_rect;
   BangoLayout *layout;
@@ -433,15 +433,15 @@ static void
 btk_cell_renderer_progress_get_size (BtkCellRenderer *cell,
 				     BtkWidget       *widget,
 				     BdkRectangle    *cell_area,
-				     gint            *x_offset,
-				     gint            *y_offset,
-				     gint            *width,
-				     gint            *height)
+				     bint            *x_offset,
+				     bint            *y_offset,
+				     bint            *width,
+				     bint            *height)
 {
   BtkCellRendererProgress *cellprogress = BTK_CELL_RENDERER_PROGRESS (cell);
   BtkCellRendererProgressPrivate *priv = cellprogress->priv;
-  gint w, h;
-  gchar *text;
+  bint w, h;
+  bchar *text;
 
   if (priv->min_w < 0)
     {
@@ -477,18 +477,18 @@ btk_cell_renderer_progress_get_size (BtkCellRenderer *cell,
   if (y_offset) *y_offset = 0;
 }
 
-static inline gint
-get_bar_size (gint pulse,
-	      gint value,
-	      gint full_size)
+static inline bint
+get_bar_size (bint pulse,
+	      bint value,
+	      bint full_size)
 {
-  gint bar_size;
+  bint bar_size;
 
   if (pulse < 0)
     bar_size = full_size * MAX (0, value) / 100;
   else if (pulse == 0)
     bar_size = 0;
-  else if (pulse == G_MAXINT)
+  else if (pulse == B_MAXINT)
     bar_size = full_size;
   else
     bar_size = MAX (2, full_size / 5);
@@ -496,17 +496,17 @@ get_bar_size (gint pulse,
   return bar_size;
 }
 
-static inline gint
-get_bar_position (gint     start,
-		  gint     full_size,
-		  gint     bar_size,
-		  gint     pulse,
-		  gint     offset,
-		  gboolean is_rtl)
+static inline bint
+get_bar_position (bint     start,
+		  bint     full_size,
+		  bint     bar_size,
+		  bint     pulse,
+		  bint     offset,
+		  bboolean is_rtl)
 {
-  gint position;
+  bint position;
 
-  if (pulse < 0 || pulse == 0 || pulse == G_MAXINT)
+  if (pulse < 0 || pulse == 0 || pulse == B_MAXINT)
     {
       position = is_rtl ? (start + full_size - bar_size) : start;
     }
@@ -528,15 +528,15 @@ btk_cell_renderer_progress_render (BtkCellRenderer *cell,
 				   BdkRectangle    *background_area,
 				   BdkRectangle    *cell_area,
 				   BdkRectangle    *expose_area,
-				   guint            flags)
+				   buint            flags)
 {
   BtkCellRendererProgress *cellprogress = BTK_CELL_RENDERER_PROGRESS (cell);
   BtkCellRendererProgressPrivate *priv= cellprogress->priv; 
   BangoLayout *layout;
   BangoRectangle logical_rect;
-  gint x, y, w, h, x_pos, y_pos, bar_position, bar_size, start, full_size;
+  bint x, y, w, h, x_pos, y_pos, bar_position, bar_size, start, full_size;
   BdkRectangle clip;
-  gboolean is_rtl;
+  bboolean is_rtl;
 
   is_rtl = btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL;
   
@@ -606,7 +606,7 @@ btk_cell_renderer_progress_render (BtkCellRenderer *cell,
 
   if (priv->label)
     {
-      gfloat text_xalign;
+      bfloat text_xalign;
 
       layout = btk_widget_create_bango_layout (widget, priv->label);
       bango_layout_get_pixel_extents (layout, NULL, &logical_rect);

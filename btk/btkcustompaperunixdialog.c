@@ -65,20 +65,20 @@ struct BtkCustomPaperUnixDialogPrivate
 
   BtkTreeViewColumn *text_column;
 
-  gulong printer_inserted_tag;
-  gulong printer_removed_tag;
+  bulong printer_inserted_tag;
+  bulong printer_removed_tag;
 
-  guint request_details_tag;
+  buint request_details_tag;
   BtkPrinter *request_details_printer;
 
-  guint non_user_change : 1;
+  buint non_user_change : 1;
 
   BtkListStore *custom_paper_list;
   BtkListStore *printer_list;
 
   GList *print_backends;
 
-  gchar *waiting_for_printer;
+  bchar *waiting_for_printer;
 };
 
 enum {
@@ -90,9 +90,9 @@ enum {
 G_DEFINE_TYPE (BtkCustomPaperUnixDialog, btk_custom_paper_unix_dialog, BTK_TYPE_DIALOG)
 
 #define BTK_CUSTOM_PAPER_UNIX_DIALOG_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, BtkCustomPaperUnixDialogPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, BtkCustomPaperUnixDialogPrivate))
 
-static void btk_custom_paper_unix_dialog_finalize  (GObject                *object);
+static void btk_custom_paper_unix_dialog_finalize  (BObject                *object);
 static void populate_dialog                        (BtkCustomPaperUnixDialog *dialog);
 static void printer_added_cb                       (BtkPrintBackend        *backend,
 						    BtkPrinter             *printer,
@@ -115,10 +115,10 @@ _btk_print_get_default_user_units (void)
    * Do *not* translate it to "predefinito:mm", if it
    * it isn't default:mm or default:inch it will not work
    */
-  gchar *e = _("default:mm");
+  bchar *e = _("default:mm");
 
 #ifdef HAVE__NL_MEASUREMENT_MEASUREMENT
-  gchar *imperial = NULL;
+  bchar *imperial = NULL;
 
   imperial = nl_langinfo (_NL_MEASUREMENT_MEASUREMENT);
   if (imperial && imperial[0] == 2 )
@@ -137,7 +137,7 @@ _btk_print_get_default_user_units (void)
 static char *
 custom_paper_get_filename (void)
 {
-  gchar *filename;
+  bchar *filename;
 
   filename = g_build_filename (g_get_home_dir (),
 			       CUSTOM_PAPER_FILENAME, NULL);
@@ -149,10 +149,10 @@ GList *
 _btk_load_custom_papers (void)
 {
   GKeyFile *keyfile;
-  gchar *filename;
-  gchar **groups;
-  gsize n_groups, i;
-  gboolean load_ok;
+  bchar *filename;
+  bchar **groups;
+  bsize n_groups, i;
+  bboolean load_ok;
   GList *result = NULL;
 
   filename = custom_paper_get_filename ();
@@ -213,9 +213,9 @@ _btk_print_save_custom_papers (BtkListStore *store)
   BtkTreeModel *model = BTK_TREE_MODEL (store);
   BtkTreeIter iter;
   GKeyFile *keyfile;
-  gchar *filename, *data;
-  gsize len;
-  gint i = 0;
+  bchar *filename, *data;
+  bsize len;
+  bint i = 0;
 
   keyfile = g_key_file_new ();
 
@@ -224,7 +224,7 @@ _btk_print_save_custom_papers (BtkListStore *store)
       do
 	{
 	  BtkPageSetup *page_setup;
-	  gchar group[32];
+	  bchar group[32];
 
 	  g_snprintf (group, sizeof (group), "Paper%u", i);
 
@@ -246,10 +246,10 @@ _btk_print_save_custom_papers (BtkListStore *store)
 static void
 btk_custom_paper_unix_dialog_class_init (BtkCustomPaperUnixDialogClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
 
   object_class->finalize = btk_custom_paper_unix_dialog_finalize;
@@ -259,8 +259,8 @@ btk_custom_paper_unix_dialog_class_init (BtkCustomPaperUnixDialogClass *class)
 
 static void
 custom_paper_dialog_response_cb (BtkDialog *dialog,
-				 gint       response,
-				 gpointer   user_data)
+				 bint       response,
+				 bpointer   user_data)
 {
   BtkCustomPaperUnixDialogPrivate *priv = BTK_CUSTOM_PAPER_UNIX_DIALOG (dialog)->priv;
 
@@ -281,12 +281,12 @@ btk_custom_paper_unix_dialog_init (BtkCustomPaperUnixDialog *dialog)
   priv->request_details_tag = 0;
 
   priv->printer_list = btk_list_store_new (PRINTER_LIST_N_COLS,
-					   G_TYPE_STRING,
-					   G_TYPE_OBJECT);
+					   B_TYPE_STRING,
+					   B_TYPE_OBJECT);
 
   btk_list_store_append (priv->printer_list, &iter);
 
-  priv->custom_paper_list = btk_list_store_new (1, G_TYPE_OBJECT);
+  priv->custom_paper_list = btk_list_store_new (1, B_TYPE_OBJECT);
   _btk_print_load_custom_papers (priv->custom_paper_list);
 
   populate_dialog (dialog);
@@ -301,7 +301,7 @@ btk_custom_paper_unix_dialog_init (BtkCustomPaperUnixDialog *dialog)
 }
 
 static void
-btk_custom_paper_unix_dialog_finalize (GObject *object)
+btk_custom_paper_unix_dialog_finalize (BObject *object)
 {
   BtkCustomPaperUnixDialog *dialog = BTK_CUSTOM_PAPER_UNIX_DIALOG (object);
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
@@ -349,7 +349,7 @@ btk_custom_paper_unix_dialog_finalize (GObject *object)
   g_list_free (priv->print_backends);
   priv->print_backends = NULL;
 
-  G_OBJECT_CLASS (btk_custom_paper_unix_dialog_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_custom_paper_unix_dialog_parent_class)->finalize (object);
 }
 
 /**
@@ -365,7 +365,7 @@ btk_custom_paper_unix_dialog_finalize (GObject *object)
  */
 BtkWidget *
 _btk_custom_paper_unix_dialog_new (BtkWindow   *parent,
-				  const gchar *title)
+				  const bchar *title)
 {
   BtkWidget *result;
 
@@ -389,7 +389,7 @@ printer_added_cb (BtkPrintBackend          *backend,
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter iter;
-  gchar *str;
+  bchar *str;
 
   if (btk_printer_is_virtual (printer))
     return;
@@ -403,7 +403,7 @@ printer_added_cb (BtkPrintBackend          *backend,
                       PRINTER_LIST_COL_PRINTER, printer,
                       -1);
 
-  g_object_set_data_full (G_OBJECT (printer),
+  g_object_set_data_full (B_OBJECT (printer),
 			  "btk-print-tree-iter",
                           btk_tree_iter_copy (&iter),
                           (GDestroyNotify) btk_tree_iter_free);
@@ -428,7 +428,7 @@ printer_removed_cb (BtkPrintBackend        *backend,
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter *iter;
 
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
   btk_list_store_remove (BTK_LIST_STORE (priv->printer_list), iter);
 }
 
@@ -440,9 +440,9 @@ printer_status_cb (BtkPrintBackend        *backend,
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter *iter;
-  gchar *str;
+  bchar *str;
 
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
 
   str = g_strdup_printf ("<b>%s</b>",
 			 btk_printer_get_name (printer));
@@ -463,17 +463,17 @@ printer_list_initialize (BtkCustomPaperUnixDialog *dialog,
   g_signal_connect_object (print_backend,
 			   "printer-added",
 			   (GCallback) printer_added_cb,
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend,
 			   "printer-removed",
 			   (GCallback) printer_removed_cb,
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend,
 			   "printer-status-changed",
 			   (GCallback) printer_status_cb,
-			   G_OBJECT (dialog), 0);
+			   B_OBJECT (dialog), 0);
 
   list = btk_print_backend_get_printer_list (print_backend);
 
@@ -538,7 +538,7 @@ new_unit_widget (BtkCustomPaperUnixDialog *dialog,
   btk_widget_show (label);
   btk_label_set_mnemonic_widget (BTK_LABEL (mnemonic_label), button);
 
-  g_object_set_data_full (G_OBJECT (hbox), "unit-data", data, g_free);
+  g_object_set_data_full (B_OBJECT (hbox), "unit-data", data, g_free);
 
   return hbox;
 }
@@ -546,18 +546,18 @@ new_unit_widget (BtkCustomPaperUnixDialog *dialog,
 static double
 unit_widget_get (BtkWidget *unit_widget)
 {
-  UnitWidget *data = g_object_get_data (G_OBJECT (unit_widget), "unit-data");
+  UnitWidget *data = g_object_get_data (B_OBJECT (unit_widget), "unit-data");
   return _btk_print_convert_to_mm (btk_spin_button_get_value (BTK_SPIN_BUTTON (data->spin_button)),
 				   data->display_unit);
 }
 
 static void
 unit_widget_set (BtkWidget *unit_widget,
-		 gdouble    value)
+		 bdouble    value)
 {
   UnitWidget *data;
 
-  data = g_object_get_data (G_OBJECT (unit_widget), "unit-data");
+  data = g_object_get_data (B_OBJECT (unit_widget), "unit-data");
   btk_spin_button_set_value (BTK_SPIN_BUTTON (data->spin_button),
 			     _btk_print_convert_from_mm (value, data->display_unit));
 }
@@ -567,7 +567,7 @@ custom_paper_printer_data_func (BtkCellLayout   *cell_layout,
 				BtkCellRenderer *cell,
 				BtkTreeModel    *tree_model,
 				BtkTreeIter     *iter,
-				gpointer         data)
+				bpointer         data)
 {
   BtkPrinter *printer;
 
@@ -588,7 +588,7 @@ update_combo_sensitivity_from_printers (BtkCustomPaperUnixDialog *dialog)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter iter;
-  gboolean sensitive;
+  bboolean sensitive;
   BtkTreeSelection *selection;
   BtkTreeModel *model;
 
@@ -656,7 +656,7 @@ static void
 unit_widget_changed (BtkCustomPaperUnixDialog *dialog)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
-  gdouble w, h, top, bottom, left, right;
+  bdouble w, h, top, bottom, left, right;
   BtkTreeSelection *selection;
   BtkTreeIter iter;
   BtkPageSetup *page_setup;
@@ -691,9 +691,9 @@ unit_widget_changed (BtkCustomPaperUnixDialog *dialog)
     }
 }
 
-static gboolean
+static bboolean
 custom_paper_name_used (BtkCustomPaperUnixDialog *dialog,
-			const gchar              *name)
+			const bchar              *name)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
   BtkTreeModel *model;
@@ -732,8 +732,8 @@ add_custom_paper (BtkCustomPaperUnixDialog *dialog)
   BtkTreeSelection *selection;
   BtkTreePath *path;
   BtkTreeIter iter;
-  gchar *name;
-  gint i;
+  bchar *name;
+  bint i;
 
   selection = btk_tree_view_get_selection (BTK_TREE_VIEW (priv->treeview));
   store = priv->custom_paper_list;
@@ -798,7 +798,7 @@ set_margins_from_printer (BtkCustomPaperUnixDialog *dialog,
 			  BtkPrinter               *printer)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
-  gdouble top, bottom, left, right;
+  bdouble top, bottom, left, right;
 
   top = bottom = left = right = 0;
   if (!btk_printer_get_hard_margins (printer, &top, &bottom, &left, &right))
@@ -817,7 +817,7 @@ set_margins_from_printer (BtkCustomPaperUnixDialog *dialog,
 
 static void
 get_margins_finished_callback (BtkPrinter               *printer,
-			       gboolean                  success,
+			       bboolean                  success,
 			       BtkCustomPaperUnixDialog *dialog)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
@@ -881,8 +881,8 @@ margins_from_printer_changed (BtkCustomPaperUnixDialog *dialog)
 
 static void
 custom_size_name_edited (BtkCellRenderer          *cell,
-			 gchar                    *path_string,
-			 gchar                    *new_text,
+			 bchar                    *path_string,
+			 bchar                    *new_text,
 			 BtkCustomPaperUnixDialog *dialog)
 {
   BtkCustomPaperUnixDialogPrivate *priv = dialog->priv;
@@ -913,7 +913,7 @@ custom_name_func (BtkTreeViewColumn *tree_column,
 		  BtkCellRenderer   *cell,
 		  BtkTreeModel      *tree_model,
 		  BtkTreeIter       *iter,
-		  gpointer           data)
+		  bpointer           data)
 {
   BtkPageSetup *page_setup;
   BtkPaperSize *paper_size;
@@ -928,11 +928,11 @@ custom_name_func (BtkTreeViewColumn *tree_column,
 }
 
 static BtkWidget *
-wrap_in_frame (const gchar *label,
+wrap_in_frame (const bchar *label,
                BtkWidget   *child)
 {
   BtkWidget *frame, *alignment, *label_widget;
-  gchar *bold_text;
+  bchar *bold_text;
 
   label_widget = btk_label_new (NULL);
   btk_misc_set_alignment (BTK_MISC (label_widget), 0.0, 0.5);

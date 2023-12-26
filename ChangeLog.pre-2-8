@@ -196,7 +196,7 @@ Fri Aug  5 16:54:19 2005  Søren Sandmann  <sandmann@redhat.com>
 	with the correct dimensions.  (#312256, Mike Morrison)
 
 	* btk/btktextbuffer.h: 
-	* btk/btk.symbols: Remove G_GNUC_NULL_TERMINATED here
+	* btk/btk.symbols: Remove B_GNUC_NULL_TERMINATED here
 	as well.
 
 	* btk/btkuimanager.c (update_node): Update tooltips when 
@@ -386,7 +386,7 @@ Fri Aug  5 16:54:19 2005  Søren Sandmann  <sandmann@redhat.com>
 	AltGr keys produce it in some keyboard layouts.  (#307283)
 
 	* btk/btkwidget.h: 
-	* btk/btk.symbols: Remove G_GNUC_NULL_TERMINATED from
+	* btk/btk.symbols: Remove B_GNUC_NULL_TERMINATED from
 	btk_widget_new as well, pointed out by Kjartan Maraas.
 
 2005-07-25  Matthias Clasen  <mclasen@redhat.com>
@@ -402,7 +402,7 @@ Fri Aug  5 16:54:19 2005  Søren Sandmann  <sandmann@redhat.com>
 	* btk/btk.symbols: 
 	* btk/btkobject.[hc]: 
 	* btk/btkfilechooserdialog.[hc] 
-	* btk/btkdialog.[hc]: Remove the G_GNUC_NULL_TERMINATED marker
+	* btk/btkdialog.[hc]: Remove the B_GNUC_NULL_TERMINATED marker
 	from a number of varargs functions where we allow to omit the
 	varargs completely.  (#311465, Callum McKenzie)
 
@@ -715,7 +715,7 @@ Fri Aug  5 16:54:19 2005  Søren Sandmann  <sandmann@redhat.com>
 
 	* configure.in: Set interface age to 0.
 
-	* btk/btkimmodule.h: Move G_BEGIN_DECLS to the right spot, noticed
+	* btk/btkimmodule.h: Move B_BEGIN_DECLS to the right spot, noticed
 	by Akira Tagoh.
 
 2005-07-14  Kristian Rietveld  <kris@btk.org>
@@ -3960,7 +3960,7 @@ Wed Mar  9 19:20:44 2005  Manish Singh  <yosh@gimp.org>
 	* btk/btkdialog.h: 
 	* btk/btkcontainer.h: 
 	* btk/btkcelllayout.h: 
-	* btk/btkaboutdialog.h: Use G_GNUC_NULL_TERMINATED where
+	* btk/btkaboutdialog.h: Use B_GNUC_NULL_TERMINATED where
 	appropriate.  (#165682, Marc Meissner)
 
 2005-03-07  Matthias Clasen  <mclasen@redhat.com>
@@ -4543,7 +4543,7 @@ Thu Jan 27 14:25:45 2005  Manish Singh  <yosh@gimp.org>
 	docs.  (#165163, Jeff Franks)
 	
 	* btk/btkimage.c (btk_image_get_property): Use the correct setter
-	for a string GValue.  (#165203, Damon Chaplin)
+	for a string BValue.  (#165203, Damon Chaplin)
 
 2005-01-24  Matthias Clasen  <mclasen@redhat.com>
 
@@ -5218,7 +5218,7 @@ Tue Jan  4 11:36:43 2005  Søren Sandmann  <sandmann@redhat.com>
 	fix capitalization of error messages.
 
 	* btk/btkcellrenderertext.c (btk_cell_renderer_text_set_property): 
-	Use g_value_get_boolean() for ellipsize_set.  (#162447, 
+	Use b_value_get_boolean() for ellipsize_set.  (#162447, 
 	Brian Tarricone)
 
 2004-12-30  Tor Lillqvist  <tml@iki.fi>

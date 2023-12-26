@@ -37,17 +37,17 @@ typedef struct _BtkMountOperationLookupContext BtkMountOperationLookupContext;
 
 BtkMountOperationLookupContext *_btk_mount_operation_lookup_context_get  (BdkDisplay *display);
 
-gboolean _btk_mount_operation_lookup_info         (BtkMountOperationLookupContext *context,
+bboolean _btk_mount_operation_lookup_info         (BtkMountOperationLookupContext *context,
                                                    GPid                            pid,
-                                                   gint                            size_pixels,
-                                                   gchar                         **out_name,
-                                                   gchar                         **out_command_line,
+                                                   bint                            size_pixels,
+                                                   bchar                         **out_name,
+                                                   bchar                         **out_command_line,
                                                    BdkPixbuf                     **out_pixbuf);
 
 void     _btk_mount_operation_lookup_context_free (BtkMountOperationLookupContext *context);
 
 /* throw G_IO_ERROR_FAILED_HANDLED if a helper already reported the error to the user */
-gboolean _btk_mount_operation_kill_process (GPid      pid,
+bboolean _btk_mount_operation_kill_process (GPid      pid,
                                             GError  **error);
 
 #endif /* __BTK_MOUNT_OPERATION_PRIVATE_H__ */

@@ -44,35 +44,35 @@
 #include "btkbuildable.h"
 #include "btkalias.h"
 
-#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_DIALOG, BtkDialogPrivate))
+#define GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_DIALOG, BtkDialogPrivate))
 
 typedef struct {
-  guint ignore_separator : 1;
+  buint ignore_separator : 1;
 } BtkDialogPrivate;
 
 typedef struct _ResponseData ResponseData;
 
 struct _ResponseData
 {
-  gint response_id;
+  bint response_id;
 };
 
 static void      btk_dialog_add_buttons_valist   (BtkDialog    *dialog,
-                                                  const gchar  *first_button_text,
+                                                  const bchar  *first_button_text,
                                                   va_list       args);
 
-static gboolean  btk_dialog_delete_event_handler (BtkWidget    *widget,
+static bboolean  btk_dialog_delete_event_handler (BtkWidget    *widget,
                                                   BdkEventAny  *event,
-                                                  gpointer      user_data);
+                                                  bpointer      user_data);
 
-static void      btk_dialog_set_property         (GObject      *object,
-                                                  guint         prop_id,
-                                                  const GValue *value,
-                                                  GParamSpec   *pspec);
-static void      btk_dialog_get_property         (GObject      *object,
-                                                  guint         prop_id,
-                                                  GValue       *value,
-                                                  GParamSpec   *pspec);
+static void      btk_dialog_set_property         (BObject      *object,
+                                                  buint         prop_id,
+                                                  const BValue *value,
+                                                  BParamSpec   *pspec);
+static void      btk_dialog_get_property         (BObject      *object,
+                                                  buint         prop_id,
+                                                  BValue       *value,
+                                                  BParamSpec   *pspec);
 static void      btk_dialog_style_set            (BtkWidget    *widget,
                                                   BtkStyle     *prev_style);
 static void      btk_dialog_map                  (BtkWidget    *widget);
@@ -80,23 +80,23 @@ static void      btk_dialog_map                  (BtkWidget    *widget);
 static void      btk_dialog_close                (BtkDialog    *dialog);
 
 static ResponseData * get_response_data          (BtkWidget    *widget,
-                                                  gboolean      create);
+                                                  bboolean      create);
 
 static void      btk_dialog_buildable_interface_init     (BtkBuildableIface *iface);
-static GObject * btk_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
+static BObject * btk_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
                                                           BtkBuilder    *builder,
-                                                          const gchar   *childname);
-static gboolean  btk_dialog_buildable_custom_tag_start   (BtkBuildable  *buildable,
+                                                          const bchar   *childname);
+static bboolean  btk_dialog_buildable_custom_tag_start   (BtkBuildable  *buildable,
                                                           BtkBuilder    *builder,
-                                                          GObject       *child,
-                                                          const gchar   *tagname,
+                                                          BObject       *child,
+                                                          const bchar   *tagname,
                                                           GMarkupParser *parser,
-                                                          gpointer      *data);
+                                                          bpointer      *data);
 static void      btk_dialog_buildable_custom_finished    (BtkBuildable  *buildable,
                                                           BtkBuilder    *builder,
-                                                          GObject       *child,
-                                                          const gchar   *tagname,
-                                                          gpointer       user_data);
+                                                          BObject       *child,
+                                                          const bchar   *tagname,
+                                                          bpointer       user_data);
 
 
 enum {
@@ -110,7 +110,7 @@ enum {
   LAST_SIGNAL
 };
 
-static guint dialog_signals[LAST_SIGNAL];
+static buint dialog_signals[LAST_SIGNAL];
 
 G_DEFINE_TYPE_WITH_CODE (BtkDialog, btk_dialog, BTK_TYPE_WINDOW,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -119,11 +119,11 @@ G_DEFINE_TYPE_WITH_CODE (BtkDialog, btk_dialog, BTK_TYPE_WINDOW,
 static void
 btk_dialog_class_init (BtkDialogClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkBindingSet *binding_set;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = BTK_WIDGET_CLASS (class);
   
   bobject_class->set_property = btk_dialog_set_property;
@@ -163,13 +163,13 @@ btk_dialog_class_init (BtkDialogClass *class)
    */
   dialog_signals[RESPONSE] =
     g_signal_new (I_("response"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkDialogClass, response),
 		  NULL, NULL,
 		  _btk_marshal_VOID__INT,
-		  G_TYPE_NONE, 1,
-		  G_TYPE_INT);
+		  B_TYPE_NONE, 1,
+		  B_TYPE_INT);
 
   /**
    * BtkDialog::close:
@@ -183,19 +183,19 @@ btk_dialog_class_init (BtkDialogClass *class)
    */ 
   dialog_signals[CLOSE] =
     g_signal_new (I_("close"),
-		  G_OBJECT_CLASS_TYPE (class),
+		  B_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkDialogClass, close),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("content-area-border",
                                                              P_("Content area border"),
                                                              P_("Width of border around the main dialog area"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              2,
                                                              BTK_PARAM_READABLE));
   /**
@@ -213,7 +213,7 @@ btk_dialog_class_init (BtkDialogClass *class)
                                                              P_("Content area spacing"),
                                                              P_("Spacing between elements of the main dialog area"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              0,
                                                              BTK_PARAM_READABLE));
   btk_widget_class_install_style_property (widget_class,
@@ -221,7 +221,7 @@ btk_dialog_class_init (BtkDialogClass *class)
                                                              P_("Button spacing"),
                                                              P_("Spacing between buttons"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              6,
                                                              BTK_PARAM_READABLE));
   
@@ -230,7 +230,7 @@ btk_dialog_class_init (BtkDialogClass *class)
                                                              P_("Action area border"),
                                                              P_("Width of border around the button area at the bottom of the dialog"),
                                                              0,
-                                                             G_MAXINT,
+                                                             B_MAXINT,
                                                              5,
                                                              BTK_PARAM_READABLE));
 
@@ -242,10 +242,10 @@ btk_dialog_class_init (BtkDialogClass *class)
 static void
 update_spacings (BtkDialog *dialog)
 {
-  gint content_area_border;
-  gint content_area_spacing;
-  gint button_spacing;
-  gint action_area_border;
+  bint content_area_border;
+  bint content_area_spacing;
+  bint button_spacing;
+  bint action_area_border;
 
   btk_widget_style_get (BTK_WIDGET (dialog),
                         "content-area-border", &content_area_border,
@@ -316,15 +316,15 @@ btk_dialog_buildable_interface_init (BtkBuildableIface *iface)
   iface->custom_finished = btk_dialog_buildable_custom_finished;
 }
 
-static GObject *
+static BObject *
 btk_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 					 BtkBuilder   *builder,
-					 const gchar  *childname)
+					 const bchar  *childname)
 {
     if (strcmp (childname, "vbox") == 0)
-      return G_OBJECT (BTK_DIALOG (buildable)->vbox);
+      return B_OBJECT (BTK_DIALOG (buildable)->vbox);
     else if (strcmp (childname, "action_area") == 0)
-      return G_OBJECT (BTK_DIALOG (buildable)->action_area);
+      return B_OBJECT (BTK_DIALOG (buildable)->action_area);
 
     return parent_buildable_iface->get_internal_child (buildable,
 						       builder,
@@ -332,10 +332,10 @@ btk_dialog_buildable_get_internal_child (BtkBuildable *buildable,
 }
 
 static void 
-btk_dialog_set_property (GObject      *object,
-                         guint         prop_id,
-                         const GValue *value,
-                         GParamSpec   *pspec)
+btk_dialog_set_property (BObject      *object,
+                         buint         prop_id,
+                         const BValue *value,
+                         BParamSpec   *pspec)
 {
   BtkDialog *dialog;
   
@@ -344,20 +344,20 @@ btk_dialog_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_HAS_SEPARATOR:
-      btk_dialog_set_has_separator (dialog, g_value_get_boolean (value));
+      btk_dialog_set_has_separator (dialog, b_value_get_boolean (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_dialog_get_property (GObject     *object,
-                         guint        prop_id,
-                         GValue      *value,
-                         GParamSpec  *pspec)
+btk_dialog_get_property (BObject     *object,
+                         buint        prop_id,
+                         BValue      *value,
+                         BParamSpec  *pspec)
 {
   BtkDialog *dialog;
   
@@ -366,19 +366,19 @@ btk_dialog_get_property (GObject     *object,
   switch (prop_id)
     {
     case PROP_HAS_SEPARATOR:
-      g_value_set_boolean (value, dialog->separator != NULL);
+      b_value_set_boolean (value, dialog->separator != NULL);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static gboolean
+static bboolean
 btk_dialog_delete_event_handler (BtkWidget   *widget,
                                  BdkEventAny *event,
-                                 gpointer     user_data)
+                                 bpointer     user_data)
 {
   /* emit response signal */
   btk_dialog_response (BTK_DIALOG (widget), BTK_RESPONSE_DELETE_EVENT);
@@ -455,7 +455,7 @@ btk_dialog_style_set (BtkWidget *widget,
 
 static BtkWidget *
 dialog_find_button (BtkDialog *dialog,
-		    gint       response_id)
+		    bint       response_id)
 {
   GList *children, *tmp_list;
   BtkWidget *child = NULL;
@@ -502,7 +502,7 @@ btk_dialog_new (void)
 }
 
 static BtkWidget*
-btk_dialog_new_empty (const gchar     *title,
+btk_dialog_new_empty (const bchar     *title,
                       BtkWindow       *parent,
                       BtkDialogFlags   flags)
 {
@@ -570,10 +570,10 @@ btk_dialog_new_empty (const gchar     *title,
  * Return value: a new #BtkDialog
  **/
 BtkWidget*
-btk_dialog_new_with_buttons (const gchar    *title,
+btk_dialog_new_with_buttons (const bchar    *title,
                              BtkWindow      *parent,
                              BtkDialogFlags  flags,
-                             const gchar    *first_button_text,
+                             const bchar    *first_button_text,
                              ...)
 {
   BtkDialog *dialog;
@@ -593,23 +593,23 @@ btk_dialog_new_with_buttons (const gchar    *title,
 }
 
 static void 
-response_data_free (gpointer data)
+response_data_free (bpointer data)
 {
   g_slice_free (ResponseData, data);
 }
 
 static ResponseData*
 get_response_data (BtkWidget *widget,
-		   gboolean   create)
+		   bboolean   create)
 {
-  ResponseData *ad = g_object_get_data (G_OBJECT (widget),
+  ResponseData *ad = g_object_get_data (B_OBJECT (widget),
                                         "btk-dialog-response-data");
 
   if (ad == NULL && create)
     {
       ad = g_slice_new (ResponseData);
       
-      g_object_set_data_full (G_OBJECT (widget),
+      g_object_set_data_full (B_OBJECT (widget),
                               I_("btk-dialog-response-data"),
                               ad,
 			      response_data_free);
@@ -621,7 +621,7 @@ get_response_data (BtkWidget *widget,
 static void
 action_widget_activated (BtkWidget *widget, BtkDialog *dialog)
 {
-  gint response_id;
+  bint response_id;
   
   response_id = btk_dialog_get_response_for_widget (dialog, widget);
 
@@ -644,10 +644,10 @@ action_widget_activated (BtkWidget *widget, BtkDialog *dialog)
 void
 btk_dialog_add_action_widget (BtkDialog *dialog,
                               BtkWidget *child,
-                              gint       response_id)
+                              bint       response_id)
 {
   ResponseData *ad;
-  guint signal_id;
+  buint signal_id;
   
   g_return_if_fail (BTK_IS_DIALOG (dialog));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -666,7 +666,7 @@ btk_dialog_add_action_widget (BtkDialog *dialog,
       GClosure *closure;
 
       closure = g_cclosure_new_object (G_CALLBACK (action_widget_activated),
-				       G_OBJECT (dialog));
+				       B_OBJECT (dialog));
       g_signal_connect_closure_by_id (child,
 				      signal_id,
 				      0,
@@ -700,8 +700,8 @@ btk_dialog_add_action_widget (BtkDialog *dialog,
  **/
 BtkWidget*
 btk_dialog_add_button (BtkDialog   *dialog,
-                       const gchar *button_text,
-                       gint         response_id)
+                       const bchar *button_text,
+                       bint         response_id)
 {
   BtkWidget *button;
   
@@ -723,11 +723,11 @@ btk_dialog_add_button (BtkDialog   *dialog,
 
 static void
 btk_dialog_add_buttons_valist (BtkDialog      *dialog,
-                               const gchar    *first_button_text,
+                               const bchar    *first_button_text,
                                va_list         args)
 {
-  const gchar* text;
-  gint response_id;
+  const bchar* text;
+  bint response_id;
 
   g_return_if_fail (BTK_IS_DIALOG (dialog));
   
@@ -735,13 +735,13 @@ btk_dialog_add_buttons_valist (BtkDialog      *dialog,
     return;
   
   text = first_button_text;
-  response_id = va_arg (args, gint);
+  response_id = va_arg (args, bint);
 
   while (text != NULL)
     {
       btk_dialog_add_button (dialog, text, response_id);
 
-      text = va_arg (args, gchar*);
+      text = va_arg (args, bchar*);
       if (text == NULL)
         break;
       response_id = va_arg (args, int);
@@ -761,7 +761,7 @@ btk_dialog_add_buttons_valist (BtkDialog      *dialog,
  **/
 void
 btk_dialog_add_buttons (BtkDialog   *dialog,
-                        const gchar *first_button_text,
+                        const bchar *first_button_text,
                         ...)
 {  
   va_list args;
@@ -787,8 +787,8 @@ btk_dialog_add_buttons (BtkDialog   *dialog,
  **/
 void
 btk_dialog_set_response_sensitive (BtkDialog *dialog,
-                                   gint       response_id,
-                                   gboolean   setting)
+                                   bint       response_id,
+                                   bboolean   setting)
 {
   GList *children;
   GList *tmp_list;
@@ -823,7 +823,7 @@ btk_dialog_set_response_sensitive (BtkDialog *dialog,
  **/
 void
 btk_dialog_set_default_response (BtkDialog *dialog,
-                                 gint       response_id)
+                                 bint       response_id)
 {
   GList *children;
   GList *tmp_list;
@@ -858,7 +858,7 @@ btk_dialog_set_default_response (BtkDialog *dialog,
  **/
 void
 btk_dialog_set_has_separator (BtkDialog *dialog,
-                              gboolean   setting)
+                              bboolean   setting)
 {
   BtkDialogPrivate *priv;
 
@@ -892,7 +892,7 @@ btk_dialog_set_has_separator (BtkDialog *dialog,
       dialog->separator = NULL;
     }
 
-  g_object_notify (G_OBJECT (dialog), "has-separator");
+  g_object_notify (B_OBJECT (dialog), "has-separator");
 }
 
 /**
@@ -905,7 +905,7 @@ btk_dialog_set_has_separator (BtkDialog *dialog,
  *
  * Deprecated: 2.22: This function will be removed in BTK+ 3
  **/
-gboolean
+bboolean
 btk_dialog_get_has_separator (BtkDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_DIALOG (dialog), FALSE);
@@ -925,7 +925,7 @@ btk_dialog_get_has_separator (BtkDialog *dialog)
  **/
 void
 btk_dialog_response (BtkDialog *dialog,
-                     gint       response_id)
+                     bint       response_id)
 {
   g_return_if_fail (BTK_IS_DIALOG (dialog));
 
@@ -938,9 +938,9 @@ btk_dialog_response (BtkDialog *dialog,
 typedef struct
 {
   BtkDialog *dialog;
-  gint response_id;
+  bint response_id;
   GMainLoop *loop;
-  gboolean destroyed;
+  bboolean destroyed;
 } RunInfo;
 
 static void
@@ -951,7 +951,7 @@ shutdown_loop (RunInfo *ri)
 }
 
 static void
-run_unmap_handler (BtkDialog *dialog, gpointer data)
+run_unmap_handler (BtkDialog *dialog, bpointer data)
 {
   RunInfo *ri = data;
 
@@ -960,8 +960,8 @@ run_unmap_handler (BtkDialog *dialog, gpointer data)
 
 static void
 run_response_handler (BtkDialog *dialog,
-                      gint response_id,
-                      gpointer data)
+                      bint response_id,
+                      bpointer data)
 {
   RunInfo *ri;
 
@@ -972,10 +972,10 @@ run_response_handler (BtkDialog *dialog,
   shutdown_loop (ri);
 }
 
-static gint
+static bint
 run_delete_handler (BtkDialog *dialog,
                     BdkEventAny *event,
-                    gpointer data)
+                    bpointer data)
 {
   RunInfo *ri = data;
     
@@ -985,7 +985,7 @@ run_delete_handler (BtkDialog *dialog,
 }
 
 static void
-run_destroy_handler (BtkDialog *dialog, gpointer data)
+run_destroy_handler (BtkDialog *dialog, bpointer data)
 {
   RunInfo *ri = data;
 
@@ -1022,7 +1022,7 @@ run_destroy_handler (BtkDialog *dialog, gpointer data)
  *
  * Typical usage of this function might be:
  * |[
- *   gint result = btk_dialog_run (BTK_DIALOG (dialog));
+ *   bint result = btk_dialog_run (BTK_DIALOG (dialog));
  *   switch (result)
  *     {
  *       case BTK_RESPONSE_ACCEPT:
@@ -1043,15 +1043,15 @@ run_destroy_handler (BtkDialog *dialog, gpointer data)
  * 
  * Return value: response ID
  **/
-gint
+bint
 btk_dialog_run (BtkDialog *dialog)
 {
   RunInfo ri = { NULL, BTK_RESPONSE_NONE, NULL, FALSE };
-  gboolean was_modal;
-  gulong response_handler;
-  gulong unmap_handler;
-  gulong destroy_handler;
-  gulong delete_handler;
+  bboolean was_modal;
+  bulong response_handler;
+  bulong unmap_handler;
+  bulong destroy_handler;
+  bulong delete_handler;
   
   g_return_val_if_fail (BTK_IS_DIALOG (dialog), -1);
 
@@ -1116,7 +1116,7 @@ btk_dialog_run (BtkDialog *dialog)
 
 void
 _btk_dialog_set_ignore_separator (BtkDialog *dialog,
-				  gboolean   ignore_separator)
+				  bboolean   ignore_separator)
 {
   BtkDialogPrivate *priv;
 
@@ -1138,7 +1138,7 @@ _btk_dialog_set_ignore_separator (BtkDialog *dialog,
  */
 BtkWidget*
 btk_dialog_get_widget_for_response (BtkDialog *dialog,
-				    gint       response_id)
+				    bint       response_id)
 {
   GList *children;
   GList *tmp_list;
@@ -1180,7 +1180,7 @@ btk_dialog_get_widget_for_response (BtkDialog *dialog,
  *
  * Since: 2.8
  */
-gint
+bint
 btk_dialog_get_response_for_widget (BtkDialog *dialog,
 				    BtkWidget *widget)
 {
@@ -1211,11 +1211,11 @@ btk_dialog_get_response_for_widget (BtkDialog *dialog,
  *
  * Since: 2.6
  */
-gboolean 
+bboolean 
 btk_alternative_dialog_button_order (BdkScreen *screen)
 {
   BtkSettings *settings;
-  gboolean result;
+  bboolean result;
 
   if (screen)
     settings = btk_settings_get_for_screen (screen);
@@ -1230,12 +1230,12 @@ btk_alternative_dialog_button_order (BdkScreen *screen)
 
 static void
 btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
-						gint       first_response_id,
+						bint       first_response_id,
 						va_list    args)
 {
   BtkWidget *child;
-  gint response_id;
-  gint position;
+  bint response_id;
+  bint position;
 
   response_id = first_response_id;
   position = 0;
@@ -1246,10 +1246,10 @@ btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
       if (child != NULL)
         btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
-        g_warning ("%s : no child button with response id %d.", G_STRFUNC,
+        g_warning ("%s : no child button with response id %d.", B_STRFUNC,
                    response_id);
 
-      response_id = va_arg (args, gint);
+      response_id = va_arg (args, bint);
       position++;
     }
 }
@@ -1300,7 +1300,7 @@ btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
  */
 void 
 btk_dialog_set_alternative_button_order (BtkDialog *dialog,
-					 gint       first_response_id,
+					 bint       first_response_id,
 					 ...)
 {
   BdkScreen *screen;
@@ -1339,12 +1339,12 @@ btk_dialog_set_alternative_button_order (BtkDialog *dialog,
  */
 void 
 btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
-                                                    gint       n_params,
-                                                    gint      *new_order)
+                                                    bint       n_params,
+                                                    bint      *new_order)
 {
   BdkScreen *screen;
   BtkWidget *child;
-  gint position;
+  bint position;
 
   g_return_if_fail (BTK_IS_DIALOG (dialog));
   g_return_if_fail (new_order != NULL);
@@ -1360,33 +1360,33 @@ btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
       if (child != NULL)
         btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
-        g_warning ("%s : no child button with response id %d.", G_STRFUNC,
+        g_warning ("%s : no child button with response id %d.", B_STRFUNC,
                    new_order[position]);
     }
 }
 
 typedef struct {
-  gchar *widget_name;
-  gchar *response_id;
+  bchar *widget_name;
+  bchar *response_id;
 } ActionWidgetInfo;
 
 typedef struct {
   BtkDialog *dialog;
   BtkBuilder *builder;
   GSList *items;
-  gchar *response;
+  bchar *response;
 } ActionWidgetsSubParserData;
 
 static void
 attributes_start_element (GMarkupParseContext *context,
-			  const gchar         *element_name,
-			  const gchar        **names,
-			  const gchar        **values,
-			  gpointer             user_data,
+			  const bchar         *element_name,
+			  const bchar        **names,
+			  const bchar        **values,
+			  bpointer             user_data,
 			  GError             **error)
 {
   ActionWidgetsSubParserData *parser_data = (ActionWidgetsSubParserData*)user_data;
-  guint i;
+  buint i;
 
   if (strcmp (element_name, "action-widget") == 0)
     {
@@ -1402,9 +1402,9 @@ attributes_start_element (GMarkupParseContext *context,
 
 static void
 attributes_text_element (GMarkupParseContext *context,
-			 const gchar         *text,
-			 gsize                text_len,
-			 gpointer             user_data,
+			 const bchar         *text,
+			 bsize                text_len,
+			 bpointer             user_data,
 			 GError             **error)
 {
   ActionWidgetsSubParserData *parser_data = (ActionWidgetsSubParserData*)user_data;
@@ -1416,7 +1416,7 @@ attributes_text_element (GMarkupParseContext *context,
   item = g_new (ActionWidgetInfo, 1);
   item->widget_name = g_strndup (text, text_len);
   item->response_id = parser_data->response;
-  parser_data->items = g_slist_prepend (parser_data->items, item);
+  parser_data->items = b_slist_prepend (parser_data->items, item);
   parser_data->response = NULL;
 }
 
@@ -1427,13 +1427,13 @@ static const GMarkupParser attributes_parser =
     attributes_text_element,
   };
 
-static gboolean
+static bboolean
 btk_dialog_buildable_custom_tag_start (BtkBuildable  *buildable,
 				       BtkBuilder    *builder,
-				       GObject       *child,
-				       const gchar   *tagname,
+				       BObject       *child,
+				       const bchar   *tagname,
 				       GMarkupParser *parser,
-				       gpointer      *data)
+				       bpointer      *data)
 {
   ActionWidgetsSubParserData *parser_data;
 
@@ -1458,16 +1458,16 @@ btk_dialog_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_dialog_buildable_custom_finished (BtkBuildable *buildable,
 				      BtkBuilder   *builder,
-				      GObject      *child,
-				      const gchar  *tagname,
-				      gpointer      user_data)
+				      BObject      *child,
+				      const bchar  *tagname,
+				      bpointer      user_data)
 {
   GSList *l;
   ActionWidgetsSubParserData *parser_data;
-  GObject *object;
+  BObject *object;
   BtkDialog *dialog;
   ResponseData *ad;
-  guint signal_id;
+  buint signal_id;
   
   if (strcmp (tagname, "action-widgets"))
     {
@@ -1478,7 +1478,7 @@ btk_dialog_buildable_custom_finished (BtkBuildable *buildable,
 
   dialog = BTK_DIALOG (buildable);
   parser_data = (ActionWidgetsSubParserData*)user_data;
-  parser_data->items = g_slist_reverse (parser_data->items);
+  parser_data->items = b_slist_reverse (parser_data->items);
 
   for (l = parser_data->items; l; l = l->next)
     {
@@ -1506,7 +1506,7 @@ btk_dialog_buildable_custom_finished (BtkBuildable *buildable,
 	  GClosure *closure;
 	  
 	  closure = g_cclosure_new_object (G_CALLBACK (action_widget_activated),
-					   G_OBJECT (dialog));
+					   B_OBJECT (dialog));
 	  g_signal_connect_closure_by_id (object,
 					  signal_id,
 					  0,
@@ -1522,7 +1522,7 @@ btk_dialog_buildable_custom_finished (BtkBuildable *buildable,
       g_free (item->response_id);
       g_free (item);
     }
-  g_slist_free (parser_data->items);
+  b_slist_free (parser_data->items);
   g_slice_free (ActionWidgetsSubParserData, parser_data);
 }
 

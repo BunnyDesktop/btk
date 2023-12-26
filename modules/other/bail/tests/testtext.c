@@ -5,16 +5,16 @@
 
 static void _create_event_watcher (void);
 static void _check_text (BatkObject *obj);
-void runtest(BatkObject *, gint);
+void runtest(BatkObject *, bint);
 
-static guint id1 = 0;
-static guint win_count = 0;
+static buint id1 = 0;
+static buint win_count = 0;
 
 static void _check_text (BatkObject *in_obj)
 {
   BatkObject *obj = NULL;
   BatkRole role;
-  gchar* title;
+  bchar* title;
   BatkRole valid_roles[NUM_VALID_ROLES];
 
   if (g_getenv("TEST_ACCESSIBLE_DELAY") != NULL)
@@ -74,7 +74,7 @@ static void _check_text (BatkObject *in_obj)
    */
   else 
   {
-    const gchar *test_accessible_name = g_getenv ("TEST_ACCESSIBLE_NAME");
+    const bchar *test_accessible_name = g_getenv ("TEST_ACCESSIBLE_NAME");
 
     if (test_accessible_name != NULL)
     {
@@ -123,7 +123,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testtext Module loaded.\n");
   _create_event_watcher();

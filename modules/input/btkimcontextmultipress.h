@@ -21,14 +21,14 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IM_CONTEXT_MULTIPRESS            (btk_im_context_multipress_get_type ())
-#define BTK_IM_CONTEXT_MULTIPRESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipress))
-#define BTK_IM_CONTEXT_MULTIPRESS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipressClass))
-#define BTK_IS_IM_CONTEXT_MULTIPRESS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS))
-#define BTK_IS_IM_CONTEXT_MULTIPRESS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_MULTIPRESS))
-#define BTK_IM_CONTEXT_MULTIPRESS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipressClass))
+#define BTK_IM_CONTEXT_MULTIPRESS(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipress))
+#define BTK_IM_CONTEXT_MULTIPRESS_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipressClass))
+#define BTK_IS_IM_CONTEXT_MULTIPRESS(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS))
+#define BTK_IS_IM_CONTEXT_MULTIPRESS_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_MULTIPRESS))
+#define BTK_IM_CONTEXT_MULTIPRESS_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_MULTIPRESS, BtkImContextMultipressClass))
 
 typedef struct _BtkImContextMultipress BtkImContextMultipress;
 
@@ -48,21 +48,21 @@ struct _BtkImContextMultipress
 
   /* Sequence information, loaded from the configuration file: */
   GHashTable* key_sequences;
-  gsize dummy; /* ABI-preserving placeholder */
+  bsize dummy; /* ABI-preserving placeholder */
 
   /* The last character entered so far during a compose.
    * If this is NULL then we are not composing yet.
    */
-  guint key_last_entered;
+  buint key_last_entered;
   
   /* The position of the compose in the possible sequence.
    *  For instance, this is 2 if aa has been pressed to show b (from abc0).
    */
-  guint compose_count; 
-  guint timeout_id;
+  buint compose_count; 
+  buint timeout_id;
 
   /* The character(s) that will be used if it the current character(s) is accepted: */
-  const gchar *tentative_match;
+  const bchar *tentative_match;
 };
 
 
@@ -77,6 +77,6 @@ void btk_im_context_multipress_register_type (GTypeModule* type_module);
 GType btk_im_context_multipress_get_type (void);
 BtkIMContext *btk_im_context_multipress_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IM_CONTEXT_MULTIPRESS_H__ */

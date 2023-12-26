@@ -22,8 +22,8 @@ static void cb_update_menu_select( BtkWidget     *item,
 static void cb_digits_scale( BtkAdjustment *adj )
 {
     /* Set the number of decimal places to which adj->value is rounded */
-    btk_scale_set_digits (BTK_SCALE (hscale), (gint) adj->value);
-    btk_scale_set_digits (BTK_SCALE (vscale), (gint) adj->value);
+    btk_scale_set_digits (BTK_SCALE (hscale), (bint) adj->value);
+    btk_scale_set_digits (BTK_SCALE (vscale), (bint) adj->value);
 }
 
 static void cb_page_size( BtkAdjustment *get,
@@ -39,7 +39,7 @@ static void cb_page_size( BtkAdjustment *get,
     btk_adjustment_set_value (set, CLAMP (set->value,
 					  set->lower,
 					  (set->upper - set->page_size)));
-    g_signal_emit_by_name(G_OBJECT(set), "changed");
+    g_signal_emit_by_name(B_OBJECT(set), "changed");
 }
 
 static void cb_draw_value( BtkToggleButton *button )
@@ -52,15 +52,15 @@ static void cb_draw_value( BtkToggleButton *button )
 
 /* Convenience functions */
 
-static BtkWidget *make_menu_item ( gchar     *name,
+static BtkWidget *make_menu_item ( bchar     *name,
                                    GCallback  callback,
-                                   gpointer   data )
+                                   bpointer   data )
 {
     BtkWidget *item;
 
     item = btk_menu_item_new_with_label (name);
     g_signal_connect (item, "activate",
-	              callback, (gpointer) data);
+	              callback, (bpointer) data);
     btk_widget_show (item);
 
     return item;
@@ -162,19 +162,19 @@ static void create_range_controls( void )
 
     item = make_menu_item ("Top",
                            G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_TOP));
+                           BINT_TO_POINTER (BTK_POS_TOP));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     item = make_menu_item ("Bottom", G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_BOTTOM));
+                           BINT_TO_POINTER (BTK_POS_BOTTOM));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     item = make_menu_item ("Left", G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_LEFT));
+                           BINT_TO_POINTER (BTK_POS_LEFT));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     item = make_menu_item ("Right", G_CALLBACK (cb_pos_menu_select),
-                           GINT_TO_POINTER (BTK_POS_RIGHT));
+                           BINT_TO_POINTER (BTK_POS_RIGHT));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     btk_option_menu_set_menu (BTK_OPTION_MENU (opt), menu);
@@ -198,17 +198,17 @@ static void create_range_controls( void )
 
     item = make_menu_item ("Continuous",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_CONTINUOUS));
+                           BINT_TO_POINTER (BTK_UPDATE_CONTINUOUS));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     item = make_menu_item ("Discontinuous",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_DISCONTINUOUS));
+                           BINT_TO_POINTER (BTK_UPDATE_DISCONTINUOUS));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     item = make_menu_item ("Delayed",
                            G_CALLBACK (cb_update_menu_select),
-                           GINT_TO_POINTER (BTK_UPDATE_DELAYED));
+                           BINT_TO_POINTER (BTK_UPDATE_DELAYED));
     btk_menu_shell_append (BTK_MENU_SHELL (menu), item);
 
     btk_option_menu_set_menu (BTK_OPTION_MENU (opt), menu);
@@ -249,7 +249,7 @@ static void create_range_controls( void )
 
     adj2 = btk_adjustment_new (1.0, 1.0, 101.0, 1.0, 1.0, 0.0);
     g_signal_connect (adj2, "value-changed",
-                      G_CALLBACK (cb_page_size), (gpointer) adj1);
+                      G_CALLBACK (cb_page_size), (bpointer) adj1);
     scale = btk_hscale_new (BTK_ADJUSTMENT (adj2));
     btk_scale_set_digits (BTK_SCALE (scale), 0);
     btk_box_pack_start (BTK_BOX (box2), scale, TRUE, TRUE, 0);

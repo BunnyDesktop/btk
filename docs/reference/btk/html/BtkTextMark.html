@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextMark.html#btk-text-mark-get-visible" title="btk_text_mark_get_visible ()">btk_text_mark_get_visible</a> <span class="c_punctuation">()</span>
@@ -67,14 +67,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextMark.html#btk-text-mark-get-deleted" title="btk_text_mark_get_deleted ()">btk_text_mark_get_deleted</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextMark.html#btk-text-mark-get-name" title="btk_text_mark_get_name ()">btk_text_mark_get_name</a> <span class="c_punctuation">()</span>
@@ -90,7 +90,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextMark.html#btk-text-mark-get-left-gravity" title="btk_text_mark_get_left_gravity ()">btk_text_mark_get_left_gravity</a> <span class="c_punctuation">()</span>
@@ -109,7 +109,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkTextMark.html#BtkTextMark--left-gravity" title="The “left-gravity” property">left-gravity</a></td>
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
@@ -137,7 +137,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkTextMark.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkTextMark
 </pre>
 </div>
@@ -154,8 +154,8 @@
 <div class="refsect2">
 <a name="btk-text-mark-new"></a><h3>btk_text_mark_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="returnvalue">BtkTextMark</span></a> *
-btk_text_mark_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>,
-                   <em class="parameter"><code><span class="type">gboolean</span> left_gravity</code></em>);</pre>
+btk_text_mark_new (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>,
+                   <em class="parameter"><code><span class="type">bboolean</span> left_gravity</code></em>);</pre>
 <p>Creates a text mark. Add it to a buffer using <a class="link" href="BtkTextBuffer.html#btk-text-buffer-add-mark" title="btk_text_buffer_add_mark ()"><code class="function">btk_text_buffer_add_mark()</code></a>.
 If <em class="parameter"><code>name</code></em>
  is <code class="literal">NULL</code>, the mark is anonymous; otherwise, the mark can be 
@@ -200,7 +200,7 @@ side of the text you're typing).</p>
 <a name="btk-text-mark-set-visible"></a><h3>btk_text_mark_set_visible ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_mark_set_visible (<em class="parameter"><code><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="type">BtkTextMark</span></a> *mark</code></em>,
-                           <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <p>Sets the visibility of <em class="parameter"><code>mark</code></em>
 ; the insertion point is normally
 visible, i.e. you can see it as a vertical bar. Also, the text
@@ -233,7 +233,7 @@ Marks are not visible by default.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-mark-get-visible"></a><h3>btk_text_mark_get_visible ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_text_mark_get_visible (<em class="parameter"><code><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="type">BtkTextMark</span></a> *mark</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the mark is visible (i.e. a cursor is displayed
 for it).</p>
@@ -260,7 +260,7 @@ for it).</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-mark-get-deleted"></a><h3>btk_text_mark_get_deleted ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_text_mark_get_deleted (<em class="parameter"><code><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="type">BtkTextMark</span></a> *mark</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the mark has been removed from its buffer
 with <a class="link" href="BtkTextBuffer.html#btk-text-buffer-delete-mark" title="btk_text_buffer_delete_mark ()"><code class="function">btk_text_buffer_delete_mark()</code></a>. See <a class="link" href="BtkTextBuffer.html#btk-text-buffer-add-mark" title="btk_text_buffer_add_mark ()"><code class="function">btk_text_buffer_add_mark()</code></a>
@@ -288,7 +288,7 @@ for a way to add it to a buffer again.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-mark-get-name"></a><h3>btk_text_mark_get_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_text_mark_get_name (<em class="parameter"><code><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="type">BtkTextMark</span></a> *mark</code></em>);</pre>
 <p>Returns the mark name; returns NULL for anonymous marks.</p>
 <div class="refsect3">
@@ -342,7 +342,7 @@ or <code class="literal">NULL</code> if the mark is deleted.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-mark-get-left-gravity"></a><h3>btk_text_mark_get_left_gravity ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_text_mark_get_left_gravity (<em class="parameter"><code><a class="link" href="BtkTextMark.html" title="BtkTextMark"><span class="type">BtkTextMark</span></a> *mark</code></em>);</pre>
 <p>Determines whether the mark has left gravity.</p>
 <div class="refsect3">
@@ -377,7 +377,7 @@ btk_text_mark_get_left_gravity (<em class="parameter"><code><a class="link" href
 <a name="BtkTextMark.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkTextMark--left-gravity"></a><h3>The <code class="literal">“left-gravity”</code> property</h3>
-<pre class="programlisting">  “left-gravity”             <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “left-gravity”             <span class="type">bboolean</span></pre>
 <p>Whether the mark has left gravity.</p>
 <p>Owner: BtkTextMark</p>
 <p>Flags: Read / Write / Construct Only</p>

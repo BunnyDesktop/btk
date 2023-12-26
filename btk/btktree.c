@@ -54,11 +54,11 @@ static void btk_tree_parent_set      (BtkWidget      *widget,
 				      BtkWidget      *previous_parent);
 static void btk_tree_unmap           (BtkWidget      *widget);
 static void btk_tree_realize         (BtkWidget      *widget);
-static gint btk_tree_motion_notify   (BtkWidget      *widget,
+static bint btk_tree_motion_notify   (BtkWidget      *widget,
 				      BdkEventMotion *event);
-static gint btk_tree_button_press    (BtkWidget      *widget,
+static bint btk_tree_button_press    (BtkWidget      *widget,
 				      BdkEventButton *event);
-static gint btk_tree_button_release  (BtkWidget      *widget,
+static bint btk_tree_button_release  (BtkWidget      *widget,
 				      BdkEventButton *event);
 static void btk_tree_size_request    (BtkWidget      *widget,
 				      BtkRequisition *requisition);
@@ -67,9 +67,9 @@ static void btk_tree_size_allocate   (BtkWidget      *widget,
 static void btk_tree_add             (BtkContainer   *container,
 				      BtkWidget      *widget);
 static void btk_tree_forall          (BtkContainer   *container,
-				      gboolean	      include_internals,
+				      bboolean	      include_internals,
 				      BtkCallback     callback,
-				      gpointer        callback_data);
+				      bpointer        callback_data);
 
 static void btk_real_tree_select_child   (BtkTree       *tree,
 					  BtkWidget     *child);
@@ -79,7 +79,7 @@ static void btk_real_tree_unselect_child (BtkTree       *tree,
 static BtkType btk_tree_child_type  (BtkContainer   *container);
 
 static BtkContainerClass *parent_class = NULL;
-static guint tree_signals[LAST_SIGNAL] = { 0 };
+static buint tree_signals[LAST_SIGNAL] = { 0 };
 
 BtkType
 btk_tree_get_type (void)
@@ -218,9 +218,9 @@ btk_tree_prepend (BtkTree   *tree,
 void
 btk_tree_insert (BtkTree   *tree,
 		 BtkWidget *tree_item,
-		 gint       position)
+		 bint       position)
 {
-  gint nchildren;
+  bint nchildren;
   
   g_return_if_fail (BTK_IS_TREE (tree));
   g_return_if_fail (BTK_IS_TREE_ITEM (tree_item));
@@ -257,7 +257,7 @@ btk_tree_add (BtkContainer *container,
     btk_tree_select_child (tree, child);
 }
 
-static gint
+static bint
 btk_tree_button_press (BtkWidget      *widget,
 		       BdkEventButton *event)
 {
@@ -292,7 +292,7 @@ btk_tree_button_press (BtkWidget      *widget,
   return TRUE;
 }
 
-static gint
+static bint
 btk_tree_button_release (BtkWidget      *widget,
 			 BdkEventButton *event)
 {
@@ -308,12 +308,12 @@ btk_tree_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-gint
+bint
 btk_tree_child_position (BtkTree   *tree,
 			 BtkWidget *child)
 {
   GList *children;
-  gint pos;
+  bint pos;
   
   
   g_return_val_if_fail (BTK_IS_TREE (tree), -1);
@@ -337,14 +337,14 @@ btk_tree_child_position (BtkTree   *tree,
 
 void
 btk_tree_clear_items (BtkTree *tree,
-		      gint     start,
-		      gint     end)
+		      bint     start,
+		      bint     end)
 {
   BtkWidget *widget;
   GList *clear_list;
   GList *tmp_list;
-  guint nchildren;
-  guint index;
+  buint nchildren;
+  buint index;
   
   g_return_if_fail (BTK_IS_TREE (tree));
   
@@ -414,9 +414,9 @@ btk_tree_destroy (BtkObject *object)
 
 static void
 btk_tree_forall (BtkContainer *container,
-		 gboolean      include_internals,
+		 bboolean      include_internals,
 		 BtkCallback   callback,
-		 gpointer      callback_data)
+		 bpointer      callback_data)
 {
   BtkTree *tree;
   BtkWidget *child;
@@ -537,7 +537,7 @@ btk_tree_map (BtkWidget *widget)
   bdk_window_show (widget->window);
 }
 
-static gint
+static bint
 btk_tree_motion_notify (BtkWidget      *widget,
 			BdkEventMotion *event)
 {
@@ -555,7 +555,7 @@ static void
 btk_tree_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   
   
   g_return_if_fail (BTK_IS_TREE (widget));
@@ -602,7 +602,7 @@ btk_tree_remove_item (BtkTree      *container,
 /* used by btk_tree_remove_items to make the function independent of
    order in list of items to remove.
    Sort item by depth in tree */
-static gint 
+static bint 
 btk_tree_sort_item_by_depth(BtkWidget* a, BtkWidget* b)
 {
   if((BTK_TREE(a->parent)->level) < (BTK_TREE(b->parent)->level))
@@ -821,7 +821,7 @@ btk_tree_select_child (BtkTree   *tree,
 
 void
 btk_tree_select_item (BtkTree   *tree,
-		      gint       item)
+		      bint       item)
 {
   GList *tmp_list;
   
@@ -858,7 +858,7 @@ btk_tree_size_allocate (BtkWidget     *widget,
     {
       child_allocation.x = BTK_CONTAINER (tree)->border_width;
       child_allocation.y = BTK_CONTAINER (tree)->border_width;
-      child_allocation.width = MAX (1, (gint)allocation->width - child_allocation.x * 2);
+      child_allocation.width = MAX (1, (bint)allocation->width - child_allocation.x * 2);
       
       children = tree->children;
       
@@ -965,7 +965,7 @@ btk_tree_unselect_child (BtkTree   *tree,
 
 void
 btk_tree_unselect_item (BtkTree *tree,
-			gint     item)
+			bint     item)
 {
   GList *tmp_list;
   
@@ -1125,7 +1125,7 @@ btk_tree_set_view_mode (BtkTree       *tree,
 
 void
 btk_tree_set_view_lines (BtkTree       *tree,
-			 gboolean	flag) 
+			 bboolean	flag) 
 {
   g_return_if_fail (BTK_IS_TREE (tree));
   

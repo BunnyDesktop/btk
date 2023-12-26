@@ -46,7 +46,7 @@
 <tbody>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="BtkCalendar.html#BtkCalendarDetailFunc" title="BtkCalendarDetailFunc ()">*BtkCalendarDetailFunc</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkCalendar.html#btk-calendar-select-month" title="btk_calendar_select_month ()">btk_calendar_select_month</a> <span class="c_punctuation">()</span>
@@ -78,7 +78,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkCalendar.html#btk-calendar-mark-day" title="btk_calendar_mark_day ()">btk_calendar_mark_day</a> <span class="c_punctuation">()</span>
@@ -86,7 +86,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkCalendar.html#btk-calendar-unmark-day" title="btk_calendar_unmark_day ()">btk_calendar_unmark_day</a> <span class="c_punctuation">()</span>
@@ -134,7 +134,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkCalendar.html#btk-calendar-get-detail-width-chars" title="btk_calendar_get_detail_width_chars ()">btk_calendar_get_detail_width_chars</a> <span class="c_punctuation">()</span>
@@ -150,7 +150,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkCalendar.html#btk-calendar-get-detail-height-rows" title="btk_calendar_get_detail_height_rows ()">btk_calendar_get_detail_height_rows</a> <span class="c_punctuation">()</span>
@@ -221,27 +221,27 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCalendar.html#BtkCalendar--no-month-change" title="The “no-month-change” property">no-month-change</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCalendar.html#BtkCalendar--show-day-names" title="The “show-day-names” property">show-day-names</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCalendar.html#BtkCalendar--show-details" title="The “show-details” property">show-details</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCalendar.html#BtkCalendar--show-heading" title="The “show-heading” property">show-heading</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkCalendar.html#BtkCalendar--show-week-numbers" title="The “show-week-numbers” property">show-week-numbers</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -348,7 +348,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkCalendar.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -373,12 +373,12 @@ BtkCalendar implements
 <a name="BtkCalendar.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BtkCalendarDetailFunc"></a><h3>BtkCalendarDetailFunc ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 <span class="c_punctuation">(</span>*BtkCalendarDetailFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> year</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> month</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> day</code></em>,
-                          <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">buint</span> year</code></em>,
+                          <em class="parameter"><code><span class="type">buint</span> month</code></em>,
+                          <em class="parameter"><code><span class="type">buint</span> day</code></em>,
+                          <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This kind of functions provide Bango markup with detail information for the
 specified day. Examples for such details are holidays or appointments. The
 function returns <code class="literal">NULL</code> when no information is available.</p>
@@ -441,10 +441,10 @@ btk_calendar_new (<em class="parameter"><code><span class="type">void</span></co
 <hr>
 <div class="refsect2">
 <a name="btk-calendar-select-month"></a><h3>btk_calendar_select_month ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_calendar_select_month (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> month</code></em>,
-                           <em class="parameter"><code><span class="type">guint</span> year</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">buint</span> month</code></em>,
+                           <em class="parameter"><code><span class="type">buint</span> year</code></em>);</pre>
 <p>Shifts the calendar to a different month.</p>
 <p>Note that this function always returns <code class="literal">TRUE</code>, and you should
 ignore the return value. In BTK+ 3, this function will not
@@ -486,7 +486,7 @@ return a value.</p>
 <a name="btk-calendar-select-day"></a><h3>btk_calendar_select_day ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_calendar_select_day (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> day</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">buint</span> day</code></em>);</pre>
 <p>Selects a day from the current month.</p>
 <div class="refsect3">
 <a name="btk-calendar-select-day.parameters"></a><h4>Parameters</h4>
@@ -515,9 +515,9 @@ the currently selected day.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-calendar-mark-day"></a><h3>btk_calendar_mark_day ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_calendar_mark_day (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> day</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">buint</span> day</code></em>);</pre>
 <p>Places a visual marker on a particular day.</p>
 <p>Note that this function always returns <code class="literal">TRUE</code>, and you should
 ignore the return value. In BTK+ 3, this function will not
@@ -552,9 +552,9 @@ return a value.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-calendar-unmark-day"></a><h3>btk_calendar_unmark_day ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_calendar_unmark_day (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> day</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">buint</span> day</code></em>);</pre>
 <p>Removes the visual marker from a particular day.</p>
 <p>Note that this function always returns <code class="literal">TRUE</code>, and you should
 ignore the return value. In BTK+ 3, this function will not
@@ -673,9 +673,9 @@ headings).</p>
 <a name="btk-calendar-get-date"></a><h3>btk_calendar_get_date ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_calendar_get_date (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> *year</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> *month</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> *day</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">buint</span> *year</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> *month</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> *day</code></em>);</pre>
 <p>Obtains the selected date from a <a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a>.</p>
 <div class="refsect3">
 <a name="btk-calendar-get-date.parameters"></a><h4>Parameters</h4>
@@ -719,7 +719,7 @@ number (e.g. 2011), or <code class="literal">NULL</code>. </p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_calendar_set_detail_func (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
                               <em class="parameter"><code><a class="link" href="BtkCalendar.html#BtkCalendarDetailFunc" title="BtkCalendarDetailFunc ()"><span class="type">BtkCalendarDetailFunc</span></a> func</code></em>,
-                              <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                              <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                               <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>Installs a function which provides Bango markup with detail information
 for each day. Examples for such details are holidays or appointments. That
@@ -769,7 +769,7 @@ invokations.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-calendar-get-detail-width-chars"></a><h3>btk_calendar_get_detail_width_chars ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_calendar_get_detail_width_chars (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>);</pre>
 <p>Queries the width of detail cells, in characters.
 See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" title="The “detail-width-chars” property"><span class="type">“detail-width-chars”</span></a>.</p>
@@ -799,7 +799,7 @@ See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" titl
 <a name="btk-calendar-set-detail-width-chars"></a><h3>btk_calendar_set_detail_width_chars ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_calendar_set_detail_width_chars (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> chars</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bint</span> chars</code></em>);</pre>
 <p>Updates the width of detail cells.
 See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" title="The “detail-width-chars” property"><span class="type">“detail-width-chars”</span></a>.</p>
 <div class="refsect3">
@@ -829,7 +829,7 @@ See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" titl
 <hr>
 <div class="refsect2">
 <a name="btk-calendar-get-detail-height-rows"></a><h3>btk_calendar_get_detail_height_rows ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_calendar_get_detail_height_rows (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>);</pre>
 <p>Queries the height of detail cells, in rows.
 See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" title="The “detail-width-chars” property"><span class="type">“detail-width-chars”</span></a>.</p>
@@ -859,7 +859,7 @@ See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-width-chars" titl
 <a name="btk-calendar-set-detail-height-rows"></a><h3>btk_calendar_set_detail_height_rows ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_calendar_set_detail_height_rows (<em class="parameter"><code><a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> rows</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bint</span> rows</code></em>);</pre>
 <p>Updates the height of detail cells.
 See <a class="link" href="BtkCalendar.html#BtkCalendar--detail-height-rows" title="The “detail-height-rows” property"><span class="type">“detail-height-rows”</span></a>.</p>
 <div class="refsect3">
@@ -1091,7 +1091,7 @@ This property gets initially set to the current month.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCalendar--no-month-change"></a><h3>The <code class="literal">“no-month-change”</code> property</h3>
-<pre class="programlisting">  “no-month-change”          <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “no-month-change”          <span class="type">bboolean</span></pre>
 <p>Determines whether the selected month can be changed.</p>
 <p>Owner: BtkCalendar</p>
 <p>Flags: Read / Write</p>
@@ -1101,7 +1101,7 @@ This property gets initially set to the current month.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCalendar--show-day-names"></a><h3>The <code class="literal">“show-day-names”</code> property</h3>
-<pre class="programlisting">  “show-day-names”           <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-day-names”           <span class="type">bboolean</span></pre>
 <p>Determines whether day names are displayed.</p>
 <p>Owner: BtkCalendar</p>
 <p>Flags: Read / Write</p>
@@ -1111,7 +1111,7 @@ This property gets initially set to the current month.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCalendar--show-details"></a><h3>The <code class="literal">“show-details”</code> property</h3>
-<pre class="programlisting">  “show-details”             <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-details”             <span class="type">bboolean</span></pre>
 <p>Determines whether details are shown directly in the widget, or if they are
 available only as tooltip. When this property is set days with details are
 marked.</p>
@@ -1123,7 +1123,7 @@ marked.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCalendar--show-heading"></a><h3>The <code class="literal">“show-heading”</code> property</h3>
-<pre class="programlisting">  “show-heading”             <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-heading”             <span class="type">bboolean</span></pre>
 <p>Determines whether a heading is displayed.</p>
 <p>Owner: BtkCalendar</p>
 <p>Flags: Read / Write</p>
@@ -1133,7 +1133,7 @@ marked.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkCalendar--show-week-numbers"></a><h3>The <code class="literal">“show-week-numbers”</code> property</h3>
-<pre class="programlisting">  “show-week-numbers”        <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-week-numbers”        <span class="type">bboolean</span></pre>
 <p>Determines whether week numbers are displayed.</p>
 <p>Owner: BtkCalendar</p>
 <p>Flags: Read / Write</p>
@@ -1191,7 +1191,7 @@ This property gets initially set to the current year.</p>
 <a name="BtkCalendar-day-selected"></a><h3>The <code class="literal">“day-selected”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -1199,7 +1199,7 @@ user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span
 <a name="BtkCalendar-day-selected-double-click"></a><h3>The <code class="literal">“day-selected-double-click”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -1207,7 +1207,7 @@ user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span
 <a name="BtkCalendar-month-changed"></a><h3>The <code class="literal">“month-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Emitted when the user clicks a button to change the selected month on a
 calendar.</p>
 <div class="refsect3">
@@ -1239,7 +1239,7 @@ calendar.</p>
 <a name="BtkCalendar-next-month"></a><h3>The <code class="literal">“next-month”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -1247,7 +1247,7 @@ user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span
 <a name="BtkCalendar-next-year"></a><h3>The <code class="literal">“next-year”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -1255,7 +1255,7 @@ user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span
 <a name="BtkCalendar-prev-month"></a><h3>The <code class="literal">“prev-month”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 <hr>
@@ -1263,7 +1263,7 @@ user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span
 <a name="BtkCalendar-prev-year"></a><h3>The <code class="literal">“prev-year”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCalendar.html" title="BtkCalendar"><span class="type">BtkCalendar</span></a> *calendar,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

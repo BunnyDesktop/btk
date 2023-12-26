@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_COMBO_BOX                      (bail_combo_box_get_type ())
-#define BAIL_COMBO_BOX(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO_BOX, BailComboBox))
-#define BAIL_COMBO_BOX_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
-#define BAIL_IS_COMBO_BOX(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO_BOX))
-#define BAIL_IS_COMBO_BOX_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO_BOX))
-#define BAIL_COMBO_BOX_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
+#define BAIL_COMBO_BOX(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO_BOX, BailComboBox))
+#define BAIL_COMBO_BOX_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
+#define BAIL_IS_COMBO_BOX(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO_BOX))
+#define BAIL_IS_COMBO_BOX_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO_BOX))
+#define BAIL_COMBO_BOX_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
 
 typedef struct _BailComboBox              BailComboBox;
 typedef struct _BailComboBoxClass         BailComboBoxClass;
@@ -38,13 +38,13 @@ struct _BailComboBox
 {
   BailContainer parent;
 
-  gchar         *press_keybinding;
-  gchar         *press_description;
-  guint         action_idle_handler;
+  bchar         *press_keybinding;
+  bchar         *press_description;
+  buint         action_idle_handler;
 
-  gchar         *name;
-  gint          old_selection;
-  gboolean      popup_set;
+  bchar         *name;
+  bint          old_selection;
+  bboolean      popup_set;
 };
 
 GType bail_combo_box_get_type (void);
@@ -54,6 +54,6 @@ struct _BailComboBoxClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_COMBO_BOX_H__ */

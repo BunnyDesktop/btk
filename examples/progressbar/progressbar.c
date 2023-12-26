@@ -5,15 +5,15 @@ typedef struct _ProgressData {
   BtkWidget *window;
   BtkWidget *pbar;
   int timer;
-  gboolean activity_mode;
+  bboolean activity_mode;
 } ProgressData;
 
 /* Update the value of the progress bar so that we get
  * some movement */
-static gboolean progress_timeout( gpointer data )
+static bboolean progress_timeout( bpointer data )
 {
   ProgressData *pdata = (ProgressData *)data;
-  gdouble new_val;
+  bdouble new_val;
   
   if (pdata->activity_mode) 
     btk_progress_bar_pulse (BTK_PROGRESS_BAR (pdata->pbar));
@@ -40,7 +40,7 @@ static gboolean progress_timeout( gpointer data )
 static void toggle_show_text( BtkWidget    *widget,
                               ProgressData *pdata )
 {
-  const gchar *text;
+  const bchar *text;
   
   text = btk_progress_bar_get_text (BTK_PROGRESS_BAR (pdata->pbar));
   if (text && *text)
@@ -110,9 +110,9 @@ int main( int   argc,
     pdata->window = btk_window_new (BTK_WINDOW_TOPLEVEL);
     btk_window_set_resizable (BTK_WINDOW (pdata->window), TRUE);
 
-    g_signal_connect (G_OBJECT (pdata->window), "destroy",
+    g_signal_connect (B_OBJECT (pdata->window), "destroy",
 	              G_CALLBACK (destroy_progress),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_window_set_title (BTK_WINDOW (pdata->window), "BtkProgressBar");
     btk_container_set_border_width (BTK_CONTAINER (pdata->window), 0);
 
@@ -150,9 +150,9 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 0, 1,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
 		      5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_show_text),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a check button to toggle activity mode */
@@ -160,9 +160,9 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 1, 2,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
                       5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_activity_mode),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a check button to toggle orientation */
@@ -170,16 +170,16 @@ int main( int   argc,
     btk_table_attach (BTK_TABLE (table), check, 0, 1, 2, 3,
                       BTK_EXPAND | BTK_FILL, BTK_EXPAND | BTK_FILL,
                       5, 5);
-    g_signal_connect (G_OBJECT (check), "clicked",
+    g_signal_connect (B_OBJECT (check), "clicked",
                       G_CALLBACK (toggle_orientation),
-                      (gpointer) pdata);
+                      (bpointer) pdata);
     btk_widget_show (check);
 
     /* Add a button to exit the program */
     button = btk_button_new_with_label ("close");
-    g_signal_connect_swapped (G_OBJECT (button), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button), "clicked",
                               G_CALLBACK (btk_widget_destroy),
-                              G_OBJECT (pdata->window));
+                              B_OBJECT (pdata->window));
     btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 
     /* This makes it so the button is the default. */

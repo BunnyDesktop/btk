@@ -25,7 +25,7 @@
 static void         bail_box_class_init            (BailBoxClass  *klass);
 static void         bail_box_init                  (BailBox       *box);
 static void         bail_box_initialize            (BatkObject     *accessible,
-                                                    gpointer       data);
+                                                    bpointer       data);
 static BatkStateSet* bail_box_ref_state_set         (BatkObject     *accessible);
 
 G_DEFINE_TYPE (BailBox, bail_box, BAIL_TYPE_CONTAINER)
@@ -46,7 +46,7 @@ bail_box_init (BailBox *box)
 
 static void
 bail_box_initialize (BatkObject *accessible,
-                     gpointer  data)
+                     bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_box_parent_class)->initialize (accessible, data);
 

@@ -71,12 +71,12 @@ typedef enum
 
 struct _BtkIconThemePrivate
 {
-  guint custom_theme        : 1;
-  guint is_screen_singleton : 1;
-  guint pixbuf_supports_svg : 1;
-  guint themes_valid        : 1;
-  guint check_reload        : 1;
-  guint loading_themes      : 1;
+  buint custom_theme        : 1;
+  buint is_screen_singleton : 1;
+  buint pixbuf_supports_svg : 1;
+  buint themes_valid        : 1;
+  buint check_reload        : 1;
+  buint loading_themes      : 1;
   
   char *current_theme;
   char *fallback_theme;
@@ -102,19 +102,19 @@ struct _BtkIconThemePrivate
   long last_stat_time;
   GList *dir_mtimes;
 
-  gulong reset_styles_idle;
+  bulong reset_styles_idle;
 };
 
 struct _BtkIconInfo
 {
   /* Information about the source
    */
-  gchar *filename;
+  bchar *filename;
 #if defined (G_OS_WIN32) && !defined (_WIN64)
   /* System codepage version of filename, for DLL ABI backward
    * compatibility functions.
    */
-  gchar *cp_filename;
+  bchar *cp_filename;
 #endif
   GLoadableIcon *loadable;
   GSList *emblem_infos;
@@ -128,24 +128,24 @@ struct _BtkIconInfo
    * the source was found
    */
   IconThemeDirType dir_type;
-  gint dir_size;
-  gint threshold;
+  bint dir_size;
+  bint threshold;
 
   /* Parameters influencing the scaled icon
    */
-  gint desired_size;
-  guint raw_coordinates : 1;
-  guint forced_size     : 1;
+  bint desired_size;
+  buint raw_coordinates : 1;
+  buint forced_size     : 1;
 
   /* Cached information if we go ahead and try to load
    * the icon.
    */
   BdkPixbuf *pixbuf;
   GError *load_error;
-  gdouble scale;
-  gboolean emblems_applied;
+  bdouble scale;
+  bboolean emblems_applied;
 
-  guint ref_count;
+  buint ref_count;
 };
 
 typedef struct
@@ -187,7 +187,7 @@ typedef struct
 
 typedef struct
 {
-  gint size;
+  bint size;
   BdkPixbuf *pixbuf;
 } BuiltinIcon;
 
@@ -195,20 +195,20 @@ typedef struct
 {
   char *dir;
   time_t mtime; /* 0 == not existing or not a dir */
-  gboolean exists;
+  bboolean exists;
 
   BtkIconCache *cache;
 } IconThemeDirMtime;
 
-static void  btk_icon_theme_finalize   (GObject              *object);
+static void  btk_icon_theme_finalize   (BObject              *object);
 static void  theme_dir_destroy         (IconThemeDir         *dir);
 
 static void         theme_destroy     (IconTheme        *theme);
 static BtkIconInfo *theme_lookup_icon (IconTheme        *theme,
 				       const char       *icon_name,
 				       int               size,
-				       gboolean          allow_svg,
-				       gboolean          use_default_icons);
+				       bboolean          allow_svg,
+				       bboolean          use_default_icons);
 static void         theme_list_icons  (IconTheme        *theme,
 				       GHashTable       *icons,
 				       GQuark            context);
@@ -221,7 +221,7 @@ static void         theme_subdir_load (BtkIconTheme     *icon_theme,
 static void         do_theme_change   (BtkIconTheme     *icon_theme);
 
 static void     blow_themes               (BtkIconTheme    *icon_themes);
-static gboolean rescan_themes             (BtkIconTheme    *icon_themes);
+static bboolean rescan_themes             (BtkIconTheme    *icon_themes);
 
 static void  icon_data_free            (BtkIconData     *icon_data);
 static void load_icon_data             (IconThemeDir    *dir,
@@ -229,8 +229,8 @@ static void load_icon_data             (IconThemeDir    *dir,
 			                const char      *name);
 
 static IconSuffix theme_dir_get_icon_suffix (IconThemeDir *dir,
-					     const gchar  *icon_name,
-					     gboolean     *has_icon_file);
+					     const bchar  *icon_name,
+					     bboolean     *has_icon_file);
 
 
 static BtkIconInfo *icon_info_new             (void);
@@ -238,12 +238,12 @@ static BtkIconInfo *icon_info_new_builtin     (BuiltinIcon *icon);
 
 static IconSuffix suffix_from_name (const char *name);
 
-static BuiltinIcon *find_builtin_icon (const gchar *icon_name,
-				       gint        size,
-				       gint        *min_difference_p,
-				       gboolean    *has_larger_p);
+static BuiltinIcon *find_builtin_icon (const bchar *icon_name,
+				       bint        size,
+				       bint        *min_difference_p,
+				       bboolean    *has_larger_p);
 
-static guint signal_changed = 0;
+static buint signal_changed = 0;
 
 static GHashTable *icon_theme_builtin_icons;
 
@@ -251,7 +251,7 @@ static GHashTable *icon_theme_builtin_icons;
 BtkIconCache *_builtin_cache = NULL;
 static GList *builtin_dirs = NULL;
 
-G_DEFINE_TYPE (BtkIconTheme, btk_icon_theme, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkIconTheme, btk_icon_theme, B_TYPE_OBJECT)
 
 /**
  * btk_icon_theme_new:
@@ -319,7 +319,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   g_return_val_if_fail (!screen->closed, NULL);
 
-  icon_theme = g_object_get_data (G_OBJECT (screen), "btk-icon-theme");
+  icon_theme = g_object_get_data (B_OBJECT (screen), "btk-icon-theme");
   if (!icon_theme)
     {
       BtkIconThemePrivate *priv;
@@ -330,7 +330,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
       priv = icon_theme->priv;
       priv->is_screen_singleton = TRUE;
 
-      g_object_set_data (G_OBJECT (screen), I_("btk-icon-theme"), icon_theme);
+      g_object_set_data (B_OBJECT (screen), I_("btk-icon-theme"), icon_theme);
     }
 
   return icon_theme;
@@ -339,7 +339,7 @@ btk_icon_theme_get_for_screen (BdkScreen *screen)
 static void
 btk_icon_theme_class_init (BtkIconThemeClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->finalize = btk_icon_theme_finalize;
 
@@ -352,12 +352,12 @@ btk_icon_theme_class_init (BtkIconThemeClass *klass)
  * icon theme.
  **/
   signal_changed = g_signal_new (I_("changed"),
-				 G_TYPE_FROM_CLASS (klass),
+				 B_TYPE_FROM_CLASS (klass),
 				 G_SIGNAL_RUN_LAST,
 				 G_STRUCT_OFFSET (BtkIconThemeClass, changed),
 				 NULL, NULL,
 				 g_cclosure_marshal_VOID__VOID,
-				 G_TYPE_NONE, 0);
+				 B_TYPE_NONE, 0);
 
   g_type_class_add_private (klass, sizeof (BtkIconThemePrivate));
 }
@@ -369,16 +369,16 @@ btk_icon_theme_class_init (BtkIconThemeClass *klass)
  */
 static void
 display_closed (BdkDisplay   *display,
-		gboolean      is_error,
+		bboolean      is_error,
 		BtkIconTheme *icon_theme)
 {
   BtkIconThemePrivate *priv = icon_theme->priv;
   BdkScreen *screen = priv->screen;
-  gboolean was_screen_singleton = priv->is_screen_singleton;
+  bboolean was_screen_singleton = priv->is_screen_singleton;
 
   if (was_screen_singleton)
     {
-      g_object_set_data (G_OBJECT (screen), I_("btk-icon-theme"), NULL);
+      g_object_set_data (B_OBJECT (screen), I_("btk-icon-theme"), NULL);
       priv->is_screen_singleton = FALSE;
     }
 
@@ -400,9 +400,9 @@ update_current_theme (BtkIconTheme *icon_theme)
 
   if (!priv->custom_theme)
     {
-      gchar *theme = NULL;
-      gchar *fallback_theme = NULL;
-      gboolean changed = FALSE;
+      bchar *theme = NULL;
+      bchar *fallback_theme = NULL;
+      bboolean changed = FALSE;
 
       if (priv->screen)
 	{
@@ -446,7 +446,7 @@ update_current_theme (BtkIconTheme *icon_theme)
  */
 static void
 theme_changed (BtkSettings  *settings,
-	       GParamSpec   *pspec,
+	       BParamSpec   *pspec,
 	       BtkIconTheme *icon_theme)
 {
   update_current_theme (icon_theme);
@@ -465,10 +465,10 @@ unset_screen (BtkIconTheme *icon_theme)
       display = bdk_screen_get_display (priv->screen);
       
       g_signal_handlers_disconnect_by_func (display,
-					    (gpointer) display_closed,
+					    (bpointer) display_closed,
 					    icon_theme);
       g_signal_handlers_disconnect_by_func (settings,
-					    (gpointer) theme_changed,
+					    (bpointer) theme_changed,
 					    icon_theme);
 
       priv->screen = NULL;
@@ -522,12 +522,12 @@ btk_icon_theme_set_screen (BtkIconTheme *icon_theme,
 /* Checks whether a loader for SVG files has been registered
  * with BdkPixbuf.
  */
-static gboolean
+static bboolean
 pixbuf_supports_svg (void)
 {
   GSList *formats;
   GSList *tmp_list;
-  static gint found_svg = -1;
+  static bint found_svg = -1;
 
   if (found_svg != -1)
     return found_svg;
@@ -537,8 +537,8 @@ pixbuf_supports_svg (void)
   found_svg = FALSE; 
   for (tmp_list = formats; tmp_list && !found_svg; tmp_list = tmp_list->next)
     {
-      gchar **mime_types = bdk_pixbuf_format_get_mime_types (tmp_list->data);
-      gchar **mime_type;
+      bchar **mime_types = bdk_pixbuf_format_get_mime_types (tmp_list->data);
+      bchar **mime_type;
       
       for (mime_type = mime_types; *mime_type && !found_svg; mime_type++)
 	{
@@ -549,7 +549,7 @@ pixbuf_supports_svg (void)
       g_strfreev (mime_types);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
   
   return found_svg;
 }
@@ -558,7 +558,7 @@ static void
 btk_icon_theme_init (BtkIconTheme *icon_theme)
 {
   BtkIconThemePrivate *priv;
-  const gchar * const *xdg_data_dirs;
+  const bchar * const *xdg_data_dirs;
   int i, j;
   
   priv = g_type_instance_get_private ((GTypeInstance *)icon_theme,
@@ -602,8 +602,8 @@ free_dir_mtime (IconThemeDirMtime *dir_mtime)
 
 }
 
-static gboolean
-reset_styles_idle (gpointer user_data)
+static bboolean
+reset_styles_idle (bpointer user_data)
 {
   BtkIconTheme *icon_theme;
   BtkIconThemePrivate *priv;
@@ -663,7 +663,7 @@ blow_themes (BtkIconTheme *icon_theme)
 }
 
 static void
-btk_icon_theme_finalize (GObject *object)
+btk_icon_theme_finalize (BObject *object)
 {
   BtkIconTheme *icon_theme;
   BtkIconThemePrivate *priv;
@@ -691,7 +691,7 @@ btk_icon_theme_finalize (GObject *object)
 
   blow_themes (icon_theme);
 
-  G_OBJECT_CLASS (btk_icon_theme_parent_class)->finalize (object);  
+  B_OBJECT_CLASS (btk_icon_theme_parent_class)->finalize (object);  
 }
 
 /**
@@ -720,11 +720,11 @@ btk_icon_theme_finalize (GObject *object)
  **/
 void
 btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
-				const gchar  *path[],
-				gint          n_elements)
+				const bchar  *path[],
+				bint          n_elements)
 {
   BtkIconThemePrivate *priv;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_ICON_THEME (icon_theme));
 
@@ -734,7 +734,7 @@ btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
 
   g_free (priv->search_path);
 
-  priv->search_path = g_new (gchar *, n_elements);
+  priv->search_path = g_new (bchar *, n_elements);
   priv->search_path_len = n_elements;
 
   for (i = 0; i < priv->search_path_len; i++)
@@ -758,8 +758,8 @@ btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
  **/
 void
 btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
-				gchar            **path[],
-				gint              *n_elements)
+				bchar            **path[],
+				bint              *n_elements)
 {
   BtkIconThemePrivate *priv;
   int i;
@@ -773,7 +773,7 @@ btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
   
   if (path)
     {
-      *path = g_new (gchar *, priv->search_path_len + 1);
+      *path = g_new (bchar *, priv->search_path_len + 1);
       for (i = 0; i < priv->search_path_len; i++)
 	(*path)[i] = g_strdup (priv->search_path[i]);
       (*path)[i] = NULL;
@@ -792,7 +792,7 @@ btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
  **/
 void
 btk_icon_theme_append_search_path (BtkIconTheme *icon_theme,
-				   const gchar  *path)
+				   const bchar  *path)
 {
   BtkIconThemePrivate *priv;
 
@@ -803,7 +803,7 @@ btk_icon_theme_append_search_path (BtkIconTheme *icon_theme,
   
   priv->search_path_len++;
 
-  priv->search_path = g_renew (gchar *, priv->search_path, priv->search_path_len);
+  priv->search_path = g_renew (bchar *, priv->search_path, priv->search_path_len);
   priv->search_path[priv->search_path_len-1] = g_strdup (path);
 
   do_theme_change (icon_theme);
@@ -821,7 +821,7 @@ btk_icon_theme_append_search_path (BtkIconTheme *icon_theme,
  **/
 void
 btk_icon_theme_prepend_search_path (BtkIconTheme *icon_theme,
-				    const gchar  *path)
+				    const bchar  *path)
 {
   BtkIconThemePrivate *priv;
   int i;
@@ -832,7 +832,7 @@ btk_icon_theme_prepend_search_path (BtkIconTheme *icon_theme,
   priv = icon_theme->priv;
   
   priv->search_path_len++;
-  priv->search_path = g_renew (gchar *, priv->search_path, priv->search_path_len);
+  priv->search_path = g_renew (bchar *, priv->search_path, priv->search_path_len);
 
   for (i = priv->search_path_len - 1; i > 0; i--)
     priv->search_path[i] = priv->search_path[i - 1];
@@ -857,7 +857,7 @@ btk_icon_theme_prepend_search_path (BtkIconTheme *icon_theme,
  **/
 void
 btk_icon_theme_set_custom_theme (BtkIconTheme *icon_theme,
-				 const gchar  *theme_name)
+				 const bchar  *theme_name)
 {
   BtkIconThemePrivate *priv;
 
@@ -1166,7 +1166,7 @@ load_themes (BtkIconTheme *icon_theme)
 void
 _btk_icon_theme_ensure_builtin_cache (void)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
   IconThemeDir *dir;
   static IconThemeDir dirs[5] = 
     {
@@ -1176,13 +1176,13 @@ _btk_icon_theme_ensure_builtin_cache (void)
       { ICON_THEME_DIR_THRESHOLD, 0, 32, 32, 32, 2, NULL, "32", -1, NULL, NULL, NULL },
       { ICON_THEME_DIR_THRESHOLD, 0, 48, 48, 48, 2, NULL, "48", -1, NULL, NULL, NULL }
     };
-  gint i;
+  bint i;
 
   if (!initialized)
     {
       initialized = TRUE;
 
-      _builtin_cache = _btk_icon_cache_new ((gchar *)builtin_icons);
+      _builtin_cache = _btk_icon_cache_new ((bchar *)builtin_icons);
 
       for (i = 0; i < G_N_ELEMENTS (dirs); i++)
 	{
@@ -1200,7 +1200,7 @@ ensure_valid_themes (BtkIconTheme *icon_theme)
 {
   BtkIconThemePrivate *priv = icon_theme->priv;
   GTimeVal tv;
-  gboolean was_valid = priv->themes_valid;
+  bboolean was_valid = priv->themes_valid;
 
   if (priv->loading_themes)
     return;
@@ -1249,17 +1249,17 @@ ensure_valid_themes (BtkIconTheme *icon_theme)
 
 static BtkIconInfo *
 choose_icon (BtkIconTheme       *icon_theme,
-	     const gchar        *icon_names[],
-	     gint                size,
+	     const bchar        *icon_names[],
+	     bint                size,
 	     BtkIconLookupFlags  flags)
 {
   BtkIconThemePrivate *priv;
   GList *l;
   BtkIconInfo *icon_info = NULL;
   UnthemedIcon *unthemed_icon = NULL;
-  gboolean allow_svg;
-  gboolean use_builtin;
-  gint i;
+  bboolean allow_svg;
+  bboolean use_builtin;
+  bint i;
 
   priv = icon_theme->priv;
 
@@ -1296,7 +1296,7 @@ choose_icon (BtkIconTheme       *icon_theme,
   /* Still not found an icon, check if reference to a Win32 resource */
   if (!unthemed_icon)
     {
-      gchar **resources;
+      bchar **resources;
       HICON hIcon = NULL;
       
       resources = g_strsplit (icon_names[0], ",", 0);
@@ -1350,9 +1350,9 @@ choose_icon (BtkIconTheme       *icon_theme,
     }
   else
     {
-      static gboolean check_for_default_theme = TRUE;
+      static bboolean check_for_default_theme = TRUE;
       char *default_theme_path;
-      gboolean found = FALSE;
+      bboolean found = FALSE;
       unsigned i;
 
       if (check_for_default_theme)
@@ -1405,8 +1405,8 @@ choose_icon (BtkIconTheme       *icon_theme,
  */
 BtkIconInfo *
 btk_icon_theme_lookup_icon (BtkIconTheme       *icon_theme,
-			    const gchar        *icon_name,
-			    gint                size,
+			    const bchar        *icon_name,
+			    bint                size,
 			    BtkIconLookupFlags  flags)
 {
   BtkIconInfo *info;
@@ -1421,16 +1421,16 @@ btk_icon_theme_lookup_icon (BtkIconTheme       *icon_theme,
 
   if (flags & BTK_ICON_LOOKUP_GENERIC_FALLBACK)
     {
-      gchar **names;
-      gint dashes, i;
-      gchar *p;
+      bchar **names;
+      bint dashes, i;
+      bchar *p;
  
       dashes = 0;
-      for (p = (gchar *) icon_name; *p; p++)
+      for (p = (bchar *) icon_name; *p; p++)
         if (*p == '-')
           dashes++;
 
-      names = g_new (gchar *, dashes + 2);
+      names = g_new (bchar *, dashes + 2);
       names[0] = g_strdup (icon_name);
       for (i = 1; i <= dashes; i++)
         {
@@ -1440,13 +1440,13 @@ btk_icon_theme_lookup_icon (BtkIconTheme       *icon_theme,
         }
       names[dashes + 1] = NULL;
    
-      info = choose_icon (icon_theme, (const gchar **) names, size, flags);
+      info = choose_icon (icon_theme, (const bchar **) names, size, flags);
       
       g_strfreev (names);
     }
   else 
     {
-      const gchar *names[2];
+      const bchar *names[2];
       
       names[0] = icon_name;
       names[1] = NULL;
@@ -1483,8 +1483,8 @@ btk_icon_theme_lookup_icon (BtkIconTheme       *icon_theme,
  */
 BtkIconInfo *
 btk_icon_theme_choose_icon (BtkIconTheme       *icon_theme,
-			    const gchar        *icon_names[],
-			    gint                size,
+			    const bchar        *icon_names[],
+			    bint                size,
 			    BtkIconLookupFlags  flags)
 {
   g_return_val_if_fail (BTK_IS_ICON_THEME (icon_theme), NULL);
@@ -1533,8 +1533,8 @@ btk_icon_theme_error_quark (void)
  **/
 BdkPixbuf *
 btk_icon_theme_load_icon (BtkIconTheme         *icon_theme,
-			  const gchar          *icon_name,
-			  gint                  size,
+			  const bchar          *icon_name,
+			  bint                  size,
 			  BtkIconLookupFlags    flags,
 			  GError              **error)
 {
@@ -1575,7 +1575,7 @@ btk_icon_theme_load_icon (BtkIconTheme         *icon_theme,
  *
  * Since: 2.4
  **/
-gboolean 
+bboolean 
 btk_icon_theme_has_icon (BtkIconTheme *icon_theme,
 			 const char   *icon_name)
 {
@@ -1615,13 +1615,13 @@ btk_icon_theme_has_icon (BtkIconTheme *icon_theme,
 }
 
 static void
-add_size (gpointer  key,
-	  gpointer  value,
-	  gpointer  user_data)
+add_size (bpointer  key,
+	  bpointer  value,
+	  bpointer  user_data)
 {
-  gint **res_p = user_data;
+  bint **res_p = user_data;
 
-  **res_p = GPOINTER_TO_INT (key);
+  **res_p = BPOINTER_TO_INT (key);
 
   (*res_p)++;
 }
@@ -1642,14 +1642,14 @@ add_size (gpointer  key,
  *
  * Since: 2.6
  **/
-gint *
+bint *
 btk_icon_theme_get_icon_sizes (BtkIconTheme *icon_theme,
 			       const char   *icon_name)
 {
   GList *l, *d, *icons;
   GHashTable *sizes;
-  gint *result, *r;
-  guint suffix;  
+  bint *result, *r;
+  buint suffix;  
   BtkIconThemePrivate *priv;
 
   g_return_val_if_fail (BTK_IS_ICON_THEME (icon_theme), NULL);
@@ -1667,16 +1667,16 @@ btk_icon_theme_get_icon_sizes (BtkIconTheme *icon_theme,
 	{
 	  IconThemeDir *dir = d->data;
 
-          if (dir->type != ICON_THEME_DIR_SCALABLE && g_hash_table_lookup_extended (sizes, GINT_TO_POINTER (dir->size), NULL, NULL))
+          if (dir->type != ICON_THEME_DIR_SCALABLE && g_hash_table_lookup_extended (sizes, BINT_TO_POINTER (dir->size), NULL, NULL))
             continue;
 
 	  suffix = theme_dir_get_icon_suffix (dir, icon_name, NULL);	  
 	  if (suffix != ICON_SUFFIX_NONE)
 	    {
 	      if (suffix == ICON_SUFFIX_SVG)
-		g_hash_table_insert (sizes, GINT_TO_POINTER (-1), NULL);
+		g_hash_table_insert (sizes, BINT_TO_POINTER (-1), NULL);
 	      else
-		g_hash_table_insert (sizes, GINT_TO_POINTER (dir->size), NULL);
+		g_hash_table_insert (sizes, BINT_TO_POINTER (dir->size), NULL);
 	    }
 	}
     }
@@ -1685,16 +1685,16 @@ btk_icon_theme_get_icon_sizes (BtkIconTheme *icon_theme,
     {
       IconThemeDir *dir = d->data;
       
-      if (dir->type != ICON_THEME_DIR_SCALABLE && g_hash_table_lookup_extended (sizes, GINT_TO_POINTER (dir->size), NULL, NULL))
+      if (dir->type != ICON_THEME_DIR_SCALABLE && g_hash_table_lookup_extended (sizes, BINT_TO_POINTER (dir->size), NULL, NULL))
         continue;
 
       suffix = theme_dir_get_icon_suffix (dir, icon_name, NULL);	  
       if (suffix != ICON_SUFFIX_NONE)
 	{
 	  if (suffix == ICON_SUFFIX_SVG)
-	    g_hash_table_insert (sizes, GINT_TO_POINTER (-1), NULL);
+	    g_hash_table_insert (sizes, BINT_TO_POINTER (-1), NULL);
 	  else
-	    g_hash_table_insert (sizes, GINT_TO_POINTER (dir->size), NULL);
+	    g_hash_table_insert (sizes, BINT_TO_POINTER (dir->size), NULL);
 	}
     }
 
@@ -1706,12 +1706,12 @@ btk_icon_theme_get_icon_sizes (BtkIconTheme *icon_theme,
         {
 	  BuiltinIcon *icon = icons->data;
 	
-	  g_hash_table_insert (sizes, GINT_TO_POINTER (icon->size), NULL);
+	  g_hash_table_insert (sizes, BINT_TO_POINTER (icon->size), NULL);
           icons = icons->next;
         }      
     }
 
-  r = result = g_new0 (gint, g_hash_table_size (sizes) + 1);
+  r = result = g_new0 (bint, g_hash_table_size (sizes) + 1);
 
   g_hash_table_foreach (sizes, add_size, &r);
   g_hash_table_destroy (sizes);
@@ -1720,9 +1720,9 @@ btk_icon_theme_get_icon_sizes (BtkIconTheme *icon_theme,
 }
 
 static void
-add_key_to_hash (gpointer  key,
-		 gpointer  value,
-		 gpointer  user_data)
+add_key_to_hash (bpointer  key,
+		 bpointer  value,
+		 bpointer  user_data)
 {
   GHashTable *hash = user_data;
 
@@ -1730,9 +1730,9 @@ add_key_to_hash (gpointer  key,
 }
 
 static void
-add_key_to_list (gpointer  key,
-		 gpointer  value,
-		 gpointer  user_data)
+add_key_to_list (bpointer  key,
+		 bpointer  value,
+		 bpointer  user_data)
 {
   GList **list = user_data;
 
@@ -1891,7 +1891,7 @@ btk_icon_theme_get_example_icon_name (BtkIconTheme *icon_theme)
 }
 
 
-static gboolean
+static bboolean
 rescan_themes (BtkIconTheme *icon_theme)
 {
   BtkIconThemePrivate *priv;
@@ -1941,10 +1941,10 @@ rescan_themes (BtkIconTheme *icon_theme)
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_icon_theme_rescan_if_needed (BtkIconTheme *icon_theme)
 {
-  gboolean retval;
+  bboolean retval;
 
   g_return_val_if_fail (BTK_IS_ICON_THEME (icon_theme), FALSE);
 
@@ -1985,7 +1985,7 @@ theme_dir_destroy (IconThemeDir *dir)
 }
 
 static int
-theme_dir_size_difference (IconThemeDir *dir, int size, gboolean *smaller)
+theme_dir_size_difference (IconThemeDir *dir, int size, bboolean *smaller)
 {
   int min, max;
   switch (dir->type)
@@ -2056,7 +2056,7 @@ suffix_from_name (const char *name)
 
 static IconSuffix
 best_suffix (IconSuffix suffix,
-	     gboolean   allow_svg)
+	     bboolean   allow_svg)
 {
   if ((suffix & ICON_SUFFIX_PNG) != 0)
     return ICON_SUFFIX_PNG;
@@ -2071,8 +2071,8 @@ best_suffix (IconSuffix suffix,
 
 static IconSuffix
 theme_dir_get_icon_suffix (IconThemeDir *dir,
-			   const gchar  *icon_name,
-			   gboolean     *has_icon_file)
+			   const bchar  *icon_name,
+			   bboolean     *has_icon_file)
 {
   IconSuffix suffix;
 
@@ -2088,7 +2088,7 @@ theme_dir_get_icon_suffix (IconThemeDir *dir,
       suffix = suffix & ~HAS_ICON_FILE;
     }
   else
-    suffix = GPOINTER_TO_UINT (g_hash_table_lookup (dir->icons, icon_name));
+    suffix = BPOINTER_TO_UINT (g_hash_table_lookup (dir->icons, icon_name));
 
   BTK_NOTE (ICONTHEME, 
 	    g_print ("get_icon_suffix%s %u\n", dir->cache ? " (cached)" : "", suffix));
@@ -2100,18 +2100,18 @@ static BtkIconInfo *
 theme_lookup_icon (IconTheme          *theme,
 		   const char         *icon_name,
 		   int                 size,
-		   gboolean            allow_svg,
-		   gboolean            use_builtin)
+		   bboolean            allow_svg,
+		   bboolean            use_builtin)
 {
   GList *dirs, *l;
   IconThemeDir *dir, *min_dir;
   char *file;
   int min_difference, difference;
   BuiltinIcon *closest_builtin = NULL;
-  gboolean smaller, has_larger, match;
+  bboolean smaller, has_larger, match;
   IconSuffix suffix;
 
-  min_difference = G_MAXINT;
+  min_difference = B_MAXINT;
   min_dir = NULL;
   has_larger = FALSE;
   match = FALSE;
@@ -2210,7 +2210,7 @@ theme_lookup_icon (IconTheme          *theme,
   if (min_dir)
     {
       BtkIconInfo *icon_info = icon_info_new ();
-      gboolean has_icon_file = FALSE;
+      bboolean has_icon_file = FALSE;
       
       suffix = theme_dir_get_icon_suffix (min_dir, icon_name, &has_icon_file);
       suffix = best_suffix (suffix, allow_svg);
@@ -2252,7 +2252,7 @@ theme_lookup_icon (IconTheme          *theme,
 
       if (icon_info->data == NULL && has_icon_file)
 	{
-	  gchar *icon_file_name, *icon_file_path;
+	  bchar *icon_file_name, *icon_file_path;
 
 	  icon_file_name = g_strconcat (icon_name, ".icon", NULL);
 	  icon_file_path = g_build_filename (min_dir->dir, icon_file_name, NULL);
@@ -2335,7 +2335,7 @@ theme_list_contexts (IconTheme  *theme,
       dir = l->data;
 
       context = g_quark_to_string (dir->context);
-      g_hash_table_replace (contexts, (gpointer) context, NULL);
+      g_hash_table_replace (contexts, (bpointer) context, NULL);
 
       l = l->next;
     }
@@ -2347,11 +2347,11 @@ load_icon_data (IconThemeDir *dir, const char *path, const char *name)
   GKeyFile *icon_file;
   char *base_name;
   char **split;
-  gsize length;
+  bsize length;
   char *str;
   char *split_point;
   int i;
-  gint *ivalues;
+  bint *ivalues;
   GError *error = NULL;
   
   BtkIconData *data;
@@ -2466,9 +2466,9 @@ scan_directory (BtkIconThemePrivate *icon_theme,
 
       base_name = strip_suffix (name);
 
-      hash_suffix = GPOINTER_TO_INT (g_hash_table_lookup (dir->icons, base_name));
+      hash_suffix = BPOINTER_TO_INT (g_hash_table_lookup (dir->icons, base_name));
       g_hash_table_replace (icon_theme->all_icons, base_name, NULL);
-      g_hash_table_replace (dir->icons, base_name, GUINT_TO_POINTER (hash_suffix| suffix));
+      g_hash_table_replace (dir->icons, base_name, BUINT_TO_POINTER (hash_suffix| suffix));
     }
   
   g_dir_close (gdir);
@@ -2692,8 +2692,8 @@ btk_icon_info_free (BtkIconInfo *icon_info)
 #endif
   if (icon_info->loadable)
     g_object_unref (icon_info->loadable);
-  g_slist_foreach (icon_info->emblem_infos, (GFunc)btk_icon_info_free, NULL);
-  g_slist_free (icon_info->emblem_infos);
+  b_slist_foreach (icon_info->emblem_infos, (GFunc)btk_icon_info_free, NULL);
+  b_slist_free (icon_info->emblem_infos);
   if (icon_info->pixbuf)
     g_object_unref (icon_info->pixbuf);
   if (icon_info->cache_pixbuf)
@@ -2720,7 +2720,7 @@ btk_icon_info_free (BtkIconInfo *icon_info)
  *
  * Since: 2.4
  **/
-gint
+bint
 btk_icon_info_get_base_size (BtkIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, 0);
@@ -2745,7 +2745,7 @@ btk_icon_info_get_base_size (BtkIconInfo *icon_info)
  *
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_icon_info_get_filename (BtkIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, NULL);
@@ -2780,7 +2780,7 @@ btk_icon_info_get_builtin_pixbuf (BtkIconInfo *icon_info)
   return icon_info->cache_pixbuf;
 }
 
-static gboolean icon_info_ensure_scale_and_pixbuf (BtkIconInfo*, gboolean);
+static bboolean icon_info_ensure_scale_and_pixbuf (BtkIconInfo*, bboolean);
 
 /* Combine the icon with all emblems, the first emblem is placed 
  * in the southeast corner. Scale emblems to be at most 3/4 of the
@@ -2790,7 +2790,7 @@ static void
 apply_emblems (BtkIconInfo *info)
 {
   BdkPixbuf *icon = NULL;
-  gint w, h, pos;
+  bint w, h, pos;
   GSList *l;
 
   if (info->emblem_infos == NULL)
@@ -2809,9 +2809,9 @@ apply_emblems (BtkIconInfo *info)
       if (icon_info_ensure_scale_and_pixbuf (emblem_info, FALSE))
         {
           BdkPixbuf *emblem = emblem_info->pixbuf;
-          gint ew, eh;
-          gint x = 0, y = 0; /* silence compiler */
-          gdouble scale;
+          bint ew, eh;
+          bint x = 0, y = 0; /* silence compiler */
+          bdouble scale;
 
           ew = bdk_pixbuf_get_width (emblem);
           eh = bdk_pixbuf_get_height (emblem);
@@ -2869,13 +2869,13 @@ apply_emblems (BtkIconInfo *info)
  * on the size at which to load the icon and loading it at
  * that size.
  */
-static gboolean
+static bboolean
 icon_info_ensure_scale_and_pixbuf (BtkIconInfo  *icon_info,
-				   gboolean      scale_only)
+				   bboolean      scale_only)
 {
   int image_width, image_height;
   BdkPixbuf *source_pixbuf;
-  gboolean is_svg;
+  bboolean is_svg;
 
   /* First check if we already succeeded have the necessary
    * information (or failed earlier)
@@ -2909,8 +2909,8 @@ icon_info_ensure_scale_and_pixbuf (BtkIconInfo  *icon_info,
     {
       GFile *file;
       GFileInfo *file_info;
-      const gchar *content_type;
-      const gchar *mime_type;
+      const bchar *content_type;
+      const bchar *mime_type;
 
       file = g_file_icon_get_file (G_FILE_ICON (icon_info->loadable));
       file_info = g_file_query_info (file, 
@@ -2980,12 +2980,12 @@ icon_info_ensure_scale_and_pixbuf (BtkIconInfo  *icon_info,
 	  icon_info->desired_size <= icon_info->dir_size + icon_info->threshold)
 	icon_info->scale = 1.0;
       else if (icon_info->dir_size > 0)
-	icon_info->scale =(gdouble) icon_info->desired_size / icon_info->dir_size;
+	icon_info->scale =(bdouble) icon_info->desired_size / icon_info->dir_size;
     }
   else if (icon_info->dir_type == ICON_THEME_DIR_SCALABLE)
     {
       if (icon_info->dir_size > 0)
-	icon_info->scale = (gdouble) icon_info->desired_size / icon_info->dir_size;
+	icon_info->scale = (bdouble) icon_info->desired_size / icon_info->dir_size;
     }
 
   if (icon_info->scale >= 0. && scale_only)
@@ -3024,9 +3024,9 @@ icon_info_ensure_scale_and_pixbuf (BtkIconInfo  *icon_info,
 
   if (icon_info->scale < 0.0)
     {
-      gint image_size = MAX (image_width, image_height);
+      bint image_size = MAX (image_width, image_height);
       if (image_size > 0)
-	icon_info->scale = (gdouble)icon_info->desired_size / (gdouble)image_size;
+	icon_info->scale = (bdouble)icon_info->desired_size / (bdouble)image_size;
       else
 	icon_info->scale = 1.0;
       
@@ -3132,7 +3132,7 @@ btk_icon_info_load_icon (BtkIconInfo *icon_info,
  **/
 void
 btk_icon_info_set_raw_coordinates (BtkIconInfo *icon_info,
-				   gboolean     raw_coordinates)
+				   bboolean     raw_coordinates)
 {
   g_return_if_fail (icon_info != NULL);
   
@@ -3142,12 +3142,12 @@ btk_icon_info_set_raw_coordinates (BtkIconInfo *icon_info,
 /* Scale coordinates from the icon data prior to returning
  * them to the user.
  */
-static gboolean
+static bboolean
 icon_info_scale_point (BtkIconInfo  *icon_info,
-		       gint          x,
-		       gint          y,
-		       gint         *x_out,
-		       gint         *y_out)
+		       bint          x,
+		       bint          y,
+		       bint         *x_out,
+		       bint         *y_out)
 {
   if (icon_info->raw_coordinates)
     {
@@ -3183,7 +3183,7 @@ icon_info_scale_point (BtkIconInfo  *icon_info,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_icon_info_get_embedded_rect (BtkIconInfo  *icon_info,
 				 BdkRectangle *rectangle)
 {
@@ -3192,8 +3192,8 @@ btk_icon_info_get_embedded_rect (BtkIconInfo  *icon_info,
   if (icon_info->data && icon_info->data->has_embedded_rect &&
       icon_info_ensure_scale_and_pixbuf (icon_info, TRUE))
     {
-      gint scaled_x0, scaled_y0;
-      gint scaled_x1, scaled_y1;
+      bint scaled_x0, scaled_y0;
+      bint scaled_x1, scaled_y1;
       
       if (rectangle)
 	{
@@ -3231,10 +3231,10 @@ btk_icon_info_get_embedded_rect (BtkIconInfo  *icon_info,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_icon_info_get_attach_points (BtkIconInfo *icon_info,
 				 BdkPoint   **points,
-				 gint        *n_points)
+				 bint        *n_points)
 {
   g_return_val_if_fail (icon_info != NULL, FALSE);
   
@@ -3243,7 +3243,7 @@ btk_icon_info_get_attach_points (BtkIconInfo *icon_info,
     {
       if (points)
 	{
-	  gint i;
+	  bint i;
 	  
 	  *points = g_new (BdkPoint, icon_info->data->n_attach_points);
 	  for (i = 0; i < icon_info->data->n_attach_points; i++)
@@ -3284,7 +3284,7 @@ btk_icon_info_get_attach_points (BtkIconInfo *icon_info,
  *
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_icon_info_get_display_name (BtkIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, NULL);
@@ -3326,13 +3326,13 @@ btk_icon_info_get_display_name (BtkIconInfo *icon_info)
  * Since: 2.4
  **/
 void
-btk_icon_theme_add_builtin_icon (const gchar *icon_name,
-				 gint         size,
+btk_icon_theme_add_builtin_icon (const bchar *icon_name,
+				 bint         size,
 				 BdkPixbuf   *pixbuf)
 {
   BuiltinIcon *default_icon;
   GSList *icons;
-  gpointer key;
+  bpointer key;
 
   g_return_if_fail (icon_name != NULL);
   g_return_if_fail (BDK_IS_PIXBUF (pixbuf));
@@ -3344,12 +3344,12 @@ btk_icon_theme_add_builtin_icon (const gchar *icon_name,
   if (!icons)
     key = g_strdup (icon_name);
   else
-    key = (gpointer)icon_name;	/* Won't get stored */
+    key = (bpointer)icon_name;	/* Won't get stored */
 
   default_icon = g_new (BuiltinIcon, 1);
   default_icon->size = size;
   default_icon->pixbuf = g_object_ref (pixbuf);
-  icons = g_slist_prepend (icons, default_icon);
+  icons = b_slist_prepend (icons, default_icon);
 
   /* Replaces value, leaves key untouched
    */
@@ -3363,14 +3363,14 @@ btk_icon_theme_add_builtin_icon (const gchar *icon_name,
  * for how they are used.
  */
 static BuiltinIcon *
-find_builtin_icon (const gchar *icon_name,
-		   gint         size,
-		   gint        *min_difference_p,
-		   gboolean    *has_larger_p)
+find_builtin_icon (const bchar *icon_name,
+		   bint         size,
+		   bint        *min_difference_p,
+		   bboolean    *has_larger_p)
 {
   GSList *icons = NULL;
-  gint min_difference = G_MAXINT;
-  gboolean has_larger = FALSE;
+  bint min_difference = B_MAXINT;
+  bboolean has_larger = FALSE;
   BuiltinIcon *min_icon = NULL;
   
   if (!icon_theme_builtin_icons)
@@ -3382,7 +3382,7 @@ find_builtin_icon (const gchar *icon_name,
     {
       BuiltinIcon *default_icon = icons->data;
       int min, max, difference;
-      gboolean smaller;
+      bboolean smaller;
       
       min = default_icon->size - 2;
       max = default_icon->size + 2;
@@ -3433,7 +3433,7 @@ find_builtin_icon (const gchar *icon_name,
 void
 _btk_icon_theme_check_reload (BdkDisplay *display)
 {
-  gint n_screens, i;
+  bint n_screens, i;
   BdkScreen *screen;
   BtkIconTheme *icon_theme;
 
@@ -3443,7 +3443,7 @@ _btk_icon_theme_check_reload (BdkDisplay *display)
     {
       screen = bdk_display_get_screen (display, i);
 
-      icon_theme = g_object_get_data (G_OBJECT (screen), "btk-icon-theme");
+      icon_theme = g_object_get_data (B_OBJECT (screen), "btk-icon-theme");
       if (icon_theme)
 	{
 	  icon_theme->priv->check_reload = TRUE;
@@ -3475,7 +3475,7 @@ _btk_icon_theme_check_reload (BdkDisplay *display)
 BtkIconInfo *
 btk_icon_theme_lookup_by_gicon (BtkIconTheme       *icon_theme,
                                 GIcon              *icon,
-                                gint                size,
+                                bint                size,
                                 BtkIconLookupFlags  flags)
 {
   BtkIconInfo *info;
@@ -3498,9 +3498,9 @@ btk_icon_theme_lookup_by_gicon (BtkIconTheme       *icon_theme,
     }
   else if (G_IS_THEMED_ICON (icon))
     {
-      const gchar **names;
+      const bchar **names;
 
-      names = (const gchar **)g_themed_icon_get_names (G_THEMED_ICON (icon));
+      names = (const bchar **)g_themed_icon_get_names (G_THEMED_ICON (icon));
       info = btk_icon_theme_choose_icon (icon_theme, names, size, flags);
 
       return info;
@@ -3522,7 +3522,7 @@ btk_icon_theme_lookup_by_gicon (BtkIconTheme       *icon_theme,
 	      /* always force size for emblems */
               emblem_info = btk_icon_theme_lookup_by_gicon (icon_theme, emblem, size / 2, flags | BTK_ICON_LOOKUP_FORCE_SIZE);
               if (emblem_info)
-                info->emblem_infos = g_slist_prepend (info->emblem_infos, emblem_info);
+                info->emblem_infos = b_slist_prepend (info->emblem_infos, emblem_info);
             }
         }
 
@@ -3536,14 +3536,14 @@ btk_icon_theme_lookup_by_gicon (BtkIconTheme       *icon_theme,
 
       if ((flags & BTK_ICON_LOOKUP_FORCE_SIZE) != 0)
 	{
-	  gint width, height, max;
-	  gdouble scale;
+	  bint width, height, max;
+	  bdouble scale;
 	  BdkPixbuf *scaled;
 
 	  width = bdk_pixbuf_get_width (pixbuf);
 	  height = bdk_pixbuf_get_height (pixbuf);
 	  max = MAX (width, height);
-	  scale = (gdouble) size / (gdouble) max;
+	  scale = (bdouble) size / (bdouble) max;
 
 	  scaled = bdk_pixbuf_scale_simple (pixbuf,
 					    0.5 + width * scale,
@@ -3601,13 +3601,13 @@ btk_icon_info_new_for_pixbuf (BtkIconTheme *icon_theme,
 
 void
 btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
-				const gchar  *path[],
-				gint          n_elements)
+				const bchar  *path[],
+				bint          n_elements)
 {
-  const gchar **utf8_path;
-  gint i;
+  const bchar **utf8_path;
+  bint i;
 
-  utf8_path = g_new (const gchar *, n_elements);
+  utf8_path = g_new (const bchar *, n_elements);
 
   for (i = 0; i < n_elements; i++)
     utf8_path[i] = g_locale_to_utf8 (path[i], -1, NULL, NULL, NULL);
@@ -3615,7 +3615,7 @@ btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
   btk_icon_theme_set_search_path_utf8 (icon_theme, utf8_path, n_elements);
 
   for (i = 0; i < n_elements; i++)
-    g_free ((gchar *) utf8_path[i]);
+    g_free ((bchar *) utf8_path[i]);
 
   g_free (utf8_path);
 }
@@ -3624,10 +3624,10 @@ btk_icon_theme_set_search_path (BtkIconTheme *icon_theme,
 
 void
 btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
-				gchar            **path[],
-				gint              *n_elements)
+				bchar            **path[],
+				bint              *n_elements)
 {
-  gint i, n;
+  bint i, n;
 
   btk_icon_theme_get_search_path_utf8 (icon_theme, path, &n);
 
@@ -3638,7 +3638,7 @@ btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
     {
       for (i = 0; i < n; i++)
 	{
-	  gchar *tem = (*path)[i];
+	  bchar *tem = (*path)[i];
 
 	  (*path)[i] = g_locale_from_utf8 ((*path)[i], -1, NULL, NULL, NULL);
 	  g_free (tem);
@@ -3650,9 +3650,9 @@ btk_icon_theme_get_search_path (BtkIconTheme      *icon_theme,
 
 void
 btk_icon_theme_append_search_path (BtkIconTheme *icon_theme,
-				   const gchar  *path)
+				   const bchar  *path)
 {
-  gchar *utf8_path = g_locale_from_utf8 (path, -1, NULL, NULL, NULL);
+  bchar *utf8_path = g_locale_from_utf8 (path, -1, NULL, NULL, NULL);
 
   btk_icon_theme_append_search_path_utf8 (icon_theme, utf8_path);
 
@@ -3663,9 +3663,9 @@ btk_icon_theme_append_search_path (BtkIconTheme *icon_theme,
 
 void
 btk_icon_theme_prepend_search_path (BtkIconTheme *icon_theme,
-				    const gchar  *path)
+				    const bchar  *path)
 {
-  gchar *utf8_path = g_locale_from_utf8 (path, -1, NULL, NULL, NULL);
+  bchar *utf8_path = g_locale_from_utf8 (path, -1, NULL, NULL, NULL);
 
   btk_icon_theme_prepend_search_path_utf8 (icon_theme, utf8_path);
 
@@ -3674,7 +3674,7 @@ btk_icon_theme_prepend_search_path (BtkIconTheme *icon_theme,
 
 #undef btk_icon_info_get_filename
 
-const gchar *
+const bchar *
 btk_icon_info_get_filename (BtkIconInfo *icon_info)
 {
   g_return_val_if_fail (icon_info != NULL, NULL);

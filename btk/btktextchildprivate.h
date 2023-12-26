@@ -52,7 +52,7 @@
 
 #include <btk/btktexttypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkTextPixbuf BtkTextPixbuf;
 
@@ -83,6 +83,6 @@ void                _btk_widget_segment_unref    (BtkTextLineSegment *widget_seg
 
 BtkTextLayout*      _btk_anchored_child_get_layout (BtkWidget *child);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif

@@ -25,16 +25,16 @@
 static void bail_arrow_class_init	(BailArrowClass *klass);
 static void bail_arrow_init		(BailArrow	*arrow);
 static void bail_arrow_initialize       (BatkObject      *accessible,
-                                         gpointer        data);
+                                         bpointer        data);
 
 /* BatkImage */
 static void  batk_image_interface_init   (BatkImageIface  *iface);
-static const gchar* bail_arrow_get_image_description
+static const bchar* bail_arrow_get_image_description
                                         (BatkImage       *obj);
-static gboolean bail_arrow_set_image_description 
+static bboolean bail_arrow_set_image_description 
                                         (BatkImage       *obj,
-                                        const gchar    *description);
-static void  bail_arrow_finalize       (GObject         *object);
+                                        const bchar    *description);
+static void  bail_arrow_finalize       (BObject         *object);
 
 G_DEFINE_TYPE_WITH_CODE (BailArrow, bail_arrow, BAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_IMAGE, batk_image_interface_init))
@@ -42,7 +42,7 @@ G_DEFINE_TYPE_WITH_CODE (BailArrow, bail_arrow, BAIL_TYPE_WIDGET,
 static void	 
 bail_arrow_class_init		(BailArrowClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
 
   batk_object_class->initialize = bail_arrow_initialize;
@@ -58,7 +58,7 @@ bail_arrow_init (BailArrow *arrow)
 
 static void
 bail_arrow_initialize (BatkObject *accessible,
-                       gpointer data)
+                       bpointer data)
 {
   BATK_OBJECT_CLASS (bail_arrow_parent_class)->initialize (accessible, data);
 
@@ -72,7 +72,7 @@ batk_image_interface_init (BatkImageIface *iface)
   iface->set_image_description = bail_arrow_set_image_description;
 }
 
-static const gchar*
+static const bchar*
 bail_arrow_get_image_description (BatkImage       *obj)
 {
   BailArrow* arrow;
@@ -84,9 +84,9 @@ bail_arrow_get_image_description (BatkImage       *obj)
   return arrow->image_description;
 }
 
-static gboolean 
+static bboolean 
 bail_arrow_set_image_description (BatkImage       *obj,
-                                  const gchar    *description)
+                                  const bchar    *description)
 {
   BailArrow* arrow;
 
@@ -104,18 +104,18 @@ bail_arrow_set_image_description (BatkImage       *obj,
 /*
  * static void  
  * bail_arrow_get_image_size (BatkImage       *obj,
- *                          gint           *height,
- *                          gint           *width)
+ *                          bint           *height,
+ *                          bint           *width)
  *
  * We dont implement this function for BailArrow as btk hardcodes the size 
  * of the arrow to be 7x5 and it is not possible to query this.
  */
 
 static void
-bail_arrow_finalize (GObject      *object)
+bail_arrow_finalize (BObject      *object)
 {
   BailArrow *arrow = BAIL_ARROW (object);
 
   g_free (arrow->image_description);
-  G_OBJECT_CLASS (bail_arrow_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_arrow_parent_class)->finalize (object);
 }

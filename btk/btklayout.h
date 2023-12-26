@@ -40,14 +40,14 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_LAYOUT            (btk_layout_get_type ())
-#define BTK_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LAYOUT, BtkLayout))
-#define BTK_LAYOUT_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LAYOUT, BtkLayoutClass))
-#define BTK_IS_LAYOUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LAYOUT))
-#define BTK_IS_LAYOUT_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LAYOUT))
-#define BTK_LAYOUT_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LAYOUT, BtkLayoutClass))
+#define BTK_LAYOUT(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LAYOUT, BtkLayout))
+#define BTK_LAYOUT_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LAYOUT, BtkLayoutClass))
+#define BTK_IS_LAYOUT(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LAYOUT))
+#define BTK_IS_LAYOUT_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LAYOUT))
+#define BTK_LAYOUT_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LAYOUT, BtkLayoutClass))
 
 
 typedef struct _BtkLayout        BtkLayout;
@@ -59,8 +59,8 @@ struct _BtkLayout
 
   GList *GSEAL (children);
 
-  guint GSEAL (width);
-  guint GSEAL (height);
+  buint GSEAL (width);
+  buint GSEAL (height);
 
   BtkAdjustment *GSEAL (hadjustment);
   BtkAdjustment *GSEAL (vadjustment);
@@ -70,10 +70,10 @@ struct _BtkLayout
 
   /*< private >*/
   BdkVisibilityState GSEAL (visibility);
-  gint GSEAL (scroll_x);
-  gint GSEAL (scroll_y);
+  bint GSEAL (scroll_x);
+  bint GSEAL (scroll_y);
 
-  guint GSEAL (freeze_count);
+  buint GSEAL (freeze_count);
 };
 
 struct _BtkLayoutClass
@@ -91,26 +91,26 @@ struct _BtkLayoutClass
   void (*_btk_reserved4) (void);
 };
 
-GType          btk_layout_get_type        (void) G_GNUC_CONST;
+GType          btk_layout_get_type        (void) B_GNUC_CONST;
 BtkWidget*     btk_layout_new             (BtkAdjustment *hadjustment,
 				           BtkAdjustment *vadjustment);
 BdkWindow*     btk_layout_get_bin_window  (BtkLayout     *layout);
 void           btk_layout_put             (BtkLayout     *layout,
 		                           BtkWidget     *child_widget,
-		                           gint           x,
-		                           gint           y);
+		                           bint           x,
+		                           bint           y);
 
 void           btk_layout_move            (BtkLayout     *layout,
 		                           BtkWidget     *child_widget,
-		                           gint           x,
-		                           gint           y);
+		                           bint           x,
+		                           bint           y);
 
 void           btk_layout_set_size        (BtkLayout     *layout,
-			                   guint          width,
-			                   guint          height);
+			                   buint          width,
+			                   buint          height);
 void           btk_layout_get_size        (BtkLayout     *layout,
-					   guint         *width,
-					   guint         *height);
+					   buint         *width,
+					   buint         *height);
 
 BtkAdjustment* btk_layout_get_hadjustment (BtkLayout     *layout);
 BtkAdjustment* btk_layout_get_vadjustment (BtkLayout     *layout);
@@ -133,6 +133,6 @@ void           btk_layout_freeze          (BtkLayout     *layout);
 void           btk_layout_thaw            (BtkLayout     *layout);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_LAYOUT_H__ */

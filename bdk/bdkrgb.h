@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkRgbCmap BdkRgbCmap;
 
@@ -47,8 +47,8 @@ typedef enum
 #ifndef BDK_DISABLE_DEPRECATED
 
 struct _BdkRgbCmap {
-  guint32 colors[256];
-  gint n_colors;
+  buint32 colors[256];
+  bint n_colors;
 
   /*< private >*/
   GSList *info_list;
@@ -56,11 +56,11 @@ struct _BdkRgbCmap {
 
 void bdk_rgb_init (void);
 
-gulong bdk_rgb_xpixel_from_rgb   (guint32      rgb) G_GNUC_CONST;
+bulong bdk_rgb_xpixel_from_rgb   (buint32      rgb) B_GNUC_CONST;
 void   bdk_rgb_gc_set_foreground (BdkGC       *gc,
-				  guint32      rgb);
+				  buint32      rgb);
 void   bdk_rgb_gc_set_background (BdkGC       *gc,
-				  guint32      rgb);
+				  buint32      rgb);
 #define bdk_rgb_get_cmap               bdk_rgb_get_colormap
 
 void   bdk_rgb_find_color        (BdkColormap *colormap,
@@ -68,82 +68,82 @@ void   bdk_rgb_find_color        (BdkColormap *colormap,
 
 void        bdk_draw_rgb_image              (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *rgb_buf,
-					     gint          rowstride);
+					     const buchar *rgb_buf,
+					     bint          rowstride);
 void        bdk_draw_rgb_image_dithalign    (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *rgb_buf,
-					     gint          rowstride,
-					     gint          xdith,
-					     gint          ydith);
+					     const buchar *rgb_buf,
+					     bint          rowstride,
+					     bint          xdith,
+					     bint          ydith);
 void        bdk_draw_rgb_32_image           (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *buf,
-					     gint          rowstride);
+					     const buchar *buf,
+					     bint          rowstride);
 void        bdk_draw_rgb_32_image_dithalign (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *buf,
-					     gint          rowstride,
-					     gint          xdith,
-					     gint          ydith);
+					     const buchar *buf,
+					     bint          rowstride,
+					     bint          xdith,
+					     bint          ydith);
 void        bdk_draw_gray_image             (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *buf,
-					     gint          rowstride);
+					     const buchar *buf,
+					     bint          rowstride);
 void        bdk_draw_indexed_image          (BdkDrawable  *drawable,
 					     BdkGC        *gc,
-					     gint          x,
-					     gint          y,
-					     gint          width,
-					     gint          height,
+					     bint          x,
+					     bint          y,
+					     bint          width,
+					     bint          height,
 					     BdkRgbDither  dith,
-					     const guchar *buf,
-					     gint          rowstride,
+					     const buchar *buf,
+					     bint          rowstride,
 					     BdkRgbCmap   *cmap);
-BdkRgbCmap *bdk_rgb_cmap_new                (guint32      *colors,
-					     gint          n_colors);
+BdkRgbCmap *bdk_rgb_cmap_new                (buint32      *colors,
+					     bint          n_colors);
 void        bdk_rgb_cmap_free               (BdkRgbCmap   *cmap);
 
-void     bdk_rgb_set_verbose (gboolean verbose);
+void     bdk_rgb_set_verbose (bboolean verbose);
 
 /* experimental colormap stuff */
-void bdk_rgb_set_install    (gboolean install);
-void bdk_rgb_set_min_colors (gint     min_colors);
+void bdk_rgb_set_install    (bboolean install);
+void bdk_rgb_set_min_colors (bint     min_colors);
 
 #ifndef BDK_MULTIHEAD_SAFE
 BdkColormap *bdk_rgb_get_colormap (void);
 BdkVisual *  bdk_rgb_get_visual   (void);
-gboolean     bdk_rgb_ditherable   (void);
-gboolean     bdk_rgb_colormap_ditherable (BdkColormap *cmap);
+bboolean     bdk_rgb_ditherable   (void);
+bboolean     bdk_rgb_colormap_ditherable (BdkColormap *cmap);
 #endif
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BDK_RGB_H__ */

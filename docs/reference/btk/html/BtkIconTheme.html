@@ -83,7 +83,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-theme-has-icon" title="btk_icon_theme_has_icon ()">btk_icon_theme_has_icon</a> <span class="c_punctuation">()</span>
@@ -139,7 +139,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span> *
+<span class="returnvalue">bint</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-theme-get-icon-sizes" title="btk_icon_theme_get_icon_sizes ()">btk_icon_theme_get_icon_sizes</a> <span class="c_punctuation">()</span>
@@ -155,7 +155,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-theme-rescan-if-needed" title="btk_icon_theme_rescan_if_needed ()">btk_icon_theme_rescan_if_needed</a> <span class="c_punctuation">()</span>
@@ -195,7 +195,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-info-get-base-size" title="btk_icon_info_get_base_size ()">btk_icon_info_get_base_size</a> <span class="c_punctuation">()</span>
@@ -227,7 +227,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-info-get-embedded-rect" title="btk_icon_info_get_embedded_rect ()">btk_icon_info_get_embedded_rect</a> <span class="c_punctuation">()</span>
@@ -235,14 +235,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-info-get-attach-points" title="btk_icon_info_get_attach_points ()">btk_icon_info_get_attach_points</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkIconTheme.html#btk-icon-info-get-display-name" title="btk_icon_info_get_display_name ()">btk_icon_info_get_display_name</a> <span class="c_punctuation">()</span>
@@ -319,7 +319,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkIconTheme.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkIconTheme
 </pre>
 </div>
@@ -442,7 +442,7 @@ which might be different for different screens.</p>
 <a name="btk-icon-theme-set-custom-theme"></a><h3>btk_icon_theme_set_custom_theme ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_icon_theme_set_custom_theme (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                                 <em class="parameter"><code>const <span class="type">gchar</span> *theme_name</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">bchar</span> *theme_name</code></em>);</pre>
 <p>Sets the name of the icon theme that the <a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> object uses
 overriding system configuration. This function cannot be called
 on the icon theme objects returned from <a class="link" href="BtkIconTheme.html#btk-icon-theme-get-default" title="btk_icon_theme_get_default ()"><code class="function">btk_icon_theme_get_default()</code></a>
@@ -475,9 +475,9 @@ or <code class="literal">NULL</code> to unset a previously set custom theme</p><
 <hr>
 <div class="refsect2">
 <a name="btk-icon-theme-has-icon"></a><h3>btk_icon_theme_has_icon ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_icon_theme_has_icon (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>);</pre>
 <p>Checks whether an icon theme includes an icon
 for a particular name.</p>
 <div class="refsect3">
@@ -516,8 +516,8 @@ icon for <em class="parameter"><code>icon_name</code></em>
 <a name="btk-icon-theme-lookup-icon"></a><h3>btk_icon_theme_lookup_icon ()</h3>
 <pre class="programlisting"><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="returnvalue">BtkIconInfo</span></a> *
 btk_icon_theme_lookup_icon (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                            <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> size</code></em>,
+                            <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> size</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconLookupFlags" title="enum BtkIconLookupFlags"><span class="type">BtkIconLookupFlags</span></a> flags</code></em>);</pre>
 <p>Looks up a named icon and returns a structure containing
 information such as the filename of the icon. The icon
@@ -569,8 +569,8 @@ about the icon, or <code class="literal">NULL</code> if the icon wasn't found. F
 <a name="btk-icon-theme-choose-icon"></a><h3>btk_icon_theme_choose_icon ()</h3>
 <pre class="programlisting"><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="returnvalue">BtkIconInfo</span></a> *
 btk_icon_theme_choose_icon (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                            <em class="parameter"><code>const <span class="type">gchar</span> *icon_names[]</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> size</code></em>,
+                            <em class="parameter"><code>const <span class="type">bchar</span> *icon_names[]</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> size</code></em>,
                             <em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconLookupFlags" title="enum BtkIconLookupFlags"><span class="type">BtkIconLookupFlags</span></a> flags</code></em>);</pre>
 <p>Looks up a named icon and returns a structure containing
 information such as the filename of the icon. The icon
@@ -628,7 +628,7 @@ about the icon, or <code class="literal">NULL</code> if the icon wasn't found. F
 <pre class="programlisting"><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="returnvalue">BtkIconInfo</span></a> *
 btk_icon_theme_lookup_by_gicon (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
                                 <em class="parameter"><code><span class="type">GIcon</span> *icon</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> size</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> size</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconLookupFlags" title="enum BtkIconLookupFlags"><span class="type">BtkIconLookupFlags</span></a> flags</code></em>);</pre>
 <p>Looks up an icon and returns a structure containing
 information such as the filename of the icon. 
@@ -679,8 +679,8 @@ wasn't found. Free with <a class="link" href="BtkIconTheme.html#btk-icon-info-fr
 <a name="btk-icon-theme-load-icon"></a><h3>btk_icon_theme_load_icon ()</h3>
 <pre class="programlisting"><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
 btk_icon_theme_load_icon (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> size</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> size</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconLookupFlags" title="enum BtkIconLookupFlags"><span class="type">BtkIconLookupFlags</span></a> flags</code></em>,
                           <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Looks up an icon in an icon theme, scales it to the given size
@@ -779,7 +779,7 @@ with <code class="function">g_list_free()</code>. </p>
 <a name="btk-icon-theme-list-icons"></a><h3>btk_icon_theme_list_icons ()</h3>
 <pre class="programlisting"><span class="returnvalue">GList</span> *
 btk_icon_theme_list_icons (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *context</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *context</code></em>);</pre>
 <p>Lists the icons in the current icon theme. Only a subset
 of the icons can be listed by providing a context string.
 The set of values for the context string is system dependent,
@@ -821,9 +821,9 @@ itself with <code class="function">g_list_free()</code>. </p>
 <hr>
 <div class="refsect2">
 <a name="btk-icon-theme-get-icon-sizes"></a><h3>btk_icon_theme_get_icon_sizes ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span> *
+<pre class="programlisting"><span class="returnvalue">bint</span> *
 btk_icon_theme_get_icon_sizes (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>);</pre>
 <p>Returns an array of integers describing the sizes at which
 the icon is available without scaling. A size of -1 means 
 that the icon is available in a scalable format. The array 
@@ -892,7 +892,7 @@ Free with <code class="function">g_free()</code>.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-icon-theme-rescan-if-needed"></a><h3>btk_icon_theme_rescan_if_needed ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_icon_theme_rescan_if_needed (<em class="parameter"><code><a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme</code></em>);</pre>
 <p>Checks to see if the icon theme has changed; if it has, any
 currently cached information is discarded and will be reloaded
@@ -924,8 +924,8 @@ to be reloaded.</p>
 <div class="refsect2">
 <a name="btk-icon-theme-add-builtin-icon"></a><h3>btk_icon_theme_add_builtin_icon ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-btk_icon_theme_add_builtin_icon (<em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> size</code></em>,
+btk_icon_theme_add_builtin_icon (<em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> size</code></em>,
                                  <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>);</pre>
 <p>Registers a built-in icon for icon theme lookups. The idea
 of built-in icons is to allow an application or library
@@ -1059,7 +1059,7 @@ btk_icon_info_new_for_pixbuf (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-icon-info-get-base-size"></a><h3>btk_icon_info_get_base_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_icon_info_get_base_size (<em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="type">BtkIconInfo</span></a> *icon_info</code></em>);</pre>
 <p>Gets the base size for the icon. The base size
 is a size for the icon that was specified by
@@ -1180,7 +1180,7 @@ to the icon. </p>
 <a name="btk-icon-info-set-raw-coordinates"></a><h3>btk_icon_info_set_raw_coordinates ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_icon_info_set_raw_coordinates (<em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="type">BtkIconInfo</span></a> *icon_info</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> raw_coordinates</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> raw_coordinates</code></em>);</pre>
 <p>Sets whether the coordinates returned by <a class="link" href="BtkIconTheme.html#btk-icon-info-get-embedded-rect" title="btk_icon_info_get_embedded_rect ()"><code class="function">btk_icon_info_get_embedded_rect()</code></a>
 and <a class="link" href="BtkIconTheme.html#btk-icon-info-get-attach-points" title="btk_icon_info_get_attach_points ()"><code class="function">btk_icon_info_get_attach_points()</code></a> should be returned in their
 original form as specified in the icon theme, instead of scaled
@@ -1222,7 +1222,7 @@ and attached points should be returned in their original
 <hr>
 <div class="refsect2">
 <a name="btk-icon-info-get-embedded-rect"></a><h3>btk_icon_info_get_embedded_rect ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_icon_info_get_embedded_rect (<em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="type">BtkIconInfo</span></a> *icon_info</code></em>,
                                  <em class="parameter"><code><a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRectangle"><span class="type">BdkRectangle</span></a> *rectangle</code></em>);</pre>
 <p>Gets the coordinates of a rectangle within the icon
@@ -1263,10 +1263,10 @@ when this function returns <code class="literal">TRUE</code>. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-icon-info-get-attach-points"></a><h3>btk_icon_info_get_attach_points ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_icon_info_get_attach_points (<em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="type">BtkIconInfo</span></a> *icon_info</code></em>,
                                  <em class="parameter"><code><a href="../html/bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint"><span class="type">BdkPoint</span></a> **points</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> *n_points</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bint</span> *n_points</code></em>);</pre>
 <p>Fetches the set of attach points for an icon. An attach point
 is a location in the icon that can be used as anchor points for attaching
 emblems or overlays to the icon.</p>
@@ -1308,7 +1308,7 @@ free the array of points with <code class="function">g_free()</code>. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-icon-info-get-display-name"></a><h3>btk_icon_info_get_display_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_icon_info_get_display_name (<em class="parameter"><code><a class="link" href="BtkIconTheme.html#BtkIconInfo" title="BtkIconInfo"><span class="type">BtkIconInfo</span></a> *icon_info</code></em>);</pre>
 <p>Gets the display name for an icon. A display name is a
 string to be used in place of the icon name in a user
@@ -1641,7 +1641,7 @@ BTK+ and should not be modified or freed.</p>
 <a name="BtkIconTheme-changed"></a><h3>The <code class="literal">“changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> *icon_theme,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Emitted when the current icon theme is switched or BTK+ detects
 that a change has occurred in the contents of the current
 icon theme.</p>

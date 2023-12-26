@@ -26,11 +26,11 @@
 extern GType btk_type_im_context_ime;
 
 #define BTK_TYPE_IM_CONTEXT_IME            btk_type_im_context_ime
-#define BTK_IM_CONTEXT_IME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIME))
-#define BTK_IM_CONTEXT_IME_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIMEClass))
-#define BTK_IS_IM_CONTEXT_IME(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_IME))
-#define BTK_IS_IM_CONTEXT_IME_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_IME))
-#define BTK_IM_CONTEXT_IME_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIMEClass))
+#define BTK_IM_CONTEXT_IME(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIME))
+#define BTK_IM_CONTEXT_IME_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIMEClass))
+#define BTK_IS_IM_CONTEXT_IME(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IM_CONTEXT_IME))
+#define BTK_IS_IM_CONTEXT_IME_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IM_CONTEXT_IME))
+#define BTK_IM_CONTEXT_IME_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IM_CONTEXT_IME, BtkIMContextIMEClass))
 
 typedef struct _BtkIMContextIME BtkIMContextIME;
 typedef struct _BtkIMContextIMEPrivate BtkIMContextIMEPrivate;
@@ -42,10 +42,10 @@ struct _BtkIMContextIME
 
   BdkWindow *client_window;
   BdkWindow *toplevel;
-  guint use_preedit : 1;
-  guint preediting : 1;
-  guint opened : 1;
-  guint focus : 1;
+  buint use_preedit : 1;
+  buint preediting : 1;
+  buint opened : 1;
+  buint focus : 1;
   BdkRectangle cursor_location;
 
   BtkIMContextIMEPrivate *priv;

@@ -22,7 +22,7 @@
 
 #include <bunnylib.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 enum {
   CHECK_OFFSETS = 1,
@@ -31,14 +31,14 @@ enum {
 };
 
 typedef struct {
-  const gchar *cache;
-  gsize cache_size;
-  guint32 n_directories;
-  gint flags;
+  const bchar *cache;
+  bsize cache_size;
+  buint32 n_directories;
+  bint flags;
 } CacheInfo;
 
-gboolean _btk_icon_cache_validate (CacheInfo *info);
+bboolean _btk_icon_cache_validate (CacheInfo *info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_ICON_CACHE_VALIDATOR_H__ */

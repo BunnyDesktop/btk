@@ -131,7 +131,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-set-with-data" title="btk_clipboard_set_with_data ()">btk_clipboard_set_with_data</a> <span class="c_punctuation">()</span>
@@ -139,7 +139,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-set-with-owner" title="btk_clipboard_set_with_owner ()">btk_clipboard_set_with_owner</a> <span class="c_punctuation">()</span>
@@ -147,7 +147,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GObject</span> *
+<span class="returnvalue">BObject</span> *
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-get-owner" title="btk_clipboard_get_owner ()">btk_clipboard_get_owner</a> <span class="c_punctuation">()</span>
@@ -235,7 +235,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-for-text" title="btk_clipboard_wait_for_text ()">btk_clipboard_wait_for_text</a> <span class="c_punctuation">()</span>
@@ -251,7 +251,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint8</span> *
+<span class="returnvalue">buint8</span> *
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-for-rich-text" title="btk_clipboard_wait_for_rich_text ()">btk_clipboard_wait_for_rich_text</a> <span class="c_punctuation">()</span>
@@ -259,7 +259,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> **
+<span class="returnvalue">bchar</span> **
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-for-uris" title="btk_clipboard_wait_for_uris ()">btk_clipboard_wait_for_uris</a> <span class="c_punctuation">()</span>
@@ -267,7 +267,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-is-text-available" title="btk_clipboard_wait_is_text_available ()">btk_clipboard_wait_is_text_available</a> <span class="c_punctuation">()</span>
@@ -275,7 +275,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-is-image-available" title="btk_clipboard_wait_is_image_available ()">btk_clipboard_wait_is_image_available</a> <span class="c_punctuation">()</span>
@@ -283,7 +283,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-is-rich-text-available" title="btk_clipboard_wait_is_rich_text_available ()">btk_clipboard_wait_is_rich_text_available</a> <span class="c_punctuation">()</span>
@@ -291,7 +291,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-is-uris-available" title="btk_clipboard_wait_is_uris_available ()">btk_clipboard_wait_is_uris_available</a> <span class="c_punctuation">()</span>
@@ -299,7 +299,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-for-targets" title="btk_clipboard_wait_for_targets ()">btk_clipboard_wait_for_targets</a> <span class="c_punctuation">()</span>
@@ -307,7 +307,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-wait-is-target-available" title="btk_clipboard_wait_is_target_available ()">btk_clipboard_wait_is_target_available</a> <span class="c_punctuation">()</span>
@@ -362,7 +362,7 @@
 </div>
 <div class="refsect1">
 <a name="btk2-Clipboards.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkClipboard
 </pre>
 </div>
@@ -381,15 +381,15 @@
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkWidget.html#BtkSelectionData"><span class="type">BtkSelectionData</span></a> *selection_data</code></em>,
-                             <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkClipboardTextReceivedFunc"></a><h3>BtkClipboardTextReceivedFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardTextReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
-                                 <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
-                                 <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                 <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>,
+                                 <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -397,7 +397,7 @@
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardImageReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                   <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
-                                  <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -405,8 +405,8 @@
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardTargetsReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                     <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> *atoms</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> n_atoms</code></em>,
-                                    <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bint</span> n_atoms</code></em>,
+                                    <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -414,17 +414,17 @@
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardRichTextReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                      <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> format</code></em>,
-                                     <em class="parameter"><code>const <span class="type">guint8</span> *text</code></em>,
-                                     <em class="parameter"><code><span class="type">gsize</span> length</code></em>,
-                                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                     <em class="parameter"><code>const <span class="type">buint8</span> *text</code></em>,
+                                     <em class="parameter"><code><span class="type">bsize</span> length</code></em>,
+                                     <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkClipboardURIReceivedFunc"></a><h3>BtkClipboardURIReceivedFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardURIReceivedFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
-                                <em class="parameter"><code><span class="type">gchar</span> **uris</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bchar</span> **uris</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -432,15 +432,15 @@
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardGetFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                         <em class="parameter"><code><a class="link" href="BtkWidget.html#BtkSelectionData"><span class="type">BtkSelectionData</span></a> *selection_data</code></em>,
-                        <em class="parameter"><code><span class="type">guint</span> info</code></em>,
-                        <em class="parameter"><code><span class="type">gpointer</span> user_data_or_owner</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">buint</span> info</code></em>,
+                        <em class="parameter"><code><span class="type">bpointer</span> user_data_or_owner</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkClipboardClearFunc"></a><h3>BtkClipboardClearFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkClipboardClearFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
-                          <em class="parameter"><code><span class="type">gpointer</span> user_data_or_owner</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bpointer</span> user_data_or_owner</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -570,13 +570,13 @@ btk_clipboard_get_display (<em class="parameter"><code><a class="link" href="btk
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-set-with-data"></a><h3>btk_clipboard_set_with_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_set_with_data (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                              <em class="parameter"><code>const <a class="link" href="btk2-Selections.html#BtkTargetEntry" title="struct BtkTargetEntry"><span class="type">BtkTargetEntry</span></a> *targets</code></em>,
-                             <em class="parameter"><code><span class="type">guint</span> n_targets</code></em>,
+                             <em class="parameter"><code><span class="type">buint</span> n_targets</code></em>,
                              <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardGetFunc" title="BtkClipboardGetFunc ()"><span class="type">BtkClipboardGetFunc</span></a> get_func</code></em>,
                              <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardClearFunc" title="BtkClipboardClearFunc ()"><span class="type">BtkClipboardClearFunc</span></a> clear_func</code></em>,
-                             <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Virtually sets the contents of the specified clipboard by providing
 a list of supported formats for the clipboard data and a function
 to call to get the actual data when it is requested.</p>
@@ -638,19 +638,19 @@ will be ignored.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-set-with-owner"></a><h3>btk_clipboard_set_with_owner ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_set_with_owner (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                               <em class="parameter"><code>const <a class="link" href="btk2-Selections.html#BtkTargetEntry" title="struct BtkTargetEntry"><span class="type">BtkTargetEntry</span></a> *targets</code></em>,
-                              <em class="parameter"><code><span class="type">guint</span> n_targets</code></em>,
+                              <em class="parameter"><code><span class="type">buint</span> n_targets</code></em>,
                               <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardGetFunc" title="BtkClipboardGetFunc ()"><span class="type">BtkClipboardGetFunc</span></a> get_func</code></em>,
                               <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardClearFunc" title="BtkClipboardClearFunc ()"><span class="type">BtkClipboardClearFunc</span></a> clear_func</code></em>,
-                              <em class="parameter"><code><span class="type">GObject</span> *owner</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">BObject</span> *owner</code></em>);</pre>
 <p>Virtually sets the contents of the specified clipboard by providing
 a list of supported formats for the clipboard data and a function
 to call to get the actual data when it is requested.</p>
 <p>The difference between this function and <a class="link" href="btk2-Clipboards.html#btk-clipboard-set-with-data" title="btk_clipboard_set_with_data ()"><code class="function">btk_clipboard_set_with_data()</code></a>
 is that instead of an generic <em class="parameter"><code>user_data</code></em>
- pointer, a <span class="type">GObject</span> is passed
+ pointer, a <span class="type">BObject</span> is passed
 in.</p>
 <div class="refsect3">
 <a name="btk-clipboard-set-with-owner.parameters"></a><h4>Parameters</h4>
@@ -709,7 +709,7 @@ will be ignored.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-get-owner"></a><h3>btk_clipboard_get_owner ()</h3>
-<pre class="programlisting"><span class="returnvalue">GObject</span> *
+<pre class="programlisting"><span class="returnvalue">BObject</span> *
 btk_clipboard_get_owner (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>If the clipboard contents callbacks were set with 
 <a class="link" href="btk2-Clipboards.html#btk-clipboard-set-with-owner" title="btk_clipboard_set_with_owner ()"><code class="function">btk_clipboard_set_with_owner()</code></a>, and the <a class="link" href="btk2-Clipboards.html#btk-clipboard-set-with-data" title="btk_clipboard_set_with_data ()"><code class="function">btk_clipboard_set_with_data()</code></a> or 
@@ -768,8 +768,8 @@ clipboard may be owned by someone else.</p>
 <a name="btk-clipboard-set-text"></a><h3>btk_clipboard_set_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_set_text (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> len</code></em>);</pre>
+                        <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> len</code></em>);</pre>
 <p>Sets the contents of the clipboard to the given UTF-8 string. BTK+ will
 make a copy of the text and take responsibility for responding
 for requests for the text, and for converting the text into
@@ -845,7 +845,7 @@ requested format.</p>
 btk_clipboard_request_contents (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                 <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> target</code></em>,
                                 <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardReceivedFunc" title="BtkClipboardReceivedFunc ()"><span class="type">BtkClipboardReceivedFunc</span></a> callback</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of clipboard as the given target.
 When the results of the result are later received the supplied callback
 will be called.</p>
@@ -894,7 +894,7 @@ negative.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_request_text (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                             <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardTextReceivedFunc" title="BtkClipboardTextReceivedFunc ()"><span class="type">BtkClipboardTextReceivedFunc</span></a> callback</code></em>,
-                            <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of the clipboard as text. When the text is
 later received, it will be converted to UTF-8 if necessary, and
 <em class="parameter"><code>callback</code></em>
@@ -942,7 +942,7 @@ one way or the other.)</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_request_image (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                              <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardImageReceivedFunc" title="BtkClipboardImageReceivedFunc ()"><span class="type">BtkClipboardImageReceivedFunc</span></a> callback</code></em>,
-                             <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of the clipboard as image. When the image is
 later received, it will be converted to a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, and
 <em class="parameter"><code>callback</code></em>
@@ -992,7 +992,7 @@ one way or the other.)</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_request_targets (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardTargetsReceivedFunc" title="BtkClipboardTargetsReceivedFunc ()"><span class="type">BtkClipboardTargetsReceivedFunc</span></a> callback</code></em>,
-                               <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of the clipboard as list of supported targets. 
 When the list is later received, <em class="parameter"><code>callback</code></em>
  will be called. </p>
@@ -1039,7 +1039,7 @@ one way or the other.)</p></td>
 btk_clipboard_request_rich_text (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                  <em class="parameter"><code><a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
                                  <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardRichTextReceivedFunc" title="BtkClipboardRichTextReceivedFunc ()"><span class="type">BtkClipboardRichTextReceivedFunc</span></a> callback</code></em>,
-                                 <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of the clipboard as rich text. When the rich
 text is later received, <em class="parameter"><code>callback</code></em>
  will be called.</p>
@@ -1095,7 +1095,7 @@ one way or the other.)</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_request_uris (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                             <em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboardURIReceivedFunc" title="BtkClipboardURIReceivedFunc ()"><span class="type">BtkClipboardURIReceivedFunc</span></a> callback</code></em>,
-                            <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>Requests the contents of the clipboard as URIs. When the URIs are
 later received <em class="parameter"><code>callback</code></em>
  will be called.</p>
@@ -1180,7 +1180,7 @@ when you are finished with it.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-for-text"></a><h3>btk_clipboard_wait_for_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 btk_clipboard_wait_for_text (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>Requests the contents of the clipboard as text and converts
 the result to UTF-8 if necessary. This function waits for
@@ -1250,11 +1250,11 @@ the clipboard could not be converted into an image.). </p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-for-rich-text"></a><h3>btk_clipboard_wait_for_rich_text ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint8</span> *
+<pre class="programlisting"><span class="returnvalue">buint8</span> *
 btk_clipboard_wait_for_rich_text (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
                                   <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> *format</code></em>,
-                                  <em class="parameter"><code><span class="type">gsize</span> *length</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bsize</span> *length</code></em>);</pre>
 <p>Requests the contents of the clipboard as rich text.  This function
 waits for the data to be received using the main loop, so events,
 timeouts, etc, may be dispatched during the wait.</p>
@@ -1306,7 +1306,7 @@ clipboard could not be converted into text form.). </p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-for-uris"></a><h3>btk_clipboard_wait_for_uris ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> **
+<pre class="programlisting"><span class="returnvalue">bchar</span> **
 btk_clipboard_wait_for_uris (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>Requests the contents of the clipboard as URIs. This function waits
 for the data to be received using the main loop, so events,
@@ -1342,7 +1342,7 @@ the clipboard could not be converted into URI form.). </p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-is-text-available"></a><h3>btk_clipboard_wait_is_text_available ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_is_text_available (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>Test to see if there is text available to be pasted
 This is done by requesting the TARGETS atom and checking
@@ -1375,7 +1375,7 @@ the actual text.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-is-image-available"></a><h3>btk_clipboard_wait_is_image_available ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_is_image_available (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>Test to see if there is an image available to be pasted
 This is done by requesting the TARGETS atom and checking
@@ -1409,7 +1409,7 @@ the actual image data.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-is-rich-text-available"></a><h3>btk_clipboard_wait_is_rich_text_available ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_is_rich_text_available
                                (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>);</pre>
@@ -1452,7 +1452,7 @@ the actual text.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-is-uris-available"></a><h3>btk_clipboard_wait_is_uris_available ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_is_uris_available (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>);</pre>
 <p>Test to see if there is a list of URIs available to be pasted
 This is done by requesting the TARGETS atom and checking
@@ -1486,10 +1486,10 @@ the actual URI data.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-for-targets"></a><h3>btk_clipboard_wait_for_targets ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_for_targets (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                 <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> **targets</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *n_targets</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> *n_targets</code></em>);</pre>
 <p>Returns a list of targets that are present on the clipboard, or <code class="literal">NULL</code>
 if there aren't any targets available. The returned list must be 
 freed with <code class="function">g_free()</code>.
@@ -1534,7 +1534,7 @@ otherwise <code class="literal">FALSE</code>.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-clipboard-wait-is-target-available"></a><h3>btk_clipboard_wait_is_target_available ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_clipboard_wait_is_target_available
                                (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                                 <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> target</code></em>);</pre>
@@ -1577,7 +1577,7 @@ insensitive or not.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_clipboard_set_can_store (<em class="parameter"><code><a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard</code></em>,
                              <em class="parameter"><code>const <a class="link" href="btk2-Selections.html#BtkTargetEntry" title="struct BtkTargetEntry"><span class="type">BtkTargetEntry</span></a> *targets</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> n_targets</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bint</span> n_targets</code></em>);</pre>
 <p>Hints that the clipboard data should be stored somewhere when the
 application exits or when <a class="link" href="btk2-Clipboards.html#btk-clipboard-store" title="btk_clipboard_store ()"><code class="function">btk_clipboard_store()</code></a> is called.</p>
 <p>This value is reset when the clipboard owner changes.
@@ -1654,7 +1654,7 @@ around after the application has quit.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="btk2-Clipboards.html#BtkClipboard"><span class="type">BtkClipboard</span></a> *clipboard,
                <a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a>     *event,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>The ::owner-change signal is emitted when BTK+ receives an
 event that indicates that the ownership of the selection
 

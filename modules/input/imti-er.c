@@ -137,7 +137,7 @@ ti_er_register_type (GTypeModule *module)
   a, 'w', 'w', 'i', 0, 0, b+10, \
   a, 'w', 'w', 'u', 0, 0, b+13,
 
-static guint16 ti_er_compose_seqs[] = {
+static buint16 ti_er_compose_seqs[] = {
   /* do punctuation and numerals here */
 
   '\'',   0, 0, 0, 0, 0, BDK_dead_grave,  /* hopefully this has no side effects */
@@ -482,7 +482,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "ti_er") == 0)
     return g_object_new (type_ti_er_translit, NULL);

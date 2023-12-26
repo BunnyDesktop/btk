@@ -26,12 +26,12 @@
 #include "bdkproperty.h"
 #include "bdkquartz.h"
 
-gboolean
+bboolean
 bdk_selection_owner_set_for_display (BdkDisplay *display,
 				     BdkWindow  *owner,
 				     BdkAtom     selection,
-				     guint32     time,
-				     gint        send_event)
+				     buint32     time,
+				     bint        send_event)
 {
   /* FIXME: Implement */
   return TRUE;
@@ -49,16 +49,16 @@ void
 bdk_selection_convert (BdkWindow *requestor,
 		       BdkAtom    selection,
 		       BdkAtom    target,
-		       guint32    time)
+		       buint32    time)
 {
   /* FIXME: Implement */
 }
 
-gint
+bint
 bdk_selection_property_get (BdkWindow  *requestor,
-			    guchar    **data,
+			    buchar    **data,
 			    BdkAtom    *ret_type,
-			    gint       *ret_format)
+			    bint       *ret_format)
 {
   /* FIXME: Implement */
   return 0;
@@ -70,61 +70,61 @@ bdk_selection_send_notify_for_display (BdkDisplay      *display,
 				       BdkAtom          selection,
 				       BdkAtom          target,
 				       BdkAtom          property,
-				       guint32          time)
+				       buint32          time)
 {
   /* FIXME: Implement */
 }
 
-gint
+bint
 bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
 					    BdkAtom       encoding,
-					    gint          format, 
-					    const guchar *text,
-					    gint          length,
-					    gchar      ***list)
+					    bint          format, 
+					    const buchar *text,
+					    bint          length,
+					    bchar      ***list)
 {
   /* FIXME: Implement */
   return 0;
 }
 
-gint
+bint
 bdk_string_to_compound_text_for_display (BdkDisplay  *display,
-					 const gchar *str,
+					 const bchar *str,
 					 BdkAtom     *encoding,
-					 gint        *format,
-					 guchar     **ctext,
-					 gint        *length)
+					 bint        *format,
+					 buchar     **ctext,
+					 bint        *length)
 {
   /* FIXME: Implement */
   return 0;
 }
 
-void bdk_free_compound_text (guchar *ctext)
+void bdk_free_compound_text (buchar *ctext)
 {
   /* FIXME: Implement */
 }
 
-gchar *
-bdk_utf8_to_string_target (const gchar *str)
+bchar *
+bdk_utf8_to_string_target (const bchar *str)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
-gboolean
+bboolean
 bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
-				       const gchar *str,
+				       const bchar *str,
 				       BdkAtom     *encoding,
-				       gint        *format,
-				       guchar     **ctext,
-				       gint        *length)
+				       bint        *format,
+				       buchar     **ctext,
+				       bint        *length)
 {
   /* FIXME: Implement */
   return 0;
 }
 
 void
-bdk_free_text_list (gchar **list)
+bdk_free_text_list (bchar **list)
 {
   g_return_if_fail (list != NULL);
 
@@ -132,23 +132,23 @@ bdk_free_text_list (gchar **list)
   g_free (list);
 }
 
-static gint
-make_list (const gchar  *text,
-	   gint          length,
-	   gboolean      latin1,
-	   gchar      ***list)
+static bint
+make_list (const bchar  *text,
+	   bint          length,
+	   bboolean      latin1,
+	   bchar      ***list)
 {
   GSList *strings = NULL;
-  gint n_strings = 0;
-  gint i;
-  const gchar *p = text;
-  const gchar *q;
+  bint n_strings = 0;
+  bint i;
+  const bchar *p = text;
+  const bchar *q;
   GSList *tmp_list;
   GError *error = NULL;
 
   while (p < text + length)
     {
-      gchar *str;
+      bchar *str;
       
       q = p;
       while (*q && q < text + length)
@@ -172,7 +172,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -180,7 +180,7 @@ make_list (const gchar  *text,
     }
 
   if (list)
-    *list = g_new0 (gchar *, n_strings + 1);
+    *list = g_new0 (bchar *, n_strings + 1);
 
   i = n_strings;
   tmp_list = strings;
@@ -194,33 +194,33 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
 
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }
 
-gint 
+bint 
 bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
 					    BdkAtom        encoding,
-					    gint           format,
-					    const guchar  *text,
-					    gint           length,
-					    gchar       ***list)
+					    bint           format,
+					    const buchar  *text,
+					    bint           length,
+					    bchar       ***list)
 {
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
 
   if (encoding == BDK_TARGET_STRING)
     {
-      return make_list ((gchar *)text, length, TRUE, list);
+      return make_list ((bchar *)text, length, TRUE, list);
     }
   else if (encoding == bdk_atom_intern_static_string ("UTF8_STRING"))
     {
-      return make_list ((gchar *)text, length, FALSE, list);
+      return make_list ((bchar *)text, length, FALSE, list);
     }
   else
     {
-      gchar *enc_name = bdk_atom_name (encoding);
+      bchar *enc_name = bdk_atom_name (encoding);
 
       g_warning ("bdk_text_property_to_utf8_list_for_display: encoding %s not handled\n", enc_name);
       g_free (enc_name);
@@ -265,7 +265,7 @@ bdk_quartz_target_to_pasteboard_type_libbtk_only (const char *target)
 NSString *
 bdk_quartz_atom_to_pasteboard_type_libbtk_only (BdkAtom atom)
 {
-  gchar *target = bdk_atom_name (atom);
+  bchar *target = bdk_atom_name (atom);
   NSString *ret = bdk_quartz_target_to_pasteboard_type_libbtk_only (target);
   g_free (target);
 

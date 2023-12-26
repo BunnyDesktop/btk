@@ -56,16 +56,16 @@ typedef enum _BdkWin32KeyLevelState BdkWin32KeyLevelState;
 struct _BdkWin32KeyNode
 {
   /* Non-spacing version of the dead key */
-  guint                  undead_bdk_keycode;
+  buint                  undead_bdk_keycode;
 
   /* Virtual key code */
-  guint8                 vk;
+  buint8                 vk;
 
   /* Level for which this virtual key code produces this bdk_keycode */
   BdkWin32KeyLevelState  level;
 
   /* BDK (X11) code for this key */
-  guint                  bdk_keycode;
+  buint                  bdk_keycode;
 
   /* Array of BdkWin32KeyNode should be sorted by bdk_keycode, then by level */
   GArray                *combinations;
@@ -129,10 +129,10 @@ struct _BdkWin32KeyGroupOptions
   wchar_t         decimal_mark;
 
   /* Scancode for the VK_RSHIFT */
-  guint           scancode_rshift;
+  buint           scancode_rshift;
 
   /* TRUE if Ctrl+Alt emulates AltGr */
-  gboolean        has_altgr;
+  bboolean        has_altgr;
 
   GArray         *dead_keys;
 };
@@ -159,7 +159,7 @@ struct _BdkWin32Keymap
    * 2x4 is the number of Shift/AltGr/CapsLock combinations (level),
    * length(layout_handles) is the number of layout handles (group).
    */
-  guint  *keysym_tab;
+  buint  *keysym_tab;
 
   /* length = length(layout_handles), type =  BdkWin32KeyGroupOptions
    * Kept separate from layout_handles because layout_handles is
@@ -171,12 +171,12 @@ struct _BdkWin32Keymap
    * at any point it should be the same handle as GetKeyboardLayout(0) returns,
    * but BDK caches it to avoid calling GetKeyboardLayout (0) every time.
    */
-  guint8 active_layout;
+  buint8 active_layout;
 };
 
 G_DEFINE_TYPE (BdkWin32Keymap, bdk_win32_keymap, BDK_TYPE_KEYMAP)
 
-guint _bdk_keymap_serial = 0;
+buint _bdk_keymap_serial = 0;
 
 static BdkKeymap *default_keymap = NULL;
 
@@ -208,7 +208,7 @@ bdk_win32_keymap_init (BdkWin32Keymap *keymap)
 }
 
 static void
-bdk_win32_keymap_finalize (GObject *object)
+bdk_win32_keymap_finalize (BObject *object)
 {
   BdkWin32Keymap *keymap = BDK_WIN32_KEYMAP (object);
 
@@ -216,18 +216,18 @@ bdk_win32_keymap_finalize (GObject *object)
   g_clear_pointer (&keymap->layout_handles, g_array_unref);
   g_clear_pointer (&keymap->options, g_array_unref);
 
-  G_OBJECT_CLASS (bdk_win32_keymap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_win32_keymap_parent_class)->finalize (object);
 }
 
 #ifdef G_ENABLE_DEBUG
 static void
 print_keysym_tab (BdkWin32Keymap *keymap)
 {
-  gint                      li;
+  bint                      li;
   BdkWin32KeyGroupOptions  *options;
-  gint                      vk;
+  bint                      vk;
   BdkWin32KeyLevelState     level;
-  gint                      group_size = keymap->layout_handles->len;
+  bint                      group_size = keymap->layout_handles->len;
 
   for (li = 0; li < group_size; li++)
     {
@@ -242,7 +242,7 @@ print_keysym_tab (BdkWin32Keymap *keymap)
 
           for (level = 0; level < BDK_WIN32_LEVEL_COUNT; level++)
             {
-              gchar *name = bdk_keyval_name (keymap->keysym_tab[vk * group_size * BDK_WIN32_LEVEL_COUNT + level]);
+              bchar *name = bdk_keyval_name (keymap->keysym_tab[vk * group_size * BDK_WIN32_LEVEL_COUNT + level]);
 
               g_print ("%s ", name ? name : "(none)");
             }
@@ -254,9 +254,9 @@ print_keysym_tab (BdkWin32Keymap *keymap)
 #endif
 
 static void
-handle_special (guint  vk,
-		guint *ksymp,
-		gint   shift)
+handle_special (buint  vk,
+		buint *ksymp,
+		bint   shift)
 
 {
   switch (vk)
@@ -418,7 +418,7 @@ handle_special (guint  vk,
 }
 
 static void
-set_level_vks (guchar               *key_state,
+set_level_vks (buchar               *key_state,
 	       BdkWin32KeyLevelState level)
 {
   switch (level)
@@ -470,10 +470,10 @@ set_level_vks (guchar               *key_state,
 }
 
 static void
-reset_after_dead (guchar key_state[KEY_STATE_SIZE],
+reset_after_dead (buchar key_state[KEY_STATE_SIZE],
                   HKL    handle)
 {
-  guchar  temp_key_state[KEY_STATE_SIZE];
+  buchar  temp_key_state[KEY_STATE_SIZE];
   wchar_t wcs[2];
 
   memmove (temp_key_state, key_state, KEY_STATE_SIZE);
@@ -489,8 +489,8 @@ reset_after_dead (guchar key_state[KEY_STATE_SIZE],
 }
 
 static void
-handle_dead (guint  keysym,
-	     guint *ksymp)
+handle_dead (buint  keysym,
+	     buint *ksymp)
 {
   switch (keysym)
     {
@@ -540,7 +540,7 @@ handle_dead (guint  keysym,
 /* keypad decimal mark depends on active keyboard layout
    return current decimal mark as unicode character
    */
-guint32
+buint32
 _bdk_win32_keymap_get_decimal_mark (BdkWin32Keymap *keymap)
 {
   if (keymap != NULL &&
@@ -548,13 +548,13 @@ _bdk_win32_keymap_get_decimal_mark (BdkWin32Keymap *keymap)
       g_array_index (keymap->options, BdkWin32KeyGroupOptions, keymap->active_layout).decimal_mark)
     return g_array_index (keymap->options, BdkWin32KeyGroupOptions, keymap->active_layout).decimal_mark;
 
-  return (guint32) '.';
+  return (buint32) '.';
 }
 
-static gboolean
-layouts_are_the_same (GArray *array, HKL *hkls, gint hkls_len)
+static bboolean
+layouts_are_the_same (GArray *array, HKL *hkls, bint hkls_len)
 {
-  gint i;
+  bint i;
 
   if (hkls_len != array->len)
     return FALSE;
@@ -589,7 +589,7 @@ check_that_active_layout_is_in_sync (BdkWin32Keymap *keymap)
     }
 }
 
-static gint
+static bint
 sort_key_nodes_by_bdk_keyval (gconstpointer a,
                               gconstpointer b)
 {
@@ -615,18 +615,18 @@ update_keymap (BdkKeymap *bdk_keymap)
   int                      hkls_len;
   static int               hkls_size = 0;
   static HKL              *hkls = NULL;
-  gboolean                 no_list;
-  static guint             current_serial = 0;
-  gint                     i, group;
+  bboolean                 no_list;
+  static buint             current_serial = 0;
+  bint                     i, group;
   BdkWin32KeyLevelState    level;
   BdkWin32KeyGroupOptions *options;
   BdkWin32Keymap          *keymap = BDK_WIN32_KEYMAP (bdk_keymap);
-  gint                     keysym_tab_size;
+  bint                     keysym_tab_size;
 
-  guchar                   key_state[KEY_STATE_SIZE];
-  guint                    scancode;
-  guint                    vk;
-  guint                   *keygroup;
+  buchar                   key_state[KEY_STATE_SIZE];
+  buint                    scancode;
+  buint                    vk;
+  buint                   *keygroup;
 
   if (keymap->keysym_tab != NULL &&
       current_serial == _bdk_keymap_serial)
@@ -690,7 +690,7 @@ update_keymap (BdkKeymap *bdk_keymap)
   keysym_tab_size = hkls_len * 256 * 2 * 4;
 
   if (hkls_len != keymap->layout_handles->len)
-    keymap->keysym_tab = g_renew (guint, keymap->keysym_tab, keysym_tab_size);
+    keymap->keysym_tab = g_renew (buint, keymap->keysym_tab, keysym_tab_size);
 
   memset (keymap->keysym_tab, 0, keysym_tab_size);
   g_array_set_size (keymap->layout_handles, hkls_len);
@@ -741,7 +741,7 @@ update_keymap (BdkKeymap *bdk_keymap)
 
           for (level = BDK_WIN32_LEVEL_NONE; level < BDK_WIN32_LEVEL_COUNT; level++)
             {
-              guint *ksymp = &keygroup[level];
+              buint *ksymp = &keygroup[level];
 
               set_level_vks (key_state, level);
 
@@ -758,8 +758,8 @@ update_keymap (BdkKeymap *bdk_keymap)
                   ((vk == VK_DECIMAL) && (level == BDK_WIN32_LEVEL_NONE)))
                 {
                   wchar_t         wcs[10];
-                  gint            k;
-                  guint           keysym;
+                  bint            k;
+                  buint           keysym;
                   BdkWin32KeyNode dead_key;
 
                   wcs[0] = wcs[1] = 0;
@@ -853,7 +853,7 @@ update_keymap (BdkKeymap *bdk_keymap)
       for (i = 0; i < options->dead_keys->len; i++)
         {
           wchar_t          wcs[10];
-          gint             k;
+          bint             k;
           BdkWin32KeyNode *dead_key;
           BdkWin32KeyNode  combo;
 
@@ -966,13 +966,13 @@ update_keymap (BdkKeymap *bdk_keymap)
   current_serial = _bdk_keymap_serial;
 }
 
-static gboolean
+static bboolean
 find_deadkey_by_keyval (GArray  *dead_keys,
-                        guint16  keyval,
-                        gsize   *index)
+                        buint16  keyval,
+                        bsize   *index)
 {
-  gsize deadkey_i;
-  gsize deadkey_i_max;
+  bsize deadkey_i;
+  bsize deadkey_i_max;
 
   if (dead_keys->len == 0)
     return FALSE;
@@ -983,7 +983,7 @@ find_deadkey_by_keyval (GArray  *dead_keys,
   while (deadkey_i != deadkey_i_max)
     {
       BdkWin32KeyNode *dead_key;
-      gsize middle;
+      bsize middle;
 
       if (g_array_index (dead_keys, BdkWin32KeyNode, deadkey_i).bdk_keycode == keyval)
         {
@@ -1022,18 +1022,18 @@ find_deadkey_by_keyval (GArray  *dead_keys,
 
 BdkWin32KeymapMatch
 bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
-                                guint          *compose_buffer,
-                                gsize           compose_buffer_len,
-                                guint16        *output,
-                                gsize          *output_len)
+                                buint          *compose_buffer,
+                                bsize           compose_buffer_len,
+                                buint16        *output,
+                                bsize          *output_len)
 {
-  gint partial_match;
-  guint8 active_group;
-  gsize deadkey_i, node_i;
+  bint partial_match;
+  buint8 active_group;
+  bsize deadkey_i, node_i;
   BdkWin32KeyNode *dead_key;
   BdkWin32KeyGroupOptions *options;
   BdkWin32KeymapMatch match;
-  gsize output_size;
+  bsize output_size;
 
   g_return_val_if_fail (output != NULL && output_len != NULL, BDK_WIN32_KEYMAP_MATCH_NONE);
 
@@ -1112,7 +1112,7 @@ bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
 
           if (output_size >= 2)
             {
-              gsize second_deadkey_i;
+              bsize second_deadkey_i;
 
               /* Special case for "deadkey + deadkey = space-version-of-deadkey, space-version-of-deadkey" combinations.
                * Normally the result is a sequence of 2 unichars, but we do not store this.
@@ -1132,7 +1132,7 @@ bdk_win32_keymap_check_compose (BdkWin32Keymap *keymap,
   return BDK_WIN32_KEYMAP_MATCH_NONE;
 }
 
-guint8
+buint8
 _bdk_win32_keymap_get_rshift_scancode (BdkWin32Keymap *keymap)
 {
   if (keymap != NULL &&
@@ -1149,7 +1149,7 @@ _bdk_win32_keymap_set_active_layout (BdkWin32Keymap *keymap,
   if (keymap != NULL &&
       keymap->layout_handles->len > 0)
     {
-      gint group;
+      bint group;
 
       for (group = 0; group < keymap->layout_handles->len; group++)
         if (g_array_index (keymap->layout_handles, HKL, group) == hkl)
@@ -1157,7 +1157,7 @@ _bdk_win32_keymap_set_active_layout (BdkWin32Keymap *keymap,
     }
 }
 
-gboolean
+bboolean
 _bdk_win32_keymap_has_altgr (BdkWin32Keymap *keymap)
 {
   if (keymap != NULL &&
@@ -1167,7 +1167,7 @@ _bdk_win32_keymap_has_altgr (BdkWin32Keymap *keymap)
   return FALSE;
 }
 
-guint8
+buint8
 _bdk_win32_keymap_get_active_group (BdkWin32Keymap *keymap)
 {
   if (keymap != NULL &&
@@ -1191,7 +1191,7 @@ bdk_keymap_get_for_display (BdkDisplay *display)
 static BangoDirection
 get_hkl_direction (HKL hkl)
 {
-  switch (PRIMARYLANGID (LOWORD ((DWORD) (gintptr) hkl)))
+  switch (PRIMARYLANGID (LOWORD ((DWORD) (bintptr) hkl)))
     {
     case LANG_HEBREW:
     case LANG_ARABIC:
@@ -1228,13 +1228,13 @@ bdk_keymap_get_direction (BdkKeymap *bdk_keymap)
   return get_hkl_direction (active_hkl);
 }
 
-gboolean
+bboolean
 bdk_keymap_have_bidi_layouts (BdkKeymap *bdk_keymap)
 {
   BdkWin32Keymap *keymap;
-  gboolean        have_rtl = FALSE;
-  gboolean        have_ltr = FALSE;
-  gint            group;
+  bboolean        have_rtl = FALSE;
+  bboolean        have_ltr = FALSE;
+  bint            group;
 
   if (bdk_keymap == NULL || bdk_keymap != bdk_keymap_get_default ())
     keymap = BDK_WIN32_KEYMAP (bdk_keymap_get_default ());
@@ -1254,7 +1254,7 @@ bdk_keymap_have_bidi_layouts (BdkKeymap *bdk_keymap)
   return have_ltr && have_rtl;
 }
 
-gboolean
+bboolean
 bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
   (void) keymap;
@@ -1262,11 +1262,11 @@ bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
   return ((GetKeyState (VK_CAPITAL) & 1) != 0);
 }
 
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
-                                   guint          keyval,
+                                   buint          keyval,
                                    BdkKeymapKey **keys,
-                                   gint          *n_keys)
+                                   bint          *n_keys)
 {
   GArray *retval;
 
@@ -1280,7 +1280,7 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
   /* Accept only the default keymap */
   if (bdk_keymap == NULL || bdk_keymap == bdk_keymap_get_default ())
     {
-      gint vk;
+      bint vk;
       BdkWin32Keymap *keymap;
 
       if (bdk_keymap == NULL)
@@ -1292,7 +1292,7 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
 
       for (vk = 0; vk < KEY_STATE_SIZE; vk++)
         {
-          gint group;
+          bint group;
 
           for (group = 0; group < keymap->layout_handles->len; group++)
             {
@@ -1300,7 +1300,7 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
 
               for (level = BDK_WIN32_LEVEL_NONE; level < BDK_WIN32_LEVEL_COUNT; level++)
                 {
-                  guint *keygroup;
+                  buint *keygroup;
 
                   keygroup = &keymap->keysym_tab[(vk * keymap->layout_handles->len + group) * BDK_WIN32_LEVEL_COUNT];
 
@@ -1321,7 +1321,7 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
 #ifdef G_ENABLE_DEBUG
   if (_bdk_debug_flags & BDK_DEBUG_EVENTS)
     {
-      guint i;
+      buint i;
 
       g_print ("bdk_keymap_get_entries_for_keyval: %#.04x (%s):",
                keyval, bdk_keyval_name (keyval));
@@ -1350,16 +1350,16 @@ bdk_keymap_get_entries_for_keyval (BdkKeymap     *bdk_keymap,
   return *n_keys > 0;
 }
 
-gboolean
+bboolean
 bdk_keymap_get_entries_for_keycode (BdkKeymap     *bdk_keymap,
-                                    guint          hardware_keycode,
+                                    buint          hardware_keycode,
                                     BdkKeymapKey **keys,
-                                    guint        **keyvals,
-                                    gint          *n_entries)
+                                    buint        **keyvals,
+                                    bint          *n_entries)
 {
   GArray         *key_array;
   GArray         *keyval_array;
-  gint            group;
+  bint            group;
   BdkWin32Keymap *keymap;
 
   g_return_val_if_fail (bdk_keymap == NULL || BDK_IS_KEYMAP (bdk_keymap), FALSE);
@@ -1386,7 +1386,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *bdk_keymap,
     key_array = NULL;
 
   if (keyvals)
-    keyval_array = g_array_new (FALSE, FALSE, sizeof (guint));
+    keyval_array = g_array_new (FALSE, FALSE, sizeof (buint));
   else
     keyval_array = NULL;
 
@@ -1411,7 +1411,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *bdk_keymap,
 
           if (keyval_array)
             {
-              guint keyval = keymap->keysym_tab[(hardware_keycode * keymap->layout_handles->len + group) * BDK_WIN32_LEVEL_COUNT + level];
+              buint keyval = keymap->keysym_tab[(hardware_keycode * keymap->layout_handles->len + group) * BDK_WIN32_LEVEL_COUNT + level];
 
               g_array_append_val (keyval_array, keyval);
             }
@@ -1427,7 +1427,7 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *bdk_keymap,
         *keys = (BdkKeymapKey*) key_array->data;
 
       if (keyvals)
-        *keyvals = (guint*) keyval_array->data;
+        *keyvals = (buint*) keyval_array->data;
     }
   else
     {
@@ -1446,11 +1446,11 @@ bdk_keymap_get_entries_for_keycode (BdkKeymap     *bdk_keymap,
   return *n_entries > 0;
 }
 
-guint
+buint
 bdk_keymap_lookup_key (BdkKeymap          *bdk_keymap,
                        const BdkKeymapKey *key)
 {
-  guint sym;
+  buint sym;
   BdkWin32Keymap *keymap;
 
   g_return_val_if_fail (bdk_keymap == NULL || BDK_IS_KEYMAP (bdk_keymap), 0);
@@ -1476,19 +1476,19 @@ bdk_keymap_lookup_key (BdkKeymap          *bdk_keymap,
     return sym;
 }
 
-gboolean
+bboolean
 bdk_keymap_translate_keyboard_state (BdkKeymap       *bdk_keymap,
-                                     guint            hardware_keycode,
+                                     buint            hardware_keycode,
                                      BdkModifierType  state,
-                                     gint             group,
-                                     guint           *keyval,
-                                     gint            *effective_group,
-                                     gint            *level,
+                                     bint             group,
+                                     buint           *keyval,
+                                     bint            *effective_group,
+                                     bint            *level,
                                      BdkModifierType *consumed_modifiers)
 {
   BdkWin32Keymap *keymap;
-  guint tmp_keyval;
-  guint *keygroup;
+  buint tmp_keyval;
+  buint *keygroup;
   BdkWin32KeyLevelState shift_level;
   BdkModifierType modifiers = BDK_SHIFT_MASK | BDK_LOCK_MASK | BDK_MOD2_MASK;
 
@@ -1657,7 +1657,7 @@ bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
 {
 }
 
-gboolean
+bboolean
 bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
                                   BdkModifierType *state)
 {
@@ -1668,7 +1668,7 @@ bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
 static void
 bdk_win32_keymap_class_init (BdkWin32KeymapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_win32_keymap_finalize;
 

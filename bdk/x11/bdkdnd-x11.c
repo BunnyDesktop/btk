@@ -57,20 +57,20 @@ typedef enum {
 } BtkDragStatus;
 
 typedef struct {
-  guint32 xid;
-  gint x, y, width, height;
-  gboolean mapped;
-  gboolean shape_selected;
-  gboolean shape_valid;
+  buint32 xid;
+  bint x, y, width, height;
+  bboolean mapped;
+  bboolean shape_selected;
+  bboolean shape_valid;
   BdkRebunnyion *shape;
 } BdkCacheChild;
 
 typedef struct {
   GList *children;
   GHashTable *child_hash;
-  guint old_event_mask;
+  buint old_event_mask;
   BdkScreen *screen;
-  gint ref_count;
+  bint ref_count;
 } BdkWindowCache;
 
 /* Structure that holds information about a drag in progress.
@@ -80,24 +80,24 @@ struct _BdkDragContextPrivateX11 {
   BdkDragContext context;
 
   Atom motif_selection;
-  guint   ref_count;
+  buint   ref_count;
 
-  guint16 last_x;		/* Coordinates from last event */
-  guint16 last_y;
+  buint16 last_x;		/* Coordinates from last event */
+  buint16 last_y;
   BdkDragAction old_action;	  /* The last action we sent to the source */
   BdkDragAction old_actions;	  /* The last actions we sent to the source */
   BdkDragAction xdnd_actions;     /* What is currently set in XdndActionList */
 
   Window dest_xid;              /* The last window we looked up */
   Window drop_xid;            /* The (non-proxied) window that is receiving drops */
-  guint xdnd_targets_set : 1;   /* Whether we've already set XdndTypeList */
-  guint xdnd_actions_set : 1;   /* Whether we've already set XdndActionList */
-  guint xdnd_have_actions : 1;  /* Whether an XdndActionList was provided */
-  guint motif_targets_set : 1;  /* Whether we've already set motif initiator info */
-  guint drag_status : 4;	/* current status of drag */
+  buint xdnd_targets_set : 1;   /* Whether we've already set XdndTypeList */
+  buint xdnd_actions_set : 1;   /* Whether we've already set XdndActionList */
+  buint xdnd_have_actions : 1;  /* Whether an XdndActionList was provided */
+  buint motif_targets_set : 1;  /* Whether we've already set motif initiator info */
+  buint drag_status : 4;	/* current status of drag */
   
-  guint drop_failed : 1;        /* Whether the drop was unsuccessful */
-  guint version;                /* Xdnd protocol version */
+  buint drop_failed : 1;        /* Whether the drop was unsuccessful */
+  buint version;                /* Xdnd protocol version */
 
   GSList *window_caches;
 };
@@ -114,32 +114,32 @@ static void motif_read_target_table (BdkDisplay *display);
 
 static BdkFilterReturn motif_dnd_filter (BdkXEvent *xev,
 					 BdkEvent  *event,
-					 gpointer   data);
+					 bpointer   data);
 
 static BdkFilterReturn xdnd_enter_filter    (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 static BdkFilterReturn xdnd_leave_filter    (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 static BdkFilterReturn xdnd_position_filter (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 static BdkFilterReturn xdnd_status_filter   (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 static BdkFilterReturn xdnd_finished_filter (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 static BdkFilterReturn xdnd_drop_filter     (BdkXEvent *xev,
 					     BdkEvent  *event,
-					     gpointer   data);
+					     bpointer   data);
 
 static void   xdnd_manage_source_filter (BdkDragContext *context,
 					 BdkWindow      *window,
-					 gboolean        add_filter);
+					 bboolean        add_filter);
 
-static void bdk_drag_context_finalize   (GObject              *object);
+static void bdk_drag_context_finalize   (BObject              *object);
 
 static GList *contexts;
 static GSList *window_caches;
@@ -156,14 +156,14 @@ static const struct {
   { "XdndDrop",     xdnd_drop_filter },
 };
 	      
-G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
 static void
 bdk_drag_context_init (BdkDragContext *dragcontext)
 {
   BdkDragContextPrivateX11 *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext, 
+  private = B_TYPE_INSTANCE_GET_PRIVATE (dragcontext, 
 					 BDK_TYPE_DRAG_CONTEXT, 
 					 BdkDragContextPrivateX11);
   
@@ -175,7 +175,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drag_context_finalize;
 
@@ -183,7 +183,7 @@ bdk_drag_context_class_init (BdkDragContextClass *klass)
 }
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
@@ -202,12 +202,12 @@ bdk_drag_context_finalize (GObject *object)
   if (context->dest_window)
     g_object_unref (context->dest_window);
 
-  g_slist_free_full (private->window_caches, (GDestroyNotify)bdk_window_cache_unref);
+  b_slist_free_full (private->window_caches, (GDestroyNotify)bdk_window_cache_unref);
   private->window_caches = NULL;
   
   contexts = g_list_remove (contexts, context);
 
-  G_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
 }
 
 /* Drag Contexts */
@@ -262,7 +262,7 @@ bdk_drag_context_unref (BdkDragContext *context)
 
 static BdkDragContext *
 bdk_drag_context_find (BdkDisplay *display,
-		       gboolean    is_source,
+		       bboolean    is_source,
 		       Window      source_xid,
 		       Window      dest_xid)
 {
@@ -311,7 +311,7 @@ precache_target_list (BdkDragContext *context)
 	g_ptr_array_add (targets, bdk_atom_name (BDK_POINTER_TO_ATOM (tmp_list->data)));
 
       _bdk_x11_precache_atoms (BDK_WINDOW_DISPLAY (context->source_window),
-			       (const gchar **)targets->pdata,
+			       (const bchar **)targets->pdata,
 			       targets->len);
 
       for (i =0; i < targets->len; i++)
@@ -342,9 +342,9 @@ free_cache_child (BdkCacheChild *child,
 
 static void
 bdk_window_cache_add (BdkWindowCache *cache,
-		      guint32 xid,
-		      gint x, gint y, gint width, gint height, 
-		      gboolean mapped)
+		      buint32 xid,
+		      bint x, bint y, bint width, bint height, 
+		      bboolean mapped)
 {
   BdkCacheChild *child = g_new (BdkCacheChild, 1);
 
@@ -359,14 +359,14 @@ bdk_window_cache_add (BdkWindowCache *cache,
   child->shape = NULL;
 
   cache->children = g_list_prepend (cache->children, child);
-  g_hash_table_insert (cache->child_hash, GUINT_TO_POINTER (xid), 
+  g_hash_table_insert (cache->child_hash, BUINT_TO_POINTER (xid), 
 		       cache->children);
 }
 
 static BdkFilterReturn
 bdk_window_cache_shape_filter (BdkXEvent *xev,
                                BdkEvent  *event,
-                               gpointer   data)
+                               bpointer   data)
 {
   XEvent *xevent = (XEvent *)xev;
   BdkWindowCache *cache = data;
@@ -380,7 +380,7 @@ bdk_window_cache_shape_filter (BdkXEvent *xev,
       GList *node;
 
       node = g_hash_table_lookup (cache->child_hash,
-                                  GUINT_TO_POINTER (xse->window));
+                                  BUINT_TO_POINTER (xse->window));
       if (node)
         {
           BdkCacheChild *child = node->data;
@@ -401,7 +401,7 @@ bdk_window_cache_shape_filter (BdkXEvent *xev,
 static BdkFilterReturn
 bdk_window_cache_filter (BdkXEvent *xev,
 			 BdkEvent  *event,
-			 gpointer   data)
+			 bpointer   data)
 {
   XEvent *xevent = (XEvent *)xev;
   BdkWindowCache *cache = data;
@@ -416,7 +416,7 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	GList *node;
 
 	node = g_hash_table_lookup (cache->child_hash, 
-				    GUINT_TO_POINTER (xce->window));
+				    BUINT_TO_POINTER (xce->window));
 	if (node) 
 	  {
 	    BdkCacheChild *child = node->data;
@@ -435,7 +435,7 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	    else
 	      {
 		GList *above_node = g_hash_table_lookup (cache->child_hash, 
-							 GUINT_TO_POINTER (xce->above));
+							 BUINT_TO_POINTER (xce->above));
 		if (above_node && node->next != above_node)
 		  {
 		    /* Put the window above (before in the list) above_node
@@ -458,7 +458,7 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	XCreateWindowEvent *xcwe = &xevent->xcreatewindow;
 
 	if (!g_hash_table_lookup (cache->child_hash, 
-				  GUINT_TO_POINTER (xcwe->window))) 
+				  BUINT_TO_POINTER (xcwe->window))) 
 	  bdk_window_cache_add (cache, xcwe->window, 
 				xcwe->x, xcwe->y, xcwe->width, xcwe->height,
 				FALSE);
@@ -470,13 +470,13 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	GList *node;
 
 	node = g_hash_table_lookup (cache->child_hash, 
-				    GUINT_TO_POINTER (xdwe->window));
+				    BUINT_TO_POINTER (xdwe->window));
 	if (node) 
 	  {
 	    BdkCacheChild *child = node->data;
 
 	    g_hash_table_remove (cache->child_hash,
-				 GUINT_TO_POINTER (xdwe->window));
+				 BUINT_TO_POINTER (xdwe->window));
 	    cache->children = g_list_remove_link (cache->children, node);
 	    /* window is destroyed, no need to disable ShapeNotify */
 	    free_cache_child (child, NULL);
@@ -490,7 +490,7 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	GList *node;
 
 	node = g_hash_table_lookup (cache->child_hash, 
-				    GUINT_TO_POINTER (xme->window));
+				    BUINT_TO_POINTER (xme->window));
 	if (node) 
 	  {
 	    BdkCacheChild *child = node->data;
@@ -506,7 +506,7 @@ bdk_window_cache_filter (BdkXEvent *xev,
 	GList *node;
 
 	node = g_hash_table_lookup (cache->child_hash, 
-				    GUINT_TO_POINTER (xume->window));
+				    BUINT_TO_POINTER (xume->window));
 	if (node)
 	  {
 	    BdkCacheChild *child = node->data;
@@ -527,7 +527,7 @@ bdk_window_cache_new (BdkScreen *screen)
   Display *xdisplay = BDK_SCREEN_XDISPLAY (screen);
   BdkWindow *root_window = bdk_screen_get_root_window (screen);
   BdkChildInfoX11 *children;
-  guint nchildren, i;
+  buint nchildren, i;
   Window cow;
   
   BdkWindowCache *result = g_new (BdkWindowCache, 1);
@@ -540,11 +540,11 @@ bdk_window_cache_new (BdkScreen *screen)
   XGetWindowAttributes (xdisplay, BDK_WINDOW_XWINDOW (root_window), &xwa);
   result->old_event_mask = xwa.your_event_mask;
 
-  if (G_UNLIKELY (!BDK_DISPLAY_X11 (BDK_SCREEN_X11 (screen)->display)->trusted_client)) 
+  if (B_UNLIKELY (!BDK_DISPLAY_X11 (BDK_SCREEN_X11 (screen)->display)->trusted_client)) 
     {
       GList *toplevel_windows, *list;
       BdkWindow *window;
-      gint x, y, width, height;
+      bint x, y, width, height;
       
       toplevel_windows = bdk_screen_get_toplevel_windows (screen);
       for (list = toplevel_windows; list; list = list->next) {
@@ -639,7 +639,7 @@ bdk_window_cache_unref (BdkWindowCache *cache)
 
   if (cache->ref_count == 0)
     {
-      window_caches = g_slist_remove (window_caches, cache);
+      window_caches = b_slist_remove (window_caches, cache);
       bdk_window_cache_destroy (cache);
     }
 }
@@ -659,17 +659,17 @@ bdk_window_cache_get (BdkScreen *screen)
 
   cache = bdk_window_cache_new (screen);
 
-  window_caches = g_slist_prepend (window_caches, cache);
+  window_caches = b_slist_prepend (window_caches, cache);
 
   return cache;
 }
 
 
-static gboolean
+static bboolean
 is_pointer_within_shape (BdkDisplay    *display,
                          BdkCacheChild *child,
-                         gint           x_pos,
-                         gint           y_pos)
+                         bint           x_pos,
+                         bint           y_pos)
 {
   if (!child->shape_selected)
     {
@@ -714,16 +714,16 @@ is_pointer_within_shape (BdkDisplay    *display,
 static Window
 get_client_window_at_coords_recurse (BdkDisplay *display,
 				     Window      win,
-				     gboolean    is_toplevel,
-				     gint        x,
-				     gint        y)
+				     bboolean    is_toplevel,
+				     bint        x,
+				     bint        y)
 {
   BdkChildInfoX11 *children;
   unsigned int nchildren;
   int i;
-  gboolean found_child = FALSE;
+  bboolean found_child = FALSE;
   BdkChildInfoX11 child = { 0, };
-  gboolean has_wm_state = FALSE;
+  bboolean has_wm_state = FALSE;
 
   if (!_bdk_x11_get_window_child_info (display, win, TRUE,
 				       is_toplevel? &has_wm_state : NULL,
@@ -768,8 +768,8 @@ get_client_window_at_coords_recurse (BdkDisplay *display,
 static Window 
 get_client_window_at_coords (BdkWindowCache *cache,
 			     Window          ignore,
-			     gint            x_root,
-			     gint            y_root)
+			     bint            x_root,
+			     bint            y_root)
 {
   GList *tmp_list;
   Window retval = None;
@@ -870,7 +870,7 @@ enum {
 /* Byte swapping routines. The motif specification leaves it
  * up to us to save a few bytes in the client messages
  */
-static gchar local_byte_order = '\0';
+static bchar local_byte_order = '\0';
 
 #ifdef G_ENABLE_DEBUG
 static void
@@ -878,7 +878,7 @@ print_target_list (GList *targets)
 {
   while (targets)
     {
-      gchar *name = bdk_atom_name (BDK_POINTER_TO_ATOM (targets->data));
+      bchar *name = bdk_atom_name (BDK_POINTER_TO_ATOM (targets->data));
       g_message ("\t%s", name);
       g_free (name);
       targets = targets->next;
@@ -889,20 +889,20 @@ print_target_list (GList *targets)
 static void
 init_byte_order (void)
 {
-  guint32 myint = 0x01020304;
-  local_byte_order = (*(gchar *)&myint == 1) ? 'B' : 'l';
+  buint32 myint = 0x01020304;
+  local_byte_order = (*(bchar *)&myint == 1) ? 'B' : 'l';
 }
 
-static guint16
-card16_to_host (guint16 x, gchar byte_order) {
+static buint16
+card16_to_host (buint16 x, bchar byte_order) {
   if (byte_order == local_byte_order)
     return x;
   else
     return (x << 8) | (x >> 8);
 }
 
-static guint32
-card32_to_host (guint32 x, gchar byte_order) {
+static buint32
+card32_to_host (buint32 x, bchar byte_order) {
   if (byte_order == local_byte_order)
     return x;
   else
@@ -918,9 +918,9 @@ card32_to_host (guint32 x, gchar byte_order) {
 #define MOTIF_XCLIENT_BYTE(xevent,i) \
   (xevent)->xclient.data.b[i]
 #define MOTIF_XCLIENT_SHORT(xevent,i) \
-  ((gint16 *)&((xevent)->xclient.data.b[0]))[i]
+  ((bint16 *)&((xevent)->xclient.data.b[0]))[i]
 #define MOTIF_XCLIENT_LONG(xevent,i) \
-  ((gint32 *)&((xevent)->xclient.data.b[0]))[i]
+  ((bint32 *)&((xevent)->xclient.data.b[0]))[i]
 
 #define MOTIF_UNPACK_BYTE(xevent,i) MOTIF_XCLIENT_BYTE(xevent,i)
 #define MOTIF_UNPACK_SHORT(xevent,i) \
@@ -932,30 +932,30 @@ card32_to_host (guint32 x, gchar byte_order) {
 
 /* Property placed on source windows */
 typedef struct _MotifDragInitiatorInfo {
-  guint8 byte_order;
-  guint8 protocol_version;
-  guint16 targets_index;
-  guint32 selection_atom;
+  buint8 byte_order;
+  buint8 protocol_version;
+  buint16 targets_index;
+  buint32 selection_atom;
 } MotifDragInitiatorInfo;
 
 /* Header for target table on the drag window */
 typedef struct _MotifTargetTableHeader {
-  guchar byte_order;
-  guchar protocol_version;
-  guint16 n_lists;
-  guint32 total_size;
+  buchar byte_order;
+  buchar protocol_version;
+  buint16 n_lists;
+  buint32 total_size;
 } MotifTargetTableHeader;
 
 /* Property placed on target windows */
 typedef struct _MotifDragReceiverInfo {
-  guint8 byte_order;
-  guint8 protocol_version;
-  guint8 protocol_style;
-  guint8 pad;
-  guint32 proxy_window;
-  guint16 num_drop_sites;
-  guint16 padding;
-  guint32 total_size;
+  buint8 byte_order;
+  buint8 protocol_version;
+  buint8 protocol_style;
+  buint8 pad;
+  buint32 proxy_window;
+  buint16 num_drop_sites;
+  buint16 padding;
+  buint32 total_size;
 } MotifDragReceiverInfo;
 
 /* Target table handling */
@@ -963,7 +963,7 @@ typedef struct _MotifDragReceiverInfo {
 static BdkFilterReturn
 motif_drag_window_filter (BdkXEvent *xevent,
 			  BdkEvent  *event,
-			  gpointer data)
+			  bpointer data)
 {
   XEvent *xev = (XEvent *)xevent;
   BdkDisplay *display = BDK_WINDOW_DISPLAY (event->any.window); 
@@ -989,10 +989,10 @@ motif_lookup_drag_window (BdkDisplay *display,
 			  Display    *lookup_xdisplay)
 {
   Window retval = None;
-  gulong bytes_after, nitems;
+  bulong bytes_after, nitems;
   Atom type;
-  gint format;
-  guchar *data;
+  bint format;
+  buchar *data;
 
   XGetWindowProperty (lookup_xdisplay, RootWindow (lookup_xdisplay, 0),
 		      bdk_x11_get_xatom_by_name_for_display (display, "_MOTIF_DRAG_WINDOW"),
@@ -1018,7 +1018,7 @@ motif_lookup_drag_window (BdkDisplay *display,
  */
 static Window 
 motif_find_drag_window (BdkDisplay *display,
-			gboolean    create)
+			bboolean    create)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   
@@ -1059,7 +1059,7 @@ motif_find_drag_window (BdkDisplay *display,
 			       RootWindow (persistant_xdisplay, 0),
 			       motif_drag_window_atom, XA_WINDOW,
 			       32, PropModeReplace,
-			       (guchar *)&motif_drag_window_atom, 1);
+			       (buchar *)&motif_drag_window_atom, 1);
 
 	    }
 	  XUngrabServer (persistant_xdisplay);
@@ -1086,10 +1086,10 @@ static void
 motif_read_target_table (BdkDisplay *display)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
-  gulong bytes_after, nitems;
+  bulong bytes_after, nitems;
   Atom type;
-  gint format;
-  gint i, j;
+  bint format;
+  bint i, j;
   
   Atom motif_drag_targets_atom = bdk_x11_get_xatom_by_name_for_display (display, "_MOTIF_DRAG_TARGETS");
 
@@ -1105,11 +1105,11 @@ motif_read_target_table (BdkDisplay *display)
 
   if (motif_find_drag_window (display, FALSE))
     {
-      guchar *data;
+      buchar *data;
       MotifTargetTableHeader *header = NULL;
-      guchar *target_bytes = NULL;
-      guchar *p;
-      gboolean success = FALSE;
+      buchar *target_bytes = NULL;
+      buchar *p;
+      bboolean success = FALSE;
 
       bdk_error_trap_push ();
       XGetWindowProperty (display_x11->xdisplay, 
@@ -1148,28 +1148,28 @@ motif_read_target_table (BdkDisplay *display)
       p = target_bytes;
       for (i=0; i<header->n_lists; i++)
 	{
-	  gint n_targets;
-	  guint32 *targets;
+	  bint n_targets;
+	  buint32 *targets;
 	  
-	  if (p + sizeof(guint16) - target_bytes > nitems)
+	  if (p + sizeof(buint16) - target_bytes > nitems)
 	    goto error;
 
-	  n_targets = card16_to_host (*(gushort *)p, header->byte_order);
+	  n_targets = card16_to_host (*(bushort *)p, header->byte_order);
 
 	  /* We need to make a copy of the targets, since it may
 	   * be unaligned
 	   */
-	  targets = g_new (guint32, n_targets);
-	  memcpy (targets, p + sizeof(guint16), sizeof(guint32) * n_targets);
+	  targets = g_new (buint32, n_targets);
+	  memcpy (targets, p + sizeof(buint16), sizeof(buint32) * n_targets);
 
-	  p +=  sizeof(guint16) + n_targets * sizeof(guint32);
+	  p +=  sizeof(buint16) + n_targets * sizeof(buint32);
 	  if (p - target_bytes > nitems)
 	    goto error;
 
 	  for (j=0; j<n_targets; j++)
 	    display_x11->motif_target_lists[i] = 
 	      g_list_prepend (display_x11->motif_target_lists[i],
-			      GUINT_TO_POINTER (card32_to_host (targets[j],
+			      BUINT_TO_POINTER (card32_to_host (targets[j],
 								header->byte_order)));
 	  g_free (targets);
 	  display_x11->motif_target_lists[i] = g_list_reverse (display_x11->motif_target_lists[i]);
@@ -1197,21 +1197,21 @@ motif_read_target_table (BdkDisplay *display)
     }
 }
 
-static gint
+static bint
 targets_sort_func (gconstpointer a, gconstpointer b)
 {
-  return (GPOINTER_TO_UINT (a) < GPOINTER_TO_UINT (b)) ?
-    -1 : ((GPOINTER_TO_UINT (a) > GPOINTER_TO_UINT (b)) ? 1 : 0);
+  return (BPOINTER_TO_UINT (a) < BPOINTER_TO_UINT (b)) ?
+    -1 : ((BPOINTER_TO_UINT (a) > BPOINTER_TO_UINT (b)) ? 1 : 0);
 }
 
 /* Check if given (sorted) list is in the targets table */
-static gint
+static bint
 motif_target_table_check (BdkDisplay *display,
 			  GList      *sorted)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   GList *tmp_list1, *tmp_list2;
-  gint i;
+  bint i;
 
   for (i=0; i<display_x11->motif_n_target_lists; i++)
     {
@@ -1233,14 +1233,14 @@ motif_target_table_check (BdkDisplay *display,
   return -1;
 }
 
-static gint
+static bint
 motif_add_to_target_table (BdkDisplay *display,
 			   GList      *targets) /* targets is list of BdkAtom */
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   GList *sorted = NULL;
-  gint index = -1;
-  gint i;
+  bint index = -1;
+  bint i;
   GList *tmp_list;
   
   /* make a sorted copy of the list */
@@ -1248,7 +1248,7 @@ motif_add_to_target_table (BdkDisplay *display,
   while (targets)
     {
       Atom xatom = bdk_x11_atom_to_xatom_for_display (display, BDK_POINTER_TO_ATOM (targets->data));
-      sorted = g_list_insert_sorted (sorted, GUINT_TO_POINTER (xatom), targets_sort_func);
+      sorted = g_list_insert_sorted (sorted, BUINT_TO_POINTER (xatom), targets_sort_func);
       targets = targets->next;
     }
 
@@ -1279,10 +1279,10 @@ motif_add_to_target_table (BdkDisplay *display,
 
       if (index < 0)
 	{
-	  guint32 total_size = 0;
-	  guchar *data;
-	  guchar *p;
-	  guint16 *p16;
+	  buint32 total_size = 0;
+	  buchar *data;
+	  buchar *p;
+	  buint16 *p16;
 	  MotifTargetTableHeader *header;
 	  
 	  if (!display_x11->motif_target_lists)
@@ -1302,7 +1302,7 @@ motif_add_to_target_table (BdkDisplay *display,
 
 	  total_size = sizeof (MotifTargetTableHeader);
 	  for (i = 0; i < display_x11->motif_n_target_lists ; i++)
-	    total_size += sizeof(guint16) + sizeof(guint32) * g_list_length (display_x11->motif_target_lists[i]);
+	    total_size += sizeof(buint16) + sizeof(buint32) * g_list_length (display_x11->motif_target_lists[i]);
 
 	  data = g_malloc (total_size);
 
@@ -1316,26 +1316,26 @@ motif_add_to_target_table (BdkDisplay *display,
 
 	  for (i = 0; i < display_x11->motif_n_target_lists ; i++)
 	    {
-	      guint16 n_targets = g_list_length (display_x11->motif_target_lists[i]);
-	      guint32 *targets = g_new (guint32, n_targets);
-	      guint32 *p32 = targets;
+	      buint16 n_targets = g_list_length (display_x11->motif_target_lists[i]);
+	      buint32 *targets = g_new (buint32, n_targets);
+	      buint32 *p32 = targets;
 	      
 	      tmp_list = display_x11->motif_target_lists[i];
 	      while (tmp_list)
 		{
-		  *p32 = GPOINTER_TO_UINT (tmp_list->data);
+		  *p32 = BPOINTER_TO_UINT (tmp_list->data);
 		  
 		  tmp_list = tmp_list->next;
 		  p32++;
 		}
 
-	      p16 = (guint16 *)p;
-	      p += sizeof(guint16);
+	      p16 = (buint16 *)p;
+	      p += sizeof(buint16);
 
-	      memcpy (p, targets, n_targets * sizeof(guint32));
+	      memcpy (p, targets, n_targets * sizeof(buint32));
 
 	      *p16 = n_targets;
-	      p += sizeof(guint32) * n_targets;
+	      p += sizeof(buint32) * n_targets;
 	      g_free (targets);
 	    }
 
@@ -1356,10 +1356,10 @@ motif_add_to_target_table (BdkDisplay *display,
 /* Translate flags */
 
 static void
-motif_dnd_translate_flags (BdkDragContext *context, guint16 flags)
+motif_dnd_translate_flags (BdkDragContext *context, buint16 flags)
 {
-  guint recommended_op = flags & 0x000f;
-  guint possible_ops = (flags & 0x0f0) >> 4;
+  buint recommended_op = flags & 0x000f;
+  buint possible_ops = (flags & 0x0f0) >> 4;
   
   switch (recommended_op)
     {
@@ -1386,10 +1386,10 @@ motif_dnd_translate_flags (BdkDragContext *context, guint16 flags)
     context->actions |= BDK_ACTION_LINK;
 }
 
-static guint16
+static buint16
 motif_dnd_get_flags (BdkDragContext *context)
 {
-  guint16 flags = 0;
+  buint16 flags = 0;
   
   switch (context->suggested_action)
     {
@@ -1424,7 +1424,7 @@ motif_set_targets (BdkDragContext *context)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   MotifDragInitiatorInfo info;
-  gint i;
+  bint i;
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
   
   info.byte_order = local_byte_order;
@@ -1434,7 +1434,7 @@ motif_set_targets (BdkDragContext *context)
 
   for (i=0; ; i++)
     {
-      gchar buf[20];
+      bchar buf[20];
       g_snprintf(buf, 20, "_BDK_SELECTION_%d", i);
       
       private->motif_selection = bdk_x11_get_xatom_by_name_for_display (display, buf);
@@ -1449,17 +1449,17 @@ motif_set_targets (BdkDragContext *context)
 		   private->motif_selection,
 		   bdk_x11_get_xatom_by_name_for_display (display, "_MOTIF_DRAG_INITIATOR_INFO"),
 		   8, PropModeReplace,
-		   (guchar *)&info, sizeof (info));
+		   (buchar *)&info, sizeof (info));
 
   private->motif_targets_set = 1;
 }
 
-static guint32
+static buint32
 motif_check_dest (BdkDisplay *display,
 		  Window      win)
 {
-  gboolean retval = FALSE;
-  guchar *data;
+  bboolean retval = FALSE;
+  buchar *data;
   MotifDragReceiverInfo *info;
   Atom type = None;
   int format;
@@ -1502,13 +1502,13 @@ motif_check_dest (BdkDisplay *display,
 
 static void
 motif_send_enter (BdkDragContext  *context,
-		  guint32          time)
+		  buint32          time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
   XEvent xev;
 
-  if (!G_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
+  if (!B_LIKELY (BDK_DISPLAY_X11 (display)->trusted_client))
     return; /* Motif Dnd requires getting properties on the root window */
 
   xev.xclient.type = ClientMessage;
@@ -1538,7 +1538,7 @@ motif_send_enter (BdkDragContext  *context,
 
 static void
 motif_send_leave (BdkDragContext  *context,
-		  guint32          time)
+		  buint32          time)
 {
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
   XEvent xev;
@@ -1564,16 +1564,16 @@ motif_send_leave (BdkDragContext  *context,
 			 BDK_DRAWABLE_XID (context->dest_window)));
 }
 
-static gboolean
+static bboolean
 motif_send_motion (BdkDragContext  *context,
-		    gint            x_root, 
-		    gint            y_root,
+		    bint            x_root, 
+		    bint            y_root,
 		    BdkDragAction   action,
-		    guint32         time)
+		    buint32         time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
-  gboolean retval;
+  bboolean retval;
   XEvent xev;
 
   xev.xclient.type = ClientMessage;
@@ -1617,7 +1617,7 @@ motif_send_motion (BdkDragContext  *context,
 }
 
 static void
-motif_send_drop (BdkDragContext *context, guint32 time)
+motif_send_drop (BdkDragContext *context, buint32 time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
@@ -1649,7 +1649,7 @@ motif_send_drop (BdkDragContext *context, guint32 time)
 
 /* Target Side */
 
-static gboolean
+static bboolean
 motif_read_initiator_info (BdkDisplay *display,
 			   Window      source_window, 
 			   Atom        atom,
@@ -1658,10 +1658,10 @@ motif_read_initiator_info (BdkDisplay *display,
 {
   GList *tmp_list;
   Atom type;
-  gint format;
-  gulong nitems;
-  gulong bytes_after;
-  guchar *data;
+  bint format;
+  bulong nitems;
+  bulong bytes_after;
+  buchar *data;
   MotifDragInitiatorInfo *initiator_info;
   
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
@@ -1700,7 +1700,7 @@ motif_read_initiator_info (BdkDisplay *display,
   *targets = NULL;
   while (tmp_list)
     {
-      BdkAtom atom = bdk_x11_xatom_to_atom_for_display (display, GPOINTER_TO_UINT (tmp_list->data));
+      BdkAtom atom = bdk_x11_xatom_to_atom_for_display (display, BPOINTER_TO_UINT (tmp_list->data));
       *targets = g_list_prepend (*targets, BDK_ATOM_TO_POINTER (atom));
       tmp_list = tmp_list->prev;
     }
@@ -1719,9 +1719,9 @@ motif_read_initiator_info (BdkDisplay *display,
 
 static BdkDragContext *
 motif_drag_context_new (BdkWindow *dest_window,
-			guint32    timestamp,
-			guint32    source_window,
-			guint32    atom)
+			buint32    timestamp,
+			buint32    source_window,
+			buint32    atom)
 {
   BdkDragContext *new_context;
   BdkDragContextPrivateX11 *private;
@@ -1787,10 +1787,10 @@ motif_drag_context_new (BdkWindow *dest_window,
 
 static BdkFilterReturn
 motif_top_level_enter (BdkEvent *event,
-		       guint16   flags, 
-		       guint32   timestamp, 
-		       guint32   source_window, 
-		       guint32   atom)
+		       buint16   flags, 
+		       buint32   timestamp, 
+		       buint32   source_window, 
+		       buint32   atom)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_DRAWABLE_DISPLAY (event->any.window));
   BdkDragContext *new_context;
@@ -1813,8 +1813,8 @@ motif_top_level_enter (BdkEvent *event,
 
 static BdkFilterReturn
 motif_top_level_leave (BdkEvent *event,
-		       guint16   flags, 
-		       guint32   timestamp)
+		       buint16   flags, 
+		       buint32   timestamp)
 {
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_DRAWABLE_DISPLAY (event->any.window));
 
@@ -1839,10 +1839,10 @@ motif_top_level_leave (BdkEvent *event,
 
 static BdkFilterReturn
 motif_motion (BdkEvent *event,
-	      guint16   flags, 
-	      guint32   timestamp,
-	      gint16    x_root,
-	      gint16    y_root)
+	      buint16   flags, 
+	      buint32   timestamp,
+	      bint16    x_root,
+	      bint16    y_root)
 {
   BdkDragContextPrivateX11 *private;
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_DRAWABLE_DISPLAY (event->any.window));
@@ -1880,8 +1880,8 @@ motif_motion (BdkEvent *event,
 
 static BdkFilterReturn
 motif_operation_changed (BdkEvent *event,
-			 guint16   flags, 
-			 guint32   timestamp)
+			 buint16   flags, 
+			 buint32   timestamp)
 {
   BdkDragContextPrivateX11 *private;
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_DRAWABLE_DISPLAY (event->any.window));
@@ -1915,12 +1915,12 @@ motif_operation_changed (BdkEvent *event,
 
 static BdkFilterReturn
 motif_drop_start (BdkEvent *event,
-		  guint16   flags,
-		  guint32   timestamp,
-		  guint32   source_window,
-		  guint32   atom,
-		  gint16    x_root,
-		  gint16    y_root)
+		  buint16   flags,
+		  buint32   timestamp,
+		  buint32   source_window,
+		  buint32   atom,
+		  bint16    x_root,
+		  bint16    y_root)
 {
   BdkDragContext *new_context;
   BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_DRAWABLE_DISPLAY (event->any.window));
@@ -1950,8 +1950,8 @@ motif_drop_start (BdkEvent *event,
 
 static BdkFilterReturn
 motif_drag_status (BdkEvent *event,
-		   guint16   flags,
-		   guint32   timestamp)
+		   buint16   flags,
+		   buint32   timestamp)
 {
   BdkDragContext *context;
   BdkDisplay *display;
@@ -2008,17 +2008,17 @@ motif_drag_status (BdkEvent *event,
 static BdkFilterReturn
 motif_dnd_filter (BdkXEvent *xev,
 		  BdkEvent  *event,
-		  gpointer data)
+		  bpointer data)
 {
   XEvent *xevent = (XEvent *)xev;
 
-  guint8 reason;
-  guint16 flags;
-  guint32 timestamp;
-  guint32 source_window;
+  buint8 reason;
+  buint16 flags;
+  buint32 timestamp;
+  buint32 source_window;
   Atom atom;
-  gint16 x_root, y_root;
-  gboolean is_reply;
+  bint16 x_root, y_root;
+  bboolean is_reply;
 
   if (!event->any.window ||
       bdk_window_get_window_type (event->any.window) == BDK_WINDOW_FOREIGN)
@@ -2093,7 +2093,7 @@ motif_dnd_filter (BdkXEvent *xev,
 /* Utility functions */
 
 static struct {
-  const gchar *name;
+  const bchar *name;
   BdkAtom atom;
   BdkDragAction action;
 } xdnd_actions_table[] = {
@@ -2104,13 +2104,13 @@ static struct {
     { "XdndActionPrivate", None, BDK_ACTION_COPY },
   };
 
-static const gint xdnd_n_actions = sizeof(xdnd_actions_table) / sizeof(xdnd_actions_table[0]);
-static gboolean xdnd_actions_initialized = FALSE;
+static const bint xdnd_n_actions = sizeof(xdnd_actions_table) / sizeof(xdnd_actions_table[0]);
+static bboolean xdnd_actions_initialized = FALSE;
 
 static void
 xdnd_initialize_actions (void)
 {
-  gint i;
+  bint i;
   
   xdnd_actions_initialized = TRUE;
   for (i=0; i < xdnd_n_actions; i++)
@@ -2122,7 +2122,7 @@ xdnd_action_from_atom (BdkDisplay *display,
 		       Atom        xatom)
 {
   BdkAtom atom;
-  gint i;
+  bint i;
 
   if (xatom == None)
     return 0;
@@ -2143,7 +2143,7 @@ static Atom
 xdnd_action_to_atom (BdkDisplay    *display,
 		     BdkDragAction  action)
 {
-  gint i;
+  bint i;
 
   if (!xdnd_actions_initialized)
     xdnd_initialize_actions();
@@ -2160,12 +2160,12 @@ xdnd_action_to_atom (BdkDisplay    *display,
 static BdkFilterReturn 
 xdnd_status_filter (BdkXEvent *xev,
 		    BdkEvent  *event,
-		    gpointer   data)
+		    bpointer   data)
 {
   BdkDisplay *display;
   XEvent *xevent = (XEvent *)xev;
-  guint32 dest_window = xevent->xclient.data.l[0];
-  guint32 flags = xevent->xclient.data.l[1];
+  buint32 dest_window = xevent->xclient.data.l[0];
+  buint32 flags = xevent->xclient.data.l[1];
   Atom action = xevent->xclient.data.l[4];
   BdkDragContext *context;
 
@@ -2210,11 +2210,11 @@ xdnd_status_filter (BdkXEvent *xev,
 static BdkFilterReturn 
 xdnd_finished_filter (BdkXEvent *xev,
 		      BdkEvent  *event,
-		      gpointer   data)
+		      bpointer   data)
 {
   BdkDisplay *display;
   XEvent *xevent = (XEvent *)xev;
-  guint32 dest_window = xevent->xclient.data.l[0];
+  buint32 dest_window = xevent->xclient.data.l[0];
   BdkDragContext *context;
   BdkDragContextPrivateX11 *private;
 
@@ -2252,8 +2252,8 @@ xdnd_set_targets (BdkDragContext *context)
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   Atom *atomlist;
   GList *tmp_list = context->targets;
-  gint i;
-  gint n_atoms = g_list_length (context->targets);
+  bint i;
+  bint n_atoms = g_list_length (context->targets);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
 
   atomlist = g_new (Atom, n_atoms);
@@ -2269,7 +2269,7 @@ xdnd_set_targets (BdkDragContext *context)
 		   BDK_DRAWABLE_XID (context->source_window),
 		   bdk_x11_get_xatom_by_name_for_display (display, "XdndTypeList"),
 		   XA_ATOM, 32, PropModeReplace,
-		   (guchar *)atomlist, n_atoms);
+		   (buchar *)atomlist, n_atoms);
 
   g_free (atomlist);
 
@@ -2281,9 +2281,9 @@ xdnd_set_actions (BdkDragContext *context)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   Atom *atomlist;
-  gint i;
-  gint n_atoms;
-  guint actions;
+  bint i;
+  bint n_atoms;
+  buint actions;
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
 
   if (!xdnd_actions_initialized)
@@ -2318,7 +2318,7 @@ xdnd_set_actions (BdkDragContext *context)
 		   BDK_DRAWABLE_XID (context->source_window),
 		   bdk_x11_get_xatom_by_name_for_display (display, "XdndActionList"),
 		   XA_ATOM, 32, PropModeReplace,
-		   (guchar *)atomlist, n_atoms);
+		   (buchar *)atomlist, n_atoms);
 
   g_free (atomlist);
 
@@ -2328,8 +2328,8 @@ xdnd_set_actions (BdkDragContext *context)
 
 static void
 send_client_message_async_cb (Window   window,
-			      gboolean success,
-			      gpointer data)
+			      bboolean success,
+			      bpointer data)
 {
   BdkDragContext *context = data;
   BDK_NOTE (DND,
@@ -2380,8 +2380,8 @@ bdk_drag_context_get_display (BdkDragContext *context)
 static void
 send_client_message_async (BdkDragContext      *context,
 			   Window               window, 
-			   gboolean             propagate,
-			   glong                event_mask,
+			   bboolean             propagate,
+			   blong                event_mask,
 			   XClientMessageEvent *event_send)
 {
   BdkDisplay *display = bdk_drag_context_get_display (context);
@@ -2393,22 +2393,22 @@ send_client_message_async (BdkDragContext      *context,
 				      send_client_message_async_cb, context);
 }
 
-static gboolean
+static bboolean
 xdnd_send_xevent (BdkDragContext *context,
 		  BdkWindow      *window, 
-		  gboolean        propagate,
+		  bboolean        propagate,
 		  XEvent         *event_send)
 {
   BdkDisplay *display = bdk_drag_context_get_display (context);
   Window xwindow;
-  glong event_mask;
+  blong event_mask;
 
   g_assert (event_send->xany.type == ClientMessage);
 
   /* We short-circuit messages to ourselves */
   if (bdk_window_get_window_type (window) != BDK_WINDOW_FOREIGN)
     {
-      gint i;
+      bint i;
       
       for (i = 0; i < G_N_ELEMENTS (xdnd_filters); i++)
 	{
@@ -2473,7 +2473,7 @@ xdnd_send_enter (BdkDragContext *context)
   else
     {
       GList *tmp_list = context->targets;
-      gint i = 2;
+      bint i = 2;
 
       while (tmp_list)
 	{
@@ -2527,7 +2527,7 @@ xdnd_send_leave (BdkDragContext *context)
 }
 
 static void
-xdnd_send_drop (BdkDragContext *context, guint32 time)
+xdnd_send_drop (BdkDragContext *context, buint32 time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
@@ -2558,10 +2558,10 @@ xdnd_send_drop (BdkDragContext *context, guint32 time)
 
 static void
 xdnd_send_motion (BdkDragContext *context,
-		  gint            x_root, 
-		  gint            y_root,
+		  bint            x_root, 
+		  bint            y_root,
 		  BdkDragAction   action,
-		  guint32         time)
+		  buint32         time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
   BdkDisplay *display = BDK_DRAWABLE_DISPLAY (context->source_window);
@@ -2591,16 +2591,16 @@ xdnd_send_motion (BdkDragContext *context,
   private->drag_status = BDK_DRAG_STATUS_MOTION_WAIT;
 }
 
-static guint32
+static buint32
 xdnd_check_dest (BdkDisplay *display,
 		 Window      win,
-		 guint      *xdnd_version)
+		 buint      *xdnd_version)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   Atom type = None;
   int format;
   unsigned long nitems, after;
-  guchar *data;
+  buchar *data;
   Atom *version;
   Window *proxy_data;
   Window proxy;
@@ -2671,11 +2671,11 @@ xdnd_read_actions (BdkDragContext *context)
   BdkDisplay *display = BDK_WINDOW_DISPLAY (context->source_window);
   Atom type;
   int format;
-  gulong nitems, after;
-  guchar *data;
+  bulong nitems, after;
+  buchar *data;
   Atom *atoms;
 
-  gint i;
+  bint i;
   
   PRIVATE_DATA (context)->xdnd_have_actions = FALSE;
 
@@ -2754,7 +2754,7 @@ xdnd_read_actions (BdkDragContext *context)
 static BdkFilterReturn 
 xdnd_source_window_filter (BdkXEvent *xev,
 			   BdkEvent  *event,
-			   gpointer   cb_data)
+			   bpointer   cb_data)
 {
   XEvent *xevent = (XEvent *)xev;
   BdkDragContext *context = cb_data;
@@ -2774,7 +2774,7 @@ xdnd_source_window_filter (BdkXEvent *xev,
 static void
 xdnd_manage_source_filter (BdkDragContext *context,
 			   BdkWindow      *window,
-			   gboolean        add_filter)
+			   bboolean        add_filter)
 {
   if (!BDK_WINDOW_DESTROYED (window) &&
       bdk_window_get_window_type (window) == BDK_WINDOW_FOREIGN)
@@ -2860,23 +2860,23 @@ xdnd_precache_atoms (BdkDisplay *display)
 static BdkFilterReturn 
 xdnd_enter_filter (BdkXEvent *xev,
 		   BdkEvent  *event,
-		   gpointer   cb_data)
+		   bpointer   cb_data)
 {
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
   XEvent *xevent = (XEvent *)xev;
   BdkDragContext *new_context;
-  gint i;
+  bint i;
   
   Atom type;
   int format;
-  gulong nitems, after;
-  guchar *data;
+  bulong nitems, after;
+  buchar *data;
   Atom *atoms;
 
-  guint32 source_window;
-  gboolean get_types;
-  gint version;
+  buint32 source_window;
+  bboolean get_types;
+  bint version;
 
   if (!event->any.window ||
       bdk_window_get_window_type (event->any.window) == BDK_WINDOW_FOREIGN)
@@ -2988,10 +2988,10 @@ xdnd_enter_filter (BdkXEvent *xev,
 static BdkFilterReturn 
 xdnd_leave_filter (BdkXEvent *xev,
 		   BdkEvent  *event,
-		   gpointer   data)
+		   bpointer   data)
 {
   XEvent *xevent = (XEvent *)xev;
-  guint32 source_window = xevent->xclient.data.l[0];
+  buint32 source_window = xevent->xclient.data.l[0];
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
 
@@ -3027,13 +3027,13 @@ xdnd_leave_filter (BdkXEvent *xev,
 static BdkFilterReturn 
 xdnd_position_filter (BdkXEvent *xev,
 		      BdkEvent  *event,
-		      gpointer   data)
+		      bpointer   data)
 {
   XEvent *xevent = (XEvent *)xev;
-  guint32 source_window = xevent->xclient.data.l[0];
-  gint16 x_root = xevent->xclient.data.l[2] >> 16;
-  gint16 y_root = xevent->xclient.data.l[2] & 0xffff;
-  guint32 time = xevent->xclient.data.l[3];
+  buint32 source_window = xevent->xclient.data.l[0];
+  bint16 x_root = xevent->xclient.data.l[2] >> 16;
+  bint16 y_root = xevent->xclient.data.l[2] & 0xffff;
+  buint32 time = xevent->xclient.data.l[3];
   Atom action = xevent->xclient.data.l[4];
 
   BdkDisplay *display;
@@ -3082,11 +3082,11 @@ xdnd_position_filter (BdkXEvent *xev,
 static BdkFilterReturn 
 xdnd_drop_filter (BdkXEvent *xev,
 		  BdkEvent  *event,
-		  gpointer   data)
+		  bpointer   data)
 {
   XEvent *xevent = (XEvent *)xev;
-  guint32 source_window = xevent->xclient.data.l[0];
-  guint32 time = xevent->xclient.data.l[2];
+  buint32 source_window = xevent->xclient.data.l[0];
+  buint32 time = xevent->xclient.data.l[2];
   BdkDisplay *display;
   BdkDisplayX11 *display_x11;
   
@@ -3153,7 +3153,7 @@ _bdk_dnd_init (BdkDisplay *display)
 /* Source side */
 
 static void
-bdk_drag_do_leave (BdkDragContext *context, guint32 time)
+bdk_drag_do_leave (BdkDragContext *context, buint32 time)
 {
   if (context->dest_window)
     {
@@ -3214,7 +3214,7 @@ static BdkNativeWindow
 _bdk_drag_get_protocol_for_display (BdkDisplay      *display,
 				    BdkNativeWindow  xid,
 				    BdkDragProtocol *protocol,
-				    guint           *version)
+				    buint           *version)
 
 {
   BdkWindow *window;
@@ -3229,7 +3229,7 @@ _bdk_drag_get_protocol_for_display (BdkDisplay      *display,
   if (window &&
       bdk_window_get_window_type (window) != BDK_WINDOW_FOREIGN)
     {
-      if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+      if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
 	{
 	  *protocol = BDK_DRAG_PROTO_XDND;
 	  *version = 5;
@@ -3261,7 +3261,7 @@ _bdk_drag_get_protocol_for_display (BdkDisplay      *display,
     {
       /* Check if this is a root window */
 
-      gboolean rootwin = FALSE;
+      bboolean rootwin = FALSE;
       Atom type = None;
       int format;
       unsigned long nitems, after;
@@ -3356,7 +3356,7 @@ drag_context_find_window_cache (BdkDragContext  *context,
     }
 
   cache = bdk_window_cache_get (screen);
-  private->window_caches = g_slist_prepend (private->window_caches, cache);
+  private->window_caches = b_slist_prepend (private->window_caches, cache);
   
   return cache;
 }
@@ -3384,8 +3384,8 @@ void
 bdk_drag_find_window_for_screen (BdkDragContext  *context,
 				 BdkWindow       *drag_window,
 				 BdkScreen       *screen,
-				 gint             x_root,
-				 gint             y_root,
+				 bint             x_root,
+				 bint             y_root,
 				 BdkWindow      **dest_window,
 				 BdkDragProtocol *protocol)
 {
@@ -3458,15 +3458,15 @@ bdk_drag_find_window_for_screen (BdkDragContext  *context,
  * 
  * Return value: FIXME
  **/
-gboolean        
+bboolean        
 bdk_drag_motion (BdkDragContext *context,
 		 BdkWindow      *dest_window,
 		 BdkDragProtocol protocol,
-		 gint            x_root, 
-		 gint            y_root,
+		 bint            x_root, 
+		 bint            y_root,
 		 BdkDragAction   suggested_action,
 		 BdkDragAction   possible_actions,
-		 guint32         time)
+		 buint32         time)
 {
   BdkDragContextPrivateX11 *private = PRIVATE_DATA (context);
 
@@ -3661,7 +3661,7 @@ bdk_drag_motion (BdkDragContext *context,
  **/
 void
 bdk_drag_drop (BdkDragContext *context,
-	       guint32         time)
+	       buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -3701,7 +3701,7 @@ bdk_drag_drop (BdkDragContext *context,
  **/
 void
 bdk_drag_abort (BdkDragContext *context,
-		guint32         time)
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -3725,7 +3725,7 @@ bdk_drag_abort (BdkDragContext *context,
 void             
 bdk_drag_status (BdkDragContext   *context,
 		 BdkDragAction     action,
-		 guint32           time)
+		 buint32           time)
 {
   BdkDragContextPrivateX11 *private;
   XEvent xev;
@@ -3740,7 +3740,7 @@ bdk_drag_status (BdkDragContext   *context,
 
   if (context->protocol == BDK_DRAG_PROTO_MOTIF)
     {
-      gboolean need_coords = FALSE;
+      bboolean need_coords = FALSE;
       
       xev.xclient.type = ClientMessage;
       xev.xclient.message_type = bdk_x11_get_xatom_by_name_for_display (display,
@@ -3850,8 +3850,8 @@ bdk_drag_status (BdkDragContext   *context,
  **/
 void 
 bdk_drop_reply (BdkDragContext   *context,
-		gboolean          ok,
-		guint32           time)
+		bboolean          ok,
+		buint32           time)
 {
   BdkDragContextPrivateX11 *private;
 
@@ -3905,8 +3905,8 @@ bdk_drop_reply (BdkDragContext   *context,
  **/
 void             
 bdk_drop_finish (BdkDragContext   *context,
-		 gboolean          success,
-		 guint32           time)
+		 bboolean          success,
+		 buint32           time)
 {
   g_return_if_fail (context != NULL);
 
@@ -3947,7 +3947,7 @@ bdk_drop_finish (BdkDragContext   *context,
 void            
 bdk_window_register_dnd (BdkWindow      *window)
 {
-  static const gulong xdnd_version = 5;
+  static const bulong xdnd_version = 5;
   MotifDragReceiverInfo info;
   Atom motif_drag_receiver_info_atom;
   BdkDisplay *display = bdk_drawable_get_display (window);
@@ -3959,10 +3959,10 @@ bdk_window_register_dnd (BdkWindow      *window)
 
   base_precache_atoms (display);
 
-  if (g_object_get_data (G_OBJECT (window), "bdk-dnd-registered") != NULL)
+  if (g_object_get_data (B_OBJECT (window), "bdk-dnd-registered") != NULL)
     return;
   else
-    g_object_set_data (G_OBJECT (window), "bdk-dnd-registered", GINT_TO_POINTER (TRUE));
+    g_object_set_data (B_OBJECT (window), "bdk-dnd-registered", BINT_TO_POINTER (TRUE));
   
   /* Set Motif drag receiver information property */
 
@@ -3981,7 +3981,7 @@ bdk_window_register_dnd (BdkWindow      *window)
 		   motif_drag_receiver_info_atom,
 		   motif_drag_receiver_info_atom,
 		   8, PropModeReplace,
-		   (guchar *)&info,
+		   (buchar *)&info,
 		   sizeof (info));
 
   /* Set XdndAware */
@@ -3991,7 +3991,7 @@ bdk_window_register_dnd (BdkWindow      *window)
 		   BDK_DRAWABLE_XID (window),
 		   bdk_x11_get_xatom_by_name_for_display (display, "XdndAware"),
 		   XA_ATOM, 32, PropModeReplace,
-		   (guchar *)&xdnd_version, 1);
+		   (buchar *)&xdnd_version, 1);
 }
 
 /**
@@ -4029,7 +4029,7 @@ bdk_drag_get_selection (BdkDragContext *context)
  *
  * Since: 2.6
  **/
-gboolean 
+bboolean 
 bdk_drag_drop_succeeded (BdkDragContext *context)
 {
   BdkDragContextPrivateX11 *private;

@@ -80,7 +80,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkIMContextSimple.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> <a class="link" href="BtkIMContext.html" title="BtkIMContext">BtkIMContext</a>
         <span class="lineart">╰──</span> BtkIMContextSimple
 </pre>
@@ -110,13 +110,13 @@ btk_im_context_simple_new (<em class="parameter"><code><span class="type">void</
 <a name="btk-im-context-simple-add-table"></a><h3>btk_im_context_simple_add_table ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_im_context_simple_add_table (<em class="parameter"><code><a class="link" href="BtkIMContextSimple.html" title="BtkIMContextSimple"><span class="type">BtkIMContextSimple</span></a> *context_simple</code></em>,
-                                 <em class="parameter"><code><span class="type">guint16</span> *data</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> max_seq_len</code></em>,
-                                 <em class="parameter"><code><span class="type">gint</span> n_seqs</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">buint16</span> *data</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> max_seq_len</code></em>,
+                                 <em class="parameter"><code><span class="type">bint</span> n_seqs</code></em>);</pre>
 <p>Adds an additional table to search to the input context.
 Each row of the table consists of <em class="parameter"><code>max_seq_len</code></em>
  key symbols
-followed by two <span class="type">guint16</span> interpreted as the high and low
+followed by two <span class="type">buint16</span> interpreted as the high and low
 words of a <span class="type">gunicode</span> value. Tables are searched starting
 from the last added.</p>
 <p>The table must be sorted in dictionary order on the

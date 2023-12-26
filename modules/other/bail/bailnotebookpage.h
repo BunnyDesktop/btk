@@ -23,14 +23,14 @@
 #include <bail/bailnotebook.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_NOTEBOOK_PAGE            (bail_notebook_page_get_type ())
-#define BAIL_NOTEBOOK_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
-#define BAIL_NOTEBOOK_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
-#define BAIL_IS_NOTEBOOK_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK_PAGE))
-#define BAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK_PAGE))
-#define BAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
+#define BAIL_NOTEBOOK_PAGE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
+#define BAIL_NOTEBOOK_PAGE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
+#define BAIL_IS_NOTEBOOK_PAGE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
 
 typedef struct _BailNotebookPage                      BailNotebookPage;
 typedef struct _BailNotebookPageClass                 BailNotebookPageClass;
@@ -43,11 +43,11 @@ struct _BailNotebookPage
 #ifndef BTK_DISABLE_DEPRECATED
   BtkNotebookPage *page;
 #else
-  gpointer page;
+  bpointer page;
 #endif
   
-  gint index;
-  guint notify_child_added_id;
+  bint index;
+  buint notify_child_added_id;
 
   BailTextUtil *textutil;
 };
@@ -59,8 +59,8 @@ struct _BailNotebookPageClass
   BatkObjectClass parent_class;
 };
 
-BatkObject *bail_notebook_page_new(BtkNotebook *notebook, gint pagenum);
+BatkObject *bail_notebook_page_new(BtkNotebook *notebook, bint pagenum);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_NOTEBOOK_PAGE_H__ */

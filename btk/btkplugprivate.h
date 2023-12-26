@@ -96,7 +96,7 @@ void _btk_plug_windowing_set_focus (BtkPlug *plug);
  * corresponding #BtkSocket to grab the key.
  */
 void _btk_plug_windowing_add_grabbed_key (BtkPlug         *plug,
-					  guint            accelerator_key,
+					  buint            accelerator_key,
 					  BdkModifierType  accelerator_mods);
 
 /*
@@ -110,7 +110,7 @@ void _btk_plug_windowing_add_grabbed_key (BtkPlug         *plug,
  * corresponding #BtkSocket to remove the key grab.
  */
 void _btk_plug_windowing_remove_grabbed_key (BtkPlug         *plug,
-					     guint            accelerator_key,
+					     buint            accelerator_key,
 					     BdkModifierType  accelerator_mods);
 
 /*
@@ -136,6 +136,6 @@ void _btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
  */
 BdkFilterReturn _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 						 BdkEvent  *event,
-						 gpointer   data);
+						 bpointer   data);
 
 #endif /* __BTK_PLUG_PRIVATE_H__ */

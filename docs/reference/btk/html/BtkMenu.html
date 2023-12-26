@@ -128,7 +128,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenu.html#btk-menu-get-accel-path" title="btk_menu_get_accel_path ()">btk_menu_get_accel_path</a> <span class="c_punctuation">()</span>
@@ -143,7 +143,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenu.html#btk-menu-get-title" title="btk_menu_get_title ()">btk_menu_get_title</a> <span class="c_punctuation">()</span>
@@ -159,7 +159,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenu.html#btk-menu-get-monitor" title="btk_menu_get_monitor ()">btk_menu_get_monitor</a> <span class="c_punctuation">()</span>
@@ -167,7 +167,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenu.html#btk-menu-get-tearoff-state" title="btk_menu_get_tearoff_state ()">btk_menu_get_tearoff_state</a> <span class="c_punctuation">()</span>
@@ -183,7 +183,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkMenu.html#btk-menu-get-reserve-toggle-size" title="btk_menu_get_reserve_toggle_size ()">btk_menu_get_reserve_toggle_size</a> <span class="c_punctuation">()</span>
@@ -318,12 +318,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenu.html#BtkMenu--reserve-toggle-size" title="The “reserve-toggle-size” property">reserve-toggle-size</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenu.html#BtkMenu--tearoff-state" title="The “tearoff-state” property">tearoff-state</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -388,7 +388,7 @@
 <td class="property_flags">Read</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkMenu.html#BtkMenu--s-double-arrows" title="The “double-arrows” style property">double-arrows</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -445,7 +445,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkMenu.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -535,7 +535,7 @@ determined by the widget the menu is attached to. </p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_reorder_child (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
                         <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> position</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> position</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -543,10 +543,10 @@ btk_menu_reorder_child (<em class="parameter"><code><a class="link" href="BtkMen
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_attach (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
                  <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> left_attach</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> right_attach</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> top_attach</code></em>,
-                 <em class="parameter"><code><span class="type">guint</span> bottom_attach</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">buint</span> left_attach</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> right_attach</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> top_attach</code></em>,
+                 <em class="parameter"><code><span class="type">buint</span> bottom_attach</code></em>);</pre>
 <p>Adds a new <a class="link" href="BtkMenuItem.html" title="BtkMenuItem"><span class="type">BtkMenuItem</span></a> to a (table) menu. The number of 'cells' that
 an item will occupy is specified by <em class="parameter"><code>left_attach</code></em>
 , <em class="parameter"><code>right_attach</code></em>
@@ -609,9 +609,9 @@ btk_menu_popup (<em class="parameter"><code><a class="link" href="BtkMenu.html" 
                 <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *parent_menu_shell</code></em>,
                 <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *parent_menu_item</code></em>,
                 <em class="parameter"><code><a class="link" href="BtkMenu.html#BtkMenuPositionFunc" title="BtkMenuPositionFunc ()"><span class="type">BtkMenuPositionFunc</span></a> func</code></em>,
-                <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                <em class="parameter"><code><span class="type">guint</span> button</code></em>,
-                <em class="parameter"><code><span class="type">guint32</span> activate_time</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
+                <em class="parameter"><code><span class="type">buint</span> button</code></em>,
+                <em class="parameter"><code><span class="type">buint32</span> activate_time</code></em>);</pre>
 <p>Displays a menu and makes it available for selection.  Applications can use
 this function to display context-sensitive menus, and will typically supply
 <code class="literal">NULL</code> for the <em class="parameter"><code>parent_menu_shell</code></em>
@@ -723,7 +723,7 @@ menu.  See <a class="link" href="BtkMenu.html#btk-menu-set-accel-group" title="b
 <a name="btk-menu-set-accel-path"></a><h3>btk_menu_set_accel_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_accel_path (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *accel_path</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *accel_path</code></em>);</pre>
 <p>Sets an accelerator path for this menu from which accelerator paths
 for its immediate children, its menu items, can be constructed.
 The main purpose of this function is to spare the programmer the
@@ -769,7 +769,7 @@ pass a static string, you can save some memory by interning it first with
 <hr>
 <div class="refsect2">
 <a name="btk-menu-get-accel-path"></a><h3>btk_menu_get_accel_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_menu_get_accel_path (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>);</pre>
 <p>Retrieves the accelerator path set on the menu.</p>
 <div class="refsect3">
@@ -798,7 +798,7 @@ btk_menu_get_accel_path (<em class="parameter"><code><a class="link" href="BtkMe
 <a name="btk-menu-set-title"></a><h3>btk_menu_set_title ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_title (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                    <em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>);</pre>
+                    <em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>);</pre>
 <p>Sets the title string for the menu.  The title is displayed when the menu
 is shown as a tearoff menu.  If <em class="parameter"><code>title</code></em>
  is <code class="literal">NULL</code>, the menu will see if it is
@@ -830,7 +830,7 @@ that menu item's label.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-get-title"></a><h3>btk_menu_get_title ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_menu_get_title (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>);</pre>
 <p>Returns the title of the menu. See <a class="link" href="BtkMenu.html#btk-menu-set-title" title="btk_menu_set_title ()"><code class="function">btk_menu_set_title()</code></a>.</p>
 <div class="refsect3">
@@ -860,7 +860,7 @@ not be modified or freed.</p>
 <a name="btk-menu-set-monitor"></a><h3>btk_menu_set_monitor ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_monitor (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> monitor_num</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> monitor_num</code></em>);</pre>
 <p>Informs BTK+ on which monitor a menu should be popped up. 
 See <a href="../html/BdkScreen.html#bdk-screen-get-monitor-geometry"><code class="function">bdk_screen_get_monitor_geometry()</code></a>.</p>
 <p>This function should be called from a <a class="link" href="BtkMenu.html#BtkMenuPositionFunc" title="BtkMenuPositionFunc ()"><span class="type">BtkMenuPositionFunc</span></a> if the
@@ -896,7 +896,7 @@ be popped up</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-get-monitor"></a><h3>btk_menu_get_monitor ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_menu_get_monitor (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>);</pre>
 <p>Retrieves the number of the monitor on which to show the menu.</p>
 <div class="refsect3">
@@ -924,7 +924,7 @@ be popped up or -1, if no monitor has been set</p>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-get-tearoff-state"></a><h3>btk_menu_get_tearoff_state ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_menu_get_tearoff_state (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>);</pre>
 <p>Returns whether the menu is torn off. See
 <a class="link" href="BtkMenu.html#btk-menu-set-tearoff-state" title="btk_menu_set_tearoff_state ()"><code class="function">btk_menu_set_tearoff_state()</code></a>.</p>
@@ -953,7 +953,7 @@ btk_menu_get_tearoff_state (<em class="parameter"><code><a class="link" href="Bt
 <a name="btk-menu-set-reserve-toggle-size"></a><h3>btk_menu_set_reserve_toggle_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_reserve_toggle_size (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                                  <em class="parameter"><code><span class="type">gboolean</span> reserve_toggle_size</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bboolean</span> reserve_toggle_size</code></em>);</pre>
 <p>Sets whether the menu should reserve space for drawing toggles 
 or icons, regardless of their actual presence.</p>
 <div class="refsect3">
@@ -983,7 +983,7 @@ or icons, regardless of their actual presence.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-get-reserve-toggle-size"></a><h3>btk_menu_get_reserve_toggle_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_menu_get_reserve_toggle_size (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>);</pre>
 <p>Returns whether the menu reserves space for toggles and
 icons, regardless of their actual presence.</p>
@@ -1055,14 +1055,14 @@ first menu item is selected. </p>
 <a name="btk-menu-set-active"></a><h3>btk_menu_set_active ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_active (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                     <em class="parameter"><code><span class="type">guint</span> index_</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">buint</span> index_</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-menu-set-tearoff-state"></a><h3>btk_menu_set_tearoff_state ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_menu_set_tearoff_state (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                            <em class="parameter"><code><span class="type">gboolean</span> torn_off</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bboolean</span> torn_off</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -1139,10 +1139,10 @@ This list is owned by BTK+ and must not be modified.</p>
 <a name="BtkMenuPositionFunc"></a><h3>BtkMenuPositionFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkMenuPositionFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a> *menu</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *y</code></em>,
-                        <em class="parameter"><code><span class="type">gboolean</span> *push_in</code></em>,
-                        <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> *x</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> *y</code></em>,
+                        <em class="parameter"><code><span class="type">bboolean</span> *push_in</code></em>,
+                        <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -1216,7 +1216,7 @@ use <a class="link" href="BtkMenu.html#btk-menu-attach-to-widget" title="btk_men
 <hr>
 <div class="refsect2">
 <a name="BtkMenu--reserve-toggle-size"></a><h3>The <code class="literal">“reserve-toggle-size”</code> property</h3>
-<pre class="programlisting">  “reserve-toggle-size”      <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “reserve-toggle-size”      <span class="type">bboolean</span></pre>
 <p>A boolean that indicates whether the menu reserves space for
 toggles and icons, regardless of their actual presence.</p>
 <p>This property should only be changed from its default value
@@ -1231,7 +1231,7 @@ toggle space for consistency.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMenu--tearoff-state"></a><h3>The <code class="literal">“tearoff-state”</code> property</h3>
-<pre class="programlisting">  “tearoff-state”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “tearoff-state”            <span class="type">bboolean</span></pre>
 <p>A boolean that indicates whether the menu is torn-off.</p>
 <p>Owner: BtkMenu</p>
 <p>Flags: Read / Write</p>
@@ -1314,7 +1314,7 @@ toggle space for consistency.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkMenu--s-double-arrows"></a><h3>The <code class="literal">“double-arrows”</code> style property</h3>
-<pre class="programlisting">  “double-arrows”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “double-arrows”            <span class="type">bboolean</span></pre>
 <p>When scrolling, always show both arrows.</p>
 <p>Owner: BtkMenu</p>
 <p>Flags: Read</p>
@@ -1366,7 +1366,7 @@ toggle space for consistency.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkMenu.html" title="BtkMenu"><span class="type">BtkMenu</span></a>      *menu,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a> arg1,
-               <span class="type">gpointer</span>      user_data)</pre>
+               <span class="type">bpointer</span>      user_data)</pre>
 <p>Flags: Action</p>
 </div>
 </div>

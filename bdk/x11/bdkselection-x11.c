@@ -43,7 +43,7 @@ struct _OwnerInfo
 {
   BdkAtom    selection;
   BdkWindow *owner;
-  gulong     serial;
+  bulong     serial;
 };
 
 static GSList *owner_list;
@@ -64,7 +64,7 @@ _bdk_selection_window_destroyed (BdkWindow *window)
       
       if (info->owner == window)
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	}
     }
@@ -73,7 +73,7 @@ _bdk_selection_window_destroyed (BdkWindow *window)
 /* We only pass through those SelectionClear events that actually
  * reflect changes to the selection owner that we didn't make ourself.
  */
-gboolean
+bboolean
 _bdk_selection_filter_clear_event (XSelectionClearEvent *event)
 {
   GSList *tmp_list = owner_list;
@@ -89,7 +89,7 @@ _bdk_selection_filter_clear_event (XSelectionClearEvent *event)
 	  if ((BDK_DRAWABLE_XID (info->owner) == event->window &&
 	       event->serial >= info->serial))
 	    {
-	      owner_list = g_slist_remove (owner_list, info);
+	      owner_list = b_slist_remove (owner_list, info);
 	      g_free (info);
 	      return TRUE;
 	    }
@@ -120,12 +120,12 @@ _bdk_selection_filter_clear_event (XSelectionClearEvent *event)
  *
  * Since: 2.2
  */
-gboolean
+bboolean
 bdk_selection_owner_set_for_display (BdkDisplay *display,
 				     BdkWindow  *owner,
 				     BdkAtom     selection,
-				     guint32     time, 
-				     gboolean    send_event)
+				     buint32     time, 
+				     bboolean    send_event)
 {
   Display *xdisplay;
   Window xwindow;
@@ -162,7 +162,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info = tmp_list->data;
       if (info->selection == selection) 
 	{
-	  owner_list = g_slist_remove (owner_list, info);
+	  owner_list = b_slist_remove (owner_list, info);
 	  g_free (info);
 	  break;
 	}
@@ -176,7 +176,7 @@ bdk_selection_owner_set_for_display (BdkDisplay *display,
       info->serial = NextRequest (BDK_WINDOW_XDISPLAY (owner));
       info->selection = selection;
 
-      owner_list = g_slist_prepend (owner_list, info);
+      owner_list = b_slist_prepend (owner_list, info);
     }
 
   XSetSelectionOwner (xdisplay, xselection, xwindow, time);
@@ -226,7 +226,7 @@ void
 bdk_selection_convert (BdkWindow *requestor,
 		       BdkAtom    selection,
 		       BdkAtom    target,
-		       guint32    time)
+		       buint32    time)
 {
   BdkDisplay *display;
 
@@ -265,18 +265,18 @@ bdk_selection_convert (BdkWindow *requestor,
  * 
  * Return value: the length of the retrieved data.
  **/
-gint
+bint
 bdk_selection_property_get (BdkWindow  *requestor,
-			    guchar    **data,
+			    buchar    **data,
 			    BdkAtom    *ret_type,
-			    gint       *ret_format)
+			    bint       *ret_format)
 {
-  gulong nitems;
-  gulong nbytes;
-  gulong length = 0;		/* Quiet GCC */
+  bulong nitems;
+  bulong nbytes;
+  bulong length = 0;		/* Quiet GCC */
   Atom prop_type;
-  gint prop_format;
-  guchar *t = NULL;
+  bint prop_format;
+  buchar *t = NULL;
   BdkDisplay *display; 
 
   g_return_val_if_fail (requestor != NULL, 0);
@@ -314,7 +314,7 @@ bdk_selection_property_get (BdkWindow  *requestor,
 	{
 	  Atom* atoms = (Atom*) t;
 	  BdkAtom* atoms_dest;
-	  gint num_atom, i;
+	  bint num_atom, i;
 
 	  if (prop_format != 32)
 	    goto err;
@@ -395,7 +395,7 @@ bdk_selection_send_notify_for_display (BdkDisplay       *display,
 				       BdkAtom          selection,
 				       BdkAtom          target,
 				       BdkAtom          property, 
-				       guint32          time)
+				       buint32          time)
 {
   XSelectionEvent xevent;
   
@@ -441,13 +441,13 @@ bdk_selection_send_notify_for_display (BdkDisplay       *display,
  *
  * Deprecated:2.24: Use bdk_x11_display_text_property_to_text_list()
  */
-gint
+bint
 bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
 					    BdkAtom       encoding,
-					    gint          format,
-					    const guchar *text,
-					    gint          length,
-					    gchar      ***list)
+					    bint          format,
+					    const buchar *text,
+					    bint          length,
+					    bchar      ***list)
 {
   return bdk_x11_display_text_property_to_text_list (display,
                                                      encoding,
@@ -457,18 +457,18 @@ bdk_text_property_to_text_list_for_display (BdkDisplay   *display,
                                                      list);
 }
 
-gint
+bint
 bdk_x11_display_text_property_to_text_list (BdkDisplay   *display,
 					    BdkAtom       encoding,
-					    gint          format, 
-					    const guchar *text,
-					    gint          length,
-					    gchar      ***list)
+					    bint          format, 
+					    const buchar *text,
+					    bint          length,
+					    bchar      ***list)
 {
   XTextProperty property;
-  gint count = 0;
-  gint res;
-  gchar **local_list;
+  bint count = 0;
+  bint res;
+  bchar **local_list;
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
 
   if (list)
@@ -477,7 +477,7 @@ bdk_x11_display_text_property_to_text_list (BdkDisplay   *display,
   if (display->closed)
     return 0;
 
-  property.value = (guchar *)text;
+  property.value = (buchar *)text;
   property.encoding = bdk_x11_atom_to_xatom_for_display (display, encoding);
   property.format = format;
   property.nitems = length;
@@ -497,36 +497,36 @@ bdk_x11_display_text_property_to_text_list (BdkDisplay   *display,
 }
 
 void
-bdk_free_text_list (gchar **list)
+bdk_free_text_list (bchar **list)
 {
   bdk_x11_free_text_list (list);
 }
 
 void
-bdk_x11_free_text_list (gchar **list)
+bdk_x11_free_text_list (bchar **list)
 {
   g_return_if_fail (list != NULL);
 
   XFreeStringList (list);
 }
 
-static gint
-make_list (const gchar  *text,
-	   gint          length,
-	   gboolean      latin1,
-	   gchar      ***list)
+static bint
+make_list (const bchar  *text,
+	   bint          length,
+	   bboolean      latin1,
+	   bchar      ***list)
 {
   GSList *strings = NULL;
-  gint n_strings = 0;
-  gint i;
-  const gchar *p = text;
-  const gchar *q;
+  bint n_strings = 0;
+  bint i;
+  const bchar *p = text;
+  const bchar *q;
   GSList *tmp_list;
   GError *error = NULL;
 
   while (p < text + length)
     {
-      gchar *str;
+      bchar *str;
       
       q = p;
       while (*q && q < text + length)
@@ -558,7 +558,7 @@ make_list (const gchar  *text,
 
       if (str)
 	{
-	  strings = g_slist_prepend (strings, str);
+	  strings = b_slist_prepend (strings, str);
 	  n_strings++;
 	}
 
@@ -567,7 +567,7 @@ make_list (const gchar  *text,
 
   if (list)
     {
-      *list = g_new (gchar *, n_strings + 1);
+      *list = g_new (bchar *, n_strings + 1);
       (*list)[n_strings] = NULL;
     }
      
@@ -583,7 +583,7 @@ make_list (const gchar  *text,
       tmp_list = tmp_list->next;
     }
   
-  g_slist_free (strings);
+  b_slist_free (strings);
 
   return n_strings;
 }
@@ -606,13 +606,13 @@ make_list (const gchar  *text,
  *
  * Since: 2.2
  **/
-gint 
+bint 
 bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
 					    BdkAtom        encoding,
-					    gint           format,
-					    const guchar  *text,
-					    gint           length,
-					    gchar       ***list)
+					    bint           format,
+					    const buchar  *text,
+					    bint           length,
+					    bchar       ***list)
 {
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
@@ -620,20 +620,20 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
   
   if (encoding == BDK_TARGET_STRING)
     {
-      return make_list ((gchar *)text, length, TRUE, list);
+      return make_list ((bchar *)text, length, TRUE, list);
     }
   else if (encoding == bdk_atom_intern_static_string ("UTF8_STRING"))
     {
-      return make_list ((gchar *)text, length, FALSE, list);
+      return make_list ((bchar *)text, length, FALSE, list);
     }
   else
     {
-      gchar **local_list;
-      gint local_count;
-      gint i;
-      const gchar *charset = NULL;
-      gboolean need_conversion = !g_get_charset (&charset);
-      gint count = 0;
+      bchar **local_list;
+      bint local_count;
+      bint i;
+      const bchar *charset = NULL;
+      bboolean need_conversion = !g_get_charset (&charset);
+      bint count = 0;
       GError *error = NULL;
       
       /* Probably COMPOUND text, we fall back to Xlib routines
@@ -645,7 +645,7 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
 								length,
 								&local_list);
       if (list)
-	*list = g_new (gchar *, local_count + 1);
+	*list = g_new (bchar *, local_count + 1);
       
       for (i=0; i<local_count; i++)
 	{
@@ -653,7 +653,7 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
 	   */
 	  if (need_conversion)
 	    {
-	      gchar *utf = g_convert (local_list[i], -1,
+	      bchar *utf = g_convert (local_list[i], -1,
 				      "UTF-8", charset,
 				      NULL, NULL, &error);
 	      if (utf)
@@ -712,26 +712,26 @@ bdk_text_property_to_utf8_list_for_display (BdkDisplay    *display,
  *
  * Deprecated:2.24: Use bdk_x11_display_string_to_compound_text()
  **/
-gint
+bint
 bdk_string_to_compound_text_for_display (BdkDisplay  *display,
-					 const gchar *str,
+					 const bchar *str,
 					 BdkAtom     *encoding,
-					 gint        *format,
-					 guchar     **ctext,
-					 gint        *length)
+					 bint        *format,
+					 buchar     **ctext,
+					 bint        *length)
 {
   return bdk_x11_display_string_to_compound_text (display, str, encoding, format, ctext, length);
 }
 
-gint
+bint
 bdk_x11_display_string_to_compound_text (BdkDisplay  *display,
-					 const gchar *str,
+					 const bchar *str,
 					 BdkAtom     *encoding,
-					 gint        *format,
-					 guchar     **ctext,
-					 gint        *length)
+					 bint        *format,
+					 buchar     **ctext,
+					 bint        *length)
 {
-  gint res;
+  bint res;
   XTextProperty property;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -769,13 +769,13 @@ bdk_x11_display_string_to_compound_text (BdkDisplay  *display,
  * This routine strips out all non-allowed C0 and C1 characters
  * from the input string and also canonicalizes \r, and \r\n to \n
  */
-static gchar * 
-sanitize_utf8 (const gchar *src,
-	       gboolean return_latin1)
+static bchar * 
+sanitize_utf8 (const bchar *src,
+	       bboolean return_latin1)
 {
-  gint len = strlen (src);
+  bint len = strlen (src);
   GString *result = g_string_sized_new (len);
-  const gchar *p = src;
+  const bchar *p = src;
 
   while (*p)
     {
@@ -805,7 +805,7 @@ sanitize_utf8 (const gchar *src,
 	      else
 		{
 		  char buf[7];
-		  gint buflen;
+		  bint buflen;
 		  
 		  buflen = g_unichar_to_utf8 (ch, buf);
 		  g_string_append_len (result, buf, buflen);
@@ -833,8 +833,8 @@ sanitize_utf8 (const gchar *src,
  *               any properly formed UTF-8 string unless system
  *               limits like memory or file descriptors are exceeded.)
  **/
-gchar *
-bdk_utf8_to_string_target (const gchar *str)
+bchar *
+bdk_utf8_to_string_target (const bchar *str)
 {
   return sanitize_utf8 (str, TRUE);
 }
@@ -858,30 +858,30 @@ bdk_utf8_to_string_target (const gchar *str)
  *
  * Deprecated:2.24: Use bdk_x11_display_utf8_to_compound_text()
  **/
-gboolean
+bboolean
 bdk_utf8_to_compound_text_for_display (BdkDisplay  *display,
-				       const gchar *str,
+				       const bchar *str,
 				       BdkAtom     *encoding,
-				       gint        *format,
-				       guchar     **ctext,
-				       gint        *length)
+				       bint        *format,
+				       buchar     **ctext,
+				       bint        *length)
 {
   return bdk_x11_display_utf8_to_compound_text (display, str, encoding, format, ctext, length);
 }
 
-gboolean
+bboolean
 bdk_x11_display_utf8_to_compound_text (BdkDisplay  *display,
-				       const gchar *str,
+				       const bchar *str,
 				       BdkAtom     *encoding,
-				       gint        *format,
-				       guchar     **ctext,
-				       gint        *length)
+				       bint        *format,
+				       buchar     **ctext,
+				       bint        *length)
 {
-  gboolean need_conversion;
-  const gchar *charset;
-  gchar *locale_str, *tmp_str;
+  bboolean need_conversion;
+  const bchar *charset;
+  bchar *locale_str, *tmp_str;
   GError *error = NULL;
-  gboolean result;
+  bboolean result;
 
   g_return_val_if_fail (str != NULL, FALSE);
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -932,12 +932,12 @@ bdk_x11_display_utf8_to_compound_text (BdkDisplay  *display,
   return result;
 }
 
-void bdk_free_compound_text (guchar *ctext)
+void bdk_free_compound_text (buchar *ctext)
 {
   bdk_x11_free_compound_text (ctext);
 }
 
-void bdk_x11_free_compound_text (guchar *ctext)
+void bdk_x11_free_compound_text (buchar *ctext)
 {
   if (ctext)
     XFree (ctext);

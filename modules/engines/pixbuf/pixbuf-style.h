@@ -25,14 +25,14 @@
 typedef struct _PixbufStyle PixbufStyle;
 typedef struct _PixbufStyleClass PixbufStyleClass;
 
-extern G_GNUC_INTERNAL GType pixbuf_type_style;
+extern B_GNUC_INTERNAL GType pixbuf_type_style;
 
 #define PIXBUF_TYPE_STYLE              pixbuf_type_style
-#define PIXBUF_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), PIXBUF_TYPE_STYLE, PixbufStyle))
-#define PIXBUF_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), PIXBUF_TYPE_STYLE, PixbufStyleClass))
-#define PIXBUF_IS_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), PIXBUF_TYPE_STYLE))
-#define PIXBUF_IS_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), PIXBUF_TYPE_STYLE))
-#define PIXBUF_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), PIXBUF_TYPE_STYLE, PixbufStyleClass))
+#define PIXBUF_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), PIXBUF_TYPE_STYLE, PixbufStyle))
+#define PIXBUF_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), PIXBUF_TYPE_STYLE, PixbufStyleClass))
+#define PIXBUF_IS_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), PIXBUF_TYPE_STYLE))
+#define PIXBUF_IS_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), PIXBUF_TYPE_STYLE))
+#define PIXBUF_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), PIXBUF_TYPE_STYLE, PixbufStyleClass))
 
 struct _PixbufStyle
 {
@@ -44,6 +44,6 @@ struct _PixbufStyleClass
   BtkStyleClass parent_class;
 };
 
-G_GNUC_INTERNAL void pixbuf_style_register_type (GTypeModule *module);
+B_GNUC_INTERNAL void pixbuf_style_register_type (GTypeModule *module);
 
 

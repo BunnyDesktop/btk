@@ -187,7 +187,7 @@ The selection API has been slightly modified:
   void btk_selection_add_target (BtkWidget           *widget, 
 	  	                 BdkAtom              selection,
 			         BdkAtom              target,
-			         guint                info);
+			         buint                info);
 </programlisting>
 
  or:
@@ -196,7 +196,7 @@ The selection API has been slightly modified:
   void btk_selection_add_targets (BtkWidget           *widget, 
 	  			  BdkAtom              selection,
 				  BtkTargetEntry      *targets,
-				  guint                ntargets);
+				  buint                ntargets);
 </programlisting>
 
  When a request for a selection is received, the new "selection_get"
@@ -205,8 +205,8 @@ The selection API has been slightly modified:
 <programlisting>
    void  "selection_get"           (BtkWidget          *widget,
 				    BtkSelectionData   *selection_data,
-				    guint               info,
-				    guint               time);
+				    buint               info,
+				    buint               time);
 </programlisting>
 
  A "time" parameter has also been added to the "selection_received"
@@ -215,7 +215,7 @@ The selection API has been slightly modified:
 <programlisting>
   void  "selection_received"       (BtkWidget          *widget,
 				    BtkSelectionData   *selection_data,
-				    guint               time);
+				    buint               time);
 </programlisting>
 </para>
 </listitem>
@@ -322,7 +322,7 @@ All freeze/thaw methods are now recursive - that is, if you
   Therefore, if you have code like:
 
 <informalexample><programlisting>
-  gboolean frozen;
+  bboolean frozen;
   frozen = BTK_CLIST_FROZEN (clist);
   btk_clist_freeze (clist);
   [...]

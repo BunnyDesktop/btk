@@ -21,7 +21,7 @@ static BtkWidget *create_list( void )
 				    BTK_POLICY_AUTOMATIC, 
 				    BTK_POLICY_AUTOMATIC);
    
-    model = btk_list_store_new (1, G_TYPE_STRING);
+    model = btk_list_store_new (1, B_TYPE_STRING);
     tree_view = btk_tree_view_new ();
     btk_scrolled_window_add_with_viewport (BTK_SCROLLED_WINDOW (scrolled_window), 
                                            tree_view);
@@ -30,7 +30,7 @@ static BtkWidget *create_list( void )
    
     /* Add some messages to the window */
     for (i = 0; i < 10; i++) {
-        gchar *msg = g_strdup_printf ("Message #%d", i);
+        bchar *msg = g_strdup_printf ("Message #%d", i);
         btk_list_store_append (BTK_LIST_STORE (model), &iter);
         btk_list_store_set (BTK_LIST_STORE (model), 
 	                    &iter,
@@ -109,7 +109,7 @@ int main( int   argc,
    
     window = btk_window_new (BTK_WINDOW_TOPLEVEL);
     btk_window_set_title (BTK_WINDOW (window), "Paned Windows");
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
 	              G_CALLBACK (btk_main_quit), NULL);
     btk_container_set_border_width (BTK_CONTAINER (window), 10);
     btk_widget_set_size_request (BTK_WIDGET (window), 450, 400);

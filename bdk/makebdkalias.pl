@@ -14,7 +14,7 @@ print <<EOF;
 
 #include <bunnylib.h>
 
-#ifdef G_HAVE_GNUC_VISIBILITY
+#ifdef B_HAVE_GNUC_VISIBILITY
 
 EOF
 
@@ -130,7 +130,7 @@ EOF
 
 print <<EOF;
 
-#endif /* G_HAVE_GNUC_VISIBILITY */
+#endif /* B_HAVE_GNUC_VISIBILITY */
 #endif /* DISABLE_VISIBILITY */
 EOF
 

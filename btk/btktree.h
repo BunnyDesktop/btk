@@ -33,17 +33,17 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* set this flag to enable tree debugging output */
 /* #define TREE_DEBUG */
 
 #define BTK_TYPE_TREE                  (btk_tree_get_type ())
-#define BTK_TREE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE, BtkTree))
-#define BTK_TREE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE, BtkTreeClass))
-#define BTK_IS_TREE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE))
-#define BTK_IS_TREE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE))
-#define BTK_TREE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE, BtkTreeClass))
+#define BTK_TREE(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE, BtkTree))
+#define BTK_TREE_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE, BtkTreeClass))
+#define BTK_IS_TREE(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE))
+#define BTK_IS_TREE_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE))
+#define BTK_TREE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE, BtkTreeClass))
 
 
 #define BTK_IS_ROOT_TREE(obj)   ((BtkObject*) BTK_TREE(obj)->root_tree == (BtkObject*)obj)
@@ -68,12 +68,12 @@ struct _BtkTree
   BtkTree* root_tree; /* owner of selection list */
   BtkWidget* tree_owner;
   GList *selection;
-  guint level;
-  guint indent_value;
-  guint current_indent;
-  guint selection_mode : 2;
-  guint view_mode : 1;
-  guint view_line : 1;
+  buint level;
+  buint indent_value;
+  buint current_indent;
+  buint selection_mode : 2;
+  buint view_mode : 1;
+  buint view_line : 1;
 };
 
 struct _BtkTreeClass
@@ -88,7 +88,7 @@ struct _BtkTreeClass
 };
 
 
-GType      btk_tree_get_type           (void) G_GNUC_CONST;
+GType      btk_tree_get_type           (void) B_GNUC_CONST;
 BtkWidget* btk_tree_new                (void);
 void       btk_tree_append             (BtkTree          *tree,
 				        BtkWidget        *tree_item);
@@ -96,28 +96,28 @@ void       btk_tree_prepend            (BtkTree          *tree,
 				        BtkWidget        *tree_item);
 void       btk_tree_insert             (BtkTree          *tree,
 				        BtkWidget        *tree_item,
-				        gint              position);
+				        bint              position);
 void       btk_tree_remove_items       (BtkTree          *tree,
 				        GList            *items);
 void       btk_tree_clear_items        (BtkTree          *tree,
-				        gint              start,
-				        gint              end);
+				        bint              start,
+				        bint              end);
 void       btk_tree_select_item        (BtkTree          *tree,
-				        gint              item);
+				        bint              item);
 void       btk_tree_unselect_item      (BtkTree          *tree,
-				        gint              item);
+				        bint              item);
 void       btk_tree_select_child       (BtkTree          *tree,
 				        BtkWidget        *tree_item);
 void       btk_tree_unselect_child     (BtkTree          *tree,
 				        BtkWidget        *tree_item);
-gint       btk_tree_child_position     (BtkTree          *tree,
+bint       btk_tree_child_position     (BtkTree          *tree,
 				        BtkWidget        *child);
 void       btk_tree_set_selection_mode (BtkTree          *tree,
 				        BtkSelectionMode  mode);
 void       btk_tree_set_view_mode      (BtkTree          *tree,
 				        BtkTreeViewMode   mode); 
 void       btk_tree_set_view_lines     (BtkTree          *tree,
-					gboolean	  flag);
+					bboolean	  flag);
 
 /* deprecated function, use btk_container_remove instead.
  */
@@ -125,7 +125,7 @@ void       btk_tree_remove_item        (BtkTree          *tree,
 				        BtkWidget        *child);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_H__ */
 

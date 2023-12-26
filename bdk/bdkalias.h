@@ -4,7 +4,7 @@
 
 #include <bunnylib.h>
 
-#ifdef G_HAVE_GNUC_VISIBILITY
+#ifdef B_HAVE_GNUC_VISIBILITY
 
 #define IN_FILE(x) 1
 #define IN_HEADER defined
@@ -66,7 +66,7 @@ extern __typeof (bdk_event_get_state) IA__bdk_event_get_state __attribute((visib
 extern __typeof (bdk_event_get_time) IA__bdk_event_get_time __attribute((visibility("hidden")));
 #define bdk_event_get_time IA__bdk_event_get_time
 
-extern __typeof (bdk_event_get_type) IA__bdk_event_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_event_get_type) IA__bdk_event_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_event_get_type IA__bdk_event_get_type
 
 extern __typeof (bdk_event_handler_set) IA__bdk_event_handler_set __attribute((visibility("hidden")));
@@ -291,16 +291,16 @@ extern __typeof (bdk_input_add_full) IA__bdk_input_add_full __attribute((visibil
 #endif
 #if IN_HEADER(__BDK_H__)
 #if IN_FILE(__BDK_SCREEN_C__)
-extern __typeof (bdk_screen_width) IA__bdk_screen_width __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_screen_width) IA__bdk_screen_width __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_screen_width IA__bdk_screen_width
 
-extern __typeof (bdk_screen_width_mm) IA__bdk_screen_width_mm __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_screen_width_mm) IA__bdk_screen_width_mm __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_screen_width_mm IA__bdk_screen_width_mm
 
-extern __typeof (bdk_screen_height) IA__bdk_screen_height __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_screen_height) IA__bdk_screen_height __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_screen_height IA__bdk_screen_height
 
-extern __typeof (bdk_screen_height_mm) IA__bdk_screen_height_mm __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_screen_height_mm) IA__bdk_screen_height_mm __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_screen_height_mm IA__bdk_screen_height_mm
 
 #endif
@@ -395,144 +395,144 @@ extern __typeof (bdk_x11_free_text_list) IA__bdk_x11_free_text_list __attribute(
 #endif
 #if IN_HEADER(__BDK_ENUM_TYPES_H__)
 #if IN_FILE(__BDK_ENUM_TYPES_C__)
-extern __typeof (bdk_rgb_dither_get_type) IA__bdk_rgb_dither_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_rgb_dither_get_type) IA__bdk_rgb_dither_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_rgb_dither_get_type IA__bdk_rgb_dither_get_type
 
-extern __typeof (bdk_drag_protocol_get_type) IA__bdk_drag_protocol_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_drag_protocol_get_type) IA__bdk_drag_protocol_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_drag_protocol_get_type IA__bdk_drag_protocol_get_type
 
-extern __typeof (bdk_input_source_get_type) IA__bdk_input_source_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_input_source_get_type) IA__bdk_input_source_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_input_source_get_type IA__bdk_input_source_get_type
 
-extern __typeof (bdk_input_condition_get_type) IA__bdk_input_condition_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_input_condition_get_type) IA__bdk_input_condition_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_input_condition_get_type IA__bdk_input_condition_get_type
 
-extern __typeof (bdk_input_mode_get_type) IA__bdk_input_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_input_mode_get_type) IA__bdk_input_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_input_mode_get_type IA__bdk_input_mode_get_type
 
-extern __typeof (bdk_axis_use_get_type) IA__bdk_axis_use_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_axis_use_get_type) IA__bdk_axis_use_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_axis_use_get_type IA__bdk_axis_use_get_type
 
-extern __typeof (bdk_byte_order_get_type) IA__bdk_byte_order_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_byte_order_get_type) IA__bdk_byte_order_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_byte_order_get_type IA__bdk_byte_order_get_type
 
-extern __typeof (bdk_cap_style_get_type) IA__bdk_cap_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_cap_style_get_type) IA__bdk_cap_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_cap_style_get_type IA__bdk_cap_style_get_type
 
-extern __typeof (bdk_crossing_mode_get_type) IA__bdk_crossing_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_crossing_mode_get_type) IA__bdk_crossing_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_crossing_mode_get_type IA__bdk_crossing_mode_get_type
 
-extern __typeof (bdk_extension_mode_get_type) IA__bdk_extension_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_extension_mode_get_type) IA__bdk_extension_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_extension_mode_get_type IA__bdk_extension_mode_get_type
 
-extern __typeof (bdk_event_mask_get_type) IA__bdk_event_mask_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_event_mask_get_type) IA__bdk_event_mask_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_event_mask_get_type IA__bdk_event_mask_get_type
 
-extern __typeof (bdk_event_type_get_type) IA__bdk_event_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_event_type_get_type) IA__bdk_event_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_event_type_get_type IA__bdk_event_type_get_type
 
-extern __typeof (bdk_fill_get_type) IA__bdk_fill_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_fill_get_type) IA__bdk_fill_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_fill_get_type IA__bdk_fill_get_type
 
 #ifndef BDK_DISABLE_DEPRECATED
-extern __typeof (bdk_fill_rule_get_type) IA__bdk_fill_rule_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_fill_rule_get_type) IA__bdk_fill_rule_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_fill_rule_get_type IA__bdk_fill_rule_get_type
 
 #endif
-extern __typeof (bdk_filter_return_get_type) IA__bdk_filter_return_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_filter_return_get_type) IA__bdk_filter_return_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_filter_return_get_type IA__bdk_filter_return_get_type
 
-extern __typeof (bdk_function_get_type) IA__bdk_function_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_function_get_type) IA__bdk_function_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_function_get_type IA__bdk_function_get_type
 
-extern __typeof (bdk_grab_status_get_type) IA__bdk_grab_status_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_grab_status_get_type) IA__bdk_grab_status_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_grab_status_get_type IA__bdk_grab_status_get_type
 
-extern __typeof (bdk_gravity_get_type) IA__bdk_gravity_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_gravity_get_type) IA__bdk_gravity_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_gravity_get_type IA__bdk_gravity_get_type
 
-extern __typeof (bdk_join_style_get_type) IA__bdk_join_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_join_style_get_type) IA__bdk_join_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_join_style_get_type IA__bdk_join_style_get_type
 
-extern __typeof (bdk_line_style_get_type) IA__bdk_line_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_line_style_get_type) IA__bdk_line_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_line_style_get_type IA__bdk_line_style_get_type
 
-extern __typeof (bdk_modifier_type_get_type) IA__bdk_modifier_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_modifier_type_get_type) IA__bdk_modifier_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_modifier_type_get_type IA__bdk_modifier_type_get_type
 
-extern __typeof (bdk_notify_type_get_type) IA__bdk_notify_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_notify_type_get_type) IA__bdk_notify_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_notify_type_get_type IA__bdk_notify_type_get_type
 
-extern __typeof (bdk_overlap_type_get_type) IA__bdk_overlap_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_overlap_type_get_type) IA__bdk_overlap_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_overlap_type_get_type IA__bdk_overlap_type_get_type
 
-extern __typeof (bdk_owner_change_get_type) IA__bdk_owner_change_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_owner_change_get_type) IA__bdk_owner_change_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_owner_change_get_type IA__bdk_owner_change_get_type
 
-extern __typeof (bdk_property_state_get_type) IA__bdk_property_state_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_property_state_get_type) IA__bdk_property_state_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_property_state_get_type IA__bdk_property_state_get_type
 
-extern __typeof (bdk_prop_mode_get_type) IA__bdk_prop_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_prop_mode_get_type) IA__bdk_prop_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_prop_mode_get_type IA__bdk_prop_mode_get_type
 
-extern __typeof (bdk_scroll_direction_get_type) IA__bdk_scroll_direction_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_scroll_direction_get_type) IA__bdk_scroll_direction_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_scroll_direction_get_type IA__bdk_scroll_direction_get_type
 
-extern __typeof (bdk_setting_action_get_type) IA__bdk_setting_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_setting_action_get_type) IA__bdk_setting_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_setting_action_get_type IA__bdk_setting_action_get_type
 
-extern __typeof (bdk_status_get_type) IA__bdk_status_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_status_get_type) IA__bdk_status_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_status_get_type IA__bdk_status_get_type
 
-extern __typeof (bdk_subwindow_mode_get_type) IA__bdk_subwindow_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_subwindow_mode_get_type) IA__bdk_subwindow_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_subwindow_mode_get_type IA__bdk_subwindow_mode_get_type
 
-extern __typeof (bdk_visibility_state_get_type) IA__bdk_visibility_state_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_visibility_state_get_type) IA__bdk_visibility_state_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_visibility_state_get_type IA__bdk_visibility_state_get_type
 
-extern __typeof (bdk_wm_decoration_get_type) IA__bdk_wm_decoration_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_wm_decoration_get_type) IA__bdk_wm_decoration_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_wm_decoration_get_type IA__bdk_wm_decoration_get_type
 
-extern __typeof (bdk_wm_function_get_type) IA__bdk_wm_function_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_wm_function_get_type) IA__bdk_wm_function_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_wm_function_get_type IA__bdk_wm_function_get_type
 
-extern __typeof (bdk_font_type_get_type) IA__bdk_font_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_font_type_get_type) IA__bdk_font_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_font_type_get_type IA__bdk_font_type_get_type
 
-extern __typeof (bdk_cursor_type_get_type) IA__bdk_cursor_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_cursor_type_get_type) IA__bdk_cursor_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_cursor_type_get_type IA__bdk_cursor_type_get_type
 
-extern __typeof (bdk_drag_action_get_type) IA__bdk_drag_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_drag_action_get_type) IA__bdk_drag_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_drag_action_get_type IA__bdk_drag_action_get_type
 
-extern __typeof (bdk_gc_values_mask_get_type) IA__bdk_gc_values_mask_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_gc_values_mask_get_type) IA__bdk_gc_values_mask_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_gc_values_mask_get_type IA__bdk_gc_values_mask_get_type
 
-extern __typeof (bdk_window_attributes_type_get_type) IA__bdk_window_attributes_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_attributes_type_get_type) IA__bdk_window_attributes_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_attributes_type_get_type IA__bdk_window_attributes_type_get_type
 
-extern __typeof (bdk_window_class_get_type) IA__bdk_window_class_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_class_get_type) IA__bdk_window_class_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_class_get_type IA__bdk_window_class_get_type
 
-extern __typeof (bdk_window_edge_get_type) IA__bdk_window_edge_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_edge_get_type) IA__bdk_window_edge_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_edge_get_type IA__bdk_window_edge_get_type
 
-extern __typeof (bdk_window_hints_get_type) IA__bdk_window_hints_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_hints_get_type) IA__bdk_window_hints_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_hints_get_type IA__bdk_window_hints_get_type
 
-extern __typeof (bdk_window_state_get_type) IA__bdk_window_state_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_state_get_type) IA__bdk_window_state_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_state_get_type IA__bdk_window_state_get_type
 
-extern __typeof (bdk_window_type_get_type) IA__bdk_window_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_type_get_type) IA__bdk_window_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_type_get_type IA__bdk_window_type_get_type
 
-extern __typeof (bdk_window_type_hint_get_type) IA__bdk_window_type_hint_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_type_hint_get_type) IA__bdk_window_type_hint_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_type_hint_get_type IA__bdk_window_type_hint_get_type
 
-extern __typeof (bdk_image_type_get_type) IA__bdk_image_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_image_type_get_type) IA__bdk_image_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_image_type_get_type IA__bdk_image_type_get_type
 
-extern __typeof (bdk_visual_type_get_type) IA__bdk_visual_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_visual_type_get_type) IA__bdk_visual_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_visual_type_get_type IA__bdk_visual_type_get_type
 
 #endif
@@ -544,7 +544,7 @@ extern __typeof (bdk_font_from_description) IA__bdk_font_from_description __attr
 #define bdk_font_from_description IA__bdk_font_from_description
 
 #endif
-extern __typeof (bdk_font_get_type) IA__bdk_font_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_font_get_type) IA__bdk_font_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_font_get_type IA__bdk_font_get_type
 
 extern __typeof (bdk_font_ref) IA__bdk_font_ref __attribute((visibility("hidden")));
@@ -682,7 +682,7 @@ extern __typeof (bdk_color_equal) IA__bdk_color_equal __attribute((visibility("h
 extern __typeof (bdk_color_free) IA__bdk_color_free __attribute((visibility("hidden")));
 #define bdk_color_free IA__bdk_color_free
 
-extern __typeof (bdk_color_get_type) IA__bdk_color_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_color_get_type) IA__bdk_color_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_color_get_type IA__bdk_color_get_type
 
 extern __typeof (bdk_color_hash) IA__bdk_color_hash __attribute((visibility("hidden")));
@@ -718,7 +718,7 @@ extern __typeof (bdk_color_to_string) IA__bdk_color_to_string __attribute((visib
 extern __typeof (bdk_colormap_new) IA__bdk_colormap_new __attribute((visibility("hidden")));
 #define bdk_colormap_new IA__bdk_colormap_new
 
-extern __typeof (bdk_colormap_get_type) IA__bdk_colormap_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_colormap_get_type) IA__bdk_colormap_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_colormap_get_type IA__bdk_colormap_get_type
 
 #ifndef BDK_DISABLE_DEPRECATED
@@ -754,7 +754,7 @@ extern __typeof (bdk_colormap_get_screen) IA__bdk_colormap_get_screen __attribut
 #endif
 #if IN_HEADER(__BDK_CURSOR_H__)
 #if IN_FILE(__BDK_CURSOR_C__)
-extern __typeof (bdk_cursor_get_type) IA__bdk_cursor_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_cursor_get_type) IA__bdk_cursor_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_cursor_get_type IA__bdk_cursor_get_type
 
 extern __typeof (bdk_cursor_get_cursor_type) IA__bdk_cursor_get_cursor_type __attribute((visibility("hidden")));
@@ -828,7 +828,7 @@ extern __typeof (bdk_device_get_n_keys) IA__bdk_device_get_n_keys __attribute((v
 extern __typeof (bdk_device_get_source) IA__bdk_device_get_source __attribute((visibility("hidden")));
 #define bdk_device_get_source IA__bdk_device_get_source
 
-extern __typeof (bdk_device_get_type) IA__bdk_device_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_device_get_type) IA__bdk_device_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_device_get_type IA__bdk_device_get_type
 
 extern __typeof (bdk_device_set_axis_use) IA__bdk_device_set_axis_use __attribute((visibility("hidden")));
@@ -900,7 +900,7 @@ extern __typeof (bdk_display_get_event) IA__bdk_display_get_event __attribute((v
 extern __typeof (bdk_display_get_pointer) IA__bdk_display_get_pointer __attribute((visibility("hidden")));
 #define bdk_display_get_pointer IA__bdk_display_get_pointer
 
-extern __typeof (bdk_display_get_type) IA__bdk_display_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_display_get_type) IA__bdk_display_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_display_get_type IA__bdk_display_get_type
 
 extern __typeof (bdk_display_get_window_at_pointer) IA__bdk_display_get_window_at_pointer __attribute((visibility("hidden")));
@@ -1037,7 +1037,7 @@ extern __typeof (bdk_display_set_double_click_time) IA__bdk_display_set_double_c
 extern __typeof (bdk_display_manager_get) IA__bdk_display_manager_get __attribute((visibility("hidden")));
 #define bdk_display_manager_get IA__bdk_display_manager_get
 
-extern __typeof (bdk_display_manager_get_type) IA__bdk_display_manager_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_display_manager_get_type) IA__bdk_display_manager_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_display_manager_get_type IA__bdk_display_manager_get_type
 
 extern __typeof (bdk_display_manager_list_displays) IA__bdk_display_manager_list_displays __attribute((visibility("hidden")));
@@ -1059,7 +1059,7 @@ extern __typeof (bdk_drag_abort) IA__bdk_drag_abort __attribute((visibility("hid
 extern __typeof (bdk_drag_begin) IA__bdk_drag_begin __attribute((visibility("hidden")));
 #define bdk_drag_begin IA__bdk_drag_begin
 
-extern __typeof (bdk_drag_context_get_type) IA__bdk_drag_context_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_drag_context_get_type) IA__bdk_drag_context_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_drag_context_get_type IA__bdk_drag_context_get_type
 
 #ifndef BDK_DISABLE_DEPRECATED
@@ -1187,7 +1187,7 @@ extern __typeof (bdk_drawable_get_depth) IA__bdk_drawable_get_depth __attribute(
 extern __typeof (bdk_drawable_get_image) IA__bdk_drawable_get_image __attribute((visibility("hidden")));
 #define bdk_drawable_get_image IA__bdk_drawable_get_image
 
-extern __typeof (bdk_drawable_get_type) IA__bdk_drawable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_drawable_get_type) IA__bdk_drawable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_drawable_get_type IA__bdk_drawable_get_type
 
 extern __typeof (bdk_drawable_get_visible_rebunnyion) IA__bdk_drawable_get_visible_rebunnyion __attribute((visibility("hidden")));
@@ -1261,7 +1261,7 @@ extern __typeof (bdk_draw_layout_with_colors) IA__bdk_draw_layout_with_colors __
 extern __typeof (bdk_gc_new) IA__bdk_gc_new __attribute((visibility("hidden")));
 #define bdk_gc_new IA__bdk_gc_new
 
-extern __typeof (bdk_gc_get_type) IA__bdk_gc_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_gc_get_type) IA__bdk_gc_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_gc_get_type IA__bdk_gc_get_type
 
 extern __typeof (bdk_gc_new_with_values) IA__bdk_gc_new_with_values __attribute((visibility("hidden")));
@@ -1359,7 +1359,7 @@ extern __typeof (bdk_gc_get_screen) IA__bdk_gc_get_screen __attribute((visibilit
 #if IN_HEADER(__BDK_PIXMAP_X11_H__)
 #if IN_FILE(__BDK_PIXMAP_X11_C__)
 #ifdef BDK_WINDOWING_X11
-extern __typeof (bdk_pixmap_impl_x11_get_type) IA__bdk_pixmap_impl_x11_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_pixmap_impl_x11_get_type) IA__bdk_pixmap_impl_x11_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_pixmap_impl_x11_get_type IA__bdk_pixmap_impl_x11_get_type
 
 #endif
@@ -1368,7 +1368,7 @@ extern __typeof (bdk_pixmap_impl_x11_get_type) IA__bdk_pixmap_impl_x11_get_type 
 #if IN_HEADER(__BDK_WINDOW_X11_H__)
 #if IN_FILE(__BDK_WINDOW_X11_C__)
 #ifdef BDK_WINDOWING_X11
-extern __typeof (bdk_window_impl_x11_get_type) IA__bdk_window_impl_x11_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_impl_x11_get_type) IA__bdk_window_impl_x11_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_impl_x11_get_type IA__bdk_window_impl_x11_get_type
 
 #endif
@@ -1612,7 +1612,7 @@ extern __typeof (bdk_window_is_viewable) IA__bdk_window_is_viewable __attribute(
 extern __typeof (bdk_window_is_visible) IA__bdk_window_is_visible __attribute((visibility("hidden")));
 #define bdk_window_is_visible IA__bdk_window_is_visible
 
-extern __typeof (bdk_window_object_get_type) IA__bdk_window_object_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_object_get_type) IA__bdk_window_object_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_object_get_type IA__bdk_window_object_get_type
 
 extern __typeof (bdk_window_peek_children) IA__bdk_window_peek_children __attribute((visibility("hidden")));
@@ -1692,7 +1692,7 @@ extern __typeof (bdk_offscreen_window_get_embedder) IA__bdk_offscreen_window_get
 #endif
 #if IN_HEADER(__BDK_INTERNALS_H__)
 #if IN_FILE(__BDK_OFFSCREEN_WINDOW_C__)
-extern __typeof (bdk_offscreen_window_get_type) IA__bdk_offscreen_window_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_offscreen_window_get_type) IA__bdk_offscreen_window_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_offscreen_window_get_type IA__bdk_offscreen_window_get_type
 
 #endif
@@ -1909,7 +1909,7 @@ extern __typeof (bdk_image_get_pixel) IA__bdk_image_get_pixel __attribute((visib
 extern __typeof (bdk_image_put_pixel) IA__bdk_image_put_pixel __attribute((visibility("hidden")));
 #define bdk_image_put_pixel IA__bdk_image_put_pixel
 
-extern __typeof (bdk_image_get_type) IA__bdk_image_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_image_get_type) IA__bdk_image_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_image_get_type IA__bdk_image_get_type
 
 #endif
@@ -1919,29 +1919,29 @@ extern __typeof (bdk_image_get_type) IA__bdk_image_get_type __attribute((visibil
 extern __typeof (bdk_keymap_get_default) IA__bdk_keymap_get_default __attribute((visibility("hidden")));
 #define bdk_keymap_get_default IA__bdk_keymap_get_default
 
-extern __typeof (bdk_keymap_get_type) IA__bdk_keymap_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keymap_get_type) IA__bdk_keymap_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keymap_get_type IA__bdk_keymap_get_type
 
-extern __typeof (bdk_keyval_is_lower) IA__bdk_keyval_is_lower __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_is_lower) IA__bdk_keyval_is_lower __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_is_lower IA__bdk_keyval_is_lower
 
-extern __typeof (bdk_keyval_is_upper) IA__bdk_keyval_is_upper __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_is_upper) IA__bdk_keyval_is_upper __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_is_upper IA__bdk_keyval_is_upper
 
-extern __typeof (bdk_keyval_to_lower) IA__bdk_keyval_to_lower __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_to_lower) IA__bdk_keyval_to_lower __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_to_lower IA__bdk_keyval_to_lower
 
-extern __typeof (bdk_keyval_to_upper) IA__bdk_keyval_to_upper __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_to_upper) IA__bdk_keyval_to_upper __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_to_upper IA__bdk_keyval_to_upper
 
 #endif
 #endif
 #if IN_HEADER(__BDK_KEYS_H__)
 #if IN_FILE(__BDK_KEYUNI_C__)
-extern __typeof (bdk_keyval_to_unicode) IA__bdk_keyval_to_unicode __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_to_unicode) IA__bdk_keyval_to_unicode __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_to_unicode IA__bdk_keyval_to_unicode
 
-extern __typeof (bdk_unicode_to_keyval) IA__bdk_unicode_to_keyval __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_unicode_to_keyval) IA__bdk_unicode_to_keyval __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_unicode_to_keyval IA__bdk_unicode_to_keyval
 
 #endif
@@ -1984,7 +1984,7 @@ extern __typeof (bdk_keyval_convert_case) IA__bdk_keyval_convert_case __attribut
 extern __typeof (bdk_keyval_from_name) IA__bdk_keyval_from_name __attribute((visibility("hidden")));
 #define bdk_keyval_from_name IA__bdk_keyval_from_name
 
-extern __typeof (bdk_keyval_name) IA__bdk_keyval_name __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_name) IA__bdk_keyval_name __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_name IA__bdk_keyval_name
 
 #endif
@@ -2021,7 +2021,7 @@ extern __typeof (bdk_keymap_map_virtual_modifiers) IA__bdk_keymap_map_virtual_mo
 extern __typeof (bdk_keyval_from_name) IA__bdk_keyval_from_name __attribute((visibility("hidden")));
 #define bdk_keyval_from_name IA__bdk_keyval_from_name
 
-extern __typeof (bdk_keyval_name) IA__bdk_keyval_name __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_keyval_name) IA__bdk_keyval_name __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_keyval_name IA__bdk_keyval_name
 
 #endif
@@ -2089,7 +2089,7 @@ extern __typeof (bdk_visual_get_best_with_type) IA__bdk_visual_get_best_with_typ
 extern __typeof (bdk_visual_get_screen) IA__bdk_visual_get_screen __attribute((visibility("hidden")));
 #define bdk_visual_get_screen IA__bdk_visual_get_screen
 
-extern __typeof (bdk_visual_get_type) IA__bdk_visual_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_visual_get_type) IA__bdk_visual_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_visual_get_type IA__bdk_visual_get_type
 
 #endif
@@ -2134,7 +2134,7 @@ extern __typeof (bdk_bango_layout_line_get_clip_rebunnyion) IA__bdk_bango_layout
 extern __typeof (bdk_bango_renderer_get_default) IA__bdk_bango_renderer_get_default __attribute((visibility("hidden")));
 #define bdk_bango_renderer_get_default IA__bdk_bango_renderer_get_default
 
-extern __typeof (bdk_bango_renderer_get_type) IA__bdk_bango_renderer_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_bango_renderer_get_type) IA__bdk_bango_renderer_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_bango_renderer_get_type IA__bdk_bango_renderer_get_type
 
 extern __typeof (bdk_bango_renderer_new) IA__bdk_bango_renderer_new __attribute((visibility("hidden")));
@@ -2208,7 +2208,7 @@ extern __typeof (bdk_pixmap_create_from_xpm_d) IA__bdk_pixmap_create_from_xpm_d 
 extern __typeof (bdk_pixmap_get_size) IA__bdk_pixmap_get_size __attribute((visibility("hidden")));
 #define bdk_pixmap_get_size IA__bdk_pixmap_get_size
 
-extern __typeof (bdk_pixmap_get_type) IA__bdk_pixmap_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_pixmap_get_type) IA__bdk_pixmap_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_pixmap_get_type IA__bdk_pixmap_get_type
 
 extern __typeof (bdk_pixmap_new) IA__bdk_pixmap_new __attribute((visibility("hidden")));
@@ -2338,7 +2338,7 @@ extern __typeof (bdk_rgb_get_visual) IA__bdk_rgb_get_visual __attribute((visibil
 extern __typeof (bdk_rgb_init) IA__bdk_rgb_init __attribute((visibility("hidden")));
 #define bdk_rgb_init IA__bdk_rgb_init
 
-extern __typeof (bdk_rgb_xpixel_from_rgb) IA__bdk_rgb_xpixel_from_rgb __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_rgb_xpixel_from_rgb) IA__bdk_rgb_xpixel_from_rgb __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_rgb_xpixel_from_rgb IA__bdk_rgb_xpixel_from_rgb
 
 extern __typeof (bdk_rgb_gc_set_background) IA__bdk_rgb_gc_set_background __attribute((visibility("hidden")));
@@ -2379,7 +2379,7 @@ extern __typeof (bdk_draw_rgb_image_dithalign) IA__bdk_draw_rgb_image_dithalign 
 #endif
 #if IN_HEADER(__BDK_SCREEN_H__)
 #if IN_FILE(__BDK_SCREEN_C__)
-extern __typeof (bdk_screen_get_type) IA__bdk_screen_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_screen_get_type) IA__bdk_screen_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_screen_get_type IA__bdk_screen_get_type
 
 extern __typeof (bdk_screen_get_monitor_at_point) IA__bdk_screen_get_monitor_at_point __attribute((visibility("hidden")));
@@ -2661,7 +2661,7 @@ extern __typeof (bdk_win32_selection_add_targets) IA__bdk_win32_selection_add_ta
 #endif
 #if IN_HEADER(__BDK_WIN32_H__)
 #if IN_FILE(__BDK_KEYS_WIN32_C__)
-extern __typeof (bdk_win32_keymap_get_type) IA__bdk_win32_keymap_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_win32_keymap_get_type) IA__bdk_win32_keymap_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_win32_keymap_get_type IA__bdk_win32_keymap_get_type
 
 extern __typeof (bdk_win32_keymap_check_compose) IA__bdk_win32_keymap_check_compose __attribute((visibility("hidden")));
@@ -2875,7 +2875,7 @@ extern __typeof (bdk_xid_table_lookup_for_display) IA__bdk_xid_table_lookup_for_
 #endif
 #if IN_HEADER(__BDK_APP_LAUNCH_CONTEXT_H__)
 #if IN_FILE(__BDK_APP_LAUNCH_CONTEXT_C__)
-extern __typeof (bdk_app_launch_context_get_type) IA__bdk_app_launch_context_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_app_launch_context_get_type) IA__bdk_app_launch_context_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_app_launch_context_get_type IA__bdk_app_launch_context_get_type
 
 extern __typeof (bdk_app_launch_context_new) IA__bdk_app_launch_context_new __attribute((visibility("hidden")));
@@ -2903,7 +2903,7 @@ extern __typeof (bdk_app_launch_context_set_icon_name) IA__bdk_app_launch_contex
 #endif
 #if IN_HEADER(__BDK_WINDOW_IMPL_H__)
 #if IN_FILE(__BDK_WINDOW_IMPL_C__)
-extern __typeof (bdk_window_impl_get_type) IA__bdk_window_impl_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (bdk_window_impl_get_type) IA__bdk_window_impl_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define bdk_window_impl_get_type IA__bdk_window_impl_get_type
 
 #endif
@@ -2911,5 +2911,5 @@ extern __typeof (bdk_window_impl_get_type) IA__bdk_window_impl_get_type __attrib
 #ifdef BDK_WINDOWING_X11
 #endif
 
-#endif /* G_HAVE_GNUC_VISIBILITY */
+#endif /* B_HAVE_GNUC_VISIBILITY */
 #endif /* DISABLE_VISIBILITY */

@@ -11,14 +11,14 @@ static BtkWidget *spinner_sensitive = NULL;
 static BtkWidget *spinner_unsensitive = NULL;
 
 static void
-on_play_clicked (BtkButton *button, gpointer user_data)
+on_play_clicked (BtkButton *button, bpointer user_data)
 {
   btk_spinner_start (BTK_SPINNER (spinner_sensitive));
   btk_spinner_start (BTK_SPINNER (spinner_unsensitive));
 }
 
 static void
-on_stop_clicked (BtkButton *button, gpointer user_data)
+on_stop_clicked (BtkButton *button, bpointer user_data)
 {
   btk_spinner_stop (BTK_SPINNER (spinner_sensitive));
   btk_spinner_stop (BTK_SPINNER (spinner_unsensitive));
@@ -69,12 +69,12 @@ do_spinner (BtkWidget *do_widget)
     btk_widget_set_sensitive (hbox, FALSE);
 
     button = btk_button_new_from_stock (BTK_STOCK_MEDIA_PLAY);
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (B_OBJECT (button), "clicked",
                       G_CALLBACK (on_play_clicked), spinner);
     btk_container_add (BTK_CONTAINER (vbox), button);
 
     button = btk_button_new_from_stock (BTK_STOCK_MEDIA_STOP);
-    g_signal_connect (G_OBJECT (button), "clicked",
+    g_signal_connect (B_OBJECT (button), "clicked",
                       G_CALLBACK (on_stop_clicked), spinner);
     btk_container_add (BTK_CONTAINER (vbox), button);
 

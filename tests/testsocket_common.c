@@ -38,7 +38,7 @@ enum
 
 static void
 print_hello (BtkWidget *w,
-	     guint      action)
+	     buint      action)
 {
   switch (action)
     {
@@ -78,13 +78,13 @@ remove_buttons (BtkWidget *widget, BtkWidget *other_button)
   btk_widget_destroy (widget);
 }
 
-static gboolean
-blink_cb (gpointer data)
+static bboolean
+blink_cb (bpointer data)
 {
   BtkWidget *widget = data;
 
   btk_widget_show (widget);
-  g_object_set_data (G_OBJECT (widget), "blink", NULL);
+  g_object_set_data (B_OBJECT (widget), "blink", NULL);
 
   return FALSE;
 }
@@ -93,21 +93,21 @@ static void
 blink (BtkWidget *widget,
        BtkWidget *window)
 {
-  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (window), "blink"));
+  buint blink_timeout = BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (window), "blink"));
   
   if (!blink_timeout)
     {
       blink_timeout = bdk_threads_add_timeout (1000, blink_cb, window);
       btk_widget_hide (window);
 
-      g_object_set_data (G_OBJECT (window), "blink", GUINT_TO_POINTER (blink_timeout));
+      g_object_set_data (B_OBJECT (window), "blink", BUINT_TO_POINTER (blink_timeout));
     }
 }
 
 static void
 local_destroy (BtkWidget *window)
 {
-  guint blink_timeout = GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (window), "blink"));
+  buint blink_timeout = BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (window), "blink"));
   if (blink_timeout)
     g_source_remove (blink_timeout);
 }
@@ -202,7 +202,7 @@ create_combo_box (void)
 }
 
 static BtkWidget *
-create_content (BtkWindow *window, gboolean local)
+create_content (BtkWindow *window, bboolean local)
 {
   BtkWidget *vbox;
   BtkWidget *button;
@@ -246,9 +246,9 @@ create_content (BtkWindow *window, gboolean local)
   return frame;
 }
 
-guint32
-create_child_plug (guint32  xid,
-		   gboolean local)
+buint32
+create_child_plug (buint32  xid,
+		   bboolean local)
 {
   BtkWidget *window;
   BtkWidget *content;
@@ -271,7 +271,7 @@ create_child_plug (guint32  xid,
 #if defined (BDK_WINDOWING_X11)
     return BDK_WINDOW_XID (window->window);
 #elif defined (BDK_WINDOWING_WIN32)
-    return (guint32) BDK_WINDOW_HWND (window->window);
+    return (buint32) BDK_WINDOW_HWND (window->window);
 #endif
   else
     return 0;

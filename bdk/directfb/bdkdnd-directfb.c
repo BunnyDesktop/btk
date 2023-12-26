@@ -56,9 +56,9 @@ struct _BdkDragContextPrivate
 {
   BdkAtom local_selection;
 
-  guint16 last_x;		/* Coordinates from last event */
-  guint16 last_y;
-  guint   drag_status : 4;	/* current status of drag      */
+  buint16 last_x;		/* Coordinates from last event */
+  buint16 last_y;
+  buint   drag_status : 4;	/* current status of drag      */
 };
 
 /* Drag Contexts */
@@ -69,16 +69,16 @@ static BdkDragContext *current_dest_drag = NULL;
 
 #define BDK_DRAG_CONTEXT_PRIVATE_DATA(ctx) ((BdkDragContextPrivate *) BDK_DRAG_CONTEXT (ctx)->windowing_data)
 
-static void bdk_drag_context_finalize (GObject *object);
+static void bdk_drag_context_finalize (BObject *object);
 
-G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDragContext, bdk_drag_context, B_TYPE_OBJECT)
 
 static void
 bdk_drag_context_init (BdkDragContext *dragcontext)
 {
   BdkDragContextPrivate *private;
 
-  private = G_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
+  private = B_TYPE_INSTANCE_GET_PRIVATE (dragcontext,
                                          BDK_TYPE_DRAG_CONTEXT,
                                          BdkDragContextPrivate);
 
@@ -90,7 +90,7 @@ bdk_drag_context_init (BdkDragContext *dragcontext)
 static void
 bdk_drag_context_class_init (BdkDragContextClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drag_context_finalize;
 
@@ -98,7 +98,7 @@ bdk_drag_context_class_init (BdkDragContextClass *klass)
 }
 
 static void
-bdk_drag_context_finalize (GObject *object)
+bdk_drag_context_finalize (BObject *object)
 {
   BdkDragContext *context = BDK_DRAG_CONTEXT (object);
 
@@ -112,7 +112,7 @@ bdk_drag_context_finalize (GObject *object)
 
   contexts = g_list_remove (contexts, context);
 
-  G_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_drag_context_parent_class)->finalize (object);
 }
 
 BdkDragContext *
@@ -134,7 +134,7 @@ bdk_drag_context_unref (BdkDragContext *context)
 }
 
 static BdkDragContext *
-bdk_drag_context_find (gboolean     is_source,
+bdk_drag_context_find (bboolean     is_source,
 		       BdkWindow   *source,
 		       BdkWindow   *dest)
 {
@@ -170,7 +170,7 @@ _bdk_dnd_init (void)
 
 static void
 local_send_leave (BdkDragContext  *context,
-		  guint32          time)
+		  buint32          time)
 {
   BdkEvent event;
 
@@ -193,7 +193,7 @@ local_send_leave (BdkDragContext  *context,
 
 static void
 local_send_enter (BdkDragContext *context,
-		  guint32         time)
+		  buint32         time)
 {
   BdkDragContextPrivate *private;
   BdkDragContext        *new_context;
@@ -241,10 +241,10 @@ local_send_enter (BdkDragContext *context,
 
 static void
 local_send_motion (BdkDragContext  *context,
-		    gint            x_root,
-		    gint            y_root,
+		    bint            x_root,
+		    bint            y_root,
 		    BdkDragAction   action,
-		    guint32         time)
+		    buint32         time)
 {
   BdkEvent event;
 
@@ -274,7 +274,7 @@ local_send_motion (BdkDragContext  *context,
 
 static void
 local_send_drop (BdkDragContext *context,
-                 guint32         time)
+                 buint32         time)
 {
   BdkEvent event;
 
@@ -299,7 +299,7 @@ local_send_drop (BdkDragContext *context,
 
 static void
 bdk_drag_do_leave (BdkDragContext *context,
-                   guint32         time)
+                   buint32         time)
 {
   if (context->dest_window)
     {
@@ -341,8 +341,8 @@ bdk_drag_begin (BdkWindow *window,
   return new_context;
 }
 
-guint32
-bdk_drag_get_protocol_for_display(BdkDisplay *display, guint32          xid,
+buint32
+bdk_drag_get_protocol_for_display(BdkDisplay *display, buint32          xid,
                                    BdkDragProtocol *protocol)
 {
   BdkWindow *window;
@@ -350,7 +350,7 @@ bdk_drag_get_protocol_for_display(BdkDisplay *display, guint32          xid,
   window = bdk_window_lookup ((BdkNativeWindow) xid);
 
   if (window &&
-      GPOINTER_TO_INT (bdk_drawable_get_data (window, "bdk-dnd-registered")))
+      BPOINTER_TO_INT (bdk_drawable_get_data (window, "bdk-dnd-registered")))
     {
       *protocol = BDK_DRAG_PROTO_LOCAL;
       return xid;
@@ -364,8 +364,8 @@ void
 bdk_drag_find_window_for_screen (BdkDragContext   *context,
                                  BdkWindow        *drag_window,
                                  BdkScreen        *screen,
-                                 gint              x_root,
-                                 gint              y_root,
+                                 bint              x_root,
+                                 bint              y_root,
                                  BdkWindow       **dest_window,
                                  BdkDragProtocol  *protocol)
 {
@@ -377,7 +377,7 @@ bdk_drag_find_window_for_screen (BdkDragContext   *context,
 
   if (context->dest_window != dest)
     {
-      guint32 recipient;
+      buint32 recipient;
 
       /* Check if new destination accepts drags, and which protocol */
       if ((recipient = bdk_drag_get_protocol (BDK_WINDOW_DFB_ID (dest),
@@ -400,15 +400,15 @@ bdk_drag_find_window_for_screen (BdkDragContext   *context,
     }
 }
 
-gboolean
+bboolean
 bdk_drag_motion (BdkDragContext  *context,
 		 BdkWindow       *dest_window,
 		 BdkDragProtocol  protocol,
-		 gint             x_root,
-		 gint             y_root,
+		 bint             x_root,
+		 bint             y_root,
 		 BdkDragAction    suggested_action,
 		 BdkDragAction    possible_actions,
-		 guint32          time)
+		 buint32          time)
 {
   BdkDragContextPrivate *private;
 
@@ -499,7 +499,7 @@ bdk_drag_motion (BdkDragContext  *context,
 
 void
 bdk_drag_drop (BdkDragContext *context,
-	       guint32         time)
+	       buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -521,7 +521,7 @@ bdk_drag_drop (BdkDragContext *context,
 
 void
 bdk_drag_abort (BdkDragContext *context,
-		guint32         time)
+		buint32         time)
 {
   g_return_if_fail (context != NULL);
 
@@ -533,7 +533,7 @@ bdk_drag_abort (BdkDragContext *context,
 void
 bdk_drag_status (BdkDragContext   *context,
 		 BdkDragAction     action,
-		 guint32           time)
+		 buint32           time)
 {
   BdkDragContextPrivate *private;
   BdkDragContext        *src_context;
@@ -570,16 +570,16 @@ bdk_drag_status (BdkDragContext   *context,
 
 void
 bdk_drop_reply (BdkDragContext   *context,
-		gboolean          ok,
-		guint32           time)
+		bboolean          ok,
+		buint32           time)
 {
   g_return_if_fail (context != NULL);
 }
 
 void
 bdk_drop_finish (BdkDragContext   *context,
-		 gboolean          success,
-		 guint32           time)
+		 bboolean          success,
+		 buint32           time)
 {
   BdkDragContextPrivate *private;
   BdkDragContext        *src_context;
@@ -605,7 +605,7 @@ bdk_drop_finish (BdkDragContext   *context,
     }
 }
 
-gboolean
+bboolean
 bdk_drag_drop_succeeded (BdkDragContext *context)
 {
 	g_warning("bdk_drag_drop_succeeded unimplemented \n");
@@ -617,11 +617,11 @@ bdk_window_register_dnd (BdkWindow      *window)
 {
   g_return_if_fail (window != NULL);
 
-  if (GPOINTER_TO_INT (bdk_drawable_get_data (window, "bdk-dnd-registered")))
+  if (BPOINTER_TO_INT (bdk_drawable_get_data (window, "bdk-dnd-registered")))
     return;
 
   bdk_drawable_set_data (window, "bdk-dnd-registered",
-                         GINT_TO_POINTER (TRUE), NULL);
+                         BINT_TO_POINTER (TRUE), NULL);
 }
 
 /*************************************************************

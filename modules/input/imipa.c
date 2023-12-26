@@ -61,7 +61,7 @@ ipa_register_type (GTypeModule *module)
  * mode cryllic-translit; they allow entering all characters
  * in iso-8859-5
  */
-static guint16 ipa_compose_seqs[] = {
+static buint16 ipa_compose_seqs[] = {
   BDK_ampersand, 0,           0,      0,      0,      0x263, 	/* LATIN SMALL LETTER GAMMA */
   BDK_apostrophe, 0,          0,      0,      0,      0x2C8, 	/* MODIFIER LETTER VERTICAL LINE */
   BDK_slash,  BDK_apostrophe, 0,      0,      0,      0x2CA, 	/* MODIFIER LETTER ACUTE ACCENT */
@@ -174,7 +174,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "ipa") == 0)
     return g_object_new (type_ipa, NULL);

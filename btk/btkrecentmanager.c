@@ -55,56 +55,56 @@
 
 typedef struct
 {
-  gchar *name;
-  gchar *exec;
+  bchar *name;
+  bchar *exec;
   
-  guint count;
+  buint count;
   
   time_t stamp;
 } RecentAppInfo;
 
 struct _BtkRecentInfo
 {
-  gchar *uri;
+  bchar *uri;
   
-  gchar *display_name;
-  gchar *description;
+  bchar *display_name;
+  bchar *description;
   
   time_t added;
   time_t modified;
   time_t visited;
   
-  gchar *mime_type;
+  bchar *mime_type;
   
   GSList *applications;
   GHashTable *apps_lookup;
   
   GSList *groups;
   
-  gboolean is_private;
+  bboolean is_private;
   
   BdkPixbuf *icon;
   
-  gint ref_count;
+  bint ref_count;
 };
 
-#define BTK_RECENT_MANAGER_GET_PRIVATE(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerPrivate))
+#define BTK_RECENT_MANAGER_GET_PRIVATE(obj)     (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RECENT_MANAGER, BtkRecentManagerPrivate))
 
 struct _BtkRecentManagerPrivate
 {
-  gchar *filename;
+  bchar *filename;
 
-  guint is_dirty : 1;
+  buint is_dirty : 1;
   
-  gint limit;
-  gint size;
+  bint limit;
+  bint size;
 
   GBookmarkFile *recent_items;
 
   GFileMonitor *monitor;
 
-  guint changed_timeout;
-  guint changed_age;
+  buint changed_timeout;
+  buint changed_age;
 };
 
 enum
@@ -116,56 +116,56 @@ enum
   PROP_SIZE
 };
 
-static void     btk_recent_manager_dispose             (GObject           *object);
-static void     btk_recent_manager_finalize            (GObject           *object);
-static void     btk_recent_manager_set_property        (GObject           *object,
-						        guint              prop_id,
-						        const GValue      *value,
-						        GParamSpec        *pspec);
-static void     btk_recent_manager_get_property        (GObject           *object,
-						        guint              prop_id,
-						        GValue            *value,
-						        GParamSpec        *pspec);
-static void     btk_recent_manager_add_item_query_info (GObject           *source_object,
+static void     btk_recent_manager_dispose             (BObject           *object);
+static void     btk_recent_manager_finalize            (BObject           *object);
+static void     btk_recent_manager_set_property        (BObject           *object,
+						        buint              prop_id,
+						        const BValue      *value,
+						        BParamSpec        *pspec);
+static void     btk_recent_manager_get_property        (BObject           *object,
+						        buint              prop_id,
+						        BValue            *value,
+						        BParamSpec        *pspec);
+static void     btk_recent_manager_add_item_query_info (BObject           *source_object,
                                                         GAsyncResult      *res,
-                                                        gpointer           user_data);
+                                                        bpointer           user_data);
 static void     btk_recent_manager_monitor_changed     (GFileMonitor      *monitor,
                                                         GFile             *file,
                                                         GFile             *other_file,
                                                         GFileMonitorEvent  event_type,
-                                                        gpointer           user_data);
+                                                        bpointer           user_data);
 static void     btk_recent_manager_changed             (BtkRecentManager  *manager);
 static void     btk_recent_manager_real_changed        (BtkRecentManager  *manager);
 static void     btk_recent_manager_set_filename        (BtkRecentManager  *manager,
-                                                        const gchar       *filename);
+                                                        const bchar       *filename);
 static void     btk_recent_manager_clamp_to_age        (BtkRecentManager  *manager,
-                                                        gint               age);
+                                                        bint               age);
 static void     btk_recent_manager_clamp_to_size       (BtkRecentManager  *manager,
-                                                        const gint         size);
+                                                        const bint         size);
 
 
 static void build_recent_items_list (BtkRecentManager  *manager);
 static void purge_recent_items_list (BtkRecentManager  *manager,
                                      GError           **error);
 
-static RecentAppInfo *recent_app_info_new  (const gchar   *app_name);
+static RecentAppInfo *recent_app_info_new  (const bchar   *app_name);
 static void           recent_app_info_free (RecentAppInfo *app_info);
 
-static BtkRecentInfo *btk_recent_info_new  (const gchar   *uri);
+static BtkRecentInfo *btk_recent_info_new  (const bchar   *uri);
 static void           btk_recent_info_free (BtkRecentInfo *recent_info);
 
-static guint signal_changed = 0;
+static buint signal_changed = 0;
 
 static BtkRecentManager *recent_manager_singleton = NULL;
 
-G_DEFINE_TYPE (BtkRecentManager, btk_recent_manager, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkRecentManager, btk_recent_manager, B_TYPE_OBJECT)
 
 static void
-filename_warning (const gchar *format, 
-                  const gchar *filename, 
-                  const gchar *message)
+filename_warning (const bchar *format, 
+                  const bchar *filename, 
+                  const bchar *message)
 {
-  gchar *utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
+  bchar *utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, NULL);
   g_warning (format, utf8 ? utf8 : "(invalid filename)", message);
   g_free (utf8);
 }
@@ -173,11 +173,11 @@ filename_warning (const gchar *format,
 /* Test of haystack has the needle prefix, comparing case
  * insensitive. haystack may be UTF-8, but needle must
  * contain only lowercase ascii. */
-static gboolean
-has_case_prefix (const gchar *haystack, 
-                 const gchar *needle)
+static bboolean
+has_case_prefix (const bchar *haystack, 
+                 const bchar *needle)
 {
-  const gchar *h, *n;
+  const bchar *h, *n;
 
   /* Eat one character at a time. */
   h = haystack;
@@ -201,7 +201,7 @@ btk_recent_manager_error_quark (void)
 static void
 btk_recent_manager_class_init (BtkRecentManagerClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   
   bobject_class->set_property = btk_recent_manager_set_property;
   bobject_class->get_property = btk_recent_manager_get_property;
@@ -242,7 +242,7 @@ btk_recent_manager_class_init (BtkRecentManagerClass *klass)
   				   		     P_("Limit"),
   				   		     P_("The maximum number of items to be returned by btk_recent_manager_get_items()"),
   				   		     -1,
-  				   		     G_MAXINT,
+  				   		     B_MAXINT,
   				   		     DEFAULT_LIMIT,
                                                      G_PARAM_READWRITE | G_PARAM_DEPRECATED));
   /**
@@ -258,7 +258,7 @@ btk_recent_manager_class_init (BtkRecentManagerClass *klass)
 					   	     P_("Size"),
 						     P_("The size of the recently used resources list"),
 						     -1,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     G_PARAM_READABLE));
   
@@ -273,12 +273,12 @@ btk_recent_manager_class_init (BtkRecentManagerClass *klass)
    */
   signal_changed =
     g_signal_new (I_("changed"),
-		  G_TYPE_FROM_CLASS (klass),
+		  B_TYPE_FROM_CLASS (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkRecentManagerClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   klass->changed = btk_recent_manager_real_changed;
   
@@ -299,54 +299,54 @@ btk_recent_manager_init (BtkRecentManager *manager)
 }
 
 static void
-btk_recent_manager_set_property (GObject               *object,
-				 guint                  prop_id,
-				 const GValue          *value,
-				 GParamSpec            *pspec)
+btk_recent_manager_set_property (BObject               *object,
+				 buint                  prop_id,
+				 const BValue          *value,
+				 BParamSpec            *pspec)
 {
   BtkRecentManager *recent_manager = BTK_RECENT_MANAGER (object);
  
   switch (prop_id)
     {
     case PROP_FILENAME:
-      btk_recent_manager_set_filename (recent_manager, g_value_get_string (value));
+      btk_recent_manager_set_filename (recent_manager, b_value_get_string (value));
       break;      
     case PROP_LIMIT:
-      btk_recent_manager_set_limit (recent_manager, g_value_get_int (value));
+      btk_recent_manager_set_limit (recent_manager, b_value_get_int (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_recent_manager_get_property (GObject               *object,
-				 guint                  prop_id,
-				 GValue                *value,
-				 GParamSpec            *pspec)
+btk_recent_manager_get_property (BObject               *object,
+				 buint                  prop_id,
+				 BValue                *value,
+				 BParamSpec            *pspec)
 {
   BtkRecentManager *recent_manager = BTK_RECENT_MANAGER (object);
   
   switch (prop_id)
     {
     case PROP_FILENAME:
-      g_value_set_string (value, recent_manager->priv->filename);
+      b_value_set_string (value, recent_manager->priv->filename);
       break;
     case PROP_LIMIT:
-      g_value_set_int (value, recent_manager->priv->limit);
+      b_value_set_int (value, recent_manager->priv->limit);
       break;
     case PROP_SIZE:
-      g_value_set_int (value, recent_manager->priv->size);
+      b_value_set_int (value, recent_manager->priv->size);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 } 
 
 static void
-btk_recent_manager_finalize (GObject *object)
+btk_recent_manager_finalize (BObject *object)
 {
   BtkRecentManager *manager = BTK_RECENT_MANAGER (object);
   BtkRecentManagerPrivate *priv = manager->priv;
@@ -356,11 +356,11 @@ btk_recent_manager_finalize (GObject *object)
   if (priv->recent_items != NULL)
     g_bookmark_file_free (priv->recent_items);
 
-  G_OBJECT_CLASS (btk_recent_manager_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_recent_manager_parent_class)->finalize (object);
 }
 
 static void
-btk_recent_manager_dispose (GObject *bobject)
+btk_recent_manager_dispose (BObject *bobject)
 {
   BtkRecentManager *manager = BTK_RECENT_MANAGER (bobject);
   BtkRecentManagerPrivate *priv = manager->priv;
@@ -388,7 +388,7 @@ btk_recent_manager_dispose (GObject *bobject)
       g_object_unref (manager);
     }
 
-  G_OBJECT_CLASS (btk_recent_manager_parent_class)->dispose (bobject);
+  B_OBJECT_CLASS (btk_recent_manager_parent_class)->dispose (bobject);
 }
 
 static void
@@ -396,7 +396,7 @@ btk_recent_manager_real_changed (BtkRecentManager *manager)
 {
   BtkRecentManagerPrivate *priv = manager->priv;
 
-  g_object_freeze_notify (G_OBJECT (manager));
+  g_object_freeze_notify (B_OBJECT (manager));
 
   if (priv->is_dirty)
     {
@@ -418,10 +418,10 @@ btk_recent_manager_real_changed (BtkRecentManager *manager)
       else
         {
           BtkSettings *settings = btk_settings_get_default ();
-          gint age = 30;
-          gint max_size = MAX_LIST_SIZE;
+          bint age = 30;
+          bint max_size = MAX_LIST_SIZE;
 
-          g_object_get (G_OBJECT (settings), "btk-recent-files-max-age", &age, NULL);
+          g_object_get (B_OBJECT (settings), "btk-recent-files-max-age", &age, NULL);
           if (age > 0)
             btk_recent_manager_clamp_to_age (manager, age);
           else if (age == 0)
@@ -465,7 +465,7 @@ btk_recent_manager_real_changed (BtkRecentManager *manager)
       build_recent_items_list (manager);
     }
 
-  g_object_thaw_notify (G_OBJECT (manager));
+  g_object_thaw_notify (B_OBJECT (manager));
 }
 
 static void
@@ -473,7 +473,7 @@ btk_recent_manager_monitor_changed (GFileMonitor      *monitor,
                                     GFile             *file,
                                     GFile             *other_file,
                                     GFileMonitorEvent  event_type,
-                                    gpointer           user_data)
+                                    bpointer           user_data)
 {
   BtkRecentManager *manager = user_data;
 
@@ -516,7 +516,7 @@ get_default_recent_file (void)
                                      NULL);
   GBookmarkFile *bf_old = NULL, *bf_new = NULL;
   char **uris;
-  gsize n_uris, i;
+  bsize n_uris, i;
 
   /* simple case: the old file does not exist, so we just use the new one */
   if (!g_file_test (old_file, G_FILE_TEST_EXISTS))
@@ -555,9 +555,9 @@ get_default_recent_file (void)
   for (i = 0; i < n_uris; i++)
     {
       char *mime, *title, *description;
-      gboolean is_private;
+      bboolean is_private;
       char **apps;
-      gsize n_apps, j;
+      bsize n_apps, j;
 
       /* the new file always wins */
       if (g_bookmark_file_has_item (bf_new, uris[i]))
@@ -586,7 +586,7 @@ get_default_recent_file (void)
       for (j = 0; j < n_apps; j++)
         {
           char *exec;
-          guint count;
+          buint count;
           time_t stamp;
 
           g_bookmark_file_get_app_info (bf_old, uris[i], apps[j],
@@ -629,7 +629,7 @@ unlink_and_return:
 
 static void
 btk_recent_manager_set_filename (BtkRecentManager *manager,
-				 const gchar      *filename)
+				 const bchar      *filename)
 {
   BtkRecentManagerPrivate *priv;
   GFile *file;
@@ -707,7 +707,7 @@ build_recent_items_list (BtkRecentManager *manager)
 {
   BtkRecentManagerPrivate *priv = manager->priv;
   GError *read_error;
-  gint size;
+  bint size;
 
   g_assert (priv->filename != NULL);
   
@@ -748,7 +748,7 @@ build_recent_items_list (BtkRecentManager *manager)
         {
           priv->size = size;
 
-          g_object_notify (G_OBJECT (manager), "size");
+          g_object_notify (B_OBJECT (manager), "size");
         }
     }
 
@@ -796,7 +796,7 @@ btk_recent_manager_new (void)
 BtkRecentManager *
 btk_recent_manager_get_default (void)
 {
-  if (G_UNLIKELY (!recent_manager_singleton))
+  if (B_UNLIKELY (!recent_manager_singleton))
     recent_manager_singleton = btk_recent_manager_new ();
 
   return recent_manager_singleton;
@@ -871,7 +871,7 @@ btk_recent_manager_set_screen (BtkRecentManager *manager,
  */
 void
 btk_recent_manager_set_limit (BtkRecentManager *manager,
-			      gint              limit)
+			      bint              limit)
 {
   BtkRecentManagerPrivate *priv;
   
@@ -896,7 +896,7 @@ btk_recent_manager_set_limit (BtkRecentManager *manager,
  *   view (implementing #BtkRecentChooser), and not by the model (the
  *   #BtkRecentManager). See #BtkRecentChooser:limit.
  */
-gint
+bint
 btk_recent_manager_get_limit (BtkRecentManager *manager)
 {
   BtkRecentManagerPrivate *priv;
@@ -908,15 +908,15 @@ btk_recent_manager_get_limit (BtkRecentManager *manager)
 }
 
 static void
-btk_recent_manager_add_item_query_info (GObject      *source_object,
+btk_recent_manager_add_item_query_info (BObject      *source_object,
                                         GAsyncResult *res,
-                                        gpointer      user_data)
+                                        bpointer      user_data)
 {
   GFile *file = G_FILE (source_object);
   BtkRecentManager *manager = user_data;
   BtkRecentData recent_data;
   GFileInfo *file_info;
-  gchar *uri;
+  bchar *uri;
 
   uri = g_file_get_uri (file);
 
@@ -927,11 +927,11 @@ btk_recent_manager_add_item_query_info (GObject      *source_object,
 
   if (file_info)
     {
-      gchar *content_type;
+      bchar *content_type;
 
       content_type = g_file_info_get_attribute_as_string (file_info, G_FILE_ATTRIBUTE_STANDARD_FAST_CONTENT_TYPE);
 
-      if (G_LIKELY (content_type))
+      if (B_LIKELY (content_type))
         recent_data.mime_type = g_content_type_get_mime_type (content_type);
       else
         recent_data.mime_type = g_strdup (BTK_RECENT_DEFAULT_MIME);
@@ -986,9 +986,9 @@ btk_recent_manager_add_item_query_info (GObject      *source_object,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_manager_add_item (BtkRecentManager  *manager,
-			     const gchar       *uri)
+			     const bchar       *uri)
 {
   GFile* file;
   
@@ -1041,9 +1041,9 @@ btk_recent_manager_add_item (BtkRecentManager  *manager,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_manager_add_full (BtkRecentManager     *manager,
-			     const gchar          *uri,
+			     const bchar          *uri,
 			     const BtkRecentData  *data)
 {
   BtkRecentManagerPrivate *priv;
@@ -1118,7 +1118,7 @@ btk_recent_manager_add_full (BtkRecentManager     *manager,
   
   if (data->groups && data->groups[0] != '\0')
     {
-      gint j;
+      bint j;
       
       for (j = 0; (data->groups)[j] != NULL; j++)
         g_bookmark_file_add_group (priv->recent_items, uri, (data->groups)[j]);
@@ -1158,9 +1158,9 @@ btk_recent_manager_add_full (BtkRecentManager     *manager,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_manager_remove_item (BtkRecentManager  *manager,
-				const gchar       *uri,
+				const bchar       *uri,
 				GError           **error)
 {
   BtkRecentManagerPrivate *priv;
@@ -1216,9 +1216,9 @@ btk_recent_manager_remove_item (BtkRecentManager  *manager,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_manager_has_item (BtkRecentManager *manager,
-			     const gchar      *uri)
+			     const bchar      *uri)
 {
   BtkRecentManagerPrivate *priv;
 
@@ -1235,8 +1235,8 @@ static void
 build_recent_info (GBookmarkFile  *bookmarks,
 		   BtkRecentInfo  *info)
 {
-  gchar **apps, **groups;
-  gsize apps_len, groups_len, i;
+  bchar **apps, **groups;
+  bsize apps_len, groups_len, i;
 
   g_assert (bookmarks != NULL);
   g_assert (info != NULL);
@@ -1254,9 +1254,9 @@ build_recent_info (GBookmarkFile  *bookmarks,
   groups = g_bookmark_file_get_groups (bookmarks, info->uri, &groups_len, NULL);
   for (i = 0; i < groups_len; i++)
     {
-      gchar *group_name = g_strdup (groups[i]);
+      bchar *group_name = g_strdup (groups[i]);
       
-      info->groups = g_slist_append (info->groups, group_name);
+      info->groups = b_slist_append (info->groups, group_name);
     }
 
   g_strfreev (groups);
@@ -1264,11 +1264,11 @@ build_recent_info (GBookmarkFile  *bookmarks,
   apps = g_bookmark_file_get_applications (bookmarks, info->uri, &apps_len, NULL);
   for (i = 0; i < apps_len; i++)
     {
-      gchar *app_name, *app_exec;
-      guint count;
+      bchar *app_name, *app_exec;
+      buint count;
       time_t stamp;
       RecentAppInfo *app_info;
-      gboolean res;
+      bboolean res;
       
       app_name = apps[i];
       
@@ -1285,7 +1285,7 @@ build_recent_info (GBookmarkFile  *bookmarks,
       app_info->count = count;
       app_info->stamp = stamp;
       
-      info->applications = g_slist_prepend (info->applications, app_info);
+      info->applications = b_slist_prepend (info->applications, app_info);
       g_hash_table_replace (info->apps_lookup, app_info->name, app_info);
     }
   
@@ -1311,7 +1311,7 @@ build_recent_info (GBookmarkFile  *bookmarks,
  */
 BtkRecentInfo *
 btk_recent_manager_lookup_item (BtkRecentManager  *manager,
-				const gchar       *uri,
+				const bchar       *uri,
 				GError           **error)
 {
   BtkRecentManagerPrivate *priv;
@@ -1372,15 +1372,15 @@ btk_recent_manager_lookup_item (BtkRecentManager  *manager,
  *
  * Since: 2.10
  */ 
-gboolean
+bboolean
 btk_recent_manager_move_item (BtkRecentManager  *recent_manager,
-			      const gchar       *uri,
-			      const gchar       *new_uri,
+			      const bchar       *uri,
+			      const bchar       *new_uri,
 			      GError           **error)
 {
   BtkRecentManagerPrivate *priv;
   GError *move_error;
-  gboolean res;
+  bboolean res;
   
   g_return_val_if_fail (BTK_IS_RECENT_MANAGER (recent_manager), FALSE);
   g_return_val_if_fail (uri != NULL, FALSE);
@@ -1445,8 +1445,8 @@ btk_recent_manager_get_items (BtkRecentManager *manager)
 {
   BtkRecentManagerPrivate *priv;
   GList *retval = NULL;
-  gchar **uris;
-  gsize uris_len, i;
+  bchar **uris;
+  bsize uris_len, i;
   
   g_return_val_if_fail (BTK_IS_RECENT_MANAGER (manager), NULL);
   
@@ -1500,12 +1500,12 @@ purge_recent_items_list (BtkRecentManager  *manager,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_recent_manager_purge_items (BtkRecentManager  *manager,
 				GError           **error)
 {
   BtkRecentManagerPrivate *priv;
-  gint count, purged;
+  bint count, purged;
   
   g_return_val_if_fail (BTK_IS_RECENT_MANAGER (manager), -1);
 
@@ -1524,8 +1524,8 @@ btk_recent_manager_purge_items (BtkRecentManager  *manager,
   return purged;
 }
 
-static gboolean
-emit_manager_changed (gpointer data)
+static bboolean
+emit_manager_changed (bpointer data)
 {
   BtkRecentManager *manager = data;
 
@@ -1565,14 +1565,14 @@ btk_recent_manager_changed (BtkRecentManager *manager)
 
 static void
 btk_recent_manager_clamp_to_age (BtkRecentManager *manager,
-                                 gint              age)
+                                 bint              age)
 {
   BtkRecentManagerPrivate *priv = manager->priv;
-  gchar **uris;
-  gsize n_uris, i;
+  bchar **uris;
+  bsize n_uris, i;
   time_t now;
 
-  if (G_UNLIKELY (!priv->recent_items))
+  if (B_UNLIKELY (!priv->recent_items))
     return;
 
   now = time (NULL);
@@ -1581,12 +1581,12 @@ btk_recent_manager_clamp_to_age (BtkRecentManager *manager,
 
   for (i = 0; i < n_uris; i++)
     {
-      const gchar *uri = uris[i];
+      const bchar *uri = uris[i];
       time_t modified;
-      gint item_age;
+      bint item_age;
 
       modified = g_bookmark_file_get_modified (priv->recent_items, uri, NULL);
-      item_age = (gint) ((now - modified) / (60 * 60 * 24));
+      item_age = (bint) ((now - modified) / (60 * 60 * 24));
       if (item_age > age)
         g_bookmark_file_remove_item (priv->recent_items, uri, NULL);
     }
@@ -1596,13 +1596,13 @@ btk_recent_manager_clamp_to_age (BtkRecentManager *manager,
 
 static void
 btk_recent_manager_clamp_to_size (BtkRecentManager *manager,
-                                  const gint        size)
+                                  const bint        size)
 {
   BtkRecentManagerPrivate *priv = manager->priv;
-  gchar **uris;
-  gsize n_uris, i;
+  bchar **uris;
+  bsize n_uris, i;
 
-  if (G_UNLIKELY (!priv->recent_items) || G_UNLIKELY (size < 0))
+  if (B_UNLIKELY (!priv->recent_items) || B_UNLIKELY (size < 0))
     return;
 
   uris = g_bookmark_file_get_uris (priv->recent_items, &n_uris);
@@ -1615,7 +1615,7 @@ btk_recent_manager_clamp_to_size (BtkRecentManager *manager,
 
   for (i = 0; i < n_uris - size; i++)
     {
-      const gchar *uri = uris[i];
+      const bchar *uri = uris[i];
       g_bookmark_file_remove_item (priv->recent_items, uri, NULL);
     }
 
@@ -1639,7 +1639,7 @@ btk_recent_info_get_type (void)
 }
 
 static BtkRecentInfo *
-btk_recent_info_new (const gchar *uri)
+btk_recent_info_new (const bchar *uri)
 {
   BtkRecentInfo *info;
 
@@ -1671,10 +1671,10 @@ btk_recent_info_free (BtkRecentInfo *recent_info)
   
   if (recent_info->applications)
     {
-      g_slist_foreach (recent_info->applications,
+      b_slist_foreach (recent_info->applications,
       		       (GFunc) recent_app_info_free,
       		       NULL);
-      g_slist_free (recent_info->applications);
+      b_slist_free (recent_info->applications);
       
       recent_info->applications = NULL;
     }
@@ -1684,10 +1684,10 @@ btk_recent_info_free (BtkRecentInfo *recent_info)
 
   if (recent_info->groups)
     {
-      g_slist_foreach (recent_info->groups,
+      b_slist_foreach (recent_info->groups,
 		       (GFunc) g_free,
 		       NULL);
-      g_slist_free (recent_info->groups);
+      b_slist_free (recent_info->groups);
 
       recent_info->groups = NULL;
     }
@@ -1752,7 +1752,7 @@ btk_recent_info_unref (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_recent_info_get_uri (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
@@ -1772,7 +1772,7 @@ btk_recent_info_get_uri (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_recent_info_get_display_name (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
@@ -1794,7 +1794,7 @@ btk_recent_info_get_display_name (BtkRecentInfo *info)
  *
  * Since: 2.10
  **/
-const gchar *
+const bchar *
 btk_recent_info_get_description (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
@@ -1813,7 +1813,7 @@ btk_recent_info_get_description (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_recent_info_get_mime_type (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, NULL);
@@ -1896,7 +1896,7 @@ btk_recent_info_get_visited (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_get_private_hint (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, FALSE);
@@ -1906,7 +1906,7 @@ btk_recent_info_get_private_hint (BtkRecentInfo *info)
 
 
 static RecentAppInfo *
-recent_app_info_new (const gchar *app_name)
+recent_app_info_new (const bchar *app_name)
 {
   RecentAppInfo *app_info;
 
@@ -1955,11 +1955,11 @@ recent_app_info_free (RecentAppInfo *app_info)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_get_application_info (BtkRecentInfo  *info,
-				      const gchar    *app_name,
-				      const gchar   **app_exec,
-				      guint          *count,
+				      const bchar    *app_name,
+				      const bchar   **app_exec,
+				      buint          *count,
 				      time_t         *time_)
 {
   RecentAppInfo *ai;
@@ -2003,13 +2003,13 @@ btk_recent_info_get_application_info (BtkRecentInfo  *info,
  *
  * Since: 2.10
  */
-gchar **
+bchar **
 btk_recent_info_get_applications (BtkRecentInfo *info,
-				  gsize         *length)
+				  bsize         *length)
 {
   GSList *l;
-  gchar **retval;
-  gsize n_apps, i;
+  bchar **retval;
+  bsize n_apps, i;
   
   g_return_val_if_fail (info != NULL, NULL);
   
@@ -2021,9 +2021,9 @@ btk_recent_info_get_applications (BtkRecentInfo *info,
       return NULL;    
     }
   
-  n_apps = g_slist_length (info->applications);
+  n_apps = b_slist_length (info->applications);
   
-  retval = g_new0 (gchar *, n_apps + 1);
+  retval = g_new0 (bchar *, n_apps + 1);
   
   for (l = info->applications, i = 0;
        l != NULL;
@@ -2055,9 +2055,9 @@ btk_recent_info_get_applications (BtkRecentInfo *info,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_has_application (BtkRecentInfo *info,
-				 const gchar   *app_name)
+				 const bchar   *app_name)
 {
   g_return_val_if_fail (info != NULL, FALSE);
   g_return_val_if_fail (app_name != NULL, FALSE);
@@ -2076,12 +2076,12 @@ btk_recent_info_has_application (BtkRecentInfo *info,
  *
  * Since: 2.10
  */
-gchar *
+bchar *
 btk_recent_info_last_application (BtkRecentInfo  *info)
 {
   GSList *l;
   time_t last_stamp = (time_t) -1;
-  gchar *name = NULL;
+  bchar *name = NULL;
   
   g_return_val_if_fail (info != NULL, NULL);
   
@@ -2101,7 +2101,7 @@ btk_recent_info_last_application (BtkRecentInfo  *info)
 
 static BdkPixbuf *
 get_icon_for_mime_type (const char *mime_type,
-			gint        pixel_size)
+			bint        pixel_size)
 {
   BtkIconTheme *icon_theme;
   char *content_type;
@@ -2134,8 +2134,8 @@ get_icon_for_mime_type (const char *mime_type,
 }
 
 static BdkPixbuf *
-get_icon_fallback (const gchar *icon_name,
-		   gint         size)
+get_icon_fallback (const bchar *icon_name,
+		   bint         size)
 {
   BtkIconTheme *icon_theme;
   BdkPixbuf *retval;
@@ -2165,7 +2165,7 @@ get_icon_fallback (const gchar *icon_name,
  */
 BdkPixbuf *
 btk_recent_info_get_icon (BtkRecentInfo *info,
-			  gint           size)
+			  bint           size)
 {
   BdkPixbuf *retval = NULL;
   
@@ -2198,7 +2198,7 @@ btk_recent_info_get_icon (BtkRecentInfo *info,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_is_local (BtkRecentInfo *info)
 {
   g_return_val_if_fail (info != NULL, FALSE);
@@ -2217,12 +2217,12 @@ btk_recent_info_is_local (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_exists (BtkRecentInfo *info)
 {
-  gchar *filename;
+  bchar *filename;
   GStatBuf stat_buf;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   
   g_return_val_if_fail (info != NULL, FALSE);
   
@@ -2255,7 +2255,7 @@ btk_recent_info_exists (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_match (BtkRecentInfo *info_a,
 		       BtkRecentInfo *info_b)
 {
@@ -2266,11 +2266,11 @@ btk_recent_info_match (BtkRecentInfo *info_a,
 }
 
 /* taken from bunny-vfs-uri.c */
-static const gchar *
-get_method_string (const gchar  *substring, 
-		   gchar       **method_string)
+static const bchar *
+get_method_string (const bchar  *substring, 
+		   bchar       **method_string)
 {
-  const gchar *p;
+  const bchar *p;
   char *method;
 	
   for (p = substring;
@@ -2338,15 +2338,15 @@ make_valid_utf8 (const char *name)
   return g_string_free (string, FALSE);
 }
 
-static gchar *
-get_uri_shortname_for_display (const gchar *uri)
+static bchar *
+get_uri_shortname_for_display (const bchar *uri)
 {
-  gchar *name = NULL;
-  gboolean validated = FALSE;
+  bchar *name = NULL;
+  bboolean validated = FALSE;
 
   if (has_case_prefix (uri, "file:/"))
     {
-      gchar *local_file;
+      bchar *local_file;
       
       local_file = g_filename_from_uri (uri, NULL, NULL);
       
@@ -2361,9 +2361,9 @@ get_uri_shortname_for_display (const gchar *uri)
   
   if (!name)
     {
-      gchar *method;
-      gchar *local_file;
-      const gchar *rest;
+      bchar *method;
+      bchar *local_file;
+      const bchar *rest;
       
       rest = get_method_string (uri, &method);
       local_file = g_filename_display_basename (rest);
@@ -2378,7 +2378,7 @@ get_uri_shortname_for_display (const gchar *uri)
   
   if (!validated && !g_utf8_validate (name, -1, NULL))
     {
-      gchar *utf8_name;
+      bchar *utf8_name;
       
       utf8_name = make_valid_utf8 (name);
       g_free (name);
@@ -2402,10 +2402,10 @@ get_uri_shortname_for_display (const gchar *uri)
  *
  * Since: 2.10
  */
-gchar *
+bchar *
 btk_recent_info_get_short_name (BtkRecentInfo *info)
 {
-  gchar *short_name;
+  bchar *short_name;
 
   g_return_val_if_fail (info != NULL, NULL);
 
@@ -2430,17 +2430,17 @@ btk_recent_info_get_short_name (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gchar *
+bchar *
 btk_recent_info_get_uri_display (BtkRecentInfo *info)
 {
-  gchar *retval;
+  bchar *retval;
   
   g_return_val_if_fail (info != NULL, NULL);
 
   retval = NULL;
   if (btk_recent_info_is_local (info))
     {
-      gchar *filename;
+      bchar *filename;
 
       filename = g_filename_from_uri (info->uri, NULL, NULL);
       if (!filename)
@@ -2469,11 +2469,11 @@ btk_recent_info_get_uri_display (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gint
+bint
 btk_recent_info_get_age (BtkRecentInfo *info)
 {
   time_t now, delta;
-  gint retval;
+  bint retval;
 
   g_return_val_if_fail (info != NULL, -1);
 
@@ -2481,7 +2481,7 @@ btk_recent_info_get_age (BtkRecentInfo *info)
   
   delta = now - info->modified;
   
-  retval = (gint) (delta / (60 * 60 * 24));
+  retval = (bint) (delta / (60 * 60 * 24));
   
   return retval;
 }
@@ -2501,13 +2501,13 @@ btk_recent_info_get_age (BtkRecentInfo *info)
  *
  * Since: 2.10
  */
-gchar **
+bchar **
 btk_recent_info_get_groups (BtkRecentInfo *info,
-			    gsize         *length)
+			    bsize         *length)
 {
   GSList *l;
-  gchar **retval;
-  gsize n_groups, i;
+  bchar **retval;
+  bsize n_groups, i;
   
   g_return_val_if_fail (info != NULL, NULL);
   
@@ -2519,15 +2519,15 @@ btk_recent_info_get_groups (BtkRecentInfo *info,
       return NULL;
     }
   
-  n_groups = g_slist_length (info->groups);
+  n_groups = b_slist_length (info->groups);
   
-  retval = g_new0 (gchar *, n_groups + 1);
+  retval = g_new0 (bchar *, n_groups + 1);
   
   for (l = info->groups, i = 0;
        l != NULL;
        l = l->next)
     {
-      gchar *group_name = (gchar *) l->data;
+      bchar *group_name = (bchar *) l->data;
       
       g_assert (group_name != NULL);
       
@@ -2553,9 +2553,9 @@ btk_recent_info_get_groups (BtkRecentInfo *info,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_recent_info_has_group (BtkRecentInfo *info,
-			   const gchar   *group_name)
+			   const bchar   *group_name)
 {
   GSList *l;
   
@@ -2567,7 +2567,7 @@ btk_recent_info_has_group (BtkRecentInfo *info,
 
   for (l = info->groups; l != NULL; l = l->next)
     {
-      gchar *g = (gchar *) l->data;
+      bchar *g = (bchar *) l->data;
 
       if (strcmp (g, group_name) == 0)
         return TRUE;

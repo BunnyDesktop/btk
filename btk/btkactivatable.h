@@ -27,13 +27,13 @@
 #include <btk/btkaction.h>
 #include <btk/btktypeutils.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTIVATABLE            (btk_activatable_get_type ())
-#define BTK_ACTIVATABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
-#define BTK_ACTIVATABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
-#define BTK_IS_ACTIVATABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTIVATABLE))
-#define BTK_ACTIVATABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
+#define BTK_ACTIVATABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatable))
+#define BTK_ACTIVATABLE_CLASS(obj)      (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
+#define BTK_IS_ACTIVATABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTIVATABLE))
+#define BTK_ACTIVATABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_ACTIVATABLE, BtkActivatableIface))
 
 
 typedef struct _BtkActivatable      BtkActivatable; /* Dummy typedef */
@@ -60,13 +60,13 @@ struct _BtkActivatableIface
   /* virtual table */
   void   (* update)                   (BtkActivatable *activatable,
 		                       BtkAction      *action,
-		                       const gchar    *property_name);
+		                       const bchar    *property_name);
   void   (* sync_action_properties)   (BtkActivatable *activatable,
 		                       BtkAction      *action);
 };
 
 
-GType      btk_activatable_get_type                   (void) G_GNUC_CONST;
+GType      btk_activatable_get_type                   (void) B_GNUC_CONST;
 
 void       btk_activatable_sync_action_properties     (BtkActivatable *activatable,
 						       BtkAction      *action);
@@ -76,13 +76,13 @@ void       btk_activatable_set_related_action         (BtkActivatable *activatab
 BtkAction *btk_activatable_get_related_action         (BtkActivatable *activatable);
 
 void       btk_activatable_set_use_action_appearance  (BtkActivatable *activatable,
-						       gboolean        use_appearance);
-gboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatable);
+						       bboolean        use_appearance);
+bboolean   btk_activatable_get_use_action_appearance  (BtkActivatable *activatable);
 
 /* For use in activatable implementations */
 void       btk_activatable_do_set_related_action      (BtkActivatable *activatable,
 						       BtkAction      *action);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ACTIVATABLE_H__ */

@@ -28,14 +28,14 @@
 #include <btk/btkdialog.h>
 #include <btk/btkrecentchooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_CHOOSER_DIALOG		  (btk_recent_chooser_dialog_get_type ())
-#define BTK_RECENT_CHOOSER_DIALOG(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialog))
-#define BTK_IS_RECENT_CHOOSER_DIALOG(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG))
-#define BTK_RECENT_CHOOSER_DIALOG_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialogClass))
-#define BTK_IS_RECENT_CHOOSER_DIALOG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_CHOOSER_DIALOG))
-#define BTK_RECENT_CHOOSER_DIALOG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialogClass))
+#define BTK_RECENT_CHOOSER_DIALOG(obj)		  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialog))
+#define BTK_IS_RECENT_CHOOSER_DIALOG(obj)	  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG))
+#define BTK_RECENT_CHOOSER_DIALOG_CLASS(klass)	  (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialogClass))
+#define BTK_IS_RECENT_CHOOSER_DIALOG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_CHOOSER_DIALOG))
+#define BTK_RECENT_CHOOSER_DIALOG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_CHOOSER_DIALOG, BtkRecentChooserDialogClass))
 
 typedef struct _BtkRecentChooserDialog        BtkRecentChooserDialog;
 typedef struct _BtkRecentChooserDialogClass   BtkRecentChooserDialogClass;
@@ -57,18 +57,18 @@ struct _BtkRecentChooserDialogClass
 };
 
 
-GType      btk_recent_chooser_dialog_get_type        (void) G_GNUC_CONST;
+GType      btk_recent_chooser_dialog_get_type        (void) B_GNUC_CONST;
 
-BtkWidget *btk_recent_chooser_dialog_new             (const gchar      *title,
+BtkWidget *btk_recent_chooser_dialog_new             (const bchar      *title,
 					              BtkWindow        *parent,
-					              const gchar      *first_button_text,
-					              ...) G_GNUC_NULL_TERMINATED;
-BtkWidget *btk_recent_chooser_dialog_new_for_manager (const gchar      *title,
+					              const bchar      *first_button_text,
+					              ...) B_GNUC_NULL_TERMINATED;
+BtkWidget *btk_recent_chooser_dialog_new_for_manager (const bchar      *title,
 						      BtkWindow        *parent,
 						      BtkRecentManager *manager,
-						      const gchar      *first_button_text,
-						      ...) G_GNUC_NULL_TERMINATED;
+						      const bchar      *first_button_text,
+						      ...) B_GNUC_NULL_TERMINATED;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_DIALOG_H__ */

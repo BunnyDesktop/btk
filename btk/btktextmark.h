@@ -54,7 +54,7 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* The BtkTextMark data type */
 
@@ -62,22 +62,22 @@ typedef struct _BtkTextMark      BtkTextMark;
 typedef struct _BtkTextMarkClass BtkTextMarkClass;
 
 #define BTK_TYPE_TEXT_MARK              (btk_text_mark_get_type ())
-#define BTK_TEXT_MARK(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_MARK, BtkTextMark))
-#define BTK_TEXT_MARK_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
-#define BTK_IS_TEXT_MARK(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_MARK))
-#define BTK_IS_TEXT_MARK_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_MARK))
-#define BTK_TEXT_MARK_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
+#define BTK_TEXT_MARK(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_MARK, BtkTextMark))
+#define BTK_TEXT_MARK_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
+#define BTK_IS_TEXT_MARK(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_MARK))
+#define BTK_IS_TEXT_MARK_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_MARK))
+#define BTK_TEXT_MARK_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
 
 struct _BtkTextMark
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
-  gpointer GSEAL (segment);
+  bpointer GSEAL (segment);
 };
 
 struct _BtkTextMarkClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -86,20 +86,20 @@ struct _BtkTextMarkClass
   void (*_btk_reserved4) (void);
 };
 
-GType        btk_text_mark_get_type   (void) G_GNUC_CONST;
+GType        btk_text_mark_get_type   (void) B_GNUC_CONST;
 
 void           btk_text_mark_set_visible (BtkTextMark *mark,
-                                          gboolean     setting);
-gboolean       btk_text_mark_get_visible (BtkTextMark *mark);
+                                          bboolean     setting);
+bboolean       btk_text_mark_get_visible (BtkTextMark *mark);
 
-BtkTextMark          *btk_text_mark_new              (const gchar *name,
-						      gboolean     left_gravity);
-const gchar *         btk_text_mark_get_name         (BtkTextMark *mark);
-gboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
+BtkTextMark          *btk_text_mark_new              (const bchar *name,
+						      bboolean     left_gravity);
+const bchar *         btk_text_mark_get_name         (BtkTextMark *mark);
+bboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
 BtkTextBuffer*        btk_text_mark_get_buffer       (BtkTextMark *mark);
-gboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
+bboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

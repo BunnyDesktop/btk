@@ -29,22 +29,22 @@
 
 #include <bdk/win32/bdkdrawable-win32.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkWin32PositionInfo    BdkWin32PositionInfo;
 
 #if 0
 struct _BdkWin32PositionInfo
 {
-  gint x;
-  gint y;
-  gint width;
-  gint height;
-  gint x_offset;		/* Offsets to add to Win32 coordinates */
-  gint y_offset;		/* within window to get BDK coodinates */
-  guint big : 1;
-  guint mapped : 1;
-  guint no_bg : 1;	        /* Set when the window background
+  bint x;
+  bint y;
+  bint width;
+  bint height;
+  bint x_offset;		/* Offsets to add to Win32 coordinates */
+  bint y_offset;		/* within window to get BDK coodinates */
+  buint big : 1;
+  buint mapped : 1;
+  buint no_bg : 1;	        /* Set when the window background
 				 * is temporarily unset during resizing
 				 * and scaling
 				 */
@@ -60,17 +60,17 @@ typedef struct _BdkWindowImplWin32 BdkWindowImplWin32;
 typedef struct _BdkWindowImplWin32Class BdkWindowImplWin32Class;
 
 #define BDK_TYPE_WINDOW_IMPL_WIN32              (_bdk_window_impl_win32_get_type ())
-#define BDK_WINDOW_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32))
-#define BDK_WINDOW_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
-#define BDK_IS_WINDOW_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_WIN32))
-#define BDK_IS_WINDOW_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_WIN32))
-#define BDK_WINDOW_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
+#define BDK_WINDOW_IMPL_WIN32(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32))
+#define BDK_WINDOW_IMPL_WIN32_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
+#define BDK_IS_WINDOW_IMPL_WIN32(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_WIN32))
+#define BDK_IS_WINDOW_IMPL_WIN32_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_WIN32))
+#define BDK_WINDOW_IMPL_WIN32_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_WIN32, BdkWindowImplWin32Class))
 
 struct _BdkWindowImplWin32
 {
   BdkDrawableImplWin32 parent_instance;
 
-  gint8 toplevel_window_type;
+  bint8 toplevel_window_type;
 
   HCURSOR hcursor;
   HICON   hicon_big;
@@ -85,7 +85,7 @@ struct _BdkWindowImplWin32
   wchar_t leading_surrogate_keyup;
 
   /* Window size hints */
-  gint hint_flags;
+  bint hint_flags;
   BdkGeometry hints;
 
   BdkEventMask native_event_mask;
@@ -96,15 +96,15 @@ struct _BdkWindowImplWin32
 
   BdkWindow *transient_owner;
   GSList    *transient_children;
-  gint       num_transients;
-  gboolean   changing_state;
+  bint       num_transients;
+  bboolean   changing_state;
 
-  gint initial_x;
-  gint initial_y;
+  bint initial_x;
+  bint initial_y;
 
-  guint no_bg : 1;
-  guint inhibit_configure : 1;
-  guint override_redirect : 1;
+  buint no_bg : 1;
+  buint inhibit_configure : 1;
+  buint override_redirect : 1;
 };
  
 struct _BdkWindowImplWin32Class 
@@ -115,13 +115,13 @@ struct _BdkWindowImplWin32Class
 GType _bdk_window_impl_win32_get_type (void);
 
 void  _bdk_win32_window_tmp_unset_bg  (BdkWindow *window,
-				       gboolean   recurse);
+				       bboolean   recurse);
 void  _bdk_win32_window_tmp_reset_bg  (BdkWindow *window,
-				       gboolean   recurse);
+				       bboolean   recurse);
 
 void  _bdk_win32_window_tmp_unset_parent_bg (BdkWindow *window);
 void  _bdk_win32_window_tmp_reset_parent_bg (BdkWindow *window);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_WIN32_H__ */

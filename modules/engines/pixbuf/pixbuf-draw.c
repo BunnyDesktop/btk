@@ -44,7 +44,7 @@ match_theme_image (BtkStyle       *style,
   
   while (tmp_list)
     {
-      guint flags;
+      buint flags;
       ThemeImage *image = tmp_list->data;
       tmp_list = tmp_list->next;
 
@@ -99,18 +99,18 @@ match_theme_image (BtkStyle       *style,
   return NULL;
 }
 
-static gboolean
+static bboolean
 draw_simple_image(BtkStyle       *style,
 		  BdkWindow      *window,
 		  BdkRectangle   *area,
 		  BtkWidget      *widget,
 		  ThemeMatchData *match_data,
-		  gboolean        draw_center,
-		  gboolean        allow_setbg,
-		  gint            x,
-		  gint            y,
-		  gint            width,
-		  gint            height)
+		  bboolean        draw_center,
+		  bboolean        allow_setbg,
+		  bint            x,
+		  bint            y,
+		  bint            width,
+		  bint            height)
 {
   ThemeImage *image;
   
@@ -161,20 +161,20 @@ draw_simple_image(BtkStyle       *style,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 draw_gap_image(BtkStyle       *style,
 	       BdkWindow      *window,
 	       BdkRectangle   *area,
 	       BtkWidget      *widget,
 	       ThemeMatchData *match_data,
-	       gboolean        draw_center,
-	       gint            x,
-	       gint            y,
-	       gint            width,
-	       gint            height,
+	       bboolean        draw_center,
+	       bint            x,
+	       bint            y,
+	       bint            width,
+	       bint            height,
 	       BtkPositionType gap_side,
-	       gint            gap_x,
-	       gint            gap_width)
+	       bint            gap_x,
+	       bint            gap_width)
 {
   ThemeImage *image;
   
@@ -201,10 +201,10 @@ draw_gap_image(BtkStyle       *style,
   image = match_theme_image (style, match_data);
   if (image)
     {
-      gint thickness;
+      bint thickness;
       BdkRectangle r1, r2, r3;
       BdkPixbuf *pixbuf = NULL;
-      guint components = COMPONENT_ALL;
+      buint components = COMPONENT_ALL;
 
       if (!draw_center)
 	components |= COMPONENT_CENTER;
@@ -339,10 +339,10 @@ draw_hline (BtkStyle     *style,
 	    BtkStateType  state,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
-	    gint          x1,
-	    gint          x2,
-	    gint          y)
+	    const bchar  *detail,
+	    bint          x1,
+	    bint          x2,
+	    bint          y)
 {
   ThemeImage *image;
   ThemeMatchData   match_data;
@@ -351,7 +351,7 @@ draw_hline (BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_HLINE;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
   match_data.orientation = BTK_ORIENTATION_HORIZONTAL;
@@ -375,10 +375,10 @@ draw_vline (BtkStyle     *style,
 	    BtkStateType  state,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
-	    gint          y1,
-	    gint          y2,
-	    gint          x)
+	    const bchar  *detail,
+	    bint          y1,
+	    bint          y2,
+	    bint          x)
 {
   ThemeImage    *image;
   ThemeMatchData match_data;
@@ -387,7 +387,7 @@ draw_vline (BtkStyle     *style,
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_VLINE;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_ORIENTATION | THEME_MATCH_STATE;
   match_data.state = state;
   match_data.orientation = BTK_ORIENTATION_VERTICAL;
@@ -412,11 +412,11 @@ draw_shadow(BtkStyle     *style,
 	    BtkShadowType shadow,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
-	    gint          x,
-	    gint          y,
-	    gint          width,
-	    gint          height)
+	    const bchar  *detail,
+	    bint          x,
+	    bint          y,
+	    bint          width,
+	    bint          height)
 {
   ThemeMatchData match_data;
   
@@ -424,7 +424,7 @@ draw_shadow(BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_SHADOW;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -445,14 +445,14 @@ draw_shadow(BtkStyle     *style,
 static void
 reverse_engineer_stepper_box (BtkWidget    *range,
 			      BtkArrowType  arrow_type,
-			      gint         *x,
-			      gint         *y,
-			      gint         *width,
-			      gint         *height)
+			      bint         *x,
+			      bint         *y,
+			      bint         *width,
+			      bint         *height)
 {
-  gint slider_width = 14, stepper_size = 14;
-  gint box_width;
-  gint box_height;
+  bint slider_width = 14, stepper_size = 14;
+  bint box_width;
+  bint box_height;
   
   if (range && BTK_IS_RANGE (range))
     {
@@ -486,13 +486,13 @@ draw_arrow (BtkStyle     *style,
 	    BtkShadowType shadow,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
+	    const bchar  *detail,
 	    BtkArrowType  arrow_direction,
-	    gint          fill,
-	    gint          x,
-	    gint          y,
-	    gint          width,
-	    gint          height)
+	    bint          fill,
+	    bint          x,
+	    bint          y,
+	    bint          width,
+	    bint          height)
 {
   ThemeMatchData match_data;
   
@@ -512,16 +512,16 @@ draw_arrow (BtkStyle     *style,
        * nothing for the box, and then here, reverse engineering the box that
        * was passed to draw box and using that
        */
-      gint box_x = x;
-      gint box_y = y;
-      gint box_width = width;
-      gint box_height = height;
+      bint box_x = x;
+      bint box_y = y;
+      bint box_width = width;
+      bint box_height = height;
 
       reverse_engineer_stepper_box (widget, arrow_direction,
 				    &box_x, &box_y, &box_width, &box_height);
 
       match_data.function = TOKEN_D_STEPPER;
-      match_data.detail = (gchar *)detail;
+      match_data.detail = (bchar *)detail;
       match_data.flags = (THEME_MATCH_SHADOW | 
 			  THEME_MATCH_STATE | 
 			  THEME_MATCH_ARROW_DIRECTION);
@@ -539,7 +539,7 @@ draw_arrow (BtkStyle     *style,
       /* Otherwise, draw the full box, and fall through to draw the arrow
        */
       match_data.function = TOKEN_D_BOX;
-      match_data.detail = (gchar *)detail;
+      match_data.detail = (bchar *)detail;
       match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
       match_data.shadow = shadow;
       match_data.state = state;
@@ -552,7 +552,7 @@ draw_arrow (BtkStyle     *style,
 
 
   match_data.function = TOKEN_D_ARROW;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = (THEME_MATCH_SHADOW | 
 		      THEME_MATCH_STATE | 
 		      THEME_MATCH_ARROW_DIRECTION);
@@ -573,11 +573,11 @@ draw_diamond (BtkStyle     *style,
 	      BtkShadowType shadow,
 	      BdkRectangle *area,
 	      BtkWidget    *widget,
-	      const gchar  *detail,
-	      gint          x,
-	      gint          y,
-	      gint          width,
-	      gint          height)
+	      const bchar  *detail,
+	      bint          x,
+	      bint          y,
+	      bint          width,
+	      bint          height)
 {
   ThemeMatchData match_data;
   
@@ -585,7 +585,7 @@ draw_diamond (BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_DIAMOND;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -602,10 +602,10 @@ draw_string (BtkStyle * style,
 	     BtkStateType state,
 	     BdkRectangle * area,
 	     BtkWidget * widget,
-	     const gchar *detail,
-	     gint x,
-	     gint y,
-	     const gchar * string)
+	     const bchar *detail,
+	     bint x,
+	     bint y,
+	     const bchar * string)
 {
   g_return_if_fail(style != NULL);
   g_return_if_fail(window != NULL);
@@ -641,11 +641,11 @@ draw_box (BtkStyle     *style,
  	  BtkShadowType shadow,
  	  BdkRectangle *area,
  	  BtkWidget    *widget,
-	  const gchar  *detail,
-	  gint          x,
-	  gint          y,
-	  gint          width,
-	  gint          height)
+	  const bchar  *detail,
+	  bint          x,
+	  bint          y,
+	  bint          width,
+	  bint          height)
 {
   ThemeMatchData match_data;
 
@@ -660,7 +660,7 @@ draw_box (BtkStyle     *style,
     }
 
   match_data.function = TOKEN_D_BOX;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -679,11 +679,11 @@ draw_flat_box (BtkStyle     *style,
 	       BtkShadowType shadow,
 	       BdkRectangle *area,
 	       BtkWidget    *widget,
-	       const gchar  *detail,
-	       gint          x,
-	       gint          y,
-	       gint          width,
-	       gint          height)
+	       const bchar  *detail,
+	       bint          x,
+	       bint          y,
+	       bint          width,
+	       bint          height)
 {
   ThemeMatchData match_data;
   
@@ -691,7 +691,7 @@ draw_flat_box (BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_FLAT_BOX;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -709,11 +709,11 @@ draw_check (BtkStyle     *style,
 	    BtkShadowType shadow,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
-	    gint          x,
-	    gint          y,
-	    gint          width,
-	    gint          height)
+	    const bchar  *detail,
+	    bint          x,
+	    bint          y,
+	    bint          width,
+	    bint          height)
 {
   ThemeMatchData match_data;
   
@@ -721,7 +721,7 @@ draw_check (BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_CHECK;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -739,11 +739,11 @@ draw_option (BtkStyle      *style,
 	     BtkShadowType shadow,
 	     BdkRectangle *area,
 	     BtkWidget    *widget,
-	     const gchar  *detail,
-	     gint          x,
-	     gint          y,
-	     gint          width,
-	     gint          height)
+	     const bchar  *detail,
+	     bint          x,
+	     bint          y,
+	     bint          width,
+	     bint          height)
 {
   ThemeMatchData match_data;
   
@@ -751,7 +751,7 @@ draw_option (BtkStyle      *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_OPTION;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -769,11 +769,11 @@ draw_tab (BtkStyle     *style,
 	  BtkShadowType shadow,
 	  BdkRectangle *area,
 	  BtkWidget    *widget,
-	  const gchar  *detail,
-	  gint          x,
-	  gint          y,
-	  gint          width,
-	  gint          height)
+	  const bchar  *detail,
+	  bint          x,
+	  bint          y,
+	  bint          width,
+	  bint          height)
 {
   ThemeMatchData match_data;
   
@@ -781,7 +781,7 @@ draw_tab (BtkStyle     *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_TAB;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -799,19 +799,19 @@ draw_shadow_gap (BtkStyle       *style,
 		 BtkShadowType   shadow,
 		 BdkRectangle   *area,
 		 BtkWidget      *widget,
-		 const gchar    *detail,
-		 gint            x,
-		 gint            y,
-		 gint            width,
-		 gint            height,
+		 const bchar    *detail,
+		 bint            x,
+		 bint            y,
+		 bint            width,
+		 bint            height,
 		 BtkPositionType gap_side,
-		 gint            gap_x,
-		 gint            gap_width)
+		 bint            gap_x,
+		 bint            gap_width)
 {
   ThemeMatchData match_data;
   
   match_data.function = TOKEN_D_SHADOW_GAP;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.flags = (THEME_MATCH_SHADOW | 
 		      THEME_MATCH_STATE | 
@@ -832,19 +832,19 @@ draw_box_gap (BtkStyle       *style,
 	      BtkShadowType   shadow,
 	      BdkRectangle   *area,
 	      BtkWidget      *widget,
-	      const gchar    *detail,
-	      gint            x,
-	      gint            y,
-	      gint            width,
-	      gint            height,
+	      const bchar    *detail,
+	      bint            x,
+	      bint            y,
+	      bint            width,
+	      bint            height,
 	      BtkPositionType gap_side,
-	      gint            gap_x,
-	      gint            gap_width)
+	      bint            gap_x,
+	      bint            gap_width)
 {
   ThemeMatchData match_data;
   
   match_data.function = TOKEN_D_BOX_GAP;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE;
   match_data.flags = (THEME_MATCH_SHADOW | 
 		      THEME_MATCH_STATE | 
@@ -865,11 +865,11 @@ draw_extension (BtkStyle       *style,
 		BtkShadowType   shadow,
 		BdkRectangle   *area,
 		BtkWidget      *widget,
-		const gchar    *detail,
-		gint            x,
-		gint            y,
-		gint            width,
-		gint            height,
+		const bchar    *detail,
+		bint            x,
+		bint            y,
+		bint            width,
+		bint            height,
 		BtkPositionType gap_side)
 {
   ThemeMatchData match_data;
@@ -878,7 +878,7 @@ draw_extension (BtkStyle       *style,
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_EXTENSION;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = THEME_MATCH_SHADOW | THEME_MATCH_STATE | THEME_MATCH_GAP_SIDE;
   match_data.shadow = shadow;
   match_data.state = state;
@@ -896,11 +896,11 @@ draw_focus (BtkStyle     *style,
 	    BtkStateType  state_type,
 	    BdkRectangle *area,
 	    BtkWidget    *widget,
-	    const gchar  *detail,
-	    gint          x,
-	    gint          y,
-	    gint          width,
-	    gint          height)
+	    const bchar  *detail,
+	    bint          x,
+	    bint          y,
+	    bint          width,
+	    bint          height)
 {
   ThemeMatchData match_data;
   
@@ -908,7 +908,7 @@ draw_focus (BtkStyle     *style,
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_FOCUS;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = 0;
   
   if (!draw_simple_image (style, window, area, widget, &match_data, TRUE, FALSE,
@@ -924,11 +924,11 @@ draw_slider (BtkStyle      *style,
 	     BtkShadowType  shadow,
 	     BdkRectangle  *area,
 	     BtkWidget     *widget,
-	     const gchar   *detail,
-	     gint           x,
-	     gint           y,
-	     gint           width,
-	     gint           height,
+	     const bchar   *detail,
+	     bint           x,
+	     bint           y,
+	     bint           width,
+	     bint           height,
 	     BtkOrientation orientation)
 {
   ThemeMatchData           match_data;
@@ -937,7 +937,7 @@ draw_slider (BtkStyle      *style,
   g_return_if_fail(window != NULL);
 
   match_data.function = TOKEN_D_SLIDER;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = (THEME_MATCH_SHADOW | 
 		      THEME_MATCH_STATE | 
 		      THEME_MATCH_ORIENTATION);
@@ -959,11 +959,11 @@ draw_handle (BtkStyle      *style,
 	     BtkShadowType  shadow,
 	     BdkRectangle  *area,
 	     BtkWidget     *widget,
-	     const gchar   *detail,
-	     gint           x,
-	     gint           y,
-	     gint           width,
-	     gint           height,
+	     const bchar   *detail,
+	     bint           x,
+	     bint           y,
+	     bint           width,
+	     bint           height,
 	     BtkOrientation orientation)
 {
   ThemeMatchData match_data;
@@ -972,7 +972,7 @@ draw_handle (BtkStyle      *style,
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_HANDLE;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = (THEME_MATCH_SHADOW | 
 		      THEME_MATCH_STATE | 
 		      THEME_MATCH_ORIENTATION);
@@ -992,16 +992,16 @@ draw_expander (BtkStyle      *style,
 	       BtkStateType   state,
 	       BdkRectangle  *area,
 	       BtkWidget     *widget,
-	       const gchar   *detail,
-	       gint           x,
-	       gint           y,
+	       const bchar   *detail,
+	       bint           x,
+	       bint           y,
 	       BtkExpanderStyle expander_style)
 {
 #define DEFAULT_EXPANDER_SIZE 12
 
   ThemeMatchData match_data;
-  gint expander_size;
-  gint radius;
+  bint expander_size;
+  bint radius;
   
   g_return_if_fail (style != NULL);
   g_return_if_fail (window != NULL);
@@ -1020,7 +1020,7 @@ draw_expander (BtkStyle      *style,
   radius = expander_size/2;
 
   match_data.function = TOKEN_D_EXPANDER;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = (THEME_MATCH_STATE | 
 		      THEME_MATCH_EXPANDER_STYLE);
   match_data.state = state;
@@ -1038,12 +1038,12 @@ draw_resize_grip (BtkStyle      *style,
 		     BtkStateType   state,
 		     BdkRectangle  *area,
 		     BtkWidget     *widget,
-		     const gchar   *detail,
+		     const bchar   *detail,
 		     BdkWindowEdge  edge,
-		     gint           x,
-		     gint           y,
-		     gint           width,
-		     gint           height)
+		     bint           x,
+		     bint           y,
+		     bint           width,
+		     bint           height)
 {
   ThemeMatchData match_data;
   
@@ -1051,7 +1051,7 @@ draw_resize_grip (BtkStyle      *style,
   g_return_if_fail (window != NULL);
 
   match_data.function = TOKEN_D_RESIZE_GRIP;
-  match_data.detail = (gchar *)detail;
+  match_data.detail = (bchar *)detail;
   match_data.flags = (THEME_MATCH_STATE | 
 		      THEME_MATCH_WINDOW_EDGE);
   match_data.state = state;

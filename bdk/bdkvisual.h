@@ -33,14 +33,14 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_VISUAL              (bdk_visual_get_type ())
-#define BDK_VISUAL(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_VISUAL, BdkVisual))
-#define BDK_VISUAL_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_VISUAL, BdkVisualClass))
-#define BDK_IS_VISUAL(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_VISUAL))
-#define BDK_IS_VISUAL_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_VISUAL))
-#define BDK_VISUAL_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_VISUAL, BdkVisualClass))
+#define BDK_VISUAL(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_VISUAL, BdkVisual))
+#define BDK_VISUAL_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_VISUAL, BdkVisualClass))
+#define BDK_IS_VISUAL(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_VISUAL))
+#define BDK_IS_VISUAL_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_VISUAL))
+#define BDK_VISUAL_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_VISUAL, BdkVisualClass))
 
 typedef struct _BdkVisualClass    BdkVisualClass;
 
@@ -76,43 +76,43 @@ typedef enum
  */
 struct _BdkVisual
 {
-  GObject parent_instance;
+  BObject parent_instance;
   
   BdkVisualType GSEAL (type);
-  gint GSEAL (depth);
+  bint GSEAL (depth);
   BdkByteOrder GSEAL (byte_order);
-  gint GSEAL (colormap_size);
-  gint GSEAL (bits_per_rgb);
+  bint GSEAL (colormap_size);
+  bint GSEAL (bits_per_rgb);
 
-  guint32 GSEAL (red_mask);
-  gint GSEAL (red_shift);
-  gint GSEAL (red_prec);
+  buint32 GSEAL (red_mask);
+  bint GSEAL (red_shift);
+  bint GSEAL (red_prec);
 
-  guint32 GSEAL (green_mask);
-  gint GSEAL (green_shift);
-  gint GSEAL (green_prec);
+  buint32 GSEAL (green_mask);
+  bint GSEAL (green_shift);
+  bint GSEAL (green_prec);
 
-  guint32 GSEAL (blue_mask);
-  gint GSEAL (blue_shift);
-  gint GSEAL (blue_prec);
+  buint32 GSEAL (blue_mask);
+  bint GSEAL (blue_shift);
+  bint GSEAL (blue_prec);
 };
 
-GType         bdk_visual_get_type            (void) G_GNUC_CONST;
+GType         bdk_visual_get_type            (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
-gint	      bdk_visual_get_best_depth	     (void);
+bint	      bdk_visual_get_best_depth	     (void);
 BdkVisualType bdk_visual_get_best_type	     (void);
 BdkVisual*    bdk_visual_get_system	     (void);
 BdkVisual*    bdk_visual_get_best	     (void);
-BdkVisual*    bdk_visual_get_best_with_depth (gint	     depth);
+BdkVisual*    bdk_visual_get_best_with_depth (bint	     depth);
 BdkVisual*    bdk_visual_get_best_with_type  (BdkVisualType  visual_type);
-BdkVisual*    bdk_visual_get_best_with_both  (gint	     depth,
+BdkVisual*    bdk_visual_get_best_with_both  (bint	     depth,
 					      BdkVisualType  visual_type);
 
-void bdk_query_depths	    (gint	    **depths,
-			     gint	     *count);
+void bdk_query_depths	    (bint	    **depths,
+			     bint	     *count);
 void bdk_query_visual_types (BdkVisualType  **visual_types,
-			     gint	     *count);
+			     bint	     *count);
 
 GList* bdk_list_visuals (void);
 #endif
@@ -120,28 +120,28 @@ GList* bdk_list_visuals (void);
 BdkScreen *bdk_visual_get_screen (BdkVisual *visual);
 
 BdkVisualType bdk_visual_get_visual_type         (BdkVisual *visual);
-gint          bdk_visual_get_depth               (BdkVisual *visual);
+bint          bdk_visual_get_depth               (BdkVisual *visual);
 BdkByteOrder  bdk_visual_get_byte_order          (BdkVisual *visual);
-gint          bdk_visual_get_colormap_size       (BdkVisual *visual);
-gint          bdk_visual_get_bits_per_rgb        (BdkVisual *visual);
+bint          bdk_visual_get_colormap_size       (BdkVisual *visual);
+bint          bdk_visual_get_bits_per_rgb        (BdkVisual *visual);
 void          bdk_visual_get_red_pixel_details   (BdkVisual *visual,
-                                                  guint32   *mask,
-                                                  gint      *shift,
-                                                  gint      *precision);
+                                                  buint32   *mask,
+                                                  bint      *shift,
+                                                  bint      *precision);
 void          bdk_visual_get_green_pixel_details (BdkVisual *visual,
-                                                  guint32   *mask,
-                                                  gint      *shift,
-                                                  gint      *precision);
+                                                  buint32   *mask,
+                                                  bint      *shift,
+                                                  bint      *precision);
 void          bdk_visual_get_blue_pixel_details  (BdkVisual *visual,
-                                                  guint32   *mask,
-                                                  gint      *shift,
-                                                  gint      *precision);
+                                                  buint32   *mask,
+                                                  bint      *shift,
+                                                  bint      *precision);
 
 #ifndef BDK_DISABLE_DEPRECATED
 #define bdk_visual_ref(v) g_object_ref(v)
 #define bdk_visual_unref(v) g_object_unref(v)
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_VISUAL_H__ */

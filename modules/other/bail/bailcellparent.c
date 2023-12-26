@@ -26,12 +26,12 @@
 GType
 bail_cell_parent_get_type (void)
 {
-  static volatile gsize g_define_type_id__volatile = 0;
+  static volatile bsize g_define_type_id__volatile = 0;
 
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
       GType g_define_type_id =
-        g_type_register_static_simple (G_TYPE_INTERFACE,
+        g_type_register_static_simple (B_TYPE_INTERFACE,
                                        "BailCellParent",
                                        sizeof (BailCellParentIface),
                                        NULL,
@@ -47,12 +47,12 @@ bail_cell_parent_get_type (void)
 
 /**
  * bail_cell_parent_get_cell_extents:
- * @parent: a #GObject instance that implements BailCellParentIface
+ * @parent: a #BObject instance that implements BailCellParentIface
  * @cell: a #BailCell whose extents is required
- * @x: address of #gint to put x coordinate
- * @y: address of #gint to put y coordinate
- * @width: address of #gint to put width
- * @height: address of #gint to put height
+ * @x: address of #bint to put x coordinate
+ * @y: address of #bint to put y coordinate
+ * @width: address of #bint to put width
+ * @height: address of #bint to put height
  * @coord_type: specifies whether the coordinates are relative to the screen
  * or to the components top level window
  *
@@ -62,10 +62,10 @@ bail_cell_parent_get_type (void)
 void
 bail_cell_parent_get_cell_extents (BailCellParent *parent,
                                    BailCell       *cell,
-                                   gint           *x,
-                                   gint           *y,
-                                   gint           *width,
-                                   gint           *height,
+                                   bint           *x,
+                                   bint           *y,
+                                   bint           *width,
+                                   bint           *height,
                                    BatkCoordType   coord_type)
 {
   BailCellParentIface *iface;
@@ -80,7 +80,7 @@ bail_cell_parent_get_cell_extents (BailCellParent *parent,
 
 /**
  * bail_cell_parent_get_cell_area:
- * @parent: a #GObject instance that implements BailCellParentIface
+ * @parent: a #BObject instance that implements BailCellParentIface
  * @cell: a #BailCell whose area is required
  * @cell_rect: address of #BdkRectangle to put the cell area
  *
@@ -104,13 +104,13 @@ bail_cell_parent_get_cell_area (BailCellParent *parent,
 }
 /**
  * bail_cell_parent_grab_focus:
- * @parent: a #GObject instance that implements BailCellParentIface
+ * @parent: a #BObject instance that implements BailCellParentIface
  * @cell: a #BailCell whose area is required
  *
  * Puts focus in the specified cell.
  *
  **/
-gboolean
+bboolean
 bail_cell_parent_grab_focus (BailCellParent *parent,
                              BailCell       *cell)
 {

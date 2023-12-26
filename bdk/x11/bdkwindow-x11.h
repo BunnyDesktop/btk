@@ -37,7 +37,7 @@
 #include <X11/extensions/sync.h>
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkToplevelX11 BdkToplevelX11;
 typedef struct _BdkWindowImplX11 BdkWindowImplX11;
@@ -48,11 +48,11 @@ typedef struct _BdkXPositionInfo BdkXPositionInfo;
  */
 
 #define BDK_TYPE_WINDOW_IMPL_X11              (bdk_window_impl_x11_get_type ())
-#define BDK_WINDOW_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11))
-#define BDK_WINDOW_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
-#define BDK_IS_WINDOW_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_X11))
-#define BDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_X11))
-#define BDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
+#define BDK_WINDOW_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11))
+#define BDK_WINDOW_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
+#define BDK_IS_WINDOW_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
 
 struct _BdkWindowImplX11
 {
@@ -60,11 +60,11 @@ struct _BdkWindowImplX11
 
   BdkToplevelX11 *toplevel;	/* Toplevel-specific information */
   BdkCursor *cursor;
-  gint8 toplevel_window_type;
-  guint no_bg : 1;	        /* Set when the window background is temporarily
+  bint8 toplevel_window_type;
+  buint no_bg : 1;	        /* Set when the window background is temporarily
 				 * unset during resizing and scaling */
-  guint override_redirect : 1;
-  guint use_synchronized_configure : 1;
+  buint override_redirect : 1;
+  buint use_synchronized_configure : 1;
 
 #if defined (HAVE_XCOMPOSITE) && defined(HAVE_XDAMAGE) && defined (HAVE_XFIXES)
   Damage damage;
@@ -81,39 +81,39 @@ struct _BdkToplevelX11
 
   /* Set if the window, or any descendent of it, is the server's focus window
    */
-  guint has_focus_window : 1;
+  buint has_focus_window : 1;
 
   /* Set if window->has_focus_window and the focus isn't grabbed elsewhere.
    */
-  guint has_focus : 1;
+  buint has_focus : 1;
 
   /* Set if the pointer is inside this window. (This is needed for
    * for focus tracking)
    */
-  guint has_pointer : 1;
+  buint has_pointer : 1;
   
   /* Set if the window is a descendent of the focus window and the pointer is
    * inside it. (This is the case where the window will receive keystroke
    * events even window->has_focus_window is FALSE)
    */
-  guint has_pointer_focus : 1;
+  buint has_pointer_focus : 1;
 
   /* Set if we are requesting these hints */
-  guint skip_taskbar_hint : 1;
-  guint skip_pager_hint : 1;
-  guint urgency_hint : 1;
+  buint skip_taskbar_hint : 1;
+  buint skip_pager_hint : 1;
+  buint urgency_hint : 1;
 
-  guint on_all_desktops : 1;   /* _NET_WM_STICKY == 0xFFFFFFFF */
+  buint on_all_desktops : 1;   /* _NET_WM_STICKY == 0xFFFFFFFF */
 
-  guint have_sticky : 1;	/* _NET_WM_STATE_STICKY */
-  guint have_maxvert : 1;       /* _NET_WM_STATE_MAXIMIZED_VERT */
-  guint have_maxhorz : 1;       /* _NET_WM_STATE_MAXIMIZED_HORZ */
-  guint have_fullscreen : 1;    /* _NET_WM_STATE_FULLSCREEN */
-  guint have_hidden : 1;	/* _NET_WM_STATE_HIDDEN */
+  buint have_sticky : 1;	/* _NET_WM_STATE_STICKY */
+  buint have_maxvert : 1;       /* _NET_WM_STATE_MAXIMIZED_VERT */
+  buint have_maxhorz : 1;       /* _NET_WM_STATE_MAXIMIZED_HORZ */
+  buint have_fullscreen : 1;    /* _NET_WM_STATE_FULLSCREEN */
+  buint have_hidden : 1;	/* _NET_WM_STATE_HIDDEN */
 
-  guint is_leader : 1;
+  buint is_leader : 1;
   
-  gulong map_serial;	/* Serial of last transition from unmapped */
+  bulong map_serial;	/* Serial of last transition from unmapped */
   
   BdkPixmap *icon_pixmap;
   BdkPixmap *icon_mask;
@@ -121,7 +121,7 @@ struct _BdkToplevelX11
   BdkWindow *group_leader;
 
   /* Time of most recent user interaction. */
-  gulong user_time;
+  bulong user_time;
 
   /* We use an extra X window for toplevel windows that we XSetInputFocus()
    * to in order to avoid getting keyboard events redirected to subwindows
@@ -142,21 +142,21 @@ struct _BdkToplevelX11
 GType bdk_window_impl_x11_get_type (void);
 
 void            bdk_x11_window_set_user_time        (BdkWindow *window,
-						     guint32    timestamp);
+						     buint32    timestamp);
 
 BdkToplevelX11 *_bdk_x11_window_get_toplevel        (BdkWindow *window);
 void            _bdk_x11_window_tmp_unset_bg        (BdkWindow *window,
-						     gboolean   recurse);
+						     bboolean   recurse);
 void            _bdk_x11_window_tmp_reset_bg        (BdkWindow *window,
-						     gboolean   recurse);
+						     bboolean   recurse);
 void            _bdk_x11_window_tmp_unset_parent_bg (BdkWindow *window);
 void            _bdk_x11_window_tmp_reset_parent_bg (BdkWindow *window);
 
 BdkCursor      *_bdk_x11_window_get_cursor    (BdkWindow *window);
 void            _bdk_x11_window_get_offsets   (BdkWindow *window,
-                                               gint      *x_offset,
-                                               gint      *y_offset);
+                                               bint      *x_offset,
+                                               bint      *y_offset);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_X11_H__ */

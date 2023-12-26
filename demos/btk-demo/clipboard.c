@@ -16,7 +16,7 @@ static BtkWidget *window = NULL;
 
 void
 copy_button_clicked (BtkWidget *button,
-                     gpointer   user_data)
+                     bpointer   user_data)
 {
   BtkWidget *entry;
   BtkClipboard *clipboard;
@@ -33,8 +33,8 @@ copy_button_clicked (BtkWidget *button,
 
 void
 paste_received (BtkClipboard *clipboard,
-                const gchar  *text,
-                gpointer      user_data)
+                const bchar  *text,
+                bpointer      user_data)
 {
   BtkWidget *entry;
 
@@ -47,7 +47,7 @@ paste_received (BtkClipboard *clipboard,
 
 void
 paste_button_clicked (BtkWidget *button,
-                     gpointer   user_data)
+                     bpointer   user_data)
 {
   BtkWidget *entry;
   BtkClipboard *clipboard;
@@ -68,7 +68,7 @@ paste_button_clicked (BtkWidget *button,
 static BdkPixbuf *
 get_image_pixbuf (BtkImage *image)
 {
-  gchar *stock_id;
+  bchar *stock_id;
   BtkIconSize size;
 
   switch (btk_image_get_storage_type (image))
@@ -89,7 +89,7 @@ get_image_pixbuf (BtkImage *image)
 static void
 drag_begin (BtkWidget      *widget,
             BdkDragContext *context,
-            gpointer        data)
+            bpointer        data)
 {
   BdkPixbuf *pixbuf;
 
@@ -102,9 +102,9 @@ void
 drag_data_get  (BtkWidget        *widget,
                 BdkDragContext   *context,
                 BtkSelectionData *selection_data,
-                guint             info,
-                guint             time,
-                gpointer          data)
+                buint             info,
+                buint             time,
+                bpointer          data)
 {
   BdkPixbuf *pixbuf;
 
@@ -116,12 +116,12 @@ drag_data_get  (BtkWidget        *widget,
 static void
 drag_data_received (BtkWidget        *widget,
                     BdkDragContext   *context,
-                    gint              x,
-                    gint              y,
+                    bint              x,
+                    bint              y,
                     BtkSelectionData *selection_data,
-                    guint             info,
-                    guint32           time,
-                    gpointer          data)
+                    buint             info,
+                    buint32           time,
+                    bpointer          data)
 {
   BdkPixbuf *pixbuf;
 
@@ -135,7 +135,7 @@ drag_data_received (BtkWidget        *widget,
 
 static void
 copy_image (BtkMenuItem *item,
-            gpointer     data)
+            bpointer     data)
 {
   BtkClipboard *clipboard;
   BdkPixbuf *pixbuf;
@@ -149,7 +149,7 @@ copy_image (BtkMenuItem *item,
 
 static void
 paste_image (BtkMenuItem *item,
-             gpointer     data)
+             bpointer     data)
 {
   BtkClipboard *clipboard;
   BdkPixbuf *pixbuf;
@@ -164,10 +164,10 @@ paste_image (BtkMenuItem *item,
     }
 }
 
-static gboolean
+static bboolean
 button_press (BtkWidget      *widget,
               BdkEventButton *button,
-              gpointer        data)
+              bpointer        data)
 {
   BtkWidget *menu;
   BtkWidget *item;

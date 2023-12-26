@@ -44,31 +44,31 @@ static void btk_invisible_style_set     (BtkWidget         *widget,
 static void btk_invisible_show          (BtkWidget         *widget);
 static void btk_invisible_size_allocate (BtkWidget         *widget,
 					 BtkAllocation     *allocation);
-static void btk_invisible_set_property  (GObject           *object,
-					 guint              prop_id,
-					 const GValue      *value,
-					 GParamSpec        *pspec);
-static void btk_invisible_get_property  (GObject           *object,
-					 guint              prop_id,
-					 GValue		   *value,
-					 GParamSpec        *pspec);
+static void btk_invisible_set_property  (BObject           *object,
+					 buint              prop_id,
+					 const BValue      *value,
+					 BParamSpec        *pspec);
+static void btk_invisible_get_property  (BObject           *object,
+					 buint              prop_id,
+					 BValue		   *value,
+					 BParamSpec        *pspec);
 
-static GObject *btk_invisible_constructor (GType                  type,
-					   guint                  n_construct_properties,
-					   GObjectConstructParam *construct_params);
+static BObject *btk_invisible_constructor (GType                  type,
+					   buint                  n_construct_properties,
+					   BObjectConstructParam *construct_params);
 
 G_DEFINE_TYPE (BtkInvisible, btk_invisible, BTK_TYPE_WIDGET)
 
 static void
 btk_invisible_class_init (BtkInvisibleClass *class)
 {
-  GObjectClass	 *bobject_class;
+  BObjectClass	 *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
   widget_class = (BtkWidgetClass*) class;
   object_class = (BtkObjectClass*) class;
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
 
   widget_class->realize = btk_invisible_realize;
   widget_class->style_set = btk_invisible_style_set;
@@ -168,7 +168,7 @@ btk_invisible_set_screen (BtkInvisible *invisible,
 {
   BtkWidget *widget;
   BdkScreen *previous_screen;
-  gboolean was_realized;
+  bboolean was_realized;
   
   g_return_if_fail (BTK_IS_INVISIBLE (invisible));
   g_return_if_fail (BDK_IS_SCREEN (screen));
@@ -187,7 +187,7 @@ btk_invisible_set_screen (BtkInvisible *invisible,
   invisible->screen = screen;
   if (screen != previous_screen)
     _btk_widget_propagate_screen_changed (widget, previous_screen);
-  g_object_notify (G_OBJECT (invisible), "screen");
+  g_object_notify (B_OBJECT (invisible), "screen");
   
   if (was_realized)
     btk_widget_realize (widget);
@@ -216,7 +216,7 @@ btk_invisible_realize (BtkWidget *widget)
 {
   BdkWindow *parent;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -265,39 +265,39 @@ btk_invisible_size_allocate (BtkWidget     *widget,
 
 
 static void 
-btk_invisible_set_property  (GObject      *object,
-			     guint         prop_id,
-			     const GValue *value,
-			     GParamSpec   *pspec)
+btk_invisible_set_property  (BObject      *object,
+			     buint         prop_id,
+			     const BValue *value,
+			     BParamSpec   *pspec)
 {
   BtkInvisible *invisible = BTK_INVISIBLE (object);
   
   switch (prop_id)
     {
     case PROP_SCREEN:
-      btk_invisible_set_screen (invisible, g_value_get_object (value));
+      btk_invisible_set_screen (invisible, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void 
-btk_invisible_get_property  (GObject      *object,
-			     guint         prop_id,
-			     GValue	  *value,
-			     GParamSpec   *pspec)
+btk_invisible_get_property  (BObject      *object,
+			     buint         prop_id,
+			     BValue	  *value,
+			     BParamSpec   *pspec)
 {
   BtkInvisible *invisible = BTK_INVISIBLE (object);
 
   switch (prop_id)
     {
     case PROP_SCREEN:
-      g_value_set_object (value, invisible->screen);
+      b_value_set_object (value, invisible->screen);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -305,14 +305,14 @@ btk_invisible_get_property  (GObject      *object,
 /* We use a constructor here so that we can realize the invisible on
  * the correct screen after the "screen" property has been set
  */
-static GObject*
+static BObject*
 btk_invisible_constructor (GType                  type,
-			   guint                  n_construct_properties,
-			   GObjectConstructParam *construct_params)
+			   buint                  n_construct_properties,
+			   BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
 
-  object = G_OBJECT_CLASS (btk_invisible_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_invisible_parent_class)->constructor (type,
                                                                      n_construct_properties,
                                                                      construct_params);
 

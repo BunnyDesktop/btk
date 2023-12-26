@@ -41,8 +41,8 @@
 - (void) ensureItem;
 - (void) actionCb:(NSObject *)button;
 - (void) setImage:(BdkPixbuf *)pixbuf;
-- (void) setVisible:(gboolean)visible;
-- (void) setToolTip:(const gchar *)tooltip_text;
+- (void) setVisible:(bboolean)visible;
+- (void) setToolTip:(const bchar *)tooltip_text;
 - (float) getWidth;
 - (float) getHeight;
 @end
@@ -111,7 +111,7 @@
   [ns_item setImage:current_image];
 }
 
-- (void) setVisible:(gboolean)visible
+- (void) setVisible:(bboolean)visible
 {
   if (visible) {
     [self ensureItem];
@@ -125,7 +125,7 @@
   }
 }
 
-- (void) setToolTip:(const gchar *)tooltip_text
+- (void) setToolTip:(const bchar *)tooltip_text
 {
   [ns_tooltip release];
   ns_tooltip = [[NSString stringWithUTF8String:tooltip_text] retain];

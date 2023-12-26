@@ -35,14 +35,14 @@
 #include "bdkinternals.h"
 #include "bdkprivate-win32.h"
 
-static gint     bdk_colormap_match_color (BdkColormap      *cmap,
+static bint     bdk_colormap_match_color (BdkColormap      *cmap,
 					  BdkColor         *color,
-					  const gchar      *available);
+					  const bchar      *available);
 static void     bdk_colormap_init        (BdkColormap      *colormap);
 static void     bdk_colormap_class_init  (BdkColormapClass *klass);
-static void     bdk_colormap_finalize    (GObject          *object);
+static void     bdk_colormap_finalize    (BObject          *object);
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 GType
 bdk_colormap_get_type (void)
@@ -64,7 +64,7 @@ bdk_colormap_get_type (void)
         (GInstanceInitFunc) bdk_colormap_init,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkColormap",
                                             &object_info, 0);
     }
@@ -94,7 +94,7 @@ bdk_colormap_init (BdkColormap *colormap)
 static void
 bdk_colormap_class_init (BdkColormapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -102,7 +102,7 @@ bdk_colormap_class_init (BdkColormapClass *klass)
 }
 
 static void
-bdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (BObject *object)
 {
   BdkColormap *colormap = BDK_COLORMAP (object);
   BdkColormapPrivateWin32 *private = BDK_WIN32_COLORMAP_DATA (colormap);
@@ -116,21 +116,21 @@ bdk_colormap_finalize (GObject *object)
   g_free (colormap->colors);
   g_free (private);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 /* Mimics XAllocColorCells. Allocate read/write color cells. */
 
-static gboolean
+static bboolean
 alloc_color_cells (BdkColormap    *cmap,
-		   gboolean        contig,
+		   bboolean        contig,
 		   unsigned long   plane_masks_return[],
 		   unsigned int    nplanes,
 		   unsigned long   pixels_return[],
 		   unsigned int	   npixels)
 {
   BdkColormapPrivateWin32 *cmapp = BDK_WIN32_COLORMAP_DATA (cmap);
-  gint i, nfree, iret, start = 0;
+  bint i, nfree, iret, start = 0;
 
   BDK_NOTE (COLORMAP, g_print ("alloc_color_cells: cmap=%p contig=%s npl=%d npix=%d",
 			       cmapp, contig ? "TRUE" : "FALSE",
@@ -232,13 +232,13 @@ terms specified in this license.
 static int
 alloc_color (BdkColormap  *cmap,
 	     PALETTEENTRY *color,
-	     guint        *pixelp)
+	     buint        *pixelp)
 {
   PALETTEENTRY entry, close_entry;
   COLORREF new_pixel;
   UINT index;
   BdkColormapPrivateWin32 *cmapp = BDK_WIN32_COLORMAP_DATA (cmap);
-  gint i;
+  bint i;
     
   entry = *color;
   entry.peFlags = 0;
@@ -274,7 +274,7 @@ alloc_color (BdkColormap  *cmap,
 	      /* The close entry found is in use, so search for a
 	       * available slot.
 	       */
-	      gboolean done = FALSE;
+	      bboolean done = FALSE;
 	      for (i = 0; i < cmap->size; i++)
 		if (cmapp->use[i] == BDK_WIN32_PE_AVAILABLE)
 		  {
@@ -348,7 +348,7 @@ alloc_color (BdkColormap  *cmap,
 
       *pixelp = GetNearestColor (_bdk_display_hdc, new_pixel);
       color->peRed = GetRValue (*pixelp);
-      color->peGreen = GetGValue (*pixelp);
+      color->peGreen = GetBValue (*pixelp);
       color->peBlue = GetBValue (*pixelp);
       return TRUE;
 
@@ -362,19 +362,19 @@ alloc_color (BdkColormap  *cmap,
 
 static void
 free_colors (BdkColormap *cmap,
-	     gulong  	 *pixels,
-	     gint    	  npixels,
-	     gulong  	  planes)
+	     bulong  	 *pixels,
+	     bint    	  npixels,
+	     bulong  	  planes)
 {
   PALETTEENTRY pe;
   BdkColormapPrivateWin32 *cmapp = BDK_WIN32_COLORMAP_DATA (cmap);
-  gint i;
+  bint i;
 #ifdef G_ENABLE_DEBUG
-  gint set_black_count = 0;
+  bint set_black_count = 0;
 #endif
-  gboolean *cleared_entries;
+  bboolean *cleared_entries;
 
-  cleared_entries = g_new0 (gboolean, cmap->size);
+  cleared_entries = g_new0 (bboolean, cmap->size);
 
   /* We don't have to do anything for non-palette devices. */
   
@@ -436,7 +436,7 @@ free_colors (BdkColormap *cmap,
 
 static void
 create_colormap (BdkColormap *cmap,
-		 gboolean     writeable)
+		 bboolean     writeable)
 {
   struct {
     LOGPALETTE pal;
@@ -444,7 +444,7 @@ create_colormap (BdkColormap *cmap,
   } lp;
   HPALETTE hpal;
   BdkColormapPrivateWin32 *cmapp = BDK_WIN32_COLORMAP_DATA (cmap);
-  gint i;
+  bint i;
 
   /* Allocate a starting palette with all the static colors. */
   hpal = GetStockObject (DEFAULT_PALETTE);
@@ -493,7 +493,7 @@ create_colormap (BdkColormap *cmap,
       for (i = 0; i < cmapp->current_size; i++)
 	{
 	  cmapp->use[i] = BDK_WIN32_PE_STATIC;
-	  cmapp->info[i].ref_count = G_MAXUINT/2;
+	  cmapp->info[i].ref_count = B_MAXUINT/2;
 	}
       /* Mark rest not in use */
       for (; i < cmap->size; i++)
@@ -510,8 +510,8 @@ sync_colors (BdkColormap *colormap)
 {
   PALETTEENTRY *pe;
   BdkColormapPrivateWin32 *private = BDK_WIN32_COLORMAP_DATA (colormap);
-  gint nlookup;
-  gint i;
+  bint nlookup;
+  bint i;
   
   pe = g_new (PALETTEENTRY, colormap->size);
   nlookup = GetPaletteEntries (private->hpal, 0, colormap->size, pe);
@@ -541,7 +541,7 @@ sync_colors (BdkColormap *colormap)
 
 BdkColormap*
 bdk_colormap_new (BdkVisual *visual,
-		  gboolean   private_cmap)
+		  bboolean   private_cmap)
 {
   BdkColormap *colormap;
   BdkColormapPrivateWin32 *private;
@@ -640,7 +640,7 @@ bdk_screen_get_system_colormap (BdkScreen *screen)
   return colormap;
 }
 
-gint
+bint
 bdk_colormap_get_system_size (void)
 {
   return bdk_colormap_get_system ()->size;
@@ -648,7 +648,7 @@ bdk_colormap_get_system_size (void)
 
 void
 bdk_colormap_change (BdkColormap *colormap,
-		     gint         ncolors)
+		     bint         ncolors)
 {
   BdkColormapPrivateWin32 *cmapp;
   PALETTEENTRY *pe;
@@ -684,17 +684,17 @@ bdk_colormap_change (BdkColormap *colormap,
     }
 }
 
-gboolean
+bboolean
 bdk_colors_alloc (BdkColormap   *colormap,
-		  gboolean       contiguous,
-		  gulong        *planes,
-		  gint           nplanes,
-		  gulong        *pixels,
-		  gint           npixels)
+		  bboolean       contiguous,
+		  bulong        *planes,
+		  bint           nplanes,
+		  bulong        *pixels,
+		  bint           npixels)
 {
   BdkColormapPrivateWin32 *private;
-  gint return_val;
-  gint i;
+  bint return_val;
+  bint i;
 
   g_return_val_if_fail (BDK_IS_COLORMAP (colormap), FALSE);
 
@@ -717,14 +717,14 @@ bdk_colors_alloc (BdkColormap   *colormap,
 
 void
 bdk_colors_free (BdkColormap *colormap,
-		 gulong      *in_pixels,
-		 gint         in_npixels,
-		 gulong       planes)
+		 bulong      *in_pixels,
+		 bint         in_npixels,
+		 bulong       planes)
 {
   BdkColormapPrivateWin32 *private;
-  gulong *pixels;
-  gint npixels = 0;
-  gint i;
+  bulong *pixels;
+  bint npixels = 0;
+  bint i;
 
   g_return_if_fail (BDK_IS_COLORMAP (colormap));
   g_return_if_fail (in_pixels != NULL);
@@ -735,11 +735,11 @@ bdk_colors_free (BdkColormap *colormap,
       (colormap->visual->type != BDK_VISUAL_GRAYSCALE))
     return;
   
-  pixels = g_new (gulong, in_npixels);
+  pixels = g_new (bulong, in_npixels);
 
   for (i = 0; i < in_npixels; i++)
     {
-      gulong pixel = in_pixels[i];
+      bulong pixel = in_pixels[i];
       
       if (private->use[pixel] == BDK_WIN32_PE_STATIC)
 	continue;
@@ -767,10 +767,10 @@ bdk_colors_free (BdkColormap *colormap,
 void
 bdk_colormap_free_colors (BdkColormap    *colormap,
 			  const BdkColor *colors,
-			  gint            ncolors)
+			  bint            ncolors)
 {
-  gulong *pixels;
-  gint i;
+  bulong *pixels;
+  bint i;
 
   g_return_if_fail (BDK_IS_COLORMAP (colormap));
   g_return_if_fail (colors != NULL);
@@ -779,7 +779,7 @@ bdk_colormap_free_colors (BdkColormap    *colormap,
       (colormap->visual->type != BDK_VISUAL_GRAYSCALE))
     return;
 
-  pixels = g_new (gulong, ncolors);
+  pixels = g_new (bulong, ncolors);
 
   for (i = 0; i < ncolors; i++)
     pixels[i] =  colors[i].pixel;
@@ -796,7 +796,7 @@ bdk_colormap_free_colors (BdkColormap    *colormap,
 /* Try to allocate a single color using alloc_color. If it succeeds,
  * cache the result in our colormap, and store in ret.
  */
-static gboolean 
+static bboolean 
 bdk_colormap_alloc1 (BdkColormap *colormap,
 		     BdkColor    *color,
 		     BdkColor    *ret)
@@ -816,7 +816,7 @@ bdk_colormap_alloc1 (BdkColormap *colormap,
       ret->green = (pe.peGreen * 65535) / 255;
       ret->blue = (pe.peBlue * 65535) / 255;
       
-      if ((guint) ret->pixel < colormap->size)
+      if ((buint) ret->pixel < colormap->size)
 	{
 	  if (private->info[ret->pixel].ref_count) /* got a duplicate */
 	    {
@@ -837,18 +837,18 @@ bdk_colormap_alloc1 (BdkColormap *colormap,
   return FALSE;
 }
 
-static gint
+static bint
 bdk_colormap_alloc_colors_writeable (BdkColormap *colormap,
 				     BdkColor    *colors,
-				     gint         ncolors,
-				     gboolean     writeable,
-				     gboolean     best_match,
-				     gboolean    *success)
+				     bint         ncolors,
+				     bboolean     writeable,
+				     bboolean     best_match,
+				     bboolean    *success)
 {
   BdkColormapPrivateWin32 *private;
-  gulong *pixels;
-  gboolean status;
-  gint i, index;
+  bulong *pixels;
+  bboolean status;
+  bint i, index;
 
   private = BDK_WIN32_COLORMAP_DATA (colormap);
 
@@ -875,7 +875,7 @@ bdk_colormap_alloc_colors_writeable (BdkColormap *colormap,
     }
   else
     {
-      pixels = g_new (gulong, ncolors);
+      pixels = g_new (bulong, ncolors);
 
       /* Allocation of a writeable color cells */
       status =  alloc_color_cells (colormap, FALSE, NULL, 0, pixels, ncolors);
@@ -895,18 +895,18 @@ bdk_colormap_alloc_colors_writeable (BdkColormap *colormap,
     }
 }
 
-static gint
+static bint
 bdk_colormap_alloc_colors_private (BdkColormap *colormap,
 				   BdkColor    *colors,
-				   gint         ncolors,
-				   gboolean     writeable,
-				   gboolean     best_match,
-				   gboolean    *success)
+				   bint         ncolors,
+				   bboolean     writeable,
+				   bboolean     best_match,
+				   bboolean    *success)
 {
   BdkColormapPrivateWin32 *cmapp;
-  gint i, index;
+  bint i, index;
   PALETTEENTRY pe;
-  gint nremaining = 0;
+  bint nremaining = 0;
   
   cmapp = BDK_WIN32_COLORMAP_DATA (colormap);
   index = -1;
@@ -965,7 +965,7 @@ bdk_colormap_alloc_colors_private (BdkColormap *colormap,
     {
       /* Get best matches for remaining colors */
 
-      gchar *available = g_new (gchar, colormap->size);
+      bchar *available = g_new (bchar, colormap->size);
       for (i = 0; i < colormap->size; i++)
 	available[i] = TRUE;
 
@@ -992,18 +992,18 @@ bdk_colormap_alloc_colors_private (BdkColormap *colormap,
   return (ncolors - nremaining);
 }
 
-static gint
+static bint
 bdk_colormap_alloc_colors_shared (BdkColormap *colormap,
 				  BdkColor    *colors,
-				  gint         ncolors,
-				  gboolean     writeable,
-				  gboolean     best_match,
-				  gboolean    *success)
+				  bint         ncolors,
+				  bboolean     writeable,
+				  bboolean     best_match,
+				  bboolean    *success)
 {
   BdkColormapPrivateWin32 *private;
-  gint i, index;
-  gint nremaining = 0;
-  gint nfailed = 0;
+  bint i, index;
+  bint nremaining = 0;
+  bint nfailed = 0;
 
   private = BDK_WIN32_COLORMAP_DATA (colormap);
   index = -1;
@@ -1022,7 +1022,7 @@ bdk_colormap_alloc_colors_shared (BdkColormap *colormap,
 
   if (nremaining > 0 && best_match)
     {
-      gchar *available = g_new (gchar, colormap->size);
+      bchar *available = g_new (bchar, colormap->size);
       for (i = 0; i < colormap->size; i++)
 	available[i] = ((private->info[i].ref_count == 0) ||
 			!(private->info[i].flags & BDK_COLOR_WRITEABLE));
@@ -1082,18 +1082,18 @@ bdk_colormap_alloc_colors_shared (BdkColormap *colormap,
   return (ncolors - nremaining);
 }
 
-static gint
+static bint
 bdk_colormap_alloc_colors_pseudocolor (BdkColormap *colormap,
 				       BdkColor    *colors,
-				       gint         ncolors,
-				       gboolean     writeable,
-				       gboolean     best_match,
-				       gboolean    *success)
+				       bint         ncolors,
+				       bboolean     writeable,
+				       bboolean     best_match,
+				       bboolean    *success)
 {
   BdkColormapPrivateWin32 *private;
   BdkColor *lookup_color;
-  gint i;
-  gint nremaining = 0;
+  bint i;
+  bint nremaining = 0;
 
   private = BDK_WIN32_COLORMAP_DATA (colormap);
 
@@ -1129,18 +1129,18 @@ bdk_colormap_alloc_colors_pseudocolor (BdkColormap *colormap,
     return 0;
 }
 
-gint
+bint
 bdk_colormap_alloc_colors (BdkColormap *colormap,
 			   BdkColor    *colors,
-			   gint         ncolors,
-			   gboolean     writeable,
-			   gboolean     best_match,
-			   gboolean    *success)
+			   bint         ncolors,
+			   bboolean     writeable,
+			   bboolean     best_match,
+			   bboolean    *success)
 {
   BdkColormapPrivateWin32 *private;
   BdkVisual *visual;
-  gint i;
-  gint nremaining = 0;
+  bint i;
+  bint nremaining = 0;
   PALETTEENTRY pe;
 
   g_return_val_if_fail (BDK_IS_COLORMAP (colormap), FALSE);
@@ -1200,7 +1200,7 @@ bdk_colormap_alloc_colors (BdkColormap *colormap,
 
 void
 bdk_colormap_query_color (BdkColormap *colormap,
-			  gulong       pixel,
+			  bulong       pixel,
 			  BdkColor    *result)
 {
   BdkVisual *visual;
@@ -1236,7 +1236,7 @@ bdk_colormap_query_color (BdkColormap *colormap,
     }
 }
 
-gboolean
+bboolean
 bdk_color_change (BdkColormap *colormap,
 		  BdkColor    *color)
 {
@@ -1263,15 +1263,15 @@ bdk_color_change (BdkColormap *colormap,
   return TRUE;
 }
 
-static gint
+static bint
 bdk_colormap_match_color (BdkColormap *cmap,
 			  BdkColor    *color,
-			  const gchar *available)
+			  const bchar *available)
 {
   BdkColor *colors;
-  guint sum, min;
-  gint rdiff, gdiff, bdiff;
-  gint i, index;
+  buint sum, min;
+  bint rdiff, gdiff, bdiff;
+  bint i, index;
 
   g_return_val_if_fail (cmap != NULL, 0);
   g_return_val_if_fail (color != NULL, 0);

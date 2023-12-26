@@ -15,15 +15,15 @@
 
 static void _create_event_watcher (void);
 static void _check_object (BatkObject *obj);
-static gint _do_menu_item_action (gpointer data);
-static gboolean doing_action = FALSE;
+static bint _do_menu_item_action (bpointer data);
+static bboolean doing_action = FALSE;
 
 static void 
 _check_object (BatkObject *obj)
 {
   BatkRole role;
   static const char *name = NULL;
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   role = batk_object_get_role (obj);
   if (role == BATK_ROLE_PUSH_BUTTON)
@@ -106,11 +106,11 @@ _check_object (BatkObject *obj)
       else if (BTK_IS_ACCESSIBLE (obj))
         {
           BtkWidget *widget = BTK_ACCESSIBLE (obj)->widget;
-          g_print ("Type: %s\n", g_type_name (G_OBJECT_TYPE (widget)));
+          g_print ("Type: %s\n", g_type_name (B_OBJECT_TYPE (widget)));
         } 
       if (role == BATK_ROLE_TABLE)
         {
-          gint n_cols, i;
+          bint n_cols, i;
 
           n_cols = batk_table_get_n_columns (BATK_TABLE (obj));
           g_print ("Number of Columns: %d\n", n_cols);
@@ -121,14 +121,14 @@ _check_object (BatkObject *obj)
 
               header = batk_table_get_column_header (BATK_TABLE (obj), i);
               g_print ("header: %s %s\n", 
-                           g_type_name (G_OBJECT_TYPE (header)),
+                           g_type_name (B_OBJECT_TYPE (header)),
                            batk_object_get_name (header));
             }
         }
     }
 }
 
-static gint _do_menu_item_action (gpointer data)
+static bint _do_menu_item_action (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
@@ -147,7 +147,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testoptionmenu Module loaded\n");
 

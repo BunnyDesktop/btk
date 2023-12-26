@@ -404,7 +404,7 @@ PtsToRebunnyion (int         numFullPtBlocks,
     CurPtBlock = FirstPtBlock;
     rects = reg->rects - 1;
     numRects = 0;
-    extents->x1 = G_MAXSHORT,  extents->x2 = G_MINSHORT;
+    extents->x1 = B_MAXSHORT,  extents->x2 = B_MINSHORT;
  
     for ( ; numFullPtBlocks >= 0; numFullPtBlocks--) {
 	/* the loop uses 2 points per iteration */
@@ -464,7 +464,7 @@ PtsToRebunnyion (int         numFullPtBlocks,
  */
 BdkRebunnyion *
 bdk_rebunnyion_polygon (const BdkPoint *points,
-                    gint            n_points,
+                    bint            n_points,
                     BdkFillRule     fill_rule)
 {
     BdkRebunnyion *rebunnyion;

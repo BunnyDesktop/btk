@@ -27,7 +27,7 @@ PKG_CONFIG_PATH=$(PREFIX_FULL)\lib\pkgconfig;$(PKG_CONFIG_PATH)
 !endif
 
 # Note: The PYTHON must be the Python release series that was used to build
-# the GObject-introspection scanner Python module!
+# the BObject-introspection scanner Python module!
 # Either having python.exe your PATH will work or passing in
 # PYTHON=<full path to your Python interpretor> will do
 

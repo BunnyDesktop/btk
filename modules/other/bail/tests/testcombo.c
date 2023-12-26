@@ -6,14 +6,14 @@
 static void _test_selection (BatkObject *obj);
 static void _check_combo_box (BatkObject *obj);
 static void _check_children (BatkObject *obj);
-static gint _open_combo_list (gpointer data);
-static gint _close_combo_list (gpointer data);
+static bint _open_combo_list (bpointer data);
+static bint _close_combo_list (bpointer data);
 
 #define NUM_VALID_ROLES 1
 
 static void _check_children (BatkObject *obj)
 {
-  gint n_children, i, j;
+  bint n_children, i, j;
   BatkObject *child;
   BatkObject *grand_child;
   BatkObject *parent;
@@ -35,7 +35,7 @@ static void _check_children (BatkObject *obj)
     if (j != 1)
      g_print ("*** inconsistency between parent and children %d %d ***\n",
               1, j);       
-    g_object_unref (G_OBJECT (child));
+    g_object_unref (B_OBJECT (child));
   }
 
   child = batk_object_ref_accessible_child (obj, 0);
@@ -49,20 +49,20 @@ static void _check_children (BatkObject *obj)
   n_children = batk_object_get_n_accessible_children (child);
   for (i = 0; i < n_children; i++)
   {
-    const gchar *name;
+    const bchar *name;
 
     grand_child = batk_object_ref_accessible_child (child, i);
     name = batk_object_get_name (grand_child);
     g_print ("Index: %d Name: %s\n", i, name ? name : "<NULL>");
-    g_object_unref (G_OBJECT (grand_child));
+    g_object_unref (B_OBJECT (grand_child));
   }
-  g_object_unref (G_OBJECT (child));
+  g_object_unref (B_OBJECT (child));
 }
   
 static void _test_selection (BatkObject *obj)
 {
-  gint count;
-  gint n_children;
+  bint count;
+  bint n_children;
   BatkObject *list;
 
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -70,7 +70,7 @@ static void _test_selection (BatkObject *obj)
 
   list = batk_object_ref_accessible_child (obj, 0);
   n_children = batk_object_get_n_accessible_children (list); 
-  g_object_unref (G_OBJECT (list));
+  g_object_unref (B_OBJECT (list));
 
   batk_selection_add_selection (BATK_SELECTION (obj), n_children - 1);
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -88,8 +88,8 @@ static void _test_selection (BatkObject *obj)
 
 static void _check_combo_box (BatkObject *obj)
 {
-  static gboolean done = FALSE;
-  static gboolean done_selection = FALSE;
+  static bboolean done = FALSE;
+  static bboolean done_selection = FALSE;
   BatkRole role;
 
   role = batk_object_get_role (obj);
@@ -141,7 +141,7 @@ static void _check_combo_box (BatkObject *obj)
   g_print ("*** End ComboBox ***\n");
 }
 
-static gint _open_combo_list (gpointer data)
+static bint _open_combo_list (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
@@ -152,12 +152,12 @@ static gint _open_combo_list (gpointer data)
   return FALSE;
 }
 
-static gint _close_combo_list (gpointer data)
+static bint _close_combo_list (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
-  gint count;
-  gint n_children;
+  bint count;
+  bint n_children;
   BatkObject *list;
 
   count = batk_selection_get_selection_count (BATK_SELECTION (obj));
@@ -165,7 +165,7 @@ static gint _close_combo_list (gpointer data)
 
   list = batk_object_ref_accessible_child (obj, 0);
   n_children = batk_object_get_n_accessible_children (list); 
-  g_object_unref (G_OBJECT (list));
+  g_object_unref (B_OBJECT (list));
 
   batk_selection_add_selection (BATK_SELECTION (obj), n_children - 1);
 
@@ -181,7 +181,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testcombo Module loaded\n");
 

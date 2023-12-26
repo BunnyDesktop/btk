@@ -30,7 +30,7 @@
 #include <bdk/bdkdrawable.h>
 #include <bdk/win32/bdkwin32.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Drawable implementation for Win32
  */
@@ -39,11 +39,11 @@ typedef struct _BdkDrawableImplWin32 BdkDrawableImplWin32;
 typedef struct _BdkDrawableImplWin32Class BdkDrawableImplWin32Class;
 
 #define BDK_TYPE_DRAWABLE_IMPL_WIN32              (_bdk_drawable_impl_win32_get_type ())
-#define BDK_DRAWABLE_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32))
-#define BDK_DRAWABLE_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
-#define BDK_IS_DRAWABLE_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32))
-#define BDK_IS_DRAWABLE_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32))
-#define BDK_DRAWABLE_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
+#define BDK_DRAWABLE_IMPL_WIN32(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32))
+#define BDK_DRAWABLE_IMPL_WIN32_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
+#define BDK_IS_DRAWABLE_IMPL_WIN32(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_WIN32))
+#define BDK_IS_DRAWABLE_IMPL_WIN32_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_WIN32))
+#define BDK_DRAWABLE_IMPL_WIN32_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_WIN32, BdkDrawableImplWin32Class))
 
 struct _BdkDrawableImplWin32
 {
@@ -52,7 +52,7 @@ struct _BdkDrawableImplWin32
   BdkColormap *colormap;
   HANDLE handle;
 
-  guint hdc_count;
+  buint hdc_count;
   HDC hdc;
   HBITMAP saved_dc_bitmap;	/* Original bitmap for dc */
   bairo_surface_t *bairo_surface;
@@ -69,6 +69,6 @@ HDC  _bdk_win32_drawable_acquire_dc (BdkDrawable *drawable);
 void _bdk_win32_drawable_release_dc (BdkDrawable *drawable);
 void _bdk_win32_drawable_finish     (BdkDrawable *drawable);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_WIN32_H__ */

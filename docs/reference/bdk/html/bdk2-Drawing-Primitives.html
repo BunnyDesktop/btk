@@ -66,7 +66,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Drawing-Primitives.html#bdk-drawable-get-data" title="bdk_drawable_get_data ()">bdk_drawable_get_data</a> <span class="c_punctuation">()</span>
@@ -114,7 +114,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Drawing-Primitives.html#bdk-drawable-get-depth" title="bdk_drawable_get_depth ()">bdk_drawable_get_depth</a> <span class="c_punctuation">()</span>
@@ -360,7 +360,7 @@
 </div>
 <div class="refsect1">
 <a name="bdk2-Drawing-Primitives.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BdkDrawable
         <span class="lineart">├──</span> <a class="link" href="bdk2-Windows.html#BdkWindow">BdkWindow</a>
         <span class="lineart">╰──</span> <a class="link" href="bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap">BdkPixmap</a>
@@ -440,12 +440,12 @@ bdk_drawable_unref (<em class="parameter"><code><a class="link" href="bdk2-Drawi
 <a name="bdk-drawable-set-data"></a><h3>bdk_drawable_set_data ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drawable_set_data (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>,
-                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                       <em class="parameter"><code>const <span class="type">bchar</span> *key</code></em>,
+                       <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                        <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy_func</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_drawable_set_data</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>This function is equivalent to <code class="function">g_object_set_data()</code>,
-the <span class="type">GObject</span> variant should be used instead.</p>
+the <span class="type">BObject</span> variant should be used instead.</p>
 <div class="refsect3">
 <a name="bdk-drawable-set-data.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -483,11 +483,11 @@ the <span class="type">GObject</span> variant should be used instead.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-drawable-get-data"></a><h3>bdk_drawable_get_data ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 bdk_drawable_get_data (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                       <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);</pre>
+                       <em class="parameter"><code>const <span class="type">bchar</span> *key</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_drawable_get_data</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>Equivalent to <code class="function">g_object_get_data()</code>; the <span class="type">GObject</span> variant should be
+<p>Equivalent to <code class="function">g_object_get_data()</code>; the <span class="type">BObject</span> variant should be
 used instead.</p>
 <div class="refsect3">
 <a name="bdk-drawable-get-data.parameters"></a><h4>Parameters</h4>
@@ -681,7 +681,7 @@ bdk_drawable_get_colormap (<em class="parameter"><code><a class="link" href="bdk
 <hr>
 <div class="refsect2">
 <a name="bdk-drawable-get-depth"></a><h3>bdk_drawable_get_depth ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_drawable_get_depth (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>);</pre>
 <p>Obtains the bit depth of the drawable, that is, the number of bits
 that make up a pixel in the drawable's visual. Examples are 8 bits
@@ -711,8 +711,8 @@ per pixel, 24 bits per pixel, etc.</p>
 <a name="bdk-drawable-get-size"></a><h3>bdk_drawable_get_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_drawable_get_size (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *width</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> *height</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> *width</code></em>,
+                       <em class="parameter"><code><span class="type">bint</span> *height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_drawable_get_size</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Windows.html#bdk-window-get-width" title="bdk_window_get_width ()"><code class="function">bdk_window_get_width()</code></a> and <a class="link" href="bdk2-Windows.html#bdk-window-get-height" title="bdk_window_get_height ()"><code class="function">bdk_window_get_height()</code></a> for
@@ -825,8 +825,8 @@ when you are done.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_point (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                 <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_point</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-rectangle"><code class="function">bairo_rectangle()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-fill"><code class="function">bairo_fill()</code></a> or 
@@ -874,7 +874,7 @@ the <a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">
 bdk_draw_points (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                  <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint" title="struct BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> n_points</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> n_points</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_points</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <em class="parameter"><code>n_points</code></em>
@@ -922,10 +922,10 @@ attributes of the <a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_line (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x1_</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y1_</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x2_</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y2_</code></em>);</pre>
+               <em class="parameter"><code><span class="type">bint</span> x1_</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y1_</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> x2_</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y2_</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_line</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-line-to"><code class="function">bairo_line_to()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-stroke"><code class="function">bairo_stroke()</code></a> instead.
@@ -1006,7 +1006,7 @@ the <a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">
 bdk_draw_lines (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                 <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                 <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint" title="struct BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> n_points</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> n_points</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_lines</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-line-to"><code class="function">bairo_line_to()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-stroke"><code class="function">bairo_stroke()</code></a> instead. See the
@@ -1057,15 +1057,15 @@ array.</p></td>
 bdk_draw_pixbuf (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                  <em class="parameter"><code>const <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> src_x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> src_y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> dest_x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> dest_y</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> height</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> src_x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> src_y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> dest_x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> dest_y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> height</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-BdkRGB.html#BdkRgbDither" title="enum BdkRgbDither"><span class="type">BdkRgbDither</span></a> dither</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x_dither</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y_dither</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x_dither</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y_dither</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_pixbuf</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Bairo-Interaction.html#bdk-bairo-set-source-pixbuf" title="bdk_bairo_set_source_pixbuf ()"><code class="function">bdk_bairo_set_source_pixbuf()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-paint"><code class="function">bairo_paint()</code></a> or
@@ -1164,7 +1164,7 @@ variable.</p>
 bdk_draw_segments (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                    <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                    <em class="parameter"><code>const <a class="link" href="bdk2-Drawing-Primitives.html#BdkSegment" title="struct BdkSegment"><span class="type">BdkSegment</span></a> *segs</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> n_segs</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> n_segs</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_segments</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-move-to"><code class="function">bairo_move_to()</code></a>, <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-line-to"><code class="function">bairo_line_to()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-stroke"><code class="function">bairo_stroke()</code></a>
@@ -1214,11 +1214,11 @@ array.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_rectangle (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                     <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                    <em class="parameter"><code><span class="type">gboolean</span> filled</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                    <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                    <em class="parameter"><code><span class="type">bboolean</span> filled</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                    <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_rectangle</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-rectangle"><code class="function">bairo_rectangle()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-fill"><code class="function">bairo_fill()</code></a> or <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-stroke"><code class="function">bairo_stroke()</code></a>
@@ -1288,13 +1288,13 @@ and (20, 0), which makes it 21 pixels wide and 21 pixels high.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_arc (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
               <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-              <em class="parameter"><code><span class="type">gboolean</span> filled</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> height</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> angle1</code></em>,
-              <em class="parameter"><code><span class="type">gint</span> angle2</code></em>);</pre>
+              <em class="parameter"><code><span class="type">bboolean</span> filled</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> height</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> angle1</code></em>,
+              <em class="parameter"><code><span class="type">bint</span> angle2</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_arc</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-arc"><code class="function">bairo_arc()</code></a> and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-fill"><code class="function">bairo_fill()</code></a> or <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-stroke"><code class="function">bairo_stroke()</code></a>
@@ -1371,9 +1371,9 @@ of a degree.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_polygon (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                  <em class="parameter"><code><span class="type">gboolean</span> filled</code></em>,
+                  <em class="parameter"><code><span class="type">bboolean</span> filled</code></em>,
                   <em class="parameter"><code>const <a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkPoint" title="struct BdkPoint"><span class="type">BdkPoint</span></a> *points</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> n_points</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> n_points</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_polygon</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-line-to"><code class="function">bairo_line_to()</code></a> or <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-append-path"><code class="function">bairo_append_path()</code></a> and
@@ -1428,7 +1428,7 @@ up the polygon.</p></td>
 bdk_draw_trapezoids (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                      <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                      <em class="parameter"><code>const <a class="link" href="bdk2-Drawing-Primitives.html#BdkTrapezoid" title="struct BdkTrapezoid"><span class="type">BdkTrapezoid</span></a> *trapezoids</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> n_trapezoids</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bint</span> n_trapezoids</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_trapezoids</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use Bairo path contruction functions and <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-fill"><code class="function">bairo_fill()</code></a>
@@ -1480,8 +1480,8 @@ likely not useful for applications.</p>
 bdk_draw_glyphs (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_glyphs</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
@@ -1545,8 +1545,8 @@ bdk_draw_glyphs_transformed (<em class="parameter"><code><a class="link" href="b
                              <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                              <em class="parameter"><code>const <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoMatrix-struct"><span class="type">BangoMatrix</span></a> *matrix</code></em>,
                              <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                              <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_glyphs_transformed</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
@@ -1618,8 +1618,8 @@ in user space coordinates)</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_layout_line (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                       <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                       <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout_line</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> onto an BDK drawable</p>
@@ -1673,8 +1673,8 @@ device coordinates.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_layout_line_with_colors (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                                   <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                                   <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *foreground</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *background</code></em>);</pre>
@@ -1746,8 +1746,8 @@ device coordinates.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_layout (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> onto a BDK drawable</p>
@@ -1802,8 +1802,8 @@ is <a href="https://developer.bunny.org/btk4/BtkWidget.html#btk-widget-create-ba
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_layout_with_colors (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                              <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                             <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                             <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                              <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *foreground</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *background</code></em>);</pre>
@@ -1877,9 +1877,9 @@ is <a href="https://developer.bunny.org/btk4/BtkWidget.html#btk-widget-create-ba
 bdk_draw_string (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Fonts.html#BdkFont" title="BdkFont"><span class="type">BdkFont</span></a> *font</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                 <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                 <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                 <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_string</code> has been deprecated since version 2.4 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-layout" title="bdk_draw_layout ()"><code class="function">bdk_draw_layout()</code></a> instead.</p>
@@ -1935,10 +1935,10 @@ bdk_draw_string (<em class="parameter"><code><a class="link" href="bdk2-Drawing-
 bdk_draw_text (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                <em class="parameter"><code><a class="link" href="bdk2-Fonts.html#BdkFont" title="BdkFont"><span class="type">BdkFont</span></a> *font</code></em>,
                <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-               <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> text_length</code></em>);</pre>
+               <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+               <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> text_length</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_text</code> has been deprecated since version 2.4 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-layout" title="bdk_draw_layout ()"><code class="function">bdk_draw_layout()</code></a> instead.</p>
@@ -2000,10 +2000,10 @@ to draw.</p></td>
 bdk_draw_text_wc (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Fonts.html#BdkFont" title="BdkFont"><span class="type">BdkFont</span></a> *font</code></em>,
                   <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> y</code></em>,
                   <em class="parameter"><code>const <a class="link" href="bdk2-Fonts.html#BdkWChar" title="BdkWChar"><span class="type">BdkWChar</span></a> *text</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> text_length</code></em>);</pre>
+                  <em class="parameter"><code><span class="type">bint</span> text_length</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_text_wc</code> has been deprecated since version 2.4 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-layout" title="bdk_draw_layout ()"><code class="function">bdk_draw_layout()</code></a> instead.</p>
@@ -2066,12 +2066,12 @@ characters (discarding the high bytes) before output.</p>
 bdk_draw_drawable (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                    <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                    <em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *src</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> xsrc</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> ysrc</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> xdest</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> ydest</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> xsrc</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> ysrc</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> xdest</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> ydest</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_drawable</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="bdk2-Bairo-Interaction.html#bdk-bairo-set-source-pixmap" title="bdk_bairo_set_source_pixmap ()"><code class="function">bdk_bairo_set_source_pixmap()</code></a>, <a href="/usr/share/btk-doc/html/bairo/bairo-Paths.html#bairo-rectangle"><code class="function">bairo_rectangle()</code></a>
@@ -2175,12 +2175,12 @@ height</p></td>
 bdk_draw_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                 <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                 <em class="parameter"><code><a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="type">BdkImage</span></a> *image</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> xsrc</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> ysrc</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> xdest</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> ydest</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                <em class="parameter"><code><span class="type">bint</span> xsrc</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> ysrc</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> xdest</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> ydest</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_image</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Do not use <a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="type">BdkImage</span></a> anymore, instead use Bairo image
@@ -2259,10 +2259,10 @@ extend to the bottom edge of <em class="parameter"><code>image</code></em>
 <a name="bdk-drawable-get-image"></a><h3>bdk_drawable_get_image ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="returnvalue">BdkImage</span></a> *
 bdk_drawable_get_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> y</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_drawable_get_image</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <em class="parameter"><code>drawable</code></em>
@@ -2350,12 +2350,12 @@ will contain undefined data.</p>
 <pre class="programlisting"><a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="returnvalue">BdkImage</span></a> *
 bdk_drawable_copy_to_image (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                             <em class="parameter"><code><a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="type">BdkImage</span></a> *image</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> src_x</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> src_y</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> dest_x</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> dest_y</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> width</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> height</code></em>);</pre>
+                            <em class="parameter"><code><span class="type">bint</span> src_x</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> src_y</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> dest_x</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> dest_y</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> width</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> height</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_drawable_copy_to_image</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <em class="parameter"><code>drawable</code></em>
@@ -2449,10 +2449,10 @@ of <em class="parameter"><code>drawable</code></em>
 <div class="refsect2">
 <a name="BdkSegment"></a><h3>struct BdkSegment</h3>
 <pre class="programlisting">struct BdkSegment {
-  gint x1;
-  gint y1;
-  gint x2;
-  gint y2;
+  bint x1;
+  bint y1;
+  bint x2;
+  bint y2;
 };
 </pre>
 </div>

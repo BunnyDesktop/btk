@@ -177,7 +177,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkViewport.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -518,7 +518,7 @@ btk_viewport_get_view_window (<em class="parameter"><code><a class="link" href="
 user_function (<a class="link" href="BtkViewport.html" title="BtkViewport"><span class="type">BtkViewport</span></a>   *horizontal,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *vertical,
                <a class="link" href="BtkAdjustment.html" title="BtkAdjustment"><span class="type">BtkAdjustment</span></a> *arg2,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>Set the scroll adjustments for the viewport. Usually scrolled containers
 like <a class="link" href="BtkScrolledWindow.html" title="BtkScrolledWindow"><span class="type">BtkScrolledWindow</span></a> will emit this signal to connect two instances
 of <a class="link" href="BtkScrollbar.html" title="BtkScrollbar"><span class="type">BtkScrollbar</span></a> to the scroll directions of the <a class="link" href="BtkViewport.html" title="BtkViewport"><span class="type">BtkViewport</span></a>.</p>

@@ -11,7 +11,7 @@ int main( int argc,
    
     window = btk_window_new (BTK_WINDOW_TOPLEVEL);
     btk_window_set_title (BTK_WINDOW (window), "Aspect Frame");
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
 	              G_CALLBACK (btk_main_quit), NULL);
     btk_container_set_border_width (BTK_CONTAINER (window), 10);
    

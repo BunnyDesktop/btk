@@ -24,18 +24,18 @@
 #include <btk/btk.h>
 #include <bango/bango.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 BatkAttributeSet* bail_misc_add_attribute          (BatkAttributeSet   *attrib_set,
                                                    BatkTextAttribute   attr,
-                                                   gchar             *value);
+                                                   bchar             *value);
 BatkAttributeSet* bail_misc_layout_get_run_attributes
                                                   (BatkAttributeSet   *attrib_set,
                                                    BangoLayout       *layout,
-                                                   gchar             *text,
-                                                   gint              offset,
-                                                   gint              *start_offset,
-                                                   gint              *end_offset);
+                                                   bchar             *text,
+                                                   bint              offset,
+                                                   bint              *start_offset,
+                                                   bint              *end_offset);
 
 BatkAttributeSet* bail_misc_get_default_attributes (BatkAttributeSet   *attrib_set,
                                                    BangoLayout       *layout,
@@ -44,28 +44,28 @@ BatkAttributeSet* bail_misc_get_default_attributes (BatkAttributeSet   *attrib_s
 void             bail_misc_get_extents_from_bango_rectangle
                                                   (BtkWidget         *widget,
                                                    BangoRectangle    *char_rect,
-                                                   gint              x_layout,
-                                                   gint              y_layout,
-                                                   gint              *x,
-                    		                   gint              *y,
-                                                   gint              *width,
-                                                   gint              *height,
+                                                   bint              x_layout,
+                                                   bint              y_layout,
+                                                   bint              *x,
+                    		                   bint              *y,
+                                                   bint              *width,
+                                                   bint              *height,
                                                    BatkCoordType      coords);
 
-gint             bail_misc_get_index_at_point_in_layout
+bint             bail_misc_get_index_at_point_in_layout
                                                   (BtkWidget         *widget,
                                                    BangoLayout       *layout, 
-                                                   gint              x_layout,
-                                                   gint              y_layout,
-                                                   gint              x,
-                                                   gint              y,
+                                                   bint              x_layout,
+                                                   bint              y_layout,
+                                                   bint              x,
+                                                   bint              y,
                                                    BatkCoordType      coords);
 
 void		 bail_misc_get_origins            (BtkWidget         *widget,
-                                                   gint              *x_window,
-					           gint              *y_window,
-					           gint              *x_toplevel,
-					           gint              *y_toplevel);
+                                                   bint              *x_window,
+					           bint              *y_window,
+					           bint              *x_toplevel,
+					           bint              *y_toplevel);
 
 BatkAttributeSet* bail_misc_add_to_attr_set        (BatkAttributeSet   *attrib_set,
 			                           BtkTextAttributes *attrs,
@@ -73,10 +73,10 @@ BatkAttributeSet* bail_misc_add_to_attr_set        (BatkAttributeSet   *attrib_s
 
 BatkAttributeSet* bail_misc_buffer_get_run_attributes
                                                   (BtkTextBuffer     *buffer,
-                                                   gint              offset,
-                                                   gint              *start_offset,
-                                                   gint              *end_offset);
+                                                   bint              offset,
+                                                   bint              *start_offset,
+                                                   bint              *end_offset);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*__BAIL_MISC_H__ */

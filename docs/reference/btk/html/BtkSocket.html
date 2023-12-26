@@ -100,7 +100,7 @@
 <td class="signal_flags">Run Last</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkSocket.html#BtkSocket-plug-removed" title="The “plug-removed” signal">plug-removed</a></td>
 <td class="signal_flags">Run Last</td>
 </tr>
@@ -122,7 +122,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkSocket.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -376,7 +376,7 @@ been created inside of the socket.</p>
 <a name="BtkSocket-plug-added"></a><h3>The <code class="literal">“plug-added”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkSocket.html" title="BtkSocket"><span class="type">BtkSocket</span></a> *socket_,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>This signal is emitted when a client is successfully
 added to the socket.</p>
 <div class="refsect3">
@@ -406,9 +406,9 @@ added to the socket.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkSocket-plug-removed"></a><h3>The <code class="literal">“plug-removed”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkSocket.html" title="BtkSocket"><span class="type">BtkSocket</span></a> *socket_,
-               <span class="type">gpointer</span>   user_data)</pre>
+               <span class="type">bpointer</span>   user_data)</pre>
 <p>This signal is emitted when a client is removed from the socket.
 
 The default action is to destroy the <a class="link" href="BtkSocket.html" title="BtkSocket"><span class="type">BtkSocket</span></a> widget, so if you

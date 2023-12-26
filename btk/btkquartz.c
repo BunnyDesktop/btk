@@ -33,7 +33,7 @@ _btk_quartz_create_image_from_pixbuf (BdkPixbuf *pixbuf)
   CGImageRef image;
   void *data;
   int rowstride, pixbuf_width, pixbuf_height;
-  gboolean has_alpha;
+  bboolean has_alpha;
   NSImage *nsimage;
   NSSize nsimage_size;
 
@@ -94,7 +94,7 @@ _btk_quartz_target_list_to_pasteboard_types (BtkTargetList *target_list)
 
 NSSet *
 _btk_quartz_target_entries_to_pasteboard_types (const BtkTargetEntry *targets,
-						guint                 n_targets)
+						buint                 n_targets)
 {
   NSMutableSet *set = [[NSMutableSet alloc] init];
   int i;
@@ -148,7 +148,7 @@ _btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
 
           btk_selection_data_set (selection_data,
                                   target, 8,
-                                  (guchar *)utf8_string, strlen (utf8_string));
+                                  (buchar *)utf8_string, strlen (utf8_string));
 	}
     }
   else if (target == bdk_atom_intern_static_string ("application/x-color"))
@@ -156,7 +156,7 @@ _btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
       NSColor *nscolor = [[NSColor colorFromPasteboard:pasteboard]
                           colorUsingColorSpaceName:NSDeviceRGBColorSpace];
       
-      guint16 color[4];
+      buint16 color[4];
       
       selection_data->target = target;
 
@@ -165,26 +165,26 @@ _btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
       color[2] = 0xffff * [nscolor blueComponent];
       color[3] = 0xffff * [nscolor alphaComponent];
 
-      btk_selection_data_set (selection_data, target, 16, (guchar *)color, 8);
+      btk_selection_data_set (selection_data, target, 16, (buchar *)color, 8);
     }
   else if (target == bdk_atom_intern_static_string ("text/uri-list"))
     {
       if ([[pasteboard types] containsObject:NSFilenamesPboardType])
         {
-           gchar **uris;
+           bchar **uris;
            NSArray *files = [pasteboard propertyListForType:NSFilenamesPboardType];
            int n_files = [files count];
            int i;
 
            selection_data->target = bdk_atom_intern_static_string ("text/uri-list");
 
-           uris = (gchar **) g_malloc (sizeof (gchar*) * (n_files + 1));
+           uris = (bchar **) g_malloc (sizeof (bchar*) * (n_files + 1));
            for (i = 0; i < n_files; ++i)
              {
                NSString* uriString = [files objectAtIndex:i];
                uriString = [@"file://" stringByAppendingString:uriString];
                uriString = [uriString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-               uris[i] = (gchar *) [uriString cStringUsingEncoding:NSUTF8StringEncoding];
+               uris[i] = (bchar *) [uriString cStringUsingEncoding:NSUTF8StringEncoding];
              }
            uris[i] = NULL;
 
@@ -193,12 +193,12 @@ _btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
          }
       else if ([[pasteboard types] containsObject:NSURLPboardType])
         {
-          gchar *uris[2];
+          bchar *uris[2];
           NSURL *url = [NSURL URLFromPasteboard:pasteboard];
 
           selection_data->target = bdk_atom_intern_static_string ("text/uri-list");
 
-          uris[0] = (gchar *) [[url description] UTF8String];
+          uris[0] = (bchar *) [[url description] UTF8String];
 
           uris[1] = NULL;
           btk_selection_data_set_uris (selection_data, uris);
@@ -207,7 +207,7 @@ _btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
   else
     {
       NSData *data;
-      gchar *name;
+      bchar *name;
 
       name = bdk_atom_name (target);
 
@@ -235,8 +235,8 @@ _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
 {
   NSString *type;
   BdkDisplay *display;
-  gint format;
-  const guchar *data;
+  bint format;
+  const buchar *data;
   NSUInteger length;
 
   display = btk_selection_data_get_display (selection_data);
@@ -251,7 +251,7 @@ _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
                   forType:type];
   else if ([type isEqualTo:NSColorPboardType])
     {
-      guint16 *color = (guint16 *)data;
+      buint16 *color = (buint16 *)data;
       float red, green, blue, alpha;
       NSColor *nscolor;
 
@@ -265,7 +265,7 @@ _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
     }
   else if ([type isEqualTo:NSURLPboardType])
     {
-      gchar **list = NULL;
+      bchar **list = NULL;
       int count;
 
       count = bdk_text_property_to_utf8_list_for_display (display,
@@ -277,7 +277,7 @@ _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
 
       if (count > 0)
         {
-          gchar **result;
+          bchar **result;
           NSURL *url;
 
           result = g_uri_list_extract_uris (list[0]);
@@ -304,16 +304,16 @@ _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
  * to test for that and remove the last element.
  */
 
-static const gchar *
+static const bchar *
 get_bundle_path (void)
 {
-  static gchar *path = NULL;
+  static bchar *path = NULL;
 
   if (path == NULL)
     {
       NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-      gchar *resource_path = g_strdup ([[[NSBundle mainBundle] resourcePath] UTF8String]);
-      gchar *base;
+      bchar *resource_path = g_strdup ([[[NSBundle mainBundle] resourcePath] UTF8String]);
+      bchar *base;
       [pool drain];
 
       base = g_path_get_basename (resource_path);
@@ -329,10 +329,10 @@ get_bundle_path (void)
   return path;
 }
 
-const gchar *
+const bchar *
 _btk_get_datadir (void)
 {
-  static gchar *path = NULL;
+  static bchar *path = NULL;
 
   if (path == NULL)
     path = g_build_filename (get_bundle_path (), "share", NULL);
@@ -340,10 +340,10 @@ _btk_get_datadir (void)
   return path;
 }
 
-const gchar *
+const bchar *
 _btk_get_libdir (void)
 {
-  static gchar *path = NULL;
+  static bchar *path = NULL;
 
   if (path == NULL)
     path = g_build_filename (get_bundle_path (), "lib", NULL);
@@ -351,10 +351,10 @@ _btk_get_libdir (void)
   return path;
 }
 
-const gchar *
+const bchar *
 _btk_get_localedir (void)
 {
-  static gchar *path = NULL;
+  static bchar *path = NULL;
 
   if (path == NULL)
     path = g_build_filename (get_bundle_path (), "share", "locale", NULL);
@@ -362,10 +362,10 @@ _btk_get_localedir (void)
   return path;
 }
 
-const gchar *
+const bchar *
 _btk_get_sysconfdir (void)
 {
-  static gchar *path = NULL;
+  static bchar *path = NULL;
 
   if (path == NULL)
     path = g_build_filename (get_bundle_path (), "etc", NULL);
@@ -373,7 +373,7 @@ _btk_get_sysconfdir (void)
   return path;
 }
 
-const gchar *
+const bchar *
 _btk_get_data_prefix (void)
 {
   return get_bundle_path ();

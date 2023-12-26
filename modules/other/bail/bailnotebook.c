@@ -27,44 +27,44 @@
 
 static void         bail_notebook_class_init          (BailNotebookClass *klass);
 static void         bail_notebook_init                (BailNotebook      *notebook);
-static void         bail_notebook_finalize            (GObject           *object);
+static void         bail_notebook_finalize            (BObject           *object);
 static void         bail_notebook_real_initialize     (BatkObject         *obj,
-                                                       gpointer          data);
+                                                       bpointer          data);
 
-static void         bail_notebook_real_notify_btk     (GObject           *obj,
-                                                       GParamSpec        *pspec);
+static void         bail_notebook_real_notify_btk     (BObject           *obj,
+                                                       BParamSpec        *pspec);
 
 static BatkObject*   bail_notebook_ref_child           (BatkObject      *obj,
-                                                       gint           i);
-static gint         bail_notebook_real_remove_btk     (BtkContainer   *container,
+                                                       bint           i);
+static bint         bail_notebook_real_remove_btk     (BtkContainer   *container,
                                                        BtkWidget      *widget,
-                                                       gpointer       data);    
+                                                       bpointer       data);    
 static void         batk_selection_interface_init      (BatkSelectionIface *iface);
-static gboolean     bail_notebook_add_selection       (BatkSelection   *selection,
-                                                       gint           i);
+static bboolean     bail_notebook_add_selection       (BatkSelection   *selection,
+                                                       bint           i);
 static BatkObject*   bail_notebook_ref_selection       (BatkSelection   *selection,
-                                                       gint           i);
-static gint         bail_notebook_get_selection_count (BatkSelection   *selection);
-static gboolean     bail_notebook_is_child_selected   (BatkSelection   *selection,
-                                                       gint           i);
+                                                       bint           i);
+static bint         bail_notebook_get_selection_count (BatkSelection   *selection);
+static bboolean     bail_notebook_is_child_selected   (BatkSelection   *selection,
+                                                       bint           i);
 static BatkObject*   find_child_in_list                (GList          *list,
-                                                       gint           index);
+                                                       bint           index);
 static void         check_cache                       (BailNotebook   *bail_notebook,
                                                        BtkNotebook    *notebook);
 static void         reset_cache                       (BailNotebook   *bail_notebook,
-                                                       gint           index);
+                                                       bint           index);
 static void         create_notebook_page_accessible   (BailNotebook   *bail_notebook,
                                                        BtkNotebook    *notebook,
-                                                       gint           index,
-                                                       gboolean       insert_before,
+                                                       bint           index,
+                                                       bboolean       insert_before,
                                                        GList          *list);
 static void         bail_notebook_child_parent_set    (BtkWidget      *widget,
                                                        BtkWidget      *old_parent,
-                                                       gpointer       data);
-static gboolean     bail_notebook_focus_cb            (BtkWidget      *widget,
+                                                       bpointer       data);
+static bboolean     bail_notebook_focus_cb            (BtkWidget      *widget,
                                                        BtkDirectionType type);
-static gboolean     bail_notebook_check_focus_tab     (gpointer       data);
-static void         bail_notebook_destroyed           (gpointer       data);
+static bboolean     bail_notebook_check_focus_tab     (bpointer       data);
+static void         bail_notebook_destroyed           (bpointer       data);
 
 
 G_DEFINE_TYPE_WITH_CODE (BailNotebook, bail_notebook, BAIL_TYPE_CONTAINER,
@@ -73,7 +73,7 @@ G_DEFINE_TYPE_WITH_CODE (BailNotebook, bail_notebook, BAIL_TYPE_CONTAINER,
 static void
 bail_notebook_class_init (BailNotebookClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
   BailContainerClass *container_class;
@@ -107,7 +107,7 @@ bail_notebook_init (BailNotebook      *notebook)
 
 static BatkObject*
 bail_notebook_ref_child (BatkObject      *obj,
-                         gint           i)
+                         bint           i)
 {
   BatkObject *accessible = NULL;
   BailNotebook *bail_notebook;
@@ -139,8 +139,8 @@ bail_notebook_ref_child (BatkObject      *obj,
 static void
 bail_notebook_page_added (BtkNotebook *btk_notebook,
                           BtkWidget   *child,
-                          guint        page_num,
-                          gpointer     data)
+                          buint        page_num,
+                          bpointer     data)
 {
   BatkObject *batk_obj;
   BailNotebook *notebook;
@@ -153,11 +153,11 @@ bail_notebook_page_added (BtkNotebook *btk_notebook,
 
 static void
 bail_notebook_real_initialize (BatkObject *obj,
-                               gpointer  data)
+                               bpointer  data)
 {
   BailNotebook *notebook;
   BtkNotebook *btk_notebook;
-  gint i;
+  bint i;
 
   BATK_OBJECT_CLASS (bail_notebook_parent_class)->initialize (obj, data);
 
@@ -181,7 +181,7 @@ bail_notebook_real_initialize (BatkObject *obj,
                     "page-added",
                     G_CALLBACK (bail_notebook_page_added),
                     NULL);
-  g_object_weak_ref (G_OBJECT(btk_notebook),
+  g_object_weak_ref (B_OBJECT(btk_notebook),
                      (GWeakNotify) bail_notebook_destroyed,
                      obj);                     
 
@@ -189,8 +189,8 @@ bail_notebook_real_initialize (BatkObject *obj,
 }
 
 static void
-bail_notebook_real_notify_btk (GObject           *obj,
-                               GParamSpec        *pspec)
+bail_notebook_real_notify_btk (BObject           *obj,
+                               BParamSpec        *pspec)
 {
   BtkWidget *widget;
   BatkObject* batk_obj;
@@ -200,9 +200,9 @@ bail_notebook_real_notify_btk (GObject           *obj,
 
   if (strcmp (pspec->name, "page") == 0)
     {
-      gint page_num, old_page_num;
-      gint focus_page_num = 0;
-      gint old_focus_page_num;
+      bint page_num, old_page_num;
+      bint focus_page_num = 0;
+      bint old_focus_page_num;
       BailNotebook *bail_notebook;
       BtkNotebook *btk_notebook;
      
@@ -269,7 +269,7 @@ bail_notebook_real_notify_btk (GObject           *obj,
 }
 
 static void
-bail_notebook_finalize (GObject            *object)
+bail_notebook_finalize (BObject            *object)
 {
   BailNotebook *notebook = BAIL_NOTEBOOK (object);
   GList *list;
@@ -292,7 +292,7 @@ bail_notebook_finalize (GObject            *object)
   if (notebook->idle_focus_id)
     g_source_remove (notebook->idle_focus_id);
 
-  G_OBJECT_CLASS (bail_notebook_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_notebook_parent_class)->finalize (object);
 }
 
 static void
@@ -316,9 +316,9 @@ batk_selection_interface_init (BatkSelectionIface *iface)
  * Selecting a page unselects any previous selection, so this 
  * changes the current selection instead of adding to it.
  */
-static gboolean
+static bboolean
 bail_notebook_add_selection (BatkSelection *selection,
-                             gint         i)
+                             bint         i)
 {
   BtkNotebook *notebook;
   BtkWidget *widget;
@@ -337,12 +337,12 @@ bail_notebook_add_selection (BatkSelection *selection,
 
 static BatkObject*
 bail_notebook_ref_selection (BatkSelection *selection,
-                             gint i)
+                             bint i)
 {
   BatkObject *accessible;
   BtkWidget *widget;
   BtkNotebook *notebook;
-  gint pagenum;
+  bint pagenum;
   
   /*
    * A note book can have only one selection.
@@ -367,7 +367,7 @@ bail_notebook_ref_selection (BatkSelection *selection,
  * Always return 1 because there can only be one page
  * selected at any time
  */
-static gint
+static bint
 bail_notebook_get_selection_count (BatkSelection *selection)
 {
   BtkWidget *widget;
@@ -387,13 +387,13 @@ bail_notebook_get_selection_count (BatkSelection *selection)
     return 1;
 }
 
-static gboolean
+static bboolean
 bail_notebook_is_child_selected (BatkSelection *selection,
-                                 gint i)
+                                 bint i)
 {
   BtkWidget *widget;
   BtkNotebook *notebook;
-  gint pagenumber;
+  bint pagenumber;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
@@ -414,7 +414,7 @@ bail_notebook_is_child_selected (BatkSelection *selection,
 
 static BatkObject*
 find_child_in_list (GList *list,
-                    gint  index)
+                    bint  index)
 {
   BatkObject *obj = NULL;
 
@@ -436,7 +436,7 @@ check_cache (BailNotebook *bail_notebook,
 {
   GList *btk_list;
   GList *bail_list;
-  gint i;
+  bint i;
 
   btk_list = notebook->children;
   bail_list = bail_notebook->page_cache;
@@ -464,7 +464,7 @@ check_cache (BailNotebook *bail_notebook,
 
 static void
 reset_cache (BailNotebook *bail_notebook,
-             gint         index)
+             bint         index)
 {
   GList *l;
 
@@ -478,8 +478,8 @@ reset_cache (BailNotebook *bail_notebook,
 static void
 create_notebook_page_accessible (BailNotebook *bail_notebook,
                                  BtkNotebook  *notebook,
-                                 gint         index,
-                                 gboolean     insert_before,
+                                 bint         index,
+                                 bboolean     insert_before,
                                  GList        *list)
 {
   BatkObject *obj;
@@ -499,7 +499,7 @@ create_notebook_page_accessible (BailNotebook *bail_notebook,
 static void
 bail_notebook_child_parent_set (BtkWidget *widget,
                                 BtkWidget *old_parent,
-                                gpointer   data)
+                                bpointer   data)
 {
   BailNotebook *bail_notebook;
 
@@ -508,14 +508,14 @@ bail_notebook_child_parent_set (BtkWidget *widget,
   bail_notebook->remove_index = BAIL_NOTEBOOK_PAGE (data)->index;
 }
 
-static gint
+static bint
 bail_notebook_real_remove_btk (BtkContainer *container,
                                BtkWidget    *widget,
-                               gpointer      data)    
+                               bpointer      data)    
 {
   BailNotebook *bail_notebook;
   BatkObject *obj;
-  gint index;
+  bint index;
 
   g_return_val_if_fail (container != NULL, 1);
   bail_notebook = BAIL_NOTEBOOK (btk_widget_get_accessible (BTK_WIDGET (container)));
@@ -535,7 +535,7 @@ bail_notebook_real_remove_btk (BtkContainer *container,
   return 1;
 }
 
-static gboolean
+static bboolean
 bail_notebook_focus_cb (BtkWidget      *widget,
                         BtkDirectionType type)
 {
@@ -555,12 +555,12 @@ bail_notebook_focus_cb (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
-bail_notebook_check_focus_tab (gpointer data)
+static bboolean
+bail_notebook_check_focus_tab (bpointer data)
 {
   BtkWidget *widget;
   BatkObject *batk_obj;
-  gint focus_page_num, old_focus_page_num;
+  bint focus_page_num, old_focus_page_num;
   BailNotebook *bail_notebook;
   BtkNotebook *btk_notebook;
 
@@ -591,7 +591,7 @@ bail_notebook_check_focus_tab (gpointer data)
 }
 
 static void
-bail_notebook_destroyed (gpointer data)
+bail_notebook_destroyed (bpointer data)
 {
   BailNotebook *bail_notebook = BAIL_NOTEBOOK (data);
 

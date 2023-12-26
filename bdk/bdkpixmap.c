@@ -36,114 +36,114 @@ static BdkGC *bdk_pixmap_create_gc      (BdkDrawable     *drawable,
                                          BdkGCValuesMask  mask);
 static void   bdk_pixmap_draw_rectangle (BdkDrawable     *drawable,
 					 BdkGC           *gc,
-					 gboolean         filled,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height);
+					 bboolean         filled,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height);
 static void   bdk_pixmap_draw_arc       (BdkDrawable     *drawable,
 					 BdkGC           *gc,
-					 gboolean         filled,
-					 gint             x,
-					 gint             y,
-					 gint             width,
-					 gint             height,
-					 gint             angle1,
-					 gint             angle2);
+					 bboolean         filled,
+					 bint             x,
+					 bint             y,
+					 bint             width,
+					 bint             height,
+					 bint             angle1,
+					 bint             angle2);
 static void   bdk_pixmap_draw_polygon   (BdkDrawable     *drawable,
 					 BdkGC           *gc,
-					 gboolean         filled,
+					 bboolean         filled,
 					 BdkPoint        *points,
-					 gint             npoints);
+					 bint             npoints);
 static void   bdk_pixmap_draw_text      (BdkDrawable     *drawable,
 					 BdkFont         *font,
 					 BdkGC           *gc,
-					 gint             x,
-					 gint             y,
-					 const gchar     *text,
-					 gint             text_length);
+					 bint             x,
+					 bint             y,
+					 const bchar     *text,
+					 bint             text_length);
 static void   bdk_pixmap_draw_text_wc   (BdkDrawable     *drawable,
 					 BdkFont         *font,
 					 BdkGC           *gc,
-					 gint             x,
-					 gint             y,
+					 bint             x,
+					 bint             y,
 					 const BdkWChar  *text,
-					 gint             text_length);
+					 bint             text_length);
 static void   bdk_pixmap_draw_drawable  (BdkDrawable     *drawable,
 					 BdkGC           *gc,
 					 BdkPixmap       *src,
-					 gint             xsrc,
-					 gint             ysrc,
-					 gint             xdest,
-					 gint             ydest,
-					 gint             width,
-					 gint             height,
+					 bint             xsrc,
+					 bint             ysrc,
+					 bint             xdest,
+					 bint             ydest,
+					 bint             width,
+					 bint             height,
 					 BdkPixmap       *original_src);
 static void   bdk_pixmap_draw_points    (BdkDrawable     *drawable,
 					 BdkGC           *gc,
 					 BdkPoint        *points,
-					 gint             npoints);
+					 bint             npoints);
 static void   bdk_pixmap_draw_segments  (BdkDrawable     *drawable,
 					 BdkGC           *gc,
 					 BdkSegment      *segs,
-					 gint             nsegs);
+					 bint             nsegs);
 static void   bdk_pixmap_draw_lines     (BdkDrawable     *drawable,
 					 BdkGC           *gc,
 					 BdkPoint        *points,
-					 gint             npoints);
+					 bint             npoints);
 
 static void bdk_pixmap_draw_glyphs             (BdkDrawable      *drawable,
 						BdkGC            *gc,
 						BangoFont        *font,
-						gint              x,
-						gint              y,
+						bint              x,
+						bint              y,
 						BangoGlyphString *glyphs);
 static void bdk_pixmap_draw_glyphs_transformed (BdkDrawable      *drawable,
 						BdkGC            *gc,
 						BangoMatrix      *matrix,
 						BangoFont        *font,
-						gint              x,
-						gint              y,
+						bint              x,
+						bint              y,
 						BangoGlyphString *glyphs);
 
 static void   bdk_pixmap_draw_image     (BdkDrawable     *drawable,
                                          BdkGC           *gc,
                                          BdkImage        *image,
-                                         gint             xsrc,
-                                         gint             ysrc,
-                                         gint             xdest,
-                                         gint             ydest,
-                                         gint             width,
-                                         gint             height);
+                                         bint             xsrc,
+                                         bint             ysrc,
+                                         bint             xdest,
+                                         bint             ydest,
+                                         bint             width,
+                                         bint             height);
 static void   bdk_pixmap_draw_pixbuf    (BdkDrawable     *drawable,
 					 BdkGC           *gc,
 					 BdkPixbuf       *pixbuf,
-					 gint             src_x,
-					 gint             src_y,
-					 gint             dest_x,
-					 gint             dest_y,
-					 gint             width,
-					 gint             height,
+					 bint             src_x,
+					 bint             src_y,
+					 bint             dest_x,
+					 bint             dest_y,
+					 bint             width,
+					 bint             height,
 					 BdkRgbDither     dither,
-					 gint             x_dither,
-					 gint             y_dither);
+					 bint             x_dither,
+					 bint             y_dither);
 static void  bdk_pixmap_draw_trapezoids (BdkDrawable     *drawable,
 					 BdkGC	         *gc,
 					 BdkTrapezoid    *trapezoids,
-					 gint             n_trapezoids);
+					 bint             n_trapezoids);
 
 static void   bdk_pixmap_real_get_size  (BdkDrawable     *drawable,
-                                         gint            *width,
-                                         gint            *height);
+                                         bint            *width,
+                                         bint            *height);
 
 static BdkImage* bdk_pixmap_copy_to_image (BdkDrawable *drawable,
 					   BdkImage    *image,
-					   gint         src_x,
-					   gint         src_y,
-					   gint         dest_x,
-					   gint         dest_y,
-					   gint         width,
-					   gint         height);
+					   bint         src_x,
+					   bint         src_y,
+					   bint         dest_x,
+					   bint         dest_y,
+					   bint         width,
+					   bint         height);
 
 static bairo_surface_t *bdk_pixmap_ref_bairo_surface (BdkDrawable *drawable);
 static bairo_surface_t *bdk_pixmap_create_bairo_surface (BdkDrawable *drawable,
@@ -151,7 +151,7 @@ static bairo_surface_t *bdk_pixmap_create_bairo_surface (BdkDrawable *drawable,
 							 int height);
 
 static BdkVisual*   bdk_pixmap_real_get_visual   (BdkDrawable *drawable);
-static gint         bdk_pixmap_real_get_depth    (BdkDrawable *drawable);
+static bint         bdk_pixmap_real_get_depth    (BdkDrawable *drawable);
 static void         bdk_pixmap_real_set_colormap (BdkDrawable *drawable,
                                                   BdkColormap *cmap);
 static BdkColormap* bdk_pixmap_real_get_colormap (BdkDrawable *drawable);
@@ -159,9 +159,9 @@ static BdkScreen*   bdk_pixmap_real_get_screen   (BdkDrawable *drawable);
 
 static void bdk_pixmap_init       (BdkPixmapObject      *pixmap);
 static void bdk_pixmap_class_init (BdkPixmapObjectClass *klass);
-static void bdk_pixmap_finalize   (GObject              *object);
+static void bdk_pixmap_finalize   (BObject              *object);
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 GType
 bdk_pixmap_get_type (void)
@@ -190,7 +190,7 @@ bdk_pixmap_init (BdkPixmapObject *pixmap)
 static void
 bdk_pixmap_class_init (BdkPixmapObjectClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -224,21 +224,21 @@ bdk_pixmap_class_init (BdkPixmapObjectClass *klass)
 }
 
 static void
-bdk_pixmap_finalize (GObject *object)
+bdk_pixmap_finalize (BObject *object)
 {
   BdkPixmapObject *obj = (BdkPixmapObject *) object;
 
   g_object_unref (obj->impl);
   obj->impl = NULL;
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 BdkPixmap *
 bdk_pixmap_new (BdkDrawable *drawable,
-                gint         width,
-                gint         height,
-                gint         depth)
+                bint         width,
+                bint         height,
+                bint         depth)
 {
   BdkDrawable *source_drawable;
 
@@ -251,9 +251,9 @@ bdk_pixmap_new (BdkDrawable *drawable,
 
 BdkPixmap *
 bdk_bitmap_create_from_data (BdkDrawable *drawable,
-                             const gchar *data,
-                             gint         width,
-                             gint         height)
+                             const bchar *data,
+                             bint         width,
+                             bint         height)
 {
   BdkDrawable *source_drawable;
 
@@ -266,10 +266,10 @@ bdk_bitmap_create_from_data (BdkDrawable *drawable,
 
 BdkPixmap*
 bdk_pixmap_create_from_data (BdkDrawable    *drawable,
-                             const gchar    *data,
-                             gint            width,
-                             gint            height,
-                             gint            depth,
+                             const bchar    *data,
+                             bint            width,
+                             bint            height,
+                             bint            depth,
                              const BdkColor *fg,
                              const BdkColor *bg)
 {
@@ -294,11 +294,11 @@ bdk_pixmap_create_gc (BdkDrawable     *drawable,
 static void
 bdk_pixmap_draw_rectangle (BdkDrawable *drawable,
 			   BdkGC       *gc,
-			   gboolean     filled,
-			   gint         x,
-			   gint         y,
-			   gint         width,
-			   gint         height)
+			   bboolean     filled,
+			   bint         x,
+			   bint         y,
+			   bint         width,
+			   bint         height)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -310,13 +310,13 @@ bdk_pixmap_draw_rectangle (BdkDrawable *drawable,
 static void
 bdk_pixmap_draw_arc (BdkDrawable *drawable,
 		     BdkGC       *gc,
-		     gboolean     filled,
-		     gint         x,
-		     gint         y,
-		     gint         width,
-		     gint         height,
-		     gint         angle1,
-		     gint         angle2)
+		     bboolean     filled,
+		     bint         x,
+		     bint         y,
+		     bint         width,
+		     bint         height,
+		     bint         angle1,
+		     bint         angle2)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -329,9 +329,9 @@ bdk_pixmap_draw_arc (BdkDrawable *drawable,
 static void
 bdk_pixmap_draw_polygon (BdkDrawable *drawable,
 			 BdkGC       *gc,
-			 gboolean     filled,
+			 bboolean     filled,
 			 BdkPoint    *points,
-			 gint         npoints)
+			 bint         npoints)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -343,10 +343,10 @@ static void
 bdk_pixmap_draw_text (BdkDrawable *drawable,
 		      BdkFont     *font,
 		      BdkGC       *gc,
-		      gint         x,
-		      gint         y,
-		      const gchar *text,
-		      gint         text_length)
+		      bint         x,
+		      bint         y,
+		      const bchar *text,
+		      bint         text_length)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -359,10 +359,10 @@ static void
 bdk_pixmap_draw_text_wc (BdkDrawable    *drawable,
 			 BdkFont        *font,
 			 BdkGC          *gc,
-			 gint            x,
-			 gint            y,
+			 bint            x,
+			 bint            y,
 			 const BdkWChar *text,
-			 gint            text_length)
+			 bint            text_length)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -375,12 +375,12 @@ static void
 bdk_pixmap_draw_drawable (BdkDrawable *drawable,
 			  BdkGC       *gc,
 			  BdkPixmap   *src,
-			  gint         xsrc,
-			  gint         ysrc,
-			  gint         xdest,
-			  gint         ydest,
-			  gint         width,
-			  gint         height,
+			  bint         xsrc,
+			  bint         ysrc,
+			  bint         xdest,
+			  bint         ydest,
+			  bint         width,
+			  bint         height,
 			  BdkPixmap   *original_src)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
@@ -399,7 +399,7 @@ static void
 bdk_pixmap_draw_points (BdkDrawable *drawable,
 			BdkGC       *gc,
 			BdkPoint    *points,
-			gint         npoints)
+			bint         npoints)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -411,7 +411,7 @@ static void
 bdk_pixmap_draw_segments (BdkDrawable *drawable,
 			  BdkGC       *gc,
 			  BdkSegment  *segs,
-			  gint         nsegs)
+			  bint         nsegs)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -423,7 +423,7 @@ static void
 bdk_pixmap_draw_lines (BdkDrawable *drawable,
 		       BdkGC       *gc,
 		       BdkPoint    *points,
-		       gint         npoints)
+		       bint         npoints)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -435,8 +435,8 @@ static void
 bdk_pixmap_draw_glyphs (BdkDrawable      *drawable,
                         BdkGC            *gc,
                         BangoFont        *font,
-                        gint              x,
-                        gint              y,
+                        bint              x,
+                        bint              y,
                         BangoGlyphString *glyphs)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
@@ -450,8 +450,8 @@ bdk_pixmap_draw_glyphs_transformed (BdkDrawable      *drawable,
 				    BdkGC            *gc,
 				    BangoMatrix      *matrix,
 				    BangoFont        *font,
-				    gint              x,
-				    gint              y,
+				    bint              x,
+				    bint              y,
 				    BangoGlyphString *glyphs)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
@@ -464,12 +464,12 @@ static void
 bdk_pixmap_draw_image (BdkDrawable     *drawable,
                        BdkGC           *gc,
                        BdkImage        *image,
-                       gint             xsrc,
-                       gint             ysrc,
-                       gint             xdest,
-                       gint             ydest,
-                       gint             width,
-                       gint             height)
+                       bint             xsrc,
+                       bint             ysrc,
+                       bint             xdest,
+                       bint             ydest,
+                       bint             width,
+                       bint             height)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -482,15 +482,15 @@ static void
 bdk_pixmap_draw_pixbuf (BdkDrawable     *drawable,
 			BdkGC           *gc,
 			BdkPixbuf       *pixbuf,
-			gint             src_x,
-			gint             src_y,
-			gint             dest_x,
-			gint             dest_y,
-			gint             width,
-			gint             height,
+			bint             src_x,
+			bint             src_y,
+			bint             dest_x,
+			bint             dest_y,
+			bint             width,
+			bint             height,
 			BdkRgbDither     dither,
-			gint             x_dither,
-			gint             y_dither)
+			bint             x_dither,
+			bint             y_dither)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -505,7 +505,7 @@ static void
 bdk_pixmap_draw_trapezoids (BdkDrawable     *drawable,
 			    BdkGC	    *gc,
 			    BdkTrapezoid    *trapezoids,
-			    gint             n_trapezoids)
+			    bint             n_trapezoids)
 {
   BdkPixmapObject *private = (BdkPixmapObject *)drawable;
 
@@ -515,8 +515,8 @@ bdk_pixmap_draw_trapezoids (BdkDrawable     *drawable,
 
 static void
 bdk_pixmap_real_get_size (BdkDrawable *drawable,
-                          gint *width,
-                          gint *height)
+                          bint *width,
+                          bint *height)
 {
   g_return_if_fail (BDK_IS_PIXMAP (drawable));
 
@@ -535,10 +535,10 @@ bdk_pixmap_real_get_visual (BdkDrawable *drawable)
   return colormap ? bdk_colormap_get_visual (colormap) : NULL;
 }
 
-static gint
+static bint
 bdk_pixmap_real_get_depth (BdkDrawable *drawable)
 {
-  gint depth;
+  bint depth;
   
   g_return_val_if_fail (BDK_IS_PIXMAP (drawable), 0);
 
@@ -567,12 +567,12 @@ bdk_pixmap_real_get_colormap (BdkDrawable *drawable)
 static BdkImage*
 bdk_pixmap_copy_to_image (BdkDrawable     *drawable,
 			  BdkImage        *image,
-			  gint             src_x,
-			  gint             src_y,
-			  gint             dest_x,
-			  gint             dest_y,
-			  gint             width,
-			  gint             height)
+			  bint             src_x,
+			  bint             src_y,
+			  bint             dest_x,
+			  bint             dest_y,
+			  bint             width,
+			  bint             height)
 {
   g_return_val_if_fail (BDK_IS_PIXMAP (drawable), NULL);
   
@@ -600,7 +600,7 @@ bdk_pixmap_create_bairo_surface (BdkDrawable *drawable,
 
 
 static BdkBitmap *
-make_solid_mask (BdkScreen *screen, gint width, gint height)
+make_solid_mask (BdkScreen *screen, bint width, bint height)
 {
   BdkBitmap *bitmap;
   BdkGC *gc;
@@ -642,7 +642,7 @@ bdk_pixmap_colormap_new_from_pixbuf (BdkColormap    *colormap,
   
   if (transparent_color)
     {
-      guint32 packed_color = PACKED_COLOR (transparent_color);
+      buint32 packed_color = PACKED_COLOR (transparent_color);
       render_pixbuf = bdk_pixbuf_composite_color_simple (pixbuf,
 							 bdk_pixbuf_get_width (pixbuf),
 							 bdk_pixbuf_get_height (pixbuf),
@@ -700,7 +700,7 @@ bdk_pixmap_colormap_create_from_xpm (BdkDrawable    *drawable,
 				     BdkColormap    *colormap,
 				     BdkBitmap     **mask,
 				     const BdkColor *transparent_color,
-				     const gchar    *filename)
+				     const bchar    *filename)
 {
   BdkPixbuf *pixbuf;
   BdkPixmap *pixmap;
@@ -748,7 +748,7 @@ BdkPixmap*
 bdk_pixmap_create_from_xpm (BdkDrawable    *drawable,
 			    BdkBitmap     **mask,
 			    const BdkColor *transparent_color,
-			    const gchar    *filename)
+			    const bchar    *filename)
 {
   return bdk_pixmap_colormap_create_from_xpm (drawable, NULL, mask,
 					      transparent_color, filename);
@@ -783,7 +783,7 @@ bdk_pixmap_colormap_create_from_xpm_d (BdkDrawable     *drawable,
 				       BdkColormap     *colormap,
 				       BdkBitmap      **mask,
 				       const BdkColor  *transparent_color,
-				       gchar          **data)
+				       bchar          **data)
 {
   BdkPixbuf *pixbuf;
   BdkPixmap *pixmap;
@@ -831,7 +831,7 @@ BdkPixmap*
 bdk_pixmap_create_from_xpm_d (BdkDrawable    *drawable,
 			      BdkBitmap     **mask,
 			      const BdkColor *transparent_color,
-			      gchar         **data)
+			      bchar         **data)
 {
   return bdk_pixmap_colormap_create_from_xpm_d (drawable, NULL, mask,
 						transparent_color, data);
@@ -857,8 +857,8 @@ bdk_pixmap_real_get_screen (BdkDrawable *drawable)
  **/
 void
 bdk_pixmap_get_size (BdkPixmap *pixmap,
-                     gint      *width,
-                     gint      *height)
+                     bint      *width,
+                     bint      *height)
 {
     g_return_if_fail (BDK_IS_PIXMAP (pixmap));
 

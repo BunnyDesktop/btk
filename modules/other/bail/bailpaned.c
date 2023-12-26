@@ -28,7 +28,7 @@ static void         bail_paned_class_init          (BailPanedClass *klass);
 static void         bail_paned_init                (BailPaned      *paned);
 
 static void         bail_paned_real_initialize     (BatkObject      *obj,
-                                                    gpointer       data);
+                                                    bpointer       data);
 static void         bail_paned_size_allocate_btk   (BtkWidget      *widget,
                                                     BtkAllocation  *allocation);
 
@@ -36,13 +36,13 @@ static BatkStateSet* bail_paned_ref_state_set       (BatkObject      *accessible
 
 static void         batk_value_interface_init       (BatkValueIface  *iface);
 static void         bail_paned_get_current_value   (BatkValue       *obj,
-                                                    GValue         *value);
+                                                    BValue         *value);
 static void         bail_paned_get_maximum_value   (BatkValue       *obj,
-                                                    GValue         *value);
+                                                    BValue         *value);
 static void         bail_paned_get_minimum_value   (BatkValue       *obj,
-                                                    GValue         *value);
-static gboolean     bail_paned_set_current_value   (BatkValue       *obj,
-                                                    const GValue   *value);
+                                                    BValue         *value);
+static bboolean     bail_paned_set_current_value   (BatkValue       *obj,
+                                                    const BValue   *value);
 
 G_DEFINE_TYPE_WITH_CODE (BailPaned, bail_paned, BAIL_TYPE_CONTAINER,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
@@ -83,7 +83,7 @@ bail_paned_ref_state_set (BatkObject *accessible)
 
 static void
 bail_paned_real_initialize (BatkObject *obj,
-                            gpointer  data)
+                            bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_paned_parent_class)->initialize (obj, data);
 
@@ -101,7 +101,7 @@ bail_paned_size_allocate_btk (BtkWidget      *widget,
 {
   BatkObject *obj = btk_widget_get_accessible (widget);
 
-  g_object_notify (G_OBJECT (obj), "accessible-value");
+  g_object_notify (B_OBJECT (obj), "accessible-value");
 }
 
 
@@ -116,10 +116,10 @@ batk_value_interface_init (BatkValueIface *iface)
 
 static void
 bail_paned_get_current_value (BatkValue             *obj,
-                              GValue               *value)
+                              BValue               *value)
 {
   BtkWidget* widget;
-  gint current_value;
+  bint current_value;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
@@ -127,17 +127,17 @@ bail_paned_get_current_value (BatkValue             *obj,
     return;
 
   current_value = btk_paned_get_position (BTK_PANED (widget));
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_INT);
-  g_value_set_int (value,current_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_INT);
+  b_value_set_int (value,current_value);
 }
 
 static void
 bail_paned_get_maximum_value (BatkValue             *obj,
-                              GValue               *value)
+                              BValue               *value)
 {
   BtkWidget* widget;
-  gint maximum_value;
+  bint maximum_value;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
@@ -145,17 +145,17 @@ bail_paned_get_maximum_value (BatkValue             *obj,
     return;
 
   maximum_value = BTK_PANED (widget)->max_position;
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_INT);
-  g_value_set_int (value, maximum_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_INT);
+  b_value_set_int (value, maximum_value);
 }
 
 static void
 bail_paned_get_minimum_value (BatkValue             *obj,
-                              GValue               *value)
+                              BValue               *value)
 {
   BtkWidget* widget;
-  gint minimum_value;
+  bint minimum_value;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
@@ -163,9 +163,9 @@ bail_paned_get_minimum_value (BatkValue             *obj,
     return;
 
   minimum_value = BTK_PANED (widget)->min_position;
-  memset (value,  0, sizeof (GValue));
-  g_value_init (value, G_TYPE_INT);
-  g_value_set_int (value, minimum_value);
+  memset (value,  0, sizeof (BValue));
+  b_value_init (value, B_TYPE_INT);
+  b_value_set_int (value, minimum_value);
 }
 
 /*
@@ -175,12 +175,12 @@ bail_paned_get_minimum_value (BatkValue             *obj,
  * maximum and minimum values are.
  */
 
-static gboolean
+static bboolean
 bail_paned_set_current_value (BatkValue             *obj,
-                              const GValue         *value)
+                              const BValue         *value)
 {
   BtkWidget* widget;
-  gint new_value;
+  bint new_value;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
@@ -189,7 +189,7 @@ bail_paned_set_current_value (BatkValue             *obj,
 
   if (G_VALUE_HOLDS_INT (value))
     {
-      new_value = g_value_get_int (value);
+      new_value = b_value_get_int (value);
       btk_paned_set_position (BTK_PANED (widget), new_value);
 
       return TRUE;

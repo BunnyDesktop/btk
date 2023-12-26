@@ -28,14 +28,14 @@
 #include <btk/btkcellrenderer.h>
 #include <btk/btktreemodel.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_VIEW                (btk_cell_view_get_type ())
-#define BTK_CELL_VIEW(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
-#define BTK_CELL_VIEW_CLASS(vtable)       (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
-#define BTK_IS_CELL_VIEW(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_VIEW))
-#define BTK_IS_CELL_VIEW_CLASS(vtable)    (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_CELL_VIEW))
-#define BTK_CELL_VIEW_GET_CLASS(inst)     (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
+#define BTK_CELL_VIEW(obj)                (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_VIEW, BtkCellView))
+#define BTK_CELL_VIEW_CLASS(vtable)       (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
+#define BTK_IS_CELL_VIEW(obj)             (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_VIEW))
+#define BTK_IS_CELL_VIEW_CLASS(vtable)    (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_CELL_VIEW))
+#define BTK_CELL_VIEW_GET_CLASS(inst)     (B_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_CELL_VIEW, BtkCellViewClass))
 
 typedef struct _BtkCellView             BtkCellView;
 typedef struct _BtkCellViewClass        BtkCellViewClass;
@@ -54,10 +54,10 @@ struct _BtkCellViewClass
   BtkWidgetClass parent_class;
 };
 
-GType             btk_cell_view_get_type               (void) G_GNUC_CONST;
+GType             btk_cell_view_get_type               (void) B_GNUC_CONST;
 BtkWidget        *btk_cell_view_new                    (void);
-BtkWidget        *btk_cell_view_new_with_text          (const gchar     *text);
-BtkWidget        *btk_cell_view_new_with_markup        (const gchar     *markup);
+BtkWidget        *btk_cell_view_new_with_text          (const bchar     *text);
+BtkWidget        *btk_cell_view_new_with_markup        (const bchar     *markup);
 BtkWidget        *btk_cell_view_new_with_pixbuf        (BdkPixbuf       *pixbuf);
 
 void              btk_cell_view_set_model               (BtkCellView     *cell_view,
@@ -66,7 +66,7 @@ BtkTreeModel     *btk_cell_view_get_model               (BtkCellView     *cell_v
 void              btk_cell_view_set_displayed_row       (BtkCellView     *cell_view,
                                                          BtkTreePath     *path);
 BtkTreePath      *btk_cell_view_get_displayed_row       (BtkCellView     *cell_view);
-gboolean          btk_cell_view_get_size_of_row         (BtkCellView     *cell_view,
+bboolean          btk_cell_view_get_size_of_row         (BtkCellView     *cell_view,
                                                          BtkTreePath     *path,
                                                          BtkRequisition  *requisition);
 
@@ -76,6 +76,6 @@ void              btk_cell_view_set_background_color    (BtkCellView     *cell_v
 GList            *btk_cell_view_get_cell_renderers      (BtkCellView     *cell_view);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_VIEW_H__ */

@@ -43,7 +43,7 @@ bdk_colormap_get_type (void)
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkColormap",
                                             &object_info,
 					    0);
@@ -54,7 +54,7 @@ bdk_colormap_get_type (void)
 
 BdkColormap *
 bdk_colormap_new (BdkVisual *visual,
-		  gint       private_cmap)
+		  bint       private_cmap)
 {
   g_return_val_if_fail (visual != NULL, NULL);
 
@@ -99,7 +99,7 @@ bdk_screen_get_rgba_colormap (BdkScreen *screen)
   return colormap;
 }
 
-gint
+bint
 bdk_colormap_get_system_size (void)
 {
   /* FIXME: Implement */
@@ -108,45 +108,45 @@ bdk_colormap_get_system_size (void)
 
 void
 bdk_colormap_change (BdkColormap *colormap,
-		     gint         ncolors)
+		     bint         ncolors)
 {
   /* FIXME: Implement */
 }
 
-gboolean
+bboolean
 bdk_colors_alloc (BdkColormap   *colormap,
-		  gboolean       contiguous,
-		  gulong        *planes,
-		  gint           nplanes,
-		  gulong        *pixels,
-		  gint           npixels)
+		  bboolean       contiguous,
+		  bulong        *planes,
+		  bint           nplanes,
+		  bulong        *pixels,
+		  bint           npixels)
 {
   return TRUE;
 }
 
 void
 bdk_colors_free (BdkColormap *colormap,
-		 gulong      *pixels,
-		 gint         npixels,
-		 gulong       planes)
+		 bulong      *pixels,
+		 bint         npixels,
+		 bulong       planes)
 {
 }
 
 void
 bdk_colormap_free_colors (BdkColormap    *colormap,
                           const BdkColor *colors,
-                          gint            n_colors)
+                          bint            n_colors)
 {
   /* This function shouldn't do anything since colors are never allocated. */
 }
 
-gint
+bint
 bdk_colormap_alloc_colors (BdkColormap *colormap,
 			   BdkColor    *colors,
-			   gint         ncolors,
-			   gboolean     writeable,
-			   gboolean     best_match,
-			   gboolean    *success)
+			   bint         ncolors,
+			   bboolean     writeable,
+			   bboolean     best_match,
+			   bboolean    *success)
 {
   int i;
   int alpha;
@@ -175,7 +175,7 @@ bdk_colormap_alloc_colors (BdkColormap *colormap,
 
 void
 bdk_colormap_query_color (BdkColormap *colormap,
-			  gulong       pixel,
+			  bulong       pixel,
 			  BdkColor    *result)
 {
   result->red = pixel >> 16 & 0xff;
@@ -198,7 +198,7 @@ bdk_colormap_get_screen (BdkColormap *cmap)
 
 CGColorRef
 _bdk_quartz_colormap_get_cgcolor_from_pixel (BdkDrawable *drawable,
-                                             guint32      pixel)
+                                             buint32      pixel)
 {
   CGFloat components[4] = { 0.0f, };
   CGColorRef color;
@@ -246,7 +246,7 @@ _bdk_quartz_colormap_get_cgcolor_from_pixel (BdkDrawable *drawable,
   return color;
 }
 
-gboolean
+bboolean
 bdk_color_change (BdkColormap *colormap,
 		  BdkColor    *color)
 {

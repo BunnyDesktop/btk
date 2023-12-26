@@ -28,15 +28,15 @@
 #include <btk/btkcellrenderer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_CELL_RENDERER_TEXT		(btk_cell_renderer_text_get_type ())
-#define BTK_CELL_RENDERER_TEXT(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererText))
-#define BTK_CELL_RENDERER_TEXT_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextClass))
-#define BTK_IS_CELL_RENDERER_TEXT(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_TEXT))
-#define BTK_IS_CELL_RENDERER_TEXT_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_TEXT))
-#define BTK_CELL_RENDERER_TEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextClass))
+#define BTK_CELL_RENDERER_TEXT(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererText))
+#define BTK_CELL_RENDERER_TEXT_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextClass))
+#define BTK_IS_CELL_RENDERER_TEXT(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_TEXT))
+#define BTK_IS_CELL_RENDERER_TEXT_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_TEXT))
+#define BTK_CELL_RENDERER_TEXT_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_TEXT, BtkCellRendererTextClass))
 
 typedef struct _BtkCellRendererText      BtkCellRendererText;
 typedef struct _BtkCellRendererTextClass BtkCellRendererTextClass;
@@ -46,9 +46,9 @@ struct _BtkCellRendererText
   BtkCellRenderer parent;
 
   /*< private >*/
-  gchar *GSEAL (text);
+  bchar *GSEAL (text);
   BangoFontDescription *GSEAL (font);
-  gdouble GSEAL (font_scale);
+  bdouble GSEAL (font_scale);
   BangoColor GSEAL (foreground);
   BangoColor GSEAL (background);
 
@@ -56,26 +56,26 @@ struct _BtkCellRendererText
 
   BangoUnderline GSEAL (underline_style);
 
-  gint GSEAL (rise);
-  gint GSEAL (fixed_height_rows);
+  bint GSEAL (rise);
+  bint GSEAL (fixed_height_rows);
 
-  guint GSEAL (strikethrough) : 1;
+  buint GSEAL (strikethrough) : 1;
 
-  guint GSEAL (editable)  : 1;
+  buint GSEAL (editable)  : 1;
 
-  guint GSEAL (scale_set) : 1;
+  buint GSEAL (scale_set) : 1;
 
-  guint GSEAL (foreground_set) : 1;
-  guint GSEAL (background_set) : 1;
+  buint GSEAL (foreground_set) : 1;
+  buint GSEAL (background_set) : 1;
 
-  guint GSEAL (underline_set) : 1;
+  buint GSEAL (underline_set) : 1;
 
-  guint GSEAL (rise_set) : 1;
+  buint GSEAL (rise_set) : 1;
 
-  guint GSEAL (strikethrough_set) : 1;
+  buint GSEAL (strikethrough_set) : 1;
 
-  guint GSEAL (editable_set) : 1;
-  guint GSEAL (calc_fixed_height) : 1;
+  buint GSEAL (editable_set) : 1;
+  buint GSEAL (calc_fixed_height) : 1;
 };
 
 struct _BtkCellRendererTextClass
@@ -83,8 +83,8 @@ struct _BtkCellRendererTextClass
   BtkCellRendererClass parent_class;
 
   void (* edited) (BtkCellRendererText *cell_renderer_text,
-		   const gchar         *path,
-		   const gchar         *new_text);
+		   const bchar         *path,
+		   const bchar         *new_text);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -93,13 +93,13 @@ struct _BtkCellRendererTextClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_text_get_type (void) G_GNUC_CONST;
+GType            btk_cell_renderer_text_get_type (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_text_new      (void);
 
 void             btk_cell_renderer_text_set_fixed_height_from_font (BtkCellRendererText *renderer,
-								    gint                 number_of_rows);
+								    bint                 number_of_rows);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_TEXT_H__ */

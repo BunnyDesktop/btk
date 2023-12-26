@@ -25,14 +25,14 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_QUERY		(_btk_query_get_type ())
-#define BTK_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_QUERY, BtkQuery))
-#define BTK_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_QUERY, BtkQueryClass))
-#define BTK_IS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_QUERY))
-#define BTK_IS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_QUERY))
-#define BTK_QUERY_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_QUERY, BtkQueryClass))
+#define BTK_QUERY(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_QUERY, BtkQuery))
+#define BTK_QUERY_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_QUERY, BtkQueryClass))
+#define BTK_IS_QUERY(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_QUERY))
+#define BTK_IS_QUERY_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_QUERY))
+#define BTK_QUERY_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_QUERY, BtkQueryClass))
 
 typedef struct _BtkQuery BtkQuery;
 typedef struct _BtkQueryClass BtkQueryClass;
@@ -40,35 +40,35 @@ typedef struct _BtkQueryPrivate BtkQueryPrivate;
 
 struct _BtkQuery 
 {
-  GObject parent;
+  BObject parent;
 
   BtkQueryPrivate *priv;
 };
 
 struct _BtkQueryClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 GType     _btk_query_get_type       (void);
-gboolean  _btk_query_enabled        (void);
+bboolean  _btk_query_enabled        (void);
 
 BtkQuery* _btk_query_new            (void);
 
-gchar*    _btk_query_get_text       (BtkQuery    *query);
+bchar*    _btk_query_get_text       (BtkQuery    *query);
 void      _btk_query_set_text       (BtkQuery    *query, 
-				     const gchar *text);
+				     const bchar *text);
 
-gchar*    _btk_query_get_location   (BtkQuery    *query);
+bchar*    _btk_query_get_location   (BtkQuery    *query);
 void      _btk_query_set_location   (BtkQuery    *query, 
-				     const gchar *uri);
+				     const bchar *uri);
 
 GList*    _btk_query_get_mime_types (BtkQuery    *query);
 void      _btk_query_set_mime_types (BtkQuery    *query, 
 				     GList       *mime_types);
 void      _btk_query_add_mime_type  (BtkQuery    *query, 
-				     const gchar *mime_type);
+				     const bchar *mime_type);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_QUERY_H__ */

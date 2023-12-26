@@ -23,14 +23,14 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CONTAINER_CELL            (bail_container_cell_get_type ())
-#define BAIL_CONTAINER_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER_CELL, BailContainerCell))
-#define BAIL_CONTAINER_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CONTAINER_CELL, BailContainerCellClass))
-#define BAIL_IS_CONTAINER_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CONTAINER_CELL))
-#define BAIL_IS_CONTAINER_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CONTAINER_CELL))
-#define BAIL_CONTAINER_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CONTAINER_CELL, BailContainerCellClass))
+#define BAIL_CONTAINER_CELL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER_CELL, BailContainerCell))
+#define BAIL_CONTAINER_CELL_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CONTAINER_CELL, BailContainerCellClass))
+#define BAIL_IS_CONTAINER_CELL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CONTAINER_CELL))
+#define BAIL_IS_CONTAINER_CELL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CONTAINER_CELL))
+#define BAIL_CONTAINER_CELL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CONTAINER_CELL, BailContainerCellClass))
 
 typedef struct _BailContainerCell                  BailContainerCell;
 typedef struct _BailContainerCellClass             BailContainerCellClass;
@@ -39,7 +39,7 @@ struct _BailContainerCell
 {
   BailCell parent;
   GList *children;
-  gint NChildren;
+  bint NChildren;
 };
 
 GType bail_container_cell_get_type (void);
@@ -60,6 +60,6 @@ void
 bail_container_cell_remove_child (BailContainerCell *container,
 				  BailCell *child);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

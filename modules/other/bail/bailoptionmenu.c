@@ -31,32 +31,32 @@
 static void                  bail_option_menu_class_init       (BailOptionMenuClass *klass);
 static void                  bail_option_menu_init             (BailOptionMenu  *menu);
 static void		     bail_option_menu_real_initialize  (BatkObject       *obj,
-                                                                gpointer        data);
+                                                                bpointer        data);
 
-static gint                  bail_option_menu_get_n_children   (BatkObject       *obj);
+static bint                  bail_option_menu_get_n_children   (BatkObject       *obj);
 static BatkObject*            bail_option_menu_ref_child        (BatkObject       *obj,
-                                                                gint            i);
-static gint                  bail_option_menu_real_add_btk     (BtkContainer    *container,
+                                                                bint            i);
+static bint                  bail_option_menu_real_add_btk     (BtkContainer    *container,
                                                                 BtkWidget       *widget,
-                                                                gpointer        data);
-static gint                  bail_option_menu_real_remove_btk  (BtkContainer    *container,
+                                                                bpointer        data);
+static bint                  bail_option_menu_real_remove_btk  (BtkContainer    *container,
                                                                 BtkWidget       *widget,
-                                                                gpointer        data);
+                                                                bpointer        data);
 
 
 static void                  batk_action_interface_init         (BatkActionIface  *iface);
 
-static gboolean              bail_option_menu_do_action        (BatkAction       *action,
-                                                                gint            i);
-static gboolean              idle_do_action                    (gpointer        data);
-static gint                  bail_option_menu_get_n_actions    (BatkAction       *action);
-static const gchar*          bail_option_menu_get_description  (BatkAction       *action,
-                                                                gint            i);
-static const gchar*          bail_option_menu_action_get_name  (BatkAction       *action,
-                                                                gint            i);
-static gboolean              bail_option_menu_set_description  (BatkAction       *action,
-                                                                gint            i,
-                                                                const gchar     *desc);
+static bboolean              bail_option_menu_do_action        (BatkAction       *action,
+                                                                bint            i);
+static bboolean              idle_do_action                    (bpointer        data);
+static bint                  bail_option_menu_get_n_actions    (BatkAction       *action);
+static const bchar*          bail_option_menu_get_description  (BatkAction       *action,
+                                                                bint            i);
+static const bchar*          bail_option_menu_action_get_name  (BatkAction       *action,
+                                                                bint            i);
+static bboolean              bail_option_menu_set_description  (BatkAction       *action,
+                                                                bint            i,
+                                                                const bchar     *desc);
 static void                  bail_option_menu_changed          (BtkOptionMenu   *option_menu);
 
 G_DEFINE_TYPE_WITH_CODE (BailOptionMenu, bail_option_menu, BAIL_TYPE_BUTTON,
@@ -85,7 +85,7 @@ bail_option_menu_init (BailOptionMenu  *menu)
 
 static void
 bail_option_menu_real_initialize (BatkObject *obj,
-                                  gpointer  data)
+                                  bpointer  data)
 {
   BtkOptionMenu *option_menu;
 
@@ -99,12 +99,12 @@ bail_option_menu_real_initialize (BatkObject *obj,
   obj->role = BATK_ROLE_COMBO_BOX;
 }
 
-static gint
+static bint
 bail_option_menu_get_n_children (BatkObject *obj)
 {
   BtkWidget *widget;
   BtkOptionMenu *option_menu;
-  gint n_children = 0;
+  bint n_children = 0;
 
   g_return_val_if_fail (BAIL_IS_OPTION_MENU (obj), 0);
 
@@ -124,7 +124,7 @@ bail_option_menu_get_n_children (BatkObject *obj)
 
 static BatkObject*
 bail_option_menu_ref_child (BatkObject *obj,
-                            gint      i)
+                            bint      i)
 {
   BtkWidget *widget;
   BatkObject *accessible;
@@ -147,17 +147,17 @@ bail_option_menu_ref_child (BatkObject *obj,
   return accessible;
 }
 
-static gint
+static bint
 bail_option_menu_real_add_btk (BtkContainer *container,
                                BtkWidget    *widget,
-                               gpointer     data)
+                               bpointer     data)
 {
   BatkObject* batk_parent = BATK_OBJECT (data);
   BatkObject* batk_child = btk_widget_get_accessible (widget);
 
   BAIL_CONTAINER_CLASS (bail_option_menu_parent_class)->add_btk (container, widget, data);
 
-  g_object_notify (G_OBJECT (batk_child), "accessible_parent");
+  g_object_notify (B_OBJECT (batk_child), "accessible_parent");
 
   g_signal_emit_by_name (batk_parent, "children_changed::add",
 			 1, batk_child, NULL);
@@ -165,17 +165,17 @@ bail_option_menu_real_add_btk (BtkContainer *container,
   return 1;
 }
 
-static gint 
+static bint 
 bail_option_menu_real_remove_btk (BtkContainer *container,
                                   BtkWidget    *widget,
-                                  gpointer     data)
+                                  bpointer     data)
 {
   BatkPropertyValues values = { NULL };
   BatkObject* batk_parent = BATK_OBJECT (data);
   BatkObject *batk_child = btk_widget_get_accessible (widget);
 
-  g_value_init (&values.old_value, G_TYPE_POINTER);
-  g_value_set_pointer (&values.old_value, batk_parent);
+  b_value_init (&values.old_value, B_TYPE_POINTER);
+  b_value_set_pointer (&values.old_value, batk_parent);
 
   values.property_name = "accessible-parent";
   g_signal_emit_by_name (batk_child,
@@ -196,13 +196,13 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_option_menu_set_description;
 }
 
-static gboolean
+static bboolean
 bail_option_menu_do_action (BatkAction *action,
-                            gint      i)
+                            bint      i)
 {
   BtkWidget *widget;
   BailButton *button; 
-  gboolean return_value = TRUE;
+  bboolean return_value = TRUE;
 
   button = BAIL_BUTTON (action);
   widget = BTK_ACCESSIBLE (action)->widget;
@@ -230,8 +230,8 @@ bail_option_menu_do_action (BatkAction *action,
   return return_value; 
 }
 
-static gboolean 
-idle_do_action (gpointer data)
+static bboolean 
+idle_do_action (bpointer data)
 {
   BtkButton *button; 
   BtkWidget *widget;
@@ -266,18 +266,18 @@ idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 bail_option_menu_get_n_actions (BatkAction *action)
 {
   return 1;
 }
 
-static const gchar*
+static const bchar*
 bail_option_menu_get_description (BatkAction *action,
-                                  gint      i)
+                                  bint      i)
 {
   BailButton *button;
-  const gchar *return_value;
+  const bchar *return_value;
 
   button = BAIL_BUTTON (action);
 
@@ -293,11 +293,11 @@ bail_option_menu_get_description (BatkAction *action,
   return return_value; 
 }
 
-static const gchar*
+static const bchar*
 bail_option_menu_action_get_name (BatkAction *action,
-                                  gint      i)
+                                  bint      i)
 {
-  const gchar *return_value;
+  const bchar *return_value;
 
   switch (i)
     {
@@ -315,13 +315,13 @@ bail_option_menu_action_get_name (BatkAction *action,
   return return_value; 
 }
 
-static gboolean
+static bboolean
 bail_option_menu_set_description (BatkAction      *action,
-                                  gint           i,
-                                  const gchar    *desc)
+                                  bint           i,
+                                  const bchar    *desc)
 {
   BailButton *button;
-  gchar **value;
+  bchar **value;
 
   button = BAIL_BUTTON (action);
 
@@ -351,6 +351,6 @@ bail_option_menu_changed (BtkOptionMenu   *option_menu)
   BailOptionMenu *bail_option_menu;
 
   bail_option_menu = BAIL_OPTION_MENU (btk_widget_get_accessible (BTK_WIDGET (option_menu)));
-  g_object_notify (G_OBJECT (bail_option_menu), "accessible-name");
+  g_object_notify (B_OBJECT (bail_option_menu), "accessible-name");
 }
 

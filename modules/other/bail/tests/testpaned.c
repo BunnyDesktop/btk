@@ -3,20 +3,20 @@
 #include <btk/btk.h>
 #include <testlib.h>
 
-static gint _test_paned (gpointer data);
+static bint _test_paned (bpointer data);
 static void _check_paned (BatkObject *obj);
 
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 
 #define NUM_VALID_ROLES 1
-static gint last_position;
+static bint last_position;
 
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -26,51 +26,51 @@ static void _property_change_handler (BatkObject   *obj,
            values->property_name ? values->property_name: "NULL");
   if (strcmp (values->property_name, "accessible-value") == 0)
   {
-    GValue *value, val;
+    BValue *value, val;
     int position;
     value = &val;
 
-    memset (value, 0, sizeof (GValue));
+    memset (value, 0, sizeof (BValue));
     batk_value_get_current_value (BATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
+    position = b_value_get_int (value); 
     g_print ("Position is  %d previous position was %d\n", 
              position, last_position);
     last_position = position;
     batk_value_get_minimum_value (BATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
+    position = b_value_get_int (value); 
     g_print ("Minimum Value is  %d\n", position); 
     batk_value_get_maximum_value (BATK_VALUE (obj), value);
     g_return_if_fail (G_VALUE_HOLDS_INT (value));
-    position = g_value_get_int (value); 
+    position = b_value_get_int (value); 
     g_print ("Maximum Value is  %d\n", position); 
   }
 }
  
-static gint _test_paned (gpointer data)
+static bint _test_paned (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
   BatkRole role = batk_object_get_role (obj);
   BtkWidget *widget;
-  static gint times = 0;
+  static bint times = 0;
 
   widget = BTK_ACCESSIBLE (obj)->widget;
 
   if (role == BATK_ROLE_SPLIT_PANE)
   {
-    GValue *value, val;
+    BValue *value, val;
     int position;
     value = &val;
 
-    memset (value, 0, sizeof (GValue));
+    memset (value, 0, sizeof (BValue));
     batk_value_get_current_value (BATK_VALUE (obj), value);
     g_return_val_if_fail (G_VALUE_HOLDS_INT (value), FALSE);
-    position = g_value_get_int (value); 
+    position = b_value_get_int (value); 
     g_print ("Position is : %d\n", position);
     last_position = position;
     position *= 2;
-    g_value_set_int (value, position);
+    b_value_set_int (value, position);
     batk_value_set_current_value (BATK_VALUE (obj), value);
     times++;
   }
@@ -82,7 +82,7 @@ static gint _test_paned (gpointer data)
 
 static void _check_paned (BatkObject *obj)
 {
-  static gboolean done_paned = FALSE;
+  static bboolean done_paned = FALSE;
   BatkRole role;
 
   role = batk_object_get_role (obj);
@@ -123,7 +123,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testpaned Module loaded\n");
 

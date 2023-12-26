@@ -90,7 +90,7 @@ align_button_new (const char *text)
 
 static BtkWidget *
 create_combo (const char *name,
-	      gboolean is_list)
+	      bboolean is_list)
 {
   BtkCellRenderer *cell_renderer;
   BtkWidget *combo;
@@ -168,8 +168,8 @@ static void
 on_reorder (void)
 {
   GArray *new_contents;
-  gint *shuffle_array;
-  gint i;
+  bint *shuffle_array;
+  bint i;
 
   shuffle_array = g_new (int, contents->len);
   
@@ -178,8 +178,8 @@ on_reorder (void)
 
   for (i = 0; i + 1 < contents->len; i++)
     {
-      gint pos = g_random_int_range (i, contents->len);
-      gint tmp;
+      bint pos = g_random_int_range (i, contents->len);
+      bint tmp;
 
       tmp = shuffle_array[i];
       shuffle_array[i] = shuffle_array[pos];
@@ -203,8 +203,8 @@ on_reorder (void)
 static int n_animations = 0;
 static int timer = 0;
 
-static gint
-animation_timer (gpointer data)
+static bint
+animation_timer (bpointer data)
 {
   switch (g_random_int_range (0, 3)) 
     {
@@ -249,7 +249,7 @@ main (int argc, char **argv)
 
   btk_init (&argc, &argv);
 
-  model = btk_list_store_new (1, G_TYPE_STRING);
+  model = btk_list_store_new (1, B_TYPE_STRING);
   contents = g_array_new (FALSE, FALSE, sizeof (char));
   
   dialog = btk_dialog_new_with_buttons ("BtkComboBox model changes",

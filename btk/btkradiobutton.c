@@ -40,34 +40,34 @@ enum {
 
 
 static void     btk_radio_button_destroy        (BtkObject           *object);
-static gboolean btk_radio_button_focus          (BtkWidget           *widget,
+static bboolean btk_radio_button_focus          (BtkWidget           *widget,
 						 BtkDirectionType     direction);
 static void     btk_radio_button_clicked        (BtkButton           *button);
 static void     btk_radio_button_draw_indicator (BtkCheckButton      *check_button,
 						 BdkRectangle        *area);
-static void     btk_radio_button_set_property   (GObject             *object,
-						 guint                prop_id,
-						 const GValue        *value,
-						 GParamSpec          *pspec);
-static void     btk_radio_button_get_property   (GObject             *object,
-						 guint                prop_id,
-						 GValue              *value,
-						 GParamSpec          *pspec);
+static void     btk_radio_button_set_property   (BObject             *object,
+						 buint                prop_id,
+						 const BValue        *value,
+						 BParamSpec          *pspec);
+static void     btk_radio_button_get_property   (BObject             *object,
+						 buint                prop_id,
+						 BValue              *value,
+						 BParamSpec          *pspec);
 
 G_DEFINE_TYPE (BtkRadioButton, btk_radio_button, BTK_TYPE_CHECK_BUTTON)
 
-static guint group_changed_signal = 0;
+static buint group_changed_signal = 0;
 
 static void
 btk_radio_button_class_init (BtkRadioButtonClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkButtonClass *button_class;
   BtkCheckButtonClass *check_button_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   object_class = (BtkObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
   button_class = (BtkButtonClass*) class;
@@ -107,12 +107,12 @@ btk_radio_button_class_init (BtkRadioButtonClass *class)
    * Since: 2.4
    */
   group_changed_signal = g_signal_new (I_("group-changed"),
-				       G_OBJECT_CLASS_TYPE (object_class),
+				       B_OBJECT_CLASS_TYPE (object_class),
 				       G_SIGNAL_RUN_FIRST,
 				       G_STRUCT_OFFSET (BtkRadioButtonClass, group_changed),
 				       NULL, NULL,
 				       _btk_marshal_VOID__VOID,
-				       G_TYPE_NONE, 0);
+				       B_TYPE_NONE, 0);
 }
 
 static void
@@ -125,17 +125,17 @@ btk_radio_button_init (BtkRadioButton *radio_button)
 
   BTK_BUTTON (radio_button)->depress_on_activate = FALSE;
 
-  radio_button->group = g_slist_prepend (NULL, radio_button);
+  radio_button->group = b_slist_prepend (NULL, radio_button);
 
   _btk_button_set_depressed (BTK_BUTTON (radio_button), TRUE);
   btk_widget_set_state (BTK_WIDGET (radio_button), BTK_STATE_ACTIVE);
 }
 
 static void
-btk_radio_button_set_property (GObject      *object,
-			       guint         prop_id,
-			       const GValue *value,
-			       GParamSpec   *pspec)
+btk_radio_button_set_property (BObject      *object,
+			       buint         prop_id,
+			       const BValue *value,
+			       BParamSpec   *pspec)
 {
   BtkRadioButton *radio_button;
 
@@ -147,7 +147,7 @@ btk_radio_button_set_property (GObject      *object,
       BtkRadioButton *button;
 
     case PROP_GROUP:
-        button = g_value_get_object (value);
+        button = b_value_get_object (value);
 
       if (button)
 	slist = btk_radio_button_get_group (button);
@@ -156,21 +156,21 @@ btk_radio_button_set_property (GObject      *object,
       btk_radio_button_set_group (radio_button, slist);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_radio_button_get_property (GObject    *object,
-			       guint       prop_id,
-			       GValue     *value,
-			       GParamSpec *pspec)
+btk_radio_button_get_property (BObject    *object,
+			       buint       prop_id,
+			       BValue     *value,
+			       BParamSpec *pspec)
 {
   switch (prop_id)
     {
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -194,13 +194,13 @@ btk_radio_button_set_group (BtkRadioButton *radio_button,
   BtkWidget *new_group_singleton = NULL;
   
   g_return_if_fail (BTK_IS_RADIO_BUTTON (radio_button));
-  g_return_if_fail (!g_slist_find (group, radio_button));
+  g_return_if_fail (!b_slist_find (group, radio_button));
 
   if (radio_button->group)
     {
       GSList *slist;
 
-      radio_button->group = g_slist_remove (radio_button->group, radio_button);
+      radio_button->group = b_slist_remove (radio_button->group, radio_button);
       
       if (radio_button->group && !radio_button->group->next)
 	old_group_singleton = g_object_ref (radio_button->group->data);
@@ -218,7 +218,7 @@ btk_radio_button_set_group (BtkRadioButton *radio_button,
   if (group && !group->next)
     new_group_singleton = g_object_ref (group->data);
   
-  radio_button->group = g_slist_prepend (group, radio_button);
+  radio_button->group = b_slist_prepend (group, radio_button);
   
   if (group)
     {
@@ -236,7 +236,7 @@ btk_radio_button_set_group (BtkRadioButton *radio_button,
 
   g_object_ref (radio_button);
   
-  g_object_notify (G_OBJECT (radio_button), "group");
+  g_object_notify (B_OBJECT (radio_button), "group");
   g_signal_emit (radio_button, group_changed_signal, 0);
   if (old_group_singleton)
     {
@@ -289,7 +289,7 @@ btk_radio_button_new (GSList *group)
  */
 BtkWidget*
 btk_radio_button_new_with_label (GSList      *group,
-				 const gchar *label)
+				 const bchar *label)
 {
   BtkWidget *radio_button;
 
@@ -316,7 +316,7 @@ btk_radio_button_new_with_label (GSList      *group,
  **/
 BtkWidget*
 btk_radio_button_new_with_mnemonic (GSList      *group,
-				    const gchar *label)
+				    const bchar *label)
 {
   BtkWidget *radio_button;
 
@@ -362,7 +362,7 @@ btk_radio_button_new_from_widget (BtkRadioButton *radio_group_member)
  */
 BtkWidget*
 btk_radio_button_new_with_label_from_widget (BtkRadioButton *radio_group_member,
-					     const gchar    *label)
+					     const bchar    *label)
 {
   GSList *l = NULL;
   if (radio_group_member)
@@ -384,7 +384,7 @@ btk_radio_button_new_with_label_from_widget (BtkRadioButton *radio_group_member,
  **/
 BtkWidget*
 btk_radio_button_new_with_mnemonic_from_widget (BtkRadioButton *radio_group_member,
-					        const gchar    *label)
+					        const bchar    *label)
 {
   GSList *l = NULL;
   if (radio_group_member)
@@ -420,13 +420,13 @@ btk_radio_button_destroy (BtkObject *object)
   BtkRadioButton *radio_button;
   BtkRadioButton *tmp_button;
   GSList *tmp_list;
-  gboolean was_in_group;
+  bboolean was_in_group;
   
   radio_button = BTK_RADIO_BUTTON (object);
 
   was_in_group = radio_button->group && radio_button->group->next;
   
-  radio_button->group = g_slist_remove (radio_button->group, radio_button);
+  radio_button->group = b_slist_remove (radio_button->group, radio_button);
   if (radio_button->group && !radio_button->group->next)
     old_group_singleton = radio_button->group->data;
 
@@ -454,8 +454,8 @@ btk_radio_button_destroy (BtkObject *object)
 static void
 get_coordinates (BtkWidget    *widget,
 		 BtkWidget    *reference,
-		 gint         *x,
-		 gint         *y)
+		 bint         *x,
+		 bint         *y)
 {
   *x = widget->allocation.x + widget->allocation.width / 2;
   *y = widget->allocation.y + widget->allocation.height / 2;
@@ -463,12 +463,12 @@ get_coordinates (BtkWidget    *widget,
   btk_widget_translate_coordinates (widget, reference, *x, *y, x, y);
 }
 
-static gint
+static bint
 left_right_compare (gconstpointer a,
 		    gconstpointer b,
-		    gpointer      data)
+		    bpointer      data)
 {
-  gint x1, y1, x2, y2;
+  bint x1, y1, x2, y2;
 
   get_coordinates ((BtkWidget *)a, data, &x1, &y1);
   get_coordinates ((BtkWidget *)b, data, &x2, &y2);
@@ -479,12 +479,12 @@ left_right_compare (gconstpointer a,
     return (y1 < y2) ? -1 : 1;
 }
 
-static gint
+static bint
 up_down_compare (gconstpointer a,
 		 gconstpointer b,
-		 gpointer      data)
+		 bpointer      data)
 {
-  gint x1, y1, x2, y2;
+  bint x1, y1, x2, y2;
   
   get_coordinates ((BtkWidget *)a, data, &x1, &y1);
   get_coordinates ((BtkWidget *)b, data, &x2, &y2);
@@ -495,7 +495,7 @@ up_down_compare (gconstpointer a,
     return (x1 < x2) ? -1 : 1;
 }
 
-static gboolean
+static bboolean
 btk_radio_button_focus (BtkWidget         *widget,
 			BtkDirectionType   direction)
 {
@@ -514,20 +514,20 @@ btk_radio_button_focus (BtkWidget         *widget,
       GSList *focus_list, *tmp_list;
       BtkWidget *toplevel = btk_widget_get_toplevel (widget);
       BtkWidget *new_focus = NULL;
-      gboolean cursor_only;
-      gboolean wrap_around;
+      bboolean cursor_only;
+      bboolean wrap_around;
 
       switch (direction)
 	{
 	case BTK_DIR_LEFT:
 	case BTK_DIR_RIGHT:
-	  focus_list = g_slist_copy (radio_button->group);
-	  focus_list = g_slist_sort_with_data (focus_list, left_right_compare, toplevel);
+	  focus_list = b_slist_copy (radio_button->group);
+	  focus_list = b_slist_sort_with_data (focus_list, left_right_compare, toplevel);
 	  break;
 	case BTK_DIR_UP:
 	case BTK_DIR_DOWN:
-	  focus_list = g_slist_copy (radio_button->group);
-	  focus_list = g_slist_sort_with_data (focus_list, up_down_compare, toplevel);
+	  focus_list = b_slist_copy (radio_button->group);
+	  focus_list = b_slist_sort_with_data (focus_list, up_down_compare, toplevel);
 	  break;
 	case BTK_DIR_TAB_FORWARD:
 	case BTK_DIR_TAB_BACKWARD:
@@ -537,9 +537,9 @@ btk_radio_button_focus (BtkWidget         *widget,
 	}
 
       if (direction == BTK_DIR_LEFT || direction == BTK_DIR_UP)
-	focus_list = g_slist_reverse (focus_list);
+	focus_list = b_slist_reverse (focus_list);
 
-      tmp_list = g_slist_find (focus_list, widget);
+      tmp_list = b_slist_find (focus_list, widget);
 
       if (tmp_list)
 	{
@@ -568,13 +568,13 @@ btk_radio_button_focus (BtkWidget         *widget,
 	{
           if (cursor_only)
             {
-              g_slist_free (focus_list);
+              b_slist_free (focus_list);
               return FALSE;
             }
 
           if (!wrap_around)
             {
-              g_slist_free (focus_list);
+              b_slist_free (focus_list);
               btk_widget_error_bell (widget);
               return TRUE;
             }
@@ -595,7 +595,7 @@ btk_radio_button_focus (BtkWidget         *widget,
 	    }
 	}
       
-      g_slist_free (focus_list);
+      b_slist_free (focus_list);
 
       if (new_focus)
 	{
@@ -640,8 +640,8 @@ btk_radio_button_clicked (BtkButton *button)
   BtkToggleButton *tmp_button;
   BtkStateType new_state;
   GSList *tmp_list;
-  gint toggled;
-  gboolean depressed;
+  bint toggled;
+  bboolean depressed;
 
   radio_button = BTK_RADIO_BUTTON (button);
   toggle_button = BTK_TOGGLE_BUTTON (button);
@@ -711,7 +711,7 @@ btk_radio_button_clicked (BtkButton *button)
     {
       btk_toggle_button_toggled (toggle_button);
 
-      g_object_notify (G_OBJECT (toggle_button), "active");
+      g_object_notify (B_OBJECT (toggle_button), "active");
     }
 
   _btk_button_set_depressed (button, depressed);
@@ -731,11 +731,11 @@ btk_radio_button_draw_indicator (BtkCheckButton *check_button,
   BtkToggleButton *toggle_button;
   BtkStateType state_type;
   BtkShadowType shadow_type;
-  gint x, y;
-  gint indicator_size, indicator_spacing;
-  gint focus_width;
-  gint focus_pad;
-  gboolean interior_focus;
+  bint x, y;
+  bint indicator_size, indicator_spacing;
+  bint focus_width;
+  bint focus_pad;
+  bboolean interior_focus;
 
   widget = BTK_WIDGET (check_button);
 

@@ -17,8 +17,8 @@
 static void 
 insert_link (BtkTextBuffer *buffer, 
              BtkTextIter   *iter, 
-             gchar         *text, 
-             gint           page)
+             bchar         *text, 
+             bint           page)
 {
   BtkTextTag *tag;
   
@@ -26,7 +26,7 @@ insert_link (BtkTextBuffer *buffer,
                                     "foreground", "blue", 
                                     "underline", BANGO_UNDERLINE_SINGLE, 
                                     NULL);
-  g_object_set_data (G_OBJECT (tag), "page", GINT_TO_POINTER (page));
+  g_object_set_data (B_OBJECT (tag), "page", BINT_TO_POINTER (page));
   btk_text_buffer_insert_with_tags (buffer, iter, text, -1, tag, NULL);
 }
 
@@ -35,7 +35,7 @@ insert_link (BtkTextBuffer *buffer,
  */
 static void
 show_page (BtkTextBuffer *buffer, 
-           gint           page)
+           bint           page)
 {
   BtkTextIter iter;
 
@@ -89,7 +89,7 @@ follow_if_link (BtkWidget   *text_view,
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
       BtkTextTag *tag = tagp->data;
-      gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
+      bint page = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (tag), "page"));
 
       if (page != 0)
         {
@@ -99,12 +99,12 @@ follow_if_link (BtkWidget   *text_view,
     }
 
   if (tags) 
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 /* Links can be activated by pressing Enter.
  */
-static gboolean
+static bboolean
 key_press_event (BtkWidget *text_view,
                  BdkEventKey *event)
 {
@@ -130,14 +130,14 @@ key_press_event (BtkWidget *text_view,
 
 /* Links can also be activated by clicking.
  */
-static gboolean
+static bboolean
 event_after (BtkWidget *text_view,
              BdkEvent  *ev)
 {
   BtkTextIter start, end, iter;
   BtkTextBuffer *buffer;
   BdkEventButton *event;
-  gint x, y;
+  bint x, y;
 
   if (ev->type != BDK_BUTTON_RELEASE)
     return FALSE;
@@ -165,7 +165,7 @@ event_after (BtkWidget *text_view,
   return FALSE;
 }
 
-static gboolean hovering_over_link = FALSE;
+static bboolean hovering_over_link = FALSE;
 static BdkCursor *hand_cursor = NULL;
 static BdkCursor *regular_cursor = NULL;
 
@@ -175,12 +175,12 @@ static BdkCursor *regular_cursor = NULL;
  */
 static void
 set_cursor_if_appropriate (BtkTextView    *text_view,
-                           gint            x,
-                           gint            y)
+                           bint            x,
+                           bint            y)
 {
   GSList *tags = NULL, *tagp = NULL;
   BtkTextIter iter;
-  gboolean hovering = FALSE;
+  bboolean hovering = FALSE;
 
   btk_text_view_get_iter_at_location (text_view, &iter, x, y);
   
@@ -188,7 +188,7 @@ set_cursor_if_appropriate (BtkTextView    *text_view,
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
       BtkTextTag *tag = tagp->data;
-      gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
+      bint page = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (tag), "page"));
 
       if (page != 0) 
         {
@@ -208,16 +208,16 @@ set_cursor_if_appropriate (BtkTextView    *text_view,
     }
 
   if (tags) 
-    g_slist_free (tags);
+    b_slist_free (tags);
 }
 
 /* Update the cursor image if the pointer moved. 
  */
-static gboolean
+static bboolean
 motion_notify_event (BtkWidget      *text_view,
                      BdkEventMotion *event)
 {
-  gint x, y;
+  bint x, y;
 
   btk_text_view_window_to_buffer_coords (BTK_TEXT_VIEW (text_view), 
                                          BTK_TEXT_WINDOW_WIDGET,
@@ -232,11 +232,11 @@ motion_notify_event (BtkWidget      *text_view,
 /* Also update the cursor image if the window becomes visible
  * (e.g. when a window covering it got iconified).
  */
-static gboolean
+static bboolean
 visibility_notify_event (BtkWidget          *text_view,
                          BdkEventVisibility *event)
 {
-  gint wx, wy, bx, by;
+  bint wx, wy, bx, by;
   
   bdk_window_get_pointer (btk_widget_get_window (text_view), &wx, &wy, NULL);
   

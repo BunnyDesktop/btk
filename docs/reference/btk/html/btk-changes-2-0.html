@@ -65,12 +65,12 @@ The <code class="function">bdk_time*</code> functions have been removed. This
 <li class="listitem"><p>
 The signature for <code class="function">BtkPrintFunc</code> (used for 
   <code class="function">btk_item_factory_dump_items()</code>)
-  has been changed to take a <span class="type">const gchar *</span> instead of 
-  <span class="type">gchar *</span>, to match what we do for GLib, and other similar cases.
+  has been changed to take a <span class="type">const bchar *</span> instead of 
+  <span class="type">bchar *</span>, to match what we do for GLib, and other similar cases.
 </p></li>
 <li class="listitem"><p>
 The detail arguments in the <span class="structname">BtkStyleClass</span> structure 
-are now <span class="type">const gchar *</span>.
+are now <span class="type">const bchar *</span>.
 </p></li>
 <li class="listitem"><p>
 <code class="function">btk_paned_set_gutter_size()</code> has been removed, since the 
@@ -130,8 +130,8 @@ The following type aliases vanished: <code class="literal">BTK_TYPE_FLAT_FIRST</
 <li class="listitem"><p>
 The type macros <code class="function">BTK_TYPE_MAKE()</code> and <code class="function">BTK_TYPE_SEQNO()</code> vanished, use of
     <code class="function">BTK_FUNDAMENTAL_TYPE()</code> is discouraged. Instead, the corresponding <span class="structname">GType</span>
-    API should be used: <code class="function">G_TYPE_FUNDAMENTAL()</code>, <code class="function">G_TYPE_DERIVE_ID()</code>,
-    <code class="function">G_TYPE_BRANCH_SEQNO()</code>. Note that the GLib type system doesn't build new
+    API should be used: <code class="function">B_TYPE_FUNDAMENTAL()</code>, <code class="function">B_TYPE_DERIVE_ID()</code>,
+    <code class="function">B_TYPE_BRANCH_SEQNO()</code>. Note that the GLib type system doesn't build new
     type ids based on a global incremental sequential number anymore, but
     numbers new type ids sequentially per fundamental type branch.
 </p></li>
@@ -219,7 +219,7 @@ The following type functions vanished/were replaced:
 <li class="listitem">
 <p>
 Object system changes:
-  <span class="structname">BtkObject</span> derives from <span class="structname">GObject</span>, so is not the basic object type anymore.
+  <span class="structname">BtkObject</span> derives from <span class="structname">BObject</span>, so is not the basic object type anymore.
   This imposes the following source incompatible changes:
 </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; ">
@@ -236,7 +236,7 @@ Object system changes:
 <p>
 <span class="structname">BtkObjectClass</span> does not introduce the <code class="function">finalize()</code> and <code class="function">shutdown()</code> methods
     anymore. While <code class="function">shutdown()</code> is intended for BTK+ internal use only, <code class="function">finalize()</code>
-    is required by a variety of object implementations. <code class="function">GObjectClass.finalize</code>
+    is required by a variety of object implementations. <code class="function">BObjectClass.finalize</code>
     should be overriden here, e.g.:
 </p>
 <div class="informalexample">
@@ -255,15 +255,15 @@ Object system changes:
 10
 11
 12</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span> <span class="nf">btk_label_finalize</span> <span class="p">(</span><span class="n">GObject</span> <span class="o">*</span><span class="n">bobject</span><span class="p">)</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span> <span class="nf">btk_label_finalize</span> <span class="p">(</span><span class="n">BObject</span> <span class="o">*</span><span class="n">bobject</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">BtkLabel</span> <span class="o">*</span><span class="n">label</span> <span class="o">=</span> <span class="n">BTK_LABEL</span> <span class="p">(</span><span class="n">bobject</span><span class="p">);</span>
   
-  <span class="n">G_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">B_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
 <span class="p">}</span>
 <span class="k">static</span> <span class="kt">void</span> <span class="nf">btk_label_class_init</span> <span class="p">(</span><span class="n">BtkLabelClass</span> <span class="o">*</span><span class="n">class</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">GObjectClass</span> <span class="o">*</span><span class="n">bobject_class</span> <span class="o">=</span> <span class="n">G_OBJECT_CLASS</span> <span class="p">(</span><span class="n">class</span><span class="p">);</span>
+  <span class="n">BObjectClass</span> <span class="o">*</span><span class="n">bobject_class</span> <span class="o">=</span> <span class="n">B_OBJECT_CLASS</span> <span class="p">(</span><span class="n">class</span><span class="p">);</span>
   
   <span class="n">bobject_class</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="o">=</span> <span class="n">btk_label_finalize</span><span class="p">;</span>
 <span class="p">}</span></pre></td>
@@ -348,7 +348,7 @@ Signal system changes:
   system now. For future usage, direct use of the 
   <span class="structname">GSignal</span> API is recommended,
   this avoids significant performance hits where <span class="structname">BtkArg</span>
-  structures have to be converted into <span class="structname">GValue</span>s. For 
+  structures have to be converted into <span class="structname">BValue</span>s. For 
   language bindings, <span class="structname">GSignal</span>+<span class="structname">GClosure</span>
   provide a much more flexible and convenient mechanism to hook into signal 
   emissions or install class default handlers, so the old 
@@ -395,10 +395,10 @@ The 'font' and 'font_set' declarations in RC files are now ignored. There
 </p></li>
 <li class="listitem"><p>
 A number of types in BDK have become subclasses of 
-  <span class="structname">GObject</span>. For the most part, this should not break 
+  <span class="structname">BObject</span>. For the most part, this should not break 
   anyone's code. However, it's now possible/encouraged to use 
   <code class="function">g_object_ref()</code>/<code class="function">g_object_unref()</code> and
-  other <span class="structname">GObject</span> features with these BDK types. The 
+  other <span class="structname">BObject</span> features with these BDK types. The 
   converted types are:
   <span class="structname">BdkWindow</span>, <span class="structname">BdkDrawable</span>, 
   <span class="structname">BdkPixmap</span>, <span class="structname">BdkImage</span>, 
@@ -417,7 +417,7 @@ All drawables including pixmaps used to have a type tag, the
 </p></li>
 <li class="listitem"><p>
 <span class="structname">BtkStyle</span> and <span class="structname">BtkRcStyle</span> are 
-  now subclasses of <span class="structname">GObject</span> as well.  This
+  now subclasses of <span class="structname">BObject</span> as well.  This
   requires fairly extensive changes to theme engines, but
   shouldn't affect most other code.
 </p></li>
@@ -604,12 +604,12 @@ The split between <span class="structname">BtkProgress</span> and
 <pre class="programlisting">
   void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
   void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
-                                                    const gchar    *text);
+                                                    const bchar    *text);
   void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
 
   void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
   void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
 						    BtkProgressBarOrientation orientation);
 </pre>
@@ -817,13 +817,13 @@ An extra <span class="structname">BtkSettings</span> argument has been added to
 <li class="listitem"><p>
 The child argument facility in <code class="filename">btkcontainer.c</code> has been 
   converted to a child property facility using 
-  <span class="structname">GParamSpec</span> and other facilities
-  for <span class="structname">GObject</span>.   
+  <span class="structname">BParamSpec</span> and other facilities
+  for <span class="structname">BObject</span>.   
 </p></li>
 <li class="listitem"><p>
 The <code class="function">set_child_arg()</code> and <code class="function">get_child_arg()</code> 
      virtual methods have been replaced with <code class="function">set_child_property()</code>/<code class="function">get_child_property()</code>, which
-     work similar to GObject-&gt;set_property/get_property.
+     work similar to BObject-&gt;set_property/get_property.
 </p></li>
 <li class="listitem">
 <p>

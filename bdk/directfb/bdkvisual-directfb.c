@@ -42,13 +42,13 @@
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 
-static void                bdk_visual_decompose_mask  (gulong   mask,
-                                                       gint    *shift,
-                                                       gint    *prec);
+static void                bdk_visual_decompose_mask  (bulong   mask,
+                                                       bint    *shift,
+                                                       bint    *prec);
 static BdkVisualDirectFB * bdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat);
 
 
@@ -65,18 +65,18 @@ static DFBSurfacePixelFormat formats[] =
 
 BdkVisual                * system_visual                                = NULL;
 static BdkVisualDirectFB * visuals[G_N_ELEMENTS (formats) + 1]          = { NULL };
-static gint                available_depths[G_N_ELEMENTS (formats) + 1] = {0};
+static bint                available_depths[G_N_ELEMENTS (formats) + 1] = {0};
 static BdkVisualType       available_types[G_N_ELEMENTS (formats) + 1]  = {0};
 
 
 static void
-bdk_visual_finalize (GObject *object)
+bdk_visual_finalize (BObject *object)
 {
   g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-bdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (BObjectClass *class)
 {
   class->finalize = bdk_visual_finalize;
 }
@@ -101,7 +101,7 @@ bdk_visual_get_type (void)
           (GInstanceInitFunc) NULL,
         };
 
-      object_type = g_type_register_static (G_TYPE_OBJECT,
+      object_type = g_type_register_static (B_TYPE_OBJECT,
                                             "BdkVisual",
                                             &object_info, 0);
     }
@@ -115,7 +115,7 @@ _bdk_visual_init (void)
   DFBDisplayLayerConfig  dlc;
   DFBSurfaceDescription  desc;
   IDirectFBSurface      *dest;
-  gint                   i, c;
+  bint                   i, c;
 
 
   _bdk_display->layer->GetConfiguration (_bdk_display->layer, &dlc);
@@ -175,7 +175,7 @@ _bdk_visual_init (void)
   g_assert (system_visual != NULL);
 }
 
-gint
+bint
 bdk_visual_get_best_depth (void)
 {
   return system_visual->depth;
@@ -201,9 +201,9 @@ bdk_visual_get_best (void)
 }
 
 BdkVisual *
-bdk_visual_get_best_with_depth (gint depth)
+bdk_visual_get_best_with_depth (bint depth)
 {
-  gint i;
+  bint i;
 
   for (i = 0; visuals[i]; i++)
     {
@@ -221,7 +221,7 @@ bdk_visual_get_best_with_depth (gint depth)
 BdkVisual *
 bdk_visual_get_best_with_type (BdkVisualType visual_type)
 {
-  gint i;
+  bint i;
 
   for (i = 0; visuals[i]; i++)
     {
@@ -237,10 +237,10 @@ bdk_visual_get_best_with_type (BdkVisualType visual_type)
 }
 
 BdkVisual*
-bdk_visual_get_best_with_both (gint          depth,
+bdk_visual_get_best_with_both (bint          depth,
                                BdkVisualType visual_type)
 {
-  gint i;
+  bint i;
 
   for (i = 0; visuals[i]; i++)
     {
@@ -256,10 +256,10 @@ bdk_visual_get_best_with_both (gint          depth,
 }
 
 void
-bdk_query_depths (gint **depths,
-                  gint  *count)
+bdk_query_depths (bint **depths,
+                  bint  *count)
 {
-  gint i;
+  bint i;
 
   for (i = 0; available_depths[i]; i++)
     ;
@@ -270,9 +270,9 @@ bdk_query_depths (gint **depths,
 
 void
 bdk_query_visual_types (BdkVisualType **visual_types,
-                        gint           *count)
+                        bint           *count)
 {
-  gint i;
+  bint i;
 
   for (i = 0; available_types[i]; i++)
     ;
@@ -285,7 +285,7 @@ GList *
 bdk_screen_list_visuals (BdkScreen *screen)
 {
   GList *list = NULL;
-  gint   i;
+  bint   i;
 
   for (i = 0; visuals[i]; i++)
     if (visuals[i]) {
@@ -315,7 +315,7 @@ bdk_screen_list_visuals (BdkScreen *screen)
 BdkVisual *
 bdk_directfb_visual_by_format (DFBSurfacePixelFormat pixel_format)
 {
-  gint i;
+  bint i;
 
   /* first check if one the registered visuals matches */
   for (i = 0; visuals[i]; i++)
@@ -351,9 +351,9 @@ bdk_visual_get_screen (BdkVisual *visual)
 }
 
 static void
-bdk_visual_decompose_mask (gulong  mask,
-                           gint   *shift,
-                           gint   *prec)
+bdk_visual_decompose_mask (bulong  mask,
+                           bint   *shift,
+                           bint   *prec)
 {
   *shift = 0;
   *prec  = 0;
@@ -375,7 +375,7 @@ static BdkVisualDirectFB *
 bdk_directfb_visual_create (DFBSurfacePixelFormat  pixelformat)
 {
   BdkVisual *visual;
-  gint       i;
+  bint       i;
 
   for (i = 0; i < G_N_ELEMENTS (formats); i++)
     if (formats[i] == pixelformat)

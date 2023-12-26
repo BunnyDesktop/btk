@@ -227,7 +227,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkInfoBar.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -357,7 +357,7 @@ btk_info_bar_new (<em class="parameter"><code><span class="type">void</span></co
 <div class="refsect2">
 <a name="btk-info-bar-new-with-buttons"></a><h3>btk_info_bar_new_with_buttons ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_info_bar_new_with_buttons (<em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+btk_info_bar_new_with_buttons (<em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                                <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> with buttons. Button text/response ID
 pairs should be listed, with a <code class="literal">NULL</code> pointer ending the list.
@@ -400,7 +400,7 @@ with <code class="literal">NULL</code></p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_info_bar_add_action_widget (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *child</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Add an activatable widget to the action area of a <a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a>,
 connecting a signal handler that will emit the <a class="link" href="BtkInfoBar.html#BtkInfoBar-response" title="The “response” signal"><span class="type">“response”</span></a>
 signal on the message area when the widget is activated. The widget
@@ -440,8 +440,8 @@ is appended to the end of the message areas action area.</p>
 <a name="btk-info-bar-add-button"></a><h3>btk_info_bar_add_button ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_info_bar_add_button (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *button_text</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *button_text</code></em>,
+                         <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Adds a button with the given text (or a stock button, if button_text
 is a stock ID) and sets things up so that clicking the button will emit
 the "response" signal with the given response_id. The button is appended
@@ -486,7 +486,7 @@ returned, but usually you don't need it.</p>
 <a name="btk-info-bar-add-buttons"></a><h3>btk_info_bar_add_buttons ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_info_bar_add_buttons (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                           <em class="parameter"><code>...</code></em>);</pre>
 <p>Adds more buttons, same as calling <a class="link" href="BtkInfoBar.html#btk-info-bar-add-button" title="btk_info_bar_add_button ()"><code class="function">btk_info_bar_add_button()</code></a>
 repeatedly. The variable argument list should be <code class="literal">NULL</code>-terminated
@@ -527,8 +527,8 @@ ending with <code class="literal">NULL</code></p></td>
 <a name="btk-info-bar-set-response-sensitive"></a><h3>btk_info_bar_set_response_sensitive ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_info_bar_set_response_sensitive (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
-                                     <em class="parameter"><code><span class="type">gint</span> response_id</code></em>,
-                                     <em class="parameter"><code><span class="type">gboolean</span> setting</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bint</span> response_id</code></em>,
+                                     <em class="parameter"><code><span class="type">bboolean</span> setting</code></em>);</pre>
 <p>Calls btk_widget_set_sensitive (widget, setting) for each
 widget in the info bars's action area with the given response_id.
 A convenient way to sensitize/desensitize dialog buttons.</p>
@@ -566,7 +566,7 @@ A convenient way to sensitize/desensitize dialog buttons.</p>
 <a name="btk-info-bar-set-default-response"></a><h3>btk_info_bar_set_default_response ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_info_bar_set_default_response (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Sets the last widget in the info bar's action area with
 the given response_id as the default widget for the dialog.
 Pressing "Enter" normally activates the default widget.</p>
@@ -602,7 +602,7 @@ be added to a widget hierarchy.</p>
 <a name="btk-info-bar-response"></a><h3>btk_info_bar_response ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_info_bar_response (<em class="parameter"><code><a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar</code></em>,
-                       <em class="parameter"><code><span class="type">gint</span> response_id</code></em>);</pre>
+                       <em class="parameter"><code><span class="type">bint</span> response_id</code></em>);</pre>
 <p>Emits the 'response' signal with the given <em class="parameter"><code>response_id</code></em>
 .</p>
 <div class="refsect3">
@@ -831,7 +831,7 @@ content area of the info bar.</p>
 <a name="BtkInfoBar-close"></a><h3>The <code class="literal">“close”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *infobar,
-               <span class="type">gpointer</span>    user_data)</pre>
+               <span class="type">bpointer</span>    user_data)</pre>
 <p>The ::close signal is a</p>
 keybinding signal<p>which gets emitted when the user uses a keybinding to dismiss
 the info bar.</p>
@@ -860,7 +860,7 @@ the info bar.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkInfoBar.html" title="BtkInfoBar"><span class="type">BtkInfoBar</span></a> *info_bar,
                <span class="type">int</span>         response_id,
-               <span class="type">gpointer</span>    user_data)</pre>
+               <span class="type">bpointer</span>    user_data)</pre>
 <p>Emitted when an action widget is clicked or the application programmer
 calls <a class="link" href="BtkDialog.html#btk-dialog-response" title="btk_dialog_response ()"><code class="function">btk_dialog_response()</code></a>. The <em class="parameter"><code>response_id</code></em>
  depends on which action

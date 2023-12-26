@@ -22,14 +22,14 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_PROGRESS_BAR                      (bail_progress_bar_get_type ())
-#define BAIL_PROGRESS_BAR(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBar))
-#define BAIL_PROGRESS_BAR_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
-#define BAIL_IS_PROGRESS_BAR(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PROGRESS_BAR))
-#define BAIL_IS_PROGRESS_BAR_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PROGRESS_BAR))
-#define BAIL_PROGRESS_BAR_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
+#define BAIL_PROGRESS_BAR(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBar))
+#define BAIL_PROGRESS_BAR_CLASS(klass)			(B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
+#define BAIL_IS_PROGRESS_BAR(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PROGRESS_BAR))
+#define BAIL_IS_PROGRESS_BAR_CLASS(klass)		(B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PROGRESS_BAR))
+#define BAIL_PROGRESS_BAR_GET_CLASS(obj)		(B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PROGRESS_BAR, BailProgressBarClass))
 
 typedef struct _BailProgressBar         BailProgressBar;
 typedef struct _BailProgressBarClass	BailProgressBarClass;
@@ -48,6 +48,6 @@ struct _BailProgressBarClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_PROGRESS_BAR_H__ */

@@ -45,24 +45,24 @@ enum {
 };
 
 
-#define BTK_TOGGLE_TOOL_BUTTON_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonPrivate))
+#define BTK_TOGGLE_TOOL_BUTTON_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOGGLE_TOOL_BUTTON, BtkToggleToolButtonPrivate))
 
 struct _BtkToggleToolButtonPrivate
 {
-  guint active : 1;
+  buint active : 1;
 };
   
 
-static void     btk_toggle_tool_button_set_property        (GObject      *object,
-							    guint         prop_id,
-							    const GValue *value,
-							    GParamSpec   *pspec);
-static void     btk_toggle_tool_button_get_property        (GObject      *object,
-							    guint         prop_id,
-							    GValue       *value,
-							    GParamSpec   *pspec);
+static void     btk_toggle_tool_button_set_property        (BObject      *object,
+							    buint         prop_id,
+							    const BValue *value,
+							    BParamSpec   *pspec);
+static void     btk_toggle_tool_button_get_property        (BObject      *object,
+							    buint         prop_id,
+							    BValue       *value,
+							    BParamSpec   *pspec);
 
-static gboolean btk_toggle_tool_button_create_menu_proxy (BtkToolItem *button);
+static bboolean btk_toggle_tool_button_create_menu_proxy (BtkToolItem *button);
 
 static void button_toggled      (BtkWidget           *widget,
 				 BtkToggleToolButton *button);
@@ -73,12 +73,12 @@ static void menu_item_activated (BtkWidget           *widget,
 static void btk_toggle_tool_button_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_toggle_tool_button_update                     (BtkActivatable       *activatable,
 							       BtkAction            *action,
-							       const gchar          *property_name);
+							       const bchar          *property_name);
 static void btk_toggle_tool_button_sync_action_properties     (BtkActivatable       *activatable,
 							       BtkAction            *action);
 
 static BtkActivatableIface *parent_activatable_iface;
-static guint                toggle_signals[LAST_SIGNAL] = { 0 };
+static buint                toggle_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkToggleToolButton, btk_toggle_tool_button, BTK_TYPE_TOOL_BUTTON,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_ACTIVATABLE,
@@ -87,11 +87,11 @@ G_DEFINE_TYPE_WITH_CODE (BtkToggleToolButton, btk_toggle_tool_button, BTK_TYPE_T
 static void
 btk_toggle_tool_button_class_init (BtkToggleToolButtonClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkToolItemClass *toolitem_class;
   BtkToolButtonClass *toolbutton_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   toolitem_class = (BtkToolItemClass *)klass;
   toolbutton_class = (BtkToolButtonClass *)klass;
 
@@ -124,12 +124,12 @@ btk_toggle_tool_button_class_init (BtkToggleToolButtonClass *klass)
  **/
   toggle_signals[TOGGLED] =
     g_signal_new (I_("toggled"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkToggleToolButtonClass, toggled),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   g_type_class_add_private (object_class, sizeof (BtkToggleToolButtonPrivate));
 }
@@ -152,10 +152,10 @@ btk_toggle_tool_button_init (BtkToggleToolButton *button)
 }
 
 static void
-btk_toggle_tool_button_set_property (GObject      *object,
-				     guint         prop_id,
-				     const GValue *value,
-				     GParamSpec   *pspec)
+btk_toggle_tool_button_set_property (BObject      *object,
+				     buint         prop_id,
+				     const BValue *value,
+				     BParamSpec   *pspec)
 {
   BtkToggleToolButton *button = BTK_TOGGLE_TOOL_BUTTON (object);
 
@@ -163,47 +163,47 @@ btk_toggle_tool_button_set_property (GObject      *object,
     {
       case PROP_ACTIVE:
 	btk_toggle_tool_button_set_active (button, 
-					   g_value_get_boolean (value));
+					   b_value_get_boolean (value));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_toggle_tool_button_get_property (GObject    *object,
-				     guint       prop_id,
-				     GValue     *value,
-				     GParamSpec *pspec)
+btk_toggle_tool_button_get_property (BObject    *object,
+				     buint       prop_id,
+				     BValue     *value,
+				     BParamSpec *pspec)
 {
   BtkToggleToolButton *button = BTK_TOGGLE_TOOL_BUTTON (object);
 
   switch (prop_id)
     {
       case PROP_ACTIVE:
-        g_value_set_boolean (value, btk_toggle_tool_button_get_active (button));
+        b_value_set_boolean (value, btk_toggle_tool_button_get_active (button));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
-static gboolean
+static bboolean
 btk_toggle_tool_button_create_menu_proxy (BtkToolItem *item)
 {
   BtkToolButton *tool_button = BTK_TOOL_BUTTON (item);
   BtkToggleToolButton *toggle_tool_button = BTK_TOGGLE_TOOL_BUTTON (item);
   BtkWidget *menu_item = NULL;
   BtkStockItem stock_item;
-  gboolean use_mnemonic = TRUE;
+  bboolean use_mnemonic = TRUE;
   const char *label;
   BtkWidget *label_widget;
-  const gchar *label_text;
-  const gchar *stock_id;
+  const bchar *label_text;
+  const bchar *stock_id;
 
   if (_btk_tool_item_create_menu_proxy (item))
     return TRUE;
@@ -246,9 +246,9 @@ btk_toggle_tool_button_create_menu_proxy (BtkToolItem *item)
     }
 
   g_signal_connect_closure_by_id (menu_item,
-				  g_signal_lookup ("activate", G_OBJECT_TYPE (menu_item)), 0,
+				  g_signal_lookup ("activate", B_OBJECT_TYPE (menu_item)), 0,
 				  g_cclosure_new_object (G_CALLBACK (menu_item_activated),
-							 G_OBJECT (toggle_tool_button)),
+							 B_OBJECT (toggle_tool_button)),
 				  FALSE);
 
   btk_tool_item_set_proxy_menu_item (item, MENU_ID, menu_item);
@@ -273,7 +273,7 @@ menu_item_activated (BtkWidget           *menu_item,
 		     BtkToggleToolButton *toggle_tool_button)
 {
   BtkToolButton *tool_button = BTK_TOOL_BUTTON (toggle_tool_button);
-  gboolean menu_active = btk_check_menu_item_get_active (BTK_CHECK_MENU_ITEM (menu_item));
+  bboolean menu_active = btk_check_menu_item_get_active (BTK_CHECK_MENU_ITEM (menu_item));
 
   if (toggle_tool_button->priv->active != menu_active)
     {
@@ -282,7 +282,7 @@ menu_item_activated (BtkWidget           *menu_item,
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (_btk_tool_button_get_button (tool_button)),
 				    toggle_tool_button->priv->active);
 
-      g_object_notify (G_OBJECT (toggle_tool_button), "active");
+      g_object_notify (B_OBJECT (toggle_tool_button), "active");
       g_signal_emit (toggle_tool_button, toggle_signals[TOGGLED], 0);
     }
 }
@@ -291,7 +291,7 @@ static void
 button_toggled (BtkWidget           *widget,
 		BtkToggleToolButton *toggle_tool_button)
 {
-  gboolean toggle_active = BTK_TOGGLE_BUTTON (widget)->active;
+  bboolean toggle_active = BTK_TOGGLE_BUTTON (widget)->active;
 
   if (toggle_tool_button->priv->active != toggle_active)
     {
@@ -306,7 +306,7 @@ button_toggled (BtkWidget           *widget,
 					  toggle_tool_button->priv->active);
 	}
 
-      g_object_notify (G_OBJECT (toggle_tool_button), "active");
+      g_object_notify (B_OBJECT (toggle_tool_button), "active");
       g_signal_emit (toggle_tool_button, toggle_signals[TOGGLED], 0);
     }
 }
@@ -322,7 +322,7 @@ btk_toggle_tool_button_activatable_interface_init (BtkActivatableIface *iface)
 static void
 btk_toggle_tool_button_update (BtkActivatable *activatable,
 			       BtkAction      *action,
-			       const gchar    *property_name)
+			       const bchar    *property_name)
 {
   BtkToggleToolButton *button;
 
@@ -392,7 +392,7 @@ btk_toggle_tool_button_new (void)
  * Since: 2.4
  **/
 BtkToolItem *
-btk_toggle_tool_button_new_from_stock (const gchar *stock_id)
+btk_toggle_tool_button_new_from_stock (const bchar *stock_id)
 {
   BtkToolButton *button;
 
@@ -418,7 +418,7 @@ btk_toggle_tool_button_new_from_stock (const gchar *stock_id)
  **/
 void
 btk_toggle_tool_button_set_active (BtkToggleToolButton *button,
-				   gboolean is_active)
+				   bboolean is_active)
 {
   g_return_if_fail (BTK_IS_TOGGLE_TOOL_BUTTON (button));
 
@@ -439,7 +439,7 @@ btk_toggle_tool_button_set_active (BtkToggleToolButton *button,
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_toggle_tool_button_get_active (BtkToggleToolButton *button)
 {
   g_return_val_if_fail (BTK_IS_TOGGLE_TOOL_BUTTON (button), FALSE);

@@ -35,13 +35,13 @@
 #include <bango/bangobairo.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 void
 _btk_bango_fill_layout (bairo_t     *cr,
                         BangoLayout *layout);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BANGO_H__ */

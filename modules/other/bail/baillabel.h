@@ -23,14 +23,14 @@
 #include <bail/bailwidget.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_LABEL                      (bail_label_get_type ())
-#define BAIL_LABEL(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LABEL, BailLabel))
-#define BAIL_LABEL_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LABEL, BailLabelClass))
-#define BAIL_IS_LABEL(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LABEL))
-#define BAIL_IS_LABEL_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LABEL))
-#define BAIL_LABEL_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LABEL, BailLabelClass))
+#define BAIL_LABEL(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LABEL, BailLabel))
+#define BAIL_LABEL_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LABEL, BailLabelClass))
+#define BAIL_IS_LABEL(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LABEL))
+#define BAIL_IS_LABEL_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LABEL))
+#define BAIL_LABEL_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LABEL, BailLabelClass))
 
 typedef struct _BailLabel              BailLabel;
 typedef struct _BailLabelClass         BailLabelClass;
@@ -40,11 +40,11 @@ struct _BailLabel
   BailWidget parent;
 
   BailTextUtil   *textutil;
-  gint           cursor_position;
-  gint           selection_bound;
-  gint           label_length;
-  guint          window_create_handler;
-  gboolean       has_top_level;
+  bint           cursor_position;
+  bint           selection_bound;
+  bint           label_length;
+  buint          window_create_handler;
+  bboolean       has_top_level;
 };
 
 GType bail_label_get_type (void);
@@ -54,6 +54,6 @@ struct _BailLabelClass
   BailWidgetClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_LABEL_H__ */

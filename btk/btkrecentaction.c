@@ -35,7 +35,7 @@
 #define FALLBACK_ITEM_LIMIT     10
 
 #define BTK_RECENT_ACTION_GET_PRIVATE(obj)      \
-        (G_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
+        (B_TYPE_INSTANCE_GET_PRIVATE ((obj),    \
          BTK_TYPE_RECENT_ACTION,                \
          BtkRecentActionPrivate))
 
@@ -43,20 +43,20 @@ struct _BtkRecentActionPrivate
 {
   BtkRecentManager *manager;
 
-  guint show_numbers   : 1;
+  buint show_numbers   : 1;
 
   /* RecentChooser properties */
-  guint show_private   : 1;
-  guint show_not_found : 1;
-  guint show_tips      : 1;
-  guint show_icons     : 1;
-  guint local_only     : 1;
+  buint show_private   : 1;
+  buint show_not_found : 1;
+  buint show_tips      : 1;
+  buint show_icons     : 1;
+  buint local_only     : 1;
 
-  gint limit;
+  bint limit;
 
   BtkRecentSortType sort_type;
   BtkRecentSortFunc sort_func;
-  gpointer          sort_data;
+  bpointer          sort_data;
   GDestroyNotify    data_destroy;
 
   BtkRecentFilter *current_filter;
@@ -80,9 +80,9 @@ G_DEFINE_TYPE_WITH_CODE (BtkRecentAction,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_RECENT_CHOOSER,
                                                 btk_recent_chooser_iface_init));
 
-static gboolean
+static bboolean
 btk_recent_action_set_current_uri (BtkRecentChooser  *chooser,
-                                   const gchar       *uri,
+                                   const bchar       *uri,
                                    GError           **error)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -100,7 +100,7 @@ btk_recent_action_set_current_uri (BtkRecentChooser  *chooser,
   return TRUE;
 }
 
-static gchar *
+static bchar *
 btk_recent_action_get_current_uri (BtkRecentChooser *chooser)
 {
   BtkRecentAction *recent_action = BTK_RECENT_ACTION (chooser);
@@ -112,9 +112,9 @@ btk_recent_action_get_current_uri (BtkRecentChooser *chooser)
   return NULL;
 }
 
-static gboolean
+static bboolean
 btk_recent_action_select_uri (BtkRecentChooser  *chooser,
-                              const gchar       *uri,
+                              const bchar       *uri,
                               GError           **error)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -134,7 +134,7 @@ btk_recent_action_select_uri (BtkRecentChooser  *chooser,
 
 static void
 btk_recent_action_unselect_uri (BtkRecentChooser *chooser,
-                                const gchar      *uri)
+                                const bchar      *uri)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
   BtkRecentActionPrivate *priv = action->priv;
@@ -153,7 +153,7 @@ btk_recent_action_select_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
-             g_type_name (G_OBJECT_TYPE (chooser)));
+             g_type_name (B_OBJECT_TYPE (chooser)));
 }
 
 static void
@@ -161,7 +161,7 @@ btk_recent_action_unselect_all (BtkRecentChooser *chooser)
 {
   g_warning (_("This function is not implemented for "
                "widgets of class '%s'"),
-             g_type_name (G_OBJECT_TYPE (chooser)));
+             g_type_name (B_OBJECT_TYPE (chooser)));
 }
 
 
@@ -186,7 +186,7 @@ btk_recent_action_get_recent_manager (BtkRecentChooser *chooser)
 static void
 btk_recent_action_set_sort_func (BtkRecentChooser  *chooser,
                                  BtkRecentSortFunc  sort_func,
-                                 gpointer           sort_data,
+                                 bpointer           sort_data,
                                  GDestroyNotify     data_destroy)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (chooser);
@@ -235,7 +235,7 @@ set_current_filter (BtkRecentAction *action,
   if (priv->current_filter)
     g_object_ref_sink (priv->current_filter);
 
-  g_object_notify (G_OBJECT (action), "filter");
+  g_object_notify (B_OBJECT (action), "filter");
 
   g_object_unref (action);
 }
@@ -267,7 +267,7 @@ btk_recent_action_list_filters (BtkRecentChooser *chooser)
   BtkRecentFilter *current_filter;
 
   current_filter = BTK_RECENT_ACTION_GET_PRIVATE (chooser)->current_filter;
-  retval = g_slist_prepend (retval, current_filter);
+  retval = b_slist_prepend (retval, current_filter);
 
   return retval;
 }
@@ -331,7 +331,7 @@ btk_recent_action_connect_proxy (BtkAction *action,
 
   /* it can only be a recent chooser implementor anyway... */
   if (BTK_IS_RECENT_CHOOSER (widget) &&
-      !g_slist_find (priv->choosers, widget))
+      !b_slist_find (priv->choosers, widget))
     {
       if (priv->sort_func)
         {
@@ -363,8 +363,8 @@ btk_recent_action_disconnect_proxy (BtkAction *action,
   /* if it was one of the recent choosers we created, remove it
    * from the list
    */
-  if (g_slist_find (priv->choosers, widget))
-    priv->choosers = g_slist_remove (priv->choosers, widget);
+  if (b_slist_find (priv->choosers, widget))
+    priv->choosers = b_slist_remove (priv->choosers, widget);
 
   if (BTK_ACTION_CLASS (btk_recent_action_parent_class)->disconnect_proxy)
     BTK_ACTION_CLASS (btk_recent_action_parent_class)->disconnect_proxy (action, widget);
@@ -406,7 +406,7 @@ btk_recent_action_create_menu (BtkAction *action)
                             recent_action);
 
   /* keep track of the choosers we create */
-  priv->choosers = g_slist_prepend (priv->choosers, widget);
+  priv->choosers = b_slist_prepend (priv->choosers, widget);
 
   return widget;
 }
@@ -452,7 +452,7 @@ set_recent_manager (BtkRecentAction  *action,
 }
 
 static void
-btk_recent_action_finalize (GObject *bobject)
+btk_recent_action_finalize (BObject *bobject)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (bobject);
   BtkRecentActionPrivate *priv = action->priv;
@@ -468,13 +468,13 @@ btk_recent_action_finalize (GObject *bobject)
   priv->sort_data = NULL;
   priv->sort_func = NULL;
 
-  g_slist_free (priv->choosers);
+  b_slist_free (priv->choosers);
 
-  G_OBJECT_CLASS (btk_recent_action_parent_class)->finalize (bobject);
+  B_OBJECT_CLASS (btk_recent_action_parent_class)->finalize (bobject);
 }
 
 static void
-btk_recent_action_dispose (GObject *bobject)
+btk_recent_action_dispose (BObject *bobject)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (bobject);
   BtkRecentActionPrivate *priv = action->priv;
@@ -485,14 +485,14 @@ btk_recent_action_dispose (GObject *bobject)
       priv->current_filter = NULL;
     }
 
-  G_OBJECT_CLASS (btk_recent_action_parent_class)->dispose (bobject);
+  B_OBJECT_CLASS (btk_recent_action_parent_class)->dispose (bobject);
 }
 
 static void
-btk_recent_action_set_property (GObject      *bobject,
-                                guint         prop_id,
-                                const GValue *value,
-                                GParamSpec   *pspec)
+btk_recent_action_set_property (BObject      *bobject,
+                                buint         prop_id,
+                                const BValue *value,
+                                BParamSpec   *pspec)
 {
   BtkRecentAction *action = BTK_RECENT_ACTION (bobject);
   BtkRecentActionPrivate *priv = action->priv;
@@ -500,88 +500,88 @@ btk_recent_action_set_property (GObject      *bobject,
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
-      priv->show_numbers = g_value_get_boolean (value);
+      priv->show_numbers = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      priv->show_private = g_value_get_boolean (value);
+      priv->show_private = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      priv->show_not_found = g_value_get_boolean (value);
+      priv->show_not_found = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      priv->show_tips = g_value_get_boolean (value);
+      priv->show_tips = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      priv->show_icons = g_value_get_boolean (value);
+      priv->show_icons = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      priv->limit = g_value_get_int (value);
+      priv->limit = b_value_get_int (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      priv->local_only = g_value_get_boolean (value);
+      priv->local_only = b_value_get_boolean (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      priv->sort_type = g_value_get_enum (value);
+      priv->sort_type = b_value_get_enum (value);
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      set_current_filter (action, g_value_get_object (value));
+      set_current_filter (action, b_value_get_object (value));
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
       g_warning ("%s: Choosers of type `%s' do not support selecting multiple items.",
-                 G_STRFUNC,
-                 G_OBJECT_TYPE_NAME (bobject));
+                 B_STRFUNC,
+                 B_OBJECT_TYPE_NAME (bobject));
       return;
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
-      set_recent_manager (action, g_value_get_object (value));
+      set_recent_manager (action, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (bobject, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (bobject, prop_id, pspec);
       return;
     }
 }
 
 static void
-btk_recent_action_get_property (GObject    *bobject,
-                                guint       prop_id,
-                                GValue     *value,
-                                GParamSpec *pspec)
+btk_recent_action_get_property (BObject    *bobject,
+                                buint       prop_id,
+                                BValue     *value,
+                                BParamSpec *pspec)
 {
   BtkRecentActionPrivate *priv = BTK_RECENT_ACTION_GET_PRIVATE (bobject);
 
   switch (prop_id)
     {
     case PROP_SHOW_NUMBERS:
-      g_value_set_boolean (value, priv->show_numbers);
+      b_value_set_boolean (value, priv->show_numbers);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE:
-      g_value_set_boolean (value, priv->show_private);
+      b_value_set_boolean (value, priv->show_private);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND:
-      g_value_set_boolean (value, priv->show_not_found);
+      b_value_set_boolean (value, priv->show_not_found);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_TIPS:
-      g_value_set_boolean (value, priv->show_tips);
+      b_value_set_boolean (value, priv->show_tips);
       break;
     case BTK_RECENT_CHOOSER_PROP_SHOW_ICONS:
-      g_value_set_boolean (value, priv->show_icons);
+      b_value_set_boolean (value, priv->show_icons);
       break;
     case BTK_RECENT_CHOOSER_PROP_LIMIT:
-      g_value_set_int (value, priv->limit);
+      b_value_set_int (value, priv->limit);
       break;
     case BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY:
-      g_value_set_boolean (value, priv->local_only);
+      b_value_set_boolean (value, priv->local_only);
       break;
     case BTK_RECENT_CHOOSER_PROP_SORT_TYPE:
-      g_value_set_enum (value, priv->sort_type);
+      b_value_set_enum (value, priv->sort_type);
       break;
     case BTK_RECENT_CHOOSER_PROP_FILTER:
-      g_value_set_object (value, priv->current_filter);
+      b_value_set_object (value, priv->current_filter);
       break;
     case BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE:
-      g_value_set_boolean (value, FALSE);
+      b_value_set_boolean (value, FALSE);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (bobject, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (bobject, prop_id, pspec);
       break;
     }
 }
@@ -589,7 +589,7 @@ btk_recent_action_get_property (GObject    *bobject,
 static void
 btk_recent_action_class_init (BtkRecentActionClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkActionClass *action_class = BTK_ACTION_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (BtkRecentActionPrivate));
@@ -663,10 +663,10 @@ btk_recent_action_init (BtkRecentAction *action)
  * Since: 2.12
  */
 BtkAction *
-btk_recent_action_new (const gchar *name,
-                       const gchar *label,
-                       const gchar *tooltip,
-                       const gchar *stock_id)
+btk_recent_action_new (const bchar *name,
+                       const bchar *label,
+                       const bchar *tooltip,
+                       const bchar *stock_id)
 {
   g_return_val_if_fail (name != NULL, NULL);
 
@@ -697,10 +697,10 @@ btk_recent_action_new (const gchar *name,
  * Since: 2.12
  */
 BtkAction *
-btk_recent_action_new_for_manager (const gchar      *name,
-                                   const gchar      *label,
-                                   const gchar      *tooltip,
-                                   const gchar      *stock_id,
+btk_recent_action_new_for_manager (const bchar      *name,
+                                   const bchar      *label,
+                                   const bchar      *tooltip,
+                                   const bchar      *stock_id,
                                    BtkRecentManager *manager)
 {
   g_return_val_if_fail (name != NULL, NULL);
@@ -725,7 +725,7 @@ btk_recent_action_new_for_manager (const gchar      *name,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_recent_action_get_show_numbers (BtkRecentAction *action)
 {
   g_return_val_if_fail (BTK_IS_RECENT_ACTION (action), FALSE);
@@ -747,7 +747,7 @@ btk_recent_action_get_show_numbers (BtkRecentAction *action)
  */
 void
 btk_recent_action_set_show_numbers (BtkRecentAction *action,
-                                    gboolean         show_numbers)
+                                    bboolean         show_numbers)
 {
   BtkRecentActionPrivate *priv;
 
@@ -761,7 +761,7 @@ btk_recent_action_set_show_numbers (BtkRecentAction *action,
 
       priv->show_numbers = show_numbers;
 
-      g_object_notify (G_OBJECT (action), "show-numbers");
+      g_object_notify (B_OBJECT (action), "show-numbers");
       g_object_unref (action);
     }
 }

@@ -61,14 +61,14 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-set-font-name" title="btk_font_button_set_font_name ()">btk_font_button_set_font_name</a> <span class="c_punctuation">()</span>
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-font-name" title="btk_font_button_get_font_name ()">btk_font_button_get_font_name</a> <span class="c_punctuation">()</span>
@@ -84,7 +84,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-show-style" title="btk_font_button_get_show_style ()">btk_font_button_get_show_style</a> <span class="c_punctuation">()</span>
@@ -100,7 +100,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-show-size" title="btk_font_button_get_show_size ()">btk_font_button_get_show_size</a> <span class="c_punctuation">()</span>
@@ -116,7 +116,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-use-font" title="btk_font_button_get_use_font ()">btk_font_button_get_use_font</a> <span class="c_punctuation">()</span>
@@ -132,7 +132,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-use-size" title="btk_font_button_get_use_size ()">btk_font_button_get_use_size</a> <span class="c_punctuation">()</span>
@@ -147,7 +147,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkFontButton.html#btk-font-button-get-title" title="btk_font_button_get_title ()">btk_font_button_get_title</a> <span class="c_punctuation">()</span>
@@ -172,12 +172,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkFontButton.html#BtkFontButton--show-size" title="The “show-size” property">show-size</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkFontButton.html#BtkFontButton--show-style" title="The “show-style” property">show-style</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -188,12 +188,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkFontButton.html#BtkFontButton--use-font" title="The “use-font” property">use-font</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkFontButton.html#BtkFontButton--use-size" title="The “use-size” property">use-size</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -230,7 +230,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkFontButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -271,7 +271,7 @@ btk_font_button_new (<em class="parameter"><code><span class="type">void</span><
 <div class="refsect2">
 <a name="btk-font-button-new-with-font"></a><h3>btk_font_button_new_with_font ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_font_button_new_with_font (<em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>);</pre>
+btk_font_button_new_with_font (<em class="parameter"><code>const <span class="type">bchar</span> *fontname</code></em>);</pre>
 <p>Creates a new font picker widget.</p>
 <div class="refsect3">
 <a name="btk-font-button-new-with-font.parameters"></a><h4>Parameters</h4>
@@ -297,9 +297,9 @@ btk_font_button_new_with_font (<em class="parameter"><code>const <span class="ty
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-set-font-name"></a><h3>btk_font_button_set_font_name ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_button_set_font_name (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *fontname</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *fontname</code></em>);</pre>
 <p>Sets or updates the currently-displayed font in font picker dialog.</p>
 <div class="refsect3">
 <a name="btk-font-button-set-font-name.parameters"></a><h4>Parameters</h4>
@@ -333,7 +333,7 @@ font selection dialog exists, otherwise <code class="literal">FALSE</code>.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-font-name"></a><h3>btk_font_button_get_font_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_font_button_get_font_name (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Retrieves the name of the currently selected font. This name includes
 style and size information as well. If you want to render something
@@ -367,7 +367,7 @@ style, size, weight) just query these properties from the
 <a name="btk-font-button-set-show-style"></a><h3>btk_font_button_set_show_style ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_button_set_show_style (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> show_style</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> show_style</code></em>);</pre>
 <p>If <em class="parameter"><code>show_style</code></em>
  is <code class="literal">TRUE</code>, the font style will be displayed along with name of the selected font.</p>
 <div class="refsect3">
@@ -397,7 +397,7 @@ btk_font_button_set_show_style (<em class="parameter"><code><a class="link" href
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-show-style"></a><h3>btk_font_button_get_show_style ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_button_get_show_style (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Returns whether the name of the font style will be shown in the label.</p>
 <div class="refsect3">
@@ -426,7 +426,7 @@ btk_font_button_get_show_style (<em class="parameter"><code><a class="link" href
 <a name="btk-font-button-set-show-size"></a><h3>btk_font_button_set_show_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_button_set_show_size (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                               <em class="parameter"><code><span class="type">gboolean</span> show_size</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bboolean</span> show_size</code></em>);</pre>
 <p>If <em class="parameter"><code>show_size</code></em>
  is <code class="literal">TRUE</code>, the font size will be displayed along with the name of the selected font.</p>
 <div class="refsect3">
@@ -456,7 +456,7 @@ btk_font_button_set_show_size (<em class="parameter"><code><a class="link" href=
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-show-size"></a><h3>btk_font_button_get_show_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_button_get_show_size (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Returns whether the font size will be shown in the label.</p>
 <div class="refsect3">
@@ -485,7 +485,7 @@ btk_font_button_get_show_size (<em class="parameter"><code><a class="link" href=
 <a name="btk-font-button-set-use-font"></a><h3>btk_font_button_set_use_font ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_button_set_use_font (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> use_font</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> use_font</code></em>);</pre>
 <p>If <em class="parameter"><code>use_font</code></em>
  is <code class="literal">TRUE</code>, the font name will be written using the selected font.</p>
 <div class="refsect3">
@@ -515,7 +515,7 @@ btk_font_button_set_use_font (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-use-font"></a><h3>btk_font_button_get_use_font ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_button_get_use_font (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Returns whether the selected font is used in the label.</p>
 <div class="refsect3">
@@ -544,7 +544,7 @@ btk_font_button_get_use_font (<em class="parameter"><code><a class="link" href="
 <a name="btk-font-button-set-use-size"></a><h3>btk_font_button_set_use_size ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_button_set_use_size (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> use_size</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> use_size</code></em>);</pre>
 <p>If <em class="parameter"><code>use_size</code></em>
  is <code class="literal">TRUE</code>, the font name will be written using the selected size.</p>
 <div class="refsect3">
@@ -574,7 +574,7 @@ btk_font_button_set_use_size (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-use-size"></a><h3>btk_font_button_get_use_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_font_button_get_use_size (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Returns whether the selected size is used in the label.</p>
 <div class="refsect3">
@@ -603,7 +603,7 @@ btk_font_button_get_use_size (<em class="parameter"><code><a class="link" href="
 <a name="btk-font-button-set-title"></a><h3>btk_font_button_set_title ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_font_button_set_title (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>);</pre>
 <p>Sets the title for the font selection dialog.</p>
 <div class="refsect3">
 <a name="btk-font-button-set-title.parameters"></a><h4>Parameters</h4>
@@ -632,7 +632,7 @@ btk_font_button_set_title (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-font-button-get-title"></a><h3>btk_font_button_get_title ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_font_button_get_title (<em class="parameter"><code><a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *font_button</code></em>);</pre>
 <p>Retrieves the title of the font selection dialog.</p>
 <div class="refsect3">
@@ -678,7 +678,7 @@ btk_font_button_get_title (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="BtkFontButton--show-size"></a><h3>The <code class="literal">“show-size”</code> property</h3>
-<pre class="programlisting">  “show-size”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-size”                <span class="type">bboolean</span></pre>
 <p>If this property is set to <code class="literal">TRUE</code>, the selected font size will be shown
 
 in the label. For a more WYSIWYG way to show the selected size, see the
@@ -692,7 +692,7 @@ in the label. For a more WYSIWYG way to show the selected size, see the
 <hr>
 <div class="refsect2">
 <a name="BtkFontButton--show-style"></a><h3>The <code class="literal">“show-style”</code> property</h3>
-<pre class="programlisting">  “show-style”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “show-style”               <span class="type">bboolean</span></pre>
 <p>If this property is set to <code class="literal">TRUE</code>, the name of the selected font style
 
 will be shown in the label. For a more WYSIWYG way to show the selected
@@ -716,7 +716,7 @@ style, see the ::use-font property.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkFontButton--use-font"></a><h3>The <code class="literal">“use-font”</code> property</h3>
-<pre class="programlisting">  “use-font”                 <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-font”                 <span class="type">bboolean</span></pre>
 <p>If this property is set to <code class="literal">TRUE</code>, the label will be drawn
 
 in the selected font.</p>
@@ -728,7 +728,7 @@ in the selected font.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkFontButton--use-size"></a><h3>The <code class="literal">“use-size”</code> property</h3>
-<pre class="programlisting">  “use-size”                 <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-size”                 <span class="type">bboolean</span></pre>
 <p>If this property is set to <code class="literal">TRUE</code>, the label will be drawn
 
 with the selected font size.</p>
@@ -744,7 +744,7 @@ with the selected font size.</p>
 <a name="BtkFontButton-font-set"></a><h3>The <code class="literal">“font-set”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkFontButton.html" title="BtkFontButton"><span class="type">BtkFontButton</span></a> *widget,
-               <span class="type">gpointer</span>       user_data)</pre>
+               <span class="type">bpointer</span>       user_data)</pre>
 <p>The ::font-set signal is emitted when the user selects a font.
 
 When handling this signal, use <a class="link" href="BtkFontButton.html#btk-font-button-get-font-name" title="btk_font_button_get_font_name ()"><code class="function">btk_font_button_get_font_name()</code></a>

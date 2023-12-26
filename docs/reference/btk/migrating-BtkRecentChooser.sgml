@@ -186,7 +186,7 @@
       #BtkRecentManager objects by default:
       <informalexample><programlisting>
         BtkWidget *chooser;
-	gint response;
+	bint response;
 
 	/* create a new dialog with the recently used documents list shown
 	 * using a BtkTreeView widget
@@ -250,9 +250,9 @@
 	static void
 	sort_by_usage_count (BtkRecentInfo *a,
                              BtkRecentInfo *b,
-                             gpointer       data)
+                             bpointer       data)
         {
-	  gint count_a, count_b;
+	  bint count_a, count_b;
 
 	  count_a = count_b = 0;
 

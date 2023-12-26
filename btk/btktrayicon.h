@@ -22,14 +22,14 @@
 
 #include "btkplug.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TRAY_ICON		(btk_tray_icon_get_type ())
-#define BTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
-#define BTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
-#define BTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TRAY_ICON))
-#define BTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TRAY_ICON))
-#define BTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
+#define BTK_TRAY_ICON(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
+#define BTK_TRAY_ICON_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
+#define BTK_IS_TRAY_ICON(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TRAY_ICON))
+#define BTK_IS_TRAY_ICON_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TRAY_ICON))
+#define BTK_TRAY_ICON_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
 	
 typedef struct _BtkTrayIcon	   BtkTrayIcon;
 typedef struct _BtkTrayIconPrivate BtkTrayIconPrivate;
@@ -54,22 +54,22 @@ struct _BtkTrayIconClass
   void (*__btk_reserved6);
 };
 
-GType          btk_tray_icon_get_type         (void) G_GNUC_CONST;
+GType          btk_tray_icon_get_type         (void) B_GNUC_CONST;
 
 BtkTrayIcon   *_btk_tray_icon_new_for_screen  (BdkScreen   *screen,
-					       const gchar *name);
+					       const bchar *name);
 
-BtkTrayIcon   *_btk_tray_icon_new             (const gchar *name);
+BtkTrayIcon   *_btk_tray_icon_new             (const bchar *name);
 
-guint          _btk_tray_icon_send_message    (BtkTrayIcon *icon,
-					       gint         timeout,
-					       const gchar *message,
-					       gint         len);
+buint          _btk_tray_icon_send_message    (BtkTrayIcon *icon,
+					       bint         timeout,
+					       const bchar *message,
+					       bint         len);
 void           _btk_tray_icon_cancel_message  (BtkTrayIcon *icon,
-					       guint        id);
+					       buint        id);
 
 BtkOrientation _btk_tray_icon_get_orientation (BtkTrayIcon *icon);
 					    
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TRAY_ICON_H__ */

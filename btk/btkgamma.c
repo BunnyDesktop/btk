@@ -54,10 +54,10 @@
 /* forward declarations: */
 static void btk_gamma_curve_destroy (BtkObject *object);
 
-static void curve_type_changed_callback (BtkWidget *w, gpointer data);
+static void curve_type_changed_callback (BtkWidget *w, bpointer data);
 static void button_realize_callback     (BtkWidget *w);
-static void button_toggled_callback     (BtkWidget *w, gpointer data);
-static void button_clicked_callback     (BtkWidget *w, gpointer data);
+static void button_toggled_callback     (BtkWidget *w, bpointer data);
+static void button_clicked_callback     (BtkWidget *w, bpointer data);
 
 enum
   {
@@ -75,9 +75,9 @@ enum
 #pragma align 4 (spline_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 spline_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 spline_pixdata[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 spline_pixdata[] = 
+static const buint8 spline_pixdata[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -108,9 +108,9 @@ static const guint8 spline_pixdata[] =
 #pragma align 4 (linear_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 linear_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 linear_pixdata[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 linear_pixdata[] = 
+static const buint8 linear_pixdata[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -147,9 +147,9 @@ static const guint8 linear_pixdata[] =
 #pragma align 4 (free_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 free_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 free_pixdata[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 free_pixdata[] = 
+static const buint8 free_pixdata[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -181,9 +181,9 @@ static const guint8 free_pixdata[] =
 #pragma align 4 (gamma_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 gamma_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 gamma_pixdata[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 gamma_pixdata[] = 
+static const buint8 gamma_pixdata[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -215,9 +215,9 @@ static const guint8 gamma_pixdata[] =
 #pragma align 4 (reset_pixdata)
 #endif
 #ifdef __GNUC__
-static const guint8 reset_pixdata[] __attribute__ ((__aligned__ (4))) = 
+static const buint8 reset_pixdata[] __attribute__ ((__aligned__ (4))) = 
 #else
-static const guint8 reset_pixdata[] = 
+static const buint8 reset_pixdata[] = 
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
@@ -276,8 +276,8 @@ btk_gamma_curve_init (BtkGammaCurve *curve)
   for (i = 0; i < 3; ++i)
     {
       curve->button[i] = btk_toggle_button_new ();
-      g_object_set_data (G_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
-			 GINT_TO_POINTER (i));
+      g_object_set_data (B_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
+			 BINT_TO_POINTER (i));
       btk_container_add (BTK_CONTAINER (vbox), curve->button[i]);
       g_signal_connect (curve->button[i], "realize",
 			G_CALLBACK (button_realize_callback), NULL);
@@ -290,8 +290,8 @@ btk_gamma_curve_init (BtkGammaCurve *curve)
   for (i = 3; i < 5; ++i)
     {
       curve->button[i] = btk_button_new ();
-      g_object_set_data (G_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
-			 GINT_TO_POINTER (i));
+      g_object_set_data (B_OBJECT (curve->button[i]), I_("_BtkGammaCurveIndex"),
+			 BINT_TO_POINTER (i));
       btk_container_add (BTK_CONTAINER (vbox), curve->button[i]);
       g_signal_connect (curve->button[i], "realize",
 			G_CALLBACK (button_realize_callback), NULL);
@@ -310,8 +310,8 @@ button_realize_callback (BtkWidget *w)
 {
   BtkWidget *image;
   struct {
-    const guint8 *stream;
-    gint length;
+    const buint8 *stream;
+    bint length;
   } streams[5] = {
     { linear_pixdata, sizeof (linear_pixdata) },
     { spline_pixdata, sizeof (spline_pixdata) },
@@ -323,7 +323,7 @@ button_realize_callback (BtkWidget *w)
   BdkPixbuf *pixbuf;
   int i;
 
-  i = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  i = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
   bdk_pixdata_deserialize (&pixdata, streams[i].length, streams[i].stream, NULL);
   pixbuf = bdk_pixbuf_from_pixdata (&pixdata, TRUE, NULL);
   image = btk_image_new_from_pixbuf (pixbuf);
@@ -334,7 +334,7 @@ button_realize_callback (BtkWidget *w)
 }
 
 static void
-button_toggled_callback (BtkWidget *w, gpointer data)
+button_toggled_callback (BtkWidget *w, bpointer data)
 {
   BtkGammaCurve *c = data;
   BtkCurveType type;
@@ -343,7 +343,7 @@ button_toggled_callback (BtkWidget *w, gpointer data)
   if (!BTK_TOGGLE_BUTTON (w)->active)
     return;
 
-  active = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  active = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
 
   for (i = 0; i < 3; ++i)
     if ((i != active) && BTK_TOGGLE_BUTTON (c->button[i])->active)
@@ -362,7 +362,7 @@ button_toggled_callback (BtkWidget *w, gpointer data)
 }
 
 static void
-gamma_cancel_callback (BtkWidget *w, gpointer data)
+gamma_cancel_callback (BtkWidget *w, bpointer data)
 {
   BtkGammaCurve *c = data;
 
@@ -370,12 +370,12 @@ gamma_cancel_callback (BtkWidget *w, gpointer data)
 }
 
 static void
-gamma_ok_callback (BtkWidget *w, gpointer data)
+gamma_ok_callback (BtkWidget *w, bpointer data)
 {
   BtkGammaCurve *c = data;
-  const gchar *start;
-  gchar *end;
-  gfloat v;
+  const bchar *start;
+  bchar *end;
+  bfloat v;
 
   start = btk_entry_get_text (BTK_ENTRY (c->gamma_text));
   if (start)
@@ -389,12 +389,12 @@ gamma_ok_callback (BtkWidget *w, gpointer data)
 }
 
 static void
-button_clicked_callback (BtkWidget *w, gpointer data)
+button_clicked_callback (BtkWidget *w, bpointer data)
 {
   BtkGammaCurve *c = data;
   int active;
 
-  active = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (w), "_BtkGammaCurveIndex"));
+  active = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (w), "_BtkGammaCurveIndex"));
   if (active == 3)
     {
       /* set gamma */
@@ -403,14 +403,14 @@ button_clicked_callback (BtkWidget *w, gpointer data)
       else
 	{
 	  BtkWidget *vbox, *hbox, *label, *button;
-	  gchar buf[64];
+	  bchar buf[64];
 	  
 	  c->gamma_dialog = btk_dialog_new ();
 	  btk_window_set_screen (BTK_WINDOW (c->gamma_dialog),
 				 btk_widget_get_screen (w));
 	  btk_window_set_title (BTK_WINDOW (c->gamma_dialog), _("Gamma"));
-	  g_object_add_weak_pointer (G_OBJECT (c->gamma_dialog),
-				     (gpointer *)&c->gamma_dialog);
+	  g_object_add_weak_pointer (B_OBJECT (c->gamma_dialog),
+				     (bpointer *)&c->gamma_dialog);
 	  
 	  vbox = BTK_DIALOG (c->gamma_dialog)->vbox;
 	  
@@ -457,7 +457,7 @@ button_clicked_callback (BtkWidget *w, gpointer data)
 }
 
 static void
-curve_type_changed_callback (BtkWidget *w, gpointer data)
+curve_type_changed_callback (BtkWidget *w, bpointer data)
 {
   BtkGammaCurve *c = data;
   BtkCurveType new_type;

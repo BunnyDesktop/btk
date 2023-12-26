@@ -67,18 +67,18 @@
 
 
 #define BTK_PRINT_UNIX_DIALOG_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogPrivate))
 
 static void     btk_print_unix_dialog_destroy      (BtkPrintUnixDialog *dialog);
-static void     btk_print_unix_dialog_finalize     (GObject            *object);
-static void     btk_print_unix_dialog_set_property (GObject            *object,
-                                                    guint               prop_id,
-                                                    const GValue       *value,
-                                                    GParamSpec         *pspec);
-static void     btk_print_unix_dialog_get_property (GObject            *object,
-                                                    guint               prop_id,
-                                                    GValue             *value,
-                                                    GParamSpec         *pspec);
+static void     btk_print_unix_dialog_finalize     (BObject            *object);
+static void     btk_print_unix_dialog_set_property (BObject            *object,
+                                                    buint               prop_id,
+                                                    const BValue       *value,
+                                                    BParamSpec         *pspec);
+static void     btk_print_unix_dialog_get_property (BObject            *object,
+                                                    buint               prop_id,
+                                                    BValue             *value,
+                                                    BParamSpec         *pspec);
 static void     btk_print_unix_dialog_style_set    (BtkWidget          *widget,
                                                     BtkStyle           *previous_style);
 static void     populate_dialog                    (BtkPrintUnixDialog *dialog);
@@ -97,26 +97,26 @@ static void     printer_status_cb                  (BtkPrintBackend    *backend,
                                                     BtkPrintUnixDialog *dialog);
 static void     update_collate_icon                (BtkToggleButton    *toggle_button,
                                                     BtkPrintUnixDialog *dialog);
-static gboolean dialog_get_collate                 (BtkPrintUnixDialog *dialog);
-static gboolean dialog_get_reverse                 (BtkPrintUnixDialog *dialog);
-static gint     dialog_get_n_copies                (BtkPrintUnixDialog *dialog);
+static bboolean dialog_get_collate                 (BtkPrintUnixDialog *dialog);
+static bboolean dialog_get_reverse                 (BtkPrintUnixDialog *dialog);
+static bint     dialog_get_n_copies                (BtkPrintUnixDialog *dialog);
 
 static void     set_cell_sensitivity_func          (BtkTreeViewColumn *tree_column,
                                                     BtkCellRenderer   *cell,
                                                     BtkTreeModel      *model,
                                                     BtkTreeIter       *iter,
-                                                    gpointer           data);
-static gboolean set_active_printer                 (BtkPrintUnixDialog *dialog,
-                                                    const gchar        *printer_name);
+                                                    bpointer           data);
+static bboolean set_active_printer                 (BtkPrintUnixDialog *dialog,
+                                                    const bchar        *printer_name);
 static void redraw_page_layout_preview             (BtkPrintUnixDialog *dialog);
 
 /* BtkBuildable */
 static void btk_print_unix_dialog_buildable_init                    (BtkBuildableIface *iface);
-static GObject *btk_print_unix_dialog_buildable_get_internal_child  (BtkBuildable *buildable,
+static BObject *btk_print_unix_dialog_buildable_get_internal_child  (BtkBuildable *buildable,
                                                                      BtkBuilder   *builder,
-                                                                     const gchar  *childname);
+                                                                     const bchar  *childname);
 
-static const gchar const common_paper_sizes[][16] = {
+static const bchar const common_paper_sizes[][16] = {
   "na_letter",
   "na_legal",
   "iso_a4",
@@ -172,13 +172,13 @@ struct BtkPrintUnixDialogPrivate
   BtkTreeModelFilter *printer_list_filter;
 
   BtkPageSetup *page_setup;
-  gboolean page_setup_set;
-  gboolean embed_page_setup;
+  bboolean page_setup_set;
+  bboolean embed_page_setup;
   BtkListStore *page_setup_list;
   BtkListStore *custom_paper_list;
 
-  gboolean support_selection;
-  gboolean has_selection;
+  bboolean support_selection;
+  bboolean has_selection;
 
   BtkWidget *all_pages_radio;
   BtkWidget *current_page_radio;
@@ -203,8 +203,8 @@ struct BtkPrintUnixDialogPrivate
   BtkWidget *paper_size_combo_label;
   BtkWidget *orientation_combo;
   BtkWidget *orientation_combo_label;
-  gboolean internal_page_setup_change;
-  gboolean updating_print_at;
+  bboolean internal_page_setup_change;
+  bboolean updating_print_at;
   BtkPrinterOptionWidget *pages_per_sheet;
   BtkPrinterOptionWidget *duplex;
   BtkPrinterOptionWidget *paper_type;
@@ -246,20 +246,20 @@ struct BtkPrintUnixDialogPrivate
    * this printer.
    */
   char *waiting_for_printer;
-  gboolean internal_printer_change;
+  bboolean internal_printer_change;
 
   GList *print_backends;
 
   BtkPrinter *current_printer;
   BtkPrinter *request_details_printer;
-  guint request_details_tag;
+  buint request_details_tag;
   BtkPrinterOptionSet *options;
-  gulong options_changed_handler;
-  gulong mark_conflicts_id;
+  bulong options_changed_handler;
+  bulong mark_conflicts_id;
 
-  gchar *format_for_printer;
+  bchar *format_for_printer;
 
-  gint current_page;
+  bint current_page;
 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkPrintUnixDialog, btk_print_unix_dialog, BTK_TYPE_DIALOG,
@@ -268,7 +268,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkPrintUnixDialog, btk_print_unix_dialog, BTK_TYPE_DIA
 
 static BtkBuildableIface *parent_buildable_iface;
 
-static gboolean
+static bboolean
 is_default_printer (BtkPrintUnixDialog *dialog,
                     BtkPrinter         *printer)
 {
@@ -284,10 +284,10 @@ is_default_printer (BtkPrintUnixDialog *dialog,
 static void
 btk_print_unix_dialog_class_init (BtkPrintUnixDialogClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkWidgetClass *widget_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
   widget_class = (BtkWidgetClass *) class;
 
   object_class->finalize = btk_print_unix_dialog_finalize;
@@ -310,7 +310,7 @@ btk_print_unix_dialog_class_init (BtkPrintUnixDialogClass *class)
                                                      P_("Current Page"),
                                                      P_("The current page in the document"),
                                                      -1,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      -1,
                                                      BTK_PARAM_READWRITE));
 
@@ -381,7 +381,7 @@ get_toplevel (BtkWidget *widget)
 
 static void
 set_busy_cursor (BtkPrintUnixDialog *dialog,
-		 gboolean            busy)
+		 bboolean            busy)
 {
   BtkWindow *toplevel;
   BdkDisplay *display;
@@ -407,9 +407,9 @@ set_busy_cursor (BtkPrintUnixDialog *dialog,
 
 static void
 add_custom_button_to_dialog (BtkDialog   *dialog,
-                             const gchar *mnemonic_label,
-                             const gchar *stock_id,
-                             gint         response_id)
+                             const bchar *mnemonic_label,
+                             const bchar *stock_id,
+                             bint         response_id)
 {
   BtkWidget *button = NULL;
 
@@ -425,10 +425,10 @@ add_custom_button_to_dialog (BtkDialog   *dialog,
 
 /* This function handles error messages before printing.
  */
-static gboolean
+static bboolean
 error_dialogs (BtkPrintUnixDialog *print_dialog,
-               gint                print_dialog_response_id,
-               gpointer            data)
+               bint                print_dialog_response_id,
+               bpointer            data)
 {
   BtkPrintUnixDialogPrivate *priv = print_dialog->priv;
   BtkPrinterOption          *option = NULL;
@@ -436,8 +436,8 @@ error_dialogs (BtkPrintUnixDialog *print_dialog,
   BtkWindow                 *toplevel = NULL;
   BtkWidget                 *dialog = NULL;
   GFile                     *file = NULL;
-  gchar                     *basename = NULL;
-  gchar                     *dirname = NULL;
+  bchar                     *basename = NULL;
+  bchar                     *dirname = NULL;
   int                        response;
 
   if (print_dialog != NULL && print_dialog_response_id == BTK_RESPONSE_OK)
@@ -579,10 +579,10 @@ btk_print_unix_dialog_init (BtkPrintUnixDialog *dialog)
   btk_dialog_set_response_sensitive (BTK_DIALOG (dialog), BTK_RESPONSE_OK, FALSE);
 
   priv->page_setup_list = btk_list_store_new (PAGE_SETUP_LIST_N_COLS,
-                                              G_TYPE_OBJECT,
-                                              G_TYPE_BOOLEAN);
+                                              B_TYPE_OBJECT,
+                                              B_TYPE_BOOLEAN);
 
-  priv->custom_paper_list = btk_list_store_new (1, G_TYPE_OBJECT);
+  priv->custom_paper_list = btk_list_store_new (1, B_TYPE_OBJECT);
   _btk_print_load_custom_papers (priv->custom_paper_list);
 
   populate_dialog (dialog);
@@ -596,7 +596,7 @@ btk_print_unix_dialog_destroy (BtkPrintUnixDialog *dialog)
 }
 
 static void
-disconnect_printer_details_request (BtkPrintUnixDialog *dialog, gboolean details_failed)
+disconnect_printer_details_request (BtkPrintUnixDialog *dialog, bboolean details_failed)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
 
@@ -608,14 +608,14 @@ disconnect_printer_details_request (BtkPrintUnixDialog *dialog, gboolean details
       set_busy_cursor (dialog, FALSE);
       if (details_failed)
         btk_list_store_set (BTK_LIST_STORE (priv->printer_list),
-                            g_object_get_data (G_OBJECT (priv->request_details_printer),
+                            g_object_get_data (B_OBJECT (priv->request_details_printer),
                                                "btk-print-tree-iter"),
                             PRINTER_LIST_COL_STATE,
                              _("Getting printer information failed"),
                             -1);
       else
         btk_list_store_set (BTK_LIST_STORE (priv->printer_list),
-                            g_object_get_data (G_OBJECT (priv->request_details_printer),
+                            g_object_get_data (B_OBJECT (priv->request_details_printer),
                                                "btk-print-tree-iter"),
                             PRINTER_LIST_COL_STATE,
                             btk_printer_get_state_message (priv->request_details_printer),
@@ -626,7 +626,7 @@ disconnect_printer_details_request (BtkPrintUnixDialog *dialog, gboolean details
 }
 
 static void
-btk_print_unix_dialog_finalize (GObject *object)
+btk_print_unix_dialog_finalize (BObject *object)
 {
   BtkPrintUnixDialog *dialog = BTK_PRINT_UNIX_DIALOG (object);
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -723,7 +723,7 @@ btk_print_unix_dialog_finalize (GObject *object)
       priv->page_setup_list = NULL;
     }
 
-  G_OBJECT_CLASS (btk_print_unix_dialog_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_print_unix_dialog_parent_class)->finalize (object);
 }
 
 static void
@@ -734,7 +734,7 @@ printer_removed_cb (BtkPrintBackend    *backend,
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   BtkTreeIter *iter;
 
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
   btk_list_store_remove (BTK_LIST_STORE (priv->printer_list), iter);
 }
 
@@ -746,13 +746,13 @@ btk_print_unix_dialog_buildable_init (BtkBuildableIface *iface)
   iface->get_internal_child = btk_print_unix_dialog_buildable_get_internal_child;
 }
 
-static GObject *
+static BObject *
 btk_print_unix_dialog_buildable_get_internal_child (BtkBuildable *buildable,
                                                     BtkBuilder   *builder,
-                                                    const gchar  *childname)
+                                                    const bchar  *childname)
 {
   if (strcmp (childname, "notebook") == 0)
-    return G_OBJECT (BTK_PRINT_UNIX_DIALOG (buildable)->priv->notebook);
+    return B_OBJECT (BTK_PRINT_UNIX_DIALOG (buildable)->priv->notebook);
 
   return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }
@@ -763,7 +763,7 @@ void set_cell_sensitivity_func (BtkTreeViewColumn *tree_column,
                                 BtkCellRenderer   *cell,
                                 BtkTreeModel      *tree_model,
                                 BtkTreeIter       *iter,
-                                gpointer           data)
+                                bpointer           data)
 {
   BtkPrinter *printer;
 
@@ -788,7 +788,7 @@ printer_status_cb (BtkPrintBackend    *backend,
   BtkTreeIter *iter;
   BtkTreeSelection *selection;
 
-  iter = g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter");
+  iter = g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter");
 
   btk_list_store_set (BTK_LIST_STORE (priv->printer_list), iter,
                       PRINTER_LIST_COL_ICON, btk_printer_get_icon_name (printer),
@@ -820,7 +820,7 @@ printer_added_cb (BtkPrintBackend    *backend,
 
   btk_list_store_append (BTK_LIST_STORE (priv->printer_list), &iter);
 
-  g_object_set_data_full (G_OBJECT (printer),
+  g_object_set_data_full (B_OBJECT (printer),
                          "btk-print-tree-iter",
                           btk_tree_iter_copy (&iter),
                           (GDestroyNotify) btk_tree_iter_free);
@@ -877,17 +877,17 @@ printer_list_initialize (BtkPrintUnixDialog *dialog,
   g_signal_connect_object (print_backend,
                            "printer-added",
                            (GCallback) printer_added_cb,
-                           G_OBJECT (dialog), 0);
+                           B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend,
                            "printer-removed",
                            (GCallback) printer_removed_cb,
-                           G_OBJECT (dialog), 0);
+                           B_OBJECT (dialog), 0);
 
   g_signal_connect_object (print_backend,
                            "printer-status-changed",
                            (GCallback) printer_status_cb,
-                           G_OBJECT (dialog), 0);
+                           B_OBJECT (dialog), 0);
 
   list = btk_print_backend_get_printer_list (print_backend);
 
@@ -918,10 +918,10 @@ load_print_backends (BtkPrintUnixDialog *dialog)
 }
 
 static void
-btk_print_unix_dialog_set_property (GObject      *object,
-                                    guint         prop_id,
-                                    const GValue *value,
-                                    GParamSpec   *pspec)
+btk_print_unix_dialog_set_property (BObject      *object,
+                                    buint         prop_id,
+                                    const BValue *value,
+                                    BParamSpec   *pspec)
 
 {
   BtkPrintUnixDialog *dialog = BTK_PRINT_UNIX_DIALOG (object);
@@ -929,37 +929,37 @@ btk_print_unix_dialog_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_PAGE_SETUP:
-      btk_print_unix_dialog_set_page_setup (dialog, g_value_get_object (value));
+      btk_print_unix_dialog_set_page_setup (dialog, b_value_get_object (value));
       break;
     case PROP_CURRENT_PAGE:
-      btk_print_unix_dialog_set_current_page (dialog, g_value_get_int (value));
+      btk_print_unix_dialog_set_current_page (dialog, b_value_get_int (value));
       break;
     case PROP_PRINT_SETTINGS:
-      btk_print_unix_dialog_set_settings (dialog, g_value_get_object (value));
+      btk_print_unix_dialog_set_settings (dialog, b_value_get_object (value));
       break;
     case PROP_MANUAL_CAPABILITIES:
-      btk_print_unix_dialog_set_manual_capabilities (dialog, g_value_get_flags (value));
+      btk_print_unix_dialog_set_manual_capabilities (dialog, b_value_get_flags (value));
       break;
     case PROP_SUPPORT_SELECTION:
-      btk_print_unix_dialog_set_support_selection (dialog, g_value_get_boolean (value));
+      btk_print_unix_dialog_set_support_selection (dialog, b_value_get_boolean (value));
       break;
     case PROP_HAS_SELECTION:
-      btk_print_unix_dialog_set_has_selection (dialog, g_value_get_boolean (value));
+      btk_print_unix_dialog_set_has_selection (dialog, b_value_get_boolean (value));
       break;
     case PROP_EMBED_PAGE_SETUP:
-      btk_print_unix_dialog_set_embed_page_setup (dialog, g_value_get_boolean (value));
+      btk_print_unix_dialog_set_embed_page_setup (dialog, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_print_unix_dialog_get_property (GObject    *object,
-                                    guint       prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
+btk_print_unix_dialog_get_property (BObject    *object,
+                                    buint       prop_id,
+                                    BValue     *value,
+                                    BParamSpec *pspec)
 {
   BtkPrintUnixDialog *dialog = BTK_PRINT_UNIX_DIALOG (object);
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -967,41 +967,41 @@ btk_print_unix_dialog_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_PAGE_SETUP:
-      g_value_set_object (value, priv->page_setup);
+      b_value_set_object (value, priv->page_setup);
       break;
     case PROP_CURRENT_PAGE:
-      g_value_set_int (value, priv->current_page);
+      b_value_set_int (value, priv->current_page);
       break;
     case PROP_PRINT_SETTINGS:
-      g_value_take_object (value, btk_print_unix_dialog_get_settings (dialog));
+      b_value_take_object (value, btk_print_unix_dialog_get_settings (dialog));
       break;
     case PROP_SELECTED_PRINTER:
-      g_value_set_object (value, priv->current_printer);
+      b_value_set_object (value, priv->current_printer);
       break;
     case PROP_MANUAL_CAPABILITIES:
-      g_value_set_flags (value, priv->manual_capabilities);
+      b_value_set_flags (value, priv->manual_capabilities);
       break;
     case PROP_SUPPORT_SELECTION:
-      g_value_set_boolean (value, priv->support_selection);
+      b_value_set_boolean (value, priv->support_selection);
       break;
     case PROP_HAS_SELECTION:
-      g_value_set_boolean (value, priv->has_selection);
+      b_value_set_boolean (value, priv->has_selection);
       break;
     case PROP_EMBED_PAGE_SETUP:
-      g_value_set_boolean (value, priv->embed_page_setup);
+      b_value_set_boolean (value, priv->embed_page_setup);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static gboolean
+static bboolean
 is_printer_active (BtkTreeModel       *model,
                    BtkTreeIter        *iter,
                    BtkPrintUnixDialog *dialog)
 {
-  gboolean result;
+  bboolean result;
   BtkPrinter *printer;
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
 
@@ -1034,17 +1034,17 @@ is_printer_active (BtkTreeModel       *model,
   return result;
 }
 
-static gint
+static bint
 default_printer_list_sort_func (BtkTreeModel *model,
                                 BtkTreeIter  *a,
                                 BtkTreeIter  *b,
-                                gpointer      user_data)
+                                bpointer      user_data)
 {
-  gchar *a_name;
-  gchar *b_name;
+  bchar *a_name;
+  bchar *b_name;
   BtkPrinter *a_printer;
   BtkPrinter *b_printer;
-  gint result;
+  bint result;
 
   btk_tree_model_get (model, a,
                       PRINTER_LIST_COL_NAME, &a_name,
@@ -1058,15 +1058,15 @@ default_printer_list_sort_func (BtkTreeModel *model,
   if (a_printer == NULL && b_printer == NULL)
     result = 0;
   else if (a_printer == NULL)
-   result = G_MAXINT;
+   result = B_MAXINT;
   else if (b_printer == NULL)
-   result = G_MININT;
+   result = B_MININT;
   else if (btk_printer_is_virtual (a_printer) && btk_printer_is_virtual (b_printer))
     result = 0;
   else if (btk_printer_is_virtual (a_printer) && !btk_printer_is_virtual (b_printer))
-    result = G_MININT;
+    result = B_MININT;
   else if (!btk_printer_is_virtual (a_printer) && btk_printer_is_virtual (b_printer))
-    result = G_MAXINT;
+    result = B_MAXINT;
   else if (a_name == NULL && b_name == NULL)
     result = 0;
   else if (a_name == NULL && b_name != NULL)
@@ -1092,12 +1092,12 @@ create_printer_list_model (BtkPrintUnixDialog *dialog)
   BtkTreeSortable *sort;
 
   model = btk_list_store_new (PRINTER_LIST_N_COLS,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_INT,
-                              G_TYPE_STRING,
-                              G_TYPE_OBJECT);
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_INT,
+                              B_TYPE_STRING,
+                              B_TYPE_OBJECT);
 
   priv->printer_list = (BtkTreeModel *)model;
   priv->printer_list_filter = (BtkTreeModelFilter *) btk_tree_model_filter_new ((BtkTreeModel *)model,
@@ -1122,11 +1122,11 @@ create_printer_list_model (BtkPrintUnixDialog *dialog)
 
 
 static BtkWidget *
-wrap_in_frame (const gchar *label,
+wrap_in_frame (const bchar *label,
                BtkWidget   *child)
 {
   BtkWidget *frame, *alignment, *label_widget;
-  gchar *bold_text;
+  bchar *bold_text;
 
   label_widget = btk_label_new (NULL);
   btk_misc_set_alignment (BTK_MISC (label_widget), 0.0, 0.5);
@@ -1152,9 +1152,9 @@ wrap_in_frame (const gchar *label,
   return frame;
 }
 
-static gboolean
+static bboolean
 setup_option (BtkPrintUnixDialog     *dialog,
-              const gchar            *option_name,
+              const bchar            *option_name,
               BtkPrinterOptionWidget *widget)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -1168,7 +1168,7 @@ setup_option (BtkPrintUnixDialog     *dialog,
 
 static void
 add_option_to_extension_point (BtkPrinterOption *option,
-                               gpointer          data)
+                               bpointer          data)
 {
   BtkWidget *extension_point = data;
   BtkWidget *widget;
@@ -1198,11 +1198,11 @@ add_option_to_extension_point (BtkPrinterOption *option,
 
 static void
 add_option_to_table (BtkPrinterOption *option,
-                     gpointer          user_data)
+                     bpointer          user_data)
 {
   BtkTable *table;
   BtkWidget *label, *widget;
-  gint row;
+  bint row;
 
   table = BTK_TABLE (user_data);
 
@@ -1236,7 +1236,7 @@ add_option_to_table (BtkPrinterOption *option,
 
 static void
 setup_page_table (BtkPrinterOptionSet *options,
-                  const gchar         *group,
+                  const bchar         *group,
                   BtkWidget           *table,
                   BtkWidget           *page)
 {
@@ -1279,7 +1279,7 @@ update_print_at_option (BtkPrintUnixDialog *dialog)
 }
 
 
-static gboolean
+static bboolean
 setup_print_at (BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -1333,9 +1333,9 @@ update_dialog_from_settings (BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   GList *groups, *l;
-  gchar *group;
+  bchar *group;
   BtkWidget *table, *frame;
-  gboolean has_advanced, has_job;
+  bboolean has_advanced, has_job;
 
   if (priv->current_printer == NULL)
     {
@@ -1442,8 +1442,8 @@ update_dialog_from_capabilities (BtkPrintUnixDialog *dialog)
 {
   BtkPrintCapabilities caps;
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
-  gboolean can_collate;
-  const gchar *copies;
+  bboolean can_collate;
+  const bchar *copies;
 
   copies = btk_entry_get_text (BTK_ENTRY (priv->copies_spin));
   can_collate = (*copies != '\0' && atoi (copies) > 1);
@@ -1474,7 +1474,7 @@ update_dialog_from_capabilities (BtkPrintUnixDialog *dialog)
   btk_tree_model_filter_refilter (priv->printer_list_filter);
 }
 
-static gboolean
+static bboolean
 page_setup_is_equal (BtkPageSetup *a, 
 		     BtkPageSetup *b)
 {
@@ -1487,7 +1487,7 @@ page_setup_is_equal (BtkPageSetup *a,
     btk_page_setup_get_right_margin (a, BTK_UNIT_MM) == btk_page_setup_get_right_margin (b, BTK_UNIT_MM);
 }
 
-static gboolean
+static bboolean
 page_setup_is_same_size (BtkPageSetup *a,
 			 BtkPageSetup *b)
 {
@@ -1495,11 +1495,11 @@ page_setup_is_same_size (BtkPageSetup *a,
 				  btk_page_setup_get_paper_size (b));
 }
 
-static gboolean
+static bboolean
 set_paper_size (BtkPrintUnixDialog *dialog,
 		BtkPageSetup       *page_setup,
-		gboolean            size_only,
-		gboolean            add_item)
+		bboolean            size_only,
+		bboolean            add_item)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   BtkTreeModel *model;
@@ -1606,7 +1606,7 @@ fill_paper_sizes (BtkPrintUnixDialog *dialog,
   BtkPageSetup *page_setup;
   BtkPaperSize *paper_size;
   BtkTreeIter iter;
-  gint i;
+  bint i;
 
   btk_list_store_clear (priv->page_setup_list);
 
@@ -1669,7 +1669,7 @@ mark_conflicts (BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   BtkPrinter *printer;
-  gboolean have_conflict;
+  bboolean have_conflict;
 
   have_conflict = FALSE;
 
@@ -1696,8 +1696,8 @@ mark_conflicts (BtkPrintUnixDialog *dialog)
     btk_widget_hide (priv->conflicts_widget);
 }
 
-static gboolean
-mark_conflicts_callback (gpointer data)
+static bboolean
+mark_conflicts_callback (bpointer data)
 {
   BtkPrintUnixDialog *dialog = data;
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -1784,7 +1784,7 @@ clear_per_printer_ui (BtkPrintUnixDialog *dialog)
 
 static void
 printer_details_acquired (BtkPrinter         *printer,
-                          gboolean            success,
+                          bboolean            success,
                           BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
@@ -1857,7 +1857,7 @@ selected_printer_changed (BtkTreeSelection   *selection,
       priv->request_details_printer = printer;
       set_busy_cursor (dialog, TRUE);
       btk_list_store_set (BTK_LIST_STORE (priv->printer_list),
-                          g_object_get_data (G_OBJECT (printer), "btk-print-tree-iter"),
+                          g_object_get_data (B_OBJECT (printer), "btk-print-tree-iter"),
                           PRINTER_LIST_COL_STATE, _("Getting printer information..."),
                           -1);
       btk_printer_request_details (printer);
@@ -1926,7 +1926,7 @@ selected_printer_changed (BtkTreeSelection   *selection,
   update_paper_sizes (dialog);
   priv->internal_page_setup_change = FALSE;
 
-  g_object_notify ( G_OBJECT(dialog), "selected-printer");
+  g_object_notify ( B_OBJECT(dialog), "selected-printer");
 }
 
 static void
@@ -1941,14 +1941,14 @@ update_collate_icon (BtkToggleButton    *toggle_button,
 static void
 paint_page (BtkWidget *widget,
             bairo_t   *cr,
-            gfloat     scale,
-            gint       x_offset,
-            gint       y_offset,
-            gchar     *text,
-            gint       text_x)
+            bfloat     scale,
+            bint       x_offset,
+            bint       y_offset,
+            bchar     *text,
+            bint       text_x)
 {
-  gint x, y, width, height;
-  gint text_y, linewidth;
+  bint x, y, width, height;
+  bint text_y, linewidth;
 
   x = x_offset * scale;
   y = y_offset * scale;
@@ -1970,23 +1970,23 @@ paint_page (BtkWidget *widget,
   bairo_select_font_face (cr, "Sans",
                           BAIRO_FONT_SLANT_NORMAL,
                           BAIRO_FONT_WEIGHT_NORMAL);
-  bairo_set_font_size (cr, (gint)(9 * scale));
-  bairo_move_to (cr, x + (gint)(text_x * scale), y + (gint)(text_y * scale));
+  bairo_set_font_size (cr, (bint)(9 * scale));
+  bairo_move_to (cr, x + (bint)(text_x * scale), y + (bint)(text_y * scale));
   bairo_show_text (cr, text);
 }
 
-static gboolean
+static bboolean
 draw_collate_cb (BtkWidget          *widget,
                  BdkEventExpose     *event,
                  BtkPrintUnixDialog *dialog)
 {
   BtkSettings *settings;
   bairo_t *cr;
-  gint size;
-  gfloat scale;
-  gboolean collate, reverse, rtl;
-  gint copies;
-  gint text_x;
+  bint size;
+  bfloat scale;
+  bboolean collate, reverse, rtl;
+  bint copies;
+  bint text_x;
 
   collate = dialog_get_collate (dialog);
   reverse = dialog_get_reverse (dialog);
@@ -2036,8 +2036,8 @@ btk_print_unix_dialog_style_set (BtkWidget *widget,
       BtkPrintUnixDialog *dialog = (BtkPrintUnixDialog *)widget;
       BtkPrintUnixDialogPrivate *priv = dialog->priv;
       BtkSettings *settings;
-      gint size;
-      gfloat scale;
+      bint size;
+      bfloat scale;
 
       settings = btk_widget_get_settings (widget);
       btk_icon_size_lookup_for_settings (settings,
@@ -2056,7 +2056,7 @@ static void
 update_entry_sensitivity (BtkWidget *button,
                           BtkWidget *range)
 {
-  gboolean active;
+  bboolean active;
 
   active = btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button));
 
@@ -2070,7 +2070,7 @@ static void
 emit_ok_response (BtkTreeView       *tree_view,
                   BtkTreePath       *path,
                   BtkTreeViewColumn *column,
-                  gpointer          *user_data)
+                  bpointer          *user_data)
 {
   BtkPrintUnixDialog *print_dialog;
 
@@ -2091,7 +2091,7 @@ create_main_page (BtkPrintUnixDialog *dialog)
   BtkTreeViewColumn *column;
   BtkTreeSelection *selection;
   BtkWidget *custom_input;
-  const gchar *range_tooltip;
+  const bchar *range_tooltip;
 
   main_vbox = btk_vbox_new (FALSE, 18);
   btk_container_set_border_width (BTK_CONTAINER (main_vbox), 12);
@@ -2289,22 +2289,22 @@ create_main_page (BtkPrintUnixDialog *dialog)
   btk_notebook_append_page (BTK_NOTEBOOK (priv->notebook), main_vbox, label);
 }
 
-static gboolean
-is_range_separator (gchar c)
+static bboolean
+is_range_separator (bchar c)
 {
   return (c == ',' || c == ';' || c == ':');
 }
 
 static BtkPageRange *
 dialog_get_page_ranges (BtkPrintUnixDialog *dialog,
-                        gint               *n_ranges_out)
+                        bint               *n_ranges_out)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
-  gint i, n_ranges;
-  const gchar *text, *p;
-  gchar *next;
+  bint i, n_ranges;
+  const bchar *text, *p;
+  bchar *next;
   BtkPageRange *ranges;
-  gint start, end;
+  bint start, end;
 
   text = btk_entry_get_text (BTK_ENTRY (priv->page_range_entry));
 
@@ -2379,10 +2379,10 @@ dialog_get_page_ranges (BtkPrintUnixDialog *dialog,
 static void
 dialog_set_page_ranges (BtkPrintUnixDialog *dialog,
                         BtkPageRange       *ranges,
-                        gint                n_ranges)
+                        bint                n_ranges)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
-  gint i;
+  bint i;
   GString *s = g_string_new (NULL);
 
   for (i = 0; i < n_ranges; i++)
@@ -2433,7 +2433,7 @@ dialog_set_print_pages (BtkPrintUnixDialog *dialog,
     btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (priv->all_pages_radio), TRUE);
 }
 
-static gdouble
+static bdouble
 dialog_get_scale (BtkPrintUnixDialog *dialog)
 {
   if (btk_widget_is_sensitive (dialog->priv->scale_spin))
@@ -2444,7 +2444,7 @@ dialog_get_scale (BtkPrintUnixDialog *dialog)
 
 static void
 dialog_set_scale (BtkPrintUnixDialog *dialog,
-                  gdouble             val)
+                  bdouble             val)
 {
   btk_spin_button_set_value (BTK_SPIN_BUTTON (dialog->priv->scale_spin), val);
 }
@@ -2466,7 +2466,7 @@ dialog_set_page_set (BtkPrintUnixDialog *dialog,
                             (int)val);
 }
 
-static gint
+static bint
 dialog_get_n_copies (BtkPrintUnixDialog *dialog)
 {
   if (btk_widget_is_sensitive (dialog->priv->copies_spin))
@@ -2476,13 +2476,13 @@ dialog_get_n_copies (BtkPrintUnixDialog *dialog)
 
 static void
 dialog_set_n_copies (BtkPrintUnixDialog *dialog,
-                     gint                n_copies)
+                     bint                n_copies)
 {
   btk_spin_button_set_value (BTK_SPIN_BUTTON (dialog->priv->copies_spin),
                              n_copies);
 }
 
-static gboolean
+static bboolean
 dialog_get_collate (BtkPrintUnixDialog *dialog)
 {
   if (btk_widget_is_sensitive (dialog->priv->collate_check))
@@ -2492,13 +2492,13 @@ dialog_get_collate (BtkPrintUnixDialog *dialog)
 
 static void
 dialog_set_collate (BtkPrintUnixDialog *dialog,
-                    gboolean            collate)
+                    bboolean            collate)
 {
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (dialog->priv->collate_check),
                                 collate);
 }
 
-static gboolean
+static bboolean
 dialog_get_reverse (BtkPrintUnixDialog *dialog)
 {
   if (btk_widget_is_sensitive (dialog->priv->reverse_check))
@@ -2508,18 +2508,18 @@ dialog_get_reverse (BtkPrintUnixDialog *dialog)
 
 static void
 dialog_set_reverse (BtkPrintUnixDialog *dialog,
-                    gboolean            reverse)
+                    bboolean            reverse)
 {
   btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (dialog->priv->reverse_check),
                                 reverse);
 }
 
-static gint
+static bint
 dialog_get_pages_per_sheet (BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
-  const gchar *val;
-  gint num;
+  const bchar *val;
+  bint num;
 
   val = btk_printer_option_widget_get_value (priv->pages_per_sheet);
 
@@ -2541,7 +2541,7 @@ dialog_get_number_up_layout (BtkPrintUnixDialog *dialog)
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   BtkPrintCapabilities       caps;
   BtkNumberUpLayout          layout;
-  const gchar               *val;
+  const bchar               *val;
   GEnumClass                *enum_class;
   GEnumValue                *enum_value;
 
@@ -2576,32 +2576,32 @@ dialog_get_number_up_layout (BtkPrintUnixDialog *dialog)
   return layout;
 }
 
-static gboolean
+static bboolean
 draw_page_cb (BtkWidget          *widget,
               BdkEventExpose     *event,
               BtkPrintUnixDialog *dialog)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   bairo_t *cr;
-  gdouble ratio;
-  gint w, h, tmp, shadow_offset;
-  gint pages_x, pages_y, i, x, y, layout_w, layout_h;
-  gdouble page_width, page_height;
+  bdouble ratio;
+  bint w, h, tmp, shadow_offset;
+  bint pages_x, pages_y, i, x, y, layout_w, layout_h;
+  bdouble page_width, page_height;
   BtkPageOrientation orientation;
-  gboolean landscape;
+  bboolean landscape;
   BangoLayout *layout;
   BangoFontDescription *font;
-  gchar *text;
+  bchar *text;
   BdkColor *color;
   BtkNumberUpLayout number_up_layout;
-  gint start_x, end_x, start_y, end_y;
-  gint dx, dy;
-  gboolean horizontal;
+  bint start_x, end_x, start_y, end_y;
+  bint dx, dy;
+  bboolean horizontal;
   BtkPageSetup *page_setup;
-  gdouble paper_width, paper_height;
-  gdouble pos_x, pos_y;
-  gint pages_per_sheet;
-  gboolean ltr = TRUE;
+  bdouble paper_width, paper_height;
+  bdouble pos_x, pos_y;
+  bint pages_per_sheet;
+  bboolean ltr = TRUE;
 
   orientation = btk_page_setup_get_orientation (priv->page_setup);
   landscape =
@@ -2874,7 +2874,7 @@ draw_page_cb (BtkWidget          *widget,
 
       BangoContext *bango_c = NULL;
       BangoFontDescription *bango_f = NULL;
-      gint font_size = 12 * BANGO_SCALE;
+      bint font_size = 12 * BANGO_SCALE;
 
       bango_c = btk_widget_get_bango_context (widget);
       if (bango_c != NULL)
@@ -3138,8 +3138,8 @@ update_number_up_layout (BtkPrintUnixDialog *dialog)
 
 static void
 custom_paper_dialog_response_cb (BtkDialog *custom_paper_dialog,
-				 gint       response_id,
-				 gpointer   user_data)
+				 bint       response_id,
+				 bpointer   user_data)
 {
   BtkPrintUnixDialog        *print_dialog = BTK_PRINT_UNIX_DIALOG (user_data);
   BtkPrintUnixDialogPrivate *priv = print_dialog->priv;
@@ -3253,12 +3253,12 @@ paper_size_changed (BtkComboBox        *combo_box,
   redraw_page_layout_preview (dialog);
 }
 
-static gboolean
+static bboolean
 paper_size_row_is_separator (BtkTreeModel *model,
                              BtkTreeIter  *iter,
-                             gpointer      data)
+                             bpointer      data)
 {
-  gboolean separator;
+  bboolean separator;
 
   btk_tree_model_get (model, iter, PAGE_SETUP_LIST_COL_IS_SEPARATOR, &separator, -1);
   return separator;
@@ -3269,7 +3269,7 @@ page_name_func (BtkCellLayout   *cell_layout,
                 BtkCellRenderer *cell,
                 BtkTreeModel    *tree_model,
                 BtkTreeIter     *iter,
-                gpointer         data)
+                bpointer         data)
 {
   BtkPageSetup *page_setup;
   BtkPaperSize *paper_size;
@@ -3531,8 +3531,8 @@ create_job_page (BtkPrintUnixDialog *dialog)
   BtkWidget *main_table, *label;
   BtkWidget *frame, *table, *radio;
   BtkWidget *entry, *widget;
-  const gchar *at_tooltip;
-  const gchar *on_hold_tooltip;
+  const bchar *at_tooltip;
+  const bchar *on_hold_tooltip;
 
   main_table = btk_table_new (2, 2, FALSE);
   btk_container_set_border_width (BTK_CONTAINER (main_table), 12);
@@ -3709,7 +3709,7 @@ create_job_page (BtkPrintUnixDialog *dialog)
 
 static void
 create_optional_page (BtkPrintUnixDialog  *dialog,
-                      const gchar         *text,
+                      const bchar         *text,
                       BtkWidget          **table_out,
                       BtkWidget          **page_out)
 {
@@ -3838,11 +3838,11 @@ populate_dialog (BtkPrintUnixDialog *print_dialog)
  * Since: 2.10
  **/
 BtkWidget *
-btk_print_unix_dialog_new (const gchar *title,
+btk_print_unix_dialog_new (const bchar *title,
                            BtkWindow   *parent)
 {
   BtkWidget *result;
-  const gchar *_title = _("Print");
+  const bchar *_title = _("Print");
 
   if (title)
     _title = title;
@@ -3901,7 +3901,7 @@ btk_print_unix_dialog_set_page_setup (BtkPrintUnixDialog *dialog,
 
       priv->page_setup_set = TRUE;
 
-      g_object_notify (G_OBJECT (dialog), "page-setup");
+      g_object_notify (B_OBJECT (dialog), "page-setup");
     }
 }
 
@@ -3933,7 +3933,7 @@ btk_print_unix_dialog_get_page_setup (BtkPrintUnixDialog *dialog)
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_unix_dialog_get_page_setup_set (BtkPrintUnixDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), FALSE);
@@ -3953,7 +3953,7 @@ btk_print_unix_dialog_get_page_setup_set (BtkPrintUnixDialog *dialog)
  */
 void
 btk_print_unix_dialog_set_current_page (BtkPrintUnixDialog *dialog,
-                                        gint                current_page)
+                                        bint                current_page)
 {
   BtkPrintUnixDialogPrivate *priv;
 
@@ -3968,7 +3968,7 @@ btk_print_unix_dialog_set_current_page (BtkPrintUnixDialog *dialog,
       if (priv->current_page_radio)
         btk_widget_set_sensitive (priv->current_page_radio, current_page != -1);
 
-      g_object_notify (G_OBJECT (dialog), "current-page");
+      g_object_notify (B_OBJECT (dialog), "current-page");
     }
 }
 
@@ -3982,7 +3982,7 @@ btk_print_unix_dialog_set_current_page (BtkPrintUnixDialog *dialog,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_unix_dialog_get_current_page (BtkPrintUnixDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), -1);
@@ -3990,9 +3990,9 @@ btk_print_unix_dialog_get_current_page (BtkPrintUnixDialog *dialog)
   return dialog->priv->current_page;
 }
 
-static gboolean
+static bboolean
 set_active_printer (BtkPrintUnixDialog *dialog,
-                    const gchar        *printer_name)
+                    const bchar        *printer_name)
 {
   BtkPrintUnixDialogPrivate *priv = dialog->priv;
   BtkTreeModel *model;
@@ -4051,9 +4051,9 @@ btk_print_unix_dialog_set_settings (BtkPrintUnixDialog *dialog,
                                     BtkPrintSettings   *settings)
 {
   BtkPrintUnixDialogPrivate *priv;
-  const gchar *printer;
+  const bchar *printer;
   BtkPageRange *ranges;
-  gint num_ranges;
+  bint num_ranges;
 
   g_return_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog));
   g_return_if_fail (settings == NULL || BTK_IS_PRINT_SETTINGS (settings));
@@ -4097,7 +4097,7 @@ btk_print_unix_dialog_set_settings (BtkPrintUnixDialog *dialog,
         priv->waiting_for_printer = g_strdup (printer);
     }
 
-  g_object_notify (G_OBJECT (dialog), "print-settings");
+  g_object_notify (B_OBJECT (dialog), "print-settings");
 }
 
 /**
@@ -4120,7 +4120,7 @@ btk_print_unix_dialog_get_settings (BtkPrintUnixDialog *dialog)
   BtkPrintSettings *settings;
   BtkPrintPages print_pages;
   BtkPageRange *ranges;
-  gint n_ranges;
+  bint n_ranges;
 
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), NULL);
 
@@ -4229,7 +4229,7 @@ btk_print_unix_dialog_set_manual_capabilities (BtkPrintUnixDialog   *dialog,
           priv->internal_printer_change = FALSE;
        }
 
-      g_object_notify (G_OBJECT (dialog), "manual-capabilities");
+      g_object_notify (B_OBJECT (dialog), "manual-capabilities");
     }
 }
 
@@ -4262,7 +4262,7 @@ btk_print_unix_dialog_get_manual_capabilities (BtkPrintUnixDialog *dialog)
  */
 void
 btk_print_unix_dialog_set_support_selection (BtkPrintUnixDialog *dialog,
-                                             gboolean            support_selection)
+                                             bboolean            support_selection)
 {
   BtkPrintUnixDialogPrivate *priv;
 
@@ -4293,7 +4293,7 @@ btk_print_unix_dialog_set_support_selection (BtkPrintUnixDialog *dialog,
             }
         }
 
-      g_object_notify (G_OBJECT (dialog), "support-selection");
+      g_object_notify (B_OBJECT (dialog), "support-selection");
     }
 }
 
@@ -4307,7 +4307,7 @@ btk_print_unix_dialog_set_support_selection (BtkPrintUnixDialog *dialog,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_unix_dialog_get_support_selection (BtkPrintUnixDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), FALSE);
@@ -4326,7 +4326,7 @@ btk_print_unix_dialog_get_support_selection (BtkPrintUnixDialog *dialog)
  */
 void
 btk_print_unix_dialog_set_has_selection (BtkPrintUnixDialog *dialog,
-                                         gboolean            has_selection)
+                                         bboolean            has_selection)
 {
   BtkPrintUnixDialogPrivate *priv;
 
@@ -4347,7 +4347,7 @@ btk_print_unix_dialog_set_has_selection (BtkPrintUnixDialog *dialog,
             btk_widget_set_sensitive (priv->selection_radio, FALSE);
         }
 
-      g_object_notify (G_OBJECT (dialog), "has-selection");
+      g_object_notify (B_OBJECT (dialog), "has-selection");
     }
 }
 
@@ -4361,7 +4361,7 @@ btk_print_unix_dialog_set_has_selection (BtkPrintUnixDialog *dialog,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_unix_dialog_get_has_selection (BtkPrintUnixDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), FALSE);
@@ -4380,7 +4380,7 @@ btk_print_unix_dialog_get_has_selection (BtkPrintUnixDialog *dialog)
  */
 void
 btk_print_unix_dialog_set_embed_page_setup (BtkPrintUnixDialog *dialog,
-                                            gboolean            embed)
+                                            bboolean            embed)
 {
   BtkPrintUnixDialogPrivate *priv;
 
@@ -4429,7 +4429,7 @@ btk_print_unix_dialog_set_embed_page_setup (BtkPrintUnixDialog *dialog,
  *
  * Since: 2.18
  */
-gboolean
+bboolean
 btk_print_unix_dialog_get_embed_page_setup (BtkPrintUnixDialog *dialog)
 {
   g_return_val_if_fail (BTK_IS_PRINT_UNIX_DIALOG (dialog), FALSE);

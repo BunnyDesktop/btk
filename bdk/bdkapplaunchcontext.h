@@ -30,14 +30,14 @@
 #include <bunnyio/bunnyio.h>
 #include <bdk/bdkscreen.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_APP_LAUNCH_CONTEXT         (bdk_app_launch_context_get_type ())
-#define BDK_APP_LAUNCH_CONTEXT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContext))
-#define BDK_APP_LAUNCH_CONTEXT_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
-#define BDK_IS_APP_LAUNCH_CONTEXT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BDK_TYPE_APP_LAUNCH_CONTEXT))
-#define BDK_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BDK_TYPE_APP_LAUNCH_CONTEXT))
-#define BDK_APP_LAUNCH_CONTEXT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
+#define BDK_APP_LAUNCH_CONTEXT(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContext))
+#define BDK_APP_LAUNCH_CONTEXT_CLASS(k)     (B_TYPE_CHECK_CLASS_CAST((k), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
+#define BDK_IS_APP_LAUNCH_CONTEXT(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BDK_TYPE_APP_LAUNCH_CONTEXT))
+#define BDK_IS_APP_LAUNCH_CONTEXT_CLASS(k)  (B_TYPE_CHECK_CLASS_TYPE ((k), BDK_TYPE_APP_LAUNCH_CONTEXT))
+#define BDK_APP_LAUNCH_CONTEXT_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS ((o), BDK_TYPE_APP_LAUNCH_CONTEXT, BdkAppLaunchContextClass))
 
 typedef struct BdkAppLaunchContext	      BdkAppLaunchContext;
 typedef struct BdkAppLaunchContextClass       BdkAppLaunchContextClass;
@@ -63,14 +63,14 @@ void                 bdk_app_launch_context_set_display   (BdkAppLaunchContext *
 void                 bdk_app_launch_context_set_screen    (BdkAppLaunchContext *context,
 							   BdkScreen           *screen);
 void                 bdk_app_launch_context_set_desktop   (BdkAppLaunchContext *context,
-							   gint                 desktop);
+							   bint                 desktop);
 void                 bdk_app_launch_context_set_timestamp (BdkAppLaunchContext *context,
-							   guint32              timestamp);
+							   buint32              timestamp);
 void                 bdk_app_launch_context_set_icon      (BdkAppLaunchContext *context,
 							   GIcon               *icon);
 void                 bdk_app_launch_context_set_icon_name (BdkAppLaunchContext *context,
 							   const char          *icon_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_APP_LAUNCH_CONTEXT_H__ */

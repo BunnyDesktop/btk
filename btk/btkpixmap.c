@@ -41,9 +41,9 @@
 #include "btkalias.h"
 
 
-static gint btk_pixmap_expose     (BtkWidget       *widget,
+static bint btk_pixmap_expose     (BtkWidget       *widget,
 				   BdkEventExpose  *event);
-static void btk_pixmap_finalize   (GObject         *object);
+static void btk_pixmap_finalize   (BObject         *object);
 static void build_insensitive_pixmap (BtkPixmap *btkpixmap);
 
 G_DEFINE_TYPE (BtkPixmap, btk_pixmap, BTK_TYPE_MISC)
@@ -51,7 +51,7 @@ G_DEFINE_TYPE (BtkPixmap, btk_pixmap, BTK_TYPE_MISC)
 static void
 btk_pixmap_class_init (BtkPixmapClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class;
 
   widget_class = (BtkWidgetClass*) class;
@@ -91,11 +91,11 @@ btk_pixmap_new (BdkPixmap *val,
 }
 
 static void
-btk_pixmap_finalize (GObject *object)
+btk_pixmap_finalize (BObject *object)
 {
   btk_pixmap_set (BTK_PIXMAP (object), NULL, NULL);
 
-  G_OBJECT_CLASS (btk_pixmap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_pixmap_parent_class)->finalize (object);
 }
 
 void
@@ -103,10 +103,10 @@ btk_pixmap_set (BtkPixmap *pixmap,
 		BdkPixmap *val,
 		BdkBitmap *mask)
 {
-  gint width;
-  gint height;
-  gint oldwidth;
-  gint oldheight;
+  bint width;
+  bint height;
+  bint oldwidth;
+  bint oldheight;
 
   g_return_if_fail (BTK_IS_PIXMAP (pixmap));
   if(BDK_IS_DRAWABLE(val))
@@ -169,14 +169,14 @@ btk_pixmap_get (BtkPixmap  *pixmap,
     *mask = pixmap->mask;
 }
 
-static gint
+static bint
 btk_pixmap_expose (BtkWidget      *widget,
 		   BdkEventExpose *event)
 {
   BtkPixmap *pixmap;
   BtkMisc *misc;
-  gint x, y;
-  gfloat xalign;
+  bint x, y;
+  bfloat xalign;
 
   g_return_val_if_fail (BTK_IS_PIXMAP (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -230,7 +230,7 @@ btk_pixmap_expose (BtkWidget      *widget,
 }
 
 void
-btk_pixmap_set_build_insensitive (BtkPixmap *pixmap, gboolean build)
+btk_pixmap_set_build_insensitive (BtkPixmap *pixmap, bboolean build)
 {
   g_return_if_fail (BTK_IS_PIXMAP (pixmap));
 
@@ -247,7 +247,7 @@ build_insensitive_pixmap (BtkPixmap *btkpixmap)
 {
   BdkPixmap *pixmap = btkpixmap->pixmap;
   BdkPixmap *insensitive;
-  gint w, h;
+  bint w, h;
   BdkPixbuf *pixbuf;
   BdkPixbuf *stated;
   

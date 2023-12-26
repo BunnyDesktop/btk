@@ -22,14 +22,14 @@
 
 #include <bail/bailmenushell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_MENU                          (bail_menu_get_type ())
-#define BAIL_MENU(obj)                          (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenu))
-#define BAIL_MENU_CLASS(klass)                  (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU, BailMenuClass))
-#define BAIL_IS_MENU(obj)                       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU))
-#define BAIL_IS_MENU_CLASS(klass)               (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU))
-#define BAIL_MENU_GET_CLASS(obj)                (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU, BailMenuClass))
+#define BAIL_MENU(obj)                          (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_SHELL, BailMenu))
+#define BAIL_MENU_CLASS(klass)                  (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU, BailMenuClass))
+#define BAIL_IS_MENU(obj)                       (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU))
+#define BAIL_IS_MENU_CLASS(klass)               (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU))
+#define BAIL_MENU_GET_CLASS(obj)                (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU, BailMenuClass))
 
 typedef struct _BailMenu                   BailMenu;
 typedef struct _BailMenuClass              BailMenuClass;
@@ -46,6 +46,6 @@ struct _BailMenuClass
   BailMenuShellClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_MENU_H__ */

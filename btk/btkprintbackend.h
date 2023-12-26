@@ -33,7 +33,7 @@
 #include <btk/btkunixprint.h>
 #include <btk/btkprinteroptionset.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPrintBackendClass    BtkPrintBackendClass;
 typedef struct _BtkPrintBackendPrivate  BtkPrintBackendPrivate;
@@ -49,11 +49,11 @@ typedef enum
 GQuark     btk_print_backend_error_quark      (void);
 
 #define BTK_TYPE_PRINT_BACKEND                  (btk_print_backend_get_type ())
-#define BTK_PRINT_BACKEND(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackend))
-#define BTK_PRINT_BACKEND_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
-#define BTK_IS_PRINT_BACKEND(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND))
-#define BTK_IS_PRINT_BACKEND_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND))
-#define BTK_PRINT_BACKEND_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
+#define BTK_PRINT_BACKEND(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackend))
+#define BTK_PRINT_BACKEND_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
+#define BTK_IS_PRINT_BACKEND(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND))
+#define BTK_IS_PRINT_BACKEND_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND))
+#define BTK_PRINT_BACKEND_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND, BtkPrintBackendClass))
 
 typedef enum 
 {
@@ -64,14 +64,14 @@ typedef enum
 
 struct _BtkPrintBackend
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BtkPrintBackendPrivate *priv;
 };
 
 struct _BtkPrintBackendClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Global backend methods: */
   void                   (*request_printer_list)            (BtkPrintBackend        *backend);
@@ -79,21 +79,21 @@ struct _BtkPrintBackendClass
 							     BtkPrintJob            *job,
 							     BUNNYIOChannel             *data_io,
 							     BtkPrintJobCompleteFunc callback,
-							     gpointer                user_data,
+							     bpointer                user_data,
 							     GDestroyNotify          dnotify);
 
   /* Printer methods: */
   void                  (*printer_request_details)           (BtkPrinter          *printer);
   bairo_surface_t *     (*printer_create_bairo_surface)      (BtkPrinter          *printer,
 							      BtkPrintSettings    *settings,
-							      gdouble              height,
-							      gdouble              width,
+							      bdouble              height,
+							      bdouble              width,
 							      BUNNYIOChannel          *cache_io);
   BtkPrinterOptionSet * (*printer_get_options)               (BtkPrinter          *printer,
 							      BtkPrintSettings    *settings,
 							      BtkPageSetup        *page_setup,
 							      BtkPrintCapabilities capabilities);
-  gboolean              (*printer_mark_conflicts)            (BtkPrinter          *printer,
+  bboolean              (*printer_mark_conflicts)            (BtkPrinter          *printer,
 							      BtkPrinterOptionSet *options);
   void                  (*printer_get_settings_from_options) (BtkPrinter          *printer,
 							      BtkPrinterOptionSet *options,
@@ -104,11 +104,11 @@ struct _BtkPrintBackendClass
 							      BtkPageSetup        *page_setup);
   GList  *              (*printer_list_papers)               (BtkPrinter          *printer);
   BtkPageSetup *        (*printer_get_default_page_size)     (BtkPrinter          *printer);
-  gboolean              (*printer_get_hard_margins)          (BtkPrinter          *printer,
-							      gdouble             *top,
-							      gdouble             *bottom,
-							      gdouble             *left,
-							      gdouble             *right);
+  bboolean              (*printer_get_hard_margins)          (BtkPrinter          *printer,
+							      bdouble             *top,
+							      bdouble             *bottom,
+							      bdouble             *left,
+							      bdouble             *right);
   BtkPrintCapabilities  (*printer_get_capabilities)          (BtkPrinter          *printer);
 
   /* Signals */
@@ -121,16 +121,16 @@ struct _BtkPrintBackendClass
   void                  (*printer_status_changed)            (BtkPrintBackend     *backend,
 							      BtkPrinter          *printer);
   void                  (*request_password)                  (BtkPrintBackend     *backend,
-                                                              gpointer             auth_info_required,
-                                                              gpointer             auth_info_default,
-                                                              gpointer             auth_info_display,
-                                                              gpointer             auth_info_visible,
-                                                              const gchar         *prompt);
+                                                              bpointer             auth_info_required,
+                                                              bpointer             auth_info_default,
+                                                              bpointer             auth_info_display,
+                                                              bpointer             auth_info_visible,
+                                                              const bchar         *prompt);
 
   /* not a signal */
   void                  (*set_password)                      (BtkPrintBackend     *backend,
-                                                              gchar              **auth_info_required,
-                                                              gchar              **auth_info);
+                                                              bchar              **auth_info_required,
+                                                              bchar              **auth_info);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -139,23 +139,23 @@ struct _BtkPrintBackendClass
   void (*_btk_reserved4) (void);
 };
 
-GType   btk_print_backend_get_type       (void) G_GNUC_CONST;
+GType   btk_print_backend_get_type       (void) B_GNUC_CONST;
 
 GList      *btk_print_backend_get_printer_list     (BtkPrintBackend         *print_backend);
-gboolean    btk_print_backend_printer_list_is_done (BtkPrintBackend         *print_backend);
+bboolean    btk_print_backend_printer_list_is_done (BtkPrintBackend         *print_backend);
 BtkPrinter *btk_print_backend_find_printer         (BtkPrintBackend         *print_backend,
-						    const gchar             *printer_name);
+						    const bchar             *printer_name);
 void        btk_print_backend_print_stream         (BtkPrintBackend         *print_backend,
 						    BtkPrintJob             *job,
 						    BUNNYIOChannel              *data_io,
 						    BtkPrintJobCompleteFunc  callback,
-						    gpointer                 user_data,
+						    bpointer                 user_data,
 						    GDestroyNotify           dnotify);
 GList *     btk_print_backend_load_modules         (void);
 void        btk_print_backend_destroy              (BtkPrintBackend         *print_backend);
 void        btk_print_backend_set_password         (BtkPrintBackend         *backend, 
-                                                    gchar                  **auth_info_required,
-                                                    gchar                  **auth_info);
+                                                    bchar                  **auth_info_required,
+                                                    bchar                  **auth_info);
 
 /* Backend-only functions for BtkPrintBackend */
 
@@ -167,35 +167,35 @@ void        btk_print_backend_set_list_done        (BtkPrintBackend         *bac
 
 
 /* Backend-only functions for BtkPrinter */
-gboolean    btk_printer_is_new                (BtkPrinter      *printer);
+bboolean    btk_printer_is_new                (BtkPrinter      *printer);
 void        btk_printer_set_accepts_pdf       (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
 void        btk_printer_set_accepts_ps        (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
 void        btk_printer_set_is_new            (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
 void        btk_printer_set_is_active         (BtkPrinter      *printer,
-					       gboolean         val);
-gboolean    btk_printer_set_is_paused         (BtkPrinter      *printer,
-					       gboolean         val);
-gboolean    btk_printer_set_is_accepting_jobs (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
+bboolean    btk_printer_set_is_paused         (BtkPrinter      *printer,
+					       bboolean         val);
+bboolean    btk_printer_set_is_accepting_jobs (BtkPrinter      *printer,
+					       bboolean         val);
 void        btk_printer_set_has_details       (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
 void        btk_printer_set_is_default        (BtkPrinter      *printer,
-					       gboolean         val);
+					       bboolean         val);
 void        btk_printer_set_icon_name         (BtkPrinter      *printer,
-					       const gchar     *icon);
-gboolean    btk_printer_set_job_count         (BtkPrinter      *printer,
-					       gint             count);
-gboolean    btk_printer_set_location          (BtkPrinter      *printer,
-					       const gchar     *location);
-gboolean    btk_printer_set_description       (BtkPrinter      *printer,
-					       const gchar     *description);
-gboolean    btk_printer_set_state_message     (BtkPrinter      *printer,
-					       const gchar     *message);
+					       const bchar     *icon);
+bboolean    btk_printer_set_job_count         (BtkPrinter      *printer,
+					       bint             count);
+bboolean    btk_printer_set_location          (BtkPrinter      *printer,
+					       const bchar     *location);
+bboolean    btk_printer_set_description       (BtkPrinter      *printer,
+					       const bchar     *description);
+bboolean    btk_printer_set_state_message     (BtkPrinter      *printer,
+					       const bchar     *message);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_BACKEND_H__ */

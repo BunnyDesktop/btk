@@ -167,7 +167,7 @@
 2006-04-04  Matthias Clasen  <mclasen@redhat.com>
 
 	* btk/btkprintoperation.h: Add missing standard
-	GObject macros.  (#337277, Yevgen Muntyan)
+	BObject macros.  (#337277, Yevgen Muntyan)
 
 2006-04-04  Alexander Larsson  <alexl@redhat.com>
 

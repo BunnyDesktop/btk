@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_COMBO                      (bail_combo_get_type ())
-#define BAIL_COMBO(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO, BailCombo))
-#define BAIL_COMBO_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO, BailComboClass))
-#define BAIL_IS_COMBO(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO))
-#define BAIL_IS_COMBO_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO))
-#define BAIL_COMBO_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO, BailComboClass))
+#define BAIL_COMBO(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO, BailCombo))
+#define BAIL_COMBO_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO, BailComboClass))
+#define BAIL_IS_COMBO(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO))
+#define BAIL_IS_COMBO_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO))
+#define BAIL_COMBO_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO, BailComboClass))
 
 typedef struct _BailCombo              BailCombo;
 typedef struct _BailComboClass         BailComboClass;
@@ -38,12 +38,12 @@ struct _BailCombo
 {
   BailContainer parent;
 
-  gpointer      old_selection;
-  gchar         *press_description;
+  bpointer      old_selection;
+  bchar         *press_description;
 
-  guint         action_idle_handler;
-  guint         select_idle_handler;
-  guint         deselect_idle_handler;
+  buint         action_idle_handler;
+  buint         select_idle_handler;
+  buint         deselect_idle_handler;
 };
 
 GType bail_combo_get_type (void);
@@ -53,6 +53,6 @@ struct _BailComboClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_COMBO_H__ */

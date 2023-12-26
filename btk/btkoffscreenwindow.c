@@ -57,8 +57,8 @@ btk_offscreen_window_size_request (BtkWidget *widget,
                                    BtkRequisition *requisition)
 {
   BtkBin *bin = BTK_BIN (widget);
-  gint border_width;
-  gint default_width, default_height;
+  bint border_width;
+  bint default_width, default_height;
 
   border_width = btk_container_get_border_width (BTK_CONTAINER (widget));
 
@@ -89,7 +89,7 @@ btk_offscreen_window_size_allocate (BtkWidget *widget,
                                     BtkAllocation *allocation)
 {
   BtkBin *bin = BTK_BIN (widget);
-  gint border_width;
+  bint border_width;
 
   widget->allocation = *allocation;
 
@@ -122,8 +122,8 @@ btk_offscreen_window_realize (BtkWidget *widget)
 {
   BtkBin *bin;
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
 
   bin = BTK_BIN (widget);
 
@@ -181,7 +181,7 @@ move_focus (BtkWidget       *widget,
 static void
 btk_offscreen_window_show (BtkWidget *widget)
 {
-  gboolean need_resize;
+  bboolean need_resize;
   BtkContainer *container;
 
   BTK_WIDGET_SET_FLAGS (widget, BTK_VISIBLE);
@@ -304,7 +304,7 @@ btk_offscreen_window_get_pixbuf (BtkOffscreenWindow *offscreen)
 
   if (pixmap != NULL)
     {
-      gint width, height;
+      bint width, height;
 
       bdk_drawable_get_size (pixmap, &width, &height);
 

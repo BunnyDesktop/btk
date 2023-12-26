@@ -30,7 +30,7 @@ BdkWindow *_bdk_root = NULL;
 BdkOSXVersion
 bdk_quartz_osx_version (void)
 {
-  static gint32 minor = BDK_OSX_UNSUPPORTED;
+  static bint32 minor = BDK_OSX_UNSUPPORTED;
 
   if (minor == BDK_OSX_UNSUPPORTED)
     {

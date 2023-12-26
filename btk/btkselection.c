@@ -84,7 +84,7 @@
        : XExtendedMaxRequestSize (BDK_DISPLAY_XDISPLAY (display)) - 100)
 #else
 /* No chunks on Win32 */
-#define BTK_SELECTION_MAX_SIZE(display) G_MAXINT
+#define BTK_SELECTION_MAX_SIZE(display) B_MAXINT
 #endif
 
 #define IDLE_ABORT_TIME 30
@@ -107,7 +107,7 @@ struct _BtkSelectionInfo
 {
   BdkAtom	 selection;
   BtkWidget	*widget;	/* widget that owns selection */
-  guint32	 time;		/* time used to acquire selection */
+  buint32	 time;		/* time used to acquire selection */
   BdkDisplay	*display;	/* needed in btk_selection_remove_all */    
 };
 
@@ -116,7 +116,7 @@ struct _BtkIncrConversion
   BdkAtom	    target;	/* Requested target */
   BdkAtom	    property;	/* Property to store in */
   BtkSelectionData  data;	/* The data being supplied */
-  gint		    offset;	/* Current offset in sent selection.
+  bint		    offset;	/* Current offset in sent selection.
 				 *  -1 => All done
 				 *  -2 => Only the final (empty) portion
 				 *	  left to send */
@@ -132,9 +132,9 @@ struct _BtkIncrInfo
 				   * With MULTIPLE requests (benighted 1980's
 				   * hardware idea), there can be more than
 				   * one */
-  gint num_conversions;
-  gint num_incrs;		/* number of remaining INCR style transactions */
-  guint32 idle_time;
+  bint num_conversions;
+  bint num_incrs;		/* number of remaining INCR style transactions */
+  buint32 idle_time;
 };
 
 
@@ -143,33 +143,33 @@ struct _BtkRetrievalInfo
   BtkWidget *widget;
   BdkAtom selection;		/* Selection being retrieved. */
   BdkAtom target;		/* Form of selection that we requested */
-  guint32 idle_time;		/* Number of seconds since we last heard
+  buint32 idle_time;		/* Number of seconds since we last heard
 				   from selection owner */
-  guchar   *buffer;		/* Buffer in which to accumulate results */
-  gint	   offset;		/* Current offset in buffer, -1 indicates
+  buchar   *buffer;		/* Buffer in which to accumulate results */
+  bint	   offset;		/* Current offset in buffer, -1 indicates
 				   not yet started */
-  guint32 notify_time;		/* Timestamp from SelectionNotify */
+  buint32 notify_time;		/* Timestamp from SelectionNotify */
 };
 
 /* Local Functions */
 static void btk_selection_init              (void);
-static gboolean btk_selection_incr_timeout      (BtkIncrInfo      *info);
-static gboolean btk_selection_retrieval_timeout (BtkRetrievalInfo *info);
+static bboolean btk_selection_incr_timeout      (BtkIncrInfo      *info);
+static bboolean btk_selection_retrieval_timeout (BtkRetrievalInfo *info);
 static void btk_selection_retrieval_report  (BtkRetrievalInfo *info,
 					     BdkAtom           type,
-					     gint              format,
-					     guchar           *buffer,
-					     gint              length,
-					     guint32           time);
+					     bint              format,
+					     buchar           *buffer,
+					     bint              length,
+					     buint32           time);
 static void btk_selection_invoke_handler    (BtkWidget        *widget,
 					     BtkSelectionData *data,
-					     guint             time);
+					     buint             time);
 static void btk_selection_default_handler   (BtkWidget        *widget,
 					     BtkSelectionData *data);
-static int  btk_selection_bytes_per_item    (gint              format);
+static int  btk_selection_bytes_per_item    (bint              format);
 
 /* Local Data */
-static gint initialize = TRUE;
+static bint initialize = TRUE;
 static GList *current_retrievals = NULL;
 static GList *current_incrs = NULL;
 static GList *current_selections = NULL;
@@ -197,7 +197,7 @@ static const char btk_selection_handler_key[] = "btk-selection-handlers";
  **/
 BtkTargetList *
 btk_target_list_new (const BtkTargetEntry *targets,
-		     guint                 ntargets)
+		     buint                 ntargets)
 {
   BtkTargetList *result = g_slice_new (BtkTargetList);
   result->list = NULL;
@@ -269,8 +269,8 @@ btk_target_list_unref (BtkTargetList *list)
 void 
 btk_target_list_add (BtkTargetList *list,
 		     BdkAtom        target,
-		     guint          flags,
-		     guint          info)
+		     buint          flags,
+		     buint          info)
 {
   BtkTargetPair *pair;
 
@@ -295,8 +295,8 @@ static BdkAtom text_uri_list_atom;
 static void 
 init_atoms (void)
 {
-  gchar *tmp;
-  const gchar *charset;
+  bchar *tmp;
+  const bchar *charset;
 
   if (!utf8_atom)
     {
@@ -326,7 +326,7 @@ init_atoms (void)
  **/
 void 
 btk_target_list_add_text_targets (BtkTargetList *list,
-				  guint          info)
+				  buint          info)
 {
   g_return_if_fail (list != NULL);
   
@@ -361,13 +361,13 @@ btk_target_list_add_text_targets (BtkTargetList *list,
  **/
 void
 btk_target_list_add_rich_text_targets (BtkTargetList  *list,
-                                       guint           info,
-                                       gboolean        deserializable,
+                                       buint           info,
+                                       bboolean        deserializable,
                                        BtkTextBuffer  *buffer)
 {
   BdkAtom *atoms;
-  gint     n_atoms;
-  gint     i;
+  bint     n_atoms;
+  bint     i;
 
   g_return_if_fail (list != NULL);
   g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
@@ -397,11 +397,11 @@ btk_target_list_add_rich_text_targets (BtkTargetList  *list,
  **/
 void 
 btk_target_list_add_image_targets (BtkTargetList *list,
-				   guint          info,
-				   gboolean       writable)
+				   buint          info,
+				   bboolean       writable)
 {
   GSList *formats, *f;
-  gchar **mimes, **m;
+  bchar **mimes, **m;
   BdkAtom atom;
 
   g_return_if_fail (list != NULL);
@@ -412,13 +412,13 @@ btk_target_list_add_image_targets (BtkTargetList *list,
   for (f = formats; f; f = f->next)
     {
       BdkPixbufFormat *fmt = f->data;
-      gchar *name; 
+      bchar *name; 
  
       name = bdk_pixbuf_format_get_name (fmt);
       if (strcmp (name, "png") == 0)
 	{
-	  formats = g_slist_delete_link (formats, f);
-	  formats = g_slist_prepend (formats, fmt);
+	  formats = b_slist_delete_link (formats, f);
+	  formats = b_slist_prepend (formats, fmt);
 
 	  g_free (name);
 
@@ -444,7 +444,7 @@ btk_target_list_add_image_targets (BtkTargetList *list,
       g_strfreev (mimes);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
 }
 
 /**
@@ -459,7 +459,7 @@ btk_target_list_add_image_targets (BtkTargetList *list,
  **/
 void 
 btk_target_list_add_uri_targets (BtkTargetList *list,
-				 guint          info)
+				 buint          info)
 {
   g_return_if_fail (list != NULL);
   
@@ -479,9 +479,9 @@ btk_target_list_add_uri_targets (BtkTargetList *list,
 void               
 btk_target_list_add_table (BtkTargetList        *list,
 			   const BtkTargetEntry *targets,
-			   guint                 ntargets)
+			   buint                 ntargets)
 {
-  gint i;
+  bint i;
 
   for (i=ntargets-1; i >= 0; i--)
     {
@@ -539,10 +539,10 @@ btk_target_list_remove (BtkTargetList *list,
  *
  * Return value: %TRUE if the target was found, otherwise %FALSE
  **/
-gboolean
+bboolean
 btk_target_list_find (BtkTargetList *list,
 		      BdkAtom        target,
-		      guint         *info)
+		      buint         *info)
 {
   GList *tmp_list;
 
@@ -583,11 +583,11 @@ btk_target_list_find (BtkTargetList *list,
  **/
 BtkTargetEntry *
 btk_target_table_new_from_list (BtkTargetList *list,
-                                gint          *n_targets)
+                                bint          *n_targets)
 {
   BtkTargetEntry *targets;
   GList          *tmp_list;
-  gint            i;
+  bint            i;
 
   g_return_val_if_fail (list != NULL, NULL);
   g_return_val_if_fail (n_targets != NULL, NULL);
@@ -621,9 +621,9 @@ btk_target_table_new_from_list (BtkTargetList *list,
  **/
 void
 btk_target_table_free (BtkTargetEntry *targets,
-                       gint            n_targets)
+                       bint            n_targets)
 {
-  gint i;
+  bint i;
 
   g_return_if_fail (targets == NULL || n_targets > 0);
 
@@ -647,11 +647,11 @@ btk_target_table_free (BtkTargetEntry *targets,
  * 
  * Since: 2.2
  */
-gboolean
+bboolean
 btk_selection_owner_set_for_display (BdkDisplay   *display,
 				     BtkWidget    *widget,
 				     BdkAtom       selection,
-				     guint32       time)
+				     buint32       time)
 {
   GList *tmp_list;
   BtkWidget *old_owner;
@@ -747,10 +747,10 @@ btk_selection_owner_set_for_display (BdkDisplay   *display,
  * 
  * Return value: %TRUE if the operation succeeded
  **/
-gboolean
+bboolean
 btk_selection_owner_set (BtkWidget *widget,
 			 BdkAtom    selection,
-			 guint32    time)
+			 buint32    time)
 {
   BdkDisplay *display;
   
@@ -786,7 +786,7 @@ btk_selection_target_list_get (BtkWidget    *widget,
   GList *tmp_list;
   GList *lists;
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -802,7 +802,7 @@ btk_selection_target_list_get (BtkWidget    *widget,
   sellist->list = btk_target_list_new (NULL, 0);
 
   lists = g_list_prepend (lists, sellist);
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), lists);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), lists);
 
   return sellist->list;
 }
@@ -814,7 +814,7 @@ btk_selection_target_list_remove (BtkWidget    *widget)
   GList *tmp_list;
   GList *lists;
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -828,7 +828,7 @@ btk_selection_target_list_remove (BtkWidget    *widget)
     }
 
   g_list_free (lists);
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), NULL);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), NULL);
 }
 
 /**
@@ -850,7 +850,7 @@ btk_selection_clear_targets (BtkWidget *widget,
   g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (selection != BDK_NONE);
 
-  lists = g_object_get_data (G_OBJECT (widget), btk_selection_handler_key);
+  lists = g_object_get_data (B_OBJECT (widget), btk_selection_handler_key);
   
   tmp_list = lists;
   while (tmp_list)
@@ -868,7 +868,7 @@ btk_selection_clear_targets (BtkWidget *widget,
       tmp_list = tmp_list->next;
     }
   
-  g_object_set_data (G_OBJECT (widget), I_(btk_selection_handler_key), lists);
+  g_object_set_data (B_OBJECT (widget), I_(btk_selection_handler_key), lists);
 }
 
 /**
@@ -885,7 +885,7 @@ void
 btk_selection_add_target (BtkWidget	    *widget, 
 			  BdkAtom	     selection,
 			  BdkAtom	     target,
-			  guint              info)
+			  buint              info)
 {
   BtkTargetList *list;
 
@@ -913,7 +913,7 @@ void
 btk_selection_add_targets (BtkWidget            *widget, 
 			   BdkAtom               selection,
 			   const BtkTargetEntry *targets,
-			   guint                 ntargets)
+			   buint                 ntargets)
 {
   BtkTargetList *list;
 
@@ -1015,11 +1015,11 @@ btk_selection_remove_all (BtkWidget *widget)
  *          request. (e.g., there was already a request in process for
  *          this widget).
  **/
-gboolean
+bboolean
 btk_selection_convert (BtkWidget *widget, 
 		       BdkAtom	  selection, 
 		       BdkAtom	  target,
-		       guint32	  time_)
+		       buint32	  time_)
 {
   BtkRetrievalInfo *info;
   GList *tmp_list;
@@ -1068,7 +1068,7 @@ btk_selection_convert (BtkWidget *widget,
   if (owner_window != NULL)
     {
       BtkWidget *owner_widget;
-      gpointer owner_widget_ptr;
+      bpointer owner_widget_ptr;
       BtkSelectionData selection_data;
       
       selection_data.selection = selection;
@@ -1176,7 +1176,7 @@ btk_selection_data_get_data_type (BtkSelectionData *selection_data)
  *
  * Since: 2.14
  **/
-gint
+bint
 btk_selection_data_get_format (BtkSelectionData *selection_data)
 {
   g_return_val_if_fail (selection_data != NULL, 0);
@@ -1194,7 +1194,7 @@ btk_selection_data_get_format (BtkSelectionData *selection_data)
  *
  * Since: 2.14
  **/
-const guchar*
+const buchar*
 btk_selection_data_get_data (BtkSelectionData *selection_data)
 {
   g_return_val_if_fail (selection_data != NULL, NULL);
@@ -1212,7 +1212,7 @@ btk_selection_data_get_data (BtkSelectionData *selection_data)
  *
  * Since: 2.14
  */
-gint
+bint
 btk_selection_data_get_length (BtkSelectionData *selection_data)
 {
   g_return_val_if_fail (selection_data != NULL, -1);
@@ -1253,9 +1253,9 @@ btk_selection_data_get_display (BtkSelectionData *selection_data)
 void 
 btk_selection_data_set (BtkSelectionData *selection_data,
 			BdkAtom		  type,
-			gint		  format,
-			const guchar	 *data,
-			gint		  length)
+			bint		  format,
+			const buchar	 *data,
+			bint		  length)
 {
   g_return_if_fail (selection_data != NULL);
 
@@ -1266,7 +1266,7 @@ btk_selection_data_set (BtkSelectionData *selection_data,
   
   if (data)
     {
-      selection_data->data = g_new (guchar, length+1);
+      selection_data->data = g_new (buchar, length+1);
       memcpy (selection_data->data, data, length);
       selection_data->data[length] = 0;
     }
@@ -1277,26 +1277,26 @@ btk_selection_data_set (BtkSelectionData *selection_data,
       if (length < 0)
 	selection_data->data = NULL;
       else
-	selection_data->data = (guchar *) g_strdup ("");
+	selection_data->data = (buchar *) g_strdup ("");
     }
   
   selection_data->length = length;
 }
 
-static gboolean
+static bboolean
 selection_set_string (BtkSelectionData *selection_data,
-		      const gchar      *str,
-		      gint              len)
+		      const bchar      *str,
+		      bint              len)
 {
-  gchar *tmp = g_strndup (str, len);
-  gchar *latin1 = bdk_utf8_to_string_target (tmp);
+  bchar *tmp = g_strndup (str, len);
+  bchar *latin1 = bdk_utf8_to_string_target (tmp);
   g_free (tmp);
   
   if (latin1)
     {
       btk_selection_data_set (selection_data,
 			      BDK_SELECTION_TYPE_STRING,
-			      8, (guchar *) latin1, strlen (latin1));
+			      8, (buchar *) latin1, strlen (latin1));
       g_free (latin1);
       
       return TRUE;
@@ -1305,17 +1305,17 @@ selection_set_string (BtkSelectionData *selection_data,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 selection_set_compound_text (BtkSelectionData *selection_data,
-			     const gchar      *str,
-			     gint              len)
+			     const bchar      *str,
+			     bint              len)
 {
-  gchar *tmp;
-  guchar *text;
+  bchar *tmp;
+  buchar *text;
   BdkAtom encoding;
-  gint format;
-  gint new_length;
-  gboolean result = FALSE;
+  bint format;
+  bint new_length;
+  bboolean result = FALSE;
 
 #ifdef BDK_WINDOWING_X11
   tmp = g_strndup (str, len);
@@ -1331,7 +1331,7 @@ selection_set_compound_text (BtkSelectionData *selection_data,
 #elif defined(BDK_WINDOWING_WIN32) || defined(BDK_WINDOWING_QUARTZ)
   result = FALSE; /* not needed on Win32 or Quartz */
 #else
-  g_warning ("%s is not implemented", G_STRFUNC);
+  g_warning ("%s is not implemented", B_STRFUNC);
   result = FALSE;
 #endif
 
@@ -1340,13 +1340,13 @@ selection_set_compound_text (BtkSelectionData *selection_data,
 
 /* Normalize \r and \n into \r\n
  */
-static gchar *
-normalize_to_crlf (const gchar *str, 
-		   gint         len)
+static bchar *
+normalize_to_crlf (const bchar *str, 
+		   bint         len)
 {
   GString *result = g_string_sized_new (len);
-  const gchar *p = str;
-  const gchar *end = str + len;
+  const bchar *p = str;
+  const bchar *end = str + len;
 
   while (p < end)
     {
@@ -1372,12 +1372,12 @@ normalize_to_crlf (const gchar *str,
 
 /* Normalize \r and \r\n into \n
  */
-static gchar *
-normalize_to_lf (gchar *str, 
-		 gint   len)
+static bchar *
+normalize_to_lf (bchar *str, 
+		 bint   len)
 {
   GString *result = g_string_sized_new (len);
-  const gchar *p = str;
+  const bchar *p = str;
 
   while (1)
     {
@@ -1398,13 +1398,13 @@ normalize_to_lf (gchar *str,
   return g_string_free (result, FALSE);  
 }
 
-static gboolean
+static bboolean
 selection_set_text_plain (BtkSelectionData *selection_data,
-			  const gchar      *str,
-			  gint              len)
+			  const bchar      *str,
+			  bint              len)
 {
-  const gchar *charset = NULL;
-  gchar *result;
+  const bchar *charset = NULL;
+  bchar *result;
   GError *error = NULL;
 
   result = normalize_to_crlf (str, len);
@@ -1415,7 +1415,7 @@ selection_set_text_plain (BtkSelectionData *selection_data,
 
   if (charset)
     {
-      gchar *tmp = result;
+      bchar *tmp = result;
       result = g_convert_with_fallback (tmp, -1, 
 					charset, "UTF-8", 
 					NULL, NULL, NULL, &error);
@@ -1433,21 +1433,21 @@ selection_set_text_plain (BtkSelectionData *selection_data,
   
   btk_selection_data_set (selection_data,
 			  selection_data->target, 
-			  8, (guchar *) result, strlen (result));
+			  8, (buchar *) result, strlen (result));
   g_free (result);
   
   return TRUE;
 }
 
-static guchar *
+static buchar *
 selection_get_text_plain (BtkSelectionData *selection_data)
 {
-  const gchar *charset = NULL;
-  gchar *str, *result;
-  gsize len;
+  const bchar *charset = NULL;
+  bchar *str, *result;
+  bsize len;
   GError *error = NULL;
 
-  str = g_strdup ((const gchar *) selection_data->data);
+  str = g_strdup ((const bchar *) selection_data->data);
   len = selection_data->length;
   
   if (selection_data->type == text_plain_atom)
@@ -1457,7 +1457,7 @@ selection_get_text_plain (BtkSelectionData *selection_data)
 
   if (charset)
     {
-      gchar *tmp = str;
+      bchar *tmp = str;
       str = g_convert_with_fallback (tmp, len, 
 				     "UTF-8", charset,
 				     NULL, NULL, &len, &error);
@@ -1484,7 +1484,7 @@ selection_get_text_plain (BtkSelectionData *selection_data)
   result = normalize_to_lf (str, len);
   g_free (str);
 
-  return (guchar *) result;
+  return (buchar *) result;
 }
 
 /**
@@ -1500,10 +1500,10 @@ selection_get_text_plain (BtkSelectionData *selection_data)
  * Return value: %TRUE if the selection was successfully set,
  *   otherwise %FALSE.
  **/
-gboolean
+bboolean
 btk_selection_data_set_text (BtkSelectionData     *selection_data,
-			     const gchar          *str,
-			     gint                  len)
+			     const bchar          *str,
+			     bint                  len)
 {
   g_return_val_if_fail (selection_data != NULL, FALSE);
 
@@ -1516,7 +1516,7 @@ btk_selection_data_set_text (BtkSelectionData     *selection_data,
     {
       btk_selection_data_set (selection_data,
 			      utf8_atom,
-			      8, (guchar *)str, len);
+			      8, (buchar *)str, len);
       return TRUE;
     }
   else if (selection_data->target == BDK_TARGET_STRING)
@@ -1552,10 +1552,10 @@ btk_selection_data_set_text (BtkSelectionData     *selection_data,
  *   string containing the converted text, otherwise %NULL.
  *   If the result is non-%NULL it must be freed with g_free().
  **/
-guchar *
+buchar *
 btk_selection_data_get_text (BtkSelectionData *selection_data)
 {
-  guchar *result = NULL;
+  buchar *result = NULL;
 
   g_return_val_if_fail (selection_data != NULL, NULL);
 
@@ -1566,16 +1566,16 @@ btk_selection_data_get_text (BtkSelectionData *selection_data)
        selection_data->type == ctext_atom ||
        selection_data->type == utf8_atom))
     {
-      gchar **list;
-      gint i;
-      gint count = bdk_text_property_to_utf8_list_for_display (selection_data->display,
+      bchar **list;
+      bint i;
+      bint count = bdk_text_property_to_utf8_list_for_display (selection_data->display,
       							       selection_data->type,
 						   	       selection_data->format, 
 						               selection_data->data,
 						               selection_data->length,
 						               &list);
       if (count > 0)
-	result = (guchar *) list[0];
+	result = (buchar *) list[0];
 
       for (i = 1; i < count; i++)
 	g_free (list[i]);
@@ -1606,16 +1606,16 @@ btk_selection_data_get_text (BtkSelectionData *selection_data)
  *
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_selection_data_set_pixbuf (BtkSelectionData *selection_data,
 			       BdkPixbuf        *pixbuf)
 {
   GSList *formats, *f;
-  gchar **mimes, **m;
+  bchar **mimes, **m;
   BdkAtom atom;
-  gboolean result;
-  gchar *str, *type;
-  gsize len;
+  bboolean result;
+  bchar *str, *type;
+  bsize len;
 
   g_return_val_if_fail (selection_data != NULL, FALSE);
   g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), FALSE);
@@ -1641,11 +1641,11 @@ btk_selection_data_set_pixbuf (BtkSelectionData *selection_data,
                                                   NULL);
 	      if (result)
 		btk_selection_data_set (selection_data,
-					atom, 8, (guchar *)str, len);
+					atom, 8, (buchar *)str, len);
 	      g_free (type);
 	      g_free (str);
 	      g_strfreev (mimes);
-	      g_slist_free (formats);
+	      b_slist_free (formats);
 
 	      return result;
 	    }
@@ -1654,7 +1654,7 @@ btk_selection_data_set_pixbuf (BtkSelectionData *selection_data,
       g_strfreev (mimes);
     }
 
-  g_slist_free (formats);
+  b_slist_free (formats);
  
   return FALSE;
 }
@@ -1715,9 +1715,9 @@ btk_selection_data_get_pixbuf (BtkSelectionData *selection_data)
  *
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_selection_data_set_uris (BtkSelectionData  *selection_data,
-			     gchar            **uris)
+			     bchar            **uris)
 {
   g_return_val_if_fail (selection_data != NULL, FALSE);
   g_return_val_if_fail (uris != NULL, FALSE);
@@ -1727,9 +1727,9 @@ btk_selection_data_set_uris (BtkSelectionData  *selection_data,
   if (selection_data->target == text_uri_list_atom)
     {
       GString *list;
-      gint i;
-      gchar *result;
-      gsize length;
+      bint i;
+      bchar *result;
+      bsize length;
       
       list = g_string_new (NULL);
       for (i = 0; uris[i]; i++)
@@ -1747,7 +1747,7 @@ btk_selection_data_set_uris (BtkSelectionData  *selection_data,
 	{
 	  btk_selection_data_set (selection_data,
 				  text_uri_list_atom,
-				  8, (guchar *)result, length);
+				  8, (buchar *)result, length);
 	  
 	  g_free (result);
 
@@ -1772,10 +1772,10 @@ btk_selection_data_set_uris (BtkSelectionData  *selection_data,
  *
  * Since: 2.6
  **/
-gchar **
+bchar **
 btk_selection_data_get_uris (BtkSelectionData *selection_data)
 {
-  gchar **result = NULL;
+  bchar **result = NULL;
 
   g_return_val_if_fail (selection_data != NULL, NULL);
 
@@ -1784,8 +1784,8 @@ btk_selection_data_get_uris (BtkSelectionData *selection_data)
   if (selection_data->length >= 0 &&
       selection_data->type == text_uri_list_atom)
     {
-      gchar **list;
-      gint count = bdk_text_property_to_utf8_list_for_display (selection_data->display,
+      bchar **list;
+      bint count = bdk_text_property_to_utf8_list_for_display (selection_data->display,
       							       utf8_atom,
 						   	       selection_data->format, 
 						               selection_data->data,
@@ -1817,10 +1817,10 @@ btk_selection_data_get_uris (BtkSelectionData *selection_data)
  * Return value: %TRUE if @selection_data contains a valid
  *    array of targets, otherwise %FALSE.
  **/
-gboolean
+bboolean
 btk_selection_data_get_targets (BtkSelectionData  *selection_data,
 				BdkAtom          **targets,
-				gint              *n_atoms)
+				bint              *n_atoms)
 {
   g_return_val_if_fail (selection_data != NULL, FALSE);
 
@@ -1859,12 +1859,12 @@ btk_selection_data_get_targets (BtkSelectionData  *selection_data,
  *
  * Since: 2.10
  **/
-gboolean 
+bboolean 
 btk_targets_include_text (BdkAtom *targets,
-                          gint     n_targets)
+                          bint     n_targets)
 {
-  gint i;
-  gboolean result = FALSE;
+  bint i;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (targets != NULL || n_targets == 0, FALSE);
 
@@ -1905,15 +1905,15 @@ btk_targets_include_text (BdkAtom *targets,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_targets_include_rich_text (BdkAtom       *targets,
-                               gint           n_targets,
+                               bint           n_targets,
                                BtkTextBuffer *buffer)
 {
   BdkAtom *rich_targets;
-  gint n_rich_targets;
-  gint i, j;
-  gboolean result = FALSE;
+  bint n_rich_targets;
+  bint i, j;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (targets != NULL || n_targets == 0, FALSE);
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), FALSE);
@@ -1952,12 +1952,12 @@ btk_targets_include_rich_text (BdkAtom       *targets,
  * Return value: %TRUE if @selection_data holds a list of targets,
  *   and a suitable target for text is included, otherwise %FALSE.
  **/
-gboolean
+bboolean
 btk_selection_data_targets_include_text (BtkSelectionData *selection_data)
 {
   BdkAtom *targets;
-  gint n_targets;
-  gboolean result = FALSE;
+  bint n_targets;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (selection_data != NULL, FALSE);
 
@@ -1987,13 +1987,13 @@ btk_selection_data_targets_include_text (BtkSelectionData *selection_data)
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_selection_data_targets_include_rich_text (BtkSelectionData *selection_data,
                                               BtkTextBuffer    *buffer)
 {
   BdkAtom *targets;
-  gint n_targets;
-  gboolean result = FALSE;
+  bint n_targets;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (selection_data != NULL, FALSE);
   g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), FALSE);
@@ -2024,15 +2024,15 @@ btk_selection_data_targets_include_rich_text (BtkSelectionData *selection_data,
  *
  * Since: 2.10
  **/
-gboolean 
+bboolean 
 btk_targets_include_image (BdkAtom *targets,
-			   gint     n_targets,
-			   gboolean writable)
+			   bint     n_targets,
+			   bboolean writable)
 {
   BtkTargetList *list;
   GList *l;
-  gint i;
-  gboolean result = FALSE;
+  bint i;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (targets != NULL || n_targets == 0, FALSE);
 
@@ -2070,13 +2070,13 @@ btk_targets_include_image (BdkAtom *targets,
  *
  * Since: 2.6
  **/
-gboolean 
+bboolean 
 btk_selection_data_targets_include_image (BtkSelectionData *selection_data,
-					  gboolean          writable)
+					  bboolean          writable)
 {
   BdkAtom *targets;
-  gint n_targets;
-  gboolean result = FALSE;
+  bint n_targets;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (selection_data != NULL, FALSE);
 
@@ -2104,12 +2104,12 @@ btk_selection_data_targets_include_image (BtkSelectionData *selection_data,
  *
  * Since: 2.10
  **/
-gboolean 
+bboolean 
 btk_targets_include_uri (BdkAtom *targets,
-			 gint     n_targets)
+			 bint     n_targets)
 {
-  gint i;
-  gboolean result = FALSE;
+  bint i;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (targets != NULL || n_targets == 0, FALSE);
 
@@ -2143,12 +2143,12 @@ btk_targets_include_uri (BdkAtom *targets,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_selection_data_targets_include_uri (BtkSelectionData *selection_data)
 {
   BdkAtom *targets;
-  gint n_targets;
-  gboolean result = FALSE;
+  bint n_targets;
+  bboolean result = FALSE;
 
   g_return_val_if_fail (selection_data != NULL, FALSE);
 
@@ -2200,7 +2200,7 @@ btk_selection_init (void)
  * your selection-clear-event handler. Calling this function
  * from any other context is illegal. 
  **/
-gboolean
+bboolean
 btk_selection_clear (BtkWidget         *widget,
 		     BdkEventSelection *event)
 {
@@ -2243,7 +2243,7 @@ btk_selection_clear (BtkWidget         *widget,
  *   results:
  *************************************************************/
 
-gboolean
+bboolean
 _btk_selection_request (BtkWidget *widget,
 			BdkEventSelection *event)
 {
@@ -2251,7 +2251,7 @@ _btk_selection_request (BtkWidget *widget,
   BtkIncrInfo *info;
   GList *tmp_list;
   int i;
-  gulong selection_max_size;
+  bulong selection_max_size;
 
   if (initialize)
     btk_selection_init ();
@@ -2290,7 +2290,7 @@ _btk_selection_request (BtkWidget *widget,
   if (!info->requestor)
     info->requestor = bdk_win32_window_foreign_new_for_display (display, event->requestor);
 #else
-  g_warning ("%s is not implemented", G_STRFUNC);
+  g_warning ("%s is not implemented", B_STRFUNC);
   info->requestor = NULL;
 #endif
 
@@ -2299,9 +2299,9 @@ _btk_selection_request (BtkWidget *widget,
   if (event->target == btk_selection_atoms[MULTIPLE])
     {
       BdkAtom  type;
-      guchar  *mult_atoms;
-      gint     format;
-      gint     length;
+      buchar  *mult_atoms;
+      bint     format;
+      bint     length;
       
       mult_atoms = NULL;
       
@@ -2331,15 +2331,15 @@ _btk_selection_request (BtkWidget *widget,
       if (type != BDK_SELECTION_TYPE_ATOM &&
 	  type != bdk_atom_intern_static_string ("ATOM_PAIR"))
 	{
-	  info->num_conversions = length / (2*sizeof (glong));
+	  info->num_conversions = length / (2*sizeof (blong));
 	  info->conversions = g_new (BtkIncrConversion, info->num_conversions);
 	  
 	  for (i=0; i<info->num_conversions; i++)
 	    {
 	      info->conversions[i].target = bdk_x11_xatom_to_atom_for_display (display,
-									       ((glong *)mult_atoms)[2*i]);
+									       ((blong *)mult_atoms)[2*i]);
 	      info->conversions[i].property = bdk_x11_xatom_to_atom_for_display (display,
-										 ((glong *)mult_atoms)[2*i + 1]);
+										 ((blong *)mult_atoms)[2*i + 1]);
 	    }
 
 	  g_free (mult_atoms);
@@ -2372,7 +2372,7 @@ _btk_selection_request (BtkWidget *widget,
   for (i=0; i<info->num_conversions; i++)
     {
       BtkSelectionData data;
-      glong items;
+      blong items;
       
       data.selection = event->selection;
       data.target = info->conversions[i].target;
@@ -2416,7 +2416,7 @@ _btk_selection_request (BtkWidget *widget,
 			       btk_selection_atoms[INCR],
 			       32,
 			       BDK_PROP_MODE_REPLACE,
-			       (guchar *)&items, 1);
+			       (buchar *)&items, 1);
 	}
       else
 	{
@@ -2466,7 +2466,7 @@ _btk_selection_request (BtkWidget *widget,
       bdk_property_change (info->requestor, event->property,
 			   bdk_atom_intern_static_string ("ATOM_PAIR"), 32, 
 			   BDK_PROP_MODE_REPLACE,
-			   (guchar *)mult_atoms, 2*info->num_conversions);
+			   (buchar *)mult_atoms, 2*info->num_conversions);
       g_free (mult_atoms);
     }
 
@@ -2517,15 +2517,15 @@ _btk_selection_request (BtkWidget *widget,
  *   results:
  *************************************************************/
 
-gboolean
+bboolean
 _btk_selection_incr_event (BdkWindow	   *window,
 			   BdkEventProperty *event)
 {
   GList *tmp_list;
   BtkIncrInfo *info = NULL;
-  gint num_bytes;
-  guchar *buffer;
-  gulong selection_max_size;
+  bint num_bytes;
+  buchar *buffer;
+  bulong selection_max_size;
   
   int i;
   
@@ -2632,11 +2632,11 @@ _btk_selection_incr_event (BdkWindow	   *window,
  *   results:
  *************************************************************/
 
-static gint
+static bint
 btk_selection_incr_timeout (BtkIncrInfo *info)
 {
   GList *tmp_list;
-  gboolean retval;
+  bboolean retval;
 
   /* Determine if retrieval has finished by checking if it still in
      list of pending retrievals */
@@ -2689,16 +2689,16 @@ btk_selection_incr_timeout (BtkIncrInfo *info)
  *     was event handled?
  *************************************************************/
 
-gboolean
+bboolean
 _btk_selection_notify (BtkWidget	       *widget,
 		       BdkEventSelection *event)
 {
   GList *tmp_list;
   BtkRetrievalInfo *info = NULL;
-  guchar  *buffer = NULL;
-  gint length;
+  buchar  *buffer = NULL;
+  bint length;
   BdkAtom type;
-  gint	  format;
+  bint	  format;
   
 #ifdef DEBUG_SELECTION
   g_message ("Initial receipt of selection %ld, target %ld (property = %ld)",
@@ -2778,16 +2778,16 @@ _btk_selection_notify (BtkWidget	       *widget,
  *     was event handled?
  *************************************************************/
 
-gboolean
+bboolean
 _btk_selection_property_notify (BtkWidget	*widget,
 				BdkEventProperty *event)
 {
   GList *tmp_list;
   BtkRetrievalInfo *info = NULL;
-  guchar *new_buffer;
+  buchar *new_buffer;
   int length;
   BdkAtom type;
-  gint	  format;
+  bint	  format;
   
   g_return_val_if_fail (widget != NULL, FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
@@ -2878,11 +2878,11 @@ _btk_selection_property_notify (BtkWidget	*widget,
  *   results:
  *************************************************************/
 
-static gboolean
+static bboolean
 btk_selection_retrieval_timeout (BtkRetrievalInfo *info)
 {
   GList *tmp_list;
-  gboolean retval;
+  bboolean retval;
 
   /* Determine if retrieval has finished by checking if it still in
      list of pending retrievals */
@@ -2932,9 +2932,9 @@ btk_selection_retrieval_timeout (BtkRetrievalInfo *info)
 
 static void
 btk_selection_retrieval_report (BtkRetrievalInfo *info,
-				BdkAtom type, gint format, 
-				guchar *buffer, gint length,
-				guint32 time)
+				BdkAtom type, bint format, 
+				buchar *buffer, bint length,
+				buint32 time)
 {
   BtkSelectionData data;
   
@@ -2970,10 +2970,10 @@ btk_selection_retrieval_report (BtkRetrievalInfo *info,
 static void
 btk_selection_invoke_handler (BtkWidget	       *widget,
 			      BtkSelectionData *data,
-			      guint             time)
+			      buint             time)
 {
   BtkTargetList *target_list;
-  guint info;
+  buint info;
   
 
   g_return_if_fail (widget != NULL);
@@ -3022,12 +3022,12 @@ btk_selection_default_handler (BtkWidget	*widget,
 	  if ((selection_info->widget == widget) &&
 	      (selection_info->selection == data->selection))
 	    {
-	      gulong time = selection_info->time;
+	      bulong time = selection_info->time;
 
 	      btk_selection_data_set (data,
 				      BDK_SELECTION_TYPE_INTEGER,
 				      32,
-				      (guchar *)&time,
+				      (buchar *)&time,
 				      sizeof (time));
 	      return;
 	    }
@@ -3041,7 +3041,7 @@ btk_selection_default_handler (BtkWidget	*widget,
     {
       /* List of all targets supported for this widget/selection pair */
       BdkAtom *p;
-      guint count;
+      buint count;
       GList *tmp_list;
       BtkTargetList *target_list;
       BtkTargetPair *pair;
@@ -3057,7 +3057,7 @@ btk_selection_default_handler (BtkWidget	*widget,
       /* selection data is always terminated by a trailing \0
        */
       p = g_malloc (data->length + 1);
-      data->data = (guchar *)p;
+      data->data = (buchar *)p;
       data->data[data->length] = '\0';
       
       *p++ = btk_selection_atoms[TIMESTAMP];
@@ -3157,7 +3157,7 @@ btk_target_list_get_type (void)
 }
 
 static int 
-btk_selection_bytes_per_item (gint format)
+btk_selection_bytes_per_item (bint format)
 {
   switch (format)
     {

@@ -15,14 +15,14 @@
 
 static void _create_event_watcher (void);
 static void _check_object (BatkObject *obj);
-static gint _do_menu_item_action (gpointer data);
+static bint _do_menu_item_action (bpointer data);
 
 static void 
 _check_object (BatkObject *obj)
 {
   BatkRole role;
   static const char *name = NULL;
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   role = batk_object_get_role (obj);
   if (role == BATK_ROLE_FRAME)
@@ -107,12 +107,12 @@ _check_object (BatkObject *obj)
     else if (BTK_IS_ACCESSIBLE (obj))
     {
       BtkWidget *widget = BTK_ACCESSIBLE (obj)->widget;
-      g_print ("Type: %s\n", g_type_name (G_OBJECT_TYPE (widget)));
+      g_print ("Type: %s\n", g_type_name (B_OBJECT_TYPE (widget)));
     } 
   }
 }
 
-static gint _do_menu_item_action (gpointer data)
+static bint _do_menu_item_action (bpointer data)
 {
   BatkObject *obj = BATK_OBJECT (data);
 
@@ -128,7 +128,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testmenuitem Module loaded\n");
 

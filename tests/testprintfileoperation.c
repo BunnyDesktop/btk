@@ -10,13 +10,13 @@
 G_DEFINE_TYPE (TestPrintFileOperation, test_print_file_operation, BTK_TYPE_PRINT_OPERATION)
 
 static void
-test_print_file_operation_finalize (GObject *object)
+test_print_file_operation_finalize (BObject *object)
 {
   TestPrintFileOperation *op = TEST_PRINT_FILE_OPERATION (object);
   
   g_free (op->filename);
   
-  G_OBJECT_CLASS (test_print_file_operation_parent_class)->finalize (object);
+  B_OBJECT_CLASS (test_print_file_operation_parent_class)->finalize (object);
 }
 
 static void
@@ -152,7 +152,7 @@ test_print_file_operation_end_print (BtkPrintOperation *operation, BtkPrintConte
 static void
 test_print_file_operation_class_init (TestPrintFileOperationClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
   BtkPrintOperationClass *print_class = (BtkPrintOperationClass *)class;
 
   bobject_class->finalize = test_print_file_operation_finalize;

@@ -35,7 +35,7 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Parameters for dialog construction */
 typedef enum
@@ -84,11 +84,11 @@ typedef enum
 
 
 #define BTK_TYPE_DIALOG                  (btk_dialog_get_type ())
-#define BTK_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DIALOG, BtkDialog))
-#define BTK_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DIALOG, BtkDialogClass))
-#define BTK_IS_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DIALOG))
-#define BTK_IS_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DIALOG))
-#define BTK_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DIALOG, BtkDialogClass))
+#define BTK_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DIALOG, BtkDialog))
+#define BTK_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DIALOG, BtkDialogClass))
+#define BTK_IS_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DIALOG))
+#define BTK_IS_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DIALOG))
+#define BTK_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DIALOG, BtkDialogClass))
 
 
 typedef struct _BtkDialog        BtkDialog;
@@ -110,7 +110,7 @@ struct _BtkDialogClass
 {
   BtkWindowClass parent_class;
 
-  void (* response) (BtkDialog *dialog, gint response_id);
+  void (* response) (BtkDialog *dialog, bint response_id);
 
   /* Keybinding signals */
 
@@ -124,63 +124,63 @@ struct _BtkDialogClass
 };
 
 
-GType      btk_dialog_get_type (void) G_GNUC_CONST;
+GType      btk_dialog_get_type (void) B_GNUC_CONST;
 BtkWidget* btk_dialog_new      (void);
 
-BtkWidget* btk_dialog_new_with_buttons (const gchar     *title,
+BtkWidget* btk_dialog_new_with_buttons (const bchar     *title,
                                         BtkWindow       *parent,
                                         BtkDialogFlags   flags,
-                                        const gchar     *first_button_text,
+                                        const bchar     *first_button_text,
                                         ...);
 
 void       btk_dialog_add_action_widget (BtkDialog   *dialog,
                                          BtkWidget   *child,
-                                         gint         response_id);
+                                         bint         response_id);
 BtkWidget* btk_dialog_add_button        (BtkDialog   *dialog,
-                                         const gchar *button_text,
-                                         gint         response_id);
+                                         const bchar *button_text,
+                                         bint         response_id);
 void       btk_dialog_add_buttons       (BtkDialog   *dialog,
-                                         const gchar *first_button_text,
-                                         ...) G_GNUC_NULL_TERMINATED;
+                                         const bchar *first_button_text,
+                                         ...) B_GNUC_NULL_TERMINATED;
 
 void btk_dialog_set_response_sensitive (BtkDialog *dialog,
-                                        gint       response_id,
-                                        gboolean   setting);
+                                        bint       response_id,
+                                        bboolean   setting);
 void btk_dialog_set_default_response   (BtkDialog *dialog,
-                                        gint       response_id);
+                                        bint       response_id);
 BtkWidget* btk_dialog_get_widget_for_response (BtkDialog *dialog,
-                                               gint       response_id);
-gint btk_dialog_get_response_for_widget (BtkDialog *dialog,
+                                               bint       response_id);
+bint btk_dialog_get_response_for_widget (BtkDialog *dialog,
 					 BtkWidget *widget);
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
 void     btk_dialog_set_has_separator (BtkDialog *dialog,
-                                       gboolean   setting);
-gboolean btk_dialog_get_has_separator (BtkDialog *dialog);
+                                       bboolean   setting);
+bboolean btk_dialog_get_has_separator (BtkDialog *dialog);
 #endif
 
-gboolean btk_alternative_dialog_button_order (BdkScreen *screen);
+bboolean btk_alternative_dialog_button_order (BdkScreen *screen);
 void     btk_dialog_set_alternative_button_order (BtkDialog *dialog,
-						  gint       first_response_id,
+						  bint       first_response_id,
 						  ...);
 void     btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
-                                                             gint       n_params,
-                                                             gint      *new_order);
+                                                             bint       n_params,
+                                                             bint      *new_order);
 
 /* Emit response signal */
 void btk_dialog_response           (BtkDialog *dialog,
-                                    gint       response_id);
+                                    bint       response_id);
 
 /* Returns response_id */
-gint btk_dialog_run                (BtkDialog *dialog);
+bint btk_dialog_run                (BtkDialog *dialog);
 
 BtkWidget * btk_dialog_get_action_area  (BtkDialog *dialog);
 BtkWidget * btk_dialog_get_content_area (BtkDialog *dialog);
 
 /* For private use only */
 void _btk_dialog_set_ignore_separator (BtkDialog *dialog,
-				       gboolean   ignore_separator);
+				       bboolean   ignore_separator);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_DIALOG_H__ */

@@ -51,18 +51,18 @@ typedef struct {
 } BdkColormapPrivateDirectFB;
 
 
-static void  bdk_colormap_finalize (GObject *object);
+static void  bdk_colormap_finalize (BObject *object);
 
-static gint  bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
+static bint  bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
                                               BdkColor    *colors,
-                                              gint         ncolors,
-                                              gboolean     writeable,
-                                              gboolean     best_match,
-                                              gboolean    *success);
+                                              bint         ncolors,
+                                              bboolean     writeable,
+                                              bboolean     best_match,
+                                              bboolean    *success);
 static void  bdk_directfb_allocate_color_key (BdkColormap *colormap);
 
 
-G_DEFINE_TYPE (BdkColormap, bdk_colormap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkColormap, bdk_colormap, B_TYPE_OBJECT)
 
 static void
 bdk_colormap_init (BdkColormap *colormap)
@@ -75,13 +75,13 @@ bdk_colormap_init (BdkColormap *colormap)
 static void
 bdk_colormap_class_init (BdkColormapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_colormap_finalize;
 }
 
 static void
-bdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (BObject *object)
 {
   BdkColormap                *colormap = BDK_COLORMAP (object);
   BdkColormapPrivateDirectFB *private  = colormap->windowing_data;
@@ -99,15 +99,15 @@ bdk_colormap_finalize (GObject *object)
       colormap->windowing_data = NULL;
     }
 
-  G_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
 }
 
 BdkColormap*
 bdk_colormap_new (BdkVisual *visual,
-                  gboolean   private_cmap)
+                  bboolean   private_cmap)
 {
   BdkColormap *colormap;
-  gint         i;
+  bint         i;
 
   g_return_val_if_fail (visual != NULL, NULL);
 
@@ -218,7 +218,7 @@ bdk_screen_get_system_colormap (BdkScreen *screen)
   return colormap;
 }
 
-gint
+bint
 bdk_colormap_get_system_size (void)
 {
   BdkVisual *visual;
@@ -230,18 +230,18 @@ bdk_colormap_get_system_size (void)
 
 void
 bdk_colormap_change (BdkColormap *colormap,
-                     gint         ncolors)
+                     bint         ncolors)
 {
   g_message ("bdk_colormap_change() is deprecated and unimplemented");
 }
 
-gboolean
+bboolean
 bdk_colors_alloc (BdkColormap   *colormap,
-                  gboolean       contiguous,
-                  gulong        *planes,
-                  gint           nplanes,
-                  gulong        *pixels,
-                  gint           npixels)
+                  bboolean       contiguous,
+                  bulong        *planes,
+                  bint           nplanes,
+                  bulong        *pixels,
+                  bint           npixels)
 {
   /* g_message ("bdk_colors_alloc() is deprecated and unimplemented"); */
 
@@ -250,9 +250,9 @@ bdk_colors_alloc (BdkColormap   *colormap,
 
 void
 bdk_colors_free (BdkColormap *colormap,
-                 gulong      *in_pixels,
-                 gint         in_npixels,
-                 gulong       planes)
+                 bulong      *in_pixels,
+                 bint         in_npixels,
+                 bulong       planes)
 {
   /* g_message ("bdk_colors_free() is deprecated and unimplemented"); */
 }
@@ -260,10 +260,10 @@ bdk_colors_free (BdkColormap *colormap,
 void
 bdk_colormap_free_colors (BdkColormap    *colormap,
                           const BdkColor *colors,
-                          gint            ncolors)
+                          bint            ncolors)
 {
   BdkColormapPrivateDirectFB *private;
-  gint                        i;
+  bint                        i;
 
   g_return_if_fail (BDK_IS_COLORMAP (colormap));
   g_return_if_fail (colors != NULL);
@@ -274,7 +274,7 @@ bdk_colormap_free_colors (BdkColormap    *colormap,
 
   for (i = 0; i < ncolors; i++)
     {
-      gint  index = colors[i].pixel;
+      bint  index = colors[i].pixel;
 
       if (index < 0 || index >= colormap->size)
         continue;
@@ -284,16 +284,16 @@ bdk_colormap_free_colors (BdkColormap    *colormap,
     }
 }
 
-gint
+bint
 bdk_colormap_alloc_colors (BdkColormap *colormap,
                            BdkColor    *colors,
-                           gint         ncolors,
-                           gboolean     writeable,
-                           gboolean     best_match,
-                           gboolean    *success)
+                           bint         ncolors,
+                           bboolean     writeable,
+                           bboolean     best_match,
+                           bboolean    *success)
 {
   BdkVisual *visual;
-  gint       i;
+  bint       i;
 
   g_return_val_if_fail (BDK_IS_COLORMAP (colormap), 0);
   g_return_val_if_fail (colors != NULL, 0);
@@ -344,7 +344,7 @@ bdk_colormap_alloc_colors (BdkColormap *colormap,
   return 0;
 }
 
-gboolean
+bboolean
 bdk_color_change (BdkColormap *colormap,
                   BdkColor    *color)
 {
@@ -384,7 +384,7 @@ bdk_color_change (BdkColormap *colormap,
 
 void
 bdk_colormap_query_color (BdkColormap *colormap,
-                          gulong       pixel,
+                          bulong       pixel,
                           BdkColor    *result)
 {
   BdkVisual *visual;
@@ -397,15 +397,15 @@ bdk_colormap_query_color (BdkColormap *colormap,
     {
     case BDK_VISUAL_TRUE_COLOR:
       result->red = 65535. *
-        (gdouble)((pixel & visual->red_mask) >> visual->red_shift) /
+        (bdouble)((pixel & visual->red_mask) >> visual->red_shift) /
         ((1 << visual->red_prec) - 1);
 
       result->green = 65535. *
-        (gdouble)((pixel & visual->green_mask) >> visual->green_shift) /
+        (bdouble)((pixel & visual->green_mask) >> visual->green_shift) /
         ((1 << visual->green_prec) - 1);
 
       result->blue = 65535. *
-        (gdouble)((pixel & visual->blue_mask) >> visual->blue_shift) /
+        (bdouble)((pixel & visual->blue_mask) >> visual->blue_shift) /
         ((1 << visual->blue_prec) - 1);
       break;
 
@@ -445,24 +445,24 @@ bdk_directfb_colormap_get_palette (BdkColormap *colormap)
     return NULL;
 }
 
-static gint
+static bint
 bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
                                  BdkColor    *colors,
-                                 gint         ncolors,
-                                 gboolean     writeable,
-                                 gboolean     best_match,
-                                 gboolean    *success)
+                                 bint         ncolors,
+                                 bboolean     writeable,
+                                 bboolean     best_match,
+                                 bboolean    *success)
 {
   BdkColormapPrivateDirectFB *private = colormap->windowing_data;
   IDirectFBPalette           *palette;
-  gint                        i, j;
-  gint                        remaining = ncolors;
+  bint                        i, j;
+  bint                        remaining = ncolors;
 
   palette = private->palette;
 
   for (i = 0; i < ncolors; i++)
     {
-      guint     index;
+      buint     index;
       DFBColor  lookup = { 0xFF,
                            colors[i].red   >> 8,
                            colors[i].green >> 8,

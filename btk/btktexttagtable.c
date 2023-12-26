@@ -74,32 +74,32 @@ enum {
   LAST_ARG
 };
 
-static void btk_text_tag_table_finalize     (GObject              *object);
-static void btk_text_tag_table_set_property (GObject              *object,
-                                             guint                 prop_id,
-                                             const GValue         *value,
-                                             GParamSpec           *pspec);
-static void btk_text_tag_table_get_property (GObject              *object,
-                                             guint                 prop_id,
-                                             GValue               *value,
-                                             GParamSpec           *pspec);
+static void btk_text_tag_table_finalize     (BObject              *object);
+static void btk_text_tag_table_set_property (BObject              *object,
+                                             buint                 prop_id,
+                                             const BValue         *value,
+                                             BParamSpec           *pspec);
+static void btk_text_tag_table_get_property (BObject              *object,
+                                             buint                 prop_id,
+                                             BValue               *value,
+                                             BParamSpec           *pspec);
 
 static void btk_text_tag_table_buildable_interface_init (BtkBuildableIface   *iface);
 static void btk_text_tag_table_buildable_add_child      (BtkBuildable        *buildable,
 							 BtkBuilder          *builder,
-							 GObject             *child,
-							 const gchar         *type);
+							 BObject             *child,
+							 const bchar         *type);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_CODE (BtkTextTagTable, btk_text_tag_table, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkTextTagTable, btk_text_tag_table, B_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
                                                 btk_text_tag_table_buildable_interface_init))
 
 static void
 btk_text_tag_table_class_init (BtkTextTagTableClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->set_property = btk_text_tag_table_set_property;
   object_class->get_property = btk_text_tag_table_get_property;
@@ -108,35 +108,35 @@ btk_text_tag_table_class_init (BtkTextTagTableClass *klass)
   
   signals[TAG_CHANGED] =
     g_signal_new (I_("tag-changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextTagTableClass, tag_changed),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_BOOLEAN,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   2,
                   BTK_TYPE_TEXT_TAG,
-                  G_TYPE_BOOLEAN);  
+                  B_TYPE_BOOLEAN);  
 
   signals[TAG_ADDED] =
     g_signal_new (I_("tag-added"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextTagTableClass, tag_added),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   1,
                   BTK_TYPE_TEXT_TAG);
 
   signals[TAG_REMOVED] =
     g_signal_new (I_("tag-removed"),  
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BtkTextTagTableClass, tag_removed),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   1,
                   BTK_TYPE_TEXT_TAG);
 }
@@ -166,7 +166,7 @@ btk_text_tag_table_new (void)
 }
 
 static void
-foreach_unref (BtkTextTag *tag, gpointer data)
+foreach_unref (BtkTextTag *tag, bpointer data)
 {
   GSList *tmp;
   
@@ -188,7 +188,7 @@ foreach_unref (BtkTextTag *tag, gpointer data)
 }
 
 static void
-btk_text_tag_table_finalize (GObject *object)
+btk_text_tag_table_finalize (BObject *object)
 {
   BtkTextTagTable *table;
 
@@ -197,39 +197,39 @@ btk_text_tag_table_finalize (GObject *object)
   btk_text_tag_table_foreach (table, foreach_unref, NULL);
 
   g_hash_table_destroy (table->hash);
-  g_slist_free (table->anonymous);
+  b_slist_free (table->anonymous);
 
-  g_slist_free (table->buffers);
+  b_slist_free (table->buffers);
 
-  G_OBJECT_CLASS (btk_text_tag_table_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_text_tag_table_parent_class)->finalize (object);
 }
 static void
-btk_text_tag_table_set_property (GObject      *object,
-                                 guint         prop_id,
-                                 const GValue *value,
-                                 GParamSpec   *pspec)
+btk_text_tag_table_set_property (BObject      *object,
+                                 buint         prop_id,
+                                 const BValue *value,
+                                 BParamSpec   *pspec)
 {
   switch (prop_id)
     {
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 
 static void
-btk_text_tag_table_get_property (GObject      *object,
-                                 guint         prop_id,
-                                 GValue       *value,
-                                 GParamSpec   *pspec)
+btk_text_tag_table_get_property (BObject      *object,
+                                 buint         prop_id,
+                                 BValue       *value,
+                                 BParamSpec   *pspec)
 {
   switch (prop_id)
     {
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -243,8 +243,8 @@ btk_text_tag_table_buildable_interface_init (BtkBuildableIface   *iface)
 static void
 btk_text_tag_table_buildable_add_child (BtkBuildable        *buildable,
 					BtkBuilder          *builder,
-					GObject             *child,
-					const gchar         *type)
+					BObject             *child,
+					const bchar         *type)
 {
   if (type && strcmp (type, "tag") == 0)
     btk_text_tag_table_add (BTK_TEXT_TAG_TABLE (buildable),
@@ -266,7 +266,7 @@ void
 btk_text_tag_table_add (BtkTextTagTable *table,
                         BtkTextTag      *tag)
 {
-  guint size;
+  buint size;
 
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
   g_return_if_fail (BTK_IS_TEXT_TAG (tag));
@@ -285,7 +285,7 @@ btk_text_tag_table_add (BtkTextTagTable *table,
     g_hash_table_insert (table->hash, tag->name, tag);
   else
     {
-      table->anonymous = g_slist_prepend (table->anonymous, tag);
+      table->anonymous = b_slist_prepend (table->anonymous, tag);
       table->anon_count += 1;
     }
 
@@ -312,7 +312,7 @@ btk_text_tag_table_add (BtkTextTagTable *table,
  **/
 BtkTextTag*
 btk_text_tag_table_lookup (BtkTextTagTable *table,
-                           const gchar     *name)
+                           const bchar     *name)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), NULL);
   g_return_val_if_fail (name != NULL, NULL);
@@ -362,7 +362,7 @@ btk_text_tag_table_remove (BtkTextTagTable *table,
     g_hash_table_remove (table->hash, tag->name);
   else
     {
-      table->anonymous = g_slist_remove (table->anonymous, tag);
+      table->anonymous = b_slist_remove (table->anonymous, tag);
       table->anon_count -= 1;
     }
 
@@ -374,11 +374,11 @@ btk_text_tag_table_remove (BtkTextTagTable *table,
 struct ForeachData
 {
   BtkTextTagTableForeach func;
-  gpointer data;
+  bpointer data;
 };
 
 static void
-hash_foreach (gpointer key, gpointer value, gpointer data)
+hash_foreach (bpointer key, bpointer value, bpointer data)
 {
   struct ForeachData *fd = data;
 
@@ -388,7 +388,7 @@ hash_foreach (gpointer key, gpointer value, gpointer data)
 }
 
 static void
-list_foreach (gpointer data, gpointer user_data)
+list_foreach (bpointer data, bpointer user_data)
 {
   struct ForeachData *fd = user_data;
 
@@ -410,7 +410,7 @@ list_foreach (gpointer data, gpointer user_data)
 void
 btk_text_tag_table_foreach (BtkTextTagTable       *table,
                             BtkTextTagTableForeach func,
-                            gpointer               data)
+                            bpointer               data)
 {
   struct ForeachData d;
 
@@ -421,7 +421,7 @@ btk_text_tag_table_foreach (BtkTextTagTable       *table,
   d.data = data;
 
   g_hash_table_foreach (table->hash, hash_foreach, &d);
-  g_slist_foreach (table->anonymous, list_foreach, &d);
+  b_slist_foreach (table->anonymous, list_foreach, &d);
 }
 
 /**
@@ -432,7 +432,7 @@ btk_text_tag_table_foreach (BtkTextTagTable       *table,
  * 
  * Return value: number of tags in @table
  **/
-gint
+bint
 btk_text_tag_table_get_size (BtkTextTagTable *table)
 {
   g_return_val_if_fail (BTK_IS_TEXT_TAG_TABLE (table), 0);
@@ -442,15 +442,15 @@ btk_text_tag_table_get_size (BtkTextTagTable *table)
 
 void
 _btk_text_tag_table_add_buffer (BtkTextTagTable *table,
-                                gpointer         buffer)
+                                bpointer         buffer)
 {
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 
-  table->buffers = g_slist_prepend (table->buffers, buffer);
+  table->buffers = b_slist_prepend (table->buffers, buffer);
 }
 
 static void
-foreach_remove_tag (BtkTextTag *tag, gpointer data)
+foreach_remove_tag (BtkTextTag *tag, bpointer data)
 {
   BtkTextBuffer *buffer;
 
@@ -461,13 +461,13 @@ foreach_remove_tag (BtkTextTag *tag, gpointer data)
 
 void
 _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
-                                   gpointer         buffer)
+                                   bpointer         buffer)
 {
   g_return_if_fail (BTK_IS_TEXT_TAG_TABLE (table));
 
   btk_text_tag_table_foreach (table, foreach_remove_tag, buffer);
   
-  table->buffers = g_slist_remove (table->buffers, buffer);
+  table->buffers = b_slist_remove (table->buffers, buffer);
 }
 
 #define __BTK_TEXT_TAG_TABLE_C__

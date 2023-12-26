@@ -22,14 +22,14 @@
 
 #include <batk/batk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CELL                           (bail_cell_get_type ())
-#define BAIL_CELL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL, BailCell))
-#define BAIL_CELL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CELL, BailCellClass))
-#define BAIL_IS_CELL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CELL))
-#define BAIL_IS_CELL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CELL))
-#define BAIL_CELL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CELL, BailCellClass))
+#define BAIL_CELL(obj)                           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CELL, BailCell))
+#define BAIL_CELL_CLASS(klass)                   (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CELL, BailCellClass))
+#define BAIL_IS_CELL(obj)                        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CELL))
+#define BAIL_IS_CELL_CLASS(klass)                (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CELL))
+#define BAIL_CELL_GET_CLASS(obj)                 (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CELL, BailCellClass))
 
 typedef struct _BailCell                  BailCell;
 typedef struct _BailCellClass             BailCellClass;
@@ -45,11 +45,11 @@ struct _BailCell
    * This cached value is used only by batk_object_get_index_in_parent()
    * which updates the value when it is stale.
    */
-  gint         index;
+  bint         index;
   BatkStateSet *state_set;
   GList       *action_list;
   void (*refresh_index) (BailCell *cell);
-  gint         action_idle_handler;
+  bint         action_idle_handler;
   ACTION_FUNC  action_func;
 };
 
@@ -61,42 +61,42 @@ struct _BailCellClass
 };
 
 struct _ActionInfo {
-  gchar *name;
-  gchar *description;
-  gchar *keybinding;
+  bchar *name;
+  bchar *description;
+  bchar *keybinding;
   ACTION_FUNC do_action_func;
 };
 
 void      bail_cell_initialise           (BailCell        *cell,
                                           BtkWidget       *widget, 
                                           BatkObject       *parent,
-			                  gint            index);
+			                  bint            index);
 
-gboolean bail_cell_add_state             (BailCell        *cell,
+bboolean bail_cell_add_state             (BailCell        *cell,
                                           BatkStateType    state_type,
-                                          gboolean        emit_signal);
+                                          bboolean        emit_signal);
 
-gboolean bail_cell_remove_state          (BailCell        *cell,
+bboolean bail_cell_remove_state          (BailCell        *cell,
                                           BatkStateType    state_type,
-                                          gboolean        emit_signal);
+                                          bboolean        emit_signal);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void     bail_cell_type_add_action_interface 
                                          (GType           type);
 #endif
 
-gboolean bail_cell_add_action            (BailCell        *cell,
-		                          const gchar     *action_name,
-		                          const gchar     *action_description,
-		                          const gchar     *action_keybinding,
+bboolean bail_cell_add_action            (BailCell        *cell,
+		                          const bchar     *action_name,
+		                          const bchar     *action_description,
+		                          const bchar     *action_keybinding,
 		                          ACTION_FUNC     action_func);
 
-gboolean bail_cell_remove_action         (BailCell        *cell,
-                                          gint            action_id);
+bboolean bail_cell_remove_action         (BailCell        *cell,
+                                          bint            action_id);
 
-gboolean bail_cell_remove_action_by_name (BailCell        *cell,
-                                          const gchar     *action_name);
+bboolean bail_cell_remove_action_by_name (BailCell        *cell,
+                                          const bchar     *action_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CELL_H__ */

@@ -23,10 +23,10 @@
 static void
 accel_edited_callback (BtkCellRendererText *cell,
                        const char          *path_string,
-                       guint                keyval,
+                       buint                keyval,
                        BdkModifierType      mask,
-                       guint                hardware_keycode,
-                       gpointer             data)
+                       buint                hardware_keycode,
+                       bpointer             data)
 {
   BtkTreeModel *model = (BtkTreeModel *)data;
   BtkTreePath *path = btk_tree_path_new_from_string (path_string);
@@ -37,7 +37,7 @@ accel_edited_callback (BtkCellRendererText *cell,
   g_print ("%u %d %u\n", keyval, mask, hardware_keycode);
   
   btk_list_store_set (BTK_LIST_STORE (model), &iter,
-		      0, (gint)mask,
+		      0, (bint)mask,
 		      1, keyval,
 		      -1);
   btk_tree_path_free (path);
@@ -50,7 +50,7 @@ key_test (void)
 	BtkListStore *store;
 	BtkTreeViewColumn *column;
 	BtkCellRenderer *rend;
-	gint i;
+	bint i;
 
 	/* create window */
 	window = btk_window_new (BTK_WINDOW_TOPLEVEL);
@@ -59,16 +59,16 @@ key_test (void)
 	sw = btk_scrolled_window_new (NULL, NULL);
 	btk_container_add (BTK_CONTAINER (window), sw);
 
-	store = btk_list_store_new (2, G_TYPE_INT, G_TYPE_UINT);
+	store = btk_list_store_new (2, B_TYPE_INT, B_TYPE_UINT);
 	tv = btk_tree_view_new_with_model (BTK_TREE_MODEL (store));
 	btk_container_add (BTK_CONTAINER (sw), tv);
 	column = btk_tree_view_column_new ();
 	rend = btk_cell_renderer_accel_new ();
-	g_object_set (G_OBJECT (rend), 
+	g_object_set (B_OBJECT (rend), 
 		      "accel-mode", BTK_CELL_RENDERER_ACCEL_MODE_BTK, 
                       "editable", TRUE, 
 		      NULL);
-	g_signal_connect (G_OBJECT (rend),
+	g_signal_connect (B_OBJECT (rend),
 			  "accel-edited",
 			  G_CALLBACK (accel_edited_callback),
 			  store);
@@ -92,8 +92,8 @@ key_test (void)
 	return window;
 }
 
-gint
-main (gint argc, gchar **argv)
+bint
+main (bint argc, bchar **argv)
 {
   BtkWidget *dialog;
   

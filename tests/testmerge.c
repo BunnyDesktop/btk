@@ -30,7 +30,7 @@
 #define STDOUT_FILENO 1 
 #endif
 
-struct { const gchar *filename; guint merge_id; } merge_ids[] = {
+struct { const bchar *filename; buint merge_id; } merge_ids[] = {
   { "merge-1.ui", 0 },
   { "merge-2.ui", 0 },
   { "merge-3.ui", 0 }
@@ -40,7 +40,7 @@ static void
 dump_tree (BtkWidget    *button, 
 	   BtkUIManager *merge)
 {
-  gchar *dump;
+  bchar *dump;
 
   dump = btk_ui_manager_get_ui (merge);
   g_message ("%s", dump);
@@ -54,9 +54,9 @@ dump_accels (void)
 }
 
 static void
-print_toplevel (BtkWidget *widget, gpointer user_data)
+print_toplevel (BtkWidget *widget, bpointer user_data)
 {
-  g_print ("%s\n", G_OBJECT_TYPE_NAME (widget));
+  g_print ("%s\n", B_OBJECT_TYPE_NAME (widget));
 }
 
 static void
@@ -70,27 +70,27 @@ dump_toplevels (BtkWidget    *button,
 					    BTK_UI_MANAGER_TOOLBAR |
 					    BTK_UI_MANAGER_POPUP);
 
-  g_slist_foreach (toplevels, (GFunc) print_toplevel, NULL);
-  g_slist_free (toplevels);
+  b_slist_foreach (toplevels, (GFunc) print_toplevel, NULL);
+  b_slist_free (toplevels);
 }
 
 static void
 toggle_tearoffs (BtkWidget    *button, 
 		 BtkUIManager *merge)
 {
-  gboolean add_tearoffs;
+  bboolean add_tearoffs;
 
   add_tearoffs = btk_ui_manager_get_add_tearoffs (merge);
   
   btk_ui_manager_set_add_tearoffs (merge, !add_tearoffs);
 }
 
-static gint
+static bint
 delayed_toggle_dynamic (BtkUIManager *merge)
 {
   BtkAction *dyn;
   static BtkActionGroup *dynamic = NULL;
-  static guint merge_id = 0;
+  static buint merge_id = 0;
 
   if (!dynamic)
     {
@@ -146,8 +146,8 @@ toggle_dynamic (BtkWidget    *button,
 static void
 activate_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("Action %s (type=%s) activated", name, typename);
 }
@@ -155,8 +155,8 @@ activate_action (BtkAction *action)
 static void
 toggle_action (BtkAction *action)
 {
-  const gchar *name = btk_action_get_name (action);
-  const gchar *typename = G_OBJECT_TYPE_NAME (action);
+  const bchar *name = btk_action_get_name (action);
+  const bchar *typename = B_OBJECT_TYPE_NAME (action);
 
   g_message ("ToggleAction %s (type=%s) toggled (active=%d)", name, typename,
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (action)));
@@ -168,7 +168,7 @@ radio_action_changed (BtkAction *action, BtkRadioAction *current)
 {
   g_message ("RadioAction %s (type=%s) activated (active=%d) (value %d)", 
 	     btk_action_get_name (BTK_ACTION (current)), 
-	     G_OBJECT_TYPE_NAME (BTK_ACTION (current)),
+	     B_OBJECT_TYPE_NAME (BTK_ACTION (current)),
 	     btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current)),
 	     btk_radio_action_get_current_value (current));
 }
@@ -191,13 +191,13 @@ static BtkActionEntry entries[] = {
   { "PasteAction", BTK_STOCK_PASTE, NULL,     "<control>v", "Paste", G_CALLBACK (activate_action) },
   { "AboutAction", NULL,            "_About", NULL,         "About", G_CALLBACK (activate_action) },
 };
-static guint n_entries = G_N_ELEMENTS (entries);
+static buint n_entries = G_N_ELEMENTS (entries);
 
 static BtkToggleActionEntry toggle_entries[] = {
   { "BoldAction",  BTK_STOCK_BOLD,  "_Bold",  "<control>b", "Make it bold", G_CALLBACK (toggle_action), 
     TRUE },
 };
-static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
+static buint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
 
 enum {
   JUSTIFY_LEFT,
@@ -216,7 +216,7 @@ static BtkRadioActionEntry radio_entries[] = {
   { "justify-fill", BTK_STOCK_JUSTIFY_FILL, NULL, "<super><hyper>J",
     "Fill justify the text", JUSTIFY_FILL },
 };
-static guint n_radio_entries = G_N_ELEMENTS (radio_entries);
+static buint n_radio_entries = G_N_ELEMENTS (radio_entries);
 
 static void
 add_widget (BtkUIManager *merge, 
@@ -244,9 +244,9 @@ static void
 toggle_merge (BtkWidget    *button, 
 	      BtkUIManager *merge)
 {
-  gint mergenum;
+  bint mergenum;
 
-  mergenum = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (button), "mergenum"));
+  mergenum = BPOINTER_TO_INT (g_object_get_data (B_OBJECT (button), "mergenum"));
 
   if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (button)))
     {
@@ -283,7 +283,7 @@ set_name_func (BtkTreeViewColumn *tree_column,
 	       BtkCellRenderer   *cell,
 	       BtkTreeModel      *tree_model,
 	       BtkTreeIter       *iter,
-	       gpointer           data)
+	       bpointer           data)
 {
   BtkAction *action;
   char *name;
@@ -300,10 +300,10 @@ set_sensitive_func (BtkTreeViewColumn *tree_column,
 		    BtkCellRenderer   *cell,
 		    BtkTreeModel      *tree_model,
 		    BtkTreeIter       *iter,
-		    gpointer           data)
+		    bpointer           data)
 {
   BtkAction *action;
-  gboolean sensitive;
+  bboolean sensitive;
   
   btk_tree_model_get (tree_model, iter, 0, &action, -1);
   g_object_get (action, "sensitive", &sensitive, NULL);
@@ -317,10 +317,10 @@ set_visible_func (BtkTreeViewColumn *tree_column,
 		  BtkCellRenderer   *cell,
 		  BtkTreeModel      *tree_model,
 		  BtkTreeIter       *iter,
-		  gpointer           data)
+		  bpointer           data)
 {
   BtkAction *action;
-  gboolean visible;
+  bboolean visible;
   
   btk_tree_model_get (tree_model, iter, 0, &action, -1);
   g_object_get (action, "visible", &visible, NULL);
@@ -330,13 +330,13 @@ set_visible_func (BtkTreeViewColumn *tree_column,
 
 static void
 sensitivity_toggled (BtkCellRendererToggle *cell, 
-		     const gchar           *path_str,
+		     const bchar           *path_str,
 		     BtkTreeModel          *model)
 {
   BtkTreePath *path;
   BtkTreeIter iter;
   BtkAction *action;
-  gboolean sensitive;
+  bboolean sensitive;
 
   path = btk_tree_path_new_from_string (path_str);
   btk_tree_model_get_iter (model, &iter, path);
@@ -350,13 +350,13 @@ sensitivity_toggled (BtkCellRendererToggle *cell,
 
 static void
 visibility_toggled (BtkCellRendererToggle *cell, 
-		    const gchar           *path_str, 
+		    const bchar           *path_str, 
 		    BtkTreeModel          *model)
 {
   BtkTreePath *path;
   BtkTreeIter iter;
   BtkAction *action;
-  gboolean visible;
+  bboolean visible;
 
   path = btk_tree_path_new_from_string (path_str);
   btk_tree_model_get_iter (model, &iter, path);
@@ -368,21 +368,21 @@ visibility_toggled (BtkCellRendererToggle *cell,
   btk_tree_path_free (path);
 }
 
-static gint
+static bint
 iter_compare_func (BtkTreeModel *model, 
 		   BtkTreeIter  *a, 
 		   BtkTreeIter  *b,
-		   gpointer      user_data)
+		   bpointer      user_data)
 {
-  GValue a_value = { 0, }, b_value = { 0, };
+  BValue a_value = { 0, }, b_value = { 0, };
   BtkAction *a_action, *b_action;
-  const gchar *a_name, *b_name;
-  gint retval = 0;
+  const bchar *a_name, *b_name;
+  bint retval = 0;
 
   btk_tree_model_get_value (model, a, 0, &a_value);
   btk_tree_model_get_value (model, b, 0, &b_value);
-  a_action = BTK_ACTION (g_value_get_object (&a_value));
-  b_action = BTK_ACTION (g_value_get_object (&b_value));
+  a_action = BTK_ACTION (b_value_get_object (&a_value));
+  b_action = BTK_ACTION (b_value_get_object (&b_value));
 
   a_name = btk_action_get_name (a_action);
   b_name = btk_action_get_name (b_action);
@@ -395,8 +395,8 @@ iter_compare_func (BtkTreeModel *model,
   else 
     retval = strcmp (a_name, b_name);
 
-  g_value_unset (&b_value);
-  g_value_unset (&a_value);
+  b_value_unset (&b_value);
+  b_value_unset (&a_value);
 
   return retval;
 }
@@ -464,7 +464,7 @@ create_tree_view (BtkUIManager *merge)
   return sw;
 }
 
-static gboolean
+static bboolean
 area_press (BtkWidget      *drawing_area,
 	    BdkEventButton *event,
 	    BtkUIManager   *merge)
@@ -509,7 +509,7 @@ struct _ActionStatus {
 };
 
 static void
-action_status_destroy (gpointer data)
+action_status_destroy (bpointer data)
 {
   ActionStatus *action_status = data;
 
@@ -523,9 +523,9 @@ static void
 set_tip (BtkWidget *widget)
 {
   ActionStatus *data;
-  gchar *tooltip;
+  bchar *tooltip;
   
-  data = g_object_get_data (G_OBJECT (widget), "action-status");
+  data = g_object_get_data (B_OBJECT (widget), "action-status");
   
   if (data) 
     {
@@ -543,7 +543,7 @@ unset_tip (BtkWidget *widget)
 {
   ActionStatus *data;
 
-  data = g_object_get_data (G_OBJECT (widget), "action-status");
+  data = g_object_get_data (B_OBJECT (widget), "action-status");
 
   if (data)
     btk_statusbar_pop (BTK_STATUSBAR (data->statusbar), 0);
@@ -559,7 +559,7 @@ connect_proxy (BtkUIManager *merge,
     {
       ActionStatus *data;
 
-      data = g_object_get_data (G_OBJECT (proxy), "action-status");
+      data = g_object_get_data (B_OBJECT (proxy), "action-status");
       if (data)
 	{
 	  g_object_unref (data->action);
@@ -575,7 +575,7 @@ connect_proxy (BtkUIManager *merge,
 	  data->action = g_object_ref (action);
 	  data->statusbar = g_object_ref (statusbar);
 
-	  g_object_set_data_full (G_OBJECT (proxy), "action-status", 
+	  g_object_set_data_full (B_OBJECT (proxy), "action-status", 
 				  data, action_status_destroy);
 	  
 	  g_signal_connect (proxy, "select",  G_CALLBACK (set_tip), NULL);
@@ -592,7 +592,7 @@ main (int argc, char **argv)
   BtkUIManager *merge;
   BtkWidget *window, *table, *frame, *menu_box, *vbox, *view;
   BtkWidget *button, *area, *statusbar;
-  gint i;
+  bint i;
   
   btk_init (&argc, &argv);
 
@@ -674,7 +674,7 @@ main (int argc, char **argv)
   for (i = 0; i < G_N_ELEMENTS (merge_ids); i++)
     {
       button = btk_check_button_new_with_label (merge_ids[i].filename);
-      g_object_set_data (G_OBJECT (button), "mergenum", GINT_TO_POINTER (i));
+      g_object_set_data (B_OBJECT (button), "mergenum", BINT_TO_POINTER (i));
       g_signal_connect (button, "toggled", G_CALLBACK (toggle_merge), merge);
       btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
       btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (button), TRUE);
@@ -722,7 +722,7 @@ main (int argc, char **argv)
       {
 	BtkAction *a = action->data;
 	g_print ("  action %s ref count %d\n", 
-		 btk_action_get_name (a), G_OBJECT (a)->ref_count);
+		 btk_action_get_name (a), B_OBJECT (a)->ref_count);
       }
   }
 #endif
@@ -740,7 +740,7 @@ main (int argc, char **argv)
       {
 	BtkAction *a = action->data;
 	g_print ("  action %s ref count %d\n", 
-		 btk_action_get_name (a), G_OBJECT (a)->ref_count);
+		 btk_action_get_name (a), B_OBJECT (a)->ref_count);
       }
   }
 #endif

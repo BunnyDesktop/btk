@@ -28,14 +28,14 @@
 
 #include <btk/btktoolitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEPARATOR_TOOL_ITEM            (btk_separator_tool_item_get_type ())
-#define BTK_SEPARATOR_TOOL_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItem))
-#define BTK_SEPARATOR_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
-#define BTK_IS_SEPARATOR_TOOL_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM))
-#define BTK_IS_SEPARATOR_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM))
-#define BTK_SEPARATOR_TOOL_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
+#define BTK_SEPARATOR_TOOL_ITEM(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItem))
+#define BTK_SEPARATOR_TOOL_ITEM_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
+#define BTK_IS_SEPARATOR_TOOL_ITEM(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM))
+#define BTK_IS_SEPARATOR_TOOL_ITEM_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM))
+#define BTK_SEPARATOR_TOOL_ITEM_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
 
 typedef struct _BtkSeparatorToolItem        BtkSeparatorToolItem;
 typedef struct _BtkSeparatorToolItemClass   BtkSeparatorToolItemClass;
@@ -60,13 +60,13 @@ struct _BtkSeparatorToolItemClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_separator_tool_item_get_type (void) G_GNUC_CONST;
+GType        btk_separator_tool_item_get_type (void) B_GNUC_CONST;
 BtkToolItem *btk_separator_tool_item_new      (void);
 
-gboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
+bboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
 void         btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
-					       gboolean              draw);
+					       bboolean              draw);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEPARATOR_TOOL_ITEM_H__ */

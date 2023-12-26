@@ -28,14 +28,14 @@
 #include <btk/btkhbox.h>
 #include <btk/btkfilechooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_BUTTON            (btk_file_chooser_button_get_type ())
-#define BTK_FILE_CHOOSER_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButton))
-#define BTK_FILE_CHOOSER_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
-#define BTK_IS_FILE_CHOOSER_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON))
-#define BTK_IS_FILE_CHOOSER_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON))
-#define BTK_FILE_CHOOSER_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
+#define BTK_FILE_CHOOSER_BUTTON(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButton))
+#define BTK_FILE_CHOOSER_BUTTON_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
+#define BTK_IS_FILE_CHOOSER_BUTTON(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON))
+#define BTK_IS_FILE_CHOOSER_BUTTON_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_BUTTON))
+#define BTK_FILE_CHOOSER_BUTTON_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_BUTTON, BtkFileChooserButtonClass))
 
 typedef struct _BtkFileChooserButton        BtkFileChooserButton;
 typedef struct _BtkFileChooserButtonPrivate BtkFileChooserButtonPrivate;
@@ -66,27 +66,27 @@ struct _BtkFileChooserButtonClass
 };
 
 
-GType                 btk_file_chooser_button_get_type         (void) G_GNUC_CONST;
-BtkWidget *           btk_file_chooser_button_new              (const gchar          *title,
+GType                 btk_file_chooser_button_get_type         (void) B_GNUC_CONST;
+BtkWidget *           btk_file_chooser_button_new              (const bchar          *title,
 								BtkFileChooserAction  action);
 
 #ifndef BTK_DISABLE_DEPRECATED
-BtkWidget *           btk_file_chooser_button_new_with_backend (const gchar          *title,
+BtkWidget *           btk_file_chooser_button_new_with_backend (const bchar          *title,
 								BtkFileChooserAction  action,
-								const gchar          *backend);
+								const bchar          *backend);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 BtkWidget *           btk_file_chooser_button_new_with_dialog  (BtkWidget            *dialog);
-const gchar *         btk_file_chooser_button_get_title        (BtkFileChooserButton *button);
+const bchar *         btk_file_chooser_button_get_title        (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_title        (BtkFileChooserButton *button,
-								const gchar          *title);
-gint                  btk_file_chooser_button_get_width_chars  (BtkFileChooserButton *button);
+								const bchar          *title);
+bint                  btk_file_chooser_button_get_width_chars  (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_width_chars  (BtkFileChooserButton *button,
-								gint                  n_chars);
-gboolean              btk_file_chooser_button_get_focus_on_click (BtkFileChooserButton *button);
+								bint                  n_chars);
+bboolean              btk_file_chooser_button_get_focus_on_click (BtkFileChooserButton *button);
 void                  btk_file_chooser_button_set_focus_on_click (BtkFileChooserButton *button,
-                                                                  gboolean              focus_on_click);
+                                                                  bboolean              focus_on_click);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* !__BTK_FILE_CHOOSER_BUTTON_H__ */

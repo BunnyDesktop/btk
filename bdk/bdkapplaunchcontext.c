@@ -29,19 +29,19 @@
 #include "bdkalias.h"
 
 
-static void    bdk_app_launch_context_finalize    (GObject           *object);
-static gchar * bdk_app_launch_context_get_display (GAppLaunchContext *context,
+static void    bdk_app_launch_context_finalize    (BObject           *object);
+static bchar * bdk_app_launch_context_get_display (GAppLaunchContext *context,
                                                    GAppInfo          *info,
                                                    GList             *files);
 
 
 G_DEFINE_TYPE (BdkAppLaunchContext, bdk_app_launch_context,
-	       G_TYPE_APP_LAUNCH_CONTEXT)
+	       B_TYPE_APP_LAUNCH_CONTEXT)
 
 static void
 bdk_app_launch_context_class_init (BdkAppLaunchContextClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   GAppLaunchContextClass *context_class = G_APP_LAUNCH_CONTEXT_CLASS (klass);
 
   bobject_class->finalize = bdk_app_launch_context_finalize;
@@ -56,14 +56,14 @@ bdk_app_launch_context_class_init (BdkAppLaunchContextClass *klass)
 static void
 bdk_app_launch_context_init (BdkAppLaunchContext *context)
 {
-  context->priv = G_TYPE_INSTANCE_GET_PRIVATE (context,
+  context->priv = B_TYPE_INSTANCE_GET_PRIVATE (context,
 					       BDK_TYPE_APP_LAUNCH_CONTEXT,
 					       BdkAppLaunchContextPrivate);
   context->priv->workspace = -1;
 }
 
 static void
-bdk_app_launch_context_finalize (GObject *object)
+bdk_app_launch_context_finalize (BObject *object)
 {
   BdkAppLaunchContext *context;
   BdkAppLaunchContextPrivate *priv;
@@ -83,10 +83,10 @@ bdk_app_launch_context_finalize (GObject *object)
 
   g_free (priv->icon_name);
 
-  G_OBJECT_CLASS (bdk_app_launch_context_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_app_launch_context_parent_class)->finalize (object);
 }
 
-static gchar *
+static bchar *
 bdk_app_launch_context_get_display (GAppLaunchContext *context,
                                     GAppInfo          *info,
                                     GList             *files)
@@ -184,7 +184,7 @@ bdk_app_launch_context_set_screen (BdkAppLaunchContext *context,
  */
 void
 bdk_app_launch_context_set_desktop (BdkAppLaunchContext *context,
-				    gint                 desktop)
+				    bint                 desktop)
 {
   g_return_if_fail (BDK_IS_APP_LAUNCH_CONTEXT (context));
 
@@ -208,7 +208,7 @@ bdk_app_launch_context_set_desktop (BdkAppLaunchContext *context,
  */
 void
 bdk_app_launch_context_set_timestamp (BdkAppLaunchContext *context,
-				      guint32              timestamp)
+				      buint32              timestamp)
 {
   g_return_if_fail (BDK_IS_APP_LAUNCH_CONTEXT (context));
 

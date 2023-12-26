@@ -51,13 +51,13 @@ typedef struct _BdkFontDirectFB  BdkFontDirectFB;
 struct _BdkFontDirectFB
 {
   BdkFontPrivate    base;
-  gint              size;
+  bint              size;
   IDirectFBFont    *dfbfont;
 };
 
 
 static BdkFont *
-bdk_directfb_bogus_font (gint height)
+bdk_directfb_bogus_font (bint height)
 {
   BdkFont         *font;
   BdkFontDirectFB *private;
@@ -77,7 +77,7 @@ BdkFont *
 bdk_font_from_description_for_display (BdkDisplay *display,
                                        BangoFontDescription *font_desc)
 {
-  gint size;
+  bint size;
 
   g_return_val_if_fail (font_desc, NULL);
 
@@ -89,19 +89,19 @@ bdk_font_from_description_for_display (BdkDisplay *display,
 /* ********************* */
 
 BdkFont *
-bdk_fontset_load (const gchar *fontset_name)
+bdk_fontset_load (const bchar *fontset_name)
 {
   return bdk_directfb_bogus_font (10);
 }
 
 BdkFont *
-bdk_fontset_load_for_display (BdkDisplay *display,const gchar *font_name)
+bdk_fontset_load_for_display (BdkDisplay *display,const bchar *font_name)
 {
   return bdk_directfb_bogus_font (10);
 }
 
 BdkFont *
-bdk_font_load_for_display (BdkDisplay *display, const gchar *font_name)
+bdk_font_load_for_display (BdkDisplay *display, const bchar *font_name)
 {
   return bdk_directfb_bogus_font (10);
 }
@@ -123,12 +123,12 @@ _bdk_font_destroy (BdkFont *font)
   g_free (font);
 }
 
-gint
+bint
 _bdk_font_strlen (BdkFont     *font,
-                  const gchar *str)
+                  const bchar *str)
 {
   BdkFontDirectFB *font_private;
-  gint             length = 0;
+  bint             length = 0;
 
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (str != NULL, -1);
@@ -137,7 +137,7 @@ _bdk_font_strlen (BdkFont     *font,
 
   if (font->type == BDK_FONT_FONT)
     {
-      guint16 *string_2b = (guint16 *)str;
+      buint16 *string_2b = (buint16 *)str;
 
       while (*(string_2b++))
         length++;
@@ -152,7 +152,7 @@ _bdk_font_strlen (BdkFont     *font,
   return length;
 }
 
-gint
+bint
 bdk_font_id (const BdkFont *font)
 {
   const BdkFontDirectFB *font_private;
@@ -171,7 +171,7 @@ bdk_font_id (const BdkFont *font)
     }
 }
 
-gint
+bint
 bdk_font_equal (const BdkFont *fonta,
                 const BdkFont *fontb)
 {
@@ -190,10 +190,10 @@ bdk_font_equal (const BdkFont *fonta,
   return FALSE;
 }
 
-gint
+bint
 bdk_text_width (BdkFont      *font,
-                const gchar  *text,
-                gint          text_length)
+                const bchar  *text,
+                bint          text_length)
 {
   BdkFontDirectFB *private;
 
@@ -202,23 +202,23 @@ bdk_text_width (BdkFont      *font,
   return (text_length * private->size) / 2;
 }
 
-gint
+bint
 bdk_text_width_wc (BdkFont        *font,
                    const BdkWChar *text,
-                   gint            text_length)
+                   bint            text_length)
 {
   return 0;
 }
 
 void
 bdk_text_extents (BdkFont     *font,
-                  const gchar *text,
-                  gint         text_length,
-                  gint        *lbearing,
-                  gint        *rbearing,
-                  gint        *width,
-                  gint        *ascent,
-                  gint        *descent)
+                  const bchar *text,
+                  bint         text_length,
+                  bint        *lbearing,
+                  bint        *rbearing,
+                  bint        *width,
+                  bint        *ascent,
+                  bint        *descent)
 {
   if (ascent)
     *ascent = font->ascent;
@@ -235,12 +235,12 @@ bdk_text_extents (BdkFont     *font,
 void
 bdk_text_extents_wc (BdkFont        *font,
                      const BdkWChar *text,
-                     gint            text_length,
-                     gint           *lbearing,
-                     gint           *rbearing,
-                     gint           *width,
-                     gint           *ascent,
-                     gint           *descent)
+                     bint            text_length,
+                     bint           *lbearing,
+                     bint           *rbearing,
+                     bint           *width,
+                     bint           *ascent,
+                     bint           *descent)
 {
   char *realstr;
   int i;

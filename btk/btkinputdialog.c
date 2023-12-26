@@ -71,7 +71,7 @@ struct _BtkInputDialogPrivate
 
 struct _BtkInputKeyInfo
 {
-  gint       index;
+  bint       index;
   BtkWidget *entry;
   BtkInputDialog *inputd;
 };
@@ -95,17 +95,17 @@ enum
 static void btk_input_dialog_screen_changed   (BtkWidget           *widget,
 					       BdkScreen           *previous_screen);
 static void btk_input_dialog_set_device       (BtkWidget           *widget,
-					       gpointer             data);
+					       bpointer             data);
 static void btk_input_dialog_set_mapping_mode (BtkWidget           *w,
-					       gpointer             data);
+					       bpointer             data);
 static void btk_input_dialog_set_axis         (BtkWidget           *widget,
-					       gpointer             data);
+					       bpointer             data);
 static void btk_input_dialog_fill_axes        (BtkInputDialog      *inputd,
 					       BdkDevice           *info);
 static void btk_input_dialog_set_key          (BtkInputKeyInfo     *key,
-					       guint                keyval,
+					       buint                keyval,
 					       BdkModifierType      modifiers);
-static gboolean btk_input_dialog_key_press    (BtkWidget           *widget,
+static bboolean btk_input_dialog_key_press    (BtkWidget           *widget,
 					       BdkEventKey         *event,
 					       BtkInputKeyInfo     *key);
 static void btk_input_dialog_clear_key        (BtkWidget           *widget,
@@ -115,14 +115,14 @@ static void btk_input_dialog_destroy_key      (BtkWidget           *widget,
 static void btk_input_dialog_fill_keys        (BtkInputDialog      *inputd,
 					       BdkDevice           *info);
 
-static guint input_dialog_signals[LAST_SIGNAL] = { 0 };
+static buint input_dialog_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BtkInputDialog, btk_input_dialog, BTK_TYPE_DIALOG)
 
 static BtkInputDialogPrivate *
 btk_input_dialog_get_private (BtkInputDialog *input_dialog)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (input_dialog, 
+  return B_TYPE_INSTANCE_GET_PRIVATE (input_dialog, 
 				      BTK_TYPE_INPUT_DIALOG, 
 				      BtkInputDialogPrivate);
 }
@@ -145,7 +145,7 @@ input_dialog_from_widget (BtkWidget *widget)
 static void
 btk_input_dialog_class_init (BtkInputDialogClass *klass)
 {
-  GObjectClass *object_class = (GObjectClass *) klass;
+  BObjectClass *object_class = (BObjectClass *) klass;
   BtkWidgetClass *widget_class = (BtkWidgetClass *)klass;
   
   widget_class->screen_changed = btk_input_dialog_screen_changed;
@@ -155,22 +155,22 @@ btk_input_dialog_class_init (BtkInputDialogClass *klass)
 
   input_dialog_signals[ENABLE_DEVICE] =
     g_signal_new (I_("enable-device"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkInputDialogClass, enable_device),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BDK_TYPE_DEVICE);
 
   input_dialog_signals[DISABLE_DEVICE] =
     g_signal_new (I_("disable-device"),
-		  G_OBJECT_CLASS_TYPE (klass),
+		  B_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkInputDialogClass, disable_device),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BDK_TYPE_DEVICE);
 
   g_type_class_add_private (object_class, sizeof (BtkInputDialogPrivate));
@@ -239,21 +239,21 @@ btk_input_dialog_init (BtkInputDialog *inputd)
   btk_widget_show (menuitem);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (btk_input_dialog_set_mapping_mode),
-		    GINT_TO_POINTER (BDK_MODE_DISABLED));
+		    BINT_TO_POINTER (BDK_MODE_DISABLED));
 
   menuitem = btk_menu_item_new_with_label(_("Screen"));
   btk_menu_shell_append (BTK_MENU_SHELL (mapping_menu), menuitem);
   btk_widget_show (menuitem);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (btk_input_dialog_set_mapping_mode),
-		    GINT_TO_POINTER (BDK_MODE_SCREEN));
+		    BINT_TO_POINTER (BDK_MODE_SCREEN));
 
   menuitem = btk_menu_item_new_with_label(_("Window"));
   btk_menu_shell_append (BTK_MENU_SHELL (mapping_menu), menuitem);
   btk_widget_show (menuitem);
   g_signal_connect (menuitem, "activate",
 		    G_CALLBACK (btk_input_dialog_set_mapping_mode),
-		    GINT_TO_POINTER (BDK_MODE_WINDOW));
+		    BINT_TO_POINTER (BDK_MODE_WINDOW));
 
   label = btk_label_new_with_mnemonic (_("_Mode:"));
   btk_box_pack_start (BTK_BOX (util_box), label, FALSE, FALSE, 0);
@@ -401,7 +401,7 @@ btk_input_dialog_new (void)
 
 static void
 btk_input_dialog_set_device (BtkWidget *w,
-			     gpointer   data)
+			     bpointer   data)
 {
   BdkDevice *device = data;
   BtkInputDialog *inputd = input_dialog_from_widget (w);
@@ -417,12 +417,12 @@ btk_input_dialog_set_device (BtkWidget *w,
 
 static void
 btk_input_dialog_set_mapping_mode (BtkWidget *w,
-				   gpointer   data)
+				   bpointer   data)
 {
   BtkInputDialog *inputd = input_dialog_from_widget (w);
   BdkDevice *info = inputd->current_device;
   BdkInputMode old_mode;
-  BdkInputMode mode = GPOINTER_TO_INT (data);
+  BdkInputMode mode = BPOINTER_TO_INT (data);
 
   if (!info)
     return;
@@ -454,16 +454,16 @@ btk_input_dialog_set_mapping_mode (BtkWidget *w,
 
 static void
 btk_input_dialog_set_axis (BtkWidget *w,
-			   gpointer   data)
+			   bpointer   data)
 {
-  BdkAxisUse use = GPOINTER_TO_INT(data) & 0xFFFF;
+  BdkAxisUse use = BPOINTER_TO_INT(data) & 0xFFFF;
   BdkAxisUse old_use;
   BdkAxisUse *new_axes;
   BtkInputDialog *inputd = input_dialog_from_widget (w);
   BdkDevice *info = inputd->current_device;
 
-  gint axis = (GPOINTER_TO_INT(data) >> 16) - 1;
-  gint old_axis;
+  bint axis = (BPOINTER_TO_INT(data) >> 16) - 1;
+  bint old_axis;
   int i;
 
   if (!info)
@@ -586,7 +586,7 @@ btk_input_dialog_fill_axes(BtkInputDialog *inputd, BdkDevice *info)
 	    }
 	  g_signal_connect (menu_item, "activate",
 			    G_CALLBACK (btk_input_dialog_set_axis),
-			    GINT_TO_POINTER (0x10000 * (j + 1) + i));
+			    BINT_TO_POINTER (0x10000 * (j + 1) + i));
 	  btk_widget_show (menu_item);
 	  btk_menu_shell_append (BTK_MENU_SHELL (menu), menu_item);
 	}
@@ -621,10 +621,10 @@ btk_input_dialog_clear_key (BtkWidget *widget, BtkInputKeyInfo *key)
 
 static void 
 btk_input_dialog_set_key (BtkInputKeyInfo *key,
-			  guint keyval, BdkModifierType modifiers)
+			  buint keyval, BdkModifierType modifiers)
 {
   GString *str;
-  gchar chars[2];
+  bchar chars[2];
 
   if (keyval)
     {
@@ -655,7 +655,7 @@ btk_input_dialog_set_key (BtkInputKeyInfo *key,
     }
 }
 
-static gboolean
+static bboolean
 btk_input_dialog_key_press (BtkWidget *widget, 
 			    BdkEventKey *event,
 			    BtkInputKeyInfo *key)

@@ -63,38 +63,38 @@ enum {
   PROP_RIGHT_PADDING
 };
 
-#define BTK_ALIGNMENT_GET_PRIVATE(o)  (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_ALIGNMENT, BtkAlignmentPrivate))
+#define BTK_ALIGNMENT_GET_PRIVATE(o)  (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_ALIGNMENT, BtkAlignmentPrivate))
 
 struct _BtkAlignmentPrivate
 {
-  guint padding_top;
-  guint padding_bottom;
-  guint padding_left;
-  guint padding_right;
+  buint padding_top;
+  buint padding_bottom;
+  buint padding_left;
+  buint padding_right;
 };
 
 static void btk_alignment_size_request  (BtkWidget         *widget,
 					 BtkRequisition    *requisition);
 static void btk_alignment_size_allocate (BtkWidget         *widget,
 					 BtkAllocation     *allocation);
-static void btk_alignment_set_property (GObject         *object,
-                                        guint            prop_id,
-                                        const GValue    *value,
-                                        GParamSpec      *pspec);
-static void btk_alignment_get_property (GObject         *object,
-                                        guint            prop_id,
-                                        GValue          *value,
-                                        GParamSpec      *pspec);
+static void btk_alignment_set_property (BObject         *object,
+                                        buint            prop_id,
+                                        const BValue    *value,
+                                        BParamSpec      *pspec);
+static void btk_alignment_get_property (BObject         *object,
+                                        buint            prop_id,
+                                        BValue          *value,
+                                        BParamSpec      *pspec);
 
 G_DEFINE_TYPE (BtkAlignment, btk_alignment, BTK_TYPE_BIN)
 
 static void
 btk_alignment_class_init (BtkAlignmentClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
   
   bobject_class->set_property = btk_alignment_set_property;
@@ -155,7 +155,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Top Padding"),
                                                       P_("The padding to insert at the top of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -172,7 +172,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Bottom Padding"),
                                                       P_("The padding to insert at the bottom of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -189,7 +189,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Left Padding"),
                                                       P_("The padding to insert at the left of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -206,7 +206,7 @@ btk_alignment_class_init (BtkAlignmentClass *class)
                                                       P_("Right Padding"),
                                                       P_("The padding to insert at the right of the widget."),
                                                       0,
-                                                      G_MAXINT,
+                                                      B_MAXINT,
                                                       0,
                                                       BTK_PARAM_READWRITE));
 
@@ -253,10 +253,10 @@ btk_alignment_init (BtkAlignment *alignment)
  * Returns: the new #BtkAlignment.
  */
 BtkWidget*
-btk_alignment_new (gfloat xalign,
-		   gfloat yalign,
-		   gfloat xscale,
-		   gfloat yscale)
+btk_alignment_new (bfloat xalign,
+		   bfloat yalign,
+		   bfloat xscale,
+		   bfloat yscale)
 {
   BtkAlignment *alignment;
 
@@ -271,10 +271,10 @@ btk_alignment_new (gfloat xalign,
 }
 
 static void
-btk_alignment_set_property (GObject         *object,
-			    guint            prop_id,
-			    const GValue    *value,
-			    GParamSpec      *pspec)
+btk_alignment_set_property (BObject         *object,
+			    buint            prop_id,
+			    const BValue    *value,
+			    BParamSpec      *pspec)
 {
   BtkAlignment *alignment;
   BtkAlignmentPrivate *priv;
@@ -286,7 +286,7 @@ btk_alignment_set_property (GObject         *object,
     {
     case PROP_XALIGN:
       btk_alignment_set (alignment,
-			 g_value_get_float (value),
+			 b_value_get_float (value),
 			 alignment->yalign,
 			 alignment->xscale,
 			 alignment->yscale);
@@ -294,7 +294,7 @@ btk_alignment_set_property (GObject         *object,
     case PROP_YALIGN:
       btk_alignment_set (alignment,
 			 alignment->xalign,
-			 g_value_get_float (value),
+			 b_value_get_float (value),
 			 alignment->xscale,
 			 alignment->yscale);
       break;
@@ -302,7 +302,7 @@ btk_alignment_set_property (GObject         *object,
       btk_alignment_set (alignment,
 			 alignment->xalign,
 			 alignment->yalign,
-			 g_value_get_float (value),
+			 b_value_get_float (value),
 			 alignment->yscale);
       break;
     case PROP_YSCALE:
@@ -310,13 +310,13 @@ btk_alignment_set_property (GObject         *object,
 			 alignment->xalign,
 			 alignment->yalign,
 			 alignment->xscale,
-			 g_value_get_float (value));
+			 b_value_get_float (value));
       break;
       
     /* Padding: */
     case PROP_TOP_PADDING:
       btk_alignment_set_padding (alignment,
-			 g_value_get_uint (value),
+			 b_value_get_uint (value),
 			 priv->padding_bottom,
 			 priv->padding_left,
 			 priv->padding_right);
@@ -324,7 +324,7 @@ btk_alignment_set_property (GObject         *object,
     case PROP_BOTTOM_PADDING:
       btk_alignment_set_padding (alignment,
 			 priv->padding_top,
-			 g_value_get_uint (value),
+			 b_value_get_uint (value),
 			 priv->padding_left,
 			 priv->padding_right);
       break;
@@ -332,7 +332,7 @@ btk_alignment_set_property (GObject         *object,
       btk_alignment_set_padding (alignment,
 			 priv->padding_top,
 			 priv->padding_bottom,
-			 g_value_get_uint (value),
+			 b_value_get_uint (value),
 			 priv->padding_right);
       break;
     case PROP_RIGHT_PADDING:
@@ -340,20 +340,20 @@ btk_alignment_set_property (GObject         *object,
 			 priv->padding_top,
 			 priv->padding_bottom,
 			 priv->padding_left,
-			 g_value_get_uint (value));
+			 b_value_get_uint (value));
       break;
     
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_alignment_get_property (GObject         *object,
-			    guint            prop_id,
-			    GValue          *value,
-			    GParamSpec      *pspec)
+btk_alignment_get_property (BObject         *object,
+			    buint            prop_id,
+			    BValue          *value,
+			    BParamSpec      *pspec)
 {
   BtkAlignment *alignment;
   BtkAlignmentPrivate *priv;
@@ -364,34 +364,34 @@ btk_alignment_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_XALIGN:
-      g_value_set_float(value, alignment->xalign);
+      b_value_set_float(value, alignment->xalign);
       break;
     case PROP_YALIGN:
-      g_value_set_float(value, alignment->yalign);
+      b_value_set_float(value, alignment->yalign);
       break;
     case PROP_XSCALE:
-      g_value_set_float(value, alignment->xscale);
+      b_value_set_float(value, alignment->xscale);
       break;
     case PROP_YSCALE:
-      g_value_set_float(value, alignment->yscale);
+      b_value_set_float(value, alignment->yscale);
       break;
 
     /* Padding: */
     case PROP_TOP_PADDING:
-      g_value_set_uint (value, priv->padding_top);
+      b_value_set_uint (value, priv->padding_top);
       break;
     case PROP_BOTTOM_PADDING:
-      g_value_set_uint (value, priv->padding_bottom);
+      b_value_set_uint (value, priv->padding_bottom);
       break;
     case PROP_LEFT_PADDING:
-      g_value_set_uint (value, priv->padding_left);
+      b_value_set_uint (value, priv->padding_left);
       break;
     case PROP_RIGHT_PADDING:
-      g_value_set_uint (value, priv->padding_right);
+      b_value_set_uint (value, priv->padding_right);
       break;
       
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -415,10 +415,10 @@ btk_alignment_get_property (GObject         *object,
  */
 void
 btk_alignment_set (BtkAlignment *alignment,
-		   gfloat        xalign,
-		   gfloat        yalign,
-		   gfloat        xscale,
-		   gfloat        yscale)
+		   bfloat        xalign,
+		   bfloat        yalign,
+		   bfloat        xscale,
+		   bfloat        yscale)
 {
   g_return_if_fail (BTK_IS_ALIGNMENT (alignment));
 
@@ -432,28 +432,28 @@ btk_alignment_set (BtkAlignment *alignment,
       || (alignment->xscale != xscale)
       || (alignment->yscale != yscale))
     {
-      g_object_freeze_notify (G_OBJECT (alignment));
+      g_object_freeze_notify (B_OBJECT (alignment));
       if (alignment->xalign != xalign)
         {
            alignment->xalign = xalign;
-           g_object_notify (G_OBJECT (alignment), "xalign");
+           g_object_notify (B_OBJECT (alignment), "xalign");
         }
       if (alignment->yalign != yalign)
         {
            alignment->yalign = yalign;
-           g_object_notify (G_OBJECT (alignment), "yalign");
+           g_object_notify (B_OBJECT (alignment), "yalign");
         }
       if (alignment->xscale != xscale)
         {
            alignment->xscale = xscale;
-           g_object_notify (G_OBJECT (alignment), "xscale");
+           g_object_notify (B_OBJECT (alignment), "xscale");
         }
       if (alignment->yscale != yscale)
         {
            alignment->yscale = yscale;
-           g_object_notify (G_OBJECT (alignment), "yscale");
+           g_object_notify (B_OBJECT (alignment), "yscale");
         }
-      g_object_thaw_notify (G_OBJECT (alignment));
+      g_object_thaw_notify (B_OBJECT (alignment));
 
       if (BTK_BIN (alignment)->child)
         btk_widget_queue_resize (BTK_BIN (alignment)->child);
@@ -498,9 +498,9 @@ btk_alignment_size_allocate (BtkWidget     *widget,
   BtkBin *bin;
   BtkAllocation child_allocation;
   BtkRequisition child_requisition;
-  gint width, height;
-  gint border_width;
-  gint padding_horizontal, padding_vertical;
+  bint width, height;
+  bint border_width;
+  bint padding_horizontal, padding_vertical;
   BtkAlignmentPrivate *priv;
 
   padding_horizontal = 0;
@@ -565,10 +565,10 @@ btk_alignment_size_allocate (BtkWidget     *widget,
  */
 void
 btk_alignment_set_padding (BtkAlignment    *alignment,
-			   guint            padding_top,
-			   guint            padding_bottom,
-			   guint            padding_left,
-			   guint            padding_right)
+			   buint            padding_top,
+			   buint            padding_bottom,
+			   buint            padding_left,
+			   buint            padding_right)
 {
   BtkAlignmentPrivate *priv;
   
@@ -576,30 +576,30 @@ btk_alignment_set_padding (BtkAlignment    *alignment,
 
   priv = BTK_ALIGNMENT_GET_PRIVATE (alignment);
 
-  g_object_freeze_notify (G_OBJECT (alignment));
+  g_object_freeze_notify (B_OBJECT (alignment));
 
   if (priv->padding_top != padding_top)
     {
       priv->padding_top = padding_top;
-      g_object_notify (G_OBJECT (alignment), "top-padding");
+      g_object_notify (B_OBJECT (alignment), "top-padding");
     }
   if (priv->padding_bottom != padding_bottom)
     {
       priv->padding_bottom = padding_bottom;
-      g_object_notify (G_OBJECT (alignment), "bottom-padding");
+      g_object_notify (B_OBJECT (alignment), "bottom-padding");
     }
   if (priv->padding_left != padding_left)
     {
       priv->padding_left = padding_left;
-      g_object_notify (G_OBJECT (alignment), "left-padding");
+      g_object_notify (B_OBJECT (alignment), "left-padding");
     }
   if (priv->padding_right != padding_right)
     {
       priv->padding_right = padding_right;
-      g_object_notify (G_OBJECT (alignment), "right-padding");
+      g_object_notify (B_OBJECT (alignment), "right-padding");
     }
 
-  g_object_thaw_notify (G_OBJECT (alignment));
+  g_object_thaw_notify (B_OBJECT (alignment));
   
   /* Make sure that the widget and children are redrawn with the new setting: */
   if (BTK_BIN (alignment)->child)
@@ -627,10 +627,10 @@ btk_alignment_set_padding (BtkAlignment    *alignment,
  */
 void
 btk_alignment_get_padding (BtkAlignment    *alignment,
-			   guint           *padding_top,
-			   guint           *padding_bottom,
-			   guint           *padding_left,
-			   guint           *padding_right)
+			   buint           *padding_top,
+			   buint           *padding_bottom,
+			   buint           *padding_left,
+			   buint           *padding_right)
 {
   BtkAlignmentPrivate *priv;
  

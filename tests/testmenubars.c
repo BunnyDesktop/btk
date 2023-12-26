@@ -55,7 +55,7 @@ create_menu (depth)
 static BtkWidget*
 create_menubar (BtkPackDirection pack_dir,
 		BtkPackDirection child_pack_dir,
-		gdouble          angle)
+		bdouble          angle)
 {
   BtkWidget *menubar;
   BtkWidget *menuitem;

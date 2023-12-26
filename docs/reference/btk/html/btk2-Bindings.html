@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Bindings.html#btk-binding-parse-binding" title="btk_binding_parse_binding ()">btk_binding_parse_binding</a> <span class="c_punctuation">()</span>
@@ -89,7 +89,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Bindings.html#btk-bindings-activate" title="btk_bindings_activate ()">btk_bindings_activate</a> <span class="c_punctuation">()</span>
@@ -97,7 +97,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Bindings.html#btk-bindings-activate-event" title="btk_bindings_activate_event ()">btk_bindings_activate_event</a> <span class="c_punctuation">()</span>
@@ -105,7 +105,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Bindings.html#btk-binding-set-activate" title="btk_binding_set_activate ()">btk_binding_set_activate</a> <span class="c_punctuation">()</span>
@@ -191,9 +191,9 @@
 <a name="btk-binding-entry-add-signall"></a><h3>btk_binding_entry_add_signall ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_entry_add_signall (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                               <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                               <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                                <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *signal_name</code></em>,
+                               <em class="parameter"><code>const <span class="type">bchar</span> *signal_name</code></em>,
                                <em class="parameter"><code><span class="type">GSList</span> *binding_args</code></em>);</pre>
 <p>Override or install a new key binding for <em class="parameter"><code>keyval</code></em>
  with <em class="parameter"><code>modifiers</code></em>
@@ -243,7 +243,7 @@ btk_binding_entry_add_signall (<em class="parameter"><code><a class="link" href=
 <a name="btk-binding-entry-clear"></a><h3>btk_binding_entry_clear ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_entry_clear (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                         <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                         <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                          <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_binding_entry_clear</code> has been deprecated since version 2.12 and should not be used in newly-written code.</p>
@@ -281,7 +281,7 @@ btk_binding_entry_clear (<em class="parameter"><code><a class="link" href="btk2-
 <hr>
 <div class="refsect2">
 <a name="btk-binding-parse-binding"></a><h3>btk_binding_parse_binding ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_binding_parse_binding (<em class="parameter"><code><span class="type">GScanner</span> *scanner</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_binding_parse_binding</code> has been deprecated since version 2.12 and should not be used in newly-written code.</p>
@@ -312,7 +312,7 @@ btk_binding_parse_binding (<em class="parameter"><code><span class="type">GScann
 <div class="refsect2">
 <a name="btk-binding-set-new"></a><h3>btk_binding_set_new ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="returnvalue">BtkBindingSet</span></a> *
-btk_binding_set_new (<em class="parameter"><code>const <span class="type">gchar</span> *set_name</code></em>);</pre>
+btk_binding_set_new (<em class="parameter"><code>const <span class="type">bchar</span> *set_name</code></em>);</pre>
 <p>BTK+ maintains a global list of binding sets. Each binding set has
 a unique name which needs to be specified upon creation.</p>
 <div class="refsect3">
@@ -339,7 +339,7 @@ a unique name which needs to be specified upon creation.</p>
 <div class="refsect2">
 <a name="btk-binding-set-by-class"></a><h3>btk_binding_set_by_class ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="returnvalue">BtkBindingSet</span></a> *
-btk_binding_set_by_class (<em class="parameter"><code><span class="type">gpointer</span> object_class</code></em>);</pre>
+btk_binding_set_by_class (<em class="parameter"><code><span class="type">bpointer</span> object_class</code></em>);</pre>
 <p>This function returns the binding set named after the type name of
 the passed in class structure. New binding sets are created on
 demand by this function.</p>
@@ -368,7 +368,7 @@ demand by this function.</p>
 <div class="refsect2">
 <a name="btk-binding-set-find"></a><h3>btk_binding_set_find ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="returnvalue">BtkBindingSet</span></a> *
-btk_binding_set_find (<em class="parameter"><code>const <span class="type">gchar</span> *set_name</code></em>);</pre>
+btk_binding_set_find (<em class="parameter"><code>const <span class="type">bchar</span> *set_name</code></em>);</pre>
 <p>Find a binding set by its globally unique name. The <em class="parameter"><code>set_name</code></em>
  can
 either be a name used for <a class="link" href="btk2-Bindings.html#btk-binding-set-new" title="btk_binding_set_new ()"><code class="function">btk_binding_set_new()</code></a> or the type name of
@@ -397,9 +397,9 @@ a class used in <a class="link" href="btk2-Bindings.html#btk-binding-set-by-clas
 <hr>
 <div class="refsect2">
 <a name="btk-bindings-activate"></a><h3>btk_bindings_activate ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_bindings_activate (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                        <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <p>Find a key binding matching <em class="parameter"><code>keyval</code></em>
  and <em class="parameter"><code>modifiers</code></em>
@@ -441,7 +441,7 @@ binding on <em class="parameter"><code>object</code></em>
 <hr>
 <div class="refsect2">
 <a name="btk-bindings-activate-event"></a><h3>btk_bindings_activate_event ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_bindings_activate_event (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
                              <em class="parameter"><code><a href="../html/bdk2-Event-Structures.html#BdkEventKey"><span class="type">BdkEventKey</span></a> *event</code></em>);</pre>
 <p>Looks up key bindings for <em class="parameter"><code>object</code></em>
@@ -479,9 +479,9 @@ btk_bindings_activate_event (<em class="parameter"><code><a class="link" href="B
 <hr>
 <div class="refsect2">
 <a name="btk-binding-set-activate"></a><h3>btk_binding_set_activate ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_binding_set_activate (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                          <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>);</pre>
 <p>Find a key binding matching <em class="parameter"><code>keyval</code></em>
@@ -532,10 +532,10 @@ btk_binding_set_activate (<em class="parameter"><code><a class="link" href="btk2
 <a name="btk-binding-entry-add-signal"></a><h3>btk_binding_entry_add_signal ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_entry_add_signal (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                              <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                              <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                               <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>,
-                              <em class="parameter"><code>const <span class="type">gchar</span> *signal_name</code></em>,
-                              <em class="parameter"><code><span class="type">guint</span> n_args</code></em>,
+                              <em class="parameter"><code>const <span class="type">bchar</span> *signal_name</code></em>,
+                              <em class="parameter"><code><span class="type">buint</span> n_args</code></em>,
                               <em class="parameter"><code>...</code></em>);</pre>
 <p>Override or install a new key binding for <em class="parameter"><code>keyval</code></em>
  with <em class="parameter"><code>modifiers</code></em>
@@ -597,7 +597,7 @@ arguments.</p>
 <a name="btk-binding-entry-skip"></a><h3>btk_binding_entry_skip ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_entry_skip (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                        <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                        <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                         <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <p>Install a binding on <em class="parameter"><code>binding_set</code></em>
  which causes key lookups
@@ -637,7 +637,7 @@ to be activated.</p>
 <a name="btk-binding-entry-remove"></a><h3>btk_binding_entry_remove ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_entry_remove (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
-                          <em class="parameter"><code><span class="type">guint</span> keyval</code></em>,
+                          <em class="parameter"><code><span class="type">buint</span> keyval</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> modifiers</code></em>);</pre>
 <p>Remove a binding previously installed via
 <a class="link" href="btk2-Bindings.html#btk-binding-entry-add-signal" title="btk_binding_entry_add_signal ()"><code class="function">btk_binding_entry_add_signal()</code></a> on <em class="parameter"><code>binding_set</code></em>
@@ -676,7 +676,7 @@ btk_binding_entry_remove (<em class="parameter"><code><a class="link" href="btk2
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_binding_set_add_path (<em class="parameter"><code><a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> *binding_set</code></em>,
                           <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPathType" title="enum BtkPathType"><span class="type">BtkPathType</span></a> path_type</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *path_pattern</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *path_pattern</code></em>,
                           <em class="parameter"><code><a class="link" href="btk2-Standard-Enumerations.html#BtkPathPriorityType" title="enum BtkPathPriorityType"><span class="type">BtkPathPriorityType</span></a> priority</code></em>);</pre>
 <p>This function is used internally by the BtkRC parsing mechanism to
 assign match patterns to <a class="link" href="btk2-Bindings.html#BtkBindingSet" title="struct BtkBindingSet"><span class="type">BtkBindingSet</span></a> structures.</p>
@@ -719,14 +719,14 @@ assign match patterns to <a class="link" href="btk2-Bindings.html#BtkBindingSet"
 <div class="refsect2">
 <a name="BtkBindingSet"></a><h3>struct BtkBindingSet</h3>
 <pre class="programlisting">struct BtkBindingSet {
-  gchar			*set_name;
-  gint			 priority;
+  bchar			*set_name;
+  bint			 priority;
   GSList		*widget_path_pspecs;
   GSList		*widget_class_pspecs;
   GSList		*class_branch_pspecs;
   BtkBindingEntry *entries;
   BtkBindingEntry *current;
-  guint                  parsed : 1; /* From RC content */
+  buint                  parsed : 1; /* From RC content */
 };
 </pre>
 </div>
@@ -736,13 +736,13 @@ assign match patterns to <a class="link" href="btk2-Bindings.html#BtkBindingSet"
 <pre class="programlisting">struct BtkBindingEntry {
   /* key portion
    */
-  guint			 keyval;
+  buint			 keyval;
   BdkModifierType	 modifiers;
 
   BtkBindingSet		*binding_set;
-  guint			destroyed : 1;
-  guint			in_emission : 1;
-  guint                 marks_unbound : 1;
+  buint			destroyed : 1;
+  buint			in_emission : 1;
+  buint                 marks_unbound : 1;
   BtkBindingEntry *set_next;
   BtkBindingEntry *hash_next;
   BtkBindingSignal *signals;
@@ -754,8 +754,8 @@ assign match patterns to <a class="link" href="btk2-Bindings.html#BtkBindingSet"
 <a name="BtkBindingSignal"></a><h3>struct BtkBindingSignal</h3>
 <pre class="programlisting">struct BtkBindingSignal {
   BtkBindingSignal *next;
-  gchar 		*signal_name;
-  guint			 n_args;
+  bchar 		*signal_name;
+  buint			 n_args;
   BtkBindingArg		*args;
 };
 </pre>
@@ -766,9 +766,9 @@ assign match patterns to <a class="link" href="btk2-Bindings.html#BtkBindingSet"
 <pre class="programlisting">struct BtkBindingArg {
   GType		 arg_type;
   union {
-    glong	 long_data;
-    gdouble	 double_data;
-    gchar *string_data;
+    blong	 long_data;
+    bdouble	 double_data;
+    bchar *string_data;
   } d;
 };
 </pre>

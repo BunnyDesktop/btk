@@ -51,8 +51,8 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
-static void         bdk_screen_x11_dispose     (GObject		  *object);
-static void         bdk_screen_x11_finalize    (GObject		  *object);
+static void         bdk_screen_x11_dispose     (BObject		  *object);
+static void         bdk_screen_x11_finalize    (BObject		  *object);
 static void	    init_randr_support	       (BdkScreen	  *screen);
 static void	    deinit_multihead           (BdkScreen         *screen);
 
@@ -62,7 +62,7 @@ enum
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE (BdkScreenX11, _bdk_screen_x11, BDK_TYPE_SCREEN)
 
@@ -79,19 +79,19 @@ struct _BdkX11Monitor
 static void
 _bdk_screen_x11_class_init (BdkScreenX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   object_class->dispose = bdk_screen_x11_dispose;
   object_class->finalize = bdk_screen_x11_finalize;
 
   signals[WINDOW_MANAGER_CHANGED] =
     g_signal_new (g_intern_static_string ("window_manager_changed"),
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BdkScreenX11Class, window_manager_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE,
+                  B_TYPE_NONE,
                   0);
 }
 
@@ -127,7 +127,7 @@ bdk_screen_get_display (BdkScreen *screen)
  *
  * Since: 2.2
  **/
-gint
+bint
 bdk_screen_get_width (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -145,7 +145,7 @@ bdk_screen_get_width (BdkScreen *screen)
  *
  * Since: 2.2
  **/
-gint
+bint
 bdk_screen_get_height (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -164,7 +164,7 @@ bdk_screen_get_height (BdkScreen *screen)
  *
  * Since: 2.2
  **/
-gint
+bint
 bdk_screen_get_width_mm (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);  
@@ -183,7 +183,7 @@ bdk_screen_get_width_mm (BdkScreen *screen)
  *
  * Since: 2.2
  **/
-gint
+bint
 bdk_screen_get_height_mm (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -202,7 +202,7 @@ bdk_screen_get_height_mm (BdkScreen *screen)
  *
  * Since: 2.2
  **/
-gint
+bint
 bdk_screen_get_number (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -273,7 +273,7 @@ bdk_screen_set_default_colormap (BdkScreen   *screen,
 }
 
 static void
-bdk_screen_x11_dispose (GObject *object)
+bdk_screen_x11_dispose (BObject *object)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
 
@@ -300,7 +300,7 @@ bdk_screen_x11_dispose (GObject *object)
   if (screen_x11->root_window)
     _bdk_window_destroy (screen_x11->root_window, TRUE);
 
-  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_screen_x11_parent_class)->dispose (object);
 
   screen_x11->xdisplay = NULL;
   screen_x11->xscreen = NULL;
@@ -310,10 +310,10 @@ bdk_screen_x11_dispose (GObject *object)
 }
 
 static void
-bdk_screen_x11_finalize (GObject *object)
+bdk_screen_x11_finalize (BObject *object)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
-  gint          i;
+  bint          i;
 
   if (screen_x11->root_window)
     g_object_unref (screen_x11->root_window);
@@ -333,7 +333,7 @@ bdk_screen_x11_finalize (GObject *object)
 
   deinit_multihead (BDK_SCREEN (object));
   
-  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_screen_x11_parent_class)->finalize (object);
 }
 
 /**
@@ -346,7 +346,7 @@ bdk_screen_x11_finalize (GObject *object)
  *
  * Since: 2.2
  */
-gint
+bint
 bdk_screen_get_n_monitors (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -371,7 +371,7 @@ bdk_screen_get_n_monitors (BdkScreen *screen)
  *
  * Since: 2.20
  */
-gint
+bint
 bdk_screen_get_primary_monitor (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -390,9 +390,9 @@ bdk_screen_get_primary_monitor (BdkScreen *screen)
  *
  * Since: 2.14
  */
-gint
+bint
 bdk_screen_get_monitor_width_mm	(BdkScreen *screen,
-				 gint       monitor_num)
+				 bint       monitor_num)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
@@ -414,9 +414,9 @@ bdk_screen_get_monitor_width_mm	(BdkScreen *screen,
  *
  * Since: 2.14
  */
-gint
+bint
 bdk_screen_get_monitor_height_mm (BdkScreen *screen,
-                                  gint       monitor_num)
+                                  bint       monitor_num)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
@@ -441,9 +441,9 @@ bdk_screen_get_monitor_height_mm (BdkScreen *screen,
  *
  * Since: 2.14
  */
-gchar *
+bchar *
 bdk_screen_get_monitor_plug_name (BdkScreen *screen,
-				  gint       monitor_num)
+				  bint       monitor_num)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
@@ -469,7 +469,7 @@ bdk_screen_get_monitor_plug_name (BdkScreen *screen,
  */
 XID
 bdk_x11_screen_get_monitor_output (BdkScreen *screen,
-                                   gint       monitor_num)
+                                   bint       monitor_num)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
@@ -496,7 +496,7 @@ bdk_x11_screen_get_monitor_output (BdkScreen *screen,
  */
 void
 bdk_screen_get_monitor_geometry (BdkScreen    *screen,
-				 gint          monitor_num,
+				 bint          monitor_num,
 				 BdkRectangle *dest)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
@@ -607,7 +607,7 @@ bdk_x11_screen_get_screen_number (BdkScreen *screen)
   return BDK_SCREEN_X11 (screen)->screen_num;
 }
 
-static gboolean
+static bboolean
 check_is_composited (BdkDisplay *display,
 		     BdkScreenX11 *screen_x11)
 {
@@ -622,7 +622,7 @@ check_is_composited (BdkDisplay *display,
 static BdkAtom
 make_cm_atom (int screen_number)
 {
-  gchar *name = g_strdup_printf ("_NET_WM_CM_S%d", screen_number);
+  bchar *name = g_strdup_printf ("_NET_WM_CM_S%d", screen_number);
   BdkAtom atom = bdk_atom_intern (name, FALSE);
   g_free (name);
   return atom;
@@ -644,14 +644,14 @@ init_monitor_geometry (BdkX11Monitor *monitor,
   monitor->manufacturer = NULL;
 }
 
-static gboolean
+static bboolean
 init_fake_xinerama (BdkScreen *screen)
 {
 #ifdef G_ENABLE_DEBUG
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   XSetWindowAttributes atts;
   Window win;
-  gint w, h;
+  bint w, h;
 
   if (!(_bdk_debug_flags & BDK_DEBUG_XINERAMA))
     return FALSE;
@@ -700,7 +700,7 @@ init_fake_xinerama (BdkScreen *screen)
 
 static void
 free_monitors (BdkX11Monitor *monitors,
-               gint           n_monitors)
+               bint           n_monitors)
 {
   int i;
 
@@ -741,7 +741,7 @@ monitor_compare_function (BdkX11Monitor *monitor1,
 #endif
 
 #ifdef HAVE_RANDR15
-static gboolean
+static bboolean
 init_randr15 (BdkScreen *screen)
 {
   BdkDisplay *display = bdk_screen_get_display (screen);
@@ -804,7 +804,7 @@ init_randr15 (BdkScreen *screen)
 }
 #endif
 
-static gboolean
+static bboolean
 init_randr13 (BdkScreen *screen)
 {
 #ifdef HAVE_RANDR
@@ -817,7 +817,7 @@ init_randr13 (BdkScreen *screen)
   RROutput first_output = None;
   int i;
   GArray *monitors;
-  gboolean randr12_compat = FALSE;
+  bboolean randr12_compat = FALSE;
 
   if (!display_x11->have_randr13)
       return FALSE;
@@ -877,7 +877,7 @@ init_randr13 (BdkScreen *screen)
   /* non RandR 1.2 X driver doesn't return any usable multihead data */
   if (randr12_compat)
     {
-      guint n_monitors = monitors->len;
+      buint n_monitors = monitors->len;
 
       free_monitors ((BdkX11Monitor *)g_array_free (monitors, FALSE),
 		     n_monitors);
@@ -922,7 +922,7 @@ init_randr13 (BdkScreen *screen)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 init_solaris_xinerama (BdkScreen *screen)
 {
 #ifdef HAVE_SOLARIS_XINERAMA
@@ -931,7 +931,7 @@ init_solaris_xinerama (BdkScreen *screen)
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   XRectangle monitors[MAXFRAMEBUFFERS];
   unsigned char hints[16];
-  gint result;
+  bint result;
   int n_monitors;
   int i;
   
@@ -966,7 +966,7 @@ init_solaris_xinerama (BdkScreen *screen)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 init_xfree_xinerama (BdkScreen *screen)
 {
 #ifdef HAVE_XFREE_XINERAMA
@@ -1025,7 +1025,7 @@ deinit_multihead (BdkScreen *screen)
   screen_x11->monitors = NULL;
 }
 
-static gboolean
+static bboolean
 compare_monitor (BdkX11Monitor *m1,
                  BdkX11Monitor *m2)
 {
@@ -1048,11 +1048,11 @@ compare_monitor (BdkX11Monitor *m1,
   return TRUE;
 }
 
-static gboolean
-compare_monitors (BdkX11Monitor *monitors1, gint n_monitors1,
-                  BdkX11Monitor *monitors2, gint n_monitors2)
+static bboolean
+compare_monitors (BdkX11Monitor *monitors1, bint n_monitors1,
+                  BdkX11Monitor *monitors2, bint n_monitors2)
 {
-  gint i;
+  bint i;
 
   if (n_monitors1 != n_monitors2)
     return FALSE;
@@ -1114,7 +1114,7 @@ init_multihead (BdkScreen *screen)
 
 BdkScreen *
 _bdk_x11_screen_new (BdkDisplay *display,
-		     gint	 screen_number) 
+		     bint	 screen_number) 
 {
   BdkScreen *screen;
   BdkScreenX11 *screen_x11;
@@ -1173,7 +1173,7 @@ _bdk_x11_screen_setup (BdkScreen *screen)
  * 
  * Since: 2.10
  **/
-gboolean
+bboolean
 bdk_screen_is_composited (BdkScreen *screen)
 {
   BdkScreenX11 *screen_x11;
@@ -1207,10 +1207,10 @@ static void
 process_monitors_change (BdkScreen *screen)
 {
   BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
-  gint		 n_monitors;
-  gint		 primary_monitor;
+  bint		 n_monitors;
+  bint		 primary_monitor;
   BdkX11Monitor	*monitors;
-  gboolean changed;
+  bboolean changed;
 
   primary_monitor = screen_x11->primary_monitor;
   n_monitors = screen_x11->n_monitors;
@@ -1236,7 +1236,7 @@ void
 _bdk_x11_screen_size_changed (BdkScreen *screen,
 			      XEvent    *event)
 {
-  gint width, height;
+  bint width, height;
 #ifdef HAVE_RANDR
   BdkDisplayX11 *display_x11;
 #endif
@@ -1289,7 +1289,7 @@ _bdk_x11_screen_process_owner_change (BdkScreen *screen,
 
   if (selection_event->selection == xcm_selection_atom)
     {
-      gboolean composited = selection_event->owner != None;
+      bboolean composited = selection_event->owner != None;
 
       if (composited != screen_x11->is_composited)
 	{
@@ -1316,12 +1316,12 @@ _bdk_x11_screen_process_owner_change (BdkScreen *screen,
  * Return value: a newly allocated string holding the resulting
  *   display name. Free with g_free().
  */
-gchar * 
-_bdk_windowing_substitute_screen_number (const gchar *display_name,
-					 gint         screen_number)
+bchar * 
+_bdk_windowing_substitute_screen_number (const bchar *display_name,
+					 bint         screen_number)
 {
   GString *str;
-  gchar   *p;
+  bchar   *p;
 
   if (!display_name)
     display_name = getenv ("DISPLAY");
@@ -1351,10 +1351,10 @@ _bdk_windowing_substitute_screen_number (const gchar *display_name,
  *
  * Since: 2.2
  **/
-gchar *
+bchar *
 bdk_screen_make_display_name (BdkScreen *screen)
 {
-  const gchar *old_display;
+  const bchar *old_display;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
@@ -1393,10 +1393,10 @@ bdk_screen_get_active_window (BdkScreen *screen)
   BdkScreenX11 *screen_x11;
   BdkWindow *ret = NULL;
   Atom type_return;
-  gint format_return;
-  gulong nitems_return;
-  gulong bytes_after_return;
-  guchar *data = NULL;
+  bint format_return;
+  bulong nitems_return;
+  bulong bytes_after_return;
+  buchar *data = NULL;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
@@ -1464,10 +1464,10 @@ bdk_screen_get_window_stack (BdkScreen *screen)
   BdkScreenX11 *screen_x11;
   GList *ret = NULL;
   Atom type_return;
-  gint format_return;
-  gulong nitems_return;
-  gulong bytes_after_return;
-  guchar *data = NULL;
+  bint format_return;
+  bulong nitems_return;
+  bulong bytes_after_return;
+  buchar *data = NULL;
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
@@ -1480,7 +1480,7 @@ bdk_screen_get_window_stack (BdkScreen *screen)
   if (XGetWindowProperty (screen_x11->xdisplay, screen_x11->xroot_window,
 	                  bdk_x11_get_xatom_by_name_for_display (screen_x11->display,
 			                                         "_NET_CLIENT_LIST_STACKING"),
-		          0, G_MAXLONG, False, XA_WINDOW, &type_return,
+		          0, B_MAXLONG, False, XA_WINDOW, &type_return,
 		          &format_return, &nitems_return,
                           &bytes_after_return, &data)
       == Success)
@@ -1488,7 +1488,7 @@ bdk_screen_get_window_stack (BdkScreen *screen)
       if ((type_return == XA_WINDOW) && (format_return == 32) &&
           (data) && (nitems_return > 0))
         {
-          gulong *stack = (gulong *) data;
+          bulong *stack = (bulong *) data;
           BdkWindow *win;
           int i;
 

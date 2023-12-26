@@ -124,27 +124,27 @@ static void bdk_drawable_impl_directfb_class_init (BdkDrawableImplDirectFBClass 
 static void bdk_directfb_draw_lines (BdkDrawable *drawable,
                                      BdkGC       *gc,
                                      BdkPoint    *points,
-                                     gint         npoints);
+                                     bint         npoints);
 
 static bairo_surface_t *bdk_directfb_ref_bairo_surface (BdkDrawable *drawable);
 
 
-static gboolean  accelerated_alpha_blending = FALSE;
-static gpointer  parent_class               = NULL;
+static bboolean  accelerated_alpha_blending = FALSE;
+static bpointer  parent_class               = NULL;
 static const bairo_user_data_key_t bdk_directfb_bairo_key;
 
 static void (*real_draw_pixbuf) (BdkDrawable *drawable,
                                  BdkGC       *gc,
                                  BdkPixbuf   *pixbuf,
-                                 gint         src_x,
-                                 gint         src_y,
-                                 gint         dest_x,
-                                 gint         dest_y,
-                                 gint         width,
-                                 gint         height,
+                                 bint         src_x,
+                                 bint         src_y,
+                                 bint         dest_x,
+                                 bint         dest_y,
+                                 bint         width,
+                                 bint         height,
                                  BdkRgbDither dither,
-                                 gint         x_dither,
-                                 gint         y_dither);
+                                 bint         x_dither,
+                                 bint         y_dither);
 
 
 /**********************************************************
@@ -161,7 +161,7 @@ bdk_directfb_set_colormap (BdkDrawable *drawable,
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p ) <- old %p\n",
-              G_STRFUNC, drawable, colormap, impl->colormap);
+              B_STRFUNC, drawable, colormap, impl->colormap);
 
   if (impl->colormap == colormap)
     return;
@@ -190,7 +190,7 @@ bdk_directfb_get_colormap (BdkDrawable *drawable)
   return retval;
 }
 
-static gint
+static bint
 bdk_directfb_get_depth (BdkDrawable *drawable)
 {
   BdkDrawableImplDirectFB *impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -200,8 +200,8 @@ bdk_directfb_get_depth (BdkDrawable *drawable)
 
 static void
 bdk_directfb_get_size (BdkDrawable *drawable,
-                       gint        *width,
-                       gint        *height)
+                       bint        *width,
+                       bint        *height)
 {
   BdkDrawableImplDirectFB *impl;
 
@@ -237,7 +237,7 @@ bdk_directfb_clip_rebunnyion (BdkDrawable  *drawable,
   g_return_if_fail (ret_clip != NULL);
 
   D_DEBUG_AT (BDKDFB_DrawClip, "%s( %p, %p, %p )\n",
-              G_STRFUNC, drawable, gc, draw_rect);
+              B_STRFUNC, drawable, gc, draw_rect);
 
   private = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
@@ -343,7 +343,7 @@ bdk_directfb_clip_rebunnyion (BdkDrawable  *drawable,
 static inline void
 bdk_directfb_set_color (BdkDrawableImplDirectFB *impl,
                         BdkColor                *color,
-                        guchar                   alpha)
+                        buchar                   alpha)
 {
   if (DFB_PIXELFORMAT_IS_INDEXED (impl->format))
     {
@@ -359,13 +359,13 @@ bdk_directfb_set_color (BdkDrawableImplDirectFB *impl,
     }
 }
 
-static gboolean
+static bboolean
 bdk_directfb_setup_for_drawing (BdkDrawableImplDirectFB *impl,
                                 BdkGCDirectFB           *gc_private)
 {
   DFBSurfaceDrawingFlags flags = DSDRAW_NOFX;
   BdkColor               color = { 0, 0, 0, 0 };
-  guchar                 alpha = 0xFF;
+  buchar                 alpha = 0xFF;
 
   if (!impl->surface)
     return FALSE;
@@ -423,21 +423,21 @@ bdk_directfb_setup_for_drawing (BdkDrawableImplDirectFB *impl,
 static void
 bdk_directfb_draw_rectangle (BdkDrawable *drawable,
                              BdkGC       *gc,
-                             gint         filled,
-                             gint         x,
-                             gint         y,
-                             gint         width,
-                             gint         height)
+                             bint         filled,
+                             bint         x,
+                             bint         y,
+                             bint         width,
+                             bint         height)
 {
   BdkDrawableImplDirectFB *impl;
   BdkRebunnyion                clip;
   BdkGCDirectFB           *gc_private = NULL;
   IDirectFBSurface        *surface    = NULL;
-  gint  i;
+  bint  i;
 
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %4d,%4d - %4dx%4d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %4d,%4d - %4dx%4d )\n", B_STRFUNC,
               drawable, gc, filled ? " filled" : "outline", x, y, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -577,13 +577,13 @@ bdk_directfb_draw_rectangle (BdkDrawable *drawable,
 static void
 bdk_directfb_draw_arc (BdkDrawable *drawable,
                        BdkGC       *gc,
-                       gint         filled,
-                       gint         x,
-                       gint         y,
-                       gint         width,
-                       gint         height,
-                       gint         angle1,
-                       gint         angle2)
+                       bint         filled,
+                       bint         x,
+                       bint         y,
+                       bint         width,
+                       bint         height,
+                       bint         angle1,
+                       bint         angle2)
 {
   D_UNIMPLEMENTED ();
 }
@@ -591,13 +591,13 @@ bdk_directfb_draw_arc (BdkDrawable *drawable,
 static void
 bdk_directfb_draw_polygon (BdkDrawable *drawable,
                            BdkGC       *gc,
-                           gint         filled,
+                           bint         filled,
                            BdkPoint    *points,
-                           gint         npoints)
+                           bint         npoints)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %p, %d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %s, %p, %d )\n", B_STRFUNC,
               drawable, gc, filled ? " filled" : "outline", points, npoints);
 
   if (npoints < 3)
@@ -611,7 +611,7 @@ bdk_directfb_draw_polygon (BdkDrawable *drawable,
         {
           BdkDrawableImplDirectFB *impl;
           BdkRebunnyion                clip;
-          gint                     i;
+          bint                     i;
 
           impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
@@ -666,10 +666,10 @@ static void
 bdk_directfb_draw_text (BdkDrawable *drawable,
                         BdkFont     *font,
                         BdkGC       *gc,
-                        gint         x,
-                        gint         y,
-                        const gchar *text,
-                        gint         text_length)
+                        bint         x,
+                        bint         y,
+                        const bchar *text,
+                        bint         text_length)
 {
   D_UNIMPLEMENTED ();
 }
@@ -678,10 +678,10 @@ static void
 bdk_directfb_draw_text_wc (BdkDrawable    *drawable,
                            BdkFont        *font,
                            BdkGC          *gc,
-                           gint            x,
-                           gint            y,
+                           bint            x,
+                           bint            y,
                            const BdkWChar *text,
-                           gint            text_length)
+                           bint            text_length)
 {
   D_UNIMPLEMENTED ();
 }
@@ -690,12 +690,12 @@ static void
 bdk_directfb_draw_drawable (BdkDrawable *drawable,
                             BdkGC       *gc,
                             BdkDrawable *src,
-                            gint         xsrc,
-                            gint         ysrc,
-                            gint         xdest,
-                            gint         ydest,
-                            gint         width,
-                            gint         height,
+                            bint         xsrc,
+                            bint         ysrc,
+                            bint         xdest,
+                            bint         ydest,
+                            bint         width,
+                            bint         height,
                             BdkDrawable *original_src)
 {
   BdkDrawableImplDirectFB *impl;
@@ -707,9 +707,9 @@ bdk_directfb_draw_drawable (BdkDrawable *drawable,
                                          ydest + height};
 
   DFBRectangle rect = { xsrc, ysrc, width, height };
-  gint i;
+  bint i;
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n", B_STRFUNC,
               drawable, gc, src, xsrc, ysrc, xdest, ydest, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -749,7 +749,7 @@ static void
 bdk_directfb_draw_points (BdkDrawable *drawable,
                           BdkGC       *gc,
                           BdkPoint    *points,
-                          gint         npoints)
+                          bint         npoints)
 {
   BdkDrawableImplDirectFB *impl;
   BdkRebunnyion                clip;
@@ -757,7 +757,7 @@ bdk_directfb_draw_points (BdkDrawable *drawable,
   DFBRebunnyion rebunnyion = { points->x, points->y, points->x, points->y };
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n",
-              G_STRFUNC, drawable, gc, points, npoints);
+              B_STRFUNC, drawable, gc, points, npoints);
 
   if (npoints < 1)
     return;
@@ -798,16 +798,16 @@ static void
 bdk_directfb_draw_segments (BdkDrawable *drawable,
                             BdkGC       *gc,
                             BdkSegment  *segs,
-                            gint         nsegs)
+                            bint         nsegs)
 {
   BdkDrawableImplDirectFB *impl;
   BdkRebunnyion                clip;
-  gint                     i;
+  bint                     i;
 
   //  DFBRebunnyion rebunnyion = { segs->x1, segs->y1, segs->x2, segs->y2 };
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n",
-              G_STRFUNC, drawable, gc, segs, nsegs);
+              B_STRFUNC, drawable, gc, segs, nsegs);
 
   if (nsegs < 1)
     return;
@@ -877,17 +877,17 @@ static void
 bdk_directfb_draw_lines (BdkDrawable *drawable,
                          BdkGC       *gc,
                          BdkPoint    *points,
-                         gint         npoints)
+                         bint         npoints)
 {
   BdkDrawableImplDirectFB *impl;
   BdkRebunnyion                clip;
-  gint                     i;
+  bint                     i;
 
   DFBRebunnyion lines[npoints > 1 ? npoints - 1 : 1];
 
   DFBRebunnyion rebunnyion = { points->x, points->y, points->x, points->y };
 
-  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n", G_STRFUNC,
+  D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %d )\n", B_STRFUNC,
               drawable, gc, points, npoints);
 
   if (npoints < 2)
@@ -945,26 +945,26 @@ static void
 bdk_directfb_draw_image (BdkDrawable *drawable,
                          BdkGC       *gc,
                          BdkImage    *image,
-                         gint         xsrc,
-                         gint         ysrc,
-                         gint         xdest,
-                         gint         ydest,
-                         gint         width,
-                         gint         height)
+                         bint         xsrc,
+                         bint         ysrc,
+                         bint         xdest,
+                         bint         ydest,
+                         bint         width,
+                         bint         height)
 {
   BdkDrawableImplDirectFB *impl;
   BdkImageDirectFB        *image_private;
   BdkRebunnyion                clip;
   BdkRectangle             dest_rect = { xdest, ydest, width, height };
 
-  gint pitch = 0;
-  gint i;
+  bint pitch = 0;
+  bint i;
 
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
   g_return_if_fail (image != NULL);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n",
-              G_STRFUNC,
+              B_STRFUNC,
               drawable, gc, image, xsrc, ysrc, xdest, ydest, width, height);
 
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
@@ -1003,26 +1003,26 @@ bdk_directfb_draw_image (BdkDrawable *drawable,
 }
 
 static void
-composite (guchar *src_buf,
-           gint    src_rowstride,
-           guchar *dest_buf,
-           gint    dest_rowstride,
-           gint    width,
-           gint    height)
+composite (buchar *src_buf,
+           bint    src_rowstride,
+           buchar *dest_buf,
+           bint    dest_rowstride,
+           bint    width,
+           bint    height)
 {
-  guchar *src = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src = src_buf;
+  buchar *dest = dest_buf;
 
   while (height--)
     {
-      gint twidth = width;
-      guchar *p = src;
-      guchar *q = dest;
+      bint twidth = width;
+      buchar *p = src;
+      buchar *q = dest;
 
       while (twidth--)
         {
-          guchar a = p[3];
-          guint t;
+          buchar a = p[3];
+          buint t;
 
           t = a * p[0] + (255 - a) * q[0] + 0x80;
           q[0] = (t + (t >> 8)) >> 8;
@@ -1041,28 +1041,28 @@ composite (guchar *src_buf,
 }
 
 static void
-composite_0888 (guchar      *src_buf,
-                gint         src_rowstride,
-                guchar      *dest_buf,
-                gint         dest_rowstride,
+composite_0888 (buchar      *src_buf,
+                bint         src_rowstride,
+                buchar      *dest_buf,
+                bint         dest_rowstride,
                 BdkByteOrder dest_byte_order,
-                gint         width,
-                gint         height)
+                bint         width,
+                bint         height)
 {
-  guchar *src = src_buf;
-  guchar *dest = dest_buf;
+  buchar *src = src_buf;
+  buchar *dest = dest_buf;
 
   while (height--)
     {
-      gint twidth = width;
-      guchar *p = src;
-      guchar *q = dest;
+      bint twidth = width;
+      buchar *p = src;
+      buchar *q = dest;
 
       if (dest_byte_order == BDK_LSB_FIRST)
         {
           while (twidth--)
             {
-              guint t;
+              buint t;
 
               t = p[3] * p[2] + (255 - p[3]) * q[0] + 0x80;
               q[0] = (t + (t >> 8)) >> 8;
@@ -1078,7 +1078,7 @@ composite_0888 (guchar      *src_buf,
         {
           while (twidth--)
             {
-              guint t;
+              buint t;
 
               t = p[3] * p[0] + (255 - p[3]) * q[1] + 0x80;
               q[1] = (t + (t >> 8)) >> 8;
@@ -1119,13 +1119,13 @@ composite_0888 (guchar      *src_buf,
   }
 
 static void
-composite_565 (guchar      *src_buf,
-               gint         src_rowstride,
-               guchar      *dest_buf,
-               gint         dest_rowstride,
+composite_565 (buchar      *src_buf,
+               bint         src_rowstride,
+               buchar      *dest_buf,
+               bint         dest_rowstride,
                BdkByteOrder dest_byte_order,
-               gint         width,
-               gint         height)
+               bint         width,
+               bint         height)
 {
   while (height--) {
     int  w = width;
@@ -1179,20 +1179,20 @@ static void
 bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
                           BdkGC        *gc,
                           BdkPixbuf    *pixbuf,
-                          gint          src_x,
-                          gint          src_y,
-                          gint          dest_x,
-                          gint          dest_y,
-                          gint          width,
-                          gint          height,
+                          bint          src_x,
+                          bint          src_y,
+                          bint          dest_x,
+                          bint          dest_y,
+                          bint          width,
+                          bint          height,
                           BdkRgbDither  dither,
-                          gint          x_dither,
-                          gint          y_dither)
+                          bint          x_dither,
+                          bint          y_dither)
 {
   BdkPixbuf *composited = NULL;
-  guchar *pb_pixels = NULL;
-  gint pb_n_channels, pb_bits_per_sample, pb_rowstride;
-  gint pb_width, pb_height;
+  buchar *pb_pixels = NULL;
+  bint pb_n_channels, pb_bits_per_sample, pb_rowstride;
+  bint pb_width, pb_height;
 #if 0
   BdkRebunnyion *clip;
   BdkRebunnyion *drect;
@@ -1226,7 +1226,7 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
   g_return_if_fail (src_y >= 0 && src_y + height <= pb_height);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p, %p, %p, %4d,%4d -> %4d,%4d - %dx%d )\n",
-              G_STRFUNC,
+              B_STRFUNC,
               drawable, gc, pixbuf, src_x, src_y, dest_x, dest_y, width, height);
 
   /* Clip to the drawable; this is required for get_from_drawable() so
@@ -1310,20 +1310,20 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
   if (bdk_pixbuf_get_has_alpha (pixbuf))
     {
       BdkVisual *visual = bdk_drawable_get_visual (drawable);
-      void (*composite_func) (guchar       *src_buf,
-                              gint          src_rowstride,
-                              guchar       *dest_buf,
-                              gint          dest_rowstride,
+      void (*composite_func) (buchar       *src_buf,
+                              bint          src_rowstride,
+                              buchar       *dest_buf,
+                              bint          dest_rowstride,
                               BdkByteOrder  dest_byte_order,
-                              gint          width,
-                              gint          height) = NULL;
+                              bint          width,
+                              bint          height) = NULL;
 
       /* First we see if we have a visual-specific composition function that can composite
        * the pixbuf data directly onto the image
        */
       if (visual)
         {
-          gint bits_per_pixel = _bdk_windowing_get_bits_for_depth (bdk_drawable_get_display (drawable),
+          bint bits_per_pixel = _bdk_windowing_get_bits_for_depth (bdk_drawable_get_display (drawable),
                                                                    visual->depth);
 
           if (visual->byte_order == (G_BYTE_ORDER == G_BIG_ENDIAN ? BDK_MSB_FIRST : BDK_LSB_FIRST) &&
@@ -1344,15 +1344,15 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
       if (composite_func && !(dither == BDK_RGB_DITHER_MAX && visual->depth != 24))
         {
 #if 0
-          gint x0, y0;
+          bint x0, y0;
           for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
             {
-              gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+              bint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
               for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
                 {
-                  gint xs0, ys0;
+                  bint xs0, ys0;
 
-                  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
+                  bint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 
                   BdkImage *image = _bdk_image_get_scratch (bdk_drawable_get_screen (drawable),
                                                             width1, height1,
@@ -1364,7 +1364,7 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
                                               width1, height1);
                   (*composite_func) (pb_pixels + (src_y + y0) * pb_rowstride + (src_x + x0) * 4,
                                      pb_rowstride,
-                                     (guchar*)image->mem + ys0 * image->bpl + xs0 * image->bpp,
+                                     (buchar*)image->mem + ys0 * image->bpl + xs0 * image->bpp,
                                      image->bpl,
                                      visual->byte_order,
                                      width1, height1);
@@ -1425,7 +1425,7 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
   
   if (pb_n_channels == 4)
     {
-      guchar *buf = pb_pixels + src_y * pb_rowstride + src_x * 4;
+      buchar *buf = pb_pixels + src_y * pb_rowstride + src_x * 4;
 
       bdk_draw_rgb_32_image_dithalign (drawable, gc,
                                        dest_x, dest_y,
@@ -1436,7 +1436,7 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
     }
   else                                /* n_channels == 3 */
     {
-      guchar *buf = pb_pixels + src_y * pb_rowstride + src_x * 3;
+      buchar *buf = pb_pixels + src_y * pb_rowstride + src_x * 3;
 
       bdk_draw_rgb_image_dithalign (drawable, gc,
                                     dest_x, dest_y,
@@ -1452,20 +1452,20 @@ bdk_directfb_draw_pixbuf (BdkDrawable  *drawable,
 }
 
 static inline void
-convert_rgba_pixbuf_to_image (guint32 *src,
-                              guint    src_pitch,
-                              guint32 *dest,
-                              guint    dest_pitch,
-                              guint    width,
-                              guint    height)
+convert_rgba_pixbuf_to_image (buint32 *src,
+                              buint    src_pitch,
+                              buint32 *dest,
+                              buint    dest_pitch,
+                              buint    width,
+                              buint    height)
 {
-  guint i;
+  buint i;
 
   while (height--)
     {
       for (i = 0; i < width; i++)
         {
-          guint32 pixel = GUINT32_FROM_BE (src[i]);
+          buint32 pixel = GUINT32_FROM_BE (src[i]);
           dest[i] = (pixel >> 8) | (pixel << 24);
         }
 
@@ -1475,15 +1475,15 @@ convert_rgba_pixbuf_to_image (guint32 *src,
 }
 
 static inline void
-convert_rgb_pixbuf_to_image (guchar  *src,
-                             guint    src_pitch,
-                             guint32 *dest,
-                             guint    dest_pitch,
-                             guint    width,
-                             guint    height)
+convert_rgb_pixbuf_to_image (buchar  *src,
+                             buint    src_pitch,
+                             buint32 *dest,
+                             buint    dest_pitch,
+                             buint    width,
+                             buint    height)
 {
-  guint   i;
-  guchar *s;
+  buint   i;
+  buchar *s;
 
   while (height--)
     {
@@ -1501,7 +1501,7 @@ convert_rgb_pixbuf_to_image (guchar  *src,
  * Object stuff
  */
 static inline const char *
-drawable_impl_type_name (GObject *object)
+drawable_impl_type_name (BObject *object)
 {
   if (BDK_IS_PIXMAP (object))
     return "PIXMAP";
@@ -1517,13 +1517,13 @@ drawable_impl_type_name (GObject *object)
 
 
 static void
-bdk_drawable_impl_directfb_finalize (GObject *object)
+bdk_drawable_impl_directfb_finalize (BObject *object)
 {
   BdkDrawableImplDirectFB *impl;
   impl = BDK_DRAWABLE_IMPL_DIRECTFB (object);
 
   D_DEBUG_AT (BDKDFB_Drawable, "%s( %p ) <- %dx%d (%s at %4d,%4d)\n",
-              G_STRFUNC,
+              B_STRFUNC,
               object, impl->width, impl->height,
               drawable_impl_type_name (object),
               impl->abs_x, impl->abs_y);
@@ -1535,14 +1535,14 @@ bdk_drawable_impl_directfb_finalize (GObject *object)
   if (impl->surface)
     impl->surface->Release (impl->surface);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_drawable_impl_directfb_class_init (BdkDrawableImplDirectFBClass *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass     *object_class   = G_OBJECT_CLASS (klass);
+  BObjectClass     *object_class   = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 

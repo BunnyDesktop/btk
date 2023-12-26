@@ -4,7 +4,7 @@
 
 #include <bunnylib.h>
 
-#ifdef G_HAVE_GNUC_VISIBILITY
+#ifdef B_HAVE_GNUC_VISIBILITY
 
 #undef IN_FILE
 #define IN_FILE defined
@@ -13172,5 +13172,5 @@ extern __typeof (btk_info_bar_get_message_type) btk_info_bar_get_message_type __
 
 #endif
 #endif
-#endif /* G_HAVE_GNUC_VISIBILITY */
+#endif /* B_HAVE_GNUC_VISIBILITY */
 #endif /* DISABLE_VISIBILITY */

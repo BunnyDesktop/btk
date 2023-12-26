@@ -35,13 +35,13 @@ bdk_window_impl_get_type (void)
 {
   static GType gtype = 0;
 
-  if (G_UNLIKELY (!gtype))
+  if (B_UNLIKELY (!gtype))
     {
-      gtype = g_type_register_static_simple (G_TYPE_INTERFACE,
+      gtype = g_type_register_static_simple (B_TYPE_INTERFACE,
                                              "BdkWindowImpl",
                                              sizeof (BdkWindowImplIface),
                                              NULL, 0, NULL, 0);
-      g_type_interface_add_prerequisite (gtype, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (gtype, B_TYPE_OBJECT);
     }
 
   return gtype;

@@ -27,9 +27,9 @@
     <informalexample><programlisting>
       static void
       link_button_clicked_cb (BtkWidget *widget,
-                              gpointer   data)
+                              bpointer   data)
       {
-        const gchar *link;
+        const bchar *link;
 
 	link = btk_link_button_get_uri (BTK_LINK_BUTTON (widget));
 	open_browser_at_url (link);
@@ -49,8 +49,8 @@
     <informalexample><programlisting>
       static void
       link_button_hook (BtkLinkButton *button,
-                        const gchar   *link,
-			gpointer       user_data)
+                        const bchar   *link,
+			bpointer       user_data)
       
       {
         open_browser_at_url (link);

@@ -25,7 +25,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  guint i, accu = 0;
+  buint i, accu = 0;
 
   for (i = 0; i < BDK_SETTINGS_N_ELEMENTS(); i++)
     {

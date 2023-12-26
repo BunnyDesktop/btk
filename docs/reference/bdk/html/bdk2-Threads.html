@@ -81,7 +81,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-idle" title="bdk_threads_add_idle ()">bdk_threads_add_idle</a> <span class="c_punctuation">()</span>
@@ -89,7 +89,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-idle-full" title="bdk_threads_add_idle_full ()">bdk_threads_add_idle_full</a> <span class="c_punctuation">()</span>
@@ -97,7 +97,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout" title="bdk_threads_add_timeout ()">bdk_threads_add_timeout</a> <span class="c_punctuation">()</span>
@@ -105,7 +105,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-full" title="bdk_threads_add_timeout_full ()">bdk_threads_add_timeout_full</a> <span class="c_punctuation">()</span>
@@ -113,7 +113,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-seconds" title="bdk_threads_add_timeout_seconds ()">bdk_threads_add_timeout_seconds</a> <span class="c_punctuation">()</span>
@@ -121,7 +121,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-seconds-full" title="bdk_threads_add_timeout_seconds_full ()">bdk_threads_add_timeout_seconds_full</a> <span class="c_punctuation">()</span>
@@ -237,9 +237,9 @@ be called multiple times.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-idle"></a><h3>bdk_threads_add_idle ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 bdk_threads_add_idle (<em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                      <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>A wrapper for the common usage of <a class="link" href="bdk2-Threads.html#bdk-threads-add-idle-full" title="bdk_threads_add_idle_full ()"><code class="function">bdk_threads_add_idle_full()</code></a> 
 assigning the default priority, <span class="type">G_PRIORITY_DEFAULT_IDLE</span>.</p>
 <p>See <a class="link" href="bdk2-Threads.html#bdk-threads-add-idle-full" title="bdk_threads_add_idle_full ()"><code class="function">bdk_threads_add_idle_full()</code></a>.</p>
@@ -275,10 +275,10 @@ assigning the default priority, <span class="type">G_PRIORITY_DEFAULT_IDLE</span
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-idle-full"></a><h3>bdk_threads_add_idle_full ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-bdk_threads_add_idle_full (<em class="parameter"><code><span class="type">gint</span> priority</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+bdk_threads_add_idle_full (<em class="parameter"><code><span class="type">bint</span> priority</code></em>,
                            <em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                           <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                           <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                            <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>Adds a function to be called whenever there are no higher priority
 events pending.  If the function returns <code class="literal">FALSE</code> it is automatically
@@ -323,8 +323,8 @@ in thread B:</p>
 27
 28
 29</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">gboolean</span>
-<span class="nf">idle_callback</span> <span class="p">(</span><span class="n">gpointer</span> <span class="n">data</span><span class="p">)</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">bboolean</span>
+<span class="nf">idle_callback</span> <span class="p">(</span><span class="n">bpointer</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="cm">/* bdk_threads_enter(); would be needed for g_idle_add() */</span>
 
@@ -345,12 +345,12 @@ in thread B:</p>
 <span class="p">}</span>
 
 <span class="k">static</span> <span class="kt">void</span>
-<span class="nf">some_widget_finalize</span> <span class="p">(</span><span class="n">GObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
+<span class="nf">some_widget_finalize</span> <span class="p">(</span><span class="n">BObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="n">SomeWidget</span> <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="n">SOME_WIDGET</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">idle_id</span><span class="p">)</span>
      <span class="n">g_source_remove</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">idle_id</span><span class="p">);</span>
-   <span class="n">G_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+   <span class="n">B_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
 <span class="p">}</span></pre></td>
       </tr>
     </tbody>
@@ -401,10 +401,10 @@ range btweeen <span class="type">G_PRIORITY_DEFAULT_IDLE</span> and <span class=
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-timeout"></a><h3>bdk_threads_add_timeout ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-bdk_threads_add_timeout (<em class="parameter"><code><span class="type">guint</span> interval</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+bdk_threads_add_timeout (<em class="parameter"><code><span class="type">buint</span> interval</code></em>,
                          <em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                         <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>A wrapper for the common usage of <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-full" title="bdk_threads_add_timeout_full ()"><code class="function">bdk_threads_add_timeout_full()</code></a> 
 assigning the default priority, <span class="type">G_PRIORITY_DEFAULT</span>.</p>
 <p>See <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-full" title="bdk_threads_add_timeout_full ()"><code class="function">bdk_threads_add_timeout_full()</code></a>.</p>
@@ -446,11 +446,11 @@ assigning the default priority, <span class="type">G_PRIORITY_DEFAULT</span>.</p
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-timeout-full"></a><h3>bdk_threads_add_timeout_full ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-bdk_threads_add_timeout_full (<em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                              <em class="parameter"><code><span class="type">guint</span> interval</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+bdk_threads_add_timeout_full (<em class="parameter"><code><span class="type">bint</span> priority</code></em>,
+                              <em class="parameter"><code><span class="type">buint</span> interval</code></em>,
                               <em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                              <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                              <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                               <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>Sets a function to be called at regular intervals holding the BDK lock,
 with the given priority.  The function is called repeatedly until it 
@@ -496,7 +496,7 @@ for BTK+ widgets for the following use case:</p>
 23
 24
 25</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">gboolean</span> <span class="nf">timeout_callback</span> <span class="p">(</span><span class="n">gpointer</span> <span class="n">data</span><span class="p">)</span>
+        <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="n">bboolean</span> <span class="nf">timeout_callback</span> <span class="p">(</span><span class="n">bpointer</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="n">SomeWidget</span> <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
    
@@ -512,14 +512,14 @@ for BTK+ widgets for the following use case:</p>
    <span class="n">self</span><span class="o">-&gt;</span><span class="n">timeout_id</span> <span class="o">=</span> <span class="n">g_timeout_add</span> <span class="p">(</span><span class="n">timeout_callback</span><span class="p">,</span> <span class="n">self</span><span class="p">)</span>
 <span class="p">}</span>
  
-<span class="k">static</span> <span class="kt">void</span> <span class="nf">some_widget_finalize</span> <span class="p">(</span><span class="n">GObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">some_widget_finalize</span> <span class="p">(</span><span class="n">BObject</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="n">SomeWidget</span> <span class="o">*</span><span class="n">self</span> <span class="o">=</span> <span class="n">SOME_WIDGET</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
    
    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">timeout_id</span><span class="p">)</span>
      <span class="n">g_source_remove</span> <span class="p">(</span><span class="n">self</span><span class="o">-&gt;</span><span class="n">timeout_id</span><span class="p">);</span>
    
-   <span class="n">G_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+   <span class="n">B_OBJECT_CLASS</span> <span class="p">(</span><span class="n">parent_class</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">finalize</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
 <span class="p">}</span></pre></td>
       </tr>
     </tbody>
@@ -576,10 +576,10 @@ range between <span class="type">G_PRIORITY_DEFAULT_IDLE</span> and <span class=
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-timeout-seconds"></a><h3>bdk_threads_add_timeout_seconds ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-bdk_threads_add_timeout_seconds (<em class="parameter"><code><span class="type">guint</span> interval</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+bdk_threads_add_timeout_seconds (<em class="parameter"><code><span class="type">buint</span> interval</code></em>,
                                  <em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                                 <em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <p>A wrapper for the common usage of <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-seconds-full" title="bdk_threads_add_timeout_seconds_full ()"><code class="function">bdk_threads_add_timeout_seconds_full()</code></a> 
 assigning the default priority, <span class="type">G_PRIORITY_DEFAULT</span>.</p>
 <p>For details, see <a class="link" href="bdk2-Threads.html#bdk-threads-add-timeout-full" title="bdk_threads_add_timeout_full ()"><code class="function">bdk_threads_add_timeout_full()</code></a>.</p>
@@ -620,11 +620,11 @@ assigning the default priority, <span class="type">G_PRIORITY_DEFAULT</span>.</p
 <hr>
 <div class="refsect2">
 <a name="bdk-threads-add-timeout-seconds-full"></a><h3>bdk_threads_add_timeout_seconds_full ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
-bdk_threads_add_timeout_seconds_full (<em class="parameter"><code><span class="type">gint</span> priority</code></em>,
-                                      <em class="parameter"><code><span class="type">guint</span> interval</code></em>,
+<pre class="programlisting"><span class="returnvalue">buint</span>
+bdk_threads_add_timeout_seconds_full (<em class="parameter"><code><span class="type">bint</span> priority</code></em>,
+                                      <em class="parameter"><code><span class="type">buint</span> interval</code></em>,
                                       <em class="parameter"><code><span class="type">GSourceFunc</span> function</code></em>,
-                                      <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                      <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                       <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>A variant of <code class="function">bdk_threads_add_timout_full()</code> with second-granularity.
 See <code class="function">g_timeout_add_seconds_full()</code> for a discussion of why it is

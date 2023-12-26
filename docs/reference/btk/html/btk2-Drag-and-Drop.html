@@ -121,7 +121,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Drag-and-Drop.html#btk-drag-dest-get-track-motion" title="btk_drag_dest_get_track_motion ()">btk_drag_dest_get_track_motion</a> <span class="c_punctuation">()</span>
@@ -233,7 +233,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Drag-and-Drop.html#btk-drag-check-threshold" title="btk_drag_check_threshold ()">btk_drag_check_threshold</a> <span class="c_punctuation">()</span>
@@ -365,7 +365,7 @@
 btk_drag_dest_set (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                    <em class="parameter"><code><a class="link" href="btk2-Drag-and-Drop.html#BtkDestDefaults" title="enum BtkDestDefaults"><span class="type">BtkDestDefaults</span></a> flags</code></em>,
                    <em class="parameter"><code>const <a class="link" href="btk2-Selections.html#BtkTargetEntry" title="struct BtkTargetEntry"><span class="type">BtkTargetEntry</span></a> *targets</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> n_targets</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> n_targets</code></em>,
                    <em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragAction"><span class="type">BdkDragAction</span></a> actions</code></em>);</pre>
 <p>Sets a widget as a potential drop destination, and adds default behaviors.</p>
 <p>The default behaviors listed in <em class="parameter"><code>flags</code></em>
@@ -410,9 +410,9 @@ the action to use depending on whether the control key is pressed or not:</p>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
 <span class="nf">drag_motion</span> <span class="p">(</span><span class="n">BtkWidget</span> <span class="o">*</span><span class="n">widget</span><span class="p">,</span>
              <span class="n">BdkDragContext</span> <span class="o">*</span><span class="n">context</span><span class="p">,</span>
-             <span class="n">gint</span> <span class="n">x</span><span class="p">,</span>
-             <span class="n">gint</span> <span class="n">y</span><span class="p">,</span>
-             <span class="n">guint</span> <span class="n">time</span><span class="p">)</span>
+             <span class="n">bint</span> <span class="n">x</span><span class="p">,</span>
+             <span class="n">bint</span> <span class="n">y</span><span class="p">,</span>
+             <span class="n">buint</span> <span class="n">time</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">BdkModifierType</span> <span class="n">mask</span><span class="p">;</span>
 
@@ -480,7 +480,7 @@ and <a class="link" href="btk2-Drag-and-Drop.html#btk-drag-dest-find-target" tit
 btk_drag_dest_set_proxy (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                          <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *proxy_window</code></em>,
                          <em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragProtocol"><span class="type">BdkDragProtocol</span></a> protocol</code></em>,
-                         <em class="parameter"><code><span class="type">gboolean</span> use_coordinates</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bboolean</span> use_coordinates</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -690,7 +690,7 @@ use <a class="link" href="btk2-Selections.html#btk-target-list-add-uri-targets" 
 <a name="btk-drag-dest-set-track-motion"></a><h3>btk_drag_dest_set_track_motion ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_dest_set_track_motion (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> track_motion</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> track_motion</code></em>);</pre>
 <p>Tells the widget to emit ::drag-motion and ::drag-leave
 events regardless of the targets and the <a class="link" href="btk2-Drag-and-Drop.html#BTK-DEST-DEFAULT-MOTION:CAPS"><code class="literal">BTK_DEST_DEFAULT_MOTION</code></a>
 flag. </p>
@@ -723,7 +723,7 @@ actions regardless of the targets that the source offers.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-drag-dest-get-track-motion"></a><h3>btk_drag_dest_get_track_motion ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_drag_dest_get_track_motion (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
 <p>Returns whether the widget has been configured to always
 emit ::drag-motion signals.</p>
@@ -753,9 +753,9 @@ emit ::drag-motion signals.</p>
 <a name="btk-drag-finish"></a><h3>btk_drag_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_finish (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> success</code></em>,
-                 <em class="parameter"><code><span class="type">gboolean</span> del</code></em>,
-                 <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                 <em class="parameter"><code><span class="type">bboolean</span> success</code></em>,
+                 <em class="parameter"><code><span class="type">bboolean</span> del</code></em>,
+                 <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -764,7 +764,7 @@ btk_drag_finish (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop
 btk_drag_get_data (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                    <em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                    <em class="parameter"><code><a href="../html/bdk2-Properties-and-Atoms.html#BdkAtom"><span class="type">BdkAtom</span></a> target</code></em>,
-                   <em class="parameter"><code><span class="type">guint32</span> time_</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">buint32</span> time_</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -814,7 +814,7 @@ btk_drag_unhighlight (<em class="parameter"><code><a class="link" href="BtkWidge
 btk_drag_begin (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                 <em class="parameter"><code><a class="link" href="btk2-Selections.html#BtkTargetList"><span class="type">BtkTargetList</span></a> *targets</code></em>,
                 <em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragAction"><span class="type">BdkDragAction</span></a> actions</code></em>,
-                <em class="parameter"><code><span class="type">gint</span> button</code></em>,
+                <em class="parameter"><code><span class="type">bint</span> button</code></em>,
                 <em class="parameter"><code><a href="../html/bdk2-Event-Structures.html#BdkEvent"><span class="type">BdkEvent</span></a> *event</code></em>);</pre>
 <p>Initiates a drag on the source side. The function
 only needs to be used when the application is
@@ -895,8 +895,8 @@ source can provide the data.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_set_icon_widget (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                           <em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <p>Changes the icon for a widget to a given widget. BTK+
 will not destroy the icon, so if you don't want
 it to persist, you should connect to the "drag-end" 
@@ -945,8 +945,8 @@ btk_drag_set_icon_pixmap (<em class="parameter"><code><a href="../html/bdk2-Drag
                           <em class="parameter"><code><a href="../html/bdk2-Colormaps-and-Colors.html#BdkColormap"><span class="type">BdkColormap</span></a> *colormap</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
                           <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <p>Sets <em class="parameter"><code>pixmap</code></em>
  as the icon for a given drag. BTK+ retains
 references for the arguments, and will release them when
@@ -1004,8 +1004,8 @@ of the hotspot.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_set_icon_pixbuf (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
                           <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <p>Sets <em class="parameter"><code>pixbuf</code></em>
  as the icon for a given drag.</p>
 <div class="refsect3">
@@ -1049,9 +1049,9 @@ of the hotspot.</p></td>
 <a name="btk-drag-set-icon-stock"></a><h3>btk_drag_set_icon_stock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_set_icon_stock (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                         <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>,
+                         <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                         <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <p>Sets the icon for a given drag from a stock ID.</p>
 <div class="refsect3">
 <a name="btk-drag-set-icon-stock.parameters"></a><h4>Parameters</h4>
@@ -1092,9 +1092,9 @@ with a  context for the source side of a drag)</p></td>
 <a name="btk-drag-set-icon-name"></a><h3>btk_drag_set_icon_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_set_icon_name (<em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragContext"><span class="type">BdkDragContext</span></a> *context</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                        <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <p>Sets the icon for a given drag from a named themed icon. See
 the docs for <a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> for more details. Note that the
 size of the icon depends on the icon theme (the icon is
@@ -1168,8 +1168,8 @@ with a  context for the source side of a drag)</p></td>
 btk_drag_set_default_icon (<em class="parameter"><code><a href="../html/bdk2-Colormaps-and-Colors.html#BdkColormap"><span class="type">BdkColormap</span></a> *colormap</code></em>,
                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkPixmap"><span class="type">BdkPixmap</span></a> *pixmap</code></em>,
                            <em class="parameter"><code><a href="../html/bdk2-Bitmaps-and-Pixmaps.html#BdkBitmap"><span class="type">BdkBitmap</span></a> *mask</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> hot_x</code></em>,
-                           <em class="parameter"><code><span class="type">gint</span> hot_y</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bint</span> hot_x</code></em>,
+                           <em class="parameter"><code><span class="type">bint</span> hot_y</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_drag_set_default_icon</code> is deprecated and should not be used in newly-written code.</p>
 <p>Change the default drag icon via the stock system by 
@@ -1220,12 +1220,12 @@ of the hotspot.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-drag-check-threshold"></a><h3>btk_drag_check_threshold ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_drag_check_threshold (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> start_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> start_y</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> current_x</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> current_y</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bint</span> start_x</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> start_y</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> current_x</code></em>,
+                          <em class="parameter"><code><span class="type">bint</span> current_y</code></em>);</pre>
 <p>Checks to see if a mouse drag starting at (<em class="parameter"><code>start_x</code></em>
 , <em class="parameter"><code>start_y</code></em>
 ) and ending
@@ -1282,7 +1282,7 @@ should trigger the beginning of a drag-and-drop operation.</p>
 btk_drag_source_set (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
                      <em class="parameter"><code><a href="../html/bdk2-Windows.html#BdkModifierType"><span class="type">BdkModifierType</span></a> start_button_mask</code></em>,
                      <em class="parameter"><code>const <a class="link" href="btk2-Selections.html#BtkTargetEntry" title="struct BtkTargetEntry"><span class="type">BtkTargetEntry</span></a> *targets</code></em>,
-                     <em class="parameter"><code><span class="type">gint</span> n_targets</code></em>,
+                     <em class="parameter"><code><span class="type">bint</span> n_targets</code></em>,
                      <em class="parameter"><code><a href="../html/bdk2-Drag-and-Drop.html#BdkDragAction"><span class="type">BdkDragAction</span></a> actions</code></em>);</pre>
 <p>Sets up a widget so that BTK+ will start a drag operation when the user
 clicks and drags on the widget. The widget must have a window.</p>
@@ -1409,7 +1409,7 @@ release it when it is no longer needed.</p>
 <a name="btk-drag-source-set-icon-stock"></a><h3>btk_drag_source_set_icon_stock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_source_set_icon_stock (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>);</pre>
 <p>Sets the icon that will be used for drags from a particular source
 to a stock icon.</p>
 <div class="refsect3">
@@ -1440,7 +1440,7 @@ to a stock icon.</p>
 <a name="btk-drag-source-set-icon-name"></a><h3>btk_drag_source_set_icon_name ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_drag_source_set_icon_name (<em class="parameter"><code><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *icon_name</code></em>);</pre>
+                               <em class="parameter"><code>const <span class="type">bchar</span> *icon_name</code></em>);</pre>
 <p>Sets the icon that will be used for drags from a particular source
 to a themed icon. See the docs for <a class="link" href="BtkIconTheme.html" title="BtkIconTheme"><span class="type">BtkIconTheme</span></a> for more details.</p>
 <div class="refsect3">

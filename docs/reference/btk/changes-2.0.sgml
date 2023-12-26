@@ -64,15 +64,15 @@ The <function>bdk_time*</function> functions have been removed. This
 <para>
 The signature for <function>BtkPrintFunc</function> (used for 
   <function>btk_item_factory_dump_items()</function>)
-  has been changed to take a <type>const gchar *</type> instead of 
-  <type>gchar *</type>, to match what we do for GLib, and other similar cases.
+  has been changed to take a <type>const bchar *</type> instead of 
+  <type>bchar *</type>, to match what we do for GLib, and other similar cases.
 </para>
 </listitem>
 
 <listitem>
 <para>
 The detail arguments in the <structname>BtkStyleClass</structname> structure 
-are now <type>const gchar *</type>.
+are now <type>const bchar *</type>.
 </para>
 </listitem>
 
@@ -158,8 +158,8 @@ The following type aliases vanished: <literal>BTK_TYPE_FLAT_FIRST</literal>,
 <para>
 The type macros <function>BTK_TYPE_MAKE()</function> and <function>BTK_TYPE_SEQNO()</function> vanished, use of
     <function>BTK_FUNDAMENTAL_TYPE()</function> is discouraged. Instead, the corresponding <structname>GType</structname>
-    API should be used: <function>G_TYPE_FUNDAMENTAL()</function>, <function>G_TYPE_DERIVE_ID()</function>,
-    <function>G_TYPE_BRANCH_SEQNO()</function>. Note that the GLib type system doesn't build new
+    API should be used: <function>B_TYPE_FUNDAMENTAL()</function>, <function>B_TYPE_DERIVE_ID()</function>,
+    <function>B_TYPE_BRANCH_SEQNO()</function>. Note that the GLib type system doesn't build new
     type ids based on a global incremental sequential number anymore, but
     numbers new type ids sequentially per fundamental type branch.
 </para>
@@ -202,7 +202,7 @@ The following type functions vanished/were replaced:
 <listitem>
 <para>
 Object system changes:
-  <structname>BtkObject</structname> derives from <structname>GObject</structname>, so is not the basic object type anymore.
+  <structname>BtkObject</structname> derives from <structname>BObject</structname>, so is not the basic object type anymore.
   This imposes the following source incompatible changes:
 <itemizedlist>
 
@@ -223,18 +223,18 @@ Object system changes:
 <para>
 <structname>BtkObjectClass</structname> does not introduce the <function>finalize()</function> and <function>shutdown()</function> methods
     anymore. While <function>shutdown()</function> is intended for BTK+ internal use only, <function>finalize()</function>
-    is required by a variety of object implementations. <function>GObjectClass.finalize</function>
+    is required by a variety of object implementations. <function>BObjectClass.finalize</function>
     should be overriden here, e.g.:
 <informalexample><programlisting>
-    static void btk_label_finalize (GObject *bobject)
+    static void btk_label_finalize (BObject *bobject)
     {
       BtkLabel *label = BTK_LABEL (bobject);
       
-      G_OBJECT_CLASS (parent_class)-&gt;finalize (object);
+      B_OBJECT_CLASS (parent_class)-&gt;finalize (object);
     }
     static void btk_label_class_init (BtkLabelClass *class)
     {
-      GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+      BObjectClass *bobject_class = B_OBJECT_CLASS (class);
       
       bobject_class-&gt;finalize = btk_label_finalize;
     }
@@ -288,7 +288,7 @@ Signal system changes:
   system now. For future usage, direct use of the 
   <structname>GSignal</structname> API is recommended,
   this avoids significant performance hits where <structname>BtkArg</structname>
-  structures have to be converted into <structname>GValue</structname>s. For 
+  structures have to be converted into <structname>BValue</structname>s. For 
   language bindings, <structname>GSignal</structname>+<structname>GClosure</structname>
   provide a much more flexible and convenient mechanism to hook into signal 
   emissions or install class default handlers, so the old 
@@ -346,10 +346,10 @@ The 'font' and 'font_set' declarations in RC files are now ignored. There
 <listitem>
 <para>
 A number of types in BDK have become subclasses of 
-  <structname>GObject</structname>. For the most part, this should not break 
+  <structname>BObject</structname>. For the most part, this should not break 
   anyone's code. However, it's now possible/encouraged to use 
   <function>g_object_ref()</function>/<function>g_object_unref()</function> and
-  other <structname>GObject</structname> features with these BDK types. The 
+  other <structname>BObject</structname> features with these BDK types. The 
   converted types are:
   <structname>BdkWindow</structname>, <structname>BdkDrawable</structname>, 
   <structname>BdkPixmap</structname>, <structname>BdkImage</structname>, 
@@ -374,7 +374,7 @@ All drawables including pixmaps used to have a type tag, the
 <listitem>
 <para>
 <structname>BtkStyle</structname> and <structname>BtkRcStyle</structname> are 
-  now subclasses of <structname>GObject</structname> as well.  This
+  now subclasses of <structname>BObject</structname> as well.  This
   requires fairly extensive changes to theme engines, but
   shouldn't affect most other code.
 </para>
@@ -533,12 +533,12 @@ The split between <structname>BtkProgress</structname> and
 <programlisting>
   void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
   void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
-                                                    const gchar    *text);
+                                                    const bchar    *text);
   void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
 
   void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
-                                                    gfloat          fraction);
+                                                    bfloat          fraction);
   void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
 						    BtkProgressBarOrientation orientation);
 </programlisting>
@@ -806,8 +806,8 @@ An extra <structname>BtkSettings</structname> argument has been added to
 <para>
 The child argument facility in <filename>btkcontainer.c</filename> has been 
   converted to a child property facility using 
-  <structname>GParamSpec</structname> and other facilities
-  for <structname>GObject</structname>.   
+  <structname>BParamSpec</structname> and other facilities
+  for <structname>BObject</structname>.   
 </para>
 </listitem>
 
@@ -815,7 +815,7 @@ The child argument facility in <filename>btkcontainer.c</filename> has been
 <para>
 The <function>set_child_arg()</function> and <function>get_child_arg()</function> 
      virtual methods have been replaced with <function>set_child_property()</function>/<function>get_child_property()</function>, which
-     work similar to GObject-&gt;set_property/get_property.
+     work similar to BObject-&gt;set_property/get_property.
 </para>
 </listitem>
 

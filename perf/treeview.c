@@ -42,7 +42,7 @@ tree_model_new (void)
   BtkListStore *list;
   int i;
 
-  list = btk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
+  list = btk_list_store_new (3, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_STRING);
 
   for (i = 0; i < G_N_ELEMENTS (row_data); i++)
     {

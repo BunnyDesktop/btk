@@ -21,19 +21,19 @@
 #include <string.h>
 #include <btk/btk.h>
 
-static guint32 quick_rand32_accu = 2147483563;
+static buint32 quick_rand32_accu = 2147483563;
 
-static inline guint32
+static inline buint32
 quick_rand32 (void)
 {
   quick_rand32_accu = 1664525 * quick_rand32_accu + 1013904223;
   return quick_rand32_accu;
 }
 
-static gboolean
+static bboolean
 delete_event (BtkWidget   *widget,
               BdkEventAny *event,
-              gpointer     user_data)
+              bpointer     user_data)
 {
   btk_main_quit ();
 
@@ -42,13 +42,13 @@ delete_event (BtkWidget   *widget,
 
 static void
 text_tag_enqueue (BtkTextTag *tag,
-                  gpointer    data)
+                  bpointer    data)
 {
   GSList **slist_p = data;
-  *slist_p = g_slist_prepend (*slist_p, tag);
+  *slist_p = b_slist_prepend (*slist_p, tag);
 }
 
-static const gchar *example_text =
+static const bchar *example_text =
 "vkndsk vfds vkfds vkdsv fdlksnvkfdvnkfdvnkdsnvs\n"
 "kmvofdmvfdsvkv fdskvnkfdv nnd.mckfdvnknsknvdnvs"
 "fdlvmfdsvlkfdsmvnskdnvfdsnvf sbskjnvlknfd cvdvnd"
@@ -62,13 +62,13 @@ static const gchar *example_text =
 static BdkAtom
 setup_buffer (BtkTextBuffer *buffer)
 {
-  const guint tlen = strlen (example_text);
-  const guint tcount = 17;
+  const buint tlen = strlen (example_text);
+  const buint tcount = 17;
   BtkTextTag **tags;
   BtkTextTagTable *ttable = btk_text_buffer_get_tag_table (buffer);
   GSList *node, *slist = NULL;
   BdkAtom atom;
-  guint i;
+  buint i;
 
   tags = g_malloc (sizeof (BtkTextTag *) * tcount);
 
@@ -77,7 +77,7 @@ setup_buffer (BtkTextBuffer *buffer)
   btk_text_tag_table_foreach (ttable, text_tag_enqueue, &slist);
   for (node = slist; node; node = node->next)
     btk_text_tag_table_remove (ttable, node->data);
-  g_slist_free (slist);
+  b_slist_free (slist);
 
   /* create new tags */
   for (i = 0; i < tcount; i++)
@@ -95,7 +95,7 @@ setup_buffer (BtkTextBuffer *buffer)
   btk_text_buffer_set_text (buffer, example_text, -1);
   for (i = 0; i < tcount * 5; i++)
     {
-      gint a = quick_rand32() % tlen, b = quick_rand32() % tlen;
+      bint a = quick_rand32() % tlen, b = quick_rand32() % tlen;
       BtkTextIter start, end;
       btk_text_buffer_get_iter_at_offset (buffer, &start, MIN (a, b));
       btk_text_buffer_get_iter_at_offset (buffer, &end,   MAX (a, b));
@@ -111,15 +111,15 @@ setup_buffer (BtkTextBuffer *buffer)
   return atom;
 }
 
-static gboolean
+static bboolean
 test_serialize_deserialize (BtkTextBuffer *buffer,
                             BdkAtom        atom,
                             GError       **error)
 {
   BtkTextIter  start, end;
-  guint8      *spew;
-  gsize        spew_length;
-  gboolean     success;
+  buint8      *spew;
+  bsize        spew_length;
+  bboolean     success;
 
   btk_text_buffer_get_bounds (buffer, &start, &end);
 
@@ -134,16 +134,16 @@ test_serialize_deserialize (BtkTextBuffer *buffer,
   return success;
 }
 
-gint
-main (gint   argc,
-      gchar *argv[])
+bint
+main (bint   argc,
+      bchar *argv[])
 {
   BtkWidget     *window;
   BtkWidget     *sw;
   BtkWidget     *view;
   BtkTextBuffer *buffer;
   BdkAtom        atom;
-  guint          i, broken = 0;
+  buint          i, broken = 0;
 
   btk_init (&argc, &argv);
 

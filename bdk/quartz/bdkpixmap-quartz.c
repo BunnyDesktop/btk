@@ -23,7 +23,7 @@
 #include "bdkpixmap.h"
 #include "bdkprivate-quartz.h"
 
-static gpointer parent_class;
+static bpointer parent_class;
 
 static void
 bdk_pixmap_impl_quartz_init (BdkPixmapImplQuartz *impl)
@@ -32,8 +32,8 @@ bdk_pixmap_impl_quartz_init (BdkPixmapImplQuartz *impl)
 
 static void
 bdk_pixmap_impl_quartz_get_size (BdkDrawable *drawable,
-				gint        *width,
-				gint        *height)
+				bint        *width,
+				bint        *height)
 {
   if (width)
     *width = BDK_PIXMAP_IMPL_QUARTZ (drawable)->width;
@@ -43,14 +43,14 @@ bdk_pixmap_impl_quartz_get_size (BdkDrawable *drawable,
 
 static void
 bdk_pixmap_impl_quartz_get_image_parameters (BdkPixmap           *pixmap,
-                                             gint                *bits_per_component,
-                                             gint                *bits_per_pixel,
-                                             gint                *bytes_per_row,
+                                             bint                *bits_per_component,
+                                             bint                *bits_per_pixel,
+                                             bint                *bytes_per_row,
                                              CGColorSpaceRef     *colorspace,
                                              CGImageAlphaInfo    *alpha_info)
 {
   BdkPixmapImplQuartz *impl = BDK_PIXMAP_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (pixmap)->impl);
-  gint depth = BDK_PIXMAP_OBJECT (pixmap)->depth;
+  bint depth = BDK_PIXMAP_OBJECT (pixmap)->depth;
 
   switch (depth)
     {
@@ -113,11 +113,11 @@ bdk_pixmap_impl_quartz_get_image_parameters (BdkPixmap           *pixmap,
 
 static CGContextRef
 bdk_pixmap_impl_quartz_get_context (BdkDrawable *drawable,
-				    gboolean     antialias)
+				    bboolean     antialias)
 {
   BdkPixmapImplQuartz *impl = BDK_PIXMAP_IMPL_QUARTZ (drawable);
   CGContextRef cg_context;
-  gint bits_per_component, bytes_per_row;
+  bint bits_per_component, bytes_per_row;
   CGColorSpaceRef colorspace;
   CGImageAlphaInfo alpha_info;
 
@@ -149,7 +149,7 @@ bdk_pixmap_impl_quartz_get_context (BdkDrawable *drawable,
 }
 
 static void
-bdk_pixmap_impl_quartz_finalize (GObject *object)
+bdk_pixmap_impl_quartz_finalize (BObject *object)
 {
   BdkPixmapImplQuartz *impl = BDK_PIXMAP_IMPL_QUARTZ (object);
 
@@ -157,13 +157,13 @@ bdk_pixmap_impl_quartz_finalize (GObject *object)
 
   _bdk_quartz_drawable_finish (BDK_DRAWABLE (impl));
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_pixmap_impl_quartz_class_init (BdkPixmapImplQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
   BdkDrawableImplQuartzClass *drawable_quartz_class = BDK_DRAWABLE_IMPL_QUARTZ_CLASS (klass);
   
@@ -211,7 +211,7 @@ _bdk_pixmap_impl_get_type (void)
   return _bdk_pixmap_impl_quartz_get_type ();
 }
 
-static inline gboolean
+static inline bboolean
 depth_supported (int depth)
 {
   if (depth != 24 && depth != 32 && depth != 1)
@@ -227,7 +227,7 @@ CGImageRef
 _bdk_pixmap_get_cgimage (BdkPixmap *pixmap)
 {
   BdkPixmapImplQuartz *impl = BDK_PIXMAP_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (pixmap)->impl);
-  gint bits_per_component, bits_per_pixel, bytes_per_row;
+  bint bits_per_component, bits_per_pixel, bytes_per_row;
   CGColorSpaceRef colorspace;
   CGImageAlphaInfo alpha_info;
   CGImageRef image;
@@ -258,15 +258,15 @@ data_provider_release (void *info, const void *data, size_t size)
 
 BdkPixmap*
 _bdk_pixmap_new (BdkDrawable *drawable,
-                 gint         width,
-                 gint         height,
-                 gint         depth)
+                 bint         width,
+                 bint         height,
+                 bint         depth)
 {
   BdkPixmap *pixmap;
   BdkDrawableImplQuartz *draw_impl;
   BdkPixmapImplQuartz *pix_impl;
-  gint window_depth;
-  gint bytes_per_row;
+  bint window_depth;
+  bint bytes_per_row;
 
   g_return_val_if_fail (drawable == NULL || BDK_IS_DRAWABLE (drawable), NULL);
   g_return_val_if_fail ((drawable != NULL) || (depth != -1), NULL);
@@ -320,9 +320,9 @@ _bdk_pixmap_new (BdkDrawable *drawable,
 
 BdkPixmap *
 _bdk_bitmap_create_from_data (BdkDrawable *window,
-                              const gchar *data,
-                              gint         width,
-                              gint         height)
+                              const bchar *data,
+                              bint         width,
+                              bint         height)
 {
   BdkPixmap *pixmap;
   BdkPixmapImplQuartz *impl;
@@ -340,8 +340,8 @@ _bdk_bitmap_create_from_data (BdkDrawable *window,
   bpl = (width + 7) / 8;
   for (y = 0; y < height; y++)
     {
-      guchar *dst = impl->data + y * width;
-      const gchar *src = data + (y * bpl);   
+      buchar *dst = impl->data + y * width;
+      const bchar *src = data + (y * bpl);   
       for (x = 0; x < width; x++)
 	{
 	  if ((src[x / 8] >> x % 8) & 1)
@@ -358,10 +358,10 @@ _bdk_bitmap_create_from_data (BdkDrawable *window,
 
 BdkPixmap*
 _bdk_pixmap_create_from_data (BdkDrawable    *drawable,
-                              const gchar    *data,
-                              gint            width,
-                              gint            height,
-                              gint            depth,
+                              const bchar    *data,
+                              bint            width,
+                              bint            height,
+                              bint            depth,
                               const BdkColor *fg,
                               const BdkColor *bg)
 {	
@@ -385,9 +385,9 @@ bdk_pixmap_foreign_new (BdkNativeWindow anid)
 BdkPixmap *
 bdk_pixmap_foreign_new_for_screen (BdkScreen       *screen,
 				   BdkNativeWindow  anid,
-				   gint             width,
-				   gint             height,
-				   gint             depth)
+				   bint             width,
+				   bint             height,
+				   bint             depth)
 {
   return NULL;
 }

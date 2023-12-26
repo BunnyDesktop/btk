@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Visuals.html#bdk-visual-get-best-depth" title="bdk_visual_get_best_depth ()">bdk_visual_get_best_depth</a> <span class="c_punctuation">()</span>
@@ -141,7 +141,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Visuals.html#bdk-visual-get-bits-per-rgb" title="bdk_visual_get_bits_per_rgb ()">bdk_visual_get_bits_per_rgb</a> <span class="c_punctuation">()</span>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Visuals.html#bdk-visual-get-colormap-size" title="bdk_visual_get_colormap_size ()">bdk_visual_get_colormap_size</a> <span class="c_punctuation">()</span>
@@ -173,7 +173,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="bdk2-Visuals.html#bdk-visual-get-depth" title="bdk_visual_get_depth ()">bdk_visual_get_depth</a> <span class="c_punctuation">()</span>
@@ -242,8 +242,8 @@
 <div class="refsect2">
 <a name="bdk-query-depths"></a><h3>bdk_query_depths ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bdk_query_depths (<em class="parameter"><code><span class="type">gint</span> **depths</code></em>,
-                  <em class="parameter"><code><span class="type">gint</span> *count</code></em>);</pre>
+bdk_query_depths (<em class="parameter"><code><span class="type">bint</span> **depths</code></em>,
+                  <em class="parameter"><code><span class="type">bint</span> *count</code></em>);</pre>
 <p>This function returns the available bit depths for the default
 screen. It's equivalent to listing the visuals
 (<a class="link" href="bdk2-Visuals.html#bdk-list-visuals" title="bdk_list_visuals ()"><code class="function">bdk_list_visuals()</code></a>) and then looking at the depth field in each
@@ -277,7 +277,7 @@ visual, removing duplicates.</p>
 <a name="bdk-query-visual-types"></a><h3>bdk_query_visual_types ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_query_visual_types (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisualType" title="enum BdkVisualType"><span class="type">BdkVisualType</span></a> **visual_types</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> *count</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> *count</code></em>);</pre>
 <p>This function returns the available visual types for the default
 screen. It's equivalent to listing the visuals
 (<a class="link" href="bdk2-Visuals.html#bdk-list-visuals" title="bdk_list_visuals ()"><code class="function">bdk_list_visuals()</code></a>) and then looking at the type field in each
@@ -326,7 +326,7 @@ and might expect pixels to be in a certain format.</p>
 <hr>
 <div class="refsect2">
 <a name="bdk-visual-get-best-depth"></a><h3>bdk_visual_get_best_depth ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_visual_get_best_depth (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Get the best available depth for the default BDK screen.  "Best"
 means "largest," i.e. 32 preferred over 24 preferred over 8 bits
@@ -378,7 +378,7 @@ BDK screen. The return value should not be freed.</p>
 <div class="refsect2">
 <a name="bdk-visual-get-best-with-depth"></a><h3>bdk_visual_get_best_with_depth ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="returnvalue">BdkVisual</span></a> *
-bdk_visual_get_best_with_depth (<em class="parameter"><code><span class="type">gint</span> depth</code></em>);</pre>
+bdk_visual_get_best_with_depth (<em class="parameter"><code><span class="type">bint</span> depth</code></em>);</pre>
 <p>Get the best visual with depth <em class="parameter"><code>depth</code></em>
  for the default BDK screen.
 Color visuals and visuals with mutable colormaps are preferred
@@ -442,7 +442,7 @@ should not be freed. <code class="literal">NULL</code> may be returned if no vis
 <div class="refsect2">
 <a name="bdk-visual-get-best-with-both"></a><h3>bdk_visual_get_best_with_both ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="returnvalue">BdkVisual</span></a> *
-bdk_visual_get_best_with_both (<em class="parameter"><code><span class="type">gint</span> depth</code></em>,
+bdk_visual_get_best_with_both (<em class="parameter"><code><span class="type">bint</span> depth</code></em>,
                                <em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisualType" title="enum BdkVisualType"><span class="type">BdkVisualType</span></a> visual_type</code></em>);</pre>
 <p>Combines <a class="link" href="bdk2-Visuals.html#bdk-visual-get-best-with-depth" title="bdk_visual_get_best_with_depth ()"><code class="function">bdk_visual_get_best_with_depth()</code></a> and <a class="link" href="bdk2-Visuals.html#bdk-visual-get-best-with-type" title="bdk_visual_get_best_with_type ()"><code class="function">bdk_visual_get_best_with_type()</code></a>.</p>
 <div class="refsect3">
@@ -521,7 +521,7 @@ bdk_visual_get_screen (<em class="parameter"><code><a class="link" href="bdk2-Vi
 <hr>
 <div class="refsect2">
 <a name="bdk-visual-get-bits-per-rgb"></a><h3>bdk_visual_get_bits_per_rgb ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_visual_get_bits_per_rgb (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>);</pre>
 <p>Returns the number of significant bits per red, green and blue value.</p>
 <div class="refsect3">
@@ -551,9 +551,9 @@ bdk_visual_get_bits_per_rgb (<em class="parameter"><code><a class="link" href="b
 <a name="bdk-visual-get-blue-pixel-details"></a><h3>bdk_visual_get_blue_pixel_details ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_visual_get_blue_pixel_details (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>,
-                                   <em class="parameter"><code><span class="type">guint32</span> *mask</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> *shift</code></em>,
-                                   <em class="parameter"><code><span class="type">gint</span> *precision</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">buint32</span> *mask</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> *shift</code></em>,
+                                   <em class="parameter"><code><span class="type">bint</span> *precision</code></em>);</pre>
 <p>Obtains values that are needed to calculate blue pixel values in TrueColor
 and DirectColor.  The "mask" is the significant bits within the pixel.
 The "shift" is the number of bits left we must shift a primary for it
@@ -575,17 +575,17 @@ to how much precision the pixel value contains for a particular primary.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">guint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">buint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>shift</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>precision</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -624,7 +624,7 @@ bdk_visual_get_byte_order (<em class="parameter"><code><a class="link" href="bdk
 <hr>
 <div class="refsect2">
 <a name="bdk-visual-get-colormap-size"></a><h3>bdk_visual_get_colormap_size ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_visual_get_colormap_size (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>);</pre>
 <p>Returns the size of a colormap for this visual.</p>
 <div class="refsect3">
@@ -652,7 +652,7 @@ bdk_visual_get_colormap_size (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="bdk-visual-get-depth"></a><h3>bdk_visual_get_depth ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 bdk_visual_get_depth (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>);</pre>
 <p>Returns the bit depth of this visual.</p>
 <div class="refsect3">
@@ -681,9 +681,9 @@ bdk_visual_get_depth (<em class="parameter"><code><a class="link" href="bdk2-Vis
 <a name="bdk-visual-get-green-pixel-details"></a><h3>bdk_visual_get_green_pixel_details ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_visual_get_green_pixel_details (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>,
-                                    <em class="parameter"><code><span class="type">guint32</span> *mask</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> *shift</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> *precision</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">buint32</span> *mask</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> *shift</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> *precision</code></em>);</pre>
 <p>Obtains values that are needed to calculate green pixel values in TrueColor
 and DirectColor.  The "mask" is the significant bits within the pixel.
 The "shift" is the number of bits left we must shift a primary for it
@@ -705,17 +705,17 @@ to how much precision the pixel value contains for a particular primary.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">guint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">buint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>shift</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>precision</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -728,9 +728,9 @@ to how much precision the pixel value contains for a particular primary.</p>
 <a name="bdk-visual-get-red-pixel-details"></a><h3>bdk_visual_get_red_pixel_details ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_visual_get_red_pixel_details (<em class="parameter"><code><a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> *visual</code></em>,
-                                  <em class="parameter"><code><span class="type">guint32</span> *mask</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> *shift</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> *precision</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">buint32</span> *mask</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> *shift</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> *precision</code></em>);</pre>
 <p>Obtains values that are needed to calculate red pixel values in TrueColor
 and DirectColor.  The "mask" is the significant bits within the pixel.
 The "shift" is the number of bits left we must shift a primary for it
@@ -752,17 +752,17 @@ to how much precision the pixel value contains for a particular primary.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>mask</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">guint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">buint32</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>shift</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>precision</p></td>
-<td class="parameter_description"><p>A pointer to a <span class="type">gint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A pointer to a <span class="type">bint</span> to be filled in, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>][<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -804,25 +804,25 @@ bdk_visual_get_visual_type (<em class="parameter"><code><a class="link" href="bd
 <div class="refsect2">
 <a name="BdkVisual"></a><h3>BdkVisual</h3>
 <pre class="programlisting">typedef struct {
-  GObject parent_instance;
+  BObject parent_instance;
 
   BdkVisualType GSEAL (type);
-  gint GSEAL (depth);
+  bint GSEAL (depth);
   BdkByteOrder GSEAL (byte_order);
-  gint GSEAL (colormap_size);
-  gint GSEAL (bits_per_rgb);
+  bint GSEAL (colormap_size);
+  bint GSEAL (bits_per_rgb);
 
-  guint32 GSEAL (red_mask);
-  gint GSEAL (red_shift);
-  gint GSEAL (red_prec);
+  buint32 GSEAL (red_mask);
+  bint GSEAL (red_shift);
+  bint GSEAL (red_prec);
 
-  guint32 GSEAL (green_mask);
-  gint GSEAL (green_shift);
-  gint GSEAL (green_prec);
+  buint32 GSEAL (green_mask);
+  bint GSEAL (green_shift);
+  bint GSEAL (green_prec);
 
-  guint32 GSEAL (blue_mask);
-  gint GSEAL (blue_shift);
-  gint GSEAL (blue_prec);
+  buint32 GSEAL (blue_mask);
+  bint GSEAL (blue_shift);
+  bint GSEAL (blue_prec);
 } BdkVisual;
 </pre>
 </div>

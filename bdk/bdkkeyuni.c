@@ -868,8 +868,8 @@ static const struct {
  * Return value: the corresponding unicode character, or 0 if there
  *               is no corresponding character.
  **/
-guint32
-bdk_keyval_to_unicode (guint keyval)
+buint32
+bdk_keyval_to_unicode (buint keyval)
 {
   int min = 0;
   int max = G_N_ELEMENTS (bdk_keysym_to_unicode_tab) - 1;
@@ -890,7 +890,7 @@ bdk_keyval_to_unicode (guint keyval)
     {
       BdkWin32Keymap *keymap = BDK_WIN32_KEYMAP (bdk_keymap_get_default ());
 
-      return (guint32) _bdk_win32_keymap_get_decimal_mark (keymap);
+      return (buint32) _bdk_win32_keymap_get_decimal_mark (keymap);
     }
 #endif
 
@@ -1677,8 +1677,8 @@ static const struct {
  *               or, if there is no corresponding symbol, 
  *               wc | 0x01000000
  **/
-guint
-bdk_unicode_to_keyval (guint32 wc)
+buint
+bdk_unicode_to_keyval (buint32 wc)
 {
   int min = 0;
   int max = G_N_ELEMENTS (bdk_unicode_to_keysym_tab) - 1;

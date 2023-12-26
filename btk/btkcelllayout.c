@@ -46,10 +46,10 @@ btk_cell_layout_get_type (void)
       };
 
       cell_layout_type =
-        g_type_register_static (G_TYPE_INTERFACE, I_("BtkCellLayout"),
+        g_type_register_static (B_TYPE_INTERFACE, I_("BtkCellLayout"),
                                 &cell_layout_info, 0);
 
-      g_type_interface_add_prerequisite (cell_layout_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (cell_layout_type, B_TYPE_OBJECT);
     }
 
   return cell_layout_type;
@@ -72,7 +72,7 @@ btk_cell_layout_get_type (void)
 void
 btk_cell_layout_pack_start (BtkCellLayout   *cell_layout,
                             BtkCellRenderer *cell,
-                            gboolean         expand)
+                            bboolean         expand)
 {
   g_return_if_fail (BTK_IS_CELL_LAYOUT (cell_layout));
   g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
@@ -99,7 +99,7 @@ btk_cell_layout_pack_start (BtkCellLayout   *cell_layout,
 void
 btk_cell_layout_pack_end (BtkCellLayout   *cell_layout,
                           BtkCellRenderer *cell,
-                          gboolean         expand)
+                          bboolean         expand)
 {
   g_return_if_fail (BTK_IS_CELL_LAYOUT (cell_layout));
   g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
@@ -131,11 +131,11 @@ btk_cell_layout_set_attributesv (BtkCellLayout   *cell_layout,
                                  BtkCellRenderer *cell,
                                  va_list          args)
 {
-  gchar *attribute;
-  gint column;
+  bchar *attribute;
+  bint column;
   BtkCellLayoutIface *iface;
 
-  attribute = va_arg (args, gchar *);
+  attribute = va_arg (args, bchar *);
 
   iface = BTK_CELL_LAYOUT_GET_IFACE (cell_layout);
 
@@ -143,9 +143,9 @@ btk_cell_layout_set_attributesv (BtkCellLayout   *cell_layout,
 
   while (attribute != NULL)
     {
-      column = va_arg (args, gint);
+      column = va_arg (args, bint);
       (* iface->add_attribute) (cell_layout, cell, attribute, column);
-      attribute = va_arg (args, gchar *);
+      attribute = va_arg (args, bchar *);
     }
 }
 
@@ -195,8 +195,8 @@ btk_cell_layout_set_attributes (BtkCellLayout   *cell_layout,
 void
 btk_cell_layout_add_attribute (BtkCellLayout   *cell_layout,
                                BtkCellRenderer *cell,
-                               const gchar     *attribute,
-                               gint             column)
+                               const bchar     *attribute,
+                               bint             column)
 {
   g_return_if_fail (BTK_IS_CELL_LAYOUT (cell_layout));
   g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
@@ -228,7 +228,7 @@ void
 btk_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
                                     BtkCellRenderer       *cell,
                                     BtkCellLayoutDataFunc  func,
-                                    gpointer               func_data,
+                                    bpointer               func_data,
                                     GDestroyNotify         destroy)
 {
   g_return_if_fail (BTK_IS_CELL_LAYOUT (cell_layout));
@@ -276,7 +276,7 @@ btk_cell_layout_clear_attributes (BtkCellLayout   *cell_layout,
 void
 btk_cell_layout_reorder (BtkCellLayout   *cell_layout,
                          BtkCellRenderer *cell,
-                         gint             position)
+                         bint             position)
 {
   g_return_if_fail (BTK_IS_CELL_LAYOUT (cell_layout));
   g_return_if_fail (BTK_IS_CELL_RENDERER (cell));
@@ -315,19 +315,19 @@ btk_cell_layout_get_cells (BtkCellLayout *cell_layout)
 typedef struct {
   BtkCellLayout   *cell_layout;
   BtkCellRenderer *renderer;
-  gchar           *attr_name;
+  bchar           *attr_name;
 } AttributesSubParserData;
 
 static void
 attributes_start_element (GMarkupParseContext *context,
-			  const gchar         *element_name,
-			  const gchar        **names,
-			  const gchar        **values,
-			  gpointer             user_data,
+			  const bchar         *element_name,
+			  const bchar        **names,
+			  const bchar        **values,
+			  bpointer             user_data,
 			  GError             **error)
 {
   AttributesSubParserData *parser_data = (AttributesSubParserData*)user_data;
-  guint i;
+  buint i;
 
   if (strcmp (element_name, "attribute") == 0)
     {
@@ -343,15 +343,15 @@ attributes_start_element (GMarkupParseContext *context,
 
 static void
 attributes_text_element (GMarkupParseContext *context,
-			 const gchar         *text,
-			 gsize                text_len,
-			 gpointer             user_data,
+			 const bchar         *text,
+			 bsize                text_len,
+			 bpointer             user_data,
 			 GError             **error)
 {
   AttributesSubParserData *parser_data = (AttributesSubParserData*)user_data;
-  glong l;
-  gchar *endptr;
-  gchar *string;
+  blong l;
+  bchar *endptr;
+  bchar *string;
   
   if (!parser_data->attr_name)
     return;
@@ -385,13 +385,13 @@ static const GMarkupParser attributes_parser =
     attributes_text_element,
   };
 
-gboolean
+bboolean
 _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 					     BtkBuilder    *builder,
-					     GObject       *child,
-					     const gchar   *tagname,
+					     BObject       *child,
+					     const bchar   *tagname,
 					     GMarkupParser *parser,
-					     gpointer      *data)
+					     bpointer      *data)
 {
   AttributesSubParserData *parser_data;
 
@@ -416,9 +416,9 @@ _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 void
 _btk_cell_layout_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
-					   GObject      *child,
-					   const gchar  *tagname,
-					   gpointer     *data)
+					   BObject      *child,
+					   const bchar  *tagname,
+					   bpointer     *data)
 {
   AttributesSubParserData *parser_data;
 
@@ -430,8 +430,8 @@ _btk_cell_layout_buildable_custom_tag_end (BtkBuildable *buildable,
 void
 _btk_cell_layout_buildable_add_child (BtkBuildable      *buildable,
 				      BtkBuilder        *builder,
-				      GObject           *child,
-				      const gchar       *type)
+				      BObject           *child,
+				      const bchar       *type)
 {
   BtkCellLayoutIface *iface;
   

@@ -51,7 +51,7 @@ populate_combo_with (BtkComboBoxText *combo, const char** elements)
 
 static void
 combo_changed_cb (BtkComboBoxText *combo,
-		  gpointer user_data)
+		  bpointer user_data)
 {
   char *text;
   int i;
@@ -111,7 +111,7 @@ static void
 option_cb (BtkToggleButton *option,
 	   BtkWidget *button)
 {
-  gboolean active = btk_toggle_button_get_active (option);
+  bboolean active = btk_toggle_button_get_active (option);
   
   btk_button_box_set_child_secondary (BTK_BUTTON_BOX (bbox),
 				      button, active);
@@ -130,7 +130,7 @@ main (int    argc,
   btk_init (&argc, &argv);
   
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "delete-event", G_CALLBACK (btk_main_quit), NULL);
+  g_signal_connect (B_OBJECT (window), "delete-event", G_CALLBACK (btk_main_quit), NULL);
   
   vbox = btk_vbox_new (FALSE, 0);
   btk_container_add (BTK_CONTAINER (window), vbox);
@@ -158,16 +158,16 @@ main (int    argc,
   
   combo_types = btk_combo_box_text_new ();
   populate_combo_with (BTK_COMBO_BOX_TEXT (combo_types), types);
-  g_signal_connect (G_OBJECT (combo_types), "changed", G_CALLBACK (combo_types_changed_cb), buttons);
+  g_signal_connect (B_OBJECT (combo_types), "changed", G_CALLBACK (combo_types_changed_cb), buttons);
   btk_box_pack_start (BTK_BOX (hbox), combo_types, TRUE, TRUE, 0);
   
   combo_styles = btk_combo_box_text_new ();
   populate_combo_with (BTK_COMBO_BOX_TEXT (combo_styles), styles);
-  g_signal_connect (G_OBJECT (combo_styles), "changed", G_CALLBACK (combo_changed_cb), NULL);
+  g_signal_connect (B_OBJECT (combo_styles), "changed", G_CALLBACK (combo_changed_cb), NULL);
   btk_box_pack_start (BTK_BOX (hbox), combo_styles, TRUE, TRUE, 0);
   
   option = btk_check_button_new_with_label ("Help is secondary");
-  g_signal_connect (G_OBJECT (option), "toggled", G_CALLBACK (option_cb), buttons[N_BUTTONS - 1]);
+  g_signal_connect (B_OBJECT (option), "toggled", G_CALLBACK (option_cb), buttons[N_BUTTONS - 1]);
   
   btk_box_pack_start (BTK_BOX (hbox), option, FALSE, FALSE, 0);
   

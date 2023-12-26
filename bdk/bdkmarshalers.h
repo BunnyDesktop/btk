@@ -4,7 +4,7 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* VOID:OBJECT (./bdkmarshalers.list:1) */
 #define _bdk_marshal_VOID__OBJECT	g_cclosure_marshal_VOID__OBJECT
@@ -15,40 +15,40 @@ G_BEGIN_DECLS
 /* VOID:POINTER,POINTER,POINTER (./bdkmarshalers.list:3) */
 extern
 void _bdk_marshal_VOID__POINTER_POINTER_POINTER (GClosure     *closure,
-                                                 GValue       *return_value,
-                                                 guint         n_param_values,
-                                                 const GValue *param_values,
-                                                 gpointer      invocation_hint,
-                                                 gpointer      marshal_data);
+                                                 BValue       *return_value,
+                                                 buint         n_param_values,
+                                                 const BValue *param_values,
+                                                 bpointer      invocation_hint,
+                                                 bpointer      marshal_data);
 
 /* OBJECT:VOID (./bdkmarshalers.list:4) */
 extern
 void _bdk_marshal_OBJECT__VOID (GClosure     *closure,
-                                GValue       *return_value,
-                                guint         n_param_values,
-                                const GValue *param_values,
-                                gpointer      invocation_hint,
-                                gpointer      marshal_data);
+                                BValue       *return_value,
+                                buint         n_param_values,
+                                const BValue *param_values,
+                                bpointer      invocation_hint,
+                                bpointer      marshal_data);
 
 /* OBJECT:DOUBLE,DOUBLE (./bdkmarshalers.list:5) */
 extern
 void _bdk_marshal_OBJECT__DOUBLE_DOUBLE (GClosure     *closure,
-                                         GValue       *return_value,
-                                         guint         n_param_values,
-                                         const GValue *param_values,
-                                         gpointer      invocation_hint,
-                                         gpointer      marshal_data);
+                                         BValue       *return_value,
+                                         buint         n_param_values,
+                                         const BValue *param_values,
+                                         bpointer      invocation_hint,
+                                         bpointer      marshal_data);
 
 /* VOID:DOUBLE,DOUBLE,POINTER,POINTER (./bdkmarshalers.list:6) */
 extern
 void _bdk_marshal_VOID__DOUBLE_DOUBLE_POINTER_POINTER (GClosure     *closure,
-                                                       GValue       *return_value,
-                                                       guint         n_param_values,
-                                                       const GValue *param_values,
-                                                       gpointer      invocation_hint,
-                                                       gpointer      marshal_data);
+                                                       BValue       *return_value,
+                                                       buint         n_param_values,
+                                                       const BValue *param_values,
+                                                       bpointer      invocation_hint,
+                                                       bpointer      marshal_data);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ___BDK_MARSHAL_MARSHAL_H__ */

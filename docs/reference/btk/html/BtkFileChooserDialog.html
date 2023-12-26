@@ -75,7 +75,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkFileChooserDialog.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -105,10 +105,10 @@ BtkFileChooserDialog implements
 <div class="refsect2">
 <a name="btk-file-chooser-dialog-new"></a><h3>btk_file_chooser_dialog_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_file_chooser_dialog_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+btk_file_chooser_dialog_new (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>,
                              <em class="parameter"><code><a class="link" href="BtkFileChooser.html#BtkFileChooserAction" title="enum BtkFileChooserAction"><span class="type">BtkFileChooserAction</span></a> action</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                             <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                              <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkFileChooserDialog.html" title="BtkFileChooserDialog"><span class="type">BtkFileChooserDialog</span></a>.  This function is analogous to
 <a class="link" href="BtkDialog.html#btk-dialog-new-with-buttons" title="btk_dialog_new_with_buttons ()"><code class="function">btk_dialog_new_with_buttons()</code></a>.</p>
@@ -160,11 +160,11 @@ btk_file_chooser_dialog_new (<em class="parameter"><code>const <span class="type
 <a name="btk-file-chooser-dialog-new-with-backend"></a><h3>btk_file_chooser_dialog_new_with_backend ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_file_chooser_dialog_new_with_backend
-                               (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+                               (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkFileChooser.html#BtkFileChooserAction" title="enum BtkFileChooserAction"><span class="type">BtkFileChooserAction</span></a> action</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *backend</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *backend</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_file_chooser_dialog_new_with_backend</code> has been deprecated since version 2.14 and should not be used in newly-written code.</p>

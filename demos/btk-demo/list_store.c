@@ -11,14 +11,14 @@
 
 static BtkWidget *window = NULL;
 static BtkTreeModel *model = NULL;
-static guint timeout = 0;
+static buint timeout = 0;
 
 typedef struct
 {
-  const gboolean  fixed;
-  const guint     number;
-  const gchar    *severity;
-  const gchar    *description;
+  const bboolean  fixed;
+  const buint     number;
+  const bchar    *severity;
+  const bchar    *description;
 }
 Bug;
 
@@ -51,11 +51,11 @@ static Bug data[] =
   { FALSE, 1,     "Normal",     "First bug :=)" },
 };
 
-static gboolean
-spinner_timeout (gpointer data)
+static bboolean
+spinner_timeout (bpointer data)
 {
   BtkTreeIter iter;
-  guint pulse;
+  buint pulse;
 
   if (model == NULL)
     return FALSE;
@@ -64,7 +64,7 @@ spinner_timeout (gpointer data)
   btk_tree_model_get (model, &iter,
                       COLUMN_PULSE, &pulse,
                       -1);
-  if (pulse == G_MAXUINT)
+  if (pulse == B_MAXUINT)
     pulse = 0;
   else
     pulse++;
@@ -81,18 +81,18 @@ spinner_timeout (gpointer data)
 static BtkTreeModel *
 create_model (void)
 {
-  gint i = 0;
+  bint i = 0;
   BtkListStore *store;
   BtkTreeIter iter;
 
   /* create list store */
   store = btk_list_store_new (NUM_COLUMNS,
-                              G_TYPE_BOOLEAN,
-                              G_TYPE_UINT,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_UINT,
-                              G_TYPE_BOOLEAN);
+                              B_TYPE_BOOLEAN,
+                              B_TYPE_UINT,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_UINT,
+                              B_TYPE_BOOLEAN);
 
   /* add data to the list store */
   for (i = 0; i < G_N_ELEMENTS (data); i++)
@@ -113,13 +113,13 @@ create_model (void)
 
 static void
 fixed_toggled (BtkCellRendererToggle *cell,
-               gchar                 *path_str,
-               gpointer               data)
+               bchar                 *path_str,
+               bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *)data;
   BtkTreeIter  iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean fixed;
+  bboolean fixed;
 
   /* get toggled iter */
   btk_tree_model_get_iter (model, &iter, path);
@@ -201,10 +201,10 @@ add_columns (BtkTreeView *treeview)
   btk_tree_view_append_column (treeview, column);
 }
 
-static gboolean
+static bboolean
 window_closed (BtkWidget *widget,
                BdkEvent  *event,
-               gpointer   user_data)
+               bpointer   user_data)
 {
   model = NULL;
   window = NULL;

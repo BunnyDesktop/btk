@@ -51,8 +51,8 @@
 void
 bdk_drag_find_window (BdkDragContext  *context,
 		      BdkWindow       *drag_window,
-		      gint             x_root,
-		      gint             y_root,
+		      bint             x_root,
+		      bint             y_root,
 		      BdkWindow      **dest_window,
 		      BdkDragProtocol *protocol)
 {

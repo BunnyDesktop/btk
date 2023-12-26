@@ -100,7 +100,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkProgressBar.html#btk-progress-bar-get-text" title="btk_progress_bar_get_text ()">btk_progress_bar_get_text</a> <span class="c_punctuation">()</span>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkProgressBar.html#btk-progress-bar-get-fraction" title="btk_progress_bar_get_fraction ()">btk_progress_bar_get_fraction</a> <span class="c_punctuation">()</span>
@@ -116,7 +116,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gdouble</span>
+<span class="returnvalue">bdouble</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkProgressBar.html#btk-progress-bar-get-pulse-step" title="btk_progress_bar_get_pulse_step ()">btk_progress_bar_get_pulse_step</a> <span class="c_punctuation">()</span>
@@ -199,12 +199,12 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkProgressBar.html#BtkProgressBar--activity-blocks" title="The “activity-blocks” property">activity-blocks</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkProgressBar.html#BtkProgressBar--activity-step" title="The “activity-step” property">activity-step</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -220,7 +220,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkProgressBar.html#BtkProgressBar--discrete-blocks" title="The “discrete-blocks” property">discrete-blocks</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -320,7 +320,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkProgressBar.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -385,7 +385,7 @@ per pulse is determined by <a class="link" href="BtkProgressBar.html#btk-progres
 <a name="btk-progress-bar-set-text"></a><h3>btk_progress_bar_set_text ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_text (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *text</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *text</code></em>);</pre>
 <p>Causes the given <em class="parameter"><code>text</code></em>
  to appear superimposed on the progress bar.</p>
 <div class="refsect3">
@@ -416,7 +416,7 @@ btk_progress_bar_set_text (<em class="parameter"><code><a class="link" href="Btk
 <a name="btk-progress-bar-set-fraction"></a><h3>btk_progress_bar_set_fraction ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_fraction (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                               <em class="parameter"><code><span class="type">gdouble</span> fraction</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bdouble</span> fraction</code></em>);</pre>
 <p>Causes the progress bar to "fill in" the given fraction
 of the bar. The fraction should be between 0.0 and 1.0,
 inclusive.</p>
@@ -448,7 +448,7 @@ inclusive.</p>
 <a name="btk-progress-bar-set-pulse-step"></a><h3>btk_progress_bar_set_pulse_step ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_pulse_step (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                                 <em class="parameter"><code><span class="type">gdouble</span> fraction</code></em>);</pre>
+                                 <em class="parameter"><code><span class="type">bdouble</span> fraction</code></em>);</pre>
 <p>Sets the fraction of total progress bar length to move the
 bouncing block for each call to <a class="link" href="BtkProgressBar.html#btk-progress-bar-pulse" title="btk_progress_bar_pulse ()"><code class="function">btk_progress_bar_pulse()</code></a>.</p>
 <div class="refsect3">
@@ -540,7 +540,7 @@ if there is not enough space to render the entire string.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-progress-bar-get-text"></a><h3>btk_progress_bar_get_text ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_progress_bar_get_text (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>);</pre>
 <p>Retrieves the text displayed superimposed on the progress bar,
 if any, otherwise <code class="literal">NULL</code>. The return value is a reference
@@ -570,7 +570,7 @@ and should not be modified or freed.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-progress-bar-get-fraction"></a><h3>btk_progress_bar_get_fraction ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_progress_bar_get_fraction (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>);</pre>
 <p>Returns the current fraction of the task that's been completed.</p>
 <div class="refsect3">
@@ -596,7 +596,7 @@ btk_progress_bar_get_fraction (<em class="parameter"><code><a class="link" href=
 <hr>
 <div class="refsect2">
 <a name="btk-progress-bar-get-pulse-step"></a><h3>btk_progress_bar_get_pulse_step ()</h3>
-<pre class="programlisting"><span class="returnvalue">gdouble</span>
+<pre class="programlisting"><span class="returnvalue">bdouble</span>
 btk_progress_bar_get_pulse_step (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>);</pre>
 <p>Retrieves the pulse step set with <a class="link" href="BtkProgressBar.html#btk-progress-bar-set-pulse-step" title="btk_progress_bar_set_pulse_step ()"><code class="function">btk_progress_bar_set_pulse_step()</code></a></p>
 <div class="refsect3">
@@ -714,7 +714,7 @@ btk_progress_bar_set_bar_style (<em class="parameter"><code><a class="link" href
 <a name="btk-progress-bar-set-discrete-blocks"></a><h3>btk_progress_bar_set_discrete_blocks ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_discrete_blocks (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                                      <em class="parameter"><code><span class="type">guint</span> blocks</code></em>);</pre>
+                                      <em class="parameter"><code><span class="type">buint</span> blocks</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_progress_bar_set_discrete_blocks</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -722,7 +722,7 @@ btk_progress_bar_set_discrete_blocks (<em class="parameter"><code><a class="link
 <a name="btk-progress-bar-set-activity-step"></a><h3>btk_progress_bar_set_activity_step ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_activity_step (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                                    <em class="parameter"><code><span class="type">guint</span> step</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">buint</span> step</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_progress_bar_set_activity_step</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -730,7 +730,7 @@ btk_progress_bar_set_activity_step (<em class="parameter"><code><a class="link" 
 <a name="btk-progress-bar-set-activity-blocks"></a><h3>btk_progress_bar_set_activity_blocks ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_set_activity_blocks (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                                      <em class="parameter"><code><span class="type">guint</span> blocks</code></em>);</pre>
+                                      <em class="parameter"><code><span class="type">buint</span> blocks</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_progress_bar_set_activity_blocks</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -738,7 +738,7 @@ btk_progress_bar_set_activity_blocks (<em class="parameter"><code><a class="link
 <a name="btk-progress-bar-update"></a><h3>btk_progress_bar_update ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_progress_bar_update (<em class="parameter"><code><a class="link" href="BtkProgressBar.html" title="BtkProgressBar"><span class="type">BtkProgressBar</span></a> *pbar</code></em>,
-                         <em class="parameter"><code><span class="type">gdouble</span> percentage</code></em>);</pre>
+                         <em class="parameter"><code><span class="type">bdouble</span> percentage</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_progress_bar_update</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 </div>
@@ -815,7 +815,7 @@ btk_progress_bar_update (<em class="parameter"><code><a class="link" href="BtkPr
 <a name="BtkProgressBar.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkProgressBar--activity-blocks"></a><h3>The <code class="literal">“activity-blocks”</code> property</h3>
-<pre class="programlisting">  “activity-blocks”          <span class="type">guint</span></pre>
+<pre class="programlisting">  “activity-blocks”          <span class="type">buint</span></pre>
 <p>The number of blocks which can fit in the progress bar area in activity mode (Deprecated).</p>
 <p>Owner: BtkProgressBar</p>
 <p>Flags: Read / Write</p>
@@ -825,7 +825,7 @@ btk_progress_bar_update (<em class="parameter"><code><a class="link" href="BtkPr
 <hr>
 <div class="refsect2">
 <a name="BtkProgressBar--activity-step"></a><h3>The <code class="literal">“activity-step”</code> property</h3>
-<pre class="programlisting">  “activity-step”            <span class="type">guint</span></pre>
+<pre class="programlisting">  “activity-step”            <span class="type">buint</span></pre>
 <p>The increment used for each iteration in activity mode (Deprecated).</p>
 <p>Owner: BtkProgressBar</p>
 <p>Flags: Read / Write</p>
@@ -851,7 +851,7 @@ btk_progress_bar_update (<em class="parameter"><code><a class="link" href="BtkPr
 <hr>
 <div class="refsect2">
 <a name="BtkProgressBar--discrete-blocks"></a><h3>The <code class="literal">“discrete-blocks”</code> property</h3>
-<pre class="programlisting">  “discrete-blocks”          <span class="type">guint</span></pre>
+<pre class="programlisting">  “discrete-blocks”          <span class="type">buint</span></pre>
 <p>The number of discrete blocks in a progress bar (when shown in the discrete style).</p>
 <p>Owner: BtkProgressBar</p>
 <p>Flags: Read / Write</p>

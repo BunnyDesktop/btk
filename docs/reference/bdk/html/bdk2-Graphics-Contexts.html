@@ -328,7 +328,7 @@
 </div>
 <div class="refsect1">
 <a name="bdk2-Graphics-Contexts.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BdkGC
 </pre>
 </div>
@@ -950,8 +950,8 @@ stipple will only be used if the fill mode is
 <a name="bdk-gc-set-ts-origin"></a><h3>bdk_gc_set_ts_origin ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_set_ts_origin (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                      <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                      <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_gc_set_ts_origin</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>You can set the origin for tiles and stipples in Bairo
@@ -996,8 +996,8 @@ will coincide with this point.</p>
 <a name="bdk-gc-set-clip-origin"></a><h3>bdk_gc_set_clip_origin ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_set_clip_origin (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> x</code></em>,
-                        <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
+                        <em class="parameter"><code><span class="type">bint</span> x</code></em>,
+                        <em class="parameter"><code><span class="type">bint</span> y</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_gc_set_clip_origin</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-Transformations.html#bairo-translate"><code class="function">bairo_translate()</code></a> before applying the clip path in
@@ -1185,7 +1185,7 @@ windows of that window.</p>
 <a name="bdk-gc-set-exposures"></a><h3>bdk_gc_set_exposures ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_set_exposures (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                      <em class="parameter"><code><span class="type">gboolean</span> exposures</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bboolean</span> exposures</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_gc_set_exposures</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>There is no replacement. If you need to control
@@ -1225,7 +1225,7 @@ drawable. (See <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-drawa
 <a name="bdk-gc-set-line-attributes"></a><h3>bdk_gc_set_line_attributes ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_set_line_attributes (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                            <em class="parameter"><code><span class="type">gint</span> line_width</code></em>,
+                            <em class="parameter"><code><span class="type">bint</span> line_width</code></em>,
                             <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkLineStyle" title="enum BdkLineStyle"><span class="type">BdkLineStyle</span></a> line_style</code></em>,
                             <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkCapStyle" title="enum BdkCapStyle"><span class="type">BdkCapStyle</span></a> cap_style</code></em>,
                             <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkJoinStyle" title="enum BdkJoinStyle"><span class="type">BdkJoinStyle</span></a> join_style</code></em>);</pre>
@@ -1283,9 +1283,9 @@ explanations of the arguments.</p>
 <a name="bdk-gc-set-dashes"></a><h3>bdk_gc_set_dashes ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_set_dashes (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> dash_offset</code></em>,
-                   <em class="parameter"><code><span class="type">gint8</span> dash_list[]</code></em>,
-                   <em class="parameter"><code><span class="type">gint</span> n</code></em>);</pre>
+                   <em class="parameter"><code><span class="type">bint</span> dash_offset</code></em>,
+                   <em class="parameter"><code><span class="type">bint8</span> dash_list[]</code></em>,
+                   <em class="parameter"><code><span class="type">bint</span> n</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_gc_set_dashes</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <a href="/usr/share/btk-doc/html/bairo/bairo-bairo-t.html#bairo-set-dash"><code class="function">bairo_set_dash()</code></a> to set the dash in Bairo.</p>
@@ -1450,8 +1450,8 @@ doesn't have one.</p>
 <a name="bdk-gc-offset"></a><h3>bdk_gc_offset ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_gc_offset (<em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> x_offset</code></em>,
-               <em class="parameter"><code><span class="type">gint</span> y_offset</code></em>);</pre>
+               <em class="parameter"><code><span class="type">bint</span> x_offset</code></em>,
+               <em class="parameter"><code><span class="type">bint</span> y_offset</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_gc_offset</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>There is no direct replacement, as this is just a
@@ -1509,12 +1509,12 @@ GC.</p>
   BdkPixmap	   *stipple;
   BdkPixmap	   *clip_mask;
   BdkSubwindowMode  subwindow_mode;
-  gint		    ts_x_origin;
-  gint		    ts_y_origin;
-  gint		    clip_x_origin;
-  gint		    clip_y_origin;
-  gint		    graphics_exposures;
-  gint		    line_width;
+  bint		    ts_x_origin;
+  bint		    ts_y_origin;
+  bint		    clip_x_origin;
+  bint		    clip_y_origin;
+  bint		    graphics_exposures;
+  bint		    line_width;
   BdkLineStyle	    line_style;
   BdkCapStyle	    cap_style;
   BdkJoinStyle	    join_style;

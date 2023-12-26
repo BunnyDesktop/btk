@@ -35,14 +35,14 @@
 #include <btk/btkbin.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ITEM                  (btk_item_get_type ())
-#define BTK_ITEM(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ITEM, BtkItem))
-#define BTK_ITEM_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ITEM, BtkItemClass))
-#define BTK_IS_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ITEM))
-#define BTK_IS_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ITEM))
-#define BTK_ITEM_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ITEM, BtkItemClass))
+#define BTK_ITEM(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ITEM, BtkItem))
+#define BTK_ITEM_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ITEM, BtkItemClass))
+#define BTK_IS_ITEM(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ITEM))
+#define BTK_IS_ITEM_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ITEM))
+#define BTK_ITEM_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ITEM, BtkItemClass))
 
 
 typedef struct _BtkItem       BtkItem;
@@ -69,13 +69,13 @@ struct _BtkItemClass
 };
 
 
-GType btk_item_get_type (void) G_GNUC_CONST;
+GType btk_item_get_type (void) B_GNUC_CONST;
 #if !defined(BTK_DISABLE_DEPRECATED) || defined(BTK_COMPILATION)
 void  btk_item_select   (BtkItem *item);
 void  btk_item_deselect (BtkItem *item);
 void  btk_item_toggle   (BtkItem *item);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ITEM_H__ */

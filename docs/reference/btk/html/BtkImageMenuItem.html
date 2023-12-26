@@ -92,7 +92,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkImageMenuItem.html#btk-image-menu-item-get-use-stock" title="btk_image_menu_item_get_use_stock ()">btk_image_menu_item_get_use_stock</a> <span class="c_punctuation">()</span>
@@ -108,7 +108,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkImageMenuItem.html#btk-image-menu-item-get-always-show-image" title="btk_image_menu_item_get_always_show_image ()">btk_image_menu_item_get_always_show_image</a> <span class="c_punctuation">()</span>
@@ -149,7 +149,7 @@
 <td class="property_flags">Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkImageMenuItem.html#BtkImageMenuItem--always-show-image" title="The “always-show-image” property">always-show-image</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -160,7 +160,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkImageMenuItem.html#BtkImageMenuItem--use-stock" title="The “use-stock” property">use-stock</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -182,7 +182,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkImageMenuItem.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -297,7 +297,7 @@ btk_image_menu_item_new (<em class="parameter"><code><span class="type">void</sp
 <div class="refsect2">
 <a name="btk-image-menu-item-new-from-stock"></a><h3>btk_image_menu_item_new_from_stock ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_image_menu_item_new_from_stock (<em class="parameter"><code>const <span class="type">gchar</span> *stock_id</code></em>,
+btk_image_menu_item_new_from_stock (<em class="parameter"><code>const <span class="type">bchar</span> *stock_id</code></em>,
                                     <em class="parameter"><code><a class="link" href="btk2-Keyboard-Accelerators.html#BtkAccelGroup"><span class="type">BtkAccelGroup</span></a> *accel_group</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> containing the image and text from a 
 stock item. Some stock ids have preprocessor macros like <a class="link" href="btk2-Stock-Items.html#BTK-STOCK-OK:CAPS" title="BTK_STOCK_OK"><span class="type">BTK_STOCK_OK</span></a> 
@@ -340,7 +340,7 @@ accelerator to, or <code class="literal">NULL</code>. </p></td>
 <div class="refsect2">
 <a name="btk-image-menu-item-new-with-label"></a><h3>btk_image_menu_item_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_image_menu_item_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_image_menu_item_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> containing a label.</p>
 <div class="refsect3">
 <a name="btk-image-menu-item-new-with-label.parameters"></a><h4>Parameters</h4>
@@ -369,7 +369,7 @@ btk_image_menu_item_new_with_label (<em class="parameter"><code>const <span clas
 <div class="refsect2">
 <a name="btk-image-menu-item-new-with-mnemonic"></a><h3>btk_image_menu_item_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_image_menu_item_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_image_menu_item_new_with_mnemonic (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> containing a label. The label
 will be created using <a class="link" href="BtkLabel.html#btk-label-new-with-mnemonic" title="btk_label_new_with_mnemonic ()"><code class="function">btk_label_new_with_mnemonic()</code></a>, so underscores
 in <em class="parameter"><code>label</code></em>
@@ -401,7 +401,7 @@ mnemonic character</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-image-menu-item-get-use-stock"></a><h3>btk_image_menu_item_get_use_stock ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_image_menu_item_get_use_stock (<em class="parameter"><code><a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> *image_menu_item</code></em>);</pre>
 <p>Checks whether the label set in the menuitem is used as a
 stock id to select the stock item for the item.</p>
@@ -432,7 +432,7 @@ stock id to select the stock item for the item</p>
 <a name="btk-image-menu-item-set-use-stock"></a><h3>btk_image_menu_item_set_use_stock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_image_menu_item_set_use_stock (<em class="parameter"><code><a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> *image_menu_item</code></em>,
-                                   <em class="parameter"><code><span class="type">gboolean</span> use_stock</code></em>);</pre>
+                                   <em class="parameter"><code><span class="type">bboolean</span> use_stock</code></em>);</pre>
 <p>If <code class="literal">TRUE</code>, the label set in the menuitem is used as a
 stock id to select the stock item for the item.</p>
 <div class="refsect3">
@@ -462,7 +462,7 @@ stock id to select the stock item for the item.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-image-menu-item-get-always-show-image"></a><h3>btk_image_menu_item_get_always_show_image ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_image_menu_item_get_always_show_image
                                (<em class="parameter"><code><a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> *image_menu_item</code></em>);</pre>
 <p>Returns whether the menu item will ignore the <a class="link" href="BtkSettings.html#BtkSettings--btk-menu-images" title="The “btk-menu-images” property"><span class="type">“btk-menu-images”</span></a>
@@ -494,7 +494,7 @@ setting and always show the image, if available.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_image_menu_item_set_always_show_image
                                (<em class="parameter"><code><a class="link" href="BtkImageMenuItem.html" title="BtkImageMenuItem"><span class="type">BtkImageMenuItem</span></a> *image_menu_item</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> always_show</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> always_show</code></em>);</pre>
 <p>If <code class="literal">TRUE</code>, the menu item will ignore the <a class="link" href="BtkSettings.html#BtkSettings--btk-menu-images" title="The “btk-menu-images” property"><span class="type">“btk-menu-images”</span></a> 
 setting and always show the image, if available.</p>
 <p>Use this property if the menuitem would be useless or hard to use
@@ -581,7 +581,7 @@ you shouldnt need this (see <a class="link" href="BtkImageMenuItem.html#btk-imag
 <hr>
 <div class="refsect2">
 <a name="BtkImageMenuItem--always-show-image"></a><h3>The <code class="literal">“always-show-image”</code> property</h3>
-<pre class="programlisting">  “always-show-image”        <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “always-show-image”        <span class="type">bboolean</span></pre>
 <p>If <code class="literal">TRUE</code>, the menu item will ignore the <a class="link" href="BtkSettings.html#BtkSettings--btk-menu-images" title="The “btk-menu-images” property"><span class="type">“btk-menu-images”</span></a>
 
 setting and always show the image, if available.</p>
@@ -603,7 +603,7 @@ without the image.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkImageMenuItem--use-stock"></a><h3>The <code class="literal">“use-stock”</code> property</h3>
-<pre class="programlisting">  “use-stock”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-stock”                <span class="type">bboolean</span></pre>
 <p>If <code class="literal">TRUE</code>, the label set in the menuitem is used as a
 stock id to select the stock item for the item.</p>
 <p>Owner: BtkImageMenuItem</p>

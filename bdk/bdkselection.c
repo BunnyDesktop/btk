@@ -30,11 +30,11 @@
 #include "bdkselection.h"
 #include "bdkalias.h"
 
-gboolean
+bboolean
 bdk_selection_owner_set (BdkWindow *owner,
 			 BdkAtom    selection,
-			 guint32    time,
-			 gboolean   send_event)
+			 buint32    time,
+			 bboolean   send_event)
 {
   return bdk_selection_owner_set_for_display (bdk_display_get_default (),
 					      owner, selection, 
@@ -53,19 +53,19 @@ bdk_selection_send_notify (BdkNativeWindow requestor,
 			   BdkAtom         selection,
 			   BdkAtom         target,
 			   BdkAtom         property,
-			   guint32         time)
+			   buint32         time)
 {
   bdk_selection_send_notify_for_display (bdk_display_get_default (), 
 					 requestor, selection, 
 					 target, property, time);
 }
 
-gint
+bint
 bdk_text_property_to_text_list (BdkAtom       encoding,
-				gint          format, 
-				const guchar *text,
-				gint          length,
-				gchar      ***list)
+				bint          format, 
+				const buchar *text,
+				bint          length,
+				bchar      ***list)
 {
   return bdk_text_property_to_text_list_for_display (bdk_display_get_default (),
 						     encoding, format, text, length, list);
@@ -86,23 +86,23 @@ bdk_text_property_to_text_list (BdkAtom       encoding,
  * Return value: the number of strings in the resulting
  *               list.
  **/
-gint 
+bint 
 bdk_text_property_to_utf8_list (BdkAtom        encoding,
-				gint           format,
-				const guchar  *text,
-				gint           length,
-				gchar       ***list)
+				bint           format,
+				const buchar  *text,
+				bint           length,
+				bchar       ***list)
 {
   return bdk_text_property_to_utf8_list_for_display (bdk_display_get_default (),
 						     encoding, format, text, length, list);
 }
 
-gint
-bdk_string_to_compound_text (const gchar *str,
+bint
+bdk_string_to_compound_text (const bchar *str,
 			     BdkAtom     *encoding,
-			     gint        *format,
-			     guchar     **ctext,
-			     gint        *length)
+			     bint        *format,
+			     buchar     **ctext,
+			     bint        *length)
 {
   return bdk_string_to_compound_text_for_display (bdk_display_get_default (),
 						  str, encoding, format, 
@@ -123,12 +123,12 @@ bdk_string_to_compound_text (const gchar *str,
  * Return value: %TRUE if the conversion succeeded, otherwise
  *               false.
  **/
-gboolean
-bdk_utf8_to_compound_text (const gchar *str,
+bboolean
+bdk_utf8_to_compound_text (const bchar *str,
 			   BdkAtom     *encoding,
-			   gint        *format,
-			   guchar     **ctext,
-			   gint        *length)
+			   bint        *format,
+			   buchar     **ctext,
+			   bint        *length)
 {
   return bdk_utf8_to_compound_text_for_display (bdk_display_get_default (),
 						str, encoding, format, 

@@ -26,16 +26,16 @@
 
 static void
 check_property (const char *output,
-	        GParamSpec *pspec,
-		GValue *value)
+	        BParamSpec *pspec,
+		BValue *value)
 {
-  GValue default_value = { 0, };
+  BValue default_value = { 0, };
   char *v, *dv, *msg;
 
   if (g_param_value_defaults (pspec, value))
       return;
 
-  g_value_init (&default_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+  b_value_init (&default_value, G_PARAM_SPEC_VALUE_TYPE (pspec));
   g_param_value_set_default (pspec, &default_value);
       
   v = g_strdup_value_contents (value);
@@ -47,32 +47,32 @@ check_property (const char *output,
 			 pspec->name,
 			 dv, v);
   g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__,
-		       G_STRFUNC, msg);
+		       B_STRFUNC, msg);
   g_free (msg);
   
   g_free (v);
   g_free (dv);
-  g_value_unset (&default_value);
+  b_value_unset (&default_value);
 }
 
 static void
 test_type (gconstpointer data)
 {
-  GObjectClass *klass;
-  GObject *instance;
-  GParamSpec **pspecs;
-  guint n_pspecs, i;
+  BObjectClass *klass;
+  BObject *instance;
+  BParamSpec **pspecs;
+  buint n_pspecs, i;
   GType type;
 
   type = * (GType *) data;
 
-  if (!G_TYPE_IS_CLASSED (type))
+  if (!B_TYPE_IS_CLASSED (type))
     return;
 
-  if (G_TYPE_IS_ABSTRACT (type))
+  if (B_TYPE_IS_ABSTRACT (type))
     return;
 
-  if (!g_type_is_a (type, G_TYPE_OBJECT))
+  if (!g_type_is_a (type, B_TYPE_OBJECT))
     return;
 
   /* These can't be freely constructed/destroyed */
@@ -110,14 +110,14 @@ test_type (gconstpointer data)
   else
     instance = g_object_new (type, NULL);
 
-  if (g_type_is_a (type, G_TYPE_INITIALLY_UNOWNED))
+  if (g_type_is_a (type, B_TYPE_INITIALLY_UNOWNED))
     g_object_ref_sink (instance);
 
   pspecs = g_object_class_list_properties (klass, &n_pspecs);
   for (i = 0; i < n_pspecs; ++i)
     {
-      GParamSpec *pspec = pspecs[i];
-      GValue value = { 0, };
+      BParamSpec *pspec = pspecs[i];
+      BValue value = { 0, };
       
       if (pspec->owner_type != type)
 	continue;
@@ -304,10 +304,10 @@ test_type (gconstpointer data)
       g_print ("Property %s.%s\n", 
 	     g_type_name (pspec->owner_type),
 	     pspec->name);
-      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      b_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
       g_object_get_property (instance, pspec->name, &value);
       check_property ("Property", pspec, &value);
-      g_value_unset (&value);
+      b_value_unset (&value);
     }
   g_free (pspecs);
 
@@ -317,8 +317,8 @@ test_type (gconstpointer data)
       
       for (i = 0; i < n_pspecs; ++i)
 	{
-	  GParamSpec *pspec = pspecs[i];
-	  GValue value = { 0, };
+	  BParamSpec *pspec = pspecs[i];
+	  BValue value = { 0, };
 	  
 	  if (pspec->owner_type != type)
 	    continue;
@@ -326,10 +326,10 @@ test_type (gconstpointer data)
 	  if ((pspec->flags & G_PARAM_READABLE) == 0)
 	    continue;
 	  
-	  g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+	  b_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 	  btk_widget_style_get_property (BTK_WIDGET (instance), pspec->name, &value);
 	  check_property ("Style property", pspec, &value);
-	  g_value_unset (&value);
+	  b_value_unset (&value);
 	}
 
       g_free (pspecs);
@@ -349,7 +349,7 @@ int
 main (int argc, char **argv)
 {
   const GType *otypes;
-  guint i;
+  buint i;
 
   btk_test_init (&argc, &argv);
   pixbuf_init ();
@@ -358,7 +358,7 @@ main (int argc, char **argv)
   otypes = btk_test_list_all_types (NULL);
   for (i = 0; otypes[i]; i++)
     {
-      gchar *testname;
+      bchar *testname;
       
       testname = g_strdup_printf ("/Default Values/%s",
 				  g_type_name (otypes[i]));

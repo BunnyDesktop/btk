@@ -12,7 +12,7 @@
 
 #include "demo-common.h"
 
-static void easter_egg_callback (BtkWidget *button, gpointer data);
+static void easter_egg_callback (BtkWidget *button, bpointer data);
 
 static void
 create_tags (BtkTextBuffer *buffer)
@@ -331,7 +331,7 @@ insert_text (BtkTextBuffer *buffer)
   g_object_unref (pixbuf);
 }
 
-static gboolean
+static bboolean
 find_anchor (BtkTextIter *iter)
 {
   while (btk_text_iter_forward_char (iter))
@@ -385,7 +385,7 @@ attach_widgets (BtkTextView *text_view)
         }
       else if (i == 3)
         {
-	  gchar *filename = demo_find_file ("floppybuddy.gif", NULL);
+	  bchar *filename = demo_find_file ("floppybuddy.gif", NULL);
 	  widget = btk_image_new_from_file (filename);
 	  g_free (filename);
         }
@@ -518,10 +518,10 @@ recursive_attach_view (int                 depth,
 
 static void
 easter_egg_callback (BtkWidget *button,
-                     gpointer   data)
+                     bpointer   data)
 {
   static BtkWidget *window = NULL;
-  gpointer window_ptr;
+  bpointer window_ptr;
   BtkTextBuffer *buffer;
   BtkWidget     *view;
   BtkTextIter    iter;
@@ -560,7 +560,7 @@ easter_egg_callback (BtkWidget *button,
   btk_container_add (BTK_CONTAINER (sw), view);
 
   window_ptr = &window;
-  g_object_add_weak_pointer (G_OBJECT (window), window_ptr);
+  g_object_add_weak_pointer (B_OBJECT (window), window_ptr);
 
   btk_window_set_default_size (BTK_WINDOW (window), 300, 400);
   

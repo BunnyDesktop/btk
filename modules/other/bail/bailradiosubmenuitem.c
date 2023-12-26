@@ -40,7 +40,7 @@ bail_radio_sub_menu_item_class_init (BailRadioSubMenuItemClass *klass)
 BatkObject* 
 bail_radio_sub_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (widget), NULL);
@@ -105,11 +105,11 @@ bail_radio_sub_menu_item_ref_relation_set (BatkObject *obj)
     if (list)
     {
       BatkObject **accessible_array;
-      guint list_length;
+      buint list_length;
       BatkRelation* relation;
-      gint i = 0;
+      bint i = 0;
 
-      list_length = g_slist_length (list);
+      list_length = b_slist_length (list);
       accessible_array = (BatkObject**) g_malloc (sizeof (BatkObject *) * 
                           list_length);
       while (list != NULL)

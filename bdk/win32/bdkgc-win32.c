@@ -44,14 +44,14 @@ static void bdk_win32_gc_set_values (BdkGC           *gc,
 				     BdkGCValues     *values,
 				     BdkGCValuesMask  values_mask);
 static void bdk_win32_gc_set_dashes (BdkGC           *gc,
-				     gint             dash_offset,
-				     gint8            dash_list[],
-				     gint             n);
+				     bint             dash_offset,
+				     bint8            dash_list[],
+				     bint             n);
 
 static void bdk_gc_win32_class_init (BdkGCWin32Class *klass);
-static void bdk_gc_win32_finalize   (GObject         *object);
+static void bdk_gc_win32_finalize   (BObject         *object);
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 GType
 _bdk_gc_win32_get_type (void)
@@ -84,7 +84,7 @@ _bdk_gc_win32_get_type (void)
 static void
 bdk_gc_win32_class_init (BdkGCWin32Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -97,7 +97,7 @@ bdk_gc_win32_class_init (BdkGCWin32Class *klass)
 }
 
 static void
-bdk_gc_win32_finalize (GObject *object)
+bdk_gc_win32_finalize (BObject *object)
 {
   BdkGCWin32 *win32_gc = BDK_GC_WIN32 (object);
   
@@ -109,7 +109,7 @@ bdk_gc_win32_finalize (GObject *object)
   
   g_free (win32_gc->pen_dashes);
   
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
@@ -551,9 +551,9 @@ bdk_win32_gc_set_values (BdkGC           *gc,
 
 static void
 bdk_win32_gc_set_dashes (BdkGC *gc,
-			 gint	dash_offset,
-			 gint8  dash_list[],
-			 gint   n)
+			 bint	dash_offset,
+			 bint8  dash_list[],
+			 bint   n)
 {
   BdkGCWin32 *win32_gc;
   int i;
@@ -575,7 +575,7 @@ bdk_win32_gc_set_dashes (BdkGC *gc,
 void
 _bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
                                    const BdkRebunnyion *rebunnyion,
-				   gboolean         reset_origin)
+				   bboolean         reset_origin)
 {
   BdkGCWin32 *win32_gc = BDK_GC_WIN32 (gc);
 
@@ -671,15 +671,15 @@ bdk_gc_get_screen (BdkGC *gc)
   return _bdk_screen;
 }
 
-static guint bitmask[9] = { 0, 1, 3, 7, 15, 31, 63, 127, 255 };
+static buint bitmask[9] = { 0, 1, 3, 7, 15, 31, 63, 127, 255 };
 
 COLORREF
 _bdk_win32_colormap_color (BdkColormap *colormap,
-                           gulong       pixel)
+                           bulong       pixel)
 {
   const BdkVisual *visual;
   BdkColormapPrivateWin32 *colormap_private;
-  guchar r, g, b;
+  buchar r, g, b;
 
   if (colormap == NULL)
     return DIBINDEX (pixel & 1);
@@ -711,14 +711,14 @@ _bdk_win32_colormap_color (BdkColormap *colormap,
     }
 }
 
-gboolean
+bboolean
 predraw (BdkGC       *gc,
 	 BdkColormap *colormap)
 {
   BdkGCWin32 *win32_gc = (BdkGCWin32 *) gc;
   BdkColormapPrivateWin32 *colormap_private;
-  gint k;
-  gboolean ok = TRUE;
+  bint k;
+  bboolean ok = TRUE;
 
   if (colormap &&
       (colormap->visual->type == BDK_VISUAL_PSEUDO_COLOR ||
@@ -814,7 +814,7 @@ bdk_win32_hdc_get (BdkDrawable    *drawable,
 {
   BdkGCWin32 *win32_gc = (BdkGCWin32 *) gc;
   BdkDrawableImplWin32 *impl = NULL;
-  gboolean ok = TRUE;
+  bboolean ok = TRUE;
   COLORREF fg = RGB (0, 0, 0), bg = RGB (255, 255, 255);
   HPEN hpen;
   HBRUSH hbr;
@@ -947,7 +947,7 @@ bdk_win32_hdc_release (BdkDrawable    *drawable,
 
   if (win32_gc->holdpal != NULL)
     {
-      gint k;
+      bint k;
       
       if (!SelectPalette (win32_gc->hdc, win32_gc->holdpal, FALSE))
 	WIN32_GDI_FAILED ("SelectPalette");
@@ -1001,10 +1001,10 @@ _bdk_win32_bitmap_to_hrgn (BdkPixmap *pixmap)
   HRGN h;
   DWORD maxRects;
   RGNDATA *pData;
-  guchar *bits;
-  gint width, height, bpl;
-  guchar *p;
-  gint x, y;
+  buchar *bits;
+  bint width, height, bpl;
+  buchar *p;
+  bint x, y;
 
   g_assert (BDK_PIXMAP_OBJECT(pixmap)->depth == 1);
 
@@ -1030,11 +1030,11 @@ _bdk_win32_bitmap_to_hrgn (BdkPixmap *pixmap)
   for (y = 0; y < height; y++)
     {
       /* Scan each bitmap row from left to right*/
-      p = (guchar *) bits + y * bpl;
+      p = (buchar *) bits + y * bpl;
       for (x = 0; x < width; x++)
 	{
 	  /* Search for a continuous range of "non transparent pixels"*/
-	  gint x0 = x;
+	  bint x0 = x;
 	  while (x < width)
 	    {
 	      if ((((p[x/8])>>(7-(x%8)))&1) == 0)
@@ -1108,14 +1108,14 @@ _bdk_win32_bitmap_to_hrgn (BdkPixmap *pixmap)
 
 HRGN
 _bdk_win32_bdkrebunnyion_to_hrgn (const BdkRebunnyion *rebunnyion,
-			      gint             x_origin,
-			      gint             y_origin)
+			      bint             x_origin,
+			      bint             y_origin)
 {
   HRGN hrgn;
   RGNDATA *rgndata;
   RECT *rect;
   BdkRebunnyionBox *boxes = rebunnyion->rects;
-  guint nbytes =
+  buint nbytes =
     sizeof (RGNDATAHEADER) + (sizeof (RECT) * rebunnyion->numRects);
   int i;
 
@@ -1124,7 +1124,7 @@ _bdk_win32_bdkrebunnyion_to_hrgn (const BdkRebunnyion *rebunnyion,
   rgndata->rdh.iType = RDH_RECTANGLES;
   rgndata->rdh.nCount = rgndata->rdh.nRgnSize = 0;
   SetRect (&rgndata->rdh.rcBound,
-	   G_MAXLONG, G_MAXLONG, G_MINLONG, G_MINLONG);
+	   B_MAXLONG, B_MAXLONG, B_MINLONG, B_MINLONG);
 
   for (i = 0; i < rebunnyion->numRects; i++)
     {

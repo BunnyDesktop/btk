@@ -4,14 +4,14 @@
 
 #include <bunnylib.h>
 
-#ifdef G_HAVE_GNUC_VISIBILITY
+#ifdef B_HAVE_GNUC_VISIBILITY
 
 #define IN_FILE(x) 1
 #define IN_HEADER defined
 
 #if IN_HEADER(__BTK_ABOUT_DIALOG_H__)
 #if IN_FILE(__BTK_ABOUT_DIALOG_C__)
-extern __typeof (btk_show_about_dialog) IA__btk_show_about_dialog __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_show_about_dialog) IA__btk_show_about_dialog __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_show_about_dialog IA__btk_show_about_dialog
 
 extern __typeof (btk_about_dialog_get_artists) IA__btk_about_dialog_get_artists __attribute((visibility("hidden")));
@@ -55,7 +55,7 @@ extern __typeof (btk_about_dialog_set_program_name) IA__btk_about_dialog_set_pro
 extern __typeof (btk_about_dialog_get_translator_credits) IA__btk_about_dialog_get_translator_credits __attribute((visibility("hidden")));
 #define btk_about_dialog_get_translator_credits IA__btk_about_dialog_get_translator_credits
 
-extern __typeof (btk_about_dialog_get_type) IA__btk_about_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_about_dialog_get_type) IA__btk_about_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_about_dialog_get_type IA__btk_about_dialog_get_type
 
 extern __typeof (btk_about_dialog_get_version) IA__btk_about_dialog_get_version __attribute((visibility("hidden")));
@@ -139,7 +139,7 @@ extern __typeof (btk_accelerator_parse) IA__btk_accelerator_parse __attribute((v
 extern __typeof (btk_accelerator_set_default_mod_mask) IA__btk_accelerator_set_default_mod_mask __attribute((visibility("hidden")));
 #define btk_accelerator_set_default_mod_mask IA__btk_accelerator_set_default_mod_mask
 
-extern __typeof (btk_accelerator_valid) IA__btk_accelerator_valid __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accelerator_valid) IA__btk_accelerator_valid __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accelerator_valid IA__btk_accelerator_valid
 
 extern __typeof (btk_accel_group_activate) IA__btk_accel_group_activate __attribute((visibility("hidden")));
@@ -163,7 +163,7 @@ extern __typeof (btk_accel_group_find) IA__btk_accel_group_find __attribute((vis
 extern __typeof (btk_accel_group_from_accel_closure) IA__btk_accel_group_from_accel_closure __attribute((visibility("hidden")));
 #define btk_accel_group_from_accel_closure IA__btk_accel_group_from_accel_closure
 
-extern __typeof (btk_accel_group_get_type) IA__btk_accel_group_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accel_group_get_type) IA__btk_accel_group_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accel_group_get_type IA__btk_accel_group_get_type
 
 extern __typeof (btk_accel_group_get_is_locked) IA__btk_accel_group_get_is_locked __attribute((visibility("hidden")));
@@ -200,7 +200,7 @@ extern __typeof (btk_accel_label_get_accel_widget) IA__btk_accel_label_get_accel
 extern __typeof (btk_accel_label_get_accel_width) IA__btk_accel_label_get_accel_width __attribute((visibility("hidden")));
 #define btk_accel_label_get_accel_width IA__btk_accel_label_get_accel_width
 
-extern __typeof (btk_accel_label_get_type) IA__btk_accel_label_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accel_label_get_type) IA__btk_accel_label_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accel_label_get_type IA__btk_accel_label_get_type
 
 extern __typeof (btk_accel_label_new) IA__btk_accel_label_new __attribute((visibility("hidden")));
@@ -237,7 +237,7 @@ extern __typeof (btk_accel_map_foreach_unfiltered) IA__btk_accel_map_foreach_unf
 extern __typeof (btk_accel_map_get) IA__btk_accel_map_get __attribute((visibility("hidden")));
 #define btk_accel_map_get IA__btk_accel_map_get
 
-extern __typeof (btk_accel_map_get_type) IA__btk_accel_map_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accel_map_get_type) IA__btk_accel_map_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accel_map_get_type IA__btk_accel_map_get_type
 
 #ifndef _WIN64
@@ -285,7 +285,7 @@ extern __typeof (btk_accel_map_unlock_path) IA__btk_accel_map_unlock_path __attr
 extern __typeof (btk_accessible_connect_widget_destroyed) IA__btk_accessible_connect_widget_destroyed __attribute((visibility("hidden")));
 #define btk_accessible_connect_widget_destroyed IA__btk_accessible_connect_widget_destroyed
 
-extern __typeof (btk_accessible_get_type) IA__btk_accessible_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accessible_get_type) IA__btk_accessible_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accessible_get_type IA__btk_accessible_get_type
 
 extern __typeof (btk_accessible_get_widget) IA__btk_accessible_get_widget __attribute((visibility("hidden")));
@@ -381,7 +381,7 @@ extern __typeof (btk_action_get_stock_id) IA__btk_action_get_stock_id __attribut
 extern __typeof (btk_action_get_tooltip) IA__btk_action_get_tooltip __attribute((visibility("hidden")));
 #define btk_action_get_tooltip IA__btk_action_get_tooltip
 
-extern __typeof (btk_action_get_type) IA__btk_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_action_get_type) IA__btk_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_action_get_type IA__btk_action_get_type
 
 extern __typeof (btk_action_get_visible) IA__btk_action_get_visible __attribute((visibility("hidden")));
@@ -489,7 +489,7 @@ extern __typeof (btk_action_group_get_name) IA__btk_action_group_get_name __attr
 extern __typeof (btk_action_group_get_sensitive) IA__btk_action_group_get_sensitive __attribute((visibility("hidden")));
 #define btk_action_group_get_sensitive IA__btk_action_group_get_sensitive
 
-extern __typeof (btk_action_group_get_type) IA__btk_action_group_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_action_group_get_type) IA__btk_action_group_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_action_group_get_type IA__btk_action_group_get_type
 
 extern __typeof (btk_action_group_get_visible) IA__btk_action_group_get_visible __attribute((visibility("hidden")));
@@ -529,7 +529,7 @@ extern __typeof (btk_activatable_do_set_related_action) IA__btk_activatable_do_s
 extern __typeof (btk_activatable_get_related_action) IA__btk_activatable_get_related_action __attribute((visibility("hidden")));
 #define btk_activatable_get_related_action IA__btk_activatable_get_related_action
 
-extern __typeof (btk_activatable_get_type) IA__btk_activatable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_activatable_get_type) IA__btk_activatable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_activatable_get_type IA__btk_activatable_get_type
 
 extern __typeof (btk_activatable_get_use_action_appearance) IA__btk_activatable_get_use_action_appearance __attribute((visibility("hidden")));
@@ -557,7 +557,7 @@ extern __typeof (btk_adjustment_clamp_page) IA__btk_adjustment_clamp_page __attr
 extern __typeof (btk_adjustment_configure) IA__btk_adjustment_configure __attribute((visibility("hidden")));
 #define btk_adjustment_configure IA__btk_adjustment_configure
 
-extern __typeof (btk_adjustment_get_type) IA__btk_adjustment_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_adjustment_get_type) IA__btk_adjustment_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_adjustment_get_type IA__btk_adjustment_get_type
 
 extern __typeof (btk_adjustment_get_value) IA__btk_adjustment_get_value __attribute((visibility("hidden")));
@@ -609,7 +609,7 @@ extern __typeof (btk_adjustment_value_changed) IA__btk_adjustment_value_changed 
 extern __typeof (btk_alignment_get_padding) IA__btk_alignment_get_padding __attribute((visibility("hidden")));
 #define btk_alignment_get_padding IA__btk_alignment_get_padding
 
-extern __typeof (btk_alignment_get_type) IA__btk_alignment_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_alignment_get_type) IA__btk_alignment_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_alignment_get_type IA__btk_alignment_get_type
 
 extern __typeof (btk_alignment_new) IA__btk_alignment_new __attribute((visibility("hidden")));
@@ -625,7 +625,7 @@ extern __typeof (btk_alignment_set_padding) IA__btk_alignment_set_padding __attr
 #endif
 #if IN_HEADER(__BTK_ASSISTANT_H__)
 #if IN_FILE(__BTK_ASSISTANT_C__)
-extern __typeof (btk_assistant_get_type) IA__btk_assistant_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_assistant_get_type) IA__btk_assistant_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_assistant_get_type IA__btk_assistant_get_type
 
 extern __typeof (btk_assistant_new) IA__btk_assistant_new __attribute((visibility("hidden")));
@@ -701,362 +701,362 @@ extern __typeof (btk_assistant_commit) IA__btk_assistant_commit __attribute((vis
 #endif
 #if IN_HEADER(__BTK_TYPE_BUILTINS_H__)
 #if IN_FILE(__BTK_TYPE_BUILTINS_C__)
-extern __typeof (btk_pack_direction_get_type) IA__btk_pack_direction_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_pack_direction_get_type) IA__btk_pack_direction_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_pack_direction_get_type IA__btk_pack_direction_get_type
 
-extern __typeof (btk_ui_manager_item_type_get_type) IA__btk_ui_manager_item_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ui_manager_item_type_get_type) IA__btk_ui_manager_item_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ui_manager_item_type_get_type IA__btk_ui_manager_item_type_get_type
 
-extern __typeof (btk_spin_button_update_policy_get_type) IA__btk_spin_button_update_policy_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_spin_button_update_policy_get_type) IA__btk_spin_button_update_policy_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_spin_button_update_policy_get_type IA__btk_spin_button_update_policy_get_type
 
-extern __typeof (btk_notebook_tab_get_type) IA__btk_notebook_tab_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_notebook_tab_get_type) IA__btk_notebook_tab_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_notebook_tab_get_type IA__btk_notebook_tab_get_type
 
-extern __typeof (btk_number_up_layout_get_type) IA__btk_number_up_layout_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_number_up_layout_get_type) IA__btk_number_up_layout_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_number_up_layout_get_type IA__btk_number_up_layout_get_type
 
-extern __typeof (btk_anchor_type_get_type) IA__btk_anchor_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_anchor_type_get_type) IA__btk_anchor_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_anchor_type_get_type IA__btk_anchor_type_get_type
 
-extern __typeof (btk_arg_flags_get_type) IA__btk_arg_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_arg_flags_get_type) IA__btk_arg_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_arg_flags_get_type IA__btk_arg_flags_get_type
 
-extern __typeof (btk_arrow_type_get_type) IA__btk_arrow_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_arrow_type_get_type) IA__btk_arrow_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_arrow_type_get_type IA__btk_arrow_type_get_type
 
-extern __typeof (btk_arrow_placement_get_type) IA__btk_arrow_placement_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_arrow_placement_get_type) IA__btk_arrow_placement_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_arrow_placement_get_type IA__btk_arrow_placement_get_type
 
-extern __typeof (btk_assistant_page_type_get_type) IA__btk_assistant_page_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_assistant_page_type_get_type) IA__btk_assistant_page_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_assistant_page_type_get_type IA__btk_assistant_page_type_get_type
 
-extern __typeof (btk_attach_options_get_type) IA__btk_attach_options_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_attach_options_get_type) IA__btk_attach_options_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_attach_options_get_type IA__btk_attach_options_get_type
 
-extern __typeof (btk_builder_error_get_type) IA__btk_builder_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_builder_error_get_type) IA__btk_builder_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_builder_error_get_type IA__btk_builder_error_get_type
 
-extern __typeof (btk_button_action_get_type) IA__btk_button_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_button_action_get_type) IA__btk_button_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_button_action_get_type IA__btk_button_action_get_type
 
-extern __typeof (btk_buttons_type_get_type) IA__btk_buttons_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_buttons_type_get_type) IA__btk_buttons_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_buttons_type_get_type IA__btk_buttons_type_get_type
 
-extern __typeof (btk_calendar_display_options_get_type) IA__btk_calendar_display_options_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_calendar_display_options_get_type) IA__btk_calendar_display_options_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_calendar_display_options_get_type IA__btk_calendar_display_options_get_type
 
-extern __typeof (btk_cell_renderer_mode_get_type) IA__btk_cell_renderer_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_mode_get_type) IA__btk_cell_renderer_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_mode_get_type IA__btk_cell_renderer_mode_get_type
 
-extern __typeof (btk_cell_renderer_state_get_type) IA__btk_cell_renderer_state_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_state_get_type) IA__btk_cell_renderer_state_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_state_get_type IA__btk_cell_renderer_state_get_type
 
 extern __typeof (btk_cell_renderer_accel_mode_get_type) IA__btk_cell_renderer_accel_mode_get_type __attribute((visibility("hidden")));
 #define btk_cell_renderer_accel_mode_get_type IA__btk_cell_renderer_accel_mode_get_type
 
-extern __typeof (btk_corner_type_get_type) IA__btk_corner_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_corner_type_get_type) IA__btk_corner_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_corner_type_get_type IA__btk_corner_type_get_type
 
-extern __typeof (btk_debug_flag_get_type) IA__btk_debug_flag_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_debug_flag_get_type) IA__btk_debug_flag_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_debug_flag_get_type IA__btk_debug_flag_get_type
 
-extern __typeof (btk_delete_type_get_type) IA__btk_delete_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_delete_type_get_type) IA__btk_delete_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_delete_type_get_type IA__btk_delete_type_get_type
 
-extern __typeof (btk_dest_defaults_get_type) IA__btk_dest_defaults_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_dest_defaults_get_type) IA__btk_dest_defaults_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_dest_defaults_get_type IA__btk_dest_defaults_get_type
 
-extern __typeof (btk_drag_result_get_type) IA__btk_drag_result_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_drag_result_get_type) IA__btk_drag_result_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_drag_result_get_type IA__btk_drag_result_get_type
 
-extern __typeof (btk_clist_drag_pos_get_type) IA__btk_clist_drag_pos_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_clist_drag_pos_get_type) IA__btk_clist_drag_pos_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_clist_drag_pos_get_type IA__btk_clist_drag_pos_get_type
 
-extern __typeof (btk_dialog_flags_get_type) IA__btk_dialog_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_dialog_flags_get_type) IA__btk_dialog_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_dialog_flags_get_type IA__btk_dialog_flags_get_type
 
-extern __typeof (btk_direction_type_get_type) IA__btk_direction_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_direction_type_get_type) IA__btk_direction_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_direction_type_get_type IA__btk_direction_type_get_type
 
-extern __typeof (btk_entry_icon_position_get_type) IA__btk_entry_icon_position_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_entry_icon_position_get_type) IA__btk_entry_icon_position_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_entry_icon_position_get_type IA__btk_entry_icon_position_get_type
 
-extern __typeof (btk_expander_style_get_type) IA__btk_expander_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_expander_style_get_type) IA__btk_expander_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_expander_style_get_type IA__btk_expander_style_get_type
 
-extern __typeof (btk_file_chooser_action_get_type) IA__btk_file_chooser_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_action_get_type) IA__btk_file_chooser_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_action_get_type IA__btk_file_chooser_action_get_type
 
-extern __typeof (btk_file_chooser_confirmation_get_type) IA__btk_file_chooser_confirmation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_confirmation_get_type) IA__btk_file_chooser_confirmation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_confirmation_get_type IA__btk_file_chooser_confirmation_get_type
 
-extern __typeof (btk_file_filter_flags_get_type) IA__btk_file_filter_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_filter_flags_get_type) IA__btk_file_filter_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_filter_flags_get_type IA__btk_file_filter_flags_get_type
 
-extern __typeof (btk_icon_view_drop_position_get_type) IA__btk_icon_view_drop_position_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_view_drop_position_get_type) IA__btk_icon_view_drop_position_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_view_drop_position_get_type IA__btk_icon_view_drop_position_get_type
 
-extern __typeof (btk_sensitivity_type_get_type) IA__btk_sensitivity_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_sensitivity_type_get_type) IA__btk_sensitivity_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_sensitivity_type_get_type IA__btk_sensitivity_type_get_type
 
-extern __typeof (btk_window_type_get_type) IA__btk_window_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_window_type_get_type) IA__btk_window_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_window_type_get_type IA__btk_window_type_get_type
 
-extern __typeof (btk_wrap_mode_get_type) IA__btk_wrap_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_wrap_mode_get_type) IA__btk_wrap_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_wrap_mode_get_type IA__btk_wrap_mode_get_type
 
-extern __typeof (btk_widget_flags_get_type) IA__btk_widget_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_widget_flags_get_type) IA__btk_widget_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_widget_flags_get_type IA__btk_widget_flags_get_type
 
-extern __typeof (btk_widget_help_type_get_type) IA__btk_widget_help_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_widget_help_type_get_type) IA__btk_widget_help_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_widget_help_type_get_type IA__btk_widget_help_type_get_type
 
-extern __typeof (btk_window_position_get_type) IA__btk_window_position_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_window_position_get_type) IA__btk_window_position_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_window_position_get_type IA__btk_window_position_get_type
 
-extern __typeof (btk_tree_view_column_sizing_get_type) IA__btk_tree_view_column_sizing_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_column_sizing_get_type) IA__btk_tree_view_column_sizing_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_column_sizing_get_type IA__btk_tree_view_column_sizing_get_type
 
-extern __typeof (btk_tree_view_drop_position_get_type) IA__btk_tree_view_drop_position_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_drop_position_get_type) IA__btk_tree_view_drop_position_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_drop_position_get_type IA__btk_tree_view_drop_position_get_type
 
-extern __typeof (btk_button_box_style_get_type) IA__btk_button_box_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_button_box_style_get_type) IA__btk_button_box_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_button_box_style_get_type IA__btk_button_box_style_get_type
 
-extern __typeof (btk_cell_type_get_type) IA__btk_cell_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_type_get_type) IA__btk_cell_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_type_get_type IA__btk_cell_type_get_type
 
-extern __typeof (btk_ctree_expander_style_get_type) IA__btk_ctree_expander_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_expander_style_get_type) IA__btk_ctree_expander_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_expander_style_get_type IA__btk_ctree_expander_style_get_type
 
-extern __typeof (btk_ctree_expansion_type_get_type) IA__btk_ctree_expansion_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_expansion_type_get_type) IA__btk_ctree_expansion_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_expansion_type_get_type IA__btk_ctree_expansion_type_get_type
 
-extern __typeof (btk_ctree_line_style_get_type) IA__btk_ctree_line_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_line_style_get_type) IA__btk_ctree_line_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_line_style_get_type IA__btk_ctree_line_style_get_type
 
-extern __typeof (btk_ctree_pos_get_type) IA__btk_ctree_pos_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_pos_get_type) IA__btk_ctree_pos_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_pos_get_type IA__btk_ctree_pos_get_type
 
-extern __typeof (btk_curve_type_get_type) IA__btk_curve_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_curve_type_get_type) IA__btk_curve_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_curve_type_get_type IA__btk_curve_type_get_type
 
-extern __typeof (btk_icon_lookup_flags_get_type) IA__btk_icon_lookup_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_lookup_flags_get_type) IA__btk_icon_lookup_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_lookup_flags_get_type IA__btk_icon_lookup_flags_get_type
 
-extern __typeof (btk_image_type_get_type) IA__btk_image_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_image_type_get_type) IA__btk_image_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_image_type_get_type IA__btk_image_type_get_type
 
-extern __typeof (btk_im_preedit_style_get_type) IA__btk_im_preedit_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_im_preedit_style_get_type) IA__btk_im_preedit_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_im_preedit_style_get_type IA__btk_im_preedit_style_get_type
 
-extern __typeof (btk_im_status_style_get_type) IA__btk_im_status_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_im_status_style_get_type) IA__btk_im_status_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_im_status_style_get_type IA__btk_im_status_style_get_type
 
-extern __typeof (btk_justification_get_type) IA__btk_justification_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_justification_get_type) IA__btk_justification_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_justification_get_type IA__btk_justification_get_type
 
-extern __typeof (btk_match_type_get_type) IA__btk_match_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_match_type_get_type) IA__btk_match_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_match_type_get_type IA__btk_match_type_get_type
 
-extern __typeof (btk_menu_direction_type_get_type) IA__btk_menu_direction_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_direction_type_get_type) IA__btk_menu_direction_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_direction_type_get_type IA__btk_menu_direction_type_get_type
 
-extern __typeof (btk_message_type_get_type) IA__btk_message_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_message_type_get_type) IA__btk_message_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_message_type_get_type IA__btk_message_type_get_type
 
-extern __typeof (btk_metric_type_get_type) IA__btk_metric_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_metric_type_get_type) IA__btk_metric_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_metric_type_get_type IA__btk_metric_type_get_type
 
-extern __typeof (btk_movement_step_get_type) IA__btk_movement_step_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_movement_step_get_type) IA__btk_movement_step_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_movement_step_get_type IA__btk_movement_step_get_type
 
-extern __typeof (btk_orientation_get_type) IA__btk_orientation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_orientation_get_type) IA__btk_orientation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_orientation_get_type IA__btk_orientation_get_type
 
-extern __typeof (btk_pack_type_get_type) IA__btk_pack_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_pack_type_get_type) IA__btk_pack_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_pack_type_get_type IA__btk_pack_type_get_type
 
-extern __typeof (btk_page_orientation_get_type) IA__btk_page_orientation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_page_orientation_get_type) IA__btk_page_orientation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_page_orientation_get_type IA__btk_page_orientation_get_type
 
-extern __typeof (btk_print_operation_result_get_type) IA__btk_print_operation_result_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_operation_result_get_type) IA__btk_print_operation_result_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_operation_result_get_type IA__btk_print_operation_result_get_type
 
-extern __typeof (btk_print_pages_get_type) IA__btk_print_pages_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_pages_get_type) IA__btk_print_pages_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_pages_get_type IA__btk_print_pages_get_type
 
-extern __typeof (btk_print_quality_get_type) IA__btk_print_quality_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_quality_get_type) IA__btk_print_quality_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_quality_get_type IA__btk_print_quality_get_type
 
-extern __typeof (btk_print_status_get_type) IA__btk_print_status_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_status_get_type) IA__btk_print_status_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_status_get_type IA__btk_print_status_get_type
 
-extern __typeof (btk_page_set_get_type) IA__btk_page_set_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_page_set_get_type) IA__btk_page_set_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_page_set_get_type IA__btk_page_set_get_type
 
-extern __typeof (btk_path_priority_type_get_type) IA__btk_path_priority_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_path_priority_type_get_type) IA__btk_path_priority_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_path_priority_type_get_type IA__btk_path_priority_type_get_type
 
-extern __typeof (btk_path_type_get_type) IA__btk_path_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_path_type_get_type) IA__btk_path_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_path_type_get_type IA__btk_path_type_get_type
 
-extern __typeof (btk_policy_type_get_type) IA__btk_policy_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_policy_type_get_type) IA__btk_policy_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_policy_type_get_type IA__btk_policy_type_get_type
 
-extern __typeof (btk_position_type_get_type) IA__btk_position_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_position_type_get_type) IA__btk_position_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_position_type_get_type IA__btk_position_type_get_type
 
-extern __typeof (btk_preview_type_get_type) IA__btk_preview_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_preview_type_get_type) IA__btk_preview_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_preview_type_get_type IA__btk_preview_type_get_type
 
-extern __typeof (btk_print_duplex_get_type) IA__btk_print_duplex_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_duplex_get_type) IA__btk_print_duplex_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_duplex_get_type IA__btk_print_duplex_get_type
 
-extern __typeof (btk_print_error_get_type) IA__btk_print_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_error_get_type) IA__btk_print_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_error_get_type IA__btk_print_error_get_type
 
-extern __typeof (btk_recent_filter_flags_get_type) IA__btk_recent_filter_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_filter_flags_get_type) IA__btk_recent_filter_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_filter_flags_get_type IA__btk_recent_filter_flags_get_type
 
-extern __typeof (btk_print_operation_action_get_type) IA__btk_print_operation_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_operation_action_get_type) IA__btk_print_operation_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_operation_action_get_type IA__btk_print_operation_action_get_type
 
-extern __typeof (btk_private_flags_get_type) IA__btk_private_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_private_flags_get_type) IA__btk_private_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_private_flags_get_type IA__btk_private_flags_get_type
 
-extern __typeof (btk_progress_bar_orientation_get_type) IA__btk_progress_bar_orientation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_progress_bar_orientation_get_type) IA__btk_progress_bar_orientation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_progress_bar_orientation_get_type IA__btk_progress_bar_orientation_get_type
 
-extern __typeof (btk_progress_bar_style_get_type) IA__btk_progress_bar_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_progress_bar_style_get_type) IA__btk_progress_bar_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_progress_bar_style_get_type IA__btk_progress_bar_style_get_type
 
-extern __typeof (btk_rc_flags_get_type) IA__btk_rc_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_rc_flags_get_type) IA__btk_rc_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_rc_flags_get_type IA__btk_rc_flags_get_type
 
-extern __typeof (btk_rc_token_type_get_type) IA__btk_rc_token_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_rc_token_type_get_type) IA__btk_rc_token_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_rc_token_type_get_type IA__btk_rc_token_type_get_type
 
-extern __typeof (btk_recent_chooser_error_get_type) IA__btk_recent_chooser_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_chooser_error_get_type) IA__btk_recent_chooser_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_chooser_error_get_type IA__btk_recent_chooser_error_get_type
 
-extern __typeof (btk_recent_manager_error_get_type) IA__btk_recent_manager_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_manager_error_get_type) IA__btk_recent_manager_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_manager_error_get_type IA__btk_recent_manager_error_get_type
 
-extern __typeof (btk_recent_sort_type_get_type) IA__btk_recent_sort_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_sort_type_get_type) IA__btk_recent_sort_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_sort_type_get_type IA__btk_recent_sort_type_get_type
 
-extern __typeof (btk_unit_get_type) IA__btk_unit_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_unit_get_type) IA__btk_unit_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_unit_get_type IA__btk_unit_get_type
 
-extern __typeof (btk_relief_style_get_type) IA__btk_relief_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_relief_style_get_type) IA__btk_relief_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_relief_style_get_type IA__btk_relief_style_get_type
 
-extern __typeof (btk_resize_mode_get_type) IA__btk_resize_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_resize_mode_get_type) IA__btk_resize_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_resize_mode_get_type IA__btk_resize_mode_get_type
 
-extern __typeof (btk_response_type_get_type) IA__btk_response_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_response_type_get_type) IA__btk_response_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_response_type_get_type IA__btk_response_type_get_type
 
-extern __typeof (btk_scroll_step_get_type) IA__btk_scroll_step_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scroll_step_get_type) IA__btk_scroll_step_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scroll_step_get_type IA__btk_scroll_step_get_type
 
-extern __typeof (btk_scroll_type_get_type) IA__btk_scroll_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scroll_type_get_type) IA__btk_scroll_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scroll_type_get_type IA__btk_scroll_type_get_type
 
-extern __typeof (btk_selection_mode_get_type) IA__btk_selection_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_selection_mode_get_type) IA__btk_selection_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_selection_mode_get_type IA__btk_selection_mode_get_type
 
-extern __typeof (btk_shadow_type_get_type) IA__btk_shadow_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_shadow_type_get_type) IA__btk_shadow_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_shadow_type_get_type IA__btk_shadow_type_get_type
 
-extern __typeof (btk_side_type_get_type) IA__btk_side_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_side_type_get_type) IA__btk_side_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_side_type_get_type IA__btk_side_type_get_type
 
-extern __typeof (btk_signal_run_type_get_type) IA__btk_signal_run_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_signal_run_type_get_type) IA__btk_signal_run_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_signal_run_type_get_type IA__btk_signal_run_type_get_type
 
-extern __typeof (btk_size_group_mode_get_type) IA__btk_size_group_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_size_group_mode_get_type) IA__btk_size_group_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_size_group_mode_get_type IA__btk_size_group_mode_get_type
 
-extern __typeof (btk_sort_type_get_type) IA__btk_sort_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_sort_type_get_type) IA__btk_sort_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_sort_type_get_type IA__btk_sort_type_get_type
 
-extern __typeof (btk_spin_type_get_type) IA__btk_spin_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_spin_type_get_type) IA__btk_spin_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_spin_type_get_type IA__btk_spin_type_get_type
 
-extern __typeof (btk_state_type_get_type) IA__btk_state_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_state_type_get_type) IA__btk_state_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_state_type_get_type IA__btk_state_type_get_type
 
-extern __typeof (btk_submenu_direction_get_type) IA__btk_submenu_direction_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_submenu_direction_get_type) IA__btk_submenu_direction_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_submenu_direction_get_type IA__btk_submenu_direction_get_type
 
-extern __typeof (btk_submenu_placement_get_type) IA__btk_submenu_placement_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_submenu_placement_get_type) IA__btk_submenu_placement_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_submenu_placement_get_type IA__btk_submenu_placement_get_type
 
-extern __typeof (btk_target_flags_get_type) IA__btk_target_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_target_flags_get_type) IA__btk_target_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_target_flags_get_type IA__btk_target_flags_get_type
 
-extern __typeof (btk_text_direction_get_type) IA__btk_text_direction_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_direction_get_type) IA__btk_text_direction_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_direction_get_type IA__btk_text_direction_get_type
 
-extern __typeof (btk_text_buffer_target_info_get_type) IA__btk_text_buffer_target_info_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_buffer_target_info_get_type) IA__btk_text_buffer_target_info_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_buffer_target_info_get_type IA__btk_text_buffer_target_info_get_type
 
-extern __typeof (btk_text_search_flags_get_type) IA__btk_text_search_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_search_flags_get_type) IA__btk_text_search_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_search_flags_get_type IA__btk_text_search_flags_get_type
 
-extern __typeof (btk_text_window_type_get_type) IA__btk_text_window_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_window_type_get_type) IA__btk_text_window_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_window_type_get_type IA__btk_text_window_type_get_type
 
-extern __typeof (btk_tool_palette_drag_targets_get_type) IA__btk_tool_palette_drag_targets_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_palette_drag_targets_get_type) IA__btk_tool_palette_drag_targets_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_palette_drag_targets_get_type IA__btk_tool_palette_drag_targets_get_type
 
-extern __typeof (btk_tree_model_flags_get_type) IA__btk_tree_model_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_model_flags_get_type) IA__btk_tree_model_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_model_flags_get_type IA__btk_tree_model_flags_get_type
 
-extern __typeof (btk_tree_view_mode_get_type) IA__btk_tree_view_mode_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_mode_get_type) IA__btk_tree_view_mode_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_mode_get_type IA__btk_tree_view_mode_get_type
 
-extern __typeof (btk_tree_view_grid_lines_get_type) IA__btk_tree_view_grid_lines_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_grid_lines_get_type) IA__btk_tree_view_grid_lines_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_grid_lines_get_type IA__btk_tree_view_grid_lines_get_type
 
-extern __typeof (btk_update_type_get_type) IA__btk_update_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_update_type_get_type) IA__btk_update_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_update_type_get_type IA__btk_update_type_get_type
 
-extern __typeof (btk_visibility_get_type) IA__btk_visibility_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_visibility_get_type) IA__btk_visibility_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_visibility_get_type IA__btk_visibility_get_type
 
-extern __typeof (btk_object_flags_get_type) IA__btk_object_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_object_flags_get_type) IA__btk_object_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_object_flags_get_type IA__btk_object_flags_get_type
 
-extern __typeof (btk_accel_flags_get_type) IA__btk_accel_flags_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_accel_flags_get_type) IA__btk_accel_flags_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_accel_flags_get_type IA__btk_accel_flags_get_type
 
-extern __typeof (btk_icon_size_get_type) IA__btk_icon_size_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_size_get_type) IA__btk_icon_size_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_size_get_type IA__btk_icon_size_get_type
 
-extern __typeof (btk_file_chooser_error_get_type) IA__btk_file_chooser_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_error_get_type) IA__btk_file_chooser_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_error_get_type IA__btk_file_chooser_error_get_type
 
-extern __typeof (btk_icon_theme_error_get_type) IA__btk_icon_theme_error_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_theme_error_get_type) IA__btk_icon_theme_error_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_theme_error_get_type IA__btk_icon_theme_error_get_type
 
-extern __typeof (btk_toolbar_child_type_get_type) IA__btk_toolbar_child_type_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toolbar_child_type_get_type) IA__btk_toolbar_child_type_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toolbar_child_type_get_type IA__btk_toolbar_child_type_get_type
 
-extern __typeof (btk_toolbar_space_style_get_type) IA__btk_toolbar_space_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toolbar_space_style_get_type) IA__btk_toolbar_space_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toolbar_space_style_get_type IA__btk_toolbar_space_style_get_type
 
-extern __typeof (btk_toolbar_style_get_type) IA__btk_toolbar_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toolbar_style_get_type) IA__btk_toolbar_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toolbar_style_get_type IA__btk_toolbar_style_get_type
 
 #endif
 #endif
 #if IN_HEADER(__BTK_ARROW_H__)
 #if IN_FILE(__BTK_ARROW_C__)
-extern __typeof (btk_arrow_get_type) IA__btk_arrow_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_arrow_get_type) IA__btk_arrow_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_arrow_get_type IA__btk_arrow_get_type
 
 extern __typeof (btk_arrow_new) IA__btk_arrow_new __attribute((visibility("hidden")));
@@ -1069,7 +1069,7 @@ extern __typeof (btk_arrow_set) IA__btk_arrow_set __attribute((visibility("hidde
 #endif
 #if IN_HEADER(__BTK_ASPECT_FRAME_H__)
 #if IN_FILE(__BTK_ASPECT_FRAME_C__)
-extern __typeof (btk_aspect_frame_get_type) IA__btk_aspect_frame_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_aspect_frame_get_type) IA__btk_aspect_frame_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_aspect_frame_get_type IA__btk_aspect_frame_get_type
 
 extern __typeof (btk_aspect_frame_new) IA__btk_aspect_frame_new __attribute((visibility("hidden")));
@@ -1130,7 +1130,7 @@ extern __typeof (btk_binding_set_new) IA__btk_binding_set_new __attribute((visib
 extern __typeof (btk_bin_get_child) IA__btk_bin_get_child __attribute((visibility("hidden")));
 #define btk_bin_get_child IA__btk_bin_get_child
 
-extern __typeof (btk_bin_get_type) IA__btk_bin_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_bin_get_type) IA__btk_bin_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_bin_get_type IA__btk_bin_get_type
 
 #endif
@@ -1143,7 +1143,7 @@ extern __typeof (btk_box_get_homogeneous) IA__btk_box_get_homogeneous __attribut
 extern __typeof (btk_box_get_spacing) IA__btk_box_get_spacing __attribute((visibility("hidden")));
 #define btk_box_get_spacing IA__btk_box_get_spacing
 
-extern __typeof (btk_box_get_type) IA__btk_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_box_get_type) IA__btk_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_box_get_type IA__btk_box_get_type
 
 extern __typeof (btk_box_pack_end) IA__btk_box_pack_end __attribute((visibility("hidden")));
@@ -1200,7 +1200,7 @@ extern __typeof (btk_buildable_get_internal_child) IA__btk_buildable_get_interna
 extern __typeof (btk_buildable_get_name) IA__btk_buildable_get_name __attribute((visibility("hidden")));
 #define btk_buildable_get_name IA__btk_buildable_get_name
 
-extern __typeof (btk_buildable_get_type) IA__btk_buildable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_buildable_get_type) IA__btk_buildable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_buildable_get_type IA__btk_buildable_get_type
 
 extern __typeof (btk_buildable_parser_finished) IA__btk_buildable_parser_finished __attribute((visibility("hidden")));
@@ -1240,7 +1240,7 @@ extern __typeof (btk_builder_get_objects) IA__btk_builder_get_objects __attribut
 extern __typeof (btk_builder_get_translation_domain) IA__btk_builder_get_translation_domain __attribute((visibility("hidden")));
 #define btk_builder_get_translation_domain IA__btk_builder_get_translation_domain
 
-extern __typeof (btk_builder_get_type) IA__btk_builder_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_builder_get_type) IA__btk_builder_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_builder_get_type IA__btk_builder_get_type
 
 extern __typeof (btk_builder_get_type_from_name) IA__btk_builder_get_type_from_name __attribute((visibility("hidden")));
@@ -1288,7 +1288,7 @@ extern __typeof (btk_button_box_get_child_secondary) IA__btk_button_box_get_chil
 extern __typeof (btk_button_box_get_layout) IA__btk_button_box_get_layout __attribute((visibility("hidden")));
 #define btk_button_box_get_layout IA__btk_button_box_get_layout
 
-extern __typeof (btk_button_box_get_type) IA__btk_button_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_button_box_get_type) IA__btk_button_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_button_box_get_type IA__btk_button_box_get_type
 
 extern __typeof (btk_button_box_set_child_secondary) IA__btk_button_box_set_child_secondary __attribute((visibility("hidden")));
@@ -1330,7 +1330,7 @@ extern __typeof (btk_button_get_label) IA__btk_button_get_label __attribute((vis
 extern __typeof (btk_button_get_relief) IA__btk_button_get_relief __attribute((visibility("hidden")));
 #define btk_button_get_relief IA__btk_button_get_relief
 
-extern __typeof (btk_button_get_type) IA__btk_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_button_get_type) IA__btk_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_button_get_type IA__btk_button_get_type
 
 extern __typeof (btk_button_get_use_stock) IA__btk_button_get_use_stock __attribute((visibility("hidden")));
@@ -1418,7 +1418,7 @@ extern __typeof (btk_calendar_get_detail_width_chars) IA__btk_calendar_get_detai
 extern __typeof (btk_calendar_get_display_options) IA__btk_calendar_get_display_options __attribute((visibility("hidden")));
 #define btk_calendar_get_display_options IA__btk_calendar_get_display_options
 
-extern __typeof (btk_calendar_get_type) IA__btk_calendar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_calendar_get_type) IA__btk_calendar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_calendar_get_type IA__btk_calendar_get_type
 
 extern __typeof (btk_calendar_mark_day) IA__btk_calendar_mark_day __attribute((visibility("hidden")));
@@ -1455,7 +1455,7 @@ extern __typeof (btk_calendar_unmark_day) IA__btk_calendar_unmark_day __attribut
 extern __typeof (btk_cell_editable_editing_done) IA__btk_cell_editable_editing_done __attribute((visibility("hidden")));
 #define btk_cell_editable_editing_done IA__btk_cell_editable_editing_done
 
-extern __typeof (btk_cell_editable_get_type) IA__btk_cell_editable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_editable_get_type) IA__btk_cell_editable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_editable_get_type IA__btk_cell_editable_get_type
 
 extern __typeof (btk_cell_editable_remove_widget) IA__btk_cell_editable_remove_widget __attribute((visibility("hidden")));
@@ -1477,7 +1477,7 @@ extern __typeof (btk_cell_layout_clear) IA__btk_cell_layout_clear __attribute((v
 extern __typeof (btk_cell_layout_clear_attributes) IA__btk_cell_layout_clear_attributes __attribute((visibility("hidden")));
 #define btk_cell_layout_clear_attributes IA__btk_cell_layout_clear_attributes
 
-extern __typeof (btk_cell_layout_get_type) IA__btk_cell_layout_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_layout_get_type) IA__btk_cell_layout_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_layout_get_type IA__btk_cell_layout_get_type
 
 extern __typeof (btk_cell_layout_pack_end) IA__btk_cell_layout_pack_end __attribute((visibility("hidden")));
@@ -1492,7 +1492,7 @@ extern __typeof (btk_cell_layout_get_cells) IA__btk_cell_layout_get_cells __attr
 extern __typeof (btk_cell_layout_reorder) IA__btk_cell_layout_reorder __attribute((visibility("hidden")));
 #define btk_cell_layout_reorder IA__btk_cell_layout_reorder
 
-extern __typeof (btk_cell_layout_set_attributes) IA__btk_cell_layout_set_attributes __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_cell_layout_set_attributes) IA__btk_cell_layout_set_attributes __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_cell_layout_set_attributes IA__btk_cell_layout_set_attributes
 
 extern __typeof (btk_cell_layout_set_cell_data_func) IA__btk_cell_layout_set_cell_data_func __attribute((visibility("hidden")));
@@ -1525,7 +1525,7 @@ extern __typeof (btk_cell_renderer_get_sensitive) IA__btk_cell_renderer_get_sens
 extern __typeof (btk_cell_renderer_get_size) IA__btk_cell_renderer_get_size __attribute((visibility("hidden")));
 #define btk_cell_renderer_get_size IA__btk_cell_renderer_get_size
 
-extern __typeof (btk_cell_renderer_get_type) IA__btk_cell_renderer_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_get_type) IA__btk_cell_renderer_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_get_type IA__btk_cell_renderer_get_type
 
 extern __typeof (btk_cell_renderer_get_visible) IA__btk_cell_renderer_get_visible __attribute((visibility("hidden")));
@@ -1559,7 +1559,7 @@ extern __typeof (btk_cell_renderer_stop_editing) IA__btk_cell_renderer_stop_edit
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_ACCEL_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_ACCEL_C__)
-extern __typeof (btk_cell_renderer_accel_get_type) IA__btk_cell_renderer_accel_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_accel_get_type) IA__btk_cell_renderer_accel_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_accel_get_type IA__btk_cell_renderer_accel_get_type
 
 extern __typeof (btk_cell_renderer_accel_new) IA__btk_cell_renderer_accel_new __attribute((visibility("hidden")));
@@ -1569,7 +1569,7 @@ extern __typeof (btk_cell_renderer_accel_new) IA__btk_cell_renderer_accel_new __
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_COMBO_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_COMBO_C__)
-extern __typeof (btk_cell_renderer_combo_get_type) IA__btk_cell_renderer_combo_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_combo_get_type) IA__btk_cell_renderer_combo_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_combo_get_type IA__btk_cell_renderer_combo_get_type
 
 extern __typeof (btk_cell_renderer_combo_new) IA__btk_cell_renderer_combo_new __attribute((visibility("hidden")));
@@ -1579,7 +1579,7 @@ extern __typeof (btk_cell_renderer_combo_new) IA__btk_cell_renderer_combo_new __
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_PIXBUF_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_PIXBUF_C__)
-extern __typeof (btk_cell_renderer_pixbuf_get_type) IA__btk_cell_renderer_pixbuf_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_pixbuf_get_type) IA__btk_cell_renderer_pixbuf_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_pixbuf_get_type IA__btk_cell_renderer_pixbuf_get_type
 
 extern __typeof (btk_cell_renderer_pixbuf_new) IA__btk_cell_renderer_pixbuf_new __attribute((visibility("hidden")));
@@ -1589,7 +1589,7 @@ extern __typeof (btk_cell_renderer_pixbuf_new) IA__btk_cell_renderer_pixbuf_new 
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_SPIN_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_SPIN_C__)
-extern __typeof (btk_cell_renderer_spin_get_type) IA__btk_cell_renderer_spin_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_spin_get_type) IA__btk_cell_renderer_spin_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_spin_get_type IA__btk_cell_renderer_spin_get_type
 
 extern __typeof (btk_cell_renderer_spin_new) IA__btk_cell_renderer_spin_new __attribute((visibility("hidden")));
@@ -1599,7 +1599,7 @@ extern __typeof (btk_cell_renderer_spin_new) IA__btk_cell_renderer_spin_new __at
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_SPINNER_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_SPINNER_C__)
-extern __typeof (btk_cell_renderer_spinner_get_type) IA__btk_cell_renderer_spinner_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_spinner_get_type) IA__btk_cell_renderer_spinner_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_spinner_get_type IA__btk_cell_renderer_spinner_get_type
 
 extern __typeof (btk_cell_renderer_spinner_new) IA__btk_cell_renderer_spinner_new __attribute((visibility("hidden")));
@@ -1609,7 +1609,7 @@ extern __typeof (btk_cell_renderer_spinner_new) IA__btk_cell_renderer_spinner_ne
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_PROGRESS_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_PROGRESS_C__)
-extern __typeof (btk_cell_renderer_progress_get_type) IA__btk_cell_renderer_progress_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_progress_get_type) IA__btk_cell_renderer_progress_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_progress_get_type IA__btk_cell_renderer_progress_get_type
 
 extern __typeof (btk_cell_renderer_progress_new) IA__btk_cell_renderer_progress_new __attribute((visibility("hidden")));
@@ -1619,7 +1619,7 @@ extern __typeof (btk_cell_renderer_progress_new) IA__btk_cell_renderer_progress_
 #endif
 #if IN_HEADER(__BTK_CELL_RENDERER_TEXT_H__)
 #if IN_FILE(__BTK_CELL_RENDERER_TEXT_C__)
-extern __typeof (btk_cell_renderer_text_get_type) IA__btk_cell_renderer_text_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_text_get_type) IA__btk_cell_renderer_text_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_text_get_type IA__btk_cell_renderer_text_get_type
 
 extern __typeof (btk_cell_renderer_text_new) IA__btk_cell_renderer_text_new __attribute((visibility("hidden")));
@@ -1641,7 +1641,7 @@ extern __typeof (btk_cell_renderer_toggle_get_active) IA__btk_cell_renderer_togg
 extern __typeof (btk_cell_renderer_toggle_get_radio) IA__btk_cell_renderer_toggle_get_radio __attribute((visibility("hidden")));
 #define btk_cell_renderer_toggle_get_radio IA__btk_cell_renderer_toggle_get_radio
 
-extern __typeof (btk_cell_renderer_toggle_get_type) IA__btk_cell_renderer_toggle_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_renderer_toggle_get_type) IA__btk_cell_renderer_toggle_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_renderer_toggle_get_type IA__btk_cell_renderer_toggle_get_type
 
 extern __typeof (btk_cell_renderer_toggle_new) IA__btk_cell_renderer_toggle_new __attribute((visibility("hidden")));
@@ -1674,7 +1674,7 @@ extern __typeof (btk_cell_view_get_model) IA__btk_cell_view_get_model __attribut
 extern __typeof (btk_cell_view_get_size_of_row) IA__btk_cell_view_get_size_of_row __attribute((visibility("hidden")));
 #define btk_cell_view_get_size_of_row IA__btk_cell_view_get_size_of_row
 
-extern __typeof (btk_cell_view_get_type) IA__btk_cell_view_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_cell_view_get_type) IA__btk_cell_view_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_cell_view_get_type IA__btk_cell_view_get_type
 
 extern __typeof (btk_cell_view_new) IA__btk_cell_view_new __attribute((visibility("hidden")));
@@ -1702,7 +1702,7 @@ extern __typeof (btk_cell_view_set_model) IA__btk_cell_view_set_model __attribut
 #endif
 #if IN_HEADER(__BTK_CHECK_BUTTON_H__)
 #if IN_FILE(__BTK_CHECK_BUTTON_C__)
-extern __typeof (btk_check_button_get_type) IA__btk_check_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_check_button_get_type) IA__btk_check_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_check_button_get_type IA__btk_check_button_get_type
 
 extern __typeof (btk_check_button_new) IA__btk_check_button_new __attribute((visibility("hidden")));
@@ -1727,7 +1727,7 @@ extern __typeof (btk_check_menu_item_get_draw_as_radio) IA__btk_check_menu_item_
 extern __typeof (btk_check_menu_item_get_inconsistent) IA__btk_check_menu_item_get_inconsistent __attribute((visibility("hidden")));
 #define btk_check_menu_item_get_inconsistent IA__btk_check_menu_item_get_inconsistent
 
-extern __typeof (btk_check_menu_item_get_type) IA__btk_check_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_check_menu_item_get_type) IA__btk_check_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_check_menu_item_get_type IA__btk_check_menu_item_get_type
 
 extern __typeof (btk_check_menu_item_new) IA__btk_check_menu_item_new __attribute((visibility("hidden")));
@@ -1775,7 +1775,7 @@ extern __typeof (btk_clipboard_get_for_display) IA__btk_clipboard_get_for_displa
 extern __typeof (btk_clipboard_get_owner) IA__btk_clipboard_get_owner __attribute((visibility("hidden")));
 #define btk_clipboard_get_owner IA__btk_clipboard_get_owner
 
-extern __typeof (btk_clipboard_get_type) IA__btk_clipboard_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_clipboard_get_type) IA__btk_clipboard_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_clipboard_get_type IA__btk_clipboard_get_type
 
 extern __typeof (btk_clipboard_request_contents) IA__btk_clipboard_request_contents __attribute((visibility("hidden")));
@@ -1921,7 +1921,7 @@ extern __typeof (btk_clist_get_selection_info) IA__btk_clist_get_selection_info 
 extern __typeof (btk_clist_get_text) IA__btk_clist_get_text __attribute((visibility("hidden")));
 #define btk_clist_get_text IA__btk_clist_get_text
 
-extern __typeof (btk_clist_get_type) IA__btk_clist_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_clist_get_type) IA__btk_clist_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_clist_get_type IA__btk_clist_get_type
 
 extern __typeof (btk_clist_get_vadjustment) IA__btk_clist_get_vadjustment __attribute((visibility("hidden")));
@@ -2088,7 +2088,7 @@ extern __typeof (btk_color_button_get_color) IA__btk_color_button_get_color __at
 extern __typeof (btk_color_button_get_title) IA__btk_color_button_get_title __attribute((visibility("hidden")));
 #define btk_color_button_get_title IA__btk_color_button_get_title
 
-extern __typeof (btk_color_button_get_type) IA__btk_color_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_color_button_get_type) IA__btk_color_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_color_button_get_type IA__btk_color_button_get_type
 
 extern __typeof (btk_color_button_get_use_alpha) IA__btk_color_button_get_use_alpha __attribute((visibility("hidden")));
@@ -2134,7 +2134,7 @@ extern __typeof (btk_color_selection_get_previous_alpha) IA__btk_color_selection
 extern __typeof (btk_color_selection_get_previous_color) IA__btk_color_selection_get_previous_color __attribute((visibility("hidden")));
 #define btk_color_selection_get_previous_color IA__btk_color_selection_get_previous_color
 
-extern __typeof (btk_color_selection_get_type) IA__btk_color_selection_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_color_selection_get_type) IA__btk_color_selection_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_color_selection_get_type IA__btk_color_selection_get_type
 
 extern __typeof (btk_color_selection_is_adjusting) IA__btk_color_selection_is_adjusting __attribute((visibility("hidden")));
@@ -2188,7 +2188,7 @@ extern __typeof (btk_color_selection_set_previous_color) IA__btk_color_selection
 #endif
 #if IN_HEADER(__BTK_COLOR_SELECTION_DIALOG_H__)
 #if IN_FILE(__BTK_COLOR_SELECTION_DIALOG_C__)
-extern __typeof (btk_color_selection_dialog_get_type) IA__btk_color_selection_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_color_selection_dialog_get_type) IA__btk_color_selection_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_color_selection_dialog_get_type IA__btk_color_selection_dialog_get_type
 
 extern __typeof (btk_color_selection_dialog_new) IA__btk_color_selection_dialog_new __attribute((visibility("hidden")));
@@ -2246,7 +2246,7 @@ extern __typeof (btk_combo_box_get_button_sensitivity) IA__btk_combo_box_get_but
 extern __typeof (btk_combo_box_get_title) IA__btk_combo_box_get_title __attribute((visibility("hidden")));
 #define btk_combo_box_get_title IA__btk_combo_box_get_title
 
-extern __typeof (btk_combo_box_get_type) IA__btk_combo_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_combo_box_get_type) IA__btk_combo_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_combo_box_get_type IA__btk_combo_box_get_type
 
 extern __typeof (btk_combo_box_get_wrap_width) IA__btk_combo_box_get_wrap_width __attribute((visibility("hidden")));
@@ -2328,7 +2328,7 @@ extern __typeof (btk_combo_box_text_append_text) IA__btk_combo_box_text_append_t
 extern __typeof (btk_combo_box_text_get_active_text) IA__btk_combo_box_text_get_active_text __attribute((visibility("hidden")));
 #define btk_combo_box_text_get_active_text IA__btk_combo_box_text_get_active_text
 
-extern __typeof (btk_combo_box_text_get_type) IA__btk_combo_box_text_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_combo_box_text_get_type) IA__btk_combo_box_text_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_combo_box_text_get_type IA__btk_combo_box_text_get_type
 
 extern __typeof (btk_combo_box_text_insert_text) IA__btk_combo_box_text_insert_text __attribute((visibility("hidden")));
@@ -2354,7 +2354,7 @@ extern __typeof (btk_combo_box_text_remove) IA__btk_combo_box_text_remove __attr
 extern __typeof (btk_combo_box_entry_get_text_column) IA__btk_combo_box_entry_get_text_column __attribute((visibility("hidden")));
 #define btk_combo_box_entry_get_text_column IA__btk_combo_box_entry_get_text_column
 
-extern __typeof (btk_combo_box_entry_get_type) IA__btk_combo_box_entry_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_combo_box_entry_get_type) IA__btk_combo_box_entry_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_combo_box_entry_get_type IA__btk_combo_box_entry_get_type
 
 extern __typeof (btk_combo_box_entry_new) IA__btk_combo_box_entry_new __attribute((visibility("hidden")));
@@ -2378,7 +2378,7 @@ extern __typeof (btk_combo_box_entry_set_text_column) IA__btk_combo_box_entry_se
 extern __typeof (btk_combo_disable_activate) IA__btk_combo_disable_activate __attribute((visibility("hidden")));
 #define btk_combo_disable_activate IA__btk_combo_disable_activate
 
-extern __typeof (btk_combo_get_type) IA__btk_combo_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_combo_get_type) IA__btk_combo_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_combo_get_type IA__btk_combo_get_type
 
 extern __typeof (btk_combo_new) IA__btk_combo_new __attribute((visibility("hidden")));
@@ -2410,13 +2410,13 @@ extern __typeof (btk_combo_set_value_in_list) IA__btk_combo_set_value_in_list __
 extern __typeof (btk_container_add) IA__btk_container_add __attribute((visibility("hidden")));
 #define btk_container_add IA__btk_container_add
 
-extern __typeof (btk_container_add_with_properties) IA__btk_container_add_with_properties __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_container_add_with_properties) IA__btk_container_add_with_properties __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_container_add_with_properties IA__btk_container_add_with_properties
 
 extern __typeof (btk_container_check_resize) IA__btk_container_check_resize __attribute((visibility("hidden")));
 #define btk_container_check_resize IA__btk_container_check_resize
 
-extern __typeof (btk_container_child_get) IA__btk_container_child_get __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_container_child_get) IA__btk_container_child_get __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_container_child_get IA__btk_container_child_get
 
 extern __typeof (btk_container_child_get_property) IA__btk_container_child_get_property __attribute((visibility("hidden")));
@@ -2425,7 +2425,7 @@ extern __typeof (btk_container_child_get_property) IA__btk_container_child_get_p
 extern __typeof (btk_container_child_get_valist) IA__btk_container_child_get_valist __attribute((visibility("hidden")));
 #define btk_container_child_get_valist IA__btk_container_child_get_valist
 
-extern __typeof (btk_container_child_set) IA__btk_container_child_set __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_container_child_set) IA__btk_container_child_set __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_container_child_set IA__btk_container_child_set
 
 extern __typeof (btk_container_child_set_property) IA__btk_container_child_set_property __attribute((visibility("hidden")));
@@ -2478,7 +2478,7 @@ extern __typeof (btk_container_get_focus_vadjustment) IA__btk_container_get_focu
 extern __typeof (btk_container_get_resize_mode) IA__btk_container_get_resize_mode __attribute((visibility("hidden")));
 #define btk_container_get_resize_mode IA__btk_container_get_resize_mode
 
-extern __typeof (btk_container_get_type) IA__btk_container_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_container_get_type) IA__btk_container_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_container_get_type IA__btk_container_get_type
 
 extern __typeof (btk_container_propagate_expose) IA__btk_container_propagate_expose __attribute((visibility("hidden")));
@@ -2561,7 +2561,7 @@ extern __typeof (btk_ctree_find_node_ptr) IA__btk_ctree_find_node_ptr __attribut
 extern __typeof (btk_ctree_get_node_info) IA__btk_ctree_get_node_info __attribute((visibility("hidden")));
 #define btk_ctree_get_node_info IA__btk_ctree_get_node_info
 
-extern __typeof (btk_ctree_get_type) IA__btk_ctree_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_get_type) IA__btk_ctree_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_get_type IA__btk_ctree_get_type
 
 extern __typeof (btk_ctree_insert_gnode) IA__btk_ctree_insert_gnode __attribute((visibility("hidden")));
@@ -2615,7 +2615,7 @@ extern __typeof (btk_ctree_node_get_selectable) IA__btk_ctree_node_get_selectabl
 extern __typeof (btk_ctree_node_get_text) IA__btk_ctree_node_get_text __attribute((visibility("hidden")));
 #define btk_ctree_node_get_text IA__btk_ctree_node_get_text
 
-extern __typeof (btk_ctree_node_get_type) IA__btk_ctree_node_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ctree_node_get_type) IA__btk_ctree_node_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ctree_node_get_type IA__btk_ctree_node_get_type
 
 extern __typeof (btk_ctree_node_is_visible) IA__btk_ctree_node_is_visible __attribute((visibility("hidden")));
@@ -2729,7 +2729,7 @@ extern __typeof (btk_ctree_unselect_recursive) IA__btk_ctree_unselect_recursive 
 #if IN_HEADER(__BTK_CURVE_H__)
 #if IN_FILE(__BTK_CURVE_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-extern __typeof (btk_curve_get_type) IA__btk_curve_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_curve_get_type) IA__btk_curve_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_curve_get_type IA__btk_curve_get_type
 
 extern __typeof (btk_curve_get_vector) IA__btk_curve_get_vector __attribute((visibility("hidden")));
@@ -2780,7 +2780,7 @@ extern __typeof (btk_dialog_add_action_widget) IA__btk_dialog_add_action_widget 
 extern __typeof (btk_dialog_add_button) IA__btk_dialog_add_button __attribute((visibility("hidden")));
 #define btk_dialog_add_button IA__btk_dialog_add_button
 
-extern __typeof (btk_dialog_add_buttons) IA__btk_dialog_add_buttons __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_dialog_add_buttons) IA__btk_dialog_add_buttons __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_dialog_add_buttons IA__btk_dialog_add_buttons
 
 extern __typeof (btk_dialog_get_action_area) IA__btk_dialog_get_action_area __attribute((visibility("hidden")));
@@ -2795,7 +2795,7 @@ extern __typeof (btk_dialog_get_widget_for_response) IA__btk_dialog_get_widget_f
 extern __typeof (btk_dialog_get_response_for_widget) IA__btk_dialog_get_response_for_widget __attribute((visibility("hidden")));
 #define btk_dialog_get_response_for_widget IA__btk_dialog_get_response_for_widget
 
-extern __typeof (btk_dialog_get_type) IA__btk_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_dialog_get_type) IA__btk_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_dialog_get_type IA__btk_dialog_get_type
 
 extern __typeof (btk_dialog_new) IA__btk_dialog_new __attribute((visibility("hidden")));
@@ -2951,7 +2951,7 @@ extern __typeof (btk_drag_unhighlight) IA__btk_drag_unhighlight __attribute((vis
 #endif
 #if IN_HEADER(__BTK_STATUS_ICON_H__)
 #if IN_FILE(__BTK_STATUS_ICON_C__)
-extern __typeof (btk_status_icon_get_type) IA__btk_status_icon_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_status_icon_get_type) IA__btk_status_icon_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_status_icon_get_type IA__btk_status_icon_get_type
 
 extern __typeof (btk_status_icon_new) IA__btk_status_icon_new __attribute((visibility("hidden")));
@@ -3216,7 +3216,7 @@ extern __typeof (btk_paint_tab) IA__btk_paint_tab __attribute((visibility("hidde
 extern __typeof (btk_paint_vline) IA__btk_paint_vline __attribute((visibility("hidden")));
 #define btk_paint_vline IA__btk_paint_vline
 
-extern __typeof (btk_border_new) IA__btk_border_new __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_border_new) IA__btk_border_new __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_border_new IA__btk_border_new
 
 extern __typeof (btk_border_copy) IA__btk_border_copy __attribute((visibility("hidden")));
@@ -3225,7 +3225,7 @@ extern __typeof (btk_border_copy) IA__btk_border_copy __attribute((visibility("h
 extern __typeof (btk_border_free) IA__btk_border_free __attribute((visibility("hidden")));
 #define btk_border_free IA__btk_border_free
 
-extern __typeof (btk_border_get_type) IA__btk_border_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_border_get_type) IA__btk_border_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_border_get_type IA__btk_border_get_type
 
 extern __typeof (btk_style_apply_default_background) IA__btk_style_apply_default_background __attribute((visibility("hidden")));
@@ -3240,7 +3240,7 @@ extern __typeof (btk_style_copy) IA__btk_style_copy __attribute((visibility("hid
 extern __typeof (btk_style_detach) IA__btk_style_detach __attribute((visibility("hidden")));
 #define btk_style_detach IA__btk_style_detach
 
-extern __typeof (btk_style_get_type) IA__btk_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_style_get_type) IA__btk_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_style_get_type IA__btk_style_get_type
 
 extern __typeof (btk_style_lookup_icon_set) IA__btk_style_lookup_icon_set __attribute((visibility("hidden")));
@@ -3274,7 +3274,7 @@ extern __typeof (btk_style_get) IA__btk_style_get __attribute((visibility("hidde
 #endif
 #if IN_HEADER(__BTK_DRAWING_AREA_H__)
 #if IN_FILE(__BTK_DRAWING_AREA_C__)
-extern __typeof (btk_drawing_area_get_type) IA__btk_drawing_area_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_drawing_area_get_type) IA__btk_drawing_area_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_drawing_area_get_type IA__btk_drawing_area_get_type
 
 extern __typeof (btk_drawing_area_new) IA__btk_drawing_area_new __attribute((visibility("hidden")));
@@ -3313,7 +3313,7 @@ extern __typeof (btk_editable_get_position) IA__btk_editable_get_position __attr
 extern __typeof (btk_editable_get_selection_bounds) IA__btk_editable_get_selection_bounds __attribute((visibility("hidden")));
 #define btk_editable_get_selection_bounds IA__btk_editable_get_selection_bounds
 
-extern __typeof (btk_editable_get_type) IA__btk_editable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_editable_get_type) IA__btk_editable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_editable_get_type IA__btk_editable_get_type
 
 extern __typeof (btk_editable_insert_text) IA__btk_editable_insert_text __attribute((visibility("hidden")));
@@ -3419,7 +3419,7 @@ extern __typeof (btk_entry_get_text) IA__btk_entry_get_text __attribute((visibil
 extern __typeof (btk_entry_get_text_length) IA__btk_entry_get_text_length __attribute((visibility("hidden")));
 #define btk_entry_get_text_length IA__btk_entry_get_text_length
 
-extern __typeof (btk_entry_get_type) IA__btk_entry_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_entry_get_type) IA__btk_entry_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_entry_get_type IA__btk_entry_get_type
 
 extern __typeof (btk_entry_get_visibility) IA__btk_entry_get_visibility __attribute((visibility("hidden")));
@@ -3587,7 +3587,7 @@ extern __typeof (btk_entry_completion_get_popup_single_match) IA__btk_entry_comp
 extern __typeof (btk_entry_completion_get_text_column) IA__btk_entry_completion_get_text_column __attribute((visibility("hidden")));
 #define btk_entry_completion_get_text_column IA__btk_entry_completion_get_text_column
 
-extern __typeof (btk_entry_completion_get_type) IA__btk_entry_completion_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_entry_completion_get_type) IA__btk_entry_completion_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_entry_completion_get_type IA__btk_entry_completion_get_type
 
 extern __typeof (btk_entry_completion_insert_action_markup) IA__btk_entry_completion_insert_action_markup __attribute((visibility("hidden")));
@@ -3633,7 +3633,7 @@ extern __typeof (btk_entry_completion_set_text_column) IA__btk_entry_completion_
 #endif
 #if IN_HEADER(__BTK_ENTRY_BUFFER_H__)
 #if IN_FILE(__BTK_ENTRY_BUFFER_C__)
-extern __typeof (btk_entry_buffer_get_type) IA__btk_entry_buffer_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_entry_buffer_get_type) IA__btk_entry_buffer_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_entry_buffer_get_type IA__btk_entry_buffer_get_type
 
 extern __typeof (btk_entry_buffer_new) IA__btk_entry_buffer_new __attribute((visibility("hidden")));
@@ -3676,7 +3676,7 @@ extern __typeof (btk_entry_buffer_emit_deleted_text) IA__btk_entry_buffer_emit_d
 extern __typeof (btk_event_box_get_above_child) IA__btk_event_box_get_above_child __attribute((visibility("hidden")));
 #define btk_event_box_get_above_child IA__btk_event_box_get_above_child
 
-extern __typeof (btk_event_box_get_type) IA__btk_event_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_event_box_get_type) IA__btk_event_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_event_box_get_type IA__btk_event_box_get_type
 
 extern __typeof (btk_event_box_get_visible_window) IA__btk_event_box_get_visible_window __attribute((visibility("hidden")));
@@ -3710,7 +3710,7 @@ extern __typeof (btk_expander_get_label_widget) IA__btk_expander_get_label_widge
 extern __typeof (btk_expander_get_spacing) IA__btk_expander_get_spacing __attribute((visibility("hidden")));
 #define btk_expander_get_spacing IA__btk_expander_get_spacing
 
-extern __typeof (btk_expander_get_type) IA__btk_expander_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_expander_get_type) IA__btk_expander_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_expander_get_type IA__btk_expander_get_type
 
 extern __typeof (btk_expander_get_use_markup) IA__btk_expander_get_use_markup __attribute((visibility("hidden")));
@@ -3863,7 +3863,7 @@ extern __typeof (btk_file_chooser_set_create_folders) IA__btk_file_chooser_set_c
 extern __typeof (btk_file_chooser_get_create_folders) IA__btk_file_chooser_get_create_folders __attribute((visibility("hidden")));
 #define btk_file_chooser_get_create_folders IA__btk_file_chooser_get_create_folders
 
-extern __typeof (btk_file_chooser_get_type) IA__btk_file_chooser_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_get_type) IA__btk_file_chooser_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_get_type IA__btk_file_chooser_get_type
 
 extern __typeof (btk_file_chooser_get_uri) IA__btk_file_chooser_get_uri __attribute((visibility("hidden")));
@@ -4011,7 +4011,7 @@ extern __typeof (btk_file_chooser_unselect_uri) IA__btk_file_chooser_unselect_ur
 #endif
 #if IN_HEADER(__BTK_FILE_CHOOSER_DIALOG_H__)
 #if IN_FILE(__BTK_FILE_CHOOSER_DIALOG_C__)
-extern __typeof (btk_file_chooser_dialog_get_type) IA__btk_file_chooser_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_dialog_get_type) IA__btk_file_chooser_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_dialog_get_type IA__btk_file_chooser_dialog_get_type
 
 extern __typeof (btk_file_chooser_dialog_new) IA__btk_file_chooser_dialog_new __attribute((visibility("hidden")));
@@ -4026,7 +4026,7 @@ extern __typeof (btk_file_chooser_dialog_new_with_backend) IA__btk_file_chooser_
 #endif
 #if IN_HEADER(__BTK_FILE_CHOOSER_WIDGET_H__)
 #if IN_FILE(__BTK_FILE_CHOOSER_WIDGET_C__)
-extern __typeof (btk_file_chooser_widget_get_type) IA__btk_file_chooser_widget_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_widget_get_type) IA__btk_file_chooser_widget_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_widget_get_type IA__btk_file_chooser_widget_get_type
 
 extern __typeof (btk_file_chooser_widget_new) IA__btk_file_chooser_widget_new __attribute((visibility("hidden")));
@@ -4044,7 +4044,7 @@ extern __typeof (btk_file_chooser_widget_new_with_backend) IA__btk_file_chooser_
 extern __typeof (btk_file_chooser_button_get_title) IA__btk_file_chooser_button_get_title __attribute((visibility("hidden")));
 #define btk_file_chooser_button_get_title IA__btk_file_chooser_button_get_title
 
-extern __typeof (btk_file_chooser_button_get_type) IA__btk_file_chooser_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_chooser_button_get_type) IA__btk_file_chooser_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_chooser_button_get_type IA__btk_file_chooser_button_get_type
 
 extern __typeof (btk_file_chooser_button_get_width_chars) IA__btk_file_chooser_button_get_width_chars __attribute((visibility("hidden")));
@@ -4098,7 +4098,7 @@ extern __typeof (btk_file_filter_get_name) IA__btk_file_filter_get_name __attrib
 extern __typeof (btk_file_filter_get_needed) IA__btk_file_filter_get_needed __attribute((visibility("hidden")));
 #define btk_file_filter_get_needed IA__btk_file_filter_get_needed
 
-extern __typeof (btk_file_filter_get_type) IA__btk_file_filter_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_filter_get_type) IA__btk_file_filter_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_filter_get_type IA__btk_file_filter_get_type
 
 extern __typeof (btk_file_filter_new) IA__btk_file_filter_new __attribute((visibility("hidden")));
@@ -4138,7 +4138,7 @@ extern __typeof (btk_file_selection_get_selections_utf8) IA__btk_file_selection_
 extern __typeof (btk_file_selection_get_select_multiple) IA__btk_file_selection_get_select_multiple __attribute((visibility("hidden")));
 #define btk_file_selection_get_select_multiple IA__btk_file_selection_get_select_multiple
 
-extern __typeof (btk_file_selection_get_type) IA__btk_file_selection_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_file_selection_get_type) IA__btk_file_selection_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_file_selection_get_type IA__btk_file_selection_get_type
 
 extern __typeof (btk_file_selection_hide_fileop_buttons) IA__btk_file_selection_hide_fileop_buttons __attribute((visibility("hidden")));
@@ -4168,7 +4168,7 @@ extern __typeof (btk_file_selection_show_fileop_buttons) IA__btk_file_selection_
 #endif
 #if IN_HEADER(__BTK_FIXED_H__)
 #if IN_FILE(__BTK_FIXED_C__)
-extern __typeof (btk_fixed_get_type) IA__btk_fixed_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_fixed_get_type) IA__btk_fixed_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_fixed_get_type IA__btk_fixed_get_type
 
 extern __typeof (btk_fixed_move) IA__btk_fixed_move __attribute((visibility("hidden")));
@@ -4204,7 +4204,7 @@ extern __typeof (btk_font_button_get_show_style) IA__btk_font_button_get_show_st
 extern __typeof (btk_font_button_get_title) IA__btk_font_button_get_title __attribute((visibility("hidden")));
 #define btk_font_button_get_title IA__btk_font_button_get_title
 
-extern __typeof (btk_font_button_get_type) IA__btk_font_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_font_button_get_type) IA__btk_font_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_font_button_get_type IA__btk_font_button_get_type
 
 extern __typeof (btk_font_button_get_use_font) IA__btk_font_button_get_use_font __attribute((visibility("hidden")));
@@ -4256,7 +4256,7 @@ extern __typeof (btk_font_selection_dialog_get_ok_button) IA__btk_font_selection
 extern __typeof (btk_font_selection_dialog_get_preview_text) IA__btk_font_selection_dialog_get_preview_text __attribute((visibility("hidden")));
 #define btk_font_selection_dialog_get_preview_text IA__btk_font_selection_dialog_get_preview_text
 
-extern __typeof (btk_font_selection_dialog_get_type) IA__btk_font_selection_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_font_selection_dialog_get_type) IA__btk_font_selection_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_font_selection_dialog_get_type IA__btk_font_selection_dialog_get_type
 
 extern __typeof (btk_font_selection_dialog_new) IA__btk_font_selection_dialog_new __attribute((visibility("hidden")));
@@ -4309,7 +4309,7 @@ extern __typeof (btk_font_selection_get_size_entry) IA__btk_font_selection_get_s
 extern __typeof (btk_font_selection_get_size_list) IA__btk_font_selection_get_size_list __attribute((visibility("hidden")));
 #define btk_font_selection_get_size_list IA__btk_font_selection_get_size_list
 
-extern __typeof (btk_font_selection_get_type) IA__btk_font_selection_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_font_selection_get_type) IA__btk_font_selection_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_font_selection_get_type IA__btk_font_selection_get_type
 
 extern __typeof (btk_font_selection_new) IA__btk_font_selection_new __attribute((visibility("hidden")));
@@ -4337,7 +4337,7 @@ extern __typeof (btk_frame_get_label_widget) IA__btk_frame_get_label_widget __at
 extern __typeof (btk_frame_get_shadow_type) IA__btk_frame_get_shadow_type __attribute((visibility("hidden")));
 #define btk_frame_get_shadow_type IA__btk_frame_get_shadow_type
 
-extern __typeof (btk_frame_get_type) IA__btk_frame_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_frame_get_type) IA__btk_frame_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_frame_get_type IA__btk_frame_get_type
 
 extern __typeof (btk_frame_new) IA__btk_frame_new __attribute((visibility("hidden")));
@@ -4360,7 +4360,7 @@ extern __typeof (btk_frame_set_shadow_type) IA__btk_frame_set_shadow_type __attr
 #if IN_HEADER(__BTK_GAMMA_CURVE_H__)
 #if IN_FILE(__BTK_GAMMA_CURVE_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-extern __typeof (btk_gamma_curve_get_type) IA__btk_gamma_curve_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_gamma_curve_get_type) IA__btk_gamma_curve_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_gamma_curve_get_type IA__btk_gamma_curve_get_type
 
 extern __typeof (btk_gamma_curve_new) IA__btk_gamma_curve_new __attribute((visibility("hidden")));
@@ -4393,7 +4393,7 @@ extern __typeof (btk_handle_box_get_snap_edge) IA__btk_handle_box_get_snap_edge 
 extern __typeof (btk_handle_box_get_child_detached) IA__btk_handle_box_get_child_detached __attribute((visibility("hidden")));
 #define btk_handle_box_get_child_detached IA__btk_handle_box_get_child_detached
 
-extern __typeof (btk_handle_box_get_type) IA__btk_handle_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_handle_box_get_type) IA__btk_handle_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_handle_box_get_type IA__btk_handle_box_get_type
 
 extern __typeof (btk_handle_box_new) IA__btk_handle_box_new __attribute((visibility("hidden")));
@@ -4412,7 +4412,7 @@ extern __typeof (btk_handle_box_set_snap_edge) IA__btk_handle_box_set_snap_edge 
 #endif
 #if IN_HEADER(__BTK_HBOX_H__)
 #if IN_FILE(__BTK_HBOX_C__)
-extern __typeof (btk_hbox_get_type) IA__btk_hbox_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hbox_get_type) IA__btk_hbox_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hbox_get_type IA__btk_hbox_get_type
 
 extern __typeof (btk_hbox_new) IA__btk_hbox_new __attribute((visibility("hidden")));
@@ -4425,7 +4425,7 @@ extern __typeof (btk_hbox_new) IA__btk_hbox_new __attribute((visibility("hidden"
 extern __typeof (btk_hbutton_box_new) IA__btk_hbutton_box_new __attribute((visibility("hidden")));
 #define btk_hbutton_box_new IA__btk_hbutton_box_new
 
-extern __typeof (btk_hbutton_box_get_type) IA__btk_hbutton_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hbutton_box_get_type) IA__btk_hbutton_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hbutton_box_get_type IA__btk_hbutton_box_get_type
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -4446,7 +4446,7 @@ extern __typeof (btk_hbutton_box_set_spacing_default) IA__btk_hbutton_box_set_sp
 #endif
 #if IN_HEADER(__BTK_HPANED_H__)
 #if IN_FILE(__BTK_HPANED_C__)
-extern __typeof (btk_hpaned_get_type) IA__btk_hpaned_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hpaned_get_type) IA__btk_hpaned_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hpaned_get_type IA__btk_hpaned_get_type
 
 extern __typeof (btk_hpaned_new) IA__btk_hpaned_new __attribute((visibility("hidden")));
@@ -4457,7 +4457,7 @@ extern __typeof (btk_hpaned_new) IA__btk_hpaned_new __attribute((visibility("hid
 #if IN_HEADER(__BTK_HRULER_H__)
 #if IN_FILE(__BTK_HRULER_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-extern __typeof (btk_hruler_get_type) IA__btk_hruler_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hruler_get_type) IA__btk_hruler_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hruler_get_type IA__btk_hruler_get_type
 
 extern __typeof (btk_hruler_new) IA__btk_hruler_new __attribute((visibility("hidden")));
@@ -4468,7 +4468,7 @@ extern __typeof (btk_hruler_new) IA__btk_hruler_new __attribute((visibility("hid
 #endif
 #if IN_HEADER(__BTK_HSCALE_H__)
 #if IN_FILE(__BTK_HSCALE_C__)
-extern __typeof (btk_hscale_get_type) IA__btk_hscale_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hscale_get_type) IA__btk_hscale_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hscale_get_type IA__btk_hscale_get_type
 
 extern __typeof (btk_hscale_new) IA__btk_hscale_new __attribute((visibility("hidden")));
@@ -4481,7 +4481,7 @@ extern __typeof (btk_hscale_new_with_range) IA__btk_hscale_new_with_range __attr
 #endif
 #if IN_HEADER(__BTK_HSCROLLBAR_H__)
 #if IN_FILE(__BTK_HSCROLLBAR_C__)
-extern __typeof (btk_hscrollbar_get_type) IA__btk_hscrollbar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hscrollbar_get_type) IA__btk_hscrollbar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hscrollbar_get_type IA__btk_hscrollbar_get_type
 
 extern __typeof (btk_hscrollbar_new) IA__btk_hscrollbar_new __attribute((visibility("hidden")));
@@ -4491,7 +4491,7 @@ extern __typeof (btk_hscrollbar_new) IA__btk_hscrollbar_new __attribute((visibil
 #endif
 #if IN_HEADER(__BTK_HSEPARATOR_H__)
 #if IN_FILE(__BTK_HSEPARATOR_C__)
-extern __typeof (btk_hseparator_get_type) IA__btk_hseparator_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hseparator_get_type) IA__btk_hseparator_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hseparator_get_type IA__btk_hseparator_get_type
 
 extern __typeof (btk_hseparator_new) IA__btk_hseparator_new __attribute((visibility("hidden")));
@@ -4507,7 +4507,7 @@ extern __typeof (btk_hsv_get_color) IA__btk_hsv_get_color __attribute((visibilit
 extern __typeof (btk_hsv_get_metrics) IA__btk_hsv_get_metrics __attribute((visibility("hidden")));
 #define btk_hsv_get_metrics IA__btk_hsv_get_metrics
 
-extern __typeof (btk_hsv_get_type) IA__btk_hsv_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_hsv_get_type) IA__btk_hsv_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_hsv_get_type IA__btk_hsv_get_type
 
 extern __typeof (btk_hsv_is_adjusting) IA__btk_hsv_is_adjusting __attribute((visibility("hidden")));
@@ -4538,7 +4538,7 @@ extern __typeof (btk_icon_factory_add) IA__btk_icon_factory_add __attribute((vis
 extern __typeof (btk_icon_factory_add_default) IA__btk_icon_factory_add_default __attribute((visibility("hidden")));
 #define btk_icon_factory_add_default IA__btk_icon_factory_add_default
 
-extern __typeof (btk_icon_factory_get_type) IA__btk_icon_factory_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_factory_get_type) IA__btk_icon_factory_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_factory_get_type IA__btk_icon_factory_get_type
 
 extern __typeof (btk_icon_factory_lookup) IA__btk_icon_factory_lookup __attribute((visibility("hidden")));
@@ -4580,7 +4580,7 @@ extern __typeof (btk_icon_set_copy) IA__btk_icon_set_copy __attribute((visibilit
 extern __typeof (btk_icon_set_get_sizes) IA__btk_icon_set_get_sizes __attribute((visibility("hidden")));
 #define btk_icon_set_get_sizes IA__btk_icon_set_get_sizes
 
-extern __typeof (btk_icon_set_get_type) IA__btk_icon_set_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_set_get_type) IA__btk_icon_set_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_set_get_type IA__btk_icon_set_get_type
 
 extern __typeof (btk_icon_set_new) IA__btk_icon_set_new __attribute((visibility("hidden")));
@@ -4638,7 +4638,7 @@ extern __typeof (btk_icon_source_get_state) IA__btk_icon_source_get_state __attr
 extern __typeof (btk_icon_source_get_state_wildcarded) IA__btk_icon_source_get_state_wildcarded __attribute((visibility("hidden")));
 #define btk_icon_source_get_state_wildcarded IA__btk_icon_source_get_state_wildcarded
 
-extern __typeof (btk_icon_source_get_type) IA__btk_icon_source_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_source_get_type) IA__btk_icon_source_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_source_get_type IA__btk_icon_source_get_type
 
 extern __typeof (btk_icon_source_new) IA__btk_icon_source_new __attribute((visibility("hidden")));
@@ -4716,7 +4716,7 @@ extern __typeof (btk_icon_info_get_filename_utf8) IA__btk_icon_info_get_filename
 #define btk_icon_info_get_filename_utf8 IA__btk_icon_info_get_filename_utf8
 
 #endif
-extern __typeof (btk_icon_info_get_type) IA__btk_icon_info_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_info_get_type) IA__btk_icon_info_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_info_get_type IA__btk_icon_info_get_type
 
 extern __typeof (btk_icon_info_load_icon) IA__btk_icon_info_load_icon __attribute((visibility("hidden")));
@@ -4763,7 +4763,7 @@ extern __typeof (btk_icon_theme_get_search_path_utf8) IA__btk_icon_theme_get_sea
 #define btk_icon_theme_get_search_path_utf8 IA__btk_icon_theme_get_search_path_utf8
 
 #endif
-extern __typeof (btk_icon_theme_get_type) IA__btk_icon_theme_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_theme_get_type) IA__btk_icon_theme_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_theme_get_type IA__btk_icon_theme_get_type
 
 extern __typeof (btk_icon_theme_has_icon) IA__btk_icon_theme_has_icon __attribute((visibility("hidden")));
@@ -4880,7 +4880,7 @@ extern __typeof (btk_icon_view_get_spacing) IA__btk_icon_view_get_spacing __attr
 extern __typeof (btk_icon_view_get_text_column) IA__btk_icon_view_get_text_column __attribute((visibility("hidden")));
 #define btk_icon_view_get_text_column IA__btk_icon_view_get_text_column
 
-extern __typeof (btk_icon_view_get_type) IA__btk_icon_view_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_icon_view_get_type) IA__btk_icon_view_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_icon_view_get_type IA__btk_icon_view_get_type
 
 extern __typeof (btk_icon_view_get_visible_range) IA__btk_icon_view_get_visible_range __attribute((visibility("hidden")));
@@ -5057,7 +5057,7 @@ extern __typeof (btk_image_get_gicon) IA__btk_image_get_gicon __attribute((visib
 extern __typeof (btk_image_get_storage_type) IA__btk_image_get_storage_type __attribute((visibility("hidden")));
 #define btk_image_get_storage_type IA__btk_image_get_storage_type
 
-extern __typeof (btk_image_get_type) IA__btk_image_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_image_get_type) IA__btk_image_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_image_get_type IA__btk_image_get_type
 
 extern __typeof (btk_image_new) IA__btk_image_new __attribute((visibility("hidden")));
@@ -5144,7 +5144,7 @@ extern __typeof (btk_image_menu_item_get_always_show_image) IA__btk_image_menu_i
 extern __typeof (btk_image_menu_item_get_image) IA__btk_image_menu_item_get_image __attribute((visibility("hidden")));
 #define btk_image_menu_item_get_image IA__btk_image_menu_item_get_image
 
-extern __typeof (btk_image_menu_item_get_type) IA__btk_image_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_image_menu_item_get_type) IA__btk_image_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_image_menu_item_get_type IA__btk_image_menu_item_get_type
 
 extern __typeof (btk_image_menu_item_get_use_stock) IA__btk_image_menu_item_get_use_stock __attribute((visibility("hidden")));
@@ -5196,7 +5196,7 @@ extern __typeof (btk_im_context_get_preedit_string) IA__btk_im_context_get_preed
 extern __typeof (btk_im_context_get_surrounding) IA__btk_im_context_get_surrounding __attribute((visibility("hidden")));
 #define btk_im_context_get_surrounding IA__btk_im_context_get_surrounding
 
-extern __typeof (btk_im_context_get_type) IA__btk_im_context_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_im_context_get_type) IA__btk_im_context_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_im_context_get_type IA__btk_im_context_get_type
 
 extern __typeof (btk_im_context_reset) IA__btk_im_context_reset __attribute((visibility("hidden")));
@@ -5221,7 +5221,7 @@ extern __typeof (btk_im_context_set_use_preedit) IA__btk_im_context_set_use_pree
 extern __typeof (btk_im_context_simple_add_table) IA__btk_im_context_simple_add_table __attribute((visibility("hidden")));
 #define btk_im_context_simple_add_table IA__btk_im_context_simple_add_table
 
-extern __typeof (btk_im_context_simple_get_type) IA__btk_im_context_simple_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_im_context_simple_get_type) IA__btk_im_context_simple_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_im_context_simple_get_type IA__btk_im_context_simple_get_type
 
 extern __typeof (btk_im_context_simple_new) IA__btk_im_context_simple_new __attribute((visibility("hidden")));
@@ -5240,7 +5240,7 @@ extern __typeof (btk_im_multicontext_get_context_id) IA__btk_im_multicontext_get
 extern __typeof (btk_im_multicontext_set_context_id) IA__btk_im_multicontext_set_context_id __attribute((visibility("hidden")));
 #define btk_im_multicontext_set_context_id IA__btk_im_multicontext_set_context_id
 
-extern __typeof (btk_im_multicontext_get_type) IA__btk_im_multicontext_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_im_multicontext_get_type) IA__btk_im_multicontext_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_im_multicontext_get_type IA__btk_im_multicontext_get_type
 
 extern __typeof (btk_im_multicontext_new) IA__btk_im_multicontext_new __attribute((visibility("hidden")));
@@ -5253,7 +5253,7 @@ extern __typeof (btk_im_multicontext_new) IA__btk_im_multicontext_new __attribut
 extern __typeof (btk_invisible_get_screen) IA__btk_invisible_get_screen __attribute((visibility("hidden")));
 #define btk_invisible_get_screen IA__btk_invisible_get_screen
 
-extern __typeof (btk_invisible_get_type) IA__btk_invisible_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_invisible_get_type) IA__btk_invisible_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_invisible_get_type IA__btk_invisible_get_type
 
 extern __typeof (btk_invisible_new) IA__btk_invisible_new __attribute((visibility("hidden")));
@@ -5269,7 +5269,7 @@ extern __typeof (btk_invisible_set_screen) IA__btk_invisible_set_screen __attrib
 #endif
 #if IN_HEADER(__BTK_ITEM_H__)
 #if IN_FILE(__BTK_ITEM_C__)
-extern __typeof (btk_item_get_type) IA__btk_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_item_get_type) IA__btk_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_item_get_type IA__btk_item_get_type
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -5330,7 +5330,7 @@ extern __typeof (btk_item_factory_get_item) IA__btk_item_factory_get_item __attr
 extern __typeof (btk_item_factory_get_item_by_action) IA__btk_item_factory_get_item_by_action __attribute((visibility("hidden")));
 #define btk_item_factory_get_item_by_action IA__btk_item_factory_get_item_by_action
 
-extern __typeof (btk_item_factory_get_type) IA__btk_item_factory_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_item_factory_get_type) IA__btk_item_factory_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_item_factory_get_type IA__btk_item_factory_get_type
 
 extern __typeof (btk_item_factory_get_widget) IA__btk_item_factory_get_widget __attribute((visibility("hidden")));
@@ -5421,7 +5421,7 @@ extern __typeof (btk_label_get_single_line_mode) IA__btk_label_get_single_line_m
 extern __typeof (btk_label_get_text) IA__btk_label_get_text __attribute((visibility("hidden")));
 #define btk_label_get_text IA__btk_label_get_text
 
-extern __typeof (btk_label_get_type) IA__btk_label_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_label_get_type) IA__btk_label_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_label_get_type IA__btk_label_get_type
 
 extern __typeof (btk_label_get_use_markup) IA__btk_label_get_use_markup __attribute((visibility("hidden")));
@@ -5521,7 +5521,7 @@ extern __typeof (btk_layout_get_hadjustment) IA__btk_layout_get_hadjustment __at
 extern __typeof (btk_layout_get_size) IA__btk_layout_get_size __attribute((visibility("hidden")));
 #define btk_layout_get_size IA__btk_layout_get_size
 
-extern __typeof (btk_layout_get_type) IA__btk_layout_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_layout_get_type) IA__btk_layout_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_layout_get_type IA__btk_layout_get_type
 
 extern __typeof (btk_layout_get_vadjustment) IA__btk_layout_get_vadjustment __attribute((visibility("hidden")));
@@ -5557,7 +5557,7 @@ extern __typeof (btk_layout_thaw) IA__btk_layout_thaw __attribute((visibility("h
 #endif
 #if IN_HEADER(__BTK_LINK_BUTTON_H__)
 #if IN_FILE(__BTK_LINK_BUTTON_C__)
-extern __typeof (btk_link_button_get_type) IA__btk_link_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_link_button_get_type) IA__btk_link_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_link_button_get_type IA__btk_link_button_get_type
 
 extern __typeof (btk_link_button_new) IA__btk_link_button_new __attribute((visibility("hidden")));
@@ -5606,7 +5606,7 @@ extern __typeof (btk_list_end_selection) IA__btk_list_end_selection __attribute(
 extern __typeof (btk_list_extend_selection) IA__btk_list_extend_selection __attribute((visibility("hidden")));
 #define btk_list_extend_selection IA__btk_list_extend_selection
 
-extern __typeof (btk_list_get_type) IA__btk_list_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_list_get_type) IA__btk_list_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_list_get_type IA__btk_list_get_type
 
 extern __typeof (btk_list_insert_items) IA__btk_list_insert_items __attribute((visibility("hidden")));
@@ -5675,7 +5675,7 @@ extern __typeof (btk_list_unselect_item) IA__btk_list_unselect_item __attribute(
 extern __typeof (btk_list_item_deselect) IA__btk_list_item_deselect __attribute((visibility("hidden")));
 #define btk_list_item_deselect IA__btk_list_item_deselect
 
-extern __typeof (btk_list_item_get_type) IA__btk_list_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_list_item_get_type) IA__btk_list_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_list_item_get_type IA__btk_list_item_get_type
 
 extern __typeof (btk_list_item_new) IA__btk_list_item_new __attribute((visibility("hidden")));
@@ -5698,7 +5698,7 @@ extern __typeof (btk_list_store_append) IA__btk_list_store_append __attribute((v
 extern __typeof (btk_list_store_clear) IA__btk_list_store_clear __attribute((visibility("hidden")));
 #define btk_list_store_clear IA__btk_list_store_clear
 
-extern __typeof (btk_list_store_get_type) IA__btk_list_store_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_list_store_get_type) IA__btk_list_store_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_list_store_get_type IA__btk_list_store_get_type
 
 extern __typeof (btk_list_store_insert) IA__btk_list_store_insert __attribute((visibility("hidden")));
@@ -5812,10 +5812,10 @@ extern __typeof (btk_input_remove) IA__btk_input_remove __attribute((visibility(
 #define btk_input_remove IA__btk_input_remove
 
 #endif
-extern __typeof (btk_false) IA__btk_false __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_false) IA__btk_false __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_false IA__btk_false
 
-extern __typeof (btk_true) IA__btk_true __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_true) IA__btk_true __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_true IA__btk_true
 
 extern __typeof (btk_events_pending) IA__btk_events_pending __attribute((visibility("hidden")));
@@ -5914,7 +5914,7 @@ extern __typeof (btk_main_quit) IA__btk_main_quit __attribute((visibility("hidde
 #if IN_HEADER(__BTK_INPUTDIALOG_H__)
 #if IN_FILE(__BTK_INPUTDIALOG_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-extern __typeof (btk_input_dialog_get_type) IA__btk_input_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_input_dialog_get_type) IA__btk_input_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_input_dialog_get_type IA__btk_input_dialog_get_type
 
 extern __typeof (btk_input_dialog_new) IA__btk_input_dialog_new __attribute((visibility("hidden")));
@@ -6009,7 +6009,7 @@ extern __typeof (btk_marshal_VOID__UINT_STRING) IA__btk_marshal_VOID__UINT_STRIN
 #endif
 #if IN_HEADER(__BTK_MENU_BAR_H__)
 #if IN_FILE(__BTK_MENU_BAR_C__)
-extern __typeof (btk_menu_bar_get_type) IA__btk_menu_bar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_bar_get_type) IA__btk_menu_bar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_bar_get_type IA__btk_menu_bar_get_type
 
 extern __typeof (btk_menu_bar_new) IA__btk_menu_bar_new __attribute((visibility("hidden")));
@@ -6067,7 +6067,7 @@ extern __typeof (btk_menu_get_tearoff_state) IA__btk_menu_get_tearoff_state __at
 extern __typeof (btk_menu_get_title) IA__btk_menu_get_title __attribute((visibility("hidden")));
 #define btk_menu_get_title IA__btk_menu_get_title
 
-extern __typeof (btk_menu_get_type) IA__btk_menu_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_get_type) IA__btk_menu_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_get_type IA__btk_menu_get_type
 
 extern __typeof (btk_menu_new) IA__btk_menu_new __attribute((visibility("hidden")));
@@ -6131,7 +6131,7 @@ extern __typeof (btk_menu_item_get_right_justified) IA__btk_menu_item_get_right_
 extern __typeof (btk_menu_item_get_submenu) IA__btk_menu_item_get_submenu __attribute((visibility("hidden")));
 #define btk_menu_item_get_submenu IA__btk_menu_item_get_submenu
 
-extern __typeof (btk_menu_item_get_type) IA__btk_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_item_get_type) IA__btk_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_item_get_type IA__btk_menu_item_get_type
 
 extern __typeof (btk_menu_item_get_use_underline) IA__btk_menu_item_get_use_underline __attribute((visibility("hidden")));
@@ -6194,7 +6194,7 @@ extern __typeof (btk_menu_shell_deactivate) IA__btk_menu_shell_deactivate __attr
 extern __typeof (btk_menu_shell_deselect) IA__btk_menu_shell_deselect __attribute((visibility("hidden")));
 #define btk_menu_shell_deselect IA__btk_menu_shell_deselect
 
-extern __typeof (btk_menu_shell_get_type) IA__btk_menu_shell_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_shell_get_type) IA__btk_menu_shell_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_shell_get_type IA__btk_menu_shell_get_type
 
 extern __typeof (btk_menu_shell_insert) IA__btk_menu_shell_insert __attribute((visibility("hidden")));
@@ -6222,7 +6222,7 @@ extern __typeof (btk_menu_shell_get_take_focus) IA__btk_menu_shell_get_take_focu
 extern __typeof (btk_menu_tool_button_get_menu) IA__btk_menu_tool_button_get_menu __attribute((visibility("hidden")));
 #define btk_menu_tool_button_get_menu IA__btk_menu_tool_button_get_menu
 
-extern __typeof (btk_menu_tool_button_get_type) IA__btk_menu_tool_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_menu_tool_button_get_type) IA__btk_menu_tool_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_menu_tool_button_get_type IA__btk_menu_tool_button_get_type
 
 extern __typeof (btk_menu_tool_button_new) IA__btk_menu_tool_button_new __attribute((visibility("hidden")));
@@ -6249,22 +6249,22 @@ extern __typeof (btk_menu_tool_button_set_menu) IA__btk_menu_tool_button_set_men
 #endif
 #if IN_HEADER(__BTK_MESSAGE_DIALOG_H__)
 #if IN_FILE(__BTK_MESSAGE_DIALOG_C__)
-extern __typeof (btk_message_dialog_format_secondary_markup) IA__btk_message_dialog_format_secondary_markup __attribute((visibility("hidden"))) G_GNUC_PRINTF(2,3);
+extern __typeof (btk_message_dialog_format_secondary_markup) IA__btk_message_dialog_format_secondary_markup __attribute((visibility("hidden"))) B_GNUC_PRINTF(2,3);
 #define btk_message_dialog_format_secondary_markup IA__btk_message_dialog_format_secondary_markup
 
-extern __typeof (btk_message_dialog_format_secondary_text) IA__btk_message_dialog_format_secondary_text __attribute((visibility("hidden"))) G_GNUC_PRINTF(2,3);
+extern __typeof (btk_message_dialog_format_secondary_text) IA__btk_message_dialog_format_secondary_text __attribute((visibility("hidden"))) B_GNUC_PRINTF(2,3);
 #define btk_message_dialog_format_secondary_text IA__btk_message_dialog_format_secondary_text
 
 extern __typeof (btk_message_dialog_get_message_area) IA__btk_message_dialog_get_message_area __attribute((visibility("hidden")));
 #define btk_message_dialog_get_message_area IA__btk_message_dialog_get_message_area
 
-extern __typeof (btk_message_dialog_get_type) IA__btk_message_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_message_dialog_get_type) IA__btk_message_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_message_dialog_get_type IA__btk_message_dialog_get_type
 
-extern __typeof (btk_message_dialog_new) IA__btk_message_dialog_new __attribute((visibility("hidden"))) G_GNUC_PRINTF(5,6);
+extern __typeof (btk_message_dialog_new) IA__btk_message_dialog_new __attribute((visibility("hidden"))) B_GNUC_PRINTF(5,6);
 #define btk_message_dialog_new IA__btk_message_dialog_new
 
-extern __typeof (btk_message_dialog_new_with_markup) IA__btk_message_dialog_new_with_markup __attribute((visibility("hidden"))) G_GNUC_PRINTF(5,6);
+extern __typeof (btk_message_dialog_new_with_markup) IA__btk_message_dialog_new_with_markup __attribute((visibility("hidden"))) B_GNUC_PRINTF(5,6);
 #define btk_message_dialog_new_with_markup IA__btk_message_dialog_new_with_markup
 
 extern __typeof (btk_message_dialog_set_markup) IA__btk_message_dialog_set_markup __attribute((visibility("hidden")));
@@ -6286,7 +6286,7 @@ extern __typeof (btk_misc_get_alignment) IA__btk_misc_get_alignment __attribute(
 extern __typeof (btk_misc_get_padding) IA__btk_misc_get_padding __attribute((visibility("hidden")));
 #define btk_misc_get_padding IA__btk_misc_get_padding
 
-extern __typeof (btk_misc_get_type) IA__btk_misc_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_misc_get_type) IA__btk_misc_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_misc_get_type IA__btk_misc_get_type
 
 extern __typeof (btk_misc_set_alignment) IA__btk_misc_set_alignment __attribute((visibility("hidden")));
@@ -6299,7 +6299,7 @@ extern __typeof (btk_misc_set_padding) IA__btk_misc_set_padding __attribute((vis
 #endif
 #if IN_HEADER(__BTK_MOUNT_OPERATION_H__)
 #if IN_FILE(__BTK_MOUNT_OPERATION_C__)
-extern __typeof (btk_mount_operation_get_type) IA__btk_mount_operation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_mount_operation_get_type) IA__btk_mount_operation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_mount_operation_get_type IA__btk_mount_operation_get_type
 
 extern __typeof (btk_mount_operation_new) IA__btk_mount_operation_new __attribute((visibility("hidden")));
@@ -6363,7 +6363,7 @@ extern __typeof (btk_notebook_get_tab_label_text) IA__btk_notebook_get_tab_label
 extern __typeof (btk_notebook_get_tab_pos) IA__btk_notebook_get_tab_pos __attribute((visibility("hidden")));
 #define btk_notebook_get_tab_pos IA__btk_notebook_get_tab_pos
 
-extern __typeof (btk_notebook_get_type) IA__btk_notebook_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_notebook_get_type) IA__btk_notebook_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_notebook_get_type IA__btk_notebook_get_type
 
 extern __typeof (btk_notebook_insert_page) IA__btk_notebook_insert_page __attribute((visibility("hidden")));
@@ -6508,10 +6508,10 @@ extern __typeof (btk_notebook_set_action_widget) IA__btk_notebook_set_action_wid
 extern __typeof (btk_object_add_arg_type) IA__btk_object_add_arg_type __attribute((visibility("hidden")));
 #define btk_object_add_arg_type IA__btk_object_add_arg_type
 
-extern __typeof (btk_object_get) IA__btk_object_get __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_object_get) IA__btk_object_get __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_object_get IA__btk_object_get
 
-extern __typeof (btk_object_set) IA__btk_object_set __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_object_set) IA__btk_object_set __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_object_set IA__btk_object_set
 
 extern __typeof (btk_object_get_data) IA__btk_object_get_data __attribute((visibility("hidden")));
@@ -6572,14 +6572,14 @@ extern __typeof (btk_object_sink) IA__btk_object_sink __attribute((visibility("h
 extern __typeof (btk_object_destroy) IA__btk_object_destroy __attribute((visibility("hidden")));
 #define btk_object_destroy IA__btk_object_destroy
 
-extern __typeof (btk_object_get_type) IA__btk_object_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_object_get_type) IA__btk_object_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_object_get_type IA__btk_object_get_type
 
 #endif
 #endif
 #if IN_HEADER(__BTK_OFFSCREEN_WINDOW_H__)
 #if IN_FILE(__BTK_OFFSCREEN_WINDOW_C__)
-extern __typeof (btk_offscreen_window_get_type) IA__btk_offscreen_window_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_offscreen_window_get_type) IA__btk_offscreen_window_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_offscreen_window_get_type IA__btk_offscreen_window_get_type
 
 extern __typeof (btk_offscreen_window_new) IA__btk_offscreen_window_new __attribute((visibility("hidden")));
@@ -6598,7 +6598,7 @@ extern __typeof (btk_offscreen_window_get_pixbuf) IA__btk_offscreen_window_get_p
 extern __typeof (btk_orientable_get_orientation) IA__btk_orientable_get_orientation __attribute((visibility("hidden")));
 #define btk_orientable_get_orientation IA__btk_orientable_get_orientation
 
-extern __typeof (btk_orientable_get_type) IA__btk_orientable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_orientable_get_type) IA__btk_orientable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_orientable_get_type IA__btk_orientable_get_type
 
 extern __typeof (btk_orientable_set_orientation) IA__btk_orientable_set_orientation __attribute((visibility("hidden")));
@@ -6614,7 +6614,7 @@ extern __typeof (btk_old_editable_changed) IA__btk_old_editable_changed __attrib
 extern __typeof (btk_old_editable_claim_selection) IA__btk_old_editable_claim_selection __attribute((visibility("hidden")));
 #define btk_old_editable_claim_selection IA__btk_old_editable_claim_selection
 
-extern __typeof (btk_old_editable_get_type) IA__btk_old_editable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_old_editable_get_type) IA__btk_old_editable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_old_editable_get_type IA__btk_old_editable_get_type
 
 #endif
@@ -6627,7 +6627,7 @@ extern __typeof (btk_option_menu_get_history) IA__btk_option_menu_get_history __
 extern __typeof (btk_option_menu_get_menu) IA__btk_option_menu_get_menu __attribute((visibility("hidden")));
 #define btk_option_menu_get_menu IA__btk_option_menu_get_menu
 
-extern __typeof (btk_option_menu_get_type) IA__btk_option_menu_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_option_menu_get_type) IA__btk_option_menu_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_option_menu_get_type IA__btk_option_menu_get_type
 
 extern __typeof (btk_option_menu_new) IA__btk_option_menu_new __attribute((visibility("hidden")));
@@ -6664,7 +6664,7 @@ extern __typeof (btk_paned_get_handle_window) IA__btk_paned_get_handle_window __
 extern __typeof (btk_paned_get_position) IA__btk_paned_get_position __attribute((visibility("hidden")));
 #define btk_paned_get_position IA__btk_paned_get_position
 
-extern __typeof (btk_paned_get_type) IA__btk_paned_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_paned_get_type) IA__btk_paned_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_paned_get_type IA__btk_paned_get_type
 
 extern __typeof (btk_paned_pack1) IA__btk_paned_pack1 __attribute((visibility("hidden")));
@@ -6685,7 +6685,7 @@ extern __typeof (btk_paned_compute_position) IA__btk_paned_compute_position __at
 #endif
 #if IN_HEADER(__BTK_PATH_BAR_H__)
 #if IN_FILE(__BTK_PATH_BAR_C__)
-extern __typeof (btk_path_bar_get_type) IA__btk_path_bar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_path_bar_get_type) IA__btk_path_bar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_path_bar_get_type IA__btk_path_bar_get_type
 
 #endif
@@ -6696,7 +6696,7 @@ extern __typeof (btk_path_bar_get_type) IA__btk_path_bar_get_type __attribute((v
 extern __typeof (btk_pixmap_get) IA__btk_pixmap_get __attribute((visibility("hidden")));
 #define btk_pixmap_get IA__btk_pixmap_get
 
-extern __typeof (btk_pixmap_get_type) IA__btk_pixmap_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_pixmap_get_type) IA__btk_pixmap_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_pixmap_get_type IA__btk_pixmap_get_type
 
 extern __typeof (btk_pixmap_new) IA__btk_pixmap_new __attribute((visibility("hidden")));
@@ -6728,7 +6728,7 @@ extern __typeof (btk_plug_get_embedded) IA__btk_plug_get_embedded __attribute((v
 extern __typeof (btk_plug_get_socket_window) IA__btk_plug_get_socket_window __attribute((visibility("hidden")));
 #define btk_plug_get_socket_window IA__btk_plug_get_socket_window
 
-extern __typeof (btk_plug_get_type) IA__btk_plug_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_plug_get_type) IA__btk_plug_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_plug_get_type IA__btk_plug_get_type
 
 extern __typeof (btk_plug_new) IA__btk_plug_new __attribute((visibility("hidden")));
@@ -6751,7 +6751,7 @@ extern __typeof (btk_preview_get_cmap) IA__btk_preview_get_cmap __attribute((vis
 extern __typeof (btk_preview_get_info) IA__btk_preview_get_info __attribute((visibility("hidden")));
 #define btk_preview_get_info IA__btk_preview_get_info
 
-extern __typeof (btk_preview_get_type) IA__btk_preview_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_preview_get_type) IA__btk_preview_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_preview_get_type IA__btk_preview_get_type
 
 extern __typeof (btk_preview_get_visual) IA__btk_preview_get_visual __attribute((visibility("hidden")));
@@ -6795,7 +6795,7 @@ extern __typeof (btk_preview_uninit) IA__btk_preview_uninit __attribute((visibil
 #endif
 #if IN_HEADER(__BTK_PAGE_SETUP_H__)
 #if IN_FILE(__BTK_PAGE_SETUP_C__)
-extern __typeof (btk_page_setup_get_type) IA__btk_page_setup_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_page_setup_get_type) IA__btk_page_setup_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_page_setup_get_type IA__btk_page_setup_get_type
 
 extern __typeof (btk_page_setup_new) IA__btk_page_setup_new __attribute((visibility("hidden")));
@@ -6878,7 +6878,7 @@ extern __typeof (btk_page_setup_get_page_height) IA__btk_page_setup_get_page_hei
 #if IN_HEADER(__BTK_PAGE_SETUP_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_PAGE_SETUP_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_page_setup_unix_dialog_get_type) IA__btk_page_setup_unix_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_page_setup_unix_dialog_get_type) IA__btk_page_setup_unix_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_page_setup_unix_dialog_get_type IA__btk_page_setup_unix_dialog_get_type
 
 extern __typeof (btk_page_setup_unix_dialog_new) IA__btk_page_setup_unix_dialog_new __attribute((visibility("hidden")));
@@ -6901,7 +6901,7 @@ extern __typeof (btk_page_setup_unix_dialog_get_print_settings) IA__btk_page_set
 #endif
 #if IN_HEADER(__BTK_PAPER_SIZE_H__)
 #if IN_FILE(__BTK_PAPER_SIZE_C__)
-extern __typeof (btk_paper_size_get_type) IA__btk_paper_size_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_paper_size_get_type) IA__btk_paper_size_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_paper_size_get_type IA__btk_paper_size_get_type
 
 extern __typeof (btk_paper_size_new) IA__btk_paper_size_new __attribute((visibility("hidden")));
@@ -6972,7 +6972,7 @@ extern __typeof (btk_paper_size_get_default) IA__btk_paper_size_get_default __at
 #if IN_HEADER(__BTK_CUSTOM_PAPER_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_CUSTOM_PAPER_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_custom_paper_unix_dialog_get_type) IA__btk_custom_paper_unix_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_custom_paper_unix_dialog_get_type) IA__btk_custom_paper_unix_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_custom_paper_unix_dialog_get_type IA__btk_custom_paper_unix_dialog_get_type
 
 #endif
@@ -6984,7 +6984,7 @@ extern __typeof (btk_custom_paper_unix_dialog_get_type) IA__btk_custom_paper_uni
 extern __typeof (btk_print_backend_error_quark) IA__btk_print_backend_error_quark __attribute((visibility("hidden")));
 #define btk_print_backend_error_quark IA__btk_print_backend_error_quark
 
-extern __typeof (btk_print_backend_get_type) IA__btk_print_backend_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_backend_get_type) IA__btk_print_backend_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_backend_get_type IA__btk_print_backend_get_type
 
 extern __typeof (btk_print_backend_add_printer) IA__btk_print_backend_add_printer __attribute((visibility("hidden")));
@@ -7022,7 +7022,7 @@ extern __typeof (btk_print_backend_set_password) IA__btk_print_backend_set_passw
 #endif
 #if IN_HEADER(__BTK_PRINT_CONTEXT_H__)
 #if IN_FILE(__BTK_PRINT_CONTEXT_C__)
-extern __typeof (btk_print_context_get_type) IA__btk_print_context_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_context_get_type) IA__btk_print_context_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_context_get_type IA__btk_print_context_get_type
 
 extern __typeof (btk_print_context_get_bairo_context) IA__btk_print_context_get_bairo_context __attribute((visibility("hidden")));
@@ -7063,7 +7063,7 @@ extern __typeof (btk_print_context_set_bairo_context) IA__btk_print_context_set_
 #if IN_HEADER(__BTK_PRINTER_H__)
 #if IN_FILE(__BTK_PRINTER_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_printer_get_type) IA__btk_printer_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_printer_get_type) IA__btk_printer_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_printer_get_type IA__btk_printer_get_type
 
 extern __typeof (btk_printer_get_backend) IA__btk_printer_get_backend __attribute((visibility("hidden")));
@@ -7120,7 +7120,7 @@ extern __typeof (btk_printer_get_hard_margins) IA__btk_printer_get_hard_margins 
 extern __typeof (btk_enumerate_printers) IA__btk_enumerate_printers __attribute((visibility("hidden")));
 #define btk_enumerate_printers IA__btk_enumerate_printers
 
-extern __typeof (btk_print_capabilities_get_type) IA__btk_print_capabilities_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_capabilities_get_type) IA__btk_print_capabilities_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_capabilities_get_type IA__btk_print_capabilities_get_type
 
 #endif
@@ -7231,7 +7231,7 @@ extern __typeof (btk_printer_option_get_activates_default) IA__btk_printer_optio
 #if IN_HEADER(__BTK_PRINTER_OPTION_SET_H__)
 #if IN_FILE(__BTK_PRINTER_OPTION_SET_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_printer_option_set_get_type) IA__btk_printer_option_set_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_printer_option_set_get_type) IA__btk_printer_option_set_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_printer_option_set_get_type IA__btk_printer_option_set_get_type
 
 extern __typeof (btk_printer_option_set_new) IA__btk_printer_option_set_new __attribute((visibility("hidden")));
@@ -7264,7 +7264,7 @@ extern __typeof (btk_printer_option_set_foreach_in_group) IA__btk_printer_option
 #if IN_HEADER(__BTK_PRINTER_OPTION_WIDGET_H__)
 #if IN_FILE(__BTK_PRINTER_OPTION_WIDGET_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_printer_option_widget_get_type) IA__btk_printer_option_widget_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_printer_option_widget_get_type) IA__btk_printer_option_widget_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_printer_option_widget_get_type IA__btk_printer_option_widget_get_type
 
 extern __typeof (btk_printer_option_widget_new) IA__btk_printer_option_widget_new __attribute((visibility("hidden")));
@@ -7288,7 +7288,7 @@ extern __typeof (btk_printer_option_widget_get_value) IA__btk_printer_option_wid
 #if IN_HEADER(__BTK_PRINT_JOB_H__)
 #if IN_FILE(__BTK_PRINT_JOB_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_print_job_get_type) IA__btk_print_job_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_job_get_type) IA__btk_print_job_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_job_get_type IA__btk_print_job_get_type
 
 extern __typeof (btk_print_job_new) IA__btk_print_job_new __attribute((visibility("hidden")));
@@ -7338,7 +7338,7 @@ extern __typeof (btk_print_job_set_status) IA__btk_print_job_set_status __attrib
 extern __typeof (btk_print_error_quark) IA__btk_print_error_quark __attribute((visibility("hidden")));
 #define btk_print_error_quark IA__btk_print_error_quark
 
-extern __typeof (btk_print_operation_get_type) IA__btk_print_operation_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_operation_get_type) IA__btk_print_operation_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_operation_get_type IA__btk_print_operation_get_type
 
 extern __typeof (btk_print_operation_new) IA__btk_print_operation_new __attribute((visibility("hidden")));
@@ -7475,7 +7475,7 @@ extern __typeof (btk_print_run_page_setup_dialog_async) IA__btk_print_run_page_s
 #endif
 #if IN_HEADER(__BTK_PRINT_SETTINGS_H__)
 #if IN_FILE(__BTK_PRINT_SETTINGS_C__)
-extern __typeof (btk_print_settings_get_type) IA__btk_print_settings_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_settings_get_type) IA__btk_print_settings_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_settings_get_type IA__btk_print_settings_get_type
 
 extern __typeof (btk_print_settings_new) IA__btk_print_settings_new __attribute((visibility("hidden")));
@@ -7705,7 +7705,7 @@ extern __typeof (btk_print_settings_set_output_bin) IA__btk_print_settings_set_o
 #if IN_HEADER(__BTK_PRINT_UNIX_DIALOG_H__)
 #if IN_FILE(__BTK_PRINT_UNIX_DIALOG_C__)
 #ifdef G_OS_UNIX
-extern __typeof (btk_print_unix_dialog_get_type) IA__btk_print_unix_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_print_unix_dialog_get_type) IA__btk_print_unix_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_print_unix_dialog_get_type IA__btk_print_unix_dialog_get_type
 
 extern __typeof (btk_print_unix_dialog_new) IA__btk_print_unix_dialog_new __attribute((visibility("hidden")));
@@ -7800,7 +7800,7 @@ extern __typeof (btk_progress_bar_get_text) IA__btk_progress_bar_get_text __attr
 extern __typeof (btk_progress_bar_get_ellipsize) IA__btk_progress_bar_get_ellipsize __attribute((visibility("hidden")));
 #define btk_progress_bar_get_ellipsize IA__btk_progress_bar_get_ellipsize
 
-extern __typeof (btk_progress_bar_get_type) IA__btk_progress_bar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_progress_bar_get_type) IA__btk_progress_bar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_progress_bar_get_type IA__btk_progress_bar_get_type
 
 extern __typeof (btk_progress_bar_new) IA__btk_progress_bar_new __attribute((visibility("hidden")));
@@ -7864,7 +7864,7 @@ extern __typeof (btk_progress_get_percentage_from_value) IA__btk_progress_get_pe
 extern __typeof (btk_progress_get_text_from_value) IA__btk_progress_get_text_from_value __attribute((visibility("hidden")));
 #define btk_progress_get_text_from_value IA__btk_progress_get_text_from_value
 
-extern __typeof (btk_progress_get_type) IA__btk_progress_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_progress_get_type) IA__btk_progress_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_progress_get_type IA__btk_progress_get_type
 
 extern __typeof (btk_progress_get_value) IA__btk_progress_get_value __attribute((visibility("hidden")));
@@ -7902,7 +7902,7 @@ extern __typeof (btk_radio_action_get_current_value) IA__btk_radio_action_get_cu
 extern __typeof (btk_radio_action_get_group) IA__btk_radio_action_get_group __attribute((visibility("hidden")));
 #define btk_radio_action_get_group IA__btk_radio_action_get_group
 
-extern __typeof (btk_radio_action_get_type) IA__btk_radio_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_radio_action_get_type) IA__btk_radio_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_radio_action_get_type IA__btk_radio_action_get_type
 
 extern __typeof (btk_radio_action_new) IA__btk_radio_action_new __attribute((visibility("hidden")));
@@ -7921,7 +7921,7 @@ extern __typeof (btk_radio_action_set_group) IA__btk_radio_action_set_group __at
 extern __typeof (btk_radio_button_get_group) IA__btk_radio_button_get_group __attribute((visibility("hidden")));
 #define btk_radio_button_get_group IA__btk_radio_button_get_group
 
-extern __typeof (btk_radio_button_get_type) IA__btk_radio_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_radio_button_get_type) IA__btk_radio_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_radio_button_get_type IA__btk_radio_button_get_type
 
 extern __typeof (btk_radio_button_new) IA__btk_radio_button_new __attribute((visibility("hidden")));
@@ -7952,7 +7952,7 @@ extern __typeof (btk_radio_button_set_group) IA__btk_radio_button_set_group __at
 extern __typeof (btk_radio_menu_item_get_group) IA__btk_radio_menu_item_get_group __attribute((visibility("hidden")));
 #define btk_radio_menu_item_get_group IA__btk_radio_menu_item_get_group
 
-extern __typeof (btk_radio_menu_item_get_type) IA__btk_radio_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_radio_menu_item_get_type) IA__btk_radio_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_radio_menu_item_get_type IA__btk_radio_menu_item_get_type
 
 extern __typeof (btk_radio_menu_item_new) IA__btk_radio_menu_item_new __attribute((visibility("hidden")));
@@ -7983,7 +7983,7 @@ extern __typeof (btk_radio_menu_item_set_group) IA__btk_radio_menu_item_set_grou
 extern __typeof (btk_radio_tool_button_get_group) IA__btk_radio_tool_button_get_group __attribute((visibility("hidden")));
 #define btk_radio_tool_button_get_group IA__btk_radio_tool_button_get_group
 
-extern __typeof (btk_radio_tool_button_get_type) IA__btk_radio_tool_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_radio_tool_button_get_type) IA__btk_radio_tool_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_radio_tool_button_get_type IA__btk_radio_tool_button_get_type
 
 extern __typeof (btk_radio_tool_button_new) IA__btk_radio_tool_button_new __attribute((visibility("hidden")));
@@ -8038,7 +8038,7 @@ extern __typeof (btk_range_get_slider_range) IA__btk_range_get_slider_range __at
 extern __typeof (btk_range_get_slider_size_fixed) IA__btk_range_get_slider_size_fixed __attribute((visibility("hidden")));
 #define btk_range_get_slider_size_fixed IA__btk_range_get_slider_size_fixed
 
-extern __typeof (btk_range_get_type) IA__btk_range_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_range_get_type) IA__btk_range_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_range_get_type IA__btk_range_get_type
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -8204,7 +8204,7 @@ extern __typeof (btk_rc_set_default_files_utf8) IA__btk_rc_set_default_files_utf
 extern __typeof (btk_rc_style_copy) IA__btk_rc_style_copy __attribute((visibility("hidden")));
 #define btk_rc_style_copy IA__btk_rc_style_copy
 
-extern __typeof (btk_rc_style_get_type) IA__btk_rc_style_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_rc_style_get_type) IA__btk_rc_style_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_rc_style_get_type IA__btk_rc_style_get_type
 
 extern __typeof (btk_rc_style_new) IA__btk_rc_style_new __attribute((visibility("hidden")));
@@ -8222,7 +8222,7 @@ extern __typeof (btk_rc_style_unref) IA__btk_rc_style_unref __attribute((visibil
 #endif
 #if IN_HEADER(__BTK_RECENT_ACTION_H__)
 #if IN_FILE(__BTK_RECENT_ACTION_C__)
-extern __typeof (btk_recent_action_get_type) IA__btk_recent_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_action_get_type) IA__btk_recent_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_action_get_type IA__btk_recent_action_get_type
 
 extern __typeof (btk_recent_action_new) IA__btk_recent_action_new __attribute((visibility("hidden")));
@@ -8342,7 +8342,7 @@ extern __typeof (btk_recent_chooser_set_filter) IA__btk_recent_chooser_set_filte
 extern __typeof (btk_recent_chooser_get_filter) IA__btk_recent_chooser_get_filter __attribute((visibility("hidden")));
 #define btk_recent_chooser_get_filter IA__btk_recent_chooser_get_filter
 
-extern __typeof (btk_recent_chooser_get_type) IA__btk_recent_chooser_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_chooser_get_type) IA__btk_recent_chooser_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_chooser_get_type IA__btk_recent_chooser_get_type
 
 extern __typeof (btk_recent_chooser_error_quark) IA__btk_recent_chooser_error_quark __attribute((visibility("hidden")));
@@ -8352,20 +8352,20 @@ extern __typeof (btk_recent_chooser_error_quark) IA__btk_recent_chooser_error_qu
 #endif
 #if IN_HEADER(__BTK_RECENT_CHOOSER_DIALOG_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_DIALOG_C__)
-extern __typeof (btk_recent_chooser_dialog_get_type) IA__btk_recent_chooser_dialog_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_chooser_dialog_get_type) IA__btk_recent_chooser_dialog_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_chooser_dialog_get_type IA__btk_recent_chooser_dialog_get_type
 
-extern __typeof (btk_recent_chooser_dialog_new) IA__btk_recent_chooser_dialog_new __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_recent_chooser_dialog_new) IA__btk_recent_chooser_dialog_new __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_recent_chooser_dialog_new IA__btk_recent_chooser_dialog_new
 
-extern __typeof (btk_recent_chooser_dialog_new_for_manager) IA__btk_recent_chooser_dialog_new_for_manager __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_recent_chooser_dialog_new_for_manager) IA__btk_recent_chooser_dialog_new_for_manager __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_recent_chooser_dialog_new_for_manager IA__btk_recent_chooser_dialog_new_for_manager
 
 #endif
 #endif
 #if IN_HEADER(__BTK_RECENT_CHOOSER_MENU_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_MENU_C__)
-extern __typeof (btk_recent_chooser_menu_get_type) IA__btk_recent_chooser_menu_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_chooser_menu_get_type) IA__btk_recent_chooser_menu_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_chooser_menu_get_type IA__btk_recent_chooser_menu_get_type
 
 extern __typeof (btk_recent_chooser_menu_new) IA__btk_recent_chooser_menu_new __attribute((visibility("hidden")));
@@ -8384,7 +8384,7 @@ extern __typeof (btk_recent_chooser_menu_set_show_numbers) IA__btk_recent_choose
 #endif
 #if IN_HEADER(__BTK_RECENT_CHOOSER_WIDGET_H__)
 #if IN_FILE(__BTK_RECENT_CHOOSER_WIDGET_C__)
-extern __typeof (btk_recent_chooser_widget_get_type) IA__btk_recent_chooser_widget_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_chooser_widget_get_type) IA__btk_recent_chooser_widget_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_chooser_widget_get_type IA__btk_recent_chooser_widget_get_type
 
 extern __typeof (btk_recent_chooser_widget_new) IA__btk_recent_chooser_widget_new __attribute((visibility("hidden")));
@@ -8397,7 +8397,7 @@ extern __typeof (btk_recent_chooser_widget_new_for_manager) IA__btk_recent_choos
 #endif
 #if IN_HEADER(__BTK_RECENT_FILTER_H__)
 #if IN_FILE(__BTK_RECENT_FILTER_C__)
-extern __typeof (btk_recent_filter_get_type) IA__btk_recent_filter_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_filter_get_type) IA__btk_recent_filter_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_filter_get_type IA__btk_recent_filter_get_type
 
 extern __typeof (btk_recent_filter_new) IA__btk_recent_filter_new __attribute((visibility("hidden")));
@@ -8443,7 +8443,7 @@ extern __typeof (btk_recent_filter_filter) IA__btk_recent_filter_filter __attrib
 extern __typeof (btk_recent_manager_error_quark) IA__btk_recent_manager_error_quark __attribute((visibility("hidden")));
 #define btk_recent_manager_error_quark IA__btk_recent_manager_error_quark
 
-extern __typeof (btk_recent_manager_get_type) IA__btk_recent_manager_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_manager_get_type) IA__btk_recent_manager_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_manager_get_type IA__btk_recent_manager_get_type
 
 extern __typeof (btk_recent_manager_new) IA__btk_recent_manager_new __attribute((visibility("hidden")));
@@ -8490,7 +8490,7 @@ extern __typeof (btk_recent_manager_get_limit) IA__btk_recent_manager_get_limit 
 extern __typeof (btk_recent_manager_purge_items) IA__btk_recent_manager_purge_items __attribute((visibility("hidden")));
 #define btk_recent_manager_purge_items IA__btk_recent_manager_purge_items
 
-extern __typeof (btk_recent_info_get_type) IA__btk_recent_info_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_recent_info_get_type) IA__btk_recent_info_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_recent_info_get_type IA__btk_recent_info_get_type
 
 extern __typeof (btk_recent_info_ref) IA__btk_recent_info_ref __attribute((visibility("hidden")));
@@ -8526,16 +8526,16 @@ extern __typeof (btk_recent_info_get_private_hint) IA__btk_recent_info_get_priva
 extern __typeof (btk_recent_info_get_application_info) IA__btk_recent_info_get_application_info __attribute((visibility("hidden")));
 #define btk_recent_info_get_application_info IA__btk_recent_info_get_application_info
 
-extern __typeof (btk_recent_info_get_applications) IA__btk_recent_info_get_applications __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_recent_info_get_applications) IA__btk_recent_info_get_applications __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_recent_info_get_applications IA__btk_recent_info_get_applications
 
-extern __typeof (btk_recent_info_last_application) IA__btk_recent_info_last_application __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_recent_info_last_application) IA__btk_recent_info_last_application __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_recent_info_last_application IA__btk_recent_info_last_application
 
 extern __typeof (btk_recent_info_has_application) IA__btk_recent_info_has_application __attribute((visibility("hidden")));
 #define btk_recent_info_has_application IA__btk_recent_info_has_application
 
-extern __typeof (btk_recent_info_get_groups) IA__btk_recent_info_get_groups __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_recent_info_get_groups) IA__btk_recent_info_get_groups __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_recent_info_get_groups IA__btk_recent_info_get_groups
 
 extern __typeof (btk_recent_info_has_group) IA__btk_recent_info_has_group __attribute((visibility("hidden")));
@@ -8544,10 +8544,10 @@ extern __typeof (btk_recent_info_has_group) IA__btk_recent_info_has_group __attr
 extern __typeof (btk_recent_info_get_icon) IA__btk_recent_info_get_icon __attribute((visibility("hidden")));
 #define btk_recent_info_get_icon IA__btk_recent_info_get_icon
 
-extern __typeof (btk_recent_info_get_short_name) IA__btk_recent_info_get_short_name __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_recent_info_get_short_name) IA__btk_recent_info_get_short_name __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_recent_info_get_short_name IA__btk_recent_info_get_short_name
 
-extern __typeof (btk_recent_info_get_uri_display) IA__btk_recent_info_get_uri_display __attribute((visibility("hidden"))) G_GNUC_MALLOC;
+extern __typeof (btk_recent_info_get_uri_display) IA__btk_recent_info_get_uri_display __attribute((visibility("hidden"))) B_GNUC_MALLOC;
 #define btk_recent_info_get_uri_display IA__btk_recent_info_get_uri_display
 
 extern __typeof (btk_recent_info_get_age) IA__btk_recent_info_get_age __attribute((visibility("hidden")));
@@ -8671,7 +8671,7 @@ extern __typeof (btk_ruler_get_metric) IA__btk_ruler_get_metric __attribute((vis
 extern __typeof (btk_ruler_get_range) IA__btk_ruler_get_range __attribute((visibility("hidden")));
 #define btk_ruler_get_range IA__btk_ruler_get_range
 
-extern __typeof (btk_ruler_get_type) IA__btk_ruler_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ruler_get_type) IA__btk_ruler_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ruler_get_type IA__btk_ruler_get_type
 
 extern __typeof (btk_ruler_set_metric) IA__btk_ruler_set_metric __attribute((visibility("hidden")));
@@ -8697,7 +8697,7 @@ extern __typeof (btk_scale_get_layout) IA__btk_scale_get_layout __attribute((vis
 extern __typeof (btk_scale_get_layout_offsets) IA__btk_scale_get_layout_offsets __attribute((visibility("hidden")));
 #define btk_scale_get_layout_offsets IA__btk_scale_get_layout_offsets
 
-extern __typeof (btk_scale_get_type) IA__btk_scale_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scale_get_type) IA__btk_scale_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scale_get_type IA__btk_scale_get_type
 
 extern __typeof (btk_scale_get_value_pos) IA__btk_scale_get_value_pos __attribute((visibility("hidden")));
@@ -8722,7 +8722,7 @@ extern __typeof (btk_scale_clear_marks) IA__btk_scale_clear_marks __attribute((v
 #endif
 #if IN_HEADER(__BTK_SCALE_BUTTON_H__)
 #if IN_FILE(__BTK_SCALE_BUTTON_C__)
-extern __typeof (btk_scale_button_get_type) IA__btk_scale_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scale_button_get_type) IA__btk_scale_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scale_button_get_type IA__btk_scale_button_get_type
 
 extern __typeof (btk_scale_button_get_value) IA__btk_scale_button_get_value __attribute((visibility("hidden")));
@@ -8764,7 +8764,7 @@ extern __typeof (btk_scale_button_get_popup) IA__btk_scale_button_get_popup __at
 #endif
 #if IN_HEADER(__BTK_SCROLLBAR_H__)
 #if IN_FILE(__BTK_SCROLLBAR_C__)
-extern __typeof (btk_scrollbar_get_type) IA__btk_scrollbar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scrollbar_get_type) IA__btk_scrollbar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scrollbar_get_type IA__btk_scrollbar_get_type
 
 #endif
@@ -8789,7 +8789,7 @@ extern __typeof (btk_scrolled_window_get_policy) IA__btk_scrolled_window_get_pol
 extern __typeof (btk_scrolled_window_get_shadow_type) IA__btk_scrolled_window_get_shadow_type __attribute((visibility("hidden")));
 #define btk_scrolled_window_get_shadow_type IA__btk_scrolled_window_get_shadow_type
 
-extern __typeof (btk_scrolled_window_get_type) IA__btk_scrolled_window_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_scrolled_window_get_type) IA__btk_scrolled_window_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_scrolled_window_get_type IA__btk_scrolled_window_get_type
 
 extern __typeof (btk_scrolled_window_get_vadjustment) IA__btk_scrolled_window_get_vadjustment __attribute((visibility("hidden")));
@@ -8874,7 +8874,7 @@ extern __typeof (btk_selection_data_get_targets) IA__btk_selection_data_get_targ
 extern __typeof (btk_selection_data_get_text) IA__btk_selection_data_get_text __attribute((visibility("hidden")));
 #define btk_selection_data_get_text IA__btk_selection_data_get_text
 
-extern __typeof (btk_selection_data_get_type) IA__btk_selection_data_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_selection_data_get_type) IA__btk_selection_data_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_selection_data_get_type IA__btk_selection_data_get_type
 
 extern __typeof (btk_selection_data_get_uris) IA__btk_selection_data_get_uris __attribute((visibility("hidden")));
@@ -8946,7 +8946,7 @@ extern __typeof (btk_target_list_add_uri_targets) IA__btk_target_list_add_uri_ta
 extern __typeof (btk_target_list_find) IA__btk_target_list_find __attribute((visibility("hidden")));
 #define btk_target_list_find IA__btk_target_list_find
 
-extern __typeof (btk_target_list_get_type) IA__btk_target_list_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_target_list_get_type) IA__btk_target_list_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_target_list_get_type IA__btk_target_list_get_type
 
 extern __typeof (btk_target_list_new) IA__btk_target_list_new __attribute((visibility("hidden")));
@@ -8971,14 +8971,14 @@ extern __typeof (btk_target_table_free) IA__btk_target_table_free __attribute((v
 #endif
 #if IN_HEADER(__BTK_SEPARATOR_H__)
 #if IN_FILE(__BTK_SEPARATOR_C__)
-extern __typeof (btk_separator_get_type) IA__btk_separator_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_separator_get_type) IA__btk_separator_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_separator_get_type IA__btk_separator_get_type
 
 #endif
 #endif
 #if IN_HEADER(__BTK_SEPARATOR_MENU_ITEM_H__)
 #if IN_FILE(__BTK_SEPARATOR_MENU_ITEM_C__)
-extern __typeof (btk_separator_menu_item_get_type) IA__btk_separator_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_separator_menu_item_get_type) IA__btk_separator_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_separator_menu_item_get_type IA__btk_separator_menu_item_get_type
 
 extern __typeof (btk_separator_menu_item_new) IA__btk_separator_menu_item_new __attribute((visibility("hidden")));
@@ -8991,7 +8991,7 @@ extern __typeof (btk_separator_menu_item_new) IA__btk_separator_menu_item_new __
 extern __typeof (btk_separator_tool_item_get_draw) IA__btk_separator_tool_item_get_draw __attribute((visibility("hidden")));
 #define btk_separator_tool_item_get_draw IA__btk_separator_tool_item_get_draw
 
-extern __typeof (btk_separator_tool_item_get_type) IA__btk_separator_tool_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_separator_tool_item_get_type) IA__btk_separator_tool_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_separator_tool_item_get_type IA__btk_separator_tool_item_get_type
 
 extern __typeof (btk_separator_tool_item_new) IA__btk_separator_tool_item_new __attribute((visibility("hidden")));
@@ -9010,7 +9010,7 @@ extern __typeof (btk_settings_get_default) IA__btk_settings_get_default __attrib
 extern __typeof (btk_settings_get_for_screen) IA__btk_settings_get_for_screen __attribute((visibility("hidden")));
 #define btk_settings_get_for_screen IA__btk_settings_get_for_screen
 
-extern __typeof (btk_settings_get_type) IA__btk_settings_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_settings_get_type) IA__btk_settings_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_settings_get_type IA__btk_settings_get_type
 
 extern __typeof (btk_settings_install_property) IA__btk_settings_install_property __attribute((visibility("hidden")));
@@ -9098,7 +9098,7 @@ extern __typeof (btk_size_group_get_ignore_hidden) IA__btk_size_group_get_ignore
 extern __typeof (btk_size_group_get_mode) IA__btk_size_group_get_mode __attribute((visibility("hidden")));
 #define btk_size_group_get_mode IA__btk_size_group_get_mode
 
-extern __typeof (btk_size_group_get_type) IA__btk_size_group_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_size_group_get_type) IA__btk_size_group_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_size_group_get_type IA__btk_size_group_get_type
 
 extern __typeof (btk_size_group_get_widgets) IA__btk_size_group_get_widgets __attribute((visibility("hidden")));
@@ -9136,7 +9136,7 @@ extern __typeof (btk_socket_get_id) IA__btk_socket_get_id __attribute((visibilit
 extern __typeof (btk_socket_get_plug_window) IA__btk_socket_get_plug_window __attribute((visibility("hidden")));
 #define btk_socket_get_plug_window IA__btk_socket_get_plug_window
 
-extern __typeof (btk_socket_get_type) IA__btk_socket_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_socket_get_type) IA__btk_socket_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_socket_get_type IA__btk_socket_get_type
 
 extern __typeof (btk_socket_new) IA__btk_socket_new __attribute((visibility("hidden")));
@@ -9172,7 +9172,7 @@ extern __typeof (btk_spin_button_get_range) IA__btk_spin_button_get_range __attr
 extern __typeof (btk_spin_button_get_snap_to_ticks) IA__btk_spin_button_get_snap_to_ticks __attribute((visibility("hidden")));
 #define btk_spin_button_get_snap_to_ticks IA__btk_spin_button_get_snap_to_ticks
 
-extern __typeof (btk_spin_button_get_type) IA__btk_spin_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_spin_button_get_type) IA__btk_spin_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_spin_button_get_type IA__btk_spin_button_get_type
 
 extern __typeof (btk_spin_button_get_update_policy) IA__btk_spin_button_get_update_policy __attribute((visibility("hidden")));
@@ -9230,7 +9230,7 @@ extern __typeof (btk_spin_button_update) IA__btk_spin_button_update __attribute(
 #endif
 #if IN_HEADER(__BTK_SPINNER_H__)
 #if IN_FILE(__BTK_SPINNER_C__)
-extern __typeof (btk_spinner_get_type) IA__btk_spinner_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_spinner_get_type) IA__btk_spinner_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_spinner_get_type IA__btk_spinner_get_type
 
 extern __typeof (btk_spinner_new) IA__btk_spinner_new __attribute((visibility("hidden")));
@@ -9255,7 +9255,7 @@ extern __typeof (btk_statusbar_get_has_resize_grip) IA__btk_statusbar_get_has_re
 extern __typeof (btk_statusbar_get_message_area) IA__btk_statusbar_get_message_area __attribute((visibility("hidden")));
 #define btk_statusbar_get_message_area IA__btk_statusbar_get_message_area
 
-extern __typeof (btk_statusbar_get_type) IA__btk_statusbar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_statusbar_get_type) IA__btk_statusbar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_statusbar_get_type IA__btk_statusbar_get_type
 
 extern __typeof (btk_statusbar_new) IA__btk_statusbar_new __attribute((visibility("hidden")));
@@ -9329,7 +9329,7 @@ extern __typeof (btk_table_get_row_spacing) IA__btk_table_get_row_spacing __attr
 extern __typeof (btk_table_get_size) IA__btk_table_get_size __attribute((visibility("hidden")));
 #define btk_table_get_size IA__btk_table_get_size
 
-extern __typeof (btk_table_get_type) IA__btk_table_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_table_get_type) IA__btk_table_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_table_get_type IA__btk_table_get_type
 
 extern __typeof (btk_table_new) IA__btk_table_new __attribute((visibility("hidden")));
@@ -9357,7 +9357,7 @@ extern __typeof (btk_table_set_row_spacings) IA__btk_table_set_row_spacings __at
 #endif
 #if IN_HEADER(__BTK_TEAROFF_MENU_ITEM_H__)
 #if IN_FILE(__BTK_TEAROFF_MENU_ITEM_C__)
-extern __typeof (btk_tearoff_menu_item_get_type) IA__btk_tearoff_menu_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tearoff_menu_item_get_type) IA__btk_tearoff_menu_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tearoff_menu_item_get_type IA__btk_tearoff_menu_item_get_type
 
 extern __typeof (btk_tearoff_menu_item_new) IA__btk_tearoff_menu_item_new __attribute((visibility("hidden")));
@@ -9373,7 +9373,7 @@ extern __typeof (btk_text_attributes_copy) IA__btk_text_attributes_copy __attrib
 extern __typeof (btk_text_attributes_copy_values) IA__btk_text_attributes_copy_values __attribute((visibility("hidden")));
 #define btk_text_attributes_copy_values IA__btk_text_attributes_copy_values
 
-extern __typeof (btk_text_attributes_get_type) IA__btk_text_attributes_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_attributes_get_type) IA__btk_text_attributes_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_attributes_get_type IA__btk_text_attributes_get_type
 
 extern __typeof (btk_text_attributes_new) IA__btk_text_attributes_new __attribute((visibility("hidden")));
@@ -9391,7 +9391,7 @@ extern __typeof (btk_text_tag_event) IA__btk_text_tag_event __attribute((visibil
 extern __typeof (btk_text_tag_get_priority) IA__btk_text_tag_get_priority __attribute((visibility("hidden")));
 #define btk_text_tag_get_priority IA__btk_text_tag_get_priority
 
-extern __typeof (btk_text_tag_get_type) IA__btk_text_tag_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_tag_get_type) IA__btk_text_tag_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_tag_get_type IA__btk_text_tag_get_type
 
 extern __typeof (btk_text_tag_new) IA__btk_text_tag_new __attribute((visibility("hidden")));
@@ -9413,7 +9413,7 @@ extern __typeof (btk_text_tag_table_foreach) IA__btk_text_tag_table_foreach __at
 extern __typeof (btk_text_tag_table_get_size) IA__btk_text_tag_table_get_size __attribute((visibility("hidden")));
 #define btk_text_tag_table_get_size IA__btk_text_tag_table_get_size
 
-extern __typeof (btk_text_tag_table_get_type) IA__btk_text_tag_table_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_tag_table_get_type) IA__btk_text_tag_table_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_tag_table_get_type IA__btk_text_tag_table_get_type
 
 extern __typeof (btk_text_tag_table_lookup) IA__btk_text_tag_table_lookup __attribute((visibility("hidden")));
@@ -9444,7 +9444,7 @@ extern __typeof (btk_text_get_length) IA__btk_text_get_length __attribute((visib
 extern __typeof (btk_text_get_point) IA__btk_text_get_point __attribute((visibility("hidden")));
 #define btk_text_get_point IA__btk_text_get_point
 
-extern __typeof (btk_text_get_type) IA__btk_text_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_get_type) IA__btk_text_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_get_type IA__btk_text_get_type
 
 extern __typeof (btk_text_insert) IA__btk_text_insert __attribute((visibility("hidden")));
@@ -9592,7 +9592,7 @@ extern __typeof (btk_text_buffer_get_tag_table) IA__btk_text_buffer_get_tag_tabl
 extern __typeof (btk_text_buffer_get_text) IA__btk_text_buffer_get_text __attribute((visibility("hidden")));
 #define btk_text_buffer_get_text IA__btk_text_buffer_get_text
 
-extern __typeof (btk_text_buffer_get_type) IA__btk_text_buffer_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_buffer_get_type) IA__btk_text_buffer_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_buffer_get_type IA__btk_text_buffer_get_type
 
 extern __typeof (btk_text_buffer_insert) IA__btk_text_buffer_insert __attribute((visibility("hidden")));
@@ -9619,10 +9619,10 @@ extern __typeof (btk_text_buffer_insert_range) IA__btk_text_buffer_insert_range 
 extern __typeof (btk_text_buffer_insert_range_interactive) IA__btk_text_buffer_insert_range_interactive __attribute((visibility("hidden")));
 #define btk_text_buffer_insert_range_interactive IA__btk_text_buffer_insert_range_interactive
 
-extern __typeof (btk_text_buffer_insert_with_tags) IA__btk_text_buffer_insert_with_tags __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_text_buffer_insert_with_tags) IA__btk_text_buffer_insert_with_tags __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_text_buffer_insert_with_tags IA__btk_text_buffer_insert_with_tags
 
-extern __typeof (btk_text_buffer_insert_with_tags_by_name) IA__btk_text_buffer_insert_with_tags_by_name __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_text_buffer_insert_with_tags_by_name) IA__btk_text_buffer_insert_with_tags_by_name __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_text_buffer_insert_with_tags_by_name IA__btk_text_buffer_insert_with_tags_by_name
 
 extern __typeof (btk_text_buffer_move_mark) IA__btk_text_buffer_move_mark __attribute((visibility("hidden")));
@@ -9876,7 +9876,7 @@ extern __typeof (btk_text_iter_get_text) IA__btk_text_iter_get_text __attribute(
 extern __typeof (btk_text_iter_get_toggled_tags) IA__btk_text_iter_get_toggled_tags __attribute((visibility("hidden")));
 #define btk_text_iter_get_toggled_tags IA__btk_text_iter_get_toggled_tags
 
-extern __typeof (btk_text_iter_get_type) IA__btk_text_iter_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_iter_get_type) IA__btk_text_iter_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_iter_get_type IA__btk_text_iter_get_type
 
 extern __typeof (btk_text_iter_get_visible_line_index) IA__btk_text_iter_get_visible_line_index __attribute((visibility("hidden")));
@@ -10003,7 +10003,7 @@ extern __typeof (btk_text_layout_get_line_yrange) IA__btk_text_layout_get_line_y
 extern __typeof (btk_text_layout_get_size) IA__btk_text_layout_get_size __attribute((visibility("hidden")));
 #define btk_text_layout_get_size IA__btk_text_layout_get_size
 
-extern __typeof (btk_text_layout_get_type) IA__btk_text_layout_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_layout_get_type) IA__btk_text_layout_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_layout_get_type IA__btk_text_layout_get_type
 
 extern __typeof (btk_text_layout_invalidate) IA__btk_text_layout_invalidate __attribute((visibility("hidden")));
@@ -10088,7 +10088,7 @@ extern __typeof (btk_text_layout_wrap_loop_start) IA__btk_text_layout_wrap_loop_
 extern __typeof (btk_text_child_anchor_get_deleted) IA__btk_text_child_anchor_get_deleted __attribute((visibility("hidden")));
 #define btk_text_child_anchor_get_deleted IA__btk_text_child_anchor_get_deleted
 
-extern __typeof (btk_text_child_anchor_get_type) IA__btk_text_child_anchor_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_child_anchor_get_type) IA__btk_text_child_anchor_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_child_anchor_get_type IA__btk_text_child_anchor_get_type
 
 extern __typeof (btk_text_child_anchor_get_widgets) IA__btk_text_child_anchor_get_widgets __attribute((visibility("hidden")));
@@ -10146,7 +10146,7 @@ extern __typeof (btk_text_mark_get_left_gravity) IA__btk_text_mark_get_left_grav
 extern __typeof (btk_text_mark_get_name) IA__btk_text_mark_get_name __attribute((visibility("hidden")));
 #define btk_text_mark_get_name IA__btk_text_mark_get_name
 
-extern __typeof (btk_text_mark_get_type) IA__btk_text_mark_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_mark_get_type) IA__btk_text_mark_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_mark_get_type IA__btk_text_mark_get_type
 
 extern __typeof (btk_text_mark_get_visible) IA__btk_text_mark_get_visible __attribute((visibility("hidden")));
@@ -10247,7 +10247,7 @@ extern __typeof (btk_text_view_get_right_margin) IA__btk_text_view_get_right_mar
 extern __typeof (btk_text_view_get_tabs) IA__btk_text_view_get_tabs __attribute((visibility("hidden")));
 #define btk_text_view_get_tabs IA__btk_text_view_get_tabs
 
-extern __typeof (btk_text_view_get_type) IA__btk_text_view_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_text_view_get_type) IA__btk_text_view_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_text_view_get_type IA__btk_text_view_get_type
 
 extern __typeof (btk_text_view_get_vadjustment) IA__btk_text_view_get_vadjustment __attribute((visibility("hidden")));
@@ -10359,14 +10359,14 @@ extern __typeof (btk_theme_engine_create_rc_style) IA__btk_theme_engine_create_r
 extern __typeof (btk_theme_engine_get) IA__btk_theme_engine_get __attribute((visibility("hidden")));
 #define btk_theme_engine_get IA__btk_theme_engine_get
 
-extern __typeof (btk_theme_engine_get_type) IA__btk_theme_engine_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_theme_engine_get_type) IA__btk_theme_engine_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_theme_engine_get_type IA__btk_theme_engine_get_type
 
 #endif
 #endif
 #if IN_HEADER(__BTK_TIPS_QUERY_H__)
 #if IN_FILE(__BTK_TIPS_QUERY_C__)
-extern __typeof (btk_tips_query_get_type) IA__btk_tips_query_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tips_query_get_type) IA__btk_tips_query_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tips_query_get_type IA__btk_tips_query_get_type
 
 extern __typeof (btk_tips_query_new) IA__btk_tips_query_new __attribute((visibility("hidden")));
@@ -10394,7 +10394,7 @@ extern __typeof (btk_toggle_action_get_active) IA__btk_toggle_action_get_active 
 extern __typeof (btk_toggle_action_get_draw_as_radio) IA__btk_toggle_action_get_draw_as_radio __attribute((visibility("hidden")));
 #define btk_toggle_action_get_draw_as_radio IA__btk_toggle_action_get_draw_as_radio
 
-extern __typeof (btk_toggle_action_get_type) IA__btk_toggle_action_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toggle_action_get_type) IA__btk_toggle_action_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toggle_action_get_type IA__btk_toggle_action_get_type
 
 extern __typeof (btk_toggle_action_new) IA__btk_toggle_action_new __attribute((visibility("hidden")));
@@ -10422,7 +10422,7 @@ extern __typeof (btk_toggle_button_get_inconsistent) IA__btk_toggle_button_get_i
 extern __typeof (btk_toggle_button_get_mode) IA__btk_toggle_button_get_mode __attribute((visibility("hidden")));
 #define btk_toggle_button_get_mode IA__btk_toggle_button_get_mode
 
-extern __typeof (btk_toggle_button_get_type) IA__btk_toggle_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toggle_button_get_type) IA__btk_toggle_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toggle_button_get_type IA__btk_toggle_button_get_type
 
 extern __typeof (btk_toggle_button_new) IA__btk_toggle_button_new __attribute((visibility("hidden")));
@@ -10453,7 +10453,7 @@ extern __typeof (btk_toggle_button_toggled) IA__btk_toggle_button_toggled __attr
 extern __typeof (btk_toggle_tool_button_get_active) IA__btk_toggle_tool_button_get_active __attribute((visibility("hidden")));
 #define btk_toggle_tool_button_get_active IA__btk_toggle_tool_button_get_active
 
-extern __typeof (btk_toggle_tool_button_get_type) IA__btk_toggle_tool_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toggle_tool_button_get_type) IA__btk_toggle_tool_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toggle_tool_button_get_type IA__btk_toggle_tool_button_get_type
 
 extern __typeof (btk_toggle_tool_button_new) IA__btk_toggle_tool_button_new __attribute((visibility("hidden")));
@@ -10553,7 +10553,7 @@ extern __typeof (btk_toolbar_get_tooltips) IA__btk_toolbar_get_tooltips __attrib
 #define btk_toolbar_get_tooltips IA__btk_toolbar_get_tooltips
 
 #endif
-extern __typeof (btk_toolbar_get_type) IA__btk_toolbar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_toolbar_get_type) IA__btk_toolbar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_toolbar_get_type IA__btk_toolbar_get_type
 
 extern __typeof (btk_toolbar_insert) IA__btk_toolbar_insert __attribute((visibility("hidden")));
@@ -10588,7 +10588,7 @@ extern __typeof (btk_toolbar_unset_style) IA__btk_toolbar_unset_style __attribut
 #endif
 #if IN_HEADER(__BTK_TOOL_SHELL_H__)
 #if IN_FILE(__BTK_TOOL_SHELL_C__)
-extern __typeof (btk_tool_shell_get_type) IA__btk_tool_shell_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_shell_get_type) IA__btk_tool_shell_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_shell_get_type IA__btk_tool_shell_get_type
 
 extern __typeof (btk_tool_shell_get_ellipsize_mode) IA__btk_tool_shell_get_ellipsize_mode __attribute((visibility("hidden")));
@@ -10637,7 +10637,7 @@ extern __typeof (btk_tool_button_get_label_widget) IA__btk_tool_button_get_label
 extern __typeof (btk_tool_button_get_stock_id) IA__btk_tool_button_get_stock_id __attribute((visibility("hidden")));
 #define btk_tool_button_get_stock_id IA__btk_tool_button_get_stock_id
 
-extern __typeof (btk_tool_button_get_type) IA__btk_tool_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_button_get_type) IA__btk_tool_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_button_get_type IA__btk_tool_button_get_type
 
 extern __typeof (btk_tool_button_get_use_underline) IA__btk_tool_button_get_use_underline __attribute((visibility("hidden")));
@@ -10707,7 +10707,7 @@ extern __typeof (btk_tool_item_get_text_size_group) IA__btk_tool_item_get_text_s
 extern __typeof (btk_tool_item_get_toolbar_style) IA__btk_tool_item_get_toolbar_style __attribute((visibility("hidden")));
 #define btk_tool_item_get_toolbar_style IA__btk_tool_item_get_toolbar_style
 
-extern __typeof (btk_tool_item_get_type) IA__btk_tool_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_item_get_type) IA__btk_tool_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_item_get_type IA__btk_tool_item_get_type
 
 extern __typeof (btk_tool_item_get_use_drag_window) IA__btk_tool_item_get_use_drag_window __attribute((visibility("hidden")));
@@ -10767,7 +10767,7 @@ extern __typeof (btk_tool_item_toolbar_reconfigured) IA__btk_tool_item_toolbar_r
 #endif
 #if IN_HEADER(__BTK_TOOL_ITEM_GROUP_H__)
 #if IN_FILE(__BTK_TOOL_ITEM_GROUP_C__)
-extern __typeof (btk_tool_item_group_get_type) IA__btk_tool_item_group_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_item_group_get_type) IA__btk_tool_item_group_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_item_group_get_type IA__btk_tool_item_group_get_type
 
 extern __typeof (btk_tool_item_group_new) IA__btk_tool_item_group_new __attribute((visibility("hidden")));
@@ -10825,7 +10825,7 @@ extern __typeof (btk_tool_item_group_get_collapsed) IA__btk_tool_item_group_get_
 #endif
 #if IN_HEADER(__BTK_TOOL_PALETTE_H__)
 #if IN_FILE(__BTK_TOOL_PALETTE_C__)
-extern __typeof (btk_tool_palette_get_type) IA__btk_tool_palette_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_palette_get_type) IA__btk_tool_palette_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_palette_get_type IA__btk_tool_palette_get_type
 
 extern __typeof (btk_tool_palette_new) IA__btk_tool_palette_new __attribute((visibility("hidden")));
@@ -10888,17 +10888,17 @@ extern __typeof (btk_tool_palette_get_hadjustment) IA__btk_tool_palette_get_hadj
 extern __typeof (btk_tool_palette_get_vadjustment) IA__btk_tool_palette_get_vadjustment __attribute((visibility("hidden")));
 #define btk_tool_palette_get_vadjustment IA__btk_tool_palette_get_vadjustment
 
-extern __typeof (btk_tool_palette_get_drag_target_item) IA__btk_tool_palette_get_drag_target_item __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_palette_get_drag_target_item) IA__btk_tool_palette_get_drag_target_item __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_palette_get_drag_target_item IA__btk_tool_palette_get_drag_target_item
 
-extern __typeof (btk_tool_palette_get_drag_target_group) IA__btk_tool_palette_get_drag_target_group __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tool_palette_get_drag_target_group) IA__btk_tool_palette_get_drag_target_group __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tool_palette_get_drag_target_group IA__btk_tool_palette_get_drag_target_group
 
 #endif
 #endif
 #if IN_HEADER(__BTK_TOOLTIP_H__)
 #if IN_FILE(__BTK_TOOLTIP_C__)
-extern __typeof (btk_tooltip_get_type) IA__btk_tooltip_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tooltip_get_type) IA__btk_tooltip_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tooltip_get_type IA__btk_tooltip_get_type
 
 extern __typeof (btk_tooltip_set_custom) IA__btk_tooltip_set_custom __attribute((visibility("hidden")));
@@ -10948,7 +10948,7 @@ extern __typeof (btk_tooltips_force_window) IA__btk_tooltips_force_window __attr
 extern __typeof (btk_tooltips_get_info_from_tip_window) IA__btk_tooltips_get_info_from_tip_window __attribute((visibility("hidden")));
 #define btk_tooltips_get_info_from_tip_window IA__btk_tooltips_get_info_from_tip_window
 
-extern __typeof (btk_tooltips_get_type) IA__btk_tooltips_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tooltips_get_type) IA__btk_tooltips_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tooltips_get_type IA__btk_tooltips_get_type
 
 extern __typeof (btk_tooltips_new) IA__btk_tooltips_new __attribute((visibility("hidden")));
@@ -10966,7 +10966,7 @@ extern __typeof (btk_tooltips_set_tip) IA__btk_tooltips_set_tip __attribute((vis
 #if IN_HEADER(__BTK_TRAY_ICON_H__)
 #if IN_FILE(__BTK_TRAY_ICON_X11_C__)
 #ifndef G_OS_WIN32
-extern __typeof (btk_tray_icon_get_type) IA__btk_tray_icon_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tray_icon_get_type) IA__btk_tray_icon_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tray_icon_get_type IA__btk_tray_icon_get_type
 
 #endif
@@ -10983,7 +10983,7 @@ extern __typeof (btk_tree_child_position) IA__btk_tree_child_position __attribut
 extern __typeof (btk_tree_clear_items) IA__btk_tree_clear_items __attribute((visibility("hidden")));
 #define btk_tree_clear_items IA__btk_tree_clear_items
 
-extern __typeof (btk_tree_get_type) IA__btk_tree_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_get_type) IA__btk_tree_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_get_type IA__btk_tree_get_type
 
 extern __typeof (btk_tree_insert) IA__btk_tree_insert __attribute((visibility("hidden")));
@@ -11029,7 +11029,7 @@ extern __typeof (btk_tree_new) IA__btk_tree_new __attribute((visibility("hidden"
 extern __typeof (btk_tree_drag_dest_drag_data_received) IA__btk_tree_drag_dest_drag_data_received __attribute((visibility("hidden")));
 #define btk_tree_drag_dest_drag_data_received IA__btk_tree_drag_dest_drag_data_received
 
-extern __typeof (btk_tree_drag_dest_get_type) IA__btk_tree_drag_dest_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_drag_dest_get_type) IA__btk_tree_drag_dest_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_drag_dest_get_type IA__btk_tree_drag_dest_get_type
 
 extern __typeof (btk_tree_drag_dest_row_drop_possible) IA__btk_tree_drag_dest_row_drop_possible __attribute((visibility("hidden")));
@@ -11041,7 +11041,7 @@ extern __typeof (btk_tree_drag_source_drag_data_delete) IA__btk_tree_drag_source
 extern __typeof (btk_tree_drag_source_drag_data_get) IA__btk_tree_drag_source_drag_data_get __attribute((visibility("hidden")));
 #define btk_tree_drag_source_drag_data_get IA__btk_tree_drag_source_drag_data_get
 
-extern __typeof (btk_tree_drag_source_get_type) IA__btk_tree_drag_source_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_drag_source_get_type) IA__btk_tree_drag_source_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_drag_source_get_type IA__btk_tree_drag_source_get_type
 
 extern __typeof (btk_tree_drag_source_row_draggable) IA__btk_tree_drag_source_row_draggable __attribute((visibility("hidden")));
@@ -11066,7 +11066,7 @@ extern __typeof (btk_tree_item_deselect) IA__btk_tree_item_deselect __attribute(
 extern __typeof (btk_tree_item_expand) IA__btk_tree_item_expand __attribute((visibility("hidden")));
 #define btk_tree_item_expand IA__btk_tree_item_expand
 
-extern __typeof (btk_tree_item_get_type) IA__btk_tree_item_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_item_get_type) IA__btk_tree_item_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_item_get_type IA__btk_tree_item_get_type
 
 extern __typeof (btk_tree_item_new) IA__btk_tree_item_new __attribute((visibility("hidden")));
@@ -11094,7 +11094,7 @@ extern __typeof (btk_tree_iter_copy) IA__btk_tree_iter_copy __attribute((visibil
 extern __typeof (btk_tree_iter_free) IA__btk_tree_iter_free __attribute((visibility("hidden")));
 #define btk_tree_iter_free IA__btk_tree_iter_free
 
-extern __typeof (btk_tree_iter_get_type) IA__btk_tree_iter_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_iter_get_type) IA__btk_tree_iter_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_iter_get_type IA__btk_tree_iter_get_type
 
 extern __typeof (btk_tree_model_foreach) IA__btk_tree_model_foreach __attribute((visibility("hidden")));
@@ -11127,7 +11127,7 @@ extern __typeof (btk_tree_model_get_path) IA__btk_tree_model_get_path __attribut
 extern __typeof (btk_tree_model_get_string_from_iter) IA__btk_tree_model_get_string_from_iter __attribute((visibility("hidden")));
 #define btk_tree_model_get_string_from_iter IA__btk_tree_model_get_string_from_iter
 
-extern __typeof (btk_tree_model_get_type) IA__btk_tree_model_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_model_get_type) IA__btk_tree_model_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_model_get_type IA__btk_tree_model_get_type
 
 extern __typeof (btk_tree_model_get_valist) IA__btk_tree_model_get_valist __attribute((visibility("hidden")));
@@ -11199,7 +11199,7 @@ extern __typeof (btk_tree_path_get_indices) IA__btk_tree_path_get_indices __attr
 extern __typeof (btk_tree_path_get_indices_with_depth) IA__btk_tree_path_get_indices_with_depth __attribute((visibility("hidden")));
 #define btk_tree_path_get_indices_with_depth IA__btk_tree_path_get_indices_with_depth
 
-extern __typeof (btk_tree_path_get_type) IA__btk_tree_path_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_path_get_type) IA__btk_tree_path_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_path_get_type IA__btk_tree_path_get_type
 
 extern __typeof (btk_tree_path_is_ancestor) IA__btk_tree_path_is_ancestor __attribute((visibility("hidden")));
@@ -11250,7 +11250,7 @@ extern __typeof (btk_tree_row_reference_get_model) IA__btk_tree_row_reference_ge
 extern __typeof (btk_tree_row_reference_get_path) IA__btk_tree_row_reference_get_path __attribute((visibility("hidden")));
 #define btk_tree_row_reference_get_path IA__btk_tree_row_reference_get_path
 
-extern __typeof (btk_tree_row_reference_get_type) IA__btk_tree_row_reference_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_row_reference_get_type) IA__btk_tree_row_reference_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_row_reference_get_type IA__btk_tree_row_reference_get_type
 
 extern __typeof (btk_tree_row_reference_inserted) IA__btk_tree_row_reference_inserted __attribute((visibility("hidden")));
@@ -11290,7 +11290,7 @@ extern __typeof (btk_tree_model_sort_convert_path_to_child_path) IA__btk_tree_mo
 extern __typeof (btk_tree_model_sort_get_model) IA__btk_tree_model_sort_get_model __attribute((visibility("hidden")));
 #define btk_tree_model_sort_get_model IA__btk_tree_model_sort_get_model
 
-extern __typeof (btk_tree_model_sort_get_type) IA__btk_tree_model_sort_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_model_sort_get_type) IA__btk_tree_model_sort_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_model_sort_get_type IA__btk_tree_model_sort_get_type
 
 extern __typeof (btk_tree_model_sort_iter_is_valid) IA__btk_tree_model_sort_iter_is_valid __attribute((visibility("hidden")));
@@ -11324,7 +11324,7 @@ extern __typeof (btk_tree_model_filter_convert_path_to_child_path) IA__btk_tree_
 extern __typeof (btk_tree_model_filter_get_model) IA__btk_tree_model_filter_get_model __attribute((visibility("hidden")));
 #define btk_tree_model_filter_get_model IA__btk_tree_model_filter_get_model
 
-extern __typeof (btk_tree_model_filter_get_type) IA__btk_tree_model_filter_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_model_filter_get_type) IA__btk_tree_model_filter_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_model_filter_get_type IA__btk_tree_model_filter_get_type
 
 extern __typeof (btk_tree_model_filter_new) IA__btk_tree_model_filter_new __attribute((visibility("hidden")));
@@ -11364,7 +11364,7 @@ extern __typeof (btk_tree_selection_get_selected_rows) IA__btk_tree_selection_ge
 extern __typeof (btk_tree_selection_get_tree_view) IA__btk_tree_selection_get_tree_view __attribute((visibility("hidden")));
 #define btk_tree_selection_get_tree_view IA__btk_tree_selection_get_tree_view
 
-extern __typeof (btk_tree_selection_get_type) IA__btk_tree_selection_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_selection_get_type) IA__btk_tree_selection_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_selection_get_type IA__btk_tree_selection_get_type
 
 extern __typeof (btk_tree_selection_get_user_data) IA__btk_tree_selection_get_user_data __attribute((visibility("hidden")));
@@ -11416,7 +11416,7 @@ extern __typeof (btk_tree_selection_unselect_range) IA__btk_tree_selection_unsel
 extern __typeof (btk_tree_sortable_get_sort_column_id) IA__btk_tree_sortable_get_sort_column_id __attribute((visibility("hidden")));
 #define btk_tree_sortable_get_sort_column_id IA__btk_tree_sortable_get_sort_column_id
 
-extern __typeof (btk_tree_sortable_get_type) IA__btk_tree_sortable_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_sortable_get_type) IA__btk_tree_sortable_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_sortable_get_type IA__btk_tree_sortable_get_type
 
 extern __typeof (btk_tree_sortable_has_default_sort_func) IA__btk_tree_sortable_has_default_sort_func __attribute((visibility("hidden")));
@@ -11444,7 +11444,7 @@ extern __typeof (btk_tree_store_append) IA__btk_tree_store_append __attribute((v
 extern __typeof (btk_tree_store_clear) IA__btk_tree_store_clear __attribute((visibility("hidden")));
 #define btk_tree_store_clear IA__btk_tree_store_clear
 
-extern __typeof (btk_tree_store_get_type) IA__btk_tree_store_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_store_get_type) IA__btk_tree_store_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_store_get_type IA__btk_tree_store_get_type
 
 extern __typeof (btk_tree_store_insert) IA__btk_tree_store_insert __attribute((visibility("hidden")));
@@ -11591,7 +11591,7 @@ extern __typeof (btk_tree_view_column_get_title) IA__btk_tree_view_column_get_ti
 extern __typeof (btk_tree_view_column_get_tree_view) IA__btk_tree_view_column_get_tree_view __attribute((visibility("hidden")));
 #define btk_tree_view_column_get_tree_view IA__btk_tree_view_column_get_tree_view
 
-extern __typeof (btk_tree_view_column_get_type) IA__btk_tree_view_column_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_column_get_type) IA__btk_tree_view_column_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_column_get_type IA__btk_tree_view_column_get_type
 
 extern __typeof (btk_tree_view_column_get_visible) IA__btk_tree_view_column_get_visible __attribute((visibility("hidden")));
@@ -11606,7 +11606,7 @@ extern __typeof (btk_tree_view_column_get_width) IA__btk_tree_view_column_get_wi
 extern __typeof (btk_tree_view_column_new) IA__btk_tree_view_column_new __attribute((visibility("hidden")));
 #define btk_tree_view_column_new IA__btk_tree_view_column_new
 
-extern __typeof (btk_tree_view_column_new_with_attributes) IA__btk_tree_view_column_new_with_attributes __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_tree_view_column_new_with_attributes) IA__btk_tree_view_column_new_with_attributes __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_tree_view_column_new_with_attributes IA__btk_tree_view_column_new_with_attributes
 
 extern __typeof (btk_tree_view_column_pack_end) IA__btk_tree_view_column_pack_end __attribute((visibility("hidden")));
@@ -11820,7 +11820,7 @@ extern __typeof (btk_tree_view_get_tooltip_column) IA__btk_tree_view_get_tooltip
 extern __typeof (btk_tree_view_get_tooltip_context) IA__btk_tree_view_get_tooltip_context __attribute((visibility("hidden")));
 #define btk_tree_view_get_tooltip_context IA__btk_tree_view_get_tooltip_context
 
-extern __typeof (btk_tree_view_get_type) IA__btk_tree_view_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_tree_view_get_type) IA__btk_tree_view_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_tree_view_get_type IA__btk_tree_view_get_type
 
 extern __typeof (btk_tree_view_get_vadjustment) IA__btk_tree_view_get_vadjustment __attribute((visibility("hidden")));
@@ -11835,7 +11835,7 @@ extern __typeof (btk_tree_view_get_visible_rect) IA__btk_tree_view_get_visible_r
 extern __typeof (btk_tree_view_insert_column) IA__btk_tree_view_insert_column __attribute((visibility("hidden")));
 #define btk_tree_view_insert_column IA__btk_tree_view_insert_column
 
-extern __typeof (btk_tree_view_insert_column_with_attributes) IA__btk_tree_view_insert_column_with_attributes __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_tree_view_insert_column_with_attributes) IA__btk_tree_view_insert_column_with_attributes __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_tree_view_insert_column_with_attributes IA__btk_tree_view_insert_column_with_attributes
 
 extern __typeof (btk_tree_view_insert_column_with_data_func) IA__btk_tree_view_insert_column_with_data_func __attribute((visibility("hidden")));
@@ -11984,7 +11984,7 @@ extern __typeof (btk_tree_view_columns_autosize) IA__btk_tree_view_columns_autos
 #endif
 #if IN_HEADER(__BTK_TYPE_UTILS_H__)
 #if IN_FILE(__BTK_TYPE_UTILS_C__)
-extern __typeof (btk_identifier_get_type) IA__btk_identifier_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_identifier_get_type) IA__btk_identifier_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_identifier_get_type IA__btk_identifier_get_type
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -12051,7 +12051,7 @@ extern __typeof (btk_ui_manager_get_add_tearoffs) IA__btk_ui_manager_get_add_tea
 extern __typeof (btk_ui_manager_get_toplevels) IA__btk_ui_manager_get_toplevels __attribute((visibility("hidden")));
 #define btk_ui_manager_get_toplevels IA__btk_ui_manager_get_toplevels
 
-extern __typeof (btk_ui_manager_get_type) IA__btk_ui_manager_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_ui_manager_get_type) IA__btk_ui_manager_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_ui_manager_get_type IA__btk_ui_manager_get_type
 
 extern __typeof (btk_ui_manager_get_ui) IA__btk_ui_manager_get_ui __attribute((visibility("hidden")));
@@ -12082,7 +12082,7 @@ extern __typeof (btk_ui_manager_set_add_tearoffs) IA__btk_ui_manager_set_add_tea
 #endif
 #if IN_HEADER(__BTK_VBOX_H__)
 #if IN_FILE(__BTK_VBOX_C__)
-extern __typeof (btk_vbox_get_type) IA__btk_vbox_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vbox_get_type) IA__btk_vbox_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vbox_get_type IA__btk_vbox_get_type
 
 extern __typeof (btk_vbox_new) IA__btk_vbox_new __attribute((visibility("hidden")));
@@ -12106,7 +12106,7 @@ extern __typeof (btk_vbutton_box_set_spacing_default) IA__btk_vbutton_box_set_sp
 #define btk_vbutton_box_set_spacing_default IA__btk_vbutton_box_set_spacing_default
 
 #endif
-extern __typeof (btk_vbutton_box_get_type) IA__btk_vbutton_box_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vbutton_box_get_type) IA__btk_vbutton_box_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vbutton_box_get_type IA__btk_vbutton_box_get_type
 
 extern __typeof (btk_vbutton_box_new) IA__btk_vbutton_box_new __attribute((visibility("hidden")));
@@ -12122,7 +12122,7 @@ extern __typeof (btk_viewport_get_hadjustment) IA__btk_viewport_get_hadjustment 
 extern __typeof (btk_viewport_get_shadow_type) IA__btk_viewport_get_shadow_type __attribute((visibility("hidden")));
 #define btk_viewport_get_shadow_type IA__btk_viewport_get_shadow_type
 
-extern __typeof (btk_viewport_get_type) IA__btk_viewport_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_viewport_get_type) IA__btk_viewport_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_viewport_get_type IA__btk_viewport_get_type
 
 extern __typeof (btk_viewport_get_vadjustment) IA__btk_viewport_get_vadjustment __attribute((visibility("hidden")));
@@ -12150,7 +12150,7 @@ extern __typeof (btk_viewport_set_vadjustment) IA__btk_viewport_set_vadjustment 
 #endif
 #if IN_HEADER(__BTK_VOLUME_BUTTON_H__)
 #if IN_FILE(__BTK_VOLUME_BUTTON_C__)
-extern __typeof (btk_volume_button_get_type) IA__btk_volume_button_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_volume_button_get_type) IA__btk_volume_button_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_volume_button_get_type IA__btk_volume_button_get_type
 
 extern __typeof (btk_volume_button_new) IA__btk_volume_button_new __attribute((visibility("hidden")));
@@ -12160,7 +12160,7 @@ extern __typeof (btk_volume_button_new) IA__btk_volume_button_new __attribute((v
 #endif
 #if IN_HEADER(__BTK_VPANED_H__)
 #if IN_FILE(__BTK_VPANED_C__)
-extern __typeof (btk_vpaned_get_type) IA__btk_vpaned_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vpaned_get_type) IA__btk_vpaned_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vpaned_get_type IA__btk_vpaned_get_type
 
 extern __typeof (btk_vpaned_new) IA__btk_vpaned_new __attribute((visibility("hidden")));
@@ -12171,7 +12171,7 @@ extern __typeof (btk_vpaned_new) IA__btk_vpaned_new __attribute((visibility("hid
 #if IN_HEADER(__BTK_VRULER_H__)
 #if IN_FILE(__BTK_VRULER_C__)
 #ifndef BTK_DISABLE_DEPRECATED
-extern __typeof (btk_vruler_get_type) IA__btk_vruler_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vruler_get_type) IA__btk_vruler_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vruler_get_type IA__btk_vruler_get_type
 
 extern __typeof (btk_vruler_new) IA__btk_vruler_new __attribute((visibility("hidden")));
@@ -12182,7 +12182,7 @@ extern __typeof (btk_vruler_new) IA__btk_vruler_new __attribute((visibility("hid
 #endif
 #if IN_HEADER(__BTK_VSCALE_H__)
 #if IN_FILE(__BTK_VSCALE_C__)
-extern __typeof (btk_vscale_get_type) IA__btk_vscale_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vscale_get_type) IA__btk_vscale_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vscale_get_type IA__btk_vscale_get_type
 
 extern __typeof (btk_vscale_new) IA__btk_vscale_new __attribute((visibility("hidden")));
@@ -12195,7 +12195,7 @@ extern __typeof (btk_vscale_new_with_range) IA__btk_vscale_new_with_range __attr
 #endif
 #if IN_HEADER(__BTK_VSCROLLBAR_H__)
 #if IN_FILE(__BTK_VSCROLLBAR_C__)
-extern __typeof (btk_vscrollbar_get_type) IA__btk_vscrollbar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vscrollbar_get_type) IA__btk_vscrollbar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vscrollbar_get_type IA__btk_vscrollbar_get_type
 
 extern __typeof (btk_vscrollbar_new) IA__btk_vscrollbar_new __attribute((visibility("hidden")));
@@ -12205,7 +12205,7 @@ extern __typeof (btk_vscrollbar_new) IA__btk_vscrollbar_new __attribute((visibil
 #endif
 #if IN_HEADER(__BTK_VSEPARATOR_H__)
 #if IN_FILE(__BTK_VSEPARATOR_C__)
-extern __typeof (btk_vseparator_get_type) IA__btk_vseparator_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_vseparator_get_type) IA__btk_vseparator_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_vseparator_get_type IA__btk_vseparator_get_type
 
 extern __typeof (btk_vseparator_new) IA__btk_vseparator_new __attribute((visibility("hidden")));
@@ -12221,7 +12221,7 @@ extern __typeof (btk_requisition_copy) IA__btk_requisition_copy __attribute((vis
 extern __typeof (btk_requisition_free) IA__btk_requisition_free __attribute((visibility("hidden")));
 #define btk_requisition_free IA__btk_requisition_free
 
-extern __typeof (btk_requisition_get_type) IA__btk_requisition_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_requisition_get_type) IA__btk_requisition_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_requisition_get_type IA__btk_requisition_get_type
 
 extern __typeof (btk_widget_activate) IA__btk_widget_activate __attribute((visibility("hidden")));
@@ -12407,7 +12407,7 @@ extern __typeof (btk_widget_get_tooltip_window) IA__btk_widget_get_tooltip_windo
 extern __typeof (btk_widget_get_toplevel) IA__btk_widget_get_toplevel __attribute((visibility("hidden")));
 #define btk_widget_get_toplevel IA__btk_widget_get_toplevel
 
-extern __typeof (btk_widget_get_type) IA__btk_widget_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_widget_get_type) IA__btk_widget_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_widget_get_type IA__btk_widget_get_type
 
 extern __typeof (btk_widget_get_visible) IA__btk_widget_get_visible __attribute((visibility("hidden")));
@@ -12697,7 +12697,7 @@ extern __typeof (btk_widget_size_request) IA__btk_widget_size_request __attribut
 extern __typeof (btk_widget_style_attach) IA__btk_widget_style_attach __attribute((visibility("hidden")));
 #define btk_widget_style_attach IA__btk_widget_style_attach
 
-extern __typeof (btk_widget_style_get) IA__btk_widget_style_get __attribute((visibility("hidden"))) G_GNUC_NULL_TERMINATED;
+extern __typeof (btk_widget_style_get) IA__btk_widget_style_get __attribute((visibility("hidden"))) B_GNUC_NULL_TERMINATED;
 #define btk_widget_style_get IA__btk_widget_style_get
 
 extern __typeof (btk_widget_style_get_property) IA__btk_widget_style_get_property __attribute((visibility("hidden")));
@@ -12875,7 +12875,7 @@ extern __typeof (btk_window_get_title) IA__btk_window_get_title __attribute((vis
 extern __typeof (btk_window_get_transient_for) IA__btk_window_get_transient_for __attribute((visibility("hidden")));
 #define btk_window_get_transient_for IA__btk_window_get_transient_for
 
-extern __typeof (btk_window_get_type) IA__btk_window_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_window_get_type) IA__btk_window_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_window_get_type IA__btk_window_get_type
 
 extern __typeof (btk_window_get_type_hint) IA__btk_window_get_type_hint __attribute((visibility("hidden")));
@@ -12887,7 +12887,7 @@ extern __typeof (btk_window_get_window_type) IA__btk_window_get_window_type __at
 extern __typeof (btk_window_group_add_window) IA__btk_window_group_add_window __attribute((visibility("hidden")));
 #define btk_window_group_add_window IA__btk_window_group_add_window
 
-extern __typeof (btk_window_group_get_type) IA__btk_window_group_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_window_group_get_type) IA__btk_window_group_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_window_group_get_type IA__btk_window_group_get_type
 
 extern __typeof (btk_window_group_new) IA__btk_window_group_new __attribute((visibility("hidden")));
@@ -13120,7 +13120,7 @@ extern __typeof (btk_window_unstick) IA__btk_window_unstick __attribute((visibil
 #if IN_HEADER(__BTK_WIN32_EMBED_WIDGET_H__)
 #if IN_FILE(__BTK_WIN32_EMBED_WIDGET_C__)
 #ifdef G_OS_WIN32
-extern __typeof (btk_win32_embed_widget_get_type) IA__btk_win32_embed_widget_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_win32_embed_widget_get_type) IA__btk_win32_embed_widget_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_win32_embed_widget_get_type IA__btk_win32_embed_widget_get_type
 
 #endif
@@ -13128,7 +13128,7 @@ extern __typeof (btk_win32_embed_widget_get_type) IA__btk_win32_embed_widget_get
 #endif
 #if IN_HEADER(__BTK_INFO_BAR_H__)
 #if IN_FILE(__BTK_INFO_BAR_C__)
-extern __typeof (btk_info_bar_get_type) IA__btk_info_bar_get_type __attribute((visibility("hidden"))) G_GNUC_CONST;
+extern __typeof (btk_info_bar_get_type) IA__btk_info_bar_get_type __attribute((visibility("hidden"))) B_GNUC_CONST;
 #define btk_info_bar_get_type IA__btk_info_bar_get_type
 
 extern __typeof (btk_info_bar_new) IA__btk_info_bar_new __attribute((visibility("hidden")));
@@ -13169,5 +13169,5 @@ extern __typeof (btk_info_bar_get_message_type) IA__btk_info_bar_get_message_typ
 
 #endif
 #endif
-#endif /* G_HAVE_GNUC_VISIBILITY */
+#endif /* B_HAVE_GNUC_VISIBILITY */
 #endif /* DISABLE_VISIBILITY */

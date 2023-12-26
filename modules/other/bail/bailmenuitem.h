@@ -22,14 +22,14 @@
 
 #include <bail/bailitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_MENU_ITEM                     (bail_menu_item_get_type ())
-#define BAIL_MENU_ITEM(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_ITEM, BailMenuItem))
-#define BAIL_MENU_ITEM_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU_ITEM, BailMenuItemClass))
-#define BAIL_IS_MENU_ITEM(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU_ITEM))
-#define BAIL_IS_MENU_ITEM_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU_ITEM))
-#define BAIL_MENU_ITEM_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU_ITEM, BailMenuItemClass))
+#define BAIL_MENU_ITEM(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MENU_ITEM, BailMenuItem))
+#define BAIL_MENU_ITEM_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MENU_ITEM, BailMenuItemClass))
+#define BAIL_IS_MENU_ITEM(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MENU_ITEM))
+#define BAIL_IS_MENU_ITEM_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MENU_ITEM))
+#define BAIL_MENU_ITEM_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MENU_ITEM, BailMenuItemClass))
 
 typedef struct _BailMenuItem                   BailMenuItem;
 typedef struct _BailMenuItemClass              BailMenuItemClass;
@@ -38,9 +38,9 @@ struct _BailMenuItem
 {
   BailItem parent;
 
-  gchar    *click_keybinding;
-  gchar    *click_description;
-  guint    action_idle_handler;
+  bchar    *click_keybinding;
+  bchar    *click_description;
+  buint    action_idle_handler;
 };
 
 GType bail_menu_item_get_type (void);
@@ -52,6 +52,6 @@ struct _BailMenuItemClass
 
 BatkObject* bail_menu_item_new (BtkWidget *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_MENU_ITEM_H__ */

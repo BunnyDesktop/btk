@@ -126,7 +126,7 @@ to
 <span class="nf">icon_pressed_cb</span> <span class="p">(</span><span class="n">SexyIconEntry</span>         <span class="o">*</span><span class="n">entry</span><span class="p">,</span>
                  <span class="n">SexyIconEntryPosition</span>  <span class="n">position</span><span class="p">,</span>
                  <span class="kt">int</span>                    <span class="n">button</span><span class="p">,</span>
-                 <span class="n">gpointer</span>               <span class="n">data</span><span class="p">)</span>
+                 <span class="n">bpointer</span>               <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">BtkMenu</span> <span class="o">*</span><span class="n">menu</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
 
@@ -162,7 +162,7 @@ to
 <span class="nf">icon_press_cb</span> <span class="p">(</span><span class="n">BtkEntry</span>             <span class="o">*</span><span class="n">entry</span><span class="p">,</span>
                <span class="n">BtkEntryIconPosition</span>  <span class="n">position</span><span class="p">,</span>
                <span class="n">BdkEventButton</span>       <span class="o">*</span><span class="n">event</span><span class="p">,</span>
-               <span class="n">gpointer</span>              <span class="n">data</span><span class="p">)</span>
+               <span class="n">bpointer</span>              <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="n">BtkMenu</span> <span class="o">*</span><span class="n">menu</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
 
@@ -244,9 +244,9 @@ to
 36</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
 <span class="nf">icon_pressed_cb</span> <span class="p">(</span><span class="n">BtkEntry</span>       <span class="o">*</span><span class="n">entry</span><span class="p">,</span>
-                 <span class="n">gint</span>            <span class="n">position</span><span class="p">,</span>
+                 <span class="n">bint</span>            <span class="n">position</span><span class="p">,</span>
                  <span class="n">BdkEventButton</span> <span class="o">*</span><span class="n">event</span><span class="p">,</span>
-                 <span class="n">gpointer</span>        <span class="n">data</span><span class="p">)</span>
+                 <span class="n">bpointer</span>        <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">==</span> <span class="n">BTK_ENTRY_ICON_SECONDARY</span><span class="p">)</span>
     <span class="n">btk_entry_set_text</span> <span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
@@ -254,10 +254,10 @@ to
 
 <span class="k">static</span> <span class="kt">void</span>
 <span class="nf">text_changed_cb</span> <span class="p">(</span><span class="n">BtkEntry</span>   <span class="o">*</span><span class="n">entry</span><span class="p">,</span>
-                 <span class="n">GParamSpec</span> <span class="o">*</span><span class="n">pspec</span><span class="p">,</span>
+                 <span class="n">BParamSpec</span> <span class="o">*</span><span class="n">pspec</span><span class="p">,</span>
                  <span class="n">BtkWidget</span>  <span class="o">*</span><span class="n">button</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">gboolean</span> <span class="n">has_text</span><span class="p">;</span>
+  <span class="n">bboolean</span> <span class="n">has_text</span><span class="p">;</span>
 
   <span class="n">has_text</span> <span class="o">=</span> <span class="n">btk_entry_get_text_length</span> <span class="p">(</span><span class="n">entry</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
   <span class="n">btk_entry_set_icon_sensitive</span> <span class="p">(</span><span class="n">entry</span><span class="p">,</span>

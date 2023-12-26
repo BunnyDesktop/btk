@@ -23,14 +23,14 @@
 #include <bail/bailrange.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_SCALE                         (bail_scale_get_type ())
-#define BAIL_SCALE(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE, BailScale))
-#define BAIL_SCALE_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCALE, BailScaleClass))
-#define BAIL_IS_SCALE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCALE))
-#define BAIL_IS_SCALE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCALE))
-#define BAIL_SCALE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCALE, BailScaleClass))
+#define BAIL_SCALE(obj)                         (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE, BailScale))
+#define BAIL_SCALE_CLASS(klass)			(B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCALE, BailScaleClass))
+#define BAIL_IS_SCALE(obj)			(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCALE))
+#define BAIL_IS_SCALE_CLASS(klass)		(B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCALE))
+#define BAIL_SCALE_GET_CLASS(obj)		(B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCALE, BailScaleClass))
 
 typedef struct _BailScale		BailScale;
 typedef struct _BailScaleClass		BailScaleClass;
@@ -49,6 +49,6 @@ struct _BailScaleClass
   BailRangeClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_SCALE_H__ */

@@ -4,15 +4,15 @@
 /* Our new improved callback.  The data passed to this function
  * is printed to stdout. */
 static void callback (BtkWidget *widget,
-                      gpointer   data)
+                      bpointer   data)
 {
-    g_print ("Hello again - %s was pressed\n", (gchar *) data);
+    g_print ("Hello again - %s was pressed\n", (bchar *) data);
 }
 
 /* another callback */
-static gboolean delete_event (BtkWidget *widget,
+static bboolean delete_event (BtkWidget *widget,
                               BdkEvent  *event,
-                              gpointer   data)
+                              bpointer   data)
 {
     btk_main_quit ();
     return FALSE;

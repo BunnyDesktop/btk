@@ -50,18 +50,18 @@ static void bdk_x11_gc_set_values (BdkGC           *gc,
 				   BdkGCValues     *values,
 				   BdkGCValuesMask  values_mask);
 static void bdk_x11_gc_set_dashes (BdkGC           *gc,
-				   gint             dash_offset,
-				   gint8            dash_list[],
-				   gint             n);
+				   bint             dash_offset,
+				   bint8            dash_list[],
+				   bint             n);
 
-static void bdk_gc_x11_finalize   (GObject         *object);
+static void bdk_gc_x11_finalize   (BObject         *object);
 
 G_DEFINE_TYPE (BdkGCX11, _bdk_gc_x11, BDK_TYPE_GC)
 
 static void
 _bdk_gc_x11_class_init (BdkGCX11Class *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   object_class->finalize = bdk_gc_x11_finalize;
@@ -77,13 +77,13 @@ _bdk_gc_x11_init (BdkGCX11 *gc)
 }
 
 static void
-bdk_gc_x11_finalize (GObject *object)
+bdk_gc_x11_finalize (BObject *object)
 {
   BdkGCX11 *x11_gc = BDK_GC_X11 (object);
   
   XFreeGC (BDK_GC_XDISPLAY (x11_gc), BDK_GC_XGC (x11_gc));
 
-  G_OBJECT_CLASS (_bdk_gc_x11_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_gc_x11_parent_class)->finalize (object);
 }
 
 
@@ -163,7 +163,7 @@ _bdk_x11_gc_flush (BdkGC *gc)
       else
 	{
 	  XRectangle *rectangles;
-          gint n_rects;
+          bint n_rects;
 
           _bdk_rebunnyion_get_xrectangles (clip_rebunnyion,
                                        gc->clip_x_origin,
@@ -377,9 +377,9 @@ bdk_x11_gc_set_values (BdkGC           *gc,
 
 static void
 bdk_x11_gc_set_dashes (BdkGC *gc,
-		       gint   dash_offset,
-		       gint8  dash_list[],
-		       gint   n)
+		       bint   dash_offset,
+		       bint8  dash_list[],
+		       bint   n)
 {
   g_return_if_fail (BDK_IS_GC (gc));
   g_return_if_fail (dash_list != NULL);
@@ -609,7 +609,7 @@ bdk_x11_gc_values_to_xvalues (BdkGCValues    *values,
 void
 _bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
 				   const BdkRebunnyion *rebunnyion,
-				   gboolean reset_origin)
+				   bboolean reset_origin)
 {
   BdkGCX11 *x11_gc = BDK_GC_X11 (gc);
 

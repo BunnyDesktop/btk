@@ -54,7 +54,7 @@ static BtkActionEntry entries[] = {
     "BTK+",                                    /* tooltip */
     G_CALLBACK (activate_action) },
 };
-static guint n_entries = G_N_ELEMENTS (entries);
+static buint n_entries = G_N_ELEMENTS (entries);
 
 
 static BtkToggleActionEntry toggle_entries[] = {
@@ -64,7 +64,7 @@ static BtkToggleActionEntry toggle_entries[] = {
     G_CALLBACK (activate_action), 
     TRUE },                                    /* is_active */
 };
-static guint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
+static buint n_toggle_entries = G_N_ELEMENTS (toggle_entries);
 
 enum {
   COLOR_RED,
@@ -83,7 +83,7 @@ static BtkRadioActionEntry color_entries[] = {
     "_Blue", "<control>B",                     /* label, accelerator */     
     "Sky", COLOR_BLUE },                       /* tooltip, value */
 };
-static guint n_color_entries = G_N_ELEMENTS (color_entries);
+static buint n_color_entries = G_N_ELEMENTS (color_entries);
 
 enum {
   SHAPE_SQUARE,
@@ -102,9 +102,9 @@ static BtkRadioActionEntry shape_entries[] = {
     "_Oval", "<control>O",                     /* label, accelerator */     
     "Egg", SHAPE_OVAL },                       /* tooltip, value */  
 };
-static guint n_shape_entries = G_N_ELEMENTS (shape_entries);
+static buint n_shape_entries = G_N_ELEMENTS (shape_entries);
 
-static const gchar *ui_info = 
+static const bchar *ui_info = 
 "<ui>"
 "  <menubar name='MenuBar'>"
 "    <menu action='FileMenu'>"

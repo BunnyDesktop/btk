@@ -37,41 +37,41 @@ enum {
   LAST_SIGNAL
 };
 
-static void bdk_display_dispose    (GObject         *object);
-static void bdk_display_finalize   (GObject         *object);
+static void bdk_display_dispose    (BObject         *object);
+static void bdk_display_finalize   (BObject         *object);
 
 
 static void       singlehead_get_pointer (BdkDisplay       *display,
 					  BdkScreen       **screen,
-					  gint             *x,
-					  gint             *y,
+					  bint             *x,
+					  bint             *y,
 					  BdkModifierType  *mask);
 static BdkWindow* singlehead_window_get_pointer (BdkDisplay       *display,
 						 BdkWindow        *window,
-						 gint             *x,
-						 gint             *y,
+						 bint             *x,
+						 bint             *y,
 						 BdkModifierType  *mask);
 static BdkWindow* singlehead_window_at_pointer  (BdkDisplay       *display,
-						 gint             *win_x,
-						 gint             *win_y);
+						 bint             *win_x,
+						 bint             *win_y);
 
 static BdkWindow* singlehead_default_window_get_pointer (BdkWindow       *window,
-							 gint            *x,
-							 gint            *y,
+							 bint            *x,
+							 bint            *y,
 							 BdkModifierType *mask);
 static BdkWindow* singlehead_default_window_at_pointer  (BdkScreen       *screen,
-							 gint            *win_x,
-							 gint            *win_y);
+							 bint            *win_x,
+							 bint            *win_y);
 static BdkWindow *bdk_window_real_window_get_pointer     (BdkDisplay       *display,
                                                           BdkWindow        *window,
-                                                          gint             *x,
-                                                          gint             *y,
+                                                          bint             *x,
+                                                          bint             *y,
                                                           BdkModifierType  *mask);
 static BdkWindow *bdk_display_real_get_window_at_pointer (BdkDisplay       *display,
-                                                          gint             *win_x,
-                                                          gint             *win_y);
+                                                          bint             *win_x,
+                                                          bint             *win_y);
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
 static char *bdk_sm_client_id;
 
@@ -94,12 +94,12 @@ static const BdkPointerHooks singlehead_default_pointer_hooks = {
 
 static const BdkPointerHooks *singlehead_current_pointer_hooks = &singlehead_default_pointer_hooks;
 
-G_DEFINE_TYPE (BdkDisplay, bdk_display, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDisplay, bdk_display, B_TYPE_OBJECT)
 
 static void
 bdk_display_class_init (BdkDisplayClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   
   object_class->finalize = bdk_display_finalize;
   object_class->dispose = bdk_display_dispose;
@@ -116,20 +116,20 @@ bdk_display_class_init (BdkDisplayClass *class)
    */   
   signals[CLOSED] =
     g_signal_new (g_intern_static_string ("closed"),
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkDisplayClass, closed),
 		  NULL, NULL,
 		  _bdk_marshal_VOID__BOOLEAN,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  1,
-		  G_TYPE_BOOLEAN);
+		  B_TYPE_BOOLEAN);
 }
 
 static void
 bdk_display_init (BdkDisplay *display)
 {
-  _bdk_displays = g_slist_prepend (_bdk_displays, display);
+  _bdk_displays = b_slist_prepend (_bdk_displays, display);
 
   display->button_click_time[0] = display->button_click_time[1] = 0;
   display->button_window[0] = display->button_window[1] = NULL;
@@ -144,7 +144,7 @@ bdk_display_init (BdkDisplay *display)
 }
 
 static void
-bdk_display_dispose (GObject *object)
+bdk_display_dispose (BObject *object)
 {
   BdkDisplay *display = BDK_DISPLAY_OBJECT (object);
 
@@ -153,7 +153,7 @@ bdk_display_dispose (GObject *object)
   display->queued_events = NULL;
   display->queued_tail = NULL;
 
-  _bdk_displays = g_slist_remove (_bdk_displays, object);
+  _bdk_displays = b_slist_remove (_bdk_displays, object);
 
   if (bdk_display_get_default() == display)
     {
@@ -165,13 +165,13 @@ bdk_display_dispose (GObject *object)
                                                  NULL);
     }
 
-  G_OBJECT_CLASS (bdk_display_parent_class)->dispose (object);
+  B_OBJECT_CLASS (bdk_display_parent_class)->dispose (object);
 }
 
 static void
-bdk_display_finalize (GObject *object)
+bdk_display_finalize (BObject *object)
 {
-  G_OBJECT_CLASS (bdk_display_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_display_parent_class)->finalize (object);
 }
 
 /**
@@ -193,7 +193,7 @@ bdk_display_close (BdkDisplay *display)
       display->closed = TRUE;
       
       g_signal_emit (display, signals[CLOSED], 0, FALSE);
-      g_object_run_dispose (G_OBJECT (display));
+      g_object_run_dispose (B_OBJECT (display));
       
       g_object_unref (display);
     }
@@ -209,7 +209,7 @@ bdk_display_close (BdkDisplay *display)
  *
  * Since: 2.22
  */
-gboolean
+bboolean
 bdk_display_is_closed  (BdkDisplay  *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -299,7 +299,7 @@ bdk_display_put_event (BdkDisplay     *display,
  * application.
  **/
 void
-bdk_pointer_ungrab (guint32 time)
+bdk_pointer_ungrab (buint32 time)
 {
   bdk_display_pointer_ungrab (bdk_display_get_default (), time);
 }
@@ -315,7 +315,7 @@ bdk_pointer_ungrab (guint32 time)
 
  * Return value: %TRUE if the pointer is currently grabbed by this application.* 
  **/
-gboolean
+bboolean
 bdk_pointer_is_grabbed (void)
 {
   return bdk_display_pointer_is_grabbed (bdk_display_get_default ());
@@ -330,7 +330,7 @@ bdk_pointer_is_grabbed (void)
  * application.
  **/
 void
-bdk_keyboard_ungrab (guint32 time)
+bdk_keyboard_ungrab (buint32 time)
 {
   bdk_display_keyboard_ungrab (bdk_display_get_default (), time);
 }
@@ -358,7 +358,7 @@ bdk_beep (void)
  * 
  * Return value: non-zero on success.
  **/
-gboolean
+bboolean
 bdk_event_send_client_message (BdkEvent        *event,
 			       BdkNativeWindow  winid)
 {
@@ -436,7 +436,7 @@ bdk_display_get_core_pointer (BdkDisplay *display)
  * Deprecated:2.24: Use bdk_x11_set_sm_client_id() instead
  **/
 void
-bdk_set_sm_client_id (const gchar* sm_client_id)
+bdk_set_sm_client_id (const bchar* sm_client_id)
 {
   GSList *displays, *tmp_list;
   
@@ -447,7 +447,7 @@ bdk_set_sm_client_id (const gchar* sm_client_id)
   for (tmp_list = displays; tmp_list; tmp_list = tmp_list->next)
     _bdk_windowing_display_set_sm_client_id (tmp_list->data, sm_client_id);
 
-  g_slist_free (displays);
+  b_slist_free (displays);
 }
 
 /**
@@ -467,7 +467,7 @@ _bdk_get_sm_client_id (void)
 void
 _bdk_display_enable_motion_hints (BdkDisplay *display)
 {
-  gulong serial;
+  bulong serial;
   
   if (display->pointer_info.motion_hint_serial != 0)
     {
@@ -500,12 +500,12 @@ _bdk_display_enable_motion_hints (BdkDisplay *display)
 void
 bdk_display_get_pointer (BdkDisplay      *display,
 			 BdkScreen      **screen,
-			 gint            *x,
-			 gint            *y,
+			 bint            *x,
+			 bint            *y,
 			 BdkModifierType *mask)
 {
   BdkScreen *tmp_screen;
-  gint tmp_x, tmp_y;
+  bint tmp_x, tmp_y;
   BdkModifierType tmp_mask;
   
   g_return_if_fail (BDK_IS_DISPLAY (display));
@@ -524,11 +524,11 @@ bdk_display_get_pointer (BdkDisplay      *display,
 
 static BdkWindow *
 bdk_display_real_get_window_at_pointer (BdkDisplay *display,
-                                        gint       *win_x,
-                                        gint       *win_y)
+                                        bint       *win_x,
+                                        bint       *win_y)
 {
   BdkWindow *window;
-  gint x, y;
+  bint x, y;
 
   window = _bdk_windowing_window_at_pointer (display, &x, &y, NULL, FALSE);
 
@@ -554,14 +554,14 @@ bdk_display_real_get_window_at_pointer (BdkDisplay *display,
 static BdkWindow *
 bdk_window_real_window_get_pointer (BdkDisplay       *display,
                                     BdkWindow        *window,
-                                    gint             *x,
-                                    gint             *y,
+                                    bint             *x,
+                                    bint             *y,
                                     BdkModifierType  *mask)
 {
   BdkWindowObject *private;
-  gint tmpx, tmpy;
+  bint tmpx, tmpy;
   BdkModifierType tmp_mask;
-  gboolean normal_child;
+  bboolean normal_child;
 
   private = (BdkWindowObject *) window;
 
@@ -603,10 +603,10 @@ bdk_window_real_window_get_pointer (BdkDisplay       *display,
  **/
 BdkWindow *
 bdk_display_get_window_at_pointer (BdkDisplay *display,
-				   gint       *win_x,
-				   gint       *win_y)
+				   bint       *win_x,
+				   bint       *win_y)
 {
-  gint tmp_x, tmp_y;
+  bint tmp_x, tmp_y;
   BdkWindow *window;
 
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
@@ -660,8 +660,8 @@ bdk_display_set_pointer_hooks (BdkDisplay                   *display,
 static void
 singlehead_get_pointer (BdkDisplay       *display,
 			BdkScreen       **screen,
-			gint             *x,
-			gint             *y,
+			bint             *x,
+			bint             *y,
 			BdkModifierType  *mask)
 {
   BdkScreen *default_screen = bdk_display_get_default_screen (display);
@@ -675,8 +675,8 @@ singlehead_get_pointer (BdkDisplay       *display,
 static BdkWindow*
 singlehead_window_get_pointer (BdkDisplay       *display,
 			       BdkWindow        *window,
-			       gint             *x,
-			       gint             *y,
+			       bint             *x,
+			       bint             *y,
 			       BdkModifierType  *mask)
 {
   return singlehead_current_pointer_hooks->get_pointer (window, x, y, mask);
@@ -684,8 +684,8 @@ singlehead_window_get_pointer (BdkDisplay       *display,
 
 static BdkWindow*
 singlehead_window_at_pointer   (BdkDisplay *display,
-				gint       *win_x,
-				gint       *win_y)
+				bint       *win_x,
+				bint       *win_y)
 {
   BdkScreen *default_screen = bdk_display_get_default_screen (display);
 
@@ -695,8 +695,8 @@ singlehead_window_at_pointer   (BdkDisplay *display,
 
 static BdkWindow*
 singlehead_default_window_get_pointer (BdkWindow       *window,
-				       gint            *x,
-				       gint            *y,
+				       bint            *x,
+				       bint            *y,
 				       BdkModifierType *mask)
 {
   return bdk_window_real_window_get_pointer (bdk_drawable_get_display (window),
@@ -705,8 +705,8 @@ singlehead_default_window_get_pointer (BdkWindow       *window,
 
 static BdkWindow*
 singlehead_default_window_at_pointer  (BdkScreen       *screen,
-				       gint            *win_x,
-				       gint            *win_y)
+				       bint            *win_x,
+				       bint            *win_y)
 {
   return bdk_display_real_get_window_at_pointer (bdk_screen_get_display (screen),
                                                  win_x, win_y);
@@ -749,8 +749,8 @@ bdk_set_pointer_hooks (const BdkPointerHooks *new_hooks)
 
 static void
 generate_grab_broken_event (BdkWindow *window,
-			    gboolean   keyboard,
-			    gboolean   implicit,
+			    bboolean   keyboard,
+			    bboolean   implicit,
 			    BdkWindow *grab_window)
 {
   g_return_if_fail (window != NULL);
@@ -786,11 +786,11 @@ BdkPointerGrabInfo *
 _bdk_display_add_pointer_grab (BdkDisplay *display,
 			       BdkWindow *window,
 			       BdkWindow *native_window,
-			       gboolean owner_events,
+			       bboolean owner_events,
 			       BdkEventMask event_mask,
 			       unsigned long serial_start,
-			       guint32 time,
-			       gboolean implicit)
+			       buint32 time,
+			       bboolean implicit)
 {
   BdkPointerGrabInfo *info, *other_info;
   GList *l;
@@ -800,7 +800,7 @@ _bdk_display_add_pointer_grab (BdkDisplay *display,
   info->window = g_object_ref (window);
   info->native_window = g_object_ref (native_window);
   info->serial_start = serial_start;
-  info->serial_end = G_MAXULONG;
+  info->serial_end = B_MAXULONG;
   info->owner_events = owner_events;
   info->event_mask = event_mask;
   info->time = time;
@@ -854,8 +854,8 @@ synthesize_crossing_events (BdkDisplay *display,
 			    BdkWindow *src_window,
 			    BdkWindow *dest_window,
 			    BdkCrossingMode crossing_mode,
-			    guint32 time,
-			    gulong serial)
+			    buint32 time,
+			    bulong serial)
 {
   BdkWindow *src_toplevel, *dest_toplevel;
   BdkModifierType state;
@@ -957,8 +957,8 @@ static void
 switch_to_pointer_grab (BdkDisplay *display,
 			BdkPointerGrabInfo *grab,
 			BdkPointerGrabInfo *last_grab,
-			guint32 time,
-			gulong serial)
+			buint32 time,
+			bulong serial)
 {
   BdkWindow *src_window, *pointer_window, *new_toplevel;
   GList *old_grabs;
@@ -1056,10 +1056,10 @@ switch_to_pointer_grab (BdkDisplay *display,
 
 void
 _bdk_display_pointer_grab_update (BdkDisplay *display,
-				  gulong current_serial)
+				  bulong current_serial)
 {
   BdkPointerGrabInfo *current_grab, *next_grab;
-  guint32 time;
+  buint32 time;
   
   time = display->last_event_time;
 
@@ -1113,7 +1113,7 @@ _bdk_display_pointer_grab_update (BdkDisplay *display,
 
 static GList *
 find_pointer_grab (BdkDisplay *display,
-		   gulong serial)
+		   bulong serial)
 {
   BdkPointerGrabInfo *grab;
   GList *l;
@@ -1133,7 +1133,7 @@ find_pointer_grab (BdkDisplay *display,
 
 BdkPointerGrabInfo *
 _bdk_display_has_pointer_grab (BdkDisplay *display,
-			       gulong serial)
+			       bulong serial)
 {
   GList *l;
 
@@ -1147,11 +1147,11 @@ _bdk_display_has_pointer_grab (BdkDisplay *display,
 /* Returns true if last grab was ended
  * If if_child is non-NULL, end the grab only if the grabbed
  * window is the same as if_child or a descendant of it */
-gboolean
+bboolean
 _bdk_display_end_pointer_grab (BdkDisplay *display,
-			       gulong serial,
+			       bulong serial,
 			       BdkWindow *if_child,
-			       gboolean implicit)
+			       bboolean implicit)
 {
   BdkPointerGrabInfo *grab;
   GList *l;
@@ -1178,9 +1178,9 @@ void
 _bdk_display_set_has_keyboard_grab (BdkDisplay *display,
 				    BdkWindow *window,
 				    BdkWindow *native_window,
-				    gboolean owner_events,
+				    bboolean owner_events,
 				    unsigned long serial,
-				    guint32 time)
+				    buint32 time)
 {
   if (display->keyboard_grab.window != NULL &&
       display->keyboard_grab.window != window)
@@ -1196,7 +1196,7 @@ _bdk_display_set_has_keyboard_grab (BdkDisplay *display,
 
 void
 _bdk_display_unset_has_keyboard_grab (BdkDisplay *display,
-				      gboolean implicit)
+				      bboolean implicit)
 {
   if (implicit)
     generate_grab_broken_event (display->keyboard_grab.window,
@@ -1217,10 +1217,10 @@ _bdk_display_unset_has_keyboard_grab (BdkDisplay *display,
  * Return value: %TRUE if this application currently has the
  *  keyboard grabbed.
  **/
-gboolean
+bboolean
 bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
 				    BdkWindow **grab_window,
-				    gboolean   *owner_events)
+				    bboolean   *owner_events)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
@@ -1250,10 +1250,10 @@ bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
  * Return value: %TRUE if this application currently has the
  *  pointer grabbed.
  **/
-gboolean
+bboolean
 bdk_pointer_grab_info_libbtk_only (BdkDisplay *display,
 				   BdkWindow **grab_window,
-				   gboolean   *owner_events)
+				   bboolean   *owner_events)
 {
   BdkPointerGrabInfo *info;
   
@@ -1288,7 +1288,7 @@ bdk_pointer_grab_info_libbtk_only (BdkDisplay *display,
  *
  * Since: 2.2
  */
-gboolean
+bboolean
 bdk_display_pointer_is_grabbed (BdkDisplay *display)
 {
   BdkPointerGrabInfo *info;

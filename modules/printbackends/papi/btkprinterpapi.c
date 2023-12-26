@@ -23,7 +23,7 @@
 
 static void btk_printer_papi_init       (BtkPrinterPapi      *printer);
 static void btk_printer_papi_class_init (BtkPrinterPapiClass *class);
-static void btk_printer_papi_finalize   (GObject             *object);
+static void btk_printer_papi_finalize   (BObject             *object);
 
 static BtkPrinterClass *btk_printer_papi_parent_class;
 static GType btk_printer_papi_type = 0;
@@ -59,7 +59,7 @@ btk_printer_papi_get_type (void)
 static void
 btk_printer_papi_class_init (BtkPrinterPapiClass *class)
 {
-  GObjectClass *object_class = (GObjectClass *) class;
+  BObjectClass *object_class = (BObjectClass *) class;
 	
   btk_printer_papi_parent_class = g_type_class_peek_parent (class);
 
@@ -73,7 +73,7 @@ btk_printer_papi_init (BtkPrinterPapi *printer)
 }
 
 static void
-btk_printer_papi_finalize (GObject *object)
+btk_printer_papi_finalize (BObject *object)
 {
   BtkPrinterPapi *printer;
 
@@ -83,7 +83,7 @@ btk_printer_papi_finalize (GObject *object)
 
   g_free(printer->printer_name);
 
-  G_OBJECT_CLASS (btk_printer_papi_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_printer_papi_parent_class)->finalize (object);
 }
 
 /**
@@ -99,7 +99,7 @@ BtkPrinterPapi *
 btk_printer_papi_new (const char      *name,
 		      BtkPrintBackend *backend)
 {
-  GObject *result;
+  BObject *result;
   BtkPrinterPapi *pp;
   
   result = g_object_new (BTK_TYPE_PRINTER_PAPI,

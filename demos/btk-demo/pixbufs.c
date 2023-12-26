@@ -43,7 +43,7 @@ static BdkPixbuf *frame;
 
 /* Background image */
 static BdkPixbuf *background;
-static gint back_width, back_height;
+static bint back_width, back_height;
 
 /* Images */
 static BdkPixbuf *images[N_IMAGES];
@@ -52,10 +52,10 @@ static BdkPixbuf *images[N_IMAGES];
 static BtkWidget *da;
 
 /* Loads the images for the demo and returns whether the operation succeeded */
-static gboolean
+static bboolean
 load_pixbufs (GError **error)
 {
-  gint i;
+  bint i;
   char *filename;
 
   if (background)
@@ -95,10 +95,10 @@ load_pixbufs (GError **error)
 }
 
 /* Expose callback for the drawing area */
-static gint
+static bint
 expose_cb (BtkWidget      *widget,
            BdkEventExpose *event,
-           gpointer        data)
+           bpointer        data)
 {
   bairo_t *cr;
 
@@ -118,8 +118,8 @@ expose_cb (BtkWidget      *widget,
 static int frame_num;
 
 /* Timeout handler to regenerate the frame */
-static gint
-timeout (gpointer data)
+static bint
+timeout (bpointer data)
 {
   double f;
   int i;
@@ -190,11 +190,11 @@ timeout (gpointer data)
   return TRUE;
 }
 
-static guint timeout_id;
+static buint timeout_id;
 
 static void
 cleanup_callback (BtkObject *object,
-                  gpointer   data)
+                  bpointer   data)
 {
   g_source_remove (timeout_id);
   timeout_id = 0;

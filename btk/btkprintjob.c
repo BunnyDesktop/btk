@@ -45,7 +45,7 @@
 
 struct _BtkPrintJobPrivate
 {
-  gchar *title;
+  bchar *title;
 
   BUNNYIOChannel *spool_io;
   bairo_surface_t *surface;
@@ -56,28 +56,28 @@ struct _BtkPrintJobPrivate
   BtkPrintSettings *settings;
   BtkPageSetup *page_setup;
 
-  guint printer_set : 1;
-  guint page_setup_set : 1;
-  guint settings_set  : 1;
-  guint track_print_status : 1;
+  buint printer_set : 1;
+  buint page_setup_set : 1;
+  buint settings_set  : 1;
+  buint track_print_status : 1;
 };
 
 
 #define BTK_PRINT_JOB_GET_PRIVATE(o)  \
-   (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_JOB, BtkPrintJobPrivate))
+   (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_PRINT_JOB, BtkPrintJobPrivate))
 
-static void     btk_print_job_finalize     (GObject               *object);
-static void     btk_print_job_set_property (GObject               *object,
-					    guint                  prop_id,
-					    const GValue          *value,
-					    GParamSpec            *pspec);
-static void     btk_print_job_get_property (GObject               *object,
-					    guint                  prop_id,
-					    GValue                *value,
-					    GParamSpec            *pspec);
-static GObject* btk_print_job_constructor  (GType                  type,
-					    guint                  n_construct_properties,
-					    GObjectConstructParam *construct_params);
+static void     btk_print_job_finalize     (BObject               *object);
+static void     btk_print_job_set_property (BObject               *object,
+					    buint                  prop_id,
+					    const BValue          *value,
+					    BParamSpec            *pspec);
+static void     btk_print_job_get_property (BObject               *object,
+					    buint                  prop_id,
+					    BValue                *value,
+					    BParamSpec            *pspec);
+static BObject* btk_print_job_constructor  (GType                  type,
+					    buint                  n_construct_properties,
+					    BObjectConstructParam *construct_params);
 
 enum {
   STATUS_CHANGED,
@@ -93,15 +93,15 @@ enum {
   PROP_TRACK_PRINT_STATUS
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BtkPrintJob, btk_print_job, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintJob, btk_print_job, B_TYPE_OBJECT)
 
 static void
 btk_print_job_class_init (BtkPrintJobClass *class)
 {
-  GObjectClass *object_class;
-  object_class = (GObjectClass *) class;
+  BObjectClass *object_class;
+  object_class = (BObjectClass *) class;
 
   object_class->finalize = btk_print_job_finalize;
   object_class->constructor = btk_print_job_constructor;
@@ -168,12 +168,12 @@ btk_print_job_class_init (BtkPrintJobClass *class)
    */
   signals[STATUS_CHANGED] =
     g_signal_new (I_("status-changed"),
-		  G_TYPE_FROM_CLASS (class),
+		  B_TYPE_FROM_CLASS (class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkPrintJobClass, status_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -210,17 +210,17 @@ btk_print_job_init (BtkPrintJob *job)
 }
 
 
-static GObject*
+static BObject*
 btk_print_job_constructor (GType                  type,
-			   guint                  n_construct_properties,
-			   GObjectConstructParam *construct_params)
+			   buint                  n_construct_properties,
+			   BObjectConstructParam *construct_params)
 {
   BtkPrintJob *job;
   BtkPrintJobPrivate *priv;
-  GObject *object;
+  BObject *object;
 
   object =
-    G_OBJECT_CLASS (btk_print_job_parent_class)->constructor (type,
+    B_OBJECT_CLASS (btk_print_job_parent_class)->constructor (type,
 							      n_construct_properties,
 							      construct_params);
 
@@ -241,7 +241,7 @@ btk_print_job_constructor (GType                  type,
 
 
 static void
-btk_print_job_finalize (GObject *object)
+btk_print_job_finalize (BObject *object)
 {
   BtkPrintJob *job = BTK_PRINT_JOB (object);
   BtkPrintJobPrivate *priv = job->priv;
@@ -273,7 +273,7 @@ btk_print_job_finalize (GObject *object)
   g_free (priv->title);
   priv->title = NULL;
 
-  G_OBJECT_CLASS (btk_print_job_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_print_job_parent_class)->finalize (object);
 }
 
 /**
@@ -290,12 +290,12 @@ btk_print_job_finalize (GObject *object)
  * Since: 2.10
  **/
 BtkPrintJob *
-btk_print_job_new (const gchar      *title,
+btk_print_job_new (const bchar      *title,
 		   BtkPrinter       *printer,
 		   BtkPrintSettings *settings,
 		   BtkPageSetup     *page_setup)
 {
-  GObject *result;
+  BObject *result;
   result = g_object_new (BTK_TYPE_PRINT_JOB,
                          "title", title,
 			 "printer", printer,
@@ -351,7 +351,7 @@ btk_print_job_get_printer (BtkPrintJob *job)
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_job_get_title (BtkPrintJob *job)
 {
   g_return_val_if_fail (BTK_IS_PRINT_JOB (job), NULL);
@@ -410,9 +410,9 @@ btk_print_job_set_status (BtkPrintJob   *job,
  *
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_print_job_set_source_file (BtkPrintJob *job,
-			       const gchar *filename,
+			       const bchar *filename,
 			       GError     **error)
 {
   BtkPrintJobPrivate *priv;
@@ -455,8 +455,8 @@ btk_print_job_get_surface (BtkPrintJob  *job,
 			   GError      **error)
 {
   BtkPrintJobPrivate *priv;
-  gchar *filename = NULL;
-  gdouble width, height;
+  bchar *filename = NULL;
+  bdouble width, height;
   BtkPaperSize *paper_size;
   int fd;
   GError *tmp_error;
@@ -532,7 +532,7 @@ btk_print_job_get_surface (BtkPrintJob  *job,
  */
 void
 btk_print_job_set_track_print_status (BtkPrintJob *job,
-				      gboolean     track_status)
+				      bboolean     track_status)
 {
   BtkPrintJobPrivate *priv;
 
@@ -546,7 +546,7 @@ btk_print_job_set_track_print_status (BtkPrintJob *job,
     {
       priv->track_print_status = track_status;
       
-      g_object_notify (G_OBJECT (job), "track-print-status");
+      g_object_notify (B_OBJECT (job), "track-print-status");
     }
 }
 
@@ -561,7 +561,7 @@ btk_print_job_set_track_print_status (BtkPrintJob *job,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_job_get_track_print_status (BtkPrintJob *job)
 {
   BtkPrintJobPrivate *priv;
@@ -574,10 +574,10 @@ btk_print_job_get_track_print_status (BtkPrintJob *job)
 }
 
 static void
-btk_print_job_set_property (GObject      *object,
-	                    guint         prop_id,
-	                    const GValue *value,
-                            GParamSpec   *pspec)
+btk_print_job_set_property (BObject      *object,
+	                    buint         prop_id,
+	                    const BValue *value,
+                            BParamSpec   *pspec)
 
 {
   BtkPrintJob *job = BTK_PRINT_JOB (object);
@@ -588,43 +588,43 @@ btk_print_job_set_property (GObject      *object,
     {
     case PROP_TITLE:
       g_free (priv->title);
-      priv->title = g_value_dup_string (value);
+      priv->title = b_value_dup_string (value);
       break;
     
     case PROP_PRINTER:
-      priv->printer = BTK_PRINTER (g_value_dup_object (value));
+      priv->printer = BTK_PRINTER (b_value_dup_object (value));
       priv->printer_set = TRUE;
       priv->backend = g_object_ref (btk_printer_get_backend (priv->printer));
       break;
 
     case PROP_PAGE_SETUP:
-      priv->page_setup = BTK_PAGE_SETUP (g_value_dup_object (value));
+      priv->page_setup = BTK_PAGE_SETUP (b_value_dup_object (value));
       priv->page_setup_set = TRUE;
       break;
       
     case PROP_SETTINGS:
       /* We save a copy of the settings since we modify
        * if when preparing the printer job. */
-      settings = BTK_PRINT_SETTINGS (g_value_get_object (value));
+      settings = BTK_PRINT_SETTINGS (b_value_get_object (value));
       priv->settings = btk_print_settings_copy (settings);
       priv->settings_set = TRUE;
       break;
 
     case PROP_TRACK_PRINT_STATUS:
-      btk_print_job_set_track_print_status (job, g_value_get_boolean (value));
+      btk_print_job_set_track_print_status (job, b_value_get_boolean (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_print_job_get_property (GObject    *object,
-			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+btk_print_job_get_property (BObject    *object,
+			    buint       prop_id,
+			    BValue     *value,
+			    BParamSpec *pspec)
 {
   BtkPrintJob *job = BTK_PRINT_JOB (object);
   BtkPrintJobPrivate *priv = job->priv;
@@ -632,22 +632,22 @@ btk_print_job_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_TITLE:
-      g_value_set_string (value, priv->title);
+      b_value_set_string (value, priv->title);
       break;
     case PROP_PRINTER:
-      g_value_set_object (value, priv->printer);
+      b_value_set_object (value, priv->printer);
       break;
     case PROP_SETTINGS:
-      g_value_set_object (value, priv->settings);
+      b_value_set_object (value, priv->settings);
       break;
     case PROP_PAGE_SETUP:
-      g_value_set_object (value, priv->page_setup);
+      b_value_set_object (value, priv->page_setup);
       break;
     case PROP_TRACK_PRINT_STATUS:
-      g_value_set_boolean (value, priv->track_print_status);
+      b_value_set_boolean (value, priv->track_print_status);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -666,7 +666,7 @@ btk_print_job_get_property (GObject    *object,
 void
 btk_print_job_send (BtkPrintJob             *job,
                     BtkPrintJobCompleteFunc  callback,
-                    gpointer                 user_data,
+                    bpointer                 user_data,
 		    GDestroyNotify           dnotify)
 {
   BtkPrintJobPrivate *priv;

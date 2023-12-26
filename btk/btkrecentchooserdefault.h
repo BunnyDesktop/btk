@@ -23,20 +23,20 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_RECENT_CHOOSER_DEFAULT    (_btk_recent_chooser_default_get_type ())
-#define BTK_RECENT_CHOOSER_DEFAULT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT, BtkRecentChooserDefault))
-#define BTK_IS_RECENT_CHOOSER_DEFAULT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT))
+#define BTK_RECENT_CHOOSER_DEFAULT(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT, BtkRecentChooserDefault))
+#define BTK_IS_RECENT_CHOOSER_DEFAULT(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_CHOOSER_DEFAULT))
 
 
 typedef struct _BtkRecentChooserDefault BtkRecentChooserDefault;
 
-GType      _btk_recent_chooser_default_get_type (void) G_GNUC_CONST;
+GType      _btk_recent_chooser_default_get_type (void) B_GNUC_CONST;
 BtkWidget *_btk_recent_chooser_default_new      (BtkRecentManager *recent_manager);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_DEFAULT_H__ */

@@ -30,23 +30,23 @@ typedef struct _BtkSocketPrivate BtkSocketPrivate;
 
 struct _BtkSocketPrivate
 {
-  gint resize_count;
+  bint resize_count;
 };
 
 /* In btksocket.c: */
 BtkSocketPrivate *_btk_socket_get_private (BtkSocket *socket);
 
 void _btk_socket_add_grabbed_key  (BtkSocket        *socket,
-				   guint             keyval,
+				   buint             keyval,
 				   BdkModifierType   modifiers);
 void _btk_socket_remove_grabbed_key (BtkSocket      *socket,
-				     guint           keyval,
+				     buint           keyval,
 				     BdkModifierType modifiers);
 void _btk_socket_claim_focus 	  (BtkSocket        *socket,
-			     	   gboolean          send_event);
+			     	   bboolean          send_event);
 void _btk_socket_add_window  	  (BtkSocket        *socket,
 			     	   BdkNativeWindow   xid,
-			     	   gboolean          need_reparent);
+			     	   bboolean          need_reparent);
 void _btk_socket_end_embedding    (BtkSocket        *socket);
 
 void _btk_socket_handle_map_request     (BtkSocket        *socket);
@@ -89,28 +89,28 @@ void _btk_socket_windowing_size_request (BtkSocket *socket);
  */
 void _btk_socket_windowing_send_key_event (BtkSocket *socket,
 					   BdkEvent  *bdk_event,
-					   gboolean   mask_key_presses);
+					   bboolean   mask_key_presses);
 
 /*
  * _btk_socket_windowing_focus_change:
  *
  */
 void _btk_socket_windowing_focus_change (BtkSocket *socket,
-					 gboolean   focus_in);
+					 bboolean   focus_in);
 
 /*
  * _btk_socket_windowing_update_active:
  *
  */
 void _btk_socket_windowing_update_active (BtkSocket *socket,
-					  gboolean   active);
+					  bboolean   active);
 
 /*
  * _btk_socket_windowing_update_modality:
  *
  */
 void _btk_socket_windowing_update_modality (BtkSocket *socket,
-					    gboolean   modality);
+					    bboolean   modality);
 
 /*
  * _btk_socket_windowing_focus:
@@ -152,7 +152,7 @@ void _btk_socket_windowing_embed_notify (BtkSocket *socket);
  * _btk_socket_windowing_embed_get_focus_wrapped:
  *
  */
-gboolean _btk_socket_windowing_embed_get_focus_wrapped (void);
+bboolean _btk_socket_windowing_embed_get_focus_wrapped (void);
 
 /*
  * _btk_socket_windowing_embed_set_focus_wrapped:
@@ -166,6 +166,6 @@ void _btk_socket_windowing_embed_set_focus_wrapped (void);
  */
 BdkFilterReturn _btk_socket_windowing_filter_func (BdkXEvent *bdk_xevent,
 						   BdkEvent  *event,
-						   gpointer   data);
+						   bpointer   data);
 
 #endif /* __BTK_SOCKET_PRIVATE_H__ */

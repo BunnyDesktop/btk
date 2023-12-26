@@ -25,9 +25,9 @@
 static void bail_scrollbar_class_init  (BailScrollbarClass *klass);
 static void bail_scrollbar_init        (BailScrollbar      *accessible);
 static void bail_scrollbar_initialize  (BatkObject           *accessible,
-                                        gpointer             data);
+                                        bpointer             data);
 
-static gint bail_scrollbar_get_index_in_parent (BatkObject *accessible);
+static bint bail_scrollbar_get_index_in_parent (BatkObject *accessible);
 
 G_DEFINE_TYPE (BailScrollbar, bail_scrollbar, BAIL_TYPE_RANGE)
 
@@ -47,19 +47,19 @@ bail_scrollbar_init (BailScrollbar      *accessible)
 
 static void
 bail_scrollbar_initialize (BatkObject *accessible,
-                           gpointer  data)
+                           bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_scrollbar_parent_class)->initialize (accessible, data);
 
   accessible->role = BATK_ROLE_SCROLL_BAR;
 }
 
-static gint
+static bint
 bail_scrollbar_get_index_in_parent (BatkObject *accessible)
 {
   BtkWidget *widget;
   BtkScrolledWindow *scrolled_window;
-  gint n_children;
+  bint n_children;
   GList *children;
 
   widget = BTK_ACCESSIBLE (accessible)->widget;

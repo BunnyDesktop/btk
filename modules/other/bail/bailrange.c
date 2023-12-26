@@ -31,44 +31,44 @@ static void	    bail_range_class_init        (BailRangeClass *klass);
 static void         bail_range_init              (BailRange      *range);
 
 static void         bail_range_real_initialize   (BatkObject      *obj,
-                                                  gpointer      data);
+                                                  bpointer      data);
 
-static void         bail_range_finalize          (GObject        *object);
+static void         bail_range_finalize          (BObject        *object);
 
 static BatkStateSet* bail_range_ref_state_set     (BatkObject      *obj);
 
 
-static void         bail_range_real_notify_btk   (GObject        *obj,
-                                                  GParamSpec     *pspec);
+static void         bail_range_real_notify_btk   (BObject        *obj,
+                                                  BParamSpec     *pspec);
 
 static void	    batk_value_interface_init	 (BatkValueIface  *iface);
 static void	    bail_range_get_current_value (BatkValue       *obj,
-                                                  GValue         *value);
+                                                  BValue         *value);
 static void	    bail_range_get_maximum_value (BatkValue       *obj,
-                                                  GValue         *value);
+                                                  BValue         *value);
 static void	    bail_range_get_minimum_value (BatkValue       *obj,
-                                                  GValue         *value);
+                                                  BValue         *value);
 static void         bail_range_get_minimum_increment (BatkValue       *obj,
-                                                      GValue         *value);
-static gboolean	    bail_range_set_current_value (BatkValue       *obj,
-                                                  const GValue   *value);
+                                                      BValue         *value);
+static bboolean	    bail_range_set_current_value (BatkValue       *obj,
+                                                  const BValue   *value);
 static void         bail_range_value_changed     (BtkAdjustment  *adjustment,
-                                                  gpointer       data);
+                                                  bpointer       data);
 
 static void         batk_action_interface_init    (BatkActionIface *iface);
-static gboolean     bail_range_do_action        (BatkAction       *action,
-                                                gint            i);
-static gboolean     idle_do_action              (gpointer        data);
-static gint         bail_range_get_n_actions    (BatkAction       *action);
-static const gchar* bail_range_get_description  (BatkAction    *action,
-                                                         gint          i);
-static const gchar* bail_range_get_keybinding   (BatkAction     *action,
-                                                         gint            i);
-static const gchar* bail_range_action_get_name  (BatkAction    *action,
-                                                        gint            i);
-static gboolean   bail_range_set_description  (BatkAction       *action,
-                                              gint            i,
-                                              const gchar     *desc);
+static bboolean     bail_range_do_action        (BatkAction       *action,
+                                                bint            i);
+static bboolean     idle_do_action              (bpointer        data);
+static bint         bail_range_get_n_actions    (BatkAction       *action);
+static const bchar* bail_range_get_description  (BatkAction    *action,
+                                                         bint          i);
+static const bchar* bail_range_get_keybinding   (BatkAction     *action,
+                                                         bint            i);
+static const bchar* bail_range_action_get_name  (BatkAction    *action,
+                                                        bint            i);
+static bboolean   bail_range_set_description  (BatkAction       *action,
+                                              bint            i,
+                                              const bchar     *desc);
 
 G_DEFINE_TYPE_WITH_CODE (BailRange, bail_range, BAIL_TYPE_WIDGET,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
@@ -77,7 +77,7 @@ G_DEFINE_TYPE_WITH_CODE (BailRange, bail_range, BAIL_TYPE_WIDGET,
 static void	 
 bail_range_class_init		(BailRangeClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -98,7 +98,7 @@ bail_range_init (BailRange      *range)
 
 static void
 bail_range_real_initialize (BatkObject *obj,
-                            gpointer  data)
+                            bpointer  data)
 {
   BailRange *range = BAIL_RANGE (obj);
   BtkRange *btk_range;
@@ -167,7 +167,7 @@ batk_value_interface_init (BatkValueIface *iface)
 
 static void	 
 bail_range_get_current_value (BatkValue		*obj,
-                              GValue		*value)
+                              BValue		*value)
 {
   BailRange *range;
 
@@ -185,12 +185,12 @@ bail_range_get_current_value (BatkValue		*obj,
 
 static void	 
 bail_range_get_maximum_value (BatkValue		*obj,
-                              GValue		*value)
+                              BValue		*value)
 {
   BailRange *range;
   BtkRange *btk_range;
   BtkAdjustment *btk_adjustment;
-  gdouble max = 0;
+  bdouble max = 0;
 
   g_return_if_fail (BAIL_IS_RANGE (obj));
 
@@ -207,18 +207,18 @@ bail_range_get_maximum_value (BatkValue		*obj,
   g_return_if_fail (btk_range);
 
   btk_adjustment = btk_range_get_adjustment (btk_range);
-  max = g_value_get_double (value);
+  max = b_value_get_double (value);
   max -=  btk_adjustment_get_page_size (btk_adjustment);
 
   if (btk_range_get_restrict_to_fill_level (btk_range))
     max = MIN (max, btk_range_get_fill_level (btk_range));
 
-  g_value_set_double (value, max);
+  b_value_set_double (value, max);
 }
 
 static void	 
 bail_range_get_minimum_value (BatkValue		*obj,
-                              GValue		*value)
+                              BValue		*value)
 {
   BailRange *range;
 
@@ -235,7 +235,7 @@ bail_range_get_minimum_value (BatkValue		*obj,
 }
 
 static void
-bail_range_get_minimum_increment (BatkValue *obj, GValue *value)
+bail_range_get_minimum_increment (BatkValue *obj, BValue *value)
 {
  BailRange *range;
 
@@ -251,8 +251,8 @@ bail_range_get_minimum_increment (BatkValue *obj, GValue *value)
   batk_value_get_minimum_increment (BATK_VALUE (range->adjustment), value);
 }
 
-static gboolean	 bail_range_set_current_value (BatkValue		*obj,
-                                               const GValue	*value)
+static bboolean	 bail_range_set_current_value (BatkValue		*obj,
+                                               const BValue	*value)
 {
   BtkWidget *widget;
 
@@ -265,9 +265,9 @@ static gboolean	 bail_range_set_current_value (BatkValue		*obj,
   if (G_VALUE_HOLDS_DOUBLE (value))
     {
       BtkRange *range = BTK_RANGE (widget);
-      gdouble new_value;
+      bdouble new_value;
 
-      new_value = g_value_get_double (value);
+      new_value = b_value_get_double (value);
       btk_range_set_value (range, new_value);
       return TRUE;
     }
@@ -278,7 +278,7 @@ static gboolean	 bail_range_set_current_value (BatkValue		*obj,
 }
 
 static void
-bail_range_finalize (GObject            *object)
+bail_range_finalize (BObject            *object)
 {
   BailRange *range = BAIL_RANGE (object);
 
@@ -305,13 +305,13 @@ bail_range_finalize (GObject            *object)
     range->action_idle_handler = 0;
    }
 
-  G_OBJECT_CLASS (bail_range_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_range_parent_class)->finalize (object);
 }
 
 
 static void
-bail_range_real_notify_btk (GObject           *obj,
-                            GParamSpec        *pspec)
+bail_range_real_notify_btk (BObject           *obj,
+                            BParamSpec        *pspec)
 {
   BtkWidget *widget = BTK_WIDGET (obj);
   BailRange *range = BAIL_RANGE (btk_widget_get_accessible (widget));
@@ -343,7 +343,7 @@ bail_range_real_notify_btk (GObject           *obj,
 
 static void
 bail_range_value_changed (BtkAdjustment    *adjustment,
-                          gpointer         data)
+                          bpointer         data)
 {
   BailRange *range;
 
@@ -352,7 +352,7 @@ bail_range_value_changed (BtkAdjustment    *adjustment,
 
   range = BAIL_RANGE (data);
 
-  g_object_notify (G_OBJECT (range), "accessible-value");
+  g_object_notify (B_OBJECT (range), "accessible-value");
 }
 
 static void
@@ -366,13 +366,13 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_range_set_description;
 }
 
-static gboolean
+static bboolean
 bail_range_do_action (BatkAction *action,
-                     gint      i)
+                     bint      i)
 {
   BailRange *range;
   BtkWidget *widget;
-  gboolean return_value = TRUE;
+  bboolean return_value = TRUE;
 
   range = BAIL_RANGE (action);
   widget = BTK_ACCESSIBLE (action)->widget;
@@ -395,8 +395,8 @@ bail_range_do_action (BatkAction *action,
   return return_value;
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BailRange *range;
   BtkWidget *widget;
@@ -413,18 +413,18 @@ idle_do_action (gpointer data)
    return FALSE;
 }
 
-static gint
+static bint
 bail_range_get_n_actions (BatkAction *action)
 {
     return 1;
 }
 
-static const gchar*
+static const bchar*
 bail_range_get_description (BatkAction *action,
-                              gint      i)
+                              bint      i)
 {
   BailRange *range;
-  const gchar *return_value;
+  const bchar *return_value;
 
   range = BAIL_RANGE (action);
   if (i==0)
@@ -434,12 +434,12 @@ bail_range_get_description (BatkAction *action,
   return return_value;
 }
 
-static const gchar*
+static const bchar*
 bail_range_get_keybinding (BatkAction *action,
-                              gint      i)
+                              bint      i)
 {
   BailRange *range;
-  gchar *return_value = NULL;
+  bchar *return_value = NULL;
   range = BAIL_RANGE (action);
   if(i==0)
    {
@@ -448,8 +448,8 @@ bail_range_get_keybinding (BatkAction *action,
     BatkRelationSet *set;
     BatkRelation *relation;
     GPtrArray *target;
-    gpointer target_object;
-    guint key_val;
+    bpointer target_object;
+    buint key_val;
 
     range = BAIL_RANGE (action);
     widget = BTK_ACCESSIBLE (range)->widget;
@@ -481,11 +481,11 @@ bail_range_get_keybinding (BatkAction *action,
   return return_value;
 }
 
-static const gchar*
+static const bchar*
 bail_range_action_get_name (BatkAction *action,
-                           gint      i)
+                           bint      i)
 {
-  const gchar *return_value;
+  const bchar *return_value;
   
   if (i==0)
    return_value = "activate";
@@ -495,13 +495,13 @@ bail_range_action_get_name (BatkAction *action,
   return return_value;
 }
 
-static gboolean
+static bboolean
 bail_range_set_description (BatkAction      *action,
-                           gint           i,
-                           const gchar    *desc)
+                           bint           i,
+                           const bchar    *desc)
 {
   BailRange *range;
-  gchar **value;
+  bchar **value;
 
   range = BAIL_RANGE (action);
   

@@ -36,14 +36,14 @@
 #include <btk/btkmisc.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_IMAGE                  (btk_image_get_type ())
-#define BTK_IMAGE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IMAGE, BtkImage))
-#define BTK_IMAGE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IMAGE, BtkImageClass))
-#define BTK_IS_IMAGE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IMAGE))
-#define BTK_IS_IMAGE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IMAGE))
-#define BTK_IMAGE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IMAGE, BtkImageClass))
+#define BTK_IMAGE(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IMAGE, BtkImage))
+#define BTK_IMAGE_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IMAGE, BtkImageClass))
+#define BTK_IS_IMAGE(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IMAGE))
+#define BTK_IS_IMAGE_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IMAGE))
+#define BTK_IMAGE_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IMAGE, BtkImageClass))
 
 
 typedef struct _BtkImage       BtkImage;
@@ -75,7 +75,7 @@ struct _BtkImagePixbufData
 
 struct _BtkImageStockData
 {
-  gchar *stock_id;
+  bchar *stock_id;
 };
 
 struct _BtkImageIconSetData
@@ -87,21 +87,21 @@ struct _BtkImageAnimationData
 {
   BdkPixbufAnimation *anim;
   BdkPixbufAnimationIter *iter;
-  guint frame_timeout;
+  buint frame_timeout;
 };
 
 struct _BtkImageIconNameData
 {
-  gchar *icon_name;
+  bchar *icon_name;
   BdkPixbuf *pixbuf;
-  guint theme_change_id;
+  buint theme_change_id;
 };
 
 struct _BtkImageGIconData
 {
   GIcon *icon;
   BdkPixbuf *pixbuf;
-  guint theme_change_id;
+  buint theme_change_id;
 };
 
 /**
@@ -187,21 +187,21 @@ struct _BtkImageClass
 #define btk_image_set_from_file btk_image_set_from_file_utf8
 #endif
 
-GType      btk_image_get_type (void) G_GNUC_CONST;
+GType      btk_image_get_type (void) B_GNUC_CONST;
 
 BtkWidget* btk_image_new                (void);
 BtkWidget* btk_image_new_from_pixmap    (BdkPixmap       *pixmap,
                                          BdkBitmap       *mask);
 BtkWidget* btk_image_new_from_image     (BdkImage        *image,
                                          BdkBitmap       *mask);
-BtkWidget* btk_image_new_from_file      (const gchar     *filename);
+BtkWidget* btk_image_new_from_file      (const bchar     *filename);
 BtkWidget* btk_image_new_from_pixbuf    (BdkPixbuf       *pixbuf);
-BtkWidget* btk_image_new_from_stock     (const gchar     *stock_id,
+BtkWidget* btk_image_new_from_stock     (const bchar     *stock_id,
                                          BtkIconSize      size);
 BtkWidget* btk_image_new_from_icon_set  (BtkIconSet      *icon_set,
                                          BtkIconSize      size);
 BtkWidget* btk_image_new_from_animation (BdkPixbufAnimation *animation);
-BtkWidget* btk_image_new_from_icon_name (const gchar     *icon_name,
+BtkWidget* btk_image_new_from_icon_name (const bchar     *icon_name,
 					 BtkIconSize      size);
 BtkWidget* btk_image_new_from_gicon     (GIcon           *icon,
 					 BtkIconSize      size);
@@ -214,11 +214,11 @@ void btk_image_set_from_image     (BtkImage        *image,
                                    BdkImage        *bdk_image,
                                    BdkBitmap       *mask);
 void btk_image_set_from_file      (BtkImage        *image,
-                                   const gchar     *filename);
+                                   const bchar     *filename);
 void btk_image_set_from_pixbuf    (BtkImage        *image,
                                    BdkPixbuf       *pixbuf);
 void btk_image_set_from_stock     (BtkImage        *image,
-                                   const gchar     *stock_id,
+                                   const bchar     *stock_id,
                                    BtkIconSize      size);
 void btk_image_set_from_icon_set  (BtkImage        *image,
                                    BtkIconSet      *icon_set,
@@ -226,13 +226,13 @@ void btk_image_set_from_icon_set  (BtkImage        *image,
 void btk_image_set_from_animation (BtkImage           *image,
                                    BdkPixbufAnimation *animation);
 void btk_image_set_from_icon_name (BtkImage        *image,
-				   const gchar     *icon_name,
+				   const bchar     *icon_name,
 				   BtkIconSize      size);
 void btk_image_set_from_gicon     (BtkImage        *image,
 				   GIcon           *icon,
 				   BtkIconSize      size);
 void btk_image_set_pixel_size     (BtkImage        *image,
-				   gint             pixel_size);
+				   bint             pixel_size);
 
 BtkImageType btk_image_get_storage_type (BtkImage   *image);
 
@@ -244,19 +244,19 @@ void       btk_image_get_image    (BtkImage         *image,
                                    BdkBitmap       **mask);
 BdkPixbuf* btk_image_get_pixbuf   (BtkImage         *image);
 void       btk_image_get_stock    (BtkImage         *image,
-                                   gchar           **stock_id,
+                                   bchar           **stock_id,
                                    BtkIconSize      *size);
 void       btk_image_get_icon_set (BtkImage         *image,
                                    BtkIconSet      **icon_set,
                                    BtkIconSize      *size);
 BdkPixbufAnimation* btk_image_get_animation (BtkImage *image);
 void       btk_image_get_icon_name (BtkImage              *image,
-				    const gchar          **icon_name,
+				    const bchar          **icon_name,
 				    BtkIconSize           *size);
 void       btk_image_get_gicon     (BtkImage              *image,
 				    GIcon                **gicon,
 				    BtkIconSize           *size);
-gint       btk_image_get_pixel_size (BtkImage             *image);
+bint       btk_image_get_pixel_size (BtkImage             *image);
 
 #ifndef BTK_DISABLE_DEPRECATED
 /* These three are deprecated */
@@ -269,6 +269,6 @@ void       btk_image_get      (BtkImage   *image,
 			       BdkBitmap **mask);
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_IMAGE_H__ */

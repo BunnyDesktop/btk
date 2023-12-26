@@ -28,14 +28,14 @@
 #include <btk/btkprinter.h>
 #include <btk/btkprintjob.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_UNIX_DIALOG                  (btk_print_unix_dialog_get_type ())
-#define BTK_PRINT_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
-#define BTK_PRINT_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
-#define BTK_IS_PRINT_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_UNIX_DIALOG))
-#define BTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_UNIX_DIALOG))
-#define BTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
+#define BTK_PRINT_UNIX_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialog))
+#define BTK_PRINT_UNIX_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
+#define BTK_IS_PRINT_UNIX_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_IS_PRINT_UNIX_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_UNIX_DIALOG))
+#define BTK_PRINT_UNIX_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_UNIX_DIALOG, BtkPrintUnixDialogClass))
 
 
 typedef struct _BtkPrintUnixDialog         BtkPrintUnixDialog;
@@ -64,16 +64,16 @@ struct _BtkPrintUnixDialogClass
   void (*_btk_reserved7) (void);
 };
 
-GType                btk_print_unix_dialog_get_type                (void) G_GNUC_CONST;
-BtkWidget *          btk_print_unix_dialog_new                     (const gchar *title,
+GType                btk_print_unix_dialog_get_type                (void) B_GNUC_CONST;
+BtkWidget *          btk_print_unix_dialog_new                     (const bchar *title,
                                                                     BtkWindow   *parent);
 
 void                 btk_print_unix_dialog_set_page_setup          (BtkPrintUnixDialog *dialog,
 								    BtkPageSetup       *page_setup);
 BtkPageSetup *       btk_print_unix_dialog_get_page_setup          (BtkPrintUnixDialog *dialog);
 void                 btk_print_unix_dialog_set_current_page        (BtkPrintUnixDialog *dialog,
-								    gint                current_page);
-gint                 btk_print_unix_dialog_get_current_page        (BtkPrintUnixDialog *dialog);
+								    bint                current_page);
+bint                 btk_print_unix_dialog_get_current_page        (BtkPrintUnixDialog *dialog);
 void                 btk_print_unix_dialog_set_settings            (BtkPrintUnixDialog *dialog,
 								    BtkPrintSettings   *settings);
 BtkPrintSettings *   btk_print_unix_dialog_get_settings            (BtkPrintUnixDialog *dialog);
@@ -85,16 +85,16 @@ void                 btk_print_unix_dialog_set_manual_capabilities (BtkPrintUnix
 								    BtkPrintCapabilities capabilities);
 BtkPrintCapabilities btk_print_unix_dialog_get_manual_capabilities (BtkPrintUnixDialog  *dialog);
 void                 btk_print_unix_dialog_set_support_selection   (BtkPrintUnixDialog  *dialog,
-								    gboolean             support_selection);
-gboolean             btk_print_unix_dialog_get_support_selection   (BtkPrintUnixDialog  *dialog);
+								    bboolean             support_selection);
+bboolean             btk_print_unix_dialog_get_support_selection   (BtkPrintUnixDialog  *dialog);
 void                 btk_print_unix_dialog_set_has_selection       (BtkPrintUnixDialog  *dialog,
-								    gboolean             has_selection);
-gboolean             btk_print_unix_dialog_get_has_selection       (BtkPrintUnixDialog  *dialog);
+								    bboolean             has_selection);
+bboolean             btk_print_unix_dialog_get_has_selection       (BtkPrintUnixDialog  *dialog);
 void                 btk_print_unix_dialog_set_embed_page_setup    (BtkPrintUnixDialog *dialog,
-								    gboolean            embed);
-gboolean             btk_print_unix_dialog_get_embed_page_setup    (BtkPrintUnixDialog *dialog);
-gboolean             btk_print_unix_dialog_get_page_setup_set      (BtkPrintUnixDialog *dialog);
+								    bboolean            embed);
+bboolean             btk_print_unix_dialog_get_embed_page_setup    (BtkPrintUnixDialog *dialog);
+bboolean             btk_print_unix_dialog_get_page_setup_set      (BtkPrintUnixDialog *dialog);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_UNIX_DIALOG_H__ */

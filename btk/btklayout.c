@@ -41,8 +41,8 @@ typedef struct _BtkLayoutChild   BtkLayoutChild;
 
 struct _BtkLayoutChild {
   BtkWidget *widget;
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 enum {
@@ -59,18 +59,18 @@ enum {
   CHILD_PROP_Y
 };
 
-static void btk_layout_get_property       (GObject        *object,
-                                           guint           prop_id,
-                                           GValue         *value,
-                                           GParamSpec     *pspec);
-static void btk_layout_set_property       (GObject        *object,
-                                           guint           prop_id,
-                                           const GValue   *value,
-                                           GParamSpec     *pspec);
-static GObject *btk_layout_constructor    (GType                  type,
-					   guint                  n_properties,
-					   GObjectConstructParam *properties);
-static void btk_layout_finalize           (GObject        *object);
+static void btk_layout_get_property       (BObject        *object,
+                                           buint           prop_id,
+                                           BValue         *value,
+                                           BParamSpec     *pspec);
+static void btk_layout_set_property       (BObject        *object,
+                                           buint           prop_id,
+                                           const BValue   *value,
+                                           BParamSpec     *pspec);
+static BObject *btk_layout_constructor    (GType                  type,
+					   buint                  n_properties,
+					   BObjectConstructParam *properties);
+static void btk_layout_finalize           (BObject        *object);
 static void btk_layout_realize            (BtkWidget      *widget);
 static void btk_layout_unrealize          (BtkWidget      *widget);
 static void btk_layout_map                (BtkWidget      *widget);
@@ -78,29 +78,29 @@ static void btk_layout_size_request       (BtkWidget      *widget,
                                            BtkRequisition *requisition);
 static void btk_layout_size_allocate      (BtkWidget      *widget,
                                            BtkAllocation  *allocation);
-static gint btk_layout_expose             (BtkWidget      *widget,
+static bint btk_layout_expose             (BtkWidget      *widget,
                                            BdkEventExpose *event);
 static void btk_layout_add                (BtkContainer   *container,
 					   BtkWidget      *widget);
 static void btk_layout_remove             (BtkContainer   *container,
                                            BtkWidget      *widget);
 static void btk_layout_forall             (BtkContainer   *container,
-                                           gboolean        include_internals,
+                                           bboolean        include_internals,
                                            BtkCallback     callback,
-                                           gpointer        callback_data);
+                                           bpointer        callback_data);
 static void btk_layout_set_adjustments    (BtkLayout      *layout,
                                            BtkAdjustment  *hadj,
                                            BtkAdjustment  *vadj);
 static void btk_layout_set_child_property (BtkContainer   *container,
                                            BtkWidget      *child,
-                                           guint           property_id,
-                                           const GValue   *value,
-                                           GParamSpec     *pspec);
+                                           buint           property_id,
+                                           const BValue   *value,
+                                           BParamSpec     *pspec);
 static void btk_layout_get_child_property (BtkContainer   *container,
                                            BtkWidget      *child,
-                                           guint           property_id,
-                                           GValue         *value,
-                                           GParamSpec     *pspec);
+                                           buint           property_id,
+                                           BValue         *value,
+                                           BParamSpec     *pspec);
 static void btk_layout_allocate_child     (BtkLayout      *layout,
                                            BtkLayoutChild *child);
 static void btk_layout_adjustment_changed (BtkAdjustment  *adjustment,
@@ -109,8 +109,8 @@ static void btk_layout_style_set          (BtkWidget      *widget,
 					   BtkStyle       *old_style);
 
 static void btk_layout_set_adjustment_upper (BtkAdjustment *adj,
-					     gdouble        upper,
-					     gboolean       always_emit_changed);
+					     bdouble        upper,
+					     bboolean       always_emit_changed);
 
 G_DEFINE_TYPE (BtkLayout, btk_layout, BTK_TYPE_CONTAINER)
 
@@ -212,7 +212,7 @@ btk_layout_set_adjustments (BtkLayout     *layout,
 			    BtkAdjustment *hadj,
 			    BtkAdjustment *vadj)
 {
-  gboolean need_adjust = FALSE;
+  bboolean need_adjust = FALSE;
 
   g_return_if_fail (BTK_IS_LAYOUT (layout));
 
@@ -272,14 +272,14 @@ btk_layout_set_adjustments (BtkLayout     *layout,
 }
 
 static void
-btk_layout_finalize (GObject *object)
+btk_layout_finalize (BObject *object)
 {
   BtkLayout *layout = BTK_LAYOUT (object);
 
   g_object_unref (layout->hadjustment);
   g_object_unref (layout->vadjustment);
 
-  G_OBJECT_CLASS (btk_layout_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_layout_parent_class)->finalize (object);
 }
 
 /**
@@ -299,7 +299,7 @@ btk_layout_set_hadjustment (BtkLayout     *layout,
   g_return_if_fail (BTK_IS_LAYOUT (layout));
 
   btk_layout_set_adjustments (layout, adjustment, layout->vadjustment);
-  g_object_notify (G_OBJECT (layout), "hadjustment");
+  g_object_notify (B_OBJECT (layout), "hadjustment");
 }
  
 /**
@@ -319,7 +319,7 @@ btk_layout_set_vadjustment (BtkLayout     *layout,
   g_return_if_fail (BTK_IS_LAYOUT (layout));
   
   btk_layout_set_adjustments (layout, layout->hadjustment, adjustment);
-  g_object_notify (G_OBJECT (layout), "vadjustment");
+  g_object_notify (B_OBJECT (layout), "vadjustment");
 }
 
 static BtkLayoutChild*
@@ -357,8 +357,8 @@ get_child (BtkLayout  *layout,
 void           
 btk_layout_put (BtkLayout     *layout, 
 		BtkWidget     *child_widget, 
-		gint           x, 
-		gint           y)
+		bint           x, 
+		bint           y)
 {
   BtkLayoutChild *child;
 
@@ -382,10 +382,10 @@ btk_layout_put (BtkLayout     *layout,
 static void
 btk_layout_move_internal (BtkLayout       *layout,
                           BtkWidget       *widget,
-                          gboolean         change_x,
-                          gint             x,
-                          gboolean         change_y,
-                          gint             y)
+                          bboolean         change_x,
+                          bint             x,
+                          bboolean         change_y,
+                          bint             y)
 {
   BtkLayoutChild *child;
 
@@ -427,8 +427,8 @@ btk_layout_move_internal (BtkLayout       *layout,
 void           
 btk_layout_move (BtkLayout     *layout, 
 		 BtkWidget     *child_widget, 
-		 gint           x, 
-		 gint           y)
+		 bint           x, 
+		 bint           y)
 {
   g_return_if_fail (BTK_IS_LAYOUT (layout));
   g_return_if_fail (BTK_IS_WIDGET (child_widget));
@@ -439,13 +439,13 @@ btk_layout_move (BtkLayout     *layout,
 
 static void
 btk_layout_set_adjustment_upper (BtkAdjustment *adj,
-				 gdouble        upper,
-				 gboolean       always_emit_changed)
+				 bdouble        upper,
+				 bboolean       always_emit_changed)
 {
-  gboolean changed = FALSE;
-  gboolean value_changed = FALSE;
+  bboolean changed = FALSE;
+  bboolean value_changed = FALSE;
   
-  gdouble min = MAX (0., upper - adj->page_size);
+  bdouble min = MAX (0., upper - adj->page_size);
 
   if (upper != adj->upper)
     {
@@ -476,8 +476,8 @@ btk_layout_set_adjustment_upper (BtkAdjustment *adj,
  **/
 void
 btk_layout_set_size (BtkLayout     *layout, 
-		     guint          width,
-		     guint          height)
+		     buint          width,
+		     buint          height)
 {
   BtkWidget *widget;
   
@@ -485,18 +485,18 @@ btk_layout_set_size (BtkLayout     *layout,
   
   widget = BTK_WIDGET (layout);
   
-  g_object_freeze_notify (G_OBJECT (layout));
+  g_object_freeze_notify (B_OBJECT (layout));
   if (width != layout->width)
      {
 	layout->width = width;
-	g_object_notify (G_OBJECT (layout), "width");
+	g_object_notify (B_OBJECT (layout), "width");
      }
   if (height != layout->height)
      {
 	layout->height = height;
-	g_object_notify (G_OBJECT (layout), "height");
+	g_object_notify (B_OBJECT (layout), "height");
      }
-  g_object_thaw_notify (G_OBJECT (layout));
+  g_object_thaw_notify (B_OBJECT (layout));
 
   if (layout->hadjustment)
     btk_layout_set_adjustment_upper (layout->hadjustment, layout->width, FALSE);
@@ -525,8 +525,8 @@ btk_layout_set_size (BtkLayout     *layout,
  **/
 void
 btk_layout_get_size (BtkLayout *layout,
-		     guint     *width,
-		     guint     *height)
+		     buint     *width,
+		     buint     *height)
 {
   g_return_if_fail (BTK_IS_LAYOUT (layout));
 
@@ -577,11 +577,11 @@ btk_layout_thaw (BtkLayout *layout)
 static void
 btk_layout_class_init (BtkLayoutClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class = (GObjectClass*) class;
+  bobject_class = (BObjectClass*) class;
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -598,8 +598,8 @@ btk_layout_class_init (BtkLayoutClass *class)
 					      g_param_spec_int ("x",
                                                                 P_("X position"),
                                                                 P_("X position of child widget"),
-                                                                G_MININT,
-                                                                G_MAXINT,
+                                                                B_MININT,
+                                                                B_MAXINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE));
 
@@ -608,8 +608,8 @@ btk_layout_class_init (BtkLayoutClass *class)
 					      g_param_spec_int ("y",
                                                                 P_("Y position"),
                                                                 P_("Y position of child widget"),
-                                                                G_MININT,
-                                                                G_MAXINT,
+                                                                B_MININT,
+                                                                B_MAXINT,
                                                                 0,
                                                                 BTK_PARAM_READWRITE));
   
@@ -635,7 +635,7 @@ btk_layout_class_init (BtkLayoutClass *class)
 						     P_("Width"),
 						     P_("The width of the layout"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     100,
 						     BTK_PARAM_READWRITE));
   g_object_class_install_property (bobject_class,
@@ -644,7 +644,7 @@ btk_layout_class_init (BtkLayoutClass *class)
 						     P_("Height"),
 						     P_("The height of the layout"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     100,
 						     BTK_PARAM_READWRITE));
   widget_class->realize = btk_layout_realize;
@@ -672,49 +672,49 @@ btk_layout_class_init (BtkLayoutClass *class)
    */
   widget_class->set_scroll_adjustments_signal =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkLayoutClass, set_scroll_adjustments),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT,
 		  BTK_TYPE_ADJUSTMENT);
 }
 
 static void
-btk_layout_get_property (GObject     *object,
-			 guint        prop_id,
-			 GValue      *value,
-			 GParamSpec  *pspec)
+btk_layout_get_property (BObject     *object,
+			 buint        prop_id,
+			 BValue      *value,
+			 BParamSpec  *pspec)
 {
   BtkLayout *layout = BTK_LAYOUT (object);
   
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      g_value_set_object (value, layout->hadjustment);
+      b_value_set_object (value, layout->hadjustment);
       break;
     case PROP_VADJUSTMENT:
-      g_value_set_object (value, layout->vadjustment);
+      b_value_set_object (value, layout->vadjustment);
       break;
     case PROP_WIDTH:
-      g_value_set_uint (value, layout->width);
+      b_value_set_uint (value, layout->width);
       break;
     case PROP_HEIGHT:
-      g_value_set_uint (value, layout->height);
+      b_value_set_uint (value, layout->height);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_layout_set_property (GObject      *object,
-			 guint         prop_id,
-			 const GValue *value,
-			 GParamSpec   *pspec)
+btk_layout_set_property (BObject      *object,
+			 buint         prop_id,
+			 const BValue *value,
+			 BParamSpec   *pspec)
 {
   BtkLayout *layout = BTK_LAYOUT (object);
   
@@ -722,22 +722,22 @@ btk_layout_set_property (GObject      *object,
     {
     case PROP_HADJUSTMENT:
       btk_layout_set_hadjustment (layout, 
-				  (BtkAdjustment*) g_value_get_object (value));
+				  (BtkAdjustment*) b_value_get_object (value));
       break;
     case PROP_VADJUSTMENT:
       btk_layout_set_vadjustment (layout, 
-				  (BtkAdjustment*) g_value_get_object (value));
+				  (BtkAdjustment*) b_value_get_object (value));
       break;
     case PROP_WIDTH:
-      btk_layout_set_size (layout, g_value_get_uint (value),
+      btk_layout_set_size (layout, b_value_get_uint (value),
 			   layout->height);
       break;
     case PROP_HEIGHT:
       btk_layout_set_size (layout, layout->width,
-			   g_value_get_uint (value));
+			   b_value_get_uint (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -745,23 +745,23 @@ btk_layout_set_property (GObject      *object,
 static void
 btk_layout_set_child_property (BtkContainer    *container,
                                BtkWidget       *child,
-                               guint            property_id,
-                               const GValue    *value,
-                               GParamSpec      *pspec)
+                               buint            property_id,
+                               const BValue    *value,
+                               BParamSpec      *pspec)
 {
   switch (property_id)
     {
     case CHILD_PROP_X:
       btk_layout_move_internal (BTK_LAYOUT (container),
                                 child,
-                                TRUE, g_value_get_int (value),
+                                TRUE, b_value_get_int (value),
                                 FALSE, 0);
       break;
     case CHILD_PROP_Y:
       btk_layout_move_internal (BTK_LAYOUT (container),
                                 child,
                                 FALSE, 0,
-                                TRUE, g_value_get_int (value));
+                                TRUE, b_value_get_int (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -772,9 +772,9 @@ btk_layout_set_child_property (BtkContainer    *container,
 static void
 btk_layout_get_child_property (BtkContainer *container,
                                BtkWidget    *child,
-                               guint         property_id,
-                               GValue       *value,
-                               GParamSpec   *pspec)
+                               buint         property_id,
+                               BValue       *value,
+                               BParamSpec   *pspec)
 {
   BtkLayoutChild *layout_child;
 
@@ -783,10 +783,10 @@ btk_layout_get_child_property (BtkContainer *container,
   switch (property_id)
     {
     case CHILD_PROP_X:
-      g_value_set_int (value, layout_child->x);
+      b_value_set_int (value, layout_child->x);
       break;
     case CHILD_PROP_Y:
-      g_value_set_int (value, layout_child->y);
+      b_value_set_int (value, layout_child->y);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -814,16 +814,16 @@ btk_layout_init (BtkLayout *layout)
   layout->freeze_count = 0;
 }
 
-static GObject *
+static BObject *
 btk_layout_constructor (GType                  type,
-			guint                  n_properties,
-			GObjectConstructParam *properties)
+			buint                  n_properties,
+			BObjectConstructParam *properties)
 {
   BtkLayout *layout;
-  GObject *object;
+  BObject *object;
   BtkAdjustment *hadj, *vadj;
   
-  object = G_OBJECT_CLASS (btk_layout_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_layout_parent_class)->constructor (type,
 								  n_properties,
 								  properties);
 
@@ -847,7 +847,7 @@ btk_layout_realize (BtkWidget *widget)
   BtkLayout *layout = BTK_LAYOUT (widget);
   GList *tmp_list;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -1007,7 +1007,7 @@ btk_layout_size_allocate (BtkWidget     *widget,
   btk_layout_set_adjustment_upper (layout->vadjustment, MAX (allocation->height, layout->height), TRUE);
 }
 
-static gint 
+static bint 
 btk_layout_expose (BtkWidget      *widget,
                    BdkEventExpose *event)
 {
@@ -1059,9 +1059,9 @@ btk_layout_remove (BtkContainer *container,
 
 static void
 btk_layout_forall (BtkContainer *container,
-		   gboolean      include_internals,
+		   bboolean      include_internals,
 		   BtkCallback   callback,
-		   gpointer      callback_data)
+		   bpointer      callback_data)
 {
   BtkLayout *layout = BTK_LAYOUT (container);
   BtkLayoutChild *child;

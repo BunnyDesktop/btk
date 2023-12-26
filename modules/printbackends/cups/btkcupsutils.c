@@ -49,7 +49,7 @@ static void _get_read_data      (BtkCupsRequest *request);
 
 struct _BtkCupsResult
 {
-  gchar *error_msg;
+  bchar *error_msg;
   ipp_t *ipp_response;
   BtkCupsErrorType error_type;
 
@@ -57,8 +57,8 @@ struct _BtkCupsResult
   int error_status;            
   int error_code;
 
-  guint is_error : 1;
-  guint is_ipp_response : 1;
+  buint is_error : 1;
+  buint is_ipp_response : 1;
 };
 
 
@@ -129,7 +129,7 @@ btk_cups_result_set_error (BtkCupsResult    *result,
 BtkCupsRequest *
 btk_cups_request_new_with_username (http_t             *connection,
                                     BtkCupsRequestType  req_type, 
-                                    gint                operation_id,
+                                    bint                operation_id,
                                     BUNNYIOChannel         *data_io,
                                     const char         *server,
                                     const char         *resource,
@@ -221,7 +221,7 @@ btk_cups_request_new_with_username (http_t             *connection,
 BtkCupsRequest *
 btk_cups_request_new (http_t             *connection,
                       BtkCupsRequestType  req_type, 
-                      gint                operation_id,
+                      bint                operation_id,
                       BUNNYIOChannel         *data_io,
                       const char         *server,
                       const char         *resource)
@@ -274,8 +274,8 @@ btk_cups_request_free (BtkCupsRequest *request)
   g_free (request);
 }
 
-gboolean 
-btk_cups_request_read_write (BtkCupsRequest *request, gboolean connect_only)
+bboolean 
+btk_cups_request_read_write (BtkCupsRequest *request, bboolean connect_only)
 {
   if (connect_only && request->state != BTK_CUPS_REQUEST_START)
     return FALSE;
@@ -428,7 +428,7 @@ static const ipp_option_t ipp_options[] = {
 
 
 static ipp_tag_t
-_find_option_tag (const gchar *option)
+_find_option_tag (const bchar *option)
 {
   int lower_bound, upper_bound, num_options;
   int current_option;
@@ -480,8 +480,8 @@ _find_option_tag (const gchar *option)
  */
 void
 btk_cups_request_encode_option (BtkCupsRequest *request,
-                                const gchar    *option,
-			        const gchar    *value)
+                                const bchar    *option,
+			        const bchar    *value)
 {
   ipp_tag_t option_tag;
 
@@ -675,8 +675,8 @@ btk_cups_request_encode_option (BtkCupsRequest *request,
 
 void
 btk_cups_request_set_ipp_version (BtkCupsRequest     *request,
-				  gint                major,
-				  gint                minor)
+				  bint                major,
+				  bint                minor)
 {
   ippSetVersion (request->ipp_request, major, minor);
 }
@@ -715,11 +715,11 @@ _connect (BtkCupsRequest *request)
 static void 
 _post_send (BtkCupsRequest *request)
 {
-  gchar length[255];
+  bchar length[255];
   struct stat data_info;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
 
@@ -773,7 +773,7 @@ _post_write_request (BtkCupsRequest *request)
   ipp_state_t ipp_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
   
@@ -809,12 +809,12 @@ _post_write_request (BtkCupsRequest *request)
 static void 
 _post_write_data (BtkCupsRequest *request)
 {
-  gsize bytes;
+  bsize bytes;
   char buffer[_BTK_CUPS_MAX_CHUNK_SIZE];
   http_status_t http_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
   
@@ -973,7 +973,7 @@ _post_check (BtkCupsRequest *request)
   http_status = request->last_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - status %i\n", G_STRFUNC, http_status));
+            g_print ("CUPS Backend: %s - status %i\n", B_STRFUNC, http_status));
 
   request->poll_state = BTK_CUPS_HTTP_READ;
 
@@ -1166,7 +1166,7 @@ _post_read_response (BtkCupsRequest *request)
   ipp_state_t ipp_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_READ;
 
@@ -1203,7 +1203,7 @@ static void
 _get_send (BtkCupsRequest *request)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   request->poll_state = BTK_CUPS_HTTP_WRITE;
 
@@ -1266,7 +1266,7 @@ _get_check (BtkCupsRequest *request)
   http_status_t http_status;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   http_status = request->last_status;
 
@@ -1432,13 +1432,13 @@ static void
 _get_read_data (BtkCupsRequest *request)
 {
   char buffer[_BTK_CUPS_MAX_CHUNK_SIZE];
-  gsize bytes;
-  gsize bytes_written;
+  bsize bytes;
+  bsize bytes_written;
   BUNNYIOStatus io_status;
   GError *error;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   error = NULL;
 
@@ -1488,13 +1488,13 @@ _get_read_data (BtkCupsRequest *request)
     }
 }
 
-gboolean
+bboolean
 btk_cups_request_is_done (BtkCupsRequest *request)
 {
   return (request->state == BTK_CUPS_REQUEST_DONE);
 }
 
-gboolean
+bboolean
 btk_cups_result_is_error (BtkCupsResult *result)
 {
   return result->is_error;
@@ -1539,7 +1539,7 @@ btk_cups_connection_test_new (const char *server,
 {
   BtkCupsConnectionTest *result = NULL;
 #ifdef HAVE_CUPS_API_1_2
-  gchar                 *port_str = NULL;
+  bchar                 *port_str = NULL;
 
   result = g_new (BtkCupsConnectionTest, 1);
 
@@ -1580,9 +1580,9 @@ btk_cups_connection_test_get_state (BtkCupsConnectionTest *test)
 #ifdef HAVE_CUPS_API_1_2
   BtkCupsConnectionState result = BTK_CUPS_CONNECTION_NOT_AVAILABLE;
   http_addrlist_t       *iter;
-  gint                   error_code;
-  gint                   flags;
-  gint                   code;
+  bint                   error_code;
+  bint                   flags;
+  bint                   code;
 
   if (test == NULL)
     return BTK_CUPS_CONNECTION_NOT_AVAILABLE;

@@ -26,11 +26,11 @@ static BtkWidget *label = NULL;
 
 static void
 item_activated_cb (BtkRecentChooser *chooser,
-                   gpointer          data)
+                   bpointer          data)
 {
   BtkRecentInfo *info;
   GString *text;
-  gchar *label_text;
+  bchar *label_text;
 
   info = btk_recent_chooser_get_current_item (chooser);
   if (!info)
@@ -53,7 +53,7 @@ item_activated_cb (BtkRecentChooser *chooser,
 }
 
 static BtkWidget *
-create_recent_chooser_menu (gint limit)
+create_recent_chooser_menu (bint limit)
 {
   BtkWidget *menu;
   BtkRecentFilter *filter;

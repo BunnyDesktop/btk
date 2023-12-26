@@ -22,14 +22,14 @@
 
 #include <batk/batk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_UTIL                           (bail_util_get_type ())
-#define BAIL_UTIL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_UTIL, BailUtil))
-#define BAIL_UTIL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_UTIL, BailUtilClass))
-#define BAIL_IS_UTIL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_UTIL))
-#define BAIL_IS_UTIL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_UTIL))
-#define BAIL_UTIL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_UTIL, BailUtilClass))
+#define BAIL_UTIL(obj)                           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_UTIL, BailUtil))
+#define BAIL_UTIL_CLASS(klass)                   (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_UTIL, BailUtilClass))
+#define BAIL_IS_UTIL(obj)                        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_UTIL))
+#define BAIL_IS_UTIL_CLASS(klass)                (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_UTIL))
+#define BAIL_UTIL_GET_CLASS(obj)                 (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_UTIL, BailUtilClass))
 
 typedef struct _BailUtil                  BailUtil;
 typedef struct _BailUtilClass             BailUtilClass;
@@ -48,11 +48,11 @@ struct _BailUtilClass
 };
 
 #define BAIL_TYPE_MISC                           (bail_misc_get_type ())
-#define BAIL_MISC(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MISC, BailMisc))
-#define BAIL_MISC_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MISC, BailMiscClass))
-#define BAIL_IS_MISC(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MISC))
-#define BAIL_IS_MISC_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MISC))
-#define BAIL_MISC_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MISC, BailMiscClass))
+#define BAIL_MISC(obj)                           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MISC, BailMisc))
+#define BAIL_MISC_CLASS(klass)                   (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MISC, BailMiscClass))
+#define BAIL_IS_MISC(obj)                        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MISC))
+#define BAIL_IS_MISC_CLASS(klass)                (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MISC))
+#define BAIL_MISC_GET_CLASS(obj)                 (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MISC, BailMiscClass))
 
 typedef struct _BailMisc                  BailMisc;
 typedef struct _BailMiscClass             BailMiscClass;
@@ -69,6 +69,6 @@ struct _BailMiscClass
   BatkMiscClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_UTIL_H__ */

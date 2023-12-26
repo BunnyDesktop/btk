@@ -1313,8 +1313,8 @@ static const char keynames[] =
   "VoidSymbol\0";
 
 typedef struct {
-    guint  keyval;
-    guint  offset;
+    buint  keyval;
+    buint  offset;
 } bdk_key;
 
 static const bdk_key bdk_keys_by_keyval[] = {

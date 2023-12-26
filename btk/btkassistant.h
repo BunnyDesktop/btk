@@ -32,14 +32,14 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ASSISTANT         (btk_assistant_get_type ())
-#define BTK_ASSISTANT(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_ASSISTANT, BtkAssistant))
-#define BTK_ASSISTANT_CLASS(c)     (G_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_ASSISTANT, BtkAssistantClass))
-#define BTK_IS_ASSISTANT(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_ASSISTANT))
-#define BTK_IS_ASSISTANT_CLASS(c)  (G_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_ASSISTANT))
-#define BTK_ASSISTANT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_ASSISTANT, BtkAssistantClass))
+#define BTK_ASSISTANT(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_ASSISTANT, BtkAssistant))
+#define BTK_ASSISTANT_CLASS(c)     (B_TYPE_CHECK_CLASS_CAST    ((c), BTK_TYPE_ASSISTANT, BtkAssistantClass))
+#define BTK_IS_ASSISTANT(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_ASSISTANT))
+#define BTK_IS_ASSISTANT_CLASS(c)  (B_TYPE_CHECK_CLASS_TYPE    ((c), BTK_TYPE_ASSISTANT))
+#define BTK_ASSISTANT_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS  ((o), BTK_TYPE_ASSISTANT, BtkAssistantClass))
 
 /**
  * BtkAssistantPageType:
@@ -117,26 +117,26 @@ struct _BtkAssistantClass
  *
  * Returns: The next page number.
  */
-typedef gint (*BtkAssistantPageFunc) (gint current_page, gpointer data);
+typedef bint (*BtkAssistantPageFunc) (bint current_page, bpointer data);
 
-GType                 btk_assistant_get_type              (void) G_GNUC_CONST;
+GType                 btk_assistant_get_type              (void) B_GNUC_CONST;
 BtkWidget            *btk_assistant_new                   (void);
-gint                  btk_assistant_get_current_page      (BtkAssistant         *assistant);
+bint                  btk_assistant_get_current_page      (BtkAssistant         *assistant);
 void                  btk_assistant_set_current_page      (BtkAssistant         *assistant,
-							   gint                  page_num);
-gint                  btk_assistant_get_n_pages           (BtkAssistant         *assistant);
+							   bint                  page_num);
+bint                  btk_assistant_get_n_pages           (BtkAssistant         *assistant);
 BtkWidget            *btk_assistant_get_nth_page          (BtkAssistant         *assistant,
-							   gint                  page_num);
-gint                  btk_assistant_prepend_page          (BtkAssistant         *assistant,
+							   bint                  page_num);
+bint                  btk_assistant_prepend_page          (BtkAssistant         *assistant,
 							   BtkWidget            *page);
-gint                  btk_assistant_append_page           (BtkAssistant         *assistant,
+bint                  btk_assistant_append_page           (BtkAssistant         *assistant,
 							   BtkWidget            *page);
-gint                  btk_assistant_insert_page           (BtkAssistant         *assistant,
+bint                  btk_assistant_insert_page           (BtkAssistant         *assistant,
 							   BtkWidget            *page,
-							   gint                  position);
+							   bint                  position);
 void                  btk_assistant_set_forward_page_func (BtkAssistant         *assistant,
 							   BtkAssistantPageFunc  page_func,
-							   gpointer              data,
+							   bpointer              data,
 							   GDestroyNotify        destroy);
 void                  btk_assistant_set_page_type         (BtkAssistant         *assistant,
 							   BtkWidget            *page,
@@ -145,8 +145,8 @@ BtkAssistantPageType  btk_assistant_get_page_type         (BtkAssistant         
 							   BtkWidget            *page);
 void                  btk_assistant_set_page_title        (BtkAssistant         *assistant,
 							   BtkWidget            *page,
-							   const gchar          *title);
-const gchar *         btk_assistant_get_page_title        (BtkAssistant         *assistant,
+							   const bchar          *title);
+const bchar *         btk_assistant_get_page_title        (BtkAssistant         *assistant,
 							   BtkWidget            *page);
 void                  btk_assistant_set_page_header_image (BtkAssistant         *assistant,
 							   BtkWidget            *page,
@@ -160,8 +160,8 @@ BdkPixbuf            *btk_assistant_get_page_side_image   (BtkAssistant         
 							   BtkWidget            *page);
 void                  btk_assistant_set_page_complete     (BtkAssistant         *assistant,
 							   BtkWidget            *page,
-							   gboolean              complete);
-gboolean              btk_assistant_get_page_complete     (BtkAssistant         *assistant,
+							   bboolean              complete);
+bboolean              btk_assistant_get_page_complete     (BtkAssistant         *assistant,
 							   BtkWidget            *page);
 void                  btk_assistant_add_action_widget     (BtkAssistant         *assistant,
 							   BtkWidget            *child);
@@ -171,6 +171,6 @@ void                  btk_assistant_remove_action_widget  (BtkAssistant         
 void                  btk_assistant_update_buttons_state  (BtkAssistant *assistant);
 void                  btk_assistant_commit                (BtkAssistant *assistant);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_ASSISTANT_H__ */

@@ -35,14 +35,14 @@
 #include <btk/btkrange.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SCALE            (btk_scale_get_type ())
-#define BTK_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
-#define BTK_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE, BtkScaleClass))
-#define BTK_IS_SCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE))
-#define BTK_IS_SCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE))
-#define BTK_SCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE, BtkScaleClass))
+#define BTK_SCALE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
+#define BTK_SCALE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE, BtkScaleClass))
+#define BTK_IS_SCALE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE))
+#define BTK_IS_SCALE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE))
+#define BTK_SCALE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE, BtkScaleClass))
 
 
 typedef struct _BtkScale        BtkScale;
@@ -52,23 +52,23 @@ struct _BtkScale
 {
   BtkRange range;
 
-  gint  GSEAL (digits);
-  guint GSEAL (draw_value) : 1;
-  guint GSEAL (value_pos) : 2;
+  bint  GSEAL (digits);
+  buint GSEAL (draw_value) : 1;
+  buint GSEAL (value_pos) : 2;
 };
 
 struct _BtkScaleClass
 {
   BtkRangeClass parent_class;
 
-  gchar* (* format_value) (BtkScale *scale,
-                           gdouble   value);
+  bchar* (* format_value) (BtkScale *scale,
+                           bdouble   value);
 
   void (* draw_value) (BtkScale *scale);
 
   void (* get_layout_offsets) (BtkScale *scale,
-                               gint     *x,
-                               gint     *y);
+                               bint     *x,
+                               bint     *y);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -76,36 +76,36 @@ struct _BtkScaleClass
   void (*_btk_reserved3) (void);
 };
 
-GType             btk_scale_get_type           (void) G_GNUC_CONST;
+GType             btk_scale_get_type           (void) B_GNUC_CONST;
 void              btk_scale_set_digits         (BtkScale        *scale,
-                                                gint             digits);
-gint              btk_scale_get_digits         (BtkScale        *scale);
+                                                bint             digits);
+bint              btk_scale_get_digits         (BtkScale        *scale);
 void              btk_scale_set_draw_value     (BtkScale        *scale,
-                                                gboolean         draw_value);
-gboolean          btk_scale_get_draw_value     (BtkScale        *scale);
+                                                bboolean         draw_value);
+bboolean          btk_scale_get_draw_value     (BtkScale        *scale);
 void              btk_scale_set_value_pos      (BtkScale        *scale,
                                                 BtkPositionType  pos);
 BtkPositionType   btk_scale_get_value_pos      (BtkScale        *scale);
 
 BangoLayout     * btk_scale_get_layout         (BtkScale        *scale);
 void              btk_scale_get_layout_offsets (BtkScale        *scale,
-                                                gint            *x,
-                                                gint            *y);
+                                                bint            *x,
+                                                bint            *y);
 
 void              btk_scale_add_mark           (BtkScale        *scale,
-                                                gdouble          value,
+                                                bdouble          value,
                                                 BtkPositionType  position,
-                                                const gchar     *markup);
+                                                const bchar     *markup);
 void              btk_scale_clear_marks        (BtkScale        *scale);
 
 /* internal API */
 void              _btk_scale_clear_layout      (BtkScale        *scale);
 void              _btk_scale_get_value_size    (BtkScale        *scale,
-                                                gint            *width,
-                                                gint            *height);
-gchar           * _btk_scale_format_value      (BtkScale        *scale,
-                                                gdouble          value);
+                                                bint            *width,
+                                                bint            *height);
+bchar           * _btk_scale_format_value      (BtkScale        *scale,
+                                                bdouble          value);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SCALE_H__ */

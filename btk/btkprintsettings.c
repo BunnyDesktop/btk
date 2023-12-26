@@ -30,34 +30,34 @@
 
 typedef struct _BtkPrintSettingsClass BtkPrintSettingsClass;
 
-#define BTK_IS_PRINT_SETTINGS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_SETTINGS))
-#define BTK_PRINT_SETTINGS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
-#define BTK_PRINT_SETTINGS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
+#define BTK_IS_PRINT_SETTINGS_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_SETTINGS))
+#define BTK_PRINT_SETTINGS_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
+#define BTK_PRINT_SETTINGS_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettingsClass))
 
 struct _BtkPrintSettings
 {
-  GObject parent_instance;
+  BObject parent_instance;
   
   GHashTable *hash;
 };
 
 struct _BtkPrintSettingsClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 #define KEYFILE_GROUP_NAME "Print Settings"
 
-G_DEFINE_TYPE (BtkPrintSettings, btk_print_settings, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintSettings, btk_print_settings, B_TYPE_OBJECT)
 
 static void
-btk_print_settings_finalize (GObject *object)
+btk_print_settings_finalize (BObject *object)
 {
   BtkPrintSettings *settings = BTK_PRINT_SETTINGS (object);
 
   g_hash_table_destroy (settings->hash);
 
-  G_OBJECT_CLASS (btk_print_settings_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_print_settings_parent_class)->finalize (object);
 }
 
 static void
@@ -70,7 +70,7 @@ btk_print_settings_init (BtkPrintSettings *settings)
 static void
 btk_print_settings_class_init (BtkPrintSettingsClass *class)
 {
-  GObjectClass *bobject_class = (GObjectClass *)class;
+  BObjectClass *bobject_class = (BObjectClass *)class;
 
   bobject_class->finalize = btk_print_settings_finalize;
 }
@@ -91,9 +91,9 @@ btk_print_settings_new (void)
 }
 
 static void
-copy_hash_entry  (gpointer  key,
-		  gpointer  value,
-		  gpointer  user_data)
+copy_hash_entry  (bpointer  key,
+		  bpointer  value,
+		  bpointer  user_data)
 {
   BtkPrintSettings *settings = user_data;
 
@@ -144,9 +144,9 @@ btk_print_settings_copy (BtkPrintSettings *other)
  * 
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get (BtkPrintSettings *settings,
-			const gchar      *key)
+			const bchar      *key)
 {
   return g_hash_table_lookup (settings->hash, key);
 }
@@ -163,8 +163,8 @@ btk_print_settings_get (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set (BtkPrintSettings *settings,
-			const gchar      *key,
-			const gchar      *value)
+			const bchar      *key,
+			const bchar      *value)
 {
   if (value == NULL)
     btk_print_settings_unset (settings, key);
@@ -186,7 +186,7 @@ btk_print_settings_set (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_unset (BtkPrintSettings *settings,
-			  const gchar      *key)
+			  const bchar      *key)
 {
   g_hash_table_remove (settings->hash, key);
 }
@@ -202,9 +202,9 @@ btk_print_settings_unset (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gboolean        
+bboolean        
 btk_print_settings_has_key (BtkPrintSettings *settings,
-			    const gchar      *key)
+			    const bchar      *key)
 {
   return btk_print_settings_get (settings, key) != NULL;
 }
@@ -225,11 +225,11 @@ btk_print_settings_has_key (BtkPrintSettings *settings,
  * 
  * Since: 2.10
  **/
-gboolean
+bboolean
 btk_print_settings_get_bool (BtkPrintSettings *settings,
-			     const gchar      *key)
+			     const bchar      *key)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, key);
   if (g_strcmp0 (val, "true") == 0)
@@ -255,12 +255,12 @@ btk_print_settings_get_bool (BtkPrintSettings *settings,
  * 
  * Since: 2.10
  */
-static gboolean
+static bboolean
 btk_print_settings_get_bool_with_default (BtkPrintSettings *settings,
-					  const gchar      *key,
-					  gboolean          default_val)
+					  const bchar      *key,
+					  bboolean          default_val)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, key);
   if (g_strcmp0 (val, "true") == 0)
@@ -284,8 +284,8 @@ btk_print_settings_get_bool_with_default (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_bool (BtkPrintSettings *settings,
-			     const gchar      *key,
-			     gboolean          value)
+			     const bchar      *key,
+			     bboolean          value)
 {
   if (value)
     btk_print_settings_set (settings, key, "true");
@@ -309,12 +309,12 @@ btk_print_settings_set_bool (BtkPrintSettings *settings,
  * 
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_double_with_default (BtkPrintSettings *settings,
-					    const gchar      *key,
-					    gdouble           def)
+					    const bchar      *key,
+					    bdouble           def)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, key);
   if (val == NULL)
@@ -334,9 +334,9 @@ btk_print_settings_get_double_with_default (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_double (BtkPrintSettings *settings,
-			       const gchar      *key)
+			       const bchar      *key)
 {
   return btk_print_settings_get_double_with_default (settings, key, 0.0);
 }
@@ -353,10 +353,10 @@ btk_print_settings_get_double (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_double (BtkPrintSettings *settings,
-			       const gchar      *key,
-			       gdouble           value)
+			       const bchar      *key,
+			       bdouble           value)
 {
-  gchar buf[G_ASCII_DTOSTR_BUF_SIZE];
+  bchar buf[G_ASCII_DTOSTR_BUF_SIZE];
   
   g_ascii_dtostr (buf, G_ASCII_DTOSTR_BUF_SIZE, value);
   btk_print_settings_set (settings, key, buf);
@@ -375,12 +375,12 @@ btk_print_settings_set_double (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_length (BtkPrintSettings *settings,
-			       const gchar      *key,
+			       const bchar      *key,
 			       BtkUnit           unit)
 {
-  gdouble length = btk_print_settings_get_double (settings, key);
+  bdouble length = btk_print_settings_get_double (settings, key);
   return _btk_print_convert_from_mm (length, unit);
 }
 
@@ -397,8 +397,8 @@ btk_print_settings_get_length (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_length (BtkPrintSettings *settings,
-			       const gchar      *key,
-			       gdouble           value, 
+			       const bchar      *key,
+			       bdouble           value, 
 			       BtkUnit           unit)
 {
   btk_print_settings_set_double (settings, key,
@@ -418,12 +418,12 @@ btk_print_settings_set_length (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_settings_get_int_with_default (BtkPrintSettings *settings,
-					 const gchar      *key,
-					 gint              def)
+					 const bchar      *key,
+					 bint              def)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, key);
   if (val == NULL)
@@ -443,9 +443,9 @@ btk_print_settings_get_int_with_default (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_settings_get_int (BtkPrintSettings *settings,
-			    const gchar      *key)
+			    const bchar      *key)
 {
   return btk_print_settings_get_int_with_default (settings, key, 0);
 }
@@ -462,10 +462,10 @@ btk_print_settings_get_int (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_int (BtkPrintSettings *settings,
-			    const gchar      *key,
-			    gint              value)
+			    const bchar      *key,
+			    bint              value)
 {
-  gchar buf[128];
+  bchar buf[128];
   g_sprintf (buf, "%d", value);
   btk_print_settings_set (settings, key, buf);
 }
@@ -483,7 +483,7 @@ btk_print_settings_set_int (BtkPrintSettings *settings,
 void
 btk_print_settings_foreach (BtkPrintSettings    *settings,
 			    BtkPrintSettingsFunc func,
-			    gpointer             user_data)
+			    bpointer             user_data)
 {
   g_hash_table_foreach (settings->hash, (GHFunc)func, user_data);
 }
@@ -499,7 +499,7 @@ btk_print_settings_foreach (BtkPrintSettings    *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_printer (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_PRINTER);
@@ -518,7 +518,7 @@ btk_print_settings_get_printer (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_printer (BtkPrintSettings *settings,
-				const gchar      *printer)
+				const bchar      *printer)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_PRINTER, printer);
 }
@@ -537,7 +537,7 @@ btk_print_settings_set_printer (BtkPrintSettings *settings,
 BtkPageOrientation
 btk_print_settings_get_orientation (BtkPrintSettings *settings)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_ORIENTATION);
 
@@ -569,7 +569,7 @@ void
 btk_print_settings_set_orientation (BtkPrintSettings   *settings,
 				    BtkPageOrientation  orientation)
 {
-  const gchar *val;
+  const bchar *val;
 
   switch (orientation)
     {
@@ -604,9 +604,9 @@ btk_print_settings_set_orientation (BtkPrintSettings   *settings,
 BtkPaperSize *     
 btk_print_settings_get_paper_size (BtkPrintSettings *settings)
 {
-  const gchar *val;
-  const gchar *name;
-  gdouble w, h;
+  const bchar *val;
+  const bchar *name;
+  bdouble w, h;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_PAPER_FORMAT);
   if (val == NULL)
@@ -638,7 +638,7 @@ void
 btk_print_settings_set_paper_size (BtkPrintSettings *settings,
 				   BtkPaperSize     *paper_size)
 {
-  gchar *custom_name;
+  bchar *custom_name;
 
   if (paper_size == NULL) 
     {
@@ -678,7 +678,7 @@ btk_print_settings_set_paper_size (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_paper_width (BtkPrintSettings *settings,
 				    BtkUnit           unit)
 {
@@ -697,7 +697,7 @@ btk_print_settings_get_paper_width (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_paper_width (BtkPrintSettings *settings,
-				    gdouble           width, 
+				    bdouble           width, 
 				    BtkUnit           unit)
 {
   btk_print_settings_set_length (settings, BTK_PRINT_SETTINGS_PAPER_WIDTH, width, unit);
@@ -715,7 +715,7 @@ btk_print_settings_set_paper_width (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_paper_height (BtkPrintSettings *settings,
 				     BtkUnit           unit)
 {
@@ -736,7 +736,7 @@ btk_print_settings_get_paper_height (BtkPrintSettings *settings,
  */
 void
 btk_print_settings_set_paper_height (BtkPrintSettings *settings,
-				     gdouble           height, 
+				     bdouble           height, 
 				     BtkUnit           unit)
 {
   btk_print_settings_set_length (settings, 
@@ -754,7 +754,7 @@ btk_print_settings_set_paper_height (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_settings_get_use_color (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_bool_with_default (settings, 
@@ -773,7 +773,7 @@ btk_print_settings_get_use_color (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_use_color (BtkPrintSettings *settings,
-				  gboolean          use_color)
+				  bboolean          use_color)
 {
   btk_print_settings_set_bool (settings,
 			       BTK_PRINT_SETTINGS_USE_COLOR, 
@@ -790,7 +790,7 @@ btk_print_settings_set_use_color (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_settings_get_collate (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_bool (settings, 
@@ -808,7 +808,7 @@ btk_print_settings_get_collate (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_collate (BtkPrintSettings *settings,
-				gboolean          collate)
+				bboolean          collate)
 {
   btk_print_settings_set_bool (settings,
 			       BTK_PRINT_SETTINGS_COLLATE, 
@@ -825,7 +825,7 @@ btk_print_settings_set_collate (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_settings_get_reverse (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_bool (settings, 
@@ -843,7 +843,7 @@ btk_print_settings_get_reverse (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_reverse (BtkPrintSettings *settings,
-				  gboolean        reverse)
+				  bboolean        reverse)
 {
   btk_print_settings_set_bool (settings,
 			       BTK_PRINT_SETTINGS_REVERSE, 
@@ -863,7 +863,7 @@ btk_print_settings_set_reverse (BtkPrintSettings *settings,
 BtkPrintDuplex
 btk_print_settings_get_duplex (BtkPrintSettings *settings)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_DUPLEX);
 
@@ -892,7 +892,7 @@ void
 btk_print_settings_set_duplex (BtkPrintSettings *settings,
 			       BtkPrintDuplex    duplex)
 {
-  const gchar *str;
+  const bchar *str;
 
   switch (duplex)
     {
@@ -924,7 +924,7 @@ btk_print_settings_set_duplex (BtkPrintSettings *settings,
 BtkPrintQuality
 btk_print_settings_get_quality (BtkPrintSettings *settings)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_QUALITY);
 
@@ -956,7 +956,7 @@ void
 btk_print_settings_set_quality (BtkPrintSettings *settings,
 				BtkPrintQuality   quality)
 {
-  const gchar *str;
+  const bchar *str;
 
   switch (quality)
     {
@@ -991,7 +991,7 @@ btk_print_settings_set_quality (BtkPrintSettings *settings,
 BtkPageSet
 btk_print_settings_get_page_set (BtkPrintSettings *settings)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_PAGE_SET);
 
@@ -1020,7 +1020,7 @@ void
 btk_print_settings_set_page_set (BtkPrintSettings *settings,
 				 BtkPageSet        page_set)
 {
-  const gchar *str;
+  const bchar *str;
 
   switch (page_set)
     {
@@ -1056,7 +1056,7 @@ btk_print_settings_get_number_up_layout (BtkPrintSettings *settings)
   BtkTextDirection  text_direction;
   GEnumClass       *enum_class;
   GEnumValue       *enum_value;
-  const gchar      *val;
+  const bchar      *val;
 
   g_return_val_if_fail (BTK_IS_PRINT_SETTINGS (settings), BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM);
 
@@ -1116,7 +1116,7 @@ btk_print_settings_set_number_up_layout (BtkPrintSettings  *settings,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_settings_get_n_copies (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_int_with_default (settings, BTK_PRINT_SETTINGS_N_COPIES, 1);
@@ -1133,7 +1133,7 @@ btk_print_settings_get_n_copies (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_n_copies (BtkPrintSettings *settings,
-				 gint              num_copies)
+				 bint              num_copies)
 {
   btk_print_settings_set_int (settings, BTK_PRINT_SETTINGS_N_COPIES,
 			      num_copies);
@@ -1149,7 +1149,7 @@ btk_print_settings_set_n_copies (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_settings_get_number_up (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_int_with_default (settings, BTK_PRINT_SETTINGS_NUMBER_UP, 1);
@@ -1166,7 +1166,7 @@ btk_print_settings_get_number_up (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_number_up (BtkPrintSettings *settings,
-				  gint              number_up)
+				  bint              number_up)
 {
   btk_print_settings_set_int (settings, BTK_PRINT_SETTINGS_NUMBER_UP,
 				number_up);
@@ -1182,7 +1182,7 @@ btk_print_settings_set_number_up (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gint
+bint
 btk_print_settings_get_resolution (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_int_with_default (settings, BTK_PRINT_SETTINGS_RESOLUTION, 300);
@@ -1201,7 +1201,7 @@ btk_print_settings_get_resolution (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_resolution (BtkPrintSettings *settings,
-				   gint              resolution)
+				   bint              resolution)
 {
   btk_print_settings_set_int (settings, BTK_PRINT_SETTINGS_RESOLUTION,
 			      resolution);
@@ -1221,7 +1221,7 @@ btk_print_settings_set_resolution (BtkPrintSettings *settings,
  *
  * Since: 2.16
  */
-gint
+bint
 btk_print_settings_get_resolution_x (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_int_with_default (settings, BTK_PRINT_SETTINGS_RESOLUTION_X, 300);
@@ -1237,7 +1237,7 @@ btk_print_settings_get_resolution_x (BtkPrintSettings *settings)
  *
  * Since: 2.16
  */
-gint
+bint
 btk_print_settings_get_resolution_y (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_int_with_default (settings, BTK_PRINT_SETTINGS_RESOLUTION_Y, 300);
@@ -1257,8 +1257,8 @@ btk_print_settings_get_resolution_y (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_resolution_xy (BtkPrintSettings *settings,
-				      gint              resolution_x,
-				      gint              resolution_y)
+				      bint              resolution_x,
+				      bint              resolution_y)
 {
   btk_print_settings_set_int (settings, BTK_PRINT_SETTINGS_RESOLUTION_X,
 			      resolution_x);
@@ -1278,7 +1278,7 @@ btk_print_settings_set_resolution_xy (BtkPrintSettings *settings,
  *
  * Since: 2.16
  */
-gdouble
+bdouble
 btk_print_settings_get_printer_lpi (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_double_with_default (settings, BTK_PRINT_SETTINGS_PRINTER_LPI, 150.0);
@@ -1295,7 +1295,7 @@ btk_print_settings_get_printer_lpi (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_printer_lpi (BtkPrintSettings *settings,
-				    gdouble           lpi)
+				    bdouble           lpi)
 {
   btk_print_settings_set_double (settings, BTK_PRINT_SETTINGS_PRINTER_LPI,
 			         lpi);
@@ -1311,7 +1311,7 @@ btk_print_settings_set_printer_lpi (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-gdouble
+bdouble
 btk_print_settings_get_scale (BtkPrintSettings *settings)
 {
   return btk_print_settings_get_double_with_default (settings,
@@ -1330,7 +1330,7 @@ btk_print_settings_get_scale (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_scale (BtkPrintSettings *settings,
-			      gdouble           scale)
+			      bdouble           scale)
 {
   btk_print_settings_set_double (settings, BTK_PRINT_SETTINGS_SCALE,
 				 scale);
@@ -1349,7 +1349,7 @@ btk_print_settings_set_scale (BtkPrintSettings *settings,
 BtkPrintPages
 btk_print_settings_get_print_pages (BtkPrintSettings *settings)
 {
-  const gchar *val;
+  const bchar *val;
 
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_PRINT_PAGES);
 
@@ -1381,7 +1381,7 @@ void
 btk_print_settings_set_print_pages (BtkPrintSettings *settings,
 				    BtkPrintPages     pages)
 {
-  const gchar *str;
+  const bchar *str;
 
   switch (pages)
     {
@@ -1418,12 +1418,12 @@ btk_print_settings_set_print_pages (BtkPrintSettings *settings,
  */
 BtkPageRange *
 btk_print_settings_get_page_ranges (BtkPrintSettings *settings,
-				    gint             *num_ranges)
+				    bint             *num_ranges)
 {
-  const gchar *val;
-  gchar **range_strs;
+  const bchar *val;
+  bchar **range_strs;
   BtkPageRange *ranges;
-  gint i, n;
+  bint i, n;
   
   val = btk_print_settings_get (settings, BTK_PRINT_SETTINGS_PAGE_RANGES);
 
@@ -1444,16 +1444,16 @@ btk_print_settings_get_page_ranges (BtkPrintSettings *settings,
 
   for (i = 0; i < n; i++)
     {
-      gint start, end;
-      gchar *str;
+      bint start, end;
+      bchar *str;
 
-      start = (gint)strtol (range_strs[i], &str, 10);
+      start = (bint)strtol (range_strs[i], &str, 10);
       end = start;
 
       if (*str == '-')
 	{
 	  str++;
-	  end = (gint)strtol (str, NULL, 10);
+	  end = (bint)strtol (str, NULL, 10);
 	}
 
       ranges[i].start = start;
@@ -1479,10 +1479,10 @@ btk_print_settings_get_page_ranges (BtkPrintSettings *settings,
 void
 btk_print_settings_set_page_ranges  (BtkPrintSettings *settings,
 				     BtkPageRange     *page_ranges,
-				     gint              num_ranges)
+				     bint              num_ranges)
 {
   GString *s;
-  gint i;
+  bint i;
   
   s = g_string_new ("");
 
@@ -1515,7 +1515,7 @@ btk_print_settings_set_page_ranges  (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_default_source (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_DEFAULT_SOURCE);
@@ -1532,7 +1532,7 @@ btk_print_settings_get_default_source (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_default_source (BtkPrintSettings *settings,
-				       const gchar      *default_source)
+				       const bchar      *default_source)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_DEFAULT_SOURCE, default_source);
 }
@@ -1550,7 +1550,7 @@ btk_print_settings_set_default_source (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_media_type (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_MEDIA_TYPE);
@@ -1570,7 +1570,7 @@ btk_print_settings_get_media_type (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_media_type (BtkPrintSettings *settings,
-				   const gchar      *media_type)
+				   const bchar      *media_type)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_MEDIA_TYPE, media_type);
 }
@@ -1585,7 +1585,7 @@ btk_print_settings_set_media_type (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_dither (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_DITHER);
@@ -1602,7 +1602,7 @@ btk_print_settings_get_dither (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_dither (BtkPrintSettings *settings,
-			       const gchar      *dither)
+			       const bchar      *dither)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_DITHER, dither);
 }
@@ -1617,7 +1617,7 @@ btk_print_settings_set_dither (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_finishings (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_FINISHINGS);
@@ -1634,7 +1634,7 @@ btk_print_settings_get_finishings (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_finishings (BtkPrintSettings *settings,
-				   const gchar      *finishings)
+				   const bchar      *finishings)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_FINISHINGS, finishings);
 }
@@ -1649,7 +1649,7 @@ btk_print_settings_set_finishings (BtkPrintSettings *settings,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_print_settings_get_output_bin (BtkPrintSettings *settings)
 {
   return btk_print_settings_get (settings, BTK_PRINT_SETTINGS_OUTPUT_BIN);
@@ -1666,7 +1666,7 @@ btk_print_settings_get_output_bin (BtkPrintSettings *settings)
  */
 void
 btk_print_settings_set_output_bin (BtkPrintSettings *settings,
-				   const gchar      *output_bin)
+				   const bchar      *output_bin)
 {
   btk_print_settings_set (settings, BTK_PRINT_SETTINGS_OUTPUT_BIN, output_bin);
 }
@@ -1685,12 +1685,12 @@ btk_print_settings_set_output_bin (BtkPrintSettings *settings,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_print_settings_load_file (BtkPrintSettings *settings,
-                              const gchar      *file_name,
+                              const bchar      *file_name,
                               GError          **error)
 {
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   GKeyFile *key_file;
 
   g_return_val_if_fail (BTK_IS_PRINT_SETTINGS (settings), FALSE);
@@ -1722,7 +1722,7 @@ btk_print_settings_load_file (BtkPrintSettings *settings,
  * Since: 2.12
  */
 BtkPrintSettings *
-btk_print_settings_new_from_file (const gchar  *file_name,
+btk_print_settings_new_from_file (const bchar  *file_name,
 			          GError      **error)
 {
   BtkPrintSettings *settings = btk_print_settings_new ();
@@ -1752,14 +1752,14 @@ btk_print_settings_new_from_file (const gchar  *file_name,
  * 
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_print_settings_load_key_file (BtkPrintSettings *settings,
 				  GKeyFile         *key_file,
-				  const gchar      *group_name,
+				  const bchar      *group_name,
 				  GError          **error)
 {
-  gchar **keys;
-  gsize n_keys, i;
+  bchar **keys;
+  bsize n_keys, i;
   GError *err = NULL;
 
   g_return_val_if_fail (BTK_IS_PRINT_SETTINGS (settings), FALSE);
@@ -1780,7 +1780,7 @@ btk_print_settings_load_key_file (BtkPrintSettings *settings,
    
   for (i = 0 ; i < n_keys; ++i)
     {
-      gchar *value;
+      bchar *value;
 
       value = g_key_file_get_string (key_file,
 				     group_name,
@@ -1816,7 +1816,7 @@ btk_print_settings_load_key_file (BtkPrintSettings *settings,
  */
 BtkPrintSettings *
 btk_print_settings_new_from_key_file (GKeyFile     *key_file,
-				      const gchar  *group_name,
+				      const bchar  *group_name,
 				      GError      **error)
 {
   BtkPrintSettings *settings = btk_print_settings_new ();
@@ -1845,15 +1845,15 @@ btk_print_settings_new_from_key_file (GKeyFile     *key_file,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_print_settings_to_file (BtkPrintSettings  *settings,
-			    const gchar       *file_name,
+			    const bchar       *file_name,
 			    GError           **error)
 {
   GKeyFile *key_file;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
   char *data = NULL;
-  gsize len;
+  bsize len;
   GError *err = NULL;
 
   g_return_val_if_fail (BTK_IS_PRINT_SETTINGS (settings), FALSE);
@@ -1880,12 +1880,12 @@ out:
 
 typedef struct {
   GKeyFile *key_file;
-  const gchar *group_name;
+  const bchar *group_name;
 } SettingsData;
 
 static void
-add_value_to_key_file (const gchar  *key,
-		       const gchar  *value,
+add_value_to_key_file (const bchar  *key,
+		       const bchar  *value,
 		       SettingsData *data)
 {
   g_key_file_set_string (data->key_file, data->group_name, key, value);
@@ -1905,7 +1905,7 @@ add_value_to_key_file (const gchar  *key,
 void
 btk_print_settings_to_key_file (BtkPrintSettings  *settings,
 			        GKeyFile          *key_file,
-				const gchar       *group_name)
+				const bchar       *group_name)
 {
   SettingsData data;
 

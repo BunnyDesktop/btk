@@ -38,17 +38,17 @@
 #include <btk/btkhbox.h>
 #include <btk/btkenums.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /*
  * Type checking and casting macros
  */
 #define BTK_TYPE_INFO_BAR              (btk_info_bar_get_type())
-#define BTK_INFO_BAR(obj)              (G_TYPE_CHECK_INSTANCE_CAST((obj), BTK_TYPE_INFO_BAR, BtkInfoBar))
-#define BTK_INFO_BAR_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST((klass), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
-#define BTK_IS_INFO_BAR(obj)           (G_TYPE_CHECK_INSTANCE_TYPE((obj), BTK_TYPE_INFO_BAR))
-#define BTK_IS_INFO_BAR_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INFO_BAR))
-#define BTK_INFO_BAR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
+#define BTK_INFO_BAR(obj)              (B_TYPE_CHECK_INSTANCE_CAST((obj), BTK_TYPE_INFO_BAR, BtkInfoBar))
+#define BTK_INFO_BAR_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST((klass), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
+#define BTK_IS_INFO_BAR(obj)           (B_TYPE_CHECK_INSTANCE_TYPE((obj), BTK_TYPE_INFO_BAR))
+#define BTK_IS_INFO_BAR_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_INFO_BAR))
+#define BTK_INFO_BAR_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_INFO_BAR, BtkInfoBarClass))
 
 
 typedef struct _BtkInfoBarPrivate BtkInfoBarPrivate;
@@ -70,7 +70,7 @@ struct _BtkInfoBarClass
   BtkHBoxClass parent_class;
 
   /* Signals */
-  void (* response) (BtkInfoBar *info_bar, gint response_id);
+  void (* response) (BtkInfoBar *info_bar, bint response_id);
 
   /* Keybinding signals */
   void (* close)    (BtkInfoBar *info_bar);
@@ -84,37 +84,37 @@ struct _BtkInfoBarClass
   void (*_btk_reserved6) (void);
 };
 
-GType          btk_info_bar_get_type               (void) G_GNUC_CONST;
+GType          btk_info_bar_get_type               (void) B_GNUC_CONST;
 BtkWidget     *btk_info_bar_new                    (void);
 
-BtkWidget     *btk_info_bar_new_with_buttons       (const gchar    *first_button_text,
+BtkWidget     *btk_info_bar_new_with_buttons       (const bchar    *first_button_text,
                                                     ...);
 
 BtkWidget     *btk_info_bar_get_action_area        (BtkInfoBar     *info_bar);
 BtkWidget     *btk_info_bar_get_content_area       (BtkInfoBar     *info_bar);
 void           btk_info_bar_add_action_widget      (BtkInfoBar     *info_bar,
                                                     BtkWidget      *child,
-                                                    gint            response_id);
+                                                    bint            response_id);
 BtkWidget     *btk_info_bar_add_button             (BtkInfoBar     *info_bar,
-                                                    const gchar    *button_text,
-                                                    gint            response_id);
+                                                    const bchar    *button_text,
+                                                    bint            response_id);
 void           btk_info_bar_add_buttons            (BtkInfoBar     *info_bar,
-                                                    const gchar    *first_button_text,
+                                                    const bchar    *first_button_text,
                                                     ...);
 void           btk_info_bar_set_response_sensitive (BtkInfoBar     *info_bar,
-                                                    gint            response_id,
-                                                    gboolean        setting);
+                                                    bint            response_id,
+                                                    bboolean        setting);
 void           btk_info_bar_set_default_response   (BtkInfoBar     *info_bar,
-                                                    gint            response_id);
+                                                    bint            response_id);
 
 /* Emit response signal */
 void           btk_info_bar_response               (BtkInfoBar     *info_bar,
-                                                    gint            response_id);
+                                                    bint            response_id);
 
 void           btk_info_bar_set_message_type       (BtkInfoBar     *info_bar,
                                                     BtkMessageType  message_type);
 BtkMessageType btk_info_bar_get_message_type       (BtkInfoBar     *info_bar);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_INFO_BAR_H__  */

@@ -36,7 +36,7 @@
 #include <bdk/bdkdnd.h>
 #include <bdk/bdkinput.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_EVENT          (bdk_event_get_type ())
 
@@ -68,7 +68,7 @@ typedef struct _BdkEventGrabBroken  BdkEventGrabBroken;
 typedef union  _BdkEvent	    BdkEvent;
 
 typedef void (*BdkEventFunc) (BdkEvent *event,
-			      gpointer	data);
+			      bpointer	data);
 
 /* Event filtering */
 
@@ -86,7 +86,7 @@ typedef enum {
 
 typedef BdkFilterReturn (*BdkFilterFunc) (BdkXEvent *xevent,
 					  BdkEvent *event,
-					  gpointer  data);
+					  bpointer  data);
 
 
 /* Event types.
@@ -267,31 +267,31 @@ struct _BdkEventAny
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
 };
 
 struct _BdkEventExpose
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkRectangle area;
   BdkRebunnyion *rebunnyion;
-  gint count; /* If non-zero, how many more events follow. */
+  bint count; /* If non-zero, how many more events follow. */
 };
 
 struct _BdkEventNoExpose
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
 };
 
 struct _BdkEventVisibility
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkVisibilityState state;
 };
 
@@ -299,115 +299,115 @@ struct _BdkEventMotion
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble *axes;
-  guint state;
-  gint16 is_hint;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble *axes;
+  buint state;
+  bint16 is_hint;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 
 struct _BdkEventButton
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble *axes;
-  guint state;
-  guint button;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble *axes;
+  buint state;
+  buint button;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 
 struct _BdkEventScroll
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  guint state;
+  bint8 send_event;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  buint state;
   BdkScrollDirection direction;
   BdkDevice *device;
-  gdouble x_root, y_root;
+  bdouble x_root, y_root;
 };
 
 struct _BdkEventKey
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
-  guint state;
-  guint keyval;
-  gint length;
-  gchar *string;
-  guint16 hardware_keycode;
-  guint8 group;
-  guint is_modifier : 1;
+  bint8 send_event;
+  buint32 time;
+  buint state;
+  buint keyval;
+  bint length;
+  bchar *string;
+  buint16 hardware_keycode;
+  buint8 group;
+  buint is_modifier : 1;
 };
 
 struct _BdkEventCrossing
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkWindow *subwindow;
-  guint32 time;
-  gdouble x;
-  gdouble y;
-  gdouble x_root;
-  gdouble y_root;
+  buint32 time;
+  bdouble x;
+  bdouble y;
+  bdouble x_root;
+  bdouble y_root;
   BdkCrossingMode mode;
   BdkNotifyType detail;
-  gboolean focus;
-  guint state;
+  bboolean focus;
+  buint state;
 };
 
 struct _BdkEventFocus
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint16 in;
+  bint8 send_event;
+  bint16 in;
 };
 
 struct _BdkEventConfigure
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gint x, y;
-  gint width;
-  gint height;
+  bint8 send_event;
+  bint x, y;
+  bint width;
+  bint height;
 };
 
 struct _BdkEventProperty
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom atom;
-  guint32 time;
-  guint state;
+  buint32 time;
+  buint state;
 };
 
 struct _BdkEventSelection
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom selection;
   BdkAtom target;
   BdkAtom property;
-  guint32 time;
+  buint32 time;
   BdkNativeWindow requestor;
 };
 
@@ -415,12 +415,12 @@ struct _BdkEventOwnerChange
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkNativeWindow owner;
   BdkOwnerChange reason;
   BdkAtom selection;
-  guint32 time;
-  guint32 selection_time;
+  buint32 time;
+  buint32 selection_time;
 };
 
 /* This event type will be used pretty rarely. It only is important
@@ -430,8 +430,8 @@ struct _BdkEventProximity
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  guint32 time;
+  bint8 send_event;
+  buint32 time;
   BdkDevice *device;
 };
 
@@ -439,9 +439,9 @@ struct _BdkEventClient
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkAtom message_type;
-  gushort data_format;
+  bushort data_format;
   union {
     char b[20];
     short s[10];
@@ -453,7 +453,7 @@ struct _BdkEventSetting
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkSettingAction action;
   char *name;
 };
@@ -462,7 +462,7 @@ struct _BdkEventWindowState
 {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkWindowState changed_mask;
   BdkWindowState new_window_state;
 };
@@ -470,9 +470,9 @@ struct _BdkEventWindowState
 struct _BdkEventGrabBroken {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
-  gboolean keyboard;
-  gboolean implicit;
+  bint8 send_event;
+  bboolean keyboard;
+  bboolean implicit;
   BdkWindow *grab_window;
 };
 
@@ -481,11 +481,11 @@ struct _BdkEventGrabBroken {
 struct _BdkEventDND {
   BdkEventType type;
   BdkWindow *window;
-  gint8 send_event;
+  bint8 send_event;
   BdkDragContext *context;
 
-  guint32 time;
-  gshort x_root, y_root;
+  buint32 time;
+  bshort x_root, y_root;
 };
 
 union _BdkEvent
@@ -513,9 +513,9 @@ union _BdkEvent
   BdkEventGrabBroken        grab_broken;
 };
 
-GType     bdk_event_get_type            (void) G_GNUC_CONST;
+GType     bdk_event_get_type            (void) B_GNUC_CONST;
 
-gboolean  bdk_events_pending	 	(void);
+bboolean  bdk_events_pending	 	(void);
 BdkEvent* bdk_event_get			(void);
 
 BdkEvent* bdk_event_peek                (void);
@@ -528,39 +528,39 @@ BdkEvent* bdk_event_new                 (BdkEventType    type);
 BdkEvent* bdk_event_copy     		(const BdkEvent *event);
 void	  bdk_event_free     		(BdkEvent 	*event);
 
-guint32   bdk_event_get_time            (const BdkEvent  *event);
-gboolean  bdk_event_get_state           (const BdkEvent  *event,
+buint32   bdk_event_get_time            (const BdkEvent  *event);
+bboolean  bdk_event_get_state           (const BdkEvent  *event,
                                          BdkModifierType *state);
-gboolean  bdk_event_get_coords		(const BdkEvent  *event,
-					 gdouble	 *x_win,
-					 gdouble	 *y_win);
-gboolean  bdk_event_get_root_coords	(const BdkEvent  *event,
-					 gdouble	 *x_root,
-					 gdouble	 *y_root);
-gboolean  bdk_event_get_axis            (const BdkEvent  *event,
+bboolean  bdk_event_get_coords		(const BdkEvent  *event,
+					 bdouble	 *x_win,
+					 bdouble	 *y_win);
+bboolean  bdk_event_get_root_coords	(const BdkEvent  *event,
+					 bdouble	 *x_root,
+					 bdouble	 *y_root);
+bboolean  bdk_event_get_axis            (const BdkEvent  *event,
                                          BdkAxisUse       axis_use,
-                                         gdouble         *value);
+                                         bdouble         *value);
 void      bdk_event_request_motions     (const BdkEventMotion *event);
 void	  bdk_event_handler_set 	(BdkEventFunc    func,
-					 gpointer        data,
+					 bpointer        data,
 					 GDestroyNotify  notify);
 
 void       bdk_event_set_screen         (BdkEvent        *event,
                                          BdkScreen       *screen);
 BdkScreen *bdk_event_get_screen         (const BdkEvent  *event);
 
-void	  bdk_set_show_events		(gboolean	 show_events);
-gboolean  bdk_get_show_events		(void);
+void	  bdk_set_show_events		(bboolean	 show_events);
+bboolean  bdk_get_show_events		(void);
 
 #ifndef BDK_MULTIHEAD_SAFE
 void bdk_add_client_message_filter (BdkAtom       message_type,
 				    BdkFilterFunc func,
-				    gpointer      data);
+				    bpointer      data);
 
-gboolean bdk_setting_get (const gchar *name,
-			  GValue      *value); 
+bboolean bdk_setting_get (const bchar *name,
+			  BValue      *value); 
 #endif /* BDK_MULTIHEAD_SAFE */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_EVENTS_H__ */

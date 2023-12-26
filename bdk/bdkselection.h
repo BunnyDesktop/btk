@@ -33,7 +33,7 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Predefined atoms relating to selections. In general, one will need to use
  * bdk_intern_atom
@@ -67,36 +67,36 @@ typedef BdkAtom BdkSelectionType;
  */
 
 #ifndef BDK_MULTIHEAD_SAFE
-gboolean   bdk_selection_owner_set (BdkWindow	 *owner,
+bboolean   bdk_selection_owner_set (BdkWindow	 *owner,
 				    BdkAtom	  selection,
-				    guint32	  time_,
-				    gboolean      send_event);
+				    buint32	  time_,
+				    bboolean      send_event);
 BdkWindow* bdk_selection_owner_get (BdkAtom	  selection);
 #endif/* BDK_MULTIHEAD_SAFE */
 
-gboolean   bdk_selection_owner_set_for_display (BdkDisplay *display,
+bboolean   bdk_selection_owner_set_for_display (BdkDisplay *display,
 						BdkWindow  *owner,
 						BdkAtom     selection,
-						guint32     time_,
-						gboolean    send_event);
+						buint32     time_,
+						bboolean    send_event);
 BdkWindow *bdk_selection_owner_get_for_display (BdkDisplay *display,
 						BdkAtom     selection);
 
 void	   bdk_selection_convert   (BdkWindow	 *requestor,
 				    BdkAtom	  selection,
 				    BdkAtom	  target,
-				    guint32	  time_);
-gint       bdk_selection_property_get (BdkWindow  *requestor,
-				       guchar	 **data,
+				    buint32	  time_);
+bint       bdk_selection_property_get (BdkWindow  *requestor,
+				       buchar	 **data,
 				       BdkAtom	  *prop_type,
-				       gint	  *prop_format);
+				       bint	  *prop_format);
 
 #ifndef BDK_MULTIHEAD_SAFE
 void	   bdk_selection_send_notify (BdkNativeWindow requestor,
 				      BdkAtom	      selection,
 				      BdkAtom	      target,
 				      BdkAtom	      property,
-				      guint32	      time_);
+				      buint32	      time_);
 #endif /* BDK_MULTIHEAD_SAFE */
 
 void       bdk_selection_send_notify_for_display (BdkDisplay      *display,
@@ -104,8 +104,8 @@ void       bdk_selection_send_notify_for_display (BdkDisplay      *display,
 						  BdkAtom     	   selection,
 						  BdkAtom     	   target,
 						  BdkAtom     	   property,
-						  guint32     	   time_);
+						  buint32     	   time_);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_SELECTION_H__ */

@@ -78,7 +78,7 @@ bdk_screen_set_default_colormap (BdkScreen   *screen,
     g_object_unref (old_colormap);
 }
 
-gint
+bint
 bdk_screen_get_n_monitors (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -86,7 +86,7 @@ bdk_screen_get_n_monitors (BdkScreen *screen)
   return 1;
 }
 
-gint
+bint
 bdk_screen_get_primary_monitor (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -96,7 +96,7 @@ bdk_screen_get_primary_monitor (BdkScreen *screen)
 
 void
 bdk_screen_get_monitor_geometry (BdkScreen    *screen,
-				 gint          num_monitor,
+				 bint          num_monitor,
 				 BdkRectangle *dest)
 {
   g_return_if_fail (BDK_IS_SCREEN (screen));
@@ -108,28 +108,28 @@ bdk_screen_get_monitor_geometry (BdkScreen    *screen,
   dest->height = bdk_screen_height ();
 }
 
-gint
+bint
 bdk_screen_get_monitor_width_mm (BdkScreen *screen,
-                                 gint       monitor_num)
+                                 bint       monitor_num)
 {
   return bdk_screen_get_width_mm (screen);
 }
 
-gint
+bint
 bdk_screen_get_monitor_height_mm (BdkScreen *screen,
-                                  gint       monitor_num)
+                                  bint       monitor_num)
 {
   return bdk_screen_get_height_mm (screen);
 }
 
-gchar *
+bchar *
 bdk_screen_get_monitor_plug_name (BdkScreen *screen,
-                                  gint       monitor_num)
+                                  bint       monitor_num)
 {
   return g_strdup ("DirectFB");
 }
 
-gint
+bint
 bdk_screen_get_number (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -138,20 +138,20 @@ bdk_screen_get_number (BdkScreen *screen)
 }
 
 
-gchar *
-_bdk_windowing_substitute_screen_number (const gchar *display_name,
+bchar *
+_bdk_windowing_substitute_screen_number (const bchar *display_name,
 					 int          screen_number)
 {
   return g_strdup (display_name);
 }
 
-gchar *
+bchar *
 bdk_screen_make_display_name (BdkScreen *screen)
 {
   return g_strdup ("DirectFB");
 }
 
-gint
+bint
 bdk_screen_get_width (BdkScreen *screen)
 {
   DFBDisplayLayerConfig dlc;
@@ -161,7 +161,7 @@ bdk_screen_get_width (BdkScreen *screen)
   return dlc.width;
 }
 
-gint
+bint
 bdk_screen_get_height (BdkScreen *screen)
 {
   DFBDisplayLayerConfig dlc;
@@ -171,10 +171,10 @@ bdk_screen_get_height (BdkScreen *screen)
   return dlc.height;
 }
 
-gint
+bint
 bdk_screen_get_width_mm (BdkScreen *screen)
 {
-  static gboolean first_call = TRUE;
+  static bboolean first_call = TRUE;
   DFBDisplayLayerConfig dlc;
 
   if (first_call)
@@ -188,10 +188,10 @@ bdk_screen_get_width_mm (BdkScreen *screen)
   return (dlc.width * 254) / 720;
 }
 
-gint
+bint
 bdk_screen_get_height_mm (BdkScreen *screen)
 {
-  static gboolean first_call = TRUE;
+  static bboolean first_call = TRUE;
   DFBDisplayLayerConfig dlc;
 
   if (first_call)
@@ -242,7 +242,7 @@ bdk_screen_get_window_stack (BdkScreen *screen)
   return NULL;
 }
 
-gboolean
+bboolean
 bdk_screen_is_composited (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);

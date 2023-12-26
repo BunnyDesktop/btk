@@ -31,79 +31,79 @@
 static void       bail_label_class_init            (BailLabelClass    *klass);
 static void       bail_label_init                  (BailLabel         *label);
 static void	  bail_label_real_initialize	   (BatkObject 	      *obj,
-                                                    gpointer	      data);
-static void	  bail_label_real_notify_btk	   (GObject	      *obj,
-                                                    GParamSpec	      *pspec);
+                                                    bpointer	      data);
+static void	  bail_label_real_notify_btk	   (BObject	      *obj,
+                                                    BParamSpec	      *pspec);
 static void       bail_label_map_btk               (BtkWidget         *widget,
-                                                    gpointer          data);
+                                                    bpointer          data);
 static void       bail_label_init_text_util        (BailLabel         *bail_label,
                                                     BtkWidget         *widget);
-static void       bail_label_finalize              (GObject           *object);
+static void       bail_label_finalize              (BObject           *object);
 
 static void       batk_text_interface_init          (BatkTextIface      *iface);
 
 /* batkobject.h */
 
-static const gchar*          bail_label_get_name         (BatkObject         *accessible);
+static const bchar*          bail_label_get_name         (BatkObject         *accessible);
 static BatkStateSet*          bail_label_ref_state_set	 (BatkObject	    *accessible);
 static BatkRelationSet*       bail_label_ref_relation_set (BatkObject         *accessible);
 
 /* batktext.h */
 
-static gchar*	  bail_label_get_text		   (BatkText	      *text,
-                                                    gint	      start_pos,
-						    gint	      end_pos);
+static bchar*	  bail_label_get_text		   (BatkText	      *text,
+                                                    bint	      start_pos,
+						    bint	      end_pos);
 static gunichar	  bail_label_get_character_at_offset(BatkText	      *text,
-						    gint	      offset);
-static gchar*     bail_label_get_text_before_offset(BatkText	      *text,
- 						    gint	      offset,
+						    bint	      offset);
+static bchar*     bail_label_get_text_before_offset(BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_label_get_text_at_offset    (BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_label_get_text_at_offset    (BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_label_get_text_after_offset    (BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_label_get_text_after_offset    (BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gint	  bail_label_get_character_count   (BatkText	      *text);
-static gint	  bail_label_get_caret_offset	   (BatkText	      *text);
-static gboolean	  bail_label_set_caret_offset	   (BatkText	      *text,
-                                                    gint	      offset);
-static gint	  bail_label_get_n_selections	   (BatkText	      *text);
-static gchar*	  bail_label_get_selection	   (BatkText	      *text,
-                                                    gint	      selection_num,
-                                                    gint	      *start_offset,
-                                                    gint	      *end_offset);
-static gboolean	  bail_label_add_selection	   (BatkText	      *text,
-                                                    gint	      start_offset,
-                                                    gint	      end_offset);
-static gboolean	  bail_label_remove_selection	   (BatkText	      *text,
-                                                    gint	      selection_num);
-static gboolean	  bail_label_set_selection	   (BatkText	      *text,
-                                                    gint	      selection_num,
-                                                    gint	      start_offset,
-						    gint	      end_offset);
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bint	  bail_label_get_character_count   (BatkText	      *text);
+static bint	  bail_label_get_caret_offset	   (BatkText	      *text);
+static bboolean	  bail_label_set_caret_offset	   (BatkText	      *text,
+                                                    bint	      offset);
+static bint	  bail_label_get_n_selections	   (BatkText	      *text);
+static bchar*	  bail_label_get_selection	   (BatkText	      *text,
+                                                    bint	      selection_num,
+                                                    bint	      *start_offset,
+                                                    bint	      *end_offset);
+static bboolean	  bail_label_add_selection	   (BatkText	      *text,
+                                                    bint	      start_offset,
+                                                    bint	      end_offset);
+static bboolean	  bail_label_remove_selection	   (BatkText	      *text,
+                                                    bint	      selection_num);
+static bboolean	  bail_label_set_selection	   (BatkText	      *text,
+                                                    bint	      selection_num,
+                                                    bint	      start_offset,
+						    bint	      end_offset);
 static void bail_label_get_character_extents       (BatkText	      *text,
-						    gint 	      offset,
-		                                    gint 	      *x,
-                    		   	            gint 	      *y,
-                                		    gint 	      *width,
-                                     		    gint 	      *height,
+						    bint 	      offset,
+		                                    bint 	      *x,
+                    		   	            bint 	      *y,
+                                		    bint 	      *width,
+                                     		    bint 	      *height,
 			        		    BatkCoordType      coords);
-static gint bail_label_get_offset_at_point         (BatkText           *text,
-                                                    gint              x,
-                                                    gint              y,
+static bint bail_label_get_offset_at_point         (BatkText           *text,
+                                                    bint              x,
+                                                    bint              y,
 			                            BatkCoordType      coords);
 static BatkAttributeSet* bail_label_get_run_attributes 
                                                    (BatkText           *text,
-              					    gint 	      offset,
-                                                    gint 	      *start_offset,
-					            gint	      *end_offset);
+              					    bint 	      offset,
+                                                    bint 	      *start_offset,
+					            bint	      *end_offset);
 static BatkAttributeSet* bail_label_get_default_attributes
                                                    (BatkText           *text);
 
@@ -113,7 +113,7 @@ G_DEFINE_TYPE_WITH_CODE (BailLabel, bail_label, BAIL_TYPE_WIDGET,
 static void
 bail_label_class_init (BailLabelClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -135,7 +135,7 @@ bail_label_init (BailLabel *label)
 
 static void
 bail_label_real_initialize (BatkObject *obj,
-                            gpointer  data)
+                            bpointer  data)
 {
   BtkWidget  *widget;
   BailLabel *bail_label;
@@ -183,7 +183,7 @@ bail_label_real_initialize (BatkObject *obj,
 
 static void
 bail_label_map_btk (BtkWidget *widget,
-                    gpointer data)
+                    bpointer data)
 {
   BailLabel *bail_label;
 
@@ -196,7 +196,7 @@ bail_label_init_text_util (BailLabel *bail_label,
                            BtkWidget *widget)
 {
   BtkLabel *label;
-  const gchar *label_text;
+  const bchar *label_text;
 
   if (bail_label->textutil == NULL)
     bail_label->textutil = bail_text_util_new ();
@@ -217,7 +217,7 @@ notify_name_change (BatkObject *batk_obj)
   BtkLabel *label;
   BailLabel *bail_label;
   BtkWidget *widget;
-  GObject *bail_obj;
+  BObject *bail_obj;
 
   widget = BTK_ACCESSIBLE (batk_obj)->widget;
   if (widget == NULL)
@@ -226,7 +226,7 @@ notify_name_change (BatkObject *batk_obj)
      */
     return;
 
-  bail_obj = G_OBJECT (batk_obj);
+  bail_obj = B_OBJECT (batk_obj);
   label = BTK_LABEL (widget);
   bail_label = BAIL_LABEL (batk_obj);
 
@@ -274,8 +274,8 @@ notify_name_change (BatkObject *batk_obj)
 }
 
 static void
-window_created (GObject *obj,
-                gpointer data)
+window_created (BObject *obj,
+                bpointer data)
 {
   g_return_if_fail (BAIL_LABEL (data));
 
@@ -283,14 +283,14 @@ window_created (GObject *obj,
 }
 
 static void
-bail_label_real_notify_btk (GObject           *obj,
-                            GParamSpec        *pspec)
+bail_label_real_notify_btk (BObject           *obj,
+                            BParamSpec        *pspec)
 {
   BtkWidget *widget = BTK_WIDGET (obj);
   BatkObject* batk_obj = btk_widget_get_accessible (widget);
   BtkLabel *label;
   BailLabel *bail_label;
-  GObject *bail_obj;
+  BObject *bail_obj;
   BatkObject *top_level;
   BatkObject *temp_obj;
 
@@ -328,11 +328,11 @@ bail_label_real_notify_btk (GObject           *obj,
     }
   else if (strcmp (pspec->name, "cursor-position") == 0)
     {
-      gint start, end, tmp;
-      gboolean text_caret_moved = FALSE;
-      gboolean selection_changed = FALSE;
+      bint start, end, tmp;
+      bboolean text_caret_moved = FALSE;
+      bboolean selection_changed = FALSE;
 
-      bail_obj = G_OBJECT (batk_obj);
+      bail_obj = B_OBJECT (batk_obj);
       label = BTK_LABEL (widget);
 
       if (bail_label->selection_bound != -1 && bail_label->selection_bound < bail_label->cursor_position)
@@ -404,13 +404,13 @@ bail_label_real_notify_btk (GObject           *obj,
 }
 
 static void
-bail_label_finalize (GObject            *object)
+bail_label_finalize (BObject            *object)
 {
   BailLabel *label = BAIL_LABEL (object);
 
   if (label->textutil)
     g_object_unref (label->textutil);
-  G_OBJECT_CLASS (bail_label_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_label_parent_class)->finalize (object);
 }
 
 
@@ -535,10 +535,10 @@ bail_label_ref_relation_set (BatkObject *obj)
   return relation_set;
 }
 
-static const gchar*
+static const bchar*
 bail_label_get_name (BatkObject *accessible)
 {
-  const gchar *name;
+  const bchar *name;
 
   g_return_val_if_fail (BAIL_IS_LABEL (accessible), NULL);
 
@@ -589,15 +589,15 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_label_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_label_get_text (BatkText *text,
-                     gint    start_pos,
-                     gint    end_pos)
+                     bint    start_pos,
+                     bint    end_pos)
 {
   BtkWidget *widget;
   BtkLabel  *label;
 
-  const gchar *label_text;
+  const bchar *label_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -619,12 +619,12 @@ bail_label_get_text (BatkText *text,
   }
 }
 
-static gchar*
+static bchar*
 bail_label_get_text_before_offset (BatkText         *text,
-				   gint            offset,
+				   bint            offset,
 				   BatkTextBoundary boundary_type,
-				   gint            *start_offset,
-				   gint            *end_offset)
+				   bint            *start_offset,
+				   bint            *end_offset)
 {
   BtkWidget *widget;
   BtkLabel *label;
@@ -643,12 +643,12 @@ bail_label_get_text_before_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset); 
 }
 
-static gchar*
+static bchar*
 bail_label_get_text_at_offset (BatkText         *text,
-			       gint            offset,
+			       bint            offset,
 			       BatkTextBoundary boundary_type,
- 			       gint            *start_offset,
-			       gint            *end_offset)
+ 			       bint            *start_offset,
+			       bint            *end_offset)
 {
   BtkWidget *widget;
   BtkLabel *label;
@@ -667,12 +667,12 @@ bail_label_get_text_at_offset (BatkText         *text,
                               boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_label_get_text_after_offset (BatkText         *text,
-				  gint            offset,
+				  bint            offset,
 				  BatkTextBoundary boundary_type,
-				  gint            *start_offset,
-				  gint            *end_offset)
+				  bint            *start_offset,
+				  bint            *end_offset)
 {
   BtkWidget *widget;
   BtkLabel *label;
@@ -693,7 +693,7 @@ bail_label_get_text_after_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset);
 }
 
-static gint
+static bint
 bail_label_get_character_count (BatkText *text)
 {
   BtkWidget *widget;
@@ -708,15 +708,15 @@ bail_label_get_character_count (BatkText *text)
   return g_utf8_strlen (btk_label_get_text (label), -1);
 }
 
-static gint
+static bint
 bail_label_get_caret_offset (BatkText *text)
 {
    return BAIL_LABEL (text)->cursor_position;
 }
 
-static gboolean
+static bboolean
 bail_label_set_caret_offset (BatkText *text, 
-                             gint    offset)
+                             bint    offset)
 {
   BtkWidget *widget;
   BtkLabel  *label;
@@ -739,12 +739,12 @@ bail_label_set_caret_offset (BatkText *text,
     return FALSE;
 }
 
-static gint
+static bint
 bail_label_get_n_selections (BatkText *text)
 {
   BtkWidget *widget;
   BtkLabel  *label;
-  gint start, end;
+  bint start, end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -762,11 +762,11 @@ bail_label_get_n_selections (BatkText *text)
      return 0;
 }
 
-static gchar*
+static bchar*
 bail_label_get_selection (BatkText *text,
-			  gint    selection_num,
-                          gint    *start_pos,
-                          gint    *end_pos)
+			  bint    selection_num,
+                          bint    *start_pos,
+                          bint    *end_pos)
 {
   BtkWidget *widget;
   BtkLabel  *label;
@@ -786,7 +786,7 @@ bail_label_get_selection (BatkText *text,
 
   if (btk_label_get_selection_bounds (label, start_pos, end_pos))
     {
-      const gchar* label_text = btk_label_get_text (label);
+      const bchar* label_text = btk_label_get_text (label);
     
       if (label_text == NULL)
         return 0;
@@ -798,14 +798,14 @@ bail_label_get_selection (BatkText *text,
     return NULL;
 }
 
-static gboolean
+static bboolean
 bail_label_add_selection (BatkText *text,
-                          gint    start_pos,
-                          gint    end_pos)
+                          bint    start_pos,
+                          bint    end_pos)
 {
   BtkWidget *widget;
   BtkLabel  *label;
-  gint start, end;
+  bint start, end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -826,13 +826,13 @@ bail_label_add_selection (BatkText *text,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_label_remove_selection (BatkText *text,
-                             gint    selection_num)
+                             bint    selection_num)
 {
   BtkWidget *widget;
   BtkLabel  *label;
-  gint start, end;
+  bint start, end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -856,15 +856,15 @@ bail_label_remove_selection (BatkText *text,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 bail_label_set_selection (BatkText *text,
-			  gint	  selection_num,
-                          gint    start_pos,
-                          gint    end_pos)
+			  bint	  selection_num,
+                          bint    start_pos,
+                          bint    end_pos)
 {
   BtkWidget *widget;
   BtkLabel  *label;
-  gint start, end;
+  bint start, end;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -890,17 +890,17 @@ bail_label_set_selection (BatkText *text,
 
 static void
 bail_label_get_character_extents (BatkText      *text,
-				  gint         offset,
-		                  gint         *x,
-                    		  gint 	       *y,
-                                  gint 	       *width,
-                                  gint 	       *height,
+				  bint         offset,
+		                  bint         *x,
+                    		  bint 	       *y,
+                                  bint 	       *width,
+                                  bint 	       *height,
 			          BatkCoordType coords)
 {
   BtkWidget *widget;
   BtkLabel *label;
   BangoRectangle char_rect;
-  gint index, x_layout, y_layout;
+  bint index, x_layout, y_layout;
  
   widget = BTK_ACCESSIBLE (text)->widget;
 
@@ -918,15 +918,15 @@ bail_label_get_character_extents (BatkText      *text,
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
-static gint 
+static bint 
 bail_label_get_offset_at_point (BatkText      *text,
-                                gint         x,
-                                gint         y,
+                                bint         x,
+                                bint         y,
 			        BatkCoordType coords)
 { 
   BtkWidget *widget;
   BtkLabel *label;
-  gint index, x_layout, y_layout;
+  bint index, x_layout, y_layout;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -952,9 +952,9 @@ bail_label_get_offset_at_point (BatkText      *text,
 
 static BatkAttributeSet*
 bail_label_get_run_attributes (BatkText        *text,
-                               gint 	      offset,
-                               gint 	      *start_offset,
-	                       gint	      *end_offset)
+                               bint 	      offset,
+                               bint 	      *start_offset,
+	                       bint	      *end_offset)
 {
   BtkWidget *widget;
   BtkLabel *label;
@@ -1016,12 +1016,12 @@ bail_label_get_default_attributes (BatkText        *text)
 
 static gunichar 
 bail_label_get_character_at_offset (BatkText	         *text,
-                                    gint	         offset)
+                                    bint	         offset)
 {
   BtkWidget *widget;
   BtkLabel *label;
-  const gchar *string;
-  gchar *index;
+  const bchar *string;
+  bchar *index;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)

@@ -38,15 +38,15 @@ struct _BdkAxisInfo
 {
   /* calibrated resolution (for aspect ratio) - only relative values
      between axes used */
-  gint resolution;
+  bint resolution;
   
   /* calibrated minimum/maximum values */
-  gint min_value, max_value;
+  bint min_value, max_value;
 };
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkDevicePrivate
@@ -56,9 +56,9 @@ struct _BdkDevicePrivate
   /* information about the axes */
   BdkAxisInfo *axes;
 
-  gint button_state;
+  bint button_state;
 
-  gint *last_axis_data;
+  bint *last_axis_data;
 
   /* WINTAB stuff: */
   HCTX hctx;
@@ -81,8 +81,8 @@ struct _BdkInputWindow
   BdkWindow *impl_window; /* an impl window */
 
   /* position relative to root window */
-  gint root_x;
-  gint root_y;
+  bint root_x;
+  bint root_y;
 };
 
 /* Global data */
@@ -92,24 +92,24 @@ struct _BdkInputWindow
 extern GList *_bdk_input_devices;
 extern GList *_bdk_input_windows;
 
-extern gboolean _bdk_input_in_proximity;
+extern bboolean _bdk_input_in_proximity;
 
 /* Function declarations */
 void             _bdk_init_input_core (BdkDisplay *display);
 
 BdkTimeCoord ** _bdk_device_allocate_history (BdkDevice *device,
-					      gint       n_events);
+					      bint       n_events);
 
 /* The following functions are provided by each implementation
  * (just wintab for now)
  */
 void             _bdk_input_configure_event  (BdkWindow        *window);
-gboolean         _bdk_input_other_event      (BdkEvent         *event,
+bboolean         _bdk_input_other_event      (BdkEvent         *event,
 					      MSG              *msg,
 					      BdkWindow        *window);
 
 void             _bdk_input_crossing_event   (BdkWindow        *window,
-					      gboolean          enter);
+					      bboolean          enter);
 
 
 /* These should be in bdkinternals.h */
@@ -119,18 +119,18 @@ BdkInputWindow  *_bdk_input_window_find      (BdkWindow        *window);
 void             _bdk_input_window_destroy   (BdkWindow *window);
 
 void             _bdk_input_select_events    (BdkWindow        *impl_window);
-gint             _bdk_input_grab_pointer     (BdkWindow        *window,
-					      gint              owner_events,
+bint             _bdk_input_grab_pointer     (BdkWindow        *window,
+					      bint              owner_events,
 					      BdkEventMask      event_mask,
 					      BdkWindow        *confine_to,
-					      guint32           time);
-void             _bdk_input_ungrab_pointer   (guint32           time);
-gboolean         _bdk_device_get_history     (BdkDevice         *device,
+					      buint32           time);
+void             _bdk_input_ungrab_pointer   (buint32           time);
+bboolean         _bdk_device_get_history     (BdkDevice         *device,
 					      BdkWindow         *window,
-					      guint32            start,
-					      guint32            stop,
+					      buint32            start,
+					      buint32            stop,
 					      BdkTimeCoord    ***events,
-					      gint              *n_events);
+					      bint              *n_events);
 
 void		_bdk_input_wintab_init_check (void);
 void		_bdk_input_set_tablet_active (void);

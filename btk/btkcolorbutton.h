@@ -39,7 +39,7 @@
 
 #include <btk/btkbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* The BtkColorButton widget is a simple color picker in a button.
@@ -49,11 +49,11 @@ G_BEGIN_DECLS
  */
 
 #define BTK_TYPE_COLOR_BUTTON             (btk_color_button_get_type ())
-#define BTK_COLOR_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButton))
-#define BTK_COLOR_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
-#define BTK_IS_COLOR_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_BUTTON))
-#define BTK_IS_COLOR_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_BUTTON))
-#define BTK_COLOR_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
+#define BTK_COLOR_BUTTON(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButton))
+#define BTK_COLOR_BUTTON_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
+#define BTK_IS_COLOR_BUTTON(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COLOR_BUTTON))
+#define BTK_IS_COLOR_BUTTON_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COLOR_BUTTON))
+#define BTK_COLOR_BUTTON_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COLOR_BUTTON, BtkColorButtonClass))
 
 typedef struct _BtkColorButton          BtkColorButton;
 typedef struct _BtkColorButtonClass     BtkColorButtonClass;
@@ -80,24 +80,24 @@ struct _BtkColorButtonClass {
 };
 
 
-GType      btk_color_button_get_type       (void) G_GNUC_CONST;
+GType      btk_color_button_get_type       (void) B_GNUC_CONST;
 BtkWidget *btk_color_button_new            (void);
 BtkWidget *btk_color_button_new_with_color (const BdkColor *color);
 void       btk_color_button_set_color      (BtkColorButton *color_button,
 					    const BdkColor *color);
 void       btk_color_button_set_alpha      (BtkColorButton *color_button,
-					    guint16         alpha);
+					    buint16         alpha);
 void       btk_color_button_get_color      (BtkColorButton *color_button,
 					    BdkColor       *color);
-guint16    btk_color_button_get_alpha      (BtkColorButton *color_button);
+buint16    btk_color_button_get_alpha      (BtkColorButton *color_button);
 void       btk_color_button_set_use_alpha  (BtkColorButton *color_button,
-					    gboolean        use_alpha);
-gboolean   btk_color_button_get_use_alpha  (BtkColorButton *color_button);
+					    bboolean        use_alpha);
+bboolean   btk_color_button_get_use_alpha  (BtkColorButton *color_button);
 void       btk_color_button_set_title      (BtkColorButton *color_button,
-					    const gchar    *title);
-const gchar *btk_color_button_get_title (BtkColorButton *color_button);
+					    const bchar    *title);
+const bchar *btk_color_button_get_title (BtkColorButton *color_button);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_COLOR_BUTTON_H__ */

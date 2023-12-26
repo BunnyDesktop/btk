@@ -48,17 +48,17 @@
 #define MAJOR_VERSION 1
 #define MINOR_VERSION 0
 
-#define GET_UINT16(cache, offset) (GUINT16_FROM_BE (*(guint16 *)((cache) + (offset))))
-#define GET_UINT32(cache, offset) (GUINT32_FROM_BE (*(guint32 *)((cache) + (offset))))
+#define GET_UINT16(cache, offset) (GUINT16_FROM_BE (*(buint16 *)((cache) + (offset))))
+#define GET_UINT32(cache, offset) (GUINT32_FROM_BE (*(buint32 *)((cache) + (offset))))
 
 
 struct _BtkIconCache {
-  gint ref_count;
+  bint ref_count;
 
   GMappedFile *map;
-  gchar *buffer;
+  bchar *buffer;
 
-  guint32 last_chain_offset;
+  buint32 last_chain_offset;
 };
 
 BtkIconCache *
@@ -85,13 +85,13 @@ _btk_icon_cache_unref (BtkIconCache *cache)
 }
 
 BtkIconCache *
-_btk_icon_cache_new_for_path (const gchar *path)
+_btk_icon_cache_new_for_path (const bchar *path)
 {
   BtkIconCache *cache = NULL;
   GMappedFile *map;
 
-  gchar *cache_filename;
-  gint fd = -1;
+  bchar *cache_filename;
+  bint fd = -1;
   GStatBuf st;
   GStatBuf path_st;
   CacheInfo info;
@@ -185,25 +185,25 @@ _btk_icon_cache_new_for_path (const gchar *path)
 }
 
 BtkIconCache *
-_btk_icon_cache_new (const gchar *data)
+_btk_icon_cache_new (const bchar *data)
 {
   BtkIconCache *cache;
 
   cache = g_new0 (BtkIconCache, 1);
   cache->ref_count = 1;
   cache->map = NULL;
-  cache->buffer = (gchar *)data;
+  cache->buffer = (bchar *)data;
   
   return cache;
 }
 
-static gint
+static bint
 get_directory_index (BtkIconCache *cache,
-		     const gchar *directory)
+		     const bchar *directory)
 {
-  guint32 dir_list_offset;
-  gint n_dirs;
-  gint i;
+  buint32 dir_list_offset;
+  bint n_dirs;
+  bint i;
   
   dir_list_offset = GET_UINT32 (cache->buffer, 8);
 
@@ -211,8 +211,8 @@ get_directory_index (BtkIconCache *cache,
 
   for (i = 0; i < n_dirs; i++)
     {
-      guint32 name_offset = GET_UINT32 (cache->buffer, dir_list_offset + 4 + 4 * i);
-      gchar *name = cache->buffer + name_offset;
+      buint32 name_offset = GET_UINT32 (cache->buffer, dir_list_offset + 4 + 4 * i);
+      bchar *name = cache->buffer + name_offset;
       if (strcmp (name, directory) == 0)
 	return i;
     }
@@ -220,18 +220,18 @@ get_directory_index (BtkIconCache *cache,
   return -1;
 }
 
-gint
+bint
 _btk_icon_cache_get_directory_index (BtkIconCache *cache,
-			             const gchar *directory)
+			             const bchar *directory)
 {
   return get_directory_index (cache, directory);
 }
 
-static guint
+static buint
 icon_name_hash (gconstpointer key)
 {
   const signed char *p = key;
-  guint32 h = *p;
+  buint32 h = *p;
 
   if (h)
     for (p += 1; *p != '\0'; p++)
@@ -240,23 +240,23 @@ icon_name_hash (gconstpointer key)
   return h;
 }
 
-static gint
+static bint
 find_image_offset (BtkIconCache *cache,
-		   const gchar  *icon_name,
-		   gint          directory_index)
+		   const bchar  *icon_name,
+		   bint          directory_index)
 {
-  guint32 hash_offset;
-  guint32 n_buckets;
-  guint32 chain_offset;
+  buint32 hash_offset;
+  buint32 n_buckets;
+  buint32 chain_offset;
   int hash;
-  guint32 image_list_offset, n_images;
+  buint32 image_list_offset, n_images;
   int i;
 
   chain_offset = cache->last_chain_offset;
   if (chain_offset)
     {
-      guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-      gchar *name = cache->buffer + name_offset;
+      buint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
+      bchar *name = cache->buffer + name_offset;
 
       if (strcmp (name, icon_name) == 0)
         goto find_dir;
@@ -269,8 +269,8 @@ find_image_offset (BtkIconCache *cache,
   chain_offset = GET_UINT32 (cache->buffer, hash_offset + 4 + 4 * hash);
   while (chain_offset != 0xffffffff)
     {
-      guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-      gchar *name = cache->buffer + name_offset;
+      buint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
+      bchar *name = cache->buffer + name_offset;
 
       if (strcmp (name, icon_name) == 0)
         {
@@ -299,12 +299,12 @@ find_dir:
   return 0;
 }
 
-gint
+bint
 _btk_icon_cache_get_icon_flags (BtkIconCache *cache,
-				const gchar  *icon_name,
-				gint          directory_index)
+				const bchar  *icon_name,
+				bint          directory_index)
 {
-  guint32 image_offset;
+  buint32 image_offset;
 
   image_offset = find_image_offset (cache, icon_name, directory_index);
 
@@ -316,13 +316,13 @@ _btk_icon_cache_get_icon_flags (BtkIconCache *cache,
 
 void
 _btk_icon_cache_add_icons (BtkIconCache *cache,
-			   const gchar  *directory,
+			   const bchar  *directory,
 			   GHashTable   *hash_table)
 {
   int directory_index;
-  guint32 hash_offset, n_buckets;
-  guint32 chain_offset;
-  guint32 image_list_offset, n_images;
+  buint32 hash_offset, n_buckets;
+  buint32 chain_offset;
+  buint32 image_list_offset, n_images;
   int i, j;
   
   directory_index = get_directory_index (cache, directory);
@@ -338,8 +338,8 @@ _btk_icon_cache_add_icons (BtkIconCache *cache,
       chain_offset = GET_UINT32 (cache->buffer, hash_offset + 4 + 4 * i);
       while (chain_offset != 0xffffffff)
 	{
-	  guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-	  gchar *name = cache->buffer + name_offset;
+	  buint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
+	  bchar *name = cache->buffer + name_offset;
 	  
 	  image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
 	  n_images = GET_UINT32 (cache->buffer, image_list_offset);
@@ -356,14 +356,14 @@ _btk_icon_cache_add_icons (BtkIconCache *cache,
     }  
 }
 
-gboolean
+bboolean
 _btk_icon_cache_has_icon (BtkIconCache *cache,
-			  const gchar  *icon_name)
+			  const bchar  *icon_name)
 {
-  guint32 hash_offset;
-  guint32 n_buckets;
-  guint32 chain_offset;
-  gint hash;
+  buint32 hash_offset;
+  buint32 n_buckets;
+  buint32 chain_offset;
+  bint hash;
   
   hash_offset = GET_UINT32 (cache->buffer, 4);
   n_buckets = GET_UINT32 (cache->buffer, hash_offset);
@@ -373,8 +373,8 @@ _btk_icon_cache_has_icon (BtkIconCache *cache,
   chain_offset = GET_UINT32 (cache->buffer, hash_offset + 4 + 4 * hash);
   while (chain_offset != 0xffffffff)
     {
-      guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-      gchar *name = cache->buffer + name_offset;
+      buint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
+      bchar *name = cache->buffer + name_offset;
 
       if (strcmp (name, icon_name) == 0)
 	return TRUE;
@@ -385,17 +385,17 @@ _btk_icon_cache_has_icon (BtkIconCache *cache,
   return FALSE;
 }
 
-gboolean
+bboolean
 _btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
-				       const gchar  *icon_name,
-				       const gchar  *directory)
+				       const bchar  *icon_name,
+				       const bchar  *directory)
 {
-  guint32 hash_offset;
-  guint32 n_buckets;
-  guint32 chain_offset;
-  gint hash;
-  gboolean found_icon = FALSE;
-  gint directory_index;
+  buint32 hash_offset;
+  buint32 n_buckets;
+  buint32 chain_offset;
+  bint hash;
+  bboolean found_icon = FALSE;
+  bint directory_index;
 
   directory_index = get_directory_index (cache, directory);
 
@@ -410,8 +410,8 @@ _btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
   chain_offset = GET_UINT32 (cache->buffer, hash_offset + 4 + 4 * hash);
   while (chain_offset != 0xffffffff)
     {
-      guint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
-      gchar *name = cache->buffer + name_offset;
+      buint32 name_offset = GET_UINT32 (cache->buffer, chain_offset + 4);
+      bchar *name = cache->buffer + name_offset;
 
       if (strcmp (name, icon_name) == 0)
 	{
@@ -424,13 +424,13 @@ _btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
 
   if (found_icon)
     {
-      guint32 image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
-      guint32 n_images =  GET_UINT32 (cache->buffer, image_list_offset);
-      guint32 image_offset = image_list_offset + 4;
-      gint i;
+      buint32 image_list_offset = GET_UINT32 (cache->buffer, chain_offset + 8);
+      buint32 n_images =  GET_UINT32 (cache->buffer, image_list_offset);
+      buint32 image_offset = image_list_offset + 4;
+      bint i;
       for (i = 0; i < n_images; i++)
 	{
-	  guint16 index = GET_UINT16 (cache->buffer, image_offset);
+	  buint16 index = GET_UINT16 (cache->buffer, image_offset);
 	  
 	  if (index == directory_index)
 	    return TRUE;
@@ -442,8 +442,8 @@ _btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
 }
 
 static void
-pixbuf_destroy_cb (guchar   *pixels, 
-		   gpointer  data)
+pixbuf_destroy_cb (buchar   *pixels, 
+		   bpointer  data)
 {
   BtkIconCache *cache = data;
 
@@ -452,11 +452,11 @@ pixbuf_destroy_cb (guchar   *pixels,
 
 BdkPixbuf *
 _btk_icon_cache_get_icon (BtkIconCache *cache,
-			  const gchar  *icon_name,
-			  gint          directory_index)
+			  const bchar  *icon_name,
+			  bint          directory_index)
 {
-  guint32 offset, image_data_offset, pixel_data_offset;
-  guint32 length, type;
+  buint32 offset, image_data_offset, pixel_data_offset;
+  buint32 length, type;
   BdkPixbuf *pixbuf;
   BdkPixdata pixdata;
   GError *error = NULL;
@@ -482,7 +482,7 @@ _btk_icon_cache_get_icon (BtkIconCache *cache,
   length = GET_UINT32 (cache->buffer, pixel_data_offset + 4);
   
   if (!bdk_pixdata_deserialize (&pixdata, length, 
-				(guchar *)(cache->buffer + pixel_data_offset + 8),
+				(buchar *)(cache->buffer + pixel_data_offset + 8),
 				&error))
     {
       BTK_NOTE (ICONTHEME,
@@ -513,10 +513,10 @@ _btk_icon_cache_get_icon (BtkIconCache *cache,
 
 BtkIconData  *
 _btk_icon_cache_get_icon_data  (BtkIconCache *cache,
-				const gchar  *icon_name,
-				gint          directory_index)
+				const bchar  *icon_name,
+				bint          directory_index)
 {
-  guint32 offset, image_data_offset, meta_data_offset;
+  buint32 offset, image_data_offset, meta_data_offset;
   BtkIconData *data;
   int i;
 
@@ -560,9 +560,9 @@ _btk_icon_cache_get_icon_data  (BtkIconCache *cache,
   offset = GET_UINT32 (cache->buffer, meta_data_offset + 8);
   if (offset)
     {
-      gint n_names;
-      gchar *lang, *name;
-      gchar **langs;
+      bint n_names;
+      bchar *lang, *name;
+      bchar **langs;
       GHashTable *table = g_hash_table_new (g_str_hash, g_str_equal);
 
       n_names = GET_UINT32 (cache->buffer, offset);
@@ -575,7 +575,7 @@ _btk_icon_cache_get_icon_data  (BtkIconCache *cache,
 	  g_hash_table_insert (table, lang, name);
 	}
       
-      langs = (gchar **)g_get_language_names ();
+      langs = (bchar **)g_get_language_names ();
       for (i = 0; langs[i]; i++)
 	{
 	  name = g_hash_table_lookup (table, langs[i]);

@@ -36,7 +36,7 @@ get_model (void)
   if (store)
     return (BtkTreeModel *) g_object_ref (store);
 
-  store = btk_list_store_new (1, G_TYPE_STRING);
+  store = btk_list_store_new (1, B_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, 0, "One", -1);
@@ -58,13 +58,13 @@ get_model (void)
   return (BtkTreeModel *) store;
 }
 
-static gboolean
+static bboolean
 visible_func (BtkTreeModel *model,
               BtkTreeIter  *iter,
-              gpointer      data)
+              bpointer      data)
 {
-  gboolean first = GPOINTER_TO_INT (data);
-  gboolean visible;
+  bboolean first = BPOINTER_TO_INT (data);
+  bboolean visible;
   BtkTreePath *path;
 
   path = btk_tree_model_get_path (model, iter);
@@ -80,19 +80,19 @@ visible_func (BtkTreeModel *model,
 }
 
 BtkTreeModel *
-get_filter_model (gboolean first)
+get_filter_model (bboolean first)
 {
   BtkTreeModelFilter *model;
 
   model = (BtkTreeModelFilter *)btk_tree_model_filter_new (get_model (), NULL);
 
-  btk_tree_model_filter_set_visible_func (model, visible_func, GINT_TO_POINTER (first), NULL);
+  btk_tree_model_filter_set_visible_func (model, visible_func, BINT_TO_POINTER (first), NULL);
 
   return (BtkTreeModel *) model;
 }
 
 static BtkWidget *
-get_view (gboolean first)
+get_view (bboolean first)
 {
   BtkWidget *view;
 
@@ -111,7 +111,7 @@ typedef struct
   BtkWidget *view2;
 } Views;
 
-static gboolean
+static bboolean
 keynav_failed (BtkWidget        *view,
                BtkDirectionType  direction,
                Views            *views)
@@ -119,7 +119,7 @@ keynav_failed (BtkWidget        *view,
   BtkTreePath *path;
   BtkTreeModel *model;
   BtkTreeIter iter;
-  gint col;
+  bint col;
   BtkTreePath *sel;
 
   if (view == views->view1 && direction == BTK_DIR_DOWN)
@@ -180,20 +180,20 @@ keynav_failed (BtkWidget        *view,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 focus_out (BtkWidget     *view,
            BdkEventFocus *event,
-           gpointer       data)
+           bpointer       data)
 {
   btk_icon_view_unselect_all (BTK_ICON_VIEW (view));
 
   return FALSE;
 }
 
-static gboolean
+static bboolean
 focus_in (BtkWidget     *view,
           BdkEventFocus *event,
-          gpointer       data)
+          bpointer       data)
 {
   BtkTreePath *path;
 

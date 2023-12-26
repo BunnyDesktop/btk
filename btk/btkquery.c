@@ -27,15 +27,15 @@
 
 struct _BtkQueryPrivate 
 {
-  gchar *text;
-  gchar *location_uri;
+  bchar *text;
+  bchar *location_uri;
   GList *mime_types;
 };
 
-G_DEFINE_TYPE (BtkQuery, _btk_query, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkQuery, _btk_query, B_TYPE_OBJECT);
 
 static void
-finalize (GObject *object)
+finalize (BObject *object)
 {
   BtkQuery *query;
   
@@ -43,15 +43,15 @@ finalize (GObject *object)
   
   g_free (query->priv->text);
 
-  G_OBJECT_CLASS (_btk_query_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_btk_query_parent_class)->finalize (object);
 }
 
 static void
 _btk_query_class_init (BtkQueryClass *class)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   bobject_class->finalize = finalize;
 
   g_type_class_add_private (bobject_class, sizeof (BtkQueryPrivate));  
@@ -60,7 +60,7 @@ _btk_query_class_init (BtkQueryClass *class)
 static void
 _btk_query_init (BtkQuery *query)
 {
-  query->priv = G_TYPE_INSTANCE_GET_PRIVATE (query, BTK_TYPE_QUERY, BtkQueryPrivate);
+  query->priv = B_TYPE_INSTANCE_GET_PRIVATE (query, BTK_TYPE_QUERY, BtkQueryPrivate);
 }
 
 BtkQuery *
@@ -70,7 +70,7 @@ _btk_query_new (void)
 }
 
 
-gchar *
+bchar *
 _btk_query_get_text (BtkQuery *query)
 {
   return g_strdup (query->priv->text);
@@ -78,13 +78,13 @@ _btk_query_get_text (BtkQuery *query)
 
 void 
 _btk_query_set_text (BtkQuery    *query, 
-		    const gchar *text)
+		    const bchar *text)
 {
   g_free (query->priv->text);
   query->priv->text = g_strdup (text);
 }
 
-gchar *
+bchar *
 _btk_query_get_location (BtkQuery *query)
 {
   return g_strdup (query->priv->location_uri);
@@ -92,7 +92,7 @@ _btk_query_get_location (BtkQuery *query)
 	
 void
 _btk_query_set_location (BtkQuery    *query, 
-			const gchar *uri)
+			const bchar *uri)
 {
   g_free (query->priv->location_uri);
   query->priv->location_uri = g_strdup (uri);
@@ -102,12 +102,12 @@ GList *
 _btk_query_get_mime_types (BtkQuery *query)
 {
   GList *list, *l;
-  gchar *mime_type;
+  bchar *mime_type;
 
   list = NULL;
   for (l = query->priv->mime_types; l; l = l->next)
     {
-      mime_type = (gchar*)l->data;
+      mime_type = (bchar*)l->data;
       list = g_list_prepend (list, g_strdup (mime_type));
     }
 
@@ -119,7 +119,7 @@ _btk_query_set_mime_types (BtkQuery *query,
 			   GList    *mime_types)
 {
   GList *l;
-  gchar *mime_type;
+  bchar *mime_type;
 
   g_list_foreach (query->priv->mime_types, (GFunc)g_free, NULL);
   g_list_free (query->priv->mime_types);
@@ -127,14 +127,14 @@ _btk_query_set_mime_types (BtkQuery *query,
 
   for (l = mime_types; l; l = l->next)
     {
-      mime_type = (gchar*)l->data;
+      mime_type = (bchar*)l->data;
       query->priv->mime_types = g_list_prepend (query->priv->mime_types, g_strdup (mime_type));
     }
 }
 
 void
 _btk_query_add_mime_type (BtkQuery    *query, 
-			  const gchar *mime_type)
+			  const bchar *mime_type)
 {
   query->priv->mime_types = g_list_prepend (query->priv->mime_types,
 					    g_strdup (mime_type));

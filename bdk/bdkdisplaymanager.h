@@ -34,27 +34,27 @@
 #include <bdk/bdktypes.h>
 #include <bdk/bdkdisplay.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkDisplayManager      BdkDisplayManager;
 typedef struct _BdkDisplayManagerClass BdkDisplayManagerClass;
 
 #define BDK_TYPE_DISPLAY_MANAGER              (bdk_display_manager_get_type ())
-#define BDK_DISPLAY_MANAGER(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManager))
-#define BDK_DISPLAY_MANAGER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
-#define BDK_IS_DISPLAY_MANAGER(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_MANAGER))
-#define BDK_IS_DISPLAY_MANAGER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_MANAGER))
-#define BDK_DISPLAY_MANAGER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
+#define BDK_DISPLAY_MANAGER(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManager))
+#define BDK_DISPLAY_MANAGER_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
+#define BDK_IS_DISPLAY_MANAGER(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_IS_DISPLAY_MANAGER_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_MANAGER))
+#define BDK_DISPLAY_MANAGER_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_MANAGER, BdkDisplayManagerClass))
 
 struct _BdkDisplayManagerClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*display_opened) (BdkDisplayManager *display_manager,
 			  BdkDisplay *display);
 };
 
-GType bdk_display_manager_get_type (void) G_GNUC_CONST;
+GType bdk_display_manager_get_type (void) B_GNUC_CONST;
 
 BdkDisplayManager *bdk_display_manager_get                 (void);
 BdkDisplay *       bdk_display_manager_get_default_display (BdkDisplayManager *display_manager);
@@ -62,6 +62,6 @@ void               bdk_display_manager_set_default_display (BdkDisplayManager *d
 							    BdkDisplay        *display);
 GSList     *       bdk_display_manager_list_displays       (BdkDisplayManager *display_manager);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DISPLAY_MANAGER_H__ */

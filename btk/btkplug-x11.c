@@ -72,7 +72,7 @@ _btk_plug_windowing_set_focus (BtkPlug *plug)
 
 void
 _btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
-				     guint           accelerator_key,
+				     buint           accelerator_key,
 				     BdkModifierType accelerator_mods)
 {
   _btk_xembed_send_message (plug->socket_window, XEMBED_BTK_GRAB_KEY, 0, 
@@ -81,7 +81,7 @@ _btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
 
 void
 _btk_plug_windowing_remove_grabbed_key (BtkPlug        *plug,
-					guint           accelerator_key,
+					buint           accelerator_key,
 					BdkModifierType accelerator_mods)
 {
   _btk_xembed_send_message (plug->socket_window, XEMBED_BTK_UNGRAB_KEY, 0, 
@@ -133,10 +133,10 @@ xembed_set_info (BdkWindow     *window,
 static void
 handle_xembed_message (BtkPlug           *plug,
 		       XEmbedMessageType  message,
-		       glong              detail,
-		       glong              data1,
-		       glong              data2,
-		       guint32            time)
+		       blong              detail,
+		       blong              data1,
+		       blong              data2,
+		       buint32            time)
 {
   BtkWindow *window = BTK_WINDOW (plug);
 
@@ -200,7 +200,7 @@ handle_xembed_message (BtkPlug           *plug,
 BdkFilterReturn
 _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 				 BdkEvent  *event,
-				 gpointer   data)
+				 bpointer   data)
 {
   BdkScreen *screen = bdk_window_get_screen (event->any.window);
   BdkDisplay *display = bdk_screen_get_display (screen);
@@ -239,7 +239,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
     case ReparentNotify:
       {
 	XReparentEvent *xre = &xevent->xreparent;
-	gboolean was_embedded = plug->socket_window != NULL;
+	bboolean was_embedded = plug->socket_window != NULL;
 
 	BTK_NOTE (PLUGSOCKET, g_message("BtkPlug: ReparentNotify received"));
 
@@ -279,7 +279,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 		    BTK_NOTE (PLUGSOCKET, g_message ("BtkPlug: calling btk_plug_send_delete_event()"));
 		    _btk_plug_send_delete_event (widget);
 
-		    g_object_notify (G_OBJECT (plug), "embedded");
+		    g_object_notify (B_OBJECT (plug), "embedded");
 		  }
 	      }
 	    else
@@ -294,12 +294,12 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 	    plug->socket_window = bdk_window_lookup_for_display (display, xre->parent);
 	    if (plug->socket_window)
 	      {
-		gpointer user_data = NULL;
+		bpointer user_data = NULL;
 		bdk_window_get_user_data (plug->socket_window, &user_data);
 
 		if (user_data)
 		  {
-		    g_warning (G_STRLOC "Plug reparented unexpectedly into window in the same process");
+		    g_warning (B_STRLOC "Plug reparented unexpectedly into window in the same process");
 		    plug->socket_window = NULL;
 		    break; /* FIXME: shouldn't this unref the plug? i.e. "goto done;" instead */
 		  }
@@ -318,7 +318,7 @@ _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
 	    if (!was_embedded)
 	      g_signal_emit_by_name (plug, "embedded");
 
-	    g_object_notify (G_OBJECT (plug), "embedded");
+	    g_object_notify (B_OBJECT (plug), "embedded");
 	  }
 
       done:

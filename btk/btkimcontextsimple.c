@@ -40,21 +40,21 @@ typedef struct _BtkComposeTableCompact BtkComposeTableCompact;
 
 struct _BtkComposeTable 
 {
-  const guint16 *data;
-  gint max_seq_len;
-  gint n_seqs;
+  const buint16 *data;
+  bint max_seq_len;
+  bint n_seqs;
 };
 
 struct _BtkComposeTableCompact
 {
-  const guint16 *data;
-  gint max_seq_len;
-  gint n_index_size;
-  gint n_index_stride;
+  const buint16 *data;
+  bint max_seq_len;
+  bint n_index_size;
+  bint n_index_stride;
 };
 
 /* This file contains the table of the compose sequences, 
- * static const guint16 btk_compose_seqs_compact[] = {}
+ * static const buint16 btk_compose_seqs_compact[] = {}
  * IT is generated from the compose-parse.py script.
  */
 #include "btkimcontextsimpleseqs.h"
@@ -71,7 +71,7 @@ static const BtkComposeTableCompact btk_compose_table_compact = {
   6
 };
 
-static const guint16 btk_compose_ignore[] = {
+static const buint16 btk_compose_ignore[] = {
   BDK_Shift_L,
   BDK_Shift_R,
   BDK_Control_L,
@@ -90,14 +90,14 @@ static const guint16 btk_compose_ignore[] = {
   BDK_ISO_Level3_Shift
 };
 
-static void     btk_im_context_simple_finalize           (GObject                  *obj);
-static gboolean btk_im_context_simple_filter_keypress    (BtkIMContext             *context,
+static void     btk_im_context_simple_finalize           (BObject                  *obj);
+static bboolean btk_im_context_simple_filter_keypress    (BtkIMContext             *context,
 							  BdkEventKey              *key);
 static void     btk_im_context_simple_reset              (BtkIMContext             *context);
 static void     btk_im_context_simple_get_preedit_string (BtkIMContext             *context,
-							  gchar                   **str,
+							  bchar                   **str,
 							  BangoAttrList           **attrs,
-							  gint                     *cursor_pos);
+							  bint                     *cursor_pos);
 
 G_DEFINE_TYPE (BtkIMContextSimple, btk_im_context_simple, BTK_TYPE_IM_CONTEXT)
 
@@ -105,7 +105,7 @@ static void
 btk_im_context_simple_class_init (BtkIMContextSimpleClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   im_context_class->filter_keypress = btk_im_context_simple_filter_keypress;
   im_context_class->reset = btk_im_context_simple_reset;
@@ -119,19 +119,19 @@ btk_im_context_simple_init (BtkIMContextSimple *im_context_simple)
 }
 
 static void
-btk_im_context_simple_finalize (GObject *obj)
+btk_im_context_simple_finalize (BObject *obj)
 {
   BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (obj);
 
   if (context_simple->tables)
     {
-      g_slist_foreach (context_simple->tables, (GFunc)g_free, NULL);
-      g_slist_free (context_simple->tables);
+      b_slist_foreach (context_simple->tables, (GFunc)g_free, NULL);
+      b_slist_free (context_simple->tables);
 
       context_simple->tables = NULL;
     }
 
-  G_OBJECT_CLASS (btk_im_context_simple_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (btk_im_context_simple_parent_class)->finalize (obj);
 }
 
 /** 
@@ -151,8 +151,8 @@ static void
 btk_im_context_simple_commit_char (BtkIMContext *context,
 				   gunichar ch)
 {
-  gchar buf[10];
-  gint len;
+  bchar buf[10];
+  bint len;
 
   BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
 
@@ -176,8 +176,8 @@ btk_im_context_simple_commit_char (BtkIMContext *context,
 static int
 compare_seq_index (const void *key, const void *value)
 {
-  const guint *keysyms = key;
-  const guint16 *seq = value;
+  const buint *keysyms = key;
+  const buint16 *seq = value;
 
   if (keysyms[0] < seq[0])
     return -1;
@@ -191,8 +191,8 @@ static int
 compare_seq (const void *key, const void *value)
 {
   int i = 0;
-  const guint *keysyms = key;
-  const guint16 *seq = value;
+  const buint *keysyms = key;
+  const buint16 *seq = value;
 
   while (keysyms[i])
     {
@@ -207,13 +207,13 @@ compare_seq (const void *key, const void *value)
   return 0;
 }
 
-static gboolean
+static bboolean
 check_table (BtkIMContextSimple    *context_simple,
 	     const BtkComposeTable *table,
-	     gint                   n_compose)
+	     bint                   n_compose)
 {
-  gint row_stride = table->max_seq_len + 2; 
-  guint16 *seq; 
+  bint row_stride = table->max_seq_len + 2; 
+  buint16 *seq; 
   
   /* Will never match, if the sequence in the compose buffer is longer
    * than the sequences in the table.  Further, compare_seq (key, val)
@@ -223,12 +223,12 @@ check_table (BtkIMContextSimple    *context_simple,
   
   seq = bsearch (context_simple->compose_buffer,
 		 table->data, table->n_seqs,
-		 sizeof (guint16) *  row_stride, 
+		 sizeof (buint16) *  row_stride, 
 		 compare_seq);
 
   if (seq)
     {
-      guint16 *prev_seq;
+      buint16 *prev_seq;
 
       /* Back up to the first sequence that matches to make sure
        * we find the exact match if their is one.
@@ -244,7 +244,7 @@ check_table (BtkIMContextSimple    *context_simple,
       if (n_compose == table->max_seq_len ||
 	  seq[n_compose] == 0) /* complete sequence */
 	{
-	  guint16 *next_seq;
+	  buint16 *next_seq;
 	  gunichar value = 
 	    0x10000 * seq[table->max_seq_len] + seq[table->max_seq_len + 1];
 
@@ -295,9 +295,9 @@ check_table (BtkIMContextSimple    *context_simple,
  * quote respectively. So special-case those.
  */
 
-static gboolean
+static bboolean
 check_win32_special_cases (BtkIMContextSimple    *context_simple,
-			   gint                   n_compose)
+			   bint                   n_compose)
 {
   if (n_compose == 2 &&
       context_simple->compose_buffer[1] == BDK_space)
@@ -325,8 +325,8 @@ check_win32_special_cases (BtkIMContextSimple    *context_simple,
 
 static void
 check_win32_special_case_after_compact_match (BtkIMContextSimple    *context_simple,
-					      gint                   n_compose,
-					      guint                  value)
+					      bint                   n_compose,
+					      buint                  value)
 {
   /* On Windows user expectation is that typing two dead accents will input
    * two corresponding spacing accents.
@@ -344,11 +344,11 @@ check_win32_special_case_after_compact_match (BtkIMContextSimple    *context_sim
 
 #ifdef BDK_WINDOWING_QUARTZ
 
-static gboolean
+static bboolean
 check_quartz_special_cases (BtkIMContextSimple *context_simple,
-                            gint                n_compose)
+                            bint                n_compose)
 {
-  guint value = 0;
+  buint value = 0;
 
   if (n_compose == 2)
     {
@@ -401,15 +401,15 @@ check_quartz_special_cases (BtkIMContextSimple *context_simple,
 
 #endif
 
-static gboolean
+static bboolean
 check_compact_table (BtkIMContextSimple    *context_simple,
 	     const BtkComposeTableCompact *table,
-	     gint                   n_compose)
+	     bint                   n_compose)
 {
-  gint row_stride;
-  guint16 *seq_index;
-  guint16 *seq; 
-  gint i;
+  bint row_stride;
+  buint16 *seq_index;
+  buint16 *seq; 
+  bint i;
 
   /* Will never match, if the sequence in the compose buffer is longer
    * than the sequences in the table.  Further, compare_seq (key, val)
@@ -419,7 +419,7 @@ check_compact_table (BtkIMContextSimple    *context_simple,
   
   seq_index = bsearch (context_simple->compose_buffer,
 		 table->data, table->n_index_size,
-		 sizeof (guint16) *  table->n_index_stride, 
+		 sizeof (buint16) *  table->n_index_stride, 
 		 compare_seq_index);
 
   if (!seq_index)
@@ -445,7 +445,7 @@ check_compact_table (BtkIMContextSimple    *context_simple,
         {
 	  seq = bsearch (context_simple->compose_buffer + 1,
 		 table->data + seq_index[i], (seq_index[i+1] - seq_index[i]) / row_stride,
-		 sizeof (guint16) *  row_stride, 
+		 sizeof (buint16) *  row_stride, 
 		 compare_seq);
 
 	  if (seq)
@@ -496,15 +496,15 @@ check_compact_table (BtkIMContextSimple    *context_simple,
  * If they belong to the same canonical combining class, we produce all
  * permutations of the diacritic marks, then attempt to normalize.
  */
-static gboolean
-check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
+static bboolean
+check_normalize_nfc (gunichar* combination_buffer, bint n_compose)
 {
   gunichar combination_buffer_temp[BTK_MAX_COMPOSE_LEN];
-  gchar *combination_utf8_temp = NULL;
-  gchar *nfc_temp = NULL;
-  gint n_combinations;
+  bchar *combination_utf8_temp = NULL;
+  bchar *nfc_temp = NULL;
+  bint n_combinations;
   gunichar temp_swap;
-  gint i;
+  bint i;
 
   n_combinations = 1;
 
@@ -555,14 +555,14 @@ check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 check_algorithmically (BtkIMContextSimple    *context_simple,
-		       gint                   n_compose)
+		       bint                   n_compose)
 
 {
-  gint i;
+  bint i;
   gunichar combination_buffer[BTK_MAX_COMPOSE_LEN];
-  gchar *combination_utf8, *nfc;
+  bchar *combination_utf8, *nfc;
 
   if (n_compose >= BTK_MAX_COMPOSE_LEN)
     return FALSE;
@@ -662,16 +662,16 @@ check_algorithmically (BtkIMContextSimple    *context_simple,
  */
 #define HEX_MOD_MASK (BTK_DEFAULT_ACCEL_MOD_MASK | BDK_SHIFT_MASK)
 
-static gboolean
+static bboolean
 check_hex (BtkIMContextSimple *context_simple,
-           gint                n_compose)
+           bint                n_compose)
 {
   /* See if this is a hex sequence, return TRUE if so */
-  gint i;
+  bint i;
   GString *str;
-  gulong n;
-  gchar *nptr = NULL;
-  gchar buf[7];
+  bulong n;
+  bchar *nptr = NULL;
+  bchar buf[7];
 
   context_simple->tentative_match = 0;
   context_simple->tentative_match_len = 0;
@@ -725,7 +725,7 @@ beep_window (BdkWindow *window)
 {
   BtkWidget *widget;
 
-  bdk_window_get_user_data (window, (gpointer) &widget);
+  bdk_window_get_user_data (window, (bpointer) &widget);
 
   if (BTK_IS_WIDGET (widget))
     {
@@ -734,7 +734,7 @@ beep_window (BdkWindow *window)
   else
     {
       BdkScreen *screen = bdk_window_get_screen (window);
-      gboolean   beep;
+      bboolean   beep;
 
       g_object_get (btk_settings_get_for_screen (screen),
                     "btk-error-bell", &beep,
@@ -745,9 +745,9 @@ beep_window (BdkWindow *window)
     }
 }
 
-static gboolean
+static bboolean
 no_sequence_matches (BtkIMContextSimple *context_simple,
-                     gint                n_compose,
+                     bint                n_compose,
                      BdkEventKey        *event)
 {
   BtkIMContext *context;
@@ -760,7 +760,7 @@ no_sequence_matches (BtkIMContextSimple *context_simple,
    */
   if (context_simple->tentative_match)
     {
-      gint len = context_simple->tentative_match_len;
+      bint len = context_simple->tentative_match_len;
       int i;
       
       btk_im_context_simple_commit_char (context, context_simple->tentative_match);
@@ -797,22 +797,22 @@ no_sequence_matches (BtkIMContextSimple *context_simple,
     }
 }
 
-static gboolean
-is_hex_keyval (guint keyval)
+static bboolean
+is_hex_keyval (buint keyval)
 {
   gunichar ch = bdk_keyval_to_unicode (keyval);
 
   return g_unichar_isxdigit (ch);
 }
 
-static guint
+static buint
 canonical_hex_keyval (BdkEventKey *event)
 {
   BdkKeymap *keymap = bdk_keymap_get_for_display (bdk_window_get_display (event->window));
-  guint keyval;
-  guint *keyvals = NULL;
-  gint n_vals = 0;
-  gint i;
+  buint keyval;
+  buint *keyvals = NULL;
+  bint n_vals = 0;
+  bint i;
   
   /* See if the keyval is already a hex digit */
   if (is_hex_keyval (event->keyval))
@@ -849,19 +849,19 @@ canonical_hex_keyval (BdkEventKey *event)
     return 0;
 }
 
-static gboolean
+static bboolean
 btk_im_context_simple_filter_keypress (BtkIMContext *context,
 				       BdkEventKey  *event)
 {
   BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
   GSList *tmp_list;  
   int n_compose = 0;
-  gboolean have_hex_mods;
-  gboolean is_hex_start;
-  gboolean is_hex_end;
-  gboolean is_backspace;
-  gboolean is_escape;
-  guint hex_keyval;
+  bboolean have_hex_mods;
+  bboolean is_hex_start;
+  bboolean is_hex_end;
+  bboolean is_backspace;
+  bboolean is_escape;
+  buint hex_keyval;
   int i;
 
   while (context_simple->compose_buffer[n_compose] != 0)
@@ -1064,8 +1064,8 @@ btk_im_context_simple_filter_keypress (BtkIMContext *context,
   else
     {
 #ifdef BDK_WINDOWING_WIN32
-      guint16  output[2];
-      gsize    output_size = 2;
+      buint16  output[2];
+      bsize    output_size = 2;
 
       switch (bdk_win32_keymap_check_compose (BDK_WIN32_KEYMAP (bdk_keymap_get_default ()),
                                               context_simple->compose_buffer,
@@ -1078,7 +1078,7 @@ btk_im_context_simple_filter_keypress (BtkIMContext *context,
         case BDK_WIN32_KEYMAP_MATCH_PARTIAL:
           for (i = 0; i < output_size; i++)
             {
-              guint32 output_char = bdk_keyval_to_unicode (output[i]);
+              buint32 output_char = bdk_keyval_to_unicode (output[i]);
               btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple),
                                                  output_char);
             }
@@ -1102,7 +1102,7 @@ btk_im_context_simple_filter_keypress (BtkIMContext *context,
 	  g_print ("[ ");
 	  for (i = 0; i < n_compose; i++)
 	    {
-	      const gchar *keyval_name = bdk_keyval_name (context_simple->compose_buffer[i]);
+	      const bchar *keyval_name = bdk_keyval_name (context_simple->compose_buffer[i]);
 	      
 	      if (keyval_name != NULL)
 		g_print ("%s ", keyval_name);
@@ -1152,9 +1152,9 @@ btk_im_context_simple_reset (BtkIMContext *context)
 
 static void     
 btk_im_context_simple_get_preedit_string (BtkIMContext   *context,
-					  gchar         **str,
+					  bchar         **str,
 					  BangoAttrList **attrs,
-					  gint           *cursor_pos)
+					  bint           *cursor_pos)
 {
   char outbuf[37]; /* up to 6 hex digits */
   int len = 0;
@@ -1212,7 +1212,7 @@ btk_im_context_simple_get_preedit_string (BtkIMContext   *context,
  * 
  * Adds an additional table to search to the input context.
  * Each row of the table consists of @max_seq_len key symbols
- * followed by two #guint16 interpreted as the high and low
+ * followed by two #buint16 interpreted as the high and low
  * words of a #gunicode value. Tables are searched starting
  * from the last added.
  *
@@ -1222,9 +1222,9 @@ btk_im_context_simple_get_preedit_string (BtkIMContext   *context,
  **/
 void
 btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
-				 guint16            *data,
-				 gint                max_seq_len,
-				 gint                n_seqs)
+				 buint16            *data,
+				 bint                max_seq_len,
+				 bint                n_seqs)
 {
   BtkComposeTable *table;
 
@@ -1237,7 +1237,7 @@ btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
   table->max_seq_len = max_seq_len;
   table->n_seqs = n_seqs;
 
-  context_simple->tables = g_slist_prepend (context_simple->tables, table);
+  context_simple->tables = b_slist_prepend (context_simple->tables, table);
 }
 
 #define __BTK_IM_CONTEXT_SIMPLE_C__

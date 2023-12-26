@@ -41,14 +41,14 @@ enum {
 };
 
 static void btk_misc_realize      (BtkWidget    *widget);
-static void btk_misc_set_property (GObject         *object,
-				   guint            prop_id,
-				   const GValue    *value,
-				   GParamSpec      *pspec);
-static void btk_misc_get_property (GObject         *object,
-				   guint            prop_id,
-				   GValue          *value,
-				   GParamSpec      *pspec);
+static void btk_misc_set_property (BObject         *object,
+				   buint            prop_id,
+				   const BValue    *value,
+				   BParamSpec      *pspec);
+static void btk_misc_get_property (BObject         *object,
+				   buint            prop_id,
+				   BValue          *value,
+				   BParamSpec      *pspec);
 
 
 G_DEFINE_ABSTRACT_TYPE (BtkMisc, btk_misc, BTK_TYPE_WIDGET)
@@ -56,10 +56,10 @@ G_DEFINE_ABSTRACT_TYPE (BtkMisc, btk_misc, BTK_TYPE_WIDGET)
 static void
 btk_misc_class_init (BtkMiscClass *class)
 {
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkWidgetClass *widget_class;
 
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
 
   bobject_class->set_property = btk_misc_set_property;
@@ -93,7 +93,7 @@ btk_misc_class_init (BtkMiscClass *class)
 						     P_("X pad"),
 						     P_("The amount of space to add on the left and right of the widget, in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -103,7 +103,7 @@ btk_misc_class_init (BtkMiscClass *class)
 						     P_("Y pad"),
 						     P_("The amount of space to add on the top and bottom of the widget, in pixels"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 }
@@ -118,10 +118,10 @@ btk_misc_init (BtkMisc *misc)
 }
 
 static void
-btk_misc_set_property (GObject      *object,
-		       guint         prop_id,
-		       const GValue *value,
-		       GParamSpec   *pspec)
+btk_misc_set_property (BObject      *object,
+		       buint         prop_id,
+		       const BValue *value,
+		       BParamSpec   *pspec)
 {
   BtkMisc *misc;
 
@@ -130,28 +130,28 @@ btk_misc_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_XALIGN:
-      btk_misc_set_alignment (misc, g_value_get_float (value), misc->yalign);
+      btk_misc_set_alignment (misc, b_value_get_float (value), misc->yalign);
       break;
     case PROP_YALIGN:
-      btk_misc_set_alignment (misc, misc->xalign, g_value_get_float (value));
+      btk_misc_set_alignment (misc, misc->xalign, b_value_get_float (value));
       break;
     case PROP_XPAD:
-      btk_misc_set_padding (misc, g_value_get_int (value), misc->ypad);
+      btk_misc_set_padding (misc, b_value_get_int (value), misc->ypad);
       break;
     case PROP_YPAD:
-      btk_misc_set_padding (misc, misc->xpad, g_value_get_int (value));
+      btk_misc_set_padding (misc, misc->xpad, b_value_get_int (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_misc_get_property (GObject      *object,
-		       guint         prop_id,
-		       GValue       *value,
-		       GParamSpec   *pspec)
+btk_misc_get_property (BObject      *object,
+		       buint         prop_id,
+		       BValue       *value,
+		       BParamSpec   *pspec)
 {
   BtkMisc *misc;
 
@@ -160,27 +160,27 @@ btk_misc_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_XALIGN:
-      g_value_set_float (value, misc->xalign);
+      b_value_set_float (value, misc->xalign);
       break;
     case PROP_YALIGN:
-      g_value_set_float (value, misc->yalign);
+      b_value_set_float (value, misc->yalign);
       break;
     case PROP_XPAD:
-      g_value_set_int (value, misc->xpad);
+      b_value_set_int (value, misc->xpad);
       break;
     case PROP_YPAD:
-      g_value_set_int (value, misc->ypad);
+      b_value_set_int (value, misc->ypad);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 void
 btk_misc_set_alignment (BtkMisc *misc,
-			gfloat   xalign,
-			gfloat   yalign)
+			bfloat   xalign,
+			bfloat   yalign)
 {
   BtkWidget *widget;
 
@@ -198,12 +198,12 @@ btk_misc_set_alignment (BtkMisc *misc,
 
   if ((xalign != misc->xalign) || (yalign != misc->yalign))
     {
-      g_object_freeze_notify (G_OBJECT (misc));
+      g_object_freeze_notify (B_OBJECT (misc));
       if (xalign != misc->xalign)
-	g_object_notify (G_OBJECT (misc), "xalign");
+	g_object_notify (B_OBJECT (misc), "xalign");
 
       if (yalign != misc->yalign)
-	g_object_notify (G_OBJECT (misc), "yalign");
+	g_object_notify (B_OBJECT (misc), "yalign");
 
       misc->xalign = xalign;
       misc->yalign = yalign;
@@ -214,7 +214,7 @@ btk_misc_set_alignment (BtkMisc *misc,
       if (btk_widget_is_drawable (widget))
         btk_widget_queue_draw (widget);
 
-      g_object_thaw_notify (G_OBJECT (misc));
+      g_object_thaw_notify (B_OBJECT (misc));
     }
 }
 
@@ -229,8 +229,8 @@ btk_misc_set_alignment (BtkMisc *misc,
  **/
 void
 btk_misc_get_alignment (BtkMisc *misc,
-		        gfloat  *xalign,
-			gfloat  *yalign)
+		        bfloat  *xalign,
+			bfloat  *yalign)
 {
   g_return_if_fail (BTK_IS_MISC (misc));
 
@@ -242,8 +242,8 @@ btk_misc_get_alignment (BtkMisc *misc,
 
 void
 btk_misc_set_padding (BtkMisc *misc,
-		      gint     xpad,
-		      gint     ypad)
+		      bint     xpad,
+		      bint     ypad)
 {
   BtkRequisition *requisition;
   
@@ -256,12 +256,12 @@ btk_misc_set_padding (BtkMisc *misc,
   
   if ((xpad != misc->xpad) || (ypad != misc->ypad))
     {
-      g_object_freeze_notify (G_OBJECT (misc));
+      g_object_freeze_notify (B_OBJECT (misc));
       if (xpad != misc->xpad)
-	g_object_notify (G_OBJECT (misc), "xpad");
+	g_object_notify (B_OBJECT (misc), "xpad");
 
       if (ypad != misc->ypad)
-	g_object_notify (G_OBJECT (misc), "ypad");
+	g_object_notify (B_OBJECT (misc), "ypad");
 
       requisition = &(BTK_WIDGET (misc)->requisition);
       requisition->width -= misc->xpad * 2;
@@ -276,7 +276,7 @@ btk_misc_set_padding (BtkMisc *misc,
       if (btk_widget_is_drawable (BTK_WIDGET (misc)))
 	btk_widget_queue_resize (BTK_WIDGET (misc));
 
-      g_object_thaw_notify (G_OBJECT (misc));
+      g_object_thaw_notify (B_OBJECT (misc));
     }
 }
 
@@ -293,8 +293,8 @@ btk_misc_set_padding (BtkMisc *misc,
  **/
 void
 btk_misc_get_padding (BtkMisc *misc,
-		      gint    *xpad,
-		      gint    *ypad)
+		      bint    *xpad,
+		      bint    *ypad)
 {
   g_return_if_fail (BTK_IS_MISC (misc));
 
@@ -308,7 +308,7 @@ static void
 btk_misc_realize (BtkWidget *widget)
 {
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   btk_widget_set_realized (widget, TRUE);
 

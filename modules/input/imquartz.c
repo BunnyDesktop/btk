@@ -31,19 +31,19 @@
 #include "bdk/quartz/BdkQuartzView.h"
 
 #define BTK_IM_CONTEXT_TYPE_QUARTZ (type_quartz)
-#define BTK_IM_CONTEXT_QUARTZ(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_IM_CONTEXT_TYPE_QUARTZ, BtkIMContextQuartz))
-#define BTK_IM_CONTEXT_QUARTZ_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_IM_CONTEXT_TYPE_QUARTZ, BtkIMContextQuartzClass))
+#define BTK_IM_CONTEXT_QUARTZ(obj) (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_IM_CONTEXT_TYPE_QUARTZ, BtkIMContextQuartz))
+#define BTK_IM_CONTEXT_QUARTZ_GET_CLASS(obj) (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_IM_CONTEXT_TYPE_QUARTZ, BtkIMContextQuartzClass))
 
 typedef struct _BtkIMContextQuartz
 {
   BtkIMContext parent;
   BtkIMContext *slave;
   BdkWindow *client_window;
-  gchar *preedit_str;
+  bchar *preedit_str;
   unsigned int cursor_index;
   unsigned int selected_len;
   BdkRectangle *cursor_rect;
-  gboolean focused;
+  bboolean focused;
 } BtkIMContextQuartz;
 
 typedef struct _BtkIMContextQuartzClass
@@ -52,7 +52,7 @@ typedef struct _BtkIMContextQuartzClass
 } BtkIMContextQuartzClass;
 
 GType type_quartz = 0;
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 static const BtkIMContextInfo imquartz_info =
 {
@@ -76,9 +76,9 @@ static const BtkIMContextInfo *info_list[] =
 
 static void
 quartz_get_preedit_string (BtkIMContext *context,
-                           gchar **str,
+                           bchar **str,
                            BangoAttrList **attrs,
-                           gint *cursor_pos)
+                           bint *cursor_pos)
 {
   BtkIMContextQuartz *qc = BTK_IM_CONTEXT_QUARTZ (context);
 
@@ -91,14 +91,14 @@ quartz_get_preedit_string (BtkIMContext *context,
     {
       *attrs = bango_attr_list_new ();
       int len = g_utf8_strlen (*str, -1);
-      gchar *ch = *str;
+      bchar *ch = *str;
       if (len > 0)
         {
           BangoAttribute *attr;
           int i = 0;
           for (;;)
             {
-              gchar *s = ch;
+              bchar *s = ch;
               ch = g_utf8_next_char (ch);
 
               if (i >= qc->cursor_index &&
@@ -125,27 +125,27 @@ quartz_get_preedit_string (BtkIMContext *context,
     *cursor_pos = qc->cursor_index;
 }
 
-static gboolean
+static bboolean
 output_result (BtkIMContext *context,
                BdkWindow *win)
 {
   BtkIMContextQuartz *qc = BTK_IM_CONTEXT_QUARTZ (context);
-  gboolean retval = FALSE;
-  gchar *fixed_str, *marked_str;
+  bboolean retval = FALSE;
+  bchar *fixed_str, *marked_str;
 
-  fixed_str = g_object_get_data (G_OBJECT (win), TIC_INSERT_TEXT);
-  marked_str = g_object_get_data (G_OBJECT (win), TIC_MARKED_TEXT);
+  fixed_str = g_object_get_data (B_OBJECT (win), TIC_INSERT_TEXT);
+  marked_str = g_object_get_data (B_OBJECT (win), TIC_MARKED_TEXT);
   if (fixed_str)
     {
       BTK_NOTE (MISC, g_print ("tic-insert-text: %s\n", fixed_str));
       g_free (qc->preedit_str);
       qc->preedit_str = NULL;
-      g_object_set_data (G_OBJECT (win), TIC_INSERT_TEXT, NULL);
+      g_object_set_data (B_OBJECT (win), TIC_INSERT_TEXT, NULL);
       g_signal_emit_by_name (context, "commit", fixed_str);
       g_signal_emit_by_name (context, "preedit_changed");
 
       unsigned int filtered =
-	   GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (win),
+	   BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (win),
 						GIC_FILTER_KEY));
       BTK_NOTE (MISC, g_print ("filtered, %d\n", filtered));
       if (filtered)
@@ -157,14 +157,14 @@ output_result (BtkIMContext *context,
     {
       BTK_NOTE (MISC, g_print ("tic-marked-text: %s\n", marked_str));
       qc->cursor_index =
-	   GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (win),
+	   BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (win),
 						TIC_SELECTED_POS));
       qc->selected_len =
-	   GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (win),
+	   BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (win),
 						TIC_SELECTED_LEN));
       g_free (qc->preedit_str);
       qc->preedit_str = g_strdup (marked_str);
-      g_object_set_data (G_OBJECT (win), TIC_MARKED_TEXT, NULL);
+      g_object_set_data (B_OBJECT (win), TIC_MARKED_TEXT, NULL);
       g_signal_emit_by_name (context, "preedit_changed");
       retval = TRUE;
     }
@@ -180,12 +180,12 @@ output_result (BtkIMContext *context,
   return retval;
 }
 
-static gboolean
+static bboolean
 quartz_filter_keypress (BtkIMContext *context,
                         BdkEventKey *event)
 {
   BtkIMContextQuartz *qc = BTK_IM_CONTEXT_QUARTZ (context);
-  gboolean retval;
+  bboolean retval;
   NSView *nsview;
   BdkWindow *win;
 
@@ -222,8 +222,8 @@ quartz_filter_keypress (BtkIMContext *context,
   NSEventType etype = [nsevent type];
   if (etype == NSKeyDown)
     {
-       g_object_set_data (G_OBJECT (win), TIC_IN_KEY_DOWN,
-                                          GUINT_TO_POINTER (TRUE));
+       g_object_set_data (B_OBJECT (win), TIC_IN_KEY_DOWN,
+                                          BUINT_TO_POINTER (TRUE));
        [nsview keyDown: nsevent];
     }
   /* JIS_Eisu || JIS_Kana */
@@ -231,8 +231,8 @@ quartz_filter_keypress (BtkIMContext *context,
     return FALSE;
 
   retval = output_result(context, win);
-  g_object_set_data (G_OBJECT (win), TIC_IN_KEY_DOWN,
-                                     GUINT_TO_POINTER (FALSE));
+  g_object_set_data (B_OBJECT (win), TIC_IN_KEY_DOWN,
+                                     BUINT_TO_POINTER (FALSE));
   BTK_NOTE (MISC, g_print ("quartz_filter_keypress done\n"));
 
   return retval;
@@ -310,7 +310,7 @@ static void
 quartz_set_cursor_location (BtkIMContext *context, BdkRectangle *area)
 {
   BtkIMContextQuartz *qc = BTK_IM_CONTEXT_QUARTZ (context);
-  gint x, y;
+  bint x, y;
   NSView *nsview;
   BdkWindow *win;
 
@@ -338,23 +338,23 @@ quartz_set_cursor_location (BtkIMContext *context, BdkRectangle *area)
   nsview = bdk_quartz_window_get_nsview (qc->client_window);
 
   win = (BdkWindow *)[ (BdkQuartzView*)nsview bdkWindow];
-  g_object_set_data (G_OBJECT (win), GIC_CURSOR_RECT, qc->cursor_rect);
+  g_object_set_data (B_OBJECT (win), GIC_CURSOR_RECT, qc->cursor_rect);
 }
 
 static void
-quartz_set_use_preedit (BtkIMContext *context, gboolean use_preedit)
+quartz_set_use_preedit (BtkIMContext *context, bboolean use_preedit)
 {
   BTK_NOTE (MISC, g_print ("quartz_set_use_preedit: %d\n", use_preedit));
 }
 
 static void
-commit_cb (BtkIMContext *context, const gchar *str, BtkIMContextQuartz *qc)
+commit_cb (BtkIMContext *context, const bchar *str, BtkIMContextQuartz *qc)
 {
   g_signal_emit_by_name (qc, "commit", str);
 }
 
 static void
-imquartz_finalize (GObject *obj)
+imquartz_finalize (BObject *obj)
 {
   BTK_NOTE (MISC, g_print ("imquartz_finalize\n"));
 
@@ -364,7 +364,7 @@ imquartz_finalize (GObject *obj)
   g_free (qc->cursor_rect);
   qc->cursor_rect = NULL;
 
-  g_signal_handlers_disconnect_by_func (qc->slave, (gpointer)commit_cb, qc);
+  g_signal_handlers_disconnect_by_func (qc->slave, (bpointer)commit_cb, qc);
   g_object_unref (qc->slave);
 
   parent_class->finalize (obj);
@@ -375,7 +375,7 @@ btk_im_context_quartz_class_init (BtkIMContextClass *klass)
 {
   BTK_NOTE (MISC, g_print ("btk_im_context_quartz_class_init\n"));
 
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   parent_class = g_type_class_peek_parent (klass);
 
   klass->get_preedit_string = quartz_get_preedit_string;
@@ -403,7 +403,7 @@ btk_im_context_quartz_init (BtkIMContext *im_context)
   qc->focused = FALSE;
 
   qc->slave = g_object_new (BTK_TYPE_IM_CONTEXT_SIMPLE, NULL);
-  g_signal_connect (G_OBJECT (qc->slave), "commit", G_CALLBACK (commit_cb), qc);
+  g_signal_connect (B_OBJECT (qc->slave), "commit", G_CALLBACK (commit_cb), qc);
 }
 
 static void
@@ -444,7 +444,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo *** contexts, int *n_contexts)
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar * context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar * context_id)
 {
   g_return_val_if_fail (context_id, NULL);
 

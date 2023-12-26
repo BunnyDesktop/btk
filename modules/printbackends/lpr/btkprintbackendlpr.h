@@ -25,18 +25,18 @@
 #include <bunnylib-object.h>
 #include "btkprintbackend.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_BACKEND_LPR            (btk_print_backend_lpr_get_type ())
-#define BTK_PRINT_BACKEND_LPR(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLpr))
-#define BTK_IS_PRINT_BACKEND_LPR(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_LPR))
+#define BTK_PRINT_BACKEND_LPR(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_LPR, BtkPrintBackendLpr))
+#define BTK_IS_PRINT_BACKEND_LPR(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_LPR))
 
 typedef struct _BtkPrintBackendLpr      BtkPrintBackendLpr;
 
 BtkPrintBackend *btk_print_backend_lpr_new      (void);
-GType          btk_print_backend_lpr_get_type (void) G_GNUC_CONST;
+GType          btk_print_backend_lpr_get_type (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_BACKEND_LPR_H__ */
 

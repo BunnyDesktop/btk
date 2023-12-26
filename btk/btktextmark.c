@@ -54,19 +54,19 @@
 #include "btkintl.h"
 #include "btkalias.h"
 
-static void btk_text_mark_set_property (GObject         *object,
-				        guint            prop_id,
-					const GValue    *value,
-					GParamSpec      *pspec);
-static void btk_text_mark_get_property (GObject         *object,
-					guint            prop_id,
-					GValue          *value,
-					GParamSpec      *pspec);
-static void btk_text_mark_finalize     (GObject         *object);
+static void btk_text_mark_set_property (BObject         *object,
+				        buint            prop_id,
+					const BValue    *value,
+					BParamSpec      *pspec);
+static void btk_text_mark_get_property (BObject         *object,
+					buint            prop_id,
+					BValue          *value,
+					BParamSpec      *pspec);
+static void btk_text_mark_finalize     (BObject         *object);
 
 static BtkTextLineSegment *btk_mark_segment_new (BtkTextMark *mark_obj);
 
-G_DEFINE_TYPE (BtkTextMark, btk_text_mark, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTextMark, btk_text_mark, B_TYPE_OBJECT)
 
 enum {
   PROP_0,
@@ -77,7 +77,7 @@ enum {
 static void
 btk_text_mark_class_init (BtkTextMarkClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_text_mark_finalize;
   object_class->set_property = btk_text_mark_set_property;
@@ -107,7 +107,7 @@ btk_text_mark_init (BtkTextMark *mark)
 }
 
 static void
-btk_text_mark_finalize (GObject *obj)
+btk_text_mark_finalize (BObject *obj)
 {
   BtkTextMark *mark;
   BtkTextLineSegment *seg;
@@ -130,16 +130,16 @@ btk_text_mark_finalize (GObject *obj)
     }
 
   /* chain parent_class' handler */
-  G_OBJECT_CLASS (btk_text_mark_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (btk_text_mark_parent_class)->finalize (obj);
 }
 
 static void
-btk_text_mark_set_property (GObject      *object,
-			    guint         prop_id,
-			    const GValue *value,
-			    GParamSpec   *pspec)
+btk_text_mark_set_property (BObject      *object,
+			    buint         prop_id,
+			    const BValue *value,
+			    BParamSpec   *pspec)
 {
-  gchar *tmp;
+  bchar *tmp;
   BtkTextMark *mark = BTK_TEXT_MARK (object);
   BtkTextLineSegment *seg = mark->segment;
 
@@ -147,42 +147,42 @@ btk_text_mark_set_property (GObject      *object,
     {
     case PROP_NAME:
       tmp = seg->body.mark.name;
-      seg->body.mark.name = g_value_dup_string (value);
+      seg->body.mark.name = b_value_dup_string (value);
       g_free (tmp);
       break;
 
     case PROP_LEFT_GRAVITY:
-      if (g_value_get_boolean (value))
+      if (b_value_get_boolean (value))
 	seg->type = &btk_text_left_mark_type;
       else
 	seg->type = &btk_text_right_mark_type;
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
 static void
-btk_text_mark_get_property (GObject    *object,
-			    guint       prop_id,
-			    GValue     *value,
-			    GParamSpec *pspec)
+btk_text_mark_get_property (BObject    *object,
+			    buint       prop_id,
+			    BValue     *value,
+			    BParamSpec *pspec)
 {
   BtkTextMark *mark = BTK_TEXT_MARK (object);
 
   switch (prop_id)
     {
     case PROP_NAME:
-      g_value_set_string (value, btk_text_mark_get_name (mark));
+      b_value_set_string (value, btk_text_mark_get_name (mark));
       break;
 
     case PROP_LEFT_GRAVITY:
-      g_value_set_boolean (value, btk_text_mark_get_left_gravity (mark));
+      b_value_set_boolean (value, btk_text_mark_get_left_gravity (mark));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
 }
 
@@ -206,8 +206,8 @@ btk_text_mark_get_property (GObject    *object,
  * Since: 2.12
  **/
 BtkTextMark *
-btk_text_mark_new (const gchar *name,
-		   gboolean     left_gravity)
+btk_text_mark_new (const bchar *name,
+		   bboolean     left_gravity)
 {
   return g_object_new (BTK_TYPE_TEXT_MARK,
 		       "name", name,
@@ -224,7 +224,7 @@ btk_text_mark_new (const gchar *name,
  * 
  * Return value: %TRUE if visible
  **/
-gboolean
+bboolean
 btk_text_mark_get_visible (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -262,7 +262,7 @@ btk_text_mark_get_name (BtkTextMark *mark)
  * 
  * Return value: whether the mark is deleted
  **/
-gboolean
+bboolean
 btk_text_mark_get_deleted (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -309,7 +309,7 @@ btk_text_mark_get_buffer (BtkTextMark *mark)
  * 
  * Return value: %TRUE if the mark has left gravity, %FALSE otherwise
  **/
-gboolean
+bboolean
 btk_text_mark_get_left_gravity (BtkTextMark *mark)
 {
   BtkTextLineSegment *seg;
@@ -425,10 +425,10 @@ const BtkTextLineSegmentClass btk_text_left_mark_type = {
  *--------------------------------------------------------------
  */
 
-static gboolean
+static bboolean
 mark_segment_delete_func (BtkTextLineSegment *seg,
                           BtkTextLine        *line,
-                          gboolean            tree_gone)
+                          bboolean            tree_gone)
 {
   if (tree_gone)
     {

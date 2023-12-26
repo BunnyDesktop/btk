@@ -23,14 +23,14 @@
 #include <bail/bailcontainer.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_BUTTON                     (bail_button_get_type ())
-#define BAIL_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BUTTON, BailButton))
-#define BAIL_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BUTTON, BailButtonClass))
-#define BAIL_IS_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BUTTON))
-#define BAIL_IS_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BUTTON))
-#define BAIL_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BUTTON, BailButtonClass))
+#define BAIL_BUTTON(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BUTTON, BailButton))
+#define BAIL_BUTTON_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BUTTON, BailButtonClass))
+#define BAIL_IS_BUTTON(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BUTTON))
+#define BAIL_IS_BUTTON_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BUTTON))
+#define BAIL_BUTTON_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BUTTON, BailButtonClass))
 
 typedef struct _BailButton                   BailButton;
 typedef struct _BailButtonClass              BailButtonClass;
@@ -42,18 +42,18 @@ struct _BailButton
   /*
    * Cache the widget state so we know the previous state when it changed
    */
-  gint8         state;
+  bint8         state;
 
-  gchar         *click_description;
-  gchar         *press_description;
-  gchar         *release_description;
-  gchar         *click_keybinding;
-  guint         action_idle_handler;
+  bchar         *click_description;
+  bchar         *press_description;
+  bchar         *release_description;
+  bchar         *click_keybinding;
+  buint         action_idle_handler;
   GQueue        *action_queue;
 
   BailTextUtil	 *textutil;
 
-  gboolean     default_is_press;
+  bboolean     default_is_press;
 };
 
 GType bail_button_get_type (void);
@@ -63,6 +63,6 @@ struct _BailButtonClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_BUTTON_H__ */

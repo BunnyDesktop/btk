@@ -34,7 +34,7 @@
 #include <bdk/bdktypes.h>
 #include <bdk-pixbuf/bdk-pixbuf.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_CURSOR (bdk_cursor_get_type ())
 
@@ -128,13 +128,13 @@ struct _BdkCursor
 {
   BdkCursorType GSEAL (type);
   /*< private >*/
-  guint GSEAL (ref_count);
+  buint GSEAL (ref_count);
 };
 
 /* Cursors
  */
 
-GType      bdk_cursor_get_type           (void) G_GNUC_CONST;
+GType      bdk_cursor_get_type           (void) B_GNUC_CONST;
 
 BdkCursor* bdk_cursor_new_for_display	 (BdkDisplay      *display,
 					  BdkCursorType    cursor_type);
@@ -145,17 +145,17 @@ BdkCursor* bdk_cursor_new_from_pixmap	 (BdkPixmap	  *source,
 					  BdkPixmap	  *mask,
 					  const BdkColor  *fg,
 					  const BdkColor  *bg,
-					  gint		   x,
-					  gint		   y);
+					  bint		   x,
+					  bint		   y);
 BdkCursor* bdk_cursor_new_from_pixbuf	 (BdkDisplay      *display,
 					  BdkPixbuf       *pixbuf,
-					  gint             x,
-					  gint             y);
+					  bint             x,
+					  bint             y);
 BdkDisplay* bdk_cursor_get_display	 (BdkCursor	  *cursor);
 BdkCursor*  bdk_cursor_ref               (BdkCursor       *cursor);
 void        bdk_cursor_unref             (BdkCursor       *cursor);
 BdkCursor*  bdk_cursor_new_from_name	 (BdkDisplay      *display,
-					  const gchar     *name);
+					  const bchar     *name);
 BdkPixbuf*  bdk_cursor_get_image         (BdkCursor       *cursor);
 BdkCursorType bdk_cursor_get_cursor_type (BdkCursor       *cursor);
 
@@ -163,6 +163,6 @@ BdkCursorType bdk_cursor_get_cursor_type (BdkCursor       *cursor);
 #define bdk_cursor_destroy             bdk_cursor_unref
 #endif /* BDK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_CURSOR_H__ */

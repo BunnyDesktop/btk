@@ -33,7 +33,7 @@
 #include "btkalias.h"
 
 
-static void btk_editable_base_init (gpointer g_class);
+static void btk_editable_base_init (bpointer g_class);
 
 
 GType
@@ -50,7 +50,7 @@ btk_editable_get_type (void)
 	NULL,			    /* base_finalize */
       };
 
-      editable_type = g_type_register_static (G_TYPE_INTERFACE, I_("BtkEditable"),
+      editable_type = g_type_register_static (B_TYPE_INTERFACE, I_("BtkEditable"),
 					      &editable_info, 0);
     }
 
@@ -58,9 +58,9 @@ btk_editable_get_type (void)
 }
 
 static void
-btk_editable_base_init (gpointer g_class)
+btk_editable_base_init (bpointer g_class)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
 
   if (! initialized)
     {
@@ -89,10 +89,10 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, insert_text),
 		    NULL, NULL,
 		    _btk_marshal_VOID__STRING_INT_POINTER,
-		    G_TYPE_NONE, 3,
-		    G_TYPE_STRING,
-		    G_TYPE_INT,
-		    G_TYPE_POINTER);
+		    B_TYPE_NONE, 3,
+		    B_TYPE_STRING,
+		    B_TYPE_INT,
+		    B_TYPE_POINTER);
 
       /**
        * BtkEditable::delete-text:
@@ -116,9 +116,9 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, delete_text),
 		    NULL, NULL,
 		    _btk_marshal_VOID__INT_INT,
-		    G_TYPE_NONE, 2,
-		    G_TYPE_INT,
-		    G_TYPE_INT);
+		    B_TYPE_NONE, 2,
+		    B_TYPE_INT,
+		    B_TYPE_INT);
       /**
        * BtkEditable::changed:
        * @editable: the object which received the signal
@@ -138,7 +138,7 @@ btk_editable_base_init (gpointer g_class)
 		    G_STRUCT_OFFSET (BtkEditableClass, changed),
 		    NULL, NULL,
 		    _btk_marshal_VOID__VOID,
-		    G_TYPE_NONE, 0);
+		    B_TYPE_NONE, 0);
 
       initialized = TRUE;
     }
@@ -159,9 +159,9 @@ btk_editable_base_init (gpointer g_class)
  */
 void
 btk_editable_insert_text (BtkEditable *editable,
-			  const gchar *new_text,
-			  gint         new_text_length,
-			  gint        *position)
+			  const bchar *new_text,
+			  bint         new_text_length,
+			  bint        *position)
 {
   g_return_if_fail (BTK_IS_EDITABLE (editable));
   g_return_if_fail (position != NULL);
@@ -187,8 +187,8 @@ btk_editable_insert_text (BtkEditable *editable,
  */
 void
 btk_editable_delete_text (BtkEditable *editable,
-			  gint         start_pos,
-			  gint         end_pos)
+			  bint         start_pos,
+			  bint         end_pos)
 {
   g_return_if_fail (BTK_IS_EDITABLE (editable));
 
@@ -212,10 +212,10 @@ btk_editable_delete_text (BtkEditable *editable,
  *      string. This string is allocated by the #BtkEditable
  *      implementation and should be freed by the caller.
  */
-gchar *    
+bchar *    
 btk_editable_get_chars (BtkEditable *editable,
-			gint         start_pos,
-			gint         end_pos)
+			bint         start_pos,
+			bint         end_pos)
 {
   g_return_val_if_fail (BTK_IS_EDITABLE (editable), NULL);
 
@@ -237,7 +237,7 @@ btk_editable_get_chars (BtkEditable *editable,
  */
 void
 btk_editable_set_position (BtkEditable      *editable,
-			   gint              position)
+			   bint              position)
 {
   g_return_if_fail (BTK_IS_EDITABLE (editable));
 
@@ -255,7 +255,7 @@ btk_editable_set_position (BtkEditable      *editable,
  *
  * Return value: the cursor position
  */
-gint
+bint
 btk_editable_get_position (BtkEditable *editable)
 {
   g_return_val_if_fail (BTK_IS_EDITABLE (editable), 0);
@@ -277,13 +277,13 @@ btk_editable_get_position (BtkEditable *editable)
  *
  * Return value: %TRUE if an area is selected, %FALSE otherwise
  */
-gboolean
+bboolean
 btk_editable_get_selection_bounds (BtkEditable *editable,
-				   gint        *start_pos,
-				   gint        *end_pos)
+				   bint        *start_pos,
+				   bint        *end_pos)
 {
-  gint tmp_start, tmp_end;
-  gboolean result;
+  bint tmp_start, tmp_end;
+  bboolean result;
   
   g_return_val_if_fail (BTK_IS_EDITABLE (editable), FALSE);
 
@@ -307,7 +307,7 @@ btk_editable_get_selection_bounds (BtkEditable *editable,
 void
 btk_editable_delete_selection (BtkEditable *editable)
 {
-  gint start, end;
+  bint start, end;
 
   g_return_if_fail (BTK_IS_EDITABLE (editable));
 
@@ -331,8 +331,8 @@ btk_editable_delete_selection (BtkEditable *editable)
  */
 void
 btk_editable_select_rebunnyion (BtkEditable *editable,
-			    gint         start_pos,
-			    gint         end_pos)
+			    bint         start_pos,
+			    bint         end_pos)
 {
   g_return_if_fail (BTK_IS_EDITABLE (editable));
   
@@ -395,7 +395,7 @@ btk_editable_paste_clipboard (BtkEditable *editable)
  */
 void
 btk_editable_set_editable (BtkEditable    *editable,
-			   gboolean        is_editable)
+			   bboolean        is_editable)
 {
   g_return_if_fail (BTK_IS_EDITABLE (editable));
 
@@ -413,10 +413,10 @@ btk_editable_set_editable (BtkEditable    *editable,
  *
  * Return value: %TRUE if @editable is editable.
  */
-gboolean
+bboolean
 btk_editable_get_editable (BtkEditable *editable)
 {
-  gboolean value;
+  bboolean value;
 
   g_return_val_if_fail (BTK_IS_EDITABLE (editable), FALSE);
 

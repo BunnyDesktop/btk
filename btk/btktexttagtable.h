@@ -33,35 +33,35 @@
 
 #include <btk/btktexttag.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
-typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, gpointer data);
+typedef void (* BtkTextTagTableForeach) (BtkTextTag *tag, bpointer data);
 
 #define BTK_TYPE_TEXT_TAG_TABLE            (btk_text_tag_table_get_type ())
-#define BTK_TEXT_TAG_TABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTable))
-#define BTK_TEXT_TAG_TABLE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
-#define BTK_IS_TEXT_TAG_TABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG_TABLE))
-#define BTK_IS_TEXT_TAG_TABLE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG_TABLE))
-#define BTK_TEXT_TAG_TABLE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
+#define BTK_TEXT_TAG_TABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTable))
+#define BTK_TEXT_TAG_TABLE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
+#define BTK_IS_TEXT_TAG_TABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_TAG_TABLE))
+#define BTK_IS_TEXT_TAG_TABLE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_TAG_TABLE))
+#define BTK_TEXT_TAG_TABLE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_TAG_TABLE, BtkTextTagTableClass))
 
 typedef struct _BtkTextTagTableClass BtkTextTagTableClass;
 
 struct _BtkTextTagTable
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   GHashTable *GSEAL (hash);
   GSList *GSEAL (anonymous);
-  gint GSEAL (anon_count);
+  bint GSEAL (anon_count);
 
   GSList *GSEAL (buffers);
 };
 
 struct _BtkTextTagTableClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
-  void (* tag_changed) (BtkTextTagTable *table, BtkTextTag *tag, gboolean size_changed);
+  void (* tag_changed) (BtkTextTagTable *table, BtkTextTag *tag, bboolean size_changed);
   void (* tag_added) (BtkTextTagTable *table, BtkTextTag *tag);
   void (* tag_removed) (BtkTextTagTable *table, BtkTextTag *tag);
 
@@ -72,7 +72,7 @@ struct _BtkTextTagTableClass
   void (*_btk_reserved4) (void);
 };
 
-GType          btk_text_tag_table_get_type (void) G_GNUC_CONST;
+GType          btk_text_tag_table_get_type (void) B_GNUC_CONST;
 
 BtkTextTagTable *btk_text_tag_table_new      (void);
 void             btk_text_tag_table_add      (BtkTextTagTable        *table,
@@ -80,22 +80,22 @@ void             btk_text_tag_table_add      (BtkTextTagTable        *table,
 void             btk_text_tag_table_remove   (BtkTextTagTable        *table,
                                               BtkTextTag             *tag);
 BtkTextTag      *btk_text_tag_table_lookup   (BtkTextTagTable        *table,
-                                              const gchar            *name);
+                                              const bchar            *name);
 void             btk_text_tag_table_foreach  (BtkTextTagTable        *table,
                                               BtkTextTagTableForeach  func,
-                                              gpointer                data);
-gint             btk_text_tag_table_get_size (BtkTextTagTable        *table);
+                                              bpointer                data);
+bint             btk_text_tag_table_get_size (BtkTextTagTable        *table);
 
 
 /* INTERNAL private stuff - not even exported from the library on
  * many platforms
  */
 void _btk_text_tag_table_add_buffer    (BtkTextTagTable *table,
-                                        gpointer         buffer);
+                                        bpointer         buffer);
 void _btk_text_tag_table_remove_buffer (BtkTextTagTable *table,
-                                        gpointer         buffer);
+                                        bpointer         buffer);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

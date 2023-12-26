@@ -39,7 +39,7 @@
 #include <btk/btkobject.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 /* Binding sets
@@ -52,27 +52,27 @@ typedef struct _BtkBindingArg		BtkBindingArg;
 
 struct _BtkBindingSet
 {
-  gchar			*set_name;
-  gint			 priority;
+  bchar			*set_name;
+  bint			 priority;
   GSList		*widget_path_pspecs;
   GSList		*widget_class_pspecs;
   GSList		*class_branch_pspecs;
   BtkBindingEntry	*entries;
   BtkBindingEntry	*current;
-  guint                  parsed : 1; /* From RC content */
+  buint                  parsed : 1; /* From RC content */
 };
 
 struct _BtkBindingEntry
 {
   /* key portion
    */
-  guint			 keyval;
+  buint			 keyval;
   BdkModifierType	 modifiers;
   
   BtkBindingSet		*binding_set;
-  guint			destroyed : 1;
-  guint			in_emission : 1;
-  guint                 marks_unbound : 1;
+  buint			destroyed : 1;
+  buint			in_emission : 1;
+  buint                 marks_unbound : 1;
   BtkBindingEntry	*set_next;
   BtkBindingEntry	*hash_next;
   BtkBindingSignal	*signals;
@@ -82,77 +82,77 @@ struct _BtkBindingArg
 {
   GType		 arg_type;
   union {
-    glong	 long_data;
-    gdouble	 double_data;
-    gchar	*string_data;
+    blong	 long_data;
+    bdouble	 double_data;
+    bchar	*string_data;
   } d;
 };
 
 struct _BtkBindingSignal
 {
   BtkBindingSignal	*next;
-  gchar 		*signal_name;
-  guint			 n_args;
+  bchar 		*signal_name;
+  buint			 n_args;
   BtkBindingArg		*args;
 };
 
 /* Application-level methods */
 
-BtkBindingSet*	btk_binding_set_new	(const gchar	*set_name);
-BtkBindingSet*	btk_binding_set_by_class(gpointer	 object_class);
-BtkBindingSet*	btk_binding_set_find	(const gchar	*set_name);
-gboolean btk_bindings_activate		(BtkObject	*object,
-					 guint		 keyval,
+BtkBindingSet*	btk_binding_set_new	(const bchar	*set_name);
+BtkBindingSet*	btk_binding_set_by_class(bpointer	 object_class);
+BtkBindingSet*	btk_binding_set_find	(const bchar	*set_name);
+bboolean btk_bindings_activate		(BtkObject	*object,
+					 buint		 keyval,
 					 BdkModifierType modifiers);
-gboolean btk_bindings_activate_event    (BtkObject      *object,
+bboolean btk_bindings_activate_event    (BtkObject      *object,
 					 BdkEventKey    *event);
-gboolean btk_binding_set_activate	(BtkBindingSet	*binding_set,
-					 guint		 keyval,
+bboolean btk_binding_set_activate	(BtkBindingSet	*binding_set,
+					 buint		 keyval,
 					 BdkModifierType modifiers,
 					 BtkObject	*object);
 
 #ifndef BTK_DISABLE_DEPRECATED
 #define	 btk_binding_entry_add		btk_binding_entry_clear
 void	 btk_binding_entry_clear	(BtkBindingSet	*binding_set,
-					 guint		 keyval,
+					 buint		 keyval,
 					 BdkModifierType modifiers);
-guint	 btk_binding_parse_binding      (GScanner       *scanner);
+buint	 btk_binding_parse_binding      (GScanner       *scanner);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 void	 btk_binding_entry_skip         (BtkBindingSet  *binding_set,
-                                         guint           keyval,
+                                         buint           keyval,
                                          BdkModifierType modifiers);
 void	 btk_binding_entry_add_signal   (BtkBindingSet  *binding_set,
-                                         guint           keyval,
+                                         buint           keyval,
                                          BdkModifierType modifiers,
-                                         const gchar    *signal_name,
-                                         guint           n_args,
+                                         const bchar    *signal_name,
+                                         buint           n_args,
                                          ...);
 void	 btk_binding_entry_add_signall	(BtkBindingSet	*binding_set,
-					 guint		 keyval,
+					 buint		 keyval,
 					 BdkModifierType modifiers,
-					 const gchar	*signal_name,
+					 const bchar	*signal_name,
 					 GSList		*binding_args);
 void	 btk_binding_entry_remove	(BtkBindingSet	*binding_set,
-					 guint		 keyval,
+					 buint		 keyval,
 					 BdkModifierType modifiers);
 
 void	 btk_binding_set_add_path	(BtkBindingSet	*binding_set,
 					 BtkPathType	 path_type,
-					 const gchar	*path_pattern,
+					 const bchar	*path_pattern,
 					 BtkPathPriorityType priority);
 
 
 /* Non-public methods */
 
-guint	 _btk_binding_parse_binding     (GScanner       *scanner);
+buint	 _btk_binding_parse_binding     (GScanner       *scanner);
 void     _btk_binding_reset_parsed      (void);
 void	 _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
-					 guint		 keyval,
+					 buint		 keyval,
 					 BdkModifierType modifiers,
-					 const gchar	*signal_name,
+					 const bchar	*signal_name,
 					 GSList		*binding_args);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BINDINGS_H__ */

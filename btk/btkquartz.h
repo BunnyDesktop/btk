@@ -24,11 +24,11 @@
 #import <Cocoa/Cocoa.h>
 #include <btk/btkselection.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 NSSet   *_btk_quartz_target_list_to_pasteboard_types    (BtkTargetList *target_list);
 NSSet   *_btk_quartz_target_entries_to_pasteboard_types (const BtkTargetEntry *targets,
-							 guint                 n_targets);
+							 buint                 n_targets);
 
 GList   *_btk_quartz_pasteboard_types_to_atom_list (NSArray  *array);
 
@@ -41,6 +41,6 @@ void _btk_quartz_set_selection_data_for_pasteboard (NSPasteboard *pasteboard,
 			
 NSImage *_btk_quartz_create_image_from_pixbuf (BdkPixbuf *pixbuf);
 			    
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_QUARTZ_H__ */

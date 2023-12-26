@@ -10,29 +10,29 @@ static void _check_properties (BatkObject *obj);
 static void _property_change_handler (BatkObject   *obj,
                                       BatkPropertyValues *values);
 static void _state_changed (BatkObject   *obj,
-                            const gchar *name,
-                            gboolean    set);
+                            const bchar *name,
+                            bboolean    set);
 static void _selection_changed (BatkObject   *obj);
 static void _visible_data_changed (BatkObject   *obj);
 static void _model_changed (BatkObject   *obj);
 static void _create_event_watcher (void);
 
-static guint id;
+static buint id;
 
 static void 
 _state_changed (BatkObject   *obj,
-                const gchar *name,
-                gboolean    set)
+                const bchar *name,
+                bboolean    set)
 {
   g_print ("_state_changed: %s: state %s %s\n", 
-           g_type_name (G_OBJECT_TYPE (obj)),
+           g_type_name (B_OBJECT_TYPE (obj)),
            set ? "is" : "was", name);
 }
 
 static void 
 _selection_changed (BatkObject   *obj)
 {
-  gchar *type;
+  bchar *type;
 
   if (BATK_IS_TEXT (obj))
     type = "text";
@@ -45,29 +45,29 @@ _selection_changed (BatkObject   *obj)
     }
 
   g_print ("In selection_changed signal handler for %s, object type: %s\n",
-           type, g_type_name (G_OBJECT_TYPE (obj)));
+           type, g_type_name (B_OBJECT_TYPE (obj)));
 }
 
 static void 
 _visible_data_changed (BatkObject   *obj)
 {
   g_print ("In visible_data_changed signal handler, object type: %s\n",
-           g_type_name (G_OBJECT_TYPE (obj)));
+           g_type_name (B_OBJECT_TYPE (obj)));
 }
 
 static void 
 _model_changed (BatkObject   *obj)
 {
   g_print ("In model_changed signal handler, object type: %s\n",
-           g_type_name (G_OBJECT_TYPE (obj)));
+           g_type_name (B_OBJECT_TYPE (obj)));
 }
 
 static void 
 _property_change_handler (BatkObject   *obj,
                           BatkPropertyValues   *values)
 {
-  const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
-  const gchar *name = batk_object_get_name (obj);
+  const bchar *type_name = g_type_name (B_TYPE_FROM_INSTANCE (obj));
+  const bchar *name = batk_object_get_name (obj);
 
   g_print ("_property_change_handler: Accessible Type: %s\n",
            type_name ? type_name : "NULL");
@@ -77,18 +77,18 @@ _property_change_handler (BatkObject   *obj,
            values->property_name ? values->property_name: "NULL");
   if (G_VALUE_HOLDS_STRING (&values->new_value))
     g_print ("_property_change_handler: PropertyValue: %s\n",
-             g_value_get_string (&values->new_value));
+             b_value_get_string (&values->new_value));
   else if (strcmp (values->property_name, "accessible-child") == 0)
     {
       if (G_IS_VALUE (&values->old_value))
         {
           g_print ("Child is removed: %s\n", 
-               g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->old_value))));
+               g_type_name (B_TYPE_FROM_INSTANCE (b_value_get_pointer (&values->old_value))));
         }
       if (G_IS_VALUE (&values->new_value))
         {
           g_print ("Child is added: %s\n", 
-               g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->new_value))));
+               g_type_name (B_TYPE_FROM_INSTANCE (b_value_get_pointer (&values->new_value))));
         }
     }
   else if (strcmp (values->property_name, "accessible-parent") == 0)
@@ -96,12 +96,12 @@ _property_change_handler (BatkObject   *obj,
       if (G_IS_VALUE (&values->old_value))
         {
           g_print ("Parent is removed: %s\n", 
-               g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->old_value))));
+               g_type_name (B_TYPE_FROM_INSTANCE (b_value_get_pointer (&values->old_value))));
         }
       if (G_IS_VALUE (&values->new_value))
         {
           g_print ("Parent is added: %s\n", 
-               g_type_name (G_TYPE_FROM_INSTANCE (g_value_get_pointer (&values->new_value))));
+               g_type_name (B_TYPE_FROM_INSTANCE (b_value_get_pointer (&values->new_value))));
         }
     }
   else if (strcmp (values->property_name, "accessible-value") == 0)
@@ -109,7 +109,7 @@ _property_change_handler (BatkObject   *obj,
       if (G_VALUE_HOLDS_DOUBLE (&values->new_value))
         {
           g_print ("Value now is (double) %f\n", 
-                   g_value_get_double (&values->new_value));
+                   b_value_get_double (&values->new_value));
         }
     }
 }
@@ -117,7 +117,7 @@ _property_change_handler (BatkObject   *obj,
 static void 
 _traverse_children (BatkObject *obj)
 {
-  gint n_children, i;
+  bint n_children, i;
   BatkRole role;
  
   role = batk_object_get_role (obj);
@@ -134,7 +134,7 @@ _traverse_children (BatkObject *obj)
       child = batk_object_ref_accessible_child (obj, i);
       _add_handler (child);
       _traverse_children (child);
-      g_object_unref (G_OBJECT (child));
+      g_object_unref (B_OBJECT (child));
     }
 }
 
@@ -142,8 +142,8 @@ static void
 _add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
-  gboolean found = FALSE;
-  gint i;
+  bboolean found = FALSE;
+  bint i;
 
   /*
    * We create a property handler for each object if one was not associated 
@@ -187,7 +187,7 @@ _check_properties (BatkObject *obj)
   BatkRole role;
 
   g_print ("Start of _check_properties: %s\n", 
-           g_type_name (G_OBJECT_TYPE (obj)));
+           g_type_name (B_OBJECT_TYPE (obj)));
 
   _add_handler (obj);
 
@@ -210,7 +210,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testprops Module loaded\n");
 

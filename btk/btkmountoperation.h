@@ -31,14 +31,14 @@
 #error "Only <btk/btk.h> can be included directly."
 #endif
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MOUNT_OPERATION         (btk_mount_operation_get_type ())
-#define BTK_MOUNT_OPERATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperation))
-#define BTK_MOUNT_OPERATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
-#define BTK_IS_MOUNT_OPERATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_MOUNT_OPERATION))
-#define BTK_IS_MOUNT_OPERATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_MOUNT_OPERATION))
-#define BTK_MOUNT_OPERATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
+#define BTK_MOUNT_OPERATION(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperation))
+#define BTK_MOUNT_OPERATION_CLASS(k)     (B_TYPE_CHECK_CLASS_CAST((k), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
+#define BTK_IS_MOUNT_OPERATION(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_MOUNT_OPERATION))
+#define BTK_IS_MOUNT_OPERATION_CLASS(k)  (B_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_MOUNT_OPERATION))
+#define BTK_MOUNT_OPERATION_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
 
 typedef struct _BtkMountOperation         BtkMountOperation;
 typedef struct _BtkMountOperationClass    BtkMountOperationClass;
@@ -70,7 +70,7 @@ struct _BtkMountOperationClass
 
 GType            btk_mount_operation_get_type   (void);
 GMountOperation *btk_mount_operation_new        (BtkWindow         *parent);
-gboolean         btk_mount_operation_is_showing (BtkMountOperation *op);
+bboolean         btk_mount_operation_is_showing (BtkMountOperation *op);
 void             btk_mount_operation_set_parent (BtkMountOperation *op,
                                                  BtkWindow         *parent);
 BtkWindow *      btk_mount_operation_get_parent (BtkMountOperation *op);
@@ -78,6 +78,6 @@ void             btk_mount_operation_set_screen (BtkMountOperation *op,
                                                  BdkScreen         *screen);
 BdkScreen       *btk_mount_operation_get_screen (BtkMountOperation *op);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MOUNT_OPERATION_H__ */

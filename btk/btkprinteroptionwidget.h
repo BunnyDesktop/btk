@@ -22,14 +22,14 @@
 #include "btkprinteroption.h"
 #include "btkhbox.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION_WIDGET                  (btk_printer_option_widget_get_type ())
-#define BTK_PRINTER_OPTION_WIDGET(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidget))
-#define BTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
-#define BTK_IS_PRINTER_OPTION_WIDGET(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET))
-#define BTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET))
-#define BTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
+#define BTK_PRINTER_OPTION_WIDGET(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidget))
+#define BTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
+#define BTK_IS_PRINTER_OPTION_WIDGET(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
 
 
 typedef struct _BtkPrinterOptionWidget         BtkPrinterOptionWidget;
@@ -50,15 +50,15 @@ struct _BtkPrinterOptionWidgetClass
   void (*changed) (BtkPrinterOptionWidget *widget);
 };
 
-GType	     btk_printer_option_widget_get_type           (void) G_GNUC_CONST;
+GType	     btk_printer_option_widget_get_type           (void) B_GNUC_CONST;
 
 BtkWidget   *btk_printer_option_widget_new                (BtkPrinterOption       *source);
 void         btk_printer_option_widget_set_source         (BtkPrinterOptionWidget *setting,
 		 					   BtkPrinterOption       *source);
-gboolean     btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *setting);
+bboolean     btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *setting);
 BtkWidget   *btk_printer_option_widget_get_external_label (BtkPrinterOptionWidget *setting);
-const gchar *btk_printer_option_widget_get_value          (BtkPrinterOptionWidget *setting);
+const bchar *btk_printer_option_widget_get_value          (BtkPrinterOptionWidget *setting);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINTER_OPTION_WIDGET_H__ */

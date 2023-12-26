@@ -35,14 +35,14 @@
 #include <btk/btkwindow.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PLUG            (btk_plug_get_type ())
-#define BTK_PLUG(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PLUG, BtkPlug))
-#define BTK_PLUG_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PLUG, BtkPlugClass))
-#define BTK_IS_PLUG(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PLUG))
-#define BTK_IS_PLUG_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PLUG))
-#define BTK_PLUG_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PLUG, BtkPlugClass))
+#define BTK_PLUG(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PLUG, BtkPlug))
+#define BTK_PLUG_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PLUG, BtkPlugClass))
+#define BTK_IS_PLUG(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PLUG))
+#define BTK_IS_PLUG_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PLUG))
+#define BTK_PLUG_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PLUG, BtkPlugClass))
 
 
 typedef struct _BtkPlug        BtkPlug;
@@ -58,7 +58,7 @@ struct _BtkPlug
   BtkWindowGroup *GSEAL (modality_group);
   GHashTable *GSEAL (grabbed_keys);
 
-  guint GSEAL (same_app) : 1;
+  buint GSEAL (same_app) : 1;
 };
 
 struct _BtkPlugClass
@@ -75,7 +75,7 @@ struct _BtkPlugClass
 };
 
 
-GType      btk_plug_get_type  (void) G_GNUC_CONST;
+GType      btk_plug_get_type  (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 void       btk_plug_construct (BtkPlug         *plug,
@@ -91,7 +91,7 @@ BtkWidget* btk_plug_new_for_display       (BdkDisplay      *display,
 
 BdkNativeWindow btk_plug_get_id (BtkPlug         *plug);
 
-gboolean  btk_plug_get_embedded (BtkPlug         *plug);
+bboolean  btk_plug_get_embedded (BtkPlug         *plug);
 
 BdkWindow *btk_plug_get_socket_window (BtkPlug   *plug);
 
@@ -100,6 +100,6 @@ void _btk_plug_add_to_socket      (BtkPlug   *plug,
 void _btk_plug_remove_from_socket (BtkPlug   *plug,
 				   BtkSocket *socket_);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PLUG_H__ */

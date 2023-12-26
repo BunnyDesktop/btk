@@ -45,9 +45,9 @@
 
 #include <imm.h>
 
-static gboolean bdk_synchronize = FALSE;
+static bboolean bdk_synchronize = FALSE;
 
-static gboolean dummy;
+static bboolean dummy;
 
 const GOptionEntry _bdk_windowing_args[] = {
   { "sync", 0, 0, G_OPTION_ARG_NONE, &bdk_synchronize, 
@@ -77,7 +77,7 @@ DllMain (HINSTANCE hinstDLL,
 void
 _bdk_windowing_init (void)
 {
-  gchar buf[10];
+  bchar buf[10];
 
   if (getenv ("BDK_IGNORE_WINTAB") != NULL)
     _bdk_input_ignore_wintab = TRUE;
@@ -137,51 +137,51 @@ _bdk_windowing_init (void)
 }
 
 void
-_bdk_win32_api_failed (const gchar *where,
-		      const gchar *api)
+_bdk_win32_api_failed (const bchar *where,
+		      const bchar *api)
 {
-  gchar *msg = g_win32_error_message (GetLastError ());
+  bchar *msg = g_win32_error_message (GetLastError ());
   g_warning ("%s: %s failed: %s", where, api, msg);
   g_free (msg);
 }
 
 void
-_bdk_other_api_failed (const gchar *where,
-		      const gchar *api)
+_bdk_other_api_failed (const bchar *where,
+		      const bchar *api)
 {
   g_warning ("%s: %s failed", where, api);
 }
 
 void
-bdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (bboolean use_xshm)
 {
   /* Always on */
 }
 
-gboolean
+bboolean
 bdk_get_use_xshm (void)
 {
   return TRUE;
 }
 
-gint
+bint
 bdk_screen_get_width (BdkScreen *screen)
 {
   return BDK_WINDOW_OBJECT (_bdk_root)->width;
 }
 
-gint
+bint
 bdk_screen_get_height (BdkScreen *screen)
 {
   return BDK_WINDOW_OBJECT (_bdk_root)->height;
 }
-gint
+bint
 bdk_screen_get_width_mm (BdkScreen *screen)
 {
   return (double) bdk_screen_get_width (screen) / GetDeviceCaps (_bdk_display_hdc, LOGPIXELSX) * 25.4;
 }
 
-gint
+bint
 bdk_screen_get_height_mm (BdkScreen *screen)
 {
   return (double) bdk_screen_get_height (screen) / GetDeviceCaps (_bdk_display_hdc, LOGPIXELSY) * 25.4;
@@ -189,7 +189,7 @@ bdk_screen_get_height_mm (BdkScreen *screen)
 
 void
 _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
-					 const gchar *sm_client_id)
+					 const bchar *sm_client_id)
 {
   g_warning("bdk_set_sm_client_id %s", sm_client_id ? sm_client_id : "NULL");
 }
@@ -211,7 +211,7 @@ _bdk_windowing_exit (void)
   _bdk_display_hdc = NULL;
 }
 
-gchar *
+bchar *
 bdk_get_display (void)
 {
   return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
@@ -222,7 +222,7 @@ bdk_error_trap_push (void)
 {
 }
 
-gint
+bint
 bdk_error_trap_pop (void)
 {
   return 0;
@@ -234,13 +234,13 @@ bdk_notify_startup_complete (void)
 }
 
 void
-bdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const bchar* startup_id)
 {
 }
 
 void          
 bdk_window_set_startup_id (BdkWindow   *window,
-			   const gchar *startup_id)
+			   const bchar *startup_id)
 {
 }
 
@@ -254,14 +254,14 @@ bdk_window_set_startup_id (BdkWindow   *window,
  * function's return value is used in debugging output right after the call,
  * and the return value isn't used after that.
  */
-static gchar *
-static_printf (const gchar *format,
+static bchar *
+static_printf (const bchar *format,
 	       ...)
 {
-  static gchar buf[10000];
-  gchar *msg;
-  static gchar *bufp = buf;
-  gchar *retval;
+  static bchar buf[10000];
+  bchar *msg;
+  static bchar *bufp = buf;
+  bchar *retval;
   va_list args;
 
   va_start (args, format);
@@ -281,7 +281,7 @@ static_printf (const gchar *format,
   return retval;
 }
 
-gchar *
+bchar *
 _bdk_win32_color_to_string (const BdkColor *color)
 {
   return static_printf ("(%.04x,%.04x,%.04x):%.06x",
@@ -328,7 +328,7 @@ _bdk_win32_print_system_palette (void)
   g_free (pe);
 }
 
-static gint
+static bint
 palette_size (HPALETTE hpal)
 {
   WORD npal = 0;
@@ -343,7 +343,7 @@ void
 _bdk_win32_print_hpalette (HPALETTE hpal)
 {
   PALETTEENTRY *pe;
-  gint n, npal;
+  bint n, npal;
 
   npal = palette_size (hpal);
   pe = g_new (PALETTEENTRY, npal);
@@ -375,7 +375,7 @@ _bdk_win32_print_dc (HDC hdc)
   GetObject (obj, sizeof (LOGBRUSH), &logbrush);
   g_print ("brush: %s color=%06lx hatch=%p\n",
 	   _bdk_win32_lbstyle_to_string (logbrush.lbStyle),
-	   logbrush.lbColor, (gpointer) logbrush.lbHatch);
+	   logbrush.lbColor, (bpointer) logbrush.lbHatch);
   obj = GetCurrentObject (hdc, OBJ_PEN);
   GetObject (obj, sizeof (EXTLOGPEN), &extlogpen);
   g_print ("pen: %s %s %s %s w=%d %s\n",
@@ -402,7 +402,7 @@ _bdk_win32_print_dc (HDC hdc)
   DeleteObject (hrgn);
 }
 
-gchar *
+bchar *
 _bdk_win32_cap_style_to_string (BdkCapStyle cap_style)
 {
   switch (cap_style)
@@ -419,7 +419,7 @@ _bdk_win32_cap_style_to_string (BdkCapStyle cap_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_fill_style_to_string (BdkFill fill)
 {
   switch (fill)
@@ -436,7 +436,7 @@ _bdk_win32_fill_style_to_string (BdkFill fill)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_function_to_string (BdkFunction function)
 {
   switch (function)
@@ -464,7 +464,7 @@ _bdk_win32_function_to_string (BdkFunction function)
   return NULL; 
 }
 
-gchar *
+bchar *
 _bdk_win32_join_style_to_string (BdkJoinStyle join_style)
 {
   switch (join_style)
@@ -480,7 +480,7 @@ _bdk_win32_join_style_to_string (BdkJoinStyle join_style)
   return NULL; 
 }
 
-gchar *
+bchar *
 _bdk_win32_line_style_to_string (BdkLineStyle line_style)
 {
   switch (line_style)
@@ -496,7 +496,7 @@ _bdk_win32_line_style_to_string (BdkLineStyle line_style)
   return NULL; 
 }
 
-gchar *
+bchar *
 _bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol)
 {
   switch (protocol)
@@ -516,12 +516,12 @@ _bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol)
   return NULL; 
 }
 
-gchar *
+bchar *
 _bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask)
 {
-  gchar buf[400];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[400];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -552,12 +552,12 @@ _bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_window_state_to_string (BdkWindowState state)
 {
-  gchar buf[100];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[100];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -578,12 +578,12 @@ _bdk_win32_window_state_to_string (BdkWindowState state)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_window_style_to_string (LONG style)
 {
-  gchar buf[1000];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[1000];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -620,12 +620,12 @@ _bdk_win32_window_style_to_string (LONG style)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_window_exstyle_to_string (LONG style)
 {
-  gchar buf[1000];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[1000];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -666,12 +666,12 @@ _bdk_win32_window_exstyle_to_string (LONG style)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_window_pos_bits_to_string (UINT flags)
 {
-  gchar buf[1000];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[1000];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -698,12 +698,12 @@ _bdk_win32_window_pos_bits_to_string (UINT flags)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_drag_action_to_string (BdkDragAction actions)
 {
-  gchar buf[100];
-  gchar *bufp = buf;
-  gchar *s = "";
+  bchar buf[100];
+  bchar *bufp = buf;
+  bchar *s = "";
 
   buf[0] = '\0';
 
@@ -722,7 +722,7 @@ _bdk_win32_drag_action_to_string (BdkDragAction actions)
   return static_printf ("%s", buf);  
 }
 
-gchar *
+bchar *
 _bdk_win32_rop2_to_string (int rop2)
 {
   switch (rop2)
@@ -751,7 +751,7 @@ _bdk_win32_rop2_to_string (int rop2)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_lbstyle_to_string (UINT brush_style)
 {
   switch (brush_style)
@@ -770,7 +770,7 @@ _bdk_win32_lbstyle_to_string (UINT brush_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_pstype_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_TYPE_MASK)
@@ -783,7 +783,7 @@ _bdk_win32_pstype_to_string (DWORD pen_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_psstyle_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_STYLE_MASK)
@@ -805,7 +805,7 @@ _bdk_win32_psstyle_to_string (DWORD pen_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_psendcap_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_ENDCAP_MASK)
@@ -821,7 +821,7 @@ _bdk_win32_psendcap_to_string (DWORD pen_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_psjoin_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_JOIN_MASK)
@@ -837,7 +837,7 @@ _bdk_win32_psjoin_to_string (DWORD pen_style)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_message_to_string (UINT msg)
 {
   switch (msg)
@@ -1073,16 +1073,16 @@ _bdk_win32_message_to_string (UINT msg)
   return NULL;
 }
 
-gchar *
+bchar *
 _bdk_win32_key_to_string (LONG lParam)
 {
   char buf[100];
-  gchar *keyname_utf8;
+  bchar *keyname_utf8;
 
   if (GetKeyNameText (lParam, buf, sizeof (buf)) &&
       (keyname_utf8 = g_locale_to_utf8 (buf, -1, NULL, NULL, NULL)) != NULL)
     {
-      gchar *retval = static_printf ("%s", keyname_utf8);
+      bchar *retval = static_printf ("%s", keyname_utf8);
 
       g_free (keyname_utf8);
 
@@ -1092,7 +1092,7 @@ _bdk_win32_key_to_string (LONG lParam)
   return static_printf ("unk-%#lx", lParam);
 }
       
-gchar *
+bchar *
 _bdk_win32_cf_to_string (UINT format)
 {
   char buf[100];
@@ -1136,13 +1136,13 @@ _bdk_win32_cf_to_string (UINT format)
     }
 }
       
-gchar *
-_bdk_win32_data_to_string (const guchar *data,
+bchar *
+_bdk_win32_data_to_string (const buchar *data,
 			   int           nbytes)
 {
   GString *s = g_string_new ("");
   int i;
-  gchar *retval;
+  bchar *retval;
 
   for (i = 0; i < nbytes; i++)
     if (data[i] >=' ' && data[i] <= '~')
@@ -1156,7 +1156,7 @@ _bdk_win32_data_to_string (const guchar *data,
   return retval;
 }
 
-gchar *
+bchar *
 _bdk_win32_rect_to_string (const RECT *rect)
 {
   return static_printf ("%ldx%ld@%+ld%+ld",
@@ -1164,7 +1164,7 @@ _bdk_win32_rect_to_string (const RECT *rect)
 			rect->left, rect->top);
 }
 
-gchar *
+bchar *
 _bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect)
 {
   return static_printf ("%dx%d@%+d%+d",
@@ -1172,7 +1172,7 @@ _bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect)
 			rect->x, rect->y);
 }
 
-gchar *
+bchar *
 _bdk_win32_bdkrebunnyion_to_string (const BdkRebunnyion *rgn)
 {
   return static_printf ("%dx%d@%+d%+d",
@@ -1181,10 +1181,10 @@ _bdk_win32_bdkrebunnyion_to_string (const BdkRebunnyion *rgn)
 			rgn->extents.x1, rgn->extents.y1);
 }
 
-gchar *
+bchar *
 _bdk_win32_drawable_description (BdkDrawable *d)
 {
-  gint width, height, depth;
+  bint width, height, depth;
 
   g_return_val_if_fail (BDK_IS_DRAWABLE (d), NULL);
 
@@ -1192,7 +1192,7 @@ _bdk_win32_drawable_description (BdkDrawable *d)
   depth = bdk_drawable_get_depth (d);
 
   return static_printf ("%s:%p:%dx%dx%d",
-			G_OBJECT_TYPE_NAME (d),
+			B_OBJECT_TYPE_NAME (d),
 			BDK_DRAWABLE_HANDLE (d),
 			width, height, depth);
 }

@@ -36,7 +36,7 @@ _bdk_windowing_set_default_display (BdkDisplay *display)
   g_assert (display == NULL || _bdk_display == display);
 }
 
-gulong
+bulong
 _bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
 	return 0;
@@ -49,7 +49,7 @@ count_monitor (HMONITOR hmonitor,
 	       LPRECT   rect,
 	       LPARAM   data)
 {
-  gint *n = (gint *) data;
+  bint *n = (bint *) data;
 
   (*n)++;
 
@@ -79,7 +79,7 @@ enum_monitor (HMONITOR hmonitor,
   MONITORINFOEXA2 monitor_info;
   HDC hDC;
 
-  gint *index = (gint *) data;
+  bint *index = (bint *) data;
   BdkWin32Monitor *monitor;
 
   if (*index >= _bdk_num_monitors)
@@ -129,7 +129,7 @@ void
 _bdk_monitor_init (void)
 {
 #ifdef HAVE_MONITOR_INFO
-  gint i, index;
+  bint i, index;
 
   /* In case something happens between monitor counting and monitor
    * enumeration, repeat until the count matches up.
@@ -147,8 +147,8 @@ _bdk_monitor_init (void)
     EnumDisplayMonitors (NULL, NULL, enum_monitor, (LPARAM) &index);
   } while (index != _bdk_num_monitors);
 
-  _bdk_offset_x = G_MININT;
-  _bdk_offset_y = G_MININT;
+  _bdk_offset_x = B_MININT;
+  _bdk_offset_y = B_MININT;
 
   /* Calculate offset */
   for (i = 0; i < _bdk_num_monitors; i++)
@@ -191,7 +191,7 @@ _bdk_monitor_init (void)
 }
 
 BdkDisplay *
-bdk_display_open (const gchar *display_name)
+bdk_display_open (const bchar *display_name)
 {
   BDK_NOTE (MISC, g_print ("bdk_display_open: %s\n", (display_name ? display_name : "NULL")));
 
@@ -235,7 +235,7 @@ bdk_display_open (const gchar *display_name)
   return _bdk_display;
 }
 
-const gchar *
+const bchar *
 bdk_display_get_name (BdkDisplay *display)
 {
   HDESK hdesk = GetThreadDesktop (GetCurrentThreadId ());
@@ -299,7 +299,7 @@ bdk_display_get_name (BdkDisplay *display)
   return display_name_cache;
 }
 
-gint
+bint
 bdk_display_get_n_screens (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
@@ -309,7 +309,7 @@ bdk_display_get_n_screens (BdkDisplay *display)
 
 BdkScreen *
 bdk_display_get_screen (BdkDisplay *display,
-			gint        screen_num)
+			bint        screen_num)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (screen_num == 0, NULL);
@@ -335,7 +335,7 @@ bdk_display_get_default_group (BdkDisplay *display)
   return NULL;
 }
 
-gboolean
+bboolean
 bdk_display_supports_selection_notification (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -449,7 +449,7 @@ _clipboard_window_procedure (HWND   hwnd,
   retval = inner_clipboard_window_procedure (hwnd, message, wparam, lparam);
   debug_indent -= 2;
 
-  BDK_NOTE (EVENTS, g_print (" => %I64d%s", (gint64) retval, (debug_indent == 0 ? "\n" : "")));
+  BDK_NOTE (EVENTS, g_print (" => %I64d%s", (bint64) retval, (debug_indent == 0 ? "\n" : "")));
 
   return retval;
 }
@@ -498,13 +498,13 @@ failed:
   return NULL;
 }
 
-gboolean
+bboolean
 bdk_display_request_selection_notification (BdkDisplay *display,
                                             BdkAtom     selection)
 
 {
   static HWND hwndViewer = NULL;
-  gboolean ret = FALSE;
+  bboolean ret = FALSE;
 
   BDK_NOTE (DND,
             g_print ("bdk_display_request_selection_notification (..., %s)",
@@ -530,7 +530,7 @@ bdk_display_request_selection_notification (BdkDisplay *display,
   return ret;
 }
 
-gboolean
+bboolean
 bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   return FALSE;
@@ -539,13 +539,13 @@ bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 void
 bdk_display_store_clipboard (BdkDisplay    *display,
 			     BdkWindow     *clipboard_window,
-			     guint32        time_,
+			     buint32        time_,
 			     const BdkAtom *targets,
-			     gint           n_targets)
+			     bint           n_targets)
 {
 }
 
-gboolean
+bboolean
 bdk_display_supports_shapes (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -553,7 +553,7 @@ bdk_display_supports_shapes (BdkDisplay *display)
   return TRUE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
@@ -565,7 +565,7 @@ bdk_display_supports_input_shapes (BdkDisplay *display)
   return FALSE;
 }
 
-gboolean
+bboolean
 bdk_display_supports_composite (BdkDisplay *display)
 {
   return FALSE;

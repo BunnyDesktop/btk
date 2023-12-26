@@ -29,12 +29,12 @@
 #include <btk/btkbuildable.h>
 #include <btk/btkbuilder.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_LAYOUT            (btk_cell_layout_get_type ())
-#define BTK_CELL_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
-#define BTK_IS_CELL_LAYOUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_LAYOUT))
-#define BTK_CELL_LAYOUT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayoutIface))
+#define BTK_CELL_LAYOUT(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
+#define BTK_IS_CELL_LAYOUT(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_LAYOUT))
+#define BTK_CELL_LAYOUT_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayoutIface))
 
 typedef struct _BtkCellLayout           BtkCellLayout; /* dummy typedef */
 typedef struct _BtkCellLayoutIface      BtkCellLayoutIface;
@@ -44,7 +44,7 @@ typedef void (* BtkCellLayoutDataFunc) (BtkCellLayout   *cell_layout,
                                         BtkCellRenderer *cell,
                                         BtkTreeModel    *tree_model,
                                         BtkTreeIter     *iter,
-                                        gpointer         data);
+                                        bpointer         data);
 
 struct _BtkCellLayoutIface
 {
@@ -53,70 +53,70 @@ struct _BtkCellLayoutIface
   /* Virtual Table */
   void (* pack_start)         (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* pack_end)           (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gboolean               expand);
+                               bboolean               expand);
   void (* clear)              (BtkCellLayout         *cell_layout);
   void (* add_attribute)      (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               const gchar           *attribute,
-                               gint                   column);
+                               const bchar           *attribute,
+                               bint                   column);
   void (* set_cell_data_func) (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
                                BtkCellLayoutDataFunc  func,
-                               gpointer               func_data,
+                               bpointer               func_data,
                                GDestroyNotify         destroy);
   void (* clear_attributes)   (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell);
   void (* reorder)            (BtkCellLayout         *cell_layout,
                                BtkCellRenderer       *cell,
-                               gint                   position);
+                               bint                   position);
   GList* (* get_cells)        (BtkCellLayout         *cell_layout);
 };
 
-GType btk_cell_layout_get_type           (void) G_GNUC_CONST;
+GType btk_cell_layout_get_type           (void) B_GNUC_CONST;
 void  btk_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gboolean               expand);
+                                          bboolean               expand);
 void  btk_cell_layout_pack_end           (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gboolean               expand);
+                                          bboolean               expand);
 GList *btk_cell_layout_get_cells         (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_clear              (BtkCellLayout         *cell_layout);
 void  btk_cell_layout_set_attributes     (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          ...) G_GNUC_NULL_TERMINATED;
+                                          ...) B_GNUC_NULL_TERMINATED;
 void  btk_cell_layout_add_attribute      (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          const gchar           *attribute,
-                                          gint                   column);
+                                          const bchar           *attribute,
+                                          bint                   column);
 void  btk_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
                                           BtkCellLayoutDataFunc  func,
-                                          gpointer               func_data,
+                                          bpointer               func_data,
                                           GDestroyNotify         destroy);
 void  btk_cell_layout_clear_attributes   (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell);
 void  btk_cell_layout_reorder            (BtkCellLayout         *cell_layout,
                                           BtkCellRenderer       *cell,
-                                          gint                   position);
-gboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                          bint                   position);
+bboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
-						      const gchar   *tagname,
+						      BObject       *child,
+						      const bchar   *tagname,
 						      GMarkupParser *parser,
-						      gpointer      *data);
+						      bpointer      *data);
 void _btk_cell_layout_buildable_custom_tag_end       (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
-						      const gchar   *tagname,
-						      gpointer      *data);
+						      BObject       *child,
+						      const bchar   *tagname,
+						      bpointer      *data);
 void _btk_cell_layout_buildable_add_child            (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
-						      const gchar   *type);
+						      BObject       *child,
+						      const bchar   *type);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_LAYOUT_H__ */

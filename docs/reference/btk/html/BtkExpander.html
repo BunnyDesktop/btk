@@ -70,7 +70,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-expanded" title="btk_expander_get_expanded ()">btk_expander_get_expanded</a> <span class="c_punctuation">()</span>
@@ -86,7 +86,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gint</span>
+<span class="returnvalue">bint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-spacing" title="btk_expander_get_spacing ()">btk_expander_get_spacing</a> <span class="c_punctuation">()</span>
@@ -101,7 +101,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-label" title="btk_expander_get_label ()">btk_expander_get_label</a> <span class="c_punctuation">()</span>
@@ -117,7 +117,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-use-underline" title="btk_expander_get_use_underline ()">btk_expander_get_use_underline</a> <span class="c_punctuation">()</span>
@@ -133,7 +133,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-use-markup" title="btk_expander_get_use_markup ()">btk_expander_get_use_markup</a> <span class="c_punctuation">()</span>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkExpander.html#btk-expander-get-label-fill" title="btk_expander_get_label_fill ()">btk_expander_get_label_fill</a> <span class="c_punctuation">()</span>
@@ -184,7 +184,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkExpander.html#BtkExpander--expanded" title="The “expanded” property">expanded</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -195,7 +195,7 @@
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkExpander.html#BtkExpander--label-fill" title="The “label-fill” property">label-fill</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -211,12 +211,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkExpander.html#BtkExpander--use-markup" title="The “use-markup” property">use-markup</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkExpander.html#BtkExpander--use-underline" title="The “use-underline” property">use-underline</a></td>
 <td class="property_flags">Read / Write / Construct</td>
 </tr>
@@ -275,7 +275,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkExpander.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -303,7 +303,7 @@ BtkExpander implements
 <div class="refsect2">
 <a name="btk-expander-new"></a><h3>btk_expander_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_expander_new (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_expander_new (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new expander using <em class="parameter"><code>label</code></em>
  as the text of the label.</p>
 <div class="refsect3">
@@ -331,7 +331,7 @@ btk_expander_new (<em class="parameter"><code>const <span class="type">gchar</sp
 <div class="refsect2">
 <a name="btk-expander-new-with-mnemonic"></a><h3>btk_expander_new_with_mnemonic ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_expander_new_with_mnemonic (<em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_expander_new_with_mnemonic (<em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new expander using <em class="parameter"><code>label</code></em>
  as the text of the label.
 If characters in <em class="parameter"><code>label</code></em>
@@ -367,7 +367,7 @@ mnemonic character. </p></td>
 <a name="btk-expander-set-expanded"></a><h3>btk_expander_set_expanded ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_expanded (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                           <em class="parameter"><code><span class="type">gboolean</span> expanded</code></em>);</pre>
+                           <em class="parameter"><code><span class="type">bboolean</span> expanded</code></em>);</pre>
 <p>Sets the state of the expander. Set to <code class="literal">TRUE</code>, if you want
 the child widget to be revealed, and <code class="literal">FALSE</code> if you want the
 child widget to be hidden.</p>
@@ -398,7 +398,7 @@ child widget to be hidden.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-expanded"></a><h3>btk_expander_get_expanded ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_expander_get_expanded (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Queries a <a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> and returns its current state. Returns <code class="literal">TRUE</code>
 if the child widget is revealed.</p>
@@ -429,7 +429,7 @@ if the child widget is revealed.</p>
 <a name="btk-expander-set-spacing"></a><h3>btk_expander_set_spacing ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_spacing (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                          <em class="parameter"><code><span class="type">gint</span> spacing</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bint</span> spacing</code></em>);</pre>
 <p>Sets the spacing field of <em class="parameter"><code>expander</code></em>
 , which is the number of pixels to
 place between expander and the child.</p>
@@ -460,7 +460,7 @@ place between expander and the child.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-spacing"></a><h3>btk_expander_get_spacing ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint</span>
+<pre class="programlisting"><span class="returnvalue">bint</span>
 btk_expander_get_spacing (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Gets the value set by <a class="link" href="BtkExpander.html#btk-expander-set-spacing" title="btk_expander_set_spacing ()"><code class="function">btk_expander_set_spacing()</code></a>.</p>
 <div class="refsect3">
@@ -489,7 +489,7 @@ btk_expander_get_spacing (<em class="parameter"><code><a class="link" href="BtkE
 <a name="btk-expander-set-label"></a><h3>btk_expander_set_label ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_label (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+                        <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Sets the text of the label of the expander to <em class="parameter"><code>label</code></em>
 .</p>
 <p>This will also clear any previously set labels.</p>
@@ -520,7 +520,7 @@ btk_expander_set_label (<em class="parameter"><code><a class="link" href="BtkExp
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-label"></a><h3>btk_expander_get_label ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_expander_get_label (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Fetches the text from a label widget including any embedded
 underlines indicating mnemonics and Bango markup, as set by
@@ -559,7 +559,7 @@ by the widget and must not be modified or freed.</p>
 <a name="btk-expander-set-use-underline"></a><h3>btk_expander_set_use_underline ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_use_underline (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> use_underline</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> use_underline</code></em>);</pre>
 <p>If true, an underline in the text of the expander label indicates
 the next character should be used for the mnemonic accelerator key.</p>
 <div class="refsect3">
@@ -589,7 +589,7 @@ the next character should be used for the mnemonic accelerator key.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-use-underline"></a><h3>btk_expander_get_use_underline ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_expander_get_use_underline (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Returns whether an embedded underline in the expander label indicates a
 mnemonic. See <a class="link" href="BtkExpander.html#btk-expander-set-use-underline" title="btk_expander_set_use_underline ()"><code class="function">btk_expander_set_use_underline()</code></a>.</p>
@@ -620,7 +620,7 @@ indicates the mnemonic accelerator keys.</p>
 <a name="btk-expander-set-use-markup"></a><h3>btk_expander_set_use_markup ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_use_markup (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> use_markup</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> use_markup</code></em>);</pre>
 <p>Sets whether the text of the label contains markup in <BTKDOCLINK HREF="BangoMarkupFormat">Bango's text markup
 language</BTKDOCLINK>. See <a class="link" href="BtkLabel.html#btk-label-set-markup" title="btk_label_set_markup ()"><code class="function">btk_label_set_markup()</code></a>.</p>
 <div class="refsect3">
@@ -650,7 +650,7 @@ language</BTKDOCLINK>. See <a class="link" href="BtkLabel.html#btk-label-set-mar
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-use-markup"></a><h3>btk_expander_get_use_markup ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_expander_get_use_markup (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Returns whether the label's text is interpreted as marked up with
 the <BTKDOCLINK HREF="BangoMarkupFormat">Bango text markup
@@ -743,7 +743,7 @@ or <code class="literal">NULL</code> if there is none. </p>
 <a name="btk-expander-set-label-fill"></a><h3>btk_expander_set_label_fill ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_expander_set_label_fill (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> label_fill</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> label_fill</code></em>);</pre>
 <p>Sets whether the label widget should fill all available horizontal space
 allocated to <em class="parameter"><code>expander</code></em>
 .</p>
@@ -775,7 +775,7 @@ space</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-expander-get-label-fill"></a><h3>btk_expander_get_label_fill ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_expander_get_label_fill (<em class="parameter"><code><a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander</code></em>);</pre>
 <p>Returns whether the label widget will fill all available horizontal
 space allocated to <em class="parameter"><code>expander</code></em>
@@ -814,7 +814,7 @@ space</p>
 <a name="BtkExpander.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkExpander--expanded"></a><h3>The <code class="literal">“expanded”</code> property</h3>
-<pre class="programlisting">  “expanded”                 <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “expanded”                 <span class="type">bboolean</span></pre>
 <p>Whether the expander has been opened to reveal the child widget.</p>
 <p>Owner: BtkExpander</p>
 <p>Flags: Read / Write / Construct</p>
@@ -832,7 +832,7 @@ space</p>
 <hr>
 <div class="refsect2">
 <a name="BtkExpander--label-fill"></a><h3>The <code class="literal">“label-fill”</code> property</h3>
-<pre class="programlisting">  “label-fill”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “label-fill”               <span class="type">bboolean</span></pre>
 <p>Whether the label widget should fill all available horizontal space.</p>
 <p>Owner: BtkExpander</p>
 <p>Flags: Read / Write / Construct</p>
@@ -859,7 +859,7 @@ space</p>
 <hr>
 <div class="refsect2">
 <a name="BtkExpander--use-markup"></a><h3>The <code class="literal">“use-markup”</code> property</h3>
-<pre class="programlisting">  “use-markup”               <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-markup”               <span class="type">bboolean</span></pre>
 <p>The text of the label includes XML markup. See bango_parse_markup().</p>
 <p>Owner: BtkExpander</p>
 <p>Flags: Read / Write / Construct</p>
@@ -868,7 +868,7 @@ space</p>
 <hr>
 <div class="refsect2">
 <a name="BtkExpander--use-underline"></a><h3>The <code class="literal">“use-underline”</code> property</h3>
-<pre class="programlisting">  “use-underline”            <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “use-underline”            <span class="type">bboolean</span></pre>
 <p>If set, an underline in the text indicates the next character should be used for the mnemonic accelerator key.</p>
 <p>Owner: BtkExpander</p>
 <p>Flags: Read / Write / Construct</p>
@@ -903,7 +903,7 @@ space</p>
 <a name="BtkExpander-activate"></a><h3>The <code class="literal">“activate”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkExpander.html" title="BtkExpander"><span class="type">BtkExpander</span></a> *expander,
-               <span class="type">gpointer</span>     user_data)</pre>
+               <span class="type">bpointer</span>     user_data)</pre>
 <p>Flags: Action</p>
 </div>
 </div>

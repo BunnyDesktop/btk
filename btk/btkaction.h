@@ -37,14 +37,14 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_ACTION            (btk_action_get_type ())
-#define BTK_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION, BtkAction))
-#define BTK_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACTION, BtkActionClass))
-#define BTK_IS_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION))
-#define BTK_IS_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACTION))
-#define BTK_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_ACTION, BtkActionClass))
+#define BTK_ACTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACTION, BtkAction))
+#define BTK_ACTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACTION, BtkActionClass))
+#define BTK_IS_ACTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACTION))
+#define BTK_IS_ACTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACTION))
+#define BTK_ACTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_ACTION, BtkActionClass))
 
 typedef struct _BtkAction      BtkAction;
 typedef struct _BtkActionClass BtkActionClass;
@@ -52,7 +52,7 @@ typedef struct _BtkActionPrivate BtkActionPrivate;
 
 struct _BtkAction
 {
-  GObject object;
+  BObject object;
 
   /*< private >*/
 
@@ -61,7 +61,7 @@ struct _BtkAction
 
 struct _BtkActionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* activation signal */
   void       (* activate)           (BtkAction    *action);
@@ -85,20 +85,20 @@ struct _BtkActionClass
   void (*_btk_reserved4) (void);
 };
 
-GType        btk_action_get_type               (void) G_GNUC_CONST;
-BtkAction   *btk_action_new                    (const gchar *name,
-						const gchar *label,
-						const gchar *tooltip,
-						const gchar *stock_id);
-const gchar* btk_action_get_name               (BtkAction     *action);
-gboolean     btk_action_is_sensitive           (BtkAction     *action);
-gboolean     btk_action_get_sensitive          (BtkAction     *action);
+GType        btk_action_get_type               (void) B_GNUC_CONST;
+BtkAction   *btk_action_new                    (const bchar *name,
+						const bchar *label,
+						const bchar *tooltip,
+						const bchar *stock_id);
+const bchar* btk_action_get_name               (BtkAction     *action);
+bboolean     btk_action_is_sensitive           (BtkAction     *action);
+bboolean     btk_action_get_sensitive          (BtkAction     *action);
 void         btk_action_set_sensitive          (BtkAction     *action,
-						gboolean       sensitive);
-gboolean     btk_action_is_visible             (BtkAction     *action);
-gboolean     btk_action_get_visible            (BtkAction     *action);
+						bboolean       sensitive);
+bboolean     btk_action_is_visible             (BtkAction     *action);
+bboolean     btk_action_get_visible            (BtkAction     *action);
 void         btk_action_set_visible            (BtkAction     *action,
-						gboolean       visible);
+						bboolean       visible);
 void         btk_action_activate               (BtkAction     *action);
 BtkWidget *  btk_action_create_icon            (BtkAction     *action,
 						BtkIconSize    icon_size);
@@ -108,7 +108,7 @@ BtkWidget *  btk_action_create_menu            (BtkAction     *action);
 GSList *     btk_action_get_proxies            (BtkAction     *action);
 void         btk_action_connect_accelerator    (BtkAction     *action);
 void         btk_action_disconnect_accelerator (BtkAction     *action);
-const gchar *btk_action_get_accel_path         (BtkAction     *action);
+const bchar *btk_action_get_accel_path         (BtkAction     *action);
 GClosure    *btk_action_get_accel_closure      (BtkAction     *action);
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -136,45 +136,45 @@ void         _btk_action_emit_activate         (BtkAction     *action);
 
 /* protected ... for use by action groups */
 void         btk_action_set_accel_path         (BtkAction     *action,
-						const gchar   *accel_path);
+						const bchar   *accel_path);
 void         btk_action_set_accel_group        (BtkAction     *action,
 						BtkAccelGroup *accel_group);
 void         _btk_action_sync_menu_visible     (BtkAction     *action,
 						BtkWidget     *proxy,
-						gboolean       empty);
+						bboolean       empty);
 
 void                  btk_action_set_label              (BtkAction   *action,
-                                                         const gchar *label);
-const gchar *         btk_action_get_label              (BtkAction   *action);
+                                                         const bchar *label);
+const bchar *         btk_action_get_label              (BtkAction   *action);
 void                  btk_action_set_short_label        (BtkAction   *action,
-                                                         const gchar *short_label);
-const gchar *         btk_action_get_short_label        (BtkAction   *action);
+                                                         const bchar *short_label);
+const bchar *         btk_action_get_short_label        (BtkAction   *action);
 void                  btk_action_set_tooltip            (BtkAction   *action,
-                                                         const gchar *tooltip);
-const gchar *         btk_action_get_tooltip            (BtkAction   *action);
+                                                         const bchar *tooltip);
+const bchar *         btk_action_get_tooltip            (BtkAction   *action);
 void                  btk_action_set_stock_id           (BtkAction   *action,
-                                                         const gchar *stock_id);
-const gchar *         btk_action_get_stock_id           (BtkAction   *action);
+                                                         const bchar *stock_id);
+const bchar *         btk_action_get_stock_id           (BtkAction   *action);
 void                  btk_action_set_gicon              (BtkAction   *action,
                                                          GIcon       *icon);
 GIcon                *btk_action_get_gicon              (BtkAction   *action);
 void                  btk_action_set_icon_name          (BtkAction   *action,
-                                                         const gchar *icon_name);
-const gchar *         btk_action_get_icon_name          (BtkAction   *action);
+                                                         const bchar *icon_name);
+const bchar *         btk_action_get_icon_name          (BtkAction   *action);
 void                  btk_action_set_visible_horizontal (BtkAction   *action,
-                                                         gboolean     visible_horizontal);
-gboolean              btk_action_get_visible_horizontal (BtkAction   *action);
+                                                         bboolean     visible_horizontal);
+bboolean              btk_action_get_visible_horizontal (BtkAction   *action);
 void                  btk_action_set_visible_vertical   (BtkAction   *action,
-                                                         gboolean     visible_vertical);
-gboolean              btk_action_get_visible_vertical   (BtkAction   *action);
+                                                         bboolean     visible_vertical);
+bboolean              btk_action_get_visible_vertical   (BtkAction   *action);
 void                  btk_action_set_is_important       (BtkAction   *action,
-                                                         gboolean     is_important);
-gboolean              btk_action_get_is_important       (BtkAction   *action);
+                                                         bboolean     is_important);
+bboolean              btk_action_get_is_important       (BtkAction   *action);
 void                  btk_action_set_always_show_image  (BtkAction   *action,
-                                                         gboolean     always_show);
-gboolean              btk_action_get_always_show_image  (BtkAction   *action);
+                                                         bboolean     always_show);
+bboolean              btk_action_get_always_show_image  (BtkAction   *action);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_ACTION_H__ */

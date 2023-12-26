@@ -63,7 +63,7 @@ btk_print_win32_devnames_to_win32 (const BtkPrintWin32Devnames *devnames)
   LPDEVNAMES windevnames;
   gunichar2 *data;
   gunichar2 *driver, *device, *output;
-  glong driver_len, device_len, output_len;
+  blong driver_len, device_len, output_len;
   int i;
 
   driver = g_utf8_to_utf16 (devnames->driver, -1, NULL, &driver_len, NULL);
@@ -136,7 +136,7 @@ btk_print_win32_devnames_from_printer_name (const char *printer_name)
       PRINTER_INFO_2W* printer_info;
 
       GetPrinterW (hprinter, 2, NULL, 0, &needed);
-      printer_info = (PRINTER_INFO_2W* )g_malloc ((gsize) needed);
+      printer_info = (PRINTER_INFO_2W* )g_malloc ((bsize) needed);
       GetPrinterW (hprinter, 2, (LPBYTE) printer_info, needed, &needed);
       devnames = g_new (BtkPrintWin32Devnames, 1);
       devnames->driver = g_utf16_to_utf8 (printer_info->pDriverName, -1, NULL, NULL, NULL);

@@ -32,7 +32,7 @@
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrender.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Drawable implementation for X11
  */
@@ -49,11 +49,11 @@ typedef struct _BdkDrawableImplX11 BdkDrawableImplX11;
 typedef struct _BdkDrawableImplX11Class BdkDrawableImplX11Class;
 
 #define BDK_TYPE_DRAWABLE_IMPL_X11              (_bdk_drawable_impl_x11_get_type ())
-#define BDK_DRAWABLE_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11))
-#define BDK_DRAWABLE_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
-#define BDK_IS_DRAWABLE_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_X11))
-#define BDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_X11))
-#define BDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
+#define BDK_DRAWABLE_IMPL_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11))
+#define BDK_DRAWABLE_IMPL_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
+#define BDK_IS_DRAWABLE_IMPL_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
 
 struct _BdkDrawableImplX11
 {
@@ -78,14 +78,14 @@ struct _BdkDrawableImplX11Class
 
 GType _bdk_drawable_impl_x11_get_type (void);
 
-void  _bdk_x11_convert_to_format      (guchar           *src_buf,
-                                       gint              src_rowstride,
-                                       guchar           *dest_buf,
-                                       gint              dest_rowstride,
+void  _bdk_x11_convert_to_format      (buchar           *src_buf,
+                                       bint              src_rowstride,
+                                       buchar           *dest_buf,
+                                       bint              dest_rowstride,
                                        BdkX11FormatType  dest_format,
                                        BdkByteOrder      dest_byteorder,
-                                       gint              width,
-                                       gint              height);
+                                       bint              width,
+                                       bint              height);
 
 /* Note that the following take BdkDrawableImplX11, not the wrapper drawable */
 void _bdk_x11_drawable_finish           (BdkDrawable  *drawable);
@@ -93,6 +93,6 @@ void _bdk_x11_drawable_update_size      (BdkDrawable  *drawable);
 BdkDrawable *bdk_x11_window_get_drawable_impl (BdkWindow *window);
 BdkDrawable *bdk_x11_pixmap_get_drawable_impl (BdkPixmap *pixmap);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_DRAWABLE_X11_H__ */

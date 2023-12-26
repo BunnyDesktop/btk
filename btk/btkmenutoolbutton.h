@@ -29,14 +29,14 @@
 #include <btk/btkmenu.h>
 #include <btk/btktoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MENU_TOOL_BUTTON         (btk_menu_tool_button_get_type ())
-#define BTK_MENU_TOOL_BUTTON(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButton))
-#define BTK_MENU_TOOL_BUTTON_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonClass))
-#define BTK_IS_MENU_TOOL_BUTTON(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_MENU_TOOL_BUTTON))
-#define BTK_IS_MENU_TOOL_BUTTON_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_MENU_TOOL_BUTTON))
-#define BTK_MENU_TOOL_BUTTON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonClass))
+#define BTK_MENU_TOOL_BUTTON(o)           (B_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButton))
+#define BTK_MENU_TOOL_BUTTON_CLASS(k)     (B_TYPE_CHECK_CLASS_CAST((k), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonClass))
+#define BTK_IS_MENU_TOOL_BUTTON(o)        (B_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_MENU_TOOL_BUTTON))
+#define BTK_IS_MENU_TOOL_BUTTON_CLASS(k)  (B_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_MENU_TOOL_BUTTON))
+#define BTK_MENU_TOOL_BUTTON_GET_CLASS(o) (B_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_MENU_TOOL_BUTTON, BtkMenuToolButtonClass))
 
 typedef struct _BtkMenuToolButtonClass   BtkMenuToolButtonClass;
 typedef struct _BtkMenuToolButton        BtkMenuToolButton;
@@ -63,10 +63,10 @@ struct _BtkMenuToolButtonClass
   void (*_btk_reserved4) (void);
 };
 
-GType         btk_menu_tool_button_get_type       (void) G_GNUC_CONST;
+GType         btk_menu_tool_button_get_type       (void) B_GNUC_CONST;
 BtkToolItem  *btk_menu_tool_button_new            (BtkWidget   *icon_widget,
-                                                   const gchar *label);
-BtkToolItem  *btk_menu_tool_button_new_from_stock (const gchar *stock_id);
+                                                   const bchar *label);
+BtkToolItem  *btk_menu_tool_button_new_from_stock (const bchar *stock_id);
 
 void          btk_menu_tool_button_set_menu       (BtkMenuToolButton *button,
                                                    BtkWidget         *menu);
@@ -75,15 +75,15 @@ BtkWidget    *btk_menu_tool_button_get_menu       (BtkMenuToolButton *button);
 #ifndef BTK_DISABLE_DEPRECATED
 void          btk_menu_tool_button_set_arrow_tooltip (BtkMenuToolButton *button,
                                                       BtkTooltips       *tooltips,
-                                                      const gchar       *tip_text,
-                                                      const gchar       *tip_private);
+                                                      const bchar       *tip_text,
+                                                      const bchar       *tip_private);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 void          btk_menu_tool_button_set_arrow_tooltip_text   (BtkMenuToolButton *button,
-							     const gchar       *text);
+							     const bchar       *text);
 void          btk_menu_tool_button_set_arrow_tooltip_markup (BtkMenuToolButton *button,
-							     const gchar       *markup);
+							     const bchar       *markup);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MENU_TOOL_BUTTON_H__ */

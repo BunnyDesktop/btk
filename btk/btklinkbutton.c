@@ -45,9 +45,9 @@
 
 struct _BtkLinkButtonPrivate
 {
-  gchar *uri;
+  bchar *uri;
 
-  gboolean visited;
+  bboolean visited;
 
   BtkWidget *popup_menu;
 };
@@ -59,43 +59,43 @@ enum
   PROP_VISITED
 };
 
-#define BTK_LINK_BUTTON_GET_PRIVATE(obj)	(G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonPrivate))
+#define BTK_LINK_BUTTON_GET_PRIVATE(obj)	(B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_LINK_BUTTON, BtkLinkButtonPrivate))
 
-static void     btk_link_button_finalize     (GObject          *object);
-static void     btk_link_button_get_property (GObject          *object,
-					      guint             prop_id,
-					      GValue           *value,
-					      GParamSpec       *pspec);
-static void     btk_link_button_set_property (GObject          *object,
-					      guint             prop_id,
-					      const GValue     *value,
-					      GParamSpec       *pspec);
+static void     btk_link_button_finalize     (BObject          *object);
+static void     btk_link_button_get_property (BObject          *object,
+					      buint             prop_id,
+					      BValue           *value,
+					      BParamSpec       *pspec);
+static void     btk_link_button_set_property (BObject          *object,
+					      buint             prop_id,
+					      const BValue     *value,
+					      BParamSpec       *pspec);
 static void     btk_link_button_add          (BtkContainer     *container,
 					      BtkWidget        *widget);
-static gboolean btk_link_button_button_press (BtkWidget        *widget,
+static bboolean btk_link_button_button_press (BtkWidget        *widget,
 					      BdkEventButton   *event);
 static void     btk_link_button_clicked      (BtkButton        *button);
-static gboolean btk_link_button_popup_menu   (BtkWidget        *widget);
+static bboolean btk_link_button_popup_menu   (BtkWidget        *widget);
 static void     btk_link_button_style_set    (BtkWidget        *widget,
 					      BtkStyle         *old_style);
-static gboolean btk_link_button_enter_cb     (BtkWidget        *widget,
+static bboolean btk_link_button_enter_cb     (BtkWidget        *widget,
 					      BdkEventCrossing *event,
-					      gpointer          user_data);
-static gboolean btk_link_button_leave_cb     (BtkWidget        *widget,
+					      bpointer          user_data);
+static bboolean btk_link_button_leave_cb     (BtkWidget        *widget,
 					      BdkEventCrossing *event,
-					      gpointer          user_data);
+					      bpointer          user_data);
 static void btk_link_button_drag_data_get_cb (BtkWidget        *widget,
 					      BdkDragContext   *context,
 					      BtkSelectionData *selection,
-					      guint             _info,
-					      guint             _time,
-					      gpointer          user_data);
-static gboolean btk_link_button_query_tooltip_cb (BtkWidget    *widget,
-                                                  gint          x,
-                                                  gint          y,
-                                                  gboolean      keyboard_tip,
+					      buint             _info,
+					      buint             _time,
+					      bpointer          user_data);
+static bboolean btk_link_button_query_tooltip_cb (BtkWidget    *widget,
+                                                  bint          x,
+                                                  bint          y,
+                                                  bboolean      keyboard_tip,
                                                   BtkTooltip   *tooltip,
-                                                  gpointer      data);
+                                                  bpointer      data);
 
 
 static const BtkTargetEntry link_drop_types[] = {
@@ -107,7 +107,7 @@ static const BdkColor default_link_color = { 0, 0, 0, 0xeeee };
 static const BdkColor default_visited_link_color = { 0, 0x5555, 0x1a1a, 0x8b8b };
 
 static BtkLinkButtonUriFunc uri_func = NULL;
-static gpointer uri_func_data = NULL;
+static bpointer uri_func_data = NULL;
 static GDestroyNotify uri_func_destroy = NULL;
 
 G_DEFINE_TYPE (BtkLinkButton, btk_link_button, BTK_TYPE_BUTTON)
@@ -115,7 +115,7 @@ G_DEFINE_TYPE (BtkLinkButton, btk_link_button, BTK_TYPE_BUTTON)
 static void
 btk_link_button_class_init (BtkLinkButtonClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (klass);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (klass);
   BtkButtonClass *button_class = BTK_BUTTON_CLASS (klass);
@@ -191,55 +191,55 @@ btk_link_button_init (BtkLinkButton *link_button)
 }
 
 static void
-btk_link_button_finalize (GObject *object)
+btk_link_button_finalize (BObject *object)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   g_free (link_button->priv->uri);
   
-  G_OBJECT_CLASS (btk_link_button_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_link_button_parent_class)->finalize (object);
 }
 
 static void
-btk_link_button_get_property (GObject    *object,
-			      guint       prop_id,
-			      GValue     *value,
-			      GParamSpec *pspec)
+btk_link_button_get_property (BObject    *object,
+			      buint       prop_id,
+			      BValue     *value,
+			      BParamSpec *pspec)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   switch (prop_id)
     {
     case PROP_URI:
-      g_value_set_string (value, link_button->priv->uri);
+      b_value_set_string (value, link_button->priv->uri);
       break;
     case PROP_VISITED:
-      g_value_set_boolean (value, link_button->priv->visited);
+      b_value_set_boolean (value, link_button->priv->visited);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_link_button_set_property (GObject      *object,
-			      guint         prop_id,
-			      const GValue *value,
-			      GParamSpec   *pspec)
+btk_link_button_set_property (BObject      *object,
+			      buint         prop_id,
+			      const BValue *value,
+			      BParamSpec   *pspec)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (object);
   
   switch (prop_id)
     {
     case PROP_URI:
-      btk_link_button_set_uri (link_button, g_value_get_string (value));
+      btk_link_button_set_uri (link_button, b_value_get_string (value));
       break;
     case PROP_VISITED:
-      btk_link_button_set_visited (link_button, g_value_get_boolean (value));
+      btk_link_button_set_visited (link_button, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -292,7 +292,7 @@ set_link_underline (BtkLinkButton *link_button)
 
       uline = bango_attr_underline_new (BANGO_UNDERLINE_SINGLE);
       uline->start_index = 0;
-      uline->end_index = G_MAXUINT;
+      uline->end_index = B_MAXUINT;
       attributes = bango_attr_list_new ();
       bango_attr_list_insert (attributes, uline); 
       btk_label_set_attributes (BTK_LABEL (label), attributes);
@@ -321,7 +321,7 @@ btk_link_button_style_set (BtkWidget *widget,
 
 static void
 set_hand_cursor (BtkWidget *widget,
-		 gboolean   show_hand)
+		 bboolean   show_hand)
 {
   BdkDisplay *display;
   BdkCursor *cursor;
@@ -350,17 +350,17 @@ popup_menu_detach (BtkWidget *attach_widget,
 
 static void
 popup_position_func (BtkMenu  *menu,
-		     gint     *x,
-		     gint     *y,
-		     gboolean *push_in,
-		     gpointer  user_data)
+		     bint     *x,
+		     bint     *y,
+		     bboolean *push_in,
+		     bpointer  user_data)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (user_data);
   BtkLinkButtonPrivate *priv = link_button->priv;
   BtkWidget *widget = BTK_WIDGET (link_button);
   BdkScreen *screen = btk_widget_get_screen (widget);
   BtkRequisition req;
-  gint monitor_num;
+  bint monitor_num;
   BdkRectangle monitor;
   
   g_return_if_fail (btk_widget_get_realized (widget));
@@ -398,8 +398,8 @@ btk_link_button_do_popup (BtkLinkButton  *link_button,
 			  BdkEventButton *event)
 {
   BtkLinkButtonPrivate *priv = link_button->priv;
-  gint button;
-  guint time;
+  bint button;
+  buint time;
   
   if (event)
     {
@@ -448,7 +448,7 @@ btk_link_button_do_popup (BtkLinkButton  *link_button,
     }
 }
 
-static gboolean
+static bboolean
 btk_link_button_button_press (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -499,7 +499,7 @@ btk_link_button_clicked (BtkButton *button)
   btk_link_button_set_visited (link_button, TRUE);
 }
 
-static gboolean
+static bboolean
 btk_link_button_popup_menu (BtkWidget *widget)
 {
   btk_link_button_do_popup (BTK_LINK_BUTTON (widget), NULL);
@@ -507,20 +507,20 @@ btk_link_button_popup_menu (BtkWidget *widget)
   return TRUE; 
 }
 
-static gboolean
+static bboolean
 btk_link_button_enter_cb (BtkWidget        *widget,
 			  BdkEventCrossing *crossing,
-			  gpointer          user_data)
+			  bpointer          user_data)
 {
   set_hand_cursor (widget, TRUE);
   
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_link_button_leave_cb (BtkWidget        *widget,
 			  BdkEventCrossing *crossing,
-			  gpointer          user_data)
+			  bpointer          user_data)
 {
   set_hand_cursor (widget, FALSE);
   
@@ -531,18 +531,18 @@ static void
 btk_link_button_drag_data_get_cb (BtkWidget        *widget,
 				  BdkDragContext   *context,
 				  BtkSelectionData *selection,
-				  guint             _info,
-				  guint             _time,
-				  gpointer          user_data)
+				  buint             _info,
+				  buint             _time,
+				  bpointer          user_data)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (widget);
-  gchar *uri;
+  bchar *uri;
   
   uri = g_strdup_printf ("%s\r\n", link_button->priv->uri);
   btk_selection_data_set (selection,
   			  selection->target,
   			  8,
-  			  (guchar *) uri,
+  			  (buchar *) uri,
 			  strlen (uri));
   
   g_free (uri);
@@ -559,9 +559,9 @@ btk_link_button_drag_data_get_cb (BtkWidget        *widget,
  * Since: 2.10
  */
 BtkWidget *
-btk_link_button_new (const gchar *uri)
+btk_link_button_new (const bchar *uri)
 {
-  gchar *utf8_uri = NULL;
+  bchar *utf8_uri = NULL;
   BtkWidget *retval;
   
   g_return_val_if_fail (uri != NULL, NULL);
@@ -609,8 +609,8 @@ btk_link_button_new (const gchar *uri)
  * Since: 2.10
  */
 BtkWidget *
-btk_link_button_new_with_label (const gchar *uri,
-				const gchar *label)
+btk_link_button_new_with_label (const bchar *uri,
+				const bchar *label)
 {
   BtkWidget *retval;
   
@@ -627,16 +627,16 @@ btk_link_button_new_with_label (const gchar *uri,
   return retval;
 }
 
-static gboolean 
+static bboolean 
 btk_link_button_query_tooltip_cb (BtkWidget    *widget,
-                                  gint          x,
-                                  gint          y,
-                                  gboolean      keyboard_tip,
+                                  bint          x,
+                                  bint          y,
+                                  bboolean      keyboard_tip,
                                   BtkTooltip   *tooltip,
-                                  gpointer      data)
+                                  bpointer      data)
 {
   BtkLinkButton *link_button = BTK_LINK_BUTTON (widget);
-  const gchar *label, *uri;
+  const bchar *label, *uri;
 
   label = btk_button_get_label (BTK_BUTTON (link_button));
   uri = link_button->priv->uri;
@@ -665,7 +665,7 @@ btk_link_button_query_tooltip_cb (BtkWidget    *widget,
  */
 void
 btk_link_button_set_uri (BtkLinkButton *link_button,
-			 const gchar   *uri)
+			 const bchar   *uri)
 {
   BtkLinkButtonPrivate *priv;
 
@@ -677,7 +677,7 @@ btk_link_button_set_uri (BtkLinkButton *link_button,
   g_free (priv->uri);
   priv->uri = g_strdup (uri);
 
-  g_object_notify (G_OBJECT (link_button), "uri");
+  g_object_notify (B_OBJECT (link_button), "uri");
 
   btk_link_button_set_visited (link_button, FALSE);
 }
@@ -693,7 +693,7 @@ btk_link_button_set_uri (BtkLinkButton *link_button,
  *
  * Since: 2.10
  */
-const gchar *
+const bchar *
 btk_link_button_get_uri (BtkLinkButton *link_button)
 {
   g_return_val_if_fail (BTK_IS_LINK_BUTTON (link_button), NULL);
@@ -721,7 +721,7 @@ btk_link_button_get_uri (BtkLinkButton *link_button)
  */
 BtkLinkButtonUriFunc
 btk_link_button_set_uri_hook (BtkLinkButtonUriFunc func,
-			      gpointer             data,
+			      bpointer             data,
 			      GDestroyNotify       destroy)
 {
   BtkLinkButtonUriFunc old_uri_func;
@@ -750,7 +750,7 @@ btk_link_button_set_uri_hook (BtkLinkButtonUriFunc func,
  */
 void
 btk_link_button_set_visited (BtkLinkButton *link_button,
-                             gboolean       visited)
+                             bboolean       visited)
 {
   g_return_if_fail (BTK_IS_LINK_BUTTON (link_button));
 
@@ -762,7 +762,7 @@ btk_link_button_set_visited (BtkLinkButton *link_button,
 
       set_link_color (link_button);
 
-      g_object_notify (G_OBJECT (link_button), "visited");
+      g_object_notify (B_OBJECT (link_button), "visited");
     }
 }
 
@@ -780,7 +780,7 @@ btk_link_button_set_visited (BtkLinkButton *link_button,
  *
  * Since: 2.14
  */
-gboolean
+bboolean
 btk_link_button_get_visited (BtkLinkButton *link_button)
 {
   g_return_val_if_fail (BTK_IS_LINK_BUTTON (link_button), FALSE);

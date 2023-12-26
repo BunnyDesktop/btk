@@ -29,14 +29,14 @@
 
 #include <btk/btktoggletoolbutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RADIO_TOOL_BUTTON            (btk_radio_tool_button_get_type ())
-#define BTK_RADIO_TOOL_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButton))
-#define BTK_RADIO_TOOL_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
-#define BTK_IS_RADIO_TOOL_BUTTON(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_TOOL_BUTTON))
-#define BTK_IS_RADIO_TOOL_BUTTON_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_TOOL_BUTTON))
-#define BTK_RADIO_TOOL_BUTTON_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
+#define BTK_RADIO_TOOL_BUTTON(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButton))
+#define BTK_RADIO_TOOL_BUTTON_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
+#define BTK_IS_RADIO_TOOL_BUTTON(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_TOOL_BUTTON))
+#define BTK_IS_RADIO_TOOL_BUTTON_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_TOOL_BUTTON))
+#define BTK_RADIO_TOOL_BUTTON_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_RADIO_TOOL_BUTTON, BtkRadioToolButtonClass))
 
 typedef struct _BtkRadioToolButton      BtkRadioToolButton;
 typedef struct _BtkRadioToolButtonClass BtkRadioToolButtonClass;
@@ -57,18 +57,18 @@ struct _BtkRadioToolButtonClass
   void (* _btk_reserved4) (void);
 };
 
-GType        btk_radio_tool_button_get_type       (void) G_GNUC_CONST;
+GType        btk_radio_tool_button_get_type       (void) B_GNUC_CONST;
 
 BtkToolItem *btk_radio_tool_button_new                        (GSList             *group);
 BtkToolItem *btk_radio_tool_button_new_from_stock             (GSList             *group,
-							       const gchar        *stock_id);
+							       const bchar        *stock_id);
 BtkToolItem *btk_radio_tool_button_new_from_widget            (BtkRadioToolButton *group);
 BtkToolItem *btk_radio_tool_button_new_with_stock_from_widget (BtkRadioToolButton *group,
-							       const gchar        *stock_id);
+							       const bchar        *stock_id);
 GSList *     btk_radio_tool_button_get_group                  (BtkRadioToolButton *button);
 void         btk_radio_tool_button_set_group                  (BtkRadioToolButton *button,
 							       GSList             *group);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RADIO_TOOL_BUTTON_H__ */

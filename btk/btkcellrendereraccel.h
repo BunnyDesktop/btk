@@ -26,14 +26,14 @@
 
 #include <btk/btkcellrenderertext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_ACCEL            (btk_cell_renderer_accel_get_type ())
-#define BTK_CELL_RENDERER_ACCEL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccel))
-#define BTK_CELL_RENDERER_ACCEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
-#define BTK_IS_CELL_RENDERER_ACCEL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_ACCEL))
-#define BTK_IS_CELL_RENDERER_ACCEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_ACCEL))
-#define BTK_CELL_RENDERER_ACCEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
+#define BTK_CELL_RENDERER_ACCEL(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccel))
+#define BTK_CELL_RENDERER_ACCEL_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
+#define BTK_IS_CELL_RENDERER_ACCEL(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_ACCEL))
+#define BTK_IS_CELL_RENDERER_ACCEL_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_ACCEL))
+#define BTK_CELL_RENDERER_ACCEL_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_ACCEL, BtkCellRendererAccelClass))
 
 typedef struct _BtkCellRendererAccel      BtkCellRendererAccel;
 typedef struct _BtkCellRendererAccelClass BtkCellRendererAccelClass;
@@ -51,9 +51,9 @@ struct _BtkCellRendererAccel
   BtkCellRendererText parent;
 
   /*< private >*/
-  guint GSEAL (accel_key);
+  buint GSEAL (accel_key);
   BdkModifierType GSEAL (accel_mods);
-  guint GSEAL (keycode);
+  buint GSEAL (keycode);
   BtkCellRendererAccelMode GSEAL (accel_mode);
 
   BtkWidget *GSEAL (edit_widget);
@@ -66,13 +66,13 @@ struct _BtkCellRendererAccelClass
   BtkCellRendererTextClass parent_class;
 
   void (* accel_edited)  (BtkCellRendererAccel *accel,
-		 	  const gchar          *path_string,
-			  guint                 accel_key,
+		 	  const bchar          *path_string,
+			  buint                 accel_key,
 			  BdkModifierType       accel_mods,
-			  guint                 hardware_keycode);
+			  buint                 hardware_keycode);
 
   void (* accel_cleared) (BtkCellRendererAccel *accel,
-			  const gchar          *path_string);
+			  const bchar          *path_string);
 
   /* Padding for future expansion */
   void (*_btk_reserved0) (void);
@@ -82,11 +82,11 @@ struct _BtkCellRendererAccelClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_cell_renderer_accel_get_type        (void) G_GNUC_CONST;
+GType            btk_cell_renderer_accel_get_type        (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_accel_new             (void);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_CELL_RENDERER_ACCEL_H__ */

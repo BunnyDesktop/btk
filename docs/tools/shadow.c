@@ -62,7 +62,7 @@ create_shadow (BdkPixbuf *src)
   int src_rowstride, dest_rowstride;
   int src_bpp, dest_bpp;
   
-  guchar *src_pixels, *dest_pixels;
+  buchar *src_pixels, *dest_pixels;
 
   if (!filter)
     filter = create_blur_filter (BLUR_RADIUS);

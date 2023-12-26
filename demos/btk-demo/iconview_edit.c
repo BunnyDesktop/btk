@@ -22,8 +22,8 @@ static void
 fill_store (BtkListStore *store)
 {
   BtkTreeIter iter;
-  const gchar *text[] = { "Red", "Green", "Blue", "Yellow" };
-  gint i;
+  const bchar *text[] = { "Red", "Green", "Blue", "Yellow" };
+  bint i;
 
   /* First clear the store */
   btk_list_store_clear (store);
@@ -40,7 +40,7 @@ create_store (void)
 {
   BtkListStore *store;
 
-  store = btk_list_store_new (NUM_COLS, G_TYPE_STRING);
+  store = btk_list_store_new (NUM_COLS, B_TYPE_STRING);
 
   return store;
 }
@@ -50,11 +50,11 @@ set_cell_color (BtkCellLayout   *cell_layout,
 		BtkCellRenderer *cell,
 		BtkTreeModel    *tree_model,
 		BtkTreeIter     *iter,
-		gpointer         data)
+		bpointer         data)
 {
-  gchar *text;
+  bchar *text;
   BdkColor color;
-  guint32 pixel = 0;
+  buint32 pixel = 0;
   BdkPixbuf *pixbuf;
 
   btk_tree_model_get (tree_model, iter, COL_TEXT, &text, -1);
@@ -76,9 +76,9 @@ set_cell_color (BtkCellLayout   *cell_layout,
 
 static void
 edited (BtkCellRendererText *cell,
-	gchar               *path_string,
-	gchar               *text,
-	gpointer             data)
+	bchar               *path_string,
+	bchar               *text,
+	bpointer             data)
 {
   BtkTreeModel *model;
   BtkTreeIter iter;

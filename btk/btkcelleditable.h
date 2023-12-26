@@ -26,13 +26,13 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_EDITABLE            (btk_cell_editable_get_type ())
-#define BTK_CELL_EDITABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditable))
-#define BTK_CELL_EDITABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
-#define BTK_IS_CELL_EDITABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_EDITABLE))
-#define BTK_CELL_EDITABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
+#define BTK_CELL_EDITABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditable))
+#define BTK_CELL_EDITABLE_CLASS(obj)      (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
+#define BTK_IS_CELL_EDITABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_EDITABLE))
+#define BTK_CELL_EDITABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_EDITABLE, BtkCellEditableIface))
 
 typedef struct _BtkCellEditable      BtkCellEditable; /* Dummy typedef */
 typedef struct _BtkCellEditableIface BtkCellEditableIface;
@@ -51,7 +51,7 @@ struct _BtkCellEditableIface
 };
 
 
-GType btk_cell_editable_get_type      (void) G_GNUC_CONST;
+GType btk_cell_editable_get_type      (void) B_GNUC_CONST;
 
 void  btk_cell_editable_start_editing (BtkCellEditable *cell_editable,
 				       BdkEvent        *event);
@@ -59,6 +59,6 @@ void  btk_cell_editable_editing_done  (BtkCellEditable *cell_editable);
 void  btk_cell_editable_remove_widget (BtkCellEditable *cell_editable);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_EDITABLE_H__ */

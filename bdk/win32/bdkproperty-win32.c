@@ -36,8 +36,8 @@
 #include "bdkprivate-win32.h"
 
 BdkAtom
-bdk_atom_intern (const gchar *atom_name,
-		 gint         only_if_exists)
+bdk_atom_intern (const bchar *atom_name,
+		 bint         only_if_exists)
 {
   ATOM win32_atom;
   BdkAtom retval;
@@ -74,7 +74,7 @@ bdk_atom_intern (const gchar *atom_name,
       else
 	{
 	  win32_atom = GlobalAddAtom (atom_name);
-	  retval = GUINT_TO_POINTER ((guint) win32_atom);
+	  retval = BUINT_TO_POINTER ((buint) win32_atom);
 	}
       g_hash_table_insert (atom_hash, 
 			   g_strdup (atom_name), 
@@ -85,7 +85,7 @@ bdk_atom_intern (const gchar *atom_name,
 }
 
 BdkAtom
-bdk_atom_intern_static_string (const gchar *atom_name)
+bdk_atom_intern_static_string (const bchar *atom_name)
 {
   /* on X11 this is supposed to save memory. On win32 there seems to be
    * no way to make a difference ?
@@ -93,11 +93,11 @@ bdk_atom_intern_static_string (const gchar *atom_name)
   return bdk_atom_intern (atom_name, FALSE);
 }
 
-gchar *
+bchar *
 bdk_atom_name (BdkAtom atom)
 {
   ATOM win32_atom;
-  gchar name[256];
+  bchar name[256];
 
   if (BDK_NONE == atom) return g_strdup ("<none>");
   else if (BDK_SELECTION_PRIMARY == atom) return g_strdup ("PRIMARY");
@@ -112,7 +112,7 @@ bdk_atom_name (BdkAtom atom)
   else if (BDK_SELECTION_TYPE_WINDOW == atom) return g_strdup ("WINDOW");
   else if (BDK_SELECTION_TYPE_STRING == atom) return g_strdup ("STRING");
   
-  win32_atom = GPOINTER_TO_UINT (atom);
+  win32_atom = BPOINTER_TO_UINT (atom);
   
   if (win32_atom < 0xC000)
     return g_strdup_printf ("#%p", atom);
@@ -121,17 +121,17 @@ bdk_atom_name (BdkAtom atom)
   return g_strdup (name);
 }
 
-gint
+bint
 bdk_property_get (BdkWindow   *window,
 		  BdkAtom      property,
 		  BdkAtom      type,
-		  gulong       offset,
-		  gulong       length,
-		  gint         pdelete,
+		  bulong       offset,
+		  bulong       length,
+		  bint         pdelete,
 		  BdkAtom     *actual_property_type,
-		  gint        *actual_format_type,
-		  gint        *actual_length,
-		  guchar     **data)
+		  bint        *actual_format_type,
+		  bint        *actual_length,
+		  buchar     **data)
 {
   g_return_val_if_fail (window != NULL, FALSE);
   g_return_val_if_fail (BDK_IS_WINDOW (window), FALSE);
@@ -148,16 +148,16 @@ void
 bdk_property_change (BdkWindow    *window,
 		     BdkAtom       property,
 		     BdkAtom       type,
-		     gint          format,
+		     bint          format,
 		     BdkPropMode   mode,
-		     const guchar *data,
-		     gint          nelements)
+		     const buchar *data,
+		     bint          nelements)
 {
   HGLOBAL hdata;
-  gint i, size;
-  guchar *ucptr;
+  bint i, size;
+  buchar *ucptr;
   wchar_t *wcptr, *p;
-  glong wclen;
+  blong wclen;
   GError *err = NULL;
 
   g_return_if_fail (window != NULL);
@@ -167,8 +167,8 @@ bdk_property_change (BdkWindow    *window,
     return;
 
   BDK_NOTE (DND, {
-      gchar *prop_name = bdk_atom_name (property);
-      gchar *type_name = bdk_atom_name (type);
+      bchar *prop_name = bdk_atom_name (property);
+      bchar *type_name = bdk_atom_name (type);
       
       g_print ("bdk_property_change: %p %s %s %s %d*%d bits: %s\n",
 	       BDK_WINDOW_HWND (window),
@@ -284,7 +284,7 @@ void
 bdk_property_delete (BdkWindow *window,
 		     BdkAtom    property)
 {
-  gchar *prop_name;
+  bchar *prop_name;
 
   g_return_if_fail (window != NULL);
   g_return_if_fail (BDK_IS_WINDOW (window));
@@ -366,10 +366,10 @@ bdk_property_delete (BdkWindow *window,
   btk-split-cursor
 
 */
-gboolean
+bboolean
 bdk_screen_get_setting (BdkScreen   *screen,
-                        const gchar *name,
-                        GValue      *value)
+                        const bchar *name,
+                        BValue      *value)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
@@ -379,45 +379,45 @@ bdk_screen_get_setting (BdkScreen   *screen,
    */
   if (strcmp ("btk-theme-name", name) == 0) 
     {
-      g_value_set_string (value, "ms-windows");
+      b_value_set_string (value, "ms-windows");
     }
   else if (strcmp ("btk-double-click-time", name) == 0)
     {
-      gint i = GetDoubleClickTime ();
+      bint i = GetDoubleClickTime ();
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-double-click-distance", name) == 0)
     {
-      gint i = MAX(GetSystemMetrics (SM_CXDOUBLECLK), GetSystemMetrics (SM_CYDOUBLECLK));
+      bint i = MAX(GetSystemMetrics (SM_CXDOUBLECLK), GetSystemMetrics (SM_CYDOUBLECLK));
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-dnd-drag-threshold", name) == 0)
     {
-      gint i = MAX(GetSystemMetrics (SM_CXDRAG), GetSystemMetrics (SM_CYDRAG));
+      bint i = MAX(GetSystemMetrics (SM_CXDRAG), GetSystemMetrics (SM_CYDRAG));
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : %d\n", name, i));
-      g_value_set_int (value, i);
+      b_value_set_int (value, i);
       return TRUE;
     }
   else if (strcmp ("btk-split-cursor", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : FALSE\n", name));
-      g_value_set_boolean (value, FALSE);
+      b_value_set_boolean (value, FALSE);
       return TRUE;
     }
   else if (strcmp ("btk-alternative-button-order", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : TRUE\n", name));
-      g_value_set_boolean (value, TRUE);
+      b_value_set_boolean (value, TRUE);
       return TRUE;
     }
   else if (strcmp ("btk-alternative-sort-arrows", name) == 0)
     {
       BDK_NOTE(MISC, g_print("bdk_screen_get_setting(\"%s\") : TRUE\n", name));
-      g_value_set_boolean (value, TRUE);
+      b_value_set_boolean (value, TRUE);
       return TRUE;
     }
 #if 0
@@ -447,7 +447,7 @@ bdk_screen_get_setting (BdkScreen   *screen,
             {
               char* s = g_strdup_printf ("%s %d", ncm.lfMenuFont.lfFaceName, nHeight);
               BDK_NOTE(MISC, g_print("bdk_screen_get_setting(%s) : %s\n", name, s));
-              g_value_set_string (value, s);
+              b_value_set_string (value, s);
 
               g_free(s);
               return TRUE;

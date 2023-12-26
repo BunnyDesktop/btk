@@ -22,14 +22,14 @@
 
 #include <bail/bailentry.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_SPIN_BUTTON                      (bail_spin_button_get_type ())
-#define BAIL_SPIN_BUTTON(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButton))
-#define BAIL_SPIN_BUTTON_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
-#define BAIL_IS_SPIN_BUTTON(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SPIN_BUTTON))
-#define BAIL_IS_SPIN_BUTTON_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SPIN_BUTTON))
-#define BAIL_SPIN_BUTTON_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
+#define BAIL_SPIN_BUTTON(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButton))
+#define BAIL_SPIN_BUTTON_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
+#define BAIL_IS_SPIN_BUTTON(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SPIN_BUTTON))
+#define BAIL_IS_SPIN_BUTTON_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SPIN_BUTTON))
+#define BAIL_SPIN_BUTTON_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SPIN_BUTTON, BailSpinButtonClass))
 
 typedef struct _BailSpinButton              BailSpinButton;
 typedef struct _BailSpinButtonClass         BailSpinButtonClass;
@@ -48,6 +48,6 @@ struct _BailSpinButtonClass
   BailEntryClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_SPIN_BUTTON_H__ */

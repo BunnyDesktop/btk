@@ -24,13 +24,13 @@
 typedef struct _TreeStruct TreeStruct;
 struct _TreeStruct
 {
-  const gchar *label;
-  gboolean alex;
-  gboolean havoc;
-  gboolean tim;
-  gboolean owen;
-  gboolean dave;
-  gboolean world_holiday; /* shared by the european hackers */
+  const bchar *label;
+  bboolean alex;
+  bboolean havoc;
+  bboolean tim;
+  bboolean owen;
+  bboolean dave;
+  bboolean world_holiday; /* shared by the european hackers */
   TreeStruct *children;
 };
 
@@ -176,14 +176,14 @@ make_model (void)
   BtkTreeIter iter;
 
   model = btk_tree_store_new (NUM_COLUMNS,
-			      G_TYPE_STRING,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN,
-			      G_TYPE_BOOLEAN);
+			      B_TYPE_STRING,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN,
+			      B_TYPE_BOOLEAN);
 
   while (month->label)
     {
@@ -226,13 +226,13 @@ make_model (void)
 
 static void
 alex_toggled (BtkCellRendererToggle *cell,
-	      gchar                 *path_str,
-	      gpointer               data)
+	      bchar                 *path_str,
+	      bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *) data;
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean alex;
+  bboolean alex;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, ALEX_COLUMN, &alex, -1);
@@ -245,13 +245,13 @@ alex_toggled (BtkCellRendererToggle *cell,
 
 static void
 havoc_toggled (BtkCellRendererToggle *cell,
-	       gchar                 *path_str,
-	       gpointer               data)
+	       bchar                 *path_str,
+	       bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *) data;
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean havoc;
+  bboolean havoc;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, HAVOC_COLUMN, &havoc, -1);
@@ -264,13 +264,13 @@ havoc_toggled (BtkCellRendererToggle *cell,
 
 static void
 owen_toggled (BtkCellRendererToggle *cell,
-	      gchar                 *path_str,
-	      gpointer               data)
+	      bchar                 *path_str,
+	      bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *) data;
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean owen;
+  bboolean owen;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, OWEN_COLUMN, &owen, -1);
@@ -283,13 +283,13 @@ owen_toggled (BtkCellRendererToggle *cell,
 
 static void
 tim_toggled (BtkCellRendererToggle *cell,
-	     gchar                 *path_str,
-	     gpointer               data)
+	     bchar                 *path_str,
+	     bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *) data;
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean tim;
+  bboolean tim;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, TIM_COLUMN, &tim, -1);
@@ -302,13 +302,13 @@ tim_toggled (BtkCellRendererToggle *cell,
 
 static void
 dave_toggled (BtkCellRendererToggle *cell,
-	      gchar                 *path_str,
-	      gpointer               data)
+	      bchar                 *path_str,
+	      bpointer               data)
 {
   BtkTreeModel *model = (BtkTreeModel *) data;
   BtkTreeIter iter;
   BtkTreePath *path = btk_tree_path_new_from_string (path_str);
-  gboolean dave;
+  bboolean dave;
 
   btk_tree_model_get_iter (model, &iter, path);
   btk_tree_model_get (model, &iter, DAVE_COLUMN, &dave, -1);
@@ -324,9 +324,9 @@ set_indicator_size (BtkTreeViewColumn *column,
 		    BtkCellRenderer *cell,
 		    BtkTreeModel *model,
 		    BtkTreeIter *iter,
-		    gpointer data)
+		    bpointer data)
 {
-  gint size;
+  bint size;
   BtkTreePath *path;
 
   path = btk_tree_model_get_path (model, iter);
@@ -345,7 +345,7 @@ main (int argc, char *argv[])
   BtkWidget *tree_view;
   BtkTreeModel *model;
   BtkCellRenderer *renderer;
-  gint col_offset;
+  bint col_offset;
   BtkTreeViewColumn *column;
 
   btk_init (&argc, &argv);

@@ -24,7 +24,7 @@
 static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean
+static bboolean
 configure_event (BtkWidget *widget, BdkEventConfigure *event)
 {
   if (pixmap)
@@ -45,7 +45,7 @@ configure_event (BtkWidget *widget, BdkEventConfigure *event)
 }
 
 /* Redraw the screen from the backing pixmap */
-static gboolean
+static bboolean
 expose_event (BtkWidget *widget, BdkEventExpose *event)
 {
   bdk_draw_drawable (widget->window,
@@ -62,7 +62,7 @@ expose_event (BtkWidget *widget, BdkEventExpose *event)
    and color on the type of device */
 static void
 draw_brush (BtkWidget *widget, BdkInputSource source,
-            gdouble x, gdouble y, gdouble pressure)
+            bdouble x, bdouble y, bdouble pressure)
 {
   BdkGC *gc;
   BdkRectangle update_rect;
@@ -100,13 +100,13 @@ print_button_press (BdkDevice *device)
   g_print ("Button press on device '%s'\n", device->name);
 }
 
-static gboolean
+static bboolean
 button_press_event (BtkWidget *widget, BdkEventButton *event)
 {
   print_button_press (event->device);
   
   if (event->button == 1 && pixmap != NULL) {
-    gdouble pressure;
+    bdouble pressure;
     bdk_event_get_axis ((BdkEvent *)event, BDK_AXIS_PRESSURE, &pressure);
     draw_brush (widget, event->device->source, event->x, event->y, pressure);
   }
@@ -114,11 +114,11 @@ button_press_event (BtkWidget *widget, BdkEventButton *event)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 {
-  gdouble x, y;
-  gdouble pressure;
+  bdouble x, y;
+  bdouble pressure;
   BdkModifierType state;
 
   if (event->is_hint) 
@@ -143,7 +143,7 @@ motion_notify_event (BtkWidget *widget, BdkEventMotion *event)
 }
 
 void
-input_dialog_destroy (BtkWidget *w, gpointer data)
+input_dialog_destroy (BtkWidget *w, bpointer data)
 {
   *((BtkWidget **)data) = NULL;
 }

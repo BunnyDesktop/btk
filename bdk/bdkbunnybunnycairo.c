@@ -24,7 +24,7 @@
 #include "bdkalias.h"
 
 static void
-bdk_ensure_surface_flush (gpointer surface)
+bdk_ensure_surface_flush (bpointer surface)
 {
   bairo_surface_flush (surface);
   bairo_surface_destroy (surface);
@@ -157,7 +157,7 @@ bdk_bairo_rebunnyion (bairo_t         *cr,
 		  const BdkRebunnyion *rebunnyion)
 {
   BdkRebunnyionBox *boxes;
-  gint n_boxes, i;
+  bint n_boxes, i;
 
   g_return_if_fail (cr != NULL);
   g_return_if_fail (rebunnyion != NULL);
@@ -192,13 +192,13 @@ bdk_bairo_set_source_pixbuf (bairo_t         *cr,
 			     double           pixbuf_x,
 			     double           pixbuf_y)
 {
-  gint width = bdk_pixbuf_get_width (pixbuf);
-  gint height = bdk_pixbuf_get_height (pixbuf);
-  guchar *bdk_pixels = bdk_pixbuf_get_pixels (pixbuf);
+  bint width = bdk_pixbuf_get_width (pixbuf);
+  bint height = bdk_pixbuf_get_height (pixbuf);
+  buchar *bdk_pixels = bdk_pixbuf_get_pixels (pixbuf);
   int bdk_rowstride = bdk_pixbuf_get_rowstride (pixbuf);
   int n_channels = bdk_pixbuf_get_n_channels (pixbuf);
   int bairo_stride;
-  guchar *bairo_pixels;
+  buchar *bairo_pixels;
   bairo_format_t format;
   bairo_surface_t *surface;
   static const bairo_user_data_key_t key;
@@ -226,12 +226,12 @@ bdk_bairo_set_source_pixbuf (bairo_t         *cr,
 
   for (j = height; j; j--)
     {
-      guchar *p = bdk_pixels;
-      guchar *q = bairo_pixels;
+      buchar *p = bdk_pixels;
+      buchar *q = bairo_pixels;
 
       if (n_channels == 3)
 	{
-	  guchar *end = p + 3 * width;
+	  buchar *end = p + 3 * width;
 	  
 	  while (p < end)
 	    {
@@ -250,10 +250,10 @@ bdk_bairo_set_source_pixbuf (bairo_t         *cr,
 	}
       else
 	{
-	  guchar *end = p + 4 * width;
-	  guint t1,t2,t3;
+	  buchar *end = p + 4 * width;
+	  buint t1,t2,t3;
 	    
-#define MULT(d,c,a,t) G_STMT_START { t = c * a + 0x80; d = ((t >> 8) + t) >> 8; } G_STMT_END
+#define MULT(d,c,a,t) B_STMT_START { t = c * a + 0x80; d = ((t >> 8) + t) >> 8; } B_STMT_END
 
 	  while (p < end)
 	    {

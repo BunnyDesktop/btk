@@ -29,11 +29,11 @@ static void      bail_check_menu_item_init              (BailCheckMenuItem      
 
 static void      bail_check_menu_item_toggled_btk       (BtkWidget              *widget);
 
-static void      bail_check_menu_item_real_notify_btk   (GObject                *obj,
-                                                         GParamSpec             *pspec);
+static void      bail_check_menu_item_real_notify_btk   (BObject                *obj,
+                                                         BParamSpec             *pspec);
 
 static void      bail_check_menu_item_real_initialize   (BatkObject              *obj,
-                                                         gpointer               data);
+                                                         bpointer               data);
 
 static BatkStateSet* bail_check_menu_item_ref_state_set  (BatkObject              *accessible);
 
@@ -60,7 +60,7 @@ bail_check_menu_item_init (BailCheckMenuItem *item)
 BatkObject* 
 bail_check_menu_item_new (BtkWidget *widget)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *accessible;
 
   g_return_val_if_fail (BTK_IS_CHECK_MENU_ITEM (widget), NULL);
@@ -78,7 +78,7 @@ bail_check_menu_item_new (BtkWidget *widget)
 
 static void
 bail_check_menu_item_real_initialize (BatkObject *obj,
-                                      gpointer  data)
+                                      bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_check_menu_item_parent_class)->initialize (obj, data);
 
@@ -131,13 +131,13 @@ bail_check_menu_item_ref_state_set (BatkObject *accessible)
 }
 
 static void
-bail_check_menu_item_real_notify_btk (GObject           *obj,
-                                    GParamSpec        *pspec)
+bail_check_menu_item_real_notify_btk (BObject           *obj,
+                                    BParamSpec        *pspec)
 {
   BtkCheckMenuItem *check_menu_item = BTK_CHECK_MENU_ITEM (obj);
   BatkObject *batk_obj;
-  gboolean sensitive;
-  gboolean inconsistent;
+  bboolean sensitive;
+  bboolean inconsistent;
 
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (check_menu_item));
   sensitive = btk_widget_get_sensitive (BTK_WIDGET (check_menu_item));

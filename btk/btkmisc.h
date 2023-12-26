@@ -35,14 +35,14 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MISC		       (btk_misc_get_type ())
-#define BTK_MISC(obj)		       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MISC, BtkMisc))
-#define BTK_MISC_CLASS(klass)	       (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MISC, BtkMiscClass))
-#define BTK_IS_MISC(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MISC))
-#define BTK_IS_MISC_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MISC))
-#define BTK_MISC_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MISC, BtkMiscClass))
+#define BTK_MISC(obj)		       (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MISC, BtkMisc))
+#define BTK_MISC_CLASS(klass)	       (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MISC, BtkMiscClass))
+#define BTK_IS_MISC(obj)	       (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MISC))
+#define BTK_IS_MISC_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MISC))
+#define BTK_MISC_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MISC, BtkMiscClass))
 
 
 typedef struct _BtkMisc	      BtkMisc;
@@ -52,11 +52,11 @@ struct _BtkMisc
 {
   BtkWidget widget;
 
-  gfloat GSEAL (xalign);
-  gfloat GSEAL (yalign);
+  bfloat GSEAL (xalign);
+  bfloat GSEAL (yalign);
 
-  guint16 GSEAL (xpad);
-  guint16 GSEAL (ypad);
+  buint16 GSEAL (xpad);
+  buint16 GSEAL (ypad);
 };
 
 struct _BtkMiscClass
@@ -65,21 +65,21 @@ struct _BtkMiscClass
 };
 
 
-GType   btk_misc_get_type      (void) G_GNUC_CONST;
+GType   btk_misc_get_type      (void) B_GNUC_CONST;
 void	btk_misc_set_alignment (BtkMisc *misc,
-				gfloat	 xalign,
-				gfloat	 yalign);
+				bfloat	 xalign,
+				bfloat	 yalign);
 void    btk_misc_get_alignment (BtkMisc *misc,
-				gfloat  *xalign,
-				gfloat  *yalign);
+				bfloat  *xalign,
+				bfloat  *yalign);
 void	btk_misc_set_padding   (BtkMisc *misc,
-				gint	 xpad,
-				gint	 ypad);
+				bint	 xpad,
+				bint	 ypad);
 void    btk_misc_get_padding   (BtkMisc *misc,
-				gint    *xpad,
-				gint    *ypad);
+				bint    *xpad,
+				bint    *ypad);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MISC_H__ */

@@ -792,7 +792,7 @@ msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Se se define, un subliñado no texto indica que o seguinte carácter debería "
+"Se se define, un subliñado no texto indica que o sebuinte carácter debería "
 "usarse para a tecla rápida mnemónica"
 
 #: ../btk/btkbutton.c:235 ../btk/btkimagemenuitem.c:150
@@ -6551,7 +6551,7 @@ msgid ""
 "should be used for the mnemonic accelerator key in the overflow menu"
 msgstr ""
 "Se se estabelece, un subliñado na etiqueta da propiedade indica que o "
-"seguinte carácter debería usarse para a tecla rápida mnemónica no menú de "
+"sebuinte carácter debería usarse para a tecla rápida mnemónica no menú de "
 "desbordamento"
 
 #: ../btk/btktoolbutton.c:219
@@ -7771,7 +7771,7 @@ msgstr "Como debuxar o método de entrada da barra de estado"
 #~ "The number of bytes between the start of a row and the start of the next "
 #~ "row"
 #~ msgstr ""
-#~ "O número de bytes entre o inicio dunha fila e o inicio da fila seguinte"
+#~ "O número de bytes entre o inicio dunha fila e o inicio da fila sebuinte"
 
 #~ msgid "Pixels"
 #~ msgstr "Píxeles"

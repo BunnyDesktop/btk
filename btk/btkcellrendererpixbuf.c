@@ -26,24 +26,24 @@
 #include "btkprivate.h"
 #include "btkalias.h"
 
-static void btk_cell_renderer_pixbuf_get_property  (GObject                    *object,
-						    guint                       param_id,
-						    GValue                     *value,
-						    GParamSpec                 *pspec);
-static void btk_cell_renderer_pixbuf_set_property  (GObject                    *object,
-						    guint                       param_id,
-						    const GValue               *value,
-						    GParamSpec                 *pspec);
-static void btk_cell_renderer_pixbuf_finalize   (GObject                    *object);
+static void btk_cell_renderer_pixbuf_get_property  (BObject                    *object,
+						    buint                       param_id,
+						    BValue                     *value,
+						    BParamSpec                 *pspec);
+static void btk_cell_renderer_pixbuf_set_property  (BObject                    *object,
+						    buint                       param_id,
+						    const BValue               *value,
+						    BParamSpec                 *pspec);
+static void btk_cell_renderer_pixbuf_finalize   (BObject                    *object);
 static void btk_cell_renderer_pixbuf_create_stock_pixbuf (BtkCellRendererPixbuf *cellpixbuf,
 							  BtkWidget             *widget);
 static void btk_cell_renderer_pixbuf_get_size   (BtkCellRenderer            *cell,
 						 BtkWidget                  *widget,
 						 BdkRectangle               *rectangle,
-						 gint                       *x_offset,
-						 gint                       *y_offset,
-						 gint                       *width,
-						 gint                       *height);
+						 bint                       *x_offset,
+						 bint                       *y_offset,
+						 bint                       *width,
+						 bint                       *height);
 static void btk_cell_renderer_pixbuf_render     (BtkCellRenderer            *cell,
 						 BdkDrawable                *window,
 						 BtkWidget                  *widget,
@@ -67,16 +67,16 @@ enum {
 };
 
 
-#define BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_PIXBUF, BtkCellRendererPixbufPrivate))
+#define BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_CELL_RENDERER_PIXBUF, BtkCellRendererPixbufPrivate))
 
 typedef struct _BtkCellRendererPixbufPrivate BtkCellRendererPixbufPrivate;
 struct _BtkCellRendererPixbufPrivate
 {
-  gchar *stock_id;
+  bchar *stock_id;
   BtkIconSize stock_size;
-  gchar *stock_detail;
-  gboolean follow_state;
-  gchar *icon_name;
+  bchar *stock_detail;
+  bboolean follow_state;
+  bchar *icon_name;
   GIcon *gicon;
 };
 
@@ -94,7 +94,7 @@ btk_cell_renderer_pixbuf_init (BtkCellRendererPixbuf *cellpixbuf)
 static void
 btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (class);
 
   object_class->finalize = btk_cell_renderer_pixbuf_finalize;
@@ -143,7 +143,7 @@ btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
 						      P_("Size"),
 						      P_("The BtkIconSize value that specifies the size of the rendered icon"),
 						      0,
-						      G_MAXUINT,
+						      B_MAXUINT,
 						      BTK_ICON_SIZE_MENU,
 						      BTK_PARAM_READWRITE));
 
@@ -204,7 +204,7 @@ btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
                                    g_param_spec_object ("gicon",
                                                         P_("Icon"),
                                                         P_("The GIcon being displayed"),
-                                                        G_TYPE_ICON,
+                                                        B_TYPE_ICON,
                                                         BTK_PARAM_READWRITE));
 
 
@@ -213,7 +213,7 @@ btk_cell_renderer_pixbuf_class_init (BtkCellRendererPixbufClass *class)
 }
 
 static void
-btk_cell_renderer_pixbuf_finalize (GObject *object)
+btk_cell_renderer_pixbuf_finalize (BObject *object)
 {
   BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
   BtkCellRendererPixbufPrivate *priv;
@@ -234,14 +234,14 @@ btk_cell_renderer_pixbuf_finalize (GObject *object)
   if (priv->gicon)
     g_object_unref (priv->gicon);
 
-  G_OBJECT_CLASS (btk_cell_renderer_pixbuf_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_cell_renderer_pixbuf_parent_class)->finalize (object);
 }
 
 static void
-btk_cell_renderer_pixbuf_get_property (GObject        *object,
-				       guint           param_id,
-				       GValue         *value,
-				       GParamSpec     *pspec)
+btk_cell_renderer_pixbuf_get_property (BObject        *object,
+				       buint           param_id,
+				       BValue         *value,
+				       BParamSpec     *pspec)
 {
   BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
   BtkCellRendererPixbufPrivate *priv;
@@ -251,43 +251,43 @@ btk_cell_renderer_pixbuf_get_property (GObject        *object,
   switch (param_id)
     {
     case PROP_PIXBUF:
-      g_value_set_object (value, cellpixbuf->pixbuf);
+      b_value_set_object (value, cellpixbuf->pixbuf);
       break;
     case PROP_PIXBUF_EXPANDER_OPEN:
-      g_value_set_object (value, cellpixbuf->pixbuf_expander_open);
+      b_value_set_object (value, cellpixbuf->pixbuf_expander_open);
       break;
     case PROP_PIXBUF_EXPANDER_CLOSED:
-      g_value_set_object (value, cellpixbuf->pixbuf_expander_closed);
+      b_value_set_object (value, cellpixbuf->pixbuf_expander_closed);
       break;
     case PROP_STOCK_ID:
-      g_value_set_string (value, priv->stock_id);
+      b_value_set_string (value, priv->stock_id);
       break;
     case PROP_STOCK_SIZE:
-      g_value_set_uint (value, priv->stock_size);
+      b_value_set_uint (value, priv->stock_size);
       break;
     case PROP_STOCK_DETAIL:
-      g_value_set_string (value, priv->stock_detail);
+      b_value_set_string (value, priv->stock_detail);
       break;
     case PROP_FOLLOW_STATE:
-      g_value_set_boolean (value, priv->follow_state);
+      b_value_set_boolean (value, priv->follow_state);
       break;
     case PROP_ICON_NAME:
-      g_value_set_string (value, priv->icon_name);
+      b_value_set_string (value, priv->icon_name);
       break;
     case PROP_GICON:
-      g_value_set_object (value, priv->gicon);
+      b_value_set_object (value, priv->gicon);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
 
 static void
-btk_cell_renderer_pixbuf_set_property (GObject      *object,
-				       guint         param_id,
-				       const GValue *value,
-				       GParamSpec   *pspec)
+btk_cell_renderer_pixbuf_set_property (BObject      *object,
+				       buint         param_id,
+				       const BValue *value,
+				       BParamSpec   *pspec)
 {
   BtkCellRendererPixbuf *cellpixbuf = BTK_CELL_RENDERER_PIXBUF (object);
   BtkCellRendererPixbufPrivate *priv;
@@ -299,7 +299,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
     case PROP_PIXBUF:
       if (cellpixbuf->pixbuf)
 	g_object_unref (cellpixbuf->pixbuf);
-      cellpixbuf->pixbuf = (BdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf = (BdkPixbuf*) b_value_dup_object (value);
       if (cellpixbuf->pixbuf)
         {
           if (priv->stock_id)
@@ -325,12 +325,12 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
     case PROP_PIXBUF_EXPANDER_OPEN:
       if (cellpixbuf->pixbuf_expander_open)
 	g_object_unref (cellpixbuf->pixbuf_expander_open);
-      cellpixbuf->pixbuf_expander_open = (BdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf_expander_open = (BdkPixbuf*) b_value_dup_object (value);
       break;
     case PROP_PIXBUF_EXPANDER_CLOSED:
       if (cellpixbuf->pixbuf_expander_closed)
 	g_object_unref (cellpixbuf->pixbuf_expander_closed);
-      cellpixbuf->pixbuf_expander_closed = (BdkPixbuf*) g_value_dup_object (value);
+      cellpixbuf->pixbuf_expander_closed = (BdkPixbuf*) b_value_dup_object (value);
       break;
     case PROP_STOCK_ID:
       if (priv->stock_id)
@@ -343,7 +343,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
             }
           g_free (priv->stock_id);
         }
-      priv->stock_id = g_value_dup_string (value);
+      priv->stock_id = b_value_dup_string (value);
       if (priv->stock_id)
         {
           if (cellpixbuf->pixbuf)
@@ -367,11 +367,11 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
         }
       break;
     case PROP_STOCK_SIZE:
-      priv->stock_size = g_value_get_uint (value);
+      priv->stock_size = b_value_get_uint (value);
       break;
     case PROP_STOCK_DETAIL:
       g_free (priv->stock_detail);
-      priv->stock_detail = g_value_dup_string (value);
+      priv->stock_detail = b_value_dup_string (value);
       break;
     case PROP_ICON_NAME:
       if (priv->icon_name)
@@ -384,7 +384,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
 	    }
 	  g_free (priv->icon_name);
 	}
-      priv->icon_name = g_value_dup_string (value);
+      priv->icon_name = b_value_dup_string (value);
       if (priv->icon_name)
         {
 	  if (cellpixbuf->pixbuf)
@@ -408,7 +408,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
         }
       break;
     case PROP_FOLLOW_STATE:
-      priv->follow_state = g_value_get_boolean (value);
+      priv->follow_state = b_value_get_boolean (value);
       break;
     case PROP_GICON:
       if (priv->gicon)
@@ -421,7 +421,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
 	    }
 	  g_object_unref (priv->gicon);
 	}
-      priv->gicon = (GIcon *) g_value_dup_object (value);
+      priv->gicon = (GIcon *) b_value_dup_object (value);
       if (priv->gicon)
         {
 	  if (cellpixbuf->pixbuf)
@@ -445,7 +445,7 @@ btk_cell_renderer_pixbuf_set_property (GObject      *object,
         }
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, param_id, pspec);
       break;
     }
 }
@@ -485,7 +485,7 @@ btk_cell_renderer_pixbuf_create_stock_pixbuf (BtkCellRendererPixbuf *cellpixbuf,
                                                priv->stock_size,
                                                priv->stock_detail);
 
-  g_object_notify (G_OBJECT (cellpixbuf), "pixbuf");
+  g_object_notify (B_OBJECT (cellpixbuf), "pixbuf");
 }
 
 static void 
@@ -496,7 +496,7 @@ btk_cell_renderer_pixbuf_create_themed_pixbuf (BtkCellRendererPixbuf *cellpixbuf
   BdkScreen *screen;
   BtkIconTheme *icon_theme;
   BtkSettings *settings;
-  gint width, height;
+  bint width, height;
 
   priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cellpixbuf);
 
@@ -539,20 +539,20 @@ btk_cell_renderer_pixbuf_create_themed_pixbuf (BtkCellRendererPixbuf *cellpixbuf
         }
     }
 
-  g_object_notify (G_OBJECT (cellpixbuf), "pixbuf");
+  g_object_notify (B_OBJECT (cellpixbuf), "pixbuf");
 }
 
 static BdkPixbuf *
 create_colorized_pixbuf (BdkPixbuf *src, 
 			 BdkColor  *new_color)
 {
-  gint i, j;
-  gint width, height, has_alpha, src_row_stride, dst_row_stride;
-  gint red_value, green_value, blue_value;
-  guchar *target_pixels;
-  guchar *original_pixels;
-  guchar *pixsrc;
-  guchar *pixdest;
+  bint i, j;
+  bint width, height, has_alpha, src_row_stride, dst_row_stride;
+  bint red_value, green_value, blue_value;
+  buchar *target_pixels;
+  buchar *original_pixels;
+  buchar *pixsrc;
+  buchar *pixdest;
   BdkPixbuf *dest;
   
   red_value = new_color->red / 255.0;
@@ -593,17 +593,17 @@ static void
 btk_cell_renderer_pixbuf_get_size (BtkCellRenderer *cell,
 				   BtkWidget       *widget,
 				   BdkRectangle    *cell_area,
-				   gint            *x_offset,
-				   gint            *y_offset,
-				   gint            *width,
-				   gint            *height)
+				   bint            *x_offset,
+				   bint            *y_offset,
+				   bint            *width,
+				   bint            *height)
 {
   BtkCellRendererPixbuf *cellpixbuf = (BtkCellRendererPixbuf *) cell;
   BtkCellRendererPixbufPrivate *priv;
-  gint pixbuf_width  = 0;
-  gint pixbuf_height = 0;
-  gint calc_width;
-  gint calc_height;
+  bint pixbuf_width  = 0;
+  bint pixbuf_height = 0;
+  bint calc_width;
+  bint calc_height;
 
   priv = BTK_CELL_RENDERER_PIXBUF_GET_PRIVATE (cell);
 
@@ -631,8 +631,8 @@ btk_cell_renderer_pixbuf_get_size (BtkCellRenderer *cell,
       pixbuf_height = MAX (pixbuf_height, bdk_pixbuf_get_height (cellpixbuf->pixbuf_expander_closed));
     }
   
-  calc_width  = (gint) cell->xpad * 2 + pixbuf_width;
-  calc_height = (gint) cell->ypad * 2 + pixbuf_height;
+  calc_width  = (bint) cell->xpad * 2 + pixbuf_width;
+  calc_height = (bint) cell->ypad * 2 + pixbuf_height;
   
   if (cell_area && pixbuf_width > 0 && pixbuf_height > 0)
     {

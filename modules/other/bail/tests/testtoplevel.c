@@ -2,24 +2,24 @@
 #include <btk/btk.h>
 #include "testlib.h"
 
-static void _notify_toplevel_child_added (GObject *obj,
-  guint index, BatkObject *child, gpointer user_data);
-static void _notify_toplevel_child_removed (GObject *obj,
-  guint index, BatkObject *child, gpointer user_data);
-static gboolean _button_press_event_watcher (GSignalInvocationHint *ihint,
-  guint n_param_values, const GValue *param_values, gpointer data);
+static void _notify_toplevel_child_added (BObject *obj,
+  buint index, BatkObject *child, bpointer user_data);
+static void _notify_toplevel_child_removed (BObject *obj,
+  buint index, BatkObject *child, bpointer user_data);
+static bboolean _button_press_event_watcher (GSignalInvocationHint *ihint,
+  buint n_param_values, const BValue *param_values, bpointer data);
 
-static guint id;
-static gboolean g_register_listener = FALSE;
-static guint g_signal_listener = 0;
-static gint g_press_count = 0;
+static buint id;
+static bboolean g_register_listener = FALSE;
+static buint g_signal_listener = 0;
+static bint g_press_count = 0;
 
 static void
 _check_toplevel (BatkObject *obj)
 {
   BatkObject *root_obj;
-  const gchar *name_string, *version_string;
-  gint max_depth;
+  const bchar *name_string, *version_string;
+  bint max_depth;
 
   g_print ("Start of _check_toplevel\n");
   root_obj = batk_get_root();
@@ -66,7 +66,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
   g_print("testtoplevel Module loaded\n");
 
@@ -75,28 +75,28 @@ btk_module_init(gint argc, char* argv[])
   return 0;
 }
 
-static void _notify_toplevel_child_added (GObject *obj,
-  guint child_index, BatkObject *child, gpointer user_data)
+static void _notify_toplevel_child_added (BObject *obj,
+  buint child_index, BatkObject *child, bpointer user_data)
 {
    g_print ("SIGNAL - Child added - index %d\n", child_index);
 }
 
-static void _notify_toplevel_child_removed (GObject *obj,
-  guint child_index, BatkObject *child, gpointer user_data)
+static void _notify_toplevel_child_removed (BObject *obj,
+  buint child_index, BatkObject *child, bpointer user_data)
 {
    g_print ("SIGNAL - Child removed - index %d\n", child_index);
 }
 
-static gboolean
+static bboolean
 _button_press_event_watcher (GSignalInvocationHint *ihint,
-                    guint		   n_param_values,
-                    const GValue	  *param_values,
-                    gpointer		   data)
+                    buint		   n_param_values,
+                    const BValue	  *param_values,
+                    bpointer		   data)
 {
-  GObject *object;
-  gchar * button_name = (gchar *) data;
+  BObject *object;
+  bchar * button_name = (bchar *) data;
 
-  object = g_value_get_object (param_values + 0);
+  object = b_value_get_object (param_values + 0);
 
   if (BATK_IS_IMPLEMENTOR(object))
     {

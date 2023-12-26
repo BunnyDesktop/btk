@@ -36,11 +36,11 @@
 #include "config.h"
 
 #define BDK_TYPE_GC_QUARTZ              (_bdk_gc_quartz_get_type ())
-#define BDK_GC_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_QUARTZ, BdkGCQuartz))
-#define BDK_GC_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
-#define BDK_IS_GC_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_QUARTZ))
-#define BDK_IS_GC_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_QUARTZ))
-#define BDK_GC_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
+#define BDK_GC_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_QUARTZ, BdkGCQuartz))
+#define BDK_GC_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
+#define BDK_IS_GC_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_QUARTZ))
+#define BDK_IS_GC_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_QUARTZ))
+#define BDK_GC_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_QUARTZ, BdkGCQuartzClass))
 
 #define BDK_DRAG_CONTEXT_PRIVATE(context) ((BdkDragContextPrivate *) BDK_DRAG_CONTEXT (context)->windowing_data)
 
@@ -56,25 +56,25 @@ struct _BdkGCQuartz
   BdkFont          *font;
   BdkFunction       function;
   BdkSubwindowMode  subwindow_mode;
-  gboolean          graphics_exposures;
+  bboolean          graphics_exposures;
 
-  gboolean          have_clip_rebunnyion;
-  gboolean          have_clip_mask;
+  bboolean          have_clip_rebunnyion;
+  bboolean          have_clip_mask;
   CGImageRef        clip_mask;
 
-  gint              line_width;
+  bint              line_width;
   BdkLineStyle      line_style;
   BdkCapStyle       cap_style;
   BdkJoinStyle      join_style;
 
   CGFloat          *dash_lengths;
-  gint              dash_count;
+  bint              dash_count;
   CGFloat           dash_phase;
 
   CGPatternRef      ts_pattern;
   void             *ts_pattern_info;
 
-  guint             is_window : 1;
+  buint             is_window : 1;
 };
 
 struct _BdkGCQuartzClass
@@ -84,7 +84,7 @@ struct _BdkGCQuartzClass
 
 struct _BdkVisualClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkCursorPrivate
@@ -125,38 +125,38 @@ GType  _bdk_gc_quartz_get_type          (void);
 BdkGC *_bdk_quartz_gc_new               (BdkDrawable                *drawable,
 					 BdkGCValues                *values,
 					 BdkGCValuesMask             values_mask);
-gboolean _bdk_quartz_gc_update_cg_context (BdkGC                      *gc,
+bboolean _bdk_quartz_gc_update_cg_context (BdkGC                      *gc,
 					   BdkDrawable                *drawable,
 					   CGContextRef                context,
 					   BdkQuartzContextValuesMask  mask);
 
 /* Colormap */
 CGColorRef _bdk_quartz_colormap_get_cgcolor_from_pixel (BdkDrawable *drawable,
-                                                        guint32      pixel);
+                                                        buint32      pixel);
 
 /* Window */
-gboolean    _bdk_quartz_window_is_ancestor          (BdkWindow *ancestor,
+bboolean    _bdk_quartz_window_is_ancestor          (BdkWindow *ancestor,
                                                      BdkWindow *window);
-void       _bdk_quartz_window_bdk_xy_to_xy          (gint       bdk_x,
-                                                     gint       bdk_y,
-                                                     gint      *ns_x,
-                                                     gint      *ns_y);
-void       _bdk_quartz_window_xy_to_bdk_xy          (gint       ns_x,
-                                                     gint       ns_y,
-                                                     gint      *bdk_x,
-                                                     gint      *bdk_y);
+void       _bdk_quartz_window_bdk_xy_to_xy          (bint       bdk_x,
+                                                     bint       bdk_y,
+                                                     bint      *ns_x,
+                                                     bint      *ns_y);
+void       _bdk_quartz_window_xy_to_bdk_xy          (bint       ns_x,
+                                                     bint       ns_y,
+                                                     bint      *bdk_x,
+                                                     bint      *bdk_y);
 void       _bdk_quartz_window_nspoint_to_bdk_xy     (NSPoint    point,
-                                                     gint      *x,
-                                                     gint      *y);
+                                                     bint      *x,
+                                                     bint      *y);
 BdkWindow *_bdk_quartz_window_find_child            (BdkWindow *window,
-						     gint       x,
-						     gint       y);
+						     bint       x,
+						     bint       y);
 void       _bdk_quartz_window_attach_to_parent      (BdkWindow *window);
 void       _bdk_quartz_window_detach_from_parent    (BdkWindow *window);
 void       _bdk_quartz_window_did_become_main       (BdkWindow *window);
 void       _bdk_quartz_window_did_resign_main       (BdkWindow *window);
 void       _bdk_quartz_window_debug_highlight       (BdkWindow *window,
-                                                     gint       number);
+                                                     bint       number);
 
 void       _bdk_quartz_window_set_needs_display_in_rect (BdkWindow    *window,
                                                          BdkRectangle *rect);
@@ -171,33 +171,33 @@ typedef enum {
 } BdkQuartzEventSubType;
 
 void         _bdk_quartz_events_update_focus_window    (BdkWindow *new_window,
-                                                        gboolean   got_focus);
+                                                        bboolean   got_focus);
 void         _bdk_quartz_events_send_map_event         (BdkWindow *window);
 BdkEventMask _bdk_quartz_events_get_current_event_mask (void);
 
 BdkModifierType _bdk_quartz_events_get_current_keyboard_modifiers (void);
 BdkModifierType _bdk_quartz_events_get_current_mouse_modifiers    (void);
 
-void         _bdk_quartz_events_break_all_grabs         (guint32    time);
+void         _bdk_quartz_events_break_all_grabs         (buint32    time);
 
 /* Event loop */
-gboolean   _bdk_quartz_event_loop_check_pending (void);
+bboolean   _bdk_quartz_event_loop_check_pending (void);
 NSEvent *  _bdk_quartz_event_loop_get_pending   (void);
 void       _bdk_quartz_event_loop_release_event (NSEvent *event);
 
 /* FIXME: image */
 BdkImage *_bdk_quartz_image_copy_to_image (BdkDrawable *drawable,
 					    BdkImage    *image,
-					    gint         src_x,
-					    gint         src_y,
-					    gint         dest_x,
-					    gint         dest_y,
-					    gint         width,
-					    gint         height);
+					    bint         src_x,
+					    bint         src_y,
+					    bint         dest_x,
+					    bint         dest_y,
+					    bint         width,
+					    bint         height);
 
 /* Keys */
 BdkEventType _bdk_quartz_keys_event_type  (NSEvent   *event);
-gboolean     _bdk_quartz_keys_is_modifier (guint      keycode);
+bboolean     _bdk_quartz_keys_is_modifier (buint      keycode);
 void         _bdk_quartz_synthesize_null_key_event (BdkWindow *window);
 
 /* Drawable */
@@ -206,14 +206,14 @@ void        _bdk_quartz_drawable_flush  (BdkDrawable *drawable);
 
 /* Geometry */
 void        _bdk_quartz_window_scroll      (BdkWindow       *window,
-                                            gint             dx,
-                                            gint             dy);
+                                            bint             dx,
+                                            bint             dy);
 void        _bdk_quartz_window_queue_translation (BdkWindow *window,
 						  BdkGC     *gc,
                                                   BdkRebunnyion *area,
-                                                  gint       dx,
-                                                  gint       dy);
-gboolean    _bdk_quartz_window_queue_antiexpose  (BdkWindow *window,
+                                                  bint       dx,
+                                                  bint       dy);
+bboolean    _bdk_quartz_window_queue_antiexpose  (BdkWindow *window,
                                                   BdkRebunnyion *area);
 
 /* Pixmap */

@@ -300,7 +300,7 @@
 2008-05-26  Michael Natterer  <mitch@imendio.com>
 
 	* libbail-util/bailmisc.h
-	* libbail-util/bailtextutil.h: use G_BEGIN/END_DECLS.
+	* libbail-util/bailtextutil.h: use B_BEGIN/END_DECLS.
 
 2008-05-24  Matthias Clasen  <mclasen@redhat.com>
 

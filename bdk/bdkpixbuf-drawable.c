@@ -51,7 +51,7 @@
 
 
 
-static const guint32 mask_table[] = {
+static const buint32 mask_table[] = {
   0x00000000, 0x00000001, 0x00000003, 0x00000007,
   0x0000000f, 0x0000001f, 0x0000003f, 0x0000007f,
   0x000000ff, 0x000001ff, 0x000003ff, 0x000007ff,
@@ -71,7 +71,7 @@ static const guint32 mask_table[] = {
  */
 static void
 bitmap1 (BdkImage    *image,
-         guchar      *pixels,
+         buchar      *pixels,
          int          rowstride,
          int          x1,
          int          y1,
@@ -80,9 +80,9 @@ bitmap1 (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  register guint8 data;
-  guint8 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl, *orow = pixels;
+  register buint8 data;
+  buint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl, *orow = pixels;
 
   d (printf ("bitmap, no alpha\n"));
 
@@ -127,7 +127,7 @@ bitmap1 (BdkImage    *image,
  */
 static void
 bitmap1a (BdkImage    *image,
-          guchar      *pixels,
+          buchar      *pixels,
           int          rowstride,
           int          x1,
           int          y1,
@@ -136,9 +136,9 @@ bitmap1a (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  register guint8 data;
-  guint8 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl, *orow = pixels;
+  register buint8 data;
+  buint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl, *orow = pixels;
 
   d (printf ("bitmap, with alpha\n"));
 
@@ -181,7 +181,7 @@ bitmap1a (BdkImage    *image,
  */
 static void
 rgb1 (BdkImage    *image,
-      guchar      *pixels,
+      buchar      *pixels,
       int          rowstride,
       int          x1,
       int          y1,
@@ -191,9 +191,9 @@ rgb1 (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  register guint8 data;
-  guint8 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl, *orow = pixels;
+  register buint8 data;
+  buint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl, *orow = pixels;
 
   d (printf ("1 bits/pixel\n"));
 
@@ -229,7 +229,7 @@ rgb1 (BdkImage    *image,
  */
 static void
 rgb1a (BdkImage    *image,
-       guchar      *pixels,
+       buchar      *pixels,
        int          rowstride,
        int          x1,
        int          y1,
@@ -239,9 +239,9 @@ rgb1a (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  register guint8 data;
-  guint8 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl, *orow = pixels;
+  register buint8 data;
+  buint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl, *orow = pixels;
   
   d (printf ("1 bits/pixel\n"));
 
@@ -277,7 +277,7 @@ rgb1a (BdkImage    *image,
  */
 static void
 rgb8 (BdkImage    *image,
-      guchar      *pixels,
+      buchar      *pixels,
       int          rowstride,
       int          x1,
       int          y1,
@@ -287,11 +287,11 @@ rgb8 (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  guint32 mask;
-  register guint32 data;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
-  register guint8 *s;
-  register guint8 *o;
+  buint32 mask;
+  register buint32 data;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  register buint8 *s;
+  register buint8 *o;
 
   bpl = image->bpl;
 
@@ -321,7 +321,7 @@ rgb8 (BdkImage    *image,
  */
 static void
 rgb8a (BdkImage    *image,
-       guchar      *pixels,
+       buchar      *pixels,
        int          rowstride,
        int          x1,
        int          y1,
@@ -331,12 +331,12 @@ rgb8a (BdkImage    *image,
 {
   int xx, yy;
   int bpl;
-  guint32 mask;
-  register guint32 data;
-  guint32 remap[256];
-  register guint8 *s;	/* read 2 pixels at once */
-  register guint32 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint32 mask;
+  register buint32 data;
+  buint32 remap[256];
+  register buint8 *s;	/* read 2 pixels at once */
+  register buint32 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
@@ -362,7 +362,7 @@ rgb8a (BdkImage    *image,
   for (yy = y1; yy < y2; yy++)
     {
       s = srow;
-      o = (guint32 *) orow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
 	  data = *s++ & mask;
@@ -413,7 +413,7 @@ rgb8a (BdkImage    *image,
  */
 static void
 rgb565lsb (BdkImage    *image,
-	   guchar      *pixels,
+	   buchar      *pixels,
 	   int          rowstride,
 	   int          x1,
 	   int          y1,
@@ -424,20 +424,20 @@ rgb565lsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint8 *o;
+  register buint16 *s;
+  register buint8 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint8 *) orow;
+      s = (buint16 *) srow;
+      o = (buint8 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef BIG
 	  data = SWAP16 (data);
 #endif	  
@@ -457,7 +457,7 @@ rgb565lsb (BdkImage    *image,
  */
 static void
 rgb565msb (BdkImage    *image,
-	   guchar      *pixels,
+	   buchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
@@ -468,20 +468,20 @@ rgb565msb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint8 *o;
+  register buint16 *s;
+  register buint8 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint8 *) orow;
+      s = (buint16 *) srow;
+      o = (buint8 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
 #endif	  
@@ -501,7 +501,7 @@ rgb565msb (BdkImage    *image,
  */
 static void
 rgb565alsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -512,20 +512,20 @@ rgb565alsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint32 *o;
+  register buint16 *s;
+  register buint32 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint32 *) orow;
+      s = (buint16 *) srow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  *o++ = ABGR8888fromRGB565 (data);
 #else
@@ -545,7 +545,7 @@ rgb565alsb (BdkImage    *image,
  */
 static void
 rgb565amsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -556,20 +556,20 @@ rgb565amsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint32 *o;
+  register buint16 *s;
+  register buint32 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint32 *) orow;
+      s = (buint16 *) srow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
 	  *o++ = ABGR8888fromRGB565 (data);
@@ -589,7 +589,7 @@ rgb565amsb (BdkImage    *image,
  */
 static void
 rgb555lsb (BdkImage     *image,
-	   guchar       *pixels,
+	   buchar       *pixels,
 	   int           rowstride,
            int          x1,
            int          y1,
@@ -600,20 +600,20 @@ rgb555lsb (BdkImage     *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint8 *o;
+  register buint16 *s;
+  register buint8 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint8 *) orow;
+      s = (buint16 *) srow;
+      o = (buint8 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef BIG
 	  data = SWAP16 (data);
 #endif	  
@@ -633,7 +633,7 @@ rgb555lsb (BdkImage     *image,
  */
 static void
 rgb555msb (BdkImage    *image,
-	   guchar      *pixels,
+	   buchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
@@ -644,20 +644,20 @@ rgb555msb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint8 *o;
+  register buint16 *s;
+  register buint8 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint8 *) orow;
+      s = (buint16 *) srow;
+      o = (buint8 *) orow;
       for (xx = x1; xx < x2; xx ++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
 #endif	  
@@ -677,7 +677,7 @@ rgb555msb (BdkImage    *image,
  */
 static void
 rgb555alsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -688,20 +688,20 @@ rgb555alsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;	/* read 1 pixels at once */
-  register guint32 *o;
+  register buint16 *s;	/* read 1 pixels at once */
+  register buint32 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint32 *) orow;
+      s = (buint16 *) srow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  *o++ = ABGR8888fromRGB555 (data);
 #else
@@ -721,7 +721,7 @@ rgb555alsb (BdkImage    *image,
  */
 static void
 rgb555amsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -732,20 +732,20 @@ rgb555amsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  register guint16 *s;
-  register guint32 *o;
+  register buint16 *s;
+  register buint32 *o;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint16 *) srow;
-      o = (guint32 *) orow;
+      s = (buint16 *) srow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx++)
 	{
-	  register guint32 data = *s++;
+	  register buint32 data = *s++;
 #ifdef LITTLE
 	  data = SWAP16 (data);
 	  *o++ = ABGR8888fromRGB555 (data);
@@ -761,7 +761,7 @@ rgb555amsb (BdkImage    *image,
 
 static void
 rgb888alsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -772,9 +772,9 @@ rgb888alsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  guint8 *s;	/* for byte order swapping */
-  guint8 *o;
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *s;	/* for byte order swapping */
+  buint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
 
   bpl = image->bpl;
 
@@ -800,7 +800,7 @@ rgb888alsb (BdkImage    *image,
 
 static void
 rgb888lsb (BdkImage    *image,
-	   guchar      *pixels,
+	   buchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
@@ -811,8 +811,8 @@ rgb888lsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
-  guint8 *o, *s;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *o, *s;
 
   bpl = image->bpl;
 
@@ -836,7 +836,7 @@ rgb888lsb (BdkImage    *image,
 
 static void
 rgb888amsb (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
@@ -847,9 +847,9 @@ rgb888amsb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
-  guint32 *o;
-  guint32 *s;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint32 *o;
+  buint32 *s;
 
   d (printf ("32 bit, msb, with alpha\n"));
 
@@ -858,8 +858,8 @@ rgb888amsb (BdkImage    *image,
   /* msb data */
   for (yy = y1; yy < y2; yy++)
     {
-      s = (guint32 *) srow;
-      o = (guint32 *) orow;
+      s = (buint32 *) srow;
+      o = (buint32 *) orow;
       for (xx = x1; xx < x2; xx++)
 	{
 #ifdef LITTLE
@@ -875,7 +875,7 @@ rgb888amsb (BdkImage    *image,
 
 static void
 rgb888msb (BdkImage    *image,
-	   guchar      *pixels,
+	   buchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
@@ -886,9 +886,9 @@ rgb888msb (BdkImage    *image,
   int xx, yy;
   int bpl;
 
-  guint8 *srow = (guint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
-  guint8 *s;
-  guint8 *o;
+  buint8 *srow = (buint8*)image->mem + y1 * image->bpl + x1 * image->bpp, *orow = pixels;
+  buint8 *s;
+  buint8 *o;
 
   d (printf ("32 bit, msb, no alpha\n"));
 
@@ -916,21 +916,21 @@ rgb888msb (BdkImage    *image,
  */
 static void
 convert_real_slow (BdkImage    *image,
-		   guchar      *pixels,
+		   buchar      *pixels,
 		   int          rowstride,
                    int          x1,
                    int          y1,
                    int          x2,
                    int          y2,
 		   BdkColormap *cmap,
-		   gboolean     alpha)
+		   bboolean     alpha)
 {
   int xx, yy;
-  guint8 *orow = pixels;
-  guint8 *o;
-  guint32 pixel;
+  buint8 *orow = pixels;
+  buint8 *o;
+  buint32 pixel;
   BdkVisual *v;
-  guint8 component;
+  buint8 component;
   int i;
 
   v = bdk_colormap_get_visual (cmap);
@@ -939,7 +939,7 @@ convert_real_slow (BdkImage    *image,
     {
       g_warning ("%s: The depth of the source image (%d) doesn't "
                  "match the depth of the colormap passed in (%d).",
-                 G_STRLOC, image->depth, v->depth);
+                 B_STRLOC, image->depth, v->depth);
       return;
     } 
  
@@ -997,7 +997,7 @@ convert_real_slow (BdkImage    *image,
 }
 
 typedef void (* cfunc) (BdkImage    *image,
-                        guchar      *pixels,
+                        buchar      *pixels,
                         int          rowstride,
                         int          x1,
                         int          y1,
@@ -1022,9 +1022,9 @@ static const cfunc convert_map[] = {
  */
 static void
 rgbconvert (BdkImage    *image,
-	    guchar      *pixels,
+	    buchar      *pixels,
 	    int          rowstride,
-	    gboolean     alpha,
+	    bboolean     alpha,
             int          x,
             int          y,
             int          width,
@@ -1059,7 +1059,7 @@ rgbconvert (BdkImage    *image,
     {
       g_warning ("%s: The depth of the source image (%d) doesn't "
                  "match the depth of the colormap passed in (%d).",
-                 G_STRLOC, image->depth, v->depth);
+                 B_STRLOC, image->depth, v->depth);
       return;
     } 
  
@@ -1246,7 +1246,7 @@ bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
     {
       g_warning ("%s: Source drawable has no colormap; either pass "
                  "in a colormap, or set the colormap on the drawable "
-                 "with bdk_drawable_set_colormap()", G_STRLOC);
+                 "with bdk_drawable_set_colormap()", B_STRLOC);
       return NULL;
     }
   
@@ -1254,7 +1254,7 @@ bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
     {
       g_warning ("%s: Depth of the source drawable is %d where as "
                  "the visual depth of the colormap passed is %d",
-                 G_STRLOC, depth, cmap->visual->depth);
+                 B_STRLOC, depth, cmap->visual->depth);
       return NULL;
     } 
  
@@ -1289,12 +1289,12 @@ bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
 
   for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
     {
-      gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+      bint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
       for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 	{
-	  gint xs0, ys0;
+	  bint xs0, ys0;
 	  
-	  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
+	  bint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 	  
 	  image = _bdk_image_get_scratch (bdk_drawable_get_screen (src), 
 					  width1, height1, depth, &xs0, &ys0);
@@ -1363,7 +1363,7 @@ bdk_pixbuf_get_from_image (BdkPixbuf   *dest,
     {
       g_warning ("%s: Source image has no colormap; either pass "
                  "in a colormap, or set the colormap on the image "
-                 "with bdk_image_set_colormap()", G_STRLOC);
+                 "with bdk_image_set_colormap()", B_STRLOC);
       return NULL;
     }
   
@@ -1371,7 +1371,7 @@ bdk_pixbuf_get_from_image (BdkPixbuf   *dest,
     {
       g_warning ("%s: Depth of the Source image is %d where as "
                  "the visual depth of the colormap passed is %d",
-                 G_STRLOC, src->depth, cmap->visual->depth);
+                 B_STRLOC, src->depth, cmap->visual->depth);
       return NULL;
     } 
  

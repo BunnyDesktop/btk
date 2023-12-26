@@ -23,7 +23,7 @@
 #include "btkalias.h"
 
 static BtkRBNode * _btk_rbnode_new                (BtkRBTree  *tree,
-						   gint        height);
+						   bint        height);
 static void        _btk_rbnode_free               (BtkRBNode  *node);
 static void        _btk_rbnode_rotate_left        (BtkRBTree  *tree,
 						   BtkRBNode  *node);
@@ -42,7 +42,7 @@ static inline void _fixup_parity                  (BtkRBTree  *tree,
 
 static BtkRBNode *
 _btk_rbnode_new (BtkRBTree *tree,
-		 gint       height)
+		 bint       height)
 {
   BtkRBNode *node = g_slice_new (BtkRBNode);
 
@@ -62,9 +62,9 @@ _btk_rbnode_free (BtkRBNode *node)
 {
   if (btk_debug_flags & BTK_DEBUG_TREE)
     {
-      node->left = (gpointer) 0xdeadbeef;
-      node->right = (gpointer) 0xdeadbeef;
-      node->parent = (gpointer) 0xdeadbeef;
+      node->left = (bpointer) 0xdeadbeef;
+      node->right = (bpointer) 0xdeadbeef;
+      node->parent = (bpointer) 0xdeadbeef;
       node->offset = 56789;
       node->count = 56789;
       node->flags = 0;
@@ -76,7 +76,7 @@ static void
 _btk_rbnode_rotate_left (BtkRBTree *tree,
 			 BtkRBNode *node)
 {
-  gint node_height, right_height;
+  bint node_height, right_height;
   BtkRBNode *right = node->right;
 
   g_return_if_fail (node != tree->nil);
@@ -133,7 +133,7 @@ static void
 _btk_rbnode_rotate_right (BtkRBTree *tree,
 			  BtkRBNode *node)
 {
-  gint node_height, left_height;
+  bint node_height, left_height;
   BtkRBNode *left = node->left;
 
   g_return_if_fail (node != tree->nil);
@@ -352,7 +352,7 @@ _btk_rbtree_new (void)
 static void
 _btk_rbtree_free_helper (BtkRBTree  *tree,
 			 BtkRBNode  *node,
-			 gpointer    data)
+			 bpointer    data)
 {
   if (node->children)
     _btk_rbtree_free (node->children);
@@ -382,11 +382,11 @@ _btk_rbtree_remove (BtkRBTree *tree)
   BtkRBTree *tmp_tree;
   BtkRBNode *tmp_node;
 
-  gint height = tree->root->offset;
+  bint height = tree->root->offset;
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
   
   tmp_tree = tree->parent_tree;
@@ -419,7 +419,7 @@ _btk_rbtree_remove (BtkRBTree *tree)
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tmp_tree);
+    _btk_rbtree_test (B_STRLOC, tmp_tree);
 #endif
 }
 
@@ -427,11 +427,11 @@ _btk_rbtree_remove (BtkRBTree *tree)
 BtkRBNode *
 _btk_rbtree_insert_after (BtkRBTree *tree,
 			  BtkRBNode *current,
-			  gint       height,
-			  gboolean   valid)
+			  bint       height,
+			  bboolean   valid)
 {
   BtkRBNode *node;
-  gboolean right = TRUE;
+  bboolean right = TRUE;
   BtkRBNode *tmp_node;
   BtkRBTree *tmp_tree;  
 
@@ -440,7 +440,7 @@ _btk_rbtree_insert_after (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_insert_after: %p\n", current);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 
@@ -502,7 +502,7 @@ _btk_rbtree_insert_after (BtkRBTree *tree,
       g_print ("_btk_rbtree_insert_after finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 
@@ -512,11 +512,11 @@ _btk_rbtree_insert_after (BtkRBTree *tree,
 BtkRBNode *
 _btk_rbtree_insert_before (BtkRBTree *tree,
 			   BtkRBNode *current,
-			   gint       height,
-			   gboolean   valid)
+			   bint       height,
+			   bboolean   valid)
 {
   BtkRBNode *node;
-  gboolean left = TRUE;
+  bboolean left = TRUE;
   BtkRBNode *tmp_node;
   BtkRBTree *tmp_tree;
 
@@ -525,7 +525,7 @@ _btk_rbtree_insert_before (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_insert_before: %p\n", current);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -588,7 +588,7 @@ _btk_rbtree_insert_before (BtkRBTree *tree,
       g_print ("_btk_rbtree_insert_before finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -597,7 +597,7 @@ _btk_rbtree_insert_before (BtkRBTree *tree,
 
 BtkRBNode *
 _btk_rbtree_find_count (BtkRBTree *tree,
-			gint       count)
+			bint       count)
 {
   BtkRBNode *node;
 
@@ -620,9 +620,9 @@ _btk_rbtree_find_count (BtkRBTree *tree,
 void
 _btk_rbtree_node_set_height (BtkRBTree *tree,
 			     BtkRBNode *node,
-			     gint       height)
+			     bint       height)
 {
-  gint diff = height - BTK_RBNODE_GET_HEIGHT (node);
+  bint diff = height - BTK_RBNODE_GET_HEIGHT (node);
   BtkRBNode *tmp_node = node;
   BtkRBTree *tmp_tree = tree;
 
@@ -641,7 +641,7 @@ _btk_rbtree_node_set_height (BtkRBTree *tree,
     }
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
 }
 
@@ -795,8 +795,8 @@ _btk_rbtree_mark_invalid (BtkRBTree *tree)
 
 void
 _btk_rbtree_set_fixed_height (BtkRBTree *tree,
-			      gint       height,
-			      gboolean   mark_valid)
+			      bint       height,
+			      bboolean   mark_valid)
 {
   BtkRBNode *node;
 
@@ -827,11 +827,11 @@ _btk_rbtree_set_fixed_height (BtkRBTree *tree,
 typedef struct _BtkRBReorder
 {
   BtkRBTree *children;
-  gint height;
-  gint flags;
-  gint order;
-  gint invert_order;
-  gint parity;
+  bint height;
+  bint flags;
+  bint order;
+  bint invert_order;
+  bint parity;
 } BtkRBReorder;
 
 static int
@@ -893,13 +893,13 @@ btk_rbtree_reorder_fixup (BtkRBTree *tree,
  */
 void
 _btk_rbtree_reorder (BtkRBTree *tree,
-		     gint      *new_order,
-		     gint       length)
+		     bint      *new_order,
+		     bint       length)
 {
   BtkRBReorder reorder = { NULL };
   GArray *array;
   BtkRBNode *node;
-  gint i;
+  bint i;
   
   g_return_if_fail (tree != NULL);
   g_return_if_fail (length > 0);
@@ -956,12 +956,12 @@ _btk_rbtree_reorder (BtkRBTree *tree,
 }
 
 
-gint
+bint
 _btk_rbtree_node_find_offset (BtkRBTree *tree,
 			      BtkRBNode *node)
 {
   BtkRBNode *last;
-  gint retval;
+  bint retval;
 
   g_assert (node);
   g_assert (node->left);
@@ -990,12 +990,12 @@ _btk_rbtree_node_find_offset (BtkRBTree *tree,
   return retval;
 }
 
-gint
+bint
 _btk_rbtree_node_find_parity (BtkRBTree *tree,
                               BtkRBNode *node)
 {
   BtkRBNode *last;
-  gint retval;  
+  bint retval;  
   
   g_assert (node);
   g_assert (node->left);
@@ -1025,9 +1025,9 @@ _btk_rbtree_node_find_parity (BtkRBTree *tree,
   return retval % 2;
 }
 
-gint
+bint
 _btk_rbtree_real_find_offset (BtkRBTree  *tree,
-			      gint        height,
+			      bint        height,
 			      BtkRBTree **new_tree,
 			      BtkRBNode **new_node)
 {
@@ -1087,9 +1087,9 @@ _btk_rbtree_real_find_offset (BtkRBTree  *tree,
   return (height - tmp_node->left->offset);
 }
 
-gint
+bint
 _btk_rbtree_find_offset (BtkRBTree  *tree,
-			      gint        height,
+			      bint        height,
 			      BtkRBTree **new_tree,
 			      BtkRBNode **new_node)
 {
@@ -1113,7 +1113,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
   BtkRBNode *x, *y;
   BtkRBTree *tmp_tree;
   BtkRBNode *tmp_node;
-  gint y_height;
+  bint y_height;
   
   g_return_if_fail (tree != NULL);
   g_return_if_fail (node != NULL);
@@ -1124,7 +1124,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
     {
       g_print ("\n\n_btk_rbtree_remove_node: %p\n", node);
       _btk_rbtree_debug_spew (tree);
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */
   
@@ -1135,7 +1135,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
 
 #ifdef G_ENABLE_DEBUG  
   if (btk_debug_flags & BTK_DEBUG_TREE)
-    _btk_rbtree_test (G_STRLOC, tree);
+    _btk_rbtree_test (B_STRLOC, tree);
 #endif
   
   if (node->left == tree->nil || node->right == tree->nil)
@@ -1218,7 +1218,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
 
   if (y != node)
     {
-      gint diff;
+      bint diff;
 
       /* Copy the node over */
       if (BTK_RBNODE_GET_COLOR (node) == BTK_RBNODE_BLACK)
@@ -1268,7 +1268,7 @@ _btk_rbtree_remove_node (BtkRBTree *tree,
       g_print ("_btk_rbtree_remove_node finished...\n");
       _btk_rbtree_debug_spew (tree);
       g_print ("\n\n");
-      _btk_rbtree_test (G_STRLOC, tree);
+      _btk_rbtree_test (B_STRLOC, tree);
     }
 #endif /* G_ENABLE_DEBUG */  
 }
@@ -1395,11 +1395,11 @@ _btk_rbtree_prev_full (BtkRBTree  *tree,
     }
 }
 
-gint
+bint
 _btk_rbtree_get_depth (BtkRBTree *tree)
 {
   BtkRBTree *tmp_tree;
-  gint depth = 0;
+  bint depth = 0;
 
   tmp_tree = tree->parent_tree;
   while (tmp_tree)
@@ -1415,7 +1415,7 @@ static void
 _btk_rbtree_traverse_pre_order (BtkRBTree             *tree,
 				BtkRBNode             *node,
 				BtkRBTreeTraverseFunc  func,
-				gpointer               data)
+				bpointer               data)
 {
   if (node == tree->nil)
     return;
@@ -1429,7 +1429,7 @@ static void
 _btk_rbtree_traverse_post_order (BtkRBTree             *tree,
 				 BtkRBNode             *node,
 				 BtkRBTreeTraverseFunc  func,
-				 gpointer               data)
+				 bpointer               data)
 {
   if (node == tree->nil)
     return;
@@ -1444,7 +1444,7 @@ _btk_rbtree_traverse (BtkRBTree             *tree,
 		      BtkRBNode             *node,
 		      GTraverseType          order,
 		      BtkRBTreeTraverseFunc  func,
-		      gpointer               data)
+		      bpointer               data)
 {
   g_return_if_fail (tree != NULL);
   g_return_if_fail (node != NULL);
@@ -1496,11 +1496,11 @@ void _fixup_parity (BtkRBTree *tree,
 }
 
 #ifdef G_ENABLE_DEBUG
-static guint
+static buint
 get_parity (BtkRBNode *node)
 {
-  guint child_total = 0;
-  guint rem;
+  buint child_total = 0;
+  buint rem;
 
   /* The parity of a node is node->parity minus
    * the parity of left, right, and children.
@@ -1511,11 +1511,11 @@ get_parity (BtkRBNode *node)
    * node->parity is the reverse of the node's parity.
    */
   
-  child_total += (guint) node->left->parity;
-  child_total += (guint) node->right->parity;
+  child_total += (buint) node->left->parity;
+  child_total += (buint) node->right->parity;
 
   if (node->children)
-    child_total += (guint) node->children->root->parity;
+    child_total += (buint) node->children->root->parity;
 
   rem = child_total % 2;
   
@@ -1525,11 +1525,11 @@ get_parity (BtkRBNode *node)
     return !node->parity;
 }
 
-static guint
+static buint
 count_parity (BtkRBTree *tree,
               BtkRBNode *node)
 {
-  guint res;
+  buint res;
   
   if (node == tree->nil)
     return 0;
@@ -1537,10 +1537,10 @@ count_parity (BtkRBTree *tree,
   res =
     count_parity (tree, node->left) +
     count_parity (tree, node->right) +
-    (guint)1 +
+    (buint)1 +
     (node->children ? count_parity (node->children, node->children->root) : 0);
 
-  res = res % (guint)2;
+  res = res % (buint)2;
   
   if (res != node->parity)
     g_print ("parity incorrect for node\n");
@@ -1551,11 +1551,11 @@ count_parity (BtkRBTree *tree,
   return res;
 }
 
-static gint
+static bint
 _count_nodes (BtkRBTree *tree,
               BtkRBNode *node)
 {
-  gint res;
+  bint res;
   if (node == tree->nil)
     return 0;
 
@@ -1574,7 +1574,7 @@ static void
 _btk_rbtree_test_height (BtkRBTree *tree,
                          BtkRBNode *node)
 {
-  gint computed_offset = 0;
+  bint computed_offset = 0;
 
   /* This whole test is sort of a useless truism. */
   
@@ -1603,7 +1603,7 @@ _btk_rbtree_test_height (BtkRBTree *tree,
 static void
 _btk_rbtree_test_dirty (BtkRBTree *tree,
 			BtkRBNode *node,
-			 gint      expected_dirtyness)
+			 bint      expected_dirtyness)
 {
 
   if (expected_dirtyness)
@@ -1677,7 +1677,7 @@ _btk_rbtree_test_structure (BtkRBTree *tree)
 }
 
 void
-_btk_rbtree_test (const gchar *where,
+_btk_rbtree_test (const bchar *where,
                   BtkRBTree   *tree)
 {
   BtkRBTree *tmp_tree;
@@ -1709,9 +1709,9 @@ _btk_rbtree_test (const gchar *where,
 static void
 _btk_rbtree_debug_spew_helper (BtkRBTree *tree,
 			       BtkRBNode *node,
-			       gint       depth)
+			       bint       depth)
 {
-  gint i;
+  bint i;
   for (i = 0; i < depth; i++)
     g_print ("\t");
 

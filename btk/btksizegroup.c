@@ -33,14 +33,14 @@ enum {
   PROP_IGNORE_HIDDEN
 };
 
-static void btk_size_group_set_property (GObject      *object,
-					 guint         prop_id,
-					 const GValue *value,
-					 GParamSpec   *pspec);
-static void btk_size_group_get_property (GObject      *object,
-					 guint         prop_id,
-					 GValue       *value,
-					 GParamSpec   *pspec);
+static void btk_size_group_set_property (BObject      *object,
+					 buint         prop_id,
+					 const BValue *value,
+					 BParamSpec   *pspec);
+static void btk_size_group_get_property (BObject      *object,
+					 buint         prop_id,
+					 BValue       *value,
+					 BParamSpec   *pspec);
 
 static void add_group_to_closure  (BtkSizeGroup      *group,
 				   BtkSizeGroupMode   mode,
@@ -53,51 +53,51 @@ static void add_widget_to_closure (BtkWidget         *widget,
 
 /* BtkBuildable */
 static void btk_size_group_buildable_init (BtkBuildableIface *iface);
-static gboolean btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
+static bboolean btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
 							   BtkBuilder    *builder,
-							   GObject       *child,
-							   const gchar   *tagname,
+							   BObject       *child,
+							   const bchar   *tagname,
 							   GMarkupParser *parser,
-							   gpointer      *data);
+							   bpointer      *data);
 static void btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
 						      BtkBuilder    *builder,
-						      GObject       *child,
-						      const gchar   *tagname,
-						      gpointer       user_data);
+						      BObject       *child,
+						      const bchar   *tagname,
+						      bpointer       user_data);
 
 static GQuark size_groups_quark;
-static const gchar size_groups_tag[] = "btk-size-groups";
+static const bchar size_groups_tag[] = "btk-size-groups";
 
 static GQuark visited_quark;
-static const gchar visited_tag[] = "btk-size-group-visited";
+static const bchar visited_tag[] = "btk-size-group-visited";
 
 static GSList *
 get_size_groups (BtkWidget *widget)
 {
-  return g_object_get_qdata (G_OBJECT (widget), size_groups_quark);
+  return g_object_get_qdata (B_OBJECT (widget), size_groups_quark);
 }
 
 static void
 set_size_groups (BtkWidget *widget,
 		 GSList    *groups)
 {
-  g_object_set_qdata (G_OBJECT (widget), size_groups_quark, groups);
+  g_object_set_qdata (B_OBJECT (widget), size_groups_quark, groups);
 }
 
 static void
-mark_visited (gpointer object)
+mark_visited (bpointer object)
 {
   g_object_set_qdata (object, visited_quark, "visited");
 }
 
 static void
-mark_unvisited (gpointer object)
+mark_unvisited (bpointer object)
 {
   g_object_set_qdata (object, visited_quark, NULL);
 }
 
-static gboolean
-is_visited (gpointer object)
+static bboolean
+is_visited (bpointer object)
 {
   return g_object_get_qdata (object, visited_quark) != NULL;
 }
@@ -110,7 +110,7 @@ add_group_to_closure (BtkSizeGroup    *group,
 {
   GSList *tmp_widgets;
   
-  *groups = g_slist_prepend (*groups, group);
+  *groups = b_slist_prepend (*groups, group);
   mark_visited (group);
 
   tmp_widgets = group->widgets;
@@ -133,7 +133,7 @@ add_widget_to_closure (BtkWidget       *widget,
 {
   GSList *tmp_groups;
 
-  *widgets = g_slist_prepend (*widgets, widget);
+  *widgets = b_slist_prepend (*widgets, widget);
   mark_visited (widget);
 
   tmp_groups = get_size_groups (widget);
@@ -178,7 +178,7 @@ reset_group_sizes (GSList *groups)
 
 static void
 queue_resize_on_widget (BtkWidget *widget,
-			gboolean   check_siblings)
+			bboolean   check_siblings)
 {
   BtkWidget *parent = widget;
   GSList *tmp_list;
@@ -210,8 +210,8 @@ queue_resize_on_widget (BtkWidget *widget,
       widgets = NULL;
 	  
       add_widget_to_closure (parent, BTK_SIZE_GROUP_HORIZONTAL, &groups, &widgets);
-      g_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
-      g_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
+      b_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
+      b_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
 
       reset_group_sizes (groups);
 	      
@@ -233,15 +233,15 @@ queue_resize_on_widget (BtkWidget *widget,
 	  tmp_list = tmp_list->next;
 	}
       
-      g_slist_free (widgets);
-      g_slist_free (groups);
+      b_slist_free (widgets);
+      b_slist_free (groups);
 	      
       groups = NULL;
       widgets = NULL;
 	      
       add_widget_to_closure (parent, BTK_SIZE_GROUP_VERTICAL, &groups, &widgets);
-      g_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
-      g_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
+      b_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
+      b_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
 
       reset_group_sizes (groups);
 	      
@@ -263,8 +263,8 @@ queue_resize_on_widget (BtkWidget *widget,
 	  tmp_list = tmp_list->next;
 	}
       
-      g_slist_free (widgets);
-      g_slist_free (groups);
+      b_slist_free (widgets);
+      b_slist_free (groups);
       
       parent = parent->parent;
     }
@@ -290,7 +290,7 @@ initialize_size_group_quarks (void)
 static void
 btk_size_group_class_init (BtkSizeGroupClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->set_property = btk_size_group_set_property;
   bobject_class->get_property = btk_size_group_get_property;
@@ -341,50 +341,50 @@ btk_size_group_buildable_init (BtkBuildableIface *iface)
   iface->custom_finished = btk_size_group_buildable_custom_finished;
 }
 
-G_DEFINE_TYPE_WITH_CODE (BtkSizeGroup, btk_size_group, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkSizeGroup, btk_size_group, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_size_group_buildable_init))
 
 static void
-btk_size_group_set_property (GObject      *object,
-			     guint         prop_id,
-			     const GValue *value,
-			     GParamSpec   *pspec)
+btk_size_group_set_property (BObject      *object,
+			     buint         prop_id,
+			     const BValue *value,
+			     BParamSpec   *pspec)
 {
   BtkSizeGroup *size_group = BTK_SIZE_GROUP (object);
 
   switch (prop_id)
     {
     case PROP_MODE:
-      btk_size_group_set_mode (size_group, g_value_get_enum (value));
+      btk_size_group_set_mode (size_group, b_value_get_enum (value));
       break;
     case PROP_IGNORE_HIDDEN:
-      btk_size_group_set_ignore_hidden (size_group, g_value_get_boolean (value));
+      btk_size_group_set_ignore_hidden (size_group, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_size_group_get_property (GObject      *object,
-			     guint         prop_id,
-			     GValue       *value,
-			     GParamSpec   *pspec)
+btk_size_group_get_property (BObject      *object,
+			     buint         prop_id,
+			     BValue       *value,
+			     BParamSpec   *pspec)
 {
   BtkSizeGroup *size_group = BTK_SIZE_GROUP (object);
 
   switch (prop_id)
     {
     case PROP_MODE:
-      g_value_set_enum (value, size_group->mode);
+      b_value_set_enum (value, size_group->mode);
       break;
     case PROP_IGNORE_HIDDEN:
-      g_value_set_boolean (value, size_group->ignore_hidden);
+      b_value_set_boolean (value, size_group->ignore_hidden);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -433,7 +433,7 @@ btk_size_group_set_mode (BtkSizeGroup     *size_group,
       if (size_group->mode != BTK_SIZE_GROUP_NONE)
 	queue_resize_on_group (size_group);
 
-      g_object_notify (G_OBJECT (size_group), "mode");
+      g_object_notify (B_OBJECT (size_group), "mode");
     }
 }
 
@@ -466,7 +466,7 @@ btk_size_group_get_mode (BtkSizeGroup *size_group)
  */
 void
 btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
-				  gboolean      ignore_hidden)
+				  bboolean      ignore_hidden)
 {
   g_return_if_fail (BTK_IS_SIZE_GROUP (size_group));
   
@@ -476,7 +476,7 @@ btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
     {
       size_group->ignore_hidden = ignore_hidden;
 
-      g_object_notify (G_OBJECT (size_group), "ignore-hidden");
+      g_object_notify (B_OBJECT (size_group), "ignore-hidden");
     }
 }
 
@@ -490,7 +490,7 @@ btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
  *
  * Since: 2.8
  */
-gboolean
+bboolean
 btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group)
 {
   g_return_val_if_fail (BTK_IS_SIZE_GROUP (size_group), FALSE);
@@ -530,12 +530,12 @@ btk_size_group_add_widget (BtkSizeGroup     *size_group,
   
   groups = get_size_groups (widget);
 
-  if (!g_slist_find (groups, size_group))
+  if (!b_slist_find (groups, size_group))
     {
-      groups = g_slist_prepend (groups, size_group);
+      groups = b_slist_prepend (groups, size_group);
       set_size_groups (widget, groups);
 
-      size_group->widgets = g_slist_prepend (size_group->widgets, widget);
+      size_group->widgets = b_slist_prepend (size_group->widgets, widget);
 
       g_signal_connect (widget, "destroy",
 			G_CALLBACK (btk_size_group_widget_destroyed),
@@ -562,17 +562,17 @@ btk_size_group_remove_widget (BtkSizeGroup *size_group,
   
   g_return_if_fail (BTK_IS_SIZE_GROUP (size_group));
   g_return_if_fail (BTK_IS_WIDGET (widget));
-  g_return_if_fail (g_slist_find (size_group->widgets, widget));
+  g_return_if_fail (b_slist_find (size_group->widgets, widget));
 
   g_signal_handlers_disconnect_by_func (widget,
 					btk_size_group_widget_destroyed,
 					size_group);
   
   groups = get_size_groups (widget);
-  groups = g_slist_remove (groups, size_group);
+  groups = b_slist_remove (groups, size_group);
   set_size_groups (widget, groups);
 
-  size_group->widgets = g_slist_remove (size_group->widgets, widget);
+  size_group->widgets = b_slist_remove (size_group->widgets, widget);
   queue_resize_on_group (size_group);
   btk_widget_queue_resize (widget);
 
@@ -596,7 +596,7 @@ btk_size_group_get_widgets (BtkSizeGroup *size_group)
   return size_group->widgets;
 }
 
-static gint
+static bint
 get_base_dimension (BtkWidget        *widget,
 		    BtkSizeGroupMode  mode)
 {
@@ -631,7 +631,7 @@ do_size_request (BtkWidget *widget)
     }
 }
 
-static gint
+static bint
 compute_base_dimension (BtkWidget        *widget,
 			BtkSizeGroupMode  mode)
 {
@@ -640,21 +640,21 @@ compute_base_dimension (BtkWidget        *widget,
   return get_base_dimension (widget, mode);
 }
 
-static gint
+static bint
 compute_dimension (BtkWidget        *widget,
 		   BtkSizeGroupMode  mode)
 {
   GSList *widgets = NULL;
   GSList *groups = NULL;
   GSList *tmp_list;
-  gint result = 0;
+  bint result = 0;
 
   add_widget_to_closure (widget, mode, &groups, &widgets);
 
-  g_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
-  g_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
+  b_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
+  b_slist_foreach (groups, (GFunc)mark_unvisited, NULL);
   
-  g_slist_foreach (widgets, (GFunc)g_object_ref, NULL);
+  b_slist_foreach (widgets, (GFunc)g_object_ref, NULL);
   
   if (!groups)
     {
@@ -675,7 +675,7 @@ compute_dimension (BtkWidget        *widget,
 	    {
 	      BtkWidget *tmp_widget = tmp_list->data;
 
-	      gint dimension = compute_base_dimension (tmp_widget, mode);
+	      bint dimension = compute_base_dimension (tmp_widget, mode);
 
 	      if (btk_widget_get_mapped (tmp_widget) || !group->ignore_hidden)
 		{
@@ -707,26 +707,26 @@ compute_dimension (BtkWidget        *widget,
 	}
     }
 
-  g_slist_foreach (widgets, (GFunc)g_object_unref, NULL);
+  b_slist_foreach (widgets, (GFunc)g_object_unref, NULL);
 
-  g_slist_free (widgets);
-  g_slist_free (groups);
+  b_slist_free (widgets);
+  b_slist_free (groups);
 
   return result;
 }
 
-static gint
+static bint
 get_dimension (BtkWidget        *widget,
 	       BtkSizeGroupMode  mode)
 {
   GSList *widgets = NULL;
   GSList *groups = NULL;
-  gint result = 0;
+  bint result = 0;
 
   add_widget_to_closure (widget, mode, &groups, &widgets);
 
-  g_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
-  g_slist_foreach (groups, (GFunc)mark_unvisited, NULL);  
+  b_slist_foreach (widgets, (GFunc)mark_unvisited, NULL);
+  b_slist_foreach (groups, (GFunc)mark_unvisited, NULL);  
 
   if (!groups)
     {
@@ -742,8 +742,8 @@ get_dimension (BtkWidget        *widget,
 	result = group->requisition.height;
     }
 
-  g_slist_free (widgets);
-  g_slist_free (groups);
+  b_slist_free (widgets);
+  b_slist_free (groups);
 
   return result;
 }
@@ -805,8 +805,8 @@ void
 _btk_size_group_compute_requisition (BtkWidget      *widget,
 				     BtkRequisition *requisition)
 {
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   initialize_size_group_quarks ();
 
@@ -847,25 +847,25 @@ _btk_size_group_queue_resize (BtkWidget *widget)
 }
 
 typedef struct {
-  GObject *object;
+  BObject *object;
   GSList *items;
 } GSListSubParserData;
 
 static void
 size_group_start_element (GMarkupParseContext *context,
-			  const gchar         *element_name,
-			  const gchar        **names,
-			  const gchar        **values,
-			  gpointer            user_data,
+			  const bchar         *element_name,
+			  const bchar        **names,
+			  const bchar        **values,
+			  bpointer            user_data,
 			  GError            **error)
 {
-  guint i;
+  buint i;
   GSListSubParserData *data = (GSListSubParserData*)user_data;
 
   if (strcmp (element_name, "widget") == 0)
     for (i = 0; names[i]; i++)
       if (strcmp (names[i], "name") == 0)
-	data->items = g_slist_prepend (data->items, g_strdup (values[i]));
+	data->items = b_slist_prepend (data->items, g_strdup (values[i]));
   else if (strcmp (element_name, "widgets") == 0)
     return;
   else
@@ -879,13 +879,13 @@ static const GMarkupParser size_group_parser =
     size_group_start_element
   };
 
-static gboolean
+static bboolean
 btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
 					   BtkBuilder    *builder,
-					   GObject       *child,
-					   const gchar   *tagname,
+					   BObject       *child,
+					   const bchar   *tagname,
 					   GMarkupParser *parser,
-					   gpointer      *data)
+					   bpointer      *data)
 {
   GSListSubParserData *parser_data;
 
@@ -896,7 +896,7 @@ btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
     {
       parser_data = g_slice_new0 (GSListSubParserData);
       parser_data->items = NULL;
-      parser_data->object = G_OBJECT (buildable);
+      parser_data->object = B_OBJECT (buildable);
 
       *parser = size_group_parser;
       *data = parser_data;
@@ -909,19 +909,19 @@ btk_size_group_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
-					  GObject       *child,
-					  const gchar   *tagname,
-					  gpointer       user_data)
+					  BObject       *child,
+					  const bchar   *tagname,
+					  bpointer       user_data)
 {
   GSList *l;
   GSListSubParserData *data;
-  GObject *object;
+  BObject *object;
 
   if (strcmp (tagname, "widgets"))
     return;
   
   data = (GSListSubParserData*)user_data;
-  data->items = g_slist_reverse (data->items);
+  data->items = b_slist_reverse (data->items);
 
   for (l = data->items; l; l = l->next)
     {
@@ -929,7 +929,7 @@ btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
       if (!object)
 	{
 	  g_warning ("Unknown object %s specified in sizegroup %s",
-		     (const gchar*)l->data,
+		     (const bchar*)l->data,
 		     btk_buildable_get_name (BTK_BUILDABLE (data->object)));
 	  continue;
 	}
@@ -937,7 +937,7 @@ btk_size_group_buildable_custom_finished (BtkBuildable  *buildable,
 				 BTK_WIDGET (object));
       g_free (l->data);
     }
-  g_slist_free (data->items);
+  b_slist_free (data->items);
   g_slice_free (GSListSubParserData, data);
 }
 

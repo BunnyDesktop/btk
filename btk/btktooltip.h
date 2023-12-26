@@ -28,25 +28,25 @@
 
 #include <btk/btkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOOLTIP                 (btk_tooltip_get_type ())
-#define BTK_TOOLTIP(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIP, BtkTooltip))
-#define BTK_IS_TOOLTIP(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIP))
+#define BTK_TOOLTIP(obj)                 (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOOLTIP, BtkTooltip))
+#define BTK_IS_TOOLTIP(obj)              (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOOLTIP))
 
 GType btk_tooltip_get_type (void);
 
 void btk_tooltip_set_markup              (BtkTooltip         *tooltip,
-                                          const gchar        *markup);
+                                          const bchar        *markup);
 void btk_tooltip_set_text                (BtkTooltip         *tooltip,
-                                          const gchar        *text);
+                                          const bchar        *text);
 void btk_tooltip_set_icon                (BtkTooltip         *tooltip,
                                           BdkPixbuf          *pixbuf);
 void btk_tooltip_set_icon_from_stock     (BtkTooltip         *tooltip,
-                                          const gchar        *stock_id,
+                                          const bchar        *stock_id,
                                           BtkIconSize         size);
 void btk_tooltip_set_icon_from_icon_name (BtkTooltip         *tooltip,
-				          const gchar        *icon_name,
+				          const bchar        *icon_name,
 				          BtkIconSize         size);
 void btk_tooltip_set_icon_from_gicon     (BtkTooltip         *tooltip,
 					  GIcon              *gicon,
@@ -67,11 +67,11 @@ void _btk_tooltip_handle_event           (BdkEvent           *event);
 void _btk_tooltip_hide                   (BtkWidget          *widget);
 
 BtkWidget * _btk_widget_find_at_coords   (BdkWindow          *window,
-                                          gint                window_x,
-                                          gint                window_y,
-                                          gint               *widget_x,
-                                          gint               *widget_y);
+                                          bint                window_x,
+                                          bint                window_y,
+                                          bint               *widget_x,
+                                          bint               *widget_y);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TOOLTIP_H__ */

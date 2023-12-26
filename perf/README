@@ -87,7 +87,7 @@ The "create-widget" signal:
   The handler has this form:
 
     BtkWidget *create_widget_callback (BtkWidgetProfiler *profiler, 
-				       gpointer user_data);
+				       bpointer user_data);
 
   You need to create a widget in your handler, and return it.  Do not
   show the widget; the profiler will do that by itself at the right
@@ -103,8 +103,8 @@ The "report" signal:
     void report_callback (BtkWidgetProfiler      *profiler,
 			  BtkWidgetProfilerReport report,
 			  BtkWidget              *widget,
-			  gdouble                 elapsed,
-			  gpointer                user_data);
+			  bdouble                 elapsed,
+			  bpointer                user_data);
 
   The "report" argument tells you what happened to your widget:
 
@@ -134,7 +134,7 @@ As a very basic example of using BtkWidgetProfiler is this:
 #include "btkwidgetprofiler.h"
 
 static BtkWidget *
-create_widget_cb (BtkWidgetProfiler *profiler, gpointer data)
+create_widget_cb (BtkWidgetProfiler *profiler, bpointer data)
 {
   BtkWidget *window;
 
@@ -145,7 +145,7 @@ create_widget_cb (BtkWidgetProfiler *profiler, gpointer data)
 }
 
 static void
-report_cb (BtkWidgetProfiler *profiler, BtkWidgetProfilerReport report, BtkWidget *widget, gdouble elapsed, gpointer data)
+report_cb (BtkWidgetProfiler *profiler, BtkWidgetProfilerReport report, BtkWidget *widget, bdouble elapsed, bpointer data)
 {
   const char *type;
 

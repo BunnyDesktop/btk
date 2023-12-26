@@ -27,7 +27,7 @@
 
 #include <btk/btk.h>
 
-static inline gboolean
+static inline bboolean
 iters_equal (BtkTreeIter *a,
 	     BtkTreeIter *b)
 {
@@ -42,12 +42,12 @@ iters_equal (BtkTreeIter *a,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 iter_position (BtkListStore *store,
 	       BtkTreeIter  *iter,
 	       int           n)
 {
-  gboolean ret = TRUE;
+  bboolean ret = TRUE;
   BtkTreePath *path;
 
   path = btk_tree_model_get_path (BTK_TREE_MODEL (store), iter);
@@ -77,7 +77,7 @@ list_store_setup (ListStore     *fixture,
 {
   int i;
 
-  fixture->store = btk_list_store_new (1, G_TYPE_INT);
+  fixture->store = btk_list_store_new (1, B_TYPE_INT);
 
   for (i = 0; i < 5; i++)
     {
@@ -99,8 +99,8 @@ list_store_teardown (ListStore     *fixture,
 
 static void
 check_model (ListStore *fixture,
-	     gint      *new_order,
-	     gint       skip)
+	     bint      *new_order,
+	     bint       skip)
 {
   int i;
   BtkTreePath *path;
@@ -142,7 +142,7 @@ list_store_test_insert_high_values (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_insert (store, &iter, 1234);
   g_assert (btk_list_store_iter_is_valid (store, &iter));
@@ -179,7 +179,7 @@ list_store_test_append (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_append (store, &iter);
   g_assert (btk_list_store_iter_is_valid (store, &iter));
@@ -216,7 +216,7 @@ list_store_test_prepend (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_prepend (store, &iter);
   g_assert (btk_list_store_iter_is_valid (store, &iter));
@@ -253,7 +253,7 @@ list_store_test_insert_after (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_append (store, &iter);
   btk_list_store_append (store, &iter2);
@@ -290,7 +290,7 @@ list_store_test_insert_after_NULL (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_append (store, &iter);
 
@@ -323,7 +323,7 @@ list_store_test_insert_before (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_append (store, &iter);
   btk_list_store_append (store, &iter2);
@@ -363,7 +363,7 @@ list_store_test_insert_before_NULL (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   btk_list_store_append (store, &iter);
 
@@ -552,7 +552,7 @@ list_store_test_swap_single (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   /* Check if swap on a store with a single node does not corrupt
    * the store.
@@ -697,7 +697,7 @@ list_store_test_move_after_single (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   /* Check if move-after on a store with a single node does not corrupt
    * the store.
@@ -828,7 +828,7 @@ list_store_test_move_before_single (void)
   BtkTreeIter iter_copy;
   BtkListStore *store;
 
-  store = btk_list_store_new (1, G_TYPE_INT);
+  store = btk_list_store_new (1, B_TYPE_INT);
 
   /* Check if move-before on a store with a single node does not corrupt
    * the store.

@@ -278,7 +278,7 @@ The selection API has been slightly modified:
   void btk_selection_add_target (BtkWidget           *widget, 
 	  	                 BdkAtom              selection,
 			         BdkAtom              target,
-			         guint                info);
+			         buint                info);
 </pre>
 <p>
 
@@ -289,7 +289,7 @@ The selection API has been slightly modified:
   void btk_selection_add_targets (BtkWidget           *widget, 
 	  			  BdkAtom              selection,
 				  BtkTargetEntry      *targets,
-				  guint                ntargets);
+				  buint                ntargets);
 </pre>
 <p>
 
@@ -300,8 +300,8 @@ The selection API has been slightly modified:
 <pre class="programlisting">
    void  "selection_get"           (BtkWidget          *widget,
 				    BtkSelectionData   *selection_data,
-				    guint               info,
-				    guint               time);
+				    buint               info,
+				    buint               time);
 </pre>
 <p>
 
@@ -312,7 +312,7 @@ The selection API has been slightly modified:
 <pre class="programlisting">
   void  "selection_received"       (BtkWidget          *widget,
 				    BtkSelectionData   *selection_data,
-				    guint               time);
+				    buint               time);
 </pre>
 <p>
 </p>
@@ -414,7 +414,7 @@ All freeze/thaw methods are now recursive - that is, if you
 4
 5
 6</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="n">gboolean</span> <span class="n">frozen</span><span class="p">;</span>
+        <td class="listing_code"><pre class="programlisting"><span class="n">bboolean</span> <span class="n">frozen</span><span class="p">;</span>
 <span class="n">frozen</span> <span class="o">=</span> <span class="n">BTK_CLIST_FROZEN</span> <span class="p">(</span><span class="n">clist</span><span class="p">);</span>
 <span class="n">btk_clist_freeze</span> <span class="p">(</span><span class="n">clist</span><span class="p">);</span>
 <span class="p">[...]</span>

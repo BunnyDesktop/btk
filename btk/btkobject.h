@@ -38,18 +38,18 @@
 #include <btk/btkdebug.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* macros for casting a pointer to a BtkObject or BtkObjectClass pointer,
  * and to test whether `object' and `klass' are of type BTK_TYPE_OBJECT.
  * these are the standard macros for all BtkObject-derived classes.
  */
 #define BTK_TYPE_OBJECT              (btk_object_get_type ())
-#define BTK_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_OBJECT, BtkObject))
-#define BTK_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OBJECT, BtkObjectClass))
-#define BTK_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_OBJECT))
-#define BTK_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OBJECT))
-#define BTK_OBJECT_GET_CLASS(object) (G_TYPE_INSTANCE_GET_CLASS ((object), BTK_TYPE_OBJECT, BtkObjectClass))
+#define BTK_OBJECT(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_OBJECT, BtkObject))
+#define BTK_OBJECT_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_OBJECT, BtkObjectClass))
+#define BTK_IS_OBJECT(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_OBJECT))
+#define BTK_IS_OBJECT_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_OBJECT))
+#define BTK_OBJECT_GET_CLASS(object) (B_TYPE_INSTANCE_GET_CLASS ((object), BTK_TYPE_OBJECT, BtkObjectClass))
 
 /* Macros for extracting various fields from BtkObject and BtkObjectClass.
  */
@@ -60,18 +60,18 @@ G_BEGIN_DECLS
  *
  * Gets the type of an object.
  *
- * Deprecated: 2.20: Use G_OBJECT_TYPE() instead.
+ * Deprecated: 2.20: Use B_OBJECT_TYPE() instead.
  */
-#define BTK_OBJECT_TYPE                   G_OBJECT_TYPE
+#define BTK_OBJECT_TYPE                   B_OBJECT_TYPE
 /**
  * BTK_OBJECT_TYPE_NAME:
  * @object: a #BtkObject.
  *
  * Gets the name of an object's type.
  *
- * Deprecated: 2.20: Use G_OBJECT_TYPE_NAME() instead.
+ * Deprecated: 2.20: Use B_OBJECT_TYPE_NAME() instead.
  */
-#define BTK_OBJECT_TYPE_NAME              G_OBJECT_TYPE_NAME
+#define BTK_OBJECT_TYPE_NAME              B_OBJECT_TYPE_NAME
 #endif
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
@@ -97,8 +97,8 @@ typedef enum
 
 /* Macros for setting and clearing bits in the object_flags field of BtkObject.
  */
-#define BTK_OBJECT_SET_FLAGS(obj,flag)	  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) |= (flag)); }G_STMT_END
-#define BTK_OBJECT_UNSET_FLAGS(obj,flag)  G_STMT_START{ (BTK_OBJECT_FLAGS (obj) &= ~(flag)); }G_STMT_END
+#define BTK_OBJECT_SET_FLAGS(obj,flag)	  B_STMT_START{ (BTK_OBJECT_FLAGS (obj) |= (flag)); }B_STMT_END
+#define BTK_OBJECT_UNSET_FLAGS(obj,flag)  B_STMT_START{ (BTK_OBJECT_FLAGS (obj) &= ~(flag)); }B_STMT_END
 #endif
 
 typedef struct _BtkObjectClass	BtkObjectClass;
@@ -113,7 +113,7 @@ struct _BtkObject
    *  aligned on 4 or 8 byte boundaries. If a new bitfield were
    *  used in BtkWidget much space would be wasted.
    */
-  guint32 GSEAL (flags);
+  buint32 GSEAL (flags);
 };
 
 struct _BtkObjectClass
@@ -123,10 +123,10 @@ struct _BtkObjectClass
   /* Non overridable class methods to set and get per class arguments */
   void (*set_arg) (BtkObject *object,
 		   BtkArg    *arg,
-		   guint      arg_id);
+		   buint      arg_id);
   void (*get_arg) (BtkObject *object,
 		   BtkArg    *arg,
-		   guint      arg_id);
+		   buint      arg_id);
 
   /* Default signal handler for the ::destroy signal, which is
    *  invoked to request that references to the widget be dropped.
@@ -143,7 +143,7 @@ struct _BtkObjectClass
 
 /* Application-level methods */
 
-GType btk_object_get_type (void) G_GNUC_CONST;
+GType btk_object_get_type (void) B_GNUC_CONST;
 
 #ifndef BTK_DISABLE_DEPRECATED
 void btk_object_sink	  (BtkObject *object);
@@ -155,16 +155,16 @@ void btk_object_destroy	  (BtkObject *object);
 #ifndef BTK_DISABLE_DEPRECATED
 
 BtkObject*	btk_object_new		  (GType	       type,
-					   const gchar	      *first_property_name,
+					   const bchar	      *first_property_name,
 					   ...);
 BtkObject*	btk_object_ref		  (BtkObject	      *object);
 void		btk_object_unref	  (BtkObject	      *object);
 void btk_object_weakref	  (BtkObject	    *object,
 			   GDestroyNotify    notify,
-			   gpointer	     data);
+			   bpointer	     data);
 void btk_object_weakunref (BtkObject	    *object,
 			   GDestroyNotify    notify,
-			   gpointer	     data);
+			   bpointer	     data);
 
 /* Set 'data' to the "object_data" field of the object. The
  *  data is indexed by the "key". If there is already data
@@ -179,18 +179,18 @@ void btk_object_weakunref (BtkObject	    *object,
  *  `btk_object_get_data' gets the data associated with "key".
  */
 void	 btk_object_set_data	     (BtkObject	     *object,
-				      const gchar    *key,
-				      gpointer	      data);
+				      const bchar    *key,
+				      bpointer	      data);
 void	 btk_object_set_data_full    (BtkObject	     *object,
-				      const gchar    *key,
-				      gpointer	      data,
+				      const bchar    *key,
+				      bpointer	      data,
 				      GDestroyNotify  destroy);
 void	 btk_object_remove_data	     (BtkObject	     *object,
-				      const gchar    *key);
-gpointer btk_object_get_data	     (BtkObject	     *object,
-				      const gchar    *key);
+				      const bchar    *key);
+bpointer btk_object_get_data	     (BtkObject	     *object,
+				      const bchar    *key);
 void	 btk_object_remove_no_notify (BtkObject	     *object,
-				      const gchar    *key);
+				      const bchar    *key);
 
 /* Set/get the "user_data" object data field of "object". It should
  *  be noted that these functions are no different than calling
@@ -198,8 +198,8 @@ void	 btk_object_remove_no_notify (BtkObject	     *object,
  *  They are merely provided as a convenience.
  */
 void	 btk_object_set_user_data (BtkObject	*object,
-				   gpointer	 data);
-gpointer btk_object_get_user_data (BtkObject	*object);
+				   bpointer	 data);
+bpointer btk_object_get_user_data (BtkObject	*object);
 
 
 /* Object-level methods */
@@ -207,12 +207,12 @@ gpointer btk_object_get_user_data (BtkObject	*object);
 /* Object data method variants that operate on key ids. */
 void btk_object_set_data_by_id		(BtkObject	 *object,
 					 GQuark		  data_id,
-					 gpointer	  data);
+					 bpointer	  data);
 void btk_object_set_data_by_id_full	(BtkObject	 *object,
 					 GQuark		  data_id,
-					 gpointer	  data,
+					 bpointer	  data,
 					 GDestroyNotify   destroy);
-gpointer btk_object_get_data_by_id	(BtkObject	 *object,
+bpointer btk_object_get_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
 void  btk_object_remove_data_by_id	(BtkObject	 *object,
 					 GQuark		  data_id);
@@ -233,18 +233,18 @@ typedef enum
 } BtkArgFlags;
 #define	BTK_ARG_READWRITE	(BTK_ARG_READABLE | BTK_ARG_WRITABLE)
 void	btk_object_get		(BtkObject	*object,
-				 const gchar	*first_property_name,
-				 ...) G_GNUC_NULL_TERMINATED;
+				 const bchar	*first_property_name,
+				 ...) B_GNUC_NULL_TERMINATED;
 void	btk_object_set		(BtkObject	*object,
-				 const gchar	*first_property_name,
-				 ...) G_GNUC_NULL_TERMINATED;
-void	btk_object_add_arg_type		(const gchar    *arg_name,
+				 const bchar	*first_property_name,
+				 ...) B_GNUC_NULL_TERMINATED;
+void	btk_object_add_arg_type		(const bchar    *arg_name,
 					 GType           arg_type,
-					 guint           arg_flags,
-					 guint           arg_id);
+					 buint           arg_flags,
+					 buint           arg_id);
 
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_OBJECT_H__ */

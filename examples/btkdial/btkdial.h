@@ -26,12 +26,12 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
-#define BTK_DIAL(obj)          G_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
-#define BTK_DIAL_CLASS(klass)  G_TYPE_CHECK_CLASS_CAST (klass, btk_dial_get_type (), BtkDialClass)
-#define BTK_IS_DIAL(obj)       G_TYPE_CHECK_INSTANCE_TYPE (obj, btk_dial_get_type ())
+#define BTK_DIAL(obj)          B_TYPE_CHECK_INSTANCE_CAST (obj, btk_dial_get_type (), BtkDial)
+#define BTK_DIAL_CLASS(klass)  B_TYPE_CHECK_CLASS_CAST (klass, btk_dial_get_type (), BtkDialClass)
+#define BTK_IS_DIAL(obj)       B_TYPE_CHECK_INSTANCE_TYPE (obj, btk_dial_get_type ())
 
 
 typedef struct _BtkDial        BtkDial;
@@ -42,26 +42,26 @@ struct _BtkDial
   BtkWidget widget;
 
   /* update policy (BTK_UPDATE_[CONTINUOUS/DELAYED/DISCONTINUOUS]) */
-  guint policy : 2;
+  buint policy : 2;
 
   /* Button currently pressed or 0 if none */
-  guint8 button;
+  buint8 button;
 
   /* Dimensions of dial components */
-  gint radius;
-  gint pointer_width;
+  bint radius;
+  bint pointer_width;
 
   /* ID of update timer, or 0 if none */
-  guint32 timer;
+  buint32 timer;
 
   /* Current angle */
-  gfloat angle;
-  gfloat last_angle;
+  bfloat angle;
+  bfloat last_angle;
 
   /* Old values from adjustment stored so we know when something changes */
-  gfloat old_value;
-  gfloat old_lower;
-  gfloat old_upper;
+  bfloat old_value;
+  bfloat old_lower;
+  bfloat old_upper;
 
   /* The adjustment object that stores the data for this dial */
   BtkAdjustment *adjustment;
@@ -83,7 +83,7 @@ void           btk_dial_set_adjustment         (BtkDial      *dial,
 						BtkAdjustment *adjustment);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_DIAL_H__ */

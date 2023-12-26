@@ -35,14 +35,14 @@
 #include <btk/btkscale.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HSCALE            (btk_hscale_get_type ())
-#define BTK_HSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSCALE, BtkHScale))
-#define BTK_HSCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSCALE, BtkHScaleClass))
-#define BTK_IS_HSCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSCALE))
-#define BTK_IS_HSCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSCALE))
-#define BTK_HSCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSCALE, BtkHScaleClass))
+#define BTK_HSCALE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSCALE, BtkHScale))
+#define BTK_HSCALE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSCALE, BtkHScaleClass))
+#define BTK_IS_HSCALE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSCALE))
+#define BTK_IS_HSCALE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSCALE))
+#define BTK_HSCALE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSCALE, BtkHScaleClass))
 
 
 typedef struct _BtkHScale       BtkHScale;
@@ -59,13 +59,13 @@ struct _BtkHScaleClass
 };
 
 
-GType      btk_hscale_get_type       (void) G_GNUC_CONST;
+GType      btk_hscale_get_type       (void) B_GNUC_CONST;
 BtkWidget* btk_hscale_new            (BtkAdjustment *adjustment);
-BtkWidget* btk_hscale_new_with_range (gdouble        min,
-                                      gdouble        max,
-                                      gdouble        step);
+BtkWidget* btk_hscale_new_with_range (bdouble        min,
+                                      bdouble        max,
+                                      bdouble        step);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HSCALE_H__ */

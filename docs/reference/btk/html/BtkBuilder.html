@@ -59,7 +59,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-add-from-file" title="btk_builder_add_from_file ()">btk_builder_add_from_file</a> <span class="c_punctuation">()</span>
@@ -67,7 +67,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-add-from-string" title="btk_builder_add_from_string ()">btk_builder_add_from_string</a> <span class="c_punctuation">()</span>
@@ -75,7 +75,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-add-objects-from-file" title="btk_builder_add_objects_from_file ()">btk_builder_add_objects_from_file</a> <span class="c_punctuation">()</span>
@@ -83,7 +83,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint</span>
+<span class="returnvalue">buint</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-add-objects-from-string" title="btk_builder_add_objects_from_string ()">btk_builder_add_objects_from_string</a> <span class="c_punctuation">()</span>
@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">GObject</span> *
+<span class="returnvalue">BObject</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-get-object" title="btk_builder_get_object ()">btk_builder_get_object</a> <span class="c_punctuation">()</span>
@@ -130,7 +130,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-get-translation-domain" title="btk_builder_get_translation_domain ()">btk_builder_get_translation_domain</a> <span class="c_punctuation">()</span>
@@ -146,7 +146,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-value-from-string" title="btk_builder_value_from_string ()">btk_builder_value_from_string</a> <span class="c_punctuation">()</span>
@@ -154,7 +154,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkBuilder.html#btk-builder-value-from-string-type" title="btk_builder_value_from_string_type ()">btk_builder_value_from_string_type</a> <span class="c_punctuation">()</span>
@@ -210,7 +210,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkBuilder.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkBuilder
 </pre>
 </div>
@@ -228,12 +228,12 @@
 <a name="BtkBuilderConnectFunc"></a><h3>BtkBuilderConnectFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkBuilderConnectFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                          <em class="parameter"><code><span class="type">GObject</span> *object</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *signal_name</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *handler_name</code></em>,
-                          <em class="parameter"><code><span class="type">GObject</span> *connect_object</code></em>,
+                          <em class="parameter"><code><span class="type">BObject</span> *object</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *signal_name</code></em>,
+                          <em class="parameter"><code>const <span class="type">bchar</span> *handler_name</code></em>,
+                          <em class="parameter"><code><span class="type">BObject</span> *connect_object</code></em>,
                           <em class="parameter"><code><span class="type">GConnectFlags</span> flags</code></em>,
-                          <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                          <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This is the signature of a function used to connect signals.  It is used
 by the <a class="link" href="BtkBuilder.html#btk-builder-connect-signals" title="btk_builder_connect_signals ()"><code class="function">btk_builder_connect_signals()</code></a> and <a class="link" href="BtkBuilder.html#btk-builder-connect-signals-full" title="btk_builder_connect_signals_full ()"><code class="function">btk_builder_connect_signals_full()</code></a>
 methods.  It is mainly intended for interpreted language bindings, but
@@ -270,7 +270,7 @@ connection process.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>connect_object</p></td>
-<td class="parameter_description"><p>a <span class="type">GObject</span>, if non-<code class="literal">NULL</code>, use <code class="function">g_signal_connect_object()</code></p></td>
+<td class="parameter_description"><p>a <span class="type">BObject</span>, if non-<code class="literal">NULL</code>, use <code class="function">g_signal_connect_object()</code></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -303,9 +303,9 @@ btk_builder_new (<em class="parameter"><code><span class="type">void</span></cod
 <hr>
 <div class="refsect2">
 <a name="btk-builder-add-from-file"></a><h3>btk_builder_add_from_file ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_builder_add_from_file (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
+                           <em class="parameter"><code>const <span class="type">bchar</span> *filename</code></em>,
                            <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Parses a file containing a <BTKDOCLINK HREF="BUILDER-UI">BtkBuilder 
 UI definition</BTKDOCLINK> and merges it with the current contents of <em class="parameter"><code>builder</code></em>
@@ -350,10 +350,10 @@ domain.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-builder-add-from-string"></a><h3>btk_builder_add_from_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_builder_add_from_string (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
-                             <em class="parameter"><code><span class="type">gsize</span> length</code></em>,
+                             <em class="parameter"><code>const <span class="type">bchar</span> *buffer</code></em>,
+                             <em class="parameter"><code><span class="type">bsize</span> length</code></em>,
                              <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Parses a string containing a <BTKDOCLINK HREF="BUILDER-UI">BtkBuilder 
 UI definition</BTKDOCLINK> and merges it with the current contents of <em class="parameter"><code>builder</code></em>
@@ -404,10 +404,10 @@ is nul-terminated)</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-builder-add-objects-from-file"></a><h3>btk_builder_add_objects_from_file ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_builder_add_objects_from_file (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                                   <em class="parameter"><code>const <span class="type">gchar</span> *filename</code></em>,
-                                   <em class="parameter"><code><span class="type">gchar</span> **object_ids</code></em>,
+                                   <em class="parameter"><code>const <span class="type">bchar</span> *filename</code></em>,
+                                   <em class="parameter"><code><span class="type">bchar</span> **object_ids</code></em>,
                                    <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Parses a file containing a <BTKDOCLINK HREF="BUILDER-UI">BtkBuilder 
 UI definition</BTKDOCLINK> building only the requested objects and merges
@@ -463,11 +463,11 @@ its child (for instance a <a class="link" href="BtkTreeView.html" title="BtkTree
 <hr>
 <div class="refsect2">
 <a name="btk-builder-add-objects-from-string"></a><h3>btk_builder_add_objects_from_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>
+<pre class="programlisting"><span class="returnvalue">buint</span>
 btk_builder_add_objects_from_string (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                                     <em class="parameter"><code>const <span class="type">gchar</span> *buffer</code></em>,
-                                     <em class="parameter"><code><span class="type">gsize</span> length</code></em>,
-                                     <em class="parameter"><code><span class="type">gchar</span> **object_ids</code></em>,
+                                     <em class="parameter"><code>const <span class="type">bchar</span> *buffer</code></em>,
+                                     <em class="parameter"><code><span class="type">bsize</span> length</code></em>,
+                                     <em class="parameter"><code><span class="type">bchar</span> **object_ids</code></em>,
                                      <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Parses a string containing a <BTKDOCLINK HREF="BUILDER-UI">BtkBuilder 
 UI definition</BTKDOCLINK> building only the requested objects and merges
@@ -529,9 +529,9 @@ is nul-terminated)</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-builder-get-object"></a><h3>btk_builder_get_object ()</h3>
-<pre class="programlisting"><span class="returnvalue">GObject</span> *
+<pre class="programlisting"><span class="returnvalue">BObject</span> *
 btk_builder_get_object (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                        <em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+                        <em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <p>Gets the object named <em class="parameter"><code>name</code></em>
 . Note that this function does not
 increment the reference count of the returned object.</p>
@@ -594,8 +594,8 @@ objects.</p>
 <a name="btk-builder-get-objects.returns"></a><h4>Returns</h4>
 <p>a newly-allocated <span class="type">GSList</span> containing all the objects
 constructed by the <a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> instance. It should be freed by
-<code class="function">g_slist_free()</code>. </p>
-<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> GObject][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></p>
+<code class="function">b_slist_free()</code>. </p>
+<p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> BObject][<acronym title="Free data container after the code is done."><span class="acronym">transfer container</span></acronym>]</span></p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
 </div>
@@ -604,7 +604,7 @@ constructed by the <a class="link" href="BtkBuilder.html" title="BtkBuilder"><sp
 <a name="btk-builder-connect-signals"></a><h3>btk_builder_connect_signals ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_builder_connect_signals (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                             <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This method is a simpler variation of <a class="link" href="BtkBuilder.html#btk-builder-connect-signals-full" title="btk_builder_connect_signals_full ()"><code class="function">btk_builder_connect_signals_full()</code></a>.
 It uses <span class="type">GModule</span>'s introspective features (by opening the module <code class="literal">NULL</code>) 
 to look at the application's symbol table. From here it tries to match
@@ -647,7 +647,7 @@ bmodule-export-2.0.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_builder_connect_signals_full (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
                                   <em class="parameter"><code><a class="link" href="BtkBuilder.html#BtkBuilderConnectFunc" title="BtkBuilderConnectFunc ()"><span class="type">BtkBuilderConnectFunc</span></a> func</code></em>,
-                                  <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This function can be thought of the interpreted language binding
 version of <a class="link" href="BtkBuilder.html#btk-builder-connect-signals" title="btk_builder_connect_signals ()"><code class="function">btk_builder_connect_signals()</code></a>, except that it does not
 require GModule to function correctly.</p>
@@ -685,7 +685,7 @@ require GModule to function correctly.</p>
 <a name="btk-builder-set-translation-domain"></a><h3>btk_builder_set_translation_domain ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_builder_set_translation_domain (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *domain</code></em>);</pre>
+                                    <em class="parameter"><code>const <span class="type">bchar</span> *domain</code></em>);</pre>
 <p>Sets the translation domain of <em class="parameter"><code>builder</code></em>
 . 
 See <a class="link" href="BtkBuilder.html#BtkBuilder--translation-domain" title="The “translation-domain” property"><span class="type">“translation-domain”</span></a>.</p>
@@ -716,7 +716,7 @@ See <a class="link" href="BtkBuilder.html#BtkBuilder--translation-domain" title=
 <hr>
 <div class="refsect2">
 <a name="btk-builder-get-translation-domain"></a><h3>btk_builder_get_translation_domain ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_builder_get_translation_domain (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>);</pre>
 <p>Gets the translation domain of <em class="parameter"><code>builder</code></em>
 .</p>
@@ -776,7 +776,7 @@ implementing the <a class="link" href="BtkBuildable.html" title="BtkBuildable"><
 <div class="refsect3">
 <a name="btk-builder-get-type-from-name.returns"></a><h4>Returns</h4>
 <p> the <span class="type">GType</span> found for <em class="parameter"><code>type_name</code></em>
-or <span class="type">G_TYPE_INVALID</span>
+or <span class="type">B_TYPE_INVALID</span>
 if no type was found</p>
 </div>
 <p class="since">Since: <a class="link" href="api-index-2-12.html#api-index-2.12">2.12</a></p>
@@ -784,14 +784,14 @@ if no type was found</p>
 <hr>
 <div class="refsect2">
 <a name="btk-builder-value-from-string"></a><h3>btk_builder_value_from_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_builder_value_from_string (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
-                               <em class="parameter"><code><span class="type">GParamSpec</span> *pspec</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>,
-                               <em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                               <em class="parameter"><code><span class="type">BParamSpec</span> *pspec</code></em>,
+                               <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>,
+                               <em class="parameter"><code><span class="type">BValue</span> *value</code></em>,
                                <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>This function demarshals a value from a string. This function
-calls <code class="function">g_value_init()</code> on the <em class="parameter"><code>value</code></em>
+calls <code class="function">b_value_init()</code> on the <em class="parameter"><code>value</code></em>
  argument, so it need not be
 initialised beforehand.</p>
 <p>This function can handle char, uchar, boolean, int, uint, long,
@@ -817,7 +817,7 @@ still to come.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>pspec</p></td>
-<td class="parameter_description"><p>the <span class="type">GParamSpec</span> for the property</p></td>
+<td class="parameter_description"><p>the <span class="type">BParamSpec</span> for the property</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -827,7 +827,7 @@ still to come.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>value</p></td>
-<td class="parameter_description"><p>the <span class="type">GValue</span> to store the result in. </p></td>
+<td class="parameter_description"><p>the <span class="type">BValue</span> to store the result in. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -847,15 +847,15 @@ still to come.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-builder-value-from-string-type"></a><h3>btk_builder_value_from_string_type ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_builder_value_from_string_type (<em class="parameter"><code><a class="link" href="BtkBuilder.html" title="BtkBuilder"><span class="type">BtkBuilder</span></a> *builder</code></em>,
                                     <em class="parameter"><code><span class="type">GType</span> type</code></em>,
-                                    <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>,
-                                    <em class="parameter"><code><span class="type">GValue</span> *value</code></em>,
+                                    <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>,
+                                    <em class="parameter"><code><span class="type">BValue</span> *value</code></em>,
                                     <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>Like <a class="link" href="BtkBuilder.html#btk-builder-value-from-string" title="btk_builder_value_from_string ()"><code class="function">btk_builder_value_from_string()</code></a>, this function demarshals 
-a value from a string, but takes a <span class="type">GType</span> instead of <span class="type">GParamSpec</span>.
-This function calls <code class="function">g_value_init()</code> on the <em class="parameter"><code>value</code></em>
+a value from a string, but takes a <span class="type">GType</span> instead of <span class="type">BParamSpec</span>.
+This function calls <code class="function">b_value_init()</code> on the <em class="parameter"><code>value</code></em>
  argument, so it 
 need not be initialised beforehand.</p>
 <p>Upon errors <code class="literal">FALSE</code> will be returned and <em class="parameter"><code>error</code></em>
@@ -887,7 +887,7 @@ need not be initialised beforehand.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>value</p></td>
-<td class="parameter_description"><p>the <span class="type">GValue</span> to store the result in. </p></td>
+<td class="parameter_description"><p>the <span class="type">BValue</span> to store the result in. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="Parameter for returning results. Default is transfer full."><span class="acronym">out</span></acronym>]</span></td>
 </tr>
 <tr>

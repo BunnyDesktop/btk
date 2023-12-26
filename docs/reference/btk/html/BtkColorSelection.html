@@ -69,7 +69,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-get-has-opacity-control" title="btk_color_selection_get_has_opacity_control ()">btk_color_selection_get_has_opacity_control</a> <span class="c_punctuation">()</span>
@@ -85,7 +85,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-get-has-palette" title="btk_color_selection_get_has_palette ()">btk_color_selection_get_has_palette</a> <span class="c_punctuation">()</span>
@@ -93,7 +93,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint16</span>
+<span class="returnvalue">buint16</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-get-current-alpha" title="btk_color_selection_get_current_alpha ()">btk_color_selection_get_current_alpha</a> <span class="c_punctuation">()</span>
@@ -125,7 +125,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">guint16</span>
+<span class="returnvalue">buint16</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-get-previous-alpha" title="btk_color_selection_get_previous_alpha ()">btk_color_selection_get_previous_alpha</a> <span class="c_punctuation">()</span>
@@ -157,7 +157,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-is-adjusting" title="btk_color_selection_is_adjusting ()">btk_color_selection_is_adjusting</a> <span class="c_punctuation">()</span>
@@ -165,7 +165,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-palette-from-string" title="btk_color_selection_palette_from_string ()">btk_color_selection_palette_from_string</a> <span class="c_punctuation">()</span>
@@ -173,7 +173,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gchar</span> *
+<span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkColorSelection.html#btk-color-selection-palette-to-string" title="btk_color_selection_palette_to_string ()">btk_color_selection_palette_to_string</a> <span class="c_punctuation">()</span>
@@ -240,7 +240,7 @@
 </colgroup>
 <tbody>
 <tr>
-<td class="property_type"><span class="type">guint</span></td>
+<td class="property_type"><span class="type">buint</span></td>
 <td class="property_name"><a class="link" href="BtkColorSelection.html#BtkColorSelection--current-alpha" title="The “current-alpha” property">current-alpha</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -251,12 +251,12 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkColorSelection.html#BtkColorSelection--has-opacity-control" title="The “has-opacity-control” property">has-opacity-control</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkColorSelection.html#BtkColorSelection--has-palette" title="The “has-palette” property">has-palette</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -293,7 +293,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkColorSelection.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -343,7 +343,7 @@ btk_color_selection_set_update_policy (<em class="parameter"><code><a class="lin
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_set_has_opacity_control
                                (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> has_opacity</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> has_opacity</code></em>);</pre>
 <p>Sets the <em class="parameter"><code>colorsel</code></em>
  to use or not use opacity.</p>
 <div class="refsect3">
@@ -373,7 +373,7 @@ can set the opacity, <code class="literal">FALSE</code> otherwise.</p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-get-has-opacity-control"></a><h3>btk_color_selection_get_has_opacity_control ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_color_selection_get_has_opacity_control
                                (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>);</pre>
 <p>Determines whether the colorsel has an opacity control.</p>
@@ -403,7 +403,7 @@ has an opacity control.  <code class="literal">FALSE</code> if it does't.</p>
 <a name="btk-color-selection-set-has-palette"></a><h3>btk_color_selection_set_has_palette ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_set_has_palette (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                                     <em class="parameter"><code><span class="type">gboolean</span> has_palette</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">bboolean</span> has_palette</code></em>);</pre>
 <p>Shows and hides the palette based upon the value of <em class="parameter"><code>has_palette</code></em>
 .</p>
 <div class="refsect3">
@@ -432,7 +432,7 @@ btk_color_selection_set_has_palette (<em class="parameter"><code><a class="link"
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-get-has-palette"></a><h3>btk_color_selection_get_has_palette ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_color_selection_get_has_palette (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>);</pre>
 <p>Determines whether the color selector has a color palette.</p>
 <div class="refsect3">
@@ -458,7 +458,7 @@ btk_color_selection_get_has_palette (<em class="parameter"><code><a class="link"
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-get-current-alpha"></a><h3>btk_color_selection_get_current_alpha ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint16</span>
+<pre class="programlisting"><span class="returnvalue">buint16</span>
 btk_color_selection_get_current_alpha (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>);</pre>
 <p>Returns the current alpha value.</p>
 <div class="refsect3">
@@ -486,7 +486,7 @@ btk_color_selection_get_current_alpha (<em class="parameter"><code><a class="lin
 <a name="btk-color-selection-set-current-alpha"></a><h3>btk_color_selection_set_current_alpha ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_set_current_alpha (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                                       <em class="parameter"><code><span class="type">guint16</span> alpha</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">buint16</span> alpha</code></em>);</pre>
 <p>Sets the current opacity to be <em class="parameter"><code>alpha</code></em>
 .  The first time this is called, it will
 also set the original opacity to be <em class="parameter"><code>alpha</code></em>
@@ -581,7 +581,7 @@ also set the original color to be <em class="parameter"><code>color</code></em>
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-get-previous-alpha"></a><h3>btk_color_selection_get_previous_alpha ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint16</span>
+<pre class="programlisting"><span class="returnvalue">buint16</span>
 btk_color_selection_get_previous_alpha
                                (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>);</pre>
 <p>Returns the previous alpha value.</p>
@@ -611,7 +611,7 @@ btk_color_selection_get_previous_alpha
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_set_previous_alpha
                                (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                                <em class="parameter"><code><span class="type">guint16</span> alpha</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">buint16</span> alpha</code></em>);</pre>
 <p>Sets the 'previous' alpha to be <em class="parameter"><code>alpha</code></em>
 .  This function should be called with
 some hesitations, as it might seem confusing to have that alpha change.</p>
@@ -708,7 +708,7 @@ time it is called.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-is-adjusting"></a><h3>btk_color_selection_is_adjusting ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_color_selection_is_adjusting (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>);</pre>
 <p>Gets the current state of the <em class="parameter"><code>colorsel</code></em>
 .</p>
@@ -736,11 +736,11 @@ if the selection has stopped.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-palette-from-string"></a><h3>btk_color_selection_palette_from_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_color_selection_palette_from_string
-                               (<em class="parameter"><code>const <span class="type">gchar</span> *str</code></em>,
+                               (<em class="parameter"><code>const <span class="type">bchar</span> *str</code></em>,
                                 <em class="parameter"><code><a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> **colors</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> *n_colors</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> *n_colors</code></em>);</pre>
 <p>Parses a color palette string; the string is a colon-separated
 list of color names readable by <a href="../html/bdk2-Colormaps-and-Colors.html#bdk-color-parse"><code class="function">bdk_color_parse()</code></a>.</p>
 <div class="refsect3">
@@ -779,9 +779,9 @@ array of <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-palette-to-string"></a><h3>btk_color_selection_palette_to_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *
+<pre class="programlisting"><span class="returnvalue">bchar</span> *
 btk_color_selection_palette_to_string (<em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *colors</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> n_colors</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bint</span> n_colors</code></em>);</pre>
 <p>Encodes a palette as a string, useful for persistent storage.</p>
 <div class="refsect3">
 <a name="btk-color-selection-palette-to-string.parameters"></a><h4>Parameters</h4>
@@ -850,7 +850,7 @@ the new palette contents, and update the BtkSettings property
 <a name="BtkColorSelectionChangePaletteFunc"></a><h3>BtkColorSelectionChangePaletteFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkColorSelectionChangePaletteFunc<span class="c_punctuation">)</span> (<em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *colors</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> n_colors</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bint</span> n_colors</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
@@ -890,14 +890,14 @@ the new palette contents, and update the BtkSettings property
 <span class="c_punctuation">(</span>*BtkColorSelectionChangePaletteWithScreenFunc<span class="c_punctuation">)</span>
                                (<em class="parameter"><code><a href="../html/BdkScreen.html#BdkScreen-struct"><span class="type">BdkScreen</span></a> *screen</code></em>,
                                 <em class="parameter"><code>const <a href="../html/bdk2-Colormaps-and-Colors.html#BdkColor"><span class="type">BdkColor</span></a> *colors</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> n_colors</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bint</span> n_colors</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-color-selection-set-color"></a><h3>btk_color_selection_set_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_set_color (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                               <em class="parameter"><code><span class="type">gdouble</span> *color</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bdouble</span> *color</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_color_selection_set_color</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkColorSelection.html#btk-color-selection-set-current-color" title="btk_color_selection_set_current_color ()"><code class="function">btk_color_selection_set_current_color()</code></a> instead.</p>
@@ -935,7 +935,7 @@ to set the current color to.</p></td>
 <a name="btk-color-selection-get-color"></a><h3>btk_color_selection_get_color ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_color_selection_get_color (<em class="parameter"><code><a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorsel</code></em>,
-                               <em class="parameter"><code><span class="type">gdouble</span> *color</code></em>);</pre>
+                               <em class="parameter"><code><span class="type">bdouble</span> *color</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_color_selection_get_color</code> has been deprecated since version 2.0 and should not be used in newly-written code.</p>
 <p>Use <a class="link" href="BtkColorSelection.html#btk-color-selection-get-current-color" title="btk_color_selection_get_current_color ()"><code class="function">btk_color_selection_get_current_color()</code></a> instead.</p>
@@ -958,7 +958,7 @@ btk_color_selection_get_color (<em class="parameter"><code><a class="link" href=
 </tr>
 <tr>
 <td class="parameter_name"><p>color</p></td>
-<td class="parameter_description"><p>an array of 4 <span class="type">gdouble</span> to fill in with the current color.</p></td>
+<td class="parameter_description"><p>an array of 4 <span class="type">bdouble</span> to fill in with the current color.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -977,7 +977,7 @@ btk_color_selection_get_color (<em class="parameter"><code><a class="link" href=
 <a name="BtkColorSelection.property-details"></a><h2>Property Details</h2>
 <div class="refsect2">
 <a name="BtkColorSelection--current-alpha"></a><h3>The <code class="literal">“current-alpha”</code> property</h3>
-<pre class="programlisting">  “current-alpha”            <span class="type">guint</span></pre>
+<pre class="programlisting">  “current-alpha”            <span class="type">buint</span></pre>
 <p>The current opacity value (0 fully transparent, 65535 fully opaque).</p>
 <p>Owner: BtkColorSelection</p>
 <p>Flags: Read / Write</p>
@@ -995,7 +995,7 @@ btk_color_selection_get_color (<em class="parameter"><code><a class="link" href=
 <hr>
 <div class="refsect2">
 <a name="BtkColorSelection--has-opacity-control"></a><h3>The <code class="literal">“has-opacity-control”</code> property</h3>
-<pre class="programlisting">  “has-opacity-control”      <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-opacity-control”      <span class="type">bboolean</span></pre>
 <p>Whether the color selector should allow setting opacity.</p>
 <p>Owner: BtkColorSelection</p>
 <p>Flags: Read / Write</p>
@@ -1004,7 +1004,7 @@ btk_color_selection_get_color (<em class="parameter"><code><a class="link" href=
 <hr>
 <div class="refsect2">
 <a name="BtkColorSelection--has-palette"></a><h3>The <code class="literal">“has-palette”</code> property</h3>
-<pre class="programlisting">  “has-palette”              <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “has-palette”              <span class="type">bboolean</span></pre>
 <p>Whether a palette should be used.</p>
 <p>Owner: BtkColorSelection</p>
 <p>Flags: Read / Write</p>
@@ -1017,7 +1017,7 @@ btk_color_selection_get_color (<em class="parameter"><code><a class="link" href=
 <a name="BtkColorSelection-color-changed"></a><h3>The <code class="literal">“color-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkColorSelection.html" title="BtkColorSelection"><span class="type">BtkColorSelection</span></a> *colorselection,
-               <span class="type">gpointer</span>           user_data)</pre>
+               <span class="type">bpointer</span>           user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

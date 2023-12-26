@@ -73,14 +73,14 @@ typedef struct _BtkStockTranslateFunc BtkStockTranslateFunc;
 struct _BtkStockTranslateFunc
 {
   BtkTranslateFunc func;
-  gpointer data;
+  bpointer data;
   GDestroyNotify notify;
 };
 
 static void
 real_add (const BtkStockItem *items,
-          guint               n_items,
-          gboolean            copy)
+          buint               n_items,
+          bboolean            copy)
 {
   int i;
 
@@ -92,7 +92,7 @@ real_add (const BtkStockItem *items,
   i = 0;
   while (i < n_items)
     {
-      gpointer old_key, old_value;
+      bpointer old_key, old_value;
       const BtkStockItem *item = &items[i];
 
       if (item->modifier & NON_STATIC_MASK)
@@ -116,7 +116,7 @@ real_add (const BtkStockItem *items,
         }
       
       g_hash_table_insert (stock_hash,
-                           (gchar*)item->stock_id, (BtkStockItem*)item);
+                           (bchar*)item->stock_id, (BtkStockItem*)item);
 
       ++i;
     }
@@ -137,7 +137,7 @@ real_add (const BtkStockItem *items,
  **/
 void
 btk_stock_add (const BtkStockItem *items,
-               guint               n_items)
+               buint               n_items)
 {
   g_return_if_fail (items != NULL);
 
@@ -155,7 +155,7 @@ btk_stock_add (const BtkStockItem *items,
  **/
 void
 btk_stock_add_static (const BtkStockItem *items,
-                      guint               n_items)
+                      buint               n_items)
 {
   g_return_if_fail (items != NULL);
 
@@ -173,8 +173,8 @@ btk_stock_add_static (const BtkStockItem *items,
  * 
  * Return value: %TRUE if @item was initialized
  **/
-gboolean
-btk_stock_lookup (const gchar  *stock_id,
+bboolean
+btk_stock_lookup (const bchar  *stock_id,
                   BtkStockItem *item)
 {
   const BtkStockItem *found;
@@ -203,7 +203,7 @@ btk_stock_lookup (const gchar  *stock_id,
 	  if (translate != NULL && translate->func != NULL)
 	    item->label = (* translate->func) (item->label, translate->data);
 	  else
-	    item->label = (gchar *) g_dgettext (item->translation_domain, item->label);
+	    item->label = (bchar *) g_dgettext (item->translation_domain, item->label);
 	}
     }
 
@@ -214,7 +214,7 @@ btk_stock_lookup (const gchar  *stock_id,
  * btk_stock_list_ids:
  * 
  * Retrieves a list of all known stock IDs added to a #BtkIconFactory
- * or registered with btk_stock_add(). The list must be freed with g_slist_free(),
+ * or registered with btk_stock_add(). The list must be freed with b_slist_free(),
  * and each string in the list must be freed with g_free().
  *
  * Return value: (element-type utf8) (transfer full): a list of known stock IDs
@@ -225,7 +225,7 @@ btk_stock_list_ids (void)
   GList *ids;
   GList *icon_ids;
   GSList *retval;
-  const gchar *last_id;
+  const bchar *last_id;
   
   init_stock_hash ();
 
@@ -249,7 +249,7 @@ btk_stock_list_ids (void)
         }
       else
         {
-          retval = g_slist_prepend (retval, g_strdup (ids->data));
+          retval = b_slist_prepend (retval, g_strdup (ids->data));
           last_id = ids->data;
         }
 
@@ -301,9 +301,9 @@ btk_stock_item_free (BtkStockItem *item)
 {
   g_return_if_fail (item != NULL);
 
-  g_free ((gchar*)item->stock_id);
-  g_free ((gchar*)item->label);
-  g_free ((gchar*)item->translation_domain);
+  g_free ((bchar*)item->stock_id);
+  g_free ((bchar*)item->label);
+  g_free ((bchar*)item->translation_domain);
 
   g_free (item);
 }
@@ -469,13 +469,13 @@ static const BtkStockItem builtin_items [] =
  *  { MY_ITEM2, NC_("even items", "Item 2"), 0, 0, "even-item-domain" },
  * };
  *
- * gchar *
- * my_translate_func (const gchar *msgid,
- *                    gpointer     data)
+ * bchar *
+ * my_translate_func (const bchar *msgid,
+ *                    bpointer     data)
  * {
- *   gchar *msgctxt = data;
+ *   bchar *msgctxt = data;
  * 
- *   return (gchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
+ *   return (bchar*)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
  * }
  *
  * /&ast; ... &ast;/
@@ -488,13 +488,13 @@ static const BtkStockItem builtin_items [] =
  * Since: 2.8
  */
 void
-btk_stock_set_translate_func (const gchar      *domain,
+btk_stock_set_translate_func (const bchar      *domain,
 			      BtkTranslateFunc  func,
-			      gpointer          data,
+			      bpointer          data,
 			      GDestroyNotify    notify)
 {
   BtkStockTranslateFunc *translate;
-  gchar *domainname;
+  bchar *domainname;
  
   domainname = g_strdup (domain);
 
@@ -516,13 +516,13 @@ btk_stock_set_translate_func (const gchar      *domain,
   g_hash_table_insert (translate_hash, domainname, translate);
 }
 
-static gchar *
-sgettext_swapped (const gchar *msgid, 
-		  gpointer     data)
+static bchar *
+sgettext_swapped (const bchar *msgid, 
+		  bpointer     data)
 {
-  gchar *msgctxt = data;
+  bchar *msgctxt = data;
 
-  return (gchar *)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
+  return (bchar *)g_dpgettext2 (GETTEXT_PACKAGE, msgctxt, msgid);
 }
 
 static void

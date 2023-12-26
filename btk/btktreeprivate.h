@@ -21,7 +21,7 @@
 #define __BTK_TREE_PRIVATE_H__
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #include <btk/btktreeview.h>
@@ -65,8 +65,8 @@ enum
   RUBBER_BAND_ACTIVE = 2
 };
 
-#define BTK_TREE_VIEW_SET_FLAG(tree_view, flag)   G_STMT_START{ (tree_view->priv->flags|=flag); }G_STMT_END
-#define BTK_TREE_VIEW_UNSET_FLAG(tree_view, flag) G_STMT_START{ (tree_view->priv->flags&=~(flag)); }G_STMT_END
+#define BTK_TREE_VIEW_SET_FLAG(tree_view, flag)   B_STMT_START{ (tree_view->priv->flags|=flag); }B_STMT_END
+#define BTK_TREE_VIEW_UNSET_FLAG(tree_view, flag) B_STMT_START{ (tree_view->priv->flags&=~(flag)); }B_STMT_END
 #define BTK_TREE_VIEW_FLAG_SET(tree_view, flag)   ((tree_view->priv->flags&flag)==flag)
 #define TREE_VIEW_HEADER_HEIGHT(tree_view)        (BTK_TREE_VIEW_FLAG_SET (tree_view, BTK_TREE_VIEW_HEADERS_VISIBLE)?tree_view->priv->header_height:0)
 #define TREE_VIEW_COLUMN_REQUESTED_WIDTH(column)  (CLAMP (column->requested_width, (column->min_width!=-1)?column->min_width:column->requested_width, (column->max_width!=-1)?column->max_width:column->requested_width))
@@ -80,8 +80,8 @@ enum
 typedef struct _BtkTreeViewColumnReorder BtkTreeViewColumnReorder;
 struct _BtkTreeViewColumnReorder
 {
-  gint left_align;
-  gint right_align;
+  bint left_align;
+  bint right_align;
   BtkTreeViewColumn *left_column;
   BtkTreeViewColumn *right_column;
 };
@@ -90,14 +90,14 @@ struct _BtkTreeViewPrivate
 {
   BtkTreeModel *model;
 
-  guint flags;
+  buint flags;
   /* tree information */
   BtkRBTree *tree;
 
   /* Container info */
   GList *children;
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   /* Adjustments */
   BtkAdjustment *hadjustment;
@@ -109,23 +109,23 @@ struct _BtkTreeViewPrivate
 
   /* Scroll position state keeping */
   BtkTreeRowReference *top_row;
-  gint top_row_dy;
+  bint top_row_dy;
   /* dy == y pos of top_row + top_row_dy */
   /* we cache it for simplicity of the code */
-  gint dy;
+  bint dy;
 
-  guint presize_handler_timer;
-  guint validate_rows_timer;
-  guint scroll_sync_timer;
+  buint presize_handler_timer;
+  buint validate_rows_timer;
+  buint scroll_sync_timer;
 
   /* Indentation and expander layout */
-  gint expander_size;
+  bint expander_size;
   BtkTreeViewColumn *expander_column;
 
-  gint level_indentation;
+  bint level_indentation;
 
   /* Key navigation (focus), selection */
-  gint cursor_offset;
+  bint cursor_offset;
 
   BtkTreeRowReference *anchor;
   BtkTreeRowReference *cursor;
@@ -136,16 +136,16 @@ struct _BtkTreeViewPrivate
   BtkRBNode *button_pressed_node;
   BtkRBTree *button_pressed_tree;
 
-  gint pressed_button;
-  gint press_start_x;
-  gint press_start_y;
+  bint pressed_button;
+  bint press_start_x;
+  bint press_start_y;
 
-  gint event_last_x;
-  gint event_last_y;
+  bint event_last_x;
+  bint event_last_y;
 
-  guint last_button_time;
-  gint last_button_x;
-  gint last_button_y;
+  buint last_button_time;
+  bint last_button_x;
+  bint last_button_y;
 
   BtkRBNode *prelight_node;
   BtkRBTree *prelight_tree;
@@ -156,63 +156,63 @@ struct _BtkTreeViewPrivate
   /* The node that's currently being collapsed or expanded */
   BtkRBNode *expanded_collapsed_node;
   BtkRBTree *expanded_collapsed_tree;
-  guint expand_collapse_timeout;
+  buint expand_collapse_timeout;
 
   /* Auto expand/collapse timeout in hover mode */
-  guint auto_expand_timeout;
+  buint auto_expand_timeout;
 
   /* Selection information */
   BtkTreeSelection *selection;
 
   /* Header information */
-  gint n_columns;
+  bint n_columns;
   GList *columns;
-  gint header_height;
+  bint header_height;
 
   BtkTreeViewColumnDropFunc column_drop_func;
-  gpointer column_drop_func_data;
+  bpointer column_drop_func_data;
   GDestroyNotify column_drop_func_data_destroy;
   GList *column_drag_info;
   BtkTreeViewColumnReorder *cur_reorder;
 
-  gint prev_width_before_expander;
+  bint prev_width_before_expander;
 
   /* Interactive Header reordering */
   BdkWindow *drag_window;
   BdkWindow *drag_highlight_window;
   BtkTreeViewColumn *drag_column;
-  gint drag_column_x;
+  bint drag_column_x;
 
   /* Interactive Header Resizing */
-  gint drag_pos;
-  gint x_drag;
+  bint drag_pos;
+  bint x_drag;
 
   /* Non-interactive Header Resizing, expand flag support */
-  gint prev_width;
+  bint prev_width;
 
-  gint last_extra_space;
-  gint last_extra_space_per_column;
-  gint last_number_of_expand_columns;
+  bint last_extra_space;
+  bint last_extra_space_per_column;
+  bint last_number_of_expand_columns;
 
   /* BATK Hack */
   BtkTreeDestroyCountFunc destroy_count_func;
-  gpointer destroy_count_data;
+  bpointer destroy_count_data;
   GDestroyNotify destroy_count_destroy;
 
   /* Scroll timeout (e.g. during dnd, rubber banding) */
-  guint scroll_timeout;
+  buint scroll_timeout;
 
   /* Row drag-and-drop */
   BtkTreeRowReference *drag_dest_row;
   BtkTreeViewDropPosition drag_dest_pos;
-  guint open_dest_timeout;
+  buint open_dest_timeout;
 
   /* Rubber banding */
-  gint rubber_band_status;
-  gint rubber_band_x;
-  gint rubber_band_y;
-  gint rubber_band_extend;
-  gint rubber_band_modify;
+  bint rubber_band_status;
+  bint rubber_band_x;
+  bint rubber_band_y;
+  bint rubber_band_extend;
+  bint rubber_band_modify;
 
   BtkRBNode *rubber_band_start_node;
   BtkRBTree *rubber_band_start_tree;
@@ -221,90 +221,90 @@ struct _BtkTreeViewPrivate
   BtkRBTree *rubber_band_end_tree;
 
   /* fixed height */
-  gint fixed_height;
+  bint fixed_height;
 
   /* Scroll-to functionality when unrealized */
   BtkTreeRowReference *scroll_to_path;
   BtkTreeViewColumn *scroll_to_column;
-  gfloat scroll_to_row_align;
-  gfloat scroll_to_col_align;
+  bfloat scroll_to_row_align;
+  bfloat scroll_to_col_align;
 
   /* Interactive search */
-  gint selected_iter;
-  gint search_column;
+  bint selected_iter;
+  bint search_column;
   BtkTreeViewSearchPositionFunc search_position_func;
   BtkTreeViewSearchEqualFunc search_equal_func;
-  gpointer search_user_data;
+  bpointer search_user_data;
   GDestroyNotify search_destroy;
-  gpointer search_position_user_data;
+  bpointer search_position_user_data;
   GDestroyNotify search_position_destroy;
   BtkWidget *search_window;
   BtkWidget *search_entry;
-  guint search_entry_changed_id;
-  guint typeselect_flush_timeout;
+  buint search_entry_changed_id;
+  buint typeselect_flush_timeout;
 
   /* Grid and tree lines */
   BtkTreeViewGridLines grid_lines;
   double grid_line_dashes[2];
   int grid_line_width;
 
-  gboolean tree_lines_enabled;
+  bboolean tree_lines_enabled;
   double tree_line_dashes[2];
   int tree_line_width;
 
   /* Row separators */
   BtkTreeViewRowSeparatorFunc row_separator_func;
-  gpointer row_separator_data;
+  bpointer row_separator_data;
   GDestroyNotify row_separator_destroy;
 
   /* Tooltip support */
-  gint tooltip_column;
+  bint tooltip_column;
 
   /* Here comes the bitfield */
-  guint scroll_to_use_align : 1;
+  buint scroll_to_use_align : 1;
 
-  guint fixed_height_mode : 1;
-  guint fixed_height_check : 1;
+  buint fixed_height_mode : 1;
+  buint fixed_height_check : 1;
 
-  guint reorderable : 1;
-  guint header_has_focus : 1;
-  guint drag_column_window_state : 3;
+  buint reorderable : 1;
+  buint header_has_focus : 1;
+  buint drag_column_window_state : 3;
   /* hint to display rows in alternating colors */
-  guint has_rules : 1;
-  guint mark_rows_col_dirty : 1;
+  buint has_rules : 1;
+  buint mark_rows_col_dirty : 1;
 
   /* for DnD */
-  guint empty_view_drop : 1;
+  buint empty_view_drop : 1;
 
-  guint modify_selection_pressed : 1;
-  guint extend_selection_pressed : 1;
+  buint modify_selection_pressed : 1;
+  buint extend_selection_pressed : 1;
 
-  guint init_hadjust_value : 1;
+  buint init_hadjust_value : 1;
 
-  guint in_top_row_to_dy : 1;
+  buint in_top_row_to_dy : 1;
 
   /* interactive search */
-  guint enable_search : 1;
-  guint disable_popdown : 1;
-  guint search_custom_entry_set : 1;
+  buint enable_search : 1;
+  buint disable_popdown : 1;
+  buint search_custom_entry_set : 1;
   
-  guint hover_selection : 1;
-  guint hover_expand : 1;
-  guint imcontext_changed : 1;
+  buint hover_selection : 1;
+  buint hover_expand : 1;
+  buint imcontext_changed : 1;
 
-  guint rubber_banding_enable : 1;
+  buint rubber_banding_enable : 1;
 
-  guint in_grab : 1;
+  buint in_grab : 1;
 
-  guint post_validation_flag : 1;
+  buint post_validation_flag : 1;
 
   /* Whether our key press handler is to avoid sending an unhandled binding to the search entry */
-  guint search_entry_avoid_unhandled_binding : 1;
+  buint search_entry_avoid_unhandled_binding : 1;
 };
 
 #ifdef __GNUC__
 
-#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -314,13 +314,13 @@ struct _BtkTreeViewPrivate
 		"and the BtkTreeModel.  This generally means that the model has changed\n"\
 		"without letting the view know.  Any display from now on is likely to\n"  \
 		"be incorrect.\n",                                                        \
-                G_STRLOC,                                               \
-                G_STRFUNC,                                              \
+                B_STRLOC,                                               \
+                B_STRFUNC,                                              \
                 #expr);                                                 \
          return ret;                                                    \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
-#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -330,15 +330,15 @@ struct _BtkTreeViewPrivate
 		"and the BtkTreeModel.  This generally means that the model has changed\n"\
 		"without letting the view know.  Any display from now on is likely to\n"  \
 		"be incorrect.\n",                                                        \
-                G_STRLOC,                                               \
-                G_STRFUNC,                                              \
+                B_STRLOC,                                               \
+                B_STRFUNC,                                              \
                 #expr);                                                 \
          return;                                                        \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
 #else
 
-#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT(expr, ret)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -352,9 +352,9 @@ struct _BtkTreeViewPrivate
                 __LINE__,                                               \
                 #expr);                                                 \
          return ret;                                                    \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 
-#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     G_STMT_START{          \
+#define TREE_VIEW_INTERNAL_ASSERT_VOID(expr)     B_STMT_START{          \
      if (!(expr))                                                       \
        {                                                                \
          g_log (G_LOG_DOMAIN,                                           \
@@ -368,7 +368,7 @@ struct _BtkTreeViewPrivate
                 __LINE__,                                               \
                 #expr);                                                 \
          return;                                                        \
-       };                               }G_STMT_END
+       };                               }B_STMT_END
 #endif
 
 
@@ -378,9 +378,9 @@ void         _btk_tree_selection_internal_select_node (BtkTreeSelection  *select
 						       BtkRBTree         *tree,
 						       BtkTreePath       *path,
                                                        BtkTreeSelectMode  mode,
-						       gboolean           override_browse_mode);
+						       bboolean           override_browse_mode);
 void         _btk_tree_selection_emit_changed         (BtkTreeSelection  *selection);
-gboolean     _btk_tree_view_find_node                 (BtkTreeView       *tree_view,
+bboolean     _btk_tree_view_find_node                 (BtkTreeView       *tree_view,
 						       BtkTreePath       *path,
 						       BtkRBTree        **tree,
 						       BtkRBNode        **node);
@@ -389,10 +389,10 @@ BtkTreePath *_btk_tree_view_find_path                 (BtkTreeView       *tree_v
 						       BtkRBNode         *node);
 void         _btk_tree_view_child_move_resize         (BtkTreeView       *tree_view,
 						       BtkWidget         *widget,
-						       gint               x,
-						       gint               y,
-						       gint               width,
-						       gint               height);
+						       bint               x,
+						       bint               y,
+						       bint               width,
+						       bint               height);
 void         _btk_tree_view_queue_draw_node           (BtkTreeView       *tree_view,
 						       BtkRBTree         *tree,
 						       BtkRBNode         *node,
@@ -406,16 +406,16 @@ void _btk_tree_view_column_unset_model      (BtkTreeViewColumn *column,
 					     BtkTreeModel      *old_model);
 void _btk_tree_view_column_unset_tree_view  (BtkTreeViewColumn *column);
 void _btk_tree_view_column_set_width        (BtkTreeViewColumn *column,
-					     gint               width);
+					     bint               width);
 void _btk_tree_view_column_start_drag       (BtkTreeView       *tree_view,
 					     BtkTreeViewColumn *column);
-gboolean _btk_tree_view_column_cell_event   (BtkTreeViewColumn  *tree_column,
+bboolean _btk_tree_view_column_cell_event   (BtkTreeViewColumn  *tree_column,
 					     BtkCellEditable   **editable_widget,
 					     BdkEvent           *event,
-					     gchar              *path_string,
+					     bchar              *path_string,
 					     const BdkRectangle *background_area,
 					     const BdkRectangle *cell_area,
-					     guint               flags);
+					     buint               flags);
 void _btk_tree_view_column_start_editing (BtkTreeViewColumn *tree_column,
 					  BtkCellEditable   *editable_widget);
 void _btk_tree_view_column_stop_editing  (BtkTreeViewColumn *tree_column);
@@ -423,17 +423,17 @@ void _btk_tree_view_install_mark_rows_col_dirty (BtkTreeView *tree_view);
 void             _btk_tree_view_column_autosize          (BtkTreeView       *tree_view,
 							  BtkTreeViewColumn *column);
 
-gboolean         _btk_tree_view_column_has_editable_cell (BtkTreeViewColumn *column);
+bboolean         _btk_tree_view_column_has_editable_cell (BtkTreeViewColumn *column);
 BtkCellRenderer *_btk_tree_view_column_get_edited_cell   (BtkTreeViewColumn *column);
-gint             _btk_tree_view_column_count_special_cells (BtkTreeViewColumn *column);
+bint             _btk_tree_view_column_count_special_cells (BtkTreeViewColumn *column);
 BtkCellRenderer *_btk_tree_view_column_get_cell_at_pos   (BtkTreeViewColumn *column,
-							  gint               x);
+							  bint               x);
 
 BtkTreeSelection* _btk_tree_selection_new                (void);
 BtkTreeSelection* _btk_tree_selection_new_with_tree_view (BtkTreeView      *tree_view);
 void              _btk_tree_selection_set_tree_view      (BtkTreeSelection *selection,
                                                           BtkTreeView      *tree_view);
-gboolean          _btk_tree_selection_row_is_selectable  (BtkTreeSelection *selection,
+bboolean          _btk_tree_selection_row_is_selectable  (BtkTreeSelection *selection,
 							  BtkRBNode        *node,
 							  BtkTreePath      *path);
 
@@ -442,30 +442,30 @@ void		  _btk_tree_view_column_cell_render      (BtkTreeViewColumn  *tree_column,
 							  const BdkRectangle *background_area,
 							  const BdkRectangle *cell_area,
 							  const BdkRectangle *expose_area,
-							  guint               flags);
+							  buint               flags);
 void		  _btk_tree_view_column_get_focus_area   (BtkTreeViewColumn  *tree_column,
 							  const BdkRectangle *background_area,
 							  const BdkRectangle *cell_area,
 							  BdkRectangle       *focus_area);
-gboolean	  _btk_tree_view_column_cell_focus       (BtkTreeViewColumn  *tree_column,
-							  gint                direction,
-							  gboolean            left,
-							  gboolean            right);
+bboolean	  _btk_tree_view_column_cell_focus       (BtkTreeViewColumn  *tree_column,
+							  bint                direction,
+							  bboolean            left,
+							  bboolean            right);
 void		  _btk_tree_view_column_cell_draw_focus  (BtkTreeViewColumn  *tree_column,
 							  BdkWindow          *window,
 							  const BdkRectangle *background_area,
 							  const BdkRectangle *cell_area,
 							  const BdkRectangle *expose_area,
-							  guint               flags);
+							  buint               flags);
 void		  _btk_tree_view_column_cell_set_dirty	 (BtkTreeViewColumn  *tree_column,
-							  gboolean            install_handler);
+							  bboolean            install_handler);
 void              _btk_tree_view_column_get_neighbor_sizes (BtkTreeViewColumn *column,
 							    BtkCellRenderer   *cell,
-							    gint              *left,
-							    gint              *right);
+							    bint              *left,
+							    bint              *right);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_TREE_PRIVATE_H__ */

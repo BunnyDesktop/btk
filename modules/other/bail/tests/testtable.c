@@ -18,44 +18,44 @@ typedef struct
 static void _check_table (BatkObject *in_obj);
 void table_runtest(BatkObject *);
 static void other_runtest(BatkObject *obj);
-static void ref_at_runtest(BatkObject *obj, gint row, gint col);
-static void ref_accessible_child_runtest(BatkObject *obj, gint childno);
-static void ref_selection_runtest (BatkObject *obj, gint index);
+static void ref_at_runtest(BatkObject *obj, bint row, bint col);
+static void ref_accessible_child_runtest(BatkObject *obj, bint childno);
+static void ref_selection_runtest (BatkObject *obj, bint index);
 static void _selection_tests(BatkObject *obj);
-static void _display_header_info(gchar *type,
-  BatkObject *header_obj, gint header_num);
+static void _display_header_info(bchar *type,
+  BatkObject *header_obj, bint header_num);
 static void _process_child(BatkObject *child_obj);
 
-static void _notify_table_row_inserted (GObject *obj,
-  gint start_offset, gint length);
-static void _notify_table_column_inserted (GObject *obj,
-  gint start_offset, gint length);
-static void _notify_table_row_deleted (GObject *obj,
-  gint start_offset, gint length);
-static void _notify_table_column_deleted (GObject *obj,
-  gint start_offset, gint length);
-static void _notify_table_row_reordered (GObject *obj);
-static void _notify_table_column_reordered (GObject *obj);
-static void _notify_table_child_added (GObject *obj,
-  gint index, BatkObject *child);
-static void _notify_table_child_removed (GObject *obj,
-  gint index, BatkObject *child);
+static void _notify_table_row_inserted (BObject *obj,
+  bint start_offset, bint length);
+static void _notify_table_column_inserted (BObject *obj,
+  bint start_offset, bint length);
+static void _notify_table_row_deleted (BObject *obj,
+  bint start_offset, bint length);
+static void _notify_table_column_deleted (BObject *obj,
+  bint start_offset, bint length);
+static void _notify_table_row_reordered (BObject *obj);
+static void _notify_table_column_reordered (BObject *obj);
+static void _notify_table_child_added (BObject *obj,
+  bint index, BatkObject *child);
+static void _notify_table_child_removed (BObject *obj,
+  bint index, BatkObject *child);
 static void _property_signal_connect (BatkObject	*obj);
 static void _property_change_handler (BatkObject	*obj,
   BatkPropertyValues *values);
 
-static gboolean tested_set_headers = FALSE;
+static bboolean tested_set_headers = FALSE;
 static void test_choice_gui (BatkObject **obj);
 static void nogui_runtest (BatkObject *obj);
 static void nogui_ref_at_runtest (BatkObject *obj);
 static void nogui_process_child (BatkObject *obj);
 
 static TestChoice *tc;
-static gint g_visibleGUI = 0;
+static bint g_visibleGUI = 0;
 static BatkTable *g_table = NULL;
 static BatkObject *current_obj = NULL;
-gboolean g_done = FALSE;
-gboolean g_properties = TRUE;
+bboolean g_done = FALSE;
+bboolean g_properties = TRUE;
 
 /* 
  * destroy
@@ -63,12 +63,12 @@ gboolean g_properties = TRUE;
  * Destroy Callback 
  *
  */
-static void destroy (BtkWidget *widget, gpointer data)
+static void destroy (BtkWidget *widget, bpointer data)
 {
   btk_main_quit();
 }
 
-static void choicecb (BtkWidget *widget, gpointer data)
+static void choicecb (BtkWidget *widget, bpointer data)
 {
   BatkObject **ptr_to_obj = (BatkObject **)data;
   BatkObject *obj = *ptr_to_obj;
@@ -79,32 +79,32 @@ static void choicecb (BtkWidget *widget, gpointer data)
   }
   else if (BTK_TOGGLE_BUTTON(tc->tb_ref_selection)->active)
   {
-    const gchar *indexstr;
-    gint index;
+    const bchar *indexstr;
+    bint index;
 
     indexstr = btk_entry_get_text(BTK_ENTRY(tc->index_entry));
-    index = string_to_int((gchar *)indexstr);
+    index = string_to_int((bchar *)indexstr);
 
     ref_selection_runtest(obj, index); 
   }
   else if (BTK_TOGGLE_BUTTON(tc->tb_ref_at)->active)
   {
-    const gchar *rowstr, *colstr;
-    gint row, col;
+    const bchar *rowstr, *colstr;
+    bint row, col;
  
     rowstr = btk_entry_get_text(BTK_ENTRY(tc->row_entry));
     colstr = btk_entry_get_text(BTK_ENTRY(tc->col_entry));
-    row = string_to_int((gchar *)rowstr);
-    col = string_to_int((gchar *)colstr);
+    row = string_to_int((bchar *)rowstr);
+    col = string_to_int((bchar *)colstr);
  
     ref_at_runtest(obj, row, col);
   }
   else if (BTK_TOGGLE_BUTTON(tc->tb_ref_accessible_child)->active)
   {
-    const gchar *childstr;
-    gint childno;
+    const bchar *childstr;
+    bint childno;
     childstr = btk_entry_get_text(BTK_ENTRY(tc->child_entry));
-    childno = string_to_int((gchar *)childstr);
+    childno = string_to_int((bchar *)childstr);
 
     ref_accessible_child_runtest(obj, childno);
   }
@@ -134,7 +134,7 @@ static void _check_table (BatkObject *in_obj)
       g_print("Found BailCList in child!\n");
     else
     {
-      g_print("No object found %s\n", g_type_name (G_OBJECT_TYPE (in_obj)));
+      g_print("No object found %s\n", g_type_name (B_OBJECT_TYPE (in_obj)));
       return;
     }
   }
@@ -147,37 +147,37 @@ static void _check_table (BatkObject *in_obj)
 
     g_print ("Adding signal handler\n");
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_inserted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_inserted", B_OBJECT_TYPE (obj)),
 		0,
 		g_cclosure_new (G_CALLBACK (_notify_table_column_inserted),
 		NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_inserted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_inserted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_inserted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_deleted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_deleted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_column_deleted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_deleted", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_deleted", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_deleted),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("column_reordered", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("column_reordered", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_column_reordered),
 			NULL, NULL),
 		FALSE);
     g_signal_connect_closure_by_id (obj,
-		g_signal_lookup ("row_reordered", G_OBJECT_TYPE (obj)),
+		g_signal_lookup ("row_reordered", B_OBJECT_TYPE (obj)),
 		0,
                 g_cclosure_new (G_CALLBACK (_notify_table_row_reordered),
 			NULL, NULL),
@@ -214,11 +214,11 @@ void other_runtest(BatkObject *obj)
 {
   BatkObject *header_obj;
   BatkObject *out_obj;
-  const gchar *out_string;
+  const bchar *out_string;
   GString *out_desc;
-  gint n_cols, n_rows;
-  gint rows_to_loop = NUM_ROWS_TO_LOOP;
-  gint i, j;
+  bint n_cols, n_rows;
+  bint rows_to_loop = NUM_ROWS_TO_LOOP;
+  bint i, j;
   out_desc = g_string_sized_new(256);
 
   n_cols = batk_table_get_n_columns(BATK_TABLE(obj));
@@ -312,8 +312,8 @@ void other_runtest(BatkObject *obj)
     
     for (j=0; j <n_cols; j++)
     {
-      gint index = batk_table_get_index_at(BATK_TABLE(obj), i, j);
-      gint row, column;
+      bint index = batk_table_get_index_at(BATK_TABLE(obj), i, j);
+      bint row, column;
 
       column = batk_table_get_column_at_index (BATK_TABLE (obj), index);
       g_return_if_fail (column == j);
@@ -352,7 +352,7 @@ void other_runtest(BatkObject *obj)
 }
 
 static
-void ref_accessible_child_runtest(BatkObject *obj, gint child)
+void ref_accessible_child_runtest(BatkObject *obj, bint child)
 {
   BatkObject *child_obj;
   /* ref_child */
@@ -364,7 +364,7 @@ void ref_accessible_child_runtest(BatkObject *obj, gint child)
 }
 
 static 
-void ref_selection_runtest (BatkObject *obj, gint index)
+void ref_selection_runtest (BatkObject *obj, bint index)
 {
   BatkObject *child_obj;
 
@@ -382,7 +382,7 @@ void ref_selection_runtest (BatkObject *obj, gint index)
 }
 
 static
-void ref_at_runtest(BatkObject *obj, gint row, gint col)
+void ref_at_runtest(BatkObject *obj, bint row, bint col)
 {
   BatkObject *child_obj;
   /* ref_at */
@@ -419,10 +419,10 @@ _process_child(BatkObject *child_obj)
 /*
     if (BATK_IS_ACTION(child_obj))
       {
-	gint i, j;
-	gchar *action_name;
-	gchar *action_description;
-	gchar *action_keybinding;
+	bint i, j;
+	bchar *action_name;
+	bchar *action_description;
+	bchar *action_keybinding;
 	BatkAction *action = BATK_ACTION(child_obj);
 
 	i = batk_action_get_n_actions (action);
@@ -462,11 +462,11 @@ _process_child(BatkObject *child_obj)
 static void
 _selection_tests(BatkObject *obj)
 {
-  gint n_rows = 0;
-  gint n_cols = 0;
-  gint selection_count = 0;
-  gint i = 0;
-  gint *selected = NULL;
+  bint n_rows = 0;
+  bint n_cols = 0;
+  bint selection_count = 0;
+  bint i = 0;
+  bint *selected = NULL;
   BatkTable *table;
 
   table = BATK_TABLE (obj);
@@ -537,7 +537,7 @@ _create_event_watcher (void)
 }
 
 int
-btk_module_init(gint argc, char* argv[])
+btk_module_init(bint argc, char* argv[])
 {
     g_print("TestTable Module loaded\n");
 
@@ -547,59 +547,59 @@ btk_module_init(gint argc, char* argv[])
 }
 
 static void
-_notify_table_row_inserted (GObject *obj, gint start_offset, gint length)
+_notify_table_row_inserted (BObject *obj, bint start_offset, bint length)
 {
   g_print ("SIGNAL - Row inserted at position %d, num of rows inserted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_column_inserted (GObject *obj, gint start_offset, gint length)
+_notify_table_column_inserted (BObject *obj, bint start_offset, bint length)
 {
   g_print ("SIGNAL - Column inserted at position %d, num of columns inserted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_row_deleted (GObject *obj, gint start_offset, gint length)
+_notify_table_row_deleted (BObject *obj, bint start_offset, bint length)
 {
   g_print ("SIGNAL - Row deleted at position %d, num of rows deleted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_column_deleted (GObject *obj, gint start_offset, gint length)
+_notify_table_column_deleted (BObject *obj, bint start_offset, bint length)
 {
   g_print ("SIGNAL - Column deleted at position %d, num of columns deleted %d!\n",
     start_offset, length);
 }
 
 static void
-_notify_table_row_reordered (GObject *obj)
+_notify_table_row_reordered (BObject *obj)
 {
   g_print ("SIGNAL - Row reordered!\n");
 }
 
 static void
-_notify_table_column_reordered (GObject *obj)
+_notify_table_column_reordered (BObject *obj)
 {
   g_print ("SIGNAL - Column reordered!\n");
 }
 
-static void _notify_table_child_added (GObject *obj,
-  gint index, BatkObject *child)
+static void _notify_table_child_added (BObject *obj,
+  bint index, BatkObject *child)
 {
    g_print ("SIGNAL - Child added - index %d\n", index);
 }
 
-static void _notify_table_child_removed (GObject *obj,
-  gint index, BatkObject *child)
+static void _notify_table_child_removed (BObject *obj,
+  bint index, BatkObject *child)
 {
    g_print ("SIGNAL - Child removed - index %d\n", index);
 }
 
 static void
-_display_header_info(gchar *type, BatkObject *header_obj, gint header_num)
+_display_header_info(bchar *type, BatkObject *header_obj, bint header_num)
 {
   if (header_obj != NULL)
   {
@@ -616,7 +616,7 @@ _display_header_info(gchar *type, BatkObject *header_obj, gint header_num)
     }
     else if (BATK_IS_TEXT(header_obj))
     {
-      gchar *header_text;
+      bchar *header_text;
 
       header_text = batk_text_get_text (BATK_TEXT (header_obj), 0, 3);
       if (header_text != NULL)
@@ -647,7 +647,7 @@ static void _property_signal_connect (BatkObject *obj)
   if (g_properties && obj != NULL)
   {
     g_signal_connect_closure_by_id (obj,
-    g_signal_lookup ("property_change", G_OBJECT_TYPE (obj)),
+    g_signal_lookup ("property_change", B_OBJECT_TYPE (obj)),
       0,
       g_cclosure_new (G_CALLBACK (_property_change_handler),
       NULL, NULL),
@@ -659,19 +659,19 @@ static void
 _property_change_handler (BatkObject         *obj,
                           BatkPropertyValues *values)
 {
-  gchar *obj_text;
-  const gchar *name;
+  bchar *obj_text;
+  const bchar *name;
 
   if (g_table != NULL)
   {
-    gint index = batk_object_get_index_in_parent(obj);
+    bint index = batk_object_get_index_in_parent(obj);
     
     if (index >= 0)
       g_print("Index is %d, row is %d, col is %d\n", index,
               batk_table_get_row_at_index(g_table, index),
               batk_table_get_column_at_index(g_table, index));
     else
-      g_print ("index: %d for %s\n", index, g_type_name (G_OBJECT_TYPE (obj)));
+      g_print ("index: %d for %s\n", index, g_type_name (B_OBJECT_TYPE (obj)));
   }
 
   if (BATK_IS_TEXT(obj))
@@ -693,11 +693,11 @@ _property_change_handler (BatkObject         *obj,
 
     switch (old_type)
     {
-    case G_TYPE_INT:
-      g_print("value was <%d>\n", g_value_get_int (&values->old_value));
+    case B_TYPE_INT:
+      g_print("value was <%d>\n", b_value_get_int (&values->old_value));
       break;
-    case G_TYPE_STRING:
-      name = g_value_get_string (&values->old_value);
+    case B_TYPE_STRING:
+      name = b_value_get_string (&values->old_value);
       if (name != NULL)
         g_print ("value was <%s>\n", name);
       else
@@ -719,11 +719,11 @@ _property_change_handler (BatkObject         *obj,
 
     switch (new_type)
     {
-    case G_TYPE_INT:
-      g_print("value is <%d>\n", g_value_get_int (&values->new_value));
+    case B_TYPE_INT:
+      g_print("value is <%d>\n", b_value_get_int (&values->new_value));
       break;
-    case G_TYPE_STRING:
-      name = g_value_get_string (&values->new_value);
+    case B_TYPE_STRING:
+      name = b_value_get_string (&values->new_value);
       if (name != NULL)
         g_print ("value is <%s>\n", name);
       else
@@ -840,9 +840,9 @@ static void
 nogui_ref_at_runtest (BatkObject *obj)
 {
   BatkObject *child_obj;
-  gint i, j;
-  gint n_cols;
-  gint rows_to_loop = 5;
+  bint i, j;
+  bint n_cols;
+  bint rows_to_loop = 5;
 
   n_cols = batk_table_get_n_columns (BATK_TABLE(obj));
   
@@ -854,7 +854,7 @@ nogui_ref_at_runtest (BatkObject *obj)
     /* Just the first rows_to_loop rows */
     for (j=0; j < n_cols; j++)
     {
-      gint index = batk_table_get_index_at(BATK_TABLE(obj), i, j);
+      bint index = batk_table_get_index_at(BATK_TABLE(obj), i, j);
 	  if(batk_selection_is_child_selected(BATK_SELECTION(obj), index))
 		 g_print("batk_selection_is_child_selected,index = %d returns TRUE\n", index);
 
@@ -904,11 +904,11 @@ nogui_ref_at_runtest (BatkObject *obj)
 static void
 nogui_process_child (BatkObject *obj)
 {
-  gchar default_val[5] = "NULL";
+  bchar default_val[5] = "NULL";
 
   if (BATK_IS_TEXT(obj))
     {
-      gchar *current_text;
+      bchar *current_text;
       current_text = batk_text_get_text (BATK_TEXT(obj), 0, -1);
       g_print ("Child supports text interface.\nCurrent text is %s\n", current_text);
     }
@@ -916,8 +916,8 @@ nogui_process_child (BatkObject *obj)
   if (BATK_IS_ACTION(obj))
     {
       BatkAction *action = BATK_ACTION(obj);
-      gint n_actions, i;
-      const gchar *name, *description;
+      bint n_actions, i;
+      const bchar *name, *description;
       
       n_actions = batk_action_get_n_actions (action);
       g_print ("Child supports %d actions.\n", n_actions);

@@ -42,8 +42,8 @@
 
 void
 _bdk_directfb_window_get_offsets (BdkWindow *window,
-                                  gint      *x_offset,
-                                  gint      *y_offset)
+                                  bint      *x_offset,
+                                  bint      *y_offset)
 {
   if (x_offset)
     *x_offset = 0;
@@ -51,7 +51,7 @@ _bdk_directfb_window_get_offsets (BdkWindow *window,
     *y_offset = 0;
 }
 
-gboolean
+bboolean
 _bdk_windowing_window_queue_antiexpose (BdkWindow *window,
                                         BdkRebunnyion *area)
 {
@@ -70,8 +70,8 @@ _bdk_windowing_window_queue_antiexpose (BdkWindow *window,
  **/
 void
 _bdk_directfb_window_scroll (BdkWindow *window,
-                             gint       dx,
-                             gint       dy)
+                             bint       dx,
+                             bint       dy)
 {
   BdkWindowObject         *private;
   BdkDrawableImplDirectFB *impl;
@@ -161,8 +161,8 @@ _bdk_directfb_window_scroll (BdkWindow *window,
 void
 _bdk_directfb_window_move_rebunnyion (BdkWindow       *window,
                                   const BdkRebunnyion *rebunnyion,
-                                  gint             dx,
-                                  gint             dy)
+                                  bint             dx,
+                                  bint             dy)
 {
   BdkWindowObject         *private;
   BdkDrawableImplDirectFB *impl;

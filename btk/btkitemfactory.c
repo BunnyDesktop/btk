@@ -56,7 +56,7 @@
 #include "btkalias.h"
 
 /* --- defines --- */
-#define		ITEM_FACTORY_STRING	((gchar*) item_factory_string)
+#define		ITEM_FACTORY_STRING	((bchar*) item_factory_string)
 #define		ITEM_BLOCK_SIZE		(128)
 
 
@@ -66,19 +66,19 @@ typedef struct  _BtkIFDumpData		BtkIFDumpData;
 struct _BtkIFCBData
 {
   BtkItemFactoryCallback  func;
-  guint			  callback_type;
-  gpointer		  func_data;
-  guint			  callback_action;
+  buint			  callback_type;
+  bpointer		  func_data;
+  buint			  callback_action;
 };
 
 
 /* --- prototypes --- */
 static void	btk_item_factory_destroy		(BtkObject	      *object);
-static void	btk_item_factory_finalize		(GObject	      *object);
+static void	btk_item_factory_finalize		(BObject	      *object);
 
 
 /* --- static variables --- */
-static const gchar	 item_factory_string[] = "Btk-<ItemFactory>";
+static const bchar	 item_factory_string[] = "Btk-<ItemFactory>";
 static GQuark		 quark_popup_data = 0;
 static GQuark		 quark_if_menu_pos = 0;
 static GQuark		 quark_item_factory = 0;
@@ -103,7 +103,7 @@ G_DEFINE_TYPE (BtkItemFactory, btk_item_factory, BTK_TYPE_OBJECT)
 static void
 btk_item_factory_class_init (BtkItemFactoryClass  *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkObjectClass *object_class = BTK_OBJECT_CLASS (class);
 
   bobject_class->finalize = btk_item_factory_finalize;
@@ -161,7 +161,7 @@ btk_item_factory_init (BtkItemFactory	    *ifactory)
  */
 BtkItemFactory*
 btk_item_factory_new (GType	     container_type,
-		      const gchar   *path,
+		      const bchar   *path,
 		      BtkAccelGroup *accel_group)
 {
   BtkItemFactory *ifactory;
@@ -176,7 +176,7 @@ btk_item_factory_new (GType	     container_type,
 
 static void
 btk_item_factory_callback_marshal (BtkWidget *widget,
-				   gpointer   func_data)
+				   bpointer   func_data)
 {
   BtkIFCBData *data;
 
@@ -198,9 +198,9 @@ static void
 btk_item_factory_item_remove_widget (BtkWidget		*widget,
 				     BtkItemFactoryItem *item)
 {
-  item->widgets = g_slist_remove (item->widgets, widget);
-  g_object_set_qdata (G_OBJECT (widget), quark_item_factory, NULL);
-  g_object_set_qdata (G_OBJECT (widget), quark_item_path, NULL);
+  item->widgets = b_slist_remove (item->widgets, widget);
+  g_object_set_qdata (B_OBJECT (widget), quark_item_factory, NULL);
+  g_object_set_qdata (B_OBJECT (widget), quark_item_path, NULL);
 }
 
 /**
@@ -226,9 +226,9 @@ btk_item_factory_item_remove_widget (BtkWidget		*widget,
  */
 void
 btk_item_factory_add_foreign (BtkWidget      *accel_widget,
-			      const gchar    *full_path,
+			      const bchar    *full_path,
 			      BtkAccelGroup  *accel_group,
-			      guint           keyval,
+			      buint           keyval,
 			      BdkModifierType modifiers)
 {
   BtkItemFactoryClass *class;
@@ -252,7 +252,7 @@ btk_item_factory_add_foreign (BtkWidget      *accel_widget,
       g_hash_table_insert (class->item_ht, item->path, item);
     }
 
-  item->widgets = g_slist_prepend (item->widgets, accel_widget);
+  item->widgets = b_slist_prepend (item->widgets, accel_widget);
   g_signal_connect (accel_widget,
 		    "destroy",
 		    G_CALLBACK (btk_item_factory_item_remove_widget),
@@ -260,22 +260,22 @@ btk_item_factory_add_foreign (BtkWidget      *accel_widget,
 
   /* set the item path for the widget
    */
-  g_object_set_qdata (G_OBJECT (accel_widget), quark_item_path, item->path);
+  g_object_set_qdata (B_OBJECT (accel_widget), quark_item_path, item->path);
   btk_widget_set_name (accel_widget, item->path);
   if (accel_group)
     {
       g_object_ref (accel_group);
-      g_object_set_qdata_full (G_OBJECT (accel_widget),
+      g_object_set_qdata_full (B_OBJECT (accel_widget),
 			       quark_accel_group,
 			       accel_group,
 			       g_object_unref);
     }
   else
-    g_object_set_qdata (G_OBJECT (accel_widget), quark_accel_group, NULL);
+    g_object_set_qdata (B_OBJECT (accel_widget), quark_accel_group, NULL);
 
   /* install defined accelerators
    */
-  if (g_signal_lookup ("activate", G_TYPE_FROM_INSTANCE (accel_widget)))
+  if (g_signal_lookup ("activate", B_TYPE_FROM_INSTANCE (accel_widget)))
     {
       if (accel_group)
 	{
@@ -286,26 +286,26 @@ btk_item_factory_add_foreign (BtkWidget      *accel_widget,
 }
 
 static void
-ifactory_cb_data_free (gpointer mem)
+ifactory_cb_data_free (bpointer mem)
 {
   g_slice_free (BtkIFCBData, mem);
 }
 
 static void
 btk_item_factory_add_item (BtkItemFactory		*ifactory,
-			   const gchar			*path,
-			   const gchar			*accelerator,
+			   const bchar			*path,
+			   const bchar			*accelerator,
 			   BtkItemFactoryCallback	callback,
-			   guint			callback_action,
-			   gpointer			callback_data,
-			   guint			callback_type,
-			   gchar			*item_type,
+			   buint			callback_action,
+			   bpointer			callback_data,
+			   buint			callback_type,
+			   bchar			*item_type,
 			   BtkWidget			*widget)
 {
   BtkItemFactoryClass *class;
   BtkItemFactoryItem *item;
-  gchar *fpath;
-  guint keyval;
+  bchar *fpath;
+  buint keyval;
   BdkModifierType mods;
   
   g_return_if_fail (widget != NULL);
@@ -330,7 +330,7 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
       data->func_data = callback_data;
       data->callback_action = callback_action;
 
-      g_object_weak_ref (G_OBJECT (widget),
+      g_object_weak_ref (B_OBJECT (widget),
 			 (GWeakNotify) ifactory_cb_data_free,
 			 data);
       g_signal_connect (widget,
@@ -342,8 +342,8 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
   /* link the widget into its item-entry
    * and keep back pointer on both the item factory and the widget
    */
-  g_object_set_qdata (G_OBJECT (widget), quark_action, GUINT_TO_POINTER (callback_action));
-  g_object_set_qdata (G_OBJECT (widget), quark_item_factory, ifactory);
+  g_object_set_qdata (B_OBJECT (widget), quark_action, BUINT_TO_POINTER (callback_action));
+  g_object_set_qdata (B_OBJECT (widget), quark_item_factory, ifactory);
   if (accelerator)
     btk_accelerator_parse (accelerator, &keyval, &mods);
   else
@@ -358,8 +358,8 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
 
   g_return_if_fail (item != NULL);
 
-  if (!g_slist_find (ifactory->items, item))
-    ifactory->items = g_slist_prepend (ifactory->items, item);
+  if (!b_slist_find (ifactory->items, item))
+    ifactory->items = b_slist_prepend (ifactory->items, item);
 }
 
 /**
@@ -379,10 +379,10 @@ btk_item_factory_add_item (BtkItemFactory		*ifactory,
 void
 btk_item_factory_construct (BtkItemFactory	*ifactory,
 			    GType		 container_type,
-			    const gchar		*path,
+			    const bchar		*path,
 			    BtkAccelGroup	*accel_group)
 {
-  guint len;
+  buint len;
 
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (ifactory->accel_group == NULL);
@@ -432,12 +432,12 @@ btk_item_factory_construct (BtkItemFactory	*ifactory,
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 BtkItemFactory*
-btk_item_factory_from_path (const gchar      *path)
+btk_item_factory_from_path (const bchar      *path)
 {
   BtkItemFactoryClass *class;
   BtkItemFactoryItem *item;
-  gchar *fname;
-  guint i;
+  bchar *fname;
+  buint i;
 
   g_return_val_if_fail (path != NULL, NULL);
   g_return_val_if_fail (path[0] == '<', NULL);
@@ -453,7 +453,7 @@ btk_item_factory_from_path (const gchar      *path)
 		 path);
       return NULL;
     }
-  fname = g_new (gchar, i + 2);
+  fname = g_new (bchar, i + 2);
   g_memmove (fname, path, i + 1);
   fname[i + 1] = 0;
 
@@ -495,14 +495,14 @@ btk_item_factory_destroy (BtkObject *object)
 	if (g_object_get_qdata (link->data, quark_item_factory) == ifactory)
 	  g_object_set_qdata (link->data, quark_item_factory, NULL);
     }
-  g_slist_free (ifactory->items);
+  b_slist_free (ifactory->items);
   ifactory->items = NULL;
 
   BTK_OBJECT_CLASS (btk_item_factory_parent_class)->destroy (object);
 }
 
 static void
-btk_item_factory_finalize (GObject *object)
+btk_item_factory_finalize (BObject *object)
 {
   BtkItemFactory *ifactory = BTK_ITEM_FACTORY (object);
 
@@ -515,7 +515,7 @@ btk_item_factory_finalize (GObject *object)
   if (ifactory->translate_notify)
     ifactory->translate_notify (ifactory->translate_data);
   
-  G_OBJECT_CLASS (btk_item_factory_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_item_factory_parent_class)->finalize (object);
 }
 
 /**
@@ -534,13 +534,13 @@ btk_item_factory_from_widget (BtkWidget	       *widget)
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  ifactory = g_object_get_qdata (G_OBJECT (widget), quark_item_factory);
+  ifactory = g_object_get_qdata (B_OBJECT (widget), quark_item_factory);
 
   if (ifactory == NULL && BTK_IS_MENU_ITEM (widget) &&
       BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
       BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
-      ifactory = g_object_get_qdata (G_OBJECT (menu), quark_item_factory);
+      ifactory = g_object_get_qdata (B_OBJECT (menu), quark_item_factory);
     }
 
   return ifactory;
@@ -560,20 +560,20 @@ btk_item_factory_from_widget (BtkWidget	       *widget)
  *
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-const gchar*
+const bchar*
 btk_item_factory_path_from_widget (BtkWidget	    *widget)
 {
-  gchar* path;
+  bchar* path;
 
   g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  path = g_object_get_qdata (G_OBJECT (widget), quark_item_path);
+  path = g_object_get_qdata (B_OBJECT (widget), quark_item_path);
 
   if (path == NULL && BTK_IS_MENU_ITEM (widget) &&
       BTK_MENU_ITEM (widget)->submenu != NULL) 
     {
       BtkWidget *menu = BTK_MENU_ITEM (widget)->submenu;
-      path = g_object_get_qdata (G_OBJECT (menu), quark_item_path);
+      path = g_object_get_qdata (B_OBJECT (menu), quark_item_path);
     }
 
   return path;
@@ -593,9 +593,9 @@ btk_item_factory_path_from_widget (BtkWidget	    *widget)
  */
 void
 btk_item_factory_create_items (BtkItemFactory	   *ifactory,
-			       guint		    n_entries,
+			       buint		    n_entries,
 			       BtkItemFactoryEntry *entries,
-			       gpointer		    callback_data)
+			       bpointer		    callback_data)
 {
   btk_item_factory_create_items_ac (ifactory, n_entries, entries, callback_data, 1);
 }
@@ -615,12 +615,12 @@ btk_item_factory_create_items (BtkItemFactory	   *ifactory,
  */
 void
 btk_item_factory_create_items_ac (BtkItemFactory      *ifactory,
-				  guint		       n_entries,
+				  buint		       n_entries,
 				  BtkItemFactoryEntry *entries,
-				  gpointer	       callback_data,
-				  guint		       callback_type)
+				  bpointer	       callback_data,
+				  buint		       callback_type)
 {
-  guint i;
+  buint i;
 
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (callback_type >= 1 && callback_type <= 2);
@@ -651,7 +651,7 @@ btk_item_factory_create_items_ac (BtkItemFactory      *ifactory,
  */
 BtkWidget*
 btk_item_factory_get_widget (BtkItemFactory *ifactory,
-			     const gchar    *path)
+			     const bchar    *path)
 {
   BtkItemFactoryClass *class;
   BtkItemFactoryItem *item;
@@ -662,10 +662,10 @@ btk_item_factory_get_widget (BtkItemFactory *ifactory,
   class = BTK_ITEM_FACTORY_GET_CLASS (ifactory);
 
   if (path[0] == '<')
-    item = g_hash_table_lookup (class->item_ht, (gpointer) path);
+    item = g_hash_table_lookup (class->item_ht, (bpointer) path);
   else
     {
-      gchar *fpath;
+      bchar *fpath;
 
       fpath = g_strconcat (ifactory->path, path, NULL);
       item = g_hash_table_lookup (class->item_ht, fpath);
@@ -704,7 +704,7 @@ btk_item_factory_get_widget (BtkItemFactory *ifactory,
  */
 BtkWidget*
 btk_item_factory_get_widget_by_action (BtkItemFactory *ifactory,
-				       guint	       action)
+				       buint	       action)
 {
   GSList *slist;
 
@@ -717,7 +717,7 @@ btk_item_factory_get_widget_by_action (BtkItemFactory *ifactory,
 
       for (link = item->widgets; link; link = link->next)
 	if (g_object_get_qdata (link->data, quark_item_factory) == ifactory &&
-	    g_object_get_qdata (link->data, quark_action) == GUINT_TO_POINTER (action))
+	    g_object_get_qdata (link->data, quark_action) == BUINT_TO_POINTER (action))
 	  return link->data;
     }
 
@@ -741,7 +741,7 @@ btk_item_factory_get_widget_by_action (BtkItemFactory *ifactory,
  */
 BtkWidget*
 btk_item_factory_get_item (BtkItemFactory *ifactory,
-			   const gchar    *path)
+			   const bchar    *path)
 {
   BtkWidget *widget;
 
@@ -772,7 +772,7 @@ btk_item_factory_get_item (BtkItemFactory *ifactory,
  */
 BtkWidget*
 btk_item_factory_get_item_by_action (BtkItemFactory *ifactory,
-				     guint	     action)
+				     buint	     action)
 {
   BtkWidget *widget;
 
@@ -789,8 +789,8 @@ btk_item_factory_get_item_by_action (BtkItemFactory *ifactory,
 static char *
 item_factory_find_separator_r (char *path)
 {
-  gchar *result = NULL;
-  gboolean escaped = FALSE;
+  bchar *result = NULL;
+  bboolean escaped = FALSE;
 
   while (*path)
     {
@@ -815,7 +815,7 @@ item_factory_unescape_label (const char *label)
 {
   char *new = g_malloc (strlen (label) + 1);
   char *p = new;
-  gboolean escaped = FALSE;
+  bboolean escaped = FALSE;
   
   while (*label)
     {
@@ -840,15 +840,15 @@ item_factory_unescape_label (const char *label)
   return new;
 }
 
-static gboolean
+static bboolean
 btk_item_factory_parse_path (BtkItemFactory *ifactory,
-			     gchar          *str,
-			     gchar         **path,
-			     gchar         **parent_path,
-			     gchar         **item)
+			     bchar          *str,
+			     bchar         **path,
+			     bchar         **parent_path,
+			     bchar         **item)
 {
-  gchar *translation;
-  gchar *p, *q;
+  bchar *translation;
+  bchar *p, *q;
   
   *path = g_strdup (str);
 
@@ -911,21 +911,21 @@ btk_item_factory_parse_path (BtkItemFactory *ifactory,
 void
 btk_item_factory_create_item (BtkItemFactory	     *ifactory,
 			      BtkItemFactoryEntry    *entry,
-			      gpointer		      callback_data,
-			      guint		      callback_type)
+			      bpointer		      callback_data,
+			      buint		      callback_type)
 {
   BtkOptionMenu *option_menu = NULL;
   BtkWidget *parent;
   BtkWidget *widget;
   BtkWidget *image;
   GSList *radio_group;
-  gchar *name;
-  gchar *parent_path;
-  gchar *path;
-  gchar *accelerator;
-  guint type_id;
+  bchar *name;
+  bchar *parent_path;
+  bchar *path;
+  bchar *accelerator;
+  buint type_id;
   GType type;
-  gchar *item_type_path;
+  bchar *item_type_path;
   BtkStockItem stock_item;
       
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
@@ -996,7 +996,7 @@ btk_item_factory_create_item (BtkItemFactory	     *ifactory,
   if (!parent)
     {
       BtkItemFactoryEntry pentry;
-      gchar *ppath, *p;
+      bchar *ppath, *p;
 
       ppath = g_strdup (entry->path);
       p = item_factory_find_separator_r (ppath);
@@ -1021,7 +1021,7 @@ btk_item_factory_create_item (BtkItemFactory	     *ifactory,
       if (!option_menu->menu)
 	{
 	  BtkWidget *menu = g_object_new (BTK_TYPE_MENU, NULL);
-	  gchar *p = g_strconcat (ifactory->path, parent_path, NULL);
+	  bchar *p = g_strconcat (ifactory->path, parent_path, NULL);
 
 	  btk_menu_set_accel_path (BTK_MENU (menu), p);
 	  g_free (p);
@@ -1102,7 +1102,7 @@ btk_item_factory_create_item (BtkItemFactory	     *ifactory,
   if (type_id == quark_type_branch ||
       type_id == quark_type_last_branch)
     {
-      gchar *p;
+      bchar *p;
 
       if (entry->callback)
 	g_warning ("btk_item_factory_create_item(): Can't specify a callback on a branch: \"%s\"",
@@ -1143,12 +1143,12 @@ btk_item_factory_create_item (BtkItemFactory	     *ifactory,
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-btk_item_factory_create_menu_entries (guint              n_entries,
+btk_item_factory_create_menu_entries (buint              n_entries,
 				      BtkMenuEntry      *entries)
 {
   static GPatternSpec *pspec_separator = NULL;
   static GPatternSpec *pspec_check = NULL;
-  guint i;
+  buint i;
 
   if (!n_entries)
     return;
@@ -1164,8 +1164,8 @@ btk_item_factory_create_menu_entries (guint              n_entries,
     {
       BtkItemFactory *ifactory;
       BtkItemFactoryEntry entry;
-      gchar *path;
-      gchar *cpath;
+      bchar *path;
+      bchar *cpath;
 
       path = entries[i].path;
       ifactory = btk_item_factory_from_path (path);
@@ -1192,10 +1192,10 @@ btk_item_factory_create_menu_entries (guint              n_entries,
 	entry.item_type = NULL;
       else
 	{
-	  gboolean in_brace = FALSE;
-	  gchar *c;
+	  bboolean in_brace = FALSE;
+	  bchar *c;
 	  
-	  cpath = g_new (gchar, strlen (path));
+	  cpath = g_new (bchar, strlen (path));
 	  c = cpath;
 	  while (*path != 0)
 	    {
@@ -1229,8 +1229,8 @@ btk_item_factory_create_menu_entries (guint              n_entries,
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
 void
-btk_item_factories_path_delete (const gchar *ifactory_path,
-				const gchar *path)
+btk_item_factories_path_delete (const bchar *ifactory_path,
+				const bchar *path)
 {
   BtkItemFactoryClass *class;
   BtkItemFactoryItem *item;
@@ -1240,10 +1240,10 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
   class = btk_type_class (BTK_TYPE_ITEM_FACTORY);
 
   if (path[0] == '<')
-    item = g_hash_table_lookup (class->item_ht, (gpointer) path);
+    item = g_hash_table_lookup (class->item_ht, (bpointer) path);
   else
     {
-      gchar *fpath;
+      bchar *fpath;
 
       g_return_if_fail (ifactory_path != NULL);
       
@@ -1263,7 +1263,7 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
 	  BtkWidget *widget;
 
 	  widget = slist->data;
-	  widget_list = g_slist_prepend (widget_list, widget);
+	  widget_list = b_slist_prepend (widget_list, widget);
 	  g_object_ref (widget);
 	}
 
@@ -1275,7 +1275,7 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
 	  btk_widget_destroy (widget);
 	  g_object_unref (widget);
 	}
-      g_slist_free (widget_list);
+      b_slist_free (widget_list);
     }
 }
 
@@ -1291,7 +1291,7 @@ btk_item_factories_path_delete (const gchar *ifactory_path,
  */
 void
 btk_item_factory_delete_item (BtkItemFactory         *ifactory,
-			      const gchar            *path)
+			      const bchar            *path)
 {
   BtkWidget *widget;
 
@@ -1323,9 +1323,9 @@ void
 btk_item_factory_delete_entry (BtkItemFactory         *ifactory,
 			       BtkItemFactoryEntry    *entry)
 {
-  gchar *path;
-  gchar *parent_path;
-  gchar *name;
+  bchar *path;
+  bchar *parent_path;
+  bchar *name;
 
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (entry != NULL);
@@ -1356,10 +1356,10 @@ btk_item_factory_delete_entry (BtkItemFactory         *ifactory,
  */
 void
 btk_item_factory_delete_entries (BtkItemFactory         *ifactory,
-				 guint                   n_entries,
+				 buint                   n_entries,
 				 BtkItemFactoryEntry    *entries)
 {
-  guint i;
+  buint i;
 
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   if (n_entries > 0)
@@ -1371,16 +1371,16 @@ btk_item_factory_delete_entries (BtkItemFactory         *ifactory,
 
 typedef struct
 {
-  guint x;
-  guint y;
+  buint x;
+  buint y;
 } MenuPos;
 
 static void
 btk_item_factory_menu_pos (BtkMenu  *menu,
-			   gint     *x,
-			   gint     *y,
-                           gboolean *push_in,
-			   gpointer  func_data)
+			   bint     *x,
+			   bint     *y,
+                           bboolean *push_in,
+			   bpointer  func_data)
 {
   MenuPos *mpos = func_data;
 
@@ -1401,7 +1401,7 @@ btk_item_factory_menu_pos (BtkMenu  *menu,
  *
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-gpointer
+bpointer
 btk_item_factory_popup_data_from_widget (BtkWidget *widget)
 {
   BtkItemFactory *ifactory;
@@ -1410,7 +1410,7 @@ btk_item_factory_popup_data_from_widget (BtkWidget *widget)
 
   ifactory = btk_item_factory_from_widget (widget);
   if (ifactory)
-    return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
+    return g_object_get_qdata (B_OBJECT (ifactory), quark_popup_data);
 
   return NULL;
 }
@@ -1426,12 +1426,12 @@ btk_item_factory_popup_data_from_widget (BtkWidget *widget)
  *
  * Deprecated: 2.4: Use #BtkUIManager instead.
  */
-gpointer
+bpointer
 btk_item_factory_popup_data (BtkItemFactory *ifactory)
 {
   g_return_val_if_fail (BTK_IS_ITEM_FACTORY (ifactory), NULL);
 
-  return g_object_get_qdata (G_OBJECT (ifactory), quark_popup_data);
+  return g_object_get_qdata (B_OBJECT (ifactory), quark_popup_data);
 }
 
 static void
@@ -1441,7 +1441,7 @@ ifactory_delete_popup_data (BtkObject	   *object,
   g_signal_handlers_disconnect_by_func (object,
 					ifactory_delete_popup_data,
 					ifactory);
-  g_object_set_qdata (G_OBJECT (ifactory), quark_popup_data, NULL);
+  g_object_set_qdata (B_OBJECT (ifactory), quark_popup_data, NULL);
 }
 
 /**
@@ -1470,10 +1470,10 @@ ifactory_delete_popup_data (BtkObject	   *object,
  */
 void
 btk_item_factory_popup (BtkItemFactory		*ifactory,
-			guint			 x,
-			guint			 y,
-			guint			 mouse_button,
-			guint32			 time)
+			buint			 x,
+			buint			 y,
+			buint			 mouse_button,
+			buint32			 time)
 {
   btk_item_factory_popup_with_data (ifactory, NULL, NULL, x, y, mouse_button, time);
 }
@@ -1509,24 +1509,24 @@ btk_item_factory_popup (BtkItemFactory		*ifactory,
  */
 void
 btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
-				  gpointer		 popup_data,
+				  bpointer		 popup_data,
 				  GDestroyNotify         destroy,
-				  guint			 x,
-				  guint			 y,
-				  guint			 mouse_button,
-				  guint32		 time)
+				  buint			 x,
+				  buint			 y,
+				  buint			 mouse_button,
+				  buint32		 time)
 {
   MenuPos *mpos;
 
   g_return_if_fail (BTK_IS_ITEM_FACTORY (ifactory));
   g_return_if_fail (BTK_IS_MENU (ifactory->widget));
   
-  mpos = g_object_get_qdata (G_OBJECT (ifactory->widget), quark_if_menu_pos);
+  mpos = g_object_get_qdata (B_OBJECT (ifactory->widget), quark_if_menu_pos);
   
   if (!mpos)
     {
       mpos = g_new0 (MenuPos, 1);
-      g_object_set_qdata_full (G_OBJECT (ifactory->widget),
+      g_object_set_qdata_full (B_OBJECT (ifactory->widget),
 			       quark_if_menu_pos,
 			       mpos,
 			       g_free);
@@ -1537,7 +1537,7 @@ btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
   
   if (popup_data != NULL)
     {
-      g_object_set_qdata_full (G_OBJECT (ifactory),
+      g_object_set_qdata_full (B_OBJECT (ifactory),
 			       quark_popup_data,
 			       popup_data,
 			       destroy);
@@ -1569,7 +1569,7 @@ btk_item_factory_popup_with_data (BtkItemFactory	*ifactory,
 void
 btk_item_factory_set_translate_func (BtkItemFactory    *ifactory,
 				     BtkTranslateFunc   func,
-				     gpointer           data,
+				     bpointer           data,
 				     GDestroyNotify     notify)
 {
   g_return_if_fail (ifactory != NULL);

@@ -34,9 +34,9 @@ typedef struct {
 	FILE             *imagefile;
 	BdkPixbufLoader  *loader;
 	BtkWidget        **rgbwin;
-	guchar           *buf;
-	guint            timeout;
-	guint            readlen;
+	buchar           *buf;
+	buint            timeout;
+	buint            readlen;
 } ProgressFileStatus;
 
 
@@ -302,7 +302,7 @@ static const char * btk_mini_xpm[] = {
 "     >%$$      ",
 "      >=       "};
 
-const gchar ** xpms[] = { 
+const bchar ** xpms[] = { 
   book_open_xpm,
   book_closed_xpm,
   mini_page_xpm,
@@ -311,17 +311,17 @@ const gchar ** xpms[] = {
 };
 
 static void
-quit_func (BtkWidget *widget, gpointer dummy)
+quit_func (BtkWidget *widget, bpointer dummy)
 {
 	btk_main_quit ();
 }
 
 static void
-expose_func (BtkWidget *drawing_area, BdkEventExpose *event, gpointer data)
+expose_func (BtkWidget *drawing_area, BdkEventExpose *event, bpointer data)
 {
 	BdkPixbuf *pixbuf;
 
-	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
 
 	if (bdk_pixbuf_get_has_alpha (pixbuf)) {
 		BdkPixbuf *dest;
@@ -362,12 +362,12 @@ expose_func (BtkWidget *drawing_area, BdkEventExpose *event, gpointer data)
 }
 
 static void
-config_func (BtkWidget *drawing_area, BdkEventConfigure *event, gpointer data)
+config_func (BtkWidget *drawing_area, BdkEventConfigure *event, bpointer data)
 {
 #if 0
 	BdkPixbuf *pixbuf;
     
-	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
 
 	if (((event->width) != bdk_pixbuf_get_width (pixbuf)) ||
 	    ((event->height) != bdk_pixbuf_get_height (pixbuf)))
@@ -376,14 +376,14 @@ config_func (BtkWidget *drawing_area, BdkEventConfigure *event, gpointer data)
 }
 
 static BtkWidget*
-new_testrgb_window (BdkPixbuf *pixbuf, gchar *title)
+new_testrgb_window (BdkPixbuf *pixbuf, bchar *title)
 {
 	BtkWidget *window;
 	BtkWidget *vbox;
 	BtkWidget *temp_box;
 	BtkWidget *button;
 	BtkWidget *drawing_area;
-	gint w, h;
+	bint w, h;
 
         g_return_val_if_fail (pixbuf != NULL, NULL);
 	w = bdk_pixbuf_get_width (pixbuf);
@@ -417,7 +417,7 @@ new_testrgb_window (BdkPixbuf *pixbuf, gchar *title)
 	g_signal_connect (drawing_area, "configure_event",
 			  G_CALLBACK (config_func), NULL);
 
-	g_object_set_data (G_OBJECT (drawing_area), "pixbuf", pixbuf);
+	g_object_set_data (B_OBJECT (drawing_area), "pixbuf", pixbuf);
 
 	btk_widget_show (drawing_area);
 
@@ -437,18 +437,18 @@ new_testrgb_window (BdkPixbuf *pixbuf, gchar *title)
 }
 
 
-static gint
-update_timeout (gpointer data)
+static bint
+update_timeout (bpointer data)
 {
         ProgressFileStatus *status = data;
-	gboolean done;
+	bboolean done;
         GError *error;
         
 	done = FALSE;
         error = NULL;
 
 	if (!feof (status->imagefile)) {
-		gint nbytes;
+		bint nbytes;
                 
 		nbytes = fread (status->buf, 1, status->readlen, 
 			       status->imagefile);
@@ -480,7 +480,7 @@ update_timeout (gpointer data)
 
 
 static void
-progressive_prepared_callback (BdkPixbufLoader* loader, gpointer data)
+progressive_prepared_callback (BdkPixbufLoader* loader, bpointer data)
 {
         BtkWidget** retloc = data;
         BdkPixbuf* pixbuf;
@@ -498,7 +498,7 @@ progressive_prepared_callback (BdkPixbufLoader* loader, gpointer data)
 
 
 static void
-progressive_updated_callback (BdkPixbufLoader* loader, guint x, guint y, guint width, guint height, gpointer data)
+progressive_updated_callback (BdkPixbufLoader* loader, buint x, buint y, buint width, buint height, bpointer data)
 {
         BtkWidget** window_loc = data;
 
@@ -512,7 +512,7 @@ static int readlen = 4096;
 
 extern void pixbuf_init (void);
 
-void size_func (BdkPixbufLoader *loader, gint width, gint height, gpointer data)
+void size_func (BdkPixbufLoader *loader, bint width, bint height, bpointer data)
 {
         bdk_pixbuf_loader_set_size (loader, width*2, height*2);
 }
@@ -542,7 +542,7 @@ main (int argc, char **argv)
 
 	{
 		char *tbf_bps = getenv ("TBF_KBPS");
-		guint bps;
+		buint bps;
 
 		if (tbf_bps) {
 			bps = atoi (tbf_bps);
@@ -553,7 +553,7 @@ main (int argc, char **argv)
 
 	i = 1;
 	if (argc == 1) {
-                const gchar*** xpmp;
+                const bchar*** xpmp;
                 GError *error = NULL;
 		
 		pixbuf = bdk_pixbuf_new_from_data (default_image, BDK_COLORSPACE_RGB, FALSE, 8,

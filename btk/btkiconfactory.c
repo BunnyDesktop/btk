@@ -56,8 +56,8 @@ struct _BtkIconSource
   BtkIconSourceType type;
 
   union {
-    gchar *icon_name;
-    gchar *filename;
+    bchar *icon_name;
+    bchar *filename;
     BdkPixbuf *pixbuf;
   } source;
 
@@ -71,15 +71,15 @@ struct _BtkIconSource
    * fields should be ignored. If FALSE, the parameter is
    * specified, and the above fields should be valid.
    */
-  guint any_direction : 1;
-  guint any_state : 1;
-  guint any_size : 1;
+  buint any_direction : 1;
+  buint any_state : 1;
+  buint any_size : 1;
 
 #if defined (G_OS_WIN32) && !defined (_WIN64)
   /* System codepage version of filename, for DLL ABI backward
    * compatibility functions.
    */
-  gchar *cp_filename;
+  bchar *cp_filename;
 #endif
 };
 
@@ -87,31 +87,31 @@ struct _BtkIconSource
 static void
 btk_icon_factory_buildable_init  (BtkBuildableIface      *iface);
 
-static gboolean btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
+static bboolean btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 							     BtkBuilder       *builder,
-							     GObject          *child,
-							     const gchar      *tagname,
+							     BObject          *child,
+							     const bchar      *tagname,
 							     GMarkupParser    *parser,
-							     gpointer         *data);
+							     bpointer         *data);
 static void btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 						       BtkBuilder   *builder,
-						       GObject      *child,
-						       const gchar  *tagname,
-						       gpointer     *user_data);
-static void btk_icon_factory_finalize   (GObject             *object);
+						       BObject      *child,
+						       const bchar  *tagname,
+						       bpointer     *user_data);
+static void btk_icon_factory_finalize   (BObject             *object);
 static void get_default_icons           (BtkIconFactory      *icon_factory);
 static void icon_source_clear           (BtkIconSource       *source);
 
-static BtkIconSize icon_size_register_intern (const gchar *name,
-					      gint         width,
-					      gint         height);
+static BtkIconSize icon_size_register_intern (const bchar *name,
+					      bint         width,
+					      bint         height);
 
 #define BTK_ICON_SOURCE_INIT(any_direction, any_state, any_size)	\
   { BTK_ICON_SOURCE_EMPTY, { NULL }, NULL,				\
    0, 0, 0,								\
    any_direction, any_state, any_size }
 
-G_DEFINE_TYPE_WITH_CODE (BtkIconFactory, btk_icon_factory, G_TYPE_OBJECT,
+G_DEFINE_TYPE_WITH_CODE (BtkIconFactory, btk_icon_factory, B_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
 						btk_icon_factory_buildable_init))
 
@@ -119,13 +119,13 @@ static void
 btk_icon_factory_init (BtkIconFactory *factory)
 {
   factory->icons = g_hash_table_new (g_str_hash, g_str_equal);
-  all_icon_factories = g_slist_prepend (all_icon_factories, factory);
+  all_icon_factories = b_slist_prepend (all_icon_factories, factory);
 }
 
 static void
 btk_icon_factory_class_init (BtkIconFactoryClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = btk_icon_factory_finalize;
 }
@@ -138,24 +138,24 @@ btk_icon_factory_buildable_init (BtkBuildableIface *iface)
 }
 
 static void
-free_icon_set (gpointer key, gpointer value, gpointer data)
+free_icon_set (bpointer key, bpointer value, bpointer data)
 {
   g_free (key);
   btk_icon_set_unref (value);
 }
 
 static void
-btk_icon_factory_finalize (GObject *object)
+btk_icon_factory_finalize (BObject *object)
 {
   BtkIconFactory *factory = BTK_ICON_FACTORY (object);
 
-  all_icon_factories = g_slist_remove (all_icon_factories, factory);
+  all_icon_factories = b_slist_remove (all_icon_factories, factory);
 
   g_hash_table_foreach (factory->icons, free_icon_set, NULL);
 
   g_hash_table_destroy (factory->icons);
 
-  G_OBJECT_CLASS (btk_icon_factory_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_icon_factory_parent_class)->finalize (object);
 }
 
 /**
@@ -202,11 +202,11 @@ btk_icon_factory_new (void)
  */
 void
 btk_icon_factory_add (BtkIconFactory *factory,
-                      const gchar    *stock_id,
+                      const bchar    *stock_id,
                       BtkIconSet     *icon_set)
 {
-  gpointer old_key = NULL;
-  gpointer old_value = NULL;
+  bpointer old_key = NULL;
+  bpointer old_value = NULL;
 
   g_return_if_fail (BTK_IS_ICON_FACTORY (factory));
   g_return_if_fail (stock_id != NULL);
@@ -245,7 +245,7 @@ btk_icon_factory_add (BtkIconFactory *factory,
  */
 BtkIconSet *
 btk_icon_factory_lookup (BtkIconFactory *factory,
-                         const gchar    *stock_id)
+                         const bchar    *stock_id)
 {
   g_return_val_if_fail (BTK_IS_ICON_FACTORY (factory), NULL);
   g_return_val_if_fail (stock_id != NULL, NULL);
@@ -274,7 +274,7 @@ btk_icon_factory_add_default (BtkIconFactory *factory)
 
   g_object_ref (factory);
 
-  default_factories = g_slist_prepend (default_factories, factory);
+  default_factories = b_slist_prepend (default_factories, factory);
 }
 
 /**
@@ -290,7 +290,7 @@ btk_icon_factory_remove_default (BtkIconFactory  *factory)
 {
   g_return_if_fail (BTK_IS_ICON_FACTORY (factory));
 
-  default_factories = g_slist_remove (default_factories, factory);
+  default_factories = b_slist_remove (default_factories, factory);
 
   g_object_unref (factory);
 }
@@ -319,7 +319,7 @@ _btk_icon_factory_ensure_default_icons (void)
  * Return value: (transfer none): a #BtkIconSet, or %NULL
  */
 BtkIconSet *
-btk_icon_factory_lookup_default (const gchar *stock_id)
+btk_icon_factory_lookup_default (const bchar *stock_id)
 {
   GSList *tmp_list;
 
@@ -335,7 +335,7 @@ btk_icon_factory_lookup_default (const gchar *stock_id)
       if (icon_set)
         return icon_set;
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   _btk_icon_factory_ensure_default_icons ();
@@ -345,14 +345,14 @@ btk_icon_factory_lookup_default (const gchar *stock_id)
 
 static void
 register_stock_icon (BtkIconFactory *factory,
-		     const gchar    *stock_id,
-                     const gchar    *icon_name)
+		     const bchar    *stock_id,
+                     const bchar    *icon_name)
 {
   BtkIconSet *set = btk_icon_set_new ();
   BtkIconSource source = BTK_ICON_SOURCE_INIT (TRUE, TRUE, TRUE);
 
   source.type = BTK_ICON_SOURCE_STATIC_ICON_NAME;
-  source.source.icon_name = (gchar *)icon_name;
+  source.source.icon_name = (bchar *)icon_name;
   source.direction = BTK_TEXT_DIR_NONE;
   btk_icon_set_add_source (set, &source);
 
@@ -362,19 +362,19 @@ register_stock_icon (BtkIconFactory *factory,
 
 static void
 register_bidi_stock_icon (BtkIconFactory *factory,
-			  const gchar    *stock_id,
-                          const gchar    *icon_name)
+			  const bchar    *stock_id,
+                          const bchar    *icon_name)
 {
   BtkIconSet *set = btk_icon_set_new ();
   BtkIconSource source = BTK_ICON_SOURCE_INIT (FALSE, TRUE, TRUE);
 
   source.type = BTK_ICON_SOURCE_STATIC_ICON_NAME;
-  source.source.icon_name = (gchar *)icon_name;
+  source.source.icon_name = (bchar *)icon_name;
   source.direction = BTK_TEXT_DIR_LTR;
   btk_icon_set_add_source (set, &source);
 
   source.type = BTK_ICON_SOURCE_STATIC_ICON_NAME;
-  source.source.icon_name = (gchar *)icon_name;
+  source.source.icon_name = (bchar *)icon_name;
   source.direction = BTK_TEXT_DIR_RTL;
   btk_icon_set_add_source (set, &source);
 
@@ -501,33 +501,33 @@ typedef struct _IconSize IconSize;
 
 struct _IconSize
 {
-  gint size;
-  gchar *name;
+  bint size;
+  bchar *name;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 };
 
 typedef struct _IconAlias IconAlias;
 
 struct _IconAlias
 {
-  gchar *name;
-  gint   target;
+  bchar *name;
+  bint   target;
 };
 
 typedef struct _SettingsIconSize SettingsIconSize;
 
 struct _SettingsIconSize
 {
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 };
 
 static GHashTable *icon_aliases = NULL;
 static IconSize *icon_sizes = NULL;
-static gint      icon_sizes_allocated = 0;
-static gint      icon_sizes_used = 0;
+static bint      icon_sizes_allocated = 0;
+static bint      icon_sizes_used = 0;
 
 static void
 init_icon_sizes (void)
@@ -535,7 +535,7 @@ init_icon_sizes (void)
   if (icon_sizes == NULL)
     {
 #define NUM_BUILTIN_SIZES 7
-      gint i;
+      bint i;
 
       icon_aliases = g_hash_table_new (g_str_hash, g_str_equal);
 
@@ -600,14 +600,14 @@ init_icon_sizes (void)
 }
 
 static void
-free_settings_sizes (gpointer data)
+free_settings_sizes (bpointer data)
 {
   g_array_free (data, TRUE);
 }
 
 static GArray *
 get_settings_sizes (BtkSettings *settings,
-		    gboolean    *created)
+		    bboolean    *created)
 {
   GArray *settings_sizes;
   static GQuark sizes_quark = 0;
@@ -615,11 +615,11 @@ get_settings_sizes (BtkSettings *settings,
   if (!sizes_quark)
     sizes_quark = g_quark_from_static_string ("btk-icon-sizes");
 
-  settings_sizes = g_object_get_qdata (G_OBJECT (settings), sizes_quark);
+  settings_sizes = g_object_get_qdata (B_OBJECT (settings), sizes_quark);
   if (!settings_sizes)
     {
       settings_sizes = g_array_new (FALSE, FALSE, sizeof (SettingsIconSize));
-      g_object_set_qdata_full (G_OBJECT (settings), sizes_quark,
+      g_object_set_qdata_full (B_OBJECT (settings), sizes_quark,
 			       settings_sizes, free_settings_sizes);
       if (created)
 	*created = TRUE;
@@ -630,9 +630,9 @@ get_settings_sizes (BtkSettings *settings,
 
 static void
 icon_size_set_for_settings (BtkSettings *settings,
-			    const gchar *size_name,
-			    gint         width,
-			    gint         height)
+			    const bchar *size_name,
+			    bint         width,
+			    bint         height)
 {
   BtkIconSize size;
   GArray *settings_sizes;
@@ -649,7 +649,7 @@ icon_size_set_for_settings (BtkSettings *settings,
   if (size >= settings_sizes->len)
     {
       SettingsIconSize unset = { -1, -1 };
-      gint i;
+      bint i;
 
       for (i = settings_sizes->len; i <= size; i++)
 	g_array_append_val (settings_sizes, unset);
@@ -663,7 +663,7 @@ icon_size_set_for_settings (BtkSettings *settings,
 
 /* Like bango_parse_word, but accept - as well
  */
-static gboolean
+static bboolean
 scan_icon_size_name (const char **pos, GString *out)
 {
   const char *p = *pos;
@@ -696,14 +696,14 @@ scan_icon_size_name (const char **pos, GString *out)
 
 static void
 icon_size_setting_parse (BtkSettings *settings,
-			 const gchar *icon_size_string)
+			 const bchar *icon_size_string)
 {
   GString *name_buf = g_string_new (NULL);
-  const gchar *p = icon_size_string;
+  const bchar *p = icon_size_string;
 
   while (bango_skip_space (&p))
     {
-      gint width, height;
+      bint width, height;
 
       if (!scan_icon_size_name (&p, name_buf))
 	goto err;
@@ -761,7 +761,7 @@ static void
 icon_size_set_all_from_settings (BtkSettings *settings)
 {
   GArray *settings_sizes;
-  gchar *icon_size_string;
+  bchar *icon_size_string;
 
   /* Reset old settings */
   settings_sizes = get_settings_sizes (settings, NULL);
@@ -780,7 +780,7 @@ icon_size_set_all_from_settings (BtkSettings *settings)
 
 static void
 icon_size_settings_changed (BtkSettings  *settings,
-			    GParamSpec   *pspec)
+			    BParamSpec   *pspec)
 {
   icon_size_set_all_from_settings (settings);
 
@@ -798,15 +798,15 @@ icon_sizes_init_for_settings (BtkSettings *settings)
   icon_size_set_all_from_settings (settings);
 }
 
-static gboolean
+static bboolean
 icon_size_lookup_intern (BtkSettings *settings,
 			 BtkIconSize  size,
-			 gint        *widthp,
-			 gint        *heightp)
+			 bint        *widthp,
+			 bint        *heightp)
 {
   GArray *settings_sizes;
-  gint width_for_settings = -1;
-  gint height_for_settings = -1;
+  bint width_for_settings = -1;
+  bint height_for_settings = -1;
 
   init_icon_sizes ();
 
@@ -821,7 +821,7 @@ icon_size_lookup_intern (BtkSettings *settings,
 
   if (settings)
     {
-      gboolean initial = FALSE;
+      bboolean initial = FALSE;
 
       settings_sizes = get_settings_sizes (settings, &initial);
 
@@ -871,11 +871,11 @@ icon_size_lookup_intern (BtkSettings *settings,
  *
  * Since: 2.2
  */
-gboolean
+bboolean
 btk_icon_size_lookup_for_settings (BtkSettings *settings,
 				   BtkIconSize  size,
-				   gint        *width,
-				   gint        *height)
+				   bint        *width,
+				   bint        *height)
 {
   g_return_val_if_fail (BTK_IS_SETTINGS (settings), FALSE);
 
@@ -902,10 +902,10 @@ btk_icon_size_lookup_for_settings (BtkSettings *settings,
  *
  * Return value: %TRUE if @size was a valid size
  */
-gboolean
+bboolean
 btk_icon_size_lookup (BtkIconSize  size,
-                      gint        *widthp,
-                      gint        *heightp)
+                      bint        *widthp,
+                      bint        *heightp)
 {
   BTK_NOTE (MULTIHEAD,
 	    g_warning ("btk_icon_size_lookup ()) is not multihead safe"));
@@ -915,9 +915,9 @@ btk_icon_size_lookup (BtkIconSize  size,
 }
 
 static BtkIconSize
-icon_size_register_intern (const gchar *name,
-			   gint         width,
-			   gint         height)
+icon_size_register_intern (const bchar *name,
+			   bint         width,
+			   bint         height)
 {
   IconAlias *old_alias;
   BtkIconSize size;
@@ -970,9 +970,9 @@ icon_size_register_intern (const gchar *name,
  * Returns: (type int): integer value representing the size
  */
 BtkIconSize
-btk_icon_size_register (const gchar *name,
-                        gint         width,
-                        gint         height)
+btk_icon_size_register (const bchar *name,
+                        bint         width,
+                        bint         height)
 {
   g_return_val_if_fail (name != NULL, 0);
   g_return_val_if_fail (width > 0, 0);
@@ -991,7 +991,7 @@ btk_icon_size_register (const gchar *name,
  * will return @target.
  */
 void
-btk_icon_size_register_alias (const gchar *alias,
+btk_icon_size_register_alias (const bchar *alias,
                               BtkIconSize  target)
 {
   IconAlias *ia;
@@ -1035,7 +1035,7 @@ btk_icon_size_register_alias (const gchar *alias,
  * Return value: (type int): the icon size
  */
 BtkIconSize
-btk_icon_size_from_name (const gchar *name)
+btk_icon_size_from_name (const bchar *name)
 {
   IconAlias *ia;
 
@@ -1057,7 +1057,7 @@ btk_icon_size_from_name (const gchar *name)
  * Gets the canonical name of the given icon size. The returned string
  * is statically allocated and should not be freed.
  */
-const gchar*
+const bchar*
 btk_icon_size_get_name (BtkIconSize  size)
 {
   if (size >= icon_sizes_used)
@@ -1087,30 +1087,30 @@ static void       add_to_cache      (BtkIconSet       *icon_set,
  * recycle an icon set.
  */
 static void       clear_cache       (BtkIconSet       *icon_set,
-                                     gboolean          style_detach);
+                                     bboolean          style_detach);
 static GSList*    copy_cache        (BtkIconSet       *icon_set,
                                      BtkIconSet       *copy_recipient);
 static void       attach_to_style   (BtkIconSet       *icon_set,
                                      BtkStyle         *style);
 static void       detach_from_style (BtkIconSet       *icon_set,
                                      BtkStyle         *style);
-static void       style_dnotify     (gpointer          data);
+static void       style_dnotify     (bpointer          data);
 
 struct _BtkIconSet
 {
-  guint ref_count;
+  buint ref_count;
 
   GSList *sources;
 
   /* Cache of the last few rendered versions of the icon. */
   GSList *cache;
 
-  guint cache_size;
+  buint cache_size;
 
-  guint cache_serial;
+  buint cache_serial;
 };
 
-static guint cache_serial = 0;
+static buint cache_serial = 0;
 
 /**
  * btk_icon_set_new:
@@ -1215,9 +1215,9 @@ btk_icon_set_unref (BtkIconSet *icon_set)
         {
           btk_icon_source_free (tmp_list->data);
 
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
-      g_slist_free (icon_set->sources);
+      b_slist_free (icon_set->sources);
 
       clear_cache (icon_set, TRUE);
 
@@ -1257,13 +1257,13 @@ btk_icon_set_copy (BtkIconSet *icon_set)
   tmp_list = icon_set->sources;
   while (tmp_list != NULL)
     {
-      copy->sources = g_slist_prepend (copy->sources,
+      copy->sources = b_slist_prepend (copy->sources,
                                        btk_icon_source_copy (tmp_list->data));
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  copy->sources = g_slist_reverse (copy->sources);
+  copy->sources = b_slist_reverse (copy->sources);
 
   copy->cache = copy_cache (icon_set, copy);
   copy->cache_size = icon_set->cache_size;
@@ -1272,7 +1272,7 @@ btk_icon_set_copy (BtkIconSet *icon_set)
   return copy;
 }
 
-static gboolean
+static bboolean
 sizes_equivalent (BtkIconSize lhs,
                   BtkIconSize rhs)
 {
@@ -1286,7 +1286,7 @@ sizes_equivalent (BtkIconSize lhs,
   return lhs == rhs;
 #else
 
-  gint r_w, r_h, l_w, l_h;
+  bint r_w, r_h, l_w, l_h;
 
   icon_size_lookup_intern (NULL, rhs, &r_w, &r_h);
   icon_size_lookup_intern (NULL, lhs, &l_w, &l_h);
@@ -1323,20 +1323,20 @@ find_best_matching_source (BtkIconSet       *icon_set,
           (s->any_state || (s->state == state)) &&
           (s->any_size || size == (BtkIconSize)-1 || (sizes_equivalent (size, s->size))))
         {
-	  if (!g_slist_find (failed, s))
+	  if (!b_slist_find (failed, s))
 	    {
 	      source = s;
 	      break;
 	    }
 	}
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return source;
 }
 
-static gboolean
+static bboolean
 ensure_filename_pixbuf (BtkIconSet    *icon_set,
 			BtkIconSource *source)
 {
@@ -1354,7 +1354,7 @@ ensure_filename_pixbuf (BtkIconSet    *icon_set,
 	  g_warning (_("Error loading icon: %s"), error->message);
 	  g_error_free (error);
 
-	  icon_set->sources = g_slist_remove (icon_set->sources, source);
+	  icon_set->sources = b_slist_remove (icon_set->sources, source);
 
 	  btk_icon_source_free (source);
 
@@ -1380,8 +1380,8 @@ render_icon_name_pixbuf (BtkIconSource    *icon_source,
   BdkScreen *screen;
   BtkIconTheme *icon_theme;
   BtkSettings *settings;
-  gint width, height, pixel_size;
-  gint *sizes, *s, dist;
+  bint width, height, pixel_size;
+  bint *sizes, *s, dist;
   GError *error = NULL;
 
   if (widget && btk_widget_has_screen (widget))
@@ -1444,9 +1444,9 @@ render_icon_name_pixbuf (BtkIconSource    *icon_source,
 
   if (icon_source->direction != BTK_TEXT_DIR_NONE)
     {
-      gchar *suffix[3] = { NULL, "-ltr", "-rtl" };
-      const gchar *names[3];
-      gchar *name_with_dir;
+      bchar *suffix[3] = { NULL, "-ltr", "-rtl" };
+      const bchar *names[3];
+      bchar *name_with_dir;
       BtkIconInfo *info;
 
       name_with_dir = g_strconcat (icon_source->source.icon_name, suffix[icon_source->direction], NULL);
@@ -1541,7 +1541,7 @@ find_and_render_icon_source (BtkIconSet       *icon_set,
 	  if (!pixbuf)
 	    {
 	      g_warning ("Failed to render icon");
-	      failed = g_slist_prepend (failed, source);
+	      failed = b_slist_prepend (failed, source);
 	    }
 	  break;
 	case BTK_ICON_SOURCE_ICON_NAME:
@@ -1550,14 +1550,14 @@ find_and_render_icon_source (BtkIconSet       *icon_set,
 					    direction, state, size,
 					    widget, detail);
 	  if (!pixbuf)
-	    failed = g_slist_prepend (failed, source);
+	    failed = b_slist_prepend (failed, source);
 	  break;
 	case BTK_ICON_SOURCE_EMPTY:
 	  g_assert_not_reached ();
 	}
     }
 
-  g_slist_free (failed);
+  b_slist_free (failed);
 
   return pixbuf;
 }
@@ -1577,7 +1577,7 @@ render_fallback_image (BtkStyle          *style,
 
   if (fallback_source.type == BTK_ICON_SOURCE_EMPTY)
     {
-      gint index;
+      bint index;
       BdkPixbuf *pixbuf;
 
       _btk_icon_theme_ensure_builtin_cache ();
@@ -1737,7 +1737,7 @@ btk_icon_set_add_source (BtkIconSet          *icon_set,
       return;
     }
 
-  icon_set->sources = g_slist_insert_sorted (icon_set->sources,
+  icon_set->sources = b_slist_insert_sorted (icon_set->sources,
                                              btk_icon_source_copy (source),
                                              icon_source_compare);
 }
@@ -1755,10 +1755,10 @@ btk_icon_set_add_source (BtkIconSet          *icon_set,
 void
 btk_icon_set_get_sizes (BtkIconSet   *icon_set,
                         BtkIconSize **sizes,
-                        gint         *n_sizes)
+                        bint         *n_sizes)
 {
   GSList *tmp_list;
-  gboolean all_sizes = FALSE;
+  bboolean all_sizes = FALSE;
   GSList *specifics = NULL;
 
   g_return_if_fail (icon_set != NULL);
@@ -1778,15 +1778,15 @@ btk_icon_set_get_sizes (BtkIconSet   *icon_set,
           break;
         }
       else
-        specifics = g_slist_prepend (specifics, GINT_TO_POINTER (source->size));
+        specifics = b_slist_prepend (specifics, BINT_TO_POINTER (source->size));
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   if (all_sizes)
     {
       /* Need to find out what sizes exist */
-      gint i;
+      bint i;
 
       init_icon_sizes ();
 
@@ -1802,23 +1802,23 @@ btk_icon_set_get_sizes (BtkIconSet   *icon_set,
     }
   else
     {
-      gint i;
+      bint i;
 
-      *n_sizes = g_slist_length (specifics);
+      *n_sizes = b_slist_length (specifics);
       *sizes = g_new (BtkIconSize, *n_sizes);
 
       i = 0;
       tmp_list = specifics;
       while (tmp_list != NULL)
         {
-          (*sizes)[i] = GPOINTER_TO_INT (tmp_list->data);
+          (*sizes)[i] = BPOINTER_TO_INT (tmp_list->data);
 
           ++i;
-          tmp_list = g_slist_next (tmp_list);
+          tmp_list = b_slist_next (tmp_list);
         }
     }
 
-  g_slist_free (specifics);
+  b_slist_free (specifics);
 }
 
 
@@ -1993,7 +1993,7 @@ icon_source_clear (BtkIconSource *source)
  */
 void
 btk_icon_source_set_filename (BtkIconSource *source,
-			      const gchar   *filename)
+			      const bchar   *filename)
 {
   g_return_if_fail (source != NULL);
   g_return_if_fail (filename == NULL || g_path_is_absolute (filename));
@@ -2024,7 +2024,7 @@ btk_icon_source_set_filename (BtkIconSource *source,
  */
 void
 btk_icon_source_set_icon_name (BtkIconSource *source,
-			       const gchar   *icon_name)
+			       const bchar   *icon_name)
 {
   g_return_if_fail (source != NULL);
 
@@ -2080,7 +2080,7 @@ btk_icon_source_set_pixbuf (BtkIconSource *source,
  * Return value: image filename. This string must not be modified
  * or freed.
  */
-const gchar*
+const bchar*
 btk_icon_source_get_filename (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);
@@ -2101,7 +2101,7 @@ btk_icon_source_get_filename (const BtkIconSource *source)
  *
  * Return value: icon name. This string must not be modified or freed.
  */
-const gchar*
+const bchar*
 btk_icon_source_get_icon_name (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);
@@ -2157,7 +2157,7 @@ btk_icon_source_get_pixbuf (const BtkIconSource *source)
  */
 void
 btk_icon_source_set_direction_wildcarded (BtkIconSource *source,
-                                          gboolean       setting)
+                                          bboolean       setting)
 {
   g_return_if_fail (source != NULL);
 
@@ -2185,7 +2185,7 @@ btk_icon_source_set_direction_wildcarded (BtkIconSource *source,
  */
 void
 btk_icon_source_set_state_wildcarded (BtkIconSource *source,
-                                      gboolean       setting)
+                                      bboolean       setting)
 {
   g_return_if_fail (source != NULL);
 
@@ -2213,7 +2213,7 @@ btk_icon_source_set_state_wildcarded (BtkIconSource *source,
  */
 void
 btk_icon_source_set_size_wildcarded (BtkIconSource *source,
-                                     gboolean       setting)
+                                     bboolean       setting)
 {
   g_return_if_fail (source != NULL);
 
@@ -2228,7 +2228,7 @@ btk_icon_source_set_size_wildcarded (BtkIconSource *source,
  *
  * Return value: %TRUE if this icon source is a base for any icon size variant
  */
-gboolean
+bboolean
 btk_icon_source_get_size_wildcarded (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, TRUE);
@@ -2244,7 +2244,7 @@ btk_icon_source_get_size_wildcarded (const BtkIconSource *source)
  *
  * Return value: %TRUE if this icon source is a base for any widget state variant
  */
-gboolean
+bboolean
 btk_icon_source_get_state_wildcarded (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, TRUE);
@@ -2260,7 +2260,7 @@ btk_icon_source_get_state_wildcarded (const BtkIconSource *source)
  *
  * Return value: %TRUE if this icon source is a base for any text direction variant
  */
-gboolean
+bboolean
 btk_icon_source_get_direction_wildcarded (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, TRUE);
@@ -2460,7 +2460,7 @@ find_in_cache (BtkIconSet      *icon_set,
         }
 
       prev = tmp_list;
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return NULL;
@@ -2489,7 +2489,7 @@ add_to_cache (BtkIconSet      *icon_set,
     g_object_ref (style);
 
   icon = g_new (CachedIcon, 1);
-  icon_set->cache = g_slist_prepend (icon_set->cache, icon);
+  icon_set->cache = b_slist_prepend (icon_set->cache, icon);
   icon_set->cache_size++;
 
   icon->style = style;
@@ -2520,7 +2520,7 @@ add_to_cache (BtkIconSet      *icon_set,
       /* Free the last icon */
       icon = tmp_list->next->data;
 
-      g_slist_free (tmp_list->next);
+      b_slist_free (tmp_list->next);
       tmp_list->next = NULL;
 
       cached_icon_free (icon);
@@ -2529,7 +2529,7 @@ add_to_cache (BtkIconSet      *icon_set,
 
 static void
 clear_cache (BtkIconSet *icon_set,
-             gboolean    style_detach)
+             bboolean    style_detach)
 {
   GSList *cache, *tmp_list;
   BtkStyle *last_style = NULL;
@@ -2558,10 +2558,10 @@ clear_cache (BtkIconSet *icon_set,
 
       cached_icon_free (icon);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  g_slist_free (cache);
+  b_slist_free (cache);
 }
 
 static GSList*
@@ -2591,12 +2591,12 @@ copy_cache (BtkIconSet *icon_set,
 
       icon_copy->size = icon->size;
 
-      copy = g_slist_prepend (copy, icon_copy);
+      copy = b_slist_prepend (copy, icon_copy);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  return g_slist_reverse (copy);
+  return b_slist_reverse (copy);
 }
 
 static void
@@ -2605,13 +2605,13 @@ attach_to_style (BtkIconSet *icon_set,
 {
   GHashTable *table;
 
-  table = g_object_get_qdata (G_OBJECT (style),
+  table = g_object_get_qdata (B_OBJECT (style),
                               g_quark_try_string ("btk-style-icon-sets"));
 
   if (table == NULL)
     {
       table = g_hash_table_new (NULL, NULL);
-      g_object_set_qdata_full (G_OBJECT (style),
+      g_object_set_qdata_full (B_OBJECT (style),
                                g_quark_from_static_string ("btk-style-icon-sets"),
                                table,
                                style_dnotify);
@@ -2626,7 +2626,7 @@ detach_from_style (BtkIconSet *icon_set,
 {
   GHashTable *table;
 
-  table = g_object_get_qdata (G_OBJECT (style),
+  table = g_object_get_qdata (B_OBJECT (style),
                               g_quark_try_string ("btk-style-icon-sets"));
 
   if (table != NULL)
@@ -2634,9 +2634,9 @@ detach_from_style (BtkIconSet *icon_set,
 }
 
 static void
-iconsets_foreach (gpointer key,
-                  gpointer value,
-                  gpointer user_data)
+iconsets_foreach (bpointer key,
+                  bpointer value,
+                  bpointer user_data)
 {
   BtkIconSet *icon_set = key;
 
@@ -2651,7 +2651,7 @@ iconsets_foreach (gpointer key,
 }
 
 static void
-style_dnotify (gpointer data)
+style_dnotify (bpointer data)
 {
   GHashTable *table = data;
 
@@ -2697,7 +2697,7 @@ _btk_icon_factory_list_ids (void)
 
       ids = g_list_concat (ids, these_ids);
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
   return ids;
@@ -2705,14 +2705,14 @@ _btk_icon_factory_list_ids (void)
 
 typedef struct {
   GSList *sources;
-  gboolean in_source;
+  bboolean in_source;
 
 } IconFactoryParserData;
 
 typedef struct {
-  gchar            *stock_id;
-  gchar            *filename;
-  gchar            *icon_name;
+  bchar            *stock_id;
+  bchar            *filename;
+  bchar            *icon_name;
   BtkTextDirection  direction;
   BtkIconSize       size;
   BtkStateType      state;
@@ -2720,22 +2720,22 @@ typedef struct {
 
 static void
 icon_source_start_element (GMarkupParseContext *context,
-			   const gchar         *element_name,
-			   const gchar        **names,
-			   const gchar        **values,
-			   gpointer             user_data,
+			   const bchar         *element_name,
+			   const bchar        **names,
+			   const bchar        **values,
+			   bpointer             user_data,
 			   GError             **error)
 {
-  gint i;
-  gchar *stock_id = NULL;
-  gchar *filename = NULL;
-  gchar *icon_name = NULL;
-  gint size = -1;
-  gint direction = -1;
-  gint state = -1;
+  bint i;
+  bchar *stock_id = NULL;
+  bchar *filename = NULL;
+  bchar *icon_name = NULL;
+  bint size = -1;
+  bint direction = -1;
+  bint state = -1;
   IconFactoryParserData *parser_data;
   IconSourceParserData *source_data;
-  gchar *error_msg;
+  bchar *error_msg;
   GQuark error_domain;
 
   parser_data = (IconFactoryParserData*)user_data;
@@ -2817,13 +2817,13 @@ icon_source_start_element (GMarkupParseContext *context,
   source_data->direction = direction;
   source_data->state = state;
 
-  parser_data->sources = g_slist_prepend (parser_data->sources, source_data);
+  parser_data->sources = b_slist_prepend (parser_data->sources, source_data);
   return;
 
  error:
   {
-    gchar *tmp;
-    gint line_number, char_number;
+    bchar *tmp;
+    bint line_number, char_number;
 
     g_markup_parse_context_get_position (context,
 					 &line_number,
@@ -2852,13 +2852,13 @@ static const GMarkupParser icon_source_parser =
     icon_source_start_element,
   };
 
-static gboolean
+static bboolean
 btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 					     BtkBuilder       *builder,
-					     GObject          *child,
-					     const gchar      *tagname,
+					     BObject          *child,
+					     const bchar      *tagname,
 					     GMarkupParser    *parser,
-					     gpointer         *data)
+					     bpointer         *data)
 {
   g_assert (buildable);
 
@@ -2877,9 +2877,9 @@ btk_icon_factory_buildable_custom_tag_start (BtkBuildable     *buildable,
 static void
 btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 					   BtkBuilder   *builder,
-					   GObject      *child,
-					   const gchar  *tagname,
-					   gpointer     *user_data)
+					   BObject      *child,
+					   const bchar  *tagname,
+					   bpointer     *user_data)
 {
   BtkIconFactory *icon_factory;
 
@@ -2910,7 +2910,7 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 
 	  if (source_data->filename)
 	    {
-	      gchar *filename;
+	      bchar *filename;
 	      filename = _btk_builder_get_absolute_filename (builder, source_data->filename);
 	      btk_icon_source_set_filename (icon_source, filename);
 	      g_free (filename);
@@ -2935,7 +2935,7 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 
 	  /* Inline source_add() to avoid creating a copy */
 	  g_assert (icon_source->type != BTK_ICON_SOURCE_EMPTY);
-	  icon_set->sources = g_slist_insert_sorted (icon_set->sources,
+	  icon_set->sources = b_slist_insert_sorted (icon_set->sources,
 						     icon_source,
 						     icon_source_compare);
 
@@ -2944,7 +2944,7 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 	  g_free (source_data->icon_name);
 	  g_slice_free (IconSourceParserData, source_data);
 	}
-      g_slist_free (parser_data->sources);
+      b_slist_free (parser_data->sources);
       g_slice_free (IconFactoryParserData, parser_data);
 
       /* TODO: Add an attribute/tag to prevent this.
@@ -2962,9 +2962,9 @@ btk_icon_factory_buildable_custom_tag_end (BtkBuildable *buildable,
 
 void
 btk_icon_source_set_filename (BtkIconSource *source,
-			      const gchar   *filename)
+			      const bchar   *filename)
 {
-  gchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
+  bchar *utf8_filename = g_locale_to_utf8 (filename, -1, NULL, NULL, NULL);
 
   btk_icon_source_set_filename_utf8 (source, utf8_filename);
 
@@ -2973,7 +2973,7 @@ btk_icon_source_set_filename (BtkIconSource *source,
 
 #undef btk_icon_source_get_filename
 
-const gchar*
+const bchar*
 btk_icon_source_get_filename (const BtkIconSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);

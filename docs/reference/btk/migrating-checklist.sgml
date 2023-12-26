@@ -84,7 +84,7 @@ do_popup_menu (BtkWidget *my_widget, BdkEventButton *event)
 	</para>
 
 	<programlisting>
-static gboolean
+static bboolean
 my_widget_button_press_event_handler (BtkWidget *widget, BdkEventButton *event)
 {
   /* Ignore double-clicks and triple-clicks */
@@ -105,7 +105,7 @@ my_widget_button_press_event_handler (BtkWidget *widget, BdkEventButton *event)
 	</para>
 
 	<programlisting>
-static gboolean
+static bboolean
 my_widget_popup_menu_handler (BtkWidget *widget)
 {
   do_popup_menu (widget, NULL);
@@ -189,7 +189,7 @@ my_widget_popup_menu_handler (BtkWidget *widget)
     </para>
 
     <programlisting id="bdkrebunnyion-get-rectangles">
-static gboolean
+static bboolean
 my_widget_expose_event_handler (BtkWidget *widget, BdkEventExpose *event)
 {
   BdkRectangle *rects;
@@ -264,10 +264,10 @@ my_widget_expose_event_handler (BtkWidget *widget, BdkEventExpose *event)
     </para>
 
     <programlisting id="default-mod-mask">
-static gboolean
+static bboolean
 my_widget_key_press_event_handler (BtkWidget *widget, BdkEventKey *event)
 {
-  guint modifiers;
+  buint modifiers;
 
   modifiers = btk_accelerator_get_default_mod_mask (<!-- -->);
 

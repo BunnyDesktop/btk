@@ -26,7 +26,7 @@
 #include "btk/btktexttypes.h" /* Private header, for UNKNOWN_CHAR */
 
 static void
-btk_text_iter_spew (const BtkTextIter *iter, const gchar *desc)
+btk_text_iter_spew (const BtkTextIter *iter, const bchar *desc)
 {
   g_print (" %20s: line %d / char %d / line char %d / line byte %d\n",
            desc,
@@ -92,17 +92,17 @@ check_get_set_text (BtkTextBuffer *buffer,
     g_error ("%d chars, expected 0", n);
 }
 
-static gint
+static bint
 count_toggles_at_iter (BtkTextIter *iter,
                        BtkTextTag  *of_tag)
 {
   GSList *tags;
   GSList *tmp;
-  gint count = 0;
+  bint count = 0;
   
   /* get toggle-ons and toggle-offs */
   tags = btk_text_iter_get_toggled_tags (iter, TRUE);
-  tags = g_slist_concat (tags,
+  tags = b_slist_concat (tags,
                          btk_text_iter_get_toggled_tags (iter, FALSE));
   
   tmp = tags;
@@ -113,22 +113,22 @@ count_toggles_at_iter (BtkTextIter *iter,
       else if (of_tag == tmp->data)
         ++count;
       
-      tmp = g_slist_next (tmp);
+      tmp = b_slist_next (tmp);
     }
   
-  g_slist_free (tags);
+  b_slist_free (tags);
 
   return count;
 }
 
-static gint
+static bint
 count_toggles_in_range_by_char (BtkTextBuffer     *buffer,
                                 BtkTextTag        *of_tag,
                                 const BtkTextIter *start,
                                 const BtkTextIter *end)
 {
   BtkTextIter iter;
-  gint count = 0;
+  bint count = 0;
   
   iter = *start;
   do
@@ -146,7 +146,7 @@ count_toggles_in_range_by_char (BtkTextBuffer     *buffer,
   return count;
 }
 
-static gint
+static bint
 count_toggles_in_buffer (BtkTextBuffer *buffer,
                          BtkTextTag    *of_tag)
 {
@@ -159,16 +159,16 @@ count_toggles_in_buffer (BtkTextBuffer *buffer,
 
 static void
 check_specific_tag_in_range (BtkTextBuffer     *buffer,
-                             const gchar       *tag_name,
+                             const bchar       *tag_name,
                              const BtkTextIter *start,
                              const BtkTextIter *end)
 {
   BtkTextIter iter;
   BtkTextTag *tag;
-  gboolean state;
-  gint count;
-  gint buffer_count;
-  gint last_offset;
+  bboolean state;
+  bint count;
+  bint buffer_count;
+  bint last_offset;
 
   if (btk_text_iter_compare (start, end) > 0)
     {
@@ -191,7 +191,7 @@ check_specific_tag_in_range (BtkTextBuffer     *buffer,
     {
       do
         {
-          gint this_offset;
+          bint this_offset;
           
           ++count;
 
@@ -235,7 +235,7 @@ check_specific_tag_in_range (BtkTextBuffer     *buffer,
     {
       do
         {
-          gint this_offset;
+          bint this_offset;
           
           ++count;
 
@@ -272,7 +272,7 @@ check_specific_tag_in_range (BtkTextBuffer     *buffer,
 
 static void
 check_specific_tag (BtkTextBuffer *buffer,
-                    const gchar   *tag_name)
+                    const bchar   *tag_name)
 {
   BtkTextIter start, end;
 
@@ -291,13 +291,13 @@ run_tests (BtkTextBuffer *buffer)
   BtkTextIter start;
   BtkTextIter end;
   BtkTextIter mark;
-  gint i, j;
-  gint num_chars;
+  bint i, j;
+  bint num_chars;
   BtkTextMark *bar_mark;
   BtkTextTag *tag;
   GHashTable *tag_states;
-  gint count;
-  gint buffer_count;
+  bint count;
+  bint buffer_count;
   
   btk_text_buffer_get_bounds (buffer, &start, &end);
 
@@ -462,7 +462,7 @@ run_tests (BtkTextBuffer *buffer)
         {
           GSList *tags;
           GSList *tmp;
-          gboolean found_some = FALSE;
+          bboolean found_some = FALSE;
           
           /* get toggled-on tags */
           tags = btk_text_iter_get_toggled_tags (&iter, TRUE);
@@ -480,12 +480,12 @@ run_tests (BtkTextBuffer *buffer)
               if (g_hash_table_lookup (tag_states, tag))
                 g_error ("Tag %p is already on, and was toggled on?", tag);
 
-              g_hash_table_insert (tag_states, tag, GINT_TO_POINTER (TRUE));
+              g_hash_table_insert (tag_states, tag, BINT_TO_POINTER (TRUE));
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
       
           /* get toggled-off tags */
           tags = btk_text_iter_get_toggled_tags (&iter, FALSE);
@@ -505,10 +505,10 @@ run_tests (BtkTextBuffer *buffer)
 
               g_hash_table_remove (tag_states, tag);
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
 
           if (!found_some)
             g_error ("No tags found going forward to tag toggle.");
@@ -538,7 +538,7 @@ run_tests (BtkTextBuffer *buffer)
         {
           GSList *tags;
           GSList *tmp;
-          gboolean found_some = FALSE;
+          bboolean found_some = FALSE;
           
           /* get toggled-off tags */
           tags = btk_text_iter_get_toggled_tags (&iter, FALSE);
@@ -556,12 +556,12 @@ run_tests (BtkTextBuffer *buffer)
               if (g_hash_table_lookup (tag_states, tag))
                 g_error ("Tag %p has two off-toggles in a row?", tag);
           
-              g_hash_table_insert (tag_states, tag, GINT_TO_POINTER (TRUE));
+              g_hash_table_insert (tag_states, tag, BINT_TO_POINTER (TRUE));
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
       
           /* get toggled-on tags */
           tags = btk_text_iter_get_toggled_tags (&iter, TRUE);
@@ -581,10 +581,10 @@ run_tests (BtkTextBuffer *buffer)
 
               g_hash_table_remove (tag_states, tag);
           
-              tmp = g_slist_next (tmp);
+              tmp = b_slist_next (tmp);
             }
 
-          g_slist_free (tags);
+          b_slist_free (tags);
 
           if (!found_some)
             g_error ("No tags found going backward to tag toggle.");
@@ -676,7 +676,7 @@ fill_buffer (BtkTextBuffer *buffer)
   i = 0;
   while (i < 10)
     {
-      gchar *str;
+      bchar *str;
 
       btk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
 
@@ -794,17 +794,17 @@ fill_buffer (BtkTextBuffer *buffer)
 
 static void
 test_line_separation (const char* str,
-                      gboolean    expect_next_line,
-                      gboolean    expect_end_iter,
+                      bboolean    expect_next_line,
+                      bboolean    expect_end_iter,
                       int         expected_line_count,
                       int         expected_line_break,
                       int         expected_next_line_start)
 {
   BtkTextIter iter;
   BtkTextBuffer* buffer;
-  gboolean on_next_line;
-  gboolean on_end_iter;
-  gint new_pos;
+  bboolean on_next_line;
+  bboolean on_end_iter;
+  bint new_pos;
 
   buffer = btk_text_buffer_new (NULL);
 
@@ -919,7 +919,7 @@ test_backspace (void)
 {
   BtkTextBuffer *buffer;
   BtkTextIter iter;
-  gboolean ret;
+  bboolean ret;
 
   buffer = btk_text_buffer_new (NULL);
 

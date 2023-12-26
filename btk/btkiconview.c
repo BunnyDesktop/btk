@@ -47,18 +47,18 @@
 
 #define SCROLL_EDGE_SIZE 15
 
-#define BTK_ICON_VIEW_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ICON_VIEW, BtkIconViewPrivate))
+#define BTK_ICON_VIEW_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_ICON_VIEW, BtkIconViewPrivate))
 
 typedef struct _BtkIconViewItem BtkIconViewItem;
 struct _BtkIconViewItem
 {
   BtkTreeIter iter;
-  gint index;
+  bint index;
   
-  gint row, col;
+  bint row, col;
 
   /* Bounding box */
-  gint x, y, width, height;
+  bint x, y, width, height;
 
   /* Individual cells.
    * box[i] is the actual area occupied by cell i,
@@ -66,13 +66,13 @@ struct _BtkIconViewItem
    * area relative to the box. 
    * See btk_icon_view_get_cell_area().
    */
-  gint n_cells;
+  bint n_cells;
   BdkRectangle *box;
-  gint *before;
-  gint *after;
+  bint *before;
+  bint *after;
 
-  guint selected : 1;
-  guint selected_before_rubberbanding : 1;
+  buint selected : 1;
+  buint selected_before_rubberbanding : 1;
 
 };
 
@@ -81,16 +81,16 @@ struct _BtkIconViewCellInfo
 {
   BtkCellRenderer *cell;
 
-  guint expand : 1;
-  guint pack : 1;
-  guint editing : 1;
+  buint expand : 1;
+  buint pack : 1;
+  buint editing : 1;
 
-  gint position;
+  bint position;
 
   GSList *attributes;
 
   BtkCellLayoutDataFunc func;
-  gpointer func_data;
+  bpointer func_data;
   GDestroyNotify destroy;
 };
 
@@ -99,12 +99,12 @@ struct _BtkIconViewChild
 {
   BtkWidget *widget;
   BtkIconViewItem *item;
-  gint cell;
+  bint cell;
 };
 
 struct _BtkIconViewPrivate
 {
-  gint width, height;
+  bint width, height;
 
   BtkSelectionMode selection_mode;
 
@@ -119,15 +119,15 @@ struct _BtkIconViewPrivate
   BtkAdjustment *hadjustment;
   BtkAdjustment *vadjustment;
 
-  guint layout_idle_id;
+  buint layout_idle_id;
   
-  gboolean doing_rubberband;
-  gint rubberband_x1, rubberband_y1;
-  gint rubberband_x2, rubberband_y2;
+  bboolean doing_rubberband;
+  bint rubberband_x1, rubberband_y1;
+  bint rubberband_x2, rubberband_y2;
 
-  guint scroll_timeout_id;
-  gint scroll_value_diff;
-  gint event_last_x, event_last_y;
+  buint scroll_timeout_id;
+  bint scroll_value_diff;
+  bint event_last_x, event_last_y;
 
   BtkIconViewItem *anchor_item;
   BtkIconViewItem *cursor_item;
@@ -137,34 +137,34 @@ struct _BtkIconViewPrivate
   BtkIconViewItem *last_single_clicked;
 
   GList *cell_list;
-  guint n_cells;
+  buint n_cells;
 
-  gint cursor_cell;
+  bint cursor_cell;
 
   BtkOrientation item_orientation;
 
-  gint columns;
-  gint item_width;
-  gint spacing;
-  gint row_spacing;
-  gint column_spacing;
-  gint margin;
-  gint item_padding;
+  bint columns;
+  bint item_width;
+  bint spacing;
+  bint row_spacing;
+  bint column_spacing;
+  bint margin;
+  bint item_padding;
 
-  gint text_column;
-  gint markup_column;
-  gint pixbuf_column;
+  bint text_column;
+  bint markup_column;
+  bint pixbuf_column;
 
-  gint pixbuf_cell;
-  gint text_cell;
+  bint pixbuf_cell;
+  bint text_cell;
 
-  gint tooltip_column;
+  bint tooltip_column;
 
   /* Drag-and-drop. */
   BdkModifierType start_button_mask;
-  gint pressed_button;
-  gint press_start_x;
-  gint press_start_y;
+  bint pressed_button;
+  bint press_start_x;
+  bint press_start_y;
 
   BdkDragAction source_actions;
   BdkDragAction dest_actions;
@@ -174,19 +174,19 @@ struct _BtkIconViewPrivate
 
   /* scroll to */
   BtkTreeRowReference *scroll_to_path;
-  gfloat scroll_to_row_align;
-  gfloat scroll_to_col_align;
-  guint scroll_to_use_align : 1;
+  bfloat scroll_to_row_align;
+  bfloat scroll_to_col_align;
+  buint scroll_to_use_align : 1;
 
-  guint source_set : 1;
-  guint dest_set : 1;
-  guint reorderable : 1;
-  guint empty_view_drop :1;
+  buint source_set : 1;
+  buint dest_set : 1;
+  buint reorderable : 1;
+  buint empty_view_drop :1;
 
-  guint modify_selection_pressed : 1;
-  guint extend_selection_pressed : 1;
+  buint modify_selection_pressed : 1;
+  buint extend_selection_pressed : 1;
 
-  guint draw_focus : 1;
+  buint draw_focus : 1;
 };
 
 /* Signals */
@@ -225,17 +225,17 @@ enum
   PROP_ITEM_PADDING
 };
 
-/* GObject vfuncs */
+/* BObject vfuncs */
 static void             btk_icon_view_cell_layout_init          (BtkCellLayoutIface *iface);
-static void             btk_icon_view_finalize                  (GObject            *object);
-static void             btk_icon_view_set_property              (GObject            *object,
-								 guint               prop_id,
-								 const GValue       *value,
-								 GParamSpec         *pspec);
-static void             btk_icon_view_get_property              (GObject            *object,
-								 guint               prop_id,
-								 GValue             *value,
-								 GParamSpec         *pspec);
+static void             btk_icon_view_finalize                  (BObject            *object);
+static void             btk_icon_view_set_property              (BObject            *object,
+								 buint               prop_id,
+								 const BValue       *value,
+								 BParamSpec         *pspec);
+static void             btk_icon_view_get_property              (BObject            *object,
+								 buint               prop_id,
+								 BValue             *value,
+								 BParamSpec         *pspec);
 
 /* BtkObject vfuncs */
 static void             btk_icon_view_destroy                   (BtkObject          *object);
@@ -251,17 +251,17 @@ static void             btk_icon_view_size_request              (BtkWidget      
 								 BtkRequisition     *requisition);
 static void             btk_icon_view_size_allocate             (BtkWidget          *widget,
 								 BtkAllocation      *allocation);
-static gboolean         btk_icon_view_expose                    (BtkWidget          *widget,
+static bboolean         btk_icon_view_expose                    (BtkWidget          *widget,
 								 BdkEventExpose     *expose);
-static gboolean         btk_icon_view_motion                    (BtkWidget          *widget,
+static bboolean         btk_icon_view_motion                    (BtkWidget          *widget,
 								 BdkEventMotion     *event);
-static gboolean         btk_icon_view_button_press              (BtkWidget          *widget,
+static bboolean         btk_icon_view_button_press              (BtkWidget          *widget,
 								 BdkEventButton     *event);
-static gboolean         btk_icon_view_button_release            (BtkWidget          *widget,
+static bboolean         btk_icon_view_button_release            (BtkWidget          *widget,
 								 BdkEventButton     *event);
-static gboolean         btk_icon_view_key_press                 (BtkWidget          *widget,
+static bboolean         btk_icon_view_key_press                 (BtkWidget          *widget,
 								 BdkEventKey        *event);
-static gboolean         btk_icon_view_key_release               (BtkWidget          *widget,
+static bboolean         btk_icon_view_key_release               (BtkWidget          *widget,
 								 BdkEventKey        *event);
 static BatkObject       *btk_icon_view_get_accessible            (BtkWidget          *widget);
 
@@ -270,9 +270,9 @@ static BatkObject       *btk_icon_view_get_accessible            (BtkWidget     
 static void             btk_icon_view_remove                    (BtkContainer       *container,
 								 BtkWidget          *widget);
 static void             btk_icon_view_forall                    (BtkContainer       *container,
-								 gboolean            include_internals,
+								 bboolean            include_internals,
 								 BtkCallback         callback,
-								 gpointer            callback_data);
+								 bpointer            callback_data);
 
 /* BtkIconView vfuncs */
 static void             btk_icon_view_set_adjustments           (BtkIconView        *icon_view,
@@ -282,7 +282,7 @@ static void             btk_icon_view_real_select_all           (BtkIconView    
 static void             btk_icon_view_real_unselect_all         (BtkIconView        *icon_view);
 static void             btk_icon_view_real_select_cursor_item   (BtkIconView        *icon_view);
 static void             btk_icon_view_real_toggle_cursor_item   (BtkIconView        *icon_view);
-static gboolean         btk_icon_view_real_activate_cursor_item (BtkIconView        *icon_view);
+static bboolean         btk_icon_view_real_activate_cursor_item (BtkIconView        *icon_view);
 
  /* Internal functions */
 static void                 btk_icon_view_adjustment_changed             (BtkAdjustment          *adjustment,
@@ -294,9 +294,9 @@ static void                 btk_icon_view_paint_item                     (BtkIco
 									  BtkIconViewItem        *item,
 									  BdkRectangle           *area,
 									  BdkDrawable *drawable,
-									  gint         x,
-									  gint         y,
-									  gboolean     draw_focus);
+									  bint         x,
+									  bint         y,
+									  bboolean     draw_focus);
 static void                 btk_icon_view_paint_rubberband               (BtkIconView            *icon_view,
 								          bairo_t *cr,
 									  BdkRectangle           *area);
@@ -307,56 +307,56 @@ static void                 btk_icon_view_queue_draw_item                (BtkIco
 static void                 btk_icon_view_queue_layout                   (BtkIconView            *icon_view);
 static void                 btk_icon_view_set_cursor_item                (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item,
-									  gint                    cursor_cell);
+									  bint                    cursor_cell);
 static void                 btk_icon_view_start_rubberbanding            (BtkIconView            *icon_view,
-									  gint                    x,
-									  gint                    y);
+									  bint                    x,
+									  bint                    y);
 static void                 btk_icon_view_stop_rubberbanding             (BtkIconView            *icon_view);
 static void                 btk_icon_view_update_rubberband_selection    (BtkIconView            *icon_view);
-static gboolean             btk_icon_view_item_hit_test                  (BtkIconView            *icon_view,
+static bboolean             btk_icon_view_item_hit_test                  (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item,
-									  gint                    x,
-									  gint                    y,
-									  gint                    width,
-									  gint                    height);
-static gboolean             btk_icon_view_unselect_all_internal          (BtkIconView            *icon_view);
+									  bint                    x,
+									  bint                    y,
+									  bint                    width,
+									  bint                    height);
+static bboolean             btk_icon_view_unselect_all_internal          (BtkIconView            *icon_view);
 static void                 btk_icon_view_calculate_item_size            (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item);
 static void                 btk_icon_view_calculate_item_size2           (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item,
-									  gint                   *max_height);
-static void                 btk_icon_view_update_rubberband              (gpointer                data);
+									  bint                   *max_height);
+static void                 btk_icon_view_update_rubberband              (bpointer                data);
 static void                 btk_icon_view_item_invalidate_size           (BtkIconViewItem        *item);
 static void                 btk_icon_view_invalidate_sizes               (BtkIconView            *icon_view);
 static void                 btk_icon_view_add_move_binding               (BtkBindingSet          *binding_set,
-									  guint                   keyval,
-									  guint                   modmask,
+									  buint                   keyval,
+									  buint                   modmask,
 									  BtkMovementStep         step,
-									  gint                    count);
-static gboolean             btk_icon_view_real_move_cursor               (BtkIconView            *icon_view,
+									  bint                    count);
+static bboolean             btk_icon_view_real_move_cursor               (BtkIconView            *icon_view,
 									  BtkMovementStep         step,
-									  gint                    count);
+									  bint                    count);
 static void                 btk_icon_view_move_cursor_up_down            (BtkIconView            *icon_view,
-									  gint                    count);
+									  bint                    count);
 static void                 btk_icon_view_move_cursor_page_up_down       (BtkIconView            *icon_view,
-									  gint                    count);
+									  bint                    count);
 static void                 btk_icon_view_move_cursor_left_right         (BtkIconView            *icon_view,
-									  gint                    count);
+									  bint                    count);
 static void                 btk_icon_view_move_cursor_start_end          (BtkIconView            *icon_view,
-									  gint                    count);
+									  bint                    count);
 static void                 btk_icon_view_scroll_to_item                 (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item);
 static void                 btk_icon_view_select_item                    (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item);
 static void                 btk_icon_view_unselect_item                  (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item);
-static gboolean             btk_icon_view_select_all_between             (BtkIconView            *icon_view,
+static bboolean             btk_icon_view_select_all_between             (BtkIconView            *icon_view,
 									  BtkIconViewItem        *anchor,
 									  BtkIconViewItem        *cursor);
 static BtkIconViewItem *    btk_icon_view_get_item_at_coords             (BtkIconView            *icon_view,
-									  gint                    x,
-									  gint                    y,
-									  gboolean                only_in_cell,
+									  bint                    x,
+									  bint                    y,
+									  bboolean                only_in_cell,
 									  BtkIconViewCellInfo   **cell_at_pos);
 static void                 btk_icon_view_get_cell_area                  (BtkIconView            *icon_view,
 									  BtkIconViewItem        *item,
@@ -372,25 +372,25 @@ static void                 btk_icon_view_set_cell_data                  (BtkIco
 									  BtkIconViewItem        *item);
 static void                 btk_icon_view_cell_layout_pack_start         (BtkCellLayout          *layout,
 									  BtkCellRenderer        *renderer,
-									  gboolean                expand);
+									  bboolean                expand);
 static void                 btk_icon_view_cell_layout_pack_end           (BtkCellLayout          *layout,
 									  BtkCellRenderer        *renderer,
-									  gboolean                expand);
+									  bboolean                expand);
 static void                 btk_icon_view_cell_layout_add_attribute      (BtkCellLayout          *layout,
 									  BtkCellRenderer        *renderer,
-									  const gchar            *attribute,
-									  gint                    column);
+									  const bchar            *attribute,
+									  bint                    column);
 static void                 btk_icon_view_cell_layout_clear              (BtkCellLayout          *layout);
 static void                 btk_icon_view_cell_layout_clear_attributes   (BtkCellLayout          *layout,
 									  BtkCellRenderer        *renderer);
 static void                 btk_icon_view_cell_layout_set_cell_data_func (BtkCellLayout          *layout,
 									  BtkCellRenderer        *cell,
 									  BtkCellLayoutDataFunc   func,
-									  gpointer                func_data,
+									  bpointer                func_data,
 									  GDestroyNotify          destroy);
 static void                 btk_icon_view_cell_layout_reorder            (BtkCellLayout          *layout,
 									  BtkCellRenderer        *cell,
-									  gint                    position);
+									  bint                    position);
 static GList *              btk_icon_view_cell_layout_get_cells          (BtkCellLayout          *layout);
 
 static void                 btk_icon_view_item_activate_cell             (BtkIconView            *icon_view,
@@ -402,7 +402,7 @@ static void                 btk_icon_view_item_selected_changed          (BtkIco
 static void                 btk_icon_view_put                            (BtkIconView            *icon_view,
 									  BtkWidget              *widget,
 									  BtkIconViewItem        *item,
-									  gint                    cell);
+									  bint                    cell);
 static void                 btk_icon_view_remove_widget                  (BtkCellEditable        *editable,
 									  BtkIconView            *icon_view);
 static void                 btk_icon_view_start_editing                  (BtkIconView            *icon_view,
@@ -410,7 +410,7 @@ static void                 btk_icon_view_start_editing                  (BtkIco
 									  BtkIconViewCellInfo    *cell_info,
 									  BdkEvent               *event);
 static void                 btk_icon_view_stop_editing                   (BtkIconView            *icon_view,
-									  gboolean                cancel_editing);
+									  bboolean                cancel_editing);
 
 /* Source side drag signals */
 static void btk_icon_view_drag_begin       (BtkWidget        *widget,
@@ -420,33 +420,33 @@ static void btk_icon_view_drag_end         (BtkWidget        *widget,
 static void btk_icon_view_drag_data_get    (BtkWidget        *widget,
                                             BdkDragContext   *context,
                                             BtkSelectionData *selection_data,
-                                            guint             info,
-                                            guint             time);
+                                            buint             info,
+                                            buint             time);
 static void btk_icon_view_drag_data_delete (BtkWidget        *widget,
                                             BdkDragContext   *context);
 
 /* Target side drag signals */
 static void     btk_icon_view_drag_leave         (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  guint             time);
-static gboolean btk_icon_view_drag_motion        (BtkWidget        *widget,
+                                                  buint             time);
+static bboolean btk_icon_view_drag_motion        (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
-static gboolean btk_icon_view_drag_drop          (BtkWidget        *widget,
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
+static bboolean btk_icon_view_drag_drop          (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
-                                                  guint             time);
+                                                  bint              x,
+                                                  bint              y,
+                                                  buint             time);
 static void     btk_icon_view_drag_data_received (BtkWidget        *widget,
                                                   BdkDragContext   *context,
-                                                  gint              x,
-                                                  gint              y,
+                                                  bint              x,
+                                                  bint              y,
                                                   BtkSelectionData *selection_data,
-                                                  guint             info,
-                                                  guint             time);
-static gboolean btk_icon_view_maybe_begin_drag   (BtkIconView             *icon_view,
+                                                  buint             info,
+                                                  buint             time);
+static bboolean btk_icon_view_maybe_begin_drag   (BtkIconView             *icon_view,
 					   	  BdkEventMotion          *event);
 
 static void     remove_scroll_timeout            (BtkIconView *icon_view);
@@ -457,19 +457,19 @@ static void     adjust_wrap_width                (BtkIconView     *icon_view,
 /* BtkBuildable */
 static BtkBuildableIface *parent_buildable_iface;
 static void     btk_icon_view_buildable_init             (BtkBuildableIface *iface);
-static gboolean btk_icon_view_buildable_custom_tag_start (BtkBuildable  *buildable,
+static bboolean btk_icon_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 							  BtkBuilder    *builder,
-							  GObject       *child,
-							  const gchar   *tagname,
+							  BObject       *child,
+							  const bchar   *tagname,
 							  GMarkupParser *parser,
-							  gpointer      *data);
+							  bpointer      *data);
 static void     btk_icon_view_buildable_custom_tag_end   (BtkBuildable  *buildable,
 							  BtkBuilder    *builder,
-							  GObject       *child,
-							  const gchar   *tagname,
-							  gpointer      *data);
+							  BObject       *child,
+							  const bchar   *tagname,
+							  bpointer      *data);
 
-static guint icon_view_signals[LAST_SIGNAL] = { 0 };
+static buint icon_view_signals[LAST_SIGNAL] = { 0 };
 
 G_DEFINE_TYPE_WITH_CODE (BtkIconView, btk_icon_view, BTK_TYPE_CONTAINER,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_CELL_LAYOUT,
@@ -480,7 +480,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkIconView, btk_icon_view, BTK_TYPE_CONTAINER,
 static void
 btk_icon_view_class_init (BtkIconViewClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
@@ -490,7 +490,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 
   g_type_class_add_private (klass, sizeof (BtkIconViewPrivate));
 
-  bobject_class = (GObjectClass *) klass;
+  bobject_class = (BObjectClass *) klass;
   object_class = (BtkObjectClass *) klass;
   widget_class = (BtkWidgetClass *) klass;
   container_class = (BtkContainerClass *) klass;
@@ -568,7 +568,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 				   g_param_spec_int ("pixbuf-column",
 						     P_("Pixbuf column"),
 						     P_("Model column used to retrieve the icon pixbuf from"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -576,7 +576,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    *
    * The ::text-column property contains the number of the model column
    * containing the texts which are displayed. The text column must be 
-   * of type #G_TYPE_STRING. If this property and the :markup-column 
+   * of type #B_TYPE_STRING. If this property and the :markup-column 
    * property are both set to -1, no texts are displayed.   
    *
    * Since: 2.6
@@ -586,7 +586,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 				   g_param_spec_int ("text-column",
 						     P_("Text column"),
 						     P_("Model column used to retrieve the text from"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
 
   
@@ -595,7 +595,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    *
    * The ::markup-column property contains the number of the model column
    * containing markup information to be displayed. The markup column must be 
-   * of type #G_TYPE_STRING. If this property and the :text-column property 
+   * of type #B_TYPE_STRING. If this property and the :text-column property 
    * are both set to column numbers, it overrides the text column.
    * If both are set to -1, no texts are displayed.   
    *
@@ -606,7 +606,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 				   g_param_spec_int ("markup-column",
 						     P_("Markup column"),
 						     P_("Model column used to retrieve the text if using Bango markup"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
   
   g_object_class_install_property (bobject_class,
@@ -631,7 +631,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 				   g_param_spec_int ("columns",
 						     P_("Number of columns"),
 						     P_("Number of columns to display"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));
   
 
@@ -649,7 +649,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
 				   g_param_spec_int ("item-width",
 						     P_("Width for each item"),
 						     P_("The width used for each item"),
-						     -1, G_MAXINT, -1,
+						     -1, B_MAXINT, -1,
 						     BTK_PARAM_READWRITE));  
 
   /**
@@ -665,7 +665,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                    g_param_spec_int ("spacing",
 						     P_("Spacing"),
 						     P_("Space which is inserted between cells of an item"),
-						     0, G_MAXINT, 0,
+						     0, B_MAXINT, 0,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -681,7 +681,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                    g_param_spec_int ("row-spacing",
 						     P_("Row Spacing"),
 						     P_("Space which is inserted between grid rows"),
-						     0, G_MAXINT, 6,
+						     0, B_MAXINT, 6,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -697,7 +697,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                    g_param_spec_int ("column-spacing",
 						     P_("Column Spacing"),
 						     P_("Space which is inserted between grid columns"),
-						     0, G_MAXINT, 6,
+						     0, B_MAXINT, 6,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -713,7 +713,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                    g_param_spec_int ("margin",
 						     P_("Margin"),
 						     P_("Space which is inserted at the edges of the icon view"),
-						     0, G_MAXINT, 6,
+						     0, B_MAXINT, 6,
 						     BTK_PARAM_READWRITE));
 
   /**
@@ -774,7 +774,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                                        P_("Tooltip Column"),
                                                        P_("The column in the model containing the tooltip texts for the items"),
                                                        -1,
-                                                       G_MAXINT,
+                                                       B_MAXINT,
                                                        -1,
                                                        BTK_PARAM_READWRITE));
 
@@ -791,7 +791,7 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
                                    g_param_spec_int ("item-padding",
 						     P_("Item Padding"),
 						     P_("Padding around icon view items"),
-						     0, G_MAXINT, 6,
+						     0, B_MAXINT, 6,
 						     BTK_PARAM_READWRITE));
 
 
@@ -824,12 +824,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   widget_class->set_scroll_adjustments_signal =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIconViewClass, set_scroll_adjustments),
 		  NULL, NULL, 
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT, BTK_TYPE_ADJUSTMENT);
 
   /**
@@ -845,12 +845,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[ITEM_ACTIVATED] =
     g_signal_new (I_("item-activated"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkIconViewClass, item_activated),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__BOXED,
-		  G_TYPE_NONE, 1,
+		  B_TYPE_NONE, 1,
 		  BTK_TYPE_TREE_PATH);
 
   /**
@@ -862,12 +862,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[SELECTION_CHANGED] =
     g_signal_new (I_("selection-changed"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkIconViewClass, selection_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   /**
    * BtkIconView::select-all:
@@ -884,12 +884,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[SELECT_ALL] =
     g_signal_new (I_("select-all"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, select_all),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
   
   /**
    * BtkIconView::unselect-all:
@@ -906,12 +906,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[UNSELECT_ALL] =
     g_signal_new (I_("unselect-all"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, unselect_all),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkIconView::select-cursor-item:
@@ -929,12 +929,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[SELECT_CURSOR_ITEM] =
     g_signal_new (I_("select-cursor-item"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, select_cursor_item),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkIconView::toggle-cursor-item:
@@ -953,12 +953,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[TOGGLE_CURSOR_ITEM] =
     g_signal_new (I_("toggle-cursor-item"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, toggle_cursor_item),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 
   /**
    * BtkIconView::activate-cursor-item:
@@ -976,12 +976,12 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[ACTIVATE_CURSOR_ITEM] =
     g_signal_new (I_("activate-cursor-item"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, activate_cursor_item),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__VOID,
-		  G_TYPE_BOOLEAN, 0);
+		  B_TYPE_BOOLEAN, 0);
   
   /**
    * BtkIconView::move-cursor:
@@ -1009,14 +1009,14 @@ btk_icon_view_class_init (BtkIconViewClass *klass)
    */
   icon_view_signals[MOVE_CURSOR] =
     g_signal_new (I_("move-cursor"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkIconViewClass, move_cursor),
 		  NULL, NULL,
 		  _btk_marshal_BOOLEAN__ENUM_INT,
-		  G_TYPE_BOOLEAN, 2,
+		  B_TYPE_BOOLEAN, 2,
 		  BTK_TYPE_MOVEMENT_STEP,
-		  G_TYPE_INT);
+		  B_TYPE_INT);
 
   /* Key bindings */
   btk_binding_entry_add_signal (binding_set, BDK_a, BDK_CONTROL_MASK, 
@@ -1187,21 +1187,21 @@ btk_icon_view_destroy (BtkObject *object)
   BTK_OBJECT_CLASS (btk_icon_view_parent_class)->destroy (object);
 }
 
-/* GObject methods */
+/* BObject methods */
 static void
-btk_icon_view_finalize (GObject *object)
+btk_icon_view_finalize (BObject *object)
 {
   btk_icon_view_cell_layout_clear (BTK_CELL_LAYOUT (object));
 
-  G_OBJECT_CLASS (btk_icon_view_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_icon_view_parent_class)->finalize (object);
 }
 
 
 static void
-btk_icon_view_set_property (GObject      *object,
-			    guint         prop_id,
-			    const GValue *value,
-			    GParamSpec   *pspec)
+btk_icon_view_set_property (BObject      *object,
+			    buint         prop_id,
+			    const BValue *value,
+			    BParamSpec   *pspec)
 {
   BtkIconView *icon_view;
 
@@ -1210,65 +1210,65 @@ btk_icon_view_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SELECTION_MODE:
-      btk_icon_view_set_selection_mode (icon_view, g_value_get_enum (value));
+      btk_icon_view_set_selection_mode (icon_view, b_value_get_enum (value));
       break;
     case PROP_PIXBUF_COLUMN:
-      btk_icon_view_set_pixbuf_column (icon_view, g_value_get_int (value));
+      btk_icon_view_set_pixbuf_column (icon_view, b_value_get_int (value));
       break;
     case PROP_TEXT_COLUMN:
-      btk_icon_view_set_text_column (icon_view, g_value_get_int (value));
+      btk_icon_view_set_text_column (icon_view, b_value_get_int (value));
       break;
     case PROP_MARKUP_COLUMN:
-      btk_icon_view_set_markup_column (icon_view, g_value_get_int (value));
+      btk_icon_view_set_markup_column (icon_view, b_value_get_int (value));
       break;
     case PROP_MODEL:
-      btk_icon_view_set_model (icon_view, g_value_get_object (value));
+      btk_icon_view_set_model (icon_view, b_value_get_object (value));
       break;
     case PROP_ORIENTATION:
     case PROP_ITEM_ORIENTATION:
-      btk_icon_view_set_item_orientation (icon_view, g_value_get_enum (value));
+      btk_icon_view_set_item_orientation (icon_view, b_value_get_enum (value));
       break;
     case PROP_COLUMNS:
-      btk_icon_view_set_columns (icon_view, g_value_get_int (value));
+      btk_icon_view_set_columns (icon_view, b_value_get_int (value));
       break;
     case PROP_ITEM_WIDTH:
-      btk_icon_view_set_item_width (icon_view, g_value_get_int (value));
+      btk_icon_view_set_item_width (icon_view, b_value_get_int (value));
       break;
     case PROP_SPACING:
-      btk_icon_view_set_spacing (icon_view, g_value_get_int (value));
+      btk_icon_view_set_spacing (icon_view, b_value_get_int (value));
       break;
     case PROP_ROW_SPACING:
-      btk_icon_view_set_row_spacing (icon_view, g_value_get_int (value));
+      btk_icon_view_set_row_spacing (icon_view, b_value_get_int (value));
       break;
     case PROP_COLUMN_SPACING:
-      btk_icon_view_set_column_spacing (icon_view, g_value_get_int (value));
+      btk_icon_view_set_column_spacing (icon_view, b_value_get_int (value));
       break;
     case PROP_MARGIN:
-      btk_icon_view_set_margin (icon_view, g_value_get_int (value));
+      btk_icon_view_set_margin (icon_view, b_value_get_int (value));
       break;
     case PROP_REORDERABLE:
-      btk_icon_view_set_reorderable (icon_view, g_value_get_boolean (value));
+      btk_icon_view_set_reorderable (icon_view, b_value_get_boolean (value));
       break;
       
     case PROP_TOOLTIP_COLUMN:
-      btk_icon_view_set_tooltip_column (icon_view, g_value_get_int (value));
+      btk_icon_view_set_tooltip_column (icon_view, b_value_get_int (value));
       break;
 
     case PROP_ITEM_PADDING:
-      btk_icon_view_set_item_padding (icon_view, g_value_get_int (value));
+      btk_icon_view_set_item_padding (icon_view, b_value_get_int (value));
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_icon_view_get_property (GObject      *object,
-			    guint         prop_id,
-			    GValue       *value,
-			    GParamSpec   *pspec)
+btk_icon_view_get_property (BObject      *object,
+			    buint         prop_id,
+			    BValue       *value,
+			    BParamSpec   *pspec)
 {
   BtkIconView *icon_view;
 
@@ -1277,55 +1277,55 @@ btk_icon_view_get_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_SELECTION_MODE:
-      g_value_set_enum (value, icon_view->priv->selection_mode);
+      b_value_set_enum (value, icon_view->priv->selection_mode);
       break;
     case PROP_PIXBUF_COLUMN:
-      g_value_set_int (value, icon_view->priv->pixbuf_column);
+      b_value_set_int (value, icon_view->priv->pixbuf_column);
       break;
     case PROP_TEXT_COLUMN:
-      g_value_set_int (value, icon_view->priv->text_column);
+      b_value_set_int (value, icon_view->priv->text_column);
       break;
     case PROP_MARKUP_COLUMN:
-      g_value_set_int (value, icon_view->priv->markup_column);
+      b_value_set_int (value, icon_view->priv->markup_column);
       break;
     case PROP_MODEL:
-      g_value_set_object (value, icon_view->priv->model);
+      b_value_set_object (value, icon_view->priv->model);
       break;
     case PROP_ORIENTATION:
     case PROP_ITEM_ORIENTATION:
-      g_value_set_enum (value, icon_view->priv->item_orientation);
+      b_value_set_enum (value, icon_view->priv->item_orientation);
       break;
     case PROP_COLUMNS:
-      g_value_set_int (value, icon_view->priv->columns);
+      b_value_set_int (value, icon_view->priv->columns);
       break;
     case PROP_ITEM_WIDTH:
-      g_value_set_int (value, icon_view->priv->item_width);
+      b_value_set_int (value, icon_view->priv->item_width);
       break;
     case PROP_SPACING:
-      g_value_set_int (value, icon_view->priv->spacing);
+      b_value_set_int (value, icon_view->priv->spacing);
       break;
     case PROP_ROW_SPACING:
-      g_value_set_int (value, icon_view->priv->row_spacing);
+      b_value_set_int (value, icon_view->priv->row_spacing);
       break;
     case PROP_COLUMN_SPACING:
-      g_value_set_int (value, icon_view->priv->column_spacing);
+      b_value_set_int (value, icon_view->priv->column_spacing);
       break;
     case PROP_MARGIN:
-      g_value_set_int (value, icon_view->priv->margin);
+      b_value_set_int (value, icon_view->priv->margin);
       break;
     case PROP_REORDERABLE:
-      g_value_set_boolean (value, icon_view->priv->reorderable);
+      b_value_set_boolean (value, icon_view->priv->reorderable);
       break;
     case PROP_TOOLTIP_COLUMN:
-      g_value_set_int (value, icon_view->priv->tooltip_column);
+      b_value_set_int (value, icon_view->priv->tooltip_column);
       break;
 
     case PROP_ITEM_PADDING:
-      g_value_set_int (value, icon_view->priv->item_padding);
+      b_value_set_int (value, icon_view->priv->item_padding);
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -1336,7 +1336,7 @@ btk_icon_view_realize (BtkWidget *widget)
 {
   BtkIconView *icon_view;
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
   
   icon_view = BTK_ICON_VIEW (widget);
 
@@ -1550,7 +1550,7 @@ btk_icon_view_size_allocate (BtkWidget      *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_icon_view_expose (BtkWidget *widget,
 		      BdkEventExpose *expose)
 {
@@ -1558,7 +1558,7 @@ btk_icon_view_expose (BtkWidget *widget,
   GList *icons;
   bairo_t *cr;
   BtkTreePath *path;
-  gint dest_index;
+  bint dest_index;
   BtkIconViewDropPosition dest_pos;
   BtkIconViewItem *dest_item = NULL;
 
@@ -1668,7 +1668,7 @@ btk_icon_view_expose (BtkWidget *widget,
   if (icon_view->priv->doing_rubberband)
     {
       BdkRectangle *rectangles;
-      gint n_rectangles;
+      bint n_rectangles;
       
       bdk_rebunnyion_get_rectangles (expose->rebunnyion,
 				 &rectangles,
@@ -1687,11 +1687,11 @@ btk_icon_view_expose (BtkWidget *widget,
   return TRUE;
 }
 
-static gboolean
-rubberband_scroll_timeout (gpointer data)
+static bboolean
+rubberband_scroll_timeout (bpointer data)
 {
   BtkIconView *icon_view;
-  gdouble value;
+  bdouble value;
 
   icon_view = data;
 
@@ -1707,12 +1707,12 @@ rubberband_scroll_timeout (gpointer data)
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_motion (BtkWidget      *widget,
 		      BdkEventMotion *event)
 {
   BtkIconView *icon_view;
-  gint abs_y;
+  bint abs_y;
   
   icon_view = BTK_ICON_VIEW (widget);
 
@@ -1778,9 +1778,9 @@ btk_icon_view_remove (BtkContainer *container,
 
 static void
 btk_icon_view_forall (BtkContainer *container,
-		      gboolean      include_internals,
+		      bboolean      include_internals,
 		      BtkCallback   callback,
-		      gpointer      callback_data)
+		      bpointer      callback_data)
 {
   BtkIconView *icon_view;
   BtkIconViewChild *child = NULL;
@@ -1805,9 +1805,9 @@ btk_icon_view_item_activate_cell (BtkIconView         *icon_view,
 				  BdkEvent            *event)
 {
   BtkTreePath *path;  
-  gchar *path_string;
+  bchar *path_string;
   BdkRectangle cell_area;
-  gboolean visible, mode;
+  bboolean visible, mode;
 
   btk_icon_view_set_cell_data (icon_view, item);
 
@@ -1859,7 +1859,7 @@ static void
 btk_icon_view_put (BtkIconView     *icon_view,
 		   BtkWidget       *widget,
 		   BtkIconViewItem *item,
-		   gint             cell)
+		   bint             cell)
 {
   BtkIconViewChild *child;
   
@@ -1918,9 +1918,9 @@ btk_icon_view_start_editing (BtkIconView         *icon_view,
 			     BdkEvent            *event)
 {
   BtkTreePath *path;  
-  gchar *path_string;
+  bchar *path_string;
   BdkRectangle cell_area;
-  gboolean visible, mode;
+  bboolean visible, mode;
   BtkCellEditable *editable;
 
   btk_icon_view_set_cell_data (icon_view, item);
@@ -1965,7 +1965,7 @@ btk_icon_view_start_editing (BtkIconView         *icon_view,
 
 static void
 btk_icon_view_stop_editing (BtkIconView *icon_view,
-			    gboolean     cancel_editing)
+			    bboolean     cancel_editing)
 {
   BtkCellRenderer *cell = NULL;
   BtkIconViewItem *item;
@@ -2033,12 +2033,12 @@ void
 btk_icon_view_set_cursor (BtkIconView     *icon_view,
 			  BtkTreePath     *path,
 			  BtkCellRenderer *cell,
-			  gboolean         start_editing)
+			  bboolean         start_editing)
 {
   BtkIconViewItem *item = NULL;
   BtkIconViewCellInfo *info =  NULL;
   GList *l;
-  gint i, cell_pos;
+  bint i, cell_pos;
 
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   g_return_if_fail (path != NULL);
@@ -2092,7 +2092,7 @@ btk_icon_view_set_cursor (BtkIconView     *icon_view,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_icon_view_get_cursor (BtkIconView      *icon_view,
 			  BtkTreePath     **path,
 			  BtkCellRenderer **cell)
@@ -2128,16 +2128,16 @@ btk_icon_view_get_cursor (BtkIconView      *icon_view,
   return (item != NULL);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_button_press (BtkWidget      *widget,
 			    BdkEventButton *event)
 {
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   BtkIconViewCellInfo *info = NULL;
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   BtkCellRendererMode mode;
-  gint cursor_cell = -1;
+  bint cursor_cell = -1;
 
   icon_view = BTK_ICON_VIEW (widget);
 
@@ -2278,7 +2278,7 @@ btk_icon_view_button_press (BtkWidget      *widget,
   return event->button == 1;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_button_release (BtkWidget      *widget,
 			      BdkEventButton *event)
 {
@@ -2296,7 +2296,7 @@ btk_icon_view_button_release (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_key_press (BtkWidget      *widget,
 			 BdkEventKey    *event)
 {
@@ -2313,7 +2313,7 @@ btk_icon_view_key_press (BtkWidget      *widget,
   return BTK_WIDGET_CLASS (btk_icon_view_parent_class)->key_press_event (widget, event);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_key_release (BtkWidget      *widget,
 			   BdkEventKey    *event)
 {
@@ -2326,10 +2326,10 @@ btk_icon_view_key_release (BtkWidget      *widget,
 }
 
 static void
-btk_icon_view_update_rubberband (gpointer data)
+btk_icon_view_update_rubberband (bpointer data)
 {
   BtkIconView *icon_view;
-  gint x, y;
+  bint x, y;
   BdkRectangle old_area;
   BdkRectangle new_area;
   BdkRectangle common;
@@ -2388,8 +2388,8 @@ btk_icon_view_update_rubberband (gpointer data)
 
 static void
 btk_icon_view_start_rubberbanding (BtkIconView  *icon_view,
-				   gint          x,
-				   gint          y)
+				   bint          x,
+				   bint          y)
 {
   GList *items;
 
@@ -2429,8 +2429,8 @@ static void
 btk_icon_view_update_rubberband_selection (BtkIconView *icon_view)
 {
   GList *items;
-  gint x, y, width, height;
-  gboolean dirty = FALSE;
+  bint x, y, width, height;
+  bboolean dirty = FALSE;
   
   x = MIN (icon_view->priv->rubberband_x1,
 	   icon_view->priv->rubberband_x2);
@@ -2444,8 +2444,8 @@ btk_icon_view_update_rubberband_selection (BtkIconView *icon_view)
   for (items = icon_view->priv->items; items; items = items->next)
     {
       BtkIconViewItem *item = items->data;
-      gboolean is_in;
-      gboolean selected;
+      bboolean is_in;
+      bboolean selected;
       
       is_in = btk_icon_view_item_hit_test (icon_view, item, 
 					   x, y, width, height);
@@ -2464,13 +2464,13 @@ btk_icon_view_update_rubberband_selection (BtkIconView *icon_view)
     g_signal_emit (icon_view, icon_view_signals[SELECTION_CHANGED], 0);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_hit_test (BtkIconView      *icon_view,
 			     BtkIconViewItem  *item,
-			     gint              x,
-			     gint              y,
-			     gint              width,
-			     gint              height)
+			     bint              x,
+			     bint              y,
+			     bint              width,
+			     bint              height)
 {
   GList *l;
   BdkRectangle box;
@@ -2496,10 +2496,10 @@ btk_icon_view_item_hit_test (BtkIconView      *icon_view,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_unselect_all_internal (BtkIconView  *icon_view)
 {
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   GList *items;
 
   if (icon_view->priv->selection_mode == BTK_SELECTION_NONE)
@@ -2528,7 +2528,7 @@ btk_icon_view_set_adjustments (BtkIconView   *icon_view,
 			       BtkAdjustment *hadj,
 			       BtkAdjustment *vadj)
 {
-  gboolean need_adjust = FALSE;
+  bboolean need_adjust = FALSE;
 
   if (hadj)
     g_return_if_fail (BTK_IS_ADJUSTMENT (hadj));
@@ -2600,7 +2600,7 @@ btk_icon_view_real_select_cursor_item (BtkIconView *icon_view)
     btk_icon_view_select_item (icon_view, icon_view->priv->cursor_item);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_real_activate_cursor_item (BtkIconView *icon_view)
 {
   BtkTreePath *path;
@@ -2690,22 +2690,22 @@ btk_icon_view_adjustment_changed (BtkAdjustment *adjustment,
 static GList *
 btk_icon_view_layout_single_row (BtkIconView *icon_view, 
 				 GList       *first_item, 
-				 gint         item_width,
-				 gint         row,
-				 gint        *y, 
-				 gint        *maximum_width)
+				 bint         item_width,
+				 bint         row,
+				 bint        *y, 
+				 bint        *maximum_width)
 {
-  gint focus_width;
-  gint x, current_width;
+  bint focus_width;
+  bint x, current_width;
   GList *items, *last_item;
-  gint col;
-  gint colspan;
-  gint *max_height;
-  gint i;
-  gboolean rtl;
+  bint col;
+  bint colspan;
+  bint *max_height;
+  bint i;
+  bboolean rtl;
 
   rtl = btk_widget_get_direction (BTK_WIDGET (icon_view)) == BTK_TEXT_DIR_RTL;
-  max_height = g_new0 (gint, icon_view->priv->n_cells);
+  max_height = g_new0 (bint, icon_view->priv->n_cells);
 
   x = 0;
   col = 0;
@@ -2785,12 +2785,12 @@ btk_icon_view_layout_single_row (BtkIconView *icon_view,
 
 static void
 btk_icon_view_set_adjustment_upper (BtkAdjustment *adj,
-				    gdouble        upper)
+				    bdouble        upper)
 {
   if (upper != adj->upper)
     {
-      gdouble min = MAX (0.0, upper - adj->page_size);
-      gboolean value_changed = FALSE;
+      bdouble min = MAX (0.0, upper - adj->page_size);
+      bboolean value_changed = FALSE;
       
       adj->upper = upper;
 
@@ -2810,11 +2810,11 @@ btk_icon_view_set_adjustment_upper (BtkAdjustment *adj,
 static void
 btk_icon_view_layout (BtkIconView *icon_view)
 {
-  gint y = 0, maximum_width = 0;
+  bint y = 0, maximum_width = 0;
   GList *icons;
   BtkWidget *widget;
-  gint row;
-  gint item_width;
+  bint row;
+  bint item_width;
 
   if (icon_view->priv->layout_idle_id != 0)
     {
@@ -2944,12 +2944,12 @@ adjust_wrap_width (BtkIconView     *icon_view,
 {
   BtkIconViewCellInfo *text_info;
   BtkIconViewCellInfo *pixbuf_info;
-  gint pixbuf_width, wrap_width;
+  bint pixbuf_width, wrap_width;
       
   if (icon_view->priv->text_cell != -1 &&
       icon_view->priv->pixbuf_cell != -1)
     {
-      gint item_width;
+      bint item_width;
 
       text_info = g_list_nth_data (icon_view->priv->cell_list,
 				   icon_view->priv->text_cell);
@@ -2988,7 +2988,7 @@ static void
 btk_icon_view_calculate_item_size (BtkIconView     *icon_view,
 				   BtkIconViewItem *item)
 {
-  gint spacing;
+  bint spacing;
   GList *l;
 
   if (item->width != -1 && item->height != -1) 
@@ -3000,8 +3000,8 @@ btk_icon_view_calculate_item_size (BtkIconView     *icon_view,
       g_free (item->after);
       g_free (item->box);
       
-      item->before = g_new0 (gint, icon_view->priv->n_cells);
-      item->after = g_new0 (gint, icon_view->priv->n_cells);
+      item->before = g_new0 (bint, icon_view->priv->n_cells);
+      item->after = g_new0 (bint, icon_view->priv->n_cells);
       item->box = g_new0 (BdkRectangle, icon_view->priv->n_cells);
 
       item->n_cells = icon_view->priv->n_cells;
@@ -3045,13 +3045,13 @@ btk_icon_view_calculate_item_size (BtkIconView     *icon_view,
 static void
 btk_icon_view_calculate_item_size2 (BtkIconView     *icon_view,
 				    BtkIconViewItem *item,
-				    gint            *max_height)
+				    bint            *max_height)
 {
   BdkRectangle cell_area;
-  gint spacing;
+  bint spacing;
   GList *l;
-  gint i, k;
-  gboolean rtl;
+  bint i, k;
+  bboolean rtl;
 
   rtl = btk_widget_get_direction (BTK_WIDGET (icon_view)) == BTK_TEXT_DIR_RTL;
 
@@ -3158,15 +3158,15 @@ btk_icon_view_paint_item (BtkIconView     *icon_view,
 			  BtkIconViewItem *item,
 			  BdkRectangle    *area,
 			  BdkDrawable     *drawable,
-			  gint             x,
-			  gint             y,
-			  gboolean         draw_focus)
+			  bint             x,
+			  bint             y,
+			  bboolean         draw_focus)
 {
-  gint focus_width;
-  gint padding;
+  bint focus_width;
+  bint padding;
   BdkRectangle cell_area, box;
   GList *l;
-  gint i;
+  bint i;
   BtkStateType state;
   BtkCellRendererState flags;
       
@@ -3311,7 +3311,7 @@ btk_icon_view_paint_rubberband (BtkIconView     *icon_view,
   BdkRectangle rect;
   BdkRectangle rubber_rect;
   BdkColor *fill_color_bdk;
-  guchar fill_color_alpha;
+  buchar fill_color_alpha;
 
   rubber_rect.x = MIN (icon_view->priv->rubberband_x1, icon_view->priv->rubberband_x2);
   rubber_rect.y = MIN (icon_view->priv->rubberband_y1, icon_view->priv->rubberband_y2);
@@ -3359,7 +3359,7 @@ btk_icon_view_queue_draw_path (BtkIconView *icon_view,
 			       BtkTreePath *path)
 {
   GList *l;
-  gint index;
+  bint index;
 
   index = btk_tree_path_get_indices (path)[0];
 
@@ -3379,7 +3379,7 @@ static void
 btk_icon_view_queue_draw_item (BtkIconView     *icon_view,
 			       BtkIconViewItem *item)
 {
-  gint focus_width;
+  bint focus_width;
   BdkRectangle rect;
 
   btk_widget_style_get (BTK_WIDGET (icon_view),
@@ -3395,8 +3395,8 @@ btk_icon_view_queue_draw_item (BtkIconView     *icon_view,
     bdk_window_invalidate_rect (icon_view->priv->bin_window, &rect, TRUE);
 }
 
-static gboolean
-layout_callback (gpointer user_data)
+static bboolean
+layout_callback (bpointer user_data)
 {
   BtkIconView *icon_view;
 
@@ -3421,7 +3421,7 @@ btk_icon_view_queue_layout (BtkIconView *icon_view)
 static void
 btk_icon_view_set_cursor_item (BtkIconView     *icon_view,
 			       BtkIconViewItem *item,
-			       gint             cursor_cell)
+			       bint             cursor_cell)
 {
   BatkObject *obj;
   BatkObject *item_obj;
@@ -3488,9 +3488,9 @@ btk_icon_view_item_free (BtkIconViewItem *item)
 
 static BtkIconViewItem *
 btk_icon_view_get_item_at_coords (BtkIconView          *icon_view,
-				  gint                  x,
-				  gint                  y,
-				  gboolean              only_in_cell,
+				  bint                  x,
+				  bint                  y,
+				  bboolean              only_in_cell,
 				  BtkIconViewCellInfo **cell_at_pos)
 {
   GList *items, *l;
@@ -3612,10 +3612,10 @@ static void
 btk_icon_view_row_changed (BtkTreeModel *model,
 			   BtkTreePath  *path,
 			   BtkTreeIter  *iter,
-			   gpointer      data)
+			   bpointer      data)
 {
   BtkIconViewItem *item;
-  gint index;
+  bint index;
   BtkIconView *icon_view;
 
   icon_view = BTK_ICON_VIEW (data);
@@ -3635,11 +3635,11 @@ static void
 btk_icon_view_row_inserted (BtkTreeModel *model,
 			    BtkTreePath  *path,
 			    BtkTreeIter  *iter,
-			    gpointer      data)
+			    bpointer      data)
 {
-  gint index;
+  bint index;
   BtkIconViewItem *item;
-  gboolean iters_persist;
+  bboolean iters_persist;
   BtkIconView *icon_view;
   GList *list;
   
@@ -3679,13 +3679,13 @@ btk_icon_view_row_inserted (BtkTreeModel *model,
 static void
 btk_icon_view_row_deleted (BtkTreeModel *model,
 			   BtkTreePath  *path,
-			   gpointer      data)
+			   bpointer      data)
 {
-  gint index;
+  bint index;
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   GList *list, *next;
-  gboolean emit = FALSE;
+  bboolean emit = FALSE;
   
   icon_view = BTK_ICON_VIEW (data);
 
@@ -3728,15 +3728,15 @@ static void
 btk_icon_view_rows_reordered (BtkTreeModel *model,
 			      BtkTreePath  *parent,
 			      BtkTreeIter  *iter,
-			      gint         *new_order,
-			      gpointer      data)
+			      bint         *new_order,
+			      bpointer      data)
 {
   int i;
   int length;
   BtkIconView *icon_view;
   GList *items = NULL, *list;
   BtkIconViewItem **item_array;
-  gint *order;
+  bint *order;
   
   icon_view = BTK_ICON_VIEW (data);
 
@@ -3744,7 +3744,7 @@ btk_icon_view_rows_reordered (BtkTreeModel *model,
 
   length = btk_tree_model_iter_n_children (model, NULL);
 
-  order = g_new (gint, length);
+  order = g_new (bint, length);
   for (i = 0; i < length; i++)
     order [new_order[i]] = i;
 
@@ -3773,7 +3773,7 @@ btk_icon_view_build_items (BtkIconView *icon_view)
 {
   BtkTreeIter iter;
   int i;
-  gboolean iters_persist;
+  bboolean iters_persist;
   GList *items = NULL;
 
   iters_persist = btk_tree_model_get_flags (icon_view->priv->model) & BTK_TREE_MODEL_ITERS_PERSIST;
@@ -3804,40 +3804,40 @@ btk_icon_view_build_items (BtkIconView *icon_view)
 
 static void
 btk_icon_view_add_move_binding (BtkBindingSet  *binding_set,
-				guint           keyval,
-				guint           modmask,
+				buint           keyval,
+				buint           modmask,
 				BtkMovementStep step,
-				gint            count)
+				bint            count)
 {
   
   btk_binding_entry_add_signal (binding_set, keyval, modmask,
                                 I_("move-cursor"), 2,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count);
 
   btk_binding_entry_add_signal (binding_set, keyval, BDK_SHIFT_MASK,
                                 "move-cursor", 2,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count);
 
   if ((modmask & BDK_CONTROL_MASK) == BDK_CONTROL_MASK)
    return;
 
   btk_binding_entry_add_signal (binding_set, keyval, BDK_CONTROL_MASK | BDK_SHIFT_MASK,
                                 "move-cursor", 2,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count);
 
   btk_binding_entry_add_signal (binding_set, keyval, BDK_CONTROL_MASK,
                                 "move-cursor", 2,
-                                G_TYPE_ENUM, step,
-                                G_TYPE_INT, count);
+                                B_TYPE_ENUM, step,
+                                B_TYPE_INT, count);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_real_move_cursor (BtkIconView     *icon_view,
 				BtkMovementStep  step,
-				gint             count)
+				bint             count)
 {
   BdkModifierType state;
 
@@ -3893,10 +3893,10 @@ btk_icon_view_real_move_cursor (BtkIconView     *icon_view,
 static BtkIconViewItem *
 find_item (BtkIconView     *icon_view,
 	   BtkIconViewItem *current,
-	   gint             row_ofs,
-	   gint             col_ofs)
+	   bint             row_ofs,
+	   bint             col_ofs)
 {
-  gint row, col;
+  bint row, col;
   GList *items;
   BtkIconViewItem *item;
 
@@ -3915,18 +3915,18 @@ find_item (BtkIconView     *icon_view,
   return NULL;
 }
 
-static gint
+static bint
 find_cell (BtkIconView     *icon_view,
 	   BtkIconViewItem *item,
-	   gint             cell,
+	   bint             cell,
 	   BtkOrientation   orientation,
-	   gint             step,
-	   gint            *count)
+	   bint             step,
+	   bint            *count)
 {
-  gint n_focusable;
-  gint *focusable;
-  gint current;
-  gint i, k;
+  bint n_focusable;
+  bint *focusable;
+  bint current;
+  bint i, k;
   GList *l;
 
   if (icon_view->priv->item_orientation != orientation)
@@ -3934,7 +3934,7 @@ find_cell (BtkIconView     *icon_view,
 
   btk_icon_view_set_cell_data (icon_view, item);
 
-  focusable = g_new0 (gint, icon_view->priv->n_cells);
+  focusable = g_new0 (bint, icon_view->priv->n_cells);
   n_focusable = 0;
 
   current = 0;
@@ -3996,10 +3996,10 @@ find_cell (BtkIconView     *icon_view,
 static BtkIconViewItem *
 find_item_page_up_down (BtkIconView     *icon_view,
 			BtkIconViewItem *current,
-			gint             count)
+			bint             count)
 {
   GList *item, *next;
-  gint y, col;
+  bint y, col;
   
   col = current->col;
   y = current->y + count * icon_view->priv->vadjustment->page_size;
@@ -4042,15 +4042,15 @@ find_item_page_up_down (BtkIconView     *icon_view,
   return NULL;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_select_all_between (BtkIconView     *icon_view,
 				  BtkIconViewItem *anchor,
 				  BtkIconViewItem *cursor)
 {
   GList *items;
   BtkIconViewItem *item;
-  gint row1, row2, col1, col2;
-  gboolean dirty = FALSE;
+  bint row1, row2, col1, col2;
+  bboolean dirty = FALSE;
   
   if (anchor->row < cursor->row)
     {
@@ -4096,12 +4096,12 @@ btk_icon_view_select_all_between (BtkIconView     *icon_view,
 
 static void 
 btk_icon_view_move_cursor_up_down (BtkIconView *icon_view,
-				   gint         count)
+				   bint         count)
 {
   BtkIconViewItem *item;
-  gint cell;
-  gboolean dirty = FALSE;
-  gint step;
+  bint cell;
+  bboolean dirty = FALSE;
+  bint step;
   BtkDirectionType direction;
   
   if (!btk_widget_has_focus (BTK_WIDGET (icon_view)))
@@ -4179,10 +4179,10 @@ btk_icon_view_move_cursor_up_down (BtkIconView *icon_view,
 
 static void 
 btk_icon_view_move_cursor_page_up_down (BtkIconView *icon_view,
-					gint         count)
+					bint         count)
 {
   BtkIconViewItem *item;
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   
   if (!btk_widget_has_focus (BTK_WIDGET (icon_view)))
     return;
@@ -4234,12 +4234,12 @@ btk_icon_view_move_cursor_page_up_down (BtkIconView *icon_view,
 
 static void 
 btk_icon_view_move_cursor_left_right (BtkIconView *icon_view,
-				      gint         count)
+				      bint         count)
 {
   BtkIconViewItem *item;
-  gint cell = -1;
-  gboolean dirty = FALSE;
-  gint step;
+  bint cell = -1;
+  bboolean dirty = FALSE;
+  bint step;
   BtkDirectionType direction;
 
   if (!btk_widget_has_focus (BTK_WIDGET (icon_view)))
@@ -4316,11 +4316,11 @@ btk_icon_view_move_cursor_left_right (BtkIconView *icon_view,
 
 static void 
 btk_icon_view_move_cursor_start_end (BtkIconView *icon_view,
-				     gint         count)
+				     bint         count)
 {
   BtkIconViewItem *item;
   GList *list;
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   
   if (!btk_widget_has_focus (BTK_WIDGET (icon_view)))
     return;
@@ -4389,9 +4389,9 @@ btk_icon_view_move_cursor_start_end (BtkIconView *icon_view,
 void
 btk_icon_view_scroll_to_path (BtkIconView *icon_view,
 			      BtkTreePath *path,
-			      gboolean     use_align,
-			      gfloat       row_align,
-			      gfloat       col_align)
+			      bboolean     use_align,
+			      bfloat       row_align,
+			      bfloat       col_align)
 {
   BtkIconViewItem *item = NULL;
 
@@ -4413,7 +4413,7 @@ btk_icon_view_scroll_to_path (BtkIconView *icon_view,
       icon_view->priv->scroll_to_path = NULL;
 
       if (path)
-	icon_view->priv->scroll_to_path = btk_tree_row_reference_new_proxy (G_OBJECT (icon_view), icon_view->priv->model, path);
+	icon_view->priv->scroll_to_path = btk_tree_row_reference_new_proxy (B_OBJECT (icon_view), icon_view->priv->model, path);
 
       icon_view->priv->scroll_to_use_align = use_align;
       icon_view->priv->scroll_to_row_align = row_align;
@@ -4424,9 +4424,9 @@ btk_icon_view_scroll_to_path (BtkIconView *icon_view,
 
   if (use_align)
     {
-      gint x, y;
-      gint focus_width;
-      gfloat offset, value;
+      bint x, y;
+      bint focus_width;
+      bfloat offset, value;
 
       btk_widget_style_get (BTK_WIDGET (icon_view),
 			    "focus-line-width", &focus_width,
@@ -4460,8 +4460,8 @@ static void
 btk_icon_view_scroll_to_item (BtkIconView     *icon_view, 
 			      BtkIconViewItem *item)
 {
-  gint x, y, width, height;
-  gint focus_width;
+  bint x, y, width, height;
+  bint focus_width;
 
   btk_widget_style_get (BTK_WIDGET (icon_view),
 			"focus-line-width", &focus_width,
@@ -4514,7 +4514,7 @@ btk_icon_view_set_cell_data (BtkIconView     *icon_view,
 			     BtkIconViewItem *item)
 {
   GList *i;
-  gboolean iters_persist;
+  bboolean iters_persist;
   BtkTreeIter iter;
   
   iters_persist = btk_tree_model_get_flags (icon_view->priv->model) & BTK_TREE_MODEL_ITERS_PERSIST;
@@ -4536,19 +4536,19 @@ btk_icon_view_set_cell_data (BtkIconView     *icon_view,
       GSList *j;
       BtkIconViewCellInfo *info = i->data;
 
-      g_object_freeze_notify (G_OBJECT (info->cell));
+      g_object_freeze_notify (B_OBJECT (info->cell));
 
       for (j = info->attributes; j && j->next; j = j->next->next)
         {
-          gchar *property = j->data;
-          gint column = GPOINTER_TO_INT (j->next->data);
-          GValue value = {0, };
+          bchar *property = j->data;
+          bint column = BPOINTER_TO_INT (j->next->data);
+          BValue value = {0, };
 
           btk_tree_model_get_value (icon_view->priv->model, &iter,
                                     column, &value);
-          g_object_set_property (G_OBJECT (info->cell),
+          g_object_set_property (B_OBJECT (info->cell),
                                  property, &value);
-          g_value_unset (&value);
+          b_value_unset (&value);
         }
 
       if (info->func)
@@ -4558,7 +4558,7 @@ btk_icon_view_set_cell_data (BtkIconView     *icon_view,
 			&iter,
 			info->func_data);
       
-      g_object_thaw_notify (G_OBJECT (info->cell));
+      g_object_thaw_notify (B_OBJECT (info->cell));
     }  
 }
 
@@ -4574,7 +4574,7 @@ free_cell_attributes (BtkIconViewCellInfo *info)
       list = list->next->next;
     }
   
-  g_slist_free (info->attributes);
+  b_slist_free (info->attributes);
   info->attributes = NULL;
 }
 
@@ -4594,7 +4594,7 @@ free_cell_info (BtkIconViewCellInfo *info)
 static void
 btk_icon_view_cell_layout_pack_start (BtkCellLayout   *layout,
                                       BtkCellRenderer *renderer,
-                                      gboolean         expand)
+                                      bboolean         expand)
 {
   BtkIconViewCellInfo *info;
   BtkIconView *icon_view = BTK_ICON_VIEW (layout);
@@ -4617,7 +4617,7 @@ btk_icon_view_cell_layout_pack_start (BtkCellLayout   *layout,
 static void
 btk_icon_view_cell_layout_pack_end (BtkCellLayout   *layout,
                                     BtkCellRenderer *renderer,
-                                    gboolean         expand)
+                                    bboolean         expand)
 {
   BtkIconViewCellInfo *info;
   BtkIconView *icon_view = BTK_ICON_VIEW (layout);
@@ -4640,8 +4640,8 @@ btk_icon_view_cell_layout_pack_end (BtkCellLayout   *layout,
 static void
 btk_icon_view_cell_layout_add_attribute (BtkCellLayout   *layout,
                                          BtkCellRenderer *renderer,
-                                         const gchar     *attribute,
-                                         gint             column)
+                                         const bchar     *attribute,
+                                         bint             column)
 {
   BtkIconViewCellInfo *info;
   BtkIconView *icon_view = BTK_ICON_VIEW (layout);
@@ -4649,9 +4649,9 @@ btk_icon_view_cell_layout_add_attribute (BtkCellLayout   *layout,
   info = btk_icon_view_get_cell_info (icon_view, renderer);
   g_return_if_fail (info != NULL);
 
-  info->attributes = g_slist_prepend (info->attributes,
-                                      GINT_TO_POINTER (column));
-  info->attributes = g_slist_prepend (info->attributes,
+  info->attributes = b_slist_prepend (info->attributes,
+                                      BINT_TO_POINTER (column));
+  info->attributes = b_slist_prepend (info->attributes,
                                       g_strdup (attribute));
 }
 
@@ -4675,7 +4675,7 @@ static void
 btk_icon_view_cell_layout_set_cell_data_func (BtkCellLayout         *layout,
                                               BtkCellRenderer       *cell,
                                               BtkCellLayoutDataFunc  func,
-                                              gpointer               func_data,
+                                              bpointer               func_data,
                                               GDestroyNotify         destroy)
 {
   BtkIconViewCellInfo *info;
@@ -4711,12 +4711,12 @@ btk_icon_view_cell_layout_clear_attributes (BtkCellLayout   *layout,
 static void
 btk_icon_view_cell_layout_reorder (BtkCellLayout   *layout,
                                    BtkCellRenderer *cell,
-                                   gint             position)
+                                   bint             position)
 {
   BtkIconView *icon_view;
   GList *link, *l;
   BtkIconViewCellInfo *info;
-  gint i;
+  bint i;
 
   icon_view = BTK_ICON_VIEW (layout);
 
@@ -4811,12 +4811,12 @@ btk_icon_view_new_with_model (BtkTreeModel *model)
  */
 void
 btk_icon_view_convert_widget_to_bin_window_coords (BtkIconView *icon_view,
-                                                   gint         wx,
-                                                   gint         wy, 
-                                                   gint        *bx,
-                                                   gint        *by)
+                                                   bint         wx,
+                                                   bint         wy, 
+                                                   bint        *bx,
+                                                   bint        *by)
 {
-  gint x, y;
+  bint x, y;
 
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
 
@@ -4850,8 +4850,8 @@ btk_icon_view_convert_widget_to_bin_window_coords (BtkIconView *icon_view,
  **/
 BtkTreePath *
 btk_icon_view_get_path_at_pos (BtkIconView *icon_view,
-			       gint         x,
-			       gint         y)
+			       bint         x,
+			       bint         y)
 {
   BtkIconViewItem *item;
   BtkTreePath *path;
@@ -4888,10 +4888,10 @@ btk_icon_view_get_path_at_pos (BtkIconView *icon_view,
  *
  * Since: 2.8
  **/
-gboolean 
+bboolean 
 btk_icon_view_get_item_at_pos (BtkIconView      *icon_view,
-			       gint              x,
-			       gint              y,
+			       bint              x,
+			       bint              y,
 			       BtkTreePath     **path,
 			       BtkCellRenderer **cell)
 {
@@ -4967,7 +4967,7 @@ btk_icon_view_set_tooltip_cell (BtkIconView     *icon_view,
   BdkRectangle rect;
   BtkIconViewItem *item = NULL;
   BtkIconViewCellInfo *info = NULL;
-  gint x, y;
+  bint x, y;
  
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   g_return_if_fail (BTK_IS_TOOLTIP (tooltip));
@@ -5030,11 +5030,11 @@ btk_icon_view_set_tooltip_cell (BtkIconView     *icon_view,
  *
  * Since: 2.12
  */
-gboolean
+bboolean
 btk_icon_view_get_tooltip_context (BtkIconView   *icon_view,
-                                   gint          *x,
-                                   gint          *y,
-                                   gboolean       keyboard_tip,
+                                   bint          *x,
+                                   bint          *y,
+                                   bboolean       keyboard_tip,
                                    BtkTreeModel **model,
                                    BtkTreePath  **path,
                                    BtkTreeIter   *iter)
@@ -5076,15 +5076,15 @@ btk_icon_view_get_tooltip_context (BtkIconView   *icon_view,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_set_tooltip_query_cb (BtkWidget  *widget,
-                                    gint        x,
-                                    gint        y,
-                                    gboolean    keyboard_tip,
+                                    bint        x,
+                                    bint        y,
+                                    bboolean    keyboard_tip,
                                     BtkTooltip *tooltip,
-                                    gpointer    data)
+                                    bpointer    data)
 {
-  gchar *str;
+  bchar *str;
   BtkTreeIter iter;
   BtkTreePath *path;
   BtkTreeModel *model;
@@ -5131,7 +5131,7 @@ btk_icon_view_set_tooltip_query_cb (BtkWidget  *widget,
  */
 void
 btk_icon_view_set_tooltip_column (BtkIconView *icon_view,
-                                  gint         column)
+                                  bint         column)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
 
@@ -5156,7 +5156,7 @@ btk_icon_view_set_tooltip_column (BtkIconView *icon_view,
     }
 
   icon_view->priv->tooltip_column = column;
-  g_object_notify (G_OBJECT (icon_view), "tooltip-column");
+  g_object_notify (B_OBJECT (icon_view), "tooltip-column");
 }
 
 /** 
@@ -5171,7 +5171,7 @@ btk_icon_view_set_tooltip_column (BtkIconView *icon_view,
  *
  * Since: 2.12
  */
-gint
+bint
 btk_icon_view_get_tooltip_column (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), 0);
@@ -5194,13 +5194,13 @@ btk_icon_view_get_tooltip_column (BtkIconView *icon_view)
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_icon_view_get_visible_range (BtkIconView  *icon_view,
 				 BtkTreePath **start_path,
 				 BtkTreePath **end_path)
 {
-  gint start_index = -1;
-  gint end_index = -1;
+  bint start_index = -1;
+  bint end_index = -1;
   GList *icons;
 
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), FALSE);
@@ -5249,7 +5249,7 @@ btk_icon_view_get_visible_range (BtkIconView  *icon_view,
 void
 btk_icon_view_selected_foreach (BtkIconView           *icon_view,
 				BtkIconViewForeachFunc func,
-				gpointer               data)
+				bpointer               data)
 {
   GList *list;
   
@@ -5289,7 +5289,7 @@ btk_icon_view_set_selection_mode (BtkIconView      *icon_view,
   
   icon_view->priv->selection_mode = mode;
 
-  g_object_notify (G_OBJECT (icon_view), "selection-mode");
+  g_object_notify (B_OBJECT (icon_view), "selection-mode");
 }
 
 /**
@@ -5359,7 +5359,7 @@ btk_icon_view_set_model (BtkIconView *icon_view,
 	  column_type = btk_tree_model_get_column_type (model,
 							icon_view->priv->text_column);	  
 
-	  g_return_if_fail (column_type == G_TYPE_STRING);
+	  g_return_if_fail (column_type == B_TYPE_STRING);
 	}
 
       if (icon_view->priv->markup_column != -1)
@@ -5367,7 +5367,7 @@ btk_icon_view_set_model (BtkIconView *icon_view,
 	  column_type = btk_tree_model_get_column_type (model,
 							icon_view->priv->markup_column);	  
 
-	  g_return_if_fail (column_type == G_TYPE_STRING);
+	  g_return_if_fail (column_type == B_TYPE_STRING);
 	}
       
     }
@@ -5426,7 +5426,7 @@ btk_icon_view_set_model (BtkIconView *icon_view,
       btk_icon_view_queue_layout (icon_view);
     }
 
-  g_object_notify (G_OBJECT (icon_view), "model");  
+  g_object_notify (B_OBJECT (icon_view), "model");  
 
   if (btk_widget_get_realized (BTK_WIDGET (icon_view)))
     btk_widget_queue_resize (BTK_WIDGET (icon_view));
@@ -5457,7 +5457,7 @@ update_text_cell (BtkIconView *icon_view)
 {
   BtkIconViewCellInfo *info;
   GList *l;
-  gint i;
+  bint i;
 	  
   if (icon_view->priv->text_column == -1 &&
       icon_view->priv->markup_column == -1)
@@ -5531,7 +5531,7 @@ update_pixbuf_cell (BtkIconView *icon_view)
 {
   BtkIconViewCellInfo *info;
   GList *l;
-  gint i;
+  bint i;
 
   if (icon_view->priv->pixbuf_column == -1)
     {
@@ -5596,13 +5596,13 @@ update_pixbuf_cell (BtkIconView *icon_view)
  * @column: A column in the currently used model, or -1 to display no text
  * 
  * Sets the column with text for @icon_view to be @column. The text
- * column must be of type #G_TYPE_STRING.
+ * column must be of type #B_TYPE_STRING.
  *
  * Since: 2.6 
  **/
 void
 btk_icon_view_set_text_column (BtkIconView *icon_view,
-			       gint          column)
+			       bint          column)
 {
   if (column == icon_view->priv->text_column)
     return;
@@ -5617,7 +5617,7 @@ btk_icon_view_set_text_column (BtkIconView *icon_view,
 	  
 	  column_type = btk_tree_model_get_column_type (icon_view->priv->model, column);
 
-	  g_return_if_fail (column_type == G_TYPE_STRING);
+	  g_return_if_fail (column_type == B_TYPE_STRING);
 	}
       
       icon_view->priv->text_column = column;
@@ -5630,7 +5630,7 @@ btk_icon_view_set_text_column (BtkIconView *icon_view,
   btk_icon_view_invalidate_sizes (icon_view);
   btk_icon_view_queue_layout (icon_view);
   
-  g_object_notify (G_OBJECT (icon_view), "text-column");
+  g_object_notify (B_OBJECT (icon_view), "text-column");
 }
 
 /**
@@ -5643,7 +5643,7 @@ btk_icon_view_set_text_column (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_text_column (BtkIconView  *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -5657,7 +5657,7 @@ btk_icon_view_get_text_column (BtkIconView  *icon_view)
  * @column: A column in the currently used model, or -1 to display no text
  * 
  * Sets the column with markup information for @icon_view to be
- * @column. The markup column must be of type #G_TYPE_STRING.
+ * @column. The markup column must be of type #B_TYPE_STRING.
  * If the markup column is set to something, it overrides
  * the text column set by btk_icon_view_set_text_column().
  *
@@ -5665,7 +5665,7 @@ btk_icon_view_get_text_column (BtkIconView  *icon_view)
  **/
 void
 btk_icon_view_set_markup_column (BtkIconView *icon_view,
-				 gint         column)
+				 bint         column)
 {
   if (column == icon_view->priv->markup_column)
     return;
@@ -5680,7 +5680,7 @@ btk_icon_view_set_markup_column (BtkIconView *icon_view,
 	  
 	  column_type = btk_tree_model_get_column_type (icon_view->priv->model, column);
 
-	  g_return_if_fail (column_type == G_TYPE_STRING);
+	  g_return_if_fail (column_type == B_TYPE_STRING);
 	}
       
       icon_view->priv->markup_column = column;
@@ -5693,7 +5693,7 @@ btk_icon_view_set_markup_column (BtkIconView *icon_view,
   btk_icon_view_invalidate_sizes (icon_view);
   btk_icon_view_queue_layout (icon_view);
   
-  g_object_notify (G_OBJECT (icon_view), "markup-column");
+  g_object_notify (B_OBJECT (icon_view), "markup-column");
 }
 
 /**
@@ -5706,7 +5706,7 @@ btk_icon_view_set_markup_column (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_markup_column (BtkIconView  *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -5726,7 +5726,7 @@ btk_icon_view_get_markup_column (BtkIconView  *icon_view)
  **/
 void
 btk_icon_view_set_pixbuf_column (BtkIconView *icon_view,
-				 gint         column)
+				 bint         column)
 {
   if (column == icon_view->priv->pixbuf_column)
     return;
@@ -5754,7 +5754,7 @@ btk_icon_view_set_pixbuf_column (BtkIconView *icon_view,
   btk_icon_view_invalidate_sizes (icon_view);
   btk_icon_view_queue_layout (icon_view);
   
-  g_object_notify (G_OBJECT (icon_view), "pixbuf-column");
+  g_object_notify (B_OBJECT (icon_view), "pixbuf-column");
   
 }
 
@@ -5768,7 +5768,7 @@ btk_icon_view_set_pixbuf_column (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_pixbuf_column (BtkIconView  *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -5886,7 +5886,7 @@ void
 btk_icon_view_select_all (BtkIconView *icon_view)
 {
   GList *items;
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
 
@@ -5920,7 +5920,7 @@ btk_icon_view_select_all (BtkIconView *icon_view)
 void
 btk_icon_view_unselect_all (BtkIconView *icon_view)
 {
-  gboolean dirty = FALSE;
+  bboolean dirty = FALSE;
   
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
 
@@ -5945,7 +5945,7 @@ btk_icon_view_unselect_all (BtkIconView *icon_view)
  *
  * Since: 2.6
  **/
-gboolean
+bboolean
 btk_icon_view_path_is_selected (BtkIconView *icon_view,
 				BtkTreePath *path)
 {
@@ -5976,7 +5976,7 @@ btk_icon_view_path_is_selected (BtkIconView *icon_view,
  *
  * Since: 2.22
  */
-gint
+bint
 btk_icon_view_get_item_row (BtkIconView *icon_view,
                             BtkTreePath *path)
 {
@@ -6007,7 +6007,7 @@ btk_icon_view_get_item_row (BtkIconView *icon_view,
  *
  * Since: 2.22
  */
-gint
+bint
 btk_icon_view_get_item_column (BtkIconView *icon_view,
                                BtkTreePath *path)
 {
@@ -6072,8 +6072,8 @@ btk_icon_view_set_item_orientation (BtkIconView    *icon_view,
       update_text_cell (icon_view);
       update_pixbuf_cell (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "item-orientation");
-      g_object_notify (G_OBJECT (icon_view), "orientation");
+      g_object_notify (B_OBJECT (icon_view), "item-orientation");
+      g_object_notify (B_OBJECT (icon_view), "orientation");
     }
 }
 
@@ -6149,7 +6149,7 @@ btk_icon_view_get_orientation (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_columns (BtkIconView *icon_view,
-			   gint         columns)
+			   bint         columns)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6160,7 +6160,7 @@ btk_icon_view_set_columns (BtkIconView *icon_view,
       btk_icon_view_stop_editing (icon_view, TRUE);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "columns");
+      g_object_notify (B_OBJECT (icon_view), "columns");
     }  
 }
 
@@ -6174,7 +6174,7 @@ btk_icon_view_set_columns (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_columns (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6195,7 +6195,7 @@ btk_icon_view_get_columns (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_item_width (BtkIconView *icon_view,
-			      gint         item_width)
+			      bint         item_width)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6209,7 +6209,7 @@ btk_icon_view_set_item_width (BtkIconView *icon_view,
       
       update_text_cell (icon_view);
 
-      g_object_notify (G_OBJECT (icon_view), "item-width");
+      g_object_notify (B_OBJECT (icon_view), "item-width");
     }  
 }
 
@@ -6223,7 +6223,7 @@ btk_icon_view_set_item_width (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_item_width (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6245,7 +6245,7 @@ btk_icon_view_get_item_width (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_spacing (BtkIconView *icon_view,
-			   gint         spacing)
+			   bint         spacing)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6257,7 +6257,7 @@ btk_icon_view_set_spacing (BtkIconView *icon_view,
       btk_icon_view_invalidate_sizes (icon_view);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "spacing");
+      g_object_notify (B_OBJECT (icon_view), "spacing");
     }  
 }
 
@@ -6271,7 +6271,7 @@ btk_icon_view_set_spacing (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_spacing (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6291,7 +6291,7 @@ btk_icon_view_get_spacing (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_row_spacing (BtkIconView *icon_view,
-			       gint         row_spacing)
+			       bint         row_spacing)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6303,7 +6303,7 @@ btk_icon_view_set_row_spacing (BtkIconView *icon_view,
       btk_icon_view_invalidate_sizes (icon_view);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "row-spacing");
+      g_object_notify (B_OBJECT (icon_view), "row-spacing");
     }  
 }
 
@@ -6317,7 +6317,7 @@ btk_icon_view_set_row_spacing (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_row_spacing (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6337,7 +6337,7 @@ btk_icon_view_get_row_spacing (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_column_spacing (BtkIconView *icon_view,
-				  gint         column_spacing)
+				  bint         column_spacing)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6349,7 +6349,7 @@ btk_icon_view_set_column_spacing (BtkIconView *icon_view,
       btk_icon_view_invalidate_sizes (icon_view);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "column-spacing");
+      g_object_notify (B_OBJECT (icon_view), "column-spacing");
     }  
 }
 
@@ -6363,7 +6363,7 @@ btk_icon_view_set_column_spacing (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_column_spacing (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6384,7 +6384,7 @@ btk_icon_view_get_column_spacing (BtkIconView *icon_view)
  */
 void 
 btk_icon_view_set_margin (BtkIconView *icon_view,
-			  gint         margin)
+			  bint         margin)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6396,7 +6396,7 @@ btk_icon_view_set_margin (BtkIconView *icon_view,
       btk_icon_view_invalidate_sizes (icon_view);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "margin");
+      g_object_notify (B_OBJECT (icon_view), "margin");
     }  
 }
 
@@ -6410,7 +6410,7 @@ btk_icon_view_set_margin (BtkIconView *icon_view,
  *
  * Since: 2.6
  */
-gint
+bint
 btk_icon_view_get_margin (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6430,7 +6430,7 @@ btk_icon_view_get_margin (BtkIconView *icon_view)
  */
 void
 btk_icon_view_set_item_padding (BtkIconView *icon_view,
-				gint         item_padding)
+				bint         item_padding)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
   
@@ -6442,7 +6442,7 @@ btk_icon_view_set_item_padding (BtkIconView *icon_view,
       btk_icon_view_invalidate_sizes (icon_view);
       btk_icon_view_queue_layout (icon_view);
       
-      g_object_notify (G_OBJECT (icon_view), "item-padding");
+      g_object_notify (B_OBJECT (icon_view), "item-padding");
     }  
 }
 
@@ -6456,7 +6456,7 @@ btk_icon_view_set_item_padding (BtkIconView *icon_view,
  *
  * Since: 2.18
  */
-gint
+bint
 btk_icon_view_get_item_padding (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), -1);
@@ -6472,15 +6472,15 @@ static void
 set_status_pending (BdkDragContext *context,
                     BdkDragAction   suggested_action)
 {
-  g_object_set_data (G_OBJECT (context),
+  g_object_set_data (B_OBJECT (context),
                      I_("btk-icon-view-status-pending"),
-                     GINT_TO_POINTER (suggested_action));
+                     BINT_TO_POINTER (suggested_action));
 }
 
 static BdkDragAction
 get_status_pending (BdkDragContext *context)
 {
-  return GPOINTER_TO_INT (g_object_get_data (G_OBJECT (context),
+  return BPOINTER_TO_INT (g_object_get_data (B_OBJECT (context),
                                              "btk-icon-view-status-pending"));
 }
 
@@ -6490,7 +6490,7 @@ unset_reorderable (BtkIconView *icon_view)
   if (icon_view->priv->reorderable)
     {
       icon_view->priv->reorderable = FALSE;
-      g_object_notify (G_OBJECT (icon_view), "reorderable");
+      g_object_notify (B_OBJECT (icon_view), "reorderable");
     }
 }
 
@@ -6500,12 +6500,12 @@ set_source_row (BdkDragContext *context,
                 BtkTreePath    *source_row)
 {
   if (source_row)
-    g_object_set_data_full (G_OBJECT (context),
+    g_object_set_data_full (B_OBJECT (context),
 			    I_("btk-icon-view-source-row"),
 			    btk_tree_row_reference_new (model, source_row),
 			    (GDestroyNotify) btk_tree_row_reference_free);
   else
-    g_object_set_data_full (G_OBJECT (context),
+    g_object_set_data_full (B_OBJECT (context),
 			    I_("btk-icon-view-source-row"),
 			    NULL, NULL);
 }
@@ -6515,7 +6515,7 @@ get_source_row (BdkDragContext *context)
 {
   BtkTreeRowReference *ref;
 
-  ref = g_object_get_data (G_OBJECT (context), "btk-icon-view-source-row");
+  ref = g_object_get_data (B_OBJECT (context), "btk-icon-view-source-row");
 
   if (ref)
     return btk_tree_row_reference_get_path (ref);
@@ -6526,12 +6526,12 @@ get_source_row (BdkDragContext *context)
 typedef struct
 {
   BtkTreeRowReference *dest_row;
-  gboolean             empty_view_drop;
-  gboolean             drop_append_mode;
+  bboolean             empty_view_drop;
+  bboolean             drop_append_mode;
 } DestRow;
 
 static void
-dest_row_free (gpointer data)
+dest_row_free (bpointer data)
 {
   DestRow *dr = (DestRow *)data;
 
@@ -6543,14 +6543,14 @@ static void
 set_dest_row (BdkDragContext *context,
 	      BtkTreeModel   *model,
 	      BtkTreePath    *dest_row,
-	      gboolean        empty_view_drop,
-	      gboolean        drop_append_mode)
+	      bboolean        empty_view_drop,
+	      bboolean        drop_append_mode)
 {
   DestRow *dr;
 
   if (!dest_row)
     {
-      g_object_set_data_full (G_OBJECT (context),
+      g_object_set_data_full (B_OBJECT (context),
 			      I_("btk-icon-view-dest-row"),
 			      NULL, NULL);
       return;
@@ -6561,7 +6561,7 @@ set_dest_row (BdkDragContext *context,
   dr->dest_row = btk_tree_row_reference_new (model, dest_row);
   dr->empty_view_drop = empty_view_drop;
   dr->drop_append_mode = drop_append_mode;
-  g_object_set_data_full (G_OBJECT (context),
+  g_object_set_data_full (B_OBJECT (context),
                           I_("btk-icon-view-dest-row"),
                           dr, (GDestroyNotify) dest_row_free);
 }
@@ -6571,7 +6571,7 @@ get_dest_row (BdkDragContext *context)
 {
   DestRow *dr;
 
-  dr = g_object_get_data (G_OBJECT (context), "btk-icon-view-dest-row");
+  dr = g_object_get_data (B_OBJECT (context), "btk-icon-view-dest-row");
 
   if (dr)
     {
@@ -6593,12 +6593,12 @@ get_dest_row (BdkDragContext *context)
     return NULL;
 }
 
-static gboolean
+static bboolean
 check_model_dnd (BtkTreeModel *model,
                  GType         required_iface,
-                 const gchar  *signal)
+                 const bchar  *signal)
 {
-  if (model == NULL || !G_TYPE_CHECK_INSTANCE_TYPE ((model), required_iface))
+  if (model == NULL || !B_TYPE_CHECK_INSTANCE_TYPE ((model), required_iface))
     {
       g_warning ("You must override the default '%s' handler "
                  "on BtkIconView when using models that don't support "
@@ -6631,9 +6631,9 @@ remove_scroll_timeout (BtkIconView *icon_view)
 static void
 btk_icon_view_autoscroll (BtkIconView *icon_view)
 {
-  gint px, py, width, height;
-  gint hoffset, voffset;
-  gfloat value;
+  bint px, py, width, height;
+  bint hoffset, voffset;
+  bfloat value;
 
   bdk_window_get_pointer (BTK_WIDGET (icon_view)->window, &px, &py, NULL);
   bdk_window_get_geometry (BTK_WIDGET (icon_view)->window, NULL, NULL, &width, &height, NULL);
@@ -6664,8 +6664,8 @@ btk_icon_view_autoscroll (BtkIconView *icon_view)
 }
 
 
-static gboolean
-drag_scroll_timeout (gpointer data)
+static bboolean
+drag_scroll_timeout (bpointer data)
 {
   BtkIconView *icon_view = BTK_ICON_VIEW (data);
 
@@ -6675,11 +6675,11 @@ drag_scroll_timeout (gpointer data)
 }
 
 
-static gboolean
+static bboolean
 set_destination (BtkIconView    *icon_view,
 		 BdkDragContext *context,
-		 gint            x,
-		 gint            y,
+		 bint            x,
+		 bint            y,
 		 BdkDragAction  *suggested_action,
 		 BdkAtom        *target)
 {
@@ -6688,7 +6688,7 @@ set_destination (BtkIconView    *icon_view,
   BtkIconViewDropPosition pos;
   BtkIconViewDropPosition old_pos;
   BtkTreePath *old_dest_path = NULL;
-  gboolean can_drop = FALSE;
+  bboolean can_drop = FALSE;
 
   widget = BTK_WIDGET (icon_view);
 
@@ -6717,7 +6717,7 @@ set_destination (BtkIconView    *icon_view,
 
   if (!btk_icon_view_get_dest_item_at_pos (icon_view, x, y, &path, &pos)) 
     {
-      gint n_children;
+      bint n_children;
       BtkTreeModel *model;
       
       /* the row got dropped on empty space, let's setup a special case
@@ -6795,7 +6795,7 @@ out:
 
 static BtkTreePath*
 get_logical_destination (BtkIconView *icon_view,
-			 gboolean    *drop_append_mode)
+			 bboolean    *drop_append_mode)
 {
   /* adjust path to point to the row the drop goes in front of */
   BtkTreePath *path = NULL;
@@ -6827,16 +6827,16 @@ get_logical_destination (BtkIconView *icon_view,
   return path;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_maybe_begin_drag (BtkIconView    *icon_view,
 				BdkEventMotion *event)
 {
   BtkWidget *widget = BTK_WIDGET (icon_view);
   BdkDragContext *context;
   BtkTreePath *path = NULL;
-  gint button;
+  bint button;
   BtkTreeModel *model;
-  gboolean retval = FALSE;
+  bboolean retval = FALSE;
 
   if (!icon_view->priv->source_set)
     goto out;
@@ -6901,7 +6901,7 @@ btk_icon_view_drag_begin (BtkWidget      *widget,
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   BdkPixmap *icon;
-  gint x, y;
+  bint x, y;
   BtkTreePath *path;
 
   icon_view = BTK_ICON_VIEW (widget);
@@ -6945,8 +6945,8 @@ static void
 btk_icon_view_drag_data_get (BtkWidget        *widget,
 			     BdkDragContext   *context,
 			     BtkSelectionData *selection_data,
-			     guint             info,
-			     guint             time)
+			     buint             info,
+			     buint             time)
 {
   BtkIconView *icon_view;
   BtkTreeModel *model;
@@ -7021,7 +7021,7 @@ btk_icon_view_drag_data_delete (BtkWidget      *widget,
 static void
 btk_icon_view_drag_leave (BtkWidget      *widget,
 			  BdkDragContext *context,
-			  guint           time)
+			  buint           time)
 {
   BtkIconView *icon_view;
 
@@ -7035,19 +7035,19 @@ btk_icon_view_drag_leave (BtkWidget      *widget,
   remove_scroll_timeout (icon_view);
 }
 
-static gboolean 
+static bboolean 
 btk_icon_view_drag_motion (BtkWidget      *widget,
 			   BdkDragContext *context,
-			   gint            x,
-			   gint            y,
-			   guint           time)
+			   bint            x,
+			   bint            y,
+			   buint           time)
 {
   BtkTreePath *path = NULL;
   BtkIconViewDropPosition pos;
   BtkIconView *icon_view;
   BdkDragAction suggested_action = 0;
   BdkAtom target;
-  gboolean empty;
+  bboolean empty;
 
   icon_view = BTK_ICON_VIEW (widget);
 
@@ -7093,19 +7093,19 @@ btk_icon_view_drag_motion (BtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean 
+static bboolean 
 btk_icon_view_drag_drop (BtkWidget      *widget,
 			 BdkDragContext *context,
-			 gint            x,
-			 gint            y,
-			 guint           time)
+			 bint            x,
+			 bint            y,
+			 buint           time)
 {
   BtkIconView *icon_view;
   BtkTreePath *path;
   BdkDragAction suggested_action = 0;
   BdkAtom target = BDK_NONE;
   BtkTreeModel *model;
-  gboolean drop_append_mode;
+  bboolean drop_append_mode;
 
   icon_view = BTK_ICON_VIEW (widget);
   model = btk_icon_view_get_model (icon_view);
@@ -7151,19 +7151,19 @@ btk_icon_view_drag_drop (BtkWidget      *widget,
 static void
 btk_icon_view_drag_data_received (BtkWidget        *widget,
 				  BdkDragContext   *context,
-				  gint              x,
-				  gint              y,
+				  bint              x,
+				  bint              y,
 				  BtkSelectionData *selection_data,
-				  guint             info,
-				  guint             time)
+				  buint             info,
+				  buint             time)
 {
   BtkTreePath *path;
-  gboolean accepted = FALSE;
+  bboolean accepted = FALSE;
   BtkTreeModel *model;
   BtkIconView *icon_view;
   BtkTreePath *dest_row;
   BdkDragAction suggested_action;
-  gboolean drop_append_mode;
+  bboolean drop_append_mode;
   
   icon_view = BTK_ICON_VIEW (widget);  
   model = btk_icon_view_get_model (icon_view);
@@ -7253,7 +7253,7 @@ void
 btk_icon_view_enable_model_drag_source (BtkIconView              *icon_view,
 					BdkModifierType           start_button_mask,
 					const BtkTargetEntry     *targets,
-					gint                      n_targets,
+					bint                      n_targets,
 					BdkDragAction             actions)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
@@ -7284,7 +7284,7 @@ btk_icon_view_enable_model_drag_source (BtkIconView              *icon_view,
 void 
 btk_icon_view_enable_model_drag_dest (BtkIconView          *icon_view,
 				      const BtkTargetEntry *targets,
-				      gint                  n_targets,
+				      bint                  n_targets,
 				      BdkDragAction         actions)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
@@ -7383,7 +7383,7 @@ btk_icon_view_set_drag_dest_item (BtkIconView              *icon_view,
       && btk_tree_path_get_depth (path) == 1
       && btk_tree_path_get_indices (path)[0] == 0)
     {
-      gint n_children;
+      bint n_children;
 
       n_children = btk_tree_model_iter_n_children (icon_view->priv->model,
                                                    NULL);
@@ -7397,7 +7397,7 @@ btk_icon_view_set_drag_dest_item (BtkIconView              *icon_view,
   if (path)
     {
       icon_view->priv->dest_item =
-        btk_tree_row_reference_new_proxy (G_OBJECT (icon_view), 
+        btk_tree_row_reference_new_proxy (B_OBJECT (icon_view), 
 					  icon_view->priv->model, path);
       
       btk_icon_view_queue_draw_path (icon_view, path);
@@ -7447,10 +7447,10 @@ btk_icon_view_get_drag_dest_item (BtkIconView              *icon_view,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_icon_view_get_dest_item_at_pos (BtkIconView              *icon_view,
-				    gint                      drag_x,
-				    gint                      drag_y,
+				    bint                      drag_x,
+				    bint                      drag_y,
 				    BtkTreePath             **path,
 				    BtkIconViewDropPosition  *pos)
 {
@@ -7517,7 +7517,7 @@ btk_icon_view_create_drag_icon (BtkIconView *icon_view,
   bairo_t *cr;
   BdkPixmap *drawable;
   GList *l;
-  gint index;
+  bint index;
   BdkRectangle area;
 
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), NULL);
@@ -7581,7 +7581,7 @@ btk_icon_view_create_drag_icon (BtkIconView *icon_view,
  *
  * Since: 2.8
  **/
-gboolean
+bboolean
 btk_icon_view_get_reorderable (BtkIconView *icon_view)
 {
   g_return_val_if_fail (BTK_IS_ICON_VIEW (icon_view), FALSE);
@@ -7616,7 +7616,7 @@ static const BtkTargetEntry item_targets[] = {
  **/
 void
 btk_icon_view_set_reorderable (BtkIconView *icon_view,
-			       gboolean     reorderable)
+			       bboolean     reorderable)
 {
   g_return_if_fail (BTK_IS_ICON_VIEW (icon_view));
 
@@ -7645,19 +7645,19 @@ btk_icon_view_set_reorderable (BtkIconView *icon_view,
 
   icon_view->priv->reorderable = reorderable;
 
-  g_object_notify (G_OBJECT (icon_view), "reorderable");
+  g_object_notify (B_OBJECT (icon_view), "reorderable");
 }
 
 
 /* Accessibility Support */
 
-static gpointer accessible_parent_class;
-static gpointer accessible_item_parent_class;
+static bpointer accessible_parent_class;
+static bpointer accessible_item_parent_class;
 static GQuark accessible_private_data_quark = 0;
 
 #define BTK_TYPE_ICON_VIEW_ITEM_ACCESSIBLE      (btk_icon_view_item_accessible_get_type ())
-#define BTK_ICON_VIEW_ITEM_ACCESSIBLE(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW_ITEM_ACCESSIBLE, BtkIconViewItemAccessible))
-#define BTK_IS_ICON_VIEW_ITEM_ACCESSIBLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW_ITEM_ACCESSIBLE))
+#define BTK_ICON_VIEW_ITEM_ACCESSIBLE(obj)      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW_ITEM_ACCESSIBLE, BtkIconViewItemAccessible))
+#define BTK_IS_ICON_VIEW_ITEM_ACCESSIBLE(obj)   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW_ITEM_ACCESSIBLE))
 
 static GType btk_icon_view_item_accessible_get_type (void);
 
@@ -7676,22 +7676,22 @@ typedef struct
 
   BatkStateSet *state_set;
 
-  gchar *text;
+  bchar *text;
 
   BtkTextBuffer *text_buffer;
 
-  gchar *action_descriptions[LAST_ACTION];
-  gchar *image_description;
-  guint action_idle_handler;
+  bchar *action_descriptions[LAST_ACTION];
+  bchar *image_description;
+  buint action_idle_handler;
 } BtkIconViewItemAccessible;
 
-static const gchar *const btk_icon_view_item_accessible_action_names[] = 
+static const bchar *const btk_icon_view_item_accessible_action_names[] = 
 {
   "activate",
   NULL
 };
 
-static const gchar *const btk_icon_view_item_accessible_action_descriptions[] =
+static const bchar *const btk_icon_view_item_accessible_action_descriptions[] =
 {
   "Activate item",
   NULL
@@ -7702,10 +7702,10 @@ typedef struct _BtkIconViewItemAccessibleClass
 
 } BtkIconViewItemAccessibleClass;
 
-static gboolean btk_icon_view_item_accessible_is_showing (BtkIconViewItemAccessible *item);
+static bboolean btk_icon_view_item_accessible_is_showing (BtkIconViewItemAccessible *item);
 
-static gboolean
-btk_icon_view_item_accessible_idle_do_action (gpointer data)
+static bboolean
+btk_icon_view_item_accessible_idle_do_action (bpointer data)
 {
   BtkIconViewItemAccessible *item;
   BtkIconView *icon_view;
@@ -7725,9 +7725,9 @@ btk_icon_view_item_accessible_idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_action_do_action (BatkAction *action,
-                                                gint       i)
+                                                bint       i)
 {
   BtkIconViewItemAccessible *item;
 
@@ -7756,15 +7756,15 @@ btk_icon_view_item_accessible_action_do_action (BatkAction *action,
   return TRUE;
 }
 
-static gint
+static bint
 btk_icon_view_item_accessible_action_get_n_actions (BatkAction *action)
 {
         return LAST_ACTION;
 }
 
-static const gchar *
+static const bchar *
 btk_icon_view_item_accessible_action_get_description (BatkAction *action,
-                                                      gint       i)
+                                                      bint       i)
 {
   BtkIconViewItemAccessible *item;
 
@@ -7779,9 +7779,9 @@ btk_icon_view_item_accessible_action_get_description (BatkAction *action,
     return btk_icon_view_item_accessible_action_descriptions[i];
 }
 
-static const gchar *
+static const bchar *
 btk_icon_view_item_accessible_action_get_name (BatkAction *action,
-                                               gint       i)
+                                               bint       i)
 {
   if (i < 0 || i >= LAST_ACTION) 
     return NULL;
@@ -7789,10 +7789,10 @@ btk_icon_view_item_accessible_action_get_name (BatkAction *action,
   return btk_icon_view_item_accessible_action_names[i];
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_action_set_description (BatkAction   *action,
-                                                      gint         i,
-                                                      const gchar *description)
+                                                      bint         i,
+                                                      const bchar *description)
 {
   BtkIconViewItemAccessible *item;
 
@@ -7818,7 +7818,7 @@ batk_action_item_interface_init (BatkActionIface *iface)
   iface->set_description = btk_icon_view_item_accessible_action_set_description;
 }
 
-static const gchar *
+static const bchar *
 btk_icon_view_item_accessible_image_get_image_description (BatkImage *image)
 {
   BtkIconViewItemAccessible *item;
@@ -7828,9 +7828,9 @@ btk_icon_view_item_accessible_image_get_image_description (BatkImage *image)
   return item->image_description;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_image_set_image_description (BatkImage    *image,
-                                                           const gchar *description)
+                                                           const bchar *description)
 {
   BtkIconViewItemAccessible *item;
 
@@ -7842,7 +7842,7 @@ btk_icon_view_item_accessible_image_set_image_description (BatkImage    *image,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 get_pixbuf_box (BtkIconView     *icon_view,
 		BtkIconViewItem *item,
 		BdkRectangle    *box)
@@ -7864,12 +7864,12 @@ get_pixbuf_box (BtkIconView     *icon_view,
   return FALSE;
 }
 
-static gchar *
+static bchar *
 get_text (BtkIconView     *icon_view,
 	  BtkIconViewItem *item)
 {
   GList *l;
-  gchar *text;
+  bchar *text;
 
   for (l = icon_view->priv->cell_list; l; l = l->next)
     {
@@ -7888,8 +7888,8 @@ get_text (BtkIconView     *icon_view,
 
 static void
 btk_icon_view_item_accessible_image_get_image_size (BatkImage *image,
-                                                    gint     *width,
-                                                    gint     *height)
+                                                    bint     *width,
+                                                    bint     *height)
 {
   BtkIconViewItemAccessible *item;
   BdkRectangle box;
@@ -7911,8 +7911,8 @@ btk_icon_view_item_accessible_image_get_image_size (BatkImage *image,
 
 static void
 btk_icon_view_item_accessible_image_get_image_position (BatkImage    *image,
-                                                        gint        *x,
-                                                        gint        *y,
+                                                        bint        *x,
+                                                        bint        *y,
                                                         BatkCoordType coord_type)
 {
   BtkIconViewItemAccessible *item;
@@ -7945,10 +7945,10 @@ batk_image_item_interface_init (BatkImageIface *iface)
   iface->get_image_position = btk_icon_view_item_accessible_image_get_image_position;
 }
 
-static gchar *
+static bchar *
 btk_icon_view_item_accessible_text_get_text (BatkText *text,
-                                             gint     start_pos,
-                                             gint     end_pos)
+                                             bint     start_pos,
+                                             bint     end_pos)
 {
   BtkIconViewItemAccessible *item;
   BtkTextIter start, end;
@@ -7974,12 +7974,12 @@ btk_icon_view_item_accessible_text_get_text (BatkText *text,
 
 static gunichar
 btk_icon_view_item_accessible_text_get_character_at_offset (BatkText *text,
-                                                            gint     offset)
+                                                            bint     offset)
 {
   BtkIconViewItemAccessible *item;
   BtkTextIter start, end;
   BtkTextBuffer *buffer;
-  gchar *string;
+  bchar *string;
   gunichar unichar;
 
   item = BTK_ICON_VIEW_ITEM_ACCESSIBLE (text);
@@ -8008,19 +8008,19 @@ btk_icon_view_item_accessible_text_get_character_at_offset (BatkText *text,
 static void
 get_bango_text_offsets (BangoLayout     *layout,
                         BtkTextBuffer   *buffer,
-                        gint             function,
+                        bint             function,
                         BatkTextBoundary  boundary_type,
-                        gint             offset,
-                        gint            *start_offset,
-                        gint            *end_offset,
+                        bint             offset,
+                        bint            *start_offset,
+                        bint            *end_offset,
                         BtkTextIter     *start_iter,
                         BtkTextIter     *end_iter)
 {
   BangoLayoutIter *iter;
   BangoLayoutLine *line, *prev_line = NULL, *prev_prev_line = NULL;
-  gint index, start_index, end_index;
-  const gchar *text;
-  gboolean found = FALSE;
+  bint index, start_index, end_index;
+  const bchar *text;
+  bboolean found = FALSE;
 
   text = bango_layout_get_text (layout);
   index = g_utf8_offset_to_pointer (text, offset) - text;
@@ -8129,12 +8129,12 @@ get_bango_text_offsets (BangoLayout     *layout,
 }
 #endif
 
-static gchar*
+static bchar*
 btk_icon_view_item_accessible_text_get_text_before_offset (BatkText         *text,
-                                                           gint            offset,
+                                                           bint            offset,
                                                            BatkTextBoundary boundary_type,
-                                                           gint            *start_offset,
-                                                           gint            *end_offset)
+                                                           bint            *start_offset,
+                                                           bint            *end_offset)
 {
   BtkIconViewItemAccessible *item;
   BtkTextIter start, end;
@@ -8239,12 +8239,12 @@ btk_icon_view_item_accessible_text_get_text_before_offset (BatkText         *tex
   return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
-static gchar*
+static bchar*
 btk_icon_view_item_accessible_text_get_text_at_offset (BatkText         *text,
-                                                       gint            offset,
+                                                       bint            offset,
                                                        BatkTextBoundary boundary_type,
-                                                       gint            *start_offset,
-                                                       gint            *end_offset)
+                                                       bint            *start_offset,
+                                                       bint            *end_offset)
 {
   BtkIconViewItemAccessible *item;
   BtkTextIter start, end;
@@ -8348,12 +8348,12 @@ btk_icon_view_item_accessible_text_get_text_at_offset (BatkText         *text,
   return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
-static gchar*
+static bchar*
 btk_icon_view_item_accessible_text_get_text_after_offset (BatkText         *text,
-                                                          gint            offset,
+                                                          bint            offset,
                                                           BatkTextBoundary boundary_type,
-                                                          gint            *start_offset,
-                                                          gint            *end_offset)
+                                                          bint            *start_offset,
+                                                          bint            *end_offset)
 {
   BtkIconViewItemAccessible *item;
   BtkTextIter start, end;
@@ -8462,7 +8462,7 @@ btk_icon_view_item_accessible_text_get_text_after_offset (BatkText         *text
   return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
-static gint
+static bint
 btk_icon_view_item_accessible_text_get_character_count (BatkText *text)
 {
   BtkIconViewItemAccessible *item;
@@ -8480,19 +8480,19 @@ btk_icon_view_item_accessible_text_get_character_count (BatkText *text)
 
 static void
 btk_icon_view_item_accessible_text_get_character_extents (BatkText      *text,
-                                                          gint         offset,
-                                                          gint         *x,
-                                                          gint         *y,
-                                                          gint         *width,
-                                                          gint         *height,
+                                                          bint         offset,
+                                                          bint         *x,
+                                                          bint         *y,
+                                                          bint         *width,
+                                                          bint         *height,
                                                           BatkCoordType coord_type)
 {
   BtkIconViewItemAccessible *item;
 #if 0
   BtkIconView *icon_view;
   BangoRectangle char_rect;
-  const gchar *item_text;
-  gint index;
+  const bchar *item_text;
+  bint index;
 #endif
 
   item = BTK_ICON_VIEW_ITEM_ACCESSIBLE (text);
@@ -8521,19 +8521,19 @@ btk_icon_view_item_accessible_text_get_character_extents (BatkText      *text,
 #endif
 }
 
-static gint
+static bint
 btk_icon_view_item_accessible_text_get_offset_at_point (BatkText      *text,
-                                                        gint          x,
-                                                        gint          y,
+                                                        bint          x,
+                                                        bint          y,
                                                         BatkCoordType coord_type)
 {
   BtkIconViewItemAccessible *item;
-  gint offset = 0;
+  bint offset = 0;
 #if 0
   BtkIconView *icon_view;
-  const gchar *item_text;
-  gint index;
-  gint l_x, l_y;
+  const bchar *item_text;
+  bint index;
+  bint l_x, l_y;
 #endif
 
   item = BTK_ICON_VIEW_ITEM_ACCESSIBLE (text);
@@ -8586,15 +8586,15 @@ batk_text_item_interface_init (BatkTextIface *iface)
 
 static void
 btk_icon_view_item_accessible_get_extents (BatkComponent *component,
-                                           gint         *x,
-                                           gint         *y,
-                                           gint         *width,
-                                           gint         *height,
+                                           bint         *x,
+                                           bint         *y,
+                                           bint         *width,
+                                           bint         *height,
                                            BatkCoordType  coord_type)
 {
   BtkIconViewItemAccessible *item;
   BatkObject *parent_obj;
-  gint l_x, l_y;
+  bint l_x, l_y;
 
   g_return_if_fail (BTK_IS_ICON_VIEW_ITEM_ACCESSIBLE (component));
 
@@ -8616,12 +8616,12 @@ btk_icon_view_item_accessible_get_extents (BatkComponent *component,
     }
   else
     {
-      *x = G_MININT;
-      *y = G_MININT;
+      *x = B_MININT;
+      *y = B_MININT;
     }
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_grab_focus (BatkComponent *component)
 {
   BtkIconViewItemAccessible *item;
@@ -8649,12 +8649,12 @@ batk_component_item_interface_init (BatkComponentIface *iface)
   iface->grab_focus = btk_icon_view_item_accessible_grab_focus;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_add_state (BtkIconViewItemAccessible *item,
                                          BatkStateType               state_type,
-                                         gboolean                   emit_signal)
+                                         bboolean                   emit_signal)
 {
-  gboolean rc;
+  bboolean rc;
 
   rc = batk_state_set_add_state (item->state_set, state_type);
   /*
@@ -8674,14 +8674,14 @@ btk_icon_view_item_accessible_add_state (BtkIconViewItemAccessible *item,
   return rc;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_remove_state (BtkIconViewItemAccessible *item,
                                             BatkStateType               state_type,
-                                            gboolean                   emit_signal)
+                                            bboolean                   emit_signal)
 {
   if (batk_state_set_contains_state (item->state_set, state_type))
     {
-      gboolean rc;
+      bboolean rc;
 
       rc = batk_state_set_remove_state (item->state_set, state_type);
       /*
@@ -8704,12 +8704,12 @@ btk_icon_view_item_accessible_remove_state (BtkIconViewItemAccessible *item,
     return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_is_showing (BtkIconViewItemAccessible *item)
 {
   BtkIconView *icon_view;
   BdkRectangle visible_rect;
-  gboolean is_showing;
+  bboolean is_showing;
 
   /*
    * An item is considered "SHOWING" if any part of the item is in the
@@ -8743,9 +8743,9 @@ btk_icon_view_item_accessible_is_showing (BtkIconViewItemAccessible *item)
   return is_showing;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_item_accessible_set_visibility (BtkIconViewItemAccessible *item,
-                                              gboolean                   emit_signal)
+                                              bboolean                   emit_signal)
 {
   if (btk_icon_view_item_accessible_is_showing (item))
     return btk_icon_view_item_accessible_add_state (item, BATK_STATE_SHOWING,
@@ -8758,7 +8758,7 @@ btk_icon_view_item_accessible_set_visibility (BtkIconViewItemAccessible *item,
 static void
 btk_icon_view_item_accessible_object_init (BtkIconViewItemAccessible *item)
 {
-  gint i;
+  bint i;
 
   item->state_set = batk_state_set_new ();
 
@@ -8777,17 +8777,17 @@ btk_icon_view_item_accessible_object_init (BtkIconViewItemAccessible *item)
 }
 
 static void
-btk_icon_view_item_accessible_finalize (GObject *object)
+btk_icon_view_item_accessible_finalize (BObject *object)
 {
   BtkIconViewItemAccessible *item;
-  gint i;
+  bint i;
 
   g_return_if_fail (BTK_IS_ICON_VIEW_ITEM_ACCESSIBLE (object));
 
   item = BTK_ICON_VIEW_ITEM_ACCESSIBLE (object);
 
   if (item->widget)
-    g_object_remove_weak_pointer (G_OBJECT (item->widget), (gpointer) &item->widget);
+    g_object_remove_weak_pointer (B_OBJECT (item->widget), (bpointer) &item->widget);
 
   if (item->state_set)
     g_object_unref (item->state_set);
@@ -8806,7 +8806,7 @@ btk_icon_view_item_accessible_finalize (GObject *object)
       item->action_idle_handler = 0;
     }
 
-  G_OBJECT_CLASS (accessible_item_parent_class)->finalize (object);
+  B_OBJECT_CLASS (accessible_item_parent_class)->finalize (object);
 }
 
 static BatkObject*
@@ -8823,7 +8823,7 @@ btk_icon_view_item_accessible_get_parent (BatkObject *obj)
     return NULL;
 }
 
-static gint
+static bint
 btk_icon_view_item_accessible_get_index_in_parent (BatkObject *obj)
 {
   BtkIconViewItemAccessible *item;
@@ -8862,11 +8862,11 @@ btk_icon_view_item_accessible_ref_state_set (BatkObject *obj)
 static void
 btk_icon_view_item_accessible_class_init (BatkObjectClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
 
   accessible_item_parent_class = g_type_class_peek_parent (klass);
 
-  bobject_class = (GObjectClass *)klass;
+  bobject_class = (BObjectClass *)klass;
 
   bobject_class->finalize = btk_icon_view_item_accessible_finalize;
 
@@ -8937,8 +8937,8 @@ btk_icon_view_item_accessible_get_type (void)
 }
 
 #define BTK_TYPE_ICON_VIEW_ACCESSIBLE      (btk_icon_view_accessible_get_type ())
-#define BTK_ICON_VIEW_ACCESSIBLE(obj)      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW_ACCESSIBLE, BtkIconViewAccessible))
-#define BTK_IS_ICON_VIEW_ACCESSIBLE(obj)   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW_ACCESSIBLE))
+#define BTK_ICON_VIEW_ACCESSIBLE(obj)      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW_ACCESSIBLE, BtkIconViewAccessible))
+#define BTK_IS_ICON_VIEW_ACCESSIBLE(obj)   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW_ACCESSIBLE))
 
 static GType btk_icon_view_accessible_get_type (void);
 
@@ -8950,7 +8950,7 @@ typedef struct
 typedef struct
 {
   BatkObject *item;
-  gint       index;
+  bint       index;
 } BtkIconViewItemAccessibleInfo;
 
 typedef struct
@@ -8967,14 +8967,14 @@ typedef struct
 static BtkIconViewAccessiblePrivate *
 btk_icon_view_accessible_get_priv (BatkObject *accessible)
 {
-  return g_object_get_qdata (G_OBJECT (accessible),
+  return g_object_get_qdata (B_OBJECT (accessible),
                              accessible_private_data_quark);
 }
 
 static void
 btk_icon_view_item_accessible_info_new (BatkObject *accessible,
                                         BatkObject *item,
-                                        gint       index)
+                                        bint       index)
 {
   BtkIconViewItemAccessibleInfo *info;
   BtkIconViewItemAccessibleInfo *tmp_info;
@@ -8999,7 +8999,7 @@ btk_icon_view_item_accessible_info_new (BatkObject *accessible,
   priv->old_vadj = NULL;
 }
 
-static gint
+static bint
 btk_icon_view_accessible_get_n_children (BatkObject *accessible)
 {
   BtkIconView *icon_view;
@@ -9016,7 +9016,7 @@ btk_icon_view_accessible_get_n_children (BatkObject *accessible)
 
 static BatkObject *
 btk_icon_view_accessible_find_child (BatkObject *accessible,
-                                     gint       index)
+                                     bint       index)
 {
   BtkIconViewAccessiblePrivate *priv;
   BtkIconViewItemAccessibleInfo *info;
@@ -9037,7 +9037,7 @@ btk_icon_view_accessible_find_child (BatkObject *accessible,
 
 static BatkObject *
 btk_icon_view_accessible_ref_child (BatkObject *accessible,
-                                    gint       index)
+                                    bint       index)
 {
   BtkIconView *icon_view;
   BtkWidget *widget;
@@ -9060,7 +9060,7 @@ btk_icon_view_accessible_ref_child (BatkObject *accessible,
       obj = btk_icon_view_accessible_find_child (accessible, index);
       if (!obj)
         {
-          gchar *text;
+          bchar *text;
 
           obj = g_object_new (btk_icon_view_item_accessible_get_type (), NULL);
           btk_icon_view_item_accessible_info_new (accessible,
@@ -9081,7 +9081,7 @@ btk_icon_view_accessible_ref_child (BatkObject *accessible,
             } 
 
           btk_icon_view_item_accessible_set_visibility (a11y_item, FALSE);
-          g_object_add_weak_pointer (G_OBJECT (widget), (gpointer) &(a11y_item->widget));
+          g_object_add_weak_pointer (B_OBJECT (widget), (bpointer) &(a11y_item->widget));
        }
       g_object_ref (obj);
     }
@@ -9101,7 +9101,7 @@ btk_icon_view_accessible_traverse_items (BtkIconViewAccessible *view,
   if (priv->items)
     {
       BtkWidget *widget;
-      gboolean act_on_item;
+      bboolean act_on_item;
 
       widget = BTK_ACCESSIBLE (view)->widget;
       if (widget == NULL)
@@ -9159,18 +9159,18 @@ btk_icon_view_accessible_set_scroll_adjustments (BtkWidget      *widget,
     {
       if (priv->old_hadj)
         {
-          g_object_remove_weak_pointer (G_OBJECT (priv->old_hadj),
-                                        (gpointer *)&priv->old_hadj);
+          g_object_remove_weak_pointer (B_OBJECT (priv->old_hadj),
+                                        (bpointer *)&priv->old_hadj);
           
           g_signal_handlers_disconnect_by_func (priv->old_hadj,
-                                                (gpointer) btk_icon_view_accessible_adjustment_changed,
+                                                (bpointer) btk_icon_view_accessible_adjustment_changed,
                                                 widget);
         }
       priv->old_hadj = hadj;
       if (priv->old_hadj)
         {
-          g_object_add_weak_pointer (G_OBJECT (priv->old_hadj),
-                                     (gpointer *)&priv->old_hadj);
+          g_object_add_weak_pointer (B_OBJECT (priv->old_hadj),
+                                     (bpointer *)&priv->old_hadj);
           g_signal_connect (hadj,
                             "value-changed",
                             G_CALLBACK (btk_icon_view_accessible_adjustment_changed),
@@ -9181,18 +9181,18 @@ btk_icon_view_accessible_set_scroll_adjustments (BtkWidget      *widget,
     {
       if (priv->old_vadj)
         {
-          g_object_remove_weak_pointer (G_OBJECT (priv->old_vadj),
-                                        (gpointer *)&priv->old_vadj);
+          g_object_remove_weak_pointer (B_OBJECT (priv->old_vadj),
+                                        (bpointer *)&priv->old_vadj);
           
           g_signal_handlers_disconnect_by_func (priv->old_vadj,
-                                                (gpointer) btk_icon_view_accessible_adjustment_changed,
+                                                (bpointer) btk_icon_view_accessible_adjustment_changed,
                                                 widget);
         }
       priv->old_vadj = vadj;
       if (priv->old_vadj)
         {
-          g_object_add_weak_pointer (G_OBJECT (priv->old_vadj),
-                                     (gpointer *)&priv->old_vadj);
+          g_object_add_weak_pointer (B_OBJECT (priv->old_vadj),
+                                     (bpointer *)&priv->old_vadj);
           g_signal_connect (vadj,
                             "value-changed",
                             G_CALLBACK (btk_icon_view_accessible_adjustment_changed),
@@ -9205,17 +9205,17 @@ static void
 btk_icon_view_accessible_model_row_changed (BtkTreeModel *tree_model,
                                             BtkTreePath  *path,
                                             BtkTreeIter  *iter,
-                                            gpointer      user_data)
+                                            bpointer      user_data)
 {
   BatkObject *batk_obj;
-  gint index;
+  bint index;
   BtkWidget *widget;
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   BtkIconViewAccessible *a11y_view;
   BtkIconViewItemAccessible *a11y_item;
-  const gchar *name;
-  gchar *text;
+  const bchar *name;
+  bchar *text;
 
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (user_data));
   a11y_view = BTK_ICON_VIEW_ACCESSIBLE (batk_obj);
@@ -9252,7 +9252,7 @@ static void
 btk_icon_view_accessible_model_row_inserted (BtkTreeModel *tree_model,
                                              BtkTreePath  *path,
                                              BtkTreeIter  *iter,
-                                             gpointer     user_data)
+                                             bpointer     user_data)
 {
   BtkIconViewAccessiblePrivate *priv;
   BtkIconViewItemAccessibleInfo *info;
@@ -9261,7 +9261,7 @@ btk_icon_view_accessible_model_row_inserted (BtkTreeModel *tree_model,
   GList *items;
   GList *tmp_list;
   BatkObject *batk_obj;
-  gint index;
+  bint index;
 
   index = btk_tree_path_get_indices(path)[0];
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (user_data));
@@ -9296,7 +9296,7 @@ btk_icon_view_accessible_model_row_inserted (BtkTreeModel *tree_model,
 static void
 btk_icon_view_accessible_model_row_deleted (BtkTreeModel *tree_model,
                                             BtkTreePath  *path,
-                                            gpointer     user_data)
+                                            bpointer     user_data)
 {
   BtkIconViewAccessiblePrivate *priv;
   BtkIconViewItemAccessibleInfo *info;
@@ -9306,7 +9306,7 @@ btk_icon_view_accessible_model_row_deleted (BtkTreeModel *tree_model,
   GList *tmp_list;
   GList *deleted_item;
   BatkObject *batk_obj;
-  gint index;
+  bint index;
 
   index = btk_tree_path_get_indices(path)[0];
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (user_data));
@@ -9349,7 +9349,7 @@ btk_icon_view_accessible_model_row_deleted (BtkTreeModel *tree_model,
   return;
 }
 
-static gint
+static bint
 btk_icon_view_accessible_item_compare (BtkIconViewItemAccessibleInfo *i1,
                                        BtkIconViewItemAccessibleInfo *i2)
 {
@@ -9360,8 +9360,8 @@ static void
 btk_icon_view_accessible_model_rows_reordered (BtkTreeModel *tree_model,
                                                BtkTreePath  *path,
                                                BtkTreeIter  *iter,
-                                               gint         *new_order,
-                                               gpointer     user_data)
+                                               bint         *new_order,
+                                               bpointer     user_data)
 {
   BtkIconViewAccessiblePrivate *priv;
   BtkIconViewItemAccessibleInfo *info;
@@ -9369,8 +9369,8 @@ btk_icon_view_accessible_model_rows_reordered (BtkTreeModel *tree_model,
   BtkIconViewItemAccessible *item;
   GList *items;
   BatkObject *batk_obj;
-  gint *order;
-  gint length, i;
+  bint *order;
+  bint length, i;
 
   batk_obj = btk_widget_get_accessible (BTK_WIDGET (user_data));
   icon_view = BTK_ICON_VIEW (user_data);
@@ -9378,7 +9378,7 @@ btk_icon_view_accessible_model_rows_reordered (BtkTreeModel *tree_model,
 
   length = btk_tree_model_iter_n_children (tree_model, NULL);
 
-  order = g_new (gint, length);
+  order = g_new (bint, length);
   for (i = 0; i < length; i++)
     order [new_order[i]] = i;
 
@@ -9402,21 +9402,21 @@ static void
 btk_icon_view_accessible_disconnect_model_signals (BtkTreeModel *model,
                                                    BtkWidget *widget)
 {
-  GObject *obj;
+  BObject *obj;
 
-  obj = G_OBJECT (model);
-  g_signal_handlers_disconnect_by_func (obj, (gpointer) btk_icon_view_accessible_model_row_changed, widget);
-  g_signal_handlers_disconnect_by_func (obj, (gpointer) btk_icon_view_accessible_model_row_inserted, widget);
-  g_signal_handlers_disconnect_by_func (obj, (gpointer) btk_icon_view_accessible_model_row_deleted, widget);
-  g_signal_handlers_disconnect_by_func (obj, (gpointer) btk_icon_view_accessible_model_rows_reordered, widget);
+  obj = B_OBJECT (model);
+  g_signal_handlers_disconnect_by_func (obj, (bpointer) btk_icon_view_accessible_model_row_changed, widget);
+  g_signal_handlers_disconnect_by_func (obj, (bpointer) btk_icon_view_accessible_model_row_inserted, widget);
+  g_signal_handlers_disconnect_by_func (obj, (bpointer) btk_icon_view_accessible_model_row_deleted, widget);
+  g_signal_handlers_disconnect_by_func (obj, (bpointer) btk_icon_view_accessible_model_rows_reordered, widget);
 }
 
 static void
 btk_icon_view_accessible_connect_model_signals (BtkIconView *icon_view)
 {
-  GObject *obj;
+  BObject *obj;
 
-  obj = G_OBJECT (icon_view->priv->model);
+  obj = B_OBJECT (icon_view->priv->model);
   g_signal_connect_data (obj, "row-changed",
                          (GCallback) btk_icon_view_accessible_model_row_changed,
                          icon_view, NULL, 0);
@@ -9450,8 +9450,8 @@ btk_icon_view_accessible_clear_cache (BtkIconViewAccessiblePrivate *priv)
 }
 
 static void
-btk_icon_view_accessible_notify_btk (GObject *obj,
-                                     GParamSpec *pspec)
+btk_icon_view_accessible_notify_btk (BObject *obj,
+                                     BParamSpec *pspec)
 {
   BtkIconView *icon_view;
   BtkWidget *widget;
@@ -9465,8 +9465,8 @@ btk_icon_view_accessible_notify_btk (GObject *obj,
       priv = btk_icon_view_accessible_get_priv (batk_obj);
       if (priv->model)
         {
-          g_object_remove_weak_pointer (G_OBJECT (priv->model),
-                                        (gpointer *)&priv->model);
+          g_object_remove_weak_pointer (B_OBJECT (priv->model),
+                                        (bpointer *)&priv->model);
           btk_icon_view_accessible_disconnect_model_signals (priv->model, widget);
         }
       btk_icon_view_accessible_clear_cache (priv);
@@ -9476,7 +9476,7 @@ btk_icon_view_accessible_notify_btk (GObject *obj,
       /* If there is no model the BtkIconView is probably being destroyed */
       if (priv->model)
         {
-          g_object_add_weak_pointer (G_OBJECT (priv->model), (gpointer *)&priv->model);
+          g_object_add_weak_pointer (B_OBJECT (priv->model), (bpointer *)&priv->model);
           btk_icon_view_accessible_connect_model_signals (icon_view);
         }
     }
@@ -9486,7 +9486,7 @@ btk_icon_view_accessible_notify_btk (GObject *obj,
 
 static void
 btk_icon_view_accessible_initialize (BatkObject *accessible,
-                                     gpointer   data)
+                                     bpointer   data)
 {
   BtkIconViewAccessiblePrivate *priv;
   BtkIconView *icon_view;
@@ -9495,7 +9495,7 @@ btk_icon_view_accessible_initialize (BatkObject *accessible,
     BATK_OBJECT_CLASS (accessible_parent_class)->initialize (accessible, data);
 
   priv = g_new0 (BtkIconViewAccessiblePrivate, 1);
-  g_object_set_qdata (G_OBJECT (accessible),
+  g_object_set_qdata (B_OBJECT (accessible),
                       accessible_private_data_quark,
                       priv);
 
@@ -9503,7 +9503,7 @@ btk_icon_view_accessible_initialize (BatkObject *accessible,
   if (icon_view->priv->hadjustment)
     {
       priv->old_hadj = icon_view->priv->hadjustment;
-      g_object_add_weak_pointer (G_OBJECT (priv->old_hadj), (gpointer *)&priv->old_hadj);
+      g_object_add_weak_pointer (B_OBJECT (priv->old_hadj), (bpointer *)&priv->old_hadj);
       g_signal_connect (icon_view->priv->hadjustment,
                         "value-changed",
                         G_CALLBACK (btk_icon_view_accessible_adjustment_changed),
@@ -9512,7 +9512,7 @@ btk_icon_view_accessible_initialize (BatkObject *accessible,
   if (icon_view->priv->vadjustment)
     {
       priv->old_vadj = icon_view->priv->vadjustment;
-      g_object_add_weak_pointer (G_OBJECT (priv->old_vadj), (gpointer *)&priv->old_vadj);
+      g_object_add_weak_pointer (B_OBJECT (priv->old_vadj), (bpointer *)&priv->old_vadj);
       g_signal_connect (icon_view->priv->vadjustment,
                         "value-changed",
                         G_CALLBACK (btk_icon_view_accessible_adjustment_changed),
@@ -9530,7 +9530,7 @@ btk_icon_view_accessible_initialize (BatkObject *accessible,
   priv->model = icon_view->priv->model;
   if (priv->model)
     {
-      g_object_add_weak_pointer (G_OBJECT (priv->model), (gpointer *)&priv->model);
+      g_object_add_weak_pointer (B_OBJECT (priv->model), (bpointer *)&priv->model);
       btk_icon_view_accessible_connect_model_signals (icon_view);
     }
                           
@@ -9538,7 +9538,7 @@ btk_icon_view_accessible_initialize (BatkObject *accessible,
 }
 
 static void
-btk_icon_view_accessible_finalize (GObject *object)
+btk_icon_view_accessible_finalize (BObject *object)
 {
   BtkIconViewAccessiblePrivate *priv;
 
@@ -9547,7 +9547,7 @@ btk_icon_view_accessible_finalize (GObject *object)
 
   g_free (priv);
 
-  G_OBJECT_CLASS (accessible_parent_class)->finalize (object);
+  B_OBJECT_CLASS (accessible_parent_class)->finalize (object);
 }
 
 static void
@@ -9561,21 +9561,21 @@ btk_icon_view_accessible_destroyed (BtkWidget *widget,
   priv = btk_icon_view_accessible_get_priv (batk_obj);
   if (priv->old_hadj)
     {
-      g_object_remove_weak_pointer (G_OBJECT (priv->old_hadj),
-                                    (gpointer *)&priv->old_hadj);
+      g_object_remove_weak_pointer (B_OBJECT (priv->old_hadj),
+                                    (bpointer *)&priv->old_hadj);
           
       g_signal_handlers_disconnect_by_func (priv->old_hadj,
-                                            (gpointer) btk_icon_view_accessible_adjustment_changed,
+                                            (bpointer) btk_icon_view_accessible_adjustment_changed,
                                             widget);
       priv->old_hadj = NULL;
     }
   if (priv->old_vadj)
     {
-      g_object_remove_weak_pointer (G_OBJECT (priv->old_vadj),
-                                    (gpointer *)&priv->old_vadj);
+      g_object_remove_weak_pointer (B_OBJECT (priv->old_vadj),
+                                    (bpointer *)&priv->old_vadj);
           
       g_signal_handlers_disconnect_by_func (priv->old_vadj,
-                                            (gpointer) btk_icon_view_accessible_adjustment_changed,
+                                            (bpointer) btk_icon_view_accessible_adjustment_changed,
                                             widget);
       priv->old_vadj = NULL;
     }
@@ -9597,12 +9597,12 @@ btk_icon_view_accessible_connect_widget_destroyed (BtkAccessible *accessible)
 static void
 btk_icon_view_accessible_class_init (BatkObjectClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkAccessibleClass *accessible_class;
 
   accessible_parent_class = g_type_class_peek_parent (klass);
 
-  bobject_class = (GObjectClass *)klass;
+  bobject_class = (BObjectClass *)klass;
   accessible_class = (BtkAccessibleClass *)klass;
 
   bobject_class->finalize = btk_icon_view_accessible_finalize;
@@ -9618,14 +9618,14 @@ btk_icon_view_accessible_class_init (BatkObjectClass *klass)
 
 static BatkObject*
 btk_icon_view_accessible_ref_accessible_at_point (BatkComponent *component,
-                                                  gint          x,
-                                                  gint          y,
+                                                  bint          x,
+                                                  bint          y,
                                                   BatkCoordType  coord_type)
 {
   BtkWidget *widget;
   BtkIconView *icon_view;
   BtkIconViewItem *item;
-  gint x_pos, y_pos;
+  bint x_pos, y_pos;
 
   widget = BTK_ACCESSIBLE (component)->widget;
   if (widget == NULL)
@@ -9647,9 +9647,9 @@ batk_component_interface_init (BatkComponentIface *iface)
   iface->ref_accessible_at_point = btk_icon_view_accessible_ref_accessible_at_point;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_accessible_add_selection (BatkSelection *selection,
-                                        gint i)
+                                        bint i)
 {
   BtkWidget *widget;
   BtkIconView *icon_view;
@@ -9671,7 +9671,7 @@ btk_icon_view_accessible_add_selection (BatkSelection *selection,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_accessible_clear_selection (BatkSelection *selection)
 {
   BtkWidget *widget;
@@ -9689,7 +9689,7 @@ btk_icon_view_accessible_clear_selection (BatkSelection *selection)
 
 static BatkObject*
 btk_icon_view_accessible_ref_selection (BatkSelection *selection,
-                                        gint          i)
+                                        bint          i)
 {
   GList *l;
   BtkWidget *widget;
@@ -9719,14 +9719,14 @@ btk_icon_view_accessible_ref_selection (BatkSelection *selection,
   return NULL;
 }
 
-static gint
+static bint
 btk_icon_view_accessible_get_selection_count (BatkSelection *selection)
 {
   BtkWidget *widget;
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   GList *l;
-  gint count;
+  bint count;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
@@ -9749,9 +9749,9 @@ btk_icon_view_accessible_get_selection_count (BatkSelection *selection)
   return count;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_accessible_is_child_selected (BatkSelection *selection,
-                                            gint          i)
+                                            bint          i)
 {
   BtkWidget *widget;
   BtkIconView *icon_view;
@@ -9770,15 +9770,15 @@ btk_icon_view_accessible_is_child_selected (BatkSelection *selection,
   return item->selected;
 }
 
-static gboolean
+static bboolean
 btk_icon_view_accessible_remove_selection (BatkSelection *selection,
-                                           gint          i)
+                                           bint          i)
 {
   BtkWidget *widget;
   BtkIconView *icon_view;
   BtkIconViewItem *item;
   GList *l;
-  gint count;
+  bint count;
 
   widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
@@ -9805,7 +9805,7 @@ btk_icon_view_accessible_remove_selection (BatkSelection *selection,
   return FALSE;
 }
  
-static gboolean
+static bboolean
 btk_icon_view_accessible_select_all_selection (BatkSelection *selection)
 {
   BtkWidget *widget;
@@ -9894,7 +9894,7 @@ btk_icon_view_accessible_get_type (void)
 }
 
 static BatkObject *
-btk_icon_view_accessible_new (GObject *obj)
+btk_icon_view_accessible_new (BObject *obj)
 {
   BatkObject *accessible;
 
@@ -9913,7 +9913,7 @@ btk_icon_view_accessible_factory_get_accessible_type (void)
 }
 
 static BatkObject*
-btk_icon_view_accessible_factory_create_accessible (GObject *obj)
+btk_icon_view_accessible_factory_create_accessible (BObject *obj)
 {
   return btk_icon_view_accessible_new (obj);
 }
@@ -9956,7 +9956,7 @@ btk_icon_view_accessible_factory_get_type (void)
 static BatkObject *
 btk_icon_view_get_accessible (BtkWidget *widget)
 {
-  static gboolean first_time = TRUE;
+  static bboolean first_time = TRUE;
 
   if (first_time)
     {
@@ -9985,13 +9985,13 @@ btk_icon_view_get_accessible (BtkWidget *widget)
   return BTK_WIDGET_CLASS (btk_icon_view_parent_class)->get_accessible (widget);
 }
 
-static gboolean
+static bboolean
 btk_icon_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 					  BtkBuilder    *builder,
-					  GObject       *child,
-					  const gchar   *tagname,
+					  BObject       *child,
+					  const bchar   *tagname,
 					  GMarkupParser *parser,
-					  gpointer      *data)
+					  bpointer      *data)
 {
   if (parent_buildable_iface->custom_tag_start (buildable, builder, child,
 						tagname, parser, data))
@@ -10004,9 +10004,9 @@ btk_icon_view_buildable_custom_tag_start (BtkBuildable  *buildable,
 static void
 btk_icon_view_buildable_custom_tag_end (BtkBuildable *buildable,
 					BtkBuilder   *builder,
-					GObject      *child,
-					const gchar  *tagname,
-					gpointer     *data)
+					BObject      *child,
+					const bchar  *tagname,
+					bpointer     *data)
 {
   if (strcmp (tagname, "attributes") == 0)
     _btk_cell_layout_buildable_custom_tag_end (buildable, builder, child, tagname,

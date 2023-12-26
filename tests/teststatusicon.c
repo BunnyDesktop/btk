@@ -35,7 +35,7 @@ typedef enum
 } TestStatus;
 
 static TestStatus status = TEST_STATUS_INFO;
-static gint timeout = 0;
+static bint timeout = 0;
 static GSList *icons = NULL;
 
 static void
@@ -72,8 +72,8 @@ static void
 update_icons (void)
 {
   GSList *l;
-  gchar *icon_name;
-  gchar *tooltip;
+  bchar *icon_name;
+  bchar *tooltip;
 
   if (status == TEST_STATUS_INFO)
     {
@@ -95,8 +95,8 @@ update_icons (void)
     }
 }
 
-static gboolean
-timeout_handler (gpointer data)
+static bboolean
+timeout_handler (bpointer data)
 {
   if (status == TEST_STATUS_INFO)
     status = TEST_STATUS_QUESTION;
@@ -148,7 +148,7 @@ icon_activated (BtkStatusIcon *icon)
   BtkWidget *dialog;
   BtkWidget *toggle;
 
-  dialog = g_object_get_data (G_OBJECT (icon), "test-status-icon-dialog");
+  dialog = g_object_get_data (B_OBJECT (icon), "test-status-icon-dialog");
   if (dialog == NULL)
     {
       dialog = btk_message_dialog_new (NULL, 0,
@@ -159,7 +159,7 @@ icon_activated (BtkStatusIcon *icon)
       btk_window_set_screen (BTK_WINDOW (dialog), btk_status_icon_get_screen (icon));
       btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_CENTER);
 
-      g_object_set_data_full (G_OBJECT (icon), "test-status-icon-dialog",
+      g_object_set_data_full (B_OBJECT (icon), "test-status-icon-dialog",
 			      dialog, (GDestroyNotify) btk_widget_destroy);
 
       g_signal_connect (dialog, "response", 
@@ -234,7 +234,7 @@ do_properties (BtkMenuItem   *item,
 	static BtkWidget *editor = NULL;
 
 	if (editor == NULL) {
-		editor = create_prop_editor (G_OBJECT (icon), BTK_TYPE_STATUS_ICON);
+		editor = create_prop_editor (B_OBJECT (icon), BTK_TYPE_STATUS_ICON);
 		g_signal_connect (editor, "destroy", G_CALLBACK (btk_widget_destroyed), &editor);
 	}
 
@@ -254,7 +254,7 @@ do_quit (BtkMenuItem *item)
       g_object_unref (icon);
     }
 
-  g_slist_free (icons);
+  b_slist_free (icons);
   icons = NULL;
 
   btk_main_quit ();
@@ -268,8 +268,8 @@ do_exit (BtkMenuItem *item)
 
 static void 
 popup_menu (BtkStatusIcon *icon,
-	    guint          button,
-	    guint32        activate_time)
+	    buint          button,
+	    buint32        activate_time)
 {
   BtkWidget *menu, *menuitem;
 
@@ -318,7 +318,7 @@ int
 main (int argc, char **argv)
 {
   BdkDisplay *display;
-  guint n_screens, i;
+  buint n_screens, i;
 
   btk_init (&argc, &argv);
 
@@ -347,7 +347,7 @@ main (int argc, char **argv)
       g_signal_connect (icon, "popup-menu",
                         G_CALLBACK (popup_menu), NULL);
 
-      icons = g_slist_append (icons, icon);
+      icons = b_slist_append (icons, icon);
  
       update_icons ();
 

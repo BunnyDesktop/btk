@@ -35,14 +35,14 @@
 #include <btk/btkcontainer.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FIXED                  (btk_fixed_get_type ())
-#define BTK_FIXED(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FIXED, BtkFixed))
-#define BTK_FIXED_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FIXED, BtkFixedClass))
-#define BTK_IS_FIXED(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FIXED))
-#define BTK_IS_FIXED_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FIXED))
-#define BTK_FIXED_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FIXED, BtkFixedClass))
+#define BTK_FIXED(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FIXED, BtkFixed))
+#define BTK_FIXED_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FIXED, BtkFixedClass))
+#define BTK_IS_FIXED(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FIXED))
+#define BTK_IS_FIXED_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FIXED))
+#define BTK_FIXED_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FIXED, BtkFixedClass))
 
 
 typedef struct _BtkFixed        BtkFixed;
@@ -64,27 +64,27 @@ struct _BtkFixedClass
 struct _BtkFixedChild
 {
   BtkWidget *widget;
-  gint x;
-  gint y;
+  bint x;
+  bint y;
 };
 
 
-GType      btk_fixed_get_type          (void) G_GNUC_CONST;
+GType      btk_fixed_get_type          (void) B_GNUC_CONST;
 BtkWidget* btk_fixed_new               (void);
 void       btk_fixed_put               (BtkFixed       *fixed,
                                         BtkWidget      *widget,
-                                        gint            x,
-                                        gint            y);
+                                        bint            x,
+                                        bint            y);
 void       btk_fixed_move              (BtkFixed       *fixed,
                                         BtkWidget      *widget,
-                                        gint            x,
-                                        gint            y);
+                                        bint            x,
+                                        bint            y);
 #ifndef BTK_DISABLE_DEPRECATED
 void       btk_fixed_set_has_window    (BtkFixed       *fixed,
-					gboolean        has_window);
-gboolean   btk_fixed_get_has_window    (BtkFixed       *fixed);
+					bboolean        has_window);
+bboolean   btk_fixed_get_has_window    (BtkFixed       *fixed);
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FIXED_H__ */

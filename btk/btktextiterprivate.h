@@ -29,7 +29,7 @@
 
 #include <btk/btktextiter.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #include <btk/btktextiter.h>
 #include <btk/btktextbtree.h>
@@ -38,16 +38,16 @@ BtkTextLineSegment *_btk_text_iter_get_indexable_segment      (const BtkTextIter
 BtkTextLineSegment *_btk_text_iter_get_any_segment            (const BtkTextIter *iter);
 BtkTextLine *       _btk_text_iter_get_text_line              (const BtkTextIter *iter);
 BtkTextBTree *      _btk_text_iter_get_btree                  (const BtkTextIter *iter);
-gboolean            _btk_text_iter_forward_indexable_segment  (BtkTextIter       *iter);
-gboolean            _btk_text_iter_backward_indexable_segment (BtkTextIter       *iter);
-gint                _btk_text_iter_get_segment_byte           (const BtkTextIter *iter);
-gint                _btk_text_iter_get_segment_char           (const BtkTextIter *iter);
+bboolean            _btk_text_iter_forward_indexable_segment  (BtkTextIter       *iter);
+bboolean            _btk_text_iter_backward_indexable_segment (BtkTextIter       *iter);
+bint                _btk_text_iter_get_segment_byte           (const BtkTextIter *iter);
+bint                _btk_text_iter_get_segment_char           (const BtkTextIter *iter);
 
 
 /* debug */
 void _btk_text_iter_check (const BtkTextIter *iter);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif
 

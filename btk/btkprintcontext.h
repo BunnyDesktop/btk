@@ -30,30 +30,30 @@
 #include <btk/btkpagesetup.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPrintContext BtkPrintContext;
 
 #define BTK_TYPE_PRINT_CONTEXT    (btk_print_context_get_type ())
-#define BTK_PRINT_CONTEXT(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_CONTEXT, BtkPrintContext))
-#define BTK_IS_PRINT_CONTEXT(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_CONTEXT))
+#define BTK_PRINT_CONTEXT(obj)    (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_CONTEXT, BtkPrintContext))
+#define BTK_IS_PRINT_CONTEXT(obj) (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_CONTEXT))
 
-GType          btk_print_context_get_type (void) G_GNUC_CONST;
+GType          btk_print_context_get_type (void) B_GNUC_CONST;
 
 
 /* Rendering */
 bairo_t      *btk_print_context_get_bairo_context    (BtkPrintContext *context);
 
 BtkPageSetup *btk_print_context_get_page_setup       (BtkPrintContext *context);
-gdouble       btk_print_context_get_width            (BtkPrintContext *context);
-gdouble       btk_print_context_get_height           (BtkPrintContext *context);
-gdouble       btk_print_context_get_dpi_x            (BtkPrintContext *context);
-gdouble       btk_print_context_get_dpi_y            (BtkPrintContext *context);
-gboolean      btk_print_context_get_hard_margins     (BtkPrintContext *context,
-						      gdouble         *top,
-						      gdouble         *bottom,
-						      gdouble         *left,
-						      gdouble         *right);
+bdouble       btk_print_context_get_width            (BtkPrintContext *context);
+bdouble       btk_print_context_get_height           (BtkPrintContext *context);
+bdouble       btk_print_context_get_dpi_x            (BtkPrintContext *context);
+bdouble       btk_print_context_get_dpi_y            (BtkPrintContext *context);
+bboolean      btk_print_context_get_hard_margins     (BtkPrintContext *context,
+						      bdouble         *top,
+						      bdouble         *bottom,
+						      bdouble         *left,
+						      bdouble         *right);
 
 /* Fonts */
 BangoFontMap *btk_print_context_get_bango_fontmap    (BtkPrintContext *context);
@@ -66,6 +66,6 @@ void         btk_print_context_set_bairo_context     (BtkPrintContext *context,
 						      double           dpi_x,
 						      double           dpi_y);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_CONTEXT_H__ */

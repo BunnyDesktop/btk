@@ -36,24 +36,24 @@
 #include <btk/btkmenushell.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_MENU			(btk_menu_get_type ())
-#define BTK_MENU(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU, BtkMenu))
-#define BTK_MENU_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU, BtkMenuClass))
-#define BTK_IS_MENU(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU))
-#define BTK_IS_MENU_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU))
-#define BTK_MENU_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU, BtkMenuClass))
+#define BTK_MENU(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MENU, BtkMenu))
+#define BTK_MENU_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MENU, BtkMenuClass))
+#define BTK_IS_MENU(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MENU))
+#define BTK_IS_MENU_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MENU))
+#define BTK_MENU_GET_CLASS(obj)         (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MENU, BtkMenuClass))
 
 
 typedef struct _BtkMenu	      BtkMenu;
 typedef struct _BtkMenuClass  BtkMenuClass;
 
 typedef void (*BtkMenuPositionFunc) (BtkMenu   *menu,
-				     gint      *x,
-				     gint      *y,
-				     gboolean  *push_in,
-				     gpointer	user_data);
+				     bint      *x,
+				     bint      *y,
+				     bboolean  *push_in,
+				     bpointer	user_data);
 typedef void (*BtkMenuDetachFunc)   (BtkWidget *attach_widget,
 				     BtkMenu   *menu);
 
@@ -65,11 +65,11 @@ struct _BtkMenu
   BtkWidget *GSEAL (old_active_menu_item);
 
   BtkAccelGroup *GSEAL (accel_group);
-  gchar         *GSEAL (accel_path);
+  bchar         *GSEAL (accel_path);
   BtkMenuPositionFunc GSEAL (position_func);
-  gpointer GSEAL (position_func_data);
+  bpointer GSEAL (position_func_data);
 
-  guint GSEAL (toggle_size);
+  buint GSEAL (toggle_size);
   /* Do _not_ touch these widgets directly. We hide the reference
    * count from the toplevel to the menu, so it must be restored
    * before operating on these widgets
@@ -84,30 +84,30 @@ struct _BtkMenu
   BdkWindow *GSEAL (view_window);
   BdkWindow *GSEAL (bin_window);
 
-  gint GSEAL (scroll_offset);
-  gint GSEAL (saved_scroll_offset);
-  gint GSEAL (scroll_step);
-  guint GSEAL (timeout_id);
+  bint GSEAL (scroll_offset);
+  bint GSEAL (saved_scroll_offset);
+  bint GSEAL (scroll_step);
+  buint GSEAL (timeout_id);
   
   /* When a submenu of this menu is popped up, motion in this
    * rebunnyion is ignored
    */
   BdkRebunnyion *GSEAL (navigation_rebunnyion); /* unused */
-  guint GSEAL (navigation_timeout);
+  buint GSEAL (navigation_timeout);
 
-  guint GSEAL (needs_destruction_ref_count) : 1;
-  guint GSEAL (torn_off) : 1;
+  buint GSEAL (needs_destruction_ref_count) : 1;
+  buint GSEAL (torn_off) : 1;
   /* The tearoff is active when it is torn off and the not-torn-off
    * menu is not popped up.
    */
-  guint GSEAL (tearoff_active) : 1;
+  buint GSEAL (tearoff_active) : 1;
 
-  guint GSEAL (scroll_fast) : 1;
+  buint GSEAL (scroll_fast) : 1;
 
-  guint GSEAL (upper_arrow_visible) : 1;
-  guint GSEAL (lower_arrow_visible) : 1;
-  guint GSEAL (upper_arrow_prelight) : 1;
-  guint GSEAL (lower_arrow_prelight) : 1;
+  buint GSEAL (upper_arrow_visible) : 1;
+  buint GSEAL (lower_arrow_visible) : 1;
+  buint GSEAL (upper_arrow_prelight) : 1;
+  buint GSEAL (lower_arrow_prelight) : 1;
 };
 
 struct _BtkMenuClass
@@ -122,7 +122,7 @@ struct _BtkMenuClass
 };
 
 
-GType	   btk_menu_get_type		  (void) G_GNUC_CONST;
+GType	   btk_menu_get_type		  (void) B_GNUC_CONST;
 BtkWidget* btk_menu_new			  (void);
 
 /* Display the menu onscreen */
@@ -130,9 +130,9 @@ void	   btk_menu_popup		  (BtkMenu	       *menu,
 					   BtkWidget	       *parent_menu_shell,
 					   BtkWidget	       *parent_menu_item,
 					   BtkMenuPositionFunc	func,
-					   gpointer		data,
-					   guint		button,
-					   guint32		activate_time);
+					   bpointer		data,
+					   buint		button,
+					   buint32		activate_time);
 
 /* Position the menu according to its position function. Called
  * from btkmenuitem.c when a menu-item changes its allocation
@@ -146,7 +146,7 @@ void	   btk_menu_popdown		  (BtkMenu	       *menu);
  */
 BtkWidget* btk_menu_get_active		  (BtkMenu	       *menu);
 void	   btk_menu_set_active		  (BtkMenu	       *menu,
-					   guint		index_);
+					   buint		index_);
 
 /* set/get the accelerator group that holds global accelerators (should
  * be added to the corresponding toplevel with btk_window_add_accel_group().
@@ -155,8 +155,8 @@ void	       btk_menu_set_accel_group	  (BtkMenu	       *menu,
 					   BtkAccelGroup       *accel_group);
 BtkAccelGroup* btk_menu_get_accel_group	  (BtkMenu	       *menu);
 void           btk_menu_set_accel_path    (BtkMenu             *menu,
-					   const gchar         *accel_path);
-const gchar*   btk_menu_get_accel_path    (BtkMenu             *menu);
+					   const bchar         *accel_path);
+const bchar*   btk_menu_get_accel_path    (BtkMenu             *menu);
 
 /* A reference count is kept for a widget when it is attached to
  * a particular widget. This is typically a menu item; it may also
@@ -174,33 +174,33 @@ void	   btk_menu_detach		  (BtkMenu	       *menu);
 BtkWidget* btk_menu_get_attach_widget	  (BtkMenu	       *menu);
 
 void       btk_menu_set_tearoff_state     (BtkMenu             *menu,
-					   gboolean             torn_off);
-gboolean   btk_menu_get_tearoff_state     (BtkMenu             *menu);
+					   bboolean             torn_off);
+bboolean   btk_menu_get_tearoff_state     (BtkMenu             *menu);
 
 /* This sets the window manager title for the window that
  * appears when a menu is torn off
  */
 void       btk_menu_set_title             (BtkMenu             *menu,
-					   const gchar         *title);
-const gchar *btk_menu_get_title           (BtkMenu             *menu);
+					   const bchar         *title);
+const bchar *btk_menu_get_title           (BtkMenu             *menu);
 
 void       btk_menu_reorder_child         (BtkMenu             *menu,
                                            BtkWidget           *child,
-                                           gint                position);
+                                           bint                position);
 
 void	   btk_menu_set_screen		  (BtkMenu	       *menu,
 					   BdkScreen	       *screen);
 
 void       btk_menu_attach                (BtkMenu             *menu,
                                            BtkWidget           *child,
-                                           guint                left_attach,
-                                           guint                right_attach,
-                                           guint                top_attach,
-                                           guint                bottom_attach);
+                                           buint                left_attach,
+                                           buint                right_attach,
+                                           buint                top_attach,
+                                           buint                bottom_attach);
 
 void       btk_menu_set_monitor           (BtkMenu             *menu,
-                                           gint                 monitor_num);
-gint       btk_menu_get_monitor           (BtkMenu             *menu);
+                                           bint                 monitor_num);
+bint       btk_menu_get_monitor           (BtkMenu             *menu);
 GList*     btk_menu_get_for_attach_widget (BtkWidget           *widget); 
 
 #ifndef BTK_DISABLE_DEPRECATED
@@ -210,10 +210,10 @@ GList*     btk_menu_get_for_attach_widget (BtkWidget           *widget);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 void     btk_menu_set_reserve_toggle_size (BtkMenu  *menu,
-                                          gboolean   reserve_toggle_size);
-gboolean btk_menu_get_reserve_toggle_size (BtkMenu  *menu);
+                                          bboolean   reserve_toggle_size);
+bboolean btk_menu_get_reserve_toggle_size (BtkMenu  *menu);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MENU_H__ */

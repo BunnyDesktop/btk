@@ -36,15 +36,15 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_RANGE            (btk_range_get_type ())
-#define BTK_RANGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RANGE, BtkRange))
-#define BTK_RANGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RANGE, BtkRangeClass))
-#define BTK_IS_RANGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RANGE))
-#define BTK_IS_RANGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RANGE))
-#define BTK_RANGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RANGE, BtkRangeClass))
+#define BTK_RANGE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RANGE, BtkRange))
+#define BTK_RANGE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RANGE, BtkRangeClass))
+#define BTK_IS_RANGE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RANGE))
+#define BTK_IS_RANGE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RANGE))
+#define BTK_RANGE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RANGE, BtkRangeClass))
 
 /* These two are private/opaque types, ignore */
 typedef struct _BtkRangeLayout    BtkRangeLayout;
@@ -59,46 +59,46 @@ struct _BtkRange
 
   BtkAdjustment *GSEAL (adjustment);
   BtkUpdateType GSEAL (update_policy);
-  guint GSEAL (inverted) : 1;
+  buint GSEAL (inverted) : 1;
 
   /*< protected >*/
 
-  guint GSEAL (flippable) : 1;
+  buint GSEAL (flippable) : 1;
 
   /* Steppers are: < > ---- < >
    *               a b      c d
    */
 
-  guint GSEAL (has_stepper_a) : 1;
-  guint GSEAL (has_stepper_b) : 1;
-  guint GSEAL (has_stepper_c) : 1;
-  guint GSEAL (has_stepper_d) : 1;
+  buint GSEAL (has_stepper_a) : 1;
+  buint GSEAL (has_stepper_b) : 1;
+  buint GSEAL (has_stepper_c) : 1;
+  buint GSEAL (has_stepper_d) : 1;
 
-  guint GSEAL (need_recalc) : 1;
+  buint GSEAL (need_recalc) : 1;
 
-  guint GSEAL (slider_size_fixed) : 1;
+  buint GSEAL (slider_size_fixed) : 1;
 
-  gint GSEAL (min_slider_size);
+  bint GSEAL (min_slider_size);
 
   BtkOrientation GSEAL (orientation);
 
   /* Area of entire stepper + trough assembly in widget->window coords */
   BdkRectangle GSEAL (range_rect);
   /* Slider range along the long dimension, in widget->window coords */
-  gint GSEAL (slider_start);
-  gint GSEAL (slider_end);
+  bint GSEAL (slider_start);
+  bint GSEAL (slider_end);
 
   /* Round off value to this many digits, -1 for no rounding */
-  gint GSEAL (round_digits);
+  bint GSEAL (round_digits);
 
   /*< private >*/
-  guint GSEAL (trough_click_forward) : 1;  /* trough click was on the forward side of slider */
-  guint GSEAL (update_pending) : 1;        /* need to emit value_changed */
+  buint GSEAL (trough_click_forward) : 1;  /* trough click was on the forward side of slider */
+  buint GSEAL (update_pending) : 1;        /* need to emit value_changed */
   BtkRangeLayout *GSEAL (layout);
   BtkRangeStepTimer *GSEAL (timer);
-  gint GSEAL (slide_initial_slider_position);
-  gint GSEAL (slide_initial_coordinate);
-  guint GSEAL (update_timeout_id);
+  bint GSEAL (slide_initial_slider_position);
+  bint GSEAL (slide_initial_coordinate);
+  buint GSEAL (update_timeout_id);
   BdkWindow *GSEAL (event_window);
 };
 
@@ -107,12 +107,12 @@ struct _BtkRangeClass
   BtkWidgetClass parent_class;
 
   /* what detail to pass to BTK drawing functions */
-  gchar *slider_detail;
-  gchar *stepper_detail;
+  bchar *slider_detail;
+  bchar *stepper_detail;
 
   void (* value_changed)    (BtkRange     *range);
   void (* adjust_bounds)    (BtkRange     *range,
-                             gdouble	   new_value);
+                             bdouble	   new_value);
 
   /* action signals for keybindings */
   void (* move_slider)      (BtkRange     *range,
@@ -122,9 +122,9 @@ struct _BtkRangeClass
   void (* get_range_border) (BtkRange     *range,
                              BtkBorder    *border_);
 
-  gboolean (* change_value) (BtkRange     *range,
+  bboolean (* change_value) (BtkRange     *range,
                              BtkScrollType scroll,
-                             gdouble       new_value);
+                             bdouble       new_value);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -133,7 +133,7 @@ struct _BtkRangeClass
 };
 
 
-GType              btk_range_get_type                      (void) G_GNUC_CONST;
+GType              btk_range_get_type                      (void) B_GNUC_CONST;
 
 #ifndef BTK_DISABLE_DEPRECATED
 void               btk_range_set_update_policy             (BtkRange      *range,
@@ -146,26 +146,26 @@ void               btk_range_set_adjustment                (BtkRange      *range
 BtkAdjustment*     btk_range_get_adjustment                (BtkRange      *range);
 
 void               btk_range_set_inverted                  (BtkRange      *range,
-                                                            gboolean       setting);
-gboolean           btk_range_get_inverted                  (BtkRange      *range);
+                                                            bboolean       setting);
+bboolean           btk_range_get_inverted                  (BtkRange      *range);
 
 void               btk_range_set_flippable                 (BtkRange      *range,
-                                                            gboolean       flippable);
-gboolean           btk_range_get_flippable                 (BtkRange      *range);
+                                                            bboolean       flippable);
+bboolean           btk_range_get_flippable                 (BtkRange      *range);
 
 void               btk_range_set_slider_size_fixed         (BtkRange      *range,
-                                                            gboolean       size_fixed);
-gboolean           btk_range_get_slider_size_fixed         (BtkRange      *range);
+                                                            bboolean       size_fixed);
+bboolean           btk_range_get_slider_size_fixed         (BtkRange      *range);
 
 void               btk_range_set_min_slider_size           (BtkRange      *range,
-                                                            gboolean       min_size);
-gint               btk_range_get_min_slider_size           (BtkRange      *range);
+                                                            bboolean       min_size);
+bint               btk_range_get_min_slider_size           (BtkRange      *range);
 
 void               btk_range_get_range_rect                (BtkRange      *range,
                                                             BdkRectangle  *range_rect);
 void               btk_range_get_slider_range              (BtkRange      *range,
-                                                            gint          *slider_start,
-                                                            gint          *slider_end);
+                                                            bint          *slider_start,
+                                                            bint          *slider_end);
 
 void               btk_range_set_lower_stepper_sensitivity (BtkRange      *range,
                                                             BtkSensitivityType sensitivity);
@@ -175,41 +175,41 @@ void               btk_range_set_upper_stepper_sensitivity (BtkRange      *range
 BtkSensitivityType btk_range_get_upper_stepper_sensitivity (BtkRange      *range);
 
 void               btk_range_set_increments                (BtkRange      *range,
-                                                            gdouble        step,
-                                                            gdouble        page);
+                                                            bdouble        step,
+                                                            bdouble        page);
 void               btk_range_set_range                     (BtkRange      *range,
-                                                            gdouble        min,
-                                                            gdouble        max);
+                                                            bdouble        min,
+                                                            bdouble        max);
 void               btk_range_set_value                     (BtkRange      *range,
-                                                            gdouble        value);
-gdouble            btk_range_get_value                     (BtkRange      *range);
+                                                            bdouble        value);
+bdouble            btk_range_get_value                     (BtkRange      *range);
 
 void               btk_range_set_show_fill_level           (BtkRange      *range,
-                                                            gboolean       show_fill_level);
-gboolean           btk_range_get_show_fill_level           (BtkRange      *range);
+                                                            bboolean       show_fill_level);
+bboolean           btk_range_get_show_fill_level           (BtkRange      *range);
 void               btk_range_set_restrict_to_fill_level    (BtkRange      *range,
-                                                            gboolean       restrict_to_fill_level);
-gboolean           btk_range_get_restrict_to_fill_level    (BtkRange      *range);
+                                                            bboolean       restrict_to_fill_level);
+bboolean           btk_range_get_restrict_to_fill_level    (BtkRange      *range);
 void               btk_range_set_fill_level                (BtkRange      *range,
-                                                            gdouble        fill_level);
-gdouble            btk_range_get_fill_level                (BtkRange      *range);
+                                                            bdouble        fill_level);
+bdouble            btk_range_get_fill_level                (BtkRange      *range);
 void               btk_range_set_round_digits              (BtkRange      *range,
-                                                            gint           round_digits);
-gint                btk_range_get_round_digits             (BtkRange      *range);
+                                                            bint           round_digits);
+bint                btk_range_get_round_digits             (BtkRange      *range);
 
 
 /* internal API */
-gdouble            _btk_range_get_wheel_delta              (BtkRange      *range,
+bdouble            _btk_range_get_wheel_delta              (BtkRange      *range,
                                                             BdkScrollDirection direction);
 
 void               _btk_range_set_stop_values              (BtkRange      *range,
-                                                            gdouble       *values,
-                                                            gint           n_values);
-gint               _btk_range_get_stop_positions           (BtkRange      *range,
-                                                            gint         **values);          
+                                                            bdouble       *values,
+                                                            bint           n_values);
+bint               _btk_range_get_stop_positions           (BtkRange      *range,
+                                                            bint         **values);          
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_RANGE_H__ */

@@ -12,7 +12,7 @@
 static BtkTextBuffer *info_buffer;
 static BtkTextBuffer *source_buffer;
 
-static gchar *current_file = NULL;
+static bchar *current_file = NULL;
 
 
 enum {
@@ -66,7 +66,7 @@ get_democodedir (void)
  * 
  * Return value: the filename, if found or %NULL
  **/
-gchar *
+bchar *
 demo_find_file (const char *base,
 		GError    **err)
 {
@@ -90,7 +90,7 @@ demo_find_file (const char *base,
 }
 
 static void
-window_closed_cb (BtkWidget *window, gpointer data)
+window_closed_cb (BtkWidget *window, bpointer data)
 {
   CallbackData *cbdata = data;
   BtkTreeIter iter;
@@ -109,7 +109,7 @@ window_closed_cb (BtkWidget *window, gpointer data)
   g_free (cbdata);
 }
 
-gboolean
+bboolean
 read_line (FILE *stream, GString *str)
 {
   int n_read = 0;
@@ -182,41 +182,41 @@ enum {
   STATE_IN_COMMENT
 };
 
-static gchar *tokens[] =
+static bchar *tokens[] =
 {
   "/*",
   "\"",
   NULL
 };
 
-static gchar *types[] =
+static bchar *types[] =
 {
   "static",
   "const ",
   "void",
-  "gint",
+  "bint",
   " int ",
   " char ",
-  "gchar ",
-  "gfloat",
+  "bchar ",
+  "bfloat",
   "float",
   "double",
-  "gint8",
-  "gint16",
-  "gint32",
-  "guint",
-  "guint8",
-  "guint16",
-  "guint32",
-  "guchar",
-  "glong",
-  "gboolean" ,
-  "gshort",
-  "gushort",
-  "gulong",
-  "gdouble",
+  "bint8",
+  "bint16",
+  "bint32",
+  "buint",
+  "buint8",
+  "buint16",
+  "buint32",
+  "buchar",
+  "blong",
+  "bboolean" ,
+  "bshort",
+  "bushort",
+  "bulong",
+  "bdouble",
   "gldouble",
-  "gpointer",
+  "bpointer",
   "NULL",
   "GList",
   "GSList",
@@ -319,7 +319,7 @@ static gchar *types[] =
   NULL
 };
 
-static gchar *control[] =
+static bchar *control[] =
 {
   " if ",
   " while ",
@@ -333,14 +333,14 @@ static gchar *control[] =
   NULL
 };
 void
-parse_chars (gchar     *text,
-	     gchar    **end_ptr,
-	     gint      *state,
-	     gchar    **tag,
-	     gboolean   start)
+parse_chars (bchar     *text,
+	     bchar    **end_ptr,
+	     bint      *state,
+	     bchar    **tag,
+	     bboolean   start)
 {
-  gint i;
-  gchar *next_token;
+  bint i;
+  bchar *next_token;
 
   /* Handle comments first */
   if (*state == STATE_IN_COMMENT)
@@ -410,7 +410,7 @@ parse_chars (gchar     *text,
   /* check for string */
   if (text[0] == '"')
     {
-      gint maybe_escape = FALSE;
+      bint maybe_escape = FALSE;
 
       *end_ptr = text + 1;
       *tag = "string";
@@ -473,10 +473,10 @@ static void
 fontify (void)
 {
   BtkTextIter start_iter, next_iter, tmp_iter;
-  gint state;
-  gchar *text;
-  gchar *start_ptr, *end_ptr;
-  gchar *tag;
+  bint state;
+  bchar *text;
+  bchar *start_ptr, *end_ptr;
+  bchar *tag;
 
   state = STATE_NORMAL;
 
@@ -485,7 +485,7 @@ fontify (void)
   next_iter = start_iter;
   while (btk_text_iter_forward_line (&next_iter))
     {
-      gboolean start = TRUE;
+      bboolean start = TRUE;
       start_ptr = text = btk_text_iter_get_text (&start_iter, &next_iter);
 
       do
@@ -516,7 +516,7 @@ fontify (void)
 }
 
 void
-load_file (const gchar *filename)
+load_file (const bchar *filename)
 {
   FILE *file;
   BtkTextIter start, end;
@@ -524,7 +524,7 @@ load_file (const gchar *filename)
   GError *err = NULL;
   GString *buffer = g_string_new (NULL);
   int state = 0;
-  gboolean in_para = 0;
+  bboolean in_para = 0;
 
   if (current_file && !strcmp (current_file, filename))
     {
@@ -562,9 +562,9 @@ load_file (const gchar *filename)
   btk_text_buffer_get_iter_at_offset (info_buffer, &start, 0);
   while (read_line (file, buffer))
     {
-      gchar *p = buffer->str;
-      gchar *q;
-      gchar *r;
+      bchar *p = buffer->str;
+      bchar *q;
+      bchar *r;
       
       switch (state)
 	{
@@ -712,7 +712,7 @@ selection_cb (BtkTreeSelection *selection,
 	      BtkTreeModel     *model)
 {
   BtkTreeIter iter;
-  GValue value = {0, };
+  BValue value = {0, };
 
   if (! btk_tree_selection_get_selected (selection, NULL, &iter))
     return;
@@ -720,14 +720,14 @@ selection_cb (BtkTreeSelection *selection,
   btk_tree_model_get_value (model, &iter,
 			    FILENAME_COLUMN,
 			    &value);
-  if (g_value_get_string (&value))
-    load_file (g_value_get_string (&value));
-  g_value_unset (&value);
+  if (b_value_get_string (&value))
+    load_file (b_value_get_string (&value));
+  b_value_unset (&value);
 }
 
 static BtkWidget *
 create_text (BtkTextBuffer **buffer,
-	     gboolean        is_source)
+	     bboolean        is_source)
 {
   BtkWidget *scrolled_window;
   BtkWidget *text_view;
@@ -785,7 +785,7 @@ create_tree (void)
 
   Demo *d = testbtk_demos;
 
-  model = btk_tree_store_new (NUM_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_POINTER, G_TYPE_INT);
+  model = btk_tree_store_new (NUM_COLUMNS, B_TYPE_STRING, B_TYPE_STRING, B_TYPE_POINTER, B_TYPE_INT);
   tree_view = btk_tree_view_new ();
   btk_tree_view_set_model (BTK_TREE_VIEW (tree_view), BTK_TREE_MODEL (model));
   selection = btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view));

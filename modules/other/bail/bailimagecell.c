@@ -25,29 +25,29 @@
 static void      bail_image_cell_class_init          (BailImageCellClass *klass);
 static void      bail_image_cell_init                (BailImageCell      *image_cell);
 
-static void      bail_image_cell_finalize            (GObject            *object);
+static void      bail_image_cell_finalize            (BObject            *object);
 
 /* BatkImage */
 static void      batk_image_interface_init              (BatkImageIface  *iface);
-static const gchar *
+static const bchar *
                  bail_image_cell_get_image_description (BatkImage       *image);
-static gboolean  bail_image_cell_set_image_description (BatkImage       *image,
-                                                        const gchar    *description);
+static bboolean  bail_image_cell_set_image_description (BatkImage       *image,
+                                                        const bchar    *description);
 static void      bail_image_cell_get_image_position    (BatkImage       *image,
-                                                        gint           *x,
-                                                        gint           *y,
+                                                        bint           *x,
+                                                        bint           *y,
                                                         BatkCoordType   coord_type);
 static void      bail_image_cell_get_image_size        (BatkImage       *image,
-                                                        gint           *width,
-                                                        gint           *height);
+                                                        bint           *width,
+                                                        bint           *height);
 
 /* Misc */
 
-static gboolean  bail_image_cell_update_cache          (BailRendererCell *cell,
-                                                        gboolean         emit_change_signal);
+static bboolean  bail_image_cell_update_cache          (BailRendererCell *cell,
+                                                        bboolean         emit_change_signal);
 
 // FIXMEchpe static!!!
-gchar *bail_image_cell_property_list[] = {
+bchar *bail_image_cell_property_list[] = {
   "pixbuf",
   NULL
 };
@@ -58,7 +58,7 @@ G_DEFINE_TYPE_WITH_CODE (BailImageCell, bail_image_cell, BAIL_TYPE_RENDERER_CELL
 static void 
 bail_image_cell_class_init (BailImageCellClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BailRendererCellClass *renderer_cell_class = BAIL_RENDERER_CELL_CLASS(klass);
 
   bobject_class->finalize = bail_image_cell_finalize;
@@ -70,7 +70,7 @@ bail_image_cell_class_init (BailImageCellClass *klass)
 BatkObject* 
 bail_image_cell_new (void)
 {
-  GObject *object;
+  BObject *object;
   BatkObject *batk_object;
   BailRendererCell *cell;
 
@@ -96,17 +96,17 @@ bail_image_cell_init (BailImageCell *image_cell)
 
 
 static void
-bail_image_cell_finalize (GObject *object)
+bail_image_cell_finalize (BObject *object)
 {
   BailImageCell *image_cell = BAIL_IMAGE_CELL (object);
 
   g_free (image_cell->image_description);
-  G_OBJECT_CLASS (bail_image_cell_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_image_cell_parent_class)->finalize (object);
 }
 
-static gboolean
+static bboolean
 bail_image_cell_update_cache (BailRendererCell *cell, 
-                              gboolean         emit_change_signal)
+                              bboolean         emit_change_signal)
 {
   return FALSE;
 }
@@ -120,7 +120,7 @@ batk_image_interface_init (BatkImageIface  *iface)
   iface->get_image_size = bail_image_cell_get_image_size;
 }
 
-static const gchar *
+static const bchar *
 bail_image_cell_get_image_description (BatkImage     *image)
 {
   BailImageCell *image_cell;
@@ -129,9 +129,9 @@ bail_image_cell_get_image_description (BatkImage     *image)
   return image_cell->image_description;
 }
 
-static gboolean
+static bboolean
 bail_image_cell_set_image_description (BatkImage     *image,
-                                       const gchar  *description)
+                                       const bchar  *description)
 {
   BailImageCell *image_cell;
 
@@ -146,8 +146,8 @@ bail_image_cell_set_image_description (BatkImage     *image,
 
 static void
 bail_image_cell_get_image_position (BatkImage     *image,
-                                    gint         *x,
-                                    gint         *y,
+                                    bint         *x,
+                                    bint         *y,
                                     BatkCoordType coord_type)
 {
   batk_component_get_position (BATK_COMPONENT (image), x, y, coord_type);
@@ -155,8 +155,8 @@ bail_image_cell_get_image_position (BatkImage     *image,
 
 static void
 bail_image_cell_get_image_size (BatkImage *image,
-                                gint     *width,
-                                gint     *height)
+                                bint     *width,
+                                bint     *height)
 {
   BailImageCell *cell = BAIL_IMAGE_CELL (image);
   BtkCellRenderer *cell_renderer;

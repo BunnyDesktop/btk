@@ -30,9 +30,9 @@
 typedef struct _BtkFileFilterClass BtkFileFilterClass;
 typedef struct _FilterRule FilterRule;
 
-#define BTK_FILE_FILTER_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
-#define BTK_IS_FILE_FILTER_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_FILTER))
-#define BTK_FILE_FILTER_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
+#define BTK_FILE_FILTER_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
+#define BTK_IS_FILE_FILTER_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_FILTER))
+#define BTK_FILE_FILTER_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilterClass))
 
 typedef enum {
   FILTER_RULE_PATTERN,
@@ -50,7 +50,7 @@ struct _BtkFileFilter
 {
   BtkObject parent_instance;
   
-  gchar *name;
+  bchar *name;
   GSList *rules;
 
   BtkFileFilterFlags needed;
@@ -62,18 +62,18 @@ struct _FilterRule
   BtkFileFilterFlags needed;
   
   union {
-    gchar *pattern;
-    gchar *mime_type;
+    bchar *pattern;
+    bchar *mime_type;
     GSList *pixbuf_formats;
     struct {
       BtkFileFilterFunc func;
-      gpointer data;
+      bpointer data;
       GDestroyNotify notify;
     } custom;
   } u;
 };
 
-static void btk_file_filter_finalize   (GObject            *object);
+static void btk_file_filter_finalize   (BObject            *object);
 
 
 G_DEFINE_TYPE (BtkFileFilter, btk_file_filter, BTK_TYPE_OBJECT)
@@ -86,7 +86,7 @@ btk_file_filter_init (BtkFileFilter *object)
 static void
 btk_file_filter_class_init (BtkFileFilterClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   bobject_class->finalize = btk_file_filter_finalize;
 }
@@ -107,7 +107,7 @@ filter_rule_free (FilterRule *rule)
 	rule->u.custom.notify (rule->u.custom.data);
       break;
     case FILTER_RULE_PIXBUF_FORMATS:
-      g_slist_free (rule->u.pixbuf_formats);
+      b_slist_free (rule->u.pixbuf_formats);
       break;
     default:
       g_assert_not_reached ();
@@ -117,16 +117,16 @@ filter_rule_free (FilterRule *rule)
 }
 
 static void
-btk_file_filter_finalize (GObject  *object)
+btk_file_filter_finalize (BObject  *object)
 {
   BtkFileFilter *filter = BTK_FILE_FILTER (object);
 
-  g_slist_foreach (filter->rules, (GFunc)filter_rule_free, NULL);
-  g_slist_free (filter->rules);
+  b_slist_foreach (filter->rules, (GFunc)filter_rule_free, NULL);
+  b_slist_free (filter->rules);
 
   g_free (filter->name);
 
-  G_OBJECT_CLASS (btk_file_filter_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_file_filter_parent_class)->finalize (object);
 }
 
 /**
@@ -167,7 +167,7 @@ btk_file_filter_new (void)
  **/
 void
 btk_file_filter_set_name (BtkFileFilter *filter,
-			  const gchar   *name)
+			  const bchar   *name)
 {
   g_return_if_fail (BTK_IS_FILE_FILTER (filter));
   
@@ -188,7 +188,7 @@ btk_file_filter_set_name (BtkFileFilter *filter,
  * 
  * Since: 2.4
  **/
-const gchar *
+const bchar *
 btk_file_filter_get_name (BtkFileFilter *filter)
 {
   g_return_val_if_fail (BTK_IS_FILE_FILTER (filter), NULL);
@@ -201,7 +201,7 @@ file_filter_add_rule (BtkFileFilter *filter,
 		      FilterRule    *rule)
 {
   filter->needed |= rule->needed;
-  filter->rules = g_slist_append (filter->rules, rule);
+  filter->rules = b_slist_append (filter->rules, rule);
 }
 
 /**
@@ -215,7 +215,7 @@ file_filter_add_rule (BtkFileFilter *filter,
  **/
 void
 btk_file_filter_add_mime_type (BtkFileFilter *filter,
-			       const gchar   *mime_type)
+			       const bchar   *mime_type)
 {
   FilterRule *rule;
   
@@ -241,7 +241,7 @@ btk_file_filter_add_mime_type (BtkFileFilter *filter,
  **/
 void
 btk_file_filter_add_pattern (BtkFileFilter *filter,
-			     const gchar   *pattern)
+			     const bchar   *pattern)
 {
   FilterRule *rule;
   
@@ -302,7 +302,7 @@ void
 btk_file_filter_add_custom (BtkFileFilter         *filter,
 			    BtkFileFilterFlags     needed,
 			    BtkFileFilterFunc      func,
-			    gpointer               data,
+			    bpointer               data,
 			    GDestroyNotify         notify)
 {
   FilterRule *rule;
@@ -360,7 +360,7 @@ btk_file_filter_get_needed (BtkFileFilter *filter)
  * 
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_file_filter_filter (BtkFileFilter           *filter,
 			const BtkFileFilterInfo *filter_info)
 {
@@ -378,8 +378,8 @@ btk_file_filter_filter (BtkFileFilter           *filter,
 	case FILTER_RULE_MIME_TYPE:
           if (filter_info->mime_type != NULL)
             {
-              gchar *filter_content_type, *rule_content_type;
-              gboolean match;
+              bchar *filter_content_type, *rule_content_type;
+              bboolean match;
 
               filter_content_type = g_content_type_from_mime_type (filter_info->mime_type);
               rule_content_type = g_content_type_from_mime_type (rule->u.mime_type);
@@ -406,7 +406,7 @@ btk_file_filter_filter (BtkFileFilter           *filter,
 	    for (list = rule->u.pixbuf_formats; list; list = list->next)
 	      {
 		int i;
-		gchar **mime_types;
+		bchar **mime_types;
 
 		mime_types = bdk_pixbuf_format_get_mime_types (list->data);
 

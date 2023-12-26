@@ -137,7 +137,7 @@ am_et_register_type (GTypeModule *module)
   a, 'w', 'w', 'i', 0, 0, b+10, \
   a, 'w', 'w', 'u', 0, 0, b+13,
 
-static guint16 am_et_compose_seqs[] = {
+static buint16 am_et_compose_seqs[] = {
   /* do punctuation and numerals here */
 
   '\'',   0, 0, 0, 0, 0, BDK_dead_grave,  /* hopefully this has no side effects */
@@ -483,7 +483,7 @@ MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const bchar *context_id)
 {
   if (strcmp (context_id, "am_et") == 0)
     return g_object_new (type_am_et_translit, NULL);

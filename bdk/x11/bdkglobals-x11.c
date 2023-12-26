@@ -31,7 +31,7 @@
 #include "bdkprivate-x11.h"
 #include "bdkalias.h"
 
-gboolean          _bdk_use_xshm = TRUE;  /* used as a cmd line arg */
+bboolean          _bdk_use_xshm = TRUE;  /* used as a cmd line arg */
 Display          *bdk_display = NULL;
 BdkAtom           _bdk_selection_property;
-gboolean          _bdk_synchronize = FALSE;
+bboolean          _bdk_synchronize = FALSE;

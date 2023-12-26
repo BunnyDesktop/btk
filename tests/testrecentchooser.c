@@ -42,7 +42,7 @@
 static void
 print_current_item (BtkRecentChooser *chooser)
 {
-  gchar *uri;
+  bchar *uri;
 
   uri = btk_recent_chooser_get_current_uri (chooser);
   g_print ("Current item changed :\n  %s\n", uri ? uri : "null");
@@ -52,8 +52,8 @@ print_current_item (BtkRecentChooser *chooser)
 static void
 print_selected (BtkRecentChooser *chooser)
 {
-  gsize uris_len, i;
-  gchar **uris = btk_recent_chooser_get_uris (chooser, &uris_len);
+  bsize uris_len, i;
+  bchar **uris = btk_recent_chooser_get_uris (chooser, &uris_len);
 
   g_print ("Selection changed :\n");
   for (i = 0; i < uris_len; i++)
@@ -65,7 +65,7 @@ print_selected (BtkRecentChooser *chooser)
 
 static void
 response_cb (BtkDialog *dialog,
-	     gint       response_id)
+	     bint       response_id)
 {
   if (response_id == BTK_RESPONSE_OK)
     {
@@ -78,17 +78,17 @@ response_cb (BtkDialog *dialog,
 
 static void
 filter_changed (BtkRecentChooserDialog *dialog,
-		gpointer                data)
+		bpointer                data)
 {
   g_print ("recent filter changed\n");
 }
 
 static void
 notify_multiple_cb (BtkWidget  *dialog,
-		    GParamSpec *pspec,
+		    BParamSpec *pspec,
 		    BtkWidget  *button)
 {
-  gboolean multiple;
+  bboolean multiple;
 
   multiple = btk_recent_chooser_get_select_multiple (BTK_RECENT_CHOOSER (dialog));
 
@@ -113,8 +113,8 @@ main (int   argc,
   BtkWidget *dialog;
   BtkWidget *prop_editor;
   BtkRecentFilter *filter;
-  gint i;
-  gboolean multiple = FALSE;
+  bint i;
+  bboolean multiple = FALSE;
   
   btk_init (&argc, &argv);
 
@@ -172,7 +172,7 @@ main (int   argc,
 
   btk_widget_show_all (dialog);
 
-  prop_editor = create_prop_editor (G_OBJECT (dialog), BTK_TYPE_RECENT_CHOOSER);
+  prop_editor = create_prop_editor (B_OBJECT (dialog), BTK_TYPE_RECENT_CHOOSER);
 
   control_window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 

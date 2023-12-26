@@ -61,8 +61,8 @@ btk_drawing_area_new (void)
 
 void
 btk_drawing_area_size (BtkDrawingArea *darea,
-		       gint            width,
-		       gint            height)
+		       bint            width,
+		       bint            height)
 {
   g_return_if_fail (BTK_IS_DRAWING_AREA (darea));
 
@@ -77,7 +77,7 @@ btk_drawing_area_realize (BtkWidget *widget)
 {
   BtkDrawingArea *darea = BTK_DRAWING_AREA (widget);
   BdkWindowAttr attributes;
-  gint attributes_mask;
+  bint attributes_mask;
 
   if (!btk_widget_get_has_window (widget))
     {

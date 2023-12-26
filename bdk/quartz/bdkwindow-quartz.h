@@ -25,7 +25,7 @@
 #import <bdk/quartz/BdkQuartzView.h>
 #import <bdk/quartz/BdkQuartzWindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Window implementation for Quartz
  */
@@ -34,11 +34,11 @@ typedef struct _BdkWindowImplQuartz BdkWindowImplQuartz;
 typedef struct _BdkWindowImplQuartzClass BdkWindowImplQuartzClass;
 
 #define BDK_TYPE_WINDOW_IMPL_QUARTZ              (_bdk_window_impl_quartz_get_type ())
-#define BDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartz))
-#define BDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
-#define BDK_IS_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ))
-#define BDK_IS_WINDOW_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ))
-#define BDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
+#define BDK_WINDOW_IMPL_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartz))
+#define BDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
+#define BDK_IS_WINDOW_IMPL_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ))
+#define BDK_IS_WINDOW_IMPL_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ))
+#define BDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
 
 struct _BdkWindowImplQuartz
 {
@@ -51,8 +51,8 @@ struct _BdkWindowImplQuartz
   BdkWindowTypeHint type_hint;
 
   BdkRebunnyion *paint_clip_rebunnyion;
-  gint begin_paint_count;
-  gint in_paint_rect_count;
+  bint begin_paint_count;
+  bint in_paint_rect_count;
 
   BdkWindow *transient_for;
 
@@ -69,6 +69,6 @@ struct _BdkWindowImplQuartzClass
 
 GType _bdk_window_impl_quartz_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_QUARTZ_H__ */

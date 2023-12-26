@@ -22,14 +22,14 @@
 
 #include <bail/bailwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CONTAINER                  (bail_container_get_type ())
-#define BAIL_CONTAINER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER, BailContainer))
-#define BAIL_CONTAINER_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CONTAINER, BailContainerClass))
-#define BAIL_IS_CONTAINER(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CONTAINER))
-#define BAIL_IS_CONTAINER_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CONTAINER))
-#define BAIL_CONTAINER_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CONTAINER, BailContainerClass))
+#define BAIL_CONTAINER(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER, BailContainer))
+#define BAIL_CONTAINER_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CONTAINER, BailContainerClass))
+#define BAIL_IS_CONTAINER(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CONTAINER))
+#define BAIL_IS_CONTAINER_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CONTAINER))
+#define BAIL_CONTAINER_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CONTAINER, BailContainerClass))
 
 typedef struct _BailContainer                 BailContainer;
 typedef struct _BailContainerClass            BailContainerClass;
@@ -50,14 +50,14 @@ struct _BailContainerClass
 {
   BailWidgetClass parent_class;
 
-  gint (*add_btk) (BtkContainer *container,
+  bint (*add_btk) (BtkContainer *container,
                    BtkWidget    *widget,
-                   gpointer     data);
-  gint (*remove_btk) (BtkContainer *container,
+                   bpointer     data);
+  bint (*remove_btk) (BtkContainer *container,
                       BtkWidget    *widget,
-                      gpointer     data);
+                      bpointer     data);
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CONTAINER_H__ */

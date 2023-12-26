@@ -36,7 +36,7 @@
 #include "btkdnd.h"
 #include "btkalias.h"
 
-#define BTK_EXPANDER_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_EXPANDER, BtkExpanderPrivate))
+#define BTK_EXPANDER_GET_PRIVATE(o) (B_TYPE_INSTANCE_GET_PRIVATE ((o), BTK_TYPE_EXPANDER, BtkExpanderPrivate))
 
 #define DEFAULT_EXPANDER_SIZE 10
 #define DEFAULT_EXPANDER_SPACING 2
@@ -57,28 +57,28 @@ struct _BtkExpanderPrivate
 {
   BtkWidget        *label_widget;
   BdkWindow        *event_window;
-  gint              spacing;
+  bint              spacing;
 
   BtkExpanderStyle  expander_style;
-  guint             animation_timeout;
-  guint             expand_timer;
+  buint             animation_timeout;
+  buint             expand_timer;
 
-  guint             expanded : 1;
-  guint             use_underline : 1;
-  guint             use_markup : 1; 
-  guint             button_down : 1;
-  guint             prelight : 1;
-  guint             label_fill : 1;
+  buint             expanded : 1;
+  buint             use_underline : 1;
+  buint             use_markup : 1; 
+  buint             button_down : 1;
+  buint             prelight : 1;
+  buint             label_fill : 1;
 };
 
-static void btk_expander_set_property (GObject          *object,
-				       guint             prop_id,
-				       const GValue     *value,
-				       GParamSpec       *pspec);
-static void btk_expander_get_property (GObject          *object,
-				       guint             prop_id,
-				       GValue           *value,
-				       GParamSpec       *pspec);
+static void btk_expander_set_property (BObject          *object,
+				       buint             prop_id,
+				       const BValue     *value,
+				       BParamSpec       *pspec);
+static void btk_expander_get_property (BObject          *object,
+				       buint             prop_id,
+				       BValue           *value,
+				       BParamSpec       *pspec);
 
 static void btk_expander_destroy (BtkObject *object);
 
@@ -90,39 +90,39 @@ static void     btk_expander_size_allocate  (BtkWidget        *widget,
 					     BtkAllocation    *allocation);
 static void     btk_expander_map            (BtkWidget        *widget);
 static void     btk_expander_unmap          (BtkWidget        *widget);
-static gboolean btk_expander_expose         (BtkWidget        *widget,
+static bboolean btk_expander_expose         (BtkWidget        *widget,
 					     BdkEventExpose   *event);
-static gboolean btk_expander_button_press   (BtkWidget        *widget,
+static bboolean btk_expander_button_press   (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_expander_button_release (BtkWidget        *widget,
+static bboolean btk_expander_button_release (BtkWidget        *widget,
 					     BdkEventButton   *event);
-static gboolean btk_expander_enter_notify   (BtkWidget        *widget,
+static bboolean btk_expander_enter_notify   (BtkWidget        *widget,
 					     BdkEventCrossing *event);
-static gboolean btk_expander_leave_notify   (BtkWidget        *widget,
+static bboolean btk_expander_leave_notify   (BtkWidget        *widget,
 					     BdkEventCrossing *event);
-static gboolean btk_expander_focus          (BtkWidget        *widget,
+static bboolean btk_expander_focus          (BtkWidget        *widget,
 					     BtkDirectionType  direction);
 static void     btk_expander_grab_notify    (BtkWidget        *widget,
-					     gboolean          was_grabbed);
+					     bboolean          was_grabbed);
 static void     btk_expander_state_changed  (BtkWidget        *widget,
 					     BtkStateType      previous_state);
-static gboolean btk_expander_drag_motion    (BtkWidget        *widget,
+static bboolean btk_expander_drag_motion    (BtkWidget        *widget,
 					     BdkDragContext   *context,
-					     gint              x,
-					     gint              y,
-					     guint             time);
+					     bint              x,
+					     bint              y,
+					     buint             time);
 static void     btk_expander_drag_leave     (BtkWidget        *widget,
 					     BdkDragContext   *context,
-					     guint             time);
+					     buint             time);
 
 static void btk_expander_add    (BtkContainer *container,
 				 BtkWidget    *widget);
 static void btk_expander_remove (BtkContainer *container,
 				 BtkWidget    *widget);
 static void btk_expander_forall (BtkContainer *container,
-				 gboolean        include_internals,
+				 bboolean        include_internals,
 				 BtkCallback     callback,
-				 gpointer        callback_data);
+				 bpointer        callback_data);
 
 static void btk_expander_activate (BtkExpander *expander);
 
@@ -133,8 +133,8 @@ static void get_expander_bounds (BtkExpander  *expander,
 static void btk_expander_buildable_init           (BtkBuildableIface *iface);
 static void btk_expander_buildable_add_child      (BtkBuildable *buildable,
 						   BtkBuilder   *builder,
-						   GObject      *child,
-						   const gchar  *type);
+						   BObject      *child,
+						   const bchar  *type);
 
 G_DEFINE_TYPE_WITH_CODE (BtkExpander, btk_expander, BTK_TYPE_BIN,
 			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
@@ -143,12 +143,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkExpander, btk_expander, BTK_TYPE_BIN,
 static void
 btk_expander_class_init (BtkExpanderClass *klass)
 {
-  GObjectClass *bobject_class;
+  BObjectClass *bobject_class;
   BtkObjectClass *object_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
-  bobject_class   = (GObjectClass *) klass;
+  bobject_class   = (BObjectClass *) klass;
   object_class    = (BtkObjectClass *) klass;
   widget_class    = (BtkWidgetClass *) klass;
   container_class = (BtkContainerClass *) klass;
@@ -221,7 +221,7 @@ btk_expander_class_init (BtkExpanderClass *klass)
 						     P_("Spacing"),
 						     P_("Space to put between the label and the child"),
 						     0,
-						     G_MAXINT,
+						     B_MAXINT,
 						     0,
 						     BTK_PARAM_READWRITE));
 
@@ -246,7 +246,7 @@ btk_expander_class_init (BtkExpanderClass *klass)
 							     P_("Expander Size"),
 							     P_("Size of the expander arrow"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     DEFAULT_EXPANDER_SIZE,
 							     BTK_PARAM_READABLE));
 
@@ -255,18 +255,18 @@ btk_expander_class_init (BtkExpanderClass *klass)
 							     P_("Indicator Spacing"),
 							     P_("Spacing around expander arrow"),
 							     0,
-							     G_MAXINT,
+							     B_MAXINT,
 							     DEFAULT_EXPANDER_SPACING,
 							     BTK_PARAM_READABLE));
 
   widget_class->activate_signal =
     g_signal_new (I_("activate"),
-		  G_TYPE_FROM_CLASS (bobject_class),
+		  B_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkExpanderClass, activate),
 		  NULL, NULL,
 		  _btk_marshal_VOID__VOID,
-		  G_TYPE_NONE, 0);
+		  B_TYPE_NONE, 0);
 }
 
 static void
@@ -301,8 +301,8 @@ btk_expander_init (BtkExpander *expander)
 static void
 btk_expander_buildable_add_child (BtkBuildable  *buildable,
 				  BtkBuilder    *builder,
-				  GObject       *child,
-				  const gchar   *type)
+				  BObject       *child,
+				  const bchar   *type)
 {
   if (!type)
     btk_container_add (BTK_CONTAINER (buildable), BTK_WIDGET (child));
@@ -319,47 +319,47 @@ btk_expander_buildable_init (BtkBuildableIface *iface)
 }
 
 static void
-btk_expander_set_property (GObject      *object,
-			   guint         prop_id,
-			   const GValue *value,
-			   GParamSpec   *pspec)
+btk_expander_set_property (BObject      *object,
+			   buint         prop_id,
+			   const BValue *value,
+			   BParamSpec   *pspec)
 {
   BtkExpander *expander = BTK_EXPANDER (object);
                                                                                                              
   switch (prop_id)
     {
     case PROP_EXPANDED:
-      btk_expander_set_expanded (expander, g_value_get_boolean (value));
+      btk_expander_set_expanded (expander, b_value_get_boolean (value));
       break;
     case PROP_LABEL:
-      btk_expander_set_label (expander, g_value_get_string (value));
+      btk_expander_set_label (expander, b_value_get_string (value));
       break;
     case PROP_USE_UNDERLINE:
-      btk_expander_set_use_underline (expander, g_value_get_boolean (value));
+      btk_expander_set_use_underline (expander, b_value_get_boolean (value));
       break;
     case PROP_USE_MARKUP:
-      btk_expander_set_use_markup (expander, g_value_get_boolean (value));
+      btk_expander_set_use_markup (expander, b_value_get_boolean (value));
       break;
     case PROP_SPACING:
-      btk_expander_set_spacing (expander, g_value_get_int (value));
+      btk_expander_set_spacing (expander, b_value_get_int (value));
       break;
     case PROP_LABEL_WIDGET:
-      btk_expander_set_label_widget (expander, g_value_get_object (value));
+      btk_expander_set_label_widget (expander, b_value_get_object (value));
       break;
     case PROP_LABEL_FILL:
-      btk_expander_set_label_fill (expander, g_value_get_boolean (value));
+      btk_expander_set_label_fill (expander, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_expander_get_property (GObject    *object,
-			   guint       prop_id,
-			   GValue     *value,
-			   GParamSpec *pspec)
+btk_expander_get_property (BObject    *object,
+			   buint       prop_id,
+			   BValue     *value,
+			   BParamSpec *pspec)
 {
   BtkExpander *expander = BTK_EXPANDER (object);
   BtkExpanderPrivate *priv = expander->priv;
@@ -367,30 +367,30 @@ btk_expander_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_EXPANDED:
-      g_value_set_boolean (value, priv->expanded);
+      b_value_set_boolean (value, priv->expanded);
       break;
     case PROP_LABEL:
-      g_value_set_string (value, btk_expander_get_label (expander));
+      b_value_set_string (value, btk_expander_get_label (expander));
       break;
     case PROP_USE_UNDERLINE:
-      g_value_set_boolean (value, priv->use_underline);
+      b_value_set_boolean (value, priv->use_underline);
       break;
     case PROP_USE_MARKUP:
-      g_value_set_boolean (value, priv->use_markup);
+      b_value_set_boolean (value, priv->use_markup);
       break;
     case PROP_SPACING:
-      g_value_set_int (value, priv->spacing);
+      b_value_set_int (value, priv->spacing);
       break;
     case PROP_LABEL_WIDGET:
-      g_value_set_object (value,
+      b_value_set_object (value,
 			  priv->label_widget ?
-			  G_OBJECT (priv->label_widget) : NULL);
+			  B_OBJECT (priv->label_widget) : NULL);
       break;
     case PROP_LABEL_FILL:
-      g_value_set_boolean (value, priv->label_fill);
+      b_value_set_boolean (value, priv->label_fill);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -414,10 +414,10 @@ btk_expander_realize (BtkWidget *widget)
 {
   BtkExpanderPrivate *priv;
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint border_width;
+  bint attributes_mask;
+  bint border_width;
   BdkRectangle expander_rect;
-  gint label_height;
+  bint label_height;
 
   priv = BTK_EXPANDER (widget)->priv;
   btk_widget_set_realized (widget, TRUE);
@@ -482,12 +482,12 @@ btk_expander_size_request (BtkWidget      *widget,
   BtkExpander *expander;
   BtkBin *bin;
   BtkExpanderPrivate *priv;
-  gint border_width;
-  gint expander_size;
-  gint expander_spacing;
-  gboolean interior_focus;
-  gint focus_width;
-  gint focus_pad;
+  bint border_width;
+  bint expander_size;
+  bint expander_spacing;
+  bboolean interior_focus;
+  bint focus_width;
+  bint focus_pad;
 
   bin = BTK_BIN (widget);
   expander = BTK_EXPANDER (widget);
@@ -542,13 +542,13 @@ get_expander_bounds (BtkExpander  *expander,
 {
   BtkWidget *widget;
   BtkExpanderPrivate *priv;
-  gint border_width;
-  gint expander_size;
-  gint expander_spacing;
-  gboolean interior_focus;
-  gint focus_width;
-  gint focus_pad;
-  gboolean ltr;
+  bint border_width;
+  bint expander_size;
+  bint expander_spacing;
+  bboolean interior_focus;
+  bint focus_width;
+  bint focus_pad;
+  bboolean ltr;
 
   widget = BTK_WIDGET (expander);
   priv = expander->priv;
@@ -610,14 +610,14 @@ btk_expander_size_allocate (BtkWidget     *widget,
   BtkBin *bin;
   BtkExpanderPrivate *priv;
   BtkRequisition child_requisition;
-  gboolean child_visible = FALSE;
-  gint border_width;
-  gint expander_size;
-  gint expander_spacing;
-  gboolean interior_focus;
-  gint focus_width;
-  gint focus_pad;
-  gint label_height;
+  bboolean child_visible = FALSE;
+  bint border_width;
+  bint expander_size;
+  bint expander_spacing;
+  bboolean interior_focus;
+  bint focus_width;
+  bint focus_pad;
+  bint label_height;
 
   expander = BTK_EXPANDER (widget);
   bin = BTK_BIN (widget);
@@ -647,7 +647,7 @@ btk_expander_size_allocate (BtkWidget     *widget,
     {
       BtkAllocation label_allocation;
       BtkRequisition label_requisition;
-      gboolean ltr;
+      bboolean ltr;
 
       btk_widget_get_child_requisition (priv->label_widget, &label_requisition);
 
@@ -711,7 +711,7 @@ btk_expander_size_allocate (BtkWidget     *widget,
   if (child_visible)
     {
       BtkAllocation child_allocation;
-      gint top_height;
+      bint top_height;
 
       top_height = MAX (2 * expander_spacing + expander_size,
 			label_height +
@@ -769,7 +769,7 @@ btk_expander_paint_prelight (BtkExpander *expander)
   BtkContainer *container;
   BtkExpanderPrivate *priv;
   BdkRectangle area;
-  gboolean interior_focus;
+  bboolean interior_focus;
   int focus_width;
   int focus_pad;
   int expander_size;
@@ -845,14 +845,14 @@ btk_expander_paint_focus (BtkExpander  *expander,
   BtkWidget *widget;
   BtkExpanderPrivate *priv;
   BdkRectangle rect;
-  gint x, y, width, height;
-  gboolean interior_focus;
-  gint border_width;
-  gint focus_width;
-  gint focus_pad;
-  gint expander_size;
-  gint expander_spacing;
-  gboolean ltr;
+  bint x, y, width, height;
+  bboolean interior_focus;
+  bint border_width;
+  bint focus_width;
+  bint focus_pad;
+  bint expander_size;
+  bint expander_spacing;
+  bboolean ltr;
 
   widget = BTK_WIDGET (expander);
   priv = expander->priv;
@@ -919,7 +919,7 @@ btk_expander_paint_focus (BtkExpander  *expander,
 		   x, y, width, height);
 }
 
-static gboolean
+static bboolean
 btk_expander_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {
@@ -938,7 +938,7 @@ btk_expander_expose (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_expander_button_press (BtkWidget      *widget,
 			   BdkEventButton *event)
 {
@@ -953,7 +953,7 @@ btk_expander_button_press (BtkWidget      *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_expander_button_release (BtkWidget      *widget,
 			     BdkEventButton *event)
 {
@@ -971,7 +971,7 @@ btk_expander_button_release (BtkWidget      *widget,
 
 static void
 btk_expander_grab_notify (BtkWidget *widget,
-			  gboolean   was_grabbed)
+			  bboolean   was_grabbed)
 {
   if (!was_grabbed)
     BTK_EXPANDER (widget)->priv->button_down = FALSE;
@@ -996,7 +996,7 @@ btk_expander_redraw_expander (BtkExpander *expander)
     bdk_window_invalidate_rect (widget->window, &widget->allocation, FALSE);
 }
 
-static gboolean
+static bboolean
 btk_expander_enter_notify (BtkWidget        *widget,
 			   BdkEventCrossing *event)
 {
@@ -1019,7 +1019,7 @@ btk_expander_enter_notify (BtkWidget        *widget,
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_expander_leave_notify (BtkWidget        *widget,
 			   BdkEventCrossing *event)
 {
@@ -1042,8 +1042,8 @@ btk_expander_leave_notify (BtkWidget        *widget,
   return FALSE;
 }
 
-static gboolean
-expand_timeout (gpointer data)
+static bboolean
+expand_timeout (bpointer data)
 {
   BtkExpander *expander = BTK_EXPANDER (data);
   BtkExpanderPrivate *priv = expander->priv;
@@ -1054,12 +1054,12 @@ expand_timeout (gpointer data)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 btk_expander_drag_motion (BtkWidget        *widget,
 			  BdkDragContext   *context,
-			  gint              x,
-			  gint              y,
-			  guint             time)
+			  bint              x,
+			  bint              y,
+			  buint             time)
 {
   BtkExpander *expander = BTK_EXPANDER (widget);
   BtkExpanderPrivate *priv = expander->priv;
@@ -1067,7 +1067,7 @@ btk_expander_drag_motion (BtkWidget        *widget,
   if (!priv->expanded && !priv->expand_timer)
     {
       BtkSettings *settings;
-      guint timeout;
+      buint timeout;
 
       settings = btk_widget_get_settings (widget);
       g_object_get (settings, "btk-timeout-expand", &timeout, NULL);
@@ -1081,7 +1081,7 @@ btk_expander_drag_motion (BtkWidget        *widget,
 static void
 btk_expander_drag_leave (BtkWidget      *widget,
 			 BdkDragContext *context,
-			 guint           time)
+			 buint           time)
 {
   BtkExpander *expander = BTK_EXPANDER (widget);
   BtkExpanderPrivate *priv = expander->priv;
@@ -1101,7 +1101,7 @@ typedef enum
   FOCUS_CHILD
 } FocusSite;
 
-static gboolean
+static bboolean
 focus_current_site (BtkExpander      *expander,
 		    BtkDirectionType  direction)
 {
@@ -1115,7 +1115,7 @@ focus_current_site (BtkExpander      *expander,
   return btk_widget_child_focus (current_focus, direction);
 }
 
-static gboolean
+static bboolean
 focus_in_site (BtkExpander      *expander,
 	       FocusSite         site,
 	       BtkDirectionType  direction)
@@ -1152,7 +1152,7 @@ get_next_site (BtkExpander      *expander,
 	       FocusSite         site,
 	       BtkDirectionType  direction)
 {
-  gboolean ltr;
+  bboolean ltr;
 
   ltr = btk_widget_get_direction (BTK_WIDGET (expander)) != BTK_TEXT_DIR_RTL;
 
@@ -1218,7 +1218,7 @@ get_next_site (BtkExpander      *expander,
   return FOCUS_NONE;
 }
 
-static gboolean
+static bboolean
 btk_expander_focus (BtkWidget        *widget,
 		    BtkDirectionType  direction)
 {
@@ -1227,7 +1227,7 @@ btk_expander_focus (BtkWidget        *widget,
   if (!focus_current_site (expander, direction))
     {
       BtkWidget *old_focus_child;
-      gboolean widget_is_focus;
+      bboolean widget_is_focus;
       FocusSite site = FOCUS_NONE;
       
       widget_is_focus = btk_widget_is_focus (widget);
@@ -1276,9 +1276,9 @@ btk_expander_remove (BtkContainer *container,
 
 static void
 btk_expander_forall (BtkContainer *container,
-		     gboolean      include_internals,
+		     bboolean      include_internals,
 		     BtkCallback   callback,
-		     gpointer      callback_data)
+		     bpointer      callback_data)
 {
   BtkBin *bin = BTK_BIN (container);
   BtkExpanderPrivate *priv = BTK_EXPANDER (container)->priv;
@@ -1307,7 +1307,7 @@ btk_expander_activate (BtkExpander *expander)
  * Since: 2.4
  **/
 BtkWidget *
-btk_expander_new (const gchar *label)
+btk_expander_new (const bchar *label)
 {
   return g_object_new (BTK_TYPE_EXPANDER, "label", label, NULL);
 }
@@ -1329,7 +1329,7 @@ btk_expander_new (const gchar *label)
  * Since: 2.4
  **/
 BtkWidget *
-btk_expander_new_with_mnemonic (const gchar *label)
+btk_expander_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_EXPANDER,
 		       "label", label,
@@ -1337,12 +1337,12 @@ btk_expander_new_with_mnemonic (const gchar *label)
 		       NULL);
 }
 
-static gboolean
+static bboolean
 btk_expander_animation_timeout (BtkExpander *expander)
 {
   BtkExpanderPrivate *priv = expander->priv;
   BdkRectangle area;
-  gboolean finish = FALSE;
+  bboolean finish = FALSE;
 
   if (btk_widget_get_realized (BTK_WIDGET (expander)))
     {
@@ -1413,7 +1413,7 @@ btk_expander_start_animation (BtkExpander *expander)
  **/
 void
 btk_expander_set_expanded (BtkExpander *expander,
-			   gboolean     expanded)
+			   bboolean     expanded)
 {
   BtkExpanderPrivate *priv;
 
@@ -1426,7 +1426,7 @@ btk_expander_set_expanded (BtkExpander *expander,
   if (priv->expanded != expanded)
     {
       BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (expander));
-      gboolean     enable_animations;
+      bboolean     enable_animations;
 
       priv->expanded = expanded;
 
@@ -1448,7 +1448,7 @@ btk_expander_set_expanded (BtkExpander *expander,
 	    }
 	}
 
-      g_object_notify (G_OBJECT (expander), "expanded");
+      g_object_notify (B_OBJECT (expander), "expanded");
     }
 }
 
@@ -1465,7 +1465,7 @@ btk_expander_set_expanded (BtkExpander *expander,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_expander_get_expanded (BtkExpander *expander)
 {
   g_return_val_if_fail (BTK_IS_EXPANDER (expander), FALSE);
@@ -1485,7 +1485,7 @@ btk_expander_get_expanded (BtkExpander *expander)
  **/
 void
 btk_expander_set_spacing (BtkExpander *expander,
-			  gint         spacing)
+			  bint         spacing)
 {
   g_return_if_fail (BTK_IS_EXPANDER (expander));
   g_return_if_fail (spacing >= 0);
@@ -1496,7 +1496,7 @@ btk_expander_set_spacing (BtkExpander *expander,
 
       btk_widget_queue_resize (BTK_WIDGET (expander));
 
-      g_object_notify (G_OBJECT (expander), "spacing");
+      g_object_notify (B_OBJECT (expander), "spacing");
     }
 }
 
@@ -1510,7 +1510,7 @@ btk_expander_set_spacing (BtkExpander *expander,
  *
  * Since: 2.4
  **/
-gint
+bint
 btk_expander_get_spacing (BtkExpander *expander)
 {
   g_return_val_if_fail (BTK_IS_EXPANDER (expander), 0);
@@ -1531,7 +1531,7 @@ btk_expander_get_spacing (BtkExpander *expander)
  **/
 void
 btk_expander_set_label (BtkExpander *expander,
-			const gchar *label)
+			const bchar *label)
 {
   g_return_if_fail (BTK_IS_EXPANDER (expander));
 
@@ -1551,7 +1551,7 @@ btk_expander_set_label (BtkExpander *expander,
       btk_expander_set_label_widget (expander, child);
     }
 
-  g_object_notify (G_OBJECT (expander), "label");
+  g_object_notify (B_OBJECT (expander), "label");
 }
 
 /**
@@ -1602,7 +1602,7 @@ btk_expander_get_label (BtkExpander *expander)
  **/
 void
 btk_expander_set_use_underline (BtkExpander *expander,
-				gboolean     use_underline)
+				bboolean     use_underline)
 {
   BtkExpanderPrivate *priv;
 
@@ -1619,7 +1619,7 @@ btk_expander_set_use_underline (BtkExpander *expander,
       if (BTK_IS_LABEL (priv->label_widget))
 	btk_label_set_use_underline (BTK_LABEL (priv->label_widget), use_underline);
 
-      g_object_notify (G_OBJECT (expander), "use-underline");
+      g_object_notify (B_OBJECT (expander), "use-underline");
     }
 }
 
@@ -1635,7 +1635,7 @@ btk_expander_set_use_underline (BtkExpander *expander,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_expander_get_use_underline (BtkExpander *expander)
 {
   g_return_val_if_fail (BTK_IS_EXPANDER (expander), FALSE);
@@ -1656,7 +1656,7 @@ btk_expander_get_use_underline (BtkExpander *expander)
  **/
 void
 btk_expander_set_use_markup (BtkExpander *expander,
-			     gboolean     use_markup)
+			     bboolean     use_markup)
 {
   BtkExpanderPrivate *priv;
 
@@ -1673,7 +1673,7 @@ btk_expander_set_use_markup (BtkExpander *expander,
       if (BTK_IS_LABEL (priv->label_widget))
 	btk_label_set_use_markup (BTK_LABEL (priv->label_widget), use_markup);
 
-      g_object_notify (G_OBJECT (expander), "use-markup");
+      g_object_notify (B_OBJECT (expander), "use-markup");
     }
 }
 
@@ -1689,7 +1689,7 @@ btk_expander_set_use_markup (BtkExpander *expander,
  *
  * Since: 2.4
  **/
-gboolean
+bboolean
 btk_expander_get_use_markup (BtkExpander *expander)
 {
   g_return_val_if_fail (BTK_IS_EXPANDER (expander), FALSE);
@@ -1745,10 +1745,10 @@ btk_expander_set_label_widget (BtkExpander *expander,
   if (btk_widget_get_visible (widget))
     btk_widget_queue_resize (widget);
 
-  g_object_freeze_notify (G_OBJECT (expander));
-  g_object_notify (G_OBJECT (expander), "label-widget");
-  g_object_notify (G_OBJECT (expander), "label");
-  g_object_thaw_notify (G_OBJECT (expander));
+  g_object_freeze_notify (B_OBJECT (expander));
+  g_object_notify (B_OBJECT (expander), "label-widget");
+  g_object_notify (B_OBJECT (expander), "label");
+  g_object_thaw_notify (B_OBJECT (expander));
 }
 
 /**
@@ -1784,7 +1784,7 @@ btk_expander_get_label_widget (BtkExpander *expander)
  */
 void
 btk_expander_set_label_fill (BtkExpander *expander,
-                             gboolean     label_fill)
+                             bboolean     label_fill)
 {
   BtkExpanderPrivate *priv;
 
@@ -1801,7 +1801,7 @@ btk_expander_set_label_fill (BtkExpander *expander,
       if (priv->label_widget != NULL)
         btk_widget_queue_resize (BTK_WIDGET (expander));
 
-      g_object_notify (G_OBJECT (expander), "label-fill");
+      g_object_notify (B_OBJECT (expander), "label-fill");
     }
 }
 
@@ -1817,7 +1817,7 @@ btk_expander_set_label_fill (BtkExpander *expander,
  *
  * Since: 2.22
  */
-gboolean
+bboolean
 btk_expander_get_label_fill (BtkExpander *expander)
 {
   g_return_val_if_fail (BTK_IS_EXPANDER (expander), FALSE);

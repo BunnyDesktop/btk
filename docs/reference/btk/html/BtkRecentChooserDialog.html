@@ -75,7 +75,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkRecentChooserDialog.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -105,9 +105,9 @@ BtkRecentChooserDialog implements
 <div class="refsect2">
 <a name="btk-recent-chooser-dialog-new"></a><h3>btk_recent_chooser_dialog_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_recent_chooser_dialog_new (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+btk_recent_chooser_dialog_new (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                                <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>,
-                               <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                               <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                                <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRecentChooserDialog.html" title="BtkRecentChooserDialog"><span class="type">BtkRecentChooserDialog</span></a>.  This function is analogous to
 <a class="link" href="BtkDialog.html#btk-dialog-new-with-buttons" title="btk_dialog_new_with_buttons ()"><code class="function">btk_dialog_new_with_buttons()</code></a>.</p>
@@ -155,10 +155,10 @@ pairs, ending with <code class="literal">NULL</code></p></td>
 <a name="btk-recent-chooser-dialog-new-for-manager"></a><h3>btk_recent_chooser_dialog_new_for_manager ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
 btk_recent_chooser_dialog_new_for_manager
-                               (<em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>,
+                               (<em class="parameter"><code>const <span class="type">bchar</span> *title</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkWindow.html" title="BtkWindow"><span class="type">BtkWindow</span></a> *parent</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkRecentManager.html" title="BtkRecentManager"><span class="type">BtkRecentManager</span></a> *manager</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *first_button_text</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *first_button_text</code></em>,
                                 <em class="parameter"><code>...</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkRecentChooserDialog.html" title="BtkRecentChooserDialog"><span class="type">BtkRecentChooserDialog</span></a> with a specified recent manager.</p>
 <p>This is useful if you have implemented your own recent manager, or if you

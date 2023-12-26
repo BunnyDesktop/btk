@@ -47,25 +47,25 @@ static void btk_image_menu_item_map                  (BtkWidget        *widget);
 static void btk_image_menu_item_remove               (BtkContainer     *container,
                                                       BtkWidget        *child);
 static void btk_image_menu_item_toggle_size_request  (BtkMenuItem      *menu_item,
-						      gint             *requisition);
+						      bint             *requisition);
 static void btk_image_menu_item_set_label            (BtkMenuItem      *menu_item,
-						      const gchar      *label);
-static const gchar *btk_image_menu_item_get_label (BtkMenuItem *menu_item);
+						      const bchar      *label);
+static const bchar *btk_image_menu_item_get_label (BtkMenuItem *menu_item);
 
 static void btk_image_menu_item_forall               (BtkContainer    *container,
-						      gboolean	       include_internals,
+						      bboolean	       include_internals,
 						      BtkCallback      callback,
-						      gpointer         callback_data);
+						      bpointer         callback_data);
 
-static void btk_image_menu_item_finalize             (GObject         *object);
-static void btk_image_menu_item_set_property         (GObject         *object,
-						      guint            prop_id,
-						      const GValue    *value,
-						      GParamSpec      *pspec);
-static void btk_image_menu_item_get_property         (GObject         *object,
-						      guint            prop_id,
-						      GValue          *value,
-						      GParamSpec      *pspec);
+static void btk_image_menu_item_finalize             (BObject         *object);
+static void btk_image_menu_item_set_property         (BObject         *object,
+						      buint            prop_id,
+						      const BValue    *value,
+						      BParamSpec      *pspec);
+static void btk_image_menu_item_get_property         (BObject         *object,
+						      buint            prop_id,
+						      BValue          *value,
+						      BParamSpec      *pspec);
 static void btk_image_menu_item_screen_changed       (BtkWidget        *widget,
 						      BdkScreen        *previous_screen);
 
@@ -74,14 +74,14 @@ static void btk_image_menu_item_recalculate          (BtkImageMenuItem *image_me
 static void btk_image_menu_item_activatable_interface_init (BtkActivatableIface  *iface);
 static void btk_image_menu_item_update                     (BtkActivatable       *activatable,
 							    BtkAction            *action,
-							    const gchar          *property_name);
+							    const bchar          *property_name);
 static void btk_image_menu_item_sync_action_properties     (BtkActivatable       *activatable,
 							    BtkAction            *action);
 
 typedef struct {
-  gchar *label;
-  guint  use_stock         : 1;
-  guint  always_show_image : 1;
+  bchar *label;
+  buint  use_stock         : 1;
+  buint  always_show_image : 1;
 } BtkImageMenuItemPrivate;
 
 enum {
@@ -100,12 +100,12 @@ G_DEFINE_TYPE_WITH_CODE (BtkImageMenuItem, btk_image_menu_item, BTK_TYPE_MENU_IT
 						btk_image_menu_item_activatable_interface_init))
 
 #define GET_PRIVATE(object)  \
-  (G_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_IMAGE_MENU_ITEM, BtkImageMenuItemPrivate))
+  (B_TYPE_INSTANCE_GET_PRIVATE ((object), BTK_TYPE_IMAGE_MENU_ITEM, BtkImageMenuItemPrivate))
 
 static void
 btk_image_menu_item_class_init (BtkImageMenuItemClass *klass)
 {
-  GObjectClass *bobject_class = (GObjectClass*) klass;
+  BObjectClass *bobject_class = (BObjectClass*) klass;
   BtkObjectClass *object_class = (BtkObjectClass*) klass;
   BtkWidgetClass *widget_class = (BtkWidgetClass*) klass;
   BtkMenuItemClass *menu_item_class = (BtkMenuItemClass*) klass;
@@ -201,75 +201,75 @@ btk_image_menu_item_init (BtkImageMenuItem *image_menu_item)
 }
 
 static void 
-btk_image_menu_item_finalize (GObject *object)
+btk_image_menu_item_finalize (BObject *object)
 {
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (object);
 
   g_free (priv->label);
   priv->label  = NULL;
 
-  G_OBJECT_CLASS (btk_image_menu_item_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_image_menu_item_parent_class)->finalize (object);
 }
 
 static void
-btk_image_menu_item_set_property (GObject         *object,
-                                  guint            prop_id,
-                                  const GValue    *value,
-                                  GParamSpec      *pspec)
+btk_image_menu_item_set_property (BObject         *object,
+                                  buint            prop_id,
+                                  const BValue    *value,
+                                  BParamSpec      *pspec)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_IMAGE:
-      btk_image_menu_item_set_image (image_menu_item, (BtkWidget *) g_value_get_object (value));
+      btk_image_menu_item_set_image (image_menu_item, (BtkWidget *) b_value_get_object (value));
       break;
     case PROP_USE_STOCK:
-      btk_image_menu_item_set_use_stock (image_menu_item, g_value_get_boolean (value));
+      btk_image_menu_item_set_use_stock (image_menu_item, b_value_get_boolean (value));
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      btk_image_menu_item_set_always_show_image (image_menu_item, g_value_get_boolean (value));
+      btk_image_menu_item_set_always_show_image (image_menu_item, b_value_get_boolean (value));
       break;
     case PROP_ACCEL_GROUP:
-      btk_image_menu_item_set_accel_group (image_menu_item, g_value_get_object (value));
+      btk_image_menu_item_set_accel_group (image_menu_item, b_value_get_object (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_image_menu_item_get_property (GObject         *object,
-                                  guint            prop_id,
-                                  GValue          *value,
-                                  GParamSpec      *pspec)
+btk_image_menu_item_get_property (BObject         *object,
+                                  buint            prop_id,
+                                  BValue          *value,
+                                  BParamSpec      *pspec)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (object);
   
   switch (prop_id)
     {
     case PROP_IMAGE:
-      g_value_set_object (value, btk_image_menu_item_get_image (image_menu_item));
+      b_value_set_object (value, btk_image_menu_item_get_image (image_menu_item));
       break;
     case PROP_USE_STOCK:
-      g_value_set_boolean (value, btk_image_menu_item_get_use_stock (image_menu_item));      
+      b_value_set_boolean (value, btk_image_menu_item_get_use_stock (image_menu_item));      
       break;
     case PROP_ALWAYS_SHOW_IMAGE:
-      g_value_set_boolean (value, btk_image_menu_item_get_always_show_image (image_menu_item));
+      b_value_set_boolean (value, btk_image_menu_item_get_always_show_image (image_menu_item));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
-static gboolean
+static bboolean
 show_image (BtkImageMenuItem *image_menu_item)
 {
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (image_menu_item);
   BtkSettings *settings = btk_widget_get_settings (BTK_WIDGET (image_menu_item));
-  gboolean show;
+  bboolean show;
 
   if (priv->always_show_image)
     show = TRUE;
@@ -306,7 +306,7 @@ btk_image_menu_item_destroy (BtkObject *object)
 
 static void
 btk_image_menu_item_toggle_size_request (BtkMenuItem *menu_item,
-					 gint        *requisition)
+					 bint        *requisition)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (menu_item);
   BtkPackDirection pack_dir;
@@ -321,7 +321,7 @@ btk_image_menu_item_toggle_size_request (BtkMenuItem *menu_item,
   if (image_menu_item->image && btk_widget_get_visible (image_menu_item->image))
     {
       BtkRequisition image_requisition;
-      guint toggle_spacing;
+      buint toggle_spacing;
       btk_widget_get_child_requisition (image_menu_item->image,
                                         &image_requisition);
 
@@ -348,7 +348,7 @@ btk_image_menu_item_recalculate (BtkImageMenuItem *image_menu_item)
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (image_menu_item);
   BtkStockItem             stock_item;
   BtkWidget               *image;
-  const gchar             *resolved_label = priv->label;
+  const bchar             *resolved_label = priv->label;
 
   if (priv->use_stock && priv->label)
     {
@@ -372,7 +372,7 @@ btk_image_menu_item_recalculate (BtkImageMenuItem *image_menu_item)
 
 static void 
 btk_image_menu_item_set_label (BtkMenuItem      *menu_item,
-			       const gchar      *label)
+			       const bchar      *label)
 {
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (menu_item);
 
@@ -383,12 +383,12 @@ btk_image_menu_item_set_label (BtkMenuItem      *menu_item,
 
       btk_image_menu_item_recalculate (BTK_IMAGE_MENU_ITEM (menu_item));
 
-      g_object_notify (G_OBJECT (menu_item), "label");
+      g_object_notify (B_OBJECT (menu_item), "label");
 
     }
 }
 
-static const gchar *
+static const bchar *
 btk_image_menu_item_get_label (BtkMenuItem *menu_item)
 {
   BtkImageMenuItemPrivate *priv = GET_PRIVATE (menu_item);
@@ -401,8 +401,8 @@ btk_image_menu_item_size_request (BtkWidget      *widget,
                                   BtkRequisition *requisition)
 {
   BtkImageMenuItem *image_menu_item;
-  gint child_width = 0;
-  gint child_height = 0;
+  bint child_width = 0;
+  bint child_height = 0;
   BtkPackDirection pack_dir;
   
   if (BTK_IS_MENU_BAR (widget->parent))
@@ -458,10 +458,10 @@ btk_image_menu_item_size_allocate (BtkWidget     *widget,
 
   if (image_menu_item->image && btk_widget_get_visible (image_menu_item->image))
     {
-      gint x, y, offset;
+      bint x, y, offset;
       BtkRequisition child_requisition;
       BtkAllocation child_allocation;
-      guint horizontal_padding, toggle_spacing;
+      buint horizontal_padding, toggle_spacing;
 
       btk_widget_style_get (widget,
 			    "horizontal-padding", &horizontal_padding,
@@ -524,9 +524,9 @@ btk_image_menu_item_size_allocate (BtkWidget     *widget,
 
 static void
 btk_image_menu_item_forall (BtkContainer   *container,
-                            gboolean	    include_internals,
+                            bboolean	    include_internals,
                             BtkCallback     callback,
-                            gpointer        callback_data)
+                            bpointer        callback_data)
 {
   BtkImageMenuItem *image_menu_item = BTK_IMAGE_MENU_ITEM (container);
 
@@ -548,11 +548,11 @@ btk_image_menu_item_activatable_interface_init (BtkActivatableIface  *iface)
   iface->sync_action_properties = btk_image_menu_item_sync_action_properties;
 }
 
-static gboolean
+static bboolean
 activatable_update_stock_id (BtkImageMenuItem *image_menu_item, BtkAction *action)
 {
   BtkWidget   *image;
-  const gchar *stock_id  = btk_action_get_stock_id (action);
+  const bchar *stock_id  = btk_action_get_stock_id (action);
 
   image = btk_image_menu_item_get_image (image_menu_item);
 	  
@@ -566,12 +566,12 @@ activatable_update_stock_id (BtkImageMenuItem *image_menu_item, BtkAction *actio
   return FALSE;
 }
 
-static gboolean
+static bboolean
 activatable_update_gicon (BtkImageMenuItem *image_menu_item, BtkAction *action)
 {
   BtkWidget   *image;
   GIcon       *icon = btk_action_get_gicon (action);
-  const gchar *stock_id = btk_action_get_stock_id (action);
+  const bchar *stock_id = btk_action_get_stock_id (action);
 
   image = btk_image_menu_item_get_image (image_menu_item);
 
@@ -589,7 +589,7 @@ static void
 activatable_update_icon_name (BtkImageMenuItem *image_menu_item, BtkAction *action)
 {
   BtkWidget   *image;
-  const gchar *icon_name = btk_action_get_icon_name (action);
+  const bchar *icon_name = btk_action_get_icon_name (action);
 
   image = btk_image_menu_item_get_image (image_menu_item);
 	  
@@ -604,10 +604,10 @@ activatable_update_icon_name (BtkImageMenuItem *image_menu_item, BtkAction *acti
 static void
 btk_image_menu_item_update (BtkActivatable *activatable,
 			    BtkAction      *action,
-			    const gchar    *property_name)
+			    const bchar    *property_name)
 {
   BtkImageMenuItem *image_menu_item;
-  gboolean   use_appearance;
+  bboolean   use_appearance;
 
   image_menu_item = BTK_IMAGE_MENU_ITEM (activatable);
 
@@ -631,7 +631,7 @@ btk_image_menu_item_sync_action_properties (BtkActivatable *activatable,
 {
   BtkImageMenuItem *image_menu_item;
   BtkWidget *image;
-  gboolean   use_appearance;
+  bboolean   use_appearance;
 
   image_menu_item = BTK_IMAGE_MENU_ITEM (activatable);
 
@@ -688,7 +688,7 @@ btk_image_menu_item_new (void)
  * Creates a new #BtkImageMenuItem containing a label. 
  **/
 BtkWidget*
-btk_image_menu_item_new_with_label (const gchar *label)
+btk_image_menu_item_new_with_label (const bchar *label)
 {
   return g_object_new (BTK_TYPE_IMAGE_MENU_ITEM, 
 		       "label", label,
@@ -707,7 +707,7 @@ btk_image_menu_item_new_with_label (const gchar *label)
  * in @label indicate the mnemonic for the menu item.
  **/
 BtkWidget*
-btk_image_menu_item_new_with_mnemonic (const gchar *label)
+btk_image_menu_item_new_with_mnemonic (const bchar *label)
 {
   return g_object_new (BTK_TYPE_IMAGE_MENU_ITEM, 
 		       "use-underline", TRUE,
@@ -733,7 +733,7 @@ btk_image_menu_item_new_with_mnemonic (const gchar *label)
  * btk_accel_map_add_entry() to register it.
  **/
 BtkWidget*
-btk_image_menu_item_new_from_stock (const gchar      *stock_id,
+btk_image_menu_item_new_from_stock (const bchar      *stock_id,
 				    BtkAccelGroup    *accel_group)
 {
   return g_object_new (BTK_TYPE_IMAGE_MENU_ITEM, 
@@ -755,7 +755,7 @@ btk_image_menu_item_new_from_stock (const gchar      *stock_id,
  */
 void
 btk_image_menu_item_set_use_stock (BtkImageMenuItem *image_menu_item,
-				   gboolean          use_stock)
+				   bboolean          use_stock)
 {
   BtkImageMenuItemPrivate *priv;
 
@@ -769,7 +769,7 @@ btk_image_menu_item_set_use_stock (BtkImageMenuItem *image_menu_item,
 
       btk_image_menu_item_recalculate (image_menu_item);
 
-      g_object_notify (G_OBJECT (image_menu_item), "use-stock");
+      g_object_notify (B_OBJECT (image_menu_item), "use-stock");
     }
 }
 
@@ -785,7 +785,7 @@ btk_image_menu_item_set_use_stock (BtkImageMenuItem *image_menu_item,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 btk_image_menu_item_get_use_stock (BtkImageMenuItem *image_menu_item)
 {
   BtkImageMenuItemPrivate *priv;
@@ -812,7 +812,7 @@ btk_image_menu_item_get_use_stock (BtkImageMenuItem *image_menu_item)
  */
 void
 btk_image_menu_item_set_always_show_image (BtkImageMenuItem *image_menu_item,
-                                           gboolean          always_show)
+                                           bboolean          always_show)
 {
   BtkImageMenuItemPrivate *priv;
 
@@ -832,7 +832,7 @@ btk_image_menu_item_set_always_show_image (BtkImageMenuItem *image_menu_item,
             btk_widget_hide (image_menu_item->image);
         }
 
-      g_object_notify (G_OBJECT (image_menu_item), "always-show-image");
+      g_object_notify (B_OBJECT (image_menu_item), "always-show-image");
     }
 }
 
@@ -847,7 +847,7 @@ btk_image_menu_item_set_always_show_image (BtkImageMenuItem *image_menu_item,
  *
  * Since: 2.16
  */
-gboolean
+bboolean
 btk_image_menu_item_get_always_show_image (BtkImageMenuItem *image_menu_item)
 {
   BtkImageMenuItemPrivate *priv;
@@ -901,7 +901,7 @@ btk_image_menu_item_set_accel_group (BtkImageMenuItem *image_menu_item,
 				    stock_item.modifier,
 				    BTK_ACCEL_VISIBLE);
 	
-	g_object_notify (G_OBJECT (image_menu_item), "accel-group");
+	g_object_notify (B_OBJECT (image_menu_item), "accel-group");
       }
 }
 
@@ -938,7 +938,7 @@ btk_image_menu_item_set_image (BtkImageMenuItem *image_menu_item,
 		"no-show-all", TRUE,
 		NULL);
 
-  g_object_notify (G_OBJECT (image_menu_item), "image");
+  g_object_notify (B_OBJECT (image_menu_item), "image");
 }
 
 /**
@@ -968,7 +968,7 @@ btk_image_menu_item_remove (BtkContainer *container,
 
   if (child == image_menu_item->image)
     {
-      gboolean widget_was_visible;
+      bboolean widget_was_visible;
       
       widget_was_visible = btk_widget_get_visible (child);
       
@@ -979,7 +979,7 @@ btk_image_menu_item_remove (BtkContainer *container,
           btk_widget_get_visible (BTK_WIDGET (container)))
         btk_widget_queue_resize (BTK_WIDGET (container));
 
-      g_object_notify (G_OBJECT (image_menu_item), "image");
+      g_object_notify (B_OBJECT (image_menu_item), "image");
     }
   else
     {
@@ -1001,7 +1001,7 @@ show_image_change_notify (BtkImageMenuItem *image_menu_item)
 
 static void
 traverse_container (BtkWidget *widget,
-		    gpointer   data)
+		    bpointer   data)
 {
   if (BTK_IS_IMAGE_MENU_ITEM (widget))
     show_image_change_notify (BTK_IMAGE_MENU_ITEM (widget));
@@ -1028,7 +1028,7 @@ btk_image_menu_item_screen_changed (BtkWidget *widget,
 				    BdkScreen *previous_screen)
 {
   BtkSettings *settings;
-  guint show_image_connection;
+  buint show_image_connection;
 
   if (!btk_widget_has_screen (widget))
     return;
@@ -1036,7 +1036,7 @@ btk_image_menu_item_screen_changed (BtkWidget *widget,
   settings = btk_widget_get_settings (widget);
   
   show_image_connection = 
-    GPOINTER_TO_UINT (g_object_get_data (G_OBJECT (settings), 
+    BPOINTER_TO_UINT (g_object_get_data (B_OBJECT (settings), 
 					 "btk-image-menu-item-connection"));
   
   if (show_image_connection)
@@ -1045,9 +1045,9 @@ btk_image_menu_item_screen_changed (BtkWidget *widget,
   show_image_connection =
     g_signal_connect (settings, "notify::btk-menu-images",
 		      G_CALLBACK (btk_image_menu_item_setting_changed), NULL);
-  g_object_set_data (G_OBJECT (settings), 
+  g_object_set_data (B_OBJECT (settings), 
 		     I_("btk-image-menu-item-connection"),
-		     GUINT_TO_POINTER (show_image_connection));
+		     BUINT_TO_POINTER (show_image_connection));
 
   show_image_change_notify (BTK_IMAGE_MENU_ITEM (widget));
 }

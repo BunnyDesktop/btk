@@ -23,7 +23,7 @@
 #include "bdkgc.h"
 #include "bdkprivate-quartz.h"
 
-static gpointer parent_class = NULL;
+static bpointer parent_class = NULL;
 
 static void
 bdk_quartz_gc_get_values (BdkGC       *gc,
@@ -175,12 +175,12 @@ bdk_quartz_gc_set_values (BdkGC           *gc,
 
 static void
 bdk_quartz_gc_set_dashes (BdkGC *gc,
-			  gint   dash_offset,
-			  gint8  dash_list[],
-			  gint   n)
+			  bint   dash_offset,
+			  bint8  dash_list[],
+			  bint   n)
 {
   BdkGCQuartz *private = BDK_GC_QUARTZ (gc);
-  gint i;
+  bint i;
 
   private->dash_count = n;
   g_free (private->dash_lengths);
@@ -191,7 +191,7 @@ bdk_quartz_gc_set_dashes (BdkGC *gc,
 }
 
 static void
-bdk_gc_quartz_finalize (GObject *object)
+bdk_gc_quartz_finalize (BObject *object)
 {
   BdkGCQuartz *private = BDK_GC_QUARTZ (object);
 
@@ -201,13 +201,13 @@ bdk_gc_quartz_finalize (GObject *object)
   if (private->ts_pattern)
     CGPatternRelease (private->ts_pattern);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 static void
 bdk_gc_quartz_class_init (BdkGCQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
@@ -278,7 +278,7 @@ _bdk_quartz_gc_new (BdkDrawable      *drawable,
 void
 _bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
 				   const BdkRebunnyion *rebunnyion,
-				   gboolean         reset_origin)
+				   bboolean         reset_origin)
 {
   BdkGCQuartz *private = BDK_GC_QUARTZ (gc);
 
@@ -448,15 +448,15 @@ bdk_quartz_draw_opaque_stippled_pattern (void         *info,
   CGImageRelease (pattern_image);
 }
 
-gboolean
+bboolean
 _bdk_quartz_gc_update_cg_context (BdkGC                      *gc,
 				  BdkDrawable                *drawable,
 				  CGContextRef                context,
 				  BdkQuartzContextValuesMask  mask)
 {
   BdkGCQuartz *private;
-  guint32      fg_pixel;
-  guint32      bg_pixel;
+  buint32      fg_pixel;
+  buint32      bg_pixel;
 
   g_return_val_if_fail (gc == NULL || BDK_IS_GC (gc), FALSE);
 
@@ -470,7 +470,7 @@ _bdk_quartz_gc_update_cg_context (BdkGC                      *gc,
       CGRect rect;
       CGRect *cg_rects;
       BdkRectangle *rects;
-      gint n_rects, i;
+      bint n_rects, i;
 
       bdk_rebunnyion_get_rectangles (_bdk_gc_get_clip_rebunnyion (gc),
 				 &rects, &n_rects);
@@ -635,8 +635,8 @@ _bdk_quartz_gc_update_cg_context (BdkGC                      *gc,
 
 	  if (!private->ts_pattern)
 	    {
-	      gfloat     width, height;
-	      gboolean   is_colored = FALSE;
+	      bfloat     width, height;
+	      bboolean   is_colored = FALSE;
 	      CGPatternCallbacks callbacks =  { 0, NULL, NULL };
 	      CGPoint    phase;
               BdkPixmapImplQuartz *pix_impl = NULL;

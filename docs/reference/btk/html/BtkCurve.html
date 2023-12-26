@@ -169,7 +169,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkCurve.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -211,7 +211,7 @@ btk_curve_reset (<em class="parameter"><code><a class="link" href="BtkCurve.html
 <a name="btk-curve-set-gamma"></a><h3>btk_curve_set_gamma ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_curve_set_gamma (<em class="parameter"><code><a class="link" href="BtkCurve.html" title="BtkCurve"><span class="type">BtkCurve</span></a> *curve</code></em>,
-                     <em class="parameter"><code><span class="type">gfloat</span> gamma_</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bfloat</span> gamma_</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_curve_set_gamma</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -219,10 +219,10 @@ btk_curve_set_gamma (<em class="parameter"><code><a class="link" href="BtkCurve.
 <a name="btk-curve-set-range"></a><h3>btk_curve_set_range ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_curve_set_range (<em class="parameter"><code><a class="link" href="BtkCurve.html" title="BtkCurve"><span class="type">BtkCurve</span></a> *curve</code></em>,
-                     <em class="parameter"><code><span class="type">gfloat</span> min_x</code></em>,
-                     <em class="parameter"><code><span class="type">gfloat</span> max_x</code></em>,
-                     <em class="parameter"><code><span class="type">gfloat</span> min_y</code></em>,
-                     <em class="parameter"><code><span class="type">gfloat</span> max_y</code></em>);</pre>
+                     <em class="parameter"><code><span class="type">bfloat</span> min_x</code></em>,
+                     <em class="parameter"><code><span class="type">bfloat</span> max_x</code></em>,
+                     <em class="parameter"><code><span class="type">bfloat</span> min_y</code></em>,
+                     <em class="parameter"><code><span class="type">bfloat</span> max_y</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_curve_set_range</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -231,7 +231,7 @@ btk_curve_set_range (<em class="parameter"><code><a class="link" href="BtkCurve.
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_curve_get_vector (<em class="parameter"><code><a class="link" href="BtkCurve.html" title="BtkCurve"><span class="type">BtkCurve</span></a> *curve</code></em>,
                       <em class="parameter"><code><span class="type">int</span> veclen</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> vector[]</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bfloat</span> vector[]</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_curve_get_vector</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -240,7 +240,7 @@ btk_curve_get_vector (<em class="parameter"><code><a class="link" href="BtkCurve
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_curve_set_vector (<em class="parameter"><code><a class="link" href="BtkCurve.html" title="BtkCurve"><span class="type">BtkCurve</span></a> *curve</code></em>,
                       <em class="parameter"><code><span class="type">int</span> veclen</code></em>,
-                      <em class="parameter"><code><span class="type">gfloat</span> vector[]</code></em>);</pre>
+                      <em class="parameter"><code><span class="type">bfloat</span> vector[]</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_curve_set_vector</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -313,7 +313,7 @@ btk_curve_set_curve_type (<em class="parameter"><code><a class="link" href="BtkC
 <a name="BtkCurve-curve-type-changed"></a><h3>The <code class="literal">“curve-type-changed”</code> signal</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkCurve.html" title="BtkCurve"><span class="type">BtkCurve</span></a> *curve,
-               <span class="type">gpointer</span>  user_data)</pre>
+               <span class="type">bpointer</span>  user_data)</pre>
 <p>Flags: Run First</p>
 </div>
 </div>

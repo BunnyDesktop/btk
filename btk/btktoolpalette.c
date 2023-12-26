@@ -75,12 +75,12 @@
  * static void
  * passive_canvas_drag_data_received (BtkWidget        *widget,
  *                                    BdkDragContext   *context,
- *                                    gint              x,
- *                                    gint              y,
+ *                                    bint              x,
+ *                                    bint              y,
  *                                    BtkSelectionData *selection,
- *                                    guint             info,
- *                                    guint             time,
- *                                    gpointer          data)
+ *                                    buint             info,
+ *                                    buint             time,
+ *                                    bpointer          data)
  * {
  *   BtkWidget *palette;
  *   BtkWidget *item;
@@ -100,7 +100,7 @@
  * palette = btk_tool_palette_new ();
  * target = btk_drawing_area_new ();
  *
- * g_signal_connect (G_OBJECT (target), "drag-data-received",
+ * g_signal_connect (B_OBJECT (target), "drag-data-received",
  *                   G_CALLBACK (passive_canvas_drag_data_received), NULL);
  * btk_tool_palette_add_drag_dest (BTK_TOOL_PALETTE (palette), target,
  *                                 BTK_DEST_DEFAULT_ALL,
@@ -134,10 +134,10 @@ struct _BtkToolItemGroupInfo
 {
   BtkToolItemGroup *widget;
 
-  guint             notify_collapsed;
-  guint             pos;
-  guint             exclusive : 1;
-  guint             expand : 1;
+  buint             notify_collapsed;
+  buint             pos;
+  buint             exclusive : 1;
+  buint             expand : 1;
 };
 
 struct _BtkToolPalettePrivate
@@ -148,19 +148,19 @@ struct _BtkToolPalettePrivate
   BtkAdjustment        *vadjustment;
 
   BtkIconSize           icon_size;
-  gboolean              icon_size_set;
+  bboolean              icon_size_set;
   BtkOrientation        orientation;
   BtkToolbarStyle       style;
-  gboolean              style_set;
+  bboolean              style_set;
 
   BtkWidget            *expanding_child;
 
   BtkSizeGroup         *text_size_group;
 
   BtkSettings       *settings;
-  gulong             settings_connection;
+  bulong             settings_connection;
 
-  guint                 drag_source : 2;
+  buint                 drag_source : 2;
 };
 
 struct _BtkToolPaletteDragData
@@ -186,7 +186,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkToolPalette,
 static void
 btk_tool_palette_init (BtkToolPalette *palette)
 {
-  palette->priv = G_TYPE_INSTANCE_GET_PRIVATE (palette,
+  palette->priv = B_TYPE_INSTANCE_GET_PRIVATE (palette,
                                                BTK_TYPE_TOOL_PALETTE,
                                                BtkToolPalettePrivate);
 
@@ -205,7 +205,7 @@ btk_tool_palette_init (BtkToolPalette *palette)
 static void
 btk_tool_palette_reconfigured (BtkToolPalette *palette)
 {
-  guint i;
+  buint i;
 
   for (i = 0; i < palette->priv->groups->len; ++i)
     {
@@ -218,90 +218,90 @@ btk_tool_palette_reconfigured (BtkToolPalette *palette)
 }
 
 static void
-btk_tool_palette_set_property (GObject      *object,
-                               guint         prop_id,
-                               const GValue *value,
-                               GParamSpec   *pspec)
+btk_tool_palette_set_property (BObject      *object,
+                               buint         prop_id,
+                               const BValue *value,
+                               BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   switch (prop_id)
     {
       case PROP_ICON_SIZE:
-        if ((guint) g_value_get_enum (value) != palette->priv->icon_size)
+        if ((buint) b_value_get_enum (value) != palette->priv->icon_size)
           {
-            palette->priv->icon_size = g_value_get_enum (value);
+            palette->priv->icon_size = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_ICON_SIZE_SET:
-        if ((guint) g_value_get_enum (value) != palette->priv->icon_size)
+        if ((buint) b_value_get_enum (value) != palette->priv->icon_size)
           {
-            palette->priv->icon_size_set = g_value_get_enum (value);
+            palette->priv->icon_size_set = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_ORIENTATION:
-        if ((guint) g_value_get_enum (value) != palette->priv->orientation)
+        if ((buint) b_value_get_enum (value) != palette->priv->orientation)
           {
-            palette->priv->orientation = g_value_get_enum (value);
+            palette->priv->orientation = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       case PROP_TOOLBAR_STYLE:
-        if ((guint) g_value_get_enum (value) != palette->priv->style)
+        if ((buint) b_value_get_enum (value) != palette->priv->style)
           {
-            palette->priv->style = g_value_get_enum (value);
+            palette->priv->style = b_value_get_enum (value);
             btk_tool_palette_reconfigured (palette);
           }
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_palette_get_property (GObject    *object,
-                               guint       prop_id,
-                               GValue     *value,
-                               GParamSpec *pspec)
+btk_tool_palette_get_property (BObject    *object,
+                               buint       prop_id,
+                               BValue     *value,
+                               BParamSpec *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   switch (prop_id)
     {
       case PROP_ICON_SIZE:
-        g_value_set_enum (value, btk_tool_palette_get_icon_size (palette));
+        b_value_set_enum (value, btk_tool_palette_get_icon_size (palette));
         break;
 
       case PROP_ICON_SIZE_SET:
-        g_value_set_boolean (value, palette->priv->icon_size_set);
+        b_value_set_boolean (value, palette->priv->icon_size_set);
         break;
 
       case PROP_ORIENTATION:
-        g_value_set_enum (value, palette->priv->orientation);
+        b_value_set_enum (value, palette->priv->orientation);
         break;
 
       case PROP_TOOLBAR_STYLE:
-        g_value_set_enum (value, btk_tool_palette_get_style (palette));
+        b_value_set_enum (value, btk_tool_palette_get_style (palette));
         break;
 
       default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+        B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
     }
 }
 
 static void
-btk_tool_palette_dispose (GObject *object)
+btk_tool_palette_dispose (BObject *object)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
-  guint i;
+  buint i;
 
   if (palette->priv->hadjustment)
     {
@@ -332,27 +332,27 @@ btk_tool_palette_dispose (GObject *object)
       palette->priv->text_size_group = NULL;
     }
 
-  G_OBJECT_CLASS (btk_tool_palette_parent_class)->dispose (object);
+  B_OBJECT_CLASS (btk_tool_palette_parent_class)->dispose (object);
 }
 
 static void
-btk_tool_palette_finalize (GObject *object)
+btk_tool_palette_finalize (BObject *object)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (object);
 
   g_ptr_array_free (palette->priv->groups, TRUE);
 
-  G_OBJECT_CLASS (btk_tool_palette_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_tool_palette_parent_class)->finalize (object);
 }
 
 static void
 btk_tool_palette_size_request (BtkWidget      *widget,
                                BtkRequisition *requisition)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
   BtkToolPalette *palette = BTK_TOOL_PALETTE (widget);
   BtkRequisition child_requisition;
-  guint i;
+  buint i;
 
   requisition->width = 0;
   requisition->height = 0;
@@ -386,24 +386,24 @@ static void
 btk_tool_palette_size_allocate (BtkWidget     *widget,
                                 BtkAllocation *allocation)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
   BtkToolPalette *palette = BTK_TOOL_PALETTE (widget);
   BtkAdjustment *adjustment = NULL;
   BtkAllocation child_allocation;
 
-  gint n_expand_groups = 0;
-  gint remaining_space = 0;
-  gint expand_space = 0;
+  bint n_expand_groups = 0;
+  bint remaining_space = 0;
+  bint expand_space = 0;
 
-  gint page_start, page_size = 0;
-  gint offset = 0;
-  guint i;
+  bint page_start, page_size = 0;
+  bint offset = 0;
+  buint i;
 
-  gint min_offset = -1, max_offset = -1;
+  bint min_offset = -1, max_offset = -1;
 
-  gint x;
+  bint x;
 
-  gint *group_sizes = g_newa (gint, palette->priv->groups->len);
+  bint *group_sizes = g_newa (bint, palette->priv->groups->len);
 
   BtkTextDirection direction = btk_widget_get_direction (widget);
 
@@ -442,7 +442,7 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
   for (i = 0; i < palette->priv->groups->len; ++i)
     {
       BtkToolItemGroupInfo *group = g_ptr_array_index (palette->priv->groups, i);
-      gint size;
+      bint size;
 
       if (!group->widget)
         continue;
@@ -470,12 +470,12 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
        */
       if (widget == palette->priv->expanding_child)
         {
-          gint limit =
+          bint limit =
             BTK_ORIENTATION_VERTICAL == palette->priv->orientation ?
             child_allocation.width : child_allocation.height;
 
-          gint real_size;
-          guint j;
+          bint real_size;
+          buint j;
 
           min_offset = 0;
 
@@ -502,7 +502,7 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
 
   if (max_offset != -1)
     {
-      gint limit =
+      bint limit =
         BTK_ORIENTATION_VERTICAL == palette->priv->orientation ?
         allocation->height : allocation->width;
 
@@ -533,7 +533,7 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
 
       if (btk_tool_item_group_get_n_items (group->widget))
         {
-          gint size = group_sizes[i];
+          bint size = group_sizes[i];
 
           if (group->expand && !btk_tool_item_group_get_collapsed (group->widget))
             {
@@ -582,7 +582,7 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
   /* update the scrollbar to match the displayed adjustment */
   if (adjustment)
     {
-      gdouble value;
+      bdouble value;
 
       adjustment->page_increment = page_size * 0.9;
       adjustment->step_increment = page_size * 0.1;
@@ -612,14 +612,14 @@ btk_tool_palette_size_allocate (BtkWidget     *widget,
     }
 }
 
-static gboolean
+static bboolean
 btk_tool_palette_expose_event (BtkWidget      *widget,
                                BdkEventExpose *event)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (widget);
   BdkDisplay *display;
   bairo_t *cr;
-  guint i;
+  buint i;
 
   display = bdk_window_get_display (widget->window);
 
@@ -650,8 +650,8 @@ btk_tool_palette_expose_event (BtkWidget      *widget,
 static void
 btk_tool_palette_realize (BtkWidget *widget)
 {
-  const gint border_width = BTK_CONTAINER (widget)->border_width;
-  gint attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
+  const bint border_width = BTK_CONTAINER (widget)->border_width;
+  bint attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
   BdkWindowAttr attributes;
 
   attributes.window_type = BDK_WINDOW_CHILD;
@@ -684,7 +684,7 @@ btk_tool_palette_realize (BtkWidget *widget)
 
 static void
 btk_tool_palette_adjustment_value_changed (BtkAdjustment *adjustment,
-                                           gpointer       data)
+                                           bpointer       data)
 {
   BtkWidget *widget = BTK_WIDGET (data);
   btk_tool_palette_size_allocate (widget, &widget->allocation);
@@ -744,7 +744,7 @@ btk_tool_palette_remove (BtkContainer *container,
                          BtkWidget    *child)
 {
   BtkToolPalette *palette;
-  guint i;
+  buint i;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (container));
   palette = BTK_TOOL_PALETTE (container);
@@ -764,12 +764,12 @@ btk_tool_palette_remove (BtkContainer *container,
 
 static void
 btk_tool_palette_forall (BtkContainer *container,
-                         gboolean      internals,
+                         bboolean      internals,
                          BtkCallback   callback,
-                         gpointer      callback_data)
+                         bpointer      callback_data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (container);
-  guint i;
+  buint i;
 
 
   for (i = 0; i < palette->priv->groups->len; ++i)
@@ -790,9 +790,9 @@ btk_tool_palette_child_type (BtkContainer *container)
 static void
 btk_tool_palette_set_child_property (BtkContainer *container,
                                      BtkWidget    *child,
-                                     guint         prop_id,
-                                     const GValue *value,
-                                     GParamSpec   *pspec)
+                                     buint         prop_id,
+                                     const BValue *value,
+                                     BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (container);
 
@@ -800,12 +800,12 @@ btk_tool_palette_set_child_property (BtkContainer *container,
     {
       case CHILD_PROP_EXCLUSIVE:
         btk_tool_palette_set_exclusive (palette, BTK_TOOL_ITEM_GROUP (child), 
-          g_value_get_boolean (value));
+          b_value_get_boolean (value));
         break;
 
       case CHILD_PROP_EXPAND:
         btk_tool_palette_set_expand (palette, BTK_TOOL_ITEM_GROUP (child), 
-          g_value_get_boolean (value));
+          b_value_get_boolean (value));
         break;
 
       default:
@@ -817,21 +817,21 @@ btk_tool_palette_set_child_property (BtkContainer *container,
 static void
 btk_tool_palette_get_child_property (BtkContainer *container,
                                      BtkWidget    *child,
-                                     guint         prop_id,
-                                     GValue       *value,
-                                     GParamSpec   *pspec)
+                                     buint         prop_id,
+                                     BValue       *value,
+                                     BParamSpec   *pspec)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (container);
 
   switch (prop_id)
     {
       case CHILD_PROP_EXCLUSIVE:
-        g_value_set_boolean (value, 
+        b_value_set_boolean (value, 
           btk_tool_palette_get_exclusive (palette, BTK_TOOL_ITEM_GROUP (child)));
         break;
 
       case CHILD_PROP_EXPAND:
-        g_value_set_boolean (value, 
+        b_value_set_boolean (value, 
           btk_tool_palette_get_expand (palette, BTK_TOOL_ITEM_GROUP (child)));
         break;
 
@@ -869,7 +869,7 @@ icon_size_change_notify (BtkToolPalette *palette)
 
 static void
 btk_tool_palette_settings_change_notify (BtkSettings      *settings,
-                                         const GParamSpec *pspec,
+                                         const BParamSpec *pspec,
                                          BtkToolPalette   *palette)
 {
   if (strcmp (pspec->name, "btk-toolbar-style") == 0)
@@ -919,7 +919,7 @@ btk_tool_palette_screen_changed (BtkWidget *widget,
 static void
 btk_tool_palette_class_init (BtkToolPaletteClass *cls)
 {
-  GObjectClass      *oclass   = G_OBJECT_CLASS (cls);
+  BObjectClass      *oclass   = B_OBJECT_CLASS (cls);
   BtkWidgetClass    *wclass   = BTK_WIDGET_CLASS (cls);
   BtkContainerClass *cclass   = BTK_CONTAINER_CLASS (cls);
 
@@ -961,12 +961,12 @@ btk_tool_palette_class_init (BtkToolPaletteClass *cls)
    */
   wclass->set_scroll_adjustments_signal =
     g_signal_new ("set-scroll-adjustments",
-                  G_TYPE_FROM_CLASS (oclass),
+                  B_TYPE_FROM_CLASS (oclass),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
                   G_STRUCT_OFFSET (BtkToolPaletteClass, set_scroll_adjustments),
                   NULL, NULL,
                   _btk_marshal_VOID__OBJECT_OBJECT,
-                  G_TYPE_NONE, 2,
+                  B_TYPE_NONE, 2,
                   BTK_TYPE_ADJUSTMENT,
                   BTK_TYPE_ADJUSTMENT);
 
@@ -1100,14 +1100,14 @@ btk_tool_palette_set_icon_size (BtkToolPalette *palette,
   if (!priv->icon_size_set)
     {
       priv->icon_size_set = TRUE;
-      g_object_notify (G_OBJECT (palette), "icon-size-set");
+      g_object_notify (B_OBJECT (palette), "icon-size-set");
     }
 
   if (priv->icon_size == icon_size)
     return;
 
   priv->icon_size = icon_size;
-  g_object_notify (G_OBJECT (palette), "icon-size");
+  g_object_notify (B_OBJECT (palette), "icon-size");
 
   btk_tool_palette_reconfigured (palette);
 
@@ -1154,11 +1154,11 @@ btk_tool_palette_unset_icon_size (BtkToolPalette *palette)
       if (size != palette->priv->icon_size)
       {
         btk_tool_palette_set_icon_size (palette, size);
-        g_object_notify (G_OBJECT (palette), "icon-size");
+        g_object_notify (B_OBJECT (palette), "icon-size");
 	    }
 
       priv->icon_size_set = FALSE;
-      g_object_notify (G_OBJECT (palette), "icon-size-set");
+      g_object_notify (B_OBJECT (palette), "icon-size-set");
     }
 }
 
@@ -1179,7 +1179,7 @@ btk_tool_palette_change_style (BtkToolPalette  *palette,
       btk_tool_palette_reconfigured (palette);
 
       btk_widget_queue_resize (BTK_WIDGET (palette));
-      g_object_notify (G_OBJECT (palette), "toolbar-style");
+      g_object_notify (B_OBJECT (palette), "toolbar-style");
     }
 }
 
@@ -1276,7 +1276,7 @@ btk_tool_palette_get_style (BtkToolPalette *palette)
   return palette->priv->style;
 }
 
-gint
+bint
 _btk_tool_palette_compare_groups (gconstpointer a,
                                   gconstpointer b)
 {
@@ -1301,11 +1301,11 @@ _btk_tool_palette_compare_groups (gconstpointer a,
 void
 btk_tool_palette_set_group_position (BtkToolPalette   *palette,
                                      BtkToolItemGroup *group,
-                                     gint             position)
+                                     bint             position)
 {
   BtkToolItemGroupInfo *group_new;
   BtkToolItemGroupInfo *group_old;
-  gint old_position;
+  bint old_position;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
   g_return_if_fail (BTK_IS_TOOL_ITEM_GROUP (group));
@@ -1314,7 +1314,7 @@ btk_tool_palette_set_group_position (BtkToolPalette   *palette,
   if (-1 == position)
     position = palette->priv->groups->len - 1;
 
-  g_return_if_fail ((guint) position < palette->priv->groups->len);
+  g_return_if_fail ((buint) position < palette->priv->groups->len);
 
   group_new = g_ptr_array_index (palette->priv->groups, position);
 
@@ -1336,11 +1336,11 @@ btk_tool_palette_set_group_position (BtkToolPalette   *palette,
 
 static void
 btk_tool_palette_group_notify_collapsed (BtkToolItemGroup *group,
-                                         GParamSpec       *pspec,
-                                         gpointer          data)
+                                         BParamSpec       *pspec,
+                                         bpointer          data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (data);
-  guint i;
+  buint i;
 
   if (btk_tool_item_group_get_collapsed (group))
     return;
@@ -1369,10 +1369,10 @@ btk_tool_palette_group_notify_collapsed (BtkToolItemGroup *group,
 void
 btk_tool_palette_set_exclusive (BtkToolPalette   *palette,
                                 BtkToolItemGroup *group,
-                                gboolean          exclusive)
+                                bboolean          exclusive)
 {
   BtkToolItemGroupInfo *group_info;
-  gint position;
+  bint position;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
   g_return_if_fail (BTK_IS_TOOL_ITEM_GROUP (group));
@@ -1420,10 +1420,10 @@ btk_tool_palette_set_exclusive (BtkToolPalette   *palette,
 void
 btk_tool_palette_set_expand (BtkToolPalette   *palette,
                              BtkToolItemGroup *group,
-                             gboolean        expand)
+                             bboolean        expand)
 {
   BtkToolItemGroupInfo *group_info;
-  gint position;
+  bint position;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
   g_return_if_fail (BTK_IS_TOOL_ITEM_GROUP (group));
@@ -1453,11 +1453,11 @@ btk_tool_palette_set_expand (BtkToolPalette   *palette,
  *
  * Since: 2.20
  */
-gint
+bint
 btk_tool_palette_get_group_position (BtkToolPalette   *palette,
                                      BtkToolItemGroup *group)
 {
-  guint i;
+  buint i;
 
   g_return_val_if_fail (BTK_IS_TOOL_PALETTE (palette), -1);
   g_return_val_if_fail (BTK_IS_TOOL_ITEM_GROUP (group), -1);
@@ -1465,7 +1465,7 @@ btk_tool_palette_get_group_position (BtkToolPalette   *palette,
   for (i = 0; i < palette->priv->groups->len; ++i)
     {
       BtkToolItemGroupInfo *info = g_ptr_array_index (palette->priv->groups, i);
-      if ((gpointer) group == info->widget)
+      if ((bpointer) group == info->widget)
         return i;
     }
 
@@ -1484,11 +1484,11 @@ btk_tool_palette_get_group_position (BtkToolPalette   *palette,
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_tool_palette_get_exclusive (BtkToolPalette   *palette,
                                 BtkToolItemGroup *group)
 {
-  gint position;
+  bint position;
   BtkToolItemGroupInfo *info;
 
   g_return_val_if_fail (BTK_IS_TOOL_PALETTE (palette), DEFAULT_CHILD_EXCLUSIVE);
@@ -1514,11 +1514,11 @@ btk_tool_palette_get_exclusive (BtkToolPalette   *palette,
  *
  * Since: 2.20
  */
-gboolean
+bboolean
 btk_tool_palette_get_expand (BtkToolPalette   *palette,
                              BtkToolItemGroup *group)
 {
-  gint position;
+  bint position;
   BtkToolItemGroupInfo *info;
 
   g_return_val_if_fail (BTK_IS_TOOL_PALETTE (palette), DEFAULT_CHILD_EXPAND);
@@ -1547,8 +1547,8 @@ btk_tool_palette_get_expand (BtkToolPalette   *palette,
  */
 BtkToolItem*
 btk_tool_palette_get_drop_item (BtkToolPalette *palette,
-                                gint            x,
-                                gint            y)
+                                bint            x,
+                                bint            y)
 {
   BtkToolItemGroup *group = btk_tool_palette_get_drop_group (palette, x, y);
   BtkWidget *widget = BTK_WIDGET (group);
@@ -1576,11 +1576,11 @@ btk_tool_palette_get_drop_item (BtkToolPalette *palette,
  */
 BtkToolItemGroup*
 btk_tool_palette_get_drop_group (BtkToolPalette *palette,
-                                 gint            x,
-                                 gint            y)
+                                 bint            x,
+                                 bint            y)
 {
   BtkAllocation *allocation;
-  guint i;
+  buint i;
 
   g_return_val_if_fail (BTK_IS_TOOL_PALETTE (palette), NULL);
 
@@ -1593,7 +1593,7 @@ btk_tool_palette_get_drop_group (BtkToolPalette *palette,
     {
       BtkToolItemGroupInfo *group = g_ptr_array_index (palette->priv->groups, i);
       BtkWidget *widget;
-      gint x0, y0;
+      bint x0, y0;
 
       if (!group->widget)
         continue;
@@ -1667,7 +1667,7 @@ void
 btk_tool_palette_set_drag_source (BtkToolPalette            *palette,
                                   BtkToolPaletteDragTargets  targets)
 {
-  guint i;
+  buint i;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
 
@@ -1710,7 +1710,7 @@ btk_tool_palette_add_drag_dest (BtkToolPalette            *palette,
                                 BdkDragAction              actions)
 {
   BtkTargetEntry entries[G_N_ELEMENTS (dnd_targets)];
-  gint n_entries = 0;
+  bint n_entries = 0;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
   g_return_if_fail (BTK_IS_WIDGET (widget));
@@ -1729,12 +1729,12 @@ btk_tool_palette_add_drag_dest (BtkToolPalette            *palette,
 void
 _btk_tool_palette_get_item_size (BtkToolPalette *palette,
                                  BtkRequisition *item_size,
-                                 gboolean        homogeneous_only,
-                                 gint           *requested_rows)
+                                 bboolean        homogeneous_only,
+                                 bint           *requested_rows)
 {
   BtkRequisition max_requisition;
-  gint max_rows;
-  guint i;
+  bint max_rows;
+  buint i;
 
   g_return_if_fail (BTK_IS_TOOL_PALETTE (palette));
   g_return_if_fail (NULL != item_size);
@@ -1747,7 +1747,7 @@ _btk_tool_palette_get_item_size (BtkToolPalette *palette,
   for (i = 0; i < palette->priv->groups->len; ++i)
     {
       BtkRequisition requisition;
-      gint rows;
+      bint rows;
       BtkToolItemGroupInfo *group = g_ptr_array_index (palette->priv->groups, i);
 
       if (!group->widget)
@@ -1769,9 +1769,9 @@ static void
 btk_tool_palette_item_drag_data_get (BtkWidget        *widget,
                                      BdkDragContext   *context,
                                      BtkSelectionData *selection,
-                                     guint             info,
-                                     guint             time,
-                                     gpointer          data)
+                                     buint             info,
+                                     buint             time,
+                                     bpointer          data)
 {
   BtkToolPaletteDragData drag_data = { BTK_TOOL_PALETTE (data), NULL };
 
@@ -1780,16 +1780,16 @@ btk_tool_palette_item_drag_data_get (BtkWidget        *widget,
 
   if (drag_data.item)
     btk_selection_data_set (selection, selection->target, 8,
-                            (guchar*) &drag_data, sizeof (drag_data));
+                            (buchar*) &drag_data, sizeof (drag_data));
 }
 
 static void
 btk_tool_palette_child_drag_data_get (BtkWidget        *widget,
                                       BdkDragContext   *context,
                                       BtkSelectionData *selection,
-                                      guint             info,
-                                      guint             time,
-                                      gpointer          data)
+                                      buint             info,
+                                      buint             time,
+                                      bpointer          data)
 {
   BtkToolPaletteDragData drag_data = { BTK_TOOL_PALETTE (data), NULL };
 
@@ -1798,12 +1798,12 @@ btk_tool_palette_child_drag_data_get (BtkWidget        *widget,
 
   if (drag_data.item)
     btk_selection_data_set (selection, selection->target, 8,
-                            (guchar*) &drag_data, sizeof (drag_data));
+                            (buchar*) &drag_data, sizeof (drag_data));
 }
 
 void
 _btk_tool_palette_child_set_drag_source (BtkWidget *child,
-                                         gpointer   data)
+                                         bpointer   data)
 {
   BtkToolPalette *palette = BTK_TOOL_PALETTE (data);
 

@@ -23,14 +23,14 @@
 #include <bail/bailcontainer.h>
 #include <libbail-util/bailtextutil.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TEXT_VIEW                  (bail_text_view_get_type ())
-#define BAIL_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_VIEW, BailTextView))
-#define BAIL_TEXT_VIEW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
-#define BAIL_IS_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_VIEW))
-#define BAIL_IS_TEXT_VIEW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_VIEW))
-#define BAIL_TEXT_VIEW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
+#define BAIL_TEXT_VIEW(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_VIEW, BailTextView))
+#define BAIL_TEXT_VIEW_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
+#define BAIL_IS_TEXT_VIEW(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_VIEW))
+#define BAIL_IS_TEXT_VIEW_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_VIEW))
+#define BAIL_TEXT_VIEW_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
 
 typedef struct _BailTextView              BailTextView;
 typedef struct _BailTextViewClass         BailTextViewClass;
@@ -40,16 +40,16 @@ struct _BailTextView
   BailContainer  parent;
 
   BailTextUtil   *textutil;
-  gint           previous_insert_offset;
-  gint           previous_selection_bound;
+  bint           previous_insert_offset;
+  bint           previous_selection_bound;
   /*
    * These fields store information about text changed
    */
-  gchar          *signal_name;
-  gint           position;
-  gint           length;
+  bchar          *signal_name;
+  bint           position;
+  bint           length;
 
-  guint          insert_notify_handler;
+  buint          insert_notify_handler;
 };
 
 GType bail_text_view_get_type (void);
@@ -59,6 +59,6 @@ struct _BailTextViewClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_TEXT_VIEW_H__ */

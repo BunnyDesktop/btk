@@ -29,42 +29,42 @@
 #include <btk/btktreesortable.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_LIST_STORE	       (btk_list_store_get_type ())
-#define BTK_LIST_STORE(obj)	       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST_STORE, BtkListStore))
-#define BTK_LIST_STORE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LIST_STORE, BtkListStoreClass))
-#define BTK_IS_LIST_STORE(obj)	       (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LIST_STORE))
-#define BTK_IS_LIST_STORE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LIST_STORE))
-#define BTK_LIST_STORE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LIST_STORE, BtkListStoreClass))
+#define BTK_LIST_STORE(obj)	       (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LIST_STORE, BtkListStore))
+#define BTK_LIST_STORE_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LIST_STORE, BtkListStoreClass))
+#define BTK_IS_LIST_STORE(obj)	       (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LIST_STORE))
+#define BTK_IS_LIST_STORE_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LIST_STORE))
+#define BTK_LIST_STORE_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LIST_STORE, BtkListStoreClass))
 
 typedef struct _BtkListStore       BtkListStore;
 typedef struct _BtkListStoreClass  BtkListStoreClass;
 
 struct _BtkListStore
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
-  gint GSEAL (stamp);
-  gpointer GSEAL (seq);		/* head of the list */
-  gpointer GSEAL (_btk_reserved1);
+  bint GSEAL (stamp);
+  bpointer GSEAL (seq);		/* head of the list */
+  bpointer GSEAL (_btk_reserved1);
   GList *GSEAL (sort_list);
-  gint GSEAL (n_columns);
-  gint GSEAL (sort_column_id);
+  bint GSEAL (n_columns);
+  bint GSEAL (sort_column_id);
   BtkSortType GSEAL (order);
   GType *GSEAL (column_headers);
-  gint GSEAL (length);
+  bint GSEAL (length);
   BtkTreeIterCompareFunc GSEAL (default_sort_func);
-  gpointer GSEAL (default_sort_data);
+  bpointer GSEAL (default_sort_data);
   GDestroyNotify GSEAL (default_sort_destroy);
-  guint GSEAL (columns_dirty) : 1;
+  buint GSEAL (columns_dirty) : 1;
 };
 
 struct _BtkListStoreClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -74,37 +74,37 @@ struct _BtkListStoreClass
 };
 
 
-GType         btk_list_store_get_type         (void) G_GNUC_CONST;
-BtkListStore *btk_list_store_new              (gint          n_columns,
+GType         btk_list_store_get_type         (void) B_GNUC_CONST;
+BtkListStore *btk_list_store_new              (bint          n_columns,
 					       ...);
-BtkListStore *btk_list_store_newv             (gint          n_columns,
+BtkListStore *btk_list_store_newv             (bint          n_columns,
 					       GType        *types);
 void          btk_list_store_set_column_types (BtkListStore *list_store,
-					       gint          n_columns,
+					       bint          n_columns,
 					       GType        *types);
 
 /* NOTE: use btk_tree_model_get to get values from a BtkListStore */
 
 void          btk_list_store_set_value        (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
-					       gint          column,
-					       GValue       *value);
+					       bint          column,
+					       BValue       *value);
 void          btk_list_store_set              (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       ...);
 void          btk_list_store_set_valuesv      (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
-					       gint         *columns,
-					       GValue       *values,
-					       gint          n_values);
+					       bint         *columns,
+					       BValue       *values,
+					       bint          n_values);
 void          btk_list_store_set_valist       (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       va_list       var_args);
-gboolean      btk_list_store_remove           (BtkListStore *list_store,
+bboolean      btk_list_store_remove           (BtkListStore *list_store,
 					       BtkTreeIter  *iter);
 void          btk_list_store_insert           (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
-					       gint          position);
+					       bint          position);
 void          btk_list_store_insert_before    (BtkListStore *list_store,
 					       BtkTreeIter  *iter,
 					       BtkTreeIter  *sibling);
@@ -113,23 +113,23 @@ void          btk_list_store_insert_after     (BtkListStore *list_store,
 					       BtkTreeIter  *sibling);
 void          btk_list_store_insert_with_values  (BtkListStore *list_store,
 						  BtkTreeIter  *iter,
-						  gint          position,
+						  bint          position,
 						  ...);
 void          btk_list_store_insert_with_valuesv (BtkListStore *list_store,
 						  BtkTreeIter  *iter,
-						  gint          position,
-						  gint         *columns,
-						  GValue       *values,
-						  gint          n_values);
+						  bint          position,
+						  bint         *columns,
+						  BValue       *values,
+						  bint          n_values);
 void          btk_list_store_prepend          (BtkListStore *list_store,
 					       BtkTreeIter  *iter);
 void          btk_list_store_append           (BtkListStore *list_store,
 					       BtkTreeIter  *iter);
 void          btk_list_store_clear            (BtkListStore *list_store);
-gboolean      btk_list_store_iter_is_valid    (BtkListStore *list_store,
+bboolean      btk_list_store_iter_is_valid    (BtkListStore *list_store,
                                                BtkTreeIter  *iter);
 void          btk_list_store_reorder          (BtkListStore *store,
-                                               gint         *new_order);
+                                               bint         *new_order);
 void          btk_list_store_swap             (BtkListStore *store,
                                                BtkTreeIter  *a,
                                                BtkTreeIter  *b);
@@ -141,7 +141,7 @@ void          btk_list_store_move_before      (BtkListStore *store,
                                                BtkTreeIter  *position);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_LIST_STORE_H__ */

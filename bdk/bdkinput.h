@@ -33,14 +33,14 @@
 
 #include <bdk/bdktypes.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_DEVICE              (bdk_device_get_type ())
-#define BDK_DEVICE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
-#define BDK_DEVICE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DEVICE, BdkDeviceClass))
-#define BDK_IS_DEVICE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DEVICE))
-#define BDK_IS_DEVICE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DEVICE))
-#define BDK_DEVICE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DEVICE, BdkDeviceClass))
+#define BDK_DEVICE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
+#define BDK_DEVICE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DEVICE, BdkDeviceClass))
+#define BDK_IS_DEVICE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DEVICE))
+#define BDK_IS_DEVICE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DEVICE))
+#define BDK_DEVICE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DEVICE, BdkDeviceClass))
 
 typedef struct _BdkDeviceKey	    BdkDeviceKey;
 typedef struct _BdkDeviceAxis	    BdkDeviceAxis;
@@ -84,31 +84,31 @@ typedef enum
 
 struct _BdkDeviceKey
 {
-  guint keyval;
+  buint keyval;
   BdkModifierType modifiers;
 };
 
 struct _BdkDeviceAxis
 {
   BdkAxisUse use;
-  gdouble    min;
-  gdouble    max;
+  bdouble    min;
+  bdouble    max;
 };
 
 struct _BdkDevice
 {
-  GObject parent_instance;
+  BObject parent_instance;
   /* All fields are read-only */
 	  
-  gchar *GSEAL (name);
+  bchar *GSEAL (name);
   BdkInputSource GSEAL (source);
   BdkInputMode GSEAL (mode);
-  gboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
+  bboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
 	  
-  gint GSEAL (num_axes);
+  bint GSEAL (num_axes);
   BdkDeviceAxis *GSEAL (axes);
 	  
-  gint GSEAL (num_keys);
+  bint GSEAL (num_keys);
   BdkDeviceKey *GSEAL (keys);
 };
 
@@ -119,74 +119,74 @@ struct _BdkDevice
 
 struct _BdkTimeCoord
 {
-  guint32 time;
-  gdouble axes[BDK_MAX_TIMECOORD_AXES];
+  buint32 time;
+  bdouble axes[BDK_MAX_TIMECOORD_AXES];
 };
 
-GType          bdk_device_get_type      (void) G_GNUC_CONST;
+GType          bdk_device_get_type      (void) B_GNUC_CONST;
 
 #ifndef BDK_MULTIHEAD_SAFE
 /* Returns a list of BdkDevice * */	  
 GList *        bdk_devices_list              (void);
 #endif /* BDK_MULTIHEAD_SAFE */
 
-const gchar *         bdk_device_get_name       (BdkDevice *device);
+const bchar *         bdk_device_get_name       (BdkDevice *device);
 BdkInputSource        bdk_device_get_source     (BdkDevice *device);
 BdkInputMode          bdk_device_get_mode       (BdkDevice *device);
-gboolean              bdk_device_get_has_cursor (BdkDevice *device);
+bboolean              bdk_device_get_has_cursor (BdkDevice *device);
 
 void                  bdk_device_get_key        (BdkDevice       *device,
-                                                 guint            index,
-                                                 guint           *keyval,
+                                                 buint            index,
+                                                 buint           *keyval,
                                                  BdkModifierType *modifiers);
 BdkAxisUse            bdk_device_get_axis_use   (BdkDevice       *device,
-                                                 guint            index);
-gint                  bdk_device_get_n_keys     (BdkDevice       *device);
-gint                  bdk_device_get_n_axes     (BdkDevice       *device);
+                                                 buint            index);
+bint                  bdk_device_get_n_keys     (BdkDevice       *device);
+bint                  bdk_device_get_n_axes     (BdkDevice       *device);
 
 /* Functions to configure a device */
 void           bdk_device_set_source    (BdkDevice      *device,
 					 BdkInputSource  source);
 	  
-gboolean       bdk_device_set_mode      (BdkDevice      *device,
+bboolean       bdk_device_set_mode      (BdkDevice      *device,
 					 BdkInputMode    mode);
 
 void           bdk_device_set_key       (BdkDevice      *device,
-					 guint           index_,
-					 guint           keyval,
+					 buint           index_,
+					 buint           keyval,
 					 BdkModifierType modifiers);
 
 void     bdk_device_set_axis_use (BdkDevice         *device,
-				  guint              index_,
+				  buint              index_,
 				  BdkAxisUse         use);
 
 void     bdk_device_get_state    (BdkDevice         *device,
 				  BdkWindow         *window,
-				  gdouble           *axes,
+				  bdouble           *axes,
 				  BdkModifierType   *mask);
 
-gboolean bdk_device_get_history  (BdkDevice         *device,
+bboolean bdk_device_get_history  (BdkDevice         *device,
 				  BdkWindow         *window,
-				  guint32            start,
-				  guint32            stop,
+				  buint32            start,
+				  buint32            stop,
 				  BdkTimeCoord    ***events,
-				  gint              *n_events);
+				  bint              *n_events);
 
 void     bdk_device_free_history (BdkTimeCoord     **events,
-				  gint               n_events);
-gboolean bdk_device_get_axis     (BdkDevice         *device,
-				  gdouble           *axes,
+				  bint               n_events);
+bboolean bdk_device_get_axis     (BdkDevice         *device,
+				  bdouble           *axes,
 				  BdkAxisUse         use,
-				  gdouble           *value);
+				  bdouble           *value);
 
 void bdk_input_set_extension_events (BdkWindow        *window,
-				     gint              mask,
+				     bint              mask,
 				     BdkExtensionMode  mode);
 
 #ifndef BDK_MULTIHEAD_SAFE
 BdkDevice *bdk_device_get_core_pointer (void);
 #endif
  
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_INPUT_H__ */

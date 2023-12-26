@@ -28,87 +28,87 @@
 static void                  bail_expander_class_init       (BailExpanderClass *klass);
 static void                  bail_expander_init             (BailExpander      *expander);
 
-static const gchar*          bail_expander_get_name         (BatkObject         *obj);
-static gint                  bail_expander_get_n_children   (BatkObject         *obj)
+static const bchar*          bail_expander_get_name         (BatkObject         *obj);
+static bint                  bail_expander_get_n_children   (BatkObject         *obj)
 ;
 static BatkObject*            bail_expander_ref_child        (BatkObject         *obj,
-                                                             gint              i);
+                                                             bint              i);
 
 static BatkStateSet*          bail_expander_ref_state_set    (BatkObject         *obj);
-static void                  bail_expander_real_notify_btk  (GObject           *obj,
-                                                             GParamSpec        *pspec);
+static void                  bail_expander_real_notify_btk  (BObject           *obj,
+                                                             BParamSpec        *pspec);
 static void                  bail_expander_map_btk          (BtkWidget         *widget,
-                                                             gpointer          data);
+                                                             bpointer          data);
 
 static void                  bail_expander_real_initialize  (BatkObject         *obj,
-                                                             gpointer          data);
-static void                  bail_expander_finalize         (GObject           *object);
+                                                             bpointer          data);
+static void                  bail_expander_finalize         (BObject           *object);
 static void                  bail_expander_init_textutil    (BailExpander      *expander,
                                                              BtkExpander       *widget);
-static const gchar*          bail_expander_get_full_text    (BtkExpander       *widget);
+static const bchar*          bail_expander_get_full_text    (BtkExpander       *widget);
 
 static void                  batk_action_interface_init  (BatkActionIface *iface);
-static gboolean              bail_expander_do_action    (BatkAction      *action,
-                                                         gint           i);
-static gboolean              idle_do_action             (gpointer       data);
-static gint                  bail_expander_get_n_actions(BatkAction      *action);
-static const gchar*          bail_expander_get_description
+static bboolean              bail_expander_do_action    (BatkAction      *action,
+                                                         bint           i);
+static bboolean              idle_do_action             (bpointer       data);
+static bint                  bail_expander_get_n_actions(BatkAction      *action);
+static const bchar*          bail_expander_get_description
                                                         (BatkAction      *action,
-                                                         gint           i);
-static const gchar*          bail_expander_get_keybinding
+                                                         bint           i);
+static const bchar*          bail_expander_get_keybinding
                                                         (BatkAction      *action,
-                                                         gint           i);
-static const gchar*          bail_expander_action_get_name
+                                                         bint           i);
+static const bchar*          bail_expander_action_get_name
                                                         (BatkAction      *action,
-                                                         gint           i);
-static gboolean              bail_expander_set_description
+                                                         bint           i);
+static bboolean              bail_expander_set_description
                                                         (BatkAction      *action,
-                                                         gint           i,
-                                                         const gchar    *desc);
+                                                         bint           i,
+                                                         const bchar    *desc);
 
 /* batktext.h */ 
 static void	  batk_text_interface_init	   (BatkTextIface	*iface);
 
-static gchar*	  bail_expander_get_text	   (BatkText	      *text,
-                                                    gint	      start_pos,
-						    gint	      end_pos);
+static bchar*	  bail_expander_get_text	   (BatkText	      *text,
+                                                    bint	      start_pos,
+						    bint	      end_pos);
 static gunichar	  bail_expander_get_character_at_offset
                                                    (BatkText	      *text,
-						    gint	      offset);
-static gchar*     bail_expander_get_text_before_offset
+						    bint	      offset);
+static bchar*     bail_expander_get_text_before_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_expander_get_text_at_offset (BatkText	      *text,
- 						    gint	      offset,
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_expander_get_text_at_offset (BatkText	      *text,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gchar*     bail_expander_get_text_after_offset
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bchar*     bail_expander_get_text_after_offset
                                                    (BatkText	      *text,
- 						    gint	      offset,
+ 						    bint	      offset,
 						    BatkTextBoundary   boundary_type,
-						    gint	      *start_offset,
-						    gint	      *end_offset);
-static gint	  bail_expander_get_character_count(BatkText	      *text);
+						    bint	      *start_offset,
+						    bint	      *end_offset);
+static bint	  bail_expander_get_character_count(BatkText	      *text);
 static void bail_expander_get_character_extents    (BatkText	      *text,
-						    gint 	      offset,
-		                                    gint 	      *x,
-                    		   	            gint 	      *y,
-                                		    gint 	      *width,
-                                     		    gint 	      *height,
+						    bint 	      offset,
+		                                    bint 	      *x,
+                    		   	            bint 	      *y,
+                                		    bint 	      *width,
+                                     		    bint 	      *height,
 			        		    BatkCoordType      coords);
-static gint bail_expander_get_offset_at_point      (BatkText           *text,
-                                                    gint              x,
-                                                    gint              y,
+static bint bail_expander_get_offset_at_point      (BatkText           *text,
+                                                    bint              x,
+                                                    bint              y,
 			                            BatkCoordType      coords);
 static BatkAttributeSet* bail_expander_get_run_attributes 
                                                    (BatkText           *text,
-              					    gint 	      offset,
-                                                    gint 	      *start_offset,
-					            gint	      *end_offset);
+              					    bint 	      offset,
+                                                    bint 	      *start_offset,
+					            bint	      *end_offset);
 static BatkAttributeSet* bail_expander_get_default_attributes
                                                    (BatkText           *text);
 
@@ -119,7 +119,7 @@ G_DEFINE_TYPE_WITH_CODE (BailExpander, bail_expander, BAIL_TYPE_CONTAINER,
 static void
 bail_expander_class_init (BailExpanderClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   BailWidgetClass *widget_class;
 
@@ -145,10 +145,10 @@ bail_expander_init (BailExpander *expander)
   expander->textutil = NULL;
 }
 
-static const gchar*
+static const bchar*
 bail_expander_get_name (BatkObject *obj)
 {
-  const gchar *name;
+  const bchar *name;
   g_return_val_if_fail (BAIL_IS_EXPANDER (obj), NULL);
 
   name = BATK_OBJECT_CLASS (bail_expander_parent_class)->get_name (obj);
@@ -174,12 +174,12 @@ bail_expander_get_name (BatkObject *obj)
     }
 }
 
-static gint
+static bint
 bail_expander_get_n_children (BatkObject* obj)
 {
   BtkWidget *widget;
   GList *children;
-  gint count = 0;
+  bint count = 0;
 
   g_return_val_if_fail (BAIL_IS_CONTAINER (obj), count);
 
@@ -202,14 +202,14 @@ bail_expander_get_n_children (BatkObject* obj)
 
 static BatkObject*
 bail_expander_ref_child (BatkObject *obj,
-                         gint      i)
+                         bint      i)
 {
   GList *children, *tmp_list;
   BatkObject *accessible;
   BtkWidget *widget;
   BtkWidget *label;
-  gint index;
-  gint count;
+  bint index;
+  bint count;
 
   g_return_val_if_fail (BAIL_IS_CONTAINER (obj), NULL);
   g_return_val_if_fail ((i >= 0), NULL);
@@ -249,7 +249,7 @@ bail_expander_ref_child (BatkObject *obj,
 
 static void
 bail_expander_real_initialize (BatkObject *obj,
-                               gpointer   data)
+                               bpointer   data)
 {
   BailExpander *bail_expander = BAIL_EXPANDER (obj);
   BtkWidget  *expander;
@@ -270,7 +270,7 @@ bail_expander_real_initialize (BatkObject *obj,
 
 static void
 bail_expander_map_btk (BtkWidget *widget,
-                       gpointer data)
+                       bpointer data)
 {
   BailExpander *expander; 
 
@@ -279,8 +279,8 @@ bail_expander_map_btk (BtkWidget *widget,
 }
 
 static void
-bail_expander_real_notify_btk (GObject    *obj,
-                               GParamSpec *pspec)
+bail_expander_real_notify_btk (BObject    *obj,
+                               BParamSpec *pspec)
 {
   BatkObject* batk_obj;
   BtkExpander *expander;
@@ -291,7 +291,7 @@ bail_expander_real_notify_btk (GObject    *obj,
 ;
   if (strcmp (pspec->name, "label") == 0)
     {
-      const gchar* label_text;
+      const bchar* label_text;
 
 
       label_text = bail_expander_get_full_text (expander);
@@ -305,7 +305,7 @@ bail_expander_real_notify_btk (GObject    *obj,
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
+        g_object_notify (B_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
@@ -324,7 +324,7 @@ bail_expander_real_notify_btk (GObject    *obj,
     BAIL_WIDGET_CLASS (bail_expander_parent_class)->notify_btk (obj, pspec);
 }
 
-static const gchar*
+static const bchar*
 bail_expander_get_full_text (BtkExpander *widget)
 {
   BtkWidget *label_widget;
@@ -341,7 +341,7 @@ static void
 bail_expander_init_textutil (BailExpander *expander,
                              BtkExpander  *widget)
 {
-  const gchar *label_text;
+  const bchar *label_text;
 
   expander->textutil = bail_text_util_new ();
   label_text = bail_expander_get_full_text (widget);
@@ -359,13 +359,13 @@ batk_action_interface_init (BatkActionIface *iface)
   iface->set_description = bail_expander_set_description;
 }
 
-static gboolean
+static bboolean
 bail_expander_do_action (BatkAction *action,
-                         gint      i)
+                         bint      i)
 {
   BtkWidget *widget;
   BailExpander *expander;
-  gboolean return_value = TRUE;
+  bboolean return_value = TRUE;
 
   widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
@@ -393,8 +393,8 @@ bail_expander_do_action (BatkAction *action,
   return return_value; 
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BtkWidget *widget;
   BailExpander *bail_expander;
@@ -412,18 +412,18 @@ idle_do_action (gpointer data)
   return FALSE;
 }
 
-static gint
+static bint
 bail_expander_get_n_actions (BatkAction *action)
 {
   return 1;
 }
 
-static const gchar*
+static const bchar*
 bail_expander_get_description (BatkAction *action,
-                               gint      i)
+                               bint      i)
 {
   BailExpander *expander;
-  const gchar *return_value;
+  const bchar *return_value;
 
   expander = BAIL_EXPANDER (action);
 
@@ -439,12 +439,12 @@ bail_expander_get_description (BatkAction *action,
   return return_value; 
 }
 
-static const gchar*
+static const bchar*
 bail_expander_get_keybinding (BatkAction *action,
-                              gint      i)
+                              bint      i)
 {
   BailExpander *expander;
-  gchar *return_value = NULL;
+  bchar *return_value = NULL;
 
   switch (i)
     {
@@ -469,7 +469,7 @@ bail_expander_get_keybinding (BatkAction *action,
         label = btk_expander_get_label_widget (BTK_EXPANDER (widget));
         if (BTK_IS_LABEL (label))
           {
-            guint key_val; 
+            buint key_val; 
 
             key_val = btk_label_get_mnemonic_keyval (BTK_LABEL (label)); 
             if (key_val != BDK_VoidSymbol)
@@ -485,11 +485,11 @@ bail_expander_get_keybinding (BatkAction *action,
   return return_value; 
 }
 
-static const gchar*
+static const bchar*
 bail_expander_action_get_name (BatkAction *action,
-                               gint      i)
+                               bint      i)
 {
-  const gchar *return_value;
+  const bchar *return_value;
 
   switch (i)
     {
@@ -503,13 +503,13 @@ bail_expander_action_get_name (BatkAction *action,
   return return_value; 
 }
 
-static gboolean
+static bboolean
 bail_expander_set_description (BatkAction      *action,
-                               gint           i,
-                               const gchar    *desc)
+                               bint           i,
+                               const bchar    *desc)
 {
   BailExpander *expander;
-  gchar **value;
+  bchar **value;
 
   expander = BAIL_EXPANDER (action);
 
@@ -574,14 +574,14 @@ batk_text_interface_init (BatkTextIface *iface)
   iface->get_default_attributes = bail_expander_get_default_attributes;
 }
 
-static gchar*
+static bchar*
 bail_expander_get_text (BatkText *text,
-                        gint    start_pos,
-                        gint    end_pos)
+                        bint    start_pos,
+                        bint    end_pos)
 {
   BtkWidget *widget;
   BailExpander *expander;
-  const gchar *label_text;
+  const bchar *label_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -601,12 +601,12 @@ bail_expander_get_text (BatkText *text,
                                          start_pos, end_pos);
 }
 
-static gchar*
+static bchar*
 bail_expander_get_text_before_offset (BatkText         *text,
-				      gint            offset,
+				      bint            offset,
 				      BatkTextBoundary boundary_type,
-				      gint            *start_offset,
-				      gint            *end_offset)
+				      bint            *start_offset,
+				      bint            *end_offset)
 {
   BtkWidget *widget;
   BailExpander *expander;
@@ -630,12 +630,12 @@ bail_expander_get_text_before_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset); 
 }
 
-static gchar*
+static bchar*
 bail_expander_get_text_at_offset (BatkText         *text,
-			          gint            offset,
+			          bint            offset,
 			          BatkTextBoundary boundary_type,
- 			          gint            *start_offset,
-			          gint            *end_offset)
+ 			          bint            *start_offset,
+			          bint            *end_offset)
 {
   BtkWidget *widget;
   BailExpander *expander;
@@ -659,12 +659,12 @@ bail_expander_get_text_at_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset);
 }
 
-static gchar*
+static bchar*
 bail_expander_get_text_after_offset (BatkText         *text,
-				     gint            offset,
+				     bint            offset,
 				     BatkTextBoundary boundary_type,
-				     gint            *start_offset,
-				     gint            *end_offset)
+				     bint            *start_offset,
+				     bint            *end_offset)
 {
   BtkWidget *widget;
   BailExpander *expander;
@@ -688,7 +688,7 @@ bail_expander_get_text_after_offset (BatkText         *text,
                            boundary_type, offset, start_offset, end_offset);
 }
 
-static gint
+static bint
 bail_expander_get_character_count (BatkText *text)
 {
   BtkWidget *widget;
@@ -708,18 +708,18 @@ bail_expander_get_character_count (BatkText *text)
 
 static void
 bail_expander_get_character_extents (BatkText      *text,
-				     gint         offset,
-		                     gint         *x,
-                    		     gint 	*y,
-                                     gint 	*width,
-                                     gint 	*height,
+				     bint         offset,
+		                     bint         *x,
+                    		     bint 	*y,
+                                     bint 	*width,
+                                     bint 	*height,
 			             BatkCoordType coords)
 {
   BtkWidget *widget;
   BtkWidget *label;
   BangoRectangle char_rect;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
  
   widget = BTK_ACCESSIBLE (text)->widget;
 
@@ -740,16 +740,16 @@ bail_expander_get_character_extents (BatkText      *text,
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
-static gint 
+static bint 
 bail_expander_get_offset_at_point (BatkText      *text,
-                                   gint         x,
-                                   gint         y,
+                                   bint         x,
+                                   bint         y,
 			           BatkCoordType coords)
 { 
   BtkWidget *widget;
   BtkWidget *label;
-  gint index, x_layout, y_layout;
-  const gchar *label_text;
+  bint index, x_layout, y_layout;
+  const bchar *label_text;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -779,9 +779,9 @@ bail_expander_get_offset_at_point (BatkText      *text,
 
 static BatkAttributeSet*
 bail_expander_get_run_attributes (BatkText *text,
-                                  gint 	  offset,
-                                  gint 	  *start_offset,
-	                          gint	  *end_offset)
+                                  bint 	  offset,
+                                  bint 	  *start_offset,
+	                          bint	  *end_offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
@@ -817,7 +817,7 @@ bail_expander_get_run_attributes (BatkText *text,
 
   at_set = bail_misc_layout_get_run_attributes (at_set,
                                                 btk_label_get_layout (BTK_LABEL (label)),
-                                                (gchar *) btk_label_get_text (BTK_LABEL (label)),
+                                                (bchar *) btk_label_get_text (BTK_LABEL (label)),
                                                 offset,
                                                 start_offset,
                                                 end_offset);
@@ -849,12 +849,12 @@ bail_expander_get_default_attributes (BatkText *text)
 
 static gunichar 
 bail_expander_get_character_at_offset (BatkText *text,
-                                       gint    offset)
+                                       bint    offset)
 {
   BtkWidget *widget;
   BtkWidget *label;
-  const gchar *string;
-  gchar *index;
+  const bchar *string;
+  bchar *index;
 
   widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
@@ -874,7 +874,7 @@ bail_expander_get_character_at_offset (BatkText *text,
 }
 
 static void
-bail_expander_finalize (GObject *object)
+bail_expander_finalize (BObject *object)
 {
   BailExpander *expander = BAIL_EXPANDER (object);
 
@@ -888,5 +888,5 @@ bail_expander_finalize (GObject *object)
   if (expander->textutil)
     g_object_unref (expander->textutil);
 
-  G_OBJECT_CLASS (bail_expander_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bail_expander_parent_class)->finalize (object);
 }

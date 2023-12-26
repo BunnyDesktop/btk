@@ -26,14 +26,14 @@
 
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PAGE_SETUP_UNIX_DIALOG                  (btk_page_setup_unix_dialog_get_type ())
-#define BTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialog))
-#define BTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
-#define BTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define BTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
-#define BTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
+#define BTK_PAGE_SETUP_UNIX_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialog))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_IS_PAGE_SETUP_UNIX_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG))
+#define BTK_PAGE_SETUP_UNIX_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PAGE_SETUP_UNIX_DIALOG, BtkPageSetupUnixDialogClass))
 
 
 typedef struct _BtkPageSetupUnixDialog         BtkPageSetupUnixDialog;
@@ -61,8 +61,8 @@ struct _BtkPageSetupUnixDialogClass
   void (*_btk_reserved7) (void);
 };
 
-GType 		  btk_page_setup_unix_dialog_get_type	        (void) G_GNUC_CONST;
-BtkWidget *       btk_page_setup_unix_dialog_new                (const gchar            *title,
+GType 		  btk_page_setup_unix_dialog_get_type	        (void) B_GNUC_CONST;
+BtkWidget *       btk_page_setup_unix_dialog_new                (const bchar            *title,
 								 BtkWindow              *parent);
 void              btk_page_setup_unix_dialog_set_page_setup     (BtkPageSetupUnixDialog *dialog,
 								 BtkPageSetup           *page_setup);
@@ -71,6 +71,6 @@ void              btk_page_setup_unix_dialog_set_print_settings (BtkPageSetupUni
 								 BtkPrintSettings       *print_settings);
 BtkPrintSettings *btk_page_setup_unix_dialog_get_print_settings (BtkPageSetupUnixDialog *dialog);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PAGE_SETUP_UNIX_DIALOG_H__ */

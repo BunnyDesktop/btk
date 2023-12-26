@@ -23,12 +23,12 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_EMBED             (_btk_file_chooser_embed_get_type ())
-#define BTK_FILE_CHOOSER_EMBED(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
-#define BTK_IS_FILE_CHOOSER_EMBED(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED))
-#define BTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbedIface))
+#define BTK_FILE_CHOOSER_EMBED(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbed))
+#define BTK_IS_FILE_CHOOSER_EMBED(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED))
+#define BTK_FILE_CHOOSER_EMBED_GET_IFACE(obj)   (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_FILE_CHOOSER_EMBED, BtkFileChooserEmbedIface))
 
 typedef struct _BtkFileChooserEmbed      BtkFileChooserEmbed;
 typedef struct _BtkFileChooserEmbedIface BtkFileChooserEmbedIface;
@@ -41,10 +41,10 @@ struct _BtkFileChooserEmbedIface
   /* Methods
    */
   void (*get_default_size)        (BtkFileChooserEmbed *chooser_embed,
-				   gint                *default_width,
-				   gint                *default_height);
+				   bint                *default_width,
+				   bint                *default_height);
 
-  gboolean (*should_respond)      (BtkFileChooserEmbed *chooser_embed);
+  bboolean (*should_respond)      (BtkFileChooserEmbed *chooser_embed);
 
   void (*initial_focus)           (BtkFileChooserEmbed *chooser_embed);
   /* Signals
@@ -53,12 +53,12 @@ struct _BtkFileChooserEmbedIface
   void (*response_requested)      (BtkFileChooserEmbed *chooser_embed);
 };
 
-GType _btk_file_chooser_embed_get_type (void) G_GNUC_CONST;
+GType _btk_file_chooser_embed_get_type (void) B_GNUC_CONST;
 
 void  _btk_file_chooser_embed_get_default_size    (BtkFileChooserEmbed *chooser_embed,
-						   gint                *default_width,
-						   gint                *default_height);
-gboolean _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed);
+						   bint                *default_width,
+						   bint                *default_height);
+bboolean _btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed);
 
 void _btk_file_chooser_embed_initial_focus (BtkFileChooserEmbed *chooser_embed);
 
@@ -66,6 +66,6 @@ void _btk_file_chooser_embed_delegate_iface_init  (BtkFileChooserEmbedIface *ifa
 void _btk_file_chooser_embed_set_delegate         (BtkFileChooserEmbed *receiver,
 						   BtkFileChooserEmbed *delegate);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_EMBED_H__ */

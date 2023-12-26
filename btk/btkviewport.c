@@ -58,16 +58,16 @@ enum {
 };
 
 
-static void btk_viewport_finalize                 (GObject          *object);
+static void btk_viewport_finalize                 (BObject          *object);
 static void btk_viewport_destroy                  (BtkObject        *object);
-static void btk_viewport_set_property             (GObject         *object,
-						   guint            prop_id,
-						   const GValue    *value,
-						   GParamSpec      *pspec);
-static void btk_viewport_get_property             (GObject         *object,
-						   guint            prop_id,
-						   GValue          *value,
-						   GParamSpec      *pspec);
+static void btk_viewport_set_property             (BObject         *object,
+						   buint            prop_id,
+						   const BValue    *value,
+						   BParamSpec      *pspec);
+static void btk_viewport_get_property             (BObject         *object,
+						   buint            prop_id,
+						   BValue          *value,
+						   BParamSpec      *pspec);
 static void btk_viewport_set_scroll_adjustments	  (BtkViewport	    *viewport,
 						   BtkAdjustment    *hadjustment,
 						   BtkAdjustment    *vadjustment);
@@ -75,7 +75,7 @@ static void btk_viewport_realize                  (BtkWidget        *widget);
 static void btk_viewport_unrealize                (BtkWidget        *widget);
 static void btk_viewport_paint                    (BtkWidget        *widget,
 						   BdkRectangle     *area);
-static gint btk_viewport_expose                   (BtkWidget        *widget,
+static bint btk_viewport_expose                   (BtkWidget        *widget,
 						   BdkEventExpose   *event);
 static void btk_viewport_add                      (BtkContainer     *container,
 						   BtkWidget        *widget);
@@ -84,7 +84,7 @@ static void btk_viewport_size_request             (BtkWidget        *widget,
 static void btk_viewport_size_allocate            (BtkWidget        *widget,
 						   BtkAllocation    *allocation);
 static void btk_viewport_adjustment_value_changed (BtkAdjustment    *adjustment,
-						   gpointer          data);
+						   bpointer          data);
 static void btk_viewport_style_set                (BtkWidget *widget,
 			                           BtkStyle  *previous_style);
 
@@ -94,12 +94,12 @@ static void
 btk_viewport_class_init (BtkViewportClass *class)
 {
   BtkObjectClass *object_class;
-  GObjectClass   *bobject_class;
+  BObjectClass   *bobject_class;
   BtkWidgetClass *widget_class;
   BtkContainerClass *container_class;
 
   object_class = (BtkObjectClass*) class;
-  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class = B_OBJECT_CLASS (class);
   widget_class = (BtkWidgetClass*) class;
   container_class = (BtkContainerClass*) class;
 
@@ -155,21 +155,21 @@ btk_viewport_class_init (BtkViewportClass *class)
    */
   widget_class->set_scroll_adjustments_signal =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (bobject_class),
+		  B_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  G_STRUCT_OFFSET (BtkViewportClass, set_scroll_adjustments),
 		  NULL, NULL,
 		  _btk_marshal_VOID__OBJECT_OBJECT,
-		  G_TYPE_NONE, 2,
+		  B_TYPE_NONE, 2,
 		  BTK_TYPE_ADJUSTMENT,
 		  BTK_TYPE_ADJUSTMENT);
 }
 
 static void
-btk_viewport_set_property (GObject         *object,
-			   guint            prop_id,
-			   const GValue    *value,
-			   GParamSpec      *pspec)
+btk_viewport_set_property (BObject         *object,
+			   buint            prop_id,
+			   const BValue    *value,
+			   BParamSpec      *pspec)
 {
   BtkViewport *viewport;
 
@@ -178,25 +178,25 @@ btk_viewport_set_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      btk_viewport_set_hadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_hadjustment (viewport, b_value_get_object (value));
       break;
     case PROP_VADJUSTMENT:
-      btk_viewport_set_vadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_vadjustment (viewport, b_value_get_object (value));
       break;
     case PROP_SHADOW_TYPE:
-      btk_viewport_set_shadow_type (viewport, g_value_get_enum (value));
+      btk_viewport_set_shadow_type (viewport, b_value_get_enum (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_viewport_get_property (GObject         *object,
-			   guint            prop_id,
-			   GValue          *value,
-			   GParamSpec      *pspec)
+btk_viewport_get_property (BObject         *object,
+			   buint            prop_id,
+			   BValue          *value,
+			   BParamSpec      *pspec)
 {
   BtkViewport *viewport;
 
@@ -205,16 +205,16 @@ btk_viewport_get_property (GObject         *object,
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      g_value_set_object (value, viewport->hadjustment);
+      b_value_set_object (value, viewport->hadjustment);
       break;
     case PROP_VADJUSTMENT:
-      g_value_set_object (value, viewport->vadjustment);
+      b_value_set_object (value, viewport->vadjustment);
       break;
     case PROP_SHADOW_TYPE:
-      g_value_set_enum (value, viewport->shadow_type);
+      b_value_set_enum (value, viewport->shadow_type);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -278,14 +278,14 @@ viewport_disconnect_adjustment (BtkViewport    *viewport,
 }
 
 static void
-btk_viewport_finalize (GObject *object)
+btk_viewport_finalize (BObject *object)
 {
   BtkViewport *viewport = BTK_VIEWPORT (object);
 
   viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL);
   viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_VERTICAL);
 
-  G_OBJECT_CLASS (btk_viewport_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_viewport_parent_class)->finalize (object);
 }
 
 static void
@@ -343,7 +343,7 @@ viewport_get_view_allocation (BtkViewport   *viewport,
 {
   BtkWidget *widget = BTK_WIDGET (viewport);
   BtkAllocation *allocation = &widget->allocation;
-  gint border_width = BTK_CONTAINER (viewport)->border_width;
+  bint border_width = BTK_CONTAINER (viewport)->border_width;
   
   view_allocation->x = 0;
   view_allocation->y = 0;
@@ -360,9 +360,9 @@ viewport_get_view_allocation (BtkViewport   *viewport,
 
 static void
 viewport_reclamp_adjustment (BtkAdjustment *adjustment,
-			     gboolean      *value_changed)
+			     bboolean      *value_changed)
 {
-  gdouble value = adjustment->value;
+  bdouble value = adjustment->value;
   
   value = CLAMP (value, 0, adjustment->upper - adjustment->page_size);
   if (value != adjustment->value)
@@ -377,14 +377,14 @@ viewport_reclamp_adjustment (BtkAdjustment *adjustment,
 
 static void
 viewport_set_hadjustment_values (BtkViewport *viewport,
-				 gboolean    *value_changed)
+				 bboolean    *value_changed)
 {
   BtkBin *bin = BTK_BIN (viewport);
   BtkAllocation view_allocation;
   BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
-  gdouble old_page_size;
-  gdouble old_upper;
-  gdouble old_value;
+  bdouble old_page_size;
+  bdouble old_upper;
+  bdouble old_value;
   
   viewport_get_view_allocation (viewport, &view_allocation);  
 
@@ -409,7 +409,7 @@ viewport_set_hadjustment_values (BtkViewport *viewport,
 
   if (btk_widget_get_direction (BTK_WIDGET (viewport)) == BTK_TEXT_DIR_RTL) 
     {
-      gdouble dist = old_upper - (old_value + old_page_size);
+      bdouble dist = old_upper - (old_value + old_page_size);
       hadjustment->value = hadjustment->upper - dist - hadjustment->page_size;
       viewport_reclamp_adjustment (hadjustment, value_changed);
       *value_changed = (old_value != hadjustment->value);
@@ -420,7 +420,7 @@ viewport_set_hadjustment_values (BtkViewport *viewport,
 
 static void
 viewport_set_vadjustment_values (BtkViewport *viewport,
-				 gboolean    *value_changed)
+				 bboolean    *value_changed)
 {
   BtkBin *bin = BTK_BIN (viewport);
   BtkAllocation view_allocation;
@@ -453,7 +453,7 @@ viewport_set_adjustment (BtkViewport    *viewport,
 			 BtkAdjustment  *adjustment)
 {
   BtkAdjustment **adjustmentp = ADJUSTMENT_POINTER (viewport, orientation);
-  gboolean value_changed;
+  bboolean value_changed;
 
   if (adjustment && adjustment == *adjustmentp)
     return;
@@ -499,7 +499,7 @@ btk_viewport_set_hadjustment (BtkViewport   *viewport,
 
   viewport_set_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL, adjustment);
 
-  g_object_notify (G_OBJECT (viewport), "hadjustment");
+  g_object_notify (B_OBJECT (viewport), "hadjustment");
 }
 
 /**
@@ -519,7 +519,7 @@ btk_viewport_set_vadjustment (BtkViewport   *viewport,
 
   viewport_set_adjustment (viewport, BTK_ORIENTATION_VERTICAL, adjustment);
 
-  g_object_notify (G_OBJECT (viewport), "vadjustment");
+  g_object_notify (B_OBJECT (viewport), "vadjustment");
 }
 
 static void
@@ -554,7 +554,7 @@ btk_viewport_set_shadow_type (BtkViewport   *viewport,
 	  btk_widget_queue_draw (BTK_WIDGET (viewport));
 	}
 
-      g_object_notify (G_OBJECT (viewport), "shadow-type");
+      g_object_notify (B_OBJECT (viewport), "shadow-type");
     }
 }
 
@@ -618,12 +618,12 @@ btk_viewport_realize (BtkWidget *widget)
   BtkBin *bin = BTK_BIN (widget);
   BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
   BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
-  gint border_width = BTK_CONTAINER (widget)->border_width;
+  bint border_width = BTK_CONTAINER (widget)->border_width;
   
   BtkAllocation view_allocation;
   BdkWindowAttr attributes;
-  gint attributes_mask;
-  gint event_mask;
+  bint attributes_mask;
+  bint event_mask;
 
   btk_widget_set_realized (widget, TRUE);
 
@@ -719,7 +719,7 @@ btk_viewport_paint (BtkWidget    *widget,
     }
 }
 
-static gint
+static bint
 btk_viewport_expose (BtkWidget      *widget,
 		     BdkEventExpose *event)
 {
@@ -789,8 +789,8 @@ btk_viewport_size_allocate (BtkWidget     *widget,
 {
   BtkViewport *viewport = BTK_VIEWPORT (widget);
   BtkBin *bin = BTK_BIN (widget);
-  gint border_width = BTK_CONTAINER (widget)->border_width;
-  gboolean hadjustment_value_changed, vadjustment_value_changed;
+  bint border_width = BTK_CONTAINER (widget)->border_width;
+  bboolean hadjustment_value_changed, vadjustment_value_changed;
   BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
   BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
   BtkAllocation child_allocation;
@@ -847,7 +847,7 @@ btk_viewport_size_allocate (BtkWidget     *widget,
 
 static void
 btk_viewport_adjustment_value_changed (BtkAdjustment *adjustment,
-				       gpointer       data)
+				       bpointer       data)
 {
   BtkViewport *viewport = BTK_VIEWPORT (data);
   BtkBin *bin = BTK_BIN (data);
@@ -857,8 +857,8 @@ btk_viewport_adjustment_value_changed (BtkAdjustment *adjustment,
     {
       BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
       BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
-      gint old_x, old_y;
-      gint new_x, new_y;
+      bint old_x, old_y;
+      bint new_x, new_y;
 
       bdk_window_get_position (viewport->bin_window, &old_x, &old_y);
       new_x = - hadjustment->value;

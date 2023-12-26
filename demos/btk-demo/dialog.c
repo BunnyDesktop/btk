@@ -11,10 +11,10 @@ static BtkWidget *entry2 = NULL;
 
 static void
 message_dialog_clicked (BtkButton *button,
-			gpointer   user_data)
+			bpointer   user_data)
 {
   BtkWidget *dialog;
-  static gint i = 1;
+  static bint i = 1;
 
   dialog = btk_message_dialog_new (BTK_WINDOW (window),
 				   BTK_DIALOG_MODAL | BTK_DIALOG_DESTROY_WITH_PARENT,
@@ -31,7 +31,7 @@ message_dialog_clicked (BtkButton *button,
 
 static void
 interactive_dialog_clicked (BtkButton *button,
-			    gpointer   user_data)
+			    bpointer   user_data)
 {
   BtkWidget *dialog;
   BtkWidget *hbox;
@@ -40,7 +40,7 @@ interactive_dialog_clicked (BtkButton *button,
   BtkWidget *local_entry1;
   BtkWidget *local_entry2;
   BtkWidget *label;
-  gint response;
+  bint response;
 
   dialog = btk_dialog_new_with_buttons ("Interactive Dialog",
 					BTK_WINDOW (window),

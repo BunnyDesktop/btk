@@ -16,13 +16,13 @@
 #include "widgets.h"
 
 static void
-quit_cb (BtkWidget *widget, gpointer data)
+quit_cb (BtkWidget *widget, bpointer data)
 {
   btk_main_quit ();
 }
 
 static void
-noop_cb (BtkWidget *widget, gpointer data)
+noop_cb (BtkWidget *widget, bpointer data)
 {
   /* nothing */
 }
@@ -190,8 +190,8 @@ status_bar_new (void)
   return btk_statusbar_new ();
 }
 
-static gboolean
-delete_event_cb (BtkWidget *widget, BdkEvent *event, gpointer data)
+static bboolean
+delete_event_cb (BtkWidget *widget, BdkEvent *event, bpointer data)
 {
   btk_main_quit ();
   return FALSE;

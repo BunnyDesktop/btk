@@ -46,14 +46,14 @@ bdk_directfb_window_id_table_insert (DFBWindowID  dfb_id,
   if (!window_id_ht)
     window_id_ht = g_hash_table_new (g_direct_hash, g_direct_equal);
 
-  g_hash_table_insert (window_id_ht, GUINT_TO_POINTER (dfb_id), window);
+  g_hash_table_insert (window_id_ht, BUINT_TO_POINTER (dfb_id), window);
 }
 
 void
 bdk_directfb_window_id_table_remove (DFBWindowID dfb_id)
 {
   if (window_id_ht)
-    g_hash_table_remove (window_id_ht, GUINT_TO_POINTER (dfb_id));
+    g_hash_table_remove (window_id_ht, BUINT_TO_POINTER (dfb_id));
 }
 
 BdkWindow *
@@ -63,7 +63,7 @@ bdk_directfb_window_id_table_lookup (DFBWindowID dfb_id)
 
   if (window_id_ht)
     window = (BdkWindow *) g_hash_table_lookup (window_id_ht,
-                                                GUINT_TO_POINTER (dfb_id));
+                                                BUINT_TO_POINTER (dfb_id));
 
   return window;
 }

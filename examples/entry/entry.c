@@ -6,7 +6,7 @@
 static void enter_callback( BtkWidget *widget,
                             BtkWidget *entry )
 {
-  const gchar *entry_text;
+  const bchar *entry_text;
   entry_text = btk_entry_get_text (BTK_ENTRY (entry));
   printf ("Entry contents: %s\n", entry_text);
 }
@@ -34,7 +34,7 @@ int main( int   argc,
     BtkWidget *entry;
     BtkWidget *button;
     BtkWidget *check;
-    gint tmp_pos;
+    bint tmp_pos;
 
     btk_init (&argc, &argv);
 
@@ -56,7 +56,7 @@ int main( int   argc,
     btk_entry_set_max_length (BTK_ENTRY (entry), 50);
     g_signal_connect (entry, "activate",
 		      G_CALLBACK (enter_callback),
-		      (gpointer) entry);
+		      (bpointer) entry);
     btk_entry_set_text (BTK_ENTRY (entry), "hello");
     tmp_pos = BTK_ENTRY (entry)->text_length;
     btk_editable_insert_text (BTK_EDITABLE (entry), " world", -1, &tmp_pos);
@@ -72,14 +72,14 @@ int main( int   argc,
     check = btk_check_button_new_with_label ("Editable");
     btk_box_pack_start (BTK_BOX (hbox), check, TRUE, TRUE, 0);
     g_signal_connect (check, "toggled",
-	              G_CALLBACK (entry_toggle_editable), (gpointer) entry);
+	              G_CALLBACK (entry_toggle_editable), (bpointer) entry);
     btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), TRUE);
     btk_widget_show (check);
 
     check = btk_check_button_new_with_label ("Visible");
     btk_box_pack_start (BTK_BOX (hbox), check, TRUE, TRUE, 0);
     g_signal_connect (check, "toggled",
-	              G_CALLBACK (entry_toggle_visibility), (gpointer) entry);
+	              G_CALLBACK (entry_toggle_visibility), (bpointer) entry);
     btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), TRUE);
     btk_widget_show (check);
 

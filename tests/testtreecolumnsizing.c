@@ -40,15 +40,15 @@ create_model (void)
   BtkListStore *store;
 
   store = btk_list_store_new (5,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING,
-                              G_TYPE_STRING);
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING,
+                              B_TYPE_STRING);
 
   for (i = 0; i < N_ROWS; i++)
     {
-      gchar *str;
+      bchar *str;
 
       str = g_strdup_printf ("Row %d", i);
       btk_list_store_insert_with_values (store, NULL, i,
@@ -66,7 +66,7 @@ create_model (void)
 
 static void
 toggle_long_content_row (BtkToggleButton *button,
-                         gpointer         user_data)
+                         bpointer         user_data)
 {
   BtkTreeModel *model;
 
@@ -92,9 +92,9 @@ toggle_long_content_row (BtkToggleButton *button,
 
 static void
 combo_box_changed (BtkComboBox *combo_box,
-                   gpointer     user_data)
+                   bpointer     user_data)
 {
-  gchar *str;
+  bchar *str;
   GList *list;
   GList *columns;
 

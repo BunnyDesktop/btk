@@ -28,14 +28,14 @@
 #include <btk/btkdialog.h>
 #include <btk/btkfilechooser.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_FILE_CHOOSER_DIALOG             (btk_file_chooser_dialog_get_type ())
-#define BTK_FILE_CHOOSER_DIALOG(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialog))
-#define BTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
-#define BTK_IS_FILE_CHOOSER_DIALOG(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG))
-#define BTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG))
-#define BTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
+#define BTK_FILE_CHOOSER_DIALOG(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialog))
+#define BTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
+#define BTK_IS_FILE_CHOOSER_DIALOG(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
 
 typedef struct _BtkFileChooserDialog        BtkFileChooserDialog;
 typedef struct _BtkFileChooserDialogPrivate BtkFileChooserDialogPrivate;
@@ -53,22 +53,22 @@ struct _BtkFileChooserDialogClass
   BtkDialogClass parent_class;
 };
 
-GType      btk_file_chooser_dialog_get_type         (void) G_GNUC_CONST;
-BtkWidget *btk_file_chooser_dialog_new              (const gchar          *title,
+GType      btk_file_chooser_dialog_get_type         (void) B_GNUC_CONST;
+BtkWidget *btk_file_chooser_dialog_new              (const bchar          *title,
 						     BtkWindow            *parent,
 						     BtkFileChooserAction  action,
-						     const gchar          *first_button_text,
-						     ...) G_GNUC_NULL_TERMINATED;
+						     const bchar          *first_button_text,
+						     ...) B_GNUC_NULL_TERMINATED;
 
 #ifndef BTK_DISABLE_DEPRECATED
-BtkWidget *btk_file_chooser_dialog_new_with_backend (const gchar          *title,
+BtkWidget *btk_file_chooser_dialog_new_with_backend (const bchar          *title,
 						     BtkWindow            *parent,
 						     BtkFileChooserAction  action,
-						     const gchar          *backend,
-						     const gchar          *first_button_text,
-						     ...) G_GNUC_NULL_TERMINATED;
+						     const bchar          *backend,
+						     const bchar          *first_button_text,
+						     ...) B_GNUC_NULL_TERMINATED;
 #endif /* BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_FILE_CHOOSER_DIALOG_H__ */

@@ -24,15 +24,15 @@ static void change_digits( BtkWidget *widget,
 }
 
 static void get_value( BtkWidget *widget,
-                       gpointer data )
+                       bpointer data )
 {
-  gchar *buf;
+  bchar *buf;
   BtkLabel *label;
   BtkSpinButton *spin;
 
   spin = BTK_SPIN_BUTTON (spinner1);
-  label = BTK_LABEL (g_object_get_data (G_OBJECT (widget), "user_data"));
-  if (GPOINTER_TO_INT (data) == 1)
+  label = BTK_LABEL (g_object_get_data (B_OBJECT (widget), "user_data"));
+  if (BPOINTER_TO_INT (data) == 1)
     buf = g_strdup_printf ("%d", btk_spin_button_get_value_as_int (spin));
   else
     buf = g_strdup_printf ("%0.*f", spin->digits,
@@ -186,17 +186,17 @@ int main( int   argc,
   hbox = btk_hbox_new (FALSE, 0);
   btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, TRUE, 5);
   button = btk_button_new_with_label ("Value as Int");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
-		    GINT_TO_POINTER (1));
+		    BINT_TO_POINTER (1));
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
 
   button = btk_button_new_with_label ("Value as Float");
-  g_object_set_data (G_OBJECT (button), "user_data", val_label);
+  g_object_set_data (B_OBJECT (button), "user_data", val_label);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (get_value),
-		    GINT_TO_POINTER (2));
+		    BINT_TO_POINTER (2));
   btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 5);
 
   btk_box_pack_start (BTK_BOX (vbox), val_label, TRUE, TRUE, 0);

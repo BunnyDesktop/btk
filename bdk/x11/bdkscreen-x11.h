@@ -31,17 +31,17 @@
 #include <X11/X.h>
 #include <X11/Xlib.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
   
 typedef struct _BdkScreenX11 BdkScreenX11;
 typedef struct _BdkScreenX11Class BdkScreenX11Class;
 
 #define BDK_TYPE_SCREEN_X11              (_bdk_screen_x11_get_type ())
-#define BDK_SCREEN_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_X11, BdkScreenX11))
-#define BDK_SCREEN_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
-#define BDK_IS_SCREEN_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_X11))
-#define BDK_IS_SCREEN_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_X11))
-#define BDK_SCREEN_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
+#define BDK_SCREEN_X11(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_X11, BdkScreenX11))
+#define BDK_SCREEN_X11_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
+#define BDK_IS_SCREEN_X11(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_X11))
+#define BDK_IS_SCREEN_X11_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_X11))
+#define BDK_SCREEN_X11_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_X11, BdkScreenX11Class))
 
 typedef struct _BdkX11Monitor BdkX11Monitor;
 
@@ -52,7 +52,7 @@ struct _BdkScreenX11
   BdkDisplay *display;
   Display *xdisplay;
   Screen *xscreen;
-  gint screen_num;
+  bint screen_num;
   Window xroot_window;
   BdkWindow *root_window;
 
@@ -63,20 +63,20 @@ struct _BdkScreenX11
   /* TRUE if wmspec_check_window has changed since last
    * fetch of _NET_SUPPORTED
    */
-  guint need_refetch_net_supported : 1;
+  buint need_refetch_net_supported : 1;
   /* TRUE if wmspec_check_window has changed since last
    * fetch of window manager name
    */
-  guint need_refetch_wm_name : 1;
+  buint need_refetch_wm_name : 1;
   
   /* Visual Part */
   BdkVisualPrivate *system_visual;
   BdkVisualPrivate **visuals;
-  gint nvisuals;
-  gint available_depths[7];
-  gint navailable_depths;
+  bint nvisuals;
+  bint available_depths[7];
+  bint navailable_depths;
   BdkVisualType available_types[6];
-  gint navailable_types;
+  bint navailable_types;
   GHashTable *visual_hash;
   GHashTable *colormap_hash;
   BdkVisual *rgba_visual;
@@ -88,12 +88,12 @@ struct _BdkScreenX11
 
   /* X settings */
   XSettingsClient *xsettings_client;
-  guint xsettings_in_init : 1;
+  buint xsettings_in_init : 1;
   
   /* Xinerama/RandR 1.2 */
-  gint		 n_monitors;
+  bint		 n_monitors;
   BdkX11Monitor	*monitors;
-  gint           primary_monitor;
+  bint           primary_monitor;
 
   /* Bango renderer object singleton */
   BangoRenderer *renderer;
@@ -101,15 +101,15 @@ struct _BdkScreenX11
   /* Xft resources for the display, used for default values for
    * the Xft/ XSETTINGS
    */
-  gboolean xft_init;		/* Whether we've intialized these values yet */
-  gboolean xft_antialias;
-  gboolean xft_hinting;
-  gint xft_hintstyle;
-  gint xft_rgba;
-  gint xft_dpi;
+  bboolean xft_init;		/* Whether we've intialized these values yet */
+  bboolean xft_antialias;
+  bboolean xft_hinting;
+  bint xft_hintstyle;
+  bint xft_rgba;
+  bint xft_dpi;
 
   BdkAtom cm_selection_atom;
-  gboolean is_composited;
+  bboolean is_composited;
 };
   
 struct _BdkScreenX11Class
@@ -121,7 +121,7 @@ struct _BdkScreenX11Class
 
 GType       _bdk_screen_x11_get_type (void);
 BdkScreen * _bdk_x11_screen_new      (BdkDisplay *display,
-				      gint	  screen_number);
+				      bint	  screen_number);
 
 void _bdk_x11_screen_setup                  (BdkScreen *screen);
 void _bdk_x11_screen_window_manager_changed (BdkScreen *screen);
@@ -130,6 +130,6 @@ void _bdk_x11_screen_size_changed           (BdkScreen *screen,
 void _bdk_x11_screen_process_owner_change   (BdkScreen *screen,
 					     XEvent    *event);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_SCREEN_X11_H__ */

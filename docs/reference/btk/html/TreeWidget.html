@@ -74,7 +74,7 @@
     <tbody>
       <tr>
         <td class="listing_lines" align="right"><pre>1</pre></td>
-        <td class="listing_code"><pre class="programlisting"><span class="n">BtkListStore</span> <span class="o">*</span><span class="n">store</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">G_TYPE_STRING</span><span class="p">,</span> <span class="n">G_TYPE_BOOLEAN</span><span class="p">);</span></pre></td>
+        <td class="listing_code"><pre class="programlisting"><span class="n">BtkListStore</span> <span class="o">*</span><span class="n">store</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">B_TYPE_STRING</span><span class="p">,</span> <span class="n">B_TYPE_BOOLEAN</span><span class="p">);</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -113,9 +113,9 @@
 <span class="p">};</span>
 
 <span class="n">BtkTreeStore</span> <span class="o">*</span><span class="n">store</span> <span class="o">=</span> <span class="n">btk_tree_store_new</span> <span class="p">(</span><span class="n">N_COLUMNS</span><span class="p">,</span>       <span class="cm">/* Total number of columns */</span>
-                                          <span class="n">G_TYPE_STRING</span><span class="p">,</span>   <span class="cm">/* Book title              */</span>
-                                          <span class="n">G_TYPE_STRING</span><span class="p">,</span>   <span class="cm">/* Author                  */</span>
-                                          <span class="n">G_TYPE_BOOLEAN</span><span class="p">);</span> <span class="cm">/* Is checked out?         */</span></pre></td>
+                                          <span class="n">B_TYPE_STRING</span><span class="p">,</span>   <span class="cm">/* Book title              */</span>
+                                          <span class="n">B_TYPE_STRING</span><span class="p">,</span>   <span class="cm">/* Author                  */</span>
+                                          <span class="n">B_TYPE_BOOLEAN</span><span class="p">);</span> <span class="cm">/* Is checked out?         */</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -330,14 +330,14 @@
 10
 11</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="cm">/* Prototype for selection handler callback */</span>
-<span class="k">static</span> <span class="kt">void</span> <span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">data</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">bpointer</span> <span class="n">data</span><span class="p">);</span>
 
 <span class="cm">/* Setup the selection handler */</span>
 <span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">select</span><span class="p">;</span>
 
 <span class="n">select</span> <span class="o">=</span> <span class="n">btk_tree_view_get_selection</span> <span class="p">(</span><span class="n">BTK_TREE_VIEW</span> <span class="p">(</span><span class="n">tree</span><span class="p">));</span>
 <span class="n">btk_tree_selection_set_mode</span> <span class="p">(</span><span class="n">select</span><span class="p">,</span> <span class="n">BTK_SELECTION_SINGLE</span><span class="p">);</span>
-<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">G_OBJECT</span> <span class="p">(</span><span class="n">select</span><span class="p">),</span> <span class="s">&quot;changed&quot;</span><span class="p">,</span>
+<span class="n">g_signal_connect</span> <span class="p">(</span><span class="n">B_OBJECT</span> <span class="p">(</span><span class="n">select</span><span class="p">),</span> <span class="s">&quot;changed&quot;</span><span class="p">,</span>
                   <span class="n">G_CALLBACK</span> <span class="p">(</span><span class="n">tree_selection_changed_cb</span><span class="p">),</span>
                   <span class="nb">NULL</span><span class="p">);</span></pre></td>
       </tr>
@@ -369,11 +369,11 @@
 15
 16</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="k">static</span> <span class="kt">void</span>
-<span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">data</span><span class="p">)</span>
+<span class="nf">tree_selection_changed_cb</span> <span class="p">(</span><span class="n">BtkTreeSelection</span> <span class="o">*</span><span class="n">selection</span><span class="p">,</span> <span class="n">bpointer</span> <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="n">BtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
         <span class="n">BtkTreeModel</span> <span class="o">*</span><span class="n">model</span><span class="p">;</span>
-        <span class="n">gchar</span> <span class="o">*</span><span class="n">author</span><span class="p">;</span>
+        <span class="n">bchar</span> <span class="o">*</span><span class="n">author</span><span class="p">;</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">btk_tree_selection_get_selected</span> <span class="p">(</span><span class="n">selection</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">model</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">))</span>
         <span class="p">{</span>
@@ -491,9 +491,9 @@
    <span class="cm">/* Create a model.  We are using the store model for now, though we</span>
 <span class="cm">    * could use any other BtkTreeModel */</span>
    <span class="n">store</span> <span class="o">=</span> <span class="n">btk_tree_store_new</span> <span class="p">(</span><span class="n">N_COLUMNS</span><span class="p">,</span>
-                               <span class="n">G_TYPE_STRING</span><span class="p">,</span>
-                               <span class="n">G_TYPE_STRING</span><span class="p">,</span>
-                               <span class="n">G_TYPE_BOOLEAN</span><span class="p">);</span>
+                               <span class="n">B_TYPE_STRING</span><span class="p">,</span>
+                               <span class="n">B_TYPE_STRING</span><span class="p">,</span>
+                               <span class="n">B_TYPE_BOOLEAN</span><span class="p">);</span>
 
    <span class="cm">/* custom function to fill the model with data */</span>
    <span class="n">populate_tree_model</span> <span class="p">(</span><span class="n">store</span><span class="p">);</span>
@@ -503,12 +503,12 @@
 
    <span class="cm">/* The view now holds a reference.  We can get rid of our own</span>
 <span class="cm">    * reference */</span>
-   <span class="n">g_object_unref</span> <span class="p">(</span><span class="n">G_OBJECT</span> <span class="p">(</span><span class="n">store</span><span class="p">));</span>
+   <span class="n">g_object_unref</span> <span class="p">(</span><span class="n">B_OBJECT</span> <span class="p">(</span><span class="n">store</span><span class="p">));</span>
 
    <span class="cm">/* Create a cell render and arbitrarily make it red for demonstration</span>
 <span class="cm">    * purposes */</span>
    <span class="n">renderer</span> <span class="o">=</span> <span class="n">btk_cell_renderer_text_new</span> <span class="p">();</span>
-   <span class="n">g_object_set</span> <span class="p">(</span><span class="n">G_OBJECT</span> <span class="p">(</span><span class="n">renderer</span><span class="p">),</span>
+   <span class="n">g_object_set</span> <span class="p">(</span><span class="n">B_OBJECT</span> <span class="p">(</span><span class="n">renderer</span><span class="p">),</span>
                  <span class="s">&quot;foreground&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">,</span>
                  <span class="nb">NULL</span><span class="p">);</span>
 

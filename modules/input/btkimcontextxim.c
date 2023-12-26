@@ -35,8 +35,8 @@ struct _BtkIMContextXIM
 
   BtkXIMInfo *im_info;
 
-  gchar *locale;
-  gchar *mb_charset;
+  bchar *locale;
+  bchar *mb_charset;
 
   BdkWindow *client_window;
   BtkWidget *client_widget;
@@ -46,12 +46,12 @@ struct _BtkIMContextXIM
    */
   StatusWindow *status_window;
 
-  gint preedit_size;
-  gint preedit_length;
+  bint preedit_size;
+  bint preedit_length;
   gunichar *preedit_chars;
   XIMFeedback *feedbacks;
 
-  gint preedit_cursor;
+  bint preedit_cursor;
   
   XIMCallback preedit_start_callback;
   XIMCallback preedit_done_callback;
@@ -66,11 +66,11 @@ struct _BtkIMContextXIM
 
   XIC ic;
 
-  guint filter_key_release : 1;
-  guint use_preedit : 1;
-  guint finalizing : 1;
-  guint in_toplevel : 1;
-  guint has_focus : 1;
+  buint filter_key_release : 1;
+  buint use_preedit : 1;
+  buint finalizing : 1;
+  buint in_toplevel : 1;
+  buint has_focus : 1;
 };
 
 struct _BtkXIMInfo
@@ -82,14 +82,14 @@ struct _BtkXIMInfo
   XIMStyle status_style_setting;
   XIMStyle style;
   BtkSettings *settings;
-  gulong status_set;
-  gulong preedit_set;
-  gulong display_closed_cb;
+  bulong status_set;
+  bulong preedit_set;
+  bulong display_closed_cb;
   XIMStyles *xim_styles;
   GSList *ics;
 
-  guint reconnecting :1;
-  guint supports_string_conversion;
+  buint reconnecting :1;
+  buint supports_string_conversion;
 };
 
 /* A context status window; these are kept in the status_windows list. */
@@ -106,10 +106,10 @@ struct _StatusWindow
 
 static void     btk_im_context_xim_class_init         (BtkIMContextXIMClass  *class);
 static void     btk_im_context_xim_init               (BtkIMContextXIM       *im_context_xim);
-static void     btk_im_context_xim_finalize           (GObject               *obj);
+static void     btk_im_context_xim_finalize           (BObject               *obj);
 static void     btk_im_context_xim_set_client_window  (BtkIMContext          *context,
 						       BdkWindow             *client_window);
-static gboolean btk_im_context_xim_filter_keypress    (BtkIMContext          *context,
+static bboolean btk_im_context_xim_filter_keypress    (BtkIMContext          *context,
 						       BdkEventKey           *key);
 static void     btk_im_context_xim_reset              (BtkIMContext          *context);
 static void     btk_im_context_xim_focus_in           (BtkIMContext          *context);
@@ -117,11 +117,11 @@ static void     btk_im_context_xim_focus_out          (BtkIMContext          *co
 static void     btk_im_context_xim_set_cursor_location (BtkIMContext          *context,
 						       BdkRectangle		*area);
 static void     btk_im_context_xim_set_use_preedit    (BtkIMContext          *context,
-						       gboolean		      use_preedit);
+						       bboolean		      use_preedit);
 static void     btk_im_context_xim_get_preedit_string (BtkIMContext          *context,
-						       gchar                **str,
+						       bchar                **str,
 						       BangoAttrList        **attrs,
-						       gint                  *cursor_pos);
+						       bint                  *cursor_pos);
 
 static void reinitialize_ic      (BtkIMContextXIM *context_xim);
 static void set_ic_client_window (BtkIMContextXIM *context_xim,
@@ -135,7 +135,7 @@ static void update_status_window   (BtkIMContextXIM *context_xim);
 static StatusWindow *status_window_get      (BtkWidget    *toplevel);
 static void          status_window_free     (StatusWindow *status_window);
 static void          status_window_set_text (StatusWindow *status_window,
-					     const gchar  *text);
+					     const bchar  *text);
 
 static void xim_destroy_callback   (XIM      xim,
 				    XPointer client_data,
@@ -143,10 +143,10 @@ static void xim_destroy_callback   (XIM      xim,
 
 static XIC       btk_im_context_xim_get_ic            (BtkIMContextXIM *context_xim);
 static void           xim_info_display_closed (BdkDisplay *display,
-			                       gboolean    is_error,
+			                       bboolean    is_error,
 			                       BtkXIMInfo *info);
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 GType btk_type_im_context_xim = 0;
 
@@ -369,12 +369,12 @@ setup_im (BtkXIMInfo *info)
 
 static void
 xim_info_display_closed (BdkDisplay *display,
-			 gboolean    is_error,
+			 bboolean    is_error,
 			 BtkXIMInfo *info)
 {
   GSList *ics, *tmp_list;
 
-  open_ims = g_slist_remove (open_ims, info);
+  open_ims = b_slist_remove (open_ims, info);
 
   ics = info->ics;
   info->ics = NULL;
@@ -382,7 +382,7 @@ xim_info_display_closed (BdkDisplay *display,
   for (tmp_list = ics; tmp_list; tmp_list = tmp_list->next)
     set_ic_client_window (tmp_list->data, NULL);
 
-  g_slist_free (ics);
+  b_slist_free (ics);
 
   if (info->status_set)
     g_signal_handler_disconnect (info->settings, info->status_set);
@@ -502,7 +502,7 @@ get_im (BdkWindow *client_window,
   if (info == NULL)
     {
       info = g_new (BtkXIMInfo, 1);
-      open_ims = g_slist_prepend (open_ims, info);
+      open_ims = b_slist_prepend (open_ims, info);
 
       info->screen = screen;
       info->locale = g_strdup (locale);
@@ -526,7 +526,7 @@ static void
 btk_im_context_xim_class_init (BtkIMContextXIMClass *class)
 {
   BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
@@ -552,7 +552,7 @@ btk_im_context_xim_init (BtkIMContextXIM *im_context_xim)
 }
 
 static void
-btk_im_context_xim_finalize (GObject *obj)
+btk_im_context_xim_finalize (BObject *obj)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (obj);
 
@@ -587,7 +587,7 @@ btk_im_context_xim_finalize (GObject *obj)
   g_free (context_xim->locale);
   g_free (context_xim->mb_charset);
 
-  G_OBJECT_CLASS (parent_class)->finalize (obj);
+  B_OBJECT_CLASS (parent_class)->finalize (obj);
 }
 
 static void
@@ -620,7 +620,7 @@ set_ic_client_window (BtkIMContextXIM *context_xim,
   reinitialize_ic (context_xim);
   if (context_xim->client_window)
     {
-      context_xim->im_info->ics = g_slist_remove (context_xim->im_info->ics, context_xim);
+      context_xim->im_info->ics = b_slist_remove (context_xim->im_info->ics, context_xim);
       context_xim->im_info = NULL;
     }
   
@@ -629,7 +629,7 @@ set_ic_client_window (BtkIMContextXIM *context_xim,
   if (context_xim->client_window)
     {
       context_xim->im_info = get_im (context_xim->client_window, context_xim->locale);
-      context_xim->im_info->ics = g_slist_prepend (context_xim->im_info->ics, context_xim);
+      context_xim->im_info->ics = b_slist_prepend (context_xim->im_info->ics, context_xim);
     }
   
   update_client_widget (context_xim);
@@ -648,7 +648,7 @@ BtkIMContext *
 btk_im_context_xim_new (void)
 {
   BtkIMContextXIM *result;
-  const gchar *charset;
+  const bchar *charset;
 
   result = g_object_new (BTK_TYPE_IM_CONTEXT_XIM, NULL);
 
@@ -665,7 +665,7 @@ mb_to_utf8 (BtkIMContextXIM *context_xim,
 	    const char      *str)
 {
   GError *error = NULL;
-  gchar *result;
+  bchar *result;
 
   if (strcmp (context_xim->mb_charset, "UTF-8") == 0)
     result = g_strdup (str);
@@ -684,19 +684,19 @@ mb_to_utf8 (BtkIMContextXIM *context_xim,
   return result;
 }
 
-static gboolean
+static bboolean
 btk_im_context_xim_filter_keypress (BtkIMContext *context,
 				    BdkEventKey  *event)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
   XIC ic = btk_im_context_xim_get_ic (context_xim);
-  gchar static_buffer[256];
-  gchar *buffer = static_buffer;
-  gint buffer_size = sizeof(static_buffer) - 1;
-  gint num_bytes = 0;
+  bchar static_buffer[256];
+  bchar *buffer = static_buffer;
+  bint buffer_size = sizeof(static_buffer) - 1;
+  bint num_bytes = 0;
   KeySym keysym;
   Status status;
-  gboolean result = FALSE;
+  bboolean result = FALSE;
   BdkWindow *root_window = bdk_screen_get_root_window (bdk_window_get_screen (event->window));
 
   XKeyPressedEvent xevent;
@@ -756,7 +756,7 @@ btk_im_context_xim_filter_keypress (BtkIMContext *context,
       result_utf8 = mb_to_utf8 (context_xim, buffer);
       if (result_utf8)
 	{
-	  if ((guchar)result_utf8[0] >= 0x20 &&
+	  if ((buchar)result_utf8[0] >= 0x20 &&
 	      result_utf8[0] != 0x7f) /* Some IM have a nasty habit of converting
 				       * control characters into strings
 				       */
@@ -842,7 +842,7 @@ btk_im_context_xim_set_cursor_location (BtkIMContext *context,
 
 static void
 btk_im_context_xim_set_use_preedit (BtkIMContext *context,
-				    gboolean      use_preedit)
+				    bboolean      use_preedit)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
@@ -862,12 +862,12 @@ btk_im_context_xim_reset (BtkIMContext *context)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
   XIC ic = btk_im_context_xim_get_ic (context_xim);
-  gchar *result;
+  bchar *result;
 
   /* restore conversion state after resetting ic later */
   XIMPreeditState preedit_state = XIMPreeditUnKnown;
   XVaNestedList preedit_attr;
-  gboolean have_preedit_state = FALSE;
+  bboolean have_preedit_state = FALSE;
 
   if (!ic)
     return;
@@ -923,15 +923,15 @@ btk_im_context_xim_reset (BtkIMContext *context)
 
 static void
 add_feedback_attr (BangoAttrList *attrs,
-		   const gchar   *str,
+		   const bchar   *str,
 		   XIMFeedback    feedback,
-		   gint           start_pos,
-		   gint           end_pos)
+		   bint           start_pos,
+		   bint           end_pos)
 {
   BangoAttribute *attr;
   
-  gint start_index = g_utf8_offset_to_pointer (str, start_pos) - str;
-  gint end_index = g_utf8_offset_to_pointer (str, end_pos) - str;
+  bint start_index = g_utf8_offset_to_pointer (str, start_pos) - str;
+  bint end_index = g_utf8_offset_to_pointer (str, end_pos) - str;
 
   if (feedback & XIMUnderline)
     {
@@ -963,18 +963,18 @@ add_feedback_attr (BangoAttrList *attrs,
 
 static void     
 btk_im_context_xim_get_preedit_string (BtkIMContext   *context,
-				       gchar         **str,
+				       bchar         **str,
 				       BangoAttrList **attrs,
-				       gint           *cursor_pos)
+				       bint           *cursor_pos)
 {
   BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
-  gchar *utf8 = g_ucs4_to_utf8 (context_xim->preedit_chars, context_xim->preedit_length, NULL, NULL, NULL);
+  bchar *utf8 = g_ucs4_to_utf8 (context_xim->preedit_chars, context_xim->preedit_length, NULL, NULL, NULL);
 
   if (attrs)
     {
       int i;
       XIMFeedback last_feedback = 0;
-      gint start = -1;
+      bint start = -1;
       
       *attrs = bango_attr_list_new ();
 
@@ -1037,12 +1037,12 @@ preedit_done_callback (XIC      xic,
     g_signal_emit_by_name (context, "preedit-end");
 }		     
 
-static gint
-xim_text_to_utf8 (BtkIMContextXIM *context, XIMText *xim_text, gchar **text)
+static bint
+xim_text_to_utf8 (BtkIMContextXIM *context, XIMText *xim_text, bchar **text)
 {
-  gint text_length = 0;
+  bint text_length = 0;
   GError *error = NULL;
-  gchar *result = NULL;
+  bchar *result = NULL;
 
   if (xim_text && xim_text->string.multi_byte)
     {
@@ -1098,15 +1098,15 @@ preedit_draw_callback (XIC                           xic,
   BtkIMContextXIM *context = BTK_IM_CONTEXT_XIM (client_data);
 
   XIMText *new_xim_text = call_data->text;
-  gint new_text_length;
+  bint new_text_length;
   gunichar *new_text = NULL;
-  gint i;
-  gint diff;
-  gint new_length;
-  gchar *tmp;
+  bint i;
+  bint diff;
+  bint new_length;
+  bchar *tmp;
   
-  gint chg_first = CLAMP (call_data->chg_first, 0, context->preedit_length);
-  gint chg_length = CLAMP (call_data->chg_length, 0, context->preedit_length - chg_first);
+  bint chg_first = CLAMP (call_data->chg_first, 0, context->preedit_length);
+  bint chg_length = CLAMP (call_data->chg_length, 0, context->preedit_length - chg_first);
 
   context->preedit_cursor = call_data->caret;
   
@@ -1208,7 +1208,7 @@ status_draw_callback (XIC      xic,
 
   if (call_data->type == XIMTextType)
     {
-      gchar *text;
+      bchar *text;
       xim_text_to_utf8 (context, call_data->data.text, &text);
 
       if (context->status_window)
@@ -1225,8 +1225,8 @@ string_conversion_callback (XIC xic, XPointer client_data, XPointer call_data)
 {
   BtkIMContextXIM *context_xim;
   XIMStringConversionCallbackStruct *conv_data;
-  gchar *surrounding;
-  gint  cursor_index;
+  bchar *surrounding;
+  bint  cursor_index;
 
   context_xim = (BtkIMContextXIM *)client_data;
   conv_data = (XIMStringConversionCallbackStruct *)call_data;
@@ -1234,12 +1234,12 @@ string_conversion_callback (XIC xic, XPointer client_data, XPointer call_data)
   if (btk_im_context_get_surrounding ((BtkIMContext *)context_xim,
                                       &surrounding, &cursor_index))
     {
-      gchar *text = NULL;
-      gsize text_len = 0;
-      gint  subst_offset = 0, subst_nchars = 0;
-      gint  i;
-      gchar *p = surrounding + cursor_index, *q;
-      gshort position = (gshort)conv_data->position;
+      bchar *text = NULL;
+      bsize text_len = 0;
+      bint  subst_offset = 0, subst_nchars = 0;
+      bint  i;
+      bchar *p = surrounding + cursor_index, *q;
+      bshort position = (bshort)conv_data->position;
 
       if (position > 0)
         {
@@ -1451,7 +1451,7 @@ btk_im_context_xim_get_ic (BtkIMContextXIM *context_xim)
 	   * stroke if both key pressed and released events are filtered.
 	   * (bugzilla #81759)
 	   */
-	  gulong mask = 0xaaaaaaaa;
+	  bulong mask = 0xaaaaaaaa;
 	  XGetICValues (xic,
 			XNFilterEvents, &mask,
 			NULL);
@@ -1596,7 +1596,7 @@ widget_for_window (BdkWindow *window)
 {
   while (window)
     {
-      gpointer user_data;
+      bpointer user_data;
       bdk_window_get_user_data (window, &user_data);
       if (user_data)
 	return user_data;
@@ -1649,7 +1649,7 @@ on_status_toplevel_destroy (BtkWidget    *toplevel,
  */
 static void
 on_status_toplevel_notify_screen (BtkWindow    *toplevel,
-				  GParamSpec   *pspec,
+				  BParamSpec   *pspec,
 				  StatusWindow *status_window)
 {
   if (status_window->window)
@@ -1660,15 +1660,15 @@ on_status_toplevel_notify_screen (BtkWindow    *toplevel,
 /* Called when the toplevel window is moved; updates the position of
  * the status window to follow it.
  */
-static gboolean
+static bboolean
 on_status_toplevel_configure (BtkWidget         *toplevel,
 			      BdkEventConfigure *event,
 			      StatusWindow      *status_window)
 {
   BdkRectangle rect;
   BtkRequisition requisition;
-  gint y;
-  gint height;
+  bint y;
+  bint height;
 
   if (status_window->window)
     {
@@ -1693,7 +1693,7 @@ on_status_toplevel_configure (BtkWidget         *toplevel,
 static void
 status_window_free (StatusWindow *status_window)
 {
-  status_windows = g_slist_remove (status_windows, status_window);
+  status_windows = b_slist_remove (status_windows, status_window);
 
   if (status_window->context)
     status_window->context->status_window = NULL;
@@ -1711,7 +1711,7 @@ status_window_free (StatusWindow *status_window)
   if (status_window->window)
     btk_widget_destroy (status_window->window);
   
-  g_object_set_data (G_OBJECT (status_window->toplevel), "btk-im-xim-status-window", NULL);
+  g_object_set_data (B_OBJECT (status_window->toplevel), "btk-im-xim-status-window", NULL);
  
   g_free (status_window);
 }
@@ -1723,14 +1723,14 @@ status_window_get (BtkWidget *toplevel)
 {
   StatusWindow *status_window;
 
-  status_window = g_object_get_data (G_OBJECT (toplevel), "btk-im-xim-status-window");
+  status_window = g_object_get_data (B_OBJECT (toplevel), "btk-im-xim-status-window");
   if (status_window)
     return status_window;
   
   status_window = g_new0 (StatusWindow, 1);
   status_window->toplevel = toplevel;
 
-  status_windows = g_slist_prepend (status_windows, status_window);
+  status_windows = b_slist_prepend (status_windows, status_window);
 
   g_signal_connect (toplevel, "destroy",
 		    G_CALLBACK (on_status_toplevel_destroy),
@@ -1742,7 +1742,7 @@ status_window_get (BtkWidget *toplevel)
 		    G_CALLBACK (on_status_toplevel_notify_screen),
 		    status_window);
   
-  g_object_set_data (G_OBJECT (toplevel), "btk-im-xim-status-window", status_window);
+  g_object_set_data (B_OBJECT (toplevel), "btk-im-xim-status-window", status_window);
 
   return status_window;
 }
@@ -1778,7 +1778,7 @@ status_window_make_window (StatusWindow *status_window)
  */
 static void
 status_window_set_text (StatusWindow *status_window,
-			const gchar  *text)
+			const bchar  *text)
 {
   if (text[0])
     {
@@ -1817,6 +1817,6 @@ btk_im_context_xim_shutdown (void)
       BdkDisplay *display = bdk_screen_get_display (info->screen);
 
       xim_info_display_closed (display, FALSE, info);
-      open_ims = g_slist_remove_link (open_ims, open_ims);
+      open_ims = b_slist_remove_link (open_ims, open_ims);
     }
 }

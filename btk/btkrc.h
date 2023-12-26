@@ -34,7 +34,7 @@
 
 #include <btk/btkstyle.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Forward declarations */
 typedef struct _BtkIconFactory  BtkIconFactory;
@@ -43,11 +43,11 @@ typedef struct _BtkRcContext    BtkRcContext;
 typedef struct _BtkRcStyleClass BtkRcStyleClass;
 
 #define BTK_TYPE_RC_STYLE              (btk_rc_style_get_type ())
-#define BTK_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_RC_STYLE, BtkRcStyle))
-#define BTK_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
-#define BTK_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_RC_STYLE))
-#define BTK_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RC_STYLE))
-#define BTK_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
+#define BTK_RC_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_RC_STYLE, BtkRcStyle))
+#define BTK_RC_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
+#define BTK_IS_RC_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_RC_STYLE))
+#define BTK_IS_RC_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RC_STYLE))
+#define BTK_RC_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RC_STYLE, BtkRcStyleClass))
 
 typedef enum
 {
@@ -59,12 +59,12 @@ typedef enum
 
 struct _BtkRcStyle
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< public >*/
 
-  gchar *name;
-  gchar *bg_pixmap_name[5];
+  bchar *name;
+  bchar *bg_pixmap_name[5];
   BangoFontDescription *font_desc;
 
   BtkRcFlags color_flags[5];
@@ -73,8 +73,8 @@ struct _BtkRcStyle
   BdkColor   text[5];
   BdkColor   base[5];
 
-  gint xthickness;
-  gint ythickness;
+  bint xthickness;
+  bint ythickness;
 
   /*< private >*/
   GArray *rc_properties;
@@ -84,16 +84,16 @@ struct _BtkRcStyle
 
   GSList *icon_factories;
 
-  guint engine_specified : 1;	/* The RC file specified the engine */
+  buint engine_specified : 1;	/* The RC file specified the engine */
 };
 
 struct _BtkRcStyleClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Create an empty RC style of the same type as this RC style.
    * The default implementation, which does
-   * g_object_new (G_OBJECT_TYPE (style), NULL);
+   * g_object_new (B_OBJECT_TYPE (style), NULL);
    * should work in most cases.
    */
   BtkRcStyle * (*create_rc_style) (BtkRcStyle *rc_style);
@@ -102,7 +102,7 @@ struct _BtkRcStyleClass
    * of brackets. Returns G_TOKEN_NONE if successful, otherwise returns
    * the token it expected but didn't get.
    */
-  guint     (*parse)  (BtkRcStyle   *rc_style,
+  buint     (*parse)  (BtkRcStyle   *rc_style,
 		       BtkSettings  *settings,
 		       GScanner     *scanner);
 
@@ -131,45 +131,45 @@ struct _BtkRcStyleClass
 #endif
 
 void	  _btk_rc_init			 (void);
-GSList*   _btk_rc_parse_widget_class_path (const gchar *pattern);
+GSList*   _btk_rc_parse_widget_class_path (const bchar *pattern);
 void      _btk_rc_free_widget_class_path (GSList       *list);
-gboolean  _btk_rc_match_widget_class     (GSList       *list,
-                                          gint          length,
-                                          gchar        *path,
-                                          gchar        *path_reversed);
+bboolean  _btk_rc_match_widget_class     (GSList       *list,
+                                          bint          length,
+                                          bchar        *path,
+                                          bchar        *path_reversed);
 
-void      btk_rc_add_default_file	(const gchar *filename);
-void      btk_rc_set_default_files      (gchar **filenames);
-gchar**   btk_rc_get_default_files      (void);
+void      btk_rc_add_default_file	(const bchar *filename);
+void      btk_rc_set_default_files      (bchar **filenames);
+bchar**   btk_rc_get_default_files      (void);
 BtkStyle* btk_rc_get_style		(BtkWidget   *widget);
 BtkStyle* btk_rc_get_style_by_paths     (BtkSettings *settings,
 					 const char  *widget_path,
 					 const char  *class_path,
 					 GType        type);
 
-gboolean btk_rc_reparse_all_for_settings (BtkSettings *settings,
-					  gboolean     force_load);
+bboolean btk_rc_reparse_all_for_settings (BtkSettings *settings,
+					  bboolean     force_load);
 void     btk_rc_reset_styles             (BtkSettings *settings);
 
-gchar*   btk_rc_find_pixmap_in_path (BtkSettings  *settings,
+bchar*   btk_rc_find_pixmap_in_path (BtkSettings  *settings,
 				     GScanner     *scanner,
-				     const gchar  *pixmap_file);
+				     const bchar  *pixmap_file);
 
-void	  btk_rc_parse			(const gchar *filename);
-void	  btk_rc_parse_string		(const gchar *rc_string);
-gboolean  btk_rc_reparse_all		(void);
+void	  btk_rc_parse			(const bchar *filename);
+void	  btk_rc_parse_string		(const bchar *rc_string);
+bboolean  btk_rc_reparse_all		(void);
 
 #ifndef BTK_DISABLE_DEPRECATED
 void	  btk_rc_add_widget_name_style	(BtkRcStyle   *rc_style,
-					 const gchar  *pattern);
+					 const bchar  *pattern);
 void	  btk_rc_add_widget_class_style (BtkRcStyle   *rc_style,
-					 const gchar  *pattern);
+					 const bchar  *pattern);
 void	  btk_rc_add_class_style	(BtkRcStyle   *rc_style,
-					 const gchar  *pattern);
+					 const bchar  *pattern);
 #endif /* BTK_DISABLE_DEPRECATED */
 
 
-GType       btk_rc_style_get_type   (void) G_GNUC_CONST;
+GType       btk_rc_style_get_type   (void) B_GNUC_CONST;
 BtkRcStyle* btk_rc_style_new        (void);
 BtkRcStyle* btk_rc_style_copy       (BtkRcStyle *orig);
 
@@ -178,11 +178,11 @@ void        btk_rc_style_ref        (BtkRcStyle *rc_style);
 void        btk_rc_style_unref      (BtkRcStyle *rc_style);
 #endif
 
-gchar*		btk_rc_find_module_in_path	(const gchar 	*module_file);
-gchar*		btk_rc_get_theme_dir		(void);
-gchar*		btk_rc_get_module_dir		(void);
-gchar*		btk_rc_get_im_module_path	(void);
-gchar*		btk_rc_get_im_module_file	(void);
+bchar*		btk_rc_find_module_in_path	(const bchar 	*module_file);
+bchar*		btk_rc_get_theme_dir		(void);
+bchar*		btk_rc_get_module_dir		(void);
+bchar*		btk_rc_get_im_module_path	(void);
+bchar*		btk_rc_get_im_module_file	(void);
 
 /* private functions/definitions */
 typedef enum {
@@ -229,14 +229,14 @@ typedef enum {
 } BtkRcTokenType;
 
 GScanner* btk_rc_scanner_new	(void);
-guint	  btk_rc_parse_color	(GScanner	     *scanner,
+buint	  btk_rc_parse_color	(GScanner	     *scanner,
 				 BdkColor	     *color);
-guint	  btk_rc_parse_color_full (GScanner	     *scanner,
+buint	  btk_rc_parse_color_full (GScanner	     *scanner,
                                    BtkRcStyle        *style,
 				   BdkColor	     *color);
-guint	  btk_rc_parse_state	(GScanner	     *scanner,
+buint	  btk_rc_parse_state	(GScanner	     *scanner,
 				 BtkStateType	     *state);
-guint	  btk_rc_parse_priority	(GScanner	     *scanner,
+buint	  btk_rc_parse_priority	(GScanner	     *scanner,
 				 BtkPathPriorityType *priority);
 
 /* rc properties
@@ -249,8 +249,8 @@ struct _BtkRcProperty
   GQuark property_name;
 
   /* fields similar to BtkSettingsValue */
-  gchar *origin;
-  GValue value;
+  bchar *origin;
+  BValue value;
 };
 const BtkRcProperty* _btk_rc_style_lookup_rc_property (BtkRcStyle *rc_style,
 						       GQuark      type_name,
@@ -263,9 +263,9 @@ void	      _btk_rc_style_unset_rc_property	      (BtkRcStyle *rc_style,
 
 GSList     * _btk_rc_style_get_color_hashes        (BtkRcStyle *rc_style);
 
-const gchar* _btk_rc_context_get_default_font_name (BtkSettings *settings);
+const bchar* _btk_rc_context_get_default_font_name (BtkSettings *settings);
 void         _btk_rc_context_destroy               (BtkSettings *settings);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RC_H__ */

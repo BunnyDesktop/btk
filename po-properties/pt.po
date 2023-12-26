@@ -776,7 +776,7 @@ msgid ""
 "If set, an underline in the text indicates the next character should be used "
 "for the mnemonic accelerator key"
 msgstr ""
-"Se definido, um sublinhado no texto indica que o caracter seguinte deverá "
+"Se definido, um sublinhado no texto indica que o caracter sebuinte deverá "
 "ser utilizador como tecla de atalho"
 
 #: ../btk/btkbutton.c:235 ../btk/btkimagemenuitem.c:150
@@ -6488,7 +6488,7 @@ msgid ""
 "should be used for the mnemonic accelerator key in the overflow menu"
 msgstr ""
 "Se definido, um sublinhado na propriedade da etiqueta indica que o caracter "
-"seguinte deverá ser utilizador para a tecla de atalho no menu decorrente"
+"sebuinte deverá ser utilizador para a tecla de atalho no menu decorrente"
 
 #: ../btk/btktoolbutton.c:219
 msgid "Widget to use as the item label"
@@ -7590,7 +7590,7 @@ msgstr "Como desenhar a barra de estados do método de introdução"
 #~ "row"
 #~ msgstr ""
 #~ "O número de pixels entre o início de uma linha e o início da linha "
-#~ "seguinte"
+#~ "sebuinte"
 
 #~ msgid "Pixels"
 #~ msgstr "Pixels"

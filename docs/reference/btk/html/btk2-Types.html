@@ -73,7 +73,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <span class="c_punctuation">(</span><a class="link" href="btk2-Types.html#BtkFunction" title="BtkFunction ()">*BtkFunction</a><span class="c_punctuation">)</span> <span class="c_punctuation">()</span>
@@ -317,7 +317,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Types.html#btk-type-class" title="btk_type_class ()">btk_type_class</a> <span class="c_punctuation">()</span>
@@ -325,7 +325,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gpointer</span>
+<span class="returnvalue">bpointer</span>
 </td>
 <td class="function_name">
 <a class="link" href="btk2-Types.html#btk-type-new" title="btk_type_new ()">btk_type_new</a> <span class="c_punctuation">()</span>
@@ -475,14 +475,14 @@
 <a name="btk2-Types.functions_details"></a><h2>Functions</h2>
 <div class="refsect2">
 <a name="BTK-CLASS-NAME:CAPS"></a><h3>BTK_CLASS_NAME()</h3>
-<pre class="programlisting">#define BTK_CLASS_NAME(class)		(g_type_name (G_TYPE_FROM_CLASS (class)))
+<pre class="programlisting">#define BTK_CLASS_NAME(class)		(g_type_name (B_TYPE_FROM_CLASS (class)))
 </pre>
 <div class="warning"><p><code class="literal">BTK_CLASS_NAME</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CLASS-TYPE:CAPS"></a><h3>BTK_CLASS_TYPE()</h3>
-<pre class="programlisting">#define BTK_CLASS_TYPE(class)		(G_TYPE_FROM_CLASS (class))
+<pre class="programlisting">#define BTK_CLASS_TYPE(class)		(B_TYPE_FROM_CLASS (class))
 </pre>
 <div class="warning"><p><code class="literal">BTK_CLASS_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -510,15 +510,15 @@
 <hr>
 <div class="refsect2">
 <a name="BtkFunction"></a><h3>BtkFunction ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
-<span class="c_punctuation">(</span>*BtkFunction<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
+<span class="c_punctuation">(</span>*BtkFunction<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <div class="warning"><p><code class="literal">BtkFunction</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkDestroyNotify"></a><h3>BtkDestroyNotify ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-<span class="c_punctuation">(</span>*BtkDestroyNotify<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">gpointer</span> data</code></em>);</pre>
+<span class="c_punctuation">(</span>*BtkDestroyNotify<span class="c_punctuation">)</span> (<em class="parameter"><code><span class="type">bpointer</span> data</code></em>);</pre>
 <div class="warning"><p><code class="literal">BtkDestroyNotify</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -526,8 +526,8 @@
 <a name="BtkCallbackMarshal"></a><h3>BtkCallbackMarshal ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkCallbackMarshal<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkObject.html" title="BtkObject"><span class="type">BtkObject</span></a> *object</code></em>,
-                       <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
-                       <em class="parameter"><code><span class="type">guint</span> n_args</code></em>,
+                       <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
+                       <em class="parameter"><code><span class="type">buint</span> n_args</code></em>,
                        <em class="parameter"><code><a class="link" href="btk2-Types.html#BtkArg" title="struct BtkArg"><span class="type">BtkArg</span></a> *args</code></em>);</pre>
 <div class="warning"><p><code class="literal">BtkCallbackMarshal</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -646,98 +646,98 @@
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-CHAR:CAPS"></a><h3>BTK_RETLOC_CHAR()</h3>
-<pre class="programlisting">#define BTK_RETLOC_CHAR(a) ((gchar*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_CHAR(a) ((bchar*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_CHAR</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-UCHAR:CAPS"></a><h3>BTK_RETLOC_UCHAR()</h3>
-<pre class="programlisting">#define BTK_RETLOC_UCHAR(a) ((guchar*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_UCHAR(a) ((buchar*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_UCHAR</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-BOOL:CAPS"></a><h3>BTK_RETLOC_BOOL()</h3>
-<pre class="programlisting">#define BTK_RETLOC_BOOL(a) ((gboolean*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_BOOL(a) ((bboolean*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_BOOL</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-INT:CAPS"></a><h3>BTK_RETLOC_INT()</h3>
-<pre class="programlisting">#define BTK_RETLOC_INT(a) ((gint*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_INT(a) ((bint*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_INT</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-UINT:CAPS"></a><h3>BTK_RETLOC_UINT()</h3>
-<pre class="programlisting">#define BTK_RETLOC_UINT(a) ((guint*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_UINT(a) ((buint*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_UINT</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-LONG:CAPS"></a><h3>BTK_RETLOC_LONG()</h3>
-<pre class="programlisting">#define BTK_RETLOC_LONG(a) ((glong*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_LONG(a) ((blong*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_LONG</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-ULONG:CAPS"></a><h3>BTK_RETLOC_ULONG()</h3>
-<pre class="programlisting">#define BTK_RETLOC_ULONG(a) ((gulong*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_ULONG(a) ((bulong*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_ULONG</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-FLOAT:CAPS"></a><h3>BTK_RETLOC_FLOAT()</h3>
-<pre class="programlisting">#define BTK_RETLOC_FLOAT(a) ((gfloat*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_FLOAT(a) ((bfloat*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_FLOAT</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-DOUBLE:CAPS"></a><h3>BTK_RETLOC_DOUBLE()</h3>
-<pre class="programlisting">#define BTK_RETLOC_DOUBLE(a) ((gdouble*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_DOUBLE(a) ((bdouble*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_DOUBLE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-STRING:CAPS"></a><h3>BTK_RETLOC_STRING()</h3>
-<pre class="programlisting">#define BTK_RETLOC_STRING(a) ((gchar**) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_STRING(a) ((bchar**) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_STRING</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-ENUM:CAPS"></a><h3>BTK_RETLOC_ENUM()</h3>
-<pre class="programlisting">#define BTK_RETLOC_ENUM(a) ((gint*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_ENUM(a) ((bint*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_ENUM</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-FLAGS:CAPS"></a><h3>BTK_RETLOC_FLAGS()</h3>
-<pre class="programlisting">#define BTK_RETLOC_FLAGS(a) ((guint*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_FLAGS(a) ((buint*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_FLAGS</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-BOXED:CAPS"></a><h3>BTK_RETLOC_BOXED()</h3>
-<pre class="programlisting">#define BTK_RETLOC_BOXED(a) ((gpointer*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_BOXED(a) ((bpointer*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_BOXED</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-RETLOC-POINTER:CAPS"></a><h3>BTK_RETLOC_POINTER()</h3>
-<pre class="programlisting">#define BTK_RETLOC_POINTER(a) ((gpointer*) (a).d.pointer_data)
+<pre class="programlisting">#define BTK_RETLOC_POINTER(a) ((bpointer*) (a).d.pointer_data)
 </pre>
 <div class="warning"><p><code class="literal">BTK_RETLOC_POINTER</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -787,7 +787,7 @@ btk_type_unique (<em class="parameter"><code><a class="link" href="btk2-Types.ht
 <hr>
 <div class="refsect2">
 <a name="btk-type-class"></a><h3>btk_type_class ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 btk_type_class (<em class="parameter"><code><a class="link" href="btk2-Types.html#BtkType" title="BtkType"><span class="type">BtkType</span></a> type</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_type_class</code> has been deprecated since version 2.14 and should not be used in newly-written code.</p>
@@ -821,7 +821,7 @@ necessary.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-type-new"></a><h3>btk_type_new ()</h3>
-<pre class="programlisting"><span class="returnvalue">gpointer</span>
+<pre class="programlisting"><span class="returnvalue">bpointer</span>
 btk_type_new (<em class="parameter"><code><a class="link" href="btk2-Types.html#BtkType" title="BtkType"><span class="type">BtkType</span></a> type</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_type_new</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -851,7 +851,7 @@ btk_type_flags_get_values (<em class="parameter"><code><a class="link" href="btk
 <a name="btk-type-enum-find-value"></a><h3>btk_type_enum_find_value ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Types.html#BtkEnumValue" title="BtkEnumValue"><span class="returnvalue">BtkEnumValue</span></a> *
 btk_type_enum_find_value (<em class="parameter"><code><a class="link" href="btk2-Types.html#BtkType" title="BtkType"><span class="type">BtkType</span></a> enum_type</code></em>,
-                          <em class="parameter"><code>const <span class="type">gchar</span> *value_name</code></em>);</pre>
+                          <em class="parameter"><code>const <span class="type">bchar</span> *value_name</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_type_enum_find_value</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
@@ -859,7 +859,7 @@ btk_type_enum_find_value (<em class="parameter"><code><a class="link" href="btk2
 <a name="btk-type-flags-find-value"></a><h3>btk_type_flags_find_value ()</h3>
 <pre class="programlisting"><a class="link" href="btk2-Types.html#BtkFlagValue" title="BtkFlagValue"><span class="returnvalue">BtkFlagValue</span></a> *
 btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk2-Types.html#BtkType" title="BtkType"><span class="type">BtkType</span></a> flags_type</code></em>,
-                           <em class="parameter"><code>const <span class="type">gchar</span> *value_name</code></em>);</pre>
+                           <em class="parameter"><code>const <span class="type">bchar</span> *value_name</code></em>);</pre>
 <div class="warning"><p><code class="literal">btk_type_flags_find_value</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 </div>
@@ -881,14 +881,14 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <hr>
 <div class="refsect2">
 <a name="BTK-TYPE-FUNDAMENTAL-LAST:CAPS"></a><h3>BTK_TYPE_FUNDAMENTAL_LAST</h3>
-<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_LAST        (G_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
+<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_LAST        (B_TYPE_LAST_RESERVED_FUNDAMENTAL - 1)
 </pre>
 <div class="warning"><p><code class="literal">BTK_TYPE_FUNDAMENTAL_LAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-TYPE-FUNDAMENTAL-MAX:CAPS"></a><h3>BTK_TYPE_FUNDAMENTAL_MAX</h3>
-<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_MAX         (G_TYPE_FUNDAMENTAL_MAX)
+<pre class="programlisting">#define BTK_TYPE_FUNDAMENTAL_MAX         (B_TYPE_FUNDAMENTAL_MAX)
 </pre>
 <div class="warning"><p><code class="literal">BTK_TYPE_FUNDAMENTAL_MAX</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -902,42 +902,42 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CAST:CAPS"></a><h3>BTK_CHECK_CAST</h3>
-<pre class="programlisting">#define BTK_CHECK_CAST		G_TYPE_CHECK_INSTANCE_CAST
+<pre class="programlisting">#define BTK_CHECK_CAST		B_TYPE_CHECK_INSTANCE_CAST
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CLASS-CAST:CAPS"></a><h3>BTK_CHECK_CLASS_CAST</h3>
-<pre class="programlisting">#define BTK_CHECK_CLASS_CAST G_TYPE_CHECK_CLASS_CAST
+<pre class="programlisting">#define BTK_CHECK_CLASS_CAST B_TYPE_CHECK_CLASS_CAST
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CLASS_CAST</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-TYPE:CAPS"></a><h3>BTK_CHECK_TYPE</h3>
-<pre class="programlisting">#define BTK_CHECK_TYPE		G_TYPE_CHECK_INSTANCE_TYPE
+<pre class="programlisting">#define BTK_CHECK_TYPE		B_TYPE_CHECK_INSTANCE_TYPE
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-CLASS-TYPE:CAPS"></a><h3>BTK_CHECK_CLASS_TYPE</h3>
-<pre class="programlisting">#define BTK_CHECK_CLASS_TYPE G_TYPE_CHECK_CLASS_TYPE
+<pre class="programlisting">#define BTK_CHECK_CLASS_TYPE B_TYPE_CHECK_CLASS_TYPE
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_CLASS_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-CHECK-GET-CLASS:CAPS"></a><h3>BTK_CHECK_GET_CLASS</h3>
-<pre class="programlisting">#define BTK_CHECK_GET_CLASS G_TYPE_INSTANCE_GET_CLASS
+<pre class="programlisting">#define BTK_CHECK_GET_CLASS B_TYPE_INSTANCE_GET_CLASS
 </pre>
 <div class="warning"><p><code class="literal">BTK_CHECK_GET_CLASS</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BTK-FUNDAMENTAL-TYPE:CAPS"></a><h3>BTK_FUNDAMENTAL_TYPE</h3>
-<pre class="programlisting">#define BTK_FUNDAMENTAL_TYPE G_TYPE_FUNDAMENTAL
+<pre class="programlisting">#define BTK_FUNDAMENTAL_TYPE B_TYPE_FUNDAMENTAL
 </pre>
 <div class="warning"><p><code class="literal">BTK_FUNDAMENTAL_TYPE</code> is deprecated and should not be used in newly-written code.</p></div>
 </div>
@@ -974,33 +974,33 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <a name="BtkArg"></a><h3>struct BtkArg</h3>
 <pre class="programlisting">struct BtkArg {
   GType type;
-  gchar *name;
+  bchar *name;
 
   /* this union only defines the required storage types for
-   * the possibile values, thus there is no gint enum_data field,
-   * because that would just be a mere alias for gint int_data.
+   * the possibile values, thus there is no bint enum_data field,
+   * because that would just be a mere alias for bint int_data.
    * use the BTK_VALUE_*() and BTK_RETLOC_*() macros to access
    * the discrete memebers.
    */
   union {
     /* flat values */
-    gchar char_data;
-    guchar uchar_data;
-    gboolean bool_data;
-    gint int_data;
-    guint uint_data;
-    glong long_data;
-    gulong ulong_data;
-    gfloat float_data;
-    gdouble double_data;
-    gchar *string_data;
+    bchar char_data;
+    buchar uchar_data;
+    bboolean bool_data;
+    bint int_data;
+    buint uint_data;
+    blong long_data;
+    bulong ulong_data;
+    bfloat float_data;
+    bdouble double_data;
+    bchar *string_data;
     BtkObject *object_data;
-    gpointer pointer_data;
+    bpointer pointer_data;
 
     /* structured values */
     struct {
       GCallback f;
-      gpointer d;
+      bpointer d;
     } signal_data;
   } d;
 };
@@ -1011,13 +1011,13 @@ btk_type_flags_find_value (<em class="parameter"><code><a class="link" href="btk
 <div class="refsect2">
 <a name="BtkTypeInfo"></a><h3>struct BtkTypeInfo</h3>
 <pre class="programlisting">struct BtkTypeInfo {
-  gchar			*type_name;
-  guint			 object_size;
-  guint			 class_size;
+  bchar			*type_name;
+  buint			 object_size;
+  buint			 class_size;
   BtkClassInitFunc	 class_init_func;
   BtkObjectInitFunc	 object_init_func;
-  gpointer		 reserved_1;
-  gpointer		 reserved_2;
+  bpointer		 reserved_1;
+  bpointer		 reserved_2;
   BtkClassInitFunc	 base_class_init_func;
 };
 </pre>

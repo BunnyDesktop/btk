@@ -59,7 +59,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkLinkButton.html#btk-link-button-get-uri" title="btk_link_button_get_uri ()">btk_link_button_get_uri</a> <span class="c_punctuation">()</span>
@@ -91,7 +91,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkLinkButton.html#btk-link-button-get-visited" title="btk_link_button_get_visited ()">btk_link_button_get_visited</a> <span class="c_punctuation">()</span>
@@ -124,7 +124,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkLinkButton.html#BtkLinkButton--visited" title="The “visited” property">visited</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -146,7 +146,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkLinkButton.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -175,7 +175,7 @@ BtkLinkButton implements
 <div class="refsect2">
 <a name="btk-link-button-new"></a><h3>btk_link_button_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_link_button_new (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+btk_link_button_new (<em class="parameter"><code>const <span class="type">bchar</span> *uri</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> with the URI as its text.</p>
 <div class="refsect3">
 <a name="btk-link-button-new.parameters"></a><h4>Parameters</h4>
@@ -202,8 +202,8 @@ btk_link_button_new (<em class="parameter"><code>const <span class="type">gchar<
 <div class="refsect2">
 <a name="btk-link-button-new-with-label"></a><h3>btk_link_button_new_with_label ()</h3>
 <pre class="programlisting"><a class="link" href="BtkWidget.html" title="BtkWidget"><span class="returnvalue">BtkWidget</span></a> *
-btk_link_button_new_with_label (<em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *label</code></em>);</pre>
+btk_link_button_new_with_label (<em class="parameter"><code>const <span class="type">bchar</span> *uri</code></em>,
+                                <em class="parameter"><code>const <span class="type">bchar</span> *label</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> containing a label.</p>
 <div class="refsect3">
 <a name="btk-link-button-new-with-label.parameters"></a><h4>Parameters</h4>
@@ -237,7 +237,7 @@ btk_link_button_new_with_label (<em class="parameter"><code>const <span class="t
 <hr>
 <div class="refsect2">
 <a name="btk-link-button-get-uri"></a><h3>btk_link_button_get_uri ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_link_button_get_uri (<em class="parameter"><code><a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> *link_button</code></em>);</pre>
 <p>Retrieves the URI set using <a class="link" href="BtkLinkButton.html#btk-link-button-set-uri" title="btk_link_button_set_uri ()"><code class="function">btk_link_button_set_uri()</code></a>.</p>
 <div class="refsect3">
@@ -267,7 +267,7 @@ and should not be modified or freed.</p>
 <a name="btk-link-button-set-uri"></a><h3>btk_link_button_set_uri ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_link_button_set_uri (<em class="parameter"><code><a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> *link_button</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *uri</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *uri</code></em>);</pre>
 <p>Sets <em class="parameter"><code>uri</code></em>
  as the URI where the <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> points. As a side-effect
 this unsets the 'visited' state of the button.</p>
@@ -300,15 +300,15 @@ this unsets the 'visited' state of the button.</p>
 <a name="BtkLinkButtonUriFunc"></a><h3>BtkLinkButtonUriFunc ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 <span class="c_punctuation">(</span>*BtkLinkButtonUriFunc<span class="c_punctuation">)</span> (<em class="parameter"><code><a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> *button</code></em>,
-                         <em class="parameter"><code>const <span class="type">gchar</span> *link_</code></em>,
-                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                         <em class="parameter"><code>const <span class="type">bchar</span> *link_</code></em>,
+                         <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 </div>
 <hr>
 <div class="refsect2">
 <a name="btk-link-button-set-uri-hook"></a><h3>btk_link_button_set_uri_hook ()</h3>
 <pre class="programlisting"><a class="link" href="BtkLinkButton.html#BtkLinkButtonUriFunc" title="BtkLinkButtonUriFunc ()"><span class="returnvalue">BtkLinkButtonUriFunc</span></a>
 btk_link_button_set_uri_hook (<em class="parameter"><code><a class="link" href="BtkLinkButton.html#BtkLinkButtonUriFunc" title="BtkLinkButtonUriFunc ()"><span class="type">BtkLinkButtonUriFunc</span></a> func</code></em>,
-                              <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                              <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                               <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">btk_link_button_set_uri_hook</code> has been deprecated since version 2.24 and should not be used in newly-written code.</p>
@@ -357,7 +357,7 @@ is no longer needed, or <code class="literal">NULL</code>. </p></td>
 <hr>
 <div class="refsect2">
 <a name="btk-link-button-get-visited"></a><h3>btk_link_button_get_visited ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_link_button_get_visited (<em class="parameter"><code><a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> *link_button</code></em>);</pre>
 <p>Retrieves the 'visited' state of the URI where the <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a>
 points. The button becomes visited when it is clicked. If the URI
@@ -389,7 +389,7 @@ is changed on the button, the 'visited' state is unset again.</p>
 <a name="btk-link-button-set-visited"></a><h3>btk_link_button_set_visited ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_link_button_set_visited (<em class="parameter"><code><a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> *link_button</code></em>,
-                             <em class="parameter"><code><span class="type">gboolean</span> visited</code></em>);</pre>
+                             <em class="parameter"><code><span class="type">bboolean</span> visited</code></em>);</pre>
 <p>Sets the 'visited' state of the URI where the <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a>
 points.  See <a class="link" href="BtkLinkButton.html#btk-link-button-get-visited" title="btk_link_button_get_visited ()"><code class="function">btk_link_button_get_visited()</code></a> for more details.</p>
 <div class="refsect3">
@@ -438,7 +438,7 @@ points.  See <a class="link" href="BtkLinkButton.html#btk-link-button-get-visite
 <hr>
 <div class="refsect2">
 <a name="BtkLinkButton--visited"></a><h3>The <code class="literal">“visited”</code> property</h3>
-<pre class="programlisting">  “visited”                  <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “visited”                  <span class="type">bboolean</span></pre>
 <p>The 'visited' state of this button. A visited link is drawn in a
 different color.</p>
 <p>Owner: BtkLinkButton</p>

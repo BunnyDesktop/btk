@@ -67,30 +67,30 @@ typedef enum {
 
 struct _ChildInfoChildState
 {
-  gulong seq[3];
+  bulong seq[3];
 };
 
 struct _ChildInfoState
 {
-  gboolean get_wm_state;
+  bboolean get_wm_state;
   Window *children;
-  guint nchildren;
+  buint nchildren;
   BdkChildInfoX11 *child_info;
   ChildInfoChildState *child_states;
 
-  guint current_child;
-  guint n_children_found;
-  gint current_request;
-  gboolean have_error;
-  gboolean child_has_error;
+  buint current_child;
+  buint n_children_found;
+  bint current_request;
+  bboolean have_error;
+  bboolean child_has_error;
 };
 
 struct _ListChildrenState
 {
   Display *dpy;
-  gulong get_property_req;
-  gboolean have_error;
-  gboolean has_wm_state;
+  bulong get_property_req;
+  bboolean have_error;
+  bboolean has_wm_state;
 };
 
 struct _SendEventState
@@ -98,33 +98,33 @@ struct _SendEventState
   Display *dpy;
   Window window;
   _XAsyncHandler async;
-  gulong send_event_req;
-  gulong get_input_focus_req;
-  gboolean have_error;
+  bulong send_event_req;
+  bulong get_input_focus_req;
+  bboolean have_error;
   BdkSendXEventCallback callback;
-  gpointer data;
+  bpointer data;
 };
 
 struct _SetInputFocusState
 {
   Display *dpy;
   _XAsyncHandler async;
-  gulong set_input_focus_req;
-  gulong get_input_focus_req;
+  bulong set_input_focus_req;
+  bulong get_input_focus_req;
 };
 
 struct _RoundtripState
 {
   Display *dpy;
   _XAsyncHandler async;
-  gulong get_input_focus_req;
+  bulong get_input_focus_req;
   BdkDisplay *display;
   BdkRoundTripCallback callback;
-  gpointer data;
+  bpointer data;
 };
 
-static gboolean
-callback_idle (gpointer data)
+static bboolean
+callback_idle (bpointer data)
 {
   SendEventState *state = (SendEventState *)data;  
   
@@ -225,11 +225,11 @@ client_message_to_wire (XClientMessageEvent *ev,
 void
 _bdk_x11_send_client_message_async (BdkDisplay           *display, 
 				    Window                window, 
-				    gboolean              propagate,
-				    glong                 event_mask,
+				    bboolean              propagate,
+				    blong                 event_mask,
 				    XClientMessageEvent  *event_send,
 				    BdkSendXEventCallback callback,
-				    gpointer              data)
+				    bpointer              data)
 {
   Display *dpy;
   SendEventState *state;
@@ -415,11 +415,11 @@ list_children_handler (Display *dpy,
     }
 }
 
-static gboolean
+static bboolean
 list_children_and_wm_state (Display      *dpy,
 			    Window        w,
 			    Atom          wm_state_atom,
-			    gboolean     *has_wm_state,
+			    bboolean     *has_wm_state,
 			    Window      **children,
 			    unsigned int *nchildren)
 {
@@ -622,21 +622,21 @@ get_child_info_handler (Display *dpy,
   return result;
 }
 
-gboolean
+bboolean
 _bdk_x11_get_window_child_info (BdkDisplay       *display,
 				Window            window,
-				gboolean          get_wm_state,
-				gboolean         *win_has_wm_state,
+				bboolean          get_wm_state,
+				bboolean         *win_has_wm_state,
 				BdkChildInfoX11 **children,
-				guint            *nchildren)
+				buint            *nchildren)
 {
   Display *dpy;
   _XAsyncHandler async;
   ChildInfoState state;
   Atom wm_state_atom;
-  gboolean has_wm_state;
+  bboolean has_wm_state;
   Bool result;
-  guint i;
+  buint i;
 
   *children = NULL;
   *nchildren = 0;
@@ -754,8 +754,8 @@ _bdk_x11_get_window_child_info (BdkDisplay       *display,
   return !state.have_error;
 }
 
-static gboolean
-roundtrip_callback_idle (gpointer data)
+static bboolean
+roundtrip_callback_idle (bpointer data)
 {
   RoundtripState *state = (RoundtripState *)data;  
   
@@ -806,7 +806,7 @@ roundtrip_handler (Display *dpy,
 void
 _bdk_x11_roundtrip_async (BdkDisplay           *display, 
 			  BdkRoundTripCallback callback,
-			  gpointer              data)
+			  bpointer              data)
 {
   Display *dpy;
   RoundtripState *state;

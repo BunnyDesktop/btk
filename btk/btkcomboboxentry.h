@@ -27,16 +27,16 @@
 #include <btk/btkcombobox.h>
 #include <btk/btktreemodel.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #ifndef BTK_DISABLE_DEPRECATED
 
 #define BTK_TYPE_COMBO_BOX_ENTRY             (btk_combo_box_entry_get_type ())
-#define BTK_COMBO_BOX_ENTRY(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntry))
-#define BTK_COMBO_BOX_ENTRY_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
-#define BTK_IS_COMBO_BOX_ENTRY(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_ENTRY))
-#define BTK_IS_COMBO_BOX_ENTRY_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX_ENTRY))
-#define BTK_COMBO_BOX_ENTRY_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
+#define BTK_COMBO_BOX_ENTRY(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntry))
+#define BTK_COMBO_BOX_ENTRY_CLASS(vtable)    (B_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
+#define BTK_IS_COMBO_BOX_ENTRY(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX_ENTRY))
+#define BTK_IS_COMBO_BOX_ENTRY_CLASS(vtable) (B_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX_ENTRY))
+#define BTK_COMBO_BOX_ENTRY_GET_CLASS(inst)  (B_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX_ENTRY, BtkComboBoxEntryClass))
 
 typedef struct _BtkComboBoxEntry             BtkComboBoxEntry;
 typedef struct _BtkComboBoxEntryClass        BtkComboBoxEntryClass;
@@ -62,20 +62,20 @@ struct _BtkComboBoxEntryClass
 };
 
 
-GType       btk_combo_box_entry_get_type        (void) G_GNUC_CONST;
+GType       btk_combo_box_entry_get_type        (void) B_GNUC_CONST;
 BtkWidget  *btk_combo_box_entry_new             (void);
 BtkWidget  *btk_combo_box_entry_new_with_model  (BtkTreeModel     *model,
-                                                 gint              text_column);
+                                                 bint              text_column);
 
 void        btk_combo_box_entry_set_text_column (BtkComboBoxEntry *entry_box,
-                                                 gint              text_column);
-gint        btk_combo_box_entry_get_text_column (BtkComboBoxEntry *entry_box);
+                                                 bint              text_column);
+bint        btk_combo_box_entry_get_text_column (BtkComboBoxEntry *entry_box);
 
 /* convenience -- text */
 BtkWidget  *btk_combo_box_entry_new_text        (void);
 
 #endif
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_COMBO_BOX_ENTRY_H__ */

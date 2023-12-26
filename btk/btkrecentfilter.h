@@ -27,11 +27,11 @@
 
 #include <bunnylib-object.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_RECENT_FILTER		(btk_recent_filter_get_type ())
-#define BTK_RECENT_FILTER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
-#define BTK_IS_RECENT_FILTER(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_FILTER))
+#define BTK_RECENT_FILTER(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
+#define BTK_IS_RECENT_FILTER(obj)	(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_FILTER))
 
 typedef struct _BtkRecentFilter		BtkRecentFilter;
 typedef struct _BtkRecentFilterInfo	BtkRecentFilterInfo;
@@ -45,50 +45,50 @@ typedef enum {
   BTK_RECENT_FILTER_AGE          = 1 << 5
 } BtkRecentFilterFlags;
 
-typedef gboolean (*BtkRecentFilterFunc) (const BtkRecentFilterInfo *filter_info,
-					 gpointer                   user_data);
+typedef bboolean (*BtkRecentFilterFunc) (const BtkRecentFilterInfo *filter_info,
+					 bpointer                   user_data);
 
 struct _BtkRecentFilterInfo
 {
   BtkRecentFilterFlags contains;
 
-  const gchar *uri;
-  const gchar *display_name;
-  const gchar *mime_type;
-  const gchar **applications;
-  const gchar **groups;
+  const bchar *uri;
+  const bchar *display_name;
+  const bchar *mime_type;
+  const bchar **applications;
+  const bchar **groups;
 
-  gint age;
+  bint age;
 };
 
-GType                 btk_recent_filter_get_type (void) G_GNUC_CONST;
+GType                 btk_recent_filter_get_type (void) B_GNUC_CONST;
 
 BtkRecentFilter *     btk_recent_filter_new      (void);
 void                  btk_recent_filter_set_name (BtkRecentFilter *filter,
-						  const gchar     *name);
-const gchar *         btk_recent_filter_get_name (BtkRecentFilter *filter);
+						  const bchar     *name);
+const bchar *         btk_recent_filter_get_name (BtkRecentFilter *filter);
 
 void btk_recent_filter_add_mime_type      (BtkRecentFilter      *filter,
-					   const gchar          *mime_type);
+					   const bchar          *mime_type);
 void btk_recent_filter_add_pattern        (BtkRecentFilter      *filter,
-					   const gchar          *pattern);
+					   const bchar          *pattern);
 void btk_recent_filter_add_pixbuf_formats (BtkRecentFilter      *filter);
 void btk_recent_filter_add_application    (BtkRecentFilter      *filter,
-					   const gchar          *application);
+					   const bchar          *application);
 void btk_recent_filter_add_group          (BtkRecentFilter      *filter,
-					   const gchar          *group);
+					   const bchar          *group);
 void btk_recent_filter_add_age            (BtkRecentFilter      *filter,
-					   gint                  days);
+					   bint                  days);
 void btk_recent_filter_add_custom         (BtkRecentFilter      *filter,
 					   BtkRecentFilterFlags  needed,
 					   BtkRecentFilterFunc   func,
-					   gpointer              data,
+					   bpointer              data,
 					   GDestroyNotify        data_destroy);
 
 BtkRecentFilterFlags btk_recent_filter_get_needed (BtkRecentFilter           *filter);
-gboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
+bboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
 						   const BtkRecentFilterInfo *filter_info);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* ! __BTK_RECENT_FILTER_H__ */

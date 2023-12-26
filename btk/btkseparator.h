@@ -35,14 +35,14 @@
 #include <btk/btkwidget.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SEPARATOR                  (btk_separator_get_type ())
-#define BTK_SEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR, BtkSeparator))
-#define BTK_SEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR, BtkSeparatorClass))
-#define BTK_IS_SEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR))
-#define BTK_IS_SEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR))
-#define BTK_SEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEPARATOR, BtkSeparatorClass))
+#define BTK_SEPARATOR(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR, BtkSeparator))
+#define BTK_SEPARATOR_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR, BtkSeparatorClass))
+#define BTK_IS_SEPARATOR(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR))
+#define BTK_IS_SEPARATOR_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR))
+#define BTK_SEPARATOR_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SEPARATOR, BtkSeparatorClass))
 
 
 typedef struct _BtkSeparator       BtkSeparator;
@@ -59,8 +59,8 @@ struct _BtkSeparatorClass
 };
 
 
-GType       btk_separator_get_type (void) G_GNUC_CONST;
+GType       btk_separator_get_type (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SEPARATOR_H__ */

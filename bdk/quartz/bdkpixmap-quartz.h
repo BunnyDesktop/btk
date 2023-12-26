@@ -25,7 +25,7 @@
 #include <bdk/quartz/bdkdrawable-quartz.h>
 #include <bdk/bdkpixmap.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* Pixmap implementation for Quartz
  */
@@ -34,18 +34,18 @@ typedef struct _BdkPixmapImplQuartz BdkPixmapImplQuartz;
 typedef struct _BdkPixmapImplQuartzClass BdkPixmapImplQuartzClass;
 
 #define BDK_TYPE_PIXMAP_IMPL_QUARTZ              (_bdk_pixmap_impl_quartz_get_type ())
-#define BDK_PIXMAP_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartz))
-#define BDK_PIXMAP_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
-#define BDK_IS_PIXMAP_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
-#define BDK_IS_PIXMAP_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
-#define BDK_PIXMAP_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
+#define BDK_PIXMAP_IMPL_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartz))
+#define BDK_PIXMAP_IMPL_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
+#define BDK_IS_PIXMAP_IMPL_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
+#define BDK_IS_PIXMAP_IMPL_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_QUARTZ))
+#define BDK_PIXMAP_IMPL_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_QUARTZ, BdkPixmapImplQuartzClass))
 
 struct _BdkPixmapImplQuartz
 {
   BdkDrawableImplQuartz parent_instance;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   void *data;
   CGDataProviderRef data_provider;
@@ -58,6 +58,6 @@ struct _BdkPixmapImplQuartzClass
 
 GType _bdk_pixmap_impl_quartz_get_type (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_PIXMAP_QUARTZ_H__ */

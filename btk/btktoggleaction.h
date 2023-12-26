@@ -37,14 +37,14 @@
 
 #include <btk/btkaction.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_TOGGLE_ACTION            (btk_toggle_action_get_type ())
-#define BTK_TOGGLE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleAction))
-#define BTK_TOGGLE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
-#define BTK_IS_TOGGLE_ACTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_ACTION))
-#define BTK_IS_TOGGLE_ACTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_ACTION))
-#define BTK_TOGGLE_ACTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
+#define BTK_TOGGLE_ACTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleAction))
+#define BTK_TOGGLE_ACTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
+#define BTK_IS_TOGGLE_ACTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_ACTION))
+#define BTK_IS_TOGGLE_ACTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_ACTION))
+#define BTK_TOGGLE_ACTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionClass))
 
 typedef struct _BtkToggleAction        BtkToggleAction;
 typedef struct _BtkToggleActionPrivate BtkToggleActionPrivate;
@@ -72,20 +72,20 @@ struct _BtkToggleActionClass
   void (*_btk_reserved4) (void);
 };
 
-GType            btk_toggle_action_get_type          (void) G_GNUC_CONST;
-BtkToggleAction *btk_toggle_action_new               (const gchar     *name,
-                                                      const gchar     *label,
-                                                      const gchar     *tooltip,
-                                                      const gchar     *stock_id);
+GType            btk_toggle_action_get_type          (void) B_GNUC_CONST;
+BtkToggleAction *btk_toggle_action_new               (const bchar     *name,
+                                                      const bchar     *label,
+                                                      const bchar     *tooltip,
+                                                      const bchar     *stock_id);
 void             btk_toggle_action_toggled           (BtkToggleAction *action);
 void             btk_toggle_action_set_active        (BtkToggleAction *action,
-                                                      gboolean         is_active);
-gboolean         btk_toggle_action_get_active        (BtkToggleAction *action);
+                                                      bboolean         is_active);
+bboolean         btk_toggle_action_get_active        (BtkToggleAction *action);
 void             btk_toggle_action_set_draw_as_radio (BtkToggleAction *action,
-                                                      gboolean         draw_as_radio);
-gboolean         btk_toggle_action_get_draw_as_radio (BtkToggleAction *action);
+                                                      bboolean         draw_as_radio);
+bboolean         btk_toggle_action_get_draw_as_radio (BtkToggleAction *action);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_TOGGLE_ACTION_H__ */

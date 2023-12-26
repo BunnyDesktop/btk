@@ -32,20 +32,20 @@ enum {
   PROP_GROUP
 };
 
-static void btk_radio_tool_button_set_property (GObject         *object,
-						guint            prop_id,
-						const GValue    *value,
-						GParamSpec      *pspec);
+static void btk_radio_tool_button_set_property (BObject         *object,
+						buint            prop_id,
+						const BValue    *value,
+						BParamSpec      *pspec);
 
 G_DEFINE_TYPE (BtkRadioToolButton, btk_radio_tool_button, BTK_TYPE_TOGGLE_TOOL_BUTTON)
 
 static void
 btk_radio_tool_button_class_init (BtkRadioToolButtonClass *klass)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
   BtkToolButtonClass *toolbutton_class;
 
-  object_class = (GObjectClass *)klass;
+  object_class = (BObjectClass *)klass;
   toolbutton_class = (BtkToolButtonClass *)klass;
 
   object_class->set_property = btk_radio_tool_button_set_property;
@@ -77,10 +77,10 @@ btk_radio_tool_button_init (BtkRadioToolButton *button)
 }
 
 static void
-btk_radio_tool_button_set_property (GObject         *object,
-				    guint            prop_id,
-				    const GValue    *value,
-				    GParamSpec      *pspec)
+btk_radio_tool_button_set_property (BObject         *object,
+				    buint            prop_id,
+				    const BValue    *value,
+				    BParamSpec      *pspec)
 {
   BtkRadioToolButton *button;
 
@@ -94,7 +94,7 @@ btk_radio_tool_button_set_property (GObject         *object,
 	GSList *slist = NULL;
 	if (G_VALUE_HOLDS_OBJECT (value)) 
 	  {
-	    arg = BTK_RADIO_TOOL_BUTTON (g_value_get_object (value));
+	    arg = BTK_RADIO_TOOL_BUTTON (b_value_get_object (value));
 	    if (arg)
 	      slist = btk_radio_tool_button_get_group (arg);
 	    btk_radio_tool_button_set_group (button, slist);
@@ -102,7 +102,7 @@ btk_radio_tool_button_set_property (GObject         *object,
       }
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -145,7 +145,7 @@ btk_radio_tool_button_new (GSList *group)
  **/
 BtkToolItem *
 btk_radio_tool_button_new_from_stock (GSList      *group,
-				      const gchar *stock_id)
+				      const bchar *stock_id)
 {
   BtkRadioToolButton *button;
 
@@ -199,7 +199,7 @@ btk_radio_tool_button_new_from_widget (BtkRadioToolButton *group)
  **/
 BtkToolItem *
 btk_radio_tool_button_new_with_stock_from_widget (BtkRadioToolButton *group,
-						  const gchar        *stock_id)
+						  const bchar        *stock_id)
 {
   GSList *list = NULL;
   

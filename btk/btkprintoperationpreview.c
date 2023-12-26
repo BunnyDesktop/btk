@@ -26,7 +26,7 @@
 #include "btkalias.h"
 
 
-static void btk_print_operation_preview_base_init (gpointer g_iface);
+static void btk_print_operation_preview_base_init (bpointer g_iface);
 
 GType
 btk_print_operation_preview_get_type (void)
@@ -49,19 +49,19 @@ btk_print_operation_preview_get_type (void)
       };
 
       print_operation_preview_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("BtkPrintOperationPreview"),
+	g_type_register_static (B_TYPE_INTERFACE, I_("BtkPrintOperationPreview"),
 				&print_operation_preview_info, 0);
 
-      g_type_interface_add_prerequisite (print_operation_preview_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (print_operation_preview_type, B_TYPE_OBJECT);
     }
 
   return print_operation_preview_type;
 }
 
 static void
-btk_print_operation_preview_base_init (gpointer g_iface)
+btk_print_operation_preview_base_init (bpointer g_iface)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
 
   if (!initialized)
     {
@@ -81,7 +81,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
 		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, ready),
 		    NULL, NULL,
 		    g_cclosure_marshal_VOID__OBJECT,
-		    G_TYPE_NONE, 1,
+		    B_TYPE_NONE, 1,
 		    BTK_TYPE_PRINT_CONTEXT);
 
       /**
@@ -103,7 +103,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
 		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, got_page_size),
 		    NULL, NULL,
 		    _btk_marshal_VOID__OBJECT_OBJECT,
-		    G_TYPE_NONE, 2,
+		    B_TYPE_NONE, 2,
 		    BTK_TYPE_PRINT_CONTEXT,
 		    BTK_TYPE_PAGE_SETUP);
 
@@ -130,7 +130,7 @@ btk_print_operation_preview_base_init (gpointer g_iface)
  */
 void    
 btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
-					 gint			   page_nr)
+					 bint			   page_nr)
 {
   g_return_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview));
 
@@ -168,9 +168,9 @@ btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview)
  *
  * Since: 2.10
  */
-gboolean
+bboolean
 btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
-					 gint                      page_nr)
+					 bint                      page_nr)
 {
   g_return_val_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview), FALSE);
 

@@ -35,14 +35,14 @@
 #include <btk/btkbox.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_HBOX            (btk_hbox_get_type ())
-#define BTK_HBOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HBOX, BtkHBox))
-#define BTK_HBOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HBOX, BtkHBoxClass))
-#define BTK_IS_HBOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HBOX))
-#define BTK_IS_HBOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HBOX))
-#define BTK_HBOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HBOX, BtkHBoxClass))
+#define BTK_HBOX(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HBOX, BtkHBox))
+#define BTK_HBOX_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HBOX, BtkHBoxClass))
+#define BTK_IS_HBOX(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HBOX))
+#define BTK_IS_HBOX_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HBOX))
+#define BTK_HBOX_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HBOX, BtkHBoxClass))
 
 
 typedef struct _BtkHBox	      BtkHBox;
@@ -59,10 +59,10 @@ struct _BtkHBoxClass
 };
 
 
-GType       btk_hbox_get_type (void) G_GNUC_CONST;
-BtkWidget * btk_hbox_new      (gboolean homogeneous,
-                               gint     spacing);
+GType       btk_hbox_get_type (void) B_GNUC_CONST;
+BtkWidget * btk_hbox_new      (bboolean homogeneous,
+                               bint     spacing);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_HBOX_H__ */

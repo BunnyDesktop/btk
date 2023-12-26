@@ -37,14 +37,14 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL] = { 0 };
+static buint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (BdkKeymap, bdk_keymap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkKeymap, bdk_keymap, B_TYPE_OBJECT)
 
 static void
 bdk_keymap_class_init (BdkKeymapClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   /**
    * BdkKeymap::direction-changed:
@@ -57,12 +57,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[DIRECTION_CHANGED] =
     g_signal_new ("direction-changed",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkKeymapClass, direction_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
   /**
    * BdkKeymap::keys-changed:
@@ -75,12 +75,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[KEYS_CHANGED] =
     g_signal_new ("keys-changed",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BdkKeymapClass, keys_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
-		  G_TYPE_NONE,
+		  B_TYPE_NONE,
 		  0);
 
   /**
@@ -95,12 +95,12 @@ bdk_keymap_class_init (BdkKeymapClass *klass)
    */
   signals[STATE_CHANGED] =
     g_signal_new ("state_changed",
-                  G_OBJECT_CLASS_TYPE (object_class),
+                  B_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (BdkKeymapClass, state_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
-                  G_TYPE_NONE, 
+                  B_TYPE_NONE, 
                   0);
 }
 
@@ -129,12 +129,12 @@ bdk_keymap_init (BdkKeymap *keymap)
  *
  **/
 void
-bdk_keyval_convert_case (guint symbol,
-			 guint *lower,
-			 guint *upper)
+bdk_keyval_convert_case (buint symbol,
+			 buint *lower,
+			 buint *upper)
 {
-  guint xlower = symbol;
-  guint xupper = symbol;
+  buint xlower = symbol;
+  buint xupper = symbol;
 
   /* Check for directly encoded 24-bit UCS characters: */
   if ((symbol & 0xff000000) == 0x01000000)
@@ -254,32 +254,32 @@ bdk_keyval_convert_case (guint symbol,
 }
 #endif
 
-guint
-bdk_keyval_to_upper (guint keyval)
+buint
+bdk_keyval_to_upper (buint keyval)
 {
-  guint result;
+  buint result;
   
   bdk_keyval_convert_case (keyval, NULL, &result);
 
   return result;
 }
 
-guint
-bdk_keyval_to_lower (guint keyval)
+buint
+bdk_keyval_to_lower (buint keyval)
 {
-  guint result;
+  buint result;
   
   bdk_keyval_convert_case (keyval, &result, NULL);
 
   return result;
 }
 
-gboolean
-bdk_keyval_is_upper (guint keyval)
+bboolean
+bdk_keyval_is_upper (buint keyval)
 {
   if (keyval)
     {
-      guint upper_val = 0;
+      buint upper_val = 0;
       
       bdk_keyval_convert_case (keyval, NULL, &upper_val);
       return upper_val == keyval;
@@ -287,12 +287,12 @@ bdk_keyval_is_upper (guint keyval)
   return FALSE;
 }
 
-gboolean
-bdk_keyval_is_lower (guint keyval)
+bboolean
+bdk_keyval_is_lower (buint keyval)
 {
   if (keyval)
     {
-      guint lower_val = 0;
+      buint lower_val = 0;
       
       bdk_keyval_convert_case (keyval, &lower_val, NULL);
       return lower_val == keyval;

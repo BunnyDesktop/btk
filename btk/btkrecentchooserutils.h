@@ -29,7 +29,7 @@
 
 #include "btkrecentchooserprivate.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_RECENT_CHOOSER_DELEGATE_QUARK	(_btk_recent_chooser_delegate_get_quark ())
@@ -49,14 +49,14 @@ typedef enum {
   BTK_RECENT_CHOOSER_PROP_LAST
 } BtkRecentChooserProp;
 
-void   _btk_recent_chooser_install_properties  (GObjectClass          *klass);
+void   _btk_recent_chooser_install_properties  (BObjectClass          *klass);
 
 void   _btk_recent_chooser_delegate_iface_init (BtkRecentChooserIface *iface);
 void   _btk_recent_chooser_set_delegate        (BtkRecentChooser      *receiver,
 						BtkRecentChooser      *delegate);
 
-GQuark _btk_recent_chooser_delegate_get_quark  (void) G_GNUC_CONST;
+GQuark _btk_recent_chooser_delegate_get_quark  (void) B_GNUC_CONST;
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_RECENT_CHOOSER_UTILS_H__ */

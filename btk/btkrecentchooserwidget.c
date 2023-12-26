@@ -35,18 +35,18 @@ struct _BtkRecentChooserWidgetPrivate
 
 #define BTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE(obj)	(BTK_RECENT_CHOOSER_WIDGET (obj)->priv)
 
-static GObject *btk_recent_chooser_widget_constructor  (GType                  type,
-						        guint                  n_params,
-						        GObjectConstructParam *params);
-static void     btk_recent_chooser_widget_set_property (GObject               *object,
-						        guint                  prop_id,
-						        const GValue          *value,
-						        GParamSpec            *pspec);
-static void     btk_recent_chooser_widget_get_property (GObject               *object,
-						        guint                  prop_id,
-						        GValue                *value,
-						        GParamSpec            *pspec);
-static void     btk_recent_chooser_widget_finalize     (GObject               *object);
+static BObject *btk_recent_chooser_widget_constructor  (GType                  type,
+						        buint                  n_params,
+						        BObjectConstructParam *params);
+static void     btk_recent_chooser_widget_set_property (BObject               *object,
+						        buint                  prop_id,
+						        const BValue          *value,
+						        BParamSpec            *pspec);
+static void     btk_recent_chooser_widget_get_property (BObject               *object,
+						        buint                  prop_id,
+						        BValue                *value,
+						        BParamSpec            *pspec);
+static void     btk_recent_chooser_widget_finalize     (BObject               *object);
 
 
 G_DEFINE_TYPE_WITH_CODE (BtkRecentChooserWidget,
@@ -58,7 +58,7 @@ G_DEFINE_TYPE_WITH_CODE (BtkRecentChooserWidget,
 static void
 btk_recent_chooser_widget_class_init (BtkRecentChooserWidgetClass *klass)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (klass);
 
   bobject_class->constructor = btk_recent_chooser_widget_constructor;
   bobject_class->set_property = btk_recent_chooser_widget_set_property;
@@ -74,19 +74,19 @@ btk_recent_chooser_widget_class_init (BtkRecentChooserWidgetClass *klass)
 static void
 btk_recent_chooser_widget_init (BtkRecentChooserWidget *widget)
 {
-  widget->priv = G_TYPE_INSTANCE_GET_PRIVATE (widget, BTK_TYPE_RECENT_CHOOSER_WIDGET,
+  widget->priv = B_TYPE_INSTANCE_GET_PRIVATE (widget, BTK_TYPE_RECENT_CHOOSER_WIDGET,
 					      BtkRecentChooserWidgetPrivate);
 }
 
-static GObject *
+static BObject *
 btk_recent_chooser_widget_constructor (GType                  type,
-				       guint                  n_params,
-				       GObjectConstructParam *params)
+				       buint                  n_params,
+				       BObjectConstructParam *params)
 {
-  GObject *object;
+  BObject *object;
   BtkRecentChooserWidgetPrivate *priv;
 
-  object = G_OBJECT_CLASS (btk_recent_chooser_widget_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (btk_recent_chooser_widget_parent_class)->constructor (type,
 										 n_params,
 										 params);
 
@@ -103,10 +103,10 @@ btk_recent_chooser_widget_constructor (GType                  type,
 }
 
 static void
-btk_recent_chooser_widget_set_property (GObject      *object,
-				        guint         prop_id,
-				        const GValue *value,
-				        GParamSpec   *pspec)
+btk_recent_chooser_widget_set_property (BObject      *object,
+				        buint         prop_id,
+				        const BValue *value,
+				        BParamSpec   *pspec)
 {
   BtkRecentChooserWidgetPrivate *priv;
 
@@ -115,36 +115,36 @@ btk_recent_chooser_widget_set_property (GObject      *object,
   switch (prop_id)
     {
     case BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER:
-      priv->manager = g_value_get_object (value);
+      priv->manager = b_value_get_object (value);
       break;
     default:
-      g_object_set_property (G_OBJECT (priv->chooser), pspec->name, value);
+      g_object_set_property (B_OBJECT (priv->chooser), pspec->name, value);
       break;
     }
 }
 
 static void
-btk_recent_chooser_widget_get_property (GObject    *object,
-				        guint       prop_id,
-				        GValue     *value,
-				        GParamSpec *pspec)
+btk_recent_chooser_widget_get_property (BObject    *object,
+				        buint       prop_id,
+				        BValue     *value,
+				        BParamSpec *pspec)
 {
   BtkRecentChooserWidgetPrivate *priv;
 
   priv = BTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE (object);
 
-  g_object_get_property (G_OBJECT (priv->chooser), pspec->name, value);
+  g_object_get_property (B_OBJECT (priv->chooser), pspec->name, value);
 }
 
 static void
-btk_recent_chooser_widget_finalize (GObject *object)
+btk_recent_chooser_widget_finalize (BObject *object)
 {
   BtkRecentChooserWidgetPrivate *priv;
   
   priv = BTK_RECENT_CHOOSER_WIDGET_GET_PRIVATE (object);
   priv->manager = NULL;
   
-  G_OBJECT_CLASS (btk_recent_chooser_widget_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_recent_chooser_widget_parent_class)->finalize (object);
 }
 
 /*

@@ -24,28 +24,28 @@
 
 #include <bdk/bdk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkKeyHash BtkKeyHash;
 
 BtkKeyHash *_btk_key_hash_new           (BdkKeymap       *keymap,
 					 GDestroyNotify   item_destroy_notify);
 void        _btk_key_hash_add_entry     (BtkKeyHash      *key_hash,
-					 guint            keyval,
+					 buint            keyval,
 					 BdkModifierType  modifiers,
-					 gpointer         value);
+					 bpointer         value);
 void        _btk_key_hash_remove_entry  (BtkKeyHash      *key_hash,
-					 gpointer         value);
+					 bpointer         value);
 GSList *    _btk_key_hash_lookup        (BtkKeyHash      *key_hash,
-					 guint16          hardware_keycode,
+					 buint16          hardware_keycode,
 					 BdkModifierType  state,
 					 BdkModifierType  mask,
-					 gint             group);
+					 bint             group);
 GSList *    _btk_key_hash_lookup_keyval (BtkKeyHash      *key_hash,
-					 guint            keyval,
+					 buint            keyval,
 					 BdkModifierType  modifiers);
 void        _btk_key_hash_free          (BtkKeyHash      *key_hash);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_KEY_HASH_H__ */

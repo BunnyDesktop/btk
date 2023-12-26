@@ -89,7 +89,7 @@ bdk_visual_get_visual_type (BdkVisual *visual)
  *
  * Since: 2.22
  */
-gint
+bint
 bdk_visual_get_depth (BdkVisual *visual)
 {
   g_return_val_if_fail (BDK_IS_VISUAL (visual), 0);
@@ -125,7 +125,7 @@ bdk_visual_get_byte_order (BdkVisual *visual)
  *
  * Since: 2.22
  */
-gint
+bint
 bdk_visual_get_colormap_size (BdkVisual *visual)
 {
   g_return_val_if_fail (BDK_IS_VISUAL (visual), 0);
@@ -143,7 +143,7 @@ bdk_visual_get_colormap_size (BdkVisual *visual)
  *
  * Since: 2.22
  */
-gint
+bint
 bdk_visual_get_bits_per_rgb (BdkVisual *visual)
 {
   g_return_val_if_fail (BDK_IS_VISUAL (visual), 0);
@@ -154,9 +154,9 @@ bdk_visual_get_bits_per_rgb (BdkVisual *visual)
 /**
  * bdk_visual_get_red_pixel_details:
  * @visual: A #BdkVisual.
- * @mask: (out) (allow-none): A pointer to a #guint32 to be filled in, or %NULL.
- * @shift: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
- * @precision: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
+ * @mask: (out) (allow-none): A pointer to a #buint32 to be filled in, or %NULL.
+ * @shift: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
+ * @precision: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
  *
  * Obtains values that are needed to calculate red pixel values in TrueColor
  * and DirectColor.  The "mask" is the significant bits within the pixel.
@@ -168,9 +168,9 @@ bdk_visual_get_bits_per_rgb (BdkVisual *visual)
  */
 void
 bdk_visual_get_red_pixel_details (BdkVisual *visual,
-                                  guint32   *mask,
-                                  gint      *shift,
-                                  gint      *precision)
+                                  buint32   *mask,
+                                  bint      *shift,
+                                  bint      *precision)
 {
   g_return_if_fail (BDK_IS_VISUAL (visual));
 
@@ -187,9 +187,9 @@ bdk_visual_get_red_pixel_details (BdkVisual *visual,
 /**
  * bdk_visual_get_green_pixel_details:
  * @visual: a #BdkVisual
- * @mask: (out) (allow-none): A pointer to a #guint32 to be filled in, or %NULL.
- * @shift: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
- * @precision: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
+ * @mask: (out) (allow-none): A pointer to a #buint32 to be filled in, or %NULL.
+ * @shift: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
+ * @precision: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
  *
  * Obtains values that are needed to calculate green pixel values in TrueColor
  * and DirectColor.  The "mask" is the significant bits within the pixel.
@@ -201,9 +201,9 @@ bdk_visual_get_red_pixel_details (BdkVisual *visual,
  */
 void
 bdk_visual_get_green_pixel_details (BdkVisual *visual,
-                                    guint32   *mask,
-                                    gint      *shift,
-                                    gint      *precision)
+                                    buint32   *mask,
+                                    bint      *shift,
+                                    bint      *precision)
 {
   g_return_if_fail (BDK_IS_VISUAL (visual));
 
@@ -220,9 +220,9 @@ bdk_visual_get_green_pixel_details (BdkVisual *visual,
 /**
  * bdk_visual_get_blue_pixel_details:
  * @visual: a #BdkVisual
- * @mask: (out) (allow-none): A pointer to a #guint32 to be filled in, or %NULL.
- * @shift: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
- * @precision: (out) (allow-none): A pointer to a #gint to be filled in, or %NULL.
+ * @mask: (out) (allow-none): A pointer to a #buint32 to be filled in, or %NULL.
+ * @shift: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
+ * @precision: (out) (allow-none): A pointer to a #bint to be filled in, or %NULL.
  *
  * Obtains values that are needed to calculate blue pixel values in TrueColor
  * and DirectColor.  The "mask" is the significant bits within the pixel.
@@ -234,9 +234,9 @@ bdk_visual_get_green_pixel_details (BdkVisual *visual,
  */
 void
 bdk_visual_get_blue_pixel_details (BdkVisual *visual,
-                                   guint32   *mask,
-                                   gint      *shift,
-                                   gint      *precision)
+                                   buint32   *mask,
+                                   bint      *shift,
+                                   bint      *precision)
 {
   g_return_if_fail (BDK_IS_VISUAL (visual));
 

@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include "prop-editor.h"
 
-static gboolean
+static bboolean
 delete_event_cb (BtkWidget *editor,
-                 gint       response,
-                 gpointer   user_data)
+                 bint       response,
+                 bpointer   user_data)
 {
   btk_widget_hide (editor);
 
@@ -14,7 +14,7 @@ delete_event_cb (BtkWidget *editor,
 
 static void
 properties_cb (BtkWidget *button,
-               GObject   *entry)
+               BObject   *entry)
 {
   BtkWidget *editor;
 
@@ -22,7 +22,7 @@ properties_cb (BtkWidget *button,
 
   if (editor == NULL)
     {
-      editor = create_prop_editor (G_OBJECT (entry), G_TYPE_INVALID);
+      editor = create_prop_editor (B_OBJECT (entry), B_TYPE_INVALID);
       btk_container_set_border_width (BTK_CONTAINER (editor), 12);
       btk_window_set_transient_for (BTK_WINDOW (editor),
                                     BTK_WINDOW (btk_widget_get_toplevel (button)));
@@ -34,7 +34,7 @@ properties_cb (BtkWidget *button,
 }
 
 static void
-clear_pressed (BtkEntry *entry, gint icon, BdkEvent *event, gpointer data)
+clear_pressed (BtkEntry *entry, bint icon, BdkEvent *event, bpointer data)
 {
    if (icon == BTK_ENTRY_ICON_SECONDARY)
      btk_entry_set_text (entry, "");
@@ -43,9 +43,9 @@ clear_pressed (BtkEntry *entry, gint icon, BdkEvent *event, gpointer data)
 static void
 drag_begin_cb (BtkWidget      *widget,
                BdkDragContext *context,
-               gpointer        user_data)
+               bpointer        user_data)
 {
-  gint pos;
+  bint pos;
 
   pos = btk_entry_get_current_icon_drag_source (BTK_ENTRY (widget));
   if (pos != -1)
@@ -58,22 +58,22 @@ static void
 drag_data_get_cb (BtkWidget        *widget,
                   BdkDragContext   *context,
                   BtkSelectionData *data,
-                  guint             info,
-                  guint             time,
-                  gpointer          user_data)
+                  buint             info,
+                  buint             time,
+                  bpointer          user_data)
 {
-  gint pos;
+  bint pos;
 
   pos = btk_entry_get_current_icon_drag_source (BTK_ENTRY (widget));
 
   if (pos == BTK_ENTRY_ICON_PRIMARY)
     {
 #if 0
-      gint start, end;
+      bint start, end;
       
       if (btk_editable_get_selection_bounds (BTK_EDITABLE (widget), &start, &end))
         {
-          gchar *str;
+          bchar *str;
           
           str = btk_editable_get_chars (BTK_EDITABLE (widget), start, end);
           btk_selection_data_set_text (data, str, -1);
@@ -102,7 +102,7 @@ main (int argc, char **argv)
   btk_window_set_title (BTK_WINDOW (window), "Btk Entry Icons Test");
   btk_container_set_border_width (BTK_CONTAINER (window), 12);
 
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (btk_main_quit), NULL);
 
   table = btk_table_new (2, 4, FALSE);

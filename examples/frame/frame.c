@@ -16,7 +16,7 @@ int main( int   argc,
   btk_window_set_title (BTK_WINDOW (window), "Frame Example");
 
   /* Here we connect the "destroy" event to a signal handler */ 
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (btk_main_quit), NULL);
 
   btk_widget_set_size_request (window, 300, 300);

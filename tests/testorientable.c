@@ -20,10 +20,10 @@
 #include <btk/btk.h>
 
 static void
-orient_toggled (BtkToggleButton *button, gpointer user_data)
+orient_toggled (BtkToggleButton *button, bpointer user_data)
 {
   GList *orientables = (GList *) user_data, *ptr;
-  gboolean state = btk_toggle_button_get_active (button);
+  bboolean state = btk_toggle_button_get_active (button);
   BtkOrientation orientation;
 
   if (state)

@@ -29,7 +29,7 @@
 #include <btk/btkenums.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BtkPaperSize BtkPaperSize;
 
@@ -44,58 +44,58 @@ typedef struct _BtkPaperSize BtkPaperSize;
 #define BTK_PAPER_NAME_EXECUTIVE "na_executive"
 #define BTK_PAPER_NAME_LEGAL "na_legal"
 
-GType btk_paper_size_get_type (void) G_GNUC_CONST;
+GType btk_paper_size_get_type (void) B_GNUC_CONST;
 
-BtkPaperSize *btk_paper_size_new          (const gchar  *name);
-BtkPaperSize *btk_paper_size_new_from_ppd (const gchar  *ppd_name,
-					   const gchar  *ppd_display_name,
-					   gdouble       width,
-					   gdouble       height);
-BtkPaperSize *btk_paper_size_new_custom   (const gchar  *name,
-					   const gchar  *display_name,
-					   gdouble       width,
-					   gdouble       height,
+BtkPaperSize *btk_paper_size_new          (const bchar  *name);
+BtkPaperSize *btk_paper_size_new_from_ppd (const bchar  *ppd_name,
+					   const bchar  *ppd_display_name,
+					   bdouble       width,
+					   bdouble       height);
+BtkPaperSize *btk_paper_size_new_custom   (const bchar  *name,
+					   const bchar  *display_name,
+					   bdouble       width,
+					   bdouble       height,
 					   BtkUnit       unit);
 BtkPaperSize *btk_paper_size_copy         (BtkPaperSize *other);
 void          btk_paper_size_free         (BtkPaperSize *size);
-gboolean      btk_paper_size_is_equal     (BtkPaperSize *size1,
+bboolean      btk_paper_size_is_equal     (BtkPaperSize *size1,
 					   BtkPaperSize *size2);
 
-GList        *btk_paper_size_get_paper_sizes (gboolean include_custom);
+GList        *btk_paper_size_get_paper_sizes (bboolean include_custom);
 
 /* The width is always the shortest side, measure in mm */
-const gchar *btk_paper_size_get_name         (BtkPaperSize *size);
-const gchar *btk_paper_size_get_display_name (BtkPaperSize *size);
-const gchar *btk_paper_size_get_ppd_name     (BtkPaperSize *size);
+const bchar *btk_paper_size_get_name         (BtkPaperSize *size);
+const bchar *btk_paper_size_get_display_name (BtkPaperSize *size);
+const bchar *btk_paper_size_get_ppd_name     (BtkPaperSize *size);
 
-gdouble  btk_paper_size_get_width        (BtkPaperSize *size, BtkUnit unit);
-gdouble  btk_paper_size_get_height       (BtkPaperSize *size, BtkUnit unit);
-gboolean btk_paper_size_is_custom        (BtkPaperSize *size);
+bdouble  btk_paper_size_get_width        (BtkPaperSize *size, BtkUnit unit);
+bdouble  btk_paper_size_get_height       (BtkPaperSize *size, BtkUnit unit);
+bboolean btk_paper_size_is_custom        (BtkPaperSize *size);
 
 /* Only for custom sizes: */
 void    btk_paper_size_set_size                  (BtkPaperSize *size, 
-                                                  gdouble       width, 
-                                                  gdouble       height, 
+                                                  bdouble       width, 
+                                                  bdouble       height, 
                                                   BtkUnit       unit);
 
-gdouble btk_paper_size_get_default_top_margin    (BtkPaperSize *size,
+bdouble btk_paper_size_get_default_top_margin    (BtkPaperSize *size,
 						  BtkUnit       unit);
-gdouble btk_paper_size_get_default_bottom_margin (BtkPaperSize *size,
+bdouble btk_paper_size_get_default_bottom_margin (BtkPaperSize *size,
 						  BtkUnit       unit);
-gdouble btk_paper_size_get_default_left_margin   (BtkPaperSize *size,
+bdouble btk_paper_size_get_default_left_margin   (BtkPaperSize *size,
 						  BtkUnit       unit);
-gdouble btk_paper_size_get_default_right_margin  (BtkPaperSize *size,
+bdouble btk_paper_size_get_default_right_margin  (BtkPaperSize *size,
 						  BtkUnit       unit);
 
-const gchar *btk_paper_size_get_default (void);
+const bchar *btk_paper_size_get_default (void);
 
 BtkPaperSize *btk_paper_size_new_from_key_file (GKeyFile    *key_file,
-					        const gchar *group_name,
+					        const bchar *group_name,
 					        GError     **error);
 void     btk_paper_size_to_key_file            (BtkPaperSize *size,
 					        GKeyFile     *key_file,
-					        const gchar  *group_name);
+					        const bchar  *group_name);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PAPER_SIZE_H__ */

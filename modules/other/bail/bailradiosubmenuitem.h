@@ -22,14 +22,14 @@
 
 #include <bail/bailchecksubmenuitem.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_RADIO_SUB_MENU_ITEM               (bail_radio_sub_menu_item_get_type ())
-#define BAIL_RADIO_SUB_MENU_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItem))
-#define BAIL_RADIO_SUB_MENU_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItemClass))
-#define BAIL_IS_RADIO_SUB_MENU_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM))
-#define BAIL_IS_RADIO_SUB_MENU_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_SUB_MENU_ITEM))
-#define BAIL_RADIO_SUB_MENU_ITEM_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItemClass))
+#define BAIL_RADIO_SUB_MENU_ITEM(obj)               (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItem))
+#define BAIL_RADIO_SUB_MENU_ITEM_CLASS(klass)       (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItemClass))
+#define BAIL_IS_RADIO_SUB_MENU_ITEM(obj)            (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM))
+#define BAIL_IS_RADIO_SUB_MENU_ITEM_CLASS(klass)    (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_SUB_MENU_ITEM))
+#define BAIL_RADIO_SUB_MENU_ITEM_GET_CLASS(obj)     (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_SUB_MENU_ITEM, BailRadioSubMenuItemClass))
 
 typedef struct _BailRadioSubMenuItem              BailRadioSubMenuItem;
 typedef struct _BailRadioSubMenuItemClass         BailRadioSubMenuItemClass;
@@ -50,6 +50,6 @@ struct _BailRadioSubMenuItemClass
 
 BatkObject* bail_radio_sub_menu_item_new (BtkWidget *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_RADIO_SUB_MENU_ITEM_H__ */

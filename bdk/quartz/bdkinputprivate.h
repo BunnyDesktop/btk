@@ -37,58 +37,58 @@ typedef struct _BdkInputVTable BdkInputVTable;
 typedef struct _BdkDevicePrivate BdkDevicePrivate;
 
 struct _BdkInputVTable {
-  gint (*set_mode) (guint32 deviceid, BdkInputMode mode);
-  void (*set_axes) (guint32 deviceid, BdkAxisUse *axes);
-  void (*set_key)  (guint32 deviceid,
-		    guint   index,
-		    guint   keyval,
+  bint (*set_mode) (buint32 deviceid, BdkInputMode mode);
+  void (*set_axes) (buint32 deviceid, BdkAxisUse *axes);
+  void (*set_key)  (buint32 deviceid,
+		    buint   index,
+		    buint   keyval,
 		    BdkModifierType modifiers);
 	
   BdkTimeCoord* (*motion_events) (BdkWindow *window,
-				  guint32 deviceid,
-				  guint32 start,
-				  guint32 stop,
-				  gint *nevents_return);
+				  buint32 deviceid,
+				  buint32 start,
+				  buint32 stop,
+				  bint *nevents_return);
   void (*get_pointer)   (BdkWindow       *window,
-			 guint32	  deviceid,
-			 gdouble         *x,
-			 gdouble         *y,
-			 gdouble         *pressure,
-			 gdouble         *xtilt,
-			 gdouble         *ytilt,
+			 buint32	  deviceid,
+			 bdouble         *x,
+			 bdouble         *y,
+			 bdouble         *pressure,
+			 bdouble         *xtilt,
+			 bdouble         *ytilt,
 			 BdkModifierType *mask);
-  gint (*grab_pointer) (BdkWindow *     window,
-			gint            owner_events,
+  bint (*grab_pointer) (BdkWindow *     window,
+			bint            owner_events,
 			BdkEventMask    event_mask,
 			BdkWindow *     confine_to,
-			guint32         time);
-  void (*ungrab_pointer) (guint32 time);
+			buint32         time);
+  void (*ungrab_pointer) (buint32 time);
 
   void (*configure_event) (BdkEventConfigure *event, BdkWindow *window);
   void (*enter_event) (BdkEventCrossing *event, BdkWindow *window);
-  gint (*other_event) (BdkEvent *event, BdkWindow *window);
+  bint (*other_event) (BdkEvent *event, BdkWindow *window);
   /* Handle an unidentified event. Returns TRUE if handled, FALSE
      otherwise */
-  gint (*window_none_event) (BdkEvent *event);
-  gint (*enable_window) (BdkWindow *window, BdkDevicePrivate *bdkdev);
-  gint (*disable_window) (BdkWindow *window, BdkDevicePrivate *bdkdev);
+  bint (*window_none_event) (BdkEvent *event);
+  bint (*enable_window) (BdkWindow *window, BdkDevicePrivate *bdkdev);
+  bint (*disable_window) (BdkWindow *window, BdkDevicePrivate *bdkdev);
 };
 
 /* information about a device axis */
 struct _BdkAxisInfo
 {
   /* reported x resolution */
-  gint xresolution;
+  bint xresolution;
 
   /* reported x minimum/maximum values */
-  gint xmin_value, xmax_value;
+  bint xmin_value, xmax_value;
 
   /* calibrated resolution (for aspect ration) - only relative values
      between axes used */
-  gint resolution;
+  bint resolution;
   
   /* calibrated minimum/maximum values */
-  gint min_value, max_value;
+  bint min_value, max_value;
 };
 
 #define BDK_INPUT_NUM_EVENTC 6
@@ -96,13 +96,13 @@ struct _BdkAxisInfo
 struct _BdkDevicePrivate {
   BdkDevice  info;
 
-  gint last_state;
-  gdouble *last_axes_state;
+  bint last_state;
+  bdouble *last_axes_state;
 };
 
 struct _BdkDeviceClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 struct _BdkInputWindow
@@ -114,15 +114,15 @@ struct _BdkInputWindow
   BdkExtensionMode mode;
 
   /* position relative to root window */
-  gint root_x;
-  gint root_y;
+  bint root_x;
+  bint root_y;
 
   /* rectangles relative to window of windows obscuring this one */
   BdkRectangle *obscuring;
-  gint num_obscuring;
+  bint num_obscuring;
 
   /* Is there a pointer grab for this window ? */
-  gint grabbed;
+  bint grabbed;
 };
 
 /* Global data */
@@ -131,9 +131,9 @@ extern const BdkDevice bdk_input_core_info;
 
 extern BdkInputVTable bdk_input_vtable;
 /* information about network port and host for gxid daemon */
-extern gchar           *_bdk_input_gxid_host;
-extern gint             _bdk_input_gxid_port;
-extern gint             _bdk_input_ignore_core;
+extern bchar           *_bdk_input_gxid_host;
+extern bint             _bdk_input_gxid_port;
+extern bint             _bdk_input_ignore_core;
 
 /* Function declarations */
 
@@ -141,17 +141,17 @@ BdkInputWindow *   _bdk_input_window_find    (BdkWindow        *window);
 void               _bdk_input_window_destroy (BdkWindow        *window);
 void               _bdk_input_init           (void);
 void               _bdk_input_exit           (void);
-gint               _bdk_input_enable_window  (BdkWindow        *window,
+bint               _bdk_input_enable_window  (BdkWindow        *window,
 					      BdkDevicePrivate *bdkdev);
-gint               _bdk_input_disable_window (BdkWindow        *window,
+bint               _bdk_input_disable_window (BdkWindow        *window,
 					      BdkDevicePrivate *bdkdev);
 void               _bdk_init_input_core      (void);
 
 void               _bdk_input_window_crossing (BdkWindow       *window,
-                                               gboolean         enter);
+                                               bboolean         enter);
 
 void               _bdk_input_quartz_tablet_proximity (NSPointingDeviceType deviceType);
-gboolean           _bdk_input_fill_quartz_input_event (BdkEvent  *event,
+bboolean           _bdk_input_fill_quartz_input_event (BdkEvent  *event,
                                                        NSEvent   *nsevent,
                                                        BdkEvent  *input_event);
 

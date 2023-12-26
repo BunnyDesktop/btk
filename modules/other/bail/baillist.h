@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_LIST                       (bail_list_get_type ())
-#define BAIL_LIST(obj)                       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LIST, BailList))
-#define BAIL_LIST_CLASS(klass)               (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LIST, BailListClass))
-#define BAIL_IS_LIST(obj)                    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LIST))
-#define BAIL_IS_LIST_CLASS(klass)            (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LIST))
-#define BAIL_LIST_GET_CLASS(obj)             (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LIST, BailListClass))
+#define BAIL_LIST(obj)                       (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LIST, BailList))
+#define BAIL_LIST_CLASS(klass)               (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LIST, BailListClass))
+#define BAIL_IS_LIST(obj)                    (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LIST))
+#define BAIL_IS_LIST_CLASS(klass)            (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LIST))
+#define BAIL_LIST_GET_CLASS(obj)             (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LIST, BailListClass))
 
 typedef struct _BailList              BailList;
 typedef struct _BailListClass         BailListClass;
@@ -46,6 +46,6 @@ struct _BailListClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_LIST_H__ */

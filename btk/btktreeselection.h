@@ -26,42 +26,42 @@
 
 #include <btk/btktreeview.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_TREE_SELECTION			(btk_tree_selection_get_type ())
-#define BTK_TREE_SELECTION(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelection))
-#define BTK_TREE_SELECTION_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
-#define BTK_IS_TREE_SELECTION(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_SELECTION))
-#define BTK_IS_TREE_SELECTION_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_SELECTION))
-#define BTK_TREE_SELECTION_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
+#define BTK_TREE_SELECTION(obj)			(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelection))
+#define BTK_TREE_SELECTION_CLASS(klass)		(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
+#define BTK_IS_TREE_SELECTION(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_SELECTION))
+#define BTK_IS_TREE_SELECTION_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_SELECTION))
+#define BTK_TREE_SELECTION_GET_CLASS(obj)	(B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_SELECTION, BtkTreeSelectionClass))
 
-typedef gboolean (* BtkTreeSelectionFunc)    (BtkTreeSelection  *selection,
+typedef bboolean (* BtkTreeSelectionFunc)    (BtkTreeSelection  *selection,
 					      BtkTreeModel      *model,
 					      BtkTreePath       *path,
-                                              gboolean           path_currently_selected,
-					      gpointer           data);
+                                              bboolean           path_currently_selected,
+					      bpointer           data);
 typedef void (* BtkTreeSelectionForeachFunc) (BtkTreeModel      *model,
 					      BtkTreePath       *path,
 					      BtkTreeIter       *iter,
-					      gpointer           data);
+					      bpointer           data);
 
 struct _BtkTreeSelection
 {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
 
   BtkTreeView *GSEAL (tree_view);
   BtkSelectionMode GSEAL (type);
   BtkTreeSelectionFunc GSEAL (user_func);
-  gpointer GSEAL (user_data);
+  bpointer GSEAL (user_data);
   GDestroyNotify GSEAL (destroy);
 };
 
 struct _BtkTreeSelectionClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (* changed) (BtkTreeSelection *selection);
 
@@ -73,31 +73,31 @@ struct _BtkTreeSelectionClass
 };
 
 
-GType            btk_tree_selection_get_type            (void) G_GNUC_CONST;
+GType            btk_tree_selection_get_type            (void) B_GNUC_CONST;
 
 void             btk_tree_selection_set_mode            (BtkTreeSelection            *selection,
 							 BtkSelectionMode             type);
 BtkSelectionMode btk_tree_selection_get_mode        (BtkTreeSelection            *selection);
 void             btk_tree_selection_set_select_function (BtkTreeSelection            *selection,
 							 BtkTreeSelectionFunc         func,
-							 gpointer                     data,
+							 bpointer                     data,
 							 GDestroyNotify               destroy);
-gpointer         btk_tree_selection_get_user_data       (BtkTreeSelection            *selection);
+bpointer         btk_tree_selection_get_user_data       (BtkTreeSelection            *selection);
 BtkTreeView*     btk_tree_selection_get_tree_view       (BtkTreeSelection            *selection);
 
 BtkTreeSelectionFunc btk_tree_selection_get_select_function (BtkTreeSelection        *selection);
 
 /* Only meaningful if BTK_SELECTION_SINGLE or BTK_SELECTION_BROWSE is set */
 /* Use selected_foreach or get_selected_rows for BTK_SELECTION_MULTIPLE */
-gboolean         btk_tree_selection_get_selected        (BtkTreeSelection            *selection,
+bboolean         btk_tree_selection_get_selected        (BtkTreeSelection            *selection,
 							 BtkTreeModel               **model,
 							 BtkTreeIter                 *iter);
 GList *          btk_tree_selection_get_selected_rows   (BtkTreeSelection            *selection,
                                                          BtkTreeModel               **model);
-gint             btk_tree_selection_count_selected_rows (BtkTreeSelection            *selection);
+bint             btk_tree_selection_count_selected_rows (BtkTreeSelection            *selection);
 void             btk_tree_selection_selected_foreach    (BtkTreeSelection            *selection,
 							 BtkTreeSelectionForeachFunc  func,
-							 gpointer                     data);
+							 bpointer                     data);
 void             btk_tree_selection_select_path         (BtkTreeSelection            *selection,
 							 BtkTreePath                 *path);
 void             btk_tree_selection_unselect_path       (BtkTreeSelection            *selection,
@@ -106,9 +106,9 @@ void             btk_tree_selection_select_iter         (BtkTreeSelection       
 							 BtkTreeIter                 *iter);
 void             btk_tree_selection_unselect_iter       (BtkTreeSelection            *selection,
 							 BtkTreeIter                 *iter);
-gboolean         btk_tree_selection_path_is_selected    (BtkTreeSelection            *selection,
+bboolean         btk_tree_selection_path_is_selected    (BtkTreeSelection            *selection,
 							 BtkTreePath                 *path);
-gboolean         btk_tree_selection_iter_is_selected    (BtkTreeSelection            *selection,
+bboolean         btk_tree_selection_iter_is_selected    (BtkTreeSelection            *selection,
 							 BtkTreeIter                 *iter);
 void             btk_tree_selection_select_all          (BtkTreeSelection            *selection);
 void             btk_tree_selection_unselect_all        (BtkTreeSelection            *selection);
@@ -120,6 +120,6 @@ void             btk_tree_selection_unselect_range      (BtkTreeSelection       
 							 BtkTreePath                 *end_path);
 
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TREE_SELECTION_H__ */

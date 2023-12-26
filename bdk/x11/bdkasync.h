@@ -24,52 +24,52 @@
 #include <X11/Xlib.h>
 #include "bdk.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkChildInfoX11 BdkChildInfoX11;
 
 typedef void (*BdkSendXEventCallback) (Window   window,
-				       gboolean success,
-				       gpointer data);
+				       bboolean success,
+				       bpointer data);
 typedef void (*BdkRoundTripCallback)  (BdkDisplay *display,
-				       gpointer data,
-				       gulong serial);
+				       bpointer data,
+				       bulong serial);
 
 struct _BdkChildInfoX11
 {
   Window window;
-  gint x;
-  gint y;
-  gint width;
-  gint height;
-  guint is_mapped : 1;
-  guint has_wm_state : 1;
-  guint window_class : 2;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
+  buint is_mapped : 1;
+  buint has_wm_state : 1;
+  buint window_class : 2;
 };
 
 void _bdk_x11_send_client_message_async (BdkDisplay            *display,
 					 Window                 window,
-					 gboolean               propagate,
-					 glong                  event_mask,
+					 bboolean               propagate,
+					 blong                  event_mask,
 					 XClientMessageEvent   *event_send,
 					 BdkSendXEventCallback  callback,
-					 gpointer               data);
+					 bpointer               data);
 void _bdk_x11_set_input_focus_safe      (BdkDisplay            *display,
 					 Window                 window,
 					 int                    revert_to,
 					 Time                   time);
 
-gboolean _bdk_x11_get_window_child_info (BdkDisplay       *display,
+bboolean _bdk_x11_get_window_child_info (BdkDisplay       *display,
 					 Window            window,
-					 gboolean          get_wm_state,
-					 gboolean         *win_has_wm_state,
+					 bboolean          get_wm_state,
+					 bboolean         *win_has_wm_state,
 					 BdkChildInfoX11 **children,
-					 guint            *nchildren);
+					 buint            *nchildren);
 
 void _bdk_x11_roundtrip_async           (BdkDisplay           *display, 
 					 BdkRoundTripCallback callback,
-					 gpointer              data);
+					 bpointer              data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_ASYNC_H__ */

@@ -34,13 +34,13 @@ struct cell_params {
   int ypad;				/* 3 */
   double xalign;			/* 4 */
   double yalign;			/* 5 */
-  gboolean sensitive;			/* 6 */
+  bboolean sensitive;			/* 6 */
   int width;				/* 7 */
   int height;				/* 8 */
   int width_chars;			/* 9 */
   int wrap_width;			/* 10 */
   BangoWrapMode wrap_mode;		/* 11 */
-  gboolean single_paragraph_mode;	/* 12 */
+  bboolean single_paragraph_mode;	/* 12 */
   BangoEllipsizeMode ellipsize;		/* 13 */
   BangoAlignment alignment;			/* 14 */
   /* COL_BACKGROUND	 */		/* 15 */
@@ -112,23 +112,23 @@ create_list_store (void)
   int i;
 
   list_store = btk_list_store_new (NUM_COLS,
-				   G_TYPE_STRING,		/* 0 */ 
-				   G_TYPE_STRING,		/* 1 */ 
-				   G_TYPE_INT,			/* 2 */ 
-				   G_TYPE_INT,			/* 3 */ 
-				   G_TYPE_DOUBLE,		/* 4 */ 
-				   G_TYPE_DOUBLE,		/* 5 */ 
-				   G_TYPE_BOOLEAN,		/* 6 */ 
-				   G_TYPE_INT,			/* 7 */ 
-				   G_TYPE_INT,			/* 8 */ 
-				   G_TYPE_INT,			/* 9 */ 
-				   G_TYPE_INT,			/* 10 */
+				   B_TYPE_STRING,		/* 0 */ 
+				   B_TYPE_STRING,		/* 1 */ 
+				   B_TYPE_INT,			/* 2 */ 
+				   B_TYPE_INT,			/* 3 */ 
+				   B_TYPE_DOUBLE,		/* 4 */ 
+				   B_TYPE_DOUBLE,		/* 5 */ 
+				   B_TYPE_BOOLEAN,		/* 6 */ 
+				   B_TYPE_INT,			/* 7 */ 
+				   B_TYPE_INT,			/* 8 */ 
+				   B_TYPE_INT,			/* 9 */ 
+				   B_TYPE_INT,			/* 10 */
 				   BANGO_TYPE_WRAP_MODE,	/* 11 */
-				   G_TYPE_BOOLEAN,		/* 12 */
+				   B_TYPE_BOOLEAN,		/* 12 */
 				   BANGO_TYPE_ELLIPSIZE_MODE,	/* 13 */
 				   BANGO_TYPE_ALIGNMENT,	/* 14 */
-				   G_TYPE_STRING,		/* 15 */
-				   G_TYPE_STRING);		/* 16 */
+				   B_TYPE_STRING,		/* 15 */
+				   B_TYPE_STRING);		/* 16 */
 
   for (i = 0; i < G_N_ELEMENTS (cell_params); i++)
     {
@@ -166,7 +166,7 @@ create_list_store (void)
 }
 
 static BtkWidget *
-create_tree (gboolean rtl)
+create_tree (bboolean rtl)
 {
   BtkWidget *sw;
   BtkWidget *treeview;

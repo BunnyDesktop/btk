@@ -40,14 +40,14 @@
 #include <btk/btkaction.h>
 #include <btk/btkactiongroup.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_UI_MANAGER            (btk_ui_manager_get_type ())
-#define BTK_UI_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
-#define BTK_UI_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
-#define BTK_IS_UI_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_UI_MANAGER))
-#define BTK_IS_UI_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_UI_MANAGER))
-#define BTK_UI_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
+#define BTK_UI_MANAGER(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
+#define BTK_UI_MANAGER_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
+#define BTK_IS_UI_MANAGER(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_UI_MANAGER))
+#define BTK_IS_UI_MANAGER_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_UI_MANAGER))
+#define BTK_UI_MANAGER_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
 
 typedef struct _BtkUIManager      BtkUIManager;
 typedef struct _BtkUIManagerClass BtkUIManagerClass;
@@ -55,7 +55,7 @@ typedef struct _BtkUIManagerPrivate BtkUIManagerPrivate;
 
 
 struct _BtkUIManager {
-  GObject parent;
+  BObject parent;
 
   /*< private >*/
 
@@ -63,7 +63,7 @@ struct _BtkUIManager {
 };
 
 struct _BtkUIManagerClass {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Signals */
   void (* add_widget)       (BtkUIManager *merge,
@@ -82,9 +82,9 @@ struct _BtkUIManagerClass {
 
   /* Virtual functions */
   BtkWidget * (* get_widget) (BtkUIManager *manager,
-                              const gchar  *path);
+                              const bchar  *path);
   BtkAction * (* get_action) (BtkUIManager *manager,
-                              const gchar  *path);
+                              const bchar  *path);
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -110,44 +110,44 @@ typedef enum {
 #define btk_ui_manager_add_ui_from_file btk_ui_manager_add_ui_from_file_utf8
 #endif
 
-GType          btk_ui_manager_get_type            (void) G_GNUC_CONST;
+GType          btk_ui_manager_get_type            (void) B_GNUC_CONST;
 BtkUIManager  *btk_ui_manager_new                 (void);
 void           btk_ui_manager_set_add_tearoffs    (BtkUIManager          *self,
-						   gboolean               add_tearoffs);
-gboolean       btk_ui_manager_get_add_tearoffs    (BtkUIManager          *self);
+						   bboolean               add_tearoffs);
+bboolean       btk_ui_manager_get_add_tearoffs    (BtkUIManager          *self);
 void           btk_ui_manager_insert_action_group (BtkUIManager          *self,
 						   BtkActionGroup        *action_group,
-						   gint                   pos);
+						   bint                   pos);
 void           btk_ui_manager_remove_action_group (BtkUIManager          *self,
 						   BtkActionGroup        *action_group);
 GList         *btk_ui_manager_get_action_groups   (BtkUIManager          *self);
 BtkAccelGroup *btk_ui_manager_get_accel_group     (BtkUIManager          *self);
 BtkWidget     *btk_ui_manager_get_widget          (BtkUIManager          *self,
-						   const gchar           *path);
+						   const bchar           *path);
 GSList        *btk_ui_manager_get_toplevels       (BtkUIManager          *self,
 						   BtkUIManagerItemType   types);
 BtkAction     *btk_ui_manager_get_action          (BtkUIManager          *self,
-						   const gchar           *path);
-guint          btk_ui_manager_add_ui_from_string  (BtkUIManager          *self,
-						   const gchar           *buffer,
-						   gssize                 length,
+						   const bchar           *path);
+buint          btk_ui_manager_add_ui_from_string  (BtkUIManager          *self,
+						   const bchar           *buffer,
+						   bssize                 length,
 						   GError               **error);
-guint          btk_ui_manager_add_ui_from_file    (BtkUIManager          *self,
-						   const gchar           *filename,
+buint          btk_ui_manager_add_ui_from_file    (BtkUIManager          *self,
+						   const bchar           *filename,
 						   GError               **error);
 void           btk_ui_manager_add_ui              (BtkUIManager          *self,
-						   guint                  merge_id,
-						   const gchar           *path,
-						   const gchar           *name,
-						   const gchar           *action,
+						   buint                  merge_id,
+						   const bchar           *path,
+						   const bchar           *name,
+						   const bchar           *action,
 						   BtkUIManagerItemType   type,
-						   gboolean               top);
+						   bboolean               top);
 void           btk_ui_manager_remove_ui           (BtkUIManager          *self,
-						   guint                  merge_id);
-gchar         *btk_ui_manager_get_ui              (BtkUIManager          *self);
+						   buint                  merge_id);
+bchar         *btk_ui_manager_get_ui              (BtkUIManager          *self);
 void           btk_ui_manager_ensure_update       (BtkUIManager          *self);
-guint          btk_ui_manager_new_merge_id        (BtkUIManager          *self);
+buint          btk_ui_manager_new_merge_id        (BtkUIManager          *self);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_UI_MANAGER_H__ */

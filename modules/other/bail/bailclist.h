@@ -22,14 +22,14 @@
 
 #include <bail/bailcontainer.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CLIST                      (bail_clist_get_type ())
-#define BAIL_CLIST(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST, BailCList))
-#define BAIL_CLIST_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST, BailCListClass))
-#define BAIL_IS_CLIST(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST))
-#define BAIL_IS_CLIST_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST))
-#define BAIL_CLIST_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST, BailCListClass))
+#define BAIL_CLIST(obj)                      (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST, BailCList))
+#define BAIL_CLIST_CLASS(klass)              (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST, BailCListClass))
+#define BAIL_IS_CLIST(obj)                   (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST))
+#define BAIL_IS_CLIST_CLASS(klass)           (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST))
+#define BAIL_CLIST_GET_CLASS(obj)            (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST, BailCListClass))
 
 typedef struct _BailCList              BailCList;
 typedef struct _BailCListClass         BailCListClass;
@@ -46,7 +46,7 @@ struct _BailCList
   /* dynamically allocated array of column structures */
   BailCListColumn *columns;
   /* private */
-  gint n_cols;
+  bint n_cols;
   GArray *row_data;
   GList *cell_data;
   BatkObject *previous_selected_cell;
@@ -59,6 +59,6 @@ struct _BailCListClass
   BailContainerClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CLIST_H__ */

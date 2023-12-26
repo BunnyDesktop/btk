@@ -91,8 +91,8 @@
 #define TAC_compose_input(wc1,wc2) \
 	thai_TAC_compose_input[TAC_char_class(wc1)][TAC_char_class(wc2)]
 
-extern const gshort thai_char_type[256];
-extern const gshort thai_TAC_char_class[256];
-extern const gchar  thai_TAC_compose_input[20][20];
+extern const bshort thai_char_type[256];
+extern const bshort thai_TAC_char_class[256];
+extern const bchar  thai_TAC_compose_input[20][20];
 
 #endif /* __THAI_CHARPROP_H__ */

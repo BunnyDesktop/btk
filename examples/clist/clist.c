@@ -3,12 +3,12 @@
 #include <btk/btk.h>
 
 /* User clicked the "Add List" button. */
-void button_add_clicked( gpointer data )
+void button_add_clicked( bpointer data )
 {
     int indx;
  
     /* Something silly to add to the list. 4 rows of 2 columns each */
-    gchar *drink[4][2] = { { "Milk",    "3 Oz" },
+    bchar *drink[4][2] = { { "Milk",    "3 Oz" },
                            { "Water",   "6 l" },
                            { "Carrots", "2" },
                            { "Snakes",  "55" } };
@@ -23,7 +23,7 @@ void button_add_clicked( gpointer data )
 }
 
 /* User clicked the "Clear List" button. */
-void button_clear_clicked( gpointer data )
+void button_clear_clicked( bpointer data )
 {
     /* Clear the list using btk_clist_clear. This is much faster than
      * calling btk_clist_remove once for each row.
@@ -34,7 +34,7 @@ void button_clear_clicked( gpointer data )
 }
 
 /* The user clicked the "Hide/Show titles" button. */
-void button_hide_show_clicked( gpointer data )
+void button_hide_show_clicked( bpointer data )
 {
     /* Just a flag to remember the status. 0 = currently visible */
     static short int flag = 0;
@@ -57,12 +57,12 @@ void button_hide_show_clicked( gpointer data )
 
 /* If we come here, then the user has selected a row in the list. */
 void selection_made( BtkWidget      *clist,
-                     gint            row,
-                     gint            column,
+                     bint            row,
+                     bint            column,
 		     BdkEventButton *event,
-                     gpointer        data )
+                     bpointer        data )
 {
-    gchar *text;
+    bchar *text;
 
     /* Get the text that is stored in the selected row and column
      * which was clicked in. We will receive it as a pointer in the
@@ -79,13 +79,13 @@ void selection_made( BtkWidget      *clist,
 }
 
 int main( int    argc,
-          gchar *argv[] )
+          bchar *argv[] )
 {                                  
     BtkWidget *window;
     BtkWidget *vbox, *hbox;
     BtkWidget *scrolled_window, *clist;
     BtkWidget *button_add, *button_clear, *button_hide_show;    
-    gchar *titles[2] = { "Ingredients", "Amount" };
+    bchar *titles[2] = { "Ingredients", "Amount" };
 
     btk_init(&argc, &argv);
     
@@ -93,7 +93,7 @@ int main( int    argc,
     btk_widget_set_size_request (BTK_WIDGET (window), 300, 150);
 
     btk_window_set_title (BTK_WINDOW (window), "BtkCList Example");
-    g_signal_connect (G_OBJECT (window), "destroy",
+    g_signal_connect (B_OBJECT (window), "destroy",
                       G_CALLBACK (btk_main_quit),
                       NULL);
     
@@ -115,7 +115,7 @@ int main( int    argc,
 
     /* When a selection is made, we want to know about it. The callback
      * used is selection_made, and its code can be found further down */
-    g_signal_connect (G_OBJECT (clist), "select_row",
+    g_signal_connect (B_OBJECT (clist), "select_row",
                       G_CALLBACK (selection_made),
                       NULL);
 
@@ -148,13 +148,13 @@ int main( int    argc,
     btk_box_pack_start (BTK_BOX (hbox), button_hide_show, TRUE, TRUE, 0);
 
     /* Connect our callbacks to the three buttons */
-    g_signal_connect_swapped (G_OBJECT (button_add), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_add), "clicked",
                               G_CALLBACK (button_add_clicked),
 			      clist);
-    g_signal_connect_swapped (G_OBJECT (button_clear), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_clear), "clicked",
                               G_CALLBACK (button_clear_clicked),
                               clist);
-    g_signal_connect_swapped (G_OBJECT (button_hide_show), "clicked",
+    g_signal_connect_swapped (B_OBJECT (button_hide_show), "clicked",
                               G_CALLBACK (button_hide_show_clicked),
                               clist);
 

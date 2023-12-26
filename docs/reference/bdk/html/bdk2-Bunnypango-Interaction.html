@@ -205,7 +205,7 @@
 </div>
 <div class="refsect1">
 <a name="bdk2-Bango-Interaction.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> <a href="https://developer.bunny.org/bango/BangoRenderer.html#BangoRenderer-struct">BangoRenderer</a>
         <span class="lineart">╰──</span> BdkBangoRenderer
 </pre>
@@ -558,7 +558,7 @@ bdk_bango_attr_emboss_color_new (<em class="parameter"><code>const <a class="lin
 <div class="refsect2">
 <a name="bdk-bango-attr-embossed-new"></a><h3>bdk_bango_attr_embossed_new ()</h3>
 <pre class="programlisting"><a href="https://developer.bunny.org/bango/bango-Text-Attributes.html#BangoAttribute-struct"><span class="returnvalue">BangoAttribute</span></a> *
-bdk_bango_attr_embossed_new (<em class="parameter"><code><span class="type">gboolean</span> embossed</code></em>);</pre>
+bdk_bango_attr_embossed_new (<em class="parameter"><code><span class="type">bboolean</span> embossed</code></em>);</pre>
 <p>Creates a new attribute flagging a rebunnyion as embossed or not.</p>
 <div class="refsect3">
 <a name="bdk-bango-attr-embossed-new.parameters"></a><h4>Parameters</h4>
@@ -612,10 +612,10 @@ rendering the text.</p>
 <a name="bdk-bango-layout-get-clip-rebunnyion"></a><h3>bdk_bango_layout_get_clip_rebunnyion ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="returnvalue">BdkRebunnyion</span></a> *
 bdk_bango_layout_get_clip_rebunnyion (<em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> x_origin</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> y_origin</code></em>,
-                                  <em class="parameter"><code>const <span class="type">gint</span> *index_ranges</code></em>,
-                                  <em class="parameter"><code><span class="type">gint</span> n_ranges</code></em>);</pre>
+                                  <em class="parameter"><code><span class="type">bint</span> x_origin</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> y_origin</code></em>,
+                                  <em class="parameter"><code>const <span class="type">bint</span> *index_ranges</code></em>,
+                                  <em class="parameter"><code><span class="type">bint</span> n_ranges</code></em>);</pre>
 <p>Obtains a clip rebunnyion which contains the areas where the given ranges
 of text would be drawn. <em class="parameter"><code>x_origin</code></em>
  and <em class="parameter"><code>y_origin</code></em>
@@ -676,10 +676,10 @@ of text, such as when text is selected.</p>
 <a name="bdk-bango-layout-line-get-clip-rebunnyion"></a><h3>bdk_bango_layout_line_get_clip_rebunnyion ()</h3>
 <pre class="programlisting"><a class="link" href="bdk2-Points-Rectangles-and-Rebunnyions.html#BdkRebunnyion" title="BdkRebunnyion"><span class="returnvalue">BdkRebunnyion</span></a> *
 bdk_bango_layout_line_get_clip_rebunnyion (<em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> x_origin</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> y_origin</code></em>,
-                                       <em class="parameter"><code>const <span class="type">gint</span> *index_ranges</code></em>,
-                                       <em class="parameter"><code><span class="type">gint</span> n_ranges</code></em>);</pre>
+                                       <em class="parameter"><code><span class="type">bint</span> x_origin</code></em>,
+                                       <em class="parameter"><code><span class="type">bint</span> y_origin</code></em>,
+                                       <em class="parameter"><code>const <span class="type">bint</span> *index_ranges</code></em>,
+                                       <em class="parameter"><code><span class="type">bint</span> n_ranges</code></em>);</pre>
 <p>Obtains a clip rebunnyion which contains the areas where the given
 ranges of text would be drawn. <em class="parameter"><code>x_origin</code></em>
  and <em class="parameter"><code>y_origin</code></em>
@@ -778,7 +778,7 @@ by overriding 'draw_shape'.</p>
 <a name="BdkBangoAttrEmbossed"></a><h3>struct BdkBangoAttrEmbossed</h3>
 <pre class="programlisting">struct BdkBangoAttrEmbossed {
   BangoAttribute attr;
-  gboolean embossed;
+  bboolean embossed;
 };
 </pre>
 </div>

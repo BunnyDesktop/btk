@@ -23,14 +23,14 @@
 #include <batk/batk.h>
 #include <bail/bailcell.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_CLIST_CELL                     (bail_clist_cell_get_type ())
-#define BAIL_CLIST_CELL(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST_CELL, BailCListCell))
-#define BAIL_CLIST_CELL_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
-#define BAIL_IS_CLIST_CELL(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST_CELL))
-#define BAIL_IS_CLIST_CELL_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST_CELL))
-#define BAIL_CLIST_CELL_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
+#define BAIL_CLIST_CELL(obj)                     (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST_CELL, BailCListCell))
+#define BAIL_CLIST_CELL_CLASS(klass)             (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
+#define BAIL_IS_CLIST_CELL(obj)                  (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST_CELL))
+#define BAIL_IS_CLIST_CELL_CLASS(klass)          (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST_CELL))
+#define BAIL_CLIST_CELL_GET_CLASS(obj)           (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
 
 typedef struct _BailCListCell                  BailCListCell;
 typedef struct _BailCListCellClass             BailCListCellClass;
@@ -49,6 +49,6 @@ struct _BailCListCellClass
 
 BatkObject *bail_clist_cell_new (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_CLIST_CELL_H__ */

@@ -209,7 +209,7 @@
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkScrolledWindow.html#BtkScrolledWindow--window-placement-set" title="The “window-placement-set” property">window-placement-set</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -231,7 +231,7 @@
 <td class="property_flags">Read</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkScrolledWindow.html#BtkScrolledWindow--s-scrollbars-within-bevel" title="The “scrollbars-within-bevel” style property">scrollbars-within-bevel</a></td>
 <td class="property_flags">Read</td>
 </tr>
@@ -253,7 +253,7 @@
 <td class="signal_flags">Action</td>
 </tr>
 <tr>
-<td class="signal_type"><span class="returnvalue">gboolean</span></td>
+<td class="signal_type"><span class="returnvalue">bboolean</span></td>
 <td class="signal_name"><a class="link" href="BtkScrolledWindow.html#BtkScrolledWindow-scroll-child" title="The “scroll-child” signal">scroll-child</a></td>
 <td class="signal_flags">Action</td>
 </tr>
@@ -275,7 +275,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkScrolledWindow.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> GInitiallyUnowned
         <span class="lineart">╰──</span> <a class="link" href="BtkObject.html" title="BtkObject">BtkObject</a>
             <span class="lineart">╰──</span> <a class="link" href="BtkWidget.html" title="BtkWidget">BtkWidget</a>
@@ -859,7 +859,7 @@ btk_scrolled_window_get_shadow_type (<em class="parameter"><code><a class="link"
 <hr>
 <div class="refsect2">
 <a name="BtkScrolledWindow--window-placement-set"></a><h3>The <code class="literal">“window-placement-set”</code> property</h3>
-<pre class="programlisting">  “window-placement-set”     <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “window-placement-set”     <span class="type">bboolean</span></pre>
 <p>Whether "window-placement" should be used to determine the location
 
 of the contents with respect to the scrollbars. Otherwise, the
@@ -885,7 +885,7 @@ of the contents with respect to the scrollbars. Otherwise, the
 <hr>
 <div class="refsect2">
 <a name="BtkScrolledWindow--s-scrollbars-within-bevel"></a><h3>The <code class="literal">“scrollbars-within-bevel”</code> style property</h3>
-<pre class="programlisting">  “scrollbars-within-bevel”  <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “scrollbars-within-bevel”  <span class="type">bboolean</span></pre>
 <p>Whether to place scrollbars within the scrolled window's bevel.</p>
 <p>Owner: BtkScrolledWindow</p>
 <p>Flags: Read</p>
@@ -900,17 +900,17 @@ of the contents with respect to the scrollbars. Otherwise, the
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkScrolledWindow.html" title="BtkScrolledWindow"><span class="type">BtkScrolledWindow</span></a> *scrolledwindow,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkDirectionType" title="enum BtkDirectionType"><span class="type">BtkDirectionType</span></a>   arg1,
-               <span class="type">gpointer</span>           user_data)</pre>
+               <span class="type">bpointer</span>           user_data)</pre>
 <p>Flags: Action</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="BtkScrolledWindow-scroll-child"></a><h3>The <code class="literal">“scroll-child”</code> signal</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 user_function (<a class="link" href="BtkScrolledWindow.html" title="BtkScrolledWindow"><span class="type">BtkScrolledWindow</span></a> *scrolled_window,
                <a class="link" href="btk2-Standard-Enumerations.html#BtkScrollType" title="enum BtkScrollType"><span class="type">BtkScrollType</span></a>      scroll,
-               <span class="type">gboolean</span>           horizontal,
-               <span class="type">gpointer</span>           user_data)</pre>
+               <span class="type">bboolean</span>           horizontal,
+               <span class="type">bpointer</span>           user_data)</pre>
 <p>The ::scroll-child signal is a</p>
 keybinding signal<p>which gets emitted when a keybinding that scrolls is pressed.
 The horizontal or vertical adjustment is updated which triggers a

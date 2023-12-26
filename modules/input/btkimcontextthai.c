@@ -27,7 +27,7 @@
 
 static void     btk_im_context_thai_class_init          (BtkIMContextThaiClass *class);
 static void     btk_im_context_thai_init                (BtkIMContextThai      *im_context_thai);
-static gboolean btk_im_context_thai_filter_keypress     (BtkIMContext          *context,
+static bboolean btk_im_context_thai_filter_keypress     (BtkIMContext          *context,
 						         BdkEventKey           *key);
 
 #ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
@@ -36,7 +36,7 @@ static void     remember_previous_char (BtkIMContextThai *context_thai,
                                         gunichar new_char);
 #endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
-static GObjectClass *parent_class;
+static BObjectClass *parent_class;
 
 GType btk_type_im_context_thai = 0;
 
@@ -107,8 +107,8 @@ btk_im_context_thai_set_isc_mode (BtkIMContextThai *context_thai,
   return prev_mode;
 }
 
-static gboolean
-is_context_lost_key(guint keyval)
+static bboolean
+is_context_lost_key(buint keyval)
 {
   return ((keyval & 0xFF00) == 0xFF00) &&
          (keyval == BDK_BackSpace ||
@@ -127,8 +127,8 @@ is_context_lost_key(guint keyval)
           (BDK_F1 <= keyval && keyval <= BDK_F35)); /* IsFunctionKey */
 }
 
-static gboolean
-is_context_intact_key(guint keyval)
+static bboolean
+is_context_intact_key(buint keyval)
 {
   return (((keyval & 0xFF00) == 0xFF00) &&
            ((BDK_Shift_L <= keyval && keyval <= BDK_Hyper_R) || /* IsModifierKey */
@@ -138,8 +138,8 @@ is_context_intact_key(guint keyval)
           (BDK_ISO_Lock <= keyval && keyval <= BDK_ISO_Last_Group_Lock));
 }
 
-static gboolean
-thai_is_accept (gunichar new_char, gunichar prev_char, gint isc_mode)
+static bboolean
+thai_is_accept (gunichar new_char, gunichar prev_char, bint isc_mode)
 {
   switch (isc_mode)
     {
@@ -179,16 +179,16 @@ remember_previous_char (BtkIMContextThai *context_thai, gunichar new_char)
 #endif /* !BTK_IM_CONTEXT_THAI_NO_FALLBACK */
 
 static gunichar
-get_previous_char (BtkIMContextThai *context_thai, gint offset)
+get_previous_char (BtkIMContextThai *context_thai, bint offset)
 {
-  gchar *surrounding;
-  gint  cursor_index;
+  bchar *surrounding;
+  bint  cursor_index;
 
   if (btk_im_context_get_surrounding ((BtkIMContext *)context_thai,
                                       &surrounding, &cursor_index))
     {
       gunichar prev_char;
-      gchar *p, *q;
+      bchar *p, *q;
 
       prev_char = 0;
       p = surrounding + cursor_index;
@@ -215,11 +215,11 @@ get_previous_char (BtkIMContextThai *context_thai, gint offset)
     return 0;
 }
 
-static gboolean
+static bboolean
 btk_im_context_thai_commit_chars (BtkIMContextThai *context_thai,
-                                  gunichar *s, gsize len)
+                                  gunichar *s, bsize len)
 {
-  gchar *utf8;
+  bchar *utf8;
 
   utf8 = g_ucs4_to_utf8 (s, len, NULL, NULL, NULL);
   if (!utf8)
@@ -231,7 +231,7 @@ btk_im_context_thai_commit_chars (BtkIMContextThai *context_thai,
   return TRUE;
 }
 
-static gboolean
+static bboolean
 accept_input (BtkIMContextThai *context_thai, gunichar new_char)
 {
 #ifndef BTK_IM_CONTEXT_THAI_NO_FALLBACK
@@ -241,7 +241,7 @@ accept_input (BtkIMContextThai *context_thai, gunichar new_char)
   return btk_im_context_thai_commit_chars (context_thai, &new_char, 1);
 }
 
-static gboolean
+static bboolean
 reorder_input (BtkIMContextThai *context_thai,
                gunichar prev_char, gunichar new_char)
 {
@@ -261,7 +261,7 @@ reorder_input (BtkIMContextThai *context_thai,
   return btk_im_context_thai_commit_chars (context_thai, buf, 2);
 }
 
-static gboolean
+static bboolean
 replace_input (BtkIMContextThai *context_thai, gunichar new_char)
 {
   if (!btk_im_context_delete_surrounding (BTK_IM_CONTEXT (context_thai), -1, 1))
@@ -275,13 +275,13 @@ replace_input (BtkIMContextThai *context_thai, gunichar new_char)
   return btk_im_context_thai_commit_chars (context_thai, &new_char, 1);
 }
 
-static gboolean
+static bboolean
 btk_im_context_thai_filter_keypress (BtkIMContext *context,
                                      BdkEventKey  *event)
 {
   BtkIMContextThai *context_thai = BTK_IM_CONTEXT_THAI (context);
   gunichar prev_char, new_char;
-  gboolean is_reject;
+  bboolean is_reject;
   BtkIMContextThaiISCMode isc_mode;
 
   if (event->type != BDK_KEY_PRESS)

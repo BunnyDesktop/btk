@@ -45,11 +45,11 @@ struct _BdkBangoRendererPrivate
 
   /* BdkBangoRenderer specific state */
   BangoColor override_color[MAX_RENDER_PART + 1];
-  gboolean override_color_set[MAX_RENDER_PART + 1];
+  bboolean override_color_set[MAX_RENDER_PART + 1];
   
   BdkBitmap *stipple[MAX_RENDER_PART + 1];
   BangoColor emboss_color;
-  gboolean embossed;
+  bboolean embossed;
 
   bairo_t *cr;
   BangoRenderPart last_part;
@@ -58,7 +58,7 @@ struct _BdkBangoRendererPrivate
   BdkDrawable *drawable;
   BdkGC *base_gc;
 
-  gboolean gc_changed;
+  bboolean gc_changed;
 };
 
 static BangoAttrType bdk_bango_attr_stipple_type;
@@ -73,7 +73,7 @@ enum {
 G_DEFINE_TYPE (BdkBangoRenderer, bdk_bango_renderer, BANGO_TYPE_RENDERER)
 
 static void
-bdk_bango_renderer_finalize (GObject *object)
+bdk_bango_renderer_finalize (BObject *object)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
   BdkBangoRendererPrivate *priv = bdk_renderer->priv;
@@ -88,18 +88,18 @@ bdk_bango_renderer_finalize (GObject *object)
     if (priv->stipple[i])
       g_object_unref (priv->stipple[i]);
 
-  G_OBJECT_CLASS (bdk_bango_renderer_parent_class)->finalize (object);
+  B_OBJECT_CLASS (bdk_bango_renderer_parent_class)->finalize (object);
 }
 
-static GObject*
+static BObject*
 bdk_bango_renderer_constructor (GType                  type,
-				guint                  n_construct_properties,
-				GObjectConstructParam *construct_params)
+				buint                  n_construct_properties,
+				BObjectConstructParam *construct_params)
 {
-  GObject *object;
+  BObject *object;
   BdkBangoRenderer *bdk_renderer;
 
-  object = G_OBJECT_CLASS (bdk_bango_renderer_parent_class)->constructor (type,
+  object = B_OBJECT_CLASS (bdk_bango_renderer_parent_class)->constructor (type,
                                                                           n_construct_properties,
                                                                           construct_params);
 
@@ -139,7 +139,7 @@ emboss_context (BdkBangoRenderer *renderer, bairo_t *cr)
   bairo_set_source_rgb (cr, red, green, blue);
 }
 
-static inline gboolean
+static inline bboolean
 color_equal (const BangoColor *c1, const BangoColor *c2)
 {
   if (!c1 && !c2)
@@ -185,7 +185,7 @@ get_bairo_context (BdkBangoRenderer *bdk_renderer,
       BangoColor *bango_color;
       BdkColor *color;
       BdkColor tmp_color;
-      gboolean changed;
+      bboolean changed;
 
       bango_color = bango_renderer_get_color (renderer, part);
       
@@ -322,7 +322,7 @@ bdk_bango_renderer_draw_shape (BangoRenderer  *renderer,
   BdkBangoRendererPrivate *priv = bdk_renderer->priv;
   BangoLayout *layout;
   BangoBairoShapeRendererFunc shape_renderer;
-  gpointer                    shape_renderer_data;
+  bpointer                    shape_renderer_data;
   bairo_t *cr;
   double dx = (double)x / BANGO_SCALE, dy = (double)y / BANGO_SCALE;
 
@@ -400,9 +400,9 @@ bdk_bango_renderer_prepare_run (BangoRenderer  *renderer,
 				BangoLayoutRun *run)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (renderer);
-  gboolean embossed = FALSE;
+  bboolean embossed = FALSE;
   BdkBitmap *stipple = NULL;
-  gboolean changed = FALSE;
+  bboolean changed = FALSE;
   BangoColor emboss_color;
   GSList *l;
   int i;
@@ -463,39 +463,39 @@ bdk_bango_renderer_prepare_run (BangoRenderer  *renderer,
 }
 
 static void
-bdk_bango_renderer_set_property (GObject         *object,
-				 guint            prop_id,
-				 const GValue    *value,
-				 GParamSpec      *pspec)
+bdk_bango_renderer_set_property (BObject         *object,
+				 buint            prop_id,
+				 const BValue    *value,
+				 BParamSpec      *pspec)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
 
   switch (prop_id)
     {
     case PROP_SCREEN:
-      bdk_renderer->priv->screen = g_value_get_object (value);
+      bdk_renderer->priv->screen = b_value_get_object (value);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-bdk_bango_renderer_get_property (GObject    *object,
-				 guint       prop_id,
-				 GValue     *value,
-				 GParamSpec *pspec)
+bdk_bango_renderer_get_property (BObject    *object,
+				 buint       prop_id,
+				 BValue     *value,
+				 BParamSpec *pspec)
 {
   BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (object);
 
   switch (prop_id)
     {
     case PROP_SCREEN:
-      g_value_set_object (value, bdk_renderer->priv->screen);
+      b_value_set_object (value, bdk_renderer->priv->screen);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -503,7 +503,7 @@ bdk_bango_renderer_get_property (GObject    *object,
 static void
 bdk_bango_renderer_init (BdkBangoRenderer *renderer)
 {
-  renderer->priv = G_TYPE_INSTANCE_GET_PRIVATE (renderer,
+  renderer->priv = B_TYPE_INSTANCE_GET_PRIVATE (renderer,
 						BDK_TYPE_BANGO_RENDERER,
 						BdkBangoRendererPrivate);
 
@@ -514,7 +514,7 @@ bdk_bango_renderer_init (BdkBangoRenderer *renderer)
 static void
 bdk_bango_renderer_class_init (BdkBangoRendererClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
   
   BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   
@@ -569,13 +569,13 @@ bdk_bango_renderer_new (BdkScreen *screen)
 
 static void
 on_renderer_display_closed (BdkDisplay       *display,
-                            gboolean          is_error,
+                            bboolean          is_error,
 			    BdkBangoRenderer *renderer)
 {
   g_signal_handlers_disconnect_by_func (display,
 					on_renderer_display_closed,
 					renderer);
-  g_object_set_data (G_OBJECT (renderer->priv->screen),
+  g_object_set_data (B_OBJECT (renderer->priv->screen),
                      g_intern_static_string ("bdk-bango-renderer"), NULL);
 }
 
@@ -605,11 +605,11 @@ bdk_bango_renderer_get_default (BdkScreen *screen)
 
   g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   
-  renderer = g_object_get_data (G_OBJECT (screen), "bdk-bango-renderer");
+  renderer = g_object_get_data (B_OBJECT (screen), "bdk-bango-renderer");
   if (!renderer)
     {
       renderer = bdk_bango_renderer_new (screen);
-      g_object_set_data_full (G_OBJECT (screen), 
+      g_object_set_data_full (B_OBJECT (screen), 
                               g_intern_static_string ("bdk-bango-renderer"), renderer,
 			      (GDestroyNotify)g_object_unref);
 
@@ -866,8 +866,8 @@ release_renderer (BangoRenderer *renderer)
 void 
 bdk_draw_layout_line_with_colors (BdkDrawable      *drawable,
                                   BdkGC            *gc,
-                                  gint              x, 
-                                  gint              y,
+                                  bint              x, 
+                                  bint              y,
                                   BangoLayoutLine  *line,
                                   const BdkColor   *foreground,
                                   const BdkColor   *background)
@@ -1019,8 +1019,8 @@ bdk_draw_layout_with_colors (BdkDrawable     *drawable,
 void 
 bdk_draw_layout_line (BdkDrawable      *drawable,
 		      BdkGC            *gc,
-		      gint              x, 
-		      gint              y,
+		      bint              x, 
+		      bint              y,
 		      BangoLayoutLine  *line)
 {
   g_return_if_fail (BDK_IS_DRAWABLE (drawable));
@@ -1082,7 +1082,7 @@ bdk_bango_attr_stipple_destroy (BangoAttribute *attr)
   g_free (attr);
 }
 
-static gboolean
+static bboolean
 bdk_bango_attr_stipple_compare (const BangoAttribute *attr1,
                                     const BangoAttribute *attr2)
 {
@@ -1145,7 +1145,7 @@ bdk_bango_attr_embossed_destroy (BangoAttribute *attr)
   g_free (attr);
 }
 
-static gboolean
+static bboolean
 bdk_bango_attr_embossed_compare (const BangoAttribute *attr1,
                                  const BangoAttribute *attr2)
 {
@@ -1165,7 +1165,7 @@ bdk_bango_attr_embossed_compare (const BangoAttribute *attr1,
  **/
 
 BangoAttribute *
-bdk_bango_attr_embossed_new (gboolean embossed)
+bdk_bango_attr_embossed_new (bboolean embossed)
 {
   BdkBangoAttrEmbossed *result;
   
@@ -1208,7 +1208,7 @@ bdk_bango_attr_emboss_color_destroy (BangoAttribute *attr)
   g_free (attr);
 }
 
-static gboolean
+static bboolean
 bdk_bango_attr_emboss_color_compare (const BangoAttribute *attr1,
                                      const BangoAttribute *attr2)
 {
@@ -1260,16 +1260,16 @@ bdk_bango_attr_emboss_color_new (const BdkColor *color)
  */
 static BdkRebunnyion*
 layout_iter_get_line_clip_rebunnyion (BangoLayoutIter *iter,
-				  gint             x_origin,
-				  gint             y_origin,
-				  const gint      *index_ranges,
-				  gint             n_ranges)
+				  bint             x_origin,
+				  bint             y_origin,
+				  const bint      *index_ranges,
+				  bint             n_ranges)
 {
   BangoLayoutLine *line;
   BdkRebunnyion *clip_rebunnyion;
   BangoRectangle logical_rect;
-  gint baseline;
-  gint i;
+  bint baseline;
+  bint i;
 
   line = bango_layout_iter_get_line_readonly (iter);
 
@@ -1281,9 +1281,9 @@ layout_iter_get_line_clip_rebunnyion (BangoLayoutIter *iter,
   i = 0;
   while (i < n_ranges)
     {  
-      gint *pixel_ranges = NULL;
-      gint n_pixel_ranges = 0;
-      gint j;
+      bint *pixel_ranges = NULL;
+      bint n_pixel_ranges = 0;
+      bint j;
 
       /* Note that get_x_ranges returns layout coordinates
        */
@@ -1343,10 +1343,10 @@ layout_iter_get_line_clip_rebunnyion (BangoLayoutIter *iter,
  **/
 BdkRebunnyion*
 bdk_bango_layout_line_get_clip_rebunnyion (BangoLayoutLine *line,
-                                       gint             x_origin,
-                                       gint             y_origin,
-                                       const gint      *index_ranges,
-                                       gint             n_ranges)
+                                       bint             x_origin,
+                                       bint             y_origin,
+                                       const bint      *index_ranges,
+                                       bint             n_ranges)
 {
   BdkRebunnyion *clip_rebunnyion;
   BangoLayoutIter *iter;
@@ -1387,10 +1387,10 @@ bdk_bango_layout_line_get_clip_rebunnyion (BangoLayoutLine *line,
  **/
 BdkRebunnyion*
 bdk_bango_layout_get_clip_rebunnyion (BangoLayout *layout,
-                                  gint         x_origin,
-                                  gint         y_origin,
-                                  const gint  *index_ranges,
-                                  gint         n_ranges)
+                                  bint         x_origin,
+                                  bint         y_origin,
+                                  const bint  *index_ranges,
+                                  bint         n_ranges)
 {
   BangoLayoutIter *iter;  
   BdkRebunnyion *clip_rebunnyion;
@@ -1406,7 +1406,7 @@ bdk_bango_layout_get_clip_rebunnyion (BangoLayout *layout,
     {
       BangoRectangle logical_rect;
       BdkRebunnyion *line_rebunnyion;
-      gint baseline;
+      bint baseline;
       
       bango_layout_iter_get_line_extents (iter, NULL, &logical_rect);
       baseline = bango_layout_iter_get_baseline (iter);      

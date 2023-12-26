@@ -48,8 +48,8 @@ typedef struct {
   BtkPathType   type;
   GPatternSpec *pspec;
   GSList       *path;
-  gpointer      user_data;
-  guint         seq_id;
+  bpointer      user_data;
+  buint         seq_id;
 } PatternSpec;
 
 
@@ -57,7 +57,7 @@ typedef struct {
 static GHashTable	*binding_entry_hash_table = NULL;
 static GSList           *binding_key_hashes = NULL;
 static GSList		*binding_set_list = NULL;
-static const gchar	 key_class_binding_set[] = "btk-class-binding-set";
+static const bchar	 key_class_binding_set[] = "btk-class-binding-set";
 static GQuark		 key_id_class_binding_set = 0;
 
 
@@ -72,14 +72,14 @@ pattern_spec_free (PatternSpec *pspec)
 }
 
 static BtkBindingSignal*
-binding_signal_new (const gchar *signal_name,
-		    guint	 n_args)
+binding_signal_new (const bchar *signal_name,
+		    buint	 n_args)
 {
   BtkBindingSignal *signal;
 
   signal = (BtkBindingSignal *) g_slice_alloc0 (sizeof (BtkBindingSignal) + n_args * sizeof (BtkBindingArg));
   signal->next = NULL;
-  signal->signal_name = (gchar *)g_intern_string (signal_name);
+  signal->signal_name = (bchar *)g_intern_string (signal_name);
   signal->n_args = n_args;
   signal->args = (BtkBindingArg *)(signal + 1);
   
@@ -89,21 +89,21 @@ binding_signal_new (const gchar *signal_name,
 static void
 binding_signal_free (BtkBindingSignal *sig)
 {
-  guint i;
+  buint i;
   
   for (i = 0; i < sig->n_args; i++)
     {
-      if (G_TYPE_FUNDAMENTAL (sig->args[i].arg_type) == G_TYPE_STRING)
+      if (B_TYPE_FUNDAMENTAL (sig->args[i].arg_type) == B_TYPE_STRING)
 	g_free (sig->args[i].d.string_data);
     }
   g_slice_free1 (sizeof (BtkBindingSignal) + sig->n_args * sizeof (BtkBindingArg), sig);
 }
 
-static guint
+static buint
 binding_entry_hash (gconstpointer  key)
 {
   register const BtkBindingEntry *e = key;
-  register guint h;
+  register buint h;
 
   h = e->keyval;
   h ^= e->modifiers;
@@ -111,7 +111,7 @@ binding_entry_hash (gconstpointer  key)
   return h;
 }
 
-static gint
+static bint
 binding_entries_compare (gconstpointer  a,
 			 gconstpointer  b)
 {
@@ -125,7 +125,7 @@ static void
 binding_key_hash_insert_entry (BtkKeyHash      *key_hash,
 			       BtkBindingEntry *entry)
 {
-  guint keyval = entry->keyval;
+  buint keyval = entry->keyval;
   
   /* We store lowercased accelerators. To deal with this, if <Shift>
    * was specified, uppercase.
@@ -142,18 +142,18 @@ binding_key_hash_insert_entry (BtkKeyHash      *key_hash,
 }
 
 static void
-binding_key_hash_destroy (gpointer data)
+binding_key_hash_destroy (bpointer data)
 {
   BtkKeyHash *key_hash = data;
   
-  binding_key_hashes = g_slist_remove (binding_key_hashes, key_hash);
+  binding_key_hashes = b_slist_remove (binding_key_hashes, key_hash);
   _btk_key_hash_free (key_hash);
 }
 
 static void
-insert_entries_into_key_hash (gpointer key,
-			      gpointer value,
-			      gpointer data)
+insert_entries_into_key_hash (bpointer key,
+			      bpointer value,
+			      bpointer data)
 {
   BtkKeyHash *key_hash = data;
   BtkBindingEntry *entry = value;
@@ -171,19 +171,19 @@ binding_key_hash_for_keymap (BdkKeymap *keymap)
   if (!key_hash_quark)
     key_hash_quark = g_quark_from_static_string ("btk-binding-key-hash");
   
-  key_hash = g_object_get_qdata (G_OBJECT (keymap), key_hash_quark);
+  key_hash = g_object_get_qdata (B_OBJECT (keymap), key_hash_quark);
 
   if (!key_hash)
     {
       key_hash = _btk_key_hash_new (keymap, NULL);
-      g_object_set_qdata_full (G_OBJECT (keymap), key_hash_quark, key_hash, binding_key_hash_destroy);
+      g_object_set_qdata_full (B_OBJECT (keymap), key_hash_quark, key_hash, binding_key_hash_destroy);
 
       if (binding_entry_hash_table)
 	g_hash_table_foreach (binding_entry_hash_table,
 			      insert_entries_into_key_hash,
 			      key_hash);
 
-      binding_key_hashes = g_slist_prepend (binding_key_hashes, key_hash);
+      binding_key_hashes = b_slist_prepend (binding_key_hashes, key_hash);
     }
 
   return key_hash;
@@ -192,7 +192,7 @@ binding_key_hash_for_keymap (BdkKeymap *keymap)
 
 static BtkBindingEntry*
 binding_entry_new (BtkBindingSet  *binding_set,
-		   guint           keyval,
+		   buint           keyval,
 		   BdkModifierType modifiers)
 {
   GSList *tmp_list;
@@ -320,7 +320,7 @@ binding_entry_destroy (BtkBindingEntry *entry)
 
 static BtkBindingEntry*
 binding_ht_lookup_entry (BtkBindingSet  *set,
-			 guint		 keyval,
+			 buint		 keyval,
 			 BdkModifierType modifiers)
 {
   BtkBindingEntry lookup_entry = { 0 };
@@ -340,49 +340,49 @@ binding_ht_lookup_entry (BtkBindingSet  *set,
   return NULL;
 }
 
-static gboolean
+static bboolean
 binding_compose_params (BtkObject       *object,
 			BtkBindingArg	*args,
 			GSignalQuery	*query,
-			GValue	       **params_p)
+			BValue	       **params_p)
 {
-  GValue *params;
+  BValue *params;
   const GType *types;
-  guint i;
-  gboolean valid;
+  buint i;
+  bboolean valid;
   
-  params = g_new0 (GValue, query->n_params + 1);
+  params = g_new0 (BValue, query->n_params + 1);
   *params_p = params;
 
   /* The instance we emit on is the first object in the array
    */
-  g_value_init (params, G_TYPE_OBJECT);
-  g_value_set_object (params, G_OBJECT (object));
+  b_value_init (params, B_TYPE_OBJECT);
+  b_value_set_object (params, B_OBJECT (object));
   params++;
   
   types = query->param_types;
   valid = TRUE;
   for (i = 1; i < query->n_params + 1 && valid; i++)
     {
-      GValue tmp_value = { 0, };
+      BValue tmp_value = { 0, };
 
-      g_value_init (params, *types);
+      b_value_init (params, *types);
 
-      switch (G_TYPE_FUNDAMENTAL (args->arg_type))
+      switch (B_TYPE_FUNDAMENTAL (args->arg_type))
 	{
-	case G_TYPE_DOUBLE:
-	  g_value_init (&tmp_value, G_TYPE_DOUBLE);
-	  g_value_set_double (&tmp_value, args->d.double_data);
+	case B_TYPE_DOUBLE:
+	  b_value_init (&tmp_value, B_TYPE_DOUBLE);
+	  b_value_set_double (&tmp_value, args->d.double_data);
 	  break;
-	case G_TYPE_LONG:
-	  g_value_init (&tmp_value, G_TYPE_LONG);
-	  g_value_set_long (&tmp_value, args->d.long_data);
+	case B_TYPE_LONG:
+	  b_value_init (&tmp_value, B_TYPE_LONG);
+	  b_value_set_long (&tmp_value, args->d.long_data);
 	  break;
-	case G_TYPE_STRING:
+	case B_TYPE_STRING:
 	  /* btk_rc_parse_flags/enum() has fancier parsing for this; we can't call
-	   * that since we don't have a GParamSpec, so just do something simple
+	   * that since we don't have a BParamSpec, so just do something simple
 	   */
-	  if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_ENUM)
+	  if (B_TYPE_FUNDAMENTAL (*types) == B_TYPE_ENUM)
 	    {
 	      GEnumClass *class = G_ENUM_CLASS (g_type_class_ref (*types));
 	      
@@ -396,8 +396,8 @@ binding_compose_params (BtkObject       *object,
 		    enum_value = g_enum_get_value_by_nick (class, args->d.string_data);
 		  if (enum_value)
 		    {
-		      g_value_init (&tmp_value, *types);
-		      g_value_set_enum (&tmp_value, enum_value->value);
+		      b_value_init (&tmp_value, *types);
+		      b_value_set_enum (&tmp_value, enum_value->value);
 		      valid = TRUE;
 		    }
 		}
@@ -408,7 +408,7 @@ binding_compose_params (BtkObject       *object,
 	   * could be used for a single flag value / without the support for multiple
 	   * values in btk_rc_parse_flags(), this isn't very useful.
 	   */
-	  else if (G_TYPE_FUNDAMENTAL (*types) == G_TYPE_FLAGS)
+	  else if (B_TYPE_FUNDAMENTAL (*types) == B_TYPE_FLAGS)
 	    {
 	      GFlagsClass *class = G_FLAGS_CLASS (g_type_class_ref (*types));
 	      
@@ -422,8 +422,8 @@ binding_compose_params (BtkObject       *object,
 		    flags_value = g_flags_get_value_by_nick (class, args->d.string_data);
 		  if (flags_value)
 		    {
-		      g_value_init (&tmp_value, *types);
-		      g_value_set_flags (&tmp_value, flags_value->value);
+		      b_value_init (&tmp_value, *types);
+		      b_value_set_flags (&tmp_value, flags_value->value);
 		      valid = TRUE;
 		    }
 		}
@@ -432,8 +432,8 @@ binding_compose_params (BtkObject       *object,
 	    }
 	  else
 	    {
-	      g_value_init (&tmp_value, G_TYPE_STRING);
-	      g_value_set_static_string (&tmp_value, args->d.string_data);
+	      b_value_init (&tmp_value, B_TYPE_STRING);
+	      b_value_set_static_string (&tmp_value, args->d.string_data);
 	    }
 	  break;
 	default:
@@ -443,10 +443,10 @@ binding_compose_params (BtkObject       *object,
 
       if (valid)
 	{
-	  if (!g_value_transform (&tmp_value, params))
+	  if (!b_value_transform (&tmp_value, params))
 	    valid = FALSE;
 
-	  g_value_unset (&tmp_value);
+	  b_value_unset (&tmp_value);
 	}
       
       types++;
@@ -456,10 +456,10 @@ binding_compose_params (BtkObject       *object,
   
   if (!valid)
     {
-      guint j;
+      buint j;
 
       for (j = 0; j < i; j++)
-	g_value_unset (&(*params_p)[j]);
+	b_value_unset (&(*params_p)[j]);
       
       g_free (*params_p);
       *params_p = NULL;
@@ -468,14 +468,14 @@ binding_compose_params (BtkObject       *object,
   return valid;
 }
 
-static gboolean
+static bboolean
 btk_binding_entry_activate (BtkBindingEntry *entry,
 			    BtkObject	    *object)
 {
   BtkBindingSignal *sig;
-  gboolean old_emission;
-  gboolean handled = FALSE;
-  gint i;
+  bboolean old_emission;
+  bboolean handled = FALSE;
+  bint i;
   
   old_emission = entry->in_emission;
   entry->in_emission = TRUE;
@@ -485,12 +485,12 @@ btk_binding_entry_activate (BtkBindingEntry *entry,
   for (sig = entry->signals; sig; sig = sig->next)
     {
       GSignalQuery query;
-      guint signal_id;
-      GValue *params = NULL;
-      GValue return_val = { 0, };
-      gchar *accelerator = NULL;
+      buint signal_id;
+      BValue *params = NULL;
+      BValue return_val = { 0, };
+      bchar *accelerator = NULL;
       
-      signal_id = g_signal_lookup (sig->signal_name, G_OBJECT_TYPE (object));
+      signal_id = g_signal_lookup (sig->signal_name, B_OBJECT_TYPE (object));
       if (!signal_id)
 	{
 	  accelerator = btk_accelerator_name (entry->keyval, entry->modifiers);
@@ -499,14 +499,14 @@ btk_binding_entry_activate (BtkBindingEntry *entry,
 		     entry->binding_set->set_name,
 		     accelerator,
 		     sig->signal_name,
-		     g_type_name (G_OBJECT_TYPE (object)));
+		     g_type_name (B_OBJECT_TYPE (object)));
 	  g_free (accelerator);
 	  continue;
 	}
       
       g_signal_query (signal_id, &query);
       if (query.n_params != sig->n_args ||
-	  (query.return_type != G_TYPE_NONE && query.return_type != G_TYPE_BOOLEAN) || 
+	  (query.return_type != B_TYPE_NONE && query.return_type != B_TYPE_BOOLEAN) || 
 	  !binding_compose_params (object, sig->args, &query, &params))
 	{
 	  accelerator = btk_accelerator_name (entry->keyval, entry->modifiers);
@@ -515,7 +515,7 @@ btk_binding_entry_activate (BtkBindingEntry *entry,
 		     entry->binding_set->set_name,
 		     accelerator,
 		     sig->signal_name,
-		     g_type_name (G_OBJECT_TYPE (object)));
+		     g_type_name (B_OBJECT_TYPE (object)));
 	}
       else if (!(query.signal_flags & G_SIGNAL_ACTION))
 	{
@@ -525,28 +525,28 @@ btk_binding_entry_activate (BtkBindingEntry *entry,
 		     entry->binding_set->set_name,
 		     accelerator,
 		     sig->signal_name,
-		     g_type_name (G_OBJECT_TYPE (object)));
+		     g_type_name (B_OBJECT_TYPE (object)));
 	}
       g_free (accelerator);
       if (accelerator)
 	continue;
 
-      if (query.return_type == G_TYPE_BOOLEAN)
-	g_value_init (&return_val, G_TYPE_BOOLEAN);
+      if (query.return_type == B_TYPE_BOOLEAN)
+	b_value_init (&return_val, B_TYPE_BOOLEAN);
       
       g_signal_emitv (params, signal_id, 0, &return_val);
 
-      if (query.return_type == G_TYPE_BOOLEAN)
+      if (query.return_type == B_TYPE_BOOLEAN)
 	{
-	  if (g_value_get_boolean (&return_val))
+	  if (b_value_get_boolean (&return_val))
 	    handled = TRUE;
-	  g_value_unset (&return_val);
+	  b_value_unset (&return_val);
 	}
       else
 	handled = TRUE;
       
       for (i = 0; i < query.n_params + 1; i++)
-	g_value_unset (&params[i]);
+	b_value_unset (&params[i]);
       g_free (params);
       
       if (entry->destroyed)
@@ -572,14 +572,14 @@ btk_binding_entry_activate (BtkBindingEntry *entry,
  * Return value: new binding set
  */
 BtkBindingSet*
-btk_binding_set_new (const gchar *set_name)
+btk_binding_set_new (const bchar *set_name)
 {
   BtkBindingSet *binding_set;
   
   g_return_val_if_fail (set_name != NULL, NULL);
   
   binding_set = g_new (BtkBindingSet, 1);
-  binding_set->set_name = (gchar *) g_intern_string (set_name);
+  binding_set->set_name = (bchar *) g_intern_string (set_name);
   binding_set->widget_path_pspecs = NULL;
   binding_set->widget_class_pspecs = NULL;
   binding_set->class_branch_pspecs = NULL;
@@ -587,7 +587,7 @@ btk_binding_set_new (const gchar *set_name)
   binding_set->current = NULL;
   binding_set->parsed = FALSE;
   
-  binding_set_list = g_slist_prepend (binding_set_list, binding_set);
+  binding_set_list = b_slist_prepend (binding_set_list, binding_set);
   
   return binding_set;
 }
@@ -603,7 +603,7 @@ btk_binding_set_new (const gchar *set_name)
  * Return value: the binding set corresponding to @object_class
  */
 BtkBindingSet*
-btk_binding_set_by_class (gpointer object_class)
+btk_binding_set_by_class (bpointer object_class)
 {
   BtkObjectClass *class = object_class;
   BtkBindingSet* binding_set;
@@ -618,10 +618,10 @@ btk_binding_set_by_class (gpointer object_class)
   if (binding_set)
     return binding_set;
 
-  binding_set = btk_binding_set_new (g_type_name (G_OBJECT_CLASS_TYPE (class)));
+  binding_set = btk_binding_set_new (g_type_name (B_OBJECT_CLASS_TYPE (class)));
   btk_binding_set_add_path (binding_set,
 			    BTK_PATH_CLASS,
-			    g_type_name (G_OBJECT_CLASS_TYPE (class)),
+			    g_type_name (B_OBJECT_CLASS_TYPE (class)),
 			    BTK_PATH_PRIO_BTK);
   g_dataset_id_set_data (class, key_id_class_binding_set, binding_set);
 
@@ -639,7 +639,7 @@ btk_binding_set_by_class (gpointer object_class)
  * Return value: (transfer none): %NULL or the specified binding set
  */
 BtkBindingSet*
-btk_binding_set_find (const gchar *set_name)
+btk_binding_set_find (const bchar *set_name)
 {
   GSList *slist;
   
@@ -650,7 +650,7 @@ btk_binding_set_find (const gchar *set_name)
       BtkBindingSet *binding_set;
       
       binding_set = slist->data;
-      if (g_str_equal (binding_set->set_name, (gpointer) set_name))
+      if (g_str_equal (binding_set->set_name, (bpointer) set_name))
 	return binding_set;
     }
   return NULL;
@@ -668,9 +668,9 @@ btk_binding_set_find (const gchar *set_name)
  *
  * Return value: %TRUE if a binding was found and activated
  */
-gboolean
+bboolean
 btk_binding_set_activate (BtkBindingSet	 *binding_set,
-			  guint		  keyval,
+			  buint		  keyval,
 			  BdkModifierType modifiers,
 			  BtkObject	 *object)
 {
@@ -691,7 +691,7 @@ btk_binding_set_activate (BtkBindingSet	 *binding_set,
 
 static void
 btk_binding_entry_clear_internal (BtkBindingSet  *binding_set,
-                                  guint           keyval,
+                                  buint           keyval,
                                   BdkModifierType modifiers)
 {
   BtkBindingEntry *entry;
@@ -729,7 +729,7 @@ btk_binding_entry_clear_internal (BtkBindingSet  *binding_set,
  */
 void
 btk_binding_entry_clear (BtkBindingSet	*binding_set,
-			 guint		 keyval,
+			 buint		 keyval,
 			 BdkModifierType modifiers)
 {
   g_return_if_fail (binding_set != NULL);
@@ -751,7 +751,7 @@ btk_binding_entry_clear (BtkBindingSet	*binding_set,
  */
 void
 btk_binding_entry_skip (BtkBindingSet  *binding_set,
-                        guint           keyval,
+                        buint           keyval,
                         BdkModifierType modifiers)
 {
   BtkBindingEntry *entry;
@@ -780,7 +780,7 @@ btk_binding_entry_skip (BtkBindingSet  *binding_set,
  */
 void
 btk_binding_entry_remove (BtkBindingSet	 *binding_set,
-			  guint		  keyval,
+			  buint		  keyval,
 			  BdkModifierType modifiers)
 {
   BtkBindingEntry *entry;
@@ -809,9 +809,9 @@ btk_binding_entry_remove (BtkBindingSet	 *binding_set,
  */
 void
 btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
-                               guint	       keyval,
+                               buint	       keyval,
                                BdkModifierType modifiers,
-                               const gchar    *signal_name,
+                               const bchar    *signal_name,
                                GSList	      *binding_args)
 {
   _btk_binding_entry_add_signall (binding_set,
@@ -821,15 +821,15 @@ btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
 
 void
 _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
-                                guint	       keyval,
+                                buint	       keyval,
                                 BdkModifierType modifiers,
-                                const gchar    *signal_name,
+                                const bchar    *signal_name,
                                 GSList	      *binding_args)
 {
   BtkBindingEntry *entry;
   BtkBindingSignal *signal, **signal_p;
   GSList *slist;
-  guint n = 0;
+  buint n = 0;
   BtkBindingArg *arg;
   
   g_return_if_fail (binding_set != NULL);
@@ -838,7 +838,7 @@ _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
   keyval = bdk_keyval_to_lower (keyval);
   modifiers = modifiers & BINDING_MOD_MASK ();
   
-  signal = binding_signal_new (signal_name, g_slist_length (binding_args));
+  signal = binding_signal_new (signal_name, b_slist_length (binding_args));
   
   arg = signal->args;
   for (slist = binding_args; slist; slist = slist->next)
@@ -852,19 +852,19 @@ _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
 	  binding_signal_free (signal);
 	  return;
 	}
-      switch (G_TYPE_FUNDAMENTAL (tmp_arg->arg_type))
+      switch (B_TYPE_FUNDAMENTAL (tmp_arg->arg_type))
 	{
-	case  G_TYPE_LONG:
-	  arg->arg_type = G_TYPE_LONG;
+	case  B_TYPE_LONG:
+	  arg->arg_type = B_TYPE_LONG;
 	  arg->d.long_data = tmp_arg->d.long_data;
 	  break;
-	case  G_TYPE_DOUBLE:
-	  arg->arg_type = G_TYPE_DOUBLE;
+	case  B_TYPE_DOUBLE:
+	  arg->arg_type = B_TYPE_DOUBLE;
 	  arg->d.double_data = tmp_arg->d.double_data;
 	  break;
-	case  G_TYPE_STRING:
+	case  B_TYPE_STRING:
           if (tmp_arg->arg_type != BTK_TYPE_IDENTIFIER)
-	    arg->arg_type = G_TYPE_STRING;
+	    arg->arg_type = B_TYPE_STRING;
 	  else
 	    arg->arg_type = BTK_TYPE_IDENTIFIER;
 	  arg->d.string_data = g_strdup (tmp_arg->d.string_data);
@@ -913,15 +913,15 @@ _btk_binding_entry_add_signall (BtkBindingSet  *binding_set,
  */
 void
 btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
-			      guint           keyval,
+			      buint           keyval,
 			      BdkModifierType modifiers,
-			      const gchar    *signal_name,
-			      guint           n_args,
+			      const bchar    *signal_name,
+			      buint           n_args,
 			      ...)
 {
   GSList *slist, *free_slist;
   va_list args;
-  guint i;
+  buint i;
 
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (signal_name != NULL);
@@ -933,35 +933,35 @@ btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
       BtkBindingArg *arg;
 
       arg = g_slice_new0 (BtkBindingArg);
-      slist = g_slist_prepend (slist, arg);
+      slist = b_slist_prepend (slist, arg);
 
       arg->arg_type = va_arg (args, GType);
-      switch (G_TYPE_FUNDAMENTAL (arg->arg_type))
+      switch (B_TYPE_FUNDAMENTAL (arg->arg_type))
 	{
-	case G_TYPE_CHAR:
-	case G_TYPE_UCHAR:
-	case G_TYPE_INT:
-	case G_TYPE_UINT:
-	case G_TYPE_BOOLEAN:
-	case G_TYPE_ENUM:
-	case G_TYPE_FLAGS:
-	  arg->arg_type = G_TYPE_LONG;
-	  arg->d.long_data = va_arg (args, gint);
+	case B_TYPE_CHAR:
+	case B_TYPE_UCHAR:
+	case B_TYPE_INT:
+	case B_TYPE_UINT:
+	case B_TYPE_BOOLEAN:
+	case B_TYPE_ENUM:
+	case B_TYPE_FLAGS:
+	  arg->arg_type = B_TYPE_LONG;
+	  arg->d.long_data = va_arg (args, bint);
 	  break;
-	case G_TYPE_LONG:
-	case G_TYPE_ULONG:
-	  arg->arg_type = G_TYPE_LONG;
-	  arg->d.long_data = va_arg (args, glong);
+	case B_TYPE_LONG:
+	case B_TYPE_ULONG:
+	  arg->arg_type = B_TYPE_LONG;
+	  arg->d.long_data = va_arg (args, blong);
 	  break;
-	case G_TYPE_FLOAT:
-	case G_TYPE_DOUBLE:
-	  arg->arg_type = G_TYPE_DOUBLE;
-	  arg->d.double_data = va_arg (args, gdouble);
+	case B_TYPE_FLOAT:
+	case B_TYPE_DOUBLE:
+	  arg->arg_type = B_TYPE_DOUBLE;
+	  arg->d.double_data = va_arg (args, bdouble);
 	  break;
-	case G_TYPE_STRING:
+	case B_TYPE_STRING:
 	  if (arg->arg_type != BTK_TYPE_IDENTIFIER)
-	    arg->arg_type = G_TYPE_STRING;
-	  arg->d.string_data = va_arg (args, gchar*);
+	    arg->arg_type = B_TYPE_STRING;
+	  arg->d.string_data = va_arg (args, bchar*);
 	  if (!arg->d.string_data)
 	    {
 	      g_warning ("btk_binding_entry_add_signal(): type `%s' arg[%u] is `NULL'",
@@ -981,7 +981,7 @@ btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
 
   if (i == n_args || i == 0)
     {
-      slist = g_slist_reverse (slist);
+      slist = b_slist_reverse (slist);
       _btk_binding_entry_add_signall (binding_set, keyval, modifiers, signal_name, slist);
     }
 
@@ -991,7 +991,7 @@ btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
       g_slice_free (BtkBindingArg, slist->data);
       slist = slist->next;
     }
-  g_slist_free (free_slist);
+  b_slist_free (free_slist);
 }
 
 /**
@@ -1007,12 +1007,12 @@ btk_binding_entry_add_signal (BtkBindingSet  *binding_set,
 void
 btk_binding_set_add_path (BtkBindingSet	     *binding_set,
 			  BtkPathType	      path_type,
-			  const gchar	     *path_pattern,
+			  const bchar	     *path_pattern,
 			  BtkPathPriorityType priority)
 {
   PatternSpec *pspec;
   GSList **slist_p, *slist;
-  static guint seq_id = 0;
+  static buint seq_id = 0;
   
   g_return_if_fail (binding_set != NULL);
   g_return_if_fail (path_pattern != NULL);
@@ -1078,17 +1078,17 @@ btk_binding_set_add_path (BtkBindingSet	     *binding_set,
   if (pspec)
     {
       pspec->seq_id |= seq_id++ & 0x0fffffff;
-      *slist_p = g_slist_prepend (*slist_p, pspec);
+      *slist_p = b_slist_prepend (*slist_p, pspec);
     }
 }
 
-static gboolean
+static bboolean
 binding_match_activate (GSList          *pspec_list,
 			BtkObject	*object,
-			guint	         path_length,
-			gchar           *path,
-			gchar           *path_reversed,
-                        gboolean        *unbound)
+			buint	         path_length,
+			bchar           *path,
+			bchar           *path_reversed,
+                        bboolean        *unbound)
 {
   GSList *slist;
 
@@ -1129,7 +1129,7 @@ binding_match_activate (GSList          *pspec_list,
   return FALSE;
 }
 
-static gint
+static bint
 btk_binding_pattern_compare (gconstpointer new_pattern,
 			     gconstpointer existing_pattern)
 {
@@ -1146,7 +1146,7 @@ btk_binding_pattern_compare (gconstpointer new_pattern,
 static GSList*
 btk_binding_entries_sort_patterns (GSList      *entries,
 				   BtkPathType  path_id,
-				   gboolean     is_release)
+				   bboolean     is_release)
 {
   GSList *patterns;
   GSList *tmp_list;
@@ -1194,35 +1194,35 @@ btk_binding_entries_sort_patterns (GSList      *entries,
 	  PatternSpec *pspec;
 
 	  pspec = slist->data;
-	  patterns = g_slist_insert_sorted (patterns, pspec, btk_binding_pattern_compare);
+	  patterns = b_slist_insert_sorted (patterns, pspec, btk_binding_pattern_compare);
 	}
     }
 
   return patterns;
 }
 
-static gboolean
+static bboolean
 btk_bindings_activate_list (BtkObject *object,
 			    GSList    *entries,
-			    gboolean   is_release)
+			    bboolean   is_release)
 {
   BtkWidget *widget = BTK_WIDGET (object);
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   if (!entries)
     return FALSE;
 
   if (!handled)
     {
-      guint path_length;
-      gchar *path, *path_reversed;
+      buint path_length;
+      bchar *path, *path_reversed;
       GSList *patterns;
-      gboolean unbound;
+      bboolean unbound;
 
       btk_widget_path (widget, &path_length, &path, &path_reversed);
       patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_WIDGET, is_release);
       handled = binding_match_activate (patterns, object, path_length, path, path_reversed, &unbound);
-      g_slist_free (patterns);
+      b_slist_free (patterns);
       g_free (path);
       g_free (path_reversed);
 
@@ -1232,15 +1232,15 @@ btk_bindings_activate_list (BtkObject *object,
 
   if (!handled)
     {
-      guint path_length;
-      gchar *path, *path_reversed;
+      buint path_length;
+      bchar *path, *path_reversed;
       GSList *patterns;
-      gboolean unbound;
+      bboolean unbound;
 
       btk_widget_class_path (widget, &path_length, &path, &path_reversed);
       patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_WIDGET_CLASS, is_release);
       handled = binding_match_activate (patterns, object, path_length, path, path_reversed, &unbound);
-      g_slist_free (patterns);
+      b_slist_free (patterns);
       g_free (path);
       g_free (path_reversed);
 
@@ -1252,15 +1252,15 @@ btk_bindings_activate_list (BtkObject *object,
     {
       GSList *patterns;
       GType class_type;
-      gboolean unbound = FALSE;
+      bboolean unbound = FALSE;
 
       patterns = btk_binding_entries_sort_patterns (entries, BTK_PATH_CLASS, is_release);
-      class_type = G_TYPE_FROM_INSTANCE (object);
+      class_type = B_TYPE_FROM_INSTANCE (object);
       while (class_type && !handled)
 	{
-	  guint path_length;
-	  gchar *path;
-	  gchar *path_reversed;
+	  buint path_length;
+	  bchar *path;
+	  bchar *path_reversed;
 
 	  path = g_strdup (g_type_name (class_type));
 	  path_reversed = g_strdup (path);
@@ -1275,7 +1275,7 @@ btk_bindings_activate_list (BtkObject *object,
 
 	  class_type = g_type_parent (class_type);
 	}
-      g_slist_free (patterns);
+      b_slist_free (patterns);
 
       if (unbound)
         return FALSE;
@@ -1295,16 +1295,16 @@ btk_bindings_activate_list (BtkObject *object,
  *
  * Return value: %TRUE if a binding was found and activated
  */
-gboolean
+bboolean
 btk_bindings_activate (BtkObject       *object,
-		       guint	        keyval,
+		       buint	        keyval,
 		       BdkModifierType  modifiers)
 {
   GSList *entries = NULL;
   BdkDisplay *display;
   BtkKeyHash *key_hash;
-  gboolean handled = FALSE;
-  gboolean is_release;
+  bboolean handled = FALSE;
+  bboolean is_release;
 
   g_return_val_if_fail (BTK_IS_OBJECT (object), FALSE);
 
@@ -1321,7 +1321,7 @@ btk_bindings_activate (BtkObject       *object,
 
   handled = btk_bindings_activate_list (object, entries, is_release);
 
-  g_slist_free (entries);
+  b_slist_free (entries);
 
   return handled;
 }
@@ -1338,14 +1338,14 @@ btk_bindings_activate (BtkObject       *object,
  *
  * Since: 2.4
  */
-gboolean
+bboolean
 btk_bindings_activate_event (BtkObject   *object,
                              BdkEventKey *event)
 {
   GSList *entries = NULL;
   BdkDisplay *display;
   BtkKeyHash *key_hash;
-  gboolean handled = FALSE;
+  bboolean handled = FALSE;
 
   g_return_val_if_fail (BTK_IS_OBJECT (object), FALSE);
 
@@ -1364,25 +1364,25 @@ btk_bindings_activate_event (BtkObject   *object,
   handled = btk_bindings_activate_list (object, entries,
 					event->type == BDK_KEY_RELEASE);
 
-  g_slist_free (entries);
+  b_slist_free (entries);
 
   return handled;
 }
 
-static guint
+static buint
 btk_binding_parse_signal (GScanner       *scanner,
 			  BtkBindingSet  *binding_set,
-			  guint		  keyval,
+			  buint		  keyval,
 			  BdkModifierType modifiers)
 {
-  gchar *signal;
-  guint expected_token = 0;
+  bchar *signal;
+  buint expected_token = 0;
   GSList *args;
   GSList *slist;
-  gboolean done;
-  gboolean negate;
-  gboolean need_arg;
-  gboolean seen_comma;
+  bboolean done;
+  bboolean negate;
+  bboolean need_arg;
+  bboolean seen_comma;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   
@@ -1411,7 +1411,7 @@ btk_binding_parse_signal (GScanner       *scanner,
       else
 	expected_token = ')';
       g_scanner_get_next_token (scanner);
-      switch ((guint) scanner->token)
+      switch ((buint) scanner->token)
 	{
 	  BtkBindingArg *arg;
 
@@ -1420,14 +1420,14 @@ btk_binding_parse_signal (GScanner       *scanner,
 	    {
 	      need_arg = FALSE;
 	      arg = g_new (BtkBindingArg, 1);
-	      arg->arg_type = G_TYPE_DOUBLE;
+	      arg->arg_type = B_TYPE_DOUBLE;
 	      arg->d.double_data = scanner->value.v_float;
 	      if (negate)
 		{
 		  arg->d.double_data = - arg->d.double_data;
 		  negate = FALSE;
 		}
-	      args = g_slist_prepend (args, arg);
+	      args = b_slist_prepend (args, arg);
 	    }
 	  else
 	    done = TRUE;
@@ -1437,14 +1437,14 @@ btk_binding_parse_signal (GScanner       *scanner,
 	    {
 	      need_arg = FALSE;
 	      arg = g_new (BtkBindingArg, 1);
-	      arg->arg_type = G_TYPE_LONG;
+	      arg->arg_type = B_TYPE_LONG;
 	      arg->d.long_data = scanner->value.v_int;
 	      if (negate)
 		{
 		  arg->d.long_data = - arg->d.long_data;
 		  negate = FALSE;
 		}
-	      args = g_slist_prepend (args, arg);
+	      args = b_slist_prepend (args, arg);
 	    }
           else
 	    done = TRUE;
@@ -1454,9 +1454,9 @@ btk_binding_parse_signal (GScanner       *scanner,
 	    {
 	      need_arg = FALSE;
 	      arg = g_new (BtkBindingArg, 1);
-	      arg->arg_type = G_TYPE_STRING;
+	      arg->arg_type = B_TYPE_STRING;
 	      arg->d.string_data = g_strdup (scanner->value.v_string);
-	      args = g_slist_prepend (args, arg);
+	      args = b_slist_prepend (args, arg);
 	    }
 	  else
 	    done = TRUE;
@@ -1468,7 +1468,7 @@ btk_binding_parse_signal (GScanner       *scanner,
 	      arg = g_new (BtkBindingArg, 1);
 	      arg->arg_type = BTK_TYPE_IDENTIFIER;
 	      arg->d.string_data = g_strdup (scanner->value.v_identifier);
-	      args = g_slist_prepend (args, arg);
+	      args = b_slist_prepend (args, arg);
 	    }
 	  else
 	    done = TRUE;
@@ -1494,7 +1494,7 @@ btk_binding_parse_signal (GScanner       *scanner,
 	case ')':
 	  if (!(need_arg && seen_comma) && !negate)
 	    {
-	      args = g_slist_reverse (args);
+	      args = b_slist_reverse (args);
 	      _btk_binding_entry_add_signall (binding_set,
                                               keyval,
                                               modifiers,
@@ -1517,33 +1517,33 @@ btk_binding_parse_signal (GScanner       *scanner,
       BtkBindingArg *arg;
 
       arg = slist->data;
-      if (G_TYPE_FUNDAMENTAL (arg->arg_type) == G_TYPE_STRING)
+      if (B_TYPE_FUNDAMENTAL (arg->arg_type) == B_TYPE_STRING)
 	g_free (arg->d.string_data);
       g_free (arg);
     }
-  g_slist_free (args);
+  b_slist_free (args);
   g_free (signal);
 
   return expected_token;
 }
 
-static inline guint
+static inline buint
 btk_binding_parse_bind (GScanner       *scanner,
 			BtkBindingSet  *binding_set)
 {
-  guint keyval = 0;
+  buint keyval = 0;
   BdkModifierType modifiers = 0;
-  gboolean unbind = FALSE;
+  bboolean unbind = FALSE;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
   
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) BTK_RC_TOKEN_BIND &&
-      scanner->token != (guint) BTK_RC_TOKEN_UNBIND)
+  if (scanner->token != (buint) BTK_RC_TOKEN_BIND &&
+      scanner->token != (buint) BTK_RC_TOKEN_UNBIND)
     return BTK_RC_TOKEN_BIND;
-  unbind = scanner->token == (guint) BTK_RC_TOKEN_UNBIND;
+  unbind = scanner->token == (buint) BTK_RC_TOKEN_UNBIND;
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) G_TOKEN_STRING)
+  if (scanner->token != (buint) G_TOKEN_STRING)
     return G_TOKEN_STRING;
   btk_accelerator_parse (scanner->value.v_string, &keyval, &modifiers);
   modifiers &= BINDING_MOD_MASK ();
@@ -1568,7 +1568,7 @@ btk_binding_parse_bind (GScanner       *scanner,
     {
       switch (scanner->next_token)
 	{
-	  guint expected_token;
+	  buint expected_token;
 
 	case G_TOKEN_STRING:
 	  expected_token = btk_binding_parse_signal (scanner,
@@ -1599,25 +1599,25 @@ btk_binding_parse_bind (GScanner       *scanner,
  *
  * Deprecated: 2.12: There should be no need to call this function outside BTK+.
  */
-guint
+buint
 btk_binding_parse_binding (GScanner *scanner)
 {
   return _btk_binding_parse_binding (scanner);
 }
 
-guint
+buint
 _btk_binding_parse_binding (GScanner *scanner)
 {
-  gchar *name;
+  bchar *name;
   BtkBindingSet *binding_set;
 
   g_return_val_if_fail (scanner != NULL, G_TOKEN_ERROR);
 
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) BTK_RC_TOKEN_BINDING)
+  if (scanner->token != (buint) BTK_RC_TOKEN_BINDING)
     return BTK_RC_TOKEN_BINDING;
   g_scanner_get_next_token (scanner);
-  if (scanner->token != (guint) G_TOKEN_STRING)
+  if (scanner->token != (buint) G_TOKEN_STRING)
     return G_TOKEN_STRING;
   name = g_strdup (scanner->value.v_string);
 
@@ -1639,9 +1639,9 @@ _btk_binding_parse_binding (GScanner *scanner)
   g_scanner_peek_next_token (scanner);
   while (scanner->next_token != '}')
     {
-      switch ((guint) scanner->next_token)
+      switch ((buint) scanner->next_token)
 	{
-	  guint expected_token;
+	  buint expected_token;
 
 	case BTK_RC_TOKEN_BIND:
 	case BTK_RC_TOKEN_UNBIND:
@@ -1674,7 +1674,7 @@ free_pattern_specs (GSList *pattern_specs)
       pattern_spec_free (pspec);
     }
 
-  g_slist_free (pattern_specs);
+  b_slist_free (pattern_specs);
 }
 
 static void
@@ -1717,7 +1717,7 @@ _btk_binding_reset_parsed (void)
 
       if (binding_set->parsed)
 	{
-	  binding_set_list = g_slist_delete_link (binding_set_list, slist);
+	  binding_set_list = b_slist_delete_link (binding_set_list, slist);
 	  binding_set_delete (binding_set);
 	}
 

@@ -32,18 +32,18 @@
 #include <bunnylib-object.h>
 #include "btkprinteroption.h"
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINTER_OPTION_SET             (btk_printer_option_set_get_type ())
-#define BTK_PRINTER_OPTION_SET(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_SET, BtkPrinterOptionSet))
-#define BTK_IS_PRINTER_OPTION_SET(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_SET))
+#define BTK_PRINTER_OPTION_SET(obj)             (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_SET, BtkPrinterOptionSet))
+#define BTK_IS_PRINTER_OPTION_SET(obj)          (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_SET))
 
 typedef struct _BtkPrinterOptionSet       BtkPrinterOptionSet;
 typedef struct _BtkPrinterOptionSetClass  BtkPrinterOptionSetClass;
 
 struct _BtkPrinterOptionSet
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /*< private >*/
   GPtrArray *array;
@@ -52,7 +52,7 @@ struct _BtkPrinterOptionSet
 
 struct _BtkPrinterOptionSetClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   void (*changed) (BtkPrinterOptionSet *option);
 
@@ -68,10 +68,10 @@ struct _BtkPrinterOptionSetClass
 };
 
 typedef void (*BtkPrinterOptionSetFunc) (BtkPrinterOption  *option,
-					 gpointer           user_data);
+					 bpointer           user_data);
 
 
-GType   btk_printer_option_set_get_type       (void) G_GNUC_CONST;
+GType   btk_printer_option_set_get_type       (void) B_GNUC_CONST;
 
 BtkPrinterOptionSet *btk_printer_option_set_new              (void);
 void                 btk_printer_option_set_add              (BtkPrinterOptionSet     *set,
@@ -82,14 +82,14 @@ BtkPrinterOption *   btk_printer_option_set_lookup           (BtkPrinterOptionSe
 							      const char              *name);
 void                 btk_printer_option_set_foreach          (BtkPrinterOptionSet     *set,
 							      BtkPrinterOptionSetFunc  func,
-							      gpointer                 user_data);
+							      bpointer                 user_data);
 void                 btk_printer_option_set_clear_conflicts  (BtkPrinterOptionSet     *set);
 GList *              btk_printer_option_set_get_groups       (BtkPrinterOptionSet     *set);
 void                 btk_printer_option_set_foreach_in_group (BtkPrinterOptionSet     *set,
 							      const char              *group,
 							      BtkPrinterOptionSetFunc  func,
-							      gpointer                 user_data);
+							      bpointer                 user_data);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINTER_OPTION_SET_H__ */

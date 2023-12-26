@@ -26,14 +26,14 @@
 
 #include <btk/btkcellrenderertext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_SPIN		(btk_cell_renderer_spin_get_type ())
-#define BTK_CELL_RENDERER_SPIN(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpin))
-#define BTK_CELL_RENDERER_SPIN_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpinClass))
-#define BTK_IS_CELL_RENDERER_SPIN(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_SPIN))
-#define BTK_IS_CELL_RENDERER_SPIN_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_SPIN))
-#define BTK_CELL_RENDERER_SPIN_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererTextClass))
+#define BTK_CELL_RENDERER_SPIN(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpin))
+#define BTK_CELL_RENDERER_SPIN_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererSpinClass))
+#define BTK_IS_CELL_RENDERER_SPIN(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_SPIN))
+#define BTK_IS_CELL_RENDERER_SPIN_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_SPIN))
+#define BTK_CELL_RENDERER_SPIN_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_SPIN, BtkCellRendererTextClass))
 
 typedef struct _BtkCellRendererSpin        BtkCellRendererSpin;
 typedef struct _BtkCellRendererSpinClass   BtkCellRendererSpinClass;
@@ -52,6 +52,6 @@ struct _BtkCellRendererSpinClass
 GType            btk_cell_renderer_spin_get_type (void);
 BtkCellRenderer *btk_cell_renderer_spin_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif  /* __BTK_CELL_RENDERER_SPIN_H__ */

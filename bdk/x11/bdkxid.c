@@ -31,8 +31,8 @@
 #include "bdkalias.h"
 #include <stdio.h>
 
-static guint     bdk_xid_hash  (XID *xid);
-static gboolean  bdk_xid_equal (XID *a,
+static buint     bdk_xid_hash  (XID *xid);
+static bboolean  bdk_xid_equal (XID *a,
 				XID *b);
 
 
@@ -44,7 +44,7 @@ static gboolean  bdk_xid_equal (XID *a,
 void
 _bdk_xid_table_insert (BdkDisplay *display,
 		       XID	  *xid,
-		       gpointer    data)
+		       bpointer    data)
 {
   BdkDisplayX11 *display_x11;
 
@@ -94,12 +94,12 @@ _bdk_xid_table_remove (BdkDisplay *display,
  *     only stores windows in its X id table nowadays, so use
  *     bdk_x11_window_lookup_for_display() instead.
  */
-gpointer
+bpointer
 bdk_xid_table_lookup_for_display (BdkDisplay  *display,
 				  XID	       xid)
 {
   BdkDisplayX11 *display_x11;
-  gpointer data = NULL;
+  bpointer data = NULL;
   
   g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
@@ -127,19 +127,19 @@ bdk_xid_table_lookup_for_display (BdkDisplay  *display,
  *     only stores windows in its X id table nowadays, so use
  *     bdk_x11_window_lookup_for_display() instead.
  */
-gpointer
+bpointer
 bdk_xid_table_lookup (XID xid)
 {
   return bdk_xid_table_lookup_for_display (bdk_display_get_default (), xid);
 }
 
-static guint
+static buint
 bdk_xid_hash (XID *xid)
 {
   return *xid;
 }
 
-static gboolean
+static bboolean
 bdk_xid_equal (XID *a,
 	       XID *b)
 {

@@ -31,11 +31,11 @@ hello (BtkWidget * button, char *label)
 }
 
 static void
-show_hide (BtkWidget * button, gpointer data)
+show_hide (BtkWidget * button, bpointer data)
 {
-  gint num_screen = GPOINTER_TO_INT (data);
+  bint num_screen = BPOINTER_TO_INT (data);
     
-  static gboolean visible = TRUE;
+  static bboolean visible = TRUE;
   if (visible)
     {
       btk_widget_hide (images[num_screen]);
@@ -57,8 +57,8 @@ move (BtkWidget *button, BtkVBox *vbox)
   BtkWidget *toplevel = btk_widget_get_toplevel (button);
   BtkWidget *new_toplevel;  
   BdkDisplay *display = bdk_screen_get_display (screen);
-  gint number_of_screens = bdk_display_get_n_screens (display);
-  gint screen_num = bdk_screen_get_number (screen);
+  bint number_of_screens = bdk_display_get_n_screens (display);
+  bint screen_num = bdk_screen_get_number (screen);
   
   g_print ("This button is on screen %d\n", bdk_screen_get_number (screen));
   
@@ -83,9 +83,9 @@ main (int argc, char *argv[])
 {
   BtkWidget **window;
   BtkWidget *moving_window, *moving_button, *moving_vbox, *moving_image;
-  gint num_screen = 0;
-  gchar *displayname = NULL;
-  gint i;
+  bint num_screen = 0;
+  bchar *displayname = NULL;
+  bint i;
   BdkScreen **screen_list;
   BdkDisplay *dpy;
   GSList *ids;
@@ -134,7 +134,7 @@ main (int argc, char *argv[])
       g_signal_connect (button, "clicked",
 			G_CALLBACK (hello), label);
   
-      images[i] = btk_image_new_from_stock (g_slist_nth (ids, i+1)->data,
+      images[i] = btk_image_new_from_stock (b_slist_nth (ids, i+1)->data,
 					     BTK_ICON_SIZE_BUTTON);
       
       btk_container_add (BTK_CONTAINER (vbox[i]), images[i]);
@@ -145,7 +145,7 @@ main (int argc, char *argv[])
 			       "visible", TRUE, NULL,
 			       NULL);
       g_signal_connect (button, "clicked",
-			G_CALLBACK (show_hide), GINT_TO_POINTER (i));
+			G_CALLBACK (show_hide), BINT_TO_POINTER (i));
     }
   
   for (i = 0; i < num_screen; i++)
@@ -165,7 +165,7 @@ main (int argc, char *argv[])
   
   btk_container_add (BTK_CONTAINER (moving_vbox), moving_button);
   
-  moving_image = btk_image_new_from_stock (g_slist_nth (ids, num_screen + 2)->data,
+  moving_image = btk_image_new_from_stock (b_slist_nth (ids, num_screen + 2)->data,
 					   BTK_ICON_SIZE_BUTTON);
   btk_container_add (BTK_CONTAINER (moving_vbox), moving_image);
   btk_widget_show_all (moving_window);

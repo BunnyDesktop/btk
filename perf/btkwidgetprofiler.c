@@ -20,17 +20,17 @@ struct _BtkWidgetProfilerPrivate {
 
   GTimer *timer;
 
-  gulong toplevel_expose_event_id;
-  gulong toplevel_property_notify_event_id;
+  bulong toplevel_expose_event_id;
+  bulong toplevel_property_notify_event_id;
 
   BdkAtom profiler_atom;
 
-  guint profiling : 1;
+  buint profiling : 1;
 };
 
-G_DEFINE_TYPE (BtkWidgetProfiler, btk_widget_profiler, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkWidgetProfiler, btk_widget_profiler, B_TYPE_OBJECT);
 
-static void btk_widget_profiler_finalize (GObject *object);
+static void btk_widget_profiler_finalize (BObject *object);
 
 enum {
   CREATE_WIDGET,
@@ -38,35 +38,35 @@ enum {
   LAST_SIGNAL
 };
 
-static guint signals[LAST_SIGNAL];
+static buint signals[LAST_SIGNAL];
 
 static void
 btk_widget_profiler_class_init (BtkWidgetProfilerClass *class)
 {
-  GObjectClass *object_class;
+  BObjectClass *object_class;
 
-  object_class = (GObjectClass *) class;
+  object_class = (BObjectClass *) class;
 
   signals[CREATE_WIDGET] =
     g_signal_new ("create-widget",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, create_widget),
 		  NULL, NULL,
 		  _btk_marshal_OBJECT__VOID,
-		  G_TYPE_OBJECT, 0);
+		  B_TYPE_OBJECT, 0);
 
   signals[REPORT] =
     g_signal_new ("report",
-		  G_OBJECT_CLASS_TYPE (object_class),
+		  B_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
 		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, report),
 		  NULL, NULL,
 		  _btk_marshal_VOID__ENUM_OBJECT_DOUBLE,
-		  G_TYPE_NONE, 3,
+		  B_TYPE_NONE, 3,
 		  BTK_TYPE_WIDGET_PROFILER_REPORT,
-		  G_TYPE_OBJECT,
-		  G_TYPE_DOUBLE);
+		  B_TYPE_OBJECT,
+		  B_TYPE_DOUBLE);
 
   object_class->finalize = btk_widget_profiler_finalize;
 }
@@ -111,7 +111,7 @@ reset_state (BtkWidgetProfiler *profiler)
 }
 
 static void
-btk_widget_profiler_finalize (GObject *object)
+btk_widget_profiler_finalize (BObject *object)
 {
   BtkWidgetProfiler *profiler;
   BtkWidgetProfilerPrivate *priv;
@@ -124,7 +124,7 @@ btk_widget_profiler_finalize (GObject *object)
 
   g_free (priv);
 
-  G_OBJECT_CLASS (btk_widget_profiler_parent_class)->finalize (object);
+  B_OBJECT_CLASS (btk_widget_profiler_parent_class)->finalize (object);
 }
 
 BtkWidgetProfiler *
@@ -135,7 +135,7 @@ btk_widget_profiler_new (void)
 
 void
 btk_widget_profiler_set_num_iterations (BtkWidgetProfiler *profiler,
-					gint               n_iterations)
+					bint               n_iterations)
 {
   BtkWidgetProfilerPrivate *priv;
 
@@ -149,7 +149,7 @@ btk_widget_profiler_set_num_iterations (BtkWidgetProfiler *profiler,
 static void
 report (BtkWidgetProfiler      *profiler,
 	BtkWidgetProfilerReport report,
-	gdouble                 elapsed)
+	bdouble                 elapsed)
 {
   BtkWidgetProfilerPrivate *priv;
 
@@ -174,12 +174,12 @@ create_widget_via_emission (BtkWidgetProfiler *profiler)
   return widget;
 }
 
-static gboolean
-toplevel_property_notify_event_cb (BtkWidget *widget, BdkEventProperty *event, gpointer data)
+static bboolean
+toplevel_property_notify_event_cb (BtkWidget *widget, BdkEventProperty *event, bpointer data)
 {
   BtkWidgetProfiler *profiler;
   BtkWidgetProfilerPrivate *priv;
-  gdouble elapsed;
+  bdouble elapsed;
 
   profiler = BTK_WIDGET_PROFILER (data);
   priv = profiler->priv;
@@ -196,8 +196,8 @@ toplevel_property_notify_event_cb (BtkWidget *widget, BdkEventProperty *event, g
   return TRUE;
 }
 
-static gboolean
-toplevel_idle_after_expose_cb (gpointer data)
+static bboolean
+toplevel_idle_after_expose_cb (bpointer data)
 {
   BtkWidgetProfiler *profiler;
   BtkWidgetProfilerPrivate *priv;
@@ -210,14 +210,14 @@ toplevel_idle_after_expose_cb (gpointer data)
 		       bdk_atom_intern ("STRING", FALSE),
 		       8,
 		       BDK_PROP_MODE_REPLACE,
-		       (guchar *) "hello",
+		       (buchar *) "hello",
 		       strlen ("hello"));
 
   return FALSE;
 }
 
-static gboolean
-toplevel_expose_event_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
+static bboolean
+toplevel_expose_event_cb (BtkWidget *widget, BdkEventExpose *event, bpointer data)
 {
   BtkWidgetProfiler *profiler;
 
@@ -295,7 +295,7 @@ static void
 profile_map_expose (BtkWidgetProfiler *profiler)
 {
   BtkWidgetProfilerPrivate *priv;
-  gdouble elapsed;
+  bdouble elapsed;
 
   priv = profiler->priv;
 
@@ -317,7 +317,7 @@ static void
 profile_destroy (BtkWidgetProfiler *profiler)
 {
   BtkWidgetProfilerPrivate *priv;
-  gdouble elapsed;
+  bdouble elapsed;
 
   priv = profiler->priv;
 
@@ -359,7 +359,7 @@ static void
 profile_boot (BtkWidgetProfiler *profiler)
 {
   BtkWidgetProfilerPrivate *priv;
-  gdouble elapsed;
+  bdouble elapsed;
 
   priv = profiler->priv;
 

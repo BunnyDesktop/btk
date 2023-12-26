@@ -32,16 +32,16 @@
 #include <btk/btkadjustment.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PROGRESS_C__) || defined (__BTK_PROGRESS_BAR_C__)
 
 #define BTK_TYPE_PROGRESS            (btk_progress_get_type ())
-#define BTK_PROGRESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS, BtkProgress))
-#define BTK_PROGRESS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS, BtkProgressClass))
-#define BTK_IS_PROGRESS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS))
-#define BTK_IS_PROGRESS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS))
-#define BTK_PROGRESS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS, BtkProgressClass))
+#define BTK_PROGRESS(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PROGRESS, BtkProgress))
+#define BTK_PROGRESS_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PROGRESS, BtkProgressClass))
+#define BTK_IS_PROGRESS(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PROGRESS))
+#define BTK_IS_PROGRESS_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PROGRESS))
+#define BTK_PROGRESS_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PROGRESS, BtkProgressClass))
 
 #endif /* !BTK_DISABLE_DEPRECATED */
 
@@ -55,13 +55,13 @@ struct _BtkProgress
 
   BtkAdjustment *adjustment;
   BdkPixmap     *offscreen_pixmap;
-  gchar         *format;
-  gfloat         x_align;
-  gfloat         y_align;
+  bchar         *format;
+  bfloat         x_align;
+  bfloat         y_align;
 
-  guint          show_text : 1;
-  guint          activity_mode : 1;
-  guint          use_text_format : 1;
+  buint          show_text : 1;
+  buint          activity_mode : 1;
+  buint          use_text_format : 1;
 };
 
 struct _BtkProgressClass
@@ -85,36 +85,36 @@ struct _BtkProgressClass
 
 #if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PROGRESS_C__) || defined (__BTK_PROGRESS_BAR_C__)
 
-GType      btk_progress_get_type            (void) G_GNUC_CONST;
+GType      btk_progress_get_type            (void) B_GNUC_CONST;
 void       btk_progress_set_show_text       (BtkProgress   *progress,
-					     gboolean       show_text);
+					     bboolean       show_text);
 void       btk_progress_set_text_alignment  (BtkProgress   *progress,
-					     gfloat         x_align,
-					     gfloat         y_align);
+					     bfloat         x_align,
+					     bfloat         y_align);
 void       btk_progress_set_format_string   (BtkProgress   *progress,
-					     const gchar   *format);
+					     const bchar   *format);
 void       btk_progress_set_adjustment      (BtkProgress   *progress,
 					     BtkAdjustment *adjustment);
 void       btk_progress_configure           (BtkProgress   *progress,
-					     gdouble        value,
-					     gdouble        min,
-					     gdouble        max);
+					     bdouble        value,
+					     bdouble        min,
+					     bdouble        max);
 void       btk_progress_set_percentage      (BtkProgress   *progress,
-					     gdouble        percentage);
+					     bdouble        percentage);
 void       btk_progress_set_value           (BtkProgress   *progress,
-					     gdouble        value);
-gdouble    btk_progress_get_value           (BtkProgress   *progress);
+					     bdouble        value);
+bdouble    btk_progress_get_value           (BtkProgress   *progress);
 void       btk_progress_set_activity_mode   (BtkProgress   *progress,
-					     gboolean       activity_mode);
-gchar*     btk_progress_get_current_text    (BtkProgress   *progress);
-gchar*     btk_progress_get_text_from_value (BtkProgress   *progress,
-					     gdouble        value);
-gdouble    btk_progress_get_current_percentage (BtkProgress *progress);
-gdouble    btk_progress_get_percentage_from_value (BtkProgress *progress,
-						   gdouble      value);
+					     bboolean       activity_mode);
+bchar*     btk_progress_get_current_text    (BtkProgress   *progress);
+bchar*     btk_progress_get_text_from_value (BtkProgress   *progress,
+					     bdouble        value);
+bdouble    btk_progress_get_current_percentage (BtkProgress *progress);
+bdouble    btk_progress_get_percentage_from_value (BtkProgress *progress,
+						   bdouble      value);
 
 #endif /* !BTK_DISABLE_DEPRECATED */
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PROGRESS_H__ */

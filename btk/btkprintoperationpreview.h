@@ -28,12 +28,12 @@
 #include <bairo.h>
 #include <btk/btkprintcontext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_PRINT_OPERATION_PREVIEW                  (btk_print_operation_preview_get_type ())
-#define BTK_PRINT_OPERATION_PREVIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreview))
-#define BTK_IS_PRINT_OPERATION_PREVIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW))
-#define BTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreviewIface))
+#define BTK_PRINT_OPERATION_PREVIEW(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreview))
+#define BTK_IS_PRINT_OPERATION_PREVIEW(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW))
+#define BTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreviewIface))
 
 typedef struct _BtkPrintOperationPreview      BtkPrintOperationPreview;      /*dummy typedef */
 typedef struct _BtkPrintOperationPreviewIface BtkPrintOperationPreviewIface;
@@ -52,9 +52,9 @@ struct _BtkPrintOperationPreviewIface
 
   /* methods */
   void              (*render_page)    (BtkPrintOperationPreview *preview,
-				       gint                      page_nr);
-  gboolean          (*is_selected)    (BtkPrintOperationPreview *preview,
-				       gint                      page_nr);
+				       bint                      page_nr);
+  bboolean          (*is_selected)    (BtkPrintOperationPreview *preview,
+				       bint                      page_nr);
   void              (*end_preview)    (BtkPrintOperationPreview *preview);
 
   /* Padding for future expansion */
@@ -67,14 +67,14 @@ struct _BtkPrintOperationPreviewIface
   void (*_btk_reserved7) (void);
 };
 
-GType   btk_print_operation_preview_get_type       (void) G_GNUC_CONST;
+GType   btk_print_operation_preview_get_type       (void) B_GNUC_CONST;
 
 void     btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
-						  gint                      page_nr);
+						  bint                      page_nr);
 void     btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview);
-gboolean btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
-						  gint                      page_nr);
+bboolean btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
+						  bint                      page_nr);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_PRINT_OPERATION_PREVIEW_H__ */

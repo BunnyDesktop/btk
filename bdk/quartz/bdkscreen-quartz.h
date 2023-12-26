@@ -21,17 +21,17 @@
 #ifndef __BDK_SCREEN_QUARTZ_H__
 #define __BDK_SCREEN_QUARTZ_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 typedef struct _BdkScreenQuartz BdkScreenQuartz;
 typedef struct _BdkScreenQuartzClass BdkScreenQuartzClass;
 
 #define BDK_TYPE_SCREEN_QUARTZ              (_bdk_screen_quartz_get_type ())
-#define BDK_SCREEN_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartz))
-#define BDK_SCREEN_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
-#define BDK_IS_SCREEN_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_QUARTZ))
-#define BDK_IS_SCREEN_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_QUARTZ))
-#define BDK_SCREEN_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
+#define BDK_SCREEN_QUARTZ(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartz))
+#define BDK_SCREEN_QUARTZ_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
+#define BDK_IS_SCREEN_QUARTZ(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_IS_SCREEN_QUARTZ_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_SCREEN_QUARTZ))
+#define BDK_SCREEN_QUARTZ_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_SCREEN_QUARTZ, BdkScreenQuartzClass))
 
 struct _BdkScreenQuartz
 {
@@ -41,18 +41,18 @@ struct _BdkScreenQuartz
   BdkColormap *default_colormap;
 
   /* Origin of "root window" in Cocoa coordinates */
-  gint min_x;
-  gint min_y;
+  bint min_x;
+  bint min_y;
 
-  gint width;
-  gint height;
+  bint width;
+  bint height;
 
   int n_screens;
   BdkRectangle *screen_rects;
 
-  guint screen_changed_id;
+  buint screen_changed_id;
 
-  guint emit_monitors_changed : 1;
+  buint emit_monitors_changed : 1;
 };
 
 struct _BdkScreenQuartzClass
@@ -63,6 +63,6 @@ struct _BdkScreenQuartzClass
 GType      _bdk_screen_quartz_get_type (void);
 BdkScreen *_bdk_screen_quartz_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* _BDK_SCREEN_QUARTZ_H_ */

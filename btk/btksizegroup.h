@@ -27,14 +27,14 @@
 
 #include <btk/btkwidget.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_SIZE_GROUP            (btk_size_group_get_type ())
-#define BTK_SIZE_GROUP(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
-#define BTK_SIZE_GROUP_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
-#define BTK_IS_SIZE_GROUP(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SIZE_GROUP))
-#define BTK_IS_SIZE_GROUP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SIZE_GROUP))
-#define BTK_SIZE_GROUP_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
+#define BTK_SIZE_GROUP(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroup))
+#define BTK_SIZE_GROUP_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
+#define BTK_IS_SIZE_GROUP(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SIZE_GROUP))
+#define BTK_IS_SIZE_GROUP_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SIZE_GROUP))
+#define BTK_SIZE_GROUP_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SIZE_GROUP, BtkSizeGroupClass))
 
 
 typedef struct _BtkSizeGroup       BtkSizeGroup;
@@ -42,23 +42,23 @@ typedef struct _BtkSizeGroupClass  BtkSizeGroupClass;
 
 struct _BtkSizeGroup
 {
-  GObject parent_instance;
+  BObject parent_instance;
 
   /* <private> */
   GSList *GSEAL (widgets);
 
-  guint8 GSEAL (mode);
+  buint8 GSEAL (mode);
 
-  guint GSEAL (have_width) : 1;
-  guint GSEAL (have_height) : 1;
-  guint GSEAL (ignore_hidden) : 1;
+  buint GSEAL (have_width) : 1;
+  buint GSEAL (have_height) : 1;
+  buint GSEAL (ignore_hidden) : 1;
 
   BtkRequisition GSEAL (requisition);
 };
 
 struct _BtkSizeGroupClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 
   /* Padding for future expansion */
   void (*_btk_reserved1) (void);
@@ -84,15 +84,15 @@ typedef enum {
   BTK_SIZE_GROUP_BOTH
 } BtkSizeGroupMode;
 
-GType            btk_size_group_get_type      (void) G_GNUC_CONST;
+GType            btk_size_group_get_type      (void) B_GNUC_CONST;
 
 BtkSizeGroup *   btk_size_group_new           (BtkSizeGroupMode  mode);
 void             btk_size_group_set_mode      (BtkSizeGroup     *size_group,
 					       BtkSizeGroupMode  mode);
 BtkSizeGroupMode btk_size_group_get_mode      (BtkSizeGroup     *size_group);
 void             btk_size_group_set_ignore_hidden (BtkSizeGroup *size_group,
-						   gboolean      ignore_hidden);
-gboolean         btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group);
+						   bboolean      ignore_hidden);
+bboolean         btk_size_group_get_ignore_hidden (BtkSizeGroup *size_group);
 void             btk_size_group_add_widget    (BtkSizeGroup     *size_group,
 					       BtkWidget        *widget);
 void             btk_size_group_remove_widget (BtkSizeGroup     *size_group,
@@ -106,6 +106,6 @@ void _btk_size_group_compute_requisition   (BtkWidget      *widget,
 					    BtkRequisition *requisition);
 void _btk_size_group_queue_resize          (BtkWidget      *widget);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_SIZE_GROUP_H__ */

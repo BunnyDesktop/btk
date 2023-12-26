@@ -5,18 +5,18 @@
 #include <btk/btk.h>
 
 int
-close_app (BtkWidget *widget, gpointer data)
+close_app (BtkWidget *widget, bpointer data)
 {
    btk_main_quit ();
    return TRUE;
 }
 
 int
-expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
+expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, bpointer data)
 {
    BdkPixbuf *pixbuf;
          
-   pixbuf = (BdkPixbuf *) g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+   pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
    if (bdk_pixbuf_get_has_alpha (pixbuf))
    {
       bdk_draw_rgb_32_image (drawing_area->window,
@@ -47,11 +47,11 @@ expose_cb (BtkWidget *drawing_area, BdkEventExpose *evt, gpointer data)
 }
 
 int
-configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
+configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, bpointer data)
 {
    BdkPixbuf *pixbuf;
                            
-   pixbuf = (BdkPixbuf *) g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+   pixbuf = (BdkPixbuf *) g_object_get_data (B_OBJECT (drawing_area), "pixbuf");
     
    g_print ("X:%d Y:%d\n", evt->width, evt->height);
    if (evt->width != bdk_pixbuf_get_width (pixbuf) || evt->height != bdk_pixbuf_get_height (pixbuf))
@@ -62,7 +62,7 @@ configure_cb (BtkWidget *drawing_area, BdkEventConfigure *evt, gpointer data)
       root = bdk_get_default_root_window ();
       new_pixbuf = bdk_pixbuf_get_from_drawable (NULL, root, NULL,
 						 0, 0, 0, 0, evt->width, evt->height);
-      g_object_set_data (G_OBJECT (drawing_area), "pixbuf", new_pixbuf);
+      g_object_set_data (B_OBJECT (drawing_area), "pixbuf", new_pixbuf);
       g_object_unref (pixbuf);
    }
 
@@ -109,7 +109,7 @@ main (int argc, char **argv)
 
    g_signal_connect (drawing_area, "configure_event",
 		     G_CALLBACK (configure_cb), NULL);
-   g_object_set_data (G_OBJECT (drawing_area), "pixbuf", pixbuf);
+   g_object_set_data (B_OBJECT (drawing_area), "pixbuf", pixbuf);
    btk_box_pack_start (BTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
    
    btk_widget_show_all (window);

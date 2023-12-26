@@ -42,9 +42,9 @@ action_test_teardown (ActionTest    *fixture,
 }
 
 static void
-notify_count_emmisions (GObject    *object,
-			GParamSpec *pspec,
-			gpointer    data)
+notify_count_emmisions (BObject    *object,
+			BParamSpec *pspec,
+			bpointer    data)
 {
   unsigned int *i = data;
   (*i)++;

@@ -23,14 +23,14 @@
 #include <bunnylib-object.h>
 #include <btk/btk.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_TEXT_UTIL                  (bail_text_util_get_type ())
-#define BAIL_TEXT_UTIL(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtil))
-#define BAIL_TEXT_UTIL_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
-#define BAIL_IS_TEXT_UTIL(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_UTIL))
-#define BAIL_IS_TEXT_UTIL_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_UTIL))
-#define BAIL_TEXT_UTIL_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
+#define BAIL_TEXT_UTIL(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtil))
+#define BAIL_TEXT_UTIL_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
+#define BAIL_IS_TEXT_UTIL(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_UTIL))
+#define BAIL_IS_TEXT_UTIL_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_UTIL))
+#define BAIL_TEXT_UTIL_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_UTIL, BailTextUtilClass))
 
 /**
  *BailOffsetType:
@@ -54,34 +54,34 @@ typedef struct _BailTextUtilClass	BailTextUtilClass;
 
 struct _BailTextUtil
 {
-  GObject parent;
+  BObject parent;
 
   BtkTextBuffer *buffer;
 };
 
 struct _BailTextUtilClass
 {
-  GObjectClass parent_class;
+  BObjectClass parent_class;
 };
 
 GType         bail_text_util_get_type      (void);
 BailTextUtil* bail_text_util_new           (void);
 
 void          bail_text_util_text_setup    (BailTextUtil    *textutil,
-                                            const gchar     *text);
+                                            const bchar     *text);
 void          bail_text_util_buffer_setup  (BailTextUtil    *textutil,
                                             BtkTextBuffer   *buffer);
-gchar*        bail_text_util_get_text      (BailTextUtil    *textutil,
-                                             gpointer        layout,
+bchar*        bail_text_util_get_text      (BailTextUtil    *textutil,
+                                             bpointer        layout,
                                             BailOffsetType  function,
                                             BatkTextBoundary boundary_type,
-                                            gint            offset,
-                                            gint            *start_offset,
-                                            gint            *end_offset);
-gchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
-                                            gint            start_pos,
-                                            gint            end_pos);
+                                            bint            offset,
+                                            bint            *start_offset,
+                                            bint            *end_offset);
+bchar*        bail_text_util_get_substring (BailTextUtil    *textutil,
+                                            bint            start_pos,
+                                            bint            end_pos);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /*__BAIL_TEXT_UTIL_H__ */

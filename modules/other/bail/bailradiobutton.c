@@ -25,7 +25,7 @@
 static void      bail_radio_button_class_init        (BailRadioButtonClass *klass);
 static void      bail_radio_button_init              (BailRadioButton      *radio_button);
 static void      bail_radio_button_initialize        (BatkObject            *accessible,
-                                                      gpointer              data);
+                                                      bpointer              data);
 
 static BatkRelationSet* bail_radio_button_ref_relation_set (BatkObject       *obj);
 
@@ -48,7 +48,7 @@ bail_radio_button_init (BailRadioButton *radio_button)
 
 static void
 bail_radio_button_initialize (BatkObject *accessible,
-                              gpointer  data)
+                              bpointer  data)
 {
   BATK_OBJECT_CLASS (bail_radio_button_parent_class)->initialize (accessible, data);
 
@@ -100,11 +100,11 @@ bail_radio_button_ref_relation_set (BatkObject *obj)
     if (list)
     {
       BatkObject **accessible_array;
-      guint list_length;
+      buint list_length;
       BatkRelation* relation;
-      gint i = 0;
+      bint i = 0;
 
-      list_length = g_slist_length (list);
+      list_length = b_slist_length (list);
       accessible_array = (BatkObject**) g_malloc (sizeof (BatkObject *) * 
                           list_length);
       while (list != NULL)

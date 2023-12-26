@@ -28,13 +28,13 @@
 #include <btk/btkbuilder.h>
 #include <btk/btktypeutils.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_BUILDABLE            (btk_buildable_get_type ())
-#define BTK_BUILDABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDABLE, BtkBuildable))
-#define BTK_BUILDABLE_CLASS(obj)      (G_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_BUILDABLE, BtkBuildableIface))
-#define BTK_IS_BUILDABLE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUILDABLE))
-#define BTK_BUILDABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_BUILDABLE, BtkBuildableIface))
+#define BTK_BUILDABLE(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUILDABLE, BtkBuildable))
+#define BTK_BUILDABLE_CLASS(obj)      (B_TYPE_CHECK_CLASS_CAST ((obj), BTK_TYPE_BUILDABLE, BtkBuildableIface))
+#define BTK_IS_BUILDABLE(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUILDABLE))
+#define BTK_BUILDABLE_GET_IFACE(obj)  (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_BUILDABLE, BtkBuildableIface))
 
 
 typedef struct _BtkBuildable      BtkBuildable; /* Dummy typedef */
@@ -95,82 +95,82 @@ struct _BtkBuildableIface
 
   /* virtual table */
   void          (* set_name)               (BtkBuildable  *buildable,
-                                            const gchar   *name);
-  const gchar * (* get_name)               (BtkBuildable  *buildable);
+                                            const bchar   *name);
+  const bchar * (* get_name)               (BtkBuildable  *buildable);
   void          (* add_child)              (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
-					    const gchar   *type);
+					    BObject       *child,
+					    const bchar   *type);
   void          (* set_buildable_property) (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    const gchar   *name,
-					    const GValue  *value);
-  GObject *     (* construct_child)        (BtkBuildable  *buildable,
+					    const bchar   *name,
+					    const BValue  *value);
+  BObject *     (* construct_child)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    const gchar   *name);
-  gboolean      (* custom_tag_start)       (BtkBuildable  *buildable,
+					    const bchar   *name);
+  bboolean      (* custom_tag_start)       (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
-					    const gchar   *tagname,
+					    BObject       *child,
+					    const bchar   *tagname,
 					    GMarkupParser *parser,
-					    gpointer      *data);
+					    bpointer      *data);
   void          (* custom_tag_end)         (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
-					    const gchar   *tagname,
-					    gpointer      *data);
+					    BObject       *child,
+					    const bchar   *tagname,
+					    bpointer      *data);
   void          (* custom_finished)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    GObject       *child,
-					    const gchar   *tagname,
-					    gpointer       data);
+					    BObject       *child,
+					    const bchar   *tagname,
+					    bpointer       data);
   void          (* parser_finished)        (BtkBuildable  *buildable,
 					    BtkBuilder    *builder);
 
-  GObject *     (* get_internal_child)     (BtkBuildable  *buildable,
+  BObject *     (* get_internal_child)     (BtkBuildable  *buildable,
 					    BtkBuilder    *builder,
-					    const gchar   *childname);
+					    const bchar   *childname);
 };
 
 
-GType     btk_buildable_get_type               (void) G_GNUC_CONST;
+GType     btk_buildable_get_type               (void) B_GNUC_CONST;
 
 void      btk_buildable_set_name               (BtkBuildable        *buildable,
-						const gchar         *name);
-const gchar * btk_buildable_get_name           (BtkBuildable        *buildable);
+						const bchar         *name);
+const bchar * btk_buildable_get_name           (BtkBuildable        *buildable);
 void      btk_buildable_add_child              (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						GObject             *child,
-						const gchar         *type);
+						BObject             *child,
+						const bchar         *type);
 void      btk_buildable_set_buildable_property (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						const gchar         *name,
-						const GValue        *value);
-GObject * btk_buildable_construct_child        (BtkBuildable        *buildable,
+						const bchar         *name,
+						const BValue        *value);
+BObject * btk_buildable_construct_child        (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						const gchar         *name);
-gboolean  btk_buildable_custom_tag_start       (BtkBuildable        *buildable,
+						const bchar         *name);
+bboolean  btk_buildable_custom_tag_start       (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						GObject             *child,
-						const gchar         *tagname,
+						BObject             *child,
+						const bchar         *tagname,
 						GMarkupParser       *parser,
-						gpointer            *data);
+						bpointer            *data);
 void      btk_buildable_custom_tag_end         (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						GObject             *child,
-						const gchar         *tagname,
-						gpointer            *data);
+						BObject             *child,
+						const bchar         *tagname,
+						bpointer            *data);
 void      btk_buildable_custom_finished        (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						GObject             *child,
-						const gchar         *tagname,
-						gpointer             data);
+						BObject             *child,
+						const bchar         *tagname,
+						bpointer             data);
 void      btk_buildable_parser_finished        (BtkBuildable        *buildable,
 						BtkBuilder          *builder);
-GObject * btk_buildable_get_internal_child     (BtkBuildable        *buildable,
+BObject * btk_buildable_get_internal_child     (BtkBuildable        *buildable,
 						BtkBuilder          *builder,
-						const gchar         *childname);
+						const bchar         *childname);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_BUILDABLE_H__ */

@@ -27,15 +27,15 @@ int main (int argc, char *argv[])
   BtkWidget *box2;
   BtkWidget *frame;
   BtkWidget *scale;
-  gdouble marks[3] = { 0.0, 50.0, 100.0 };
-  const gchar *labels[3] = { 
+  bdouble marks[3] = { 0.0, 50.0, 100.0 };
+  const bchar *labels[3] = { 
     "<small>Left</small>", 
     "<small>Middle</small>", 
     "<small>Right</small>" 
   };
 
-  gdouble bath_marks[4] = { 0.0, 33.3, 66.6, 100.0 };
-  const gchar *bath_labels[4] = { 
+  bdouble bath_marks[4] = { 0.0, 33.3, 66.6, 100.0 };
+  const bchar *bath_labels[4] = { 
     "<span color='blue' size='small'>Cold</span>", 
     "<span size='small'>Baby bath</span>", 
     "<span size='small'>Hot tub</span>", 

@@ -59,10 +59,10 @@ bdk_keys_keyval_compare (const void *pkey, const void *pbase)
  *     or %NULL if @keyval is not a valid key. The string should not be
  *     modified.
  */
-gchar*
-bdk_keyval_name (guint keyval)
+bchar*
+bdk_keyval_name (buint keyval)
 {
-  static gchar buf[100];
+  static bchar buf[100];
   bdk_key *found;
 
   /* Check for directly encoded 24-bit UCS characters: */
@@ -82,7 +82,7 @@ bdk_keyval_name (guint keyval)
              ((found - 1)->keyval == keyval))
         found--;
 	    
-      return (gchar *) (keynames + found->offset);
+      return (bchar *) (keynames + found->offset);
     }
   else if (keyval != 0)
     {
@@ -113,8 +113,8 @@ bdk_keys_name_compare (const void *pkey, const void *pbase)
  * Returns: the corresponding key value, or %BDK_KEY_VoidSymbol
  *     if the key name is not a valid key
  */
-guint
-bdk_keyval_from_name (const gchar *keyval_name)
+buint
+bdk_keyval_from_name (const bchar *keyval_name)
 {
   bdk_key *found;
 

@@ -31,11 +31,11 @@ typedef struct _MswRcStyleClass MswRcStyleClass;
 extern GType msw_type_rc_style;
 
 #define MSW_TYPE_RC_STYLE              msw_type_rc_style
-#define MSW_RC_STYLE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MSW_TYPE_RC_STYLE, MswRcStyle))
-#define MSW_RC_STYLE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MSW_TYPE_RC_STYLE, MswRcStyleClass))
-#define MSW_IS_RC_STYLE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MSW_TYPE_RC_STYLE))
-#define MSW_IS_RC_STYLE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), MSW_TYPE_RC_STYLE))
-#define MSW_RC_STYLE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), MSW_TYPE_RC_STYLE, MswRcStyleClass))
+#define MSW_RC_STYLE(object)           (B_TYPE_CHECK_INSTANCE_CAST ((object), MSW_TYPE_RC_STYLE, MswRcStyle))
+#define MSW_RC_STYLE_CLASS(klass)      (B_TYPE_CHECK_CLASS_CAST ((klass), MSW_TYPE_RC_STYLE, MswRcStyleClass))
+#define MSW_IS_RC_STYLE(object)        (B_TYPE_CHECK_INSTANCE_TYPE ((object), MSW_TYPE_RC_STYLE))
+#define MSW_IS_RC_STYLE_CLASS(klass)   (B_TYPE_CHECK_CLASS_TYPE ((klass), MSW_TYPE_RC_STYLE))
+#define MSW_RC_STYLE_GET_CLASS(obj)    (B_TYPE_INSTANCE_GET_CLASS ((obj), MSW_TYPE_RC_STYLE, MswRcStyleClass))
 
 struct _MswRcStyle
 {

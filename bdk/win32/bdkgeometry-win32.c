@@ -54,10 +54,10 @@ static void tmp_reset_bg (BdkWindow *window);
 
 void
 _bdk_window_move_resize_child (BdkWindow *window,
-			       gint       x,
-			       gint       y,
-			       gint       width,
-			       gint       height)
+			       bint       x,
+			       bint       y,
+			       bint       width,
+			       bint       height)
 {
   BdkWindowImplWin32 *impl;
   BdkWindowObject *obj;
@@ -107,7 +107,7 @@ _bdk_window_move_resize_child (BdkWindow *window,
 
 void
 _bdk_win32_window_tmp_unset_bg (BdkWindow *window,
-				gboolean recurse)
+				bboolean recurse)
 {
   BdkWindowObject *private;
 
@@ -185,7 +185,7 @@ _bdk_win32_window_tmp_unset_parent_bg (BdkWindow *window)
 
 void
 _bdk_win32_window_tmp_reset_bg (BdkWindow *window,
-				gboolean   recurse)
+				bboolean   recurse)
 {
   BdkWindowObject *private = (BdkWindowObject*)window;
 

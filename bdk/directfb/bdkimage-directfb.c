@@ -44,14 +44,14 @@
 
 
 static GList    *image_list   = NULL;
-static gpointer  parent_class = NULL;
+static bpointer  parent_class = NULL;
 
 static void bdk_directfb_image_destroy (BdkImage      *image);
 static void bdk_image_init             (BdkImage      *image);
 static void bdk_image_class_init       (BdkImageClass *klass);
-static void bdk_image_finalize         (GObject       *object);
+static void bdk_image_finalize         (BObject       *object);
 
-G_DEFINE_TYPE (BdkImage, bdk_image, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkImage, bdk_image, B_TYPE_OBJECT)
 
 static void
 bdk_image_init (BdkImage *image)
@@ -65,7 +65,7 @@ bdk_image_init (BdkImage *image)
 static void
 bdk_image_class_init (BdkImageClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -73,7 +73,7 @@ bdk_image_class_init (BdkImageClass *klass)
 }
 
 static void
-bdk_image_finalize (GObject *object)
+bdk_image_finalize (BObject *object)
 {
   BdkImage *image;
 
@@ -86,8 +86,8 @@ bdk_image_finalize (GObject *object)
 
   bdk_directfb_image_destroy (image);
 
-  if (G_OBJECT_CLASS (parent_class)->finalize)
-    G_OBJECT_CLASS (parent_class)->finalize (object);
+  if (B_OBJECT_CLASS (parent_class)->finalize)
+    B_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
 
@@ -95,7 +95,7 @@ bdk_image_finalize (GObject *object)
 void
 _bdk_image_exit (void)
 {
-  GObject *image;
+  BObject *image;
 
   while (image_list)
     {
@@ -107,9 +107,9 @@ _bdk_image_exit (void)
 
 BdkImage *
 bdk_image_new_bitmap (BdkVisual *visual,
-                      gpointer   data,
-                      gint       w,
-                      gint       h)
+                      bpointer   data,
+                      bint       w,
+                      bint       h)
 {
   BdkImage         *image;
   BdkImageDirectFB *private;
@@ -125,7 +125,7 @@ bdk_image_new_bitmap (BdkVisual *visual,
 
   BDK_NOTE (MISC, g_print ("bdk_image_new_bitmap: %dx%d\n", w, h));
 
-  g_message ("not fully implemented %s", G_STRFUNC);
+  g_message ("not fully implemented %s", B_STRFUNC);
 
   image->bpl = (w + 7) / 8;
   image->mem = g_malloc (image->bpl * h);
@@ -148,14 +148,14 @@ BdkImage*
 _bdk_image_new_for_depth (BdkScreen    *screen,
                           BdkImageType  type,
                           BdkVisual    *visual,
-                          gint          width,
-                          gint          height,
-                          gint          depth)
+                          bint          width,
+                          bint          height,
+                          bint          depth)
 {
   BdkImage              *image;
   BdkImageDirectFB      *private;
   DFBResult              ret;
-  gint                   pitch;
+  bint                   pitch;
   DFBSurfacePixelFormat  format;
   IDirectFBSurface      *surface;
 
@@ -183,7 +183,7 @@ _bdk_image_new_for_depth (BdkScreen    *screen,
       format = DSPF_ARGB;
       break;
     default:
-      g_message ("unimplemented %s for depth %d", G_STRFUNC, depth);
+      g_message ("unimplemented %s for depth %d", B_STRFUNC, depth);
       return NULL;
     }
 
@@ -231,12 +231,12 @@ _bdk_image_new_for_depth (BdkScreen    *screen,
 BdkImage*
 _bdk_directfb_copy_to_image (BdkDrawable *drawable,
                              BdkImage    *image,
-                             gint         src_x,
-                             gint         src_y,
-                             gint         dest_x,
-                             gint         dest_y,
-                             gint         width,
-                             gint         height)
+                             bint         src_x,
+                             bint         src_y,
+                             bint         dest_x,
+                             bint         dest_y,
+                             bint         width,
+                             bint         height)
 {
   BdkDrawableImplDirectFB *impl;
   BdkImageDirectFB        *private;
@@ -299,12 +299,12 @@ _bdk_directfb_copy_to_image (BdkDrawable *drawable,
   return image;
 }
 
-guint32
+buint32
 bdk_image_get_pixel (BdkImage *image,
-                     gint      x,
-                     gint      y)
+                     bint      x,
+                     bint      y)
 {
-  guint32 pixel = 0;
+  buint32 pixel = 0;
 
   g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
 
@@ -312,10 +312,10 @@ bdk_image_get_pixel (BdkImage *image,
     return 0;
 
   if (image->depth == 1)
-    pixel = (((guchar *) image->mem)[y * image->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
+    pixel = (((buchar *) image->mem)[y * image->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
   else
     {
-      guchar *pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
+      buchar *pixelp = (buchar *) image->mem + y * image->bpl + x * image->bpp;
 
       switch (image->bpp)
         {
@@ -342,9 +342,9 @@ bdk_image_get_pixel (BdkImage *image,
 
 void
 bdk_image_put_pixel (BdkImage *image,
-                     gint       x,
-                     gint       y,
-                     guint32    pixel)
+                     bint       x,
+                     bint       y,
+                     buint32    pixel)
 {
   g_return_if_fail (image != NULL);
 
@@ -353,12 +353,12 @@ bdk_image_put_pixel (BdkImage *image,
 
   if (image->depth == 1)
     if (pixel & 1)
-      ((guchar *) image->mem)[y * image->bpl + (x >> 3)] |= (1 << (7 - (x & 0x7)));
+      ((buchar *) image->mem)[y * image->bpl + (x >> 3)] |= (1 << (7 - (x & 0x7)));
     else
-      ((guchar *) image->mem)[y * image->bpl + (x >> 3)] &= ~(1 << (7 - (x & 0x7)));
+      ((buchar *) image->mem)[y * image->bpl + (x >> 3)] &= ~(1 << (7 - (x & 0x7)));
   else
     {
-      guchar *pixelp = (guchar *) image->mem + y * image->bpl + x * image->bpp;
+      buchar *pixelp = (buchar *) image->mem + y * image->bpl + x * image->bpp;
 
       switch (image->bpp)
         {
@@ -387,7 +387,7 @@ bdk_directfb_image_destroy (BdkImage *image)
     return;
 
   BDK_NOTE (MISC, g_print ("bdk_directfb_image_destroy: %#lx\n",
-                           (gulong) private->surface));
+                           (bulong) private->surface));
 
   private->surface->Unlock (private->surface);
   private->surface->Release (private->surface);
@@ -396,9 +396,9 @@ bdk_directfb_image_destroy (BdkImage *image)
   image->windowing_data = NULL;
 }
 
-gint
+bint
 _bdk_windowing_get_bits_for_depth (BdkDisplay *display,
-                                   gint        depth)
+                                   bint        depth)
 {
   switch (depth)
     {

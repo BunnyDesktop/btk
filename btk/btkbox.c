@@ -54,21 +54,21 @@ typedef struct _BtkBoxPrivate BtkBoxPrivate;
 struct _BtkBoxPrivate
 {
   BtkOrientation orientation;
-  guint          default_expand : 1;
-  guint          spacing_set    : 1;
+  buint          default_expand : 1;
+  buint          spacing_set    : 1;
 };
 
-#define BTK_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_BOX, BtkBoxPrivate))
+#define BTK_BOX_GET_PRIVATE(obj) (B_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_BOX, BtkBoxPrivate))
 
 
-static void btk_box_set_property       (GObject        *object,
-                                        guint           prop_id,
-                                        const GValue   *value,
-                                        GParamSpec     *pspec);
-static void btk_box_get_property       (GObject        *object,
-                                        guint           prop_id,
-                                        GValue         *value,
-                                        GParamSpec     *pspec);
+static void btk_box_set_property       (BObject        *object,
+                                        buint           prop_id,
+                                        const BValue   *value,
+                                        BParamSpec     *pspec);
+static void btk_box_get_property       (BObject        *object,
+                                        buint           prop_id,
+                                        BValue         *value,
+                                        BParamSpec     *pspec);
 
 static void btk_box_size_request       (BtkWidget      *widget,
                                         BtkRequisition *requisition);
@@ -80,19 +80,19 @@ static void btk_box_add                (BtkContainer   *container,
 static void btk_box_remove             (BtkContainer   *container,
                                         BtkWidget      *widget);
 static void btk_box_forall             (BtkContainer   *container,
-                                        gboolean        include_internals,
+                                        bboolean        include_internals,
                                         BtkCallback     callback,
-                                        gpointer        callback_data);
+                                        bpointer        callback_data);
 static void btk_box_set_child_property (BtkContainer   *container,
                                         BtkWidget      *child,
-                                        guint           property_id,
-                                        const GValue   *value,
-                                        GParamSpec     *pspec);
+                                        buint           property_id,
+                                        const BValue   *value,
+                                        BParamSpec     *pspec);
 static void btk_box_get_child_property (BtkContainer   *container,
                                         BtkWidget      *child,
-                                        guint           property_id,
-                                        GValue         *value,
-                                        GParamSpec     *pspec);
+                                        buint           property_id,
+                                        BValue         *value,
+                                        BParamSpec     *pspec);
 static GType btk_box_child_type        (BtkContainer   *container);
 
 
@@ -103,7 +103,7 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkBox, btk_box, BTK_TYPE_CONTAINER,
 static void
 btk_box_class_init (BtkBoxClass *class)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
+  BObjectClass *object_class = B_OBJECT_CLASS (class);
   BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
   BtkContainerClass *container_class = BTK_CONTAINER_CLASS (class);
 
@@ -130,7 +130,7 @@ btk_box_class_init (BtkBoxClass *class)
                                                      P_("Spacing"),
                                                      P_("The amount of space between children"),
                                                      0,
-                                                     G_MAXINT,
+                                                     B_MAXINT,
                                                      0,
                                                      BTK_PARAM_READWRITE));
 
@@ -161,7 +161,7 @@ btk_box_class_init (BtkBoxClass *class)
 					      g_param_spec_uint ("padding", 
 								 P_("Padding"), 
 								 P_("Extra space to put between the child and its neighbors, in pixels"),
-								 0, G_MAXINT, 0,
+								 0, B_MAXINT, 0,
 								 BTK_PARAM_READWRITE));
   btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PACK_TYPE,
@@ -175,7 +175,7 @@ btk_box_class_init (BtkBoxClass *class)
 					      g_param_spec_int ("position", 
 								P_("Position"), 
 								P_("The index of the child in the parent"),
-								-1, G_MAXINT, 0,
+								-1, B_MAXINT, 0,
 								BTK_PARAM_READWRITE));
 
   g_type_class_add_private (object_class, sizeof (BtkBoxPrivate));
@@ -199,10 +199,10 @@ btk_box_init (BtkBox *box)
 }
 
 static void
-btk_box_set_property (GObject      *object,
-                      guint         prop_id,
-                      const GValue *value,
-                      GParamSpec   *pspec)
+btk_box_set_property (BObject      *object,
+                      buint         prop_id,
+                      const BValue *value,
+                      BParamSpec   *pspec)
 {
   BtkBox *box = BTK_BOX (object);
   BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
@@ -210,26 +210,26 @@ btk_box_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      private->orientation = g_value_get_enum (value);
+      private->orientation = b_value_get_enum (value);
       btk_widget_queue_resize (BTK_WIDGET (box));
       break;
     case PROP_SPACING:
-      btk_box_set_spacing (box, g_value_get_int (value));
+      btk_box_set_spacing (box, b_value_get_int (value));
       break;
     case PROP_HOMOGENEOUS:
-      btk_box_set_homogeneous (box, g_value_get_boolean (value));
+      btk_box_set_homogeneous (box, b_value_get_boolean (value));
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-btk_box_get_property (GObject    *object,
-                      guint       prop_id,
-                      GValue     *value,
-                      GParamSpec *pspec)
+btk_box_get_property (BObject    *object,
+                      buint       prop_id,
+                      BValue     *value,
+                      BParamSpec *pspec)
 {
   BtkBox *box = BTK_BOX (object);
   BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
@@ -237,16 +237,16 @@ btk_box_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_ORIENTATION:
-      g_value_set_enum (value, private->orientation);
+      b_value_set_enum (value, private->orientation);
       break;
     case PROP_SPACING:
-      g_value_set_int (value, box->spacing);
+      b_value_set_int (value, box->spacing);
       break;
     case PROP_HOMOGENEOUS:
-      g_value_set_boolean (value, box->homogeneous);
+      b_value_set_boolean (value, box->homogeneous);
       break;
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      B_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -259,9 +259,9 @@ btk_box_size_request (BtkWidget      *widget,
   BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
   BtkBoxChild *child;
   GList *children;
-  gint nvis_children;
-  gint width;
-  gint height;
+  bint nvis_children;
+  bint width;
+  bint height;
 
   requisition->width = 0;
   requisition->height = 0;
@@ -335,15 +335,15 @@ btk_box_size_allocate (BtkWidget     *widget,
   BtkBoxChild *child;
   GList *children;
   BtkAllocation child_allocation;
-  gint nvis_children = 0;
-  gint nexpand_children = 0;
-  gint child_width = 0;
-  gint child_height = 0;
-  gint width = 0;
-  gint height = 0;
-  gint extra = 0;
-  gint x = 0;
-  gint y = 0;
+  bint nvis_children = 0;
+  bint nexpand_children = 0;
+  bint child_width = 0;
+  bint child_height = 0;
+  bint width = 0;
+  bint height = 0;
+  bint extra = 0;
+  bint x = 0;
+  bint y = 0;
   BtkTextDirection direction;
 
   widget->allocation = *allocation;
@@ -385,12 +385,12 @@ btk_box_size_allocate (BtkWidget     *widget,
 	{
           if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
-              width = (gint) allocation->width - (gint) widget->requisition.width;
+              width = (bint) allocation->width - (bint) widget->requisition.width;
               extra = width / nexpand_children;
             }
           else
             {
-              height = (gint) allocation->height - (gint) widget->requisition.height;
+              height = (bint) allocation->height - (bint) widget->requisition.height;
               extra = height / nexpand_children;
             }
 	}
@@ -399,13 +399,13 @@ btk_box_size_allocate (BtkWidget     *widget,
         {
           x = allocation->x + BTK_CONTAINER (box)->border_width;
           child_allocation.y = allocation->y + BTK_CONTAINER (box)->border_width;
-          child_allocation.height = MAX (1, (gint) allocation->height - (gint) BTK_CONTAINER (box)->border_width * 2);
+          child_allocation.height = MAX (1, (bint) allocation->height - (bint) BTK_CONTAINER (box)->border_width * 2);
         }
       else
         {
           y = allocation->y + BTK_CONTAINER (box)->border_width;
           child_allocation.x = allocation->x + BTK_CONTAINER (box)->border_width;
-          child_allocation.width = MAX (1, (gint) allocation->width - (gint) BTK_CONTAINER (box)->border_width * 2);
+          child_allocation.width = MAX (1, (bint) allocation->width - (bint) BTK_CONTAINER (box)->border_width * 2);
         }
 
       children = box->children;
@@ -465,12 +465,12 @@ btk_box_size_allocate (BtkWidget     *widget,
 		{
                   if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
-                      child_allocation.width = MAX (1, (gint) child_width - (gint) child->padding * 2);
+                      child_allocation.width = MAX (1, (bint) child_width - (bint) child->padding * 2);
                       child_allocation.x = x + child->padding;
                     }
                   else
                     {
-                      child_allocation.height = MAX (1, child_height - (gint)child->padding * 2);
+                      child_allocation.height = MAX (1, child_height - (bint)child->padding * 2);
                       child_allocation.y = y + child->padding;
                     }
 		}
@@ -564,12 +564,12 @@ btk_box_size_allocate (BtkWidget     *widget,
                 {
                   if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
-                      child_allocation.width = MAX (1, (gint)child_width - (gint)child->padding * 2);
+                      child_allocation.width = MAX (1, (bint)child_width - (bint)child->padding * 2);
                       child_allocation.x = x + child->padding - child_width;
                     }
                   else
                     {
-                      child_allocation.height = MAX (1, child_height - (gint)child->padding * 2);
+                      child_allocation.height = MAX (1, child_height - (bint)child->padding * 2);
                       child_allocation.y = y + child->padding - child_height;
                      }
                 }
@@ -611,13 +611,13 @@ btk_box_child_type (BtkContainer   *container)
 static void
 btk_box_set_child_property (BtkContainer *container,
                             BtkWidget    *child,
-                            guint         property_id,
-                            const GValue *value,
-                            GParamSpec   *pspec)
+                            buint         property_id,
+                            const BValue *value,
+                            BParamSpec   *pspec)
 {
-  gboolean expand = 0;
-  gboolean fill = 0;
-  guint padding = 0;
+  bboolean expand = 0;
+  bboolean fill = 0;
+  buint padding = 0;
   BtkPackType pack_type = 0;
 
   if (property_id != CHILD_PROP_POSITION)
@@ -632,7 +632,7 @@ btk_box_set_child_property (BtkContainer *container,
     case CHILD_PROP_EXPAND:
       btk_box_set_child_packing (BTK_BOX (container),
 				 child,
-				 g_value_get_boolean (value),
+				 b_value_get_boolean (value),
 				 fill,
 				 padding,
 				 pack_type);
@@ -641,7 +641,7 @@ btk_box_set_child_property (BtkContainer *container,
       btk_box_set_child_packing (BTK_BOX (container),
 				 child,
 				 expand,
-				 g_value_get_boolean (value),
+				 b_value_get_boolean (value),
 				 padding,
 				 pack_type);
       break;
@@ -650,7 +650,7 @@ btk_box_set_child_property (BtkContainer *container,
 				 child,
 				 expand,
 				 fill,
-				 g_value_get_uint (value),
+				 b_value_get_uint (value),
 				 pack_type);
       break;
     case CHILD_PROP_PACK_TYPE:
@@ -659,12 +659,12 @@ btk_box_set_child_property (BtkContainer *container,
 				 expand,
 				 fill,
 				 padding,
-				 g_value_get_enum (value));
+				 b_value_get_enum (value));
       break;
     case CHILD_PROP_POSITION:
       btk_box_reorder_child (BTK_BOX (container),
 			     child,
-			     g_value_get_int (value));
+			     b_value_get_int (value));
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -675,13 +675,13 @@ btk_box_set_child_property (BtkContainer *container,
 static void
 btk_box_get_child_property (BtkContainer *container,
 			    BtkWidget    *child,
-			    guint         property_id,
-			    GValue       *value,
-			    GParamSpec   *pspec)
+			    buint         property_id,
+			    BValue       *value,
+			    BParamSpec   *pspec)
 {
-  gboolean expand = 0;
-  gboolean fill = 0;
-  guint padding = 0;
+  bboolean expand = 0;
+  bboolean fill = 0;
+  buint padding = 0;
   BtkPackType pack_type = 0;
   GList *list;
 
@@ -694,18 +694,18 @@ btk_box_get_child_property (BtkContainer *container,
 				 &pack_type);
   switch (property_id)
     {
-      guint i;
+      buint i;
     case CHILD_PROP_EXPAND:
-      g_value_set_boolean (value, expand);
+      b_value_set_boolean (value, expand);
       break;
     case CHILD_PROP_FILL:
-      g_value_set_boolean (value, fill);
+      b_value_set_boolean (value, fill);
       break;
     case CHILD_PROP_PADDING:
-      g_value_set_uint (value, padding);
+      b_value_set_uint (value, padding);
       break;
     case CHILD_PROP_PACK_TYPE:
-      g_value_set_enum (value, pack_type);
+      b_value_set_enum (value, pack_type);
       break;
     case CHILD_PROP_POSITION:
       i = 0;
@@ -718,7 +718,7 @@ btk_box_get_child_property (BtkContainer *container,
 	    break;
 	  i++;
 	}
-      g_value_set_int (value, list ? i : -1);
+      b_value_set_int (value, list ? i : -1);
       break;
     default:
       BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
@@ -729,9 +729,9 @@ btk_box_get_child_property (BtkContainer *container,
 static void
 btk_box_pack (BtkBox      *box,
               BtkWidget   *child,
-              gboolean     expand,
-              gboolean     fill,
-              guint        padding,
+              bboolean     expand,
+              bboolean     fill,
+              buint        padding,
               BtkPackType  pack_type)
 {
   BtkBoxChild *child_info;
@@ -776,8 +776,8 @@ btk_box_pack (BtkBox      *box,
  **/
 BtkWidget*
 _btk_box_new (BtkOrientation orientation,
-              gboolean       homogeneous,
-              gint           spacing)
+              bboolean       homogeneous,
+              bint           spacing)
 {
   return g_object_new (BTK_TYPE_BOX,
                        "orientation", orientation,
@@ -811,9 +811,9 @@ _btk_box_new (BtkOrientation orientation,
 void
 btk_box_pack_start (BtkBox    *box,
 		    BtkWidget *child,
-		    gboolean   expand,
-		    gboolean   fill,
-		    guint      padding)
+		    bboolean   expand,
+		    bboolean   fill,
+		    buint      padding)
 {
   btk_box_pack (box, child, expand, fill, padding, BTK_PACK_START);
 }
@@ -843,9 +843,9 @@ btk_box_pack_start (BtkBox    *box,
 void
 btk_box_pack_end (BtkBox    *box,
 		  BtkWidget *child,
-		  gboolean   expand,
-		  gboolean   fill,
-		  guint      padding)
+		  bboolean   expand,
+		  bboolean   fill,
+		  buint      padding)
 {
   btk_box_pack (box, child, expand, fill, padding, BTK_PACK_END);
 }
@@ -906,14 +906,14 @@ btk_box_pack_end_defaults (BtkBox    *box,
  */
 void
 btk_box_set_homogeneous (BtkBox  *box,
-			 gboolean homogeneous)
+			 bboolean homogeneous)
 {
   g_return_if_fail (BTK_IS_BOX (box));
 
   if ((homogeneous ? TRUE : FALSE) != box->homogeneous)
     {
       box->homogeneous = homogeneous ? TRUE : FALSE;
-      g_object_notify (G_OBJECT (box), "homogeneous");
+      g_object_notify (B_OBJECT (box), "homogeneous");
       btk_widget_queue_resize (BTK_WIDGET (box));
     }
 }
@@ -927,7 +927,7 @@ btk_box_set_homogeneous (BtkBox  *box,
  *
  * Return value: %TRUE if the box is homogeneous.
  **/
-gboolean
+bboolean
 btk_box_get_homogeneous (BtkBox *box)
 {
   g_return_val_if_fail (BTK_IS_BOX (box), FALSE);
@@ -945,7 +945,7 @@ btk_box_get_homogeneous (BtkBox *box)
  */
 void
 btk_box_set_spacing (BtkBox *box,
-		     gint    spacing)
+		     bint    spacing)
 {
   g_return_if_fail (BTK_IS_BOX (box));
 
@@ -954,7 +954,7 @@ btk_box_set_spacing (BtkBox *box,
       box->spacing = spacing;
       _btk_box_set_spacing_set (box, TRUE);
 
-      g_object_notify (G_OBJECT (box), "spacing");
+      g_object_notify (B_OBJECT (box), "spacing");
 
       btk_widget_queue_resize (BTK_WIDGET (box));
     }
@@ -968,7 +968,7 @@ btk_box_set_spacing (BtkBox *box,
  * 
  * Return value: spacing between children
  **/
-gint
+bint
 btk_box_get_spacing (BtkBox *box)
 {
   g_return_val_if_fail (BTK_IS_BOX (box), 0);
@@ -978,7 +978,7 @@ btk_box_get_spacing (BtkBox *box)
 
 void
 _btk_box_set_spacing_set (BtkBox  *box,
-                          gboolean spacing_set)
+                          bboolean spacing_set)
 {
   BtkBoxPrivate *private;
 
@@ -989,7 +989,7 @@ _btk_box_set_spacing_set (BtkBox  *box,
   private->spacing_set = spacing_set ? TRUE : FALSE;
 }
 
-gboolean
+bboolean
 _btk_box_get_spacing_set (BtkBox *box)
 {
   BtkBoxPrivate *private;
@@ -1023,12 +1023,12 @@ _btk_box_get_spacing_set (BtkBox *box)
 void
 btk_box_reorder_child (BtkBox    *box,
 		       BtkWidget *child,
-		       gint       position)
+		       bint       position)
 {
   GList *old_link;
   GList *new_link;
   BtkBoxChild *child_info = NULL;
-  gint old_position;
+  bint old_position;
 
   g_return_if_fail (BTK_IS_BOX (box));
   g_return_if_fail (BTK_IS_WIDGET (child));
@@ -1079,9 +1079,9 @@ btk_box_reorder_child (BtkBox    *box,
 void
 btk_box_query_child_packing (BtkBox      *box,
 			     BtkWidget   *child,
-			     gboolean    *expand,
-			     gboolean    *fill,
-			     guint       *padding,
+			     bboolean    *expand,
+			     bboolean    *fill,
+			     buint       *padding,
 			     BtkPackType *pack_type)
 {
   GList *list;
@@ -1127,9 +1127,9 @@ btk_box_query_child_packing (BtkBox      *box,
 void
 btk_box_set_child_packing (BtkBox      *box,
 			   BtkWidget   *child,
-			   gboolean     expand,
-			   gboolean     fill,
-			   guint        padding,
+			   bboolean     expand,
+			   bboolean     fill,
+			   buint        padding,
 			   BtkPackType  pack_type)
 {
   GList *list;
@@ -1209,7 +1209,7 @@ btk_box_remove (BtkContainer *container,
 
       if (child->widget == widget)
 	{
-	  gboolean was_visible;
+	  bboolean was_visible;
 
 	  was_visible = btk_widget_get_visible (widget);
 	  btk_widget_unparent (widget);
@@ -1233,9 +1233,9 @@ btk_box_remove (BtkContainer *container,
 
 static void
 btk_box_forall (BtkContainer *container,
-		gboolean      include_internals,
+		bboolean      include_internals,
 		BtkCallback   callback,
-		gpointer      callback_data)
+		bpointer      callback_data)
 {
   BtkBox *box = BTK_BOX (container);
   BtkBoxChild *child;

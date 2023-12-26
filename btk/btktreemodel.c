@@ -32,12 +32,12 @@
 
 
 #define INITIALIZE_TREE_ITER(Iter) \
-    G_STMT_START{ \
+    B_STMT_START{ \
       (Iter)->stamp = 0; \
       (Iter)->user_data  = NULL; \
       (Iter)->user_data2 = NULL; \
       (Iter)->user_data3 = NULL; \
-    }G_STMT_END
+    }B_STMT_END
 
 #define ROW_REF_DATA_STRING "btk-tree-row-refs"
 
@@ -50,12 +50,12 @@ enum {
   LAST_SIGNAL
 };
 
-static guint tree_model_signals[LAST_SIGNAL] = { 0 };
+static buint tree_model_signals[LAST_SIGNAL] = { 0 };
 
 struct _BtkTreePath
 {
-  gint depth;
-  gint *indices;
+  bint depth;
+  bint *indices;
 };
 
 typedef struct
@@ -63,27 +63,27 @@ typedef struct
   GSList *list;
 } RowRefList;
 
-static void      btk_tree_model_base_init   (gpointer           g_class);
+static void      btk_tree_model_base_init   (bpointer           g_class);
 
 /* custom closures */
 static void      row_inserted_marshal       (GClosure          *closure,
-                                             GValue /* out */  *return_value,
-                                             guint              n_param_value,
-                                             const GValue      *param_values,
-                                             gpointer           invocation_hint,
-                                             gpointer           marshal_data);
+                                             BValue /* out */  *return_value,
+                                             buint              n_param_value,
+                                             const BValue      *param_values,
+                                             bpointer           invocation_hint,
+                                             bpointer           marshal_data);
 static void      row_deleted_marshal        (GClosure          *closure,
-                                             GValue /* out */  *return_value,
-                                             guint              n_param_value,
-                                             const GValue      *param_values,
-                                             gpointer           invocation_hint,
-                                             gpointer           marshal_data);
+                                             BValue /* out */  *return_value,
+                                             buint              n_param_value,
+                                             const BValue      *param_values,
+                                             bpointer           invocation_hint,
+                                             bpointer           marshal_data);
 static void      rows_reordered_marshal     (GClosure          *closure,
-                                             GValue /* out */  *return_value,
-                                             guint              n_param_value,
-                                             const GValue      *param_values,
-                                             gpointer           invocation_hint,
-                                             gpointer           marshal_data);
+                                             BValue /* out */  *return_value,
+                                             buint              n_param_value,
+                                             const BValue      *param_values,
+                                             bpointer           invocation_hint,
+                                             bpointer           marshal_data);
 
 static void      btk_tree_row_ref_inserted  (RowRefList        *refs,
                                              BtkTreePath       *path,
@@ -93,7 +93,7 @@ static void      btk_tree_row_ref_deleted   (RowRefList        *refs,
 static void      btk_tree_row_ref_reordered (RowRefList        *refs,
                                              BtkTreePath       *path,
                                              BtkTreeIter       *iter,
-                                             gint              *new_order);
+                                             bint              *new_order);
 
 GType
 btk_tree_model_get_type (void)
@@ -116,19 +116,19 @@ btk_tree_model_get_type (void)
       };
 
       tree_model_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("BtkTreeModel"),
+	g_type_register_static (B_TYPE_INTERFACE, I_("BtkTreeModel"),
 				&tree_model_info, 0);
 
-      g_type_interface_add_prerequisite (tree_model_type, G_TYPE_OBJECT);
+      g_type_interface_add_prerequisite (tree_model_type, B_TYPE_OBJECT);
     }
 
   return tree_model_type;
 }
 
 static void
-btk_tree_model_base_init (gpointer g_class)
+btk_tree_model_base_init (bpointer g_class)
 {
-  static gboolean initialized = FALSE;
+  static bboolean initialized = FALSE;
   GClosure *closure;
 
   if (! initialized)
@@ -144,7 +144,7 @@ btk_tree_model_base_init (gpointer g_class)
 
       rows_reordered_params[0] = BTK_TYPE_TREE_PATH | G_SIGNAL_TYPE_STATIC_SCOPE;
       rows_reordered_params[1] = BTK_TYPE_TREE_ITER;
-      rows_reordered_params[2] = G_TYPE_POINTER;
+      rows_reordered_params[2] = B_TYPE_POINTER;
 
       /**
        * BtkTreeModel::row-changed:
@@ -161,7 +161,7 @@ btk_tree_model_base_init (gpointer g_class)
                       G_STRUCT_OFFSET (BtkTreeModelIface, row_changed),
                       NULL, NULL,
                       _btk_marshal_VOID__BOXED_BOXED,
-                      G_TYPE_NONE, 2,
+                      B_TYPE_NONE, 2,
                       BTK_TYPE_TREE_PATH | G_SIGNAL_TYPE_STATIC_SCOPE,
                       BTK_TYPE_TREE_ITER);
 
@@ -199,7 +199,7 @@ btk_tree_model_base_init (gpointer g_class)
                        closure,
                        NULL, NULL,
                        _btk_marshal_VOID__BOXED_BOXED,
-                       G_TYPE_NONE, 2,
+                       B_TYPE_NONE, 2,
                        row_inserted_params);
 
       /**
@@ -218,7 +218,7 @@ btk_tree_model_base_init (gpointer g_class)
                       G_STRUCT_OFFSET (BtkTreeModelIface, row_has_child_toggled),
                       NULL, NULL,
                       _btk_marshal_VOID__BOXED_BOXED,
-                      G_TYPE_NONE, 2,
+                      B_TYPE_NONE, 2,
                       BTK_TYPE_TREE_PATH | G_SIGNAL_TYPE_STATIC_SCOPE,
                       BTK_TYPE_TREE_ITER);
 
@@ -245,7 +245,7 @@ btk_tree_model_base_init (gpointer g_class)
                        closure,
                        NULL, NULL,
                        _btk_marshal_VOID__BOXED,
-                       G_TYPE_NONE, 1,
+                       B_TYPE_NONE, 1,
                        row_deleted_params);
 
       /**
@@ -274,7 +274,7 @@ btk_tree_model_base_init (gpointer g_class)
                        closure,
                        NULL, NULL,
                        _btk_marshal_VOID__BOXED_BOXED_POINTER,
-                       G_TYPE_NONE, 3,
+                       B_TYPE_NONE, 3,
                        rows_reordered_params);
       initialized = TRUE;
     }
@@ -282,11 +282,11 @@ btk_tree_model_base_init (gpointer g_class)
 
 static void
 row_inserted_marshal (GClosure          *closure,
-                      GValue /* out */  *return_value,
-                      guint              n_param_values,
-                      const GValue      *param_values,
-                      gpointer           invocation_hint,
-                      gpointer           marshal_data)
+                      BValue /* out */  *return_value,
+                      buint              n_param_values,
+                      const BValue      *param_values,
+                      bpointer           invocation_hint,
+                      bpointer           marshal_data)
 {
   BtkTreeModelIface *iface;
 
@@ -294,9 +294,9 @@ row_inserted_marshal (GClosure          *closure,
                                   BtkTreePath *path,
                                   BtkTreeIter *iter) = NULL;
             
-  GObject *model = g_value_get_object (param_values + 0);
-  BtkTreePath *path = (BtkTreePath *)g_value_get_boxed (param_values + 1);
-  BtkTreeIter *iter = (BtkTreeIter *)g_value_get_boxed (param_values + 2);
+  BObject *model = b_value_get_object (param_values + 0);
+  BtkTreePath *path = (BtkTreePath *)b_value_get_boxed (param_values + 1);
+  BtkTreeIter *iter = (BtkTreeIter *)b_value_get_boxed (param_values + 2);
 
   /* first, we need to update internal row references */
   btk_tree_row_ref_inserted ((RowRefList *)g_object_get_data (model, ROW_REF_DATA_STRING),
@@ -304,7 +304,7 @@ row_inserted_marshal (GClosure          *closure,
                                
   /* fetch the interface ->row_inserted implementation */
   iface = BTK_TREE_MODEL_GET_IFACE (model);
-  row_inserted_callback = G_STRUCT_MEMBER (gpointer, iface,
+  row_inserted_callback = G_STRUCT_MEMBER (bpointer, iface,
                               G_STRUCT_OFFSET (BtkTreeModelIface,
                                                row_inserted));
 
@@ -315,17 +315,17 @@ row_inserted_marshal (GClosure          *closure,
 
 static void
 row_deleted_marshal (GClosure          *closure,
-                     GValue /* out */  *return_value,
-                     guint              n_param_values,
-                     const GValue      *param_values,
-                     gpointer           invocation_hint,
-                     gpointer           marshal_data)
+                     BValue /* out */  *return_value,
+                     buint              n_param_values,
+                     const BValue      *param_values,
+                     bpointer           invocation_hint,
+                     bpointer           marshal_data)
 {
   BtkTreeModelIface *iface;
   void (* row_deleted_callback) (BtkTreeModel *tree_model,
                                  BtkTreePath  *path) = NULL;                                 
-  GObject *model = g_value_get_object (param_values + 0);
-  BtkTreePath *path = (BtkTreePath *)g_value_get_boxed (param_values + 1);
+  BObject *model = b_value_get_object (param_values + 0);
+  BtkTreePath *path = (BtkTreePath *)b_value_get_boxed (param_values + 1);
  
 
   /* first, we need to update internal row references */
@@ -334,7 +334,7 @@ row_deleted_marshal (GClosure          *closure,
 
   /* fetch the interface ->row_deleted implementation */
   iface = BTK_TREE_MODEL_GET_IFACE (model);
-  row_deleted_callback = G_STRUCT_MEMBER (gpointer, iface,
+  row_deleted_callback = G_STRUCT_MEMBER (bpointer, iface,
                               G_STRUCT_OFFSET (BtkTreeModelIface,
                                                row_deleted));
                               
@@ -345,22 +345,22 @@ row_deleted_marshal (GClosure          *closure,
 
 static void
 rows_reordered_marshal (GClosure          *closure,
-                        GValue /* out */  *return_value,
-                        guint              n_param_values,
-                        const GValue      *param_values,
-                        gpointer           invocation_hint,
-                        gpointer           marshal_data)
+                        BValue /* out */  *return_value,
+                        buint              n_param_values,
+                        const BValue      *param_values,
+                        bpointer           invocation_hint,
+                        bpointer           marshal_data)
 {
   BtkTreeModelIface *iface;
   void (* rows_reordered_callback) (BtkTreeModel *tree_model,
                                     BtkTreePath  *path,
                                     BtkTreeIter  *iter,
-                                    gint         *new_order);
+                                    bint         *new_order);
             
-  GObject *model = g_value_get_object (param_values + 0);
-  BtkTreePath *path = (BtkTreePath *)g_value_get_boxed (param_values + 1);
-  BtkTreeIter *iter = (BtkTreeIter *)g_value_get_boxed (param_values + 2);
-  gint *new_order = (gint *)g_value_get_pointer (param_values + 3);
+  BObject *model = b_value_get_object (param_values + 0);
+  BtkTreePath *path = (BtkTreePath *)b_value_get_boxed (param_values + 1);
+  BtkTreeIter *iter = (BtkTreeIter *)b_value_get_boxed (param_values + 2);
+  bint *new_order = (bint *)b_value_get_pointer (param_values + 3);
   
   /* first, we need to update internal row references */
   btk_tree_row_ref_reordered ((RowRefList *)g_object_get_data (model, ROW_REF_DATA_STRING),
@@ -368,7 +368,7 @@ rows_reordered_marshal (GClosure          *closure,
 
   /* fetch the interface ->rows_reordered implementation */
   iface = BTK_TREE_MODEL_GET_IFACE (model);
-  rows_reordered_callback = G_STRUCT_MEMBER (gpointer, iface,
+  rows_reordered_callback = G_STRUCT_MEMBER (bpointer, iface,
                               G_STRUCT_OFFSET (BtkTreeModelIface,
                                                rows_reordered));
 
@@ -409,12 +409,12 @@ btk_tree_path_new (void)
  * Return value: A newly-created #BtkTreePath, or %NULL
  **/
 BtkTreePath *
-btk_tree_path_new_from_string (const gchar *path)
+btk_tree_path_new_from_string (const bchar *path)
 {
   BtkTreePath *retval;
-  const gchar *orig_path = path;
-  gchar *ptr;
-  gint i;
+  const bchar *orig_path = path;
+  bchar *ptr;
+  bint i;
 
   g_return_val_if_fail (path != NULL, NULL);
   g_return_val_if_fail (*path != '\000', NULL);
@@ -426,7 +426,7 @@ btk_tree_path_new_from_string (const gchar *path)
       i = strtol (path, &ptr, 10);
       if (i < 0)
 	{
-	  g_warning (G_STRLOC ": Negative numbers in path %s passed to btk_tree_path_new_from_string", orig_path);
+	  g_warning (B_STRLOC ": Negative numbers in path %s passed to btk_tree_path_new_from_string", orig_path);
 	  btk_tree_path_free (retval);
 	  return NULL;
 	}
@@ -437,7 +437,7 @@ btk_tree_path_new_from_string (const gchar *path)
 	break;
       if (ptr == path || *ptr != ':')
 	{
-	  g_warning (G_STRLOC ": Invalid path %s passed to btk_tree_path_new_from_string", orig_path);
+	  g_warning (B_STRLOC ": Invalid path %s passed to btk_tree_path_new_from_string", orig_path);
 	  btk_tree_path_free (retval);
 	  return NULL;
 	}
@@ -459,7 +459,7 @@ btk_tree_path_new_from_string (const gchar *path)
  * Since: 2.2
  **/
 BtkTreePath *
-btk_tree_path_new_from_indices (gint first_index,
+btk_tree_path_new_from_indices (bint first_index,
 				...)
 {
   int arg;
@@ -474,7 +474,7 @@ btk_tree_path_new_from_indices (gint first_index,
   while (arg != -1)
     {
       btk_tree_path_append_index (path, arg);
-      arg = va_arg (args, gint);
+      arg = va_arg (args, bint);
     }
 
   va_end (args);
@@ -491,11 +491,11 @@ btk_tree_path_new_from_indices (gint first_index,
  *
  * Return value: A newly-allocated string.  Must be freed with g_free().
  **/
-gchar *
+bchar *
 btk_tree_path_to_string (BtkTreePath *path)
 {
-  gchar *retval, *ptr, *end;
-  gint i, n;
+  bchar *retval, *ptr, *end;
+  bint i, n;
 
   g_return_val_if_fail (path != NULL, NULL);
 
@@ -503,7 +503,7 @@ btk_tree_path_to_string (BtkTreePath *path)
     return NULL;
 
   n = path->depth * 12;
-  ptr = retval = g_new0 (gchar, n);
+  ptr = retval = g_new0 (bchar, n);
   end = ptr + n;
   g_snprintf (retval, end - ptr, "%d", path->indices[0]);
   while (*ptr != '\000') 
@@ -547,13 +547,13 @@ btk_tree_path_new_first (void)
  **/
 void
 btk_tree_path_append_index (BtkTreePath *path,
-			    gint         index)
+			    bint         index)
 {
   g_return_if_fail (path != NULL);
   g_return_if_fail (index >= 0);
 
   path->depth += 1;
-  path->indices = g_realloc (path->indices, path->depth * sizeof(gint));
+  path->indices = g_realloc (path->indices, path->depth * sizeof(bint));
   path->indices[path->depth - 1] = index;
 }
 
@@ -567,12 +567,12 @@ btk_tree_path_append_index (BtkTreePath *path,
  **/
 void
 btk_tree_path_prepend_index (BtkTreePath *path,
-			     gint       index)
+			     bint       index)
 {
-  gint *new_indices;
+  bint *new_indices;
 
   (path->depth)++;
-  new_indices = g_new (gint, path->depth);
+  new_indices = g_new (bint, path->depth);
 
   if (path->indices == NULL)
     {
@@ -580,7 +580,7 @@ btk_tree_path_prepend_index (BtkTreePath *path,
       path->indices[0] = index;
       return;
     }
-  memcpy (new_indices + 1, path->indices, (path->depth - 1)*sizeof (gint));
+  memcpy (new_indices + 1, path->indices, (path->depth - 1)*sizeof (bint));
   g_free (path->indices);
   path->indices = new_indices;
   path->indices[0] = index;
@@ -594,7 +594,7 @@ btk_tree_path_prepend_index (BtkTreePath *path,
  *
  * Return value: The depth of @path
  **/
-gint
+bint
 btk_tree_path_get_depth (BtkTreePath *path)
 {
   g_return_val_if_fail (path != NULL, 0);
@@ -611,7 +611,7 @@ btk_tree_path_get_depth (BtkTreePath *path)
  *
  * Return value: The current indices, or %NULL.
  **/
-gint *
+bint *
 btk_tree_path_get_indices (BtkTreePath *path)
 {
   g_return_val_if_fail (path != NULL, NULL);
@@ -633,8 +633,8 @@ btk_tree_path_get_indices (BtkTreePath *path)
  *
  * Since: 2.22
  **/
-gint *
-btk_tree_path_get_indices_with_depth (BtkTreePath *path, gint *depth)
+bint *
+btk_tree_path_get_indices_with_depth (BtkTreePath *path, bint *depth)
 {
   g_return_val_if_fail (path != NULL, NULL);
 
@@ -677,8 +677,8 @@ btk_tree_path_copy (const BtkTreePath *path)
 
   retval = g_slice_new (BtkTreePath);
   retval->depth = path->depth;
-  retval->indices = g_new (gint, path->depth);
-  memcpy (retval->indices, path->indices, path->depth * sizeof (gint));
+  retval->indices = g_new (bint, path->depth);
+  memcpy (retval->indices, path->indices, path->depth * sizeof (bint));
   return retval;
 }
 
@@ -706,11 +706,11 @@ btk_tree_path_get_type (void)
  *
  * Return value: The relative positions of @a and @b
  **/
-gint
+bint
 btk_tree_path_compare (const BtkTreePath *a,
 		       const BtkTreePath *b)
 {
-  gint p = 0, q = 0;
+  bint p = 0, q = 0;
 
   g_return_val_if_fail (a != NULL, 0);
   g_return_val_if_fail (b != NULL, 0);
@@ -738,11 +738,11 @@ btk_tree_path_compare (const BtkTreePath *a,
  *
  * Return value: %TRUE if @descendant is contained inside @path
  **/
-gboolean
+bboolean
 btk_tree_path_is_ancestor (BtkTreePath *path,
                            BtkTreePath *descendant)
 {
-  gint i;
+  bint i;
 
   g_return_val_if_fail (path != NULL, FALSE);
   g_return_val_if_fail (descendant != NULL, FALSE);
@@ -771,11 +771,11 @@ btk_tree_path_is_ancestor (BtkTreePath *path,
  *
  * Return value: %TRUE if @ancestor contains @path somewhere below it
  **/
-gboolean
+bboolean
 btk_tree_path_is_descendant (BtkTreePath *path,
                              BtkTreePath *ancestor)
 {
-  gint i;
+  bint i;
 
   g_return_val_if_fail (path != NULL, FALSE);
   g_return_val_if_fail (ancestor != NULL, FALSE);
@@ -820,7 +820,7 @@ btk_tree_path_next (BtkTreePath *path)
  *
  * Return value: %TRUE if @path has a previous node, and the move was made.
  **/
-gboolean
+bboolean
 btk_tree_path_prev (BtkTreePath *path)
 {
   g_return_val_if_fail (path != NULL, FALSE);
@@ -844,7 +844,7 @@ btk_tree_path_prev (BtkTreePath *path)
  *
  * Return value: %TRUE if @path has a parent, and the move was made.
  **/
-gboolean
+bboolean
 btk_tree_path_up (BtkTreePath *path)
 {
   g_return_val_if_fail (path != NULL, FALSE);
@@ -956,7 +956,7 @@ btk_tree_model_get_flags (BtkTreeModel *tree_model)
  *
  * Return value: The number of columns.
  **/
-gint
+bint
 btk_tree_model_get_n_columns (BtkTreeModel *tree_model)
 {
   BtkTreeModelIface *iface;
@@ -979,15 +979,15 @@ btk_tree_model_get_n_columns (BtkTreeModel *tree_model)
  **/
 GType
 btk_tree_model_get_column_type (BtkTreeModel *tree_model,
-				gint          index)
+				bint          index)
 {
   BtkTreeModelIface *iface;
 
-  g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), G_TYPE_INVALID);
+  g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), B_TYPE_INVALID);
 
   iface = BTK_TREE_MODEL_GET_IFACE (tree_model);
-  g_return_val_if_fail (iface->get_column_type != NULL, G_TYPE_INVALID);
-  g_return_val_if_fail (index >= 0, G_TYPE_INVALID);
+  g_return_val_if_fail (iface->get_column_type != NULL, B_TYPE_INVALID);
+  g_return_val_if_fail (index >= 0, B_TYPE_INVALID);
 
   return (* iface->get_column_type) (tree_model, index);
 }
@@ -1002,7 +1002,7 @@ btk_tree_model_get_column_type (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE, if @iter was set.
  **/
-gboolean
+bboolean
 btk_tree_model_get_iter (BtkTreeModel *tree_model,
 			 BtkTreeIter  *iter,
 			 BtkTreePath  *path)
@@ -1033,12 +1033,12 @@ btk_tree_model_get_iter (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE, if @iter was set.
  **/
-gboolean
+bboolean
 btk_tree_model_get_iter_from_string (BtkTreeModel *tree_model,
 				     BtkTreeIter  *iter,
-				     const gchar  *path_string)
+				     const bchar  *path_string)
 {
-  gboolean retval;
+  bboolean retval;
   BtkTreePath *path;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), FALSE);
@@ -1068,12 +1068,12 @@ btk_tree_model_get_iter_from_string (BtkTreeModel *tree_model,
  *
  * Since: 2.2
  **/
-gchar *
+bchar *
 btk_tree_model_get_string_from_iter (BtkTreeModel *tree_model,
                                      BtkTreeIter  *iter)
 {
   BtkTreePath *path;
-  gchar *ret;
+  bchar *ret;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), NULL);
   g_return_val_if_fail (iter != NULL, NULL);
@@ -1098,12 +1098,12 @@ btk_tree_model_get_string_from_iter (BtkTreeModel *tree_model,
  * 
  * Return value: %TRUE, if @iter was set.
  **/
-gboolean
+bboolean
 btk_tree_model_get_iter_first (BtkTreeModel *tree_model,
 			       BtkTreeIter  *iter)
 {
   BtkTreePath *path;
-  gboolean retval;
+  bboolean retval;
 
   g_return_val_if_fail (BTK_IS_TREE_MODEL (tree_model), FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
@@ -1145,17 +1145,17 @@ btk_tree_model_get_path (BtkTreeModel *tree_model,
  * @tree_model: A #BtkTreeModel.
  * @iter: The #BtkTreeIter.
  * @column: The column to lookup the value at.
- * @value: (out) (transfer none): An empty #GValue to set.
+ * @value: (out) (transfer none): An empty #BValue to set.
  *
  * Initializes and sets @value to that at @column.
- * When done with @value, g_value_unset() needs to be called 
+ * When done with @value, b_value_unset() needs to be called 
  * to free any allocated memory.
  */
 void
 btk_tree_model_get_value (BtkTreeModel *tree_model,
 			  BtkTreeIter  *iter,
-			  gint          column,
-			  GValue       *value)
+			  bint          column,
+			  BValue       *value)
 {
   BtkTreeModelIface *iface;
 
@@ -1179,7 +1179,7 @@ btk_tree_model_get_value (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE if @iter has been changed to the next node.
  **/
-gboolean
+bboolean
 btk_tree_model_iter_next (BtkTreeModel  *tree_model,
 			  BtkTreeIter   *iter)
 {
@@ -1209,7 +1209,7 @@ btk_tree_model_iter_next (BtkTreeModel  *tree_model,
  *
  * Return value: %TRUE, if @child has been set to the first child.
  **/
-gboolean
+bboolean
 btk_tree_model_iter_children (BtkTreeModel *tree_model,
 			      BtkTreeIter  *iter,
 			      BtkTreeIter  *parent)
@@ -1236,7 +1236,7 @@ btk_tree_model_iter_children (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE if @iter has children.
  **/
-gboolean
+bboolean
 btk_tree_model_iter_has_child (BtkTreeModel *tree_model,
 			       BtkTreeIter  *iter)
 {
@@ -1261,7 +1261,7 @@ btk_tree_model_iter_has_child (BtkTreeModel *tree_model,
  *
  * Return value: The number of children of @iter.
  **/
-gint
+bint
 btk_tree_model_iter_n_children (BtkTreeModel *tree_model,
 				BtkTreeIter  *iter)
 {
@@ -1290,11 +1290,11 @@ btk_tree_model_iter_n_children (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE, if @parent has an @n<!-- -->th child.
  **/
-gboolean
+bboolean
 btk_tree_model_iter_nth_child (BtkTreeModel *tree_model,
 			       BtkTreeIter  *iter,
 			       BtkTreeIter  *parent,
-			       gint          n)
+			       bint          n)
 {
   BtkTreeModelIface *iface;
 
@@ -1323,7 +1323,7 @@ btk_tree_model_iter_nth_child (BtkTreeModel *tree_model,
  *
  * Return value: %TRUE, if @iter is set to the parent of @child.
  **/
-gboolean
+bboolean
 btk_tree_model_iter_parent (BtkTreeModel *tree_model,
 			    BtkTreeIter  *iter,
 			    BtkTreeIter  *child)
@@ -1409,13 +1409,13 @@ btk_tree_model_unref_node (BtkTreeModel *tree_model,
  * The variable argument list should contain integer column numbers,
  * each column number followed by a place to store the value being
  * retrieved.  The list is terminated by a -1. For example, to get a
- * value from column 0 with type %G_TYPE_STRING, you would
+ * value from column 0 with type %B_TYPE_STRING, you would
  * write: <literal>btk_tree_model_get (model, iter, 0, &amp;place_string_here, -1)</literal>,
- * where <literal>place_string_here</literal> is a <type>gchar*</type> to be 
+ * where <literal>place_string_here</literal> is a <type>bchar*</type> to be 
  * filled with the string.
  *
- * Returned values with type %G_TYPE_OBJECT have to be unreferenced, values
- * with type %G_TYPE_STRING or %G_TYPE_BOXED have to be freed. Other values are
+ * Returned values with type %B_TYPE_OBJECT have to be unreferenced, values
+ * with type %B_TYPE_STRING or %B_TYPE_BOXED have to be freed. Other values are
  * passed by value.
  **/
 void
@@ -1447,21 +1447,21 @@ btk_tree_model_get_valist (BtkTreeModel *tree_model,
                            BtkTreeIter  *iter,
                            va_list	var_args)
 {
-  gint column;
+  bint column;
 
   g_return_if_fail (BTK_IS_TREE_MODEL (tree_model));
   g_return_if_fail (iter != NULL);
 
-  column = va_arg (var_args, gint);
+  column = va_arg (var_args, bint);
 
   while (column != -1)
     {
-      GValue value = { 0, };
-      gchar *error = NULL;
+      BValue value = { 0, };
+      bchar *error = NULL;
 
       if (column >= btk_tree_model_get_n_columns (tree_model))
 	{
-	  g_warning ("%s: Invalid column number %d accessed (remember to end your list of columns with a -1)", G_STRLOC, column);
+	  g_warning ("%s: Invalid column number %d accessed (remember to end your list of columns with a -1)", B_STRLOC, column);
 	  break;
 	}
 
@@ -1470,7 +1470,7 @@ btk_tree_model_get_valist (BtkTreeModel *tree_model,
       G_VALUE_LCOPY (&value, var_args, 0, &error);
       if (error)
 	{
-	  g_warning ("%s: %s", G_STRLOC, error);
+	  g_warning ("%s: %s", B_STRLOC, error);
 	  g_free (error);
 
  	  /* we purposely leak the value here, it might not be
@@ -1479,9 +1479,9 @@ btk_tree_model_get_valist (BtkTreeModel *tree_model,
 	  break;
 	}
 
-      g_value_unset (&value);
+      b_value_unset (&value);
 
-      column = va_arg (var_args, gint);
+      column = va_arg (var_args, bint);
     }
 }
 
@@ -1584,7 +1584,7 @@ void
 btk_tree_model_rows_reordered (BtkTreeModel *tree_model,
 			       BtkTreePath  *path,
 			       BtkTreeIter  *iter,
-			       gint         *new_order)
+			       bint         *new_order)
 {
   g_return_if_fail (BTK_IS_TREE_MODEL (tree_model));
   g_return_if_fail (new_order != NULL);
@@ -1593,12 +1593,12 @@ btk_tree_model_rows_reordered (BtkTreeModel *tree_model,
 }
 
 
-static gboolean
+static bboolean
 btk_tree_model_foreach_helper (BtkTreeModel            *model,
 			       BtkTreeIter             *iter,
 			       BtkTreePath             *path,
 			       BtkTreeModelForeachFunc  func,
-			       gpointer                 user_data)
+			       bpointer                 user_data)
 {
   do
     {
@@ -1635,7 +1635,7 @@ btk_tree_model_foreach_helper (BtkTreeModel            *model,
 void
 btk_tree_model_foreach (BtkTreeModel            *model,
 			BtkTreeModelForeachFunc  func,
-			gpointer                 user_data)
+			bpointer                 user_data)
 {
   BtkTreePath *path;
   BtkTreeIter iter;
@@ -1661,7 +1661,7 @@ btk_tree_model_foreach (BtkTreeModel            *model,
 
 static void btk_tree_row_reference_unref_path (BtkTreePath  *path,
 					       BtkTreeModel *model,
-					       gint          depth);
+					       bint          depth);
 
 
 GType
@@ -1680,14 +1680,14 @@ btk_tree_row_reference_get_type (void)
 
 struct _BtkTreeRowReference
 {
-  GObject *proxy;
+  BObject *proxy;
   BtkTreeModel *model;
   BtkTreePath *path;
 };
 
 
 static void
-release_row_references (gpointer data)
+release_row_references (bpointer data)
 {
   RowRefList *refs = data;
   GSList *tmp_list = NULL;
@@ -1697,16 +1697,16 @@ release_row_references (gpointer data)
     {
       BtkTreeRowReference *reference = tmp_list->data;
 
-      if (reference->proxy == (GObject *)reference->model)
+      if (reference->proxy == (BObject *)reference->model)
 	reference->model = NULL;
       reference->proxy = NULL;
 
       /* we don't free the reference, users are responsible for that. */
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 
-  g_slist_free (refs->list);
+  b_slist_free (refs->list);
   g_free (refs);
 }
 
@@ -1740,8 +1740,8 @@ btk_tree_row_ref_inserted (RowRefList  *refs,
 
       if (reference->path->depth >= path->depth)
 	{
-	  gint i;
-	  gboolean ancestor = TRUE;
+	  bint i;
+	  bboolean ancestor = TRUE;
 
 	  for (i = 0; i < path->depth - 1; i ++)
 	    {
@@ -1758,7 +1758,7 @@ btk_tree_row_ref_inserted (RowRefList  *refs,
 	    reference->path->indices[path->depth-1] += 1;
 	}
     done:
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -1786,7 +1786,7 @@ btk_tree_row_ref_deleted (RowRefList  *refs,
 
       if (reference->path)
 	{
-	  gint i;
+	  bint i;
 
 	  if (path->depth > reference->path->depth)
 	    goto next;
@@ -1817,7 +1817,7 @@ btk_tree_row_ref_deleted (RowRefList  *refs,
 	}
 
 next:
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -1825,10 +1825,10 @@ static void
 btk_tree_row_ref_reordered (RowRefList  *refs,
 			    BtkTreePath *path,
 			    BtkTreeIter *iter,
-			    gint        *new_order)
+			    bint        *new_order)
 {
   GSList *tmp_list;
-  gint length;
+  bint length;
 
   if (refs == NULL)
     return;
@@ -1847,13 +1847,13 @@ btk_tree_row_ref_reordered (RowRefList  *refs,
       if ((reference->path) &&
 	  (btk_tree_path_is_ancestor (path, reference->path)))
 	{
-	  gint ref_depth = btk_tree_path_get_depth (reference->path);
-	  gint depth = btk_tree_path_get_depth (path);
+	  bint ref_depth = btk_tree_path_get_depth (reference->path);
+	  bint depth = btk_tree_path_get_depth (path);
 
 	  if (ref_depth > depth)
 	    {
-	      gint i;
-	      gint *indices = btk_tree_path_get_indices (reference->path);
+	      bint i;
+	      bint *indices = btk_tree_path_get_indices (reference->path);
 
 	      for (i = 0; i < length; i++)
 		{
@@ -1866,7 +1866,7 @@ btk_tree_row_ref_reordered (RowRefList  *refs,
 	    }
 	}
 
-      tmp_list = g_slist_next (tmp_list);
+      tmp_list = b_slist_next (tmp_list);
     }
 }
 
@@ -1875,8 +1875,8 @@ static void
 btk_tree_row_reference_unref_path_helper (BtkTreePath  *path,
 					  BtkTreeModel *model,
 					  BtkTreeIter  *parent_iter,
-					  gint          depth,
-					  gint          current_depth)
+					  bint          depth,
+					  bint          current_depth)
 {
   BtkTreeIter iter;
 
@@ -1891,7 +1891,7 @@ btk_tree_row_reference_unref_path_helper (BtkTreePath  *path,
 static void
 btk_tree_row_reference_unref_path (BtkTreePath  *path,
 				   BtkTreeModel *model,
-				   gint          depth)
+				   bint          depth)
 {
   BtkTreeIter iter;
 
@@ -1926,12 +1926,12 @@ btk_tree_row_reference_new (BtkTreeModel *model,
    * btk_tree_row_reference_inserted(), etc, in the
    * class closure (default handler) marshalers for the signal.
    */  
-  return btk_tree_row_reference_new_proxy (G_OBJECT (model), model, path);
+  return btk_tree_row_reference_new_proxy (B_OBJECT (model), model, path);
 }
 
 /**
  * btk_tree_row_reference_new_proxy:
- * @proxy: A proxy #GObject
+ * @proxy: A proxy #BObject
  * @model: A #BtkTreeModel
  * @path: A valid #BtkTreePath to monitor
  * 
@@ -1959,14 +1959,14 @@ btk_tree_row_reference_new (BtkTreeModel *model,
  * Return value: A newly allocated #BtkTreeRowReference, or %NULL
  **/
 BtkTreeRowReference *
-btk_tree_row_reference_new_proxy (GObject      *proxy,
+btk_tree_row_reference_new_proxy (BObject      *proxy,
 				  BtkTreeModel *model,
 				  BtkTreePath  *path)
 {
   BtkTreeRowReference *reference;
   RowRefList *refs;
   BtkTreeIter parent_iter;
-  gint i;
+  bint i;
 
   g_return_val_if_fail (G_IS_OBJECT (proxy), NULL);
   g_return_val_if_fail (BTK_IS_TREE_MODEL (model), NULL);
@@ -1998,19 +1998,19 @@ btk_tree_row_reference_new_proxy (GObject      *proxy,
   reference->model = model;
   reference->path = btk_tree_path_copy (path);
 
-  refs = g_object_get_data (G_OBJECT (proxy), ROW_REF_DATA_STRING);
+  refs = g_object_get_data (B_OBJECT (proxy), ROW_REF_DATA_STRING);
 
   if (refs == NULL)
     {
       refs = g_new (RowRefList, 1);
       refs->list = NULL;
 
-      g_object_set_data_full (G_OBJECT (proxy),
+      g_object_set_data_full (B_OBJECT (proxy),
 			      I_(ROW_REF_DATA_STRING),
                               refs, release_row_references);
     }
 
-  refs->list = g_slist_prepend (refs->list, reference);
+  refs->list = b_slist_prepend (refs->list, reference);
 
   return reference;
 }
@@ -2065,7 +2065,7 @@ btk_tree_row_reference_get_model (BtkTreeRowReference *reference)
  * 
  * Return value: %TRUE if @reference points to a valid path.
  **/
-gboolean
+bboolean
 btk_tree_row_reference_valid (BtkTreeRowReference *reference)
 {
   if (reference == NULL || reference->path == NULL)
@@ -2107,19 +2107,19 @@ btk_tree_row_reference_free (BtkTreeRowReference *reference)
   if (reference == NULL)
     return;
 
-  refs = g_object_get_data (G_OBJECT (reference->proxy), ROW_REF_DATA_STRING);
+  refs = g_object_get_data (B_OBJECT (reference->proxy), ROW_REF_DATA_STRING);
 
   if (refs == NULL)
     {
-      g_warning (G_STRLOC": bad row reference, proxy has no outstanding row references");
+      g_warning (B_STRLOC": bad row reference, proxy has no outstanding row references");
       return;
     }
 
-  refs->list = g_slist_remove (refs->list, reference);
+  refs->list = b_slist_remove (refs->list, reference);
 
   if (refs->list == NULL)
     {
-      g_object_set_data (G_OBJECT (reference->proxy),
+      g_object_set_data (B_OBJECT (reference->proxy),
 			 I_(ROW_REF_DATA_STRING),
 			 NULL);
     }
@@ -2137,14 +2137,14 @@ btk_tree_row_reference_free (BtkTreeRowReference *reference)
 
 /**
  * btk_tree_row_reference_inserted:
- * @proxy: A #GObject
+ * @proxy: A #BObject
  * @path: The row position that was inserted
  * 
  * Lets a set of row reference created by btk_tree_row_reference_new_proxy()
  * know that the model emitted the "row_inserted" signal.
  **/
 void
-btk_tree_row_reference_inserted (GObject     *proxy,
+btk_tree_row_reference_inserted (BObject     *proxy,
 				 BtkTreePath *path)
 {
   g_return_if_fail (G_IS_OBJECT (proxy));
@@ -2154,14 +2154,14 @@ btk_tree_row_reference_inserted (GObject     *proxy,
 
 /**
  * btk_tree_row_reference_deleted:
- * @proxy: A #GObject
+ * @proxy: A #BObject
  * @path: The path position that was deleted
  * 
  * Lets a set of row reference created by btk_tree_row_reference_new_proxy()
  * know that the model emitted the "row_deleted" signal.
  **/
 void
-btk_tree_row_reference_deleted (GObject     *proxy,
+btk_tree_row_reference_deleted (BObject     *proxy,
 				BtkTreePath *path)
 {
   g_return_if_fail (G_IS_OBJECT (proxy));
@@ -2171,7 +2171,7 @@ btk_tree_row_reference_deleted (GObject     *proxy,
 
 /**
  * btk_tree_row_reference_reordered:
- * @proxy: A #GObject
+ * @proxy: A #BObject
  * @path: The parent path of the reordered signal
  * @iter: The iter pointing to the parent of the reordered
  * @new_order: The new order of rows
@@ -2180,10 +2180,10 @@ btk_tree_row_reference_deleted (GObject     *proxy,
  * know that the model emitted the "rows_reordered" signal.
  **/
 void
-btk_tree_row_reference_reordered (GObject     *proxy,
+btk_tree_row_reference_reordered (BObject     *proxy,
 				  BtkTreePath *path,
 				  BtkTreeIter *iter,
-				  gint        *new_order)
+				  bint        *new_order)
 {
   g_return_if_fail (G_IS_OBJECT (proxy));
 

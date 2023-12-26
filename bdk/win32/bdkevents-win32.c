@@ -86,19 +86,19 @@
 
 #define SYNAPSIS_ICON_WINDOW_CLASS "SynTrackCursorWindowClass"
 
-static gboolean bdk_event_translate (MSG        *msg,
-				     gint       *ret_valp);
+static bboolean bdk_event_translate (MSG        *msg,
+				     bint       *ret_valp);
 static void     handle_wm_paint     (MSG        *msg,
 				     BdkWindow  *window,
-				     gboolean    return_exposes,
+				     bboolean    return_exposes,
 				     BdkEvent  **event);
 
-static gboolean bdk_event_prepare  (GSource     *source,
-				    gint        *timeout);
-static gboolean bdk_event_check    (GSource     *source);
-static gboolean bdk_event_dispatch (GSource     *source,
+static bboolean bdk_event_prepare  (GSource     *source,
+				    bint        *timeout);
+static bboolean bdk_event_check    (GSource     *source);
+static bboolean bdk_event_dispatch (GSource     *source,
 				    GSourceFunc  callback,
-				    gpointer     user_data);
+				    bpointer     user_data);
 
 /* Private variable declarations
  */
@@ -118,8 +118,8 @@ GPollFD event_poll_fd;
 
 static BdkWindow *mouse_window = NULL;
 static BdkWindow *mouse_window_ignored_leave = NULL;
-static gint current_x, current_y;
-static gint current_root_x, current_root_y;
+static bint current_x, current_y;
+static bint current_root_x, current_root_y;
 static UINT client_message;
 
 static UINT got_bdk_events_message;
@@ -129,21 +129,21 @@ static HWND modal_win32_dialog = NULL;
 static HKL latin_locale = NULL;
 #endif
 
-static gboolean in_ime_composition = FALSE;
+static bboolean in_ime_composition = FALSE;
 static UINT     modal_timer;
 static UINT     sync_timer = 0;
 
 static int debug_indent = 0;
 
 static void
-assign_object (gpointer lhsp,
-	       gpointer rhs)
+assign_object (bpointer lhsp,
+	       bpointer rhs)
 {
-  if (*(gpointer *)lhsp != rhs)
+  if (*(bpointer *)lhsp != rhs)
     {
-      if (*(gpointer *)lhsp != NULL)
-	g_object_unref (*(gpointer *)lhsp);
-      *(gpointer *)lhsp = rhs;
+      if (*(bpointer *)lhsp != NULL)
+	g_object_unref (*(bpointer *)lhsp);
+      *(bpointer *)lhsp = rhs;
       if (rhs != NULL)
 	g_object_ref (rhs);
     }
@@ -168,10 +168,10 @@ track_mouse_event (DWORD dwFlags,
     BDK_NOTE (EVENTS, g_print(" (cancel TrackMouseEvent %p)", hwnd));
 }
 
-gulong
-_bdk_win32_get_next_tick (gulong suggested_tick)
+bulong
+_bdk_win32_get_next_tick (bulong suggested_tick)
 {
-  static gulong cur_tick = 0;
+  static bulong cur_tick = 0;
 
   if (suggested_tick == 0)
     suggested_tick = GetTickCount ();
@@ -183,7 +183,7 @@ _bdk_win32_get_next_tick (gulong suggested_tick)
 
 static void
 generate_focus_event (BdkWindow *window,
-		      gboolean   in)
+		      bboolean   in)
 {
   BdkEvent *event;
 
@@ -196,7 +196,7 @@ generate_focus_event (BdkWindow *window,
 
 static void
 generate_grab_broken_event (BdkWindow *window,
-			    gboolean   keyboard,
+			    bboolean   keyboard,
 			    BdkWindow *grab_window)
 {
   BdkEvent *event = bdk_event_new (BDK_GRAB_BROKEN);
@@ -218,7 +218,7 @@ inner_window_procedure (HWND   hwnd,
 {
   MSG msg;
   DWORD pos;
-  gint ret_val = 0;
+  bint ret_val = 0;
 
   msg.hwnd = hwnd;
   msg.message = message;
@@ -263,7 +263,7 @@ _bdk_win32_window_procedure (HWND   hwnd,
   retval = inner_window_procedure (hwnd, message, wparam, lparam);
   debug_indent -= 2;
 
-  BDK_NOTE (EVENTS, g_print (" => %I64d%s", (gint64) retval, (debug_indent == 0 ? "\n" : "")));
+  BDK_NOTE (EVENTS, g_print (" => %I64d%s", (bint64) retval, (debug_indent == 0 ? "\n" : "")));
 
   return retval;
 }
@@ -356,7 +356,7 @@ _bdk_events_init (void)
 	}
     }
 
-  BDK_NOTE (EVENTS, g_print ("latin_locale = %08x\n", (guint) latin_locale));
+  BDK_NOTE (EVENTS, g_print ("latin_locale = %08x\n", (buint) latin_locale));
 #endif
 
   source = g_source_new (&event_funcs, sizeof (GSource));
@@ -377,7 +377,7 @@ _bdk_events_init (void)
   g_source_attach (source, NULL);
 }
 
-gboolean
+bboolean
 bdk_events_pending (void)
 {
   return (_bdk_event_queue_find_first (_bdk_display) ||
@@ -452,15 +452,15 @@ event_mask_string (BdkEventMask mask)
 BdkGrabStatus
 _bdk_windowing_pointer_grab (BdkWindow    *window,
 			     BdkWindow    *native_window,
-			     gboolean	owner_events,
+			     bboolean	owner_events,
 			     BdkEventMask	event_mask,
 			     BdkWindow    *confine_to,
 			     BdkCursor    *cursor,
-			     guint32	time)
+			     buint32	time)
 {
   HCURSOR hcursor;
   BdkCursorPrivate *cursor_private;
-  gint return_val;
+  bint return_val;
 
   g_return_val_if_fail (window != NULL, 0);
   g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
@@ -508,7 +508,7 @@ _bdk_windowing_pointer_grab (BdkWindow    *window,
 
 void
 bdk_display_pointer_ungrab (BdkDisplay *display,
-                            guint32     time)
+                            buint32     time)
 {
   BdkPointerGrabInfo *info;
 
@@ -573,8 +573,8 @@ find_window_for_mouse_event (BdkWindow* reported_window,
 
 BdkGrabStatus
 bdk_keyboard_grab (BdkWindow *window,
-		   gboolean   owner_events,
-		   guint32    time)
+		   bboolean   owner_events,
+		   buint32    time)
 {
   BdkDisplay *display;
   BdkWindow  *toplevel;
@@ -600,7 +600,7 @@ bdk_keyboard_grab (BdkWindow *window,
 
 void
 bdk_display_keyboard_ungrab (BdkDisplay *display,
-                             guint32 time)
+                             buint32 time)
 {
   BDK_NOTE (EVENTS, g_print ("bdk_display_keyboard_ungrab\n"));
   _bdk_display_unset_has_keyboard_grab (display, FALSE);
@@ -610,7 +610,7 @@ void
 bdk_display_add_client_message_filter (BdkDisplay   *display,
 				       BdkAtom       message_type,
 				       BdkFilterFunc func,
-				       gpointer      data)
+				       bpointer      data)
 {
   /* XXX */
   bdk_add_client_message_filter (message_type, func, data);
@@ -619,7 +619,7 @@ bdk_display_add_client_message_filter (BdkDisplay   *display,
 void
 bdk_add_client_message_filter (BdkAtom       message_type,
 			       BdkFilterFunc func,
-			       gpointer      data)
+			       bpointer      data)
 {
   BdkClientFilter *filter = g_new (BdkClientFilter, 1);
 
@@ -677,10 +677,10 @@ build_key_event_state (BdkEvent *event,
     }
 }
 
-static gint
+static bint
 build_pointer_event_state (MSG *msg)
 {
-  gint state;
+  bint state;
   
   state = 0;
 
@@ -743,7 +743,7 @@ build_wm_ime_composition_event (BdkEvent *event,
 #ifdef G_ENABLE_DEBUG
 
 static void
-print_event_state (guint state)
+print_event_state (buint state)
 {
 #define CASE(bit) if (state & BDK_ ## bit ## _MASK) g_print (#bit " ");
   CASE (SHIFT);
@@ -765,8 +765,8 @@ print_event_state (guint state)
 void
 _bdk_win32_print_event (const BdkEvent *event)
 {
-  gchar *escaped, *kvname;
-  gchar *selection_name, *target_name, *property_name;
+  bchar *escaped, *kvname;
+  bchar *selection_name, *target_name, *property_name;
 
   g_print ("%s%*s===> ", (debug_indent > 0 ? "\n" : ""), debug_indent, "");
   switch (event->any.type)
@@ -1006,7 +1006,7 @@ static void
 fill_key_event_string (BdkEvent *event)
 {
   gunichar c;
-  gchar buf[256];
+  bchar buf[256];
 
   /* Fill in event->string crudely, since various programs
    * depend on it.
@@ -1018,8 +1018,8 @@ fill_key_event_string (BdkEvent *event)
 
   if (c)
     {
-      gsize bytes_written;
-      gint len;
+      bsize bytes_written;
+      bint len;
       
       /* Apply the control key - Taken from Xlib
        */
@@ -1151,7 +1151,7 @@ apply_event_filters (BdkWindow  *window,
  * from.
  */
 static void
-show_window_recurse (BdkWindow *window, gboolean hide_window)
+show_window_recurse (BdkWindow *window, bboolean hide_window)
 {
   BdkWindowImplWin32 *impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (window)->impl);
   GSList *children = impl->transient_children;
@@ -1168,7 +1168,7 @@ show_window_recurse (BdkWindow *window, gboolean hide_window)
 	      child = children->data;
 	      show_window_recurse (child, hide_window);
 
-	      children = g_slist_next (children);
+	      children = b_slist_next (children);
 	    }
 	}
 
@@ -1199,7 +1199,7 @@ show_window_recurse (BdkWindow *window, gboolean hide_window)
 }
 
 static void
-do_show_window (BdkWindow *window, gboolean hide_window)
+do_show_window (BdkWindow *window, bboolean hide_window)
 {
   BdkWindow *tmp_window = NULL;
   BdkWindowImplWin32 *tmp_impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (window)->impl);
@@ -1236,7 +1236,7 @@ send_crossing_event (BdkDisplay                 *display,
 		     BdkWindow                  *subwindow,
 		     POINT                      *screen_pt,
 		     BdkModifierType             mask,
-		     guint32                     time_)
+		     buint32                     time_)
 {
   BdkEvent *event;
   BdkPointerGrabInfo *grab;
@@ -1332,8 +1332,8 @@ synthesize_crossing_events (BdkDisplay                 *display,
 			    BdkCrossingMode             mode,
 			    POINT                      *screen_pt,
 			    BdkModifierType             mask,
-			    guint32                     time_,
-			    gboolean                    non_linear)
+			    buint32                     time_,
+			    bboolean                    non_linear)
 {
   BdkWindowObject *c;
   BdkWindowObject *win, *last, *next;
@@ -1496,7 +1496,7 @@ synthesize_expose_events (BdkWindow *window)
 
 static void
 update_colors (BdkWindow *window,
-	       gboolean   top)
+	       bboolean   top)
 {
   HDC hdc;
   BdkDrawableImplWin32 *impl = BDK_DRAWABLE_IMPL_WIN32 (((BdkWindowObject *) window)->impl);
@@ -1522,7 +1522,7 @@ update_colors (BdkWindow *window,
     {
       BdkColormapPrivateWin32 *cmapp = BDK_WIN32_COLORMAP_DATA (impl->colormap);
       HPALETTE holdpal;
-      gint k;
+      bint k;
       
       if ((holdpal = SelectPalette (hdc, cmapp->hpal, TRUE)) == NULL)
 	WIN32_GDI_FAILED ("SelectPalette");
@@ -1550,13 +1550,13 @@ update_colors (BdkWindow *window,
  * events from extended input devices and if the message should be skipped
  * because an extended input device is active
  */
-static gboolean
+static bboolean
 propagate (BdkWindow  **window,
 	   MSG         *msg,
 	   BdkWindow   *grab_window,
-	   gboolean     grab_owner_events,
-	   gint	        grab_mask,
-	   gboolean   (*doesnt_want_it) (gint mask,
+	   bboolean     grab_owner_events,
+	   bint	        grab_mask,
+	   bboolean   (*doesnt_want_it) (bint mask,
 					 MSG *msg))
 {
   if (grab_window != NULL && !grab_owner_events)
@@ -1626,8 +1626,8 @@ propagate (BdkWindow  **window,
     }
 }
 
-static gboolean
-doesnt_want_key (gint mask,
+static bboolean
+doesnt_want_key (bint mask,
 		 MSG *msg)
 {
   return (((msg->message == WM_KEYUP || msg->message == WM_SYSKEYUP) &&
@@ -1636,8 +1636,8 @@ doesnt_want_key (gint mask,
 	   !(mask & BDK_KEY_PRESS_MASK)));
 }
 
-static gboolean
-doesnt_want_char (gint mask,
+static bboolean
+doesnt_want_char (bint mask,
 		  MSG *msg)
 {
   return !(mask & (BDK_KEY_PRESS_MASK | BDK_KEY_RELEASE_MASK));
@@ -1702,8 +1702,8 @@ _bdk_win32_hrgn_to_rebunnyion (HRGN hrgn)
   RGNDATA *rgndata;
   RECT *rects;
   BdkRebunnyion *result;
-  gint nbytes;
-  guint i;
+  bint nbytes;
+  buint i;
 
   if ((nbytes = GetRebunnyionData (hrgn, 0, NULL)) == 0)
     {
@@ -1742,7 +1742,7 @@ _bdk_win32_hrgn_to_rebunnyion (HRGN hrgn)
 static void
 adjust_drag (LONG *drag,
 	     LONG  curr,
-	     gint  inc)
+	     bint  inc)
 {
   if (*drag > curr)
     *drag = curr + ((*drag + inc/2 - curr) / inc) * inc;
@@ -1753,7 +1753,7 @@ adjust_drag (LONG *drag,
 static void
 handle_wm_paint (MSG        *msg,
 		 BdkWindow  *window,
-		 gboolean    return_exposes,
+		 bboolean    return_exposes,
 		 BdkEvent  **event)
 {
   HRGN hrgn = CreateRectRgn (0, 0, 0, 0);
@@ -1893,7 +1893,7 @@ handle_display_change (void)
 
 static void
 generate_button_event (BdkEventType type,
-		       gint         button,
+		       bint         button,
 		       BdkWindow   *window,
 		       MSG         *msg)
 {
@@ -1901,8 +1901,8 @@ generate_button_event (BdkEventType type,
 
   event->button.window = window;
   event->button.time = _bdk_win32_get_next_tick (msg->time);
-  event->button.x = current_x = (gint16) GET_X_LPARAM (msg->lParam);
-  event->button.y = current_y = (gint16) GET_Y_LPARAM (msg->lParam);
+  event->button.x = current_x = (bint16) GET_X_LPARAM (msg->lParam);
+  event->button.y = current_y = (bint16) GET_Y_LPARAM (msg->lParam);
   event->button.x_root = msg->pt.x + _bdk_offset_x;
   event->button.y_root = msg->pt.y + _bdk_offset_y;
   event->button.axes = NULL;
@@ -1947,7 +1947,7 @@ ensure_stacking_on_unminimize (MSG *msg)
     }
 }
 
-static gboolean
+static bboolean
 ensure_stacking_on_window_pos_changing (MSG       *msg,
 					BdkWindow *window)
 {
@@ -1967,7 +1967,7 @@ ensure_stacking_on_window_pos_changing (MSG       *msg,
        * handling to bring any utility windows on top of it.
        */
       HWND rover;
-      gboolean restacking;
+      bboolean restacking;
 
       rover = windowpos->hwndInsertAfter;
       restacking = FALSE;
@@ -2059,9 +2059,9 @@ ensure_stacking_on_activate_app (MSG       *msg,
 			     BDK_BUTTON4_MASK | \
 			     BDK_BUTTON5_MASK)
 
-static gboolean
+static bboolean
 bdk_event_translate (MSG  *msg,
-		     gint *ret_valp)
+		     bint *ret_valp)
 {
   RECT rect, *drag, orig_drag;
   POINT point;
@@ -2071,12 +2071,12 @@ bdk_event_translate (MSG  *msg,
   BYTE key_state[256];
   HIMC himc;
   WINDOWPOS *windowpos;
-  gboolean ignore_leave;
+  bboolean ignore_leave;
 
   BdkEvent *event;
 
   wchar_t wbuf[100];
-  gint ccount;
+  bint ccount;
 
   BdkWindow *window = NULL;
   BdkWindowImplWin32 *impl;
@@ -2086,12 +2086,12 @@ bdk_event_translate (MSG  *msg,
   BdkPointerGrabInfo *grab = NULL;
   BdkWindow *grab_window = NULL;
 
-  static gint update_colors_counter = 0;
-  gint button;
+  static bint update_colors_counter = 0;
+  bint button;
   BdkAtom target;
 
-  gchar buf[256];
-  gboolean return_val = FALSE;
+  bchar buf[256];
+  bboolean return_val = FALSE;
 
   int i;
 
@@ -2229,8 +2229,8 @@ bdk_event_translate (MSG  *msg,
       _bdk_keymap_serial++;
       BDK_NOTE (EVENTS,
 		g_print (" cs:%lu hkl:%p%s cp:%d",
-			 (gulong) msg->wParam,
-			 (gpointer) msg->lParam, _bdk_input_locale_is_ime ? " (IME)" : "",
+			 (bulong) msg->wParam,
+			 (bpointer) msg->lParam, _bdk_input_locale_is_ime ? " (IME)" : "",
 			 _bdk_input_codepage));
       break;
 
@@ -2554,7 +2554,7 @@ bdk_event_translate (MSG  *msg,
       grab = _bdk_display_get_last_pointer_grab (_bdk_display);
       if (grab != NULL && grab->implicit)
 	{
-	  gint state = build_pointer_event_state (msg);
+	  bint state = build_pointer_event_state (msg);
 
 	  /* We keep the implicit grab until no buttons at all are held down */
 	  if ((state & BDK_ANY_BUTTON_MASK & ~(BDK_BUTTON1_MASK << (button - 1))) == 0)
@@ -2593,7 +2593,7 @@ bdk_event_translate (MSG  *msg,
     case WM_MOUSEMOVE:
       BDK_NOTE (EVENTS,
 		g_print (" %p (%d,%d)",
-			 (gpointer) msg->wParam,
+			 (bpointer) msg->wParam,
 			 GET_X_LPARAM (msg->lParam), GET_Y_LPARAM (msg->lParam)));
 
       new_window = window;
@@ -2665,8 +2665,8 @@ bdk_event_translate (MSG  *msg,
       event = bdk_event_new (BDK_MOTION_NOTIFY);
       event->motion.window = window;
       event->motion.time = _bdk_win32_get_next_tick (msg->time);
-      event->motion.x = current_x = (gint16) GET_X_LPARAM (msg->lParam);
-      event->motion.y = current_y = (gint16) GET_Y_LPARAM (msg->lParam);
+      event->motion.x = current_x = (bint16) GET_X_LPARAM (msg->lParam);
+      event->motion.y = current_y = (bint16) GET_Y_LPARAM (msg->lParam);
       event->motion.x_root = current_root_x;
       event->motion.y_root = current_root_y;
       event->motion.axes = NULL;
@@ -2791,10 +2791,10 @@ bdk_event_translate (MSG  *msg,
 	    BDK_SCROLL_RIGHT : BDK_SCROLL_LEFT;
         }
       event->scroll.time = _bdk_win32_get_next_tick (msg->time);
-      event->scroll.x = (gint16) point.x;
-      event->scroll.y = (gint16) point.y;
-      event->scroll.x_root = (gint16) GET_X_LPARAM (msg->lParam) + _bdk_offset_x;
-      event->scroll.y_root = (gint16) GET_Y_LPARAM (msg->lParam) + _bdk_offset_y;
+      event->scroll.x = (bint16) point.x;
+      event->scroll.y = (bint16) point.y;
+      event->scroll.x_root = (bint16) GET_X_LPARAM (msg->lParam) + _bdk_offset_x;
+      event->scroll.y_root = (bint16) GET_Y_LPARAM (msg->lParam) + _bdk_offset_y;
       event->scroll.state = build_pointer_event_state (msg);
       event->scroll.device = _bdk_display->core_pointer;
 
@@ -3258,7 +3258,7 @@ bdk_event_translate (MSG  *msg,
 	  RECT decorated_rect;
 	  RECT undecorated_drag;
 	  int decoration_width, decoration_height;
-	  gdouble drag_aspect;
+	  bdouble drag_aspect;
 	  int drag_width, drag_height, new_width, new_height;
 
 	  GetClientRect (BDK_WINDOW_HWND (window), &rect);
@@ -3280,7 +3280,7 @@ bdk_event_translate (MSG  *msg,
 	  drag_width = undecorated_drag.right - undecorated_drag.left;
 	  drag_height = undecorated_drag.bottom - undecorated_drag.top;
 
-	  drag_aspect = (gdouble) drag_width / drag_height;
+	  drag_aspect = (bdouble) drag_width / drag_height;
 
 	  BDK_NOTE (EVENTS, g_print (" (ASPECT:%g--%g curr: %g)",
 				     impl->hints.min_aspect, impl->hints.max_aspect, drag_aspect));
@@ -3396,8 +3396,8 @@ bdk_event_translate (MSG  *msg,
 	  /* at least on win9x we have the 16 bit trouble */
 	  maxw = rect.right - rect.left;
 	  maxh = rect.bottom - rect.top;
-	  mmi->ptMaxTrackSize.x = maxw > 0 && maxw < G_MAXSHORT ? maxw : G_MAXSHORT;
-	  mmi->ptMaxTrackSize.y = maxh > 0 && maxh < G_MAXSHORT ? maxh : G_MAXSHORT;
+	  mmi->ptMaxTrackSize.x = maxw > 0 && maxw < B_MAXSHORT ? maxw : B_MAXSHORT;
+	  mmi->ptMaxTrackSize.y = maxh > 0 && maxh < B_MAXSHORT ? maxh : B_MAXSHORT;
 	}
       else
 	{
@@ -3487,7 +3487,7 @@ bdk_event_translate (MSG  *msg,
     case WM_RENDERFORMAT:
       BDK_NOTE (EVENTS, g_print (" %s", _bdk_win32_cf_to_string (msg->wParam)));
 
-      if (!(target = g_hash_table_lookup (_format_atom_table, GINT_TO_POINTER (msg->wParam))))
+      if (!(target = g_hash_table_lookup (_format_atom_table, BINT_TO_POINTER (msg->wParam))))
 	{
 	  BDK_NOTE (EVENTS, g_print (" (target not found)"));
 	  return_val = TRUE;
@@ -3579,7 +3579,7 @@ bdk_event_translate (MSG  *msg,
     case WM_ACTIVATEAPP:
       BDK_NOTE (EVENTS, g_print (" %s thread: %I64d",
 				 msg->wParam ? "YES" : "NO",
-				 (gint64) msg->lParam));
+				 (bint64) msg->lParam));
       if (msg->wParam && BDK_WINDOW_IS_MAPPED (window))
 	ensure_stacking_on_activate_app (msg, window);
       break;
@@ -3590,17 +3590,17 @@ bdk_event_translate (MSG  *msg,
        */
     case WT_PACKET:
       BDK_NOTE (EVENTS, g_print (" %d %p",
-				 (int) msg->wParam, (gpointer) msg->lParam));
+				 (int) msg->wParam, (bpointer) msg->lParam));
       goto wintab;
       
     case WT_CSRCHANGE:
       BDK_NOTE (EVENTS, g_print (" %d %p",
-				 (int) msg->wParam, (gpointer) msg->lParam));
+				 (int) msg->wParam, (bpointer) msg->lParam));
       goto wintab;
       
     case WT_PROXIMITY:
       BDK_NOTE (EVENTS, g_print (" %p %d %d",
-				 (gpointer) msg->wParam,
+				 (bpointer) msg->wParam,
 				 LOWORD (msg->lParam),
 				 HIWORD (msg->lParam)));
       /* Fall through */
@@ -3641,11 +3641,11 @@ _bdk_events_queue (BdkDisplay *display)
     }
 }
 
-static gboolean
+static bboolean
 bdk_event_prepare (GSource *source,
-		   gint    *timeout)
+		   bint    *timeout)
 {
-  gboolean retval;
+  bboolean retval;
 
   BDK_THREADS_ENTER ();
 
@@ -3660,10 +3660,10 @@ bdk_event_prepare (GSource *source,
   return retval;
 }
 
-static gboolean
+static bboolean
 bdk_event_check (GSource *source)
 {
-  gboolean retval;
+  bboolean retval;
   
   BDK_THREADS_ENTER ();
 
@@ -3683,10 +3683,10 @@ bdk_event_check (GSource *source)
   return retval;
 }
 
-static gboolean
+static bboolean
 bdk_event_dispatch (GSource     *source,
 		    GSourceFunc  callback,
-		    gpointer     user_data)
+		    bpointer     user_data)
 {
   BdkEvent *event;
  
@@ -3734,7 +3734,7 @@ check_for_too_much_data (BdkEvent *event)
     }
 }
 
-gboolean
+bboolean
 bdk_event_send_client_message_for_display (BdkDisplay     *display,
                                            BdkEvent       *event, 
                                            BdkNativeWindow winid)
@@ -3779,7 +3779,7 @@ bdk_display_flush (BdkDisplay * display)
   GdiFlush ();
 }
 
-gboolean
+bboolean
 bdk_net_wm_supports (BdkAtom property)
 {
   return FALSE;

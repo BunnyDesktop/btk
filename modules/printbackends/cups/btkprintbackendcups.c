@@ -64,9 +64,9 @@
 
 typedef struct _BtkPrintBackendCupsClass BtkPrintBackendCupsClass;
 
-#define BTK_PRINT_BACKEND_CUPS_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
-#define BTK_IS_PRINT_BACKEND_CUPS_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_CUPS))
-#define BTK_PRINT_BACKEND_CUPS_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
+#define BTK_PRINT_BACKEND_CUPS_CLASS(klass)     (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
+#define BTK_IS_PRINT_BACKEND_CUPS_CLASS(klass)  (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_BACKEND_CUPS))
+#define BTK_PRINT_BACKEND_CUPS_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_BACKEND_CUPS, BtkPrintBackendCupsClass))
 
 #define _CUPS_MAX_ATTEMPTS 10 
 #define _CUPS_MAX_CHUNK_SIZE 8192
@@ -92,7 +92,7 @@ static GType print_backend_cups_type = 0;
 
 typedef void (* BtkPrintCupsResponseCallbackFunc) (BtkPrintBackend *print_backend,
                                                    BtkCupsResult   *result, 
-                                                   gpointer         user_data);
+                                                   bpointer         user_data);
 
 typedef enum 
 {
@@ -114,7 +114,7 @@ typedef struct
   GPollFD *data_poll;
   BtkPrintBackendCups *backend;
   BtkPrintCupsResponseCallbackFunc callback;
-  gpointer                         callback_data;
+  bpointer                         callback_data;
 
 } BtkPrintCupsDispatchWatch;
 
@@ -129,49 +129,49 @@ struct _BtkPrintBackendCups
 
   char *default_printer;
   
-  guint list_printers_poll;
-  guint list_printers_pending : 1;
-  gint  list_printers_attempts;
-  guint got_default_printer   : 1;
-  guint default_printer_poll;
+  buint list_printers_poll;
+  buint list_printers_pending : 1;
+  bint  list_printers_attempts;
+  buint got_default_printer   : 1;
+  buint default_printer_poll;
   BtkCupsConnectionTest *cups_connection_test;
-  gint  reading_ppds;
+  bint  reading_ppds;
 
   char **covers;
   int    number_of_covers;
 
   GList      *requests;
   GHashTable *auth;
-  gchar      *username;
-  gboolean    authentication_lock;
+  bchar      *username;
+  bboolean    authentication_lock;
 #ifdef HAVE_CUPS_API_1_6
   GDBusConnection *dbus_connection;
-  gchar           *avahi_default_printer;
-  guint            avahi_service_browser_subscription_id;
-  guint            avahi_service_browser_subscription_ids[2];
-  gchar           *avahi_service_browser_paths[2];
+  bchar           *avahi_default_printer;
+  buint            avahi_service_browser_subscription_id;
+  buint            avahi_service_browser_subscription_ids[2];
+  bchar           *avahi_service_browser_paths[2];
   GCancellable    *avahi_cancellable;
 #endif
 };
 
-static GObjectClass *backend_parent_class;
+static BObjectClass *backend_parent_class;
 
 static void                 btk_print_backend_cups_class_init      (BtkPrintBackendCupsClass          *class);
 static void                 btk_print_backend_cups_init            (BtkPrintBackendCups               *impl);
-static void                 btk_print_backend_cups_finalize        (GObject                           *object);
-static void                 btk_print_backend_cups_dispose         (GObject                           *object);
+static void                 btk_print_backend_cups_finalize        (BObject                           *object);
+static void                 btk_print_backend_cups_dispose         (BObject                           *object);
 static void                 cups_get_printer_list                  (BtkPrintBackend                   *print_backend);
 static void                 cups_get_default_printer               (BtkPrintBackendCups               *print_backend);
 static void                 cups_get_local_default_printer         (BtkPrintBackendCups               *print_backend);
 static void                 cups_request_execute                   (BtkPrintBackendCups               *print_backend,
 								    BtkCupsRequest                    *request,
 								    BtkPrintCupsResponseCallbackFunc   callback,
-								    gpointer                           user_data,
+								    bpointer                           user_data,
 								    GDestroyNotify                     notify);
 static void                 cups_printer_get_settings_from_options (BtkPrinter                        *printer,
 								    BtkPrinterOptionSet               *options,
 								    BtkPrintSettings                  *settings);
-static gboolean             cups_printer_mark_conflicts            (BtkPrinter                        *printer,
+static bboolean             cups_printer_mark_conflicts            (BtkPrinter                        *printer,
 								    BtkPrinterOptionSet               *options);
 static BtkPrinterOptionSet *cups_printer_get_options               (BtkPrinter                        *printer,
 								    BtkPrintSettings                  *settings,
@@ -184,39 +184,39 @@ static void                 cups_printer_prepare_for_print         (BtkPrinter  
 static GList *              cups_printer_list_papers               (BtkPrinter                        *printer);
 static BtkPageSetup *       cups_printer_get_default_page_size     (BtkPrinter                        *printer);
 static void                 cups_printer_request_details           (BtkPrinter                        *printer);
-static gboolean             cups_request_default_printer           (BtkPrintBackendCups               *print_backend);
-static gboolean             cups_request_ppd                       (BtkPrinter                        *printer);
-static gboolean             cups_printer_get_hard_margins          (BtkPrinter                        *printer,
-								    gdouble                           *top,
-								    gdouble                           *bottom,
-								    gdouble                           *left,
-								    gdouble                           *right);
+static bboolean             cups_request_default_printer           (BtkPrintBackendCups               *print_backend);
+static bboolean             cups_request_ppd                       (BtkPrinter                        *printer);
+static bboolean             cups_printer_get_hard_margins          (BtkPrinter                        *printer,
+								    bdouble                           *top,
+								    bdouble                           *bottom,
+								    bdouble                           *left,
+								    bdouble                           *right);
 static BtkPrintCapabilities cups_printer_get_capabilities          (BtkPrinter                        *printer);
 static void                 set_option_from_settings               (BtkPrinterOption                  *option,
 								    BtkPrintSettings                  *setting);
 static void                 cups_begin_polling_info                (BtkPrintBackendCups               *print_backend,
 								    BtkPrintJob                       *job,
 								    int                                job_id);
-static gboolean             cups_job_info_poll_timeout             (gpointer                           user_data);
+static bboolean             cups_job_info_poll_timeout             (bpointer                           user_data);
 static void                 btk_print_backend_cups_print_stream    (BtkPrintBackend                   *backend,
 								    BtkPrintJob                       *job,
 								    BUNNYIOChannel                        *data_io,
 								    BtkPrintJobCompleteFunc            callback,
-								    gpointer                           user_data,
+								    bpointer                           user_data,
 								    GDestroyNotify                     dnotify);
 static bairo_surface_t *    cups_printer_create_bairo_surface      (BtkPrinter                        *printer,
 								    BtkPrintSettings                  *settings,
-								    gdouble                            width,
-								    gdouble                            height,
+								    bdouble                            width,
+								    bdouble                            height,
 								    BUNNYIOChannel                        *cache_io);
 
 static void                 btk_print_backend_cups_set_password    (BtkPrintBackend                   *backend, 
-                                                                    gchar                            **auth_info_required,
-                                                                    gchar                            **auth_info);
+                                                                    bchar                            **auth_info_required,
+                                                                    bchar                            **auth_info);
 
-void                        overwrite_and_free                      (gpointer                          data);
-static gboolean             is_address_local                        (const gchar                      *address);
-static gboolean             request_auth_info                       (gpointer                          data);
+void                        overwrite_and_free                      (bpointer                          data);
+static bboolean             is_address_local                        (const bchar                      *address);
+static bboolean             request_auth_info                       (bpointer                          data);
 
 #ifdef HAVE_CUPS_API_1_6
 static void                 avahi_request_printer_list              (BtkPrintBackendCups              *cups_backend);
@@ -320,7 +320,7 @@ btk_print_backend_cups_new (void)
 static void
 btk_print_backend_cups_class_init (BtkPrintBackendCupsClass *class)
 {
-  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
+  BObjectClass *bobject_class = B_OBJECT_CLASS (class);
   BtkPrintBackendClass *backend_class = BTK_PRINT_BACKEND_CLASS (class);
 
   backend_parent_class = g_type_class_peek_parent (class);
@@ -349,7 +349,7 @@ _bairo_write_to_cups (void                *closure,
                       unsigned int         length)
 {
   BUNNYIOChannel *io = (BUNNYIOChannel *)closure;
-  gsize written;
+  bsize written;
   GError *error;
 
   error = NULL;
@@ -359,7 +359,7 @@ _bairo_write_to_cups (void                *closure,
 
   while (length > 0) 
     {
-      g_io_channel_write_chars (io, (gchar *)data, length, &written, &error);
+      g_io_channel_write_chars (io, (bchar *)data, length, &written, &error);
 
       if (error != NULL)
 	{
@@ -384,8 +384,8 @@ _bairo_write_to_cups (void                *closure,
 static bairo_surface_t *
 cups_printer_create_bairo_surface (BtkPrinter       *printer,
 				   BtkPrintSettings *settings,
-				   gdouble           width, 
-				   gdouble           height,
+				   bdouble           width, 
+				   bdouble           height,
 				   BUNNYIOChannel       *cache_io)
 {
   bairo_surface_t *surface;
@@ -394,8 +394,8 @@ cups_printer_create_bairo_surface (BtkPrinter       *printer,
   ppd_attr_t      *ppd_attr_res = NULL;
   ppd_attr_t      *ppd_attr_screen_freq = NULL;
   ppd_attr_t      *ppd_attr_res_screen_freq = NULL;
-  gchar           *res_string = NULL;
-  gint             level = 2;
+  bchar           *res_string = NULL;
+  bint             level = 2;
 
   if (btk_printer_accepts_pdf (printer))
     surface = bairo_pdf_surface_create_for_stream (_bairo_write_to_cups, cache_io, width, height);
@@ -473,7 +473,7 @@ cups_printer_create_bairo_surface (BtkPrinter       *printer,
 typedef struct {
   BtkPrintJobCompleteFunc callback;
   BtkPrintJob *job;
-  gpointer user_data;
+  bpointer user_data;
   GDestroyNotify dnotify;
 } CupsPrintStreamData;
 
@@ -481,7 +481,7 @@ static void
 cups_free_print_stream_data (CupsPrintStreamData *data)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (data->dnotify)
     data->dnotify (data->user_data);
@@ -492,7 +492,7 @@ cups_free_print_stream_data (CupsPrintStreamData *data)
 static void
 cups_print_cb (BtkPrintBackendCups *print_backend,
                BtkCupsResult       *result,
-               gpointer             user_data)
+               bpointer             user_data)
 {
   GError *error = NULL;
   CupsPrintStreamData *ps = user_data;
@@ -500,7 +500,7 @@ cups_print_cb (BtkPrintBackendCups *print_backend,
   BDK_THREADS_ENTER ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC)); 
+            g_print ("CUPS Backend: %s\n", B_STRFUNC)); 
 
   if (btk_cups_result_is_error (result))
     error = g_error_new_literal (btk_print_error_quark (),
@@ -543,16 +543,16 @@ typedef struct {
 } CupsOptionsData;
 
 static void
-add_cups_options (const gchar *key,
-		  const gchar *value,
-		  gpointer     user_data)
+add_cups_options (const bchar *key,
+		  const bchar *value,
+		  bpointer     user_data)
 {
   CupsOptionsData *data = (CupsOptionsData *) user_data;
   BtkCupsRequest *request = data->request;
   BtkPrinterCups *printer = data->printer;
-  gboolean custom_value = FALSE;
-  gchar *new_value = NULL;
-  gint i;
+  bboolean custom_value = FALSE;
+  bchar *new_value = NULL;
+  bint i;
 
   if (!key || !value)
     return;
@@ -568,8 +568,8 @@ add_cups_options (const gchar *key,
   if (printer && printer->ppd_file)
     {
       ppd_coption_t *coption;
-      gboolean       found = FALSE;
-      gboolean       custom_values_enabled = FALSE;
+      bboolean       found = FALSE;
+      bboolean       custom_values_enabled = FALSE;
 
       coption = ppdFindCustomOption (printer->ppd_file, key);
       if (coption && coption->option)
@@ -606,7 +606,7 @@ btk_print_backend_cups_print_stream (BtkPrintBackend         *print_backend,
                                      BtkPrintJob             *job,
 				     BUNNYIOChannel              *data_io,
 				     BtkPrintJobCompleteFunc  callback,
-				     gpointer                 user_data,
+				     bpointer                 user_data,
 				     GDestroyNotify           dnotify)
 {
   BtkPrinterCups *cups_printer;
@@ -614,11 +614,11 @@ btk_print_backend_cups_print_stream (BtkPrintBackend         *print_backend,
   CupsOptionsData *options_data;
   BtkCupsRequest *request = NULL;
   BtkPrintSettings *settings;
-  const gchar *title;
+  const bchar *title;
   char  printer_absolute_uri[HTTP_MAX_URI];
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));   
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));   
 
   cups_printer = BTK_PRINTER_CUPS (btk_print_job_get_printer (job));
   settings = btk_print_job_get_settings (job);
@@ -740,9 +740,9 @@ btk_print_backend_cups_print_stream (BtkPrintBackend         *print_backend,
                         (GDestroyNotify)cups_free_print_stream_data);
 }
 
-void overwrite_and_free (gpointer data)
+void overwrite_and_free (bpointer data)
 {
-  gchar *password = (gchar *) data;
+  bchar *password = (bchar *) data;
 
   if (password != NULL)
     {
@@ -755,7 +755,7 @@ static void
 btk_print_backend_cups_init (BtkPrintBackendCups *backend_cups)
 {
 #ifdef HAVE_CUPS_API_1_6
-  gint i;
+  bint i;
 #endif
 
   backend_cups->list_printers_poll = FALSE;  
@@ -791,7 +791,7 @@ btk_print_backend_cups_init (BtkPrintBackendCups *backend_cups)
 }
 
 static void
-btk_print_backend_cups_finalize (GObject *object)
+btk_print_backend_cups_finalize (BObject *object)
 {
   BtkPrintBackendCups *backend_cups;
   
@@ -824,15 +824,15 @@ btk_print_backend_cups_finalize (GObject *object)
 }
 
 static void
-btk_print_backend_cups_dispose (GObject *object)
+btk_print_backend_cups_dispose (BObject *object)
 {
   BtkPrintBackendCups *backend_cups;
 #ifdef HAVE_CUPS_API_1_6
-  gint                 i;
+  bint                 i;
 #endif
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   backend_cups = BTK_PRINT_BACKEND_CUPS (object);
 
@@ -887,8 +887,8 @@ btk_print_backend_cups_dispose (GObject *object)
   backend_parent_class->dispose (object);
 }
 
-static gboolean
-is_address_local (const gchar *address)
+static bboolean
+is_address_local (const bchar *address)
 {
   if (address[0] == '/' ||
       strcmp (address, "127.0.0.1") == 0 ||
@@ -934,18 +934,18 @@ httpGetHostname(http_t *http,
 
 static void
 btk_print_backend_cups_set_password (BtkPrintBackend  *backend,
-                                     gchar           **auth_info_required,
-                                     gchar           **auth_info)
+                                     bchar           **auth_info_required,
+                                     bchar           **auth_info)
 {
   BtkPrintBackendCups *cups_backend = BTK_PRINT_BACKEND_CUPS (backend);
   GList *l;
   char   dispatch_hostname[HTTP_MAX_URI];
-  gchar *key;
-  gchar *username = NULL;
-  gchar *hostname = NULL;
-  gchar *password = NULL;
-  gint   length;
-  gint   i;
+  bchar *key;
+  bchar *username = NULL;
+  bchar *hostname = NULL;
+  bchar *password = NULL;
+  bint   length;
+  bint   i;
 
   length = g_strv_length (auth_info_required);
 
@@ -984,7 +984,7 @@ btk_print_backend_cups_set_password (BtkPrintBackend  *backend,
         {
           if (auth_info != NULL)
             {
-              dispatch->request->auth_info = g_new0 (gchar *, length + 1);
+              dispatch->request->auth_info = g_new0 (bchar *, length + 1);
               for (i = 0; i < length; i++)
                 dispatch->request->auth_info[i] = g_strdup (auth_info[i]);
             }
@@ -1003,21 +1003,21 @@ btk_print_backend_cups_set_password (BtkPrintBackend  *backend,
     }
 }
 
-static gboolean
-request_password (gpointer data)
+static bboolean
+request_password (bpointer data)
 {
   BtkPrintCupsDispatchWatch *dispatch = data;
-  const gchar               *username;
-  gchar                     *password;
-  gchar                     *prompt = NULL;
-  gchar                     *key = NULL;
+  const bchar               *username;
+  bchar                     *password;
+  bchar                     *prompt = NULL;
+  bchar                     *key = NULL;
   char                       hostname[HTTP_MAX_URI];
-  gchar                    **auth_info_required;
-  gchar                    **auth_info_default;
-  gchar                    **auth_info_display;
-  gboolean                  *auth_info_visible;
-  gint                       length = 3;
-  gint                       i;
+  bchar                    **auth_info_required;
+  bchar                    **auth_info_default;
+  bchar                    **auth_info_display;
+  bboolean                  *auth_info_visible;
+  bint                       length = 3;
+  bint                       i;
 
   if (dispatch->backend->authentication_lock)
     return FALSE;
@@ -1031,20 +1031,20 @@ request_password (gpointer data)
   else
     username = cupsUser ();
 
-  auth_info_required = g_new0 (gchar*, length + 1);
+  auth_info_required = g_new0 (bchar*, length + 1);
   auth_info_required[0] = g_strdup ("hostname");
   auth_info_required[1] = g_strdup ("username");
   auth_info_required[2] = g_strdup ("password");
 
-  auth_info_default = g_new0 (gchar*, length + 1);
+  auth_info_default = g_new0 (bchar*, length + 1);
   auth_info_default[0] = g_strdup (hostname);
   auth_info_default[1] = g_strdup (username);
 
-  auth_info_display = g_new0 (gchar*, length + 1);
+  auth_info_display = g_new0 (bchar*, length + 1);
   auth_info_display[1] = g_strdup (_("Username:"));
   auth_info_display[2] = g_strdup (_("Password:"));
 
-  auth_info_visible = g_new0 (gboolean, length + 1);
+  auth_info_visible = g_new0 (bboolean, length + 1);
   auth_info_visible[1] = TRUE;
 
   key = g_strconcat (username, "@", hostname, NULL);
@@ -1178,8 +1178,8 @@ cups_dispatch_add_poll (GSource *source)
     }
 }
 
-static gboolean
-check_auth_info (gpointer user_data)
+static bboolean
+check_auth_info (bpointer user_data)
 {
   BtkPrintCupsDispatchWatch *dispatch;
   dispatch = (BtkPrintCupsDispatchWatch *) user_data;
@@ -1195,8 +1195,8 @@ check_auth_info (gpointer user_data)
         }
       else
         {
-          gint length;
-          gint i;
+          bint length;
+          bint i;
 
           length = g_strv_length (dispatch->request->auth_info_required);
 
@@ -1223,19 +1223,19 @@ check_auth_info (gpointer user_data)
   return TRUE;
 }
 
-static gboolean
-request_auth_info (gpointer user_data)
+static bboolean
+request_auth_info (bpointer user_data)
 {
   BtkPrintCupsDispatchWatch  *dispatch;
   const char                 *job_title;
   const char                 *printer_uri;
-  gchar                      *prompt = NULL;
+  bchar                      *prompt = NULL;
   char                       *printer_name = NULL;
-  gint                        length;
-  gint                        i;
-  gboolean                   *auth_info_visible = NULL;
-  gchar                     **auth_info_default = NULL;
-  gchar                     **auth_info_display = NULL;
+  bint                        length;
+  bint                        i;
+  bboolean                   *auth_info_visible = NULL;
+  bchar                     **auth_info_default = NULL;
+  bchar                     **auth_info_display = NULL;
 
   dispatch = (BtkPrintCupsDispatchWatch *) user_data;
 
@@ -1246,9 +1246,9 @@ request_auth_info (gpointer user_data)
   printer_uri = btk_cups_request_ipp_get_string (dispatch->request, IPP_TAG_URI, "printer-uri");
   length = g_strv_length (dispatch->request->auth_info_required);
 
-  auth_info_visible = g_new0 (gboolean, length);
-  auth_info_default = g_new0 (gchar *, length + 1);
-  auth_info_display = g_new0 (gchar *, length + 1);
+  auth_info_visible = g_new0 (bboolean, length);
+  auth_info_default = g_new0 (bchar *, length + 1);
+  auth_info_display = g_new0 (bchar *, length + 1);
 
   for (i = 0; i < length; i++)
     {
@@ -1317,15 +1317,15 @@ request_auth_info (gpointer user_data)
   return FALSE;
 }
 
-static gboolean
+static bboolean
 cups_dispatch_watch_check (GSource *source)
 {
   BtkPrintCupsDispatchWatch *dispatch;
   BtkCupsPollState poll_state;
-  gboolean result;
+  bboolean result;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source)); 
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source)); 
 
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
@@ -1353,17 +1353,17 @@ cups_dispatch_watch_check (GSource *source)
   return result;
 }
 
-static gboolean
+static bboolean
 cups_dispatch_watch_prepare (GSource *source,
-			     gint    *timeout_)
+			     bint    *timeout_)
 {
   BtkPrintCupsDispatchWatch *dispatch;
-  gboolean result;
+  bboolean result;
 
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   *timeout_ = -1;
 
@@ -1374,10 +1374,10 @@ cups_dispatch_watch_prepare (GSource *source,
   return result;
 }
 
-static gboolean
+static bboolean
 cups_dispatch_watch_dispatch (GSource     *source,
 			      GSourceFunc  callback,
-			      gpointer     user_data)
+			      bpointer     user_data)
 {
   BtkPrintCupsDispatchWatch *dispatch;
   BtkPrintCupsResponseCallbackFunc ep_callback;  
@@ -1392,7 +1392,7 @@ cups_dispatch_watch_dispatch (GSource     *source,
   result = btk_cups_request_get_result (dispatch->request);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   if (btk_cups_result_is_error (result))
     {
@@ -1416,16 +1416,16 @@ cups_dispatch_watch_finalize (GSource *source)
   BtkCupsResult *result;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p>\n", G_STRFUNC, source));
+            g_print ("CUPS Backend: %s <source %p>\n", B_STRFUNC, source));
 
   dispatch = (BtkPrintCupsDispatchWatch *) source;
 
   result = btk_cups_request_get_result (dispatch->request);
   if (btk_cups_result_get_error_type (result) == BTK_CUPS_ERROR_AUTH)
     {
-      const gchar *username;
-      gchar        hostname[HTTP_MAX_URI];
-      gchar       *key;
+      const bchar *username;
+      bchar        hostname[HTTP_MAX_URI];
+      bchar       *key;
     
       httpGetHostname (dispatch->request->http, hostname, sizeof (hostname));
       if (is_address_local (hostname))
@@ -1487,7 +1487,7 @@ static void
 cups_request_execute (BtkPrintBackendCups              *print_backend,
                       BtkCupsRequest                   *request,
                       BtkPrintCupsResponseCallbackFunc  callback,
-                      gpointer                          user_data,
+                      bpointer                          user_data,
                       GDestroyNotify                    notify)
 {
   BtkPrintCupsDispatchWatch *dispatch;
@@ -1497,7 +1497,7 @@ cups_request_execute (BtkPrintBackendCups              *print_backend,
   g_source_set_name (&dispatch->source, "BTK+ CUPS backend");
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s <source %p> - Executing cups request on server '%s' and resource '%s'\n", G_STRFUNC, dispatch, request->server, request->resource));
+            g_print ("CUPS Backend: %s <source %p> - Executing cups request on server '%s' and resource '%s'\n", B_STRFUNC, dispatch, request->server, request->resource));
 
   dispatch->request = request;
   dispatch->backend = g_object_ref (print_backend);
@@ -1527,27 +1527,27 @@ cups_request_execute (BtkPrintBackendCups              *print_backend,
 static void
 cups_request_printer_info_cb (BtkPrintBackendCups *backend,
                               BtkCupsResult       *result,
-                              gpointer             user_data)
+                              bpointer             user_data)
 {
   ipp_attribute_t *attr;
   ipp_t *response;
-  gchar *printer_name;
+  bchar *printer_name;
   BtkPrinterCups *cups_printer;
   BtkPrinter *printer;
-  gchar *loc;
-  gchar *desc;
-  gchar *state_msg;
+  bchar *loc;
+  bchar *desc;
+  bchar *state_msg;
   int job_count;
-  gboolean status_changed;  
+  bboolean status_changed;  
 
   g_assert (BTK_IS_PRINT_BACKEND_CUPS (backend));
 
-  printer_name = (gchar *)user_data;
+  printer_name = (bchar *)user_data;
   printer = btk_print_backend_find_printer (BTK_PRINT_BACKEND (backend),
 					    printer_name);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - Got printer info for printer '%s'\n", G_STRFUNC, printer_name));
+            g_print ("CUPS Backend: %s - Got printer info for printer '%s'\n", B_STRFUNC, printer_name));
 
   if (!printer)
     {
@@ -1604,10 +1604,10 @@ cups_request_printer_info_cb (BtkPrintBackendCups *backend,
 
 static void
 cups_request_printer_info (BtkPrintBackendCups *print_backend,
-                           const gchar         *printer_name)
+                           const bchar         *printer_name)
 {
   BtkCupsRequest *request;
-  gchar *printer_uri;
+  bchar *printer_uri;
   static const char * const pattrs[] =	/* Attributes we're interested in */
     {
       "printer-location",
@@ -1633,7 +1633,7 @@ cups_request_printer_info (BtkPrintBackendCups *print_backend,
                                    "printer-uri", NULL, printer_uri);
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s - Requesting printer info for URI '%s'\n", G_STRFUNC, printer_uri));
+            g_print ("CUPS Backend: %s - Requesting printer info for URI '%s'\n", B_STRFUNC, printer_uri));
 
   g_free (printer_uri);
 
@@ -1657,8 +1657,8 @@ typedef struct {
 } CupsJobPollData;
 
 static void
-job_object_died	(gpointer  user_data,
-		 GObject  *where_the_object_was)
+job_object_died	(bpointer  user_data,
+		 BObject  *where_the_object_was)
 {
   CupsJobPollData *data = user_data;
   data->job = NULL;
@@ -1668,7 +1668,7 @@ static void
 cups_job_poll_data_free (CupsJobPollData *data)
 {
   if (data->job)
-    g_object_weak_unref (G_OBJECT (data->job), job_object_died, data);
+    g_object_weak_unref (B_OBJECT (data->job), job_object_died, data);
     
   g_free (data);
 }
@@ -1676,13 +1676,13 @@ cups_job_poll_data_free (CupsJobPollData *data)
 static void
 cups_request_job_info_cb (BtkPrintBackendCups *print_backend,
 			  BtkCupsResult       *result,
-			  gpointer             user_data)
+			  bpointer             user_data)
 {
   CupsJobPollData *data = user_data;
   ipp_attribute_t *attr;
   ipp_t *response;
   int state;
-  gboolean done;
+  bboolean done;
 
   BDK_THREADS_ENTER ();
 
@@ -1741,7 +1741,7 @@ cups_request_job_info_cb (BtkPrintBackendCups *print_backend,
 
   if (!done && data->job != NULL)
     {
-      guint32 timeout;
+      buint32 timeout;
 
       if (data->counter < 5)
 	timeout = 100;
@@ -1763,7 +1763,7 @@ static void
 cups_request_job_info (CupsJobPollData *data)
 {
   BtkCupsRequest *request;
-  gchar *job_uri;
+  bchar *job_uri;
 
   request = btk_cups_request_new_with_username (NULL,
                                                 BTK_CUPS_POST,
@@ -1785,8 +1785,8 @@ cups_request_job_info (CupsJobPollData *data)
                         NULL);
 }
 
-static gboolean
-cups_job_info_poll_timeout (gpointer user_data)
+static bboolean
+cups_job_info_poll_timeout (bpointer user_data)
 {
   CupsJobPollData *data = user_data;
   
@@ -1801,7 +1801,7 @@ cups_job_info_poll_timeout (gpointer user_data)
 static void
 cups_begin_polling_info (BtkPrintBackendCups *print_backend,
 			 BtkPrintJob         *job,
-			 gint                 job_id)
+			 bint                 job_id)
 {
   CupsJobPollData *data;
 
@@ -1812,7 +1812,7 @@ cups_begin_polling_info (BtkPrintBackendCups *print_backend,
   data->job_id = job_id;
   data->counter = 0;
 
-  g_object_weak_ref (G_OBJECT (job), job_object_died, data);
+  g_object_weak_ref (B_OBJECT (job), job_object_died, data);
 
   cups_request_job_info (data);
 }
@@ -1825,11 +1825,11 @@ mark_printer_inactive (BtkPrinter      *printer,
   g_signal_emit_by_name (backend, "printer-removed", printer);
 }
 
-static gint
+static bint
 find_printer (BtkPrinter  *printer, 
-	      const gchar *find_name)
+	      const bchar *find_name)
 {
-  const gchar *printer_name;
+  const bchar *printer_name;
 
   printer_name = btk_printer_get_name (printer);
   return g_ascii_strcasecmp (printer_name, find_name);
@@ -1905,41 +1905,41 @@ typedef enum
 
 typedef struct
 {
-  const gchar *printer_name;
-  const gchar *printer_uri;
-  const gchar *member_uris;
-  const gchar *location;
-  const gchar *description;
-  gchar *state_msg;
-  const gchar *reason_msg;
+  const bchar *printer_name;
+  const bchar *printer_uri;
+  const bchar *member_uris;
+  const bchar *location;
+  const bchar *description;
+  bchar *state_msg;
+  const bchar *reason_msg;
   PrinterStateLevel reason_level;
-  gint state;
-  gint job_count;
-  gboolean is_paused;
-  gboolean is_accepting_jobs;
-  const gchar *default_cover_before;
-  const gchar *default_cover_after;
-  gboolean default_printer;
-  gboolean got_printer_type;
-  gboolean remote_printer;
+  bint state;
+  bint job_count;
+  bboolean is_paused;
+  bboolean is_accepting_jobs;
+  const bchar *default_cover_before;
+  const bchar *default_cover_after;
+  bboolean default_printer;
+  bboolean got_printer_type;
+  bboolean remote_printer;
 #ifdef HAVE_CUPS_API_1_6
-  gboolean avahi_printer;
+  bboolean avahi_printer;
 #endif
-  gchar  **auth_info_required;
-  guchar   ipp_version_major;
-  guchar   ipp_version_minor;
-  gboolean supports_copies;
-  gboolean supports_collate;
-  gboolean supports_number_up;
+  bchar  **auth_info_required;
+  buchar   ipp_version_major;
+  buchar   ipp_version_minor;
+  bboolean supports_copies;
+  bboolean supports_collate;
+  bboolean supports_number_up;
 } PrinterSetupInfo;
 
 static void
 get_ipp_version (const char *ipp_version_string,
-                 guchar     *ipp_version_major,
-                 guchar     *ipp_version_minor)
+                 buchar     *ipp_version_major,
+                 buchar     *ipp_version_minor)
 {
-  gchar **ipp_version_strv;
-  gchar  *endptr;
+  bchar **ipp_version_strv;
+  bchar  *endptr;
 
   *ipp_version_major = 1;
   *ipp_version_minor = 1;
@@ -1952,11 +1952,11 @@ get_ipp_version (const char *ipp_version_string,
         {
           if (g_strv_length (ipp_version_strv) == 2)
             {
-              *ipp_version_major = (guchar) g_ascii_strtoull (ipp_version_strv[0], &endptr, 10);
+              *ipp_version_major = (buchar) g_ascii_strtoull (ipp_version_strv[0], &endptr, 10);
               if (endptr == ipp_version_strv[0])
                 *ipp_version_major = 1;
 
-              *ipp_version_minor = (guchar) g_ascii_strtoull (ipp_version_strv[1], &endptr, 10);
+              *ipp_version_minor = (buchar) g_ascii_strtoull (ipp_version_strv[1], &endptr, 10);
               if (endptr == ipp_version_strv[1])
                 *ipp_version_minor = 1;
             }
@@ -1967,8 +1967,8 @@ get_ipp_version (const char *ipp_version_string,
 }
 
 static void
-get_server_ipp_version (guchar *ipp_version_major,
-                        guchar *ipp_version_minor)
+get_server_ipp_version (buchar *ipp_version_major,
+                        buchar *ipp_version_minor)
 {
   *ipp_version_major = 1;
   *ipp_version_minor = 1;
@@ -1980,11 +1980,11 @@ get_server_ipp_version (guchar *ipp_version_major,
     }
 }
 
-static gint
-ipp_version_cmp (guchar ipp_version_major1,
-                 guchar ipp_version_minor1,
-                 guchar ipp_version_major2,
-                 guchar ipp_version_minor2)
+static bint
+ipp_version_cmp (buchar ipp_version_major1,
+                 buchar ipp_version_minor1,
+                 buchar ipp_version_major2,
+                 buchar ipp_version_minor2)
 {
   if (ipp_version_major1 == ipp_version_major2 &&
       ipp_version_minor1 == ipp_version_minor2)
@@ -2008,7 +2008,7 @@ cups_printer_handle_attribute (BtkPrintBackendCups *cups_backend,
 			       ipp_attribute_t *attr,
 			       PrinterSetupInfo *info)
 {
-  gint i,j;
+  bint i,j;
 
   if (strcmp (ippGetName (attr), "printer-name") == 0 &&
       ippGetValueTag (attr) == IPP_TAG_NAME)
@@ -2031,7 +2031,7 @@ cups_printer_handle_attribute (BtkPrintBackendCups *cups_backend,
     {
       for (i = 0; i < ippGetCount (attr); i++)
 	{
-	  gboolean interested_in = FALSE;
+	  bboolean interested_in = FALSE;
 	  if (strcmp (ippGetString (attr, i, NULL), "none") == 0)
 	    continue;
 	  /* Sets is_paused flag for paused printer. */
@@ -2119,17 +2119,17 @@ cups_printer_handle_attribute (BtkPrintBackendCups *cups_backend,
     {
       if (strcmp (ippGetString (attr, 0, NULL), "none") != 0)
 	{
-	  info->auth_info_required = g_new0 (gchar *, ippGetCount (attr) + 1);
+	  info->auth_info_required = g_new0 (bchar *, ippGetCount (attr) + 1);
 	  for (i = 0; i < ippGetCount (attr); i++)
 	    info->auth_info_required[i] = g_strdup (ippGetString (attr, i, NULL));
 	}
     }
   else if (g_strcmp0 (ippGetName (attr), "ipp-versions-supported") == 0)
     {
-      guchar server_ipp_version_major;
-      guchar server_ipp_version_minor;
-      guchar ipp_version_major;
-      guchar ipp_version_minor;
+      buchar server_ipp_version_major;
+      buchar server_ipp_version_minor;
+      buchar ipp_version_major;
+      buchar ipp_version_minor;
 
       get_server_ipp_version (&server_ipp_version_major,
                               &server_ipp_version_minor);
@@ -2306,11 +2306,11 @@ set_printer_icon_name_from_info (BtkPrinter       *printer,
 static void
 set_info_state_message (PrinterSetupInfo *info)
 {
-  gint i;
+  bint i;
 
   if (info->state_msg && strlen (info->state_msg) == 0)
     {
-      gchar *tmp_msg2 = NULL;
+      bchar *tmp_msg2 = NULL;
       if (info->is_paused && !info->is_accepting_jobs)
         /* Translators: this is a printer status. */
         tmp_msg2 = g_strdup ( _("Paused; Rejecting Jobs"));
@@ -2331,8 +2331,8 @@ set_info_state_message (PrinterSetupInfo *info)
   /* Set description of the reason and combine it with printer-state-message. */
   if (info->reason_msg)
     {
-      gchar *reason_msg_desc = NULL;
-      gboolean found = FALSE;
+      bchar *reason_msg_desc = NULL;
+      bboolean found = FALSE;
 
       for (i = 0; i < G_N_ELEMENTS (printer_messages); i++)
         {
@@ -2359,7 +2359,7 @@ set_info_state_message (PrinterSetupInfo *info)
             }
           else
             {
-              gchar *tmp_msg = NULL;
+              bchar *tmp_msg = NULL;
               /* Translators: this string connects multiple printer states together. */
               tmp_msg = g_strjoin ( _("; "), info->state_msg,
                                    reason_msg_desc, NULL);
@@ -2374,7 +2374,7 @@ set_info_state_message (PrinterSetupInfo *info)
 
 static void
 set_default_printer (BtkPrintBackendCups *cups_backend,
-                     const gchar         *default_printer_name)
+                     const bchar         *default_printer_name)
 {
   cups_backend->default_printer = g_strdup (default_printer_name);
   cups_backend->got_default_printer = TRUE;
@@ -2396,11 +2396,11 @@ set_default_printer (BtkPrintBackendCups *cups_backend,
 #ifdef HAVE_CUPS_API_1_6
 typedef struct
 {
-  gchar *name;
-  gchar *type;
-  gchar *domain;
-  gchar *host;
-  gint   port;
+  bchar *name;
+  bchar *type;
+  bchar *domain;
+  bchar *host;
+  bint   port;
 } AvahiService;
 
 void
@@ -2419,21 +2419,21 @@ avahi_service_free (AvahiService *service)
 static void
 cups_request_avahi_printer_info_cb (BtkPrintBackendCups *cups_backend,
                                     BtkCupsResult       *result,
-                                    gpointer             user_data)
+                                    bpointer             user_data)
 {
   PrinterSetupInfo *info = g_slice_new0 (PrinterSetupInfo);
   BtkPrintBackend  *backend = BTK_PRINT_BACKEND (cups_backend);
   ipp_attribute_t  *attr;
   AvahiService     *service = (AvahiService *) user_data;
   BtkPrinter       *printer;
-  gboolean          list_has_changed = FALSE;
-  gboolean          status_changed = FALSE;
+  bboolean          list_has_changed = FALSE;
+  bboolean          status_changed = FALSE;
   ipp_t            *response;
 
   bdk_threads_enter ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (btk_cups_result_is_error (result))
     {
@@ -2543,12 +2543,12 @@ done:
 }
 
 static void
-cups_request_avahi_printer_info (const gchar         *printer_uri,
-                                 const gchar         *host,
-                                 gint                 port,
-                                 const gchar         *name,
-                                 const gchar         *type,
-                                 const gchar         *domain,
+cups_request_avahi_printer_info (const bchar         *printer_uri,
+                                 const bchar         *host,
+                                 bint                 port,
+                                 const bchar         *name,
+                                 const bchar         *type,
+                                 const bchar         *domain,
                                  BtkPrintBackendCups *backend)
 {
   BtkCupsRequest *request;
@@ -2592,19 +2592,19 @@ cups_request_avahi_printer_info (const gchar         *printer_uri,
 
 typedef struct
 {
-  gchar               *printer_uri;
-  gchar               *host;
-  gint                 port;
-  gchar               *name;
-  gchar               *type;
-  gchar               *domain;
+  bchar               *printer_uri;
+  bchar               *host;
+  bint                 port;
+  bchar               *name;
+  bchar               *type;
+  bchar               *domain;
   BtkPrintBackendCups *backend;
 } AvahiConnectionTestData;
 
 static void
-avahi_connection_test_cb (GObject      *source_object,
+avahi_connection_test_cb (BObject      *source_object,
                           GAsyncResult *res,
-                          gpointer      user_data)
+                          bpointer      user_data)
 {
   AvahiConnectionTestData *data = (AvahiConnectionTestData *) user_data;
   GSocketConnection       *connection;
@@ -2637,30 +2637,30 @@ avahi_connection_test_cb (GObject      *source_object,
 }
 
 static void
-avahi_service_resolver_cb (GObject      *source_object,
+avahi_service_resolver_cb (BObject      *source_object,
                            GAsyncResult *res,
-                           gpointer      user_data)
+                           bpointer      user_data)
 {
   AvahiConnectionTestData *data;
   BtkPrintBackendCups     *backend;
-  const gchar             *name;
-  const gchar             *host;
-  const gchar             *type;
-  const gchar             *domain;
-  const gchar             *address;
-  const gchar             *protocol_string;
+  const bchar             *name;
+  const bchar             *host;
+  const bchar             *type;
+  const bchar             *domain;
+  const bchar             *address;
+  const bchar             *protocol_string;
   GVariant                *output;
   GVariant                *txt;
   GVariant                *child;
-  guint32                  flags;
-  guint16                  port;
+  buint32                  flags;
+  buint16                  port;
   GError                  *error = NULL;
-  gchar                   *suffix = NULL;
-  gchar                   *tmp;
-  gint                     interface;
-  gint                     protocol;
-  gint                     aprotocol;
-  gint                     i, j;
+  bchar                   *suffix = NULL;
+  bchar                   *tmp;
+  bint                     interface;
+  bint                     protocol;
+  bint                     aprotocol;
+  bint                     i, j;
 
   output = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
                                           res,
@@ -2686,7 +2686,7 @@ avahi_service_resolver_cb (GObject      *source_object,
         {
           child = g_variant_get_child_value (txt, i);
 
-          tmp = g_new0 (gchar, g_variant_n_children (child) + 1);
+          tmp = g_new0 (bchar, g_variant_n_children (child) + 1);
           for (j = 0; j < g_variant_n_children (child); j++)
             {
               tmp[j] = g_variant_get_byte (g_variant_get_child_value (child, j));
@@ -2745,20 +2745,20 @@ avahi_service_resolver_cb (GObject      *source_object,
 
 static void
 avahi_service_browser_signal_handler (GDBusConnection *connection,
-                                      const gchar     *sender_name,
-                                      const gchar     *object_path,
-                                      const gchar     *interface_name,
-                                      const gchar     *signal_name,
+                                      const bchar     *sender_name,
+                                      const bchar     *object_path,
+                                      const bchar     *interface_name,
+                                      const bchar     *signal_name,
                                       GVariant        *parameters,
-                                      gpointer         user_data)
+                                      bpointer         user_data)
 {
   BtkPrintBackendCups *backend = BTK_PRINT_BACKEND_CUPS (user_data);
-  gchar               *name;
-  gchar               *type;
-  gchar               *domain;
-  guint                flags;
-  gint                 interface;
-  gint                 protocol;
+  bchar               *name;
+  bchar               *type;
+  bchar               *domain;
+  buint                flags;
+  bint                 interface;
+  bint                 protocol;
 
   if (g_strcmp0 (signal_name, "ItemNew") == 0)
     {
@@ -2840,14 +2840,14 @@ avahi_service_browser_signal_handler (GDBusConnection *connection,
 }
 
 static void
-avahi_service_browser_new_cb (GObject      *source_object,
+avahi_service_browser_new_cb (BObject      *source_object,
                               GAsyncResult *res,
-                              gpointer      user_data)
+                              bpointer      user_data)
 {
   BtkPrintBackendCups *cups_backend;
   GVariant            *output;
   GError              *error = NULL;
-  gint                 i;
+  bint                 i;
 
   output = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source_object),
                                           res,
@@ -2901,9 +2901,9 @@ avahi_service_browser_new_cb (GObject      *source_object,
 }
 
 static void
-avahi_create_browsers (GObject      *source_object,
+avahi_create_browsers (BObject      *source_object,
                        GAsyncResult *res,
-                       gpointer      user_data)
+                       bpointer      user_data)
 {
   GDBusConnection     *dbus_connection;
   BtkPrintBackendCups *cups_backend;
@@ -2990,14 +2990,14 @@ avahi_request_printer_list (BtkPrintBackendCups *cups_backend)
 static void
 cups_request_printer_list_cb (BtkPrintBackendCups *cups_backend,
                               BtkCupsResult       *result,
-                              gpointer             user_data)
+                              bpointer             user_data)
 {
   BtkPrintBackend *backend = BTK_PRINT_BACKEND (cups_backend);
   ipp_attribute_t *attr;
   ipp_t *response;
-  gboolean list_has_changed;
+  bboolean list_has_changed;
   GList *removed_printer_checklist;
-  gchar *remote_default_printer = NULL;
+  bchar *remote_default_printer = NULL;
   GList *iter;
 
   BDK_THREADS_ENTER ();
@@ -3005,7 +3005,7 @@ cups_request_printer_list_cb (BtkPrintBackendCups *cups_backend,
   list_has_changed = FALSE;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   cups_backend->list_printers_pending = FALSE;
 
@@ -3041,7 +3041,7 @@ cups_request_printer_list_cb (BtkPrintBackendCups *cups_backend,
        attr = ippNextAttribute (response))
     {
       BtkPrinter *printer;
-      gboolean status_changed = FALSE;
+      bboolean status_changed = FALSE;
       GList *node;
       PrinterSetupInfo *info = g_slice_new0 (PrinterSetupInfo);
 
@@ -3061,7 +3061,7 @@ cups_request_printer_list_cb (BtkPrintBackendCups *cups_backend,
   for (attr = response->attrs; attr != NULL; attr = attr->next)
     {
       BtkPrinter *printer;
-      gboolean status_changed = FALSE;
+      bboolean status_changed = FALSE;
       GList *node;
       PrinterSetupInfo *info = g_slice_new0 (PrinterSetupInfo);
 
@@ -3239,7 +3239,7 @@ update_backend_status (BtkPrintBackendCups    *cups_backend,
     }
 }
 
-static gboolean
+static bboolean
 cups_request_printer_list (BtkPrintBackendCups *cups_backend)
 {
   BtkCupsConnectionState state;
@@ -3325,7 +3325,7 @@ static void
 get_ppd_data_free (GetPPDData *data)
 {
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
   httpClose (data->http);
   g_io_channel_unref (data->ppd_io);
   g_object_unref (data->printer);
@@ -3343,7 +3343,7 @@ cups_request_ppd_cb (BtkPrintBackendCups *print_backend,
   BDK_THREADS_ENTER ();
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   printer = BTK_PRINTER (data->printer);
   BTK_PRINTER_CUPS (printer)->reading_ppd = FALSE;
@@ -3351,7 +3351,7 @@ cups_request_ppd_cb (BtkPrintBackendCups *print_backend,
 
   if (btk_cups_result_is_error (result))
     {
-      gboolean success = FALSE;
+      bboolean success = FALSE;
 
       /* If we get a 404 then it is just a raw printer without a ppd
          and not an error. Standalone Avahi printers also don't have
@@ -3386,7 +3386,7 @@ done:
   BDK_THREADS_LEAVE ();
 }
 
-static gboolean
+static bboolean
 cups_request_ppd (BtkPrinter *printer)
 {
   GError *error;
@@ -3394,7 +3394,7 @@ cups_request_ppd (BtkPrinter *printer)
   BtkPrinterCups *cups_printer;
   BtkCupsRequest *request;
   char *ppd_filename = NULL;
-  gchar *resource;
+  bchar *resource;
   http_t *http;
   GetPPDData *data;
   int fd;
@@ -3404,7 +3404,7 @@ cups_request_ppd (BtkPrinter *printer)
   error = NULL;
 
   BTK_NOTE (PRINTING,
-            g_print ("CUPS Backend: %s\n", G_STRFUNC));
+            g_print ("CUPS Backend: %s\n", B_STRFUNC));
 
   if (cups_printer->remote)
     {
@@ -3592,7 +3592,7 @@ cups_parse_user_options (const char     *filename,
                          cups_option_t **options)
 {
   FILE *fp;
-  gchar line[1024], *lineptr, *name;
+  bchar line[1024], *lineptr, *name;
 
   if ((fp = g_fopen (filename, "r")) == NULL)
     return num_options;
@@ -3727,7 +3727,7 @@ cups_get_local_default_printer (BtkPrintBackendCups *backend)
 static void
 cups_request_default_printer_cb (BtkPrintBackendCups *print_backend,
 				 BtkCupsResult       *result,
-				 gpointer             user_data)
+				 bpointer             user_data)
 {
   ipp_t *response;
   ipp_attribute_t *attr;
@@ -3775,7 +3775,7 @@ cups_request_default_printer_cb (BtkPrintBackendCups *print_backend,
   BDK_THREADS_LEAVE ();
 }
 
-static gboolean
+static bboolean
 cups_request_default_printer (BtkPrintBackendCups *print_backend)
 {
   BtkCupsConnectionState state;
@@ -4107,7 +4107,7 @@ get_choice_text (ppd_file_t   *ppd_file,
   return ppd_text_to_utf8 (ppd_file, choice->text);
 }
 
-static gboolean
+static bboolean
 group_has_option (ppd_group_t  *group, 
 		  ppd_option_t *option)
 {
@@ -4138,7 +4138,7 @@ set_option_off (BtkPrinterOption *option)
   btk_printer_option_set (option, "None");
 }
 
-static gboolean
+static bboolean
 value_is_off (const char *value)
 {
   return  (strcasecmp (value, "None") == 0 ||
@@ -4160,17 +4160,17 @@ static int
 available_choices (ppd_file_t     *ppd,
 		   ppd_option_t   *option,
 		   ppd_choice_t ***available,
-		   gboolean        keep_if_only_one_option)
+		   bboolean        keep_if_only_one_option)
 {
   ppd_option_t *other_option;
   int i, j;
-  gchar *conflicts;
+  bchar *conflicts;
   ppd_const_t *constraint;
   const char *choice, *other_choice;
   ppd_option_t *option1, *option2;
   ppd_group_t *installed_options;
   int num_conflicts;
-  gboolean all_default;
+  bboolean all_default;
   int add_auto;
 
   if (available)
@@ -4280,7 +4280,7 @@ available_choices (ppd_file_t     *ppd,
   add_auto = 0;
   if (strcmp (option->keyword, "InputSlot") == 0)
     {
-      gboolean found_auto = FALSE;
+      bboolean found_auto = FALSE;
       for (j = 0; j < option->num_choices; j++)
 	{
 	  if (!conflicts[j])
@@ -4327,7 +4327,7 @@ available_choices (ppd_file_t     *ppd,
 static BtkPrinterOption *
 create_pickone_option (ppd_file_t   *ppd_file,
 		       ppd_option_t *ppd_option,
-		       const gchar  *btk_name)
+		       const bchar  *btk_name)
 {
   BtkPrinterOption *option;
   ppd_choice_t **available;
@@ -4452,7 +4452,7 @@ create_pickone_option (ppd_file_t   *ppd_file,
 static BtkPrinterOption *
 create_boolean_option (ppd_file_t   *ppd_file,
 		       ppd_option_t *ppd_option,
-		       const gchar  *btk_name)
+		       const bchar  *btk_name)
 {
   BtkPrinterOption *option;
   ppd_choice_t **available;
@@ -4488,8 +4488,8 @@ create_boolean_option (ppd_file_t   *ppd_file,
   return option;
 }
 
-static gchar *
-get_ppd_option_name (const gchar *keyword)
+static bchar *
+get_ppd_option_name (const bchar *keyword)
 {
   int i;
 
@@ -4500,8 +4500,8 @@ get_ppd_option_name (const gchar *keyword)
   return g_strdup_printf ("cups-%s", keyword);
 }
 
-static gchar *
-get_lpoption_name (const gchar *lpoption)
+static bchar *
+get_lpoption_name (const bchar *lpoption)
 {
   int i;
 
@@ -4526,10 +4526,10 @@ strptr_cmp (const void *a,
 }
 
 
-static gboolean
-string_in_table (gchar       *str, 
-		 const gchar *table[], 
-		 gint         table_len)
+static bboolean
+string_in_table (bchar       *str, 
+		 const bchar *table[], 
+		 bint         table_len)
 {
   return bsearch (&str, table, table_len, sizeof (char *), (void *)strptr_cmp) != NULL;
 }
@@ -4622,8 +4622,8 @@ handle_group (BtkPrinterOptionSet *set,
 	      ppd_group_t         *toplevel_group,
 	      BtkPrintSettings    *settings)
 {
-  gint i;
-  gchar *name;
+  bint i;
+  bchar *name;
   
   /* Ignore installable options */
   name = ppd_group_name (toplevel_group);
@@ -4745,9 +4745,9 @@ cups_printer_get_options (BtkPrinter           *printer,
       char **cover = NULL;
       char **cover_display = NULL;
       char **cover_display_translated = NULL;
-      gint num_of_covers = 0;
-      gpointer value;
-      gint j;
+      bint num_of_covers = 0;
+      bpointer value;
+      bint j;
 
       num_of_covers = backend->number_of_covers;
       cover = g_new (char *, num_of_covers + 1);
@@ -4834,7 +4834,7 @@ cups_printer_get_options (BtkPrinter           *printer,
     {
       BtkPaperSize *paper_size;
       ppd_option_t *option;
-      const gchar  *ppd_name;
+      const bchar  *ppd_name;
 
       ppdMarkDefaults (ppd_file);
 
@@ -4849,7 +4849,7 @@ cups_printer_get_options (BtkPrinter           *printer,
             strncpy (option->defchoice, ppd_name, PPD_MAX_NAME);
           else
             {
-              gchar *custom_name;
+              bchar *custom_name;
               char width[G_ASCII_DTOSTR_BUF_SIZE];
               char height[G_ASCII_DTOSTR_BUF_SIZE];
 
@@ -4885,8 +4885,8 @@ cups_printer_get_options (BtkPrinter           *printer,
       name = get_lpoption_name (opts[i].name);
       if (strcmp (name, "cups-job-sheets") == 0)
         {
-          gchar **values;
-          gint    num_values;
+          bchar **values;
+          bint    num_values;
           
           values = g_strsplit (opts[i].value, ",", 2);
           num_values = g_strv_length (values);
@@ -5016,7 +5016,7 @@ set_conflicts_from_group (BtkPrinterOptionSet *set,
     set_conflicts_from_group (set, ppd_file, &group->subgroups[i]);
 }
 
-static gboolean
+static bboolean
 cups_printer_mark_conflicts (BtkPrinter          *printer,
 			     BtkPrinterOptionSet *options)
 {
@@ -5060,10 +5060,10 @@ typedef struct {
 static void
 map_settings_to_option (BtkPrinterOption  *option,
 			const NameMapping  table[],
-			gint               n_elements,
+			bint               n_elements,
 			BtkPrintSettings  *settings,
-			const gchar       *standard_name,
-			const gchar       *cups_name)
+			const bchar       *standard_name,
+			const bchar       *cups_name)
 {
   int i;
   char *name;
@@ -5108,12 +5108,12 @@ map_settings_to_option (BtkPrinterOption  *option,
 }
 
 static void
-map_option_to_settings (const gchar       *value,
+map_option_to_settings (const bchar       *value,
 			const NameMapping  table[],
-			gint               n_elements,
+			bint               n_elements,
 			BtkPrintSettings  *settings,
-			const gchar       *standard_name,
-			const gchar       *cups_name)
+			const bchar       *standard_name,
+			const bchar       *cups_name)
 {
   int i;
   char *name;
@@ -5303,7 +5303,7 @@ set_option_from_settings (BtkPrinterOption *option,
 
 static void
 foreach_option_get_settings (BtkPrinterOption *option,
-			     gpointer          user_data)
+			     bpointer          user_data)
 {
   struct OptionData *data = user_data;
   BtkPrintSettings *settings = data->settings;
@@ -5365,7 +5365,7 @@ foreach_option_get_settings (BtkPrinterOption *option,
     btk_print_settings_set (settings, option->name, value);
 }
 
-static gboolean
+static bboolean
 supports_am_pm (void)
 {
   struct tm tmp_tm = { 0 };
@@ -5383,7 +5383,7 @@ supports_am_pm (void)
  * Returns a newly allocated string holding UTC time in HH:MM:SS format
  * or NULL.
  */
-gchar *
+bchar *
 localtime_to_utctime (const char *local_time)
 {
   const char *formats_0[] = {" %I : %M : %S %p ", " %p %I : %M : %S ",
@@ -5398,7 +5398,7 @@ localtime_to_utctime (const char *local_time)
   struct tm   local_print_time;
   struct tm   utc_print_time;
   struct tm   diff_time;
-  gchar      *utc_time = NULL;
+  bchar      *utc_time = NULL;
   int         i, n;
 
   if (local_time == NULL || local_time[0] == '\0')
@@ -5478,7 +5478,7 @@ cups_printer_get_settings_from_options (BtkPrinter          *printer,
 
       if (strcmp (print_at, "at") == 0)
         {
-          gchar *utc_time = NULL;
+          bchar *utc_time = NULL;
           
           utc_time = localtime_to_utctime (print_at_time);
 
@@ -5712,12 +5712,12 @@ cups_printer_get_default_page_size (BtkPrinter *printer)
   return create_page_setup (ppd_file, size);
 }
 
-static gboolean
+static bboolean
 cups_printer_get_hard_margins (BtkPrinter *printer,
-			       gdouble    *top,
-			       gdouble    *bottom,
-			       gdouble    *left,
-			       gdouble    *right)
+			       bdouble    *top,
+			       bdouble    *bottom,
+			       bdouble    *left,
+			       bdouble    *right)
 {
   ppd_file_t *ppd_file;
 

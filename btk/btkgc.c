@@ -38,7 +38,7 @@ typedef struct _BtkGCDrawable  BtkGCDrawable;
 
 struct _BtkGCKey
 {
-  gint depth;
+  bint depth;
   BdkColormap *colormap;
   BdkGCValues values;
   BdkGCValuesMask mask;
@@ -46,7 +46,7 @@ struct _BtkGCKey
 
 struct _BtkGCDrawable
 {
-  gint depth;
+  bint depth;
   BdkPixmap *drawable;
 };
 
@@ -54,23 +54,23 @@ struct _BtkGCDrawable
 static void      btk_gc_init             (void);
 static BtkGCKey* btk_gc_key_dup          (BtkGCKey      *key);
 static void      btk_gc_key_destroy      (BtkGCKey      *key);
-static gpointer  btk_gc_new              (gpointer       key);
-static void      btk_gc_destroy          (gpointer       value);
-static guint     btk_gc_key_hash         (gpointer       key);
-static guint     btk_gc_value_hash       (gpointer       value);
-static gint      btk_gc_key_equal        (gpointer       a,
-					  gpointer       b);
-static guint     btk_gc_drawable_hash    (BtkGCDrawable *d);
-static gint      btk_gc_drawable_equal   (BtkGCDrawable *a,
+static bpointer  btk_gc_new              (bpointer       key);
+static void      btk_gc_destroy          (bpointer       value);
+static buint     btk_gc_key_hash         (bpointer       key);
+static buint     btk_gc_value_hash       (bpointer       value);
+static bint      btk_gc_key_equal        (bpointer       a,
+					  bpointer       b);
+static buint     btk_gc_drawable_hash    (BtkGCDrawable *d);
+static bint      btk_gc_drawable_equal   (BtkGCDrawable *a,
 					  BtkGCDrawable *b);
 
 
-static gint initialize = TRUE;
+static bint initialize = TRUE;
 static GCache *gc_cache = NULL;
 static GQuark quark_btk_gc_drawable_ht = 0;
 
 BdkGC*
-btk_gc_get (gint             depth,
+btk_gc_get (bint             depth,
 	    BdkColormap     *colormap,
 	    BdkGCValues     *values,
 	    BdkGCValuesMask  values_mask)
@@ -101,7 +101,7 @@ btk_gc_release (BdkGC *gc)
 }
 
 static void 
-free_gc_drawable (gpointer data)
+free_gc_drawable (bpointer data)
 {
   BtkGCDrawable *drawable = data;
   g_object_unref (drawable->drawable);
@@ -111,13 +111,13 @@ free_gc_drawable (gpointer data)
 static GHashTable*
 btk_gc_get_drawable_ht (BdkScreen *screen)
 {
-  GHashTable *ht = g_object_get_qdata (G_OBJECT (screen), quark_btk_gc_drawable_ht);
+  GHashTable *ht = g_object_get_qdata (B_OBJECT (screen), quark_btk_gc_drawable_ht);
   if (!ht)
     {
       ht = g_hash_table_new_full ((GHashFunc) btk_gc_drawable_hash,
 				  (GEqualFunc) btk_gc_drawable_equal,
 				  NULL, free_gc_drawable);
-      g_object_set_qdata_full (G_OBJECT (screen), 
+      g_object_set_qdata_full (B_OBJECT (screen), 
 			       quark_btk_gc_drawable_ht, ht, 
 			       (GDestroyNotify)g_hash_table_destroy);
     }
@@ -159,8 +159,8 @@ btk_gc_key_destroy (BtkGCKey *key)
   g_slice_free (BtkGCKey, key);
 }
 
-static gpointer
-btk_gc_new (gpointer key)
+static bpointer
+btk_gc_new (bpointer key)
 {
   BtkGCKey *keyval;
   BtkGCDrawable *drawable;
@@ -185,20 +185,20 @@ btk_gc_new (gpointer key)
   gc = bdk_gc_new_with_values (drawable->drawable, &keyval->values, keyval->mask);
   bdk_gc_set_colormap (gc, keyval->colormap);
 
-  return (gpointer) gc;
+  return (bpointer) gc;
 }
 
 static void
-btk_gc_destroy (gpointer value)
+btk_gc_destroy (bpointer value)
 {
   g_object_unref (value);
 }
 
-static guint
-btk_gc_key_hash (gpointer key)
+static buint
+btk_gc_key_hash (bpointer key)
 {
   BtkGCKey *keyval;
-  guint hash_val;
+  buint hash_val;
 
   keyval = key;
   hash_val = 0;
@@ -217,77 +217,77 @@ btk_gc_key_hash (gpointer key)
     }
   if (keyval->mask & BDK_GC_FUNCTION)
     {
-      hash_val += (gint) keyval->values.function;
+      hash_val += (bint) keyval->values.function;
     }
   if (keyval->mask & BDK_GC_FILL)
     {
-      hash_val += (gint) keyval->values.fill;
+      hash_val += (bint) keyval->values.fill;
     }
   if (keyval->mask & BDK_GC_TILE)
     {
-      hash_val += (gintptr) keyval->values.tile;
+      hash_val += (bintptr) keyval->values.tile;
     }
   if (keyval->mask & BDK_GC_STIPPLE)
     {
-      hash_val += (gintptr) keyval->values.stipple;
+      hash_val += (bintptr) keyval->values.stipple;
     }
   if (keyval->mask & BDK_GC_CLIP_MASK)
     {
-      hash_val += (gintptr) keyval->values.clip_mask;
+      hash_val += (bintptr) keyval->values.clip_mask;
     }
   if (keyval->mask & BDK_GC_SUBWINDOW)
     {
-      hash_val += (gint) keyval->values.subwindow_mode;
+      hash_val += (bint) keyval->values.subwindow_mode;
     }
   if (keyval->mask & BDK_GC_TS_X_ORIGIN)
     {
-      hash_val += (gint) keyval->values.ts_x_origin;
+      hash_val += (bint) keyval->values.ts_x_origin;
     }
   if (keyval->mask & BDK_GC_TS_Y_ORIGIN)
     {
-      hash_val += (gint) keyval->values.ts_y_origin;
+      hash_val += (bint) keyval->values.ts_y_origin;
     }
   if (keyval->mask & BDK_GC_CLIP_X_ORIGIN)
     {
-      hash_val += (gint) keyval->values.clip_x_origin;
+      hash_val += (bint) keyval->values.clip_x_origin;
     }
   if (keyval->mask & BDK_GC_CLIP_Y_ORIGIN)
     {
-      hash_val += (gint) keyval->values.clip_y_origin;
+      hash_val += (bint) keyval->values.clip_y_origin;
     }
   if (keyval->mask & BDK_GC_EXPOSURES)
     {
-      hash_val += (gint) keyval->values.graphics_exposures;
+      hash_val += (bint) keyval->values.graphics_exposures;
     }
   if (keyval->mask & BDK_GC_LINE_WIDTH)
     {
-      hash_val += (gint) keyval->values.line_width;
+      hash_val += (bint) keyval->values.line_width;
     }
   if (keyval->mask & BDK_GC_LINE_STYLE)
     {
-      hash_val += (gint) keyval->values.line_style;
+      hash_val += (bint) keyval->values.line_style;
     }
   if (keyval->mask & BDK_GC_CAP_STYLE)
     {
-      hash_val += (gint) keyval->values.cap_style;
+      hash_val += (bint) keyval->values.cap_style;
     }
   if (keyval->mask & BDK_GC_JOIN_STYLE)
     {
-      hash_val += (gint) keyval->values.join_style;
+      hash_val += (bint) keyval->values.join_style;
     }
 
   return hash_val;
 }
 
-static guint
-btk_gc_value_hash (gpointer value)
+static buint
+btk_gc_value_hash (bpointer value)
 {
-  return (gulong) value;
+  return (bulong) value;
 }
 
-static gboolean
-btk_gc_key_equal (gpointer a,
-		  gpointer b)
+static bboolean
+btk_gc_key_equal (bpointer a,
+		  bpointer b)
 {
   BtkGCKey *akey;
   BtkGCKey *bkey;
@@ -403,13 +403,13 @@ btk_gc_key_equal (gpointer a,
   return TRUE;
 }
 
-static guint
+static buint
 btk_gc_drawable_hash (BtkGCDrawable *d)
 {
   return d->depth;
 }
 
-static gboolean
+static bboolean
 btk_gc_drawable_equal (BtkGCDrawable *a,
 		       BtkGCDrawable *b)
 {

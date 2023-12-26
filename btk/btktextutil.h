@@ -27,32 +27,32 @@
 #ifndef __BTK_TEXT_UTIL_H__
 #define __BTK_TEXT_UTIL_H__
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 /* This is a private uninstalled header shared between
  * BtkTextView and BtkEntry
  */
 
 typedef void (* BtkTextUtilCharChosenFunc) (const char *text,
-                                            gpointer    data);
+                                            bpointer    data);
 
 void _btk_text_util_append_special_char_menuitems (BtkMenuShell              *menushell,
                                                    BtkTextUtilCharChosenFunc  func,
-                                                   gpointer                   data);
+                                                   bpointer                   data);
 
 BdkPixmap* _btk_text_util_create_drag_icon      (BtkWidget     *widget,
-                                                 gchar         *text,
-                                                 gsize          len);
+                                                 bchar         *text,
+                                                 bsize          len);
 BdkPixmap* _btk_text_util_create_rich_drag_icon (BtkWidget     *widget,
                                                  BtkTextBuffer *buffer,
                                                  BtkTextIter   *start,
                                                  BtkTextIter   *end);
 
-gboolean _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
-						   gint            index_,
+bboolean _btk_text_util_get_block_cursor_location (BangoLayout    *layout,
+						   bint            index_,
 						   BangoRectangle *rectangle,
-						   gboolean       *at_line_end);
+						   bboolean       *at_line_end);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_TEXT_UTIL_H__ */

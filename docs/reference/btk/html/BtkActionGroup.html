@@ -52,7 +52,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkActionGroup.html#btk-action-group-get-name" title="btk_action_group_get_name ()">btk_action_group_get_name</a> <span class="c_punctuation">()</span>
@@ -60,7 +60,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkActionGroup.html#btk-action-group-get-sensitive" title="btk_action_group_get_sensitive ()">btk_action_group_get_sensitive</a> <span class="c_punctuation">()</span>
@@ -76,7 +76,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<span class="returnvalue">gboolean</span>
+<span class="returnvalue">bboolean</span>
 </td>
 <td class="function_name">
 <a class="link" href="BtkActionGroup.html#btk-action-group-get-visible" title="btk_action_group_get_visible ()">btk_action_group_get_visible</a> <span class="c_punctuation">()</span>
@@ -195,7 +195,7 @@
 </td>
 </tr>
 <tr>
-<td class="function_type">const <span class="returnvalue">gchar</span> *
+<td class="function_type">const <span class="returnvalue">bchar</span> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkActionGroup.html#btk-action-group-translate-string" title="btk_action_group_translate_string ()">btk_action_group_translate_string</a> <span class="c_punctuation">()</span>
@@ -220,12 +220,12 @@
 <td class="property_flags">Read / Write / Construct Only</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup--sensitive" title="The “sensitive” property">sensitive</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
 <tr>
-<td class="property_type"><span class="type">gboolean</span></td>
+<td class="property_type"><span class="type">bboolean</span></td>
 <td class="property_name"><a class="link" href="BtkActionGroup.html#BtkActionGroup--visible" title="The “visible” property">visible</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -293,7 +293,7 @@
 </div>
 <div class="refsect1">
 <a name="BtkActionGroup.object-hierarchy"></a><h2>Object Hierarchy</h2>
-<pre class="screen">    GObject
+<pre class="screen">    BObject
     <span class="lineart">╰──</span> BtkActionGroup
 </pre>
 </div>
@@ -316,7 +316,7 @@ BtkActionGroup implements
 <div class="refsect2">
 <a name="btk-action-group-new"></a><h3>btk_action_group_new ()</h3>
 <pre class="programlisting"><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="returnvalue">BtkActionGroup</span></a> *
-btk_action_group_new (<em class="parameter"><code>const <span class="type">gchar</span> *name</code></em>);</pre>
+btk_action_group_new (<em class="parameter"><code>const <span class="type">bchar</span> *name</code></em>);</pre>
 <p>Creates a new <a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> object. The name of the action group
 is used when associating keybindings 
 with the actions.</p>
@@ -344,7 +344,7 @@ with the actions.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-action-group-get-name"></a><h3>btk_action_group_get_name ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_action_group_get_name (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
 <p>Gets the name of the action group.</p>
 <div class="refsect3">
@@ -371,7 +371,7 @@ btk_action_group_get_name (<em class="parameter"><code><a class="link" href="Btk
 <hr>
 <div class="refsect2">
 <a name="btk-action-group-get-sensitive"></a><h3>btk_action_group_get_sensitive ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_action_group_get_sensitive (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the group is sensitive.  The constituent actions
 can only be logically sensitive (see <a class="link" href="BtkAction.html#btk-action-is-sensitive" title="btk_action_is_sensitive ()"><code class="function">btk_action_is_sensitive()</code></a>) if
@@ -403,7 +403,7 @@ is sensitive.</p>
 <a name="btk-action-group-set-sensitive"></a><h3>btk_action_group_set_sensitive ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_set_sensitive (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
-                                <em class="parameter"><code><span class="type">gboolean</span> sensitive</code></em>);</pre>
+                                <em class="parameter"><code><span class="type">bboolean</span> sensitive</code></em>);</pre>
 <p>Changes the sensitivity of <em class="parameter"><code>action_group</code></em>
 </p>
 <div class="refsect3">
@@ -433,7 +433,7 @@ btk_action_group_set_sensitive (<em class="parameter"><code><a class="link" href
 <hr>
 <div class="refsect2">
 <a name="btk-action-group-get-visible"></a><h3>btk_action_group_get_visible ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>
+<pre class="programlisting"><span class="returnvalue">bboolean</span>
 btk_action_group_get_visible (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>);</pre>
 <p>Returns <code class="literal">TRUE</code> if the group is visible.  The constituent actions
 can only be logically visible (see <a class="link" href="BtkAction.html#btk-action-is-visible" title="btk_action_is_visible ()"><code class="function">btk_action_is_visible()</code></a>) if
@@ -465,7 +465,7 @@ is visible.</p>
 <a name="btk-action-group-set-visible"></a><h3>btk_action_group_set_visible ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_set_visible (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
-                              <em class="parameter"><code><span class="type">gboolean</span> visible</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">bboolean</span> visible</code></em>);</pre>
 <p>Changes the visible of <em class="parameter"><code>action_group</code></em>
 .</p>
 <div class="refsect3">
@@ -497,7 +497,7 @@ btk_action_group_set_visible (<em class="parameter"><code><a class="link" href="
 <a name="btk-action-group-get-action"></a><h3>btk_action_group_get_action ()</h3>
 <pre class="programlisting"><a class="link" href="BtkAction.html" title="BtkAction"><span class="returnvalue">BtkAction</span></a> *
 btk_action_group_get_action (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
-                             <em class="parameter"><code>const <span class="type">gchar</span> *action_name</code></em>);</pre>
+                             <em class="parameter"><code>const <span class="type">bchar</span> *action_name</code></em>);</pre>
 <p>Looks up an action in the action group by name.</p>
 <div class="refsect3">
 <a name="btk-action-group-get-action.parameters"></a><h4>Parameters</h4>
@@ -599,7 +599,7 @@ the action. Therefore you must either set the accel path yourself with
 btk_action_group_add_action_with_accel
                                (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a> *action</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *accelerator</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *accelerator</code></em>);</pre>
 <p>Adds an action object to the action group and sets up the accelerator.</p>
 <p>If <em class="parameter"><code>accelerator</code></em>
  is <code class="literal">NULL</code>, attempts to use the accelerator associated 
@@ -674,8 +674,8 @@ btk_action_group_remove_action (<em class="parameter"><code><a class="link" href
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_add_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                               <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry"><span class="type">BtkActionEntry</span></a> *entries</code></em>,
-                              <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                              <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                              <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                              <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This is a convenience function to create a number of actions and add them 
 to the action group.</p>
 <p>The "activate" signals of the actions are connected to the callbacks and 
@@ -721,8 +721,8 @@ their accel paths are set to
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_add_actions_full (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                    <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkActionEntry" title="struct BtkActionEntry"><span class="type">BtkActionEntry</span></a> *entries</code></em>,
-                                   <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                                   <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                   <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                                   <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>,
                                    <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-actions" title="btk_action_group_add_actions ()"><code class="function">btk_action_group_add_actions()</code></a> adds a <span class="type">GDestroyNotify</span>
 callback for <em class="parameter"><code>user_data</code></em>
@@ -773,8 +773,8 @@ callback for <em class="parameter"><code>user_data</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_add_toggle_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                      <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkToggleActionEntry" title="struct BtkToggleActionEntry"><span class="type">BtkToggleActionEntry</span></a> *entries</code></em>,
-                                     <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                                     <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                     <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                                     <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This is a convenience function to create a number of toggle actions and add them 
 to the action group.</p>
 <p>The "activate" signals of the actions are connected to the callbacks and 
@@ -821,8 +821,8 @@ their accel paths are set to
 btk_action_group_add_toggle_actions_full
                                (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkToggleActionEntry" title="struct BtkToggleActionEntry"><span class="type">BtkToggleActionEntry</span></a> *entries</code></em>,
-                                <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>,
                                 <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-toggle-actions" title="btk_action_group_add_toggle_actions ()"><code class="function">btk_action_group_add_toggle_actions()</code></a> adds a 
 <span class="type">GDestroyNotify</span> callback for <em class="parameter"><code>user_data</code></em>
@@ -873,10 +873,10 @@ btk_action_group_add_toggle_actions_full
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_add_radio_actions (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                     <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkRadioActionEntry" title="struct BtkRadioActionEntry"><span class="type">BtkRadioActionEntry</span></a> *entries</code></em>,
-                                    <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                                    <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                    <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                                    <em class="parameter"><code><span class="type">bint</span> value</code></em>,
                                     <em class="parameter"><code><span class="type">GCallback</span> on_change</code></em>,
-                                    <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                    <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>);</pre>
 <p>This is a convenience routine to create a group of radio actions and
 add them to the action group. </p>
 <p>The "changed" signal of the first radio action is connected to the 
@@ -935,10 +935,10 @@ no action should be activated</p></td>
 btk_action_group_add_radio_actions_full
                                (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                 <em class="parameter"><code>const <a class="link" href="BtkActionGroup.html#BtkRadioActionEntry" title="struct BtkRadioActionEntry"><span class="type">BtkRadioActionEntry</span></a> *entries</code></em>,
-                                <em class="parameter"><code><span class="type">guint</span> n_entries</code></em>,
-                                <em class="parameter"><code><span class="type">gint</span> value</code></em>,
+                                <em class="parameter"><code><span class="type">buint</span> n_entries</code></em>,
+                                <em class="parameter"><code><span class="type">bint</span> value</code></em>,
                                 <em class="parameter"><code><span class="type">GCallback</span> on_change</code></em>,
-                                <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>,
+                                <em class="parameter"><code><span class="type">bpointer</span> user_data</code></em>,
                                 <em class="parameter"><code><span class="type">GDestroyNotify</span> destroy</code></em>);</pre>
 <p>This variant of <a class="link" href="BtkActionGroup.html#btk-action-group-add-radio-actions" title="btk_action_group_add_radio_actions ()"><code class="function">btk_action_group_add_radio_actions()</code></a> adds a 
 <span class="type">GDestroyNotify</span> callback for <em class="parameter"><code>user_data</code></em>
@@ -1000,7 +1000,7 @@ no action should be activated</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_set_translate_func (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
                                      <em class="parameter"><code><a class="link" href="BtkItemFactory.html#BtkTranslateFunc" title="BtkTranslateFunc ()"><span class="type">BtkTranslateFunc</span></a> func</code></em>,
-                                     <em class="parameter"><code><span class="type">gpointer</span> data</code></em>,
+                                     <em class="parameter"><code><span class="type">bpointer</span> data</code></em>,
                                      <em class="parameter"><code><span class="type">GDestroyNotify</span> notify</code></em>);</pre>
 <p>Sets a function to be used for translating the <em class="parameter"><code>label</code></em>
  and <em class="parameter"><code>tooltip</code></em>
@@ -1052,7 +1052,7 @@ destroyed and when the translation function is changed again</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_action_group_set_translation_domain
                                (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
-                                <em class="parameter"><code>const <span class="type">gchar</span> *domain</code></em>);</pre>
+                                <em class="parameter"><code>const <span class="type">bchar</span> *domain</code></em>);</pre>
 <p>Sets the translation domain and uses <code class="function">g_dgettext()</code> for translating the 
 <em class="parameter"><code>label</code></em>
  and <em class="parameter"><code>tooltip</code></em>
@@ -1087,9 +1087,9 @@ btk_action_group_set_translation_domain
 <hr>
 <div class="refsect2">
 <a name="btk-action-group-translate-string"></a><h3>btk_action_group_translate_string ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *
+<pre class="programlisting">const <span class="returnvalue">bchar</span> *
 btk_action_group_translate_string (<em class="parameter"><code><a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group</code></em>,
-                                   <em class="parameter"><code>const <span class="type">gchar</span> *string</code></em>);</pre>
+                                   <em class="parameter"><code>const <span class="type">bchar</span> *string</code></em>);</pre>
 <p>Translates a string using the specified <code class="function">translate_func()</code>. This
 is mainly intended for language bindings.</p>
 <div class="refsect3">
@@ -1132,11 +1132,11 @@ is mainly intended for language bindings.</p>
 <div class="refsect2">
 <a name="BtkActionEntry"></a><h3>struct BtkActionEntry</h3>
 <pre class="programlisting">struct BtkActionEntry {
-  const gchar     *name;
-  const gchar     *stock_id;
-  const gchar     *label;
-  const gchar     *accelerator;
-  const gchar     *tooltip;
+  const bchar     *name;
+  const bchar     *stock_id;
+  const bchar     *label;
+  const bchar     *accelerator;
+  const bchar     *tooltip;
   GCallback  callback;
 };
 </pre>
@@ -1145,13 +1145,13 @@ is mainly intended for language bindings.</p>
 <div class="refsect2">
 <a name="BtkToggleActionEntry"></a><h3>struct BtkToggleActionEntry</h3>
 <pre class="programlisting">struct BtkToggleActionEntry {
-  const gchar     *name;
-  const gchar     *stock_id;
-  const gchar     *label;
-  const gchar     *accelerator;
-  const gchar     *tooltip;
+  const bchar     *name;
+  const bchar     *stock_id;
+  const bchar     *label;
+  const bchar     *accelerator;
+  const bchar     *tooltip;
   GCallback  callback;
-  gboolean   is_active;
+  bboolean   is_active;
 };
 </pre>
 </div>
@@ -1159,12 +1159,12 @@ is mainly intended for language bindings.</p>
 <div class="refsect2">
 <a name="BtkRadioActionEntry"></a><h3>struct BtkRadioActionEntry</h3>
 <pre class="programlisting">struct BtkRadioActionEntry {
-  const gchar *name;
-  const gchar *stock_id;
-  const gchar *label;
-  const gchar *accelerator;
-  const gchar *tooltip;
-  gint   value;
+  const bchar *name;
+  const bchar *stock_id;
+  const bchar *label;
+  const bchar *accelerator;
+  const bchar *tooltip;
+  bint   value;
 
 };
 </pre>
@@ -1183,7 +1183,7 @@ is mainly intended for language bindings.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkActionGroup--sensitive"></a><h3>The <code class="literal">“sensitive”</code> property</h3>
-<pre class="programlisting">  “sensitive”                <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “sensitive”                <span class="type">bboolean</span></pre>
 <p>Whether the action group is enabled.</p>
 <p>Owner: BtkActionGroup</p>
 <p>Flags: Read / Write</p>
@@ -1192,7 +1192,7 @@ is mainly intended for language bindings.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkActionGroup--visible"></a><h3>The <code class="literal">“visible”</code> property</h3>
-<pre class="programlisting">  “visible”                  <span class="type">gboolean</span></pre>
+<pre class="programlisting">  “visible”                  <span class="type">bboolean</span></pre>
 <p>Whether the action group is visible.</p>
 <p>Owner: BtkActionGroup</p>
 <p>Flags: Read / Write</p>
@@ -1207,7 +1207,7 @@ is mainly intended for language bindings.</p>
 user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
                <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>      *proxy,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::connect-proxy signal is emitted after connecting a proxy to
 
 an action in the group. Note that the proxy may have been connected
@@ -1261,7 +1261,7 @@ convenient to use.</p>
 user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
                <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
                <a class="link" href="BtkWidget.html" title="BtkWidget"><span class="type">BtkWidget</span></a>      *proxy,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::disconnect-proxy signal is emitted after disconnecting a proxy
 
 from an action in the group. </p>
@@ -1309,7 +1309,7 @@ convenient to use.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
                <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::post-activate signal is emitted just after the <em class="parameter"><code>action</code></em>
  in the
 <em class="parameter"><code>action_group</code></em>
@@ -1351,7 +1351,7 @@ notification just after any action is activated.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkActionGroup.html" title="BtkActionGroup"><span class="type">BtkActionGroup</span></a> *action_group,
                <a class="link" href="BtkAction.html" title="BtkAction"><span class="type">BtkAction</span></a>      *action,
-               <span class="type">gpointer</span>        user_data)</pre>
+               <span class="type">bpointer</span>        user_data)</pre>
 <p>The ::pre-activate signal is emitted just before the <em class="parameter"><code>action</code></em>
  in the
 <em class="parameter"><code>action_group</code></em>

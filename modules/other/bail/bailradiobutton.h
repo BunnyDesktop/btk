@@ -22,14 +22,14 @@
 
 #include <bail/bailtogglebutton.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BAIL_TYPE_RADIO_BUTTON               (bail_radio_button_get_type ())
-#define BAIL_RADIO_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButton))
-#define BAIL_RADIO_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
-#define BAIL_IS_RADIO_BUTTON(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_BUTTON))
-#define BAIL_IS_RADIO_BUTTON_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_BUTTON))
-#define BAIL_RADIO_BUTTON_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
+#define BAIL_RADIO_BUTTON(obj)               (B_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButton))
+#define BAIL_RADIO_BUTTON_CLASS(klass)       (B_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
+#define BAIL_IS_RADIO_BUTTON(obj)            (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RADIO_BUTTON))
+#define BAIL_IS_RADIO_BUTTON_CLASS(klass)    (B_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RADIO_BUTTON))
+#define BAIL_RADIO_BUTTON_GET_CLASS(obj)     (B_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RADIO_BUTTON, BailRadioButtonClass))
 
 typedef struct _BailRadioButton              BailRadioButton;
 typedef struct _BailRadioButtonClass         BailRadioButtonClass;
@@ -48,6 +48,6 @@ struct _BailRadioButtonClass
   BailToggleButtonClass parent_class;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BAIL_RADIO_BUTTON_H__ */

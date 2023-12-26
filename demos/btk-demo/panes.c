@@ -18,8 +18,8 @@ toggle_resize (BtkWidget *widget,
 	       BtkWidget *child)
 {
   BtkPaned *paned = BTK_PANED (btk_widget_get_parent (child));
-  gboolean is_child1 = (child == btk_paned_get_child1 (paned));
-  gboolean resize, shrink;
+  bboolean is_child1 = (child == btk_paned_get_child1 (paned));
+  bboolean resize, shrink;
 
   btk_container_child_get (BTK_CONTAINER (paned), child, "resize", &resize, "shrink", &shrink, NULL);
 
@@ -37,8 +37,8 @@ toggle_shrink (BtkWidget *widget,
 	       BtkWidget *child)
 {
   BtkPaned *paned = BTK_PANED (btk_widget_get_parent (child));
-  gboolean is_child1 = (child == btk_paned_get_child1 (paned));
-  gboolean resize, shrink;
+  bboolean is_child1 = (child == btk_paned_get_child1 (paned));
+  bboolean resize, shrink;
 
   btk_container_child_get (BTK_CONTAINER (paned), child, "resize", &resize, "shrink", &shrink, NULL);
 
@@ -53,9 +53,9 @@ toggle_shrink (BtkWidget *widget,
 
 BtkWidget *
 create_pane_options (BtkPaned	 *paned,
-		     const gchar *frame_label,
-		     const gchar *label1,
-		     const gchar *label2)
+		     const bchar *frame_label,
+		     const bchar *label1,
+		     const bchar *label2)
 {
   BtkWidget *frame;
   BtkWidget *table;

@@ -32,15 +32,15 @@
 #include <btk/btk.h>
 
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_FILE_SELECTION            (btk_file_selection_get_type ())
-#define BTK_FILE_SELECTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelection))
-#define BTK_FILE_SELECTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
-#define BTK_IS_FILE_SELECTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SELECTION))
-#define BTK_IS_FILE_SELECTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SELECTION))
-#define BTK_FILE_SELECTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
+#define BTK_FILE_SELECTION(obj)            (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelection))
+#define BTK_FILE_SELECTION_CLASS(klass)    (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
+#define BTK_IS_FILE_SELECTION(obj)         (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SELECTION))
+#define BTK_IS_FILE_SELECTION_CLASS(klass) (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SELECTION))
+#define BTK_FILE_SELECTION_GET_CLASS(obj)  (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
 
 
 typedef struct _BtkFileSelection       BtkFileSelection;
@@ -65,8 +65,8 @@ struct _BtkFileSelection
   GList     *history_list;
   BtkWidget *fileop_dialog;
   BtkWidget *fileop_entry;
-  gchar     *fileop_file;
-  gpointer   cmpl_state;
+  bchar     *fileop_file;
+  bpointer   cmpl_state;
   
   BtkWidget *fileop_c_dir;
   BtkWidget *fileop_del_file;
@@ -77,7 +77,7 @@ struct _BtkFileSelection
 
   /*< private >*/
   GPtrArray *selected_names;
-  gchar     *last_selected;
+  bchar     *last_selected;
 };
 
 struct _BtkFileSelectionClass
@@ -99,25 +99,25 @@ struct _BtkFileSelectionClass
 #define btk_file_selection_get_selections btk_file_selection_get_selections_utf8
 #endif
 
-GType      btk_file_selection_get_type            (void) G_GNUC_CONST;
-BtkWidget* btk_file_selection_new                 (const gchar      *title);
+GType      btk_file_selection_get_type            (void) B_GNUC_CONST;
+BtkWidget* btk_file_selection_new                 (const bchar      *title);
 void       btk_file_selection_set_filename        (BtkFileSelection *filesel,
-						   const gchar      *filename);
-const gchar* btk_file_selection_get_filename      (BtkFileSelection *filesel);
+						   const bchar      *filename);
+const bchar* btk_file_selection_get_filename      (BtkFileSelection *filesel);
 
 void	   btk_file_selection_complete		  (BtkFileSelection *filesel,
-						   const gchar	    *pattern);
+						   const bchar	    *pattern);
 void       btk_file_selection_show_fileop_buttons (BtkFileSelection *filesel);
 void       btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel);
 
-gchar**    btk_file_selection_get_selections      (BtkFileSelection *filesel);
+bchar**    btk_file_selection_get_selections      (BtkFileSelection *filesel);
 
 void       btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
-						   gboolean          select_multiple);
-gboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
+						   bboolean          select_multiple);
+bboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
 
 
-G_END_DECLS
+B_END_DECLS
 
 
 #endif /* __BTK_FILESEL_H__ */

@@ -29,12 +29,12 @@
 
 #include <bdk/bdkwindow.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BDK_TYPE_WINDOW_IMPL           (bdk_window_impl_get_type ())
-#define BDK_WINDOW_IMPL(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
-#define BDK_IS_WINDOW_IMPL(obj)        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_WINDOW_IMPL))
-#define BDK_WINDOW_IMPL_GET_IFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImplIface))
+#define BDK_WINDOW_IMPL(obj)           (B_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImpl))
+#define BDK_IS_WINDOW_IMPL(obj)        (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_WINDOW_IMPL))
+#define BDK_WINDOW_IMPL_GET_IFACE(obj) (B_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_WINDOW_IMPL, BdkWindowImplIface))
 
 typedef struct _BdkWindowImpl       BdkWindowImpl;      /* dummy */
 typedef struct _BdkWindowImplIface  BdkWindowImplIface;
@@ -44,7 +44,7 @@ struct _BdkWindowImplIface
   GTypeInterface g_iface;
 
   void         (* show)                 (BdkWindow       *window,
-					 gboolean         already_mapped);
+					 bboolean         already_mapped);
   void         (* hide)                 (BdkWindow       *window);
   void         (* withdraw)             (BdkWindow       *window);
   void         (* raise)                (BdkWindow       *window);
@@ -53,14 +53,14 @@ struct _BdkWindowImplIface
 					 GList           *native_siblings);
   void         (* restack_toplevel)     (BdkWindow       *window,
 					 BdkWindow       *sibling,
-					 gboolean        above);
+					 bboolean        above);
 
   void         (* move_resize)          (BdkWindow       *window,
-                                         gboolean         with_move,
-                                         gint             x,
-                                         gint             y,
-                                         gint             width,
-                                         gint             height);
+                                         bboolean         with_move,
+                                         bint             x,
+                                         bint             y,
+                                         bint             width,
+                                         bint             height);
   void         (* set_background)       (BdkWindow       *window,
                                          const BdkColor  *color);
   void         (* set_back_pixmap)      (BdkWindow       *window,
@@ -70,47 +70,47 @@ struct _BdkWindowImplIface
   void         (* set_events)           (BdkWindow       *window,
                                          BdkEventMask     event_mask);
   
-  gboolean     (* reparent)             (BdkWindow       *window,
+  bboolean     (* reparent)             (BdkWindow       *window,
                                          BdkWindow       *new_parent,
-                                         gint             x,
-                                         gint             y);
+                                         bint             x,
+                                         bint             y);
   void         (* clear_rebunnyion)         (BdkWindow       *window,
 					 BdkRebunnyion       *rebunnyion,
-					 gboolean         send_expose);
+					 bboolean         send_expose);
   
   void         (* set_cursor)           (BdkWindow       *window,
                                          BdkCursor       *cursor);
 
   void         (* get_geometry)         (BdkWindow       *window,
-                                         gint            *x,
-                                         gint            *y,
-                                         gint            *width,
-                                         gint            *height,
-                                         gint            *depth);
-  gint         (* get_root_coords)      (BdkWindow       *window,
-					 gint             x,
-					 gint             y,
-                                         gint            *root_x,
-                                         gint            *root_y);
-  gint         (* get_deskrelative_origin) (BdkWindow       *window,
-                                         gint            *x,
-                                         gint            *y);
-  gboolean     (* get_pointer)          (BdkWindow       *window,
-                                         gint            *x,
-                                         gint            *y,
+                                         bint            *x,
+                                         bint            *y,
+                                         bint            *width,
+                                         bint            *height,
+                                         bint            *depth);
+  bint         (* get_root_coords)      (BdkWindow       *window,
+					 bint             x,
+					 bint             y,
+                                         bint            *root_x,
+                                         bint            *root_y);
+  bint         (* get_deskrelative_origin) (BdkWindow       *window,
+                                         bint            *x,
+                                         bint            *y);
+  bboolean     (* get_pointer)          (BdkWindow       *window,
+                                         bint            *x,
+                                         bint            *y,
 					 BdkModifierType  *mask);
 
   void         (* shape_combine_rebunnyion) (BdkWindow       *window,
                                          const BdkRebunnyion *shape_rebunnyion,
-                                         gint             offset_x,
-                                         gint             offset_y);
+                                         bint             offset_x,
+                                         bint             offset_y);
   void         (* input_shape_combine_rebunnyion) (BdkWindow       *window,
 					       const BdkRebunnyion *shape_rebunnyion,
-					       gint             offset_x,
-					       gint             offset_y);
+					       bint             offset_x,
+					       bint             offset_y);
 
-  gboolean     (* set_static_gravities) (BdkWindow       *window,
-				         gboolean         use_static);
+  bboolean     (* set_static_gravities) (BdkWindow       *window,
+				         bboolean         use_static);
 
   /* Called before processing updates for a window. This gives the windowing
    * layer a chance to save the rebunnyion for later use in avoiding duplicate
@@ -118,13 +118,13 @@ struct _BdkWindowImplIface
    * the rebunnyion; if the result is TRUE, then the windowing layer is responsible
    * for destroying the rebunnyion later.
    */
-  gboolean     (* queue_antiexpose)     (BdkWindow       *window,
+  bboolean     (* queue_antiexpose)     (BdkWindow       *window,
 					 BdkRebunnyion       *update_area);
   void         (* queue_translation)    (BdkWindow       *window,
 					 BdkGC           *gc,
 					 BdkRebunnyion       *area,
-					 gint            dx,
-					 gint            dy);
+					 bint            dx,
+					 bint            dy);
 
 /* Called to do the windowing system specific part of bdk_window_destroy(),
  *
@@ -140,17 +140,17 @@ struct _BdkWindowImplIface
  *            windowing systems.)
  */
   void         (* destroy)              (BdkWindow       *window,
-					 gboolean         recursing,
-					 gboolean         foreign_destroy);
+					 bboolean         recursing,
+					 bboolean         foreign_destroy);
 
   void         (* input_window_destroy) (BdkWindow       *window);
   void         (* input_window_crossing)(BdkWindow       *window,
-					 gboolean         enter);
-  gboolean     supports_native_bg;
+					 bboolean         enter);
+  bboolean     supports_native_bg;
 };
 
 /* Interface Functions */
-GType bdk_window_impl_get_type (void) G_GNUC_CONST;
+GType bdk_window_impl_get_type (void) B_GNUC_CONST;
 
 /* private definitions from bdkwindow.h */
 
@@ -159,17 +159,17 @@ struct _BdkWindowRedirect
   BdkWindowObject *redirected;
   BdkDrawable *pixmap;
 
-  gint src_x;
-  gint src_y;
-  gint dest_x;
-  gint dest_y;
-  gint width;
-  gint height;
+  bint src_x;
+  bint src_y;
+  bint dest_x;
+  bint dest_y;
+  bint width;
+  bint height;
 
   BdkRebunnyion *damage;
-  guint damage_idle;
+  buint damage_idle;
 };
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BDK_WINDOW_IMPL_H__ */

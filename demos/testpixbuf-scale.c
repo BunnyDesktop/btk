@@ -10,9 +10,9 @@ BdkPixbuf *pixbuf;
 BtkWidget *darea;
   
 void
-set_interp_type (BtkWidget *widget, gpointer data)
+set_interp_type (BtkWidget *widget, bpointer data)
 {
-  guint types[] = { BDK_INTERP_NEAREST,
+  buint types[] = { BDK_INTERP_NEAREST,
                     BDK_INTERP_BILINEAR,
                     BDK_INTERP_TILES,
                     BDK_INTERP_HYPER };
@@ -22,7 +22,7 @@ set_interp_type (BtkWidget *widget, gpointer data)
 }
 
 void
-overall_changed_cb (BtkAdjustment *adjustment, gpointer data)
+overall_changed_cb (BtkAdjustment *adjustment, bpointer data)
 {
   if (adjustment->value != overall_alpha)
     {
@@ -31,8 +31,8 @@ overall_changed_cb (BtkAdjustment *adjustment, gpointer data)
     }
 }
 
-gboolean
-expose_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
+bboolean
+expose_cb (BtkWidget *widget, BdkEventExpose *event, bpointer data)
 {
   BdkPixbuf *dest;
   bairo_t *cr;
@@ -72,7 +72,7 @@ main(int argc, char **argv)
 	BtkWidget *hbox, *label, *hscale;
 	BtkAdjustment *adjustment;
 	BtkRequisition scratch_requisition;
-        const gchar *creator;
+        const bchar *creator;
         GError *error;
         
 	pixbuf_init ();

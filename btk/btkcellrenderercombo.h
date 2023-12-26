@@ -27,14 +27,14 @@
 #include <btk/btktreemodel.h>
 #include <btk/btkcellrenderertext.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 #define BTK_TYPE_CELL_RENDERER_COMBO		(btk_cell_renderer_combo_get_type ())
-#define BTK_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererCombo))
-#define BTK_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererComboClass))
-#define BTK_IS_CELL_RENDERER_COMBO(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_COMBO))
-#define BTK_IS_CELL_RENDERER_COMBO_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_COMBO))
-#define BTK_CELL_RENDERER_COMBO_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererTextClass))
+#define BTK_CELL_RENDERER_COMBO(obj)		(B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererCombo))
+#define BTK_CELL_RENDERER_COMBO_CLASS(klass)	(B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererComboClass))
+#define BTK_IS_CELL_RENDERER_COMBO(obj)		(B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_COMBO))
+#define BTK_IS_CELL_RENDERER_COMBO_CLASS(klass)	(B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_COMBO))
+#define BTK_CELL_RENDERER_COMBO_GET_CLASS(obj)   (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_COMBO, BtkCellRendererTextClass))
 
 typedef struct _BtkCellRendererCombo      BtkCellRendererCombo;
 typedef struct _BtkCellRendererComboClass BtkCellRendererComboClass;
@@ -44,11 +44,11 @@ struct _BtkCellRendererCombo
   BtkCellRendererText parent;
 
   BtkTreeModel *GSEAL (model);
-  gint          GSEAL (text_column);
-  gboolean      GSEAL (has_entry);
+  bint          GSEAL (text_column);
+  bboolean      GSEAL (has_entry);
 
   /*< private >*/
-  guint         GSEAL (focus_out_id);
+  buint         GSEAL (focus_out_id);
 };
 
 struct _BtkCellRendererComboClass
@@ -56,9 +56,9 @@ struct _BtkCellRendererComboClass
   BtkCellRendererTextClass parent;
 };
 
-GType            btk_cell_renderer_combo_get_type (void) G_GNUC_CONST;
+GType            btk_cell_renderer_combo_get_type (void) B_GNUC_CONST;
 BtkCellRenderer *btk_cell_renderer_combo_new      (void);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_CELL_RENDERER_COMBO_H__ */

@@ -31,49 +31,49 @@ static void         bail_cell_destroyed           (BtkWidget           *widget,
                                                    BailCell            *cell);
 
 static void         bail_cell_init                (BailCell            *cell);
-static void         bail_cell_object_finalize     (GObject             *cell);
+static void         bail_cell_object_finalize     (BObject             *cell);
 static BatkStateSet* bail_cell_ref_state_set       (BatkObject           *obj);
-static gint         bail_cell_get_index_in_parent (BatkObject           *obj);
+static bint         bail_cell_get_index_in_parent (BatkObject           *obj);
 
 /* BatkAction */
 
 static void         batk_action_interface_init 
                                                   (BatkActionIface      *iface);
 static ActionInfo * _bail_cell_get_action_info    (BailCell            *cell,
-			                           gint                index);
+			                           bint                index);
 static void         _bail_cell_destroy_action_info 
-                                                  (gpointer            data,
-				                   gpointer            user_data);
+                                                  (bpointer            data,
+				                   bpointer            user_data);
 
-static gint         bail_cell_action_get_n_actions 
+static bint         bail_cell_action_get_n_actions 
                                                   (BatkAction           *action);
-static const gchar *
+static const bchar *
                     bail_cell_action_get_name     (BatkAction           *action,
-			                           gint                index);
-static const gchar *
+			                           bint                index);
+static const bchar *
                     bail_cell_action_get_description 
                                                   (BatkAction           *action,
-				                   gint                index);
-static gboolean     bail_cell_action_set_description 
+				                   bint                index);
+static bboolean     bail_cell_action_set_description 
                                                   (BatkAction           *action,
-				                   gint                index,
-				                   const gchar         *desc);
-static const gchar *
+				                   bint                index,
+				                   const bchar         *desc);
+static const bchar *
                     bail_cell_action_get_keybinding 
                                                   (BatkAction           *action,
-				                   gint                index);
-static gboolean     bail_cell_action_do_action    (BatkAction           *action,
-			                           gint                index);
-static gboolean     idle_do_action                (gpointer            data);
+				                   bint                index);
+static bboolean     bail_cell_action_do_action    (BatkAction           *action,
+			                           bint                index);
+static bboolean     idle_do_action                (bpointer            data);
 
 static void         batk_component_interface_init  (BatkComponentIface   *iface);
 static void         bail_cell_get_extents         (BatkComponent        *component,
-                                                   gint                *x,
-                                                   gint                *y,
-                                                   gint                *width,
-                                                   gint                *height,
+                                                   bint                *x,
+                                                   bint                *y,
+                                                   bint                *width,
+                                                   bint                *height,
                                                    BatkCoordType        coord_type);
-static gboolean     bail_cell_grab_focus         (BatkComponent        *component);
+static bboolean     bail_cell_grab_focus         (BatkComponent        *component);
 
 G_DEFINE_TYPE_WITH_CODE (BailCell, bail_cell, BATK_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
@@ -83,7 +83,7 @@ static void
 bail_cell_class_init (BailCellClass *klass)
 {
   BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
-  GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *g_object_class = B_OBJECT_CLASS (klass);
 
   g_object_class->finalize = bail_cell_object_finalize;
 
@@ -95,7 +95,7 @@ void
 bail_cell_initialise (BailCell  *cell,
                       BtkWidget *widget,
                       BatkObject *parent,
-                      gint      index)
+                      bint      index)
 {
   g_return_if_fail (BAIL_IS_CELL (cell));
   g_return_if_fail (BTK_IS_WIDGET (widget));
@@ -104,7 +104,7 @@ bail_cell_initialise (BailCell  *cell,
   batk_object_set_parent (BATK_OBJECT (cell), parent);
   cell->index = index;
 
-  g_signal_connect_object (G_OBJECT (widget),
+  g_signal_connect_object (B_OBJECT (widget),
                            "destroy",
                            G_CALLBACK (bail_cell_destroyed ),
                            cell, 0);
@@ -136,14 +136,14 @@ bail_cell_init (BailCell *cell)
 }
 
 static void
-bail_cell_object_finalize (GObject *obj)
+bail_cell_object_finalize (BObject *obj)
 {
   BailCell *cell = BAIL_CELL (obj);
   BatkRelationSet *relation_set;
   BatkRelation *relation;
   GPtrArray *target;
-  gpointer target_object;
-  gint i;
+  bpointer target_object;
+  bint i;
 
   if (cell->state_set)
     g_object_unref (cell->state_set);
@@ -176,7 +176,7 @@ bail_cell_object_finalize (GObject *obj)
         }
       g_object_unref (relation_set);
     }
-  G_OBJECT_CLASS (bail_cell_parent_class)->finalize (obj);
+  B_OBJECT_CLASS (bail_cell_parent_class)->finalize (obj);
 }
 
 static BatkStateSet *
@@ -189,14 +189,14 @@ bail_cell_ref_state_set (BatkObject *obj)
   return cell->state_set;
 }
 
-gboolean
+bboolean
 bail_cell_add_state (BailCell     *cell, 
                      BatkStateType state_type,
-                     gboolean     emit_signal)
+                     bboolean     emit_signal)
 {
   if (!batk_state_set_contains_state (cell->state_set, state_type))
     {
-      gboolean rc;
+      bboolean rc;
       BatkObject *parent;
     
       rc = batk_state_set_add_state (cell->state_set, state_type);
@@ -228,14 +228,14 @@ bail_cell_add_state (BailCell     *cell,
     return FALSE;
 }
 
-gboolean
+bboolean
 bail_cell_remove_state (BailCell     *cell, 
                         BatkStateType state_type,
-                        gboolean     emit_signal)
+                        bboolean     emit_signal)
 {
   if (batk_state_set_contains_state (cell->state_set, state_type))
     {
-      gboolean rc;
+      bboolean rc;
       BatkObject *parent;
 
       parent = batk_object_get_parent (BATK_OBJECT (cell));
@@ -268,7 +268,7 @@ bail_cell_remove_state (BailCell     *cell,
     return FALSE;
 }
 
-static gint
+static bint
 bail_cell_get_index_in_parent (BatkObject *obj)
 {
   BailCell *cell;
@@ -304,11 +304,11 @@ bail_cell_type_add_action_interface (GType type)
 {
 }
 
-gboolean
+bboolean
 bail_cell_add_action (BailCell    *cell,
-		      const gchar *action_name,
-		      const gchar *action_description,
-		      const gchar *action_keybinding,
+		      const bchar *action_name,
+		      const bchar *action_description,
+		      const bchar *action_keybinding,
 		      ACTION_FUNC action_func)
 {
   ActionInfo *info;
@@ -329,13 +329,13 @@ bail_cell_add_action (BailCell    *cell,
     info->keybinding = NULL;
   info->do_action_func = action_func;
 
-  cell->action_list = g_list_append (cell->action_list, (gpointer) info);
+  cell->action_list = g_list_append (cell->action_list, (bpointer) info);
   return TRUE;
 }
 
-gboolean
+bboolean
 bail_cell_remove_action (BailCell *cell,
-			 gint     action_index)
+			 bint     action_index)
 {
   GList *list_node;
 
@@ -349,12 +349,12 @@ bail_cell_remove_action (BailCell *cell,
 }
 
 
-gboolean
+bboolean
 bail_cell_remove_action_by_name (BailCell    *cell,
-				 const gchar *action_name)
+				 const bchar *action_name)
 {
   GList *list_node;
-  gboolean action_found= FALSE;
+  bboolean action_found= FALSE;
   
   g_return_val_if_fail (BAIL_IS_CELL (cell), FALSE);
   for (list_node = cell->action_list; list_node && !action_found; 
@@ -375,7 +375,7 @@ bail_cell_remove_action_by_name (BailCell    *cell,
 
 static ActionInfo *
 _bail_cell_get_action_info (BailCell *cell,
-			    gint     index)
+			    bint     index)
 {
   GList *list_node;
 
@@ -390,8 +390,8 @@ _bail_cell_get_action_info (BailCell *cell,
 
 
 static void
-_bail_cell_destroy_action_info (gpointer action_info, 
-                                gpointer user_data)
+_bail_cell_destroy_action_info (bpointer action_info, 
+                                bpointer user_data)
 {
   ActionInfo *info = (ActionInfo *)action_info;
   g_assert (info != NULL);
@@ -400,7 +400,7 @@ _bail_cell_destroy_action_info (gpointer action_info,
   g_free (info->keybinding);
   g_free (info);
 }
-static gint
+static bint
 bail_cell_action_get_n_actions (BatkAction *action)
 {
   BailCell *cell = BAIL_CELL(action);
@@ -410,9 +410,9 @@ bail_cell_action_get_n_actions (BatkAction *action)
     return 0;
 }
 
-static const gchar *
+static const bchar *
 bail_cell_action_get_name (BatkAction *action,
-			   gint      index)
+			   bint      index)
 {
   BailCell *cell = BAIL_CELL(action);
   ActionInfo *info = _bail_cell_get_action_info (cell, index);
@@ -422,9 +422,9 @@ bail_cell_action_get_name (BatkAction *action,
   return info->name;
 }
 
-static const gchar *
+static const bchar *
 bail_cell_action_get_description (BatkAction *action,
-				  gint      index)
+				  bint      index)
 {
   BailCell *cell = BAIL_CELL(action);
   ActionInfo *info = _bail_cell_get_action_info (cell, index);
@@ -434,10 +434,10 @@ bail_cell_action_get_description (BatkAction *action,
   return info->description;
 }
 
-static gboolean
+static bboolean
 bail_cell_action_set_description (BatkAction   *action,
-				  gint        index,
-				  const gchar *desc)
+				  bint        index,
+				  const bchar *desc)
 {
   BailCell *cell = BAIL_CELL(action);
   ActionInfo *info = _bail_cell_get_action_info (cell, index);
@@ -449,9 +449,9 @@ bail_cell_action_set_description (BatkAction   *action,
   return TRUE;
 }
 
-static const gchar *
+static const bchar *
 bail_cell_action_get_keybinding (BatkAction *action,
-				 gint      index)
+				 bint      index)
 {
   BailCell *cell = BAIL_CELL(action);
   ActionInfo *info = _bail_cell_get_action_info (cell, index);
@@ -460,9 +460,9 @@ bail_cell_action_get_keybinding (BatkAction *action,
   return info->keybinding;
 }
 
-static gboolean
+static bboolean
 bail_cell_action_do_action (BatkAction *action,
-			    gint      index)
+			    bint      index)
 {
   BailCell *cell = BAIL_CELL(action);
   ActionInfo *info = _bail_cell_get_action_info (cell, index);
@@ -477,8 +477,8 @@ bail_cell_action_do_action (BatkAction *action,
   return TRUE;
 }
 
-static gboolean
-idle_do_action (gpointer data)
+static bboolean
+idle_do_action (bpointer data)
 {
   BailCell *cell;
 
@@ -498,10 +498,10 @@ batk_component_interface_init (BatkComponentIface *iface)
 
 static void 
 bail_cell_get_extents (BatkComponent *component,
-                       gint         *x,
-                       gint         *y,
-                       gint         *width,
-                       gint         *height,
+                       bint         *x,
+                       bint         *y,
+                       bint         *width,
+                       bint         *height,
                        BatkCoordType coord_type)
 {
   BailCell *bailcell;
@@ -517,7 +517,7 @@ bail_cell_get_extents (BatkComponent *component,
                                    bailcell, x, y, width, height, coord_type);
 }
 
-static gboolean 
+static bboolean 
 bail_cell_grab_focus (BatkComponent *component)
 {
   BailCell *bailcell;

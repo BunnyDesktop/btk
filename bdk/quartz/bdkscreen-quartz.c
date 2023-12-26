@@ -59,8 +59,8 @@
  * but BDK coordinates can *not*!
  */
 
-static void  bdk_screen_quartz_dispose          (GObject         *object);
-static void  bdk_screen_quartz_finalize         (GObject         *object);
+static void  bdk_screen_quartz_dispose          (BObject         *object);
+static void  bdk_screen_quartz_finalize         (BObject         *object);
 static void  bdk_screen_quartz_calculate_layout (BdkScreenQuartz *screen);
 
 static void display_reconfiguration_callback (CGDirectDisplayID            display,
@@ -72,7 +72,7 @@ G_DEFINE_TYPE (BdkScreenQuartz, _bdk_screen_quartz, BDK_TYPE_SCREEN);
 static void
 _bdk_screen_quartz_class_init (BdkScreenQuartzClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->dispose = bdk_screen_quartz_dispose;
   object_class->finalize = bdk_screen_quartz_finalize;
@@ -100,7 +100,7 @@ _bdk_screen_quartz_init (BdkScreenQuartz *screen_quartz)
 }
 
 static void
-bdk_screen_quartz_dispose (GObject *object)
+bdk_screen_quartz_dispose (BObject *object)
 {
   BdkScreenQuartz *screen = BDK_SCREEN_QUARTZ (object);
 
@@ -119,7 +119,7 @@ bdk_screen_quartz_dispose (GObject *object)
   CGDisplayRemoveReconfigurationCallback (display_reconfiguration_callback,
                                           screen);
 
-  G_OBJECT_CLASS (_bdk_screen_quartz_parent_class)->dispose (object);
+  B_OBJECT_CLASS (_bdk_screen_quartz_parent_class)->dispose (object);
 }
 
 static void
@@ -135,7 +135,7 @@ bdk_screen_quartz_screen_rects_free (BdkScreenQuartz *screen)
 }
 
 static void
-bdk_screen_quartz_finalize (GObject *object)
+bdk_screen_quartz_finalize (BObject *object)
 {
   BdkScreenQuartz *screen = BDK_SCREEN_QUARTZ (object);
 
@@ -225,8 +225,8 @@ process_display_reconfiguration (BdkScreenQuartz *screen)
     g_signal_emit_by_name (screen, "size-changed");
 }
 
-static gboolean
-screen_changed_idle (gpointer data)
+static bboolean
+screen_changed_idle (bpointer data)
 {
   BdkScreenQuartz *screen = data;
 
@@ -295,7 +295,7 @@ bdk_screen_get_root_window (BdkScreen *screen)
   return _bdk_root;
 }
 
-gint
+bint
 bdk_screen_get_number (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -303,8 +303,8 @@ bdk_screen_get_number (BdkScreen *screen)
   return 0;
 }
 
-gchar * 
-_bdk_windowing_substitute_screen_number (const gchar *display_name,
+bchar * 
+_bdk_windowing_substitute_screen_number (const bchar *display_name,
 					 int          screen_number)
 {
   if (screen_number != 0)
@@ -338,7 +338,7 @@ bdk_screen_set_default_colormap (BdkScreen   *screen,
     g_object_unref (old_colormap);
 }
 
-gint
+bint
 bdk_screen_get_width (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -346,7 +346,7 @@ bdk_screen_get_width (BdkScreen *screen)
   return BDK_SCREEN_QUARTZ (screen)->width;
 }
 
-gint
+bint
 bdk_screen_get_height (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -354,7 +354,7 @@ bdk_screen_get_height (BdkScreen *screen)
   return BDK_SCREEN_QUARTZ (screen)->height;
 }
 
-static gint
+static bint
 get_mm_from_pixels (NSScreen *screen, int pixels)
 {
   /* userSpaceScaleFactor is in "pixels per point", 
@@ -371,7 +371,7 @@ get_mm_from_pixels (NSScreen *screen, int pixels)
 }
 
 static NSScreen *
-get_nsscreen_for_monitor (gint monitor_num)
+get_nsscreen_for_monitor (bint monitor_num)
 {
   NSArray *array;
   NSScreen *screen;
@@ -386,7 +386,7 @@ get_nsscreen_for_monitor (gint monitor_num)
   return screen;
 }
 
-gint
+bint
 bdk_screen_get_width_mm (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -395,7 +395,7 @@ bdk_screen_get_width_mm (BdkScreen *screen)
                              BDK_SCREEN_QUARTZ (screen)->width);
 }
 
-gint
+bint
 bdk_screen_get_height_mm (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -404,7 +404,7 @@ bdk_screen_get_height_mm (BdkScreen *screen)
                              BDK_SCREEN_QUARTZ (screen)->height);
 }
 
-gint
+bint
 bdk_screen_get_n_monitors (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -412,7 +412,7 @@ bdk_screen_get_n_monitors (BdkScreen *screen)
   return BDK_SCREEN_QUARTZ (screen)->n_screens;
 }
 
-gint
+bint
 bdk_screen_get_primary_monitor (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
@@ -420,9 +420,9 @@ bdk_screen_get_primary_monitor (BdkScreen *screen)
   return 0;
 }
 
-gint
+bint
 bdk_screen_get_monitor_width_mm	(BdkScreen *screen,
-				 gint       monitor_num)
+				 bint       monitor_num)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
   g_return_val_if_fail (monitor_num < bdk_screen_get_n_monitors (screen), 0);
@@ -432,9 +432,9 @@ bdk_screen_get_monitor_width_mm	(BdkScreen *screen,
                              BDK_SCREEN_QUARTZ (screen)->screen_rects[monitor_num].width);
 }
 
-gint
+bint
 bdk_screen_get_monitor_height_mm (BdkScreen *screen,
-                                  gint       monitor_num)
+                                  bint       monitor_num)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
   g_return_val_if_fail (monitor_num < bdk_screen_get_n_monitors (screen), 0);
@@ -444,9 +444,9 @@ bdk_screen_get_monitor_height_mm (BdkScreen *screen,
                              BDK_SCREEN_QUARTZ (screen)->screen_rects[monitor_num].height);
 }
 
-gchar *
+bchar *
 bdk_screen_get_monitor_plug_name (BdkScreen *screen,
-				  gint       monitor_num)
+				  bint       monitor_num)
 {
   /* FIXME: Is there some useful name we could use here? */
   return NULL;
@@ -454,7 +454,7 @@ bdk_screen_get_monitor_plug_name (BdkScreen *screen,
 
 void
 bdk_screen_get_monitor_geometry (BdkScreen    *screen, 
-				 gint          monitor_num,
+				 bint          monitor_num,
 				 BdkRectangle *dest)
 {
   g_return_if_fail (BDK_IS_SCREEN (screen));
@@ -464,7 +464,7 @@ bdk_screen_get_monitor_geometry (BdkScreen    *screen,
   *dest = BDK_SCREEN_QUARTZ (screen)->screen_rects[monitor_num];
 }
 
-gchar *
+bchar *
 bdk_screen_make_display_name (BdkScreen *screen)
 {
   return g_strdup (bdk_display_get_name (_bdk_display));
@@ -486,7 +486,7 @@ bdk_screen_get_window_stack (BdkScreen *screen)
   return NULL;
 }
 
-gboolean
+bboolean
 bdk_screen_is_composited (BdkScreen *screen)
 {
   g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);

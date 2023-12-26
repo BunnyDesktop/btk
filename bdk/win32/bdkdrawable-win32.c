@@ -51,82 +51,82 @@
 
 static void bdk_win32_draw_rectangle (BdkDrawable    *drawable,
 				      BdkGC          *gc,
-				      gboolean        filled,
-				      gint            x,
-				      gint            y,
-				      gint            width,
-				      gint            height);
+				      bboolean        filled,
+				      bint            x,
+				      bint            y,
+				      bint            width,
+				      bint            height);
 static void bdk_win32_draw_arc       (BdkDrawable    *drawable,
 				      BdkGC          *gc,
-				      gboolean        filled,
-				      gint            x,
-				      gint            y,
-				      gint            width,
-				      gint            height,
-				      gint            angle1,
-				      gint            angle2);
+				      bboolean        filled,
+				      bint            x,
+				      bint            y,
+				      bint            width,
+				      bint            height,
+				      bint            angle1,
+				      bint            angle2);
 static void bdk_win32_draw_polygon   (BdkDrawable    *drawable,
 				      BdkGC          *gc,
-				      gboolean        filled,
+				      bboolean        filled,
 				      BdkPoint       *points,
-				      gint            npoints);
+				      bint            npoints);
 static void bdk_win32_draw_text      (BdkDrawable    *drawable,
 				      BdkFont        *font,
 				      BdkGC          *gc,
-				      gint            x,
-				      gint            y,
-				      const gchar    *text,
-				      gint            text_length);
+				      bint            x,
+				      bint            y,
+				      const bchar    *text,
+				      bint            text_length);
 static void bdk_win32_draw_text_wc   (BdkDrawable    *drawable,
 				      BdkFont        *font,
 				      BdkGC          *gc,
-				      gint            x,
-				      gint            y,
+				      bint            x,
+				      bint            y,
 				      const BdkWChar *text,
-				      gint            text_length);
+				      bint            text_length);
 static void bdk_win32_draw_drawable  (BdkDrawable    *drawable,
 				      BdkGC          *gc,
 				      BdkPixmap      *src,
-				      gint            xsrc,
-				      gint            ysrc,
-				      gint            xdest,
-				      gint            ydest,
-				      gint            width,
-				      gint            height,
+				      bint            xsrc,
+				      bint            ysrc,
+				      bint            xdest,
+				      bint            ydest,
+				      bint            width,
+				      bint            height,
 				      BdkDrawable    *original_src);
 static void bdk_win32_draw_points    (BdkDrawable    *drawable,
 				      BdkGC          *gc,
 				      BdkPoint       *points,
-				      gint            npoints);
+				      bint            npoints);
 static void bdk_win32_draw_segments  (BdkDrawable    *drawable,
 				      BdkGC          *gc,
 				      BdkSegment     *segs,
-				      gint            nsegs);
+				      bint            nsegs);
 static void bdk_win32_draw_lines     (BdkDrawable    *drawable,
 				      BdkGC          *gc,
 				      BdkPoint       *points,
-				      gint            npoints);
+				      bint            npoints);
 static void bdk_win32_draw_image     (BdkDrawable     *drawable,
 				      BdkGC           *gc,
 				      BdkImage        *image,
-				      gint             xsrc,
-				      gint             ysrc,
-				      gint             xdest,
-				      gint             ydest,
-				      gint             width,
-				      gint             height);
+				      bint             xsrc,
+				      bint             ysrc,
+				      bint             xdest,
+				      bint             ydest,
+				      bint             width,
+				      bint             height);
 static void bdk_win32_draw_pixbuf     (BdkDrawable     *drawable,
 				      BdkGC           *gc,
 				      BdkPixbuf       *pixbuf,
-				      gint             src_x,
-				      gint             src_y,
-				      gint             dest_x,
-				      gint             dest_y,
-				      gint             width,
-				      gint             height,
+				      bint             src_x,
+				      bint             src_y,
+				      bint             dest_x,
+				      bint             dest_y,
+				      bint             width,
+				      bint             height,
 				      BdkRgbDither     dither,
-				      gint             x_dither,
-				      gint             y_dither);
+				      bint             x_dither,
+				      bint             y_dither);
 
 static bairo_surface_t *bdk_win32_ref_bairo_surface (BdkDrawable *drawable);
      
@@ -135,13 +135,13 @@ static void bdk_win32_set_colormap   (BdkDrawable    *drawable,
 
 static BdkColormap* bdk_win32_get_colormap   (BdkDrawable    *drawable);
 
-static gint         bdk_win32_get_depth      (BdkDrawable    *drawable);
+static bint         bdk_win32_get_depth      (BdkDrawable    *drawable);
 
 static BdkScreen *  bdk_win32_get_screen     (BdkDrawable    *drawable);
 
 static BdkVisual*   bdk_win32_get_visual     (BdkDrawable    *drawable);
 
-static void bdk_drawable_impl_win32_finalize   (GObject *object);
+static void bdk_drawable_impl_win32_finalize   (BObject *object);
 
 static const bairo_user_data_key_t bdk_win32_bairo_key;
 static const bairo_user_data_key_t bdk_win32_bairo_hdc_key;
@@ -153,7 +153,7 @@ static void
 _bdk_drawable_impl_win32_class_init (BdkDrawableImplWin32Class *klass)
 {
   BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  BObjectClass *object_class = B_OBJECT_CLASS (klass);
 
   object_class->finalize = bdk_drawable_impl_win32_finalize;
 
@@ -188,11 +188,11 @@ _bdk_drawable_impl_win32_init (BdkDrawableImplWin32 *impl)
 }
 
 static void
-bdk_drawable_impl_win32_finalize (GObject *object)
+bdk_drawable_impl_win32_finalize (BObject *object)
 {
   bdk_drawable_set_colormap (BDK_DRAWABLE (object), NULL);
 
-  G_OBJECT_CLASS (_bdk_drawable_impl_win32_parent_class)->finalize (object);
+  B_OBJECT_CLASS (_bdk_drawable_impl_win32_parent_class)->finalize (object);
 }
 
 /*****************************************************
@@ -295,7 +295,7 @@ align_with_dash_offset (int a, DWORD *dashes, int num_dashes, BdkGCWin32 *gcwin3
 /* Render a dashed line 'by hand'. Used for all dashes on Win9x (where
  * GDI is way too limited), and for double dashes on all Windowses.
  */
-static inline gboolean
+static inline bboolean
 render_line_horizontal (BdkGCWin32 *gcwin32,
                         int         x1,
                         int         x2,
@@ -355,7 +355,7 @@ render_line_horizontal (BdkGCWin32 *gcwin32,
   return TRUE;
 }
 
-static inline gboolean
+static inline bboolean
 render_line_vertical (BdkGCWin32 *gcwin32,
 		      int         x,
                       int         y1,
@@ -415,16 +415,16 @@ static void
 draw_tiles_lowlevel (HDC  dest,
 		     HDC  tile,
 		     int  rop3,
-		     gint dest_x,
-		     gint dest_y,
-		     gint tile_x_origin,
-		     gint tile_y_origin,
-		     gint width,
-		     gint height,
-		     gint tile_width,
-		     gint tile_height)
+		     bint dest_x,
+		     bint dest_y,
+		     bint tile_x_origin,
+		     bint tile_y_origin,
+		     bint width,
+		     bint height,
+		     bint tile_width,
+		     bint tile_height)
 {
-  gint x, y;
+  bint x, y;
 
   BDK_NOTE (DRAW, g_print ("draw_tiles_lowlevel: %p %+d%+d tile=%p:%dx%d@%+d%+d %dx%d\n",
 			   dest,
@@ -447,8 +447,8 @@ draw_tiles_lowlevel (HDC  dest,
 	    {
 	      if (x + tile_width >= dest_x)
 		{
-		  gint src_x = MAX (0, dest_x - x);
-		  gint src_y = MAX (0, dest_y - y);
+		  bint src_x = MAX (0, dest_x - x);
+		  bint src_y = MAX (0, dest_y - y);
 
 		  if (!GDI_CALL (BitBlt, (dest, x + src_x, y + src_y,
 					  MIN (tile_width, dest_x + width - (x + src_x)),
@@ -470,15 +470,15 @@ draw_tiles (BdkDrawable *drawable,
 	    BdkGC       *gc,
 	    int          rop3,
 	    BdkPixmap   *tile,
-	    gint         dest_x,
-	    gint 	 dest_y,
-	    gint 	 tile_x_origin,
-	    gint 	 tile_y_origin,
-	    gint 	 width,
-	    gint 	 height)
+	    bint         dest_x,
+	    bint 	 dest_y,
+	    bint 	 tile_x_origin,
+	    bint 	 tile_y_origin,
+	    bint 	 width,
+	    bint 	 height)
 {
   const BdkGCValuesMask mask = BDK_GC_FOREGROUND;
-  gint tile_width, tile_height;
+  bint tile_width, tile_height;
   BdkGC *gc_copy;
   HDC dest_hdc, tile_hdc;
 
@@ -502,7 +502,7 @@ static void
 generic_draw (BdkDrawable    *drawable,
 	      BdkGC          *gc,
 	      BdkGCValuesMask mask,
-	      void (*function) (BdkGCWin32 *, HDC, gint, gint, va_list),
+	      void (*function) (BdkGCWin32 *, HDC, bint, bint, va_list),
 	      const BdkRebunnyion *rebunnyion,
 	      ...)
 {
@@ -529,10 +529,10 @@ generic_draw (BdkDrawable    *drawable,
     {
       const BdkGCValuesMask blitting_mask = 0;
       BdkGCValuesMask drawing_mask = BDK_GC_FOREGROUND;
-      gint ts_x_origin = 0, ts_y_origin = 0;
+      bint ts_x_origin = 0, ts_y_origin = 0;
 
-      gint width = rebunnyion->extents.x2 - rebunnyion->extents.x1;
-      gint height = rebunnyion->extents.y2 - rebunnyion->extents.y1;
+      bint width = rebunnyion->extents.x2 - rebunnyion->extents.x1;
+      bint height = rebunnyion->extents.y2 - rebunnyion->extents.y1;
 
       BdkPixmap *mask_pixmap =
 	bdk_pixmap_new (drawable, width, height, 1);
@@ -715,7 +715,7 @@ generic_draw (BdkDrawable    *drawable,
 
 static BdkRebunnyion *
 widen_bounds (BdkRectangle *bounds,
-	      gint          pen_width)
+	      bint          pen_width)
 {
   if (pen_width == 0)
     pen_width = 1;
@@ -731,22 +731,22 @@ widen_bounds (BdkRectangle *bounds,
 static void
 draw_rectangle (BdkGCWin32 *gcwin32,
 		HDC         hdc,
-		gint        x_offset,
-		gint        y_offset,
+		bint        x_offset,
+		bint        y_offset,
 		va_list     args)
 {
   HGDIOBJ old_pen_or_brush;
-  gboolean filled;
-  gint x;
-  gint y;
-  gint width;
-  gint height;
+  bboolean filled;
+  bint x;
+  bint y;
+  bint width;
+  bint height;
 
-  filled = va_arg (args, gboolean);
-  x = va_arg (args, gint);
-  y = va_arg (args, gint);
-  width = va_arg (args, gint);
-  height = va_arg (args, gint);
+  filled = va_arg (args, bboolean);
+  x = va_arg (args, bint);
+  y = va_arg (args, bint);
+  width = va_arg (args, bint);
+  height = va_arg (args, bint);
   
   x -= x_offset;
   y -= y_offset;
@@ -777,11 +777,11 @@ draw_rectangle (BdkGCWin32 *gcwin32,
 static void
 bdk_win32_draw_rectangle (BdkDrawable *drawable,
 			  BdkGC       *gc,
-			  gboolean     filled,
-			  gint         x,
-			  gint         y,
-			  gint         width,
-			  gint         height)
+			  bboolean     filled,
+			  bint         x,
+			  bint         y,
+			  bint         width,
+			  bint         height)
 {
   BdkRectangle bounds;
   BdkRebunnyion *rebunnyion;
@@ -809,24 +809,24 @@ bdk_win32_draw_rectangle (BdkDrawable *drawable,
 static void
 draw_arc (BdkGCWin32 *gcwin32,
 	  HDC         hdc,
-	  gint        x_offset,
-	  gint        y_offset,
+	  bint        x_offset,
+	  bint        y_offset,
 	  va_list     args)
 {
   HGDIOBJ old_pen;
-  gboolean filled;
-  gint x, y;
-  gint width, height;
-  gint angle1, angle2;
+  bboolean filled;
+  bint x, y;
+  bint width, height;
+  bint angle1, angle2;
   int nXStartArc, nYStartArc, nXEndArc, nYEndArc;
 
-  filled = va_arg (args, gboolean);
-  x = va_arg (args, gint);
-  y = va_arg (args, gint);
-  width = va_arg (args, gint);
-  height = va_arg (args, gint);
-  angle1 = va_arg (args, gint);
-  angle2 = va_arg (args, gint);
+  filled = va_arg (args, bboolean);
+  x = va_arg (args, bint);
+  y = va_arg (args, bint);
+  width = va_arg (args, bint);
+  height = va_arg (args, bint);
+  angle1 = va_arg (args, bint);
+  angle2 = va_arg (args, bint);
 
   x -= x_offset;
   y -= y_offset;
@@ -873,13 +873,13 @@ draw_arc (BdkGCWin32 *gcwin32,
 static void
 bdk_win32_draw_arc (BdkDrawable *drawable,
 		    BdkGC       *gc,
-		    gboolean     filled,
-		    gint         x,
-		    gint         y,
-		    gint         width,
-		    gint         height,
-		    gint         angle1,
-		    gint         angle2)
+		    bboolean     filled,
+		    bint         x,
+		    bint         y,
+		    bint         width,
+		    bint         height,
+		    bint         angle1,
+		    bint         angle2)
 {
   BdkRectangle bounds;
   BdkRebunnyion *rebunnyion;
@@ -907,19 +907,19 @@ bdk_win32_draw_arc (BdkDrawable *drawable,
 static void
 draw_polygon (BdkGCWin32 *gcwin32,
 	      HDC         hdc,
-	      gint        x_offset,
-	      gint        y_offset,
+	      bint        x_offset,
+	      bint        y_offset,
 	      va_list     args)
 {
-  gboolean filled;
+  bboolean filled;
   POINT *pts;
   HGDIOBJ old_pen_or_brush;
-  gint npoints;
-  gint i;
+  bint npoints;
+  bint i;
 
-  filled = va_arg (args, gboolean);
+  filled = va_arg (args, bboolean);
   pts = va_arg (args, POINT *);
-  npoints = va_arg (args, gint);
+  npoints = va_arg (args, bint);
 
   if (x_offset != 0 || y_offset != 0)
     for (i = 0; i < npoints; i++)
@@ -942,9 +942,9 @@ draw_polygon (BdkGCWin32 *gcwin32,
 static void
 bdk_win32_draw_polygon (BdkDrawable *drawable,
 			BdkGC       *gc,
-			gboolean     filled,
+			bboolean     filled,
 			BdkPoint    *points,
-			gint         npoints)
+			bint         npoints)
 {
   BdkRectangle bounds;
   BdkRebunnyion *rebunnyion;
@@ -958,8 +958,8 @@ bdk_win32_draw_polygon (BdkDrawable *drawable,
   if (npoints < 2)
     return;
 
-  bounds.x = G_MAXINT;
-  bounds.y = G_MAXINT;
+  bounds.x = B_MAXINT;
+  bounds.y = B_MAXINT;
   bounds.width = 0;
   bounds.height = 0;
 
@@ -991,7 +991,7 @@ bdk_win32_draw_polygon (BdkDrawable *drawable,
 
 typedef struct
 {
-  gint x, y;
+  bint x, y;
   HDC hdc;
 } bdk_draw_text_arg;
 
@@ -1026,14 +1026,14 @@ static void
 bdk_win32_draw_text (BdkDrawable *drawable,
 		     BdkFont     *font,
 		     BdkGC       *gc,
-		     gint         x,
-		     gint         y,
-		     const gchar *text,
-		     gint         text_length)
+		     bint         x,
+		     bint         y,
+		     const bchar *text,
+		     bint         text_length)
 {
   const BdkGCValuesMask mask = BDK_GC_FOREGROUND|BDK_GC_FONT;
   wchar_t *wcstr, wc;
-  glong wlen;
+  blong wlen;
   bdk_draw_text_arg arg;
 
   if (text_length == 0)
@@ -1054,7 +1054,7 @@ bdk_win32_draw_text (BdkDrawable *drawable,
   if (text_length == 1)
     {
       /* For single characters, don't try to interpret as UTF-8. */
-      wc = (guchar) text[0];
+      wc = (buchar) text[0];
       _bdk_wchar_text_handle (font, &wc, 1, bdk_draw_text_handler, &arg);
     }
   else
@@ -1071,13 +1071,13 @@ static void
 bdk_win32_draw_text_wc (BdkDrawable	 *drawable,
 			BdkFont          *font,
 			BdkGC		 *gc,
-			gint		  x,
-			gint		  y,
+			bint		  x,
+			bint		  y,
 			const BdkWChar *text,
-			gint		  text_length)
+			bint		  text_length)
 {
   const BdkGCValuesMask mask = BDK_GC_FOREGROUND|BDK_GC_FONT;
-  gint i;
+  bint i;
   wchar_t *wcstr;
   bdk_draw_text_arg arg;
 
@@ -1116,12 +1116,12 @@ static void
 bdk_win32_draw_drawable (BdkDrawable *drawable,
 			 BdkGC       *gc,
 			 BdkPixmap   *src,
-			 gint         xsrc,
-			 gint         ysrc,
-			 gint         xdest,
-			 gint         ydest,
-			 gint         width,
-			 gint         height,
+			 bint         xsrc,
+			 bint         ysrc,
+			 bint         xdest,
+			 bint         ydest,
+			 bint         width,
+			 bint         height,
 			 BdkDrawable *original_src)
 {
   g_assert (BDK_IS_DRAWABLE_IMPL_WIN32 (drawable));
@@ -1135,7 +1135,7 @@ static void
 bdk_win32_draw_points (BdkDrawable *drawable,
 		       BdkGC       *gc,
 		       BdkPoint    *points,
-		       gint         npoints)
+		       bint         npoints)
 {
   HDC hdc;
   HGDIOBJ old_pen;
@@ -1165,16 +1165,16 @@ bdk_win32_draw_points (BdkDrawable *drawable,
 static void
 draw_segments (BdkGCWin32 *gcwin32,
 	       HDC         hdc,
-	       gint        x_offset,
-	       gint        y_offset,
+	       bint        x_offset,
+	       bint        y_offset,
 	       va_list     args)
 {
   BdkSegment *segs;
-  gint nsegs;
-  gint i;
+  bint nsegs;
+  bint i;
 
   segs = va_arg (args, BdkSegment *);
-  nsegs = va_arg (args, gint);
+  nsegs = va_arg (args, bint);
 
   if (x_offset != 0 || y_offset != 0)
     {
@@ -1243,18 +1243,18 @@ static void
 bdk_win32_draw_segments (BdkDrawable *drawable,
 			 BdkGC       *gc,
 			 BdkSegment  *segs,
-			 gint         nsegs)
+			 bint         nsegs)
 {
   BdkRectangle bounds;
   BdkRebunnyion *rebunnyion;
-  gint i;
+  bint i;
 
   BDK_NOTE (DRAW, g_print ("bdk_win32_draw_segments: %s %d segs\n",
 			   _bdk_win32_drawable_description (drawable),
 			   nsegs));
 
-  bounds.x = G_MAXINT;
-  bounds.y = G_MAXINT;
+  bounds.x = B_MAXINT;
+  bounds.y = B_MAXINT;
   bounds.width = 0;
   bounds.height = 0;
 
@@ -1285,16 +1285,16 @@ bdk_win32_draw_segments (BdkDrawable *drawable,
 static void
 draw_lines (BdkGCWin32 *gcwin32,
 	    HDC         hdc,
-	    gint        x_offset,
-	    gint        y_offset,
+	    bint        x_offset,
+	    bint        y_offset,
 	    va_list     args)
 {
   POINT *pts;
-  gint npoints;
-  gint i;
+  bint npoints;
+  bint i;
 
   pts = va_arg (args, POINT *);
-  npoints = va_arg (args, gint);
+  npoints = va_arg (args, bint);
 
   if (x_offset != 0 || y_offset != 0)
     for (i = 0; i < npoints; i++)
@@ -1340,7 +1340,7 @@ static void
 bdk_win32_draw_lines (BdkDrawable *drawable,
 		      BdkGC       *gc,
 		      BdkPoint    *points,
-		      gint         npoints)
+		      bint         npoints)
 {
   BdkRectangle bounds;
   BdkRebunnyion *rebunnyion;
@@ -1354,8 +1354,8 @@ bdk_win32_draw_lines (BdkDrawable *drawable,
   if (npoints < 2)
     return;
 
-  bounds.x = G_MAXINT;
-  bounds.y = G_MAXINT;
+  bounds.x = B_MAXINT;
+  bounds.y = B_MAXINT;
   bounds.width = 0;
   bounds.height = 0;
 
@@ -1386,17 +1386,17 @@ bdk_win32_draw_lines (BdkDrawable *drawable,
 }
 
 static void
-blit_from_pixmap (gboolean              use_fg_bg,
+blit_from_pixmap (bboolean              use_fg_bg,
 		  BdkDrawableImplWin32 *dest,
 		  HDC                   hdc,
 		  BdkPixmapImplWin32   *src,
 		  BdkGC                *gc,
-		  gint         	      	xsrc,
-		  gint         	      	ysrc,
-		  gint         	      	xdest,
-		  gint         	      	ydest,
-		  gint         	      	width,
-		  gint         	      	height)
+		  bint         	      	xsrc,
+		  bint         	      	ysrc,
+		  bint         	      	xdest,
+		  bint         	      	ydest,
+		  bint         	      	width,
+		  bint         	      	height)
 {
   BdkGCWin32 *gcwin32 = BDK_GC_WIN32 (gc);
   HDC srcdc;
@@ -1404,8 +1404,8 @@ blit_from_pixmap (gboolean              use_fg_bg,
   RGBQUAD oldtable[256], newtable[256];
   COLORREF bg, fg;
 
-  gint newtable_size = 0, oldtable_size = 0;
-  gboolean ok = TRUE;
+  bint newtable_size = 0, oldtable_size = 0;
+  bboolean ok = TRUE;
   
   BDK_NOTE (DRAW, g_print ("blit_from_pixmap\n"));
 
@@ -1427,7 +1427,7 @@ blit_from_pixmap (gboolean              use_fg_bg,
 	    {
 	      /* Blitting from an 1-bit pixmap */
 
-	      gint bgix, fgix;
+	      bint bgix, fgix;
 	      
 	      if (use_fg_bg)
 		{
@@ -1462,11 +1462,11 @@ blit_from_pixmap (gboolean              use_fg_bg,
 		  bg = _bdk_win32_colormap_color (dest->colormap, bgix);
 		  fg = _bdk_win32_colormap_color (dest->colormap, fgix);
 		  newtable[0].rgbBlue = GetBValue (bg);
-		  newtable[0].rgbGreen = GetGValue (bg);
+		  newtable[0].rgbGreen = GetBValue (bg);
 		  newtable[0].rgbRed = GetRValue (bg);
 		  newtable[0].rgbReserved = 0;
 		  newtable[1].rgbBlue = GetBValue (fg);
-		  newtable[1].rgbGreen = GetGValue (fg);
+		  newtable[1].rgbGreen = GetBValue (fg);
 		  newtable[1].rgbRed = GetRValue (fg);
 		  newtable[1].rgbReserved = 0;
 		}
@@ -1527,12 +1527,12 @@ static void
 blit_inside_drawable (HDC                   hdc,
                       BdkGCWin32           *gcwin32,
                       BdkDrawableImplWin32 *src,
-                      gint                  xsrc,
-                      gint                  ysrc,
-                      gint                  xdest,
-                      gint                  ydest,
-                      gint                  width,
-                      gint                  height)
+                      bint                  xsrc,
+                      bint                  ysrc,
+                      bint                  xdest,
+                      bint                  ydest,
+                      bint                  width,
+                      bint                  height)
 
 {
   BDK_NOTE (DRAW, g_print ("blit_inside_drawable\n"));
@@ -1581,12 +1581,12 @@ static void
 blit_from_window (HDC                   hdc,
 		  BdkGCWin32           *gcwin32,
 		  BdkDrawableImplWin32 *src,
-		  gint         	      	xsrc,
-		  gint         	      	ysrc,
-		  gint         	      	xdest,
-		  gint         	      	ydest,
-		  gint         	      	width,
-		  gint         	      	height)
+		  bint         	      	xsrc,
+		  bint         	      	ysrc,
+		  bint         	      	xdest,
+		  bint         	      	ydest,
+		  bint         	      	width,
+		  bint         	      	height)
 {
   HDC srcdc;
   HPALETTE holdpal = NULL;
@@ -1603,7 +1603,7 @@ blit_from_window (HDC                   hdc,
   if (cmap->visual->type == BDK_VISUAL_PSEUDO_COLOR ||
       cmap->visual->type == BDK_VISUAL_STATIC_COLOR)
     {
-      gint k;
+      bint k;
       
       if (!(holdpal = SelectPalette (srcdc, BDK_WIN32_COLORMAP_DATA (cmap)->hpal, FALSE)))
 	WIN32_GDI_FAILED ("SelectPalette");
@@ -1624,22 +1624,22 @@ blit_from_window (HDC                   hdc,
 }
 
 void
-_bdk_win32_blit (gboolean              use_fg_bg,
+_bdk_win32_blit (bboolean              use_fg_bg,
 		 BdkDrawableImplWin32 *draw_impl,
 		 BdkGC       	      *gc,
 		 BdkDrawable 	      *src,
-		 gint        	       xsrc,
-		 gint        	       ysrc,
-		 gint        	       xdest,
-		 gint        	       ydest,
-		 gint        	       width,
-		 gint        	       height)
+		 bint        	       xsrc,
+		 bint        	       ysrc,
+		 bint        	       xdest,
+		 bint        	       ydest,
+		 bint        	       width,
+		 bint        	       height)
 {
   HDC hdc;
   HRGN src_rgn, draw_rgn, outside_rgn;
   RECT r;
   BdkDrawableImplWin32 *src_impl = NULL;
-  gint src_width, src_height;
+  bint src_width, src_height;
   
   BDK_NOTE (DRAW, g_print ("_bdk_win32_blit: src:%s %dx%d@%+d%+d\n"
 			   "                 dst:%s @%+d%+d use_fg_bg=%d\n",
@@ -1781,12 +1781,12 @@ static void
 bdk_win32_draw_image (BdkDrawable     *drawable,
 		      BdkGC           *gc,
 		      BdkImage        *image,
-		      gint             xsrc,
-		      gint             ysrc,
-		      gint             xdest,
-		      gint             ydest,
-		      gint             width,
-		      gint             height)
+		      bint             xsrc,
+		      bint             ysrc,
+		      bint             xdest,
+		      bint             ydest,
+		      bint             width,
+		      bint             height)
 {
   g_assert (BDK_IS_DRAWABLE_IMPL_WIN32 (drawable));
 
@@ -1799,15 +1799,15 @@ static void
 bdk_win32_draw_pixbuf (BdkDrawable     *drawable,
 			BdkGC           *gc,
 			BdkPixbuf       *pixbuf,
-			gint             src_x,
-			gint             src_y,
-			gint             dest_x,
-			gint             dest_y,
-			gint             width,
-			gint             height,
+			bint             src_x,
+			bint             src_y,
+			bint             dest_x,
+			bint             dest_y,
+			bint             width,
+			bint             height,
 			BdkRgbDither     dither,
-			gint             x_dither,
-			gint             y_dither)
+			bint             x_dither,
+			bint             y_dither)
 {
   BdkDrawable *wrapper = BDK_DRAWABLE_IMPL_WIN32 (drawable)->wrapper;
   BDK_DRAWABLE_CLASS (_bdk_drawable_impl_win32_parent_class)->draw_pixbuf (wrapper, gc, pixbuf,
@@ -1918,8 +1918,8 @@ bdk_win32_bairo_surface_release_hdc (void *data)
 
 bairo_surface_t *
 _bdk_windowing_create_bairo_surface (BdkDrawable *drawable,
-				     gint width,
-				     gint height)
+				     bint width,
+				     bint height)
 {
   bairo_surface_t *surface;
   HDC hdc;
@@ -1975,13 +1975,13 @@ bdk_win32_ref_bairo_surface (BdkDrawable *drawable)
 
 void
 _bdk_windowing_set_bairo_surface_size (bairo_surface_t *surface,
-				       gint width,
-				       gint height)
+				       bint width,
+				       bint height)
 {
   // Do nothing.  The surface size is determined by the DC
 }
 
-static gint
+static bint
 bdk_win32_get_depth (BdkDrawable *drawable)
 {
   /* This is a bit bogus but I'm not sure the other way is better */
@@ -2014,13 +2014,13 @@ bdk_win32_drawable_get_handle (BdkDrawable *drawable)
 
       if (!BDK_WINDOW_IS_WIN32 (window))
 	{
-	  g_warning (G_STRLOC " drawable is not a native Win32 window");
+	  g_warning (B_STRLOC " drawable is not a native Win32 window");
 	  return NULL;
 	}
     }
   else if (!BDK_IS_PIXMAP (drawable))
     {
-      g_warning (G_STRLOC " drawable is not a pixmap or window");
+      g_warning (B_STRLOC " drawable is not a pixmap or window");
       return NULL;
     }
 

@@ -28,11 +28,11 @@
 
 #include "btkalias.h"
 
-static guint message_type[BTK_WIN32_EMBED_LAST];
+static buint message_type[BTK_WIN32_EMBED_LAST];
 
 static GSList *current_messages;
 
-guint
+buint
 _btk_win32_embed_message_type (BtkWin32EmbedMessageType type)
 {
   if (type < 0 || type >= BTK_WIN32_EMBED_LAST)
@@ -55,7 +55,7 @@ _btk_win32_embed_push_message (MSG *msg)
 
   *message = *msg;
 
-  current_messages = g_slist_prepend (current_messages, message);
+  current_messages = b_slist_prepend (current_messages, message);
 }
 
 void
@@ -63,7 +63,7 @@ _btk_win32_embed_pop_message (void)
 {
   MSG *message = current_messages->data;
 
-  current_messages = g_slist_delete_link (current_messages, current_messages);
+  current_messages = b_slist_delete_link (current_messages, current_messages);
 
   g_free (message);
 }
@@ -121,7 +121,7 @@ _btk_win32_embed_set_focus_wrapped (void)
   msg->lParam |= BTK_WIN32_EMBED_FOCUS_WRAPAROUND;
 }
 
-gboolean
+bboolean
 _btk_win32_embed_get_focus_wrapped (void)
 {
   MSG *msg;

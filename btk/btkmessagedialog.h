@@ -34,15 +34,15 @@
 #include <btk/btkdialog.h>
 #include <btk/btkenums.h>
 
-G_BEGIN_DECLS
+B_BEGIN_DECLS
 
 
 #define BTK_TYPE_MESSAGE_DIALOG                  (btk_message_dialog_get_type ())
-#define BTK_MESSAGE_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialog))
-#define BTK_MESSAGE_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
-#define BTK_IS_MESSAGE_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MESSAGE_DIALOG))
-#define BTK_IS_MESSAGE_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MESSAGE_DIALOG))
-#define BTK_MESSAGE_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
+#define BTK_MESSAGE_DIALOG(obj)                  (B_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialog))
+#define BTK_MESSAGE_DIALOG_CLASS(klass)          (B_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
+#define BTK_IS_MESSAGE_DIALOG(obj)               (B_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_IS_MESSAGE_DIALOG_CLASS(klass)       (B_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_MESSAGE_DIALOG_GET_CLASS(obj)        (B_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
 
 typedef struct _BtkMessageDialog        BtkMessageDialog;
 typedef struct _BtkMessageDialogClass   BtkMessageDialogClass;
@@ -96,21 +96,21 @@ typedef enum
   BTK_BUTTONS_OK_CANCEL
 } BtkButtonsType;
 
-GType      btk_message_dialog_get_type (void) G_GNUC_CONST;
+GType      btk_message_dialog_get_type (void) B_GNUC_CONST;
 
 BtkWidget* btk_message_dialog_new      (BtkWindow      *parent,
                                         BtkDialogFlags  flags,
                                         BtkMessageType  type,
                                         BtkButtonsType  buttons,
-                                        const gchar    *message_format,
-                                        ...) G_GNUC_PRINTF (5, 6);
+                                        const bchar    *message_format,
+                                        ...) B_GNUC_PRINTF (5, 6);
 
 BtkWidget* btk_message_dialog_new_with_markup   (BtkWindow      *parent,
                                                  BtkDialogFlags  flags,
                                                  BtkMessageType  type,
                                                  BtkButtonsType  buttons,
-                                                 const gchar    *message_format,
-                                                 ...) G_GNUC_PRINTF (5, 6);
+                                                 const bchar    *message_format,
+                                                 ...) B_GNUC_PRINTF (5, 6);
 
 void       btk_message_dialog_set_image    (BtkMessageDialog *dialog,
 					    BtkWidget        *image);
@@ -118,18 +118,18 @@ void       btk_message_dialog_set_image    (BtkMessageDialog *dialog,
 BtkWidget * btk_message_dialog_get_image   (BtkMessageDialog *dialog);
 
 void       btk_message_dialog_set_markup  (BtkMessageDialog *message_dialog,
-                                           const gchar      *str);
+                                           const bchar      *str);
 
 void       btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
-                                                     const gchar      *message_format,
-                                                     ...) G_GNUC_PRINTF (2, 3);
+                                                     const bchar      *message_format,
+                                                     ...) B_GNUC_PRINTF (2, 3);
 
 void       btk_message_dialog_format_secondary_markup (BtkMessageDialog *message_dialog,
-                                                       const gchar      *message_format,
-                                                       ...) G_GNUC_PRINTF (2, 3);
+                                                       const bchar      *message_format,
+                                                       ...) B_GNUC_PRINTF (2, 3);
 
 BtkWidget *btk_message_dialog_get_message_area (BtkMessageDialog *message_dialog);
 
-G_END_DECLS
+B_END_DECLS
 
 #endif /* __BTK_MESSAGE_DIALOG_H__ */

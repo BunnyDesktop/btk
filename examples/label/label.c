@@ -14,7 +14,7 @@ int main( int   argc,
   btk_init (&argc, &argv);
 
   window = btk_window_new (BTK_WINDOW_TOPLEVEL);
-  g_signal_connect (G_OBJECT (window), "destroy",
+  g_signal_connect (B_OBJECT (window), "destroy",
 		    G_CALLBACK (btk_main_quit),
 		    NULL);
 
