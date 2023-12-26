@@ -152,7 +152,7 @@ file selection, and color selection widgets.</para>
 <para>BTK+ was initially developed as a widget set for the GIMP (GNU Image
 Manipulation Program). It has grown extensively since then, and is today
 used by a large number of applications, and is the toolkit used by the
-<ulink url="http://www.gnome.org/">GNOME</ulink> desktop project.</para>
+<ulink url="http://www.bunny.org/">BUNNY</ulink> desktop project.</para>
 
 <para>BTK+ is free software and part of the GNU Project. However, the
 licensing terms for BTK+, the GNU LGPL, allow it to be used by all developers,
@@ -223,7 +223,7 @@ ftp://ftp.btk.org/pub/btk/tutorial
 </ulink></para>
 
 <para>There are now a few books available that deal with
-programming BTK+, BDK and GNOME. Unfortunately, they
+programming BTK+, BDK and BUNNY. Unfortunately, they
 currently are all based upon BTK+ 1.x:</para>
 
 <itemizedlist>
@@ -237,25 +237,25 @@ url="http://www.bcpl.net/~eharlow/book">
 http://www.bcpl.net/~eharlow/book</ulink></simpara>
 </listitem>
 <listitem><simpara>Havoc Pennington has released a book called
-"BTK+/GNOME Application Development". The ISBN is
+"BTK+/BUNNY Application Development". The ISBN is
 0-7357-0078-8</simpara>
 <simpara>The free version of the book lives here: <ulink
-url="http://developer.gnome.org/doc/GGAD/">
-http://developer.gnome.org/doc/GGAD/
+url="http://developer.bunny.org/doc/GGAD/">
+http://developer.bunny.org/doc/GGAD/
 </ulink></simpara>
 <simpara>And Havoc maintains information about it and
 errata here: <ulink
-url="http://pobox.com/~hp/gnome-app-devel.html">
-http://pobox.com/~hp/gnome-app-devel.html
+url="http://pobox.com/~hp/bunny-app-devel.html">
+http://pobox.com/~hp/bunny-app-devel.html
 </ulink></simpara>
 </listitem>
 <listitem><simpara>"BTK+ Programming in C" by
 Syd Logan. ISBN: 0-1301-4264-6</simpara>
 </listitem>
-<listitem><simpara>"Linux GNOME/BTK+ Programming Bible" by
+<listitem><simpara>"Linux BUNNY/BTK+ Programming Bible" by
 Arthur Griffith. ISBN: 0-7645-4640-6</simpara>
 </listitem>
-<listitem><simpara>"Beginning BTK+/GNOME Programming" by
+<listitem><simpara>"Beginning BTK+/BUNNY Programming" by
 Peter Wright. ISBN: 1-8610-0381-1</simpara>
 </listitem>
 <listitem><simpara>"Sams Teach Yourself BTK+ Programming
@@ -297,8 +297,8 @@ post questions is to the BTK+ mailing list.</para>
 <sect1>
 <title>How to report bugs in BTK+ <emphasis>[BTK 2.x]</emphasis></title>
 
-<para>Bugs should be reported to the GNOME bug tracking system
-(<ulink url="http://bugzilla.gnome.org">http://bugzilla.gnome.org</ulink>).
+<para>Bugs should be reported to the BUNNY bug tracking system
+(<ulink url="http://bugzilla.bunny.org">http://bugzilla.bunny.org</ulink>).
 You will need to enter your email address and receive a password before
 you can use the system to register a new bug report.</para>
 
@@ -363,8 +363,8 @@ Dropline BTK+</ulink> site.</para>
 <sect1>
 <title>What applications have been written with BTK+? <emphasis>[BTK 2.x]</emphasis></title>
 
-<para>The GNOME software map contains a catalogue of software that is
-built using GNOME and BTK+. The catalogue is searchable and browsable, so
+<para>The BUNNY software map contains a catalogue of software that is
+built using BUNNY and BTK+. The catalogue is searchable and browsable, so
 provides easy access.</para>
 
 <para>Some of the best known projects utilising BTK+ are:</para>
@@ -389,13 +389,13 @@ http://www.gnucash.org/</ulink>),
 a personal finance manager</simpara>
 </listitem>
 <listitem><simpara> Gnumeric (<ulink
-url="http://www.gnome.org/projects/gnumeric/">
-http://www.gnome.org/projects/gnumeric/</ulink>),
-the GNOME spreadsheet application</simpara>
+url="http://www.bunny.org/projects/gnumeric/">
+http://www.bunny.org/projects/gnumeric/</ulink>),
+the BUNNY spreadsheet application</simpara>
 </listitem>
 <listitem><simpara> Glade (<ulink
-url="http://glade.gnome.org/">http://glade.gnome.org/</ulink>), a
-BTK+ based RAD tool which produces BTK+ and GNOME applications</simpara>
+url="http://glade.bunny.org/">http://glade.bunny.org/</ulink>), a
+BTK+ based RAD tool which produces BTK+ and BUNNY applications</simpara>
 </listitem>
 <listitem><simpara> Anjuta (<ulink
 url="http://anjuta.sourceforge.net/">http://anjuta.sourceforge.net/</ulink>),
@@ -697,12 +697,12 @@ using anonymous access using the following steps:</para>
 <itemizedlist>
 <listitem><simpara>In a bourne shell descendant (e.g. bash) type:</simpara>
 <para><literallayout>
-<literal>git clone git://git.gnome.org/btk+</literal>
+<literal>git clone git://git.bunny.org/btk+</literal>
 </literallayout></para>
 <para>Note that with the BTK+ 1.1 tree, bunnylib has been moved to
 a separate Git module, so if you don't have bunnylib installed you will
 need to get that as well:<literallayout>
-<literal>git clone git://git.gnome.org/bunnylib</literal>
+<literal>git clone git://git.bunny.org/bunnylib</literal>
 </literallayout></para>
 </listitem>
 </itemizedlist>
@@ -738,9 +738,9 @@ can be done using a command such as <literal>diff -ru
 &lt;oldfile&gt; &lt;newfile&gt;</literal>.</para>
 
 <para>The patch should then be attached to a bug report in
-the GNOME bug tracking system, which can also be used to store
+the BUNNY bug tracking system, which can also be used to store
 general patches
-(<ulink url="http://bugzilla.gnome.org">http://bugzilla.gnome.org</ulink>).
+(<ulink url="http://bugzilla.bunny.org">http://bugzilla.bunny.org</ulink>).
 </para>
 
 <para>This method ensures that the patch will not be lost.</para>
@@ -753,7 +753,7 @@ general patches
 <title>How do I know if my patch got applied, and if not, why
 not? <emphasis>[BTK 2.x]</emphasis></title>
 
-<para>If you have used the GNOME bug tracking system (as stated
+<para>If you have used the BUNNY bug tracking system (as stated
 <link linkend="faq-Patches">above</link>) then the status
 of your patch should be reflected in the bug report.</para>
 
@@ -811,8 +811,8 @@ However, bindings for many other languages are available.</para>
 <para>So, after you have installed BTK+ there are a couple of
 things that can ease you into developing applications with
 it. There is the BTK+ Tutorial <ulink
-url="http://library.gnome.org/devel/btk-tutorial/stable/">
-http://library.gnome.org/devel/btk-tutorial/stable/</ulink>, which is undergoing
+url="http://library.bunny.org/devel/btk-tutorial/stable/">
+http://library.bunny.org/devel/btk-tutorial/stable/</ulink>, which is undergoing
 development. This will introduce you to writing applications
 using C.</para>
 
@@ -845,8 +845,8 @@ out there you can look at.</para>
 
 <para>An introduction to using libglade can be found in the 
 libglade API docs
-(<ulink url="http://developer.gnome.org/doc/API/2.0/libglade/libglade-notes.html#libglade-basics">
-http://developer.gnome.org/doc/API/2.0/libglade/libglade-notes.html#libglade-basics</ulink>)
+(<ulink url="http://developer.bunny.org/doc/API/2.0/libglade/libglade-notes.html#libglade-basics">
+http://developer.bunny.org/doc/API/2.0/libglade/libglade-notes.html#libglade-basics</ulink>)
 .</para>
 
 </sect1>
@@ -2247,7 +2247,7 @@ screen?</title>
 way is to use BdkRGB, see bdk/bdkrgb.h. You create an RGB
 buffer, render to your RGB buffer, then use BdkRGB routines to
 copy your RGB buffer to a drawing area or custom widget. The
-book "BTK+/Gnome Application Development" gives some details;
+book "BTK+/Bunny Application Development" gives some details;
 BdkRGB is also documented in the BTK+ reference
 documentation.</para>
 

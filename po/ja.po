@@ -1,12 +1,12 @@
 # btk+ ja.po.
 # Copyright (C) 1998,2000-2010 Free Software Foundation, Inc.
 # Yasuhiro SHIRASAKI <yasuhiro@awa.tohoku.ac.jp>, 1998.
-# Yukihiro Nakai <nakai@gnome.gr.jp>, 2000-2001.
+# Yukihiro Nakai <nakai@bunny.gr.jp>, 2000-2001.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2002, 2009-2010.
-# Akira TAGOH <tagoh@gnome.gr.jp>, 2002.
+# Akira TAGOH <tagoh@bunny.gr.jp>, 2002.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2009.
-# KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
-# Satoru SATOh <ss@gnome.gr.jp>, 2006.
+# KAMAGASAKO Masatoshi <emerald@bunny.gr.jp>, 2003.
+# Satoru SATOh <ss@bunny.gr.jp>, 2006.
 # Nishibori Kiyotaka <ml.nishibori.kiyotaka@gmail.com>, 2009-2010, 2016.
 # Masato Hashimoto <cabezon.hashimoto@gmail.com>, 2010.
 # IWAI, Masaharu <iwaim.sub@gmail.com>, 2010.
@@ -14,12 +14,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+ btk-2-24\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk"
 "%2b&keywords=I18N+L10N&component=.General\n"
 "POT-Creation-Date: 2016-01-10 23:30+0000\n"
 "PO-Revision-Date: 2016-01-11 15:17+0900\n"
 "Last-Translator: Kiyotaka NISHIBORI <ml.nishibori.kiyotaka@gmail.com>\n"
-"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language-Team: Japanese <bunny-translation@bunny.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

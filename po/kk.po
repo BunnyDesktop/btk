@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: trunk\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk%2b&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk%2b&component=general\n"
 "POT-Creation-Date: 2010-09-02 08:43+0000\n"
 "PO-Revision-Date: 2010-09-06 10:26+0600\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"

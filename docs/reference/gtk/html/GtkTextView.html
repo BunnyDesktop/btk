@@ -494,7 +494,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="returnvalue">BangoTabArray</span></a> *
+<a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="returnvalue">BangoTabArray</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextView.html#btk-text-view-get-tabs" title="btk_text_view_get_tabs ()">btk_text_view_get_tabs</a> <span class="c_punctuation">()</span>
@@ -637,7 +637,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *</td>
+<a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *</td>
 <td class="property_name"><a class="link" href="BtkTextView.html#BtkTextView--tabs" title="The “tabs” property">tabs</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -2122,7 +2122,7 @@ child's position. Unfortunately there's no good way to detect that
 scrolling has occurred, using the current API; a possible hack
 would be to update all child positions when the scroll adjustments
 change or the text buffer changes. See bug 64518 on
-bugzilla.gnome.org for status of fixing this issue.</p>
+bugzilla.bunny.org for status of fixing this issue.</p>
 <div class="refsect3">
 <a name="btk-text-view-add-child-in-window.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2858,7 +2858,7 @@ The indentation may be negative.</p>
 <a name="btk-text-view-set-tabs"></a><h3>btk_text_view_set_tabs ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_view_set_tabs (<em class="parameter"><code><a class="link" href="BtkTextView.html" title="BtkTextView"><span class="type">BtkTextView</span></a> *text_view</code></em>,
-                        <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *tabs</code></em>);</pre>
+                        <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *tabs</code></em>);</pre>
 <p>Sets the default tab stops for paragraphs in <em class="parameter"><code>text_view</code></em>
 .
 Tags in the buffer may override the default.</p>
@@ -2878,7 +2878,7 @@ Tags in the buffer may override the default.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>tabs</p></td>
-<td class="parameter_description"><p>tabs as a <a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a></p></td>
+<td class="parameter_description"><p>tabs as a <a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -2888,13 +2888,13 @@ Tags in the buffer may override the default.</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-view-get-tabs"></a><h3>btk_text_view_get_tabs ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="returnvalue">BangoTabArray</span></a> *
+<pre class="programlisting"><a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="returnvalue">BangoTabArray</span></a> *
 btk_text_view_get_tabs (<em class="parameter"><code><a class="link" href="BtkTextView.html" title="BtkTextView"><span class="type">BtkTextView</span></a> *text_view</code></em>);</pre>
 <p>Gets the default tabs for <em class="parameter"><code>text_view</code></em>
 . Tags in the buffer may
 override the defaults. The returned array will be <code class="literal">NULL</code> if
 "standard" (8-space) tabs are used. Free the return value
-with <a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#bango-tab-array-free"><code class="function">bango_tab_array_free()</code></a>.</p>
+with <a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#bango-tab-array-free"><code class="function">bango_tab_array_free()</code></a>.</p>
 <div class="refsect3">
 <a name="btk-text-view-get-tabs.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2913,7 +2913,7 @@ with <a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#bango-tab-a
 <div class="refsect3">
 <a name="btk-text-view-get-tabs.returns"></a><h4>Returns</h4>
 <p> copy of default tab array, or <code class="literal">NULL</code> if "standard"
-tabs are used; must be freed with <a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#bango-tab-array-free"><code class="function">bango_tab_array_free()</code></a>.</p>
+tabs are used; must be freed with <a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#bango-tab-array-free"><code class="function">bango_tab_array_free()</code></a>.</p>
 </div>
 </div>
 <hr>
@@ -3379,7 +3379,7 @@ system-wide IM module setting. See the BtkSettings
 <hr>
 <div class="refsect2">
 <a name="BtkTextView--tabs"></a><h3>The <code class="literal">“tabs”</code> property</h3>
-<pre class="programlisting">  “tabs”                     <a href="https://developer.gnome.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *</pre>
+<pre class="programlisting">  “tabs”                     <a href="https://developer.bunny.org/bango/bango-Tab-Stops.html#BangoTabArray-struct"><span class="type">BangoTabArray</span></a> *</pre>
 <p>Custom tabs for this text.</p>
 <p>Owner: BtkTextView</p>
 <p>Flags: Read / Write</p>

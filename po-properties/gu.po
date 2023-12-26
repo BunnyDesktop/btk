@@ -6915,15 +6915,15 @@ msgstr "સંયુક્ત બાળ પ્રક્રિયા"
 msgid "Whether the widget is part of a composite widget"
 msgstr "શું આ વિજેટ સંયુક્ત વિજેટનેા ભાગ છે"
 
-# #-#-#-#-#  gnome-session.HEAD.hi.po (gnome-session 2.4)  #-#-#-#-#
-# gnome-session/gsm-client-list.c:111
+# #-#-#-#-#  bunny-session.HEAD.hi.po (bunny-session 2.4)  #-#-#-#-#
+# bunny-session/gsm-client-list.c:111
 # #-#-#-#-#  gnumeric.HEAD.hi.po (gnumeric HEAD)  #-#-#-#-#
-# #-#-#-#-#  gnome-session.HEAD.hi.po (gnome-session VERSION)  #-#-#-#-#
-# gnome-session/gsm-client-list.c:111
-# #-#-#-#-#  libgnomeprintui.gnome-2-2.hi.po (libgnomeprintui )  #-#-#-#-#
-# libgnomeprintui/gnome-font-dialog.c:217
-# #-#-#-#-#  libgnomeprintui.HEAD.hi.po (libgnomeprintui )  #-#-#-#-#
-# libgnomeprintui/gnome-font-dialog.c:217
+# #-#-#-#-#  bunny-session.HEAD.hi.po (bunny-session VERSION)  #-#-#-#-#
+# bunny-session/gsm-client-list.c:111
+# #-#-#-#-#  libbunnyprintui.bunny-2-2.hi.po (libbunnyprintui )  #-#-#-#-#
+# libbunnyprintui/bunny-font-dialog.c:217
+# #-#-#-#-#  libbunnyprintui.HEAD.hi.po (libbunnyprintui )  #-#-#-#-#
+# libbunnyprintui/bunny-font-dialog.c:217
 #: btk/btkwidget.c:657
 msgid "Style"
 msgstr "શૈલી"
@@ -7163,8 +7163,8 @@ msgstr "જો ખરુ હોય તો, વપરાશકર્તા વિ
 msgid "If TRUE, users can resize the window"
 msgstr "જો ખરુ હોય તો, વપરાશકર્તા વિન્ડોનું માપ બદલી શકે છે"
 
-# #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
-# libgnomeui/gnome-file-entry.c:216
+# #-#-#-#-#  libbunnyui.HEAD.hi.po (libbunnyui-2.0.hi)  #-#-#-#-#
+# libbunnyui/bunny-file-entry.c:216
 #: btk/btkwindow.c:550
 msgid "Modal"
 msgstr "આજે"

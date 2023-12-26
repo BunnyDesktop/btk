@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* BTK - The GIMP Toolkit
- * Copyright (C) Christian Kellner <gicmo@gnome.org>
+ * Copyright (C) Christian Kellner <gicmo@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

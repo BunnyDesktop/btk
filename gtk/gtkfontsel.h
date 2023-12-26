@@ -2,8 +2,8 @@
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * BtkFontSelection widget for Btk+, by Damon Chaplin, May 1998.
- * Based on the GnomeFontSelector widget, by Elliot Lee, but major changes.
- * The GnomeFontSelector was derived from app/text_tool.c in the GIMP.
+ * Based on the BunnyFontSelector widget, by Elliot Lee, but major changes.
+ * The BunnyFontSelector was derived from app/text_tool.c in the GIMP.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

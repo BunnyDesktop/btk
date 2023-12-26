@@ -28,15 +28,15 @@
 #
 # Il nome deve essere mantenuto il più corto possibile,
 # evitando articoli e, dove possibile, preposizioni.
-# Luca Ferretti <lferrett@gnome.org>, 2007, 2008, 2009, 2010.
-# Luca Ferretti <lferrett@gnome.org>, 2010.
+# Luca Ferretti <lferrett@bunny.org>, 2007, 2008, 2009, 2010.
+# Luca Ferretti <lferrett@bunny.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+-properties\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-01-29 16:00+0100\n"
 "PO-Revision-Date: 2011-01-29 16:03+0100\n"
-"Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
+"Last-Translator: Luca Ferretti <lferrett@bunny.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -6145,7 +6145,7 @@ msgstr "Il contenuto del suggerimento per questa icona"
 # NEW
 #
 # messo di stato in vista del nuovo sistema di notifiche (e di icone tray)
-# di GNOME Shell
+# di BUNNY Shell
 #: ../btk/btkstatusicon.c:432
 msgid "The title of this tray icon"
 msgstr "Il titolo di questa icona di stato"

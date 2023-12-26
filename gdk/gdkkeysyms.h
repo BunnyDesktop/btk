@@ -1,6 +1,6 @@
 /* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
- * Copyright (C) 2005, 2006, 2007, 2009 GNOME Foundation
+ * Copyright (C) 2005, 2006, 2007, 2009 BUNNY Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,7 +20,7 @@
 
 
 /*
- * File auto-generated from script http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms-update.pl
+ * File auto-generated from script http://git.bunny.org/cgit/btk+/tree/bdk/bdkkeysyms-update.pl
  * using the input file
  * http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
  * and

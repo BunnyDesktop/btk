@@ -40,7 +40,7 @@ m4_define([bdk_pixbuf_required_version], [2.21.0])
 
 
 AC_INIT([btk+], [btk_version],
-        [http://bugzilla.gnome.org/enter_bug.cgi?product=btk%2B],
+        [http://bugzilla.bunny.org/enter_bug.cgi?product=btk%2B],
 	[btk+])
 
 AC_CONFIG_SRCDIR([bdk/bdktypes.h])
@@ -519,7 +519,7 @@ AC_OUTPUT_COMMANDS([case "$CONFIG_FILES" in *po-properties/Makefile.in*)
       esac])
 
 dnl Snippet below is copied from AM_BUNNYLIB_GNU_GETTEXT to generate a first
-dnl po-properties/POTFILES during configure; see GNOME #573515.
+dnl po-properties/POTFILES during configure; see BUNNY #573515.
 dnl
 dnl Generate list of files to be processed by xgettext which will
 dnl be included in po-properties/Makefile.

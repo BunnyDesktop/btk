@@ -5578,7 +5578,7 @@ btk_text_view_scroll_hpages (BtkTextView *text_view,
   /*  FIXME for lines shorter than the overall widget width, this results in a
    *  "bounce" effect as we scroll to the right of the widget, then scroll
    *  back to get the end of the line onscreen.
-   *      http://bugzilla.gnome.org/show_bug.cgi?id=68963
+   *      http://bugzilla.bunny.org/show_bug.cgi?id=68963
    */
   
   /* Adjust to have the cursor _entirely_ onscreen, move_mark_onscreen
@@ -9110,7 +9110,7 @@ btk_text_view_add_child_at_anchor (BtkTextView          *text_view,
  * scrolling has occurred, using the current API; a possible hack
  * would be to update all child positions when the scroll adjustments
  * change or the text buffer changes. See bug 64518 on
- * bugzilla.gnome.org for status of fixing this issue.
+ * bugzilla.bunny.org for status of fixing this issue.
  **/
 void
 btk_text_view_add_child_in_window (BtkTextView       *text_view,

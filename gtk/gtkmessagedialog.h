@@ -83,7 +83,7 @@ struct _BtkMessageDialogClass
  * <note>
  *  Please note that %BTK_BUTTONS_OK, %BTK_BUTTONS_YES_NO
  *  and %BTK_BUTTONS_OK_CANCEL are discouraged by the
- *  <ulink url="http://library.gnome.org/devel/hig-book/stable/">GNOME HIG</ulink>.
+ *  <ulink url="http://library.bunny.org/devel/hig-book/stable/">BUNNY HIG</ulink>.
  * </note>
  */
 typedef enum

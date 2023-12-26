@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ bail_menu_get_parent (BatkObject *accessible)
       g_return_val_if_fail (BTK_IS_MENU (widget), NULL);
 
       /*
-       * If the menu is attached to a menu item or a button (Gnome Menu)
+       * If the menu is attached to a menu item or a button (Bunny Menu)
        * report the menu item as parent.
        */
       parent_widget = btk_menu_get_attach_widget (BTK_MENU (widget));

@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 #include "bail.h"
 #include "bailfactory.h"
 
-#define GNOME_ACCESSIBILITY_ENV "GNOME_ACCESSIBILITY"
+#define BUNNY_ACCESSIBILITY_ENV "BUNNY_ACCESSIBILITY"
 #define NO_BAIL_ENV "NO_BAIL"
 
 static gboolean bail_focus_watcher      (GSignalInvocationHint *ihint,
@@ -123,9 +123,9 @@ bail_get_accessible_for_widget (BtkWidget *widget,
                                 gboolean  *transient)
 {
   BatkObject *obj = NULL;
-  GType gnome_canvas;
+  GType bunny_canvas;
 
-  gnome_canvas = g_type_from_name ("GnomeCanvas");
+  bunny_canvas = g_type_from_name ("BunnyCanvas");
 
   *transient = FALSE;
   if (!widget)
@@ -160,7 +160,7 @@ bail_get_accessible_for_widget (BtkWidget *widget,
           g_object_unref (obj);
         }
     }
-  else if (BTK_CHECK_TYPE ((widget), gnome_canvas))
+  else if (BTK_CHECK_TYPE ((widget), bunny_canvas))
     {
       GObject *focused_item;
       GValue value = {0, };
@@ -860,11 +860,11 @@ bail_set_focus_object (BatkObject *focus_obj,
 }
 
 /*
- *   These exported symbols are hooked by gnome-program
+ *   These exported symbols are hooked by bunny-program
  * to provide automatic module initialization and shutdown.
  */
-extern void gnome_accessibility_module_init     (void);
-extern void gnome_accessibility_module_shutdown (void);
+extern void bunny_accessibility_module_init     (void);
+extern void bunny_accessibility_module_shutdown (void);
 
 static int bail_initialized = FALSE;
 
@@ -881,7 +881,7 @@ bail_accessibility_module_init (void)
   bail_initialized = TRUE;
   quark_focus_object = g_quark_from_static_string ("bail-focus-object");
   
-  env_a_t_support = g_getenv (GNOME_ACCESSIBILITY_ENV);
+  env_a_t_support = g_getenv (BUNNY_ACCESSIBILITY_ENV);
 
   if (env_a_t_support)
     a_t_support = atoi (env_a_t_support);
@@ -932,7 +932,7 @@ bail_accessibility_module_init (void)
   BAIL_WIDGET_SET_FACTORY (BTK_TYPE_RADIO_MENU_ITEM, bail_radio_menu_item);
   BAIL_WIDGET_SET_FACTORY (BTK_TYPE_EXPANDER, bail_expander);
 
-  /* LIBGNOMECANVAS SUPPORT */
+  /* LIBBUNNYCANVAS SUPPORT */
   BAIL_WIDGET_SET_FACTORY (BTK_TYPE_OBJECT, bail_object);
 
   batk_focus_tracker_init (bail_focus_tracker_init);
@@ -944,27 +944,27 @@ bail_accessibility_module_init (void)
 }
 
 /**
- * gnome_accessibility_module_init:
+ * bunny_accessibility_module_init:
  * @void: 
  * 
- *   This method is invoked by name from libgnome's
- * gnome-program.c to activate accessibility support.
+ *   This method is invoked by name from libbunny's
+ * bunny-program.c to activate accessibility support.
  **/
 void
-gnome_accessibility_module_init (void)
+bunny_accessibility_module_init (void)
 {
   bail_accessibility_module_init ();
 }
 
 /**
- * gnome_accessibility_module_shutdown:
+ * bunny_accessibility_module_shutdown:
  * @void: 
  * 
- *   This method is invoked by name from libgnome's
- * gnome-program.c to de-activate accessibility support.
+ *   This method is invoked by name from libbunny's
+ * bunny-program.c to de-activate accessibility support.
  **/
 void
-gnome_accessibility_module_shutdown (void)
+bunny_accessibility_module_shutdown (void)
 {
   if (!bail_initialized)
     {

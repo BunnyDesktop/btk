@@ -4,23 +4,23 @@
 ]>
 <chapter id="btk-migrating-BtkLinkButton">
 
-  <title>Migrating from GnomeHRef to BtkLinkButton</title>
+  <title>Migrating from BunnyHRef to BtkLinkButton</title>
 
   <para>
     Since version 2.10, BTK+ provides the #BtkLinkButton widget as a
-    replacement for the <structname>GnomeHRef</structname> widget
-    in the libgnomeui library.
+    replacement for the <structname>BunnyHRef</structname> widget
+    in the libbunnyui library.
   </para>
 
   <para>
-    Porting an application from <structname>GnomeHRef</structname> to
+    Porting an application from <structname>BunnyHRef</structname> to
     #BtkLinkButton is very simple. #BtkLinkButton does not have a
     default action for #BtkButton::clicked signal. So instead of simply 
     creating the widget
     <informalexample><programlisting>
       BtkWidget *button;
 
-      button = gnome_href_new (url, "");
+      button = bunny_href_new (url, "");
     </programlisting></informalexample>
     you will have to handle the activation of the #BtkLinkButton, using
     the ::clicked signal for instance

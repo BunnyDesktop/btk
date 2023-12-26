@@ -278,7 +278,7 @@ main (int   argc,
       char *argv[])
 {
   btk_test_init (&argc, &argv);
-  g_test_bug_base ("http://bugzilla.gnome.org/");
+  g_test_bug_base ("http://bugzilla.bunny.org/");
   btk_test_register_all_types();
 
   g_test_add_func ("/tests/statusbar-remove-all", test_statusbar_remove_all);

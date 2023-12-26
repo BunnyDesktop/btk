@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2002 Sun Microsystems Inc.
  * Copyright (C) 1998-1999, 2000-2001 Tim Janik and Red Hat, Inc.
  * Copyright (C) 2007 Christian Persch

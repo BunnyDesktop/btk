@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -297,7 +297,7 @@ bail_window_get_name (BatkObject *accessible)
               child = btk_bin_get_child (BTK_BIN (window));
               /* could be some kind of egg notification bubble thingy? */
 
-              /* Handle new BTK+ GNOME 2.20 tooltips */
+              /* Handle new BTK+ BUNNY 2.20 tooltips */
               if (BTK_IS_ALIGNMENT(child))
                 {
                   child = btk_bin_get_child (BTK_BIN (child));

@@ -61,7 +61,7 @@ The BTK+ <a class="ulink" href="http://www.btk.org" target="_top">website</a> of
 <a class="ulink" href="http://www.btk.org/tutorial" target="_top">tutorial</a> and a 
 <a class="ulink" href="http://www.btk.org/faq" target="_top">FAQ</a>. More documentation ranging
 from whitepapers to online books can be found at the
-<a class="ulink" href="http://developer.gnome.org/doc" target="_top">GNOME developer's site</a>.
+<a class="ulink" href="http://developer.bunny.org/doc" target="_top">BUNNY developer's site</a>.
 After studying these materials you should be well prepared to come back to
 this reference manual for details.
 </p></td>
@@ -93,15 +93,15 @@ version to another?</p></td>
 <td align="left" valign="top">
 <p>
 See the <a class="link" href="btk-changes-2-0.html" title="Changes from 1.2 to 2.0">list of incompatible changes
-from 1.2 to 2.0</a>. Also, the <a class="ulink" href="http://developer.gnome.org/dotplan/porting/" target="_top">GNOME 2.0 porting
-guide</a> on <a class="ulink" href="http://developer.gnome.org" target="_top">http://developer.gnome.org</a>
+from 1.2 to 2.0</a>. Also, the <a class="ulink" href="http://developer.bunny.org/dotplan/porting/" target="_top">BUNNY 2.0 porting
+guide</a> on <a class="ulink" href="http://developer.bunny.org" target="_top">http://developer.bunny.org</a>
 has some more detailed discussion of porting from 1.2 to 2.0.
 You may also find useful information in the documentation for 
 specific widgets and functions.
 </p>
 <p>
 If you have a question not covered in the manual, feel free to
-ask on the mailing lists and please <a class="ulink" href="http://bugzilla.gnome.org" target="_top">file a bug report</a> against the
+ask on the mailing lists and please <a class="ulink" href="http://bugzilla.bunny.org" target="_top">file a bug report</a> against the
 documentation.
 </p>
 </td>
@@ -128,7 +128,7 @@ of <span class="type">GObject</span> so the same points apply, except that it ha
 For strings returned from functions, they will be declared "const"
 if they should not be freed. Non-const strings should be
 freed with <code class="function">g_free()</code>. Arrays follow the same rule.  (If you find an exception 
-to the rules, please report a bug to <a class="ulink" href="http://bugzilla.gnome.org" target="_top">http://bugzilla.gnome.org</a>.)
+to the rules, please report a bug to <a class="ulink" href="http://bugzilla.bunny.org" target="_top">http://bugzilla.bunny.org</a>.)
 </p>
 </td>
 </tr>
@@ -603,15 +603,15 @@ How do I load an image or animation from a file?
 <p>
 To load an image file straight into a display widget, use 
 <a class="link" href="BtkImage.html#btk-image-new-from-file" title="btk_image_new_from_file"><code class="function">btk_image_new_from_file()</code></a> <a href="#ftn.id-1.2.11.3.3.1.12.2.1.2" class="footnote" name="id-1.2.11.3.3.1.12.2.1.2"><sup class="footnote">[1]</sup></a>. 
-To load an image for another purpose, use <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-File-Loading.html#bdk-pixbuf-new-from-file"><code class="function">bdk_pixbuf_new_from_file()</code></a>. To i
-load an animation, use <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-new-from-file"><code class="function">bdk_pixbuf_animation_new_from_file()</code></a>.
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-new-from-file"><code class="function">bdk_pixbuf_animation_new_from_file()</code></a> can also load non-animated images, so 
-use it in combination with <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-is-static-image"><code class="function">bdk_pixbuf_animation_is_static_image()</code></a> to load a 
+To load an image for another purpose, use <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-File-Loading.html#bdk-pixbuf-new-from-file"><code class="function">bdk_pixbuf_new_from_file()</code></a>. To i
+load an animation, use <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-new-from-file"><code class="function">bdk_pixbuf_animation_new_from_file()</code></a>.
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-new-from-file"><code class="function">bdk_pixbuf_animation_new_from_file()</code></a> can also load non-animated images, so 
+use it in combination with <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-Animations.html#bdk-pixbuf-animation-is-static-image"><code class="function">bdk_pixbuf_animation_is_static_image()</code></a> to load a 
 file of unknown type. 
 </p>
 <p>
 To load an image or animation file asynchronously (without blocking), use 
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/BdkPixbufLoader.html#BdkPixbufLoader-struct"><span class="type">BdkPixbufLoader</span></a>.
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/BdkPixbufLoader.html#BdkPixbufLoader-struct"><span class="type">BdkPixbufLoader</span></a>.
 </p>
 </td>
 </tr>
@@ -656,8 +656,8 @@ Do not use the deprecated <a href="../html/bdk2-Fonts.html#BdkFont"><span class=
 </p>
 <p>
 See also the "Text Handling in BTK 2" section of 
-<a class="ulink" href="http://developer.gnome.org/dotplan/porting/" target="_top">Porting applications 
-to the GNOME 2.0 platform</a>.
+<a class="ulink" href="http://developer.bunny.org/dotplan/porting/" target="_top">Porting applications 
+to the BUNNY 2.0 platform</a>.
 </p>
 </td>
 </tr>
@@ -674,7 +674,7 @@ How do I measure the size of a piece of text ?
 <td align="left" valign="top">
 <p>
 To obtain the size of a piece of text, use a Bango layout and 
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#bango-layout-get-pixel-size"><code class="function">bango_layout_get_pixel_size()</code></a>, using code like the following:
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#bango-layout-get-pixel-size"><code class="function">bango_layout_get_pixel_size()</code></a>, using code like the following:
 </p>
 <div class="informalexample">
   <table class="listing_frame" border="0" cellpadding="0" cellspacing="0">
@@ -702,8 +702,8 @@ Do not use the deprecated function <a href="../html/bdk2-Fonts.html#bdk-text-wid
 </p>
 <p>
 See also the "Text Handling in BTK 2" section of 
-<a class="ulink" href="http://developer.gnome.org/dotplan/porting/" target="_top">Porting applications 
-to the GNOME 2.0 platform</a>.
+<a class="ulink" href="http://developer.bunny.org/dotplan/porting/" target="_top">Porting applications 
+to the BUNNY 2.0 platform</a>.
 </p>
 </td>
 </tr>
@@ -1398,7 +1398,7 @@ Render extension).
 <a name="id-1.2.11.3.3.6.5"></a><a name="id-1.2.11.3.3.6.5.1"></a><p><b>6.4.</b></p>
 </td>
 <td align="left" valign="top"><p>
-Can I use bairo to draw on a <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> ?
+Can I use bairo to draw on a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> ?
 </p></td>
 </tr>
 <tr class="answer">
@@ -1416,7 +1416,7 @@ pixel format used by BdkPixbuf.
 <br><hr style="width:100; text-align:left;margin-left: 0">
 <div id="ftn.id-1.2.11.3.3.1.12.2.1.2" class="footnote"><p><a href="#id-1.2.11.3.3.1.12.2.1.2" class="para"><sup class="para">[1] </sup></a> If the file load fails, 
 <a class="link" href="BtkImage.html#btk-image-new-from-file" title="btk_image_new_from_file"><code class="function">btk_image_new_from_file()</code></a> will display no image graphic — to detect 
-a failed load yourself, use <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-File-Loading.html#bdk-pixbuf-new-from-file"><code class="function">bdk_pixbuf_new_from_file()</code></a> directly, then 
+a failed load yourself, use <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-File-Loading.html#bdk-pixbuf-new-from-file"><code class="function">bdk_pixbuf_new_from_file()</code></a> directly, then 
 <a class="link" href="BtkImage.html#btk-image-new-from-pixbuf" title="btk_image_new_from_pixbuf ()"><code class="function">btk_image_new_from_pixbuf()</code></a>.</p></div>
 </div>
 </div>

@@ -89,14 +89,14 @@ IMAGEFILES=	alphatest.png		\
 	        apple-red.png		\
 		background.jpg		\
 		floppybuddy.gif		\
-		gnome-applets.png	\
-		gnome-calendar.png	\
-		gnome-fs-directory.png	\
-		gnome-fs-regular.png	\
-		gnome-foot.png		\
-		gnome-gimp.png		\
-		gnome-gmush.png		\
-		gnome-gsame.png		\
+		bunny-applets.png	\
+		bunny-calendar.png	\
+		bunny-fs-directory.png	\
+		bunny-fs-regular.png	\
+		bunny-foot.png		\
+		bunny-gimp.png		\
+		bunny-gmush.png		\
+		bunny-gsame.png		\
 		gnu-keys.png		\
 		btk-logo-rgb.gif		
 

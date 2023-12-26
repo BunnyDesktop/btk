@@ -3,7 +3,7 @@
 # Dirk-Jan C. Binnema <djcb@djcbsoftware.nl>, 2002.
 # Ronald Hummelink <ronald@hummelink.xs4all.nl>, 2002.
 # Tino Meinen <a.t.meinen@chelo.nl>, 2002-2009.
-# Vincent van Adrighem <adrighem@gnome.org>, 2004.
+# Vincent van Adrighem <adrighem@bunny.org>, 2004.
 # --------------
 # arrow keys       - toetsenbordpijlen/pijltjestoetsen/cursortoetsen
 # color selector   - kleurenkiezer
@@ -7646,7 +7646,7 @@ msgstr "Taakbalk overslaan"
 msgid "TRUE if the window should not be in the task bar."
 msgstr "WAAR (TRUE) als het venster niet in de taakbalk hoort"
 
-# in Gnome-nl is er voor gekozen de pager te vertalen met: werkbladwisselaar
+# in Bunny-nl is er voor gekozen de pager te vertalen met: werkbladwisselaar
 #: btk/btkwindow.c:667
 msgid "Skip pager"
 msgstr "Werkbladwisselaar overslaan"

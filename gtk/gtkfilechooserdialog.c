@@ -458,7 +458,7 @@ btk_file_chooser_dialog_new (const gchar         *title,
  *
  * Creates a new #BtkFileChooserDialog with a specified backend. This is
  * especially useful if you use btk_file_chooser_set_local_only() to allow
- * non-local files and you use a more expressive vfs, such as gnome-vfs,
+ * non-local files and you use a more expressive vfs, such as bunny-vfs,
  * to load files.
  *
  * Return value: a new #BtkFileChooserDialog

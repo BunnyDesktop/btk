@@ -65,7 +65,7 @@ bdk_bairo_create (BdkDrawable *drawable)
   /* Ugly workaround for BTK not ensuring to flush surfaces before
    * directly accessing the drawable backed by the surface. Not visible
    * on X11 (where flushing is a no-op). For details, see
-   * https://bugzilla.gnome.org/show_bug.cgi?id=628291
+   * https://bugzilla.bunny.org/show_bug.cgi?id=628291
    */
   bairo_set_user_data (cr, &key, surface, bdk_ensure_surface_flush);
 

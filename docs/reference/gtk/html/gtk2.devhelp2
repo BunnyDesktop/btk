@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="BTK+ 2 Reference Manual" link="index.html" author="" name="btk2" version="2" language="c" online="http://library.gnome.org/devel/btk2/">
+<book xmlns="http://www.devhelp.net/book" title="BTK+ 2 Reference Manual" link="index.html" author="" name="btk2" version="2" language="c" online="http://library.bunny.org/devel/btk2/">
   <chapters>
     <sub name="BTK+ Overview" link="btk.html">
       <sub name="Compiling the BTK+ libraries" link="btk-building.html"/>
@@ -288,17 +288,17 @@
       <sub name="Migrating from old menu and toolbar systems to BtkAction" link="btk-migrating-BtkAction.html">
         <sub name="Actions and Action Groups" link="btk-migrating-BtkAction.html#actions-and-action-groups"/>
         <sub name="User Interface Manager Object" link="ui-manager.html"/>
-        <sub name="Migrating from GnomeUIInfo" link="migrating-gnomeuiinfo.html"/>
+        <sub name="Migrating from BunnyUIInfo" link="migrating-bunnyuiinfo.html"/>
       </sub>
       <sub name="Migrating from BtkOptionMenu and BtkCombo to BtkComboBox and &#10;         BtkComboBoxEntry" link="btk-migrating-BtkComboBox.html">
         <sub name="Migrating from BtkOptionMenu to BtkComboBox" link="btk-migrating-BtkComboBox.html#migrating-BtkOptionMenu"/>
         <sub name="Migrating from BtkCombo to BtkComboBoxEntry" link="migrating-BtkCombo.html"/>
         <sub name="New features" link="new-features-BtkComboBox.html"/>
       </sub>
-      <sub name="Migrating from GnomeIconList to BtkIconView" link="btk-migrating-BtkIconView.html"/>
-      <sub name="Migrating from GnomeAbout to BtkAboutDialog" link="btk-migrating-BtkAboutDialog.html"/>
-      <sub name="Migrating from GnomeColorPicker to BtkColorButton" link="btk-migrating-BtkColorButton.html"/>
-      <sub name="Migrating from GnomeDruid to BtkAssistant" link="btk-migrating-BtkAssistant.html">
+      <sub name="Migrating from BunnyIconList to BtkIconView" link="btk-migrating-BtkIconView.html"/>
+      <sub name="Migrating from BunnyAbout to BtkAboutDialog" link="btk-migrating-BtkAboutDialog.html"/>
+      <sub name="Migrating from BunnyColorPicker to BtkColorButton" link="btk-migrating-BtkColorButton.html"/>
+      <sub name="Migrating from BunnyDruid to BtkAssistant" link="btk-migrating-BtkAssistant.html">
         <sub name="Inserting pages" link="btk-migrating-BtkAssistant.html#inserting-pages"/>
         <sub name="Decorating the assistant pages" link="decorating-the-assistant-pages.html"/>
         <sub name="Setting the page flow" link="setting-the-page-flow.html"/>
@@ -308,7 +308,7 @@
         <sub name="Displaying the Recently Used Documents" link="btkrecent-chooser.html"/>
         <sub name="Advanced usage" link="btkrecent-advanced.html"/>
       </sub>
-      <sub name="Migrating from GnomeHRef to BtkLinkButton" link="btk-migrating-BtkLinkButton.html"/>
+      <sub name="Migrating from BunnyHRef to BtkLinkButton" link="btk-migrating-BtkLinkButton.html"/>
       <sub name="Migrating from libglade to BtkBuilder" link="btk-migrating-BtkBuilder.html"/>
       <sub name="Migrating from BtkTooltips to BtkTooltip" link="btk-migrating-tooltips.html"/>
       <sub name="Migrating from SexyIconEntry to BtkEntry" link="btk-migrating-entry-icons.html"/>

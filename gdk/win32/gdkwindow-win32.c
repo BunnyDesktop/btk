@@ -509,7 +509,7 @@ RegisterBdkClass (BdkWindowType wtype, BdkWindowTypeHint wtype_hint)
  * and complain if that changes, which would break this implementation
  * again.
  *
- * [1] http://mail.gnome.org/archives/btk-devel-list/2010-August/msg00214.html
+ * [1] http://mail.bunny.org/archives/btk-devel-list/2010-August/msg00214.html
  */
 void
 _bdk_window_impl_new (BdkWindow     *window,

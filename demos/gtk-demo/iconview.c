@@ -11,8 +11,8 @@
 
 static BtkWidget *window = NULL;
 
-#define FOLDER_NAME "gnome-fs-directory.png"
-#define FILE_NAME "gnome-fs-regular.png"
+#define FOLDER_NAME "bunny-fs-directory.png"
+#define FILE_NAME "bunny-fs-regular.png"
 
 enum
 {

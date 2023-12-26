@@ -1,6 +1,6 @@
 Date: Sun, 14 Sep 1997 20:17:06 -0700 (PDT)
 From: Josh MacDonald <jmacd@CS.Berkeley.EDU>
-To: gnome@athena.nuclecu.unam.mx, btk-list@redhat.com
+To: bunny@athena.nuclecu.unam.mx, btk-list@redhat.com
 Subject: [btk-list] btktext widget internal documentation
 
 

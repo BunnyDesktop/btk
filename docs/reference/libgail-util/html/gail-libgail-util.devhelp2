@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<book xmlns="http://www.devhelp.net/book" title="BAIL Reference Manual" link="index.html" author="" name="bail-libbail-util" version="2" language="c" online="http://library.gnome.org/devel/bail-libbail-util/unstable/">
+<book xmlns="http://www.devhelp.net/book" title="BAIL Reference Manual" link="index.html" author="" name="bail-libbail-util" version="2" language="c" online="http://library.bunny.org/devel/bail-libbail-util/unstable/">
   <chapters>
     <sub name="BAIL libbail-util Library" link="libbail-util-main.html">
       <sub name="BailTextUtil" link="bail-libbail-util-BailTextUtil.html"/>

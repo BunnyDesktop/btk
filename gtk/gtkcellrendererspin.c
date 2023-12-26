@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * Authors: Lorenzo Gil Sanchez    <lgs@sicem.biz>
- *          Carlos Garnacho Parro  <carlosg@gnome.org>
+ *          Carlos Garnacho Parro  <carlosg@bunny.org>
  */
 
 #include "config.h"

@@ -21,9 +21,9 @@ Incompatible changes made between version 1.2 and version 2.0
 <title>Incompatible changes from 1.2 to 2.0</title>
 
 <para>
-The <ulink url="http://developer.gnome.org/dotplan/porting/">GNOME 2.0
+The <ulink url="http://developer.bunny.org/dotplan/porting/">BUNNY 2.0
 porting guide</ulink> on <ulink
-url="http://developer.gnome.org">http://developer.gnome.org</ulink>
+url="http://developer.bunny.org">http://developer.bunny.org</ulink>
 has some more detailed discussion of porting from 1.2 to 2.0.
 See the sections on GLib and BTK+.
 </para>

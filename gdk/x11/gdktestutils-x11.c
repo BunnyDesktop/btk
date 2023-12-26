@@ -40,7 +40,7 @@ bdk_test_render_sync (BdkWindow *window)
 {
   static BdkImage *p1image = NULL;
   /* syncronize to X drawing queue, see:
-   * http://mail.gnome.org/archives/btk-devel-list/2006-October/msg00103.html
+   * http://mail.bunny.org/archives/btk-devel-list/2006-October/msg00103.html
    */
   p1image = bdk_drawable_copy_to_image (window, p1image, 0, 0, 0, 0, 1, 1);
 }

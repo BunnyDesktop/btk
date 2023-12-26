@@ -172,9 +172,9 @@ msgctxt "keyboard label"
 msgid "Down"
 msgstr ""
 
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_CELLS.SID_FORMATPAGE.text
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_EDIT.SID_FORMATPAGE.text
 #: bdk/keyname-table.h:3953
 #, fuzzy
@@ -197,8 +197,8 @@ msgctxt "keyboard label"
 msgid "Begin"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: bdk/keyname-table.h:3957
 #, fuzzy
 msgctxt "keyboard label"
@@ -227,8 +227,8 @@ msgctxt "keyboard label"
 msgid "KP_Tab"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: bdk/keyname-table.h:3962
 #, fuzzy
 msgctxt "keyboard label"
@@ -298,9 +298,9 @@ msgctxt "keyboard label"
 msgid "KP_Insert"
 msgstr ""
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_TABBAR.SID_BASICIDE_DELETECURRENT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\brkdlg.src:RID_BASICIDE_BREAKPOINTDLG.RID_PB_DEL.text
 #: bdk/keyname-table.h:3975
 #, fuzzy
@@ -308,9 +308,9 @@ msgctxt "keyboard label"
 msgid "KP_Delete"
 msgstr "Gusiba"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_TABBAR.SID_BASICIDE_DELETECURRENT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\brkdlg.src:RID_BASICIDE_BREAKPOINTDLG.RID_PB_DEL.text
 #: bdk/keyname-table.h:3976
 #, fuzzy
@@ -1390,8 +1390,8 @@ msgstr "amabara"
 msgid "Make X calls synchronous"
 msgstr "Amahamagara:"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: bdk/x11/bdkapplaunchcontext-x11.c:313
 #, fuzzy, c-format
 msgid "Starting %s"
@@ -1888,9 +1888,9 @@ msgstr ""
 msgid "_Height:"
 msgstr "Ibara"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkcustompaperunixdialog.c:1078
 #, fuzzy
@@ -2591,22 +2591,22 @@ msgstr "Ikirahuri"
 msgid "Window"
 msgstr "Idirishya"
 
-# #-#-#-#-#  goodies.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  goodies.pot (Bunny 2.12)  #-#-#-#-#
 # goodies/source\filter.vcl\egif\dlgegif.src:DLG_EXPORT_GIF.GRP_MODE.text
-# #-#-#-#-#  goodies.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  goodies.pot (Bunny 2.12)  #-#-#-#-#
 # goodies/source\filter.vcl\eos2met\dlgeos2.src:DLG_EXPORT_EMET.GRP_MODE.text
-# #-#-#-#-#  goodies.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  goodies.pot (Bunny 2.12)  #-#-#-#-#
 # goodies/source\filter.vcl\epict\dlgepct.src:DLG_EXPORT_EPCT.GRP_MODE.text
-# #-#-#-#-#  goodies.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  goodies.pot (Bunny 2.12)  #-#-#-#-#
 # goodies/source\filter.vcl\epng\dlgepng.src:DLG_EXPORT_EPNG.GRP_COMPRESSION.text
 #: btk/btkinputdialog.c:258
 #, fuzzy
 msgid "_Mode:"
 msgstr "Ubwoko"
 
-# #-#-#-#-#  sch.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sch.pot (Bunny 2.12)  #-#-#-#-#
 # sch/source\ui\dlg\attrib2.src:TAB_AXIS.text
-# #-#-#-#-#  sch.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sch.pot (Bunny 2.12)  #-#-#-#-#
 # sch/source\ui\dlg\axisgrid.src:DLG_AXIS.text
 #. The axis listbox
 #: btk/btkinputdialog.c:279
@@ -2668,11 +2668,11 @@ msgstr "(Itazwi>"
 msgid "Cl_ear"
 msgstr "Gusiba"
 
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\accel\accel.src:STR_OPEN.text
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\dialog\cfg.src:STR_OPEN.text
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\dialog\versdlg.src:DLG_VERSIONS.PB_OPEN.text
 #. Open Link
 #: btk/btklabel.c:5685
@@ -2838,9 +2838,9 @@ msgstr ""
 msgid "Cannot end process with pid %d: %s"
 msgstr ""
 
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_CELLS.SID_FORMATPAGE.text
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_EDIT.SID_FORMATPAGE.text
 #: btk/btknotebook.c:4704 btk/btknotebook.c:7269
 #, fuzzy, c-format
@@ -2851,8 +2851,8 @@ msgstr "Ipaji..."
 msgid "Not a valid page setup file"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkpagesetupunixdialog.c:167
 #, fuzzy
 msgid "Any Printer"
@@ -2880,9 +2880,9 @@ msgstr ""
 msgid "_Format for:"
 msgstr ""
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkpagesetupunixdialog.c:916 btk/btkprintunixdialog.c:3449
 #, fuzzy
@@ -2895,9 +2895,9 @@ msgstr "indangakintu"
 msgid "_Orientation:"
 msgstr "Ubwuzurane"
 
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_CELLS.SID_FORMATPAGE.text
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_EDIT.SID_FORMATPAGE.text
 #: btk/btkpagesetupunixdialog.c:1011 btk/btkprintunixdialog.c:3511
 #, fuzzy
@@ -2973,8 +2973,8 @@ msgctxt "print operation status"
 msgid "Blocking on issue"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintoperation.c:1693
 #, fuzzy
 msgctxt "print operation status"
@@ -3003,8 +3003,8 @@ msgstr ""
 msgid "Preparing"
 msgstr "Iburira"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintoperation.c:2259
 #, fuzzy, c-format
 msgid "Printing %d"
@@ -3105,8 +3105,8 @@ msgstr ""
 msgid "Getting printer information..."
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintunixdialog.c:2132
 #, fuzzy
 msgid "Printer"
@@ -3242,8 +3242,8 @@ msgstr "Iburira"
 msgid "Left to right"
 msgstr "Kuri Iburyo: Ikimenyetso"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintunixdialog.c:3047
 #, fuzzy
 msgid "Right to left"
@@ -3265,26 +3265,26 @@ msgstr ""
 msgid "T_wo-sided:"
 msgstr ""
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkprintunixdialog.c:3319
 #, fuzzy
 msgid "Pages per _side:"
 msgstr "indangakintu"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkprintunixdialog.c:3336
 #, fuzzy
 msgid "Page or_dering:"
 msgstr "indangakintu"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintunixdialog.c:3352
 #, fuzzy
 msgid "_Only print:"
@@ -3312,18 +3312,18 @@ msgstr "Agaciro:"
 msgid "Paper"
 msgstr ""
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkprintunixdialog.c:3403
 #, fuzzy
 msgid "Paper _type:"
 msgstr "indangakintu"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkprintunixdialog.c:3418
 #, fuzzy
@@ -3340,8 +3340,8 @@ msgstr ""
 msgid "Or_ientation:"
 msgstr "Ubwuzurane"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. In enum order
 #: btk/btkprintunixdialog.c:3488
 #, fuzzy
@@ -3402,9 +3402,9 @@ msgstr ""
 msgid "Time of print"
 msgstr ""
 
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Font.UnderLine..12.text
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Font.Strikeout..4.text
 #: btk/btkprintunixdialog.c:3627
 #, fuzzy
@@ -3466,8 +3466,8 @@ msgstr ""
 msgid "Some of the settings in the dialog conflict"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkprintunixdialog.c:3836
 #, fuzzy
 msgid "Print"
@@ -3645,9 +3645,9 @@ msgctxt "Stock label"
 msgid "_Apply"
 msgstr "Gukurikiza"
 
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Font.UnderLine..12.text
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Common.xcs:....Font.Strikeout..4.text
 #: btk/btkstock.c:325
 #, fuzzy
@@ -3673,13 +3673,13 @@ msgctxt "Stock label"
 msgid "_Clear"
 msgstr "Gusiba"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_CLOSE.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\macrodlg.src:RID_STR_CLOSE.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_CLOSE.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_CLOSE.text
 #: btk/btkstock.c:329
 #, fuzzy
@@ -3715,9 +3715,9 @@ msgctxt "Stock label"
 msgid "Cu_t"
 msgstr "Gukata"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_TABBAR.SID_BASICIDE_DELETECURRENT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\brkdlg.src:RID_BASICIDE_BREAKPOINTDLG.RID_PB_DEL.text
 #: btk/btkstock.c:334
 #, fuzzy
@@ -3744,15 +3744,15 @@ msgctxt "Stock label"
 msgid "_Execute"
 msgstr "Gukora"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_BASICMENU.MN_EDIT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_BASICPLUGINMENU.MN_PLEDIT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\macrodlg.src:RID_MACROCHOOSER.RID_PB_EDIT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\moduldlg.src:RID_TP_MODULS.RID_PB_EDIT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\moduldlg.src:RID_TP_LIBS.RID_PB_EDIT.text
 #: btk/btkstock.c:338
 #, fuzzy
@@ -4054,11 +4054,11 @@ msgctxt "Stock label"
 msgid "_OK"
 msgstr "YEGO"
 
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\accel\accel.src:STR_OPEN.text
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\dialog\cfg.src:STR_OPEN.text
-# #-#-#-#-#  sfx2.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sfx2.pot (Bunny 2.12)  #-#-#-#-#
 # sfx2/source\dialog\versdlg.src:DLG_VERSIONS.PB_OPEN.text
 #: btk/btkstock.c:398
 #, fuzzy
@@ -4072,8 +4072,8 @@ msgctxt "Stock label"
 msgid "Landscape"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. Page orientation
 #: btk/btkstock.c:402
 #, fuzzy
@@ -4093,9 +4093,9 @@ msgctxt "Stock label"
 msgid "Reverse portrait"
 msgstr ""
 
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_CELLS.SID_FORMATPAGE.text
-# #-#-#-#-#  sc.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  sc.pot (Bunny 2.12)  #-#-#-#-#
 # sc/source\ui\src\menue.src:RID_OBJECTMENU_EDIT.SID_FORMATPAGE.text
 #: btk/btkstock.c:407
 #, fuzzy
@@ -4116,8 +4116,8 @@ msgctxt "Stock label"
 msgid "_Preferences"
 msgstr "Ibyahiswemo"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkstock.c:410
 #, fuzzy
 msgctxt "Stock label"
@@ -4131,9 +4131,9 @@ msgctxt "Stock label"
 msgid "Print Pre_view"
 msgstr "Igaragazambere ryo Gucapa"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_BRKPROPS.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\tbxctl.src:RID_TOOLBOX.SID_SHOW_PROPERTYBROWSER.text
 #: btk/btkstock.c:412
 #, fuzzy
@@ -4147,11 +4147,11 @@ msgctxt "Stock label"
 msgid "_Quit"
 msgstr "Kuvamo"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 # dbaccess/source/ui/inc/toolbox.hrc:MID_REDO.text
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkstock.c:414
 #, fuzzy
 msgctxt "Stock label"
@@ -4185,17 +4185,17 @@ msgctxt "Stock label"
 msgid "_Save"
 msgstr "Kubika"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkstock.c:419
 #, fuzzy
 msgctxt "Stock label"
 msgid "Save _As"
 msgstr "Kubika nka"
 
-# #-#-#-#-#  padmin.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  padmin.pot (Bunny 2.12)  #-#-#-#-#
 # padmin/source\padialog.src:RID_FONTIMPORT_DIALOG.RID_FIMP_BTN_SELECTALL.text
-# #-#-#-#-#  padmin.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  padmin.pot (Bunny 2.12)  #-#-#-#-#
 # padmin/source\padialog.src:RID_ADDP_PAGE_OLDPRINTERS.RID_ADDP_OLD_BTN_SELECTALL.text
 #: btk/btkstock.c:420
 #, fuzzy
@@ -4216,8 +4216,8 @@ msgctxt "Stock label"
 msgid "_Font"
 msgstr "Intego- nyuguti"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. Sorting direction
 #: btk/btkstock.c:424
 #, fuzzy
@@ -4225,8 +4225,8 @@ msgctxt "Stock label"
 msgid "_Ascending"
 msgstr "Ubujyejuru"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. Sorting direction
 #: btk/btkstock.c:426
 #, fuzzy
@@ -4253,9 +4253,9 @@ msgctxt "Stock label"
 msgid "_Strikethrough"
 msgstr "Icishamokarongo"
 
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\basidesh.src:RID_POPUP_TABBAR.SID_BASICIDE_DELETECURRENT.text
-# #-#-#-#-#  basctl.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  basctl.pot (Bunny 2.12)  #-#-#-#-#
 # basctl/source\basicide\brkdlg.src:RID_BASICIDE_BREAKPOINTDLG.RID_PB_DEL.text
 #: btk/btkstock.c:431
 #, fuzzy
@@ -4263,9 +4263,9 @@ msgctxt "Stock label"
 msgid "_Undelete"
 msgstr "Gusiba"
 
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Revision.TextDisplay.Insert.Attribute..3.text
-# #-#-#-#-#  officecfg.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  officecfg.pot (Bunny 2.12)  #-#-#-#-#
 # officecfg/registry\schema\org\openoffice\Office\Writer.xcs:....Revision.TextDisplay.ChangedAttribute.Attribute..3.text
 #. Font variant
 #: btk/btkstock.c:433
@@ -4274,11 +4274,11 @@ msgctxt "Stock label"
 msgid "_Underline"
 msgstr "Gucaho umurongo"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 # dbaccess/source/ui/inc/toolbox.hrc:MID_UNDO.text
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: btk/btkstock.c:434
 #, fuzzy
 msgctxt "Stock label"
@@ -5876,8 +5876,8 @@ msgstr ""
 msgid "After"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. Translators: this is the name of the option that controls when
 #. * a print job is printed. Possible values are 'now', a specified time,
 #. * or 'on hold'
@@ -5887,8 +5887,8 @@ msgstr ""
 msgid "Print at"
 msgstr "Gucapa"
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #. Translators: this is the name of the option that allows the user
 #. * to specify a time when a print job will be printed.
 #.
@@ -5912,8 +5912,8 @@ msgstr ""
 msgid "output.%s"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: modules/printbackends/file/btkprintbackendfile.c:493
 #, fuzzy
 msgid "Print to File"
@@ -5923,8 +5923,8 @@ msgstr "Gucapa"
 msgid "PDF"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: modules/printbackends/file/btkprintbackendfile.c:570
 #, fuzzy
 msgid "Postscript"
@@ -5997,8 +5997,8 @@ msgstr "(Itazwi>"
 msgid "test-output.%s"
 msgstr ""
 
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
-# #-#-#-#-#  dbaccess.pot (Gnome 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
+# #-#-#-#-#  dbaccess.pot (Bunny 2.12)  #-#-#-#-#
 #: modules/printbackends/test/btkprintbackendtest.c:467
 #, fuzzy
 msgid "Print to Test Printer"

@@ -15,7 +15,7 @@
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  *
- * Author: Jamie McCracken (jamiemcc@gnome.org)
+ * Author: Jamie McCracken (jamiemcc@bunny.org)
  *
  * Based on nautilus-search-engine-tracker.h
  */

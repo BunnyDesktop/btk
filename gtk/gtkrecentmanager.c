@@ -2265,7 +2265,7 @@ btk_recent_info_match (BtkRecentInfo *info_a,
   return (0 == strcmp (info_a->uri, info_b->uri));
 }
 
-/* taken from gnome-vfs-uri.c */
+/* taken from bunny-vfs-uri.c */
 static const gchar *
 get_method_string (const gchar  *substring, 
 		   gchar       **method_string)
@@ -2300,7 +2300,7 @@ get_method_string (const gchar  *substring,
   return p;
 }
 
-/* Stolen from gnome_vfs_make_valid_utf8() */
+/* Stolen from bunny_vfs_make_valid_utf8() */
 static char *
 make_valid_utf8 (const char *name)
 {

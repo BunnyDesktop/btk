@@ -154,7 +154,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextIter.html#btk-text-iter-get-pixbuf" title="btk_text_iter_get_pixbuf ()">btk_text_iter_get_pixbuf</a> <span class="c_punctuation">()</span>
@@ -338,7 +338,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/bango/bango-Scripts-and-Languages.html#BangoLanguage-struct"><span class="returnvalue">BangoLanguage</span></a> *
+<a href="https://developer.bunny.org/bango/bango-Scripts-and-Languages.html#BangoLanguage-struct"><span class="returnvalue">BangoLanguage</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkTextIter.html#btk-text-iter-get-language" title="btk_text_iter_get_language ()">btk_text_iter_get_language</a> <span class="c_punctuation">()</span>
@@ -1251,7 +1251,7 @@ Invisible text is usually invisible because a <a class="link" href="BtkTextTag.h
 <hr>
 <div class="refsect2">
 <a name="btk-text-iter-get-pixbuf"></a><h3>btk_text_iter_get_pixbuf ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
+<pre class="programlisting"><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
 btk_text_iter_get_pixbuf (<em class="parameter"><code>const <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter</code></em>);</pre>
 <p>If the element at <em class="parameter"><code>iter</code></em>
  is a pixbuf, the pixbuf is returned
@@ -1934,8 +1934,8 @@ is inside a sentence.</p>
 <a name="btk-text-iter-is-cursor-position"></a><h3>btk_text_iter_is_cursor_position ()</h3>
 <pre class="programlisting"><span class="returnvalue">gboolean</span>
 btk_text_iter_is_cursor_position (<em class="parameter"><code>const <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter</code></em>);</pre>
-<p>See <a class="link" href="BtkTextIter.html#btk-text-iter-forward-cursor-position" title="btk_text_iter_forward_cursor_position ()"><code class="function">btk_text_iter_forward_cursor_position()</code></a> or <a href="https://developer.gnome.org/bango/bango-Text-Processing.html#BangoLogAttr"><span class="type">BangoLogAttr</span></a> or
-<a href="https://developer.gnome.org/bango/bango-Text-Processing.html#bango-break"><code class="function">bango_break()</code></a> for details on what a cursor position is.</p>
+<p>See <a class="link" href="BtkTextIter.html#btk-text-iter-forward-cursor-position" title="btk_text_iter_forward_cursor_position ()"><code class="function">btk_text_iter_forward_cursor_position()</code></a> or <a href="https://developer.bunny.org/bango/bango-Text-Processing.html#BangoLogAttr"><span class="type">BangoLogAttr</span></a> or
+<a href="https://developer.bunny.org/bango/bango-Text-Processing.html#bango-break"><code class="function">bango_break()</code></a> for details on what a cursor position is.</p>
 <div class="refsect3">
 <a name="btk-text-iter-is-cursor-position.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2061,7 +2061,7 @@ was modified</p>
 <hr>
 <div class="refsect2">
 <a name="btk-text-iter-get-language"></a><h3>btk_text_iter_get_language ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/bango/bango-Scripts-and-Languages.html#BangoLanguage-struct"><span class="returnvalue">BangoLanguage</span></a> *
+<pre class="programlisting"><a href="https://developer.bunny.org/bango/bango-Scripts-and-Languages.html#BangoLanguage-struct"><span class="returnvalue">BangoLanguage</span></a> *
 btk_text_iter_get_language (<em class="parameter"><code>const <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter</code></em>);</pre>
 <p>A convenience wrapper around <a class="link" href="BtkTextIter.html#btk-text-iter-get-attributes" title="btk_text_iter_get_attributes ()"><code class="function">btk_text_iter_get_attributes()</code></a>,
 which returns the language in effect at <em class="parameter"><code>iter</code></em>
@@ -2615,8 +2615,8 @@ a carriage return/newline sequence. For some Unicode characters,
 the equivalent of say the letter "a" with an accent mark will be
 represented as two characters, first the letter then a "combining
 mark" that causes the accent to be rendered; so the cursor can't go
-between those two characters. See also the <a href="https://developer.gnome.org/bango/bango-Text-Processing.html#BangoLogAttr"><span class="type">BangoLogAttr</span></a> structure and
-<a href="https://developer.gnome.org/bango/bango-Text-Processing.html#bango-break"><code class="function">bango_break()</code></a> function.</p>
+between those two characters. See also the <a href="https://developer.bunny.org/bango/bango-Text-Processing.html#BangoLogAttr"><span class="type">BangoLogAttr</span></a> structure and
+<a href="https://developer.bunny.org/bango/bango-Text-Processing.html#bango-break"><code class="function">bango_break()</code></a> function.</p>
 <div class="refsect3">
 <a name="btk-text-iter-forward-cursor-position.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">

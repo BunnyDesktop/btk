@@ -981,7 +981,7 @@ BTESTER_REPORT = btester-report		# in $PATH for non-BUNNYLIB packages
 EXTRA_DIST = prop-editor.h testbtk.1 testbtkrc testbtkrc2 circles.xbm \
 	3DRings.xpm FilesQueue.xpm Modeller.xpm check-y.xpm \
 	check-n.xpm marble.xpm test.xpm check-y.xpm check-n.xpm \
-	test.xpm merge-1.ui merge-2.ui merge-3.ui gnome-textfile.png \
+	test.xpm merge-1.ui merge-2.ui merge-3.ui bunny-textfile.png \
 	makefile.msc file-chooser-test-dir/empty \
 	file-chooser-test-dir/text.txt
 TEST_PROGS = 

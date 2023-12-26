@@ -254,7 +254,7 @@
 #endif
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=btk%2B"
+#define PACKAGE_BUGREPORT "http://bugzilla.bunny.org/enter_bug.cgi?product=btk%2B"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "btk+"

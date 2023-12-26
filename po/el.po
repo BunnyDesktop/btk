@@ -14,17 +14,17 @@
 # simos: 214 messages, 16Aug2002, updated and converted to UTF-8.
 # kostas: 981 messages, 16Oct2002, almost completed translation.
 # kostas: 1018 messages, 06Nov2002, completed translation.
-# kostas: 1127 messages, 03Dec2002, updated translation for Gnome 2.1x.
-# kostas:02Nov2003,1288 messages update for Gnome 2.6.
+# kostas: 1127 messages, 03Dec2002, updated translation for Bunny 2.1x.
+# kostas:02Nov2003,1288 messages update for Bunny 2.6.
 # kostas:22Nov2003,1342 messages.
 # Spiros Papadimitriou <spapadim+@cs.cmu.edu>, 1999.
 # Simos Xenitellis <simos@hellug.gr>, 1999, 2001, 2002.
 # Nikos Charonitakis <nikox@gmail.com>, 2003, 2004, 2005, 2006, 2008.
 # Nikos Kannelopoulos <nkan@panafonet.gr>, 2003.
-# Kostas Papadimas <pkst@gnome.org>, 2002, 2003, 2004, 2005, 2006, 2007.
-# Simos Xenitellis <simos@gnome.org>, 2006.
+# Kostas Papadimas <pkst@bunny.org>, 2002, 2003, 2004, 2005, 2006, 2007.
+# Simos Xenitellis <simos@bunny.org>, 2006.
 # Jennie Petoumenou <epetoumenou@gmail.com>, 2009.
-# Simos Xenitellis <simos@gnome.org>, 2009.
+# Simos Xenitellis <simos@bunny.org>, 2009.
 # Jennie Petoumenou <epetoumenou@gmail.com>, 2010.
 msgid ""
 msgstr ""
@@ -33,7 +33,7 @@ msgstr ""
 "POT-Creation-Date: 2010-09-20 19:00+0300\n"
 "PO-Revision-Date: 2010-09-20 10:57+0200\n"
 "Last-Translator: Bakaoukas Nikolaos <nikolaos.x1@gmail.com>\n"
-"Language-Team: Greek <team@gnome.gr>\n"
+"Language-Team: Greek <team@bunny.gr>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

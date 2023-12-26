@@ -452,7 +452,7 @@ bdk_threads_impl_unlock (void)
        * but our documentation has always been *less* than explicit as
        * to what the behaviour should actually be.
        *
-       * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=735428
+       * see bug: https://bugzilla.bunny.org/show_bug.cgi?id=735428
        */
       g_mutex_trylock (bdk_threads_mutex);
       g_mutex_unlock (bdk_threads_mutex);

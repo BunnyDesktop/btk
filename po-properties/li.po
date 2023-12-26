@@ -7843,7 +7843,7 @@ msgstr "Taakbalk euversjlaon"
 msgid "TRUE if the window should not be in the task bar."
 msgstr "WAOR (TRUE) wen 't vinster neet in de taakbalk huurt"
 
-# in Gnome-nl is er veur gekozen de pager te vertalen met: wirkbladwisselaar
+# in Bunny-nl is er veur gekozen de pager te vertalen met: wirkbladwisselaar
 #: btk/btkwindow.c:667
 msgid "Skip pager"
 msgstr "Wirkblaadwisselaar euversjlaon"

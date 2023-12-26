@@ -59,7 +59,7 @@
  *       <term>Shortcuts</term>
  *       <listitem>
  *          can be provided by the application or by the underlying filesystem
- *          abstraction (e.g. both the gnome-vfs and the Windows filesystems
+ *          abstraction (e.g. both the bunny-vfs and the Windows filesystems
  *          provide "Desktop" shortcuts). Shortcuts cannot be modified by the
  *          user.
  *       </listitem>
@@ -539,7 +539,7 @@
  * the available options can be changed directly through the file chooser's user
  * interface, a couple are only editable by hand or by third-party tools (such
  * as <ulink
- * url="https://wiki.gnome.org/action/show/Apps/GnomeTweakTool">gnome-tweak-tool</ulink>).
+ * url="https://wiki.bunny.org/action/show/Apps/BunnyTweakTool">bunny-tweak-tool</ulink>).
  * This section describes the available options.
  * </para>
  * <para>

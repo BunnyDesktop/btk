@@ -1,8 +1,8 @@
 # Romanian translation for btk+-properties
 # Copyright (C) 1999 - 2012 Free Software Foundation, Inc.
-# Dan Damian <dand@gnome.ro>, 1999, 2000.
+# Dan Damian <dand@bunny.ro>, 1999, 2000.
 # Marius Andreiana <marius galuna.ro>, 2001, 2002.
-# Mișu Moldovan <dumol@gnome.org>, 2003 - 2012.
+# Mișu Moldovan <dumol@bunny.org>, 2003 - 2012.
 # Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2009, 2010.
 # Mișu Moldovan <dumol@bunny.org>, 2012.
 msgid ""

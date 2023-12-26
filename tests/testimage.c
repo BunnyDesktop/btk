@@ -102,7 +102,7 @@ main (int argc, char **argv)
   BdkPixbuf *pixbuf;
   BtkIconSet *iconset;
   BtkIconSource *iconsource;
-  gchar *icon_name = "gnome-terminal";
+  gchar *icon_name = "bunny-terminal";
   gchar *anim_filename = NULL;
   GIcon *icon;
   GFile *file;

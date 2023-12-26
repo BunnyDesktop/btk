@@ -1,5 +1,5 @@
 # Old English translation of btk+-properties.
-# Copyright (C) 2004 The GNOME Foundation
+# Copyright (C) 2004 The BUNNY Foundation
 # This file is distributed under the same license as the btk+-properties package.
 # James Johnson <modean52@comcast.net>, 2004.
 #

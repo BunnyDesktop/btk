@@ -1611,7 +1611,7 @@ _btk_drag_dest_handle_event (BtkWidget *toplevel,
 	  }
 
 #ifdef BDK_WINDOWING_X11
-	/* Hackaround for: http://bugzilla.gnome.org/show_bug.cgi?id=136112
+	/* Hackaround for: http://bugzilla.bunny.org/show_bug.cgi?id=136112
 	 *
 	 * Currently bdk_window_get_position doesn't provide reliable
 	 * information for embedded windows, so we call the much more

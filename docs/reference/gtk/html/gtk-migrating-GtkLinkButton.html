@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeHRef to BtkLinkButton: BTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyHRef to BtkLinkButton: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
 <link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
@@ -21,14 +21,14 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="btk-migrating-BtkLinkButton"></a>Migrating from GnomeHRef to BtkLinkButton</h2></div></div></div>
+<a name="btk-migrating-BtkLinkButton"></a>Migrating from BunnyHRef to BtkLinkButton</h2></div></div></div>
 <p>
     Since version 2.10, BTK+ provides the <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> widget as a
-    replacement for the <span class="structname">GnomeHRef</span> widget
-    in the libgnomeui library.
+    replacement for the <span class="structname">BunnyHRef</span> widget
+    in the libbunnyui library.
   </p>
 <p>
-    Porting an application from <span class="structname">GnomeHRef</span> to
+    Porting an application from <span class="structname">BunnyHRef</span> to
     <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> is very simple. <a class="link" href="BtkLinkButton.html" title="BtkLinkButton"><span class="type">BtkLinkButton</span></a> does not have a
     default action for <a class="link" href="BtkButton.html#BtkButton-clicked" title="The “clicked” signal"><span class="type">“clicked”</span></a> signal. So instead of simply 
     creating the widget
@@ -42,7 +42,7 @@
 3</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="n">BtkWidget</span> <span class="o">*</span><span class="n">button</span><span class="p">;</span>
 
-<span class="n">button</span> <span class="o">=</span> <span class="n">gnome_href_new</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span></pre></td>
+<span class="n">button</span> <span class="o">=</span> <span class="n">bunny_href_new</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">);</span></pre></td>
       </tr>
     </tbody>
   </table>

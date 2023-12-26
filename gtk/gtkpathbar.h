@@ -1,5 +1,5 @@
 /* btkpathbar.h
- * Copyright (C) 2004  Red Hat, Inc.,  Jonathan Blandford <jrb@gnome.org>
+ * Copyright (C) 2004  Red Hat, Inc.,  Jonathan Blandford <jrb@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

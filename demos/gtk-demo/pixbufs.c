@@ -24,12 +24,12 @@
 
 static const char *image_names[] = {
   "apple-red.png",
-  "gnome-applets.png",
-  "gnome-calendar.png",
-  "gnome-foot.png",
-  "gnome-gmush.png",
-  "gnome-gimp.png",
-  "gnome-gsame.png",
+  "bunny-applets.png",
+  "bunny-calendar.png",
+  "bunny-foot.png",
+  "bunny-gmush.png",
+  "bunny-gimp.png",
+  "bunny-gsame.png",
   "gnu-keys.png"
 };
 

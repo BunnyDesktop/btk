@@ -489,9 +489,9 @@ BTESTER = btester		# in $PATH for non-BUNNYLIB packages
 BTESTER_REPORT = btester-report		# in $PATH for non-BUNNYLIB packages
 
 # initialize variables for unconditional += appending
-EXTRA_DIST = apple-red.png background.jpg gnome-applets.png \
-	gnome-calendar.png gnome-foot.png gnome-gimp.png \
-	gnome-gmush.png gnome-gsame.png gnu-keys.png
+EXTRA_DIST = apple-red.png background.jpg bunny-applets.png \
+	bunny-calendar.png bunny-foot.png bunny-gimp.png \
+	bunny-gmush.png bunny-gsame.png gnu-keys.png
 TEST_PROGS = 
 
 ### testing rules
@@ -1040,10 +1040,10 @@ test-report perf-report full-report:	${TEST_PROGS}
 # run make test-cwd as part of make check
 check-local: test-cwd
 
-test-inline-pixbufs.h: apple-red.png gnome-foot.png
+test-inline-pixbufs.h: apple-red.png bunny-foot.png
 	$(BDK_PIXBUF_CSOURCE) --raw --build-list		\
 	        apple_red  $(srcdir)/apple-red.png	\
-                gnome_foot $(srcdir)/gnome-foot.png	\
+                bunny_foot $(srcdir)/bunny-foot.png	\
         > test-inline-pixbufs.h				\
 	|| (rm -f test-inline-pixbufs.h && false)
 

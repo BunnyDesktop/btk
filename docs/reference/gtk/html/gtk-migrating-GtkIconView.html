@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeIconList to BtkIconView: BTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyIconList to BtkIconView: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
 <link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
 <link rel="prev" href="new-features-BtkComboBox.html" title="New features">
-<link rel="next" href="btk-migrating-BtkAboutDialog.html" title="Migrating from GnomeAbout to BtkAboutDialog">
+<link rel="next" href="btk-migrating-BtkAboutDialog.html" title="Migrating from BunnyAbout to BtkAboutDialog">
 <meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,26 +21,26 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="btk-migrating-BtkIconView"></a>Migrating from GnomeIconList to BtkIconView</h2></div></div></div>
+<a name="btk-migrating-BtkIconView"></a>Migrating from BunnyIconList to BtkIconView</h2></div></div></div>
 <p>
     Since version 2.6, BTK+ provides the <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> widget. It is similar in 
-    functionality to the <span class="structname">GnomeIconList</span> widget in the 
-    libgnomeui library, both widgets provide a way to lay out named icons in 
+    functionality to the <span class="structname">BunnyIconList</span> widget in the 
+    libbunnyui library, both widgets provide a way to lay out named icons in 
     a grid. The distinctive feature of the BTK+ widget is that it follows the 
     model-view pattern, allowing it to share the actual data (i.e. the names 
     and images of the icons) with other views.
   </p>
 <p>
     <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> currently doesn't support some features found in 
-    <span class="structname">GnomeIconList</span>. Icons can not be positioned freely, 
+    <span class="structname">BunnyIconList</span>. Icons can not be positioned freely, 
     the spacing is not customizable, and it is not possible to edit the names of 
     icons. 
   </p>
 <p>
-    To convert an application that uses <span class="structname">GnomeIconList</span> 
+    To convert an application that uses <span class="structname">BunnyIconList</span> 
     to <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a>, the first step is to organize your data in a <a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a>. 
-    <span class="structname">GnomeIconList</span> lets you directly insert data with 
-    <code class="function">gnome_icon_list_insert()</code> and <code class="function">gnome_icon_list_insert_pixbuf()</code> and their
+    <span class="structname">BunnyIconList</span> lets you directly insert data with 
+    <code class="function">bunny_icon_list_insert()</code> and <code class="function">bunny_icon_list_insert_pixbuf()</code> and their
     append variants. So, if you previously had a function to fill your icon 
     list similar to this one:
     </p>
@@ -57,10 +57,10 @@
 7
 8</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="kt">void</span> 
-<span class="nf">fill_icon_list</span> <span class="p">(</span><span class="n">GnomeIconList</span> <span class="o">*</span><span class="n">icon_list</span><span class="p">)</span>
+<span class="nf">fill_icon_list</span> <span class="p">(</span><span class="n">BunnyIconList</span> <span class="o">*</span><span class="n">icon_list</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">gnome_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">);</span>
-  <span class="n">gnome_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">);</span>
+  <span class="n">bunny_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">);</span>
+  <span class="n">bunny_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">);</span>
 
   <span class="cm">/* more icons ... */</span> 
 <span class="p">}</span></pre></td>
@@ -189,8 +189,8 @@
   </p>
 <p>
     Your application may make use of extra data attached to the icons in the 
-    <span class="structname">GnomeIconList</span> via <code class="function">gnome_icon_list_set_icon_data()</code> and 
-    <code class="function">gnome_icon_list_get_icon_data()</code>. With <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> such data is most 
+    <span class="structname">BunnyIconList</span> via <code class="function">bunny_icon_list_set_icon_data()</code> and 
+    <code class="function">bunny_icon_list_get_icon_data()</code>. With <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> such data is most 
     conveniently stored in an extra column in the tree model, so you would 
     call a function like
     </p>
@@ -237,19 +237,19 @@
   </p>
 <p>
     There is a number of minor API differences between 
-    <span class="structname">GnomeIconList</span> and 
+    <span class="structname">BunnyIconList</span> and 
     <span class="structname">BtkIconView</span>:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
-       <span class="type">GnomeIconListMode</span> is replaced by the 
+       <span class="type">BunnyIconListMode</span> is replaced by the 
        <a class="link" href="BtkIconView.html#BtkIconView--orientation" title="The “orientation” property">orientation</a> 
        property of <span class="structname">BtkIconView</span>
      </p></li>
 <li class="listitem"><p>
        <span class="structname">BtkIconView</span> can not be frozen in the same 
-       way as <span class="structname">GnomeIconList</span> can with 
-       <code class="function">gnome_icon_list_freeze()</code> and <code class="function">gnome_icon_list_thaw()</code>. Instead you can 
+       way as <span class="structname">BunnyIconList</span> can with 
+       <code class="function">bunny_icon_list_freeze()</code> and <code class="function">bunny_icon_list_thaw()</code>. Instead you can 
        replace the whole model of a <span class="structname">BtkIconView</span>, 
        instead of doing many small changes to the existing model.
      </p></li>

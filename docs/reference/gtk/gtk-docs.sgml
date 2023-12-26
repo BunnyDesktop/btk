@@ -11,10 +11,10 @@
     <releaseinfo>
       This document is for the BTK+ 2 library; the latest versions can be found online at
       <ulink role="online-location"
-      url="http://library.gnome.org/devel/btk2/">http://library.gnome.org/devel/btk2</ulink>.
+      url="http://library.bunny.org/devel/btk2/">http://library.bunny.org/devel/btk2</ulink>.
       If you're looking for the newer BTK+ 3 series of libraries,
       see <ulink role="online-location"
-      url="http://library.gnome.org/devel/btk3/">http://library.gnome.org/devel/btk3/</ulink>.
+      url="http://library.bunny.org/devel/btk3/">http://library.bunny.org/devel/btk3/</ulink>.
     </releaseinfo>
   </bookinfo>
 
@@ -423,7 +423,7 @@ that is, GUI components such as #BtkButton or #BtkTextView.
 	This part describes what you need to change in programs use
 	older versions of BTK+ so that they can use the new features.
         It also mentions how to convert applications using widgets
-        found in the libgnomeui library to use their counterparts
+        found in the libbunnyui library to use their counterparts
         in BTK+.
       </para>
     </partintro>

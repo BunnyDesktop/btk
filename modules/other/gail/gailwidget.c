@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -385,7 +385,7 @@ bail_widget_ref_relation_set (BatkObject *obj)
   if (BTK_IS_BOX (widget) && !BTK_IS_COMBO (widget))
       /*
        * Do not report labelled-by for a BtkBox which could be a 
-       * GnomeFileEntry.
+       * BunnyFileEntry.
        */
     return relation_set;
 
@@ -396,8 +396,8 @@ bail_widget_ref_relation_set (BatkObject *obj)
         {
           if (BTK_IS_BUTTON (widget))
             /*
-             * Handle the case where GnomeIconEntry is the mnemonic widget.
-             * The BtkButton which is a grandchild of the GnomeIconEntry
+             * Handle the case where BunnyIconEntry is the mnemonic widget.
+             * The BtkButton which is a grandchild of the BunnyIconEntry
              * should really be the mnemonic widget. See bug #133967.
              */
             {
@@ -419,8 +419,8 @@ bail_widget_ref_relation_set (BatkObject *obj)
             }
           else if (BTK_IS_COMBO (widget))
             /*
-             * Handle the case when GnomeFileEntry is the mnemonic widget.
-             * The GnomeEntry which is a grandchild of the GnomeFileEntry
+             * Handle the case when BunnyFileEntry is the mnemonic widget.
+             * The BunnyEntry which is a grandchild of the BunnyFileEntry
              * should be the mnemonic widget. See bug #137584.
              */
             {

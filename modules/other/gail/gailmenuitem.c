@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -157,7 +157,7 @@ get_children (BtkWidget *submenu)
     {
       /*
        * If menu is empty it may be because the menu items are created only 
-       * on demand. For example, in gnome-panel the menu items are created
+       * on demand. For example, in bunny-panel the menu items are created
        * only when "show" signal is emitted on the menu.
        *
        * The following hack forces the menu items to be created.

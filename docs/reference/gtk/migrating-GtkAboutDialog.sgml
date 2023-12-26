@@ -4,23 +4,23 @@
 ]>
 <chapter id="btk-migrating-BtkAboutDialog">
 
-  <title>Migrating from GnomeAbout to BtkAboutDialog</title>
+  <title>Migrating from BunnyAbout to BtkAboutDialog</title>
 
   <para>
     Since version 2.6, BTK+ provides the #BtkAboutDialog widget as a 
-    replacement for the <structname>GnomeAbout</structname> dialog in 
-    the libgnomeui library.
+    replacement for the <structname>BunnyAbout</structname> dialog in 
+    the libbunnyui library.
   </para>
 
   <para>
-    #BtkAboutDialog supports all features found in <structname>GnomeAbout</structname>.
+    #BtkAboutDialog supports all features found in <structname>BunnyAbout</structname>.
     The <structname>BtkAboutDialog</structname> API is bigger, since it follows 
     the BTK+ policy to have getters and setters for all widget properties, 
-    but it isn't much more complex than <structname>GnomeAbout</structname>.
+    but it isn't much more complex than <structname>BunnyAbout</structname>.
   </para>
 
   <para>
-    To convert an application that uses <structname>GnomeAbout</structname> to 
+    To convert an application that uses <structname>BunnyAbout</structname> to 
     <structname>BtkAboutDialog</structname>, as a first step, replace calls 
     like
     <informalexample><programlisting>
@@ -36,9 +36,9 @@
       NULL 
     };
 
-    BtkWidget *about = gnome_about_new ("GNOME Test Program", VERSION,
+    BtkWidget *about = bunny_about_new ("BUNNY Test Program", VERSION,
 					"(C) 1998-2001 The Free Software Foundation",
-					"Program to display GNOME functions.",
+					"Program to display BUNNY functions.",
 					authors,
 					documenters,
 					_("translator-credits"),
@@ -48,10 +48,10 @@
     <informalexample><programlisting>
     BdkPixbuf *logo = bdk_pixbuf_new_from_file ("logo.png", NULL);
     BtkWidget *about = g_object_new (BTK_TYPE_ABOUT_DIALOG,
-                                     "name", "GNOME Test Program", 
+                                     "name", "BUNNY Test Program", 
                                      "version", VERSION,
 			             "copyright", "(C) 1998-2001 The Free Software Foundation",
-				     "comments", "Program to display GNOME functions.",
+				     "comments", "Program to display BUNNY functions.",
 			             "authors", authors,
 			             "documenters", documenters,
 			             "translator-credits", _("translator-credits"),
@@ -67,7 +67,7 @@
   <para>
     Once you are done with the initial conversion, you may want to look into 
     using some of the features of <structname>BtkAboutDialog</structname> 
-    which are not present in <structname>GnomeAbout</structname>.
+    which are not present in <structname>BunnyAbout</structname>.
     <itemizedlist>
       <listitem><para>
         You can specify license information with the 

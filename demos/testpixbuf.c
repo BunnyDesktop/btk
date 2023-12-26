@@ -579,8 +579,8 @@ main (int argc, char **argv)
 		else
 		  new_testrgb_window (pixbuf, "Red apple from inlined RLE data");
 
-                pixbuf = bdk_pixbuf_new_from_inline (sizeof (gnome_foot), gnome_foot, TRUE, NULL);
-                new_testrgb_window (pixbuf, "GNOME Foot from inlined RLE data");
+                pixbuf = bdk_pixbuf_new_from_inline (sizeof (bunny_foot), bunny_foot, TRUE, NULL);
+                new_testrgb_window (pixbuf, "BUNNY Foot from inlined RLE data");
                 
 		found_valid = TRUE;
 	} else {

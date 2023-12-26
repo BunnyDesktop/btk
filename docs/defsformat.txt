@@ -156,8 +156,8 @@ Ex:
 
 Ex:
   (function config_set_set_handler
-   (in-module (Gnome))
-   (c-name gnome_config_set_set_handler)
+   (in-module (Bunny))
+   (c-name bunny_config_set_set_handler)
    (parameter in (type-and-name native func)
                  (c-declaration "void (*func)(void*)"))
    (parameter in (type-and-name gpointer data)))  

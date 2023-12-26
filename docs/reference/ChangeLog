@@ -65,7 +65,7 @@
 	* bdk/bdk-docs.sgml:
 	* btk/btk-docs.sgml:
 	* libbail-util/bail-libbail-util-docs.sgml:
-	  Add online urls for library.gnome.org. This allows other docs to do
+	  Add online urls for library.bunny.org. This allows other docs to do
           btkdoc-rebase --online --html-dir=html
           before publishing docs and have working xrefs.
           Whitespece cleanup for bdk/bdk-docs.sgml.
@@ -728,13 +728,13 @@
 	* docs/reference/btk/Makefile.am:
 	* docs/reference/btk/tmpl/btkstock.sgml: Add new icons.
 
-2008-04-10  Cody Russell  <bratsche@gnome.org>
+2008-04-10  Cody Russell  <bratsche@bunny.org>
 
 	* docs/reference/bdk/tmpl/windows.sgml: Fix to say
 	g_signal_connect_after rather than g_signal_register_after.
 	(reported by Guillaume Cottenceau)
 
-2008-04-10  Cody Russell  <bratsche@gnome.org>
+2008-04-10  Cody Russell  <bratsche@bunny.org>
 
 	* docs/reference/btk/tmpl/btktreeview.sgml: Fix a typo
 	in the markup. (reported by kraai -at- ftbfs.org)
@@ -772,13 +772,13 @@
 	* btk/windows.sgml: Correct description of the Wintab and max
 	palette size options. Drop obsolete Win9x stuff.
 
-2008-02-11  Benjamin Otte  <otte@gnome.org>
+2008-02-11  Benjamin Otte  <otte@bunny.org>
 
 	* bdk/tmpl/windows.sgml:
 	remove SGML comment in example code - it was visible in the generated
 	HTML.
 
-2008-01-24  Johan Dahlin  <johan@gnome.org>
+2008-01-24  Johan Dahlin  <johan@bunny.org>
 
 	* btk/tmpl/btkwidget.sgml:
 	Add documentation for <accessible> buildable tag.
@@ -818,7 +818,7 @@
 
 	* reference/btk/btk-sections.txt: Add new BtkCalendar symbols.
 
-2007-12-27  Xan Lopez  <xan@gnome.org>
+2007-12-27  Xan Lopez  <xan@bunny.org>
 
 	* btk/btk-sections.txt: Add btk_border_new
 
@@ -918,7 +918,7 @@
 	* bdk/tmpl/windows.sgml: Correct the example widget for
 	child windows.  (#473463, Andrew Cowie)
 
-2007-09-03  Behdad Esfahbod  <behdad@gnome.org>
+2007-09-03  Behdad Esfahbod  <behdad@bunny.org>
 
 	* btk/btk-sections.txt: Remove duplicate
 	btk_print_operation_get_error().  (#473340, Yeti)
@@ -1437,7 +1437,7 @@ Tue Oct 10 15:29:15 2006  Tim Janik  <timj@imendio.com>
 	* btk/running.sgml: Document new BTK_DEBUG values.  (#350023,
 	Mart Raudsepp)
 
-2006-08-14  Emmanuele Bassi  <ebassi@gnome.org>
+2006-08-14  Emmanuele Bassi  <ebassi@bunny.org>
 
 	* btk/tmpl/btkrecentchoosermenu.sgml: Add a warning about
 	the semantics of btk_recent_chooser_add_filter() and of
@@ -1606,7 +1606,7 @@ Tue Oct 10 15:29:15 2006  Tim Janik  <timj@imendio.com>
 	* btk/tree_widget.sgml: Fix up example rendering. (#341855, Guillaume
 	Desmottes)
 
-2006-05-11  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-05-11  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/tmpl/btkrecentmanager.sgml: Update the error enum and the
 	btk_recent_manager_add and btk_recent_manager_add_full parameters.
@@ -1668,7 +1668,7 @@ Tue Oct 10 15:29:15 2006  Tim Janik  <timj@imendio.com>
 
 	* btk/btk-sections.txt: Remove BtkRecentChooserDefault
 
-2006-04-22  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-04-22  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/tmpl/btkrecentchoosermenu.sgml:
 	* btk/tmpl/btkrecentchooserwidget.sgml: Fix unclosed para tags.
@@ -1693,11 +1693,11 @@ Tue Oct 10 15:29:15 2006  Tim Janik  <timj@imendio.com>
 	* btk/visual_index.xml:
 	Add docs for the printing support
 
-2006-04-17  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-04-17  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/tmp/btkicontheme.sgml: Fix the code of the look up example.
 
-2006-04-17  Emmanuele Bassi  <ebassi@cvs.gnome.org>
+2006-04-17  Emmanuele Bassi  <ebassi@cvs.bunny.org>
 
 	* btk/tmpl/btkrecent*.sgml: Add long descriptions.
 
@@ -1836,7 +1836,7 @@ Tue Oct 10 15:29:15 2006  Tim Janik  <timj@imendio.com>
 
 	* btk/btk-docs.sgml: 
 	* btk/migrating-BtkAssistant.sgml: Add a migration guide
-	GnomeDruid --> BtkAssistant.  (Carlos Garnacho)
+	BunnyDruid --> BtkAssistant.  (Carlos Garnacho)
 
 2006-01-27  Federico Mena Quintero  <federico@ximian.com>
 
@@ -2668,7 +2668,7 @@ Sat Nov 20 16:01:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btk-docs.sgml: 
 	* btk/migrating-BtkColorButton.sgml: Add some hints about
-	GnomeColorPicker --> BtkColorButton migration.
+	BunnyColorPicker --> BtkColorButton migration.
 
 	* btk/migrating-BtkAboutDialog.sgml: Fix links.
 
@@ -2682,7 +2682,7 @@ Sat Nov 20 16:01:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btk-docs.sgml: 
 	* btk/migrating-BtkAboutDialog.sgml: Add a first version
-	of a GnomeAbout --> BtkAboutDialog migration chapter.
+	of a BunnyAbout --> BtkAboutDialog migration chapter.
 
 	* btk/tmpl/btkaboutdialog.sgml: Update.
 
@@ -2695,7 +2695,7 @@ Sat Nov 20 16:01:51 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/btk-docs.sgml: 
 	* btk/migrating-BtkIconView.sgml: Add a first version of
-	a GnomeIconList --> BtkIconView migration chapter.
+	a BunnyIconList --> BtkIconView migration chapter.
 
 2004-11-02  Matthias Clasen  <mclasen@redhat.com>
 
@@ -2760,7 +2760,7 @@ Mon Nov  1 13:37:31 2004  Jonathan Blandford  <jrb@redhat.com>
 
 	* btk/btk-update-icon-cache.1: Regenerated.
 
-2004-10-25  Anders Carlsson  <andersca@gnome.org>
+2004-10-25  Anders Carlsson  <andersca@bunny.org>
 
 	* bdk/bdk-sections.txt:
 	* btk/btk-sections.txt:
@@ -3136,7 +3136,7 @@ Wed Jul  7 23:57:43 2004  Matthias Clasen  <maclas@gmx.de>
 	Actually add the iconview docs somewhere (in the tree view
 	section, for lack of a better place).
 
-2004-07-04  Anders Carlsson  <andersca@gnome.org>
+2004-07-04  Anders Carlsson  <andersca@bunny.org>
 
 	* btk/btk-docs.sgml:
 	* btk/btk-sections.txt:
@@ -3179,7 +3179,7 @@ Sat Jun 19 01:42:20 2004  Matthias Clasen  <maclas@gmx.de>
 	* bdk-pixbuf/composite.dia: 
 	* bdk-pixbuf/apple-red-1a.png: 
 	* bdk-pixbuf/apple-red-2c.png: 
-	* bdk-pixbuf/gnome-gmush-1.png: Sources for composite.png.
+	* bdk-pixbuf/bunny-gmush-1.png: Sources for composite.png.
 	
 	* bdk-pixbuf/Makefile.am (HTML_IMAGES): Add composite.png.
 
@@ -3619,7 +3619,7 @@ Wed Jan 28 21:46:55 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* btk/Makefile.am (content_files): Likewise.
 
-Thu Jan 22 01:46:45 2004  Jonathan Blandford  <jrb@gnome.org>
+Thu Jan 22 01:46:45 2004  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/tmpl/btktreemodelsort.sgml: new introduction section.
 
@@ -3729,7 +3729,7 @@ Wed Dec 10 00:09:51 2003  Matthias Clasen  <maclas@gmx.de>
 2003-12-08  Federico Mena Quintero  <federico@ximian.com>
  
  	* btk/migrating-BtkAction.sgml: New chapter about how to migrate
- 	from gnome-ui/bonobo-ui/etc. to BtkAction.
+ 	from bunny-ui/bonobo-ui/etc. to BtkAction.
  
  	* btk/btk-docs.sgml: Integrated the above.
  
@@ -4546,7 +4546,7 @@ Fri Dec 20 13:10:06 2002  Owen Taylor  <otaylor@redhat.com>
 
  	* btk/tmpl/btkcombo.sgml: Fix typo in example code.  (#99078)
 
-Sun Nov 17 15:42:08 2002  Jonathan Blandford  <jrb@gnome.org>
+Sun Nov 17 15:42:08 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/tmpl/btkliststore.sgml: add more to the docs.
 
@@ -4566,7 +4566,7 @@ Sun Nov 17 15:42:08 2002  Jonathan Blandford  <jrb@gnome.org>
 	* bdk-pixbuf/bdk-pixbuf-sections.txt: Don't mark BdkPixbufLoader
 	as private, since that prevents its signals from being documented.
 
-Sun Nov  3 13:23:51 2002  Jonathan Blandford  <jrb@gnome.org>
+Sun Nov  3 13:23:51 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/tmpl/btkcellrenderer.sgml: more docs.
 
@@ -4578,7 +4578,7 @@ Sat Nov  2 12:46:16 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* btk/tmpl/btkliststore.sgml: SGML fixes.
 
-Sat Nov  2 08:41:47 2002  Jonathan Blandford  <jrb@gnome.org>
+Sat Nov  2 08:41:47 2002  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/tmpl/btktreestore.sgml: clean up the wording.
 
@@ -5062,7 +5062,7 @@ Tue Jan 29 23:41:31 2002  Owen Taylor  <otaylor@redhat.com>
 Mon Jan 21 23:39:42 2002  Jonathan Blandford  <jrb@redhat.com>
 
 	* btk/tmpl/btkfixed.sgml: change guint16 to gint to reflect
-	changes in the code, found by Jody Goldberg <jody@gnome.org>
+	changes in the code, found by Jody Goldberg <jody@bunny.org>
 
 2002-01-19  Havoc Pennington  <hp@pobox.com>
 
@@ -5539,7 +5539,7 @@ Wed Nov 21 15:57:29 2001  Owen Taylor  <otaylor@redhat.com>
 2001-11-15  Matthias Clasen  <matthiasc@poet.de>
 
 	* btk/btk-docs.sgml: Go back to DocBook 3.0 to get the
-	autobuilder on developer.gnome.org back to work, but add
+	autobuilder on developer.bunny.org back to work, but add
 	the png notation for the stock icons.
 
 2001-11-14  Matthias Clasen  <matthiasc@poet.de>

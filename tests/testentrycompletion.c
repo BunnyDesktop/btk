@@ -67,7 +67,7 @@ create_simple_completion_model (void)
   store = btk_list_store_new (1, G_TYPE_STRING);
 
   btk_list_store_append (store, &iter);
-  btk_list_store_set (store, &iter, 0, "GNOME", -1);
+  btk_list_store_set (store, &iter, 0, "BUNNY", -1);
   btk_list_store_append (store, &iter);
   btk_list_store_set (store, &iter, 0, "gnominious", -1);
   btk_list_store_append (store, &iter);
@@ -197,7 +197,7 @@ activated_cb (BtkEntryCompletion *completion,
 static gint timer_count = 0;
 
 static gchar *dynamic_completions[] = {
-  "GNOME",
+  "BUNNY",
   "gnominious",
   "Gnomonic projection",
   "total",
@@ -334,7 +334,7 @@ main (int argc, char *argv[])
   
   label = btk_label_new (NULL);
 
-  btk_label_set_markup (BTK_LABEL (label), "Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
+  btk_label_set_markup (BTK_LABEL (label), "Completion demo, try writing <b>total</b> or <b>bunny</b> for example.");
   btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
   /* Create our first entry */

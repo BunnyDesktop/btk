@@ -7,7 +7,7 @@
 # Sergey Panov <sipan@mit.edu>, 1999.
 # Valek Filippov <frob@df.ru>, 2000-2002.
 # Dmitry Mastrukov <dmitry@taurussoft.org>, 2002-2004.
-# Sun G11n <gnome_int_l10n@ireland.sun.com>, 2002.
+# Sun G11n <bunny_int_l10n@ireland.sun.com>, 2002.
 # Andrew W. Nosenko <awn@bcs.zp.ua>, 2003.
 # Leonid Kanter <leon@asplinux.ru>, 2004-2006.
 # Alexander Sigachov <alexander.sigachov@gmail.com>, 2006.

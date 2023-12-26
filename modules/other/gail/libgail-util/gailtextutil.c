@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
  * #BatkText functions which get text for accessible objects which implement
  * #BatkText.
  *
- * In BAIL it is used by the accsesible objects for #GnomeCanvasText, #BtkEntry,
+ * In BAIL it is used by the accsesible objects for #BunnyCanvasText, #BtkEntry,
  * #BtkLabel, #BtkCellRendererText and #BtkTextView.
  */
 

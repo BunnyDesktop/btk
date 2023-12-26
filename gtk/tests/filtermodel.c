@@ -2367,7 +2367,7 @@ specific_list_store_clear (void)
 static void
 specific_bug_300089 (void)
 {
-  /* Test case for GNOME Bugzilla bug 300089.  Written by
+  /* Test case for BUNNY Bugzilla bug 300089.  Written by
    * Matthias Clasen.
    */
   BtkTreeModel *sort_model, *child_model;
@@ -2422,7 +2422,7 @@ specific_bug_301558_sort_func (BtkTreeModel *model,
 static void
 specific_bug_301558 (void)
 {
-  /* Test case for GNOME Bugzilla bug 301558 provided by
+  /* Test case for BUNNY Bugzilla bug 301558 provided by
    * Markku Vire.
    */
   BtkTreeStore *tree;
@@ -2493,7 +2493,7 @@ specific_bug_311955_filter_func (BtkTreeModel *model,
 static void
 specific_bug_311955 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 311955.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 311955.  It was written
    * by Markku Vire.
    */
   BtkTreeIter iter, child, root;
@@ -2569,7 +2569,7 @@ specific_bug_311955 (void)
 static void
 specific_bug_346800 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 346800.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 346800.  It was written
    * by Jonathan Matthew.
    */
 
@@ -2626,7 +2626,7 @@ specific_bug_346800 (void)
 static void
 specific_bug_364946 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 364946.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 364946.  It was written
    * by Andreas Koehler.
    */
   BtkTreeStore *store;
@@ -2674,7 +2674,7 @@ specific_bug_464173_visible_func (BtkTreeModel *model,
 static void
 specific_bug_464173 (void)
 {
-  /* Test case for GNOME Bugzilla bug 464173, test case written
+  /* Test case for BUNNY Bugzilla bug 464173, test case written
    * by Andreas Koehler.
    */
   BtkTreeStore *model;
@@ -2716,7 +2716,7 @@ specific_bug_540201_filter_func (BtkTreeModel *model,
 static void
 specific_bug_540201 (void)
 {
-  /* Test case for GNOME Bugzilla bug 540201, steps provided by
+  /* Test case for BUNNY Bugzilla bug 540201, steps provided by
    * Charles Day.
    */
   BtkTreeIter iter, root;
@@ -2767,7 +2767,7 @@ specific_bug_549287_visible_func (BtkTreeModel *model,
 static void
 specific_bug_549287 (void)
 {
-  /* Test case for GNOME Bugzilla bug 529287, provided by Julient Puydt */
+  /* Test case for BUNNY Bugzilla bug 529287, provided by Julient Puydt */
 
   int i;
   BtkTreeStore *store;

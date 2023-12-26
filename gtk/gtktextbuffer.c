@@ -3178,7 +3178,7 @@ create_clipboard_contents_buffer (BtkTextBuffer *buffer)
 
   /*  Ref the source buffer as long as the clipboard contents buffer
    *  exists, because it's needed for serializing the contents buffer.
-   *  See http://bugzilla.gnome.org/show_bug.cgi?id=339195
+   *  See http://bugzilla.bunny.org/show_bug.cgi?id=339195
    */
   g_object_ref (buffer);
   g_object_weak_ref (G_OBJECT (contents), (GWeakNotify) g_object_unref, buffer);

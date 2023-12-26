@@ -1581,7 +1581,7 @@ msgstr "Husk for _altid"
 msgid "Unknown Application (PID %d)"
 msgstr "Ukendt program (PID %d)"
 
-# end -> afbryd jf. gnome-system-monitor
+# end -> afbryd jf. bunny-system-monitor
 #: ../btk/btkmountoperation.c:1064
 msgid "Unable to end process"
 msgstr "Kan ikke afbryde proces"
@@ -1617,7 +1617,7 @@ msgstr "Bourne Shell"
 msgid "Z Shell"
 msgstr "Z Shell"
 
-# Nomenklatur fra gnome-system-monitor
+# Nomenklatur fra bunny-system-monitor
 #: ../btk/btkmountoperation-x11.c:966
 #, c-format
 msgid "Cannot end process with PID %d: %s"

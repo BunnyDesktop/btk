@@ -162,7 +162,7 @@ to <em class="parameter"><code>attrib_set</code></em>
 <a name="bail-misc-layout-get-run-attributes"></a><h3>bail_misc_layout_get_run_attributes ()</h3>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
 bail_misc_layout_get_run_attributes (<em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="type">BatkAttributeSet</span></a> *attrib_set</code></em>,
-                                     <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
+                                     <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
                                      <em class="parameter"><code><span class="type">gchar</span> *text</code></em>,
                                      <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
                                      <em class="parameter"><code><span class="type">gint</span> *start_offset</code></em>,
@@ -221,8 +221,8 @@ attribute set.</p>
 <a name="bail-misc-get-default-attributes"></a><h3>bail_misc_get_default_attributes ()</h3>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
 bail_misc_get_default_attributes (<em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="type">BatkAttributeSet</span></a> *attrib_set</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
+                                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>);</pre>
 <p>Adds the default attributes to the specified attribute set.</p>
 <div class="refsect3">
 <a name="bail-misc-get-default-attributes.parameters"></a><h4>Parameters</h4>
@@ -261,8 +261,8 @@ bail_misc_get_default_attributes (<em class="parameter"><code><a href="/usr/shar
 <a name="bail-misc-get-extents-from-bango-rectangle"></a><h3>bail_misc_get_extents_from_bango_rectangle ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bail_misc_get_extents_from_bango_rectangle
-                               (<em class="parameter"><code><a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> *char_rect</code></em>,
+                               (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
+                                <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> *char_rect</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> x_layout</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> y_layout</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
@@ -292,7 +292,7 @@ the BangoRectangle</p></td>
 </tr>
 <tr>
 <td class="parameter_name"><p>char_rect</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> from which to calculate extents</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> from which to calculate extents</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -311,24 +311,24 @@ BangoLayout that contains the BangoRectangle, relative to <em class="parameter">
 </tr>
 <tr>
 <td class="parameter_name"><p>x</p></td>
-<td class="parameter_description"><p>The x-position of the <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> relative to <em class="parameter"><code>coords</code></em>
+<td class="parameter_description"><p>The x-position of the <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> relative to <em class="parameter"><code>coords</code></em>
 </p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>y</p></td>
-<td class="parameter_description"><p>The y-position of the <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> relative to <em class="parameter"><code>coords</code></em>
+<td class="parameter_description"><p>The y-position of the <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a> relative to <em class="parameter"><code>coords</code></em>
 </p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>width</p></td>
-<td class="parameter_description"><p>The width of the <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a></p></td>
+<td class="parameter_description"><p>The width of the <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>height</p></td>
-<td class="parameter_description"><p>The  height of the <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a></p></td>
+<td class="parameter_description"><p>The  height of the <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoRectangle"><span class="type">BangoRectangle</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -345,8 +345,8 @@ BangoLayout that contains the BangoRectangle, relative to <em class="parameter">
 <a name="bail-misc-get-index-at-point-in-layout"></a><h3>bail_misc_get_index_at_point_in_layout ()</h3>
 <pre class="programlisting"><span class="returnvalue">gint</span>
 bail_misc_get_index_at_point_in_layout
-                               (<em class="parameter"><code><a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
-                                <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
+                               (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
+                                <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> x_layout</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> y_layout</code></em>,
                                 <em class="parameter"><code><span class="type">gint</span> x</code></em>,
@@ -354,7 +354,7 @@ bail_misc_get_index_at_point_in_layout
                                 <em class="parameter"><code><a href="/usr/share/btk-doc/html/batk/BatkUtil.html#BatkCoordType"><span class="type">BatkCoordType</span></a> coords</code></em>);</pre>
 <p>Gets the byte offset at the specified <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
- in a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>.</p>
+ in a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>.</p>
 <div class="refsect3">
 <a name="bail-misc-get-index-at-point-in-layout.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -366,26 +366,26 @@ bail_misc_get_index_at_point_in_layout
 <tbody>
 <tr>
 <td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>A <a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a></p></td>
+<td class="parameter_description"><p>A <a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>layout</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> from which to get the index at the
+<td class="parameter_description"><p>The <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> from which to get the index at the
 specified point.</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>x_layout</p></td>
 <td class="parameter_description"><p>The x-offset at which the widget displays the
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, relative to <em class="parameter"><code>widget</code></em>
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, relative to <em class="parameter"><code>widget</code></em>
 </p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
 <td class="parameter_name"><p>y_layout</p></td>
 <td class="parameter_description"><p>The y-offset at which the widget displays the
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, relative to <em class="parameter"><code>widget</code></em>
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, relative to <em class="parameter"><code>widget</code></em>
 </p></td>
 <td class="parameter_annotations"> </td>
 </tr>
@@ -416,14 +416,14 @@ calculate the index</p></td>
 <p> the byte offset at the specified <em class="parameter"><code>x</code></em>
 and <em class="parameter"><code>y</code></em>
 in a
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p>
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p>
 </div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="bail-misc-get-origins"></a><h3>bail_misc_get_origins ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>
-bail_misc_get_origins (<em class="parameter"><code><a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
+bail_misc_get_origins (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> *widget</code></em>,
                        <em class="parameter"><code><span class="type">gint</span> *x_window</code></em>,
                        <em class="parameter"><code><span class="type">gint</span> *y_window</code></em>,
                        <em class="parameter"><code><span class="type">gint</span> *x_toplevel</code></em>,
@@ -441,7 +441,7 @@ widgets top-level window.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>widget</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a></p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -513,7 +513,7 @@ and adds it to the AttributeSet.</p>
 <div class="refsect2">
 <a name="bail-misc-buffer-get-run-attributes"></a><h3>bail_misc_buffer_get_run_attributes ()</h3>
 <pre class="programlisting"><a href="/usr/share/btk-doc/html/batk/BatkObject.html#BatkAttributeSet"><span class="returnvalue">BatkAttributeSet</span></a> *
-bail_misc_buffer_get_run_attributes (<em class="parameter"><code><a href="https://developer.gnome.org/btk4/BtkTextBuffer.html#BtkTextBuffer-struct"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
+bail_misc_buffer_get_run_attributes (<em class="parameter"><code><a href="https://developer.bunny.org/btk4/BtkTextBuffer.html#BtkTextBuffer-struct"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
                                      <em class="parameter"><code><span class="type">gint</span> offset</code></em>,
                                      <em class="parameter"><code><span class="type">gint</span> *start_offset</code></em>,
                                      <em class="parameter"><code><span class="type">gint</span> *end_offset</code></em>);</pre>
@@ -530,7 +530,7 @@ run starting at offset.</p>
 <tbody>
 <tr>
 <td class="parameter_name"><p>buffer</p></td>
-<td class="parameter_description"><p>The <a href="https://developer.gnome.org/btk4/BtkTextBuffer.html#BtkTextBuffer-struct"><span class="type">BtkTextBuffer</span></a> for which the attributes will be obtained</p></td>
+<td class="parameter_description"><p>The <a href="https://developer.bunny.org/btk4/BtkTextBuffer.html#BtkTextBuffer-struct"><span class="type">BtkTextBuffer</span></a> for which the attributes will be obtained</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

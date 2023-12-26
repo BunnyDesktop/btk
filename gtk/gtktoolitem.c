@@ -1,6 +1,6 @@
 /* btktoolitem.c
  *
- * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
+ * Copyright (C) 2002 Anders Carlsson <andersca@bunny.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
  * Copyright (C) 2003 Soeren Sandmann <sandmann@daimi.au.dk>
  *

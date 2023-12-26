@@ -284,7 +284,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="returnvalue">BangoLayout</span></a> *
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="returnvalue">BangoLayout</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkEntry.html#btk-entry-get-layout" title="btk_entry_get_layout ()">btk_entry_get_layout</a> <span class="c_punctuation">()</span>
@@ -460,7 +460,7 @@
 </tr>
 <tr>
 <td class="function_type">
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
 </td>
 <td class="function_name">
 <a class="link" href="BtkEntry.html#btk-entry-get-icon-pixbuf" title="btk_entry_get_icon_pixbuf ()">btk_entry_get_icon_pixbuf</a> <span class="c_punctuation">()</span>
@@ -686,7 +686,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</td>
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</td>
 <td class="property_name"><a class="link" href="BtkEntry.html#BtkEntry--primary-icon-pixbuf" title="The “primary-icon-pixbuf” property">primary-icon-pixbuf</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -752,7 +752,7 @@
 </tr>
 <tr>
 <td class="property_type">
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</td>
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</td>
 <td class="property_name"><a class="link" href="BtkEntry.html#BtkEntry--secondary-icon-pixbuf" title="The “secondary-icon-pixbuf” property">secondary-icon-pixbuf</a></td>
 <td class="property_flags">Read / Write</td>
 </tr>
@@ -1969,9 +1969,9 @@ btk_entry_get_overwrite_mode (<em class="parameter"><code><a class="link" href="
 <hr>
 <div class="refsect2">
 <a name="btk-entry-get-layout"></a><h3>btk_entry_get_layout ()</h3>
-<pre class="programlisting"><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="returnvalue">BangoLayout</span></a> *
+<pre class="programlisting"><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="returnvalue">BangoLayout</span></a> *
 btk_entry_get_layout (<em class="parameter"><code><a class="link" href="BtkEntry.html" title="BtkEntry"><span class="type">BtkEntry</span></a> *entry</code></em>);</pre>
-<p>Gets the <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> used to display the entry.
+<p>Gets the <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> used to display the entry.
 The layout is useful to e.g. convert text positions to
 pixel positions, in combination with <a class="link" href="BtkEntry.html#btk-entry-get-layout-offsets" title="btk_entry_get_layout_offsets ()"><code class="function">btk_entry_get_layout_offsets()</code></a>.
 The returned layout is owned by the entry and must not be 
@@ -1997,7 +1997,7 @@ indices in the layout to byte indices in the entry contents.</p>
 </div>
 <div class="refsect3">
 <a name="btk-entry-get-layout.returns"></a><h4>Returns</h4>
-<p>the <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> for this entry. </p>
+<p>the <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> for this entry. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
 </div>
@@ -2008,18 +2008,18 @@ indices in the layout to byte indices in the entry contents.</p>
 btk_entry_get_layout_offsets (<em class="parameter"><code><a class="link" href="BtkEntry.html" title="BtkEntry"><span class="type">BtkEntry</span></a> *entry</code></em>,
                               <em class="parameter"><code><span class="type">gint</span> *x</code></em>,
                               <em class="parameter"><code><span class="type">gint</span> *y</code></em>);</pre>
-<p>Obtains the position of the <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> used to render text
+<p>Obtains the position of the <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> used to render text
 in the entry, in widget coordinates. Useful if you want to line
 up the text in an entry with some other text, e.g. when using the
 entry to implement editable cells in a sheet widget.</p>
 <p>Also useful to convert mouse events into coordinates inside the
-<a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, e.g. to take some action if some part of the entry text
+<a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>, e.g. to take some action if some part of the entry text
 is clicked.</p>
 <p>Note that as the user scrolls around in the entry the offsets will
 change; you'll need to connect to the "notify::scroll-offset"
-signal to track this. Remember when using the <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
+signal to track this. Remember when using the <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
 functions you need to convert to and from pixels using
-<a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BANGO-PIXELS:CAPS"><code class="function">BANGO_PIXELS()</code></a> or <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BANGO-SCALE:CAPS"><span class="type">BANGO_SCALE</span></a>.</p>
+<a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BANGO-PIXELS:CAPS"><code class="function">BANGO_PIXELS()</code></a> or <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BANGO-SCALE:CAPS"><span class="type">BANGO_SCALE</span></a>.</p>
 <p>Keep in mind that the layout text may contain a preedit string, so
 <a class="link" href="BtkEntry.html#btk-entry-layout-index-to-text-index" title="btk_entry_layout_index_to_text_index ()"><code class="function">btk_entry_layout_index_to_text_index()</code></a> and
 <a class="link" href="BtkEntry.html#btk-entry-text-index-to-layout-index" title="btk_entry_text_index_to_layout_index ()"><code class="function">btk_entry_text_index_to_layout_index()</code></a> are needed to convert byte
@@ -2060,8 +2060,8 @@ btk_entry_layout_index_to_text_index (<em class="parameter"><code><a class="link
                                       <em class="parameter"><code><span class="type">gint</span> layout_index</code></em>);</pre>
 <p>Converts from a position in the entry contents (returned
 by <a class="link" href="BtkEntry.html#btk-entry-get-text" title="btk_entry_get_text ()"><code class="function">btk_entry_get_text()</code></a>) to a position in the
-entry's <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> (returned by <a class="link" href="BtkEntry.html#btk-entry-get-layout" title="btk_entry_get_layout ()"><code class="function">btk_entry_get_layout()</code></a>,
-with text retrieved via <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#bango-layout-get-text"><code class="function">bango_layout_get_text()</code></a>).</p>
+entry's <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> (returned by <a class="link" href="BtkEntry.html#btk-entry-get-layout" title="btk_entry_get_layout ()"><code class="function">btk_entry_get_layout()</code></a>,
+with text retrieved via <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#bango-layout-get-text"><code class="function">bango_layout_get_text()</code></a>).</p>
 <div class="refsect3">
 <a name="btk-entry-layout-index-to-text-index.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2095,7 +2095,7 @@ with text retrieved via <a href="https://developer.gnome.org/bango/bango-Layout-
 <pre class="programlisting"><span class="returnvalue">gint</span>
 btk_entry_text_index_to_layout_index (<em class="parameter"><code><a class="link" href="BtkEntry.html" title="BtkEntry"><span class="type">BtkEntry</span></a> *entry</code></em>,
                                       <em class="parameter"><code><span class="type">gint</span> text_index</code></em>);</pre>
-<p>Converts from a position in the entry's <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> (returned by
+<p>Converts from a position in the entry's <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> (returned by
 <a class="link" href="BtkEntry.html#btk-entry-get-layout" title="btk_entry_get_layout ()"><code class="function">btk_entry_get_layout()</code></a>) to a position in the entry contents
 (returned by <a class="link" href="BtkEntry.html#btk-entry-get-text" title="btk_entry_get_text ()"><code class="function">btk_entry_get_text()</code></a>).</p>
 <div class="refsect3">
@@ -2552,7 +2552,7 @@ would confuse on-going input method behavior.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_entry_set_icon_from_pixbuf (<em class="parameter"><code><a class="link" href="BtkEntry.html" title="BtkEntry"><span class="type">BtkEntry</span></a> *entry</code></em>,
                                 <em class="parameter"><code><a class="link" href="BtkEntry.html#BtkEntryIconPosition" title="enum BtkEntryIconPosition"><span class="type">BtkEntryIconPosition</span></a> icon_pos</code></em>,
-                                <em class="parameter"><code><a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>);</pre>
+                                <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>);</pre>
 <p>Sets the icon shown in the specified position using a pixbuf.</p>
 <p>If <em class="parameter"><code>pixbuf</code></em>
  is <code class="literal">NULL</code>, no icon will be shown in the specified position.</p>
@@ -2577,7 +2577,7 @@ btk_entry_set_icon_from_pixbuf (<em class="parameter"><code><a class="link" href
 </tr>
 <tr>
 <td class="parameter_name"><p>pixbuf</p></td>
-<td class="parameter_description"><p>A <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, or <code class="literal">NULL</code>. </p></td>
+<td class="parameter_description"><p>A <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, or <code class="literal">NULL</code>. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 </tbody>
@@ -2749,13 +2749,13 @@ the return value will be <a class="link" href="BtkImage.html#BTK-IMAGE-EMPTY:CAP
 <hr>
 <div class="refsect2">
 <a name="btk-entry-get-icon-pixbuf"></a><h3>btk_entry_get_icon_pixbuf ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
+<pre class="programlisting"><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="returnvalue">BdkPixbuf</span></a> *
 btk_entry_get_icon_pixbuf (<em class="parameter"><code><a class="link" href="BtkEntry.html" title="BtkEntry"><span class="type">BtkEntry</span></a> *entry</code></em>,
                            <em class="parameter"><code><a class="link" href="BtkEntry.html#BtkEntryIconPosition" title="enum BtkEntryIconPosition"><span class="type">BtkEntryIconPosition</span></a> icon_pos</code></em>);</pre>
 <p>Retrieves the image used for the icon.</p>
 <p>Unlike the other methods of setting and getting icon data, this
 method will work regardless of whether the icon was set using a
-<a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, a <span class="type">GIcon</span>, a stock item, or an icon name.</p>
+<a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, a <span class="type">GIcon</span>, a stock item, or an icon name.</p>
 <div class="refsect3">
 <a name="btk-entry-get-icon-pixbuf.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2780,7 +2780,7 @@ method will work regardless of whether the icon was set using a
 </div>
 <div class="refsect3">
 <a name="btk-entry-get-icon-pixbuf.returns"></a><h4>Returns</h4>
-<p>A <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, or <code class="literal">NULL</code> if no icon is
+<p>A <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>, or <code class="literal">NULL</code> if no icon is
 set for this position. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span></p>
 </div>
@@ -3359,7 +3359,7 @@ entry in an expose-event callback because it enables the callback
 to distinguish between the text window and entry's icon windows.</p>
 <p>See also <a class="link" href="BtkEntry.html#btk-entry-get-text-window" title="btk_entry_get_text_window ()"><code class="function">btk_entry_get_text_window()</code></a>.</p>
 <p>Note that BTK+ 3 does not have this function anymore; it has
-been replaced by <a href="https://developer.gnome.org/btk4/BtkEntry.html#btk-entry-get-icon-area"><code class="function">btk_entry_get_icon_area()</code></a>.</p>
+been replaced by <a href="https://developer.bunny.org/btk4/BtkEntry.html#btk-entry-get-icon-area"><code class="function">btk_entry_get_icon_area()</code></a>.</p>
 <div class="refsect3">
 <a name="btk-entry-get-icon-window.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -3627,7 +3627,7 @@ informational purposes.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkEntry--primary-icon-pixbuf"></a><h3>The <code class="literal">“primary-icon-pixbuf”</code> property</h3>
-<pre class="programlisting">  “primary-icon-pixbuf”      <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</pre>
+<pre class="programlisting">  “primary-icon-pixbuf”      <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</pre>
 <p>A pixbuf to use as the primary icon for the entry.</p>
 <p>Owner: BtkEntry</p>
 <p>Flags: Read / Write</p>
@@ -3766,7 +3766,7 @@ informational purposes.</p>
 <hr>
 <div class="refsect2">
 <a name="BtkEntry--secondary-icon-pixbuf"></a><h3>The <code class="literal">“secondary-icon-pixbuf”</code> property</h3>
-<pre class="programlisting">  “secondary-icon-pixbuf”    <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</pre>
+<pre class="programlisting">  “secondary-icon-pixbuf”    <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *</pre>
 <p>An pixbuf to use as the secondary icon for the entry.</p>
 <p>Owner: BtkEntry</p>
 <p>Flags: Read / Write</p>

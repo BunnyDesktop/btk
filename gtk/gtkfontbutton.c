@@ -3,7 +3,7 @@
  * Copyright (C) 1998 David Abilleira Freijeiro <odaf@nbexo.es>
  * All rights reserved.
  *
- * Based on gnome-color-picker by Federico Mena <federico@nuclecu.unam.mx>
+ * Based on bunny-color-picker by Federico Mena <federico@nuclecu.unam.mx>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

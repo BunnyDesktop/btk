@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeAbout to BtkAboutDialog: BTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyAbout to BtkAboutDialog: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
 <link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
-<link rel="prev" href="btk-migrating-BtkIconView.html" title="Migrating from GnomeIconList to BtkIconView">
-<link rel="next" href="btk-migrating-BtkColorButton.html" title="Migrating from GnomeColorPicker to BtkColorButton">
+<link rel="prev" href="btk-migrating-BtkIconView.html" title="Migrating from BunnyIconList to BtkIconView">
+<link rel="next" href="btk-migrating-BtkColorButton.html" title="Migrating from BunnyColorPicker to BtkColorButton">
 <meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,20 +21,20 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="btk-migrating-BtkAboutDialog"></a>Migrating from GnomeAbout to BtkAboutDialog</h2></div></div></div>
+<a name="btk-migrating-BtkAboutDialog"></a>Migrating from BunnyAbout to BtkAboutDialog</h2></div></div></div>
 <p>
     Since version 2.6, BTK+ provides the <a class="link" href="BtkAboutDialog.html" title="BtkAboutDialog"><span class="type">BtkAboutDialog</span></a> widget as a 
-    replacement for the <span class="structname">GnomeAbout</span> dialog in 
-    the libgnomeui library.
+    replacement for the <span class="structname">BunnyAbout</span> dialog in 
+    the libbunnyui library.
   </p>
 <p>
-    <a class="link" href="BtkAboutDialog.html" title="BtkAboutDialog"><span class="type">BtkAboutDialog</span></a> supports all features found in <span class="structname">GnomeAbout</span>.
+    <a class="link" href="BtkAboutDialog.html" title="BtkAboutDialog"><span class="type">BtkAboutDialog</span></a> supports all features found in <span class="structname">BunnyAbout</span>.
     The <span class="structname">BtkAboutDialog</span> API is bigger, since it follows 
     the BTK+ policy to have getters and setters for all widget properties, 
-    but it isn't much more complex than <span class="structname">GnomeAbout</span>.
+    but it isn't much more complex than <span class="structname">BunnyAbout</span>.
   </p>
 <p>
-    To convert an application that uses <span class="structname">GnomeAbout</span> to 
+    To convert an application that uses <span class="structname">BunnyAbout</span> to 
     <span class="structname">BtkAboutDialog</span>, as a first step, replace calls 
     like
     </p>
@@ -73,9 +73,9 @@
   <span class="nb">NULL</span> 
 <span class="p">};</span>
 
-<span class="n">BtkWidget</span> <span class="o">*</span><span class="n">about</span> <span class="o">=</span> <span class="n">gnome_about_new</span> <span class="p">(</span><span class="s">&quot;GNOME Test Program&quot;</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">,</span>
+<span class="n">BtkWidget</span> <span class="o">*</span><span class="n">about</span> <span class="o">=</span> <span class="n">bunny_about_new</span> <span class="p">(</span><span class="s">&quot;BUNNY Test Program&quot;</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">,</span>
 					<span class="s">&quot;(C) 1998-2001 The Free Software Foundation&quot;</span><span class="p">,</span>
-					<span class="s">&quot;Program to display GNOME functions.&quot;</span><span class="p">,</span>
+					<span class="s">&quot;Program to display BUNNY functions.&quot;</span><span class="p">,</span>
 					<span class="n">authors</span><span class="p">,</span>
 					<span class="n">documenters</span><span class="p">,</span>
 					<span class="n">_</span><span class="p">(</span><span class="s">&quot;translator-credits&quot;</span><span class="p">),</span>
@@ -106,10 +106,10 @@
 12</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="n">BdkPixbuf</span> <span class="o">*</span><span class="n">logo</span> <span class="o">=</span> <span class="n">bdk_pixbuf_new_from_file</span> <span class="p">(</span><span class="s">&quot;logo.png&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
 <span class="n">BtkWidget</span> <span class="o">*</span><span class="n">about</span> <span class="o">=</span> <span class="n">g_object_new</span> <span class="p">(</span><span class="n">BTK_TYPE_ABOUT_DIALOG</span><span class="p">,</span>
-                                 <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;GNOME Test Program&quot;</span><span class="p">,</span> 
+                                 <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;BUNNY Test Program&quot;</span><span class="p">,</span> 
                                  <span class="s">&quot;version&quot;</span><span class="p">,</span> <span class="n">VERSION</span><span class="p">,</span>
 			             <span class="s">&quot;copyright&quot;</span><span class="p">,</span> <span class="s">&quot;(C) 1998-2001 The Free Software Foundation&quot;</span><span class="p">,</span>
-				     <span class="s">&quot;comments&quot;</span><span class="p">,</span> <span class="s">&quot;Program to display GNOME functions.&quot;</span><span class="p">,</span>
+				     <span class="s">&quot;comments&quot;</span><span class="p">,</span> <span class="s">&quot;Program to display BUNNY functions.&quot;</span><span class="p">,</span>
 			             <span class="s">&quot;authors&quot;</span><span class="p">,</span> <span class="n">authors</span><span class="p">,</span>
 			             <span class="s">&quot;documenters&quot;</span><span class="p">,</span> <span class="n">documenters</span><span class="p">,</span>
 			             <span class="s">&quot;translator-credits&quot;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;translator-credits&quot;</span><span class="p">),</span>
@@ -129,7 +129,7 @@
 <p>
     Once you are done with the initial conversion, you may want to look into 
     using some of the features of <span class="structname">BtkAboutDialog</span> 
-    which are not present in <span class="structname">GnomeAbout</span>.
+    which are not present in <span class="structname">BunnyAbout</span>.
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>

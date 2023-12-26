@@ -14,12 +14,12 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with the Gnome Library; see the file COPYING.LIB.  If not,
+ * License along with the Bunny Library; see the file COPYING.LIB.  If not,
  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
 
-/* Color picker button for GNOME
+/* Color picker button for BUNNY
  *
  * Author: Federico Mena <federico@nuclecu.unam.mx>
  *

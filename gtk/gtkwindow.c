@@ -4267,7 +4267,7 @@ btk_window_move (BtkWindow *window,
  * do this without getting it somewhat wrong because applications do
  * not have sufficient knowledge of window manager state. The Correct
  * Mechanism is to support the session management protocol (see the
- * "GnomeClient" object in the GNOME libraries for example) and allow
+ * "BunnyClient" object in the BUNNY libraries for example) and allow
  * the window manager to save your window sizes and positions.
  * 
  **/
@@ -4678,7 +4678,7 @@ btk_window_map_event (BtkWidget   *widget,
        * and an unmap request occoured while the MapRequestEvent was still
        * being handled. we work around this situaiton here by re-requesting
        * the window being unmapped. more details can be found in:
-       *   http://bugzilla.gnome.org/show_bug.cgi?id=316180
+       *   http://bugzilla.bunny.org/show_bug.cgi?id=316180
        */
       bdk_window_hide (widget->window);
     }

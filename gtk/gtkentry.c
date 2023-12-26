@@ -3112,7 +3112,7 @@ btk_entry_size_allocate (BtkWidget     *widget,
     }
 }
 
-/* Kudos to the gnome-panel guys. */
+/* Kudos to the bunny-panel guys. */
 static void
 colorshift_pixbuf (BdkPixbuf *dest,
                    BdkPixbuf *src,

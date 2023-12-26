@@ -33,10 +33,10 @@ noinst_PROGRAMS = 		\
 noinst_PROGRAMS += testpixbuf
 BUILT_SOURCES = test-inline-pixbufs.h
 
-test-inline-pixbufs.h: apple-red.png gnome-foot.png
+test-inline-pixbufs.h: apple-red.png bunny-foot.png
 	$(BDK_PIXBUF_CSOURCE) --raw --build-list		\
 	        apple_red  $(srcdir)/apple-red.png	\
-                gnome_foot $(srcdir)/gnome-foot.png	\
+                bunny_foot $(srcdir)/bunny-foot.png	\
         > test-inline-pixbufs.h				\
 	|| (rm -f test-inline-pixbufs.h && false)
 
@@ -67,12 +67,12 @@ pixbuf_demo_SOURCES = pixbuf-demo.c pixbuf-init.c
 EXTRA_DIST +=			\
 	apple-red.png		\
 	background.jpg		\
-	gnome-applets.png	\
-	gnome-calendar.png	\
-	gnome-foot.png		\
-	gnome-gimp.png		\
-	gnome-gmush.png		\
-	gnome-gsame.png		\
+	bunny-applets.png	\
+	bunny-calendar.png	\
+	bunny-foot.png		\
+	bunny-gimp.png		\
+	bunny-gmush.png		\
+	bunny-gsame.png		\
 	gnu-keys.png
 
 DISTCLEANFILES = test-inline-pixbufs.h

@@ -36,7 +36,7 @@ doc_shooter_SOURCES=	\
 clean-local:
 	for file in *.png; do \
 	  case "$$file" in \
-	    folder.png|gnome.png) ;; \
+	    folder.png|bunny.png) ;; \
 	    *) rm -f $$file ;; \
 	  esac ; \
 	done

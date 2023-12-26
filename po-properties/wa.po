@@ -1,6 +1,6 @@
 # Translation into the walloon language.
 #
-# Si vos voloz donner on côp di spale pol ratournaedje di Gnome (ou des
+# Si vos voloz donner on côp di spale pol ratournaedje di Bunny (ou des
 # ôtes libes programes) sicrijhoz-mu a l' adresse emile
 # <srtxg@chanae.alphanet.ch>; nos avans co bråmint di l' ovraedje a fé.
 #

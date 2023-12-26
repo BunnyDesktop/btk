@@ -9,23 +9,23 @@
       <surname>Garnacho</surname>
       <affiliation>
 	<address>
-	  <email>carlosg@gnome.org</email>
+	  <email>carlosg@bunny.org</email>
 	</address>
       </affiliation>
     </author>
   </chapterinfo>
 
-  <title>Migrating from GnomeDruid to BtkAssistant</title>
+  <title>Migrating from BunnyDruid to BtkAssistant</title>
 
   <para>
     Since version 2.10, BTK+ provides the BtkAssistant widget as a replacement
-    for the <structname>GnomeDruid</structname> widget in the libgnomeui 
+    for the <structname>BunnyDruid</structname> widget in the libbunnyui 
     library.
   </para>
 
   <para>
     Conceptually, both <structname>BtkAssistant</structname> and
-    <structname>GnomeDruid</structname> do the same task, but there are 
+    <structname>BunnyDruid</structname> do the same task, but there are 
     several areas where the API has been completely redesigned, so this 
     chapter covers the main changes between both widgets.
   </para>
@@ -34,10 +34,10 @@
     <title>Inserting pages</title>
 
     <para>
-      <structname>GnomeDruid</structname> was implemented as a container for
-	 <structname>GnomeDruidPage</structname> abstract objects, which are
-         implemented by the <structname>GnomeDruidPageEdge</structname> and 
-         <structname>GnomeDruidPageStandard</structname> widgets. Instead, 
+      <structname>BunnyDruid</structname> was implemented as a container for
+	 <structname>BunnyDruidPage</structname> abstract objects, which are
+         implemented by the <structname>BunnyDruidPageEdge</structname> and 
+         <structname>BunnyDruidPageStandard</structname> widgets. Instead, 
          <structname>BtkAssistant</structname> allows any widget to be a page, 
          and implements per-page settings (such as page type or title) as 
          child properties. So instead of:
@@ -45,25 +45,25 @@
 
     <programlisting>
 /* Page 1 */
-page = gnome_druid_page_edge_new (GNOME_EDGE_START);
-gnome_druid_page_edge_set_test (GNOME_DRUID_PAGE_EDGE (page),
+page = bunny_druid_page_edge_new (BUNNY_EDGE_START);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
                                 "Welcome to the assistant, it will make your life easier");
 btk_widget_show (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
 
 /* Page 2 */
-page = gnome_druid_page_standard_new ();
-btk_container_add (BTK_CONTAINER (GNOME_DRUID_PAGE_STANDARD (page)->vbox,
+page = bunny_druid_page_standard_new ();
+btk_container_add (BTK_CONTAINER (BUNNY_DRUID_PAGE_STANDARD (page)->vbox,
                    create_page1 ());
 btk_widget_show_all (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
 
 /* Page 3 */
-page = gnome_druid_page_edge_new (GNOME_EDGE_FINISH);
-gnome_druid_page_edge_set_test (GNOME_DRUID_PAGE_EDGE (page),
+page = bunny_druid_page_edge_new (BUNNY_EDGE_FINISH);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
                                 "Now you are done, your life is easier");
 btk_widget_show (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
     </programlisting>
 
     <para>
@@ -85,13 +85,13 @@ btk_assistant_append_page (BTK_ASSISTANT (assistant),
 
     <para>
       To decorate your assistant pages, <structname>BtkAssistant</structname> provides similar functions
-	 to <structname>GnomeDruid</structname>, so you have to transform code like this:
+	 to <structname>BunnyDruid</structname>, so you have to transform code like this:
     </para>
 
     <programlisting>
-gnome_druid_page_edge_set_title (GNOME_DRUID_PAGE_EDGE (page), "Welcome");
-gnome_druid_page_edge_set_logo (GNOME_DRUID_PAGE_EDGE (page), logo_pixbuf);
-gnome_druid_page_edge_set_watermark (GNOME_DRUID_PAGE_EDGE (page), watermark_pixbuf);
+bunny_druid_page_edge_set_title (BUNNY_DRUID_PAGE_EDGE (page), "Welcome");
+bunny_druid_page_edge_set_logo (BUNNY_DRUID_PAGE_EDGE (page), logo_pixbuf);
+bunny_druid_page_edge_set_watermark (BUNNY_DRUID_PAGE_EDGE (page), watermark_pixbuf);
     </programlisting>
 
     <para>
@@ -113,9 +113,9 @@ btk_assistant_set_page_side_image (BTK_ASSISTANT (assistant), page_widget, water
     <title>Setting the page flow</title>
 
     <para>
-      Here is the area where <structname>BtkAssistant</structname> and <structname>GnomeDruid</structname>
-	 differ the most. While <structname>GnomeDruid</structname> used the "next" and "back" signals from the 
-	 <structname>GnomeDruidPage</structname>, <structname>BtkAssistant</structname> uses the following
+      Here is the area where <structname>BtkAssistant</structname> and <structname>BunnyDruid</structname>
+	 differ the most. While <structname>BunnyDruid</structname> used the "next" and "back" signals from the 
+	 <structname>BunnyDruidPage</structname>, <structname>BtkAssistant</structname> uses the following
 	 techniques:
     </para>
 

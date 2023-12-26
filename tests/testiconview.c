@@ -36,7 +36,7 @@ fill_model (BtkTreeModel *model)
   BtkListStore *store = BTK_LIST_STORE (model);
   gint32 size;
   
-  pixbuf = bdk_pixbuf_new_from_file ("gnome-textfile.png", NULL);
+  pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
 
   i = 0;
   
@@ -137,7 +137,7 @@ add_n_items (BtkIconView *icon_list, gint n)
   gint i;
 
   store = BTK_LIST_STORE (btk_icon_view_get_model (icon_list));
-  pixbuf = bdk_pixbuf_new_from_file ("gnome-textfile.png", NULL);
+  pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
 
 
   for (i = 0; i < n; i++)
@@ -179,7 +179,7 @@ add_large (BtkWidget *button, BtkIconView *icon_list)
   gchar *str;
 
   store = BTK_LIST_STORE (btk_icon_view_get_model (icon_list));
-  pixbuf = bdk_pixbuf_new_from_file ("gnome-textfile.png", NULL);
+  pixbuf = bdk_pixbuf_new_from_file ("bunny-textfile.png", NULL);
 
   pb = bdk_pixbuf_scale_simple (pixbuf, 
 				2 * bdk_pixbuf_get_width (pixbuf),

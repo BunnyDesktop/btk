@@ -13,7 +13,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk"
 "%2b&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-07-26 09:16+0000\n"
 "PO-Revision-Date: 2010-09-16 15:45+0000\n"
@@ -1291,7 +1291,7 @@ msgstr "字体"
 #. can set it. Remember that some fonts only have capital letters.
 #: ../btk/btkfontsel.c:75
 msgid "abcdefghijk ABCDEFGHIJK"
-msgstr "GNOME 字体测试"
+msgstr "BUNNY 字体测试"
 
 #: ../btk/btkfontsel.c:343
 msgid "_Family:"

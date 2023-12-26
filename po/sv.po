@@ -1368,7 +1368,7 @@ msgstr "_Enhet:"
 msgid "Disabled"
 msgstr "Avstängd"
 
-# Se http://bugzilla.gnome.org/show_bug.cgi?id=148437 -- detta ska vara
+# Se http://bugzilla.bunny.org/show_bug.cgi?id=148437 -- detta ska vara
 # "skärm"
 #: ../btk/btkinputdialog.c:244
 msgid "Screen"
@@ -4264,7 +4264,7 @@ msgstr "Klassificerat"
 msgid "Confidential"
 msgstr "Konfidentiellt"
 
-# Se http://bugzilla.gnome.org/show_bug.cgi?id=148437 -- detta ska vara
+# Se http://bugzilla.bunny.org/show_bug.cgi?id=148437 -- detta ska vara
 # "skärm"
 #: ../modules/printbackends/cups/btkprintbackendcups.c:3590
 msgid "Secret"

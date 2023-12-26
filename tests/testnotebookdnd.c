@@ -1,7 +1,7 @@
 /* -*- Mode: C; c-file-style: "gnu"; tab-width: 8 -*- */
 /* 
  * BTK - The GIMP Toolkit
- * Copyright (C) 2006  Carlos Garnacho Parro <carlosg@gnome.org>
+ * Copyright (C) 2006  Carlos Garnacho Parro <carlosg@bunny.org>
  *
  * All rights reserved.
  *

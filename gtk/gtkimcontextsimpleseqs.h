@@ -1,5 +1,5 @@
 /* BTK - The GIMP Tool Kit
- * Copyright (C) 2007, 2008 GNOME Foundation
+ * Copyright (C) 2007, 2008 BUNNY Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,17 +18,17 @@
  */
 
 /*
- * File auto-generated from script found at http://bugzilla.gnome.org/show_bug.cgi?id=321896
+ * File auto-generated from script found at http://bugzilla.bunny.org/show_bug.cgi?id=321896
  * using the input files
  *  Input   : http://gitweb.freedesktop.org/?p=xorg/lib/libX11.git;a=blob_plain;f=nls/en_US.UTF-8/Compose.pre
  *  Input   : http://www.cl.cam.ac.uk/~mgk25/ucs/keysyms.txt
  *  Input   : http://www.unicode.org/Public/UNIDATA/UnicodeData.txt
  *
  * This table is optimised for space and requires special handling to access the content.
- * This table is used solely by http://svn.gnome.org/viewcvs/btk%2B/trunk/btk/btkimcontextsimple.c
+ * This table is used solely by http://svn.bunny.org/viewcvs/btk%2B/trunk/btk/btkimcontextsimple.c
  * 
- * The resulting file is placed at http://svn.gnome.org/viewcvs/btk%2B/trunk/btk/btkimcontextsimpleseqs.h
- * This file is described in bug report http://bugzilla.gnome.org/show_bug.cgi?id=321896
+ * The resulting file is placed at http://svn.bunny.org/viewcvs/btk%2B/trunk/btk/btkimcontextsimpleseqs.h
+ * This file is described in bug report http://bugzilla.bunny.org/show_bug.cgi?id=321896
  */
 
 /*

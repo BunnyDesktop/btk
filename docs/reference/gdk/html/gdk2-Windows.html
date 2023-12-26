@@ -1638,7 +1638,7 @@ top of the window stack (moves the window to the front of the
 Z-order).</p>
 <p>This function maps a window so it's visible onscreen. Its opposite
 is <a class="link" href="bdk2-Windows.html#bdk-window-hide" title="bdk_window_hide ()"><code class="function">bdk_window_hide()</code></a>.</p>
-<p>When implementing a <a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a>, you should call this function on the widget's
+<p>When implementing a <a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a>, you should call this function on the widget's
 <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> as part of the "map" method.</p>
 <div class="refsect3">
 <a name="bdk-window-show.parameters"></a><h4>Parameters</h4>
@@ -1691,7 +1691,7 @@ bdk_window_hide (<em class="parameter"><code><a class="link" href="bdk2-Windows.
 <p>For toplevel windows, withdraws them, so they will no longer be
 known to the window manager; for all windows, unmaps them, so
 they won't be displayed. Normally done automatically as
-part of <a href="https://developer.gnome.org/btk4/BtkWidget.html#btk-widget-hide"><code class="function">btk_widget_hide()</code></a>.</p>
+part of <a href="https://developer.bunny.org/btk4/BtkWidget.html#btk-widget-hide"><code class="function">btk_widget_hide()</code></a>.</p>
 <div class="refsect3">
 <a name="bdk-window-hide.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1906,7 +1906,7 @@ bdk_window_iconify (<em class="parameter"><code><a class="link" href="bdk2-Windo
 <p>Asks to iconify (minimize) <em class="parameter"><code>window</code></em>
 . The window manager may choose
 to ignore the request, but normally will honor it. Using
-<code class="function">btk_window_iconify()</code> is preferred, if you have a <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> widget.</p>
+<code class="function">btk_window_iconify()</code> is preferred, if you have a <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> widget.</p>
 <p>This function only makes sense when <em class="parameter"><code>window</code></em>
  is a toplevel window.</p>
 <div class="refsect3">
@@ -1934,7 +1934,7 @@ bdk_window_deiconify (<em class="parameter"><code><a class="link" href="bdk2-Win
 . On X11 the window manager may
 choose to ignore the request to deiconify. When using BTK+,
 use <code class="function">btk_window_deiconify()</code> instead of the <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> variant. Or better yet,
-you probably want to use <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-present"><code class="function">btk_window_present()</code></a>, which raises the window, focuses it,
+you probably want to use <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-present"><code class="function">btk_window_present()</code></a>, which raises the window, focuses it,
 unminimizes it, and puts it on the current desktop.</p>
 <div class="refsect3">
 <a name="bdk-window-deiconify.parameters"></a><h4>Parameters</h4>
@@ -1959,7 +1959,7 @@ unminimizes it, and puts it on the current desktop.</p>
 bdk_window_stick (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>);</pre>
 <p>"Pins" a window such that it's on all workspaces and does not scroll
 with viewports, for window managers that have scrollable viewports.
-(When using <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a>, <code class="function">btk_window_stick()</code> may be more useful.)</p>
+(When using <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a>, <code class="function">btk_window_stick()</code> may be more useful.)</p>
 <p>On the X11 platform, this function depends on window manager
 support, so may have no effect with many window managers. However,
 BDK will do the best it can to convince the window manager to stick
@@ -2341,7 +2341,7 @@ bdk_window_move (<em class="parameter"><code><a class="link" href="bdk2-Windows.
                  <em class="parameter"><code><span class="type">gint</span> y</code></em>);</pre>
 <p>Repositions a window relative to its parent window.
 For toplevel windows, window managers may ignore or modify the move;
-you should probably use <code class="function">btk_window_move()</code> on a <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> widget
+you should probably use <code class="function">btk_window_move()</code> on a <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> widget
 anyway, instead of using BDK functions. For child windows,
 the move will reliably succeed.</p>
 <p>If you're also planning to resize the window, use <a class="link" href="bdk2-Windows.html#bdk-window-move-resize" title="bdk_window_move_resize ()"><code class="function">bdk_window_move_resize()</code></a>
@@ -2384,7 +2384,7 @@ bdk_window_resize (<em class="parameter"><code><a class="link" href="bdk2-Window
 <p>Resizes <em class="parameter"><code>window</code></em>
 ; for toplevel windows, asks the window manager to resize
 the window. The window manager may not allow the resize. When using BTK+,
-use <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-resize"><code class="function">btk_window_resize()</code></a> instead of this low-level BDK function.</p>
+use <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-resize"><code class="function">btk_window_resize()</code></a> instead of this low-level BDK function.</p>
 <p>Windows may not be resized below 1x1.</p>
 <p>If you're also planning to move the window, use <a class="link" href="bdk2-Windows.html#bdk-window-move-resize" title="bdk_window_move_resize ()"><code class="function">bdk_window_move_resize()</code></a>
 to both move and resize simultaneously, for a nicer visual effect.</p>
@@ -2947,8 +2947,8 @@ requests the restack, does not guarantee it.</p>
 bdk_window_focus (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                   <em class="parameter"><code><span class="type">guint32</span> timestamp</code></em>);</pre>
 <p>Sets keyboard focus to <em class="parameter"><code>window</code></em>
-. In most cases, <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-present"><code class="function">btk_window_present()</code></a> 
-should be used on a <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a>, rather than calling this function.</p>
+. In most cases, <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-present"><code class="function">btk_window_present()</code></a> 
+should be used on a <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a>, rather than calling this function.</p>
 <div class="refsect3">
 <a name="bdk-window-focus.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -2990,7 +2990,7 @@ bdk_window_begin_resize_drag (<em class="parameter"><code><a class="link" href="
                               <em class="parameter"><code><span class="type">guint32</span> timestamp</code></em>);</pre>
 <p>Begins a window resize operation (for a toplevel window).
 You might use this function to implement a "window resize grip," for
-example; in fact <a href="https://developer.gnome.org/btk4/BtkStatusbar.html#BtkStatusbar-struct"><span class="type">BtkStatusbar</span></a> uses it. The function works best
+example; in fact <a href="https://developer.bunny.org/btk4/BtkStatusbar.html#BtkStatusbar-struct"><span class="type">BtkStatusbar</span></a> uses it. The function works best
 with window managers that support the <a class="ulink" href="http://www.freedesktop.org/Standards/wm-spec" target="_top">Extended Window Manager Hints</a>, but has a 
 fallback implementation for other window managers.</p>
 <div class="refsect3">
@@ -3757,11 +3757,11 @@ bdk_window_set_user_data (<em class="parameter"><code><a class="link" href="bdk2
                           <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
 <p>For most purposes this function is deprecated in favor of
 <code class="function">g_object_set_data()</code>. However, for historical reasons BTK+ stores
-the <a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> that owns a <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> as user data on the
+the <a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a> that owns a <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> as user data on the
 <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a>. So, custom widget implementations should use
 this function for that. If BTK+ receives an event for a <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a>,
 and the user data for the window is non-<code class="literal">NULL</code>, BTK+ will assume the
-user data is a <a href="https://developer.gnome.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a>, and forward the event to that widget.</p>
+user data is a <a href="https://developer.bunny.org/btk4/BtkWidget.html#BtkWidget-struct"><span class="type">BtkWidget</span></a>, and forward the event to that widget.</p>
 <div class="refsect3">
 <a name="bdk-window-set-user-data.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -4458,7 +4458,7 @@ bdk_window_set_hints (<em class="parameter"><code><a class="link" href="bdk2-Win
                       <em class="parameter"><code><span class="type">gint</span> flags</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_window_set_hints</code> is deprecated and should not be used in newly-written code.</p></div>
 <p>This function is broken and useless and you should ignore it.
-If using BTK+, use functions such as <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-resize"><code class="function">btk_window_resize()</code></a>, <code class="function">btk_window_set_size_request()</code>,
+If using BTK+, use functions such as <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-resize"><code class="function">btk_window_resize()</code></a>, <code class="function">btk_window_set_size_request()</code>,
 <code class="function">btk_window_move()</code>, <code class="function">btk_window_parse_geometry()</code>, and <code class="function">btk_window_set_geometry_hints()</code>,
 depending on what you're trying to do.</p>
 <p>If using BDK directly, use <a class="link" href="bdk2-Windows.html#bdk-window-set-geometry-hints" title="bdk_window_set_geometry_hints ()"><code class="function">bdk_window_set_geometry_hints()</code></a>.</p>
@@ -5980,8 +5980,8 @@ window manager to do things like center <em class="parameter"><code>window</code
 keep <em class="parameter"><code>window</code></em>
  above <em class="parameter"><code>parent</code></em>
 .</p>
-<p>See <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-set-transient-for"><code class="function">btk_window_set_transient_for()</code></a> if you're using <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> or
-<a href="https://developer.gnome.org/btk4/BtkDialog.html#BtkDialog-struct"><span class="type">BtkDialog</span></a>.</p>
+<p>See <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-set-transient-for"><code class="function">btk_window_set_transient_for()</code></a> if you're using <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> or
+<a href="https://developer.bunny.org/btk4/BtkDialog.html#BtkDialog-struct"><span class="type">BtkDialog</span></a>.</p>
 <div class="refsect3">
 <a name="bdk-window-set-transient-for.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -6051,7 +6051,7 @@ non-interchangeable kind of window.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_window_set_startup_id (<em class="parameter"><code><a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a> *window</code></em>,
                            <em class="parameter"><code>const <span class="type">gchar</span> *startup_id</code></em>);</pre>
-<p>When using BTK+, typically you should use <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-set-startup-id"><code class="function">btk_window_set_startup_id()</code></a>
+<p>When using BTK+, typically you should use <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-set-startup-id"><code class="function">btk_window_set_startup_id()</code></a>
 instead of this low-level function.</p>
 <div class="refsect3">
 <a name="bdk-window-set-startup-id.parameters"></a><h4>Parameters</h4>
@@ -6154,7 +6154,7 @@ bdk_window_set_decorations (<em class="parameter"><code><a class="link" href="bd
 <p>"Decorations" are the features the window manager adds to a toplevel <a class="link" href="bdk2-Windows.html#BdkWindow"><span class="type">BdkWindow</span></a>.
 This function sets the traditional Motif window manager hints that tell the
 window manager which decorations you would like your window to have.
-Usually you should use <a href="https://developer.gnome.org/btk4/BtkWindow.html#btk-window-set-decorated"><code class="function">btk_window_set_decorated()</code></a> on a <a href="https://developer.gnome.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> instead of
+Usually you should use <a href="https://developer.bunny.org/btk4/BtkWindow.html#btk-window-set-decorated"><code class="function">btk_window_set_decorated()</code></a> on a <a href="https://developer.bunny.org/btk4/BtkWindow.html#BtkWindow-struct"><span class="type">BtkWindow</span></a> instead of
 using the BDK function directly.</p>
 <p>The <em class="parameter"><code>decorations</code></em>
  argument is the logical OR of the fields in

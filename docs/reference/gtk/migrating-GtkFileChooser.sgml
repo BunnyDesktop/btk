@@ -126,7 +126,7 @@
 	<para>
 	  Ability to select URIs rather than just local files.  You
 	  must use a #BtkFileSystem implementation that supports this, 
-          for example the gnome-vfs backend.
+          for example the bunny-vfs backend.
 	</para>
       </listitem>
 

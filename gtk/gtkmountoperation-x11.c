@@ -893,9 +893,9 @@ _btk_mount_operation_lookup_info (BtkMountOperationLookupContext *context,
    * because we want the name from the window with WINDOWID and this
    * normally does not give you an icon
    *
-   * (the canonical example is a tab in gnome-terminal - the shell/command running
+   * (the canonical example is a tab in bunny-terminal - the shell/command running
    *  in the shell will have WINDOWID set - but this window won't have an icon - so
-   *  we want to continue up until the gnome-terminal window so we can get that icon)
+   *  we want to continue up until the bunny-terminal window so we can get that icon)
    */
 
   *out_command_line = pid_get_command_line (pid);

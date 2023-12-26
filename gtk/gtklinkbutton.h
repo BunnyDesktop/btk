@@ -4,7 +4,7 @@
  * Copyright (C) 2005 Emmanuele Bassi <ebassi@gmail.com>
  * All rights reserved.
  *
- * Based on gnome-href code by:
+ * Based on bunny-href code by:
  * 	James Henstridge <james@daa.com.au>
  *
  * This library is free software; you can redistribute it and/or

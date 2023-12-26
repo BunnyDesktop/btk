@@ -20,7 +20,7 @@ create_completion_model (void)
 
   /* Append one word */
   btk_list_store_append (store, &iter);
-  btk_list_store_set (store, &iter, 0, "GNOME", -1);
+  btk_list_store_set (store, &iter, 0, "BUNNY", -1);
 
   /* Append another word */
   btk_list_store_append (store, &iter);
@@ -63,7 +63,7 @@ do_entry_completion (BtkWidget *do_widget)
     btk_container_set_border_width (BTK_CONTAINER (vbox), 5);
 
     label = btk_label_new (NULL);
-    btk_label_set_markup (BTK_LABEL (label), "Completion demo, try writing <b>total</b> or <b>gnome</b> for example.");
+    btk_label_set_markup (BTK_LABEL (label), "Completion demo, try writing <b>total</b> or <b>bunny</b> for example.");
     btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
     /* Create our entry */

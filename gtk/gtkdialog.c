@@ -1265,8 +1265,8 @@ btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
  * the dialog buttons are reordered according to the order of the 
  * response ids passed to this function.
  *
- * By default, BTK+ dialogs use the button order advocated by the Gnome 
- * <ulink url="http://developer.gnome.org/projects/gup/hig/2.0/">Human 
+ * By default, BTK+ dialogs use the button order advocated by the Bunny 
+ * <ulink url="http://developer.bunny.org/projects/gup/hig/2.0/">Human 
  * Interface Guidelines</ulink> with the affirmative button at the far 
  * right, and the cancel button left of it. But the builtin BTK+ dialogs
  * and #BtkMessageDialog<!-- -->s do provide an alternative button order,

@@ -1056,7 +1056,7 @@ array.</p></td>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_pixbuf (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                 <em class="parameter"><code>const <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
+                 <em class="parameter"><code>const <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> src_x</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> src_y</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> dest_x</code></em>,
@@ -1104,7 +1104,7 @@ variable.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>pixbuf</p></td>
-<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1479,10 +1479,10 @@ likely not useful for applications.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_glyphs (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                 <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
+                 <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
+                 <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_glyphs</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <code class="function">bango_bairo_show_glyphs()</code> instead.</p>
@@ -1543,22 +1543,22 @@ understand; thus, use <a class="link" href="bdk2-Drawing-Primitives.html#bdk-dra
 <pre class="programlisting"><span class="returnvalue">void</span>
 bdk_draw_glyphs_transformed (<em class="parameter"><code><a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a> *drawable</code></em>,
                              <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
-                             <em class="parameter"><code>const <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoMatrix-struct"><span class="type">BangoMatrix</span></a> *matrix</code></em>,
-                             <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
+                             <em class="parameter"><code>const <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoMatrix-struct"><span class="type">BangoMatrix</span></a> *matrix</code></em>,
+                             <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Fonts.html#BangoFont-struct"><span class="type">BangoFont</span></a> *font</code></em>,
                              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                             <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
+                             <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> *glyphs</code></em>);</pre>
 <div class="warning">
 <p><code class="literal">bdk_draw_glyphs_transformed</code> has been deprecated since version 2.22 and should not be used in newly-written code.</p>
 <p>Use <code class="function">bango_bairo_show_glyphs()</code> instead.</p>
 </div>
-<p>Renders a <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> onto a drawable, possibly
+<p>Renders a <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoGlyphString-struct"><span class="type">BangoGlyphString</span></a> onto a drawable, possibly
 transforming the layed-out coordinates through a transformation
 matrix. Note that the transformation matrix for <em class="parameter"><code>font</code></em>
  is not
 changed, so to produce correct rendering results, the <em class="parameter"><code>font</code></em>
 
-must have been loaded using a <a href="https://developer.gnome.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> with an identical
+must have been loaded using a <a href="https://developer.bunny.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> with an identical
 transformation matrix to that passed in to this function.</p>
 <p>See also <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-glyphs" title="bdk_draw_glyphs ()"><code class="function">bdk_draw_glyphs()</code></a>, <a class="link" href="bdk2-Drawing-Primitives.html#bdk-draw-layout" title="bdk_draw_layout ()"><code class="function">bdk_draw_layout()</code></a>.</p>
 <div class="refsect3">
@@ -1582,7 +1582,7 @@ transformation matrix to that passed in to this function.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>matrix</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/bango/bango-Glyph-Storage.html#BangoMatrix-struct"><span class="type">BangoMatrix</span></a>, or <code class="literal">NULL</code> to use an identity transformation. </p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/bango/bango-Glyph-Storage.html#BangoMatrix-struct"><span class="type">BangoMatrix</span></a>, or <code class="literal">NULL</code> to use an identity transformation. </p></td>
 <td class="parameter_annotations"><span class="annotation">[<acronym title="NULL is OK, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span></td>
 </tr>
 <tr>
@@ -1620,10 +1620,10 @@ bdk_draw_layout_line (<em class="parameter"><code><a class="link" href="bdk2-Dra
                       <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                       <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                       <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                      <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>);</pre>
+                      <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout_line</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>Render a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> onto an BDK drawable</p>
-<p>If the layout's <a href="https://developer.gnome.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
+<p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> onto an BDK drawable</p>
+<p>If the layout's <a href="https://developer.bunny.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
 <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
  specify the position of the left edge of the baseline
@@ -1660,7 +1660,7 @@ device coordinates.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>line</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a></p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1675,18 +1675,18 @@ bdk_draw_layout_line_with_colors (<em class="parameter"><code><a class="link" hr
                                   <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                                   <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                                   <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                                  <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>,
+                                  <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> *line</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *foreground</code></em>,
                                   <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *background</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout_line_with_colors</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>Render a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> onto a <a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a>, overriding the
+<p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a> onto a <a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a>, overriding the
 layout's normal colors with <em class="parameter"><code>foreground</code></em>
  and/or <em class="parameter"><code>background</code></em>
 .
 <em class="parameter"><code>foreground</code></em>
  and <em class="parameter"><code>background</code></em>
  need not be allocated.</p>
-<p>If the layout's <a href="https://developer.gnome.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
+<p>If the layout's <a href="https://developer.bunny.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
 <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
  specify the position of the left edge of the baseline
@@ -1723,7 +1723,7 @@ device coordinates.</p>
 </tr>
 <tr>
 <td class="parameter_name"><p>line</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a></p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayoutLine-struct"><span class="type">BangoLayoutLine</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -1748,16 +1748,16 @@ bdk_draw_layout (<em class="parameter"><code><a class="link" href="bdk2-Drawing-
                  <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                  <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                 <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>);</pre>
+                 <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>Render a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> onto a BDK drawable</p>
-<p>If the layout's <a href="https://developer.gnome.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
+<p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> onto a BDK drawable</p>
+<p>If the layout's <a href="https://developer.bunny.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
 <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
  specify the position of the top left corner of the
 bounding box (in device space) of the transformed layout.</p>
-<p>If you're using BTK+, the usual way to obtain a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
-is <a href="https://developer.gnome.org/btk4/BtkWidget.html#btk-widget-create-bango-layout"><code class="function">btk_widget_create_bango_layout()</code></a>.</p>
+<p>If you're using BTK+, the usual way to obtain a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
+is <a href="https://developer.bunny.org/btk4/BtkWidget.html#btk-widget-create-bango-layout"><code class="function">btk_widget_create_bango_layout()</code></a>.</p>
 <div class="refsect3">
 <a name="bdk-draw-layout.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1789,7 +1789,7 @@ is <a href="https://developer.gnome.org/btk4/BtkWidget.html#btk-widget-create-ba
 </tr>
 <tr>
 <td class="parameter_name"><p>layout</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -1804,24 +1804,24 @@ bdk_draw_layout_with_colors (<em class="parameter"><code><a class="link" href="b
                              <em class="parameter"><code><a class="link" href="bdk2-Graphics-Contexts.html#BdkGC"><span class="type">BdkGC</span></a> *gc</code></em>,
                              <em class="parameter"><code><span class="type">gint</span> x</code></em>,
                              <em class="parameter"><code><span class="type">gint</span> y</code></em>,
-                             <em class="parameter"><code><a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
+                             <em class="parameter"><code><a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> *layout</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *foreground</code></em>,
                              <em class="parameter"><code>const <a class="link" href="bdk2-Colormaps-and-Colors.html#BdkColor" title="BdkColor"><span class="type">BdkColor</span></a> *background</code></em>);</pre>
 <div class="warning"><p><code class="literal">bdk_draw_layout_with_colors</code> is deprecated and should not be used in newly-written code.</p></div>
-<p>Render a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> onto a <a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a>, overriding the
+<p>Render a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a> onto a <a class="link" href="bdk2-Drawing-Primitives.html#BdkDrawable"><span class="type">BdkDrawable</span></a>, overriding the
 layout's normal colors with <em class="parameter"><code>foreground</code></em>
  and/or <em class="parameter"><code>background</code></em>
 .
 <em class="parameter"><code>foreground</code></em>
  and <em class="parameter"><code>background</code></em>
  need not be allocated.</p>
-<p>If the layout's <a href="https://developer.gnome.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
+<p>If the layout's <a href="https://developer.bunny.org/bango/bango-Contexts.html#BangoContext-struct"><span class="type">BangoContext</span></a> has a transformation matrix set, then
 <em class="parameter"><code>x</code></em>
  and <em class="parameter"><code>y</code></em>
  specify the position of the top left corner of the
 bounding box (in device space) of the transformed layout.</p>
-<p>If you're using BTK+, the ususal way to obtain a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
-is <a href="https://developer.gnome.org/btk4/BtkWidget.html#btk-widget-create-bango-layout"><code class="function">btk_widget_create_bango_layout()</code></a>.</p>
+<p>If you're using BTK+, the ususal way to obtain a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a>
+is <a href="https://developer.bunny.org/btk4/BtkWidget.html#btk-widget-create-bango-layout"><code class="function">btk_widget_create_bango_layout()</code></a>.</p>
 <div class="refsect3">
 <a name="bdk-draw-layout-with-colors.parameters"></a><h4>Parameters</h4>
 <div class="informaltable"><table class="informaltable" width="100%" border="0">
@@ -1853,7 +1853,7 @@ is <a href="https://developer.gnome.org/btk4/BtkWidget.html#btk-widget-create-ba
 </tr>
 <tr>
 <td class="parameter_name"><p>layout</p></td>
-<td class="parameter_description"><p>a <a href="https://developer.gnome.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p></td>
+<td class="parameter_description"><p>a <a href="https://developer.bunny.org/bango/bango-Layout-Objects.html#BangoLayout-struct"><span class="type">BangoLayout</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>
@@ -2276,7 +2276,7 @@ server-side drawable as a client-side <a class="link" href="bdk2-Images.html#Bdk
 <a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="type">BdkImage</span></a> depends on the <a class="link" href="bdk2-Visuals.html#BdkVisual" title="BdkVisual"><span class="type">BdkVisual</span></a> of the current display, which
 makes manipulating <a class="link" href="bdk2-Images.html#BdkImage" title="BdkImage"><span class="type">BdkImage</span></a> extremely difficult; therefore, in
 most cases you should use <a class="link" href="bdk2-Pixbufs.html#bdk-pixbuf-get-from-drawable" title="bdk_pixbuf_get_from_drawable ()"><code class="function">bdk_pixbuf_get_from_drawable()</code></a> instead of
-this lower-level function. A <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> contains image data in a
+this lower-level function. A <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> contains image data in a
 canonicalized RGB format, rather than a display-dependent format.
 Of course, there's a convenience vs. speed tradeoff here, so you'll
 want to think about what makes sense for your application.</p>

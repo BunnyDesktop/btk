@@ -1,7 +1,7 @@
 /* btkcellrendererprogress.c
  * Copyright (C) 2002 Naba Kumar <kh_naba@users.sourceforge.net>
  * heavily modified by Jörgen Scheibengruber <mfcn@gmx.de>
- * heavily modified by Marco Pesenti Gritti <marco@gnome.org>
+ * heavily modified by Marco Pesenti Gritti <marco@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

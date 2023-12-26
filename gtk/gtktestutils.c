@@ -82,7 +82,7 @@ btk_test_init (int    *argcp,
   g_setenv ("BTK2_RC_FILES", "/dev/null", TRUE);
   btk_disable_setlocale();
   setlocale (LC_ALL, "C");
-  g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=%s");
+  g_test_bug_base ("http://bugzilla.bunny.org/show_bug.cgi?id=%s");
   btk_init (argcp, argvp);
 }
 

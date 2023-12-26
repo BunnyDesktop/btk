@@ -3,7 +3,7 @@
 # Rajesh Ranjan <rranjan@redhat.com>, 2009.
 # Rajesh Ranjan <rajesh672@gmail.com>, 2009.
 # translation to btk+ to Maithili
-# Copyright (C) 2006 The GNOME Foundation
+# Copyright (C) 2006 The BUNNY Foundation
 # This file is distributed under the same license as the PACKAGE package.
 msgid ""
 msgstr ""

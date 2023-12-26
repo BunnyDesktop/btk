@@ -1197,7 +1197,7 @@ btk_container_add (BtkContainer *container,
     {
       g_warning ("Attempting to add a widget with type %s to a container of "
                  "type %s, but the widget is already inside a container of type %s, "
-                 "the BTK+ FAQ at http://library.gnome.org/devel/btk-faq/stable/ "
+                 "the BTK+ FAQ at http://library.bunny.org/devel/btk-faq/stable/ "
                  "explains how to reparent a widget.",
                  g_type_name (G_OBJECT_TYPE (widget)),
                  g_type_name (G_OBJECT_TYPE (container)),
@@ -2725,7 +2725,7 @@ btk_container_unmap (BtkWidget *widget)
  * Note that the ::expose-event signal has been replaced by a ::draw
  * signal in BTK+ 3, and consequently, btk_container_propagate_expose()
  * has been replaced by btk_container_propagate_draw().
- * The <link linkend="http://library.gnome.org/devel/btk3/3.0/btk-migrating-2-to-3.html">BTK+ 3 migration guide</link>
+ * The <link linkend="http://library.bunny.org/devel/btk3/3.0/btk-migrating-2-to-3.html">BTK+ 3 migration guide</link>
  * for hints on how to port from ::expose-event to ::draw.
  *
  **/

@@ -1,4 +1,4 @@
-/* BAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -487,9 +487,9 @@ bail_label_ref_relation_set (BatkObject *obj)
                   g_list_free (list);
                 }
             /*
-             * Handle the case where a GnomeIconEntry is specified as the 
+             * Handle the case where a BunnyIconEntry is specified as the 
              * mnemonic widget. use the button which is a grandchild of the
-             * GnomeIconEntry as the mnemonic widget. See bug #133967.
+             * BunnyIconEntry as the mnemonic widget. See bug #133967.
              */
               else if (BTK_IS_BOX (mnemonic_widget))
                 {

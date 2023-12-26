@@ -60,7 +60,7 @@ using BTK without having to spend anything for licenses or royalties.</para>
 <para>It's called the GIMP toolkit because it was originally written for
 developing the GNU Image Manipulation Program (GIMP), but BTK has
 now been used in a large number of software projects, including the
-GNU Network Object Model Environment (GNOME) project. BTK is built on
+GNU Network Object Model Environment (BUNNY) project. BTK is built on
 top of BDK (GIMP Drawing Kit) which is basically a wrapper around the
 low-level functions for accessing the underlying windowing functions
 (Xlib in the case of the X windows system), and bdk-pixbuf, a library for
@@ -13267,7 +13267,7 @@ drawing program gsumi. (Available from <ulink
 url="http://www.msc.cornell.edu/~otaylor/gsumi/">http://www.msc.cornell.edu/~otaylor/gsumi/</ulink>) Eventually, it
 would be nice to have a standard way of doing this for all
 applications. This probably belongs at a slightly higher level than
-BTK, perhaps in the GNOME library.</para>
+BTK, perhaps in the BUNNY library.</para>
 
 <para>Another major omission that we have mentioned above is the lack of
 cursor drawing. Platforms other than XFree86 currently do not allow

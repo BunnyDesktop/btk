@@ -1,15 +1,15 @@
 #!/usr/bin/env perl
 
-# Updates http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms.h from upstream (X.org 7.x),
+# Updates http://git.bunny.org/cgit/btk+/tree/bdk/bdkkeysyms.h from upstream (X.org 7.x),
 # from http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 # 
-# Author  : Simos Xenitellis <simos at gnome dot org>.
+# Author  : Simos Xenitellis <simos at bunny dot org>.
 # Authos  : Bastien Nocera <hadess@hadess.net>
 # Version : 1.2
 #
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
 # Input   : http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=XF86keysym.h
-# Output  : http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms.h
+# Output  : http://git.bunny.org/cgit/btk+/tree/bdk/bdkkeysyms.h
 # 
 # Notes   : It downloads keysymdef.h from the Internet, if not found locally,
 # Notes   : and creates an updated bdkkeysyms.h
@@ -69,7 +69,7 @@ die "Could not open file bdkkeysyms-compat.h: $!\n" unless open(OUT_BDKKEYSYMS_C
 my $LICENSE_HEADER= <<EOF;
 /* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
- * Copyright (C) 2005, 2006, 2007, 2009 GNOME Foundation
+ * Copyright (C) 2005, 2006, 2007, 2009 BUNNY Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -95,7 +95,7 @@ print OUT_BDKKEYSYMS_COMPAT $LICENSE_HEADER;
 print OUT_BDKKEYSYMS<<EOF;
 
 /*
- * File auto-generated from script http://git.gnome.org/cgit/btk+/tree/bdk/bdkkeysyms-update.pl
+ * File auto-generated from script http://git.bunny.org/cgit/btk+/tree/bdk/bdkkeysyms-update.pl
  * using the input file
  * http://gitweb.freedesktop.org/?p=xorg/proto/x11proto.git;a=blob_plain;f=keysymdef.h
  * and

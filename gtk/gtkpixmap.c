@@ -1,7 +1,7 @@
 /* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * Insensitive pixmap building code by Eckehard Berns from GNOME Stock
+ * Insensitive pixmap building code by Eckehard Berns from BUNNY Stock
  * Copyright (C) 1997, 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or

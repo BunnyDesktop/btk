@@ -1810,7 +1810,7 @@ bdk_event_translate (BdkDisplay *display,
 
       /* If the WM supports the _NET_WM_STATE_HIDDEN hint, we do not want to
        * interpret UnmapNotify events as implying iconic state.
-       * http://bugzilla.gnome.org/show_bug.cgi?id=590726.
+       * http://bugzilla.bunny.org/show_bug.cgi?id=590726.
        */
       if (screen &&
           !bdk_x11_screen_supports_net_wm_hint (screen,

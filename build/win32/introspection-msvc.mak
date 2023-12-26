@@ -1,6 +1,6 @@
 # Common NMake Makefile module for checking the build environment is sane
 # for building introspection files under MSVC/NMake.
-# This can be copied from $(gi_srcroot)\build\win32 for GNOME items
+# This can be copied from $(gi_srcroot)\build\win32 for BUNNY items
 # that support MSVC builds and introspection under MSVC.
 
 # Can override with env vars as needed

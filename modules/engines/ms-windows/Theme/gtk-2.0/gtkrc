@@ -8,7 +8,7 @@ btk-button-images = 0
 # the office apps use them heavily, though.
 btk-menu-images = 1
 
-# use the win32 button ordering instead of the GNOME HIG one, where applicable
+# use the win32 button ordering instead of the BUNNY HIG one, where applicable
 btk-alternative-button-order = 1
 
 # use the win32 sort indicators direction, as in Explorer

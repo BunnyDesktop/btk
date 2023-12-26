@@ -28,7 +28,7 @@ msgstr "Standarddisplay"
 msgid "The default display for BDK"
 msgstr "Standarddisplayen för BDK"
 
-# Se http://bugzilla.gnome.org/show_bug.cgi?id=148437 -- detta ska vara
+# Se http://bugzilla.bunny.org/show_bug.cgi?id=148437 -- detta ska vara
 # "skärm"
 #: ../bdk/bdkbango.c:538
 #: ../btk/btkinvisible.c:86

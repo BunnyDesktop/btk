@@ -20,7 +20,7 @@
  */
 
 /*
- * Author: Anders Carlsson <andersca@gnome.org>
+ * Author: Anders Carlsson <andersca@bunny.org>
  *
  * Modified by the BTK+ Team and others 1997-2004.  See the AUTHORS
  * file for a list of people on the BTK+ Team.  See the ChangeLog

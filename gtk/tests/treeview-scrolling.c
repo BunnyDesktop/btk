@@ -798,7 +798,7 @@ scroll_new_row_tree (ScrollFixture *fixture,
 	 *
 	 * This issue has been reported by Miroslav Rajcic on
 	 * btk-app-devel-list:
-	 * http://mail.gnome.org/archives/btk-app-devel-list/2008-December/msg00068.html
+	 * http://mail.bunny.org/archives/btk-app-devel-list/2008-December/msg00068.html
 	 */
 
 	btk_widget_show_all (fixture->window);
@@ -833,7 +833,7 @@ scroll_new_row_tree (ScrollFixture *fixture,
 	}
 }
 
-/* Test for GNOME bugzilla bug 359231; tests "recovery when removing a bunch of
+/* Test for BUNNY bugzilla bug 359231; tests "recovery when removing a bunch of
  * rows at the bottom.
  */
 static void
@@ -879,7 +879,7 @@ test_bug316689 (ScrollFixture *fixture,
 }
 
 
-/* Test for GNOME bugzilla bug 359231 */
+/* Test for BUNNY bugzilla bug 359231 */
 static void
 test_bug359231 (void)
 {

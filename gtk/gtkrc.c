@@ -2060,7 +2060,7 @@ btk_rc_get_style (BtkWidget *widget)
  * the raw components used in matching. This function may be useful
  * when creating pseudo-widgets that should be themed like widgets but
  * don't actually have corresponding BTK+ widgets. An example of this
- * would be items inside a GNOME canvas widget.
+ * would be items inside a BUNNY canvas widget.
  *
  * The action of btk_rc_get_style() is similar to:
  * |[

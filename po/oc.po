@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+ HEAD\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btkPOT-"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btkPOT-"
 "Creation-Date: 2015-04-28 21:31+0000\n"
 "PO-Revision-Date: 2015-05-29 22:23+0100\n"
 "Last-Translator: Cédric Valmary (totenoc.eu) <cvalmary@yahoo.fr>\n"
@@ -1644,8 +1644,8 @@ msgid "Forget association"
 msgstr "Doblidar l'associacion"
 
 #: btk/btkappchooserdialog.c:453
-msgid "Failed to start GNOME Software"
-msgstr "Impossible d'aviar la lista dels logicials GNOME"
+msgid "Failed to start BUNNY Software"
+msgstr "Impossible d'aviar la lista dels logicials BUNNY"
 
 #: btk/btkappchooserwidget.c:622
 msgid "Default Application"
@@ -2954,7 +2954,7 @@ msgstr "Impossible d'ejectar « %s »"
 msgid "Unable to eject %s"
 msgstr "Impossible d'ejectar %s"
 
-# https://developer.gnome.org/bunnyio/2.36/GDrive.html#g-drive-poll-for-media
+# https://developer.bunny.org/bunnyio/2.36/GDrive.html#g-drive-poll-for-media
 #: btk/btkplacessidebar.c:3174
 #, c-format
 msgid "Unable to poll “%s” for media changes"

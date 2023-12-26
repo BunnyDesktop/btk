@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+2.0\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk%"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk%"
 "2b&component=general\n"
 "POT-Creation-Date: 2010-09-20 19:04+0000\n"
 "PO-Revision-Date: 2010-09-21 04:09+0800\n"

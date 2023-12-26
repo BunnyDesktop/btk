@@ -4,7 +4,7 @@ libdir=@libdir@
 includedir=@includedir@
 
 Name: Bail
-Description: GNOME Accessibility Implementation Library
+Description: BUNNY Accessibility Implementation Library
 Version: @VERSION@
 Requires: batk btk+-2.0
 Libs: -L${libdir} -lbailutil

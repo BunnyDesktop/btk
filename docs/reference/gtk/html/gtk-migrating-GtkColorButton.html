@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeColorPicker to BtkColorButton: BTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyColorPicker to BtkColorButton: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
 <link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
-<link rel="prev" href="btk-migrating-BtkAboutDialog.html" title="Migrating from GnomeAbout to BtkAboutDialog">
-<link rel="next" href="btk-migrating-BtkAssistant.html" title="Migrating from GnomeDruid to BtkAssistant">
+<link rel="prev" href="btk-migrating-BtkAboutDialog.html" title="Migrating from BunnyAbout to BtkAboutDialog">
+<link rel="next" href="btk-migrating-BtkAssistant.html" title="Migrating from BunnyDruid to BtkAssistant">
 <meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
@@ -21,14 +21,14 @@
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="btk-migrating-BtkColorButton"></a>Migrating from GnomeColorPicker to BtkColorButton</h2></div></div></div>
+<a name="btk-migrating-BtkColorButton"></a>Migrating from BunnyColorPicker to BtkColorButton</h2></div></div></div>
 <p>
     Since version 2.6, BTK+ provides the <a class="link" href="BtkColorButton.html" title="BtkColorButton"><span class="type">BtkColorButton</span></a>
-    widget as a replacement for the <span class="structname">GnomeColorPicker</span> 
-    widget in the libgnomeui library.
+    widget as a replacement for the <span class="structname">BunnyColorPicker</span> 
+    widget in the libbunnyui library.
   </p>
 <p>
-   Porting an application from <span class="structname">GnomeColorPicker</span> to 
+   Porting an application from <span class="structname">BunnyColorPicker</span> to 
    <span class="structname">BtkColorButton</span> is very simple. 
    <span class="structname">BtkColorButton</span> doesn't support dithering 
    (since it is rarely needed on modern hardware), and it doesn't have 
@@ -44,7 +44,7 @@
 3</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="n">guint</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">;</span>
 <span class="cm">/* ... */</span>
-<span class="n">gnome_color_picker_set_i8</span> <span class="p">(</span><span class="n">color_picker</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">);</span></pre></td>
+<span class="n">bunny_color_picker_set_i8</span> <span class="p">(</span><span class="n">color_picker</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span><span class="p">,</span> <span class="n">alpha</span><span class="p">);</span></pre></td>
       </tr>
     </tbody>
   </table>
@@ -78,8 +78,8 @@
 
 <p>   
   and similarly for the setters taking other number formats. For 
-  <code class="function"><code class="function">gnome_color_picker_set_i16()</code></code> no conversion is needed, 
-  for <code class="function"><code class="function">gnome_color_picker_set_d()</code></code>, you need to convert 
+  <code class="function"><code class="function">bunny_color_picker_set_i16()</code></code> no conversion is needed, 
+  for <code class="function"><code class="function">bunny_color_picker_set_d()</code></code>, you need to convert 
   the color components like this:
    </p>
 <div class="informalexample">

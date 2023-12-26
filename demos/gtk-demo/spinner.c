@@ -79,7 +79,7 @@ do_spinner (BtkWidget *do_widget)
     btk_container_add (BTK_CONTAINER (vbox), button);
 
     /* Start by default to test for:
-     * https://bugzilla.gnome.org/show_bug.cgi?id=598496 */
+     * https://bugzilla.bunny.org/show_bug.cgi?id=598496 */
     on_play_clicked (NULL, NULL);
   }
 

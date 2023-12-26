@@ -2,11 +2,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeDruid to BtkAssistant: BTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyDruid to BtkAssistant: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
 <link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
 <link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
-<link rel="prev" href="btk-migrating-BtkColorButton.html" title="Migrating from GnomeColorPicker to BtkColorButton">
+<link rel="prev" href="btk-migrating-BtkColorButton.html" title="Migrating from BunnyColorPicker to BtkColorButton">
 <link rel="next" href="decorating-the-assistant-pages.html" title="Decorating the assistant pages">
 <meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
@@ -22,13 +22,13 @@
 <div class="chapter">
 <div class="titlepage"><div>
 <div><h2 class="title">
-<a name="btk-migrating-BtkAssistant"></a>Migrating from GnomeDruid to BtkAssistant</h2></div>
+<a name="btk-migrating-BtkAssistant"></a>Migrating from BunnyDruid to BtkAssistant</h2></div>
 <div><div class="author">
 <h3 class="author">
 <span class="firstname">Carlos</span> <span class="surname">Garnacho</span>
 </h3>
 <div class="affiliation"><div class="address"><p><br>
-	  <code class="email">&lt;<a class="email" href="mailto:carlosggnome.org">carlosg<em class="parameter"><code>gnome.org</code></em></a>&gt;</code><br>
+	  <code class="email">&lt;<a class="email" href="mailto:carlosgbunny.org">carlosg<em class="parameter"><code>bunny.org</code></em></a>&gt;</code><br>
 	</p></div></div>
 </div></div>
 </div></div>
@@ -39,12 +39,12 @@
 </dl></div>
 <p>
     Since version 2.10, BTK+ provides the BtkAssistant widget as a replacement
-    for the <span class="structname">GnomeDruid</span> widget in the libgnomeui 
+    for the <span class="structname">BunnyDruid</span> widget in the libbunnyui 
     library.
   </p>
 <p>
     Conceptually, both <span class="structname">BtkAssistant</span> and
-    <span class="structname">GnomeDruid</span> do the same task, but there are 
+    <span class="structname">BunnyDruid</span> do the same task, but there are 
     several areas where the API has been completely redesigned, so this 
     chapter covers the main changes between both widgets.
   </p>
@@ -52,35 +52,35 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="inserting-pages"></a>Inserting pages</h2></div></div></div>
 <p>
-      <span class="structname">GnomeDruid</span> was implemented as a container for
-	 <span class="structname">GnomeDruidPage</span> abstract objects, which are
-         implemented by the <span class="structname">GnomeDruidPageEdge</span> and 
-         <span class="structname">GnomeDruidPageStandard</span> widgets. Instead, 
+      <span class="structname">BunnyDruid</span> was implemented as a container for
+	 <span class="structname">BunnyDruidPage</span> abstract objects, which are
+         implemented by the <span class="structname">BunnyDruidPageEdge</span> and 
+         <span class="structname">BunnyDruidPageStandard</span> widgets. Instead, 
          <span class="structname">BtkAssistant</span> allows any widget to be a page, 
          and implements per-page settings (such as page type or title) as 
          child properties. So instead of:
     </p>
 <pre class="programlisting">
 /* Page 1 */
-page = gnome_druid_page_edge_new (GNOME_EDGE_START);
-gnome_druid_page_edge_set_test (GNOME_DRUID_PAGE_EDGE (page),
+page = bunny_druid_page_edge_new (BUNNY_EDGE_START);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
                                 "Welcome to the assistant, it will make your life easier");
 btk_widget_show (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
 
 /* Page 2 */
-page = gnome_druid_page_standard_new ();
-btk_container_add (BTK_CONTAINER (GNOME_DRUID_PAGE_STANDARD (page)-&gt;vbox,
+page = bunny_druid_page_standard_new ();
+btk_container_add (BTK_CONTAINER (BUNNY_DRUID_PAGE_STANDARD (page)-&gt;vbox,
                    create_page1 ());
 btk_widget_show_all (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
 
 /* Page 3 */
-page = gnome_druid_page_edge_new (GNOME_EDGE_FINISH);
-gnome_druid_page_edge_set_test (GNOME_DRUID_PAGE_EDGE (page),
+page = bunny_druid_page_edge_new (BUNNY_EDGE_FINISH);
+bunny_druid_page_edge_set_test (BUNNY_DRUID_PAGE_EDGE (page),
                                 "Now you are done, your life is easier");
 btk_widget_show (page);
-gnome_druid_append_page (GNOME_DRUID (druid), GNOME_DRUID_PAGE (page));
+bunny_druid_append_page (BUNNY_DRUID (druid), BUNNY_DRUID_PAGE (page));
     </pre>
 <p>
       You have to write:

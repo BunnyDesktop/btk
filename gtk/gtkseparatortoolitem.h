@@ -1,6 +1,6 @@
 /* btktoggletoolbutton.h
  *
- * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
+ * Copyright (C) 2002 Anders Carlsson <andersca@bunny.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
  *
  * This library is free software; you can redistribute it and/or

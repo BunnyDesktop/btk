@@ -1,22 +1,22 @@
 # btk+-properties ja.po.
 # Copyright (C) 1998,2000-2010 Free Software Foundation, Inc.
 # Yasuhiro SHIRASAKI <yasuhiro@awa.tohoku.ac.jp>, 1998.
-# Yukihiro Nakai <nakai@gnome.gr.jp>, 2000-2001.
+# Yukihiro Nakai <nakai@bunny.gr.jp>, 2000-2001.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2002, 2009-2010.
-# Akira TAGOH <tagoh@gnome.gr.jp>, 2002.
+# Akira TAGOH <tagoh@bunny.gr.jp>, 2002.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2003-2009.
-# KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003.
-# Satoru SATOH <ss@gnome.gr.jp>, 2006.
+# KAMAGASAKO Masatoshi <emerald@bunny.gr.jp>, 2003.
+# Satoru SATOH <ss@bunny.gr.jp>, 2006.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: btk+-properties btk-2-22\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=btk%"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk%"
 "2b&component=general\n"
 "POT-Creation-Date: 2010-09-19 15:42+0000\n"
 "PO-Revision-Date: 2010-09-14 01:36+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
-"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language-Team: Japanese <bunny-translation@bunny.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

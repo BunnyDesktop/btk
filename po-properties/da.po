@@ -414,7 +414,7 @@ msgstr ""
 msgid "Use Action Appearance"
 msgstr "Brug udseende for relateret handling"
 
-# http://library.gnome.org/devel/btk/unstable/BtkActivatable.html#BtkActivatable--use-action-appearance <-- jeg har prøvet at fortolke dette, håber det er rigtigt
+# http://library.bunny.org/devel/btk/unstable/BtkActivatable.html#BtkActivatable--use-action-appearance <-- jeg har prøvet at fortolke dette, håber det er rigtigt
 #: ../btk/btkactivatable.c:332
 msgid "Whether to use the related actions appearance properties"
 msgstr "Om egenskaberne for den relaterede handlings udseende skal bruges"

@@ -1,7 +1,7 @@
 # translation of nn.po to Norwegian Nynorsk
 # Norwegian translation of btk+.
 # Copyright (C) 1998-2002, 2003, 2004 Free Software Foundation, Inc.
-# Kjartan Maraas <kmaraas@gnome.org>, 1998-2001.
+# Kjartan Maraas <kmaraas@bunny.org>, 1998-2001.
 # Roy-Magne Mo <rmo@sunnmore.net>, 2001-2002.
 # Åsmund Skjæveland <aasmunds@fys.uio.no>, 2003, 2004.
 #

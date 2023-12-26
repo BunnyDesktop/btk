@@ -4,16 +4,16 @@
 ]>
 <chapter id="btk-migrating-BtkColorButton">
 
-  <title>Migrating from GnomeColorPicker to BtkColorButton</title>
+  <title>Migrating from BunnyColorPicker to BtkColorButton</title>
 
   <para>
     Since version 2.6, BTK+ provides the #BtkColorButton
-    widget as a replacement for the <structname>GnomeColorPicker</structname> 
-    widget in the libgnomeui library.
+    widget as a replacement for the <structname>BunnyColorPicker</structname> 
+    widget in the libbunnyui library.
   </para>
 
   <para>
-   Porting an application from <structname>GnomeColorPicker</structname> to 
+   Porting an application from <structname>BunnyColorPicker</structname> to 
    <structname>BtkColorButton</structname> is very simple. 
    <structname>BtkColorButton</structname> doesn't support dithering 
    (since it is rarely needed on modern hardware), and it doesn't have 
@@ -22,7 +22,7 @@
    <informalexample><programlisting>
    guint red, green, blue, alpha;
    /* ... */
-   gnome_color_picker_set_i8 (color_picker, red, green, blue, alpha);
+   bunny_color_picker_set_i8 (color_picker, red, green, blue, alpha);
    </programlisting></informalexample>   
    you have to write
    <informalexample><programlisting>
@@ -35,8 +35,8 @@
    btk_color_button_set_alpha (color_picker, alpha &lt;&lt; 8);
    </programlisting></informalexample>   
   and similarly for the setters taking other number formats. For 
-  <function>gnome_color_picker_set_i16()</function> no conversion is needed, 
-  for <function>gnome_color_picker_set_d()</function>, you need to convert 
+  <function>bunny_color_picker_set_i16()</function> no conversion is needed, 
+  for <function>bunny_color_picker_set_d()</function>, you need to convert 
   the color components like this:
    <informalexample><programlisting>  
    color.red = (guint16) (red * 65535.0 + 0.5);

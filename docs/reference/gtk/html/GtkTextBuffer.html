@@ -1685,7 +1685,7 @@ widget is in the buffer.</p>
 <pre class="programlisting"><span class="returnvalue">void</span>
 btk_text_buffer_insert_pixbuf (<em class="parameter"><code><a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a> *buffer</code></em>,
                                <em class="parameter"><code><a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a> *iter</code></em>,
-                               <em class="parameter"><code><a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>);</pre>
+                               <em class="parameter"><code><a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> *pixbuf</code></em>);</pre>
 <p>Inserts an image into the text buffer at <em class="parameter"><code>iter</code></em>
 . The image will be
 counted as one character in character counts, and when obtaining
@@ -1716,7 +1716,7 @@ not. e.g. see <a class="link" href="BtkTextBuffer.html#btk-text-buffer-get-slice
 </tr>
 <tr>
 <td class="parameter_name"><p>pixbuf</p></td>
-<td class="parameter_description"><p>a <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a></p></td>
+<td class="parameter_description"><p>a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a></p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 </tbody>
@@ -4426,9 +4426,9 @@ in <em class="parameter"><code>textbuffer</code></em>
 <pre class="programlisting"><span class="returnvalue">void</span>
 user_function (<a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a> *textbuffer,
                <a class="link" href="BtkTextIter.html" title="BtkTextIter"><span class="type">BtkTextIter</span></a>   *location,
-               <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>     *pixbuf,
+               <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>     *pixbuf,
                <span class="type">gpointer</span>       user_data)</pre>
-<p>The ::insert-pixbuf signal is emitted to insert a <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>
+<p>The ::insert-pixbuf signal is emitted to insert a <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a>
 
 in a <a class="link" href="BtkTextBuffer.html" title="BtkTextBuffer"><span class="type">BtkTextBuffer</span></a>. Insertion actually occurs in the default handler.</p>
 <p>Note that if your handler runs before the default handler it must not
@@ -4464,7 +4464,7 @@ in <em class="parameter"><code>textbuffer</code></em>
 </tr>
 <tr>
 <td class="parameter_name"><p>pixbuf</p></td>
-<td class="parameter_description"><p>the <a href="http://library.gnome.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> to be inserted</p></td>
+<td class="parameter_description"><p>the <a href="http://library.bunny.org/devel/bdk-pixbuf/unstable/bdk-pixbuf-The-BdkPixbuf-Structure.html#BdkPixbuf-struct"><span class="type">BdkPixbuf</span></a> to be inserted</p></td>
 <td class="parameter_annotations"> </td>
 </tr>
 <tr>

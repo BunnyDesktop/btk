@@ -1,6 +1,6 @@
 /* testmultidisplay.c
  * Copyright (C) 2008 Christian Kellner
- * Author: Christian Kellner <gicmo@gnome.org>
+ * Author: Christian Kellner <gicmo@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

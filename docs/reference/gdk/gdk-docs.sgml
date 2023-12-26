@@ -10,10 +10,10 @@
     <releaseinfo>
       This document is for BDK 2 library; the latest versions can be found online at
       <ulink role="online-location"
-      url="http://library.gnome.org/devel/bdk2/">http://library.gnome.org/devel/bdk2/</ulink>.
+      url="http://library.bunny.org/devel/bdk2/">http://library.bunny.org/devel/bdk2/</ulink>.
       If you're looking for the newer BDK 3 series of libraries,
       see <ulink role="online-location"
-      url="http://library.gnome.org/devel/bdk3/">http://library.gnome.org/devel/bdk3/</ulink>.
+      url="http://library.bunny.org/devel/bdk3/">http://library.bunny.org/devel/bdk3/</ulink>.
     </releaseinfo>
   </bookinfo>
 

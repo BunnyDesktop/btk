@@ -292,7 +292,7 @@ EXTRA_DIST += 			\
 	merge-1.ui		\
 	merge-2.ui		\
 	merge-3.ui		\
-	gnome-textfile.png	\
+	bunny-textfile.png	\
 	makefile.msc		\
 	file-chooser-test-dir/empty \
 	file-chooser-test-dir/text.txt

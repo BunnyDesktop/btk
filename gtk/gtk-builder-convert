@@ -34,7 +34,7 @@ When OUTPUT is -, write to standard output.
 Examples:
   btk-builder-convert preference.glade preferences.ui
 
-Report bugs to https://gitlab.gnome.org/GNOME/btk/issues/new
+Report bugs to https://gitlab.bunny.org/BUNNY/btk/issues/new
 """
 
 from __future__ import print_function

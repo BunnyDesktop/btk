@@ -411,7 +411,7 @@ create_icon_view (void)
   pixbuf = bdk_pixbuf_new_from_file ("folder.png", NULL);
   btk_list_store_set (list_store, &iter, 0, "One", 1, pixbuf, -1);
   btk_list_store_append (list_store, &iter);
-  pixbuf = bdk_pixbuf_new_from_file ("gnome.png", NULL);
+  pixbuf = bdk_pixbuf_new_from_file ("bunny.png", NULL);
   btk_list_store_set (list_store, &iter, 0, "Two", 1, pixbuf, -1);
 
   icon_view = btk_icon_view_new();

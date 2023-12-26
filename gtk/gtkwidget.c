@@ -1347,7 +1347,7 @@ btk_widget_class_init (BtkWidgetClass *klass)
    * to enable the #BDK_EXPOSURE_MASK mask.
    *
    * Note that the ::expose-event signal has been replaced by a ::draw
-   * signal in BTK+ 3. The <link linkend="http://library.gnome.org/devel/btk3/3.0/btk-migrating-2-to-3.html">BTK+ 3 migration guide</link>
+   * signal in BTK+ 3. The <link linkend="http://library.bunny.org/devel/btk3/3.0/btk-migrating-2-to-3.html">BTK+ 3 migration guide</link>
    * for hints on how to port from ::expose-event to ::draw.
    *
    * Returns: %TRUE to stop other handlers from being invoked for the event.
@@ -4842,7 +4842,7 @@ btk_widget_send_expose (BtkWidget *widget,
 static gboolean
 event_window_is_still_viewable (BdkEvent *event)
 {
-  /* Some programs, such as gnome-theme-manager, fake widgets
+  /* Some programs, such as bunny-theme-manager, fake widgets
    * into exposing onto a pixmap by sending expose events with
    * event->window pointing to a pixmap
    */
@@ -10223,12 +10223,12 @@ btk_requisition_get_type (void)
  * 
  * If no accessibility library is loaded (i.e. no BATK implementation library is 
  * loaded via <envar>BTK_MODULES</envar> or via another application library, 
- * such as libgnome), then this #BatkObject instance may be a no-op. Likewise, 
+ * such as libbunny), then this #BatkObject instance may be a no-op. Likewise, 
  * if no class-specific #BatkObject implementation is available for the widget 
  * instance in question, it will inherit an #BatkObject implementation from the 
  * first ancestor class for which such an implementation is defined.
  *
- * The documentation of the <ulink url="http://developer.gnome.org/doc/API/2.0/batk/index.html">BATK</ulink>
+ * The documentation of the <ulink url="http://developer.bunny.org/doc/API/2.0/batk/index.html">BATK</ulink>
  * library contains more information about accessible objects and their uses.
  *
  * Returns: (transfer none): the #BatkObject associated with @widget

@@ -1,5 +1,5 @@
 # translation of ka.po to Georgian
-# Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@gnome.org>, 2008.
+# Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@bunny.org>, 2008.
 # btk+-properties Georgian translation
 # Copyright (C) 2006, Gia Shervashidze <giasher@telenet.ge>
 # This file is distributed under the same license as the BTK+-PROPERTIES package.
@@ -9,8 +9,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-10 11:56-0400\n"
 "PO-Revision-Date: 2008-03-19 16:31+0100\n"
-"Last-Translator: Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@gnome.org>\n"
-"Language-Team: Georgian <http://mail.gnome.org/mailman/listinfo/gnome-ge-"
+"Last-Translator: Vladimer Sichinava ვლადიმერ სიჭინავა <vsichi@bunny.org>\n"
+"Language-Team: Georgian <http://mail.bunny.org/mailman/listinfo/bunny-ge-"
 "list>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"

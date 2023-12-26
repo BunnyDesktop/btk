@@ -4,12 +4,12 @@
 ]>
 <chapter id="btk-migrating-BtkIconView">
 
-  <title>Migrating from GnomeIconList to BtkIconView</title>
+  <title>Migrating from BunnyIconList to BtkIconView</title>
 
   <para>
     Since version 2.6, BTK+ provides the #BtkIconView widget. It is similar in 
-    functionality to the <structname>GnomeIconList</structname> widget in the 
-    libgnomeui library, both widgets provide a way to lay out named icons in 
+    functionality to the <structname>BunnyIconList</structname> widget in the 
+    libbunnyui library, both widgets provide a way to lay out named icons in 
     a grid. The distinctive feature of the BTK+ widget is that it follows the 
     model-view pattern, allowing it to share the actual data (i.e. the names 
     and images of the icons) with other views.
@@ -17,24 +17,24 @@
 
   <para>
     #BtkIconView currently doesn't support some features found in 
-    <structname>GnomeIconList</structname>. Icons can not be positioned freely, 
+    <structname>BunnyIconList</structname>. Icons can not be positioned freely, 
     the spacing is not customizable, and it is not possible to edit the names of 
     icons. 
   </para>
 
   <para>
-    To convert an application that uses <structname>GnomeIconList</structname> 
+    To convert an application that uses <structname>BunnyIconList</structname> 
     to #BtkIconView, the first step is to organize your data in a #BtkTreeModel. 
-    <structname>GnomeIconList</structname> lets you directly insert data with 
-    gnome_icon_list_insert() and gnome_icon_list_insert_pixbuf() and their
+    <structname>BunnyIconList</structname> lets you directly insert data with 
+    bunny_icon_list_insert() and bunny_icon_list_insert_pixbuf() and their
     append variants. So, if you previously had a function to fill your icon 
     list similar to this one:
     <informalexample><programlisting>
       void 
-      fill_icon_list (GnomeIconList *icon_list)
+      fill_icon_list (BunnyIconList *icon_list)
       {
-        gnome_icon_list_append (icon_list, "file1.png", "Icon 1");
-        gnome_icon_list_append (icon_list, "file2.png", "Icon 2");
+        bunny_icon_list_append (icon_list, "file1.png", "Icon 1");
+        bunny_icon_list_append (icon_list, "file2.png", "Icon 2");
 
         /* more icons ... */ 
       }
@@ -100,8 +100,8 @@
 
   <para>
     Your application may make use of extra data attached to the icons in the 
-    <structname>GnomeIconList</structname> via gnome_icon_list_set_icon_data() and 
-    gnome_icon_list_get_icon_data(). With #BtkIconView such data is most 
+    <structname>BunnyIconList</structname> via bunny_icon_list_set_icon_data() and 
+    bunny_icon_list_get_icon_data(). With #BtkIconView such data is most 
     conveniently stored in an extra column in the tree model, so you would 
     call a function like
     <informalexample><programlisting>
@@ -126,18 +126,18 @@
 
   <para>
     There is a number of minor API differences between 
-    <structname>GnomeIconList</structname> and 
+    <structname>BunnyIconList</structname> and 
     <structname>BtkIconView</structname>:
     <itemizedlist> 
      <listitem><para>
-       <type>GnomeIconListMode</type> is replaced by the 
+       <type>BunnyIconListMode</type> is replaced by the 
        <link linkend="BtkIconView--orientation">orientation</link> 
        property of <structname>BtkIconView</structname>
      </para></listitem>
      <listitem><para>
        <structname>BtkIconView</structname> can not be frozen in the same 
-       way as <structname>GnomeIconList</structname> can with 
-       gnome_icon_list_freeze() and gnome_icon_list_thaw(). Instead you can 
+       way as <structname>BunnyIconList</structname> can with 
+       bunny_icon_list_freeze() and bunny_icon_list_thaw(). Instead you can 
        replace the whole model of a <structname>BtkIconView</structname>, 
        instead of doing many small changes to the existing model.
      </para></listitem>

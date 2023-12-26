@@ -488,7 +488,7 @@ _bdk_windowing_after_process_all_updates (void)
       _bdk_quartz_drawable_flush (NULL);
 
       /* 10.14 needs to be told that the view needs to be redrawn, see
-       * https://gitlab.gnome.org/GNOME/btk/issues/1479 */
+       * https://gitlab.bunny.org/BUNNY/btk/issues/1479 */
       if (bdk_quartz_osx_version() >= BDK_OSX_MOJAVE)
            [[nswindow contentView] setNeedsDisplay:YES];
       [nswindow enableFlushWindow];

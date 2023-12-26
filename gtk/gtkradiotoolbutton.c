@@ -1,6 +1,6 @@
 /* btkradiotoolbutton.c
  *
- * Copyright (C) 2002 Anders Carlsson <andersca@gnome.og>
+ * Copyright (C) 2002 Anders Carlsson <andersca@bunny.og>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
  * Copyright (C) 2003 Soeren Sandmann <sandmann@daimi.au.dk>
  *

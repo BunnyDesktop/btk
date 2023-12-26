@@ -92,7 +92,7 @@ about_cb (BtkAction *action,
     "Library General Public License for more details.\n"
     "\n"
     "You should have received a copy of the GNU Library General Public\n"
-    "License along with the Gnome Library; see the file COPYING.LIB.  If not,\n"
+    "License along with the Bunny Library; see the file COPYING.LIB.  If not,\n"
     "write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,\n"
     "Boston, MA 02111-1307, USA.\n";
 

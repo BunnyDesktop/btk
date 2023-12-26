@@ -1,4 +1,4 @@
-# translation of btk.gnome-2-14.ne.po to Nepali
+# translation of btk.bunny-2-14.ne.po to Nepali
 # translation of btk+.HEAD.po to Nepali
 # Pawan Chitrakar <pawan@nplinux.org>, 2004.
 # Jyotshna Shrestha <shresthajyo@hotmail.com>, 2005.
@@ -9,7 +9,7 @@
 # Mahesh subedi <submanesh@hotmail.com>, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: btk.gnome-2-14.ne\n"
+"Project-Id-Version: btk.bunny-2-14.ne\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-10 11:56-0400\n"
 "PO-Revision-Date: 2006-07-07 14:33+0545\n"

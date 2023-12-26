@@ -8,7 +8,7 @@
  * - Ronald S. Bultje <rbultje@ronald.bitfreak.net>
  * - Bastien Nocera <bnocera@redhat.com>
  * - Jan Arne Petersen <jpetersen@jpetersen.org>
- * - Christian Persch <chpe@svn.gnome.org>
+ * - Christian Persch <chpe@svn.bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
