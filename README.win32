@@ -1,7 +1,7 @@
 The Win32 backend in BTK+ is not as stable or correct as the X11 one.
 
 For prebuilt runtime and developer packages see
-http://ftp.bunny.org/pub/bunny/binaries/win32/
+http://ftp.gnome.org/pub/gnome/binaries/win32/
 
 Building BTK+ on Win32
 ======================
@@ -9,7 +9,7 @@ Building BTK+ on Win32
 First you obviously need developer packages for the compile-time
 dependencies: BDK-Pixbuf, Bango, batk, bunnylib, gettext-runtime, libiconv
 at least.  See
-http://ftp.bunny.org/pub/bunny/binaries/win32/dependencies.
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies.
 
 For people compiling BTK+ on Visual C++ 2005 or later, it is recommended
 that you build BDK-Pixbuf, Bango, batk, bunnylib with the same compiler to avoid
@@ -162,11 +162,11 @@ provided that the afore-mentioned dependencies are installed. They will
 build BDK with the Win32 backend, BTK+ itself and the btk-demo program.
 (The BAIL and BAIL-util sources are not built by this method yet)
 
-Please refer to the following BUNNY Live! page for a more detailed ouline
+Please refer to the following GNOME Live! page for a more detailed ouline
 on the process of building the BTK+ stack and its dependencies with Visual
 C++:
 
-https://live.bunny.org/BTK%2B/Win32/MSVCCompilationOfBTKStack 
+https://live.gnome.org/BTK%2B/Win32/MSVCCompilationOfBTKStack 
 
 Alternative 1 also generates Microsoft import libraries (.lib), if you
 have lib.exe available. It might also work for cross-compilation from

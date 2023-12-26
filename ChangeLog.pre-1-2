@@ -55,7 +55,7 @@ Wed Feb 24 23:12:09 1999  Owen Taylor  <otaylor@redhat.com>
 Wed Feb 24 20:34:59 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Changed bug reporting instructions to
-	describe using the BUNNY bug tracking system.
+	describe using the GNOME bug tracking system.
 
 Wed Feb 24 19:08:51 1999  Owen Taylor  <otaylor@redhat.com>
 
@@ -92,7 +92,7 @@ Wed Feb 24 11:19:12 1999  Tim Janik  <timj@btk.org>
 
 	* btk/btkmain.c:
 	* btk/btkobject.c: hack time, make --btk-debug=objects work even
-	after btk_type_init(), this is to "fix" bunny's arg parsing oddities.
+	after btk_type_init(), this is to "fix" gnome's arg parsing oddities.
 
 	* btk/btktypeutils.h: don't segfault in BTK_CHECK_CLASS_TYPE and
 	BTK_CHECK_TYPE upon NULL pointers.
@@ -3764,7 +3764,7 @@ Mon Nov 16 19:19:00 CST 1998 Shawn T. Amundson <amundson@btk.org>
 
 	* btk/btkpixmap.h
 	  btk/btkpixmap.c: Pixmaps now grey out when insensitive,
-	  code thanks to BUNNY stock by Eckehard Berns.  New function
+	  code thanks to GNOME stock by Eckehard Berns.  New function
 	  btk_pixmap_set_build_insensitive to provide ability to turn 
 	  this off.
 
@@ -8139,7 +8139,7 @@ Sat May 23 17:48:58 1998  Owen Taylor  <otaylor@btk.org>
 1998-05-22  Miguel de Icaza  <miguel@nuclecu.unam.mx>
 
 	* btk/btkfeatures.h.in: Define BTK_HAVE_RC_SET_IMAGE_LOADER, to be
-	used in bunny-libs
+	used in gnome-libs
 
 1998-05-22    <sopwith@redhat.com>
 

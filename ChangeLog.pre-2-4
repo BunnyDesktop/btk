@@ -68,7 +68,7 @@ Mon Mar 15 13:50:14 2004  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkcellrenderertext.c (btk_cell_renderer_text_set_property):
 	Don't leak the temporary font description. (Nils O. Selåsdal)
 
-Mon Mar 15 12:51:17 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Mar 15 12:51:17 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (location_popup_handler): Only show
 	the title string in OPEN/SELECT_FOLDER mode as it's open-specific.
@@ -92,7 +92,7 @@ Mon Mar 15 11:40:43 2004  Owen Taylor  <otaylor@redhat.com>
 	to operate on the text, rather than recomputing the
 	information.
 
-Mon Mar 15 10:35:19 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Mar 15 10:35:19 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (shortcuts_add_volumes): set
 	changing_folders to be true so we don't trigger a callback when we
@@ -110,7 +110,7 @@ Mon Mar 15 09:54:36 2004  Owen Taylor  <otaylor@redhat.com>
 	as a current event ... handles the case where a dialog
 	is triggered from a control accelerator better.
 
-Mon Mar 15 08:48:48 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Mar 15 08:48:48 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserentry.c (match_selected_callback): implement
 	correctly.
@@ -140,7 +140,7 @@ Mon Mar 15 08:48:48 2004  Jonathan Blandford  <jrb@bunny.org>
 	BtkFileChooserDefault member. Leftover from my original patch
 	for bug #136987.
 
-Mon Mar 15 01:50:28 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Mar 15 01:50:28 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btkfilechooserentry.c: Rewritten to use the BtkEntryCompletion
 	API more correctly.  Now pops down the dropdown well.
@@ -201,7 +201,7 @@ Sun Mar 14 22:32:36 2004  Owen Taylor  <otaylor@redhat.com>
 	FALSE (match). Handle %NULL string values gracefully.
 	Remove unused variable. (#135962, Mark McLoughlin)
 
-2004-03-14  Morten Welinder  <terra@bunny.org>
+2004-03-14  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkfilesystemunix.c: Kill some debug g_prints.
 
@@ -274,12 +274,12 @@ Mon Mar 15 02:36:07 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkentrycompletion.c (btk_entry_completion_class_init): Add
 	some signal docs.
 
-Sun Mar 14 15:38:39 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar 14 15:38:39 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkentrycompletion.c (btk_entry_completion_visible_func):
 	always use the match_func, even if text_column is set.
 
-2004-03-14  Morten Welinder  <terra@bunny.org>
+2004-03-14  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkfilesystemunix.c (get_parent_dir): Don't turn "/" into
 	"".
@@ -352,7 +352,7 @@ Sat Mar 13 21:37:44 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkcombobox.c (btk_combo_box_list_key_press): Pop down the
 	list when an item is selected via the keyboard.
 
-2004-03-13  Anders Carlsson  <andersca@bunny.org>
+2004-03-13  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilesystemunix.c: (remove_trailing_slash),
 	(btk_file_system_unix_get_folder),
@@ -460,7 +460,7 @@ Fri Mar 12 15:06:44 2004  Owen Taylor  <otaylor@redhat.com>
 	(get_response_data): Add a "create" argument so that we don't
 	unconditionally create the response data.
 
-2004-03-12  Morten Welinder  <terra@bunny.org>
+2004-03-12  Morten Welinder  <terra@gnome.org>
 
 	* tests/Makefile.am: Add new testspinbutton.c
 
@@ -479,7 +479,7 @@ Thu Mar 11 17:51:10 2004  Owen Taylor  <otaylor@redhat.com>
 	Clear preedit string and emit preedit_changed as needed
 	on AIX. (#130617, Philip K Warren)
 
-2004-03-11  Morten Welinder  <terra@bunny.org>
+2004-03-11  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkpathbar.c (_btk_path_bar_set_file_system): Plug leak.
 
@@ -599,7 +599,7 @@ Thu Mar 11 10:28:30 2004  Owen Taylor  <otaylor@redhat.com>
 	an idle handler.
 	(shortcuts_drag_end_cb): New handler; remove the selected bookmark.
 
-Thu Mar 11 01:08:25 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Mar 11 01:08:25 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (location_entry_create): up the
 	width of the entry a tad.
@@ -651,7 +651,7 @@ Wed Mar 10 22:30:23 2004  Matthias Clasen  <maclas@gmx.de>
 	untranslatable "%x" for dates, rather than a custom format.  Fixes
 	#136357.
 
-2004-03-10  Morten Welinder  <terra@bunny.org>
+2004-03-10  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkfilechooserdefault.c
 	(btk_file_chooser_default_add_shortcut_folder): Test validity of
@@ -661,7 +661,7 @@ Wed Mar 10 22:30:23 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* tests/testfilechooser.c (main): Add support for --multiple.
 
-Wed Mar 10 02:41:05 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Mar 10 02:41:05 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c: (btk_path_bar_init), (btk_path_bar_class_init),
 	(remove_settings_signal), (btk_path_bar_dispose),
@@ -674,26 +674,26 @@ Wed Mar 10 02:41:05 2004  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btkpathbar.h: add two elements
 
-	* tests/testfilechooser.c: (main): use bunny-vfs method again to
+	* tests/testfilechooser.c: (main): use gnome-vfs method again to
 	get more testing.
 
-Wed Mar 10 01:17:40 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Mar 10 01:17:40 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c: added 'Desktop' to the list of volumes.  We
 	don't have any more untranlated strings in the dialog.
 
-Wed Mar 10 00:24:24 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Mar 10 00:24:24 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (error_dialog): use uri instead of
 	the pathname for UTF-8 safety.
 
-Wed Mar 10 00:10:47 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Mar 10 00:10:47 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (shortcuts_insert_path): Always
 	check to see if the shortcuts exists.  We don't want to put
 	invalid dirs in the shortcuts pane.
 
-Tue Mar  9 16:40:34 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Mar  9 16:40:34 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (struct _BtkFileChooserDefault):
 	remove unneeded shortuts_swin;
@@ -720,7 +720,7 @@ Tue Mar  9 23:09:46 2004  Matthias Clasen  <maclas@gmx.de>
 	the label that is reparented from the menuitem.  (#136614, Dennis
 	Cranston)
 
-Tue Mar  9 16:19:09 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Mar  9 16:19:09 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c (struct _ButtonData): Encapsulate all of the
 	information about a button in a struct instead of ugly
@@ -782,12 +782,12 @@ Tue Mar  9 09:57:25 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* NEWS: Updates
 
-Tue Mar  9 11:01:45 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Mar  9 11:01:45 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c (btk_path_bar_finalize): unref the correct
 	icon.  Reported by Michael Natterer <mitch@gimp.org>.
 
-2004-03-09  Morten Welinder  <terra@bunny.org>
+2004-03-09  Morten Welinder  <terra@gnome.org>
 
 	* tests/testfilechooser.c (main): Destroy widgets to reveal leaks.
 
@@ -899,12 +899,12 @@ Mon Mar  8 11:57:27 2004  Owen Taylor  <otaylor@redhat.com>
 	btk_combo_box_menu_fill() rather than duplicating
 	a large chunk of code.
 
-2004-03-08  Anders Carlsson  <andersca@bunny.org>
+2004-03-08  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilesystemmodel.c (btk_file_system_model_get_flags): 
 	If max_depth is 0 then we have a list.
 
-2004-03-08  Morten Welinder  <terra@bunny.org>
+2004-03-08  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkpathbar.c (_btk_path_bar_set_path): If we fail, leave
 	widget unchanged.  Explicitly verify final directory.
@@ -912,14 +912,14 @@ Mon Mar  8 11:57:27 2004  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkfilesystemunix.c (btk_file_system_unix_create_folder,
 	get_icon_type, filename_get_info): Protect errno.
 
-2004-03-08  Marco Pesenti Gritti  <marco@bunny.org>
+2004-03-08  Marco Pesenti Gritti  <marco@gnome.org>
 
 	* btk/btkentry.c: (btk_entry_completion_key_press):
 
 	When an action is selected stop the event to be propagated
 	otherwise the activate signal is emitted too. (Bug #133394)
 
-Mon Mar  8 04:50:12 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Mar  8 04:50:12 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (create_path_bar): new function to
 	consolidate creating the path_bar.
@@ -939,19 +939,19 @@ Mon Mar  8 04:50:12 2004  Jonathan Blandford  <jrb@bunny.org>
 
 	* tests/testfilechooser.c: Fix reused error handling.
 
-2004-03-08  Anders Carlsson  <andersca@bunny.org>
+2004-03-08  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilesystemunix.c: (get_icon_for_directory),
 	(btk_file_system_unix_render_icon):
 	Use better icons for home and desktop.
 
-2004-03-08  Anders Carlsson  <andersca@bunny.org>
+2004-03-08  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilechooserentry.c:
 	(_btk_file_chooser_entry_set_base_folder):
 	Set the base folder path in the entry.
 	
-2004-03-08  Christian Neumair  <chris@bunny-de.org>
+2004-03-08  Christian Neumair  <chris@gnome-de.org>
 
 	* tests/testentrycompletion.c: Fix typo.
 
@@ -973,7 +973,7 @@ Sun Mar  7 22:38:49 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkframe.c (btk_frame_paint): Use ythickness, not 
 	xthickness in the calculation of vertical dimensions.
 
-Sun Mar  7 17:38:03 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar  7 17:38:03 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkbutton.c (btk_button_class_init): actually use
 	btk_button_add.
@@ -987,7 +987,7 @@ Sun Mar  7 17:38:03 2004  Jonathan Blandford  <jrb@bunny.org>
 	(update_from_entry): ditto
 	(up_folder_handler): ditto
 
-Sun Mar  7 16:07:08 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar  7 16:07:08 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_init): set
 	redraw_on_allocate, #135902.
@@ -1001,7 +1001,7 @@ Sun Mar  7 22:24:28 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkbutton.c (_btk_button_paint): Don't use xthickness in the
 	height calculation.
 
-Sun Mar  7 14:34:04 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar  7 14:34:04 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	Fixes #121500.
 
@@ -1022,7 +1022,7 @@ Sun Mar  7 14:34:04 2004  Jonathan Blandford  <jrb@bunny.org>
 
 	* tests/makefile.msc : some more tests get build
 
-Sun Mar  7 03:03:57 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar  7 03:03:57 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c
 	(btk_file_chooser_default_get_paths): if action is
@@ -1031,7 +1031,7 @@ Sun Mar  7 03:03:57 2004  Jonathan Blandford  <jrb@bunny.org>
 	(btk_file_chooser_default_should_respond): Allow 'Ok' to be hit if
 	no directory is selected in SELECT_FOLDER mode.
 
-Sat Mar  6 23:31:18 2004  Jonathan Blandford  <jrb@bunny.org>
+Sat Mar  6 23:31:18 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (struct _BtkFileChooserDefault):
 	remove unneeded elements.
@@ -1194,12 +1194,12 @@ Fri Mar  5 11:17:35 2004  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_show_all):
 	s/object/widget/. Makes it compile again.
 
-Fri Mar  5 03:37:14 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Mar  5 03:37:14 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_show_all):
 	chain to the extra_widget.
 
-Fri Mar  5 02:53:41 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Mar  5 02:53:41 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_finalize):
 	Patch from Damon Chaplin to free models when we're finalized,
@@ -1214,7 +1214,7 @@ Fri Mar  5 02:53:41 2004  Jonathan Blandford  <jrb@bunny.org>
 	* btk/btkfilechooserdefault.c (shortcuts_add_current_folder):
 	Don't assume there is a volume for all paths.
 
-Fri Mar  5 01:45:04 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Mar  5 01:45:04 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (shortcuts_append_paths): insert in
 	the correct place instead of naïvely appending.
@@ -1284,7 +1284,7 @@ Wed Mar  3 17:53:21 2004  Owen Taylor  <otaylor@redhat.com>
 	since we don't want to propagate to the in-process
 	plug, if any. (#122949, Michael Meeks)
 
-Thu Mar  4 15:20:55 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Mar  4 15:20:55 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (update_appearance): show the 'New
 	Folder' button in SAVE mode again.
@@ -1301,7 +1301,7 @@ Thu Mar  4 21:45:43 2004  Matthias Clasen  <maclas@gmx.de>
 	of the cell view to the base color of the style, instead of
 	hardwiring white. (#136158)
 
-Thu Mar  4 01:32:19 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Mar  4 01:32:19 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c (btk_path_bar_set_path): Modified patch from
 	muppet <scott@asofyet.org> to keep child directories around if we
@@ -1369,7 +1369,7 @@ Wed Mar  3 16:00:10 2004  Owen Taylor  <otaylor@redhat.com>
 	* configure.in: Strip out the "export-dynamic" libtool
 	option from library link lines. (#124687, James Henstridge)
 
-Wed Mar  3 16:06:03 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Mar  3 16:06:03 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (save_folder_combo_changed_cb):
 	Don't activate the combo if we're in the midst of changing
@@ -1399,11 +1399,11 @@ Wed Mar  3 16:06:03 2004  Jonathan Blandford  <jrb@bunny.org>
 	signal vfunc declaration, adding the first parameter, which is the
 	widget emitting the signal.
 
-2004-03-03  Morten Welinder  <terra@bunny.org>
+2004-03-03  Morten Welinder  <terra@gnome.org>
 
 	* tests/testfilechooser.c (update_preview_cb): Plug leak.
 
-Tue Mar  2 23:39:55 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Mar  2 23:39:55 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdialog.c
 	(file_chooser_widget_default_realized_size_changed): Split
@@ -1577,7 +1577,7 @@ Tue Mar  2 17:55:31 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* btk/btk.def: Add btk_combo_box_entry_new_text().  
 
-2004-03-02  Morten Welinder  <terra@bunny.org>
+2004-03-02  Morten Welinder  <terra@gnome.org>
 
 	* tests/testfilechooser.c (size_prepared_cb): Don't scale images
 	that are small enough to fit.  Avoid using incompatibly typed data
@@ -1707,7 +1707,7 @@ Mon Mar  1 16:32:52 2004  Jonathan Blandford  <jrb@redhat.com>
 	(btk_file_chooser_widget_new_with_backend): new function.  Long
 	name.
 
-2004-03-01  Morten Welinder  <terra@bunny.org>
+2004-03-01  Morten Welinder  <terra@gnome.org>
 
 	* btk/btkfilesystemunix.c (filename_get_info): Only stat when
 	needed.
@@ -1859,7 +1859,7 @@ Sun Feb 29 19:04:33 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* btk/btkmenu.c (btk_menu_leave_notify): Fix a warning.
 
-Sun Feb 29 01:51:27 2004  Jonathan Blandford  <jrb@bunny.org>
+Sun Feb 29 01:51:27 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserembed.c
 	(_btk_file_chooser_embed_get_default_size):  Add g_return_if_fail()
@@ -2092,7 +2092,7 @@ Thu Feb 26 19:48:39 2004  Owen Taylor  <otaylor@redhat.com>
 	* bdk/x11/xsettings-client.c (read_settings): Fix memory leak
 	in case of mismatched property type.
 
-Thu Feb 26 18:25:57 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Feb 26 18:25:57 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooser.h (BtkFileChooserAction): Add two more folder
 	modes to the enum.
@@ -2253,7 +2253,7 @@ Wed Feb 25 22:35:00 2004  Tomasz Kłoczko <kloczek@pld.org.pl>
 	* cinfigure.in: After changes in G_DEFINE_TYPE minimal required bunnylib
 	vesion for build btk+ is now 2.3.3.
 
-Wed Feb 25 16:00:40 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Feb 25 16:00:40 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (update_appearance): move the
 	expander code.
@@ -2287,7 +2287,7 @@ Wed Feb 25 09:46:34 2004  Owen Taylor  <otaylor@redhat.com>
 	* btk/btkstyle.c (btk_style_finalize): Free 
 	style->icon_factories (#130128)
 
-Wed Feb 25 03:52:58 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Feb 25 03:52:58 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c: use btk_widget_push/pop_composite_child around
 	internal buttons.
@@ -2374,17 +2374,17 @@ Tue Feb 24 14:45:03 2004  Owen Taylor  <otaylor@redhat.com>
 	(expander_changed_cb): Renamed from expander_activate_cb().  Flip
 	the conditions again...
 
-Tue Feb 24 14:43:07 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Feb 24 14:43:07 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (btk_tree_view_bin_expose): only draw the sort
 	column as different if there are 3 or more visible columns.
 
-2004-02-24  Anders Carlsson  <andersca@bunny.org>
+2004-02-24  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilechooserdefault.c: (shortcuts_insert_separator):
 	Fix compilation (#135278, Padraig O'Briain).
 	
-2004-02-24  Anders Carlsson  <andersca@bunny.org>
+2004-02-24  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilechooserdefault.c: (shortcuts_append_desktop):
 	Translate the desktop label.
@@ -2393,7 +2393,7 @@ Tue Feb 24 14:43:07 2004  Jonathan Blandford  <jrb@bunny.org>
 	(shortcuts_insert_separator), (create_shortcuts_model):
 	Don't show the bookmark separator if there are no bookmarks.
 	
-Tue Feb 24 01:41:30 2004  Jonathan Blandford  <jrb@bunny.org>
+Tue Feb 24 01:41:30 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (location_popup_handler): Make the
 	dialog look like the nautilus dialog.
@@ -2412,7 +2412,7 @@ Tue Feb 24 01:41:30 2004  Jonathan Blandford  <jrb@bunny.org>
 	(add_bookmark_button_clicked_cb): Add the bookmarks from the list
 	selection or from the current folder, as appropriate.
 
-Mon Feb 23 21:09:06 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 21:09:06 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (shortcuts_pane_create): Add
 	mnemonics.  Sorry translators.
@@ -2422,13 +2422,13 @@ Tue Feb 24 02:24:58 2004  Matthias Clasen  <maclas@gmx.de>
 	* NEWS: Additions. This should be complete for the main ChangeLog
 	now, still need to sift through bdk-pixbuf, docs, and translations.
 
-Mon Feb 23 19:57:45 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 19:57:45 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkcellrendererseptext.c (btk_cell_renderer_sep_get_size):
 	Add a get_size implementation so that we are no longer the same
 	height as text.
 
-2004-02-24  Anders Carlsson  <andersca@bunny.org>
+2004-02-24  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkfilechooserdefault.c: (shortcuts_insert_path),
 	(shortcuts_remove_rows), (shortcuts_append_bookmarks),
@@ -2447,20 +2447,20 @@ Tue Feb 24 01:08:27 2004  Matthias Clasen  <maclas@gmx.de>
 	tree in BtkComboBoxPrivate is really fragile and should be
 	cleaned up.
 
-Mon Feb 23 17:52:43 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 17:52:43 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (main_paned_create): use a size
 	group when allocating space for the buttons at the bottom just in
 	case.  Also, move the filter to below the file list.
 
-Mon Feb 23 16:52:12 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 16:52:12 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c
 	(btk_file_chooser_default_class_init): Seth was confused by
 	keybindings.  They should be Alt, not Ctl.  Also, A-Home should go
 	home, not up.
 
-Mon Feb 23 15:23:23 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 15:23:23 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c (btk_path_bar_set_path): Display the root a bit
 	more cleanly.
@@ -2501,13 +2501,13 @@ Mon Feb 23 11:20:34 2004  Owen Taylor  <otaylor@redhat.com>
 	entirely; it's not needed, since BangoXft implies that sufficiently
 	new fontconfig is present.
 
-Mon Feb 23 02:26:53 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 02:26:53 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.c (btk_path_bar_finalize):
 	for (i = 0; i < 10; i++)
 	  g_print ("I will compile before committing.\n");
 
-Mon Feb 23 02:08:42 2004  Jonathan Blandford  <jrb@bunny.org>
+Mon Feb 23 02:08:42 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (file_pane_create): Use the
 	BtkPathBar by default now.
@@ -2613,7 +2613,7 @@ Sat Feb 21 17:57:35 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* btk/docs: Commit auto-generated changes
 
-Fri Feb 20 18:20:22 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Feb 20 18:20:22 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c: conditional compile for BtkPathBar
 
@@ -2648,7 +2648,7 @@ Fri Feb 20 18:20:22 2004  Jonathan Blandford  <jrb@bunny.org>
 	(btk_file_chooser_widget_constructor):
 	Use btk_file_chooser_set_current_folder to set cwd.
 
-Thu Feb 19 19:58:53 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Feb 19 19:58:53 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkpathbar.[ch]: New widget to handle the path in the
 	fileselector implementation.  Not hooked up to anything yet.
@@ -3099,7 +3099,7 @@ Wed Feb 11 01:24:20 2004  Matthias Clasen  <maclas@gmx.de>
 
 	* btk/btkfilechooserdefault.c (btk_file_chooser_default_finalize):
 	Free the filters.  Fixes #133547, patch by Morten Welinder
-	<mortenw@bunny.org>.
+	<mortenw@gnome.org>.
 
 Tue Feb 10 12:02:14 2004  Owen Taylor  <otaylor@redhat.com>
 
@@ -3124,7 +3124,7 @@ Tue Feb 10 12:02:14 2004  Owen Taylor  <otaylor@redhat.com>
 
 2004-02-10  Federico Mena Quintero  <federico@ximian.com>
 
-	Fixes #133995, patch by Morten Welinder <mortenw@bunny.org>.
+	Fixes #133995, patch by Morten Welinder <mortenw@gnome.org>.
 
 	* tests/prop-editor.c (create_prop_editor): Free the title.
 	(object_changed): Free the children list.
@@ -3175,7 +3175,7 @@ Sun Feb  8 01:44:06 2004  Matthias Clasen  <maclas@gmx.de>
 	come up on the same screen as the combo box.  (#133544, 
 	Morten Welinder)
 
-Fri Feb  6 23:40:24 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Feb  6 23:40:24 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkfilechooserdefault.c (create_file_list): clean up the
 	packing of the file selector.
@@ -3208,7 +3208,7 @@ Fri Feb  6 22:38:54 2004  Matthias Clasen  <maclas@gmx.de>
 	positions in UTF-8 strings correctly.  (#133315, Theppitak 
 	Karoonboonyanan)
 
-2004-02-06  Morten Welinder  <terra@bunny.org>
+2004-02-06  Morten Welinder  <terra@gnome.org>
 
 	* btk/btktoolbar.c (show_menu): Cleanup using
 	btk_menu_attach_to_widget.  Also fixes leak, see #133411.
@@ -3294,7 +3294,7 @@ Thu Feb  5 00:59:08 2004  Matthias Clasen  <maclas@gmx.de>
 	* tests/testbtk.c (create_message_dialog): For the dialog with
 	only BTK_BUTTONS_CLOSE, make BTK_RESPONSE_CLOSE the default.
 
-2004-02-04  Morten Welinder  <terra@bunny.org>
+2004-02-04  Morten Welinder  <terra@gnome.org>
 
 	* btk/btktoolbar.c (show_menu): Show on the right screen.  (Fixes
 	bug 133411, apart from the leak.)
@@ -3818,7 +3818,7 @@ Fri Jan 23 23:46:12 2004  Matthias Clasen  <maclas@gmx.de>
 	(check_preview_change): Likewise.
 	(tree_selection_changed): Likewise.
 
-Fri Jan 23 14:56:18 2004  Jonathan Blandford  <jrb@bunny.org>
+Fri Jan 23 14:56:18 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (btk_tree_view_get_path_at_pos): Don't crash
 	when there are no columns, or all columns are hidden, #131402
@@ -3846,7 +3846,7 @@ Thu Jan 22 18:45:26 2004  Owen Taylor  <otaylor@redhat.com>
 
 	* NEWS: Organized, added some names.
 
-Thu Jan 22 16:59:36 2004  Jonathan Blandford  <jrb@bunny.org>
+Thu Jan 22 16:59:36 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkliststore.c (btk_list_store_reorder): Doc fix.
 
@@ -3888,7 +3888,7 @@ Thu Jan 22 21:38:52 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 	<scott@asofyet.org>
 	(btk_file_filter_finalize): Free the rules list.
 
-Wed Jan 21 18:10:40 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Jan 21 18:10:40 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkcolorbutton.c (btk_color_button_set_color):redraw the
 	color button when an alpha is set.
@@ -4196,7 +4196,7 @@ Thu Jan 15 23:17:14 2004  Matthias Clasen  <maclas@gmx.de>
 	a 'newly-allocated' to hint that the list should be freed after
 	use.
 
-Wed Jan 14 18:01:52 2004  Jonathan Blandford  <jrb@bunny.org>
+Wed Jan 14 18:01:52 2004  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (btk_tree_view_button_press): move grab_focus
 	to after handling the button presses in the TreeView to avoid
@@ -4237,13 +4237,13 @@ Mon Jan 12 23:40:34 2004  Matthias Clasen  <maclas@gmx.de>
 	and the (unrelated) virtual functions of the same name and aligns
 	the setup with the pre_/post_activate signals.
 
-2004-01-12  Jody Goldberg <jody@bunny.org>
+2004-01-12  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkaction.c (connect_proxy) : only connect activate for menus
 	  with no submenus otherwise it looks like we activate every time a
 	  submenu opens.
 
-2004-01-12  Jody Goldberg <jody@bunny.org>
+2004-01-12  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkuimanager.c: Remove accidentially committed debug spew.
 
@@ -4255,7 +4255,7 @@ Sun Jan 11 01:55:07 2004  Matthias Clasen  <maclas@gmx.de>
 	entry is silently created during lock_path(), and treated as an error 
 	during unlock_path(). These changes have been requested by Tim Janik.
 
-2004-01-10  Jody Goldberg <jody@bunny.org>
+2004-01-10  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkuimanager.c (d) : Add a debug macro to quiet the spew.
 	s/merge_signals/ui_manager_signals/ for readability.
@@ -4415,7 +4415,7 @@ Wed Jan  7 02:50:55 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/btkfilesel.c: (btk_file_selection_delete_file): Removed space
 	that proceeded the end-of-sentence punctuation. Fixes: #130353.
 
-2004-01-06  Jody Goldberg <jody@bunny.org>
+2004-01-06  Jody Goldberg <jody@gnome.org>
 
 	* btk/btktoolitem.c (btk_tool_item_set_property) : Call 
 	  btk_tool_item_set_visible_vertical for PROP_VISIBLE_VERTICAL.
@@ -4447,7 +4447,7 @@ Wed Jan  7 02:50:55 2004  Matthias Clasen  <maclas@gmx.de>
 	* bdk/bdkimage.h: Added <public> documentation to the struct, as
 	suggested by Owen Taylor.
 
-2004-01-05  Jody Goldberg <jody@bunny.org>
+2004-01-05  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkiconfactory.c (get_default_icons) : add stock indent, unindent
 	  I would have prefered outdent, but compatibility seems more
@@ -4458,7 +4458,7 @@ Wed Jan  7 02:50:55 2004  Matthias Clasen  <maclas@gmx.de>
 	* btk/stock-icons/stock_text_indent_16.png :
 	* btk/stock-icons/stock_text_indent_24.png :
 	* btk/stock-icons/stock_text_unindent_16.png :
-	* btk/stock-icons/stock_text_unindent_24.png : from bunny-icon-theme
+	* btk/stock-icons/stock_text_unindent_24.png : from gnome-icon-theme
 
 Sun Jan  4 15:29:04 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
@@ -4489,7 +4489,7 @@ Sat Jan  3 11:39:42 2004  Manish Singh  <yosh@gimp.org>
 	* btk/btkclipboard.c: Update freedesktop.org clipboard doc link.
 	Patch from Andrew Moise (#130462).
 
-2004-01-01  Jody Goldberg <jody@bunny.org>
+2004-01-01  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkaction.c (_BtkActionPrivate) : add visible_horizontal,
 	  visible_vertical.
@@ -4499,7 +4499,7 @@ Sat Jan  3 11:39:42 2004  Manish Singh  <yosh@gimp.org>
 	(btk_action_get_property) : here.
 	(connect_proxy) : and here.
 
-2003-12-30  Jody Goldberg <jody@bunny.org>
+2003-12-30  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkactiongroup.c (btk_action_group_add_action_with_accel) :  new
 	  utility routine for use in derived BtkActions with the replicated code
@@ -4515,7 +4515,7 @@ Sat Jan  3 11:39:42 2004  Manish Singh  <yosh@gimp.org>
 2004-01-01  Taneem Ahmed  <taneem@bengalinux.org>
 
 	* bn.po: Added Bangla translation by 
-	of Ankur group <bunny-translation@bengalinux.org>.
+	of Ankur group <gnome-translation@bengalinux.org>.
 
 Fri Jan  2 02:50:11 2004  Matthias Clasen  <maclas@gmx.de>
 
@@ -4533,7 +4533,7 @@ Fri Jan  2 02:50:11 2004  Matthias Clasen  <maclas@gmx.de>
 	extended input device reports an incorrect resolution of 0.  Fixes
 	bug #123546
 	
-2003-12-31  Christian Neumair  <chris@bunny-de.org>
+2003-12-31  Christian Neumair  <chris@gnome-de.org>
 
 	* bdk-pixbuf/bdk-pixdata.c: (bdk_pixbuf_from_pixdata):
 	* btk/btkfilechooserdefault.c: (list_size_data_func): Use ngettext for
@@ -4568,7 +4568,7 @@ Mon Dec 29 12:22:22 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 	Add BDK_THREADS_ENTER()/BDK_THREADS_LEAVE() pairs around idle
 	functions. (#130157, patch from Olexiy Avramchenko).
 	
-2003-12-29  Anders Carlsson  <andersca@bunny.org>
+2003-12-29  Anders Carlsson  <andersca@gnome.org>
 
 	* btk/btkradiotoolbutton.c:
 	* btk/btkradiotoolbutton.h:
@@ -4612,7 +4612,7 @@ Tue Dec 23 22:34:50 2003  Manish Singh  <yosh@gimp.org>
 	* btk/btkicontheme.h: fix BTK_TYPE_ICON_INFO macro, reported by
 	muppet.
 
-2003-12-24  Jody Goldberg <jody@bunny.org>
+2003-12-24  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkactiongroup.h : Add some const to the char * in
 	  BtkActionEntry*.  We're reccomending people pass static strings to
@@ -4739,7 +4739,7 @@ Fri Dec 19 01:35:34 2003  Matthias Clasen  <maclas@gmx.de>
 	* btk/btktoggleaction.c: Always use _btk_action_emit_activate()
 	instead of btk_action_activate().
 
-2003-12-18  Jody Goldberg <jody@bunny.org>
+2003-12-18  Jody Goldberg <jody@gnome.org>
 
 	* btk/btkicontheme.c (btk_icon_theme_lookup_icon)) : Add a sanity test
 	  to ensure that the base hicolor theme is installed.  Silently
@@ -4862,7 +4862,7 @@ Wed Dec 17 23:50:56 2003  Kristian Rietveld  <kris@btk.org>
 	the pixbuf (since it was used to renderer the previous stock_id
 	and stock_id might have been set to NULL now). (Fixes #122966).
 
-2003-12-17  Marco Pesenti Gritti  <marco@bunny.org>
+2003-12-17  Marco Pesenti Gritti  <marco@gnome.org>
 
 	* btk/btktreemodelsort.c: (btk_tree_model_sort_get_iter):
 
@@ -5535,7 +5535,7 @@ Sun Nov 30 17:31:32 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* btk/btktoolbar.c (get_item_size): return 0 for disappearing placeholders
 
-Sat Nov 29 00:55:28 2003  Jonathan Blandford  <jrb@bunny.org>
+Sat Nov 29 00:55:28 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (btk_tree_view_new_column_width): 
 	* btk/btktreeviewcolumn.c (_btk_tree_view_column_realize_button):
@@ -5744,7 +5744,7 @@ Tue Nov 18 22:26:30 2003  Kristian Rietveld  <kris@btk.org>
 	* btk/btkentry.c (btk_entry_completion_key_press): the total
 	number of actions is "matches + actions - 1". (Fixes #126572).
 
-Tue Nov 18 21:05:05 2003  Christian Persch  <chp@cvs.bunny.org>
+Tue Nov 18 21:05:05 2003  Christian Persch  <chp@cvs.gnome.org>
 
 	* btk/btktreemodelfilter.c (btk_tree_model_filter_row_inserted): fix
 	mem leaks (#119435).
@@ -6976,7 +6976,7 @@ Fri Sep 26 23:49:44 2003  Kristian Rietveld  <kris@btk.org>
 	radio actions.
 
 	Prevent the "show_all" trap for action-based menus (see
-	http://mail.bunny.org/archives/btk-devel-list/2003-September/
+	http://mail.gnome.org/archives/btk-devel-list/2003-September/
 	msg00260.html):
 
 	* btk/btkmenu.c (btk_menu_{hide,show}_all): Remove g_return_if_fail()
@@ -7111,7 +7111,7 @@ Tue Sep 16 10:42:00 2003  Eric Warmenhoven  <eric@warmenhoven.org>
 	* btk/btkuimanager.c: Doc tweaks.
 
 	Smart separators; see 
-	http://mail.bunny.org/archives/btk-devel-list/2003-September/msg00133.html:
+	http://mail.gnome.org/archives/btk-devel-list/2003-September/msg00133.html:
 	
 	* btk/btkuimanager.c (update_smart_separators): New function which 
 	implements "smart" separators by iterating once over the entries of a 
@@ -7126,7 +7126,7 @@ Tue Sep 16 10:42:00 2003  Eric Warmenhoven  <eric@warmenhoven.org>
 
 	Changes to allow setting action state before connecting signal; see
 	the thread starting at 
-	http://mail.bunny.org/archives/btk-devel-list/2003-September/msg00140.html:
+	http://mail.gnome.org/archives/btk-devel-list/2003-September/msg00140.html:
 	
 	* btk/btkactiongroup.[hc]: (btk_action_group_add_radio_actions):
 	(btk_action_group_add_radio_actions_full): Add value parameter to allow
@@ -7593,7 +7593,7 @@ Fri Aug 29 20:32:07 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* btk/btktoolbar.c (btk_toolbar_append_element): Trivial doc fix.
 
-2003-08-27  Anders Carlsson  <andersca@bunny.org>
+2003-08-27  Anders Carlsson  <andersca@gnome.org>
 
 	* demos/btk-demo/appwindow.c (do_appwindow): Focus the
 	text view, so the tool bar won't have focus.
@@ -8062,7 +8062,7 @@ Wed Aug 13 11:34:53 2003  Owen Taylor  <otaylor@redhat.com>
 	key presses before BtkCombo customization.
 	(#115451, Botond Botyanszki)
 
-2003-08-13  Anders Carlsson  <andersca@bunny.org>
+2003-08-13  Anders Carlsson  <andersca@gnome.org>
 
 	* tests/testtoolbar.c: (set_important_func), (important_toggled),
 	(create_items_list):
@@ -8899,7 +8899,7 @@ Fri Jul 18 20:06:57 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 	* btk/btktextview.c (changed_handler): use
 	btk_widget_queue_resize_noredraw().
 
-2003-07-16  Jody Goldberg <jody@bunny.org>
+2003-07-16  Jody Goldberg <jody@gnome.org>
 
 	* bdk/x11/bdkwindow-x11.c (bdk_window_focus) : fix cut-n-paste-o
 
@@ -9075,7 +9075,7 @@ Fri Jul 11 20:48:14 2003  Kristian Rietveld  <kris@btk.org>
 	* btk/btkstatusbar.c (btk_statusbar_init): Center statusbar contents 
 	vertically.  (#109823, Joe Shaw)
 
-2003-07-11  Morten Welinder  <terra@bunny.org>
+2003-07-11  Morten Welinder  <terra@gnome.org>
 
 	* bdk/x11/bdkcursor-x11.c (bdk_cursor_new_from_pixbuf): Fix memory
 	access error.  (#69436)
@@ -9472,11 +9472,11 @@ Thu Jul  3 03:13:20 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 Wed Jul  2 18:00:56 2003  Owen Taylor  <otaylor@redhat.com>
 	 
         * btk/btkicontheme.[ch]: Implement a loader for
-	named themed icon based on from bunny-desktop library
+	named themed icon based on from gnome-desktop library
 	by Alex Larsson.
 
 	* btk/btkiconthemeparser.[ch]: .ini file parsing code
-	from bunny-desktop.
+	from gnome-desktop.
 
 	* btk/btkiconfactory.[ch]: Add
 	btk_icon_source_set/get_icon_name() to allow stock icons
@@ -9497,7 +9497,7 @@ Wed Jul  2 18:00:56 2003  Owen Taylor  <otaylor@redhat.com>
 	a themed icon for a stock icon source.
 
 	* tests/Makefile.am test/testicontheme.c: Add a test
-	program from bunny-desktop.
+	program from gnome-desktop.
 
 	* bdk/x11/bdkevents-x11.c btk/btksettings.c: Add
 	Net/IconThemeName / btk-icon-theme-name setting.
@@ -10673,7 +10673,7 @@ Fri Apr 18 14:15:09 2003  Owen Taylor  <otaylor@redhat.com>
 	don't get a XkbMapNotify event if you get a XkbNewKeyboardNotify 
 	event, so select for both. (#108406, Egmont Koblinger)
 
-Thu Apr 17 09:57:44 2003  Jonathan Blandford  <jrb@bunny.org>
+Thu Apr 17 09:57:44 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (validate_visible_area): remove infinite loop
 	caused by not clearing the scroll_to_path.
@@ -10778,7 +10778,7 @@ Mon Mar 31 13:52:13 2003  Jonathan Blandford  <jrb@redhat.com>
 	* btk/btkwindow.c: Add a new property, role, corresponding to 
 	btk_window_[gs]et_role().  (#93904)
 
-Sun Mar 30 03:57:42 2003  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar 30 03:57:42 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeselection.c (btk_tree_selection_get_selected_rows):
 	fix crash.  Patch from Markus Lausser <sgop@users.sourceforge.net>
@@ -10904,7 +10904,7 @@ Sat Mar 15 18:49:27 2003  Manish Singh  <yosh@gimp.org>
 
 	* bdk/win32/bdkcursor-win32.c: Minor spacing and debug print fixes.
 
-Tue Mar 11 12:01:07 2003  Jonathan Blandford  <jrb@bunny.org>
+Tue Mar 11 12:01:07 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btktreeview.c (btk_tree_view_class_init): Ctrl/Shift
 	[left/right] expands/collapses the tree, #108092
@@ -10965,7 +10965,7 @@ Tue Mar 11 12:01:07 2003  Jonathan Blandford  <jrb@bunny.org>
 
 	* btk/btkobject.h: Add deprecation guards for btk_object_new ().
 
-Sun Mar  2 23:35:57 2003  Jonathan Blandford  <jrb@bunny.org>
+Sun Mar  2 23:35:57 2003  Jonathan Blandford  <jrb@gnome.org>
 
 	* btk/btkcellrenderertoggle.c (btk_cell_renderer_toggle_get_size):
 	handle rtl code.  Thanks to Matthias Clasen for an initial patch
@@ -11004,7 +11004,7 @@ Sun Mar  2 23:35:57 2003  Jonathan Blandford  <jrb@bunny.org>
 	Add support for expand flag.  Thanks to Kristian Rietveld for an
 	initial patch for this.
 
-Fri Feb 28 02:06:17 2003  Jonathan Blandford  <jrb@bunny.org>
+Fri Feb 28 02:06:17 2003  Jonathan Blandford  <jrb@gnome.org>
 
 
 2003-03-02  Tor Lillqvist  <tml@iki.fi>

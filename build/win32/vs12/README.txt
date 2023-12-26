@@ -3,9 +3,9 @@ spaces in them-as strange problems may occur during compilation or during
 the use of the library.
 
 A more detailed outline for instructions on building the BTK+ with Visual
-C++ can be found in the following BUNNY Live! page:
+C++ can be found in the following GNOME Live! page:
 
-https://live.bunny.org/BTK%2B/Win32/MSVCCompilationOfBTKStack 
+https://live.gnome.org/BTK%2B/Win32/MSVCCompilationOfBTKStack 
 
 This VS12 solution and the projects it includes are intented to be used
 in a BTK+ source tree unpacked from a tarball. In a git checkout you
@@ -33,11 +33,11 @@ unstable version of Bango.  There is no known official VS12 build
 support for fontconfig (along with freetype and expat) and
 gettext-runtime, so please use the binaries from: 
 
-ftp://ftp.bunny.org/pub/BUNNY/binaries/win32/dependencies/ (32 bit)
-ftp://ftp.bunny.org/pub/BUNNY/binaries/win64/dependencies/ (64 bit)
+ftp://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ (32 bit)
+ftp://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ (64 bit)
 
 The recommended build order for these dependencies:
-(first unzip any dependent binaries downloaded from the ftp.bunny.org
+(first unzip any dependent binaries downloaded from the ftp.gnome.org
  as described in the README.txt file in the build/win32/vs12 folder)
 -zlib
 -libpng

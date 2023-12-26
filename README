@@ -154,7 +154,7 @@ Release notes for 2.12
   is due to marks moved or changed selection; new BtkTextLineDisplay structure
   member. Source compatibility is preserved; binary compatibility may break
   only if BtkTextLineDisplay structure was created on stack or as a part
-  of another structure (in particular BunnyCanvas and its clones do not need
+  of another structure (in particular GnomeCanvas and its clones do not need
   recompiling).
 
 * Another new signal has been added to BtkNotebook. The new signal
@@ -258,7 +258,7 @@ Release notes for 2.10
   BTK_OBJECT_IS_FLOATING() will still work, but direct checking
   of the BTK_FLOATING flag will no longer detect the floating 
   reference. Details about floating references can be found in the docs:
-  http://developer.bunny.org/doc/API/2.0/bobject/bobject-The-Base-Object-Type.html#floating-ref
+  http://developer.gnome.org/doc/API/2.0/bobject/bobject-The-Base-Object-Type.html#floating-ref
 
 * Accelerators like (_F) are now stripped from labels when they are 
   displayed in toolbars. If this is not wanted, the feature can be 
@@ -420,8 +420,8 @@ Release notes for 2.6
 How to report bugs
 ==================
 
-Bugs should be reported to the BUNNY bug tracking system.
-(http://bugzilla.bunny.org, product btk+.) You will need to create an
+Bugs should be reported to the GNOME bug tracking system.
+(http://bugzilla.gnome.org, product btk+.) You will need to create an
 account for yourself.
   
 In the bug report please include:
@@ -454,7 +454,7 @@ In the bug report please include:
 Patches
 =======
 
-Patches should also be submitted to bugzilla.bunny.org. If the patch
+Patches should also be submitted to bugzilla.gnome.org. If the patch
 fixes an existing bug, add the patch as an attachment to that bug
 report.
 
