@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilefilter.h: Filters for selecting a file subset
+/* BTK - The GIMP Toolkit
+ * btkfilefilter.h: Filters for selecting a file subset
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,37 +18,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_FILTER_H__
-#define __GTK_FILE_FILTER_H__
+#ifndef __BTK_FILE_FILTER_H__
+#define __BTK_FILE_FILTER_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FILE_FILTER              (gtk_file_filter_get_type ())
-#define GTK_FILE_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FILE_FILTER, GtkFileFilter))
-#define GTK_IS_FILE_FILTER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FILE_FILTER))
+#define BTK_TYPE_FILE_FILTER              (btk_file_filter_get_type ())
+#define BTK_FILE_FILTER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_FILTER, BtkFileFilter))
+#define BTK_IS_FILE_FILTER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_FILTER))
 
-typedef struct _GtkFileFilter     GtkFileFilter;
-typedef struct _GtkFileFilterInfo GtkFileFilterInfo;
+typedef struct _BtkFileFilter     BtkFileFilter;
+typedef struct _BtkFileFilterInfo BtkFileFilterInfo;
 
 typedef enum {
-  GTK_FILE_FILTER_FILENAME     = 1 << 0,
-  GTK_FILE_FILTER_URI          = 1 << 1,
-  GTK_FILE_FILTER_DISPLAY_NAME = 1 << 2,
-  GTK_FILE_FILTER_MIME_TYPE    = 1 << 3
-} GtkFileFilterFlags;
+  BTK_FILE_FILTER_FILENAME     = 1 << 0,
+  BTK_FILE_FILTER_URI          = 1 << 1,
+  BTK_FILE_FILTER_DISPLAY_NAME = 1 << 2,
+  BTK_FILE_FILTER_MIME_TYPE    = 1 << 3
+} BtkFileFilterFlags;
 
-typedef gboolean (*GtkFileFilterFunc) (const GtkFileFilterInfo *filter_info,
+typedef gboolean (*BtkFileFilterFunc) (const BtkFileFilterInfo *filter_info,
 				       gpointer                 data);
 
-struct _GtkFileFilterInfo
+struct _BtkFileFilterInfo
 {
-  GtkFileFilterFlags contains;
+  BtkFileFilterFlags contains;
 
   const gchar *filename;
   const gchar *uri;
@@ -56,28 +56,28 @@ struct _GtkFileFilterInfo
   const gchar *mime_type;
 };
 
-GType gtk_file_filter_get_type (void) G_GNUC_CONST;
+GType btk_file_filter_get_type (void) G_GNUC_CONST;
 
-GtkFileFilter *       gtk_file_filter_new      (void);
-void                  gtk_file_filter_set_name (GtkFileFilter *filter,
+BtkFileFilter *       btk_file_filter_new      (void);
+void                  btk_file_filter_set_name (BtkFileFilter *filter,
 						const gchar   *name);
-const gchar *         gtk_file_filter_get_name (GtkFileFilter *filter);
+const gchar *         btk_file_filter_get_name (BtkFileFilter *filter);
 
-void gtk_file_filter_add_mime_type      (GtkFileFilter      *filter,
+void btk_file_filter_add_mime_type      (BtkFileFilter      *filter,
 					 const gchar        *mime_type);
-void gtk_file_filter_add_pattern        (GtkFileFilter      *filter,
+void btk_file_filter_add_pattern        (BtkFileFilter      *filter,
 					 const gchar        *pattern);
-void gtk_file_filter_add_pixbuf_formats (GtkFileFilter      *filter);
-void gtk_file_filter_add_custom         (GtkFileFilter      *filter,
-					 GtkFileFilterFlags  needed,
-					 GtkFileFilterFunc   func,
+void btk_file_filter_add_pixbuf_formats (BtkFileFilter      *filter);
+void btk_file_filter_add_custom         (BtkFileFilter      *filter,
+					 BtkFileFilterFlags  needed,
+					 BtkFileFilterFunc   func,
 					 gpointer            data,
 					 GDestroyNotify      notify);
 
-GtkFileFilterFlags gtk_file_filter_get_needed (GtkFileFilter           *filter);
-gboolean           gtk_file_filter_filter     (GtkFileFilter           *filter,
-					       const GtkFileFilterInfo *filter_info);
+BtkFileFilterFlags btk_file_filter_get_needed (BtkFileFilter           *filter);
+gboolean           btk_file_filter_filter     (BtkFileFilter           *filter,
+					       const BtkFileFilterInfo *filter_info);
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_FILTER_H__ */
+#endif /* __BTK_FILE_FILTER_H__ */

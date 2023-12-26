@@ -1,4 +1,4 @@
-/* Gdk testing utilities
+/* Bdk testing utilities
  * Copyright (C) 2007 Imendio AB
  * Authors: Tim Janik
  *
@@ -18,32 +18,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_TEST_UTILS_H__
-#define __GDK_TEST_UTILS_H__
+#ifndef __BDK_TEST_UTILS_H__
+#define __BDK_TEST_UTILS_H__
 
-#if !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdkwindow.h>
+#include <bdk/bdkwindow.h>
 
 G_BEGIN_DECLS
 
-/* --- Gdk Test Utility API --- */
-void            gdk_test_render_sync            (GdkWindow      *window);
-gboolean        gdk_test_simulate_key           (GdkWindow      *window,
+/* --- Bdk Test Utility API --- */
+void            bdk_test_render_sync            (BdkWindow      *window);
+gboolean        bdk_test_simulate_key           (BdkWindow      *window,
                                                  gint            x,
                                                  gint            y,
                                                  guint           keyval,
-                                                 GdkModifierType modifiers,
-                                                 GdkEventType    key_pressrelease);
-gboolean        gdk_test_simulate_button        (GdkWindow      *window,
+                                                 BdkModifierType modifiers,
+                                                 BdkEventType    key_pressrelease);
+gboolean        bdk_test_simulate_button        (BdkWindow      *window,
                                                  gint            x,
                                                  gint            y,
                                                  guint           button, /*1..3*/
-                                                 GdkModifierType modifiers,
-                                                 GdkEventType    button_pressrelease);
+                                                 BdkModifierType modifiers,
+                                                 BdkEventType    button_pressrelease);
 
 G_END_DECLS
 
-#endif /* __GDK_TEST_UTILS_H__ */
+#endif /* __BDK_TEST_UTILS_H__ */

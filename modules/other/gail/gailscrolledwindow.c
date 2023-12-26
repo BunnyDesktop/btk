@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,129 +20,129 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailscrolledwindow.h"
+#include <btk/btk.h>
+#include "bailscrolledwindow.h"
 
 
-static void         gail_scrolled_window_class_init     (GailScrolledWindowClass  *klass); 
-static void         gail_scrolled_window_init           (GailScrolledWindow       *window);
-static void         gail_scrolled_window_real_initialize
-                                                        (AtkObject     *obj,
+static void         bail_scrolled_window_class_init     (BailScrolledWindowClass  *klass); 
+static void         bail_scrolled_window_init           (BailScrolledWindow       *window);
+static void         bail_scrolled_window_real_initialize
+                                                        (BatkObject     *obj,
                                                          gpointer      data);
 
-static gint         gail_scrolled_window_get_n_children (AtkObject     *object);
-static AtkObject*   gail_scrolled_window_ref_child      (AtkObject     *obj,
+static gint         bail_scrolled_window_get_n_children (BatkObject     *object);
+static BatkObject*   bail_scrolled_window_ref_child      (BatkObject     *obj,
                                                          gint          child);
-static void         gail_scrolled_window_scrollbar_visibility_changed 
+static void         bail_scrolled_window_scrollbar_visibility_changed 
                                                         (GObject       *object,
                                                          GParamSpec    *pspec,
                                                          gpointer      user_data);
 
-G_DEFINE_TYPE (GailScrolledWindow, gail_scrolled_window, GAIL_TYPE_CONTAINER)
+G_DEFINE_TYPE (BailScrolledWindow, bail_scrolled_window, BAIL_TYPE_CONTAINER)
 
 static void
-gail_scrolled_window_class_init (GailScrolledWindowClass *klass)
+bail_scrolled_window_class_init (BailScrolledWindowClass *klass)
 {
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  class->get_n_children = gail_scrolled_window_get_n_children;
-  class->ref_child = gail_scrolled_window_ref_child;
-  class->initialize = gail_scrolled_window_real_initialize;
+  class->get_n_children = bail_scrolled_window_get_n_children;
+  class->ref_child = bail_scrolled_window_ref_child;
+  class->initialize = bail_scrolled_window_real_initialize;
 }
 
 static void
-gail_scrolled_window_init (GailScrolledWindow *window)
+bail_scrolled_window_init (BailScrolledWindow *window)
 {
 }
 
 static void
-gail_scrolled_window_real_initialize (AtkObject *obj,
+bail_scrolled_window_real_initialize (BatkObject *obj,
                                       gpointer  data)
 {
-  GtkScrolledWindow *window;
+  BtkScrolledWindow *window;
 
-  ATK_OBJECT_CLASS (gail_scrolled_window_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_scrolled_window_parent_class)->initialize (obj, data);
 
-  window = GTK_SCROLLED_WINDOW (data);
+  window = BTK_SCROLLED_WINDOW (data);
   g_signal_connect_data (window->hscrollbar, "notify::visible",
-    (GCallback)gail_scrolled_window_scrollbar_visibility_changed, 
+    (GCallback)bail_scrolled_window_scrollbar_visibility_changed, 
     obj, NULL, FALSE);
   g_signal_connect_data (window->vscrollbar, "notify::visible",
-    (GCallback)gail_scrolled_window_scrollbar_visibility_changed, 
+    (GCallback)bail_scrolled_window_scrollbar_visibility_changed, 
     obj, NULL, FALSE);
 
-  obj->role = ATK_ROLE_SCROLL_PANE;
+  obj->role = BATK_ROLE_SCROLL_PANE;
 }
 
 static gint
-gail_scrolled_window_get_n_children (AtkObject *object)
+bail_scrolled_window_get_n_children (BatkObject *object)
 {
-  GtkWidget *widget;
-  GtkScrolledWindow *gtk_window;
+  BtkWidget *widget;
+  BtkScrolledWindow *btk_window;
   GList *children;
   gint n_children;
  
-  widget = GTK_ACCESSIBLE (object)->widget;
+  widget = BTK_ACCESSIBLE (object)->widget;
   if (widget == NULL)
     /* Object is defunct */
     return 0;
 
-  gtk_window = GTK_SCROLLED_WINDOW (widget);
+  btk_window = BTK_SCROLLED_WINDOW (widget);
    
-  /* Get the number of children returned by the backing GtkScrolledWindow */
+  /* Get the number of children returned by the backing BtkScrolledWindow */
 
-  children = gtk_container_get_children (GTK_CONTAINER(gtk_window));
+  children = btk_container_get_children (BTK_CONTAINER(btk_window));
   n_children = g_list_length (children);
   g_list_free (children);
   
   /* Add one to the count for each visible scrollbar */
 
-  if (gtk_window->hscrollbar_visible)
+  if (btk_window->hscrollbar_visible)
     n_children++;
-  if (gtk_window->vscrollbar_visible)
+  if (btk_window->vscrollbar_visible)
     n_children++;
   return n_children;
 }
 
-static AtkObject *
-gail_scrolled_window_ref_child (AtkObject *obj, 
+static BatkObject *
+bail_scrolled_window_ref_child (BatkObject *obj, 
                                 gint      child)
 {
-  GtkWidget *widget;
-  GtkScrolledWindow *gtk_window;
+  BtkWidget *widget;
+  BtkScrolledWindow *btk_window;
   GList *children, *tmp_list;
   gint n_children;
-  AtkObject  *accessible = NULL;
+  BatkObject  *accessible = NULL;
 
   g_return_val_if_fail (child >= 0, NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /* Object is defunct */
     return NULL;
 
-  gtk_window = GTK_SCROLLED_WINDOW (widget);
+  btk_window = BTK_SCROLLED_WINDOW (widget);
 
-  children = gtk_container_get_children (GTK_CONTAINER (gtk_window));
+  children = btk_container_get_children (BTK_CONTAINER (btk_window));
   n_children = g_list_length (children);
 
   if (child == n_children)
     {
-      if (gtk_window->hscrollbar_visible)
-        accessible = gtk_widget_get_accessible (gtk_window->hscrollbar);
-      else if (gtk_window->vscrollbar_visible)
-        accessible = gtk_widget_get_accessible (gtk_window->vscrollbar);
+      if (btk_window->hscrollbar_visible)
+        accessible = btk_widget_get_accessible (btk_window->hscrollbar);
+      else if (btk_window->vscrollbar_visible)
+        accessible = btk_widget_get_accessible (btk_window->vscrollbar);
     }
   else if (child == n_children+1 && 
-           gtk_window->hscrollbar_visible &&
-           gtk_window->vscrollbar_visible)
-    accessible = gtk_widget_get_accessible (gtk_window->vscrollbar);
+           btk_window->hscrollbar_visible &&
+           btk_window->vscrollbar_visible)
+    accessible = btk_widget_get_accessible (btk_window->vscrollbar);
   else if (child < n_children)
     {
       tmp_list = g_list_nth (children, child);
       if (tmp_list)
-	accessible = gtk_widget_get_accessible (
-		GTK_WIDGET (tmp_list->data));
+	accessible = btk_widget_get_accessible (
+		BTK_WIDGET (tmp_list->data));
     }
 
   g_list_free (children);
@@ -152,7 +152,7 @@ gail_scrolled_window_ref_child (AtkObject *obj,
 }
 
 static void
-gail_scrolled_window_scrollbar_visibility_changed (GObject    *object,
+bail_scrolled_window_scrollbar_visibility_changed (GObject    *object,
                                                    GParamSpec *pspec,
                                                    gpointer   user_data)
 {
@@ -162,32 +162,32 @@ gail_scrolled_window_scrollbar_visibility_changed (GObject    *object,
       gint n_children;
       gboolean child_added = FALSE;
       GList *children;
-      AtkObject *child;
-      GtkScrolledWindow *gtk_window;
-      GailScrolledWindow *gail_window = GAIL_SCROLLED_WINDOW (user_data);
+      BatkObject *child;
+      BtkScrolledWindow *btk_window;
+      BailScrolledWindow *bail_window = BAIL_SCROLLED_WINDOW (user_data);
       gchar *signal_name;
 
-      gtk_window = GTK_SCROLLED_WINDOW (GTK_ACCESSIBLE (user_data)->widget);
-      if (gtk_window == NULL)
+      btk_window = BTK_SCROLLED_WINDOW (BTK_ACCESSIBLE (user_data)->widget);
+      if (btk_window == NULL)
         return;
-      children = gtk_container_get_children (GTK_CONTAINER (gtk_window));
+      children = btk_container_get_children (BTK_CONTAINER (btk_window));
       index = n_children = g_list_length (children);
       g_list_free (children);
 
-      if ((gpointer) object == (gpointer) (gtk_window->hscrollbar))
+      if ((gpointer) object == (gpointer) (btk_window->hscrollbar))
         {
-          if (gtk_window->hscrollbar_visible)
+          if (btk_window->hscrollbar_visible)
             child_added = TRUE;
 
-          child = gtk_widget_get_accessible (gtk_window->hscrollbar);
+          child = btk_widget_get_accessible (btk_window->hscrollbar);
         }
-      else if ((gpointer) object == (gpointer) (gtk_window->vscrollbar))
+      else if ((gpointer) object == (gpointer) (btk_window->vscrollbar))
         {
-          if (gtk_window->vscrollbar_visible)
+          if (btk_window->vscrollbar_visible)
             child_added = TRUE;
 
-          child = gtk_widget_get_accessible (gtk_window->vscrollbar);
-          if (gtk_window->hscrollbar_visible)
+          child = btk_widget_get_accessible (btk_window->vscrollbar);
+          if (btk_window->hscrollbar_visible)
             index = n_children+1;
         }
       else 
@@ -201,6 +201,6 @@ gail_scrolled_window_scrollbar_visibility_changed (GObject    *object,
       else
         signal_name = "children_changed::delete";
 
-      g_signal_emit_by_name (gail_window, signal_name, index, child, NULL);
+      g_signal_emit_by_name (bail_window, signal_name, index, child, NULL);
     }
 }

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,54 +18,54 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_EVENT_BOX_H__
-#define __GTK_EVENT_BOX_H__
+#ifndef __BTK_EVENT_BOX_H__
+#define __BTK_EVENT_BOX_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_EVENT_BOX              (gtk_event_box_get_type ())
-#define GTK_EVENT_BOX(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_EVENT_BOX, GtkEventBox))
-#define GTK_EVENT_BOX_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_EVENT_BOX, GtkEventBoxClass))
-#define GTK_IS_EVENT_BOX(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_EVENT_BOX))
-#define GTK_IS_EVENT_BOX_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_EVENT_BOX))
-#define GTK_EVENT_BOX_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_EVENT_BOX, GtkEventBoxClass))
+#define BTK_TYPE_EVENT_BOX              (btk_event_box_get_type ())
+#define BTK_EVENT_BOX(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_EVENT_BOX, BtkEventBox))
+#define BTK_EVENT_BOX_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
+#define BTK_IS_EVENT_BOX(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_EVENT_BOX))
+#define BTK_IS_EVENT_BOX_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_EVENT_BOX))
+#define BTK_EVENT_BOX_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_EVENT_BOX, BtkEventBoxClass))
 
-typedef struct _GtkEventBox	  GtkEventBox;
-typedef struct _GtkEventBoxClass  GtkEventBoxClass;
+typedef struct _BtkEventBox	  BtkEventBox;
+typedef struct _BtkEventBoxClass  BtkEventBoxClass;
 
-struct _GtkEventBox
+struct _BtkEventBox
 {
-  GtkBin bin;
+  BtkBin bin;
 };
 
-struct _GtkEventBoxClass
+struct _BtkEventBoxClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 };
 
-GType	   gtk_event_box_get_type           (void) G_GNUC_CONST;
-GtkWidget* gtk_event_box_new                (void);
-gboolean   gtk_event_box_get_visible_window (GtkEventBox *event_box);
-void       gtk_event_box_set_visible_window (GtkEventBox *event_box,
+GType	   btk_event_box_get_type           (void) G_GNUC_CONST;
+BtkWidget* btk_event_box_new                (void);
+gboolean   btk_event_box_get_visible_window (BtkEventBox *event_box);
+void       btk_event_box_set_visible_window (BtkEventBox *event_box,
 					     gboolean     visible_window);
-gboolean   gtk_event_box_get_above_child    (GtkEventBox *event_box);
-void       gtk_event_box_set_above_child    (GtkEventBox *event_box,
+gboolean   btk_event_box_get_above_child    (BtkEventBox *event_box);
+void       btk_event_box_set_above_child    (BtkEventBox *event_box,
 					     gboolean     above_child);
 
 G_END_DECLS
 
-#endif /* __GTK_EVENT_BOX_H__ */
+#endif /* __BTK_EVENT_BOX_H__ */

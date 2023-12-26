@@ -47,10 +47,10 @@ SOFTWARE.
 #define SMALL_COORDINATE -LARGE_COORDINATE
 
 #include "config.h"
-#include <gdkregion.h>
-#include "gdkregion-generic.h"
-#include "gdkpoly-generic.h"
-#include "gdkalias.h"
+#include <bdkrebunnyion.h>
+#include "bdkrebunnyion-generic.h"
+#include "bdkpoly-generic.h"
+#include "bdkalias.h"
 
 /*
  *     InsertEdgeInET
@@ -150,14 +150,14 @@ InsertEdgeInET (EdgeTable          *ET,
 
 static void
 CreateETandAET (int                count,
-                const GdkPoint    *pts,
+                const BdkPoint    *pts,
                 EdgeTable         *ET,
                 EdgeTableEntry    *AET,
                 EdgeTableEntry    *pETEs,
                 ScanLineListBlock *pSLLBlock)
 {
-    const GdkPoint *top, *bottom;
-    const GdkPoint *PrevPt, *CurrPt;
+    const BdkPoint *top, *bottom;
+    const BdkPoint *PrevPt, *CurrPt;
     int iSLLBlock = 0;
     int dy;
 
@@ -383,23 +383,23 @@ FreeStorage (ScanLineListBlock *pSLLBlock)
  *
  */
 static int
-PtsToRegion (int         numFullPtBlocks,
+PtsToRebunnyion (int         numFullPtBlocks,
              int         iCurPtBlock,
              POINTBLOCK *FirstPtBlock,
-             GdkRegion  *reg)
+             BdkRebunnyion  *reg)
 {
-    GdkRegionBox *rects;
-    GdkPoint *pts;
+    BdkRebunnyionBox *rects;
+    BdkPoint *pts;
     POINTBLOCK *CurPtBlock;
     int i;
-    GdkRegionBox *extents;
+    BdkRebunnyionBox *extents;
     int numRects;
 
     extents = &reg->extents;
  
     numRects = ((numFullPtBlocks * NUMPTSTOBUFFER) + iCurPtBlock) >> 1;
  
-    GROWREGION(reg, numRects);
+    GROWREBUNNYION(reg, numRects);
 
     CurPtBlock = FirstPtBlock;
     rects = reg->rects - 1;
@@ -448,32 +448,32 @@ PtsToRegion (int         numFullPtBlocks,
 }
 
 /**
- * gdk_region_polygon:
- * @points: an array of #GdkPoint structs
+ * bdk_rebunnyion_polygon:
+ * @points: an array of #BdkPoint structs
  * @n_points: the number of elements in the @points array
- * @fill_rule: specifies which pixels are included in the region when the 
+ * @fill_rule: specifies which pixels are included in the rebunnyion when the 
  *     polygon overlaps itself.
  * 
- * Creates a new #GdkRegion using the polygon defined by a 
+ * Creates a new #BdkRebunnyion using the polygon defined by a 
  * number of points.
  *
- * Returns: a new #GdkRegion based on the given polygon
+ * Returns: a new #BdkRebunnyion based on the given polygon
  *
  * Deprecated: 2.22: There is no replacement. For working with paths, please
- *             use Cairo.
+ *             use Bairo.
  */
-GdkRegion *
-gdk_region_polygon (const GdkPoint *points,
+BdkRebunnyion *
+bdk_rebunnyion_polygon (const BdkPoint *points,
                     gint            n_points,
-                    GdkFillRule     fill_rule)
+                    BdkFillRule     fill_rule)
 {
-    GdkRegion *region;
+    BdkRebunnyion *rebunnyion;
     EdgeTableEntry *pAET;   /* Active Edge Table       */
     int y;                  /* current scanline        */
     int iPts = 0;           /* number of pts in buffer */
     EdgeTableEntry *pWETE;  /* Winding Edge Table Entry*/
     ScanLineList *pSLL;     /* current scanLineList    */
-    GdkPoint *pts;          /* output buffer           */
+    BdkPoint *pts;          /* output buffer           */
     EdgeTableEntry *pPrevAET;        /* ptr to previous AET     */
     EdgeTable ET;                    /* header node for ET      */
     EdgeTableEntry AET;              /* header node for AET     */
@@ -484,7 +484,7 @@ gdk_region_polygon (const GdkPoint *points,
     POINTBLOCK *tmpPtBlock;
     int numFullPtBlocks = 0;
  
-    region = gdk_region_new ();
+    rebunnyion = bdk_rebunnyion_new ();
 
     /* special case a rectangle */
     if (((n_points == 4) ||
@@ -497,16 +497,16 @@ gdk_region_polygon (const GdkPoint *points,
 	  (points[1].y == points[2].y) &&
 	  (points[2].x == points[3].x) &&
 	  (points[3].y == points[0].y)))) {
-	region->extents.x1 = MIN(points[0].x, points[2].x);
-	region->extents.y1 = MIN(points[0].y, points[2].y);
-	region->extents.x2 = MAX(points[0].x, points[2].x);
-	region->extents.y2 = MAX(points[0].y, points[2].y);
-	if ((region->extents.x1 != region->extents.x2) &&
-	    (region->extents.y1 != region->extents.y2)) {
-	    region->numRects = 1;
-	    *(region->rects) = region->extents;
+	rebunnyion->extents.x1 = MIN(points[0].x, points[2].x);
+	rebunnyion->extents.y1 = MIN(points[0].y, points[2].y);
+	rebunnyion->extents.x2 = MAX(points[0].x, points[2].x);
+	rebunnyion->extents.y2 = MAX(points[0].y, points[2].y);
+	if ((rebunnyion->extents.x1 != rebunnyion->extents.x2) &&
+	    (rebunnyion->extents.y1 != rebunnyion->extents.y2)) {
+	    rebunnyion->numRects = 1;
+	    *(rebunnyion->rects) = rebunnyion->extents;
 	}
-	return(region);
+	return(rebunnyion);
     }
 
     pETEs = g_new (EdgeTableEntry, n_points);
@@ -516,7 +516,7 @@ gdk_region_polygon (const GdkPoint *points,
     pSLL = ET.scanlines.next;
     curPtBlock = &FirstPtBlock;
  
-    if (fill_rule == GDK_EVEN_ODD_RULE) {
+    if (fill_rule == BDK_EVEN_ODD_RULE) {
         /*
          *  for each scanline
          */
@@ -613,15 +613,15 @@ gdk_region_polygon (const GdkPoint *points,
         }
     }
     FreeStorage(SLLBlock.next);	
-    (void) PtsToRegion(numFullPtBlocks, iPts, &FirstPtBlock, region);
+    (void) PtsToRebunnyion(numFullPtBlocks, iPts, &FirstPtBlock, rebunnyion);
     for (curPtBlock = FirstPtBlock.next; --numFullPtBlocks >= 0;) {
 	tmpPtBlock = curPtBlock->next;
 	g_free (curPtBlock);
 	curPtBlock = tmpPtBlock;
     }
     g_free (pETEs);
-    return(region);
+    return(rebunnyion);
 }
 
-#define __GDK_POLYREG_GENERIC_C__
-#include "gdkaliasdef.c"
+#define __BDK_POLYREG_GENERIC_C__
+#include "bdkaliasdef.c"

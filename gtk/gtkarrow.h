@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,60 +18,60 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ARROW_H__
-#define __GTK_ARROW_H__
+#ifndef __BTK_ARROW_H__
+#define __BTK_ARROW_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkmisc.h>
+#include <btk/btkmisc.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_ARROW                  (gtk_arrow_get_type ())
-#define GTK_ARROW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ARROW, GtkArrow))
-#define GTK_ARROW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ARROW, GtkArrowClass))
-#define GTK_IS_ARROW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ARROW))
-#define GTK_IS_ARROW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ARROW))
-#define GTK_ARROW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ARROW, GtkArrowClass))
+#define BTK_TYPE_ARROW                  (btk_arrow_get_type ())
+#define BTK_ARROW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ARROW, BtkArrow))
+#define BTK_ARROW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ARROW, BtkArrowClass))
+#define BTK_IS_ARROW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ARROW))
+#define BTK_IS_ARROW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ARROW))
+#define BTK_ARROW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ARROW, BtkArrowClass))
 
 
-typedef struct _GtkArrow       GtkArrow;
-typedef struct _GtkArrowClass  GtkArrowClass;
+typedef struct _BtkArrow       BtkArrow;
+typedef struct _BtkArrowClass  BtkArrowClass;
 
-struct _GtkArrow
+struct _BtkArrow
 {
-  GtkMisc misc;
+  BtkMisc misc;
 
   gint16 GSEAL (arrow_type);
   gint16 GSEAL (shadow_type);
 };
 
-struct _GtkArrowClass
+struct _BtkArrowClass
 {
-  GtkMiscClass parent_class;
+  BtkMiscClass parent_class;
 };
 
 
-GType      gtk_arrow_get_type   (void) G_GNUC_CONST;
-GtkWidget* gtk_arrow_new        (GtkArrowType   arrow_type,
-				 GtkShadowType  shadow_type);
-void       gtk_arrow_set        (GtkArrow      *arrow,
-				 GtkArrowType   arrow_type,
-				 GtkShadowType  shadow_type);
+GType      btk_arrow_get_type   (void) G_GNUC_CONST;
+BtkWidget* btk_arrow_new        (BtkArrowType   arrow_type,
+				 BtkShadowType  shadow_type);
+void       btk_arrow_set        (BtkArrow      *arrow,
+				 BtkArrowType   arrow_type,
+				 BtkShadowType  shadow_type);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_ARROW_H__ */
+#endif /* __BTK_ARROW_H__ */

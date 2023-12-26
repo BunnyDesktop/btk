@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,16 +17,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* For more information on GdkRgb, see http://www.levien.com/gdkrgb/
+/* For more information on BdkRgb, see http://www.levien.com/bdkrgb/
 
    Raph Levien <raph@acm.org>
    */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -36,31 +36,31 @@
 
 #define ENABLE_GRAYSCALE
 
-#include "gdkinternals.h"	/* _gdk_windowing_get_bits_for_depth() */
+#include "bdkinternals.h"	/* _bdk_windowing_get_bits_for_depth() */
 
-#include "gdkrgb.h"
-#include "gdkscreen.h"
-#include "gdkalias.h"
-#include <glib/gprintf.h>
+#include "bdkrgb.h"
+#include "bdkscreen.h"
+#include "bdkalias.h"
+#include <bunnylib/gprintf.h>
 
-typedef struct _GdkRgbInfo     GdkRgbInfo;
-typedef struct _GdkRgbCmapInfo GdkRgbCmapInfo;
+typedef struct _BdkRgbInfo     BdkRgbInfo;
+typedef struct _BdkRgbCmapInfo BdkRgbCmapInfo;
 
-typedef void (*GdkRgbConvFunc) (GdkRgbInfo *image_info, GdkImage *image,
+typedef void (*BdkRgbConvFunc) (BdkRgbInfo *image_info, BdkImage *image,
 				gint x0, gint y0,
 				gint width, gint height,
 				const guchar *buf, int rowstride,
 				gint x_align, gint y_align,
-				GdkRgbCmap *cmap);
+				BdkRgbCmap *cmap);
 
-#define STAGE_ROWSTRIDE (GDK_SCRATCH_IMAGE_WIDTH * 3)
+#define STAGE_ROWSTRIDE (BDK_SCRATCH_IMAGE_WIDTH * 3)
 
 /* Some of these fields should go, as they're not being used at all. (?)
  */
-struct _GdkRgbInfo
+struct _BdkRgbInfo
 {
-  GdkVisual *visual;
-  GdkColormap *cmap;
+  BdkVisual *visual;
+  BdkColormap *cmap;
 
   guint nred_shades;
   guint ngreen_shades;
@@ -76,57 +76,57 @@ struct _GdkRgbInfo
      and indexed images into 24 bit packed RGB. */
   guchar *stage_buf;
 
-  GdkRgbCmap *gray_cmap;
+  BdkRgbCmap *gray_cmap;
 
   gboolean dith_default;
 
   gboolean bitmap; /* set true if in 1 bit per pixel mode */
-  GdkGC *own_gc;
+  BdkGC *own_gc;
 
   /* Convert functions */
-  GdkRgbConvFunc conv;
-  GdkRgbConvFunc conv_d;
+  BdkRgbConvFunc conv;
+  BdkRgbConvFunc conv_d;
 
-  GdkRgbConvFunc conv_32;
-  GdkRgbConvFunc conv_32_d;
+  BdkRgbConvFunc conv_32;
+  BdkRgbConvFunc conv_32_d;
 
-  GdkRgbConvFunc conv_gray;
-  GdkRgbConvFunc conv_gray_d;
+  BdkRgbConvFunc conv_gray;
+  BdkRgbConvFunc conv_gray_d;
 
-  GdkRgbConvFunc conv_indexed;
-  GdkRgbConvFunc conv_indexed_d;
+  BdkRgbConvFunc conv_indexed;
+  BdkRgbConvFunc conv_indexed_d;
 
   guchar *colorcube;
   guchar *colorcube_d;
 
-  /* We need to track LUT's for pairs of GdkRgbInfo / GdkRgbCmap, so we
-   * keep a list of pointers to GdkRgbCmapInfo on both structures so we
-   * can remove as necessary when freeing a GdkRgbInfo or GdkRgbCmap
+  /* We need to track LUT's for pairs of BdkRgbInfo / BdkRgbCmap, so we
+   * keep a list of pointers to BdkRgbCmapInfo on both structures so we
+   * can remove as necessary when freeing a BdkRgbInfo or BdkRgbCmap
    */
   GSList *cmap_info_list;
 };
 
-struct _GdkRgbCmapInfo
+struct _BdkRgbCmapInfo
 {
-  GdkRgbInfo *image_info;
-  GdkRgbCmap *cmap;
+  BdkRgbInfo *image_info;
+  BdkRgbCmap *cmap;
 
   guchar lut[256];		/* For 8-bit modes */
 };
 
-static GdkRgbCmapInfo *gdk_rgb_cmap_get_info (GdkRgbCmap *cmap, GdkRgbInfo *image_info);
+static BdkRgbCmapInfo *bdk_rgb_cmap_get_info (BdkRgbCmap *cmap, BdkRgbInfo *image_info);
 
-static const char gdk_rgb_key[] = "gdk-rgb-info";
-static GQuark gdk_rgb_quark = 0;
+static const char bdk_rgb_key[] = "bdk-rgb-info";
+static GQuark bdk_rgb_quark = 0;
 
-static gboolean gdk_rgb_install_cmap = FALSE;
-static gint gdk_rgb_min_colors = 5 * 5 * 5;
-static gboolean gdk_rgb_verbose = FALSE;
+static gboolean bdk_rgb_install_cmap = FALSE;
+static gint bdk_rgb_min_colors = 5 * 5 * 5;
+static gboolean bdk_rgb_verbose = FALSE;
 
 static gint
-gdk_rgb_cmap_fail (const char *msg, GdkColormap *cmap, gulong *pixels)
+bdk_rgb_cmap_fail (const char *msg, BdkColormap *cmap, gulong *pixels)
 {
-  GdkColor free_colors[256];
+  BdkColor free_colors[256];
   gint n_free;
   gint i;
 
@@ -138,12 +138,12 @@ gdk_rgb_cmap_fail (const char *msg, GdkColormap *cmap, gulong *pixels)
     if (pixels[i] < 256)
       free_colors[n_free++].pixel = pixels[i];
   if (n_free)
-    gdk_colormap_free_colors (cmap, free_colors, n_free);
+    bdk_colormap_free_colors (cmap, free_colors, n_free);
   return 0;
 }
 
 static void
-gdk_rgb_make_colorcube (GdkRgbInfo *image_info, gulong *pixels,
+bdk_rgb_make_colorcube (BdkRgbInfo *image_info, gulong *pixels,
 			gint nr, gint ng, gint nb)
 {
   guchar rt[16], gt[16], bt[16];
@@ -168,7 +168,7 @@ gdk_rgb_make_colorcube (GdkRgbInfo *image_info, gulong *pixels,
 
 /* this is the colorcube suitable for dithering */
 static void
-gdk_rgb_make_colorcube_d (GdkRgbInfo *image_info, gulong *pixels,
+bdk_rgb_make_colorcube_d (BdkRgbInfo *image_info, gulong *pixels,
 			  gint nr, gint ng, gint nb)
 {
   gint r, g, b;
@@ -187,31 +187,31 @@ gdk_rgb_make_colorcube_d (GdkRgbInfo *image_info, gulong *pixels,
 /* Try installing a color cube of the specified size.
    Make the colorcube and return TRUE on success */
 static gboolean
-gdk_rgb_try_colormap (GdkRgbInfo *image_info, gboolean force,
+bdk_rgb_try_colormap (BdkRgbInfo *image_info, gboolean force,
 		      gint nr, gint ng, gint nb)
 {
   gint r, g, b;
   gint ri, gi, bi;
   gint r0, g0, b0;
-  GdkColormap *cmap;
-  GdkColor color;
+  BdkColormap *cmap;
+  BdkColor color;
   gulong pixels[256];
   gint i;
   gint d2;
   gint colors_needed;
   gint idx;
   gint best[256];
-  GdkScreen *screen;
+  BdkScreen *screen;
 
-  if (!force && nr * ng * nb < gdk_rgb_min_colors)
+  if (!force && nr * ng * nb < bdk_rgb_min_colors)
     return FALSE;
 
-  screen = gdk_visual_get_screen (image_info->visual);
+  screen = bdk_visual_get_screen (image_info->visual);
 
   if (image_info->cmap)
     cmap = image_info->cmap;
   else
-    cmap = gdk_screen_get_system_colormap (screen);
+    cmap = bdk_screen_get_system_colormap (screen);
 
   colors_needed = nr * ng * nb;
   for (i = 0; i < 256; i++)
@@ -221,7 +221,7 @@ gdk_rgb_try_colormap (GdkRgbInfo *image_info, gboolean force,
     }
 
 #ifndef GAMMA
-  if (cmap == gdk_screen_get_system_colormap (screen))
+  if (cmap == bdk_screen_get_system_colormap (screen))
     /* find color cube colors that are already present */
     for (i = 0; i < MIN (256, cmap->size); i++)
       {
@@ -241,13 +241,13 @@ gdk_rgb_try_colormap (GdkRgbInfo *image_info, gboolean force,
 	    if (pixels[idx] < 256)
 	      {
 		color.pixel = pixels[idx];
-		gdk_colormap_free_colors (cmap, &color, 1);
+		bdk_colormap_free_colors (cmap, &color, 1);
 	      }
 	    else
 	      colors_needed--;
 	    color = cmap->colors[i];
-	    if (!gdk_colormap_alloc_color (cmap, &color, FALSE, FALSE))
-	      return gdk_rgb_cmap_fail ("error allocating system color\n",
+	    if (!bdk_colormap_alloc_color (cmap, &color, FALSE, FALSE))
+	      return bdk_rgb_cmap_fail ("error allocating system color\n",
 					cmap, pixels);
 	    pixels[idx] = color.pixel; /* which is almost certainly i */
 	    best[idx] = d2;
@@ -271,13 +271,13 @@ gdk_rgb_try_colormap (GdkRgbInfo *image_info, gboolean force,
 	      color.blue = 65535 * pow (color.blue / 65535.0, 0.5);
 #endif
 
-	      if (!gdk_colormap_alloc_color (cmap, &color, FALSE, force))
+	      if (!bdk_colormap_alloc_color (cmap, &color, FALSE, force))
 		{
 		  char tmp_str[80];
 
 		  g_snprintf (tmp_str, 80, "%d %d %d colormap failed\n",
 			   nr, ng, nb);
-		  return gdk_rgb_cmap_fail (tmp_str,
+		  return bdk_rgb_cmap_fail (tmp_str,
 					    cmap, pixels);
 		}
 	      pixels[i] = color.pixel;
@@ -290,14 +290,14 @@ gdk_rgb_try_colormap (GdkRgbInfo *image_info, gboolean force,
   image_info->nred_shades = nr;
   image_info->ngreen_shades = ng;
   image_info->nblue_shades = nb;
-  gdk_rgb_make_colorcube (image_info, pixels, nr, ng, nb);
-  gdk_rgb_make_colorcube_d (image_info, pixels, nr, ng, nb);
+  bdk_rgb_make_colorcube (image_info, pixels, nr, ng, nb);
+  bdk_rgb_make_colorcube_d (image_info, pixels, nr, ng, nb);
   return TRUE;
 }
 
 /* Return TRUE on success. */
 static gboolean
-gdk_rgb_do_colormaps (GdkRgbInfo *image_info, gboolean force)
+bdk_rgb_do_colormaps (BdkRgbInfo *image_info, gboolean force)
 {
   static const gint sizes[][3] = {
     /*    { 6, 7, 6 }, */
@@ -320,7 +320,7 @@ gdk_rgb_do_colormaps (GdkRgbInfo *image_info, gboolean force)
    * colors
    */
   for (i = 0; i < n_sizes; i++)
-    if (gdk_rgb_try_colormap (image_info,
+    if (bdk_rgb_try_colormap (image_info,
 			      (i == n_sizes - 1 ) && force,
 			      sizes[i][0], sizes[i][1], sizes[i][2]))
       return TRUE;
@@ -329,10 +329,10 @@ gdk_rgb_do_colormaps (GdkRgbInfo *image_info, gboolean force)
 
 /* Make a 2 x 2 x 2 colorcube */
 static void
-gdk_rgb_colorcube_222 (GdkRgbInfo *image_info)
+bdk_rgb_colorcube_222 (BdkRgbInfo *image_info)
 {
   int i;
-  GdkColor color;
+  BdkColor color;
 
   image_info->colorcube_d = g_new (guchar, 512);
 
@@ -341,27 +341,27 @@ gdk_rgb_colorcube_222 (GdkRgbInfo *image_info)
       color.red = ((i & 4) >> 2) * 65535;
       color.green = ((i & 2) >> 1) * 65535;
       color.blue = (i & 1) * 65535;
-      gdk_colormap_alloc_color (image_info->cmap, &color, FALSE, TRUE);
+      bdk_colormap_alloc_color (image_info->cmap, &color, FALSE, TRUE);
       image_info->colorcube_d[((i & 4) << 4) | ((i & 2) << 2) | (i & 1)] = color.pixel;
     }
 }
 
 void
-gdk_rgb_set_verbose (gboolean verbose)
+bdk_rgb_set_verbose (gboolean verbose)
 {
-  gdk_rgb_verbose = verbose;
+  bdk_rgb_verbose = verbose;
 }
 
 void
-gdk_rgb_set_install (gboolean install)
+bdk_rgb_set_install (gboolean install)
 {
-  gdk_rgb_install_cmap = install;
+  bdk_rgb_install_cmap = install;
 }
 
 void
-gdk_rgb_set_min_colors (gint min_colors)
+bdk_rgb_set_min_colors (gint min_colors)
 {
-  gdk_rgb_min_colors = min_colors;
+  bdk_rgb_min_colors = min_colors;
 }
 
 /* Return a "score" based on the following criteria (in hex):
@@ -380,15 +380,15 @@ gdk_rgb_set_min_colors (gint min_colors)
    the same speed.
 */
 static guint32
-gdk_rgb_score_visual (GdkVisual *visual)
+bdk_rgb_score_visual (BdkVisual *visual)
 {
   guint32 quality, speed, sys, pseudo;
 
   quality = 0;
   speed = 1;
   sys = 0;
-  if (visual->type == GDK_VISUAL_TRUE_COLOR ||
-      visual->type == GDK_VISUAL_DIRECT_COLOR)
+  if (visual->type == BDK_VISUAL_TRUE_COLOR ||
+      visual->type == BDK_VISUAL_DIRECT_COLOR)
     {
       if (visual->depth == 24)
 	{
@@ -402,8 +402,8 @@ gdk_rgb_score_visual (GdkVisual *visual)
       else if (visual->depth == 8)
 	quality = 4;
     }
-  else if (visual->type == GDK_VISUAL_PSEUDO_COLOR ||
-	   visual->type == GDK_VISUAL_STATIC_COLOR)
+  else if (visual->type == BDK_VISUAL_PSEUDO_COLOR ||
+	   visual->type == BDK_VISUAL_STATIC_COLOR)
     {
       if (visual->depth == 8)
 	quality = 4;
@@ -412,9 +412,9 @@ gdk_rgb_score_visual (GdkVisual *visual)
       else if (visual->depth == 1)
 	quality = 1;
     }
-  else if (visual->type == GDK_VISUAL_STATIC_GRAY
+  else if (visual->type == BDK_VISUAL_STATIC_GRAY
 #ifdef ENABLE_GRAYSCALE
-	   || visual->type == GDK_VISUAL_GRAYSCALE
+	   || visual->type == BDK_VISUAL_GRAYSCALE
 #endif
 	   )
     {
@@ -429,11 +429,11 @@ gdk_rgb_score_visual (GdkVisual *visual)
   if (quality == 0)
     return 0;
 
-  sys = (visual == gdk_screen_get_system_visual (gdk_visual_get_screen (visual)));
+  sys = (visual == bdk_screen_get_system_visual (bdk_visual_get_screen (visual)));
 
-  pseudo = (visual->type == GDK_VISUAL_PSEUDO_COLOR || visual->type == GDK_VISUAL_TRUE_COLOR);
+  pseudo = (visual->type == BDK_VISUAL_PSEUDO_COLOR || visual->type == BDK_VISUAL_TRUE_COLOR);
 
-  if (gdk_rgb_verbose)
+  if (bdk_rgb_verbose)
     g_print ("Visual type = %d, depth = %d, %x:%x:%x%s; score=%x\n",
 	     visual->type,
 	     visual->depth,
@@ -446,23 +446,23 @@ gdk_rgb_score_visual (GdkVisual *visual)
   return (quality << 12) | (speed << 8) | (sys << 4) | pseudo;
 }
 
-static GdkVisual *
-gdk_rgb_choose_visual (GdkScreen *screen)
+static BdkVisual *
+bdk_rgb_choose_visual (BdkScreen *screen)
 {
   GList *visuals, *tmp_list;
   guint32 score, best_score;
-  GdkVisual *visual, *best_visual;
+  BdkVisual *visual, *best_visual;
 
-  visuals = gdk_screen_list_visuals (screen);
+  visuals = bdk_screen_list_visuals (screen);
   tmp_list = visuals;
 
   best_visual = tmp_list->data;
-  best_score = gdk_rgb_score_visual (best_visual);
+  best_score = bdk_rgb_score_visual (best_visual);
   tmp_list = tmp_list->next;
   while (tmp_list)
     {
       visual = tmp_list->data;
-      score = gdk_rgb_score_visual (visual);
+      score = bdk_rgb_score_visual (visual);
       if (score > best_score)
 	{
 	  best_score = score;
@@ -476,14 +476,14 @@ gdk_rgb_choose_visual (GdkScreen *screen)
   return best_visual;
 }
 
-static void gdk_rgb_select_conv (GdkRgbInfo *image_info);
+static void bdk_rgb_select_conv (BdkRgbInfo *image_info);
 
 static void
-gdk_rgb_set_gray_cmap (GdkRgbInfo  *image_info,
-		       GdkColormap *cmap)
+bdk_rgb_set_gray_cmap (BdkRgbInfo  *image_info,
+		       BdkColormap *cmap)
 {
   gint i;
-  GdkColor color;
+  BdkColor color;
   gboolean status;
   gulong pixels[256];
   gint r, g, b, gray;
@@ -494,7 +494,7 @@ gdk_rgb_set_gray_cmap (GdkRgbInfo  *image_info,
       color.red = i * 257;
       color.green = i * 257;
       color.blue = i * 257;
-      status = gdk_colormap_alloc_color (cmap, &color, FALSE, TRUE);
+      status = bdk_colormap_alloc_color (cmap, &color, FALSE, TRUE);
       pixels[i] = color.pixel;
 #ifdef VERBOSE
       g_print ("allocating pixel %d, %x %x %x, result %d\n",
@@ -521,14 +521,14 @@ gdk_rgb_set_gray_cmap (GdkRgbInfo  *image_info,
 }
 
 static void
-gdk_rgb_free_info (GdkRgbInfo *image_info)
+bdk_rgb_free_info (BdkRgbInfo *image_info)
 {
   GSList *tmp_list;
   
   g_free (image_info->stage_buf);
   
   if (image_info->gray_cmap)
-    gdk_rgb_cmap_free (image_info->gray_cmap);
+    bdk_rgb_cmap_free (image_info->gray_cmap);
 
   if (image_info->own_gc)
     g_object_unref (image_info->own_gc);
@@ -540,7 +540,7 @@ gdk_rgb_free_info (GdkRgbInfo *image_info)
   tmp_list = image_info->cmap_info_list;
   while (tmp_list)
     {
-      GdkRgbCmapInfo *cmap_info = tmp_list->data;
+      BdkRgbCmapInfo *cmap_info = tmp_list->data;
       cmap_info->cmap->info_list = g_slist_remove (cmap_info->cmap->info_list, cmap_info);
       g_free (cmap_info);
     }
@@ -549,18 +549,18 @@ gdk_rgb_free_info (GdkRgbInfo *image_info)
   g_free (image_info);
 }
 
-/* Create a GdkRgbInfo for the given visual/colormap pair. If colormap
+/* Create a BdkRgbInfo for the given visual/colormap pair. If colormap
  * is NULL, it will be determined and stored in image_info->cmap. 
  * In this case, image_info->cmap will have an extra refcount which
  * is owned by the caller. 
  */
-static GdkRgbInfo *
-gdk_rgb_create_info (GdkVisual *visual, GdkColormap *colormap)
+static BdkRgbInfo *
+bdk_rgb_create_info (BdkVisual *visual, BdkColormap *colormap)
 {
-  GdkRgbInfo *image_info;
-  GdkScreen *screen = gdk_visual_get_screen (visual);
+  BdkRgbInfo *image_info;
+  BdkScreen *screen = bdk_visual_get_screen (visual);
 
-  image_info = g_new0 (GdkRgbInfo, 1);
+  image_info = g_new0 (BdkRgbInfo, 1);
 
   image_info->visual = visual;
   image_info->cmap = NULL;
@@ -586,61 +586,61 @@ gdk_rgb_create_info (GdkVisual *visual, GdkColormap *colormap)
    * pseudo-color. The reason for this is that on Win32 we let the
    * user restrict the color allocation for PSEUDO_COLOR visuals
    * (i.e., 256-color mode) and we probably want to do the full
-   * gdk_rgb_do_colormaps() if we are doing that. (Though the color
+   * bdk_rgb_do_colormaps() if we are doing that. (Though the color
    * sharing code won't really be right.)
    *
    * (The actual usefulness of this user-requested restriction remains
-   * to be seen, but the code is there in gdkvisual-win32.c. The
+   * to be seen, but the code is there in bdkvisual-win32.c. The
    * thought is that it might occasionally be useful to restrict the
-   * palette size in a GTK application in order to reduce color
+   * palette size in a BTK application in order to reduce color
    * flashing.)
    */
-  if ((image_info->visual->type == GDK_VISUAL_PSEUDO_COLOR &&
+  if ((image_info->visual->type == BDK_VISUAL_PSEUDO_COLOR &&
        image_info->visual->depth <= 4 &&
        image_info->visual->depth >= 3) ||
-      (image_info->visual->type == GDK_VISUAL_STATIC_COLOR &&
+      (image_info->visual->type == BDK_VISUAL_STATIC_COLOR &&
        image_info->visual->depth < 8 &&
        image_info->visual->depth >= 3))
     {
       if (!image_info->cmap)
-	image_info->cmap = g_object_ref (gdk_screen_get_system_colormap (screen));
+	image_info->cmap = g_object_ref (bdk_screen_get_system_colormap (screen));
       
-      gdk_rgb_colorcube_222 (image_info);
+      bdk_rgb_colorcube_222 (image_info);
     }
-  else if (image_info->visual->type == GDK_VISUAL_PSEUDO_COLOR
-    || image_info->visual->type == GDK_VISUAL_STATIC_COLOR)
+  else if (image_info->visual->type == BDK_VISUAL_PSEUDO_COLOR
+    || image_info->visual->type == BDK_VISUAL_STATIC_COLOR)
     {
       if (!image_info->cmap &&
-	  (gdk_rgb_install_cmap || image_info->visual != gdk_screen_get_system_visual (screen)))
+	  (bdk_rgb_install_cmap || image_info->visual != bdk_screen_get_system_visual (screen)))
 	{
-	  image_info->cmap = gdk_colormap_new (image_info->visual, FALSE);
+	  image_info->cmap = bdk_colormap_new (image_info->visual, FALSE);
 	  image_info->cmap_alloced = TRUE;
 	}
-      if (!gdk_rgb_do_colormaps (image_info, image_info->cmap != NULL))
+      if (!bdk_rgb_do_colormaps (image_info, image_info->cmap != NULL))
 	{
-	  image_info->cmap = gdk_colormap_new (image_info->visual, FALSE);
+	  image_info->cmap = bdk_colormap_new (image_info->visual, FALSE);
 	  image_info->cmap_alloced = TRUE;
-	  gdk_rgb_do_colormaps (image_info, TRUE);
+	  bdk_rgb_do_colormaps (image_info, TRUE);
 	}
-      if (gdk_rgb_verbose)
+      if (bdk_rgb_verbose)
 	g_print ("color cube: %d x %d x %d\n",
 		 image_info->nred_shades,
 		 image_info->ngreen_shades,
 		 image_info->nblue_shades);
 
       if (!image_info->cmap)
-	image_info->cmap = g_object_ref (gdk_screen_get_system_colormap (screen));
+	image_info->cmap = g_object_ref (bdk_screen_get_system_colormap (screen));
     }
 #ifdef ENABLE_GRAYSCALE
-  else if (image_info->visual->type == GDK_VISUAL_GRAYSCALE)
+  else if (image_info->visual->type == BDK_VISUAL_GRAYSCALE)
     {
       if (!image_info->cmap)
 	{
-	  image_info->cmap = gdk_colormap_new (image_info->visual, FALSE);
+	  image_info->cmap = bdk_colormap_new (image_info->visual, FALSE);
 	  image_info->cmap_alloced = TRUE;
 	}
       
-      gdk_rgb_set_gray_cmap (image_info, image_info->cmap);
+      bdk_rgb_set_gray_cmap (image_info, image_info->cmap);
     }
 #endif
   else
@@ -648,12 +648,12 @@ gdk_rgb_create_info (GdkVisual *visual, GdkColormap *colormap)
       if (!image_info->cmap)
 	{
 	  /* Always install colormap in direct color. */
-	  if (image_info->visual->type != GDK_VISUAL_DIRECT_COLOR &&
-	      image_info->visual == gdk_screen_get_system_visual (screen))
-	    image_info->cmap = g_object_ref (gdk_screen_get_system_colormap (screen));
+	  if (image_info->visual->type != BDK_VISUAL_DIRECT_COLOR &&
+	      image_info->visual == bdk_screen_get_system_visual (screen))
+	    image_info->cmap = g_object_ref (bdk_screen_get_system_colormap (screen));
 	  else
 	    {
-	      image_info->cmap = gdk_colormap_new (image_info->visual, FALSE);
+	      image_info->cmap = bdk_colormap_new (image_info->visual, FALSE);
 	      image_info->cmap_alloced = TRUE;
 	    }
 	}
@@ -661,49 +661,49 @@ gdk_rgb_create_info (GdkVisual *visual, GdkColormap *colormap)
 
   image_info->bitmap = (image_info->visual->depth == 1);
 
-  image_info->bpp = (_gdk_windowing_get_bits_for_depth (gdk_screen_get_display (screen), image_info->visual->depth) + 7) / 8;
-  gdk_rgb_select_conv (image_info);
+  image_info->bpp = (_bdk_windowing_get_bits_for_depth (bdk_screen_get_display (screen), image_info->visual->depth) + 7) / 8;
+  bdk_rgb_select_conv (image_info);
 
-  if (!gdk_rgb_quark)
-    gdk_rgb_quark = g_quark_from_static_string (gdk_rgb_key);
+  if (!bdk_rgb_quark)
+    bdk_rgb_quark = g_quark_from_static_string (bdk_rgb_key);
 
-  g_object_set_qdata_full (G_OBJECT (image_info->cmap), gdk_rgb_quark,
-			   image_info, (GDestroyNotify)gdk_rgb_free_info);
+  g_object_set_qdata_full (G_OBJECT (image_info->cmap), bdk_rgb_quark,
+			   image_info, (GDestroyNotify)bdk_rgb_free_info);
   return image_info;
 }
 
 void
-gdk_rgb_init (void)
+bdk_rgb_init (void)
 {
   static const gint byte_order[1] = { 1 };
 
   /* check endian sanity */
 #if G_BYTE_ORDER == G_BIG_ENDIAN
   if (((char *)byte_order)[0] == 1)
-    g_error ("gdk_rgb_init: compiled for big endian, but this is a little endian machine.\n\n");
+    g_error ("bdk_rgb_init: compiled for big endian, but this is a little endian machine.\n\n");
 #else
   if (((char *)byte_order)[0] != 1)
-    g_error ("gdk_rgb_init: compiled for little endian, but this is a big endian machine.\n\n");
+    g_error ("bdk_rgb_init: compiled for little endian, but this is a big endian machine.\n\n");
 #endif
 }
 
-static GdkRgbInfo *
-gdk_rgb_get_info_from_colormap (GdkColormap *cmap)
+static BdkRgbInfo *
+bdk_rgb_get_info_from_colormap (BdkColormap *cmap)
 {
-  GdkRgbInfo *image_info;
+  BdkRgbInfo *image_info;
 
-  if (!gdk_rgb_quark)
-    gdk_rgb_quark = g_quark_from_static_string (gdk_rgb_key);
+  if (!bdk_rgb_quark)
+    bdk_rgb_quark = g_quark_from_static_string (bdk_rgb_key);
 
-  image_info = g_object_get_qdata (G_OBJECT (cmap), gdk_rgb_quark);
+  image_info = g_object_get_qdata (G_OBJECT (cmap), bdk_rgb_quark);
   if (!image_info)
-    image_info = gdk_rgb_create_info (gdk_colormap_get_visual (cmap), cmap);
+    image_info = bdk_rgb_create_info (bdk_colormap_get_visual (cmap), cmap);
 
   return image_info;
 }
 
 static guint32
-gdk_rgb_alpha_mask (GdkRgbInfo *image_info)
+bdk_rgb_alpha_mask (BdkRgbInfo *image_info)
 {
   guint padding;
   
@@ -720,30 +720,30 @@ gdk_rgb_alpha_mask (GdkRgbInfo *image_info)
 }
 
 static gulong
-gdk_rgb_xpixel_from_rgb_internal (GdkColormap *colormap,
+bdk_rgb_xpixel_from_rgb_internal (BdkColormap *colormap,
 				  guint16 r, guint16 g, guint16 b)
 {
   gulong pixel = 0;
 
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_colormap (colormap);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_colormap (colormap);
 
   if (image_info->bitmap)
     {
       return (r + (g << 1) + b) > 131070;
     }
-  else if (image_info->visual->type == GDK_VISUAL_PSEUDO_COLOR)
+  else if (image_info->visual->type == BDK_VISUAL_PSEUDO_COLOR)
     pixel = image_info->colorcube[((r & 0xf000) >> 4) |
 				  ((g & 0xf000) >> 8) |
 				  ((b & 0xf000) >> 12)];
   else if (image_info->visual->depth < 8 &&
-	   image_info->visual->type == GDK_VISUAL_STATIC_COLOR)
+	   image_info->visual->type == BDK_VISUAL_STATIC_COLOR)
     {
       pixel = image_info->colorcube_d[((r & 0x8000) >> 9) |
 				      ((g & 0x8000) >> 12) |
 				      ((b & 0x8000) >> 15)];
     }
-  else if (image_info->visual->type == GDK_VISUAL_TRUE_COLOR ||
-	   image_info->visual->type == GDK_VISUAL_DIRECT_COLOR)
+  else if (image_info->visual->type == BDK_VISUAL_TRUE_COLOR ||
+	   image_info->visual->type == BDK_VISUAL_DIRECT_COLOR)
     {
       guint32 unused;
 
@@ -767,10 +767,10 @@ gdk_rgb_xpixel_from_rgb_internal (GdkColormap *colormap,
       pixel = (unused + ((r >> (16 - image_info->visual->red_prec)) << image_info->visual->red_shift) +
 	       ((g >> (16 - image_info->visual->green_prec)) << image_info->visual->green_shift) +
 	       ((b >> (16 - image_info->visual->blue_prec)) << image_info->visual->blue_shift));
-      pixel |= gdk_rgb_alpha_mask (image_info);
+      pixel |= bdk_rgb_alpha_mask (image_info);
     }
-  else if (image_info->visual->type == GDK_VISUAL_STATIC_GRAY ||
-	   image_info->visual->type == GDK_VISUAL_GRAYSCALE)
+  else if (image_info->visual->type == BDK_VISUAL_STATIC_GRAY ||
+	   image_info->visual->type == BDK_VISUAL_GRAYSCALE)
     {
       int gray = r + g * 2 + b;
       return gray >> (18 - image_info->visual->depth);
@@ -781,60 +781,60 @@ gdk_rgb_xpixel_from_rgb_internal (GdkColormap *colormap,
 
 /* convert an rgb value into an X pixel code */
 gulong
-gdk_rgb_xpixel_from_rgb (guint32 rgb)
+bdk_rgb_xpixel_from_rgb (guint32 rgb)
 {
   guint32 r = rgb & 0xff0000;
   guint32 g = rgb & 0xff00;
   guint32 b = rgb & 0xff;
 
-  return gdk_rgb_xpixel_from_rgb_internal (gdk_screen_get_rgb_colormap (gdk_screen_get_default ()),
+  return bdk_rgb_xpixel_from_rgb_internal (bdk_screen_get_rgb_colormap (bdk_screen_get_default ()),
 					   (r >> 8) + (r >> 16), g + (g >> 8), b + (b << 8));
 }
 
 void
-gdk_rgb_gc_set_foreground (GdkGC *gc, guint32 rgb)
+bdk_rgb_gc_set_foreground (BdkGC *gc, guint32 rgb)
 {
-  GdkColor color;
+  BdkColor color;
 
-  color.pixel = gdk_rgb_xpixel_from_rgb (rgb);
-  gdk_gc_set_foreground (gc, &color);
+  color.pixel = bdk_rgb_xpixel_from_rgb (rgb);
+  bdk_gc_set_foreground (gc, &color);
 }
 
 void
-gdk_rgb_gc_set_background (GdkGC *gc, guint32 rgb)
+bdk_rgb_gc_set_background (BdkGC *gc, guint32 rgb)
 {
-  GdkColor color;
+  BdkColor color;
 
-  color.pixel = gdk_rgb_xpixel_from_rgb (rgb);
-  gdk_gc_set_background (gc, &color);
+  color.pixel = bdk_rgb_xpixel_from_rgb (rgb);
+  bdk_gc_set_background (gc, &color);
 }
 
 /**
- * gdk_rgb_find_color:
- * @colormap: a #GdkColormap
- * @color: a #GdkColor
+ * bdk_rgb_find_color:
+ * @colormap: a #BdkColormap
+ * @color: a #BdkColor
  *
  * @colormap should be the colormap for the graphics context and
- * drawable you're using to draw. If you're drawing to a #GtkWidget,
- * call gtk_widget_get_colormap().
+ * drawable you're using to draw. If you're drawing to a #BtkWidget,
+ * call btk_widget_get_colormap().
  *
  * @color should have its %red, %green, and %blue fields initialized;
- * gdk_rgb_find_color() will fill in the %pixel field with the best
+ * bdk_rgb_find_color() will fill in the %pixel field with the best
  * matching pixel from a color cube. The color is then ready to be
- * used for drawing, e.g. you can call gdk_gc_set_foreground() which
+ * used for drawing, e.g. you can call bdk_gc_set_foreground() which
  * expects %pixel to be initialized.
  *
  * In many cases, you can avoid this whole issue by calling
- * gdk_gc_set_rgb_fg_color() or gdk_gc_set_rgb_bg_color(), which
+ * bdk_gc_set_rgb_fg_color() or bdk_gc_set_rgb_bg_color(), which
  * do not expect %pixel to be initialized in advance. If you use those
- * functions, there's no need for gdk_rgb_find_color().
+ * functions, there's no need for bdk_rgb_find_color().
  * 
- * Deprecated: 2.22: Cairo handles colors automatically.
+ * Deprecated: 2.22: Bairo handles colors automatically.
  **/
 void
-gdk_rgb_find_color (GdkColormap *colormap, GdkColor *color)
+bdk_rgb_find_color (BdkColormap *colormap, BdkColor *color)
 {
-  color->pixel = gdk_rgb_xpixel_from_rgb_internal (colormap,
+  color->pixel = bdk_rgb_xpixel_from_rgb_internal (colormap,
 						   color->red, color->green, color->blue);
 }
 
@@ -844,10 +844,10 @@ gdk_rgb_find_color (GdkColormap *colormap, GdkColor *color)
 
 #ifdef HAIRY_CONVERT_8
 static void
-gdk_rgb_convert_8 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
 		   gint x0, gint y0, gint width, gint height,
 		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align, GdkRgbCmap *cmap)
+		   gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -920,10 +920,10 @@ gdk_rgb_convert_8 (GdkRgbInfo *image_info, GdkImage *image,
 }
 #else
 static void
-gdk_rgb_convert_8 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8 (BdkRgbInfo *image_info, BdkImage *image,
 		   gint x0, gint y0, gint width, gint height,
 		   const guchar *buf, int rowstride,
-		   gint x_align, gint y_align, GdkRgbCmap *cmap)
+		   gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -962,7 +962,7 @@ gdk_rgb_convert_8 (GdkRgbInfo *image_info, GdkImage *image,
  *
  * The original matrices are called "DM" below.  The preprocessed matrices for
  * 5-6-5 RGB displays are called "DM_565".  These preprocessed tables can be
- * generated with the gdk_rgb_preprocess_dm_565() function below.
+ * generated with the bdk_rgb_preprocess_dm_565() function below.
  */
 
 #if 1
@@ -1270,7 +1270,7 @@ static const guint32 DM_565[8 * 8] =
 
 #if 0
 static void
-gdk_rgb_preprocess_dm_565 (void)
+bdk_rgb_preprocess_dm_565 (void)
 {
   int i;
   guint32 dith;
@@ -1289,14 +1289,14 @@ gdk_rgb_preprocess_dm_565 (void)
     }
 }
 #else
-#define gdk_rgb_preprocess_dm_565()
+#define bdk_rgb_preprocess_dm_565()
 #endif
 
 static void
-gdk_rgb_convert_8_d666 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8_d666 (BdkRgbInfo *image_info, BdkImage *image,
 			gint x0, gint y0, gint width, gint height,
 			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, GdkRgbCmap *cmap)
+			gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -1333,11 +1333,11 @@ gdk_rgb_convert_8_d666 (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_8_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8_d (BdkRgbInfo *image_info, BdkImage *image,
 		     gint x0, gint y0, gint width, gint height,
 		     const guchar *buf, int rowstride,
 		     gint x_align, gint y_align,
-		     GdkRgbCmap *cmap)
+		     BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -1378,10 +1378,10 @@ gdk_rgb_convert_8_d (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_8_indexed (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8_indexed (BdkRgbInfo *image_info, BdkImage *image,
 			   gint x0, gint y0, gint width, gint height,
 			   const guchar *buf, int rowstride,
-			   gint x_align, gint y_align, GdkRgbCmap *cmap)
+			   gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -1389,7 +1389,7 @@ gdk_rgb_convert_8_indexed (GdkRgbInfo *image_info, GdkImage *image,
   const guchar *bptr, *bp2;
   guchar c;
   guchar *lut;
-  GdkRgbCmapInfo *cmap_info = gdk_rgb_cmap_get_info (cmap, image_info);
+  BdkRgbCmapInfo *cmap_info = bdk_rgb_cmap_get_info (cmap, image_info);
 
   lut = cmap_info->lut;
   bptr = buf;
@@ -1411,10 +1411,10 @@ gdk_rgb_convert_8_indexed (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_gray8 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray8 (BdkRgbInfo *image_info, BdkImage *image,
 		       gint x0, gint y0, gint width, gint height,
 		       const guchar *buf, int rowstride,
-		       gint x_align, gint y_align, GdkRgbCmap *cmap)
+		       gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -1443,10 +1443,10 @@ gdk_rgb_convert_gray8 (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_gray8_gray (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray8_gray (BdkRgbInfo *image_info, BdkImage *image,
 			    gint x0, gint y0, gint width, gint height,
 			    const guchar *buf, int rowstride,
-			    gint x_align, gint y_align, GdkRgbCmap *cmap)
+			    gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int y;
   gint bpl;
@@ -1469,7 +1469,7 @@ gdk_rgb_convert_gray8_gray (GdkRgbInfo *image_info, GdkImage *image,
 #endif
 
 #ifdef HAIRY_CONVERT_565
-/* Render a 24-bit RGB image in buf into the GdkImage, without dithering.
+/* Render a 24-bit RGB image in buf into the BdkImage, without dithering.
    This assumes native byte ordering - what should really be done is to
    check whether the image byte_order is consistent with the _ENDIAN
    config flag, and if not, use a different function.
@@ -1478,10 +1478,10 @@ gdk_rgb_convert_gray8_gray (GdkRgbInfo *image_info, GdkImage *image,
    words (i.e. 4 24-bit pixels), does a lot of shifting and masking,
    then writes 2 words. */
 static void
-gdk_rgb_convert_565 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 		     gint x0, gint y0, gint width, gint height,
 		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, GdkRgbCmap *cmap)
+		     gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -1553,12 +1553,12 @@ gdk_rgb_convert_565 (GdkRgbInfo *image_info, GdkImage *image,
     }
 }
 #else
-/* Render a 24-bit RGB image in buf into the GdkImage, without dithering.
+/* Render a 24-bit RGB image in buf into the BdkImage, without dithering.
    This assumes native byte ordering - what should really be done is to
    check whether the image byte_order is consistent with the _ENDIAN
    config flag, and if not, use a different function.
 
-   This routine is faster than the one included with Gtk 1.0 for a number
+   This routine is faster than the one included with Btk 1.0 for a number
    of reasons:
 
    1. Shifting instead of lookup tables (less memory traffic).
@@ -1575,10 +1575,10 @@ gdk_rgb_convert_565 (GdkRgbInfo *image_info, GdkImage *image,
    shifting and masking, then writes 2 words.
 */
 static void
-gdk_rgb_convert_565 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565 (BdkRgbInfo *image_info, BdkImage *image,
 		     gint x0, gint y0, gint width, gint height,
 		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, GdkRgbCmap *cmap)
+		     gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1609,10 +1609,10 @@ gdk_rgb_convert_565 (GdkRgbInfo *image_info, GdkImage *image,
 
 #ifdef HAIRY_CONVERT_565
 static void
-gdk_rgb_convert_565_gray (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 			  gint x0, gint y0, gint width, gint height,
 			  const guchar *buf, int rowstride,
-			  gint x_align, gint y_align, GdkRgbCmap *cmap)
+			  gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -1677,10 +1677,10 @@ gdk_rgb_convert_565_gray (GdkRgbInfo *image_info, GdkImage *image,
 }
 #else
 static void
-gdk_rgb_convert_565_gray (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565_gray (BdkRgbInfo *image_info, BdkImage *image,
 			  gint x0, gint y0, gint width, gint height,
 			  const guchar *buf, int rowstride,
-			  gint x_align, gint y_align, GdkRgbCmap *cmap)
+			  gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1708,10 +1708,10 @@ gdk_rgb_convert_565_gray (GdkRgbInfo *image_info, GdkImage *image,
 #endif
 
 static void
-gdk_rgb_convert_565_br (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565_br (BdkRgbInfo *image_info, BdkImage *image,
 			gint x0, gint y0, gint width, gint height,
 			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, GdkRgbCmap *cmap)
+			gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1747,10 +1747,10 @@ gdk_rgb_convert_565_br (GdkRgbInfo *image_info, GdkImage *image,
    in this mode. */
 #ifdef HAIRY_CONVERT_565
 static void
-gdk_rgb_convert_565_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
                        gint x0, gint y0, gint width, gint height,
                        const guchar *buf, int rowstride,
-                       gint x_align, gint y_align, GdkRgbCmap *cmap)
+                       gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   /* Now this is what I'd call some highly tuned code! */
   int x, y;
@@ -1872,10 +1872,10 @@ gdk_rgb_convert_565_d (GdkRgbInfo *image_info, GdkImage *image,
 }
 #else
 static void
-gdk_rgb_convert_565_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_565_d (BdkRgbInfo *image_info, BdkImage *image,
                        gint x0, gint y0, gint width, gint height,
                        const guchar *buf, int rowstride,
-                       gint x_align, gint y_align, GdkRgbCmap *cmap)
+                       gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1917,10 +1917,10 @@ gdk_rgb_convert_565_d (GdkRgbInfo *image_info, GdkImage *image,
 #endif
 
 static void
-gdk_rgb_convert_555 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_555 (BdkRgbInfo *image_info, BdkImage *image,
 		     gint x0, gint y0, gint width, gint height,
 		     const guchar *buf, int rowstride,
-		     gint x_align, gint y_align, GdkRgbCmap *cmap)
+		     gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1949,10 +1949,10 @@ gdk_rgb_convert_555 (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_555_br (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_555_br (BdkRgbInfo *image_info, BdkImage *image,
 			gint x0, gint y0, gint width, gint height,
 			const guchar *buf, int rowstride,
-			gint x_align, gint y_align, GdkRgbCmap *cmap)
+			gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -1985,10 +1985,10 @@ gdk_rgb_convert_555_br (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_888_msb (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_888_msb (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int y;
   guchar *obuf;
@@ -2013,10 +2013,10 @@ gdk_rgb_convert_888_msb (GdkRgbInfo *image_info, GdkImage *image,
 
 #ifdef HAIRY_CONVERT_888
 static void
-gdk_rgb_convert_888_lsb (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -2087,10 +2087,10 @@ gdk_rgb_convert_888_lsb (GdkRgbInfo *image_info, GdkImage *image,
 }
 #else
 static void
-gdk_rgb_convert_888_lsb (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_888_lsb (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -2123,10 +2123,10 @@ gdk_rgb_convert_888_lsb (GdkRgbInfo *image_info, GdkImage *image,
 /* convert 24-bit packed to 32-bit unpacked */
 /* todo: optimize this */
 static void
-gdk_rgb_convert_0888 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_0888 (BdkRgbInfo *image_info, BdkImage *image,
 		      gint x0, gint y0, gint width, gint height,
 		      const guchar *buf, int rowstride,
-		      gint x_align, gint y_align, GdkRgbCmap *cmap)
+		      gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
   guchar *obuf, *p;
@@ -2158,10 +2158,10 @@ gdk_rgb_convert_0888 (GdkRgbInfo *image_info, GdkImage *image,
 #ifdef USE_MEDIALIB25
 /* convert 24-bit packed to 32-bit unpacked */
 static void
-gdk_rgb_convert_0888_medialib (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_0888_medialib (BdkRgbInfo *image_info, BdkImage *image,
 			       gint x0, gint y0, gint width, gint height,
 			       const guchar *buf, int rowstride,
-			       gint x_align, gint y_align, GdkRgbCmap *cmap)
+			       gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
   guchar *obuf, *p;
@@ -2179,10 +2179,10 @@ gdk_rgb_convert_0888_medialib (GdkRgbInfo *image_info, GdkImage *image,
 #endif
 
 static void
-gdk_rgb_convert_0888_br (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_0888_br (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int y, w;
   guchar *obuf, *p;
@@ -2212,10 +2212,10 @@ gdk_rgb_convert_0888_br (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_8880_br (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_8880_br (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf;
@@ -2245,11 +2245,11 @@ gdk_rgb_convert_8880_br (GdkRgbInfo *image_info, GdkImage *image,
 /* Generic truecolor/directcolor conversion function. Slow, but these
    are oddball modes. */
 static void
-gdk_rgb_convert_truecolor_lsb (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_truecolor_lsb (BdkRgbInfo *image_info, BdkImage *image,
 			       gint x0, gint y0, gint width, gint height,
 			       const guchar *buf, int rowstride,
 			       gint x_align, gint y_align,
-			       GdkRgbCmap *cmap)
+			       BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -2261,7 +2261,7 @@ gdk_rgb_convert_truecolor_lsb (GdkRgbInfo *image_info, GdkImage *image,
   gint b_right, b_left;
   gint bpp;
   guint32 pixel;
-  guint32 alpha_mask = gdk_rgb_alpha_mask (image_info);
+  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
   gint i;
 
   r_right = 8 - image_info->visual->red_prec;
@@ -2299,11 +2299,11 @@ gdk_rgb_convert_truecolor_lsb (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_truecolor_lsb_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_truecolor_lsb_d (BdkRgbInfo *image_info, BdkImage *image,
 				 gint x0, gint y0, gint width, gint height,
 				 const guchar *buf, int rowstride,
 				 gint x_align, gint y_align,
-				 GdkRgbCmap *cmap)
+				 BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -2315,7 +2315,7 @@ gdk_rgb_convert_truecolor_lsb_d (GdkRgbInfo *image_info, GdkImage *image,
   gint b_right, b_left, b_prec;
   gint bpp;
   guint32 pixel;
-  guint32 alpha_mask = gdk_rgb_alpha_mask (image_info);
+  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
   gint i;
   gint dith;
   gint r1, g1, b1;
@@ -2364,11 +2364,11 @@ gdk_rgb_convert_truecolor_lsb_d (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_truecolor_msb (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_truecolor_msb (BdkRgbInfo *image_info, BdkImage *image,
 			       gint x0, gint y0, gint width, gint height,
 			       const guchar *buf, int rowstride,
 			       gint x_align, gint y_align,
-			       GdkRgbCmap *cmap)
+			       BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -2380,7 +2380,7 @@ gdk_rgb_convert_truecolor_msb (GdkRgbInfo *image_info, GdkImage *image,
   gint b_right, b_left;
   gint bpp;
   guint32 pixel;
-  guint32 alpha_mask = gdk_rgb_alpha_mask (image_info);
+  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
   gint shift, shift_init;
 
   r_right = 8 - image_info->visual->red_prec;
@@ -2418,11 +2418,11 @@ gdk_rgb_convert_truecolor_msb (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_truecolor_msb_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_truecolor_msb_d (BdkRgbInfo *image_info, BdkImage *image,
 				 gint x0, gint y0, gint width, gint height,
 				 const guchar *buf, int rowstride,
 				 gint x_align, gint y_align,
-				 GdkRgbCmap *cmap)
+				 BdkRgbCmap *cmap)
 {
   int x, y;
   guchar *obuf, *obptr;
@@ -2434,7 +2434,7 @@ gdk_rgb_convert_truecolor_msb_d (GdkRgbInfo *image_info, GdkImage *image,
   gint b_right, b_left, b_prec;
   gint bpp;
   guint32 pixel;
-  guint32 alpha_mask = gdk_rgb_alpha_mask (image_info);
+  guint32 alpha_mask = bdk_rgb_alpha_mask (image_info);
   gint shift, shift_init;
   gint dith;
   gint r1, g1, b1;
@@ -2484,11 +2484,11 @@ gdk_rgb_convert_truecolor_msb_d (GdkRgbInfo *image_info, GdkImage *image,
 
 /* This actually works for depths from 3 to 7 */
 static void
-gdk_rgb_convert_4 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_4 (BdkRgbInfo *image_info, BdkImage *image,
 		   gint x0, gint y0, gint width, gint height,
 		   const guchar *buf, int rowstride,
 		   gint x_align, gint y_align,
-		   GdkRgbCmap *cmap)
+		   BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2524,11 +2524,11 @@ gdk_rgb_convert_4 (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_4_pack (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_4_pack (BdkRgbInfo *image_info, BdkImage *image,
 			gint x0, gint y0, gint width, gint height,
 			const guchar *buf, int rowstride,
 			gint x_align, gint y_align,
-			GdkRgbCmap *cmap)
+			BdkRgbCmap *cmap)
 {
   int x, y, ix;
   gint bpl;
@@ -2598,10 +2598,10 @@ gdk_rgb_convert_4_pack (GdkRgbInfo *image_info, GdkImage *image,
 
 /* This actually works for depths from 3 to 7 */
 static void
-gdk_rgb_convert_gray4 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray4 (BdkRgbInfo *image_info, BdkImage *image,
 		       gint x0, gint y0, gint width, gint height,
 		       const guchar *buf, int rowstride,
-		       gint x_align, gint y_align, GdkRgbCmap *cmap)
+		       gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2632,10 +2632,10 @@ gdk_rgb_convert_gray4 (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_gray4_pack (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray4_pack (BdkRgbInfo *image_info, BdkImage *image,
 			    gint x0, gint y0, gint width, gint height,
 			    const guchar *buf, int rowstride,
-			    gint x_align, gint y_align, GdkRgbCmap *cmap)
+			    gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2692,10 +2692,10 @@ gdk_rgb_convert_gray4_pack (GdkRgbInfo *image_info, GdkImage *image,
 
 /* This actually works for depths from 3 to 7 */
 static void
-gdk_rgb_convert_gray4_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray4_d (BdkRgbInfo *image_info, BdkImage *image,
 			 gint x0, gint y0, gint width, gint height,
 			 const guchar *buf, int rowstride,
-			 gint x_align, gint y_align, GdkRgbCmap *cmap)
+			 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2732,10 +2732,10 @@ gdk_rgb_convert_gray4_d (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_gray4_d_pack (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray4_d_pack (BdkRgbInfo *image_info, BdkImage *image,
 			      gint x0, gint y0, gint width, gint height,
 			      const guchar *buf, int rowstride,
-			      gint x_align, gint y_align, GdkRgbCmap *cmap)
+			      gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2801,11 +2801,11 @@ gdk_rgb_convert_gray4_d_pack (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_1 (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_1 (BdkRgbInfo *image_info, BdkImage *image,
 		   gint x0, gint y0, gint width, gint height,
 		   const guchar *buf, int rowstride,
 		   gint x_align, gint y_align,
-		   GdkRgbCmap *cmap)
+		   BdkRgbCmap *cmap)
 {
   int x, y;
   gint bpl;
@@ -2847,16 +2847,16 @@ gdk_rgb_convert_1 (GdkRgbInfo *image_info, GdkImage *image,
 
 /* Returns a pointer to the stage buffer. */
 static guchar *
-gdk_rgb_ensure_stage (GdkRgbInfo *image_info)
+bdk_rgb_ensure_stage (BdkRgbInfo *image_info)
 {
   if (image_info->stage_buf == NULL)
-    image_info->stage_buf = g_malloc (GDK_SCRATCH_IMAGE_HEIGHT * STAGE_ROWSTRIDE);
+    image_info->stage_buf = g_malloc (BDK_SCRATCH_IMAGE_HEIGHT * STAGE_ROWSTRIDE);
   return image_info->stage_buf;
 }
 
 /* This is slow. Speed me up, please. */
 static void
-gdk_rgb_32_to_stage (GdkRgbInfo *image_info,
+bdk_rgb_32_to_stage (BdkRgbInfo *image_info,
 		     const guchar *buf, gint rowstride, gint width, gint height)
 {
   gint x, y;
@@ -2866,7 +2866,7 @@ gdk_rgb_32_to_stage (GdkRgbInfo *image_info,
   guchar *po;
 
   pi_start = buf;
-  po_start = gdk_rgb_ensure_stage (image_info);
+  po_start = bdk_rgb_ensure_stage (image_info);
   for (y = 0; y < height; y++)
     {
       pi = pi_start;
@@ -2886,12 +2886,12 @@ gdk_rgb_32_to_stage (GdkRgbInfo *image_info,
 /* Generic 32bit RGB conversion function - convert to 24bit packed, then
    go from there. */
 static void
-gdk_rgb_convert_32_generic (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_32_generic (BdkRgbInfo *image_info, BdkImage *image,
 			    gint x0, gint y0, gint width, gint height,
 			    const guchar *buf, gint rowstride,
-			    gint x_align, gint y_align, GdkRgbCmap *cmap)
+			    gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
-  gdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
+  bdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
 
   (*image_info->conv) (image_info, image, x0, y0, width, height,
 		       image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -2901,12 +2901,12 @@ gdk_rgb_convert_32_generic (GdkRgbInfo *image_info, GdkImage *image,
 /* Generic 32bit RGB conversion function - convert to 24bit packed, then
    go from there. */
 static void
-gdk_rgb_convert_32_generic_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_32_generic_d (BdkRgbInfo *image_info, BdkImage *image,
 			      gint x0, gint y0, gint width, gint height,
 			      const guchar *buf, gint rowstride,
-			      gint x_align, gint y_align, GdkRgbCmap *cmap)
+			      gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
-  gdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
+  bdk_rgb_32_to_stage (image_info, buf, rowstride, width, height);
 
   (*image_info->conv_d) (image_info, image, x0, y0, width, height,
 			 image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -2915,7 +2915,7 @@ gdk_rgb_convert_32_generic_d (GdkRgbInfo *image_info, GdkImage *image,
 
 /* This is slow. Speed me up, please. */
 static void
-gdk_rgb_gray_to_stage (GdkRgbInfo *image_info,
+bdk_rgb_gray_to_stage (BdkRgbInfo *image_info,
 		       const guchar *buf, gint rowstride, gint width, gint height)
 {
   gint x, y;
@@ -2926,7 +2926,7 @@ gdk_rgb_gray_to_stage (GdkRgbInfo *image_info,
   guchar gray;
 
   pi_start = buf;
-  po_start = gdk_rgb_ensure_stage (image_info);
+  po_start = bdk_rgb_ensure_stage (image_info);
   for (y = 0; y < height; y++)
     {
       pi = pi_start;
@@ -2946,12 +2946,12 @@ gdk_rgb_gray_to_stage (GdkRgbInfo *image_info,
 /* Generic gray conversion function - convert to 24bit packed, then go
    from there. */
 static void
-gdk_rgb_convert_gray_generic (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray_generic (BdkRgbInfo *image_info, BdkImage *image,
 			      gint x0, gint y0, gint width, gint height,
 			      const guchar *buf, gint rowstride,
-			      gint x_align, gint y_align, GdkRgbCmap *cmap)
+			      gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
-  gdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
+  bdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
 
   (*image_info->conv) (image_info, image, x0, y0, width, height,
 		       image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -2959,12 +2959,12 @@ gdk_rgb_convert_gray_generic (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_gray_generic_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray_generic_d (BdkRgbInfo *image_info, BdkImage *image,
 				gint x0, gint y0, gint width, gint height,
 				const guchar *buf, gint rowstride,
-				gint x_align, gint y_align, GdkRgbCmap *cmap)
+				gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
-  gdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
+  bdk_rgb_gray_to_stage (image_info, buf, rowstride, width, height);
 
   (*image_info->conv_d) (image_info, image, x0, y0, width, height,
 			 image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -2973,10 +2973,10 @@ gdk_rgb_convert_gray_generic_d (GdkRgbInfo *image_info, GdkImage *image,
 
 /* Render grayscale using indexed method. */
 static void
-gdk_rgb_convert_gray_cmap (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray_cmap (BdkRgbInfo *image_info, BdkImage *image,
 			   gint x0, gint y0, gint width, gint height,
 			   const guchar *buf, gint rowstride,
-			   gint x_align, gint y_align, GdkRgbCmap *cmap)
+			   gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   (*image_info->conv_indexed) (image_info, image, x0, y0, width, height,
 			       buf, rowstride,
@@ -2985,10 +2985,10 @@ gdk_rgb_convert_gray_cmap (GdkRgbInfo *image_info, GdkImage *image,
 
 #if 0
 static void
-gdk_rgb_convert_gray_cmap_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_gray_cmap_d (BdkRgbInfo *image_info, BdkImage *image,
 			     gint x0, gint y0, gint width, gint height,
 			     const guchar *buf, gint rowstride,
-			     gint x_align, gint y_align, GdkRgbCmap *cmap)
+			     gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
   (*image_info->conv_indexed_d) (image_info, image, x0, y0, width, height,
 				 buf, rowstride,
@@ -2998,9 +2998,9 @@ gdk_rgb_convert_gray_cmap_d (GdkRgbInfo *image_info, GdkImage *image,
 
 /* This is slow. Speed me up, please. */
 static void
-gdk_rgb_indexed_to_stage (GdkRgbInfo *image_info,
+bdk_rgb_indexed_to_stage (BdkRgbInfo *image_info,
 			  const guchar *buf, gint rowstride, gint width, gint height,
-			  GdkRgbCmap *cmap)
+			  BdkRgbCmap *cmap)
 {
   gint x, y;
   const guchar *pi_start;
@@ -3010,7 +3010,7 @@ gdk_rgb_indexed_to_stage (GdkRgbInfo *image_info,
   gint rgb;
 
   pi_start = buf;
-  po_start = gdk_rgb_ensure_stage (image_info);
+  po_start = bdk_rgb_ensure_stage (image_info);
   for (y = 0; y < height; y++)
     {
       pi = pi_start;
@@ -3030,12 +3030,12 @@ gdk_rgb_indexed_to_stage (GdkRgbInfo *image_info,
 /* Generic gray conversion function - convert to 24bit packed, then go
    from there. */
 static void
-gdk_rgb_convert_indexed_generic (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_indexed_generic (BdkRgbInfo *image_info, BdkImage *image,
 				 gint x0, gint y0, gint width, gint height,
 				 const guchar *buf, gint rowstride,
-				 gint x_align, gint y_align, GdkRgbCmap *cmap)
+				 gint x_align, gint y_align, BdkRgbCmap *cmap)
 {
-  gdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
+  bdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
 
   (*image_info->conv) (image_info, image, x0, y0, width, height,
 		       image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -3043,13 +3043,13 @@ gdk_rgb_convert_indexed_generic (GdkRgbInfo *image_info, GdkImage *image,
 }
 
 static void
-gdk_rgb_convert_indexed_generic_d (GdkRgbInfo *image_info, GdkImage *image,
+bdk_rgb_convert_indexed_generic_d (BdkRgbInfo *image_info, BdkImage *image,
 				   gint x0, gint y0, gint width, gint height,
 				   const guchar *buf, gint rowstride,
 				   gint x_align, gint y_align,
-				   GdkRgbCmap *cmap)
+				   BdkRgbCmap *cmap)
 {
-  gdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
+  bdk_rgb_indexed_to_stage (image_info, buf, rowstride, width, height, cmap);
 
   (*image_info->conv_d) (image_info, image, x0, y0, width, height,
 			 image_info->stage_buf, STAGE_ROWSTRIDE,
@@ -3059,39 +3059,39 @@ gdk_rgb_convert_indexed_generic_d (GdkRgbInfo *image_info, GdkImage *image,
 /* Select a conversion function based on the visual and a
    representative image. */
 static void
-gdk_rgb_select_conv (GdkRgbInfo *image_info)
+bdk_rgb_select_conv (BdkRgbInfo *image_info)
 {
-  GdkByteOrder byte_order;
+  BdkByteOrder byte_order;
   gint depth, bpp, byterev;
-  GdkVisualType vtype;
+  BdkVisualType vtype;
   guint32 red_mask, green_mask, blue_mask;
-  GdkRgbConvFunc conv, conv_d;
-  GdkRgbConvFunc conv_32, conv_32_d;
-  GdkRgbConvFunc conv_gray, conv_gray_d;
-  GdkRgbConvFunc conv_indexed, conv_indexed_d;
+  BdkRgbConvFunc conv, conv_d;
+  BdkRgbConvFunc conv_32, conv_32_d;
+  BdkRgbConvFunc conv_gray, conv_gray_d;
+  BdkRgbConvFunc conv_indexed, conv_indexed_d;
   gboolean mask_rgb, mask_bgr;
-  GdkScreen *screen = gdk_visual_get_screen (image_info->visual);
+  BdkScreen *screen = bdk_visual_get_screen (image_info->visual);
 
   depth = image_info->visual->depth;
 
-  bpp = _gdk_windowing_get_bits_for_depth (gdk_screen_get_display (screen),
+  bpp = _bdk_windowing_get_bits_for_depth (bdk_screen_get_display (screen),
 					   image_info->visual->depth);
 
   byte_order = image_info->visual->byte_order;
-  if (gdk_rgb_verbose)
+  if (bdk_rgb_verbose)
     g_print ("Chose visual type=%d depth=%d, image bpp=%d, %s first\n",
 	     image_info->visual->type, image_info->visual->depth,
-	     bpp, byte_order == GDK_LSB_FIRST ? "lsb" : "msb");
+	     bpp, byte_order == BDK_LSB_FIRST ? "lsb" : "msb");
 
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  byterev = (byte_order == GDK_LSB_FIRST);
+  byterev = (byte_order == BDK_LSB_FIRST);
 #else
-  byterev = (byte_order == GDK_MSB_FIRST);
+  byterev = (byte_order == BDK_MSB_FIRST);
 #endif
 
   vtype = image_info->visual->type;
-  if (vtype == GDK_VISUAL_DIRECT_COLOR)
-    vtype = GDK_VISUAL_TRUE_COLOR;
+  if (vtype == BDK_VISUAL_DIRECT_COLOR)
+    vtype = BDK_VISUAL_TRUE_COLOR;
 
   red_mask = image_info->visual->red_mask;
   green_mask = image_info->visual->green_mask;
@@ -3103,115 +3103,115 @@ gdk_rgb_select_conv (GdkRgbInfo *image_info)
   conv = NULL;
   conv_d = NULL;
 
-  conv_32 = gdk_rgb_convert_32_generic;
-  conv_32_d = gdk_rgb_convert_32_generic_d;
+  conv_32 = bdk_rgb_convert_32_generic;
+  conv_32_d = bdk_rgb_convert_32_generic_d;
 
-  conv_gray = gdk_rgb_convert_gray_generic;
-  conv_gray_d = gdk_rgb_convert_gray_generic_d;
+  conv_gray = bdk_rgb_convert_gray_generic;
+  conv_gray_d = bdk_rgb_convert_gray_generic_d;
 
-  conv_indexed = gdk_rgb_convert_indexed_generic;
-  conv_indexed_d = gdk_rgb_convert_indexed_generic_d;
+  conv_indexed = bdk_rgb_convert_indexed_generic;
+  conv_indexed_d = bdk_rgb_convert_indexed_generic_d;
 
   image_info->dith_default = FALSE;
 
   if (image_info->bitmap)
-    conv = gdk_rgb_convert_1;
+    conv = bdk_rgb_convert_1;
   else if (bpp == 16 && depth == 16 && !byterev &&
       red_mask == 0xf800 && green_mask == 0x7e0 && blue_mask == 0x1f)
     {
-      conv = gdk_rgb_convert_565;
-      conv_d = gdk_rgb_convert_565_d;
-      conv_gray = gdk_rgb_convert_565_gray;
-      gdk_rgb_preprocess_dm_565 ();
+      conv = bdk_rgb_convert_565;
+      conv_d = bdk_rgb_convert_565_d;
+      conv_gray = bdk_rgb_convert_565_gray;
+      bdk_rgb_preprocess_dm_565 ();
     }
   else if (bpp == 16 && depth == 16 &&
-	   vtype == GDK_VISUAL_TRUE_COLOR && byterev &&
+	   vtype == BDK_VISUAL_TRUE_COLOR && byterev &&
       red_mask == 0xf800 && green_mask == 0x7e0 && blue_mask == 0x1f)
-    conv = gdk_rgb_convert_565_br;
+    conv = bdk_rgb_convert_565_br;
 
   else if (bpp == 16 && depth == 15 &&
-	   vtype == GDK_VISUAL_TRUE_COLOR && !byterev &&
+	   vtype == BDK_VISUAL_TRUE_COLOR && !byterev &&
       red_mask == 0x7c00 && green_mask == 0x3e0 && blue_mask == 0x1f)
-    conv = gdk_rgb_convert_555;
+    conv = bdk_rgb_convert_555;
 
   else if (bpp == 16 && depth == 15 &&
-	   vtype == GDK_VISUAL_TRUE_COLOR && byterev &&
+	   vtype == BDK_VISUAL_TRUE_COLOR && byterev &&
       red_mask == 0x7c00 && green_mask == 0x3e0 && blue_mask == 0x1f)
-    conv = gdk_rgb_convert_555_br;
+    conv = bdk_rgb_convert_555_br;
 
   /* I'm not 100% sure about the 24bpp tests - but testing will show*/
-  else if (bpp == 24 && depth == 24 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   ((mask_rgb && byte_order == GDK_LSB_FIRST) ||
-	    (mask_bgr && byte_order == GDK_MSB_FIRST)))
-    conv = gdk_rgb_convert_888_lsb;
-  else if (bpp == 24 && depth == 24 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   ((mask_rgb && byte_order == GDK_MSB_FIRST) ||
-	    (mask_bgr && byte_order == GDK_LSB_FIRST)))
-    conv = gdk_rgb_convert_888_msb;
+  else if (bpp == 24 && depth == 24 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   ((mask_rgb && byte_order == BDK_LSB_FIRST) ||
+	    (mask_bgr && byte_order == BDK_MSB_FIRST)))
+    conv = bdk_rgb_convert_888_lsb;
+  else if (bpp == 24 && depth == 24 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   ((mask_rgb && byte_order == BDK_MSB_FIRST) ||
+	    (mask_bgr && byte_order == BDK_LSB_FIRST)))
+    conv = bdk_rgb_convert_888_msb;
   else if (bpp == 32 &&
 	   (depth == 24 || depth == 32) &&
-	   vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_rgb && byte_order == GDK_MSB_FIRST))
-    conv = gdk_rgb_convert_0888_br;
+	   vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_rgb && byte_order == BDK_MSB_FIRST))
+    conv = bdk_rgb_convert_0888_br;
   else if (bpp == 32 &&
 	   (depth == 24 || depth == 32) &&
-	   vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_rgb && byte_order == GDK_LSB_FIRST))
+	   vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_rgb && byte_order == BDK_LSB_FIRST))
     {
 #ifdef USE_MEDIALIB25
-      if (_gdk_use_medialib ())
-        conv = gdk_rgb_convert_0888_medialib;
+      if (_bdk_use_medialib ())
+        conv = bdk_rgb_convert_0888_medialib;
       else
-        conv = gdk_rgb_convert_0888;
+        conv = bdk_rgb_convert_0888;
 #else
-      conv = gdk_rgb_convert_0888;
+      conv = bdk_rgb_convert_0888;
 #endif
     }
   
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  else if (bpp == 32 && depth == 24 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_bgr && byte_order == GDK_MSB_FIRST))
-    conv = gdk_rgb_convert_8880_br;
-  else if (bpp == 32 && depth == 32 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_rgb && byte_order == GDK_LSB_FIRST))
-    conv = gdk_rgb_convert_8880_br;
-  else if (bpp == 32 && depth == 32 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_rgb && byte_order == GDK_MSB_FIRST))
-    conv = gdk_rgb_convert_8880_br;
+  else if (bpp == 32 && depth == 24 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_bgr && byte_order == BDK_MSB_FIRST))
+    conv = bdk_rgb_convert_8880_br;
+  else if (bpp == 32 && depth == 32 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_rgb && byte_order == BDK_LSB_FIRST))
+    conv = bdk_rgb_convert_8880_br;
+  else if (bpp == 32 && depth == 32 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_rgb && byte_order == BDK_MSB_FIRST))
+    conv = bdk_rgb_convert_8880_br;
 #else
-  else if (bpp == 32 && depth == 24 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_bgr && byte_order == GDK_LSB_FIRST))
-    conv = gdk_rgb_convert_8880_br;
-  else if (bpp == 32 && depth == 32 && vtype == GDK_VISUAL_TRUE_COLOR &&
-	   (mask_rgb && byte_order == GDK_LSB_FIRST))
+  else if (bpp == 32 && depth == 24 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_bgr && byte_order == BDK_LSB_FIRST))
+    conv = bdk_rgb_convert_8880_br;
+  else if (bpp == 32 && depth == 32 && vtype == BDK_VISUAL_TRUE_COLOR &&
+	   (mask_rgb && byte_order == BDK_LSB_FIRST))
     {
 #ifdef USE_MEDIALIB25
-      if (_gdk_use_medialib ())
-        conv = gdk_rgb_convert_0888_medialib;
+      if (_bdk_use_medialib ())
+        conv = bdk_rgb_convert_0888_medialib;
       else
-        conv = gdk_rgb_convert_0888;
+        conv = bdk_rgb_convert_0888;
 #else
-      conv = gdk_rgb_convert_0888;
+      conv = bdk_rgb_convert_0888;
 #endif
     }
 #endif
-  else if (vtype == GDK_VISUAL_TRUE_COLOR && byte_order == GDK_LSB_FIRST)
+  else if (vtype == BDK_VISUAL_TRUE_COLOR && byte_order == BDK_LSB_FIRST)
     {
-      conv = gdk_rgb_convert_truecolor_lsb;
-      conv_d = gdk_rgb_convert_truecolor_lsb_d;
+      conv = bdk_rgb_convert_truecolor_lsb;
+      conv_d = bdk_rgb_convert_truecolor_lsb_d;
     }
-  else if (vtype == GDK_VISUAL_TRUE_COLOR && byte_order == GDK_MSB_FIRST)
+  else if (vtype == BDK_VISUAL_TRUE_COLOR && byte_order == BDK_MSB_FIRST)
     {
-      conv = gdk_rgb_convert_truecolor_msb;
-      conv_d = gdk_rgb_convert_truecolor_msb_d;
+      conv = bdk_rgb_convert_truecolor_msb;
+      conv_d = bdk_rgb_convert_truecolor_msb_d;
     }
   else if (bpp == 8 &&
 	   depth <= 8 &&
 	   depth > 4 &&
-	   (vtype == GDK_VISUAL_PSEUDO_COLOR
-	    || vtype == GDK_VISUAL_STATIC_COLOR
+	   (vtype == BDK_VISUAL_PSEUDO_COLOR
+	    || vtype == BDK_VISUAL_STATIC_COLOR
 #ifdef ENABLE_GRAYSCALE
-	    || vtype == GDK_VISUAL_GRAYSCALE
+	    || vtype == BDK_VISUAL_GRAYSCALE
 #endif
 	    ))
     {
@@ -3221,56 +3221,56 @@ gdk_rgb_select_conv (GdkRgbInfo *image_info)
        * probably never occur.
        */
       image_info->dith_default = TRUE;
-      conv = gdk_rgb_convert_8;
-      if (vtype != GDK_VISUAL_GRAYSCALE)
+      conv = bdk_rgb_convert_8;
+      if (vtype != BDK_VISUAL_GRAYSCALE)
 	{
 	  if (image_info->nred_shades == 6 &&
 	      image_info->ngreen_shades == 6 &&
 	      image_info->nblue_shades == 6)
-	    conv_d = gdk_rgb_convert_8_d666;
+	    conv_d = bdk_rgb_convert_8_d666;
 	  else
-	    conv_d = gdk_rgb_convert_8_d;
+	    conv_d = bdk_rgb_convert_8_d;
 	}
-      conv_indexed = gdk_rgb_convert_8_indexed;
-      conv_gray = gdk_rgb_convert_gray_cmap;
+      conv_indexed = bdk_rgb_convert_8_indexed;
+      conv_gray = bdk_rgb_convert_gray_cmap;
     }
-  else if (bpp == 8 && depth == 8 && (vtype == GDK_VISUAL_STATIC_GRAY
+  else if (bpp == 8 && depth == 8 && (vtype == BDK_VISUAL_STATIC_GRAY
 #ifdef not_ENABLE_GRAYSCALE
-				      || vtype == GDK_VISUAL_GRAYSCALE
+				      || vtype == BDK_VISUAL_GRAYSCALE
 #endif
 				      ))
     {
-      conv = gdk_rgb_convert_gray8;
-      conv_gray = gdk_rgb_convert_gray8_gray;
+      conv = bdk_rgb_convert_gray8;
+      conv_gray = bdk_rgb_convert_gray8_gray;
     }
   else if (bpp == 8 && depth < 8 && depth >= 2 &&
-	   (vtype == GDK_VISUAL_STATIC_GRAY
-	    || vtype == GDK_VISUAL_GRAYSCALE))
+	   (vtype == BDK_VISUAL_STATIC_GRAY
+	    || vtype == BDK_VISUAL_GRAYSCALE))
     {
-      conv = gdk_rgb_convert_gray4;
-      conv_d = gdk_rgb_convert_gray4_d;
+      conv = bdk_rgb_convert_gray4;
+      conv_d = bdk_rgb_convert_gray4_d;
     }
   else if (bpp == 8 && depth < 8 && depth >= 3)
     {
-      conv = gdk_rgb_convert_4;
+      conv = bdk_rgb_convert_4;
     }
   else if (bpp == 4 && depth <= 4 && depth >= 2 &&
-	   (vtype == GDK_VISUAL_STATIC_GRAY
-	    || vtype == GDK_VISUAL_GRAYSCALE))
+	   (vtype == BDK_VISUAL_STATIC_GRAY
+	    || vtype == BDK_VISUAL_GRAYSCALE))
     {
-      conv = gdk_rgb_convert_gray4_pack;
-      conv_d = gdk_rgb_convert_gray4_d_pack;
+      conv = bdk_rgb_convert_gray4_pack;
+      conv_d = bdk_rgb_convert_gray4_d_pack;
     }
   else if (bpp == 4 && depth == 4 &&
-	   vtype == GDK_VISUAL_STATIC_COLOR)
-    conv = gdk_rgb_convert_4_pack;
+	   vtype == BDK_VISUAL_STATIC_COLOR)
+    conv = bdk_rgb_convert_4_pack;
 
   if (!conv)
     g_error ("Visual type=%d depth=%d, image bpp=%d, %s first\n"
-             "is not supported by GdkRGB. Please submit a bug report\n"
-             "with the above values to bugzilla.gnome.org",
+             "is not supported by BdkRGB. Please submit a bug report\n"
+             "with the above values to bugzilla.bunny.org",
              vtype, depth, bpp,
-             byte_order == GDK_LSB_FIRST ? "lsb" : "msb");
+             byte_order == BDK_LSB_FIRST ? "lsb" : "msb");
 
   if (conv_d == NULL)
     conv_d = conv;
@@ -3289,9 +3289,9 @@ gdk_rgb_select_conv (GdkRgbInfo *image_info)
 }
 
 static void
-gdk_draw_rgb_image_core (GdkRgbInfo     *image_info,
-			 GdkDrawable    *drawable,
-			 GdkGC          *gc,
+bdk_draw_rgb_image_core (BdkRgbInfo     *image_info,
+			 BdkDrawable    *drawable,
+			 BdkGC          *gc,
 			 gint            x,
 			 gint            y,
 			 gint            width,
@@ -3299,32 +3299,32 @@ gdk_draw_rgb_image_core (GdkRgbInfo     *image_info,
 			 const guchar   *buf,
 			 gint            pixstride,
 			 gint            rowstride,
-			 GdkRgbConvFunc  conv,
-			 GdkRgbCmap     *cmap,
+			 BdkRgbConvFunc  conv,
+			 BdkRgbCmap     *cmap,
 			 gint            xdith,
 			 gint            ydith)
 {
   gint y0, x0;
   gint xs0, ys0;
-  GdkImage *image;
+  BdkImage *image;
   gint width1, height1;
   const guchar *buf_ptr;
 
   if (image_info->bitmap)
     {
       if (image_info->own_gc == NULL)
-	image_info->own_gc = gdk_gc_new (drawable);
+	image_info->own_gc = bdk_gc_new (drawable);
       gc = image_info->own_gc;
     }
-  for (y0 = 0; y0 < height; y0 += GDK_SCRATCH_IMAGE_HEIGHT)
+  for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
     {
-      height1 = MIN (height - y0, GDK_SCRATCH_IMAGE_HEIGHT);
-      for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
+      height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+      for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 	{
-	  width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
+	  width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 	  buf_ptr = buf + y0 * rowstride + x0 * pixstride;
 
-	  image = _gdk_image_get_scratch (gdk_drawable_get_screen (drawable), 
+	  image = _bdk_image_get_scratch (bdk_drawable_get_screen (drawable), 
 					  width1, height1,
 					  image_info->visual->depth, &xs0, &ys0);
 
@@ -3332,18 +3332,18 @@ gdk_draw_rgb_image_core (GdkRgbInfo     *image_info,
 		x + x0 + xdith, y + y0 + ydith, cmap);
 
 #ifndef DONT_ACTUALLY_DRAW
-	  gdk_draw_image (drawable, gc,
+	  bdk_draw_image (drawable, gc,
 			  image, xs0, ys0, x + x0, y + y0, width1, height1);
 #endif
 	}
     }
 }
 
-static GdkRgbInfo *
-gdk_rgb_get_info_from_drawable (GdkDrawable *drawable)
+static BdkRgbInfo *
+bdk_rgb_get_info_from_drawable (BdkDrawable *drawable)
 {
-  GdkColormap *cmap = gdk_drawable_get_colormap (drawable);
-  GdkScreen *screen = gdk_drawable_get_screen (drawable);
+  BdkColormap *cmap = bdk_drawable_get_colormap (drawable);
+  BdkScreen *screen = bdk_drawable_get_screen (drawable);
 
   if (!cmap)
     {
@@ -3351,108 +3351,108 @@ gdk_rgb_get_info_from_drawable (GdkDrawable *drawable)
        * but would otherwise be a bad thing
        */
 
-      gint depth = gdk_drawable_get_depth (drawable);
-      GdkColormap *rgb_cmap = gdk_screen_get_rgb_colormap (screen);
-      if (depth == gdk_colormap_get_visual (rgb_cmap)->depth)
+      gint depth = bdk_drawable_get_depth (drawable);
+      BdkColormap *rgb_cmap = bdk_screen_get_rgb_colormap (screen);
+      if (depth == bdk_colormap_get_visual (rgb_cmap)->depth)
 	cmap = rgb_cmap;
       else
 	{
-	  g_warning ("The gdk_draw_*_image require the drawable argument to\n"
+	  g_warning ("The bdk_draw_*_image require the drawable argument to\n"
 		     "have a specified colormap. All windows have a colormap,\n"
 		     "however, pixmaps only have colormap by default if they\n"
 		     "were created with a non-NULL window argument. Otherwise\n"
-		     "a colormap must be set on them with gdk_drawable_set_colormap");
+		     "a colormap must be set on them with bdk_drawable_set_colormap");
 	  return NULL;
 	}
     }
 
-  return gdk_rgb_get_info_from_colormap (cmap);
+  return bdk_rgb_get_info_from_colormap (cmap);
 }
 
 void
-gdk_draw_rgb_image (GdkDrawable  *drawable,
-		    GdkGC        *gc,
+bdk_draw_rgb_image (BdkDrawable  *drawable,
+		    BdkGC        *gc,
 		    gint          x,
 		    gint          y,
 		    gint          width,
 		    gint          height,
-		    GdkRgbDither  dith,
+		    BdkRgbDither  dith,
 		    const guchar *rgb_buf,
 		    gint          rowstride)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     rgb_buf, 3, rowstride, image_info->conv, NULL,
 			     0, 0);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     rgb_buf, 3, rowstride, image_info->conv_d, NULL,
 			     0, 0);
 }
 
 void
-gdk_draw_rgb_image_dithalign (GdkDrawable  *drawable,
-			      GdkGC        *gc,
+bdk_draw_rgb_image_dithalign (BdkDrawable  *drawable,
+			      BdkGC        *gc,
 			      gint          x,
 			      gint          y,
 			      gint          width,
 			      gint          height,
-			      GdkRgbDither  dith,
+			      BdkRgbDither  dith,
 			      const guchar *rgb_buf,
 			      gint          rowstride,
 			      gint          xdith,
 			      gint          ydith)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     rgb_buf, 3, rowstride, image_info->conv, NULL,
 			     xdith, ydith);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     rgb_buf, 3, rowstride, image_info->conv_d, NULL,
 			     xdith, ydith);
 }
 
 void
-gdk_draw_rgb_32_image (GdkDrawable  *drawable,
-		       GdkGC        *gc,
+bdk_draw_rgb_32_image (BdkDrawable  *drawable,
+		       BdkGC        *gc,
 		       gint          x,
 		       gint          y,
 		       gint          width,
 		       gint          height,
-		       GdkRgbDither  dith,
+		       BdkRgbDither  dith,
 		       const guchar *buf,
 		       gint          rowstride)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 4, rowstride,
 			     image_info->conv_32, NULL, 0, 0);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 4, rowstride,
 			     image_info->conv_32_d, NULL, 0, 0);
 }
 
 /**
- * gdk_draw_rgb_32_image_dithalign:
- * @drawable: a #GdkDrawable
- * @gc: a #GdkGC
+ * bdk_draw_rgb_32_image_dithalign:
+ * @drawable: a #BdkDrawable
+ * @gc: a #BdkGC
  * @x: X coordinate on @drawable where image should go
  * @y: Y coordinate on @drawable where image should go
  * @width: width of area of image to draw
@@ -3463,97 +3463,97 @@ gdk_draw_rgb_32_image (GdkDrawable  *drawable,
  * @xdith: X dither offset
  * @ydith: Y dither offset
  *
- * Like gdk_draw_rgb_32_image(), but allows you to specify the dither
- * offsets. See gdk_draw_rgb_image_dithalign() for more details.
+ * Like bdk_draw_rgb_32_image(), but allows you to specify the dither
+ * offsets. See bdk_draw_rgb_image_dithalign() for more details.
  * 
- * Deprecated: 2.22: Cairo handles colors automatically.
+ * Deprecated: 2.22: Bairo handles colors automatically.
  **/
 void
-gdk_draw_rgb_32_image_dithalign (GdkDrawable  *drawable,
-				 GdkGC        *gc,
+bdk_draw_rgb_32_image_dithalign (BdkDrawable  *drawable,
+				 BdkGC        *gc,
 				 gint          x,
 				 gint          y,
 				 gint          width,
 				 gint          height,
-				 GdkRgbDither  dith,
+				 BdkRgbDither  dith,
 				 const guchar *buf,
 				 gint          rowstride,
 				 gint          xdith,
 				 gint          ydith)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 4, rowstride,
 			     image_info->conv_32, NULL, xdith, ydith);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 4, rowstride,
 			     image_info->conv_32_d, NULL, xdith, ydith);
 }
 
 static void
-gdk_rgb_make_gray_cmap (GdkRgbInfo *info)
+bdk_rgb_make_gray_cmap (BdkRgbInfo *info)
 {
   guint32 rgb[256];
   gint i;
 
   for (i = 0; i < 256; i++)
     rgb[i] = (i << 16)  | (i << 8) | i;
-  info->gray_cmap = gdk_rgb_cmap_new (rgb, 256);
+  info->gray_cmap = bdk_rgb_cmap_new (rgb, 256);
 }
 
 void
-gdk_draw_gray_image (GdkDrawable  *drawable,
-		     GdkGC        *gc,
+bdk_draw_gray_image (BdkDrawable  *drawable,
+		     BdkGC        *gc,
 		     gint          x,
 		     gint          y,
 		     gint          width,
 		     gint          height,
-		     GdkRgbDither  dith,
+		     BdkRgbDither  dith,
 		     const guchar *buf,
 		     gint          rowstride)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
   if (image_info->bpp == 1 &&
       image_info->gray_cmap == NULL &&
-      (image_info->visual->type == GDK_VISUAL_PSEUDO_COLOR ||
-       image_info->visual->type == GDK_VISUAL_STATIC_COLOR ||
-       image_info->visual->type == GDK_VISUAL_GRAYSCALE))
-    gdk_rgb_make_gray_cmap (image_info);
+      (image_info->visual->type == BDK_VISUAL_PSEUDO_COLOR ||
+       image_info->visual->type == BDK_VISUAL_STATIC_COLOR ||
+       image_info->visual->type == BDK_VISUAL_GRAYSCALE))
+    bdk_rgb_make_gray_cmap (image_info);
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 1, rowstride,
 			     image_info->conv_gray, NULL, 0, 0);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 1, rowstride,
 			     image_info->conv_gray_d, NULL, 0, 0);
 }
 
-static GdkRgbCmapInfo *
-gdk_rgb_cmap_get_info (GdkRgbCmap *cmap,
-		       GdkRgbInfo *image_info)
+static BdkRgbCmapInfo *
+bdk_rgb_cmap_get_info (BdkRgbCmap *cmap,
+		       BdkRgbInfo *image_info)
 {
   GSList *tmp_list;
-  GdkRgbCmapInfo *cmap_info;
+  BdkRgbCmapInfo *cmap_info;
   int i, j;
   guint32 rgb;
 
   /* We don't need a LUT for TrueColor or DirectColor visuals */
   if (image_info->bpp != 1 ||
-      !(image_info->visual->type == GDK_VISUAL_PSEUDO_COLOR ||
-	image_info->visual->type == GDK_VISUAL_STATIC_COLOR ||
-	image_info->visual->type == GDK_VISUAL_GRAYSCALE))
+      !(image_info->visual->type == BDK_VISUAL_PSEUDO_COLOR ||
+	image_info->visual->type == BDK_VISUAL_STATIC_COLOR ||
+	image_info->visual->type == BDK_VISUAL_GRAYSCALE))
     return NULL;
   
   tmp_list = cmap->info_list;
@@ -3565,7 +3565,7 @@ gdk_rgb_cmap_get_info (GdkRgbCmap *cmap,
 	return cmap_info;
     }
 
-  cmap_info = g_new (GdkRgbCmapInfo, 1);
+  cmap_info = g_new (BdkRgbCmapInfo, 1);
   cmap_info->image_info = image_info;
   cmap_info->cmap = cmap;
   
@@ -3587,15 +3587,15 @@ gdk_rgb_cmap_get_info (GdkRgbCmap *cmap,
   return cmap_info;
 }
 
-GdkRgbCmap *
-gdk_rgb_cmap_new (guint32 *colors, gint n_colors)
+BdkRgbCmap *
+bdk_rgb_cmap_new (guint32 *colors, gint n_colors)
 {
-  GdkRgbCmap *cmap;
+  BdkRgbCmap *cmap;
     
   g_return_val_if_fail (n_colors >= 0, NULL);
   g_return_val_if_fail (n_colors <= 256, NULL);
 
-  cmap = g_new (GdkRgbCmap, 1);
+  cmap = g_new (BdkRgbCmap, 1);
 
   cmap->n_colors = n_colors;
   memcpy (cmap->colors, colors, n_colors * sizeof(guint32));
@@ -3606,14 +3606,14 @@ gdk_rgb_cmap_new (guint32 *colors, gint n_colors)
 }
 
 void
-gdk_rgb_cmap_free (GdkRgbCmap *cmap)
+bdk_rgb_cmap_free (BdkRgbCmap *cmap)
 {
   GSList *tmp_list;
 
   tmp_list = cmap->info_list;
   while (tmp_list)
     {
-      GdkRgbCmapInfo *cmap_info = tmp_list->data;
+      BdkRgbCmapInfo *cmap_info = tmp_list->data;
       cmap_info->image_info->cmap_info_list = g_slist_remove (cmap_info->image_info->cmap_info_list, cmap_info);
       g_free (cmap_info);
       tmp_list = tmp_list->next;
@@ -3624,66 +3624,66 @@ gdk_rgb_cmap_free (GdkRgbCmap *cmap)
 }
 
 void
-gdk_draw_indexed_image (GdkDrawable  *drawable,
-			GdkGC        *gc,
+bdk_draw_indexed_image (BdkDrawable  *drawable,
+			BdkGC        *gc,
 			gint          x,
 			gint          y,
 			gint          width,
 			gint          height,
-			GdkRgbDither  dith,
+			BdkRgbDither  dith,
 			const guchar *buf,
 			gint          rowstride,
-			GdkRgbCmap   *cmap)
+			BdkRgbCmap   *cmap)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_drawable (drawable);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_drawable (drawable);
   if (!image_info)
     return;
   
-  if (dith == GDK_RGB_DITHER_NONE || (dith == GDK_RGB_DITHER_NORMAL &&
+  if (dith == BDK_RGB_DITHER_NONE || (dith == BDK_RGB_DITHER_NORMAL &&
 				      !image_info->dith_default))
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 1, rowstride,
 			     image_info->conv_indexed, cmap, 0, 0);
   else
-    gdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
+    bdk_draw_rgb_image_core (image_info, drawable, gc, x, y, width, height,
 			     buf, 1, rowstride,
 			     image_info->conv_indexed_d, cmap, 0, 0);
 }
 
 gboolean
-gdk_rgb_colormap_ditherable (GdkColormap *cmap)
+bdk_rgb_colormap_ditherable (BdkColormap *cmap)
 {
-  GdkRgbInfo *image_info = gdk_rgb_get_info_from_colormap (cmap);
+  BdkRgbInfo *image_info = bdk_rgb_get_info_from_colormap (cmap);
 
   return (image_info->conv != image_info->conv_d);
 }
 
 gboolean
-gdk_rgb_ditherable (void)
+bdk_rgb_ditherable (void)
 {
-  return gdk_rgb_colormap_ditherable (gdk_rgb_get_colormap ());
+  return bdk_rgb_colormap_ditherable (bdk_rgb_get_colormap ());
 }
 
 /**
- * gdk_rgb_get_colormap:
+ * bdk_rgb_get_colormap:
  * 
  * Get the preferred colormap for rendering image data.  Not a
- * very useful function; historically, GDK could only render RGB image
+ * very useful function; historically, BDK could only render RGB image
  * data to one colormap and visual, but in the current version it can
  * render to any colormap and visual. So there's no need to call this
  * function.
  * 
  * Return value: (transfer none): the preferred colormap
  *
- * Deprecated: 2.22: Use gdk_screen_get_system_colormap (gdk_screen_get_default ()) instead.
+ * Deprecated: 2.22: Use bdk_screen_get_system_colormap (bdk_screen_get_default ()) instead.
  **/
-GdkColormap *
-gdk_rgb_get_colormap (void)
+BdkColormap *
+bdk_rgb_get_colormap (void)
 {
-  static GdkColormap *cmap = NULL;
+  static BdkColormap *cmap = NULL;
   if (!cmap)
     {
-      GdkRgbInfo *image_info = gdk_rgb_create_info (gdk_rgb_choose_visual (gdk_screen_get_default ()), NULL);
+      BdkRgbInfo *image_info = bdk_rgb_create_info (bdk_rgb_choose_visual (bdk_screen_get_default ()), NULL);
       cmap = image_info->cmap;
     }
 
@@ -3691,11 +3691,11 @@ gdk_rgb_get_colormap (void)
 }
 
 /**
- * gdk_screen_get_rgb_colormap:
- * @screen: a #GdkScreen.
+ * bdk_screen_get_rgb_colormap:
+ * @screen: a #BdkScreen.
  * 
  * Gets the preferred colormap for rendering image data on @screen.
- * Not a very useful function; historically, GDK could only render RGB
+ * Not a very useful function; historically, BDK could only render RGB
  * image data to one colormap and visual, but in the current version
  * it can render to any colormap and visual. So there's no need to
  * call this function.
@@ -3704,17 +3704,17 @@ gdk_rgb_get_colormap (void)
  *
  * Since: 2.2
  *
- * Deprecated: 2.22: Use gdk_screen_get_system_colormap()
+ * Deprecated: 2.22: Use bdk_screen_get_system_colormap()
  **/
-GdkColormap *
-gdk_screen_get_rgb_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_rgb_colormap (BdkScreen *screen)
 {
-  GdkColormap *cmap;
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  BdkColormap *cmap;
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   cmap = g_object_get_data (G_OBJECT (screen), "rgb-colormap"); 
   if (!cmap)
     {
-      GdkRgbInfo *image_info = gdk_rgb_create_info (gdk_rgb_choose_visual (screen), NULL);
+      BdkRgbInfo *image_info = bdk_rgb_create_info (bdk_rgb_choose_visual (screen), NULL);
       cmap = image_info->cmap;
       g_object_set_data (G_OBJECT (screen), "rgb-colormap", cmap);
     }
@@ -3723,48 +3723,48 @@ gdk_screen_get_rgb_colormap (GdkScreen *screen)
 }
 
 /**
- * gdk_screen_get_rgb_visual:
- * @screen: a #GdkScreen
+ * bdk_screen_get_rgb_visual:
+ * @screen: a #BdkScreen
  * 
- * Gets a "preferred visual" chosen by GdkRGB for rendering image data
+ * Gets a "preferred visual" chosen by BdkRGB for rendering image data
  * on @screen. In previous versions of
- * GDK, this was the only visual GdkRGB could use for rendering. In
- * current versions, it's simply the visual GdkRGB would have chosen as 
- * the optimal one in those previous versions. GdkRGB can now render to 
+ * BDK, this was the only visual BdkRGB could use for rendering. In
+ * current versions, it's simply the visual BdkRGB would have chosen as 
+ * the optimal one in those previous versions. BdkRGB can now render to 
  * drawables with any visual.
  * 
- * Return value: (transfer none): The #GdkVisual chosen by GdkRGB.
+ * Return value: (transfer none): The #BdkVisual chosen by BdkRGB.
  *
  * Since: 2.2
  *
- * Deprecated: 2.22: Use gdk_screen_get_system_visual()
+ * Deprecated: 2.22: Use bdk_screen_get_system_visual()
  **/
-GdkVisual *
-gdk_screen_get_rgb_visual (GdkScreen *screen)
+BdkVisual *
+bdk_screen_get_rgb_visual (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  return gdk_colormap_get_visual (gdk_screen_get_rgb_colormap (screen));
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
+  return bdk_colormap_get_visual (bdk_screen_get_rgb_colormap (screen));
 }
 
 /**
- * gdk_rgb_get_visual:
+ * bdk_rgb_get_visual:
  * 
- * Gets a "preferred visual" chosen by GdkRGB for rendering image data
- * on the default screen. In previous versions of GDK, this was the
- * only visual GdkRGB could use for rendering. In current versions,
- * it's simply the visual GdkRGB would have chosen as the optimal one
- * in those previous versions. GdkRGB can now render to drawables with
+ * Gets a "preferred visual" chosen by BdkRGB for rendering image data
+ * on the default screen. In previous versions of BDK, this was the
+ * only visual BdkRGB could use for rendering. In current versions,
+ * it's simply the visual BdkRGB would have chosen as the optimal one
+ * in those previous versions. BdkRGB can now render to drawables with
  * any visual.
  * 
- * Return value: (transfer none): The #GdkVisual chosen by GdkRGB.
+ * Return value: (transfer none): The #BdkVisual chosen by BdkRGB.
  *
- * Deprecated: 2.22: Use gdk_visual_get_system_visual (gdk_screen_get_default ()) instead.
+ * Deprecated: 2.22: Use bdk_visual_get_system_visual (bdk_screen_get_default ()) instead.
  **/
-GdkVisual *
-gdk_rgb_get_visual (void)
+BdkVisual *
+bdk_rgb_get_visual (void)
 {
-  return gdk_screen_get_rgb_visual (gdk_screen_get_default ());
+  return bdk_screen_get_rgb_visual (bdk_screen_get_default ());
 }
 
-#define __GDK_RGB_C__
-#include "gdkaliasdef.c"
+#define __BDK_RGB_C__
+#include "bdkaliasdef.c"

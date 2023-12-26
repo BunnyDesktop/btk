@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,31 +17,31 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_NOTEBOOK_PAGE_H__
-#define __GAIL_NOTEBOOK_PAGE_H__
+#ifndef __BAIL_NOTEBOOK_PAGE_H__
+#define __BAIL_NOTEBOOK_PAGE_H__
 
-#include <gail/gailnotebook.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailnotebook.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_NOTEBOOK_PAGE            (gail_notebook_page_get_type ())
-#define GAIL_NOTEBOOK_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj),GAIL_TYPE_NOTEBOOK_PAGE, GailNotebookPage))
-#define GAIL_NOTEBOOK_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_NOTEBOOK_PAGE, GailNotebookPageClass))
-#define GAIL_IS_NOTEBOOK_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_NOTEBOOK_PAGE))
-#define GAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_NOTEBOOK_PAGE))
-#define GAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_NOTEBOOK_PAGE, GailNotebookPageClass))
+#define BAIL_TYPE_NOTEBOOK_PAGE            (bail_notebook_page_get_type ())
+#define BAIL_NOTEBOOK_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj),BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPage))
+#define BAIL_NOTEBOOK_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
+#define BAIL_IS_NOTEBOOK_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_IS_NOTEBOOK_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK_PAGE))
+#define BAIL_NOTEBOOK_PAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK_PAGE, BailNotebookPageClass))
 
-typedef struct _GailNotebookPage                      GailNotebookPage;
-typedef struct _GailNotebookPageClass                 GailNotebookPageClass;
+typedef struct _BailNotebookPage                      BailNotebookPage;
+typedef struct _BailNotebookPageClass                 BailNotebookPageClass;
 
-struct _GailNotebookPage
+struct _BailNotebookPage
 {
-  AtkObject parent;
+  BatkObject parent;
 
-  GtkNotebook *notebook;
-#ifndef GTK_DISABLE_DEPRECATED
-  GtkNotebookPage *page;
+  BtkNotebook *notebook;
+#ifndef BTK_DISABLE_DEPRECATED
+  BtkNotebookPage *page;
 #else
   gpointer page;
 #endif
@@ -49,18 +49,18 @@ struct _GailNotebookPage
   gint index;
   guint notify_child_added_id;
 
-  GailTextUtil *textutil;
+  BailTextUtil *textutil;
 };
 
-GType gail_notebook_page_get_type (void);
+GType bail_notebook_page_get_type (void);
 
-struct _GailNotebookPageClass
+struct _BailNotebookPageClass
 {
-  AtkObjectClass parent_class;
+  BatkObjectClass parent_class;
 };
 
-AtkObject *gail_notebook_page_new(GtkNotebook *notebook, gint pagenum);
+BatkObject *bail_notebook_page_new(BtkNotebook *notebook, gint pagenum);
 
 G_END_DECLS
 
-#endif /* __GAIL_NOTEBOOK_PAGE_H__ */
+#endif /* __BAIL_NOTEBOOK_PAGE_H__ */

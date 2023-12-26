@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -31,60 +31,60 @@
  */
 
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkinternals.h"
+#include "bdkinternals.h"
 
-#include "gdkimage.h"
-#include "gdkalias.h"
+#include "bdkimage.h"
+#include "bdkalias.h"
 
 
 static GList    *image_list   = NULL;
 static gpointer  parent_class = NULL;
 
-static void gdk_directfb_image_destroy (GdkImage      *image);
-static void gdk_image_init             (GdkImage      *image);
-static void gdk_image_class_init       (GdkImageClass *klass);
-static void gdk_image_finalize         (GObject       *object);
+static void bdk_directfb_image_destroy (BdkImage      *image);
+static void bdk_image_init             (BdkImage      *image);
+static void bdk_image_class_init       (BdkImageClass *klass);
+static void bdk_image_finalize         (GObject       *object);
 
-G_DEFINE_TYPE (GdkImage, gdk_image, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkImage, bdk_image, G_TYPE_OBJECT)
 
 static void
-gdk_image_init (GdkImage *image)
+bdk_image_init (BdkImage *image)
 {
-  image->windowing_data = g_new0 (GdkImageDirectFB, 1);
+  image->windowing_data = g_new0 (BdkImageDirectFB, 1);
   image->mem = NULL;
 
   image_list = g_list_prepend (image_list, image);
 }
 
 static void
-gdk_image_class_init (GdkImageClass *klass)
+bdk_image_class_init (BdkImageClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_image_finalize;
+  object_class->finalize = bdk_image_finalize;
 }
 
 static void
-gdk_image_finalize (GObject *object)
+bdk_image_finalize (GObject *object)
 {
-  GdkImage *image;
+  BdkImage *image;
 
-  image = GDK_IMAGE (object);
+  image = BDK_IMAGE (object);
 
   image_list = g_list_remove (image_list, image);
 
   if (image->depth == 1)
     g_free (image->mem);
 
-  gdk_directfb_image_destroy (image);
+  bdk_directfb_image_destroy (image);
 
   if (G_OBJECT_CLASS (parent_class)->finalize)
     G_OBJECT_CLASS (parent_class)->finalize (object);
@@ -93,7 +93,7 @@ gdk_image_finalize (GObject *object)
 
 /* this function is called from the atexit handler! */
 void
-_gdk_image_exit (void)
+_bdk_image_exit (void)
 {
   GObject *image;
 
@@ -101,38 +101,38 @@ _gdk_image_exit (void)
     {
       image = image_list->data;
 
-      gdk_image_finalize (image);
+      bdk_image_finalize (image);
     }
 }
 
-GdkImage *
-gdk_image_new_bitmap (GdkVisual *visual,
+BdkImage *
+bdk_image_new_bitmap (BdkVisual *visual,
                       gpointer   data,
                       gint       w,
                       gint       h)
 {
-  GdkImage         *image;
-  GdkImageDirectFB *private;
+  BdkImage         *image;
+  BdkImageDirectFB *private;
 
-  image = g_object_new (gdk_image_get_type (), NULL);
+  image = g_object_new (bdk_image_get_type (), NULL);
   private = image->windowing_data;
 
-  image->type   = GDK_IMAGE_SHARED;
+  image->type   = BDK_IMAGE_SHARED;
   image->visual = visual;
   image->width  = w;
   image->height = h;
   image->depth  = 1;
 
-  GDK_NOTE (MISC, g_print ("gdk_image_new_bitmap: %dx%d\n", w, h));
+  BDK_NOTE (MISC, g_print ("bdk_image_new_bitmap: %dx%d\n", w, h));
 
   g_message ("not fully implemented %s", G_STRFUNC);
 
   image->bpl = (w + 7) / 8;
   image->mem = g_malloc (image->bpl * h);
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  image->byte_order = GDK_MSB_FIRST;
+  image->byte_order = BDK_MSB_FIRST;
 #else
-  image->byte_order = GDK_LSB_FIRST;
+  image->byte_order = BDK_LSB_FIRST;
 #endif
   image->bpp = 1;
 
@@ -140,27 +140,27 @@ gdk_image_new_bitmap (GdkVisual *visual,
 }
 
 void
-_gdk_windowing_image_init (void)
+_bdk_windowing_image_init (void)
 {
 }
 
-GdkImage*
-_gdk_image_new_for_depth (GdkScreen    *screen,
-                          GdkImageType  type,
-                          GdkVisual    *visual,
+BdkImage*
+_bdk_image_new_for_depth (BdkScreen    *screen,
+                          BdkImageType  type,
+                          BdkVisual    *visual,
                           gint          width,
                           gint          height,
                           gint          depth)
 {
-  GdkImage              *image;
-  GdkImageDirectFB      *private;
+  BdkImage              *image;
+  BdkImageDirectFB      *private;
   DFBResult              ret;
   gint                   pitch;
   DFBSurfacePixelFormat  format;
   IDirectFBSurface      *surface;
 
-  if (type == GDK_IMAGE_FASTEST || type == GDK_IMAGE_NORMAL)
-    type = GDK_IMAGE_SHARED;
+  if (type == BDK_IMAGE_FASTEST || type == BDK_IMAGE_NORMAL)
+    type = BDK_IMAGE_SHARED;
 
   if (visual)
     depth = visual->depth;
@@ -187,7 +187,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
       return NULL;
     }
 
-  surface = gdk_display_dfb_create_surface (_gdk_display, format,
+  surface = bdk_display_dfb_create_surface (_bdk_display, format,
                                             width, height);
   if (!surface)
     {
@@ -195,7 +195,7 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
     }
   surface->GetPixelFormat (surface, &format);
 
-  image = g_object_new (gdk_image_get_type (), NULL);
+  image = g_object_new (bdk_image_get_type (), NULL);
   private = image->windowing_data;
 
   private->surface = surface;
@@ -211,9 +211,9 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
   image->type           = type;
   image->visual         = visual;
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  image->byte_order	= GDK_MSB_FIRST;
+  image->byte_order	= BDK_MSB_FIRST;
 #else
-  image->byte_order 	= GDK_LSB_FIRST;
+  image->byte_order 	= BDK_LSB_FIRST;
 #endif
   image->width          = width;
   image->height         = height;
@@ -228,9 +228,9 @@ _gdk_image_new_for_depth (GdkScreen    *screen,
 }
 
 
-GdkImage*
-_gdk_directfb_copy_to_image (GdkDrawable *drawable,
-                             GdkImage    *image,
+BdkImage*
+_bdk_directfb_copy_to_image (BdkDrawable *drawable,
+                             BdkImage    *image,
                              gint         src_x,
                              gint         src_y,
                              gint         dest_x,
@@ -238,25 +238,25 @@ _gdk_directfb_copy_to_image (GdkDrawable *drawable,
                              gint         width,
                              gint         height)
 {
-  GdkDrawableImplDirectFB *impl;
-  GdkImageDirectFB        *private;
+  BdkDrawableImplDirectFB *impl;
+  BdkImageDirectFB        *private;
   int                      pitch;
   DFBRectangle             rect  = { src_x, src_y, width, height };
-  IDirectFBDisplayLayer   *layer = _gdk_display->layer;
+  IDirectFBDisplayLayer   *layer = _bdk_display->layer;
 
-  g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_DIRECTFB (drawable), NULL);
+  g_return_val_if_fail (BDK_IS_DRAWABLE_IMPL_DIRECTFB (drawable), NULL);
   g_return_val_if_fail (image != NULL || (dest_x == 0 && dest_y == 0), NULL);
 
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (drawable);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (drawable);
 
-  if (impl->wrapper == _gdk_parent_root)
+  if (impl->wrapper == _bdk_parent_root)
     {
       DFBResult ret;
 
       ret = layer->SetCooperativeLevel (layer, DLSCL_ADMINISTRATIVE);
       if (ret)
         {
-          DirectFBError ("_gdk_directfb_copy_to_image - SetCooperativeLevel",
+          DirectFBError ("_bdk_directfb_copy_to_image - SetCooperativeLevel",
                          ret);
           return NULL;
         }
@@ -265,7 +265,7 @@ _gdk_directfb_copy_to_image (GdkDrawable *drawable,
       if (ret)
         {
           layer->SetCooperativeLevel (layer, DLSCL_SHARED);
-          DirectFBError ("_gdk_directfb_copy_to_image - GetSurface", ret);
+          DirectFBError ("_bdk_directfb_copy_to_image - GetSurface", ret);
           return NULL;
         }
     }
@@ -274,8 +274,8 @@ _gdk_directfb_copy_to_image (GdkDrawable *drawable,
     return NULL;
 
   if (!image)
-    image =  gdk_image_new (GDK_IMAGE_NORMAL,
-                            gdk_drawable_get_visual (drawable), width, height);
+    image =  bdk_image_new (BDK_IMAGE_NORMAL,
+                            bdk_drawable_get_visual (drawable), width, height);
 
   private = image->windowing_data;
 
@@ -289,7 +289,7 @@ _gdk_directfb_copy_to_image (GdkDrawable *drawable,
                           &image->mem, &pitch);
   image->bpl = pitch;
 
-  if (impl->wrapper == _gdk_parent_root)
+  if (impl->wrapper == _bdk_parent_root)
     {
       impl->surface->Release (impl->surface);
       impl->surface = NULL;
@@ -300,13 +300,13 @@ _gdk_directfb_copy_to_image (GdkDrawable *drawable,
 }
 
 guint32
-gdk_image_get_pixel (GdkImage *image,
+bdk_image_get_pixel (BdkImage *image,
                      gint      x,
                      gint      y)
 {
   guint32 pixel = 0;
 
-  g_return_val_if_fail (GDK_IS_IMAGE (image), 0);
+  g_return_val_if_fail (BDK_IS_IMAGE (image), 0);
 
   if (!(x >= 0 && x < image->width && y >= 0 && y < image->height))
     return 0;
@@ -341,7 +341,7 @@ gdk_image_get_pixel (GdkImage *image,
 }
 
 void
-gdk_image_put_pixel (GdkImage *image,
+bdk_image_put_pixel (BdkImage *image,
                      gint       x,
                      gint       y,
                      guint32    pixel)
@@ -375,18 +375,18 @@ gdk_image_put_pixel (GdkImage *image,
 }
 
 static void
-gdk_directfb_image_destroy (GdkImage *image)
+bdk_directfb_image_destroy (BdkImage *image)
 {
-  GdkImageDirectFB *private;
+  BdkImageDirectFB *private;
 
-  g_return_if_fail (GDK_IS_IMAGE (image));
+  g_return_if_fail (BDK_IS_IMAGE (image));
 
   private = image->windowing_data;
 
   if (!private)
     return;
 
-  GDK_NOTE (MISC, g_print ("gdk_directfb_image_destroy: %#lx\n",
+  BDK_NOTE (MISC, g_print ("bdk_directfb_image_destroy: %#lx\n",
                            (gulong) private->surface));
 
   private->surface->Unlock (private->surface);
@@ -397,7 +397,7 @@ gdk_directfb_image_destroy (GdkImage *image)
 }
 
 gint
-_gdk_windowing_get_bits_for_depth (GdkDisplay *display,
+_bdk_windowing_get_bits_for_depth (BdkDisplay *display,
                                    gint        depth)
 {
   switch (depth)
@@ -416,5 +416,5 @@ _gdk_windowing_get_bits_for_depth (GdkDisplay *display,
   return 0;
 }
 
-#define __GDK_IMAGE_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_IMAGE_X11_C__
+#include "bdkaliasdef.c"

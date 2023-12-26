@@ -1,4 +1,4 @@
-/* gdkvisual-quartz.c
+/* bdkvisual-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,27 +20,27 @@
 
 #include "config.h"
 
-#include "gdkvisual.h"
-#include "gdkprivate-quartz.h"
+#include "bdkvisual.h"
+#include "bdkprivate-quartz.h"
 
-static GdkVisual *system_visual;
-static GdkVisual *rgba_visual;
-static GdkVisual *gray_visual;
+static BdkVisual *system_visual;
+static BdkVisual *rgba_visual;
+static BdkVisual *gray_visual;
 
 static void
-gdk_visual_finalize (GObject *object)
+bdk_visual_finalize (GObject *object)
 {
-  g_error ("A GdkVisual object was finalized. This should not happen");
+  g_error ("A BdkVisual object was finalized. This should not happen");
 }
 
 static void
-gdk_visual_class_init (GObjectClass *class)
+bdk_visual_class_init (GObjectClass *class)
 {
-  class->finalize = gdk_visual_finalize;
+  class->finalize = bdk_visual_finalize;
 }
 
 GType
-gdk_visual_get_type (void)
+bdk_visual_get_type (void)
 {
   static GType object_type = 0;
 
@@ -48,19 +48,19 @@ gdk_visual_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkVisualClass),
+        sizeof (BdkVisualClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_visual_class_init,
+        (GClassInitFunc) bdk_visual_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkVisual),
+        sizeof (BdkVisual),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            "GdkVisual",
+                                            "BdkVisual",
                                             &object_info, 0);
     }
   
@@ -68,7 +68,7 @@ gdk_visual_get_type (void)
 }
 
 static void
-gdk_visual_decompose_mask (gulong  mask,
+bdk_visual_decompose_mask (gulong  mask,
 			   gint   *shift,
 			   gint   *prec)
 {
@@ -88,50 +88,50 @@ gdk_visual_decompose_mask (gulong  mask,
     }
 }
 
-static GdkVisual *
+static BdkVisual *
 create_standard_visual (gint depth)
 {
-  GdkVisual *visual = g_object_new (GDK_TYPE_VISUAL, NULL);
+  BdkVisual *visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
   visual->depth = depth;
-  visual->byte_order = GDK_MSB_FIRST; /* FIXME: Should this be different on intel macs? */
+  visual->byte_order = BDK_MSB_FIRST; /* FIXME: Should this be different on intel macs? */
   visual->colormap_size = 0;
   
-  visual->type = GDK_VISUAL_TRUE_COLOR;
+  visual->type = BDK_VISUAL_TRUE_COLOR;
 
   visual->red_mask = 0xff0000;
   visual->green_mask = 0xff00;
   visual->blue_mask = 0xff;
   
-  gdk_visual_decompose_mask (visual->red_mask,
+  bdk_visual_decompose_mask (visual->red_mask,
 			     &visual->red_shift,
 			     &visual->red_prec);
-  gdk_visual_decompose_mask (visual->green_mask,
+  bdk_visual_decompose_mask (visual->green_mask,
 			     &visual->green_shift,
 			     &visual->green_prec);
-  gdk_visual_decompose_mask (visual->blue_mask,
+  bdk_visual_decompose_mask (visual->blue_mask,
 			     &visual->blue_shift,
 			     &visual->blue_prec);
 
   return visual;
 }
 
-static GdkVisual *
+static BdkVisual *
 create_gray_visual (void)
 {
-  GdkVisual *visual = g_object_new (GDK_TYPE_VISUAL, NULL);
+  BdkVisual *visual = g_object_new (BDK_TYPE_VISUAL, NULL);
 
   visual->depth = 1;
-  visual->byte_order = GDK_MSB_FIRST;
+  visual->byte_order = BDK_MSB_FIRST;
   visual->colormap_size = 0;
 
-  visual->type = GDK_VISUAL_STATIC_GRAY;
+  visual->type = BDK_VISUAL_STATIC_GRAY;
 
   return visual;
 }
 
 void
-_gdk_visual_init (void)
+_bdk_visual_init (void)
 {
   system_visual = create_standard_visual (24);
   rgba_visual = create_standard_visual (32);
@@ -140,41 +140,41 @@ _gdk_visual_init (void)
 
 /* We prefer the system visual for now ... */
 gint
-gdk_visual_get_best_depth (void)
+bdk_visual_get_best_depth (void)
 {
   return system_visual->depth;
 }
 
-GdkVisualType
-gdk_visual_get_best_type (void)
+BdkVisualType
+bdk_visual_get_best_type (void)
 {
   return system_visual->type;
 }
 
-GdkVisual *
-gdk_screen_get_rgba_visual (GdkScreen *screen)
+BdkVisual *
+bdk_screen_get_rgba_visual (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   return rgba_visual;
 }
 
-GdkVisual*
-gdk_screen_get_system_visual (GdkScreen *screen)
+BdkVisual*
+bdk_screen_get_system_visual (BdkScreen *screen)
 {
   return system_visual;
 }
 
-GdkVisual*
-gdk_visual_get_best (void)
+BdkVisual*
+bdk_visual_get_best (void)
 {
   return system_visual;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_depth (gint depth)
+BdkVisual*
+bdk_visual_get_best_with_depth (gint depth)
 {
-  GdkVisual *visual = NULL;
+  BdkVisual *visual = NULL;
 
   switch (depth)
     {
@@ -197,8 +197,8 @@ gdk_visual_get_best_with_depth (gint depth)
   return visual;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_type (GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_type (BdkVisualType visual_type)
 {
   if (system_visual->type == visual_type)
     return system_visual;
@@ -208,9 +208,9 @@ gdk_visual_get_best_with_type (GdkVisualType visual_type)
   return NULL;
 }
 
-GdkVisual*
-gdk_visual_get_best_with_both (gint          depth,
-			       GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_both (gint          depth,
+			       BdkVisualType visual_type)
 {
   if (system_visual->depth == depth
       && system_visual->type == visual_type)
@@ -227,7 +227,7 @@ gdk_visual_get_best_with_both (gint          depth,
 
 /* For these, we also prefer the system visual */
 void
-gdk_query_depths  (gint **depths,
+bdk_query_depths  (gint **depths,
 		   gint  *count)
 {
   *count = 1;
@@ -235,7 +235,7 @@ gdk_query_depths  (gint **depths,
 }
 
 void
-gdk_query_visual_types (GdkVisualType **visual_types,
+bdk_query_visual_types (BdkVisualType **visual_types,
 			gint           *count)
 {
   *count = 1;
@@ -243,7 +243,7 @@ gdk_query_visual_types (GdkVisualType **visual_types,
 }
 
 GList*
-gdk_screen_list_visuals (GdkScreen *screen)
+bdk_screen_list_visuals (BdkScreen *screen)
 {
   GList *visuals = NULL;
 
@@ -254,11 +254,11 @@ gdk_screen_list_visuals (GdkScreen *screen)
   return visuals;
 }
 
-GdkScreen *
-gdk_visual_get_screen (GdkVisual *visual)
+BdkScreen *
+bdk_visual_get_screen (BdkVisual *visual)
 {
-  g_return_val_if_fail (GDK_IS_VISUAL (visual), NULL);
+  g_return_val_if_fail (BDK_IS_VISUAL (visual), NULL);
 
-  return gdk_screen_get_default ();
+  return bdk_screen_get_default ();
 }
 

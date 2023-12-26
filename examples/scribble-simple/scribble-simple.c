@@ -1,5 +1,5 @@
 
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -19,23 +19,23 @@
  */
 
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* Backing pixmap for drawing area */
-static GdkPixmap *pixmap = NULL;
+static BdkPixmap *pixmap = NULL;
 
 /* Create a new backing pixmap of the appropriate size */
-static gboolean configure_event( GtkWidget         *widget,
-                                 GdkEventConfigure *event )
+static gboolean configure_event( BtkWidget         *widget,
+                                 BdkEventConfigure *event )
 {
   if (pixmap)
     g_object_unref (pixmap);
 
-  pixmap = gdk_pixmap_new (widget->window,
+  pixmap = bdk_pixmap_new (widget->window,
 			   widget->allocation.width,
 			   widget->allocation.height,
 			   -1);
-  gdk_draw_rectangle (pixmap,
+  bdk_draw_rectangle (pixmap,
 		      widget->style->white_gc,
 		      TRUE,
 		      0, 0,
@@ -46,11 +46,11 @@ static gboolean configure_event( GtkWidget         *widget,
 }
 
 /* Redraw the screen from the backing pixmap */
-static gboolean expose_event( GtkWidget      *widget,
-                              GdkEventExpose *event )
+static gboolean expose_event( BtkWidget      *widget,
+                              BdkEventExpose *event )
 {
-  gdk_draw_drawable (widget->window,
-		     widget->style->fg_gc[gtk_widget_get_state (widget)],
+  bdk_draw_drawable (widget->window,
+		     widget->style->fg_gc[btk_widget_get_state (widget)],
 		     pixmap,
 		     event->area.x, event->area.y,
 		     event->area.x, event->area.y,
@@ -60,28 +60,28 @@ static gboolean expose_event( GtkWidget      *widget,
 }
 
 /* Draw a rectangle on the screen */
-static void draw_brush( GtkWidget *widget,
+static void draw_brush( BtkWidget *widget,
                         gdouble    x,
                         gdouble    y)
 {
-  GdkRectangle update_rect;
+  BdkRectangle update_rect;
 
   update_rect.x = x - 5;
   update_rect.y = y - 5;
   update_rect.width = 10;
   update_rect.height = 10;
-  gdk_draw_rectangle (pixmap,
+  bdk_draw_rectangle (pixmap,
 		      widget->style->black_gc,
 		      TRUE,
 		      update_rect.x, update_rect.y,
 		      update_rect.width, update_rect.height);
-  gtk_widget_queue_draw_area (widget, 
+  btk_widget_queue_draw_area (widget, 
 		              update_rect.x, update_rect.y,
 		              update_rect.width, update_rect.height);
 }
 
-static gboolean button_press_event( GtkWidget      *widget,
-                                    GdkEventButton *event )
+static gboolean button_press_event( BtkWidget      *widget,
+                                    BdkEventButton *event )
 {
   if (event->button == 1 && pixmap != NULL)
     draw_brush (widget, event->x, event->y);
@@ -89,14 +89,14 @@ static gboolean button_press_event( GtkWidget      *widget,
   return TRUE;
 }
 
-static gboolean motion_notify_event( GtkWidget *widget,
-                                     GdkEventMotion *event )
+static gboolean motion_notify_event( BtkWidget *widget,
+                                     BdkEventMotion *event )
 {
   int x, y;
-  GdkModifierType state;
+  BdkModifierType state;
 
   if (event->is_hint)
-    gdk_window_get_pointer (event->window, &x, &y, &state);
+    bdk_window_get_pointer (event->window, &x, &y, &state);
   else
     {
       x = event->x;
@@ -104,7 +104,7 @@ static gboolean motion_notify_event( GtkWidget *widget,
       state = event->state;
     }
     
-  if (state & GDK_BUTTON1_MASK && pixmap != NULL)
+  if (state & BDK_BUTTON1_MASK && pixmap != NULL)
     draw_brush (widget, x, y);
   
   return TRUE;
@@ -118,31 +118,31 @@ void quit ()
 int main( int   argc, 
           char *argv[] )
 {
-  GtkWidget *window;
-  GtkWidget *drawing_area;
-  GtkWidget *vbox;
+  BtkWidget *window;
+  BtkWidget *drawing_area;
+  BtkWidget *vbox;
 
-  GtkWidget *button;
+  BtkWidget *button;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_widget_set_name (window, "Test Input");
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_widget_set_name (window, "Test Input");
 
-  vbox = gtk_vbox_new (FALSE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-  gtk_widget_show (vbox);
+  vbox = btk_vbox_new (FALSE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
+  btk_widget_show (vbox);
 
   g_signal_connect (window, "destroy",
                     G_CALLBACK (quit), NULL);
 
   /* Create the drawing area */
 
-  drawing_area = gtk_drawing_area_new ();
-  gtk_widget_set_size_request (GTK_WIDGET (drawing_area), 200, 200);
-  gtk_box_pack_start (GTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
+  drawing_area = btk_drawing_area_new ();
+  btk_widget_set_size_request (BTK_WIDGET (drawing_area), 200, 200);
+  btk_box_pack_start (BTK_BOX (vbox), drawing_area, TRUE, TRUE, 0);
 
-  gtk_widget_show (drawing_area);
+  btk_widget_show (drawing_area);
 
   /* Signals used to handle backing pixmap */
 
@@ -158,24 +158,24 @@ int main( int   argc,
   g_signal_connect (drawing_area, "button-press-event",
 		    G_CALLBACK (button_press_event), NULL);
 
-  gtk_widget_set_events (drawing_area, GDK_EXPOSURE_MASK
-			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_BUTTON_PRESS_MASK
-			 | GDK_POINTER_MOTION_MASK
-			 | GDK_POINTER_MOTION_HINT_MASK);
+  btk_widget_set_events (drawing_area, BDK_EXPOSURE_MASK
+			 | BDK_LEAVE_NOTIFY_MASK
+			 | BDK_BUTTON_PRESS_MASK
+			 | BDK_POINTER_MOTION_MASK
+			 | BDK_POINTER_MOTION_HINT_MASK);
 
   /* .. And a quit button */
-  button = gtk_button_new_with_label ("Quit");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("Quit");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 
   g_signal_connect_swapped (button, "clicked",
-			    G_CALLBACK (gtk_widget_destroy),
+			    G_CALLBACK (btk_widget_destroy),
 			    window);
-  gtk_widget_show (button);
+  btk_widget_show (button);
 
-  gtk_widget_show (window);
+  btk_widget_show (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

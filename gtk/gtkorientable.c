@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * gtkorientable.c
+ * btkorientable.c
  * Copyright (C) 2008 Imendio AB
  * Contact: Michael Natterer <mitch@imendio.com>
  *
@@ -23,20 +23,20 @@
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
-typedef GtkOrientableIface GtkOrientableInterface;
-G_DEFINE_INTERFACE (GtkOrientable, gtk_orientable, G_TYPE_OBJECT)
+typedef BtkOrientableIface BtkOrientableInterface;
+G_DEFINE_INTERFACE (BtkOrientable, btk_orientable, G_TYPE_OBJECT)
 
 static void
-gtk_orientable_default_init (GtkOrientableInterface *iface)
+btk_orientable_default_init (BtkOrientableInterface *iface)
 {
   /**
-   * GtkOrientable:orientation:
+   * BtkOrientable:orientation:
    *
    * The orientation of the orientable.
    *
@@ -46,14 +46,14 @@ gtk_orientable_default_init (GtkOrientableInterface *iface)
                                        g_param_spec_enum ("orientation",
                                                           P_("Orientation"),
                                                           P_("The orientation of the orientable"),
-                                                          GTK_TYPE_ORIENTATION,
-                                                          GTK_ORIENTATION_HORIZONTAL,
-                                                          GTK_PARAM_READWRITE));
+                                                          BTK_TYPE_ORIENTATION,
+                                                          BTK_ORIENTATION_HORIZONTAL,
+                                                          BTK_PARAM_READWRITE));
 }
 
 /**
- * gtk_orientable_set_orientation:
- * @orientable: a #GtkOrientable
+ * btk_orientable_set_orientation:
+ * @orientable: a #BtkOrientable
  * @orientation: the orientable's new orientation.
  *
  * Sets the orientation of the @orientable.
@@ -61,10 +61,10 @@ gtk_orientable_default_init (GtkOrientableInterface *iface)
  * Since: 2.16
  **/
 void
-gtk_orientable_set_orientation (GtkOrientable  *orientable,
-                                GtkOrientation  orientation)
+btk_orientable_set_orientation (BtkOrientable  *orientable,
+                                BtkOrientation  orientation)
 {
-  g_return_if_fail (GTK_IS_ORIENTABLE (orientable));
+  g_return_if_fail (BTK_IS_ORIENTABLE (orientable));
 
   g_object_set (orientable,
                 "orientation", orientation,
@@ -72,8 +72,8 @@ gtk_orientable_set_orientation (GtkOrientable  *orientable,
 }
 
 /**
- * gtk_orientable_get_orientation:
- * @orientable: a #GtkOrientable
+ * btk_orientable_get_orientation:
+ * @orientable: a #BtkOrientable
  *
  * Retrieves the orientation of the @orientable.
  *
@@ -81,13 +81,13 @@ gtk_orientable_set_orientation (GtkOrientable  *orientable,
  *
  * Since: 2.16
  **/
-GtkOrientation
-gtk_orientable_get_orientation (GtkOrientable *orientable)
+BtkOrientation
+btk_orientable_get_orientation (BtkOrientable *orientable)
 {
-  GtkOrientation orientation;
+  BtkOrientation orientation;
 
-  g_return_val_if_fail (GTK_IS_ORIENTABLE (orientable),
-                        GTK_ORIENTATION_HORIZONTAL);
+  g_return_val_if_fail (BTK_IS_ORIENTABLE (orientable),
+                        BTK_ORIENTATION_HORIZONTAL);
 
   g_object_get (orientable,
                 "orientation", &orientation,
@@ -96,5 +96,5 @@ gtk_orientable_get_orientation (GtkOrientable *orientable)
   return orientation;
 }
 
-#define __GTK_ORIENTABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_ORIENTABLE_C__
+#include "btkaliasdef.c"

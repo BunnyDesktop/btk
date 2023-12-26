@@ -1,39 +1,39 @@
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#ifdef GDK_WINDOWING_DIRECTFB
-#define gdk_display gdk_display_directfb
-#include <gdk/directfb/gdkdirectfb.h>
-#undef gdk_display
-#undef GDK_DISPLAY
-#undef GDK_ROOT_WINDOW
+#ifdef BDK_WINDOWING_DIRECTFB
+#define bdk_display bdk_display_directfb
+#include <bdk/directfb/bdkdirectfb.h>
+#undef bdk_display
+#undef BDK_DISPLAY
+#undef BDK_ROOT_WINDOW
 #endif
 
-#ifdef GDK_WINDOWING_QUARTZ
+#ifdef BDK_WINDOWING_QUARTZ
 #if HAVE_OBJC
-#define gdk_display gdk_display_quartz
-#include <gdk/quartz/gdkquartz.h>
-#undef gdk_display
-#undef GDK_DISPLAY
-#undef GDK_ROOT_WINDOW
+#define bdk_display bdk_display_quartz
+#include <bdk/quartz/bdkquartz.h>
+#undef bdk_display
+#undef BDK_DISPLAY
+#undef BDK_ROOT_WINDOW
 #endif
 #endif
 
 #ifndef __OBJC__
-#ifdef GDK_WINDOWING_WIN32
-#define gdk_display gdk_display_win32
-#include <gdk/win32/gdkwin32.h>
-#undef gdk_display
-#undef GDK_DISPLAY
-#undef GDK_ROOT_WINDOW
+#ifdef BDK_WINDOWING_WIN32
+#define bdk_display bdk_display_win32
+#include <bdk/win32/bdkwin32.h>
+#undef bdk_display
+#undef BDK_DISPLAY
+#undef BDK_ROOT_WINDOW
 #endif
 #endif
 
-#ifdef GDK_WINDOWING_X11
-#define gdk_display gdk_display_x11
-#include <gdk/x11/gdkx.h>
-#undef gdk_display
-#undef GDK_DISPLAY
-#undef GDK_ROOT_WINDOW
+#ifdef BDK_WINDOWING_X11
+#define bdk_display bdk_display_x11
+#include <bdk/x11/bdkx.h>
+#undef bdk_display
+#undef BDK_DISPLAY
+#undef BDK_ROOT_WINDOW
 #endif
 
 int main() { return 0; }

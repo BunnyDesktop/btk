@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * Copyright (C) 2009 Matthias Clasen <mclasen@redhat.com>
  * Copyright (C) 2008 Richard Hughes <richard@hughsie.com>
@@ -20,48 +20,48 @@
  * Boston, MA  02111-1307, USA.
  */
 
-#ifndef __GTK_CELL_RENDERER_SPINNER_H__
-#define __GTK_CELL_RENDERER_SPINNER_H__
+#ifndef __BTK_CELL_RENDERER_SPINNER_H__
+#define __BTK_CELL_RENDERER_SPINNER_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcellrenderer.h>
+#include <btk/btkcellrenderer.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CELL_RENDERER_SPINNER            (gtk_cell_renderer_spinner_get_type ())
-#define GTK_CELL_RENDERER_SPINNER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_RENDERER_SPINNER, GtkCellRendererSpinner))
-#define GTK_CELL_RENDERER_SPINNER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CELL_RENDERER_SPINNER, GtkCellRendererSpinnerClass))
-#define GTK_IS_CELL_RENDERER_SPINNER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_RENDERER_SPINNER))
-#define GTK_IS_CELL_RENDERER_SPINNER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CELL_RENDERER_SPINNER))
-#define GTK_CELL_RENDERER_SPINNER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CELL_RENDERER_SPINNER, GtkCellRendererSpinnerClass))
+#define BTK_TYPE_CELL_RENDERER_SPINNER            (btk_cell_renderer_spinner_get_type ())
+#define BTK_CELL_RENDERER_SPINNER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_RENDERER_SPINNER, BtkCellRendererSpinner))
+#define BTK_CELL_RENDERER_SPINNER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CELL_RENDERER_SPINNER, BtkCellRendererSpinnerClass))
+#define BTK_IS_CELL_RENDERER_SPINNER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_RENDERER_SPINNER))
+#define BTK_IS_CELL_RENDERER_SPINNER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CELL_RENDERER_SPINNER))
+#define BTK_CELL_RENDERER_SPINNER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CELL_RENDERER_SPINNER, BtkCellRendererSpinnerClass))
 
-typedef struct _GtkCellRendererSpinner        GtkCellRendererSpinner;
-typedef struct _GtkCellRendererSpinnerClass   GtkCellRendererSpinnerClass;
-typedef struct _GtkCellRendererSpinnerPrivate GtkCellRendererSpinnerPrivate;
+typedef struct _BtkCellRendererSpinner        BtkCellRendererSpinner;
+typedef struct _BtkCellRendererSpinnerClass   BtkCellRendererSpinnerClass;
+typedef struct _BtkCellRendererSpinnerPrivate BtkCellRendererSpinnerPrivate;
 
-struct _GtkCellRendererSpinner
+struct _BtkCellRendererSpinner
 {
-  GtkCellRenderer                parent;
-  GtkCellRendererSpinnerPrivate *priv;
+  BtkCellRenderer                parent;
+  BtkCellRendererSpinnerPrivate *priv;
 };
 
-struct _GtkCellRendererSpinnerClass
+struct _BtkCellRendererSpinnerClass
 {
-  GtkCellRendererClass parent_class;
+  BtkCellRendererClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType            gtk_cell_renderer_spinner_get_type (void) G_GNUC_CONST;
-GtkCellRenderer *gtk_cell_renderer_spinner_new      (void);
+GType            btk_cell_renderer_spinner_get_type (void) G_GNUC_CONST;
+BtkCellRenderer *btk_cell_renderer_spinner_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_CELL_RENDERER_SPINNER_H__ */
+#endif /* __BTK_CELL_RENDERER_SPINNER_H__ */

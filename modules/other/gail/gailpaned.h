@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_PANED_H__
-#define __GAIL_PANED_H__
+#ifndef __BAIL_PANED_H__
+#define __BAIL_PANED_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_PANED                      (gail_paned_get_type ())
-#define GAIL_PANED(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_PANED, GailPaned))
-#define GAIL_PANED_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_PANED, GailPanedClass))
-#define GAIL_IS_PANED(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_PANED))
-#define GAIL_IS_PANED_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_PANED))
-#define GAIL_PANED_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_PANED, GailPanedClass))
+#define BAIL_TYPE_PANED                      (bail_paned_get_type ())
+#define BAIL_PANED(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_PANED, BailPaned))
+#define BAIL_PANED_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_PANED, BailPanedClass))
+#define BAIL_IS_PANED(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_PANED))
+#define BAIL_IS_PANED_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_PANED))
+#define BAIL_PANED_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_PANED, BailPanedClass))
 
-typedef struct _GailPaned              GailPaned;
-typedef struct _GailPanedClass         GailPanedClass;
+typedef struct _BailPaned              BailPaned;
+typedef struct _BailPanedClass         BailPanedClass;
 
-struct _GailPaned
+struct _BailPaned
 {
-  GailContainer parent;
+  BailContainer parent;
 };
 
-GType gail_paned_get_type (void);
+GType bail_paned_get_type (void);
 
-struct _GailPanedClass
+struct _BailPanedClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_PANED_H__ */
+#endif /* __BAIL_PANED_H__ */

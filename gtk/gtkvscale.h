@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,57 +18,57 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VSCALE_H__
-#define __GTK_VSCALE_H__
+#ifndef __BTK_VSCALE_H__
+#define __BTK_VSCALE_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkscale.h>
+#include <btk/btkscale.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_VSCALE            (gtk_vscale_get_type ())
-#define GTK_VSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VSCALE, GtkVScale))
-#define GTK_VSCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VSCALE, GtkVScaleClass))
-#define GTK_IS_VSCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VSCALE))
-#define GTK_IS_VSCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VSCALE))
-#define GTK_VSCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VSCALE, GtkVScaleClass))
+#define BTK_TYPE_VSCALE            (btk_vscale_get_type ())
+#define BTK_VSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VSCALE, BtkVScale))
+#define BTK_VSCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VSCALE, BtkVScaleClass))
+#define BTK_IS_VSCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VSCALE))
+#define BTK_IS_VSCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VSCALE))
+#define BTK_VSCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VSCALE, BtkVScaleClass))
 
 
-typedef struct _GtkVScale       GtkVScale;
-typedef struct _GtkVScaleClass  GtkVScaleClass;
+typedef struct _BtkVScale       BtkVScale;
+typedef struct _BtkVScaleClass  BtkVScaleClass;
 
 /**
- * GtkVScale:
+ * BtkVScale:
  *
- * The #GtkVScale struct contains private data only, and
+ * The #BtkVScale struct contains private data only, and
  * should be accessed using the functions below.
  */
-struct _GtkVScale
+struct _BtkVScale
 {
-  GtkScale scale;
+  BtkScale scale;
 };
 
-struct _GtkVScaleClass
+struct _BtkVScaleClass
 {
-  GtkScaleClass parent_class;
+  BtkScaleClass parent_class;
 };
 
 
-GType      gtk_vscale_get_type       (void) G_GNUC_CONST;
-GtkWidget* gtk_vscale_new            (GtkAdjustment *adjustment);
-GtkWidget* gtk_vscale_new_with_range (gdouble        min,
+GType      btk_vscale_get_type       (void) G_GNUC_CONST;
+BtkWidget* btk_vscale_new            (BtkAdjustment *adjustment);
+BtkWidget* btk_vscale_new_with_range (gdouble        min,
                                       gdouble        max,
                                       gdouble        step);
 
@@ -76,4 +76,4 @@ GtkWidget* gtk_vscale_new_with_range (gdouble        min,
 G_END_DECLS
 
 
-#endif /* __GTK_VSCALE_H__ */
+#endif /* __BTK_VSCALE_H__ */

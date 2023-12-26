@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintoperationpreview.c: Abstract print preview interface
+/* BTK - The GIMP Toolkit
+ * btkprintoperationpreview.c: Abstract print preview interface
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,16 +20,16 @@
 
 #include "config.h"
 
-#include "gtkprintoperationpreview.h"
-#include "gtkmarshalers.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkprintoperationpreview.h"
+#include "btkmarshalers.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
-static void gtk_print_operation_preview_base_init (gpointer g_iface);
+static void btk_print_operation_preview_base_init (gpointer g_iface);
 
 GType
-gtk_print_operation_preview_get_type (void)
+btk_print_operation_preview_get_type (void)
 {
   static GType print_operation_preview_type = 0;
 
@@ -37,8 +37,8 @@ gtk_print_operation_preview_get_type (void)
     {
       const GTypeInfo print_operation_preview_info =
       {
-        sizeof (GtkPrintOperationPreviewIface), /* class_size */
-	gtk_print_operation_preview_base_init,   /* base_init */
+        sizeof (BtkPrintOperationPreviewIface), /* class_size */
+	btk_print_operation_preview_base_init,   /* base_init */
 	NULL,		/* base_finalize */
 	NULL,
 	NULL,		/* class_finalize */
@@ -49,7 +49,7 @@ gtk_print_operation_preview_get_type (void)
       };
 
       print_operation_preview_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GtkPrintOperationPreview"),
+	g_type_register_static (G_TYPE_INTERFACE, I_("BtkPrintOperationPreview"),
 				&print_operation_preview_info, 0);
 
       g_type_interface_add_prerequisite (print_operation_preview_type, G_TYPE_OBJECT);
@@ -59,16 +59,16 @@ gtk_print_operation_preview_get_type (void)
 }
 
 static void
-gtk_print_operation_preview_base_init (gpointer g_iface)
+btk_print_operation_preview_base_init (gpointer g_iface)
 {
   static gboolean initialized = FALSE;
 
   if (!initialized)
     {
       /**
-       * GtkPrintOperationPreview::ready:
+       * BtkPrintOperationPreview::ready:
        * @preview: the object on which the signal is emitted
-       * @context: the current #GtkPrintContext
+       * @context: the current #BtkPrintContext
        *
        * The ::ready signal gets emitted once per preview operation,
        * before the first page is rendered.
@@ -76,71 +76,71 @@ gtk_print_operation_preview_base_init (gpointer g_iface)
        * A handler for this signal can be used for setup tasks.
        */
       g_signal_new (I_("ready"),
-		    GTK_TYPE_PRINT_OPERATION_PREVIEW,
+		    BTK_TYPE_PRINT_OPERATION_PREVIEW,
 		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (GtkPrintOperationPreviewIface, ready),
+		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, ready),
 		    NULL, NULL,
 		    g_cclosure_marshal_VOID__OBJECT,
 		    G_TYPE_NONE, 1,
-		    GTK_TYPE_PRINT_CONTEXT);
+		    BTK_TYPE_PRINT_CONTEXT);
 
       /**
-       * GtkPrintOperationPreview::got-page-size:
+       * BtkPrintOperationPreview::got-page-size:
        * @preview: the object on which the signal is emitted
-       * @context: the current #GtkPrintContext
-       * @page_setup: the #GtkPageSetup for the current page
+       * @context: the current #BtkPrintContext
+       * @page_setup: the #BtkPageSetup for the current page
        *
        * The ::got-page-size signal is emitted once for each page
        * that gets rendered to the preview. 
        *
        * A handler for this signal should update the @context
-       * according to @page_setup and set up a suitable cairo
-       * context, using gtk_print_context_set_cairo_context().
+       * according to @page_setup and set up a suitable bairo
+       * context, using btk_print_context_set_bairo_context().
        */
       g_signal_new (I_("got-page-size"),
-		    GTK_TYPE_PRINT_OPERATION_PREVIEW,
+		    BTK_TYPE_PRINT_OPERATION_PREVIEW,
 		    G_SIGNAL_RUN_LAST,
-		    G_STRUCT_OFFSET (GtkPrintOperationPreviewIface, got_page_size),
+		    G_STRUCT_OFFSET (BtkPrintOperationPreviewIface, got_page_size),
 		    NULL, NULL,
-		    _gtk_marshal_VOID__OBJECT_OBJECT,
+		    _btk_marshal_VOID__OBJECT_OBJECT,
 		    G_TYPE_NONE, 2,
-		    GTK_TYPE_PRINT_CONTEXT,
-		    GTK_TYPE_PAGE_SETUP);
+		    BTK_TYPE_PRINT_CONTEXT,
+		    BTK_TYPE_PAGE_SETUP);
 
       initialized = TRUE;
     }
 }
 
 /**
- * gtk_print_operation_preview_render_page:
- * @preview: a #GtkPrintOperationPreview
+ * btk_print_operation_preview_render_page:
+ * @preview: a #BtkPrintOperationPreview
  * @page_nr: the page to render
  *
  * Renders a page to the preview, using the print context that
- * was passed to the #GtkPrintOperation::preview handler together
+ * was passed to the #BtkPrintOperation::preview handler together
  * with @preview.
  *
  * A custom iprint preview should use this function in its ::expose
  * handler to render the currently selected page.
  * 
- * Note that this function requires a suitable cairo context to 
+ * Note that this function requires a suitable bairo context to 
  * be associated with the print context. 
  *
  * Since: 2.10 
  */
 void    
-gtk_print_operation_preview_render_page (GtkPrintOperationPreview *preview,
+btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
 					 gint			   page_nr)
 {
-  g_return_if_fail (GTK_IS_PRINT_OPERATION_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview));
 
-  GTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->render_page (preview,
+  BTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->render_page (preview,
 								page_nr);
 }
 
 /**
- * gtk_print_operation_preview_end_preview:
- * @preview: a #GtkPrintOperationPreview
+ * btk_print_operation_preview_end_preview:
+ * @preview: a #BtkPrintOperationPreview
  *
  * Ends a preview. 
  *
@@ -149,16 +149,16 @@ gtk_print_operation_preview_render_page (GtkPrintOperationPreview *preview,
  * Since: 2.10
  */
 void
-gtk_print_operation_preview_end_preview (GtkPrintOperationPreview *preview)
+btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview)
 {
-  g_return_if_fail (GTK_IS_PRINT_OPERATION_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview));
 
-  GTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->end_preview (preview);
+  BTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->end_preview (preview);
 }
 
 /**
- * gtk_print_operation_preview_is_selected:
- * @preview: a #GtkPrintOperationPreview
+ * btk_print_operation_preview_is_selected:
+ * @preview: a #BtkPrintOperationPreview
  * @page_nr: a page number
  *
  * Returns whether the given page is included in the set of pages that
@@ -169,14 +169,14 @@ gtk_print_operation_preview_end_preview (GtkPrintOperationPreview *preview)
  * Since: 2.10
  */
 gboolean
-gtk_print_operation_preview_is_selected (GtkPrintOperationPreview *preview,
+btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
 					 gint                      page_nr)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_OPERATION_PREVIEW (preview), FALSE);
+  g_return_val_if_fail (BTK_IS_PRINT_OPERATION_PREVIEW (preview), FALSE);
 
-  return GTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->is_selected (preview, page_nr);
+  return BTK_PRINT_OPERATION_PREVIEW_GET_IFACE (preview)->is_selected (preview, page_nr);
 }
 
 
-#define __GTK_PRINT_OPERATION_PREVIEW_C__
-#include "gtkaliasdef.c"
+#define __BTK_PRINT_OPERATION_PREVIEW_C__
+#include "btkaliasdef.c"

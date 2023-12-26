@@ -1,5 +1,5 @@
 /*
- * gdkdisplay-x11.h
+ * bdkdisplay-x11.h
  * 
  * Copyright 2001 Sun Microsystems Inc. 
  *
@@ -21,43 +21,43 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_DISPLAY_X11__
-#define __GDK_DISPLAY_X11__
+#ifndef __BDK_DISPLAY_X11__
+#define __BDK_DISPLAY_X11__
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
-#include <glib.h>
-#include <gdk/gdkdisplay.h>
-#include <gdk/gdkkeys.h>
-#include <gdk/gdkwindow.h>
-#include <gdk/gdkinternals.h>
-#include <gdk/gdk.h>		/* For gdk_get_program_class() */
+#include <bunnylib.h>
+#include <bdk/bdkdisplay.h>
+#include <bdk/bdkkeys.h>
+#include <bdk/bdkwindow.h>
+#include <bdk/bdkinternals.h>
+#include <bdk/bdk.h>		/* For bdk_get_program_class() */
 
 G_BEGIN_DECLS
 
-typedef struct _GdkDisplayX11 GdkDisplayX11;
-typedef struct _GdkDisplayX11Class GdkDisplayX11Class;
+typedef struct _BdkDisplayX11 BdkDisplayX11;
+typedef struct _BdkDisplayX11Class BdkDisplayX11Class;
 
-#define GDK_TYPE_DISPLAY_X11              (_gdk_display_x11_get_type())
-#define GDK_DISPLAY_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DISPLAY_X11, GdkDisplayX11))
-#define GDK_DISPLAY_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DISPLAY_X11, GdkDisplayX11Class))
-#define GDK_IS_DISPLAY_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DISPLAY_X11))
-#define GDK_IS_DISPLAY_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DISPLAY_X11))
-#define GDK_DISPLAY_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DISPLAY_X11, GdkDisplayX11Class))
+#define BDK_TYPE_DISPLAY_X11              (_bdk_display_x11_get_type())
+#define BDK_DISPLAY_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DISPLAY_X11, BdkDisplayX11))
+#define BDK_DISPLAY_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
+#define BDK_IS_DISPLAY_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DISPLAY_X11))
+#define BDK_IS_DISPLAY_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DISPLAY_X11))
+#define BDK_DISPLAY_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DISPLAY_X11, BdkDisplayX11Class))
 
 typedef enum 
 {
-  GDK_UNKNOWN,
-  GDK_NO,
-  GDK_YES
-} GdkTristate;
+  BDK_UNKNOWN,
+  BDK_NO,
+  BDK_YES
+} BdkTristate;
 
-struct _GdkDisplayX11
+struct _BdkDisplayX11
 {
-  GdkDisplay parent_instance;
+  BdkDisplay parent_instance;
   Display *xdisplay;
-  GdkScreen *default_screen;
-  GdkScreen **screens;
+  BdkScreen *default_screen;
+  BdkScreen **screens;
 
   GSource *event_source;
 
@@ -73,12 +73,12 @@ struct _GdkDisplayX11
    * to checking the next event with XPending(). */
   gboolean have_xkb_autorepeat;
 
-  GdkKeymap *keymap;
+  BdkKeymap *keymap;
   guint	    keymap_serial;
 
   gboolean use_xshm;
   gboolean have_shm_pixmaps;
-  GdkTristate have_render;
+  BdkTristate have_render;
   gboolean have_xfixes;
   gint xfixes_event_base;
 
@@ -96,12 +96,12 @@ struct _GdkDisplayX11
   gboolean trusted_client;
 
   /* drag and drop information */
-  GdkDragContext *current_dest_drag;
+  BdkDragContext *current_dest_drag;
 
   /* data needed for MOTIF DnD */
 
   Window motif_drag_window;
-  GdkWindow *motif_drag_gdk_window;
+  BdkWindow *motif_drag_bdk_window;
   GList **motif_target_lists;
   gint motif_n_target_lists;
 
@@ -112,7 +112,7 @@ struct _GdkDisplayX11
 
   /* Session Management leader window see ICCCM */
   Window leader_window;
-  GdkWindow *leader_gdk_window;
+  BdkWindow *leader_bdk_window;
   gboolean leader_window_title_set;
   
   /* list of filters for client messages */
@@ -128,10 +128,10 @@ struct _GdkDisplayX11
   GQueue *translate_queue;
 
   /* Input device */
-  /* input GdkDevice list */
+  /* input BdkDevice list */
   GList *input_devices;
 
-  /* input GdkWindow list */
+  /* input BdkWindow list */
   GList *input_windows;
 
   /* Startup notification */
@@ -154,18 +154,18 @@ struct _GdkDisplayX11
   XRenderPictFormat *mask_format;
 
   /* The offscreen window that has the pointer in it (if any) */
-  GdkWindow *active_offscreen_window;
+  BdkWindow *active_offscreen_window;
 };
 
-struct _GdkDisplayX11Class
+struct _BdkDisplayX11Class
 {
-  GdkDisplayClass parent_class;
+  BdkDisplayClass parent_class;
 };
 
-GType      _gdk_display_x11_get_type            (void);
-GdkScreen *_gdk_x11_display_screen_for_xrootwin (GdkDisplay *display,
+GType      _bdk_display_x11_get_type            (void);
+BdkScreen *_bdk_x11_display_screen_for_xrootwin (BdkDisplay *display,
 						 Window      xrootwin);
 
 G_END_DECLS
 
-#endif				/* __GDK_DISPLAY_X11__ */
+#endif				/* __BDK_DISPLAY_X11__ */

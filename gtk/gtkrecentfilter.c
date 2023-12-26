@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkrecentfilter.h - Filter object for recently used resources
+/* BTK - The GIMP Toolkit
+ * btkrecentfilter.h - Filter object for recently used resources
  * Copyright (C) 2006, Emmanuele Bassi
  * 
  * This library is free software; you can redistribute it and/or
@@ -21,13 +21,13 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtkrecentfilter.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
+#include "btkrecentfilter.h"
+#include "btkintl.h"
+#include "btkprivate.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
-typedef struct _GtkRecentFilterClass GtkRecentFilterClass;
+typedef struct _BtkRecentFilterClass BtkRecentFilterClass;
 typedef struct _FilterRule FilterRule;
 
 typedef enum {
@@ -41,25 +41,25 @@ typedef enum {
   FILTER_RULE_CUSTOM
 } FilterRuleType;
 
-struct _GtkRecentFilter
+struct _BtkRecentFilter
 {
-  GtkObject parent_instance;
+  BtkObject parent_instance;
   
   gchar *name;
   GSList *rules;
   
-  GtkRecentFilterFlags needed;
+  BtkRecentFilterFlags needed;
 };
 
-struct _GtkRecentFilterClass
+struct _BtkRecentFilterClass
 {
-  GtkObjectClass parent_class;
+  BtkObjectClass parent_class;
 };
 
 struct _FilterRule
 {
   FilterRuleType type;
-  GtkRecentFilterFlags needed;
+  BtkRecentFilterFlags needed;
   
   union {
     gchar *uri;
@@ -70,14 +70,14 @@ struct _FilterRule
     gchar *group;
     gint age;
     struct {
-      GtkRecentFilterFunc func;
+      BtkRecentFilterFunc func;
       gpointer data;
       GDestroyNotify data_destroy;
     } custom;
   } u;
 };
 
-G_DEFINE_TYPE (GtkRecentFilter, gtk_recent_filter, GTK_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkRecentFilter, btk_recent_filter, BTK_TYPE_OBJECT)
 
 
 static void
@@ -118,9 +118,9 @@ filter_rule_free (FilterRule *rule)
 }
 
 static void
-gtk_recent_filter_finalize (GObject *object)
+btk_recent_filter_finalize (GObject *object)
 {
-  GtkRecentFilter *filter = GTK_RECENT_FILTER (object);
+  BtkRecentFilter *filter = BTK_RECENT_FILTER (object);
   
   g_free (filter->name);
   
@@ -132,19 +132,19 @@ gtk_recent_filter_finalize (GObject *object)
       g_slist_free (filter->rules);
     }
   
-  G_OBJECT_CLASS (gtk_recent_filter_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_recent_filter_parent_class)->finalize (object);
 }
 
 static void
-gtk_recent_filter_class_init (GtkRecentFilterClass *klass)
+btk_recent_filter_class_init (BtkRecentFilterClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
   
-  gobject_class->finalize = gtk_recent_filter_finalize;
+  bobject_class->finalize = btk_recent_filter_finalize;
 }
 
 static void
-gtk_recent_filter_init (GtkRecentFilter *filter)
+btk_recent_filter_init (BtkRecentFilter *filter)
 {
 
 }
@@ -154,32 +154,32 @@ gtk_recent_filter_init (GtkRecentFilter *filter)
  */
  
 /**
- * gtk_recent_filter_new:
+ * btk_recent_filter_new:
  *
- * Creates a new #GtkRecentFilter with no rules added to it.
+ * Creates a new #BtkRecentFilter with no rules added to it.
  * Such filter does not accept any recently used resources, so is not
  * particularly useful until you add rules with
- * gtk_recent_filter_add_pattern(), gtk_recent_filter_add_mime_type(),
- * gtk_recent_filter_add_application(), gtk_recent_filter_add_age().
+ * btk_recent_filter_add_pattern(), btk_recent_filter_add_mime_type(),
+ * btk_recent_filter_add_application(), btk_recent_filter_add_age().
  * To create a filter that accepts any recently used resource, use:
  * |[
- * GtkRecentFilter *filter = gtk_recent_filter_new ();
- * gtk_recent_filter_add_pattern (filter, "*");
+ * BtkRecentFilter *filter = btk_recent_filter_new ();
+ * btk_recent_filter_add_pattern (filter, "*");
  * ]|
  *
- * Return value: a new #GtkRecentFilter
+ * Return value: a new #BtkRecentFilter
  *
  * Since: 2.10
  */
-GtkRecentFilter *
-gtk_recent_filter_new (void)
+BtkRecentFilter *
+btk_recent_filter_new (void)
 {
-  return g_object_new (GTK_TYPE_RECENT_FILTER, NULL);
+  return g_object_new (BTK_TYPE_RECENT_FILTER, NULL);
 }
 
 /**
- * gtk_recent_filter_set_name:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_set_name:
+ * @filter: a #BtkRecentFilter
  * @name: then human readable name of @filter
  *
  * Sets the human-readable name of the filter; this is the string
@@ -189,10 +189,10 @@ gtk_recent_filter_new (void)
  * Since: 2.10
  */
 void
-gtk_recent_filter_set_name (GtkRecentFilter *filter,
+btk_recent_filter_set_name (BtkRecentFilter *filter,
 			    const gchar     *name)
 {
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   
   g_free (filter->name);
   
@@ -201,11 +201,11 @@ gtk_recent_filter_set_name (GtkRecentFilter *filter,
 }
 
 /**
- * gtk_recent_filter_get_name:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_get_name:
+ * @filter: a #BtkRecentFilter
  *
  * Gets the human-readable name for the filter.
- * See gtk_recent_filter_set_name().
+ * See btk_recent_filter_set_name().
  *
  * Return value: the name of the filter, or %NULL.  The returned string
  *   is owned by the filter object and should not be freed.
@@ -213,37 +213,37 @@ gtk_recent_filter_set_name (GtkRecentFilter *filter,
  * Since: 2.10
  */
 const gchar *
-gtk_recent_filter_get_name (GtkRecentFilter *filter)
+btk_recent_filter_get_name (BtkRecentFilter *filter)
 {
-  g_return_val_if_fail (GTK_IS_RECENT_FILTER (filter), NULL);
+  g_return_val_if_fail (BTK_IS_RECENT_FILTER (filter), NULL);
   
   return filter->name;
 }
 
 /**
- * gtk_recent_filter_get_needed:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_get_needed:
+ * @filter: a #BtkRecentFilter
  *
  * Gets the fields that need to be filled in for the structure
- * passed to gtk_recent_filter_filter()
+ * passed to btk_recent_filter_filter()
  * 
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
- * #GtkRecentChooser.
+ * #BtkRecentChooser.
  * 
  * Return value: bitfield of flags indicating needed fields when
- *   calling gtk_recent_filter_filter()
+ *   calling btk_recent_filter_filter()
  *
  * Since: 2.10
  */
-GtkRecentFilterFlags
-gtk_recent_filter_get_needed (GtkRecentFilter *filter)
+BtkRecentFilterFlags
+btk_recent_filter_get_needed (BtkRecentFilter *filter)
 {
   return filter->needed;
 }
 
 static void
-recent_filter_add_rule (GtkRecentFilter *filter,
+recent_filter_add_rule (BtkRecentFilter *filter,
 			FilterRule      *rule)
 {
   filter->needed |= rule->needed;
@@ -251,8 +251,8 @@ recent_filter_add_rule (GtkRecentFilter *filter,
 }
 
 /**
- * gtk_recent_filter_add_mime_type:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_mime_type:
+ * @filter: a #BtkRecentFilter
  * @mime_type: a MIME type
  *
  * Adds a rule that allows resources based on their registered MIME type.
@@ -260,25 +260,25 @@ recent_filter_add_rule (GtkRecentFilter *filter,
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_mime_type (GtkRecentFilter *filter,
+btk_recent_filter_add_mime_type (BtkRecentFilter *filter,
 				 const gchar     *mime_type)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (mime_type != NULL);
   
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_MIME_TYPE;
-  rule->needed = GTK_RECENT_FILTER_MIME_TYPE;
+  rule->needed = BTK_RECENT_FILTER_MIME_TYPE;
   rule->u.mime_type = g_strdup (mime_type);
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_pattern:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_pattern:
+ * @filter: a #BtkRecentFilter
  * @pattern: a file pattern
  *
  * Adds a rule that allows resources based on a pattern matching their
@@ -287,49 +287,49 @@ gtk_recent_filter_add_mime_type (GtkRecentFilter *filter,
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_pattern (GtkRecentFilter *filter,
+btk_recent_filter_add_pattern (BtkRecentFilter *filter,
 			       const gchar     *pattern)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (pattern != NULL);
   
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_DISPLAY_NAME;
-  rule->needed = GTK_RECENT_FILTER_DISPLAY_NAME;
+  rule->needed = BTK_RECENT_FILTER_DISPLAY_NAME;
   rule->u.pattern = g_strdup (pattern);
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_pixbuf_formats:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_pixbuf_formats:
+ * @filter: a #BtkRecentFilter
  *
  * Adds a rule allowing image files in the formats supported
- * by GdkPixbuf.
+ * by BdkPixbuf.
  *
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_pixbuf_formats (GtkRecentFilter *filter)
+btk_recent_filter_add_pixbuf_formats (BtkRecentFilter *filter)
 {
   FilterRule *rule;
 
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
 
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_PIXBUF_FORMATS;
-  rule->needed = GTK_RECENT_FILTER_MIME_TYPE;
-  rule->u.pixbuf_formats = gdk_pixbuf_get_formats ();
+  rule->needed = BTK_RECENT_FILTER_MIME_TYPE;
+  rule->u.pixbuf_formats = bdk_pixbuf_get_formats ();
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_application:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_application:
+ * @filter: a #BtkRecentFilter
  * @application: an application name
  *
  * Adds a rule that allows resources based on the name of the application
@@ -338,25 +338,25 @@ gtk_recent_filter_add_pixbuf_formats (GtkRecentFilter *filter)
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_application (GtkRecentFilter *filter,
+btk_recent_filter_add_application (BtkRecentFilter *filter,
 				   const gchar     *application)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (application != NULL);
   
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_APPLICATION;
-  rule->needed = GTK_RECENT_FILTER_APPLICATION;
+  rule->needed = BTK_RECENT_FILTER_APPLICATION;
   rule->u.application = g_strdup (application);
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_group:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_group:
+ * @filter: a #BtkRecentFilter
  * @group: a group name
  *
  * Adds a rule that allows resources based on the name of the group
@@ -365,25 +365,25 @@ gtk_recent_filter_add_application (GtkRecentFilter *filter,
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_group (GtkRecentFilter *filter,
+btk_recent_filter_add_group (BtkRecentFilter *filter,
 			     const gchar     *group)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (group != NULL);
   
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_GROUP;
-  rule->needed = GTK_RECENT_FILTER_GROUP;
+  rule->needed = BTK_RECENT_FILTER_GROUP;
   rule->u.group = g_strdup (group);
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_age:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_age:
+ * @filter: a #BtkRecentFilter
  * @days: number of days
  *
  * Adds a rule that allows resources based on their age - that is, the number
@@ -392,24 +392,24 @@ gtk_recent_filter_add_group (GtkRecentFilter *filter,
  * Since: 2.10
  */
 void
-gtk_recent_filter_add_age (GtkRecentFilter *filter,
+btk_recent_filter_add_age (BtkRecentFilter *filter,
 			   gint             days)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   
   rule = g_new0 (FilterRule, 1);
   rule->type = FILTER_RULE_AGE;
-  rule->needed = GTK_RECENT_FILTER_AGE;
+  rule->needed = BTK_RECENT_FILTER_AGE;
   rule->u.age = days;
   
   recent_filter_add_rule (filter, rule);
 }
 
 /**
- * gtk_recent_filter_add_custom:
- * @filter: a #GtkRecentFilter
+ * btk_recent_filter_add_custom:
+ * @filter: a #BtkRecentFilter
  * @needed: bitfield of flags indicating the information that the custom
  *          filter function needs.
  * @func: callback function; if the function returns %TRUE, then
@@ -420,21 +420,21 @@ gtk_recent_filter_add_age (GtkRecentFilter *filter,
  * Adds a rule to a filter that allows resources based on a custom callback
  * function. The bitfield @needed which is passed in provides information
  * about what sorts of information that the filter function needs;
- * this allows GTK+ to avoid retrieving expensive information when
+ * this allows BTK+ to avoid retrieving expensive information when
  * it isn't needed by the filter.
  * 
  * Since: 2.10
  **/
 void
-gtk_recent_filter_add_custom (GtkRecentFilter      *filter,
-			      GtkRecentFilterFlags  needed,
-			      GtkRecentFilterFunc   func,
+btk_recent_filter_add_custom (BtkRecentFilter      *filter,
+			      BtkRecentFilterFlags  needed,
+			      BtkRecentFilterFunc   func,
 			      gpointer              data,
 			      GDestroyNotify        data_destroy)
 {
   FilterRule *rule;
   
-  g_return_if_fail (GTK_IS_RECENT_FILTER (filter));
+  g_return_if_fail (BTK_IS_RECENT_FILTER (filter));
   g_return_if_fail (func != NULL);
 
   rule = g_new0 (FilterRule, 1);
@@ -449,30 +449,30 @@ gtk_recent_filter_add_custom (GtkRecentFilter      *filter,
 
 
 /**
- * gtk_recent_filter_filter:
- * @filter: a #GtkRecentFilter
- * @filter_info: a #GtkRecentFilterInfo structure containing information
+ * btk_recent_filter_filter:
+ * @filter: a #BtkRecentFilter
+ * @filter_info: a #BtkRecentFilterInfo structure containing information
  *   about a recently used resource
  *
  * Tests whether a file should be displayed according to @filter.
- * The #GtkRecentFilterInfo structure @filter_info should include
- * the fields returned from gtk_recent_filter_get_needed().
+ * The #BtkRecentFilterInfo structure @filter_info should include
+ * the fields returned from btk_recent_filter_get_needed().
  *
  * This function will not typically be used by applications; it
  * is intended principally for use in the implementation of
- * #GtkRecentChooser.
+ * #BtkRecentChooser.
  * 
  * Return value: %TRUE if the file should be displayed
  *
  * Since: 2.10
  */
 gboolean
-gtk_recent_filter_filter (GtkRecentFilter           *filter,
-			  const GtkRecentFilterInfo *filter_info)
+btk_recent_filter_filter (BtkRecentFilter           *filter,
+			  const BtkRecentFilterInfo *filter_info)
 {
   GSList *l;
   
-  g_return_val_if_fail (GTK_IS_RECENT_FILTER (filter), FALSE);
+  g_return_val_if_fail (BTK_IS_RECENT_FILTER (filter), FALSE);
   g_return_val_if_fail (filter_info != NULL, FALSE);
   
   for (l = filter->rules; l != NULL; l = l->next)
@@ -535,7 +535,7 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
                 gint i;
 		gchar **mime_types;
 
-		mime_types = gdk_pixbuf_format_get_mime_types (list->data);
+		mime_types = bdk_pixbuf_format_get_mime_types (list->data);
 
 		for (i = 0; mime_types[i] != NULL; i++)
                   {
@@ -552,12 +552,12 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
 	  }
         case FILTER_RULE_URI:
           if ((filter_info->uri != NULL) &&
-              _gtk_fnmatch (rule->u.uri, filter_info->uri, FALSE))
+              _btk_fnmatch (rule->u.uri, filter_info->uri, FALSE))
             return TRUE;
           break;
         case FILTER_RULE_DISPLAY_NAME:
           if ((filter_info->display_name != NULL) &&
-              _gtk_fnmatch (rule->u.pattern, filter_info->display_name, FALSE))
+              _btk_fnmatch (rule->u.pattern, filter_info->display_name, FALSE))
             return TRUE;
           break;
         case FILTER_RULE_AGE:
@@ -575,5 +575,5 @@ gtk_recent_filter_filter (GtkRecentFilter           *filter,
   return FALSE;
 }
 
-#define __GTK_RECENT_FILTER_C__
-#include "gtkaliasdef.c"
+#define __BTK_RECENT_FILTER_C__
+#include "btkaliasdef.c"

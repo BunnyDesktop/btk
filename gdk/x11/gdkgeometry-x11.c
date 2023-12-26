@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,54 +18,54 @@
  */
 
 #include "config.h"
-#include "gdk.h"		/* For gdk_rectangle_intersect */
-#include "gdkprivate-x11.h"
-#include "gdkx.h"
-#include "gdkregion.h"
-#include "gdkinternals.h"
-#include "gdkscreen-x11.h"
-#include "gdkdisplay-x11.h"
-#include "gdkwindow-x11.h"
-#include "gdkalias.h"
+#include "bdk.h"		/* For bdk_rectangle_intersect */
+#include "bdkprivate-x11.h"
+#include "bdkx.h"
+#include "bdkrebunnyion.h"
+#include "bdkinternals.h"
+#include "bdkscreen-x11.h"
+#include "bdkdisplay-x11.h"
+#include "bdkwindow-x11.h"
+#include "bdkalias.h"
 
-typedef struct _GdkWindowQueueItem GdkWindowQueueItem;
-typedef struct _GdkWindowParentPos GdkWindowParentPos;
+typedef struct _BdkWindowQueueItem BdkWindowQueueItem;
+typedef struct _BdkWindowParentPos BdkWindowParentPos;
 
 typedef enum {
-  GDK_WINDOW_QUEUE_TRANSLATE,
-  GDK_WINDOW_QUEUE_ANTIEXPOSE
-} GdkWindowQueueType;
+  BDK_WINDOW_QUEUE_TRANSLATE,
+  BDK_WINDOW_QUEUE_ANTIEXPOSE
+} BdkWindowQueueType;
 
-struct _GdkWindowQueueItem
+struct _BdkWindowQueueItem
 {
-  GdkWindow *window;
+  BdkWindow *window;
   gulong serial;
-  GdkWindowQueueType type;
+  BdkWindowQueueType type;
   union {
     struct {
-      GdkRegion *area;
+      BdkRebunnyion *area;
       gint dx;
       gint dy;
     } translate;
     struct {
-      GdkRegion *area;
+      BdkRebunnyion *area;
     } antiexpose;
   } u;
 };
 
 void
-_gdk_window_move_resize_child (GdkWindow *window,
+_bdk_window_move_resize_child (BdkWindow *window,
 			       gint       x,
 			       gint       y,
 			       gint       width,
 			       gint       height)
 {
-  GdkWindowObject *obj;
+  BdkWindowObject *obj;
 
   g_return_if_fail (window != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  obj = GDK_WINDOW_OBJECT (window);
+  obj = BDK_WINDOW_OBJECT (window);
 
   if (width > 65535 ||
       height > 65535)
@@ -87,15 +87,15 @@ _gdk_window_move_resize_child (GdkWindow *window,
      the window won't be visible anyway and thus it will be shaped
      to nothing */
 
-  _gdk_x11_window_tmp_unset_parent_bg (window);
-  _gdk_x11_window_tmp_unset_bg (window, TRUE);
-  XMoveResizeWindow (GDK_WINDOW_XDISPLAY (window),
-		     GDK_WINDOW_XID (window),
+  _bdk_x11_window_tmp_unset_parent_bg (window);
+  _bdk_x11_window_tmp_unset_bg (window, TRUE);
+  XMoveResizeWindow (BDK_WINDOW_XDISPLAY (window),
+		     BDK_WINDOW_XID (window),
 		     obj->x + obj->parent->abs_x,
 		     obj->y + obj->parent->abs_y,
 		     width, height);
-  _gdk_x11_window_tmp_reset_parent_bg (window);
-  _gdk_x11_window_tmp_reset_bg (window, TRUE);
+  _bdk_x11_window_tmp_reset_parent_bg (window);
+  _bdk_x11_window_tmp_reset_bg (window, TRUE);
 }
 
 static Bool
@@ -139,7 +139,7 @@ queue_delete_link (GQueue *queue,
 }
 
 static void
-queue_item_free (GdkWindowQueueItem *item)
+queue_item_free (BdkWindowQueueItem *item)
 {
   if (item->window)
     {
@@ -147,22 +147,22 @@ queue_item_free (GdkWindowQueueItem *item)
 				    (gpointer *)&(item->window));
     }
   
-  if (item->type == GDK_WINDOW_QUEUE_ANTIEXPOSE)
-    gdk_region_destroy (item->u.antiexpose.area);
+  if (item->type == BDK_WINDOW_QUEUE_ANTIEXPOSE)
+    bdk_rebunnyion_destroy (item->u.antiexpose.area);
   else
     {
       if (item->u.translate.area)
-	gdk_region_destroy (item->u.translate.area);
+	bdk_rebunnyion_destroy (item->u.translate.area);
     }
   
   g_free (item);
 }
 
 static void
-gdk_window_queue (GdkWindow          *window,
-		  GdkWindowQueueItem *item)
+bdk_window_queue (BdkWindow          *window,
+		  BdkWindowQueueItem *item)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
   
   if (!display_x11->translate_queue)
     display_x11->translate_queue = g_queue_new ();
@@ -173,12 +173,12 @@ gdk_window_queue (GdkWindow          *window,
    */
   if (display_x11->translate_queue->length >= 64)
     {
-      gulong serial = find_current_serial (GDK_WINDOW_XDISPLAY (window));
+      gulong serial = find_current_serial (BDK_WINDOW_XDISPLAY (window));
       GList *tmp_list = display_x11->translate_queue->head;
       
       while (tmp_list)
 	{
-	  GdkWindowQueueItem *item = tmp_list->data;
+	  BdkWindowQueueItem *item = tmp_list->data;
 	  GList *next = tmp_list->next;
 	  
 	  /* an overflow-safe (item->serial < serial) */
@@ -204,10 +204,10 @@ gdk_window_queue (GdkWindow          *window,
       
       while (tmp_list)
 	{
-	  GdkWindowQueueItem *item = tmp_list->data;
+	  BdkWindowQueueItem *item = tmp_list->data;
 	  GList *next = tmp_list->next;
 	  
-	  if (item->type == GDK_WINDOW_QUEUE_ANTIEXPOSE)
+	  if (item->type == BDK_WINDOW_QUEUE_ANTIEXPOSE)
 	    {
 	      queue_delete_link (display_x11->translate_queue, tmp_list);
 	      queue_item_free (item);
@@ -218,7 +218,7 @@ gdk_window_queue (GdkWindow          *window,
     }
 
   item->window = window;
-  item->serial = NextRequest (GDK_WINDOW_XDISPLAY (window));
+  item->serial = NextRequest (BDK_WINDOW_XDISPLAY (window));
   
   g_object_add_weak_pointer (G_OBJECT (window),
 			     (gpointer *)&(item->window));
@@ -227,46 +227,46 @@ gdk_window_queue (GdkWindow          *window,
 }
 
 void
-_gdk_x11_window_queue_translation (GdkWindow *window,
-				   GdkGC     *gc,
-				   GdkRegion *area,
+_bdk_x11_window_queue_translation (BdkWindow *window,
+				   BdkGC     *gc,
+				   BdkRebunnyion *area,
 				   gint       dx,
 				   gint       dy)
 {
-  GdkWindowQueueItem *item = g_new (GdkWindowQueueItem, 1);
-  item->type = GDK_WINDOW_QUEUE_TRANSLATE;
-  item->u.translate.area = area ? gdk_region_copy (area) : NULL;
+  BdkWindowQueueItem *item = g_new (BdkWindowQueueItem, 1);
+  item->type = BDK_WINDOW_QUEUE_TRANSLATE;
+  item->u.translate.area = area ? bdk_rebunnyion_copy (area) : NULL;
   item->u.translate.dx = dx;
   item->u.translate.dy = dy;
 
   /* Ensure that the gc is flushed so that we get the right
-     serial from NextRequest in gdk_window_queue, i.e. the
+     serial from NextRequest in bdk_window_queue, i.e. the
      the serial for the XCopyArea, not the ones from flushing
      the gc. */
-  _gdk_x11_gc_flush (gc);
-  gdk_window_queue (window, item);
+  _bdk_x11_gc_flush (gc);
+  bdk_window_queue (window, item);
 }
 
 gboolean
-_gdk_x11_window_queue_antiexpose (GdkWindow *window,
-				  GdkRegion *area)
+_bdk_x11_window_queue_antiexpose (BdkWindow *window,
+				  BdkRebunnyion *area)
 {
-  GdkWindowQueueItem *item = g_new (GdkWindowQueueItem, 1);
-  item->type = GDK_WINDOW_QUEUE_ANTIEXPOSE;
+  BdkWindowQueueItem *item = g_new (BdkWindowQueueItem, 1);
+  item->type = BDK_WINDOW_QUEUE_ANTIEXPOSE;
   item->u.antiexpose.area = area;
 
-  gdk_window_queue (window, item);
+  bdk_window_queue (window, item);
 
   return TRUE;
 }
 
 void
-_gdk_window_process_expose (GdkWindow    *window,
+_bdk_window_process_expose (BdkWindow    *window,
 			    gulong        serial,
-			    GdkRectangle *area)
+			    BdkRectangle *area)
 {
-  GdkRegion *invalidate_region = gdk_region_rectangle (area);
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
+  BdkRebunnyion *invalidate_rebunnyion = bdk_rebunnyion_rectangle (area);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
 
   if (display_x11->translate_queue)
     {
@@ -274,7 +274,7 @@ _gdk_window_process_expose (GdkWindow    *window,
 
       while (tmp_list)
 	{
-	  GdkWindowQueueItem *item = tmp_list->data;
+	  BdkWindowQueueItem *item = tmp_list->data;
           GList *next = tmp_list->next;
 
 	  /* an overflow-safe (serial < item->serial) */
@@ -282,25 +282,25 @@ _gdk_window_process_expose (GdkWindow    *window,
 	    {
 	      if (item->window == window)
 		{
-		  if (item->type == GDK_WINDOW_QUEUE_TRANSLATE)
+		  if (item->type == BDK_WINDOW_QUEUE_TRANSLATE)
 		    {
 		      if (item->u.translate.area)
 			{
-			  GdkRegion *intersection;
+			  BdkRebunnyion *intersection;
 
-			  intersection = gdk_region_copy (invalidate_region);
-			  gdk_region_intersect (intersection, item->u.translate.area);
-			  gdk_region_subtract (invalidate_region, intersection);
-			  gdk_region_offset (intersection, item->u.translate.dx, item->u.translate.dy);
-			  gdk_region_union (invalidate_region, intersection);
-			  gdk_region_destroy (intersection);
+			  intersection = bdk_rebunnyion_copy (invalidate_rebunnyion);
+			  bdk_rebunnyion_intersect (intersection, item->u.translate.area);
+			  bdk_rebunnyion_subtract (invalidate_rebunnyion, intersection);
+			  bdk_rebunnyion_offset (intersection, item->u.translate.dx, item->u.translate.dy);
+			  bdk_rebunnyion_union (invalidate_rebunnyion, intersection);
+			  bdk_rebunnyion_destroy (intersection);
 			}
 		      else
-			gdk_region_offset (invalidate_region, item->u.translate.dx, item->u.translate.dy);
+			bdk_rebunnyion_offset (invalidate_rebunnyion, item->u.translate.dx, item->u.translate.dy);
 		    }
 		  else		/* anti-expose */
 		    {
-		      gdk_region_subtract (invalidate_region, item->u.antiexpose.area);
+		      bdk_rebunnyion_subtract (invalidate_rebunnyion, item->u.antiexpose.area);
 		    }
 		}
 	    }
@@ -313,11 +313,11 @@ _gdk_window_process_expose (GdkWindow    *window,
 	}
     }
 
-  if (!gdk_region_empty (invalidate_region))
-    _gdk_window_invalidate_for_expose (window, invalidate_region);
+  if (!bdk_rebunnyion_empty (invalidate_rebunnyion))
+    _bdk_window_invalidate_for_expose (window, invalidate_rebunnyion);
 
-  gdk_region_destroy (invalidate_region);
+  bdk_rebunnyion_destroy (invalidate_rebunnyion);
 }
 
-#define __GDK_GEOMETRY_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_GEOMETRY_X11_C__
+#include "bdkaliasdef.c"

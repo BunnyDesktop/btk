@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,47 +18,47 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SCROLLED_WINDOW_H__
-#define __GTK_SCROLLED_WINDOW_H__
+#ifndef __BTK_SCROLLED_WINDOW_H__
+#define __BTK_SCROLLED_WINDOW_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkhscrollbar.h>
-#include <gtk/gtkvscrollbar.h>
-#include <gtk/gtkviewport.h>
+#include <btk/btkhscrollbar.h>
+#include <btk/btkvscrollbar.h>
+#include <btk/btkviewport.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_SCROLLED_WINDOW            (gtk_scrolled_window_get_type ())
-#define GTK_SCROLLED_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SCROLLED_WINDOW, GtkScrolledWindow))
-#define GTK_SCROLLED_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SCROLLED_WINDOW, GtkScrolledWindowClass))
-#define GTK_IS_SCROLLED_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SCROLLED_WINDOW))
-#define GTK_IS_SCROLLED_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SCROLLED_WINDOW))
-#define GTK_SCROLLED_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SCROLLED_WINDOW, GtkScrolledWindowClass))
+#define BTK_TYPE_SCROLLED_WINDOW            (btk_scrolled_window_get_type ())
+#define BTK_SCROLLED_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCROLLED_WINDOW, BtkScrolledWindow))
+#define BTK_SCROLLED_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCROLLED_WINDOW, BtkScrolledWindowClass))
+#define BTK_IS_SCROLLED_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCROLLED_WINDOW))
+#define BTK_IS_SCROLLED_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCROLLED_WINDOW))
+#define BTK_SCROLLED_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCROLLED_WINDOW, BtkScrolledWindowClass))
 
 
 
-typedef struct _GtkScrolledWindow       GtkScrolledWindow;
-typedef struct _GtkScrolledWindowClass  GtkScrolledWindowClass;
+typedef struct _BtkScrolledWindow       BtkScrolledWindow;
+typedef struct _BtkScrolledWindowClass  BtkScrolledWindowClass;
 
-struct _GtkScrolledWindow
+struct _BtkScrolledWindow
 {
-  GtkBin container;
+  BtkBin container;
 
   /*< public >*/
-  GtkWidget *GSEAL (hscrollbar);
-  GtkWidget *GSEAL (vscrollbar);
+  BtkWidget *GSEAL (hscrollbar);
+  BtkWidget *GSEAL (vscrollbar);
 
   /*< private >*/
   guint GSEAL (hscrollbar_policy)      : 2;
@@ -71,66 +71,66 @@ struct _GtkScrolledWindow
   guint16 GSEAL (shadow_type);
 };
 
-struct _GtkScrolledWindowClass
+struct _BtkScrolledWindowClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
   gint scrollbar_spacing;
 
   /* Action signals for keybindings. Do not connect to these signals
    */
 
-  /* Unfortunately, GtkScrollType is deficient in that there is
-   * no horizontal/vertical variants for GTK_SCROLL_START/END,
+  /* Unfortunately, BtkScrollType is deficient in that there is
+   * no horizontal/vertical variants for BTK_SCROLL_START/END,
    * so we have to add an additional boolean flag.
    */
-  gboolean (*scroll_child) (GtkScrolledWindow *scrolled_window,
-	  		    GtkScrollType      scroll,
+  gboolean (*scroll_child) (BtkScrolledWindow *scrolled_window,
+	  		    BtkScrollType      scroll,
 			    gboolean           horizontal);
 
-  void (* move_focus_out) (GtkScrolledWindow *scrolled_window,
-			   GtkDirectionType   direction);
+  void (* move_focus_out) (BtkScrolledWindow *scrolled_window,
+			   BtkDirectionType   direction);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType          gtk_scrolled_window_get_type          (void) G_GNUC_CONST;
-GtkWidget*     gtk_scrolled_window_new               (GtkAdjustment     *hadjustment,
-						      GtkAdjustment     *vadjustment);
-void           gtk_scrolled_window_set_hadjustment   (GtkScrolledWindow *scrolled_window,
-						      GtkAdjustment     *hadjustment);
-void           gtk_scrolled_window_set_vadjustment   (GtkScrolledWindow *scrolled_window,
-						      GtkAdjustment     *vadjustment);
-GtkAdjustment* gtk_scrolled_window_get_hadjustment   (GtkScrolledWindow *scrolled_window);
-GtkAdjustment* gtk_scrolled_window_get_vadjustment   (GtkScrolledWindow *scrolled_window);
-GtkWidget*     gtk_scrolled_window_get_hscrollbar    (GtkScrolledWindow *scrolled_window);
-GtkWidget*     gtk_scrolled_window_get_vscrollbar    (GtkScrolledWindow *scrolled_window);
-void           gtk_scrolled_window_set_policy        (GtkScrolledWindow *scrolled_window,
-						      GtkPolicyType      hscrollbar_policy,
-						      GtkPolicyType      vscrollbar_policy);
-void           gtk_scrolled_window_get_policy        (GtkScrolledWindow *scrolled_window,
-						      GtkPolicyType     *hscrollbar_policy,
-						      GtkPolicyType     *vscrollbar_policy);
-void           gtk_scrolled_window_set_placement     (GtkScrolledWindow *scrolled_window,
-						      GtkCornerType      window_placement);
-void           gtk_scrolled_window_unset_placement   (GtkScrolledWindow *scrolled_window);
+GType          btk_scrolled_window_get_type          (void) G_GNUC_CONST;
+BtkWidget*     btk_scrolled_window_new               (BtkAdjustment     *hadjustment,
+						      BtkAdjustment     *vadjustment);
+void           btk_scrolled_window_set_hadjustment   (BtkScrolledWindow *scrolled_window,
+						      BtkAdjustment     *hadjustment);
+void           btk_scrolled_window_set_vadjustment   (BtkScrolledWindow *scrolled_window,
+						      BtkAdjustment     *vadjustment);
+BtkAdjustment* btk_scrolled_window_get_hadjustment   (BtkScrolledWindow *scrolled_window);
+BtkAdjustment* btk_scrolled_window_get_vadjustment   (BtkScrolledWindow *scrolled_window);
+BtkWidget*     btk_scrolled_window_get_hscrollbar    (BtkScrolledWindow *scrolled_window);
+BtkWidget*     btk_scrolled_window_get_vscrollbar    (BtkScrolledWindow *scrolled_window);
+void           btk_scrolled_window_set_policy        (BtkScrolledWindow *scrolled_window,
+						      BtkPolicyType      hscrollbar_policy,
+						      BtkPolicyType      vscrollbar_policy);
+void           btk_scrolled_window_get_policy        (BtkScrolledWindow *scrolled_window,
+						      BtkPolicyType     *hscrollbar_policy,
+						      BtkPolicyType     *vscrollbar_policy);
+void           btk_scrolled_window_set_placement     (BtkScrolledWindow *scrolled_window,
+						      BtkCornerType      window_placement);
+void           btk_scrolled_window_unset_placement   (BtkScrolledWindow *scrolled_window);
 
-GtkCornerType  gtk_scrolled_window_get_placement     (GtkScrolledWindow *scrolled_window);
-void           gtk_scrolled_window_set_shadow_type   (GtkScrolledWindow *scrolled_window,
-						      GtkShadowType      type);
-GtkShadowType  gtk_scrolled_window_get_shadow_type   (GtkScrolledWindow *scrolled_window);
-void	       gtk_scrolled_window_add_with_viewport (GtkScrolledWindow *scrolled_window,
-						      GtkWidget		*child);
+BtkCornerType  btk_scrolled_window_get_placement     (BtkScrolledWindow *scrolled_window);
+void           btk_scrolled_window_set_shadow_type   (BtkScrolledWindow *scrolled_window,
+						      BtkShadowType      type);
+BtkShadowType  btk_scrolled_window_get_shadow_type   (BtkScrolledWindow *scrolled_window);
+void	       btk_scrolled_window_add_with_viewport (BtkScrolledWindow *scrolled_window,
+						      BtkWidget		*child);
 
-gint _gtk_scrolled_window_get_scrollbar_spacing (GtkScrolledWindow *scrolled_window);
+gint _btk_scrolled_window_get_scrollbar_spacing (BtkScrolledWindow *scrolled_window);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_SCROLLED_WINDOW_H__ */
+#endif /* __BTK_SCROLLED_WINDOW_H__ */

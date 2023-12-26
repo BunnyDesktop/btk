@@ -1,4 +1,4 @@
-/* GdkPixbuf RGBA C-Source image dump */
+/* BdkPixbuf RGBA C-Source image dump */
 
 #ifdef __SUNPRO_C
 #pragma align 4 (dnd_cursor_ask)
@@ -10,7 +10,7 @@ static const guint8 dnd_cursor_ask[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
-  "GdkP"
+  "BdkP"
   /* length: header (24) + pixel_data (1024) */
   "\0\0\4\30"
   /* pixdata_type (0x1010002) */
@@ -68,7 +68,7 @@ static const guint8 dnd_cursor_ask[] =
   "\0\0\0\0\0\0\0\0\0\0\0\0\0\0"};
 
 
-/* GdkPixbuf RGBA C-Source image dump */
+/* BdkPixbuf RGBA C-Source image dump */
 
 #ifdef __SUNPRO_C
 #pragma align 4 (dnd_cursor_move)
@@ -80,7 +80,7 @@ static const guint8 dnd_cursor_move[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
-  "GdkP"
+  "BdkP"
   /* length: header (24) + pixel_data (1024) */
   "\0\0\4\30"
   /* pixdata_type (0x1010002) */
@@ -138,7 +138,7 @@ static const guint8 dnd_cursor_move[] =
   "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"};
 
 
-/* GdkPixbuf RGBA C-Source image dump */
+/* BdkPixbuf RGBA C-Source image dump */
 
 #ifdef __SUNPRO_C
 #pragma align 4 (dnd_cursor_link)
@@ -150,7 +150,7 @@ static const guint8 dnd_cursor_link[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
-  "GdkP"
+  "BdkP"
   /* length: header (24) + pixel_data (1024) */
   "\0\0\4\30"
   /* pixdata_type (0x1010002) */
@@ -210,7 +210,7 @@ static const guint8 dnd_cursor_link[] =
   "\0\0\0\0\0\0"};
 
 
-/* GdkPixbuf RGBA C-Source image dump */
+/* BdkPixbuf RGBA C-Source image dump */
 
 #ifdef __SUNPRO_C
 #pragma align 4 (dnd_cursor_copy)
@@ -222,7 +222,7 @@ static const guint8 dnd_cursor_copy[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
-  "GdkP"
+  "BdkP"
   /* length: header (24) + pixel_data (1024) */
   "\0\0\4\30"
   /* pixdata_type (0x1010002) */
@@ -280,7 +280,7 @@ static const guint8 dnd_cursor_copy[] =
   "\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0"};
 
 
-/* GdkPixbuf RGBA C-Source image dump */
+/* BdkPixbuf RGBA C-Source image dump */
 
 #ifdef __SUNPRO_C
 #pragma align 4 (dnd_cursor_none)
@@ -292,7 +292,7 @@ static const guint8 dnd_cursor_none[] =
 #endif
 { ""
   /* Pixbuf magic (0x47646b50) */
-  "GdkP"
+  "BdkP"
   /* length: header (24) + pixel_data (1024) */
   "\0\0\4\30"
   /* pixdata_type (0x1010002) */

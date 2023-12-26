@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,169 +20,169 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailpaned.h"
+#include <btk/btk.h>
+#include "bailpaned.h"
 
-static void         gail_paned_class_init          (GailPanedClass *klass); 
+static void         bail_paned_class_init          (BailPanedClass *klass); 
 
-static void         gail_paned_init                (GailPaned      *paned);
+static void         bail_paned_init                (BailPaned      *paned);
 
-static void         gail_paned_real_initialize     (AtkObject      *obj,
+static void         bail_paned_real_initialize     (BatkObject      *obj,
                                                     gpointer       data);
-static void         gail_paned_size_allocate_gtk   (GtkWidget      *widget,
-                                                    GtkAllocation  *allocation);
+static void         bail_paned_size_allocate_btk   (BtkWidget      *widget,
+                                                    BtkAllocation  *allocation);
 
-static AtkStateSet* gail_paned_ref_state_set       (AtkObject      *accessible);
+static BatkStateSet* bail_paned_ref_state_set       (BatkObject      *accessible);
 
-static void         atk_value_interface_init       (AtkValueIface  *iface);
-static void         gail_paned_get_current_value   (AtkValue       *obj,
+static void         batk_value_interface_init       (BatkValueIface  *iface);
+static void         bail_paned_get_current_value   (BatkValue       *obj,
                                                     GValue         *value);
-static void         gail_paned_get_maximum_value   (AtkValue       *obj,
+static void         bail_paned_get_maximum_value   (BatkValue       *obj,
                                                     GValue         *value);
-static void         gail_paned_get_minimum_value   (AtkValue       *obj,
+static void         bail_paned_get_minimum_value   (BatkValue       *obj,
                                                     GValue         *value);
-static gboolean     gail_paned_set_current_value   (AtkValue       *obj,
+static gboolean     bail_paned_set_current_value   (BatkValue       *obj,
                                                     const GValue   *value);
 
-G_DEFINE_TYPE_WITH_CODE (GailPaned, gail_paned, GAIL_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_VALUE, atk_value_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailPaned, bail_paned, BAIL_TYPE_CONTAINER,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_VALUE, batk_value_interface_init))
 
 static void
-gail_paned_class_init (GailPanedClass *klass)
+bail_paned_class_init (BailPanedClass *klass)
 {
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  class->ref_state_set = gail_paned_ref_state_set;
-  class->initialize = gail_paned_real_initialize;
+  class->ref_state_set = bail_paned_ref_state_set;
+  class->initialize = bail_paned_real_initialize;
 }
 
 static void
-gail_paned_init (GailPaned *paned)
+bail_paned_init (BailPaned *paned)
 {
 }
 
-static AtkStateSet*
-gail_paned_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_paned_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkWidget *widget;
+  BatkStateSet *state_set;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_paned_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_paned_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     return state_set;
 
-  if (GTK_IS_VPANED (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_VERTICAL);
-  else if (GTK_IS_HPANED (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_HORIZONTAL);
+  if (BTK_IS_VPANED (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_VERTICAL);
+  else if (BTK_IS_HPANED (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_HORIZONTAL);
 
   return state_set;
 }
 
 static void
-gail_paned_real_initialize (AtkObject *obj,
+bail_paned_real_initialize (BatkObject *obj,
                             gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_paned_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_paned_parent_class)->initialize (obj, data);
 
   g_signal_connect (data,
                     "size_allocate",
-                    G_CALLBACK (gail_paned_size_allocate_gtk),
+                    G_CALLBACK (bail_paned_size_allocate_btk),
                     NULL);
 
-  obj->role = ATK_ROLE_SPLIT_PANE;
+  obj->role = BATK_ROLE_SPLIT_PANE;
 }
  
 static void
-gail_paned_size_allocate_gtk (GtkWidget      *widget,
-                              GtkAllocation  *allocation)
+bail_paned_size_allocate_btk (BtkWidget      *widget,
+                              BtkAllocation  *allocation)
 {
-  AtkObject *obj = gtk_widget_get_accessible (widget);
+  BatkObject *obj = btk_widget_get_accessible (widget);
 
   g_object_notify (G_OBJECT (obj), "accessible-value");
 }
 
 
 static void
-atk_value_interface_init (AtkValueIface *iface)
+batk_value_interface_init (BatkValueIface *iface)
 {
-  iface->get_current_value = gail_paned_get_current_value;
-  iface->get_maximum_value = gail_paned_get_maximum_value;
-  iface->get_minimum_value = gail_paned_get_minimum_value;
-  iface->set_current_value = gail_paned_set_current_value;
+  iface->get_current_value = bail_paned_get_current_value;
+  iface->get_maximum_value = bail_paned_get_maximum_value;
+  iface->get_minimum_value = bail_paned_get_minimum_value;
+  iface->set_current_value = bail_paned_set_current_value;
 }
 
 static void
-gail_paned_get_current_value (AtkValue             *obj,
+bail_paned_get_current_value (BatkValue             *obj,
                               GValue               *value)
 {
-  GtkWidget* widget;
+  BtkWidget* widget;
   gint current_value;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  current_value = gtk_paned_get_position (GTK_PANED (widget));
+  current_value = btk_paned_get_position (BTK_PANED (widget));
   memset (value,  0, sizeof (GValue));
   g_value_init (value, G_TYPE_INT);
   g_value_set_int (value,current_value);
 }
 
 static void
-gail_paned_get_maximum_value (AtkValue             *obj,
+bail_paned_get_maximum_value (BatkValue             *obj,
                               GValue               *value)
 {
-  GtkWidget* widget;
+  BtkWidget* widget;
   gint maximum_value;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  maximum_value = GTK_PANED (widget)->max_position;
+  maximum_value = BTK_PANED (widget)->max_position;
   memset (value,  0, sizeof (GValue));
   g_value_init (value, G_TYPE_INT);
   g_value_set_int (value, maximum_value);
 }
 
 static void
-gail_paned_get_minimum_value (AtkValue             *obj,
+bail_paned_get_minimum_value (BatkValue             *obj,
                               GValue               *value)
 {
-  GtkWidget* widget;
+  BtkWidget* widget;
   gint minimum_value;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  minimum_value = GTK_PANED (widget)->min_position;
+  minimum_value = BTK_PANED (widget)->min_position;
   memset (value,  0, sizeof (GValue));
   g_value_init (value, G_TYPE_INT);
   g_value_set_int (value, minimum_value);
 }
 
 /*
- * Calling atk_value_set_current_value() is no guarantee that the value is
+ * Calling batk_value_set_current_value() is no guarantee that the value is
  * acceptable; it is necessary to listen for accessible-value signals
  * and check whether the current value has been changed or check what the 
  * maximum and minimum values are.
  */
 
 static gboolean
-gail_paned_set_current_value (AtkValue             *obj,
+bail_paned_set_current_value (BatkValue             *obj,
                               const GValue         *value)
 {
-  GtkWidget* widget;
+  BtkWidget* widget;
   gint new_value;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
@@ -190,7 +190,7 @@ gail_paned_set_current_value (AtkValue             *obj,
   if (G_VALUE_HOLDS_INT (value))
     {
       new_value = g_value_get_int (value);
-      gtk_paned_set_position (GTK_PANED (widget), new_value);
+      btk_paned_set_position (BTK_PANED (widget), new_value);
 
       return TRUE;
     }

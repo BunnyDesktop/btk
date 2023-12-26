@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* Maximum characters in the output buffer */
 #define MAX_LINE_SIZE   1000
@@ -17,33 +17,33 @@
 
 typedef struct
 {
-  GtkWidget     *outputWindow;
-  GtkTextBuffer *outputBuffer; 
-  GtkTextIter   outputIter;
+  BtkWidget     *outputWindow;
+  BtkTextBuffer *outputBuffer; 
+  BtkTextIter   outputIter;
 }OutputWindow;
 
-typedef void (*TLruntest) (AtkObject * obj, gint win_num);
+typedef void (*TLruntest) (BatkObject * obj, gint win_num);
 
 /* General purpose functions */
 
-gboolean		already_accessed_atk_object	(AtkObject	*obj);
-AtkObject*		find_object_by_role		(AtkObject	*obj,
-							AtkRole		*role,
+gboolean		already_accessed_batk_object	(BatkObject	*obj);
+BatkObject*		find_object_by_role		(BatkObject	*obj,
+							BatkRole		*role,
 							gint		num_roles);
-AtkObject*		find_object_by_type		(AtkObject	*obj,
+BatkObject*		find_object_by_type		(BatkObject	*obj,
 							gchar		*type);
-AtkObject*		find_object_by_name_and_role	(AtkObject	*obj,
+BatkObject*		find_object_by_name_and_role	(BatkObject	*obj,
 						      	const gchar	*name,
-							AtkRole		*roles,
+							BatkRole		*roles,
 							gint		num_roles);
-AtkObject*		find_object_by_accessible_name_and_role (AtkObject *obj,
+BatkObject*		find_object_by_accessible_name_and_role (BatkObject *obj,
 							const gchar	*name,
-							AtkRole		*roles,
+							BatkRole		*roles,
 							gint		num_roles);
-void			display_children		(AtkObject	*obj,
+void			display_children		(BatkObject	*obj,
                                                         gint		depth,
                                                         gint		child_number);
-void			display_children_to_depth	(AtkObject	*obj,
+void			display_children_to_depth	(BatkObject	*obj,
                                                         gint		to_depth,
                                                         gint		depth,
                                                         gint		child_number);
@@ -51,7 +51,7 @@ void			display_children_to_depth	(AtkObject	*obj,
 
 /* Test GUI functions */
 
-gint			create_windows			(AtkObject	*obj,
+gint			create_windows			(BatkObject	*obj,
 							TLruntest	runtest,
 							OutputWindow	**outwin);
 gboolean		add_test			(gint		window,

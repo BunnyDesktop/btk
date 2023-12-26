@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,48 +18,48 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_HPANED_H__
-#define __GTK_HPANED_H__
+#ifndef __BTK_HPANED_H__
+#define __BTK_HPANED_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkpaned.h>
+#include <btk/btkpaned.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HPANED		   (gtk_hpaned_get_type ())
-#define GTK_HPANED(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HPANED, GtkHPaned))
-#define GTK_HPANED_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HPANED, GtkHPanedClass))
-#define GTK_IS_HPANED(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HPANED))
-#define GTK_IS_HPANED_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HPANED))
-#define GTK_HPANED_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HPANED, GtkHPanedClass))
+#define BTK_TYPE_HPANED		   (btk_hpaned_get_type ())
+#define BTK_HPANED(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HPANED, BtkHPaned))
+#define BTK_HPANED_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HPANED, BtkHPanedClass))
+#define BTK_IS_HPANED(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HPANED))
+#define BTK_IS_HPANED_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HPANED))
+#define BTK_HPANED_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HPANED, BtkHPanedClass))
 
 
-typedef struct _GtkHPaned      GtkHPaned;
-typedef struct _GtkHPanedClass GtkHPanedClass;
+typedef struct _BtkHPaned      BtkHPaned;
+typedef struct _BtkHPanedClass BtkHPanedClass;
 
-struct _GtkHPaned
+struct _BtkHPaned
 {
-  GtkPaned paned;
+  BtkPaned paned;
 };
 
-struct _GtkHPanedClass
+struct _BtkHPanedClass
 {
-  GtkPanedClass parent_class;
+  BtkPanedClass parent_class;
 };
 
 
-GType       gtk_hpaned_get_type (void) G_GNUC_CONST;
-GtkWidget * gtk_hpaned_new      (void);
+GType       btk_hpaned_get_type (void) G_GNUC_CONST;
+BtkWidget * btk_hpaned_new      (void);
 
 G_END_DECLS
 
-#endif /* __GTK_HPANED_H__ */
+#endif /* __BTK_HPANED_H__ */

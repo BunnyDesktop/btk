@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,23 +18,23 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-/* Uninstalled header defining types and functions internal to GDK */
+/* Uninstalled header defining types and functions internal to BDK */
 
-#ifndef __GDK_INTERNALS_H__
-#define __GDK_INTERNALS_H__
+#ifndef __BDK_INTERNALS_H__
+#define __BDK_INTERNALS_H__
 
-#include <gio/gio.h>
-#include <gdk/gdktypes.h>
-#include <gdk/gdkwindow.h>
-#include <gdk/gdkprivate.h>
+#include <bunnyio/bunnyio.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkwindow.h>
+#include <bdk/bdkprivate.h>
 #ifdef USE_MEDIALIB
-#include <gdk/gdkmedialib.h>
+#include <bdk/bdkmedialib.h>
 #endif
 
 G_BEGIN_DECLS
@@ -45,85 +45,85 @@ G_BEGIN_DECLS
 
 /* Debugging support */
 
-typedef struct _GdkColorInfo           GdkColorInfo;
-typedef struct _GdkEventFilter	       GdkEventFilter;
-typedef struct _GdkClientFilter	       GdkClientFilter;
+typedef struct _BdkColorInfo           BdkColorInfo;
+typedef struct _BdkEventFilter	       BdkEventFilter;
+typedef struct _BdkClientFilter	       BdkClientFilter;
 
 typedef enum {
-  GDK_COLOR_WRITEABLE = 1 << 0
-} GdkColorInfoFlags;
+  BDK_COLOR_WRITEABLE = 1 << 0
+} BdkColorInfoFlags;
 
-struct _GdkColorInfo
+struct _BdkColorInfo
 {
-  GdkColorInfoFlags flags;
+  BdkColorInfoFlags flags;
   guint ref_count;
 };
 
 typedef enum {
-  GDK_EVENT_FILTER_REMOVED = 1 << 0
-} GdkEventFilterFlags;
+  BDK_EVENT_FILTER_REMOVED = 1 << 0
+} BdkEventFilterFlags;
 
-struct _GdkEventFilter {
-  GdkFilterFunc function;
+struct _BdkEventFilter {
+  BdkFilterFunc function;
   gpointer data;
-  GdkEventFilterFlags flags;
+  BdkEventFilterFlags flags;
   guint ref_count;
 };
 
-struct _GdkClientFilter {
-  GdkAtom       type;
-  GdkFilterFunc function;
+struct _BdkClientFilter {
+  BdkAtom       type;
+  BdkFilterFunc function;
   gpointer      data;
 };
 
 typedef enum {
-  GDK_DEBUG_MISC          = 1 << 0,
-  GDK_DEBUG_EVENTS        = 1 << 1,
-  GDK_DEBUG_DND           = 1 << 2,
-  GDK_DEBUG_XIM           = 1 << 3,
-  GDK_DEBUG_NOGRABS       = 1 << 4,
-  GDK_DEBUG_COLORMAP	  = 1 << 5,
-  GDK_DEBUG_GDKRGB	  = 1 << 6,
-  GDK_DEBUG_GC		  = 1 << 7,
-  GDK_DEBUG_PIXMAP	  = 1 << 8,
-  GDK_DEBUG_IMAGE	  = 1 << 9,
-  GDK_DEBUG_INPUT	  = 1 <<10,
-  GDK_DEBUG_CURSOR	  = 1 <<11,
-  GDK_DEBUG_MULTIHEAD	  = 1 <<12,
-  GDK_DEBUG_XINERAMA	  = 1 <<13,
-  GDK_DEBUG_DRAW	  = 1 <<14,
-  GDK_DEBUG_EVENTLOOP     = 1 <<15
-} GdkDebugFlag;
+  BDK_DEBUG_MISC          = 1 << 0,
+  BDK_DEBUG_EVENTS        = 1 << 1,
+  BDK_DEBUG_DND           = 1 << 2,
+  BDK_DEBUG_XIM           = 1 << 3,
+  BDK_DEBUG_NOGRABS       = 1 << 4,
+  BDK_DEBUG_COLORMAP	  = 1 << 5,
+  BDK_DEBUG_BDKRGB	  = 1 << 6,
+  BDK_DEBUG_GC		  = 1 << 7,
+  BDK_DEBUG_PIXMAP	  = 1 << 8,
+  BDK_DEBUG_IMAGE	  = 1 << 9,
+  BDK_DEBUG_INPUT	  = 1 <<10,
+  BDK_DEBUG_CURSOR	  = 1 <<11,
+  BDK_DEBUG_MULTIHEAD	  = 1 <<12,
+  BDK_DEBUG_XINERAMA	  = 1 <<13,
+  BDK_DEBUG_DRAW	  = 1 <<14,
+  BDK_DEBUG_EVENTLOOP     = 1 <<15
+} BdkDebugFlag;
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 
-typedef struct _GdkFontPrivate	       GdkFontPrivate;
+typedef struct _BdkFontPrivate	       BdkFontPrivate;
 
-struct _GdkFontPrivate
+struct _BdkFontPrivate
 {
-  GdkFont font;
+  BdkFont font;
   guint ref_count;
 };
 
-#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* BDK_DISABLE_DEPRECATED */
 
-extern GList            *_gdk_default_filters;
-extern GdkWindow  	*_gdk_parent_root;
-extern gint		 _gdk_error_code;
-extern gint		 _gdk_error_warnings;
+extern GList            *_bdk_default_filters;
+extern BdkWindow  	*_bdk_parent_root;
+extern gint		 _bdk_error_code;
+extern gint		 _bdk_error_warnings;
 
-extern guint _gdk_debug_flags;
-extern gboolean _gdk_native_windows;
+extern guint _bdk_debug_flags;
+extern gboolean _bdk_native_windows;
 
 #ifdef G_ENABLE_DEBUG
 
-#define GDK_NOTE(type,action)		     G_STMT_START { \
-    if (_gdk_debug_flags & GDK_DEBUG_##type)		    \
+#define BDK_NOTE(type,action)		     G_STMT_START { \
+    if (_bdk_debug_flags & BDK_DEBUG_##type)		    \
        { action; };			     } G_STMT_END
 
 #else /* !G_ENABLE_DEBUG */
 
-#define GDK_NOTE(type,action)
+#define BDK_NOTE(type,action)
 
 #endif /* G_ENABLE_DEBUG */
 
@@ -131,57 +131,57 @@ extern gboolean _gdk_native_windows;
 
 typedef enum 
 {
-  GDK_ARG_STRING,
-  GDK_ARG_INT,
-  GDK_ARG_BOOL,
-  GDK_ARG_NOBOOL,
-  GDK_ARG_CALLBACK
-} GdkArgType;
+  BDK_ARG_STRING,
+  BDK_ARG_INT,
+  BDK_ARG_BOOL,
+  BDK_ARG_NOBOOL,
+  BDK_ARG_CALLBACK
+} BdkArgType;
 
-typedef struct _GdkArgContext GdkArgContext;
-typedef struct _GdkArgDesc GdkArgDesc;
+typedef struct _BdkArgContext BdkArgContext;
+typedef struct _BdkArgDesc BdkArgDesc;
 
-typedef void (*GdkArgFunc) (const char *name, const char *arg, gpointer data);
+typedef void (*BdkArgFunc) (const char *name, const char *arg, gpointer data);
 
-struct _GdkArgContext
+struct _BdkArgContext
 {
   GPtrArray *tables;
   gpointer cb_data;
 };
 
-struct _GdkArgDesc
+struct _BdkArgDesc
 {
   const char *name;
-  GdkArgType type;
+  BdkArgType type;
   gpointer location;
-  GdkArgFunc callback;
+  BdkArgFunc callback;
 };
 
 /* Event handling */
 
-typedef struct _GdkEventPrivate GdkEventPrivate;
+typedef struct _BdkEventPrivate BdkEventPrivate;
 
 typedef enum
 {
   /* Following flag is set for events on the event queue during
    * translation and cleared afterwards.
    */
-  GDK_EVENT_PENDING = 1 << 0
-} GdkEventFlags;
+  BDK_EVENT_PENDING = 1 << 0
+} BdkEventFlags;
 
-struct _GdkEventPrivate
+struct _BdkEventPrivate
 {
-  GdkEvent   event;
+  BdkEvent   event;
   guint      flags;
-  GdkScreen *screen;
+  BdkScreen *screen;
   gpointer   windowing_data;
 };
 
 /* Tracks information about the pointer grab on this display */
 typedef struct
 {
-  GdkWindow *window;
-  GdkWindow *native_window;
+  BdkWindow *window;
+  BdkWindow *native_window;
   gulong serial_start;
   gulong serial_end; /* exclusive, i.e. not active on serial_end */
   gboolean owner_events;
@@ -191,22 +191,22 @@ typedef struct
 
   gboolean activated;
   gboolean implicit_ungrab;
-} GdkPointerGrabInfo;
+} BdkPointerGrabInfo;
 
-typedef struct _GdkInputWindow GdkInputWindow;
+typedef struct _BdkInputWindow BdkInputWindow;
 
-/* Private version of GdkWindowObject. The initial part of this strucuture
+/* Private version of BdkWindowObject. The initial part of this strucuture
    is public for historical reasons. Don't change that part */
-typedef struct _GdkWindowPaint             GdkWindowPaint;
+typedef struct _BdkWindowPaint             BdkWindowPaint;
 
-struct _GdkWindowObject
+struct _BdkWindowObject
 {
   /* vvvvvvv THIS PART IS PUBLIC. DON'T CHANGE vvvvvvvvvvvvvv */
-  GdkDrawable parent_instance;
+  BdkDrawable parent_instance;
 
-  GdkDrawable *impl; /* window-system-specific delegate object */  
+  BdkDrawable *impl; /* window-system-specific delegate object */  
   
-  GdkWindowObject *parent;
+  BdkWindowObject *parent;
 
   gpointer user_data;
 
@@ -218,19 +218,19 @@ struct _GdkWindowObject
   GList *filters;
   GList *children;
 
-  GdkColor bg_color;
-  GdkPixmap *bg_pixmap;
+  BdkColor bg_color;
+  BdkPixmap *bg_pixmap;
   
   GSList *paint_stack;
   
-  GdkRegion *update_area;
+  BdkRebunnyion *update_area;
   guint update_freeze_count;
   
   guint8 window_type;
   guint8 depth;
   guint8 resize_count;
 
-  GdkWindowState state;
+  BdkWindowState state;
   
   guint guffaw_gravity : 1;
   guint input_only : 1;
@@ -243,107 +243,107 @@ struct _GdkWindowObject
   guint focus_on_map : 1;
   guint shaped : 1;
   
-  GdkEventMask event_mask;
+  BdkEventMask event_mask;
 
   guint update_and_descendants_freeze_count;
 
-  GdkWindowRedirect *redirect;
+  BdkWindowRedirect *redirect;
 
   /* ^^^^^^^^^^ THIS PART IS PUBLIC. DON'T CHANGE ^^^^^^^^^^ */
   
-  /* The GdkWindowObject that has the impl, ref:ed if another window.
+  /* The BdkWindowObject that has the impl, ref:ed if another window.
    * This ref is required to keep the wrapper of the impl window alive
-   * for as long as any GdkWindow references the impl. */
-  GdkWindowObject *impl_window; 
+   * for as long as any BdkWindow references the impl. */
+  BdkWindowObject *impl_window; 
   int abs_x, abs_y; /* Absolute offset in impl */
   gint width, height;
   guint32 clip_tag;
-  GdkRegion *clip_region; /* Clip region (wrt toplevel) in window coords */
-  GdkRegion *clip_region_with_children; /* Clip region in window coords */
-  GdkCursor *cursor;
+  BdkRebunnyion *clip_rebunnyion; /* Clip rebunnyion (wrt toplevel) in window coords */
+  BdkRebunnyion *clip_rebunnyion_with_children; /* Clip rebunnyion in window coords */
+  BdkCursor *cursor;
   gint8 toplevel_window_type;
   guint synthesize_crossing_event_queued : 1;
   guint effective_visibility : 2;
-  guint visibility : 2; /* The visibility wrt the toplevel (i.e. based on clip_region) */
+  guint visibility : 2; /* The visibility wrt the toplevel (i.e. based on clip_rebunnyion) */
   guint native_visibility : 2; /* the native visibility of a impl windows */
   guint viewable : 1; /* mapped and all parents mapped */
   guint applied_shape : 1;
 
   guint num_offscreen_children;
-  GdkWindowPaint *implicit_paint;
-  GdkInputWindow *input_window; /* only set for impl windows */
+  BdkWindowPaint *implicit_paint;
+  BdkInputWindow *input_window; /* only set for impl windows */
 
   GList *outstanding_moves;
 
-  GdkRegion *shape;
-  GdkRegion *input_shape;
+  BdkRebunnyion *shape;
+  BdkRebunnyion *input_shape;
   
-  cairo_surface_t *cairo_surface;
+  bairo_surface_t *bairo_surface;
   guint outstanding_surfaces; /* only set on impl window */
 
-  cairo_pattern_t *background;
+  bairo_pattern_t *background;
 };
 
-#define GDK_WINDOW_TYPE(d) (((GdkWindowObject*)(GDK_WINDOW (d)))->window_type)
-#define GDK_WINDOW_DESTROYED(d) (((GdkWindowObject*)(GDK_WINDOW (d)))->destroyed)
+#define BDK_WINDOW_TYPE(d) (((BdkWindowObject*)(BDK_WINDOW (d)))->window_type)
+#define BDK_WINDOW_DESTROYED(d) (((BdkWindowObject*)(BDK_WINDOW (d)))->destroyed)
 
-extern GdkEventFunc   _gdk_event_func;    /* Callback for events */
-extern gpointer       _gdk_event_data;
-extern GDestroyNotify _gdk_event_notify;
+extern BdkEventFunc   _bdk_event_func;    /* Callback for events */
+extern gpointer       _bdk_event_data;
+extern GDestroyNotify _bdk_event_notify;
 
-extern GSList    *_gdk_displays;
-extern gchar     *_gdk_display_name;
-extern gint       _gdk_screen_number;
-extern gchar     *_gdk_display_arg_name;
+extern GSList    *_bdk_displays;
+extern gchar     *_bdk_display_name;
+extern gint       _bdk_screen_number;
+extern gchar     *_bdk_display_arg_name;
 
-void      _gdk_events_queue  (GdkDisplay *display);
-GdkEvent* _gdk_event_unqueue (GdkDisplay *display);
+void      _bdk_events_queue  (BdkDisplay *display);
+BdkEvent* _bdk_event_unqueue (BdkDisplay *display);
 
-void _gdk_event_filter_unref        (GdkWindow      *window,
-				     GdkEventFilter *filter);
+void _bdk_event_filter_unref        (BdkWindow      *window,
+				     BdkEventFilter *filter);
 
-GList* _gdk_event_queue_find_first   (GdkDisplay *display);
-void   _gdk_event_queue_remove_link  (GdkDisplay *display,
+GList* _bdk_event_queue_find_first   (BdkDisplay *display);
+void   _bdk_event_queue_remove_link  (BdkDisplay *display,
 				      GList      *node);
-GList* _gdk_event_queue_prepend      (GdkDisplay *display,
-				      GdkEvent   *event);
-GList* _gdk_event_queue_append       (GdkDisplay *display,
-				      GdkEvent   *event);
-GList* _gdk_event_queue_insert_after (GdkDisplay *display,
-                                      GdkEvent   *after_event,
-                                      GdkEvent   *event);
-GList* _gdk_event_queue_insert_before(GdkDisplay *display,
-                                      GdkEvent   *after_event,
-                                      GdkEvent   *event);
-void   _gdk_event_button_generate    (GdkDisplay *display,
-				      GdkEvent   *event);
+GList* _bdk_event_queue_prepend      (BdkDisplay *display,
+				      BdkEvent   *event);
+GList* _bdk_event_queue_append       (BdkDisplay *display,
+				      BdkEvent   *event);
+GList* _bdk_event_queue_insert_after (BdkDisplay *display,
+                                      BdkEvent   *after_event,
+                                      BdkEvent   *event);
+GList* _bdk_event_queue_insert_before(BdkDisplay *display,
+                                      BdkEvent   *after_event,
+                                      BdkEvent   *event);
+void   _bdk_event_button_generate    (BdkDisplay *display,
+				      BdkEvent   *event);
 
-void _gdk_windowing_event_data_copy (const GdkEvent *src,
-                                     GdkEvent       *dst);
-void _gdk_windowing_event_data_free (GdkEvent       *event);
+void _bdk_windowing_event_data_copy (const BdkEvent *src,
+                                     BdkEvent       *dst);
+void _bdk_windowing_event_data_free (BdkEvent       *event);
 
-void gdk_synthesize_window_state (GdkWindow     *window,
-                                  GdkWindowState unset_flags,
-                                  GdkWindowState set_flags);
+void bdk_synthesize_window_state (BdkWindow     *window,
+                                  BdkWindowState unset_flags,
+                                  BdkWindowState set_flags);
 
-#define GDK_SCRATCH_IMAGE_WIDTH 256
-#define GDK_SCRATCH_IMAGE_HEIGHT 64
+#define BDK_SCRATCH_IMAGE_WIDTH 256
+#define BDK_SCRATCH_IMAGE_HEIGHT 64
 
-GdkImage* _gdk_image_new_for_depth (GdkScreen    *screen,
-				    GdkImageType  type,
-				    GdkVisual    *visual,
+BdkImage* _bdk_image_new_for_depth (BdkScreen    *screen,
+				    BdkImageType  type,
+				    BdkVisual    *visual,
 				    gint          width,
 				    gint          height,
 				    gint          depth);
-GdkImage *_gdk_image_get_scratch (GdkScreen *screen,
+BdkImage *_bdk_image_get_scratch (BdkScreen *screen,
 				  gint	     width,
 				  gint	     height,
 				  gint	     depth,
 				  gint	    *x,
 				  gint	    *y);
 
-GdkImage *_gdk_drawable_copy_to_image (GdkDrawable  *drawable,
-				       GdkImage     *image,
+BdkImage *_bdk_drawable_copy_to_image (BdkDrawable  *drawable,
+				       BdkImage     *image,
 				       gint          src_x,
 				       gint          src_y,
 				       gint          dest_x,
@@ -351,95 +351,95 @@ GdkImage *_gdk_drawable_copy_to_image (GdkDrawable  *drawable,
 				       gint          width,
 				       gint          height);
 
-cairo_surface_t *_gdk_drawable_ref_cairo_surface (GdkDrawable *drawable);
+bairo_surface_t *_bdk_drawable_ref_bairo_surface (BdkDrawable *drawable);
 
-GdkDrawable *_gdk_drawable_get_source_drawable (GdkDrawable *drawable);
-cairo_surface_t * _gdk_drawable_create_cairo_surface (GdkDrawable *drawable,
+BdkDrawable *_bdk_drawable_get_source_drawable (BdkDrawable *drawable);
+bairo_surface_t * _bdk_drawable_create_bairo_surface (BdkDrawable *drawable,
 						      int width,
 						      int height);
 
 /* GC caching */
-GdkGC *_gdk_drawable_get_scratch_gc (GdkDrawable *drawable,
+BdkGC *_bdk_drawable_get_scratch_gc (BdkDrawable *drawable,
 				     gboolean     graphics_exposures);
-GdkGC *_gdk_drawable_get_subwindow_scratch_gc (GdkDrawable *drawable);
+BdkGC *_bdk_drawable_get_subwindow_scratch_gc (BdkDrawable *drawable);
 
-void _gdk_gc_update_context (GdkGC          *gc,
-			     cairo_t        *cr,
-			     const GdkColor *override_foreground,
-			     GdkBitmap      *override_stipple,
+void _bdk_gc_update_context (BdkGC          *gc,
+			     bairo_t        *cr,
+			     const BdkColor *override_foreground,
+			     BdkBitmap      *override_stipple,
 			     gboolean        gc_changed,
-			     GdkDrawable    *target_drawable);
+			     BdkDrawable    *target_drawable);
 
 /*************************************
  * Interfaces used by windowing code *
  *************************************/
 
-GdkPixmap *_gdk_pixmap_new               (GdkDrawable    *drawable,
+BdkPixmap *_bdk_pixmap_new               (BdkDrawable    *drawable,
                                           gint            width,
                                           gint            height,
                                           gint            depth);
-GdkPixmap *_gdk_pixmap_create_from_data  (GdkDrawable    *drawable,
+BdkPixmap *_bdk_pixmap_create_from_data  (BdkDrawable    *drawable,
                                           const gchar    *data,
                                           gint            width,
                                           gint            height,
                                           gint            depth,
-                                          const GdkColor *fg,
-                                          const GdkColor *bg);
-GdkPixmap *_gdk_bitmap_create_from_data  (GdkDrawable    *drawable,
+                                          const BdkColor *fg,
+                                          const BdkColor *bg);
+BdkPixmap *_bdk_bitmap_create_from_data  (BdkDrawable    *drawable,
                                           const gchar    *data,
                                           gint            width,
                                           gint            height);
 
-void       _gdk_window_impl_new          (GdkWindow      *window,
-					  GdkWindow      *real_parent,
-					  GdkScreen      *screen,
-					  GdkVisual      *visual,
-					  GdkEventMask    event_mask,
-                                          GdkWindowAttr  *attributes,
+void       _bdk_window_impl_new          (BdkWindow      *window,
+					  BdkWindow      *real_parent,
+					  BdkScreen      *screen,
+					  BdkVisual      *visual,
+					  BdkEventMask    event_mask,
+                                          BdkWindowAttr  *attributes,
                                           gint            attributes_mask);
-void       _gdk_window_destroy           (GdkWindow      *window,
+void       _bdk_window_destroy           (BdkWindow      *window,
                                           gboolean        foreign_destroy);
-void       _gdk_window_clear_update_area (GdkWindow      *window);
-void       _gdk_window_update_size       (GdkWindow      *window);
-gboolean   _gdk_window_update_viewable   (GdkWindow      *window);
+void       _bdk_window_clear_update_area (BdkWindow      *window);
+void       _bdk_window_update_size       (BdkWindow      *window);
+gboolean   _bdk_window_update_viewable   (BdkWindow      *window);
 
-void       _gdk_window_process_updates_recurse (GdkWindow *window,
-                                                GdkRegion *expose_region);
+void       _bdk_window_process_updates_recurse (BdkWindow *window,
+                                                BdkRebunnyion *expose_rebunnyion);
 
-void       _gdk_screen_close             (GdkScreen      *screen);
+void       _bdk_screen_close             (BdkScreen      *screen);
 
-const char *_gdk_get_sm_client_id (void);
+const char *_bdk_get_sm_client_id (void);
 
-void _gdk_gc_init (GdkGC           *gc,
-		   GdkDrawable     *drawable,
-		   GdkGCValues     *values,
-		   GdkGCValuesMask  values_mask);
+void _bdk_gc_init (BdkGC           *gc,
+		   BdkDrawable     *drawable,
+		   BdkGCValues     *values,
+		   BdkGCValuesMask  values_mask);
 
-GdkRegion *_gdk_gc_get_clip_region (GdkGC *gc);
-GdkBitmap *_gdk_gc_get_clip_mask   (GdkGC *gc);
-gboolean   _gdk_gc_get_exposures   (GdkGC *gc);
-GdkFill    _gdk_gc_get_fill        (GdkGC *gc);
-GdkPixmap *_gdk_gc_get_tile        (GdkGC *gc);
-GdkBitmap *_gdk_gc_get_stipple     (GdkGC *gc);
-guint32    _gdk_gc_get_fg_pixel    (GdkGC *gc);
-guint32    _gdk_gc_get_bg_pixel    (GdkGC *gc);
-void      _gdk_gc_add_drawable_clip     (GdkGC     *gc,
-					 guint32    region_tag,
-					 GdkRegion *region,
+BdkRebunnyion *_bdk_gc_get_clip_rebunnyion (BdkGC *gc);
+BdkBitmap *_bdk_gc_get_clip_mask   (BdkGC *gc);
+gboolean   _bdk_gc_get_exposures   (BdkGC *gc);
+BdkFill    _bdk_gc_get_fill        (BdkGC *gc);
+BdkPixmap *_bdk_gc_get_tile        (BdkGC *gc);
+BdkBitmap *_bdk_gc_get_stipple     (BdkGC *gc);
+guint32    _bdk_gc_get_fg_pixel    (BdkGC *gc);
+guint32    _bdk_gc_get_bg_pixel    (BdkGC *gc);
+void      _bdk_gc_add_drawable_clip     (BdkGC     *gc,
+					 guint32    rebunnyion_tag,
+					 BdkRebunnyion *rebunnyion,
 					 int        offset_x,
 					 int        offset_y);
-void      _gdk_gc_remove_drawable_clip  (GdkGC     *gc);
-void       _gdk_gc_set_clip_region_internal (GdkGC     *gc,
-					     GdkRegion *region,
+void      _bdk_gc_remove_drawable_clip  (BdkGC     *gc);
+void       _bdk_gc_set_clip_rebunnyion_internal (BdkGC     *gc,
+					     BdkRebunnyion *rebunnyion,
 					     gboolean reset_origin);
-GdkSubwindowMode _gdk_gc_get_subwindow (GdkGC *gc);
+BdkSubwindowMode _bdk_gc_get_subwindow (BdkGC *gc);
 
-GdkDrawable *_gdk_drawable_begin_direct_draw (GdkDrawable *drawable,
-					      GdkGC *gc,
+BdkDrawable *_bdk_drawable_begin_direct_draw (BdkDrawable *drawable,
+					      BdkGC *gc,
 					      gpointer *priv_data,
 					      gint *x_offset_out,
 					      gint *y_offset_out);
-void         _gdk_drawable_end_direct_draw (gpointer priv_data);
+void         _bdk_drawable_end_direct_draw (gpointer priv_data);
 
 
 /*****************************************
@@ -447,258 +447,258 @@ void         _gdk_drawable_end_direct_draw (gpointer priv_data);
  *****************************************/
 
 /* Font/string functions implemented in module-specific code */
-gint _gdk_font_strlen (GdkFont *font, const char *str);
-void _gdk_font_destroy (GdkFont *font);
+gint _bdk_font_strlen (BdkFont *font, const char *str);
+void _bdk_font_destroy (BdkFont *font);
 
-void _gdk_colormap_real_destroy (GdkColormap *colormap);
+void _bdk_colormap_real_destroy (BdkColormap *colormap);
 
-void _gdk_cursor_destroy (GdkCursor *cursor);
+void _bdk_cursor_destroy (BdkCursor *cursor);
 
-void     _gdk_windowing_init                    (void);
+void     _bdk_windowing_init                    (void);
 
-extern const GOptionEntry _gdk_windowing_args[];
-void     _gdk_windowing_set_default_display     (GdkDisplay *display);
+extern const GOptionEntry _bdk_windowing_args[];
+void     _bdk_windowing_set_default_display     (BdkDisplay *display);
 
-gchar *_gdk_windowing_substitute_screen_number (const gchar *display_name,
+gchar *_bdk_windowing_substitute_screen_number (const gchar *display_name,
 					        gint         screen_number);
 
-gulong   _gdk_windowing_window_get_next_serial  (GdkDisplay *display);
-void     _gdk_windowing_window_get_offsets      (GdkWindow  *window,
+gulong   _bdk_windowing_window_get_next_serial  (BdkDisplay *display);
+void     _bdk_windowing_window_get_offsets      (BdkWindow  *window,
 						 gint       *x_offset,
 						 gint       *y_offset);
-GdkRegion *_gdk_windowing_window_get_shape      (GdkWindow  *window);
-GdkRegion *_gdk_windowing_window_get_input_shape(GdkWindow  *window);
-GdkRegion *_gdk_windowing_get_shape_for_mask    (GdkBitmap *mask);
-void     _gdk_windowing_window_beep             (GdkWindow *window);
+BdkRebunnyion *_bdk_windowing_window_get_shape      (BdkWindow  *window);
+BdkRebunnyion *_bdk_windowing_window_get_input_shape(BdkWindow  *window);
+BdkRebunnyion *_bdk_windowing_get_shape_for_mask    (BdkBitmap *mask);
+void     _bdk_windowing_window_beep             (BdkWindow *window);
 
 
-void       _gdk_windowing_get_pointer        (GdkDisplay       *display,
-					      GdkScreen       **screen,
+void       _bdk_windowing_get_pointer        (BdkDisplay       *display,
+					      BdkScreen       **screen,
 					      gint             *x,
 					      gint             *y,
-					      GdkModifierType  *mask);
-GdkWindow* _gdk_windowing_window_at_pointer  (GdkDisplay       *display,
+					      BdkModifierType  *mask);
+BdkWindow* _bdk_windowing_window_at_pointer  (BdkDisplay       *display,
 					      gint             *win_x,
 					      gint             *win_y,
-					      GdkModifierType  *mask,
+					      BdkModifierType  *mask,
 					      gboolean          get_toplevel);
-GdkGrabStatus _gdk_windowing_pointer_grab    (GdkWindow        *window,
-					      GdkWindow        *native,
+BdkGrabStatus _bdk_windowing_pointer_grab    (BdkWindow        *window,
+					      BdkWindow        *native,
 					      gboolean          owner_events,
-					      GdkEventMask      event_mask,
-					      GdkWindow        *confine_to,
-					      GdkCursor        *cursor,
+					      BdkEventMask      event_mask,
+					      BdkWindow        *confine_to,
+					      BdkCursor        *cursor,
 					      guint32           time);
-void _gdk_windowing_got_event                (GdkDisplay       *display,
+void _bdk_windowing_got_event                (BdkDisplay       *display,
 					      GList            *event_link,
-					      GdkEvent         *event,
+					      BdkEvent         *event,
 					      gulong            serial);
 
-void _gdk_windowing_window_process_updates_recurse (GdkWindow *window,
-                                                    GdkRegion *expose_region);
-void _gdk_windowing_before_process_all_updates     (void);
-void _gdk_windowing_after_process_all_updates      (void);
+void _bdk_windowing_window_process_updates_recurse (BdkWindow *window,
+                                                    BdkRebunnyion *expose_rebunnyion);
+void _bdk_windowing_before_process_all_updates     (void);
+void _bdk_windowing_after_process_all_updates      (void);
 
 /* Return the number of bits-per-pixel for images of the specified depth. */
-gint _gdk_windowing_get_bits_for_depth (GdkDisplay *display,
+gint _bdk_windowing_get_bits_for_depth (BdkDisplay *display,
 					gint        depth);
 
 
-#define GDK_WINDOW_IS_MAPPED(window) ((((GdkWindowObject*)window)->state & GDK_WINDOW_STATE_WITHDRAWN) == 0)
+#define BDK_WINDOW_IS_MAPPED(window) ((((BdkWindowObject*)window)->state & BDK_WINDOW_STATE_WITHDRAWN) == 0)
 
 
-/* Called when gdk_window_destroy() is called on a foreign window
+/* Called when bdk_window_destroy() is called on a foreign window
  * or an ancestor of the foreign window. It should generally reparent
  * the window out of it's current heirarchy, hide it, and then
  * send a message to the owner requesting that the window be destroyed.
  */
-void _gdk_windowing_window_destroy_foreign (GdkWindow *window);
+void _bdk_windowing_window_destroy_foreign (BdkWindow *window);
 
-void _gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
+void _bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
 					      const gchar *sm_client_id);
 
-void _gdk_windowing_window_set_composited (GdkWindow *window,
+void _bdk_windowing_window_set_composited (BdkWindow *window,
 					   gboolean composited);
 
-#define GDK_TYPE_PAINTABLE            (_gdk_paintable_get_type ())
-#define GDK_PAINTABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GDK_TYPE_PAINTABLE, GdkPaintable))
-#define GDK_IS_PAINTABLE(obj)	      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GDK_TYPE_PAINTABLE))
-#define GDK_PAINTABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GDK_TYPE_PAINTABLE, GdkPaintableIface))
+#define BDK_TYPE_PAINTABLE            (_bdk_paintable_get_type ())
+#define BDK_PAINTABLE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BDK_TYPE_PAINTABLE, BdkPaintable))
+#define BDK_IS_PAINTABLE(obj)	      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BDK_TYPE_PAINTABLE))
+#define BDK_PAINTABLE_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BDK_TYPE_PAINTABLE, BdkPaintableIface))
 
-typedef struct _GdkPaintable        GdkPaintable;
-typedef struct _GdkPaintableIface   GdkPaintableIface;
+typedef struct _BdkPaintable        BdkPaintable;
+typedef struct _BdkPaintableIface   BdkPaintableIface;
 
-struct _GdkPaintableIface
+struct _BdkPaintableIface
 {
   GTypeInterface g_iface;
   
-  void (* begin_paint_region)       (GdkPaintable    *paintable,
-                                     GdkWindow       *window,
-                                     const GdkRegion *region);
-  void (* end_paint)                (GdkPaintable    *paintable);
+  void (* begin_paint_rebunnyion)       (BdkPaintable    *paintable,
+                                     BdkWindow       *window,
+                                     const BdkRebunnyion *rebunnyion);
+  void (* end_paint)                (BdkPaintable    *paintable);
 };
 
-GType _gdk_paintable_get_type (void) G_GNUC_CONST;
+GType _bdk_paintable_get_type (void) G_GNUC_CONST;
 
 /* Implementation types */
-GType _gdk_window_impl_get_type (void) G_GNUC_CONST;
-GType _gdk_pixmap_impl_get_type (void) G_GNUC_CONST;
+GType _bdk_window_impl_get_type (void) G_GNUC_CONST;
+GType _bdk_pixmap_impl_get_type (void) G_GNUC_CONST;
 
 
 /**
- * _gdk_windowing_gc_set_clip_region:
- * @gc: a #GdkGC
- * @region: the new clip region
+ * _bdk_windowing_gc_set_clip_rebunnyion:
+ * @gc: a #BdkGC
+ * @rebunnyion: the new clip rebunnyion
  * @reset_origin: if TRUE, reset the clip_x/y_origin values to 0
  * 
  * Do any window-system specific processing necessary
- * for a change in clip region. Since the clip origin
+ * for a change in clip rebunnyion. Since the clip origin
  * will likely change before the GC is used with the
  * new clip, frequently this function will only set a flag and
  * do the real processing later.
  *
- * When this function is called, _gdk_gc_get_clip_region
- * will already return the new region.
+ * When this function is called, _bdk_gc_get_clip_rebunnyion
+ * will already return the new rebunnyion.
  **/
-void _gdk_windowing_gc_set_clip_region (GdkGC           *gc,
-					const GdkRegion *region,
+void _bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
+					const BdkRebunnyion *rebunnyion,
 					gboolean reset_origin);
 
 /**
- * _gdk_windowing_gc_copy:
- * @dst_gc: a #GdkGC from the GDK backend
- * @src_gc: a #GdkGC from the GDK backend
+ * _bdk_windowing_gc_copy:
+ * @dst_gc: a #BdkGC from the BDK backend
+ * @src_gc: a #BdkGC from the BDK backend
  * 
  * Copies backend specific state from @src_gc to @dst_gc.
  * This is called before the generic state is copied, so
  * the old generic state is still available from @dst_gc
  **/
-void _gdk_windowing_gc_copy (GdkGC *dst_gc,
-			     GdkGC *src_gc);
+void _bdk_windowing_gc_copy (BdkGC *dst_gc,
+			     BdkGC *src_gc);
      
-/* Queries the current foreground color of a GdkGC */
-void _gdk_windowing_gc_get_foreground (GdkGC    *gc,
-				       GdkColor *color);
-/* Queries the current background color of a GdkGC */
-void _gdk_windowing_gc_get_background (GdkGC    *gc,
-				       GdkColor *color);
+/* Queries the current foreground color of a BdkGC */
+void _bdk_windowing_gc_get_foreground (BdkGC    *gc,
+				       BdkColor *color);
+/* Queries the current background color of a BdkGC */
+void _bdk_windowing_gc_get_background (BdkGC    *gc,
+				       BdkColor *color);
 
-struct GdkAppLaunchContextPrivate
+struct BdkAppLaunchContextPrivate
 {
-  GdkDisplay *display;
-  GdkScreen *screen;
+  BdkDisplay *display;
+  BdkScreen *screen;
   gint workspace;
   guint32 timestamp;
   GIcon *icon;
   char *icon_name;
 };
 
-char *_gdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
+char *_bdk_windowing_get_startup_notify_id (GAppLaunchContext *context,
 					    GAppInfo          *info, 
 					    GList             *files);
-void  _gdk_windowing_launch_failed         (GAppLaunchContext *context, 
+void  _bdk_windowing_launch_failed         (GAppLaunchContext *context, 
 				            const char        *startup_notify_id);
 
-GdkPointerGrabInfo *_gdk_display_get_active_pointer_grab (GdkDisplay *display);
-void _gdk_display_pointer_grab_update                    (GdkDisplay *display,
+BdkPointerGrabInfo *_bdk_display_get_active_pointer_grab (BdkDisplay *display);
+void _bdk_display_pointer_grab_update                    (BdkDisplay *display,
 							  gulong current_serial);
-GdkPointerGrabInfo *_gdk_display_get_last_pointer_grab (GdkDisplay *display);
-GdkPointerGrabInfo *_gdk_display_add_pointer_grab  (GdkDisplay *display,
-						    GdkWindow *window,
-						    GdkWindow *native_window,
+BdkPointerGrabInfo *_bdk_display_get_last_pointer_grab (BdkDisplay *display);
+BdkPointerGrabInfo *_bdk_display_add_pointer_grab  (BdkDisplay *display,
+						    BdkWindow *window,
+						    BdkWindow *native_window,
 						    gboolean owner_events,
-						    GdkEventMask event_mask,
+						    BdkEventMask event_mask,
 						    unsigned long serial_start,
 						    guint32 time,
 						    gboolean implicit);
-GdkPointerGrabInfo * _gdk_display_has_pointer_grab (GdkDisplay *display,
+BdkPointerGrabInfo * _bdk_display_has_pointer_grab (BdkDisplay *display,
 						    gulong serial);
-gboolean _gdk_display_end_pointer_grab (GdkDisplay *display,
+gboolean _bdk_display_end_pointer_grab (BdkDisplay *display,
 					gulong serial,
-					GdkWindow *if_child,
+					BdkWindow *if_child,
 					gboolean implicit);
-void _gdk_display_set_has_keyboard_grab (GdkDisplay *display,
-					 GdkWindow *window,
-					 GdkWindow *native_window,
+void _bdk_display_set_has_keyboard_grab (BdkDisplay *display,
+					 BdkWindow *window,
+					 BdkWindow *native_window,
 					 gboolean owner_events,
 					 unsigned long serial,
 					 guint32 time);
-void _gdk_display_unset_has_keyboard_grab (GdkDisplay *display,
+void _bdk_display_unset_has_keyboard_grab (BdkDisplay *display,
 					   gboolean implicit);
-void _gdk_display_enable_motion_hints     (GdkDisplay *display);
+void _bdk_display_enable_motion_hints     (BdkDisplay *display);
 
 
-void _gdk_window_invalidate_for_expose (GdkWindow       *window,
-					GdkRegion       *region);
+void _bdk_window_invalidate_for_expose (BdkWindow       *window,
+					BdkRebunnyion       *rebunnyion);
 
-void _gdk_windowing_set_cairo_surface_size (cairo_surface_t *surface,
+void _bdk_windowing_set_bairo_surface_size (bairo_surface_t *surface,
 					    int width,
 					    int height);
 
-cairo_surface_t * _gdk_windowing_create_cairo_surface (GdkDrawable *drawable,
+bairo_surface_t * _bdk_windowing_create_bairo_surface (BdkDrawable *drawable,
 						       int width,
 						       int height);
-GdkWindow * _gdk_window_find_child_at (GdkWindow *window,
+BdkWindow * _bdk_window_find_child_at (BdkWindow *window,
 				       int x, int y);
-GdkWindow * _gdk_window_find_descendant_at (GdkWindow *toplevel,
+BdkWindow * _bdk_window_find_descendant_at (BdkWindow *toplevel,
 					    double x, double y,
 					    double *found_x,
 					    double *found_y);
 
-void _gdk_window_add_damage (GdkWindow *toplevel,
-			     GdkRegion *damaged_region);
+void _bdk_window_add_damage (BdkWindow *toplevel,
+			     BdkRebunnyion *damaged_rebunnyion);
 
-GdkEvent * _gdk_make_event (GdkWindow    *window,
-			    GdkEventType  type,
-			    GdkEvent     *event_in_queue,
+BdkEvent * _bdk_make_event (BdkWindow    *window,
+			    BdkEventType  type,
+			    BdkEvent     *event_in_queue,
 			    gboolean      before_event);
-gboolean _gdk_window_event_parent_of (GdkWindow *parent,
-                                      GdkWindow *child);
+gboolean _bdk_window_event_parent_of (BdkWindow *parent,
+                                      BdkWindow *child);
 
-void _gdk_synthesize_crossing_events (GdkDisplay                 *display,
-				      GdkWindow                  *src,
-				      GdkWindow                  *dest,
-				      GdkCrossingMode             mode,
+void _bdk_synthesize_crossing_events (BdkDisplay                 *display,
+				      BdkWindow                  *src,
+				      BdkWindow                  *dest,
+				      BdkCrossingMode             mode,
 				      gint                        toplevel_x,
 				      gint                        toplevel_y,
-				      GdkModifierType             mask,
+				      BdkModifierType             mask,
 				      guint32                     time_,
-				      GdkEvent                   *event_in_queue,
+				      BdkEvent                   *event_in_queue,
 				      gulong                      serial,
 				      gboolean                    non_linear);
-void _gdk_display_set_window_under_pointer (GdkDisplay *display,
-					    GdkWindow *window);
+void _bdk_display_set_window_under_pointer (BdkDisplay *display,
+					    BdkWindow *window);
 
 
-void _gdk_synthesize_crossing_events_for_geometry_change (GdkWindow *changed_window);
+void _bdk_synthesize_crossing_events_for_geometry_change (BdkWindow *changed_window);
 
-GdkRegion *_gdk_window_calculate_full_clip_region    (GdkWindow     *window,
-                                                      GdkWindow     *base_window,
+BdkRebunnyion *_bdk_window_calculate_full_clip_rebunnyion    (BdkWindow     *window,
+                                                      BdkWindow     *base_window,
                                                       gboolean       do_children,
                                                       gint          *base_x_offset,
                                                       gint          *base_y_offset);
-gboolean    _gdk_window_has_impl (GdkWindow *window);
-GdkWindow * _gdk_window_get_impl_window (GdkWindow *window);
-GdkWindow *_gdk_window_get_input_window_for_event (GdkWindow *native_window,
-						   GdkEventType event_type,
-						   GdkModifierType mask,
+gboolean    _bdk_window_has_impl (BdkWindow *window);
+BdkWindow * _bdk_window_get_impl_window (BdkWindow *window);
+BdkWindow *_bdk_window_get_input_window_for_event (BdkWindow *native_window,
+						   BdkEventType event_type,
+						   BdkModifierType mask,
 						   int x, int y,
 						   gulong serial);
-GdkRegion  *_gdk_region_new_from_yxbanded_rects (GdkRectangle *rects, int n_rects);
+BdkRebunnyion  *_bdk_rebunnyion_new_from_yxbanded_rects (BdkRectangle *rects, int n_rects);
 
 /*****************************
  * offscreen window routines *
  *****************************/
-typedef struct _GdkOffscreenWindow      GdkOffscreenWindow;
-#define GDK_TYPE_OFFSCREEN_WINDOW            (gdk_offscreen_window_get_type())
-#define GDK_OFFSCREEN_WINDOW(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_OFFSCREEN_WINDOW, GdkOffscreenWindow))
-#define GDK_IS_OFFSCREEN_WINDOW(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_OFFSCREEN_WINDOW))
-GType gdk_offscreen_window_get_type (void);
-GdkDrawable * _gdk_offscreen_window_get_real_drawable (GdkOffscreenWindow *window);
-void       _gdk_offscreen_window_new                 (GdkWindow     *window,
-						      GdkScreen     *screen,
-						      GdkVisual     *visual,
-						      GdkWindowAttr *attributes,
+typedef struct _BdkOffscreenWindow      BdkOffscreenWindow;
+#define BDK_TYPE_OFFSCREEN_WINDOW            (bdk_offscreen_window_get_type())
+#define BDK_OFFSCREEN_WINDOW(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_OFFSCREEN_WINDOW, BdkOffscreenWindow))
+#define BDK_IS_OFFSCREEN_WINDOW(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_OFFSCREEN_WINDOW))
+GType bdk_offscreen_window_get_type (void);
+BdkDrawable * _bdk_offscreen_window_get_real_drawable (BdkOffscreenWindow *window);
+void       _bdk_offscreen_window_new                 (BdkWindow     *window,
+						      BdkScreen     *screen,
+						      BdkVisual     *visual,
+						      BdkWindowAttr *attributes,
 						      gint           attributes_mask);
 
 
@@ -706,9 +706,9 @@ void       _gdk_offscreen_window_new                 (GdkWindow     *window,
  * Initialization and exit routines *
  ************************************/
 
-void _gdk_image_exit  (void);
-void _gdk_windowing_exit (void);
+void _bdk_image_exit  (void);
+void _bdk_windowing_exit (void);
 
 G_END_DECLS
 
-#endif /* __GDK_INTERNALS_H__ */
+#endif /* __BDK_INTERNALS_H__ */

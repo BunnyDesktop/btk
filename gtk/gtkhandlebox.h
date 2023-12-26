@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998 Elliot Lee
  *
@@ -19,47 +19,47 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-/* The GtkHandleBox is to allow widgets to be dragged in and out of
+/* The BtkHandleBox is to allow widgets to be dragged in and out of
  * their parents.
  */
 
-#ifndef __GTK_HANDLE_BOX_H__
-#define __GTK_HANDLE_BOX_H__
+#ifndef __BTK_HANDLE_BOX_H__
+#define __BTK_HANDLE_BOX_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HANDLE_BOX            (gtk_handle_box_get_type ())
-#define GTK_HANDLE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HANDLE_BOX, GtkHandleBox))
-#define GTK_HANDLE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HANDLE_BOX, GtkHandleBoxClass))
-#define GTK_IS_HANDLE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HANDLE_BOX))
-#define GTK_IS_HANDLE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HANDLE_BOX))
-#define GTK_HANDLE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HANDLE_BOX, GtkHandleBoxClass))
+#define BTK_TYPE_HANDLE_BOX            (btk_handle_box_get_type ())
+#define BTK_HANDLE_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBox))
+#define BTK_HANDLE_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
+#define BTK_IS_HANDLE_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HANDLE_BOX))
+#define BTK_IS_HANDLE_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HANDLE_BOX))
+#define BTK_HANDLE_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HANDLE_BOX, BtkHandleBoxClass))
 
 
-typedef struct _GtkHandleBox       GtkHandleBox;
-typedef struct _GtkHandleBoxClass  GtkHandleBoxClass;
+typedef struct _BtkHandleBox       BtkHandleBox;
+typedef struct _BtkHandleBoxClass  BtkHandleBoxClass;
 
-struct _GtkHandleBox
+struct _BtkHandleBox
 {
-  GtkBin bin;
+  BtkBin bin;
 
-  GdkWindow      *GSEAL (bin_window);	/* parent window for children */
-  GdkWindow      *GSEAL (float_window);
-  GtkShadowType   GSEAL (shadow_type);
+  BdkWindow      *GSEAL (bin_window);	/* parent window for children */
+  BdkWindow      *GSEAL (float_window);
+  BtkShadowType   GSEAL (shadow_type);
   guint           GSEAL (handle_position) : 2;
   guint           GSEAL (float_window_mapped) : 1;
   guint           GSEAL (child_detached) : 1;
@@ -73,40 +73,40 @@ struct _GtkHandleBox
   gint            GSEAL (deskoff_x); /* Offset between root relative coords */
   gint            GSEAL (deskoff_y); /* and deskrelative coords             */
 
-  GtkAllocation   GSEAL (attach_allocation);
-  GtkAllocation   GSEAL (float_allocation);
+  BtkAllocation   GSEAL (attach_allocation);
+  BtkAllocation   GSEAL (float_allocation);
 };
 
-struct _GtkHandleBoxClass
+struct _BtkHandleBoxClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
-  void	(*child_attached)	(GtkHandleBox	*handle_box,
-				 GtkWidget	*child);
-  void	(*child_detached)	(GtkHandleBox	*handle_box,
-				 GtkWidget	*child);
+  void	(*child_attached)	(BtkHandleBox	*handle_box,
+				 BtkWidget	*child);
+  void	(*child_detached)	(BtkHandleBox	*handle_box,
+				 BtkWidget	*child);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType         gtk_handle_box_get_type             (void) G_GNUC_CONST;
-GtkWidget*    gtk_handle_box_new                  (void);
-void          gtk_handle_box_set_shadow_type      (GtkHandleBox    *handle_box,
-                                                   GtkShadowType    type);
-GtkShadowType gtk_handle_box_get_shadow_type      (GtkHandleBox    *handle_box);
-void          gtk_handle_box_set_handle_position  (GtkHandleBox    *handle_box,
-					           GtkPositionType  position);
-GtkPositionType gtk_handle_box_get_handle_position(GtkHandleBox    *handle_box);
-void          gtk_handle_box_set_snap_edge        (GtkHandleBox    *handle_box,
-						   GtkPositionType  edge);
-GtkPositionType gtk_handle_box_get_snap_edge      (GtkHandleBox    *handle_box);
-gboolean      gtk_handle_box_get_child_detached   (GtkHandleBox    *handle_box);
+GType         btk_handle_box_get_type             (void) G_GNUC_CONST;
+BtkWidget*    btk_handle_box_new                  (void);
+void          btk_handle_box_set_shadow_type      (BtkHandleBox    *handle_box,
+                                                   BtkShadowType    type);
+BtkShadowType btk_handle_box_get_shadow_type      (BtkHandleBox    *handle_box);
+void          btk_handle_box_set_handle_position  (BtkHandleBox    *handle_box,
+					           BtkPositionType  position);
+BtkPositionType btk_handle_box_get_handle_position(BtkHandleBox    *handle_box);
+void          btk_handle_box_set_snap_edge        (BtkHandleBox    *handle_box,
+						   BtkPositionType  edge);
+BtkPositionType btk_handle_box_get_snap_edge      (BtkHandleBox    *handle_box);
+gboolean      btk_handle_box_get_child_detached   (BtkHandleBox    *handle_box);
 
 G_END_DECLS
 
-#endif /* __GTK_HANDLE_BOX_H__ */
+#endif /* __BTK_HANDLE_BOX_H__ */

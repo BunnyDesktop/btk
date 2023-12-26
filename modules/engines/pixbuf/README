@@ -1,10 +1,10 @@
-The code in this directory is a GTK+ theme engine based on the earlier
+The code in this directory is a BTK+ theme engine based on the earlier
 pixmap theme engine.
 
 The config files are meant to be compatible, but instead of rendering
-using Imlib, it renders using GdkPixbuf.  This makes the memory
+using Imlib, it renders using BdkPixbuf.  This makes the memory
 management much more understandable, and also allows us to use
-GdkPixbuf's high quality scaling.
+BdkPixbuf's high quality scaling.
 
 Most of the code was reworked/rewritten in the process to make it more
 understandable and maintainable.

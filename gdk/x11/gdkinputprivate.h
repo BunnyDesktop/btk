@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,19 +18,19 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_INPUTPRIVATE_H__
-#define __GDK_INPUTPRIVATE_H__
+#ifndef __BDK_INPUTPRIVATE_H__
+#define __BDK_INPUTPRIVATE_H__
 
 #include "config.h"
-#include "gdkinput.h"
-#include "gdkevents.h"
-#include "gdkx.h"
+#include "bdkinput.h"
+#include "bdkevents.h"
+#include "bdkx.h"
 
 #include <X11/Xlib.h>
 
@@ -39,11 +39,11 @@
 #endif
 
 
-typedef struct _GdkAxisInfo    GdkAxisInfo;
-typedef struct _GdkDevicePrivate GdkDevicePrivate;
+typedef struct _BdkAxisInfo    BdkAxisInfo;
+typedef struct _BdkDevicePrivate BdkDevicePrivate;
 
 /* information about a device axis */
-struct _GdkAxisInfo
+struct _BdkAxisInfo
 {
   /* reported x resolution */
   gint xresolution;
@@ -59,20 +59,20 @@ struct _GdkAxisInfo
   gint min_value, max_value;
 };
 
-#define GDK_INPUT_NUM_EVENTC 6
+#define BDK_INPUT_NUM_EVENTC 6
 
-struct _GdkDevicePrivate
+struct _BdkDevicePrivate
 {
-  GdkDevice info;
+  BdkDevice info;
 
   guint32 deviceid;
 
-  GdkDisplay *display;
+  BdkDisplay *display;
   
 
 #ifndef XINPUT_NONE
   /* information about the axes */
-  GdkAxisInfo *axes;
+  BdkAxisInfo *axes;
   gint *axis_data;
 
   /* Information about XInput device */
@@ -98,21 +98,21 @@ struct _GdkDevicePrivate
 #endif /* !XINPUT_NONE */
 };
 
-struct _GdkDeviceClass
+struct _BdkDeviceClass
 {
   GObjectClass parent_class;
 };
 
 /* Addition used for extension_events mask */
-#define GDK_ALL_DEVICES_MASK (1<<30)
+#define BDK_ALL_DEVICES_MASK (1<<30)
 
-struct _GdkInputWindow
+struct _BdkInputWindow
 {
-  GList *windows; /* GdkWindow:s with extension_events set */
+  GList *windows; /* BdkWindow:s with extension_events set */
 
-  /* gdk window */
-  GdkWindow *impl_window; /* an impl window */
-  GdkWindow *button_down_window;
+  /* bdk window */
+  BdkWindow *impl_window; /* an impl window */
+  BdkWindow *button_down_window;
 
   /* position relative to root window */
   gint root_x;
@@ -124,66 +124,66 @@ struct _GdkInputWindow
 
 /* Global data */
 
-#define GDK_IS_CORE(d) (((GdkDevice *)(d)) == ((GdkDevicePrivate *)(d))->display->core_pointer)
+#define BDK_IS_CORE(d) (((BdkDevice *)(d)) == ((BdkDevicePrivate *)(d))->display->core_pointer)
 
 /* Function declarations */
 
-GdkInputWindow *_gdk_input_window_find       (GdkWindow *window);
-void            _gdk_input_window_destroy    (GdkWindow *window);
-GdkTimeCoord ** _gdk_device_allocate_history (GdkDevice *device,
+BdkInputWindow *_bdk_input_window_find       (BdkWindow *window);
+void            _bdk_input_window_destroy    (BdkWindow *window);
+BdkTimeCoord ** _bdk_device_allocate_history (BdkDevice *device,
 					      gint       n_events);
-void            _gdk_init_input_core         (GdkDisplay *display);
+void            _bdk_init_input_core         (BdkDisplay *display);
 
 /* The following functions are provided by each implementation
  * (xfree, gxi, and none)
  */
-void             _gdk_input_configure_event  (XConfigureEvent  *xevent,
-					      GdkWindow        *window);
-void             _gdk_input_crossing_event   (GdkWindow        *window,
+void             _bdk_input_configure_event  (XConfigureEvent  *xevent,
+					      BdkWindow        *window);
+void             _bdk_input_crossing_event   (BdkWindow        *window,
 					      gboolean          enter);
-gboolean         _gdk_input_other_event      (GdkEvent         *event,
+gboolean         _bdk_input_other_event      (BdkEvent         *event,
 					      XEvent           *xevent,
-					      GdkWindow        *window);
-gint             _gdk_input_grab_pointer     (GdkWindow        *window,
-					      GdkWindow        *native_window,
+					      BdkWindow        *window);
+gint             _bdk_input_grab_pointer     (BdkWindow        *window,
+					      BdkWindow        *native_window,
 					      gint              owner_events,
-					      GdkEventMask      event_mask,
-					      GdkWindow        *confine_to,
+					      BdkEventMask      event_mask,
+					      BdkWindow        *confine_to,
 					      guint32           time);
-void             _gdk_input_ungrab_pointer   (GdkDisplay       *display,
+void             _bdk_input_ungrab_pointer   (BdkDisplay       *display,
 					      guint32           time);
-gboolean         _gdk_device_get_history     (GdkDevice         *device,
-					      GdkWindow         *window,
+gboolean         _bdk_device_get_history     (BdkDevice         *device,
+					      BdkWindow         *window,
 					      guint32            start,
 					      guint32            stop,
-					      GdkTimeCoord    ***events,
+					      BdkTimeCoord    ***events,
 					      gint              *n_events);
 
 #ifndef XINPUT_NONE
 
-#define GDK_MAX_DEVICE_CLASSES 13
+#define BDK_MAX_DEVICE_CLASSES 13
 
-gint               _gdk_input_common_init               (GdkDisplay	  *display,
+gint               _bdk_input_common_init               (BdkDisplay	  *display,
 							 gint              include_core);
-GdkDevicePrivate * _gdk_input_find_device               (GdkDisplay	  *display,
+BdkDevicePrivate * _bdk_input_find_device               (BdkDisplay	  *display,
 							 guint32           id);
-void               _gdk_input_get_root_relative_geometry(GdkWindow        *window,
+void               _bdk_input_get_root_relative_geometry(BdkWindow        *window,
 							 int              *x_ret,
 							 int              *y_ret);
-void               _gdk_input_common_find_events        (GdkDevicePrivate *gdkdev,
+void               _bdk_input_common_find_events        (BdkDevicePrivate *bdkdev,
 							 gint              mask,
 							 XEventClass      *classes,
 							 int              *num_classes);
-void               _gdk_input_select_events             (GdkWindow        *impl_window,
-							 GdkDevicePrivate *gdkdev);
-gint               _gdk_input_common_other_event        (GdkEvent         *event,
+void               _bdk_input_select_events             (BdkWindow        *impl_window,
+							 BdkDevicePrivate *bdkdev);
+gint               _bdk_input_common_other_event        (BdkEvent         *event,
 							 XEvent           *xevent,
-							 GdkWindow        *window,
-							 GdkDevicePrivate *gdkdev);
-gboolean	   _gdk_input_common_event_selected     (GdkEvent         *event,
-							 GdkWindow        *window,
-							 GdkDevicePrivate *gdkdev);
+							 BdkWindow        *window,
+							 BdkDevicePrivate *bdkdev);
+gboolean	   _bdk_input_common_event_selected     (BdkEvent         *event,
+							 BdkWindow        *window,
+							 BdkDevicePrivate *bdkdev);
 
 #endif /* !XINPUT_NONE */
 
-#endif /* __GDK_INPUTPRIVATE_H__ */
+#endif /* __BDK_INPUTPRIVATE_H__ */

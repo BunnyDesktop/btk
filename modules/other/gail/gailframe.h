@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_FRAME_H__
-#define __GAIL_FRAME_H__
+#ifndef __BAIL_FRAME_H__
+#define __BAIL_FRAME_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_FRAME                      (gail_frame_get_type ())
-#define GAIL_FRAME(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_FRAME, GailFrame))
-#define GAIL_FRAME_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_FRAME, GailFrameClass))
-#define GAIL_IS_FRAME(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_FRAME))
-#define GAIL_IS_FRAME_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_FRAME))
-#define GAIL_FRAME_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_FRAME, GailFrameClass))
+#define BAIL_TYPE_FRAME                      (bail_frame_get_type ())
+#define BAIL_FRAME(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_FRAME, BailFrame))
+#define BAIL_FRAME_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_FRAME, BailFrameClass))
+#define BAIL_IS_FRAME(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_FRAME))
+#define BAIL_IS_FRAME_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_FRAME))
+#define BAIL_FRAME_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_FRAME, BailFrameClass))
 
-typedef struct _GailFrame                   GailFrame;
-typedef struct _GailFrameClass              GailFrameClass;
+typedef struct _BailFrame                   BailFrame;
+typedef struct _BailFrameClass              BailFrameClass;
 
-struct _GailFrame
+struct _BailFrame
 {
-  GailContainer parent;
+  BailContainer parent;
 };
 
-GType gail_frame_get_type (void);
+GType bail_frame_get_type (void);
 
-struct _GailFrameClass
+struct _BailFrameClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_FRAME_H__ */
+#endif /* __BAIL_FRAME_H__ */

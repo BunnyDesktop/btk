@@ -3,45 +3,45 @@
  * Demonstrates a typical application window with menubar, toolbar, statusbar.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include "config.h"
 #include "demo-common.h"
 
-static GtkWidget *window = NULL;
-static GtkWidget *infobar = NULL;
-static GtkWidget *messagelabel = NULL;
+static BtkWidget *window = NULL;
+static BtkWidget *infobar = NULL;
+static BtkWidget *messagelabel = NULL;
 
 static void
-activate_action (GtkAction *action)
+activate_action (BtkAction *action)
 {
-  const gchar *name = gtk_action_get_name (action);
+  const gchar *name = btk_action_get_name (action);
   const gchar *typename = G_OBJECT_TYPE_NAME (action);
 
-  GtkWidget *dialog;
+  BtkWidget *dialog;
 
-  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
-                                   GTK_DIALOG_DESTROY_WITH_PARENT,
-                                   GTK_MESSAGE_INFO,
-                                   GTK_BUTTONS_CLOSE,
+  dialog = btk_message_dialog_new (BTK_WINDOW (window),
+                                   BTK_DIALOG_DESTROY_WITH_PARENT,
+                                   BTK_MESSAGE_INFO,
+                                   BTK_BUTTONS_CLOSE,
                                    "You activated action: \"%s\" of type \"%s\"",
                                     name, typename);
 
   /* Close dialog on user response */
   g_signal_connect (dialog,
                     "response",
-                    G_CALLBACK (gtk_widget_destroy),
+                    G_CALLBACK (btk_widget_destroy),
                     NULL);
 
-  gtk_widget_show (dialog);
+  btk_widget_show (dialog);
 }
 
 static void
-activate_radio_action (GtkAction *action, GtkRadioAction *current)
+activate_radio_action (BtkAction *action, BtkRadioAction *current)
 {
-  const gchar *name = gtk_action_get_name (GTK_ACTION (current));
-  const gchar *typename = G_OBJECT_TYPE_NAME (GTK_ACTION (current));
-  gboolean active = gtk_toggle_action_get_active (GTK_TOGGLE_ACTION (current));
-  gint value = gtk_radio_action_get_current_value (GTK_RADIO_ACTION (current));
+  const gchar *name = btk_action_get_name (BTK_ACTION (current));
+  const gchar *typename = G_OBJECT_TYPE_NAME (BTK_ACTION (current));
+  gboolean active = btk_toggle_action_get_active (BTK_TOGGLE_ACTION (current));
+  gint value = btk_radio_action_get_current_value (BTK_RADIO_ACTION (current));
 
   if (active)
     {
@@ -50,18 +50,18 @@ activate_radio_action (GtkAction *action, GtkRadioAction *current)
       text = g_strdup_printf ("You activated radio action: \"%s\" of type \"%s\".\n"
                               "Current value: %d",
                               name, typename, value);
-      gtk_label_set_text (GTK_LABEL (messagelabel), text);
-      gtk_info_bar_set_message_type (GTK_INFO_BAR (infobar), (GtkMessageType)value);
-      gtk_widget_show (infobar);
+      btk_label_set_text (BTK_LABEL (messagelabel), text);
+      btk_info_bar_set_message_type (BTK_INFO_BAR (infobar), (BtkMessageType)value);
+      btk_widget_show (infobar);
       g_free (text);
     }
 }
 
 static void
-about_cb (GtkAction *action,
-	  GtkWidget *window)
+about_cb (BtkAction *action,
+	  BtkWidget *window)
 {
-  GdkPixbuf *pixbuf, *transparent;
+  BdkPixbuf *pixbuf, *transparent;
   gchar *filename;
 
   const gchar *authors[] = {
@@ -92,32 +92,32 @@ about_cb (GtkAction *action,
     "Library General Public License for more details.\n"
     "\n"
     "You should have received a copy of the GNU Library General Public\n"
-    "License along with the Gnome Library; see the file COPYING.LIB.  If not,\n"
+    "License along with the Bunny Library; see the file COPYING.LIB.  If not,\n"
     "write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,\n"
     "Boston, MA 02111-1307, USA.\n";
 
   pixbuf = NULL;
   transparent = NULL;
-  filename = demo_find_file ("gtk-logo-rgb.gif", NULL);
+  filename = demo_find_file ("btk-logo-rgb.gif", NULL);
   if (filename)
     {
-      pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+      pixbuf = bdk_pixbuf_new_from_file (filename, NULL);
       g_free (filename);
-      transparent = gdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
+      transparent = bdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
       g_object_unref (pixbuf);
     }
 
-  gtk_show_about_dialog (GTK_WINDOW (window),
-			 "program-name", "GTK+ Code Demos",
+  btk_show_about_dialog (BTK_WINDOW (window),
+			 "program-name", "BTK+ Code Demos",
 			 "version", PACKAGE_VERSION,
-			 "copyright", "(C) 1997-2009 The GTK+ Team",
+			 "copyright", "(C) 1997-2009 The BTK+ Team",
 			 "license", license,
-			 "website", "http://www.gtk.org",
-			 "comments", "Program to demonstrate GTK+ functions.",
+			 "website", "http://www.btk.org",
+			 "comments", "Program to demonstrate BTK+ functions.",
 			 "authors", authors,
 			 "documenters", documentors,
 			 "logo", transparent,
-                         "title", "About GTK+ Code Demos",
+                         "title", "About BTK+ Code Demos",
 			 NULL);
 
   g_object_unref (transparent);
@@ -125,20 +125,20 @@ about_cb (GtkAction *action,
 
 typedef struct
 {
-  GtkAction action;
+  BtkAction action;
 } ToolMenuAction;
 
 typedef struct
 {
-  GtkActionClass parent_class;
+  BtkActionClass parent_class;
 } ToolMenuActionClass;
 
-G_DEFINE_TYPE(ToolMenuAction, tool_menu_action, GTK_TYPE_ACTION)
+G_DEFINE_TYPE(ToolMenuAction, tool_menu_action, BTK_TYPE_ACTION)
 
 static void
 tool_menu_action_class_init (ToolMenuActionClass *class)
 {
-  GTK_ACTION_CLASS (class)->toolbar_item_type = GTK_TYPE_MENU_TOOL_BUTTON;
+  BTK_ACTION_CLASS (class)->toolbar_item_type = BTK_TYPE_MENU_TOOL_BUTTON;
 }
 
 static void
@@ -146,14 +146,14 @@ tool_menu_action_init (ToolMenuAction *action)
 {
 }
 
-static GtkActionEntry entries[] = {
+static BtkActionEntry entries[] = {
   { "FileMenu", NULL, "_File" },               /* name, stock id, label */
   { "OpenMenu", NULL, "_Open" },               /* name, stock id, label */
   { "PreferencesMenu", NULL, "_Preferences" }, /* name, stock id, label */
   { "ColorMenu", NULL, "_Color"  },            /* name, stock id, label */
   { "ShapeMenu", NULL, "_Shape" },             /* name, stock id, label */
   { "HelpMenu", NULL, "_Help" },               /* name, stock id, label */
-  { "New", GTK_STOCK_NEW,                      /* name, stock id */
+  { "New", BTK_STOCK_NEW,                      /* name, stock id */
     "_New", "<control>N",                      /* label, accelerator */
     "Create a new file",                       /* tooltip */
     G_CALLBACK (activate_action) },
@@ -161,15 +161,15 @@ static GtkActionEntry entries[] = {
     "File1", NULL,                             /* label, accelerator */
     "Open first file",                         /* tooltip */
     G_CALLBACK (activate_action) },
-  { "Save", GTK_STOCK_SAVE,                    /* name, stock id */
+  { "Save", BTK_STOCK_SAVE,                    /* name, stock id */
     "_Save","<control>S",                      /* label, accelerator */
     "Save current file",                       /* tooltip */
     G_CALLBACK (activate_action) },
-  { "SaveAs", GTK_STOCK_SAVE,                  /* name, stock id */
+  { "SaveAs", BTK_STOCK_SAVE,                  /* name, stock id */
     "Save _As...", NULL,                       /* label, accelerator */
     "Save to a file",                          /* tooltip */
     G_CALLBACK (activate_action) },
-  { "Quit", GTK_STOCK_QUIT,                    /* name, stock id */
+  { "Quit", BTK_STOCK_QUIT,                    /* name, stock id */
     "_Quit", "<control>Q",                     /* label, accelerator */
     "Quit",                                    /* tooltip */
     G_CALLBACK (activate_action) },
@@ -177,16 +177,16 @@ static GtkActionEntry entries[] = {
     "_About", "<control>A",                    /* label, accelerator */
     "About",                                   /* tooltip */
     G_CALLBACK (about_cb) },
-  { "Logo", "demo-gtk-logo",                   /* name, stock id */
+  { "Logo", "demo-btk-logo",                   /* name, stock id */
      NULL, NULL,                               /* label, accelerator */
-    "GTK+",                                    /* tooltip */
+    "BTK+",                                    /* tooltip */
     G_CALLBACK (activate_action) },
 };
 static guint n_entries = G_N_ELEMENTS (entries);
 
 
-static GtkToggleActionEntry toggle_entries[] = {
-  { "Bold", GTK_STOCK_BOLD,                    /* name, stock id */
+static BtkToggleActionEntry toggle_entries[] = {
+  { "Bold", BTK_STOCK_BOLD,                    /* name, stock id */
      "_Bold", "<control>B",                    /* label, accelerator */
     "Bold",                                    /* tooltip */
     G_CALLBACK (activate_action),
@@ -200,7 +200,7 @@ enum {
   COLOR_BLUE
 };
 
-static GtkRadioActionEntry color_entries[] = {
+static BtkRadioActionEntry color_entries[] = {
   { "Red", NULL,                               /* name, stock id */
     "_Red", "<control>R",                      /* label, accelerator */
     "Blood", COLOR_RED },                      /* tooltip, value */
@@ -219,7 +219,7 @@ enum {
   SHAPE_OVAL
 };
 
-static GtkRadioActionEntry shape_entries[] = {
+static BtkRadioActionEntry shape_entries[] = {
   { "Square", NULL,                            /* name, stock id */
     "_Square", "<control>S",                   /* label, accelerator */
     "Square",  SHAPE_SQUARE },                 /* tooltip, value */
@@ -287,130 +287,130 @@ register_stock_icons (void)
 
   if (!registered)
     {
-      GdkPixbuf *pixbuf;
-      GtkIconFactory *factory;
+      BdkPixbuf *pixbuf;
+      BtkIconFactory *factory;
       char *filename;
 
-      static GtkStockItem items[] = {
-        { "demo-gtk-logo",
-          "_GTK!",
+      static BtkStockItem items[] = {
+        { "demo-btk-logo",
+          "_BTK!",
           0, 0, NULL }
       };
 
       registered = TRUE;
 
       /* Register our stock items */
-      gtk_stock_add (items, G_N_ELEMENTS (items));
+      btk_stock_add (items, G_N_ELEMENTS (items));
 
       /* Add our custom icon factory to the list of defaults */
-      factory = gtk_icon_factory_new ();
-      gtk_icon_factory_add_default (factory);
+      factory = btk_icon_factory_new ();
+      btk_icon_factory_add_default (factory);
 
       /* demo_find_file() looks in the current directory first,
-       * so you can run gtk-demo without installing GTK, then looks
+       * so you can run btk-demo without installing BTK, then looks
        * in the location where the file is installed.
        */
       pixbuf = NULL;
-      filename = demo_find_file ("gtk-logo-rgb.gif", NULL);
+      filename = demo_find_file ("btk-logo-rgb.gif", NULL);
       if (filename)
 	{
-	  pixbuf = gdk_pixbuf_new_from_file (filename, NULL);
+	  pixbuf = bdk_pixbuf_new_from_file (filename, NULL);
 	  g_free (filename);
 	}
 
       /* Register icon to accompany stock item */
       if (pixbuf != NULL)
         {
-          GtkIconSet *icon_set;
-          GdkPixbuf *transparent;
+          BtkIconSet *icon_set;
+          BdkPixbuf *transparent;
 
-          /* The gtk-logo-rgb icon has a white background, make it transparent */
-          transparent = gdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
+          /* The btk-logo-rgb icon has a white background, make it transparent */
+          transparent = bdk_pixbuf_add_alpha (pixbuf, TRUE, 0xff, 0xff, 0xff);
 
-          icon_set = gtk_icon_set_new_from_pixbuf (transparent);
-          gtk_icon_factory_add (factory, "demo-gtk-logo", icon_set);
-          gtk_icon_set_unref (icon_set);
+          icon_set = btk_icon_set_new_from_pixbuf (transparent);
+          btk_icon_factory_add (factory, "demo-btk-logo", icon_set);
+          btk_icon_set_unref (icon_set);
           g_object_unref (pixbuf);
           g_object_unref (transparent);
         }
       else
-        g_warning ("failed to load GTK logo for toolbar");
+        g_warning ("failed to load BTK logo for toolbar");
 
-      /* Drop our reference to the factory, GTK will hold a reference. */
+      /* Drop our reference to the factory, BTK will hold a reference. */
       g_object_unref (factory);
     }
 }
 
 static void
-update_statusbar (GtkTextBuffer *buffer,
-                  GtkStatusbar  *statusbar)
+update_statusbar (BtkTextBuffer *buffer,
+                  BtkStatusbar  *statusbar)
 {
   gchar *msg;
   gint row, col;
   gint count;
-  GtkTextIter iter;
+  BtkTextIter iter;
 
-  gtk_statusbar_pop (statusbar, 0); /* clear any previous message,
+  btk_statusbar_pop (statusbar, 0); /* clear any previous message,
 				     * underflow is allowed
 				     */
 
-  count = gtk_text_buffer_get_char_count (buffer);
+  count = btk_text_buffer_get_char_count (buffer);
 
-  gtk_text_buffer_get_iter_at_mark (buffer,
+  btk_text_buffer_get_iter_at_mark (buffer,
                                     &iter,
-                                    gtk_text_buffer_get_insert (buffer));
+                                    btk_text_buffer_get_insert (buffer));
 
-  row = gtk_text_iter_get_line (&iter);
-  col = gtk_text_iter_get_line_offset (&iter);
+  row = btk_text_iter_get_line (&iter);
+  col = btk_text_iter_get_line_offset (&iter);
 
   msg = g_strdup_printf ("Cursor at row %d column %d - %d chars in document",
                          row, col, count);
 
-  gtk_statusbar_push (statusbar, 0, msg);
+  btk_statusbar_push (statusbar, 0, msg);
 
   g_free (msg);
 }
 
 static void
-mark_set_callback (GtkTextBuffer     *buffer,
-                   const GtkTextIter *new_location,
-                   GtkTextMark       *mark,
+mark_set_callback (BtkTextBuffer     *buffer,
+                   const BtkTextIter *new_location,
+                   BtkTextMark       *mark,
                    gpointer           data)
 {
-  update_statusbar (buffer, GTK_STATUSBAR (data));
+  update_statusbar (buffer, BTK_STATUSBAR (data));
 }
 
 static void
-update_resize_grip (GtkWidget           *widget,
-		    GdkEventWindowState *event,
-		    GtkStatusbar        *statusbar)
+update_resize_grip (BtkWidget           *widget,
+		    BdkEventWindowState *event,
+		    BtkStatusbar        *statusbar)
 {
-  if (event->changed_mask & (GDK_WINDOW_STATE_MAXIMIZED |
-			     GDK_WINDOW_STATE_FULLSCREEN))
+  if (event->changed_mask & (BDK_WINDOW_STATE_MAXIMIZED |
+			     BDK_WINDOW_STATE_FULLSCREEN))
     {
       gboolean maximized;
 
-      maximized = event->new_window_state & (GDK_WINDOW_STATE_MAXIMIZED |
-					     GDK_WINDOW_STATE_FULLSCREEN);
-      gtk_statusbar_set_has_resize_grip (statusbar, !maximized);
+      maximized = event->new_window_state & (BDK_WINDOW_STATE_MAXIMIZED |
+					     BDK_WINDOW_STATE_FULLSCREEN);
+      btk_statusbar_set_has_resize_grip (statusbar, !maximized);
     }
 }
 
 
-GtkWidget *
-do_appwindow (GtkWidget *do_widget)
+BtkWidget *
+do_appwindow (BtkWidget *do_widget)
 {
   if (!window)
     {
-      GtkWidget *table;
-      GtkWidget *statusbar;
-      GtkWidget *contents;
-      GtkWidget *sw;
-      GtkWidget *bar;
-      GtkTextBuffer *buffer;
-      GtkActionGroup *action_group;
-      GtkAction *open_action;
-      GtkUIManager *merge;
+      BtkWidget *table;
+      BtkWidget *statusbar;
+      BtkWidget *contents;
+      BtkWidget *sw;
+      BtkWidget *bar;
+      BtkTextBuffer *buffer;
+      BtkActionGroup *action_group;
+      BtkAction *open_action;
+      BtkUIManager *merge;
       GError *error = NULL;
 
       register_stock_icons ();
@@ -418,140 +418,140 @@ do_appwindow (GtkWidget *do_widget)
       /* Create the toplevel window
        */
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_screen (GTK_WINDOW (window),
-			     gtk_widget_get_screen (do_widget));
-      gtk_window_set_title (GTK_WINDOW (window), "Application Window");
-      gtk_window_set_icon_name (GTK_WINDOW (window), "gtk-open");
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_screen (BTK_WINDOW (window),
+			     btk_widget_get_screen (do_widget));
+      btk_window_set_title (BTK_WINDOW (window), "Application Window");
+      btk_window_set_icon_name (BTK_WINDOW (window), "btk-open");
 
       /* NULL window variable when window is closed */
       g_signal_connect (window, "destroy",
-                        G_CALLBACK (gtk_widget_destroyed),
+                        G_CALLBACK (btk_widget_destroyed),
                         &window);
 
-      table = gtk_table_new (1, 5, FALSE);
+      table = btk_table_new (1, 5, FALSE);
 
-      gtk_container_add (GTK_CONTAINER (window), table);
+      btk_container_add (BTK_CONTAINER (window), table);
 
       /* Create the menubar and toolbar
        */
 
-      action_group = gtk_action_group_new ("AppWindowActions");
+      action_group = btk_action_group_new ("AppWindowActions");
       open_action = g_object_new (tool_menu_action_get_type (),
 				  "name", "Open",
 				  "label", "_Open",
 				  "tooltip", "Open a file",
-				  "stock-id", GTK_STOCK_OPEN,
+				  "stock-id", BTK_STOCK_OPEN,
 				  NULL);
-      gtk_action_group_add_action (action_group, open_action);
+      btk_action_group_add_action (action_group, open_action);
       g_object_unref (open_action);
-      gtk_action_group_add_actions (action_group,
+      btk_action_group_add_actions (action_group,
 				    entries, n_entries,
 				    window);
-      gtk_action_group_add_toggle_actions (action_group,
+      btk_action_group_add_toggle_actions (action_group,
 					   toggle_entries, n_toggle_entries,
 					   NULL);
-      gtk_action_group_add_radio_actions (action_group,
+      btk_action_group_add_radio_actions (action_group,
 					  color_entries, n_color_entries,
 					  COLOR_RED,
 					  G_CALLBACK (activate_radio_action),
 					  NULL);
-      gtk_action_group_add_radio_actions (action_group,
+      btk_action_group_add_radio_actions (action_group,
 					  shape_entries, n_shape_entries,
 					  SHAPE_SQUARE,
 					  G_CALLBACK (activate_radio_action),
 					  NULL);
 
-      merge = gtk_ui_manager_new ();
+      merge = btk_ui_manager_new ();
       g_object_set_data_full (G_OBJECT (window), "ui-manager", merge,
 			      g_object_unref);
-      gtk_ui_manager_insert_action_group (merge, action_group, 0);
-      gtk_window_add_accel_group (GTK_WINDOW (window),
-				  gtk_ui_manager_get_accel_group (merge));
+      btk_ui_manager_insert_action_group (merge, action_group, 0);
+      btk_window_add_accel_group (BTK_WINDOW (window),
+				  btk_ui_manager_get_accel_group (merge));
 
-      if (!gtk_ui_manager_add_ui_from_string (merge, ui_info, -1, &error))
+      if (!btk_ui_manager_add_ui_from_string (merge, ui_info, -1, &error))
 	{
 	  g_message ("building menus failed: %s", error->message);
 	  g_error_free (error);
 	}
 
-      bar = gtk_ui_manager_get_widget (merge, "/MenuBar");
-      gtk_widget_show (bar);
-      gtk_table_attach (GTK_TABLE (table),
+      bar = btk_ui_manager_get_widget (merge, "/MenuBar");
+      btk_widget_show (bar);
+      btk_table_attach (BTK_TABLE (table),
 			bar,
                         /* X direction */          /* Y direction */
                         0, 1,                      0, 1,
-                        GTK_EXPAND | GTK_FILL,     0,
+                        BTK_EXPAND | BTK_FILL,     0,
                         0,                         0);
 
-      bar = gtk_ui_manager_get_widget (merge, "/ToolBar");
-      gtk_widget_show (bar);
-      gtk_table_attach (GTK_TABLE (table),
+      bar = btk_ui_manager_get_widget (merge, "/ToolBar");
+      btk_widget_show (bar);
+      btk_table_attach (BTK_TABLE (table),
 			bar,
                         /* X direction */       /* Y direction */
                         0, 1,                   1, 2,
-                        GTK_EXPAND | GTK_FILL,  0,
+                        BTK_EXPAND | BTK_FILL,  0,
                         0,                      0);
 
       /* Create document
        */
 
-      infobar = gtk_info_bar_new ();
-      gtk_widget_set_no_show_all (infobar, TRUE);
-      messagelabel = gtk_label_new ("");
-      gtk_widget_show (messagelabel);
-      gtk_box_pack_start (GTK_BOX (gtk_info_bar_get_content_area (GTK_INFO_BAR (infobar))),
+      infobar = btk_info_bar_new ();
+      btk_widget_set_no_show_all (infobar, TRUE);
+      messagelabel = btk_label_new ("");
+      btk_widget_show (messagelabel);
+      btk_box_pack_start (BTK_BOX (btk_info_bar_get_content_area (BTK_INFO_BAR (infobar))),
                           messagelabel,
                           TRUE, TRUE, 0);
-      gtk_info_bar_add_button (GTK_INFO_BAR (infobar),
-                               GTK_STOCK_OK, GTK_RESPONSE_OK);
+      btk_info_bar_add_button (BTK_INFO_BAR (infobar),
+                               BTK_STOCK_OK, BTK_RESPONSE_OK);
       g_signal_connect (infobar, "response",
-                        G_CALLBACK (gtk_widget_hide), NULL);
+                        G_CALLBACK (btk_widget_hide), NULL);
 
-      gtk_table_attach (GTK_TABLE (table),
+      btk_table_attach (BTK_TABLE (table),
                         infobar,
                         /* X direction */       /* Y direction */
                         0, 1,                   2, 3,
-                        GTK_EXPAND | GTK_FILL,  0,
+                        BTK_EXPAND | BTK_FILL,  0,
                         0,                      0);
 
-      sw = gtk_scrolled_window_new (NULL, NULL);
+      sw = btk_scrolled_window_new (NULL, NULL);
 
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-                                      GTK_POLICY_AUTOMATIC,
-                                      GTK_POLICY_AUTOMATIC);
+      btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+                                      BTK_POLICY_AUTOMATIC,
+                                      BTK_POLICY_AUTOMATIC);
 
-      gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
-                                           GTK_SHADOW_IN);
+      btk_scrolled_window_set_shadow_type (BTK_SCROLLED_WINDOW (sw),
+                                           BTK_SHADOW_IN);
 
-      gtk_table_attach (GTK_TABLE (table),
+      btk_table_attach (BTK_TABLE (table),
                         sw,
                         /* X direction */       /* Y direction */
                         0, 1,                   3, 4,
-                        GTK_EXPAND | GTK_FILL,  GTK_EXPAND | GTK_FILL,
+                        BTK_EXPAND | BTK_FILL,  BTK_EXPAND | BTK_FILL,
                         0,                      0);
 
-      gtk_window_set_default_size (GTK_WINDOW (window),
+      btk_window_set_default_size (BTK_WINDOW (window),
                                    200, 200);
 
-      contents = gtk_text_view_new ();
-      gtk_widget_grab_focus (contents);
+      contents = btk_text_view_new ();
+      btk_widget_grab_focus (contents);
 
-      gtk_container_add (GTK_CONTAINER (sw),
+      btk_container_add (BTK_CONTAINER (sw),
                          contents);
 
       /* Create statusbar */
 
-      statusbar = gtk_statusbar_new ();
-      gtk_table_attach (GTK_TABLE (table),
+      statusbar = btk_statusbar_new ();
+      btk_table_attach (BTK_TABLE (table),
                         statusbar,
                         /* X direction */       /* Y direction */
                         0, 1,                   4, 5,
-                        GTK_EXPAND | GTK_FILL,  0,
+                        BTK_EXPAND | BTK_FILL,  0,
                         0,                      0);
 
       /* Show text widget info in the statusbar */
-      buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (contents));
+      buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (contents));
       
       g_signal_connect_object (buffer,
                                "changed",
@@ -571,16 +571,16 @@ do_appwindow (GtkWidget *do_widget)
 			       statusbar,
 			       0);
 
-      update_statusbar (buffer, GTK_STATUSBAR (statusbar));
+      update_statusbar (buffer, BTK_STATUSBAR (statusbar));
     }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show_all (window);
+      btk_widget_show_all (window);
     }
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
       infobar = NULL;
       messagelabel = NULL;

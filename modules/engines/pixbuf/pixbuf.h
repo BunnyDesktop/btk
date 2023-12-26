@@ -1,4 +1,4 @@
-/* GTK+ Pixbuf Engine
+/* BTK+ Pixbuf Engine
  * Copyright (C) 1998-2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,8 +20,8 @@
  * Carsten Haitzler <raster@rasterman.com>
  */
 
-#include <gtk/gtk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <btk/btk.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
 /* internals */
 
@@ -151,7 +151,7 @@ typedef enum {
 struct _ThemePixbuf
 {
   gchar     *filename;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   gboolean   stretch;
   gint       border_left;
   gint       border_right;
@@ -167,14 +167,14 @@ struct _ThemeMatchData
 
   ThemeMatchFlags  flags;
 
-  GtkPositionType  gap_side;
-  GtkOrientation   orientation;
-  GtkStateType     state;
-  GtkShadowType    shadow;
-  GtkArrowType     arrow_direction;
-  GtkExpanderStyle expander_style;
-  GdkWindowEdge    window_edge;
-  GtkTextDirection direction;
+  BtkPositionType  gap_side;
+  BtkOrientation   orientation;
+  BtkStateType     state;
+  BtkShadowType    shadow;
+  BtkArrowType     arrow_direction;
+  BtkExpanderStyle expander_style;
+  BdkWindowEdge    window_edge;
+  BtkTextDirection direction;
 };
 
 struct _ThemeImage
@@ -198,7 +198,7 @@ G_GNUC_INTERNAL void         theme_pixbuf_destroy      (ThemePixbuf  *theme_pb);
 G_GNUC_INTERNAL void         theme_clear_pixbuf        (ThemePixbuf **theme_pb);
 G_GNUC_INTERNAL void         theme_pixbuf_set_filename (ThemePixbuf  *theme_pb,
 					const char   *filename);
-G_GNUC_INTERNAL GdkPixbuf *  theme_pixbuf_get_pixbuf   (ThemePixbuf  *theme_pb);
+G_GNUC_INTERNAL BdkPixbuf *  theme_pixbuf_get_pixbuf   (ThemePixbuf  *theme_pb);
 G_GNUC_INTERNAL void         theme_pixbuf_set_border   (ThemePixbuf  *theme_pb,
 					gint          left,
 					gint          right,
@@ -207,9 +207,9 @@ G_GNUC_INTERNAL void         theme_pixbuf_set_border   (ThemePixbuf  *theme_pb,
 G_GNUC_INTERNAL void         theme_pixbuf_set_stretch  (ThemePixbuf  *theme_pb,
 					gboolean      stretch);
 G_GNUC_INTERNAL void         theme_pixbuf_render       (ThemePixbuf  *theme_pb,
-					GdkWindow    *window,
-					GdkBitmap    *mask,
-					GdkRectangle *clip_rect,
+					BdkWindow    *window,
+					BdkBitmap    *mask,
+					BdkRectangle *clip_rect,
 					guint         component_mask,
 					gboolean      center,
 					gint          dest_x,
@@ -219,4 +219,4 @@ G_GNUC_INTERNAL void         theme_pixbuf_render       (ThemePixbuf  *theme_pb,
 
 
 
-extern GtkStyleClass pixmap_default_class;
+extern BtkStyleClass pixmap_default_class;

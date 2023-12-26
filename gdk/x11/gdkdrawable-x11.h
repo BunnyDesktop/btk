@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,16 +18,16 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_DRAWABLE_X11_H__
-#define __GDK_DRAWABLE_X11_H__
+#ifndef __BDK_DRAWABLE_X11_H__
+#define __BDK_DRAWABLE_X11_H__
 
-#include <gdk/gdkdrawable.h>
+#include <bdk/bdkdrawable.h>
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xrender.h>
@@ -39,60 +39,60 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-  GDK_X11_FORMAT_NONE,
-  GDK_X11_FORMAT_EXACT_MASK,
-  GDK_X11_FORMAT_ARGB_MASK,
-  GDK_X11_FORMAT_ARGB
-} GdkX11FormatType;
+  BDK_X11_FORMAT_NONE,
+  BDK_X11_FORMAT_EXACT_MASK,
+  BDK_X11_FORMAT_ARGB_MASK,
+  BDK_X11_FORMAT_ARGB
+} BdkX11FormatType;
 
-typedef struct _GdkDrawableImplX11 GdkDrawableImplX11;
-typedef struct _GdkDrawableImplX11Class GdkDrawableImplX11Class;
+typedef struct _BdkDrawableImplX11 BdkDrawableImplX11;
+typedef struct _BdkDrawableImplX11Class BdkDrawableImplX11Class;
 
-#define GDK_TYPE_DRAWABLE_IMPL_X11              (_gdk_drawable_impl_x11_get_type ())
-#define GDK_DRAWABLE_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DRAWABLE_IMPL_X11, GdkDrawableImplX11))
-#define GDK_DRAWABLE_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DRAWABLE_IMPL_X11, GdkDrawableImplX11Class))
-#define GDK_IS_DRAWABLE_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DRAWABLE_IMPL_X11))
-#define GDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DRAWABLE_IMPL_X11))
-#define GDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DRAWABLE_IMPL_X11, GdkDrawableImplX11Class))
+#define BDK_TYPE_DRAWABLE_IMPL_X11              (_bdk_drawable_impl_x11_get_type ())
+#define BDK_DRAWABLE_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11))
+#define BDK_DRAWABLE_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
+#define BDK_IS_DRAWABLE_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_IS_DRAWABLE_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_X11))
+#define BDK_DRAWABLE_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_X11, BdkDrawableImplX11Class))
 
-struct _GdkDrawableImplX11
+struct _BdkDrawableImplX11
 {
-  GdkDrawable parent_instance;
+  BdkDrawable parent_instance;
 
-  GdkDrawable *wrapper;
+  BdkDrawable *wrapper;
   
-  GdkColormap *colormap;
+  BdkColormap *colormap;
   
   Window xid;
-  GdkScreen *screen;
+  BdkScreen *screen;
 
   Picture picture;
-  cairo_surface_t *cairo_surface;
+  bairo_surface_t *bairo_surface;
 };
  
-struct _GdkDrawableImplX11Class 
+struct _BdkDrawableImplX11Class 
 {
-  GdkDrawableClass parent_class;
+  BdkDrawableClass parent_class;
 
 };
 
-GType _gdk_drawable_impl_x11_get_type (void);
+GType _bdk_drawable_impl_x11_get_type (void);
 
-void  _gdk_x11_convert_to_format      (guchar           *src_buf,
+void  _bdk_x11_convert_to_format      (guchar           *src_buf,
                                        gint              src_rowstride,
                                        guchar           *dest_buf,
                                        gint              dest_rowstride,
-                                       GdkX11FormatType  dest_format,
-                                       GdkByteOrder      dest_byteorder,
+                                       BdkX11FormatType  dest_format,
+                                       BdkByteOrder      dest_byteorder,
                                        gint              width,
                                        gint              height);
 
-/* Note that the following take GdkDrawableImplX11, not the wrapper drawable */
-void _gdk_x11_drawable_finish           (GdkDrawable  *drawable);
-void _gdk_x11_drawable_update_size      (GdkDrawable  *drawable);
-GdkDrawable *gdk_x11_window_get_drawable_impl (GdkWindow *window);
-GdkDrawable *gdk_x11_pixmap_get_drawable_impl (GdkPixmap *pixmap);
+/* Note that the following take BdkDrawableImplX11, not the wrapper drawable */
+void _bdk_x11_drawable_finish           (BdkDrawable  *drawable);
+void _bdk_x11_drawable_update_size      (BdkDrawable  *drawable);
+BdkDrawable *bdk_x11_window_get_drawable_impl (BdkWindow *window);
+BdkDrawable *bdk_x11_pixmap_get_drawable_impl (BdkPixmap *pixmap);
 
 G_END_DECLS
 
-#endif /* __GDK_DRAWABLE_X11_H__ */
+#endif /* __BDK_DRAWABLE_X11_H__ */

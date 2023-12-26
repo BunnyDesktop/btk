@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,30 +17,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_NOTEBOOK_H__
-#define __GAIL_NOTEBOOK_H__
+#ifndef __BAIL_NOTEBOOK_H__
+#define __BAIL_NOTEBOOK_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_NOTEBOOK                   (gail_notebook_get_type ())
-#define GAIL_NOTEBOOK(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_NOTEBOOK, GailNotebook))
-#define GAIL_NOTEBOOK_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_NOTEBOOK, GailNotebookClass))
-#define GAIL_IS_NOTEBOOK(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_NOTEBOOK))
-#define GAIL_IS_NOTEBOOK_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_NOTEBOOK))
-#define GAIL_NOTEBOOK_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_NOTEBOOK, GailNotebookClass))
+#define BAIL_TYPE_NOTEBOOK                   (bail_notebook_get_type ())
+#define BAIL_NOTEBOOK(obj)                   (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_NOTEBOOK, BailNotebook))
+#define BAIL_NOTEBOOK_CLASS(klass)           (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
+#define BAIL_IS_NOTEBOOK(obj)                (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_NOTEBOOK))
+#define BAIL_IS_NOTEBOOK_CLASS(klass)        (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_NOTEBOOK))
+#define BAIL_NOTEBOOK_GET_CLASS(obj)         (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_NOTEBOOK, BailNotebookClass))
 
-typedef struct _GailNotebook              GailNotebook;
-typedef struct _GailNotebookClass         GailNotebookClass;
+typedef struct _BailNotebook              BailNotebook;
+typedef struct _BailNotebookClass         BailNotebookClass;
 
-struct _GailNotebook
+struct _BailNotebook
 {
-  GailContainer parent;
+  BailContainer parent;
 
   /*
    * page_cache maintains a list of pre-ref'd Notebook Pages.
-   * This cache is queried by gail_notebook_ref_child().
+   * This cache is queried by bail_notebook_ref_child().
    * If the page is found in the list then a new page does not
    * need to be created
    */
@@ -53,13 +53,13 @@ struct _GailNotebook
   gint         remove_index;
 };
 
-GType gail_notebook_get_type (void);
+GType bail_notebook_get_type (void);
 
-struct _GailNotebookClass
+struct _BailNotebookClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_NOTEBOOK_H__ */
+#endif /* __BAIL_NOTEBOOK_H__ */

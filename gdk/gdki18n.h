@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,42 +18,42 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_I18N_H__
-#define __GDK_I18N_H__
+#ifndef __BDK_I18N_H__
+#define __BDK_I18N_H__
 
-#ifndef GDK_DISABLE_DEPRECATED
+#ifndef BDK_DISABLE_DEPRECATED
 
-/* GDK uses "glib". (And so does GTK).
+/* BDK uses "bunnylib". (And so does BTK).
  */
-#include <glib.h>
-#include <gdkconfig.h>
+#include <bunnylib.h>
+#include <bdkconfig.h>
 
 /* international string support */
 
 #include <stdlib.h>
 
-#if !defined(GDK_HAVE_BROKEN_WCTYPE) && (defined(GDK_HAVE_WCTYPE_H) || defined(GDK_HAVE_WCHAR_H)) && !defined(X_LOCALE)
-#  ifdef GDK_HAVE_WCTYPE_H
+#if !defined(BDK_HAVE_BROKEN_WCTYPE) && (defined(BDK_HAVE_WCTYPE_H) || defined(BDK_HAVE_WCHAR_H)) && !defined(X_LOCALE)
+#  ifdef BDK_HAVE_WCTYPE_H
 #    include <wctype.h>
 #  else
-#    ifdef GDK_HAVE_WCHAR_H
+#    ifdef BDK_HAVE_WCHAR_H
 #      include <wchar.h>
 #    endif
 #  endif
-#  define gdk_iswalnum(c) iswalnum(c)
-#  define gdk_iswspace(c) iswspace(c)
+#  define bdk_iswalnum(c) iswalnum(c)
+#  define bdk_iswspace(c) iswspace(c)
 #else
 #  include <ctype.h>
-#  define gdk_iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
-#  define gdk_iswspace(c) ((wchar_t)(c) <= 0xFF && isspace(c))
+#  define bdk_iswalnum(c) ((wchar_t)(c) <= 0xFF && isalnum(c))
+#  define bdk_iswspace(c) ((wchar_t)(c) <= 0xFF && isspace(c))
 #endif
 
-#endif /* GDK_DISABLE_DEPRECATED */
+#endif /* BDK_DISABLE_DEPRECATED */
 
-#endif /* __GDK_I18N_H__ */
+#endif /* __BDK_I18N_H__ */

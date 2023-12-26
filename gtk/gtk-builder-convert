@@ -21,20 +21,20 @@
 # TODO:
 #  Toolbars
 
-"""Usage: gtk-builder-convert [OPTION] [INPUT] [OUTPUT]
-Converts Glade files into XML files which can be loaded with GtkBuilder.
+"""Usage: btk-builder-convert [OPTION] [INPUT] [OUTPUT]
+Converts Glade files into XML files which can be loaded with BtkBuilder.
 The [INPUT] file is
 
-  -w, --skip-windows     Convert everything but GtkWindow subclasses.
+  -w, --skip-windows     Convert everything but BtkWindow subclasses.
   -r, --root             Convert only widget named root and its children
   -h, --help             display this help and exit
 
 When OUTPUT is -, write to standard output.
 
 Examples:
-  gtk-builder-convert preference.glade preferences.ui
+  btk-builder-convert preference.glade preferences.ui
 
-Report bugs to https://gitlab.gnome.org/GNOME/gtk/issues/new
+Report bugs to https://gitlab.bunny.org/BUNNY/btk/issues/new
 """
 
 from __future__ import print_function
@@ -44,10 +44,10 @@ import sys
 
 from xml.dom import minidom, Node
 
-DIALOGS = ['GtkDialog',
-           'GtkFileChooserDialog',
-           'GtkMessageDialog']
-WINDOWS = ['GtkWindow'] + DIALOGS
+DIALOGS = ['BtkDialog',
+           'BtkFileChooserDialog',
+           'BtkMessageDialog']
+WINDOWS = ['BtkWindow'] + DIALOGS
 
 import subprocess
 
@@ -141,7 +141,7 @@ def copy_properties(node, props, prop_dict):
 
     return node
 
-class GtkBuilderConverter(object):
+class BtkBuilderConverter(object):
 
     def __init__(self, skip_windows, target_version, root):
         self.skip_windows = skip_windows
@@ -273,14 +273,14 @@ class GtkBuilderConverter(object):
             self._interface.childNodes.insert(0, obj)
 
     def _convert(self, klass, node):
-        if klass == 'GtkNotebook':
+        if klass == 'BtkNotebook':
             self._packing_prop_to_child_attr(node, "type", "tab")
-        elif klass in ['GtkExpander', 'GtkFrame']:
+        elif klass in ['BtkExpander', 'BtkFrame']:
             self._packing_prop_to_child_attr(
                 node, "type", "label_item", "label")
-        elif klass == "GtkMenuBar":
+        elif klass == "BtkMenuBar":
             self._convert_menu(node)
-        elif klass == "GtkMenu":
+        elif klass == "BtkMenu":
             # Only convert toplevel popups
             if node.parentNode == self._interface:
                 self._convert_menu(node, popup=True)
@@ -288,13 +288,13 @@ class GtkBuilderConverter(object):
             self._remove_window(node)
 
         if self.target_version == "3.0":
-            if klass == "GtkComboBoxEntry":
-                node.setAttribute("class","GtkComboBox")
+            if klass == "BtkComboBoxEntry":
+                node.setAttribute("class","BtkComboBox")
                 prop = self._dom.createElement("property")
                 prop.setAttribute("name", "has-entry")
                 prop.appendChild(self._dom.createTextNode("True"))
                 node.appendChild(prop)
-            elif klass == "GtkDialog":
+            elif klass == "BtkDialog":
                 for child in node.childNodes:
                     if child.nodeType != Node.ELEMENT_NODE:
                         continue
@@ -313,7 +313,7 @@ class GtkBuilderConverter(object):
             prop_name = prop.getAttribute("name")
             if prop_name == "sizegroup":
                 self._convert_sizegroup(node, prop)
-            elif prop_name == "tooltip" and klass != "GtkAction":
+            elif prop_name == "tooltip" and klass != "BtkAction":
                 prop.setAttribute("name", "tooltip-text")
             elif prop_name in ["response_id", 'response-id']:
                 # It does not make sense to convert responses when
@@ -326,10 +326,10 @@ class GtkBuilderConverter(object):
                 prop.parentNode.removeChild(prop)
             elif prop_name == "adjustment":
                 self._convert_adjustment(prop)
-            elif prop_name == "items" and klass in ['GtkComboBox',
-                                                    'GtkComboBoxEntry']:
+            elif prop_name == "items" and klass in ['BtkComboBox',
+                                                    'BtkComboBoxEntry']:
                 self._convert_combobox_items(node, prop)
-            elif prop_name == "text" and klass == 'GtkTextView':
+            elif prop_name == "text" and klass == 'BtkTextView':
                 self._convert_textview_text(prop)
 
     def _remove_window(self, node):
@@ -342,7 +342,7 @@ class GtkBuilderConverter(object):
         if node.hasAttribute('constructor'):
             return
 
-        uimgr = self._create_root_object('GtkUIManager',
+        uimgr = self._create_root_object('BtkUIManager',
                                          template='uimanager')
 
         if popup:
@@ -372,17 +372,17 @@ class GtkBuilderConverter(object):
         if children:
             child_node = children[0]
             menu_node = get_object_node(child_node)
-            # Can be GtkImage, which will take care of later.
-            if menu_node.getAttribute('class') == 'GtkMenu':
+            # Can be BtkImage, which will take care of later.
+            if menu_node.getAttribute('class') == 'BtkMenu':
                 name = 'menu'
 
         object_class = obj_node.getAttribute('class')
-        if object_class in ['GtkMenuItem',
-                            'GtkImageMenuItem',
-                            'GtkCheckMenuItem',
-                            'GtkRadioMenuItem']:
+        if object_class in ['BtkMenuItem',
+                            'BtkImageMenuItem',
+                            'BtkCheckMenuItem',
+                            'BtkRadioMenuItem']:
             menu = self._dom.createElement(name)
-        elif object_class == 'GtkSeparatorMenuItem':
+        elif object_class == 'BtkSeparatorMenuItem':
             return self._dom.createElement('separator')
         else:
             raise NotImplementedError(object_class)
@@ -413,17 +413,17 @@ class GtkBuilderConverter(object):
         properties = {}
         object_class = node.getAttribute('class')
         object_id = node.getAttribute('id')
-        if object_class == 'GtkMenuItem':
-            name = 'GtkAction'
+        if object_class == 'BtkMenuItem':
+            name = 'BtkAction'
             self._menuitem_to_action(node, properties)
-        elif object_class == 'GtkCheckMenuItem':
-            name = 'GtkToggleAction'
+        elif object_class == 'BtkCheckMenuItem':
+            name = 'BtkToggleAction'
             self._togglemenuitem_to_action(node, properties)
-        elif object_class == 'GtkRadioMenuItem':
-            name = 'GtkRadioAction'
+        elif object_class == 'BtkRadioMenuItem':
+            name = 'BtkRadioAction'
             self._radiomenuitem_to_action(node, properties)
-        elif object_class == 'GtkImageMenuItem':
-            name = 'GtkAction'
+        elif object_class == 'BtkImageMenuItem':
+            name = 'BtkAction'
             children = get_child_nodes(node)
             if (children and
                 children[0].getAttribute('internal-child') == 'image'):
@@ -432,7 +432,7 @@ class GtkBuilderConverter(object):
                 if child is not None:
                     properties['stock_id'] = child
             self._menuitem_to_action(node, properties)
-        elif object_class == 'GtkSeparatorMenuItem':
+        elif object_class == 'BtkSeparatorMenuItem':
             return
         else:
             raise NotImplementedError(object_class)
@@ -458,7 +458,7 @@ class GtkBuilderConverter(object):
             child = self._dom.createElement('child')
             uimgr.appendChild(child)
 
-            group = self._create_object('GtkActionGroup', None,
+            group = self._create_object('BtkActionGroup', None,
                                         template='actiongroup')
             child.appendChild(group)
         else:
@@ -482,11 +482,11 @@ class GtkBuilderConverter(object):
         node.removeChild(prop)
         obj = self._get_object(prop.childNodes[0].data)
         if obj is None:
-            widgets = self._get_objects_by_attr("class", "GtkSizeGroup")
+            widgets = self._get_objects_by_attr("class", "BtkSizeGroup")
             if widgets:
                 obj = widgets[-1]
             else:
-                obj = self._create_root_object('GtkSizeGroup',
+                obj = self._create_root_object('BtkSizeGroup',
                                                template='sizegroup')
 
         widgets = obj.getElementsByTagName("widgets")
@@ -546,7 +546,7 @@ class GtkBuilderConverter(object):
         else:
             prop.appendChild(self._dom.createTextNode(""))
 
-        adj = self._create_root_object("GtkAdjustment",
+        adj = self._create_root_object("BtkAdjustment",
                                        template='adjustment',
                                        properties=properties)
         prop.childNodes[0].data = adj.getAttribute('id')
@@ -565,7 +565,7 @@ class GtkBuilderConverter(object):
         comments = comments_attr is not None and comments_attr.value or None
 
         value = prop.childNodes[0].data
-        model = self._create_root_object("GtkListStore",
+        model = self._create_root_object("BtkListStore",
                                          template="model")
 
         columns = self._dom.createElement('columns')
@@ -608,7 +608,7 @@ class GtkBuilderConverter(object):
 
         child = self._dom.createElement('child')
         node.appendChild(child)
-        cell_renderer = self._create_object('GtkCellRendererText', None,
+        cell_renderer = self._create_object('BtkCellRendererText', None,
                                             template='renderer')
         child.appendChild(cell_renderer)
 
@@ -628,7 +628,7 @@ class GtkBuilderConverter(object):
         data = prop.childNodes[0].data
         if prop.hasAttribute('translatable'):
             prop.removeAttribute('translatable')
-        tbuffer = self._create_root_object("GtkTextBuffer",
+        tbuffer = self._create_root_object("BtkTextBuffer",
                                            template='textbuffer',
                                            properties=dict(text=data))
         prop.childNodes[0].data = tbuffer.getAttribute('id')
@@ -679,27 +679,27 @@ class GtkBuilderConverter(object):
 
         properties = {}
         for node in node.childNodes:
-            if node.nodeName == 'atkproperty':
+            if node.nodeName == 'batkproperty':
                 node.tagName = 'property'
                 properties[node.getAttribute('name')] = node
                 node.parentNode.removeChild(node)
-            elif node.nodeName == 'atkrelation':
+            elif node.nodeName == 'batkrelation':
                 node.tagName = 'relation'
                 relation_type = node.getAttribute('type')
                 relation_type = relation_type.replace('_', '-')
                 node.setAttribute('type', relation_type)
-            elif node.nodeName == 'atkaction':
+            elif node.nodeName == 'batkaction':
                 node.tagName = 'action'
 
         if properties:
             child = self._dom.createElement('child')
             child.setAttribute("internal-child", "accessible")
 
-            atkobject = self._create_object(
-                "AtkObject", None,
+            batkobject = self._create_object(
+                "BatkObject", None,
                 template='a11y-%s' % (parent_id,),
                 properties=properties)
-            child.appendChild(atkobject)
+            child.appendChild(batkobject)
             objectNode.appendChild(child)
 
     def _strip_root(self, root_name):
@@ -771,7 +771,7 @@ def main(args):
         elif o in ("-t", "--target-version"):
             target_version = a
 
-    conv = GtkBuilderConverter(skip_windows=skip_windows,
+    conv = BtkBuilderConverter(skip_windows=skip_windows,
                                target_version=target_version,
                                root=root)
     conv.parse_file(input_filename)

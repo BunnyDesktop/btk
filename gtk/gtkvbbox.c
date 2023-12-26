@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,142 +18,142 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
-#include "gtkvbbox.h"
-#include "gtkorientable.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkvbbox.h"
+#include "btkorientable.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkvbbox
+ * SECTION:btkvbbox
  * @Short_description: A container for arranging buttons vertically
- * @Title: GtkVButtonBox
- * @See_also: #GtkBox, #GtkButtonBox, #GtkHButtonBox
+ * @Title: BtkVButtonBox
+ * @See_also: #BtkBox, #BtkButtonBox, #BtkHButtonBox
  *
  * A button box should be used to provide a consistent layout of buttons
  * throughout your application. The layout/spacing can be altered by the
  * programmer, or if desired, by the user to alter the 'feel' of a
  * program to a small degree.
  *
- * A #GtkVButtonBox is created with gtk_vbutton_box_new(). Buttons are
+ * A #BtkVButtonBox is created with btk_vbutton_box_new(). Buttons are
  * packed into a button box the same way widgets are added to any other
- * container, using gtk_container_add(). You can also use
- * gtk_box_pack_start() or gtk_box_pack_end(), but for button boxes both
- * these functions work just like gtk_container_add(), ie., they pack the
+ * container, using btk_container_add(). You can also use
+ * btk_box_pack_start() or btk_box_pack_end(), but for button boxes both
+ * these functions work just like btk_container_add(), ie., they pack the
  * button in a way that depends on the current layout style and on
- * whether the button has had gtk_button_box_set_child_secondary() called
+ * whether the button has had btk_button_box_set_child_secondary() called
  * on it.
  *
- * The spacing between buttons can be set with gtk_box_set_spacing(). The
+ * The spacing between buttons can be set with btk_box_set_spacing(). The
  * arrangement and layout of the buttons can be changed with
- * gtk_button_box_set_layout().
+ * btk_button_box_set_layout().
  */
 
 static gint default_spacing = 10;
-static GtkButtonBoxStyle default_layout_style = GTK_BUTTONBOX_EDGE;
+static BtkButtonBoxStyle default_layout_style = BTK_BUTTONBOX_EDGE;
 
-G_DEFINE_TYPE (GtkVButtonBox, gtk_vbutton_box, GTK_TYPE_BUTTON_BOX)
+G_DEFINE_TYPE (BtkVButtonBox, btk_vbutton_box, BTK_TYPE_BUTTON_BOX)
 
 static void
-gtk_vbutton_box_class_init (GtkVButtonBoxClass *class)
+btk_vbutton_box_class_init (BtkVButtonBoxClass *class)
 {
 }
 
 static void
-gtk_vbutton_box_init (GtkVButtonBox *vbutton_box)
+btk_vbutton_box_init (BtkVButtonBox *vbutton_box)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (vbutton_box),
-                                  GTK_ORIENTATION_VERTICAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (vbutton_box),
+                                  BTK_ORIENTATION_VERTICAL);
 }
 
 /**
- * gtk_vbutton_box_new:
+ * btk_vbutton_box_new:
  *
  * Creates a new vertical button box.
  *
- * Returns: a new button box #GtkWidget.
+ * Returns: a new button box #BtkWidget.
  */
-GtkWidget *
-gtk_vbutton_box_new (void)
+BtkWidget *
+btk_vbutton_box_new (void)
 {
-  return g_object_new (GTK_TYPE_VBUTTON_BOX, NULL);
+  return g_object_new (BTK_TYPE_VBUTTON_BOX, NULL);
 }
 
 /**
- * gtk_vbutton_box_set_spacing_default:
+ * btk_vbutton_box_set_spacing_default:
  * @spacing: an integer value.
  *
  * Changes the default spacing that is placed between widgets in an
  * vertical button box.
  *
- * Deprecated: 2.0: Use gtk_box_set_spacing() instead.
+ * Deprecated: 2.0: Use btk_box_set_spacing() instead.
  */
 void
-gtk_vbutton_box_set_spacing_default (gint spacing)
+btk_vbutton_box_set_spacing_default (gint spacing)
 {
   default_spacing = spacing;
 }
 
 /**
- * gtk_vbutton_box_set_layout_default:
- * @layout: a new #GtkButtonBoxStyle.
+ * btk_vbutton_box_set_layout_default:
+ * @layout: a new #BtkButtonBoxStyle.
  *
  * Sets a new layout mode that will be used by all button boxes.
  *
- * Deprecated: 2.0: Use gtk_button_box_set_layout() instead.
+ * Deprecated: 2.0: Use btk_button_box_set_layout() instead.
  */
 void
-gtk_vbutton_box_set_layout_default (GtkButtonBoxStyle layout)
+btk_vbutton_box_set_layout_default (BtkButtonBoxStyle layout)
 {
-  g_return_if_fail (layout >= GTK_BUTTONBOX_DEFAULT_STYLE &&
-		    layout <= GTK_BUTTONBOX_CENTER);
+  g_return_if_fail (layout >= BTK_BUTTONBOX_DEFAULT_STYLE &&
+		    layout <= BTK_BUTTONBOX_CENTER);
 
   default_layout_style = layout;
 }
 
 /**
- * gtk_vbutton_box_get_spacing_default:
+ * btk_vbutton_box_get_spacing_default:
  *
  * Retrieves the current default spacing for vertical button boxes. This is the number of pixels
  * to be placed between the buttons when they are arranged.
  *
  * Returns: the default number of pixels between buttons.
  *
- * Deprecated: 2.0: Use gtk_box_get_spacing() instead.
+ * Deprecated: 2.0: Use btk_box_get_spacing() instead.
  */
 gint
-gtk_vbutton_box_get_spacing_default (void)
+btk_vbutton_box_get_spacing_default (void)
 {
   return default_spacing;
 }
 
 /**
- * gtk_vbutton_box_get_layout_default:
+ * btk_vbutton_box_get_layout_default:
  *
  * Retrieves the current layout used to arrange buttons in button box widgets.
  *
- * Returns: the current #GtkButtonBoxStyle.
+ * Returns: the current #BtkButtonBoxStyle.
  *
- * Deprecated: 2.0: Use gtk_button_box_get_layout() instead.
+ * Deprecated: 2.0: Use btk_button_box_get_layout() instead.
  */
-GtkButtonBoxStyle
-gtk_vbutton_box_get_layout_default (void)
+BtkButtonBoxStyle
+btk_vbutton_box_get_layout_default (void)
 {
   return default_layout_style;
 }
 
-GtkButtonBoxStyle
-_gtk_vbutton_box_get_layout_default (void)
+BtkButtonBoxStyle
+_btk_vbutton_box_get_layout_default (void)
 {
   return default_layout_style;
 }
 
 
-#define __GTK_VBBOX_C__
-#include "gtkaliasdef.c"
+#define __BTK_VBBOX_C__
+#include "btkaliasdef.c"

@@ -1,6 +1,6 @@
 
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* User clicked the "Add List" button. */
 void button_add_clicked( gpointer data )
@@ -17,7 +17,7 @@ void button_add_clicked( gpointer data )
      * each row.
      */
     for (indx = 0; indx < 4; indx++)
-	gtk_clist_append ((GtkCList *)data, drink[indx]);
+	btk_clist_append ((BtkCList *)data, drink[indx]);
 
     return;
 }
@@ -25,10 +25,10 @@ void button_add_clicked( gpointer data )
 /* User clicked the "Clear List" button. */
 void button_clear_clicked( gpointer data )
 {
-    /* Clear the list using gtk_clist_clear. This is much faster than
-     * calling gtk_clist_remove once for each row.
+    /* Clear the list using btk_clist_clear. This is much faster than
+     * calling btk_clist_remove once for each row.
      */
-    gtk_clist_clear ((GtkCList *)data);
+    btk_clist_clear ((BtkCList *)data);
 
     return;
 }
@@ -42,13 +42,13 @@ void button_hide_show_clicked( gpointer data )
     if (flag == 0)
     {
         /* Hide the titles and set the flag to 1 */
-	gtk_clist_column_titles_hide ((GtkCList *)data);
+	btk_clist_column_titles_hide ((BtkCList *)data);
 	flag++;
     }
     else
     {
         /* Show the titles and reset flag to 0 */
-	gtk_clist_column_titles_show ((GtkCList *)data);
+	btk_clist_column_titles_show ((BtkCList *)data);
 	flag--;
     }
 
@@ -56,10 +56,10 @@ void button_hide_show_clicked( gpointer data )
 }
 
 /* If we come here, then the user has selected a row in the list. */
-void selection_made( GtkWidget      *clist,
+void selection_made( BtkWidget      *clist,
                      gint            row,
                      gint            column,
-		     GdkEventButton *event,
+		     BdkEventButton *event,
                      gpointer        data )
 {
     gchar *text;
@@ -68,7 +68,7 @@ void selection_made( GtkWidget      *clist,
      * which was clicked in. We will receive it as a pointer in the
      * argument text.
      */
-    gtk_clist_get_text (GTK_CLIST (clist), row, column, &text);
+    btk_clist_get_text (BTK_CLIST (clist), row, column, &text);
 
     /* Just prints some information about the selected row */
     g_print ("You selected row %d. More specifically you clicked in "
@@ -81,37 +81,37 @@ void selection_made( GtkWidget      *clist,
 int main( int    argc,
           gchar *argv[] )
 {                                  
-    GtkWidget *window;
-    GtkWidget *vbox, *hbox;
-    GtkWidget *scrolled_window, *clist;
-    GtkWidget *button_add, *button_clear, *button_hide_show;    
+    BtkWidget *window;
+    BtkWidget *vbox, *hbox;
+    BtkWidget *scrolled_window, *clist;
+    BtkWidget *button_add, *button_clear, *button_hide_show;    
     gchar *titles[2] = { "Ingredients", "Amount" };
 
-    gtk_init(&argc, &argv);
+    btk_init(&argc, &argv);
     
-    window=gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_size_request (GTK_WIDGET (window), 300, 150);
+    window=btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_widget_set_size_request (BTK_WIDGET (window), 300, 150);
 
-    gtk_window_set_title (GTK_WINDOW (window), "GtkCList Example");
+    btk_window_set_title (BTK_WINDOW (window), "BtkCList Example");
     g_signal_connect (G_OBJECT (window), "destroy",
-                      G_CALLBACK (gtk_main_quit),
+                      G_CALLBACK (btk_main_quit),
                       NULL);
     
-    vbox=gtk_vbox_new (FALSE, 5);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
-    gtk_container_add (GTK_CONTAINER (window), vbox);
-    gtk_widget_show (vbox);
+    vbox=btk_vbox_new (FALSE, 5);
+    btk_container_set_border_width (BTK_CONTAINER (vbox), 5);
+    btk_container_add (BTK_CONTAINER (window), vbox);
+    btk_widget_show (vbox);
     
     /* Create a scrolled window to pack the CList widget into */
-    scrolled_window = gtk_scrolled_window_new (NULL, NULL);
-    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-                                    GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+    scrolled_window = btk_scrolled_window_new (NULL, NULL);
+    btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+                                    BTK_POLICY_AUTOMATIC, BTK_POLICY_ALWAYS);
 
-    gtk_box_pack_start (GTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
-    gtk_widget_show (scrolled_window);
+    btk_box_pack_start (BTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
+    btk_widget_show (scrolled_window);
 
     /* Create the CList. For this example we use 2 columns */
-    clist = gtk_clist_new_with_titles (2, titles);
+    clist = btk_clist_new_with_titles (2, titles);
 
     /* When a selection is made, we want to know about it. The callback
      * used is selection_made, and its code can be found further down */
@@ -120,32 +120,32 @@ int main( int    argc,
                       NULL);
 
     /* It isn't necessary to shadow the border, but it looks nice :) */
-    gtk_clist_set_shadow_type (GTK_CLIST (clist), GTK_SHADOW_OUT);
+    btk_clist_set_shadow_type (BTK_CLIST (clist), BTK_SHADOW_OUT);
 
     /* What however is important, is that we set the column widths as
      * they will never be right otherwise. Note that the columns are
      * numbered from 0 and up (to 1 in this case).
      */
-    gtk_clist_set_column_width (GTK_CLIST (clist), 0, 150);
+    btk_clist_set_column_width (BTK_CLIST (clist), 0, 150);
 
     /* Add the CList widget to the vertical box and show it. */
-    gtk_container_add (GTK_CONTAINER (scrolled_window), clist);
-    gtk_widget_show (clist);
+    btk_container_add (BTK_CONTAINER (scrolled_window), clist);
+    btk_widget_show (clist);
 
     /* Create the buttons and add them to the window. See the button
      * tutorial for more examples and comments on this.
      */
-    hbox = gtk_hbox_new (FALSE, 0);
-    gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
-    gtk_widget_show (hbox);
+    hbox = btk_hbox_new (FALSE, 0);
+    btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, TRUE, 0);
+    btk_widget_show (hbox);
 
-    button_add = gtk_button_new_with_label ("Add List");
-    button_clear = gtk_button_new_with_label ("Clear List");
-    button_hide_show = gtk_button_new_with_label ("Hide/Show titles");
+    button_add = btk_button_new_with_label ("Add List");
+    button_clear = btk_button_new_with_label ("Clear List");
+    button_hide_show = btk_button_new_with_label ("Hide/Show titles");
 
-    gtk_box_pack_start (GTK_BOX (hbox), button_add, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), button_clear, TRUE, TRUE, 0);
-    gtk_box_pack_start (GTK_BOX (hbox), button_hide_show, TRUE, TRUE, 0);
+    btk_box_pack_start (BTK_BOX (hbox), button_add, TRUE, TRUE, 0);
+    btk_box_pack_start (BTK_BOX (hbox), button_clear, TRUE, TRUE, 0);
+    btk_box_pack_start (BTK_BOX (hbox), button_hide_show, TRUE, TRUE, 0);
 
     /* Connect our callbacks to the three buttons */
     g_signal_connect_swapped (G_OBJECT (button_add), "clicked",
@@ -158,16 +158,16 @@ int main( int    argc,
                               G_CALLBACK (button_hide_show_clicked),
                               clist);
 
-    gtk_widget_show (button_add);
-    gtk_widget_show (button_clear);
-    gtk_widget_show (button_hide_show);
+    btk_widget_show (button_add);
+    btk_widget_show (button_clear);
+    btk_widget_show (button_hide_show);
 
     /* The interface is completely set up so we show the window and
-     * enter the gtk_main loop.
+     * enter the btk_main loop.
      */
-    gtk_widget_show (window);
+    btk_widget_show (window);
 
-    gtk_main();
+    btk_main();
     
     return 0;
 }

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,30 +22,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <gdk/gdkkeysyms.h>
-#include "gtkprivate.h"
-#include "gtkaccelgroup.h"
-#include "gtkimcontextsimple.h"
-#include "gtksettings.h"
-#include "gtkwidget.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bdk/bdkkeysyms.h>
+#include "btkprivate.h"
+#include "btkaccelgroup.h"
+#include "btkimcontextsimple.h"
+#include "btksettings.h"
+#include "btkwidget.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-#ifdef GDK_WINDOWING_WIN32
-#include <win32/gdkwin32keys.h>
+#ifdef BDK_WINDOWING_WIN32
+#include <win32/bdkwin32keys.h>
 #endif
 
-typedef struct _GtkComposeTable GtkComposeTable;
-typedef struct _GtkComposeTableCompact GtkComposeTableCompact;
+typedef struct _BtkComposeTable BtkComposeTable;
+typedef struct _BtkComposeTableCompact BtkComposeTableCompact;
 
-struct _GtkComposeTable 
+struct _BtkComposeTable 
 {
   const guint16 *data;
   gint max_seq_len;
   gint n_seqs;
 };
 
-struct _GtkComposeTableCompact
+struct _BtkComposeTableCompact
 {
   const guint16 *data;
   gint max_seq_len;
@@ -54,74 +54,74 @@ struct _GtkComposeTableCompact
 };
 
 /* This file contains the table of the compose sequences, 
- * static const guint16 gtk_compose_seqs_compact[] = {}
+ * static const guint16 btk_compose_seqs_compact[] = {}
  * IT is generated from the compose-parse.py script.
  */
-#include "gtkimcontextsimpleseqs.h"
+#include "btkimcontextsimpleseqs.h"
 
 /* From the values below, the value 23 means the number of different first keysyms 
  * that exist in the Compose file (from Xorg). When running compose-parse.py without 
  * parameters, you get the count that you can put here. Needed when updating the
- * gtkimcontextsimpleseqs.h header file (contains the compose sequences).
+ * btkimcontextsimpleseqs.h header file (contains the compose sequences).
  */
-static const GtkComposeTableCompact gtk_compose_table_compact = {
-  gtk_compose_seqs_compact,
+static const BtkComposeTableCompact btk_compose_table_compact = {
+  btk_compose_seqs_compact,
   5,
   24,
   6
 };
 
-static const guint16 gtk_compose_ignore[] = {
-  GDK_Shift_L,
-  GDK_Shift_R,
-  GDK_Control_L,
-  GDK_Control_R,
-  GDK_Caps_Lock,
-  GDK_Shift_Lock,
-  GDK_Meta_L,
-  GDK_Meta_R,
-  GDK_Alt_L,
-  GDK_Alt_R,
-  GDK_Super_L,
-  GDK_Super_R,
-  GDK_Hyper_L,
-  GDK_Hyper_R,
-  GDK_Mode_switch,
-  GDK_ISO_Level3_Shift
+static const guint16 btk_compose_ignore[] = {
+  BDK_Shift_L,
+  BDK_Shift_R,
+  BDK_Control_L,
+  BDK_Control_R,
+  BDK_Caps_Lock,
+  BDK_Shift_Lock,
+  BDK_Meta_L,
+  BDK_Meta_R,
+  BDK_Alt_L,
+  BDK_Alt_R,
+  BDK_Super_L,
+  BDK_Super_R,
+  BDK_Hyper_L,
+  BDK_Hyper_R,
+  BDK_Mode_switch,
+  BDK_ISO_Level3_Shift
 };
 
-static void     gtk_im_context_simple_finalize           (GObject                  *obj);
-static gboolean gtk_im_context_simple_filter_keypress    (GtkIMContext             *context,
-							  GdkEventKey              *key);
-static void     gtk_im_context_simple_reset              (GtkIMContext             *context);
-static void     gtk_im_context_simple_get_preedit_string (GtkIMContext             *context,
+static void     btk_im_context_simple_finalize           (GObject                  *obj);
+static gboolean btk_im_context_simple_filter_keypress    (BtkIMContext             *context,
+							  BdkEventKey              *key);
+static void     btk_im_context_simple_reset              (BtkIMContext             *context);
+static void     btk_im_context_simple_get_preedit_string (BtkIMContext             *context,
 							  gchar                   **str,
-							  PangoAttrList           **attrs,
+							  BangoAttrList           **attrs,
 							  gint                     *cursor_pos);
 
-G_DEFINE_TYPE (GtkIMContextSimple, gtk_im_context_simple, GTK_TYPE_IM_CONTEXT)
+G_DEFINE_TYPE (BtkIMContextSimple, btk_im_context_simple, BTK_TYPE_IM_CONTEXT)
 
 static void
-gtk_im_context_simple_class_init (GtkIMContextSimpleClass *class)
+btk_im_context_simple_class_init (BtkIMContextSimpleClass *class)
 {
-  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
-  im_context_class->filter_keypress = gtk_im_context_simple_filter_keypress;
-  im_context_class->reset = gtk_im_context_simple_reset;
-  im_context_class->get_preedit_string = gtk_im_context_simple_get_preedit_string;
-  gobject_class->finalize = gtk_im_context_simple_finalize;
+  im_context_class->filter_keypress = btk_im_context_simple_filter_keypress;
+  im_context_class->reset = btk_im_context_simple_reset;
+  im_context_class->get_preedit_string = btk_im_context_simple_get_preedit_string;
+  bobject_class->finalize = btk_im_context_simple_finalize;
 }
 
 static void
-gtk_im_context_simple_init (GtkIMContextSimple *im_context_simple)
+btk_im_context_simple_init (BtkIMContextSimple *im_context_simple)
 {  
 }
 
 static void
-gtk_im_context_simple_finalize (GObject *obj)
+btk_im_context_simple_finalize (GObject *obj)
 {
-  GtkIMContextSimple *context_simple = GTK_IM_CONTEXT_SIMPLE (obj);
+  BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (obj);
 
   if (context_simple->tables)
     {
@@ -131,30 +131,30 @@ gtk_im_context_simple_finalize (GObject *obj)
       context_simple->tables = NULL;
     }
 
-  G_OBJECT_CLASS (gtk_im_context_simple_parent_class)->finalize (obj);
+  G_OBJECT_CLASS (btk_im_context_simple_parent_class)->finalize (obj);
 }
 
 /** 
- * gtk_im_context_simple_new:
+ * btk_im_context_simple_new:
  * 
- * Creates a new #GtkIMContextSimple.
+ * Creates a new #BtkIMContextSimple.
  *
- * Returns: a new #GtkIMContextSimple.
+ * Returns: a new #BtkIMContextSimple.
  **/
-GtkIMContext *
-gtk_im_context_simple_new (void)
+BtkIMContext *
+btk_im_context_simple_new (void)
 {
-  return g_object_new (GTK_TYPE_IM_CONTEXT_SIMPLE, NULL);
+  return g_object_new (BTK_TYPE_IM_CONTEXT_SIMPLE, NULL);
 }
 
 static void
-gtk_im_context_simple_commit_char (GtkIMContext *context,
+btk_im_context_simple_commit_char (BtkIMContext *context,
 				   gunichar ch)
 {
   gchar buf[10];
   gint len;
 
-  GtkIMContextSimple *context_simple = GTK_IM_CONTEXT_SIMPLE (context);
+  BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
 
   g_return_if_fail (g_unichar_validate (ch));
   
@@ -208,8 +208,8 @@ compare_seq (const void *key, const void *value)
 }
 
 static gboolean
-check_table (GtkIMContextSimple    *context_simple,
-	     const GtkComposeTable *table,
+check_table (BtkIMContextSimple    *context_simple,
+	     const BtkComposeTable *table,
 	     gint                   n_compose)
 {
   gint row_stride = table->max_seq_len + 2; 
@@ -266,7 +266,7 @@ check_table (GtkIMContextSimple    *context_simple,
 		}
 	    }
 
-	  gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple), value);
+	  btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple), value);
 	  context_simple->compose_buffer[0] = 0;
 	}
       
@@ -277,16 +277,16 @@ check_table (GtkIMContextSimple    *context_simple,
 }
 
 /* Checks if a keysym is a dead key. Dead key keysym values are defined in
- * ../gdk/gdkkeysyms.h and the first is GDK_dead_grave. As X.Org is updated,
+ * ../bdk/bdkkeysyms.h and the first is BDK_dead_grave. As X.Org is updated,
  * more dead keys are added and we need to update the upper limit.
- * Currently, the upper limit is GDK_dead_dasia+1. The +1 has to do with 
+ * Currently, the upper limit is BDK_dead_dasia+1. The +1 has to do with 
  * a temporary issue in the X.Org header files. 
  * In future versions it will be just the keysym (no +1).
  */
 #define IS_DEAD_KEY(k) \
-    ((k) >= GDK_dead_grave && (k) <= (GDK_dead_dasia+1))
+    ((k) >= BDK_dead_grave && (k) <= (BDK_dead_dasia+1))
 
-#ifdef GDK_WINDOWING_WIN32
+#ifdef BDK_WINDOWING_WIN32
 
 /* On Windows, user expectation is that typing a dead accent followed
  * by space will input the corresponding spacing character. The X
@@ -296,27 +296,27 @@ check_table (GtkIMContextSimple    *context_simple,
  */
 
 static gboolean
-check_win32_special_cases (GtkIMContextSimple    *context_simple,
+check_win32_special_cases (BtkIMContextSimple    *context_simple,
 			   gint                   n_compose)
 {
   if (n_compose == 2 &&
-      context_simple->compose_buffer[1] == GDK_space)
+      context_simple->compose_buffer[1] == BDK_space)
     {
       gunichar value = 0;
 
       switch (context_simple->compose_buffer[0])
 	{
-	case GDK_dead_acute:
+	case BDK_dead_acute:
 	  value = 0x00B4; break;
-	case GDK_dead_diaeresis:
+	case BDK_dead_diaeresis:
 	  value = 0x00A8; break;
 	}
       if (value > 0)
 	{
-	  gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple), value);
+	  btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple), value);
 	  context_simple->compose_buffer[0] = 0;
 
-	  GTK_NOTE (MISC, g_print ("win32: U+%04X\n", value));
+	  BTK_NOTE (MISC, g_print ("win32: U+%04X\n", value));
 	  return TRUE;
 	}
     }
@@ -324,7 +324,7 @@ check_win32_special_cases (GtkIMContextSimple    *context_simple,
 }
 
 static void
-check_win32_special_case_after_compact_match (GtkIMContextSimple    *context_simple,
+check_win32_special_case_after_compact_match (BtkIMContextSimple    *context_simple,
 					      gint                   n_compose,
 					      guint                  value)
 {
@@ -335,17 +335,17 @@ check_win32_special_case_after_compact_match (GtkIMContextSimple    *context_sim
       context_simple->compose_buffer[0] == context_simple->compose_buffer[1] &&
       IS_DEAD_KEY (context_simple->compose_buffer[0]))
     {
-      gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple), value);
-      GTK_NOTE (MISC, g_print ("win32: U+%04X ", value));
+      btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple), value);
+      BTK_NOTE (MISC, g_print ("win32: U+%04X ", value));
     }
 }
 
 #endif
 
-#ifdef GDK_WINDOWING_QUARTZ
+#ifdef BDK_WINDOWING_QUARTZ
 
 static gboolean
-check_quartz_special_cases (GtkIMContextSimple *context_simple,
+check_quartz_special_cases (BtkIMContextSimple *context_simple,
                             gint                n_compose)
 {
   guint value = 0;
@@ -354,33 +354,33 @@ check_quartz_special_cases (GtkIMContextSimple *context_simple,
     {
       switch (context_simple->compose_buffer[0])
         {
-        case GDK_KEY_dead_doubleacute:
+        case BDK_KEY_dead_doubleacute:
           switch (context_simple->compose_buffer[1])
             {
-            case GDK_KEY_dead_doubleacute:
-            case GDK_KEY_space:
-              value = GDK_KEY_quotedbl; break;
+            case BDK_KEY_dead_doubleacute:
+            case BDK_KEY_space:
+              value = BDK_KEY_quotedbl; break;
 
-            case 'a': value = GDK_KEY_adiaeresis; break;
-            case 'A': value = GDK_KEY_Adiaeresis; break;
-            case 'e': value = GDK_KEY_ediaeresis; break;
-            case 'E': value = GDK_KEY_Ediaeresis; break;
-            case 'i': value = GDK_KEY_idiaeresis; break;
-            case 'I': value = GDK_KEY_Idiaeresis; break;
-            case 'o': value = GDK_KEY_odiaeresis; break;
-            case 'O': value = GDK_KEY_Odiaeresis; break;
-            case 'u': value = GDK_KEY_udiaeresis; break;
-            case 'U': value = GDK_KEY_Udiaeresis; break;
-            case 'y': value = GDK_KEY_ydiaeresis; break;
-            case 'Y': value = GDK_KEY_Ydiaeresis; break;
+            case 'a': value = BDK_KEY_adiaeresis; break;
+            case 'A': value = BDK_KEY_Adiaeresis; break;
+            case 'e': value = BDK_KEY_ediaeresis; break;
+            case 'E': value = BDK_KEY_Ediaeresis; break;
+            case 'i': value = BDK_KEY_idiaeresis; break;
+            case 'I': value = BDK_KEY_Idiaeresis; break;
+            case 'o': value = BDK_KEY_odiaeresis; break;
+            case 'O': value = BDK_KEY_Odiaeresis; break;
+            case 'u': value = BDK_KEY_udiaeresis; break;
+            case 'U': value = BDK_KEY_Udiaeresis; break;
+            case 'y': value = BDK_KEY_ydiaeresis; break;
+            case 'Y': value = BDK_KEY_Ydiaeresis; break;
             }
           break;
 
-        case GDK_KEY_dead_acute:
+        case BDK_KEY_dead_acute:
           switch (context_simple->compose_buffer[1])
             {
-            case 'c': value = GDK_KEY_ccedilla; break;
-            case 'C': value = GDK_KEY_Ccedilla; break;
+            case 'c': value = BDK_KEY_ccedilla; break;
+            case 'C': value = BDK_KEY_Ccedilla; break;
             }
           break;
         }
@@ -388,11 +388,11 @@ check_quartz_special_cases (GtkIMContextSimple *context_simple,
 
   if (value > 0)
     {
-      gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple),
-                                         gdk_keyval_to_unicode (value));
+      btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple),
+                                         bdk_keyval_to_unicode (value));
       context_simple->compose_buffer[0] = 0;
 
-      GTK_NOTE (MISC, g_print ("quartz: U+%04X\n", value));
+      BTK_NOTE (MISC, g_print ("quartz: U+%04X\n", value));
       return TRUE;
     }
 
@@ -402,8 +402,8 @@ check_quartz_special_cases (GtkIMContextSimple *context_simple,
 #endif
 
 static gboolean
-check_compact_table (GtkIMContextSimple    *context_simple,
-	     const GtkComposeTableCompact *table,
+check_compact_table (BtkIMContextSimple    *context_simple,
+	     const BtkComposeTableCompact *table,
 	     gint                   n_compose)
 {
   gint row_stride;
@@ -424,17 +424,17 @@ check_compact_table (GtkIMContextSimple    *context_simple,
 
   if (!seq_index)
     {
-      GTK_NOTE (MISC, g_print ("compact: no\n"));
+      BTK_NOTE (MISC, g_print ("compact: no\n"));
       return FALSE;
     }
 
   if (seq_index && n_compose == 1)
     {
-      GTK_NOTE (MISC, g_print ("compact: yes\n"));
+      BTK_NOTE (MISC, g_print ("compact: yes\n"));
       return TRUE;
     }
 
-  GTK_NOTE (MISC, g_print ("compact: %d ", *seq_index));
+  BTK_NOTE (MISC, g_print ("compact: %d ", *seq_index));
   seq = NULL;
 
   for (i = n_compose-1; i < table->max_seq_len; i++)
@@ -456,7 +456,7 @@ check_compact_table (GtkIMContextSimple    *context_simple,
                 {
                   g_signal_emit_by_name (context_simple, "preedit-changed");
 
-		  GTK_NOTE (MISC, g_print ("yes\n"));
+		  BTK_NOTE (MISC, g_print ("yes\n"));
       		  return TRUE;
                 }
              }
@@ -465,7 +465,7 @@ check_compact_table (GtkIMContextSimple    *context_simple,
 
   if (!seq)
     {
-      GTK_NOTE (MISC, g_print ("no\n"));
+      BTK_NOTE (MISC, g_print ("no\n"));
       return FALSE;
     }
   else
@@ -474,17 +474,17 @@ check_compact_table (GtkIMContextSimple    *context_simple,
 
       value = seq[row_stride - 1];
 
-      gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple), value);
+      btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple), value);
 #ifdef G_OS_WIN32
       check_win32_special_case_after_compact_match (context_simple, n_compose, value);
 #endif
       context_simple->compose_buffer[0] = 0;
 
-      GTK_NOTE (MISC, g_print ("U+%04X\n", value));
+      BTK_NOTE (MISC, g_print ("U+%04X\n", value));
       return TRUE;
     }
 
-  GTK_NOTE (MISC, g_print ("no\n"));
+  BTK_NOTE (MISC, g_print ("no\n"));
   return FALSE;
 }
 
@@ -499,7 +499,7 @@ check_compact_table (GtkIMContextSimple    *context_simple,
 static gboolean
 check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
 {
-  gunichar combination_buffer_temp[GTK_MAX_COMPOSE_LEN];
+  gunichar combination_buffer_temp[BTK_MAX_COMPOSE_LEN];
   gchar *combination_utf8_temp = NULL;
   gchar *nfc_temp = NULL;
   gint n_combinations;
@@ -521,7 +521,7 @@ check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
           combination_buffer[i] = 0x342;
     }
 
-  memcpy (combination_buffer_temp, combination_buffer, GTK_MAX_COMPOSE_LEN * sizeof (gunichar) );
+  memcpy (combination_buffer_temp, combination_buffer, BTK_MAX_COMPOSE_LEN * sizeof (gunichar) );
 
   for (i = 0; i < n_combinations; i++ )
     {
@@ -531,7 +531,7 @@ check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
 
       if (g_utf8_strlen (nfc_temp, -1) == 1)
         {
-          memcpy (combination_buffer, combination_buffer_temp, GTK_MAX_COMPOSE_LEN * sizeof (gunichar) );
+          memcpy (combination_buffer, combination_buffer_temp, BTK_MAX_COMPOSE_LEN * sizeof (gunichar) );
 
           g_free (combination_utf8_temp);
           g_free (nfc_temp);
@@ -556,15 +556,15 @@ check_normalize_nfc (gunichar* combination_buffer, gint n_compose)
 }
 
 static gboolean
-check_algorithmically (GtkIMContextSimple    *context_simple,
+check_algorithmically (BtkIMContextSimple    *context_simple,
 		       gint                   n_compose)
 
 {
   gint i;
-  gunichar combination_buffer[GTK_MAX_COMPOSE_LEN];
+  gunichar combination_buffer[BTK_MAX_COMPOSE_LEN];
   gchar *combination_utf8, *nfc;
 
-  if (n_compose >= GTK_MAX_COMPOSE_LEN)
+  if (n_compose >= BTK_MAX_COMPOSE_LEN)
     return FALSE;
 
   for (i = 0; i < n_compose && IS_DEAD_KEY (context_simple->compose_buffer[i]); i++)
@@ -574,7 +574,7 @@ check_algorithmically (GtkIMContextSimple    *context_simple,
 
   if (i > 0 && i == n_compose - 1)
     {
-      combination_buffer[0] = gdk_keyval_to_unicode (context_simple->compose_buffer[i]);
+      combination_buffer[0] = bdk_keyval_to_unicode (context_simple->compose_buffer[i]);
       combination_buffer[n_compose] = 0;
       i--;
       while (i >= 0)
@@ -582,7 +582,7 @@ check_algorithmically (GtkIMContextSimple    *context_simple,
 	  switch (context_simple->compose_buffer[i])
 	    {
 #define CASE(keysym, unicode) \
-	    case GDK_dead_##keysym: combination_buffer[i+1] = unicode; break
+	    case BDK_dead_##keysym: combination_buffer[i+1] = unicode; break
 
 	    CASE (grave, 0x0300);
 	    CASE (acute, 0x0301);
@@ -616,7 +616,7 @@ check_algorithmically (GtkIMContextSimple    *context_simple,
 	    /* CASE (psili, 0x343); */
 #undef CASE
 	    default:
-	      combination_buffer[i+1] = gdk_keyval_to_unicode (context_simple->compose_buffer[i]);
+	      combination_buffer[i+1] = bdk_keyval_to_unicode (context_simple->compose_buffer[i]);
 	    }
 	  i--;
 	}
@@ -632,7 +632,7 @@ check_algorithmically (GtkIMContextSimple    *context_simple,
           nfc = g_utf8_normalize (combination_utf8, -1, G_NORMALIZE_NFC);
 
           value = g_utf8_get_char (nfc);
-          gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple), value);
+          btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple), value);
           context_simple->compose_buffer[0] = 0;
 
           g_free (combination_utf8);
@@ -660,10 +660,10 @@ check_algorithmically (GtkIMContextSimple    *context_simple,
  * with Ctrl-Shift-U, then release the modifiers before typing any
  * digits, and enter the digits without modifiers.
  */
-#define HEX_MOD_MASK (GTK_DEFAULT_ACCEL_MOD_MASK | GDK_SHIFT_MASK)
+#define HEX_MOD_MASK (BTK_DEFAULT_ACCEL_MOD_MASK | BDK_SHIFT_MASK)
 
 static gboolean
-check_hex (GtkIMContextSimple *context_simple,
+check_hex (BtkIMContextSimple *context_simple,
            gint                n_compose)
 {
   /* See if this is a hex sequence, return TRUE if so */
@@ -683,7 +683,7 @@ check_hex (GtkIMContextSimple *context_simple,
     {
       gunichar ch;
       
-      ch = gdk_keyval_to_unicode (context_simple->compose_buffer[i]);
+      ch = bdk_keyval_to_unicode (context_simple->compose_buffer[i]);
       
       if (ch == 0)
         return FALSE;
@@ -721,39 +721,39 @@ check_hex (GtkIMContextSimple *context_simple,
 }
 
 static void
-beep_window (GdkWindow *window)
+beep_window (BdkWindow *window)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  gdk_window_get_user_data (window, (gpointer) &widget);
+  bdk_window_get_user_data (window, (gpointer) &widget);
 
-  if (GTK_IS_WIDGET (widget))
+  if (BTK_IS_WIDGET (widget))
     {
-      gtk_widget_error_bell (widget);
+      btk_widget_error_bell (widget);
     }
   else
     {
-      GdkScreen *screen = gdk_window_get_screen (window);
+      BdkScreen *screen = bdk_window_get_screen (window);
       gboolean   beep;
 
-      g_object_get (gtk_settings_get_for_screen (screen),
-                    "gtk-error-bell", &beep,
+      g_object_get (btk_settings_get_for_screen (screen),
+                    "btk-error-bell", &beep,
                     NULL);
 
       if (beep)
-        gdk_window_beep (window);
+        bdk_window_beep (window);
     }
 }
 
 static gboolean
-no_sequence_matches (GtkIMContextSimple *context_simple,
+no_sequence_matches (BtkIMContextSimple *context_simple,
                      gint                n_compose,
-                     GdkEventKey        *event)
+                     BdkEventKey        *event)
 {
-  GtkIMContext *context;
+  BtkIMContext *context;
   gunichar ch;
   
-  context = GTK_IM_CONTEXT (context_simple);
+  context = BTK_IM_CONTEXT (context_simple);
   
   /* No compose sequences found, check first if we have a partial
    * match pending.
@@ -763,19 +763,19 @@ no_sequence_matches (GtkIMContextSimple *context_simple,
       gint len = context_simple->tentative_match_len;
       int i;
       
-      gtk_im_context_simple_commit_char (context, context_simple->tentative_match);
+      btk_im_context_simple_commit_char (context, context_simple->tentative_match);
       context_simple->compose_buffer[0] = 0;
       
       for (i=0; i < n_compose - len - 1; i++)
 	{
-	  GdkEvent *tmp_event = gdk_event_copy ((GdkEvent *)event);
+	  BdkEvent *tmp_event = bdk_event_copy ((BdkEvent *)event);
 	  tmp_event->key.keyval = context_simple->compose_buffer[len + i];
 	  
-	  gtk_im_context_filter_keypress (context, (GdkEventKey *)tmp_event);
-	  gdk_event_free (tmp_event);
+	  btk_im_context_filter_keypress (context, (BdkEventKey *)tmp_event);
+	  bdk_event_free (tmp_event);
 	}
 
-      return gtk_im_context_filter_keypress (context, event);
+      return btk_im_context_filter_keypress (context, event);
     }
   else
     {
@@ -786,10 +786,10 @@ no_sequence_matches (GtkIMContextSimple *context_simple,
 	  return TRUE;
 	}
   
-      ch = gdk_keyval_to_unicode (event->keyval);
+      ch = bdk_keyval_to_unicode (event->keyval);
       if (ch != 0)
 	{
-	  gtk_im_context_simple_commit_char (context, ch);
+	  btk_im_context_simple_commit_char (context, ch);
 	  return TRUE;
 	}
       else
@@ -800,15 +800,15 @@ no_sequence_matches (GtkIMContextSimple *context_simple,
 static gboolean
 is_hex_keyval (guint keyval)
 {
-  gunichar ch = gdk_keyval_to_unicode (keyval);
+  gunichar ch = bdk_keyval_to_unicode (keyval);
 
   return g_unichar_isxdigit (ch);
 }
 
 static guint
-canonical_hex_keyval (GdkEventKey *event)
+canonical_hex_keyval (BdkEventKey *event)
 {
-  GdkKeymap *keymap = gdk_keymap_get_for_display (gdk_window_get_display (event->window));
+  BdkKeymap *keymap = bdk_keymap_get_for_display (bdk_window_get_display (event->window));
   guint keyval;
   guint *keyvals = NULL;
   gint n_vals = 0;
@@ -821,7 +821,7 @@ canonical_hex_keyval (GdkEventKey *event)
   /* See if this key would have generated a hex keyval in
    * any other state, and return that hex keyval if so
    */
-  gdk_keymap_get_entries_for_keycode (keymap,
+  bdk_keymap_get_entries_for_keycode (keymap,
 				      event->hardware_keycode,
 				      NULL,
 				      &keyvals, &n_vals);
@@ -850,10 +850,10 @@ canonical_hex_keyval (GdkEventKey *event)
 }
 
 static gboolean
-gtk_im_context_simple_filter_keypress (GtkIMContext *context,
-				       GdkEventKey  *event)
+btk_im_context_simple_filter_keypress (BtkIMContext *context,
+				       BdkEventKey  *event)
 {
-  GtkIMContextSimple *context_simple = GTK_IM_CONTEXT_SIMPLE (context);
+  BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
   GSList *tmp_list;  
   int n_compose = 0;
   gboolean have_hex_mods;
@@ -867,16 +867,16 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
   while (context_simple->compose_buffer[n_compose] != 0)
     n_compose++;
 
-  if (event->type == GDK_KEY_RELEASE)
+  if (event->type == BDK_KEY_RELEASE)
     {
       if (context_simple->in_hex_sequence &&
-	  (event->keyval == GDK_Control_L || event->keyval == GDK_Control_R ||
-	   event->keyval == GDK_Shift_L || event->keyval == GDK_Shift_R))
+	  (event->keyval == BDK_Control_L || event->keyval == BDK_Control_R ||
+	   event->keyval == BDK_Shift_L || event->keyval == BDK_Shift_R))
 	{
 	  if (context_simple->tentative_match &&
 	      g_unichar_validate (context_simple->tentative_match))
 	    {
-	      gtk_im_context_simple_commit_char (context, context_simple->tentative_match);
+	      btk_im_context_simple_commit_char (context, context_simple->tentative_match);
 	      context_simple->compose_buffer[0] = 0;
 
 	    }
@@ -904,22 +904,22 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
     }
 
   /* Ignore modifier key presses */
-  for (i = 0; i < G_N_ELEMENTS (gtk_compose_ignore); i++)
-    if (event->keyval == gtk_compose_ignore[i])
+  for (i = 0; i < G_N_ELEMENTS (btk_compose_ignore); i++)
+    if (event->keyval == btk_compose_ignore[i])
       return FALSE;
 
   if (context_simple->in_hex_sequence && context_simple->modifiers_dropped)
     have_hex_mods = TRUE;
   else
     have_hex_mods = (event->state & (HEX_MOD_MASK)) == HEX_MOD_MASK;
-  is_hex_start = event->keyval == GDK_U;
-  is_hex_end = (event->keyval == GDK_space || 
-		event->keyval == GDK_KP_Space ||
-		event->keyval == GDK_Return || 
-		event->keyval == GDK_ISO_Enter ||
-		event->keyval == GDK_KP_Enter);
-  is_backspace = event->keyval == GDK_BackSpace;
-  is_escape = event->keyval == GDK_Escape;
+  is_hex_start = event->keyval == BDK_U;
+  is_hex_end = (event->keyval == BDK_space || 
+		event->keyval == BDK_KP_Space ||
+		event->keyval == BDK_Return || 
+		event->keyval == BDK_ISO_Enter ||
+		event->keyval == BDK_KP_Enter);
+  is_backspace = event->keyval == BDK_BackSpace;
+  is_escape = event->keyval == BDK_Escape;
   hex_keyval = canonical_hex_keyval (event);
 
   /* If we are already in a non-hex sequence, or
@@ -935,11 +935,11 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
       (context_simple->in_hex_sequence && !hex_keyval && 
        !is_hex_start && !is_hex_end && !is_escape && !is_backspace))
     {
-      if (event->state & GTK_NO_TEXT_INPUT_MOD_MASK ||
+      if (event->state & BTK_NO_TEXT_INPUT_MOD_MASK ||
 	  (context_simple->in_hex_sequence && context_simple->modifiers_dropped &&
-	   (event->keyval == GDK_Return || 
-	    event->keyval == GDK_ISO_Enter ||
-	    event->keyval == GDK_KP_Enter)))
+	   (event->keyval == BDK_Return || 
+	    event->keyval == BDK_ISO_Enter ||
+	    event->keyval == BDK_KP_Enter)))
 	{
 	  return FALSE;
 	}
@@ -973,7 +973,7 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
       if (context_simple->tentative_match &&
 	  g_unichar_validate (context_simple->tentative_match))
 	{
-	  gtk_im_context_simple_commit_char (context, context_simple->tentative_match);
+	  btk_im_context_simple_commit_char (context, context_simple->tentative_match);
 	  context_simple->compose_buffer[0] = 0;
 	}
       else 
@@ -1009,7 +1009,7 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
 	context_simple->compose_buffer[n_compose++] = hex_keyval;
       else if (is_escape)
 	{
-	  gtk_im_context_simple_reset (context);
+	  btk_im_context_simple_reset (context);
 	  
 	  return TRUE;
 	}
@@ -1037,7 +1037,7 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
 	      if (context_simple->tentative_match &&
 		  g_unichar_validate (context_simple->tentative_match))
 		{
-		  gtk_im_context_simple_commit_char (context, context_simple->tentative_match);
+		  btk_im_context_simple_commit_char (context, context_simple->tentative_match);
 		  context_simple->compose_buffer[0] = 0;
 		}
 	      else
@@ -1063,28 +1063,28 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
     }
   else
     {
-#ifdef GDK_WINDOWING_WIN32
+#ifdef BDK_WINDOWING_WIN32
       guint16  output[2];
       gsize    output_size = 2;
 
-      switch (gdk_win32_keymap_check_compose (GDK_WIN32_KEYMAP (gdk_keymap_get_default ()),
+      switch (bdk_win32_keymap_check_compose (BDK_WIN32_KEYMAP (bdk_keymap_get_default ()),
                                               context_simple->compose_buffer,
                                               n_compose,
                                               output, &output_size))
         {
-        case GDK_WIN32_KEYMAP_MATCH_NONE:
+        case BDK_WIN32_KEYMAP_MATCH_NONE:
           break;
-        case GDK_WIN32_KEYMAP_MATCH_EXACT:
-        case GDK_WIN32_KEYMAP_MATCH_PARTIAL:
+        case BDK_WIN32_KEYMAP_MATCH_EXACT:
+        case BDK_WIN32_KEYMAP_MATCH_PARTIAL:
           for (i = 0; i < output_size; i++)
             {
-              guint32 output_char = gdk_keyval_to_unicode (output[i]);
-              gtk_im_context_simple_commit_char (GTK_IM_CONTEXT (context_simple),
+              guint32 output_char = bdk_keyval_to_unicode (output[i]);
+              btk_im_context_simple_commit_char (BTK_IM_CONTEXT (context_simple),
                                                  output_char);
             }
           context_simple->compose_buffer[0] = 0;
           return TRUE;
-        case GDK_WIN32_KEYMAP_MATCH_INCOMPLETE:
+        case BDK_WIN32_KEYMAP_MATCH_INCOMPLETE:
           return TRUE;
         }
 #endif
@@ -1098,11 +1098,11 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
           tmp_list = tmp_list->next;
         }
 
-      GTK_NOTE (MISC, {
+      BTK_NOTE (MISC, {
 	  g_print ("[ ");
 	  for (i = 0; i < n_compose; i++)
 	    {
-	      const gchar *keyval_name = gdk_keyval_name (context_simple->compose_buffer[i]);
+	      const gchar *keyval_name = bdk_keyval_name (context_simple->compose_buffer[i]);
 	      
 	      if (keyval_name != NULL)
 		g_print ("%s ", keyval_name);
@@ -1112,17 +1112,17 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
 	  g_print ("] ");
 	});
 
-#ifdef GDK_WINDOWING_WIN32
+#ifdef BDK_WINDOWING_WIN32
       if (check_win32_special_cases (context_simple, n_compose))
 	return TRUE;
 #endif
 
-#ifdef GDK_WINDOWING_QUARTZ
+#ifdef BDK_WINDOWING_QUARTZ
       if (check_quartz_special_cases (context_simple, n_compose))
         return TRUE;
 #endif
 
-      if (check_compact_table (context_simple, &gtk_compose_table_compact, n_compose))
+      if (check_compact_table (context_simple, &btk_compose_table_compact, n_compose))
         return TRUE;
   
       if (check_algorithmically (context_simple, n_compose))
@@ -1134,9 +1134,9 @@ gtk_im_context_simple_filter_keypress (GtkIMContext *context,
 }
 
 static void
-gtk_im_context_simple_reset (GtkIMContext *context)
+btk_im_context_simple_reset (BtkIMContext *context)
 {
-  GtkIMContextSimple *context_simple = GTK_IM_CONTEXT_SIMPLE (context);
+  BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
 
   context_simple->compose_buffer[0] = 0;
 
@@ -1151,15 +1151,15 @@ gtk_im_context_simple_reset (GtkIMContext *context)
 }
 
 static void     
-gtk_im_context_simple_get_preedit_string (GtkIMContext   *context,
+btk_im_context_simple_get_preedit_string (BtkIMContext   *context,
 					  gchar         **str,
-					  PangoAttrList **attrs,
+					  BangoAttrList **attrs,
 					  gint           *cursor_pos)
 {
   char outbuf[37]; /* up to 6 hex digits */
   int len = 0;
   
-  GtkIMContextSimple *context_simple = GTK_IM_CONTEXT_SIMPLE (context);
+  BtkIMContextSimple *context_simple = BTK_IM_CONTEXT_SIMPLE (context);
 
   if (context_simple->in_hex_sequence)
     {
@@ -1170,7 +1170,7 @@ gtk_im_context_simple_get_preedit_string (GtkIMContext   *context,
 
       while (context_simple->compose_buffer[hexchars] != 0)
 	{
-	  len += g_unichar_to_utf8 (gdk_keyval_to_unicode (context_simple->compose_buffer[hexchars]),
+	  len += g_unichar_to_utf8 (bdk_keyval_to_unicode (context_simple->compose_buffer[hexchars]),
 				    outbuf + len);
 	  ++hexchars;
 	}
@@ -1187,14 +1187,14 @@ gtk_im_context_simple_get_preedit_string (GtkIMContext   *context,
 
   if (attrs)
     {
-      *attrs = pango_attr_list_new ();
+      *attrs = bango_attr_list_new ();
       
       if (len)
 	{
-	  PangoAttribute *attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+	  BangoAttribute *attr = bango_attr_underline_new (BANGO_UNDERLINE_SINGLE);
 	  attr->start_index = 0;
           attr->end_index = len;
-	  pango_attr_list_insert (*attrs, attr);
+	  bango_attr_list_insert (*attrs, attr);
 	}
     }
 
@@ -1203,11 +1203,11 @@ gtk_im_context_simple_get_preedit_string (GtkIMContext   *context,
 }
 
 /**
- * gtk_im_context_simple_add_table:
- * @context_simple: A #GtkIMContextSimple
+ * btk_im_context_simple_add_table:
+ * @context_simple: A #BtkIMContextSimple
  * @data: the table 
  * @max_seq_len: Maximum length of a sequence in the table
- *               (cannot be greater than #GTK_MAX_COMPOSE_LEN)
+ *               (cannot be greater than #BTK_MAX_COMPOSE_LEN)
  * @n_seqs: number of sequences in the table
  * 
  * Adds an additional table to search to the input context.
@@ -1221,18 +1221,18 @@ gtk_im_context_simple_get_preedit_string (GtkIMContext   *context,
  * the length of the sequence should be zero.)
  **/
 void
-gtk_im_context_simple_add_table (GtkIMContextSimple *context_simple,
+btk_im_context_simple_add_table (BtkIMContextSimple *context_simple,
 				 guint16            *data,
 				 gint                max_seq_len,
 				 gint                n_seqs)
 {
-  GtkComposeTable *table;
+  BtkComposeTable *table;
 
-  g_return_if_fail (GTK_IS_IM_CONTEXT_SIMPLE (context_simple));
+  g_return_if_fail (BTK_IS_IM_CONTEXT_SIMPLE (context_simple));
   g_return_if_fail (data != NULL);
-  g_return_if_fail (max_seq_len <= GTK_MAX_COMPOSE_LEN);
+  g_return_if_fail (max_seq_len <= BTK_MAX_COMPOSE_LEN);
   
-  table = g_new (GtkComposeTable, 1);
+  table = g_new (BtkComposeTable, 1);
   table->data = data;
   table->max_seq_len = max_seq_len;
   table->n_seqs = n_seqs;
@@ -1240,5 +1240,5 @@ gtk_im_context_simple_add_table (GtkIMContextSimple *context_simple,
   context_simple->tables = g_slist_prepend (context_simple->tables, table);
 }
 
-#define __GTK_IM_CONTEXT_SIMPLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_IM_CONTEXT_SIMPLE_C__
+#include "btkaliasdef.c"

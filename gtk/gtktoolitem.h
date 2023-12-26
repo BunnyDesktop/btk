@@ -1,6 +1,6 @@
-/* gtktoolitem.c
+/* btktoolitem.c
  *
- * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
+ * Copyright (C) 2002 Anders Carlsson <andersca@bunny.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
  * Copyright (C) 2003 Soeren Sandmann <sandmann@daimi.au.dk>
  *
@@ -20,49 +20,49 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TOOL_ITEM_H__
-#define __GTK_TOOL_ITEM_H__
+#ifndef __BTK_TOOL_ITEM_H__
+#define __BTK_TOOL_ITEM_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
-#include <gtk/gtktooltips.h>
-#include <gtk/gtkmenuitem.h>
-#include <gtk/gtksizegroup.h>
+#include <btk/btkbin.h>
+#include <btk/btktooltips.h>
+#include <btk/btkmenuitem.h>
+#include <btk/btksizegroup.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOOL_ITEM            (gtk_tool_item_get_type ())
-#define GTK_TOOL_ITEM(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), GTK_TYPE_TOOL_ITEM, GtkToolItem))
-#define GTK_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TOOL_ITEM, GtkToolItemClass))
-#define GTK_IS_TOOL_ITEM(o)           (G_TYPE_CHECK_INSTANCE_TYPE ((o), GTK_TYPE_TOOL_ITEM))
-#define GTK_IS_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TOOL_ITEM))
-#define GTK_TOOL_ITEM_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS((o), GTK_TYPE_TOOL_ITEM, GtkToolItemClass))
+#define BTK_TYPE_TOOL_ITEM            (btk_tool_item_get_type ())
+#define BTK_TOOL_ITEM(o)              (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_TOOL_ITEM, BtkToolItem))
+#define BTK_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOOL_ITEM, BtkToolItemClass))
+#define BTK_IS_TOOL_ITEM(o)           (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_TOOL_ITEM))
+#define BTK_IS_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOOL_ITEM))
+#define BTK_TOOL_ITEM_GET_CLASS(o)    (G_TYPE_INSTANCE_GET_CLASS((o), BTK_TYPE_TOOL_ITEM, BtkToolItemClass))
 
-typedef struct _GtkToolItem        GtkToolItem;
-typedef struct _GtkToolItemClass   GtkToolItemClass;
-typedef struct _GtkToolItemPrivate GtkToolItemPrivate;
+typedef struct _BtkToolItem        BtkToolItem;
+typedef struct _BtkToolItemClass   BtkToolItemClass;
+typedef struct _BtkToolItemPrivate BtkToolItemPrivate;
 
-struct _GtkToolItem
+struct _BtkToolItem
 {
-  GtkBin parent;
+  BtkBin parent;
 
   /*< private >*/
-  GtkToolItemPrivate *GSEAL (priv);
+  BtkToolItemPrivate *GSEAL (priv);
 };
 
-struct _GtkToolItemClass
+struct _BtkToolItemClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
   /* signals */
-  gboolean   (* create_menu_proxy)    (GtkToolItem *tool_item);
-  void       (* toolbar_reconfigured) (GtkToolItem *tool_item);
-#ifndef GTK_DISABLE_DEPRECATED
-  gboolean   (* set_tooltip)	      (GtkToolItem *tool_item,
-				       GtkTooltips *tooltips,
+  gboolean   (* create_menu_proxy)    (BtkToolItem *tool_item);
+  void       (* toolbar_reconfigured) (BtkToolItem *tool_item);
+#ifndef BTK_DISABLE_DEPRECATED
+  gboolean   (* set_tooltip)	      (BtkToolItem *tool_item,
+				       BtkTooltips *tooltips,
 				       const gchar *tip_text,
 				       const gchar *tip_private);
 #else
@@ -70,73 +70,73 @@ struct _GtkToolItemClass
 #endif
 
   /* Padding for future expansion */
-  void (* _gtk_reserved1) (void);
-  void (* _gtk_reserved2) (void);
-  void (* _gtk_reserved3) (void);
-  void (* _gtk_reserved4) (void);
+  void (* _btk_reserved1) (void);
+  void (* _btk_reserved2) (void);
+  void (* _btk_reserved3) (void);
+  void (* _btk_reserved4) (void);
 };
 
-GType        gtk_tool_item_get_type (void) G_GNUC_CONST;
-GtkToolItem *gtk_tool_item_new      (void);
+GType        btk_tool_item_get_type (void) G_GNUC_CONST;
+BtkToolItem *btk_tool_item_new      (void);
 
-void            gtk_tool_item_set_homogeneous          (GtkToolItem *tool_item,
+void            btk_tool_item_set_homogeneous          (BtkToolItem *tool_item,
 							gboolean     homogeneous);
-gboolean        gtk_tool_item_get_homogeneous          (GtkToolItem *tool_item);
+gboolean        btk_tool_item_get_homogeneous          (BtkToolItem *tool_item);
 
-void            gtk_tool_item_set_expand               (GtkToolItem *tool_item,
+void            btk_tool_item_set_expand               (BtkToolItem *tool_item,
 							gboolean     expand);
-gboolean        gtk_tool_item_get_expand               (GtkToolItem *tool_item);
+gboolean        btk_tool_item_get_expand               (BtkToolItem *tool_item);
 
-#ifndef GTK_DISABLE_DEPRECATED
-void            gtk_tool_item_set_tooltip              (GtkToolItem *tool_item,
-							GtkTooltips *tooltips,
+#ifndef BTK_DISABLE_DEPRECATED
+void            btk_tool_item_set_tooltip              (BtkToolItem *tool_item,
+							BtkTooltips *tooltips,
 							const gchar *tip_text,
 							const gchar *tip_private);
-#endif /* GTK_DISABLE_DEPRECATED */
-void            gtk_tool_item_set_tooltip_text         (GtkToolItem *tool_item,
+#endif /* BTK_DISABLE_DEPRECATED */
+void            btk_tool_item_set_tooltip_text         (BtkToolItem *tool_item,
 							const gchar *text);
-void            gtk_tool_item_set_tooltip_markup       (GtkToolItem *tool_item,
+void            btk_tool_item_set_tooltip_markup       (BtkToolItem *tool_item,
 							const gchar *markup);
 
-void            gtk_tool_item_set_use_drag_window      (GtkToolItem *tool_item,
+void            btk_tool_item_set_use_drag_window      (BtkToolItem *tool_item,
 							gboolean     use_drag_window);
-gboolean        gtk_tool_item_get_use_drag_window      (GtkToolItem *tool_item);
+gboolean        btk_tool_item_get_use_drag_window      (BtkToolItem *tool_item);
 
-void            gtk_tool_item_set_visible_horizontal   (GtkToolItem *tool_item,
+void            btk_tool_item_set_visible_horizontal   (BtkToolItem *tool_item,
 							gboolean     visible_horizontal);
-gboolean        gtk_tool_item_get_visible_horizontal   (GtkToolItem *tool_item);
+gboolean        btk_tool_item_get_visible_horizontal   (BtkToolItem *tool_item);
 
-void            gtk_tool_item_set_visible_vertical     (GtkToolItem *tool_item,
+void            btk_tool_item_set_visible_vertical     (BtkToolItem *tool_item,
 							gboolean     visible_vertical);
-gboolean        gtk_tool_item_get_visible_vertical     (GtkToolItem *tool_item);
+gboolean        btk_tool_item_get_visible_vertical     (BtkToolItem *tool_item);
 
-gboolean        gtk_tool_item_get_is_important         (GtkToolItem *tool_item);
-void            gtk_tool_item_set_is_important         (GtkToolItem *tool_item,
+gboolean        btk_tool_item_get_is_important         (BtkToolItem *tool_item);
+void            btk_tool_item_set_is_important         (BtkToolItem *tool_item,
 							gboolean     is_important);
 
-PangoEllipsizeMode gtk_tool_item_get_ellipsize_mode    (GtkToolItem *tool_item);
-GtkIconSize     gtk_tool_item_get_icon_size            (GtkToolItem *tool_item);
-GtkOrientation  gtk_tool_item_get_orientation          (GtkToolItem *tool_item);
-GtkToolbarStyle gtk_tool_item_get_toolbar_style        (GtkToolItem *tool_item);
-GtkReliefStyle  gtk_tool_item_get_relief_style         (GtkToolItem *tool_item);
-gfloat          gtk_tool_item_get_text_alignment       (GtkToolItem *tool_item);
-GtkOrientation  gtk_tool_item_get_text_orientation     (GtkToolItem *tool_item);
-GtkSizeGroup *  gtk_tool_item_get_text_size_group      (GtkToolItem *tool_item);
+BangoEllipsizeMode btk_tool_item_get_ellipsize_mode    (BtkToolItem *tool_item);
+BtkIconSize     btk_tool_item_get_icon_size            (BtkToolItem *tool_item);
+BtkOrientation  btk_tool_item_get_orientation          (BtkToolItem *tool_item);
+BtkToolbarStyle btk_tool_item_get_toolbar_style        (BtkToolItem *tool_item);
+BtkReliefStyle  btk_tool_item_get_relief_style         (BtkToolItem *tool_item);
+gfloat          btk_tool_item_get_text_alignment       (BtkToolItem *tool_item);
+BtkOrientation  btk_tool_item_get_text_orientation     (BtkToolItem *tool_item);
+BtkSizeGroup *  btk_tool_item_get_text_size_group      (BtkToolItem *tool_item);
 
-GtkWidget *     gtk_tool_item_retrieve_proxy_menu_item (GtkToolItem *tool_item);
-GtkWidget *     gtk_tool_item_get_proxy_menu_item      (GtkToolItem *tool_item,
+BtkWidget *     btk_tool_item_retrieve_proxy_menu_item (BtkToolItem *tool_item);
+BtkWidget *     btk_tool_item_get_proxy_menu_item      (BtkToolItem *tool_item,
 							const gchar *menu_item_id);
-void            gtk_tool_item_set_proxy_menu_item      (GtkToolItem *tool_item,
+void            btk_tool_item_set_proxy_menu_item      (BtkToolItem *tool_item,
 							const gchar *menu_item_id,
-							GtkWidget   *menu_item);
-void		gtk_tool_item_rebuild_menu	       (GtkToolItem *tool_item);
+							BtkWidget   *menu_item);
+void		btk_tool_item_rebuild_menu	       (BtkToolItem *tool_item);
 
-void            gtk_tool_item_toolbar_reconfigured     (GtkToolItem *tool_item);
+void            btk_tool_item_toolbar_reconfigured     (BtkToolItem *tool_item);
 
 /* private */
 
-gboolean       _gtk_tool_item_create_menu_proxy        (GtkToolItem *tool_item);
+gboolean       _btk_tool_item_create_menu_proxy        (BtkToolItem *tool_item);
 
 G_END_DECLS
 
-#endif /* __GTK_TOOL_ITEM_H__ */
+#endif /* __BTK_TOOL_ITEM_H__ */

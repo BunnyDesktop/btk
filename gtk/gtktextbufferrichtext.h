@@ -1,4 +1,4 @@
-/* gtkrichtext.h
+/* btkrichtext.h
  *
  * Copyright (C) 2006 Imendio AB
  * Contact: Michael Natterer <mitch@imendio.com>
@@ -19,78 +19,78 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TEXT_BUFFER_RICH_TEXT_H__
-#define __GTK_TEXT_BUFFER_RICH_TEXT_H__
+#ifndef __BTK_TEXT_BUFFER_RICH_TEXT_H__
+#define __BTK_TEXT_BUFFER_RICH_TEXT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktextbuffer.h>
+#include <btk/btktextbuffer.h>
 
 G_BEGIN_DECLS
 
-typedef guint8 * (* GtkTextBufferSerializeFunc)   (GtkTextBuffer     *register_buffer,
-                                                   GtkTextBuffer     *content_buffer,
-                                                   const GtkTextIter *start,
-                                                   const GtkTextIter *end,
+typedef guint8 * (* BtkTextBufferSerializeFunc)   (BtkTextBuffer     *register_buffer,
+                                                   BtkTextBuffer     *content_buffer,
+                                                   const BtkTextIter *start,
+                                                   const BtkTextIter *end,
                                                    gsize             *length,
                                                    gpointer           user_data);
-typedef gboolean (* GtkTextBufferDeserializeFunc) (GtkTextBuffer     *register_buffer,
-                                                   GtkTextBuffer     *content_buffer,
-                                                   GtkTextIter       *iter,
+typedef gboolean (* BtkTextBufferDeserializeFunc) (BtkTextBuffer     *register_buffer,
+                                                   BtkTextBuffer     *content_buffer,
+                                                   BtkTextIter       *iter,
                                                    const guint8      *data,
                                                    gsize              length,
                                                    gboolean           create_tags,
                                                    gpointer           user_data,
                                                    GError           **error);
 
-GdkAtom   gtk_text_buffer_register_serialize_format   (GtkTextBuffer                *buffer,
+BdkAtom   btk_text_buffer_register_serialize_format   (BtkTextBuffer                *buffer,
                                                        const gchar                  *mime_type,
-                                                       GtkTextBufferSerializeFunc    function,
+                                                       BtkTextBufferSerializeFunc    function,
                                                        gpointer                      user_data,
                                                        GDestroyNotify                user_data_destroy);
-GdkAtom   gtk_text_buffer_register_serialize_tagset   (GtkTextBuffer                *buffer,
+BdkAtom   btk_text_buffer_register_serialize_tagset   (BtkTextBuffer                *buffer,
                                                        const gchar                  *tagset_name);
 
-GdkAtom   gtk_text_buffer_register_deserialize_format (GtkTextBuffer                *buffer,
+BdkAtom   btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffer,
                                                        const gchar                  *mime_type,
-                                                       GtkTextBufferDeserializeFunc  function,
+                                                       BtkTextBufferDeserializeFunc  function,
                                                        gpointer                      user_data,
                                                        GDestroyNotify                user_data_destroy);
-GdkAtom   gtk_text_buffer_register_deserialize_tagset (GtkTextBuffer                *buffer,
+BdkAtom   btk_text_buffer_register_deserialize_tagset (BtkTextBuffer                *buffer,
                                                        const gchar                  *tagset_name);
 
-void    gtk_text_buffer_unregister_serialize_format   (GtkTextBuffer                *buffer,
-                                                       GdkAtom                       format);
-void    gtk_text_buffer_unregister_deserialize_format (GtkTextBuffer                *buffer,
-                                                       GdkAtom                       format);
+void    btk_text_buffer_unregister_serialize_format   (BtkTextBuffer                *buffer,
+                                                       BdkAtom                       format);
+void    btk_text_buffer_unregister_deserialize_format (BtkTextBuffer                *buffer,
+                                                       BdkAtom                       format);
 
-void     gtk_text_buffer_deserialize_set_can_create_tags (GtkTextBuffer             *buffer,
-                                                          GdkAtom                    format,
+void     btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer             *buffer,
+                                                          BdkAtom                    format,
                                                           gboolean                   can_create_tags);
-gboolean gtk_text_buffer_deserialize_get_can_create_tags (GtkTextBuffer             *buffer,
-                                                          GdkAtom                    format);
+gboolean btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer             *buffer,
+                                                          BdkAtom                    format);
 
-GdkAtom * gtk_text_buffer_get_serialize_formats       (GtkTextBuffer                *buffer,
+BdkAtom * btk_text_buffer_get_serialize_formats       (BtkTextBuffer                *buffer,
                                                        gint                         *n_formats);
-GdkAtom * gtk_text_buffer_get_deserialize_formats     (GtkTextBuffer                *buffer,
+BdkAtom * btk_text_buffer_get_deserialize_formats     (BtkTextBuffer                *buffer,
                                                        gint                         *n_formats);
 
-guint8  * gtk_text_buffer_serialize                   (GtkTextBuffer                *register_buffer,
-                                                       GtkTextBuffer                *content_buffer,
-                                                       GdkAtom                       format,
-                                                       const GtkTextIter            *start,
-                                                       const GtkTextIter            *end,
+guint8  * btk_text_buffer_serialize                   (BtkTextBuffer                *register_buffer,
+                                                       BtkTextBuffer                *content_buffer,
+                                                       BdkAtom                       format,
+                                                       const BtkTextIter            *start,
+                                                       const BtkTextIter            *end,
                                                        gsize                        *length);
-gboolean  gtk_text_buffer_deserialize                 (GtkTextBuffer                *register_buffer,
-                                                       GtkTextBuffer                *content_buffer,
-                                                       GdkAtom                       format,
-                                                       GtkTextIter                  *iter,
+gboolean  btk_text_buffer_deserialize                 (BtkTextBuffer                *register_buffer,
+                                                       BtkTextBuffer                *content_buffer,
+                                                       BdkAtom                       format,
+                                                       BtkTextIter                  *iter,
                                                        const guint8                 *data,
                                                        gsize                         length,
                                                        GError                      **error);
 
 G_END_DECLS
 
-#endif /* __GTK_TEXT_BUFFER_RICH_TEXT_H__ */
+#endif /* __BTK_TEXT_BUFFER_RICH_TEXT_H__ */

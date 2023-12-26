@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,257 +18,257 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_IMAGE_H__
-#define __GTK_IMAGE_H__
+#ifndef __BTK_IMAGE_H__
+#define __BTK_IMAGE_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gio/gio.h>
-#include <gtk/gtkmisc.h>
+#include <bunnyio/bunnyio.h>
+#include <btk/btkmisc.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_IMAGE                  (gtk_image_get_type ())
-#define GTK_IMAGE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_IMAGE, GtkImage))
-#define GTK_IMAGE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_IMAGE, GtkImageClass))
-#define GTK_IS_IMAGE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_IMAGE))
-#define GTK_IS_IMAGE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_IMAGE))
-#define GTK_IMAGE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_IMAGE, GtkImageClass))
+#define BTK_TYPE_IMAGE                  (btk_image_get_type ())
+#define BTK_IMAGE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_IMAGE, BtkImage))
+#define BTK_IMAGE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_IMAGE, BtkImageClass))
+#define BTK_IS_IMAGE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_IMAGE))
+#define BTK_IS_IMAGE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_IMAGE))
+#define BTK_IMAGE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_IMAGE, BtkImageClass))
 
 
-typedef struct _GtkImage       GtkImage;
-typedef struct _GtkImageClass  GtkImageClass;
+typedef struct _BtkImage       BtkImage;
+typedef struct _BtkImageClass  BtkImageClass;
 
-typedef struct _GtkImagePixmapData  GtkImagePixmapData;
-typedef struct _GtkImageImageData   GtkImageImageData;
-typedef struct _GtkImagePixbufData  GtkImagePixbufData;
-typedef struct _GtkImageStockData   GtkImageStockData;
-typedef struct _GtkImageIconSetData GtkImageIconSetData;
-typedef struct _GtkImageAnimationData GtkImageAnimationData;
-typedef struct _GtkImageIconNameData  GtkImageIconNameData;
-typedef struct _GtkImageGIconData     GtkImageGIconData;
+typedef struct _BtkImagePixmapData  BtkImagePixmapData;
+typedef struct _BtkImageImageData   BtkImageImageData;
+typedef struct _BtkImagePixbufData  BtkImagePixbufData;
+typedef struct _BtkImageStockData   BtkImageStockData;
+typedef struct _BtkImageIconSetData BtkImageIconSetData;
+typedef struct _BtkImageAnimationData BtkImageAnimationData;
+typedef struct _BtkImageIconNameData  BtkImageIconNameData;
+typedef struct _BtkImageGIconData     BtkImageGIconData;
 
-struct _GtkImagePixmapData
+struct _BtkImagePixmapData
 {
-  GdkPixmap *pixmap;
+  BdkPixmap *pixmap;
 };
 
-struct _GtkImageImageData
+struct _BtkImageImageData
 {
-  GdkImage *image;
+  BdkImage *image;
 };
 
-struct _GtkImagePixbufData
+struct _BtkImagePixbufData
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 };
 
-struct _GtkImageStockData
+struct _BtkImageStockData
 {
   gchar *stock_id;
 };
 
-struct _GtkImageIconSetData
+struct _BtkImageIconSetData
 {
-  GtkIconSet *icon_set;
+  BtkIconSet *icon_set;
 };
 
-struct _GtkImageAnimationData
+struct _BtkImageAnimationData
 {
-  GdkPixbufAnimation *anim;
-  GdkPixbufAnimationIter *iter;
+  BdkPixbufAnimation *anim;
+  BdkPixbufAnimationIter *iter;
   guint frame_timeout;
 };
 
-struct _GtkImageIconNameData
+struct _BtkImageIconNameData
 {
   gchar *icon_name;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   guint theme_change_id;
 };
 
-struct _GtkImageGIconData
+struct _BtkImageGIconData
 {
   GIcon *icon;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   guint theme_change_id;
 };
 
 /**
- * GtkImageType:
- * @GTK_IMAGE_EMPTY: there is no image displayed by the widget
- * @GTK_IMAGE_PIXMAP: the widget contains a #GdkPixmap
- * @GTK_IMAGE_IMAGE: the widget contains a #GdkImage
- * @GTK_IMAGE_PIXBUF: the widget contains a #GdkPixbuf
- * @GTK_IMAGE_STOCK: the widget contains a stock icon name (see <xref linkend="gtk-Stock-Items"/>)
- * @GTK_IMAGE_ICON_SET: the widget contains a #GtkIconSet
- * @GTK_IMAGE_ANIMATION: the widget contains a #GdkPixbufAnimation
- * @GTK_IMAGE_ICON_NAME: the widget contains a named icon.
- *  This image type was added in GTK+ 2.6
- * @GTK_IMAGE_GICON: the widget contains a #GIcon.
- *  This image type was added in GTK+ 2.14
+ * BtkImageType:
+ * @BTK_IMAGE_EMPTY: there is no image displayed by the widget
+ * @BTK_IMAGE_PIXMAP: the widget contains a #BdkPixmap
+ * @BTK_IMAGE_IMAGE: the widget contains a #BdkImage
+ * @BTK_IMAGE_PIXBUF: the widget contains a #BdkPixbuf
+ * @BTK_IMAGE_STOCK: the widget contains a stock icon name (see <xref linkend="btk-Stock-Items"/>)
+ * @BTK_IMAGE_ICON_SET: the widget contains a #BtkIconSet
+ * @BTK_IMAGE_ANIMATION: the widget contains a #BdkPixbufAnimation
+ * @BTK_IMAGE_ICON_NAME: the widget contains a named icon.
+ *  This image type was added in BTK+ 2.6
+ * @BTK_IMAGE_GICON: the widget contains a #GIcon.
+ *  This image type was added in BTK+ 2.14
  *
- * Describes the image data representation used by a #GtkImage. If you
+ * Describes the image data representation used by a #BtkImage. If you
  * want to get the image from the widget, you can only get the
  * currently-stored representation. e.g.  if the
- * gtk_image_get_storage_type() returns #GTK_IMAGE_PIXBUF, then you can
- * call gtk_image_get_pixbuf() but not gtk_image_get_stock().  For empty
+ * btk_image_get_storage_type() returns #BTK_IMAGE_PIXBUF, then you can
+ * call btk_image_get_pixbuf() but not btk_image_get_stock().  For empty
  * images, you can request any storage type (call any of the "get"
  * functions), but they will all return %NULL values.
  */
 typedef enum
 {
-  GTK_IMAGE_EMPTY,
-  GTK_IMAGE_PIXMAP,
-  GTK_IMAGE_IMAGE,
-  GTK_IMAGE_PIXBUF,
-  GTK_IMAGE_STOCK,
-  GTK_IMAGE_ICON_SET,
-  GTK_IMAGE_ANIMATION,
-  GTK_IMAGE_ICON_NAME,
-  GTK_IMAGE_GICON
-} GtkImageType;
+  BTK_IMAGE_EMPTY,
+  BTK_IMAGE_PIXMAP,
+  BTK_IMAGE_IMAGE,
+  BTK_IMAGE_PIXBUF,
+  BTK_IMAGE_STOCK,
+  BTK_IMAGE_ICON_SET,
+  BTK_IMAGE_ANIMATION,
+  BTK_IMAGE_ICON_NAME,
+  BTK_IMAGE_GICON
+} BtkImageType;
 
 /**
- * GtkImage:
+ * BtkImage:
  *
  * This struct contain private data only and should be accessed by the functions
  * below.
  */
-struct _GtkImage
+struct _BtkImage
 {
-  GtkMisc misc;
+  BtkMisc misc;
 
-  GtkImageType GSEAL (storage_type);
+  BtkImageType GSEAL (storage_type);
   
   union
   {
-    GtkImagePixmapData pixmap;
-    GtkImageImageData image;
-    GtkImagePixbufData pixbuf;
-    GtkImageStockData stock;
-    GtkImageIconSetData icon_set;
-    GtkImageAnimationData anim;
-    GtkImageIconNameData name;
-    GtkImageGIconData gicon;
+    BtkImagePixmapData pixmap;
+    BtkImageImageData image;
+    BtkImagePixbufData pixbuf;
+    BtkImageStockData stock;
+    BtkImageIconSetData icon_set;
+    BtkImageAnimationData anim;
+    BtkImageIconNameData name;
+    BtkImageGIconData gicon;
   } GSEAL (data);
 
-  /* Only used with GTK_IMAGE_PIXMAP, GTK_IMAGE_IMAGE */
-  GdkBitmap *GSEAL (mask);
+  /* Only used with BTK_IMAGE_PIXMAP, BTK_IMAGE_IMAGE */
+  BdkBitmap *GSEAL (mask);
 
-  /* Only used with GTK_IMAGE_STOCK, GTK_IMAGE_ICON_SET, GTK_IMAGE_ICON_NAME */
-  GtkIconSize GSEAL (icon_size);
+  /* Only used with BTK_IMAGE_STOCK, BTK_IMAGE_ICON_SET, BTK_IMAGE_ICON_NAME */
+  BtkIconSize GSEAL (icon_size);
 };
 
-struct _GtkImageClass
+struct _BtkImageClass
 {
-  GtkMiscClass parent_class;
+  BtkMiscClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 #ifdef G_OS_WIN32
 /* Reserve old names for DLL ABI backward compatibility */
-#define gtk_image_new_from_file gtk_image_new_from_file_utf8
-#define gtk_image_set_from_file gtk_image_set_from_file_utf8
+#define btk_image_new_from_file btk_image_new_from_file_utf8
+#define btk_image_set_from_file btk_image_set_from_file_utf8
 #endif
 
-GType      gtk_image_get_type (void) G_GNUC_CONST;
+GType      btk_image_get_type (void) G_GNUC_CONST;
 
-GtkWidget* gtk_image_new                (void);
-GtkWidget* gtk_image_new_from_pixmap    (GdkPixmap       *pixmap,
-                                         GdkBitmap       *mask);
-GtkWidget* gtk_image_new_from_image     (GdkImage        *image,
-                                         GdkBitmap       *mask);
-GtkWidget* gtk_image_new_from_file      (const gchar     *filename);
-GtkWidget* gtk_image_new_from_pixbuf    (GdkPixbuf       *pixbuf);
-GtkWidget* gtk_image_new_from_stock     (const gchar     *stock_id,
-                                         GtkIconSize      size);
-GtkWidget* gtk_image_new_from_icon_set  (GtkIconSet      *icon_set,
-                                         GtkIconSize      size);
-GtkWidget* gtk_image_new_from_animation (GdkPixbufAnimation *animation);
-GtkWidget* gtk_image_new_from_icon_name (const gchar     *icon_name,
-					 GtkIconSize      size);
-GtkWidget* gtk_image_new_from_gicon     (GIcon           *icon,
-					 GtkIconSize      size);
+BtkWidget* btk_image_new                (void);
+BtkWidget* btk_image_new_from_pixmap    (BdkPixmap       *pixmap,
+                                         BdkBitmap       *mask);
+BtkWidget* btk_image_new_from_image     (BdkImage        *image,
+                                         BdkBitmap       *mask);
+BtkWidget* btk_image_new_from_file      (const gchar     *filename);
+BtkWidget* btk_image_new_from_pixbuf    (BdkPixbuf       *pixbuf);
+BtkWidget* btk_image_new_from_stock     (const gchar     *stock_id,
+                                         BtkIconSize      size);
+BtkWidget* btk_image_new_from_icon_set  (BtkIconSet      *icon_set,
+                                         BtkIconSize      size);
+BtkWidget* btk_image_new_from_animation (BdkPixbufAnimation *animation);
+BtkWidget* btk_image_new_from_icon_name (const gchar     *icon_name,
+					 BtkIconSize      size);
+BtkWidget* btk_image_new_from_gicon     (GIcon           *icon,
+					 BtkIconSize      size);
 
-void gtk_image_clear              (GtkImage        *image);
-void gtk_image_set_from_pixmap    (GtkImage        *image,
-                                   GdkPixmap       *pixmap,
-                                   GdkBitmap       *mask);
-void gtk_image_set_from_image     (GtkImage        *image,
-                                   GdkImage        *gdk_image,
-                                   GdkBitmap       *mask);
-void gtk_image_set_from_file      (GtkImage        *image,
+void btk_image_clear              (BtkImage        *image);
+void btk_image_set_from_pixmap    (BtkImage        *image,
+                                   BdkPixmap       *pixmap,
+                                   BdkBitmap       *mask);
+void btk_image_set_from_image     (BtkImage        *image,
+                                   BdkImage        *bdk_image,
+                                   BdkBitmap       *mask);
+void btk_image_set_from_file      (BtkImage        *image,
                                    const gchar     *filename);
-void gtk_image_set_from_pixbuf    (GtkImage        *image,
-                                   GdkPixbuf       *pixbuf);
-void gtk_image_set_from_stock     (GtkImage        *image,
+void btk_image_set_from_pixbuf    (BtkImage        *image,
+                                   BdkPixbuf       *pixbuf);
+void btk_image_set_from_stock     (BtkImage        *image,
                                    const gchar     *stock_id,
-                                   GtkIconSize      size);
-void gtk_image_set_from_icon_set  (GtkImage        *image,
-                                   GtkIconSet      *icon_set,
-                                   GtkIconSize      size);
-void gtk_image_set_from_animation (GtkImage           *image,
-                                   GdkPixbufAnimation *animation);
-void gtk_image_set_from_icon_name (GtkImage        *image,
+                                   BtkIconSize      size);
+void btk_image_set_from_icon_set  (BtkImage        *image,
+                                   BtkIconSet      *icon_set,
+                                   BtkIconSize      size);
+void btk_image_set_from_animation (BtkImage           *image,
+                                   BdkPixbufAnimation *animation);
+void btk_image_set_from_icon_name (BtkImage        *image,
 				   const gchar     *icon_name,
-				   GtkIconSize      size);
-void gtk_image_set_from_gicon     (GtkImage        *image,
+				   BtkIconSize      size);
+void btk_image_set_from_gicon     (BtkImage        *image,
 				   GIcon           *icon,
-				   GtkIconSize      size);
-void gtk_image_set_pixel_size     (GtkImage        *image,
+				   BtkIconSize      size);
+void btk_image_set_pixel_size     (BtkImage        *image,
 				   gint             pixel_size);
 
-GtkImageType gtk_image_get_storage_type (GtkImage   *image);
+BtkImageType btk_image_get_storage_type (BtkImage   *image);
 
-void       gtk_image_get_pixmap   (GtkImage         *image,
-                                   GdkPixmap       **pixmap,
-                                   GdkBitmap       **mask);
-void       gtk_image_get_image    (GtkImage         *image,
-                                   GdkImage        **gdk_image,
-                                   GdkBitmap       **mask);
-GdkPixbuf* gtk_image_get_pixbuf   (GtkImage         *image);
-void       gtk_image_get_stock    (GtkImage         *image,
+void       btk_image_get_pixmap   (BtkImage         *image,
+                                   BdkPixmap       **pixmap,
+                                   BdkBitmap       **mask);
+void       btk_image_get_image    (BtkImage         *image,
+                                   BdkImage        **bdk_image,
+                                   BdkBitmap       **mask);
+BdkPixbuf* btk_image_get_pixbuf   (BtkImage         *image);
+void       btk_image_get_stock    (BtkImage         *image,
                                    gchar           **stock_id,
-                                   GtkIconSize      *size);
-void       gtk_image_get_icon_set (GtkImage         *image,
-                                   GtkIconSet      **icon_set,
-                                   GtkIconSize      *size);
-GdkPixbufAnimation* gtk_image_get_animation (GtkImage *image);
-void       gtk_image_get_icon_name (GtkImage              *image,
+                                   BtkIconSize      *size);
+void       btk_image_get_icon_set (BtkImage         *image,
+                                   BtkIconSet      **icon_set,
+                                   BtkIconSize      *size);
+BdkPixbufAnimation* btk_image_get_animation (BtkImage *image);
+void       btk_image_get_icon_name (BtkImage              *image,
 				    const gchar          **icon_name,
-				    GtkIconSize           *size);
-void       gtk_image_get_gicon     (GtkImage              *image,
+				    BtkIconSize           *size);
+void       btk_image_get_gicon     (BtkImage              *image,
 				    GIcon                **gicon,
-				    GtkIconSize           *size);
-gint       gtk_image_get_pixel_size (GtkImage             *image);
+				    BtkIconSize           *size);
+gint       btk_image_get_pixel_size (BtkImage             *image);
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /* These three are deprecated */
 
-void       gtk_image_set      (GtkImage   *image,
-			       GdkImage   *val,
-			       GdkBitmap  *mask);
-void       gtk_image_get      (GtkImage   *image,
-			       GdkImage  **val,
-			       GdkBitmap **mask);
-#endif /* GTK_DISABLE_DEPRECATED */
+void       btk_image_set      (BtkImage   *image,
+			       BdkImage   *val,
+			       BdkBitmap  *mask);
+void       btk_image_get      (BtkImage   *image,
+			       BdkImage  **val,
+			       BdkBitmap **mask);
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_IMAGE_H__ */
+#endif /* __BTK_IMAGE_H__ */

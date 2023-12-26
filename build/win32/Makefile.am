@@ -3,10 +3,10 @@ include $(top_srcdir)/Makefile.decl
 if HAVE_INTROSPECTION
 GENERATED_ITEMS =		\
 	introspection.body.mak	\
-	Gdk_2_0_gir_list	\
-	Gtk_2_0_gir_list
+	Bdk_2_0_gir_list	\
+	Btk_2_0_gir_list
 
-MSVC_INTROSPECTION_INTERMEDIATE_FILES = Gdk-2.0.gir.msvc.introspect Gtk-2.0.gir.msvc.introspect
+MSVC_INTROSPECTION_INTERMEDIATE_FILES = Bdk-2.0.gir.msvc.introspect Btk-2.0.gir.msvc.introspect
 
 introspection.body.mak: $(MSVC_INTROSPECTION_INTERMEDIATE_FILES)
 	-$(RM) introspection.body.mak
@@ -37,8 +37,8 @@ SUBDIRS =	\
 EXTRA_DIST +=	\
 	detectenv-msvc.mak		\
 	introspection-msvc.mak		\
-	gtk-introspection-msvc.mak	\
-	gtkpc.py			\
+	btk-introspection-msvc.mak	\
+	btkpc.py			\
 	pc_base.py			\
 	replace.py			\
 	$(GENERATED_ITEMS)

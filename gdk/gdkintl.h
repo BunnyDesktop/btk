@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,17 +18,17 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDKINTL_H__
-#define __GDKINTL_H__
+#ifndef __BDKINTL_H__
+#define __BDKINTL_H__
 
 #include "config.h"
-#include <glib/gi18n-lib.h>
+#include <bunnylib/gi18n-lib.h>
 
 #ifdef ENABLE_NLS
 #define P_(String) dgettext(GETTEXT_PACKAGE "-properties",String)

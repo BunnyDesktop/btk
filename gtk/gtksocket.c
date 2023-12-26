@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -16,64 +16,64 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* By Owen Taylor <otaylor@gtk.org>              98/4/4 */
+/* By Owen Taylor <otaylor@btk.org>              98/4/4 */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <string.h>
 
-#include "gdk/gdkkeysyms.h"
-#include "gtkmain.h"
-#include "gtkmarshalers.h"
-#include "gtkwindow.h"
-#include "gtkplug.h"
-#include "gtkprivate.h"
-#include "gtksocket.h"
-#include "gtksocketprivate.h"
-#include "gtkdnd.h"
-#include "gtkintl.h"
+#include "bdk/bdkkeysyms.h"
+#include "btkmain.h"
+#include "btkmarshalers.h"
+#include "btkwindow.h"
+#include "btkplug.h"
+#include "btkprivate.h"
+#include "btksocket.h"
+#include "btksocketprivate.h"
+#include "btkdnd.h"
+#include "btkintl.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtksocket
+ * SECTION:btksocket
  * @Short_description: Container for widgets from other processes
- * @Title: GtkSocket
- * @See_also: #GtkPlug, <ulink url="http://www.freedesktop.org/Standards/xembed-spec">XEmbed</ulink>
+ * @Title: BtkSocket
+ * @See_also: #BtkPlug, <ulink url="http://www.freedesktop.org/Standards/xembed-spec">XEmbed</ulink>
  *
- * Together with #GtkPlug, #GtkSocket provides the ability
+ * Together with #BtkPlug, #BtkSocket provides the ability
  * to embed widgets from one process into another process
  * in a fashion that is transparent to the user. One
- * process creates a #GtkSocket widget and passes
+ * process creates a #BtkSocket widget and passes
  * that widget's window ID to the other process,
- * which then creates a #GtkPlug with that window ID.
- * Any widgets contained in the #GtkPlug then will appear
+ * which then creates a #BtkPlug with that window ID.
+ * Any widgets contained in the #BtkPlug then will appear
  * inside the first application's window.
  *
  * The socket's window ID is obtained by using
- * gtk_socket_get_id(). Before using this function,
+ * btk_socket_get_id(). Before using this function,
  * the socket must have been realized, and for hence,
  * have been added to its parent.
  *
  * <example>
  * <title>Obtaining the window ID of a socket.</title>
  * <programlisting>
- * GtkWidget *socket = gtk_socket_new (<!-- -->);
- * gtk_widget_show (socket);
- * gtk_container_add (GTK_CONTAINER (parent), socket);
+ * BtkWidget *socket = btk_socket_new (<!-- -->);
+ * btk_widget_show (socket);
+ * btk_container_add (BTK_CONTAINER (parent), socket);
  *
  * /<!---->* The following call is only necessary if one of
  *  * the ancestors of the socket is not yet visible.
  *  *<!---->/
- * gtk_widget_realize (socket);
+ * btk_widget_realize (socket);
  * g_print ("The ID of the sockets window is %#x\n",
- *          gtk_socket_get_id (socket));
+ *          btk_socket_get_id (socket));
  * </programlisting>
  * </example>
  *
@@ -84,58 +84,58 @@
  * cause unpredictable consequences, the most likely
  * consequence being that the plug will appear as a
  * separate toplevel window. You can check if the plug
- * has been created by using gtk_socket_get_plug_window(). If
+ * has been created by using btk_socket_get_plug_window(). If
  * it returns a non-%NULL value, then the plug has been
  * successfully created inside of the socket.
  *
- * When GTK+ is notified that the embedded window has been
+ * When BTK+ is notified that the embedded window has been
  * destroyed, then it will destroy the socket as well. You
  * should always, therefore, be prepared for your sockets
  * to be destroyed at any time when the main event loop
  * is running. To prevent this from happening, you can
- * connect to the #GtkSocket::plug-removed signal.
+ * connect to the #BtkSocket::plug-removed signal.
  *
- * The communication between a #GtkSocket and a #GtkPlug follows the
+ * The communication between a #BtkSocket and a #BtkPlug follows the
  * <ulink url="http://www.freedesktop.org/Standards/xembed-spec">XEmbed</ulink>
  * protocol. This protocol has also been implemented in other toolkits, e.g.
  * <application>Qt</application>, allowing the same level of integration
- * when embedding a <application>Qt</application> widget in GTK or vice versa.
+ * when embedding a <application>Qt</application> widget in BTK or vice versa.
  *
  * A socket can also be used to swallow arbitrary
- * pre-existing top-level windows using gtk_socket_steal(),
+ * pre-existing top-level windows using btk_socket_steal(),
  * though the integration when this is done will not be as close
- * as between a #GtkPlug and a #GtkSocket.
+ * as between a #BtkPlug and a #BtkSocket.
  *
  * <note>
- * The #GtkPlug and #GtkSocket widgets are currently not available
- * on all platforms supported by GTK+.
+ * The #BtkPlug and #BtkSocket widgets are currently not available
+ * on all platforms supported by BTK+.
  * </note>
  */
 
 /* Forward declararations */
 
-static void     gtk_socket_finalize             (GObject          *object);
-static void     gtk_socket_notify               (GObject          *object,
+static void     btk_socket_finalize             (GObject          *object);
+static void     btk_socket_notify               (GObject          *object,
 						 GParamSpec       *pspec);
-static void     gtk_socket_realize              (GtkWidget        *widget);
-static void     gtk_socket_unrealize            (GtkWidget        *widget);
-static void     gtk_socket_size_request         (GtkWidget        *widget,
-						 GtkRequisition   *requisition);
-static void     gtk_socket_size_allocate        (GtkWidget        *widget,
-						 GtkAllocation    *allocation);
-static void     gtk_socket_hierarchy_changed    (GtkWidget        *widget,
-						 GtkWidget        *old_toplevel);
-static void     gtk_socket_grab_notify          (GtkWidget        *widget,
+static void     btk_socket_realize              (BtkWidget        *widget);
+static void     btk_socket_unrealize            (BtkWidget        *widget);
+static void     btk_socket_size_request         (BtkWidget        *widget,
+						 BtkRequisition   *requisition);
+static void     btk_socket_size_allocate        (BtkWidget        *widget,
+						 BtkAllocation    *allocation);
+static void     btk_socket_hierarchy_changed    (BtkWidget        *widget,
+						 BtkWidget        *old_toplevel);
+static void     btk_socket_grab_notify          (BtkWidget        *widget,
 						 gboolean          was_grabbed);
-static gboolean gtk_socket_key_event            (GtkWidget        *widget,
-						 GdkEventKey      *event);
-static gboolean gtk_socket_focus                (GtkWidget        *widget,
-						 GtkDirectionType  direction);
-static void     gtk_socket_remove               (GtkContainer     *container,
-						 GtkWidget        *widget);
-static void     gtk_socket_forall               (GtkContainer     *container,
+static gboolean btk_socket_key_event            (BtkWidget        *widget,
+						 BdkEventKey      *event);
+static gboolean btk_socket_focus                (BtkWidget        *widget,
+						 BtkDirectionType  direction);
+static void     btk_socket_remove               (BtkContainer     *container,
+						 BtkWidget        *widget);
+static void     btk_socket_forall               (BtkContainer     *container,
 						 gboolean          include_internals,
-						 GtkCallback       callback,
+						 BtkCallback       callback,
 						 gpointer          callback_data);
 
 
@@ -144,7 +144,7 @@ static void     gtk_socket_forall               (GtkContainer     *container,
 typedef struct
 {
   guint			 accel_key;
-  GdkModifierType	 accel_mods;
+  BdkModifierType	 accel_mods;
 } GrabbedKey;
 
 enum {
@@ -156,67 +156,67 @@ enum {
 static guint socket_signals[LAST_SIGNAL] = { 0 };
 
 /*
- * _gtk_socket_get_private:
+ * _btk_socket_get_private:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  *
- * Returns the private data associated with a GtkSocket, creating it
+ * Returns the private data associated with a BtkSocket, creating it
  * first if necessary.
  */
-GtkSocketPrivate *
-_gtk_socket_get_private (GtkSocket *socket)
+BtkSocketPrivate *
+_btk_socket_get_private (BtkSocket *socket)
 {
-  return G_TYPE_INSTANCE_GET_PRIVATE (socket, GTK_TYPE_SOCKET, GtkSocketPrivate);
+  return G_TYPE_INSTANCE_GET_PRIVATE (socket, BTK_TYPE_SOCKET, BtkSocketPrivate);
 }
 
-G_DEFINE_TYPE (GtkSocket, gtk_socket, GTK_TYPE_CONTAINER)
+G_DEFINE_TYPE (BtkSocket, btk_socket, BTK_TYPE_CONTAINER)
 
 static void
-gtk_socket_finalize (GObject *object)
+btk_socket_finalize (GObject *object)
 {
-  GtkSocket *socket = GTK_SOCKET (object);
+  BtkSocket *socket = BTK_SOCKET (object);
   
   g_object_unref (socket->accel_group);
   socket->accel_group = NULL;
 
-  G_OBJECT_CLASS (gtk_socket_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_socket_parent_class)->finalize (object);
 }
 
 static void
-gtk_socket_class_init (GtkSocketClass *class)
+btk_socket_class_init (BtkSocketClass *class)
 {
-  GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
-  GObjectClass *gobject_class;
+  BtkWidgetClass *widget_class;
+  BtkContainerClass *container_class;
+  GObjectClass *bobject_class;
 
-  gobject_class = (GObjectClass *) class;
-  widget_class = (GtkWidgetClass*) class;
-  container_class = (GtkContainerClass*) class;
+  bobject_class = (GObjectClass *) class;
+  widget_class = (BtkWidgetClass*) class;
+  container_class = (BtkContainerClass*) class;
 
-  gobject_class->finalize = gtk_socket_finalize;
-  gobject_class->notify = gtk_socket_notify;
+  bobject_class->finalize = btk_socket_finalize;
+  bobject_class->notify = btk_socket_notify;
 
-  widget_class->realize = gtk_socket_realize;
-  widget_class->unrealize = gtk_socket_unrealize;
-  widget_class->size_request = gtk_socket_size_request;
-  widget_class->size_allocate = gtk_socket_size_allocate;
-  widget_class->hierarchy_changed = gtk_socket_hierarchy_changed;
-  widget_class->grab_notify = gtk_socket_grab_notify;
-  widget_class->key_press_event = gtk_socket_key_event;
-  widget_class->key_release_event = gtk_socket_key_event;
-  widget_class->focus = gtk_socket_focus;
+  widget_class->realize = btk_socket_realize;
+  widget_class->unrealize = btk_socket_unrealize;
+  widget_class->size_request = btk_socket_size_request;
+  widget_class->size_allocate = btk_socket_size_allocate;
+  widget_class->hierarchy_changed = btk_socket_hierarchy_changed;
+  widget_class->grab_notify = btk_socket_grab_notify;
+  widget_class->key_press_event = btk_socket_key_event;
+  widget_class->key_release_event = btk_socket_key_event;
+  widget_class->focus = btk_socket_focus;
 
   /* We don't want to show_all/hide_all the in-process
    * plug, if any.
    */
-  widget_class->show_all = gtk_widget_show;
-  widget_class->hide_all = gtk_widget_hide;
+  widget_class->show_all = btk_widget_show;
+  widget_class->hide_all = btk_widget_hide;
   
-  container_class->remove = gtk_socket_remove;
-  container_class->forall = gtk_socket_forall;
+  container_class->remove = btk_socket_remove;
+  container_class->forall = btk_socket_forall;
 
   /**
-   * GtkSocket::plug-added:
+   * BtkSocket::plug-added:
    * @socket_: the object which received the signal
    *
    * This signal is emitted when a client is successfully
@@ -226,17 +226,17 @@ gtk_socket_class_init (GtkSocketClass *class)
     g_signal_new (I_("plug-added"),
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSocketClass, plug_added),
+		  G_STRUCT_OFFSET (BtkSocketClass, plug_added),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   /**
-   * GtkSocket::plug-removed:
+   * BtkSocket::plug-removed:
    * @socket_: the object which received the signal
    *
    * This signal is emitted when a client is removed from the socket. 
-   * The default action is to destroy the #GtkSocket widget, so if you 
+   * The default action is to destroy the #BtkSocket widget, so if you 
    * want to reuse it you must add a signal handler that returns %TRUE. 
    *
    * Return value: %TRUE to stop other handlers from being invoked.
@@ -245,16 +245,16 @@ gtk_socket_class_init (GtkSocketClass *class)
     g_signal_new (I_("plug-removed"),
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkSocketClass, plug_removed),
-                  _gtk_boolean_handled_accumulator, NULL,
-		  _gtk_marshal_BOOLEAN__VOID,
+		  G_STRUCT_OFFSET (BtkSocketClass, plug_removed),
+                  _btk_boolean_handled_accumulator, NULL,
+		  _btk_marshal_BOOLEAN__VOID,
 		  G_TYPE_BOOLEAN, 0);
 
-  g_type_class_add_private (gobject_class, sizeof (GtkSocketPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkSocketPrivate));
 }
 
 static void
-gtk_socket_init (GtkSocket *socket)
+btk_socket_init (BtkSocket *socket)
 {
   socket->request_width = 0;
   socket->request_height = 0;
@@ -268,112 +268,112 @@ gtk_socket_init (GtkSocket *socket)
   socket->need_map = FALSE;
   socket->active = FALSE;
 
-  socket->accel_group = gtk_accel_group_new ();
-  g_object_set_data (G_OBJECT (socket->accel_group), I_("gtk-socket"), socket);
+  socket->accel_group = btk_accel_group_new ();
+  g_object_set_data (G_OBJECT (socket->accel_group), I_("btk-socket"), socket);
 }
 
 /**
- * gtk_socket_new:
+ * btk_socket_new:
  * 
- * Create a new empty #GtkSocket.
+ * Create a new empty #BtkSocket.
  * 
- * Return value:  the new #GtkSocket.
+ * Return value:  the new #BtkSocket.
  **/
-GtkWidget*
-gtk_socket_new (void)
+BtkWidget*
+btk_socket_new (void)
 {
-  GtkSocket *socket;
+  BtkSocket *socket;
 
-  socket = g_object_new (GTK_TYPE_SOCKET, NULL);
+  socket = g_object_new (BTK_TYPE_SOCKET, NULL);
 
-  return GTK_WIDGET (socket);
+  return BTK_WIDGET (socket);
 }
 
 /**
- * gtk_socket_steal:
- * @socket_: a #GtkSocket
+ * btk_socket_steal:
+ * @socket_: a #BtkSocket
  * @wid: the window ID of an existing toplevel window.
  * 
- * Reparents a pre-existing toplevel window into a #GtkSocket. This is
+ * Reparents a pre-existing toplevel window into a #BtkSocket. This is
  * meant to embed clients that do not know about embedding into a
- * #GtkSocket, however doing so is inherently unreliable, and using
+ * #BtkSocket, however doing so is inherently unreliable, and using
  * this function is not recommended.
  *
- * The #GtkSocket must have already be added into a toplevel window
+ * The #BtkSocket must have already be added into a toplevel window
  *  before you can make this call.
  **/
 void           
-gtk_socket_steal (GtkSocket      *socket,
-		  GdkNativeWindow wid)
+btk_socket_steal (BtkSocket      *socket,
+		  BdkNativeWindow wid)
 {
-  g_return_if_fail (GTK_IS_SOCKET (socket));
-  g_return_if_fail (GTK_WIDGET_ANCHORED (socket));
+  g_return_if_fail (BTK_IS_SOCKET (socket));
+  g_return_if_fail (BTK_WIDGET_ANCHORED (socket));
 
-  if (!gtk_widget_get_realized (GTK_WIDGET (socket)))
-    gtk_widget_realize (GTK_WIDGET (socket));
+  if (!btk_widget_get_realized (BTK_WIDGET (socket)))
+    btk_widget_realize (BTK_WIDGET (socket));
 
-  _gtk_socket_add_window (socket, wid, TRUE);
+  _btk_socket_add_window (socket, wid, TRUE);
 }
 
 /**
- * gtk_socket_add_id:
- * @socket_: a #GtkSocket
+ * btk_socket_add_id:
+ * @socket_: a #BtkSocket
  * @window_id: the window ID of a client participating in the XEMBED protocol.
  *
- * Adds an XEMBED client, such as a #GtkPlug, to the #GtkSocket.  The
+ * Adds an XEMBED client, such as a #BtkPlug, to the #BtkSocket.  The
  * client may be in the same process or in a different process. 
  * 
- * To embed a #GtkPlug in a #GtkSocket, you can either create the
- * #GtkPlug with <literal>gtk_plug_new (0)</literal>, call 
- * gtk_plug_get_id() to get the window ID of the plug, and then pass that to the
- * gtk_socket_add_id(), or you can call gtk_socket_get_id() to get the
- * window ID for the socket, and call gtk_plug_new() passing in that
+ * To embed a #BtkPlug in a #BtkSocket, you can either create the
+ * #BtkPlug with <literal>btk_plug_new (0)</literal>, call 
+ * btk_plug_get_id() to get the window ID of the plug, and then pass that to the
+ * btk_socket_add_id(), or you can call btk_socket_get_id() to get the
+ * window ID for the socket, and call btk_plug_new() passing in that
  * ID.
  *
- * The #GtkSocket must have already be added into a toplevel window
+ * The #BtkSocket must have already be added into a toplevel window
  *  before you can make this call.
  **/
 void           
-gtk_socket_add_id (GtkSocket      *socket,
-		   GdkNativeWindow window_id)
+btk_socket_add_id (BtkSocket      *socket,
+		   BdkNativeWindow window_id)
 {
-  g_return_if_fail (GTK_IS_SOCKET (socket));
-  g_return_if_fail (GTK_WIDGET_ANCHORED (socket));
+  g_return_if_fail (BTK_IS_SOCKET (socket));
+  g_return_if_fail (BTK_WIDGET_ANCHORED (socket));
 
-  if (!gtk_widget_get_realized (GTK_WIDGET (socket)))
-    gtk_widget_realize (GTK_WIDGET (socket));
+  if (!btk_widget_get_realized (BTK_WIDGET (socket)))
+    btk_widget_realize (BTK_WIDGET (socket));
 
-  _gtk_socket_add_window (socket, window_id, TRUE);
+  _btk_socket_add_window (socket, window_id, TRUE);
 }
 
 /**
- * gtk_socket_get_id:
- * @socket_: a #GtkSocket.
+ * btk_socket_get_id:
+ * @socket_: a #BtkSocket.
  * 
- * Gets the window ID of a #GtkSocket widget, which can then
+ * Gets the window ID of a #BtkSocket widget, which can then
  * be used to create a client embedded inside the socket, for
- * instance with gtk_plug_new(). 
+ * instance with btk_plug_new(). 
  *
- * The #GtkSocket must have already be added into a toplevel window 
+ * The #BtkSocket must have already be added into a toplevel window 
  * before you can make this call.
  * 
  * Return value: the window ID for the socket
  **/
-GdkNativeWindow
-gtk_socket_get_id (GtkSocket *socket)
+BdkNativeWindow
+btk_socket_get_id (BtkSocket *socket)
 {
-  g_return_val_if_fail (GTK_IS_SOCKET (socket), 0);
-  g_return_val_if_fail (GTK_WIDGET_ANCHORED (socket), 0);
+  g_return_val_if_fail (BTK_IS_SOCKET (socket), 0);
+  g_return_val_if_fail (BTK_WIDGET_ANCHORED (socket), 0);
 
-  if (!gtk_widget_get_realized (GTK_WIDGET (socket)))
-    gtk_widget_realize (GTK_WIDGET (socket));
+  if (!btk_widget_get_realized (BTK_WIDGET (socket)))
+    btk_widget_realize (BTK_WIDGET (socket));
 
-  return _gtk_socket_windowing_get_id (socket);
+  return _btk_socket_windowing_get_id (socket);
 }
 
 /**
- * gtk_socket_get_plug_window:
- * @socket_: a #GtkSocket.
+ * btk_socket_get_plug_window:
+ * @socket_: a #BtkSocket.
  *
  * Retrieves the window of the plug. Use this to check if the plug has
  * been created inside of the socket.
@@ -382,70 +382,70 @@ gtk_socket_get_id (GtkSocket *socket)
  *
  * Since:  2.14
  **/
-GdkWindow*
-gtk_socket_get_plug_window (GtkSocket *socket)
+BdkWindow*
+btk_socket_get_plug_window (BtkSocket *socket)
 {
-  g_return_val_if_fail (GTK_IS_SOCKET (socket), NULL);
+  g_return_val_if_fail (BTK_IS_SOCKET (socket), NULL);
 
   return socket->plug_window;
 }
 
 static void
-gtk_socket_realize (GtkWidget *widget)
+btk_socket_realize (BtkWidget *widget)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
-  GdkWindowAttr attributes;
+  BtkSocket *socket = BTK_SOCKET (widget);
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
-  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.window_type = BDK_WINDOW_CHILD;
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
   attributes.width = widget->allocation.width;
   attributes.height = widget->allocation.height;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
-  attributes.event_mask = GDK_FOCUS_CHANGE_MASK;
+  attributes.wclass = BDK_INPUT_OUTPUT;
+  attributes.visual = btk_widget_get_visual (widget);
+  attributes.colormap = btk_widget_get_colormap (widget);
+  attributes.event_mask = BDK_FOCUS_CHANGE_MASK;
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+  attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
 
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), 
+  widget->window = bdk_window_new (btk_widget_get_parent_window (widget), 
 				   &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, socket);
+  bdk_window_set_user_data (widget->window, socket);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+  widget->style = btk_style_attach (widget->style, widget->window);
+  btk_style_set_background (widget->style, widget->window, BTK_STATE_NORMAL);
 
-  _gtk_socket_windowing_realize_window (socket);
+  _btk_socket_windowing_realize_window (socket);
 
-  gdk_window_add_filter (widget->window,
-			 _gtk_socket_windowing_filter_func,
+  bdk_window_add_filter (widget->window,
+			 _btk_socket_windowing_filter_func,
 			 widget);
 
   /* We sync here so that we make sure that if the XID for
    * our window is passed to another application, SubstructureRedirectMask
    * will be set by the time the other app creates its window.
    */
-  gdk_display_sync (gtk_widget_get_display (widget));
+  bdk_display_sync (btk_widget_get_display (widget));
 }
 
 /**
- * _gtk_socket_end_embedding:
+ * _btk_socket_end_embedding:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  *
  * Called to end the embedding of a plug in the socket.
  */
 void
-_gtk_socket_end_embedding (GtkSocket *socket)
+_btk_socket_end_embedding (BtkSocket *socket)
 {
-  GtkSocketPrivate *private = _gtk_socket_get_private (socket);
-  GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (socket));
+  BtkSocketPrivate *private = _btk_socket_get_private (socket);
+  BtkWidget *toplevel = btk_widget_get_toplevel (BTK_WIDGET (socket));
   
-  if (GTK_IS_WINDOW (toplevel))
-    _gtk_socket_windowing_end_embedding_toplevel (socket);
+  if (BTK_IS_WINDOW (toplevel))
+    _btk_socket_windowing_end_embedding_toplevel (socket);
 
   g_object_unref (socket->plug_window);
   socket->plug_window = NULL;
@@ -453,42 +453,42 @@ _gtk_socket_end_embedding (GtkSocket *socket)
   socket->current_height = 0;
   private->resize_count = 0;
 
-  gtk_accel_group_disconnect (socket->accel_group, NULL);
+  btk_accel_group_disconnect (socket->accel_group, NULL);
 }
 
 static void
-gtk_socket_unrealize (GtkWidget *widget)
+btk_socket_unrealize (BtkWidget *widget)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
 
-  gtk_widget_set_realized (widget, FALSE);
+  btk_widget_set_realized (widget, FALSE);
 
   if (socket->plug_widget)
     {
-      _gtk_plug_remove_from_socket (GTK_PLUG (socket->plug_widget), socket);
+      _btk_plug_remove_from_socket (BTK_PLUG (socket->plug_widget), socket);
     }
   else if (socket->plug_window)
     {
-      _gtk_socket_end_embedding (socket);
+      _btk_socket_end_embedding (socket);
     }
 
-  GTK_WIDGET_CLASS (gtk_socket_parent_class)->unrealize (widget);
+  BTK_WIDGET_CLASS (btk_socket_parent_class)->unrealize (widget);
 }
 
 static void
-gtk_socket_size_request (GtkWidget      *widget,
-			 GtkRequisition *requisition)
+btk_socket_size_request (BtkWidget      *widget,
+			 BtkRequisition *requisition)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
 
   if (socket->plug_widget)
     {
-      gtk_widget_size_request (socket->plug_widget, requisition);
+      btk_widget_size_request (socket->plug_widget, requisition);
     }
   else
     {
       if (socket->is_mapped && !socket->have_size && socket->plug_window)
-	_gtk_socket_windowing_size_request (socket);
+	_btk_socket_windowing_size_request (socket);
 
       if (socket->is_mapped && socket->have_size)
 	{
@@ -504,46 +504,46 @@ gtk_socket_size_request (GtkWidget      *widget,
 }
 
 static void
-gtk_socket_size_allocate (GtkWidget     *widget,
-			  GtkAllocation *allocation)
+btk_socket_size_allocate (BtkWidget     *widget,
+			  BtkAllocation *allocation)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
 
   widget->allocation = *allocation;
-  if (gtk_widget_get_realized (widget))
+  if (btk_widget_get_realized (widget))
     {
-      gdk_window_move_resize (widget->window,
+      bdk_window_move_resize (widget->window,
 			      allocation->x, allocation->y,
 			      allocation->width, allocation->height);
 
       if (socket->plug_widget)
 	{
-	  GtkAllocation child_allocation;
+	  BtkAllocation child_allocation;
 
 	  child_allocation.x = 0;
 	  child_allocation.y = 0;
 	  child_allocation.width = allocation->width;
 	  child_allocation.height = allocation->height;
 
-	  gtk_widget_size_allocate (socket->plug_widget, &child_allocation);
+	  btk_widget_size_allocate (socket->plug_widget, &child_allocation);
 	}
       else if (socket->plug_window)
 	{
-	  GtkSocketPrivate *private = _gtk_socket_get_private (socket);
+	  BtkSocketPrivate *private = _btk_socket_get_private (socket);
 	  
-	  gdk_error_trap_push ();
+	  bdk_error_trap_push ();
 	  
 	  if (allocation->width != socket->current_width ||
 	      allocation->height != socket->current_height)
 	    {
-	      gdk_window_move_resize (socket->plug_window,
+	      bdk_window_move_resize (socket->plug_window,
 				      0, 0,
 				      allocation->width, allocation->height);
 	      if (private->resize_count)
 		private->resize_count--;
 	      
-	      GTK_NOTE (PLUGSOCKET,
-			g_message ("GtkSocket - allocated: %d %d",
+	      BTK_NOTE (PLUGSOCKET,
+			g_message ("BtkSocket - allocated: %d %d",
 				   allocation->width, allocation->height));
 	      socket->current_width = allocation->width;
 	      socket->current_height = allocation->height;
@@ -551,51 +551,51 @@ gtk_socket_size_allocate (GtkWidget     *widget,
 
 	  if (socket->need_map)
 	    {
-	      gdk_window_show (socket->plug_window);
+	      bdk_window_show (socket->plug_window);
 	      socket->need_map = FALSE;
 	    }
 
 	  while (private->resize_count)
  	    {
- 	      _gtk_socket_windowing_send_configure_event (socket);
+ 	      _btk_socket_windowing_send_configure_event (socket);
  	      private->resize_count--;
- 	      GTK_NOTE (PLUGSOCKET,
-			g_message ("GtkSocket - sending synthetic configure: %d %d",
+ 	      BTK_NOTE (PLUGSOCKET,
+			g_message ("BtkSocket - sending synthetic configure: %d %d",
 				   allocation->width, allocation->height));
  	    }
 	  
-	  gdk_display_sync (gtk_widget_get_display (widget));
-	  gdk_error_trap_pop ();
+	  bdk_display_sync (btk_widget_get_display (widget));
+	  bdk_error_trap_pop ();
 	}
     }
 }
 
 static gboolean
-activate_key (GtkAccelGroup  *accel_group,
+activate_key (BtkAccelGroup  *accel_group,
 	      GObject        *acceleratable,
 	      guint           accel_key,
-	      GdkModifierType accel_mods,
+	      BdkModifierType accel_mods,
 	      GrabbedKey     *grabbed_key)
 {
-  GdkEvent *gdk_event = gtk_get_current_event ();
+  BdkEvent *bdk_event = btk_get_current_event ();
   
-  GtkSocket *socket = g_object_get_data (G_OBJECT (accel_group), "gtk-socket");
+  BtkSocket *socket = g_object_get_data (G_OBJECT (accel_group), "btk-socket");
   gboolean retval = FALSE;
 
-  if (gdk_event && gdk_event->type == GDK_KEY_PRESS && socket->plug_window)
+  if (bdk_event && bdk_event->type == BDK_KEY_PRESS && socket->plug_window)
     {
-      _gtk_socket_windowing_send_key_event (socket, gdk_event, TRUE);
+      _btk_socket_windowing_send_key_event (socket, bdk_event, TRUE);
       retval = TRUE;
     }
 
-  if (gdk_event)
-    gdk_event_free (gdk_event);
+  if (bdk_event)
+    bdk_event_free (bdk_event);
 
   return retval;
 }
 
 static gboolean
-find_accel_key (GtkAccelKey *key,
+find_accel_key (BtkAccelKey *key,
 		GClosure    *closure,
 		gpointer     data)
 {
@@ -606,19 +606,19 @@ find_accel_key (GtkAccelKey *key,
 }
 
 /**
- * _gtk_socket_add_grabbed_key:
+ * _btk_socket_add_grabbed_key:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  * @keyval: a key
  * @modifiers: modifiers for the key
  *
- * Called from the GtkSocket platform-specific backend when the
+ * Called from the BtkSocket platform-specific backend when the
  * corresponding plug has told the socket to grab a key.
  */
 void
-_gtk_socket_add_grabbed_key (GtkSocket       *socket,
+_btk_socket_add_grabbed_key (BtkSocket       *socket,
 			     guint            keyval,
-			     GdkModifierType  modifiers)
+			     BdkModifierType  modifiers)
 {
   GClosure *closure;
   GrabbedKey *grabbed_key;
@@ -628,11 +628,11 @@ _gtk_socket_add_grabbed_key (GtkSocket       *socket,
   grabbed_key->accel_key = keyval;
   grabbed_key->accel_mods = modifiers;
 
-  if (gtk_accel_group_find (socket->accel_group,
+  if (btk_accel_group_find (socket->accel_group,
 			    find_accel_key,
 			    &grabbed_key))
     {
-      g_warning ("GtkSocket: request to add already present grabbed key %u,%#x\n",
+      g_warning ("BtkSocket: request to add already present grabbed key %u,%#x\n",
 		 keyval, modifiers);
       g_free (grabbed_key);
       return;
@@ -640,42 +640,42 @@ _gtk_socket_add_grabbed_key (GtkSocket       *socket,
 
   closure = g_cclosure_new (G_CALLBACK (activate_key), grabbed_key, (GClosureNotify)g_free);
 
-  gtk_accel_group_connect (socket->accel_group, keyval, modifiers, GTK_ACCEL_LOCKED,
+  btk_accel_group_connect (socket->accel_group, keyval, modifiers, BTK_ACCEL_LOCKED,
 			   closure);
 }
 
 /**
- * _gtk_socket_remove_grabbed_key:
+ * _btk_socket_remove_grabbed_key:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  * @keyval: a key
  * @modifiers: modifiers for the key
  *
- * Called from the GtkSocket backend when the corresponding plug has
+ * Called from the BtkSocket backend when the corresponding plug has
  * told the socket to remove a key grab.
  */
 void
-_gtk_socket_remove_grabbed_key (GtkSocket      *socket,
+_btk_socket_remove_grabbed_key (BtkSocket      *socket,
 				guint           keyval,
-				GdkModifierType modifiers)
+				BdkModifierType modifiers)
 {
-  if (!gtk_accel_group_disconnect_key (socket->accel_group, keyval, modifiers))
-    g_warning ("GtkSocket: request to remove non-present grabbed key %u,%#x\n",
+  if (!btk_accel_group_disconnect_key (socket->accel_group, keyval, modifiers))
+    g_warning ("BtkSocket: request to remove non-present grabbed key %u,%#x\n",
 	       keyval, modifiers);
 }
 
 static void
-socket_update_focus_in (GtkSocket *socket)
+socket_update_focus_in (BtkSocket *socket)
 {
   gboolean focus_in = FALSE;
 
   if (socket->plug_window)
     {
-      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (socket));
+      BtkWidget *toplevel = btk_widget_get_toplevel (BTK_WIDGET (socket));
 
-      if (gtk_widget_is_toplevel (toplevel) &&
-	  GTK_WINDOW (toplevel)->has_toplevel_focus &&
-	  gtk_widget_is_focus (GTK_WIDGET (socket)))
+      if (btk_widget_is_toplevel (toplevel) &&
+	  BTK_WINDOW (toplevel)->has_toplevel_focus &&
+	  btk_widget_is_focus (BTK_WIDGET (socket)))
 	focus_in = TRUE;
     }
 
@@ -683,21 +683,21 @@ socket_update_focus_in (GtkSocket *socket)
     {
       socket->focus_in = focus_in;
 
-      _gtk_socket_windowing_focus_change (socket, focus_in);
+      _btk_socket_windowing_focus_change (socket, focus_in);
     }
 }
 
 static void
-socket_update_active (GtkSocket *socket)
+socket_update_active (BtkSocket *socket)
 {
   gboolean active = FALSE;
 
   if (socket->plug_window)
     {
-      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (socket));
+      BtkWidget *toplevel = btk_widget_get_toplevel (BTK_WIDGET (socket));
 
-      if (gtk_widget_is_toplevel (toplevel) &&
-	  GTK_WINDOW (toplevel)->is_active)
+      if (btk_widget_is_toplevel (toplevel) &&
+	  BTK_WINDOW (toplevel)->is_active)
 	active = TRUE;
     }
 
@@ -705,25 +705,25 @@ socket_update_active (GtkSocket *socket)
     {
       socket->active = active;
 
-      _gtk_socket_windowing_update_active (socket, active);
+      _btk_socket_windowing_update_active (socket, active);
     }
 }
 
 static void
-gtk_socket_hierarchy_changed (GtkWidget *widget,
-			      GtkWidget *old_toplevel)
+btk_socket_hierarchy_changed (BtkWidget *widget,
+			      BtkWidget *old_toplevel)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
-  GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
+  BtkWidget *toplevel = btk_widget_get_toplevel (widget);
 
-  if (toplevel && !GTK_IS_WINDOW (toplevel))
+  if (toplevel && !BTK_IS_WINDOW (toplevel))
     toplevel = NULL;
 
   if (toplevel != socket->toplevel)
     {
       if (socket->toplevel)
 	{
-	  gtk_window_remove_accel_group (GTK_WINDOW (socket->toplevel), socket->accel_group);
+	  btk_window_remove_accel_group (BTK_WINDOW (socket->toplevel), socket->accel_group);
 	  g_signal_handlers_disconnect_by_func (socket->toplevel,
 						socket_update_focus_in,
 						socket);
@@ -736,7 +736,7 @@ gtk_socket_hierarchy_changed (GtkWidget *widget,
 
       if (toplevel)
 	{
-	  gtk_window_add_accel_group (GTK_WINDOW (socket->toplevel), socket->accel_group);
+	  btk_window_add_accel_group (BTK_WINDOW (socket->toplevel), socket->accel_group);
 	  g_signal_connect_swapped (socket->toplevel, "notify::has-toplevel-focus",
 				    G_CALLBACK (socket_update_focus_in), socket);
 	  g_signal_connect_swapped (socket->toplevel, "notify::is-active",
@@ -749,24 +749,24 @@ gtk_socket_hierarchy_changed (GtkWidget *widget,
 }
 
 static void
-gtk_socket_grab_notify (GtkWidget *widget,
+btk_socket_grab_notify (BtkWidget *widget,
 			gboolean   was_grabbed)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
 
   if (!socket->same_app)
-    _gtk_socket_windowing_update_modality (socket, !was_grabbed);
+    _btk_socket_windowing_update_modality (socket, !was_grabbed);
 }
 
 static gboolean
-gtk_socket_key_event (GtkWidget   *widget,
-                      GdkEventKey *event)
+btk_socket_key_event (BtkWidget   *widget,
+                      BdkEventKey *event)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
   
-  if (gtk_widget_has_focus (widget) && socket->plug_window && !socket->plug_widget)
+  if (btk_widget_has_focus (widget) && socket->plug_window && !socket->plug_widget)
     {
-      _gtk_socket_windowing_send_key_event (socket, (GdkEvent *) event, FALSE);
+      _btk_socket_windowing_send_key_event (socket, (BdkEvent *) event, FALSE);
 
       return TRUE;
     }
@@ -775,51 +775,51 @@ gtk_socket_key_event (GtkWidget   *widget,
 }
 
 static void
-gtk_socket_notify (GObject    *object,
+btk_socket_notify (GObject    *object,
 		   GParamSpec *pspec)
 {
   if (!strcmp (pspec->name, "is-focus"))
     return;
-  socket_update_focus_in (GTK_SOCKET (object));
+  socket_update_focus_in (BTK_SOCKET (object));
 }
 
 /**
- * _gtk_socket_claim_focus:
+ * _btk_socket_claim_focus:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  * @send_event: huh?
  *
  * Claims focus for the socket. XXX send_event?
  */
 void
-_gtk_socket_claim_focus (GtkSocket *socket,
+_btk_socket_claim_focus (BtkSocket *socket,
 			 gboolean   send_event)
 {
-  GtkWidget *widget = GTK_WIDGET (socket);
+  BtkWidget *widget = BTK_WIDGET (socket);
 
   if (!send_event)
     socket->focus_in = TRUE;	/* Otherwise, our notify handler will send FOCUS_IN  */
       
   /* Oh, the trickery... */
   
-  gtk_widget_set_can_focus (widget, TRUE);
-  gtk_widget_grab_focus (widget);
-  gtk_widget_set_can_focus (widget, FALSE);
+  btk_widget_set_can_focus (widget, TRUE);
+  btk_widget_grab_focus (widget);
+  btk_widget_set_can_focus (widget, FALSE);
 }
 
 static gboolean
-gtk_socket_focus (GtkWidget       *widget,
-		  GtkDirectionType direction)
+btk_socket_focus (BtkWidget       *widget,
+		  BtkDirectionType direction)
 {
-  GtkSocket *socket = GTK_SOCKET (widget);
+  BtkSocket *socket = BTK_SOCKET (widget);
 
   if (socket->plug_widget)
-    return gtk_widget_child_focus (socket->plug_widget, direction);
+    return btk_widget_child_focus (socket->plug_widget, direction);
 
-  if (!gtk_widget_is_focus (widget))
+  if (!btk_widget_is_focus (widget))
     {
-      _gtk_socket_windowing_focus (socket, direction);
-      _gtk_socket_claim_focus (socket, FALSE);
+      _btk_socket_windowing_focus (socket, direction);
+      _btk_socket_claim_focus (socket, FALSE);
  
       return TRUE;
     }
@@ -828,90 +828,90 @@ gtk_socket_focus (GtkWidget       *widget,
 }
 
 static void
-gtk_socket_remove (GtkContainer *container,
-		   GtkWidget    *child)
+btk_socket_remove (BtkContainer *container,
+		   BtkWidget    *child)
 {
-  GtkSocket *socket = GTK_SOCKET (container);
+  BtkSocket *socket = BTK_SOCKET (container);
 
   g_return_if_fail (child == socket->plug_widget);
 
-  _gtk_plug_remove_from_socket (GTK_PLUG (socket->plug_widget), socket);
+  _btk_plug_remove_from_socket (BTK_PLUG (socket->plug_widget), socket);
 }
 
 static void
-gtk_socket_forall (GtkContainer *container,
+btk_socket_forall (BtkContainer *container,
 		   gboolean      include_internals,
-		   GtkCallback   callback,
+		   BtkCallback   callback,
 		   gpointer      callback_data)
 {
-  GtkSocket *socket = GTK_SOCKET (container);
+  BtkSocket *socket = BTK_SOCKET (container);
 
   if (socket->plug_widget)
     (* callback) (socket->plug_widget, callback_data);
 }
 
 /**
- * _gtk_socket_add_window:
+ * _btk_socket_add_window:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  * @xid: the native identifier for a window
  * @need_reparent: whether the socket's plug's window needs to be
  *		   reparented to the socket
  *
- * Adds a window to a GtkSocket.
+ * Adds a window to a BtkSocket.
  */
 void
-_gtk_socket_add_window (GtkSocket       *socket,
-			GdkNativeWindow  xid,
+_btk_socket_add_window (BtkSocket       *socket,
+			BdkNativeWindow  xid,
 			gboolean         need_reparent)
 {
-  GtkWidget *widget = GTK_WIDGET (socket);
-  GdkDisplay *display = gtk_widget_get_display (widget);
+  BtkWidget *widget = BTK_WIDGET (socket);
+  BdkDisplay *display = btk_widget_get_display (widget);
   gpointer user_data = NULL;
   
-  socket->plug_window = gdk_window_lookup_for_display (display, xid);
+  socket->plug_window = bdk_window_lookup_for_display (display, xid);
 
   if (socket->plug_window)
     {
       g_object_ref (socket->plug_window);
-      gdk_window_get_user_data (socket->plug_window, &user_data);
+      bdk_window_get_user_data (socket->plug_window, &user_data);
     }
 
   if (user_data)		/* A widget's window in this process */
     {
-      GtkWidget *child_widget = user_data;
+      BtkWidget *child_widget = user_data;
 
-      if (!GTK_IS_PLUG (child_widget))
+      if (!BTK_IS_PLUG (child_widget))
 	{
-	  g_warning (G_STRLOC ": Can't add non-GtkPlug to GtkSocket");
+	  g_warning (G_STRLOC ": Can't add non-BtkPlug to BtkSocket");
 	  socket->plug_window = NULL;
-	  gdk_error_trap_pop ();
+	  bdk_error_trap_pop ();
 	  
 	  return;
 	}
 
-      _gtk_plug_add_to_socket (GTK_PLUG (child_widget), socket);
+      _btk_plug_add_to_socket (BTK_PLUG (child_widget), socket);
     }
   else				/* A foreign window */
     {
-      GtkWidget *toplevel;
-      GdkDragProtocol protocol;
+      BtkWidget *toplevel;
+      BdkDragProtocol protocol;
 
-      gdk_error_trap_push ();
+      bdk_error_trap_push ();
 
       if (!socket->plug_window)
 	{  
-	  socket->plug_window = gdk_window_foreign_new_for_display (display, xid);
+	  socket->plug_window = bdk_window_foreign_new_for_display (display, xid);
 	  if (!socket->plug_window) /* was deleted before we could get it */
 	    {
-	      gdk_error_trap_pop ();
+	      bdk_error_trap_pop ();
 	      return;
 	    }
 	}
 	
-      _gtk_socket_windowing_select_plug_window_input (socket);
+      _btk_socket_windowing_select_plug_window_input (socket);
 
-      if (gdk_error_trap_pop ())
+      if (bdk_error_trap_pop ())
 	{
 	  g_object_unref (socket->plug_window);
 	  socket->plug_window = NULL;
@@ -920,43 +920,43 @@ _gtk_socket_add_window (GtkSocket       *socket,
       
       /* OK, we now will reliably get destroy notification on socket->plug_window */
 
-      gdk_error_trap_push ();
+      bdk_error_trap_push ();
 
       if (need_reparent)
 	{
-	  gdk_window_hide (socket->plug_window); /* Shouldn't actually be necessary for XEMBED, but just in case */
-	  gdk_window_reparent (socket->plug_window, widget->window, 0, 0);
+	  bdk_window_hide (socket->plug_window); /* Shouldn't actually be necessary for XEMBED, but just in case */
+	  bdk_window_reparent (socket->plug_window, widget->window, 0, 0);
 	}
 
       socket->have_size = FALSE;
 
-      _gtk_socket_windowing_embed_get_info (socket);
+      _btk_socket_windowing_embed_get_info (socket);
 
       socket->need_map = socket->is_mapped;
 
-      if (gdk_drag_get_protocol_for_display (display, xid, &protocol))
-	gtk_drag_dest_set_proxy (GTK_WIDGET (socket), socket->plug_window, 
+      if (bdk_drag_get_protocol_for_display (display, xid, &protocol))
+	btk_drag_dest_set_proxy (BTK_WIDGET (socket), socket->plug_window, 
 				 protocol, TRUE);
 
-      gdk_display_sync (display);
-      gdk_error_trap_pop ();
+      bdk_display_sync (display);
+      bdk_error_trap_pop ();
 
-      gdk_window_add_filter (socket->plug_window,
-			     _gtk_socket_windowing_filter_func,
+      bdk_window_add_filter (socket->plug_window,
+			     _btk_socket_windowing_filter_func,
 			     socket);
 
       /* Add a pointer to the socket on our toplevel window */
 
-      toplevel = gtk_widget_get_toplevel (GTK_WIDGET (socket));
-      if (GTK_IS_WINDOW (toplevel))
-	gtk_window_add_embedded_xid (GTK_WINDOW (toplevel), xid);
+      toplevel = btk_widget_get_toplevel (BTK_WIDGET (socket));
+      if (BTK_IS_WINDOW (toplevel))
+	btk_window_add_embedded_xid (BTK_WINDOW (toplevel), xid);
 
-      _gtk_socket_windowing_embed_notify (socket);
+      _btk_socket_windowing_embed_notify (socket);
 
       socket_update_active (socket);
       socket_update_focus_in (socket);
 
-      gtk_widget_queue_resize (GTK_WIDGET (socket));
+      btk_widget_queue_resize (BTK_WIDGET (socket));
     }
 
   if (socket->plug_window)
@@ -964,92 +964,92 @@ _gtk_socket_add_window (GtkSocket       *socket,
 }
 
 /**
- * _gtk_socket_handle_map_request:
+ * _btk_socket_handle_map_request:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  *
- * Called from the GtkSocket backend when the plug has been mapped.
+ * Called from the BtkSocket backend when the plug has been mapped.
  */
 void
-_gtk_socket_handle_map_request (GtkSocket *socket)
+_btk_socket_handle_map_request (BtkSocket *socket)
 {
   if (!socket->is_mapped)
     {
       socket->is_mapped = TRUE;
       socket->need_map = TRUE;
 
-      gtk_widget_queue_resize (GTK_WIDGET (socket));
+      btk_widget_queue_resize (BTK_WIDGET (socket));
     }
 }
 
 /**
- * _gtk_socket_unmap_notify:
+ * _btk_socket_unmap_notify:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  *
- * Called from the GtkSocket backend when the plug has been unmapped ???
+ * Called from the BtkSocket backend when the plug has been unmapped ???
  */
 void
-_gtk_socket_unmap_notify (GtkSocket *socket)
+_btk_socket_unmap_notify (BtkSocket *socket)
 {
   if (socket->is_mapped)
     {
       socket->is_mapped = FALSE;
-      gtk_widget_queue_resize (GTK_WIDGET (socket));
+      btk_widget_queue_resize (BTK_WIDGET (socket));
     }
 }
 
 /**
- * _gtk_socket_advance_toplevel_focus:
+ * _btk_socket_advance_toplevel_focus:
  *
- * @socket: a #GtkSocket
+ * @socket: a #BtkSocket
  * @direction: a direction
  *
- * Called from the GtkSocket backend when the corresponding plug
+ * Called from the BtkSocket backend when the corresponding plug
  * has told the socket to move the focus.
  */
 void
-_gtk_socket_advance_toplevel_focus (GtkSocket        *socket,
-				    GtkDirectionType  direction)
+_btk_socket_advance_toplevel_focus (BtkSocket        *socket,
+				    BtkDirectionType  direction)
 {
-  GtkBin *bin;
-  GtkWindow *window;
-  GtkContainer *container;
-  GtkWidget *toplevel;
-  GtkWidget *old_focus_child;
-  GtkWidget *parent;
+  BtkBin *bin;
+  BtkWindow *window;
+  BtkContainer *container;
+  BtkWidget *toplevel;
+  BtkWidget *old_focus_child;
+  BtkWidget *parent;
 
-  toplevel = gtk_widget_get_toplevel (GTK_WIDGET (socket));
+  toplevel = btk_widget_get_toplevel (BTK_WIDGET (socket));
   if (!toplevel)
     return;
 
-  if (!gtk_widget_is_toplevel (toplevel) || GTK_IS_PLUG (toplevel))
+  if (!btk_widget_is_toplevel (toplevel) || BTK_IS_PLUG (toplevel))
     {
-      gtk_widget_child_focus (toplevel,direction);
+      btk_widget_child_focus (toplevel,direction);
       return;
     }
 
-  container = GTK_CONTAINER (toplevel);
-  window = GTK_WINDOW (toplevel);
-  bin = GTK_BIN (toplevel);
+  container = BTK_CONTAINER (toplevel);
+  window = BTK_WINDOW (toplevel);
+  bin = BTK_BIN (toplevel);
 
-  /* This is a copy of gtk_window_focus(), modified so that we
+  /* This is a copy of btk_window_focus(), modified so that we
    * can detect wrap-around.
    */
   old_focus_child = container->focus_child;
   
   if (old_focus_child)
     {
-      if (gtk_widget_child_focus (old_focus_child, direction))
+      if (btk_widget_child_focus (old_focus_child, direction))
 	return;
 
       /* We are allowed exactly one wrap-around per sequence of focus
        * events
        */
-      if (_gtk_socket_windowing_embed_get_focus_wrapped ())
+      if (_btk_socket_windowing_embed_get_focus_wrapped ())
 	return;
       else
-	_gtk_socket_windowing_embed_set_focus_wrapped ();
+	_btk_socket_windowing_embed_set_focus_wrapped ();
     }
 
   if (window->focus_widget)
@@ -1058,20 +1058,20 @@ _gtk_socket_advance_toplevel_focus (GtkSocket        *socket,
       parent = window->focus_widget->parent;
       while (parent)
 	{
-	  gtk_container_set_focus_child (GTK_CONTAINER (parent), NULL);
-	  parent = GTK_WIDGET (parent)->parent;
+	  btk_container_set_focus_child (BTK_CONTAINER (parent), NULL);
+	  parent = BTK_WIDGET (parent)->parent;
 	}
       
-      gtk_window_set_focus (GTK_WINDOW (container), NULL);
+      btk_window_set_focus (BTK_WINDOW (container), NULL);
     }
 
   /* Now try to focus the first widget in the window */
   if (bin->child)
     {
-      if (gtk_widget_child_focus (bin->child, direction))
+      if (btk_widget_child_focus (bin->child, direction))
         return;
     }
 }
 
-#define __GTK_SOCKET_C__
-#include "gtkaliasdef.c"
+#define __BTK_SOCKET_C__
+#include "btkaliasdef.c"

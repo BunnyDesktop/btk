@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,64 +18,64 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ITEM_H__
-#define __GTK_ITEM_H__
+#ifndef __BTK_ITEM_H__
+#define __BTK_ITEM_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ITEM                  (gtk_item_get_type ())
-#define GTK_ITEM(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ITEM, GtkItem))
-#define GTK_ITEM_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ITEM, GtkItemClass))
-#define GTK_IS_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ITEM))
-#define GTK_IS_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ITEM))
-#define GTK_ITEM_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ITEM, GtkItemClass))
+#define BTK_TYPE_ITEM                  (btk_item_get_type ())
+#define BTK_ITEM(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ITEM, BtkItem))
+#define BTK_ITEM_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ITEM, BtkItemClass))
+#define BTK_IS_ITEM(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ITEM))
+#define BTK_IS_ITEM_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ITEM))
+#define BTK_ITEM_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ITEM, BtkItemClass))
 
 
-typedef struct _GtkItem       GtkItem;
-typedef struct _GtkItemClass  GtkItemClass;
+typedef struct _BtkItem       BtkItem;
+typedef struct _BtkItemClass  BtkItemClass;
 
-struct _GtkItem
+struct _BtkItem
 {
-  GtkBin bin;
+  BtkBin bin;
 };
 
-struct _GtkItemClass
+struct _BtkItemClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
-  void (* select)   (GtkItem *item);
-  void (* deselect) (GtkItem *item);
-  void (* toggle)   (GtkItem *item);
+  void (* select)   (BtkItem *item);
+  void (* deselect) (BtkItem *item);
+  void (* toggle)   (BtkItem *item);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType gtk_item_get_type (void) G_GNUC_CONST;
-#if !defined(GTK_DISABLE_DEPRECATED) || defined(GTK_COMPILATION)
-void  gtk_item_select   (GtkItem *item);
-void  gtk_item_deselect (GtkItem *item);
-void  gtk_item_toggle   (GtkItem *item);
+GType btk_item_get_type (void) G_GNUC_CONST;
+#if !defined(BTK_DISABLE_DEPRECATED) || defined(BTK_COMPILATION)
+void  btk_item_select   (BtkItem *item);
+void  btk_item_deselect (BtkItem *item);
+void  btk_item_toggle   (BtkItem *item);
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_ITEM_H__ */
+#endif /* __BTK_ITEM_H__ */

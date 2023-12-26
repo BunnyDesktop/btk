@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,33 +18,33 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SELECTION_H__
-#define __GTK_SELECTION_H__
+#ifndef __BTK_SELECTION_H__
+#define __BTK_SELECTION_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
-#include <gtk/gtktextiter.h>
+#include <btk/btkwidget.h>
+#include <btk/btktextiter.h>
 
 
 G_BEGIN_DECLS
 
-typedef struct _GtkTargetList    GtkTargetList;
-typedef struct _GtkTargetEntry   GtkTargetEntry;
+typedef struct _BtkTargetList    BtkTargetList;
+typedef struct _BtkTargetEntry   BtkTargetEntry;
 
-#define GTK_TYPE_SELECTION_DATA (gtk_selection_data_get_type ())
-#define GTK_TYPE_TARGET_LIST    (gtk_target_list_get_type ())
+#define BTK_TYPE_SELECTION_DATA (btk_selection_data_get_type ())
+#define BTK_TYPE_TARGET_LIST    (btk_target_list_get_type ())
 
-/* The contents of a selection are returned in a GtkSelectionData
+/* The contents of a selection are returned in a BtkSelectionData
  * structure. selection/target identify the request.  type specifies
  * the type of the return; if length < 0, and the data should be
  * ignored. This structure has object semantics - no fields should be
@@ -55,167 +55,167 @@ typedef struct _GtkTargetEntry   GtkTargetEntry;
  * sent.
  */
 
-struct _GtkSelectionData
+struct _BtkSelectionData
 {
-  GdkAtom       GSEAL (selection);
-  GdkAtom       GSEAL (target);
-  GdkAtom       GSEAL (type);
+  BdkAtom       GSEAL (selection);
+  BdkAtom       GSEAL (target);
+  BdkAtom       GSEAL (type);
   gint          GSEAL (format);
   guchar       *GSEAL (data);
   gint          GSEAL (length);
-  GdkDisplay   *GSEAL (display);
+  BdkDisplay   *GSEAL (display);
 };
 
-struct _GtkTargetEntry {
+struct _BtkTargetEntry {
   gchar *target;
   guint  flags;
   guint  info;
 };
 
 /* These structures not public, and are here only for the convenience of
- * gtkdnd.c
+ * btkdnd.c
  */
 
-typedef struct _GtkTargetPair GtkTargetPair;
+typedef struct _BtkTargetPair BtkTargetPair;
 
 /* This structure is a list of destinations, and associated guint id's */
-struct _GtkTargetList {
+struct _BtkTargetList {
   GList *list;
   guint ref_count;
 };
 
-struct _GtkTargetPair {
-  GdkAtom   target;
+struct _BtkTargetPair {
+  BdkAtom   target;
   guint     flags;
   guint     info;
 };
 
-GtkTargetList *gtk_target_list_new       (const GtkTargetEntry *targets,
+BtkTargetList *btk_target_list_new       (const BtkTargetEntry *targets,
 					  guint                 ntargets);
-GtkTargetList *gtk_target_list_ref       (GtkTargetList  *list);
-void           gtk_target_list_unref     (GtkTargetList  *list);
-void           gtk_target_list_add       (GtkTargetList  *list,
-				  	  GdkAtom         target,
+BtkTargetList *btk_target_list_ref       (BtkTargetList  *list);
+void           btk_target_list_unref     (BtkTargetList  *list);
+void           btk_target_list_add       (BtkTargetList  *list,
+				  	  BdkAtom         target,
 					  guint           flags,
 					  guint           info);
-void           gtk_target_list_add_text_targets      (GtkTargetList  *list,
+void           btk_target_list_add_text_targets      (BtkTargetList  *list,
                                                       guint           info);
-void           gtk_target_list_add_rich_text_targets (GtkTargetList  *list,
+void           btk_target_list_add_rich_text_targets (BtkTargetList  *list,
                                                       guint           info,
                                                       gboolean        deserializable,
-                                                      GtkTextBuffer  *buffer);
-void           gtk_target_list_add_image_targets     (GtkTargetList  *list,
+                                                      BtkTextBuffer  *buffer);
+void           btk_target_list_add_image_targets     (BtkTargetList  *list,
                                                       guint           info,
                                                       gboolean        writable);
-void           gtk_target_list_add_uri_targets       (GtkTargetList  *list,
+void           btk_target_list_add_uri_targets       (BtkTargetList  *list,
                                                       guint           info);
-void           gtk_target_list_add_table (GtkTargetList        *list,
-					  const GtkTargetEntry *targets,
+void           btk_target_list_add_table (BtkTargetList        *list,
+					  const BtkTargetEntry *targets,
 					  guint                 ntargets);
-void           gtk_target_list_remove    (GtkTargetList  *list,
-					  GdkAtom         target);
-gboolean       gtk_target_list_find      (GtkTargetList  *list,
-					  GdkAtom         target,
+void           btk_target_list_remove    (BtkTargetList  *list,
+					  BdkAtom         target);
+gboolean       btk_target_list_find      (BtkTargetList  *list,
+					  BdkAtom         target,
 					  guint          *info);
 
-GtkTargetEntry * gtk_target_table_new_from_list (GtkTargetList  *list,
+BtkTargetEntry * btk_target_table_new_from_list (BtkTargetList  *list,
                                                  gint           *n_targets);
-void             gtk_target_table_free          (GtkTargetEntry *targets,
+void             btk_target_table_free          (BtkTargetEntry *targets,
                                                  gint            n_targets);
 
 /* Public interface */
 
-gboolean gtk_selection_owner_set             (GtkWidget  *widget,
-					      GdkAtom     selection,
+gboolean btk_selection_owner_set             (BtkWidget  *widget,
+					      BdkAtom     selection,
 					      guint32     time_);
-gboolean gtk_selection_owner_set_for_display (GdkDisplay *display,
-					      GtkWidget  *widget,
-					      GdkAtom     selection,
+gboolean btk_selection_owner_set_for_display (BdkDisplay *display,
+					      BtkWidget  *widget,
+					      BdkAtom     selection,
 					      guint32     time_);
 
-void     gtk_selection_add_target    (GtkWidget            *widget,
-				      GdkAtom               selection,
-				      GdkAtom               target,
+void     btk_selection_add_target    (BtkWidget            *widget,
+				      BdkAtom               selection,
+				      BdkAtom               target,
 				      guint                 info);
-void     gtk_selection_add_targets   (GtkWidget            *widget,
-				      GdkAtom               selection,
-				      const GtkTargetEntry *targets,
+void     btk_selection_add_targets   (BtkWidget            *widget,
+				      BdkAtom               selection,
+				      const BtkTargetEntry *targets,
 				      guint                 ntargets);
-void     gtk_selection_clear_targets (GtkWidget            *widget,
-				      GdkAtom               selection);
-gboolean gtk_selection_convert       (GtkWidget            *widget,
-				      GdkAtom               selection,
-				      GdkAtom               target,
+void     btk_selection_clear_targets (BtkWidget            *widget,
+				      BdkAtom               selection);
+gboolean btk_selection_convert       (BtkWidget            *widget,
+				      BdkAtom               selection,
+				      BdkAtom               target,
 				      guint32               time_);
 
-GdkAtom       gtk_selection_data_get_selection (GtkSelectionData *selection_data);
-GdkAtom       gtk_selection_data_get_target    (GtkSelectionData *selection_data);
-GdkAtom       gtk_selection_data_get_data_type (GtkSelectionData *selection_data);
-gint          gtk_selection_data_get_format    (GtkSelectionData *selection_data);
-const guchar *gtk_selection_data_get_data      (GtkSelectionData *selection_data);
-gint          gtk_selection_data_get_length    (GtkSelectionData *selection_data);
-GdkDisplay   *gtk_selection_data_get_display   (GtkSelectionData *selection_data);
+BdkAtom       btk_selection_data_get_selection (BtkSelectionData *selection_data);
+BdkAtom       btk_selection_data_get_target    (BtkSelectionData *selection_data);
+BdkAtom       btk_selection_data_get_data_type (BtkSelectionData *selection_data);
+gint          btk_selection_data_get_format    (BtkSelectionData *selection_data);
+const guchar *btk_selection_data_get_data      (BtkSelectionData *selection_data);
+gint          btk_selection_data_get_length    (BtkSelectionData *selection_data);
+BdkDisplay   *btk_selection_data_get_display   (BtkSelectionData *selection_data);
 
-void     gtk_selection_data_set      (GtkSelectionData     *selection_data,
-				      GdkAtom               type,
+void     btk_selection_data_set      (BtkSelectionData     *selection_data,
+				      BdkAtom               type,
 				      gint                  format,
 				      const guchar         *data,
 				      gint                  length);
-gboolean gtk_selection_data_set_text (GtkSelectionData     *selection_data,
+gboolean btk_selection_data_set_text (BtkSelectionData     *selection_data,
 				      const gchar          *str,
 				      gint                  len);
-guchar * gtk_selection_data_get_text (GtkSelectionData     *selection_data);
-gboolean gtk_selection_data_set_pixbuf   (GtkSelectionData  *selection_data,
-				          GdkPixbuf         *pixbuf);
-GdkPixbuf *gtk_selection_data_get_pixbuf (GtkSelectionData  *selection_data);
-gboolean gtk_selection_data_set_uris (GtkSelectionData     *selection_data,
+guchar * btk_selection_data_get_text (BtkSelectionData     *selection_data);
+gboolean btk_selection_data_set_pixbuf   (BtkSelectionData  *selection_data,
+				          BdkPixbuf         *pixbuf);
+BdkPixbuf *btk_selection_data_get_pixbuf (BtkSelectionData  *selection_data);
+gboolean btk_selection_data_set_uris (BtkSelectionData     *selection_data,
 				      gchar               **uris);
-gchar  **gtk_selection_data_get_uris (GtkSelectionData     *selection_data);
+gchar  **btk_selection_data_get_uris (BtkSelectionData     *selection_data);
 
-gboolean gtk_selection_data_get_targets          (GtkSelectionData  *selection_data,
-						  GdkAtom          **targets,
+gboolean btk_selection_data_get_targets          (BtkSelectionData  *selection_data,
+						  BdkAtom          **targets,
 						  gint              *n_atoms);
-gboolean gtk_selection_data_targets_include_text (GtkSelectionData  *selection_data);
-gboolean gtk_selection_data_targets_include_rich_text (GtkSelectionData *selection_data,
-                                                       GtkTextBuffer    *buffer);
-gboolean gtk_selection_data_targets_include_image (GtkSelectionData  *selection_data,
+gboolean btk_selection_data_targets_include_text (BtkSelectionData  *selection_data);
+gboolean btk_selection_data_targets_include_rich_text (BtkSelectionData *selection_data,
+                                                       BtkTextBuffer    *buffer);
+gboolean btk_selection_data_targets_include_image (BtkSelectionData  *selection_data,
 						   gboolean           writable);
-gboolean gtk_selection_data_targets_include_uri  (GtkSelectionData  *selection_data);
-gboolean gtk_targets_include_text                (GdkAtom       *targets,
+gboolean btk_selection_data_targets_include_uri  (BtkSelectionData  *selection_data);
+gboolean btk_targets_include_text                (BdkAtom       *targets,
 						  gint           n_targets);
-gboolean gtk_targets_include_rich_text           (GdkAtom       *targets,
+gboolean btk_targets_include_rich_text           (BdkAtom       *targets,
 						  gint           n_targets,
-                                                  GtkTextBuffer *buffer);
-gboolean gtk_targets_include_image               (GdkAtom       *targets,
+                                                  BtkTextBuffer *buffer);
+gboolean btk_targets_include_image               (BdkAtom       *targets,
 						  gint           n_targets,
 						  gboolean       writable);
-gboolean gtk_targets_include_uri                 (GdkAtom       *targets,
+gboolean btk_targets_include_uri                 (BdkAtom       *targets,
 						  gint           n_targets);
 
 /* Called when a widget is destroyed */
 
-void gtk_selection_remove_all      (GtkWidget *widget);
+void btk_selection_remove_all      (BtkWidget *widget);
 
 /* Event handlers */
-#if !defined(GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
-gboolean gtk_selection_clear		  (GtkWidget 	     *widget,
-					   GdkEventSelection *event);
+#if !defined(BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
+gboolean btk_selection_clear		  (BtkWidget 	     *widget,
+					   BdkEventSelection *event);
 #endif
-gboolean _gtk_selection_request		  (GtkWidget  	     *widget,
-					   GdkEventSelection *event);
-gboolean _gtk_selection_incr_event	  (GdkWindow         *window,
-					   GdkEventProperty  *event);
-gboolean _gtk_selection_notify		  (GtkWidget         *widget,
-					   GdkEventSelection *event);
-gboolean _gtk_selection_property_notify	  (GtkWidget         *widget,
-					   GdkEventProperty  *event);
+gboolean _btk_selection_request		  (BtkWidget  	     *widget,
+					   BdkEventSelection *event);
+gboolean _btk_selection_incr_event	  (BdkWindow         *window,
+					   BdkEventProperty  *event);
+gboolean _btk_selection_notify		  (BtkWidget         *widget,
+					   BdkEventSelection *event);
+gboolean _btk_selection_property_notify	  (BtkWidget         *widget,
+					   BdkEventProperty  *event);
 
-GType             gtk_selection_data_get_type (void) G_GNUC_CONST;
-GtkSelectionData *gtk_selection_data_copy     (GtkSelectionData *data);
-void		  gtk_selection_data_free     (GtkSelectionData *data);
+GType             btk_selection_data_get_type (void) G_GNUC_CONST;
+BtkSelectionData *btk_selection_data_copy     (BtkSelectionData *data);
+void		  btk_selection_data_free     (BtkSelectionData *data);
 
-GType             gtk_target_list_get_type    (void) G_GNUC_CONST;
+GType             btk_target_list_get_type    (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_SELECTION_H__ */
+#endif /* __BTK_SELECTION_H__ */

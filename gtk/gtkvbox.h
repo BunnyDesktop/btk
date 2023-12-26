@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,51 +18,51 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VBOX_H__
-#define __GTK_VBOX_H__
+#ifndef __BTK_VBOX_H__
+#define __BTK_VBOX_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbox.h>
+#include <btk/btkbox.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_VBOX		 (gtk_vbox_get_type ())
-#define GTK_VBOX(obj)		 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VBOX, GtkVBox))
-#define GTK_VBOX_CLASS(klass)	 (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VBOX, GtkVBoxClass))
-#define GTK_IS_VBOX(obj)	 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VBOX))
-#define GTK_IS_VBOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VBOX))
-#define GTK_VBOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VBOX, GtkVBoxClass))
+#define BTK_TYPE_VBOX		 (btk_vbox_get_type ())
+#define BTK_VBOX(obj)		 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VBOX, BtkVBox))
+#define BTK_VBOX_CLASS(klass)	 (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VBOX, BtkVBoxClass))
+#define BTK_IS_VBOX(obj)	 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VBOX))
+#define BTK_IS_VBOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VBOX))
+#define BTK_VBOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VBOX, BtkVBoxClass))
 
 
-typedef struct _GtkVBox	      GtkVBox;
-typedef struct _GtkVBoxClass  GtkVBoxClass;
+typedef struct _BtkVBox	      BtkVBox;
+typedef struct _BtkVBoxClass  BtkVBoxClass;
 
-struct _GtkVBox
+struct _BtkVBox
 {
-  GtkBox box;
+  BtkBox box;
 };
 
-struct _GtkVBoxClass
+struct _BtkVBoxClass
 {
-  GtkBoxClass parent_class;
+  BtkBoxClass parent_class;
 };
 
 
-GType       gtk_vbox_get_type (void) G_GNUC_CONST;
-GtkWidget * gtk_vbox_new      (gboolean homogeneous,
+GType       btk_vbox_get_type (void) G_GNUC_CONST;
+BtkWidget * btk_vbox_new      (gboolean homogeneous,
                                gint     spacing);
 
 G_END_DECLS
 
-#endif /* __GTK_VBOX_H__ */
+#endif /* __BTK_VBOX_H__ */

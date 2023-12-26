@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,11 +17,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include	<config.h>
-#include	"gtksignal.h"
-#include "gtkalias.h"
+#include	"btksignal.h"
+#include "btkalias.h"
 
 /* the real parameter limit is of course given by GSignal, bu we need
  * an upper limit for the implementations. so this should be adjusted
@@ -32,8 +32,8 @@
 
 /* --- functions --- */
 guint
-gtk_signal_newv (const gchar         *name,
-		 GtkSignalRunType     signal_flags,
+btk_signal_newv (const gchar         *name,
+		 BtkSignalRunType     signal_flags,
 		 GType                object_type,
 		 guint                function_offset,
 		 GSignalCMarshaller   marshaller,
@@ -52,8 +52,8 @@ gtk_signal_newv (const gchar         *name,
 }
 
 guint
-gtk_signal_new (const gchar         *name,
-		GtkSignalRunType     signal_flags,
+btk_signal_new (const gchar         *name,
+		BtkSignalRunType     signal_flags,
 		GType                object_type,
 		guint                function_offset,
 		GSignalCMarshaller   marshaller,
@@ -77,7 +77,7 @@ gtk_signal_new (const gchar         *name,
     }
   else
     params = NULL;
-  signal_id = gtk_signal_newv (name,
+  signal_id = btk_signal_newv (name,
 			       signal_flags,
 			       object_type,
 			       function_offset,
@@ -91,21 +91,21 @@ gtk_signal_new (const gchar         *name,
 }
 
 void
-gtk_signal_emit_stop_by_name (GtkObject   *object,
+btk_signal_emit_stop_by_name (BtkObject   *object,
 			      const gchar *name)
 {
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
   
   g_signal_stop_emission (object, g_signal_lookup (name, G_OBJECT_TYPE (object)), 0);
 }
 
 void
-gtk_signal_connect_object_while_alive (GtkObject    *object,
+btk_signal_connect_object_while_alive (BtkObject    *object,
 				       const gchar  *name,
 				       GCallback     func,
-				       GtkObject    *alive_object)
+				       BtkObject    *alive_object)
 {
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
   
   g_signal_connect_closure_by_id (object,
 				  g_signal_lookup (name, G_OBJECT_TYPE (object)), 0,
@@ -114,15 +114,15 @@ gtk_signal_connect_object_while_alive (GtkObject    *object,
 }
 
 void
-gtk_signal_connect_while_alive (GtkObject    *object,
+btk_signal_connect_while_alive (BtkObject    *object,
 				const gchar  *name,
 				GCallback     func,
 				gpointer      func_data,
-				GtkObject    *alive_object)
+				BtkObject    *alive_object)
 {
   GClosure *closure;
 
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
 
   closure = g_cclosure_new (func, func_data, NULL);
   g_object_watch_closure (G_OBJECT (alive_object), closure);
@@ -133,16 +133,16 @@ gtk_signal_connect_while_alive (GtkObject    *object,
 }
 
 gulong
-gtk_signal_connect_full (GtkObject           *object,
+btk_signal_connect_full (BtkObject           *object,
 			 const gchar         *name,
 			 GCallback            func,
-			 GtkCallbackMarshal   unsupported,
+			 BtkCallbackMarshal   unsupported,
 			 gpointer             data,
 			 GDestroyNotify       destroy_func,
 			 gint                 object_signal,
 			 gint                 after)
 {
-  g_return_val_if_fail (GTK_IS_OBJECT (object), 0);
+  g_return_val_if_fail (BTK_IS_OBJECT (object), 0);
   g_return_val_if_fail (unsupported == NULL, 0);
   
   return g_signal_connect_closure_by_id (object,
@@ -156,7 +156,7 @@ gtk_signal_connect_full (GtkObject           *object,
 }
 
 void
-gtk_signal_compat_matched (GtkObject       *object,
+btk_signal_compat_matched (BtkObject       *object,
 			   GCallback        func,
 			   gpointer         data,
 			   GSignalMatchType match,
@@ -164,7 +164,7 @@ gtk_signal_compat_matched (GtkObject       *object,
 {
   guint n_handlers;
   
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
 
   switch (action)
     {
@@ -180,26 +180,26 @@ gtk_signal_compat_matched (GtkObject       *object,
 }
 
 static inline gboolean
-gtk_arg_to_value (GtkArg *arg,
+btk_arg_to_value (BtkArg *arg,
 		  GValue *value)
 {
   switch (G_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		g_value_set_char (value, GTK_VALUE_CHAR (*arg));	break;
-    case G_TYPE_UCHAR:		g_value_set_uchar (value, GTK_VALUE_UCHAR (*arg));	break;
-    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, GTK_VALUE_BOOL (*arg));	break;
-    case G_TYPE_INT:		g_value_set_int (value, GTK_VALUE_INT (*arg));		break;
-    case G_TYPE_UINT:		g_value_set_uint (value, GTK_VALUE_UINT (*arg));	break;
-    case G_TYPE_LONG:		g_value_set_long (value, GTK_VALUE_LONG (*arg));	break;
-    case G_TYPE_ULONG:		g_value_set_ulong (value, GTK_VALUE_ULONG (*arg));	break;
-    case G_TYPE_ENUM:		g_value_set_enum (value, GTK_VALUE_ENUM (*arg));	break;
-    case G_TYPE_FLAGS:		g_value_set_flags (value, GTK_VALUE_FLAGS (*arg));	break;
-    case G_TYPE_FLOAT:		g_value_set_float (value, GTK_VALUE_FLOAT (*arg));	break;
-    case G_TYPE_DOUBLE:		g_value_set_double (value, GTK_VALUE_DOUBLE (*arg));	break;
-    case G_TYPE_STRING:		g_value_set_string (value, GTK_VALUE_STRING (*arg));	break;
-    case G_TYPE_BOXED:		g_value_set_boxed (value, GTK_VALUE_BOXED (*arg));	break;
-    case G_TYPE_POINTER:	g_value_set_pointer (value, GTK_VALUE_POINTER (*arg));	break;
-    case G_TYPE_OBJECT:		g_value_set_object (value, GTK_VALUE_POINTER (*arg));	break;
+    case G_TYPE_CHAR:		g_value_set_char (value, BTK_VALUE_CHAR (*arg));	break;
+    case G_TYPE_UCHAR:		g_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));	break;
+    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, BTK_VALUE_BOOL (*arg));	break;
+    case G_TYPE_INT:		g_value_set_int (value, BTK_VALUE_INT (*arg));		break;
+    case G_TYPE_UINT:		g_value_set_uint (value, BTK_VALUE_UINT (*arg));	break;
+    case G_TYPE_LONG:		g_value_set_long (value, BTK_VALUE_LONG (*arg));	break;
+    case G_TYPE_ULONG:		g_value_set_ulong (value, BTK_VALUE_ULONG (*arg));	break;
+    case G_TYPE_ENUM:		g_value_set_enum (value, BTK_VALUE_ENUM (*arg));	break;
+    case G_TYPE_FLAGS:		g_value_set_flags (value, BTK_VALUE_FLAGS (*arg));	break;
+    case G_TYPE_FLOAT:		g_value_set_float (value, BTK_VALUE_FLOAT (*arg));	break;
+    case G_TYPE_DOUBLE:		g_value_set_double (value, BTK_VALUE_DOUBLE (*arg));	break;
+    case G_TYPE_STRING:		g_value_set_string (value, BTK_VALUE_STRING (*arg));	break;
+    case G_TYPE_BOXED:		g_value_set_boxed (value, BTK_VALUE_BOXED (*arg));	break;
+    case G_TYPE_POINTER:	g_value_set_pointer (value, BTK_VALUE_POINTER (*arg));	break;
+    case G_TYPE_OBJECT:		g_value_set_object (value, BTK_VALUE_POINTER (*arg));	break;
     default:
       return FALSE;
     }
@@ -207,26 +207,26 @@ gtk_arg_to_value (GtkArg *arg,
 }
 
 static inline gboolean
-gtk_arg_static_to_value (GtkArg *arg,
+btk_arg_static_to_value (BtkArg *arg,
 			 GValue *value)
 {
   switch (G_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		g_value_set_char (value, GTK_VALUE_CHAR (*arg));		break;
-    case G_TYPE_UCHAR:		g_value_set_uchar (value, GTK_VALUE_UCHAR (*arg));		break;
-    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, GTK_VALUE_BOOL (*arg));		break;
-    case G_TYPE_INT:		g_value_set_int (value, GTK_VALUE_INT (*arg));			break;
-    case G_TYPE_UINT:		g_value_set_uint (value, GTK_VALUE_UINT (*arg));		break;
-    case G_TYPE_LONG:		g_value_set_long (value, GTK_VALUE_LONG (*arg));		break;
-    case G_TYPE_ULONG:		g_value_set_ulong (value, GTK_VALUE_ULONG (*arg));		break;
-    case G_TYPE_ENUM:		g_value_set_enum (value, GTK_VALUE_ENUM (*arg));		break;
-    case G_TYPE_FLAGS:		g_value_set_flags (value, GTK_VALUE_FLAGS (*arg));		break;
-    case G_TYPE_FLOAT:		g_value_set_float (value, GTK_VALUE_FLOAT (*arg));		break;
-    case G_TYPE_DOUBLE:		g_value_set_double (value, GTK_VALUE_DOUBLE (*arg));		break;
-    case G_TYPE_STRING:		g_value_set_static_string (value, GTK_VALUE_STRING (*arg));	break;
-    case G_TYPE_BOXED:		g_value_set_static_boxed (value, GTK_VALUE_BOXED (*arg));	break;
-    case G_TYPE_POINTER:	g_value_set_pointer (value, GTK_VALUE_POINTER (*arg));		break;
-    case G_TYPE_OBJECT:		g_value_set_object (value, GTK_VALUE_POINTER (*arg));		break;
+    case G_TYPE_CHAR:		g_value_set_char (value, BTK_VALUE_CHAR (*arg));		break;
+    case G_TYPE_UCHAR:		g_value_set_uchar (value, BTK_VALUE_UCHAR (*arg));		break;
+    case G_TYPE_BOOLEAN:	g_value_set_boolean (value, BTK_VALUE_BOOL (*arg));		break;
+    case G_TYPE_INT:		g_value_set_int (value, BTK_VALUE_INT (*arg));			break;
+    case G_TYPE_UINT:		g_value_set_uint (value, BTK_VALUE_UINT (*arg));		break;
+    case G_TYPE_LONG:		g_value_set_long (value, BTK_VALUE_LONG (*arg));		break;
+    case G_TYPE_ULONG:		g_value_set_ulong (value, BTK_VALUE_ULONG (*arg));		break;
+    case G_TYPE_ENUM:		g_value_set_enum (value, BTK_VALUE_ENUM (*arg));		break;
+    case G_TYPE_FLAGS:		g_value_set_flags (value, BTK_VALUE_FLAGS (*arg));		break;
+    case G_TYPE_FLOAT:		g_value_set_float (value, BTK_VALUE_FLOAT (*arg));		break;
+    case G_TYPE_DOUBLE:		g_value_set_double (value, BTK_VALUE_DOUBLE (*arg));		break;
+    case G_TYPE_STRING:		g_value_set_static_string (value, BTK_VALUE_STRING (*arg));	break;
+    case G_TYPE_BOXED:		g_value_set_static_boxed (value, BTK_VALUE_BOXED (*arg));	break;
+    case G_TYPE_POINTER:	g_value_set_pointer (value, BTK_VALUE_POINTER (*arg));		break;
+    case G_TYPE_OBJECT:		g_value_set_object (value, BTK_VALUE_POINTER (*arg));		break;
     default:
       return FALSE;
     }
@@ -234,30 +234,30 @@ gtk_arg_static_to_value (GtkArg *arg,
 }
 
 static inline gboolean
-gtk_arg_set_from_value (GtkArg  *arg,
+btk_arg_set_from_value (BtkArg  *arg,
 			GValue  *value,
 			gboolean copy_string)
 {
   switch (G_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		GTK_VALUE_CHAR (*arg) = g_value_get_char (value);	break;
-    case G_TYPE_UCHAR:		GTK_VALUE_UCHAR (*arg) = g_value_get_uchar (value);	break;
-    case G_TYPE_BOOLEAN:	GTK_VALUE_BOOL (*arg) = g_value_get_boolean (value);	break;
-    case G_TYPE_INT:		GTK_VALUE_INT (*arg) = g_value_get_int (value);		break;
-    case G_TYPE_UINT:		GTK_VALUE_UINT (*arg) = g_value_get_uint (value);	break;
-    case G_TYPE_LONG:		GTK_VALUE_LONG (*arg) = g_value_get_long (value);	break;
-    case G_TYPE_ULONG:		GTK_VALUE_ULONG (*arg) = g_value_get_ulong (value);	break;
-    case G_TYPE_ENUM:		GTK_VALUE_ENUM (*arg) = g_value_get_enum (value);	break;
-    case G_TYPE_FLAGS:		GTK_VALUE_FLAGS (*arg) = g_value_get_flags (value);	break;
-    case G_TYPE_FLOAT:		GTK_VALUE_FLOAT (*arg) = g_value_get_float (value);	break;
-    case G_TYPE_DOUBLE:		GTK_VALUE_DOUBLE (*arg) = g_value_get_double (value);	break;
-    case G_TYPE_BOXED:		GTK_VALUE_BOXED (*arg) = g_value_get_boxed (value);	break;
-    case G_TYPE_POINTER:	GTK_VALUE_POINTER (*arg) = g_value_get_pointer (value);	break;
-    case G_TYPE_OBJECT:		GTK_VALUE_POINTER (*arg) = g_value_get_object (value);	break;
+    case G_TYPE_CHAR:		BTK_VALUE_CHAR (*arg) = g_value_get_char (value);	break;
+    case G_TYPE_UCHAR:		BTK_VALUE_UCHAR (*arg) = g_value_get_uchar (value);	break;
+    case G_TYPE_BOOLEAN:	BTK_VALUE_BOOL (*arg) = g_value_get_boolean (value);	break;
+    case G_TYPE_INT:		BTK_VALUE_INT (*arg) = g_value_get_int (value);		break;
+    case G_TYPE_UINT:		BTK_VALUE_UINT (*arg) = g_value_get_uint (value);	break;
+    case G_TYPE_LONG:		BTK_VALUE_LONG (*arg) = g_value_get_long (value);	break;
+    case G_TYPE_ULONG:		BTK_VALUE_ULONG (*arg) = g_value_get_ulong (value);	break;
+    case G_TYPE_ENUM:		BTK_VALUE_ENUM (*arg) = g_value_get_enum (value);	break;
+    case G_TYPE_FLAGS:		BTK_VALUE_FLAGS (*arg) = g_value_get_flags (value);	break;
+    case G_TYPE_FLOAT:		BTK_VALUE_FLOAT (*arg) = g_value_get_float (value);	break;
+    case G_TYPE_DOUBLE:		BTK_VALUE_DOUBLE (*arg) = g_value_get_double (value);	break;
+    case G_TYPE_BOXED:		BTK_VALUE_BOXED (*arg) = g_value_get_boxed (value);	break;
+    case G_TYPE_POINTER:	BTK_VALUE_POINTER (*arg) = g_value_get_pointer (value);	break;
+    case G_TYPE_OBJECT:		BTK_VALUE_POINTER (*arg) = g_value_get_object (value);	break;
     case G_TYPE_STRING:		if (copy_string)
-      GTK_VALUE_STRING (*arg) = g_value_dup_string (value);
+      BTK_VALUE_STRING (*arg) = g_value_dup_string (value);
     else
-      GTK_VALUE_STRING (*arg) = (char *) g_value_get_string (value);
+      BTK_VALUE_STRING (*arg) = (char *) g_value_get_string (value);
     break;
     default:
       return FALSE;
@@ -266,30 +266,30 @@ gtk_arg_set_from_value (GtkArg  *arg,
 }
 
 static inline gboolean
-gtk_argloc_set_from_value (GtkArg  *arg,
+btk_argloc_set_from_value (BtkArg  *arg,
 			   GValue  *value,
 			   gboolean copy_string)
 {
   switch (G_TYPE_FUNDAMENTAL (arg->type))
     {
-    case G_TYPE_CHAR:		*GTK_RETLOC_CHAR (*arg) = g_value_get_char (value);	  break;
-    case G_TYPE_UCHAR:		*GTK_RETLOC_UCHAR (*arg) = g_value_get_uchar (value);	  break;
-    case G_TYPE_BOOLEAN:	*GTK_RETLOC_BOOL (*arg) = g_value_get_boolean (value);	  break;
-    case G_TYPE_INT:		*GTK_RETLOC_INT (*arg) = g_value_get_int (value);	  break;
-    case G_TYPE_UINT:		*GTK_RETLOC_UINT (*arg) = g_value_get_uint (value);	  break;
-    case G_TYPE_LONG:		*GTK_RETLOC_LONG (*arg) = g_value_get_long (value);	  break;
-    case G_TYPE_ULONG:		*GTK_RETLOC_ULONG (*arg) = g_value_get_ulong (value);	  break;
-    case G_TYPE_ENUM:		*GTK_RETLOC_ENUM (*arg) = g_value_get_enum (value);	  break;
-    case G_TYPE_FLAGS:		*GTK_RETLOC_FLAGS (*arg) = g_value_get_flags (value);	  break;
-    case G_TYPE_FLOAT:		*GTK_RETLOC_FLOAT (*arg) = g_value_get_float (value);	  break;
-    case G_TYPE_DOUBLE:		*GTK_RETLOC_DOUBLE (*arg) = g_value_get_double (value);	  break;
-    case G_TYPE_BOXED:		*GTK_RETLOC_BOXED (*arg) = g_value_get_boxed (value);	  break;
-    case G_TYPE_POINTER:	*GTK_RETLOC_POINTER (*arg) = g_value_get_pointer (value); break;
-    case G_TYPE_OBJECT:		*GTK_RETLOC_POINTER (*arg) = g_value_get_object (value);  break;
+    case G_TYPE_CHAR:		*BTK_RETLOC_CHAR (*arg) = g_value_get_char (value);	  break;
+    case G_TYPE_UCHAR:		*BTK_RETLOC_UCHAR (*arg) = g_value_get_uchar (value);	  break;
+    case G_TYPE_BOOLEAN:	*BTK_RETLOC_BOOL (*arg) = g_value_get_boolean (value);	  break;
+    case G_TYPE_INT:		*BTK_RETLOC_INT (*arg) = g_value_get_int (value);	  break;
+    case G_TYPE_UINT:		*BTK_RETLOC_UINT (*arg) = g_value_get_uint (value);	  break;
+    case G_TYPE_LONG:		*BTK_RETLOC_LONG (*arg) = g_value_get_long (value);	  break;
+    case G_TYPE_ULONG:		*BTK_RETLOC_ULONG (*arg) = g_value_get_ulong (value);	  break;
+    case G_TYPE_ENUM:		*BTK_RETLOC_ENUM (*arg) = g_value_get_enum (value);	  break;
+    case G_TYPE_FLAGS:		*BTK_RETLOC_FLAGS (*arg) = g_value_get_flags (value);	  break;
+    case G_TYPE_FLOAT:		*BTK_RETLOC_FLOAT (*arg) = g_value_get_float (value);	  break;
+    case G_TYPE_DOUBLE:		*BTK_RETLOC_DOUBLE (*arg) = g_value_get_double (value);	  break;
+    case G_TYPE_BOXED:		*BTK_RETLOC_BOXED (*arg) = g_value_get_boxed (value);	  break;
+    case G_TYPE_POINTER:	*BTK_RETLOC_POINTER (*arg) = g_value_get_pointer (value); break;
+    case G_TYPE_OBJECT:		*BTK_RETLOC_POINTER (*arg) = g_value_get_object (value);  break;
     case G_TYPE_STRING:		if (copy_string)
-      *GTK_RETLOC_STRING (*arg) = g_value_dup_string (value);
+      *BTK_RETLOC_STRING (*arg) = g_value_dup_string (value);
     else
-      *GTK_RETLOC_STRING (*arg) = (char *) g_value_get_string (value);
+      *BTK_RETLOC_STRING (*arg) = (char *) g_value_get_string (value);
     break;
     default:
       return FALSE;
@@ -298,33 +298,33 @@ gtk_argloc_set_from_value (GtkArg  *arg,
 }
 
 void
-gtk_signal_emitv (GtkObject *object,
+btk_signal_emitv (BtkObject *object,
 		  guint      signal_id,
-		  GtkArg    *args)
+		  BtkArg    *args)
 {
   GSignalQuery query;
   GValue params[SIGNAL_MAX_PARAMS + 1] = { { 0, }, };
   GValue rvalue = { 0, };
   guint i;
   
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
   
   g_signal_query (signal_id, &query);
   g_return_if_fail (query.signal_id != 0);
-  g_return_if_fail (g_type_is_a (GTK_OBJECT_TYPE (object), query.itype));
+  g_return_if_fail (g_type_is_a (BTK_OBJECT_TYPE (object), query.itype));
   g_return_if_fail (query.n_params < SIGNAL_MAX_PARAMS);
   if (query.n_params > 0)
     g_return_if_fail (args != NULL);
   
-  g_value_init (params + 0, GTK_OBJECT_TYPE (object));
+  g_value_init (params + 0, BTK_OBJECT_TYPE (object));
   g_value_set_object (params + 0, G_OBJECT (object));
   for (i = 0; i < query.n_params; i++)
     {
       GValue *value = params + 1 + i;
-      GtkArg *arg = args + i;
+      BtkArg *arg = args + i;
       
       g_value_init (value, arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE);
-      if (!gtk_arg_static_to_value (arg, value))
+      if (!btk_arg_static_to_value (arg, value))
 	{
 	  g_warning ("%s: failed to convert arg type `%s' to value type `%s'",
 		     G_STRLOC, g_type_name (arg->type & ~G_SIGNAL_TYPE_STATIC_SCOPE),
@@ -339,7 +339,7 @@ gtk_signal_emitv (GtkObject *object,
   
   if (query.return_type != G_TYPE_NONE)
     {
-      gtk_argloc_set_from_value (args + query.n_params, &rvalue, TRUE);
+      btk_argloc_set_from_value (args + query.n_params, &rvalue, TRUE);
       g_value_unset (&rvalue);
     }
   for (i = 0; i < query.n_params; i++)
@@ -348,13 +348,13 @@ gtk_signal_emitv (GtkObject *object,
 }
 
 void
-gtk_signal_emit (GtkObject *object,
+btk_signal_emit (BtkObject *object,
 		 guint      signal_id,
 		 ...)
 {
   va_list var_args;
   
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
 
   va_start (var_args, signal_id);
   g_signal_emit_valist (G_OBJECT (object), signal_id, 0, var_args);
@@ -362,17 +362,17 @@ gtk_signal_emit (GtkObject *object,
 }
 
 void
-gtk_signal_emit_by_name (GtkObject   *object,
+btk_signal_emit_by_name (BtkObject   *object,
 			 const gchar *name,
 			 ...)
 {
   GSignalQuery query;
   va_list var_args;
   
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
   g_return_if_fail (name != NULL);
   
-  g_signal_query (g_signal_lookup (name, GTK_OBJECT_TYPE (object)), &query);
+  g_signal_query (g_signal_lookup (name, BTK_OBJECT_TYPE (object)), &query);
   g_return_if_fail (query.signal_id != 0);
   
   va_start (var_args, name);
@@ -381,14 +381,14 @@ gtk_signal_emit_by_name (GtkObject   *object,
 }
 
 void
-gtk_signal_emitv_by_name (GtkObject   *object,
+btk_signal_emitv_by_name (BtkObject   *object,
 			  const gchar *name,
-			  GtkArg      *args)
+			  BtkArg      *args)
 {
-  g_return_if_fail (GTK_IS_OBJECT (object));
+  g_return_if_fail (BTK_IS_OBJECT (object));
   
-  gtk_signal_emitv (object, g_signal_lookup (name, GTK_OBJECT_TYPE (object)), args);
+  btk_signal_emitv (object, g_signal_lookup (name, BTK_OBJECT_TYPE (object)), args);
 }
 
-#define __GTK_SIGNAL_C__
-#include "gtkaliasdef.c"
+#define __BTK_SIGNAL_C__
+#include "btkaliasdef.c"

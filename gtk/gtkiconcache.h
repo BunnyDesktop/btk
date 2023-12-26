@@ -1,5 +1,5 @@
-/* gtkiconcache.h
- * Copyright (C) 2004  Anders Carlsson <andersca@gnome.org>
+/* btkiconcache.h
+ * Copyright (C) 2004  Anders Carlsson <andersca@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -16,51 +16,51 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#ifndef __GTK_ICON_CACHE_H__
-#define __GTK_ICON_CACHE_H__
+#ifndef __BTK_ICON_CACHE_H__
+#define __BTK_ICON_CACHE_H__
 
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <gdk/gdk.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
+#include <bdk/bdk.h>
 
-typedef struct _GtkIconCache GtkIconCache;
-typedef struct _GtkIconData GtkIconData;
+typedef struct _BtkIconCache BtkIconCache;
+typedef struct _BtkIconData BtkIconData;
 
-struct _GtkIconData
+struct _BtkIconData
 {
   gboolean has_embedded_rect;
   gint x0, y0, x1, y1;
   
-  GdkPoint *attach_points;
+  BdkPoint *attach_points;
   gint n_attach_points;
 
   gchar *display_name;
 };
 
-GtkIconCache *_gtk_icon_cache_new            (const gchar  *data);
-GtkIconCache *_gtk_icon_cache_new_for_path   (const gchar  *path);
-gint          _gtk_icon_cache_get_directory_index  (GtkIconCache *cache,
+BtkIconCache *_btk_icon_cache_new            (const gchar  *data);
+BtkIconCache *_btk_icon_cache_new_for_path   (const gchar  *path);
+gint          _btk_icon_cache_get_directory_index  (BtkIconCache *cache,
 					            const gchar  *directory);
-gboolean      _gtk_icon_cache_has_icon       (GtkIconCache *cache,
+gboolean      _btk_icon_cache_has_icon       (BtkIconCache *cache,
 					      const gchar  *icon_name);
-gboolean      _gtk_icon_cache_has_icon_in_directory (GtkIconCache *cache,
+gboolean      _btk_icon_cache_has_icon_in_directory (BtkIconCache *cache,
 					             const gchar  *icon_name,
 					             const gchar  *directory);
-void	      _gtk_icon_cache_add_icons      (GtkIconCache *cache,
+void	      _btk_icon_cache_add_icons      (BtkIconCache *cache,
 					      const gchar  *directory,
 					      GHashTable   *hash_table);
 
-gint          _gtk_icon_cache_get_icon_flags (GtkIconCache *cache,
+gint          _btk_icon_cache_get_icon_flags (BtkIconCache *cache,
 					      const gchar  *icon_name,
 					      gint          directory_index);
-GdkPixbuf    *_gtk_icon_cache_get_icon       (GtkIconCache *cache,
+BdkPixbuf    *_btk_icon_cache_get_icon       (BtkIconCache *cache,
 					      const gchar  *icon_name,
 					      gint          directory_index);
-GtkIconData  *_gtk_icon_cache_get_icon_data  (GtkIconCache *cache,
+BtkIconData  *_btk_icon_cache_get_icon_data  (BtkIconCache *cache,
  					      const gchar  *icon_name,
  					      gint          directory_index);
 
-GtkIconCache *_gtk_icon_cache_ref            (GtkIconCache *cache);
-void          _gtk_icon_cache_unref          (GtkIconCache *cache);
+BtkIconCache *_btk_icon_cache_ref            (BtkIconCache *cache);
+void          _btk_icon_cache_unref          (BtkIconCache *cache);
 
 
-#endif /* __GTK_ICON_CACHE_H__ */
+#endif /* __BTK_ICON_CACHE_H__ */

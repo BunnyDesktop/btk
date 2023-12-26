@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,36 +17,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_TOPLEVEL_H__
-#define __GAIL_TOPLEVEL_H__
+#ifndef __BAIL_TOPLEVEL_H__
+#define __BAIL_TOPLEVEL_H__
 
-#include <atk/atk.h>
+#include <batk/batk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_TOPLEVEL               (gail_toplevel_get_type ())
-#define GAIL_TOPLEVEL(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_TOPLEVEL, GailToplevel))
-#define GAIL_TOPLEVEL_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_TOPLEVEL, GailToplevelClass))
-#define GAIL_IS_TOPLEVEL(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_TOPLEVEL))
-#define GAIL_IS_TOPLEVEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_TOPLEVEL))
-#define GAIL_TOPLEVEL_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_TOPLEVEL, GailToplevelClass))
+#define BAIL_TYPE_TOPLEVEL               (bail_toplevel_get_type ())
+#define BAIL_TOPLEVEL(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TOPLEVEL, BailToplevel))
+#define BAIL_TOPLEVEL_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TOPLEVEL, BailToplevelClass))
+#define BAIL_IS_TOPLEVEL(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TOPLEVEL))
+#define BAIL_IS_TOPLEVEL_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TOPLEVEL))
+#define BAIL_TOPLEVEL_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TOPLEVEL, BailToplevelClass))
 
-typedef struct _GailToplevel             GailToplevel;
-typedef struct _GailToplevelClass        GailToplevelClass;
+typedef struct _BailToplevel             BailToplevel;
+typedef struct _BailToplevelClass        BailToplevelClass;
   
-struct _GailToplevel
+struct _BailToplevel
 {
-  AtkObject parent;
+  BatkObject parent;
   GList *window_list;
 };
 
-GType gail_toplevel_get_type (void);
+GType bail_toplevel_get_type (void);
 
-struct _GailToplevelClass
+struct _BailToplevelClass
 {
-  AtkObjectClass parent_class;
+  BatkObjectClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_TOPLEVEL_H__ */
+#endif /* __BAIL_TOPLEVEL_H__ */

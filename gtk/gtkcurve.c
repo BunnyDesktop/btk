@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1997 David Mosberger
  *
  * This library is free software; you can redistribute it and/or
@@ -18,40 +18,40 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#undef GDK_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
+#undef BDK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include "config.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-#include "gtkcurve.h"
-#include "gtkdrawingarea.h"
-#include "gtkmain.h"
-#include "gtkmarshalers.h"
-#include "gtkradiobutton.h"
-#include "gtktable.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkcurve.h"
+#include "btkdrawingarea.h"
+#include "btkmain.h"
+#include "btkmarshalers.h"
+#include "btkradiobutton.h"
+#include "btktable.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 #define RADIUS		3	/* radius of the control points */
 #define MIN_DISTANCE	8	/* min distance between control points */
 
-#define GRAPH_MASK	(GDK_EXPOSURE_MASK |		\
-			 GDK_POINTER_MOTION_MASK |	\
-			 GDK_POINTER_MOTION_HINT_MASK |	\
-			 GDK_ENTER_NOTIFY_MASK |	\
-			 GDK_BUTTON_PRESS_MASK |	\
-			 GDK_BUTTON_RELEASE_MASK |	\
-			 GDK_BUTTON1_MOTION_MASK)
+#define GRAPH_MASK	(BDK_EXPOSURE_MASK |		\
+			 BDK_POINTER_MOTION_MASK |	\
+			 BDK_POINTER_MOTION_HINT_MASK |	\
+			 BDK_ENTER_NOTIFY_MASK |	\
+			 BDK_BUTTON_PRESS_MASK |	\
+			 BDK_BUTTON_RELEASE_MASK |	\
+			 BDK_BUTTON1_MOTION_MASK)
 
 enum {
   PROP_0,
@@ -62,29 +62,29 @@ enum {
   PROP_MAX_Y
 };
 
-static GtkDrawingAreaClass *parent_class = NULL;
+static BtkDrawingAreaClass *parent_class = NULL;
 static guint curve_type_changed_signal = 0;
 
 
 /* forward declarations: */
-static void gtk_curve_class_init   (GtkCurveClass *class);
-static void gtk_curve_init         (GtkCurve      *curve);
-static void gtk_curve_get_property  (GObject              *object,
+static void btk_curve_class_init   (BtkCurveClass *class);
+static void btk_curve_init         (BtkCurve      *curve);
+static void btk_curve_get_property  (GObject              *object,
 				     guint                 param_id,
 				     GValue               *value,
 				     GParamSpec           *pspec);
-static void gtk_curve_set_property  (GObject              *object,
+static void btk_curve_set_property  (GObject              *object,
 				     guint                 param_id,
 				     const GValue         *value,
 				     GParamSpec           *pspec);
-static void gtk_curve_finalize     (GObject       *object);
-static gint gtk_curve_graph_events (GtkWidget     *widget, 
-				    GdkEvent      *event, 
-				    GtkCurve      *c);
-static void gtk_curve_size_graph   (GtkCurve      *curve);
+static void btk_curve_finalize     (GObject       *object);
+static gint btk_curve_graph_events (BtkWidget     *widget, 
+				    BdkEvent      *event, 
+				    BtkCurve      *c);
+static void btk_curve_size_graph   (BtkCurve      *curve);
 
 GType
-gtk_curve_get_type (void)
+btk_curve_get_type (void)
 {
   static GType curve_type = 0;
 
@@ -92,44 +92,44 @@ gtk_curve_get_type (void)
     {
       const GTypeInfo curve_info =
       {
-	sizeof (GtkCurveClass),
+	sizeof (BtkCurveClass),
 	NULL,		/* base_init */
 	NULL,		/* base_finalize */
-	(GClassInitFunc) gtk_curve_class_init,
+	(GClassInitFunc) btk_curve_class_init,
 	NULL,		/* class_finalize */
 	NULL,		/* class_data */
-	sizeof (GtkCurve),
+	sizeof (BtkCurve),
 	0,		/* n_preallocs */
-	(GInstanceInitFunc) gtk_curve_init,
+	(GInstanceInitFunc) btk_curve_init,
       };
 
-      curve_type = g_type_register_static (GTK_TYPE_DRAWING_AREA, I_("GtkCurve"),
+      curve_type = g_type_register_static (BTK_TYPE_DRAWING_AREA, I_("BtkCurve"),
 					   &curve_info, 0);
     }
   return curve_type;
 }
 
 static void
-gtk_curve_class_init (GtkCurveClass *class)
+btk_curve_class_init (BtkCurveClass *class)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
   
   parent_class = g_type_class_peek_parent (class);
   
-  gobject_class->finalize = gtk_curve_finalize;
+  bobject_class->finalize = btk_curve_finalize;
 
-  gobject_class->set_property = gtk_curve_set_property;
-  gobject_class->get_property = gtk_curve_get_property;
+  bobject_class->set_property = btk_curve_set_property;
+  bobject_class->get_property = btk_curve_get_property;
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_CURVE_TYPE,
 				   g_param_spec_enum ("curve-type",
 						      P_("Curve type"),
 						      P_("Is this curve linear, spline interpolated, or free-form"),
-						      GTK_TYPE_CURVE_TYPE,
-						      GTK_CURVE_TYPE_SPLINE,
-						      GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+						      BTK_TYPE_CURVE_TYPE,
+						      BTK_CURVE_TYPE_SPLINE,
+						      BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_MIN_X,
 				   g_param_spec_float ("min-x",
 						       P_("Minimum X"),
@@ -137,8 +137,8 @@ gtk_curve_class_init (GtkCurveClass *class)
 						       -G_MAXFLOAT,
 						       G_MAXFLOAT,
 						       0.0,
-						       GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+						       BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_MAX_X,
 				   g_param_spec_float ("max-x",
 						       P_("Maximum X"),
@@ -146,8 +146,8 @@ gtk_curve_class_init (GtkCurveClass *class)
 						       -G_MAXFLOAT,
 						       G_MAXFLOAT,
                                                        1.0,
-						       GTK_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class,
+						       BTK_PARAM_READWRITE));
+  g_object_class_install_property (bobject_class,
 				   PROP_MIN_Y,
 				   g_param_spec_float ("min-y",
 						       P_("Minimum Y"),
@@ -155,8 +155,8 @@ gtk_curve_class_init (GtkCurveClass *class)
                                                        -G_MAXFLOAT,
 						       G_MAXFLOAT,
 						       0.0,
-						       GTK_PARAM_READWRITE));  
-  g_object_class_install_property (gobject_class,
+						       BTK_PARAM_READWRITE));  
+  g_object_class_install_property (bobject_class,
 				   PROP_MAX_Y,
 				   g_param_spec_float ("max-y",
 						       P_("Maximum Y"),
@@ -164,26 +164,26 @@ gtk_curve_class_init (GtkCurveClass *class)
 						       -G_MAXFLOAT,
 						       G_MAXFLOAT,
 						       1.0,
-						       GTK_PARAM_READWRITE));
+						       BTK_PARAM_READWRITE));
 
   curve_type_changed_signal =
     g_signal_new (I_("curve-type-changed"),
-		   G_OBJECT_CLASS_TYPE (gobject_class),
+		   G_OBJECT_CLASS_TYPE (bobject_class),
 		   G_SIGNAL_RUN_FIRST,
-		   G_STRUCT_OFFSET (GtkCurveClass, curve_type_changed),
+		   G_STRUCT_OFFSET (BtkCurveClass, curve_type_changed),
 		   NULL, NULL,
-		   _gtk_marshal_VOID__VOID,
+		   _btk_marshal_VOID__VOID,
 		   G_TYPE_NONE, 0);
 }
 
 static void
-gtk_curve_init (GtkCurve *curve)
+btk_curve_init (BtkCurve *curve)
 {
   gint old_mask;
 
-  curve->cursor_type = GDK_TOP_LEFT_ARROW;
+  curve->cursor_type = BDK_TOP_LEFT_ARROW;
   curve->pixmap = NULL;
-  curve->curve_type = GTK_CURVE_TYPE_SPLINE;
+  curve->curve_type = BTK_CURVE_TYPE_SPLINE;
   curve->height = 0;
   curve->grab_point = -1;
 
@@ -198,40 +198,40 @@ gtk_curve_init (GtkCurve *curve)
   curve->min_y = 0.0;
   curve->max_y = 1.0;
 
-  old_mask = gtk_widget_get_events (GTK_WIDGET (curve));
-  gtk_widget_set_events (GTK_WIDGET (curve), old_mask | GRAPH_MASK);
+  old_mask = btk_widget_get_events (BTK_WIDGET (curve));
+  btk_widget_set_events (BTK_WIDGET (curve), old_mask | GRAPH_MASK);
   g_signal_connect (curve, "event",
-		    G_CALLBACK (gtk_curve_graph_events), curve);
-  gtk_curve_size_graph (curve);
+		    G_CALLBACK (btk_curve_graph_events), curve);
+  btk_curve_size_graph (curve);
 }
 
 static void
-gtk_curve_set_property (GObject              *object,
+btk_curve_set_property (GObject              *object,
 			guint                 prop_id,
 			const GValue         *value,
 			GParamSpec           *pspec)
 {
-  GtkCurve *curve = GTK_CURVE (object);
+  BtkCurve *curve = BTK_CURVE (object);
   
   switch (prop_id)
     {
     case PROP_CURVE_TYPE:
-      gtk_curve_set_curve_type (curve, g_value_get_enum (value));
+      btk_curve_set_curve_type (curve, g_value_get_enum (value));
       break;
     case PROP_MIN_X:
-      gtk_curve_set_range (curve, g_value_get_float (value), curve->max_x,
+      btk_curve_set_range (curve, g_value_get_float (value), curve->max_x,
 			   curve->min_y, curve->max_y);
       break;
     case PROP_MAX_X:
-      gtk_curve_set_range (curve, curve->min_x, g_value_get_float (value),
+      btk_curve_set_range (curve, curve->min_x, g_value_get_float (value),
 			   curve->min_y, curve->max_y);
       break;	
     case PROP_MIN_Y:
-      gtk_curve_set_range (curve, curve->min_x, curve->max_x,
+      btk_curve_set_range (curve, curve->min_x, curve->max_x,
 			   g_value_get_float (value), curve->max_y);
       break;
     case PROP_MAX_Y:
-      gtk_curve_set_range (curve, curve->min_x, curve->max_x,
+      btk_curve_set_range (curve, curve->min_x, curve->max_x,
 			   curve->min_y, g_value_get_float (value));
       break;
     default:
@@ -241,12 +241,12 @@ gtk_curve_set_property (GObject              *object,
 }
 
 static void
-gtk_curve_get_property (GObject              *object,
+btk_curve_get_property (GObject              *object,
 			guint                 prop_id,
 			GValue               *value,
 			GParamSpec           *pspec)
 {
-  GtkCurve *curve = GTK_CURVE (object);
+  BtkCurve *curve = BTK_CURVE (object);
 
   switch (prop_id)
     {
@@ -340,14 +340,14 @@ spline_eval (int n, gfloat x[], gfloat y[], gfloat y2[], gfloat val)
 }
 
 static void
-gtk_curve_interpolate (GtkCurve *c, gint width, gint height)
+btk_curve_interpolate (BtkCurve *c, gint width, gint height)
 {
   gfloat *vector;
   int i;
 
   vector = g_malloc (width * sizeof (vector[0]));
 
-  gtk_curve_get_vector (c, width, vector);
+  btk_curve_get_vector (c, width, vector);
 
   c->height = height;
   if (c->num_points != width)
@@ -368,41 +368,41 @@ gtk_curve_interpolate (GtkCurve *c, gint width, gint height)
 }
 
 static void
-gtk_curve_draw (GtkCurve *c, gint width, gint height)
+btk_curve_draw (BtkCurve *c, gint width, gint height)
 {
-  GtkStateType state;
-  GtkStyle *style;
+  BtkStateType state;
+  BtkStyle *style;
   gint i;
 
   if (!c->pixmap)
     return;
 
   if (c->height != height || c->num_points != width)
-    gtk_curve_interpolate (c, width, height);
+    btk_curve_interpolate (c, width, height);
 
-  state = GTK_STATE_NORMAL;
-  if (!gtk_widget_is_sensitive (GTK_WIDGET (c)))
-    state = GTK_STATE_INSENSITIVE;
+  state = BTK_STATE_NORMAL;
+  if (!btk_widget_is_sensitive (BTK_WIDGET (c)))
+    state = BTK_STATE_INSENSITIVE;
 
-  style = GTK_WIDGET (c)->style;
+  style = BTK_WIDGET (c)->style;
 
   /* clear the pixmap: */
-  gtk_paint_flat_box (style, c->pixmap, GTK_STATE_NORMAL, GTK_SHADOW_NONE,
-		      NULL, GTK_WIDGET (c), "curve_bg",
+  btk_paint_flat_box (style, c->pixmap, BTK_STATE_NORMAL, BTK_SHADOW_NONE,
+		      NULL, BTK_WIDGET (c), "curve_bg",
 		      0, 0, width + RADIUS * 2, height + RADIUS * 2);
   /* draw the grid lines: (XXX make more meaningful) */
   for (i = 0; i < 5; i++)
     {
-      gdk_draw_line (c->pixmap, style->dark_gc[state],
+      bdk_draw_line (c->pixmap, style->dark_gc[state],
 		     RADIUS, i * (height / 4.0) + RADIUS,
 		     width + RADIUS, i * (height / 4.0) + RADIUS);
-      gdk_draw_line (c->pixmap, style->dark_gc[state],
+      bdk_draw_line (c->pixmap, style->dark_gc[state],
 		     i * (width / 4.0) + RADIUS, RADIUS,
 		     i * (width / 4.0) + RADIUS, height + RADIUS);
     }
 
-  gdk_draw_points (c->pixmap, style->fg_gc[state], c->point, c->num_points);
-  if (c->curve_type != GTK_CURVE_TYPE_FREE)
+  bdk_draw_points (c->pixmap, style->fg_gc[state], c->point, c->num_points);
+  if (c->curve_type != BTK_CURVE_TYPE_FREE)
     for (i = 0; i < c->num_ctlpoints; ++i)
       {
 	gint x, y;
@@ -417,20 +417,20 @@ gtk_curve_draw (GtkCurve *c, gint width, gint height)
 		   height);
 
 	/* draw a bullet: */
-	gdk_draw_arc (c->pixmap, style->fg_gc[state], TRUE, x, y,
+	bdk_draw_arc (c->pixmap, style->fg_gc[state], TRUE, x, y,
 		      RADIUS * 2, RADIUS*2, 0, 360*64);
       }
-  gdk_draw_drawable (GTK_WIDGET (c)->window, style->fg_gc[state], c->pixmap,
+  bdk_draw_drawable (BTK_WIDGET (c)->window, style->fg_gc[state], c->pixmap,
 		     0, 0, 0, 0, width + RADIUS * 2, height + RADIUS * 2);
 }
 
 static gint
-gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
+btk_curve_graph_events (BtkWidget *widget, BdkEvent *event, BtkCurve *c)
 {
-  GdkCursorType new_type = c->cursor_type;
+  BdkCursorType new_type = c->cursor_type;
   gint i, src, dst, leftbound, rightbound;
-  GdkEventMotion *mevent;
-  GtkWidget *w;
+  BdkEventMotion *mevent;
+  BtkWidget *w;
   gint tx, ty;
   gint cx, x, y, width, height;
   gint closest_point = 0;
@@ -439,7 +439,7 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
   gint x1, x2, y1, y2;
   gint retval = FALSE;
 
-  w = GTK_WIDGET (c);
+  w = BTK_WIDGET (c);
   width = w->allocation.width - RADIUS * 2;
   height = w->allocation.height - RADIUS * 2;
 
@@ -447,7 +447,7 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
     return FALSE;
 
   /*  get the pointer position  */
-  gdk_window_get_pointer (w->window, &tx, &ty, NULL);
+  bdk_window_get_pointer (w->window, &tx, &ty, NULL);
   x = CLAMP ((tx - RADIUS), 0, width-1);
   y = CLAMP ((ty - RADIUS), 0, height-1);
 
@@ -466,28 +466,28 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 
   switch (event->type)
     {
-    case GDK_CONFIGURE:
+    case BDK_CONFIGURE:
       if (c->pixmap)
 	g_object_unref (c->pixmap);
       c->pixmap = NULL;
       /* fall through */
-    case GDK_EXPOSE:
+    case BDK_EXPOSE:
       if (!c->pixmap)
-	c->pixmap = gdk_pixmap_new (w->window,
+	c->pixmap = bdk_pixmap_new (w->window,
 				    w->allocation.width,
 				    w->allocation.height, -1);
-      gtk_curve_draw (c, width, height);
+      btk_curve_draw (c, width, height);
       break;
 
-    case GDK_BUTTON_PRESS:
-      gtk_grab_add (widget);
+    case BDK_BUTTON_PRESS:
+      btk_grab_add (widget);
 
-      new_type = GDK_TCROSS;
+      new_type = BDK_TCROSS;
 
       switch (c->curve_type)
 	{
-	case GTK_CURVE_TYPE_LINEAR:
-	case GTK_CURVE_TYPE_SPLINE:
+	case BTK_CURVE_TYPE_LINEAR:
+	case BTK_CURVE_TYPE_SPLINE:
 	  if (distance > MIN_DISTANCE)
 	    {
 	      /* insert a new control point */
@@ -512,25 +512,25 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 	  c->ctlpoint[c->grab_point][1] =
 	    unproject (height - y, c->min_y, c->max_y, height);
 
-	  gtk_curve_interpolate (c, width, height);
+	  btk_curve_interpolate (c, width, height);
 	  break;
 
-	case GTK_CURVE_TYPE_FREE:
+	case BTK_CURVE_TYPE_FREE:
 	  c->point[x].x = RADIUS + x;
 	  c->point[x].y = RADIUS + y;
 	  c->grab_point = x;
 	  c->last = y;
 	  break;
 	}
-      gtk_curve_draw (c, width, height);
+      btk_curve_draw (c, width, height);
       retval = TRUE;
       break;
 
-    case GDK_BUTTON_RELEASE:
-      gtk_grab_remove (widget);
+    case BDK_BUTTON_RELEASE:
+      btk_grab_remove (widget);
 
       /* delete inactive points: */
-      if (c->curve_type != GTK_CURVE_TYPE_FREE)
+      if (c->curve_type != BTK_CURVE_TYPE_FREE)
 	{
 	  for (src = dst = 0; src < c->num_ctlpoints; ++src)
 	    {
@@ -549,38 +549,38 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 		  c->num_ctlpoints = 1;
 		  c->ctlpoint[0][0] = min_x;
 		  c->ctlpoint[0][1] = c->min_y;
-		  gtk_curve_interpolate (c, width, height);
-		  gtk_curve_draw (c, width, height);
+		  btk_curve_interpolate (c, width, height);
+		  btk_curve_draw (c, width, height);
 		}
 	      c->ctlpoint =
 		g_realloc (c->ctlpoint,
 			   c->num_ctlpoints * sizeof (*c->ctlpoint));
 	    }
 	}
-      new_type = GDK_FLEUR;
+      new_type = BDK_FLEUR;
       c->grab_point = -1;
       retval = TRUE;
       break;
 
-    case GDK_MOTION_NOTIFY:
-      mevent = (GdkEventMotion *) event;
+    case BDK_MOTION_NOTIFY:
+      mevent = (BdkEventMotion *) event;
 
       switch (c->curve_type)
 	{
-	case GTK_CURVE_TYPE_LINEAR:
-	case GTK_CURVE_TYPE_SPLINE:
+	case BTK_CURVE_TYPE_LINEAR:
+	case BTK_CURVE_TYPE_SPLINE:
 	  if (c->grab_point == -1)
 	    {
 	      /* if no point is grabbed...  */
 	      if (distance <= MIN_DISTANCE)
-		new_type = GDK_FLEUR;
+		new_type = BDK_FLEUR;
 	      else
-		new_type = GDK_TCROSS;
+		new_type = BDK_TCROSS;
 	    }
 	  else
 	    {
 	      /* drag the grabbed point  */
-	      new_type = GDK_TCROSS;
+	      new_type = BDK_TCROSS;
 
 	      leftbound = -MIN_DISTANCE;
 	      if (c->grab_point > 0)
@@ -603,12 +603,12 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 		  c->ctlpoint[c->grab_point][0] = rx;
 		  c->ctlpoint[c->grab_point][1] = ry;
 		}
-	      gtk_curve_interpolate (c, width, height);
-	      gtk_curve_draw (c, width, height);
+	      btk_curve_interpolate (c, width, height);
+	      btk_curve_draw (c, width, height);
 	    }
 	  break;
 
-	case GTK_CURVE_TYPE_FREE:
+	case BTK_CURVE_TYPE_FREE:
 	  if (c->grab_point != -1)
 	    {
 	      if (c->grab_point > x)
@@ -640,24 +640,24 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 		}
 	      c->grab_point = x;
 	      c->last = y;
-	      gtk_curve_draw (c, width, height);
+	      btk_curve_draw (c, width, height);
 	    }
-	  if (mevent->state & GDK_BUTTON1_MASK)
-	    new_type = GDK_TCROSS;
+	  if (mevent->state & BDK_BUTTON1_MASK)
+	    new_type = BDK_TCROSS;
 	  else
-	    new_type = GDK_PENCIL;
+	    new_type = BDK_PENCIL;
 	  break;
 	}
-      if (new_type != (GdkCursorType) c->cursor_type)
+      if (new_type != (BdkCursorType) c->cursor_type)
 	{
-	  GdkCursor *cursor;
+	  BdkCursor *cursor;
 
 	  c->cursor_type = new_type;
 
-	  cursor = gdk_cursor_new_for_display (gtk_widget_get_display (w),
+	  cursor = bdk_cursor_new_for_display (btk_widget_get_display (w),
 					      c->cursor_type);
-	  gdk_window_set_cursor (w->window, cursor);
-	  gdk_cursor_unref (cursor);
+	  bdk_window_set_cursor (w->window, cursor);
+	  bdk_cursor_unref (cursor);
 	}
       retval = TRUE;
       break;
@@ -670,7 +670,7 @@ gtk_curve_graph_events (GtkWidget *widget, GdkEvent *event, GtkCurve *c)
 }
 
 void
-gtk_curve_set_curve_type (GtkCurve *c, GtkCurveType new_type)
+btk_curve_set_curve_type (BtkCurve *c, BtkCurveType new_type)
 {
   gfloat rx, dx;
   gint x, i;
@@ -679,15 +679,15 @@ gtk_curve_set_curve_type (GtkCurve *c, GtkCurveType new_type)
     {
       gint width, height;
 
-      width  = GTK_WIDGET (c)->allocation.width - RADIUS * 2;
-      height = GTK_WIDGET (c)->allocation.height - RADIUS * 2;
+      width  = BTK_WIDGET (c)->allocation.width - RADIUS * 2;
+      height = BTK_WIDGET (c)->allocation.height - RADIUS * 2;
 
-      if (new_type == GTK_CURVE_TYPE_FREE)
+      if (new_type == BTK_CURVE_TYPE_FREE)
 	{
-	  gtk_curve_interpolate (c, width, height);
+	  btk_curve_interpolate (c, width, height);
 	  c->curve_type = new_type;
 	}
-      else if (c->curve_type == GTK_CURVE_TYPE_FREE)
+      else if (c->curve_type == BTK_CURVE_TYPE_FREE)
 	{
 	  g_free (c->ctlpoint);
 	  c->num_ctlpoints = 9;
@@ -706,46 +706,46 @@ gtk_curve_set_curve_type (GtkCurve *c, GtkCurveType new_type)
 			   c->min_y, c->max_y, height);
 	    }
 	  c->curve_type = new_type;
-	  gtk_curve_interpolate (c, width, height);
+	  btk_curve_interpolate (c, width, height);
 	}
       else
 	{
 	  c->curve_type = new_type;
-	  gtk_curve_interpolate (c, width, height);
+	  btk_curve_interpolate (c, width, height);
 	}
       g_signal_emit (c, curve_type_changed_signal, 0);
       g_object_notify (G_OBJECT (c), "curve-type");
-      gtk_curve_draw (c, width, height);
+      btk_curve_draw (c, width, height);
     }
 }
 
 static void
-gtk_curve_size_graph (GtkCurve *curve)
+btk_curve_size_graph (BtkCurve *curve)
 {
   gint width, height;
   gfloat aspect;
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (curve)); 
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (curve)); 
 
   width  = (curve->max_x - curve->min_x) + 1;
   height = (curve->max_y - curve->min_y) + 1;
   aspect = width / (gfloat) height;
-  if (width > gdk_screen_get_width (screen) / 4)
-    width  = gdk_screen_get_width (screen) / 4;
-  if (height > gdk_screen_get_height (screen) / 4)
-    height = gdk_screen_get_height (screen) / 4;
+  if (width > bdk_screen_get_width (screen) / 4)
+    width  = bdk_screen_get_width (screen) / 4;
+  if (height > bdk_screen_get_height (screen) / 4)
+    height = bdk_screen_get_height (screen) / 4;
 
   if (aspect < 1.0)
     width  = height * aspect;
   else
     height = width / aspect;
 
-  gtk_widget_set_size_request (GTK_WIDGET (curve),
+  btk_widget_set_size_request (BTK_WIDGET (curve),
 			       width + RADIUS * 2,
 			       height + RADIUS * 2);
 }
 
 static void
-gtk_curve_reset_vector (GtkCurve *curve)
+btk_curve_reset_vector (BtkCurve *curve)
 {
   g_free (curve->ctlpoint);
 
@@ -760,31 +760,31 @@ gtk_curve_reset_vector (GtkCurve *curve)
     {
       gint width, height;
 
-      width = GTK_WIDGET (curve)->allocation.width - RADIUS * 2;
-      height = GTK_WIDGET (curve)->allocation.height - RADIUS * 2;
+      width = BTK_WIDGET (curve)->allocation.width - RADIUS * 2;
+      height = BTK_WIDGET (curve)->allocation.height - RADIUS * 2;
 
-      if (curve->curve_type == GTK_CURVE_TYPE_FREE)
+      if (curve->curve_type == BTK_CURVE_TYPE_FREE)
 	{
-	  curve->curve_type = GTK_CURVE_TYPE_LINEAR;
-	  gtk_curve_interpolate (curve, width, height);
-	  curve->curve_type = GTK_CURVE_TYPE_FREE;
+	  curve->curve_type = BTK_CURVE_TYPE_LINEAR;
+	  btk_curve_interpolate (curve, width, height);
+	  curve->curve_type = BTK_CURVE_TYPE_FREE;
 	}
       else
-	gtk_curve_interpolate (curve, width, height);
-      gtk_curve_draw (curve, width, height);
+	btk_curve_interpolate (curve, width, height);
+      btk_curve_draw (curve, width, height);
     }
 }
 
 void
-gtk_curve_reset (GtkCurve *c)
+btk_curve_reset (BtkCurve *c)
 {
-  GtkCurveType old_type;
+  BtkCurveType old_type;
 
   old_type = c->curve_type;
-  c->curve_type = GTK_CURVE_TYPE_SPLINE;
-  gtk_curve_reset_vector (c);
+  c->curve_type = BTK_CURVE_TYPE_SPLINE;
+  btk_curve_reset_vector (c);
 
-  if (old_type != GTK_CURVE_TYPE_SPLINE)
+  if (old_type != BTK_CURVE_TYPE_SPLINE)
     {
        g_signal_emit (c, curve_type_changed_signal, 0);
        g_object_notify (G_OBJECT (c), "curve-type");
@@ -792,17 +792,17 @@ gtk_curve_reset (GtkCurve *c)
 }
 
 void
-gtk_curve_set_gamma (GtkCurve *c, gfloat gamma)
+btk_curve_set_gamma (BtkCurve *c, gfloat gamma)
 {
   gfloat x, one_over_gamma, height;
-  GtkCurveType old_type;
+  BtkCurveType old_type;
   gint i;
 
   if (c->num_points < 2)
     return;
 
   old_type = c->curve_type;
-  c->curve_type = GTK_CURVE_TYPE_FREE;
+  c->curve_type = BTK_CURVE_TYPE_FREE;
 
   if (gamma <= 0)
     one_over_gamma = 1.0;
@@ -817,14 +817,14 @@ gtk_curve_set_gamma (GtkCurve *c, gfloat gamma)
 	RADIUS + (height * (1.0 - pow (x, one_over_gamma)) + 0.5);
     }
 
-  if (old_type != GTK_CURVE_TYPE_FREE)
+  if (old_type != BTK_CURVE_TYPE_FREE)
     g_signal_emit (c, curve_type_changed_signal, 0);
 
-  gtk_curve_draw (c, c->num_points, c->height);
+  btk_curve_draw (c, c->num_points, c->height);
 }
 
 void
-gtk_curve_set_range (GtkCurve *curve,
+btk_curve_set_range (BtkCurve *curve,
 		     gfloat    min_x,
                      gfloat    max_x,
                      gfloat    min_y,
@@ -849,28 +849,28 @@ gtk_curve_set_range (GtkCurve *curve,
   }
   g_object_thaw_notify (G_OBJECT (curve));
 
-  gtk_curve_size_graph (curve);
-  gtk_curve_reset_vector (curve);
+  btk_curve_size_graph (curve);
+  btk_curve_reset_vector (curve);
 }
 
 void
-gtk_curve_set_vector (GtkCurve *c, int veclen, gfloat vector[])
+btk_curve_set_vector (BtkCurve *c, int veclen, gfloat vector[])
 {
-  GtkCurveType old_type;
+  BtkCurveType old_type;
   gfloat rx, dx, ry;
   gint i, height;
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (c));
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (c));
 
   old_type = c->curve_type;
-  c->curve_type = GTK_CURVE_TYPE_FREE;
+  c->curve_type = BTK_CURVE_TYPE_FREE;
 
   if (c->point)
-    height = GTK_WIDGET (c)->allocation.height - RADIUS * 2;
+    height = BTK_WIDGET (c)->allocation.height - RADIUS * 2;
   else
     {
       height = (c->max_y - c->min_y);
-      if (height > gdk_screen_get_height (screen) / 4)
-	height = gdk_screen_get_height (screen) / 4;
+      if (height > bdk_screen_get_height (screen) / 4)
+	height = bdk_screen_get_height (screen) / 4;
 
       c->height = height;
       c->num_points = veclen;
@@ -888,24 +888,24 @@ gtk_curve_set_vector (GtkCurve *c, int veclen, gfloat vector[])
       c->point[i].y =
 	RADIUS + height - project (ry, c->min_y, c->max_y, height);
     }
-  if (old_type != GTK_CURVE_TYPE_FREE)
+  if (old_type != BTK_CURVE_TYPE_FREE)
     {
        g_signal_emit (c, curve_type_changed_signal, 0);
        g_object_notify (G_OBJECT (c), "curve-type");
     }
 
-  gtk_curve_draw (c, c->num_points, height);
+  btk_curve_draw (c, c->num_points, height);
 }
 
 void
-gtk_curve_get_vector (GtkCurve *c, int veclen, gfloat vector[])
+btk_curve_get_vector (BtkCurve *c, int veclen, gfloat vector[])
 {
   gfloat rx, ry, dx, dy, min_x, delta_x, *mem, *xv, *yv, *y2v, prev;
   gint dst, i, x, next, num_active_ctlpoints = 0, first_active = -1;
 
   min_x = c->min_x;
 
-  if (c->curve_type != GTK_CURVE_TYPE_FREE)
+  if (c->curve_type != BTK_CURVE_TYPE_FREE)
     {
       /* count active points: */
       prev = min_x - 1.0;
@@ -935,7 +935,7 @@ gtk_curve_get_vector (GtkCurve *c, int veclen, gfloat vector[])
 
   switch (c->curve_type)
     {
-    case GTK_CURVE_TYPE_SPLINE:
+    case BTK_CURVE_TYPE_SPLINE:
       mem = g_malloc (3 * num_active_ctlpoints * sizeof (gfloat));
       xv  = mem;
       yv  = mem + num_active_ctlpoints;
@@ -966,7 +966,7 @@ gtk_curve_get_vector (GtkCurve *c, int veclen, gfloat vector[])
       g_free (mem);
       break;
 
-    case GTK_CURVE_TYPE_LINEAR:
+    case BTK_CURVE_TYPE_LINEAR:
       dx = (c->max_x - min_x) / (veclen - 1);
       rx = min_x;
       ry = c->min_y;
@@ -998,7 +998,7 @@ gtk_curve_get_vector (GtkCurve *c, int veclen, gfloat vector[])
 	}
       break;
 
-    case GTK_CURVE_TYPE_FREE:
+    case BTK_CURVE_TYPE_FREE:
       if (c->point)
 	{
 	  rx = 0.0;
@@ -1014,20 +1014,20 @@ gtk_curve_get_vector (GtkCurve *c, int veclen, gfloat vector[])
     }
 }
 
-GtkWidget*
-gtk_curve_new (void)
+BtkWidget*
+btk_curve_new (void)
 {
-  return g_object_new (GTK_TYPE_CURVE, NULL);
+  return g_object_new (BTK_TYPE_CURVE, NULL);
 }
 
 static void
-gtk_curve_finalize (GObject *object)
+btk_curve_finalize (GObject *object)
 {
-  GtkCurve *curve;
+  BtkCurve *curve;
 
-  g_return_if_fail (GTK_IS_CURVE (object));
+  g_return_if_fail (BTK_IS_CURVE (object));
 
-  curve = GTK_CURVE (object);
+  curve = BTK_CURVE (object);
   if (curve->pixmap)
     g_object_unref (curve->pixmap);
   g_free (curve->point);
@@ -1036,5 +1036,5 @@ gtk_curve_finalize (GObject *object)
   G_OBJECT_CLASS (parent_class)->finalize (object);
 }
 
-#define __GTK_CURVE_C__
-#include "gtkaliasdef.c"
+#define __BTK_CURVE_C__
+#include "btkaliasdef.c"

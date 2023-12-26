@@ -1,4 +1,4 @@
-/* gdkdrawable-quartz.c
+/* bdkdrawable-quartz.c
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -20,20 +20,20 @@
 
 #include "config.h"
 #include <sys/time.h>
-#include <cairo-quartz.h>
-#include "gdkprivate-quartz.h"
+#include <bairo-quartz.h>
+#include "bdkprivate-quartz.h"
 
 static gpointer parent_class;
 
-static cairo_user_data_key_t gdk_quartz_cairo_key;
+static bairo_user_data_key_t bdk_quartz_bairo_key;
 
 typedef struct {
-  GdkDrawable  *drawable;
+  BdkDrawable  *drawable;
   CGContextRef  cg_context;
-} GdkQuartzCairoSurfaceData;
+} BdkQuartzBairoSurfaceData;
 
 void
-_gdk_windowing_set_cairo_surface_size (cairo_surface_t *surface,
+_bdk_windowing_set_bairo_surface_size (bairo_surface_t *surface,
 				       int              width,
 				       int              height)
 {
@@ -41,75 +41,75 @@ _gdk_windowing_set_cairo_surface_size (cairo_surface_t *surface,
 }
 
 static void
-gdk_quartz_cairo_surface_destroy (void *data)
+bdk_quartz_bairo_surface_destroy (void *data)
 {
-  GdkQuartzCairoSurfaceData *surface_data = data;
-  GdkDrawableImplQuartz *impl = GDK_DRAWABLE_IMPL_QUARTZ (surface_data->drawable);
+  BdkQuartzBairoSurfaceData *surface_data = data;
+  BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (surface_data->drawable);
 
-  impl->cairo_surface = NULL;
+  impl->bairo_surface = NULL;
 
-  gdk_quartz_drawable_release_context (surface_data->drawable,
+  bdk_quartz_drawable_release_context (surface_data->drawable,
                                        surface_data->cg_context);
 
   g_free (surface_data);
 }
 
-cairo_surface_t *
-_gdk_windowing_create_cairo_surface (GdkDrawable *drawable,
+bairo_surface_t *
+_bdk_windowing_create_bairo_surface (BdkDrawable *drawable,
 				     int          width,
 				     int          height)
 {
   CGContextRef cg_context;
-  GdkQuartzCairoSurfaceData *surface_data;
-  cairo_surface_t *surface;
+  BdkQuartzBairoSurfaceData *surface_data;
+  bairo_surface_t *surface;
 
-  cg_context = gdk_quartz_drawable_get_context (drawable, TRUE);
+  cg_context = bdk_quartz_drawable_get_context (drawable, TRUE);
 
-  surface_data = g_new (GdkQuartzCairoSurfaceData, 1);
+  surface_data = g_new (BdkQuartzBairoSurfaceData, 1);
   surface_data->drawable = drawable;
   surface_data->cg_context = cg_context;
 
   if (cg_context)
-    surface = cairo_quartz_surface_create_for_cg_context (cg_context,
+    surface = bairo_quartz_surface_create_for_cg_context (cg_context,
                                                           width, height);
   else
-    surface = cairo_quartz_surface_create(CAIRO_FORMAT_ARGB32, width, height);
+    surface = bairo_quartz_surface_create(BAIRO_FORMAT_ARGB32, width, height);
 
-  cairo_surface_set_user_data (surface, &gdk_quartz_cairo_key,
+  bairo_surface_set_user_data (surface, &bdk_quartz_bairo_key,
                                surface_data,
-                               gdk_quartz_cairo_surface_destroy);
+                               bdk_quartz_bairo_surface_destroy);
 
   return surface;
 }
 
-static cairo_surface_t *
-gdk_quartz_ref_cairo_surface (GdkDrawable *drawable)
+static bairo_surface_t *
+bdk_quartz_ref_bairo_surface (BdkDrawable *drawable)
 {
-  GdkDrawableImplQuartz *impl = GDK_DRAWABLE_IMPL_QUARTZ (drawable);
+  BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (drawable);
 
-  if (GDK_IS_WINDOW_IMPL_QUARTZ (drawable) &&
-      GDK_WINDOW_DESTROYED (impl->wrapper))
+  if (BDK_IS_WINDOW_IMPL_QUARTZ (drawable) &&
+      BDK_WINDOW_DESTROYED (impl->wrapper))
     return NULL;
 
-  if (!impl->cairo_surface)
+  if (!impl->bairo_surface)
     {
       int width, height;
 
-      gdk_drawable_get_size (drawable, &width, &height);
-      impl->cairo_surface = _gdk_windowing_create_cairo_surface (drawable,
+      bdk_drawable_get_size (drawable, &width, &height);
+      impl->bairo_surface = _bdk_windowing_create_bairo_surface (drawable,
                                                                  width, height);
     }
   else
-    cairo_surface_reference (impl->cairo_surface);
+    bairo_surface_reference (impl->bairo_surface);
 
-  return impl->cairo_surface;
+  return impl->bairo_surface;
 }
 
 static void
-gdk_quartz_set_colormap (GdkDrawable *drawable,
-			 GdkColormap *colormap)
+bdk_quartz_set_colormap (BdkDrawable *drawable,
+			 BdkColormap *colormap)
 {
-  GdkDrawableImplQuartz *impl = GDK_DRAWABLE_IMPL_QUARTZ (drawable);
+  BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (drawable);
 
   if (impl->colormap == colormap)
     return;
@@ -121,54 +121,54 @@ gdk_quartz_set_colormap (GdkDrawable *drawable,
     g_object_ref (impl->colormap);
 }
 
-static GdkColormap*
-gdk_quartz_get_colormap (GdkDrawable *drawable)
+static BdkColormap*
+bdk_quartz_get_colormap (BdkDrawable *drawable)
 {
-  return GDK_DRAWABLE_IMPL_QUARTZ (drawable)->colormap;
+  return BDK_DRAWABLE_IMPL_QUARTZ (drawable)->colormap;
 }
 
-static GdkScreen*
-gdk_quartz_get_screen (GdkDrawable *drawable)
+static BdkScreen*
+bdk_quartz_get_screen (BdkDrawable *drawable)
 {
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-static GdkVisual*
-gdk_quartz_get_visual (GdkDrawable *drawable)
+static BdkVisual*
+bdk_quartz_get_visual (BdkDrawable *drawable)
 {
-  return gdk_drawable_get_visual (GDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper);
+  return bdk_drawable_get_visual (BDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper);
 }
 
 static int
-gdk_quartz_get_depth (GdkDrawable *drawable)
+bdk_quartz_get_depth (BdkDrawable *drawable)
 {
   /* This is a bit bogus but I'm not sure the other way is better */
 
-  return gdk_drawable_get_depth (GDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper);
+  return bdk_drawable_get_depth (BDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper);
 }
 
 static void
-gdk_quartz_draw_rectangle (GdkDrawable *drawable,
-			   GdkGC       *gc,
+bdk_quartz_draw_rectangle (BdkDrawable *drawable,
+			   BdkGC       *gc,
 			   gboolean     filled,
 			   gint         x,
 			   gint         y,
 			   gint         width,
 			   gint         height)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
 
   if (!context)
     return;
 
-  if(!_gdk_quartz_gc_update_cg_context (gc,
+  if(!_bdk_quartz_gc_update_cg_context (gc,
 					drawable,
 					context,
 					filled ?
-					GDK_QUARTZ_CONTEXT_FILL :
-					GDK_QUARTZ_CONTEXT_STROKE))
+					BDK_QUARTZ_CONTEXT_FILL :
+					BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   if (filled)
@@ -184,12 +184,12 @@ gdk_quartz_draw_rectangle (GdkDrawable *drawable,
       CGContextStrokeRect (context, rect);
     }
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_arc (GdkDrawable *drawable,
-		     GdkGC       *gc,
+bdk_quartz_draw_arc (BdkDrawable *drawable,
+		     BdkGC       *gc,
 		     gboolean     filled,
 		     gint         x,
 		     gint         y,
@@ -198,19 +198,19 @@ gdk_quartz_draw_arc (GdkDrawable *drawable,
 		     gint         angle1,
 		     gint         angle2)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   float start_angle, end_angle;
   gboolean clockwise = FALSE;
 
   if (!context)
     return;
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
 					 filled ?
-					 GDK_QUARTZ_CONTEXT_FILL :
-					 GDK_QUARTZ_CONTEXT_STROKE))
+					 BDK_QUARTZ_CONTEXT_FILL :
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   start_angle = angle1 * 2.0 * G_PI / 360.0 / 64.0;
@@ -261,28 +261,28 @@ gdk_quartz_draw_arc (GdkDrawable *drawable,
       CGContextStrokePath (context);
     }
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_polygon (GdkDrawable *drawable,
-			 GdkGC       *gc,
+bdk_quartz_draw_polygon (BdkDrawable *drawable,
+			 BdkGC       *gc,
 			 gboolean     filled,
-			 GdkPoint    *points,
+			 BdkPoint    *points,
 			 gint         npoints)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   int i;
 
   if (!context)
     return;
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
 					 filled ?
-					 GDK_QUARTZ_CONTEXT_FILL :
-					 GDK_QUARTZ_CONTEXT_STROKE))
+					 BDK_QUARTZ_CONTEXT_FILL :
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   if (filled)
@@ -304,13 +304,13 @@ gdk_quartz_draw_polygon (GdkDrawable *drawable,
       CGContextStrokePath (context);
     }
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_text (GdkDrawable *drawable,
-		      GdkFont     *font,
-		      GdkGC       *gc,
+bdk_quartz_draw_text (BdkDrawable *drawable,
+		      BdkFont     *font,
+		      BdkGC       *gc,
 		      gint         x,
 		      gint         y,
 		      const gchar *text,
@@ -320,98 +320,98 @@ gdk_quartz_draw_text (GdkDrawable *drawable,
 }
 
 static void
-gdk_quartz_draw_text_wc (GdkDrawable    *drawable,
-			 GdkFont	*font,
-			 GdkGC	        *gc,
+bdk_quartz_draw_text_wc (BdkDrawable    *drawable,
+			 BdkFont	*font,
+			 BdkGC	        *gc,
 			 gint	         x,
 			 gint	         y,
-			 const GdkWChar *text,
+			 const BdkWChar *text,
 			 gint	         text_length)
 {
   /* FIXME: Implement */
 }
 
 static void
-gdk_quartz_draw_drawable (GdkDrawable *drawable,
-			  GdkGC       *gc,
-			  GdkPixmap   *src,
+bdk_quartz_draw_drawable (BdkDrawable *drawable,
+			  BdkGC       *gc,
+			  BdkPixmap   *src,
 			  gint         xsrc,
 			  gint         ysrc,
 			  gint         xdest,
 			  gint         ydest,
 			  gint         width,
 			  gint         height,
-			  GdkDrawable *original_src)
+			  BdkDrawable *original_src)
 {
-  int src_depth = gdk_drawable_get_depth (src);
-  int dest_depth = gdk_drawable_get_depth (drawable);
-  GdkDrawableImplQuartz *src_impl;
+  int src_depth = bdk_drawable_get_depth (src);
+  int dest_depth = bdk_drawable_get_depth (drawable);
+  BdkDrawableImplQuartz *src_impl;
 
-  if (GDK_IS_WINDOW_IMPL_QUARTZ (src))
+  if (BDK_IS_WINDOW_IMPL_QUARTZ (src))
     {
-      GdkWindowImplQuartz *window_impl;
+      BdkWindowImplQuartz *window_impl;
 
-      window_impl = GDK_WINDOW_IMPL_QUARTZ (src);
+      window_impl = BDK_WINDOW_IMPL_QUARTZ (src);
 
       /* We do support moving areas on the same drawable, if it can be done
        * by using a scroll. FIXME: We need to check that the params support
        * this hack, and make sure it's done properly with any offsets etc?
        */
-      if (drawable == (GdkDrawable *)window_impl)
+      if (drawable == (BdkDrawable *)window_impl)
         {
           NSRect rect = NSMakeRect (xsrc, ysrc, width, height);
           NSSize offset = NSMakeSize (xdest - xsrc, ydest - ysrc);
-          GdkRectangle tmp_rect;
-          GdkRegion *orig_region, *offset_region, *need_display_region;
-          GdkWindow *window = GDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper;
+          BdkRectangle tmp_rect;
+          BdkRebunnyion *orig_rebunnyion, *offset_rebunnyion, *need_display_rebunnyion;
+          BdkWindow *window = BDK_DRAWABLE_IMPL_QUARTZ (drawable)->wrapper;
 
-          /* Origin region */
+          /* Origin rebunnyion */
           tmp_rect.x = xsrc;
           tmp_rect.y = ysrc;
           tmp_rect.width = width;
           tmp_rect.height = height;
-          orig_region = gdk_region_rectangle (&tmp_rect);
+          orig_rebunnyion = bdk_rebunnyion_rectangle (&tmp_rect);
 
-          /* Destination region (or the offset region) */
-          offset_region = gdk_region_copy (orig_region);
-          gdk_region_offset (offset_region, offset.width, offset.height);
+          /* Destination rebunnyion (or the offset rebunnyion) */
+          offset_rebunnyion = bdk_rebunnyion_copy (orig_rebunnyion);
+          bdk_rebunnyion_offset (offset_rebunnyion, offset.width, offset.height);
 
-          need_display_region = gdk_region_copy (orig_region);
+          need_display_rebunnyion = bdk_rebunnyion_copy (orig_rebunnyion);
 
           if (window_impl->in_paint_rect_count == 0)
             {
-              GdkRegion *bottom_border_region;
+              BdkRebunnyion *bottom_border_rebunnyion;
 
               /* If we are not in drawRect:, we can use scrollRect:.
                * We apply scrollRect on the rectangle to be moved and
                * subtract this area from the rectangle that needs display.
                *
-               * Note: any area in this moved region that already needed
-               * display will be handled by GDK (queue translation).
+               * Note: any area in this moved rebunnyion that already needed
+               * display will be handled by BDK (queue translation).
                *
                * Queuing the redraw below is important, otherwise the
                * results from scrollRect will not take effect!
                */
               [window_impl->view scrollRect:rect by:offset];
 
-              gdk_region_subtract (need_display_region, offset_region);
+              bdk_rebunnyion_subtract (need_display_rebunnyion, offset_rebunnyion);
 
               /* Here we take special care with the bottom window border,
                * which extents 4 pixels and typically draws rounded corners.
                */
               tmp_rect.x = 0;
-              tmp_rect.y = gdk_window_get_height (window) - 4;
-              tmp_rect.width = gdk_window_get_width (window);
+              tmp_rect.y = bdk_window_get_height (window) - 4;
+              tmp_rect.width = bdk_window_get_width (window);
               tmp_rect.height = 4;
 
-              if (gdk_region_rect_in (offset_region, &tmp_rect) !=
-                  GDK_OVERLAP_RECTANGLE_OUT)
+              if (bdk_rebunnyion_rect_in (offset_rebunnyion, &tmp_rect) !=
+                  BDK_OVERLAP_RECTANGLE_OUT)
                 {
                   /* We are copying pixels to the bottom border, we need
                    * to submit this area for redisplay to get the rounded
                    * corners drawn.
                    */
-                  gdk_region_union_with_rect (need_display_region,
+                  bdk_rebunnyion_union_with_rect (need_display_rebunnyion,
                                               &tmp_rect);
                 }
 
@@ -420,41 +420,41 @@ gdk_quartz_draw_drawable (GdkDrawable *drawable,
                * to fill the contents of where the rounded corners used
                * to be. We post this area for redisplay.
                */
-              bottom_border_region = gdk_region_rectangle (&tmp_rect);
-              gdk_region_intersect (bottom_border_region,
-                                    orig_region);
+              bottom_border_rebunnyion = bdk_rebunnyion_rectangle (&tmp_rect);
+              bdk_rebunnyion_intersect (bottom_border_rebunnyion,
+                                    orig_rebunnyion);
 
-              gdk_region_offset (bottom_border_region,
+              bdk_rebunnyion_offset (bottom_border_rebunnyion,
                                  offset.width, offset.height);
 
-              gdk_region_union (need_display_region, bottom_border_region);
+              bdk_rebunnyion_union (need_display_rebunnyion, bottom_border_rebunnyion);
 
-              gdk_region_destroy (bottom_border_region);
+              bdk_rebunnyion_destroy (bottom_border_rebunnyion);
             }
           else
             {
               /* If we cannot handle things with a scroll, we must redisplay
                * the union of the source area and the destination area.
                */
-              gdk_region_union (need_display_region, offset_region);
+              bdk_rebunnyion_union (need_display_rebunnyion, offset_rebunnyion);
             }
 
-          _gdk_quartz_window_set_needs_display_in_region (window,
-                                                          need_display_region);
+          _bdk_quartz_window_set_needs_display_in_rebunnyion (window,
+                                                          need_display_rebunnyion);
 
-          gdk_region_destroy (orig_region);
-          gdk_region_destroy (offset_region);
-          gdk_region_destroy (need_display_region);
+          bdk_rebunnyion_destroy (orig_rebunnyion);
+          bdk_rebunnyion_destroy (offset_rebunnyion);
+          bdk_rebunnyion_destroy (need_display_rebunnyion);
         }
       else
         g_warning ("Drawing with window source != dest is not supported");
 
       return;
     }
-  else if (GDK_IS_DRAWABLE_IMPL_QUARTZ (src))
-    src_impl = GDK_DRAWABLE_IMPL_QUARTZ (src);
-  else if (GDK_IS_PIXMAP (src))
-    src_impl = GDK_DRAWABLE_IMPL_QUARTZ (GDK_PIXMAP_OBJECT (src)->impl);
+  else if (BDK_IS_DRAWABLE_IMPL_QUARTZ (src))
+    src_impl = BDK_DRAWABLE_IMPL_QUARTZ (src);
+  else if (BDK_IS_PIXMAP (src))
+    src_impl = BDK_DRAWABLE_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (src)->impl);
   else
     {
       g_warning ("Unsupported source %s", G_OBJECT_TYPE_NAME (src));
@@ -469,17 +469,17 @@ gdk_quartz_draw_drawable (GdkDrawable *drawable,
     }
   else if (dest_depth != 0 && src_depth == dest_depth)
     {
-      GdkPixmapImplQuartz *pixmap_impl = GDK_PIXMAP_IMPL_QUARTZ (src_impl);
-      CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+      BdkPixmapImplQuartz *pixmap_impl = BDK_PIXMAP_IMPL_QUARTZ (src_impl);
+      CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
       CGImageRef image;
 
       if (!context)
         return;
 
-      if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					     GDK_QUARTZ_CONTEXT_STROKE))
+      if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					     BDK_QUARTZ_CONTEXT_STROKE))
 	{
-	  gdk_quartz_drawable_release_context (drawable, context);
+	  bdk_quartz_drawable_release_context (drawable, context);
 	  return;
 	}
       CGContextClipToRect (context, CGRectMake (xdest, ydest, width, height));
@@ -487,13 +487,13 @@ gdk_quartz_draw_drawable (GdkDrawable *drawable,
                              pixmap_impl->height);
       CGContextScaleCTM (context, 1.0, -1.0);
 
-      image = _gdk_pixmap_get_cgimage (src);
+      image = _bdk_pixmap_get_cgimage (src);
       CGContextDrawImage (context,
                           CGRectMake (0, 0, pixmap_impl->width, pixmap_impl->height),
                           image);
       CGImageRelease (image);
 
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
     }
   else
     g_warning ("Attempt to draw a drawable with depth %d to a drawable with depth %d",
@@ -501,22 +501,22 @@ gdk_quartz_draw_drawable (GdkDrawable *drawable,
 }
 
 static void
-gdk_quartz_draw_points (GdkDrawable *drawable,
-			GdkGC       *gc,
-			GdkPoint    *points,
+bdk_quartz_draw_points (BdkDrawable *drawable,
+			BdkGC       *gc,
+			BdkPoint    *points,
 			gint         npoints)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   int i;
 
   if (!context)
     return;
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					 GDK_QUARTZ_CONTEXT_STROKE |
-					 GDK_QUARTZ_CONTEXT_FILL))
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					 BDK_QUARTZ_CONTEXT_STROKE |
+					 BDK_QUARTZ_CONTEXT_FILL))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   /* Just draw 1x1 rectangles */
@@ -526,11 +526,11 @@ gdk_quartz_draw_points (GdkDrawable *drawable,
       CGContextFillRect (context, rect);
     }
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static inline void
-gdk_quartz_fix_cap_not_last_line (GdkGCQuartz *private,
+bdk_quartz_fix_cap_not_last_line (BdkGCQuartz *private,
 				  gint         x1,
 				  gint         y1,
 				  gint         x2,
@@ -541,7 +541,7 @@ gdk_quartz_fix_cap_not_last_line (GdkGCQuartz *private,
   *xfix = 0;
   *yfix = 0;
 
-  if (private->cap_style == GDK_CAP_NOT_LAST && private->line_width == 0)
+  if (private->cap_style == BDK_CAP_NOT_LAST && private->line_width == 0)
     {
       /* fix only vertical and horizontal lines for now */
 
@@ -557,31 +557,31 @@ gdk_quartz_fix_cap_not_last_line (GdkGCQuartz *private,
 }
 
 static void
-gdk_quartz_draw_segments (GdkDrawable    *drawable,
-			  GdkGC          *gc,
-			  GdkSegment     *segs,
+bdk_quartz_draw_segments (BdkDrawable    *drawable,
+			  BdkGC          *gc,
+			  BdkSegment     *segs,
 			  gint            nsegs)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
-  GdkGCQuartz *private;
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
+  BdkGCQuartz *private;
   int i;
 
   if (!context)
     return;
 
-  private = GDK_GC_QUARTZ (gc);
+  private = BDK_GC_QUARTZ (gc);
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					 GDK_QUARTZ_CONTEXT_STROKE))
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   for (i = 0; i < nsegs; i++)
     {
       gint xfix, yfix;
 
-      gdk_quartz_fix_cap_not_last_line (private,
+      bdk_quartz_fix_cap_not_last_line (private,
 					segs[i].x1, segs[i].y1,
 					segs[i].x2, segs[i].y2,
 					&xfix, &yfix);
@@ -592,29 +592,29 @@ gdk_quartz_draw_segments (GdkDrawable    *drawable,
   
   CGContextStrokePath (context);
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_lines (GdkDrawable *drawable,
-		       GdkGC       *gc,
-		       GdkPoint    *points,
+bdk_quartz_draw_lines (BdkDrawable *drawable,
+		       BdkGC       *gc,
+		       BdkPoint    *points,
 		       gint         npoints)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
-  GdkGCQuartz *private;
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
+  BdkGCQuartz *private;
   gint xfix, yfix;
   gint i;
 
   if (!context)
     return;
 
-  private = GDK_GC_QUARTZ (gc);
+  private = BDK_GC_QUARTZ (gc);
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					 GDK_QUARTZ_CONTEXT_STROKE))
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   CGContextMoveToPoint (context, points[0].x + 0.5, points[0].y + 0.5);
@@ -622,7 +622,7 @@ gdk_quartz_draw_lines (GdkDrawable *drawable,
   for (i = 1; i < npoints - 1; i++)
     CGContextAddLineToPoint (context, points[i].x + 0.5, points[i].y + 0.5);
 
-  gdk_quartz_fix_cap_not_last_line (private,
+  bdk_quartz_fix_cap_not_last_line (private,
 				    points[npoints - 2].x, points[npoints - 2].y,
 				    points[npoints - 1].x, points[npoints - 1].y,
 				    &xfix, &yfix);
@@ -633,24 +633,24 @@ gdk_quartz_draw_lines (GdkDrawable *drawable,
 
   CGContextStrokePath (context);
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_pixbuf (GdkDrawable     *drawable,
-			GdkGC           *gc,
-			GdkPixbuf       *pixbuf,
+bdk_quartz_draw_pixbuf (BdkDrawable     *drawable,
+			BdkGC           *gc,
+			BdkPixbuf       *pixbuf,
 			gint             src_x,
 			gint             src_y,
 			gint             dest_x,
 			gint             dest_y,
 			gint             width,
 			gint             height,
-			GdkRgbDither     dither,
+			BdkRgbDither     dither,
 			gint             x_dither,
 			gint             y_dither)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   CGColorSpaceRef colorspace;
   CGDataProviderRef data_provider;
   CGImageRef image;
@@ -661,12 +661,12 @@ gdk_quartz_draw_pixbuf (GdkDrawable     *drawable,
   if (!context)
     return;
 
-  pixbuf_width = gdk_pixbuf_get_width (pixbuf);
-  pixbuf_height = gdk_pixbuf_get_height (pixbuf);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+  pixbuf_width = bdk_pixbuf_get_width (pixbuf);
+  pixbuf_height = bdk_pixbuf_get_height (pixbuf);
+  rowstride = bdk_pixbuf_get_rowstride (pixbuf);
+  has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
 
-  data = gdk_pixbuf_get_pixels (pixbuf);
+  data = bdk_pixbuf_get_pixels (pixbuf);
 
   colorspace = CGColorSpaceCreateDeviceRGB ();
   data_provider = CGDataProviderCreateWithData (NULL, data, pixbuf_height * rowstride, NULL);
@@ -681,10 +681,10 @@ gdk_quartz_draw_pixbuf (GdkDrawable     *drawable,
   CGDataProviderRelease (data_provider);
   CGColorSpaceRelease (colorspace);
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					 GDK_QUARTZ_CONTEXT_STROKE))
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
   CGContextClipToRect (context, CGRectMake (dest_x, dest_y, width, height));
@@ -694,13 +694,13 @@ gdk_quartz_draw_pixbuf (GdkDrawable     *drawable,
   CGContextDrawImage (context, CGRectMake (0, 0, pixbuf_width, pixbuf_height), image);
   CGImageRelease (image);
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_quartz_draw_image (GdkDrawable     *drawable,
-		       GdkGC           *gc,
-		       GdkImage        *image,
+bdk_quartz_draw_image (BdkDrawable     *drawable,
+		       BdkGC           *gc,
+		       BdkImage        *image,
 		       gint             xsrc,
 		       gint             ysrc,
 		       gint             xdest,
@@ -708,7 +708,7 @@ gdk_quartz_draw_image (GdkDrawable     *drawable,
 		       gint             width,
 		       gint             height)
 {
-  CGContextRef context = gdk_quartz_drawable_get_context (drawable, FALSE);
+  CGContextRef context = bdk_quartz_drawable_get_context (drawable, FALSE);
   CGColorSpaceRef colorspace;
   CGDataProviderRef data_provider;
   CGImageRef cgimage;
@@ -730,10 +730,10 @@ gdk_quartz_draw_image (GdkDrawable     *drawable,
   CGDataProviderRelease (data_provider);
   CGColorSpaceRelease (colorspace);
 
-  if (!_gdk_quartz_gc_update_cg_context (gc, drawable, context,
-					 GDK_QUARTZ_CONTEXT_STROKE))
+  if (!_bdk_quartz_gc_update_cg_context (gc, drawable, context,
+					 BDK_QUARTZ_CONTEXT_STROKE))
     {
-      gdk_quartz_drawable_release_context (drawable, context);
+      bdk_quartz_drawable_release_context (drawable, context);
       return;
     }
 
@@ -744,13 +744,13 @@ gdk_quartz_draw_image (GdkDrawable     *drawable,
   CGContextDrawImage (context, CGRectMake (0, 0, image->width, image->height), cgimage);
   CGImageRelease (cgimage);
 
-  gdk_quartz_drawable_release_context (drawable, context);
+  bdk_quartz_drawable_release_context (drawable, context);
 }
 
 static void
-gdk_drawable_impl_quartz_finalize (GObject *object)
+bdk_drawable_impl_quartz_finalize (GObject *object)
 {
-  GdkDrawableImplQuartz *impl = GDK_DRAWABLE_IMPL_QUARTZ (object);
+  BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (object);
 
   if (impl->colormap)
     g_object_unref (impl->colormap);
@@ -759,42 +759,42 @@ gdk_drawable_impl_quartz_finalize (GObject *object)
 }
 
 static void
-gdk_drawable_impl_quartz_class_init (GdkDrawableImplQuartzClass *klass)
+bdk_drawable_impl_quartz_class_init (BdkDrawableImplQuartzClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GdkDrawableClass *drawable_class = GDK_DRAWABLE_CLASS (klass);
+  BdkDrawableClass *drawable_class = BDK_DRAWABLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_drawable_impl_quartz_finalize;
+  object_class->finalize = bdk_drawable_impl_quartz_finalize;
 
-  drawable_class->create_gc = _gdk_quartz_gc_new;
-  drawable_class->draw_rectangle = gdk_quartz_draw_rectangle;
-  drawable_class->draw_arc = gdk_quartz_draw_arc;
-  drawable_class->draw_polygon = gdk_quartz_draw_polygon;
-  drawable_class->draw_text = gdk_quartz_draw_text;
-  drawable_class->draw_text_wc = gdk_quartz_draw_text_wc;
-  drawable_class->draw_drawable_with_src = gdk_quartz_draw_drawable;
-  drawable_class->draw_points = gdk_quartz_draw_points;
-  drawable_class->draw_segments = gdk_quartz_draw_segments;
-  drawable_class->draw_lines = gdk_quartz_draw_lines;
-  drawable_class->draw_image = gdk_quartz_draw_image;
-  drawable_class->draw_pixbuf = gdk_quartz_draw_pixbuf;
+  drawable_class->create_gc = _bdk_quartz_gc_new;
+  drawable_class->draw_rectangle = bdk_quartz_draw_rectangle;
+  drawable_class->draw_arc = bdk_quartz_draw_arc;
+  drawable_class->draw_polygon = bdk_quartz_draw_polygon;
+  drawable_class->draw_text = bdk_quartz_draw_text;
+  drawable_class->draw_text_wc = bdk_quartz_draw_text_wc;
+  drawable_class->draw_drawable_with_src = bdk_quartz_draw_drawable;
+  drawable_class->draw_points = bdk_quartz_draw_points;
+  drawable_class->draw_segments = bdk_quartz_draw_segments;
+  drawable_class->draw_lines = bdk_quartz_draw_lines;
+  drawable_class->draw_image = bdk_quartz_draw_image;
+  drawable_class->draw_pixbuf = bdk_quartz_draw_pixbuf;
 
-  drawable_class->ref_cairo_surface = gdk_quartz_ref_cairo_surface;
+  drawable_class->ref_bairo_surface = bdk_quartz_ref_bairo_surface;
 
-  drawable_class->set_colormap = gdk_quartz_set_colormap;
-  drawable_class->get_colormap = gdk_quartz_get_colormap;
+  drawable_class->set_colormap = bdk_quartz_set_colormap;
+  drawable_class->get_colormap = bdk_quartz_get_colormap;
 
-  drawable_class->get_depth = gdk_quartz_get_depth;
-  drawable_class->get_screen = gdk_quartz_get_screen;
-  drawable_class->get_visual = gdk_quartz_get_visual;
+  drawable_class->get_depth = bdk_quartz_get_depth;
+  drawable_class->get_screen = bdk_quartz_get_screen;
+  drawable_class->get_visual = bdk_quartz_get_visual;
 
-  drawable_class->_copy_to_image = _gdk_quartz_image_copy_to_image;
+  drawable_class->_copy_to_image = _bdk_quartz_image_copy_to_image;
 }
 
 GType
-gdk_drawable_impl_quartz_get_type (void)
+bdk_drawable_impl_quartz_get_type (void)
 {
   static GType object_type = 0;
 
@@ -802,19 +802,19 @@ gdk_drawable_impl_quartz_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkDrawableImplQuartzClass),
+        sizeof (BdkDrawableImplQuartzClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_drawable_impl_quartz_class_init,
+        (GClassInitFunc) bdk_drawable_impl_quartz_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkDrawableImplQuartz),
+        sizeof (BdkDrawableImplQuartz),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (GDK_TYPE_DRAWABLE,
-                                            "GdkDrawableImplQuartz",
+      object_type = g_type_register_static (BDK_TYPE_DRAWABLE,
+                                            "BdkDrawableImplQuartz",
                                             &object_info, 0);
     }
   
@@ -822,17 +822,17 @@ gdk_drawable_impl_quartz_get_type (void)
 }
 
 CGContextRef
-gdk_quartz_drawable_get_context (GdkDrawable *drawable,
+bdk_quartz_drawable_get_context (BdkDrawable *drawable,
 				 gboolean     antialias)
 {
-  if (!GDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context)
+  if (!BDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context)
     {
-      g_warning ("%s doesn't implement GdkDrawableImplQuartzClass::get_context()",
+      g_warning ("%s doesn't implement BdkDrawableImplQuartzClass::get_context()",
                  G_OBJECT_TYPE_NAME (drawable));
       return NULL;
     }
 
-  return GDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context (drawable, antialias);
+  return BDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS (drawable)->get_context (drawable, antialias);
 }
 
 /* Help preventing "beam sync penalty" where CG makes all graphics code
@@ -840,14 +840,14 @@ gdk_quartz_drawable_get_context (GdkDrawable *drawable,
  * a view) too often. We do this by limiting the manual flushing done
  * outside of expose calls to less than some frequency when measured over
  * the last 4 flushes. This is a bit arbitray, but seems to make it possible
- * for some quick manual flushes (such as gtkruler or gimp's marching ants)
+ * for some quick manual flushes (such as btkruler or gimp's marching ants)
  * without hitting the max flush frequency.
  *
  * If drawable NULL, no flushing is done, only registering that a flush was
  * done externally.
  */
 void
-_gdk_quartz_drawable_flush (GdkDrawable *drawable)
+_bdk_quartz_drawable_flush (BdkDrawable *drawable)
 {
   static struct timeval prev_tv;
   static gint intervals[4];
@@ -866,9 +866,9 @@ _gdk_quartz_drawable_flush (GdkDrawable *drawable)
       /* ~25Hz on average. */
       if (ms > 4*40)
         {
-          if (GDK_IS_WINDOW_IMPL_QUARTZ (drawable))
+          if (BDK_IS_WINDOW_IMPL_QUARTZ (drawable))
             {
-              GdkWindowImplQuartz *window_impl = GDK_WINDOW_IMPL_QUARTZ (drawable);
+              BdkWindowImplQuartz *window_impl = BDK_WINDOW_IMPL_QUARTZ (drawable);
 
               [window_impl->toplevel flushWindow];
             }
@@ -881,40 +881,40 @@ _gdk_quartz_drawable_flush (GdkDrawable *drawable)
 }
 
 void
-gdk_quartz_drawable_release_context (GdkDrawable  *drawable, 
+bdk_quartz_drawable_release_context (BdkDrawable  *drawable, 
 				     CGContextRef  cg_context)
 {
   if (!cg_context)
     return;
   
-  if (GDK_IS_WINDOW_IMPL_QUARTZ (drawable))
+  if (BDK_IS_WINDOW_IMPL_QUARTZ (drawable))
     {
-      GdkWindowImplQuartz *window_impl = GDK_WINDOW_IMPL_QUARTZ (drawable);
+      BdkWindowImplQuartz *window_impl = BDK_WINDOW_IMPL_QUARTZ (drawable);
 
       CGContextRestoreGState (cg_context);
       CGContextSetAllowsAntialiasing (cg_context, TRUE);
 
-      /* See comment in gdk_quartz_drawable_get_context(). */
+      /* See comment in bdk_quartz_drawable_get_context(). */
       if (window_impl->in_paint_rect_count == 0)
         {
-          _gdk_quartz_drawable_flush (drawable);
+          _bdk_quartz_drawable_flush (drawable);
           [window_impl->view unlockFocus];
         }
     }
-  else if (GDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
+  else if (BDK_IS_PIXMAP_IMPL_QUARTZ (drawable))
     CGContextRelease (cg_context);
 }
 
 void
-_gdk_quartz_drawable_finish (GdkDrawable *drawable)
+_bdk_quartz_drawable_finish (BdkDrawable *drawable)
 {
-  GdkDrawableImplQuartz *impl = GDK_DRAWABLE_IMPL_QUARTZ (drawable);
+  BdkDrawableImplQuartz *impl = BDK_DRAWABLE_IMPL_QUARTZ (drawable);
 
-  if (impl->cairo_surface)
+  if (impl->bairo_surface)
     {
-      cairo_surface_finish (impl->cairo_surface);
-      cairo_surface_set_user_data (impl->cairo_surface, &gdk_quartz_cairo_key,
+      bairo_surface_finish (impl->bairo_surface);
+      bairo_surface_set_user_data (impl->bairo_surface, &bdk_quartz_bairo_key,
 				   NULL, NULL);
-      impl->cairo_surface = NULL;
+      impl->bairo_surface = NULL;
     }
 }  

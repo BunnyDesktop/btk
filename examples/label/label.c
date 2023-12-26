@@ -1,59 +1,59 @@
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 int main( int   argc,
           char *argv[] )
 {
-  static GtkWidget *window = NULL;
-  GtkWidget *hbox;
-  GtkWidget *vbox;
-  GtkWidget *frame;
-  GtkWidget *label;
+  static BtkWidget *window = NULL;
+  BtkWidget *hbox;
+  BtkWidget *vbox;
+  BtkWidget *frame;
+  BtkWidget *label;
 
-  /* Initialise GTK */
-  gtk_init (&argc, &argv);
+  /* Initialise BTK */
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   g_signal_connect (G_OBJECT (window), "destroy",
-		    G_CALLBACK (gtk_main_quit),
+		    G_CALLBACK (btk_main_quit),
 		    NULL);
 
-  gtk_window_set_title (GTK_WINDOW (window), "Label");
-  vbox = gtk_vbox_new (FALSE, 5);
-  hbox = gtk_hbox_new (FALSE, 5);
-  gtk_container_add (GTK_CONTAINER (window), hbox);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
-  gtk_container_set_border_width (GTK_CONTAINER (window), 5);
+  btk_window_set_title (BTK_WINDOW (window), "Label");
+  vbox = btk_vbox_new (FALSE, 5);
+  hbox = btk_hbox_new (FALSE, 5);
+  btk_container_add (BTK_CONTAINER (window), hbox);
+  btk_box_pack_start (BTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+  btk_container_set_border_width (BTK_CONTAINER (window), 5);
   
-  frame = gtk_frame_new ("Normal Label");
-  label = gtk_label_new ("This is a Normal label");
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Normal Label");
+  label = btk_label_new ("This is a Normal label");
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Multi-line Label");
-  label = gtk_label_new ("This is a Multi-line label.\nSecond line\n" \
+  frame = btk_frame_new ("Multi-line Label");
+  label = btk_label_new ("This is a Multi-line label.\nSecond line\n" \
 			 "Third line");
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Left Justified Label");
-  label = gtk_label_new ("This is a Left-Justified\n" \
+  frame = btk_frame_new ("Left Justified Label");
+  label = btk_label_new ("This is a Left-Justified\n" \
 			 "Multi-line label.\nThird      line");
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_label_set_justify (BTK_LABEL (label), BTK_JUSTIFY_LEFT);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Right Justified Label");
-  label = gtk_label_new ("This is a Right-Justified\nMulti-line label.\n" \
+  frame = btk_frame_new ("Right Justified Label");
+  label = btk_label_new ("This is a Right-Justified\nMulti-line label.\n" \
 			 "Fourth line, (j/k)");
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_RIGHT);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_label_set_justify (BTK_LABEL (label), BTK_JUSTIFY_RIGHT);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-  vbox = gtk_vbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, FALSE, 0);
-  frame = gtk_frame_new ("Line wrapped label");
-  label = gtk_label_new ("This is an example of a line-wrapped label.  It " \
+  vbox = btk_vbox_new (FALSE, 5);
+  btk_box_pack_start (BTK_BOX (hbox), vbox, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Line wrapped label");
+  label = btk_label_new ("This is an example of a line-wrapped label.  It " \
 			 "should not be taking up the entire             " /* big space to test spacing */\
 			 "width allocated to it, but automatically " \
 			 "wraps the words to fit.  " \
@@ -63,12 +63,12 @@ int main( int   argc,
 			 "     It supports multiple paragraphs correctly, " \
 			 "and  correctly   adds "\
 			 "many          extra  spaces. ");
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_label_set_line_wrap (BTK_LABEL (label), TRUE);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Filled, wrapped label");
-  label = gtk_label_new ("This is an example of a line-wrapped, filled label.  " \
+  frame = btk_frame_new ("Filled, wrapped label");
+  label = btk_label_new ("This is an example of a line-wrapped, filled label.  " \
 			 "It should be taking "\
 			 "up the entire              width allocated to it.  " \
 			 "Here is a sentence to prove "\
@@ -78,23 +78,23 @@ int main( int   argc,
 			 "    This is another newer, longer, better " \
 			 "paragraph.  It is coming to an end, "\
 			 "unfortunately.");
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_FILL);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_label_set_justify (BTK_LABEL (label), BTK_JUSTIFY_FILL);
+  btk_label_set_line_wrap (BTK_LABEL (label), TRUE);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Underlined label");
-  label = gtk_label_new ("This label is underlined!\n"
+  frame = btk_frame_new ("Underlined label");
+  label = btk_label_new ("This label is underlined!\n"
 			 "This one is underlined in quite a funky fashion");
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
-  gtk_label_set_pattern (GTK_LABEL (label),
+  btk_label_set_justify (BTK_LABEL (label), BTK_JUSTIFY_LEFT);
+  btk_label_set_pattern (BTK_LABEL (label),
 			 "_________________________ _ _________ _ ______     __ _______ ___");
-  gtk_container_add (GTK_CONTAINER (frame), label);
-  gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+  btk_container_add (BTK_CONTAINER (frame), label);
+  btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
   
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
   
   return 0;
 }

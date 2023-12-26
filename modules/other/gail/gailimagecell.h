@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,41 +17,41 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_IMAGE_CELL_H__
-#define __GAIL_IMAGE_CELL_H__
+#ifndef __BAIL_IMAGE_CELL_H__
+#define __BAIL_IMAGE_CELL_H__
 
-#include <atk/atk.h>
-#include <gail/gailrenderercell.h>
+#include <batk/batk.h>
+#include <bail/bailrenderercell.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_IMAGE_CELL            (gail_image_cell_get_type ())
-#define GAIL_IMAGE_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_IMAGE_CELL, GailImageCell))
-#define GAIL_IMAGE_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_IMAGE_CELL, GailImageCellClass))
-#define GAIL_IS_IMAGE_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_IMAGE_CELL))
-#define GAIL_IS_IMAGE_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_IMAGE_CELL))78
-#define GAIL_IMAGE_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_IMAGE_CELL, GailImageCellClass))
+#define BAIL_TYPE_IMAGE_CELL            (bail_image_cell_get_type ())
+#define BAIL_IMAGE_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_IMAGE_CELL, BailImageCell))
+#define BAIL_IMAGE_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_IMAGE_CELL, BailImageCellClass))
+#define BAIL_IS_IMAGE_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_IMAGE_CELL))
+#define BAIL_IS_IMAGE_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_IMAGE_CELL))78
+#define BAIL_IMAGE_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_IMAGE_CELL, BailImageCellClass))
 
-typedef struct _GailImageCell                  GailImageCell;
-typedef struct _GailImageCellClass             GailImageCellClass;
+typedef struct _BailImageCell                  BailImageCell;
+typedef struct _BailImageCellClass             BailImageCellClass;
 
-struct _GailImageCell
+struct _BailImageCell
 {
-  GailRendererCell parent;
+  BailRendererCell parent;
 
   gchar            *image_description;
   gint             x, y;
 };
 
-GType gail_image_cell_get_type (void);
+GType bail_image_cell_get_type (void);
 
-struct _GailImageCellClass
+struct _BailImageCellClass
 {
-  GailRendererCellClass parent_class;
+  BailRendererCellClass parent_class;
 };
 
-AtkObject *gail_image_cell_new (void);
+BatkObject *bail_image_cell_new (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_TREE_VIEW_IMAGE_CELL_H__ */
+#endif /* __BAIL_TREE_VIEW_IMAGE_CELL_H__ */

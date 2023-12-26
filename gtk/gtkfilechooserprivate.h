@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechooserprivate.h: Interface definition for file selector GUIs
+/* BTK - The GIMP Toolkit
+ * btkfilechooserprivate.h: Interface definition for file selector GUIs
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,105 +18,105 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_CHOOSER_PRIVATE_H__
-#define __GTK_FILE_CHOOSER_PRIVATE_H__
+#ifndef __BTK_FILE_CHOOSER_PRIVATE_H__
+#define __BTK_FILE_CHOOSER_PRIVATE_H__
 
-#include "gtkfilechooser.h"
-#include "gtkfilesystem.h"
-#include "gtkfilesystemmodel.h"
-#include "gtkliststore.h"
-#include "gtkrecentmanager.h"
-#include "gtksearchengine.h"
-#include "gtkquery.h"
-#include "gtksizegroup.h"
-#include "gtktreemodelsort.h"
-#include "gtktreestore.h"
-#include "gtktreeview.h"
-#include "gtkvbox.h"
+#include "btkfilechooser.h"
+#include "btkfilesystem.h"
+#include "btkfilesystemmodel.h"
+#include "btkliststore.h"
+#include "btkrecentmanager.h"
+#include "btksearchengine.h"
+#include "btkquery.h"
+#include "btksizegroup.h"
+#include "btktreemodelsort.h"
+#include "btktreestore.h"
+#include "btktreeview.h"
+#include "btkvbox.h"
 
 G_BEGIN_DECLS
 
-#define GTK_FILE_CHOOSER_GET_IFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), GTK_TYPE_FILE_CHOOSER, GtkFileChooserIface))
+#define BTK_FILE_CHOOSER_GET_IFACE(inst)  (G_TYPE_INSTANCE_GET_INTERFACE ((inst), BTK_TYPE_FILE_CHOOSER, BtkFileChooserIface))
 
-typedef struct _GtkFileChooserIface GtkFileChooserIface;
+typedef struct _BtkFileChooserIface BtkFileChooserIface;
 
-struct _GtkFileChooserIface
+struct _BtkFileChooserIface
 {
   GTypeInterface base_iface;
 
   /* Methods
    */
-  gboolean       (*set_current_folder) 	   (GtkFileChooser    *chooser,
+  gboolean       (*set_current_folder) 	   (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
-  GFile *        (*get_current_folder) 	   (GtkFileChooser    *chooser);
-  void           (*set_current_name)   	   (GtkFileChooser    *chooser,
+  GFile *        (*get_current_folder) 	   (BtkFileChooser    *chooser);
+  void           (*set_current_name)   	   (BtkFileChooser    *chooser,
 					    const gchar       *name);
-  gboolean       (*select_file)        	   (GtkFileChooser    *chooser,
+  gboolean       (*select_file)        	   (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
-  void           (*unselect_file)      	   (GtkFileChooser    *chooser,
+  void           (*unselect_file)      	   (BtkFileChooser    *chooser,
 					    GFile             *file);
-  void           (*select_all)         	   (GtkFileChooser    *chooser);
-  void           (*unselect_all)       	   (GtkFileChooser    *chooser);
-  GSList *       (*get_files)          	   (GtkFileChooser    *chooser);
-  GFile *        (*get_preview_file)   	   (GtkFileChooser    *chooser);
-  GtkFileSystem *(*get_file_system)    	   (GtkFileChooser    *chooser);
-  void           (*add_filter)         	   (GtkFileChooser    *chooser,
-					    GtkFileFilter     *filter);
-  void           (*remove_filter)      	   (GtkFileChooser    *chooser,
-					    GtkFileFilter     *filter);
-  GSList *       (*list_filters)       	   (GtkFileChooser    *chooser);
-  gboolean       (*add_shortcut_folder)    (GtkFileChooser    *chooser,
+  void           (*select_all)         	   (BtkFileChooser    *chooser);
+  void           (*unselect_all)       	   (BtkFileChooser    *chooser);
+  GSList *       (*get_files)          	   (BtkFileChooser    *chooser);
+  GFile *        (*get_preview_file)   	   (BtkFileChooser    *chooser);
+  BtkFileSystem *(*get_file_system)    	   (BtkFileChooser    *chooser);
+  void           (*add_filter)         	   (BtkFileChooser    *chooser,
+					    BtkFileFilter     *filter);
+  void           (*remove_filter)      	   (BtkFileChooser    *chooser,
+					    BtkFileFilter     *filter);
+  GSList *       (*list_filters)       	   (BtkFileChooser    *chooser);
+  gboolean       (*add_shortcut_folder)    (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
-  gboolean       (*remove_shortcut_folder) (GtkFileChooser    *chooser,
+  gboolean       (*remove_shortcut_folder) (BtkFileChooser    *chooser,
 					    GFile             *file,
 					    GError           **error);
-  GSList *       (*list_shortcut_folders)  (GtkFileChooser    *chooser);
+  GSList *       (*list_shortcut_folders)  (BtkFileChooser    *chooser);
   
   /* Signals
    */
-  void (*current_folder_changed) (GtkFileChooser *chooser);
-  void (*selection_changed)      (GtkFileChooser *chooser);
-  void (*update_preview)         (GtkFileChooser *chooser);
-  void (*file_activated)         (GtkFileChooser *chooser);
-  GtkFileChooserConfirmation (*confirm_overwrite) (GtkFileChooser *chooser);
+  void (*current_folder_changed) (BtkFileChooser *chooser);
+  void (*selection_changed)      (BtkFileChooser *chooser);
+  void (*update_preview)         (BtkFileChooser *chooser);
+  void (*file_activated)         (BtkFileChooser *chooser);
+  BtkFileChooserConfirmation (*confirm_overwrite) (BtkFileChooser *chooser);
 };
 
-GtkFileSystem *_gtk_file_chooser_get_file_system         (GtkFileChooser    *chooser);
-gboolean       _gtk_file_chooser_add_shortcut_folder     (GtkFileChooser    *chooser,
+BtkFileSystem *_btk_file_chooser_get_file_system         (BtkFileChooser    *chooser);
+gboolean       _btk_file_chooser_add_shortcut_folder     (BtkFileChooser    *chooser,
 							  GFile             *folder,
 							  GError           **error);
-gboolean       _gtk_file_chooser_remove_shortcut_folder  (GtkFileChooser    *chooser,
+gboolean       _btk_file_chooser_remove_shortcut_folder  (BtkFileChooser    *chooser,
 							  GFile             *folder,
 							  GError           **error);
-GSList *       _gtk_file_chooser_list_shortcut_folder_files (GtkFileChooser *chooser);
+GSList *       _btk_file_chooser_list_shortcut_folder_files (BtkFileChooser *chooser);
 
-/* GtkFileChooserDialog private */
+/* BtkFileChooserDialog private */
 
-struct _GtkFileChooserDialogPrivate
+struct _BtkFileChooserDialogPrivate
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   
   char *file_system;
 
-  /* for use with GtkFileChooserEmbed */
+  /* for use with BtkFileChooserEmbed */
   gboolean response_requested;
 };
 
 
-/* GtkFileChooserWidget private */
+/* BtkFileChooserWidget private */
 
-struct _GtkFileChooserWidgetPrivate
+struct _BtkFileChooserWidgetPrivate
 {
-  GtkWidget *impl;
+  BtkWidget *impl;
 
   char *file_system;
 };
 
 
-/* GtkFileChooserDefault private */
+/* BtkFileChooserDefault private */
 
 typedef enum {
   LOAD_EMPTY,			/* There is no model */
@@ -146,83 +146,83 @@ typedef enum {
   STARTUP_MODE_CWD
 } StartupMode;
 
-struct _GtkFileChooserDefault
+struct _BtkFileChooserDefault
 {
-  GtkVBox parent_instance;
+  BtkVBox parent_instance;
 
-  GtkFileChooserAction action;
+  BtkFileChooserAction action;
 
-  GtkFileSystem *file_system;
+  BtkFileSystem *file_system;
 
   /* Save mode widgets */
-  GtkWidget *save_widgets;
-  GtkWidget *save_widgets_table;
+  BtkWidget *save_widgets;
+  BtkWidget *save_widgets_table;
 
-  GtkWidget *save_folder_label;
+  BtkWidget *save_folder_label;
 
   /* The file browsing widgets */
-  GtkWidget *browse_widgets_box;
-  GtkWidget *browse_header_box;
-  GtkWidget *browse_shortcuts_tree_view;
-  GtkWidget *browse_shortcuts_add_button;
-  GtkWidget *browse_shortcuts_remove_button;
-  GtkWidget *browse_shortcuts_popup_menu;
-  GtkWidget *browse_shortcuts_popup_menu_remove_item;
-  GtkWidget *browse_shortcuts_popup_menu_rename_item;
-  GtkWidget *browse_files_tree_view;
-  GtkWidget *browse_files_popup_menu;
-  GtkWidget *browse_files_popup_menu_add_shortcut_item;
-  GtkWidget *browse_files_popup_menu_hidden_files_item;
-  GtkWidget *browse_files_popup_menu_size_column_item;
-  GtkWidget *browse_new_folder_button;
-  GtkWidget *browse_path_bar_hbox;
-  GtkSizeGroup *browse_path_bar_size_group;
-  GtkWidget *browse_path_bar;
-  GtkWidget *browse_special_mode_icon;
-  GtkWidget *browse_special_mode_label;
-  GtkWidget *browse_select_a_folder_info_bar;
-  GtkWidget *browse_select_a_folder_label;
-  GtkWidget *browse_select_a_folder_icon;
+  BtkWidget *browse_widgets_box;
+  BtkWidget *browse_header_box;
+  BtkWidget *browse_shortcuts_tree_view;
+  BtkWidget *browse_shortcuts_add_button;
+  BtkWidget *browse_shortcuts_remove_button;
+  BtkWidget *browse_shortcuts_popup_menu;
+  BtkWidget *browse_shortcuts_popup_menu_remove_item;
+  BtkWidget *browse_shortcuts_popup_menu_rename_item;
+  BtkWidget *browse_files_tree_view;
+  BtkWidget *browse_files_popup_menu;
+  BtkWidget *browse_files_popup_menu_add_shortcut_item;
+  BtkWidget *browse_files_popup_menu_hidden_files_item;
+  BtkWidget *browse_files_popup_menu_size_column_item;
+  BtkWidget *browse_new_folder_button;
+  BtkWidget *browse_path_bar_hbox;
+  BtkSizeGroup *browse_path_bar_size_group;
+  BtkWidget *browse_path_bar;
+  BtkWidget *browse_special_mode_icon;
+  BtkWidget *browse_special_mode_label;
+  BtkWidget *browse_select_a_folder_info_bar;
+  BtkWidget *browse_select_a_folder_label;
+  BtkWidget *browse_select_a_folder_icon;
 
   gulong toplevel_unmapped_id;
 
-  GtkFileSystemModel *browse_files_model;
+  BtkFileSystemModel *browse_files_model;
   char *browse_files_last_selected_name;
 
   StartupMode startup_mode;
 
   /* OPERATION_MODE_SEARCH */
-  GtkWidget *search_hbox;
-  GtkWidget *search_entry;
-  GtkSearchEngine *search_engine;
-  GtkQuery *search_query;
-  GtkFileSystemModel *search_model;
+  BtkWidget *search_hbox;
+  BtkWidget *search_entry;
+  BtkSearchEngine *search_engine;
+  BtkQuery *search_query;
+  BtkFileSystemModel *search_model;
 
   /* OPERATION_MODE_RECENT */
-  GtkRecentManager *recent_manager;
-  GtkFileSystemModel *recent_model;
+  BtkRecentManager *recent_manager;
+  BtkFileSystemModel *recent_model;
   guint load_recent_id;
 
-  GtkWidget *filter_combo_hbox;
-  GtkWidget *filter_combo;
-  GtkWidget *preview_box;
-  GtkWidget *preview_label;
-  GtkWidget *preview_widget;
-  GtkWidget *extra_align;
-  GtkWidget *extra_widget;
+  BtkWidget *filter_combo_hbox;
+  BtkWidget *filter_combo;
+  BtkWidget *preview_box;
+  BtkWidget *preview_label;
+  BtkWidget *preview_widget;
+  BtkWidget *extra_align;
+  BtkWidget *extra_widget;
 
-  GtkWidget *location_button;
-  GtkWidget *location_entry_box;
-  GtkWidget *location_label;
-  GtkWidget *location_entry;
+  BtkWidget *location_button;
+  BtkWidget *location_entry_box;
+  BtkWidget *location_label;
+  BtkWidget *location_entry;
   LocationMode location_mode;
 
-  GtkListStore *shortcuts_model;
+  BtkListStore *shortcuts_model;
 
   /* Filter for the shortcuts pane.  We filter out the "current folder" row and
    * the separator that we use for the "Save in folder" combo.
    */
-  GtkTreeModel *shortcuts_pane_filter_model;
+  BtkTreeModel *shortcuts_pane_filter_model;
   
   /* Handles */
   GSList *loading_shortcuts;
@@ -242,7 +242,7 @@ struct _GtkFileChooserDefault
 
   GSList *pending_select_files;
 
-  GtkFileFilter *current_filter;
+  BtkFileFilter *current_filter;
   GSList *filters;
 
   int num_volumes;
@@ -257,10 +257,10 @@ struct _GtkFileChooserDefault
   GFile *preview_file;
   char *preview_display_name;
 
-  GtkTreeViewColumn *list_name_column;
-  GtkCellRenderer *list_name_renderer;
-  GtkTreeViewColumn *list_mtime_column;
-  GtkTreeViewColumn *list_size_column;
+  BtkTreeViewColumn *list_name_column;
+  BtkCellRenderer *list_name_renderer;
+  BtkTreeViewColumn *list_mtime_column;
+  BtkTreeViewColumn *list_size_column;
 
   GSource *edited_idle;
   char *edited_new_text;
@@ -271,13 +271,13 @@ struct _GtkFileChooserDefault
   GSource *focus_entry_idle;
 
   gulong toplevel_set_focus_id;
-  GtkWidget *toplevel_last_focus_widget;
+  BtkWidget *toplevel_last_focus_widget;
 
   gint sort_column;
-  GtkSortType sort_order;
+  BtkSortType sort_order;
 
 #if 0
-  GdkDragContext *shortcuts_drag_context;
+  BdkDragContext *shortcuts_drag_context;
   GSource *shortcuts_drag_outside_idle;
 #endif
 
@@ -307,4 +307,4 @@ struct _GtkFileChooserDefault
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_CHOOSER_PRIVATE_H__ */
+#endif /* __BTK_FILE_CHOOSER_PRIVATE_H__ */

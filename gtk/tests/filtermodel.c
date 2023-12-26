@@ -1,5 +1,5 @@
-/* Extensive GtkTreeModelFilter tests.
- * Copyright (C) 2009  Kristian Rietveld  <kris@gtk.org>
+/* Extensive BtkTreeModelFilter tests.
+ * Copyright (C) 2009  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 /* Left to do:
@@ -38,38 +38,38 @@
 #define LEVEL_LENGTH 5
 
 static void
-create_tree_store_set_values (GtkTreeStore *store,
-                              GtkTreeIter  *iter,
+create_tree_store_set_values (BtkTreeStore *store,
+                              BtkTreeIter  *iter,
                               gboolean      visible)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
   gchar *path_string;
 
-  path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), iter);
-  path_string = gtk_tree_path_to_string (path);
+  path = btk_tree_model_get_path (BTK_TREE_MODEL (store), iter);
+  path_string = btk_tree_path_to_string (path);
 
-  gtk_tree_store_set (store, iter,
+  btk_tree_store_set (store, iter,
                       0, path_string,
                       1, visible,
                       -1);
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
   g_free (path_string);
 }
 
 static void
 create_tree_store_recurse (int           depth,
-                           GtkTreeStore *store,
-                           GtkTreeIter  *parent,
+                           BtkTreeStore *store,
+                           BtkTreeIter  *parent,
                            gboolean      visible)
 {
   int i;
 
   for (i = 0; i < LEVEL_LENGTH; i++)
     {
-      GtkTreeIter iter;
+      BtkTreeIter iter;
 
-      gtk_tree_store_insert (store, &iter, parent, i);
+      btk_tree_store_insert (store, &iter, parent, i);
       create_tree_store_set_values (store, &iter, visible);
 
       if (depth > 0)
@@ -77,13 +77,13 @@ create_tree_store_recurse (int           depth,
     }
 }
 
-static GtkTreeStore *
+static BtkTreeStore *
 create_tree_store (int      depth,
                    gboolean visible)
 {
-  GtkTreeStore *store;
+  BtkTreeStore *store;
 
-  store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
   create_tree_store_recurse (depth, store, NULL, visible);
 
@@ -136,19 +136,19 @@ signal_name_to_string (SignalName signal)
 typedef struct
 {
   SignalName signal;
-  GtkTreePath *path;
+  BtkTreePath *path;
 }
 Signal;
 
 
 static Signal *
-signal_new (SignalName signal, GtkTreePath *path)
+signal_new (SignalName signal, BtkTreePath *path)
 {
   Signal *s;
 
   s = g_new0 (Signal, 1);
   s->signal = signal;
-  s->path = gtk_tree_path_copy (path);
+  s->path = btk_tree_path_copy (path);
 
   return s;
 }
@@ -157,7 +157,7 @@ static void
 signal_free (Signal *s)
 {
   if (s->path)
-    gtk_tree_path_free (s->path);
+    btk_tree_path_free (s->path);
 
   g_free (s);
 }
@@ -166,7 +166,7 @@ signal_free (Signal *s)
 typedef struct
 {
   GQueue *queue;
-  GtkTreeModel *client;
+  BtkTreeModel *client;
   guint signal_ids[LAST_SIGNAL];
 }
 SignalMonitor;
@@ -175,8 +175,8 @@ SignalMonitor;
 static void
 signal_monitor_generic_handler (SignalMonitor *m,
                                 SignalName     signal,
-                                GtkTreeModel  *model,
-                                GtkTreePath   *path)
+                                BtkTreeModel  *model,
+                                BtkTreePath   *path)
 {
   Signal *s;
 
@@ -197,16 +197,16 @@ signal_monitor_generic_handler (SignalMonitor *m,
 
 #if 0
   /* For debugging: output signals that are coming in.  Leaks memory. */
-  g_print ("signal=%d  path=%s\n", signal, gtk_tree_path_to_string (path));
+  g_print ("signal=%d  path=%s\n", signal, btk_tree_path_to_string (path));
 #endif
 
   if (s->signal != signal
-      || gtk_tree_path_compare (s->path, path) != 0)
+      || btk_tree_path_compare (s->path, path) != 0)
     {
       gchar *path_str, *s_path_str;
 
-      s_path_str = gtk_tree_path_to_string (s->path);
-      path_str = gtk_tree_path_to_string (path);
+      s_path_str = btk_tree_path_to_string (s->path);
+      path_str = btk_tree_path_to_string (path);
 
       g_error ("Signals don't match; expected signal %s path %s, got signal %s path %s\n",
                signal_name_to_string (s->signal), s_path_str,
@@ -224,9 +224,9 @@ signal_monitor_generic_handler (SignalMonitor *m,
 }
 
 static void
-signal_monitor_row_inserted (GtkTreeModel *model,
-                             GtkTreePath  *path,
-                             GtkTreeIter  *iter,
+signal_monitor_row_inserted (BtkTreeModel *model,
+                             BtkTreePath  *path,
+                             BtkTreeIter  *iter,
                              gpointer      data)
 {
   signal_monitor_generic_handler (data, ROW_INSERTED,
@@ -234,8 +234,8 @@ signal_monitor_row_inserted (GtkTreeModel *model,
 }
 
 static void
-signal_monitor_row_deleted (GtkTreeModel *model,
-                            GtkTreePath  *path,
+signal_monitor_row_deleted (BtkTreeModel *model,
+                            BtkTreePath  *path,
                             gpointer      data)
 {
   signal_monitor_generic_handler (data, ROW_DELETED,
@@ -243,9 +243,9 @@ signal_monitor_row_deleted (GtkTreeModel *model,
 }
 
 static void
-signal_monitor_row_changed (GtkTreeModel *model,
-                            GtkTreePath  *path,
-                            GtkTreeIter  *iter,
+signal_monitor_row_changed (BtkTreeModel *model,
+                            BtkTreePath  *path,
+                            BtkTreeIter  *iter,
                             gpointer      data)
 {
   signal_monitor_generic_handler (data, ROW_CHANGED,
@@ -253,9 +253,9 @@ signal_monitor_row_changed (GtkTreeModel *model,
 }
 
 static void
-signal_monitor_row_has_child_toggled (GtkTreeModel *model,
-                                      GtkTreePath  *path,
-                                      GtkTreeIter  *iter,
+signal_monitor_row_has_child_toggled (BtkTreeModel *model,
+                                      BtkTreePath  *path,
+                                      BtkTreeIter  *iter,
                                       gpointer      data)
 {
   signal_monitor_generic_handler (data, ROW_HAS_CHILD_TOGGLED,
@@ -263,9 +263,9 @@ signal_monitor_row_has_child_toggled (GtkTreeModel *model,
 }
 
 static void
-signal_monitor_rows_reordered (GtkTreeModel *model,
-                               GtkTreePath  *path,
-                               GtkTreeIter  *iter,
+signal_monitor_rows_reordered (BtkTreeModel *model,
+                               BtkTreePath  *path,
+                               BtkTreeIter  *iter,
                                gint         *new_order,
                                gpointer      data)
 {
@@ -274,7 +274,7 @@ signal_monitor_rows_reordered (GtkTreeModel *model,
 }
 
 static SignalMonitor *
-signal_monitor_new (GtkTreeModel *client)
+signal_monitor_new (BtkTreeModel *client)
 {
   SignalMonitor *m;
 
@@ -331,7 +331,7 @@ signal_monitor_assert_is_empty (SignalMonitor *m)
 static void
 signal_monitor_append_signal_path (SignalMonitor *m,
                                    SignalName     signal,
-                                   GtkTreePath   *path)
+                                   BtkTreePath   *path)
 {
   Signal *s;
 
@@ -345,14 +345,14 @@ signal_monitor_append_signal (SignalMonitor *m,
                               const gchar   *path_string)
 {
   Signal *s;
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  path = gtk_tree_path_new_from_string (path_string);
+  path = btk_tree_path_new_from_string (path_string);
 
   s = signal_new (signal, path);
   g_queue_push_head (m->queue, s);
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 
 /*
@@ -361,10 +361,10 @@ signal_monitor_append_signal (SignalMonitor *m,
 
 typedef struct
 {
-  GtkWidget *tree_view;
+  BtkWidget *tree_view;
 
-  GtkTreeStore *store;
-  GtkTreeModelFilter *filter;
+  BtkTreeStore *store;
+  BtkTreeModelFilter *filter;
 
   SignalMonitor *monitor;
 
@@ -387,8 +387,8 @@ filter_test_setup_generic (FilterTest    *fixture,
                            gboolean       empty,
                            gboolean       unfiltered)
 {
-  const GtkTreePath *vroot = test_data;
-  GtkTreeModel *filter;
+  const BtkTreePath *vroot = test_data;
+  BtkTreeModel *filter;
 
   fixture->store = create_tree_store (depth, !empty);
 
@@ -396,17 +396,17 @@ filter_test_setup_generic (FilterTest    *fixture,
                             G_CALLBACK (filter_test_store_signal), fixture);
 
   /* Please forgive me for casting const away. */
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (fixture->store),
-                                      (GtkTreePath *)vroot);
-  fixture->filter = GTK_TREE_MODEL_FILTER (filter);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture->store),
+                                      (BtkTreePath *)vroot);
+  fixture->filter = BTK_TREE_MODEL_FILTER (filter);
 
   if (!unfiltered)
-    gtk_tree_model_filter_set_visible_column (fixture->filter, 1);
+    btk_tree_model_filter_set_visible_column (fixture->filter, 1);
 
   /* We need a tree view that's listening to get ref counting from that
    * side.
    */
-  fixture->tree_view = gtk_tree_view_new_with_model (filter);
+  fixture->tree_view = btk_tree_view_new_with_model (filter);
 
   fixture->monitor = signal_monitor_new (filter);
 }
@@ -439,86 +439,86 @@ filter_test_setup_empty_unfiltered (FilterTest    *fixture,
   filter_test_setup_generic (fixture, test_data, 3, TRUE, TRUE);
 }
 
-static GtkTreePath *
-strip_virtual_root (GtkTreePath *path,
-                    GtkTreePath *root_path)
+static BtkTreePath *
+strip_virtual_root (BtkTreePath *path,
+                    BtkTreePath *root_path)
 {
-  GtkTreePath *real_path;
+  BtkTreePath *real_path;
 
   if (root_path)
     {
       int j;
-      int depth = gtk_tree_path_get_depth (path);
-      int root_depth = gtk_tree_path_get_depth (root_path);
+      int depth = btk_tree_path_get_depth (path);
+      int root_depth = btk_tree_path_get_depth (root_path);
 
-      real_path = gtk_tree_path_new ();
+      real_path = btk_tree_path_new ();
 
       for (j = 0; j < depth - root_depth; j++)
-        gtk_tree_path_append_index (real_path,
-                                    gtk_tree_path_get_indices (path)[root_depth + j]);
+        btk_tree_path_append_index (real_path,
+                                    btk_tree_path_get_indices (path)[root_depth + j]);
     }
   else
-    real_path = gtk_tree_path_copy (path);
+    real_path = btk_tree_path_copy (path);
 
   return real_path;
 }
 
 static void
 filter_test_append_refilter_signals_recurse (FilterTest  *fixture,
-                                             GtkTreePath *store_path,
-                                             GtkTreePath *filter_path,
+                                             BtkTreePath *store_path,
+                                             BtkTreePath *filter_path,
                                              int          depth,
-                                             GtkTreePath *root_path)
+                                             BtkTreePath *root_path)
 {
   int i;
   int rows_deleted = 0;
-  GtkTreeIter iter;
+  BtkTreeIter iter;
 
-  gtk_tree_path_down (store_path);
-  gtk_tree_path_down (filter_path);
+  btk_tree_path_down (store_path);
+  btk_tree_path_down (filter_path);
 
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store),
+  btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store),
                            &iter, store_path);
 
   for (i = 0; i < LEVEL_LENGTH; i++)
     {
       gboolean visible;
-      GtkTreePath *real_path;
+      BtkTreePath *real_path;
 
-      gtk_tree_model_get (GTK_TREE_MODEL (fixture->store), &iter,
+      btk_tree_model_get (BTK_TREE_MODEL (fixture->store), &iter,
                           1, &visible,
                           -1);
 
       if (root_path &&
-          (!gtk_tree_path_is_descendant (store_path, root_path)
-           || !gtk_tree_path_compare (store_path, root_path)))
+          (!btk_tree_path_is_descendant (store_path, root_path)
+           || !btk_tree_path_compare (store_path, root_path)))
         {
-          if (!gtk_tree_path_compare (store_path, root_path))
+          if (!btk_tree_path_compare (store_path, root_path))
             {
               if (depth > 1
-                  && gtk_tree_model_iter_has_child (GTK_TREE_MODEL (fixture->store),
+                  && btk_tree_model_iter_has_child (BTK_TREE_MODEL (fixture->store),
                                                     &iter))
                 {
-                  GtkTreePath *store_copy;
-                  GtkTreePath *filter_copy;
+                  BtkTreePath *store_copy;
+                  BtkTreePath *filter_copy;
 
-                  store_copy = gtk_tree_path_copy (store_path);
-                  filter_copy = gtk_tree_path_copy (filter_path);
+                  store_copy = btk_tree_path_copy (store_path);
+                  filter_copy = btk_tree_path_copy (filter_path);
                   filter_test_append_refilter_signals_recurse (fixture,
                                                                store_copy,
                                                                filter_copy,
                                                                depth - 1,
                                                                root_path);
-                  gtk_tree_path_free (store_copy);
-                  gtk_tree_path_free (filter_copy);
+                  btk_tree_path_free (store_copy);
+                  btk_tree_path_free (filter_copy);
                 }
             }
 
-          gtk_tree_path_next (store_path);
-          gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
+          btk_tree_path_next (store_path);
+          btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
 
           if (visible)
-            gtk_tree_path_next (filter_path);
+            btk_tree_path_next (filter_path);
 
           continue;
         }
@@ -535,24 +535,24 @@ filter_test_append_refilter_signals_recurse (FilterTest  *fixture,
                                              real_path);
 
           if (depth > 1
-              && gtk_tree_model_iter_has_child (GTK_TREE_MODEL (fixture->store),
+              && btk_tree_model_iter_has_child (BTK_TREE_MODEL (fixture->store),
                                                 &iter))
             {
-              GtkTreePath *store_copy;
-              GtkTreePath *filter_copy;
+              BtkTreePath *store_copy;
+              BtkTreePath *filter_copy;
 
-              store_copy = gtk_tree_path_copy (store_path);
-              filter_copy = gtk_tree_path_copy (filter_path);
+              store_copy = btk_tree_path_copy (store_path);
+              filter_copy = btk_tree_path_copy (filter_path);
               filter_test_append_refilter_signals_recurse (fixture,
                                                            store_copy,
                                                            filter_copy,
                                                            depth - 1,
                                                            root_path);
-              gtk_tree_path_free (store_copy);
-              gtk_tree_path_free (filter_copy);
+              btk_tree_path_free (store_copy);
+              btk_tree_path_free (filter_copy);
             }
 
-          gtk_tree_path_next (filter_path);
+          btk_tree_path_next (filter_path);
         }
       else
         {
@@ -562,32 +562,32 @@ filter_test_append_refilter_signals_recurse (FilterTest  *fixture,
                                              real_path);
         }
 
-      gtk_tree_path_free (real_path);
+      btk_tree_path_free (real_path);
 
-      gtk_tree_path_next (store_path);
-      gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
+      btk_tree_path_next (store_path);
+      btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
     }
 
   if (rows_deleted == LEVEL_LENGTH
-      && gtk_tree_path_get_depth (filter_path) > 1)
+      && btk_tree_path_get_depth (filter_path) > 1)
     {
-      GtkTreePath *real_path;
+      BtkTreePath *real_path;
 
-      gtk_tree_path_up (store_path);
-      gtk_tree_path_up (filter_path);
+      btk_tree_path_up (store_path);
+      btk_tree_path_up (filter_path);
 
       /* A row-has-child-toggled will be emitted on the parent */
       if (!root_path
           || (root_path
-              && gtk_tree_path_is_descendant (store_path, root_path)
-              && gtk_tree_path_compare (store_path, root_path)))
+              && btk_tree_path_is_descendant (store_path, root_path)
+              && btk_tree_path_compare (store_path, root_path)))
         {
           real_path = strip_virtual_root (filter_path, root_path);
           signal_monitor_append_signal_path (fixture->monitor,
                                              ROW_HAS_CHILD_TOGGLED,
                                              real_path);
 
-          gtk_tree_path_free (real_path);
+          btk_tree_path_free (real_path);
         }
     }
 }
@@ -599,47 +599,47 @@ filter_test_append_refilter_signals (FilterTest *fixture,
   /* A special function that walks the tree store like the
    * model validation functions below.
    */
-  GtkTreePath *path;
-  GtkTreePath *filter_path;
+  BtkTreePath *path;
+  BtkTreePath *filter_path;
 
-  path = gtk_tree_path_new ();
-  filter_path = gtk_tree_path_new ();
+  path = btk_tree_path_new ();
+  filter_path = btk_tree_path_new ();
   filter_test_append_refilter_signals_recurse (fixture,
                                                path,
                                                filter_path,
                                                depth,
                                                NULL);
-  gtk_tree_path_free (path);
-  gtk_tree_path_free (filter_path);
+  btk_tree_path_free (path);
+  btk_tree_path_free (filter_path);
 }
 
 static void
 filter_test_append_refilter_signals_with_vroot (FilterTest  *fixture,
                                                 int          depth,
-                                                GtkTreePath *root_path)
+                                                BtkTreePath *root_path)
 {
   /* A special function that walks the tree store like the
    * model validation functions below.
    */
-  GtkTreePath *path;
-  GtkTreePath *filter_path;
+  BtkTreePath *path;
+  BtkTreePath *filter_path;
 
-  path = gtk_tree_path_new ();
-  filter_path = gtk_tree_path_new ();
+  path = btk_tree_path_new ();
+  filter_path = btk_tree_path_new ();
   filter_test_append_refilter_signals_recurse (fixture,
                                                path,
                                                filter_path,
                                                depth,
                                                root_path);
-  gtk_tree_path_free (path);
-  gtk_tree_path_free (filter_path);
+  btk_tree_path_free (path);
+  btk_tree_path_free (filter_path);
 }
 
 static void
 filter_test_enable_filter (FilterTest *fixture)
 {
-  gtk_tree_model_filter_set_visible_column (fixture->filter, 1);
-  gtk_tree_model_filter_refilter (fixture->filter);
+  btk_tree_model_filter_set_visible_column (fixture->filter, 1);
+  btk_tree_model_filter_refilter (fixture->filter);
 }
 
 static void
@@ -670,20 +670,20 @@ filter_test_teardown (FilterTest    *fixture,
 
 static void
 check_filter_model_recurse (FilterTest  *fixture,
-                            GtkTreePath *store_parent_path,
-                            GtkTreePath *filter_parent_path)
+                            BtkTreePath *store_parent_path,
+                            BtkTreePath *filter_parent_path)
 {
   int i;
-  GtkTreeIter store_iter;
-  GtkTreeIter filter_iter;
+  BtkTreeIter store_iter;
+  BtkTreeIter filter_iter;
   gboolean store_has_next, filter_has_next;
 
-  gtk_tree_path_down (store_parent_path);
-  gtk_tree_path_down (filter_parent_path);
+  btk_tree_path_down (store_parent_path);
+  btk_tree_path_down (filter_parent_path);
 
-  store_has_next = gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store),
+  store_has_next = btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store),
                                             &store_iter, store_parent_path);
-  filter_has_next = gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->filter),
+  filter_has_next = btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->filter),
                                              &filter_iter, filter_parent_path);
 
   for (i = 0; i < LEVEL_LENGTH; i++)
@@ -692,29 +692,29 @@ check_filter_model_recurse (FilterTest  *fixture,
 
       g_return_if_fail (store_has_next == TRUE);
 
-      gtk_tree_model_get (GTK_TREE_MODEL (fixture->store),
+      btk_tree_model_get (BTK_TREE_MODEL (fixture->store),
                           &store_iter,
                           1, &visible,
                           -1);
 
       if (visible)
         {
-          GtkTreePath *tmp;
+          BtkTreePath *tmp;
           gchar *filter_str, *store_str;
 
           g_return_if_fail (filter_has_next == TRUE);
 
           /* Verify path */
-          tmp = gtk_tree_model_get_path (GTK_TREE_MODEL (fixture->filter),
+          tmp = btk_tree_model_get_path (BTK_TREE_MODEL (fixture->filter),
                                          &filter_iter);
-          g_return_if_fail (gtk_tree_path_compare (tmp, filter_parent_path) == 0);
+          g_return_if_fail (btk_tree_path_compare (tmp, filter_parent_path) == 0);
 
           /* Verify model content */
-          gtk_tree_model_get (GTK_TREE_MODEL (fixture->store),
+          btk_tree_model_get (BTK_TREE_MODEL (fixture->store),
                               &store_iter,
                               0, &store_str,
                               -1);
-          gtk_tree_model_get (GTK_TREE_MODEL (fixture->filter),
+          btk_tree_model_get (BTK_TREE_MODEL (fixture->filter),
                               &filter_iter,
                               0, &filter_str,
                               -1);
@@ -724,79 +724,79 @@ check_filter_model_recurse (FilterTest  *fixture,
           g_free (store_str);
           g_free (filter_str);
 
-          if (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (fixture->filter),
+          if (btk_tree_model_iter_has_child (BTK_TREE_MODEL (fixture->filter),
                                              &filter_iter))
             {
-              g_return_if_fail (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (fixture->store), &store_iter));
+              g_return_if_fail (btk_tree_model_iter_has_child (BTK_TREE_MODEL (fixture->store), &store_iter));
 
               check_filter_model_recurse (fixture,
-                                          gtk_tree_path_copy (store_parent_path),
+                                          btk_tree_path_copy (store_parent_path),
                                           tmp);
             }
 
-          gtk_tree_path_next (filter_parent_path);
-          filter_has_next = gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->filter), &filter_iter);
+          btk_tree_path_next (filter_parent_path);
+          filter_has_next = btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->filter), &filter_iter);
         }
 
-      gtk_tree_path_next (store_parent_path);
-      store_has_next = gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &store_iter);
+      btk_tree_path_next (store_parent_path);
+      store_has_next = btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &store_iter);
     }
 
   /* Both models should have no more content! */
   g_return_if_fail (store_has_next == FALSE);
   g_return_if_fail (filter_has_next == FALSE);
 
-  gtk_tree_path_free (store_parent_path);
-  gtk_tree_path_free (filter_parent_path);
+  btk_tree_path_free (store_parent_path);
+  btk_tree_path_free (filter_parent_path);
 }
 
 static void
 check_filter_model (FilterTest *fixture)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
 
   if (fixture->monitor)
     signal_monitor_assert_is_empty (fixture->monitor);
 
-  path = gtk_tree_path_new ();
+  path = btk_tree_path_new ();
 
-  check_filter_model_recurse (fixture, path, gtk_tree_path_copy (path));
+  check_filter_model_recurse (fixture, path, btk_tree_path_copy (path));
 }
 
 static void
 check_filter_model_with_root (FilterTest  *fixture,
-                              GtkTreePath *path)
+                              BtkTreePath *path)
 {
   if (fixture->monitor)
     signal_monitor_assert_is_empty (fixture->monitor);
 
   check_filter_model_recurse (fixture,
-                              gtk_tree_path_copy (path),
-                              gtk_tree_path_new ());
+                              btk_tree_path_copy (path),
+                              btk_tree_path_new ());
 }
 
 /* Helpers */
 
 static void
-check_level_length (GtkTreeModelFilter *filter,
+check_level_length (BtkTreeModelFilter *filter,
                     const gchar        *level,
                     const int           length)
 {
   if (!level)
     {
-      int l = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (filter), NULL);
+      int l = btk_tree_model_iter_n_children (BTK_TREE_MODEL (filter), NULL);
       g_return_if_fail (l == length);
     }
   else
     {
       int l;
       gboolean retrieved_iter = FALSE;
-      GtkTreeIter iter;
+      BtkTreeIter iter;
 
-      retrieved_iter = gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (filter),
+      retrieved_iter = btk_tree_model_get_iter_from_string (BTK_TREE_MODEL (filter),
                                                             &iter, level);
       g_return_if_fail (retrieved_iter);
-      l = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (filter), &iter);
+      l = btk_tree_model_iter_n_children (BTK_TREE_MODEL (filter), &iter);
       g_return_if_fail (l == length);
     }
 }
@@ -806,11 +806,11 @@ set_path_visibility (FilterTest  *fixture,
                      const gchar *path,
                      gboolean     visible)
 {
-  GtkTreeIter store_iter;
+  BtkTreeIter store_iter;
 
-  gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (fixture->store),
+  btk_tree_model_get_iter_from_string (BTK_TREE_MODEL (fixture->store),
                                        &store_iter, path);
-  gtk_tree_store_set (fixture->store, &store_iter,
+  btk_tree_store_set (fixture->store, &store_iter,
                       1, visible,
                       -1);
 }
@@ -822,19 +822,19 @@ insert_path_with_visibility (FilterTest  *fixture,
                              gboolean     visible)
 {
   int position;
-  GtkTreePath *path;
-  GtkTreeIter parent, iter;
+  BtkTreePath *path;
+  BtkTreeIter parent, iter;
 
-  path = gtk_tree_path_new_from_string (path_string);
-  position = gtk_tree_path_get_indices (path)[gtk_tree_path_get_depth (path)];
-  gtk_tree_path_up (path);
+  path = btk_tree_path_new_from_string (path_string);
+  position = btk_tree_path_get_indices (path)[btk_tree_path_get_depth (path)];
+  btk_tree_path_up (path);
 
-  if (gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store), &parent, path))
+  if (btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store), &parent, path))
     {
-      gtk_tree_store_insert (fixture->store, &iter, &parent, position);
+      btk_tree_store_insert (fixture->store, &iter, &parent, position);
       create_tree_store_set_values (fixture->store, &iter, visible);
     }
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 #endif
 
@@ -853,7 +853,7 @@ static void
 verify_test_suite_vroot (FilterTest    *fixture,
                          gconstpointer  user_data)
 {
-  check_filter_model_with_root (fixture, (GtkTreePath *)user_data);
+  check_filter_model_with_root (fixture, (BtkTreePath *)user_data);
 }
 
 
@@ -970,7 +970,7 @@ static void
 filled_vroot_hide_root_level (FilterTest    *fixture,
                               gconstpointer  user_data)
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   /* These changes do not affect the filter's root level */
   set_path_visibility (fixture, "0", FALSE);
@@ -1099,7 +1099,7 @@ static void
 filled_vroot_hide_child_levels (FilterTest    *fixture,
                                 gconstpointer  user_data)
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   signal_monitor_append_signal (fixture->monitor, ROW_DELETED, "0:2");
   set_path_visibility (fixture, "2:0:2", FALSE);
@@ -1207,8 +1207,8 @@ static void
 empty_show_multiple_nodes (FilterTest    *fixture,
                            gconstpointer  user_data)
 {
-  GtkTreeIter iter;
-  GtkTreePath *changed_path;
+  BtkTreeIter iter;
+  BtkTreePath *changed_path;
 
   check_filter_model (fixture);
   check_level_length (fixture->filter, NULL, 0);
@@ -1229,24 +1229,24 @@ empty_show_multiple_nodes (FilterTest    *fixture,
   set_path_visibility (fixture, "4", TRUE);
   filter_test_unblock_signals (fixture);
 
-  changed_path = gtk_tree_path_new ();
-  gtk_tree_path_append_index (changed_path, 2);
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store),
+  changed_path = btk_tree_path_new ();
+  btk_tree_path_append_index (changed_path, 2);
+  btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store),
                            &iter, changed_path);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_free (changed_path);
+  btk_tree_path_free (changed_path);
 
   check_filter_model (fixture);
   check_level_length (fixture->filter, NULL, 2);
@@ -1287,7 +1287,7 @@ static void
 empty_vroot_show_nodes (FilterTest    *fixture,
                         gconstpointer  user_data)
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   check_filter_model_with_root (fixture, path);
   check_level_length (fixture->filter, NULL, 0);
@@ -1331,9 +1331,9 @@ static void
 empty_vroot_show_multiple_nodes (FilterTest    *fixture,
                                  gconstpointer  user_data)
 {
-  GtkTreeIter iter;
-  GtkTreePath *changed_path;
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreeIter iter;
+  BtkTreePath *changed_path;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   check_filter_model_with_root (fixture, path);
   check_level_length (fixture->filter, NULL, 0);
@@ -1347,29 +1347,29 @@ empty_vroot_show_multiple_nodes (FilterTest    *fixture,
   set_path_visibility (fixture, "3", TRUE);
   filter_test_unblock_signals (fixture);
 
-  changed_path = gtk_tree_path_new ();
-  gtk_tree_path_append_index (changed_path, 1);
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store),
+  changed_path = btk_tree_path_new ();
+  btk_tree_path_append_index (changed_path, 1);
+  btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store),
                            &iter, changed_path);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_free (changed_path);
+  btk_tree_path_free (changed_path);
 
   check_filter_model_with_root (fixture, path);
   check_level_length (fixture->filter, NULL, 0);
@@ -1389,30 +1389,30 @@ empty_vroot_show_multiple_nodes (FilterTest    *fixture,
   set_path_visibility (fixture, "2:3", TRUE);
   filter_test_unblock_signals (fixture);
 
-  changed_path = gtk_tree_path_new ();
-  gtk_tree_path_append_index (changed_path, 2);
-  gtk_tree_path_append_index (changed_path, 1);
-  gtk_tree_model_get_iter (GTK_TREE_MODEL (fixture->store),
+  changed_path = btk_tree_path_new ();
+  btk_tree_path_append_index (changed_path, 2);
+  btk_tree_path_append_index (changed_path, 1);
+  btk_tree_model_get_iter (BTK_TREE_MODEL (fixture->store),
                            &iter, changed_path);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_next (changed_path);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (fixture->store), &iter);
-  gtk_tree_model_row_changed (GTK_TREE_MODEL (fixture->store),
+  btk_tree_path_next (changed_path);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (fixture->store), &iter);
+  btk_tree_model_row_changed (BTK_TREE_MODEL (fixture->store),
                               changed_path, &iter);
 
-  gtk_tree_path_free (changed_path);
+  btk_tree_path_free (changed_path);
 
   check_filter_model_with_root (fixture, path);
   check_level_length (fixture->filter, NULL, 2);
@@ -1528,7 +1528,7 @@ unfiltered_vroot_hide_single (FilterTest    *fixture,
                               gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   signal_monitor_append_signal (fixture->monitor, ROW_CHANGED, "2");
   signal_monitor_append_signal (fixture->monitor, ROW_HAS_CHILD_TOGGLED, "2");
@@ -1553,7 +1553,7 @@ unfiltered_vroot_hide_single_child (FilterTest    *fixture,
                                     gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   signal_monitor_append_signal (fixture->monitor, ROW_CHANGED, "2:2");
   signal_monitor_append_signal (fixture->monitor, ROW_HAS_CHILD_TOGGLED, "2:2");
@@ -1580,7 +1580,7 @@ unfiltered_vroot_hide_single_multi_level (FilterTest    *fixture,
                                           gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   /* This row is not shown, so its signal is not propagated */
   set_path_visibility (fixture, "2:2:2:2", FALSE);
@@ -1717,7 +1717,7 @@ unfiltered_vroot_show_single (FilterTest    *fixture,
                               gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   signal_monitor_append_signal (fixture->monitor, ROW_CHANGED, "2");
   signal_monitor_append_signal (fixture->monitor, ROW_HAS_CHILD_TOGGLED, "2");
@@ -1741,7 +1741,7 @@ unfiltered_vroot_show_single_child (FilterTest    *fixture,
                                     gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   signal_monitor_append_signal (fixture->monitor, ROW_CHANGED, "2:2");
   signal_monitor_append_signal (fixture->monitor, ROW_HAS_CHILD_TOGGLED, "2:2");
@@ -1776,7 +1776,7 @@ unfiltered_vroot_show_single_multi_level (FilterTest    *fixture,
                                           gconstpointer  user_data)
 
 {
-  GtkTreePath *path = (GtkTreePath *)user_data;
+  BtkTreePath *path = (BtkTreePath *)user_data;
 
   /* The view is not showing this row (collapsed state), so it is not
    * referenced.  The signal should not go through.
@@ -1815,14 +1815,14 @@ unfiltered_vroot_show_single_multi_level (FilterTest    *fixture,
 
 
 static gboolean
-specific_path_dependent_filter_func (GtkTreeModel *model,
-                                     GtkTreeIter  *iter,
+specific_path_dependent_filter_func (BtkTreeModel *model,
+                                     BtkTreeIter  *iter,
                                      gpointer      data)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  path = gtk_tree_model_get_path (model, iter);
-  if (gtk_tree_path_get_indices (path)[0] < 4)
+  path = btk_tree_model_get_path (model, iter);
+  if (btk_tree_path_get_indices (path)[0] < 4)
     return FALSE;
 
   return TRUE;
@@ -1832,52 +1832,52 @@ static void
 specific_path_dependent_filter (void)
 {
   int i;
-  GtkTreeIter iter;
-  GtkListStore *list;
-  GtkTreeModel *sort;
-  GtkTreeModel *filter;
+  BtkTreeIter iter;
+  BtkListStore *list;
+  BtkTreeModel *sort;
+  BtkTreeModel *filter;
 
-  list = gtk_list_store_new (1, G_TYPE_INT);
-  gtk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
-  gtk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
-  gtk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
-  gtk_list_store_insert_with_values (list, &iter, 3, 0, 4, -1);
-  gtk_list_store_insert_with_values (list, &iter, 4, 0, 5, -1);
-  gtk_list_store_insert_with_values (list, &iter, 5, 0, 6, -1);
-  gtk_list_store_insert_with_values (list, &iter, 6, 0, 7, -1);
-  gtk_list_store_insert_with_values (list, &iter, 7, 0, 8, -1);
+  list = btk_list_store_new (1, G_TYPE_INT);
+  btk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
+  btk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
+  btk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
+  btk_list_store_insert_with_values (list, &iter, 3, 0, 4, -1);
+  btk_list_store_insert_with_values (list, &iter, 4, 0, 5, -1);
+  btk_list_store_insert_with_values (list, &iter, 5, 0, 6, -1);
+  btk_list_store_insert_with_values (list, &iter, 6, 0, 7, -1);
+  btk_list_store_insert_with_values (list, &iter, 7, 0, 8, -1);
 
-  sort = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (list));
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (sort), NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
+  sort = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (list));
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (sort), NULL);
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_path_dependent_filter_func,
                                           NULL, NULL);
 
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort), 0,
-                                        GTK_SORT_DESCENDING);
+  btk_tree_sortable_set_sort_column_id (BTK_TREE_SORTABLE (sort), 0,
+                                        BTK_SORT_DESCENDING);
 
   for (i = 0; i < 4; i++)
     {
-      if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (list), &iter,
+      if (btk_tree_model_iter_nth_child (BTK_TREE_MODEL (list), &iter,
                                          NULL, 1))
-        gtk_list_store_remove (list, &iter);
+        btk_list_store_remove (list, &iter);
 
-      if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (list), &iter,
+      if (btk_tree_model_iter_nth_child (BTK_TREE_MODEL (list), &iter,
                                          NULL, 2))
-        gtk_list_store_remove (list, &iter);
+        btk_list_store_remove (list, &iter);
     }
 }
 
 
 static gboolean
-specific_append_after_collapse_visible_func (GtkTreeModel *model,
-                                             GtkTreeIter  *iter,
+specific_append_after_collapse_visible_func (BtkTreeModel *model,
+                                             BtkTreeIter  *iter,
                                              gpointer      data)
 {
   gint number;
   gboolean hide_negative_numbers;
 
-  gtk_tree_model_get (model, iter, 1, &number, -1);
+  btk_tree_model_get (model, iter, 1, &number, -1);
   hide_negative_numbers = GPOINTER_TO_INT (g_object_get_data (data, "private-hide-negative-numbers"));
 
   return (number >= 0 || !hide_negative_numbers);
@@ -1896,104 +1896,104 @@ specific_append_after_collapse (void)
    * - Add a row.
    */
 
-  GtkTreeIter iter;
-  GtkTreeIter child_iter;
-  GtkTreeIter child_iter2;
-  GtkTreePath *append_path;
-  GtkTreeStore *store;
-  GtkTreeModel *filter;
-  GtkTreeModel *sort;
+  BtkTreeIter iter;
+  BtkTreeIter child_iter;
+  BtkTreeIter child_iter2;
+  BtkTreePath *append_path;
+  BtkTreeStore *store;
+  BtkTreeModel *filter;
+  BtkTreeModel *sort;
 
-  GtkWidget *window;
-  GtkWidget *tree_view;
+  BtkWidget *window;
+  BtkWidget *tree_view;
 
-  store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
+  store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_INT);
 
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (store), NULL);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
   g_object_set_data (G_OBJECT (filter), "private-hide-negative-numbers",
                      GINT_TO_POINTER (FALSE));
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_append_after_collapse_visible_func,
                                           filter, NULL);
 
-  sort = gtk_tree_model_sort_new_with_model (filter);
+  sort = btk_tree_model_sort_new_with_model (filter);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  tree_view = gtk_tree_view_new_with_model (sort);
-  gtk_container_add (GTK_CONTAINER (window), tree_view);
-  gtk_widget_realize (tree_view);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  tree_view = btk_tree_view_new_with_model (sort);
+  btk_container_add (BTK_CONTAINER (window), tree_view);
+  btk_widget_realize (tree_view);
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
-  gtk_tree_store_prepend (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter,
+  btk_tree_store_prepend (store, &iter, NULL);
+  btk_tree_store_set (store, &iter,
                       0, "hallo", 1, 1, -1);
 
-  gtk_tree_store_append (store, &child_iter, &iter);
-  gtk_tree_store_set (store, &child_iter,
+  btk_tree_store_append (store, &child_iter, &iter);
+  btk_tree_store_set (store, &child_iter,
                       0, "toemaar", 1, 1, -1);
 
-  gtk_tree_store_append (store, &child_iter2, &child_iter);
-  gtk_tree_store_set (store, &child_iter2,
+  btk_tree_store_append (store, &child_iter2, &child_iter);
+  btk_tree_store_set (store, &child_iter2,
                       0, "very deep", 1, 1, -1);
 
-  append_path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &child_iter2);
+  append_path = btk_tree_model_get_path (BTK_TREE_MODEL (store), &child_iter2);
 
-  gtk_tree_store_append (store, &child_iter, &iter);
-  gtk_tree_store_set (store, &child_iter,
+  btk_tree_store_append (store, &child_iter, &iter);
+  btk_tree_store_set (store, &child_iter,
                       0, "sja", 1, 1, -1);
 
-  gtk_tree_store_append (store, &child_iter, &iter);
-  gtk_tree_store_set (store, &child_iter,
+  btk_tree_store_append (store, &child_iter, &iter);
+  btk_tree_store_set (store, &child_iter,
                       0, "some word", 1, -1, -1);
 
   /* Expand and collapse the tree */
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  btk_tree_view_expand_all (BTK_TREE_VIEW (tree_view));
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
-  gtk_tree_view_collapse_all (GTK_TREE_VIEW (tree_view));
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  btk_tree_view_collapse_all (BTK_TREE_VIEW (tree_view));
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
   /* Add another it */
   g_object_set_data (G_OBJECT (filter), "private-hide-negative-numbers",
                      GINT_TO_POINTER (TRUE));
 
-  if (gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &iter, append_path))
+  if (btk_tree_model_get_iter (BTK_TREE_MODEL (store), &iter, append_path))
     {
-      gtk_tree_store_append (store, &child_iter, &iter);
-      gtk_tree_store_set (store, &child_iter,
+      btk_tree_store_append (store, &child_iter, &iter);
+      btk_tree_store_set (store, &child_iter,
                           0, "new new new !!", 1, 1, -1);
     }
-  gtk_tree_path_free (append_path);
+  btk_tree_path_free (append_path);
 
   /* Expand */
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  btk_tree_view_expand_all (BTK_TREE_VIEW (tree_view));
+  while (btk_events_pending ())
+    btk_main_iteration ();
 }
 
 
 static gint
-specific_sort_filter_remove_node_compare_func (GtkTreeModel  *model,
-                                               GtkTreeIter   *iter1,
-                                               GtkTreeIter   *iter2,
+specific_sort_filter_remove_node_compare_func (BtkTreeModel  *model,
+                                               BtkTreeIter   *iter1,
+                                               BtkTreeIter   *iter2,
                                                gpointer       data)
 {
   return -1;
 }
 
 static gboolean
-specific_sort_filter_remove_node_visible_func (GtkTreeModel  *model,
-                                               GtkTreeIter   *iter,
+specific_sort_filter_remove_node_visible_func (BtkTreeModel  *model,
+                                               BtkTreeIter   *iter,
                                                gpointer       data)
 {
   char *item = NULL;
 
   /* Do reference the model */
-  gtk_tree_model_get (model, iter, 0, &item, -1);
+  btk_tree_model_get (model, iter, 0, &item, -1);
   g_free (item);
 
   return FALSE;
@@ -2013,46 +2013,46 @@ specific_sort_filter_remove_node (void)
    *  - Remove a node from the tree store.
    */
 
-  GtkTreeIter iter;
-  GtkTreeStore *store;
-  GtkTreeModel *filter;
-  GtkTreeModel *sort;
+  BtkTreeIter iter;
+  BtkTreeStore *store;
+  BtkTreeModel *filter;
+  BtkTreeModel *sort;
 
-  GtkWidget *window;
-  GtkWidget *tree_view;
+  BtkWidget *window;
+  BtkWidget *tree_view;
 
-  store = gtk_tree_store_new (1, G_TYPE_STRING);
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, "Hello1", -1);
+  store = btk_tree_store_new (1, G_TYPE_STRING);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, "Hello1", -1);
 
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, "Hello2", -1);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, "Hello2", -1);
 
-  sort = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (store));
-  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (sort),
+  sort = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (store));
+  btk_tree_sortable_set_default_sort_func (BTK_TREE_SORTABLE (sort),
                                            specific_sort_filter_remove_node_compare_func, NULL, NULL);
 
-  filter = gtk_tree_model_filter_new (sort, NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
+  filter = btk_tree_model_filter_new (sort, NULL);
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_sort_filter_remove_node_visible_func,
                                           filter, NULL);
 
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  tree_view = gtk_tree_view_new_with_model (filter);
-  gtk_container_add (GTK_CONTAINER (window), tree_view);
-  gtk_widget_realize (tree_view);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  tree_view = btk_tree_view_new_with_model (filter);
+  btk_container_add (BTK_CONTAINER (window), tree_view);
+  btk_widget_realize (tree_view);
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
   /* Remove a node */
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter);
-  gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
-  gtk_tree_store_remove (store, &iter);
+  btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter);
+  btk_tree_model_iter_next (BTK_TREE_MODEL (store), &iter);
+  btk_tree_store_remove (store, &iter);
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 }
 
 
@@ -2064,21 +2064,21 @@ specific_sort_filter_remove_root (void)
    * from who this test case originated.  -Kris.
    */
 
-  GtkTreeModel *model, *sort, *filter;
-  GtkTreeIter root, mid, leaf;
-  GtkTreePath *path;
+  BtkTreeModel *model, *sort, *filter;
+  BtkTreeIter root, mid, leaf;
+  BtkTreePath *path;
 
-  model = GTK_TREE_MODEL (gtk_tree_store_new (1, G_TYPE_INT));
-  gtk_tree_store_append (GTK_TREE_STORE (model), &root, NULL);
-  gtk_tree_store_append (GTK_TREE_STORE (model), &mid, &root);
-  gtk_tree_store_append (GTK_TREE_STORE (model), &leaf, &mid);
+  model = BTK_TREE_MODEL (btk_tree_store_new (1, G_TYPE_INT));
+  btk_tree_store_append (BTK_TREE_STORE (model), &root, NULL);
+  btk_tree_store_append (BTK_TREE_STORE (model), &mid, &root);
+  btk_tree_store_append (BTK_TREE_STORE (model), &leaf, &mid);
 
-  path = gtk_tree_model_get_path (model, &mid);
+  path = btk_tree_model_get_path (model, &mid);
 
-  sort = gtk_tree_model_sort_new_with_model (model);
-  filter = gtk_tree_model_filter_new (sort, path);
+  sort = btk_tree_model_sort_new_with_model (model);
+  filter = btk_tree_model_filter_new (sort, path);
 
-  gtk_tree_store_remove (GTK_TREE_STORE (model), &root);
+  btk_tree_store_remove (BTK_TREE_STORE (model), &root);
 
   g_object_unref (filter);
   g_object_unref (sort);
@@ -2090,28 +2090,28 @@ static void
 specific_root_mixed_visibility (void)
 {
   int i;
-  GtkTreeModel *filter;
+  BtkTreeModel *filter;
   /* A bit nasty, apologies */
   FilterTest fixture;
 
-  fixture.store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
 
   for (i = 0; i < LEVEL_LENGTH; i++)
     {
-      GtkTreeIter iter;
+      BtkTreeIter iter;
 
-      gtk_tree_store_insert (fixture.store, &iter, NULL, i);
+      btk_tree_store_insert (fixture.store, &iter, NULL, i);
       if (i % 2 == 0)
         create_tree_store_set_values (fixture.store, &iter, TRUE);
       else
         create_tree_store_set_values (fixture.store, &iter, FALSE);
     }
 
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (fixture.store), NULL);
-  fixture.filter = GTK_TREE_MODEL_FILTER (filter);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture.store), NULL);
+  fixture.filter = BTK_TREE_MODEL_FILTER (filter);
   fixture.monitor = NULL;
 
-  gtk_tree_model_filter_set_visible_column (fixture.filter, 1);
+  btk_tree_model_filter_set_visible_column (fixture.filter, 1);
 
   /* In order to trigger the potential bug, we should not access
    * the filter model here (so don't call the check functions).
@@ -2126,24 +2126,24 @@ specific_root_mixed_visibility (void)
 
 
 static gboolean
-specific_has_child_filter_filter_func (GtkTreeModel *model,
-                                       GtkTreeIter  *iter,
+specific_has_child_filter_filter_func (BtkTreeModel *model,
+                                       BtkTreeIter  *iter,
                                        gpointer      data)
 {
-  return gtk_tree_model_iter_has_child (model, iter);
+  return btk_tree_model_iter_has_child (model, iter);
 }
 
 static void
 specific_has_child_filter (void)
 {
-  GtkTreeModel *filter;
-  GtkTreeIter iter, root;
+  BtkTreeModel *filter;
+  BtkTreeIter iter, root;
   /* A bit nasty, apologies */
   FilterTest fixture;
 
-  fixture.store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (fixture.store), NULL);
-  fixture.filter = GTK_TREE_MODEL_FILTER (filter);
+  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture.store), NULL);
+  fixture.filter = BTK_TREE_MODEL_FILTER (filter);
   fixture.monitor = NULL;
 
   /* We will filter on parent state using a filter function.  We will
@@ -2154,17 +2154,17 @@ specific_has_child_filter (void)
    * to be able to check the structure here.  We keep the calls to
    * check_filter_model() commented out until then.
    */
-  gtk_tree_model_filter_set_visible_func (fixture.filter,
+  btk_tree_model_filter_set_visible_func (fixture.filter,
                                           specific_has_child_filter_filter_func,
                                           NULL, NULL);
 
-  gtk_tree_store_append (fixture.store, &root, NULL);
+  btk_tree_store_append (fixture.store, &root, NULL);
   create_tree_store_set_values (fixture.store, &root, FALSE);
 
   /* check_filter_model (&fixture); */
   check_level_length (fixture.filter, NULL, 0);
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   create_tree_store_set_values (fixture.store, &iter, TRUE);
 
   /* Parent must now be visible.  Do the level length check first,
@@ -2177,10 +2177,10 @@ specific_has_child_filter (void)
   set_path_visibility (&fixture, "0", TRUE);
   /* check_filter_model (&fixture); */
 
-  gtk_tree_store_append (fixture.store, &root, NULL);
+  btk_tree_store_append (fixture.store, &root, NULL);
   check_level_length (fixture.filter, NULL, 1);
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   check_level_length (fixture.filter, NULL, 2);
   check_level_length (fixture.filter, "1", 0);
 
@@ -2189,16 +2189,16 @@ specific_has_child_filter (void)
 
   /* check_filter_model (&fixture); */
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   create_tree_store_set_values (fixture.store, &iter, TRUE);
   check_level_length (fixture.filter, NULL, 2);
   check_level_length (fixture.filter, "0", 0);
   check_level_length (fixture.filter, "1", 0);
 
   /* Now remove one of the remaining child rows */
-  gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (fixture.store),
+  btk_tree_model_get_iter_from_string (BTK_TREE_MODEL (fixture.store),
                                        &iter, "0:0");
-  gtk_tree_store_remove (fixture.store, &iter);
+  btk_tree_store_remove (fixture.store, &iter);
 
   check_level_length (fixture.filter, NULL, 1);
   check_level_length (fixture.filter, "0", 0);
@@ -2209,28 +2209,28 @@ specific_has_child_filter (void)
 
 
 static gboolean
-specific_root_has_child_filter_filter_func (GtkTreeModel *model,
-                                            GtkTreeIter  *iter,
+specific_root_has_child_filter_filter_func (BtkTreeModel *model,
+                                            BtkTreeIter  *iter,
                                             gpointer      data)
 {
   int depth;
-  GtkTreePath *path;
+  BtkTreePath *path;
 
-  path = gtk_tree_model_get_path (model, iter);
-  depth = gtk_tree_path_get_depth (path);
-  gtk_tree_path_free (path);
+  path = btk_tree_model_get_path (model, iter);
+  depth = btk_tree_path_get_depth (path);
+  btk_tree_path_free (path);
 
   if (depth > 1)
     return TRUE;
   /* else */
-  return gtk_tree_model_iter_has_child (model, iter);
+  return btk_tree_model_iter_has_child (model, iter);
 }
 
 static void
 specific_root_has_child_filter (void)
 {
-  GtkTreeModel *filter;
-  GtkTreeIter iter, root;
+  BtkTreeModel *filter;
+  BtkTreeIter iter, root;
   /* A bit nasty, apologies */
   FilterTest fixture;
 
@@ -2238,9 +2238,9 @@ specific_root_has_child_filter (void)
    * check for visibility only applies to root level nodes.
    */
 
-  fixture.store = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (fixture.store), NULL);
-  fixture.filter = GTK_TREE_MODEL_FILTER (filter);
+  fixture.store = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (fixture.store), NULL);
+  fixture.filter = BTK_TREE_MODEL_FILTER (filter);
   fixture.monitor = NULL;
 
   /* We will filter on parent state using a filter function.  We will
@@ -2251,17 +2251,17 @@ specific_root_has_child_filter (void)
    * to be able to check the structure here.  We keep the calls to
    * check_filter_model() commented out until then.
    */
-  gtk_tree_model_filter_set_visible_func (fixture.filter,
+  btk_tree_model_filter_set_visible_func (fixture.filter,
                                           specific_root_has_child_filter_filter_func,
                                           NULL, NULL);
 
-  gtk_tree_store_append (fixture.store, &root, NULL);
+  btk_tree_store_append (fixture.store, &root, NULL);
   create_tree_store_set_values (fixture.store, &root, FALSE);
 
   /* check_filter_model (&fixture); */
   check_level_length (fixture.filter, NULL, 0);
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   create_tree_store_set_values (fixture.store, &iter, TRUE);
 
   /* Parent must now be visible.  Do the level length check first,
@@ -2274,10 +2274,10 @@ specific_root_has_child_filter (void)
   set_path_visibility (&fixture, "0", TRUE);
   /* check_filter_model (&fixture); */
 
-  gtk_tree_store_append (fixture.store, &root, NULL);
+  btk_tree_store_append (fixture.store, &root, NULL);
   check_level_length (fixture.filter, NULL, 1);
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   check_level_length (fixture.filter, NULL, 2);
   check_level_length (fixture.filter, "1", 1);
 
@@ -2286,16 +2286,16 @@ specific_root_has_child_filter (void)
 
   /* check_filter_model (&fixture); */
 
-  gtk_tree_store_append (fixture.store, &iter, &root);
+  btk_tree_store_append (fixture.store, &iter, &root);
   create_tree_store_set_values (fixture.store, &iter, TRUE);
   check_level_length (fixture.filter, NULL, 2);
   check_level_length (fixture.filter, "0", 1);
   check_level_length (fixture.filter, "1", 2);
 
   /* Now remove one of the remaining child rows */
-  gtk_tree_model_get_iter_from_string (GTK_TREE_MODEL (fixture.store),
+  btk_tree_model_get_iter_from_string (BTK_TREE_MODEL (fixture.store),
                                        &iter, "0:0");
-  gtk_tree_store_remove (fixture.store, &iter);
+  btk_tree_store_remove (fixture.store, &iter);
 
   check_level_length (fixture.filter, NULL, 1);
   check_level_length (fixture.filter, "0", 2);
@@ -2313,108 +2313,108 @@ specific_filter_add_child (void)
    * from who this test case originated.  -Kris.
    */
 
-  GtkTreeIter iter;
-  GtkTreeIter iter_first;
-  GtkTreeIter child;
-  GtkTreeStore *store;
-  GtkTreeModel *filter;
+  BtkTreeIter iter;
+  BtkTreeIter iter_first;
+  BtkTreeIter child;
+  BtkTreeStore *store;
+  BtkTreeModel *filter;
 
-  store = gtk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, G_TYPE_STRING);
 
-  gtk_tree_store_append (store, &iter_first, NULL);
-  gtk_tree_store_set (store, &iter_first, 0, "Hello", -1);
+  btk_tree_store_append (store, &iter_first, NULL);
+  btk_tree_store_set (store, &iter_first, 0, "Hello", -1);
 
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, "Hello", -1);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, "Hello", -1);
 
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, "Hello", -1);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, "Hello", -1);
 
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, "Hello", -1);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, "Hello", -1);
 
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (store), NULL);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
 
-  gtk_tree_store_set (store, &iter, 0, "Hello", -1);
-  gtk_tree_store_append (store, &child, &iter_first);
-  gtk_tree_store_set (store, &child, 0, "Hello", -1);
+  btk_tree_store_set (store, &iter, 0, "Hello", -1);
+  btk_tree_store_append (store, &child, &iter_first);
+  btk_tree_store_set (store, &child, 0, "Hello", -1);
 }
 
 static void
 specific_list_store_clear (void)
 {
-  GtkTreeIter iter;
-  GtkListStore *list;
-  GtkTreeModel *filter;
-  GtkWidget *view;
+  BtkTreeIter iter;
+  BtkListStore *list;
+  BtkTreeModel *filter;
+  BtkWidget *view;
 
-  list = gtk_list_store_new (1, G_TYPE_INT);
-  gtk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
-  gtk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
-  gtk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
-  gtk_list_store_insert_with_values (list, &iter, 3, 0, 4, -1);
-  gtk_list_store_insert_with_values (list, &iter, 4, 0, 5, -1);
-  gtk_list_store_insert_with_values (list, &iter, 5, 0, 6, -1);
-  gtk_list_store_insert_with_values (list, &iter, 6, 0, 7, -1);
-  gtk_list_store_insert_with_values (list, &iter, 7, 0, 8, -1);
+  list = btk_list_store_new (1, G_TYPE_INT);
+  btk_list_store_insert_with_values (list, &iter, 0, 0, 1, -1);
+  btk_list_store_insert_with_values (list, &iter, 1, 0, 2, -1);
+  btk_list_store_insert_with_values (list, &iter, 2, 0, 3, -1);
+  btk_list_store_insert_with_values (list, &iter, 3, 0, 4, -1);
+  btk_list_store_insert_with_values (list, &iter, 4, 0, 5, -1);
+  btk_list_store_insert_with_values (list, &iter, 5, 0, 6, -1);
+  btk_list_store_insert_with_values (list, &iter, 6, 0, 7, -1);
+  btk_list_store_insert_with_values (list, &iter, 7, 0, 8, -1);
 
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (list), NULL);
-  view = gtk_tree_view_new_with_model (filter);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (list), NULL);
+  view = btk_tree_view_new_with_model (filter);
 
-  gtk_list_store_clear (list);
+  btk_list_store_clear (list);
 }
 
 static void
 specific_bug_300089 (void)
 {
-  /* Test case for GNOME Bugzilla bug 300089.  Written by
+  /* Test case for BUNNY Bugzilla bug 300089.  Written by
    * Matthias Clasen.
    */
-  GtkTreeModel *sort_model, *child_model;
-  GtkTreePath *path;
-  GtkTreeIter iter, iter2, sort_iter;
+  BtkTreeModel *sort_model, *child_model;
+  BtkTreePath *path;
+  BtkTreeIter iter, iter2, sort_iter;
 
-  child_model = GTK_TREE_MODEL (gtk_tree_store_new (1, G_TYPE_STRING));
+  child_model = BTK_TREE_MODEL (btk_tree_store_new (1, G_TYPE_STRING));
 
-  gtk_tree_store_append (GTK_TREE_STORE (child_model), &iter, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter, 0, "A", -1);
-  gtk_tree_store_append (GTK_TREE_STORE (child_model), &iter, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter, 0, "B", -1);
+  btk_tree_store_append (BTK_TREE_STORE (child_model), &iter, NULL);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter, 0, "A", -1);
+  btk_tree_store_append (BTK_TREE_STORE (child_model), &iter, NULL);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter, 0, "B", -1);
 
-  gtk_tree_store_append (GTK_TREE_STORE (child_model), &iter2, &iter);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter2, 0, "D", -1);
-  gtk_tree_store_append (GTK_TREE_STORE (child_model), &iter2, &iter);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter2, 0, "E", -1);
+  btk_tree_store_append (BTK_TREE_STORE (child_model), &iter2, &iter);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter2, 0, "D", -1);
+  btk_tree_store_append (BTK_TREE_STORE (child_model), &iter2, &iter);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter2, 0, "E", -1);
 
-  gtk_tree_store_append (GTK_TREE_STORE (child_model), &iter, NULL);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter, 0, "C", -1);
+  btk_tree_store_append (BTK_TREE_STORE (child_model), &iter, NULL);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter, 0, "C", -1);
 
 
-  sort_model = GTK_TREE_MODEL (gtk_tree_model_sort_new_with_model (child_model));
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (sort_model),
-                                        0, GTK_SORT_ASCENDING);
+  sort_model = BTK_TREE_MODEL (btk_tree_model_sort_new_with_model (child_model));
+  btk_tree_sortable_set_sort_column_id (BTK_TREE_SORTABLE (sort_model),
+                                        0, BTK_SORT_ASCENDING);
 
-  path = gtk_tree_path_new_from_indices (1, 1, -1);
+  path = btk_tree_path_new_from_indices (1, 1, -1);
 
   /* make sure a level is constructed */ 
-  gtk_tree_model_get_iter (sort_model, &sort_iter, path);
+  btk_tree_model_get_iter (sort_model, &sort_iter, path);
 
   /* change the "E" row in a way that causes it to change position */ 
-  gtk_tree_model_get_iter (child_model, &iter, path);
-  gtk_tree_store_set (GTK_TREE_STORE (child_model), &iter, 0, "A", -1);
+  btk_tree_model_get_iter (child_model, &iter, path);
+  btk_tree_store_set (BTK_TREE_STORE (child_model), &iter, 0, "A", -1);
 }
 
 
 static int
-specific_bug_301558_sort_func (GtkTreeModel *model,
-                               GtkTreeIter  *a,
-                               GtkTreeIter  *b,
+specific_bug_301558_sort_func (BtkTreeModel *model,
+                               BtkTreeIter  *a,
+                               BtkTreeIter  *b,
                                gpointer      data)
 {
   int i, j;
 
-  gtk_tree_model_get (model, a, 0, &i, -1);
-  gtk_tree_model_get (model, b, 0, &j, -1);
+  btk_tree_model_get (model, a, 0, &i, -1);
+  btk_tree_model_get (model, b, 0, &j, -1);
 
   return j - i;
 }
@@ -2422,55 +2422,55 @@ specific_bug_301558_sort_func (GtkTreeModel *model,
 static void
 specific_bug_301558 (void)
 {
-  /* Test case for GNOME Bugzilla bug 301558 provided by
+  /* Test case for BUNNY Bugzilla bug 301558 provided by
    * Markku Vire.
    */
-  GtkTreeStore *tree;
-  GtkTreeModel *filter;
-  GtkTreeModel *sort;
-  GtkTreeIter root, iter, iter2;
-  GtkWidget *view;
+  BtkTreeStore *tree;
+  BtkTreeModel *filter;
+  BtkTreeModel *sort;
+  BtkTreeIter root, iter, iter2;
+  BtkWidget *view;
   int i;
   gboolean add;
 
-  tree = gtk_tree_store_new (2, G_TYPE_INT, G_TYPE_BOOLEAN);
-  gtk_tree_store_append (tree, &iter, NULL);
-  gtk_tree_store_set (tree, &iter, 0, 123, 1, TRUE, -1);
-  gtk_tree_store_append (tree, &iter2, &iter);
-  gtk_tree_store_set (tree, &iter2, 0, 73, 1, TRUE, -1);
+  tree = btk_tree_store_new (2, G_TYPE_INT, G_TYPE_BOOLEAN);
+  btk_tree_store_append (tree, &iter, NULL);
+  btk_tree_store_set (tree, &iter, 0, 123, 1, TRUE, -1);
+  btk_tree_store_append (tree, &iter2, &iter);
+  btk_tree_store_set (tree, &iter2, 0, 73, 1, TRUE, -1);
 
-  sort = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (tree));
-  gtk_tree_sortable_set_default_sort_func (GTK_TREE_SORTABLE (sort),
+  sort = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (tree));
+  btk_tree_sortable_set_default_sort_func (BTK_TREE_SORTABLE (sort),
                                            specific_bug_301558_sort_func,
                                            NULL, NULL);
 
-  filter = gtk_tree_model_filter_new (sort, NULL);
-  gtk_tree_model_filter_set_visible_column (GTK_TREE_MODEL_FILTER (filter), 1);
+  filter = btk_tree_model_filter_new (sort, NULL);
+  btk_tree_model_filter_set_visible_column (BTK_TREE_MODEL_FILTER (filter), 1);
 
-  view = gtk_tree_view_new_with_model (filter);
+  view = btk_tree_view_new_with_model (filter);
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
   add = TRUE;
 
   for (i = 0; i < 10; i++)
     {
-      if (!gtk_tree_model_get_iter_first (GTK_TREE_MODEL (tree), &root))
+      if (!btk_tree_model_get_iter_first (BTK_TREE_MODEL (tree), &root))
         g_assert_not_reached ();
 
       if (add)
         {
-          gtk_tree_store_append (tree, &iter, &root);
-          gtk_tree_store_set (tree, &iter, 0, 456, 1, TRUE, -1);
+          btk_tree_store_append (tree, &iter, &root);
+          btk_tree_store_set (tree, &iter, 0, 456, 1, TRUE, -1);
         }
       else
         {
           int n;
-          n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (tree), &root);
-          gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (tree), &iter,
+          n = btk_tree_model_iter_n_children (BTK_TREE_MODEL (tree), &root);
+          btk_tree_model_iter_nth_child (BTK_TREE_MODEL (tree), &iter,
                                          &root, n - 1);
-          gtk_tree_store_remove (tree, &iter);
+          btk_tree_store_remove (tree, &iter);
         }
 
       add = !add;
@@ -2479,13 +2479,13 @@ specific_bug_301558 (void)
 
 
 static gboolean
-specific_bug_311955_filter_func (GtkTreeModel *model,
-                                 GtkTreeIter  *iter,
+specific_bug_311955_filter_func (BtkTreeModel *model,
+                                 BtkTreeIter  *iter,
                                  gpointer      data)
 {
   int value;
 
-  gtk_tree_model_get (model, iter, 0, &value, -1);
+  btk_tree_model_get (model, iter, 0, &value, -1);
 
   return (value != 0);
 }
@@ -2493,74 +2493,74 @@ specific_bug_311955_filter_func (GtkTreeModel *model,
 static void
 specific_bug_311955 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 311955.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 311955.  It was written
    * by Markku Vire.
    */
-  GtkTreeIter iter, child, root;
-  GtkTreeStore *store;
-  GtkTreeModel *sort;
-  GtkTreeModel *filter;
+  BtkTreeIter iter, child, root;
+  BtkTreeStore *store;
+  BtkTreeModel *sort;
+  BtkTreeModel *filter;
 
-  GtkWidget *window;
-  GtkWidget *tree_view;
+  BtkWidget *window;
+  BtkWidget *tree_view;
   int i;
   int n;
 
-  store = gtk_tree_store_new (1, G_TYPE_INT);
+  store = btk_tree_store_new (1, G_TYPE_INT);
 
-  gtk_tree_store_append (store, &root, NULL);
-  gtk_tree_store_set (store, &root, 0, 33, -1);
+  btk_tree_store_append (store, &root, NULL);
+  btk_tree_store_set (store, &root, 0, 33, -1);
 
-  gtk_tree_store_append (store, &iter, &root);
-  gtk_tree_store_set (store, &iter, 0, 50, -1);
+  btk_tree_store_append (store, &iter, &root);
+  btk_tree_store_set (store, &iter, 0, 50, -1);
 
-  gtk_tree_store_append (store, &iter, NULL);
-  gtk_tree_store_set (store, &iter, 0, 22, -1);
+  btk_tree_store_append (store, &iter, NULL);
+  btk_tree_store_set (store, &iter, 0, 22, -1);
 
-  sort = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (store));
-  filter = gtk_tree_model_filter_new (sort, NULL);
+  sort = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (store));
+  filter = btk_tree_model_filter_new (sort, NULL);
 
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_bug_311955_filter_func,
                                           NULL, NULL);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  tree_view = gtk_tree_view_new_with_model (filter);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  tree_view = btk_tree_view_new_with_model (filter);
   g_object_unref (store);
 
-  gtk_tree_view_expand_all (GTK_TREE_VIEW (tree_view));
+  btk_tree_view_expand_all (BTK_TREE_VIEW (tree_view));
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
   /* Fill model */
   for (i = 0; i < 4; i++)
     {
-      gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &root);
+      btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &root);
 
-      gtk_tree_store_append (store, &iter, &root);
+      btk_tree_store_append (store, &iter, &root);
 
       if (i < 3)
-        gtk_tree_store_set (store, &iter, 0, i, -1);
+        btk_tree_store_set (store, &iter, 0, i, -1);
 
       if (i % 2 == 0)
         {
-          gtk_tree_store_append (store, &child, &iter);
-          gtk_tree_store_set (store, &child, 0, 10, -1);
+          btk_tree_store_append (store, &child, &iter);
+          btk_tree_store_set (store, &child, 0, 10, -1);
         }
     }
 
-  while (gtk_events_pending ())
-    gtk_main_iteration ();
+  while (btk_events_pending ())
+    btk_main_iteration ();
 
   /* Remove bottommost child from the tree. */
-  gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &root);
-  n = gtk_tree_model_iter_n_children (GTK_TREE_MODEL (store), &root);
+  btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &root);
+  n = btk_tree_model_iter_n_children (BTK_TREE_MODEL (store), &root);
 
-  if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (store), &iter, &root, n - 2))
+  if (btk_tree_model_iter_nth_child (BTK_TREE_MODEL (store), &iter, &root, n - 2))
     {
-      if (gtk_tree_model_iter_children (GTK_TREE_MODEL (store), &child, &iter))
-        gtk_tree_store_remove (store, &child);
+      if (btk_tree_model_iter_children (BTK_TREE_MODEL (store), &child, &iter))
+        btk_tree_store_remove (store, &child);
     }
   else
     g_assert_not_reached ();
@@ -2569,55 +2569,55 @@ specific_bug_311955 (void)
 static void
 specific_bug_346800 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 346800.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 346800.  It was written
    * by Jonathan Matthew.
    */
 
-  GtkTreeIter node_iters[50];
-  GtkTreeIter child_iters[50];
-  GtkTreeModel *model;
-  GtkTreeModelFilter *filter;
-  GtkTreeStore *store;
+  BtkTreeIter node_iters[50];
+  BtkTreeIter child_iters[50];
+  BtkTreeModel *model;
+  BtkTreeModelFilter *filter;
+  BtkTreeStore *store;
   GType *columns;
   int i;
   int items = 50;
   columns = g_new (GType, 2);
   columns[0] = G_TYPE_STRING;
   columns[1] = G_TYPE_BOOLEAN;
-  store = gtk_tree_store_newv (2, columns);
-  model = GTK_TREE_MODEL (store);
+  store = btk_tree_store_newv (2, columns);
+  model = BTK_TREE_MODEL (store);
 
-  filter = GTK_TREE_MODEL_FILTER (gtk_tree_model_filter_new (model, NULL));
-  gtk_tree_model_filter_set_visible_column (filter, 1);
+  filter = BTK_TREE_MODEL_FILTER (btk_tree_model_filter_new (model, NULL));
+  btk_tree_model_filter_set_visible_column (filter, 1);
 
   for (i=0; i<items; i++)
     {
       /* allocate random amounts of junk, otherwise the filter model's arrays can expand without moving */
 
       g_malloc (138);
-      gtk_tree_store_append (store, &node_iters[i], NULL);
-      gtk_tree_store_set (store, &node_iters[i],
+      btk_tree_store_append (store, &node_iters[i], NULL);
+      btk_tree_store_set (store, &node_iters[i],
                           0, "something",
                           1, ((i%6) == 0) ? FALSE : TRUE,
                           -1);
 
       g_malloc (47);
-      gtk_tree_store_append (store, &child_iters[i], &node_iters[i]);
-      gtk_tree_store_set (store, &child_iters[i],
+      btk_tree_store_append (store, &child_iters[i], &node_iters[i]);
+      btk_tree_store_set (store, &child_iters[i],
                           0, "something else",
                           1, FALSE,
                           -1);
-      gtk_tree_model_filter_refilter (filter);
+      btk_tree_model_filter_refilter (filter);
 
       if (i > 6)
         {
-          gtk_tree_store_set (GTK_TREE_STORE (model), &child_iters[i-1], 1,
+          btk_tree_store_set (BTK_TREE_STORE (model), &child_iters[i-1], 1,
                               (i & 1) ? TRUE : FALSE, -1);
-          gtk_tree_model_filter_refilter (filter);
+          btk_tree_model_filter_refilter (filter);
 
-          gtk_tree_store_set (GTK_TREE_STORE (model), &child_iters[i-2], 1,
+          btk_tree_store_set (BTK_TREE_STORE (model), &child_iters[i-2], 1,
                               (i & 1) ? FALSE: TRUE, -1);
-          gtk_tree_model_filter_refilter (filter);
+          btk_tree_model_filter_refilter (filter);
         }
     }
 }
@@ -2626,44 +2626,44 @@ specific_bug_346800 (void)
 static void
 specific_bug_364946 (void)
 {
-  /* This is a test case for GNOME Bugzilla bug 364946.  It was written
+  /* This is a test case for BUNNY Bugzilla bug 364946.  It was written
    * by Andreas Koehler.
    */
-  GtkTreeStore *store;
-  GtkTreeIter a, aa, aaa, aab, iter;
-  GtkTreeModel *s_model;
+  BtkTreeStore *store;
+  BtkTreeIter a, aa, aaa, aab, iter;
+  BtkTreeModel *s_model;
 
-  store = gtk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, G_TYPE_STRING);
 
-  gtk_tree_store_append (store, &a, NULL);
-  gtk_tree_store_set (store, &a, 0, "0", -1);
+  btk_tree_store_append (store, &a, NULL);
+  btk_tree_store_set (store, &a, 0, "0", -1);
 
-  gtk_tree_store_append (store, &aa, &a);
-  gtk_tree_store_set (store, &aa, 0, "0:0", -1);
+  btk_tree_store_append (store, &aa, &a);
+  btk_tree_store_set (store, &aa, 0, "0:0", -1);
 
-  gtk_tree_store_append (store, &aaa, &aa);
-  gtk_tree_store_set (store, &aaa, 0, "0:0:0", -1);
+  btk_tree_store_append (store, &aaa, &aa);
+  btk_tree_store_set (store, &aaa, 0, "0:0:0", -1);
 
-  gtk_tree_store_append (store, &aab, &aa);
-  gtk_tree_store_set (store, &aab, 0, "0:0:1", -1);
+  btk_tree_store_append (store, &aab, &aa);
+  btk_tree_store_set (store, &aab, 0, "0:0:1", -1);
 
-  s_model = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (store));
-  gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (s_model), 0,
-                                        GTK_SORT_ASCENDING);
+  s_model = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (store));
+  btk_tree_sortable_set_sort_column_id (BTK_TREE_SORTABLE (s_model), 0,
+                                        BTK_SORT_ASCENDING);
 
-  gtk_tree_model_get_iter_from_string (s_model, &iter, "0:0:0");
+  btk_tree_model_get_iter_from_string (s_model, &iter, "0:0:0");
 
-  gtk_tree_store_set (store, &aaa, 0, "0:0:0", -1);
-  gtk_tree_store_remove (store, &aaa);
-  gtk_tree_store_remove (store, &aab);
+  btk_tree_store_set (store, &aaa, 0, "0:0:0", -1);
+  btk_tree_store_remove (store, &aaa);
+  btk_tree_store_remove (store, &aab);
 
-  gtk_tree_model_sort_clear_cache (GTK_TREE_MODEL_SORT (s_model));
+  btk_tree_model_sort_clear_cache (BTK_TREE_MODEL_SORT (s_model));
 }
 
 
 static gboolean
-specific_bug_464173_visible_func (GtkTreeModel *model,
-                                  GtkTreeIter  *iter,
+specific_bug_464173_visible_func (BtkTreeModel *model,
+                                  BtkTreeIter  *iter,
                                   gpointer      data)
 {
   gboolean *visible = (gboolean *)data;
@@ -2674,41 +2674,41 @@ specific_bug_464173_visible_func (GtkTreeModel *model,
 static void
 specific_bug_464173 (void)
 {
-  /* Test case for GNOME Bugzilla bug 464173, test case written
+  /* Test case for BUNNY Bugzilla bug 464173, test case written
    * by Andreas Koehler.
    */
-  GtkTreeStore *model;
-  GtkTreeModelFilter *f_model;
-  GtkTreeIter iter1, iter2;
-  GtkWidget *view;
+  BtkTreeStore *model;
+  BtkTreeModelFilter *f_model;
+  BtkTreeIter iter1, iter2;
+  BtkWidget *view;
   gboolean visible = TRUE;
 
-  model = gtk_tree_store_new (1, G_TYPE_STRING);
-  gtk_tree_store_append (model, &iter1, NULL);
-  gtk_tree_store_set (model, &iter1, 0, "Foo", -1);
-  gtk_tree_store_append (model, &iter2, &iter1);
-  gtk_tree_store_set (model, &iter2, 0, "Bar", -1);
+  model = btk_tree_store_new (1, G_TYPE_STRING);
+  btk_tree_store_append (model, &iter1, NULL);
+  btk_tree_store_set (model, &iter1, 0, "Foo", -1);
+  btk_tree_store_append (model, &iter2, &iter1);
+  btk_tree_store_set (model, &iter2, 0, "Bar", -1);
 
-  f_model = GTK_TREE_MODEL_FILTER (gtk_tree_model_filter_new (GTK_TREE_MODEL(model), NULL));
-  gtk_tree_model_filter_set_visible_func (f_model,
+  f_model = BTK_TREE_MODEL_FILTER (btk_tree_model_filter_new (BTK_TREE_MODEL(model), NULL));
+  btk_tree_model_filter_set_visible_func (f_model,
                                           specific_bug_464173_visible_func,
                                           &visible, NULL);
 
-  view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (f_model));
+  view = btk_tree_view_new_with_model (BTK_TREE_MODEL (f_model));
 
   visible = FALSE;
-  gtk_tree_model_filter_refilter (f_model);
+  btk_tree_model_filter_refilter (f_model);
 }
 
 
 static gboolean
-specific_bug_540201_filter_func (GtkTreeModel *model,
-                                 GtkTreeIter  *iter,
+specific_bug_540201_filter_func (BtkTreeModel *model,
+                                 BtkTreeIter  *iter,
                                  gpointer      data)
 {
   gboolean has_children;
 
-  has_children = gtk_tree_model_iter_has_child (model, iter);
+  has_children = btk_tree_model_iter_has_child (model, iter);
 
   return has_children;
 }
@@ -2716,50 +2716,50 @@ specific_bug_540201_filter_func (GtkTreeModel *model,
 static void
 specific_bug_540201 (void)
 {
-  /* Test case for GNOME Bugzilla bug 540201, steps provided by
+  /* Test case for BUNNY Bugzilla bug 540201, steps provided by
    * Charles Day.
    */
-  GtkTreeIter iter, root;
-  GtkTreeStore *store;
-  GtkTreeModel *filter;
+  BtkTreeIter iter, root;
+  BtkTreeStore *store;
+  BtkTreeModel *filter;
 
-  GtkWidget *tree_view;
+  BtkWidget *tree_view;
 
-  store = gtk_tree_store_new (1, G_TYPE_INT);
+  store = btk_tree_store_new (1, G_TYPE_INT);
 
-  gtk_tree_store_append (store, &root, NULL);
-  gtk_tree_store_set (store, &root, 0, 33, -1);
+  btk_tree_store_append (store, &root, NULL);
+  btk_tree_store_set (store, &root, 0, 33, -1);
 
-  filter = gtk_tree_model_filter_new (GTK_TREE_MODEL (store), NULL);
-  tree_view = gtk_tree_view_new_with_model (filter);
+  filter = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
+  tree_view = btk_tree_view_new_with_model (filter);
 
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filter),
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filter),
                                           specific_bug_540201_filter_func,
                                           NULL, NULL);
 
-  gtk_tree_store_append (store, &iter, &root);
-  gtk_tree_store_set (store, &iter, 0, 50, -1);
+  btk_tree_store_append (store, &iter, &root);
+  btk_tree_store_set (store, &iter, 0, 50, -1);
 
-  gtk_tree_store_append (store, &iter, &root);
-  gtk_tree_store_set (store, &iter, 0, 22, -1);
+  btk_tree_store_append (store, &iter, &root);
+  btk_tree_store_set (store, &iter, 0, 22, -1);
 
 
-  gtk_tree_store_append (store, &root, NULL);
-  gtk_tree_store_set (store, &root, 0, 33, -1);
+  btk_tree_store_append (store, &root, NULL);
+  btk_tree_store_set (store, &root, 0, 33, -1);
 
-  gtk_tree_store_append (store, &iter, &root);
-  gtk_tree_store_set (store, &iter, 0, 22, -1);
+  btk_tree_store_append (store, &iter, &root);
+  btk_tree_store_set (store, &iter, 0, 22, -1);
 }
 
 
 static gboolean
-specific_bug_549287_visible_func (GtkTreeModel *model,
-                                  GtkTreeIter  *iter,
+specific_bug_549287_visible_func (BtkTreeModel *model,
+                                  BtkTreeIter  *iter,
                                   gpointer      data)
 {
   gboolean result = FALSE;
 
-  result = gtk_tree_model_iter_has_child (model, iter);
+  result = btk_tree_model_iter_has_child (model, iter);
 
   return result;
 }
@@ -2767,31 +2767,31 @@ specific_bug_549287_visible_func (GtkTreeModel *model,
 static void
 specific_bug_549287 (void)
 {
-  /* Test case for GNOME Bugzilla bug 529287, provided by Julient Puydt */
+  /* Test case for BUNNY Bugzilla bug 529287, provided by Julient Puydt */
 
   int i;
-  GtkTreeStore *store;
-  GtkTreeModel *filtered;
-  GtkWidget *view;
-  GtkTreeIter iter;
-  GtkTreeIter *swap, *parent, *child;
+  BtkTreeStore *store;
+  BtkTreeModel *filtered;
+  BtkWidget *view;
+  BtkTreeIter iter;
+  BtkTreeIter *swap, *parent, *child;
 
-  store = gtk_tree_store_new (1, G_TYPE_STRING);
-  filtered = gtk_tree_model_filter_new (GTK_TREE_MODEL (store), NULL);
-  gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filtered),
+  store = btk_tree_store_new (1, G_TYPE_STRING);
+  filtered = btk_tree_model_filter_new (BTK_TREE_MODEL (store), NULL);
+  btk_tree_model_filter_set_visible_func (BTK_TREE_MODEL_FILTER (filtered),
                                           specific_bug_549287_visible_func,
                                           NULL, NULL);
 
-  view = gtk_tree_view_new_with_model (filtered);
+  view = btk_tree_view_new_with_model (filtered);
 
   for (i = 0; i < 4; i++)
     {
-      if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
+      if (btk_tree_model_get_iter_first (BTK_TREE_MODEL (store), &iter))
         {
-          parent = gtk_tree_iter_copy (&iter);
-          child = gtk_tree_iter_copy (&iter);
+          parent = btk_tree_iter_copy (&iter);
+          child = btk_tree_iter_copy (&iter);
 
-          while (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (store),
+          while (btk_tree_model_iter_nth_child (BTK_TREE_MODEL (store),
                                                 child, parent, 0))
             {
 
@@ -2800,24 +2800,24 @@ specific_bug_549287 (void)
               child = swap;
             }
 
-          gtk_tree_store_append (store, child, parent);
-          gtk_tree_store_set (store, child,
+          btk_tree_store_append (store, child, parent);
+          btk_tree_store_set (store, child,
                               0, "Something",
                               -1);
 
-          gtk_tree_iter_free (parent);
-          gtk_tree_iter_free (child);
+          btk_tree_iter_free (parent);
+          btk_tree_iter_free (child);
         }
       else
         {
-          gtk_tree_store_append (store, &iter, NULL);
-          gtk_tree_store_set (store, &iter,
+          btk_tree_store_append (store, &iter, NULL);
+          btk_tree_store_set (store, &iter,
                               0, "Something",
                               -1);
         }
 
       /* since we inserted something, we changed the visibility conditions: */
-      gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (filtered));
+      btk_tree_model_filter_refilter (BTK_TREE_MODEL_FILTER (filtered));
     }
 }
 
@@ -2827,7 +2827,7 @@ int
 main (int    argc,
       char **argv)
 {
-  gtk_test_init (&argc, &argv, NULL);
+  btk_test_init (&argc, &argv, NULL);
 
   g_test_add ("/FilterModel/self/verify-test-suite",
               FilterTest, NULL,
@@ -2836,12 +2836,12 @@ main (int    argc,
               filter_test_teardown);
 
   g_test_add ("/FilterModel/self/verify-test-suite/vroot/depth-1",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup,
               verify_test_suite_vroot,
               filter_test_teardown);
   g_test_add ("/FilterModel/self/verify-test-suite/vroot/depth-2",
-              FilterTest, gtk_tree_path_new_from_indices (2, 3, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, 3, -1),
               filter_test_setup,
               verify_test_suite_vroot,
               filter_test_teardown);
@@ -2859,12 +2859,12 @@ main (int    argc,
               filter_test_teardown);
 
   g_test_add ("/FilterModel/filled/hide-root-level/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup,
               filled_vroot_hide_root_level,
               filter_test_teardown);
   g_test_add ("/FilterModel/filled/hide-child-levels/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup,
               filled_vroot_hide_child_levels,
               filter_test_teardown);
@@ -2882,12 +2882,12 @@ main (int    argc,
               filter_test_teardown);
 
   g_test_add ("/FilterModel/empty/show-nodes/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_empty,
               empty_vroot_show_nodes,
               filter_test_teardown);
   g_test_add ("/FilterModel/empty/show-multiple-nodes/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_empty,
               empty_vroot_show_multiple_nodes,
               filter_test_teardown);
@@ -2910,17 +2910,17 @@ main (int    argc,
               filter_test_teardown);
 
   g_test_add ("/FilterModel/unfiltered/hide-single/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_unfiltered,
               unfiltered_vroot_hide_single,
               filter_test_teardown);
   g_test_add ("/FilterModel/unfiltered/hide-single-child/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_unfiltered,
               unfiltered_vroot_hide_single_child,
               filter_test_teardown);
   g_test_add ("/FilterModel/unfiltered/hide-single-multi-level/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_unfiltered,
               unfiltered_vroot_hide_single_multi_level,
               filter_test_teardown);
@@ -2944,17 +2944,17 @@ main (int    argc,
               filter_test_teardown);
 
   g_test_add ("/FilterModel/unfiltered/show-single/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_empty_unfiltered,
               unfiltered_vroot_show_single,
               filter_test_teardown);
   g_test_add ("/FilterModel/unfiltered/show-single-child/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_empty_unfiltered,
               unfiltered_vroot_show_single_child,
               filter_test_teardown);
   g_test_add ("/FilterModel/unfiltered/show-single-multi-level/vroot",
-              FilterTest, gtk_tree_path_new_from_indices (2, -1),
+              FilterTest, btk_tree_path_new_from_indices (2, -1),
               filter_test_setup_empty_unfiltered,
               unfiltered_vroot_show_single_multi_level,
               filter_test_teardown);

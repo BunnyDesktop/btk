@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/ or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -31,18 +31,18 @@
  */
 
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
 #include <string.h>
 
-#include "gdkproperty.h"
+#include "bdkproperty.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkinternals.h"
+#include "bdkinternals.h"
 
-#include "gdkalias.h"
+#include "bdkalias.h"
 
 static GHashTable *names_to_atoms;
 static GPtrArray  *atoms_to_names;
@@ -152,13 +152,13 @@ ensure_atom_tables (void)
     }
 }
 
-static GdkAtom
+static BdkAtom
 intern_atom_internal (const gchar *atom_name, gboolean allocate)
 {
   gpointer  result;
   gchar    *name;
 
-  g_return_val_if_fail (atom_name != NULL, GDK_NONE);
+  g_return_val_if_fail (atom_name != NULL, BDK_NONE);
 
   ensure_atom_tables ();
 
@@ -173,22 +173,22 @@ intern_atom_internal (const gchar *atom_name, gboolean allocate)
   return result;
 }
 
-GdkAtom
-gdk_atom_intern (const gchar *atom_name,
+BdkAtom
+bdk_atom_intern (const gchar *atom_name,
 		 gboolean     only_if_exists)
 {
   return intern_atom_internal (atom_name, TRUE);
 }
 
-GdkAtom
-gdk_atom_intern_static_string (const gchar *atom_name)
+BdkAtom
+bdk_atom_intern_static_string (const gchar *atom_name)
 {
   return intern_atom_internal (atom_name, FALSE);
 }
 
 
 gchar *
-gdk_atom_name (GdkAtom atom)
+bdk_atom_name (BdkAtom atom)
 {
   if (!atoms_to_names)
     return NULL;
@@ -201,39 +201,39 @@ gdk_atom_name (GdkAtom atom)
 
 
 static void
-gdk_property_delete_2 (GdkWindow         *window,
-                       GdkAtom            property,
-                       GdkWindowProperty *prop)
+bdk_property_delete_2 (BdkWindow         *window,
+                       BdkAtom            property,
+                       BdkWindowProperty *prop)
 {
-  GdkWindowImplDirectFB *impl;
-  GdkEvent              *event;
-  GdkWindow             *event_window;
+  BdkWindowImplDirectFB *impl;
+  BdkEvent              *event;
+  BdkWindow             *event_window;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   g_hash_table_remove (impl->properties, GUINT_TO_POINTER (property));
   g_free (prop);
 
-  event_window = gdk_directfb_other_event_window (window, GDK_PROPERTY_NOTIFY);
+  event_window = bdk_directfb_other_event_window (window, BDK_PROPERTY_NOTIFY);
 
   if (event_window)
     {
-      event                 = gdk_directfb_event_make (event_window, GDK_PROPERTY_NOTIFY);
+      event                 = bdk_directfb_event_make (event_window, BDK_PROPERTY_NOTIFY);
       event->property.atom  = property;
-      event->property.state = GDK_PROPERTY_DELETE;
+      event->property.state = BDK_PROPERTY_DELETE;
     }
 }
 
 void
-gdk_property_delete (GdkWindow *window,
-                     GdkAtom    property)
+bdk_property_delete (BdkWindow *window,
+                     BdkAtom    property)
 {
-  GdkWindowImplDirectFB *impl;
-  GdkWindowProperty     *prop;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowProperty     *prop;
 
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (!impl->properties)
     return;
@@ -242,35 +242,35 @@ gdk_property_delete (GdkWindow *window,
   if (!prop)
     return;
 
-  gdk_property_delete_2 (window, property, prop);
+  bdk_property_delete_2 (window, property, prop);
 }
 
 gboolean
-gdk_property_get (GdkWindow  *window,
-                  GdkAtom     property,
-                  GdkAtom     type,
+bdk_property_get (BdkWindow  *window,
+                  BdkAtom     property,
+                  BdkAtom     type,
                   gulong      offset,
                   gulong      length,
                   gint        pdelete,
-                  GdkAtom    *actual_property_type,
+                  BdkAtom    *actual_property_type,
                   gint       *actual_format_type,
                   gint       *actual_length,
                   guchar    **data)
 {
-  GdkWindowImplDirectFB *impl;
-  GdkWindowProperty     *prop;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowProperty     *prop;
   gint                   nbytes = 0;
 
-  g_return_val_if_fail (window == NULL || GDK_IS_WINDOW (window), FALSE);
+  g_return_val_if_fail (window == NULL || BDK_IS_WINDOW (window), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
 
   if (!window)
-    window = _gdk_parent_root;
+    window = _bdk_parent_root;
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return FALSE;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (!impl->properties)
     return FALSE;
@@ -279,7 +279,7 @@ gdk_property_get (GdkWindow  *window,
   if (!prop)
     {
       if (actual_property_type)
-        *actual_property_type = GDK_NONE;
+        *actual_property_type = BDK_NONE;
       return FALSE;
     }
 
@@ -307,37 +307,37 @@ gdk_property_get (GdkWindow  *window,
   /* only delete the property if it was completely retrieved */
   if (pdelete && length >= *actual_length && *data != NULL)
     {
-      gdk_property_delete_2 (window, property, prop);
+      bdk_property_delete_2 (window, property, prop);
     }
 
   return TRUE;
 }
 
 void
-gdk_property_change (GdkWindow    *window,
-                     GdkAtom       property,
-                     GdkAtom       type,
+bdk_property_change (BdkWindow    *window,
+                     BdkAtom       property,
+                     BdkAtom       type,
                      gint          format,
-                     GdkPropMode   mode,
+                     BdkPropMode   mode,
                      const guchar *data,
                      gint          nelements)
 {
-  GdkWindowImplDirectFB *impl;
-  GdkWindowProperty     *prop;
-  GdkWindowProperty     *new_prop;
+  BdkWindowImplDirectFB *impl;
+  BdkWindowProperty     *prop;
+  BdkWindowProperty     *new_prop;
   gint                   new_size = 0;
-  GdkEvent              *event;
-  GdkWindow             *event_window;
+  BdkEvent              *event;
+  BdkWindow             *event_window;
 
-  g_return_if_fail (window == NULL || GDK_IS_WINDOW (window));
+  g_return_if_fail (window == NULL || BDK_IS_WINDOW (window));
 
   if (!window)
-    window = _gdk_parent_root;
+    window = _bdk_parent_root;
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl = GDK_WINDOW_IMPL_DIRECTFB (GDK_WINDOW_OBJECT (window)->impl);
+  impl = BDK_WINDOW_IMPL_DIRECTFB (BDK_WINDOW_OBJECT (window)->impl);
 
   if (!impl->properties)
     impl->properties = g_hash_table_new (NULL, NULL);
@@ -346,12 +346,12 @@ gdk_property_change (GdkWindow    *window,
 
   switch (mode)
     {
-    case GDK_PROP_MODE_REPLACE:
+    case BDK_PROP_MODE_REPLACE:
       new_size = nelements * (format >> 3);
       break;
 
-    case GDK_PROP_MODE_PREPEND:
-    case GDK_PROP_MODE_APPEND:
+    case BDK_PROP_MODE_PREPEND:
+    case BDK_PROP_MODE_APPEND:
       new_size = nelements * (format >> 3);
       if (prop)
         {
@@ -362,25 +362,25 @@ gdk_property_change (GdkWindow    *window,
       break;
     }
 
-  new_prop         = g_malloc (G_STRUCT_OFFSET (GdkWindowProperty, data) + new_size);
+  new_prop         = g_malloc (G_STRUCT_OFFSET (BdkWindowProperty, data) + new_size);
   new_prop->length = new_size;
   new_prop->type   = type;
   new_prop->format = format;
 
   switch (mode)
     {
-    case GDK_PROP_MODE_REPLACE:
+    case BDK_PROP_MODE_REPLACE:
       memcpy (new_prop->data, data, new_size);
       break;
 
-    case GDK_PROP_MODE_APPEND:
+    case BDK_PROP_MODE_APPEND:
       if (prop)
         memcpy (new_prop->data, prop->data, prop->length);
       memcpy (new_prop->data + new_prop->length,
               data, (nelements * (format >> 3)));
       break;
 
-    case GDK_PROP_MODE_PREPEND:
+    case BDK_PROP_MODE_PREPEND:
       memcpy (new_prop->data, data, (nelements * (format >> 3)));
       if (prop)
         memcpy (new_prop->data + (nelements * (format >> 3)),
@@ -392,15 +392,15 @@ gdk_property_change (GdkWindow    *window,
                        GUINT_TO_POINTER (property), new_prop);
   g_free (prop);
 
-  event_window = gdk_directfb_other_event_window (window, GDK_PROPERTY_NOTIFY);
+  event_window = bdk_directfb_other_event_window (window, BDK_PROPERTY_NOTIFY);
 
   if (event_window)
     {
-      event                 = gdk_directfb_event_make (event_window, GDK_PROPERTY_NOTIFY);
+      event                 = bdk_directfb_event_make (event_window, BDK_PROPERTY_NOTIFY);
       event->property.atom  = property;
-      event->property.state = GDK_PROPERTY_NEW_VALUE;
+      event->property.state = BDK_PROPERTY_NEW_VALUE;
     }
 }
 
-#define __GDK_PROPERTY_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_PROPERTY_X11_C__
+#include "bdkaliasdef.c"

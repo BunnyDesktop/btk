@@ -1,4 +1,4 @@
-/* gtkstatusicon-quartz.c:
+/* btkstatusicon-quartz.c:
  *
  * Copyright (C) 2006 Imendio AB
  *
@@ -24,31 +24,31 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#include <quartz/gdkquartz.h>
+#include <quartz/bdkquartz.h>
 
 #define QUARTZ_POOL_ALLOC NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]
 #define QUARTZ_POOL_RELEASE [pool release]
 
-@interface GtkQuartzStatusIcon : NSObject 
+@interface BtkQuartzStatusIcon : NSObject 
 {
-  GtkStatusIcon *status_icon;
+  BtkStatusIcon *status_icon;
   NSStatusBar   *ns_bar;
   NSStatusItem  *ns_item;
   NSImage       *current_image;
   NSString      *ns_tooltip;
 }
-- (id) initWithStatusIcon:(GtkStatusIcon *)status_icon;
+- (id) initWithStatusIcon:(BtkStatusIcon *)status_icon;
 - (void) ensureItem;
 - (void) actionCb:(NSObject *)button;
-- (void) setImage:(GdkPixbuf *)pixbuf;
+- (void) setImage:(BdkPixbuf *)pixbuf;
 - (void) setVisible:(gboolean)visible;
 - (void) setToolTip:(const gchar *)tooltip_text;
 - (float) getWidth;
 - (float) getHeight;
 @end
 
-@implementation GtkQuartzStatusIcon : NSObject
-- (id) initWithStatusIcon:(GtkStatusIcon *)icon
+@implementation BtkQuartzStatusIcon : NSObject
+- (id) initWithStatusIcon:(BtkStatusIcon *)icon
 {
   [super init];
   status_icon = icon;
@@ -70,7 +70,7 @@
 
 - (void) dealloc
 {
-  g_print ("Deallocating GtkQuartzStatusIcon\n");
+  g_print ("Deallocating BtkQuartzStatusIcon\n");
   [current_image release];
   [ns_item release];
   [ns_bar release];
@@ -89,7 +89,7 @@
                  time * 1000.0);
 }
 
-- (void) setImage:(GdkPixbuf *)pixbuf
+- (void) setImage:(BdkPixbuf *)pixbuf
 {
   /* Support NULL */
   [self ensureItem];
@@ -105,7 +105,7 @@
     return;
   }
 
-  current_image = gdk_quartz_pixbuf_to_ns_image_libgtk_only (pixbuf);
+  current_image = bdk_quartz_pixbuf_to_ns_image_libbtk_only (pixbuf);
   [current_image retain];
 
   [ns_item setImage:current_image];

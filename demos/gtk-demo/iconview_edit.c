@@ -1,15 +1,15 @@
 /* Icon View/Editing and Drag-and-Drop
  *
- * The GtkIconView widget supports Editing and Drag-and-Drop.
- * This example also demonstrates using the generic GtkCellLayout
+ * The BtkIconView widget supports Editing and Drag-and-Drop.
+ * This example also demonstrates using the generic BtkCellLayout
  * interface to set up cell renderers in an icon view.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <string.h>
 #include "demo-common.h"
 
-static GtkWidget *window = NULL;
+static BtkWidget *window = NULL;
 
 enum
 {
@@ -19,46 +19,46 @@ enum
 
 
 static void
-fill_store (GtkListStore *store)
+fill_store (BtkListStore *store)
 {
-  GtkTreeIter iter;
+  BtkTreeIter iter;
   const gchar *text[] = { "Red", "Green", "Blue", "Yellow" };
   gint i;
 
   /* First clear the store */
-  gtk_list_store_clear (store);
+  btk_list_store_clear (store);
 
   for (i = 0; i < 4; i++)
     {
-      gtk_list_store_append (store, &iter);
-      gtk_list_store_set (store, &iter, COL_TEXT, text[i], -1);
+      btk_list_store_append (store, &iter);
+      btk_list_store_set (store, &iter, COL_TEXT, text[i], -1);
     }
 }
 
-static GtkListStore *
+static BtkListStore *
 create_store (void)
 {
-  GtkListStore *store;
+  BtkListStore *store;
 
-  store = gtk_list_store_new (NUM_COLS, G_TYPE_STRING);
+  store = btk_list_store_new (NUM_COLS, G_TYPE_STRING);
 
   return store;
 }
 
 static void
-set_cell_color (GtkCellLayout   *cell_layout,
-		GtkCellRenderer *cell,
-		GtkTreeModel    *tree_model,
-		GtkTreeIter     *iter,
+set_cell_color (BtkCellLayout   *cell_layout,
+		BtkCellRenderer *cell,
+		BtkTreeModel    *tree_model,
+		BtkTreeIter     *iter,
 		gpointer         data)
 {
   gchar *text;
-  GdkColor color;
+  BdkColor color;
   guint32 pixel = 0;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 
-  gtk_tree_model_get (tree_model, iter, COL_TEXT, &text, -1);
-  if (gdk_color_parse (text, &color))
+  btk_tree_model_get (tree_model, iter, COL_TEXT, &text, -1);
+  if (bdk_color_parse (text, &color))
     pixel =
       (color.red   >> 8) << 24 |
       (color.green >> 8) << 16 |
@@ -66,8 +66,8 @@ set_cell_color (GtkCellLayout   *cell_layout,
 
   g_free (text);
 
-  pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 24, 24);
-  gdk_pixbuf_fill (pixbuf, pixel);
+  pixbuf = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, 24, 24);
+  bdk_pixbuf_fill (pixbuf, pixel);
 
   g_object_set (cell, "pixbuf", pixbuf, NULL);
 
@@ -75,82 +75,82 @@ set_cell_color (GtkCellLayout   *cell_layout,
 }
 
 static void
-edited (GtkCellRendererText *cell,
+edited (BtkCellRendererText *cell,
 	gchar               *path_string,
 	gchar               *text,
 	gpointer             data)
 {
-  GtkTreeModel *model;
-  GtkTreeIter iter;
-  GtkTreePath *path;
+  BtkTreeModel *model;
+  BtkTreeIter iter;
+  BtkTreePath *path;
 
-  model = gtk_icon_view_get_model (GTK_ICON_VIEW (data));
-  path = gtk_tree_path_new_from_string (path_string);
+  model = btk_icon_view_get_model (BTK_ICON_VIEW (data));
+  path = btk_tree_path_new_from_string (path_string);
 
-  gtk_tree_model_get_iter (model, &iter, path);
-  gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+  btk_tree_model_get_iter (model, &iter, path);
+  btk_list_store_set (BTK_LIST_STORE (model), &iter,
 		      COL_TEXT, text, -1);
 
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 }
 
-GtkWidget *
-do_iconview_edit (GtkWidget *do_widget)
+BtkWidget *
+do_iconview_edit (BtkWidget *do_widget)
 {
   if (!window)
     {
-      GtkWidget *icon_view;
-      GtkListStore *store;
-      GtkCellRenderer *renderer;
+      BtkWidget *icon_view;
+      BtkListStore *store;
+      BtkCellRenderer *renderer;
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
 
-      gtk_window_set_screen (GTK_WINDOW (window),
-			     gtk_widget_get_screen (do_widget));
-      gtk_window_set_title (GTK_WINDOW (window), "Editing and Drag-and-Drop");
+      btk_window_set_screen (BTK_WINDOW (window),
+			     btk_widget_get_screen (do_widget));
+      btk_window_set_title (BTK_WINDOW (window), "Editing and Drag-and-Drop");
 
       g_signal_connect (window, "destroy",
-			G_CALLBACK (gtk_widget_destroyed), &window);
+			G_CALLBACK (btk_widget_destroyed), &window);
 
       store = create_store ();
       fill_store (store);
 
-      icon_view = gtk_icon_view_new_with_model (GTK_TREE_MODEL (store));
+      icon_view = btk_icon_view_new_with_model (BTK_TREE_MODEL (store));
       g_object_unref (store);
 
-      gtk_icon_view_set_selection_mode (GTK_ICON_VIEW (icon_view),
-					GTK_SELECTION_SINGLE);
-      gtk_icon_view_set_orientation (GTK_ICON_VIEW (icon_view),
-				     GTK_ORIENTATION_HORIZONTAL);
-      gtk_icon_view_set_columns (GTK_ICON_VIEW (icon_view), 2);
-      gtk_icon_view_set_reorderable (GTK_ICON_VIEW (icon_view), TRUE);
+      btk_icon_view_set_selection_mode (BTK_ICON_VIEW (icon_view),
+					BTK_SELECTION_SINGLE);
+      btk_icon_view_set_orientation (BTK_ICON_VIEW (icon_view),
+				     BTK_ORIENTATION_HORIZONTAL);
+      btk_icon_view_set_columns (BTK_ICON_VIEW (icon_view), 2);
+      btk_icon_view_set_reorderable (BTK_ICON_VIEW (icon_view), TRUE);
 
-      renderer = gtk_cell_renderer_pixbuf_new ();
-      gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (icon_view),
+      renderer = btk_cell_renderer_pixbuf_new ();
+      btk_cell_layout_pack_start (BTK_CELL_LAYOUT (icon_view),
 				  renderer, TRUE);
-      gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT (icon_view),
+      btk_cell_layout_set_cell_data_func (BTK_CELL_LAYOUT (icon_view),
 					  renderer,
 					  set_cell_color,
 					  NULL, NULL);
 
-      renderer = gtk_cell_renderer_text_new ();
-      gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (icon_view),
+      renderer = btk_cell_renderer_text_new ();
+      btk_cell_layout_pack_start (BTK_CELL_LAYOUT (icon_view),
 				  renderer, TRUE);
       g_object_set (renderer, "editable", TRUE, NULL);
       g_signal_connect (renderer, "edited", G_CALLBACK (edited), icon_view);
-      gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (icon_view),
+      btk_cell_layout_set_attributes (BTK_CELL_LAYOUT (icon_view),
 				      renderer,
 				      "text", COL_TEXT,
 				      NULL);
 
-      gtk_container_add (GTK_CONTAINER (window), icon_view);
+      btk_container_add (BTK_CONTAINER (window), icon_view);
     }
 
-  if (!gtk_widget_get_visible (window))
-    gtk_widget_show_all (window);
+  if (!btk_widget_get_visible (window))
+    btk_widget_show_all (window);
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkpagesetup.h: Page Setup
+/* BTK - The GIMP Toolkit
+ * btkpagesetup.h: Page Setup
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,91 +18,91 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PAGE_SETUP_H__
-#define __GTK_PAGE_SETUP_H__
+#ifndef __BTK_PAGE_SETUP_H__
+#define __BTK_PAGE_SETUP_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkpapersize.h>
+#include <btk/btkpapersize.h>
 
 
 G_BEGIN_DECLS
 
-typedef struct _GtkPageSetup GtkPageSetup;
+typedef struct _BtkPageSetup BtkPageSetup;
 
-#define GTK_TYPE_PAGE_SETUP    (gtk_page_setup_get_type ())
-#define GTK_PAGE_SETUP(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PAGE_SETUP, GtkPageSetup))
-#define GTK_IS_PAGE_SETUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PAGE_SETUP))
+#define BTK_TYPE_PAGE_SETUP    (btk_page_setup_get_type ())
+#define BTK_PAGE_SETUP(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PAGE_SETUP, BtkPageSetup))
+#define BTK_IS_PAGE_SETUP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PAGE_SETUP))
 
-GType              gtk_page_setup_get_type          (void) G_GNUC_CONST;
-GtkPageSetup *     gtk_page_setup_new               (void);
-GtkPageSetup *     gtk_page_setup_copy              (GtkPageSetup       *other);
-GtkPageOrientation gtk_page_setup_get_orientation   (GtkPageSetup       *setup);
-void               gtk_page_setup_set_orientation   (GtkPageSetup       *setup,
-						     GtkPageOrientation  orientation);
-GtkPaperSize *     gtk_page_setup_get_paper_size    (GtkPageSetup       *setup);
-void               gtk_page_setup_set_paper_size    (GtkPageSetup       *setup,
-						     GtkPaperSize       *size);
-gdouble            gtk_page_setup_get_top_margin    (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-void               gtk_page_setup_set_top_margin    (GtkPageSetup       *setup,
+GType              btk_page_setup_get_type          (void) G_GNUC_CONST;
+BtkPageSetup *     btk_page_setup_new               (void);
+BtkPageSetup *     btk_page_setup_copy              (BtkPageSetup       *other);
+BtkPageOrientation btk_page_setup_get_orientation   (BtkPageSetup       *setup);
+void               btk_page_setup_set_orientation   (BtkPageSetup       *setup,
+						     BtkPageOrientation  orientation);
+BtkPaperSize *     btk_page_setup_get_paper_size    (BtkPageSetup       *setup);
+void               btk_page_setup_set_paper_size    (BtkPageSetup       *setup,
+						     BtkPaperSize       *size);
+gdouble            btk_page_setup_get_top_margin    (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+void               btk_page_setup_set_top_margin    (BtkPageSetup       *setup,
 						     gdouble             margin,
-						     GtkUnit             unit);
-gdouble            gtk_page_setup_get_bottom_margin (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-void               gtk_page_setup_set_bottom_margin (GtkPageSetup       *setup,
+						     BtkUnit             unit);
+gdouble            btk_page_setup_get_bottom_margin (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+void               btk_page_setup_set_bottom_margin (BtkPageSetup       *setup,
 						     gdouble             margin,
-						     GtkUnit             unit);
-gdouble            gtk_page_setup_get_left_margin   (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-void               gtk_page_setup_set_left_margin   (GtkPageSetup       *setup,
+						     BtkUnit             unit);
+gdouble            btk_page_setup_get_left_margin   (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+void               btk_page_setup_set_left_margin   (BtkPageSetup       *setup,
 						     gdouble             margin,
-						     GtkUnit             unit);
-gdouble            gtk_page_setup_get_right_margin  (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-void               gtk_page_setup_set_right_margin  (GtkPageSetup       *setup,
+						     BtkUnit             unit);
+gdouble            btk_page_setup_get_right_margin  (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+void               btk_page_setup_set_right_margin  (BtkPageSetup       *setup,
 						     gdouble             margin,
-						     GtkUnit             unit);
+						     BtkUnit             unit);
 
-void gtk_page_setup_set_paper_size_and_default_margins (GtkPageSetup    *setup,
-							GtkPaperSize    *size);
+void btk_page_setup_set_paper_size_and_default_margins (BtkPageSetup    *setup,
+							BtkPaperSize    *size);
 
 /* These take orientation, but not margins into consideration */
-gdouble            gtk_page_setup_get_paper_width   (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-gdouble            gtk_page_setup_get_paper_height  (GtkPageSetup       *setup,
-						     GtkUnit             unit);
+gdouble            btk_page_setup_get_paper_width   (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+gdouble            btk_page_setup_get_paper_height  (BtkPageSetup       *setup,
+						     BtkUnit             unit);
 
 
 /* These take orientation, and margins into consideration */
-gdouble            gtk_page_setup_get_page_width    (GtkPageSetup       *setup,
-						     GtkUnit             unit);
-gdouble            gtk_page_setup_get_page_height   (GtkPageSetup       *setup,
-						     GtkUnit             unit);
+gdouble            btk_page_setup_get_page_width    (BtkPageSetup       *setup,
+						     BtkUnit             unit);
+gdouble            btk_page_setup_get_page_height   (BtkPageSetup       *setup,
+						     BtkUnit             unit);
 
 /* Saving and restoring page setup */
-GtkPageSetup	  *gtk_page_setup_new_from_file	    (const gchar         *file_name,
+BtkPageSetup	  *btk_page_setup_new_from_file	    (const gchar         *file_name,
 						     GError              **error);
-gboolean	   gtk_page_setup_load_file	    (GtkPageSetup        *setup,
+gboolean	   btk_page_setup_load_file	    (BtkPageSetup        *setup,
 						     const char          *file_name,
 						     GError             **error);
-gboolean	   gtk_page_setup_to_file	    (GtkPageSetup        *setup,
+gboolean	   btk_page_setup_to_file	    (BtkPageSetup        *setup,
 						     const char          *file_name,
 						     GError             **error);
-GtkPageSetup	  *gtk_page_setup_new_from_key_file (GKeyFile            *key_file,
+BtkPageSetup	  *btk_page_setup_new_from_key_file (GKeyFile            *key_file,
 						     const gchar         *group_name,
 						     GError             **error);
-gboolean           gtk_page_setup_load_key_file     (GtkPageSetup        *setup,
+gboolean           btk_page_setup_load_key_file     (BtkPageSetup        *setup,
 				                     GKeyFile            *key_file,
 				                     const gchar         *group_name,
 				                     GError             **error);
-void		   gtk_page_setup_to_key_file	    (GtkPageSetup        *setup,
+void		   btk_page_setup_to_key_file	    (BtkPageSetup        *setup,
 						     GKeyFile            *key_file,
 						     const gchar         *group_name);
 
 G_END_DECLS
 
-#endif /* __GTK_PAGE_SETUP_H__ */
+#endif /* __BTK_PAGE_SETUP_H__ */

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,26 +17,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_CONTAINER_H__
-#define __GAIL_CONTAINER_H__
+#ifndef __BAIL_CONTAINER_H__
+#define __BAIL_CONTAINER_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_CONTAINER                  (gail_container_get_type ())
-#define GAIL_CONTAINER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_CONTAINER, GailContainer))
-#define GAIL_CONTAINER_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_CONTAINER, GailContainerClass))
-#define GAIL_IS_CONTAINER(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_CONTAINER))
-#define GAIL_IS_CONTAINER_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_CONTAINER))
-#define GAIL_CONTAINER_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_CONTAINER, GailContainerClass))
+#define BAIL_TYPE_CONTAINER                  (bail_container_get_type ())
+#define BAIL_CONTAINER(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CONTAINER, BailContainer))
+#define BAIL_CONTAINER_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CONTAINER, BailContainerClass))
+#define BAIL_IS_CONTAINER(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CONTAINER))
+#define BAIL_IS_CONTAINER_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CONTAINER))
+#define BAIL_CONTAINER_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CONTAINER, BailContainerClass))
 
-typedef struct _GailContainer                 GailContainer;
-typedef struct _GailContainerClass            GailContainerClass;
+typedef struct _BailContainer                 BailContainer;
+typedef struct _BailContainerClass            BailContainerClass;
 
-struct _GailContainer
+struct _BailContainer
 {
-  GailWidget parent;
+  BailWidget parent;
 
   /*
    * Cached list of children
@@ -44,20 +44,20 @@ struct _GailContainer
   GList      *children;
 };
 
-GType gail_container_get_type (void);
+GType bail_container_get_type (void);
 
-struct _GailContainerClass
+struct _BailContainerClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 
-  gint (*add_gtk) (GtkContainer *container,
-                   GtkWidget    *widget,
+  gint (*add_btk) (BtkContainer *container,
+                   BtkWidget    *widget,
                    gpointer     data);
-  gint (*remove_gtk) (GtkContainer *container,
-                      GtkWidget    *widget,
+  gint (*remove_btk) (BtkContainer *container,
+                      BtkWidget    *widget,
                       gpointer     data);
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_CONTAINER_H__ */
+#endif /* __BAIL_CONTAINER_H__ */

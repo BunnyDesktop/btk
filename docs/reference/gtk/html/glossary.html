@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Glossary: GTK+ 2 Reference Manual</title>
+<title>Glossary: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
-<link rel="home" href="index.html" title="GTK+ 2 Reference Manual">
-<link rel="up" href="index.html" title="GTK+ 2 Reference Manual">
-<link rel="prev" href="gtk-builder-convert.html" title="gtk-builder-convert">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="prev" href="btk-builder-convert.html" title="btk-builder-convert">
 <link rel="next" href="api-index-full.html" title="Index of all symbols">
-<meta name="generator" content="GTK-Doc V1.33.0 (XML mode)">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,7 +16,7 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><img src="up-insensitive.png" width="16" height="16" border="0"></td>
-<td><a accesskey="p" href="gtk-builder-convert.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="p" href="btk-builder-convert.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
 <td><a accesskey="n" href="api-index-full.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="glossary">
@@ -44,7 +44,7 @@
 <p>
 	A <a class="glossterm" href="glossary.html#container"><em class="glossterm"><a class="glossterm" href="glossary.html#container" title="container">container</a></em></a> that
 	can hold at most one child widget.  The base class for bins is
-	#GtkBin.
+	#BtkBin.
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#container"><em class="glossterm"><a class="glossterm" href="glossary.html#container" title="container">container</a></em></a>
@@ -63,11 +63,11 @@
 </dt>
 <dd class="glossdef">
 <p>
-	GTK+ contains several widgets which display data in columns,
-        e.g. the #GtkTreeView. 
+	BTK+ contains several widgets which display data in columns,
+        e.g. the #BtkTreeView. 
         These <a class="glossterm" href="glossary.html#view-column"><em class="glossterm"><a class="glossterm" href="glossary.html#view-column" title="view column">view columns</a></em></a> in 
-        the tree view are represented by #GtkTreeViewColumn
-        objects inside GTK+. They should not be confused with 
+        the tree view are represented by #BtkTreeViewColumn
+        objects inside BTK+. They should not be confused with 
         <a class="glossterm" href="glossary.html#model-column"><em class="glossterm"><a class="glossterm" href="glossary.html#model-column" title="model column">model columns</a></em></a> which
         are used to organize the data in tree models.
       </p>
@@ -82,11 +82,11 @@
 	other widgets; in that case, the container is the
 	<span class="emphasis"><em>parent</em></span> of the <span class="emphasis"><em>child</em></span>
 	widgets.  Some containers don't draw anything on their own,
-	but rather just organize their children's <a class="glossterm" href="glossary.html#geometry"><em class="glossterm"><a class="glossterm" href="glossary.html#geometry" title="geometry">geometry</a></em></a>; for example, #GtkVBox lays out 
+	but rather just organize their children's <a class="glossterm" href="glossary.html#geometry"><em class="glossterm"><a class="glossterm" href="glossary.html#geometry" title="geometry">geometry</a></em></a>; for example, #BtkVBox lays out 
         its children vertically without painting anything on its own.  Other
-	containers include decorative elements; for example, #GtkFrame contains 
+	containers include decorative elements; for example, #BtkFrame contains 
         the frame's child and a label in addition to the shaded frame it draws.  
-        The base class for containers is #GtkContainer.
+        The base class for containers is #BtkContainer.
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#container"><em class="glossterm"><a class="glossterm" href="glossary.html#container" title="container">widget</a></em></a>
@@ -97,25 +97,25 @@
 <a name="display"></a><span class="glossterm">display</span>
 </dt>
 <dd class="glossdef"><p>
-        GDK inherited the concept of display from the X window system,
+        BDK inherited the concept of display from the X window system,
         which considers a display to be the combination
         of a keyboard, a pointing device and one or more 
         <a class="glossterm" href="glossary.html#screen"><em class="glossterm"><a class="glossterm" href="glossary.html#screen" title="screen">screens</a></em></a>. 
         Applications open a display to show windows and interact with the user.
-        In GDK, a display is represented by a #GdkDisplay.
+        In BDK, a display is represented by a #BdkDisplay.
       </p></dd>
 <dt><a name="ellipsization"></a></dt>
 <dd class="glossdef"><p>
         Ellipsization is the process of replacing some part
         of a text by an ellipsis (usually "...") to make the
-        text fit in a smaller space. Pango can ellipsize text
+        text fit in a smaller space. Bango can ellipsize text
         at the beginning, at the end or in the middle.
       </p></dd>
 <dt>
 <a name="event"></a><span class="glossterm">event</span>
 </dt>
 <dd class="glossdef"><p>
-        Events are the way in which GDK informs GTK+ about external events
+        Events are the way in which BDK informs BTK+ about external events
         like pointer motion, button clicks, key presses, etc. 
       </p></dd>
 <dt>
@@ -132,17 +132,17 @@
 <dd class="glossdef">
 <p>
 	This is the step in a <a class="glossterm" href="glossary.html#widget"><em class="glossterm"><a class="glossterm" href="glossary.html#widget" title="widget">widget's</a></em></a> life cycle where it
-	actually shows the GdkWindows it created when it was
+	actually shows the BdkWindows it created when it was
 	<a class="glossterm" href="glossary.html#realization"><em class="glossterm"><a class="glossterm" href="glossary.html#realization" title="realization">realized</a></em></a>.  When a
 	widget is mapped, it must turn on its
-	%GTK_MAPPED <a class="link" href="GtkWidget.html#GtkWidgetFlags" title="enum GtkWidgetFlags">flag</a>.
+	%BTK_MAPPED <a class="link" href="BtkWidget.html#BtkWidgetFlags" title="enum BtkWidgetFlags">flag</a>.
       </p>
 <p>
 	Note that due to the asynchronous nature of the X window
 	system, a widget's window may not appear on the screen
-	immediatly after one calls gdk_window_show():
+	immediatly after one calls bdk_window_show():
 	you must wait for the corresponding map <a class="glossterm" href="glossary.html#event"><em class="glossterm"><a class="glossterm" href="glossary.html#event" title="event">event</a></em></a> to be received.  You can do
-	this with the <a class="link" href="GtkWidget.html#GtkWidget-map-event" title="The “map-event” signal"><code class="methodname">GtkWidget::map-event</code>
+	this with the <a class="link" href="BtkWidget.html#BtkWidget-map-event" title="The “map-event” signal"><code class="methodname">BtkWidget::map-event</code>
 	signal</a>.
       </p>
 </dd>
@@ -154,7 +154,7 @@
         A column in a tree model, holding data of a certain type. 
         The types which can be stored in the columns of a model 
         have to be specified when the model is constructed, see 
-        e.g. gtk_list_store_new().
+        e.g. btk_list_store_new().
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#view-column"><em class="glossterm"><a class="glossterm" href="glossary.html#view-column" title="view column">view column</a></em></a>
@@ -167,23 +167,23 @@
 <p>
         These widgets follow the well-known model-view pattern, which separates
         the data (the model) to be displayed from the component which does the 
-        actual visualization (the view). Examples of this pattern in GTK+ are 
-        the #GtkTreeView/#GtkTreeModel and #GtkTextView/#GtkTextBuffer
+        actual visualization (the view). Examples of this pattern in BTK+ are 
+        the #BtkTreeView/#BtkTreeModel and #BtkTextView/#BtkTextBuffer
       </p>
 <p>
         One important advantage of this pattern is that it is possible to 
         display the same model in multiple views; another one that the 
         separation of the model allows a great deal of flexibility, as 
-        demonstrated by e.g. #GtkTreeModelSort or #GtkTreeModelFilter.
+        demonstrated by e.g. #BtkTreeModelSort or #BtkTreeModelFilter.
       </p>
 </dd>
 <dt>
 <a name="no-window"></a><span class="glossterm">no-window widget</span>
 </dt>
 <dd class="glossdef"><p>
-	A widget that does not have a GdkWindow of its own on which to
+	A widget that does not have a BdkWindow of its own on which to
 	draw its contents, but rather shares its <a class="glossterm" href="glossary.html#parent"><em class="glossterm"><a class="glossterm" href="glossary.html#parent" title="parent">parent's</a></em></a>.  This can be tested with
-	the gtk_widget_get_has_window() function.  See
+	the btk_widget_get_has_window() function.  See
 	<a class="xref" href="chap-drawing-model.html#window-no-window-widgets" title="Window and no-window widgets">the section called “Window and no-window widgets”</a> for a detailed
 	description of this flag.
       </p></dd>
@@ -201,19 +201,19 @@
 <dd class="glossdef">
 <p>
 	This is the step in a <a class="glossterm" href="glossary.html#widget"><em class="glossterm"><a class="glossterm" href="glossary.html#widget" title="widget">widget's</a></em></a> life cycle where it
-	creates its own GdkWindow, or otherwise associates itself with
+	creates its own BdkWindow, or otherwise associates itself with
 	its <a class="glossterm" href="glossary.html#parent"><em class="glossterm"><a class="glossterm" href="glossary.html#parent" title="parent">parent's</a></em></a>
-	GdkWindow.  If the widget has its own window, then it must
+	BdkWindow.  If the widget has its own window, then it must
 	also attach a <a class="glossterm" href="glossary.html#style"><em class="glossterm"><a class="glossterm" href="glossary.html#style" title="style">style</a></em></a> to
 	it.  A widget becomes unrealized by destroying its associated
-	GdkWindow.  When a widget is realized, it must turn on its
-	%GTK_REALIZED <a class="link" href="GtkWidget.html#GtkWidgetFlags" title="enum GtkWidgetFlags">flag</a>.
+	BdkWindow.  When a widget is realized, it must turn on its
+	%BTK_REALIZED <a class="link" href="BtkWidget.html#BtkWidgetFlags" title="enum BtkWidgetFlags">flag</a>.
       </p>
 <p>
-	Widgets that don't own the GdkWindow on which they draw are
+	Widgets that don't own the BdkWindow on which they draw are
 	called <a class="glossterm" href="glossary.html#no-window"><em class="glossterm"><a class="glossterm" href="glossary.html#no-window" title="no-window widget">no-window widgets</a></em></a>.  
-        This can be tested with the GTK_WIDGET_NO_WINDOW() macro.  Normally, 
-        these widgets draw on their parent's GdkWindow.
+        This can be tested with the BTK_WIDGET_NO_WINDOW() macro.  Normally, 
+        these widgets draw on their parent's BdkWindow.
       </p>
 <p>
 	Note that when a widget creates a window in its <code class="methodname">::realize()</code>
@@ -240,21 +240,21 @@
 </dt>
 <dd class="glossdef">
 <p>
-	GDK inherited the concept of screen from the X window system, 
+	BDK inherited the concept of screen from the X window system, 
         which considers a screen to be a rectangular area, on which 
         applications may place their windows. Screens under X may have 
         quite dissimilar <a class="glossterm" href="glossary.html#visual"><em class="glossterm"><a class="glossterm" href="glossary.html#visual" title="visual">visuals</a></em></a>.
         Each screen can stretch across multiple physical monitors.
       </p>
 <p>
-        In GDK, screens are represented by #GdkScreen objects.
+        In BDK, screens are represented by #BdkScreen objects.
       </p>
 </dd>
 <dt>
 <a name="style"></a><span class="glossterm">style</span>
 </dt>
 <dd class="glossdef"><p>
-        A style encapsulates what GTK+ needs to know in order to draw
+        A style encapsulates what BTK+ needs to know in order to draw
         a widget. Styles can be modified with 
         resource files.
       </p></dd>
@@ -265,7 +265,7 @@
 <p>
 	A <a class="glossterm" href="glossary.html#widget"><em class="glossterm"><a class="glossterm" href="glossary.html#widget" title="widget">widget</a></em></a> that does not
 	require a <a class="glossterm" href="glossary.html#parent"><em class="glossterm"><a class="glossterm" href="glossary.html#parent" title="parent">parent</a></em></a> container.  
-        The only toplevel widgets in GTK+ are #GtkWindow and widgets derived from it.
+        The only toplevel widgets in BTK+ are #BtkWindow and widgets derived from it.
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#container"><em class="glossterm"><a class="glossterm" href="glossary.html#container" title="container">container</a></em></a>
@@ -285,7 +285,7 @@
 <dd class="glossdef">
 <p>
         A displayed column in a tree view, represented by a
-        #GtkTreeViewColumn object.
+        #BtkTreeViewColumn object.
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#model-column"><em class="glossterm"><a class="glossterm" href="glossary.html#model-column" title="model column">model column</a></em></a>
@@ -320,7 +320,7 @@
 	care of assigning the <a class="glossterm" href="glossary.html#geometry"><em class="glossterm"><a class="glossterm" href="glossary.html#geometry" title="geometry">geometry</a></em></a> of the widgets:  every
 	widget thus has a parent except those widgets which are
 	<a class="glossterm" href="glossary.html#toplevel"><em class="glossterm"><a class="glossterm" href="glossary.html#toplevel" title="toplevel">toplevels</a></em></a>.  The base
-	class for widgets is #GtkWidget.
+	class for widgets is #BtkWidget.
       </p>
 <p>See Also 
 	<a class="glossterm" href="glossary.html#container"><em class="glossterm"><a class="glossterm" href="glossary.html#container" title="container">container</a></em></a>
@@ -329,6 +329,6 @@
 </dl>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.0</div>
+<hr>Generated by BTK-Doc V1.33.0</div>
 </body>
 </html>

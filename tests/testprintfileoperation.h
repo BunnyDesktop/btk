@@ -1,7 +1,7 @@
 #ifndef __TEST_PRINT_FILE_OPERATION_H__
 #define __TEST_PRINT_FILE_OPERATION_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
@@ -15,7 +15,7 @@ typedef struct _TestPrintFileOperation        TestPrintFileOperation;
 
 struct _TestPrintFileOperation
 {
-  GtkPrintOperation parent_instance;
+  BtkPrintOperation parent_instance;
 
   /* < private > */
   char *filename;
@@ -30,7 +30,7 @@ struct _TestPrintFileOperation
 
 struct _TestPrintFileOperationClass
 {
-  GtkPrintOperationClass parent_class;
+  BtkPrintOperationClass parent_class;
 };
 
 GType                   test_print_file_operation_get_type      (void);

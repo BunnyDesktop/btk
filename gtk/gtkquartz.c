@@ -1,4 +1,4 @@
-/* gtkquartz.c: Utility functions used by the Quartz port
+/* btkquartz.c: Utility functions used by the Quartz port
  *
  * Copyright (C) 2006 Imendio AB
  *
@@ -20,12 +20,12 @@
 
 #include "config.h"
 
-#include "gtkquartz.h"
-#include <gdk/quartz/gdkquartz.h>
-#include "gtkalias.h"
+#include "btkquartz.h"
+#include <bdk/quartz/bdkquartz.h>
+#include "btkalias.h"
 
 NSImage *
-_gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf)
+_btk_quartz_create_image_from_pixbuf (BdkPixbuf *pixbuf)
 {
   CGColorSpaceRef colorspace;
   CGDataProviderRef data_provider;
@@ -37,13 +37,13 @@ _gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf)
   NSImage *nsimage;
   NSSize nsimage_size;
 
-  pixbuf_width = gdk_pixbuf_get_width (pixbuf);
-  pixbuf_height = gdk_pixbuf_get_height (pixbuf);
+  pixbuf_width = bdk_pixbuf_get_width (pixbuf);
+  pixbuf_height = bdk_pixbuf_get_height (pixbuf);
   g_return_val_if_fail (pixbuf_width != 0 && pixbuf_height != 0, NULL);
-  rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+  rowstride = bdk_pixbuf_get_rowstride (pixbuf);
+  has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
 
-  data = gdk_pixbuf_get_pixels (pixbuf);
+  data = bdk_pixbuf_get_pixels (pixbuf);
 
   colorspace = CGColorSpaceCreateDeviceRGB ();
   data_provider = CGDataProviderCreateWithData (NULL, data, pixbuf_height * rowstride, NULL);
@@ -78,22 +78,22 @@ _gtk_quartz_create_image_from_pixbuf (GdkPixbuf *pixbuf)
 }
 
 NSSet *
-_gtk_quartz_target_list_to_pasteboard_types (GtkTargetList *target_list)
+_btk_quartz_target_list_to_pasteboard_types (BtkTargetList *target_list)
 {
   NSMutableSet *set = [[NSMutableSet alloc] init];
   GList *list;
 
   for (list = target_list->list; list; list = list->next)
     {
-      GtkTargetPair *pair = list->data;
-      [set addObject:gdk_quartz_atom_to_pasteboard_type_libgtk_only (pair->target)];
+      BtkTargetPair *pair = list->data;
+      [set addObject:bdk_quartz_atom_to_pasteboard_type_libbtk_only (pair->target)];
     }
 
   return set;
 }
 
 NSSet *
-_gtk_quartz_target_entries_to_pasteboard_types (const GtkTargetEntry *targets,
+_btk_quartz_target_entries_to_pasteboard_types (const BtkTargetEntry *targets,
 						guint                 n_targets)
 {
   NSMutableSet *set = [[NSMutableSet alloc] init];
@@ -101,14 +101,14 @@ _gtk_quartz_target_entries_to_pasteboard_types (const GtkTargetEntry *targets,
 
   for (i = 0; i < n_targets; i++)
     {
-      [set addObject:gdk_quartz_target_to_pasteboard_type_libgtk_only (targets[i].target)];
+      [set addObject:bdk_quartz_target_to_pasteboard_type_libbtk_only (targets[i].target)];
     }
 
   return set;
 }
 
 GList *
-_gtk_quartz_pasteboard_types_to_atom_list (NSArray *array)
+_btk_quartz_pasteboard_types_to_atom_list (NSArray *array)
 {
   GList *result = NULL;
   int i;
@@ -118,27 +118,27 @@ _gtk_quartz_pasteboard_types_to_atom_list (NSArray *array)
 
   for (i = 0; i < count; i++) 
     {
-      GdkAtom atom = gdk_quartz_pasteboard_type_to_atom_libgtk_only ([array objectAtIndex:i]);
+      BdkAtom atom = bdk_quartz_pasteboard_type_to_atom_libbtk_only ([array objectAtIndex:i]);
 
-      result = g_list_prepend (result, GDK_ATOM_TO_POINTER (atom));
+      result = g_list_prepend (result, BDK_ATOM_TO_POINTER (atom));
     }
 
   return result;
 }
 
-GtkSelectionData *
-_gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
-						GdkAtom       target,
-						GdkAtom       selection)
+BtkSelectionData *
+_btk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
+						BdkAtom       target,
+						BdkAtom       selection)
 {
-  GtkSelectionData *selection_data = NULL;
+  BtkSelectionData *selection_data = NULL;
 
-  selection_data = g_slice_new0 (GtkSelectionData);
+  selection_data = g_slice_new0 (BtkSelectionData);
   selection_data->selection = selection;
   selection_data->target = target;
   if (!selection_data->display)
-    selection_data->display = gdk_display_get_default ();
-  if (target == gdk_atom_intern_static_string ("UTF8_STRING"))
+    selection_data->display = bdk_display_get_default ();
+  if (target == bdk_atom_intern_static_string ("UTF8_STRING"))
     {
       NSString *s = [pasteboard stringForType:NSStringPboardType];
 
@@ -146,12 +146,12 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
 	{
           const char *utf8_string = [s UTF8String];
 
-          gtk_selection_data_set (selection_data,
+          btk_selection_data_set (selection_data,
                                   target, 8,
                                   (guchar *)utf8_string, strlen (utf8_string));
 	}
     }
-  else if (target == gdk_atom_intern_static_string ("application/x-color"))
+  else if (target == bdk_atom_intern_static_string ("application/x-color"))
     {
       NSColor *nscolor = [[NSColor colorFromPasteboard:pasteboard]
                           colorUsingColorSpaceName:NSDeviceRGBColorSpace];
@@ -165,9 +165,9 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
       color[2] = 0xffff * [nscolor blueComponent];
       color[3] = 0xffff * [nscolor alphaComponent];
 
-      gtk_selection_data_set (selection_data, target, 16, (guchar *)color, 8);
+      btk_selection_data_set (selection_data, target, 16, (guchar *)color, 8);
     }
-  else if (target == gdk_atom_intern_static_string ("text/uri-list"))
+  else if (target == bdk_atom_intern_static_string ("text/uri-list"))
     {
       if ([[pasteboard types] containsObject:NSFilenamesPboardType])
         {
@@ -176,7 +176,7 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
            int n_files = [files count];
            int i;
 
-           selection_data->target = gdk_atom_intern_static_string ("text/uri-list");
+           selection_data->target = bdk_atom_intern_static_string ("text/uri-list");
 
            uris = (gchar **) g_malloc (sizeof (gchar*) * (n_files + 1));
            for (i = 0; i < n_files; ++i)
@@ -188,7 +188,7 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
              }
            uris[i] = NULL;
 
-           gtk_selection_data_set_uris (selection_data, uris);
+           btk_selection_data_set_uris (selection_data, uris);
            g_free (uris);
          }
       else if ([[pasteboard types] containsObject:NSURLPboardType])
@@ -196,12 +196,12 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
           gchar *uris[2];
           NSURL *url = [NSURL URLFromPasteboard:pasteboard];
 
-          selection_data->target = gdk_atom_intern_static_string ("text/uri-list");
+          selection_data->target = bdk_atom_intern_static_string ("text/uri-list");
 
           uris[0] = (gchar *) [[url description] UTF8String];
 
           uris[1] = NULL;
-          gtk_selection_data_set_uris (selection_data, uris);
+          btk_selection_data_set_uris (selection_data, uris);
         }
     }
   else
@@ -209,7 +209,7 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
       NSData *data;
       gchar *name;
 
-      name = gdk_atom_name (target);
+      name = bdk_atom_name (target);
 
       if (strcmp (name, "image/tiff") == 0)
 	data = [pasteboard dataForType:NSTIFFPboardType];
@@ -220,7 +220,7 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
 
       if (data)
 	{
-	  gtk_selection_data_set (selection_data,
+	  btk_selection_data_set (selection_data,
                                   target, 8,
                                   [data bytes], [data length]);
 	}
@@ -230,21 +230,21 @@ _gtk_quartz_get_selection_data_from_pasteboard (NSPasteboard *pasteboard,
 }
 
 void
-_gtk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
-					       GtkSelectionData *selection_data)
+_btk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
+					       BtkSelectionData *selection_data)
 {
   NSString *type;
-  GdkDisplay *display;
+  BdkDisplay *display;
   gint format;
   const guchar *data;
   NSUInteger length;
 
-  display = gtk_selection_data_get_display (selection_data);
-  format = gtk_selection_data_get_format (selection_data);
-  data = gtk_selection_data_get_data (selection_data);
-  length = gtk_selection_data_get_length (selection_data);
+  display = btk_selection_data_get_display (selection_data);
+  format = btk_selection_data_get_format (selection_data);
+  data = btk_selection_data_get_data (selection_data);
+  length = btk_selection_data_get_length (selection_data);
 
-  type = gdk_quartz_atom_to_pasteboard_type_libgtk_only (gtk_selection_data_get_target (selection_data));
+  type = bdk_quartz_atom_to_pasteboard_type_libbtk_only (btk_selection_data_get_target (selection_data));
 
   if ([type isEqualTo:NSStringPboardType]) 
     [pasteboard setString:[NSString stringWithUTF8String:(const char *)data]
@@ -268,8 +268,8 @@ _gtk_quartz_set_selection_data_for_pasteboard (NSPasteboard     *pasteboard,
       gchar **list = NULL;
       int count;
 
-      count = gdk_text_property_to_utf8_list_for_display (display,
-                                                          gdk_atom_intern_static_string ("UTF8_STRING"),
+      count = bdk_text_property_to_utf8_list_for_display (display,
+                                                          bdk_atom_intern_static_string ("UTF8_STRING"),
                                                           format,
                                                           data,
                                                           length,
@@ -330,7 +330,7 @@ get_bundle_path (void)
 }
 
 const gchar *
-_gtk_get_datadir (void)
+_btk_get_datadir (void)
 {
   static gchar *path = NULL;
 
@@ -341,7 +341,7 @@ _gtk_get_datadir (void)
 }
 
 const gchar *
-_gtk_get_libdir (void)
+_btk_get_libdir (void)
 {
   static gchar *path = NULL;
 
@@ -352,7 +352,7 @@ _gtk_get_libdir (void)
 }
 
 const gchar *
-_gtk_get_localedir (void)
+_btk_get_localedir (void)
 {
   static gchar *path = NULL;
 
@@ -363,7 +363,7 @@ _gtk_get_localedir (void)
 }
 
 const gchar *
-_gtk_get_sysconfdir (void)
+_btk_get_sysconfdir (void)
 {
   static gchar *path = NULL;
 
@@ -374,7 +374,7 @@ _gtk_get_sysconfdir (void)
 }
 
 const gchar *
-_gtk_get_data_prefix (void)
+_btk_get_data_prefix (void)
 {
   return get_bundle_path ();
 }

@@ -1,4 +1,4 @@
-/* gtktrayicon.c
+/* btktrayicon.c
  * Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -25,13 +25,13 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtktrayicon.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btktrayicon.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
-#include "x11/gdkx.h"
+#include "x11/bdkx.h"
 #include <X11/Xatom.h>
 
 #define SYSTEM_TRAY_REQUEST_DOCK    0
@@ -46,7 +46,7 @@ enum {
   PROP_ORIENTATION
 };
 
-struct _GtkTrayIconPrivate
+struct _BtkTrayIconPrivate
 {
   guint stamp;
   
@@ -56,94 +56,94 @@ struct _GtkTrayIconPrivate
   Atom orientation_atom;
   Atom visual_atom;
   Window manager_window;
-  GdkVisual *manager_visual;
+  BdkVisual *manager_visual;
   gboolean manager_visual_rgba;
 
-  GtkOrientation orientation;
+  BtkOrientation orientation;
 };
 
-static void gtk_tray_icon_constructed   (GObject     *object);
-static void gtk_tray_icon_dispose       (GObject     *object);
+static void btk_tray_icon_constructed   (GObject     *object);
+static void btk_tray_icon_dispose       (GObject     *object);
 
-static void gtk_tray_icon_get_property  (GObject     *object,
+static void btk_tray_icon_get_property  (GObject     *object,
 				 	 guint        prop_id,
 					 GValue      *value,
 					 GParamSpec  *pspec);
 
-static void     gtk_tray_icon_realize   (GtkWidget   *widget);
-static void     gtk_tray_icon_style_set (GtkWidget   *widget,
-					 GtkStyle    *previous_style);
-static gboolean gtk_tray_icon_delete    (GtkWidget   *widget,
-					 GdkEventAny *event);
-static gboolean gtk_tray_icon_expose    (GtkWidget      *widget, 
-					 GdkEventExpose *event);
+static void     btk_tray_icon_realize   (BtkWidget   *widget);
+static void     btk_tray_icon_style_set (BtkWidget   *widget,
+					 BtkStyle    *previous_style);
+static gboolean btk_tray_icon_delete    (BtkWidget   *widget,
+					 BdkEventAny *event);
+static gboolean btk_tray_icon_expose    (BtkWidget      *widget, 
+					 BdkEventExpose *event);
 
-static void gtk_tray_icon_clear_manager_window     (GtkTrayIcon *icon);
-static void gtk_tray_icon_update_manager_window    (GtkTrayIcon *icon);
-static void gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon);
+static void btk_tray_icon_clear_manager_window     (BtkTrayIcon *icon);
+static void btk_tray_icon_update_manager_window    (BtkTrayIcon *icon);
+static void btk_tray_icon_manager_window_destroyed (BtkTrayIcon *icon);
 
-static GdkFilterReturn gtk_tray_icon_manager_filter (GdkXEvent *xevent,
-						     GdkEvent  *event,
+static BdkFilterReturn btk_tray_icon_manager_filter (BdkXEvent *xevent,
+						     BdkEvent  *event,
 						     gpointer   user_data);
 
 
-G_DEFINE_TYPE (GtkTrayIcon, gtk_tray_icon, GTK_TYPE_PLUG)
+G_DEFINE_TYPE (BtkTrayIcon, btk_tray_icon, BTK_TYPE_PLUG)
 
 static void
-gtk_tray_icon_class_init (GtkTrayIconClass *class)
+btk_tray_icon_class_init (BtkTrayIconClass *class)
 {
-  GObjectClass *gobject_class = (GObjectClass *)class;
-  GtkWidgetClass *widget_class = (GtkWidgetClass *)class;
+  GObjectClass *bobject_class = (GObjectClass *)class;
+  BtkWidgetClass *widget_class = (BtkWidgetClass *)class;
 
-  gobject_class->get_property = gtk_tray_icon_get_property;
-  gobject_class->constructed = gtk_tray_icon_constructed;
-  gobject_class->dispose = gtk_tray_icon_dispose;
+  bobject_class->get_property = btk_tray_icon_get_property;
+  bobject_class->constructed = btk_tray_icon_constructed;
+  bobject_class->dispose = btk_tray_icon_dispose;
 
-  widget_class->realize = gtk_tray_icon_realize;
-  widget_class->style_set = gtk_tray_icon_style_set;
-  widget_class->delete_event = gtk_tray_icon_delete;
-  widget_class->expose_event = gtk_tray_icon_expose;
+  widget_class->realize = btk_tray_icon_realize;
+  widget_class->style_set = btk_tray_icon_style_set;
+  widget_class->delete_event = btk_tray_icon_delete;
+  widget_class->expose_event = btk_tray_icon_expose;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_ORIENTATION,
 				   g_param_spec_enum ("orientation",
 						      P_("Orientation"),
 						      P_("The orientation of the tray"),
-						      GTK_TYPE_ORIENTATION,
-						      GTK_ORIENTATION_HORIZONTAL,
-						      GTK_PARAM_READABLE));
+						      BTK_TYPE_ORIENTATION,
+						      BTK_ORIENTATION_HORIZONTAL,
+						      BTK_PARAM_READABLE));
 
-  g_type_class_add_private (class, sizeof (GtkTrayIconPrivate));
+  g_type_class_add_private (class, sizeof (BtkTrayIconPrivate));
 }
 
 static void
-gtk_tray_icon_init (GtkTrayIcon *icon)
+btk_tray_icon_init (BtkTrayIcon *icon)
 {
-  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, GTK_TYPE_TRAY_ICON,
-					    GtkTrayIconPrivate);
+  icon->priv = G_TYPE_INSTANCE_GET_PRIVATE (icon, BTK_TYPE_TRAY_ICON,
+					    BtkTrayIconPrivate);
   
   icon->priv->stamp = 1;
-  icon->priv->orientation = GTK_ORIENTATION_HORIZONTAL;
+  icon->priv->orientation = BTK_ORIENTATION_HORIZONTAL;
 
-  gtk_widget_set_app_paintable (GTK_WIDGET (icon), TRUE);
-  gtk_widget_add_events (GTK_WIDGET (icon), GDK_PROPERTY_CHANGE_MASK);
+  btk_widget_set_app_paintable (BTK_WIDGET (icon), TRUE);
+  btk_widget_add_events (BTK_WIDGET (icon), BDK_PROPERTY_CHANGE_MASK);
 }
 
 static void
-gtk_tray_icon_constructed (GObject *object)
+btk_tray_icon_constructed (GObject *object)
 {
   /* Do setup that depends on the screen; screen has been set at this point */
 
-  GtkTrayIcon *icon = GTK_TRAY_ICON (object);
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (object));
-  GdkWindow *root_window = gdk_screen_get_root_window (screen);
-  GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (object));
-  Display *xdisplay = gdk_x11_display_get_xdisplay (display);
+  BtkTrayIcon *icon = BTK_TRAY_ICON (object);
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (object));
+  BdkWindow *root_window = bdk_screen_get_root_window (screen);
+  BdkDisplay *display = btk_widget_get_display (BTK_WIDGET (object));
+  Display *xdisplay = bdk_x11_display_get_xdisplay (display);
   char buffer[256];
   
   g_snprintf (buffer, sizeof (buffer),
 	      "_NET_SYSTEM_TRAY_S%d",
-	      gdk_screen_get_number (screen));
+	      bdk_screen_get_number (screen));
 
   icon->priv->selection_atom = XInternAtom (xdisplay, buffer, False);
   
@@ -162,25 +162,25 @@ gtk_tray_icon_constructed (GObject *object)
 					 False);
 
   /* Add a root window filter so that we get changes on MANAGER */
-  gdk_window_add_filter (root_window,
-			 gtk_tray_icon_manager_filter, icon);
+  bdk_window_add_filter (root_window,
+			 btk_tray_icon_manager_filter, icon);
 
-  gtk_tray_icon_update_manager_window (icon);
+  btk_tray_icon_update_manager_window (icon);
 }
 
 static void
-gtk_tray_icon_clear_manager_window (GtkTrayIcon *icon)
+btk_tray_icon_clear_manager_window (BtkTrayIcon *icon)
 {
-  GdkDisplay *display = gtk_widget_get_display (GTK_WIDGET (icon));
+  BdkDisplay *display = btk_widget_get_display (BTK_WIDGET (icon));
 
   if (icon->priv->manager_window != None)
     {
-      GdkWindow *gdkwin;
+      BdkWindow *bdkwin;
 
-      gdkwin = gdk_window_lookup_for_display (display,
+      bdkwin = bdk_window_lookup_for_display (display,
                                               icon->priv->manager_window);
 
-      gdk_window_remove_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+      bdk_window_remove_filter (bdkwin, btk_tray_icon_manager_filter, icon);
 
       icon->priv->manager_window = None;
       icon->priv->manager_visual = NULL;
@@ -188,26 +188,26 @@ gtk_tray_icon_clear_manager_window (GtkTrayIcon *icon)
 }
 
 static void
-gtk_tray_icon_dispose (GObject *object)
+btk_tray_icon_dispose (GObject *object)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (object);
-  GtkWidget *widget = GTK_WIDGET (object);
-  GdkWindow *root_window = gdk_screen_get_root_window (gtk_widget_get_screen (widget));
+  BtkTrayIcon *icon = BTK_TRAY_ICON (object);
+  BtkWidget *widget = BTK_WIDGET (object);
+  BdkWindow *root_window = bdk_screen_get_root_window (btk_widget_get_screen (widget));
 
-  gtk_tray_icon_clear_manager_window (icon);
+  btk_tray_icon_clear_manager_window (icon);
 
-  gdk_window_remove_filter (root_window, gtk_tray_icon_manager_filter, icon);
+  bdk_window_remove_filter (root_window, btk_tray_icon_manager_filter, icon);
 
-  G_OBJECT_CLASS (gtk_tray_icon_parent_class)->dispose (object);
+  G_OBJECT_CLASS (btk_tray_icon_parent_class)->dispose (object);
 }
 
 static void
-gtk_tray_icon_get_property (GObject    *object,
+btk_tray_icon_get_property (GObject    *object,
 			    guint       prop_id,
 			    GValue     *value,
 			    GParamSpec *pspec)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (object);
+  BtkTrayIcon *icon = BTK_TRAY_ICON (object);
 
   switch (prop_id)
     {
@@ -221,38 +221,38 @@ gtk_tray_icon_get_property (GObject    *object,
 }
 
 static gboolean
-gtk_tray_icon_expose (GtkWidget      *widget, 
-		      GdkEventExpose *event)
+btk_tray_icon_expose (BtkWidget      *widget, 
+		      BdkEventExpose *event)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
-  GtkWidget *focus_child;
+  BtkTrayIcon *icon = BTK_TRAY_ICON (widget);
+  BtkWidget *focus_child;
   gint border_width, x, y, width, height;
   gboolean retval = FALSE;
 
   if (icon->priv->manager_visual_rgba)
     {
       /* Clear to transparent */
-      cairo_t *cr = gdk_cairo_create (widget->window);
-      cairo_set_source_rgba (cr, 0, 0, 0, 0);
-      cairo_set_operator (cr, CAIRO_OPERATOR_SOURCE);
-      gdk_cairo_region (cr, event->region);
-      cairo_fill (cr);
-      cairo_destroy (cr);
+      bairo_t *cr = bdk_bairo_create (widget->window);
+      bairo_set_source_rgba (cr, 0, 0, 0, 0);
+      bairo_set_operator (cr, BAIRO_OPERATOR_SOURCE);
+      bdk_bairo_rebunnyion (cr, event->rebunnyion);
+      bairo_fill (cr);
+      bairo_destroy (cr);
     }
   else
     {
       /* Clear to parent-relative pixmap */
-      gdk_window_clear_area (widget->window, event->area.x, event->area.y,
+      bdk_window_clear_area (widget->window, event->area.x, event->area.y,
 			     event->area.width, event->area.height);
     }
 
-  if (GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event)
-    retval = GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->expose_event (widget, event);
+  if (BTK_WIDGET_CLASS (btk_tray_icon_parent_class)->expose_event)
+    retval = BTK_WIDGET_CLASS (btk_tray_icon_parent_class)->expose_event (widget, event);
 
-  focus_child = GTK_CONTAINER (widget)->focus_child;
-  if (focus_child && gtk_widget_has_focus (focus_child))
+  focus_child = BTK_CONTAINER (widget)->focus_child;
+  if (focus_child && btk_widget_has_focus (focus_child))
     {
-      border_width = GTK_CONTAINER (widget)->border_width;
+      border_width = BTK_CONTAINER (widget)->border_width;
 
       x = widget->allocation.x + border_width;
       y = widget->allocation.y + border_width;
@@ -260,8 +260,8 @@ gtk_tray_icon_expose (GtkWidget      *widget,
       width  = widget->allocation.width  - 2 * border_width;
       height = widget->allocation.height - 2 * border_width;
 
-      gtk_paint_focus (widget->style, widget->window,
-                       gtk_widget_get_state (widget),
+      btk_paint_focus (widget->style, widget->window,
+                       btk_widget_get_state (widget),
                        &event->area, widget, "tray_icon",
                        x, y, width, height);
     }
@@ -270,11 +270,11 @@ gtk_tray_icon_expose (GtkWidget      *widget,
 }
 
 static void
-gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
+btk_tray_icon_get_orientation_property (BtkTrayIcon *icon)
 {
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (icon));
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (icon));
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
 
   Atom type;
   int format;
@@ -288,7 +288,7 @@ gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
 
   g_assert (icon->priv->manager_window != None);
   
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   result = XGetWindowProperty (xdisplay,
 			       icon->priv->manager_window,
@@ -297,18 +297,18 @@ gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
 			       XA_CARDINAL,
 			       &type, &format, &nitems,
 			       &bytes_after, &(prop.prop_ch));
-  error = gdk_error_trap_pop ();
+  error = bdk_error_trap_pop ();
 
   if (error || result != Success)
     return;
 
   if (type == XA_CARDINAL && nitems == 1 && format == 32)
     {
-      GtkOrientation orientation;
+      BtkOrientation orientation;
 
       orientation = (prop.prop [0] == SYSTEM_TRAY_ORIENTATION_HORZ) ?
-					GTK_ORIENTATION_HORIZONTAL :
-					GTK_ORIENTATION_VERTICAL;
+					BTK_ORIENTATION_HORIZONTAL :
+					BTK_ORIENTATION_VERTICAL;
 
       if (icon->priv->orientation != orientation)
 	{
@@ -323,11 +323,11 @@ gtk_tray_icon_get_orientation_property (GtkTrayIcon *icon)
 }
 
 static void
-gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
+btk_tray_icon_get_visual_property (BtkTrayIcon *icon)
 {
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (icon));
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (icon));
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
 
   Atom type;
   int format;
@@ -341,7 +341,7 @@ gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
 
   g_assert (icon->priv->manager_window != None);
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   type = None;
   result = XGetWindowProperty (xdisplay,
 			       icon->priv->manager_window,
@@ -350,16 +350,16 @@ gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
 			       XA_VISUALID,
 			       &type, &format, &nitems,
 			       &bytes_after, &(prop.prop_ch));
-  error = gdk_error_trap_pop ();
+  error = bdk_error_trap_pop ();
 
   if (!error && result == Success &&
       type == XA_VISUALID && nitems == 1 && format == 32)
     {
       VisualID visual_id;
-      GdkVisual *visual;
+      BdkVisual *visual;
 
       visual_id = prop.prop[0];
-      visual = gdk_x11_screen_lookup_visual (screen, visual_id);
+      visual = bdk_x11_screen_lookup_visual (screen, visual_id);
 
       icon->priv->manager_visual = visual;
       icon->priv->manager_visual_rgba = visual != NULL &&
@@ -374,56 +374,56 @@ gtk_tray_icon_get_visual_property (GtkTrayIcon *icon)
 
   /* For the background-relative hack we use when we aren't using a real RGBA
    * visual, we can't be double-buffered */
-  gtk_widget_set_double_buffered (GTK_WIDGET (icon), icon->priv->manager_visual_rgba);
+  btk_widget_set_double_buffered (BTK_WIDGET (icon), icon->priv->manager_visual_rgba);
 
   if (type != None)
     XFree (prop.prop);
 }
 
-static GdkFilterReturn
-gtk_tray_icon_manager_filter (GdkXEvent *xevent, 
-			      GdkEvent  *event, 
+static BdkFilterReturn
+btk_tray_icon_manager_filter (BdkXEvent *xevent, 
+			      BdkEvent  *event, 
 			      gpointer   user_data)
 {
-  GtkTrayIcon *icon = user_data;
+  BtkTrayIcon *icon = user_data;
   XEvent *xev = (XEvent *)xevent;
 
   if (xev->xany.type == ClientMessage &&
       xev->xclient.message_type == icon->priv->manager_atom &&
       xev->xclient.data.l[1] == icon->priv->selection_atom)
     {
-      GTK_NOTE (PLUGSOCKET,
-		g_print ("GtkStatusIcon %p: tray manager appeared\n", icon));
+      BTK_NOTE (PLUGSOCKET,
+		g_print ("BtkStatusIcon %p: tray manager appeared\n", icon));
 
-      gtk_tray_icon_update_manager_window (icon);
+      btk_tray_icon_update_manager_window (icon);
     }
   else if (xev->xany.window == icon->priv->manager_window)
     {
       if (xev->xany.type == PropertyNotify &&
 	  xev->xproperty.atom == icon->priv->orientation_atom)
 	{
-          GTK_NOTE (PLUGSOCKET,
-		    g_print ("GtkStatusIcon %p: got PropertyNotify on manager window for orientation atom\n", icon));
+          BTK_NOTE (PLUGSOCKET,
+		    g_print ("BtkStatusIcon %p: got PropertyNotify on manager window for orientation atom\n", icon));
 
-	  gtk_tray_icon_get_orientation_property (icon);
+	  btk_tray_icon_get_orientation_property (icon);
 	}
       else if (xev->xany.type == DestroyNotify)
 	{
-          GTK_NOTE (PLUGSOCKET,
-		    g_print ("GtkStatusIcon %p: got DestroyNotify for manager window\n", icon));
+          BTK_NOTE (PLUGSOCKET,
+		    g_print ("BtkStatusIcon %p: got DestroyNotify for manager window\n", icon));
 
-	  gtk_tray_icon_manager_window_destroyed (icon);
+	  btk_tray_icon_manager_window_destroyed (icon);
 	}
       else
-        GTK_NOTE (PLUGSOCKET,
-		  g_print ("GtkStatusIcon %p: got other message on manager window\n", icon));
+        BTK_NOTE (PLUGSOCKET,
+		  g_print ("BtkStatusIcon %p: got other message on manager window\n", icon));
     }
   
-  return GDK_FILTER_CONTINUE;
+  return BDK_FILTER_CONTINUE;
 }
 
 static void
-gtk_tray_icon_send_manager_message (GtkTrayIcon *icon,
+btk_tray_icon_send_manager_message (BtkTrayIcon *icon,
 				    long         message,
 				    Window       window,
 				    long         data1,
@@ -438,52 +438,52 @@ gtk_tray_icon_send_manager_message (GtkTrayIcon *icon,
   ev.window = window;
   ev.message_type = icon->priv->system_tray_opcode_atom;
   ev.format = 32;
-  ev.data.l[0] = gdk_x11_get_server_time (GTK_WIDGET (icon)->window);
+  ev.data.l[0] = bdk_x11_get_server_time (BTK_WIDGET (icon)->window);
   ev.data.l[1] = message;
   ev.data.l[2] = data1;
   ev.data.l[3] = data2;
   ev.data.l[4] = data3;
 
-  display = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (GTK_WIDGET (icon)));
+  display = BDK_DISPLAY_XDISPLAY (btk_widget_get_display (BTK_WIDGET (icon)));
   
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   XSendEvent (display,
 	      icon->priv->manager_window, False, NoEventMask, (XEvent *)&ev);
-  gdk_display_sync (gtk_widget_get_display (GTK_WIDGET (icon)));
-  gdk_error_trap_pop ();
+  bdk_display_sync (btk_widget_get_display (BTK_WIDGET (icon)));
+  bdk_error_trap_pop ();
 }
 
 static void
-gtk_tray_icon_send_dock_request (GtkTrayIcon *icon)
+btk_tray_icon_send_dock_request (BtkTrayIcon *icon)
 {
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: sending dock request to manager window %lx\n",
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: sending dock request to manager window %lx\n",
 	    	     icon, (gulong) icon->priv->manager_window));
 
-  gtk_tray_icon_send_manager_message (icon,
+  btk_tray_icon_send_manager_message (icon,
 				      SYSTEM_TRAY_REQUEST_DOCK,
 				      icon->priv->manager_window,
-				      gtk_plug_get_id (GTK_PLUG (icon)),
+				      btk_plug_get_id (BTK_PLUG (icon)),
 				      0, 0);
 }
 
 static void
-gtk_tray_icon_update_manager_window (GtkTrayIcon *icon)
+btk_tray_icon_update_manager_window (BtkTrayIcon *icon)
 {
-  GtkWidget *widget = GTK_WIDGET (icon);
-  GdkScreen *screen = gtk_widget_get_screen (widget);
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+  BtkWidget *widget = BTK_WIDGET (icon);
+  BdkScreen *screen = btk_widget_get_screen (widget);
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
 
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: updating tray icon manager window, current manager window: %lx\n",
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: updating tray icon manager window, current manager window: %lx\n",
 		     icon, (gulong) icon->priv->manager_window));
 
   if (icon->priv->manager_window != None)
     return;
 
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: trying to find manager window\n", icon));
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: trying to find manager window\n", icon));
 
   XGrabServer (xdisplay);
   
@@ -499,66 +499,66 @@ gtk_tray_icon_update_manager_window (GtkTrayIcon *icon)
   
   if (icon->priv->manager_window != None)
     {
-      GdkWindow *gdkwin;
+      BdkWindow *bdkwin;
 
-      GTK_NOTE (PLUGSOCKET,
-		g_print ("GtkStatusIcon %p: is being managed by window %lx\n",
+      BTK_NOTE (PLUGSOCKET,
+		g_print ("BtkStatusIcon %p: is being managed by window %lx\n",
 				icon, (gulong) icon->priv->manager_window));
 
-      gdkwin = gdk_window_lookup_for_display (display,
+      bdkwin = bdk_window_lookup_for_display (display,
 					      icon->priv->manager_window);
       
-      gdk_window_add_filter (gdkwin, gtk_tray_icon_manager_filter, icon);
+      bdk_window_add_filter (bdkwin, btk_tray_icon_manager_filter, icon);
 
-      gtk_tray_icon_get_orientation_property (icon);
-      gtk_tray_icon_get_visual_property (icon);
+      btk_tray_icon_get_orientation_property (icon);
+      btk_tray_icon_get_visual_property (icon);
 
-      if (gtk_widget_get_realized (GTK_WIDGET (icon)))
+      if (btk_widget_get_realized (BTK_WIDGET (icon)))
 	{
 	  if ((icon->priv->manager_visual == NULL &&
-	       gtk_widget_get_visual (widget) == gdk_screen_get_system_visual (screen)) ||
-	      (icon->priv->manager_visual == gtk_widget_get_visual (widget)))
+	       btk_widget_get_visual (widget) == bdk_screen_get_system_visual (screen)) ||
+	      (icon->priv->manager_visual == btk_widget_get_visual (widget)))
 	    {
 	      /* Already have the right visual, can just dock
 	       */
-	      gtk_tray_icon_send_dock_request (icon);
+	      btk_tray_icon_send_dock_request (icon);
 	    }
 	  else
 	    {
 	      /* Need to re-realize the widget to get the right visual
 	       */
-	      gtk_widget_hide (widget);
-	      gtk_widget_unrealize (widget);
-	      gtk_widget_show (widget);
+	      btk_widget_hide (widget);
+	      btk_widget_unrealize (widget);
+	      btk_widget_show (widget);
 	    }
 	}
     }
   else
-    GTK_NOTE (PLUGSOCKET,
-	      g_print ("GtkStatusIcon %p: no tray manager found\n", icon));
+    BTK_NOTE (PLUGSOCKET,
+	      g_print ("BtkStatusIcon %p: no tray manager found\n", icon));
 }
 
 static void
-gtk_tray_icon_manager_window_destroyed (GtkTrayIcon *icon)
+btk_tray_icon_manager_window_destroyed (BtkTrayIcon *icon)
 {
   g_return_if_fail (icon->priv->manager_window != None);
 
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: tray manager window destroyed\n", icon));
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: tray manager window destroyed\n", icon));
 
-  gtk_tray_icon_clear_manager_window (icon);
+  btk_tray_icon_clear_manager_window (icon);
 }
 
 static gboolean
-gtk_tray_icon_delete (GtkWidget   *widget,
-		      GdkEventAny *event)
+btk_tray_icon_delete (BtkWidget   *widget,
+		      BdkEventAny *event)
 {
 #ifdef G_ENABLE_DEBUG
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+  BtkTrayIcon *icon = BTK_TRAY_ICON (widget);
 #endif
 
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: delete notify, tray manager window %lx\n",
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: delete notify, tray manager window %lx\n",
 		     icon, (gulong) icon->priv->manager_window));
 
   /* A bug in X server versions up to x.org 1.5.0 means that:
@@ -566,82 +566,82 @@ gtk_tray_icon_delete (GtkWidget   *widget,
    * and we'll left mapped in a separate toplevel window if the tray is destroyed.
    * For simplicity just get rid of our X window and start over.
    */
-  gtk_widget_hide (widget);
-  gtk_widget_unrealize (widget);
-  gtk_widget_show (widget);
+  btk_widget_hide (widget);
+  btk_widget_unrealize (widget);
+  btk_widget_show (widget);
 
   /* Handled it, don't destroy the tray icon */
   return TRUE;
 }
 
 static void
-gtk_tray_icon_set_colormap (GtkTrayIcon *icon)
+btk_tray_icon_set_colormap (BtkTrayIcon *icon)
 {
-  GdkScreen *screen = gtk_widget_get_screen (GTK_WIDGET (icon));
-  GdkColormap *colormap;
-  GdkVisual *visual = icon->priv->manager_visual;
+  BdkScreen *screen = btk_widget_get_screen (BTK_WIDGET (icon));
+  BdkColormap *colormap;
+  BdkVisual *visual = icon->priv->manager_visual;
   gboolean new_colormap = FALSE;
 
   /* To avoid uncertainty about colormaps, _NET_SYSTEM_TRAY_VISUAL is supposed
    * to be either the screen default visual or a TrueColor visual; ignore it
    * if it is something else
    */
-  if (visual && visual->type != GDK_VISUAL_TRUE_COLOR)
+  if (visual && visual->type != BDK_VISUAL_TRUE_COLOR)
     visual = NULL;
 
-  if (visual == NULL || visual == gdk_screen_get_system_visual (screen))
-    colormap = gdk_screen_get_system_colormap (screen);
-  else if (visual == gdk_screen_get_rgb_visual (screen))
-    colormap = gdk_screen_get_rgb_colormap (screen);
-  else if (visual == gdk_screen_get_rgba_visual (screen))
-    colormap = gdk_screen_get_rgba_colormap (screen);
+  if (visual == NULL || visual == bdk_screen_get_system_visual (screen))
+    colormap = bdk_screen_get_system_colormap (screen);
+  else if (visual == bdk_screen_get_rgb_visual (screen))
+    colormap = bdk_screen_get_rgb_colormap (screen);
+  else if (visual == bdk_screen_get_rgba_visual (screen))
+    colormap = bdk_screen_get_rgba_colormap (screen);
   else
     {
-      colormap = gdk_colormap_new (visual, FALSE);
+      colormap = bdk_colormap_new (visual, FALSE);
       new_colormap = TRUE;
     }
 
-  gtk_widget_set_colormap (GTK_WIDGET (icon), colormap);
+  btk_widget_set_colormap (BTK_WIDGET (icon), colormap);
 
   if (new_colormap)
     g_object_unref (colormap);
 }
 
 static void
-gtk_tray_icon_realize (GtkWidget *widget)
+btk_tray_icon_realize (BtkWidget *widget)
 {
-  GtkTrayIcon *icon = GTK_TRAY_ICON (widget);
+  BtkTrayIcon *icon = BTK_TRAY_ICON (widget);
 
   /* Set our colormap before realizing */
-  gtk_tray_icon_set_colormap (icon);
+  btk_tray_icon_set_colormap (icon);
 
-  GTK_WIDGET_CLASS (gtk_tray_icon_parent_class)->realize (widget);
+  BTK_WIDGET_CLASS (btk_tray_icon_parent_class)->realize (widget);
   if (icon->priv->manager_visual_rgba)
     {
       /* Set a transparent background */
-      GdkColor transparent = { 0, 0, 0, 0 }; /* Only pixel=0 matters */
-      gdk_window_set_background (widget->window, &transparent);
+      BdkColor transparent = { 0, 0, 0, 0 }; /* Only pixel=0 matters */
+      bdk_window_set_background (widget->window, &transparent);
     }
   else
     {
       /* Set a parent-relative background pixmap */
-      gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
+      bdk_window_set_back_pixmap (widget->window, NULL, TRUE);
     }
 
-  GTK_NOTE (PLUGSOCKET,
-	    g_print ("GtkStatusIcon %p: realized, window: %lx, socket window: %lx\n",
+  BTK_NOTE (PLUGSOCKET,
+	    g_print ("BtkStatusIcon %p: realized, window: %lx, socket window: %lx\n",
 		     widget,
-		     (gulong) GDK_WINDOW_XWINDOW (widget->window),
-		     GTK_PLUG (icon)->socket_window ?
-			     (gulong) GDK_WINDOW_XWINDOW (GTK_PLUG (icon)->socket_window) : 0UL));
+		     (gulong) BDK_WINDOW_XWINDOW (widget->window),
+		     BTK_PLUG (icon)->socket_window ?
+			     (gulong) BDK_WINDOW_XWINDOW (BTK_PLUG (icon)->socket_window) : 0UL));
 
   if (icon->priv->manager_window != None)
-    gtk_tray_icon_send_dock_request (icon);
+    btk_tray_icon_send_dock_request (icon);
 }
 
 static void
-gtk_tray_icon_style_set (GtkWidget   *widget,
-			 GtkStyle    *previous_style)
+btk_tray_icon_style_set (BtkWidget   *widget,
+			 BtkStyle    *previous_style)
 {
   /* The default handler resets the background according to the style. We either
    * use a transparent background or a parent-relative background and ignore the
@@ -650,7 +650,7 @@ gtk_tray_icon_style_set (GtkWidget   *widget,
 }
 
 guint
-_gtk_tray_icon_send_message (GtkTrayIcon *icon,
+_btk_tray_icon_send_message (BtkTrayIcon *icon,
 			     gint         timeout,
 			     const gchar *message,
 			     gint         len)
@@ -658,7 +658,7 @@ _gtk_tray_icon_send_message (GtkTrayIcon *icon,
   guint stamp;
   Display *xdisplay;
  
-  g_return_val_if_fail (GTK_IS_TRAY_ICON (icon), 0);
+  g_return_val_if_fail (BTK_IS_TRAY_ICON (icon), 0);
   g_return_val_if_fail (timeout >= 0, 0);
   g_return_val_if_fail (message != NULL, 0);
 
@@ -671,20 +671,20 @@ _gtk_tray_icon_send_message (GtkTrayIcon *icon,
   stamp = icon->priv->stamp++;
   
   /* Get ready to send the message */
-  gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_BEGIN_MESSAGE,
-				      (Window)gtk_plug_get_id (GTK_PLUG (icon)),
+  btk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_BEGIN_MESSAGE,
+				      (Window)btk_plug_get_id (BTK_PLUG (icon)),
 				      timeout, len, stamp);
 
   /* Now to send the actual message */
-  xdisplay = GDK_DISPLAY_XDISPLAY (gtk_widget_get_display (GTK_WIDGET (icon)));
-  gdk_error_trap_push ();
+  xdisplay = BDK_DISPLAY_XDISPLAY (btk_widget_get_display (BTK_WIDGET (icon)));
+  bdk_error_trap_push ();
   while (len > 0)
     {
       XClientMessageEvent ev;
 
       memset (&ev, 0, sizeof (ev));
       ev.type = ClientMessage;
-      ev.window = (Window)gtk_plug_get_id (GTK_PLUG (icon));
+      ev.window = (Window)btk_plug_get_id (BTK_PLUG (icon));
       ev.format = 8;
       ev.message_type = XInternAtom (xdisplay,
 				     "_NET_SYSTEM_TRAY_MESSAGE_DATA", False);
@@ -704,53 +704,53 @@ _gtk_tray_icon_send_message (GtkTrayIcon *icon,
 		  icon->priv->manager_window, False,
 		  StructureNotifyMask, (XEvent *)&ev);
     }
-  gdk_display_sync (gtk_widget_get_display (GTK_WIDGET (icon)));
-  gdk_error_trap_pop ();
+  bdk_display_sync (btk_widget_get_display (BTK_WIDGET (icon)));
+  bdk_error_trap_pop ();
 
   return stamp;
 }
 
 void
-_gtk_tray_icon_cancel_message (GtkTrayIcon *icon,
+_btk_tray_icon_cancel_message (BtkTrayIcon *icon,
 			       guint        id)
 {
-  g_return_if_fail (GTK_IS_TRAY_ICON (icon));
+  g_return_if_fail (BTK_IS_TRAY_ICON (icon));
   g_return_if_fail (id > 0);
   
-  gtk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_CANCEL_MESSAGE,
-				      (Window)gtk_plug_get_id (GTK_PLUG (icon)),
+  btk_tray_icon_send_manager_message (icon, SYSTEM_TRAY_CANCEL_MESSAGE,
+				      (Window)btk_plug_get_id (BTK_PLUG (icon)),
 				      id, 0, 0);
 }
 
-GtkTrayIcon *
-_gtk_tray_icon_new_for_screen (GdkScreen  *screen, 
+BtkTrayIcon *
+_btk_tray_icon_new_for_screen (BdkScreen  *screen, 
 			       const gchar *name)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return g_object_new (GTK_TYPE_TRAY_ICON, 
+  return g_object_new (BTK_TYPE_TRAY_ICON, 
 		       "screen", screen, 
 		       "title", name, 
 		       NULL);
 }
 
-GtkTrayIcon*
-_gtk_tray_icon_new (const gchar *name)
+BtkTrayIcon*
+_btk_tray_icon_new (const gchar *name)
 {
-  return g_object_new (GTK_TYPE_TRAY_ICON, 
+  return g_object_new (BTK_TYPE_TRAY_ICON, 
 		       "title", name, 
 		       NULL);
 }
 
-GtkOrientation
-_gtk_tray_icon_get_orientation (GtkTrayIcon *icon)
+BtkOrientation
+_btk_tray_icon_get_orientation (BtkTrayIcon *icon)
 {
-  g_return_val_if_fail (GTK_IS_TRAY_ICON (icon), GTK_ORIENTATION_HORIZONTAL);
+  g_return_val_if_fail (BTK_IS_TRAY_ICON (icon), BTK_ORIENTATION_HORIZONTAL);
 
   return icon->priv->orientation;
 }
 
 
-#define __GTK_TRAY_ICON_X11_C__
-#include "gtkaliasdef.c"
+#define __BTK_TRAY_ICON_X11_C__
+#include "btkaliasdef.c"
 

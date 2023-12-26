@@ -2,40 +2,40 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="gtk-building" revision="6 Sept 2001">
+<refentry id="btk-building" revision="6 Sept 2001">
 <refmeta>
-<refentrytitle>Compiling the GTK+ libraries</refentrytitle>
+<refentrytitle>Compiling the BTK+ libraries</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>GTK Library</refmiscinfo>
+<refmiscinfo>BTK Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>Compiling the GTK+ Libraries</refname>
+<refname>Compiling the BTK+ Libraries</refname>
 <refpurpose>
-How to compile GTK+ itself
+How to compile BTK+ itself
 </refpurpose>
 </refnamediv>
   <refsect1 id="overview">
-    <title>Building GTK+ on UNIX-like systems</title>
+    <title>Building BTK+ on UNIX-like systems</title>
     <para>
-      This chapter covers building and installing GTK+ on UNIX and
-      UNIX-like systems such as Linux. Compiling GTK+ on Microsoft
+      This chapter covers building and installing BTK+ on UNIX and
+      UNIX-like systems such as Linux. Compiling BTK+ on Microsoft
       Windows is different in detail and somewhat more difficult to
       get going since the necessary tools aren't included with
       the operating system.
     </para>
     <para>
-      Before we get into the details of how to compile GTK+, we should
-      mention that in many cases, binary packages of GTK+ prebuilt for
+      Before we get into the details of how to compile BTK+, we should
+      mention that in many cases, binary packages of BTK+ prebuilt for
       your operating system will be available, either from your
       operating system vendor or from independent sources. If such a
       set of packages is available, installing it will get you
-      programming wih GTK+ much faster than building it yourself. In
-      fact, you may well already have GTK+ installed on your system
+      programming wih BTK+ much faster than building it yourself. In
+      fact, you may well already have BTK+ installed on your system
       already.
     </para>
     <para>
-      On UNIX-like systems GTK+ uses the standard GNU build system,
+      On UNIX-like systems BTK+ uses the standard GNU build system,
       using <application>autoconf</application> for package
       configuration and resolving portability issues,
       <application>automake</application> for building makefiles that
@@ -44,7 +44,7 @@ How to compile GTK+ itself
       on multiple platforms.
     </para>
     <para>
-      If you are building GTK+ from the distributed source packages,
+      If you are building BTK+ from the distributed source packages,
       then won't need these tools installed; the necessary pieces
       of the tools are already included in the source packages. But
       it's useful to know a bit about how packages that use these
@@ -53,8 +53,8 @@ How to compile GTK+ itself
       which you unpack into a directory full of the source files as follows:
     </para>
     <programlisting>
-      tar xvfz gtk+-2.0.0.tar.gz
-      tar xvfj gtk+-2.0.0.tar.bz2
+      tar xvfz btk+-2.0.0.tar.gz
+      tar xvfj btk+-2.0.0.tar.bz2
     </programlisting>
     <para>
       In the toplevel of the directory that is created, there will be
@@ -66,10 +66,10 @@ How to compile GTK+ itself
       the package is built and installed. The most commonly useful
       argument is the <systemitem>--prefix</systemitem> argument which
       determines where the package is installed. To install a package
-      in <filename>/opt/gtk</filename> you would run configure as:
+      in <filename>/opt/btk</filename> you would run configure as:
     </para>
     <programlisting>
-      ./configure --prefix=/opt/gtk
+      ./configure --prefix=/opt/btk
     </programlisting>
     <para>
       A full list of options can be found by running
@@ -102,14 +102,14 @@ How to compile GTK+ itself
       <envar>PKG_CONFIG_PATH</envar> environment variable contains
       a search path that <command>pkg-config</command> (see below)
       uses when looking for for file describing how to compile
-      programs using different libraries. If you were installing GTK+
-      and it's dependencies into <filename>/opt/gtk</filename>, you 
+      programs using different libraries. If you were installing BTK+
+      and it's dependencies into <filename>/opt/btk</filename>, you 
       might want to set these variables as:
     </para>
     <programlisting>
-      CPPFLAGS="-I/opt/gtk/include"
-      LDFLAGS="-L/opt/gtk/lib"
-      PKG_CONFIG_PATH="/opt/gtk/lib/pkgconfig"
+      CPPFLAGS="-I/opt/btk/include"
+      LDFLAGS="-L/opt/btk/lib"
+      PKG_CONFIG_PATH="/opt/btk/lib/pkgconfig"
       export CPPFLAGS LDFLAGS PKG_CONFIG_PATH
     </programlisting>
     <para>
@@ -120,18 +120,18 @@ How to compile GTK+ itself
       the various libraries will be found.
     </para>
     <programlisting>
-      LD_LIBRARY_PATH="/opt/gtk/lib"
-      PATH="/opt/gtk/bin:$PATH"
+      LD_LIBRARY_PATH="/opt/btk/lib"
+      PATH="/opt/btk/bin:$PATH"
       export LD_LIBRARY_PATH PATH
     </programlisting>
   </refsect1>
   <refsect1 id="dependencies">
     <title>Dependencies</title>
     <para>
-      Before you can compile the GTK+ widget toolkit, you need to have
+      Before you can compile the BTK+ widget toolkit, you need to have
       various other tools and libraries installed on your
       system. The two tools needed during the build process (as
-      differentiated from the tools used in when creating GTK+
+      differentiated from the tools used in when creating BTK+
       mentioned above such as <application>autoconf</application>)
       are <command>pkg-config</command> and GNU make.
     </para>
@@ -141,21 +141,21 @@ How to compile GTK+ itself
 	  <ulink
 	  url="http://www.freedesktop.org/software/pkgconfig">pkg-config</ulink>
 	  is a tool for tracking the compilation flags needed for
-	  libraries that are used by the GTK+ libraries. (For each
+	  libraries that are used by the BTK+ libraries. (For each
 	  library, a small <literal>.pc</literal> text file is installed 
           in a standard location that contains the compilation flags 
           needed for that library along with version number information.)  
           The version of <command>pkg-config</command> needed to build 
-          GTK+ is mirrored in the <filename>dependencies</filename> directory
-	  on the <ulink url="ftp://ftp.gtk.org/pub/gtk/">GTK+ FTP
+          BTK+ is mirrored in the <filename>dependencies</filename> directory
+	  on the <ulink url="ftp://ftp.btk.org/pub/btk/">BTK+ FTP
 	  site.</ulink>
 	</para>
       </listitem>
       <listitem>
 	<para>
-	  The GTK+ makefiles will mostly work with different versions
+	  The BTK+ makefiles will mostly work with different versions
 	  of <command>make</command>, however, there tends to be
-	  a few incompatibilities, so the GTK+ team recommends
+	  a few incompatibilities, so the BTK+ team recommends
 	  installing <ulink url="http://www.gnu.org/software/make">GNU
 	    make</ulink> if you don't already have it on your system
 	  and using it. (It may be called <command>gmake</command>
@@ -164,8 +164,8 @@ How to compile GTK+ itself
       </listitem>
     </itemizedlist>
     <para>
-      Three of the libraries that GTK+ depends on are maintained by
-      by the GTK+ team: GLib, GdkPixbuf, Pango, and ATK. Other libraries
+      Three of the libraries that BTK+ depends on are maintained by
+      by the BTK+ team: GLib, BdkPixbuf, Bango, and BATK. Other libraries
       are maintained separately.
     </para>
     <itemizedlist>
@@ -174,25 +174,25 @@ How to compile GTK+ itself
 	  The GLib library provides core non-graphical functionality
 	  such as high level data types, Unicode manipulation, and
 	  an object and type system to C programs. It is available
-	  from the <ulink url="ftp://ftp.gtk.org/pub/glib/">GTK+
+	  from the <ulink url="ftp://ftp.btk.org/pub/bunnylib/">BTK+
 	  FTP site.</ulink>
 	</para>
       </listitem>
       <listitem>
 	<para>
-	  <ulink url="http://www.pango.org">Pango</ulink> is a library
+	  <ulink url="http://www.bango.org">Bango</ulink> is a library
 	  for internationalized text handling. It is available from
-	  the <ulink url="ftp://ftp.gtk.org/pub/pango/">GTK+ FTP
+	  the <ulink url="ftp://ftp.btk.org/pub/bango/">BTK+ FTP
 	  site.</ulink>. 
 	</para>
       </listitem>
       <listitem>
 	<para>
-	  ATK is the Accessibility Toolkit. It provides a set of generic
+	  BATK is the Accessibility Toolkit. It provides a set of generic
 	  interfaces allowing accessibility technologies such as
 	  screen readers to interact with a graphical user interface.
 	  It is available from the <ulink
-	  url="ftp://ftp.gtk.org/pub/atk/">GTK+ FTP site.</ulink>
+	  url="ftp://ftp.btk.org/pub/batk/">BTK+ FTP site.</ulink>
 	</para>
       </listitem>
       <listitem>
@@ -220,11 +220,11 @@ How to compile GTK+ itself
 	    url="ftp://ftp.uu.net/graphics/jpeg/">JPEG</ulink>,
 	  <ulink url="http://www.libpng.org">PNG</ulink>, and
 	  <ulink url="http://www.libtiff.org">TIFF</ulink> image 
-          loading libraries are needed to compile GTK+. You probably 
+          loading libraries are needed to compile BTK+. You probably 
           already have these libraries installed, but if not, the 
           versions you need are available in the 
            <filename>dependencies</filename> directory on the the
-	  <ulink url="ftp://ftp.gtk.org/pub/gtk/v2.6/dependencies/">GTK+
+	  <ulink url="ftp://ftp.btk.org/pub/btk/v2.6/dependencies/">BTK+
 	    FTP site.</ulink>. (Before installing these libraries
 	  from source, you should check if your operating system
 	  vendor has prebuilt packages of these libraries that you
@@ -234,7 +234,7 @@ How to compile GTK+ itself
       <listitem>
 	<para>
 	  The libraries from the X window system are needed to build
-	  Pango and GTK+. You should already have these installed on
+	  Bango and BTK+. You should already have these installed on
 	  your system, but it's possible that you'll need to install
 	  the development environment for these libraries that your
 	  operating system vendor provides.
@@ -243,21 +243,21 @@ How to compile GTK+ itself
       <listitem>
 	<para>
 	  The <ulink url="http://www.fontconfig.org">fontconfig</ulink>
-	  library provides Pango with a standard way of locating
+	  library provides Bango with a standard way of locating
 	  fonts and matching them against font names.
 	</para>
       </listitem>
       <listitem>
 	<para>
-	  <ulink url="http://www.cairographics.org">Cairo</ulink>
+	  <ulink url="http://www.bairographics.org">Bairo</ulink>
           is a graphics library that supports vector graphics and image
-          compositing. Both Pango and GTK+ use cairo for much of their
+          compositing. Both Bango and BTK+ use bairo for much of their
           drawing.
         </para>
       </listitem>
       <listitem>
 	<para>
-	  <ulink url="http://live.gnome.org/GObjectIntrospection">gobject-introspection</ulink>
+	  <ulink url="http://live.bunny.org/GObjectIntrospection">bobject-introspection</ulink>
           is a framework for making introspection data available to
           language bindings.
         </para>
@@ -265,18 +265,18 @@ How to compile GTK+ itself
       <listitem>
         <para>
           The <ulink url="http://www.freedesktop.org/wiki/Software/shared-mime-info">shared-mime-info</ulink> 
-          package is not a hard dependency of GTK+, but it contains definitions 
-          for mime types that are used by GIO and, indirectly, by GTK+. 
-          gdk-pixbuf will use GIO for mime type detection if possible. For this 
+          package is not a hard dependency of BTK+, but it contains definitions 
+          for mime types that are used by BUNNYIO and, indirectly, by BTK+. 
+          bdk-pixbuf will use BUNNYIO for mime type detection if possible. For this 
           to work, shared-mime-info needs to be installed and 
           <envar>XDG_DATA_DIRS</envar> set accordingly at configure time. 
-          Otherwise, gdk-pixbuf falls back to its built-in mime type detection.
+          Otherwise, bdk-pixbuf falls back to its built-in mime type detection.
         </para>
       </listitem>
     </itemizedlist>
   </refsect1>
   <refsect1 id="building">
-    <title>Building and testing GTK+</title>
+    <title>Building and testing BTK+</title>
     <para>
       First make sure that you have the necessary external
       dependencies installed: <command>pkg-config</command>, GNU make,
@@ -288,15 +288,15 @@ How to compile GTK+ itself
       installed already except for <command>pkg-config</command>.
     </para>
     <para>
-      Then build and install the GTK+ libraries in the order:
-      GLib, Pango, ATK, then GTK+. For each library, follow the
+      Then build and install the BTK+ libraries in the order:
+      GLib, Bango, BATK, then BTK+. For each library, follow the
       steps of <literal>configure</literal>, <literal>make</literal>,
       <literal>make install</literal> mentioned above. If you're
       lucky, this will all go smoothly, and you'll be ready to
-      <link linkend="gtk-compiling">start compiling your own GTK+
-	applications</link>. You can test your GTK+ installation
-      by running the <command>gtk-demo</command> program that
-      GTK+ installs.
+      <link linkend="btk-compiling">start compiling your own BTK+
+	applications</link>. You can test your BTK+ installation
+      by running the <command>btk-demo</command> program that
+      BTK+ installs.
     </para>
     <para>
       If one of the <filename>configure</filename> scripts fails or running
@@ -307,8 +307,8 @@ How to compile GTK+ itself
       ran into, is found in the file <filename>config.log</filename>.
       Looking at the last couple of hundred lines in this file will
       frequently make clear what went wrong. If all else fails, you
-      can ask for help on the gtk-list mailing list.
-      See <xref linkend="gtk-resources"/> for more information.
+      can ask for help on the btk-list mailing list.
+      See <xref linkend="btk-resources"/> for more information.
     </para>
   </refsect1>
       <refsect1 id="extra-configuration-options">
@@ -316,9 +316,9 @@ How to compile GTK+ itself
 
       <para>
 	In addition to the normal options, the
-	<command>configure</command> script for the GTK+ library
+	<command>configure</command> script for the BTK+ library
 	supports a number of additional arguments. (Command line
-	arguments for the other GTK+ libraries are described in
+	arguments for the other BTK+ libraries are described in
 	the documentation distributed with the those libraries.)
 
 	<cmdsynopsis>
@@ -351,8 +351,8 @@ How to compile GTK+ itself
             <arg>--enable-xinerama</arg>
           </group>
           <group>
-            <arg>--disable-gtk-doc</arg>
-            <arg>--enable-gtk-doc</arg>
+            <arg>--disable-btk-doc</arg>
+            <arg>--enable-btk-doc</arg>
           </group>
           <group>
             <arg>--disable-cups</arg>
@@ -366,7 +366,7 @@ How to compile GTK+ itself
             <arg>--with-xinput=[no|yes]</arg>
           </group>
 	  <group>
-	    <arg>--with-gdktarget=[x11|win32|quartz|directfb]</arg>
+	    <arg>--with-bdktarget=[x11|win32|quartz|directfb]</arg>
 	  </group>
           <group>
 	    <arg>--disable-introspection</arg>
@@ -379,11 +379,11 @@ How to compile GTK+ itself
 	  <systemitem>--enable-modules</systemitem></title>
 
 	<para>
-	  Normally GTK+ will try to build the input method modules
+	  Normally BTK+ will try to build the input method modules
 	  as little shared libraries that are loaded on
 	  demand.  The <systemitem>--disable-modules</systemitem>
 	  argument indicates that they should all be built statically
-	  into the GTK+ library instead.  This is useful for
+	  into the BTK+ library instead.  This is useful for
 	  people who need to produce statically-linked binaries.  If
 	  neither <systemitem>--disable-modules</systemitem> nor
 	  <systemitem>--enable-modules</systemitem> is specified, then
@@ -409,13 +409,13 @@ How to compile GTK+ itself
 	 disables g_assert(), g_return_if_fail(), g_return_val_if_fail() and
          all cast checks between different object types. Setting it to 'minimum'
          disables only cast checks. Setting it to 'yes' enables 
-         <link linkend="GTK-Debug-Options">runtime debugging</link>. 
+         <link linkend="BTK-Debug-Options">runtime debugging</link>. 
          The default is 'minimum'.
          Note that 'no' is fast, but dangerous as it tends to destabilize 
          even mostly bug-free software by changing the effect of many bugs 
          from simple warnings into fatal crashes. Thus 
          <option>--enable-debug=no</option> should <emphasis>not</emphasis> 
-         be used for stable releases of GTK+.
+         be used for stable releases of BTK+.
         </para>
       </formalpara>
 
@@ -425,8 +425,8 @@ How to compile GTK+ itself
         <para>
           The option <systemitem>--disable-visibility</systemitem>
           turns off the use of ELF visibility attributes for linking
-          optimizations. This makes sense while changing GTK+ itself,
-          since the way in which GTK+ uses visibility attributes 
+          optimizations. This makes sense while changing BTK+ itself,
+          since the way in which BTK+ uses visibility attributes 
           forces a full rebuild of all source files for any header
           modification.
         </para>
@@ -437,13 +437,13 @@ How to compile GTK+ itself
           <systemitem>--disable-explicit-deps</systemitem></title>
         <para>
 	  If <systemitem>--enable-explicit-deps</systemitem> is
-	  specified then GTK+ will write the full set of libraries
-	  that GTK+ depends upon into its <literal>.pc</literal> files to be used when
-	  programs depending on GTK+ are linked. Otherwise, GTK+
-	  only will include the GTK+ libraries themselves, and
+	  specified then BTK+ will write the full set of libraries
+	  that BTK+ depends upon into its <literal>.pc</literal> files to be used when
+	  programs depending on BTK+ are linked. Otherwise, BTK+
+	  only will include the BTK+ libraries themselves, and
 	  will depend on system library dependency facilities to
 	  bring in the other libraries.
-	  By default GTK+ will disable explicit dependencies unless
+	  By default BTK+ will disable explicit dependencies unless
 	  it detects that they are needed on the system. (If you
 	  specify <systemitem>--enable-static</systemitem> to force
 	  building of static libraries, then explicit dependencies
@@ -452,7 +452,7 @@ How to compile GTK+ itself
 	  <systemitem>--enable-explicit-deps</systemitem> or
 	  <systemitem>--enable-static</systemitem> can cause
 	  compatibility
-	  problems when libraries that GTK+ depends upon change
+	  problems when libraries that BTK+ depends upon change
 	  their versions, and should be avoided if possible.
         </para>
       </formalpara>
@@ -462,7 +462,7 @@ How to compile GTK+ itself
           <systemitem>--enable-shm</systemitem></title>
  
         <para>
-          These options can be used to control whether GTK+ will use shared 
+          These options can be used to control whether BTK+ will use shared 
           memory to communicate with the X server when possible.
           The default is 'yes'.
         </para>
@@ -475,9 +475,9 @@ How to compile GTK+ itself
         <para>
 	  By default the <command>configure</command> script will try
 	  to auto-detect whether the XKB extension is supported by
-          the X libraries GTK+ is linked with.
+          the X libraries BTK+ is linked with.
           These options can be used to explicitly control whether
-	  GTK+ will support the XKB extension. 
+	  BTK+ will support the XKB extension. 
         </para>
       </formalpara>
 
@@ -494,20 +494,20 @@ How to compile GTK+ itself
       </formalpara>
 
       <formalpara>
-	<title><systemitem>--disable-gtk-doc</systemitem> and
-	  <systemitem>--enable-gtk-doc</systemitem></title>
+	<title><systemitem>--disable-btk-doc</systemitem> and
+	  <systemitem>--enable-btk-doc</systemitem></title>
 
 	<para>
-	  The <application>gtk-doc</application> package is
+	  The <application>btk-doc</application> package is
 	  used to generate the reference documentation included
-	  with GTK+. By default support for <application>gtk-doc</application> 
+	  with BTK+. By default support for <application>btk-doc</application> 
 	  is disabled because it requires various extra dependencies
 	  to be installed. If you have
-	  <application>gtk-doc</application> installed and
-	  are modifying GTK+, you may want to enable
-	  <application>gtk-doc</application> support by passing
-	  in <systemitem>--enable-gtk-doc</systemitem>. If not
-	  enabled, pre-generated HTML files distributed with GTK+
+	  <application>btk-doc</application> installed and
+	  are modifying BTK+, you may want to enable
+	  <application>btk-doc</application> support by passing
+	  in <systemitem>--enable-btk-doc</systemitem>. If not
+	  enabled, pre-generated HTML files distributed with BTK+
 	  will be installed.
 	</para>
       </formalpara>
@@ -527,11 +527,11 @@ How to compile GTK+ itself
       <formalpara>
         <title><systemitem>--with-xinput</systemitem></title>
         <para>
-	  Controls whether GTK+ is built with support for the XInput
+	  Controls whether BTK+ is built with support for the XInput
 	  extension. The XInput extension provides an interface
 	  to extended input devices such as graphics tablets.
 	  When this support is compiled in, specially written
-	  GTK+ programs can get access to subpixel positions,
+	  BTK+ programs can get access to subpixel positions,
 	  multiple simultaneous input devices, and extra "axes"
 	  provided by the device such as pressure and tilt
 	  information. This is only known to work well on XFree86
@@ -539,10 +539,10 @@ How to compile GTK+ itself
         </para>
       </formalpara>
       <formalpara>
-	<title><systemitem>--with-gdktarget</systemitem></title>
+	<title><systemitem>--with-bdktarget</systemitem></title>
 
 	<para>
-          Toggles between the supported backends for GDK. 
+          Toggles between the supported backends for BDK. 
           The default is x11, unless the platform is Windows, in which
 	  case the default is win32. Other supported backends are
           the quartz backend for OS X, and the DirectFB backend
@@ -561,5 +561,5 @@ How to compile GTK+ itself
 </refentry>
 
 <!-- Local Variables: -->
-<!-- sgml-parent-document: ("gtk-docs.sgml" "chapter" "refentry")  -->
+<!-- sgml-parent-document: ("btk-docs.sgml" "chapter" "refentry")  -->
 <!-- End: -->

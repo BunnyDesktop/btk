@@ -1,24 +1,24 @@
 This package contains the reference documentation
-for GTK+. For more information about GTK+
+for BTK+. For more information about BTK+
 see:
 
- http://www.gtk.org
+ http://www.btk.org
 
 For information about contributing to the
-GLib/GTK+ reference documentation project, see:
+GLib/BTK+ reference documentation project, see:
 
- http://www.gtk.org/rdp/
+ http://www.btk.org/rdp/
 
-The GTK+ reference documentation is freely redistributable,
+The BTK+ reference documentation is freely redistributable,
 see the file COPYING for details.
 
 
 REQUIREMENTS
 ============
 
-To build the documentation, you must have the gtk-doc
+To build the documentation, you must have the btk-doc
 package installed. To rebuild the template files,
-you must have the current version of the GTK+
+you must have the current version of the BTK+
 header files installed.
 
 
@@ -31,7 +31,7 @@ module. There is one option specific to this package
   --with-html-dir=DIR   top of installed HTML documentation tree
 
 
-The Makefiles in the gdk/ and gtk/ subdirs each define three targets:
+The Makefiles in the bdk/ and btk/ subdirs each define three targets:
 
  templates:
   
@@ -54,7 +54,7 @@ To build the documentation, do:
 
 You should only run the 'make templates' step if you
 need to regenerate the templates for a more recent
-version of the GTK+ sources.
+version of the BTK+ sources.
 
 INSTALLATION
 ============

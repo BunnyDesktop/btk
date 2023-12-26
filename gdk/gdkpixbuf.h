@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,30 +18,30 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_PIXBUF_H__
-#define __GDK_PIXBUF_H__
+#ifndef __BDK_PIXBUF_H__
+#define __BDK_PIXBUF_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <cairo.h>
-#include <gdk/gdktypes.h>
-#include <gdk/gdkrgb.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bairo.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkrgb.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
 G_BEGIN_DECLS
 
 /* Rendering to a drawable */
 
-void gdk_pixbuf_render_threshold_alpha   (GdkPixbuf           *pixbuf,
-					  GdkBitmap           *bitmap,
+void bdk_pixbuf_render_threshold_alpha   (BdkPixbuf           *pixbuf,
+					  BdkBitmap           *bitmap,
 					  int                  src_x,
 					  int                  src_y,
 					  int                  dest_x,
@@ -49,50 +49,50 @@ void gdk_pixbuf_render_threshold_alpha   (GdkPixbuf           *pixbuf,
 					  int                  width,
 					  int                  height,
 					  int                  alpha_threshold);
-#ifndef GDK_DISABLE_DEPRECATED
-void gdk_pixbuf_render_to_drawable       (GdkPixbuf           *pixbuf,
-					  GdkDrawable         *drawable,
-					  GdkGC               *gc,
+#ifndef BDK_DISABLE_DEPRECATED
+void bdk_pixbuf_render_to_drawable       (BdkPixbuf           *pixbuf,
+					  BdkDrawable         *drawable,
+					  BdkGC               *gc,
 					  int                  src_x,
 					  int                  src_y,
 					  int                  dest_x,
 					  int                  dest_y,
 					  int                  width,
 					  int                  height,
-					  GdkRgbDither         dither,
+					  BdkRgbDither         dither,
 					  int                  x_dither,
 					  int                  y_dither);
-void gdk_pixbuf_render_to_drawable_alpha (GdkPixbuf           *pixbuf,
-					  GdkDrawable         *drawable,
+void bdk_pixbuf_render_to_drawable_alpha (BdkPixbuf           *pixbuf,
+					  BdkDrawable         *drawable,
 					  int                  src_x,
 					  int                  src_y,
 					  int                  dest_x,
 					  int                  dest_y,
 					  int                  width,
 					  int                  height,
-					  GdkPixbufAlphaMode   alpha_mode,
+					  BdkPixbufAlphaMode   alpha_mode,
 					  int                  alpha_threshold,
-					  GdkRgbDither         dither,
+					  BdkRgbDither         dither,
 					  int                  x_dither,
 					  int                  y_dither);
-#endif /* GDK_DISABLE_DEPRECATED */
-void gdk_pixbuf_render_pixmap_and_mask_for_colormap (GdkPixbuf    *pixbuf,
-						     GdkColormap  *colormap,
-						     GdkPixmap   **pixmap_return,
-						     GdkBitmap   **mask_return,
+#endif /* BDK_DISABLE_DEPRECATED */
+void bdk_pixbuf_render_pixmap_and_mask_for_colormap (BdkPixbuf    *pixbuf,
+						     BdkColormap  *colormap,
+						     BdkPixmap   **pixmap_return,
+						     BdkBitmap   **mask_return,
 						     int           alpha_threshold);
-#ifndef GDK_MULTIHEAD_SAFE
-void gdk_pixbuf_render_pixmap_and_mask              (GdkPixbuf    *pixbuf,
-						     GdkPixmap   **pixmap_return,
-						     GdkBitmap   **mask_return,
+#ifndef BDK_MULTIHEAD_SAFE
+void bdk_pixbuf_render_pixmap_and_mask              (BdkPixbuf    *pixbuf,
+						     BdkPixmap   **pixmap_return,
+						     BdkBitmap   **mask_return,
 						     int           alpha_threshold);
 #endif
 
 
-/* Fetching a region from a drawable */
-GdkPixbuf *gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
-					 GdkDrawable *src,
-					 GdkColormap *cmap,
+/* Fetching a rebunnyion from a drawable */
+BdkPixbuf *bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
+					 BdkDrawable *src,
+					 BdkColormap *cmap,
 					 int          src_x,
 					 int          src_y,
 					 int          dest_x,
@@ -100,9 +100,9 @@ GdkPixbuf *gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
 					 int          width,
 					 int          height);
 
-GdkPixbuf *gdk_pixbuf_get_from_image    (GdkPixbuf   *dest,
-                                         GdkImage    *src,
-                                         GdkColormap *cmap,
+BdkPixbuf *bdk_pixbuf_get_from_image    (BdkPixbuf   *dest,
+                                         BdkImage    *src,
+                                         BdkColormap *cmap,
                                          int          src_x,
                                          int          src_y,
                                          int          dest_x,
@@ -112,4 +112,4 @@ GdkPixbuf *gdk_pixbuf_get_from_image    (GdkPixbuf   *dest,
 
 G_END_DECLS
 
-#endif /* __GDK_PIXBUF_H__ */
+#endif /* __BDK_PIXBUF_H__ */

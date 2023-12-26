@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,94 +18,94 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SCALE_H__
-#define __GTK_SCALE_H__
+#ifndef __BTK_SCALE_H__
+#define __BTK_SCALE_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkrange.h>
+#include <btk/btkrange.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SCALE            (gtk_scale_get_type ())
-#define GTK_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SCALE, GtkScale))
-#define GTK_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SCALE, GtkScaleClass))
-#define GTK_IS_SCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SCALE))
-#define GTK_IS_SCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SCALE))
-#define GTK_SCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SCALE, GtkScaleClass))
+#define BTK_TYPE_SCALE            (btk_scale_get_type ())
+#define BTK_SCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCALE, BtkScale))
+#define BTK_SCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCALE, BtkScaleClass))
+#define BTK_IS_SCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCALE))
+#define BTK_IS_SCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCALE))
+#define BTK_SCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCALE, BtkScaleClass))
 
 
-typedef struct _GtkScale        GtkScale;
-typedef struct _GtkScaleClass   GtkScaleClass;
+typedef struct _BtkScale        BtkScale;
+typedef struct _BtkScaleClass   BtkScaleClass;
 
-struct _GtkScale
+struct _BtkScale
 {
-  GtkRange range;
+  BtkRange range;
 
   gint  GSEAL (digits);
   guint GSEAL (draw_value) : 1;
   guint GSEAL (value_pos) : 2;
 };
 
-struct _GtkScaleClass
+struct _BtkScaleClass
 {
-  GtkRangeClass parent_class;
+  BtkRangeClass parent_class;
 
-  gchar* (* format_value) (GtkScale *scale,
+  gchar* (* format_value) (BtkScale *scale,
                            gdouble   value);
 
-  void (* draw_value) (GtkScale *scale);
+  void (* draw_value) (BtkScale *scale);
 
-  void (* get_layout_offsets) (GtkScale *scale,
+  void (* get_layout_offsets) (BtkScale *scale,
                                gint     *x,
                                gint     *y);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
 };
 
-GType             gtk_scale_get_type           (void) G_GNUC_CONST;
-void              gtk_scale_set_digits         (GtkScale        *scale,
+GType             btk_scale_get_type           (void) G_GNUC_CONST;
+void              btk_scale_set_digits         (BtkScale        *scale,
                                                 gint             digits);
-gint              gtk_scale_get_digits         (GtkScale        *scale);
-void              gtk_scale_set_draw_value     (GtkScale        *scale,
+gint              btk_scale_get_digits         (BtkScale        *scale);
+void              btk_scale_set_draw_value     (BtkScale        *scale,
                                                 gboolean         draw_value);
-gboolean          gtk_scale_get_draw_value     (GtkScale        *scale);
-void              gtk_scale_set_value_pos      (GtkScale        *scale,
-                                                GtkPositionType  pos);
-GtkPositionType   gtk_scale_get_value_pos      (GtkScale        *scale);
+gboolean          btk_scale_get_draw_value     (BtkScale        *scale);
+void              btk_scale_set_value_pos      (BtkScale        *scale,
+                                                BtkPositionType  pos);
+BtkPositionType   btk_scale_get_value_pos      (BtkScale        *scale);
 
-PangoLayout     * gtk_scale_get_layout         (GtkScale        *scale);
-void              gtk_scale_get_layout_offsets (GtkScale        *scale,
+BangoLayout     * btk_scale_get_layout         (BtkScale        *scale);
+void              btk_scale_get_layout_offsets (BtkScale        *scale,
                                                 gint            *x,
                                                 gint            *y);
 
-void              gtk_scale_add_mark           (GtkScale        *scale,
+void              btk_scale_add_mark           (BtkScale        *scale,
                                                 gdouble          value,
-                                                GtkPositionType  position,
+                                                BtkPositionType  position,
                                                 const gchar     *markup);
-void              gtk_scale_clear_marks        (GtkScale        *scale);
+void              btk_scale_clear_marks        (BtkScale        *scale);
 
 /* internal API */
-void              _gtk_scale_clear_layout      (GtkScale        *scale);
-void              _gtk_scale_get_value_size    (GtkScale        *scale,
+void              _btk_scale_clear_layout      (BtkScale        *scale);
+void              _btk_scale_get_value_size    (BtkScale        *scale,
                                                 gint            *width,
                                                 gint            *height);
-gchar           * _gtk_scale_format_value      (GtkScale        *scale,
+gchar           * _btk_scale_format_value      (BtkScale        *scale,
                                                 gdouble          value);
 
 G_END_DECLS
 
-#endif /* __GTK_SCALE_H__ */
+#endif /* __BTK_SCALE_H__ */

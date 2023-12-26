@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,61 +18,61 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ASPECT_FRAME_H__
-#define __GTK_ASPECT_FRAME_H__
+#ifndef __BTK_ASPECT_FRAME_H__
+#define __BTK_ASPECT_FRAME_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkframe.h>
+#include <btk/btkframe.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ASPECT_FRAME            (gtk_aspect_frame_get_type ())
-#define GTK_ASPECT_FRAME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ASPECT_FRAME, GtkAspectFrame))
-#define GTK_ASPECT_FRAME_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ASPECT_FRAME, GtkAspectFrameClass))
-#define GTK_IS_ASPECT_FRAME(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ASPECT_FRAME))
-#define GTK_IS_ASPECT_FRAME_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ASPECT_FRAME))
-#define GTK_ASPECT_FRAME_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ASPECT_FRAME, GtkAspectFrameClass))
+#define BTK_TYPE_ASPECT_FRAME            (btk_aspect_frame_get_type ())
+#define BTK_ASPECT_FRAME(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrame))
+#define BTK_ASPECT_FRAME_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
+#define BTK_IS_ASPECT_FRAME(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ASPECT_FRAME))
+#define BTK_IS_ASPECT_FRAME_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ASPECT_FRAME))
+#define BTK_ASPECT_FRAME_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ASPECT_FRAME, BtkAspectFrameClass))
 
 
-typedef struct _GtkAspectFrame       GtkAspectFrame;
-typedef struct _GtkAspectFrameClass  GtkAspectFrameClass;
+typedef struct _BtkAspectFrame       BtkAspectFrame;
+typedef struct _BtkAspectFrameClass  BtkAspectFrameClass;
 
-struct _GtkAspectFrame
+struct _BtkAspectFrame
 {
-  GtkFrame frame;
+  BtkFrame frame;
 
   gfloat   GSEAL (xalign);
   gfloat   GSEAL (yalign);
   gfloat   GSEAL (ratio);
   gboolean GSEAL (obey_child);
 
-  GtkAllocation GSEAL (center_allocation);
+  BtkAllocation GSEAL (center_allocation);
 };
 
-struct _GtkAspectFrameClass
+struct _BtkAspectFrameClass
 {
-  GtkFrameClass parent_class;
+  BtkFrameClass parent_class;
 };
 
 
-GType      gtk_aspect_frame_get_type   (void) G_GNUC_CONST;
-GtkWidget* gtk_aspect_frame_new        (const gchar     *label,
+GType      btk_aspect_frame_get_type   (void) G_GNUC_CONST;
+BtkWidget* btk_aspect_frame_new        (const gchar     *label,
 					gfloat           xalign,
 					gfloat           yalign,
 					gfloat           ratio,
 					gboolean         obey_child);
-void       gtk_aspect_frame_set        (GtkAspectFrame  *aspect_frame,
+void       btk_aspect_frame_set        (BtkAspectFrame  *aspect_frame,
 					gfloat           xalign,
 					gfloat           yalign,
 					gfloat           ratio,
@@ -81,4 +81,4 @@ void       gtk_aspect_frame_set        (GtkAspectFrame  *aspect_frame,
 
 G_END_DECLS
 
-#endif /* __GTK_ASPECT_FRAME_H__ */
+#endif /* __BTK_ASPECT_FRAME_H__ */

@@ -1,4 +1,4 @@
-/* gtkrbtree.h
+/* btkrbtree.h
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,12 +17,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* A Red-Black Tree implementation used specifically by GtkTreeView.
+/* A Red-Black Tree implementation used specifically by BtkTreeView.
  */
-#ifndef __GTK_RBTREE_H__
-#define __GTK_RBTREE_H__
+#ifndef __BTK_RBTREE_H__
+#define __BTK_RBTREE_H__
 
-#include <glib.h>
+#include <bunnylib.h>
 
 
 G_BEGIN_DECLS
@@ -30,43 +30,43 @@ G_BEGIN_DECLS
 
 typedef enum
 {
-  GTK_RBNODE_BLACK = 1 << 0,
-  GTK_RBNODE_RED = 1 << 1,
-  GTK_RBNODE_IS_PARENT = 1 << 2,
-  GTK_RBNODE_IS_SELECTED = 1 << 3,
-  GTK_RBNODE_IS_PRELIT = 1 << 4,
-  GTK_RBNODE_IS_SEMI_COLLAPSED = 1 << 5,
-  GTK_RBNODE_IS_SEMI_EXPANDED = 1 << 6,
-  GTK_RBNODE_INVALID = 1 << 7,
-  GTK_RBNODE_COLUMN_INVALID = 1 << 8,
-  GTK_RBNODE_DESCENDANTS_INVALID = 1 << 9,
-  GTK_RBNODE_NON_COLORS = GTK_RBNODE_IS_PARENT |
-  			  GTK_RBNODE_IS_SELECTED |
-  			  GTK_RBNODE_IS_PRELIT |
-                          GTK_RBNODE_IS_SEMI_COLLAPSED |
-                          GTK_RBNODE_IS_SEMI_EXPANDED |
-                          GTK_RBNODE_INVALID |
-                          GTK_RBNODE_COLUMN_INVALID |
-                          GTK_RBNODE_DESCENDANTS_INVALID
-} GtkRBNodeColor;
+  BTK_RBNODE_BLACK = 1 << 0,
+  BTK_RBNODE_RED = 1 << 1,
+  BTK_RBNODE_IS_PARENT = 1 << 2,
+  BTK_RBNODE_IS_SELECTED = 1 << 3,
+  BTK_RBNODE_IS_PRELIT = 1 << 4,
+  BTK_RBNODE_IS_SEMI_COLLAPSED = 1 << 5,
+  BTK_RBNODE_IS_SEMI_EXPANDED = 1 << 6,
+  BTK_RBNODE_INVALID = 1 << 7,
+  BTK_RBNODE_COLUMN_INVALID = 1 << 8,
+  BTK_RBNODE_DESCENDANTS_INVALID = 1 << 9,
+  BTK_RBNODE_NON_COLORS = BTK_RBNODE_IS_PARENT |
+  			  BTK_RBNODE_IS_SELECTED |
+  			  BTK_RBNODE_IS_PRELIT |
+                          BTK_RBNODE_IS_SEMI_COLLAPSED |
+                          BTK_RBNODE_IS_SEMI_EXPANDED |
+                          BTK_RBNODE_INVALID |
+                          BTK_RBNODE_COLUMN_INVALID |
+                          BTK_RBNODE_DESCENDANTS_INVALID
+} BtkRBNodeColor;
 
-typedef struct _GtkRBTree GtkRBTree;
-typedef struct _GtkRBNode GtkRBNode;
-typedef struct _GtkRBTreeView GtkRBTreeView;
+typedef struct _BtkRBTree BtkRBTree;
+typedef struct _BtkRBNode BtkRBNode;
+typedef struct _BtkRBTreeView BtkRBTreeView;
 
-typedef void (*GtkRBTreeTraverseFunc) (GtkRBTree  *tree,
-                                       GtkRBNode  *node,
+typedef void (*BtkRBTreeTraverseFunc) (BtkRBTree  *tree,
+                                       BtkRBNode  *node,
                                        gpointer  data);
 
-struct _GtkRBTree
+struct _BtkRBTree
 {
-  GtkRBNode *root;
-  GtkRBNode *nil;
-  GtkRBTree *parent_tree;
-  GtkRBNode *parent_node;
+  BtkRBNode *root;
+  BtkRBNode *nil;
+  BtkRBTree *parent_tree;
+  BtkRBNode *parent_node;
 };
 
-struct _GtkRBNode
+struct _BtkRBNode
 {
   guint flags : 14;
 
@@ -82,9 +82,9 @@ struct _GtkRBNode
 
   guint parity : 1;
   
-  GtkRBNode *left;
-  GtkRBNode *right;
-  GtkRBNode *parent;
+  BtkRBNode *left;
+  BtkRBNode *right;
+  BtkRBNode *parent;
 
   /* count is the number of nodes beneath us, plus 1 for ourselves.
    * i.e. node->left->count + node->right->count + 1
@@ -99,86 +99,86 @@ struct _GtkRBNode
   gint offset;
 
   /* Child trees */
-  GtkRBTree *children;
+  BtkRBTree *children;
 };
 
 
-#define GTK_RBNODE_GET_COLOR(node)		(node?(((node->flags&GTK_RBNODE_RED)==GTK_RBNODE_RED)?GTK_RBNODE_RED:GTK_RBNODE_BLACK):GTK_RBNODE_BLACK)
-#define GTK_RBNODE_SET_COLOR(node,color) 	if((node->flags&color)!=color)node->flags=node->flags^(GTK_RBNODE_RED|GTK_RBNODE_BLACK)
-#define GTK_RBNODE_GET_HEIGHT(node) 		(node->offset-(node->left->offset+node->right->offset+(node->children?node->children->root->offset:0)))
-#define GTK_RBNODE_SET_FLAG(node, flag)   	G_STMT_START{ (node->flags|=flag); }G_STMT_END
-#define GTK_RBNODE_UNSET_FLAG(node, flag) 	G_STMT_START{ (node->flags&=~(flag)); }G_STMT_END
-#define GTK_RBNODE_FLAG_SET(node, flag) 	(node?(((node->flags&flag)==flag)?TRUE:FALSE):FALSE)
+#define BTK_RBNODE_GET_COLOR(node)		(node?(((node->flags&BTK_RBNODE_RED)==BTK_RBNODE_RED)?BTK_RBNODE_RED:BTK_RBNODE_BLACK):BTK_RBNODE_BLACK)
+#define BTK_RBNODE_SET_COLOR(node,color) 	if((node->flags&color)!=color)node->flags=node->flags^(BTK_RBNODE_RED|BTK_RBNODE_BLACK)
+#define BTK_RBNODE_GET_HEIGHT(node) 		(node->offset-(node->left->offset+node->right->offset+(node->children?node->children->root->offset:0)))
+#define BTK_RBNODE_SET_FLAG(node, flag)   	G_STMT_START{ (node->flags|=flag); }G_STMT_END
+#define BTK_RBNODE_UNSET_FLAG(node, flag) 	G_STMT_START{ (node->flags&=~(flag)); }G_STMT_END
+#define BTK_RBNODE_FLAG_SET(node, flag) 	(node?(((node->flags&flag)==flag)?TRUE:FALSE):FALSE)
 
 
-GtkRBTree *_gtk_rbtree_new              (void);
-void       _gtk_rbtree_free             (GtkRBTree              *tree);
-void       _gtk_rbtree_remove           (GtkRBTree              *tree);
-void       _gtk_rbtree_destroy          (GtkRBTree              *tree);
-GtkRBNode *_gtk_rbtree_insert_before    (GtkRBTree              *tree,
-					 GtkRBNode              *node,
+BtkRBTree *_btk_rbtree_new              (void);
+void       _btk_rbtree_free             (BtkRBTree              *tree);
+void       _btk_rbtree_remove           (BtkRBTree              *tree);
+void       _btk_rbtree_destroy          (BtkRBTree              *tree);
+BtkRBNode *_btk_rbtree_insert_before    (BtkRBTree              *tree,
+					 BtkRBNode              *node,
 					 gint                    height,
 					 gboolean                valid);
-GtkRBNode *_gtk_rbtree_insert_after     (GtkRBTree              *tree,
-					 GtkRBNode              *node,
+BtkRBNode *_btk_rbtree_insert_after     (BtkRBTree              *tree,
+					 BtkRBNode              *node,
 					 gint                    height,
 					 gboolean                valid);
-void       _gtk_rbtree_remove_node      (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-void       _gtk_rbtree_reorder          (GtkRBTree              *tree,
+void       _btk_rbtree_remove_node      (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+void       _btk_rbtree_reorder          (BtkRBTree              *tree,
 					 gint                   *new_order,
 					 gint                    length);
-GtkRBNode *_gtk_rbtree_find_count       (GtkRBTree              *tree,
+BtkRBNode *_btk_rbtree_find_count       (BtkRBTree              *tree,
 					 gint                    count);
-void       _gtk_rbtree_node_set_height  (GtkRBTree              *tree,
-					 GtkRBNode              *node,
+void       _btk_rbtree_node_set_height  (BtkRBTree              *tree,
+					 BtkRBNode              *node,
 					 gint                    height);
-void       _gtk_rbtree_node_mark_invalid(GtkRBTree              *tree,
-					 GtkRBNode              *node);
-void       _gtk_rbtree_node_mark_valid  (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-void       _gtk_rbtree_column_invalid   (GtkRBTree              *tree);
-void       _gtk_rbtree_mark_invalid     (GtkRBTree              *tree);
-void       _gtk_rbtree_set_fixed_height (GtkRBTree              *tree,
+void       _btk_rbtree_node_mark_invalid(BtkRBTree              *tree,
+					 BtkRBNode              *node);
+void       _btk_rbtree_node_mark_valid  (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+void       _btk_rbtree_column_invalid   (BtkRBTree              *tree);
+void       _btk_rbtree_mark_invalid     (BtkRBTree              *tree);
+void       _btk_rbtree_set_fixed_height (BtkRBTree              *tree,
 					 gint                    height,
 					 gboolean                mark_valid);
-gint       _gtk_rbtree_node_find_offset (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-gint       _gtk_rbtree_node_find_parity (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-gint       _gtk_rbtree_find_offset      (GtkRBTree              *tree,
+gint       _btk_rbtree_node_find_offset (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+gint       _btk_rbtree_node_find_parity (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+gint       _btk_rbtree_find_offset      (BtkRBTree              *tree,
 					 gint                    offset,
-					 GtkRBTree             **new_tree,
-					 GtkRBNode             **new_node);
-void       _gtk_rbtree_traverse         (GtkRBTree              *tree,
-					 GtkRBNode              *node,
+					 BtkRBTree             **new_tree,
+					 BtkRBNode             **new_node);
+void       _btk_rbtree_traverse         (BtkRBTree              *tree,
+					 BtkRBNode              *node,
 					 GTraverseType           order,
-					 GtkRBTreeTraverseFunc   func,
+					 BtkRBTreeTraverseFunc   func,
 					 gpointer                data);
-GtkRBNode *_gtk_rbtree_next             (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-GtkRBNode *_gtk_rbtree_prev             (GtkRBTree              *tree,
-					 GtkRBNode              *node);
-void       _gtk_rbtree_next_full        (GtkRBTree              *tree,
-					 GtkRBNode              *node,
-					 GtkRBTree             **new_tree,
-					 GtkRBNode             **new_node);
-void       _gtk_rbtree_prev_full        (GtkRBTree              *tree,
-					 GtkRBNode              *node,
-					 GtkRBTree             **new_tree,
-					 GtkRBNode             **new_node);
+BtkRBNode *_btk_rbtree_next             (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+BtkRBNode *_btk_rbtree_prev             (BtkRBTree              *tree,
+					 BtkRBNode              *node);
+void       _btk_rbtree_next_full        (BtkRBTree              *tree,
+					 BtkRBNode              *node,
+					 BtkRBTree             **new_tree,
+					 BtkRBNode             **new_node);
+void       _btk_rbtree_prev_full        (BtkRBTree              *tree,
+					 BtkRBNode              *node,
+					 BtkRBTree             **new_tree,
+					 BtkRBNode             **new_node);
 
-gint       _gtk_rbtree_get_depth        (GtkRBTree              *tree);
+gint       _btk_rbtree_get_depth        (BtkRBTree              *tree);
 
 /* This func checks the integrity of the tree */
 #ifdef G_ENABLE_DEBUG  
-void       _gtk_rbtree_test             (const gchar            *where,
-                                         GtkRBTree              *tree);
-void       _gtk_rbtree_debug_spew       (GtkRBTree              *tree);
+void       _btk_rbtree_test             (const gchar            *where,
+                                         BtkRBTree              *tree);
+void       _btk_rbtree_debug_spew       (BtkRBTree              *tree);
 #endif
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_RBTREE_H__ */
+#endif /* __BTK_RBTREE_H__ */

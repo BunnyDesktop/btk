@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2005 Novell, Inc.
  *
@@ -20,20 +20,20 @@
 /* By Tor Lillqvist <tml@novell.com> 2005 */
 
 /*
- * Modified by the GTK+ Team and others 1997-2005.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2005.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#include "gtkmarshalers.h"
-#include "gtkplug.h"
-#include "gtkplugprivate.h"
+#include "btkmarshalers.h"
+#include "btkplug.h"
+#include "btkplugprivate.h"
 
-#include "win32/gdkwin32.h"
+#include "win32/bdkwin32.h"
 
-#include "gtkwin32embed.h"
-#include "gtkalias.h"
+#include "btkwin32embed.h"
+#include "btkalias.h"
 
 #if defined(_MSC_VER) && (WINVER < 0x0500)
 #ifndef GA_PARENT
@@ -42,106 +42,106 @@
 WINUSERAPI HWND WINAPI GetAncestor(HWND,UINT);
 #endif
 
-GdkNativeWindow
-_gtk_plug_windowing_get_id (GtkPlug *plug)
+BdkNativeWindow
+_btk_plug_windowing_get_id (BtkPlug *plug)
 {
-  return (GdkNativeWindow) GDK_WINDOW_HWND (GTK_WIDGET (plug)->window);
+  return (BdkNativeWindow) BDK_WINDOW_HWND (BTK_WIDGET (plug)->window);
 }
 
 void
-_gtk_plug_windowing_realize_toplevel (GtkPlug *plug)
+_btk_plug_windowing_realize_toplevel (BtkPlug *plug)
 {
   if (plug->socket_window)
     {
-      _gtk_win32_embed_send (plug->socket_window,
-			     GTK_WIN32_EMBED_PARENT_NOTIFY,
-			     (WPARAM) GDK_WINDOW_HWND (GTK_WIDGET (plug)->window),
-			     GTK_WIN32_EMBED_PROTOCOL_VERSION);
-      _gtk_win32_embed_send (plug->socket_window,
-			     GTK_WIN32_EMBED_EVENT_PLUG_MAPPED, 0, 0);
+      _btk_win32_embed_send (plug->socket_window,
+			     BTK_WIN32_EMBED_PARENT_NOTIFY,
+			     (WPARAM) BDK_WINDOW_HWND (BTK_WIDGET (plug)->window),
+			     BTK_WIN32_EMBED_PROTOCOL_VERSION);
+      _btk_win32_embed_send (plug->socket_window,
+			     BTK_WIN32_EMBED_EVENT_PLUG_MAPPED, 0, 0);
     }
 }
 
 void
-_gtk_plug_windowing_map_toplevel (GtkPlug *plug)
+_btk_plug_windowing_map_toplevel (BtkPlug *plug)
 {
   if (plug->socket_window)
-    _gtk_win32_embed_send (plug->socket_window,
-			   GTK_WIN32_EMBED_EVENT_PLUG_MAPPED,
+    _btk_win32_embed_send (plug->socket_window,
+			   BTK_WIN32_EMBED_EVENT_PLUG_MAPPED,
 			   1, 0);
 }
 
 void
-_gtk_plug_windowing_unmap_toplevel (GtkPlug *plug)
+_btk_plug_windowing_unmap_toplevel (BtkPlug *plug)
 {
   if (plug->socket_window)
-    _gtk_win32_embed_send (plug->socket_window,
-			   GTK_WIN32_EMBED_EVENT_PLUG_MAPPED,
+    _btk_win32_embed_send (plug->socket_window,
+			   BTK_WIN32_EMBED_EVENT_PLUG_MAPPED,
 			   0, 0);
 }
 
 void
-_gtk_plug_windowing_set_focus (GtkPlug *plug)
+_btk_plug_windowing_set_focus (BtkPlug *plug)
 {
   if (plug->socket_window)
-    _gtk_win32_embed_send (plug->socket_window,
-			   GTK_WIN32_EMBED_REQUEST_FOCUS,
+    _btk_win32_embed_send (plug->socket_window,
+			   BTK_WIN32_EMBED_REQUEST_FOCUS,
 			   0, 0);
 }
 
 void
-_gtk_plug_windowing_add_grabbed_key (GtkPlug        *plug,
+_btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
 				     guint           accelerator_key,
-				     GdkModifierType accelerator_mods)
+				     BdkModifierType accelerator_mods)
 {
   if (plug->socket_window)
-    _gtk_win32_embed_send (plug->socket_window,
-			   GTK_WIN32_EMBED_GRAB_KEY,
+    _btk_win32_embed_send (plug->socket_window,
+			   BTK_WIN32_EMBED_GRAB_KEY,
 			   accelerator_key, accelerator_mods);
 }
 
 void
-_gtk_plug_windowing_remove_grabbed_key (GtkPlug        *plug,
+_btk_plug_windowing_remove_grabbed_key (BtkPlug        *plug,
 					guint           accelerator_key,
-					GdkModifierType accelerator_mods)
+					BdkModifierType accelerator_mods)
 {
   if (plug->socket_window)
-    _gtk_win32_embed_send (plug->socket_window,
-			   GTK_WIN32_EMBED_UNGRAB_KEY,
+    _btk_win32_embed_send (plug->socket_window,
+			   BTK_WIN32_EMBED_UNGRAB_KEY,
 			   accelerator_key, accelerator_mods);
 }
 
 void
-_gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
-				     GtkDirectionType direction)
+_btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
+				     BtkDirectionType direction)
 {
-  GtkWin32EmbedMessageType message = GTK_WIN32_EMBED_FOCUS_PREV;
+  BtkWin32EmbedMessageType message = BTK_WIN32_EMBED_FOCUS_PREV;
   
   switch (direction)
     {
-    case GTK_DIR_UP:
-    case GTK_DIR_LEFT:
-    case GTK_DIR_TAB_BACKWARD:
-      message = GTK_WIN32_EMBED_FOCUS_PREV;
+    case BTK_DIR_UP:
+    case BTK_DIR_LEFT:
+    case BTK_DIR_TAB_BACKWARD:
+      message = BTK_WIN32_EMBED_FOCUS_PREV;
       break;
-    case GTK_DIR_DOWN:
-    case GTK_DIR_RIGHT:
-    case GTK_DIR_TAB_FORWARD:
-      message = GTK_WIN32_EMBED_FOCUS_NEXT;
+    case BTK_DIR_DOWN:
+    case BTK_DIR_RIGHT:
+    case BTK_DIR_TAB_FORWARD:
+      message = BTK_WIN32_EMBED_FOCUS_NEXT;
       break;
     }
   
-  _gtk_win32_embed_send_focus_message (plug->socket_window, message, 0);
+  _btk_win32_embed_send_focus_message (plug->socket_window, message, 0);
 }
 
-GdkFilterReturn
-_gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
-				 GdkEvent  *event,
+BdkFilterReturn
+_btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
+				 BdkEvent  *event,
 				 gpointer   data)
 {
-  GtkPlug *plug = GTK_PLUG (data);
-  MSG *msg = (MSG *) gdk_xevent;
-  GdkFilterReturn return_val = GDK_FILTER_CONTINUE;
+  BtkPlug *plug = BTK_PLUG (data);
+  MSG *msg = (MSG *) bdk_xevent;
+  BdkFilterReturn return_val = BDK_FILTER_CONTINUE;
 
   switch (msg->message)
     {
@@ -156,20 +156,20 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 	{
 	  HWND parent = GetAncestor (msg->hwnd, GA_PARENT);
 	  gboolean was_embedded = plug->socket_window != NULL;
-	  GdkScreen *screen = gdk_drawable_get_screen (event->any.window);
-	  GdkDisplay *display = gdk_screen_get_display (screen);
+	  BdkScreen *screen = bdk_drawable_get_screen (event->any.window);
+	  BdkDisplay *display = bdk_screen_get_display (screen);
 
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("WM_WINDOWPOSCHANGED: hwnd=%p GA_PARENT=%p socket_window=%p\n", msg->hwnd, parent, plug->socket_window));
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("WM_WINDOWPOSCHANGED: hwnd=%p GA_PARENT=%p socket_window=%p\n", msg->hwnd, parent, plug->socket_window));
 	  g_object_ref (plug);
 	  if (was_embedded)
 	    {
 	      /* End of embedding protocol for previous socket */
-	      if (parent != GDK_WINDOW_HWND (plug->socket_window))
+	      if (parent != BDK_WINDOW_HWND (plug->socket_window))
 		{
-		  GtkWidget *widget = GTK_WIDGET (plug);
+		  BtkWidget *widget = BTK_WIDGET (plug);
 
-		  GTK_NOTE (PLUGSOCKET, g_printerr ("was_embedded, current parent != socket_window\n"));
-		  gdk_window_set_user_data (plug->socket_window, NULL);
+		  BTK_NOTE (PLUGSOCKET, g_printerr ("was_embedded, current parent != socket_window\n"));
+		  bdk_window_set_user_data (plug->socket_window, NULL);
 		  g_object_unref (plug->socket_window);
 		  plug->socket_window = NULL;
 
@@ -180,14 +180,14 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 		   */
 		  if (parent == GetDesktopWindow ())
 		    {
-		      GTK_NOTE (PLUGSOCKET, g_printerr ("current parent is root window\n"));
-		      _gtk_plug_send_delete_event (widget);
-		      return_val = GDK_FILTER_REMOVE;
+		      BTK_NOTE (PLUGSOCKET, g_printerr ("current parent is root window\n"));
+		      _btk_plug_send_delete_event (widget);
+		      return_val = BDK_FILTER_REMOVE;
 		    }
 		}
 	      else
 		{
-		  GTK_NOTE (PLUGSOCKET, g_printerr ("still same parent\n"));
+		  BTK_NOTE (PLUGSOCKET, g_printerr ("still same parent\n"));
 		  goto done;
 		}
 	    }
@@ -196,14 +196,14 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 	    {
 	      /* Start of embedding protocol */
 
-	      GTK_NOTE (PLUGSOCKET, g_printerr ("start of embedding\n"));
-	      plug->socket_window = gdk_window_lookup_for_display (display, (GdkNativeWindow) parent);
+	      BTK_NOTE (PLUGSOCKET, g_printerr ("start of embedding\n"));
+	      plug->socket_window = bdk_window_lookup_for_display (display, (BdkNativeWindow) parent);
 	      if (plug->socket_window)
 		{
 		  gpointer user_data = NULL;
 
-		  GTK_NOTE (PLUGSOCKET, g_printerr ("already had socket_window\n"));
-		  gdk_window_get_user_data (plug->socket_window, &user_data);
+		  BTK_NOTE (PLUGSOCKET, g_printerr ("already had socket_window\n"));
+		  bdk_window_get_user_data (plug->socket_window, &user_data);
 
 		  if (user_data)
 		    {
@@ -216,12 +216,12 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
 		}
 	      else
 		{
-		  plug->socket_window = gdk_window_foreign_new_for_display (display, (GdkNativeWindow) parent);
+		  plug->socket_window = bdk_window_foreign_new_for_display (display, (BdkNativeWindow) parent);
 		  if (!plug->socket_window) /* Already gone */
 		    break;
 		}
 
-	      _gtk_plug_add_all_grabbed_keys (plug);
+	      _btk_plug_add_all_grabbed_keys (plug);
 
 	      if (!was_embedded)
 		g_signal_emit_by_name (plug, "embedded");
@@ -234,71 +234,71 @@ _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
     case WM_SIZE:
       if (!plug->same_app && plug->socket_window)
 	{
-	  _gtk_win32_embed_send (plug->socket_window,
-				 GTK_WIN32_EMBED_PLUG_RESIZED,
+	  _btk_win32_embed_send (plug->socket_window,
+				 BTK_WIN32_EMBED_PLUG_RESIZED,
 				 0, 0);
 	}
       break;
 
     default:
-      if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_WINDOW_ACTIVATE))
+      if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_WINDOW_ACTIVATE))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: WINDOW_ACTIVATE received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_window_set_is_active (GTK_WINDOW (plug), TRUE);
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: WINDOW_ACTIVATE received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_window_set_is_active (BTK_WINDOW (plug), TRUE);
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
-      else if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_WINDOW_DEACTIVATE))
+      else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_WINDOW_DEACTIVATE))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: WINDOW_DEACTIVATE received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_window_set_is_active (GTK_WINDOW (plug), FALSE);
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: WINDOW_DEACTIVATE received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_window_set_is_active (BTK_WINDOW (plug), FALSE);
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
-      else if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_FOCUS_IN))
+      else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_FOCUS_IN))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: FOCUS_IN received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_window_set_has_toplevel_focus (GTK_WINDOW (plug), TRUE);
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: FOCUS_IN received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_window_set_has_toplevel_focus (BTK_WINDOW (plug), TRUE);
 	  switch (msg->wParam)
 	    {
-	    case GTK_WIN32_EMBED_FOCUS_CURRENT:
+	    case BTK_WIN32_EMBED_FOCUS_CURRENT:
 	      break;
-	    case GTK_WIN32_EMBED_FOCUS_FIRST:
-	      _gtk_plug_focus_first_last (plug, GTK_DIR_TAB_FORWARD);
+	    case BTK_WIN32_EMBED_FOCUS_FIRST:
+	      _btk_plug_focus_first_last (plug, BTK_DIR_TAB_FORWARD);
 	      break;
-	    case GTK_WIN32_EMBED_FOCUS_LAST:
-	      _gtk_plug_focus_first_last (plug, GTK_DIR_TAB_BACKWARD);
+	    case BTK_WIN32_EMBED_FOCUS_LAST:
+	      _btk_plug_focus_first_last (plug, BTK_DIR_TAB_BACKWARD);
 	      break;
 	    }
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
-      else if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_FOCUS_OUT))
+      else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_FOCUS_OUT))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: FOCUS_OUT received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_window_set_has_toplevel_focus (GTK_WINDOW (plug), FALSE);
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: FOCUS_OUT received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_window_set_has_toplevel_focus (BTK_WINDOW (plug), FALSE);
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
-      else if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_MODALITY_ON))
+      else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_MODALITY_ON))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: MODALITY_ON received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_plug_handle_modality_on (plug);
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: MODALITY_ON received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_plug_handle_modality_on (plug);
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
-      else if (msg->message == _gtk_win32_embed_message_type (GTK_WIN32_EMBED_MODALITY_OFF))
+      else if (msg->message == _btk_win32_embed_message_type (BTK_WIN32_EMBED_MODALITY_OFF))
 	{
-	  GTK_NOTE (PLUGSOCKET, g_printerr ("GtkPlug: MODALITY_OFF received\n"));
-	  _gtk_win32_embed_push_message (msg);
-	  _gtk_plug_handle_modality_off (plug);
-	  _gtk_win32_embed_pop_message ();
-	  return_val = GDK_FILTER_REMOVE;
+	  BTK_NOTE (PLUGSOCKET, g_printerr ("BtkPlug: MODALITY_OFF received\n"));
+	  _btk_win32_embed_push_message (msg);
+	  _btk_plug_handle_modality_off (plug);
+	  _btk_win32_embed_pop_message ();
+	  return_val = BDK_FILTER_REMOVE;
 	}
       break;
     }

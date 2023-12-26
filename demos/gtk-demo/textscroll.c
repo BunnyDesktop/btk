@@ -1,39 +1,39 @@
 /* Text Widget/Automatic scrolling
  *
  * This example demonstrates how to use the gravity of 
- * GtkTextMarks to keep a text view scrolled to the bottom
+ * BtkTextMarks to keep a text view scrolled to the bottom
  * while appending text.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include "demo-common.h"
 
 /* Scroll to the end of the buffer.
  */
 static gboolean
-scroll_to_end (GtkTextView *textview)
+scroll_to_end (BtkTextView *textview)
 {
-  GtkTextBuffer *buffer;
-  GtkTextIter iter;
-  GtkTextMark *mark;
+  BtkTextBuffer *buffer;
+  BtkTextIter iter;
+  BtkTextMark *mark;
   char *spaces;
   static int count;
 
-  buffer = gtk_text_view_get_buffer (textview);
+  buffer = btk_text_view_get_buffer (textview);
   
   /* Get "end" mark. It's located at the end of buffer because 
    * of right gravity
    */
-  mark = gtk_text_buffer_get_mark (buffer, "end");
-  gtk_text_buffer_get_iter_at_mark (buffer, &iter, mark);
+  mark = btk_text_buffer_get_mark (buffer, "end");
+  btk_text_buffer_get_iter_at_mark (buffer, &iter, mark);
 
   /* and insert some text at its position, the iter will be 
    * revalidated after insertion to point to the end of inserted text
    */
   spaces = g_strnfill (count++, ' ');
-  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
-  gtk_text_buffer_insert (buffer, &iter, spaces, -1);
-  gtk_text_buffer_insert (buffer, &iter,
+  btk_text_buffer_insert (buffer, &iter, "\n", -1);
+  btk_text_buffer_insert (buffer, &iter, spaces, -1);
+  btk_text_buffer_insert (buffer, &iter,
                           "Scroll to end scroll to end scroll "
                           "to end scroll to end ",
                           -1);
@@ -41,7 +41,7 @@ scroll_to_end (GtkTextView *textview)
 
   /* Now scroll the end mark onscreen.
    */
-  gtk_text_view_scroll_mark_onscreen (textview, mark);
+  btk_text_view_scroll_mark_onscreen (textview, mark);
 
   /* Emulate typewriter behavior, shift to the left if we 
    * are far enough to the right.
@@ -55,26 +55,26 @@ scroll_to_end (GtkTextView *textview)
 /* Scroll to the bottom of the buffer.
  */
 static gboolean
-scroll_to_bottom (GtkTextView *textview)
+scroll_to_bottom (BtkTextView *textview)
 {
-  GtkTextBuffer *buffer;
-  GtkTextIter iter;
-  GtkTextMark *mark;
+  BtkTextBuffer *buffer;
+  BtkTextIter iter;
+  BtkTextMark *mark;
   char *spaces;
   static int count;
 
-  buffer = gtk_text_view_get_buffer (textview);
+  buffer = btk_text_view_get_buffer (textview);
   
   /* Get end iterator */
-  gtk_text_buffer_get_end_iter (buffer, &iter);
+  btk_text_buffer_get_end_iter (buffer, &iter);
 
   /* and insert some text at it, the iter will be revalidated
    * after insertion to point to the end of inserted text
    */
   spaces = g_strnfill (count++, ' ');
-  gtk_text_buffer_insert (buffer, &iter, "\n", -1);
-  gtk_text_buffer_insert (buffer, &iter, spaces, -1);
-  gtk_text_buffer_insert (buffer, &iter,
+  btk_text_buffer_insert (buffer, &iter, "\n", -1);
+  btk_text_buffer_insert (buffer, &iter, spaces, -1);
+  btk_text_buffer_insert (buffer, &iter,
                           "Scroll to bottom scroll to bottom scroll "
                           "to bottom scroll to bottom",
                           -1);
@@ -83,17 +83,17 @@ scroll_to_bottom (GtkTextView *textview)
   /* Move the iterator to the beginning of line, so we don't scroll 
    * in horizontal direction 
    */
-  gtk_text_iter_set_line_offset (&iter, 0);
+  btk_text_iter_set_line_offset (&iter, 0);
   
   /* and place the mark at iter. the mark will stay there after we
    * insert some text at the end because it has right gravity.
    */
-  mark = gtk_text_buffer_get_mark (buffer, "scroll");
-  gtk_text_buffer_move_mark (buffer, mark, &iter);
+  mark = btk_text_buffer_get_mark (buffer, "scroll");
+  btk_text_buffer_move_mark (buffer, mark, &iter);
   
   /* Scroll the mark onscreen.
    */
-  gtk_text_view_scroll_mark_onscreen (textview, mark);
+  btk_text_view_scroll_mark_onscreen (textview, mark);
 
   /* Shift text back if we got enough to the right.
    */
@@ -104,23 +104,23 @@ scroll_to_bottom (GtkTextView *textview)
 }
 
 static guint
-setup_scroll (GtkTextView *textview,
+setup_scroll (BtkTextView *textview,
               gboolean     to_end)
 {
-  GtkTextBuffer *buffer;
-  GtkTextIter iter;
+  BtkTextBuffer *buffer;
+  BtkTextIter iter;
 
-  buffer = gtk_text_view_get_buffer (textview);
-  gtk_text_buffer_get_end_iter (buffer, &iter);
+  buffer = btk_text_view_get_buffer (textview);
+  btk_text_buffer_get_end_iter (buffer, &iter);
 
   if (to_end)
   {
     /* If we want to scroll to the end, including horizontal scrolling,
      * then we just create a mark with right gravity at the end of the 
      * buffer. It will stay at the end unless explicitely moved with 
-     * gtk_text_buffer_move_mark.
+     * btk_text_buffer_move_mark.
      */
-    gtk_text_buffer_create_mark (buffer, "end", &iter, FALSE);
+    btk_text_buffer_create_mark (buffer, "end", &iter, FALSE);
     
     /* Add scrolling timeout. */
     return g_timeout_add (50, (GSourceFunc) scroll_to_end, textview);
@@ -129,11 +129,11 @@ setup_scroll (GtkTextView *textview,
   {
     /* If we want to scroll to the bottom, but not scroll horizontally, 
      * then an end mark won't do the job. Just create a mark so we can 
-     * use it with gtk_text_view_scroll_mark_onscreen, we'll position it
+     * use it with btk_text_view_scroll_mark_onscreen, we'll position it
      * explicitely when needed. Use left gravity so the mark stays where 
      * we put it after inserting new text.
      */
-    gtk_text_buffer_create_mark (buffer, "scroll", &iter, TRUE);
+    btk_text_buffer_create_mark (buffer, "scroll", &iter, TRUE);
     
     /* Add scrolling timeout. */
     return g_timeout_add (100, (GSourceFunc) scroll_to_bottom, textview);
@@ -141,26 +141,26 @@ setup_scroll (GtkTextView *textview,
 }
 
 static void
-remove_timeout (GtkWidget *window,
+remove_timeout (BtkWidget *window,
                 gpointer   timeout)
 {
   g_source_remove (GPOINTER_TO_UINT (timeout));
 }
 
 static void
-create_text_view (GtkWidget *hbox,
+create_text_view (BtkWidget *hbox,
                   gboolean   to_end)
 {
-  GtkWidget *swindow;
-  GtkWidget *textview;
+  BtkWidget *swindow;
+  BtkWidget *textview;
   guint timeout;
 
-  swindow = gtk_scrolled_window_new (NULL, NULL);
-  gtk_box_pack_start (GTK_BOX (hbox), swindow, TRUE, TRUE, 0);
-  textview = gtk_text_view_new ();
-  gtk_container_add (GTK_CONTAINER (swindow), textview);
+  swindow = btk_scrolled_window_new (NULL, NULL);
+  btk_box_pack_start (BTK_BOX (hbox), swindow, TRUE, TRUE, 0);
+  textview = btk_text_view_new ();
+  btk_container_add (BTK_CONTAINER (swindow), textview);
 
-  timeout = setup_scroll (GTK_TEXT_VIEW (textview), to_end);
+  timeout = setup_scroll (BTK_TEXT_VIEW (textview), to_end);
 
   /* Remove the timeout in destroy handler, so we don't try to
    * scroll destroyed widget. 
@@ -170,31 +170,31 @@ create_text_view (GtkWidget *hbox,
                     GUINT_TO_POINTER (timeout));
 }
 
-GtkWidget *
-do_textscroll (GtkWidget *do_widget)
+BtkWidget *
+do_textscroll (BtkWidget *do_widget)
 {
-  static GtkWidget *window = NULL;
+  static BtkWidget *window = NULL;
 
   if (!window)
     {
-      GtkWidget *hbox;
+      BtkWidget *hbox;
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
       g_signal_connect (window, "destroy",
-			G_CALLBACK (gtk_widget_destroyed), &window);
-      gtk_window_set_default_size (GTK_WINDOW (window), 600, 400);
+			G_CALLBACK (btk_widget_destroyed), &window);
+      btk_window_set_default_size (BTK_WINDOW (window), 600, 400);
       
-      hbox = gtk_hbox_new (TRUE, 6);
-      gtk_container_add (GTK_CONTAINER (window), hbox);
+      hbox = btk_hbox_new (TRUE, 6);
+      btk_container_add (BTK_CONTAINER (window), hbox);
 
       create_text_view (hbox, TRUE);
       create_text_view (hbox, FALSE);
     }
 
-  if (!gtk_widget_get_visible (window))
-      gtk_widget_show_all (window);
+  if (!btk_widget_get_visible (window))
+      btk_widget_show_all (window);
   else
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
 
   return window;
 }

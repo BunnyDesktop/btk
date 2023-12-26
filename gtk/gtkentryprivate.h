@@ -1,5 +1,5 @@
-/* gtkentryprivate.h
- * Copyright (C) 2003  Kristian Rietveld  <kris@gtk.org>
+/* btkentryprivate.h
+ * Copyright (C) 2003  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,28 +17,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_ENTRY_PRIVATE_H__
-#define __GTK_ENTRY_PRIVATE_H__
+#ifndef __BTK_ENTRY_PRIVATE_H__
+#define __BTK_ENTRY_PRIVATE_H__
 
-#include <gtk/gtktreeviewcolumn.h>
-#include <gtk/gtktreemodelfilter.h>
-#include <gtk/gtkliststore.h>
-#include <gtk/gtkentrycompletion.h>
-#include <gtk/gtkentry.h>
+#include <btk/btktreeviewcolumn.h>
+#include <btk/btktreemodelfilter.h>
+#include <btk/btkliststore.h>
+#include <btk/btkentrycompletion.h>
+#include <btk/btkentry.h>
 
 G_BEGIN_DECLS
 
-struct _GtkEntryCompletionPrivate
+struct _BtkEntryCompletionPrivate
 {
-  GtkWidget *entry;
+  BtkWidget *entry;
 
-  GtkWidget *tree_view;
-  GtkTreeViewColumn *column;
-  GtkTreeModelFilter *filter_model;
-  GtkListStore *actions;
+  BtkWidget *tree_view;
+  BtkTreeViewColumn *column;
+  BtkTreeModelFilter *filter_model;
+  BtkListStore *actions;
   gboolean first_sel_changed;
 
-  GtkEntryCompletionMatchFunc match_func;
+  BtkEntryCompletionMatchFunc match_func;
   gpointer match_data;
   GDestroyNotify match_notify;
 
@@ -48,11 +48,11 @@ struct _GtkEntryCompletionPrivate
 
   gchar *case_normalized_key;
 
-  /* only used by GtkEntry when attached: */
-  GtkWidget *popup_window;
-  GtkWidget *vbox;
-  GtkWidget *scrolled_window;
-  GtkWidget *action_view;
+  /* only used by BtkEntry when attached: */
+  BtkWidget *popup_window;
+  BtkWidget *vbox;
+  BtkWidget *scrolled_window;
+  BtkWidget *action_view;
 
   gulong completion_timeout;
   gulong changed_id;
@@ -71,18 +71,18 @@ struct _GtkEntryCompletionPrivate
   GSource *check_completion_idle;
 };
 
-gboolean _gtk_entry_completion_resize_popup (GtkEntryCompletion *completion);
-void     _gtk_entry_completion_popup        (GtkEntryCompletion *completion);
-void     _gtk_entry_completion_popdown      (GtkEntryCompletion *completion);
-gchar *  _gtk_entry_completion_compute_prefix (GtkEntryCompletion *completion,
+gboolean _btk_entry_completion_resize_popup (BtkEntryCompletion *completion);
+void     _btk_entry_completion_popup        (BtkEntryCompletion *completion);
+void     _btk_entry_completion_popdown      (BtkEntryCompletion *completion);
+gchar *  _btk_entry_completion_compute_prefix (BtkEntryCompletion *completion,
 					       const char         *key);
 
-void      _gtk_entry_get_borders            (GtkEntry  *entry,
+void      _btk_entry_get_borders            (BtkEntry  *entry,
 					     gint      *xborder,
 					     gint      *yborder);
-void     _gtk_entry_effective_inner_border (GtkEntry  *entry,
-					    GtkBorder *border);
-void     _gtk_entry_reset_im_context       (GtkEntry  *entry);
+void     _btk_entry_effective_inner_border (BtkEntry  *entry,
+					    BtkBorder *border);
+void     _btk_entry_reset_im_context       (BtkEntry  *entry);
 G_END_DECLS
 
-#endif /* __GTK_ENTRY_PRIVATE_H__ */
+#endif /* __BTK_ENTRY_PRIVATE_H__ */

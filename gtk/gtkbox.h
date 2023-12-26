@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,40 +18,40 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_BOX_H__
-#define __GTK_BOX_H__
+#ifndef __BTK_BOX_H__
+#define __BTK_BOX_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
+#include <btk/btkcontainer.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_BOX            (gtk_box_get_type ())
-#define GTK_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_BOX, GtkBox))
-#define GTK_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_BOX, GtkBoxClass))
-#define GTK_IS_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_BOX))
-#define GTK_IS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_BOX))
-#define GTK_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_BOX, GtkBoxClass))
+#define BTK_TYPE_BOX            (btk_box_get_type ())
+#define BTK_BOX(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BOX, BtkBox))
+#define BTK_BOX_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BOX, BtkBoxClass))
+#define BTK_IS_BOX(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BOX))
+#define BTK_IS_BOX_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BOX))
+#define BTK_BOX_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BOX, BtkBoxClass))
 
 
-typedef struct _GtkBox	      GtkBox;
-typedef struct _GtkBoxClass   GtkBoxClass;
+typedef struct _BtkBox	      BtkBox;
+typedef struct _BtkBoxClass   BtkBoxClass;
 
-struct _GtkBox
+struct _BtkBox
 {
-  GtkContainer container;
+  BtkContainer container;
 
   /*< public >*/
   GList *GSEAL (children);
@@ -59,40 +59,40 @@ struct _GtkBox
   guint GSEAL (homogeneous) : 1;
 };
 
-struct _GtkBoxClass
+struct _BtkBoxClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 };
 
 /**
- * GtkBoxChild:
- * @widget: the child widget, packed into the GtkBox.
+ * BtkBoxChild:
+ * @widget: the child widget, packed into the BtkBox.
  * @padding: the number of extra pixels to put between this child and its
  *  neighbors, set when packed, zero by default.
  * @expand: flag indicates whether extra space should be given to this child.
- *  Any extra space given to the parent GtkBox is divided up among all children
+ *  Any extra space given to the parent BtkBox is divided up among all children
  *  with this attribute set to %TRUE; set when packed, %TRUE by default.
  * @fill: flag indicates whether any extra space given to this child due to its
  *  @expand attribute being set is actually allocated to the child, rather than
  *  being used as padding around the widget; set when packed, %TRUE by default.
- * @pack: one of #GtkPackType indicating whether the child is packed with
- *  reference to the start (top/left) or end (bottom/right) of the GtkBox.
+ * @pack: one of #BtkPackType indicating whether the child is packed with
+ *  reference to the start (top/left) or end (bottom/right) of the BtkBox.
  * @is_secondary: %TRUE if the child is secondary
  *
- * The #GtkBoxChild holds a child widget of #GtkBox and describes how the child
- * is to be packed into the #GtkBox. All fields of this #GtkBoxChild should be
+ * The #BtkBoxChild holds a child widget of #BtkBox and describes how the child
+ * is to be packed into the #BtkBox. All fields of this #BtkBoxChild should be
  * considered read-only and they should never be set directly by an application.
- * Use gtk_box_query_child_packing() and gtk_box_set_child_packing() to query
- * and set the #GtkBoxChild.padding, #GtkBoxChild.expand, #GtkBoxChild.fill and
- * #GtkBoxChild.pack fields.
+ * Use btk_box_query_child_packing() and btk_box_set_child_packing() to query
+ * and set the #BtkBoxChild.padding, #BtkBoxChild.expand, #BtkBoxChild.fill and
+ * #BtkBoxChild.pack fields.
  *
- * Deprecated: 2.22: Use gtk_container_get_children() instead.
+ * Deprecated: 2.22: Use btk_container_get_children() instead.
  */
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
-typedef struct _GtkBoxChild   GtkBoxChild;
-struct _GtkBoxChild
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
+typedef struct _BtkBoxChild   BtkBoxChild;
+struct _BtkBoxChild
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   guint16 padding;
   guint expand : 1;
   guint fill : 1;
@@ -101,59 +101,59 @@ struct _GtkBoxChild
 };
 #endif
 
-GType       gtk_box_get_type            (void) G_GNUC_CONST;
-GtkWidget* _gtk_box_new                 (GtkOrientation  orientation,
+GType       btk_box_get_type            (void) G_GNUC_CONST;
+BtkWidget* _btk_box_new                 (BtkOrientation  orientation,
                                          gboolean        homogeneous,
                                          gint            spacing);
 
-void        gtk_box_pack_start          (GtkBox         *box,
-                                         GtkWidget      *child,
+void        btk_box_pack_start          (BtkBox         *box,
+                                         BtkWidget      *child,
                                          gboolean        expand,
                                          gboolean        fill,
                                          guint           padding);
-void        gtk_box_pack_end            (GtkBox         *box,
-                                         GtkWidget      *child,
+void        btk_box_pack_end            (BtkBox         *box,
+                                         BtkWidget      *child,
                                          gboolean        expand,
                                          gboolean        fill,
                                          guint           padding);
 
-#ifndef GTK_DISABLE_DEPRECATED
-void        gtk_box_pack_start_defaults (GtkBox         *box,
-                                         GtkWidget      *widget);
-void        gtk_box_pack_end_defaults   (GtkBox         *box,
-                                         GtkWidget      *widget);
+#ifndef BTK_DISABLE_DEPRECATED
+void        btk_box_pack_start_defaults (BtkBox         *box,
+                                         BtkWidget      *widget);
+void        btk_box_pack_end_defaults   (BtkBox         *box,
+                                         BtkWidget      *widget);
 #endif
 
-void        gtk_box_set_homogeneous     (GtkBox         *box,
+void        btk_box_set_homogeneous     (BtkBox         *box,
                                          gboolean        homogeneous);
-gboolean    gtk_box_get_homogeneous     (GtkBox         *box);
-void        gtk_box_set_spacing         (GtkBox         *box,
+gboolean    btk_box_get_homogeneous     (BtkBox         *box);
+void        btk_box_set_spacing         (BtkBox         *box,
                                          gint            spacing);
-gint        gtk_box_get_spacing         (GtkBox         *box);
+gint        btk_box_get_spacing         (BtkBox         *box);
 
-void        gtk_box_reorder_child       (GtkBox         *box,
-                                         GtkWidget      *child,
+void        btk_box_reorder_child       (BtkBox         *box,
+                                         BtkWidget      *child,
                                          gint            position);
 
-void        gtk_box_query_child_packing (GtkBox         *box,
-                                         GtkWidget      *child,
+void        btk_box_query_child_packing (BtkBox         *box,
+                                         BtkWidget      *child,
                                          gboolean       *expand,
                                          gboolean       *fill,
                                          guint          *padding,
-                                         GtkPackType    *pack_type);
-void        gtk_box_set_child_packing   (GtkBox         *box,
-                                         GtkWidget      *child,
+                                         BtkPackType    *pack_type);
+void        btk_box_set_child_packing   (BtkBox         *box,
+                                         BtkWidget      *child,
                                          gboolean        expand,
                                          gboolean        fill,
                                          guint           padding,
-                                         GtkPackType     pack_type);
+                                         BtkPackType     pack_type);
 
 /* internal API */
-void        _gtk_box_set_old_defaults   (GtkBox         *box);
-gboolean    _gtk_box_get_spacing_set    (GtkBox         *box);
-void        _gtk_box_set_spacing_set    (GtkBox         *box,
+void        _btk_box_set_old_defaults   (BtkBox         *box);
+gboolean    _btk_box_get_spacing_set    (BtkBox         *box);
+void        _btk_box_set_spacing_set    (BtkBox         *box,
                                          gboolean        spacing_set);
 
 G_END_DECLS
 
-#endif /* __GTK_BOX_H__ */
+#endif /* __BTK_BOX_H__ */

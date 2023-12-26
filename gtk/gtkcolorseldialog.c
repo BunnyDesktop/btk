@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,22 +18,22 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 #include "config.h"
 #include <string.h>
-#include <glib.h>
-#include "gtkcolorseldialog.h"
-#include "gtkframe.h"
-#include "gtkhbbox.h"
-#include "gtkbutton.h"
-#include "gtkstock.h"
-#include "gtkintl.h"
-#include "gtkbuildable.h"
-#include "gtkalias.h"
+#include <bunnylib.h>
+#include "btkcolorseldialog.h"
+#include "btkframe.h"
+#include "btkhbbox.h"
+#include "btkbutton.h"
+#include "btkstock.h"
+#include "btkintl.h"
+#include "btkbuildable.h"
+#include "btkalias.h"
 
 enum {
   PROP_0,
@@ -45,30 +45,30 @@ enum {
 
 
 /***************************/
-/* GtkColorSelectionDialog */
+/* BtkColorSelectionDialog */
 /***************************/
 
-static void gtk_color_selection_dialog_buildable_interface_init     (GtkBuildableIface *iface);
-static GObject * gtk_color_selection_dialog_buildable_get_internal_child (GtkBuildable *buildable,
-									  GtkBuilder   *builder,
+static void btk_color_selection_dialog_buildable_interface_init     (BtkBuildableIface *iface);
+static GObject * btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+									  BtkBuilder   *builder,
 									  const gchar  *childname);
 
-G_DEFINE_TYPE_WITH_CODE (GtkColorSelectionDialog, gtk_color_selection_dialog,
-           GTK_TYPE_DIALOG,
-           G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                      gtk_color_selection_dialog_buildable_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkColorSelectionDialog, btk_color_selection_dialog,
+           BTK_TYPE_DIALOG,
+           G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+                      btk_color_selection_dialog_buildable_interface_init))
 
-static GtkBuildableIface *parent_buildable_iface;
+static BtkBuildableIface *parent_buildable_iface;
 
 static void
-gtk_color_selection_dialog_get_property (GObject         *object,
+btk_color_selection_dialog_get_property (GObject         *object,
 					 guint            prop_id,
 					 GValue          *value,
 					 GParamSpec      *pspec)
 {
-  GtkColorSelectionDialog *colorsel;
+  BtkColorSelectionDialog *colorsel;
 
-  colorsel = GTK_COLOR_SELECTION_DIALOG (object);
+  colorsel = BTK_COLOR_SELECTION_DIALOG (object);
 
   switch (prop_id)
     {
@@ -91,144 +91,144 @@ gtk_color_selection_dialog_get_property (GObject         *object,
 }
 
 static void
-gtk_color_selection_dialog_class_init (GtkColorSelectionDialogClass *klass)
+btk_color_selection_dialog_class_init (BtkColorSelectionDialogClass *klass)
 {
-  GObjectClass   *gobject_class = G_OBJECT_CLASS (klass);
-  gobject_class->get_property = gtk_color_selection_dialog_get_property;
+  GObjectClass   *bobject_class = G_OBJECT_CLASS (klass);
+  bobject_class->get_property = btk_color_selection_dialog_get_property;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_COLOR_SELECTION,
 				   g_param_spec_object ("color-selection",
 						     P_("Color Selection"),
 						     P_("The color selection embedded in the dialog."),
-						     GTK_TYPE_WIDGET,
+						     BTK_TYPE_WIDGET,
 						     G_PARAM_READABLE));
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_OK_BUTTON,
 				   g_param_spec_object ("ok-button",
 						     P_("OK Button"),
 						     P_("The OK button of the dialog."),
-						     GTK_TYPE_WIDGET,
+						     BTK_TYPE_WIDGET,
 						     G_PARAM_READABLE));
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_CANCEL_BUTTON,
 				   g_param_spec_object ("cancel-button",
 						     P_("Cancel Button"),
 						     P_("The cancel button of the dialog."),
-						     GTK_TYPE_WIDGET,
+						     BTK_TYPE_WIDGET,
 						     G_PARAM_READABLE));
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_HELP_BUTTON,
 				   g_param_spec_object ("help-button",
 						     P_("Help Button"),
 						     P_("The help button of the dialog."),
-						     GTK_TYPE_WIDGET,
+						     BTK_TYPE_WIDGET,
 						     G_PARAM_READABLE));
 }
 
 static void
-gtk_color_selection_dialog_init (GtkColorSelectionDialog *colorseldiag)
+btk_color_selection_dialog_init (BtkColorSelectionDialog *colorseldiag)
 {
-  GtkDialog *dialog = GTK_DIALOG (colorseldiag);
+  BtkDialog *dialog = BTK_DIALOG (colorseldiag);
 
-  gtk_dialog_set_has_separator (dialog, FALSE);
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_box_set_spacing (GTK_BOX (dialog->vbox), 2); /* 2 * 5 + 2 = 12 */
-  gtk_container_set_border_width (GTK_CONTAINER (dialog->action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (dialog->action_area), 6);
+  btk_dialog_set_has_separator (dialog, FALSE);
+  btk_container_set_border_width (BTK_CONTAINER (dialog), 5);
+  btk_box_set_spacing (BTK_BOX (dialog->vbox), 2); /* 2 * 5 + 2 = 12 */
+  btk_container_set_border_width (BTK_CONTAINER (dialog->action_area), 5);
+  btk_box_set_spacing (BTK_BOX (dialog->action_area), 6);
 
-  colorseldiag->colorsel = gtk_color_selection_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (colorseldiag->colorsel), 5);
-  gtk_color_selection_set_has_palette (GTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE); 
-  gtk_color_selection_set_has_opacity_control (GTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE);
-  gtk_container_add (GTK_CONTAINER (GTK_DIALOG (colorseldiag)->vbox), colorseldiag->colorsel);
-  gtk_widget_show (colorseldiag->colorsel);
+  colorseldiag->colorsel = btk_color_selection_new ();
+  btk_container_set_border_width (BTK_CONTAINER (colorseldiag->colorsel), 5);
+  btk_color_selection_set_has_palette (BTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE); 
+  btk_color_selection_set_has_opacity_control (BTK_COLOR_SELECTION(colorseldiag->colorsel), FALSE);
+  btk_container_add (BTK_CONTAINER (BTK_DIALOG (colorseldiag)->vbox), colorseldiag->colorsel);
+  btk_widget_show (colorseldiag->colorsel);
   
-  colorseldiag->cancel_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
-                                                       GTK_STOCK_CANCEL,
-                                                       GTK_RESPONSE_CANCEL);
+  colorseldiag->cancel_button = btk_dialog_add_button (BTK_DIALOG (colorseldiag),
+                                                       BTK_STOCK_CANCEL,
+                                                       BTK_RESPONSE_CANCEL);
 
-  colorseldiag->ok_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
-                                                   GTK_STOCK_OK,
-                                                   GTK_RESPONSE_OK);
+  colorseldiag->ok_button = btk_dialog_add_button (BTK_DIALOG (colorseldiag),
+                                                   BTK_STOCK_OK,
+                                                   BTK_RESPONSE_OK);
                                                    
-  gtk_widget_grab_default (colorseldiag->ok_button);
+  btk_widget_grab_default (colorseldiag->ok_button);
   
-  colorseldiag->help_button = gtk_dialog_add_button (GTK_DIALOG (colorseldiag),
-                                                     GTK_STOCK_HELP,
-                                                     GTK_RESPONSE_HELP);
+  colorseldiag->help_button = btk_dialog_add_button (BTK_DIALOG (colorseldiag),
+                                                     BTK_STOCK_HELP,
+                                                     BTK_RESPONSE_HELP);
 
-  gtk_widget_hide (colorseldiag->help_button);
+  btk_widget_hide (colorseldiag->help_button);
 
-  gtk_dialog_set_alternative_button_order (GTK_DIALOG (colorseldiag),
-					   GTK_RESPONSE_OK,
-					   GTK_RESPONSE_CANCEL,
-					   GTK_RESPONSE_HELP,
+  btk_dialog_set_alternative_button_order (BTK_DIALOG (colorseldiag),
+					   BTK_RESPONSE_OK,
+					   BTK_RESPONSE_CANCEL,
+					   BTK_RESPONSE_HELP,
 					   -1);
 
-  gtk_window_set_title (GTK_WINDOW (colorseldiag),
+  btk_window_set_title (BTK_WINDOW (colorseldiag),
                         _("Color Selection"));
 
-  _gtk_dialog_set_ignore_separator (dialog, TRUE);
+  _btk_dialog_set_ignore_separator (dialog, TRUE);
 }
 
-GtkWidget*
-gtk_color_selection_dialog_new (const gchar *title)
+BtkWidget*
+btk_color_selection_dialog_new (const gchar *title)
 {
-  GtkColorSelectionDialog *colorseldiag;
+  BtkColorSelectionDialog *colorseldiag;
   
-  colorseldiag = g_object_new (GTK_TYPE_COLOR_SELECTION_DIALOG, NULL);
+  colorseldiag = g_object_new (BTK_TYPE_COLOR_SELECTION_DIALOG, NULL);
 
   if (title)
-    gtk_window_set_title (GTK_WINDOW (colorseldiag), title);
+    btk_window_set_title (BTK_WINDOW (colorseldiag), title);
 
-  gtk_window_set_resizable (GTK_WINDOW (colorseldiag), FALSE);
+  btk_window_set_resizable (BTK_WINDOW (colorseldiag), FALSE);
   
-  return GTK_WIDGET (colorseldiag);
+  return BTK_WIDGET (colorseldiag);
 }
 
 /**
- * gtk_color_selection_dialog_get_color_selection:
- * @colorsel: a #GtkColorSelectionDialog
+ * btk_color_selection_dialog_get_color_selection:
+ * @colorsel: a #BtkColorSelectionDialog
  *
- * Retrieves the #GtkColorSelection widget embedded in the dialog.
+ * Retrieves the #BtkColorSelection widget embedded in the dialog.
  *
- * Returns: (transfer none): the embedded #GtkColorSelection
+ * Returns: (transfer none): the embedded #BtkColorSelection
  *
  * Since: 2.14
  **/
-GtkWidget*
-gtk_color_selection_dialog_get_color_selection (GtkColorSelectionDialog *colorsel)
+BtkWidget*
+btk_color_selection_dialog_get_color_selection (BtkColorSelectionDialog *colorsel)
 {
-  g_return_val_if_fail (GTK_IS_COLOR_SELECTION_DIALOG (colorsel), NULL);
+  g_return_val_if_fail (BTK_IS_COLOR_SELECTION_DIALOG (colorsel), NULL);
 
   return colorsel->colorsel;
 }
 
 static void
-gtk_color_selection_dialog_buildable_interface_init (GtkBuildableIface *iface)
+btk_color_selection_dialog_buildable_interface_init (BtkBuildableIface *iface)
 {
   parent_buildable_iface = g_type_interface_peek_parent (iface);
-  iface->get_internal_child = gtk_color_selection_dialog_buildable_get_internal_child;
+  iface->get_internal_child = btk_color_selection_dialog_buildable_get_internal_child;
 }
 
 static GObject *
-gtk_color_selection_dialog_buildable_get_internal_child (GtkBuildable *buildable,
-							 GtkBuilder   *builder,
+btk_color_selection_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+							 BtkBuilder   *builder,
 							 const gchar  *childname)
 {
     if (strcmp(childname, "ok_button") == 0)
-	return G_OBJECT (GTK_COLOR_SELECTION_DIALOG (buildable)->ok_button);
+	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->ok_button);
     else if (strcmp(childname, "cancel_button") == 0)
-	return G_OBJECT (GTK_COLOR_SELECTION_DIALOG (buildable)->cancel_button);
+	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG (buildable)->cancel_button);
     else if (strcmp(childname, "help_button") == 0)
-	return G_OBJECT (GTK_COLOR_SELECTION_DIALOG(buildable)->help_button);
+	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->help_button);
     else if (strcmp(childname, "color_selection") == 0)
-	return G_OBJECT (GTK_COLOR_SELECTION_DIALOG(buildable)->colorsel);
+	return G_OBJECT (BTK_COLOR_SELECTION_DIALOG(buildable)->colorsel);
 
     return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }
 
 
-#define __GTK_COLOR_SELECTION_DIALOG_C__
-#include "gtkaliasdef.c"
+#define __BTK_COLOR_SELECTION_DIALOG_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,80 +18,80 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TOGGLE_BUTTON_H__
-#define __GTK_TOGGLE_BUTTON_H__
+#ifndef __BTK_TOGGLE_BUTTON_H__
+#define __BTK_TOGGLE_BUTTON_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbutton.h>
+#include <btk/btkbutton.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TOGGLE_BUTTON                  (gtk_toggle_button_get_type ())
-#define GTK_TOGGLE_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TOGGLE_BUTTON, GtkToggleButton))
-#define GTK_TOGGLE_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TOGGLE_BUTTON, GtkToggleButtonClass))
-#define GTK_IS_TOGGLE_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TOGGLE_BUTTON))
-#define GTK_IS_TOGGLE_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TOGGLE_BUTTON))
-#define GTK_TOGGLE_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TOGGLE_BUTTON, GtkToggleButtonClass))
+#define BTK_TYPE_TOGGLE_BUTTON                  (btk_toggle_button_get_type ())
+#define BTK_TOGGLE_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TOGGLE_BUTTON, BtkToggleButton))
+#define BTK_TOGGLE_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TOGGLE_BUTTON, BtkToggleButtonClass))
+#define BTK_IS_TOGGLE_BUTTON(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TOGGLE_BUTTON))
+#define BTK_IS_TOGGLE_BUTTON_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TOGGLE_BUTTON))
+#define BTK_TOGGLE_BUTTON_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TOGGLE_BUTTON, BtkToggleButtonClass))
 
 
-typedef struct _GtkToggleButton       GtkToggleButton;
-typedef struct _GtkToggleButtonClass  GtkToggleButtonClass;
+typedef struct _BtkToggleButton       BtkToggleButton;
+typedef struct _BtkToggleButtonClass  BtkToggleButtonClass;
 
-struct _GtkToggleButton
+struct _BtkToggleButton
 {
-  GtkButton button;
+  BtkButton button;
 
   guint GSEAL (active) : 1;
   guint GSEAL (draw_indicator) : 1;
   guint GSEAL (inconsistent) : 1;
 };
 
-struct _GtkToggleButtonClass
+struct _BtkToggleButtonClass
 {
-  GtkButtonClass parent_class;
+  BtkButtonClass parent_class;
 
-  void (* toggled) (GtkToggleButton *toggle_button);
+  void (* toggled) (BtkToggleButton *toggle_button);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_toggle_button_get_type          (void) G_GNUC_CONST;
+GType      btk_toggle_button_get_type          (void) G_GNUC_CONST;
 
-GtkWidget* gtk_toggle_button_new               (void);
-GtkWidget* gtk_toggle_button_new_with_label    (const gchar     *label);
-GtkWidget* gtk_toggle_button_new_with_mnemonic (const gchar     *label);
-void       gtk_toggle_button_set_mode          (GtkToggleButton *toggle_button,
+BtkWidget* btk_toggle_button_new               (void);
+BtkWidget* btk_toggle_button_new_with_label    (const gchar     *label);
+BtkWidget* btk_toggle_button_new_with_mnemonic (const gchar     *label);
+void       btk_toggle_button_set_mode          (BtkToggleButton *toggle_button,
                                                 gboolean         draw_indicator);
-gboolean   gtk_toggle_button_get_mode          (GtkToggleButton *toggle_button);
-void       gtk_toggle_button_set_active        (GtkToggleButton *toggle_button,
+gboolean   btk_toggle_button_get_mode          (BtkToggleButton *toggle_button);
+void       btk_toggle_button_set_active        (BtkToggleButton *toggle_button,
                                                 gboolean         is_active);
-gboolean   gtk_toggle_button_get_active        (GtkToggleButton *toggle_button);
-void       gtk_toggle_button_toggled           (GtkToggleButton *toggle_button);
-void       gtk_toggle_button_set_inconsistent  (GtkToggleButton *toggle_button,
+gboolean   btk_toggle_button_get_active        (BtkToggleButton *toggle_button);
+void       btk_toggle_button_toggled           (BtkToggleButton *toggle_button);
+void       btk_toggle_button_set_inconsistent  (BtkToggleButton *toggle_button,
                                                 gboolean         setting);
-gboolean   gtk_toggle_button_get_inconsistent  (GtkToggleButton *toggle_button);
+gboolean   btk_toggle_button_get_inconsistent  (BtkToggleButton *toggle_button);
 
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define	gtk_toggle_button_set_state		gtk_toggle_button_set_active
-#endif /* GTK_DISABLE_DEPRECATED */
+#ifndef BTK_DISABLE_DEPRECATED
+#define	btk_toggle_button_set_state		btk_toggle_button_set_active
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_TOGGLE_BUTTON_H__ */
+#endif /* __BTK_TOGGLE_BUTTON_H__ */

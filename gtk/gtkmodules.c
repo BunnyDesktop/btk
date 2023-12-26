@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright 1998-2002 Tim Janik, Red Hat, Inc., and others.
  * Copyright (C) 2003 Alex Graveley
  *
@@ -22,34 +22,34 @@
 
 #include <string.h>
 
-#include "gtkmodules.h"
-#include "gtkmain.h"
-#include "gtksettings.h"
-#include "gtkdebug.h"
-#include "gtkprivate.h" /* GTK_LIBDIR */
-#include "gtkintl.h" 
-#include "gtkalias.h"
+#include "btkmodules.h"
+#include "btkmain.h"
+#include "btksettings.h"
+#include "btkdebug.h"
+#include "btkprivate.h" /* BTK_LIBDIR */
+#include "btkintl.h" 
+#include "btkalias.h"
 
-#include <gmodule.h>
+#include <bmodule.h>
 
-typedef struct _GtkModuleInfo GtkModuleInfo;
-struct _GtkModuleInfo
+typedef struct _BtkModuleInfo BtkModuleInfo;
+struct _BtkModuleInfo
 {
   GModule                 *module;
   gint                     ref_count;
-  GtkModuleInitFunc        init_func;
-  GtkModuleDisplayInitFunc display_init_func;
+  BtkModuleInitFunc        init_func;
+  BtkModuleDisplayInitFunc display_init_func;
   GSList                  *names;
 };
 
-static GSList *gtk_modules = NULL;
+static GSList *btk_modules = NULL;
 
 static gboolean default_display_opened = FALSE;
 
 /* Saved argc, argv for delayed module initialization
  */
-static gint    gtk_argc = 0;
-static gchar **gtk_argv = NULL;
+static gint    btk_argc = 0;
+static gchar **btk_argv = NULL;
 
 static gchar **
 get_module_path (void)
@@ -57,7 +57,7 @@ get_module_path (void)
   const gchar *module_path_env;
   const gchar *exe_prefix;
   const gchar *home_dir;
-  gchar *home_gtk_dir = NULL;
+  gchar *home_btk_dir = NULL;
   gchar *module_path;
   gchar *default_dir;
   static gchar **result = NULL;
@@ -67,40 +67,40 @@ get_module_path (void)
 
   home_dir = g_get_home_dir();
   if (home_dir)
-    home_gtk_dir = g_build_filename (home_dir, ".gtk-2.0", NULL);
+    home_btk_dir = g_build_filename (home_dir, ".btk-2.0", NULL);
 
-  module_path_env = g_getenv ("GTK_PATH");
-  exe_prefix = g_getenv ("GTK_EXE_PREFIX");
+  module_path_env = g_getenv ("BTK_PATH");
+  exe_prefix = g_getenv ("BTK_EXE_PREFIX");
 
   if (exe_prefix)
-    default_dir = g_build_filename (exe_prefix, "lib", "gtk-2.0", NULL);
+    default_dir = g_build_filename (exe_prefix, "lib", "btk-2.0", NULL);
   else
-    default_dir = g_build_filename (GTK_LIBDIR, "gtk-2.0", NULL);
+    default_dir = g_build_filename (BTK_LIBDIR, "btk-2.0", NULL);
 
-  if (module_path_env && home_gtk_dir)
+  if (module_path_env && home_btk_dir)
     module_path = g_build_path (G_SEARCHPATH_SEPARATOR_S,
-				module_path_env, home_gtk_dir, default_dir, NULL);
+				module_path_env, home_btk_dir, default_dir, NULL);
   else if (module_path_env)
     module_path = g_build_path (G_SEARCHPATH_SEPARATOR_S,
 				module_path_env, default_dir, NULL);
-  else if (home_gtk_dir)
+  else if (home_btk_dir)
     module_path = g_build_path (G_SEARCHPATH_SEPARATOR_S,
-				home_gtk_dir, default_dir, NULL);
+				home_btk_dir, default_dir, NULL);
   else
     module_path = g_build_path (G_SEARCHPATH_SEPARATOR_S,
 				default_dir, NULL);
 
-  g_free (home_gtk_dir);
+  g_free (home_btk_dir);
   g_free (default_dir);
 
-  result = pango_split_file_list (module_path);
+  result = bango_split_file_list (module_path);
   g_free (module_path);
 
   return result;
 }
 
 /**
- * _gtk_get_module_path:
+ * _btk_get_module_path:
  * @type: the type of the module, for instance 'modules', 'engines', immodules'
  * 
  * Determines the search path for a particular type of module.
@@ -108,7 +108,7 @@ get_module_path (void)
  * Return value: the search path for the module type. Free with g_strfreev().
  **/
 gchar **
-_gtk_get_module_path (const gchar *type)
+_btk_get_module_path (const gchar *type)
 {
   gchar **paths = get_module_path();
   gchar **path;
@@ -131,11 +131,11 @@ _gtk_get_module_path (const gchar *type)
 	    gchar *tmp_dir;
 	    
 	    if (use_version && use_host)
-	      tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, GTK_HOST, type, NULL);
+	      tmp_dir = g_build_filename (*path, BTK_BINARY_VERSION, BTK_HOST, type, NULL);
 	    else if (use_version)
-	      tmp_dir = g_build_filename (*path, GTK_BINARY_VERSION, type, NULL);
+	      tmp_dir = g_build_filename (*path, BTK_BINARY_VERSION, type, NULL);
 	    else if (use_host)
-	      tmp_dir = g_build_filename (*path, GTK_HOST, type, NULL);
+	      tmp_dir = g_build_filename (*path, BTK_HOST, type, NULL);
 	    else
 	      tmp_dir = g_build_filename (*path, type, NULL);
 
@@ -174,18 +174,18 @@ module_build_la_path (const gchar *directory,
 }
 
 /**
- * _gtk_find_module:
+ * _btk_find_module:
  * @name: the name of the module
  * @type: the type of the module, for instance 'modules', 'engines', immodules'
  * 
- * Looks for a dynamically module named @name of type @type in the standard GTK+
+ * Looks for a dynamically module named @name of type @type in the standard BTK+
  *  module search path.
  * 
  * Return value: the pathname to the found module, or %NULL if it wasn't found.
  *  Free with g_free().
  **/
 gchar *
-_gtk_find_module (const gchar *name,
+_btk_find_module (const gchar *name,
 		  const gchar *type)
 {
   gchar **paths;
@@ -195,7 +195,7 @@ _gtk_find_module (const gchar *name,
   if (g_path_is_absolute (name))
     return g_strdup (name);
 
-  paths = _gtk_get_module_path (type);
+  paths = _btk_get_module_path (type);
   for (path = paths; *path; path++)
     {
       gchar *tmp_name;
@@ -228,7 +228,7 @@ find_module (const gchar *name)
   GModule *module;
   gchar *module_name;
 
-  module_name = _gtk_find_module (name, "modules");
+  module_name = _btk_find_module (name, "modules");
   if (!module_name)
     {
       /* As last resort, try loading without an absolute path (using system
@@ -239,10 +239,10 @@ find_module (const gchar *name)
 
   module = g_module_open (module_name, G_MODULE_BIND_LOCAL | G_MODULE_BIND_LAZY);
 
-  if (_gtk_module_has_mixed_deps (module))
+  if (_btk_module_has_mixed_deps (module))
     {
-      g_warning ("GTK+ module %s cannot be loaded.\n"
-                 "GTK+ 2.x symbols detected. Using GTK+ 2.x and GTK+ 3 in the same process is not supported.", module_name);
+      g_warning ("BTK+ module %s cannot be loaded.\n"
+                 "BTK+ 2.x symbols detected. Using BTK+ 2.x and BTK+ 3 in the same process is not supported.", module_name);
       g_module_close (module);
       module = NULL;
     }
@@ -253,7 +253,7 @@ find_module (const gchar *name)
 }
 
 static gint
-cmp_module (GtkModuleInfo *info,
+cmp_module (BtkModuleInfo *info,
 	    GModule       *module)
 {
   return info->module != module;
@@ -263,16 +263,16 @@ static GSList *
 load_module (GSList      *module_list,
 	     const gchar *name)
 {
-  GtkModuleInitFunc modinit_func;
+  BtkModuleInitFunc modinit_func;
   gpointer modinit_func_ptr;
-  GtkModuleInfo *info = NULL;
+  BtkModuleInfo *info = NULL;
   GModule *module = NULL;
   GSList *l;
   gboolean success = FALSE;
   
   if (g_module_supported ())
     {
-      for (l = gtk_modules; l; l = l->next)
+      for (l = btk_modules; l; l = l->next)
 	{
 	  info = l->data;
 	  if (g_slist_find_custom (info->names, name, 
@@ -291,7 +291,7 @@ load_module (GSList      *module_list,
 
 	  if (module)
 	    {
-	      if (g_module_symbol (module, "gtk_module_init", &modinit_func_ptr))
+	      if (g_module_symbol (module, "btk_module_init", &modinit_func_ptr))
 		modinit_func = modinit_func_ptr;
 	      else
 		modinit_func = NULL;
@@ -305,23 +305,23 @@ load_module (GSList      *module_list,
 		  success = TRUE;
 		  info = NULL;
 
-		  temp = g_slist_find_custom (gtk_modules, module,
+		  temp = g_slist_find_custom (btk_modules, module,
 			(GCompareFunc)cmp_module);
 		  if (temp != NULL)
 			info = temp->data;
 
 		  if (!info)
 		    {
-		      info = g_new0 (GtkModuleInfo, 1);
+		      info = g_new0 (BtkModuleInfo, 1);
 		      
 		      info->names = g_slist_prepend (info->names, g_strdup (name));
 		      info->module = module;
 		      info->ref_count = 1;
 		      info->init_func = modinit_func;
-		      g_module_symbol (module, "gtk_module_display_init",
+		      g_module_symbol (module, "btk_module_display_init",
 				       (gpointer *) &info->display_init_func);
 		      
-		      gtk_modules = g_slist_append (gtk_modules, info);
+		      btk_modules = g_slist_append (btk_modules, info);
 		      
 		      /* display_init == NULL indicates a non-multihead aware module.
 		       * For these, we delay the call to init_func until first display is 
@@ -330,15 +330,15 @@ load_module (GSList      *module_list,
 		       * and also call display_init_func on all opened displays.
 		       */
 		      if (default_display_opened || info->display_init_func)
-			(* info->init_func) (&gtk_argc, &gtk_argv);
+			(* info->init_func) (&btk_argc, &btk_argv);
 		      
 		      if (info->display_init_func) 
 			{
 			  GSList *displays, *iter; 		  
-			  displays = gdk_display_manager_list_displays (gdk_display_manager_get ());
+			  displays = bdk_display_manager_list_displays (bdk_display_manager_get ());
 			  for (iter = displays; iter; iter = iter->next)
 			    {
-			      GdkDisplay *display = iter->data;
+			      BdkDisplay *display = iter->data;
 			  (* info->display_init_func) (display);
 			    }
 			  g_slist_free (displays);
@@ -346,7 +346,7 @@ load_module (GSList      *module_list,
 		    }
 		  else
 		    {
-		      GTK_NOTE (MODULES, g_print ("Module already loaded, ignoring: %s\n", name));
+		      BTK_NOTE (MODULES, g_print ("Module already loaded, ignoring: %s\n", name));
 		      info->names = g_slist_prepend (info->names, g_strdup (name));
 		      info->ref_count++;
 		      /* remove new reference count on module, we already have one */
@@ -379,7 +379,7 @@ load_module (GSList      *module_list,
 
 
 static void
-gtk_module_info_unref (GtkModuleInfo *info)
+btk_module_info_unref (BtkModuleInfo *info)
 {
   GSList *l;
 
@@ -387,10 +387,10 @@ gtk_module_info_unref (GtkModuleInfo *info)
 
   if (info->ref_count == 0) 
     {
-      GTK_NOTE (MODULES, 
+      BTK_NOTE (MODULES, 
 		g_print ("Unloading module: %s\n", g_module_name (info->module)));
 
-      gtk_modules = g_slist_remove (gtk_modules, info);
+      btk_modules = g_slist_remove (btk_modules, info);
       g_module_close (info->module);
       for (l = info->names; l; l = l->next)
 	g_free (l->data);
@@ -406,9 +406,9 @@ load_modules (const char *module_str)
   GSList *module_list = NULL;
   gint i;
 
-  GTK_NOTE (MODULES, g_print ("Loading module list: %s\n", module_str));
+  BTK_NOTE (MODULES, g_print ("Loading module list: %s\n", module_str));
 
-  module_names = pango_split_file_list (module_str);
+  module_names = bango_split_file_list (module_str);
   for (i = 0; module_names[i]; i++) 
     module_list = load_module (module_list, module_names[i]);
 
@@ -419,7 +419,7 @@ load_modules (const char *module_str)
 }
 
 static void
-default_display_notify_cb (GdkDisplayManager *display_manager)
+default_display_notify_cb (BdkDisplayManager *display_manager)
 {
   GSList *slist;
 
@@ -427,76 +427,76 @@ default_display_notify_cb (GdkDisplayManager *display_manager)
    * default display is first set to a non-NULL value.
    */
 
-  if (!gdk_display_get_default () || default_display_opened)
+  if (!bdk_display_get_default () || default_display_opened)
     return;
 
   default_display_opened = TRUE;
 
-  for (slist = gtk_modules; slist; slist = slist->next)
+  for (slist = btk_modules; slist; slist = slist->next)
     {
       if (slist->data)
 	{
-	  GtkModuleInfo *info = slist->data;
+	  BtkModuleInfo *info = slist->data;
 
 	  if (!info->display_init_func)
-	    (* info->init_func) (&gtk_argc, &gtk_argv);
+	    (* info->init_func) (&btk_argc, &btk_argv);
 	}
     }
 }
 
 static void
-display_closed_cb (GdkDisplay *display,
+display_closed_cb (BdkDisplay *display,
 		   gboolean    is_error)
 {
-  GdkScreen *screen;
-  GtkSettings *settings;
+  BdkScreen *screen;
+  BtkSettings *settings;
   gint i;
 
-  for (i = 0; i < gdk_display_get_n_screens (display); i++)
+  for (i = 0; i < bdk_display_get_n_screens (display); i++)
     {
-      screen = gdk_display_get_screen (display, i);
+      screen = bdk_display_get_screen (display, i);
 
-      settings = gtk_settings_get_for_screen (screen);
+      settings = btk_settings_get_for_screen (screen);
 
       g_object_set_data_full (G_OBJECT (settings),
-			      I_("gtk-modules"),
+			      I_("btk-modules"),
 			      NULL, NULL);
     }  
 }
 		   
 
 static void
-display_opened_cb (GdkDisplayManager *display_manager,
-		   GdkDisplay        *display)
+display_opened_cb (BdkDisplayManager *display_manager,
+		   BdkDisplay        *display)
 {
   GSList *slist;
-  GdkScreen *screen;
-  GtkSettings *settings;
+  BdkScreen *screen;
+  BtkSettings *settings;
   gint i;
 
-  for (slist = gtk_modules; slist; slist = slist->next)
+  for (slist = btk_modules; slist; slist = slist->next)
     {
       if (slist->data)
 	{
-	  GtkModuleInfo *info = slist->data;
+	  BtkModuleInfo *info = slist->data;
 
 	  if (info->display_init_func)
 	    (* info->display_init_func) (display);
 	}
     }
   
-  for (i = 0; i < gdk_display_get_n_screens (display); i++)
+  for (i = 0; i < bdk_display_get_n_screens (display); i++)
     {
       GValue value = { 0, };
 
       g_value_init (&value, G_TYPE_STRING);
 
-      screen = gdk_display_get_screen (display, i);
+      screen = bdk_display_get_screen (display, i);
 
-      if (gdk_screen_get_setting (screen, "gtk-modules", &value))
+      if (bdk_screen_get_setting (screen, "btk-modules", &value))
 	{
-	  settings = gtk_settings_get_for_screen (screen);
-	  _gtk_modules_settings_changed (settings, g_value_get_string (&value));
+	  settings = btk_settings_get_for_screen (screen);
+	  _btk_modules_settings_changed (settings, g_value_get_string (&value));
 	  g_value_unset (&value);
 	}
     }
@@ -508,27 +508,27 @@ display_opened_cb (GdkDisplayManager *display_manager,
 }
 
 void
-_gtk_modules_init (gint        *argc, 
+_btk_modules_init (gint        *argc, 
 		   gchar     ***argv, 
-		   const gchar *gtk_modules_args)
+		   const gchar *btk_modules_args)
 {
-  GdkDisplayManager *display_manager;
+  BdkDisplayManager *display_manager;
   gint i;
 
-  g_assert (gtk_argv == NULL);
+  g_assert (btk_argv == NULL);
 
   if (argc && argv) 
     {
       /* store argc and argv for later use in mod initialization */
-      gtk_argc = *argc;
-      gtk_argv = g_new (gchar *, *argc + 1);
-      for (i = 0; i < gtk_argc; i++)
-	gtk_argv [i] = g_strdup ((*argv) [i]);
-      gtk_argv [*argc] = NULL;
+      btk_argc = *argc;
+      btk_argv = g_new (gchar *, *argc + 1);
+      for (i = 0; i < btk_argc; i++)
+	btk_argv [i] = g_strdup ((*argv) [i]);
+      btk_argv [*argc] = NULL;
     }
 
-  display_manager = gdk_display_manager_get ();
-  default_display_opened = gdk_display_get_default () != NULL;
+  display_manager = bdk_display_manager_get ();
+  default_display_opened = bdk_display_get_default () != NULL;
   g_signal_connect (display_manager, "notify::default-display",
 		    G_CALLBACK (default_display_notify_cb), 
 		    NULL);
@@ -536,12 +536,12 @@ _gtk_modules_init (gint        *argc,
 		    G_CALLBACK (display_opened_cb), 
 		    NULL);
 
-  if (gtk_modules_args) {
-    /* Modules specified in the GTK_MODULES environment variable
+  if (btk_modules_args) {
+    /* Modules specified in the BTK_MODULES environment variable
      * or on the command line are always loaded, so we'll just leak 
      * the refcounts.
      */
-    g_slist_free (load_modules (gtk_modules_args));
+    g_slist_free (load_modules (btk_modules_args));
   }
 }
 
@@ -552,26 +552,26 @@ settings_destroy_notify (gpointer data)
 
   for (iter = modules; iter; iter = iter->next) 
     {
-      GtkModuleInfo *info = iter->data;
-      gtk_module_info_unref (info);
+      BtkModuleInfo *info = iter->data;
+      btk_module_info_unref (info);
     }
   g_slist_free (modules);
 }
 
 void
-_gtk_modules_settings_changed (GtkSettings *settings, 
+_btk_modules_settings_changed (BtkSettings *settings, 
 			       const gchar *modules)
 {
   GSList *new_modules = NULL;
 
-  GTK_NOTE (MODULES, g_print ("gtk-modules setting changed to: %s\n", modules));
+  BTK_NOTE (MODULES, g_print ("btk-modules setting changed to: %s\n", modules));
 
   /* load/ref before unreffing existing */
   if (modules && modules[0])
     new_modules = load_modules (modules);
 
   g_object_set_data_full (G_OBJECT (settings),
-			  I_("gtk-modules"),
+			  I_("btk-modules"),
 			  new_modules,
 			  settings_destroy_notify);
 }

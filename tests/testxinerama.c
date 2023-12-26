@@ -20,29 +20,29 @@
 
 #include "config.h"
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 static gint num_monitors;
 static gint primary_monitor;
 
 static void
-request (GtkWidget      *widget,
+request (BtkWidget      *widget,
 	 gpointer        user_data)
 {
   gchar *str;
-  GdkScreen *screen = gtk_widget_get_screen (widget);
-  gint i = gdk_screen_get_monitor_at_window (screen,
+  BdkScreen *screen = btk_widget_get_screen (widget);
+  gint i = bdk_screen_get_monitor_at_window (screen,
 					     widget->window);
 
   if (i < 0)
     str = g_strdup ("<big><span foreground='white' background='black'>Not on a monitor </span></big>");
   else
     {
-      GdkRectangle monitor;
+      BdkRectangle monitor;
 
-      gdk_screen_get_monitor_geometry (screen,
+      bdk_screen_get_monitor_geometry (screen,
                                        i, &monitor);
-      primary_monitor = gdk_screen_get_primary_monitor (screen);
+      primary_monitor = bdk_screen_get_primary_monitor (screen);
 
       str = g_strdup_printf ("<big><span foreground='white' background='black'>"
 			     "Monitor %d of %d</span></big>\n"
@@ -55,15 +55,15 @@ request (GtkWidget      *widget,
                              primary_monitor);
     }
 
-  gtk_label_set_markup (GTK_LABEL (user_data), str);
+  btk_label_set_markup (BTK_LABEL (user_data), str);
   g_free (str);
 }
 
 static void
-monitors_changed_cb (GdkScreen *screen,
+monitors_changed_cb (BdkScreen *screen,
                      gpointer   data)
 {
-  GtkWidget *label = (GtkWidget *)data;
+  BtkWidget *label = (BtkWidget *)data;
 
   request (label, label);
 }
@@ -71,33 +71,33 @@ monitors_changed_cb (GdkScreen *screen,
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *window, *label, *vbox, *button;
-  GdkScreen *screen;
+  BtkWidget *window, *label, *vbox, *button;
+  BdkScreen *screen;
   gint i;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  screen = gdk_screen_get_default ();
+  screen = bdk_screen_get_default ();
 
-  num_monitors = gdk_screen_get_n_monitors (screen);
+  num_monitors = bdk_screen_get_n_monitors (screen);
   if (num_monitors == 1)
     g_warning ("The default screen of the current display only has one monitor.");
 
-  primary_monitor = gdk_screen_get_primary_monitor (screen);
+  primary_monitor = bdk_screen_get_primary_monitor (screen);
 
   for (i = 0; i < num_monitors; i++)
     {
-      GdkRectangle monitor; 
+      BdkRectangle monitor; 
       gchar *str;
       
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
       
-      gdk_screen_get_monitor_geometry (screen, i, &monitor);
-      gtk_window_set_default_size (GTK_WINDOW (window), 200, 200);
-      gtk_window_move (GTK_WINDOW (window), (monitor.width - 200) / 2 + monitor.x,
+      bdk_screen_get_monitor_geometry (screen, i, &monitor);
+      btk_window_set_default_size (BTK_WINDOW (window), 200, 200);
+      btk_window_move (BTK_WINDOW (window), (monitor.width - 200) / 2 + monitor.x,
 		       (monitor.height - 200) / 2 + monitor.y);
       
-      label = gtk_label_new (NULL);
+      label = btk_label_new (NULL);
       str = g_strdup_printf ("<big><span foreground='white' background='black'>"
 			     "Monitor %d of %d</span></big>\n"
 			     "<i>Width - Height       </i>: (%d,%d)\n"
@@ -107,24 +107,24 @@ main (int argc, char *argv[])
 			     monitor.width, monitor.height,
                              monitor.x, monitor.y,
                              primary_monitor);
-      gtk_label_set_markup (GTK_LABEL (label), str);
+      btk_label_set_markup (BTK_LABEL (label), str);
       g_free (str);
-      vbox = gtk_vbox_new (TRUE, 1);
-      gtk_container_add (GTK_CONTAINER (window), vbox);
-      gtk_container_add (GTK_CONTAINER (vbox), label);
-      button = gtk_button_new_with_label ("Query current monitor");
+      vbox = btk_vbox_new (TRUE, 1);
+      btk_container_add (BTK_CONTAINER (window), vbox);
+      btk_container_add (BTK_CONTAINER (vbox), label);
+      button = btk_button_new_with_label ("Query current monitor");
       g_signal_connect (button, "clicked", G_CALLBACK (request), label);
-      gtk_container_add (GTK_CONTAINER (vbox), button);
-      button = gtk_button_new_with_label ("Close");
-      g_signal_connect (button, "clicked", G_CALLBACK (gtk_main_quit), NULL);
-      gtk_container_add (GTK_CONTAINER (vbox), button);
-      gtk_widget_show_all (window);
+      btk_container_add (BTK_CONTAINER (vbox), button);
+      button = btk_button_new_with_label ("Close");
+      g_signal_connect (button, "clicked", G_CALLBACK (btk_main_quit), NULL);
+      btk_container_add (BTK_CONTAINER (vbox), button);
+      btk_widget_show_all (window);
 
       g_signal_connect (screen, "monitors-changed",
                         G_CALLBACK (monitors_changed_cb), label);
     }
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

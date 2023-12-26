@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechooserdialog.h: File selector dialog
+/* BTK - The GIMP Toolkit
+ * btkfilechooserdialog.h: File selector dialog
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,57 +18,57 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_FILE_CHOOSER_DIALOG_H__
-#define __GTK_FILE_CHOOSER_DIALOG_H__
+#ifndef __BTK_FILE_CHOOSER_DIALOG_H__
+#define __BTK_FILE_CHOOSER_DIALOG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkfilechooser.h>
+#include <btk/btkdialog.h>
+#include <btk/btkfilechooser.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FILE_CHOOSER_DIALOG             (gtk_file_chooser_dialog_get_type ())
-#define GTK_FILE_CHOOSER_DIALOG(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FILE_CHOOSER_DIALOG, GtkFileChooserDialog))
-#define GTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILE_CHOOSER_DIALOG, GtkFileChooserDialogClass))
-#define GTK_IS_FILE_CHOOSER_DIALOG(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FILE_CHOOSER_DIALOG))
-#define GTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILE_CHOOSER_DIALOG))
-#define GTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FILE_CHOOSER_DIALOG, GtkFileChooserDialogClass))
+#define BTK_TYPE_FILE_CHOOSER_DIALOG             (btk_file_chooser_dialog_get_type ())
+#define BTK_FILE_CHOOSER_DIALOG(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialog))
+#define BTK_FILE_CHOOSER_DIALOG_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
+#define BTK_IS_FILE_CHOOSER_DIALOG(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_IS_FILE_CHOOSER_DIALOG_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_CHOOSER_DIALOG))
+#define BTK_FILE_CHOOSER_DIALOG_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_CHOOSER_DIALOG, BtkFileChooserDialogClass))
 
-typedef struct _GtkFileChooserDialog        GtkFileChooserDialog;
-typedef struct _GtkFileChooserDialogPrivate GtkFileChooserDialogPrivate;
-typedef struct _GtkFileChooserDialogClass   GtkFileChooserDialogClass;
+typedef struct _BtkFileChooserDialog        BtkFileChooserDialog;
+typedef struct _BtkFileChooserDialogPrivate BtkFileChooserDialogPrivate;
+typedef struct _BtkFileChooserDialogClass   BtkFileChooserDialogClass;
 
-struct _GtkFileChooserDialog
+struct _BtkFileChooserDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
-  GtkFileChooserDialogPrivate *GSEAL (priv);
+  BtkFileChooserDialogPrivate *GSEAL (priv);
 };
 
-struct _GtkFileChooserDialogClass
+struct _BtkFileChooserDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 };
 
-GType      gtk_file_chooser_dialog_get_type         (void) G_GNUC_CONST;
-GtkWidget *gtk_file_chooser_dialog_new              (const gchar          *title,
-						     GtkWindow            *parent,
-						     GtkFileChooserAction  action,
+GType      btk_file_chooser_dialog_get_type         (void) G_GNUC_CONST;
+BtkWidget *btk_file_chooser_dialog_new              (const gchar          *title,
+						     BtkWindow            *parent,
+						     BtkFileChooserAction  action,
 						     const gchar          *first_button_text,
 						     ...) G_GNUC_NULL_TERMINATED;
 
-#ifndef GTK_DISABLE_DEPRECATED
-GtkWidget *gtk_file_chooser_dialog_new_with_backend (const gchar          *title,
-						     GtkWindow            *parent,
-						     GtkFileChooserAction  action,
+#ifndef BTK_DISABLE_DEPRECATED
+BtkWidget *btk_file_chooser_dialog_new_with_backend (const gchar          *title,
+						     BtkWindow            *parent,
+						     BtkFileChooserAction  action,
 						     const gchar          *backend,
 						     const gchar          *first_button_text,
 						     ...) G_GNUC_NULL_TERMINATED;
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GTK_FILE_CHOOSER_DIALOG_H__ */
+#endif /* __BTK_FILE_CHOOSER_DIALOG_H__ */

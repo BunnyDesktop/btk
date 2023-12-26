@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SEPARATOR_H__
-#define __GAIL_SEPARATOR_H__
+#ifndef __BAIL_SEPARATOR_H__
+#define __BAIL_SEPARATOR_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SEPARATOR                  (gail_separator_get_type ())
-#define GAIL_SEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SEPARATOR, GailSeparator))
-#define GAIL_SEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SEPARATOR, GailSeparatorClass))
-#define GAIL_IS_SEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SEPARATOR))
-#define GAIL_IS_SEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SEPARATOR))
-#define GAIL_SEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SEPARATOR, GailSeparatorClass))
+#define BAIL_TYPE_SEPARATOR                  (bail_separator_get_type ())
+#define BAIL_SEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SEPARATOR, BailSeparator))
+#define BAIL_SEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SEPARATOR, BailSeparatorClass))
+#define BAIL_IS_SEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SEPARATOR))
+#define BAIL_IS_SEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SEPARATOR))
+#define BAIL_SEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SEPARATOR, BailSeparatorClass))
 
-typedef struct _GailSeparator              GailSeparator;
-typedef struct _GailSeparatorClass         GailSeparatorClass;
+typedef struct _BailSeparator              BailSeparator;
+typedef struct _BailSeparatorClass         BailSeparatorClass;
 
-struct _GailSeparator
+struct _BailSeparator
 {
-  GailWidget parent;
+  BailWidget parent;
 };
 
-GType gail_separator_get_type (void);
+GType bail_separator_get_type (void);
 
-struct _GailSeparatorClass
+struct _BailSeparatorClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_SEPARATOR_H__ */
+#endif /* __BAIL_SEPARATOR_H__ */

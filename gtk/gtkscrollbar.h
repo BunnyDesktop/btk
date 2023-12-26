@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,55 +18,55 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_SCROLLBAR_H__
-#define __GTK_SCROLLBAR_H__
+#ifndef __BTK_SCROLLBAR_H__
+#define __BTK_SCROLLBAR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkrange.h>
+#include <btk/btkrange.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SCROLLBAR            (gtk_scrollbar_get_type ())
-#define GTK_SCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SCROLLBAR, GtkScrollbar))
-#define GTK_SCROLLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SCROLLBAR, GtkScrollbarClass))
-#define GTK_IS_SCROLLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SCROLLBAR))
-#define GTK_IS_SCROLLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SCROLLBAR))
-#define GTK_SCROLLBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_SCROLLBAR, GtkScrollbarClass))
+#define BTK_TYPE_SCROLLBAR            (btk_scrollbar_get_type ())
+#define BTK_SCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SCROLLBAR, BtkScrollbar))
+#define BTK_SCROLLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SCROLLBAR, BtkScrollbarClass))
+#define BTK_IS_SCROLLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SCROLLBAR))
+#define BTK_IS_SCROLLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SCROLLBAR))
+#define BTK_SCROLLBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_SCROLLBAR, BtkScrollbarClass))
 
 
-typedef struct _GtkScrollbar        GtkScrollbar;
-typedef struct _GtkScrollbarClass   GtkScrollbarClass;
+typedef struct _BtkScrollbar        BtkScrollbar;
+typedef struct _BtkScrollbarClass   BtkScrollbarClass;
 
-struct _GtkScrollbar
+struct _BtkScrollbar
 {
-  GtkRange range;
+  BtkRange range;
 };
 
-struct _GtkScrollbarClass
+struct _BtkScrollbarClass
 {
-  GtkRangeClass parent_class;
+  BtkRangeClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType       gtk_scrollbar_get_type (void) G_GNUC_CONST;
+GType       btk_scrollbar_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_SCROLLBAR_H__ */
+#endif /* __BTK_SCROLLBAR_H__ */

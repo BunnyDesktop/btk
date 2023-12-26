@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2004 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SCALE_H__
-#define __GAIL_SCALE_H__
+#ifndef __BAIL_SCALE_H__
+#define __BAIL_SCALE_H__
 
-#include <gail/gailrange.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailrange.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SCALE                         (gail_scale_get_type ())
-#define GAIL_SCALE(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SCALE, GailScale))
-#define GAIL_SCALE_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SCALE, GailScaleClass))
-#define GAIL_IS_SCALE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SCALE))
-#define GAIL_IS_SCALE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SCALE))
-#define GAIL_SCALE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SCALE, GailScaleClass))
+#define BAIL_TYPE_SCALE                         (bail_scale_get_type ())
+#define BAIL_SCALE(obj)                         (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCALE, BailScale))
+#define BAIL_SCALE_CLASS(klass)			(G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCALE, BailScaleClass))
+#define BAIL_IS_SCALE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCALE))
+#define BAIL_IS_SCALE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCALE))
+#define BAIL_SCALE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCALE, BailScaleClass))
 
-typedef struct _GailScale		GailScale;
-typedef struct _GailScaleClass		GailScaleClass;
+typedef struct _BailScale		BailScale;
+typedef struct _BailScaleClass		BailScaleClass;
 
-struct _GailScale
+struct _BailScale
 {
-  GailRange parent;
+  BailRange parent;
 
-  GailTextUtil *textutil;
+  BailTextUtil *textutil;
 };
 
-GType gail_scale_get_type (void);
+GType bail_scale_get_type (void);
 
-struct _GailScaleClass
+struct _BailScaleClass
 {
-  GailRangeClass parent_class;
+  BailRangeClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_SCALE_H__ */
+#endif /* __BAIL_SCALE_H__ */

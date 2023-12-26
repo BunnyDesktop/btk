@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,34 +19,34 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailcalendar.h"
+#include <btk/btk.h>
+#include "bailcalendar.h"
 
-static void         gail_calendar_class_init          (GailCalendarClass *klass);
-static void         gail_calendar_init                (GailCalendar      *calendar);
-static void         gail_calendar_initialize          (AtkObject         *accessible,
+static void         bail_calendar_class_init          (BailCalendarClass *klass);
+static void         bail_calendar_init                (BailCalendar      *calendar);
+static void         bail_calendar_initialize          (BatkObject         *accessible,
                                                        gpointer           data);
 
-G_DEFINE_TYPE (GailCalendar, gail_calendar, GAIL_TYPE_WIDGET)
+G_DEFINE_TYPE (BailCalendar, bail_calendar, BAIL_TYPE_WIDGET)
 
 static void
-gail_calendar_class_init (GailCalendarClass *klass)
+bail_calendar_class_init (BailCalendarClass *klass)
 {
-  AtkObjectClass *atk_object_class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
 
-  atk_object_class->initialize = gail_calendar_initialize;
+  batk_object_class->initialize = bail_calendar_initialize;
 }
 
 static void
-gail_calendar_init (GailCalendar *calendar)
+bail_calendar_init (BailCalendar *calendar)
 {
 }
 
 static void
-gail_calendar_initialize (AtkObject *accessible,
+bail_calendar_initialize (BatkObject *accessible,
                           gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_calendar_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_calendar_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_CALENDAR;
+  accessible->role = BATK_ROLE_CALENDAR;
 }

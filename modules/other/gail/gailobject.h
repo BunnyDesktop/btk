@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_OBJECT_H__
-#define __GAIL_OBJECT_H__
+#ifndef __BAIL_OBJECT_H__
+#define __BAIL_OBJECT_H__
 
-#include <atk/atk.h>
+#include <batk/batk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_OBJECT                  (gail_object_get_type ())
-#define GAIL_OBJECT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_OBJECT, GailObject)
-#define GAIL_OBJECT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_OBJECT, GailObjectlass))
-#define GAIL_IS_OBJECT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_OBJECT))
-#define GAIL_IS_OBJECT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_OBJECT))
-#define GAIL_OBJECT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_OBJECT, GailObjectlass))
+#define BAIL_TYPE_OBJECT                  (bail_object_get_type ())
+#define BAIL_OBJECT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_OBJECT, BailObject)
+#define BAIL_OBJECT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_OBJECT, BailObjectlass))
+#define BAIL_IS_OBJECT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_OBJECT))
+#define BAIL_IS_OBJECT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_OBJECT))
+#define BAIL_OBJECT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_OBJECT, BailObjectlass))
 
-typedef struct _GailObject                 GailObject;
-typedef struct _GailObjectClass            GailObjectClass;
+typedef struct _BailObject                 BailObject;
+typedef struct _BailObjectClass            BailObjectClass;
 
-struct _GailObject
+struct _BailObject
 {
-  AtkGObjectAccessible parent;
+  BatkGObjectAccessible parent;
 };
 
-GType gail_object_get_type (void);
+GType bail_object_get_type (void);
 
-struct _GailObjectClass
+struct _BailObjectClass
 {
-  AtkGObjectAccessibleClass parent_class;
+  BatkGObjectAccessibleClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_OBJECT_H__ */
+#endif /* __BAIL_OBJECT_H__ */

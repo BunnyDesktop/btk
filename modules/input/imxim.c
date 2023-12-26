@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,50 +18,50 @@
  */
 
 #include "config.h"
-#include "gtk/gtkintl.h"
-#include "gtk/gtkimmodule.h"
-#include "gtkimcontextxim.h"
+#include "btk/btkintl.h"
+#include "btk/btkimmodule.h"
+#include "btkimcontextxim.h"
 #include <string.h>
 
-static const GtkIMContextInfo xim_ja_info = { 
+static const BtkIMContextInfo xim_ja_info = { 
   "xim",		           /* ID */
   N_("X Input Method"),            /* Human readable name */
   GETTEXT_PACKAGE,		   /* Translation domain */
-  GTK_LOCALEDIR,		   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+  BTK_LOCALEDIR,		   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   "ko:ja:th:zh"		           /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &xim_ja_info
 };
 
 #ifndef INCLUDE_IM_xim
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_xim_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_xim_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *type_module)
 {
-  gtk_im_context_xim_register_type (type_module);
+  btk_im_context_xim_register_type (type_module);
 }
 
 MODULE_ENTRY (void, exit) (void)
 {
-  gtk_im_context_xim_shutdown ();
+  btk_im_context_xim_shutdown ();
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "xim") == 0)
-    return gtk_im_context_xim_new ();
+    return btk_im_context_xim_new ();
   else
     return NULL;
 }

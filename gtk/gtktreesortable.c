@@ -1,4 +1,4 @@
-/* gtktreesortable.c
+/* btktreesortable.c
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,15 +19,15 @@
 
 
 #include "config.h"
-#include "gtktreesortable.h"
-#include "gtkmarshalers.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktreesortable.h"
+#include "btkmarshalers.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-static void gtk_tree_sortable_base_init (gpointer g_class);
+static void btk_tree_sortable_base_init (gpointer g_class);
 
 GType
-gtk_tree_sortable_get_type (void)
+btk_tree_sortable_get_type (void)
 {
   static GType tree_sortable_type = 0;
 
@@ -35,8 +35,8 @@ gtk_tree_sortable_get_type (void)
     {
       const GTypeInfo tree_sortable_info =
       {
-	sizeof (GtkTreeSortableIface), /* class_size */
-	gtk_tree_sortable_base_init,   /* base_init */
+	sizeof (BtkTreeSortableIface), /* class_size */
+	btk_tree_sortable_base_init,   /* base_init */
 	NULL,		/* base_finalize */
 	NULL,
 	NULL,		/* class_finalize */
@@ -47,24 +47,24 @@ gtk_tree_sortable_get_type (void)
       };
 
       tree_sortable_type =
-	g_type_register_static (G_TYPE_INTERFACE, I_("GtkTreeSortable"),
+	g_type_register_static (G_TYPE_INTERFACE, I_("BtkTreeSortable"),
 				&tree_sortable_info, 0);
 
-      g_type_interface_add_prerequisite (tree_sortable_type, GTK_TYPE_TREE_MODEL);
+      g_type_interface_add_prerequisite (tree_sortable_type, BTK_TYPE_TREE_MODEL);
     }
 
   return tree_sortable_type;
 }
 
 static void
-gtk_tree_sortable_base_init (gpointer g_class)
+btk_tree_sortable_base_init (gpointer g_class)
 {
   static gboolean initialized = FALSE;
 
   if (! initialized)
     {
       /**
-       * GtkTreeSortable::sort-column-changed:
+       * BtkTreeSortable::sort-column-changed:
        * @sortable: the object on which the signal is emitted
        *
        * The ::sort-column-changed signal is emitted when the sort column
@@ -72,54 +72,54 @@ gtk_tree_sortable_base_init (gpointer g_class)
        * the contents of @sortable are resorted.
        */
       g_signal_new (I_("sort-column-changed"),
-                    GTK_TYPE_TREE_SORTABLE,
+                    BTK_TYPE_TREE_SORTABLE,
                     G_SIGNAL_RUN_LAST,
-                    G_STRUCT_OFFSET (GtkTreeSortableIface, sort_column_changed),
+                    G_STRUCT_OFFSET (BtkTreeSortableIface, sort_column_changed),
                     NULL, NULL,
-                    _gtk_marshal_VOID__VOID,
+                    _btk_marshal_VOID__VOID,
                     G_TYPE_NONE, 0);
       initialized = TRUE;
     }
 }
 
 /**
- * gtk_tree_sortable_sort_column_changed:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_sort_column_changed:
+ * @sortable: A #BtkTreeSortable
  * 
- * Emits a #GtkTreeSortable::sort-column-changed signal on @sortable.
+ * Emits a #BtkTreeSortable::sort-column-changed signal on @sortable.
  */
 void
-gtk_tree_sortable_sort_column_changed (GtkTreeSortable *sortable)
+btk_tree_sortable_sort_column_changed (BtkTreeSortable *sortable)
 {
-  g_return_if_fail (GTK_IS_TREE_SORTABLE (sortable));
+  g_return_if_fail (BTK_IS_TREE_SORTABLE (sortable));
 
   g_signal_emit_by_name (sortable, "sort-column-changed");
 }
 
 /**
- * gtk_tree_sortable_get_sort_column_id:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_get_sort_column_id:
+ * @sortable: A #BtkTreeSortable
  * @sort_column_id: The sort column id to be filled in
- * @order: The #GtkSortType to be filled in
+ * @order: The #BtkSortType to be filled in
  * 
  * Fills in @sort_column_id and @order with the current sort column and the
  * order. It returns %TRUE unless the @sort_column_id is 
- * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or 
- * %GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
+ * %BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID or 
+ * %BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID.
  * 
  * Return value: %TRUE if the sort column is not one of the special sort
  *   column ids.
  **/
 gboolean
-gtk_tree_sortable_get_sort_column_id (GtkTreeSortable  *sortable,
+btk_tree_sortable_get_sort_column_id (BtkTreeSortable  *sortable,
 				      gint             *sort_column_id,
-				      GtkSortType      *order)
+				      BtkSortType      *order)
 {
-  GtkTreeSortableIface *iface;
+  BtkTreeSortableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_TREE_SORTABLE (sortable), FALSE);
+  g_return_val_if_fail (BTK_IS_TREE_SORTABLE (sortable), FALSE);
 
-  iface = GTK_TREE_SORTABLE_GET_IFACE (sortable);
+  iface = BTK_TREE_SORTABLE_GET_IFACE (sortable);
 
   g_return_val_if_fail (iface != NULL, FALSE);
   g_return_val_if_fail (iface->get_sort_column_id != NULL, FALSE);
@@ -128,36 +128,36 @@ gtk_tree_sortable_get_sort_column_id (GtkTreeSortable  *sortable,
 }
 
 /**
- * gtk_tree_sortable_set_sort_column_id:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_set_sort_column_id:
+ * @sortable: A #BtkTreeSortable
  * @sort_column_id: the sort column id to set
  * @order: The sort order of the column
  * 
  * Sets the current sort column to be @sort_column_id. The @sortable will
  * resort itself to reflect this change, after emitting a
- * #GtkTreeSortable::sort-column-changed signal. @sort_column_id may either be
+ * #BtkTreeSortable::sort-column-changed signal. @sort_column_id may either be
  * a regular column id, or one of the following special values:
  * <variablelist>
  * <varlistentry>
- *   <term>%GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID</term>
+ *   <term>%BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID</term>
  *   <listitem>the default sort function will be used, if it is set</listitem>
  * </varlistentry>
  * <varlistentry>
- *   <term>%GTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID</term>
+ *   <term>%BTK_TREE_SORTABLE_UNSORTED_SORT_COLUMN_ID</term>
  *   <listitem>no sorting will occur</listitem>
  * </varlistentry>
  * </variablelist>
  */
 void
-gtk_tree_sortable_set_sort_column_id (GtkTreeSortable  *sortable,
+btk_tree_sortable_set_sort_column_id (BtkTreeSortable  *sortable,
 				      gint              sort_column_id,
-				      GtkSortType       order)
+				      BtkSortType       order)
 {
-  GtkTreeSortableIface *iface;
+  BtkTreeSortableIface *iface;
 
-  g_return_if_fail (GTK_IS_TREE_SORTABLE (sortable));
+  g_return_if_fail (BTK_IS_TREE_SORTABLE (sortable));
 
-  iface = GTK_TREE_SORTABLE_GET_IFACE (sortable);
+  iface = BTK_TREE_SORTABLE_GET_IFACE (sortable);
 
   g_return_if_fail (iface != NULL);
   g_return_if_fail (iface->set_sort_column_id != NULL);
@@ -166,8 +166,8 @@ gtk_tree_sortable_set_sort_column_id (GtkTreeSortable  *sortable,
 }
 
 /**
- * gtk_tree_sortable_set_sort_func:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_set_sort_func:
+ * @sortable: A #BtkTreeSortable
  * @sort_column_id: the sort column id to set the function for
  * @sort_func: The comparison function
  * @user_data: (allow-none): User data to pass to @sort_func, or %NULL
@@ -178,18 +178,18 @@ gtk_tree_sortable_set_sort_column_id (GtkTreeSortable  *sortable,
  * the model will sort using this function.
  */
 void
-gtk_tree_sortable_set_sort_func (GtkTreeSortable        *sortable,
+btk_tree_sortable_set_sort_func (BtkTreeSortable        *sortable,
 				 gint                    sort_column_id,
-				 GtkTreeIterCompareFunc  sort_func,
+				 BtkTreeIterCompareFunc  sort_func,
 				 gpointer                user_data,
 				 GDestroyNotify          destroy)
 {
-  GtkTreeSortableIface *iface;
+  BtkTreeSortableIface *iface;
 
-  g_return_if_fail (GTK_IS_TREE_SORTABLE (sortable));
+  g_return_if_fail (BTK_IS_TREE_SORTABLE (sortable));
   g_return_if_fail (sort_func != NULL);
 
-  iface = GTK_TREE_SORTABLE_GET_IFACE (sortable);
+  iface = BTK_TREE_SORTABLE_GET_IFACE (sortable);
 
   g_return_if_fail (iface != NULL);
   g_return_if_fail (iface->set_sort_func != NULL);
@@ -199,33 +199,33 @@ gtk_tree_sortable_set_sort_func (GtkTreeSortable        *sortable,
 }
 
 /**
- * gtk_tree_sortable_set_default_sort_func:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_set_default_sort_func:
+ * @sortable: A #BtkTreeSortable
  * @sort_func: The comparison function
  * @user_data: (allow-none): User data to pass to @sort_func, or %NULL
  * @destroy: (allow-none): Destroy notifier of @user_data, or %NULL
  * 
  * Sets the default comparison function used when sorting to be @sort_func.  
  * If the current sort column id of @sortable is
- * %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, then the model will sort using 
+ * %BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, then the model will sort using 
  * this function.
  *
  * If @sort_func is %NULL, then there will be no default comparison function.
  * This means that once the model  has been sorted, it can't go back to the
  * default state. In this case, when the current sort column id of @sortable 
- * is %GTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, the model will be unsorted.
+ * is %BTK_TREE_SORTABLE_DEFAULT_SORT_COLUMN_ID, the model will be unsorted.
  */
 void
-gtk_tree_sortable_set_default_sort_func (GtkTreeSortable        *sortable,
-					 GtkTreeIterCompareFunc  sort_func,
+btk_tree_sortable_set_default_sort_func (BtkTreeSortable        *sortable,
+					 BtkTreeIterCompareFunc  sort_func,
 					 gpointer                user_data,
 					 GDestroyNotify          destroy)
 {
-  GtkTreeSortableIface *iface;
+  BtkTreeSortableIface *iface;
 
-  g_return_if_fail (GTK_IS_TREE_SORTABLE (sortable));
+  g_return_if_fail (BTK_IS_TREE_SORTABLE (sortable));
 
-  iface = GTK_TREE_SORTABLE_GET_IFACE (sortable);
+  iface = BTK_TREE_SORTABLE_GET_IFACE (sortable);
 
   g_return_if_fail (iface != NULL);
   g_return_if_fail (iface->set_default_sort_func != NULL);
@@ -234,23 +234,23 @@ gtk_tree_sortable_set_default_sort_func (GtkTreeSortable        *sortable,
 }
 
 /**
- * gtk_tree_sortable_has_default_sort_func:
- * @sortable: A #GtkTreeSortable
+ * btk_tree_sortable_has_default_sort_func:
+ * @sortable: A #BtkTreeSortable
  * 
  * Returns %TRUE if the model has a default sort function. This is used
- * primarily by GtkTreeViewColumns in order to determine if a model can 
+ * primarily by BtkTreeViewColumns in order to determine if a model can 
  * go back to the default state, or not.
  * 
  * Return value: %TRUE, if the model has a default sort function
  */
 gboolean
-gtk_tree_sortable_has_default_sort_func (GtkTreeSortable *sortable)
+btk_tree_sortable_has_default_sort_func (BtkTreeSortable *sortable)
 {
-  GtkTreeSortableIface *iface;
+  BtkTreeSortableIface *iface;
 
-  g_return_val_if_fail (GTK_IS_TREE_SORTABLE (sortable), FALSE);
+  g_return_val_if_fail (BTK_IS_TREE_SORTABLE (sortable), FALSE);
 
-  iface = GTK_TREE_SORTABLE_GET_IFACE (sortable);
+  iface = BTK_TREE_SORTABLE_GET_IFACE (sortable);
 
   g_return_val_if_fail (iface != NULL, FALSE);
   g_return_val_if_fail (iface->has_default_sort_func != NULL, FALSE);
@@ -258,5 +258,5 @@ gtk_tree_sortable_has_default_sort_func (GtkTreeSortable *sortable)
   return (* iface->has_default_sort_func) (sortable);
 }
 
-#define __GTK_TREE_SORTABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_TREE_SORTABLE_C__
+#include "btkaliasdef.c"

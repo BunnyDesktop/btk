@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,43 +17,43 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_LABEL_H__
-#define __GTK_LABEL_H__
+#ifndef __BTK_LABEL_H__
+#define __BTK_LABEL_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkmisc.h>
-#include <gtk/gtkwindow.h>
-#include <gtk/gtkmenu.h>
+#include <btk/btkmisc.h>
+#include <btk/btkwindow.h>
+#include <btk/btkmenu.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_LABEL		  (gtk_label_get_type ())
-#define GTK_LABEL(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_LABEL, GtkLabel))
-#define GTK_LABEL_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_LABEL, GtkLabelClass))
-#define GTK_IS_LABEL(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_LABEL))
-#define GTK_IS_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_LABEL))
-#define GTK_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_LABEL, GtkLabelClass))
+#define BTK_TYPE_LABEL		  (btk_label_get_type ())
+#define BTK_LABEL(obj)		  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_LABEL, BtkLabel))
+#define BTK_LABEL_CLASS(klass)	  (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_LABEL, BtkLabelClass))
+#define BTK_IS_LABEL(obj)	  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_LABEL))
+#define BTK_IS_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_LABEL))
+#define BTK_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_LABEL, BtkLabelClass))
 
 
-typedef struct _GtkLabel       GtkLabel;
-typedef struct _GtkLabelClass  GtkLabelClass;
+typedef struct _BtkLabel       BtkLabel;
+typedef struct _BtkLabelClass  BtkLabelClass;
 
-typedef struct _GtkLabelSelectionInfo GtkLabelSelectionInfo;
+typedef struct _BtkLabelSelectionInfo BtkLabelSelectionInfo;
 
-struct _GtkLabel
+struct _BtkLabel
 {
-  GtkMisc misc;
+  BtkMisc misc;
 
   /*< private >*/
   gchar  *GSEAL (label);
@@ -72,136 +72,136 @@ struct _GtkLabel
   guint   GSEAL (mnemonic_keyval);
 
   gchar  *GSEAL (text);
-  PangoAttrList *GSEAL (attrs);
-  PangoAttrList *GSEAL (effective_attrs);
+  BangoAttrList *GSEAL (attrs);
+  BangoAttrList *GSEAL (effective_attrs);
 
-  PangoLayout *GSEAL (layout);
+  BangoLayout *GSEAL (layout);
 
-  GtkWidget *GSEAL (mnemonic_widget);
-  GtkWindow *GSEAL (mnemonic_window);
+  BtkWidget *GSEAL (mnemonic_widget);
+  BtkWindow *GSEAL (mnemonic_window);
 
-  GtkLabelSelectionInfo *GSEAL (select_info);
+  BtkLabelSelectionInfo *GSEAL (select_info);
 };
 
-struct _GtkLabelClass
+struct _BtkLabelClass
 {
-  GtkMiscClass parent_class;
+  BtkMiscClass parent_class;
 
-  void (* move_cursor)     (GtkLabel       *label,
-			    GtkMovementStep step,
+  void (* move_cursor)     (BtkLabel       *label,
+			    BtkMovementStep step,
 			    gint            count,
 			    gboolean        extend_selection);
-  void (* copy_clipboard)  (GtkLabel       *label);
+  void (* copy_clipboard)  (BtkLabel       *label);
 
   /* Hook to customize right-click popup for selectable labels */
-  void (* populate_popup)   (GtkLabel       *label,
-                             GtkMenu        *menu);
+  void (* populate_popup)   (BtkLabel       *label,
+                             BtkMenu        *menu);
 
-  gboolean (*activate_link) (GtkLabel       *label,
+  gboolean (*activate_link) (BtkLabel       *label,
                              const gchar    *uri);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
 };
 
-GType                 gtk_label_get_type          (void) G_GNUC_CONST;
-GtkWidget*            gtk_label_new               (const gchar   *str);
-GtkWidget*            gtk_label_new_with_mnemonic (const gchar   *str);
-void                  gtk_label_set_text          (GtkLabel      *label,
+GType                 btk_label_get_type          (void) G_GNUC_CONST;
+BtkWidget*            btk_label_new               (const gchar   *str);
+BtkWidget*            btk_label_new_with_mnemonic (const gchar   *str);
+void                  btk_label_set_text          (BtkLabel      *label,
 						   const gchar   *str);
-const gchar *         gtk_label_get_text          (GtkLabel      *label);
-void                  gtk_label_set_attributes    (GtkLabel      *label,
-						   PangoAttrList *attrs);
-PangoAttrList        *gtk_label_get_attributes    (GtkLabel      *label);
-void                  gtk_label_set_label         (GtkLabel      *label,
+const gchar *         btk_label_get_text          (BtkLabel      *label);
+void                  btk_label_set_attributes    (BtkLabel      *label,
+						   BangoAttrList *attrs);
+BangoAttrList        *btk_label_get_attributes    (BtkLabel      *label);
+void                  btk_label_set_label         (BtkLabel      *label,
 						   const gchar   *str);
-const gchar *         gtk_label_get_label         (GtkLabel      *label);
-void                  gtk_label_set_markup        (GtkLabel      *label,
+const gchar *         btk_label_get_label         (BtkLabel      *label);
+void                  btk_label_set_markup        (BtkLabel      *label,
 						   const gchar   *str);
-void                  gtk_label_set_use_markup    (GtkLabel      *label,
+void                  btk_label_set_use_markup    (BtkLabel      *label,
 						   gboolean       setting);
-gboolean              gtk_label_get_use_markup    (GtkLabel      *label);
-void                  gtk_label_set_use_underline (GtkLabel      *label,
+gboolean              btk_label_get_use_markup    (BtkLabel      *label);
+void                  btk_label_set_use_underline (BtkLabel      *label,
 						   gboolean       setting);
-gboolean              gtk_label_get_use_underline (GtkLabel      *label);
+gboolean              btk_label_get_use_underline (BtkLabel      *label);
 
-void     gtk_label_set_markup_with_mnemonic       (GtkLabel         *label,
+void     btk_label_set_markup_with_mnemonic       (BtkLabel         *label,
 						   const gchar      *str);
-guint    gtk_label_get_mnemonic_keyval            (GtkLabel         *label);
-void     gtk_label_set_mnemonic_widget            (GtkLabel         *label,
-						   GtkWidget        *widget);
-GtkWidget *gtk_label_get_mnemonic_widget          (GtkLabel         *label);
-void     gtk_label_set_text_with_mnemonic         (GtkLabel         *label,
+guint    btk_label_get_mnemonic_keyval            (BtkLabel         *label);
+void     btk_label_set_mnemonic_widget            (BtkLabel         *label,
+						   BtkWidget        *widget);
+BtkWidget *btk_label_get_mnemonic_widget          (BtkLabel         *label);
+void     btk_label_set_text_with_mnemonic         (BtkLabel         *label,
 						   const gchar      *str);
-void     gtk_label_set_justify                    (GtkLabel         *label,
-						   GtkJustification  jtype);
-GtkJustification gtk_label_get_justify            (GtkLabel         *label);
-void     gtk_label_set_ellipsize		  (GtkLabel         *label,
-						   PangoEllipsizeMode mode);
-PangoEllipsizeMode gtk_label_get_ellipsize        (GtkLabel         *label);
-void     gtk_label_set_width_chars		  (GtkLabel         *label,
+void     btk_label_set_justify                    (BtkLabel         *label,
+						   BtkJustification  jtype);
+BtkJustification btk_label_get_justify            (BtkLabel         *label);
+void     btk_label_set_ellipsize		  (BtkLabel         *label,
+						   BangoEllipsizeMode mode);
+BangoEllipsizeMode btk_label_get_ellipsize        (BtkLabel         *label);
+void     btk_label_set_width_chars		  (BtkLabel         *label,
 						   gint              n_chars);
-gint     gtk_label_get_width_chars                (GtkLabel         *label);
-void     gtk_label_set_max_width_chars    	  (GtkLabel         *label,
+gint     btk_label_get_width_chars                (BtkLabel         *label);
+void     btk_label_set_max_width_chars    	  (BtkLabel         *label,
 					  	   gint              n_chars);
-gint     gtk_label_get_max_width_chars  	  (GtkLabel         *label);
-void     gtk_label_set_pattern                    (GtkLabel         *label,
+gint     btk_label_get_max_width_chars  	  (BtkLabel         *label);
+void     btk_label_set_pattern                    (BtkLabel         *label,
 						   const gchar      *pattern);
-void     gtk_label_set_line_wrap                  (GtkLabel         *label,
+void     btk_label_set_line_wrap                  (BtkLabel         *label,
 						   gboolean          wrap);
-gboolean gtk_label_get_line_wrap                  (GtkLabel         *label);
-void     gtk_label_set_line_wrap_mode             (GtkLabel         *label,
-						   PangoWrapMode     wrap_mode);
-PangoWrapMode gtk_label_get_line_wrap_mode        (GtkLabel         *label);
-void     gtk_label_set_selectable                 (GtkLabel         *label,
+gboolean btk_label_get_line_wrap                  (BtkLabel         *label);
+void     btk_label_set_line_wrap_mode             (BtkLabel         *label,
+						   BangoWrapMode     wrap_mode);
+BangoWrapMode btk_label_get_line_wrap_mode        (BtkLabel         *label);
+void     btk_label_set_selectable                 (BtkLabel         *label,
 						   gboolean          setting);
-gboolean gtk_label_get_selectable                 (GtkLabel         *label);
-void     gtk_label_set_angle                      (GtkLabel         *label,
+gboolean btk_label_get_selectable                 (BtkLabel         *label);
+void     btk_label_set_angle                      (BtkLabel         *label,
 						   gdouble           angle);
-gdouble  gtk_label_get_angle                      (GtkLabel         *label);
-void     gtk_label_select_region                  (GtkLabel         *label,
+gdouble  btk_label_get_angle                      (BtkLabel         *label);
+void     btk_label_select_rebunnyion                  (BtkLabel         *label,
 						   gint              start_offset,
 						   gint              end_offset);
-gboolean gtk_label_get_selection_bounds           (GtkLabel         *label,
+gboolean btk_label_get_selection_bounds           (BtkLabel         *label,
                                                    gint             *start,
                                                    gint             *end);
 
-PangoLayout *gtk_label_get_layout         (GtkLabel *label);
-void         gtk_label_get_layout_offsets (GtkLabel *label,
+BangoLayout *btk_label_get_layout         (BtkLabel *label);
+void         btk_label_get_layout_offsets (BtkLabel *label,
                                            gint     *x,
                                            gint     *y);
 
-void         gtk_label_set_single_line_mode  (GtkLabel *label,
+void         btk_label_set_single_line_mode  (BtkLabel *label,
                                               gboolean single_line_mode);
-gboolean     gtk_label_get_single_line_mode  (GtkLabel *label);
+gboolean     btk_label_get_single_line_mode  (BtkLabel *label);
 
-const gchar *gtk_label_get_current_uri          (GtkLabel *label);
-void         gtk_label_set_track_visited_links  (GtkLabel *label,
+const gchar *btk_label_get_current_uri          (BtkLabel *label);
+void         btk_label_set_track_visited_links  (BtkLabel *label,
                                                  gboolean  track_links);
-gboolean     gtk_label_get_track_visited_links  (GtkLabel *label);
+gboolean     btk_label_get_track_visited_links  (BtkLabel *label);
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#define  gtk_label_set           gtk_label_set_text
-void       gtk_label_get           (GtkLabel          *label,
+#define  btk_label_set           btk_label_set_text
+void       btk_label_get           (BtkLabel          *label,
                                     gchar            **str);
 
 /* Convenience function to set the name and pattern by parsing
  * a string with embedded underscores, and return the appropriate
  * key symbol for the accelerator.
  */
-guint gtk_label_parse_uline            (GtkLabel    *label,
+guint btk_label_parse_uline            (BtkLabel    *label,
 					const gchar *string);
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* private */
 
-void _gtk_label_mnemonics_visible_apply_recursively (GtkWidget *widget,
+void _btk_label_mnemonics_visible_apply_recursively (BtkWidget *widget,
                                                      gboolean   mnemonics_visible);
 
 G_END_DECLS
 
-#endif /* __GTK_LABEL_H__ */
+#endif /* __BTK_LABEL_H__ */

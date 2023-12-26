@@ -17,95 +17,95 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 static void
-orient_toggled (GtkToggleButton *button, gpointer user_data)
+orient_toggled (BtkToggleButton *button, gpointer user_data)
 {
   GList *orientables = (GList *) user_data, *ptr;
-  gboolean state = gtk_toggle_button_get_active (button);
-  GtkOrientation orientation;
+  gboolean state = btk_toggle_button_get_active (button);
+  BtkOrientation orientation;
 
   if (state)
     {
-      orientation = GTK_ORIENTATION_VERTICAL;
-      gtk_button_set_label (GTK_BUTTON (button), "Vertical");
+      orientation = BTK_ORIENTATION_VERTICAL;
+      btk_button_set_label (BTK_BUTTON (button), "Vertical");
     }
   else
     {
-      orientation = GTK_ORIENTATION_HORIZONTAL;
-      gtk_button_set_label (GTK_BUTTON (button), "Horizontal");
+      orientation = BTK_ORIENTATION_HORIZONTAL;
+      btk_button_set_label (BTK_BUTTON (button), "Horizontal");
     }
 
   for (ptr = orientables; ptr; ptr = ptr->next)
     {
-      GtkOrientable *orientable = GTK_ORIENTABLE (ptr->data);
+      BtkOrientable *orientable = BTK_ORIENTABLE (ptr->data);
 
-      gtk_orientable_set_orientation (orientable, orientation);
+      btk_orientable_set_orientation (orientable, orientation);
     }
 }
 
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *table;
-  GtkWidget *box, *button;
+  BtkWidget *window;
+  BtkWidget *table;
+  BtkWidget *box, *button;
   GList *orientables = NULL;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  table = gtk_table_new (2, 3, FALSE);
-  gtk_table_set_row_spacings (GTK_TABLE (table), 12);
-  gtk_table_set_col_spacings (GTK_TABLE (table), 12);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  table = btk_table_new (2, 3, FALSE);
+  btk_table_set_row_spacings (BTK_TABLE (table), 12);
+  btk_table_set_col_spacings (BTK_TABLE (table), 12);
 
-  /* GtkBox */
-  box = gtk_hbox_new (6, FALSE);
+  /* BtkBox */
+  box = btk_hbox_new (6, FALSE);
   orientables = g_list_prepend (orientables, box);
-  gtk_table_attach_defaults (GTK_TABLE (table), box, 0, 1, 1, 2);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkBox 1"),
+  btk_table_attach_defaults (BTK_TABLE (table), box, 0, 1, 1, 2);
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkBox 1"),
                   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkBox 2"),
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkBox 2"),
                   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkBox 3"),
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkBox 3"),
                   TRUE, TRUE, 0);
 
-  /* GtkButtonBox */
-  box = gtk_hbutton_box_new ();
+  /* BtkButtonBox */
+  box = btk_hbutton_box_new ();
   orientables = g_list_prepend (orientables, box);
-  gtk_table_attach_defaults (GTK_TABLE (table), box, 1, 2, 1, 2);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkButtonBox 1"),
+  btk_table_attach_defaults (BTK_TABLE (table), box, 1, 2, 1, 2);
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkButtonBox 1"),
                   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkButtonBox 2"),
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkButtonBox 2"),
                   TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box),
-                  gtk_button_new_with_label ("GtkButtonBox 3"),
+  btk_box_pack_start (BTK_BOX (box),
+                  btk_button_new_with_label ("BtkButtonBox 3"),
                   TRUE, TRUE, 0);
 
-  /* GtkSeparator */
-  box = gtk_hseparator_new ();
+  /* BtkSeparator */
+  box = btk_hseparator_new ();
   orientables = g_list_prepend (orientables, box);
-  gtk_table_attach_defaults (GTK_TABLE (table), box, 2, 3, 1, 2);
+  btk_table_attach_defaults (BTK_TABLE (table), box, 2, 3, 1, 2);
 
-  button = gtk_toggle_button_new_with_label ("Horizontal");
-  gtk_table_attach (GTK_TABLE (table), button, 0, 1, 0, 1,
-                  GTK_FILL, GTK_FILL, 0, 0);
+  button = btk_toggle_button_new_with_label ("Horizontal");
+  btk_table_attach (BTK_TABLE (table), button, 0, 1, 0, 1,
+                  BTK_FILL, BTK_FILL, 0, 0);
   g_signal_connect (button, "toggled",
                   G_CALLBACK (orient_toggled), orientables);
 
-  gtk_container_add (GTK_CONTAINER (window), table);
-  gtk_widget_show_all (window);
+  btk_container_add (BTK_CONTAINER (window), table);
+  btk_widget_show_all (window);
 
   g_signal_connect (window, "destroy",
-                  G_CALLBACK (gtk_main_quit), NULL);
+                  G_CALLBACK (btk_main_quit), NULL);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

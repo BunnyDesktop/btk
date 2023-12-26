@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gdkasync.c: Utility functions using the Xlib asynchronous interfaces
+/* BTK - The GIMP Toolkit
+ * bdkasync.c: Utility functions using the Xlib asynchronous interfaces
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -48,9 +48,9 @@ in this Software without prior written authorization from The Open Group.
 #include <X11/extensions/XIproto.h>
 #endif
 #include <X11/Xlibint.h>
-#include "gdkasync.h"
-#include "gdkx.h"
-#include "gdkalias.h"
+#include "bdkasync.h"
+#include "bdkx.h"
+#include "bdkalias.h"
 
 typedef struct _ChildInfoChildState ChildInfoChildState;
 typedef struct _ChildInfoState ChildInfoState;
@@ -75,7 +75,7 @@ struct _ChildInfoState
   gboolean get_wm_state;
   Window *children;
   guint nchildren;
-  GdkChildInfoX11 *child_info;
+  BdkChildInfoX11 *child_info;
   ChildInfoChildState *child_states;
 
   guint current_child;
@@ -101,7 +101,7 @@ struct _SendEventState
   gulong send_event_req;
   gulong get_input_focus_req;
   gboolean have_error;
-  GdkSendXEventCallback callback;
+  BdkSendXEventCallback callback;
   gpointer data;
 };
 
@@ -118,8 +118,8 @@ struct _RoundtripState
   Display *dpy;
   _XAsyncHandler async;
   gulong get_input_focus_req;
-  GdkDisplay *display;
-  GdkRoundTripCallback callback;
+  BdkDisplay *display;
+  BdkRoundTripCallback callback;
   gpointer data;
 };
 
@@ -170,7 +170,7 @@ send_event_handler (Display *dpy,
 	}
 
       if (state->callback)
-        gdk_threads_add_idle (callback_idle, state);
+        bdk_threads_add_idle (callback_idle, state);
 
       DeqAsyncHandler(state->dpy, &state->async);
 
@@ -223,18 +223,18 @@ client_message_to_wire (XClientMessageEvent *ev,
 }
 
 void
-_gdk_x11_send_client_message_async (GdkDisplay           *display, 
+_bdk_x11_send_client_message_async (BdkDisplay           *display, 
 				    Window                window, 
 				    gboolean              propagate,
 				    glong                 event_mask,
 				    XClientMessageEvent  *event_send,
-				    GdkSendXEventCallback callback,
+				    BdkSendXEventCallback callback,
 				    gpointer              data)
 {
   Display *dpy;
   SendEventState *state;
   
-  dpy = GDK_DISPLAY_XDISPLAY (display);
+  dpy = BDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (SendEventState, 1);
 
@@ -333,7 +333,7 @@ set_input_focus_handler (Display *dpy,
 }
 
 void
-_gdk_x11_set_input_focus_safe (GdkDisplay             *display,
+_bdk_x11_set_input_focus_safe (BdkDisplay             *display,
 			       Window                  window,
 			       int                     revert_to,
 			       Time                    time)
@@ -341,7 +341,7 @@ _gdk_x11_set_input_focus_safe (GdkDisplay             *display,
   Display *dpy;
   SetInputFocusState *state;
   
-  dpy = GDK_DISPLAY_XDISPLAY (display);
+  dpy = BDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (SetInputFocusState, 1);
 
@@ -493,7 +493,7 @@ handle_get_wa_reply (Display                   *dpy,
 		     ChildInfoState            *state,
 		     xGetWindowAttributesReply *repl)
 {
-  GdkChildInfoX11 *child = &state->child_info[state->n_children_found];
+  BdkChildInfoX11 *child = &state->child_info[state->n_children_found];
   child->is_mapped = repl->mapState != IsUnmapped;
   child->window_class = repl->class;
 }
@@ -503,7 +503,7 @@ handle_get_geometry_reply (Display           *dpy,
 			   ChildInfoState    *state,
 			   xGetGeometryReply *repl)
 {
-  GdkChildInfoX11 *child = &state->child_info[state->n_children_found];
+  BdkChildInfoX11 *child = &state->child_info[state->n_children_found];
   
   child->x = cvtINT16toInt (repl->x);
   child->y = cvtINT16toInt (repl->y);
@@ -516,7 +516,7 @@ handle_get_property_reply (Display           *dpy,
 			   ChildInfoState    *state,
 			   xGetPropertyReply *repl)
 {
-  GdkChildInfoX11 *child = &state->child_info[state->n_children_found];
+  BdkChildInfoX11 *child = &state->child_info[state->n_children_found];
   child->has_wm_state = repl->propertyType != None;
 
   /* Since we called GetProperty with longLength of 0, we don't
@@ -623,11 +623,11 @@ get_child_info_handler (Display *dpy,
 }
 
 gboolean
-_gdk_x11_get_window_child_info (GdkDisplay       *display,
+_bdk_x11_get_window_child_info (BdkDisplay       *display,
 				Window            window,
 				gboolean          get_wm_state,
 				gboolean         *win_has_wm_state,
-				GdkChildInfoX11 **children,
+				BdkChildInfoX11 **children,
 				guint            *nchildren)
 {
   Display *dpy;
@@ -641,21 +641,21 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
   *children = NULL;
   *nchildren = 0;
   
-  dpy = GDK_DISPLAY_XDISPLAY (display);
+  dpy = BDK_DISPLAY_XDISPLAY (display);
   if (get_wm_state)
-    wm_state_atom = gdk_x11_get_xatom_by_name_for_display (display, "WM_STATE");
+    wm_state_atom = bdk_x11_get_xatom_by_name_for_display (display, "WM_STATE");
   else
     wm_state_atom = None;
 
   state.children = NULL;
   state.nchildren = 0;
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   result = list_children_and_wm_state (dpy, window,
 				       win_has_wm_state ? wm_state_atom : None,
 				       &has_wm_state,
 				       &state.children, &state.nchildren);
-  gdk_error_trap_pop ();
+  bdk_error_trap_pop ();
   if (!result)
     {
       g_free (state.children);
@@ -676,7 +676,7 @@ _gdk_x11_get_window_child_info (GdkDisplay       *display,
     }
 
   state.get_wm_state = get_wm_state;
-  state.child_info = g_new (GdkChildInfoX11, state.nchildren);
+  state.child_info = g_new (BdkChildInfoX11, state.nchildren);
   state.child_states = g_new (ChildInfoChildState, state.nchildren);
   state.current_child = 0;
   state.n_children_found = 0;
@@ -793,7 +793,7 @@ roundtrip_handler (Display *dpy,
 
       
       if (state->callback)
-        gdk_threads_add_idle (roundtrip_callback_idle, state);
+        bdk_threads_add_idle (roundtrip_callback_idle, state);
 
       DeqAsyncHandler(state->dpy, &state->async);
 
@@ -804,14 +804,14 @@ roundtrip_handler (Display *dpy,
 }
 
 void
-_gdk_x11_roundtrip_async (GdkDisplay           *display, 
-			  GdkRoundTripCallback callback,
+_bdk_x11_roundtrip_async (BdkDisplay           *display, 
+			  BdkRoundTripCallback callback,
 			  gpointer              data)
 {
   Display *dpy;
   RoundtripState *state;
   
-  dpy = GDK_DISPLAY_XDISPLAY (display);
+  dpy = BDK_DISPLAY_XDISPLAY (display);
 
   state = g_new (RoundtripState, 1);
 
@@ -841,5 +841,5 @@ _gdk_x11_roundtrip_async (GdkDisplay           *display,
   SyncHandle();
 }
 
-#define __GDK_ASYNC_C__
-#include "gdkaliasdef.c"
+#define __BDK_ASYNC_C__
+#include "bdkaliasdef.c"

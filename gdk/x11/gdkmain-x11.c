@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,15 +18,15 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
-#include <glib/gprintf.h>
+#include <bunnylib/gprintf.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -41,27 +41,27 @@
 #include <X11/XKBlib.h>
 #endif
 
-#include "gdk.h"
+#include "bdk.h"
 
-#include "gdkx.h"
-#include "gdkasync.h"
-#include "gdkdisplay-x11.h"
-#include "gdkinternals.h"
-#include "gdkintl.h"
-#include "gdkregion-generic.h"
-#include "gdkinputprivate.h"
-#include "gdkalias.h"
+#include "bdkx.h"
+#include "bdkasync.h"
+#include "bdkdisplay-x11.h"
+#include "bdkinternals.h"
+#include "bdkintl.h"
+#include "bdkrebunnyion-generic.h"
+#include "bdkinputprivate.h"
+#include "bdkalias.h"
 
-typedef struct _GdkPredicate  GdkPredicate;
-typedef struct _GdkErrorTrap  GdkErrorTrap;
+typedef struct _BdkPredicate  BdkPredicate;
+typedef struct _BdkErrorTrap  BdkErrorTrap;
 
-struct _GdkPredicate
+struct _BdkPredicate
 {
-  GdkEventFunc func;
+  BdkEventFunc func;
   gpointer data;
 };
 
-struct _GdkErrorTrap
+struct _BdkErrorTrap
 {
   int (*old_handler) (Display *, XErrorEvent *);
   gint error_warnings;
@@ -73,64 +73,64 @@ struct _GdkErrorTrap
  */
 
 #ifndef HAVE_XCONVERTCASE
-static void	 gdkx_XConvertCase	(KeySym	       symbol,
+static void	 bdkx_XConvertCase	(KeySym	       symbol,
 					 KeySym	      *lower,
 					 KeySym	      *upper);
-#define XConvertCase gdkx_XConvertCase
+#define XConvertCase bdkx_XConvertCase
 #endif
 
-static int	    gdk_x_error			 (Display     *display, 
+static int	    bdk_x_error			 (Display     *display, 
 						  XErrorEvent *error);
-static int	    gdk_x_io_error		 (Display     *display);
+static int	    bdk_x_io_error		 (Display     *display);
 
 /* Private variable declarations
  */
-static GSList *gdk_error_traps = NULL;               /* List of error traps */
-static GSList *gdk_error_trap_free_list = NULL;      /* Free list */
+static GSList *bdk_error_traps = NULL;               /* List of error traps */
+static GSList *bdk_error_trap_free_list = NULL;      /* Free list */
 
-const GOptionEntry _gdk_windowing_args[] = {
-  { "sync", 0, 0, G_OPTION_ARG_NONE, &_gdk_synchronize, 
+const GOptionEntry _bdk_windowing_args[] = {
+  { "sync", 0, 0, G_OPTION_ARG_NONE, &_bdk_synchronize, 
     /* Description of --sync in --help output */ N_("Make X calls synchronous"), NULL },
   { NULL }
 };
 
 void
-_gdk_windowing_init (void)
+_bdk_windowing_init (void)
 {
-  _gdk_x11_initialize_locale ();
+  _bdk_x11_initialize_locale ();
   
-  XSetErrorHandler (gdk_x_error);
-  XSetIOErrorHandler (gdk_x_io_error);
+  XSetErrorHandler (bdk_x_error);
+  XSetIOErrorHandler (bdk_x_io_error);
 
-  _gdk_selection_property = gdk_atom_intern_static_string ("GDK_SELECTION");
+  _bdk_selection_property = bdk_atom_intern_static_string ("BDK_SELECTION");
 }
 
 void
-gdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (gboolean use_xshm)
 {
 }
 
 gboolean
-gdk_get_use_xshm (void)
+bdk_get_use_xshm (void)
 {
-  return GDK_DISPLAY_X11 (gdk_display_get_default ())->use_xshm;
+  return BDK_DISPLAY_X11 (bdk_display_get_default ())->use_xshm;
 }
 
-static GdkGrabStatus
-gdk_x11_convert_grab_status (gint status)
+static BdkGrabStatus
+bdk_x11_convert_grab_status (gint status)
 {
   switch (status)
     {
     case GrabSuccess:
-      return GDK_GRAB_SUCCESS;
+      return BDK_GRAB_SUCCESS;
     case AlreadyGrabbed:
-      return GDK_GRAB_ALREADY_GRABBED;
+      return BDK_GRAB_ALREADY_GRABBED;
     case GrabInvalidTime:
-      return GDK_GRAB_INVALID_TIME;
+      return BDK_GRAB_INVALID_TIME;
     case GrabNotViewable:
-      return GDK_GRAB_NOT_VIEWABLE;
+      return BDK_GRAB_NOT_VIEWABLE;
     case GrabFrozen:
-      return GDK_GRAB_FROZEN;
+      return BDK_GRAB_FROZEN;
     }
 
   g_assert_not_reached();
@@ -139,25 +139,25 @@ gdk_x11_convert_grab_status (gint status)
 }
 
 static void
-has_pointer_grab_callback (GdkDisplay *display,
+has_pointer_grab_callback (BdkDisplay *display,
 			   gpointer data,
 			   gulong serial)
 {
-  _gdk_display_pointer_grab_update (display, serial);
+  _bdk_display_pointer_grab_update (display, serial);
 }
 
-GdkGrabStatus
-_gdk_windowing_pointer_grab (GdkWindow *window,
-			     GdkWindow *native,
+BdkGrabStatus
+_bdk_windowing_pointer_grab (BdkWindow *window,
+			     BdkWindow *native,
 			     gboolean owner_events,
-			     GdkEventMask event_mask,
-			     GdkWindow *confine_to,
-			     GdkCursor *cursor,
+			     BdkEventMask event_mask,
+			     BdkWindow *confine_to,
+			     BdkCursor *cursor,
 			     guint32 time)
 {
   gint return_val;
-  GdkCursorPrivate *cursor_private;
-  GdkDisplayX11 *display_x11;
+  BdkCursorPrivate *cursor_private;
+  BdkDisplayX11 *display_x11;
   guint xevent_mask;
   Window xwindow;
   Window xconfine_to;
@@ -165,32 +165,32 @@ _gdk_windowing_pointer_grab (GdkWindow *window,
   int i;
 
   if (confine_to)
-    confine_to = _gdk_window_get_impl_window (confine_to);
+    confine_to = _bdk_window_get_impl_window (confine_to);
 
-  display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (native));
+  display_x11 = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (native));
 
-  cursor_private = (GdkCursorPrivate*) cursor;
+  cursor_private = (BdkCursorPrivate*) cursor;
 
-  xwindow = GDK_WINDOW_XID (native);
+  xwindow = BDK_WINDOW_XID (native);
 
-  if (!confine_to || GDK_WINDOW_DESTROYED (confine_to))
+  if (!confine_to || BDK_WINDOW_DESTROYED (confine_to))
     xconfine_to = None;
   else
-    xconfine_to = GDK_WINDOW_XID (confine_to);
+    xconfine_to = BDK_WINDOW_XID (confine_to);
 
   if (!cursor)
     xcursor = None;
   else
     {
-      _gdk_x11_cursor_update_theme (cursor);
+      _bdk_x11_cursor_update_theme (cursor);
       xcursor = cursor_private->xcursor;
     }
 
   xevent_mask = 0;
-  for (i = 0; i < _gdk_nenvent_masks; i++)
+  for (i = 0; i < _bdk_nenvent_masks; i++)
     {
       if (event_mask & (1 << (i + 1)))
-	xevent_mask |= _gdk_event_mask_table[i];
+	xevent_mask |= _bdk_event_mask_table[i];
     }
 
   /* We don't want to set a native motion hint mask, as we're emulating motion
@@ -198,7 +198,7 @@ _gdk_windowing_pointer_grab (GdkWindow *window,
    */
   xevent_mask &= ~PointerMotionHintMask;
 
-  return_val = _gdk_input_grab_pointer (window,
+  return_val = _bdk_input_grab_pointer (window,
 					native,
 					owner_events,
 					event_mask,
@@ -208,14 +208,14 @@ _gdk_windowing_pointer_grab (GdkWindow *window,
   if (return_val == GrabSuccess ||
       G_UNLIKELY (!display_x11->trusted_client && return_val == AlreadyGrabbed))
     {
-      if (!GDK_WINDOW_DESTROYED (native))
+      if (!BDK_WINDOW_DESTROYED (native))
 	{
 #ifdef G_ENABLE_DEBUG
-	  if (_gdk_debug_flags & GDK_DEBUG_NOGRABS)
+	  if (_bdk_debug_flags & BDK_DEBUG_NOGRABS)
 	    return_val = GrabSuccess;
 	  else
 #endif
-	    return_val = XGrabPointer (GDK_WINDOW_XDISPLAY (native),
+	    return_val = XGrabPointer (BDK_WINDOW_XDISPLAY (native),
 				       xwindow,
 				       owner_events,
 				       xevent_mask,
@@ -229,16 +229,16 @@ _gdk_windowing_pointer_grab (GdkWindow *window,
     }
 
   if (return_val == GrabSuccess)
-    _gdk_x11_roundtrip_async (GDK_DISPLAY_OBJECT (display_x11),
+    _bdk_x11_roundtrip_async (BDK_DISPLAY_OBJECT (display_x11),
 			      has_pointer_grab_callback,
 			      NULL);
 
-  return gdk_x11_convert_grab_status (return_val);
+  return bdk_x11_convert_grab_status (return_val);
 }
 
 /*
  *--------------------------------------------------------------
- * gdk_keyboard_grab
+ * bdk_keyboard_grab
  *
  *   Grabs the keyboard to a specific window
  *
@@ -251,68 +251,68 @@ _gdk_windowing_pointer_grab (GdkWindow *window,
  * Results:
  *
  * Side effects:
- *   requires a corresponding call to gdk_keyboard_ungrab
+ *   requires a corresponding call to bdk_keyboard_ungrab
  *
  *--------------------------------------------------------------
  */
 
-GdkGrabStatus
-gdk_keyboard_grab (GdkWindow *	   window,
+BdkGrabStatus
+bdk_keyboard_grab (BdkWindow *	   window,
 		   gboolean	   owner_events,
 		   guint32	   time)
 {
   gint return_val;
   unsigned long serial;
-  GdkDisplay *display;
-  GdkDisplayX11 *display_x11;
-  GdkWindow *native;
+  BdkDisplay *display;
+  BdkDisplayX11 *display_x11;
+  BdkWindow *native;
 
   g_return_val_if_fail (window != NULL, 0);
-  g_return_val_if_fail (GDK_IS_WINDOW (window), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (window), 0);
 
-  native = gdk_window_get_toplevel (window);
+  native = bdk_window_get_toplevel (window);
 
   /* TODO: What do we do for offscreens and  children? We need to proxy the grab somehow */
-  if (!GDK_IS_WINDOW_IMPL_X11 (GDK_WINDOW_OBJECT (native)->impl))
-    return GDK_GRAB_SUCCESS;
+  if (!BDK_IS_WINDOW_IMPL_X11 (BDK_WINDOW_OBJECT (native)->impl))
+    return BDK_GRAB_SUCCESS;
 
-  display = GDK_WINDOW_DISPLAY (native);
-  display_x11 = GDK_DISPLAY_X11 (display);
+  display = BDK_WINDOW_DISPLAY (native);
+  display_x11 = BDK_DISPLAY_X11 (display);
 
-  serial = NextRequest (GDK_WINDOW_XDISPLAY (native));
+  serial = NextRequest (BDK_WINDOW_XDISPLAY (native));
 
-  if (!GDK_WINDOW_DESTROYED (native))
+  if (!BDK_WINDOW_DESTROYED (native))
     {
 #ifdef G_ENABLE_DEBUG
-      if (_gdk_debug_flags & GDK_DEBUG_NOGRABS)
+      if (_bdk_debug_flags & BDK_DEBUG_NOGRABS)
 	return_val = GrabSuccess;
       else
 #endif
-	return_val = XGrabKeyboard (GDK_WINDOW_XDISPLAY (native),
-				    GDK_WINDOW_XID (native),
+	return_val = XGrabKeyboard (BDK_WINDOW_XDISPLAY (native),
+				    BDK_WINDOW_XID (native),
 				    owner_events,
 				    GrabModeAsync, GrabModeAsync,
 				    time);
 	if (G_UNLIKELY (!display_x11->trusted_client && 
 			return_val == AlreadyGrabbed))
-	  /* we can't grab the keyboard, but we can do a GTK-local grab */
+	  /* we can't grab the keyboard, but we can do a BTK-local grab */
 	  return_val = GrabSuccess;
     }
   else
     return_val = AlreadyGrabbed;
 
   if (return_val == GrabSuccess)
-    _gdk_display_set_has_keyboard_grab (display,
+    _bdk_display_set_has_keyboard_grab (display,
 					window,	native,
 					owner_events,
 					serial, time);
 
-  return gdk_x11_convert_grab_status (return_val);
+  return bdk_x11_convert_grab_status (return_val);
 }
 
 /**
- * _gdk_xgrab_check_unmap:
- * @window: a #GdkWindow
+ * _bdk_xgrab_check_unmap:
+ * @window: a #BdkWindow
  * @serial: serial from Unmap event (or from NextRequest(display)
  *   if the unmap is being done by this client.)
  * 
@@ -321,43 +321,43 @@ gdk_keyboard_grab (GdkWindow *	   window,
  * the pointer we keep to it.
  **/
 void
-_gdk_xgrab_check_unmap (GdkWindow *window,
+_bdk_xgrab_check_unmap (BdkWindow *window,
 			gulong     serial)
 {
-  GdkDisplay *display = gdk_drawable_get_display (window);
+  BdkDisplay *display = bdk_drawable_get_display (window);
 
-  _gdk_display_end_pointer_grab (display, serial, window, TRUE);
+  _bdk_display_end_pointer_grab (display, serial, window, TRUE);
 
   if (display->keyboard_grab.window &&
       serial >= display->keyboard_grab.serial)
     {
-      GdkWindowObject *private = GDK_WINDOW_OBJECT (window);
-      GdkWindowObject *tmp = GDK_WINDOW_OBJECT (display->keyboard_grab.window);
+      BdkWindowObject *private = BDK_WINDOW_OBJECT (window);
+      BdkWindowObject *tmp = BDK_WINDOW_OBJECT (display->keyboard_grab.window);
 
       while (tmp && tmp != private)
 	tmp = tmp->parent;
 
       if (tmp)
-	_gdk_display_unset_has_keyboard_grab (display, TRUE);
+	_bdk_display_unset_has_keyboard_grab (display, TRUE);
     }
 }
 
 /**
- * _gdk_xgrab_check_destroy:
- * @window: a #GdkWindow
+ * _bdk_xgrab_check_destroy:
+ * @window: a #BdkWindow
  * 
  * Checks to see if window is the current grab window, and if
  * so, clear the current grab window.
  **/
 void
-_gdk_xgrab_check_destroy (GdkWindow *window)
+_bdk_xgrab_check_destroy (BdkWindow *window)
 {
-  GdkDisplay *display = gdk_drawable_get_display (window);
-  GdkPointerGrabInfo *grab;
+  BdkDisplay *display = bdk_drawable_get_display (window);
+  BdkPointerGrabInfo *grab;
 
   /* Make sure there is no lasting grab in this native
      window */
-  grab = _gdk_display_get_last_pointer_grab (display);
+  grab = _bdk_display_get_last_pointer_grab (display);
   if (grab && grab->native_window == window)
     {
       /* We don't know the actual serial to end, but it
@@ -371,14 +371,14 @@ _gdk_xgrab_check_destroy (GdkWindow *window)
   
   if (window == display->keyboard_grab.native_window &&
       display->keyboard_grab.window != NULL)
-    _gdk_display_unset_has_keyboard_grab (display, TRUE);
+    _bdk_display_unset_has_keyboard_grab (display, TRUE);
 }
 
 void
-_gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
+_bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
 					 const gchar *sm_client_id)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
 
   if (display->closed)
     return;
@@ -386,17 +386,17 @@ _gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
   if (sm_client_id && strcmp (sm_client_id, ""))
     {
       XChangeProperty (display_x11->xdisplay, display_x11->leader_window,
-		       gdk_x11_get_xatom_by_name_for_display (display, "SM_CLIENT_ID"),
+		       bdk_x11_get_xatom_by_name_for_display (display, "SM_CLIENT_ID"),
 		       XA_STRING, 8, PropModeReplace, (guchar *)sm_client_id,
 		       strlen (sm_client_id));
     }
   else
     XDeleteProperty (display_x11->xdisplay, display_x11->leader_window,
-		     gdk_x11_get_xatom_by_name_for_display (display, "SM_CLIENT_ID"));
+		     bdk_x11_get_xatom_by_name_for_display (display, "SM_CLIENT_ID"));
 }
 
 /**
- * gdk_x11_set_sm_client_id:
+ * bdk_x11_set_sm_client_id:
  * @sm_client_id: the client id assigned by the session manager when the
  *    connection was opened, or %NULL to remove the property.
  *
@@ -410,21 +410,21 @@ _gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
  * Since: 2.24
  */
 void
-gdk_x11_set_sm_client_id (const gchar *sm_client_id)
+bdk_x11_set_sm_client_id (const gchar *sm_client_id)
 {
-  gdk_set_sm_client_id (sm_client_id);
+  bdk_set_sm_client_id (sm_client_id);
 }
 
 /* Close all open displays
  */
 void
-_gdk_windowing_exit (void)
+_bdk_windowing_exit (void)
 {
-  GSList *tmp_list = _gdk_displays;
+  GSList *tmp_list = _bdk_displays;
     
   while (tmp_list)
     {
-      XCloseDisplay (GDK_DISPLAY_XDISPLAY (tmp_list->data));
+      XCloseDisplay (BDK_DISPLAY_XDISPLAY (tmp_list->data));
       
       tmp_list = tmp_list->next;
   }
@@ -432,7 +432,7 @@ _gdk_windowing_exit (void)
 
 /*
  *--------------------------------------------------------------
- * gdk_x_error
+ * bdk_x_error
  *
  *   The X error handling routine.
  *
@@ -442,7 +442,7 @@ _gdk_windowing_exit (void)
  *
  * Results:
  *   Either we were expecting some sort of error to occur,
- *   in which case we set the "_gdk_error_code" flag, or this
+ *   in which case we set the "_bdk_error_code" flag, or this
  *   error was unexpected, in which case we will print an
  *   error message and exit. (Since trying to continue will
  *   most likely simply lead to more errors).
@@ -453,12 +453,12 @@ _gdk_windowing_exit (void)
  */
 
 static int
-gdk_x_error (Display	 *display,
+bdk_x_error (Display	 *display,
 	     XErrorEvent *error)
 {
   if (error->error_code)
     {
-      if (_gdk_error_warnings)
+      if (_bdk_error_warnings)
 	{
 	  gchar buf[64];
           gchar *msg;
@@ -474,7 +474,7 @@ gdk_x_error (Display	 *display,
                              "   that is, you will receive the error a while after causing it.\n"
                              "   To debug your program, run it with the --sync command line\n"
                              "   option to change this behavior. You can then get a meaningful\n"
-                             "   backtrace from your debugger if you break on the gdk_x_error() function.)",
+                             "   backtrace from your debugger if you break on the bdk_x_error() function.)",
                              g_get_prgname (),
                              buf,
                              error->serial, 
@@ -490,7 +490,7 @@ gdk_x_error (Display	 *display,
 	  exit (1);
 #endif /* G_ENABLE_DEBUG */
 	}
-      _gdk_error_code = error->error_code;
+      _bdk_error_code = error->error_code;
     }
   
   return 0;
@@ -498,7 +498,7 @@ gdk_x_error (Display	 *display,
 
 /*
  *--------------------------------------------------------------
- * gdk_x_io_error
+ * bdk_x_io_error
  *
  *   The X I/O error handling routine.
  *
@@ -516,7 +516,7 @@ gdk_x_error (Display	 *display,
  */
 
 static int
-gdk_x_io_error (Display *display)
+bdk_x_io_error (Display *display)
 {
   /* This is basically modelled after the code in XLib. We need
    * an explicit error handler here, so we can disable our atexit()
@@ -531,23 +531,23 @@ gdk_x_io_error (Display *display)
                "most likely the X server was shut down or you killed/destroyed\n"
                "the application.\n",
                g_get_prgname (),
-               display ? DisplayString (display) : gdk_get_display_arg_name ());
+               display ? DisplayString (display) : bdk_get_display_arg_name ());
     }
   else
     {
       g_fprintf (stderr, "%s: Fatal IO error %d (%s) on X server %s.\n",
                g_get_prgname (),
 	       errno, g_strerror (errno),
-	       display ? DisplayString (display) : gdk_get_display_arg_name ());
+	       display ? DisplayString (display) : bdk_get_display_arg_name ());
     }
 
   exit(1);
 }
 
 /*************************************************************
- * gdk_error_trap_push:
+ * bdk_error_trap_push:
  *     Push an error trap. X errors will be trapped until
- *     the corresponding gdk_error_pop(), which will return
+ *     the corresponding bdk_error_pop(), which will return
  *     the error code, if any.
  *   arguments:
  *     
@@ -555,37 +555,37 @@ gdk_x_io_error (Display *display)
  *************************************************************/
 
 void
-gdk_error_trap_push (void)
+bdk_error_trap_push (void)
 {
   GSList *node;
-  GdkErrorTrap *trap;
+  BdkErrorTrap *trap;
 
-  if (gdk_error_trap_free_list)
+  if (bdk_error_trap_free_list)
     {
-      node = gdk_error_trap_free_list;
-      gdk_error_trap_free_list = gdk_error_trap_free_list->next;
+      node = bdk_error_trap_free_list;
+      bdk_error_trap_free_list = bdk_error_trap_free_list->next;
     }
   else
     {
       node = g_slist_alloc ();
-      node->data = g_new (GdkErrorTrap, 1);
+      node->data = g_new (BdkErrorTrap, 1);
     }
 
-  node->next = gdk_error_traps;
-  gdk_error_traps = node;
+  node->next = bdk_error_traps;
+  bdk_error_traps = node;
   
   trap = node->data;
-  trap->old_handler = XSetErrorHandler (gdk_x_error);
-  trap->error_code = _gdk_error_code;
-  trap->error_warnings = _gdk_error_warnings;
+  trap->old_handler = XSetErrorHandler (bdk_x_error);
+  trap->error_code = _bdk_error_code;
+  trap->error_warnings = _bdk_error_warnings;
 
-  _gdk_error_code = 0;
-  _gdk_error_warnings = 0;
+  _bdk_error_code = 0;
+  _bdk_error_warnings = 0;
 }
 
 /*************************************************************
- * gdk_error_trap_pop:
- *     Pop an error trap added with gdk_error_push()
+ * bdk_error_trap_pop:
+ *     Pop an error trap added with bdk_error_push()
  *   arguments:
  *     
  *   results:
@@ -593,39 +593,39 @@ gdk_error_trap_push (void)
  *************************************************************/
 
 gint
-gdk_error_trap_pop (void)
+bdk_error_trap_pop (void)
 {
   GSList *node;
-  GdkErrorTrap *trap;
+  BdkErrorTrap *trap;
   gint result;
 
-  g_return_val_if_fail (gdk_error_traps != NULL, 0);
+  g_return_val_if_fail (bdk_error_traps != NULL, 0);
 
-  node = gdk_error_traps;
-  gdk_error_traps = gdk_error_traps->next;
+  node = bdk_error_traps;
+  bdk_error_traps = bdk_error_traps->next;
 
-  node->next = gdk_error_trap_free_list;
-  gdk_error_trap_free_list = node;
+  node->next = bdk_error_trap_free_list;
+  bdk_error_trap_free_list = node;
   
-  result = _gdk_error_code;
+  result = _bdk_error_code;
   
   trap = node->data;
-  _gdk_error_code = trap->error_code;
-  _gdk_error_warnings = trap->error_warnings;
+  _bdk_error_code = trap->error_code;
+  _bdk_error_warnings = trap->error_warnings;
   XSetErrorHandler (trap->old_handler);
   
   return result;
 }
 
 gchar *
-gdk_get_display (void)
+bdk_get_display (void)
 {
-  return g_strdup (gdk_display_get_name (gdk_display_get_default ()));
+  return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
 }
 
 /**
- * _gdk_send_xevent:
- * @display: #GdkDisplay which @window is on
+ * _bdk_send_xevent:
+ * @display: #BdkDisplay which @window is on
  * @window: window ID to which to send the event
  * @propagate: %TRUE if the event should be propagated if the target window
  *             doesn't handle it.
@@ -639,7 +639,7 @@ gdk_get_display (void)
  * Return value: %TRUE if sending the event succeeded.
  **/
 gint 
-_gdk_send_xevent (GdkDisplay *display,
+_bdk_send_xevent (BdkDisplay *display,
 		  Window      window, 
 		  gboolean    propagate, 
 		  glong       event_mask,
@@ -650,29 +650,29 @@ _gdk_send_xevent (GdkDisplay *display,
   if (display->closed)
     return FALSE;
 
-  gdk_error_trap_push ();
-  result = XSendEvent (GDK_DISPLAY_XDISPLAY (display), window, 
+  bdk_error_trap_push ();
+  result = XSendEvent (BDK_DISPLAY_XDISPLAY (display), window, 
 		       propagate, event_mask, event_send);
-  XSync (GDK_DISPLAY_XDISPLAY (display), False);
+  XSync (BDK_DISPLAY_XDISPLAY (display), False);
   
-  if (gdk_error_trap_pop ())
+  if (bdk_error_trap_pop ())
     return FALSE;
  
   return result;
 }
 
 void
-_gdk_region_get_xrectangles (const GdkRegion *region,
+_bdk_rebunnyion_get_xrectangles (const BdkRebunnyion *rebunnyion,
                              gint             x_offset,
                              gint             y_offset,
                              XRectangle     **rects,
                              gint            *n_rects)
 {
-  XRectangle *rectangles = g_new (XRectangle, region->numRects);
-  GdkRegionBox *boxes = region->rects;
+  XRectangle *rectangles = g_new (XRectangle, rebunnyion->numRects);
+  BdkRebunnyionBox *boxes = rebunnyion->rects;
   gint i;
   
-  for (i = 0; i < region->numRects; i++)
+  for (i = 0; i < rebunnyion->numRects; i++)
     {
       rectangles[i].x = CLAMP (boxes[i].x1 + x_offset, G_MINSHORT, G_MAXSHORT);
       rectangles[i].y = CLAMP (boxes[i].y1 + y_offset, G_MINSHORT, G_MAXSHORT);
@@ -681,78 +681,78 @@ _gdk_region_get_xrectangles (const GdkRegion *region,
     }
 
   *rects = rectangles;
-  *n_rects = region->numRects;
+  *n_rects = rebunnyion->numRects;
 }
 
 /**
- * gdk_x11_grab_server:
+ * bdk_x11_grab_server:
  * 
- * Call gdk_x11_display_grab() on the default display. 
- * To ungrab the server again, use gdk_x11_ungrab_server(). 
+ * Call bdk_x11_display_grab() on the default display. 
+ * To ungrab the server again, use bdk_x11_ungrab_server(). 
  *
- * gdk_x11_grab_server()/gdk_x11_ungrab_server() calls can be nested.
+ * bdk_x11_grab_server()/bdk_x11_ungrab_server() calls can be nested.
  **/ 
 void
-gdk_x11_grab_server (void)
+bdk_x11_grab_server (void)
 {
-  gdk_x11_display_grab (gdk_display_get_default ());
+  bdk_x11_display_grab (bdk_display_get_default ());
 }
 
 /**
- * gdk_x11_ungrab_server:
+ * bdk_x11_ungrab_server:
  *
  * Ungrab the default display after it has been grabbed with 
- * gdk_x11_grab_server(). 
+ * bdk_x11_grab_server(). 
  **/
 void
-gdk_x11_ungrab_server (void)
+bdk_x11_ungrab_server (void)
 {
-  gdk_x11_display_ungrab (gdk_display_get_default ());
+  bdk_x11_display_ungrab (bdk_display_get_default ());
 }
 
 /**
- * gdk_x11_get_default_screen:
+ * bdk_x11_get_default_screen:
  * 
- * Gets the default GTK+ screen number.
+ * Gets the default BTK+ screen number.
  * 
  * Return value: returns the screen number specified by
  *   the --display command line option or the DISPLAY environment
- *   variable when gdk_init() calls XOpenDisplay().
+ *   variable when bdk_init() calls XOpenDisplay().
  **/
 gint
-gdk_x11_get_default_screen (void)
+bdk_x11_get_default_screen (void)
 {
-  return gdk_screen_get_number (gdk_screen_get_default ());
+  return bdk_screen_get_number (bdk_screen_get_default ());
 }
 
 /**
- * gdk_x11_get_default_root_xwindow:
+ * bdk_x11_get_default_root_xwindow:
  * 
  * Gets the root window of the default screen 
- * (see gdk_x11_get_default_screen()).  
+ * (see bdk_x11_get_default_screen()).  
  * 
  * Return value: an Xlib <type>Window</type>.
  **/
 Window
-gdk_x11_get_default_root_xwindow (void)
+bdk_x11_get_default_root_xwindow (void)
 {
-  return GDK_SCREEN_XROOTWIN (gdk_screen_get_default ());
+  return BDK_SCREEN_XROOTWIN (bdk_screen_get_default ());
 }
 
 /**
- * gdk_x11_get_default_xdisplay:
+ * bdk_x11_get_default_xdisplay:
  * 
- * Gets the default GTK+ display.
+ * Gets the default BTK+ display.
  * 
  * Return value: the Xlib <type>Display*</type> for the display
  * specified in the <option>--display</option> command line option 
  * or the <envar>DISPLAY</envar> environment variable.
  **/
 Display *
-gdk_x11_get_default_xdisplay (void)
+bdk_x11_get_default_xdisplay (void)
 {
-  return GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
+  return BDK_DISPLAY_XDISPLAY (bdk_display_get_default ());
 }
 
-#define __GDK_MAIN_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_MAIN_X11_C__
+#include "bdkaliasdef.c"

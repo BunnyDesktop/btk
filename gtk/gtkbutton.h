@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,41 +18,41 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_BUTTON_H__
-#define __GTK_BUTTON_H__
+#ifndef __BTK_BUTTON_H__
+#define __BTK_BUTTON_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
-#include <gtk/gtkimage.h>
+#include <btk/btkbin.h>
+#include <btk/btkimage.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_BUTTON                 (gtk_button_get_type ())
-#define GTK_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_BUTTON, GtkButton))
-#define GTK_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_BUTTON, GtkButtonClass))
-#define GTK_IS_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_BUTTON))
-#define GTK_IS_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_BUTTON))
-#define GTK_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_BUTTON, GtkButtonClass))
+#define BTK_TYPE_BUTTON                 (btk_button_get_type ())
+#define BTK_BUTTON(obj)                 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUTTON, BtkButton))
+#define BTK_BUTTON_CLASS(klass)         (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BUTTON, BtkButtonClass))
+#define BTK_IS_BUTTON(obj)              (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUTTON))
+#define BTK_IS_BUTTON_CLASS(klass)      (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BUTTON))
+#define BTK_BUTTON_GET_CLASS(obj)       (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BUTTON, BtkButtonClass))
 
-typedef struct _GtkButton        GtkButton;
-typedef struct _GtkButtonClass   GtkButtonClass;
+typedef struct _BtkButton        BtkButton;
+typedef struct _BtkButtonClass   BtkButtonClass;
 
-struct _GtkButton
+struct _BtkButton
 {
-  GtkBin bin;
+  BtkBin bin;
 
-  GdkWindow *GSEAL (event_window);
+  BdkWindow *GSEAL (event_window);
 
   gchar *GSEAL (label_text);
 
@@ -69,79 +69,79 @@ struct _GtkButton
   guint GSEAL (focus_on_click) : 1;
 };
 
-struct _GtkButtonClass
+struct _BtkButtonClass
 {
-  GtkBinClass        parent_class;
+  BtkBinClass        parent_class;
   
-  void (* pressed)  (GtkButton *button);
-  void (* released) (GtkButton *button);
-  void (* clicked)  (GtkButton *button);
-  void (* enter)    (GtkButton *button);
-  void (* leave)    (GtkButton *button);
-  void (* activate) (GtkButton *button);
+  void (* pressed)  (BtkButton *button);
+  void (* released) (BtkButton *button);
+  void (* clicked)  (BtkButton *button);
+  void (* enter)    (BtkButton *button);
+  void (* leave)    (BtkButton *button);
+  void (* activate) (BtkButton *button);
   
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType          gtk_button_get_type          (void) G_GNUC_CONST;
-GtkWidget*     gtk_button_new               (void);
-GtkWidget*     gtk_button_new_with_label    (const gchar    *label);
-GtkWidget*     gtk_button_new_from_stock    (const gchar    *stock_id);
-GtkWidget*     gtk_button_new_with_mnemonic (const gchar    *label);
-#ifndef GTK_DISABLE_DEPRECATED
-void           gtk_button_pressed           (GtkButton      *button);
-void           gtk_button_released          (GtkButton      *button);
+GType          btk_button_get_type          (void) G_GNUC_CONST;
+BtkWidget*     btk_button_new               (void);
+BtkWidget*     btk_button_new_with_label    (const gchar    *label);
+BtkWidget*     btk_button_new_from_stock    (const gchar    *stock_id);
+BtkWidget*     btk_button_new_with_mnemonic (const gchar    *label);
+#ifndef BTK_DISABLE_DEPRECATED
+void           btk_button_pressed           (BtkButton      *button);
+void           btk_button_released          (BtkButton      *button);
 #endif
-void           gtk_button_clicked           (GtkButton      *button);
-#ifndef GTK_DISABLE_DEPRECATED
-void           gtk_button_enter             (GtkButton      *button);
-void           gtk_button_leave             (GtkButton      *button);
+void           btk_button_clicked           (BtkButton      *button);
+#ifndef BTK_DISABLE_DEPRECATED
+void           btk_button_enter             (BtkButton      *button);
+void           btk_button_leave             (BtkButton      *button);
 #endif
 
-void                  gtk_button_set_relief         (GtkButton      *button,
-						     GtkReliefStyle  newstyle);
-GtkReliefStyle        gtk_button_get_relief         (GtkButton      *button);
-void                  gtk_button_set_label          (GtkButton      *button,
+void                  btk_button_set_relief         (BtkButton      *button,
+						     BtkReliefStyle  newstyle);
+BtkReliefStyle        btk_button_get_relief         (BtkButton      *button);
+void                  btk_button_set_label          (BtkButton      *button,
 						     const gchar    *label);
-const gchar *         gtk_button_get_label          (GtkButton      *button);
-void                  gtk_button_set_use_underline  (GtkButton      *button,
+const gchar *         btk_button_get_label          (BtkButton      *button);
+void                  btk_button_set_use_underline  (BtkButton      *button,
 						     gboolean        use_underline);
-gboolean              gtk_button_get_use_underline  (GtkButton      *button);
-void                  gtk_button_set_use_stock      (GtkButton      *button,
+gboolean              btk_button_get_use_underline  (BtkButton      *button);
+void                  btk_button_set_use_stock      (BtkButton      *button,
 						     gboolean        use_stock);
-gboolean              gtk_button_get_use_stock      (GtkButton      *button);
-void                  gtk_button_set_focus_on_click (GtkButton      *button,
+gboolean              btk_button_get_use_stock      (BtkButton      *button);
+void                  btk_button_set_focus_on_click (BtkButton      *button,
 						     gboolean        focus_on_click);
-gboolean              gtk_button_get_focus_on_click (GtkButton      *button);
-void                  gtk_button_set_alignment      (GtkButton      *button,
+gboolean              btk_button_get_focus_on_click (BtkButton      *button);
+void                  btk_button_set_alignment      (BtkButton      *button,
 						     gfloat          xalign,
 						     gfloat          yalign);
-void                  gtk_button_get_alignment      (GtkButton      *button,
+void                  btk_button_get_alignment      (BtkButton      *button,
 						     gfloat         *xalign,
 						     gfloat         *yalign);
-void                  gtk_button_set_image          (GtkButton      *button,
-					             GtkWidget      *image);
-GtkWidget*            gtk_button_get_image          (GtkButton      *button);
-void                  gtk_button_set_image_position (GtkButton      *button,
-						     GtkPositionType position);
-GtkPositionType       gtk_button_get_image_position (GtkButton      *button);
+void                  btk_button_set_image          (BtkButton      *button,
+					             BtkWidget      *image);
+BtkWidget*            btk_button_get_image          (BtkButton      *button);
+void                  btk_button_set_image_position (BtkButton      *button,
+						     BtkPositionType position);
+BtkPositionType       btk_button_get_image_position (BtkButton      *button);
 
-GdkWindow*            gtk_button_get_event_window   (GtkButton      *button);
+BdkWindow*            btk_button_get_event_window   (BtkButton      *button);
 
-void _gtk_button_set_depressed             (GtkButton          *button,
+void _btk_button_set_depressed             (BtkButton          *button,
 					    gboolean            depressed);
-void _gtk_button_paint                     (GtkButton          *button,
-					    const GdkRectangle *area,
-					    GtkStateType        state_type,
-					    GtkShadowType       shadow_type,
+void _btk_button_paint                     (BtkButton          *button,
+					    const BdkRectangle *area,
+					    BtkStateType        state_type,
+					    BtkShadowType       shadow_type,
 					    const gchar        *main_detail,
 					    const gchar        *default_detail);
 
 G_END_DECLS
 
-#endif /* __GTK_BUTTON_H__ */
+#endif /* __BTK_BUTTON_H__ */

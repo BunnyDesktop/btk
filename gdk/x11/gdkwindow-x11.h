@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,16 +18,16 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_WINDOW_X11_H__
-#define __GDK_WINDOW_X11_H__
+#ifndef __BDK_WINDOW_X11_H__
+#define __BDK_WINDOW_X11_H__
 
-#include <gdk/x11/gdkdrawable-x11.h>
+#include <bdk/x11/bdkdrawable-x11.h>
 
 #ifdef HAVE_XDAMAGE
 #include <X11/extensions/Xdamage.h>
@@ -39,27 +39,27 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GdkToplevelX11 GdkToplevelX11;
-typedef struct _GdkWindowImplX11 GdkWindowImplX11;
-typedef struct _GdkWindowImplX11Class GdkWindowImplX11Class;
-typedef struct _GdkXPositionInfo GdkXPositionInfo;
+typedef struct _BdkToplevelX11 BdkToplevelX11;
+typedef struct _BdkWindowImplX11 BdkWindowImplX11;
+typedef struct _BdkWindowImplX11Class BdkWindowImplX11Class;
+typedef struct _BdkXPositionInfo BdkXPositionInfo;
 
 /* Window implementation for X11
  */
 
-#define GDK_TYPE_WINDOW_IMPL_X11              (gdk_window_impl_x11_get_type ())
-#define GDK_WINDOW_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_X11, GdkWindowImplX11))
-#define GDK_WINDOW_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_X11, GdkWindowImplX11Class))
-#define GDK_IS_WINDOW_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW_IMPL_X11))
-#define GDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_WINDOW_IMPL_X11))
-#define GDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW_IMPL_X11, GdkWindowImplX11Class))
+#define BDK_TYPE_WINDOW_IMPL_X11              (bdk_window_impl_x11_get_type ())
+#define BDK_WINDOW_IMPL_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11))
+#define BDK_WINDOW_IMPL_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
+#define BDK_IS_WINDOW_IMPL_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_IS_WINDOW_IMPL_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_X11))
+#define BDK_WINDOW_IMPL_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_X11, BdkWindowImplX11Class))
 
-struct _GdkWindowImplX11
+struct _BdkWindowImplX11
 {
-  GdkDrawableImplX11 parent_instance;
+  BdkDrawableImplX11 parent_instance;
 
-  GdkToplevelX11 *toplevel;	/* Toplevel-specific information */
-  GdkCursor *cursor;
+  BdkToplevelX11 *toplevel;	/* Toplevel-specific information */
+  BdkCursor *cursor;
   gint8 toplevel_window_type;
   guint no_bg : 1;	        /* Set when the window background is temporarily
 				 * unset during resizing and scaling */
@@ -71,12 +71,12 @@ struct _GdkWindowImplX11
 #endif
 };
  
-struct _GdkWindowImplX11Class 
+struct _BdkWindowImplX11Class 
 {
-  GdkDrawableImplX11Class parent_class;
+  BdkDrawableImplX11Class parent_class;
 };
 
-struct _GdkToplevelX11
+struct _BdkToplevelX11
 {
 
   /* Set if the window, or any descendent of it, is the server's focus window
@@ -115,10 +115,10 @@ struct _GdkToplevelX11
   
   gulong map_serial;	/* Serial of last transition from unmapped */
   
-  GdkPixmap *icon_pixmap;
-  GdkPixmap *icon_mask;
-  GdkPixmap *icon_window;
-  GdkWindow *group_leader;
+  BdkPixmap *icon_pixmap;
+  BdkPixmap *icon_mask;
+  BdkPixmap *icon_window;
+  BdkWindow *group_leader;
 
   /* Time of most recent user interaction. */
   gulong user_time;
@@ -139,24 +139,24 @@ struct _GdkToplevelX11
 #endif
 };
 
-GType gdk_window_impl_x11_get_type (void);
+GType bdk_window_impl_x11_get_type (void);
 
-void            gdk_x11_window_set_user_time        (GdkWindow *window,
+void            bdk_x11_window_set_user_time        (BdkWindow *window,
 						     guint32    timestamp);
 
-GdkToplevelX11 *_gdk_x11_window_get_toplevel        (GdkWindow *window);
-void            _gdk_x11_window_tmp_unset_bg        (GdkWindow *window,
+BdkToplevelX11 *_bdk_x11_window_get_toplevel        (BdkWindow *window);
+void            _bdk_x11_window_tmp_unset_bg        (BdkWindow *window,
 						     gboolean   recurse);
-void            _gdk_x11_window_tmp_reset_bg        (GdkWindow *window,
+void            _bdk_x11_window_tmp_reset_bg        (BdkWindow *window,
 						     gboolean   recurse);
-void            _gdk_x11_window_tmp_unset_parent_bg (GdkWindow *window);
-void            _gdk_x11_window_tmp_reset_parent_bg (GdkWindow *window);
+void            _bdk_x11_window_tmp_unset_parent_bg (BdkWindow *window);
+void            _bdk_x11_window_tmp_reset_parent_bg (BdkWindow *window);
 
-GdkCursor      *_gdk_x11_window_get_cursor    (GdkWindow *window);
-void            _gdk_x11_window_get_offsets   (GdkWindow *window,
+BdkCursor      *_bdk_x11_window_get_cursor    (BdkWindow *window);
+void            _bdk_x11_window_get_offsets   (BdkWindow *window,
                                                gint      *x_offset,
                                                gint      *y_offset);
 
 G_END_DECLS
 
-#endif /* __GDK_WINDOW_X11_H__ */
+#endif /* __BDK_WINDOW_X11_H__ */

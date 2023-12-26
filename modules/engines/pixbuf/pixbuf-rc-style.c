@@ -1,4 +1,4 @@
-/* GTK+ Pixbuf Engine
+/* BTK+ Pixbuf Engine
  * Copyright (C) 1998-2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -27,12 +27,12 @@
 static void      pixbuf_rc_style_init         (PixbufRcStyle      *style);
 static void      pixbuf_rc_style_class_init   (PixbufRcStyleClass *klass);
 static void      pixbuf_rc_style_finalize     (GObject            *object);
-static guint     pixbuf_rc_style_parse        (GtkRcStyle         *rc_style,
-					       GtkSettings  *settings,
+static guint     pixbuf_rc_style_parse        (BtkRcStyle         *rc_style,
+					       BtkSettings  *settings,
 					       GScanner           *scanner);
-static void      pixbuf_rc_style_merge        (GtkRcStyle         *dest,
-					       GtkRcStyle         *src);
-static GtkStyle *pixbuf_rc_style_create_style (GtkRcStyle         *rc_style);
+static void      pixbuf_rc_style_merge        (BtkRcStyle         *dest,
+					       BtkRcStyle         *src);
+static BtkStyle *pixbuf_rc_style_create_style (BtkRcStyle         *rc_style);
 
 static void theme_image_unref (ThemeImage *data);
 
@@ -137,7 +137,7 @@ theme_symbols[] =
   { "RTL",              TOKEN_RTL }
 };
 
-static GtkRcStyleClass *parent_class;
+static BtkRcStyleClass *parent_class;
 
 GType pixbuf_type_rc_style = 0;
 
@@ -158,7 +158,7 @@ pixbuf_rc_style_register_type (GTypeModule *module)
   };
   
   pixbuf_type_rc_style = g_type_module_register_type (module,
-						      GTK_TYPE_RC_STYLE,
+						      BTK_TYPE_RC_STYLE,
 						      "PixbufRcStyle",
 						      &object_info, 0);
 }
@@ -171,7 +171,7 @@ pixbuf_rc_style_init (PixbufRcStyle *style)
 static void
 pixbuf_rc_style_class_init (PixbufRcStyleClass *klass)
 {
-  GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
+  BtkRcStyleClass *rc_style_class = BTK_RC_STYLE_CLASS (klass);
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
@@ -195,7 +195,7 @@ pixbuf_rc_style_finalize (GObject *object)
 }
 
 static guint
-theme_parse_file(GtkSettings  *settings,
+theme_parse_file(BtkSettings  *settings,
 		 GScanner     *scanner,
 		 ThemePixbuf **theme_pb)
 {
@@ -216,7 +216,7 @@ theme_parse_file(GtkSettings  *settings,
   if (!*theme_pb)
     *theme_pb = theme_pixbuf_new ();
 
-  pixmap = gtk_rc_find_pixmap_in_path(settings, scanner, scanner->value.v_string);
+  pixmap = btk_rc_find_pixmap_in_path(settings, scanner, scanner->value.v_string);
   if (pixmap)
     {
       theme_pixbuf_set_filename (*theme_pb, pixmap);
@@ -402,15 +402,15 @@ theme_parse_state(GScanner * scanner,
 
   token = g_scanner_get_next_token(scanner);
   if (token == TOKEN_NORMAL)
-    data->match_data.state = GTK_STATE_NORMAL;
+    data->match_data.state = BTK_STATE_NORMAL;
   else if (token == TOKEN_ACTIVE)
-    data->match_data.state = GTK_STATE_ACTIVE;
+    data->match_data.state = BTK_STATE_ACTIVE;
   else if (token == TOKEN_PRELIGHT)
-    data->match_data.state = GTK_STATE_PRELIGHT;
+    data->match_data.state = BTK_STATE_PRELIGHT;
   else if (token == TOKEN_SELECTED)
-    data->match_data.state = GTK_STATE_SELECTED;
+    data->match_data.state = BTK_STATE_SELECTED;
   else if (token == TOKEN_INSENSITIVE)
-    data->match_data.state = GTK_STATE_INSENSITIVE;
+    data->match_data.state = BTK_STATE_INSENSITIVE;
   else
     return TOKEN_NORMAL;
 
@@ -435,15 +435,15 @@ theme_parse_shadow(GScanner * scanner,
 
   token = g_scanner_get_next_token(scanner);
   if (token == TOKEN_NONE)
-    data->match_data.shadow = GTK_SHADOW_NONE;
+    data->match_data.shadow = BTK_SHADOW_NONE;
   else if (token == TOKEN_IN)
-    data->match_data.shadow = GTK_SHADOW_IN;
+    data->match_data.shadow = BTK_SHADOW_IN;
   else if (token == TOKEN_OUT)
-    data->match_data.shadow = GTK_SHADOW_OUT;
+    data->match_data.shadow = BTK_SHADOW_OUT;
   else if (token == TOKEN_ETCHED_IN)
-    data->match_data.shadow = GTK_SHADOW_ETCHED_IN;
+    data->match_data.shadow = BTK_SHADOW_ETCHED_IN;
   else if (token == TOKEN_ETCHED_OUT)
-    data->match_data.shadow = GTK_SHADOW_ETCHED_OUT;
+    data->match_data.shadow = BTK_SHADOW_ETCHED_OUT;
   else
     return TOKEN_NONE;
 
@@ -468,13 +468,13 @@ theme_parse_arrow_direction(GScanner * scanner,
 
   token = g_scanner_get_next_token(scanner);
   if (token == TOKEN_UP)
-    data->match_data.arrow_direction = GTK_ARROW_UP;
+    data->match_data.arrow_direction = BTK_ARROW_UP;
   else if (token == TOKEN_DOWN)
-    data->match_data.arrow_direction = GTK_ARROW_DOWN;
+    data->match_data.arrow_direction = BTK_ARROW_DOWN;
   else if (token == TOKEN_LEFT)
-    data->match_data.arrow_direction = GTK_ARROW_LEFT;
+    data->match_data.arrow_direction = BTK_ARROW_LEFT;
   else if (token == TOKEN_RIGHT)
-    data->match_data.arrow_direction = GTK_ARROW_RIGHT;
+    data->match_data.arrow_direction = BTK_ARROW_RIGHT;
   else
     return TOKEN_UP;
 
@@ -500,13 +500,13 @@ theme_parse_gap_side(GScanner * scanner,
   token = g_scanner_get_next_token(scanner);
 
   if (token == TOKEN_TOP)
-    data->match_data.gap_side = GTK_POS_TOP;
+    data->match_data.gap_side = BTK_POS_TOP;
   else if (token == TOKEN_BOTTOM)
-    data->match_data.gap_side = GTK_POS_BOTTOM;
+    data->match_data.gap_side = BTK_POS_BOTTOM;
   else if (token == TOKEN_LEFT)
-    data->match_data.gap_side = GTK_POS_LEFT;
+    data->match_data.gap_side = BTK_POS_LEFT;
   else if (token == TOKEN_RIGHT)
-    data->match_data.gap_side = GTK_POS_RIGHT;
+    data->match_data.gap_side = BTK_POS_RIGHT;
   else
     return TOKEN_TOP;
 
@@ -532,9 +532,9 @@ theme_parse_orientation(GScanner * scanner,
   token = g_scanner_get_next_token(scanner);
 
   if (token == TOKEN_HORIZONTAL)
-    data->match_data.orientation = GTK_ORIENTATION_HORIZONTAL;
+    data->match_data.orientation = BTK_ORIENTATION_HORIZONTAL;
   else if (token == TOKEN_VERTICAL)
-    data->match_data.orientation = GTK_ORIENTATION_VERTICAL;
+    data->match_data.orientation = BTK_ORIENTATION_VERTICAL;
   else
     return TOKEN_HORIZONTAL;
 
@@ -559,13 +559,13 @@ theme_parse_expander_style(GScanner * scanner,
 
   token = g_scanner_get_next_token(scanner);
   if (token == TOKEN_COLLAPSED)
-    data->match_data.expander_style = GTK_EXPANDER_COLLAPSED;
+    data->match_data.expander_style = BTK_EXPANDER_COLLAPSED;
   else if (token == TOKEN_SEMI_COLLAPSED)
-    data->match_data.expander_style = GTK_EXPANDER_SEMI_COLLAPSED;
+    data->match_data.expander_style = BTK_EXPANDER_SEMI_COLLAPSED;
   else if (token == TOKEN_SEMI_EXPANDED)
-    data->match_data.expander_style = GTK_EXPANDER_SEMI_EXPANDED;
+    data->match_data.expander_style = BTK_EXPANDER_SEMI_EXPANDED;
   else if (token == TOKEN_EXPANDED)
-    data->match_data.expander_style = GTK_EXPANDER_EXPANDED;
+    data->match_data.expander_style = BTK_EXPANDER_EXPANDED;
   else
     return TOKEN_COLLAPSED;
 
@@ -590,21 +590,21 @@ theme_parse_window_edge(GScanner * scanner,
 
   token = g_scanner_get_next_token(scanner);
   if (token == TOKEN_NORTH_WEST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_NORTH_WEST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_NORTH_WEST;
   else if (token == TOKEN_NORTH)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_NORTH;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_NORTH;
   else if (token == TOKEN_NORTH_EAST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_NORTH_EAST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_NORTH_EAST;
   else if (token == TOKEN_WEST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_WEST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_WEST;
   else if (token == TOKEN_EAST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_EAST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_EAST;
   else if (token == TOKEN_SOUTH_WEST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_SOUTH_WEST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_SOUTH_WEST;
   else if (token == TOKEN_SOUTH)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_SOUTH;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_SOUTH;
   else if (token == TOKEN_SOUTH_EAST)
-    data->match_data.window_edge = GDK_WINDOW_EDGE_SOUTH_EAST;
+    data->match_data.window_edge = BDK_WINDOW_EDGE_SOUTH_EAST;
   else
     return TOKEN_NORTH_WEST;
 
@@ -630,9 +630,9 @@ theme_parse_direction(GScanner * scanner,
   token = g_scanner_get_next_token(scanner);
 
   if (token == TOKEN_LTR)
-    data->match_data.direction = GTK_TEXT_DIR_LTR;
+    data->match_data.direction = BTK_TEXT_DIR_LTR;
   else if (token == TOKEN_RTL)
-    data->match_data.direction = GTK_TEXT_DIR_RTL;
+    data->match_data.direction = BTK_TEXT_DIR_RTL;
   else
     return TOKEN_LTR;
 
@@ -673,7 +673,7 @@ clear_theme_pixbuf_and_warn (ThemePixbuf **theme_pb,
 }
 
 static guint
-theme_parse_image(GtkSettings  *settings,
+theme_parse_image(BtkSettings  *settings,
 		  GScanner      *scanner,
 		  PixbufRcStyle *pixbuf_style,
 		  ThemeImage   **data_return)
@@ -826,8 +826,8 @@ theme_parse_image(GtkSettings  *settings,
 }
 
 static guint
-pixbuf_rc_style_parse (GtkRcStyle *rc_style,
-		       GtkSettings  *settings,
+pixbuf_rc_style_parse (BtkRcStyle *rc_style,
+		       BtkSettings  *settings,
 		       GScanner   *scanner)
 		     
 {
@@ -895,8 +895,8 @@ pixbuf_rc_style_parse (GtkRcStyle *rc_style,
 }
 
 static void
-pixbuf_rc_style_merge (GtkRcStyle *dest,
-		       GtkRcStyle *src)
+pixbuf_rc_style_merge (BtkRcStyle *dest,
+		       BtkRcStyle *src)
 {
   if (PIXBUF_IS_RC_STYLE (src))
     {
@@ -938,8 +938,8 @@ pixbuf_rc_style_merge (GtkRcStyle *dest,
 
 /* Create an empty style suitable to this RC style
  */
-static GtkStyle *
-pixbuf_rc_style_create_style (GtkRcStyle *rc_style)
+static BtkStyle *
+pixbuf_rc_style_create_style (BtkRcStyle *rc_style)
 {
   return g_object_new (PIXBUF_TYPE_STYLE, NULL);
 }

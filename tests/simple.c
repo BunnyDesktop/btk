@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 void
@@ -30,33 +30,33 @@ hello (void)
 int
 main (int argc, char *argv[])
 {
-  GtkWidget *window;
-  GtkWidget *button;
+  BtkWidget *window;
+  BtkWidget *button;
 
   /* FIXME: This is not allowable - what is this supposed to be? */
-  /*  gdk_progclass = g_strdup ("XTerm"); */
-  gtk_init (&argc, &argv);
+  /*  bdk_progclass = g_strdup ("XTerm"); */
+  btk_init (&argc, &argv);
   
-  window = g_object_connect (g_object_new (gtk_window_get_type (),
+  window = g_object_connect (g_object_new (btk_window_get_type (),
 					     "user_data", NULL,
-					     "type", GTK_WINDOW_TOPLEVEL,
+					     "type", BTK_WINDOW_TOPLEVEL,
 					     "title", "hello world",
 					     "allow_grow", FALSE,
 					     "allow_shrink", FALSE,
 					     "border_width", 10,
 					     NULL),
-			     "signal::destroy", gtk_main_quit, NULL,
+			     "signal::destroy", btk_main_quit, NULL,
 			     NULL);
-  button = g_object_connect (g_object_new (gtk_button_get_type (),
-					     "GtkButton::label", "hello world",
-					     "GtkWidget::parent", window,
-					     "GtkWidget::visible", TRUE,
+  button = g_object_connect (g_object_new (btk_button_get_type (),
+					     "BtkButton::label", "hello world",
+					     "BtkWidget::parent", window,
+					     "BtkWidget::visible", TRUE,
 					     NULL),
 			     "signal::clicked", hello, NULL,
 			     NULL);
-  gtk_widget_show (window);
+  btk_widget_show (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

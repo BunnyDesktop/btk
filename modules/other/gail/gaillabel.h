@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,29 +17,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_LABEL_H__
-#define __GAIL_LABEL_H__
+#ifndef __BAIL_LABEL_H__
+#define __BAIL_LABEL_H__
 
-#include <gail/gailwidget.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailwidget.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_LABEL                      (gail_label_get_type ())
-#define GAIL_LABEL(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_LABEL, GailLabel))
-#define GAIL_LABEL_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_LABEL, GailLabelClass))
-#define GAIL_IS_LABEL(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_LABEL))
-#define GAIL_IS_LABEL_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_LABEL))
-#define GAIL_LABEL_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_LABEL, GailLabelClass))
+#define BAIL_TYPE_LABEL                      (bail_label_get_type ())
+#define BAIL_LABEL(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LABEL, BailLabel))
+#define BAIL_LABEL_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LABEL, BailLabelClass))
+#define BAIL_IS_LABEL(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LABEL))
+#define BAIL_IS_LABEL_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LABEL))
+#define BAIL_LABEL_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LABEL, BailLabelClass))
 
-typedef struct _GailLabel              GailLabel;
-typedef struct _GailLabelClass         GailLabelClass;
+typedef struct _BailLabel              BailLabel;
+typedef struct _BailLabelClass         BailLabelClass;
 
-struct _GailLabel
+struct _BailLabel
 {
-  GailWidget parent;
+  BailWidget parent;
 
-  GailTextUtil   *textutil;
+  BailTextUtil   *textutil;
   gint           cursor_position;
   gint           selection_bound;
   gint           label_length;
@@ -47,13 +47,13 @@ struct _GailLabel
   gboolean       has_top_level;
 };
 
-GType gail_label_get_type (void);
+GType bail_label_get_type (void);
 
-struct _GailLabelClass
+struct _BailLabelClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_LABEL_H__ */
+#endif /* __BAIL_LABEL_H__ */

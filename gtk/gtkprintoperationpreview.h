@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintoperationpreview.h: Abstract print preview interface
+/* BTK - The GIMP Toolkit
+ * btkprintoperationpreview.h: Abstract print preview interface
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,63 +18,63 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_OPERATION_PREVIEW_H__
-#define __GTK_PRINT_OPERATION_PREVIEW_H__
+#ifndef __BTK_PRINT_OPERATION_PREVIEW_H__
+#define __BTK_PRINT_OPERATION_PREVIEW_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <cairo.h>
-#include <gtk/gtkprintcontext.h>
+#include <bairo.h>
+#include <btk/btkprintcontext.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_OPERATION_PREVIEW                  (gtk_print_operation_preview_get_type ())
-#define GTK_PRINT_OPERATION_PREVIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_OPERATION_PREVIEW, GtkPrintOperationPreview))
-#define GTK_IS_PRINT_OPERATION_PREVIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_OPERATION_PREVIEW))
-#define GTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GTK_TYPE_PRINT_OPERATION_PREVIEW, GtkPrintOperationPreviewIface))
+#define BTK_TYPE_PRINT_OPERATION_PREVIEW                  (btk_print_operation_preview_get_type ())
+#define BTK_PRINT_OPERATION_PREVIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreview))
+#define BTK_IS_PRINT_OPERATION_PREVIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW))
+#define BTK_PRINT_OPERATION_PREVIEW_GET_IFACE(obj)        (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_PRINT_OPERATION_PREVIEW, BtkPrintOperationPreviewIface))
 
-typedef struct _GtkPrintOperationPreview      GtkPrintOperationPreview;      /*dummy typedef */
-typedef struct _GtkPrintOperationPreviewIface GtkPrintOperationPreviewIface;
+typedef struct _BtkPrintOperationPreview      BtkPrintOperationPreview;      /*dummy typedef */
+typedef struct _BtkPrintOperationPreviewIface BtkPrintOperationPreviewIface;
 
 
-struct _GtkPrintOperationPreviewIface
+struct _BtkPrintOperationPreviewIface
 {
   GTypeInterface g_iface;
 
   /* signals */
-  void              (*ready)          (GtkPrintOperationPreview *preview,
-				       GtkPrintContext          *context);
-  void              (*got_page_size)  (GtkPrintOperationPreview *preview,
-				       GtkPrintContext          *context,
-				       GtkPageSetup             *page_setup);
+  void              (*ready)          (BtkPrintOperationPreview *preview,
+				       BtkPrintContext          *context);
+  void              (*got_page_size)  (BtkPrintOperationPreview *preview,
+				       BtkPrintContext          *context,
+				       BtkPageSetup             *page_setup);
 
   /* methods */
-  void              (*render_page)    (GtkPrintOperationPreview *preview,
+  void              (*render_page)    (BtkPrintOperationPreview *preview,
 				       gint                      page_nr);
-  gboolean          (*is_selected)    (GtkPrintOperationPreview *preview,
+  gboolean          (*is_selected)    (BtkPrintOperationPreview *preview,
 				       gint                      page_nr);
-  void              (*end_preview)    (GtkPrintOperationPreview *preview);
+  void              (*end_preview)    (BtkPrintOperationPreview *preview);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType   gtk_print_operation_preview_get_type       (void) G_GNUC_CONST;
+GType   btk_print_operation_preview_get_type       (void) G_GNUC_CONST;
 
-void     gtk_print_operation_preview_render_page (GtkPrintOperationPreview *preview,
+void     btk_print_operation_preview_render_page (BtkPrintOperationPreview *preview,
 						  gint                      page_nr);
-void     gtk_print_operation_preview_end_preview (GtkPrintOperationPreview *preview);
-gboolean gtk_print_operation_preview_is_selected (GtkPrintOperationPreview *preview,
+void     btk_print_operation_preview_end_preview (BtkPrintOperationPreview *preview);
+gboolean btk_print_operation_preview_is_selected (BtkPrintOperationPreview *preview,
 						  gint                      page_nr);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_OPERATION_PREVIEW_H__ */
+#endif /* __BTK_PRINT_OPERATION_PREVIEW_H__ */

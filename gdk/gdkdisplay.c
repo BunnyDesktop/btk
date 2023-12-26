@@ -1,5 +1,5 @@
-/* GDK - The GIMP Drawing Kit
- * gdkdisplay.c
+/* BDK - The GIMP Drawing Kit
+ * bdkdisplay.c
  * 
  * Copyright 2001 Sun Microsystems Inc. 
  *
@@ -23,89 +23,89 @@
 
 #include "config.h"
 #include <math.h>
-#include <glib.h>
-#include "gdk.h"		/* gdk_event_send_client_message() */
-#include "gdkdisplay.h"
-#include "gdkwindowimpl.h"
-#include "gdkinternals.h"
-#include "gdkmarshalers.h"
-#include "gdkscreen.h"
-#include "gdkalias.h"
+#include <bunnylib.h>
+#include "bdk.h"		/* bdk_event_send_client_message() */
+#include "bdkdisplay.h"
+#include "bdkwindowimpl.h"
+#include "bdkinternals.h"
+#include "bdkmarshalers.h"
+#include "bdkscreen.h"
+#include "bdkalias.h"
 
 enum {
   CLOSED,
   LAST_SIGNAL
 };
 
-static void gdk_display_dispose    (GObject         *object);
-static void gdk_display_finalize   (GObject         *object);
+static void bdk_display_dispose    (GObject         *object);
+static void bdk_display_finalize   (GObject         *object);
 
 
-static void       singlehead_get_pointer (GdkDisplay       *display,
-					  GdkScreen       **screen,
+static void       singlehead_get_pointer (BdkDisplay       *display,
+					  BdkScreen       **screen,
 					  gint             *x,
 					  gint             *y,
-					  GdkModifierType  *mask);
-static GdkWindow* singlehead_window_get_pointer (GdkDisplay       *display,
-						 GdkWindow        *window,
+					  BdkModifierType  *mask);
+static BdkWindow* singlehead_window_get_pointer (BdkDisplay       *display,
+						 BdkWindow        *window,
 						 gint             *x,
 						 gint             *y,
-						 GdkModifierType  *mask);
-static GdkWindow* singlehead_window_at_pointer  (GdkDisplay       *display,
+						 BdkModifierType  *mask);
+static BdkWindow* singlehead_window_at_pointer  (BdkDisplay       *display,
 						 gint             *win_x,
 						 gint             *win_y);
 
-static GdkWindow* singlehead_default_window_get_pointer (GdkWindow       *window,
+static BdkWindow* singlehead_default_window_get_pointer (BdkWindow       *window,
 							 gint            *x,
 							 gint            *y,
-							 GdkModifierType *mask);
-static GdkWindow* singlehead_default_window_at_pointer  (GdkScreen       *screen,
+							 BdkModifierType *mask);
+static BdkWindow* singlehead_default_window_at_pointer  (BdkScreen       *screen,
 							 gint            *win_x,
 							 gint            *win_y);
-static GdkWindow *gdk_window_real_window_get_pointer     (GdkDisplay       *display,
-                                                          GdkWindow        *window,
+static BdkWindow *bdk_window_real_window_get_pointer     (BdkDisplay       *display,
+                                                          BdkWindow        *window,
                                                           gint             *x,
                                                           gint             *y,
-                                                          GdkModifierType  *mask);
-static GdkWindow *gdk_display_real_get_window_at_pointer (GdkDisplay       *display,
+                                                          BdkModifierType  *mask);
+static BdkWindow *bdk_display_real_get_window_at_pointer (BdkDisplay       *display,
                                                           gint             *win_x,
                                                           gint             *win_y);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static char *gdk_sm_client_id;
+static char *bdk_sm_client_id;
 
-static const GdkDisplayPointerHooks default_pointer_hooks = {
-  _gdk_windowing_get_pointer,
-  gdk_window_real_window_get_pointer,
-  gdk_display_real_get_window_at_pointer
+static const BdkDisplayPointerHooks default_pointer_hooks = {
+  _bdk_windowing_get_pointer,
+  bdk_window_real_window_get_pointer,
+  bdk_display_real_get_window_at_pointer
 };
 
-static const GdkDisplayPointerHooks singlehead_pointer_hooks = {
+static const BdkDisplayPointerHooks singlehead_pointer_hooks = {
   singlehead_get_pointer,
   singlehead_window_get_pointer,
   singlehead_window_at_pointer
 };
 
-static const GdkPointerHooks singlehead_default_pointer_hooks = {
+static const BdkPointerHooks singlehead_default_pointer_hooks = {
   singlehead_default_window_get_pointer,
   singlehead_default_window_at_pointer
 };
 
-static const GdkPointerHooks *singlehead_current_pointer_hooks = &singlehead_default_pointer_hooks;
+static const BdkPointerHooks *singlehead_current_pointer_hooks = &singlehead_default_pointer_hooks;
 
-G_DEFINE_TYPE (GdkDisplay, gdk_display, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDisplay, bdk_display, G_TYPE_OBJECT)
 
 static void
-gdk_display_class_init (GdkDisplayClass *class)
+bdk_display_class_init (BdkDisplayClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
   
-  object_class->finalize = gdk_display_finalize;
-  object_class->dispose = gdk_display_dispose;
+  object_class->finalize = bdk_display_finalize;
+  object_class->dispose = bdk_display_dispose;
 
   /**
-   * GdkDisplay::closed:
+   * BdkDisplay::closed:
    * @display: the object on which the signal is emitted
    * @is_error: %TRUE if the display was closed due to an error
    *
@@ -118,18 +118,18 @@ gdk_display_class_init (GdkDisplayClass *class)
     g_signal_new (g_intern_static_string ("closed"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkDisplayClass, closed),
+		  G_STRUCT_OFFSET (BdkDisplayClass, closed),
 		  NULL, NULL,
-		  _gdk_marshal_VOID__BOOLEAN,
+		  _bdk_marshal_VOID__BOOLEAN,
 		  G_TYPE_NONE,
 		  1,
 		  G_TYPE_BOOLEAN);
 }
 
 static void
-gdk_display_init (GdkDisplay *display)
+bdk_display_init (BdkDisplay *display)
 {
-  _gdk_displays = g_slist_prepend (_gdk_displays, display);
+  _bdk_displays = g_slist_prepend (_bdk_displays, display);
 
   display->button_click_time[0] = display->button_click_time[1] = 0;
   display->button_window[0] = display->button_window[1] = NULL;
@@ -144,39 +144,39 @@ gdk_display_init (GdkDisplay *display)
 }
 
 static void
-gdk_display_dispose (GObject *object)
+bdk_display_dispose (GObject *object)
 {
-  GdkDisplay *display = GDK_DISPLAY_OBJECT (object);
+  BdkDisplay *display = BDK_DISPLAY_OBJECT (object);
 
-  g_list_foreach (display->queued_events, (GFunc)gdk_event_free, NULL);
+  g_list_foreach (display->queued_events, (GFunc)bdk_event_free, NULL);
   g_list_free (display->queued_events);
   display->queued_events = NULL;
   display->queued_tail = NULL;
 
-  _gdk_displays = g_slist_remove (_gdk_displays, object);
+  _bdk_displays = g_slist_remove (_bdk_displays, object);
 
-  if (gdk_display_get_default() == display)
+  if (bdk_display_get_default() == display)
     {
-      if (_gdk_displays)
-        gdk_display_manager_set_default_display (gdk_display_manager_get(),
-                                                 _gdk_displays->data);
+      if (_bdk_displays)
+        bdk_display_manager_set_default_display (bdk_display_manager_get(),
+                                                 _bdk_displays->data);
       else
-        gdk_display_manager_set_default_display (gdk_display_manager_get(),
+        bdk_display_manager_set_default_display (bdk_display_manager_get(),
                                                  NULL);
     }
 
-  G_OBJECT_CLASS (gdk_display_parent_class)->dispose (object);
+  G_OBJECT_CLASS (bdk_display_parent_class)->dispose (object);
 }
 
 static void
-gdk_display_finalize (GObject *object)
+bdk_display_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (gdk_display_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bdk_display_parent_class)->finalize (object);
 }
 
 /**
- * gdk_display_close:
- * @display: a #GdkDisplay
+ * bdk_display_close:
+ * @display: a #BdkDisplay
  *
  * Closes the connection to the windowing system for the given display,
  * and cleans up associated resources.
@@ -184,9 +184,9 @@ gdk_display_finalize (GObject *object)
  * Since: 2.2
  */
 void
-gdk_display_close (GdkDisplay *display)
+bdk_display_close (BdkDisplay *display)
 {
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
   if (!display->closed)
     {
@@ -200,8 +200,8 @@ gdk_display_close (GdkDisplay *display)
 }
 
 /**
- * gdk_display_is_closed:
- * @display: a #GdkDisplay
+ * bdk_display_is_closed:
+ * @display: a #BdkDisplay
  *
  * Finds out if the display has been closed.
  *
@@ -210,68 +210,68 @@ gdk_display_close (GdkDisplay *display)
  * Since: 2.22
  */
 gboolean
-gdk_display_is_closed  (GdkDisplay  *display)
+bdk_display_is_closed  (BdkDisplay  *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   return display->closed;
 }
 
 /**
- * gdk_display_get_event:
- * @display: a #GdkDisplay
+ * bdk_display_get_event:
+ * @display: a #BdkDisplay
  * 
- * Gets the next #GdkEvent to be processed for @display, fetching events from the
+ * Gets the next #BdkEvent to be processed for @display, fetching events from the
  * windowing system if necessary.
  * 
- * Return value: the next #GdkEvent to be processed, or %NULL if no events
- * are pending. The returned #GdkEvent should be freed with gdk_event_free().
+ * Return value: the next #BdkEvent to be processed, or %NULL if no events
+ * are pending. The returned #BdkEvent should be freed with bdk_event_free().
  *
  * Since: 2.2
  **/
-GdkEvent*
-gdk_display_get_event (GdkDisplay *display)
+BdkEvent*
+bdk_display_get_event (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
-  _gdk_events_queue (display);
-  return _gdk_event_unqueue (display);
+  _bdk_events_queue (display);
+  return _bdk_event_unqueue (display);
 }
 
 /**
- * gdk_display_peek_event:
- * @display: a #GdkDisplay 
+ * bdk_display_peek_event:
+ * @display: a #BdkDisplay 
  * 
- * Gets a copy of the first #GdkEvent in the @display's event queue, without
+ * Gets a copy of the first #BdkEvent in the @display's event queue, without
  * removing the event from the queue.  (Note that this function will
  * not get more events from the windowing system.  It only checks the events
- * that have already been moved to the GDK event queue.)
+ * that have already been moved to the BDK event queue.)
  * 
- * Return value: a copy of the first #GdkEvent on the event queue, or %NULL 
- * if no events are in the queue. The returned #GdkEvent should be freed with
- * gdk_event_free().
+ * Return value: a copy of the first #BdkEvent on the event queue, or %NULL 
+ * if no events are in the queue. The returned #BdkEvent should be freed with
+ * bdk_event_free().
  *
  * Since: 2.2
  **/
-GdkEvent*
-gdk_display_peek_event (GdkDisplay *display)
+BdkEvent*
+bdk_display_peek_event (BdkDisplay *display)
 {
   GList *tmp_list;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
-  tmp_list = _gdk_event_queue_find_first (display);
+  tmp_list = _bdk_event_queue_find_first (display);
   
   if (tmp_list)
-    return gdk_event_copy (tmp_list->data);
+    return bdk_event_copy (tmp_list->data);
   else
     return NULL;
 }
 
 /**
- * gdk_display_put_event:
- * @display: a #GdkDisplay
- * @event: a #GdkEvent.
+ * bdk_display_put_event:
+ * @display: a #BdkDisplay
+ * @event: a #BdkEvent.
  *
  * Appends a copy of the given event onto the front of the event
  * queue for @display.
@@ -279,33 +279,33 @@ gdk_display_peek_event (GdkDisplay *display)
  * Since: 2.2
  **/
 void
-gdk_display_put_event (GdkDisplay     *display,
-		       const GdkEvent *event)
+bdk_display_put_event (BdkDisplay     *display,
+		       const BdkEvent *event)
 {
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
   g_return_if_fail (event != NULL);
 
-  _gdk_event_queue_append (display, gdk_event_copy (event));
+  _bdk_event_queue_append (display, bdk_event_copy (event));
   /* If the main loop is blocking in a different thread, wake it up */
   g_main_context_wakeup (NULL); 
 }
 
 /**
- * gdk_pointer_ungrab:
- * @time_: a timestamp from a #GdkEvent, or %GDK_CURRENT_TIME if no 
+ * bdk_pointer_ungrab:
+ * @time_: a timestamp from a #BdkEvent, or %BDK_CURRENT_TIME if no 
  *  timestamp is available.
  *
  * Ungrabs the pointer on the default display, if it is grabbed by this 
  * application.
  **/
 void
-gdk_pointer_ungrab (guint32 time)
+bdk_pointer_ungrab (guint32 time)
 {
-  gdk_display_pointer_ungrab (gdk_display_get_default (), time);
+  bdk_display_pointer_ungrab (bdk_display_get_default (), time);
 }
 
 /**
- * gdk_pointer_is_grabbed:
+ * bdk_pointer_is_grabbed:
  * 
  * Returns %TRUE if the pointer on the default display is currently 
  * grabbed by this application.
@@ -316,64 +316,64 @@ gdk_pointer_ungrab (guint32 time)
  * Return value: %TRUE if the pointer is currently grabbed by this application.* 
  **/
 gboolean
-gdk_pointer_is_grabbed (void)
+bdk_pointer_is_grabbed (void)
 {
-  return gdk_display_pointer_is_grabbed (gdk_display_get_default ());
+  return bdk_display_pointer_is_grabbed (bdk_display_get_default ());
 }
 
 /**
- * gdk_keyboard_ungrab:
- * @time_: a timestamp from a #GdkEvent, or %GDK_CURRENT_TIME if no
+ * bdk_keyboard_ungrab:
+ * @time_: a timestamp from a #BdkEvent, or %BDK_CURRENT_TIME if no
  *        timestamp is available.
  * 
  * Ungrabs the keyboard on the default display, if it is grabbed by this 
  * application.
  **/
 void
-gdk_keyboard_ungrab (guint32 time)
+bdk_keyboard_ungrab (guint32 time)
 {
-  gdk_display_keyboard_ungrab (gdk_display_get_default (), time);
+  bdk_display_keyboard_ungrab (bdk_display_get_default (), time);
 }
 
 /**
- * gdk_beep:
+ * bdk_beep:
  * 
  * Emits a short beep on the default display.
  **/
 void
-gdk_beep (void)
+bdk_beep (void)
 {
-  gdk_display_beep (gdk_display_get_default ());
+  bdk_display_beep (bdk_display_get_default ());
 }
 
 /**
- * gdk_event_send_client_message:
- * @event: the #GdkEvent to send, which should be a #GdkEventClient.
+ * bdk_event_send_client_message:
+ * @event: the #BdkEvent to send, which should be a #BdkEventClient.
  * @winid:  the window to send the X ClientMessage event to.
  * 
  * Sends an X ClientMessage event to a given window (which must be
- * on the default #GdkDisplay.)
+ * on the default #BdkDisplay.)
  * This could be used for communicating between different applications,
  * though the amount of data is limited to 20 bytes.
  * 
  * Return value: non-zero on success.
  **/
 gboolean
-gdk_event_send_client_message (GdkEvent        *event,
-			       GdkNativeWindow  winid)
+bdk_event_send_client_message (BdkEvent        *event,
+			       BdkNativeWindow  winid)
 {
   g_return_val_if_fail (event != NULL, FALSE);
 
-  return gdk_event_send_client_message_for_display (gdk_display_get_default (),
+  return bdk_event_send_client_message_for_display (bdk_display_get_default (),
 						    event, winid);
 }
 
 /**
- * gdk_event_send_clientmessage_toall:
- * @event: the #GdkEvent to send, which should be a #GdkEventClient.
+ * bdk_event_send_clientmessage_toall:
+ * @event: the #BdkEvent to send, which should be a #BdkEventClient.
  *
  * Sends an X ClientMessage event to all toplevel windows on the default
- * #GdkScreen.
+ * #BdkScreen.
  *
  * Toplevel windows are determined by checking for the WM_STATE property, as
  * described in the Inter-Client Communication Conventions Manual (ICCCM).
@@ -381,30 +381,30 @@ gdk_event_send_client_message (GdkEvent        *event,
  * to all children of the root window.
  **/
 void
-gdk_event_send_clientmessage_toall (GdkEvent *event)
+bdk_event_send_clientmessage_toall (BdkEvent *event)
 {
   g_return_if_fail (event != NULL);
 
-  gdk_screen_broadcast_client_message (gdk_screen_get_default (), event);
+  bdk_screen_broadcast_client_message (bdk_screen_get_default (), event);
 }
 
 /**
- * gdk_device_get_core_pointer:
+ * bdk_device_get_core_pointer:
  * 
  * Returns the core pointer device for the default display.
  * 
  * Return value: the core pointer device; this is owned by the
  *   display and should not be freed.
  **/
-GdkDevice *
-gdk_device_get_core_pointer (void)
+BdkDevice *
+bdk_device_get_core_pointer (void)
 {
-  return gdk_display_get_core_pointer (gdk_display_get_default ());
+  return bdk_display_get_core_pointer (bdk_display_get_default ());
 }
 
 /**
- * gdk_display_get_core_pointer:
- * @display: a #GdkDisplay
+ * bdk_display_get_core_pointer:
+ * @display: a #BdkDisplay
  * 
  * Returns the core pointer device for the given display
  * 
@@ -413,14 +413,14 @@ gdk_device_get_core_pointer (void)
  *
  * Since: 2.2
  **/
-GdkDevice *
-gdk_display_get_core_pointer (GdkDisplay *display)
+BdkDevice *
+bdk_display_get_core_pointer (BdkDisplay *display)
 {
   return display->core_pointer;
 }
 
 /**
- * gdk_set_sm_client_id:
+ * bdk_set_sm_client_id:
  * @sm_client_id: the client id assigned by the session manager when the
  *    connection was opened, or %NULL to remove the property.
  * 
@@ -433,45 +433,45 @@ gdk_display_get_core_pointer (GdkDisplay *display)
  * (ICCCM) for information on the <literal>WM_CLIENT_LEADER</literal> property. 
  * (Both documents are part of the X Window System distribution.)
  *
- * Deprecated:2.24: Use gdk_x11_set_sm_client_id() instead
+ * Deprecated:2.24: Use bdk_x11_set_sm_client_id() instead
  **/
 void
-gdk_set_sm_client_id (const gchar* sm_client_id)
+bdk_set_sm_client_id (const gchar* sm_client_id)
 {
   GSList *displays, *tmp_list;
   
-  g_free (gdk_sm_client_id);
-  gdk_sm_client_id = g_strdup (sm_client_id);
+  g_free (bdk_sm_client_id);
+  bdk_sm_client_id = g_strdup (sm_client_id);
 
-  displays = gdk_display_manager_list_displays (gdk_display_manager_get ());
+  displays = bdk_display_manager_list_displays (bdk_display_manager_get ());
   for (tmp_list = displays; tmp_list; tmp_list = tmp_list->next)
-    _gdk_windowing_display_set_sm_client_id (tmp_list->data, sm_client_id);
+    _bdk_windowing_display_set_sm_client_id (tmp_list->data, sm_client_id);
 
   g_slist_free (displays);
 }
 
 /**
- * _gdk_get_sm_client_id:
+ * _bdk_get_sm_client_id:
  * 
- * Gets the client ID set with gdk_set_sm_client_id(), if any.
+ * Gets the client ID set with bdk_set_sm_client_id(), if any.
  * 
- * Return value: Session ID, or %NULL if gdk_set_sm_client_id()
+ * Return value: Session ID, or %NULL if bdk_set_sm_client_id()
  *               has never been called.
  **/
 const char *
-_gdk_get_sm_client_id (void)
+_bdk_get_sm_client_id (void)
 {
-  return gdk_sm_client_id;
+  return bdk_sm_client_id;
 }
 
 void
-_gdk_display_enable_motion_hints (GdkDisplay *display)
+_bdk_display_enable_motion_hints (BdkDisplay *display)
 {
   gulong serial;
   
   if (display->pointer_info.motion_hint_serial != 0)
     {
-      serial = _gdk_windowing_window_get_next_serial (display);
+      serial = _bdk_windowing_window_get_next_serial (display);
       /* We might not actually generate the next request, so
 	 make sure this triggers always, this may cause it to
 	 trigger slightly too early, but this is just a hint
@@ -484,8 +484,8 @@ _gdk_display_enable_motion_hints (GdkDisplay *display)
 }
 
 /**
- * gdk_display_get_pointer:
- * @display: a #GdkDisplay
+ * bdk_display_get_pointer:
+ * @display: a #BdkDisplay
  * @screen: (out) (allow-none): location to store the screen that the
  *          cursor is on, or %NULL.
  * @x: (out) (allow-none): location to store root window X coordinate of pointer, or %NULL.
@@ -498,17 +498,17 @@ _gdk_display_enable_motion_hints (GdkDisplay *display)
  * Since: 2.2
  **/
 void
-gdk_display_get_pointer (GdkDisplay      *display,
-			 GdkScreen      **screen,
+bdk_display_get_pointer (BdkDisplay      *display,
+			 BdkScreen      **screen,
 			 gint            *x,
 			 gint            *y,
-			 GdkModifierType *mask)
+			 BdkModifierType *mask)
 {
-  GdkScreen *tmp_screen;
+  BdkScreen *tmp_screen;
   gint tmp_x, tmp_y;
-  GdkModifierType tmp_mask;
+  BdkModifierType tmp_mask;
   
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
   display->pointer_hooks->get_pointer (display, &tmp_screen, &tmp_x, &tmp_y, &tmp_mask);
 
@@ -522,15 +522,15 @@ gdk_display_get_pointer (GdkDisplay      *display,
     *mask = tmp_mask;
 }
 
-static GdkWindow *
-gdk_display_real_get_window_at_pointer (GdkDisplay *display,
+static BdkWindow *
+bdk_display_real_get_window_at_pointer (BdkDisplay *display,
                                         gint       *win_x,
                                         gint       *win_y)
 {
-  GdkWindow *window;
+  BdkWindow *window;
   gint x, y;
 
-  window = _gdk_windowing_window_at_pointer (display, &x, &y, NULL, FALSE);
+  window = _bdk_windowing_window_at_pointer (display, &x, &y, NULL, FALSE);
 
   /* This might need corrections, as the native window returned
      may contain client side children */
@@ -538,7 +538,7 @@ gdk_display_real_get_window_at_pointer (GdkDisplay *display,
     {
       double xx, yy;
 
-      window = _gdk_window_find_descendant_at (window,
+      window = _bdk_window_find_descendant_at (window,
 					       x, y,
 					       &xx, &yy);
       x = floor (xx + 0.5);
@@ -551,21 +551,21 @@ gdk_display_real_get_window_at_pointer (GdkDisplay *display,
   return window;
 }
 
-static GdkWindow *
-gdk_window_real_window_get_pointer (GdkDisplay       *display,
-                                    GdkWindow        *window,
+static BdkWindow *
+bdk_window_real_window_get_pointer (BdkDisplay       *display,
+                                    BdkWindow        *window,
                                     gint             *x,
                                     gint             *y,
-                                    GdkModifierType  *mask)
+                                    BdkModifierType  *mask)
 {
-  GdkWindowObject *private;
+  BdkWindowObject *private;
   gint tmpx, tmpy;
-  GdkModifierType tmp_mask;
+  BdkModifierType tmp_mask;
   gboolean normal_child;
 
-  private = (GdkWindowObject *) window;
+  private = (BdkWindowObject *) window;
 
-  normal_child = GDK_WINDOW_IMPL_GET_IFACE (private->impl)->get_pointer (window,
+  normal_child = BDK_WINDOW_IMPL_GET_IFACE (private->impl)->get_pointer (window,
 									 &tmpx, &tmpy,
 									 &tmp_mask);
   /* We got the coords on the impl, convert to the window */
@@ -580,13 +580,13 @@ gdk_window_real_window_get_pointer (GdkDisplay       *display,
     *mask = tmp_mask;
 
   if (normal_child)
-    return _gdk_window_find_child_at (window, tmpx, tmpy);
+    return _bdk_window_find_child_at (window, tmpx, tmpy);
   return NULL;
 }
 
 /**
- * gdk_display_get_window_at_pointer:
- * @display: a #GdkDisplay
+ * bdk_display_get_window_at_pointer:
+ * @display: a #BdkDisplay
  * @win_x: (out) (allow-none): return location for x coordinate of the pointer location relative
  *    to the window origin, or %NULL
  * @win_y: (out) (allow-none): return location for y coordinate of the pointer location relative
@@ -594,22 +594,22 @@ gdk_window_real_window_get_pointer (GdkDisplay       *display,
  *
  * Obtains the window underneath the mouse pointer, returning the location
  * of the pointer in that window in @win_x, @win_y for @screen. Returns %NULL
- * if the window under the mouse pointer is not known to GDK (for example, 
+ * if the window under the mouse pointer is not known to BDK (for example, 
  * belongs to another application).
  *
  * Returns: (transfer none): the window under the mouse pointer, or %NULL
  *
  * Since: 2.2
  **/
-GdkWindow *
-gdk_display_get_window_at_pointer (GdkDisplay *display,
+BdkWindow *
+bdk_display_get_window_at_pointer (BdkDisplay *display,
 				   gint       *win_x,
 				   gint       *win_y)
 {
   gint tmp_x, tmp_y;
-  GdkWindow *window;
+  BdkWindow *window;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
   window = display->pointer_hooks->window_at_pointer (display, &tmp_x, &tmp_y);
 
@@ -622,8 +622,8 @@ gdk_display_get_window_at_pointer (GdkDisplay *display,
 }
 
 /**
- * gdk_display_set_pointer_hooks:
- * @display: a #GdkDisplay
+ * bdk_display_set_pointer_hooks:
+ * @display: a #BdkDisplay
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
  *   or %NULL to restore the default table.
@@ -638,15 +638,15 @@ gdk_display_get_window_at_pointer (GdkDisplay *display,
  *
  * Since: 2.2
  *
- * Deprecated: 2.24: This function will go away in GTK 3 for lack of use cases.
+ * Deprecated: 2.24: This function will go away in BTK 3 for lack of use cases.
  **/
-GdkDisplayPointerHooks *
-gdk_display_set_pointer_hooks (GdkDisplay                   *display,
-			       const GdkDisplayPointerHooks *new_hooks)
+BdkDisplayPointerHooks *
+bdk_display_set_pointer_hooks (BdkDisplay                   *display,
+			       const BdkDisplayPointerHooks *new_hooks)
 {
-  const GdkDisplayPointerHooks *result;
+  const BdkDisplayPointerHooks *result;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   result = display->pointer_hooks;
 
   if (new_hooks)
@@ -654,66 +654,66 @@ gdk_display_set_pointer_hooks (GdkDisplay                   *display,
   else
     display->pointer_hooks = &default_pointer_hooks;
 
-  return (GdkDisplayPointerHooks *)result;
+  return (BdkDisplayPointerHooks *)result;
 }
 
 static void
-singlehead_get_pointer (GdkDisplay       *display,
-			GdkScreen       **screen,
+singlehead_get_pointer (BdkDisplay       *display,
+			BdkScreen       **screen,
 			gint             *x,
 			gint             *y,
-			GdkModifierType  *mask)
+			BdkModifierType  *mask)
 {
-  GdkScreen *default_screen = gdk_display_get_default_screen (display);
-  GdkWindow *root_window = gdk_screen_get_root_window (default_screen);
+  BdkScreen *default_screen = bdk_display_get_default_screen (display);
+  BdkWindow *root_window = bdk_screen_get_root_window (default_screen);
 
   *screen = default_screen;
 
   singlehead_current_pointer_hooks->get_pointer (root_window, x, y, mask);
 }
 
-static GdkWindow*
-singlehead_window_get_pointer (GdkDisplay       *display,
-			       GdkWindow        *window,
+static BdkWindow*
+singlehead_window_get_pointer (BdkDisplay       *display,
+			       BdkWindow        *window,
 			       gint             *x,
 			       gint             *y,
-			       GdkModifierType  *mask)
+			       BdkModifierType  *mask)
 {
   return singlehead_current_pointer_hooks->get_pointer (window, x, y, mask);
 }
 
-static GdkWindow*
-singlehead_window_at_pointer   (GdkDisplay *display,
+static BdkWindow*
+singlehead_window_at_pointer   (BdkDisplay *display,
 				gint       *win_x,
 				gint       *win_y)
 {
-  GdkScreen *default_screen = gdk_display_get_default_screen (display);
+  BdkScreen *default_screen = bdk_display_get_default_screen (display);
 
   return singlehead_current_pointer_hooks->window_at_pointer (default_screen,
 							      win_x, win_y);
 }
 
-static GdkWindow*
-singlehead_default_window_get_pointer (GdkWindow       *window,
+static BdkWindow*
+singlehead_default_window_get_pointer (BdkWindow       *window,
 				       gint            *x,
 				       gint            *y,
-				       GdkModifierType *mask)
+				       BdkModifierType *mask)
 {
-  return gdk_window_real_window_get_pointer (gdk_drawable_get_display (window),
+  return bdk_window_real_window_get_pointer (bdk_drawable_get_display (window),
                                              window, x, y, mask);
 }
 
-static GdkWindow*
-singlehead_default_window_at_pointer  (GdkScreen       *screen,
+static BdkWindow*
+singlehead_default_window_at_pointer  (BdkScreen       *screen,
 				       gint            *win_x,
 				       gint            *win_y)
 {
-  return gdk_display_real_get_window_at_pointer (gdk_screen_get_display (screen),
+  return bdk_display_real_get_window_at_pointer (bdk_screen_get_display (screen),
                                                  win_x, win_y);
 }
 
 /**
- * gdk_set_pointer_hooks:
+ * bdk_set_pointer_hooks:
  * @new_hooks: a table of pointers to functions for getting
  *   quantities related to the current pointer position,
  *   or %NULL to restore the default table.
@@ -725,51 +725,51 @@ singlehead_default_window_at_pointer  (GdkScreen       *screen,
  * reason to use this facility.
  *
  * This function is not multihead safe. For multihead operation,
- * see gdk_display_set_pointer_hooks().
+ * see bdk_display_set_pointer_hooks().
  * 
  * Return value: the previous pointer hook table
  *
- * Deprecated: 2.24: This function will go away in GTK 3 for lack of use cases.
+ * Deprecated: 2.24: This function will go away in BTK 3 for lack of use cases.
  **/
-GdkPointerHooks *
-gdk_set_pointer_hooks (const GdkPointerHooks *new_hooks)
+BdkPointerHooks *
+bdk_set_pointer_hooks (const BdkPointerHooks *new_hooks)
 {
-  const GdkPointerHooks *result = singlehead_current_pointer_hooks;
+  const BdkPointerHooks *result = singlehead_current_pointer_hooks;
 
   if (new_hooks)
     singlehead_current_pointer_hooks = new_hooks;
   else
     singlehead_current_pointer_hooks = &singlehead_default_pointer_hooks;
 
-  gdk_display_set_pointer_hooks (gdk_display_get_default (),
+  bdk_display_set_pointer_hooks (bdk_display_get_default (),
 				 &singlehead_pointer_hooks);
   
-  return (GdkPointerHooks *)result;
+  return (BdkPointerHooks *)result;
 }
 
 static void
-generate_grab_broken_event (GdkWindow *window,
+generate_grab_broken_event (BdkWindow *window,
 			    gboolean   keyboard,
 			    gboolean   implicit,
-			    GdkWindow *grab_window)
+			    BdkWindow *grab_window)
 {
   g_return_if_fail (window != NULL);
 
-  if (!GDK_WINDOW_DESTROYED (window))
+  if (!BDK_WINDOW_DESTROYED (window))
     {
-      GdkEvent event;
-      event.type = GDK_GRAB_BROKEN;
+      BdkEvent event;
+      event.type = BDK_GRAB_BROKEN;
       event.grab_broken.window = window;
       event.grab_broken.send_event = 0;
       event.grab_broken.keyboard = keyboard;
       event.grab_broken.implicit = implicit;
       event.grab_broken.grab_window = grab_window;
-      gdk_event_put (&event);
+      bdk_event_put (&event);
     }
 }
 
-GdkPointerGrabInfo *
-_gdk_display_get_last_pointer_grab (GdkDisplay *display)
+BdkPointerGrabInfo *
+_bdk_display_get_last_pointer_grab (BdkDisplay *display)
 {
   GList *l;
 
@@ -778,24 +778,24 @@ _gdk_display_get_last_pointer_grab (GdkDisplay *display)
   if (l == NULL)
     return NULL;
   else
-    return (GdkPointerGrabInfo *)l->data;
+    return (BdkPointerGrabInfo *)l->data;
 }
 
 
-GdkPointerGrabInfo *
-_gdk_display_add_pointer_grab (GdkDisplay *display,
-			       GdkWindow *window,
-			       GdkWindow *native_window,
+BdkPointerGrabInfo *
+_bdk_display_add_pointer_grab (BdkDisplay *display,
+			       BdkWindow *window,
+			       BdkWindow *native_window,
 			       gboolean owner_events,
-			       GdkEventMask event_mask,
+			       BdkEventMask event_mask,
 			       unsigned long serial_start,
 			       guint32 time,
 			       gboolean implicit)
 {
-  GdkPointerGrabInfo *info, *other_info;
+  BdkPointerGrabInfo *info, *other_info;
   GList *l;
 
-  info = g_new0 (GdkPointerGrabInfo, 1);
+  info = g_new0 (BdkPointerGrabInfo, 1);
 
   info->window = g_object_ref (window);
   info->native_window = g_object_ref (native_window);
@@ -839,38 +839,38 @@ _gdk_display_add_pointer_grab (GdkDisplay *display,
 }
 
 static void
-free_pointer_grab (GdkPointerGrabInfo *info)
+free_pointer_grab (BdkPointerGrabInfo *info)
 {
   g_object_unref (info->window);
   g_object_unref (info->native_window);
   g_free (info);
 }
 
-/* _gdk_synthesize_crossing_events only works inside one toplevel.
+/* _bdk_synthesize_crossing_events only works inside one toplevel.
    This function splits things into two calls if needed, converting the
    coordinates to the right toplevel */
 static void
-synthesize_crossing_events (GdkDisplay *display,
-			    GdkWindow *src_window,
-			    GdkWindow *dest_window,
-			    GdkCrossingMode crossing_mode,
+synthesize_crossing_events (BdkDisplay *display,
+			    BdkWindow *src_window,
+			    BdkWindow *dest_window,
+			    BdkCrossingMode crossing_mode,
 			    guint32 time,
 			    gulong serial)
 {
-  GdkWindow *src_toplevel, *dest_toplevel;
-  GdkModifierType state;
+  BdkWindow *src_toplevel, *dest_toplevel;
+  BdkModifierType state;
   int x, y;
 
   /* We use the native crossing events if all native */
-  if (_gdk_native_windows)
+  if (_bdk_native_windows)
     return;
   
   if (src_window)
-    src_toplevel = gdk_window_get_toplevel (src_window);
+    src_toplevel = bdk_window_get_toplevel (src_window);
   else
     src_toplevel = NULL;
   if (dest_window)
-    dest_toplevel = gdk_window_get_toplevel (dest_window);
+    dest_toplevel = bdk_window_get_toplevel (dest_window);
   else
     dest_toplevel = NULL;
 
@@ -881,9 +881,9 @@ synthesize_crossing_events (GdkDisplay *display,
       src_toplevel == dest_toplevel)
     {
       /* Same toplevels */
-      gdk_window_get_pointer (dest_toplevel,
+      bdk_window_get_pointer (dest_toplevel,
 			      &x, &y, &state);
-      _gdk_synthesize_crossing_events (display,
+      _bdk_synthesize_crossing_events (display,
 				       src_window,
 				       dest_window,
 				       crossing_mode,
@@ -894,9 +894,9 @@ synthesize_crossing_events (GdkDisplay *display,
     }
   else if (dest_toplevel == NULL)
     {
-      gdk_window_get_pointer (src_toplevel,
+      bdk_window_get_pointer (src_toplevel,
 			      &x, &y, &state);
-      _gdk_synthesize_crossing_events (display,
+      _bdk_synthesize_crossing_events (display,
 				       src_window,
 				       NULL,
 				       crossing_mode,
@@ -908,9 +908,9 @@ synthesize_crossing_events (GdkDisplay *display,
   else
     {
       /* Different toplevels */
-      gdk_window_get_pointer (src_toplevel,
+      bdk_window_get_pointer (src_toplevel,
 			      &x, &y, &state);
-      _gdk_synthesize_crossing_events (display,
+      _bdk_synthesize_crossing_events (display,
 				       src_window,
 				       NULL,
 				       crossing_mode,
@@ -918,9 +918,9 @@ synthesize_crossing_events (GdkDisplay *display,
 				       time,
 				       NULL,
 				       serial, FALSE);
-      gdk_window_get_pointer (dest_toplevel,
+      bdk_window_get_pointer (dest_toplevel,
 			      &x, &y, &state);
-      _gdk_synthesize_crossing_events (display,
+      _bdk_synthesize_crossing_events (display,
 				       NULL,
 				       dest_window,
 				       crossing_mode,
@@ -931,20 +931,20 @@ synthesize_crossing_events (GdkDisplay *display,
     }
 }
 
-static GdkWindow *
-get_current_toplevel (GdkDisplay *display,
+static BdkWindow *
+get_current_toplevel (BdkDisplay *display,
 		      int *x_out, int *y_out,
-		      GdkModifierType *state_out)
+		      BdkModifierType *state_out)
 {
-  GdkWindow *pointer_window;
+  BdkWindow *pointer_window;
   int x, y;
-  GdkModifierType state;
+  BdkModifierType state;
 
-  pointer_window = _gdk_windowing_window_at_pointer (display,  &x, &y, &state, TRUE);
+  pointer_window = _bdk_windowing_window_at_pointer (display,  &x, &y, &state, TRUE);
   if (pointer_window != NULL &&
-      (GDK_WINDOW_DESTROYED (pointer_window) ||
-       GDK_WINDOW_TYPE (pointer_window) == GDK_WINDOW_ROOT ||
-       GDK_WINDOW_TYPE (pointer_window) == GDK_WINDOW_FOREIGN))
+      (BDK_WINDOW_DESTROYED (pointer_window) ||
+       BDK_WINDOW_TYPE (pointer_window) == BDK_WINDOW_ROOT ||
+       BDK_WINDOW_TYPE (pointer_window) == BDK_WINDOW_FOREIGN))
     pointer_window = NULL;
 
   *x_out = x;
@@ -954,15 +954,15 @@ get_current_toplevel (GdkDisplay *display,
 }
 
 static void
-switch_to_pointer_grab (GdkDisplay *display,
-			GdkPointerGrabInfo *grab,
-			GdkPointerGrabInfo *last_grab,
+switch_to_pointer_grab (BdkDisplay *display,
+			BdkPointerGrabInfo *grab,
+			BdkPointerGrabInfo *last_grab,
 			guint32 time,
 			gulong serial)
 {
-  GdkWindow *src_window, *pointer_window, *new_toplevel;
+  BdkWindow *src_window, *pointer_window, *new_toplevel;
   GList *old_grabs;
-  GdkModifierType state;
+  BdkModifierType state;
   int x, y;
 
   /* Temporarily unset pointer to make sure we send the crossing events below */
@@ -991,13 +991,13 @@ switch_to_pointer_grab (GdkDisplay *display,
 	    {
 	      synthesize_crossing_events (display,
 					  src_window, grab->window,
-					  GDK_CROSSING_GRAB, time, serial);
+					  BDK_CROSSING_GRAB, time, serial);
 	    }
 
 	  /* !owner_event Grabbing a window that we're not inside, current status is
 	     now NULL (i.e. outside grabbed window) */
 	  if (!grab->owner_events && display->pointer_info.window_under_pointer != grab->window)
-	    _gdk_display_set_window_under_pointer (display, NULL);
+	    _bdk_display_set_window_under_pointer (display, NULL);
 	}
 
       grab->activated = TRUE;
@@ -1035,7 +1035,7 @@ switch_to_pointer_grab (GdkDisplay *display,
 	    {
 	      /* Find (possibly virtual) child window */
 	      pointer_window =
-		_gdk_window_find_descendant_at (new_toplevel,
+		_bdk_window_find_descendant_at (new_toplevel,
 						x, y,
 						NULL, NULL);
 	    }
@@ -1043,10 +1043,10 @@ switch_to_pointer_grab (GdkDisplay *display,
 	  if (pointer_window != last_grab->window)
 	    synthesize_crossing_events (display,
 					last_grab->window, pointer_window,
-					GDK_CROSSING_UNGRAB, time, serial);
+					BDK_CROSSING_UNGRAB, time, serial);
 	  
 	  /* We're now ungrabbed, update the window_under_pointer */
-	  _gdk_display_set_window_under_pointer (display, pointer_window);
+	  _bdk_display_set_window_under_pointer (display, pointer_window);
 	}
     }
   
@@ -1055,10 +1055,10 @@ switch_to_pointer_grab (GdkDisplay *display,
 }
 
 void
-_gdk_display_pointer_grab_update (GdkDisplay *display,
+_bdk_display_pointer_grab_update (BdkDisplay *display,
 				  gulong current_serial)
 {
-  GdkPointerGrabInfo *current_grab, *next_grab;
+  BdkPointerGrabInfo *current_grab, *next_grab;
   guint32 time;
   
   time = display->last_event_time;
@@ -1094,7 +1094,7 @@ _gdk_display_pointer_grab_update (GdkDisplay *display,
 
       if ((next_grab == NULL && current_grab->implicit_ungrab) ||
 	  (next_grab != NULL && current_grab->window != next_grab->window))
-	generate_grab_broken_event (GDK_WINDOW (current_grab->window),
+	generate_grab_broken_event (BDK_WINDOW (current_grab->window),
 				    FALSE, current_grab->implicit,
 				    next_grab? next_grab->window : NULL);
 
@@ -1112,10 +1112,10 @@ _gdk_display_pointer_grab_update (GdkDisplay *display,
 }
 
 static GList *
-find_pointer_grab (GdkDisplay *display,
+find_pointer_grab (BdkDisplay *display,
 		   gulong serial)
 {
-  GdkPointerGrabInfo *grab;
+  BdkPointerGrabInfo *grab;
   GList *l;
 
   for (l = display->pointer_grabs; l != NULL; l = l->next)
@@ -1131,8 +1131,8 @@ find_pointer_grab (GdkDisplay *display,
 
 
 
-GdkPointerGrabInfo *
-_gdk_display_has_pointer_grab (GdkDisplay *display,
+BdkPointerGrabInfo *
+_bdk_display_has_pointer_grab (BdkDisplay *display,
 			       gulong serial)
 {
   GList *l;
@@ -1148,12 +1148,12 @@ _gdk_display_has_pointer_grab (GdkDisplay *display,
  * If if_child is non-NULL, end the grab only if the grabbed
  * window is the same as if_child or a descendant of it */
 gboolean
-_gdk_display_end_pointer_grab (GdkDisplay *display,
+_bdk_display_end_pointer_grab (BdkDisplay *display,
 			       gulong serial,
-			       GdkWindow *if_child,
+			       BdkWindow *if_child,
 			       gboolean implicit)
 {
-  GdkPointerGrabInfo *grab;
+  BdkPointerGrabInfo *grab;
   GList *l;
 
   l = find_pointer_grab (display, serial);
@@ -1164,7 +1164,7 @@ _gdk_display_end_pointer_grab (GdkDisplay *display,
   grab = l->data;
   if (grab &&
       (if_child == NULL ||
-       _gdk_window_event_parent_of (if_child, grab->window)))
+       _bdk_window_event_parent_of (if_child, grab->window)))
     {
       grab->serial_end = serial;
       grab->implicit_ungrab = implicit;
@@ -1175,9 +1175,9 @@ _gdk_display_end_pointer_grab (GdkDisplay *display,
 }
 
 void
-_gdk_display_set_has_keyboard_grab (GdkDisplay *display,
-				    GdkWindow *window,
-				    GdkWindow *native_window,
+_bdk_display_set_has_keyboard_grab (BdkDisplay *display,
+				    BdkWindow *window,
+				    BdkWindow *native_window,
 				    gboolean owner_events,
 				    unsigned long serial,
 				    guint32 time)
@@ -1195,7 +1195,7 @@ _gdk_display_set_has_keyboard_grab (GdkDisplay *display,
 }
 
 void
-_gdk_display_unset_has_keyboard_grab (GdkDisplay *display,
+_bdk_display_unset_has_keyboard_grab (BdkDisplay *display,
 				      gboolean implicit)
 {
   if (implicit)
@@ -1205,11 +1205,11 @@ _gdk_display_unset_has_keyboard_grab (GdkDisplay *display,
 }
 
 /**
- * gdk_keyboard_grab_info_libgtk_only:
+ * bdk_keyboard_grab_info_libbtk_only:
  * @display: the display for which to get the grab information
  * @grab_window: location to store current grab window
  * @owner_events: location to store boolean indicating whether
- *   the @owner_events flag to gdk_keyboard_grab() was %TRUE.
+ *   the @owner_events flag to bdk_keyboard_grab() was %TRUE.
  * 
  * Determines information about the current keyboard grab.
  * This is not public API and must not be used by applications.
@@ -1218,11 +1218,11 @@ _gdk_display_unset_has_keyboard_grab (GdkDisplay *display,
  *  keyboard grabbed.
  **/
 gboolean
-gdk_keyboard_grab_info_libgtk_only (GdkDisplay *display,
-				    GdkWindow **grab_window,
+bdk_keyboard_grab_info_libbtk_only (BdkDisplay *display,
+				    BdkWindow **grab_window,
 				    gboolean   *owner_events)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   if (display->keyboard_grab.window)
     {
@@ -1238,11 +1238,11 @@ gdk_keyboard_grab_info_libgtk_only (GdkDisplay *display,
 }
 
 /**
- * gdk_pointer_grab_info_libgtk_only:
- * @display: the #GdkDisplay for which to get the grab information
+ * bdk_pointer_grab_info_libbtk_only:
+ * @display: the #BdkDisplay for which to get the grab information
  * @grab_window: location to store current grab window
  * @owner_events: location to store boolean indicating whether
- *   the @owner_events flag to gdk_pointer_grab() was %TRUE.
+ *   the @owner_events flag to bdk_pointer_grab() was %TRUE.
  * 
  * Determines information about the current pointer grab.
  * This is not public API and must not be used by applications.
@@ -1251,18 +1251,18 @@ gdk_keyboard_grab_info_libgtk_only (GdkDisplay *display,
  *  pointer grabbed.
  **/
 gboolean
-gdk_pointer_grab_info_libgtk_only (GdkDisplay *display,
-				   GdkWindow **grab_window,
+bdk_pointer_grab_info_libbtk_only (BdkDisplay *display,
+				   BdkWindow **grab_window,
 				   gboolean   *owner_events)
 {
-  GdkPointerGrabInfo *info;
+  BdkPointerGrabInfo *info;
   
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   /* What we're interested in is the steady state (ie last grab),
      because we're interested e.g. if we grabbed so that we
      can ungrab, even if our grab is not active just yet. */
-  info = _gdk_display_get_last_pointer_grab (display);
+  info = _bdk_display_get_last_pointer_grab (display);
   
   if (info)
     {
@@ -1279,8 +1279,8 @@ gdk_pointer_grab_info_libgtk_only (GdkDisplay *display,
 
 
 /**
- * gdk_display_pointer_is_grabbed:
- * @display: a #GdkDisplay
+ * bdk_display_pointer_is_grabbed:
+ * @display: a #BdkDisplay
  *
  * Test if the pointer is grabbed.
  *
@@ -1289,19 +1289,19 @@ gdk_pointer_grab_info_libgtk_only (GdkDisplay *display,
  * Since: 2.2
  */
 gboolean
-gdk_display_pointer_is_grabbed (GdkDisplay *display)
+bdk_display_pointer_is_grabbed (BdkDisplay *display)
 {
-  GdkPointerGrabInfo *info;
+  BdkPointerGrabInfo *info;
   
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), TRUE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), TRUE);
 
   /* What we're interested in is the steady state (ie last grab),
      because we're interested e.g. if we grabbed so that we
      can ungrab, even if our grab is not active just yet. */
-  info = _gdk_display_get_last_pointer_grab (display);
+  info = _bdk_display_get_last_pointer_grab (display);
   
   return (info && !info->implicit);
 }
 
-#define __GDK_DISPLAY_C__
-#include "gdkaliasdef.c"
+#define __BDK_DISPLAY_C__
+#include "bdkaliasdef.c"

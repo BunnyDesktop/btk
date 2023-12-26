@@ -1,4 +1,4 @@
-/* GtkToolPalette -- A tool palette with categories and DnD support
+/* BtkToolPalette -- A tool palette with categories and DnD support
  * Copyright (C) 2008  Openismus GmbH
  *
  * This library is free software; you can redistribute it and/or
@@ -19,37 +19,37 @@
  *      Mathias Hasselmann
  */
 
-#ifndef __GTK_TOOL_PALETTE_PRIVATE_H__
-#define __GTK_TOOL_PALETTE_PRIVATE_H__
+#ifndef __BTK_TOOL_PALETTE_PRIVATE_H__
+#define __BTK_TOOL_PALETTE_PRIVATE_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-void _gtk_tool_palette_get_item_size           (GtkToolPalette   *palette,
-                                                GtkRequisition   *item_size,
+void _btk_tool_palette_get_item_size           (BtkToolPalette   *palette,
+                                                BtkRequisition   *item_size,
                                                 gboolean          homogeneous_only,
                                                 gint             *requested_rows);
-void _gtk_tool_palette_child_set_drag_source   (GtkWidget        *widget,
+void _btk_tool_palette_child_set_drag_source   (BtkWidget        *widget,
                                                 gpointer          data);
-void _gtk_tool_palette_set_expanding_child     (GtkToolPalette   *palette,
-                                                GtkWidget        *widget);
+void _btk_tool_palette_set_expanding_child     (BtkToolPalette   *palette,
+                                                BtkWidget        *widget);
 
-void _gtk_tool_item_group_palette_reconfigured (GtkToolItemGroup *group);
-void _gtk_tool_item_group_item_size_request    (GtkToolItemGroup *group,
-                                                GtkRequisition   *item_size,
+void _btk_tool_item_group_palette_reconfigured (BtkToolItemGroup *group);
+void _btk_tool_item_group_item_size_request    (BtkToolItemGroup *group,
+                                                BtkRequisition   *item_size,
                                                 gboolean          homogeneous_only,
                                                 gint             *requested_rows);
-gint _gtk_tool_item_group_get_height_for_width (GtkToolItemGroup *group,
+gint _btk_tool_item_group_get_height_for_width (BtkToolItemGroup *group,
                                                 gint              width);
-gint _gtk_tool_item_group_get_width_for_height (GtkToolItemGroup *group,
+gint _btk_tool_item_group_get_width_for_height (BtkToolItemGroup *group,
                                                 gint              height);
-void _gtk_tool_item_group_paint                (GtkToolItemGroup *group,
-                                                cairo_t          *cr);
-gint _gtk_tool_item_group_get_size_for_limit   (GtkToolItemGroup *group,
+void _btk_tool_item_group_paint                (BtkToolItemGroup *group,
+                                                bairo_t          *cr);
+gint _btk_tool_item_group_get_size_for_limit   (BtkToolItemGroup *group,
                                                 gint              limit,
                                                 gboolean          vertical,
                                                 gboolean          animation);
 
 
-GtkSizeGroup *_gtk_tool_palette_get_size_group (GtkToolPalette   *palette);
+BtkSizeGroup *_btk_tool_palette_get_size_group (BtkToolPalette   *palette);
 
-#endif /* __GTK_TOOL_PALETTE_PRIVATE_H__ */
+#endif /* __BTK_TOOL_PALETTE_PRIVATE_H__ */

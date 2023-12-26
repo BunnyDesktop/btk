@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtktexttagprivate.h Copyright (C) 2000 Red Hat, Inc.
+/* BTK - The GIMP Toolkit
+ * btktexttagprivate.h Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,40 +18,40 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_TAG_PRIVATE_H__
-#define __GTK_TEXT_TAG_PRIVATE_H__
+#ifndef __BTK_TEXT_TAG_PRIVATE_H__
+#define __BTK_TEXT_TAG_PRIVATE_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-typedef struct _GtkTextBTreeNode GtkTextBTreeNode;
+typedef struct _BtkTextBTreeNode BtkTextBTreeNode;
 
 /* values should already have desired defaults; this function will override
  * the defaults with settings in the given tags, which should be sorted in
  * ascending order of priority
 */
-void _gtk_text_attributes_fill_from_tags   (GtkTextAttributes   *values,
-                                            GtkTextTag         **tags,
+void _btk_text_attributes_fill_from_tags   (BtkTextAttributes   *values,
+                                            BtkTextTag         **tags,
                                             guint                n_tags);
-void _gtk_text_tag_array_sort              (GtkTextTag         **tag_array_p,
+void _btk_text_tag_array_sort              (BtkTextTag         **tag_array_p,
                                             guint                len);
 
 /* ensure colors are allocated, etc. for drawing */
-void                _gtk_text_attributes_realize   (GtkTextAttributes *values,
-                                                    GdkColormap       *cmap,
-                                                    GdkVisual         *visual);
+void                _btk_text_attributes_realize   (BtkTextAttributes *values,
+                                                    BdkColormap       *cmap,
+                                                    BdkVisual         *visual);
 
 /* free the stuff again */
-void                _gtk_text_attributes_unrealize (GtkTextAttributes *values,
-                                                    GdkColormap       *cmap,
-                                                    GdkVisual         *visual);
+void                _btk_text_attributes_unrealize (BtkTextAttributes *values,
+                                                    BdkColormap       *cmap,
+                                                    BdkVisual         *visual);
 
-gboolean _gtk_text_tag_affects_size               (GtkTextTag *tag);
-gboolean _gtk_text_tag_affects_nonsize_appearance (GtkTextTag *tag);
+gboolean _btk_text_tag_affects_size               (BtkTextTag *tag);
+gboolean _btk_text_tag_affects_nonsize_appearance (BtkTextTag *tag);
 
 #endif

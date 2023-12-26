@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,67 +18,67 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 /*
  * NOTE this widget is considered too specialized/little-used for
- * GTK+, and will in the future be moved to some other package.  If
+ * BTK+, and will in the future be moved to some other package.  If
  * your application needs this widget, feel free to use it, as the
  * widget does work and is useful in some applications; it's just not
  * of general interest. However, we are not accepting new features for
- * the widget, and it will eventually move out of the GTK+
+ * the widget, and it will eventually move out of the BTK+
  * distribution.
  */
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_HRULER_H__
-#define __GTK_HRULER_H__
+#ifndef __BTK_HRULER_H__
+#define __BTK_HRULER_H__
 
 
-#include <gtk/gtkruler.h>
+#include <btk/btkruler.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_HRULER	           (gtk_hruler_get_type ())
-#define GTK_HRULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HRULER, GtkHRuler))
-#define GTK_HRULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HRULER, GtkHRulerClass))
-#define GTK_IS_HRULER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HRULER))
-#define GTK_IS_HRULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HRULER))
-#define GTK_HRULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HRULER, GtkHRulerClass))
+#define BTK_TYPE_HRULER	           (btk_hruler_get_type ())
+#define BTK_HRULER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HRULER, BtkHRuler))
+#define BTK_HRULER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HRULER, BtkHRulerClass))
+#define BTK_IS_HRULER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HRULER))
+#define BTK_IS_HRULER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HRULER))
+#define BTK_HRULER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HRULER, BtkHRulerClass))
 
 
-typedef struct _GtkHRuler       GtkHRuler;
-typedef struct _GtkHRulerClass  GtkHRulerClass;
+typedef struct _BtkHRuler       BtkHRuler;
+typedef struct _BtkHRulerClass  BtkHRulerClass;
 
-struct _GtkHRuler
+struct _BtkHRuler
 {
-  GtkRuler ruler;
+  BtkRuler ruler;
 };
 
-struct _GtkHRulerClass
+struct _BtkHRulerClass
 {
-  GtkRulerClass parent_class;
+  BtkRulerClass parent_class;
 };
 
 
-GType      gtk_hruler_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_hruler_new      (void);
+GType      btk_hruler_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_hruler_new      (void);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_HRULER_H__ */
+#endif /* __BTK_HRULER_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,125 +18,125 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gtkdrawingarea.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkdrawingarea.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
-static void gtk_drawing_area_realize       (GtkWidget           *widget);
-static void gtk_drawing_area_size_allocate (GtkWidget           *widget,
-					    GtkAllocation       *allocation);
-static void gtk_drawing_area_send_configure (GtkDrawingArea     *darea);
+static void btk_drawing_area_realize       (BtkWidget           *widget);
+static void btk_drawing_area_size_allocate (BtkWidget           *widget,
+					    BtkAllocation       *allocation);
+static void btk_drawing_area_send_configure (BtkDrawingArea     *darea);
 
-G_DEFINE_TYPE (GtkDrawingArea, gtk_drawing_area, GTK_TYPE_WIDGET)
+G_DEFINE_TYPE (BtkDrawingArea, btk_drawing_area, BTK_TYPE_WIDGET)
 
 static void
-gtk_drawing_area_class_init (GtkDrawingAreaClass *class)
+btk_drawing_area_class_init (BtkDrawingAreaClass *class)
 {
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
+  BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
 
-  widget_class->realize = gtk_drawing_area_realize;
-  widget_class->size_allocate = gtk_drawing_area_size_allocate;
+  widget_class->realize = btk_drawing_area_realize;
+  widget_class->size_allocate = btk_drawing_area_size_allocate;
 }
 
 static void
-gtk_drawing_area_init (GtkDrawingArea *darea)
+btk_drawing_area_init (BtkDrawingArea *darea)
 {
   darea->draw_data = NULL;
 }
 
 
-GtkWidget*
-gtk_drawing_area_new (void)
+BtkWidget*
+btk_drawing_area_new (void)
 {
-  return g_object_new (GTK_TYPE_DRAWING_AREA, NULL);
+  return g_object_new (BTK_TYPE_DRAWING_AREA, NULL);
 }
 
 void
-gtk_drawing_area_size (GtkDrawingArea *darea,
+btk_drawing_area_size (BtkDrawingArea *darea,
 		       gint            width,
 		       gint            height)
 {
-  g_return_if_fail (GTK_IS_DRAWING_AREA (darea));
+  g_return_if_fail (BTK_IS_DRAWING_AREA (darea));
 
-  GTK_WIDGET (darea)->requisition.width = width;
-  GTK_WIDGET (darea)->requisition.height = height;
+  BTK_WIDGET (darea)->requisition.width = width;
+  BTK_WIDGET (darea)->requisition.height = height;
 
-  gtk_widget_queue_resize (GTK_WIDGET (darea));
+  btk_widget_queue_resize (BTK_WIDGET (darea));
 }
 
 static void
-gtk_drawing_area_realize (GtkWidget *widget)
+btk_drawing_area_realize (BtkWidget *widget)
 {
-  GtkDrawingArea *darea = GTK_DRAWING_AREA (widget);
-  GdkWindowAttr attributes;
+  BtkDrawingArea *darea = BTK_DRAWING_AREA (widget);
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  if (!gtk_widget_get_has_window (widget))
+  if (!btk_widget_get_has_window (widget))
     {
-      GTK_WIDGET_CLASS (gtk_drawing_area_parent_class)->realize (widget);
+      BTK_WIDGET_CLASS (btk_drawing_area_parent_class)->realize (widget);
     }
   else
     {
-      gtk_widget_set_realized (widget, TRUE);
+      btk_widget_set_realized (widget, TRUE);
 
-      attributes.window_type = GDK_WINDOW_CHILD;
+      attributes.window_type = BDK_WINDOW_CHILD;
       attributes.x = widget->allocation.x;
       attributes.y = widget->allocation.y;
       attributes.width = widget->allocation.width;
       attributes.height = widget->allocation.height;
-      attributes.wclass = GDK_INPUT_OUTPUT;
-      attributes.visual = gtk_widget_get_visual (widget);
-      attributes.colormap = gtk_widget_get_colormap (widget);
-      attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK;
+      attributes.wclass = BDK_INPUT_OUTPUT;
+      attributes.visual = btk_widget_get_visual (widget);
+      attributes.colormap = btk_widget_get_colormap (widget);
+      attributes.event_mask = btk_widget_get_events (widget) | BDK_EXPOSURE_MASK;
 
-      attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+      attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
 
-      widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
+      widget->window = bdk_window_new (btk_widget_get_parent_window (widget),
                                        &attributes, attributes_mask);
-      gdk_window_set_user_data (widget->window, darea);
+      bdk_window_set_user_data (widget->window, darea);
 
-      widget->style = gtk_style_attach (widget->style, widget->window);
-      gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+      widget->style = btk_style_attach (widget->style, widget->window);
+      btk_style_set_background (widget->style, widget->window, BTK_STATE_NORMAL);
     }
 
-  gtk_drawing_area_send_configure (GTK_DRAWING_AREA (widget));
+  btk_drawing_area_send_configure (BTK_DRAWING_AREA (widget));
 }
 
 static void
-gtk_drawing_area_size_allocate (GtkWidget     *widget,
-				GtkAllocation *allocation)
+btk_drawing_area_size_allocate (BtkWidget     *widget,
+				BtkAllocation *allocation)
 {
-  g_return_if_fail (GTK_IS_DRAWING_AREA (widget));
+  g_return_if_fail (BTK_IS_DRAWING_AREA (widget));
   g_return_if_fail (allocation != NULL);
 
   widget->allocation = *allocation;
 
-  if (gtk_widget_get_realized (widget))
+  if (btk_widget_get_realized (widget))
     {
-      if (gtk_widget_get_has_window (widget))
-        gdk_window_move_resize (widget->window,
+      if (btk_widget_get_has_window (widget))
+        bdk_window_move_resize (widget->window,
                                 allocation->x, allocation->y,
                                 allocation->width, allocation->height);
 
-      gtk_drawing_area_send_configure (GTK_DRAWING_AREA (widget));
+      btk_drawing_area_send_configure (BTK_DRAWING_AREA (widget));
     }
 }
 
 static void
-gtk_drawing_area_send_configure (GtkDrawingArea *darea)
+btk_drawing_area_send_configure (BtkDrawingArea *darea)
 {
-  GtkWidget *widget;
-  GdkEvent *event = gdk_event_new (GDK_CONFIGURE);
+  BtkWidget *widget;
+  BdkEvent *event = bdk_event_new (BDK_CONFIGURE);
 
-  widget = GTK_WIDGET (darea);
+  widget = BTK_WIDGET (darea);
 
   event->configure.window = g_object_ref (widget->window);
   event->configure.send_event = TRUE;
@@ -145,9 +145,9 @@ gtk_drawing_area_send_configure (GtkDrawingArea *darea)
   event->configure.width = widget->allocation.width;
   event->configure.height = widget->allocation.height;
   
-  gtk_widget_event (widget, event);
-  gdk_event_free (event);
+  btk_widget_event (widget, event);
+  bdk_event_free (event);
 }
 
-#define __GTK_DRAWING_AREA_C__
-#include "gtkaliasdef.c"
+#define __BTK_DRAWING_AREA_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -22,24 +22,24 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "gtkimcontextxim.h"
+#include "btkimcontextxim.h"
 
-#include "gtk/gtkintl.h"
+#include "btk/btkintl.h"
 
 typedef struct _StatusWindow StatusWindow;
-typedef struct _GtkXIMInfo GtkXIMInfo;
+typedef struct _BtkXIMInfo BtkXIMInfo;
 
-struct _GtkIMContextXIM
+struct _BtkIMContextXIM
 {
-  GtkIMContext object;
+  BtkIMContext object;
 
-  GtkXIMInfo *im_info;
+  BtkXIMInfo *im_info;
 
   gchar *locale;
   gchar *mb_charset;
 
-  GdkWindow *client_window;
-  GtkWidget *client_widget;
+  BdkWindow *client_window;
+  BtkWidget *client_widget;
 
   /* The status window for this input context; we claim the
    * status window when we are focused and have created an XIC
@@ -73,15 +73,15 @@ struct _GtkIMContextXIM
   guint has_focus : 1;
 };
 
-struct _GtkXIMInfo
+struct _BtkXIMInfo
 {
-  GdkScreen *screen;
+  BdkScreen *screen;
   XIM im;
   char *locale;
   XIMStyle preedit_style_setting;
   XIMStyle status_style_setting;
   XIMStyle style;
-  GtkSettings *settings;
+  BtkSettings *settings;
   gulong status_set;
   gulong preedit_set;
   gulong display_closed_cb;
@@ -95,44 +95,44 @@ struct _GtkXIMInfo
 /* A context status window; these are kept in the status_windows list. */
 struct _StatusWindow
 {
-  GtkWidget *window;
+  BtkWidget *window;
   
   /* Toplevel window to which the status window corresponds */
-  GtkWidget *toplevel;
+  BtkWidget *toplevel;
 
-  /* Currently focused GtkIMContextXIM for the toplevel, if any */
-  GtkIMContextXIM *context;
+  /* Currently focused BtkIMContextXIM for the toplevel, if any */
+  BtkIMContextXIM *context;
 };
 
-static void     gtk_im_context_xim_class_init         (GtkIMContextXIMClass  *class);
-static void     gtk_im_context_xim_init               (GtkIMContextXIM       *im_context_xim);
-static void     gtk_im_context_xim_finalize           (GObject               *obj);
-static void     gtk_im_context_xim_set_client_window  (GtkIMContext          *context,
-						       GdkWindow             *client_window);
-static gboolean gtk_im_context_xim_filter_keypress    (GtkIMContext          *context,
-						       GdkEventKey           *key);
-static void     gtk_im_context_xim_reset              (GtkIMContext          *context);
-static void     gtk_im_context_xim_focus_in           (GtkIMContext          *context);
-static void     gtk_im_context_xim_focus_out          (GtkIMContext          *context);
-static void     gtk_im_context_xim_set_cursor_location (GtkIMContext          *context,
-						       GdkRectangle		*area);
-static void     gtk_im_context_xim_set_use_preedit    (GtkIMContext          *context,
+static void     btk_im_context_xim_class_init         (BtkIMContextXIMClass  *class);
+static void     btk_im_context_xim_init               (BtkIMContextXIM       *im_context_xim);
+static void     btk_im_context_xim_finalize           (GObject               *obj);
+static void     btk_im_context_xim_set_client_window  (BtkIMContext          *context,
+						       BdkWindow             *client_window);
+static gboolean btk_im_context_xim_filter_keypress    (BtkIMContext          *context,
+						       BdkEventKey           *key);
+static void     btk_im_context_xim_reset              (BtkIMContext          *context);
+static void     btk_im_context_xim_focus_in           (BtkIMContext          *context);
+static void     btk_im_context_xim_focus_out          (BtkIMContext          *context);
+static void     btk_im_context_xim_set_cursor_location (BtkIMContext          *context,
+						       BdkRectangle		*area);
+static void     btk_im_context_xim_set_use_preedit    (BtkIMContext          *context,
 						       gboolean		      use_preedit);
-static void     gtk_im_context_xim_get_preedit_string (GtkIMContext          *context,
+static void     btk_im_context_xim_get_preedit_string (BtkIMContext          *context,
 						       gchar                **str,
-						       PangoAttrList        **attrs,
+						       BangoAttrList        **attrs,
 						       gint                  *cursor_pos);
 
-static void reinitialize_ic      (GtkIMContextXIM *context_xim);
-static void set_ic_client_window (GtkIMContextXIM *context_xim,
-				  GdkWindow       *client_window);
+static void reinitialize_ic      (BtkIMContextXIM *context_xim);
+static void set_ic_client_window (BtkIMContextXIM *context_xim,
+				  BdkWindow       *client_window);
 
-static void setup_styles (GtkXIMInfo *info);
+static void setup_styles (BtkXIMInfo *info);
 
-static void update_client_widget   (GtkIMContextXIM *context_xim);
-static void update_status_window   (GtkIMContextXIM *context_xim);
+static void update_client_widget   (BtkIMContextXIM *context_xim);
+static void update_status_window   (BtkIMContextXIM *context_xim);
 
-static StatusWindow *status_window_get      (GtkWidget    *toplevel);
+static StatusWindow *status_window_get      (BtkWidget    *toplevel);
 static void          status_window_free     (StatusWindow *status_window);
 static void          status_window_set_text (StatusWindow *status_window,
 					     const gchar  *text);
@@ -141,14 +141,14 @@ static void xim_destroy_callback   (XIM      xim,
 				    XPointer client_data,
 				    XPointer call_data);
 
-static XIC       gtk_im_context_xim_get_ic            (GtkIMContextXIM *context_xim);
-static void           xim_info_display_closed (GdkDisplay *display,
+static XIC       btk_im_context_xim_get_ic            (BtkIMContextXIM *context_xim);
+static void           xim_info_display_closed (BdkDisplay *display,
 			                       gboolean    is_error,
-			                       GtkXIMInfo *info);
+			                       BtkXIMInfo *info);
 
 static GObjectClass *parent_class;
 
-GType gtk_type_im_context_xim = 0;
+GType btk_type_im_context_xim = 0;
 
 static GSList *open_ims = NULL;
 
@@ -156,25 +156,25 @@ static GSList *open_ims = NULL;
 static GSList *status_windows = NULL;
 
 void
-gtk_im_context_xim_register_type (GTypeModule *type_module)
+btk_im_context_xim_register_type (GTypeModule *type_module)
 {
   const GTypeInfo im_context_xim_info =
   {
-    sizeof (GtkIMContextXIMClass),
+    sizeof (BtkIMContextXIMClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) gtk_im_context_xim_class_init,
+    (GClassInitFunc) btk_im_context_xim_class_init,
     NULL,           /* class_finalize */    
     NULL,           /* class_data */
-    sizeof (GtkIMContextXIM),
+    sizeof (BtkIMContextXIM),
     0,
-    (GInstanceInitFunc) gtk_im_context_xim_init,
+    (GInstanceInitFunc) btk_im_context_xim_init,
   };
 
-  gtk_type_im_context_xim = 
+  btk_type_im_context_xim = 
     g_type_module_register_type (type_module,
-				 GTK_TYPE_IM_CONTEXT,
-				 "GtkIMContextXIM",
+				 BTK_TYPE_IM_CONTEXT,
+				 "BtkIMContextXIM",
 				 &im_context_xim_info, 0);
 }
 
@@ -227,7 +227,7 @@ choose_better_style (XIMStyle style1, XIMStyle style2)
 }
 
 static void
-reinitialize_all_ics (GtkXIMInfo *info)
+reinitialize_all_ics (BtkXIMInfo *info)
 {
   GSList *tmp_list;
 
@@ -236,18 +236,18 @@ reinitialize_all_ics (GtkXIMInfo *info)
 }
 
 static void
-status_style_change (GtkXIMInfo *info)
+status_style_change (BtkXIMInfo *info)
 {
-  GtkIMStatusStyle status_style;
+  BtkIMStatusStyle status_style;
   
   g_object_get (info->settings,
-		"gtk-im-status-style", &status_style,
+		"btk-im-status-style", &status_style,
 		NULL);
-  if (status_style == GTK_IM_STATUS_CALLBACK)
+  if (status_style == BTK_IM_STATUS_CALLBACK)
     info->status_style_setting = XIMStatusCallbacks;
-  else if (status_style == GTK_IM_STATUS_NOTHING)
+  else if (status_style == BTK_IM_STATUS_NOTHING)
     info->status_style_setting = XIMStatusNothing;
-  else if (status_style == GTK_IM_STATUS_NONE)
+  else if (status_style == BTK_IM_STATUS_NONE)
     info->status_style_setting = XIMStatusNone;
   else
     return;
@@ -258,17 +258,17 @@ status_style_change (GtkXIMInfo *info)
 }
 
 static void
-preedit_style_change (GtkXIMInfo *info)
+preedit_style_change (BtkXIMInfo *info)
 {
-  GtkIMPreeditStyle preedit_style;
+  BtkIMPreeditStyle preedit_style;
   g_object_get (info->settings,
-		"gtk-im-preedit-style", &preedit_style,
+		"btk-im-preedit-style", &preedit_style,
 		NULL);
-  if (preedit_style == GTK_IM_PREEDIT_CALLBACK)
+  if (preedit_style == BTK_IM_PREEDIT_CALLBACK)
     info->preedit_style_setting = XIMPreeditCallbacks;
-  else if (preedit_style == GTK_IM_PREEDIT_NOTHING)
+  else if (preedit_style == BTK_IM_PREEDIT_NOTHING)
     info->preedit_style_setting = XIMPreeditNothing;
-  else if (preedit_style == GTK_IM_PREEDIT_NONE)
+  else if (preedit_style == BTK_IM_PREEDIT_NONE)
     info->preedit_style_setting = XIMPreeditNone;
   else
     return;
@@ -279,7 +279,7 @@ preedit_style_change (GtkXIMInfo *info)
 }
 
 static void
-setup_styles (GtkXIMInfo *info)
+setup_styles (BtkXIMInfo *info)
 {
   int i;
   unsigned long settings_preference;
@@ -306,11 +306,11 @@ setup_styles (GtkXIMInfo *info)
 }
 
 static void
-setup_im (GtkXIMInfo *info)
+setup_im (BtkXIMInfo *info)
 {
   XIMValuesList *ic_values = NULL;
   XIMCallback im_destroy_callback;
-  GdkDisplay *display;
+  BdkDisplay *display;
 
   if (info->im == NULL)
     return;
@@ -326,13 +326,13 @@ setup_im (GtkXIMInfo *info)
 		XNQueryICValuesList, &ic_values,
 		NULL);
 
-  info->settings = gtk_settings_get_for_screen (info->screen);
+  info->settings = btk_settings_get_for_screen (info->screen);
   info->status_set = g_signal_connect_swapped (info->settings,
-					       "notify::gtk-im-status-style",
+					       "notify::btk-im-status-style",
 					       G_CALLBACK (status_style_change),
 					       info);
   info->preedit_set = g_signal_connect_swapped (info->settings,
-						"notify::gtk-im-preedit-style",
+						"notify::btk-im-preedit-style",
 						G_CALLBACK (preedit_style_change),
 						info);
 
@@ -362,15 +362,15 @@ setup_im (GtkXIMInfo *info)
   status_style_change (info);
   preedit_style_change (info);
 
-  display = gdk_screen_get_display (info->screen);
+  display = bdk_screen_get_display (info->screen);
   info->display_closed_cb = g_signal_connect (display, "closed",
 	                                      G_CALLBACK (xim_info_display_closed), info);
 }
 
 static void
-xim_info_display_closed (GdkDisplay *display,
+xim_info_display_closed (BdkDisplay *display,
 			 gboolean    is_error,
-			 GtkXIMInfo *info)
+			 BtkXIMInfo *info)
 {
   GSList *ics, *tmp_list;
 
@@ -405,7 +405,7 @@ static void
 xim_instantiate_callback (Display *display, XPointer client_data,
 			  XPointer call_data)
 {
-  GtkXIMInfo *info = (GtkXIMInfo*)client_data;
+  BtkXIMInfo *info = (BtkXIMInfo*)client_data;
   XIM im = NULL;
 
   im = XOpenIM (display, NULL, NULL, NULL);
@@ -424,10 +424,10 @@ xim_instantiate_callback (Display *display, XPointer client_data,
 
 /* initialize info->im */
 static void
-xim_info_try_im (GtkXIMInfo *info)
+xim_info_try_im (BtkXIMInfo *info)
 {
-  GdkScreen *screen = info->screen;
-  GdkDisplay *display = gdk_screen_get_display (screen);
+  BdkScreen *screen = info->screen;
+  BdkDisplay *display = bdk_screen_get_display (screen);
 
   g_assert (info->im == NULL);
   if (info->reconnecting)
@@ -437,10 +437,10 @@ xim_info_try_im (GtkXIMInfo *info)
     {
       if (!XSetLocaleModifiers (""))
 	g_warning ("Unable to set locale modifiers with XSetLocaleModifiers()");
-      info->im = XOpenIM (GDK_DISPLAY_XDISPLAY (display), NULL, NULL, NULL);
+      info->im = XOpenIM (BDK_DISPLAY_XDISPLAY (display), NULL, NULL, NULL);
       if (!info->im)
 	{
-	  XRegisterIMInstantiateCallback (GDK_DISPLAY_XDISPLAY(display),
+	  XRegisterIMInstantiateCallback (BDK_DISPLAY_XDISPLAY(display),
 					  NULL, NULL, NULL,
 					  xim_instantiate_callback,
 					  (XPointer)info);
@@ -456,7 +456,7 @@ xim_destroy_callback (XIM      xim,
 		      XPointer client_data,
 		      XPointer call_data)
 {
-  GtkXIMInfo *info = (GtkXIMInfo*)client_data;
+  BtkXIMInfo *info = (BtkXIMInfo*)client_data;
 
   info->im = NULL;
 
@@ -470,19 +470,19 @@ xim_destroy_callback (XIM      xim,
   return;
 } 
 
-static GtkXIMInfo *
-get_im (GdkWindow *client_window,
+static BtkXIMInfo *
+get_im (BdkWindow *client_window,
 	const char *locale)
 {
   GSList *tmp_list;
-  GtkXIMInfo *info;
-  GdkScreen *screen = gdk_window_get_screen (client_window);
+  BtkXIMInfo *info;
+  BdkScreen *screen = bdk_window_get_screen (client_window);
 
   info = NULL;
   tmp_list = open_ims;
   while (tmp_list)
     {
-      GtkXIMInfo *tmp_info = tmp_list->data;
+      BtkXIMInfo *tmp_info = tmp_list->data;
       if (tmp_info->screen == screen &&
 	  strcmp (tmp_info->locale, locale) == 0)
 	{
@@ -501,7 +501,7 @@ get_im (GdkWindow *client_window,
 
   if (info == NULL)
     {
-      info = g_new (GtkXIMInfo, 1);
+      info = g_new (BtkXIMInfo, 1);
       open_ims = g_slist_prepend (open_ims, info);
 
       info->screen = screen;
@@ -523,26 +523,26 @@ get_im (GdkWindow *client_window,
 }
 
 static void
-gtk_im_context_xim_class_init (GtkIMContextXIMClass *class)
+btk_im_context_xim_class_init (BtkIMContextXIMClass *class)
 {
-  GtkIMContextClass *im_context_class = GTK_IM_CONTEXT_CLASS (class);
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  BtkIMContextClass *im_context_class = BTK_IM_CONTEXT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
   parent_class = g_type_class_peek_parent (class);
 
-  im_context_class->set_client_window = gtk_im_context_xim_set_client_window;
-  im_context_class->filter_keypress = gtk_im_context_xim_filter_keypress;
-  im_context_class->reset = gtk_im_context_xim_reset;
-  im_context_class->get_preedit_string = gtk_im_context_xim_get_preedit_string;
-  im_context_class->focus_in = gtk_im_context_xim_focus_in;
-  im_context_class->focus_out = gtk_im_context_xim_focus_out;
-  im_context_class->set_cursor_location = gtk_im_context_xim_set_cursor_location;
-  im_context_class->set_use_preedit = gtk_im_context_xim_set_use_preedit;
-  gobject_class->finalize = gtk_im_context_xim_finalize;
+  im_context_class->set_client_window = btk_im_context_xim_set_client_window;
+  im_context_class->filter_keypress = btk_im_context_xim_filter_keypress;
+  im_context_class->reset = btk_im_context_xim_reset;
+  im_context_class->get_preedit_string = btk_im_context_xim_get_preedit_string;
+  im_context_class->focus_in = btk_im_context_xim_focus_in;
+  im_context_class->focus_out = btk_im_context_xim_focus_out;
+  im_context_class->set_cursor_location = btk_im_context_xim_set_cursor_location;
+  im_context_class->set_use_preedit = btk_im_context_xim_set_use_preedit;
+  bobject_class->finalize = btk_im_context_xim_finalize;
 }
 
 static void
-gtk_im_context_xim_init (GtkIMContextXIM *im_context_xim)
+btk_im_context_xim_init (BtkIMContextXIM *im_context_xim)
 {
   im_context_xim->use_preedit = TRUE;
   im_context_xim->filter_key_release = FALSE;
@@ -552,9 +552,9 @@ gtk_im_context_xim_init (GtkIMContextXIM *im_context_xim)
 }
 
 static void
-gtk_im_context_xim_finalize (GObject *obj)
+btk_im_context_xim_finalize (GObject *obj)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (obj);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (obj);
 
   context_xim->finalizing = TRUE;
 
@@ -562,10 +562,10 @@ gtk_im_context_xim_finalize (GObject *obj)
     {
       if (context_xim->im_info->reconnecting)
 	{
-	  GdkDisplay *display;
+	  BdkDisplay *display;
 
-	  display = gdk_screen_get_display (context_xim->im_info->screen);
-	  XUnregisterIMInstantiateCallback (GDK_DISPLAY_XDISPLAY (display),
+	  display = bdk_screen_get_display (context_xim->im_info->screen);
+	  XUnregisterIMInstantiateCallback (BDK_DISPLAY_XDISPLAY (display),
 					    NULL, NULL, NULL,
 					    xim_instantiate_callback,
 					    (XPointer)context_xim->im_info);
@@ -591,7 +591,7 @@ gtk_im_context_xim_finalize (GObject *obj)
 }
 
 static void
-reinitialize_ic (GtkIMContextXIM *context_xim)
+reinitialize_ic (BtkIMContextXIM *context_xim)
 {
   if (context_xim->ic)
     {
@@ -614,8 +614,8 @@ reinitialize_ic (GtkIMContextXIM *context_xim)
 }
 
 static void
-set_ic_client_window (GtkIMContextXIM *context_xim,
-		      GdkWindow       *client_window)
+set_ic_client_window (BtkIMContextXIM *context_xim,
+		      BdkWindow       *client_window)
 {
   reinitialize_ic (context_xim);
   if (context_xim->client_window)
@@ -636,32 +636,32 @@ set_ic_client_window (GtkIMContextXIM *context_xim,
 }
 
 static void
-gtk_im_context_xim_set_client_window (GtkIMContext          *context,
-				      GdkWindow             *client_window)
+btk_im_context_xim_set_client_window (BtkIMContext          *context,
+				      BdkWindow             *client_window)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
   set_ic_client_window (context_xim, client_window);
 }
 
-GtkIMContext *
-gtk_im_context_xim_new (void)
+BtkIMContext *
+btk_im_context_xim_new (void)
 {
-  GtkIMContextXIM *result;
+  BtkIMContextXIM *result;
   const gchar *charset;
 
-  result = g_object_new (GTK_TYPE_IM_CONTEXT_XIM, NULL);
+  result = g_object_new (BTK_TYPE_IM_CONTEXT_XIM, NULL);
 
   result->locale = g_strdup (setlocale (LC_CTYPE, NULL));
   
   g_get_charset (&charset);
   result->mb_charset = g_strdup (charset);
 
-  return GTK_IM_CONTEXT (result);
+  return BTK_IM_CONTEXT (result);
 }
 
 static char *
-mb_to_utf8 (GtkIMContextXIM *context_xim,
+mb_to_utf8 (BtkIMContextXIM *context_xim,
 	    const char      *str)
 {
   GError *error = NULL;
@@ -685,11 +685,11 @@ mb_to_utf8 (GtkIMContextXIM *context_xim,
 }
 
 static gboolean
-gtk_im_context_xim_filter_keypress (GtkIMContext *context,
-				    GdkEventKey  *event)
+btk_im_context_xim_filter_keypress (BtkIMContext *context,
+				    BdkEventKey  *event)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
-  XIC ic = gtk_im_context_xim_get_ic (context_xim);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
+  XIC ic = btk_im_context_xim_get_ic (context_xim);
   gchar static_buffer[256];
   gchar *buffer = static_buffer;
   gint buffer_size = sizeof(static_buffer) - 1;
@@ -697,19 +697,19 @@ gtk_im_context_xim_filter_keypress (GtkIMContext *context,
   KeySym keysym;
   Status status;
   gboolean result = FALSE;
-  GdkWindow *root_window = gdk_screen_get_root_window (gdk_window_get_screen (event->window));
+  BdkWindow *root_window = bdk_screen_get_root_window (bdk_window_get_screen (event->window));
 
   XKeyPressedEvent xevent;
 
-  if (event->type == GDK_KEY_RELEASE && !context_xim->filter_key_release)
+  if (event->type == BDK_KEY_RELEASE && !context_xim->filter_key_release)
     return FALSE;
 
-  xevent.type = (event->type == GDK_KEY_PRESS) ? KeyPress : KeyRelease;
+  xevent.type = (event->type == BDK_KEY_PRESS) ? KeyPress : KeyRelease;
   xevent.serial = 0;		/* hope it doesn't matter */
   xevent.send_event = event->send_event;
-  xevent.display = GDK_DRAWABLE_XDISPLAY (event->window);
-  xevent.window = GDK_DRAWABLE_XID (event->window);
-  xevent.root = GDK_DRAWABLE_XID (root_window);
+  xevent.display = BDK_DRAWABLE_XDISPLAY (event->window);
+  xevent.window = BDK_DRAWABLE_XID (event->window);
+  xevent.root = BDK_DRAWABLE_XID (root_window);
   xevent.subwindow = xevent.window;
   xevent.time = event->time;
   xevent.x = xevent.x_root = 0;
@@ -718,11 +718,11 @@ gtk_im_context_xim_filter_keypress (GtkIMContext *context,
   xevent.keycode = event->hardware_keycode;
   xevent.same_screen = True;
   
-  if (XFilterEvent ((XEvent *)&xevent, GDK_DRAWABLE_XID (context_xim->client_window)))
+  if (XFilterEvent ((XEvent *)&xevent, BDK_DRAWABLE_XID (context_xim->client_window)))
     return TRUE;
   
   if (event->state &
-      (gtk_accelerator_get_default_mod_mask () & ~(GDK_SHIFT_MASK | GDK_CONTROL_MASK))) 
+      (btk_accelerator_get_default_mod_mask () & ~(BDK_SHIFT_MASK | BDK_CONTROL_MASK))) 
     return FALSE;
 
  again:
@@ -776,13 +776,13 @@ gtk_im_context_xim_filter_keypress (GtkIMContext *context,
 }
 
 static void
-gtk_im_context_xim_focus_in (GtkIMContext *context)
+btk_im_context_xim_focus_in (BtkIMContext *context)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
   if (!context_xim->has_focus)
     {
-      XIC ic = gtk_im_context_xim_get_ic (context_xim);
+      XIC ic = btk_im_context_xim_get_ic (context_xim);
 
       context_xim->has_focus = TRUE;
       update_status_window (context_xim);
@@ -795,13 +795,13 @@ gtk_im_context_xim_focus_in (GtkIMContext *context)
 }
 
 static void
-gtk_im_context_xim_focus_out (GtkIMContext *context)
+btk_im_context_xim_focus_out (BtkIMContext *context)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
   if (context_xim->has_focus)
     {
-      XIC ic = gtk_im_context_xim_get_ic (context_xim);
+      XIC ic = btk_im_context_xim_get_ic (context_xim);
       
       context_xim->has_focus = FALSE;
       update_status_window (context_xim);
@@ -814,11 +814,11 @@ gtk_im_context_xim_focus_out (GtkIMContext *context)
 }
 
 static void
-gtk_im_context_xim_set_cursor_location (GtkIMContext *context,
-					GdkRectangle *area)
+btk_im_context_xim_set_cursor_location (BtkIMContext *context,
+					BdkRectangle *area)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
-  XIC ic = gtk_im_context_xim_get_ic (context_xim);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
+  XIC ic = btk_im_context_xim_get_ic (context_xim);
 
   XVaNestedList preedit_attr;
   XPoint          spot;
@@ -841,10 +841,10 @@ gtk_im_context_xim_set_cursor_location (GtkIMContext *context,
 }
 
 static void
-gtk_im_context_xim_set_use_preedit (GtkIMContext *context,
+btk_im_context_xim_set_use_preedit (BtkIMContext *context,
 				    gboolean      use_preedit)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
   use_preedit = use_preedit != FALSE;
 
@@ -858,10 +858,10 @@ gtk_im_context_xim_set_use_preedit (GtkIMContext *context,
 }
 
 static void
-gtk_im_context_xim_reset (GtkIMContext *context)
+btk_im_context_xim_reset (BtkIMContext *context)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
-  XIC ic = gtk_im_context_xim_get_ic (context_xim);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
+  XIC ic = btk_im_context_xim_get_ic (context_xim);
   gchar *result;
 
   /* restore conversion state after resetting ic later */
@@ -922,39 +922,39 @@ gtk_im_context_xim_reset (GtkIMContext *context)
 #define FEEDBACK_MASK (XIMReverse | XIMUnderline)
 
 static void
-add_feedback_attr (PangoAttrList *attrs,
+add_feedback_attr (BangoAttrList *attrs,
 		   const gchar   *str,
 		   XIMFeedback    feedback,
 		   gint           start_pos,
 		   gint           end_pos)
 {
-  PangoAttribute *attr;
+  BangoAttribute *attr;
   
   gint start_index = g_utf8_offset_to_pointer (str, start_pos) - str;
   gint end_index = g_utf8_offset_to_pointer (str, end_pos) - str;
 
   if (feedback & XIMUnderline)
     {
-      attr = pango_attr_underline_new (PANGO_UNDERLINE_SINGLE);
+      attr = bango_attr_underline_new (BANGO_UNDERLINE_SINGLE);
       attr->start_index = start_index;
       attr->end_index = end_index;
 
-      pango_attr_list_change (attrs, attr);
+      bango_attr_list_change (attrs, attr);
     }
 
   if (feedback & XIMReverse)
     {
-      attr = pango_attr_foreground_new (0xffff, 0xffff, 0xffff);
+      attr = bango_attr_foreground_new (0xffff, 0xffff, 0xffff);
       attr->start_index = start_index;
       attr->end_index = end_index;
 
-      pango_attr_list_change (attrs, attr);
+      bango_attr_list_change (attrs, attr);
 
-      attr = pango_attr_background_new (0, 0, 0);
+      attr = bango_attr_background_new (0, 0, 0);
       attr->start_index = start_index;
       attr->end_index = end_index;
 
-      pango_attr_list_change (attrs, attr);
+      bango_attr_list_change (attrs, attr);
     }
 
   if (feedback & ~FEEDBACK_MASK)
@@ -962,12 +962,12 @@ add_feedback_attr (PangoAttrList *attrs,
 }
 
 static void     
-gtk_im_context_xim_get_preedit_string (GtkIMContext   *context,
+btk_im_context_xim_get_preedit_string (BtkIMContext   *context,
 				       gchar         **str,
-				       PangoAttrList **attrs,
+				       BangoAttrList **attrs,
 				       gint           *cursor_pos)
 {
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
   gchar *utf8 = g_ucs4_to_utf8 (context_xim->preedit_chars, context_xim->preedit_length, NULL, NULL, NULL);
 
   if (attrs)
@@ -976,7 +976,7 @@ gtk_im_context_xim_get_preedit_string (GtkIMContext   *context,
       XIMFeedback last_feedback = 0;
       gint start = -1;
       
-      *attrs = pango_attr_list_new ();
+      *attrs = bango_attr_list_new ();
 
       for (i = 0; i < context_xim->preedit_length; i++)
 	{
@@ -1009,8 +1009,8 @@ preedit_start_callback (XIC      xic,
 			XPointer client_data,
 			XPointer call_data)
 {
-  GtkIMContext *context = GTK_IM_CONTEXT (client_data);
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContext *context = BTK_IM_CONTEXT (client_data);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
   
   if (!context_xim->finalizing)
     g_signal_emit_by_name (context, "preedit-start");
@@ -1023,8 +1023,8 @@ preedit_done_callback (XIC      xic,
 		     XPointer client_data,
 		     XPointer call_data)
 {
-  GtkIMContext *context = GTK_IM_CONTEXT (client_data);
-  GtkIMContextXIM *context_xim = GTK_IM_CONTEXT_XIM (context);
+  BtkIMContext *context = BTK_IM_CONTEXT (client_data);
+  BtkIMContextXIM *context_xim = BTK_IM_CONTEXT_XIM (context);
 
   if (context_xim->preedit_length)
     {
@@ -1038,7 +1038,7 @@ preedit_done_callback (XIC      xic,
 }		     
 
 static gint
-xim_text_to_utf8 (GtkIMContextXIM *context, XIMText *xim_text, gchar **text)
+xim_text_to_utf8 (BtkIMContextXIM *context, XIMText *xim_text, gchar **text)
 {
   gint text_length = 0;
   GError *error = NULL;
@@ -1095,7 +1095,7 @@ preedit_draw_callback (XIC                           xic,
 		       XPointer                      client_data,
 		       XIMPreeditDrawCallbackStruct *call_data)
 {
-  GtkIMContextXIM *context = GTK_IM_CONTEXT_XIM (client_data);
+  BtkIMContextXIM *context = BTK_IM_CONTEXT_XIM (client_data);
 
   XIMText *new_xim_text = call_data->text;
   gint new_text_length;
@@ -1168,7 +1168,7 @@ preedit_caret_callback (XIC                            xic,
 			XPointer                       client_data,
 			XIMPreeditCaretCallbackStruct *call_data)
 {
-  GtkIMContextXIM *context = GTK_IM_CONTEXT_XIM (client_data);
+  BtkIMContextXIM *context = BTK_IM_CONTEXT_XIM (client_data);
   
   if (call_data->direction == XIMAbsolutePosition)
     {
@@ -1204,7 +1204,7 @@ status_draw_callback (XIC      xic,
 		      XPointer client_data,
 		      XIMStatusDrawCallbackStruct *call_data)
 {
-  GtkIMContextXIM *context = GTK_IM_CONTEXT_XIM (client_data);
+  BtkIMContextXIM *context = BTK_IM_CONTEXT_XIM (client_data);
 
   if (call_data->type == XIMTextType)
     {
@@ -1223,15 +1223,15 @@ status_draw_callback (XIC      xic,
 static void
 string_conversion_callback (XIC xic, XPointer client_data, XPointer call_data)
 {
-  GtkIMContextXIM *context_xim;
+  BtkIMContextXIM *context_xim;
   XIMStringConversionCallbackStruct *conv_data;
   gchar *surrounding;
   gint  cursor_index;
 
-  context_xim = (GtkIMContextXIM *)client_data;
+  context_xim = (BtkIMContextXIM *)client_data;
   conv_data = (XIMStringConversionCallbackStruct *)call_data;
 
-  if (gtk_im_context_get_surrounding ((GtkIMContext *)context_xim,
+  if (btk_im_context_get_surrounding ((BtkIMContext *)context_xim,
                                       &surrounding, &cursor_index))
     {
       gchar *text = NULL;
@@ -1325,7 +1325,7 @@ string_conversion_callback (XIC xic, XPointer client_data, XPointer call_data)
       if (conv_data->operation == XIMStringConversionSubstitution
           && subst_nchars > 0)
         {
-          gtk_im_context_delete_surrounding ((GtkIMContext *)context_xim,
+          btk_im_context_delete_surrounding ((BtkIMContext *)context_xim,
                                             subst_offset, subst_nchars);
         }
 
@@ -1335,7 +1335,7 @@ string_conversion_callback (XIC xic, XPointer client_data, XPointer call_data)
 
 
 static XVaNestedList
-set_preedit_callback (GtkIMContextXIM *context_xim)
+set_preedit_callback (BtkIMContextXIM *context_xim)
 {
   context_xim->preedit_start_callback.client_data = (XPointer)context_xim;
   context_xim->preedit_start_callback.callback = (XIMProc)preedit_start_callback;
@@ -1354,7 +1354,7 @@ set_preedit_callback (GtkIMContextXIM *context_xim)
 }
 
 static XVaNestedList
-set_status_callback (GtkIMContextXIM *context_xim)
+set_status_callback (BtkIMContextXIM *context_xim)
 {
   context_xim->status_start_callback.client_data = (XPointer)context_xim;
   context_xim->status_start_callback.callback = (XIMProc)status_start_callback;
@@ -1372,7 +1372,7 @@ set_status_callback (GtkIMContextXIM *context_xim)
 
 
 static void
-set_string_conversion_callback (GtkIMContextXIM *context_xim, XIC xic)
+set_string_conversion_callback (BtkIMContextXIM *context_xim, XIC xic)
 {
   if (!context_xim->im_info->supports_string_conversion)
     return;
@@ -1387,7 +1387,7 @@ set_string_conversion_callback (GtkIMContextXIM *context_xim, XIC xic)
 }
 
 static XIC
-gtk_im_context_xim_get_ic (GtkIMContextXIM *context_xim)
+btk_im_context_xim_get_ic (BtkIMContextXIM *context_xim)
 {
   if (context_xim->im_info == NULL || context_xim->im_info->im == NULL)
     return NULL;
@@ -1434,7 +1434,7 @@ gtk_im_context_xim_get_ic (GtkIMContextXIM *context_xim)
 
       xic = XCreateIC (context_xim->im_info->im,
 		       XNInputStyle, im_style,
-		       XNClientWindow, GDK_DRAWABLE_XID (context_xim->client_window),
+		       XNClientWindow, BDK_DRAWABLE_XID (context_xim->client_window),
 		       name1, list1,
 		       name2, list2,
 		       NULL);
@@ -1487,18 +1487,18 @@ gtk_im_context_xim_get_ic (GtkIMContextXIM *context_xim)
  * For B) we basically have to depend on our callers
  * calling ::focus-in and ::focus-out at the right time.
  *
- * The toplevel is computed by walking up the GdkWindow
+ * The toplevel is computed by walking up the BdkWindow
  * hierarchy from context->client_window until we find a
  * window that is owned by some widget, and then calling
- * gtk_widget_get_toplevel() on that widget. This should
- * handle both cases where we might have GdkWindows without widgets,
- * and cases where GtkWidgets have strange window hierarchies
- * (like a torn off GtkHandleBox.)
+ * btk_widget_get_toplevel() on that widget. This should
+ * handle both cases where we might have BdkWindows without widgets,
+ * and cases where BtkWidgets have strange window hierarchies
+ * (like a torn off BtkHandleBox.)
  *
  * The status window is visible if and only if there is text
- * for it; whenever a new GtkIMContextXIM claims the status
+ * for it; whenever a new BtkIMContextXIM claims the status
  * window, we blank out any existing text. We actually only
- * create a GtkWindow for the status window the first time
+ * create a BtkWindow for the status window the first time
  * it is shown; this is an important optimization when we are
  * using XIM with something like a simple compose-key input
  * method that never needs a status window.
@@ -1507,7 +1507,7 @@ gtk_im_context_xim_get_ic (GtkIMContextXIM *context_xim)
 /* Called when we no longer need a status window
 */
 static void
-disclaim_status_window (GtkIMContextXIM *context_xim)
+disclaim_status_window (BtkIMContextXIM *context_xim)
 {
   if (context_xim->status_window)
     {
@@ -1523,12 +1523,12 @@ disclaim_status_window (GtkIMContextXIM *context_xim)
 /* Called when we need a status window
  */
 static void
-claim_status_window (GtkIMContextXIM *context_xim)
+claim_status_window (BtkIMContextXIM *context_xim)
 {
   if (!context_xim->status_window && context_xim->client_widget)
     {
-      GtkWidget *toplevel = gtk_widget_get_toplevel (context_xim->client_widget);
-      if (toplevel && gtk_widget_is_toplevel (toplevel))
+      BtkWidget *toplevel = btk_widget_get_toplevel (context_xim->client_widget);
+      if (toplevel && btk_widget_is_toplevel (toplevel))
 	{
 	  StatusWindow *status_window = status_window_get (toplevel);
 
@@ -1545,7 +1545,7 @@ claim_status_window (GtkIMContextXIM *context_xim)
  * us to need, or not to need a status window.
  */
 static void
-update_status_window (GtkIMContextXIM *context_xim)
+update_status_window (BtkIMContextXIM *context_xim)
 {
   if (context_xim->ic && context_xim->in_toplevel && context_xim->has_focus)
     claim_status_window (context_xim);
@@ -1556,13 +1556,13 @@ update_status_window (GtkIMContextXIM *context_xim)
 /* Updates the in_toplevel flag for @context_xim
  */
 static void
-update_in_toplevel (GtkIMContextXIM *context_xim)
+update_in_toplevel (BtkIMContextXIM *context_xim)
 {
   if (context_xim->client_widget)
     {
-      GtkWidget *toplevel = gtk_widget_get_toplevel (context_xim->client_widget);
+      BtkWidget *toplevel = btk_widget_get_toplevel (context_xim->client_widget);
       
-      context_xim->in_toplevel = (toplevel && gtk_widget_is_toplevel (toplevel));
+      context_xim->in_toplevel = (toplevel && btk_widget_is_toplevel (toplevel));
     }
   else
     context_xim->in_toplevel = FALSE;
@@ -1581,27 +1581,27 @@ update_in_toplevel (GtkIMContextXIM *context_xim)
  * window.
  */
 static void
-on_client_widget_hierarchy_changed (GtkWidget       *widget,
-				    GtkWidget       *old_toplevel,
-				    GtkIMContextXIM *context_xim)
+on_client_widget_hierarchy_changed (BtkWidget       *widget,
+				    BtkWidget       *old_toplevel,
+				    BtkIMContextXIM *context_xim)
 {
   update_in_toplevel (context_xim);
 }
 
-/* Finds the GtkWidget that owns the window, or if none, the
+/* Finds the BtkWidget that owns the window, or if none, the
  * widget owning the nearest parent that has a widget.
  */
-static GtkWidget *
-widget_for_window (GdkWindow *window)
+static BtkWidget *
+widget_for_window (BdkWindow *window)
 {
   while (window)
     {
       gpointer user_data;
-      gdk_window_get_user_data (window, &user_data);
+      bdk_window_get_user_data (window, &user_data);
       if (user_data)
 	return user_data;
 
-      window = gdk_window_get_parent (window);
+      window = bdk_window_get_parent (window);
     }
 
   return NULL;
@@ -1611,9 +1611,9 @@ widget_for_window (GdkWindow *window)
  * removing and/or setting up our watches for the toplevel
  */
 static void
-update_client_widget (GtkIMContextXIM *context_xim)
+update_client_widget (BtkIMContextXIM *context_xim)
 {
-  GtkWidget *new_client_widget = widget_for_window (context_xim->client_window);
+  BtkWidget *new_client_widget = widget_for_window (context_xim->client_window);
 
   if (new_client_widget != context_xim->client_widget)
     {
@@ -1638,7 +1638,7 @@ update_client_widget (GtkIMContextXIM *context_xim)
 /* Called when the toplevel is destroyed; frees the status window
  */
 static void
-on_status_toplevel_destroy (GtkWidget    *toplevel,
+on_status_toplevel_destroy (BtkWidget    *toplevel,
 			    StatusWindow *status_window)
 {
   status_window_free (status_window);
@@ -1648,41 +1648,41 @@ on_status_toplevel_destroy (GtkWidget    *toplevel,
  * screen for the status window to match.
  */
 static void
-on_status_toplevel_notify_screen (GtkWindow    *toplevel,
+on_status_toplevel_notify_screen (BtkWindow    *toplevel,
 				  GParamSpec   *pspec,
 				  StatusWindow *status_window)
 {
   if (status_window->window)
-    gtk_window_set_screen (GTK_WINDOW (status_window->window),
-			   gtk_widget_get_screen (GTK_WIDGET (toplevel)));
+    btk_window_set_screen (BTK_WINDOW (status_window->window),
+			   btk_widget_get_screen (BTK_WIDGET (toplevel)));
 }
 
 /* Called when the toplevel window is moved; updates the position of
  * the status window to follow it.
  */
 static gboolean
-on_status_toplevel_configure (GtkWidget         *toplevel,
-			      GdkEventConfigure *event,
+on_status_toplevel_configure (BtkWidget         *toplevel,
+			      BdkEventConfigure *event,
 			      StatusWindow      *status_window)
 {
-  GdkRectangle rect;
-  GtkRequisition requisition;
+  BdkRectangle rect;
+  BtkRequisition requisition;
   gint y;
   gint height;
 
   if (status_window->window)
     {
-      height = gdk_screen_get_height (gtk_widget_get_screen (toplevel));
+      height = bdk_screen_get_height (btk_widget_get_screen (toplevel));
   
-      gdk_window_get_frame_extents (toplevel->window, &rect);
-      gtk_widget_size_request (status_window->window, &requisition);
+      bdk_window_get_frame_extents (toplevel->window, &rect);
+      btk_widget_size_request (status_window->window, &requisition);
       
       if (rect.y + rect.height + requisition.height < height)
 	y = rect.y + rect.height;
       else
 	y = height - requisition.height;
       
-      gtk_window_move (GTK_WINDOW (status_window->window), rect.x, y);
+      btk_window_move (BTK_WINDOW (status_window->window), rect.x, y);
     }
 
   return FALSE;
@@ -1709,9 +1709,9 @@ status_window_free (StatusWindow *status_window)
 					status_window);
 
   if (status_window->window)
-    gtk_widget_destroy (status_window->window);
+    btk_widget_destroy (status_window->window);
   
-  g_object_set_data (G_OBJECT (status_window->toplevel), "gtk-im-xim-status-window", NULL);
+  g_object_set_data (G_OBJECT (status_window->toplevel), "btk-im-xim-status-window", NULL);
  
   g_free (status_window);
 }
@@ -1719,11 +1719,11 @@ status_window_free (StatusWindow *status_window)
 /* Finds the status window object for a toplevel, creating it if necessary.
  */
 static StatusWindow *
-status_window_get (GtkWidget *toplevel)
+status_window_get (BtkWidget *toplevel)
 {
   StatusWindow *status_window;
 
-  status_window = g_object_get_data (G_OBJECT (toplevel), "gtk-im-xim-status-window");
+  status_window = g_object_get_data (G_OBJECT (toplevel), "btk-im-xim-status-window");
   if (status_window)
     return status_window;
   
@@ -1742,7 +1742,7 @@ status_window_get (GtkWidget *toplevel)
 		    G_CALLBACK (on_status_toplevel_notify_screen),
 		    status_window);
   
-  g_object_set_data (G_OBJECT (toplevel), "gtk-im-xim-status-window", status_window);
+  g_object_set_data (G_OBJECT (toplevel), "btk-im-xim-status-window", status_window);
 
   return status_window;
 }
@@ -1753,22 +1753,22 @@ status_window_get (GtkWidget *toplevel)
 static void
 status_window_make_window (StatusWindow *status_window)
 {
-  GtkWidget *window;
-  GtkWidget *status_label;
+  BtkWidget *window;
+  BtkWidget *status_label;
   
-  status_window->window = gtk_window_new (GTK_WINDOW_POPUP);
+  status_window->window = btk_window_new (BTK_WINDOW_POPUP);
   window = status_window->window;
 
-  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+  btk_window_set_resizable (BTK_WINDOW (window), FALSE);
 
-  status_label = gtk_label_new ("");
-  gtk_misc_set_padding (GTK_MISC (status_label), 1, 1);
-  gtk_widget_show (status_label);
+  status_label = btk_label_new ("");
+  btk_misc_set_padding (BTK_MISC (status_label), 1, 1);
+  btk_widget_show (status_label);
   
-  gtk_container_add (GTK_CONTAINER (window), status_label);
+  btk_container_add (BTK_CONTAINER (window), status_label);
   
-  gtk_window_set_screen (GTK_WINDOW (status_window->window),
-			 gtk_widget_get_screen (status_window->toplevel));
+  btk_window_set_screen (BTK_WINDOW (status_window->window),
+			 btk_widget_get_screen (status_window->toplevel));
 
   on_status_toplevel_configure (status_window->toplevel, NULL, status_window);
 }
@@ -1782,39 +1782,39 @@ status_window_set_text (StatusWindow *status_window,
 {
   if (text[0])
     {
-      GtkWidget *label;
+      BtkWidget *label;
       
       if (!status_window->window)
 	status_window_make_window (status_window);
       
-      label = GTK_BIN (status_window->window)->child;
-      gtk_label_set_text (GTK_LABEL (label), text);
+      label = BTK_BIN (status_window->window)->child;
+      btk_label_set_text (BTK_LABEL (label), text);
   
-      gtk_widget_show (status_window->window);
+      btk_widget_show (status_window->window);
     }
   else
     {
       if (status_window->window)
-	gtk_widget_hide (status_window->window);
+	btk_widget_hide (status_window->window);
     }
 }
 
 /**
- * gtk_im_context_xim_shutdown:
+ * btk_im_context_xim_shutdown:
  * 
  * Destroys all the status windows that are kept by the XIM contexts.  This
  * function should only be called by the XIM module exit routine.
  **/
 void
-gtk_im_context_xim_shutdown (void)
+btk_im_context_xim_shutdown (void)
 {
   while (status_windows)
     status_window_free (status_windows->data);
 
   while (open_ims)
     {
-      GtkXIMInfo *info = open_ims->data;
-      GdkDisplay *display = gdk_screen_get_display (info->screen);
+      BtkXIMInfo *info = open_ims->data;
+      BdkDisplay *display = bdk_screen_get_display (info->screen);
 
       xim_info_display_closed (display, FALSE, info);
       open_ims = g_slist_remove_link (open_ims, open_ims);

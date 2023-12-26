@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# GTK+ - The GIMP Toolkit
+# BTK+ - The GIMP Toolkit
 
 
 VPATH = @srcdir@
@@ -75,8 +75,8 @@ am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkglibexecdir = $(libexecdir)/@PACKAGE@
+pkbunnylibdir = $(libdir)/@PACKAGE@
+pkbunnylibexecdir = $(libexecdir)/@PACKAGE@
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -91,13 +91,13 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = modules/other/gail
+subdir = modules/other/bail
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(libgailinclude_HEADERS) \
+DIST_COMMON = $(srcdir)/Makefile.am $(libbailinclude_HEADERS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -131,55 +131,55 @@ am__uninstall_files_from_dir = { \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
 am__installdirs = "$(DESTDIR)$(moduledir)" \
-	"$(DESTDIR)$(libgailincludedir)"
+	"$(DESTDIR)$(libbailincludedir)"
 LTLIBRARIES = $(module_LTLIBRARIES)
 am__DEPENDENCIES_1 =
 @PLATFORM_WIN32_TRUE@am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
-libgail_la_DEPENDENCIES = $(top_builddir)/gdk/$(gdktargetlib) \
-	$(top_builddir)/gtk/$(gtktargetlib) \
-	$(top_builddir)/modules/other/gail/libgail-util/libgailutil.la \
+libbail_la_DEPENDENCIES = $(top_builddir)/bdk/$(bdktargetlib) \
+	$(top_builddir)/btk/$(btktargetlib) \
+	$(top_builddir)/modules/other/bail/libbail-util/libbailutil.la \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
 	$(am__DEPENDENCIES_1)
-am__objects_1 = libgail_la-gail.lo libgail_la-gailadjustment.lo \
-	libgail_la-gailarrow.lo libgail_la-gailbooleancell.lo \
-	libgail_la-gailbox.lo libgail_la-gailbutton.lo \
-	libgail_la-gailcalendar.lo libgail_la-gailcell.lo \
-	libgail_la-gailcellparent.lo libgail_la-gailcheckmenuitem.lo \
-	libgail_la-gailchecksubmenuitem.lo libgail_la-gailclist.lo \
-	libgail_la-gailclistcell.lo libgail_la-gailcombo.lo \
-	libgail_la-gailcombobox.lo libgail_la-gailcontainer.lo \
-	libgail_la-gailcontainercell.lo libgail_la-gailentry.lo \
-	libgail_la-gailexpander.lo libgail_la-gailframe.lo \
-	libgail_la-gailimage.lo libgail_la-gailimagecell.lo \
-	libgail_la-gailitem.lo libgail_la-gaillabel.lo \
-	libgail_la-gaillist.lo libgail_la-gailmenu.lo \
-	libgail_la-gailmenushell.lo libgail_la-gailmenuitem.lo \
-	libgail_la-gailnotebook.lo libgail_la-gailnotebookpage.lo \
-	libgail_la-gailobject.lo libgail_la-gailoptionmenu.lo \
-	libgail_la-gailpaned.lo libgail_la-gailpixmap.lo \
-	libgail_la-gailprogressbar.lo libgail_la-gailradiobutton.lo \
-	libgail_la-gailradiomenuitem.lo \
-	libgail_la-gailradiosubmenuitem.lo libgail_la-gailrange.lo \
-	libgail_la-gailrenderercell.lo libgail_la-gailscale.lo \
-	libgail_la-gailscalebutton.lo libgail_la-gailscrollbar.lo \
-	libgail_la-gailscrolledwindow.lo libgail_la-gailseparator.lo \
-	libgail_la-gailspinbutton.lo libgail_la-gailsubmenuitem.lo \
-	libgail_la-gailstatusbar.lo libgail_la-gailtextcell.lo \
-	libgail_la-gailtextview.lo libgail_la-gailtogglebutton.lo \
-	libgail_la-gailtoplevel.lo libgail_la-gailtreeview.lo \
-	libgail_la-gailutil.lo libgail_la-gailwidget.lo \
-	libgail_la-gailwindow.lo
+am__objects_1 = libbail_la-bail.lo libbail_la-bailadjustment.lo \
+	libbail_la-bailarrow.lo libbail_la-bailbooleancell.lo \
+	libbail_la-bailbox.lo libbail_la-bailbutton.lo \
+	libbail_la-bailcalendar.lo libbail_la-bailcell.lo \
+	libbail_la-bailcellparent.lo libbail_la-bailcheckmenuitem.lo \
+	libbail_la-bailchecksubmenuitem.lo libbail_la-bailclist.lo \
+	libbail_la-bailclistcell.lo libbail_la-bailcombo.lo \
+	libbail_la-bailcombobox.lo libbail_la-bailcontainer.lo \
+	libbail_la-bailcontainercell.lo libbail_la-bailentry.lo \
+	libbail_la-bailexpander.lo libbail_la-bailframe.lo \
+	libbail_la-bailimage.lo libbail_la-bailimagecell.lo \
+	libbail_la-bailitem.lo libbail_la-baillabel.lo \
+	libbail_la-baillist.lo libbail_la-bailmenu.lo \
+	libbail_la-bailmenushell.lo libbail_la-bailmenuitem.lo \
+	libbail_la-bailnotebook.lo libbail_la-bailnotebookpage.lo \
+	libbail_la-bailobject.lo libbail_la-bailoptionmenu.lo \
+	libbail_la-bailpaned.lo libbail_la-bailpixmap.lo \
+	libbail_la-bailprogressbar.lo libbail_la-bailradiobutton.lo \
+	libbail_la-bailradiomenuitem.lo \
+	libbail_la-bailradiosubmenuitem.lo libbail_la-bailrange.lo \
+	libbail_la-bailrenderercell.lo libbail_la-bailscale.lo \
+	libbail_la-bailscalebutton.lo libbail_la-bailscrollbar.lo \
+	libbail_la-bailscrolledwindow.lo libbail_la-bailseparator.lo \
+	libbail_la-bailspinbutton.lo libbail_la-bailsubmenuitem.lo \
+	libbail_la-bailstatusbar.lo libbail_la-bailtextcell.lo \
+	libbail_la-bailtextview.lo libbail_la-bailtogglebutton.lo \
+	libbail_la-bailtoplevel.lo libbail_la-bailtreeview.lo \
+	libbail_la-bailutil.lo libbail_la-bailwidget.lo \
+	libbail_la-bailwindow.lo
 am__objects_2 =
-am_libgail_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
+am_libbail_la_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	$(am__objects_2)
-libgail_la_OBJECTS = $(am_libgail_la_OBJECTS)
+libbail_la_OBJECTS = $(am_libbail_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libgail_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libgail_la_CFLAGS) \
-	$(CFLAGS) $(libgail_la_LDFLAGS) $(LDFLAGS) -o $@
+libbail_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libbail_la_CFLAGS) \
+	$(CFLAGS) $(libbail_la_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -195,62 +195,62 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/libgail_la-gail.Plo \
-	./$(DEPDIR)/libgail_la-gailadjustment.Plo \
-	./$(DEPDIR)/libgail_la-gailarrow.Plo \
-	./$(DEPDIR)/libgail_la-gailbooleancell.Plo \
-	./$(DEPDIR)/libgail_la-gailbox.Plo \
-	./$(DEPDIR)/libgail_la-gailbutton.Plo \
-	./$(DEPDIR)/libgail_la-gailcalendar.Plo \
-	./$(DEPDIR)/libgail_la-gailcell.Plo \
-	./$(DEPDIR)/libgail_la-gailcellparent.Plo \
-	./$(DEPDIR)/libgail_la-gailcheckmenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailchecksubmenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailclist.Plo \
-	./$(DEPDIR)/libgail_la-gailclistcell.Plo \
-	./$(DEPDIR)/libgail_la-gailcombo.Plo \
-	./$(DEPDIR)/libgail_la-gailcombobox.Plo \
-	./$(DEPDIR)/libgail_la-gailcontainer.Plo \
-	./$(DEPDIR)/libgail_la-gailcontainercell.Plo \
-	./$(DEPDIR)/libgail_la-gailentry.Plo \
-	./$(DEPDIR)/libgail_la-gailexpander.Plo \
-	./$(DEPDIR)/libgail_la-gailframe.Plo \
-	./$(DEPDIR)/libgail_la-gailimage.Plo \
-	./$(DEPDIR)/libgail_la-gailimagecell.Plo \
-	./$(DEPDIR)/libgail_la-gailitem.Plo \
-	./$(DEPDIR)/libgail_la-gaillabel.Plo \
-	./$(DEPDIR)/libgail_la-gaillist.Plo \
-	./$(DEPDIR)/libgail_la-gailmenu.Plo \
-	./$(DEPDIR)/libgail_la-gailmenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailmenushell.Plo \
-	./$(DEPDIR)/libgail_la-gailnotebook.Plo \
-	./$(DEPDIR)/libgail_la-gailnotebookpage.Plo \
-	./$(DEPDIR)/libgail_la-gailobject.Plo \
-	./$(DEPDIR)/libgail_la-gailoptionmenu.Plo \
-	./$(DEPDIR)/libgail_la-gailpaned.Plo \
-	./$(DEPDIR)/libgail_la-gailpixmap.Plo \
-	./$(DEPDIR)/libgail_la-gailprogressbar.Plo \
-	./$(DEPDIR)/libgail_la-gailradiobutton.Plo \
-	./$(DEPDIR)/libgail_la-gailradiomenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailradiosubmenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailrange.Plo \
-	./$(DEPDIR)/libgail_la-gailrenderercell.Plo \
-	./$(DEPDIR)/libgail_la-gailscale.Plo \
-	./$(DEPDIR)/libgail_la-gailscalebutton.Plo \
-	./$(DEPDIR)/libgail_la-gailscrollbar.Plo \
-	./$(DEPDIR)/libgail_la-gailscrolledwindow.Plo \
-	./$(DEPDIR)/libgail_la-gailseparator.Plo \
-	./$(DEPDIR)/libgail_la-gailspinbutton.Plo \
-	./$(DEPDIR)/libgail_la-gailstatusbar.Plo \
-	./$(DEPDIR)/libgail_la-gailsubmenuitem.Plo \
-	./$(DEPDIR)/libgail_la-gailtextcell.Plo \
-	./$(DEPDIR)/libgail_la-gailtextview.Plo \
-	./$(DEPDIR)/libgail_la-gailtogglebutton.Plo \
-	./$(DEPDIR)/libgail_la-gailtoplevel.Plo \
-	./$(DEPDIR)/libgail_la-gailtreeview.Plo \
-	./$(DEPDIR)/libgail_la-gailutil.Plo \
-	./$(DEPDIR)/libgail_la-gailwidget.Plo \
-	./$(DEPDIR)/libgail_la-gailwindow.Plo
+am__depfiles_remade = ./$(DEPDIR)/libbail_la-bail.Plo \
+	./$(DEPDIR)/libbail_la-bailadjustment.Plo \
+	./$(DEPDIR)/libbail_la-bailarrow.Plo \
+	./$(DEPDIR)/libbail_la-bailbooleancell.Plo \
+	./$(DEPDIR)/libbail_la-bailbox.Plo \
+	./$(DEPDIR)/libbail_la-bailbutton.Plo \
+	./$(DEPDIR)/libbail_la-bailcalendar.Plo \
+	./$(DEPDIR)/libbail_la-bailcell.Plo \
+	./$(DEPDIR)/libbail_la-bailcellparent.Plo \
+	./$(DEPDIR)/libbail_la-bailcheckmenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailchecksubmenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailclist.Plo \
+	./$(DEPDIR)/libbail_la-bailclistcell.Plo \
+	./$(DEPDIR)/libbail_la-bailcombo.Plo \
+	./$(DEPDIR)/libbail_la-bailcombobox.Plo \
+	./$(DEPDIR)/libbail_la-bailcontainer.Plo \
+	./$(DEPDIR)/libbail_la-bailcontainercell.Plo \
+	./$(DEPDIR)/libbail_la-bailentry.Plo \
+	./$(DEPDIR)/libbail_la-bailexpander.Plo \
+	./$(DEPDIR)/libbail_la-bailframe.Plo \
+	./$(DEPDIR)/libbail_la-bailimage.Plo \
+	./$(DEPDIR)/libbail_la-bailimagecell.Plo \
+	./$(DEPDIR)/libbail_la-bailitem.Plo \
+	./$(DEPDIR)/libbail_la-baillabel.Plo \
+	./$(DEPDIR)/libbail_la-baillist.Plo \
+	./$(DEPDIR)/libbail_la-bailmenu.Plo \
+	./$(DEPDIR)/libbail_la-bailmenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailmenushell.Plo \
+	./$(DEPDIR)/libbail_la-bailnotebook.Plo \
+	./$(DEPDIR)/libbail_la-bailnotebookpage.Plo \
+	./$(DEPDIR)/libbail_la-bailobject.Plo \
+	./$(DEPDIR)/libbail_la-bailoptionmenu.Plo \
+	./$(DEPDIR)/libbail_la-bailpaned.Plo \
+	./$(DEPDIR)/libbail_la-bailpixmap.Plo \
+	./$(DEPDIR)/libbail_la-bailprogressbar.Plo \
+	./$(DEPDIR)/libbail_la-bailradiobutton.Plo \
+	./$(DEPDIR)/libbail_la-bailradiomenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailradiosubmenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailrange.Plo \
+	./$(DEPDIR)/libbail_la-bailrenderercell.Plo \
+	./$(DEPDIR)/libbail_la-bailscale.Plo \
+	./$(DEPDIR)/libbail_la-bailscalebutton.Plo \
+	./$(DEPDIR)/libbail_la-bailscrollbar.Plo \
+	./$(DEPDIR)/libbail_la-bailscrolledwindow.Plo \
+	./$(DEPDIR)/libbail_la-bailseparator.Plo \
+	./$(DEPDIR)/libbail_la-bailspinbutton.Plo \
+	./$(DEPDIR)/libbail_la-bailstatusbar.Plo \
+	./$(DEPDIR)/libbail_la-bailsubmenuitem.Plo \
+	./$(DEPDIR)/libbail_la-bailtextcell.Plo \
+	./$(DEPDIR)/libbail_la-bailtextview.Plo \
+	./$(DEPDIR)/libbail_la-bailtogglebutton.Plo \
+	./$(DEPDIR)/libbail_la-bailtoplevel.Plo \
+	./$(DEPDIR)/libbail_la-bailtreeview.Plo \
+	./$(DEPDIR)/libbail_la-bailutil.Plo \
+	./$(DEPDIR)/libbail_la-bailwidget.Plo \
+	./$(DEPDIR)/libbail_la-bailwindow.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -270,8 +270,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libgail_la_SOURCES)
-DIST_SOURCES = $(libgail_la_SOURCES)
+SOURCES = $(libbail_la_SOURCES)
+DIST_SOURCES = $(libbail_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -285,7 +285,7 @@ am__can_run_installinfo = \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-HEADERS = $(libgailinclude_HEADERS)
+HEADERS = $(libbailinclude_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 am__recursive_targets = \
@@ -347,16 +347,16 @@ AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AS = @AS@
-ATK_PREFIX = @ATK_PREFIX@
+BATK_PREFIX = @BATK_PREFIX@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE_DEPENDENCIES_CFLAGS = @BASE_DEPENDENCIES_CFLAGS@
 BASE_DEPENDENCIES_LIBS = @BASE_DEPENDENCIES_LIBS@
-CAIRO_BACKEND_CFLAGS = @CAIRO_BACKEND_CFLAGS@
-CAIRO_BACKEND_LIBS = @CAIRO_BACKEND_LIBS@
-CAIRO_PREFIX = @CAIRO_PREFIX@
+BAIRO_BACKEND_CFLAGS = @BAIRO_BACKEND_CFLAGS@
+BAIRO_BACKEND_LIBS = @BAIRO_BACKEND_LIBS@
+BAIRO_PREFIX = @BAIRO_PREFIX@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -393,52 +393,52 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXE_MANIFEST_ARCHITECTURE = @EXE_MANIFEST_ARCHITECTURE@
 FGREP = @FGREP@
-GAIL_INET_LIBS = @GAIL_INET_LIBS@
-GAIL_LT_CURRENT_MINUS_AGE = @GAIL_LT_CURRENT_MINUS_AGE@
-GAIL_LT_VERSION_INFO = @GAIL_LT_VERSION_INFO@
-GDK_DEP_CFLAGS = @GDK_DEP_CFLAGS@
-GDK_DEP_LIBS = @GDK_DEP_LIBS@
-GDK_EXTRA_CFLAGS = @GDK_EXTRA_CFLAGS@
-GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
-GDK_PACKAGES = @GDK_PACKAGES@
-GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
-GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_WLIBS = @GDK_WLIBS@
+BAIL_INET_LIBS = @BAIL_INET_LIBS@
+BAIL_LT_CURRENT_MINUS_AGE = @BAIL_LT_CURRENT_MINUS_AGE@
+BAIL_LT_VERSION_INFO = @BAIL_LT_VERSION_INFO@
+BDK_DEP_CFLAGS = @BDK_DEP_CFLAGS@
+BDK_DEP_LIBS = @BDK_DEP_LIBS@
+BDK_EXTRA_CFLAGS = @BDK_EXTRA_CFLAGS@
+BDK_EXTRA_LIBS = @BDK_EXTRA_LIBS@
+BDK_PACKAGES = @BDK_PACKAGES@
+BDK_PIXBUF_CSOURCE = @BDK_PIXBUF_CSOURCE@
+BDK_PIXBUF_LIBS = @BDK_PIXBUF_LIBS@
+BDK_WLIBS = @BDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_CFLAGS = @GLIB_CFLAGS@
-GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GLIB_LIBS = @GLIB_LIBS@
-GLIB_MKENUMS = @GLIB_MKENUMS@
-GLIB_PREFIX = @GLIB_PREFIX@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+BUNNYLIB_CFLAGS = @BUNNYLIB_CFLAGS@
+BUNNYLIB_COMPILE_RESOURCES = @BUNNYLIB_COMPILE_RESOURCES@
+BUNNYLIB_GENMARSHAL = @BUNNYLIB_GENMARSHAL@
+BUNNYLIB_LIBS = @BUNNYLIB_LIBS@
+BUNNYLIB_MKENUMS = @BUNNYLIB_MKENUMS@
+BUNNYLIB_PREFIX = @BUNNYLIB_PREFIX@
+BMODULE_CFLAGS = @BMODULE_CFLAGS@
+BMODULE_LIBS = @BMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GOBJECT_QUERY = @GOBJECT_QUERY@
+BOBJECT_QUERY = @BOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_CHECK = @GTKDOC_CHECK@
-GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
-GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
-GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
-GTKDOC_MKPDF = @GTKDOC_MKPDF@
-GTKDOC_REBASE = @GTKDOC_REBASE@
-GTK_API_VERSION = @GTK_API_VERSION@
-GTK_BINARY_AGE = @GTK_BINARY_AGE@
-GTK_BINARY_VERSION = @GTK_BINARY_VERSION@
-GTK_DEBUG_FLAGS = @GTK_DEBUG_FLAGS@
-GTK_DEP_CFLAGS = @GTK_DEP_CFLAGS@
-GTK_DEP_LIBS = @GTK_DEP_LIBS@
-GTK_EXTRA_CFLAGS = @GTK_EXTRA_CFLAGS@
-GTK_EXTRA_LIBS = @GTK_EXTRA_LIBS@
-GTK_INTERFACE_AGE = @GTK_INTERFACE_AGE@
-GTK_MAJOR_VERSION = @GTK_MAJOR_VERSION@
-GTK_MICRO_VERSION = @GTK_MICRO_VERSION@
-GTK_MINOR_VERSION = @GTK_MINOR_VERSION@
-GTK_PACKAGES = @GTK_PACKAGES@
-GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_VERSION = @GTK_VERSION@
-GTK_XIM_FLAGS = @GTK_XIM_FLAGS@
+BTKDOC_CHECK = @BTKDOC_CHECK@
+BTKDOC_CHECK_PATH = @BTKDOC_CHECK_PATH@
+BTKDOC_DEPS_CFLAGS = @BTKDOC_DEPS_CFLAGS@
+BTKDOC_DEPS_LIBS = @BTKDOC_DEPS_LIBS@
+BTKDOC_MKPDF = @BTKDOC_MKPDF@
+BTKDOC_REBASE = @BTKDOC_REBASE@
+BTK_API_VERSION = @BTK_API_VERSION@
+BTK_BINARY_AGE = @BTK_BINARY_AGE@
+BTK_BINARY_VERSION = @BTK_BINARY_VERSION@
+BTK_DEBUG_FLAGS = @BTK_DEBUG_FLAGS@
+BTK_DEP_CFLAGS = @BTK_DEP_CFLAGS@
+BTK_DEP_LIBS = @BTK_DEP_LIBS@
+BTK_EXTRA_CFLAGS = @BTK_EXTRA_CFLAGS@
+BTK_EXTRA_LIBS = @BTK_EXTRA_LIBS@
+BTK_INTERFACE_AGE = @BTK_INTERFACE_AGE@
+BTK_MAJOR_VERSION = @BTK_MAJOR_VERSION@
+BTK_MICRO_VERSION = @BTK_MICRO_VERSION@
+BTK_MINOR_VERSION = @BTK_MINOR_VERSION@
+BTK_PACKAGES = @BTK_PACKAGES@
+BTK_UPDATE_ICON_CACHE = @BTK_UPDATE_ICON_CACHE@
+BTK_VERSION = @BTK_VERSION@
+BTK_XIM_FLAGS = @BTK_XIM_FLAGS@
 HAVE_HTTP_AUTHSTRING = @HAVE_HTTP_AUTHSTRING@
 HTML_DIR = @HTML_DIR@
 INCLUDED_IMMODULE_DEFINE = @INCLUDED_IMMODULE_DEFINE@
@@ -494,7 +494,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_PREFIX = @PANGO_PREFIX@
+BANGO_PREFIX = @BANGO_PREFIX@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
@@ -547,9 +547,9 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-gdktarget = @gdktarget@
-gdktargetlib = @gdktargetlib@
-gtktargetlib = @gtktargetlib@
+bdktarget = @bdktarget@
+bdktargetlib = @bdktargetlib@
+btktargetlib = @btktargetlib@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -579,8 +579,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-GTESTER = gtester		# in $PATH for non-GLIB packages
-GTESTER_REPORT = gtester-report		# in $PATH for non-GLIB packages
+BTESTER = btester		# in $PATH for non-BUNNYLIB packages
+BTESTER_REPORT = btester-report		# in $PATH for non-BUNNYLIB packages
 
 # initialize variables for unconditional += appending
 EXTRA_DIST = 
@@ -597,180 +597,180 @@ XIDS = 101 102 103 104 105 106 107 197 199 211 223 227 293 307 308 309 310 311 \
   9980 9981 9982 9983 9984 9985 9986 9987 9988 9989 9990 9991 9992 9993 9994 \
   9995 9996 9997 9998 9999
 
-SKIP_GDKTARGET = \
-	test "$(gdktarget)" != "x11" \
-	&& echo "Gtk+Tests:INFO: Skipping GUI tests for non-X11 target."
+SKIP_BDKTARGET = \
+	test "$(bdktarget)" != "x11" \
+	&& echo "Btk+Tests:INFO: Skipping GUI tests for non-X11 target."
 
 XVFB_START = \
 	${XVFB} -help 2>/dev/null 1>&2 \
 	&& XID=`for id in $(XIDS) ; do test -e /tmp/.X$$id-lock || { echo $$id; exit 0; }; done; exit 1` \
 	&& { ${XVFB} :$$XID -screen 0 800x600x16 -nolisten tcp -auth /dev/null >/dev/null 2>&1 & \
 	       trap "kill -15 $$! " 0 HUP INT QUIT TRAP USR1 PIPE TERM ; } \
-	|| { echo "Gtk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
+	|| { echo "Btk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
 	&& DISPLAY=:$$XID && export DISPLAY
 
-SUBDIRS = libgail-util tests
+SUBDIRS = libbail-util tests
 @PLATFORM_WIN32_TRUE@no_undefined = -no-undefined
-moduledir = $(libdir)/gtk-2.0/modules
-module_LTLIBRARIES = libgail.la
-gail_c_sources = \
-	gail-private-macros.h		\
-	gail.c				\
-	gailadjustment.c		\
-	gailarrow.c			\
-	gailbooleancell.c		\
-	gailbox.c			\
-	gailbutton.c			\
-	gailcalendar.c			\
-	gailcell.c			\
-	gailcellparent.c		\
-	gailcheckmenuitem.c		\
-	gailchecksubmenuitem.c		\
-	gailclist.c			\
-	gailclistcell.c			\
-	gailcombo.c			\
-	gailcombobox.c			\
-	gailcontainer.c			\
-	gailcontainercell.c		\
-	gailentry.c			\
-	gailexpander.c			\
-	gailframe.c			\
-	gailimage.c			\
-	gailimagecell.c			\
-	gailitem.c			\
-	gaillabel.c			\
-	gaillist.c			\
-	gailmenu.c			\
-	gailmenushell.c			\
-	gailmenuitem.c			\
-	gailnotebook.c			\
-	gailnotebookpage.c		\
-	gailobject.c			\
-	gailoptionmenu.c		\
-	gailpaned.c			\
-	gailpixmap.c			\
-	gailprogressbar.c		\
-	gailradiobutton.c		\
-	gailradiomenuitem.c		\
-	gailradiosubmenuitem.c		\
-	gailrange.c			\
-	gailrenderercell.c		\
-	gailscale.c			\
-	gailscalebutton.c		\
-	gailscrollbar.c			\
-	gailscrolledwindow.c		\
-	gailseparator.c			\
-	gailspinbutton.c		\
-	gailsubmenuitem.c		\
-	gailstatusbar.c			\
-	gailtextcell.c			\
-	gailtextview.c			\
-	gailtogglebutton.c		\
-	gailtoplevel.c			\
-	gailtreeview.c			\
-	gailutil.c			\
-	gailwidget.c			\
-	gailwindow.c
+moduledir = $(libdir)/btk-2.0/modules
+module_LTLIBRARIES = libbail.la
+bail_c_sources = \
+	bail-private-macros.h		\
+	bail.c				\
+	bailadjustment.c		\
+	bailarrow.c			\
+	bailbooleancell.c		\
+	bailbox.c			\
+	bailbutton.c			\
+	bailcalendar.c			\
+	bailcell.c			\
+	bailcellparent.c		\
+	bailcheckmenuitem.c		\
+	bailchecksubmenuitem.c		\
+	bailclist.c			\
+	bailclistcell.c			\
+	bailcombo.c			\
+	bailcombobox.c			\
+	bailcontainer.c			\
+	bailcontainercell.c		\
+	bailentry.c			\
+	bailexpander.c			\
+	bailframe.c			\
+	bailimage.c			\
+	bailimagecell.c			\
+	bailitem.c			\
+	baillabel.c			\
+	baillist.c			\
+	bailmenu.c			\
+	bailmenushell.c			\
+	bailmenuitem.c			\
+	bailnotebook.c			\
+	bailnotebookpage.c		\
+	bailobject.c			\
+	bailoptionmenu.c		\
+	bailpaned.c			\
+	bailpixmap.c			\
+	bailprogressbar.c		\
+	bailradiobutton.c		\
+	bailradiomenuitem.c		\
+	bailradiosubmenuitem.c		\
+	bailrange.c			\
+	bailrenderercell.c		\
+	bailscale.c			\
+	bailscalebutton.c		\
+	bailscrollbar.c			\
+	bailscrolledwindow.c		\
+	bailseparator.c			\
+	bailspinbutton.c		\
+	bailsubmenuitem.c		\
+	bailstatusbar.c			\
+	bailtextcell.c			\
+	bailtextview.c			\
+	bailtogglebutton.c		\
+	bailtoplevel.c			\
+	bailtreeview.c			\
+	bailutil.c			\
+	bailwidget.c			\
+	bailwindow.c
 
-libgailincludedir = $(includedir)/gail-1.0/gail
-gail_private_h_sources = \
-	gail.h				\
-	gailadjustment.h		\
-	gailarrow.h			\
-	gailbooleancell.h		\
-	gailbox.h			\
-	gailbutton.h			\
-	gailcalendar.h			\
-	gailcell.h			\
-	gailcellparent.h		\
-	gailcheckmenuitem.h		\
-	gailchecksubmenuitem.h		\
-	gailclist.h			\
-	gailclistcell.h			\
-	gailcombo.h			\
-	gailcombobox.h			\
-	gailcontainercell.h		\
-	gailcontainer.h			\
-	gailentry.h			\
-	gailexpander.h			\
-	gailfactory.h			\
-	gailframe.h			\
-	gailimage.h			\
-	gailimagecell.h			\
-	gailitem.h			\
-	gaillabel.h			\
-	gaillist.h			\
-	gailmenu.h			\
-	gailmenushell.h			\
-	gailmenuitem.h			\
-	gailnotebook.h			\
-	gailnotebookpage.h		\
-	gailobject.h			\
-	gailoptionmenu.h		\
-	gailpaned.h			\
-	gailpixmap.h			\
-	gailprogressbar.h		\
-	gailradiobutton.h		\
-	gailradiomenuitem.h		\
-	gailradiosubmenuitem.h		\
-	gailrange.h			\
-	gailrenderercell.h		\
-	gailscale.h			\
-	gailscalebutton.h		\
-	gailscrollbar.h			\
-	gailscrolledwindow.h		\
-	gailseparator.h			\
-	gailspinbutton.h		\
-	gailsubmenuitem.h		\
-	gailstatusbar.h			\
-	gailtextcell.h			\
-	gailtextview.h			\
-	gailtogglebutton.h		\
-	gailtoplevel.h			\
-	gailtreeview.h			\
-	gailutil.h			\
-	gailwindow.h
+libbailincludedir = $(includedir)/bail-1.0/bail
+bail_private_h_sources = \
+	bail.h				\
+	bailadjustment.h		\
+	bailarrow.h			\
+	bailbooleancell.h		\
+	bailbox.h			\
+	bailbutton.h			\
+	bailcalendar.h			\
+	bailcell.h			\
+	bailcellparent.h		\
+	bailcheckmenuitem.h		\
+	bailchecksubmenuitem.h		\
+	bailclist.h			\
+	bailclistcell.h			\
+	bailcombo.h			\
+	bailcombobox.h			\
+	bailcontainercell.h		\
+	bailcontainer.h			\
+	bailentry.h			\
+	bailexpander.h			\
+	bailfactory.h			\
+	bailframe.h			\
+	bailimage.h			\
+	bailimagecell.h			\
+	bailitem.h			\
+	baillabel.h			\
+	baillist.h			\
+	bailmenu.h			\
+	bailmenushell.h			\
+	bailmenuitem.h			\
+	bailnotebook.h			\
+	bailnotebookpage.h		\
+	bailobject.h			\
+	bailoptionmenu.h		\
+	bailpaned.h			\
+	bailpixmap.h			\
+	bailprogressbar.h		\
+	bailradiobutton.h		\
+	bailradiomenuitem.h		\
+	bailradiosubmenuitem.h		\
+	bailrange.h			\
+	bailrenderercell.h		\
+	bailscale.h			\
+	bailscalebutton.h		\
+	bailscrollbar.h			\
+	bailscrolledwindow.h		\
+	bailseparator.h			\
+	bailspinbutton.h		\
+	bailsubmenuitem.h		\
+	bailstatusbar.h			\
+	bailtextcell.h			\
+	bailtextview.h			\
+	bailtogglebutton.h		\
+	bailtoplevel.h			\
+	bailtreeview.h			\
+	bailutil.h			\
+	bailwindow.h
 
-gail_public_h_sources = \
-	gailwidget.h
+bail_public_h_sources = \
+	bailwidget.h
 
-libgail_la_SOURCES = \
-	$(gail_c_sources)		\
-	$(gail_public_h_sources)	\
-	$(gail_private_h_sources)
+libbail_la_SOURCES = \
+	$(bail_c_sources)		\
+	$(bail_public_h_sources)	\
+	$(bail_private_h_sources)
 
-libgailinclude_HEADERS = \
-	$(gail_public_h_sources)
+libbailinclude_HEADERS = \
+	$(bail_public_h_sources)
 
-libgail_la_CPPFLAGS = \
+libbail_la_CPPFLAGS = \
 	-I$(top_srcdir)			\
 	-I$(top_srcdir)/modules/other	\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
-	-I$(top_srcdir)/gtk		\
-	-I$(top_builddir)/gtk		\
-	-DGTK_VERSION=\"$(GTK_VERSION)\"\
-	-DGDK_DISABLE_DEPRECATED	\
-	-DGTK_DISABLE_DEPRECATED	\
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
+	-I$(top_srcdir)/btk		\
+	-I$(top_builddir)/btk		\
+	-DBTK_VERSION=\"$(BTK_VERSION)\"\
+	-DBDK_DISABLE_DEPRECATED	\
+	-DBTK_DISABLE_DEPRECATED	\
 	$(AM_CPPFLAGS)
 
-@PLATFORM_WIN32_TRUE@WIN32_ADDITIONAL_CFLAGS = $(GMODULE_CFLAGS)
-@PLATFORM_WIN32_TRUE@WIN32_ADDITIONAL_LIBS = $(GMODULE_LIBS)
-libgail_la_CFLAGS = \
-	$(GTK_DEP_CFLAGS)	\
-	$(GTK_DEBUG_FLAGS)	\
+@PLATFORM_WIN32_TRUE@WIN32_ADDITIONAL_CFLAGS = $(BMODULE_CFLAGS)
+@PLATFORM_WIN32_TRUE@WIN32_ADDITIONAL_LIBS = $(BMODULE_LIBS)
+libbail_la_CFLAGS = \
+	$(BTK_DEP_CFLAGS)	\
+	$(BTK_DEBUG_FLAGS)	\
 	$(WIN32_ADDITIONAL_CFLAGS)		\
 	$(AM_CFLAGS)
 
-libgail_la_LIBADD = \
-	$(top_builddir)/gdk/$(gdktargetlib) 				\
-	$(top_builddir)/gtk/$(gtktargetlib)				\
-	$(top_builddir)/modules/other/gail/libgail-util/libgailutil.la	\
-	$(GTK_DEP_LIBS)							\
+libbail_la_LIBADD = \
+	$(top_builddir)/bdk/$(bdktargetlib) 				\
+	$(top_builddir)/btk/$(btktargetlib)				\
+	$(top_builddir)/modules/other/bail/libbail-util/libbailutil.la	\
+	$(BTK_DEP_LIBS)							\
 	$(WIN32_ADDITIONAL_LIBS)		\
 	$(INTLLIBS)
 
-libgail_la_LDFLAGS = \
+libbail_la_LDFLAGS = \
 	-rpath $(moduledir) -module -avoid-version \
 	$(no_undefined) \
         $(LDFLAGS)
@@ -788,9 +788,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu modules/other/gail/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu modules/other/bail/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu modules/other/gail/Makefile
+	  $(AUTOMAKE) --gnu modules/other/bail/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -845,8 +845,8 @@ clean-moduleLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libgail.la: $(libgail_la_OBJECTS) $(libgail_la_DEPENDENCIES) $(EXTRA_libgail_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libgail_la_LINK) -rpath $(moduledir) $(libgail_la_OBJECTS) $(libgail_la_LIBADD) $(LIBS)
+libbail.la: $(libbail_la_OBJECTS) $(libbail_la_DEPENDENCIES) $(EXTRA_libbail_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libbail_la_LINK) -rpath $(moduledir) $(libbail_la_OBJECTS) $(libbail_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -854,62 +854,62 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gail.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailadjustment.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailarrow.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailbooleancell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailbox.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailbutton.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcalendar.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcellparent.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcheckmenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailchecksubmenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailclist.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailclistcell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcombo.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcombobox.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcontainer.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailcontainercell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailentry.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailexpander.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailframe.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailimage.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailimagecell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gaillabel.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gaillist.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailmenu.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailmenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailmenushell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailnotebook.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailnotebookpage.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailobject.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailoptionmenu.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailpaned.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailpixmap.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailprogressbar.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailradiobutton.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailradiomenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailradiosubmenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailrange.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailrenderercell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailscale.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailscalebutton.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailscrollbar.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailscrolledwindow.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailseparator.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailspinbutton.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailstatusbar.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailsubmenuitem.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailtextcell.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailtextview.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailtogglebutton.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailtoplevel.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailtreeview.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailutil.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailwidget.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgail_la-gailwindow.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bail.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailadjustment.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailarrow.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailbooleancell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailbox.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailbutton.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcalendar.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcellparent.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcheckmenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailchecksubmenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailclist.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailclistcell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcombo.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcombobox.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcontainer.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailcontainercell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailentry.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailexpander.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailframe.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailimage.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailimagecell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-baillabel.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-baillist.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailmenu.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailmenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailmenushell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailnotebook.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailnotebookpage.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailobject.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailoptionmenu.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailpaned.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailpixmap.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailprogressbar.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailradiobutton.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailradiomenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailradiosubmenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailrange.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailrenderercell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailscale.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailscalebutton.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailscrollbar.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailscrolledwindow.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailseparator.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailspinbutton.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailstatusbar.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailsubmenuitem.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailtextcell.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailtextview.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailtogglebutton.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailtoplevel.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailtreeview.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailutil.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailwidget.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libbail_la-bailwindow.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -938,424 +938,424 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libgail_la-gail.lo: gail.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gail.lo -MD -MP -MF $(DEPDIR)/libgail_la-gail.Tpo -c -o libgail_la-gail.lo `test -f 'gail.c' || echo '$(srcdir)/'`gail.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gail.Tpo $(DEPDIR)/libgail_la-gail.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gail.c' object='libgail_la-gail.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bail.lo: bail.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bail.lo -MD -MP -MF $(DEPDIR)/libbail_la-bail.Tpo -c -o libbail_la-bail.lo `test -f 'bail.c' || echo '$(srcdir)/'`bail.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bail.Tpo $(DEPDIR)/libbail_la-bail.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bail.c' object='libbail_la-bail.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gail.lo `test -f 'gail.c' || echo '$(srcdir)/'`gail.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bail.lo `test -f 'bail.c' || echo '$(srcdir)/'`bail.c
 
-libgail_la-gailadjustment.lo: gailadjustment.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailadjustment.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailadjustment.Tpo -c -o libgail_la-gailadjustment.lo `test -f 'gailadjustment.c' || echo '$(srcdir)/'`gailadjustment.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailadjustment.Tpo $(DEPDIR)/libgail_la-gailadjustment.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailadjustment.c' object='libgail_la-gailadjustment.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailadjustment.lo: bailadjustment.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailadjustment.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailadjustment.Tpo -c -o libbail_la-bailadjustment.lo `test -f 'bailadjustment.c' || echo '$(srcdir)/'`bailadjustment.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailadjustment.Tpo $(DEPDIR)/libbail_la-bailadjustment.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailadjustment.c' object='libbail_la-bailadjustment.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailadjustment.lo `test -f 'gailadjustment.c' || echo '$(srcdir)/'`gailadjustment.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailadjustment.lo `test -f 'bailadjustment.c' || echo '$(srcdir)/'`bailadjustment.c
 
-libgail_la-gailarrow.lo: gailarrow.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailarrow.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailarrow.Tpo -c -o libgail_la-gailarrow.lo `test -f 'gailarrow.c' || echo '$(srcdir)/'`gailarrow.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailarrow.Tpo $(DEPDIR)/libgail_la-gailarrow.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailarrow.c' object='libgail_la-gailarrow.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailarrow.lo: bailarrow.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailarrow.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailarrow.Tpo -c -o libbail_la-bailarrow.lo `test -f 'bailarrow.c' || echo '$(srcdir)/'`bailarrow.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailarrow.Tpo $(DEPDIR)/libbail_la-bailarrow.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailarrow.c' object='libbail_la-bailarrow.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailarrow.lo `test -f 'gailarrow.c' || echo '$(srcdir)/'`gailarrow.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailarrow.lo `test -f 'bailarrow.c' || echo '$(srcdir)/'`bailarrow.c
 
-libgail_la-gailbooleancell.lo: gailbooleancell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailbooleancell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailbooleancell.Tpo -c -o libgail_la-gailbooleancell.lo `test -f 'gailbooleancell.c' || echo '$(srcdir)/'`gailbooleancell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailbooleancell.Tpo $(DEPDIR)/libgail_la-gailbooleancell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailbooleancell.c' object='libgail_la-gailbooleancell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailbooleancell.lo: bailbooleancell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailbooleancell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailbooleancell.Tpo -c -o libbail_la-bailbooleancell.lo `test -f 'bailbooleancell.c' || echo '$(srcdir)/'`bailbooleancell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailbooleancell.Tpo $(DEPDIR)/libbail_la-bailbooleancell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailbooleancell.c' object='libbail_la-bailbooleancell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailbooleancell.lo `test -f 'gailbooleancell.c' || echo '$(srcdir)/'`gailbooleancell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailbooleancell.lo `test -f 'bailbooleancell.c' || echo '$(srcdir)/'`bailbooleancell.c
 
-libgail_la-gailbox.lo: gailbox.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailbox.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailbox.Tpo -c -o libgail_la-gailbox.lo `test -f 'gailbox.c' || echo '$(srcdir)/'`gailbox.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailbox.Tpo $(DEPDIR)/libgail_la-gailbox.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailbox.c' object='libgail_la-gailbox.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailbox.lo: bailbox.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailbox.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailbox.Tpo -c -o libbail_la-bailbox.lo `test -f 'bailbox.c' || echo '$(srcdir)/'`bailbox.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailbox.Tpo $(DEPDIR)/libbail_la-bailbox.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailbox.c' object='libbail_la-bailbox.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailbox.lo `test -f 'gailbox.c' || echo '$(srcdir)/'`gailbox.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailbox.lo `test -f 'bailbox.c' || echo '$(srcdir)/'`bailbox.c
 
-libgail_la-gailbutton.lo: gailbutton.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailbutton.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailbutton.Tpo -c -o libgail_la-gailbutton.lo `test -f 'gailbutton.c' || echo '$(srcdir)/'`gailbutton.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailbutton.Tpo $(DEPDIR)/libgail_la-gailbutton.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailbutton.c' object='libgail_la-gailbutton.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailbutton.lo: bailbutton.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailbutton.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailbutton.Tpo -c -o libbail_la-bailbutton.lo `test -f 'bailbutton.c' || echo '$(srcdir)/'`bailbutton.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailbutton.Tpo $(DEPDIR)/libbail_la-bailbutton.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailbutton.c' object='libbail_la-bailbutton.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailbutton.lo `test -f 'gailbutton.c' || echo '$(srcdir)/'`gailbutton.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailbutton.lo `test -f 'bailbutton.c' || echo '$(srcdir)/'`bailbutton.c
 
-libgail_la-gailcalendar.lo: gailcalendar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcalendar.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcalendar.Tpo -c -o libgail_la-gailcalendar.lo `test -f 'gailcalendar.c' || echo '$(srcdir)/'`gailcalendar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcalendar.Tpo $(DEPDIR)/libgail_la-gailcalendar.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcalendar.c' object='libgail_la-gailcalendar.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcalendar.lo: bailcalendar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcalendar.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcalendar.Tpo -c -o libbail_la-bailcalendar.lo `test -f 'bailcalendar.c' || echo '$(srcdir)/'`bailcalendar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcalendar.Tpo $(DEPDIR)/libbail_la-bailcalendar.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcalendar.c' object='libbail_la-bailcalendar.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcalendar.lo `test -f 'gailcalendar.c' || echo '$(srcdir)/'`gailcalendar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcalendar.lo `test -f 'bailcalendar.c' || echo '$(srcdir)/'`bailcalendar.c
 
-libgail_la-gailcell.lo: gailcell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcell.Tpo -c -o libgail_la-gailcell.lo `test -f 'gailcell.c' || echo '$(srcdir)/'`gailcell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcell.Tpo $(DEPDIR)/libgail_la-gailcell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcell.c' object='libgail_la-gailcell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcell.lo: bailcell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcell.Tpo -c -o libbail_la-bailcell.lo `test -f 'bailcell.c' || echo '$(srcdir)/'`bailcell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcell.Tpo $(DEPDIR)/libbail_la-bailcell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcell.c' object='libbail_la-bailcell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcell.lo `test -f 'gailcell.c' || echo '$(srcdir)/'`gailcell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcell.lo `test -f 'bailcell.c' || echo '$(srcdir)/'`bailcell.c
 
-libgail_la-gailcellparent.lo: gailcellparent.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcellparent.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcellparent.Tpo -c -o libgail_la-gailcellparent.lo `test -f 'gailcellparent.c' || echo '$(srcdir)/'`gailcellparent.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcellparent.Tpo $(DEPDIR)/libgail_la-gailcellparent.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcellparent.c' object='libgail_la-gailcellparent.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcellparent.lo: bailcellparent.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcellparent.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcellparent.Tpo -c -o libbail_la-bailcellparent.lo `test -f 'bailcellparent.c' || echo '$(srcdir)/'`bailcellparent.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcellparent.Tpo $(DEPDIR)/libbail_la-bailcellparent.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcellparent.c' object='libbail_la-bailcellparent.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcellparent.lo `test -f 'gailcellparent.c' || echo '$(srcdir)/'`gailcellparent.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcellparent.lo `test -f 'bailcellparent.c' || echo '$(srcdir)/'`bailcellparent.c
 
-libgail_la-gailcheckmenuitem.lo: gailcheckmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcheckmenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcheckmenuitem.Tpo -c -o libgail_la-gailcheckmenuitem.lo `test -f 'gailcheckmenuitem.c' || echo '$(srcdir)/'`gailcheckmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcheckmenuitem.Tpo $(DEPDIR)/libgail_la-gailcheckmenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcheckmenuitem.c' object='libgail_la-gailcheckmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcheckmenuitem.lo: bailcheckmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcheckmenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcheckmenuitem.Tpo -c -o libbail_la-bailcheckmenuitem.lo `test -f 'bailcheckmenuitem.c' || echo '$(srcdir)/'`bailcheckmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcheckmenuitem.Tpo $(DEPDIR)/libbail_la-bailcheckmenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcheckmenuitem.c' object='libbail_la-bailcheckmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcheckmenuitem.lo `test -f 'gailcheckmenuitem.c' || echo '$(srcdir)/'`gailcheckmenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcheckmenuitem.lo `test -f 'bailcheckmenuitem.c' || echo '$(srcdir)/'`bailcheckmenuitem.c
 
-libgail_la-gailchecksubmenuitem.lo: gailchecksubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailchecksubmenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailchecksubmenuitem.Tpo -c -o libgail_la-gailchecksubmenuitem.lo `test -f 'gailchecksubmenuitem.c' || echo '$(srcdir)/'`gailchecksubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailchecksubmenuitem.Tpo $(DEPDIR)/libgail_la-gailchecksubmenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailchecksubmenuitem.c' object='libgail_la-gailchecksubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailchecksubmenuitem.lo: bailchecksubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailchecksubmenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailchecksubmenuitem.Tpo -c -o libbail_la-bailchecksubmenuitem.lo `test -f 'bailchecksubmenuitem.c' || echo '$(srcdir)/'`bailchecksubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailchecksubmenuitem.Tpo $(DEPDIR)/libbail_la-bailchecksubmenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailchecksubmenuitem.c' object='libbail_la-bailchecksubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailchecksubmenuitem.lo `test -f 'gailchecksubmenuitem.c' || echo '$(srcdir)/'`gailchecksubmenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailchecksubmenuitem.lo `test -f 'bailchecksubmenuitem.c' || echo '$(srcdir)/'`bailchecksubmenuitem.c
 
-libgail_la-gailclist.lo: gailclist.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailclist.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailclist.Tpo -c -o libgail_la-gailclist.lo `test -f 'gailclist.c' || echo '$(srcdir)/'`gailclist.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailclist.Tpo $(DEPDIR)/libgail_la-gailclist.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailclist.c' object='libgail_la-gailclist.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailclist.lo: bailclist.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailclist.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailclist.Tpo -c -o libbail_la-bailclist.lo `test -f 'bailclist.c' || echo '$(srcdir)/'`bailclist.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailclist.Tpo $(DEPDIR)/libbail_la-bailclist.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailclist.c' object='libbail_la-bailclist.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailclist.lo `test -f 'gailclist.c' || echo '$(srcdir)/'`gailclist.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailclist.lo `test -f 'bailclist.c' || echo '$(srcdir)/'`bailclist.c
 
-libgail_la-gailclistcell.lo: gailclistcell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailclistcell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailclistcell.Tpo -c -o libgail_la-gailclistcell.lo `test -f 'gailclistcell.c' || echo '$(srcdir)/'`gailclistcell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailclistcell.Tpo $(DEPDIR)/libgail_la-gailclistcell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailclistcell.c' object='libgail_la-gailclistcell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailclistcell.lo: bailclistcell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailclistcell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailclistcell.Tpo -c -o libbail_la-bailclistcell.lo `test -f 'bailclistcell.c' || echo '$(srcdir)/'`bailclistcell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailclistcell.Tpo $(DEPDIR)/libbail_la-bailclistcell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailclistcell.c' object='libbail_la-bailclistcell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailclistcell.lo `test -f 'gailclistcell.c' || echo '$(srcdir)/'`gailclistcell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailclistcell.lo `test -f 'bailclistcell.c' || echo '$(srcdir)/'`bailclistcell.c
 
-libgail_la-gailcombo.lo: gailcombo.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcombo.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcombo.Tpo -c -o libgail_la-gailcombo.lo `test -f 'gailcombo.c' || echo '$(srcdir)/'`gailcombo.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcombo.Tpo $(DEPDIR)/libgail_la-gailcombo.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcombo.c' object='libgail_la-gailcombo.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcombo.lo: bailcombo.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcombo.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcombo.Tpo -c -o libbail_la-bailcombo.lo `test -f 'bailcombo.c' || echo '$(srcdir)/'`bailcombo.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcombo.Tpo $(DEPDIR)/libbail_la-bailcombo.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcombo.c' object='libbail_la-bailcombo.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcombo.lo `test -f 'gailcombo.c' || echo '$(srcdir)/'`gailcombo.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcombo.lo `test -f 'bailcombo.c' || echo '$(srcdir)/'`bailcombo.c
 
-libgail_la-gailcombobox.lo: gailcombobox.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcombobox.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcombobox.Tpo -c -o libgail_la-gailcombobox.lo `test -f 'gailcombobox.c' || echo '$(srcdir)/'`gailcombobox.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcombobox.Tpo $(DEPDIR)/libgail_la-gailcombobox.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcombobox.c' object='libgail_la-gailcombobox.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcombobox.lo: bailcombobox.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcombobox.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcombobox.Tpo -c -o libbail_la-bailcombobox.lo `test -f 'bailcombobox.c' || echo '$(srcdir)/'`bailcombobox.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcombobox.Tpo $(DEPDIR)/libbail_la-bailcombobox.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcombobox.c' object='libbail_la-bailcombobox.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcombobox.lo `test -f 'gailcombobox.c' || echo '$(srcdir)/'`gailcombobox.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcombobox.lo `test -f 'bailcombobox.c' || echo '$(srcdir)/'`bailcombobox.c
 
-libgail_la-gailcontainer.lo: gailcontainer.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcontainer.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcontainer.Tpo -c -o libgail_la-gailcontainer.lo `test -f 'gailcontainer.c' || echo '$(srcdir)/'`gailcontainer.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcontainer.Tpo $(DEPDIR)/libgail_la-gailcontainer.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcontainer.c' object='libgail_la-gailcontainer.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcontainer.lo: bailcontainer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcontainer.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcontainer.Tpo -c -o libbail_la-bailcontainer.lo `test -f 'bailcontainer.c' || echo '$(srcdir)/'`bailcontainer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcontainer.Tpo $(DEPDIR)/libbail_la-bailcontainer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcontainer.c' object='libbail_la-bailcontainer.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcontainer.lo `test -f 'gailcontainer.c' || echo '$(srcdir)/'`gailcontainer.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcontainer.lo `test -f 'bailcontainer.c' || echo '$(srcdir)/'`bailcontainer.c
 
-libgail_la-gailcontainercell.lo: gailcontainercell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailcontainercell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailcontainercell.Tpo -c -o libgail_la-gailcontainercell.lo `test -f 'gailcontainercell.c' || echo '$(srcdir)/'`gailcontainercell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailcontainercell.Tpo $(DEPDIR)/libgail_la-gailcontainercell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailcontainercell.c' object='libgail_la-gailcontainercell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailcontainercell.lo: bailcontainercell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailcontainercell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailcontainercell.Tpo -c -o libbail_la-bailcontainercell.lo `test -f 'bailcontainercell.c' || echo '$(srcdir)/'`bailcontainercell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailcontainercell.Tpo $(DEPDIR)/libbail_la-bailcontainercell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailcontainercell.c' object='libbail_la-bailcontainercell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailcontainercell.lo `test -f 'gailcontainercell.c' || echo '$(srcdir)/'`gailcontainercell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailcontainercell.lo `test -f 'bailcontainercell.c' || echo '$(srcdir)/'`bailcontainercell.c
 
-libgail_la-gailentry.lo: gailentry.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailentry.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailentry.Tpo -c -o libgail_la-gailentry.lo `test -f 'gailentry.c' || echo '$(srcdir)/'`gailentry.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailentry.Tpo $(DEPDIR)/libgail_la-gailentry.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailentry.c' object='libgail_la-gailentry.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailentry.lo: bailentry.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailentry.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailentry.Tpo -c -o libbail_la-bailentry.lo `test -f 'bailentry.c' || echo '$(srcdir)/'`bailentry.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailentry.Tpo $(DEPDIR)/libbail_la-bailentry.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailentry.c' object='libbail_la-bailentry.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailentry.lo `test -f 'gailentry.c' || echo '$(srcdir)/'`gailentry.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailentry.lo `test -f 'bailentry.c' || echo '$(srcdir)/'`bailentry.c
 
-libgail_la-gailexpander.lo: gailexpander.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailexpander.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailexpander.Tpo -c -o libgail_la-gailexpander.lo `test -f 'gailexpander.c' || echo '$(srcdir)/'`gailexpander.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailexpander.Tpo $(DEPDIR)/libgail_la-gailexpander.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailexpander.c' object='libgail_la-gailexpander.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailexpander.lo: bailexpander.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailexpander.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailexpander.Tpo -c -o libbail_la-bailexpander.lo `test -f 'bailexpander.c' || echo '$(srcdir)/'`bailexpander.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailexpander.Tpo $(DEPDIR)/libbail_la-bailexpander.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailexpander.c' object='libbail_la-bailexpander.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailexpander.lo `test -f 'gailexpander.c' || echo '$(srcdir)/'`gailexpander.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailexpander.lo `test -f 'bailexpander.c' || echo '$(srcdir)/'`bailexpander.c
 
-libgail_la-gailframe.lo: gailframe.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailframe.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailframe.Tpo -c -o libgail_la-gailframe.lo `test -f 'gailframe.c' || echo '$(srcdir)/'`gailframe.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailframe.Tpo $(DEPDIR)/libgail_la-gailframe.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailframe.c' object='libgail_la-gailframe.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailframe.lo: bailframe.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailframe.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailframe.Tpo -c -o libbail_la-bailframe.lo `test -f 'bailframe.c' || echo '$(srcdir)/'`bailframe.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailframe.Tpo $(DEPDIR)/libbail_la-bailframe.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailframe.c' object='libbail_la-bailframe.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailframe.lo `test -f 'gailframe.c' || echo '$(srcdir)/'`gailframe.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailframe.lo `test -f 'bailframe.c' || echo '$(srcdir)/'`bailframe.c
 
-libgail_la-gailimage.lo: gailimage.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailimage.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailimage.Tpo -c -o libgail_la-gailimage.lo `test -f 'gailimage.c' || echo '$(srcdir)/'`gailimage.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailimage.Tpo $(DEPDIR)/libgail_la-gailimage.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailimage.c' object='libgail_la-gailimage.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailimage.lo: bailimage.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailimage.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailimage.Tpo -c -o libbail_la-bailimage.lo `test -f 'bailimage.c' || echo '$(srcdir)/'`bailimage.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailimage.Tpo $(DEPDIR)/libbail_la-bailimage.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailimage.c' object='libbail_la-bailimage.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailimage.lo `test -f 'gailimage.c' || echo '$(srcdir)/'`gailimage.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailimage.lo `test -f 'bailimage.c' || echo '$(srcdir)/'`bailimage.c
 
-libgail_la-gailimagecell.lo: gailimagecell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailimagecell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailimagecell.Tpo -c -o libgail_la-gailimagecell.lo `test -f 'gailimagecell.c' || echo '$(srcdir)/'`gailimagecell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailimagecell.Tpo $(DEPDIR)/libgail_la-gailimagecell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailimagecell.c' object='libgail_la-gailimagecell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailimagecell.lo: bailimagecell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailimagecell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailimagecell.Tpo -c -o libbail_la-bailimagecell.lo `test -f 'bailimagecell.c' || echo '$(srcdir)/'`bailimagecell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailimagecell.Tpo $(DEPDIR)/libbail_la-bailimagecell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailimagecell.c' object='libbail_la-bailimagecell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailimagecell.lo `test -f 'gailimagecell.c' || echo '$(srcdir)/'`gailimagecell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailimagecell.lo `test -f 'bailimagecell.c' || echo '$(srcdir)/'`bailimagecell.c
 
-libgail_la-gailitem.lo: gailitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailitem.Tpo -c -o libgail_la-gailitem.lo `test -f 'gailitem.c' || echo '$(srcdir)/'`gailitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailitem.Tpo $(DEPDIR)/libgail_la-gailitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailitem.c' object='libgail_la-gailitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailitem.lo: bailitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailitem.Tpo -c -o libbail_la-bailitem.lo `test -f 'bailitem.c' || echo '$(srcdir)/'`bailitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailitem.Tpo $(DEPDIR)/libbail_la-bailitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailitem.c' object='libbail_la-bailitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailitem.lo `test -f 'gailitem.c' || echo '$(srcdir)/'`gailitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailitem.lo `test -f 'bailitem.c' || echo '$(srcdir)/'`bailitem.c
 
-libgail_la-gaillabel.lo: gaillabel.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gaillabel.lo -MD -MP -MF $(DEPDIR)/libgail_la-gaillabel.Tpo -c -o libgail_la-gaillabel.lo `test -f 'gaillabel.c' || echo '$(srcdir)/'`gaillabel.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gaillabel.Tpo $(DEPDIR)/libgail_la-gaillabel.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gaillabel.c' object='libgail_la-gaillabel.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-baillabel.lo: baillabel.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-baillabel.lo -MD -MP -MF $(DEPDIR)/libbail_la-baillabel.Tpo -c -o libbail_la-baillabel.lo `test -f 'baillabel.c' || echo '$(srcdir)/'`baillabel.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-baillabel.Tpo $(DEPDIR)/libbail_la-baillabel.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='baillabel.c' object='libbail_la-baillabel.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gaillabel.lo `test -f 'gaillabel.c' || echo '$(srcdir)/'`gaillabel.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-baillabel.lo `test -f 'baillabel.c' || echo '$(srcdir)/'`baillabel.c
 
-libgail_la-gaillist.lo: gaillist.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gaillist.lo -MD -MP -MF $(DEPDIR)/libgail_la-gaillist.Tpo -c -o libgail_la-gaillist.lo `test -f 'gaillist.c' || echo '$(srcdir)/'`gaillist.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gaillist.Tpo $(DEPDIR)/libgail_la-gaillist.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gaillist.c' object='libgail_la-gaillist.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-baillist.lo: baillist.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-baillist.lo -MD -MP -MF $(DEPDIR)/libbail_la-baillist.Tpo -c -o libbail_la-baillist.lo `test -f 'baillist.c' || echo '$(srcdir)/'`baillist.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-baillist.Tpo $(DEPDIR)/libbail_la-baillist.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='baillist.c' object='libbail_la-baillist.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gaillist.lo `test -f 'gaillist.c' || echo '$(srcdir)/'`gaillist.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-baillist.lo `test -f 'baillist.c' || echo '$(srcdir)/'`baillist.c
 
-libgail_la-gailmenu.lo: gailmenu.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailmenu.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailmenu.Tpo -c -o libgail_la-gailmenu.lo `test -f 'gailmenu.c' || echo '$(srcdir)/'`gailmenu.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailmenu.Tpo $(DEPDIR)/libgail_la-gailmenu.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailmenu.c' object='libgail_la-gailmenu.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailmenu.lo: bailmenu.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailmenu.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailmenu.Tpo -c -o libbail_la-bailmenu.lo `test -f 'bailmenu.c' || echo '$(srcdir)/'`bailmenu.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailmenu.Tpo $(DEPDIR)/libbail_la-bailmenu.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailmenu.c' object='libbail_la-bailmenu.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailmenu.lo `test -f 'gailmenu.c' || echo '$(srcdir)/'`gailmenu.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailmenu.lo `test -f 'bailmenu.c' || echo '$(srcdir)/'`bailmenu.c
 
-libgail_la-gailmenushell.lo: gailmenushell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailmenushell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailmenushell.Tpo -c -o libgail_la-gailmenushell.lo `test -f 'gailmenushell.c' || echo '$(srcdir)/'`gailmenushell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailmenushell.Tpo $(DEPDIR)/libgail_la-gailmenushell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailmenushell.c' object='libgail_la-gailmenushell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailmenushell.lo: bailmenushell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailmenushell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailmenushell.Tpo -c -o libbail_la-bailmenushell.lo `test -f 'bailmenushell.c' || echo '$(srcdir)/'`bailmenushell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailmenushell.Tpo $(DEPDIR)/libbail_la-bailmenushell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailmenushell.c' object='libbail_la-bailmenushell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailmenushell.lo `test -f 'gailmenushell.c' || echo '$(srcdir)/'`gailmenushell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailmenushell.lo `test -f 'bailmenushell.c' || echo '$(srcdir)/'`bailmenushell.c
 
-libgail_la-gailmenuitem.lo: gailmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailmenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailmenuitem.Tpo -c -o libgail_la-gailmenuitem.lo `test -f 'gailmenuitem.c' || echo '$(srcdir)/'`gailmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailmenuitem.Tpo $(DEPDIR)/libgail_la-gailmenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailmenuitem.c' object='libgail_la-gailmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailmenuitem.lo: bailmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailmenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailmenuitem.Tpo -c -o libbail_la-bailmenuitem.lo `test -f 'bailmenuitem.c' || echo '$(srcdir)/'`bailmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailmenuitem.Tpo $(DEPDIR)/libbail_la-bailmenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailmenuitem.c' object='libbail_la-bailmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailmenuitem.lo `test -f 'gailmenuitem.c' || echo '$(srcdir)/'`gailmenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailmenuitem.lo `test -f 'bailmenuitem.c' || echo '$(srcdir)/'`bailmenuitem.c
 
-libgail_la-gailnotebook.lo: gailnotebook.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailnotebook.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailnotebook.Tpo -c -o libgail_la-gailnotebook.lo `test -f 'gailnotebook.c' || echo '$(srcdir)/'`gailnotebook.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailnotebook.Tpo $(DEPDIR)/libgail_la-gailnotebook.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailnotebook.c' object='libgail_la-gailnotebook.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailnotebook.lo: bailnotebook.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailnotebook.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailnotebook.Tpo -c -o libbail_la-bailnotebook.lo `test -f 'bailnotebook.c' || echo '$(srcdir)/'`bailnotebook.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailnotebook.Tpo $(DEPDIR)/libbail_la-bailnotebook.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailnotebook.c' object='libbail_la-bailnotebook.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailnotebook.lo `test -f 'gailnotebook.c' || echo '$(srcdir)/'`gailnotebook.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailnotebook.lo `test -f 'bailnotebook.c' || echo '$(srcdir)/'`bailnotebook.c
 
-libgail_la-gailnotebookpage.lo: gailnotebookpage.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailnotebookpage.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailnotebookpage.Tpo -c -o libgail_la-gailnotebookpage.lo `test -f 'gailnotebookpage.c' || echo '$(srcdir)/'`gailnotebookpage.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailnotebookpage.Tpo $(DEPDIR)/libgail_la-gailnotebookpage.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailnotebookpage.c' object='libgail_la-gailnotebookpage.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailnotebookpage.lo: bailnotebookpage.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailnotebookpage.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailnotebookpage.Tpo -c -o libbail_la-bailnotebookpage.lo `test -f 'bailnotebookpage.c' || echo '$(srcdir)/'`bailnotebookpage.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailnotebookpage.Tpo $(DEPDIR)/libbail_la-bailnotebookpage.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailnotebookpage.c' object='libbail_la-bailnotebookpage.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailnotebookpage.lo `test -f 'gailnotebookpage.c' || echo '$(srcdir)/'`gailnotebookpage.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailnotebookpage.lo `test -f 'bailnotebookpage.c' || echo '$(srcdir)/'`bailnotebookpage.c
 
-libgail_la-gailobject.lo: gailobject.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailobject.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailobject.Tpo -c -o libgail_la-gailobject.lo `test -f 'gailobject.c' || echo '$(srcdir)/'`gailobject.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailobject.Tpo $(DEPDIR)/libgail_la-gailobject.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailobject.c' object='libgail_la-gailobject.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailobject.lo: bailobject.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailobject.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailobject.Tpo -c -o libbail_la-bailobject.lo `test -f 'bailobject.c' || echo '$(srcdir)/'`bailobject.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailobject.Tpo $(DEPDIR)/libbail_la-bailobject.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailobject.c' object='libbail_la-bailobject.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailobject.lo `test -f 'gailobject.c' || echo '$(srcdir)/'`gailobject.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailobject.lo `test -f 'bailobject.c' || echo '$(srcdir)/'`bailobject.c
 
-libgail_la-gailoptionmenu.lo: gailoptionmenu.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailoptionmenu.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailoptionmenu.Tpo -c -o libgail_la-gailoptionmenu.lo `test -f 'gailoptionmenu.c' || echo '$(srcdir)/'`gailoptionmenu.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailoptionmenu.Tpo $(DEPDIR)/libgail_la-gailoptionmenu.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailoptionmenu.c' object='libgail_la-gailoptionmenu.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailoptionmenu.lo: bailoptionmenu.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailoptionmenu.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailoptionmenu.Tpo -c -o libbail_la-bailoptionmenu.lo `test -f 'bailoptionmenu.c' || echo '$(srcdir)/'`bailoptionmenu.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailoptionmenu.Tpo $(DEPDIR)/libbail_la-bailoptionmenu.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailoptionmenu.c' object='libbail_la-bailoptionmenu.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailoptionmenu.lo `test -f 'gailoptionmenu.c' || echo '$(srcdir)/'`gailoptionmenu.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailoptionmenu.lo `test -f 'bailoptionmenu.c' || echo '$(srcdir)/'`bailoptionmenu.c
 
-libgail_la-gailpaned.lo: gailpaned.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailpaned.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailpaned.Tpo -c -o libgail_la-gailpaned.lo `test -f 'gailpaned.c' || echo '$(srcdir)/'`gailpaned.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailpaned.Tpo $(DEPDIR)/libgail_la-gailpaned.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailpaned.c' object='libgail_la-gailpaned.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailpaned.lo: bailpaned.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailpaned.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailpaned.Tpo -c -o libbail_la-bailpaned.lo `test -f 'bailpaned.c' || echo '$(srcdir)/'`bailpaned.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailpaned.Tpo $(DEPDIR)/libbail_la-bailpaned.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailpaned.c' object='libbail_la-bailpaned.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailpaned.lo `test -f 'gailpaned.c' || echo '$(srcdir)/'`gailpaned.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailpaned.lo `test -f 'bailpaned.c' || echo '$(srcdir)/'`bailpaned.c
 
-libgail_la-gailpixmap.lo: gailpixmap.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailpixmap.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailpixmap.Tpo -c -o libgail_la-gailpixmap.lo `test -f 'gailpixmap.c' || echo '$(srcdir)/'`gailpixmap.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailpixmap.Tpo $(DEPDIR)/libgail_la-gailpixmap.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailpixmap.c' object='libgail_la-gailpixmap.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailpixmap.lo: bailpixmap.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailpixmap.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailpixmap.Tpo -c -o libbail_la-bailpixmap.lo `test -f 'bailpixmap.c' || echo '$(srcdir)/'`bailpixmap.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailpixmap.Tpo $(DEPDIR)/libbail_la-bailpixmap.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailpixmap.c' object='libbail_la-bailpixmap.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailpixmap.lo `test -f 'gailpixmap.c' || echo '$(srcdir)/'`gailpixmap.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailpixmap.lo `test -f 'bailpixmap.c' || echo '$(srcdir)/'`bailpixmap.c
 
-libgail_la-gailprogressbar.lo: gailprogressbar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailprogressbar.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailprogressbar.Tpo -c -o libgail_la-gailprogressbar.lo `test -f 'gailprogressbar.c' || echo '$(srcdir)/'`gailprogressbar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailprogressbar.Tpo $(DEPDIR)/libgail_la-gailprogressbar.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailprogressbar.c' object='libgail_la-gailprogressbar.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailprogressbar.lo: bailprogressbar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailprogressbar.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailprogressbar.Tpo -c -o libbail_la-bailprogressbar.lo `test -f 'bailprogressbar.c' || echo '$(srcdir)/'`bailprogressbar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailprogressbar.Tpo $(DEPDIR)/libbail_la-bailprogressbar.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailprogressbar.c' object='libbail_la-bailprogressbar.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailprogressbar.lo `test -f 'gailprogressbar.c' || echo '$(srcdir)/'`gailprogressbar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailprogressbar.lo `test -f 'bailprogressbar.c' || echo '$(srcdir)/'`bailprogressbar.c
 
-libgail_la-gailradiobutton.lo: gailradiobutton.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailradiobutton.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailradiobutton.Tpo -c -o libgail_la-gailradiobutton.lo `test -f 'gailradiobutton.c' || echo '$(srcdir)/'`gailradiobutton.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailradiobutton.Tpo $(DEPDIR)/libgail_la-gailradiobutton.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailradiobutton.c' object='libgail_la-gailradiobutton.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailradiobutton.lo: bailradiobutton.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailradiobutton.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailradiobutton.Tpo -c -o libbail_la-bailradiobutton.lo `test -f 'bailradiobutton.c' || echo '$(srcdir)/'`bailradiobutton.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailradiobutton.Tpo $(DEPDIR)/libbail_la-bailradiobutton.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailradiobutton.c' object='libbail_la-bailradiobutton.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailradiobutton.lo `test -f 'gailradiobutton.c' || echo '$(srcdir)/'`gailradiobutton.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailradiobutton.lo `test -f 'bailradiobutton.c' || echo '$(srcdir)/'`bailradiobutton.c
 
-libgail_la-gailradiomenuitem.lo: gailradiomenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailradiomenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailradiomenuitem.Tpo -c -o libgail_la-gailradiomenuitem.lo `test -f 'gailradiomenuitem.c' || echo '$(srcdir)/'`gailradiomenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailradiomenuitem.Tpo $(DEPDIR)/libgail_la-gailradiomenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailradiomenuitem.c' object='libgail_la-gailradiomenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailradiomenuitem.lo: bailradiomenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailradiomenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailradiomenuitem.Tpo -c -o libbail_la-bailradiomenuitem.lo `test -f 'bailradiomenuitem.c' || echo '$(srcdir)/'`bailradiomenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailradiomenuitem.Tpo $(DEPDIR)/libbail_la-bailradiomenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailradiomenuitem.c' object='libbail_la-bailradiomenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailradiomenuitem.lo `test -f 'gailradiomenuitem.c' || echo '$(srcdir)/'`gailradiomenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailradiomenuitem.lo `test -f 'bailradiomenuitem.c' || echo '$(srcdir)/'`bailradiomenuitem.c
 
-libgail_la-gailradiosubmenuitem.lo: gailradiosubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailradiosubmenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailradiosubmenuitem.Tpo -c -o libgail_la-gailradiosubmenuitem.lo `test -f 'gailradiosubmenuitem.c' || echo '$(srcdir)/'`gailradiosubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailradiosubmenuitem.Tpo $(DEPDIR)/libgail_la-gailradiosubmenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailradiosubmenuitem.c' object='libgail_la-gailradiosubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailradiosubmenuitem.lo: bailradiosubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailradiosubmenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailradiosubmenuitem.Tpo -c -o libbail_la-bailradiosubmenuitem.lo `test -f 'bailradiosubmenuitem.c' || echo '$(srcdir)/'`bailradiosubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailradiosubmenuitem.Tpo $(DEPDIR)/libbail_la-bailradiosubmenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailradiosubmenuitem.c' object='libbail_la-bailradiosubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailradiosubmenuitem.lo `test -f 'gailradiosubmenuitem.c' || echo '$(srcdir)/'`gailradiosubmenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailradiosubmenuitem.lo `test -f 'bailradiosubmenuitem.c' || echo '$(srcdir)/'`bailradiosubmenuitem.c
 
-libgail_la-gailrange.lo: gailrange.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailrange.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailrange.Tpo -c -o libgail_la-gailrange.lo `test -f 'gailrange.c' || echo '$(srcdir)/'`gailrange.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailrange.Tpo $(DEPDIR)/libgail_la-gailrange.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailrange.c' object='libgail_la-gailrange.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailrange.lo: bailrange.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailrange.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailrange.Tpo -c -o libbail_la-bailrange.lo `test -f 'bailrange.c' || echo '$(srcdir)/'`bailrange.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailrange.Tpo $(DEPDIR)/libbail_la-bailrange.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailrange.c' object='libbail_la-bailrange.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailrange.lo `test -f 'gailrange.c' || echo '$(srcdir)/'`gailrange.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailrange.lo `test -f 'bailrange.c' || echo '$(srcdir)/'`bailrange.c
 
-libgail_la-gailrenderercell.lo: gailrenderercell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailrenderercell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailrenderercell.Tpo -c -o libgail_la-gailrenderercell.lo `test -f 'gailrenderercell.c' || echo '$(srcdir)/'`gailrenderercell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailrenderercell.Tpo $(DEPDIR)/libgail_la-gailrenderercell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailrenderercell.c' object='libgail_la-gailrenderercell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailrenderercell.lo: bailrenderercell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailrenderercell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailrenderercell.Tpo -c -o libbail_la-bailrenderercell.lo `test -f 'bailrenderercell.c' || echo '$(srcdir)/'`bailrenderercell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailrenderercell.Tpo $(DEPDIR)/libbail_la-bailrenderercell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailrenderercell.c' object='libbail_la-bailrenderercell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailrenderercell.lo `test -f 'gailrenderercell.c' || echo '$(srcdir)/'`gailrenderercell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailrenderercell.lo `test -f 'bailrenderercell.c' || echo '$(srcdir)/'`bailrenderercell.c
 
-libgail_la-gailscale.lo: gailscale.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailscale.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailscale.Tpo -c -o libgail_la-gailscale.lo `test -f 'gailscale.c' || echo '$(srcdir)/'`gailscale.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailscale.Tpo $(DEPDIR)/libgail_la-gailscale.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailscale.c' object='libgail_la-gailscale.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailscale.lo: bailscale.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailscale.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailscale.Tpo -c -o libbail_la-bailscale.lo `test -f 'bailscale.c' || echo '$(srcdir)/'`bailscale.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailscale.Tpo $(DEPDIR)/libbail_la-bailscale.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailscale.c' object='libbail_la-bailscale.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailscale.lo `test -f 'gailscale.c' || echo '$(srcdir)/'`gailscale.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailscale.lo `test -f 'bailscale.c' || echo '$(srcdir)/'`bailscale.c
 
-libgail_la-gailscalebutton.lo: gailscalebutton.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailscalebutton.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailscalebutton.Tpo -c -o libgail_la-gailscalebutton.lo `test -f 'gailscalebutton.c' || echo '$(srcdir)/'`gailscalebutton.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailscalebutton.Tpo $(DEPDIR)/libgail_la-gailscalebutton.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailscalebutton.c' object='libgail_la-gailscalebutton.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailscalebutton.lo: bailscalebutton.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailscalebutton.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailscalebutton.Tpo -c -o libbail_la-bailscalebutton.lo `test -f 'bailscalebutton.c' || echo '$(srcdir)/'`bailscalebutton.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailscalebutton.Tpo $(DEPDIR)/libbail_la-bailscalebutton.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailscalebutton.c' object='libbail_la-bailscalebutton.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailscalebutton.lo `test -f 'gailscalebutton.c' || echo '$(srcdir)/'`gailscalebutton.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailscalebutton.lo `test -f 'bailscalebutton.c' || echo '$(srcdir)/'`bailscalebutton.c
 
-libgail_la-gailscrollbar.lo: gailscrollbar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailscrollbar.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailscrollbar.Tpo -c -o libgail_la-gailscrollbar.lo `test -f 'gailscrollbar.c' || echo '$(srcdir)/'`gailscrollbar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailscrollbar.Tpo $(DEPDIR)/libgail_la-gailscrollbar.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailscrollbar.c' object='libgail_la-gailscrollbar.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailscrollbar.lo: bailscrollbar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailscrollbar.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailscrollbar.Tpo -c -o libbail_la-bailscrollbar.lo `test -f 'bailscrollbar.c' || echo '$(srcdir)/'`bailscrollbar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailscrollbar.Tpo $(DEPDIR)/libbail_la-bailscrollbar.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailscrollbar.c' object='libbail_la-bailscrollbar.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailscrollbar.lo `test -f 'gailscrollbar.c' || echo '$(srcdir)/'`gailscrollbar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailscrollbar.lo `test -f 'bailscrollbar.c' || echo '$(srcdir)/'`bailscrollbar.c
 
-libgail_la-gailscrolledwindow.lo: gailscrolledwindow.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailscrolledwindow.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailscrolledwindow.Tpo -c -o libgail_la-gailscrolledwindow.lo `test -f 'gailscrolledwindow.c' || echo '$(srcdir)/'`gailscrolledwindow.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailscrolledwindow.Tpo $(DEPDIR)/libgail_la-gailscrolledwindow.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailscrolledwindow.c' object='libgail_la-gailscrolledwindow.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailscrolledwindow.lo: bailscrolledwindow.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailscrolledwindow.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailscrolledwindow.Tpo -c -o libbail_la-bailscrolledwindow.lo `test -f 'bailscrolledwindow.c' || echo '$(srcdir)/'`bailscrolledwindow.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailscrolledwindow.Tpo $(DEPDIR)/libbail_la-bailscrolledwindow.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailscrolledwindow.c' object='libbail_la-bailscrolledwindow.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailscrolledwindow.lo `test -f 'gailscrolledwindow.c' || echo '$(srcdir)/'`gailscrolledwindow.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailscrolledwindow.lo `test -f 'bailscrolledwindow.c' || echo '$(srcdir)/'`bailscrolledwindow.c
 
-libgail_la-gailseparator.lo: gailseparator.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailseparator.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailseparator.Tpo -c -o libgail_la-gailseparator.lo `test -f 'gailseparator.c' || echo '$(srcdir)/'`gailseparator.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailseparator.Tpo $(DEPDIR)/libgail_la-gailseparator.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailseparator.c' object='libgail_la-gailseparator.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailseparator.lo: bailseparator.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailseparator.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailseparator.Tpo -c -o libbail_la-bailseparator.lo `test -f 'bailseparator.c' || echo '$(srcdir)/'`bailseparator.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailseparator.Tpo $(DEPDIR)/libbail_la-bailseparator.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailseparator.c' object='libbail_la-bailseparator.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailseparator.lo `test -f 'gailseparator.c' || echo '$(srcdir)/'`gailseparator.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailseparator.lo `test -f 'bailseparator.c' || echo '$(srcdir)/'`bailseparator.c
 
-libgail_la-gailspinbutton.lo: gailspinbutton.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailspinbutton.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailspinbutton.Tpo -c -o libgail_la-gailspinbutton.lo `test -f 'gailspinbutton.c' || echo '$(srcdir)/'`gailspinbutton.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailspinbutton.Tpo $(DEPDIR)/libgail_la-gailspinbutton.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailspinbutton.c' object='libgail_la-gailspinbutton.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailspinbutton.lo: bailspinbutton.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailspinbutton.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailspinbutton.Tpo -c -o libbail_la-bailspinbutton.lo `test -f 'bailspinbutton.c' || echo '$(srcdir)/'`bailspinbutton.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailspinbutton.Tpo $(DEPDIR)/libbail_la-bailspinbutton.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailspinbutton.c' object='libbail_la-bailspinbutton.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailspinbutton.lo `test -f 'gailspinbutton.c' || echo '$(srcdir)/'`gailspinbutton.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailspinbutton.lo `test -f 'bailspinbutton.c' || echo '$(srcdir)/'`bailspinbutton.c
 
-libgail_la-gailsubmenuitem.lo: gailsubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailsubmenuitem.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailsubmenuitem.Tpo -c -o libgail_la-gailsubmenuitem.lo `test -f 'gailsubmenuitem.c' || echo '$(srcdir)/'`gailsubmenuitem.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailsubmenuitem.Tpo $(DEPDIR)/libgail_la-gailsubmenuitem.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailsubmenuitem.c' object='libgail_la-gailsubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailsubmenuitem.lo: bailsubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailsubmenuitem.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailsubmenuitem.Tpo -c -o libbail_la-bailsubmenuitem.lo `test -f 'bailsubmenuitem.c' || echo '$(srcdir)/'`bailsubmenuitem.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailsubmenuitem.Tpo $(DEPDIR)/libbail_la-bailsubmenuitem.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailsubmenuitem.c' object='libbail_la-bailsubmenuitem.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailsubmenuitem.lo `test -f 'gailsubmenuitem.c' || echo '$(srcdir)/'`gailsubmenuitem.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailsubmenuitem.lo `test -f 'bailsubmenuitem.c' || echo '$(srcdir)/'`bailsubmenuitem.c
 
-libgail_la-gailstatusbar.lo: gailstatusbar.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailstatusbar.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailstatusbar.Tpo -c -o libgail_la-gailstatusbar.lo `test -f 'gailstatusbar.c' || echo '$(srcdir)/'`gailstatusbar.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailstatusbar.Tpo $(DEPDIR)/libgail_la-gailstatusbar.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailstatusbar.c' object='libgail_la-gailstatusbar.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailstatusbar.lo: bailstatusbar.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailstatusbar.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailstatusbar.Tpo -c -o libbail_la-bailstatusbar.lo `test -f 'bailstatusbar.c' || echo '$(srcdir)/'`bailstatusbar.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailstatusbar.Tpo $(DEPDIR)/libbail_la-bailstatusbar.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailstatusbar.c' object='libbail_la-bailstatusbar.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailstatusbar.lo `test -f 'gailstatusbar.c' || echo '$(srcdir)/'`gailstatusbar.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailstatusbar.lo `test -f 'bailstatusbar.c' || echo '$(srcdir)/'`bailstatusbar.c
 
-libgail_la-gailtextcell.lo: gailtextcell.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailtextcell.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailtextcell.Tpo -c -o libgail_la-gailtextcell.lo `test -f 'gailtextcell.c' || echo '$(srcdir)/'`gailtextcell.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailtextcell.Tpo $(DEPDIR)/libgail_la-gailtextcell.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailtextcell.c' object='libgail_la-gailtextcell.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailtextcell.lo: bailtextcell.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailtextcell.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailtextcell.Tpo -c -o libbail_la-bailtextcell.lo `test -f 'bailtextcell.c' || echo '$(srcdir)/'`bailtextcell.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailtextcell.Tpo $(DEPDIR)/libbail_la-bailtextcell.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailtextcell.c' object='libbail_la-bailtextcell.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailtextcell.lo `test -f 'gailtextcell.c' || echo '$(srcdir)/'`gailtextcell.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailtextcell.lo `test -f 'bailtextcell.c' || echo '$(srcdir)/'`bailtextcell.c
 
-libgail_la-gailtextview.lo: gailtextview.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailtextview.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailtextview.Tpo -c -o libgail_la-gailtextview.lo `test -f 'gailtextview.c' || echo '$(srcdir)/'`gailtextview.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailtextview.Tpo $(DEPDIR)/libgail_la-gailtextview.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailtextview.c' object='libgail_la-gailtextview.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailtextview.lo: bailtextview.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailtextview.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailtextview.Tpo -c -o libbail_la-bailtextview.lo `test -f 'bailtextview.c' || echo '$(srcdir)/'`bailtextview.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailtextview.Tpo $(DEPDIR)/libbail_la-bailtextview.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailtextview.c' object='libbail_la-bailtextview.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailtextview.lo `test -f 'gailtextview.c' || echo '$(srcdir)/'`gailtextview.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailtextview.lo `test -f 'bailtextview.c' || echo '$(srcdir)/'`bailtextview.c
 
-libgail_la-gailtogglebutton.lo: gailtogglebutton.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailtogglebutton.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailtogglebutton.Tpo -c -o libgail_la-gailtogglebutton.lo `test -f 'gailtogglebutton.c' || echo '$(srcdir)/'`gailtogglebutton.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailtogglebutton.Tpo $(DEPDIR)/libgail_la-gailtogglebutton.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailtogglebutton.c' object='libgail_la-gailtogglebutton.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailtogglebutton.lo: bailtogglebutton.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailtogglebutton.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailtogglebutton.Tpo -c -o libbail_la-bailtogglebutton.lo `test -f 'bailtogglebutton.c' || echo '$(srcdir)/'`bailtogglebutton.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailtogglebutton.Tpo $(DEPDIR)/libbail_la-bailtogglebutton.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailtogglebutton.c' object='libbail_la-bailtogglebutton.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailtogglebutton.lo `test -f 'gailtogglebutton.c' || echo '$(srcdir)/'`gailtogglebutton.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailtogglebutton.lo `test -f 'bailtogglebutton.c' || echo '$(srcdir)/'`bailtogglebutton.c
 
-libgail_la-gailtoplevel.lo: gailtoplevel.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailtoplevel.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailtoplevel.Tpo -c -o libgail_la-gailtoplevel.lo `test -f 'gailtoplevel.c' || echo '$(srcdir)/'`gailtoplevel.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailtoplevel.Tpo $(DEPDIR)/libgail_la-gailtoplevel.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailtoplevel.c' object='libgail_la-gailtoplevel.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailtoplevel.lo: bailtoplevel.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailtoplevel.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailtoplevel.Tpo -c -o libbail_la-bailtoplevel.lo `test -f 'bailtoplevel.c' || echo '$(srcdir)/'`bailtoplevel.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailtoplevel.Tpo $(DEPDIR)/libbail_la-bailtoplevel.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailtoplevel.c' object='libbail_la-bailtoplevel.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailtoplevel.lo `test -f 'gailtoplevel.c' || echo '$(srcdir)/'`gailtoplevel.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailtoplevel.lo `test -f 'bailtoplevel.c' || echo '$(srcdir)/'`bailtoplevel.c
 
-libgail_la-gailtreeview.lo: gailtreeview.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailtreeview.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailtreeview.Tpo -c -o libgail_la-gailtreeview.lo `test -f 'gailtreeview.c' || echo '$(srcdir)/'`gailtreeview.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailtreeview.Tpo $(DEPDIR)/libgail_la-gailtreeview.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailtreeview.c' object='libgail_la-gailtreeview.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailtreeview.lo: bailtreeview.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailtreeview.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailtreeview.Tpo -c -o libbail_la-bailtreeview.lo `test -f 'bailtreeview.c' || echo '$(srcdir)/'`bailtreeview.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailtreeview.Tpo $(DEPDIR)/libbail_la-bailtreeview.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailtreeview.c' object='libbail_la-bailtreeview.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailtreeview.lo `test -f 'gailtreeview.c' || echo '$(srcdir)/'`gailtreeview.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailtreeview.lo `test -f 'bailtreeview.c' || echo '$(srcdir)/'`bailtreeview.c
 
-libgail_la-gailutil.lo: gailutil.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailutil.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailutil.Tpo -c -o libgail_la-gailutil.lo `test -f 'gailutil.c' || echo '$(srcdir)/'`gailutil.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailutil.Tpo $(DEPDIR)/libgail_la-gailutil.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailutil.c' object='libgail_la-gailutil.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailutil.lo: bailutil.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailutil.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailutil.Tpo -c -o libbail_la-bailutil.lo `test -f 'bailutil.c' || echo '$(srcdir)/'`bailutil.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailutil.Tpo $(DEPDIR)/libbail_la-bailutil.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailutil.c' object='libbail_la-bailutil.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailutil.lo `test -f 'gailutil.c' || echo '$(srcdir)/'`gailutil.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailutil.lo `test -f 'bailutil.c' || echo '$(srcdir)/'`bailutil.c
 
-libgail_la-gailwidget.lo: gailwidget.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailwidget.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailwidget.Tpo -c -o libgail_la-gailwidget.lo `test -f 'gailwidget.c' || echo '$(srcdir)/'`gailwidget.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailwidget.Tpo $(DEPDIR)/libgail_la-gailwidget.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailwidget.c' object='libgail_la-gailwidget.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailwidget.lo: bailwidget.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailwidget.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailwidget.Tpo -c -o libbail_la-bailwidget.lo `test -f 'bailwidget.c' || echo '$(srcdir)/'`bailwidget.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailwidget.Tpo $(DEPDIR)/libbail_la-bailwidget.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailwidget.c' object='libbail_la-bailwidget.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailwidget.lo `test -f 'gailwidget.c' || echo '$(srcdir)/'`gailwidget.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailwidget.lo `test -f 'bailwidget.c' || echo '$(srcdir)/'`bailwidget.c
 
-libgail_la-gailwindow.lo: gailwindow.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -MT libgail_la-gailwindow.lo -MD -MP -MF $(DEPDIR)/libgail_la-gailwindow.Tpo -c -o libgail_la-gailwindow.lo `test -f 'gailwindow.c' || echo '$(srcdir)/'`gailwindow.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libgail_la-gailwindow.Tpo $(DEPDIR)/libgail_la-gailwindow.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='gailwindow.c' object='libgail_la-gailwindow.lo' libtool=yes @AMDEPBACKSLASH@
+libbail_la-bailwindow.lo: bailwindow.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -MT libbail_la-bailwindow.lo -MD -MP -MF $(DEPDIR)/libbail_la-bailwindow.Tpo -c -o libbail_la-bailwindow.lo `test -f 'bailwindow.c' || echo '$(srcdir)/'`bailwindow.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libbail_la-bailwindow.Tpo $(DEPDIR)/libbail_la-bailwindow.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='bailwindow.c' object='libbail_la-bailwindow.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libgail_la_CPPFLAGS) $(CPPFLAGS) $(libgail_la_CFLAGS) $(CFLAGS) -c -o libgail_la-gailwindow.lo `test -f 'gailwindow.c' || echo '$(srcdir)/'`gailwindow.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbail_la_CPPFLAGS) $(CPPFLAGS) $(libbail_la_CFLAGS) $(CFLAGS) -c -o libbail_la-bailwindow.lo `test -f 'bailwindow.c' || echo '$(srcdir)/'`bailwindow.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libgailincludeHEADERS: $(libgailinclude_HEADERS)
+install-libbailincludeHEADERS: $(libbailinclude_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(libgailinclude_HEADERS)'; test -n "$(libgailincludedir)" || list=; \
+	@list='$(libbailinclude_HEADERS)'; test -n "$(libbailincludedir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(libgailincludedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(libgailincludedir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(libbailincludedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(libbailincludedir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libgailincludedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libgailincludedir)" || exit $$?; \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libbailincludedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libbailincludedir)" || exit $$?; \
 	done
 
-uninstall-libgailincludeHEADERS:
+uninstall-libbailincludeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libgailinclude_HEADERS)'; test -n "$(libgailincludedir)" || list=; \
+	@list='$(libbailinclude_HEADERS)'; test -n "$(libbailincludedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(libgailincludedir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(libbailincludedir)'; $(am__uninstall_files_from_dir)
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -1520,7 +1520,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(moduledir)" "$(DESTDIR)$(libgailincludedir)"; do \
+	for dir in "$(DESTDIR)$(moduledir)" "$(DESTDIR)$(libbailincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -1559,62 +1559,62 @@ clean-am: clean-generic clean-libtool clean-moduleLTLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-recursive
-		-rm -f ./$(DEPDIR)/libgail_la-gail.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailadjustment.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailarrow.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbooleancell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbox.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcalendar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcellparent.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcheckmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailchecksubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailclist.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailclistcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcombo.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcombobox.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcontainer.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcontainercell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailentry.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailexpander.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailframe.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailimage.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailimagecell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gaillabel.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gaillist.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenu.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenushell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailnotebook.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailnotebookpage.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailobject.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailoptionmenu.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailpaned.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailpixmap.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailprogressbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiobutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiomenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiosubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailrange.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailrenderercell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscale.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscalebutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscrollbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscrolledwindow.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailseparator.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailspinbutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailstatusbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailsubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtextcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtextview.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtogglebutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtoplevel.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtreeview.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailutil.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailwidget.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailwindow.Plo
+		-rm -f ./$(DEPDIR)/libbail_la-bail.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailadjustment.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailarrow.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbooleancell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbox.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcalendar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcellparent.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcheckmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailchecksubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailclist.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailclistcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcombo.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcombobox.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcontainer.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcontainercell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailentry.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailexpander.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailframe.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailimage.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailimagecell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-baillabel.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-baillist.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenu.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenushell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailnotebook.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailnotebookpage.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailobject.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailoptionmenu.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailpaned.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailpixmap.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailprogressbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiobutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiomenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiosubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailrange.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailrenderercell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscale.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscalebutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscrollbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscrolledwindow.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailseparator.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailspinbutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailstatusbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailsubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtextcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtextview.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtogglebutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtoplevel.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtreeview.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailutil.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailwidget.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailwindow.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1631,7 +1631,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-libgailincludeHEADERS \
+install-data-am: install-libbailincludeHEADERS \
 	install-moduleLTLIBRARIES
 
 install-dvi: install-dvi-recursive
@@ -1661,62 +1661,62 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-		-rm -f ./$(DEPDIR)/libgail_la-gail.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailadjustment.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailarrow.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbooleancell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbox.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailbutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcalendar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcellparent.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcheckmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailchecksubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailclist.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailclistcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcombo.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcombobox.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcontainer.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailcontainercell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailentry.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailexpander.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailframe.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailimage.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailimagecell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gaillabel.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gaillist.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenu.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailmenushell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailnotebook.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailnotebookpage.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailobject.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailoptionmenu.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailpaned.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailpixmap.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailprogressbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiobutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiomenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailradiosubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailrange.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailrenderercell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscale.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscalebutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscrollbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailscrolledwindow.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailseparator.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailspinbutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailstatusbar.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailsubmenuitem.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtextcell.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtextview.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtogglebutton.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtoplevel.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailtreeview.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailutil.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailwidget.Plo
-	-rm -f ./$(DEPDIR)/libgail_la-gailwindow.Plo
+		-rm -f ./$(DEPDIR)/libbail_la-bail.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailadjustment.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailarrow.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbooleancell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbox.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailbutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcalendar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcellparent.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcheckmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailchecksubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailclist.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailclistcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcombo.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcombobox.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcontainer.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailcontainercell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailentry.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailexpander.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailframe.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailimage.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailimagecell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-baillabel.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-baillist.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenu.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailmenushell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailnotebook.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailnotebookpage.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailobject.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailoptionmenu.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailpaned.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailpixmap.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailprogressbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiobutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiomenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailradiosubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailrange.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailrenderercell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscale.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscalebutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscrollbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailscrolledwindow.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailseparator.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailspinbutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailstatusbar.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailsubmenuitem.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtextcell.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtextview.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtogglebutton.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtoplevel.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailtreeview.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailutil.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailwidget.Plo
+	-rm -f ./$(DEPDIR)/libbail_la-bailwindow.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -1733,7 +1733,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-libgailincludeHEADERS \
+uninstall-am: uninstall-libbailincludeHEADERS \
 	uninstall-moduleLTLIBRARIES
 
 .MAKE: $(am__recursive_targets) check-am install-am install-strip
@@ -1746,14 +1746,14 @@ uninstall-am: uninstall-libgailincludeHEADERS \
 	html-am info info-am install install-am install-data \
 	install-data-am install-dvi install-dvi-am install-exec \
 	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libgailincludeHEADERS install-man \
+	install-info-am install-libbailincludeHEADERS install-man \
 	install-moduleLTLIBRARIES install-pdf install-pdf-am \
 	install-ps install-ps-am install-strip installcheck \
 	installcheck-am installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am \
-	uninstall-libgailincludeHEADERS uninstall-moduleLTLIBRARIES
+	uninstall-libbailincludeHEADERS uninstall-moduleLTLIBRARIES
 
 .PRECIOUS: Makefile
 
@@ -1763,8 +1763,8 @@ uninstall-am: uninstall-libgailincludeHEADERS \
 test: test-cwd test-recurse
 # test-cwd: run tests in cwd
 test-cwd: ${TEST_PROGS}
-	@$(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
-	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${GTESTER} --verbose ${TEST_PROGS}; }; \
+	@$(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${BTESTER} --verbose ${TEST_PROGS}; }; \
 	}
 # test-recurse: run tests in subdirs
 test-recurse:
@@ -1777,15 +1777,15 @@ test-recurse:
 # full-report: like test-report: with -m perf and -m slow
 test-report perf-report full-report:	${TEST_PROGS}
 	@ ignore_logdir=true ; \
-	  if test -z "$$GTESTER_LOGDIR" ; then \
-	    GTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export GTESTER_LOGDIR ; \
+	  if test -z "$$BTESTER_LOGDIR" ; then \
+	    BTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export BTESTER_LOGDIR ; \
 	    ignore_logdir=false ; \
 	  fi ; \
 	  for subdir in $(SUBDIRS) ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" -o "$$subdir" = "po-properties" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done ; \
-	  $(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
 	    case $@ in \
 	    test-report) test_options="-k";; \
 	    perf-report) test_options="-k -m=perf";; \
@@ -1793,23 +1793,23 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    esac ; \
 	    $(XVFB_START) && { \
 	      set -e; \
-	      if test -z "$$GTESTER_LOGDIR" ; then \
-	        ${GTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
+	      if test -z "$$BTESTER_LOGDIR" ; then \
+	        ${BTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
 	      elif test -n "${TEST_PROGS}" ; then \
-	        ${GTESTER} --verbose $$test_options -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
+	        ${BTESTER} --verbose $$test_options -o `mktemp "$$BTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
 	      fi ; \
 	    }; \
 	  }; \
 	  $$ignore_logdir || { \
 	    echo '<?xml version="1.0"?>' > $@.xml ; \
 	    echo '<report-collection>'  >> $@.xml ; \
-	    for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
+	    for lf in `ls -L "$$BTESTER_LOGDIR"/.` ; do \
+	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$BTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
 	    done ; \
 	    echo >> $@.xml ; \
 	    echo '</report-collection>' >> $@.xml ; \
-	    rm -rf "$$GTESTER_LOGDIR"/ ; \
-	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
+	    rm -rf "$$BTESTER_LOGDIR"/ ; \
+	    ${BTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${BTESTER_REPORT} $@.xml >$@.html ; \
 	  }
 .PHONY: test test-cwd test-recurse test-report perf-report full-report
 # run make test-cwd as part of make check

@@ -1,56 +1,56 @@
 /* Expander
  *
- * GtkExpander allows to provide additional content that is initially hidden.
+ * BtkExpander allows to provide additional content that is initially hidden.
  * This is also known as "disclosure triangle".
  *
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *window = NULL;
+static BtkWidget *window = NULL;
 
 
-GtkWidget *
-do_expander (GtkWidget *do_widget)
+BtkWidget *
+do_expander (BtkWidget *do_widget)
 {
-  GtkWidget *vbox;
-  GtkWidget *label;
-  GtkWidget *expander;
+  BtkWidget *vbox;
+  BtkWidget *label;
+  BtkWidget *expander;
   
   if (!window)
   {
-    window = gtk_dialog_new_with_buttons ("GtkExpander",
-					  GTK_WINDOW (do_widget),
+    window = btk_dialog_new_with_buttons ("BtkExpander",
+					  BTK_WINDOW (do_widget),
 					  0,
-					  GTK_STOCK_CLOSE,
-					  GTK_RESPONSE_NONE,
+					  BTK_STOCK_CLOSE,
+					  BTK_RESPONSE_NONE,
 					  NULL);
-    gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+    btk_window_set_resizable (BTK_WINDOW (window), FALSE);
 
     g_signal_connect (window, "response",
-		      G_CALLBACK (gtk_widget_destroy), NULL);
+		      G_CALLBACK (btk_widget_destroy), NULL);
     g_signal_connect (window, "destroy",
-		      G_CALLBACK (gtk_widget_destroyed), &window);
+		      G_CALLBACK (btk_widget_destroyed), &window);
 
-    vbox = gtk_vbox_new (FALSE, 5);
-    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))), vbox, TRUE, TRUE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+    vbox = btk_vbox_new (FALSE, 5);
+    btk_box_pack_start (BTK_BOX (btk_dialog_get_content_area (BTK_DIALOG (window))), vbox, TRUE, TRUE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (vbox), 5);
 
-    label = gtk_label_new ("Expander demo. Click on the triangle for details.");
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+    label = btk_label_new ("Expander demo. Click on the triangle for details.");
+    btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
     /* Create the expander */
-    expander = gtk_expander_new ("Details");
-    gtk_box_pack_start (GTK_BOX (vbox), expander, FALSE, FALSE, 0);
+    expander = btk_expander_new ("Details");
+    btk_box_pack_start (BTK_BOX (vbox), expander, FALSE, FALSE, 0);
 
-    label = gtk_label_new ("Details can be shown or hidden.");
-    gtk_container_add (GTK_CONTAINER (expander), label);
+    label = btk_label_new ("Details can be shown or hidden.");
+    btk_container_add (BTK_CONTAINER (expander), label);
   }
 
-  if (!gtk_widget_get_visible (window))
-    gtk_widget_show_all (window);
+  if (!btk_widget_get_visible (window))
+    btk_widget_show_all (window);
   else
-    gtk_widget_destroy (window);
+    btk_widget_destroy (window);
 
   return window;
 }

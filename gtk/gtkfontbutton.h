@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
- * Copyright (C) 1998 David Abilleira Freijeiro <odaf@nexo.es>
+/* BTK - The GIMP Toolkit
+ * Copyright (C) 1998 David Abilleira Freijeiro <odaf@nbexo.es>
  * All rights reserved
- * Based on gnome-color-picker by Federico Mena <federico@nuclecu.unam.mx>
+ * Based on bunny-color-picker by Federico Mena <federico@nuclecu.unam.mx>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -18,83 +18,83 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Cambridge, MA 02139, USA.
  */
 /*
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_FONT_BUTTON_H__
-#define __GTK_FONT_BUTTON_H__
+#ifndef __BTK_FONT_BUTTON_H__
+#define __BTK_FONT_BUTTON_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbutton.h>
+#include <btk/btkbutton.h>
 
 
 G_BEGIN_DECLS
 
-/* GtkFontButton is a button widget that allow user to select a font.
+/* BtkFontButton is a button widget that allow user to select a font.
  */
 
-#define GTK_TYPE_FONT_BUTTON             (gtk_font_button_get_type ())
-#define GTK_FONT_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FONT_BUTTON, GtkFontButton))
-#define GTK_FONT_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FONT_BUTTON, GtkFontButtonClass))
-#define GTK_IS_FONT_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FONT_BUTTON))
-#define GTK_IS_FONT_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FONT_BUTTON))
-#define GTK_FONT_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FONT_BUTTON, GtkFontButtonClass))
+#define BTK_TYPE_FONT_BUTTON             (btk_font_button_get_type ())
+#define BTK_FONT_BUTTON(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButton))
+#define BTK_FONT_BUTTON_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
+#define BTK_IS_FONT_BUTTON(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FONT_BUTTON))
+#define BTK_IS_FONT_BUTTON_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FONT_BUTTON))
+#define BTK_FONT_BUTTON_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FONT_BUTTON, BtkFontButtonClass))
 
-typedef struct _GtkFontButton        GtkFontButton;
-typedef struct _GtkFontButtonClass   GtkFontButtonClass;
-typedef struct _GtkFontButtonPrivate GtkFontButtonPrivate;
+typedef struct _BtkFontButton        BtkFontButton;
+typedef struct _BtkFontButtonClass   BtkFontButtonClass;
+typedef struct _BtkFontButtonPrivate BtkFontButtonPrivate;
 
-struct _GtkFontButton {
-  GtkButton button;
+struct _BtkFontButton {
+  BtkButton button;
 
   /*< private >*/
-  GtkFontButtonPrivate *GSEAL (priv);
+  BtkFontButtonPrivate *GSEAL (priv);
 };
 
-struct _GtkFontButtonClass {
-  GtkButtonClass parent_class;
+struct _BtkFontButtonClass {
+  BtkButtonClass parent_class;
 
   /* font_set signal is emitted when font is chosen */
-  void (* font_set) (GtkFontButton *gfp);
+  void (* font_set) (BtkFontButton *gfp);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType                 gtk_font_button_get_type       (void) G_GNUC_CONST;
-GtkWidget            *gtk_font_button_new            (void);
-GtkWidget            *gtk_font_button_new_with_font  (const gchar   *fontname);
+GType                 btk_font_button_get_type       (void) G_GNUC_CONST;
+BtkWidget            *btk_font_button_new            (void);
+BtkWidget            *btk_font_button_new_with_font  (const gchar   *fontname);
 
-const gchar *         gtk_font_button_get_title      (GtkFontButton *font_button);
-void                  gtk_font_button_set_title      (GtkFontButton *font_button,
+const gchar *         btk_font_button_get_title      (BtkFontButton *font_button);
+void                  btk_font_button_set_title      (BtkFontButton *font_button,
                                                       const gchar   *title);
-gboolean              gtk_font_button_get_use_font   (GtkFontButton *font_button);
-void                  gtk_font_button_set_use_font   (GtkFontButton *font_button,
+gboolean              btk_font_button_get_use_font   (BtkFontButton *font_button);
+void                  btk_font_button_set_use_font   (BtkFontButton *font_button,
                                                       gboolean       use_font);
-gboolean              gtk_font_button_get_use_size   (GtkFontButton *font_button);
-void                  gtk_font_button_set_use_size   (GtkFontButton *font_button,
+gboolean              btk_font_button_get_use_size   (BtkFontButton *font_button);
+void                  btk_font_button_set_use_size   (BtkFontButton *font_button,
                                                       gboolean       use_size);
-const gchar *         gtk_font_button_get_font_name  (GtkFontButton *font_button);
-gboolean              gtk_font_button_set_font_name  (GtkFontButton *font_button,
+const gchar *         btk_font_button_get_font_name  (BtkFontButton *font_button);
+gboolean              btk_font_button_set_font_name  (BtkFontButton *font_button,
                                                       const gchar   *fontname);
-gboolean              gtk_font_button_get_show_style (GtkFontButton *font_button);
-void                  gtk_font_button_set_show_style (GtkFontButton *font_button,
+gboolean              btk_font_button_get_show_style (BtkFontButton *font_button);
+void                  btk_font_button_set_show_style (BtkFontButton *font_button,
                                                       gboolean       show_style);
-gboolean              gtk_font_button_get_show_size  (GtkFontButton *font_button);
-void                  gtk_font_button_set_show_size  (GtkFontButton *font_button,
+gboolean              btk_font_button_get_show_size  (BtkFontButton *font_button);
+void                  btk_font_button_set_show_size  (BtkFontButton *font_button,
                                                       gboolean       show_size);
 
 G_END_DECLS
 
 
-#endif /* __GTK_FONT_BUTTON_H__ */
+#endif /* __BTK_FONT_BUTTON_H__ */

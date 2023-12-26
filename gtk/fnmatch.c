@@ -17,10 +17,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 /*
@@ -32,7 +32,7 @@
 #include "config.h"
 #include <string.h>
 
-#include <glib.h>
+#include <bunnylib.h>
 
 /* We need to make sure that all constants are defined
  * to properly compile this file
@@ -77,7 +77,7 @@ get_unescaped_char (const char **str,
    it matches, nonzero if not.  */
 
 static gboolean
-gtk_fnmatch_intern (const char *pattern,
+btk_fnmatch_intern (const char *pattern,
 		    const char *string,
 		    gboolean    component_start,
 		    gboolean    no_leading_period)
@@ -149,7 +149,7 @@ gtk_fnmatch_intern (const char *pattern,
 	    for (p = last_p; nc != '\0';)
 	      {
 		if ((c == '[' || nc == c) &&
-		    gtk_fnmatch_intern (p, last_n, component_start, no_leading_period))
+		    btk_fnmatch_intern (p, last_n, component_start, no_leading_period))
 		  return TRUE;
 		
 		component_start = (nc == G_DIR_SEPARATOR);
@@ -238,11 +238,11 @@ gtk_fnmatch_intern (const char *pattern,
 /* Match STRING against the filename pattern PATTERN, returning zero if
  *  it matches, nonzero if not.
  *
- * GTK+ used to use a old version of GNU fnmatch() that was buggy
+ * BTK+ used to use a old version of GNU fnmatch() that was buggy
  * in various ways and didn't handle UTF-8. The following is
  * converted to UTF-8. To simplify the process of making it
  * correct, this is special-cased to the combinations of flags
- * that gtkfilesel.c uses.
+ * that btkfilesel.c uses.
  *
  *   FNM_FILE_NAME   - always set
  *   FNM_LEADING_DIR - never set
@@ -250,18 +250,18 @@ gtk_fnmatch_intern (const char *pattern,
  *   FNM_CASEFOLD    - set only on windows
  */
 gboolean
-_gtk_fnmatch (const char *pattern,
+_btk_fnmatch (const char *pattern,
 	      const char *string,
 	      gboolean no_leading_period)
 {
-  return gtk_fnmatch_intern (pattern, string, TRUE, no_leading_period);
+  return btk_fnmatch_intern (pattern, string, TRUE, no_leading_period);
 }
 
 #undef FNMATCH_TEST_CASES
 #ifdef FNMATCH_TEST_CASES
 
 #define TEST(pat, str, no_leading_period, result) \
-  g_assert (_gtk_fnmatch ((pat), (str), (no_leading_period)) == result)
+  g_assert (_btk_fnmatch ((pat), (str), (no_leading_period)) == result)
 
 int main (int argc, char **argv)
 {

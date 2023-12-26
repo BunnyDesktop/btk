@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,233 +21,233 @@
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#include "gaillabel.h"
-#include "gailwindow.h"
-#include <libgail-util/gailmisc.h>
+#include <btk/btk.h>
+#include "baillabel.h"
+#include "bailwindow.h"
+#include <libbail-util/bailmisc.h>
 
-static void       gail_label_class_init            (GailLabelClass    *klass);
-static void       gail_label_init                  (GailLabel         *label);
-static void	  gail_label_real_initialize	   (AtkObject 	      *obj,
+static void       bail_label_class_init            (BailLabelClass    *klass);
+static void       bail_label_init                  (BailLabel         *label);
+static void	  bail_label_real_initialize	   (BatkObject 	      *obj,
                                                     gpointer	      data);
-static void	  gail_label_real_notify_gtk	   (GObject	      *obj,
+static void	  bail_label_real_notify_btk	   (GObject	      *obj,
                                                     GParamSpec	      *pspec);
-static void       gail_label_map_gtk               (GtkWidget         *widget,
+static void       bail_label_map_btk               (BtkWidget         *widget,
                                                     gpointer          data);
-static void       gail_label_init_text_util        (GailLabel         *gail_label,
-                                                    GtkWidget         *widget);
-static void       gail_label_finalize              (GObject           *object);
+static void       bail_label_init_text_util        (BailLabel         *bail_label,
+                                                    BtkWidget         *widget);
+static void       bail_label_finalize              (GObject           *object);
 
-static void       atk_text_interface_init          (AtkTextIface      *iface);
+static void       batk_text_interface_init          (BatkTextIface      *iface);
 
-/* atkobject.h */
+/* batkobject.h */
 
-static const gchar*          gail_label_get_name         (AtkObject         *accessible);
-static AtkStateSet*          gail_label_ref_state_set	 (AtkObject	    *accessible);
-static AtkRelationSet*       gail_label_ref_relation_set (AtkObject         *accessible);
+static const gchar*          bail_label_get_name         (BatkObject         *accessible);
+static BatkStateSet*          bail_label_ref_state_set	 (BatkObject	    *accessible);
+static BatkRelationSet*       bail_label_ref_relation_set (BatkObject         *accessible);
 
-/* atktext.h */
+/* batktext.h */
 
-static gchar*	  gail_label_get_text		   (AtkText	      *text,
+static gchar*	  bail_label_get_text		   (BatkText	      *text,
                                                     gint	      start_pos,
 						    gint	      end_pos);
-static gunichar	  gail_label_get_character_at_offset(AtkText	      *text,
+static gunichar	  bail_label_get_character_at_offset(BatkText	      *text,
 						    gint	      offset);
-static gchar*     gail_label_get_text_before_offset(AtkText	      *text,
+static gchar*     bail_label_get_text_before_offset(BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gchar*     gail_label_get_text_at_offset    (AtkText	      *text,
+static gchar*     bail_label_get_text_at_offset    (BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gchar*     gail_label_get_text_after_offset    (AtkText	      *text,
+static gchar*     bail_label_get_text_after_offset    (BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gint	  gail_label_get_character_count   (AtkText	      *text);
-static gint	  gail_label_get_caret_offset	   (AtkText	      *text);
-static gboolean	  gail_label_set_caret_offset	   (AtkText	      *text,
+static gint	  bail_label_get_character_count   (BatkText	      *text);
+static gint	  bail_label_get_caret_offset	   (BatkText	      *text);
+static gboolean	  bail_label_set_caret_offset	   (BatkText	      *text,
                                                     gint	      offset);
-static gint	  gail_label_get_n_selections	   (AtkText	      *text);
-static gchar*	  gail_label_get_selection	   (AtkText	      *text,
+static gint	  bail_label_get_n_selections	   (BatkText	      *text);
+static gchar*	  bail_label_get_selection	   (BatkText	      *text,
                                                     gint	      selection_num,
                                                     gint	      *start_offset,
                                                     gint	      *end_offset);
-static gboolean	  gail_label_add_selection	   (AtkText	      *text,
+static gboolean	  bail_label_add_selection	   (BatkText	      *text,
                                                     gint	      start_offset,
                                                     gint	      end_offset);
-static gboolean	  gail_label_remove_selection	   (AtkText	      *text,
+static gboolean	  bail_label_remove_selection	   (BatkText	      *text,
                                                     gint	      selection_num);
-static gboolean	  gail_label_set_selection	   (AtkText	      *text,
+static gboolean	  bail_label_set_selection	   (BatkText	      *text,
                                                     gint	      selection_num,
                                                     gint	      start_offset,
 						    gint	      end_offset);
-static void gail_label_get_character_extents       (AtkText	      *text,
+static void bail_label_get_character_extents       (BatkText	      *text,
 						    gint 	      offset,
 		                                    gint 	      *x,
                     		   	            gint 	      *y,
                                 		    gint 	      *width,
                                      		    gint 	      *height,
-			        		    AtkCoordType      coords);
-static gint gail_label_get_offset_at_point         (AtkText           *text,
+			        		    BatkCoordType      coords);
+static gint bail_label_get_offset_at_point         (BatkText           *text,
                                                     gint              x,
                                                     gint              y,
-			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_label_get_run_attributes 
-                                                   (AtkText           *text,
+			                            BatkCoordType      coords);
+static BatkAttributeSet* bail_label_get_run_attributes 
+                                                   (BatkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
 					            gint	      *end_offset);
-static AtkAttributeSet* gail_label_get_default_attributes
-                                                   (AtkText           *text);
+static BatkAttributeSet* bail_label_get_default_attributes
+                                                   (BatkText           *text);
 
-G_DEFINE_TYPE_WITH_CODE (GailLabel, gail_label, GAIL_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailLabel, bail_label, BAIL_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_TEXT, batk_text_interface_init))
 
 static void
-gail_label_class_init (GailLabelClass *klass)
+bail_label_class_init (BailLabelClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
-  GailWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class;
 
-  gobject_class->finalize = gail_label_finalize;
+  bobject_class->finalize = bail_label_finalize;
 
-  widget_class = (GailWidgetClass*)klass;
-  widget_class->notify_gtk = gail_label_real_notify_gtk;
+  widget_class = (BailWidgetClass*)klass;
+  widget_class->notify_btk = bail_label_real_notify_btk;
 
-  class->get_name = gail_label_get_name;
-  class->ref_state_set = gail_label_ref_state_set;
-  class->ref_relation_set = gail_label_ref_relation_set;
-  class->initialize = gail_label_real_initialize;
+  class->get_name = bail_label_get_name;
+  class->ref_state_set = bail_label_ref_state_set;
+  class->ref_relation_set = bail_label_ref_relation_set;
+  class->initialize = bail_label_real_initialize;
 }
 
 static void
-gail_label_init (GailLabel *label)
+bail_label_init (BailLabel *label)
 {
 }
 
 static void
-gail_label_real_initialize (AtkObject *obj,
+bail_label_real_initialize (BatkObject *obj,
                             gpointer  data)
 {
-  GtkWidget  *widget;
-  GailLabel *gail_label;
+  BtkWidget  *widget;
+  BailLabel *bail_label;
 
-  ATK_OBJECT_CLASS (gail_label_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_label_parent_class)->initialize (obj, data);
   
-  gail_label = GAIL_LABEL (obj);
+  bail_label = BAIL_LABEL (obj);
 
-  gail_label->window_create_handler = 0;
-  gail_label->has_top_level = FALSE;
-  gail_label->cursor_position = 0;
-  gail_label->selection_bound = 0;
-  gail_label->textutil = NULL;
-  gail_label->label_length = 0;
+  bail_label->window_create_handler = 0;
+  bail_label->has_top_level = FALSE;
+  bail_label->cursor_position = 0;
+  bail_label->selection_bound = 0;
+  bail_label->textutil = NULL;
+  bail_label->label_length = 0;
   
-  widget = GTK_WIDGET (data);
+  widget = BTK_WIDGET (data);
 
-  if (gtk_widget_get_mapped (widget))
-    gail_label_init_text_util (gail_label, widget);
+  if (btk_widget_get_mapped (widget))
+    bail_label_init_text_util (bail_label, widget);
   else
     g_signal_connect (widget,
                       "map",
-                      G_CALLBACK (gail_label_map_gtk),
-                      gail_label);
+                      G_CALLBACK (bail_label_map_btk),
+                      bail_label);
 
   /* 
-   * Check whether ancestor of GtkLabel is a GtkButton and if so
-   * set accessible parent for GailLabel
+   * Check whether ancestor of BtkLabel is a BtkButton and if so
+   * set accessible parent for BailLabel
    */
   while (widget != NULL)
     {
-      widget = gtk_widget_get_parent (widget);
-      if (GTK_IS_BUTTON (widget))
+      widget = btk_widget_get_parent (widget);
+      if (BTK_IS_BUTTON (widget))
         {
-          atk_object_set_parent (obj, gtk_widget_get_accessible (widget));
+          batk_object_set_parent (obj, btk_widget_get_accessible (widget));
           break;
         }
     }
 
-  if (GTK_IS_ACCEL_LABEL (widget))
-    obj->role = ATK_ROLE_ACCEL_LABEL;
+  if (BTK_IS_ACCEL_LABEL (widget))
+    obj->role = BATK_ROLE_ACCEL_LABEL;
   else
-    obj->role = ATK_ROLE_LABEL;
+    obj->role = BATK_ROLE_LABEL;
 }
 
 static void
-gail_label_map_gtk (GtkWidget *widget,
+bail_label_map_btk (BtkWidget *widget,
                     gpointer data)
 {
-  GailLabel *gail_label;
+  BailLabel *bail_label;
 
-  gail_label = GAIL_LABEL (data);
-  gail_label_init_text_util (gail_label, widget);
+  bail_label = BAIL_LABEL (data);
+  bail_label_init_text_util (bail_label, widget);
 }
 
 static void
-gail_label_init_text_util (GailLabel *gail_label,
-                           GtkWidget *widget)
+bail_label_init_text_util (BailLabel *bail_label,
+                           BtkWidget *widget)
 {
-  GtkLabel *label;
+  BtkLabel *label;
   const gchar *label_text;
 
-  if (gail_label->textutil == NULL)
-    gail_label->textutil = gail_text_util_new ();
+  if (bail_label->textutil == NULL)
+    bail_label->textutil = bail_text_util_new ();
 
-  label = GTK_LABEL (widget);
-  label_text = gtk_label_get_text (label);
-  gail_text_util_text_setup (gail_label->textutil, label_text);
+  label = BTK_LABEL (widget);
+  label_text = btk_label_get_text (label);
+  bail_text_util_text_setup (bail_label->textutil, label_text);
   
   if (label_text == NULL)
-    gail_label->label_length = 0;
+    bail_label->label_length = 0;
   else
-    gail_label->label_length = g_utf8_strlen (label_text, -1);
+    bail_label->label_length = g_utf8_strlen (label_text, -1);
 }
 
 static void
-notify_name_change (AtkObject *atk_obj)
+notify_name_change (BatkObject *batk_obj)
 {
-  GtkLabel *label;
-  GailLabel *gail_label;
-  GtkWidget *widget;
-  GObject *gail_obj;
+  BtkLabel *label;
+  BailLabel *bail_label;
+  BtkWidget *widget;
+  GObject *bail_obj;
 
-  widget = GTK_ACCESSIBLE (atk_obj)->widget;
+  widget = BTK_ACCESSIBLE (batk_obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return;
 
-  gail_obj = G_OBJECT (atk_obj);
-  label = GTK_LABEL (widget);
-  gail_label = GAIL_LABEL (atk_obj);
+  bail_obj = G_OBJECT (batk_obj);
+  label = BTK_LABEL (widget);
+  bail_label = BAIL_LABEL (batk_obj);
 
-  if (gail_label->textutil == NULL)
+  if (bail_label->textutil == NULL)
     return;
 
   /*
    * Check whether the label has actually changed before emitting
    * notification.
    */
-  if (gail_label->textutil->buffer) 
+  if (bail_label->textutil->buffer) 
     {
-      GtkTextIter start, end;
+      BtkTextIter start, end;
       const char *new_label;
       char *old_label;
       int same;   
 
-      gtk_text_buffer_get_start_iter (gail_label->textutil->buffer, &start);
-      gtk_text_buffer_get_end_iter (gail_label->textutil->buffer, &end);
-      old_label = gtk_text_buffer_get_text (gail_label->textutil->buffer, &start, &end, FALSE);
-      new_label = gtk_label_get_text (label);
+      btk_text_buffer_get_start_iter (bail_label->textutil->buffer, &start);
+      btk_text_buffer_get_end_iter (bail_label->textutil->buffer, &end);
+      old_label = btk_text_buffer_get_text (bail_label->textutil->buffer, &start, &end, FALSE);
+      new_label = btk_label_get_text (label);
       same = strcmp (new_label, old_label);
       g_free (old_label);
       if (same == 0)
@@ -256,45 +256,45 @@ notify_name_change (AtkObject *atk_obj)
    
   /* Create a delete text and an insert text signal */
  
-  g_signal_emit_by_name (gail_obj, "text_changed::delete", 0, 
-                         gail_label->label_length);
+  g_signal_emit_by_name (bail_obj, "text_changed::delete", 0, 
+                         bail_label->label_length);
 
-  gail_label_init_text_util (gail_label, widget);
+  bail_label_init_text_util (bail_label, widget);
 
-  g_signal_emit_by_name (gail_obj, "text_changed::insert", 0, 
-                         gail_label->label_length);
+  g_signal_emit_by_name (bail_obj, "text_changed::insert", 0, 
+                         bail_label->label_length);
 
-  if (atk_obj->name == NULL)
+  if (batk_obj->name == NULL)
     /*
      * The label has changed so notify a change in accessible-name
      */
-    g_object_notify (gail_obj, "accessible-name");
+    g_object_notify (bail_obj, "accessible-name");
 
-  g_signal_emit_by_name (gail_obj, "visible_data_changed");
+  g_signal_emit_by_name (bail_obj, "visible_data_changed");
 }
 
 static void
 window_created (GObject *obj,
                 gpointer data)
 {
-  g_return_if_fail (GAIL_LABEL (data));
+  g_return_if_fail (BAIL_LABEL (data));
 
-  notify_name_change (ATK_OBJECT (data)); 
+  notify_name_change (BATK_OBJECT (data)); 
 }
 
 static void
-gail_label_real_notify_gtk (GObject           *obj,
+bail_label_real_notify_btk (GObject           *obj,
                             GParamSpec        *pspec)
 {
-  GtkWidget *widget = GTK_WIDGET (obj);
-  AtkObject* atk_obj = gtk_widget_get_accessible (widget);
-  GtkLabel *label;
-  GailLabel *gail_label;
-  GObject *gail_obj;
-  AtkObject *top_level;
-  AtkObject *temp_obj;
+  BtkWidget *widget = BTK_WIDGET (obj);
+  BatkObject* batk_obj = btk_widget_get_accessible (widget);
+  BtkLabel *label;
+  BailLabel *bail_label;
+  GObject *bail_obj;
+  BatkObject *top_level;
+  BatkObject *temp_obj;
 
-  gail_label = GAIL_LABEL (atk_obj);
+  bail_label = BAIL_LABEL (batk_obj);
 
   if (strcmp (pspec->name, "label") == 0)
     {
@@ -305,26 +305,26 @@ gail_label_real_notify_gtk (GObject           *obj,
       *
       * This happens when [Ctrl+]Alt+Tab is pressed in metacity
       */
-      if (!gail_label->has_top_level)
+      if (!bail_label->has_top_level)
         {
-          temp_obj = atk_obj;
+          temp_obj = batk_obj;
           top_level = NULL;
           while (temp_obj)
             {
               top_level = temp_obj;
-              temp_obj = atk_object_get_parent (top_level);
+              temp_obj = batk_object_get_parent (top_level);
             }
-          if (atk_object_get_role (top_level) != ATK_ROLE_APPLICATION)
+          if (batk_object_get_role (top_level) != BATK_ROLE_APPLICATION)
             {
-              if (gail_label->window_create_handler == 0 && 
-                  GAIL_IS_WINDOW (top_level))
-                gail_label->window_create_handler = g_signal_connect_after (top_level, "create", G_CALLBACK (window_created), atk_obj);
+              if (bail_label->window_create_handler == 0 && 
+                  BAIL_IS_WINDOW (top_level))
+                bail_label->window_create_handler = g_signal_connect_after (top_level, "create", G_CALLBACK (window_created), batk_obj);
             }
           else
-            gail_label->has_top_level = TRUE;
+            bail_label->has_top_level = TRUE;
         }
-      if (gail_label->has_top_level)
-        notify_name_change (atk_obj);
+      if (bail_label->has_top_level)
+        notify_name_change (batk_obj);
     }
   else if (strcmp (pspec->name, "cursor-position") == 0)
     {
@@ -332,30 +332,30 @@ gail_label_real_notify_gtk (GObject           *obj,
       gboolean text_caret_moved = FALSE;
       gboolean selection_changed = FALSE;
 
-      gail_obj = G_OBJECT (atk_obj);
-      label = GTK_LABEL (widget);
+      bail_obj = G_OBJECT (batk_obj);
+      label = BTK_LABEL (widget);
 
-      if (gail_label->selection_bound != -1 && gail_label->selection_bound < gail_label->cursor_position)
+      if (bail_label->selection_bound != -1 && bail_label->selection_bound < bail_label->cursor_position)
         {
-          tmp = gail_label->selection_bound;
-          gail_label->selection_bound = gail_label->cursor_position;
-          gail_label->cursor_position = tmp;
+          tmp = bail_label->selection_bound;
+          bail_label->selection_bound = bail_label->cursor_position;
+          bail_label->cursor_position = tmp;
         }
 
-      if (gtk_label_get_selection_bounds (label, &start, &end))
+      if (btk_label_get_selection_bounds (label, &start, &end))
         {
-          if (start != gail_label->cursor_position ||
-              end != gail_label->selection_bound)
+          if (start != bail_label->cursor_position ||
+              end != bail_label->selection_bound)
             {
-              if (end != gail_label->selection_bound)
+              if (end != bail_label->selection_bound)
                 {
-                  gail_label->selection_bound = start;
-                  gail_label->cursor_position = end;
+                  bail_label->selection_bound = start;
+                  bail_label->cursor_position = end;
                 }
               else
                 {
-                  gail_label->selection_bound = end;
-                  gail_label->cursor_position = start;
+                  bail_label->selection_bound = end;
+                  bail_label->cursor_position = start;
                 }
               text_caret_moved = TRUE;
               if (start != end)
@@ -364,168 +364,168 @@ gail_label_real_notify_gtk (GObject           *obj,
         }
       else 
         {
-          if (gail_label->cursor_position != gail_label->selection_bound)
+          if (bail_label->cursor_position != bail_label->selection_bound)
             selection_changed = TRUE;
-          if (gtk_label_get_selectable (label))
+          if (btk_label_get_selectable (label))
             {
-              if (gail_label->cursor_position != -1 && start != gail_label->cursor_position)
+              if (bail_label->cursor_position != -1 && start != bail_label->cursor_position)
                 text_caret_moved = TRUE;
-              if (gail_label->selection_bound != -1 && end != gail_label->selection_bound)
+              if (bail_label->selection_bound != -1 && end != bail_label->selection_bound)
                 {
                   text_caret_moved = TRUE;
-                  gail_label->cursor_position = end;
-                  gail_label->selection_bound = start;
+                  bail_label->cursor_position = end;
+                  bail_label->selection_bound = start;
                 }
               else
                 {
-                  gail_label->cursor_position = start;
-                  gail_label->selection_bound = end;
+                  bail_label->cursor_position = start;
+                  bail_label->selection_bound = end;
                 }
             }
           else
             {
-              /* GtkLabel has become non selectable */
+              /* BtkLabel has become non selectable */
 
-              gail_label->cursor_position = 0;
-              gail_label->selection_bound = 0;
+              bail_label->cursor_position = 0;
+              bail_label->selection_bound = 0;
               text_caret_moved = TRUE;
             }
 
         }
         if (text_caret_moved)
-          g_signal_emit_by_name (gail_obj, "text_caret_moved", 
-                                 gail_label->cursor_position);
+          g_signal_emit_by_name (bail_obj, "text_caret_moved", 
+                                 bail_label->cursor_position);
         if (selection_changed)
-          g_signal_emit_by_name (gail_obj, "text_selection_changed");
+          g_signal_emit_by_name (bail_obj, "text_selection_changed");
 
     }
   else
-    GAIL_WIDGET_CLASS (gail_label_parent_class)->notify_gtk (obj, pspec);
+    BAIL_WIDGET_CLASS (bail_label_parent_class)->notify_btk (obj, pspec);
 }
 
 static void
-gail_label_finalize (GObject            *object)
+bail_label_finalize (GObject            *object)
 {
-  GailLabel *label = GAIL_LABEL (object);
+  BailLabel *label = BAIL_LABEL (object);
 
   if (label->textutil)
     g_object_unref (label->textutil);
-  G_OBJECT_CLASS (gail_label_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_label_parent_class)->finalize (object);
 }
 
 
-/* atkobject.h */
+/* batkobject.h */
 
-static AtkStateSet*
-gail_label_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_label_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkWidget *widget;
+  BatkStateSet *state_set;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_label_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_label_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     return state_set;
 
-  atk_state_set_add_state (state_set, ATK_STATE_MULTI_LINE);
+  batk_state_set_add_state (state_set, BATK_STATE_MULTI_LINE);
 
   return state_set;
 }
 
-AtkRelationSet*
-gail_label_ref_relation_set (AtkObject *obj)
+BatkRelationSet*
+bail_label_ref_relation_set (BatkObject *obj)
 {
-  GtkWidget *widget;
-  AtkRelationSet *relation_set;
+  BtkWidget *widget;
+  BatkRelationSet *relation_set;
 
-  g_return_val_if_fail (GAIL_IS_LABEL (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_LABEL (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  relation_set = ATK_OBJECT_CLASS (gail_label_parent_class)->ref_relation_set (obj);
+  relation_set = BATK_OBJECT_CLASS (bail_label_parent_class)->ref_relation_set (obj);
 
-  if (!atk_relation_set_contains (relation_set, ATK_RELATION_LABEL_FOR))
+  if (!batk_relation_set_contains (relation_set, BATK_RELATION_LABEL_FOR))
     {
       /*
        * Get the mnemonic widget
        *
        * The relation set is not updated if the mnemonic widget is changed
        */
-      GtkWidget *mnemonic_widget = GTK_LABEL (widget)->mnemonic_widget;
+      BtkWidget *mnemonic_widget = BTK_LABEL (widget)->mnemonic_widget;
 
       if (mnemonic_widget)
         {
-          AtkObject *accessible_array[1];
-          AtkRelation* relation;
+          BatkObject *accessible_array[1];
+          BatkRelation* relation;
 
-          if (!gtk_widget_get_can_focus (mnemonic_widget))
+          if (!btk_widget_get_can_focus (mnemonic_widget))
             {
             /*
-             * Handle the case where a GtkFileChooserButton is specified as the 
+             * Handle the case where a BtkFileChooserButton is specified as the 
              * mnemonic widget. use the combobox which is a child of the
-             * GtkFileChooserButton as the mnemonic widget. See bug #359843.
+             * BtkFileChooserButton as the mnemonic widget. See bug #359843.
              */
-             if (GTK_IS_BOX (mnemonic_widget))
+             if (BTK_IS_BOX (mnemonic_widget))
                {
                   GList *list, *tmpl;
 
-                  list = gtk_container_get_children (GTK_CONTAINER (mnemonic_widget));
+                  list = btk_container_get_children (BTK_CONTAINER (mnemonic_widget));
                   if (g_list_length (list) == 2)
                     {
                       tmpl = g_list_last (list);
-                      if (GTK_IS_COMBO_BOX(tmpl->data))
+                      if (BTK_IS_COMBO_BOX(tmpl->data))
                         {
-                          mnemonic_widget = GTK_WIDGET(tmpl->data);
+                          mnemonic_widget = BTK_WIDGET(tmpl->data);
                         }
                     }
                   g_list_free (list);
                 }
             /*
-             * Handle the case where a GnomeIconEntry is specified as the 
+             * Handle the case where a BunnyIconEntry is specified as the 
              * mnemonic widget. use the button which is a grandchild of the
-             * GnomeIconEntry as the mnemonic widget. See bug #133967.
+             * BunnyIconEntry as the mnemonic widget. See bug #133967.
              */
-              else if (GTK_IS_BOX (mnemonic_widget))
+              else if (BTK_IS_BOX (mnemonic_widget))
                 {
                   GList *list;
 
-                  list = gtk_container_get_children (GTK_CONTAINER (mnemonic_widget));
+                  list = btk_container_get_children (BTK_CONTAINER (mnemonic_widget));
                   if (g_list_length (list) == 1)
                     {
-                      if (GTK_IS_ALIGNMENT (list->data))
+                      if (BTK_IS_ALIGNMENT (list->data))
                         {
-                          GtkWidget *temp_widget;
+                          BtkWidget *temp_widget;
 
-                          temp_widget = GTK_BIN (list->data)->child;
-                          if (GTK_IS_BUTTON (temp_widget))
+                          temp_widget = BTK_BIN (list->data)->child;
+                          if (BTK_IS_BUTTON (temp_widget))
                             mnemonic_widget = temp_widget;
                         }
-                      else if (GTK_IS_HBOX (list->data))
+                      else if (BTK_IS_HBOX (list->data))
                         {
-                          GtkWidget *temp_widget;
+                          BtkWidget *temp_widget;
 
-                          temp_widget = GTK_WIDGET (list->data);
+                          temp_widget = BTK_WIDGET (list->data);
                           g_list_free (list);
-                          list = gtk_container_get_children (GTK_CONTAINER (temp_widget));
-                          if (GTK_IS_COMBO (list->data))
+                          list = btk_container_get_children (BTK_CONTAINER (temp_widget));
+                          if (BTK_IS_COMBO (list->data))
                             {
-                              mnemonic_widget = GTK_WIDGET (list->data);
+                              mnemonic_widget = BTK_WIDGET (list->data);
                             }
                         }
                     }
                   g_list_free (list);
                 }
             }
-          accessible_array[0] = gtk_widget_get_accessible (mnemonic_widget);
-          relation = atk_relation_new (accessible_array, 1,
-                                       ATK_RELATION_LABEL_FOR);
-          atk_relation_set_add (relation_set, relation);
+          accessible_array[0] = btk_widget_get_accessible (mnemonic_widget);
+          relation = batk_relation_new (accessible_array, 1,
+                                       BATK_RELATION_LABEL_FOR);
+          batk_relation_set_add (relation_set, relation);
           /*
            * Unref the relation so that it is not leaked.
            */
@@ -536,13 +536,13 @@ gail_label_ref_relation_set (AtkObject *obj)
 }
 
 static const gchar*
-gail_label_get_name (AtkObject *accessible)
+bail_label_get_name (BatkObject *accessible)
 {
   const gchar *name;
 
-  g_return_val_if_fail (GAIL_IS_LABEL (accessible), NULL);
+  g_return_val_if_fail (BAIL_IS_LABEL (accessible), NULL);
 
-  name = ATK_OBJECT_CLASS (gail_label_parent_class)->get_name (accessible);
+  name = BATK_OBJECT_CLASS (bail_label_parent_class)->get_name (accessible);
   if (name != NULL)
     return name;
   else
@@ -550,134 +550,134 @@ gail_label_get_name (AtkObject *accessible)
       /*
        * Get the text on the label
        */
-      GtkWidget *widget;
+      BtkWidget *widget;
 
-      widget = GTK_ACCESSIBLE (accessible)->widget;
+      widget = BTK_ACCESSIBLE (accessible)->widget;
       if (widget == NULL)
         /*
          * State is defunct
          */
         return NULL;
 
-      g_return_val_if_fail (GTK_IS_LABEL (widget), NULL);
+      g_return_val_if_fail (BTK_IS_LABEL (widget), NULL);
 
-      return gtk_label_get_text (GTK_LABEL (widget));
+      return btk_label_get_text (BTK_LABEL (widget));
     }
 }
 
-/* atktext.h */
+/* batktext.h */
 
 static void
-atk_text_interface_init (AtkTextIface *iface)
+batk_text_interface_init (BatkTextIface *iface)
 {
-  iface->get_text = gail_label_get_text;
-  iface->get_character_at_offset = gail_label_get_character_at_offset;
-  iface->get_text_before_offset = gail_label_get_text_before_offset;
-  iface->get_text_at_offset = gail_label_get_text_at_offset;
-  iface->get_text_after_offset = gail_label_get_text_after_offset;
-  iface->get_character_count = gail_label_get_character_count;
-  iface->get_caret_offset = gail_label_get_caret_offset;
-  iface->set_caret_offset = gail_label_set_caret_offset;
-  iface->get_n_selections = gail_label_get_n_selections;
-  iface->get_selection = gail_label_get_selection;
-  iface->add_selection = gail_label_add_selection;
-  iface->remove_selection = gail_label_remove_selection;
-  iface->set_selection = gail_label_set_selection;
-  iface->get_character_extents = gail_label_get_character_extents;
-  iface->get_offset_at_point = gail_label_get_offset_at_point;
-  iface->get_run_attributes = gail_label_get_run_attributes;
-  iface->get_default_attributes = gail_label_get_default_attributes;
+  iface->get_text = bail_label_get_text;
+  iface->get_character_at_offset = bail_label_get_character_at_offset;
+  iface->get_text_before_offset = bail_label_get_text_before_offset;
+  iface->get_text_at_offset = bail_label_get_text_at_offset;
+  iface->get_text_after_offset = bail_label_get_text_after_offset;
+  iface->get_character_count = bail_label_get_character_count;
+  iface->get_caret_offset = bail_label_get_caret_offset;
+  iface->set_caret_offset = bail_label_set_caret_offset;
+  iface->get_n_selections = bail_label_get_n_selections;
+  iface->get_selection = bail_label_get_selection;
+  iface->add_selection = bail_label_add_selection;
+  iface->remove_selection = bail_label_remove_selection;
+  iface->set_selection = bail_label_set_selection;
+  iface->get_character_extents = bail_label_get_character_extents;
+  iface->get_offset_at_point = bail_label_get_offset_at_point;
+  iface->get_run_attributes = bail_label_get_run_attributes;
+  iface->get_default_attributes = bail_label_get_default_attributes;
 }
 
 static gchar*
-gail_label_get_text (AtkText *text,
+bail_label_get_text (BatkText *text,
                      gint    start_pos,
                      gint    end_pos)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
 
   const gchar *label_text;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  label_text = gtk_label_get_text (label);
+  label_text = btk_label_get_text (label);
  
   if (label_text == NULL)
     return NULL;
   else
   {
-    if (GAIL_LABEL (text)->textutil == NULL) 
-      gail_label_init_text_util (GAIL_LABEL (text), widget);
-    return gail_text_util_get_substring (GAIL_LABEL(text)->textutil, 
+    if (BAIL_LABEL (text)->textutil == NULL) 
+      bail_label_init_text_util (BAIL_LABEL (text), widget);
+    return bail_text_util_get_substring (BAIL_LABEL(text)->textutil, 
                                          start_pos, end_pos);
   }
 }
 
 static gchar*
-gail_label_get_text_before_offset (AtkText         *text,
+bail_label_get_text_before_offset (BatkText         *text,
 				   gint            offset,
-				   AtkTextBoundary boundary_type,
+				   BatkTextBoundary boundary_type,
 				   gint            *start_offset,
 				   gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
+  BtkWidget *widget;
+  BtkLabel *label;
   
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
     /* State is defunct */
     return NULL;
   
   /* Get label */
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                           gtk_label_get_layout (label), GAIL_BEFORE_OFFSET, 
+  return bail_text_util_get_text (BAIL_LABEL (text)->textutil,
+                           btk_label_get_layout (label), BAIL_BEFORE_OFFSET, 
                            boundary_type, offset, start_offset, end_offset); 
 }
 
 static gchar*
-gail_label_get_text_at_offset (AtkText         *text,
+bail_label_get_text_at_offset (BatkText         *text,
 			       gint            offset,
-			       AtkTextBoundary boundary_type,
+			       BatkTextBoundary boundary_type,
  			       gint            *start_offset,
 			       gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
+  BtkWidget *widget;
+  BtkLabel *label;
  
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
     /* State is defunct */
     return NULL;
   
   /* Get label */
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                              gtk_label_get_layout (label), GAIL_AT_OFFSET, 
+  return bail_text_util_get_text (BAIL_LABEL (text)->textutil,
+                              btk_label_get_layout (label), BAIL_AT_OFFSET, 
                               boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
-gail_label_get_text_after_offset (AtkText         *text,
+bail_label_get_text_after_offset (BatkText         *text,
 				  gint            offset,
-				  AtkTextBoundary boundary_type,
+				  BatkTextBoundary boundary_type,
 				  gint            *start_offset,
 				  gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
+  BtkWidget *widget;
+  BtkLabel *label;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
   {
@@ -686,53 +686,53 @@ gail_label_get_text_after_offset (AtkText         *text,
   }
   
   /* Get label */
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  return gail_text_util_get_text (GAIL_LABEL (text)->textutil,
-                           gtk_label_get_layout (label), GAIL_AFTER_OFFSET, 
+  return bail_text_util_get_text (BAIL_LABEL (text)->textutil,
+                           btk_label_get_layout (label), BAIL_AFTER_OFFSET, 
                            boundary_type, offset, start_offset, end_offset);
 }
 
 static gint
-gail_label_get_character_count (AtkText *text)
+bail_label_get_character_count (BatkText *text)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  label = GTK_LABEL (widget);
-  return g_utf8_strlen (gtk_label_get_text (label), -1);
+  label = BTK_LABEL (widget);
+  return g_utf8_strlen (btk_label_get_text (label), -1);
 }
 
 static gint
-gail_label_get_caret_offset (AtkText *text)
+bail_label_get_caret_offset (BatkText *text)
 {
-   return GAIL_LABEL (text)->cursor_position;
+   return BAIL_LABEL (text)->cursor_position;
 }
 
 static gboolean
-gail_label_set_caret_offset (AtkText *text, 
+bail_label_set_caret_offset (BatkText *text, 
                              gint    offset)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  if (gtk_label_get_selectable (label) &&
+  if (btk_label_get_selectable (label) &&
       offset >= 0 &&
       offset <= g_utf8_strlen (label->text, -1))
     {
-      gtk_label_select_region (label, offset, offset);
+      btk_label_select_rebunnyion (label, offset, offset);
       return TRUE;
     }
   else
@@ -740,58 +740,58 @@ gail_label_set_caret_offset (AtkText *text,
 }
 
 static gint
-gail_label_get_n_selections (AtkText *text)
+bail_label_get_n_selections (BatkText *text)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
   gint start, end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  if (!gtk_label_get_selectable (label))
+  if (!btk_label_get_selectable (label))
      return 0;
 
-  if (gtk_label_get_selection_bounds (label, &start, &end))
+  if (btk_label_get_selection_bounds (label, &start, &end))
      return 1;
   else 
      return 0;
 }
 
 static gchar*
-gail_label_get_selection (AtkText *text,
+bail_label_get_selection (BatkText *text,
 			  gint    selection_num,
                           gint    *start_pos,
                           gint    *end_pos)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
  /* Only let the user get the selection if one is set, and if the
   * selection_num is 0.
   */
-  if (!gtk_label_get_selectable( label) || selection_num != 0)
+  if (!btk_label_get_selectable( label) || selection_num != 0)
      return NULL;
 
-  if (gtk_label_get_selection_bounds (label, start_pos, end_pos))
+  if (btk_label_get_selection_bounds (label, start_pos, end_pos))
     {
-      const gchar* label_text = gtk_label_get_text (label);
+      const gchar* label_text = btk_label_get_text (label);
     
       if (label_text == NULL)
         return 0;
       else
-        return gail_text_util_get_substring (GAIL_LABEL (text)->textutil, 
+        return bail_text_util_get_substring (BAIL_LABEL (text)->textutil, 
                                              *start_pos, *end_pos);
     }
   else 
@@ -799,27 +799,27 @@ gail_label_get_selection (AtkText *text,
 }
 
 static gboolean
-gail_label_add_selection (AtkText *text,
+bail_label_add_selection (BatkText *text,
                           gint    start_pos,
                           gint    end_pos)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
   gint start, end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  if (!gtk_label_get_selectable (label))
+  if (!btk_label_get_selectable (label))
      return FALSE;
 
-  if (! gtk_label_get_selection_bounds (label, &start, &end))
+  if (! btk_label_get_selection_bounds (label, &start, &end))
     {
-      gtk_label_select_region (label, start_pos, end_pos);
+      btk_label_select_rebunnyion (label, start_pos, end_pos);
       return TRUE;
     }
   else
@@ -827,14 +827,14 @@ gail_label_add_selection (AtkText *text,
 }
 
 static gboolean
-gail_label_remove_selection (AtkText *text,
+bail_label_remove_selection (BatkText *text,
                              gint    selection_num)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
   gint start, end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
@@ -842,14 +842,14 @@ gail_label_remove_selection (AtkText *text,
   if (selection_num != 0)
      return FALSE;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  if (!gtk_label_get_selectable (label))
+  if (!btk_label_get_selectable (label))
      return FALSE;
 
-  if (gtk_label_get_selection_bounds (label, &start, &end))
+  if (btk_label_get_selection_bounds (label, &start, &end))
     {
-      gtk_label_select_region (label, 0, 0);
+      btk_label_select_rebunnyion (label, 0, 0);
       return TRUE;
     }
   else
@@ -857,16 +857,16 @@ gail_label_remove_selection (AtkText *text,
 }
 
 static gboolean
-gail_label_set_selection (AtkText *text,
+bail_label_set_selection (BatkText *text,
 			  gint	  selection_num,
                           gint    start_pos,
                           gint    end_pos)
 {
-  GtkWidget *widget;
-  GtkLabel  *label;
+  BtkWidget *widget;
+  BtkLabel  *label;
   gint start, end;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return FALSE;
@@ -874,14 +874,14 @@ gail_label_set_selection (AtkText *text,
   if (selection_num != 0)
      return FALSE;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
 
-  if (!gtk_label_get_selectable (label))
+  if (!btk_label_get_selectable (label))
      return FALSE;
 
-  if (gtk_label_get_selection_bounds (label, &start, &end))
+  if (btk_label_get_selection_bounds (label, &start, &end))
     {
-      gtk_label_select_region (label, start_pos, end_pos);
+      btk_label_select_rebunnyion (label, start_pos, end_pos);
       return TRUE;
     }
   else
@@ -889,59 +889,59 @@ gail_label_set_selection (AtkText *text,
 }
 
 static void
-gail_label_get_character_extents (AtkText      *text,
+bail_label_get_character_extents (BatkText      *text,
 				  gint         offset,
 		                  gint         *x,
                     		  gint 	       *y,
                                   gint 	       *width,
                                   gint 	       *height,
-			          AtkCoordType coords)
+			          BatkCoordType coords)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
-  PangoRectangle char_rect;
+  BtkWidget *widget;
+  BtkLabel *label;
+  BangoRectangle char_rect;
   gint index, x_layout, y_layout;
  
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
     /* State is defunct */
     return;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
   
-  gtk_label_get_layout_offsets (label, &x_layout, &y_layout);
+  btk_label_get_layout_offsets (label, &x_layout, &y_layout);
   index = g_utf8_offset_to_pointer (label->text, offset) - label->text;
-  pango_layout_index_to_pos (gtk_label_get_layout (label), index, &char_rect);
+  bango_layout_index_to_pos (btk_label_get_layout (label), index, &char_rect);
   
-  gail_misc_get_extents_from_pango_rectangle (widget, &char_rect, 
+  bail_misc_get_extents_from_bango_rectangle (widget, &char_rect, 
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
 static gint 
-gail_label_get_offset_at_point (AtkText      *text,
+bail_label_get_offset_at_point (BatkText      *text,
                                 gint         x,
                                 gint         y,
-			        AtkCoordType coords)
+			        BatkCoordType coords)
 { 
-  GtkWidget *widget;
-  GtkLabel *label;
+  BtkWidget *widget;
+  BtkLabel *label;
   gint index, x_layout, y_layout;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return -1;
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
   
-  gtk_label_get_layout_offsets (label, &x_layout, &y_layout);
+  btk_label_get_layout_offsets (label, &x_layout, &y_layout);
   
-  index = gail_misc_get_index_at_point_in_layout (widget, 
-                                              gtk_label_get_layout (label), 
+  index = bail_misc_get_index_at_point_in_layout (widget, 
+                                              btk_label_get_layout (label), 
                                               x_layout, y_layout, x, y, coords);
   if (index == -1)
     {
-      if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
+      if (coords == BATK_XY_WINDOW || coords == BATK_XY_SCREEN)
         return g_utf8_strlen (label->text, -1);
 
       return index;  
@@ -950,43 +950,43 @@ gail_label_get_offset_at_point (AtkText      *text,
     return g_utf8_pointer_to_offset (label->text, label->text + index);  
 }
 
-static AtkAttributeSet*
-gail_label_get_run_attributes (AtkText        *text,
+static BatkAttributeSet*
+bail_label_get_run_attributes (BatkText        *text,
                                gint 	      offset,
                                gint 	      *start_offset,
 	                       gint	      *end_offset)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
-  AtkAttributeSet *at_set = NULL;
-  GtkJustification justify;
-  GtkTextDirection dir;
+  BtkWidget *widget;
+  BtkLabel *label;
+  BatkAttributeSet *at_set = NULL;
+  BtkJustification justify;
+  BtkTextDirection dir;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
   
   /* Get values set for entire label, if any */
-  justify = gtk_label_get_justify (label);
-  if (justify != GTK_JUSTIFY_CENTER)
+  justify = btk_label_get_justify (label);
+  if (justify != BTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
-                                        ATK_TEXT_ATTR_JUSTIFICATION,
-     g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
+      at_set = bail_misc_add_attribute (at_set, 
+                                        BATK_TEXT_ATTR_JUSTIFICATION,
+     g_strdup (batk_text_attribute_get_value (BATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
-  dir = gtk_widget_get_direction (widget);
-  if (dir == GTK_TEXT_DIR_RTL)
+  dir = btk_widget_get_direction (widget);
+  if (dir == BTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
-                                        ATK_TEXT_ATTR_DIRECTION,
-     g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
+      at_set = bail_misc_add_attribute (at_set, 
+                                        BATK_TEXT_ATTR_DIRECTION,
+     g_strdup (batk_text_attribute_get_value (BATK_TEXT_ATTR_DIRECTION, dir)));
     }
 
-  at_set = gail_misc_layout_get_run_attributes (at_set,
-                                                gtk_label_get_layout (label),
+  at_set = bail_misc_layout_get_run_attributes (at_set,
+                                                btk_label_get_layout (label),
                                                 label->text,
                                                 offset,
                                                 start_offset,
@@ -994,42 +994,42 @@ gail_label_get_run_attributes (AtkText        *text,
   return at_set;
 }
 
-static AtkAttributeSet*
-gail_label_get_default_attributes (AtkText        *text)
+static BatkAttributeSet*
+bail_label_get_default_attributes (BatkText        *text)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
-  AtkAttributeSet *at_set = NULL;
+  BtkWidget *widget;
+  BtkLabel *label;
+  BatkAttributeSet *at_set = NULL;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
-  label = GTK_LABEL (widget);
+  label = BTK_LABEL (widget);
   
-  at_set = gail_misc_get_default_attributes (at_set,
-                                             gtk_label_get_layout (label),
+  at_set = bail_misc_get_default_attributes (at_set,
+                                             btk_label_get_layout (label),
                                              widget);
   return at_set;
 }
 
 static gunichar 
-gail_label_get_character_at_offset (AtkText	         *text,
+bail_label_get_character_at_offset (BatkText	         *text,
                                     gint	         offset)
 {
-  GtkWidget *widget;
-  GtkLabel *label;
+  BtkWidget *widget;
+  BtkLabel *label;
   const gchar *string;
   gchar *index;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return '\0';
 
-  label = GTK_LABEL (widget);
-  string = gtk_label_get_text (label);
+  label = BTK_LABEL (widget);
+  string = btk_label_get_text (label);
   if (offset >= g_utf8_strlen (string, -1))
     return '\0';
   index = g_utf8_offset_to_pointer (string, offset);

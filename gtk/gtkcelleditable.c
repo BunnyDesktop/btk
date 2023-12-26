@@ -1,4 +1,4 @@
-/* gtkcelleditable.c
+/* btkcelleditable.c
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,20 +19,20 @@
 
 
 #include "config.h"
-#include "gtkcelleditable.h"
-#include "gtkmarshalers.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkcelleditable.h"
+#include "btkmarshalers.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-typedef GtkCellEditableIface GtkCellEditableInterface;
-G_DEFINE_INTERFACE(GtkCellEditable, gtk_cell_editable, GTK_TYPE_WIDGET)
+typedef BtkCellEditableIface BtkCellEditableInterface;
+G_DEFINE_INTERFACE(BtkCellEditable, btk_cell_editable, BTK_TYPE_WIDGET)
 
 static void
-gtk_cell_editable_default_init (GtkCellEditableInterface *iface)
+btk_cell_editable_default_init (BtkCellEditableInterface *iface)
 {
   /**
-   * GtkCellEditable:editing-canceled:
+   * BtkCellEditable:editing-canceled:
    *
    * Indicates whether editing on the cell has been canceled.
    *
@@ -43,100 +43,100 @@ gtk_cell_editable_default_init (GtkCellEditableInterface *iface)
                                        P_("Editing Canceled"),
                                        P_("Indicates that editing has been canceled"),
                                        FALSE,
-                                       GTK_PARAM_READWRITE));
+                                       BTK_PARAM_READWRITE));
 
   /**
-   * GtkCellEditable::editing-done:
+   * BtkCellEditable::editing-done:
    * @cell_editable: the object on which the signal was emitted
    *
    * This signal is a sign for the cell renderer to update its
    * value from the @cell_editable.
    *
-   * Implementations of #GtkCellEditable are responsible for
+   * Implementations of #BtkCellEditable are responsible for
    * emitting this signal when they are done editing, e.g.
-   * #GtkEntry is emitting it when the user presses Enter.
+   * #BtkEntry is emitting it when the user presses Enter.
    *
-   * gtk_cell_editable_editing_done() is a convenience method
-   * for emitting GtkCellEditable::editing-done.
+   * btk_cell_editable_editing_done() is a convenience method
+   * for emitting BtkCellEditable::editing-done.
    */
   g_signal_new (I_("editing-done"),
-                GTK_TYPE_CELL_EDITABLE,
+                BTK_TYPE_CELL_EDITABLE,
                 G_SIGNAL_RUN_LAST,
-                G_STRUCT_OFFSET (GtkCellEditableIface, editing_done),
+                G_STRUCT_OFFSET (BtkCellEditableIface, editing_done),
                 NULL, NULL,
-                _gtk_marshal_VOID__VOID,
+                _btk_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
 
   /**
-   * GtkCellEditable::remove-widget:
+   * BtkCellEditable::remove-widget:
    * @cell_editable: the object on which the signal was emitted
    *
    * This signal is meant to indicate that the cell is finished
    * editing, and the widget may now be destroyed.
    *
-   * Implementations of #GtkCellEditable are responsible for
+   * Implementations of #BtkCellEditable are responsible for
    * emitting this signal when they are done editing. It must
-   * be emitted after the #GtkCellEditable::editing-done signal,
+   * be emitted after the #BtkCellEditable::editing-done signal,
    * to give the cell renderer a chance to update the cell's value
    * before the widget is removed.
    *
-   * gtk_cell_editable_remove_widget() is a convenience method
-   * for emitting GtkCellEditable::remove-widget.
+   * btk_cell_editable_remove_widget() is a convenience method
+   * for emitting BtkCellEditable::remove-widget.
    */
   g_signal_new (I_("remove-widget"),
-                GTK_TYPE_CELL_EDITABLE,
+                BTK_TYPE_CELL_EDITABLE,
                 G_SIGNAL_RUN_LAST,
-                G_STRUCT_OFFSET (GtkCellEditableIface, remove_widget),
+                G_STRUCT_OFFSET (BtkCellEditableIface, remove_widget),
                 NULL, NULL,
-                _gtk_marshal_VOID__VOID,
+                _btk_marshal_VOID__VOID,
                 G_TYPE_NONE, 0);
 }
 
 /**
- * gtk_cell_editable_start_editing:
- * @cell_editable: A #GtkCellEditable
- * @event: (allow-none): A #GdkEvent, or %NULL
+ * btk_cell_editable_start_editing:
+ * @cell_editable: A #BtkCellEditable
+ * @event: (allow-none): A #BdkEvent, or %NULL
  * 
- * Begins editing on a @cell_editable. @event is the #GdkEvent that began 
+ * Begins editing on a @cell_editable. @event is the #BdkEvent that began 
  * the editing process. It may be %NULL, in the instance that editing was 
  * initiated through programatic means.
  **/
 void
-gtk_cell_editable_start_editing (GtkCellEditable *cell_editable,
-				 GdkEvent        *event)
+btk_cell_editable_start_editing (BtkCellEditable *cell_editable,
+				 BdkEvent        *event)
 {
-  g_return_if_fail (GTK_IS_CELL_EDITABLE (cell_editable));
+  g_return_if_fail (BTK_IS_CELL_EDITABLE (cell_editable));
 
-  (* GTK_CELL_EDITABLE_GET_IFACE (cell_editable)->start_editing) (cell_editable, event);
+  (* BTK_CELL_EDITABLE_GET_IFACE (cell_editable)->start_editing) (cell_editable, event);
 }
 
 /**
- * gtk_cell_editable_editing_done:
- * @cell_editable: A #GtkTreeEditable
+ * btk_cell_editable_editing_done:
+ * @cell_editable: A #BtkTreeEditable
  * 
- * Emits the #GtkCellEditable::editing-done signal. 
+ * Emits the #BtkCellEditable::editing-done signal. 
  **/
 void
-gtk_cell_editable_editing_done (GtkCellEditable *cell_editable)
+btk_cell_editable_editing_done (BtkCellEditable *cell_editable)
 {
-  g_return_if_fail (GTK_IS_CELL_EDITABLE (cell_editable));
+  g_return_if_fail (BTK_IS_CELL_EDITABLE (cell_editable));
 
   g_signal_emit_by_name (cell_editable, "editing-done");
 }
 
 /**
- * gtk_cell_editable_remove_widget:
- * @cell_editable: A #GtkTreeEditable
+ * btk_cell_editable_remove_widget:
+ * @cell_editable: A #BtkTreeEditable
  * 
- * Emits the #GtkCellEditable::remove-widget signal.  
+ * Emits the #BtkCellEditable::remove-widget signal.  
  **/
 void
-gtk_cell_editable_remove_widget (GtkCellEditable *cell_editable)
+btk_cell_editable_remove_widget (BtkCellEditable *cell_editable)
 {
-  g_return_if_fail (GTK_IS_CELL_EDITABLE (cell_editable));
+  g_return_if_fail (BTK_IS_CELL_EDITABLE (cell_editable));
 
   g_signal_emit_by_name (cell_editable, "remove-widget");
 }
 
-#define __GTK_CELL_EDITABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_CELL_EDITABLE_C__
+#include "btkaliasdef.c"

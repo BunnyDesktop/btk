@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintsettings.h: Print Settings
+/* BTK - The GIMP Toolkit
+ * btkprintsettings.h: Print Settings
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,217 +18,217 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_SETTINGS_H__
-#define __GTK_PRINT_SETTINGS_H__
+#ifndef __BTK_PRINT_SETTINGS_H__
+#define __BTK_PRINT_SETTINGS_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkpapersize.h>
+#include <btk/btkpapersize.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GtkPrintSettings GtkPrintSettings;
+typedef struct _BtkPrintSettings BtkPrintSettings;
 
-#define GTK_TYPE_PRINT_SETTINGS    (gtk_print_settings_get_type ())
-#define GTK_PRINT_SETTINGS(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_SETTINGS, GtkPrintSettings))
-#define GTK_IS_PRINT_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_SETTINGS))
+#define BTK_TYPE_PRINT_SETTINGS    (btk_print_settings_get_type ())
+#define BTK_PRINT_SETTINGS(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_SETTINGS, BtkPrintSettings))
+#define BTK_IS_PRINT_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_SETTINGS))
 
-typedef void  (*GtkPrintSettingsFunc)  (const gchar *key,
+typedef void  (*BtkPrintSettingsFunc)  (const gchar *key,
 					const gchar *value,
 					gpointer     user_data);
 
-typedef struct _GtkPageRange GtkPageRange;
-struct _GtkPageRange
+typedef struct _BtkPageRange BtkPageRange;
+struct _BtkPageRange
 {
   gint start;
   gint end;
 };
 
-GType             gtk_print_settings_get_type                (void) G_GNUC_CONST;
-GtkPrintSettings *gtk_print_settings_new                     (void);
+GType             btk_print_settings_get_type                (void) G_GNUC_CONST;
+BtkPrintSettings *btk_print_settings_new                     (void);
 
-GtkPrintSettings *gtk_print_settings_copy                    (GtkPrintSettings     *other);
+BtkPrintSettings *btk_print_settings_copy                    (BtkPrintSettings     *other);
 
-GtkPrintSettings *gtk_print_settings_new_from_file           (const gchar          *file_name,
+BtkPrintSettings *btk_print_settings_new_from_file           (const gchar          *file_name,
 							      GError              **error);
-gboolean          gtk_print_settings_load_file               (GtkPrintSettings     *settings,
+gboolean          btk_print_settings_load_file               (BtkPrintSettings     *settings,
 							      const gchar          *file_name,
 							      GError              **error);
-gboolean          gtk_print_settings_to_file                 (GtkPrintSettings     *settings,
+gboolean          btk_print_settings_to_file                 (BtkPrintSettings     *settings,
 							      const gchar          *file_name,
 							      GError              **error);
-GtkPrintSettings *gtk_print_settings_new_from_key_file       (GKeyFile             *key_file,
+BtkPrintSettings *btk_print_settings_new_from_key_file       (GKeyFile             *key_file,
 							      const gchar          *group_name,
 							      GError              **error);
-gboolean          gtk_print_settings_load_key_file           (GtkPrintSettings     *settings,
+gboolean          btk_print_settings_load_key_file           (BtkPrintSettings     *settings,
 							      GKeyFile             *key_file,
 							      const gchar          *group_name,
 							      GError              **error);
-void              gtk_print_settings_to_key_file             (GtkPrintSettings     *settings,
+void              btk_print_settings_to_key_file             (BtkPrintSettings     *settings,
 							      GKeyFile             *key_file,
 							      const gchar          *group_name);
-gboolean          gtk_print_settings_has_key                 (GtkPrintSettings     *settings,
+gboolean          btk_print_settings_has_key                 (BtkPrintSettings     *settings,
 							      const gchar          *key);
-const gchar *     gtk_print_settings_get                 (GtkPrintSettings     *settings,
+const gchar *     btk_print_settings_get                 (BtkPrintSettings     *settings,
 							      const gchar          *key);
-void              gtk_print_settings_set                     (GtkPrintSettings     *settings,
+void              btk_print_settings_set                     (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      const gchar          *value);
-void              gtk_print_settings_unset                   (GtkPrintSettings     *settings,
+void              btk_print_settings_unset                   (BtkPrintSettings     *settings,
 							      const gchar          *key);
-void              gtk_print_settings_foreach                 (GtkPrintSettings     *settings,
-							      GtkPrintSettingsFunc  func,
+void              btk_print_settings_foreach                 (BtkPrintSettings     *settings,
+							      BtkPrintSettingsFunc  func,
 							      gpointer              user_data);
-gboolean          gtk_print_settings_get_bool                (GtkPrintSettings     *settings,
+gboolean          btk_print_settings_get_bool                (BtkPrintSettings     *settings,
 							      const gchar          *key);
-void              gtk_print_settings_set_bool                (GtkPrintSettings     *settings,
+void              btk_print_settings_set_bool                (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gboolean              value);
-gdouble           gtk_print_settings_get_double              (GtkPrintSettings     *settings,
+gdouble           btk_print_settings_get_double              (BtkPrintSettings     *settings,
 							      const gchar          *key);
-gdouble           gtk_print_settings_get_double_with_default (GtkPrintSettings     *settings,
+gdouble           btk_print_settings_get_double_with_default (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gdouble               def);
-void              gtk_print_settings_set_double              (GtkPrintSettings     *settings,
+void              btk_print_settings_set_double              (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gdouble               value);
-gdouble           gtk_print_settings_get_length              (GtkPrintSettings     *settings,
+gdouble           btk_print_settings_get_length              (BtkPrintSettings     *settings,
 							      const gchar          *key,
-							      GtkUnit               unit);
-void              gtk_print_settings_set_length              (GtkPrintSettings     *settings,
+							      BtkUnit               unit);
+void              btk_print_settings_set_length              (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gdouble               value,
-							      GtkUnit               unit);
-gint              gtk_print_settings_get_int                 (GtkPrintSettings     *settings,
+							      BtkUnit               unit);
+gint              btk_print_settings_get_int                 (BtkPrintSettings     *settings,
 							      const gchar          *key);
-gint              gtk_print_settings_get_int_with_default    (GtkPrintSettings     *settings,
+gint              btk_print_settings_get_int_with_default    (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gint                  def);
-void              gtk_print_settings_set_int                 (GtkPrintSettings     *settings,
+void              btk_print_settings_set_int                 (BtkPrintSettings     *settings,
 							      const gchar          *key,
 							      gint                  value);
 
-#define GTK_PRINT_SETTINGS_PRINTER          "printer"
-#define GTK_PRINT_SETTINGS_ORIENTATION      "orientation"
-#define GTK_PRINT_SETTINGS_PAPER_FORMAT     "paper-format"
-#define GTK_PRINT_SETTINGS_PAPER_WIDTH      "paper-width"
-#define GTK_PRINT_SETTINGS_PAPER_HEIGHT     "paper-height"
-#define GTK_PRINT_SETTINGS_N_COPIES         "n-copies"
-#define GTK_PRINT_SETTINGS_DEFAULT_SOURCE   "default-source"
-#define GTK_PRINT_SETTINGS_QUALITY          "quality"
-#define GTK_PRINT_SETTINGS_RESOLUTION       "resolution"
-#define GTK_PRINT_SETTINGS_USE_COLOR        "use-color"
-#define GTK_PRINT_SETTINGS_DUPLEX           "duplex"
-#define GTK_PRINT_SETTINGS_COLLATE          "collate"
-#define GTK_PRINT_SETTINGS_REVERSE          "reverse"
-#define GTK_PRINT_SETTINGS_MEDIA_TYPE       "media-type"
-#define GTK_PRINT_SETTINGS_DITHER           "dither"
-#define GTK_PRINT_SETTINGS_SCALE            "scale"
-#define GTK_PRINT_SETTINGS_PRINT_PAGES      "print-pages"
-#define GTK_PRINT_SETTINGS_PAGE_RANGES      "page-ranges"
-#define GTK_PRINT_SETTINGS_PAGE_SET         "page-set"
-#define GTK_PRINT_SETTINGS_FINISHINGS       "finishings"
-#define GTK_PRINT_SETTINGS_NUMBER_UP        "number-up"
-#define GTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT "number-up-layout"
-#define GTK_PRINT_SETTINGS_OUTPUT_BIN       "output-bin"
-#define GTK_PRINT_SETTINGS_RESOLUTION_X     "resolution-x"
-#define GTK_PRINT_SETTINGS_RESOLUTION_Y     "resolution-y"
-#define GTK_PRINT_SETTINGS_PRINTER_LPI      "printer-lpi"
+#define BTK_PRINT_SETTINGS_PRINTER          "printer"
+#define BTK_PRINT_SETTINGS_ORIENTATION      "orientation"
+#define BTK_PRINT_SETTINGS_PAPER_FORMAT     "paper-format"
+#define BTK_PRINT_SETTINGS_PAPER_WIDTH      "paper-width"
+#define BTK_PRINT_SETTINGS_PAPER_HEIGHT     "paper-height"
+#define BTK_PRINT_SETTINGS_N_COPIES         "n-copies"
+#define BTK_PRINT_SETTINGS_DEFAULT_SOURCE   "default-source"
+#define BTK_PRINT_SETTINGS_QUALITY          "quality"
+#define BTK_PRINT_SETTINGS_RESOLUTION       "resolution"
+#define BTK_PRINT_SETTINGS_USE_COLOR        "use-color"
+#define BTK_PRINT_SETTINGS_DUPLEX           "duplex"
+#define BTK_PRINT_SETTINGS_COLLATE          "collate"
+#define BTK_PRINT_SETTINGS_REVERSE          "reverse"
+#define BTK_PRINT_SETTINGS_MEDIA_TYPE       "media-type"
+#define BTK_PRINT_SETTINGS_DITHER           "dither"
+#define BTK_PRINT_SETTINGS_SCALE            "scale"
+#define BTK_PRINT_SETTINGS_PRINT_PAGES      "print-pages"
+#define BTK_PRINT_SETTINGS_PAGE_RANGES      "page-ranges"
+#define BTK_PRINT_SETTINGS_PAGE_SET         "page-set"
+#define BTK_PRINT_SETTINGS_FINISHINGS       "finishings"
+#define BTK_PRINT_SETTINGS_NUMBER_UP        "number-up"
+#define BTK_PRINT_SETTINGS_NUMBER_UP_LAYOUT "number-up-layout"
+#define BTK_PRINT_SETTINGS_OUTPUT_BIN       "output-bin"
+#define BTK_PRINT_SETTINGS_RESOLUTION_X     "resolution-x"
+#define BTK_PRINT_SETTINGS_RESOLUTION_Y     "resolution-y"
+#define BTK_PRINT_SETTINGS_PRINTER_LPI      "printer-lpi"
 
-#define GTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT  "output-file-format"
-#define GTK_PRINT_SETTINGS_OUTPUT_URI          "output-uri"
+#define BTK_PRINT_SETTINGS_OUTPUT_FILE_FORMAT  "output-file-format"
+#define BTK_PRINT_SETTINGS_OUTPUT_URI          "output-uri"
 
-#define GTK_PRINT_SETTINGS_WIN32_DRIVER_VERSION "win32-driver-version"
-#define GTK_PRINT_SETTINGS_WIN32_DRIVER_EXTRA   "win32-driver-extra"
+#define BTK_PRINT_SETTINGS_WIN32_DRIVER_VERSION "win32-driver-version"
+#define BTK_PRINT_SETTINGS_WIN32_DRIVER_EXTRA   "win32-driver-extra"
 
 /* Helpers: */
 
-const gchar *gtk_print_settings_get_printer           (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_printer           (GtkPrintSettings   *settings,
+const gchar *btk_print_settings_get_printer           (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_printer           (BtkPrintSettings   *settings,
 								const gchar        *printer);
-GtkPageOrientation    gtk_print_settings_get_orientation       (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_orientation       (GtkPrintSettings   *settings,
-								GtkPageOrientation  orientation);
-GtkPaperSize *        gtk_print_settings_get_paper_size        (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_paper_size        (GtkPrintSettings   *settings,
-								GtkPaperSize       *paper_size);
-gdouble               gtk_print_settings_get_paper_width       (GtkPrintSettings   *settings,
-								GtkUnit             unit);
-void                  gtk_print_settings_set_paper_width       (GtkPrintSettings   *settings,
+BtkPageOrientation    btk_print_settings_get_orientation       (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_orientation       (BtkPrintSettings   *settings,
+								BtkPageOrientation  orientation);
+BtkPaperSize *        btk_print_settings_get_paper_size        (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_paper_size        (BtkPrintSettings   *settings,
+								BtkPaperSize       *paper_size);
+gdouble               btk_print_settings_get_paper_width       (BtkPrintSettings   *settings,
+								BtkUnit             unit);
+void                  btk_print_settings_set_paper_width       (BtkPrintSettings   *settings,
 								gdouble             width,
-								GtkUnit             unit);
-gdouble               gtk_print_settings_get_paper_height      (GtkPrintSettings   *settings,
-								GtkUnit             unit);
-void                  gtk_print_settings_set_paper_height      (GtkPrintSettings   *settings,
+								BtkUnit             unit);
+gdouble               btk_print_settings_get_paper_height      (BtkPrintSettings   *settings,
+								BtkUnit             unit);
+void                  btk_print_settings_set_paper_height      (BtkPrintSettings   *settings,
 								gdouble             height,
-								GtkUnit             unit);
-gboolean              gtk_print_settings_get_use_color         (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_use_color         (GtkPrintSettings   *settings,
+								BtkUnit             unit);
+gboolean              btk_print_settings_get_use_color         (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_use_color         (BtkPrintSettings   *settings,
 								gboolean            use_color);
-gboolean              gtk_print_settings_get_collate           (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_collate           (GtkPrintSettings   *settings,
+gboolean              btk_print_settings_get_collate           (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_collate           (BtkPrintSettings   *settings,
 								gboolean            collate);
-gboolean              gtk_print_settings_get_reverse           (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_reverse           (GtkPrintSettings   *settings,
+gboolean              btk_print_settings_get_reverse           (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_reverse           (BtkPrintSettings   *settings,
 								gboolean            reverse);
-GtkPrintDuplex        gtk_print_settings_get_duplex            (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_duplex            (GtkPrintSettings   *settings,
-								GtkPrintDuplex      duplex);
-GtkPrintQuality       gtk_print_settings_get_quality           (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_quality           (GtkPrintSettings   *settings,
-								GtkPrintQuality     quality);
-gint                  gtk_print_settings_get_n_copies          (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_n_copies          (GtkPrintSettings   *settings,
+BtkPrintDuplex        btk_print_settings_get_duplex            (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_duplex            (BtkPrintSettings   *settings,
+								BtkPrintDuplex      duplex);
+BtkPrintQuality       btk_print_settings_get_quality           (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_quality           (BtkPrintSettings   *settings,
+								BtkPrintQuality     quality);
+gint                  btk_print_settings_get_n_copies          (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_n_copies          (BtkPrintSettings   *settings,
 								gint                num_copies);
-gint                  gtk_print_settings_get_number_up         (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_number_up         (GtkPrintSettings   *settings,
+gint                  btk_print_settings_get_number_up         (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_number_up         (BtkPrintSettings   *settings,
 								gint                number_up);
-GtkNumberUpLayout     gtk_print_settings_get_number_up_layout  (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_number_up_layout  (GtkPrintSettings   *settings,
-								GtkNumberUpLayout   number_up_layout);
-gint                  gtk_print_settings_get_resolution        (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_resolution        (GtkPrintSettings   *settings,
+BtkNumberUpLayout     btk_print_settings_get_number_up_layout  (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_number_up_layout  (BtkPrintSettings   *settings,
+								BtkNumberUpLayout   number_up_layout);
+gint                  btk_print_settings_get_resolution        (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_resolution        (BtkPrintSettings   *settings,
 								gint                resolution);
-gint                  gtk_print_settings_get_resolution_x      (GtkPrintSettings   *settings);
-gint                  gtk_print_settings_get_resolution_y      (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_resolution_xy     (GtkPrintSettings   *settings,
+gint                  btk_print_settings_get_resolution_x      (BtkPrintSettings   *settings);
+gint                  btk_print_settings_get_resolution_y      (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_resolution_xy     (BtkPrintSettings   *settings,
 								gint                resolution_x,
 								gint                resolution_y);
-gdouble               gtk_print_settings_get_printer_lpi       (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_printer_lpi       (GtkPrintSettings   *settings,
+gdouble               btk_print_settings_get_printer_lpi       (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_printer_lpi       (BtkPrintSettings   *settings,
 								gdouble             lpi);
-gdouble               gtk_print_settings_get_scale             (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_scale             (GtkPrintSettings   *settings,
+gdouble               btk_print_settings_get_scale             (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_scale             (BtkPrintSettings   *settings,
 								gdouble             scale);
-GtkPrintPages         gtk_print_settings_get_print_pages       (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_print_pages       (GtkPrintSettings   *settings,
-								GtkPrintPages       pages);
-GtkPageRange *        gtk_print_settings_get_page_ranges       (GtkPrintSettings   *settings,
+BtkPrintPages         btk_print_settings_get_print_pages       (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_print_pages       (BtkPrintSettings   *settings,
+								BtkPrintPages       pages);
+BtkPageRange *        btk_print_settings_get_page_ranges       (BtkPrintSettings   *settings,
 								gint               *num_ranges);
-void                  gtk_print_settings_set_page_ranges       (GtkPrintSettings   *settings,
-								GtkPageRange       *page_ranges,
+void                  btk_print_settings_set_page_ranges       (BtkPrintSettings   *settings,
+								BtkPageRange       *page_ranges,
 								gint                num_ranges);
-GtkPageSet            gtk_print_settings_get_page_set          (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_page_set          (GtkPrintSettings   *settings,
-								GtkPageSet          page_set);
-const gchar *         gtk_print_settings_get_default_source    (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_default_source    (GtkPrintSettings   *settings,
+BtkPageSet            btk_print_settings_get_page_set          (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_page_set          (BtkPrintSettings   *settings,
+								BtkPageSet          page_set);
+const gchar *         btk_print_settings_get_default_source    (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_default_source    (BtkPrintSettings   *settings,
 								const gchar        *default_source);
-const gchar *         gtk_print_settings_get_media_type        (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_media_type        (GtkPrintSettings   *settings,
+const gchar *         btk_print_settings_get_media_type        (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_media_type        (BtkPrintSettings   *settings,
 								const gchar        *media_type);
-const gchar *         gtk_print_settings_get_dither            (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_dither            (GtkPrintSettings   *settings,
+const gchar *         btk_print_settings_get_dither            (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_dither            (BtkPrintSettings   *settings,
 								const gchar        *dither);
-const gchar *         gtk_print_settings_get_finishings        (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_finishings        (GtkPrintSettings   *settings,
+const gchar *         btk_print_settings_get_finishings        (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_finishings        (BtkPrintSettings   *settings,
 								const gchar        *finishings);
-const gchar *         gtk_print_settings_get_output_bin        (GtkPrintSettings   *settings);
-void                  gtk_print_settings_set_output_bin        (GtkPrintSettings   *settings,
+const gchar *         btk_print_settings_get_output_bin        (BtkPrintSettings   *settings);
+void                  btk_print_settings_set_output_bin        (BtkPrintSettings   *settings,
 								const gchar        *output_bin);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_SETTINGS_H__ */
+#endif /* __BTK_PRINT_SETTINGS_H__ */

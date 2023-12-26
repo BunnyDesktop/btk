@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,34 +18,34 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#include "gdkx.h"
-#include "gdkvisual.h"
-#include "gdkprivate-x11.h"
-#include "gdkscreen-x11.h"
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkx.h"
+#include "bdkvisual.h"
+#include "bdkprivate-x11.h"
+#include "bdkscreen-x11.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
-struct _GdkVisualClass
+struct _BdkVisualClass
 {
   GObjectClass parent_class;
 };
 
-static void     gdk_visual_add            (GdkVisual *visual);
-static void     gdk_visual_decompose_mask (gulong     mask,
+static void     bdk_visual_add            (BdkVisual *visual);
+static void     bdk_visual_decompose_mask (gulong     mask,
 					   gint      *shift,
 					   gint      *prec);
-static guint    gdk_visual_hash           (Visual    *key);
-static gboolean gdk_visual_equal          (Visual    *a,
+static guint    bdk_visual_hash           (Visual    *key);
+static gboolean bdk_visual_equal          (Visual    *a,
 					   Visual    *b);
 
 
@@ -64,7 +64,7 @@ static const gchar *const visual_names[] =
 #endif /* G_ENABLE_DEBUG */
 
 GType
-gdk_visual_get_type (void)
+bdk_visual_get_type (void)
 {
   static GType object_type = 0;
 
@@ -72,19 +72,19 @@ gdk_visual_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkVisualClass),
+        sizeof (BdkVisualClass),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
         (GClassInitFunc) NULL,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkVisualPrivate),
+        sizeof (BdkVisualPrivate),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
       object_type = g_type_register_static (G_TYPE_OBJECT,
-                                            g_intern_static_string ("GdkVisual"),
+                                            g_intern_static_string ("BdkVisual"),
                                             &object_info, 0);
     }
   
@@ -93,39 +93,39 @@ gdk_visual_get_type (void)
 
 
 void
-_gdk_visual_init (GdkScreen *screen)
+_bdk_visual_init (BdkScreen *screen)
 {
   static const gint possible_depths[8] = { 32, 30, 24, 16, 15, 8, 4, 1 };
-  static const GdkVisualType possible_types[6] =
+  static const BdkVisualType possible_types[6] =
     {
-      GDK_VISUAL_DIRECT_COLOR,
-      GDK_VISUAL_TRUE_COLOR,
-      GDK_VISUAL_PSEUDO_COLOR,
-      GDK_VISUAL_STATIC_COLOR,
-      GDK_VISUAL_GRAYSCALE,
-      GDK_VISUAL_STATIC_GRAY
+      BDK_VISUAL_DIRECT_COLOR,
+      BDK_VISUAL_TRUE_COLOR,
+      BDK_VISUAL_PSEUDO_COLOR,
+      BDK_VISUAL_STATIC_COLOR,
+      BDK_VISUAL_GRAYSCALE,
+      BDK_VISUAL_STATIC_GRAY
     };
 
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
   XVisualInfo *visual_list;
   XVisualInfo visual_template;
-  GdkVisualPrivate *temp_visual;
+  BdkVisualPrivate *temp_visual;
   Visual *default_xvisual;
-  GdkVisualPrivate **visuals;
+  BdkVisualPrivate **visuals;
   int nxvisuals;
   int nvisuals;
   int i, j;
   
-  g_return_if_fail (GDK_IS_SCREEN (screen));
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  g_return_if_fail (BDK_IS_SCREEN (screen));
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   nxvisuals = 0;
   visual_template.screen = screen_x11->screen_num;
   visual_list = XGetVisualInfo (screen_x11->xdisplay, VisualScreenMask, &visual_template, &nxvisuals);
   
-  visuals = g_new (GdkVisualPrivate *, nxvisuals);
+  visuals = g_new (BdkVisualPrivate *, nxvisuals);
   for (i = 0; i < nxvisuals; i++)
-    visuals[i] = g_object_new (GDK_TYPE_VISUAL, NULL);
+    visuals[i] = g_object_new (BDK_TYPE_VISUAL, NULL);
 
   default_xvisual = DefaultVisual (screen_x11->xdisplay, screen_x11->screen_num);
 
@@ -143,29 +143,29 @@ _gdk_visual_init (GdkScreen *screen)
 #endif /* __cplusplus */
 	    {
 	    case StaticGray:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_STATIC_GRAY;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_STATIC_GRAY;
 	      break;
 	    case GrayScale:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_GRAYSCALE;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_GRAYSCALE;
 	      break;
 	    case StaticColor:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_STATIC_COLOR;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_STATIC_COLOR;
 	      break;
 	    case PseudoColor:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_PSEUDO_COLOR;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_PSEUDO_COLOR;
 	      break;
 	    case TrueColor:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_TRUE_COLOR;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_TRUE_COLOR;
 	      break;
 	    case DirectColor:
-	      visuals[nvisuals]->visual.type = GDK_VISUAL_DIRECT_COLOR;
+	      visuals[nvisuals]->visual.type = BDK_VISUAL_DIRECT_COLOR;
 	      break;
 	    }
 
 	  visuals[nvisuals]->visual.depth = visual_list[i].depth;
 	  visuals[nvisuals]->visual.byte_order =
 	    (ImageByteOrder(screen_x11->xdisplay) == LSBFirst) ?
-	    GDK_LSB_FIRST : GDK_MSB_FIRST;
+	    BDK_LSB_FIRST : BDK_MSB_FIRST;
 	  visuals[nvisuals]->visual.red_mask = visual_list[i].red_mask;
 	  visuals[nvisuals]->visual.green_mask = visual_list[i].green_mask;
 	  visuals[nvisuals]->visual.blue_mask = visual_list[i].blue_mask;
@@ -173,18 +173,18 @@ _gdk_visual_init (GdkScreen *screen)
 	  visuals[nvisuals]->visual.bits_per_rgb = visual_list[i].bits_per_rgb;
 	  visuals[nvisuals]->xvisual = visual_list[i].visual;
 
-	  if ((visuals[nvisuals]->visual.type == GDK_VISUAL_TRUE_COLOR) ||
-	      (visuals[nvisuals]->visual.type == GDK_VISUAL_DIRECT_COLOR))
+	  if ((visuals[nvisuals]->visual.type == BDK_VISUAL_TRUE_COLOR) ||
+	      (visuals[nvisuals]->visual.type == BDK_VISUAL_DIRECT_COLOR))
 	    {
-	      gdk_visual_decompose_mask (visuals[nvisuals]->visual.red_mask,
+	      bdk_visual_decompose_mask (visuals[nvisuals]->visual.red_mask,
 					 &visuals[nvisuals]->visual.red_shift,
 					 &visuals[nvisuals]->visual.red_prec);
 
-	      gdk_visual_decompose_mask (visuals[nvisuals]->visual.green_mask,
+	      bdk_visual_decompose_mask (visuals[nvisuals]->visual.green_mask,
 					 &visuals[nvisuals]->visual.green_shift,
 					 &visuals[nvisuals]->visual.green_prec);
 
-	      gdk_visual_decompose_mask (visuals[nvisuals]->visual.blue_mask,
+	      bdk_visual_decompose_mask (visuals[nvisuals]->visual.blue_mask,
 					 &visuals[nvisuals]->visual.blue_shift,
 					 &visuals[nvisuals]->visual.blue_prec);
 	    }
@@ -218,13 +218,13 @@ _gdk_visual_init (GdkScreen *screen)
 	    {
 	      if ((visuals[j]->visual.depth == 8) && (visuals[i]->visual.depth == 8))
 		{
-		  if (visuals[j]->visual.type == GDK_VISUAL_PSEUDO_COLOR)
+		  if (visuals[j]->visual.type == BDK_VISUAL_PSEUDO_COLOR)
 		    {
 		      temp_visual = visuals[j];
 		      visuals[j] = visuals[i];
 		      visuals[i] = temp_visual;
 		    }
-		  else if ((visuals[i]->visual.type != GDK_VISUAL_PSEUDO_COLOR) &&
+		  else if ((visuals[i]->visual.type != BDK_VISUAL_PSEUDO_COLOR) &&
 			   visuals[j]->visual.type > visuals[i]->visual.type)
 		    {
 		      temp_visual = visuals[j];
@@ -258,12 +258,12 @@ _gdk_visual_init (GdkScreen *screen)
 	   visuals[i]->visual.green_mask == 0x00ff00 &&
 	   visuals[i]->visual.blue_mask  == 0x0000ff))
 	{
-	  screen_x11->rgba_visual = GDK_VISUAL (visuals[i]);
+	  screen_x11->rgba_visual = BDK_VISUAL (visuals[i]);
 	}
     }
 
 #ifdef G_ENABLE_DEBUG 
-  if (_gdk_debug_flags & GDK_DEBUG_MISC)
+  if (_bdk_debug_flags & BDK_DEBUG_MISC)
     for (i = 0; i < nvisuals; i++)
       g_message ("visual: %s: %d",
 		 visual_names[visuals[i]->visual.type],
@@ -300,7 +300,7 @@ _gdk_visual_init (GdkScreen *screen)
     }
 
   for (i = 0; i < nvisuals; i++)
-    gdk_visual_add ((GdkVisual*) visuals[i]);
+    bdk_visual_add ((BdkVisual*) visuals[i]);
 
   if (screen_x11->navailable_types == 0)
     g_error ("unable to find a usable visual type");
@@ -310,40 +310,40 @@ _gdk_visual_init (GdkScreen *screen)
 }
 
 /**
- * gdk_visual_get_best_depth:
+ * bdk_visual_get_best_depth:
  * 
- * Get the best available depth for the default GDK screen.  "Best"
+ * Get the best available depth for the default BDK screen.  "Best"
  * means "largest," i.e. 32 preferred over 24 preferred over 8 bits
  * per pixel.
  * 
  * Return value: best available depth
  **/
 gint
-gdk_visual_get_best_depth (void)
+bdk_visual_get_best_depth (void)
 {
-  GdkScreen *screen = gdk_screen_get_default();
+  BdkScreen *screen = bdk_screen_get_default();
   
-  return GDK_SCREEN_X11 (screen)->available_depths[0];
+  return BDK_SCREEN_X11 (screen)->available_depths[0];
 }
 
 /**
- * gdk_visual_get_best_type:
+ * bdk_visual_get_best_type:
  * 
- * Return the best available visual type for the default GDK screen.
+ * Return the best available visual type for the default BDK screen.
  * 
  * Return value: best visual type
  **/
-GdkVisualType
-gdk_visual_get_best_type (void)
+BdkVisualType
+bdk_visual_get_best_type (void)
 {
-  GdkScreen *screen = gdk_screen_get_default();
+  BdkScreen *screen = bdk_screen_get_default();
   
-  return GDK_SCREEN_X11 (screen)->available_types[0];
+  return BDK_SCREEN_X11 (screen)->available_types[0];
 }
 
 /**
- * gdk_screen_get_system_visual:
- * @screen: a #GdkScreen.
+ * bdk_screen_get_system_visual:
+ * @screen: a #BdkScreen.
  * 
  * Get the system's default visual for @screen.
  * This is the visual for the root window of the display.
@@ -353,53 +353,53 @@ gdk_visual_get_best_type (void)
  *
  * Since: 2.2
  **/
-GdkVisual *
-gdk_screen_get_system_visual (GdkScreen * screen)
+BdkVisual *
+bdk_screen_get_system_visual (BdkScreen * screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return ((GdkVisual *) GDK_SCREEN_X11 (screen)->system_visual);
+  return ((BdkVisual *) BDK_SCREEN_X11 (screen)->system_visual);
 }
 
 /**
- * gdk_visual_get_best:
+ * bdk_visual_get_best:
  *
  * Get the visual with the most available colors for the default
- * GDK screen. The return value should not be freed.
+ * BDK screen. The return value should not be freed.
  * 
  * Return value: (transfer none): best visual
  **/
-GdkVisual*
-gdk_visual_get_best (void)
+BdkVisual*
+bdk_visual_get_best (void)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default());
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default());
 
-  return (GdkVisual *)screen_x11->visuals[0];
+  return (BdkVisual *)screen_x11->visuals[0];
 }
 
 /**
- * gdk_visual_get_best_with_depth:
+ * bdk_visual_get_best_with_depth:
  * @depth: a bit depth
  * 
- * Get the best visual with depth @depth for the default GDK screen.
+ * Get the best visual with depth @depth for the default BDK screen.
  * Color visuals and visuals with mutable colormaps are preferred
  * over grayscale or fixed-colormap visuals. The return value should not
  * be freed. %NULL may be returned if no visual supports @depth.
  * 
  * Return value: (transfer none): best visual for the given depth
  **/
-GdkVisual*
-gdk_visual_get_best_with_depth (gint depth)
+BdkVisual*
+bdk_visual_get_best_with_depth (gint depth)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default ());
-  GdkVisual *return_val;
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
+  BdkVisual *return_val;
   int i;
   
   return_val = NULL;
   for (i = 0; i < screen_x11->nvisuals; i++)
     if (depth == screen_x11->visuals[i]->visual.depth)
       {
-	return_val = (GdkVisual *) screen_x11->visuals[i];
+	return_val = (BdkVisual *) screen_x11->visuals[i];
 	break;
       }
 
@@ -407,28 +407,28 @@ gdk_visual_get_best_with_depth (gint depth)
 }
 
 /**
- * gdk_visual_get_best_with_type:
+ * bdk_visual_get_best_with_type:
  * @visual_type: a visual type
  *
- * Get the best visual of the given @visual_type for the default GDK screen.
+ * Get the best visual of the given @visual_type for the default BDK screen.
  * Visuals with higher color depths are considered better. The return value
  * should not be freed. %NULL may be returned if no visual has type
  * @visual_type.
  * 
  * Return value: (transfer none): best visual of the given type
  **/
-GdkVisual*
-gdk_visual_get_best_with_type (GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_type (BdkVisualType visual_type)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default ());
-  GdkVisual *return_val;
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
+  BdkVisual *return_val;
   int i;
 
   return_val = NULL;
   for (i = 0; i < screen_x11->nvisuals; i++)
     if (visual_type == screen_x11->visuals[i]->visual.type)
       {
-	return_val = (GdkVisual *) screen_x11->visuals[i];
+	return_val = (BdkVisual *) screen_x11->visuals[i];
 	break;
       }
 
@@ -436,21 +436,21 @@ gdk_visual_get_best_with_type (GdkVisualType visual_type)
 }
 
 /**
- * gdk_visual_get_best_with_both:
+ * bdk_visual_get_best_with_both:
  * @depth: a bit depth
  * @visual_type: a visual type
  *
- * Combines gdk_visual_get_best_with_depth() and gdk_visual_get_best_with_type().
+ * Combines bdk_visual_get_best_with_depth() and bdk_visual_get_best_with_type().
  * 
  * Return value: (transfer none): best visual with both @depth and
  *     @visual_type, or %NULL if none
  **/
-GdkVisual*
-gdk_visual_get_best_with_both (gint          depth,
-			       GdkVisualType visual_type)
+BdkVisual*
+bdk_visual_get_best_with_both (gint          depth,
+			       BdkVisualType visual_type)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default ());
-  GdkVisual *return_val;
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
+  BdkVisual *return_val;
   int i;
 
   return_val = NULL;
@@ -458,7 +458,7 @@ gdk_visual_get_best_with_both (gint          depth,
     if ((depth == screen_x11->visuals[i]->visual.depth) &&
 	(visual_type == screen_x11->visuals[i]->visual.type))
       {
-	return_val = (GdkVisual *) screen_x11->visuals[i];
+	return_val = (BdkVisual *) screen_x11->visuals[i];
 	break;
       }
 
@@ -466,53 +466,53 @@ gdk_visual_get_best_with_both (gint          depth,
 }
 
 /**
- * gdk_query_depths:
+ * bdk_query_depths:
  * @depths: (out) (array): return location for available depths
  * @count: (out): return location for number of available depths
  *
  * This function returns the available bit depths for the default
  * screen. It's equivalent to listing the visuals
- * (gdk_list_visuals()) and then looking at the depth field in each
+ * (bdk_list_visuals()) and then looking at the depth field in each
  * visual, removing duplicates.
  * 
  * The array returned by this function should not be freed.
  * 
  **/
 void
-gdk_query_depths  (gint **depths,
+bdk_query_depths  (gint **depths,
 		   gint  *count)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default ());
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
   
   *count = screen_x11->navailable_depths;
   *depths = screen_x11->available_depths;
 }
 
 /**
- * gdk_query_visual_types:
+ * bdk_query_visual_types:
  * @visual_types: return location for the available visual types
  * @count: return location for the number of available visual types
  *
  * This function returns the available visual types for the default
  * screen. It's equivalent to listing the visuals
- * (gdk_list_visuals()) and then looking at the type field in each
+ * (bdk_list_visuals()) and then looking at the type field in each
  * visual, removing duplicates.
  * 
  * The array returned by this function should not be freed.
  **/
 void
-gdk_query_visual_types (GdkVisualType **visual_types,
+bdk_query_visual_types (BdkVisualType **visual_types,
 			gint           *count)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (gdk_screen_get_default ());
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (bdk_screen_get_default ());
   
   *count = screen_x11->navailable_types;
   *visual_types = screen_x11->available_types;
 }
 
 /**
- * gdk_screen_list_visuals:
- * @screen: the relevant #GdkScreen.
+ * bdk_screen_list_visuals:
+ * @screen: the relevant #BdkScreen.
  *  
  * Lists the available visuals for the specified @screen.
  * A visual describes a hardware image data format.
@@ -521,20 +521,20 @@ gdk_query_visual_types (GdkVisualType **visual_types,
  *
  * Call g_list_free() on the return value when you're finished with it.
  * 
- * Return value: (transfer container) (element-type GdkVisual):
+ * Return value: (transfer container) (element-type BdkVisual):
  *     a list of visuals; the list must be freed, but not its contents
  *
  * Since: 2.2
  **/
 GList *
-gdk_screen_list_visuals (GdkScreen *screen)
+bdk_screen_list_visuals (BdkScreen *screen)
 {
   GList *list;
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
   guint i;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
+  screen_x11 = BDK_SCREEN_X11 (screen);
   
   list = NULL;
 
@@ -545,64 +545,64 @@ gdk_screen_list_visuals (GdkScreen *screen)
 }
 
 /**
- * gdk_x11_screen_lookup_visual:
- * @screen: a #GdkScreen.
+ * bdk_x11_screen_lookup_visual:
+ * @screen: a #BdkScreen.
  * @xvisualid: an X Visual ID.
  *
- * Looks up the #GdkVisual for a particular screen and X Visual ID.
+ * Looks up the #BdkVisual for a particular screen and X Visual ID.
  *
- * Returns: (transfer none): the #GdkVisual (owned by the screen
+ * Returns: (transfer none): the #BdkVisual (owned by the screen
  *   object), or %NULL if the visual ID wasn't found.
  *
  * Since: 2.2
  */
-GdkVisual *
-gdk_x11_screen_lookup_visual (GdkScreen *screen,
+BdkVisual *
+bdk_x11_screen_lookup_visual (BdkScreen *screen,
 			      VisualID   xvisualid)
 {
   int i;
-  GdkScreenX11 *screen_x11;
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11;
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   for (i = 0; i < screen_x11->nvisuals; i++)
     if (xvisualid == screen_x11->visuals[i]->xvisual->visualid)
-      return (GdkVisual *)  screen_x11->visuals[i];
+      return (BdkVisual *)  screen_x11->visuals[i];
 
   return NULL;
 }
 
 /**
- * gdkx_visual_get:
+ * bdkx_visual_get:
  * @xvisualid: a X visual id.
  *
- * Returns a #GdkVisual corresponding to a X visual. 
+ * Returns a #BdkVisual corresponding to a X visual. 
  *
- * Return value: the #GdkVisual.
+ * Return value: the #BdkVisual.
  *
- * Deprecated:2.24: Use gdk_x11_screen_lookup_visual() instead
+ * Deprecated:2.24: Use bdk_x11_screen_lookup_visual() instead
  */
-GdkVisual*
-gdkx_visual_get (VisualID xvisualid)
+BdkVisual*
+bdkx_visual_get (VisualID xvisualid)
 {
-  return gdk_x11_screen_lookup_visual (gdk_screen_get_default (), xvisualid);
+  return bdk_x11_screen_lookup_visual (bdk_screen_get_default (), xvisualid);
 }
 
 static void
-gdk_visual_add (GdkVisual *visual)
+bdk_visual_add (BdkVisual *visual)
 {
-  GdkVisualPrivate *private = (GdkVisualPrivate *) visual;
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (private->screen);
+  BdkVisualPrivate *private = (BdkVisualPrivate *) visual;
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (private->screen);
   
   if (!screen_x11->visual_hash)
-    screen_x11->visual_hash = g_hash_table_new ((GHashFunc) gdk_visual_hash,
-                                                (GEqualFunc) gdk_visual_equal);
+    screen_x11->visual_hash = g_hash_table_new ((GHashFunc) bdk_visual_hash,
+                                                (GEqualFunc) bdk_visual_equal);
 
   g_hash_table_insert (screen_x11->visual_hash, private->xvisual, visual);
 }
 
 static void
-gdk_visual_decompose_mask (gulong  mask,
+bdk_visual_decompose_mask (gulong  mask,
 			   gint   *shift,
 			   gint   *prec)
 {
@@ -629,37 +629,37 @@ gdk_visual_decompose_mask (gulong  mask,
 }
 
 static guint
-gdk_visual_hash (Visual *key)
+bdk_visual_hash (Visual *key)
 {
   return key->visualid;
 }
 
 static gboolean
-gdk_visual_equal (Visual *a,
+bdk_visual_equal (Visual *a,
 		  Visual *b)
 {
   return (a->visualid == b->visualid);
 }
 
 /**
- * gdk_x11_visual_get_xvisual:
- * @visual: a #GdkVisual.
+ * bdk_x11_visual_get_xvisual:
+ * @visual: a #BdkVisual.
  * 
- * Returns the X visual belonging to a #GdkVisual.
+ * Returns the X visual belonging to a #BdkVisual.
  * 
  * Return value: an Xlib <type>Visual*</type>.
  **/
 Visual *
-gdk_x11_visual_get_xvisual (GdkVisual *visual)
+bdk_x11_visual_get_xvisual (BdkVisual *visual)
 {
   g_return_val_if_fail (visual != NULL, NULL);
 
-  return  ((GdkVisualPrivate*) visual)->xvisual;
+  return  ((BdkVisualPrivate*) visual)->xvisual;
 }
 
 /**
- * gdk_visual_get_screen:
- * @visual: a #GdkVisual
+ * bdk_visual_get_screen:
+ * @visual: a #BdkVisual
  * 
  * Gets the screen to which this visual belongs
  * 
@@ -667,13 +667,13 @@ gdk_x11_visual_get_xvisual (GdkVisual *visual)
  *
  * Since: 2.2
  **/
-GdkScreen *
-gdk_visual_get_screen (GdkVisual *visual)
+BdkScreen *
+bdk_visual_get_screen (BdkVisual *visual)
 {
-  g_return_val_if_fail (GDK_IS_VISUAL (visual), NULL);
+  g_return_val_if_fail (BDK_IS_VISUAL (visual), NULL);
 
-  return  ((GdkVisualPrivate*) visual)->screen;
+  return  ((BdkVisualPrivate*) visual)->screen;
 }
 
-#define __GDK_VISUAL_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_VISUAL_X11_C__
+#include "bdkaliasdef.c"

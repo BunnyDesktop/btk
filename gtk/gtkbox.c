@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,19 +18,19 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkbox.h"
-#include "gtkorientable.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkbox.h"
+#include "btkorientable.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 enum {
   PROP_0,
@@ -49,76 +49,76 @@ enum {
 };
 
 
-typedef struct _GtkBoxPrivate GtkBoxPrivate;
+typedef struct _BtkBoxPrivate BtkBoxPrivate;
 
-struct _GtkBoxPrivate
+struct _BtkBoxPrivate
 {
-  GtkOrientation orientation;
+  BtkOrientation orientation;
   guint          default_expand : 1;
   guint          spacing_set    : 1;
 };
 
-#define GTK_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_BOX, GtkBoxPrivate))
+#define BTK_BOX_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_BOX, BtkBoxPrivate))
 
 
-static void gtk_box_set_property       (GObject        *object,
+static void btk_box_set_property       (GObject        *object,
                                         guint           prop_id,
                                         const GValue   *value,
                                         GParamSpec     *pspec);
-static void gtk_box_get_property       (GObject        *object,
+static void btk_box_get_property       (GObject        *object,
                                         guint           prop_id,
                                         GValue         *value,
                                         GParamSpec     *pspec);
 
-static void gtk_box_size_request       (GtkWidget      *widget,
-                                        GtkRequisition *requisition);
-static void gtk_box_size_allocate      (GtkWidget      *widget,
-                                        GtkAllocation  *allocation);
+static void btk_box_size_request       (BtkWidget      *widget,
+                                        BtkRequisition *requisition);
+static void btk_box_size_allocate      (BtkWidget      *widget,
+                                        BtkAllocation  *allocation);
 
-static void gtk_box_add                (GtkContainer   *container,
-                                        GtkWidget      *widget);
-static void gtk_box_remove             (GtkContainer   *container,
-                                        GtkWidget      *widget);
-static void gtk_box_forall             (GtkContainer   *container,
+static void btk_box_add                (BtkContainer   *container,
+                                        BtkWidget      *widget);
+static void btk_box_remove             (BtkContainer   *container,
+                                        BtkWidget      *widget);
+static void btk_box_forall             (BtkContainer   *container,
                                         gboolean        include_internals,
-                                        GtkCallback     callback,
+                                        BtkCallback     callback,
                                         gpointer        callback_data);
-static void gtk_box_set_child_property (GtkContainer   *container,
-                                        GtkWidget      *child,
+static void btk_box_set_child_property (BtkContainer   *container,
+                                        BtkWidget      *child,
                                         guint           property_id,
                                         const GValue   *value,
                                         GParamSpec     *pspec);
-static void gtk_box_get_child_property (GtkContainer   *container,
-                                        GtkWidget      *child,
+static void btk_box_get_child_property (BtkContainer   *container,
+                                        BtkWidget      *child,
                                         guint           property_id,
                                         GValue         *value,
                                         GParamSpec     *pspec);
-static GType gtk_box_child_type        (GtkContainer   *container);
+static GType btk_box_child_type        (BtkContainer   *container);
 
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkBox, gtk_box, GTK_TYPE_CONTAINER,
-                                  G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE,
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkBox, btk_box, BTK_TYPE_CONTAINER,
+                                  G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                          NULL));
 
 static void
-gtk_box_class_init (GtkBoxClass *class)
+btk_box_class_init (BtkBoxClass *class)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (class);
-  GtkWidgetClass *widget_class = GTK_WIDGET_CLASS (class);
-  GtkContainerClass *container_class = GTK_CONTAINER_CLASS (class);
+  BtkWidgetClass *widget_class = BTK_WIDGET_CLASS (class);
+  BtkContainerClass *container_class = BTK_CONTAINER_CLASS (class);
 
-  object_class->set_property = gtk_box_set_property;
-  object_class->get_property = gtk_box_get_property;
+  object_class->set_property = btk_box_set_property;
+  object_class->get_property = btk_box_get_property;
 
-  widget_class->size_request = gtk_box_size_request;
-  widget_class->size_allocate = gtk_box_size_allocate;
+  widget_class->size_request = btk_box_size_request;
+  widget_class->size_allocate = btk_box_size_allocate;
 
-  container_class->add = gtk_box_add;
-  container_class->remove = gtk_box_remove;
-  container_class->forall = gtk_box_forall;
-  container_class->child_type = gtk_box_child_type;
-  container_class->set_child_property = gtk_box_set_child_property;
-  container_class->get_child_property = gtk_box_get_child_property;
+  container_class->add = btk_box_add;
+  container_class->remove = btk_box_remove;
+  container_class->forall = btk_box_forall;
+  container_class->child_type = btk_box_child_type;
+  container_class->set_child_property = btk_box_set_child_property;
+  container_class->get_child_property = btk_box_get_child_property;
 
   g_object_class_override_property (object_class,
                                     PROP_ORIENTATION,
@@ -132,7 +132,7 @@ gtk_box_class_init (GtkBoxClass *class)
                                                      0,
                                                      G_MAXINT,
                                                      0,
-                                                     GTK_PARAM_READWRITE));
+                                                     BTK_PARAM_READWRITE));
 
   g_object_class_install_property (object_class,
                                    PROP_HOMOGENEOUS,
@@ -140,84 +140,84 @@ gtk_box_class_init (GtkBoxClass *class)
 							 P_("Homogeneous"),
 							 P_("Whether the children should all be the same size"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
-  gtk_container_class_install_child_property (container_class,
+  btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_EXPAND,
 					      g_param_spec_boolean ("expand", 
 								    P_("Expand"), 
 								    P_("Whether the child should receive extra space when the parent grows"),
 								    TRUE,
-								    GTK_PARAM_READWRITE));
-  gtk_container_class_install_child_property (container_class,
+								    BTK_PARAM_READWRITE));
+  btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_FILL,
 					      g_param_spec_boolean ("fill", 
 								    P_("Fill"), 
 								    P_("Whether extra space given to the child should be allocated to the child or used as padding"),
 								    TRUE,
-								    GTK_PARAM_READWRITE));
-  gtk_container_class_install_child_property (container_class,
+								    BTK_PARAM_READWRITE));
+  btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PADDING,
 					      g_param_spec_uint ("padding", 
 								 P_("Padding"), 
 								 P_("Extra space to put between the child and its neighbors, in pixels"),
 								 0, G_MAXINT, 0,
-								 GTK_PARAM_READWRITE));
-  gtk_container_class_install_child_property (container_class,
+								 BTK_PARAM_READWRITE));
+  btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_PACK_TYPE,
 					      g_param_spec_enum ("pack-type", 
 								 P_("Pack type"), 
-								 P_("A GtkPackType indicating whether the child is packed with reference to the start or end of the parent"),
-								 GTK_TYPE_PACK_TYPE, GTK_PACK_START,
-								 GTK_PARAM_READWRITE));
-  gtk_container_class_install_child_property (container_class,
+								 P_("A BtkPackType indicating whether the child is packed with reference to the start or end of the parent"),
+								 BTK_TYPE_PACK_TYPE, BTK_PACK_START,
+								 BTK_PARAM_READWRITE));
+  btk_container_class_install_child_property (container_class,
 					      CHILD_PROP_POSITION,
 					      g_param_spec_int ("position", 
 								P_("Position"), 
 								P_("The index of the child in the parent"),
 								-1, G_MAXINT, 0,
-								GTK_PARAM_READWRITE));
+								BTK_PARAM_READWRITE));
 
-  g_type_class_add_private (object_class, sizeof (GtkBoxPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkBoxPrivate));
 }
 
 static void
-gtk_box_init (GtkBox *box)
+btk_box_init (BtkBox *box)
 {
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (box);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
 
-  gtk_widget_set_has_window (GTK_WIDGET (box), FALSE);
-  gtk_widget_set_redraw_on_allocate (GTK_WIDGET (box), FALSE);
+  btk_widget_set_has_window (BTK_WIDGET (box), FALSE);
+  btk_widget_set_redraw_on_allocate (BTK_WIDGET (box), FALSE);
 
   box->children = NULL;
   box->spacing = 0;
   box->homogeneous = FALSE;
 
-  private->orientation = GTK_ORIENTATION_HORIZONTAL;
+  private->orientation = BTK_ORIENTATION_HORIZONTAL;
   private->default_expand = FALSE;
   private->spacing_set = FALSE;
 }
 
 static void
-gtk_box_set_property (GObject      *object,
+btk_box_set_property (GObject      *object,
                       guint         prop_id,
                       const GValue *value,
                       GParamSpec   *pspec)
 {
-  GtkBox *box = GTK_BOX (object);
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (box);
+  BtkBox *box = BTK_BOX (object);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
 
   switch (prop_id)
     {
     case PROP_ORIENTATION:
       private->orientation = g_value_get_enum (value);
-      gtk_widget_queue_resize (GTK_WIDGET (box));
+      btk_widget_queue_resize (BTK_WIDGET (box));
       break;
     case PROP_SPACING:
-      gtk_box_set_spacing (box, g_value_get_int (value));
+      btk_box_set_spacing (box, g_value_get_int (value));
       break;
     case PROP_HOMOGENEOUS:
-      gtk_box_set_homogeneous (box, g_value_get_boolean (value));
+      btk_box_set_homogeneous (box, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -226,13 +226,13 @@ gtk_box_set_property (GObject      *object,
 }
 
 static void
-gtk_box_get_property (GObject    *object,
+btk_box_get_property (GObject    *object,
                       guint       prop_id,
                       GValue     *value,
                       GParamSpec *pspec)
 {
-  GtkBox *box = GTK_BOX (object);
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (box);
+  BtkBox *box = BTK_BOX (object);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
 
   switch (prop_id)
     {
@@ -252,12 +252,12 @@ gtk_box_get_property (GObject    *object,
 }
 
 static void
-gtk_box_size_request (GtkWidget      *widget,
-                      GtkRequisition *requisition)
+btk_box_size_request (BtkWidget      *widget,
+                      BtkRequisition *requisition)
 {
-  GtkBox *box = GTK_BOX (widget);
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (box);
-  GtkBoxChild *child;
+  BtkBox *box = BTK_BOX (widget);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
+  BtkBoxChild *child;
   GList *children;
   gint nvis_children;
   gint width;
@@ -273,31 +273,31 @@ gtk_box_size_request (GtkWidget      *widget,
       child = children->data;
       children = children->next;
 
-      if (gtk_widget_get_visible (child->widget))
+      if (btk_widget_get_visible (child->widget))
 	{
-	  GtkRequisition child_requisition;
+	  BtkRequisition child_requisition;
 
-	  gtk_widget_size_request (child->widget, &child_requisition);
+	  btk_widget_size_request (child->widget, &child_requisition);
 
 	  if (box->homogeneous)
 	    {
 	      width = child_requisition.width + child->padding * 2;
 	      height = child_requisition.height + child->padding * 2;
 
-              if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+              if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                 requisition->width = MAX (requisition->width, width);
               else
                 requisition->height = MAX (requisition->height, height);
 	    }
 	  else
 	    {
-              if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+              if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                 requisition->width += child_requisition.width + child->padding * 2;
               else
                 requisition->height += child_requisition.height + child->padding * 2;
 	    }
 
-          if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             requisition->height = MAX (requisition->height, child_requisition.height);
           else
             requisition->width = MAX (requisition->width, child_requisition.width);
@@ -310,31 +310,31 @@ gtk_box_size_request (GtkWidget      *widget,
     {
       if (box->homogeneous)
         {
-          if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             requisition->width *= nvis_children;
           else
             requisition->height *= nvis_children;
         }
 
-      if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
         requisition->width += (nvis_children - 1) * box->spacing;
       else
         requisition->height += (nvis_children - 1) * box->spacing;
     }
 
-  requisition->width += GTK_CONTAINER (box)->border_width * 2;
-  requisition->height += GTK_CONTAINER (box)->border_width * 2;
+  requisition->width += BTK_CONTAINER (box)->border_width * 2;
+  requisition->height += BTK_CONTAINER (box)->border_width * 2;
 }
 
 static void
-gtk_box_size_allocate (GtkWidget     *widget,
-                       GtkAllocation *allocation)
+btk_box_size_allocate (BtkWidget     *widget,
+                       BtkAllocation *allocation)
 {
-  GtkBox *box = GTK_BOX (widget);
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (box);
-  GtkBoxChild *child;
+  BtkBox *box = BTK_BOX (widget);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (box);
+  BtkBoxChild *child;
   GList *children;
-  GtkAllocation child_allocation;
+  BtkAllocation child_allocation;
   gint nvis_children = 0;
   gint nexpand_children = 0;
   gint child_width = 0;
@@ -344,17 +344,17 @@ gtk_box_size_allocate (GtkWidget     *widget,
   gint extra = 0;
   gint x = 0;
   gint y = 0;
-  GtkTextDirection direction;
+  BtkTextDirection direction;
 
   widget->allocation = *allocation;
 
-  direction = gtk_widget_get_direction (widget);
+  direction = btk_widget_get_direction (widget);
 
   for (children = box->children; children; children = children->next)
     {
       child = children->data;
 
-      if (gtk_widget_get_visible (child->widget))
+      if (btk_widget_get_visible (child->widget))
 	{
 	  nvis_children += 1;
 	  if (child->expand)
@@ -366,24 +366,24 @@ gtk_box_size_allocate (GtkWidget     *widget,
     {
       if (box->homogeneous)
 	{
-          if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
               width = (allocation->width -
-                       GTK_CONTAINER (box)->border_width * 2 -
+                       BTK_CONTAINER (box)->border_width * 2 -
                        (nvis_children - 1) * box->spacing);
               extra = width / nvis_children;
             }
           else
             {
               height = (allocation->height -
-                        GTK_CONTAINER (box)->border_width * 2 -
+                        BTK_CONTAINER (box)->border_width * 2 -
                         (nvis_children - 1) * box->spacing);
               extra = height / nvis_children;
             }
 	}
       else if (nexpand_children > 0)
 	{
-          if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
               width = (gint) allocation->width - (gint) widget->requisition.width;
               extra = width / nexpand_children;
@@ -395,17 +395,17 @@ gtk_box_size_allocate (GtkWidget     *widget,
             }
 	}
 
-      if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
         {
-          x = allocation->x + GTK_CONTAINER (box)->border_width;
-          child_allocation.y = allocation->y + GTK_CONTAINER (box)->border_width;
-          child_allocation.height = MAX (1, (gint) allocation->height - (gint) GTK_CONTAINER (box)->border_width * 2);
+          x = allocation->x + BTK_CONTAINER (box)->border_width;
+          child_allocation.y = allocation->y + BTK_CONTAINER (box)->border_width;
+          child_allocation.height = MAX (1, (gint) allocation->height - (gint) BTK_CONTAINER (box)->border_width * 2);
         }
       else
         {
-          y = allocation->y + GTK_CONTAINER (box)->border_width;
-          child_allocation.x = allocation->x + GTK_CONTAINER (box)->border_width;
-          child_allocation.width = MAX (1, (gint) allocation->width - (gint) GTK_CONTAINER (box)->border_width * 2);
+          y = allocation->y + BTK_CONTAINER (box)->border_width;
+          child_allocation.x = allocation->x + BTK_CONTAINER (box)->border_width;
+          child_allocation.width = MAX (1, (gint) allocation->width - (gint) BTK_CONTAINER (box)->border_width * 2);
         }
 
       children = box->children;
@@ -414,7 +414,7 @@ gtk_box_size_allocate (GtkWidget     *widget,
 	  child = children->data;
 	  children = children->next;
 
-	  if ((child->pack == GTK_PACK_START) && gtk_widget_get_visible (child->widget))
+	  if ((child->pack == BTK_PACK_START) && btk_widget_get_visible (child->widget))
 	    {
 	      if (box->homogeneous)
 		{
@@ -435,9 +435,9 @@ gtk_box_size_allocate (GtkWidget     *widget,
 		}
 	      else
 		{
-		  GtkRequisition child_requisition;
+		  BtkRequisition child_requisition;
 
-		  gtk_widget_get_child_requisition (child->widget, &child_requisition);
+		  btk_widget_get_child_requisition (child->widget, &child_requisition);
 
 		  child_width = child_requisition.width + child->padding * 2;
 		  child_height = child_requisition.height + child->padding * 2;
@@ -463,7 +463,7 @@ gtk_box_size_allocate (GtkWidget     *widget,
 
 	      if (child->fill)
 		{
-                  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+                  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
                       child_allocation.width = MAX (1, (gint) child_width - (gint) child->padding * 2);
                       child_allocation.x = x + child->padding;
@@ -476,10 +476,10 @@ gtk_box_size_allocate (GtkWidget     *widget,
 		}
 	      else
 		{
-		  GtkRequisition child_requisition;
+		  BtkRequisition child_requisition;
 
-		  gtk_widget_get_child_requisition (child->widget, &child_requisition);
-                  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+		  btk_widget_get_child_requisition (child->widget, &child_requisition);
+                  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
                       child_allocation.width = child_requisition.width;
                       child_allocation.x = x + (child_width - child_allocation.width) / 2;
@@ -491,21 +491,21 @@ gtk_box_size_allocate (GtkWidget     *widget,
                     }
 		}
 
-	      if (direction == GTK_TEXT_DIR_RTL &&
-                  private->orientation == GTK_ORIENTATION_HORIZONTAL)
+	      if (direction == BTK_TEXT_DIR_RTL &&
+                  private->orientation == BTK_ORIENTATION_HORIZONTAL)
                 {
                   child_allocation.x = allocation->x + allocation->width - (child_allocation.x - allocation->x) - child_allocation.width;
                 }
 
-	      gtk_widget_size_allocate (child->widget, &child_allocation);
+	      btk_widget_size_allocate (child->widget, &child_allocation);
 
 	      x += child_width + box->spacing;
 	      y += child_height + box->spacing;
 	    }
 	}
 
-      x = allocation->x + allocation->width - GTK_CONTAINER (box)->border_width;
-      y = allocation->y + allocation->height - GTK_CONTAINER (box)->border_width;
+      x = allocation->x + allocation->width - BTK_CONTAINER (box)->border_width;
+      y = allocation->y + allocation->height - BTK_CONTAINER (box)->border_width;
 
       children = box->children;
       while (children)
@@ -513,11 +513,11 @@ gtk_box_size_allocate (GtkWidget     *widget,
 	  child = children->data;
 	  children = children->next;
 
-	  if ((child->pack == GTK_PACK_END) && gtk_widget_get_visible (child->widget))
+	  if ((child->pack == BTK_PACK_END) && btk_widget_get_visible (child->widget))
 	    {
-	      GtkRequisition child_requisition;
+	      BtkRequisition child_requisition;
 
-	      gtk_widget_get_child_requisition (child->widget, &child_requisition);
+	      btk_widget_get_child_requisition (child->widget, &child_requisition);
 
               if (box->homogeneous)
                 {
@@ -562,7 +562,7 @@ gtk_box_size_allocate (GtkWidget     *widget,
 
               if (child->fill)
                 {
-                  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+                  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
                       child_allocation.width = MAX (1, (gint)child_width - (gint)child->padding * 2);
                       child_allocation.x = x + child->padding - child_width;
@@ -575,7 +575,7 @@ gtk_box_size_allocate (GtkWidget     *widget,
                 }
               else
                 {
-                  if (private->orientation == GTK_ORIENTATION_HORIZONTAL)
+                  if (private->orientation == BTK_ORIENTATION_HORIZONTAL)
                     {
                       child_allocation.width = child_requisition.width;
                       child_allocation.x = x + (child_width - child_allocation.width) / 2 - child_width;
@@ -587,13 +587,13 @@ gtk_box_size_allocate (GtkWidget     *widget,
                     }
                 }
 
-	      if (direction == GTK_TEXT_DIR_RTL &&
-                  private->orientation == GTK_ORIENTATION_HORIZONTAL)
+	      if (direction == BTK_TEXT_DIR_RTL &&
+                  private->orientation == BTK_ORIENTATION_HORIZONTAL)
                 {
                   child_allocation.x = allocation->x + allocation->width - (child_allocation.x - allocation->x) - child_allocation.width;
                 }
 
-              gtk_widget_size_allocate (child->widget, &child_allocation);
+              btk_widget_size_allocate (child->widget, &child_allocation);
 
               x -= (child_width + box->spacing);
               y -= (child_height + box->spacing);
@@ -603,14 +603,14 @@ gtk_box_size_allocate (GtkWidget     *widget,
 }
 
 static GType
-gtk_box_child_type (GtkContainer   *container)
+btk_box_child_type (BtkContainer   *container)
 {
-  return GTK_TYPE_WIDGET;
+  return BTK_TYPE_WIDGET;
 }
 
 static void
-gtk_box_set_child_property (GtkContainer *container,
-                            GtkWidget    *child,
+btk_box_set_child_property (BtkContainer *container,
+                            BtkWidget    *child,
                             guint         property_id,
                             const GValue *value,
                             GParamSpec   *pspec)
@@ -618,10 +618,10 @@ gtk_box_set_child_property (GtkContainer *container,
   gboolean expand = 0;
   gboolean fill = 0;
   guint padding = 0;
-  GtkPackType pack_type = 0;
+  BtkPackType pack_type = 0;
 
   if (property_id != CHILD_PROP_POSITION)
-    gtk_box_query_child_packing (GTK_BOX (container),
+    btk_box_query_child_packing (BTK_BOX (container),
 				 child,
 				 &expand,
 				 &fill,
@@ -630,7 +630,7 @@ gtk_box_set_child_property (GtkContainer *container,
   switch (property_id)
     {
     case CHILD_PROP_EXPAND:
-      gtk_box_set_child_packing (GTK_BOX (container),
+      btk_box_set_child_packing (BTK_BOX (container),
 				 child,
 				 g_value_get_boolean (value),
 				 fill,
@@ -638,7 +638,7 @@ gtk_box_set_child_property (GtkContainer *container,
 				 pack_type);
       break;
     case CHILD_PROP_FILL:
-      gtk_box_set_child_packing (GTK_BOX (container),
+      btk_box_set_child_packing (BTK_BOX (container),
 				 child,
 				 expand,
 				 g_value_get_boolean (value),
@@ -646,7 +646,7 @@ gtk_box_set_child_property (GtkContainer *container,
 				 pack_type);
       break;
     case CHILD_PROP_PADDING:
-      gtk_box_set_child_packing (GTK_BOX (container),
+      btk_box_set_child_packing (BTK_BOX (container),
 				 child,
 				 expand,
 				 fill,
@@ -654,7 +654,7 @@ gtk_box_set_child_property (GtkContainer *container,
 				 pack_type);
       break;
     case CHILD_PROP_PACK_TYPE:
-      gtk_box_set_child_packing (GTK_BOX (container),
+      btk_box_set_child_packing (BTK_BOX (container),
 				 child,
 				 expand,
 				 fill,
@@ -662,19 +662,19 @@ gtk_box_set_child_property (GtkContainer *container,
 				 g_value_get_enum (value));
       break;
     case CHILD_PROP_POSITION:
-      gtk_box_reorder_child (GTK_BOX (container),
+      btk_box_reorder_child (BTK_BOX (container),
 			     child,
 			     g_value_get_int (value));
       break;
     default:
-      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+      BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
       break;
     }
 }
 
 static void
-gtk_box_get_child_property (GtkContainer *container,
-			    GtkWidget    *child,
+btk_box_get_child_property (BtkContainer *container,
+			    BtkWidget    *child,
 			    guint         property_id,
 			    GValue       *value,
 			    GParamSpec   *pspec)
@@ -682,11 +682,11 @@ gtk_box_get_child_property (GtkContainer *container,
   gboolean expand = 0;
   gboolean fill = 0;
   guint padding = 0;
-  GtkPackType pack_type = 0;
+  BtkPackType pack_type = 0;
   GList *list;
 
   if (property_id != CHILD_PROP_POSITION)
-    gtk_box_query_child_packing (GTK_BOX (container),
+    btk_box_query_child_packing (BTK_BOX (container),
 				 child,
 				 &expand,
 				 &fill,
@@ -709,9 +709,9 @@ gtk_box_get_child_property (GtkContainer *container,
       break;
     case CHILD_PROP_POSITION:
       i = 0;
-      for (list = GTK_BOX (container)->children; list; list = list->next)
+      for (list = BTK_BOX (container)->children; list; list = list->next)
 	{
-	  GtkBoxChild *child_entry;
+	  BtkBoxChild *child_entry;
 
 	  child_entry = list->data;
 	  if (child_entry->widget == child)
@@ -721,26 +721,26 @@ gtk_box_get_child_property (GtkContainer *container,
       g_value_set_int (value, list ? i : -1);
       break;
     default:
-      GTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
+      BTK_CONTAINER_WARN_INVALID_CHILD_PROPERTY_ID (container, property_id, pspec);
       break;
     }
 }
 
 static void
-gtk_box_pack (GtkBox      *box,
-              GtkWidget   *child,
+btk_box_pack (BtkBox      *box,
+              BtkWidget   *child,
               gboolean     expand,
               gboolean     fill,
               guint        padding,
-              GtkPackType  pack_type)
+              BtkPackType  pack_type)
 {
-  GtkBoxChild *child_info;
+  BtkBoxChild *child_info;
 
-  g_return_if_fail (GTK_IS_BOX (box));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_WIDGET (child));
   g_return_if_fail (child->parent == NULL);
 
-  child_info = g_new (GtkBoxChild, 1);
+  child_info = g_new (BtkBoxChild, 1);
   child_info->widget = child;
   child_info->padding = padding;
   child_info->expand = expand ? TRUE : FALSE;
@@ -750,36 +750,36 @@ gtk_box_pack (GtkBox      *box,
 
   box->children = g_list_append (box->children, child_info);
 
-  gtk_widget_freeze_child_notify (child);
+  btk_widget_freeze_child_notify (child);
 
-  gtk_widget_set_parent (child, GTK_WIDGET (box));
+  btk_widget_set_parent (child, BTK_WIDGET (box));
   
-  gtk_widget_child_notify (child, "expand");
-  gtk_widget_child_notify (child, "fill");
-  gtk_widget_child_notify (child, "padding");
-  gtk_widget_child_notify (child, "pack-type");
-  gtk_widget_child_notify (child, "position");
-  gtk_widget_thaw_child_notify (child);
+  btk_widget_child_notify (child, "expand");
+  btk_widget_child_notify (child, "fill");
+  btk_widget_child_notify (child, "padding");
+  btk_widget_child_notify (child, "pack-type");
+  btk_widget_child_notify (child, "position");
+  btk_widget_thaw_child_notify (child);
 }
 
 /**
- * gtk_box_new:
+ * btk_box_new:
  * @orientation: the box' orientation.
  * @homogeneous: %TRUE if all children are to be given equal space allocations.
  * @spacing: the number of pixels to place by default between children.
  *
- * Creates a new #GtkHBox.
+ * Creates a new #BtkHBox.
  *
- * Return value: a new #GtkHBox.
+ * Return value: a new #BtkHBox.
  *
  * Since: 2.16
  **/
-GtkWidget*
-_gtk_box_new (GtkOrientation orientation,
+BtkWidget*
+_btk_box_new (BtkOrientation orientation,
               gboolean       homogeneous,
               gint           spacing)
 {
-  return g_object_new (GTK_TYPE_BOX,
+  return g_object_new (BTK_TYPE_BOX,
                        "orientation", orientation,
                        "spacing",     spacing,
                        "homogeneous", homogeneous ? TRUE : FALSE,
@@ -787,20 +787,20 @@ _gtk_box_new (GtkOrientation orientation,
 }
 
 /**
- * gtk_box_pack_start:
- * @box: a #GtkBox
- * @child: the #GtkWidget to be added to @box
+ * btk_box_pack_start:
+ * @box: a #BtkBox
+ * @child: the #BtkWidget to be added to @box
  * @expand: %TRUE if the new child is to be given extra space allocated to
  * @box.  The extra space will be divided evenly between all children of
  * @box that use this option
  * @fill: %TRUE if space given to @child by the @expand option is
  *   actually allocated to @child, rather than just padding it.  This
  *   parameter has no effect if @expand is set to %FALSE.  A child is
- *   always allocated the full height of a #GtkHBox and the full width 
- *   of a #GtkVBox. This option affects the other dimension
+ *   always allocated the full height of a #BtkHBox and the full width 
+ *   of a #BtkVBox. This option affects the other dimension
  * @padding: extra space in pixels to put between this child and its
  *   neighbors, over and above the global amount specified by
- *   #GtkBox:spacing property.  If @child is a widget at one of the 
+ *   #BtkBox:spacing property.  If @child is a widget at one of the 
  *   reference ends of @box, then @padding pixels are also put between 
  *   @child and the reference edge of @box
  *
@@ -809,30 +809,30 @@ _gtk_box_new (GtkOrientation orientation,
  * to the start of @box.
  */
 void
-gtk_box_pack_start (GtkBox    *box,
-		    GtkWidget *child,
+btk_box_pack_start (BtkBox    *box,
+		    BtkWidget *child,
 		    gboolean   expand,
 		    gboolean   fill,
 		    guint      padding)
 {
-  gtk_box_pack (box, child, expand, fill, padding, GTK_PACK_START);
+  btk_box_pack (box, child, expand, fill, padding, BTK_PACK_START);
 }
 
 /**
- * gtk_box_pack_end:
- * @box: a #GtkBox
- * @child: the #GtkWidget to be added to @box
+ * btk_box_pack_end:
+ * @box: a #BtkBox
+ * @child: the #BtkWidget to be added to @box
  * @expand: %TRUE if the new child is to be given extra space allocated 
  *   to @box. The extra space will be divided evenly between all children 
  *   of @box that use this option
  * @fill: %TRUE if space given to @child by the @expand option is
  *   actually allocated to @child, rather than just padding it.  This
  *   parameter has no effect if @expand is set to %FALSE.  A child is
- *   always allocated the full height of a #GtkHBox and the full width 
- *   of a #GtkVBox.  This option affects the other dimension
+ *   always allocated the full height of a #BtkHBox and the full width 
+ *   of a #BtkVBox.  This option affects the other dimension
  * @padding: extra space in pixels to put between this child and its
  *   neighbors, over and above the global amount specified by
- *   #GtkBox:spacing property.  If @child is a widget at one of the 
+ *   #BtkBox:spacing property.  If @child is a widget at one of the 
  *   reference ends of @box, then @padding pixels are also put between 
  *   @child and the reference edge of @box
  *
@@ -841,178 +841,178 @@ gtk_box_pack_start (GtkBox    *box,
  * packed with reference to the end of @box.
  */
 void
-gtk_box_pack_end (GtkBox    *box,
-		  GtkWidget *child,
+btk_box_pack_end (BtkBox    *box,
+		  BtkWidget *child,
 		  gboolean   expand,
 		  gboolean   fill,
 		  guint      padding)
 {
-  gtk_box_pack (box, child, expand, fill, padding, GTK_PACK_END);
+  btk_box_pack (box, child, expand, fill, padding, BTK_PACK_END);
 }
 
 /**
- * gtk_box_pack_start_defaults:
- * @box: a #GtkBox
- * @widget: the #GtkWidget to be added to @box
+ * btk_box_pack_start_defaults:
+ * @box: a #BtkBox
+ * @widget: the #BtkWidget to be added to @box
  *
  * Adds @widget to @box, packed with reference to the start of @box.
  * The child is packed after any other child packed with reference 
  * to the start of @box. 
  * 
- * Parameters for how to pack the child @widget, #GtkBox:expand, 
- * #GtkBox:fill and #GtkBox:padding, are given their default
+ * Parameters for how to pack the child @widget, #BtkBox:expand, 
+ * #BtkBox:fill and #BtkBox:padding, are given their default
  * values, %TRUE, %TRUE, and 0, respectively.
  *
- * Deprecated: 2.14: Use gtk_box_pack_start()
+ * Deprecated: 2.14: Use btk_box_pack_start()
  */
 void
-gtk_box_pack_start_defaults (GtkBox    *box,
-			     GtkWidget *child)
+btk_box_pack_start_defaults (BtkBox    *box,
+			     BtkWidget *child)
 {
-  gtk_box_pack_start (box, child, TRUE, TRUE, 0);
+  btk_box_pack_start (box, child, TRUE, TRUE, 0);
 }
 
 /**
- * gtk_box_pack_end_defaults:
- * @box: a #GtkBox
- * @widget: the #GtkWidget to be added to @box
+ * btk_box_pack_end_defaults:
+ * @box: a #BtkBox
+ * @widget: the #BtkWidget to be added to @box
  *
  * Adds @widget to @box, packed with reference to the end of @box.
  * The child is packed after any other child packed with reference 
  * to the start of @box. 
  * 
- * Parameters for how to pack the child @widget, #GtkBox:expand, 
- * #GtkBox:fill and #GtkBox:padding, are given their default
+ * Parameters for how to pack the child @widget, #BtkBox:expand, 
+ * #BtkBox:fill and #BtkBox:padding, are given their default
  * values, %TRUE, %TRUE, and 0, respectively.
  *
- * Deprecated: 2.14: Use gtk_box_pack_end()
+ * Deprecated: 2.14: Use btk_box_pack_end()
  */
 void
-gtk_box_pack_end_defaults (GtkBox    *box,
-			   GtkWidget *child)
+btk_box_pack_end_defaults (BtkBox    *box,
+			   BtkWidget *child)
 {
-  gtk_box_pack_end (box, child, TRUE, TRUE, 0);
+  btk_box_pack_end (box, child, TRUE, TRUE, 0);
 }
 
 /**
- * gtk_box_set_homogeneous:
- * @box: a #GtkBox
+ * btk_box_set_homogeneous:
+ * @box: a #BtkBox
  * @homogeneous: a boolean value, %TRUE to create equal allotments,
  *   %FALSE for variable allotments
  * 
- * Sets the #GtkBox:homogeneous property of @box, controlling 
+ * Sets the #BtkBox:homogeneous property of @box, controlling 
  * whether or not all children of @box are given equal space 
  * in the box.
  */
 void
-gtk_box_set_homogeneous (GtkBox  *box,
+btk_box_set_homogeneous (BtkBox  *box,
 			 gboolean homogeneous)
 {
-  g_return_if_fail (GTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_BOX (box));
 
   if ((homogeneous ? TRUE : FALSE) != box->homogeneous)
     {
       box->homogeneous = homogeneous ? TRUE : FALSE;
       g_object_notify (G_OBJECT (box), "homogeneous");
-      gtk_widget_queue_resize (GTK_WIDGET (box));
+      btk_widget_queue_resize (BTK_WIDGET (box));
     }
 }
 
 /**
- * gtk_box_get_homogeneous:
- * @box: a #GtkBox
+ * btk_box_get_homogeneous:
+ * @box: a #BtkBox
  *
  * Returns whether the box is homogeneous (all children are the
- * same size). See gtk_box_set_homogeneous().
+ * same size). See btk_box_set_homogeneous().
  *
  * Return value: %TRUE if the box is homogeneous.
  **/
 gboolean
-gtk_box_get_homogeneous (GtkBox *box)
+btk_box_get_homogeneous (BtkBox *box)
 {
-  g_return_val_if_fail (GTK_IS_BOX (box), FALSE);
+  g_return_val_if_fail (BTK_IS_BOX (box), FALSE);
 
   return box->homogeneous;
 }
 
 /**
- * gtk_box_set_spacing:
- * @box: a #GtkBox
+ * btk_box_set_spacing:
+ * @box: a #BtkBox
  * @spacing: the number of pixels to put between children
  *
- * Sets the #GtkBox:spacing property of @box, which is the 
+ * Sets the #BtkBox:spacing property of @box, which is the 
  * number of pixels to place between children of @box.
  */
 void
-gtk_box_set_spacing (GtkBox *box,
+btk_box_set_spacing (BtkBox *box,
 		     gint    spacing)
 {
-  g_return_if_fail (GTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_BOX (box));
 
   if (spacing != box->spacing)
     {
       box->spacing = spacing;
-      _gtk_box_set_spacing_set (box, TRUE);
+      _btk_box_set_spacing_set (box, TRUE);
 
       g_object_notify (G_OBJECT (box), "spacing");
 
-      gtk_widget_queue_resize (GTK_WIDGET (box));
+      btk_widget_queue_resize (BTK_WIDGET (box));
     }
 }
 
 /**
- * gtk_box_get_spacing:
- * @box: a #GtkBox
+ * btk_box_get_spacing:
+ * @box: a #BtkBox
  * 
- * Gets the value set by gtk_box_set_spacing().
+ * Gets the value set by btk_box_set_spacing().
  * 
  * Return value: spacing between children
  **/
 gint
-gtk_box_get_spacing (GtkBox *box)
+btk_box_get_spacing (BtkBox *box)
 {
-  g_return_val_if_fail (GTK_IS_BOX (box), 0);
+  g_return_val_if_fail (BTK_IS_BOX (box), 0);
 
   return box->spacing;
 }
 
 void
-_gtk_box_set_spacing_set (GtkBox  *box,
+_btk_box_set_spacing_set (BtkBox  *box,
                           gboolean spacing_set)
 {
-  GtkBoxPrivate *private;
+  BtkBoxPrivate *private;
 
-  g_return_if_fail (GTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_BOX (box));
 
-  private = GTK_BOX_GET_PRIVATE (box);
+  private = BTK_BOX_GET_PRIVATE (box);
 
   private->spacing_set = spacing_set ? TRUE : FALSE;
 }
 
 gboolean
-_gtk_box_get_spacing_set (GtkBox *box)
+_btk_box_get_spacing_set (BtkBox *box)
 {
-  GtkBoxPrivate *private;
+  BtkBoxPrivate *private;
 
-  g_return_val_if_fail (GTK_IS_BOX (box), FALSE);
+  g_return_val_if_fail (BTK_IS_BOX (box), FALSE);
 
-  private = GTK_BOX_GET_PRIVATE (box);
+  private = BTK_BOX_GET_PRIVATE (box);
 
   return private->spacing_set;
 }
 
 /**
- * gtk_box_reorder_child:
- * @box: a #GtkBox
- * @child: the #GtkWidget to move
+ * btk_box_reorder_child:
+ * @box: a #BtkBox
+ * @child: the #BtkWidget to move
  * @position: the new position for @child in the list of children 
  *   of @box, starting from 0. If negative, indicates the end of 
  *   the list
  *
  * Moves @child to a new @position in the list of @box children.  
  * The list is the <structfield>children</structfield> field of
- * #GtkBox-struct, and contains both widgets packed #GTK_PACK_START 
- * as well as widgets packed #GTK_PACK_END, in the order that these 
+ * #BtkBox-struct, and contains both widgets packed #BTK_PACK_START 
+ * as well as widgets packed #BTK_PACK_END, in the order that these 
  * widgets were added to @box.
  * 
  * A widget's position in the @box children list determines where 
@@ -1021,17 +1021,17 @@ _gtk_box_get_spacing_set (GtkBox *box)
  * same packing type that appear earlier in the list.
  */ 
 void
-gtk_box_reorder_child (GtkBox    *box,
-		       GtkWidget *child,
+btk_box_reorder_child (BtkBox    *box,
+		       BtkWidget *child,
 		       gint       position)
 {
   GList *old_link;
   GList *new_link;
-  GtkBoxChild *child_info = NULL;
+  BtkBoxChild *child_info = NULL;
   gint old_position;
 
-  g_return_if_fail (GTK_IS_BOX (box));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_WIDGET (child));
 
   old_link = box->children;
   old_position = 0;
@@ -1059,36 +1059,36 @@ gtk_box_reorder_child (GtkBox    *box,
 
   box->children = g_list_insert_before (box->children, new_link, child_info);
 
-  gtk_widget_child_notify (child, "position");
-  if (gtk_widget_get_visible (child)
-      && gtk_widget_get_visible (GTK_WIDGET (box)))
-    gtk_widget_queue_resize (child);
+  btk_widget_child_notify (child, "position");
+  if (btk_widget_get_visible (child)
+      && btk_widget_get_visible (BTK_WIDGET (box)))
+    btk_widget_queue_resize (child);
 }
 
 /**
- * gtk_box_query_child_packing:
- * @box: a #GtkBox
- * @child: the #GtkWidget of the child to query
- * @expand: pointer to return location for #GtkBox:expand child property 
- * @fill: pointer to return location for #GtkBox:fill child property 
- * @padding: pointer to return location for #GtkBox:padding child property 
- * @pack_type: pointer to return location for #GtkBox:pack-type child property 
+ * btk_box_query_child_packing:
+ * @box: a #BtkBox
+ * @child: the #BtkWidget of the child to query
+ * @expand: pointer to return location for #BtkBox:expand child property 
+ * @fill: pointer to return location for #BtkBox:fill child property 
+ * @padding: pointer to return location for #BtkBox:padding child property 
+ * @pack_type: pointer to return location for #BtkBox:pack-type child property 
  * 
  * Obtains information about how @child is packed into @box.
  */
 void
-gtk_box_query_child_packing (GtkBox      *box,
-			     GtkWidget   *child,
+btk_box_query_child_packing (BtkBox      *box,
+			     BtkWidget   *child,
 			     gboolean    *expand,
 			     gboolean    *fill,
 			     guint       *padding,
-			     GtkPackType *pack_type)
+			     BtkPackType *pack_type)
 {
   GList *list;
-  GtkBoxChild *child_info = NULL;
+  BtkBoxChild *child_info = NULL;
 
-  g_return_if_fail (GTK_IS_BOX (box));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_WIDGET (child));
 
   list = box->children;
   while (list)
@@ -1114,29 +1114,29 @@ gtk_box_query_child_packing (GtkBox      *box,
 }
 
 /**
- * gtk_box_set_child_packing:
- * @box: a #GtkBox
- * @child: the #GtkWidget of the child to set
- * @expand: the new value of the #GtkBox:expand child property 
- * @fill: the new value of the #GtkBox:fill child property
- * @padding: the new value of the #GtkBox:padding child property
- * @pack_type: the new value of the #GtkBox:pack-type child property
+ * btk_box_set_child_packing:
+ * @box: a #BtkBox
+ * @child: the #BtkWidget of the child to set
+ * @expand: the new value of the #BtkBox:expand child property 
+ * @fill: the new value of the #BtkBox:fill child property
+ * @padding: the new value of the #BtkBox:padding child property
+ * @pack_type: the new value of the #BtkBox:pack-type child property
  *
  * Sets the way @child is packed into @box.
  */
 void
-gtk_box_set_child_packing (GtkBox      *box,
-			   GtkWidget   *child,
+btk_box_set_child_packing (BtkBox      *box,
+			   BtkWidget   *child,
 			   gboolean     expand,
 			   gboolean     fill,
 			   guint        padding,
-			   GtkPackType  pack_type)
+			   BtkPackType  pack_type)
 {
   GList *list;
-  GtkBoxChild *child_info = NULL;
+  BtkBoxChild *child_info = NULL;
 
-  g_return_if_fail (GTK_IS_BOX (box));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_WIDGET (child));
 
   list = box->children;
   while (list)
@@ -1148,58 +1148,58 @@ gtk_box_set_child_packing (GtkBox      *box,
       list = list->next;
     }
 
-  gtk_widget_freeze_child_notify (child);
+  btk_widget_freeze_child_notify (child);
   if (list)
     {
       child_info->expand = expand != FALSE;
-      gtk_widget_child_notify (child, "expand");
+      btk_widget_child_notify (child, "expand");
       child_info->fill = fill != FALSE;
-      gtk_widget_child_notify (child, "fill");
+      btk_widget_child_notify (child, "fill");
       child_info->padding = padding;
-      gtk_widget_child_notify (child, "padding");
-      if (pack_type == GTK_PACK_END)
-	child_info->pack = GTK_PACK_END;
+      btk_widget_child_notify (child, "padding");
+      if (pack_type == BTK_PACK_END)
+	child_info->pack = BTK_PACK_END;
       else
-	child_info->pack = GTK_PACK_START;
-      gtk_widget_child_notify (child, "pack-type");
+	child_info->pack = BTK_PACK_START;
+      btk_widget_child_notify (child, "pack-type");
 
-      if (gtk_widget_get_visible (child)
-          && gtk_widget_get_visible (GTK_WIDGET (box)))
-	gtk_widget_queue_resize (child);
+      if (btk_widget_get_visible (child)
+          && btk_widget_get_visible (BTK_WIDGET (box)))
+	btk_widget_queue_resize (child);
     }
-  gtk_widget_thaw_child_notify (child);
+  btk_widget_thaw_child_notify (child);
 }
 
 void
-_gtk_box_set_old_defaults (GtkBox *box)
+_btk_box_set_old_defaults (BtkBox *box)
 {
-  GtkBoxPrivate *private;
+  BtkBoxPrivate *private;
 
-  g_return_if_fail (GTK_IS_BOX (box));
+  g_return_if_fail (BTK_IS_BOX (box));
 
-  private = GTK_BOX_GET_PRIVATE (box);
+  private = BTK_BOX_GET_PRIVATE (box);
 
   private->default_expand = TRUE;
 }
 
 static void
-gtk_box_add (GtkContainer *container,
-	     GtkWidget    *widget)
+btk_box_add (BtkContainer *container,
+	     BtkWidget    *widget)
 {
-  GtkBoxPrivate *private = GTK_BOX_GET_PRIVATE (container);
+  BtkBoxPrivate *private = BTK_BOX_GET_PRIVATE (container);
 
-  gtk_box_pack_start (GTK_BOX (container), widget,
+  btk_box_pack_start (BTK_BOX (container), widget,
                       private->default_expand,
                       private->default_expand,
                       0);
 }
 
 static void
-gtk_box_remove (GtkContainer *container,
-		GtkWidget    *widget)
+btk_box_remove (BtkContainer *container,
+		BtkWidget    *widget)
 {
-  GtkBox *box = GTK_BOX (container);
-  GtkBoxChild *child;
+  BtkBox *box = BTK_BOX (container);
+  BtkBoxChild *child;
   GList *children;
 
   children = box->children;
@@ -1211,18 +1211,18 @@ gtk_box_remove (GtkContainer *container,
 	{
 	  gboolean was_visible;
 
-	  was_visible = gtk_widget_get_visible (widget);
-	  gtk_widget_unparent (widget);
+	  was_visible = btk_widget_get_visible (widget);
+	  btk_widget_unparent (widget);
 
 	  box->children = g_list_remove_link (box->children, children);
 	  g_list_free (children);
 	  g_free (child);
 
-	  /* queue resize regardless of gtk_widget_get_visible (container),
+	  /* queue resize regardless of btk_widget_get_visible (container),
 	   * since that's what is needed by toplevels.
 	   */
 	  if (was_visible)
-	    gtk_widget_queue_resize (GTK_WIDGET (container));
+	    btk_widget_queue_resize (BTK_WIDGET (container));
 
 	  break;
 	}
@@ -1232,13 +1232,13 @@ gtk_box_remove (GtkContainer *container,
 }
 
 static void
-gtk_box_forall (GtkContainer *container,
+btk_box_forall (BtkContainer *container,
 		gboolean      include_internals,
-		GtkCallback   callback,
+		BtkCallback   callback,
 		gpointer      callback_data)
 {
-  GtkBox *box = GTK_BOX (container);
-  GtkBoxChild *child;
+  BtkBox *box = BTK_BOX (container);
+  BtkBoxChild *child;
   GList *children;
 
   children = box->children;
@@ -1247,7 +1247,7 @@ gtk_box_forall (GtkContainer *container,
       child = children->data;
       children = children->next;
 
-      if (child->pack == GTK_PACK_START)
+      if (child->pack == BTK_PACK_START)
 	(* callback) (child->widget, callback_data);
     }
 
@@ -1257,10 +1257,10 @@ gtk_box_forall (GtkContainer *container,
       child = children->data;
       children = children->prev;
 
-      if (child->pack == GTK_PACK_END)
+      if (child->pack == BTK_PACK_END)
 	(* callback) (child->widget, callback_data);
     }
 }
 
-#define __GTK_BOX_C__
-#include "gtkaliasdef.c"
+#define __BTK_BOX_C__
+#include "btkaliasdef.c"

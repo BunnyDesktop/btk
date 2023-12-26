@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_WINDOW_H__
-#define __GAIL_WINDOW_H__
+#ifndef __BAIL_WINDOW_H__
+#define __BAIL_WINDOW_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_WINDOW                        (gail_window_get_type ())
-#define GAIL_WINDOW(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_WINDOW, GailWindow))
-#define GAIL_WINDOW_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_WINDOW, GailWindowClass))
-#define GAIL_IS_WINDOW(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_WINDOW))
-#define GAIL_IS_WINDOW_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_WINDOW))
-#define GAIL_WINDOW_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_WINDOW, GailWindowClass))
+#define BAIL_TYPE_WINDOW                        (bail_window_get_type ())
+#define BAIL_WINDOW(obj)                        (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_WINDOW, BailWindow))
+#define BAIL_WINDOW_CLASS(klass)                (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_WINDOW, BailWindowClass))
+#define BAIL_IS_WINDOW(obj)                     (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_WINDOW))
+#define BAIL_IS_WINDOW_CLASS(klass)             (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_WINDOW))
+#define BAIL_WINDOW_GET_CLASS(obj)              (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_WINDOW, BailWindowClass))
 
-typedef struct _GailWindow                   GailWindow;
-typedef struct _GailWindowClass              GailWindowClass;
+typedef struct _BailWindow                   BailWindow;
+typedef struct _BailWindowClass              BailWindowClass;
 
-struct _GailWindow
+struct _BailWindow
 {
-  GailContainer parent;
+  BailContainer parent;
 
   guint name_change_handler;
   gchar *previous_name;
 };
 
-GType gail_window_get_type (void);
+GType bail_window_get_type (void);
 
-struct _GailWindowClass
+struct _BailWindowClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_WINDOW_H__ */
+#endif /* __BAIL_WINDOW_H__ */

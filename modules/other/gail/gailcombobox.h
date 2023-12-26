@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2004 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,26 +17,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_COMBO_BOX_H__
-#define __GAIL_COMBO_BOX_H__
+#ifndef __BAIL_COMBO_BOX_H__
+#define __BAIL_COMBO_BOX_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_COMBO_BOX                      (gail_combo_box_get_type ())
-#define GAIL_COMBO_BOX(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_COMBO_BOX, GailComboBox))
-#define GAIL_COMBO_BOX_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_COMBO_BOX, GailComboBoxClass))
-#define GAIL_IS_COMBO_BOX(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_COMBO_BOX))
-#define GAIL_IS_COMBO_BOX_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_COMBO_BOX))
-#define GAIL_COMBO_BOX_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_COMBO_BOX, GailComboBoxClass))
+#define BAIL_TYPE_COMBO_BOX                      (bail_combo_box_get_type ())
+#define BAIL_COMBO_BOX(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_COMBO_BOX, BailComboBox))
+#define BAIL_COMBO_BOX_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
+#define BAIL_IS_COMBO_BOX(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_COMBO_BOX))
+#define BAIL_IS_COMBO_BOX_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_COMBO_BOX))
+#define BAIL_COMBO_BOX_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_COMBO_BOX, BailComboBoxClass))
 
-typedef struct _GailComboBox              GailComboBox;
-typedef struct _GailComboBoxClass         GailComboBoxClass;
+typedef struct _BailComboBox              BailComboBox;
+typedef struct _BailComboBoxClass         BailComboBoxClass;
 
-struct _GailComboBox
+struct _BailComboBox
 {
-  GailContainer parent;
+  BailContainer parent;
 
   gchar         *press_keybinding;
   gchar         *press_description;
@@ -47,13 +47,13 @@ struct _GailComboBox
   gboolean      popup_set;
 };
 
-GType gail_combo_box_get_type (void);
+GType bail_combo_box_get_type (void);
 
-struct _GailComboBoxClass
+struct _BailComboBoxClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_COMBO_BOX_H__ */
+#endif /* __BAIL_COMBO_BOX_H__ */

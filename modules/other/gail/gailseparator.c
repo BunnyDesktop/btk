@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,56 +19,56 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailseparator.h"
+#include <btk/btk.h>
+#include "bailseparator.h"
 
-static void         gail_separator_class_init            (GailSeparatorClass  *klass);
-static void         gail_separator_init                  (GailSeparator       *accessible);
-static void         gail_separator_initialize            (AtkObject           *accessible,
+static void         bail_separator_class_init            (BailSeparatorClass  *klass);
+static void         bail_separator_init                  (BailSeparator       *accessible);
+static void         bail_separator_initialize            (BatkObject           *accessible,
                                                           gpointer             data);
-static AtkStateSet* gail_separator_ref_state_set	 (AtkObject	      *accessible);
+static BatkStateSet* bail_separator_ref_state_set	 (BatkObject	      *accessible);
 
-G_DEFINE_TYPE (GailSeparator, gail_separator, GAIL_TYPE_WIDGET)
+G_DEFINE_TYPE (BailSeparator, bail_separator, BAIL_TYPE_WIDGET)
 
 static void
-gail_separator_class_init (GailSeparatorClass *klass)
+bail_separator_class_init (BailSeparatorClass *klass)
 {
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_separator_initialize;
-  class->ref_state_set = gail_separator_ref_state_set;
+  class->initialize = bail_separator_initialize;
+  class->ref_state_set = bail_separator_ref_state_set;
 }
 
 static void
-gail_separator_init (GailSeparator *accessible)
+bail_separator_init (BailSeparator *accessible)
 {
 }
 
 static void
-gail_separator_initialize (AtkObject *accessible,
+bail_separator_initialize (BatkObject *accessible,
                            gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_separator_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_separator_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_SEPARATOR;
+  accessible->role = BATK_ROLE_SEPARATOR;
 }
 
-static AtkStateSet*
-gail_separator_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_separator_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkWidget *widget;
+  BatkStateSet *state_set;
+  BtkWidget *widget;
 
-  state_set = ATK_OBJECT_CLASS (gail_separator_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_separator_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
 
   if (widget == NULL)
     return state_set;
 
-  if (GTK_IS_VSEPARATOR (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_VERTICAL);
-  else if (GTK_IS_HSEPARATOR (widget))
-    atk_state_set_add_state (state_set, ATK_STATE_HORIZONTAL);
+  if (BTK_IS_VSEPARATOR (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_VERTICAL);
+  else if (BTK_IS_HSEPARATOR (widget))
+    batk_state_set_add_state (state_set, BATK_STATE_HORIZONTAL);
 
   return state_set;
 }

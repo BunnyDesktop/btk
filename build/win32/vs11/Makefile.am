@@ -2,27 +2,27 @@ include $(top_srcdir)/Makefile.decl
 
 EXTRA_DIST +=	\
 	README.txt	\
-	gtk+.sln	\
-	gtk-build-defines.props	\
-	gtk-gen-srcs.props	\
-	gtk-install.props	\
-	gtk-version-paths.props	\
-	gdk-win32.vcxproj	\
-	gdk-win32.vcxproj.filters	\
-	gdk.vcxproj	\
-	gdk.vcxproj.filters	\
-	gtk.vcxproj	\
-	gtk.vcxproj.filters	\
-	gtk-demo.vcxproj	\
-	gtk-demo.vcxproj.filters	\
-	gailutil.vcxproj	\
-	gailutil.vcxproj.filters	\
+	btk+.sln	\
+	btk-build-defines.props	\
+	btk-gen-srcs.props	\
+	btk-install.props	\
+	btk-version-paths.props	\
+	bdk-win32.vcxproj	\
+	bdk-win32.vcxproj.filters	\
+	bdk.vcxproj	\
+	bdk.vcxproj.filters	\
+	btk.vcxproj	\
+	btk.vcxproj.filters	\
+	btk-demo.vcxproj	\
+	btk-demo.vcxproj.filters	\
+	bailutil.vcxproj	\
+	bailutil.vcxproj.filters	\
 	libwimp.vcxproj	\
 	libwimp.vcxproj.filters	\
-	gtk-update-icon-cache.vcxproj	\
-	gtk-update-icon-cache.vcxproj.filters	\
-	gtk-install.vcxproj	\
-	gtk-install.vcxproj.filters
+	btk-update-icon-cache.vcxproj	\
+	btk-update-icon-cache.vcxproj.filters	\
+	btk-install.vcxproj	\
+	btk-install.vcxproj.filters
 
 DISTCLEANFILES = $(EXTRA_DIST)
 

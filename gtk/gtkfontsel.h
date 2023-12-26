@@ -1,9 +1,9 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkFontSelection widget for Gtk+, by Damon Chaplin, May 1998.
- * Based on the GnomeFontSelector widget, by Elliot Lee, but major changes.
- * The GnomeFontSelector was derived from app/text_tool.c in the GIMP.
+ * BtkFontSelection widget for Btk+, by Damon Chaplin, May 1998.
+ * Based on the BunnyFontSelector widget, by Elliot Lee, but major changes.
+ * The BunnyFontSelector was derived from app/text_tool.c in the GIMP.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,98 +22,98 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_FONTSEL_H__
-#define __GTK_FONTSEL_H__
+#ifndef __BTK_FONTSEL_H__
+#define __BTK_FONTSEL_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkvbox.h>
+#include <btk/btkdialog.h>
+#include <btk/btkvbox.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_FONT_SELECTION              (gtk_font_selection_get_type ())
-#define GTK_FONT_SELECTION(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FONT_SELECTION, GtkFontSelection))
-#define GTK_FONT_SELECTION_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FONT_SELECTION, GtkFontSelectionClass))
-#define GTK_IS_FONT_SELECTION(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FONT_SELECTION))
-#define GTK_IS_FONT_SELECTION_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FONT_SELECTION))
-#define GTK_FONT_SELECTION_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FONT_SELECTION, GtkFontSelectionClass))
+#define BTK_TYPE_FONT_SELECTION              (btk_font_selection_get_type ())
+#define BTK_FONT_SELECTION(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_SELECTION, BtkFontSelection))
+#define BTK_FONT_SELECTION_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FONT_SELECTION, BtkFontSelectionClass))
+#define BTK_IS_FONT_SELECTION(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FONT_SELECTION))
+#define BTK_IS_FONT_SELECTION_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FONT_SELECTION))
+#define BTK_FONT_SELECTION_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FONT_SELECTION, BtkFontSelectionClass))
 
 
-#define GTK_TYPE_FONT_SELECTION_DIALOG              (gtk_font_selection_dialog_get_type ())
-#define GTK_FONT_SELECTION_DIALOG(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FONT_SELECTION_DIALOG, GtkFontSelectionDialog))
-#define GTK_FONT_SELECTION_DIALOG_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FONT_SELECTION_DIALOG, GtkFontSelectionDialogClass))
-#define GTK_IS_FONT_SELECTION_DIALOG(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FONT_SELECTION_DIALOG))
-#define GTK_IS_FONT_SELECTION_DIALOG_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FONT_SELECTION_DIALOG))
-#define GTK_FONT_SELECTION_DIALOG_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FONT_SELECTION_DIALOG, GtkFontSelectionDialogClass))
+#define BTK_TYPE_FONT_SELECTION_DIALOG              (btk_font_selection_dialog_get_type ())
+#define BTK_FONT_SELECTION_DIALOG(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FONT_SELECTION_DIALOG, BtkFontSelectionDialog))
+#define BTK_FONT_SELECTION_DIALOG_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FONT_SELECTION_DIALOG, BtkFontSelectionDialogClass))
+#define BTK_IS_FONT_SELECTION_DIALOG(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FONT_SELECTION_DIALOG))
+#define BTK_IS_FONT_SELECTION_DIALOG_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FONT_SELECTION_DIALOG))
+#define BTK_FONT_SELECTION_DIALOG_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FONT_SELECTION_DIALOG, BtkFontSelectionDialogClass))
 
 
-typedef struct _GtkFontSelection	     GtkFontSelection;
-typedef struct _GtkFontSelectionClass	     GtkFontSelectionClass;
+typedef struct _BtkFontSelection	     BtkFontSelection;
+typedef struct _BtkFontSelectionClass	     BtkFontSelectionClass;
 
-typedef struct _GtkFontSelectionDialog	     GtkFontSelectionDialog;
-typedef struct _GtkFontSelectionDialogClass  GtkFontSelectionDialogClass;
+typedef struct _BtkFontSelectionDialog	     BtkFontSelectionDialog;
+typedef struct _BtkFontSelectionDialogClass  BtkFontSelectionDialogClass;
 
-struct _GtkFontSelection
+struct _BtkFontSelection
 {
-  GtkVBox parent_instance;
+  BtkVBox parent_instance;
   
-  GtkWidget *GSEAL (font_entry);        /* Used _get_family_entry() for consistency, -mr */
-  GtkWidget *GSEAL (family_list);
-  GtkWidget *GSEAL (font_style_entry);  /* Used _get_face_entry() for consistency, -mr */
-  GtkWidget *GSEAL (face_list);
-  GtkWidget *GSEAL (size_entry);
-  GtkWidget *GSEAL (size_list);
-  GtkWidget *GSEAL (pixels_button);     /* Unused, -mr */
-  GtkWidget *GSEAL (points_button);     /* Unused, -mr */
-  GtkWidget *GSEAL (filter_button);     /* Unused, -mr */
-  GtkWidget *GSEAL (preview_entry);
+  BtkWidget *GSEAL (font_entry);        /* Used _get_family_entry() for consistency, -mr */
+  BtkWidget *GSEAL (family_list);
+  BtkWidget *GSEAL (font_style_entry);  /* Used _get_face_entry() for consistency, -mr */
+  BtkWidget *GSEAL (face_list);
+  BtkWidget *GSEAL (size_entry);
+  BtkWidget *GSEAL (size_list);
+  BtkWidget *GSEAL (pixels_button);     /* Unused, -mr */
+  BtkWidget *GSEAL (points_button);     /* Unused, -mr */
+  BtkWidget *GSEAL (filter_button);     /* Unused, -mr */
+  BtkWidget *GSEAL (preview_entry);
 
-  PangoFontFamily *GSEAL (family);	/* Current family */
-  PangoFontFace *GSEAL (face);		/* Current face */
+  BangoFontFamily *GSEAL (family);	/* Current family */
+  BangoFontFace *GSEAL (face);		/* Current face */
   
   gint GSEAL (size);
   
-  GdkFont *GSEAL (font);		/* Cache for gdk_font_selection_get_font, so we can preserve
+  BdkFont *GSEAL (font);		/* Cache for bdk_font_selection_get_font, so we can preserve
                                          * refcounting behavior
                                          */
 };
 
-struct _GtkFontSelectionClass
+struct _BtkFontSelectionClass
 {
-  GtkVBoxClass parent_class;
+  BtkVBoxClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-struct _GtkFontSelectionDialog
+struct _BtkFontSelectionDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
   /*< private >*/
-  GtkWidget *GSEAL (fontsel);
+  BtkWidget *GSEAL (fontsel);
 
-  GtkWidget *GSEAL (main_vbox);     /* Not wrapped with an API, can use GTK_DIALOG->vbox instead, -mr */
-  GtkWidget *GSEAL (action_area);   /* Not wrapped with an API, can use GTK_DIALOG->action_area instead, -mr */
+  BtkWidget *GSEAL (main_vbox);     /* Not wrapped with an API, can use BTK_DIALOG->vbox instead, -mr */
+  BtkWidget *GSEAL (action_area);   /* Not wrapped with an API, can use BTK_DIALOG->action_area instead, -mr */
 
   /*< public >*/
-  GtkWidget *GSEAL (ok_button);
-  GtkWidget *GSEAL (apply_button);
-  GtkWidget *GSEAL (cancel_button);
+  BtkWidget *GSEAL (ok_button);
+  BtkWidget *GSEAL (apply_button);
+  BtkWidget *GSEAL (cancel_button);
 
   /*< private >*/
 
@@ -124,97 +124,97 @@ struct _GtkFontSelectionDialog
   gboolean GSEAL (auto_resize);
 };
 
-struct _GtkFontSelectionDialogClass
+struct _BtkFontSelectionDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
 
 /*****************************************************************************
- * GtkFontSelection functions.
- *   see the comments in the GtkFontSelectionDialog functions.
+ * BtkFontSelection functions.
+ *   see the comments in the BtkFontSelectionDialog functions.
  *****************************************************************************/
 
-GType	     gtk_font_selection_get_type	  (void) G_GNUC_CONST;
-GtkWidget *  gtk_font_selection_new               (void);
-GtkWidget *  gtk_font_selection_get_family_list   (GtkFontSelection *fontsel);
-GtkWidget *  gtk_font_selection_get_face_list     (GtkFontSelection *fontsel);
-GtkWidget *  gtk_font_selection_get_size_entry    (GtkFontSelection *fontsel);
-GtkWidget *  gtk_font_selection_get_size_list     (GtkFontSelection *fontsel);
-GtkWidget *  gtk_font_selection_get_preview_entry (GtkFontSelection *fontsel);
-PangoFontFamily *
-             gtk_font_selection_get_family        (GtkFontSelection *fontsel);
-PangoFontFace *
-             gtk_font_selection_get_face          (GtkFontSelection *fontsel);
-gint         gtk_font_selection_get_size          (GtkFontSelection *fontsel);
-gchar*       gtk_font_selection_get_font_name     (GtkFontSelection *fontsel);
+GType	     btk_font_selection_get_type	  (void) G_GNUC_CONST;
+BtkWidget *  btk_font_selection_new               (void);
+BtkWidget *  btk_font_selection_get_family_list   (BtkFontSelection *fontsel);
+BtkWidget *  btk_font_selection_get_face_list     (BtkFontSelection *fontsel);
+BtkWidget *  btk_font_selection_get_size_entry    (BtkFontSelection *fontsel);
+BtkWidget *  btk_font_selection_get_size_list     (BtkFontSelection *fontsel);
+BtkWidget *  btk_font_selection_get_preview_entry (BtkFontSelection *fontsel);
+BangoFontFamily *
+             btk_font_selection_get_family        (BtkFontSelection *fontsel);
+BangoFontFace *
+             btk_font_selection_get_face          (BtkFontSelection *fontsel);
+gint         btk_font_selection_get_size          (BtkFontSelection *fontsel);
+gchar*       btk_font_selection_get_font_name     (BtkFontSelection *fontsel);
 
-#ifndef GTK_DISABLE_DEPRECATED
-GdkFont*     gtk_font_selection_get_font          (GtkFontSelection *fontsel);
-#endif /* GTK_DISABLE_DEPRECATED */
+#ifndef BTK_DISABLE_DEPRECATED
+BdkFont*     btk_font_selection_get_font          (BtkFontSelection *fontsel);
+#endif /* BTK_DISABLE_DEPRECATED */
 
-gboolean     gtk_font_selection_set_font_name     (GtkFontSelection *fontsel,
+gboolean     btk_font_selection_set_font_name     (BtkFontSelection *fontsel,
                                                    const gchar      *fontname);
-const gchar* gtk_font_selection_get_preview_text  (GtkFontSelection *fontsel);
-void         gtk_font_selection_set_preview_text  (GtkFontSelection *fontsel,
+const gchar* btk_font_selection_get_preview_text  (BtkFontSelection *fontsel);
+void         btk_font_selection_set_preview_text  (BtkFontSelection *fontsel,
                                                    const gchar      *text);
 
 /*****************************************************************************
- * GtkFontSelectionDialog functions.
+ * BtkFontSelectionDialog functions.
  *   most of these functions simply call the corresponding function in the
- *   GtkFontSelection.
+ *   BtkFontSelection.
  *****************************************************************************/
 
-GType	   gtk_font_selection_dialog_get_type	       (void) G_GNUC_CONST;
-GtkWidget *gtk_font_selection_dialog_new	       (const gchar            *title);
+GType	   btk_font_selection_dialog_get_type	       (void) G_GNUC_CONST;
+BtkWidget *btk_font_selection_dialog_new	       (const gchar            *title);
 
-GtkWidget *gtk_font_selection_dialog_get_ok_button     (GtkFontSelectionDialog *fsd);
-#ifndef GTK_DISABLE_DEPRECATED
-GtkWidget *gtk_font_selection_dialog_get_apply_button  (GtkFontSelectionDialog *fsd);
+BtkWidget *btk_font_selection_dialog_get_ok_button     (BtkFontSelectionDialog *fsd);
+#ifndef BTK_DISABLE_DEPRECATED
+BtkWidget *btk_font_selection_dialog_get_apply_button  (BtkFontSelectionDialog *fsd);
 #endif
-GtkWidget *gtk_font_selection_dialog_get_cancel_button (GtkFontSelectionDialog *fsd);
-GtkWidget *gtk_font_selection_dialog_get_font_selection (GtkFontSelectionDialog *fsd);
+BtkWidget *btk_font_selection_dialog_get_cancel_button (BtkFontSelectionDialog *fsd);
+BtkWidget *btk_font_selection_dialog_get_font_selection (BtkFontSelectionDialog *fsd);
 
 /* This returns the X Logical Font Description fontname, or NULL if no font
    is selected. Note that there is a slight possibility that the font might not
-   have been loaded OK. You should call gtk_font_selection_dialog_get_font()
+   have been loaded OK. You should call btk_font_selection_dialog_get_font()
    to see if it has been loaded OK.
    You should g_free() the returned font name after you're done with it. */
-gchar*	   gtk_font_selection_dialog_get_font_name     (GtkFontSelectionDialog *fsd);
+gchar*	   btk_font_selection_dialog_get_font_name     (BtkFontSelectionDialog *fsd);
 
-#ifndef GTK_DISABLE_DEPRECATED
-/* This will return the current GdkFont, or NULL if none is selected or there
-   was a problem loading it. Remember to use gdk_font_ref/unref() if you want
+#ifndef BTK_DISABLE_DEPRECATED
+/* This will return the current BdkFont, or NULL if none is selected or there
+   was a problem loading it. Remember to use bdk_font_ref/unref() if you want
    to use the font (in a style, for example). */
-GdkFont*   gtk_font_selection_dialog_get_font	       (GtkFontSelectionDialog *fsd);
-#endif /* GTK_DISABLE_DEPRECATED */
+BdkFont*   btk_font_selection_dialog_get_font	       (BtkFontSelectionDialog *fsd);
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* This sets the currently displayed font. It should be a valid X Logical
    Font Description font name (anything else will be ignored), e.g.
    "-adobe-courier-bold-o-normal--25-*-*-*-*-*-*-*" 
    It returns TRUE on success. */
-gboolean   gtk_font_selection_dialog_set_font_name     (GtkFontSelectionDialog *fsd,
+gboolean   btk_font_selection_dialog_set_font_name     (BtkFontSelectionDialog *fsd,
                                                         const gchar	       *fontname);
 
 /* This returns the text in the preview entry. You should copy the returned
    text if you need it. */
 const gchar*
-          gtk_font_selection_dialog_get_preview_text   (GtkFontSelectionDialog *fsd);
+          btk_font_selection_dialog_get_preview_text   (BtkFontSelectionDialog *fsd);
 
 /* This sets the text in the preview entry. It will be copied by the entry,
    so there's no need to g_strdup() it first. */
-void	  gtk_font_selection_dialog_set_preview_text   (GtkFontSelectionDialog *fsd,
+void	  btk_font_selection_dialog_set_preview_text   (BtkFontSelectionDialog *fsd,
                                                         const gchar	       *text);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_FONTSEL_H__ */
+#endif /* __BTK_FONTSEL_H__ */

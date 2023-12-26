@@ -18,31 +18,31 @@
  * Boston, MA 02111-1307, USA.
  */
 #include "config.h"
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <stdlib.h>
 #include <string.h>
 
-GtkTreeStore *base_model;
+BtkTreeStore *base_model;
 static gint node_count = 0;
 
 static void
-selection_changed (GtkTreeSelection *selection,
-		   GtkWidget        *button)
+selection_changed (BtkTreeSelection *selection,
+		   BtkWidget        *button)
 {
-  if (gtk_tree_selection_get_selected (selection, NULL, NULL))
-    gtk_widget_set_sensitive (button, TRUE);
+  if (btk_tree_selection_get_selected (selection, NULL, NULL))
+    btk_widget_set_sensitive (button, TRUE);
   else
-    gtk_widget_set_sensitive (button, FALSE);
+    btk_widget_set_sensitive (button, FALSE);
 }
 
 static void
-node_set (GtkTreeIter *iter)
+node_set (BtkTreeIter *iter)
 {
   gint n;
   gchar *str;
 
   str = g_strdup_printf ("Row (<span color=\"red\">%d</span>)", node_count++);
-  gtk_tree_store_set (base_model, iter, 0, str, -1);
+  btk_tree_store_set (base_model, iter, 0, str, -1);
   g_free (str);
 
   n = g_random_int_range (10000,99999);
@@ -50,95 +50,95 @@ node_set (GtkTreeIter *iter)
     n *= -1;
   str = g_strdup_printf ("%d", n);
 
-  gtk_tree_store_set (base_model, iter, 1, str, -1);
+  btk_tree_store_set (base_model, iter, 1, str, -1);
   g_free (str);
 }
 
 static void
-iter_remove (GtkWidget *button, GtkTreeView *tree_view)
+iter_remove (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkTreeIter selected;
-  GtkTreeModel *model;
+  BtkTreeIter selected;
+  BtkTreeModel *model;
 
-  model = gtk_tree_view_get_model (tree_view);
+  model = btk_tree_view_get_model (tree_view);
 
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (tree_view),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (tree_view),
 				       NULL,
 				       &selected))
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_remove (GTK_TREE_STORE (model), &selected);
+	  btk_tree_store_remove (BTK_TREE_STORE (model), &selected);
 	}
     }
 }
 
 static void
-iter_insert (GtkWidget *button, GtkTreeView *tree_view)
+iter_insert (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkWidget *entry;
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkWidget *entry;
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
   entry = g_object_get_data (G_OBJECT (button), "user_data");
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
     {
-      gtk_tree_store_insert (GTK_TREE_STORE (model),
+      btk_tree_store_insert (BTK_TREE_STORE (model),
 			     &iter,
 			     &selected,
-			     atoi (gtk_entry_get_text (GTK_ENTRY (entry))));
+			     atoi (btk_entry_get_text (BTK_ENTRY (entry))));
     }
   else
     {
-      gtk_tree_store_insert (GTK_TREE_STORE (model),
+      btk_tree_store_insert (BTK_TREE_STORE (model),
 			     &iter,
 			     NULL,
-			     atoi (gtk_entry_get_text (GTK_ENTRY (entry))));
+			     atoi (btk_entry_get_text (BTK_ENTRY (entry))));
     }
 
   node_set (&iter);
 }
 
 static void
-iter_change (GtkWidget *button, GtkTreeView *tree_view)
+iter_change (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkWidget *entry;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkWidget *entry;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
   entry = g_object_get_data (G_OBJECT (button), "user_data");
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL, &selected))
     {
-      gtk_tree_store_set (GTK_TREE_STORE (model),
+      btk_tree_store_set (BTK_TREE_STORE (model),
 			  &selected,
 			  1,
-			  gtk_entry_get_text (GTK_ENTRY (entry)),
+			  btk_entry_get_text (BTK_ENTRY (entry)),
 			  -1);
     }
 }
 
 static void
-iter_insert_with_values (GtkWidget *button, GtkTreeView *tree_view)
+iter_insert_with_values (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkWidget *entry;
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkWidget *entry;
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
   gchar *str1, *str2;
 
   entry = g_object_get_data (G_OBJECT (button), "user_data");
   str1 = g_strdup_printf ("Row (<span color=\"red\">%d</span>)", node_count++);
-  str2 = g_strdup_printf ("%d", atoi (gtk_entry_get_text (GTK_ENTRY (entry))));
+  str2 = g_strdup_printf ("%d", atoi (btk_entry_get_text (BTK_ENTRY (entry))));
 
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
     {
-      gtk_tree_store_insert_with_values (GTK_TREE_STORE (model),
+      btk_tree_store_insert_with_values (BTK_TREE_STORE (model),
 					 &iter,
 					 &selected,
 					 -1,
@@ -148,7 +148,7 @@ iter_insert_with_values (GtkWidget *button, GtkTreeView *tree_view)
     }
   else
     {
-      gtk_tree_store_insert_with_values (GTK_TREE_STORE (model),
+      btk_tree_store_insert_with_values (BTK_TREE_STORE (model),
 					 &iter,
 					 NULL,
 					 -1,
@@ -162,24 +162,24 @@ iter_insert_with_values (GtkWidget *button, GtkTreeView *tree_view)
 }
 
 static void
-iter_insert_before  (GtkWidget *button, GtkTreeView *tree_view)
+iter_insert_before  (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
     {
-      gtk_tree_store_insert_before (GTK_TREE_STORE (model),
+      btk_tree_store_insert_before (BTK_TREE_STORE (model),
 				    &iter,
 				    NULL,
 				    &selected);
     }
   else
     {
-      gtk_tree_store_insert_before (GTK_TREE_STORE (model),
+      btk_tree_store_insert_before (BTK_TREE_STORE (model),
 				    &iter,
 				    NULL,
 				    NULL);
@@ -189,19 +189,19 @@ iter_insert_before  (GtkWidget *button, GtkTreeView *tree_view)
 }
 
 static void
-iter_insert_after (GtkWidget *button, GtkTreeView *tree_view)
+iter_insert_after (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_insert_after (GTK_TREE_STORE (model),
+	  btk_tree_store_insert_after (BTK_TREE_STORE (model),
 				       &iter,
 				       NULL,
 				       &selected);
@@ -210,9 +210,9 @@ iter_insert_after (GtkWidget *button, GtkTreeView *tree_view)
     }
   else
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_insert_after (GTK_TREE_STORE (model),
+	  btk_tree_store_insert_after (BTK_TREE_STORE (model),
 				       &iter,
 				       NULL,
 				       NULL);
@@ -222,18 +222,18 @@ iter_insert_after (GtkWidget *button, GtkTreeView *tree_view)
 }
 
 static void
-iter_prepend (GtkWidget *button, GtkTreeView *tree_view)
+iter_prepend (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
-  GtkTreeSelection *selection = gtk_tree_view_get_selection (tree_view);
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
+  BtkTreeSelection *selection = btk_tree_view_get_selection (tree_view);
 
-  if (gtk_tree_selection_get_selected (selection, NULL, &selected))
+  if (btk_tree_selection_get_selected (selection, NULL, &selected))
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_prepend (GTK_TREE_STORE (model),
+	  btk_tree_store_prepend (BTK_TREE_STORE (model),
 				  &iter,
 				  &selected);
 	  node_set (&iter);
@@ -241,9 +241,9 @@ iter_prepend (GtkWidget *button, GtkTreeView *tree_view)
     }
   else
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_prepend (GTK_TREE_STORE (model),
+	  btk_tree_store_prepend (BTK_TREE_STORE (model),
 				  &iter,
 				  NULL);
 	  node_set (&iter);
@@ -252,27 +252,27 @@ iter_prepend (GtkWidget *button, GtkTreeView *tree_view)
 }
 
 static void
-iter_append (GtkWidget *button, GtkTreeView *tree_view)
+iter_append (BtkWidget *button, BtkTreeView *tree_view)
 {
-  GtkTreeIter iter;
-  GtkTreeIter selected;
-  GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+  BtkTreeIter iter;
+  BtkTreeIter selected;
+  BtkTreeModel *model = btk_tree_view_get_model (tree_view);
 
-  if (gtk_tree_selection_get_selected (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)),
+  if (btk_tree_selection_get_selected (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)),
 				       NULL,
 				       &selected))
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, &selected);
+	  btk_tree_store_append (BTK_TREE_STORE (model), &iter, &selected);
 	  node_set (&iter);
 	}
     }
   else
     {
-      if (GTK_IS_TREE_STORE (model))
+      if (BTK_IS_TREE_STORE (model))
 	{
-	  gtk_tree_store_append (GTK_TREE_STORE (model), &iter, NULL);
+	  btk_tree_store_append (BTK_TREE_STORE (model), &iter, NULL);
 	  node_set (&iter);
 	}
     }
@@ -281,43 +281,43 @@ iter_append (GtkWidget *button, GtkTreeView *tree_view)
 static void
 make_window (gint view_type)
 {
-  GtkWidget *window;
-  GtkWidget *vbox;
-  GtkWidget *hbox, *entry;
-  GtkWidget *button;
-  GtkWidget *scrolled_window;
-  GtkWidget *tree_view;
-  GtkTreeViewColumn *column;
-  GtkCellRenderer *cell;
+  BtkWidget *window;
+  BtkWidget *vbox;
+  BtkWidget *hbox, *entry;
+  BtkWidget *button;
+  BtkWidget *scrolled_window;
+  BtkWidget *tree_view;
+  BtkTreeViewColumn *column;
+  BtkCellRenderer *cell;
   GObject *selection;
 
   /* Make the Widgets/Objects */
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   switch (view_type)
     {
     case 0:
-      gtk_window_set_title (GTK_WINDOW (window), "Unsorted list");
+      btk_window_set_title (BTK_WINDOW (window), "Unsorted list");
       break;
     case 1:
-      gtk_window_set_title (GTK_WINDOW (window), "Sorted list");
+      btk_window_set_title (BTK_WINDOW (window), "Sorted list");
       break;
     }
 
-  vbox = gtk_vbox_new (FALSE, 8);
-  gtk_container_set_border_width (GTK_CONTAINER (vbox), 8);
-  gtk_window_set_default_size (GTK_WINDOW (window), 300, 350);
-  scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+  vbox = btk_vbox_new (FALSE, 8);
+  btk_container_set_border_width (BTK_CONTAINER (vbox), 8);
+  btk_window_set_default_size (BTK_WINDOW (window), 300, 350);
+  scrolled_window = btk_scrolled_window_new (NULL, NULL);
   switch (view_type)
     {
     case 0:
-      tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (base_model));
+      tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (base_model));
       break;
     case 1:
       {
-	GtkTreeModel *sort_model;
+	BtkTreeModel *sort_model;
 	
-	sort_model = gtk_tree_model_sort_new_with_model (GTK_TREE_MODEL (base_model));
-	tree_view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (sort_model));
+	sort_model = btk_tree_model_sort_new_with_model (BTK_TREE_MODEL (base_model));
+	tree_view = btk_tree_view_new_with_model (BTK_TREE_MODEL (sort_model));
       }
       break;
     default:
@@ -326,132 +326,132 @@ make_window (gint view_type)
       break;
     }
 
-  gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (tree_view), TRUE);
-  selection = G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (tree_view)));
-  gtk_tree_selection_set_mode (GTK_TREE_SELECTION (selection), GTK_SELECTION_SINGLE);
+  btk_tree_view_set_rules_hint (BTK_TREE_VIEW (tree_view), TRUE);
+  selection = G_OBJECT (btk_tree_view_get_selection (BTK_TREE_VIEW (tree_view)));
+  btk_tree_selection_set_mode (BTK_TREE_SELECTION (selection), BTK_SELECTION_SINGLE);
 
   /* Put them together */
-  gtk_container_add (GTK_CONTAINER (scrolled_window), tree_view);
-  gtk_box_pack_start (GTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
-  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_AUTOMATIC,
-				  GTK_POLICY_AUTOMATIC);
-  g_signal_connect (window, "destroy", gtk_main_quit, NULL);
+  btk_container_add (BTK_CONTAINER (scrolled_window), tree_view);
+  btk_box_pack_start (BTK_BOX (vbox), scrolled_window, TRUE, TRUE, 0);
+  btk_container_add (BTK_CONTAINER (window), vbox);
+  btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (scrolled_window),
+				  BTK_POLICY_AUTOMATIC,
+				  BTK_POLICY_AUTOMATIC);
+  g_signal_connect (window, "destroy", btk_main_quit, NULL);
 
   /* buttons */
-  button = gtk_button_new_with_label ("gtk_tree_store_remove");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_remove");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
   g_signal_connect (selection, "changed",
                     G_CALLBACK (selection_changed),
                     button);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_remove), 
                     tree_view);
-  gtk_widget_set_sensitive (button, FALSE);
+  btk_widget_set_sensitive (button, FALSE);
 
-  button = gtk_button_new_with_label ("gtk_tree_store_insert");
-  hbox = gtk_hbox_new (FALSE, 8);
-  entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_insert");
+  hbox = btk_hbox_new (FALSE, 8);
+  entry = btk_entry_new ();
+  btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_insert), 
                     tree_view);
   
-  button = gtk_button_new_with_label ("gtk_tree_store_set");
-  hbox = gtk_hbox_new (FALSE, 8);
-  entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_set");
+  hbox = btk_hbox_new (FALSE, 8);
+  entry = btk_entry_new ();
+  btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (iter_change),
 		    tree_view);
 
-  button = gtk_button_new_with_label ("gtk_tree_store_insert_with_values");
-  hbox = gtk_hbox_new (FALSE, 8);
-  entry = gtk_entry_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, FALSE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), button, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (hbox), entry, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_insert_with_values");
+  hbox = btk_hbox_new (FALSE, 8);
+  entry = btk_entry_new ();
+  btk_box_pack_start (BTK_BOX (vbox), hbox, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), button, TRUE, TRUE, 0);
+  btk_box_pack_start (BTK_BOX (hbox), entry, FALSE, FALSE, 0);
   g_object_set_data (G_OBJECT (button), "user_data", entry);
   g_signal_connect (button, "clicked",
 		    G_CALLBACK (iter_insert_with_values),
 		    tree_view);
   
-  button = gtk_button_new_with_label ("gtk_tree_store_insert_before");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_insert_before");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_insert_before), 
                     tree_view);
   g_signal_connect (selection, "changed",
                     G_CALLBACK (selection_changed),
                     button);
-  gtk_widget_set_sensitive (button, FALSE);
+  btk_widget_set_sensitive (button, FALSE);
 
-  button = gtk_button_new_with_label ("gtk_tree_store_insert_after");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_insert_after");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_insert_after), 
                     tree_view);
   g_signal_connect (selection, "changed",
                     G_CALLBACK (selection_changed),
                     button);
-  gtk_widget_set_sensitive (button, FALSE);
+  btk_widget_set_sensitive (button, FALSE);
 
-  button = gtk_button_new_with_label ("gtk_tree_store_prepend");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_prepend");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_prepend), 
                     tree_view);
 
-  button = gtk_button_new_with_label ("gtk_tree_store_append");
-  gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+  button = btk_button_new_with_label ("btk_tree_store_append");
+  btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
   g_signal_connect (button, "clicked", 
                     G_CALLBACK (iter_append), 
                     tree_view);
 
   /* The selected column */
-  cell = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Node ID", cell, "markup", 0, NULL);
-  gtk_tree_view_column_set_sort_column_id (column, 0);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  cell = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Node ID", cell, "markup", 0, NULL);
+  btk_tree_view_column_set_sort_column_id (column, 0);
+  btk_tree_view_append_column (BTK_TREE_VIEW (tree_view), column);
 
-  cell = gtk_cell_renderer_text_new ();
-  column = gtk_tree_view_column_new_with_attributes ("Random Number", cell, "text", 1, NULL);
-  gtk_tree_view_column_set_sort_column_id (column, 1);
-  gtk_tree_view_append_column (GTK_TREE_VIEW (tree_view), column);
+  cell = btk_cell_renderer_text_new ();
+  column = btk_tree_view_column_new_with_attributes ("Random Number", cell, "text", 1, NULL);
+  btk_tree_view_column_set_sort_column_id (column, 1);
+  btk_tree_view_append_column (BTK_TREE_VIEW (tree_view), column);
 
   /* A few to start */
   if (view_type == 0)
     {
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
-      iter_append (NULL, GTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
+      iter_append (NULL, BTK_TREE_VIEW (tree_view));
     }
   /* Show it all */
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 }
 
 int
 main (int argc, char *argv[])
 {
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  base_model = gtk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
+  base_model = btk_tree_store_new (2, G_TYPE_STRING, G_TYPE_STRING);
 
   /* FIXME: reverse this */
   make_window (0);
   make_window (1);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

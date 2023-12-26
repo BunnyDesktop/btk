@@ -1,26 +1,26 @@
-## Makefile for building the gtk test apps with Microsoft C
+## Makefile for building the btk test apps with Microsoft C
 ## Use: nmake -f makefile.msc
 
 ## There is no install target, you have to decide where and 
 ## how to install for yourself.
 
 TOP = ..\..
-!INCLUDE $(TOP)/glib/build/win32/make.msc
+!INCLUDE $(TOP)/bunnylib/build/win32/make.msc
 
 ################################################################
 
 # Possibly override versions from build/win32/module.defs
-GTK_VER = 2.0
-GDK_PIXBUF_VER = 2.0
+BTK_VER = 2.0
+BDK_PIXBUF_VER = 2.0
 
-GDK_LIBS = ../gdk/gdk-win32-$(GTK_VER).lib
-GTK_LIBS = ../gtk/gtk-win32-$(GTK_VER).lib
+BDK_LIBS = ../bdk/bdk-win32-$(BTK_VER).lib
+BTK_LIBS = ../btk/btk-win32-$(BTK_VER).lib
 
-INCLUDES = -I . -I .. -I ../gdk -I ../gtk
-DEPCFLAGS = $(PANGO_CFLAGS) $(GLIB_CFLAGS) $(GDK_PIXBUF_CFLAGS) \
-	$(LIBICONV_CFLAGS) $(INTL_CFLAGS) $(ATK_CFLAGS) $(CAIRO_CFLAGS)
+INCLUDES = -I . -I .. -I ../bdk -I ../btk
+DEPCFLAGS = $(BANGO_CFLAGS) $(BUNNYLIB_CFLAGS) $(BDK_PIXBUF_CFLAGS) \
+	$(LIBICONV_CFLAGS) $(INTL_CFLAGS) $(BATK_CFLAGS) $(BAIRO_CFLAGS)
 LDFLAGS = /link /machine:ix86 $(LINKDEBUG)
-DEFINES = -DG_LOG_DOMAIN=\"GtkTest\" -DGTK_VERSION=\"$(GTK_VER)\"
+DEFINES = -DG_LOG_DOMAIN=\"BtkTest\" -DBTK_VERSION=\"$(BTK_VER)\"
 
 TOUCH = copy makefile.msc+nul
 
@@ -46,11 +46,11 @@ TESTAPPS = \
 	objecttests \
 	testaccel testactions testassistant \
 	testbbox testbuttons \
-	testcairo testcalendar testcellrenderertext testclientmessage testcombo testcombochange \
+	testbairo testcalendar testcellrenderertext testclientmessage testcombo testcombochange \
 	testdnd \
 	testellipsise testentrycompletion testentryicons \
 	testfilechooser testfilechooserbutton testframe \
-	testgrouping testgtk \
+	testgrouping testbtk \
 	testicontheme testiconview testimage testinput \
 	testmenus testmountoperation testmenubars testmerge testmultidisplay testmultiscreen \
 	testnouiprint testnotebookdnd \
@@ -80,20 +80,20 @@ one-test-app:
 EXTRA_OBJETCS = prop-editor.obj
 
 !IFDEF EXTRA_buildertest
-EXTRA_LIBS = $(ATK_LIBS)
+EXTRA_LIBS = $(BATK_LIBS)
 !ENDIF
 
 !IFDEF EXTRA_testoffscreen
-EXTRA_OBJETCS = gtkoffscreenbox.obj
+EXTRA_OBJETCS = btkoffscreenbox.obj
 !ENDIF
 
 !IFDEF EXTRA_testprint
 EXTRA_OBJETCS = testprintfileoperation.obj
-EXTRA_LIBS = $(PANGOCAIRO_LIBS)
+EXTRA_LIBS = $(BANGOBAIRO_LIBS)
 !ENDIF
 
 !IFDEF EXTRA_testnouiprint
-EXTRA_LIBS = $(PANGOCAIRO_LIBS)
+EXTRA_LIBS = $(BANGOBAIRO_LIBS)
 !ENDIF
 
 !IFDEF EXTRA_testfilechooser
@@ -108,9 +108,9 @@ EXTRA_OBJETCS = testsocket_common.obj
 EXTRA_OBJETCS = testsocket_common.obj
 !ENDIF
 
-$(TESTAPP).exe : ../gtk/gtk-win32-$(GTK_VER).lib $(TESTAPP).obj $(EXTRA_OBJETCS)
-	$(CC) $(CFLAGS) $(TESTAPP).obj $(EXTRA_OBJETCS) $(GTK_LIBS) $(GDK_LIBS) $(GDK_PIXBUF_LIBS) \
-	$(PANGO_LIBS) $(PANGOCAIRO_LIBS) $(GLIB_LIBS) $(CAIRO_LIBS) $(EXTRA_LIBS) $(LDFLAGS)
+$(TESTAPP).exe : ../btk/btk-win32-$(BTK_VER).lib $(TESTAPP).obj $(EXTRA_OBJETCS)
+	$(CC) $(CFLAGS) $(TESTAPP).obj $(EXTRA_OBJETCS) $(BTK_LIBS) $(BDK_LIBS) $(BDK_PIXBUF_LIBS) \
+	$(BANGO_LIBS) $(BANGOBAIRO_LIBS) $(BUNNYLIB_LIBS) $(BAIRO_LIBS) $(EXTRA_LIBS) $(LDFLAGS)
 
 $(TESTAPP).obj : $(TESTAPP).c
 	$(CC) $(CFLAGS) -c -DG_LOG_DOMAIN=\"$(TESTAPP)\" $(TESTAPP).c

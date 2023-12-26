@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2007  Kristian Rietveld  <kris@gtk.org>
+ * Copyright (C) 2007  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,9 +17,9 @@
  */
 
 #include <Cocoa/Cocoa.h>
-#include <quartz/gdkquartz.h>
+#include <quartz/bdkquartz.h>
 
-#include "gtksearchenginequartz.h"
+#include "btksearchenginequartz.h"
 
 /* This file is a mixture of an objective-C object and a GObject,
  * so be careful to not confuse yourself.
@@ -33,10 +33,10 @@
 @interface ResultReceiver : NSObject
 {
   int submitted_hits;
-  GtkSearchEngine *engine;
+  BtkSearchEngine *engine;
 }
 
-- (void) setEngine:(GtkSearchEngine *)quartz_engine;
+- (void) setEngine:(BtkSearchEngine *)quartz_engine;
 
 - (void) queryUpdate:(id)sender;
 - (void) queryProgress:(id)sender;
@@ -46,9 +46,9 @@
 
 
 /* Definition of GObject */
-struct _GtkSearchEngineQuartzPrivate
+struct _BtkSearchEngineQuartzPrivate
 {
-  GtkQuery *query;
+  BtkQuery *query;
 
   ResultReceiver *receiver;
   NSMetadataQuery *ns_query;
@@ -56,15 +56,15 @@ struct _GtkSearchEngineQuartzPrivate
   gboolean query_finished;
 };
 
-G_DEFINE_TYPE (GtkSearchEngineQuartz, _gtk_search_engine_quartz, GTK_TYPE_SEARCH_ENGINE);
+G_DEFINE_TYPE (BtkSearchEngineQuartz, _btk_search_engine_quartz, BTK_TYPE_SEARCH_ENGINE);
 
 
 /* Implementation of the objective-C object */
 @implementation ResultReceiver
 
-- (void) setEngine:(GtkSearchEngine *)quartz_engine
+- (void) setEngine:(BtkSearchEngine *)quartz_engine
 {
-  g_return_if_fail (GTK_IS_SEARCH_ENGINE (quartz_engine));
+  g_return_if_fail (BTK_IS_SEARCH_ENGINE (quartz_engine));
 
   engine = quartz_engine;
   submitted_hits = 0;
@@ -85,7 +85,7 @@ G_DEFINE_TYPE (GtkSearchEngineQuartz, _gtk_search_engine_quartz, GTK_TYPE_SEARCH
       hits = g_list_prepend (hits, result_path);
     }
 
-  _gtk_search_engine_hits_added (engine, hits);
+  _btk_search_engine_hits_added (engine, hits);
   g_list_free (hits);
 
   submitted_hits = [ns_query resultCount];
@@ -119,7 +119,7 @@ G_DEFINE_TYPE (GtkSearchEngineQuartz, _gtk_search_engine_quartz, GTK_TYPE_SEARCH
 
   [self submitHits:ns_query];
 
-  _gtk_search_engine_finished (engine);
+  _btk_search_engine_finished (engine);
   submitted_hits = 0;
 }
 
@@ -128,13 +128,13 @@ G_DEFINE_TYPE (GtkSearchEngineQuartz, _gtk_search_engine_quartz, GTK_TYPE_SEARCH
 /* Implementation of the GObject */
 
 static void
-gtk_search_engine_quartz_finalize (GObject *object)
+btk_search_engine_quartz_finalize (GObject *object)
 {
-  GtkSearchEngineQuartz *quartz;
+  BtkSearchEngineQuartz *quartz;
 
   QUARTZ_POOL_ALLOC;
 
-  quartz = GTK_SEARCH_ENGINE_QUARTZ (object);
+  quartz = BTK_SEARCH_ENGINE_QUARTZ (object);
 
   [[NSNotificationCenter defaultCenter] removeObserver:quartz->priv->receiver];
 
@@ -149,17 +149,17 @@ gtk_search_engine_quartz_finalize (GObject *object)
       quartz->priv->query = NULL;
     }
 
-  G_OBJECT_CLASS (_gtk_search_engine_quartz_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_search_engine_quartz_parent_class)->finalize (object);
 }
 
 static void
-gtk_search_engine_quartz_start (GtkSearchEngine *engine)
+btk_search_engine_quartz_start (BtkSearchEngine *engine)
 {
-  GtkSearchEngineQuartz *quartz;
+  BtkSearchEngineQuartz *quartz;
 
   QUARTZ_POOL_ALLOC;
 
-  quartz = GTK_SEARCH_ENGINE_QUARTZ (engine);
+  quartz = BTK_SEARCH_ENGINE_QUARTZ (engine);
 
   [quartz->priv->ns_query startQuery];
 
@@ -167,13 +167,13 @@ gtk_search_engine_quartz_start (GtkSearchEngine *engine)
 }
 
 static void
-gtk_search_engine_quartz_stop (GtkSearchEngine *engine)
+btk_search_engine_quartz_stop (BtkSearchEngine *engine)
 {
-  GtkSearchEngineQuartz *quartz;
+  BtkSearchEngineQuartz *quartz;
 
   QUARTZ_POOL_ALLOC;
 
-  quartz = GTK_SEARCH_ENGINE_QUARTZ (engine);
+  quartz = BTK_SEARCH_ENGINE_QUARTZ (engine);
 
   [quartz->priv->ns_query stopQuery];
 
@@ -181,20 +181,20 @@ gtk_search_engine_quartz_stop (GtkSearchEngine *engine)
 }
 
 static gboolean
-gtk_search_engine_quartz_is_indexed (GtkSearchEngine *engine)
+btk_search_engine_quartz_is_indexed (BtkSearchEngine *engine)
 {
   return TRUE;
 }
 
 static void
-gtk_search_engine_quartz_set_query (GtkSearchEngine *engine, 
-				    GtkQuery        *query)
+btk_search_engine_quartz_set_query (BtkSearchEngine *engine, 
+				    BtkQuery        *query)
 {
-  GtkSearchEngineQuartz *quartz;
+  BtkSearchEngineQuartz *quartz;
 
   QUARTZ_POOL_ALLOC;
 
-  quartz = GTK_SEARCH_ENGINE_QUARTZ (engine);
+  quartz = BTK_SEARCH_ENGINE_QUARTZ (engine);
 
   if (query)
     g_object_ref (query);
@@ -211,40 +211,40 @@ gtk_search_engine_quartz_set_query (GtkSearchEngine *engine,
   [quartz->priv->ns_query setPredicate:
     [NSPredicate predicateWithFormat:
       [NSString stringWithFormat:@"(kMDItemTextContent LIKE[cd] \"*%s*\")",
-                                 _gtk_query_get_text (query)]]];
+                                 _btk_query_get_text (query)]]];
 
   QUARTZ_POOL_RELEASE;
 }
 
 static void
-_gtk_search_engine_quartz_class_init (GtkSearchEngineQuartzClass *class)
+_btk_search_engine_quartz_class_init (BtkSearchEngineQuartzClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkSearchEngineClass *engine_class;
+  GObjectClass *bobject_class;
+  BtkSearchEngineClass *engine_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->finalize = gtk_search_engine_quartz_finalize;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->finalize = btk_search_engine_quartz_finalize;
   
-  engine_class = GTK_SEARCH_ENGINE_CLASS (class);
-  engine_class->set_query = gtk_search_engine_quartz_set_query;
-  engine_class->start = gtk_search_engine_quartz_start;
-  engine_class->stop = gtk_search_engine_quartz_stop;
-  engine_class->is_indexed = gtk_search_engine_quartz_is_indexed;
+  engine_class = BTK_SEARCH_ENGINE_CLASS (class);
+  engine_class->set_query = btk_search_engine_quartz_set_query;
+  engine_class->start = btk_search_engine_quartz_start;
+  engine_class->stop = btk_search_engine_quartz_stop;
+  engine_class->is_indexed = btk_search_engine_quartz_is_indexed;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkSearchEngineQuartzPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkSearchEngineQuartzPrivate));
 }
 
 static void
-_gtk_search_engine_quartz_init (GtkSearchEngineQuartz *engine)
+_btk_search_engine_quartz_init (BtkSearchEngineQuartz *engine)
 {
   QUARTZ_POOL_ALLOC;
 
-  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, GTK_TYPE_SEARCH_ENGINE_QUARTZ, GtkSearchEngineQuartzPrivate);
+  engine->priv = G_TYPE_INSTANCE_GET_PRIVATE (engine, BTK_TYPE_SEARCH_ENGINE_QUARTZ, BtkSearchEngineQuartzPrivate);
 
   engine->priv->ns_query = [[NSMetadataQuery alloc] init];
   engine->priv->receiver = [[ResultReceiver alloc] init];
 
-  [engine->priv->receiver setEngine:GTK_SEARCH_ENGINE (engine)];
+  [engine->priv->receiver setEngine:BTK_SEARCH_ENGINE (engine)];
 
   [[NSNotificationCenter defaultCenter] addObserver:engine->priv->receiver
 				        selector:@selector(queryUpdate:)
@@ -263,11 +263,11 @@ _gtk_search_engine_quartz_init (GtkSearchEngineQuartz *engine)
   QUARTZ_POOL_RELEASE;
 }
 
-GtkSearchEngine *
-_gtk_search_engine_quartz_new (void)
+BtkSearchEngine *
+_btk_search_engine_quartz_new (void)
 {
-#ifdef GDK_WINDOWING_QUARTZ
-  return g_object_new (GTK_TYPE_SEARCH_ENGINE_QUARTZ, NULL);
+#ifdef BDK_WINDOWING_QUARTZ
+  return g_object_new (BTK_TYPE_SEARCH_ENGINE_QUARTZ, NULL);
 #else
   return NULL;
 #endif

@@ -1,4 +1,4 @@
-/* Gtk+ testing utilities
+/* Btk+ testing utilities
  * Copyright (C) 2007 Imendio AB
  * Authors: Tim Janik
  *
@@ -18,54 +18,54 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TEST_UTILS_H__
-#define __GTK_TEST_UTILS_H__
+#ifndef __BTK_TEST_UTILS_H__
+#define __BTK_TEST_UTILS_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
 G_BEGIN_DECLS
 
-/* --- Gtk+ Test Utility API --- */
-void            gtk_test_init                   (int            *argcp,
+/* --- Btk+ Test Utility API --- */
+void            btk_test_init                   (int            *argcp,
                                                  char         ***argvp,
                                                  ...);
-void            gtk_test_register_all_types     (void);
-const GType*    gtk_test_list_all_types         (guint          *n_types);
-GtkWidget*      gtk_test_find_widget            (GtkWidget      *widget,
+void            btk_test_register_all_types     (void);
+const GType*    btk_test_list_all_types         (guint          *n_types);
+BtkWidget*      btk_test_find_widget            (BtkWidget      *widget,
                                                  const gchar    *label_pattern,
                                                  GType           widget_type);
-GtkWidget*      gtk_test_create_widget          (GType           widget_type,
+BtkWidget*      btk_test_create_widget          (GType           widget_type,
                                                  const gchar    *first_property_name,
                                                  ...);
-GtkWidget*      gtk_test_create_simple_window   (const gchar    *window_title,
+BtkWidget*      btk_test_create_simple_window   (const gchar    *window_title,
                                                  const gchar    *dialog_text);
-GtkWidget*      gtk_test_display_button_window  (const gchar    *window_title,
+BtkWidget*      btk_test_display_button_window  (const gchar    *window_title,
                                                  const gchar    *dialog_text,
                                                  ...); /* NULL terminated list of (label, &int) pairs */
-void            gtk_test_slider_set_perc        (GtkWidget      *widget, /* GtkRange-alike */
+void            btk_test_slider_set_perc        (BtkWidget      *widget, /* BtkRange-alike */
                                                  double          percentage);
-double          gtk_test_slider_get_value       (GtkWidget      *widget);
-gboolean        gtk_test_spin_button_click      (GtkSpinButton  *spinner,
+double          btk_test_slider_get_value       (BtkWidget      *widget);
+gboolean        btk_test_spin_button_click      (BtkSpinButton  *spinner,
                                                  guint           button,
                                                  gboolean        upwards);
-gboolean        gtk_test_widget_click           (GtkWidget      *widget,
+gboolean        btk_test_widget_click           (BtkWidget      *widget,
                                                  guint           button,
-                                                 GdkModifierType modifiers);
-gboolean        gtk_test_widget_send_key        (GtkWidget      *widget,
+                                                 BdkModifierType modifiers);
+gboolean        btk_test_widget_send_key        (BtkWidget      *widget,
                                                  guint           keyval,
-                                                 GdkModifierType modifiers);
-/* operate on GtkEntry, GtkText, GtkTextView or GtkLabel */
-void            gtk_test_text_set               (GtkWidget      *widget,
+                                                 BdkModifierType modifiers);
+/* operate on BtkEntry, BtkText, BtkTextView or BtkLabel */
+void            btk_test_text_set               (BtkWidget      *widget,
                                                  const gchar    *string);
-gchar*          gtk_test_text_get               (GtkWidget      *widget);
+gchar*          btk_test_text_get               (BtkWidget      *widget);
 
-/* --- Gtk+ Test low-level API --- */
-GtkWidget*      gtk_test_find_sibling           (GtkWidget      *base_widget,
+/* --- Btk+ Test low-level API --- */
+BtkWidget*      btk_test_find_sibling           (BtkWidget      *base_widget,
                                                  GType           widget_type);
-GtkWidget*      gtk_test_find_label             (GtkWidget      *widget,
+BtkWidget*      btk_test_find_label             (BtkWidget      *widget,
                                                  const gchar    *label_pattern);
 G_END_DECLS
 
-#endif /* __GTK_TEST_UTILS_H__ */
+#endif /* __BTK_TEST_UTILS_H__ */

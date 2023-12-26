@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,118 +18,118 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_MESSAGE_DIALOG_H__
-#define __GTK_MESSAGE_DIALOG_H__
+#ifndef __BTK_MESSAGE_DIALOG_H__
+#define __BTK_MESSAGE_DIALOG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkdialog.h>
-#include <gtk/gtkenums.h>
+#include <btk/btkdialog.h>
+#include <btk/btkenums.h>
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_MESSAGE_DIALOG                  (gtk_message_dialog_get_type ())
-#define GTK_MESSAGE_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_MESSAGE_DIALOG, GtkMessageDialog))
-#define GTK_MESSAGE_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_MESSAGE_DIALOG, GtkMessageDialogClass))
-#define GTK_IS_MESSAGE_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_MESSAGE_DIALOG))
-#define GTK_IS_MESSAGE_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_MESSAGE_DIALOG))
-#define GTK_MESSAGE_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_MESSAGE_DIALOG, GtkMessageDialogClass))
+#define BTK_TYPE_MESSAGE_DIALOG                  (btk_message_dialog_get_type ())
+#define BTK_MESSAGE_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialog))
+#define BTK_MESSAGE_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
+#define BTK_IS_MESSAGE_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_IS_MESSAGE_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_MESSAGE_DIALOG))
+#define BTK_MESSAGE_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogClass))
 
-typedef struct _GtkMessageDialog        GtkMessageDialog;
-typedef struct _GtkMessageDialogClass   GtkMessageDialogClass;
+typedef struct _BtkMessageDialog        BtkMessageDialog;
+typedef struct _BtkMessageDialogClass   BtkMessageDialogClass;
 
-struct _GtkMessageDialog
+struct _BtkMessageDialog
 {
   /*< private >*/
   
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
   
-  GtkWidget *GSEAL (image);
-  GtkWidget *GSEAL (label);
+  BtkWidget *GSEAL (image);
+  BtkWidget *GSEAL (label);
 };
 
-struct _GtkMessageDialogClass
+struct _BtkMessageDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 /**
- * GtkButtonsType:
- * @GTK_BUTTONS_NONE: no buttons at all
- * @GTK_BUTTONS_OK: an OK button
- * @GTK_BUTTONS_CLOSE: a Close button
- * @GTK_BUTTONS_CANCEL: a Cancel button
- * @GTK_BUTTONS_YES_NO: Yes and No buttons
- * @GTK_BUTTONS_OK_CANCEL: OK and Cancel buttons
+ * BtkButtonsType:
+ * @BTK_BUTTONS_NONE: no buttons at all
+ * @BTK_BUTTONS_OK: an OK button
+ * @BTK_BUTTONS_CLOSE: a Close button
+ * @BTK_BUTTONS_CANCEL: a Cancel button
+ * @BTK_BUTTONS_YES_NO: Yes and No buttons
+ * @BTK_BUTTONS_OK_CANCEL: OK and Cancel buttons
  *
  * Prebuilt sets of buttons for the dialog. If
- * none of these choices are appropriate, simply use %GTK_BUTTONS_NONE
- * then call gtk_dialog_add_buttons().
+ * none of these choices are appropriate, simply use %BTK_BUTTONS_NONE
+ * then call btk_dialog_add_buttons().
  * <note>
- *  Please note that %GTK_BUTTONS_OK, %GTK_BUTTONS_YES_NO
- *  and %GTK_BUTTONS_OK_CANCEL are discouraged by the
- *  <ulink url="http://library.gnome.org/devel/hig-book/stable/">GNOME HIG</ulink>.
+ *  Please note that %BTK_BUTTONS_OK, %BTK_BUTTONS_YES_NO
+ *  and %BTK_BUTTONS_OK_CANCEL are discouraged by the
+ *  <ulink url="http://library.bunny.org/devel/hig-book/stable/">BUNNY HIG</ulink>.
  * </note>
  */
 typedef enum
 {
-  GTK_BUTTONS_NONE,
-  GTK_BUTTONS_OK,
-  GTK_BUTTONS_CLOSE,
-  GTK_BUTTONS_CANCEL,
-  GTK_BUTTONS_YES_NO,
-  GTK_BUTTONS_OK_CANCEL
-} GtkButtonsType;
+  BTK_BUTTONS_NONE,
+  BTK_BUTTONS_OK,
+  BTK_BUTTONS_CLOSE,
+  BTK_BUTTONS_CANCEL,
+  BTK_BUTTONS_YES_NO,
+  BTK_BUTTONS_OK_CANCEL
+} BtkButtonsType;
 
-GType      gtk_message_dialog_get_type (void) G_GNUC_CONST;
+GType      btk_message_dialog_get_type (void) G_GNUC_CONST;
 
-GtkWidget* gtk_message_dialog_new      (GtkWindow      *parent,
-                                        GtkDialogFlags  flags,
-                                        GtkMessageType  type,
-                                        GtkButtonsType  buttons,
+BtkWidget* btk_message_dialog_new      (BtkWindow      *parent,
+                                        BtkDialogFlags  flags,
+                                        BtkMessageType  type,
+                                        BtkButtonsType  buttons,
                                         const gchar    *message_format,
                                         ...) G_GNUC_PRINTF (5, 6);
 
-GtkWidget* gtk_message_dialog_new_with_markup   (GtkWindow      *parent,
-                                                 GtkDialogFlags  flags,
-                                                 GtkMessageType  type,
-                                                 GtkButtonsType  buttons,
+BtkWidget* btk_message_dialog_new_with_markup   (BtkWindow      *parent,
+                                                 BtkDialogFlags  flags,
+                                                 BtkMessageType  type,
+                                                 BtkButtonsType  buttons,
                                                  const gchar    *message_format,
                                                  ...) G_GNUC_PRINTF (5, 6);
 
-void       gtk_message_dialog_set_image    (GtkMessageDialog *dialog,
-					    GtkWidget        *image);
+void       btk_message_dialog_set_image    (BtkMessageDialog *dialog,
+					    BtkWidget        *image);
 
-GtkWidget * gtk_message_dialog_get_image   (GtkMessageDialog *dialog);
+BtkWidget * btk_message_dialog_get_image   (BtkMessageDialog *dialog);
 
-void       gtk_message_dialog_set_markup  (GtkMessageDialog *message_dialog,
+void       btk_message_dialog_set_markup  (BtkMessageDialog *message_dialog,
                                            const gchar      *str);
 
-void       gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
+void       btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
                                                      const gchar      *message_format,
                                                      ...) G_GNUC_PRINTF (2, 3);
 
-void       gtk_message_dialog_format_secondary_markup (GtkMessageDialog *message_dialog,
+void       btk_message_dialog_format_secondary_markup (BtkMessageDialog *message_dialog,
                                                        const gchar      *message_format,
                                                        ...) G_GNUC_PRINTF (2, 3);
 
-GtkWidget *gtk_message_dialog_get_message_area (GtkMessageDialog *message_dialog);
+BtkWidget *btk_message_dialog_get_message_area (BtkMessageDialog *message_dialog);
 
 G_END_DECLS
 
-#endif /* __GTK_MESSAGE_DIALOG_H__ */
+#endif /* __BTK_MESSAGE_DIALOG_H__ */

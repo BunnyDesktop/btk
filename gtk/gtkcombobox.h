@@ -1,5 +1,5 @@
-/* gtkcombobox.h
- * Copyright (C) 2002, 2003  Kristian Rietveld <kris@gtk.org>
+/* btkcombobox.h
+ * Copyright (C) 2002, 2003  Kristian Rietveld <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,137 +17,137 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_COMBO_BOX_H__
-#define __GTK_COMBO_BOX_H__
+#ifndef __BTK_COMBO_BOX_H__
+#define __BTK_COMBO_BOX_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
-#include <gtk/gtktreemodel.h>
-#include <gtk/gtktreeview.h>
+#include <btk/btkbin.h>
+#include <btk/btktreemodel.h>
+#include <btk/btktreeview.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_COMBO_BOX             (gtk_combo_box_get_type ())
-#define GTK_COMBO_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_COMBO_BOX, GtkComboBox))
-#define GTK_COMBO_BOX_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), GTK_TYPE_COMBO_BOX, GtkComboBoxClass))
-#define GTK_IS_COMBO_BOX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_COMBO_BOX))
-#define GTK_IS_COMBO_BOX_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), GTK_TYPE_COMBO_BOX))
-#define GTK_COMBO_BOX_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), GTK_TYPE_COMBO_BOX, GtkComboBoxClass))
+#define BTK_TYPE_COMBO_BOX             (btk_combo_box_get_type ())
+#define BTK_COMBO_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO_BOX, BtkComboBox))
+#define BTK_COMBO_BOX_CLASS(vtable)    (G_TYPE_CHECK_CLASS_CAST ((vtable), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
+#define BTK_IS_COMBO_BOX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO_BOX))
+#define BTK_IS_COMBO_BOX_CLASS(vtable) (G_TYPE_CHECK_CLASS_TYPE ((vtable), BTK_TYPE_COMBO_BOX))
+#define BTK_COMBO_BOX_GET_CLASS(inst)  (G_TYPE_INSTANCE_GET_CLASS ((inst), BTK_TYPE_COMBO_BOX, BtkComboBoxClass))
 
-typedef struct _GtkComboBox        GtkComboBox;
-typedef struct _GtkComboBoxClass   GtkComboBoxClass;
-typedef struct _GtkComboBoxPrivate GtkComboBoxPrivate;
+typedef struct _BtkComboBox        BtkComboBox;
+typedef struct _BtkComboBoxClass   BtkComboBoxClass;
+typedef struct _BtkComboBoxPrivate BtkComboBoxPrivate;
 
-struct _GtkComboBox
+struct _BtkComboBox
 {
-  GtkBin parent_instance;
+  BtkBin parent_instance;
 
   /*< private >*/
-  GtkComboBoxPrivate *GSEAL (priv);
+  BtkComboBoxPrivate *GSEAL (priv);
 };
 
-struct _GtkComboBoxClass
+struct _BtkComboBoxClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 
   /* signals */
-  void     (* changed)          (GtkComboBox *combo_box);
+  void     (* changed)          (BtkComboBox *combo_box);
 
   /* vfuncs */
-  gchar *  (* get_active_text)  (GtkComboBox *combo_box);
+  gchar *  (* get_active_text)  (BtkComboBox *combo_box);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved0) (void);
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
+  void (*_btk_reserved0) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
 };
 
 
 /* construction */
-GType         gtk_combo_box_get_type                 (void) G_GNUC_CONST;
-GtkWidget    *gtk_combo_box_new                      (void);
-GtkWidget    *gtk_combo_box_new_with_entry           (void);
-GtkWidget    *gtk_combo_box_new_with_model           (GtkTreeModel *model);
-GtkWidget    *gtk_combo_box_new_with_model_and_entry (GtkTreeModel *model);
+GType         btk_combo_box_get_type                 (void) G_GNUC_CONST;
+BtkWidget    *btk_combo_box_new                      (void);
+BtkWidget    *btk_combo_box_new_with_entry           (void);
+BtkWidget    *btk_combo_box_new_with_model           (BtkTreeModel *model);
+BtkWidget    *btk_combo_box_new_with_model_and_entry (BtkTreeModel *model);
 
 /* grids */
-gint          gtk_combo_box_get_wrap_width         (GtkComboBox *combo_box);
-void          gtk_combo_box_set_wrap_width         (GtkComboBox *combo_box,
+gint          btk_combo_box_get_wrap_width         (BtkComboBox *combo_box);
+void          btk_combo_box_set_wrap_width         (BtkComboBox *combo_box,
                                                     gint         width);
-gint          gtk_combo_box_get_row_span_column    (GtkComboBox *combo_box);
-void          gtk_combo_box_set_row_span_column    (GtkComboBox *combo_box,
+gint          btk_combo_box_get_row_span_column    (BtkComboBox *combo_box);
+void          btk_combo_box_set_row_span_column    (BtkComboBox *combo_box,
                                                     gint         row_span);
-gint          gtk_combo_box_get_column_span_column (GtkComboBox *combo_box);
-void          gtk_combo_box_set_column_span_column (GtkComboBox *combo_box,
+gint          btk_combo_box_get_column_span_column (BtkComboBox *combo_box);
+void          btk_combo_box_set_column_span_column (BtkComboBox *combo_box,
                                                     gint         column_span);
 
-gboolean      gtk_combo_box_get_add_tearoffs       (GtkComboBox *combo_box);
-void          gtk_combo_box_set_add_tearoffs       (GtkComboBox *combo_box,
+gboolean      btk_combo_box_get_add_tearoffs       (BtkComboBox *combo_box);
+void          btk_combo_box_set_add_tearoffs       (BtkComboBox *combo_box,
 						    gboolean     add_tearoffs);
 
-const gchar * gtk_combo_box_get_title              (GtkComboBox *combo_box);
-void                  gtk_combo_box_set_title      (GtkComboBox *combo_box,
+const gchar * btk_combo_box_get_title              (BtkComboBox *combo_box);
+void                  btk_combo_box_set_title      (BtkComboBox *combo_box,
 					            const gchar *title);
 
-gboolean      gtk_combo_box_get_focus_on_click     (GtkComboBox *combo);
-void          gtk_combo_box_set_focus_on_click     (GtkComboBox *combo,
+gboolean      btk_combo_box_get_focus_on_click     (BtkComboBox *combo);
+void          btk_combo_box_set_focus_on_click     (BtkComboBox *combo,
 						    gboolean     focus_on_click);
 
 /* get/set active item */
-gint          gtk_combo_box_get_active       (GtkComboBox     *combo_box);
-void          gtk_combo_box_set_active       (GtkComboBox     *combo_box,
+gint          btk_combo_box_get_active       (BtkComboBox     *combo_box);
+void          btk_combo_box_set_active       (BtkComboBox     *combo_box,
                                               gint             index_);
-gboolean      gtk_combo_box_get_active_iter  (GtkComboBox     *combo_box,
-                                              GtkTreeIter     *iter);
-void          gtk_combo_box_set_active_iter  (GtkComboBox     *combo_box,
-                                              GtkTreeIter     *iter);
+gboolean      btk_combo_box_get_active_iter  (BtkComboBox     *combo_box,
+                                              BtkTreeIter     *iter);
+void          btk_combo_box_set_active_iter  (BtkComboBox     *combo_box,
+                                              BtkTreeIter     *iter);
 
 /* getters and setters */
-void          gtk_combo_box_set_model        (GtkComboBox     *combo_box,
-                                              GtkTreeModel    *model);
-GtkTreeModel *gtk_combo_box_get_model        (GtkComboBox     *combo_box);
+void          btk_combo_box_set_model        (BtkComboBox     *combo_box,
+                                              BtkTreeModel    *model);
+BtkTreeModel *btk_combo_box_get_model        (BtkComboBox     *combo_box);
 
-GtkTreeViewRowSeparatorFunc gtk_combo_box_get_row_separator_func (GtkComboBox                *combo_box);
-void                        gtk_combo_box_set_row_separator_func (GtkComboBox                *combo_box,
-								  GtkTreeViewRowSeparatorFunc func,
+BtkTreeViewRowSeparatorFunc btk_combo_box_get_row_separator_func (BtkComboBox                *combo_box);
+void                        btk_combo_box_set_row_separator_func (BtkComboBox                *combo_box,
+								  BtkTreeViewRowSeparatorFunc func,
 								  gpointer                    data,
 								  GDestroyNotify              destroy);
 
-void               gtk_combo_box_set_button_sensitivity (GtkComboBox        *combo_box,
-							 GtkSensitivityType  sensitivity);
-GtkSensitivityType gtk_combo_box_get_button_sensitivity (GtkComboBox        *combo_box);
+void               btk_combo_box_set_button_sensitivity (BtkComboBox        *combo_box,
+							 BtkSensitivityType  sensitivity);
+BtkSensitivityType btk_combo_box_get_button_sensitivity (BtkComboBox        *combo_box);
 
-gboolean           gtk_combo_box_get_has_entry          (GtkComboBox        *combo_box);
-void               gtk_combo_box_set_entry_text_column  (GtkComboBox        *combo_box,
+gboolean           btk_combo_box_get_has_entry          (BtkComboBox        *combo_box);
+void               btk_combo_box_set_entry_text_column  (BtkComboBox        *combo_box,
 							 gint                text_column);
-gint               gtk_combo_box_get_entry_text_column  (GtkComboBox        *combo_box);
+gint               btk_combo_box_get_entry_text_column  (BtkComboBox        *combo_box);
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (GTK_COMPILATION)
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (BTK_COMPILATION)
 
 /* convenience -- text */
-GtkWidget    *gtk_combo_box_new_text         (void);
-void          gtk_combo_box_append_text      (GtkComboBox     *combo_box,
+BtkWidget    *btk_combo_box_new_text         (void);
+void          btk_combo_box_append_text      (BtkComboBox     *combo_box,
                                               const gchar     *text);
-void          gtk_combo_box_insert_text      (GtkComboBox     *combo_box,
+void          btk_combo_box_insert_text      (BtkComboBox     *combo_box,
                                               gint             position,
                                               const gchar     *text);
-void          gtk_combo_box_prepend_text     (GtkComboBox     *combo_box,
+void          btk_combo_box_prepend_text     (BtkComboBox     *combo_box,
                                               const gchar     *text);
-void          gtk_combo_box_remove_text      (GtkComboBox     *combo_box,
+void          btk_combo_box_remove_text      (BtkComboBox     *combo_box,
                                               gint             position);
-gchar        *gtk_combo_box_get_active_text  (GtkComboBox     *combo_box);
+gchar        *btk_combo_box_get_active_text  (BtkComboBox     *combo_box);
 
 #endif
 
 /* programmatic control */
-void          gtk_combo_box_popup            (GtkComboBox     *combo_box);
-void          gtk_combo_box_popdown          (GtkComboBox     *combo_box);
-AtkObject*    gtk_combo_box_get_popup_accessible (GtkComboBox *combo_box);
+void          btk_combo_box_popup            (BtkComboBox     *combo_box);
+void          btk_combo_box_popdown          (BtkComboBox     *combo_box);
+BatkObject*    btk_combo_box_get_popup_accessible (BtkComboBox *combo_box);
 
 
 G_END_DECLS
 
-#endif /* __GTK_COMBO_BOX_H__ */
+#endif /* __BTK_COMBO_BOX_H__ */

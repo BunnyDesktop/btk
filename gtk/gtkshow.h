@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 2008  Jaap Haitsma <jaap@haitsma.org>
  *
  * All rights reserved.
@@ -20,20 +20,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_SHOW_H__
-#define __GTK_SHOW_H__
+#ifndef __BTK_SHOW_H__
+#define __BTK_SHOW_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
 G_BEGIN_DECLS
 
-gboolean gtk_show_uri  (GdkScreen   *screen,
+gboolean btk_show_uri  (BdkScreen   *screen,
                         const gchar *uri,
                         guint32      timestamp,
                         GError     **error);
 
 G_END_DECLS
 
-#endif /* __GTK_SHOW_H__ */
+#endif /* __BTK_SHOW_H__ */

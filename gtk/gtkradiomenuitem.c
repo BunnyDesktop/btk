@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,20 +18,20 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gtkaccellabel.h"
-#include "gtkmarshalers.h"
-#include "gtkradiomenuitem.h"
-#include "gtkactivatable.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkaccellabel.h"
+#include "btkmarshalers.h"
+#include "btkradiomenuitem.h"
+#include "btkactivatable.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 enum {
@@ -40,42 +40,42 @@ enum {
 };
 
 
-static void gtk_radio_menu_item_destroy        (GtkObject             *object);
-static void gtk_radio_menu_item_activate       (GtkMenuItem           *menu_item);
-static void gtk_radio_menu_item_set_property   (GObject               *object,
+static void btk_radio_menu_item_destroy        (BtkObject             *object);
+static void btk_radio_menu_item_activate       (BtkMenuItem           *menu_item);
+static void btk_radio_menu_item_set_property   (GObject               *object,
 						guint                  prop_id,
 						const GValue          *value,
 						GParamSpec            *pspec);
-static void gtk_radio_menu_item_get_property   (GObject               *object,
+static void btk_radio_menu_item_get_property   (GObject               *object,
 						guint                  prop_id,
 						GValue                *value,
 						GParamSpec            *pspec);
 
 static guint group_changed_signal = 0;
 
-G_DEFINE_TYPE (GtkRadioMenuItem, gtk_radio_menu_item, GTK_TYPE_CHECK_MENU_ITEM)
+G_DEFINE_TYPE (BtkRadioMenuItem, btk_radio_menu_item, BTK_TYPE_CHECK_MENU_ITEM)
 
-GtkWidget*
-gtk_radio_menu_item_new (GSList *group)
+BtkWidget*
+btk_radio_menu_item_new (GSList *group)
 {
-  GtkRadioMenuItem *radio_menu_item;
+  BtkRadioMenuItem *radio_menu_item;
 
-  radio_menu_item = g_object_new (GTK_TYPE_RADIO_MENU_ITEM, NULL);
+  radio_menu_item = g_object_new (BTK_TYPE_RADIO_MENU_ITEM, NULL);
 
-  gtk_radio_menu_item_set_group (radio_menu_item, group);
+  btk_radio_menu_item_set_group (radio_menu_item, group);
 
-  return GTK_WIDGET (radio_menu_item);
+  return BTK_WIDGET (radio_menu_item);
 }
 
 static void
-gtk_radio_menu_item_set_property (GObject      *object,
+btk_radio_menu_item_set_property (GObject      *object,
 				  guint         prop_id,
 				  const GValue *value,
 				  GParamSpec   *pspec)
 {
-  GtkRadioMenuItem *radio_menu_item;
+  BtkRadioMenuItem *radio_menu_item;
 
-  radio_menu_item = GTK_RADIO_MENU_ITEM (object);
+  radio_menu_item = BTK_RADIO_MENU_ITEM (object);
 
   switch (prop_id)
     {
@@ -83,10 +83,10 @@ gtk_radio_menu_item_set_property (GObject      *object,
 
     case PROP_GROUP:
       if (G_VALUE_HOLDS_OBJECT (value))
-	slist = gtk_radio_menu_item_get_group ((GtkRadioMenuItem*) g_value_get_object (value));
+	slist = btk_radio_menu_item_get_group ((BtkRadioMenuItem*) g_value_get_object (value));
       else
 	slist = NULL;
-      gtk_radio_menu_item_set_group (radio_menu_item, slist);
+      btk_radio_menu_item_set_group (radio_menu_item, slist);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -95,7 +95,7 @@ gtk_radio_menu_item_set_property (GObject      *object,
 }
 
 static void
-gtk_radio_menu_item_get_property (GObject    *object,
+btk_radio_menu_item_get_property (GObject    *object,
 				  guint       prop_id,
 				  GValue     *value,
 				  GParamSpec *pspec)
@@ -109,13 +109,13 @@ gtk_radio_menu_item_get_property (GObject    *object,
 }
 
 void
-gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
+btk_radio_menu_item_set_group (BtkRadioMenuItem *radio_menu_item,
 			       GSList           *group)
 {
-  GtkWidget *old_group_singleton = NULL;
-  GtkWidget *new_group_singleton = NULL;
+  BtkWidget *old_group_singleton = NULL;
+  BtkWidget *new_group_singleton = NULL;
   
-  g_return_if_fail (GTK_IS_RADIO_MENU_ITEM (radio_menu_item));
+  g_return_if_fail (BTK_IS_RADIO_MENU_ITEM (radio_menu_item));
   g_return_if_fail (!g_slist_find (group, radio_menu_item));
 
   if (radio_menu_item->group)
@@ -129,7 +129,7 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
 	  
       for (slist = radio_menu_item->group; slist; slist = slist->next)
 	{
-	  GtkRadioMenuItem *tmp_item;
+	  BtkRadioMenuItem *tmp_item;
 	  
 	  tmp_item = slist->data;
 	  
@@ -148,7 +148,7 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
       
       for (slist = group; slist; slist = slist->next)
 	{
-	  GtkRadioMenuItem *tmp_item;
+	  BtkRadioMenuItem *tmp_item;
 	  
 	  tmp_item = slist->data;
 	  
@@ -157,8 +157,8 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
     }
   else
     {
-      GTK_CHECK_MENU_ITEM (radio_menu_item)->active = TRUE;
-      /* gtk_widget_set_state (GTK_WIDGET (radio_menu_item), GTK_STATE_ACTIVE);
+      BTK_CHECK_MENU_ITEM (radio_menu_item)->active = TRUE;
+      /* btk_widget_set_state (BTK_WIDGET (radio_menu_item), BTK_STATE_ACTIVE);
        */
     }
 
@@ -182,194 +182,194 @@ gtk_radio_menu_item_set_group (GtkRadioMenuItem *radio_menu_item,
 
 
 /**
- * gtk_radio_menu_item_new_with_label:
- * @group: (element-type GtkRadioMenuItem) (transfer full):
+ * btk_radio_menu_item_new_with_label:
+ * @group: (element-type BtkRadioMenuItem) (transfer full):
  * @label: the text for the label
  *
- * Creates a new #GtkRadioMenuItem whose child is a simple #GtkLabel.
+ * Creates a new #BtkRadioMenuItem whose child is a simple #BtkLabel.
  *
- * Returns: (transfer none): A new #GtkRadioMenuItem
+ * Returns: (transfer none): A new #BtkRadioMenuItem
  */
-GtkWidget*
-gtk_radio_menu_item_new_with_label (GSList *group,
+BtkWidget*
+btk_radio_menu_item_new_with_label (GSList *group,
 				    const gchar *label)
 {
-  GtkWidget *radio_menu_item;
-  GtkWidget *accel_label;
+  BtkWidget *radio_menu_item;
+  BtkWidget *accel_label;
 
-  radio_menu_item = gtk_radio_menu_item_new (group);
-  accel_label = gtk_accel_label_new (label);
-  gtk_misc_set_alignment (GTK_MISC (accel_label), 0.0, 0.5);
-  gtk_container_add (GTK_CONTAINER (radio_menu_item), accel_label);
-  gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (accel_label), radio_menu_item);
-  gtk_widget_show (accel_label);
+  radio_menu_item = btk_radio_menu_item_new (group);
+  accel_label = btk_accel_label_new (label);
+  btk_misc_set_alignment (BTK_MISC (accel_label), 0.0, 0.5);
+  btk_container_add (BTK_CONTAINER (radio_menu_item), accel_label);
+  btk_accel_label_set_accel_widget (BTK_ACCEL_LABEL (accel_label), radio_menu_item);
+  btk_widget_show (accel_label);
 
   return radio_menu_item;
 }
 
 
 /**
- * gtk_radio_menu_item_new_with_mnemonic:
+ * btk_radio_menu_item_new_with_mnemonic:
  * @group: group the radio menu item is inside
  * @label: the text of the button, with an underscore in front of the
  *         mnemonic character
- * @returns: a new #GtkRadioMenuItem
+ * @returns: a new #BtkRadioMenuItem
  *
- * Creates a new #GtkRadioMenuItem containing a label. The label
- * will be created using gtk_label_new_with_mnemonic(), so underscores
+ * Creates a new #BtkRadioMenuItem containing a label. The label
+ * will be created using btk_label_new_with_mnemonic(), so underscores
  * in @label indicate the mnemonic for the menu item.
  **/
-GtkWidget*
-gtk_radio_menu_item_new_with_mnemonic (GSList *group,
+BtkWidget*
+btk_radio_menu_item_new_with_mnemonic (GSList *group,
 				       const gchar *label)
 {
-  GtkWidget *radio_menu_item;
-  GtkWidget *accel_label;
+  BtkWidget *radio_menu_item;
+  BtkWidget *accel_label;
 
-  radio_menu_item = gtk_radio_menu_item_new (group);
-  accel_label = g_object_new (GTK_TYPE_ACCEL_LABEL, NULL);
-  gtk_label_set_text_with_mnemonic (GTK_LABEL (accel_label), label);
-  gtk_misc_set_alignment (GTK_MISC (accel_label), 0.0, 0.5);
+  radio_menu_item = btk_radio_menu_item_new (group);
+  accel_label = g_object_new (BTK_TYPE_ACCEL_LABEL, NULL);
+  btk_label_set_text_with_mnemonic (BTK_LABEL (accel_label), label);
+  btk_misc_set_alignment (BTK_MISC (accel_label), 0.0, 0.5);
 
-  gtk_container_add (GTK_CONTAINER (radio_menu_item), accel_label);
-  gtk_accel_label_set_accel_widget (GTK_ACCEL_LABEL (accel_label), radio_menu_item);
-  gtk_widget_show (accel_label);
+  btk_container_add (BTK_CONTAINER (radio_menu_item), accel_label);
+  btk_accel_label_set_accel_widget (BTK_ACCEL_LABEL (accel_label), radio_menu_item);
+  btk_widget_show (accel_label);
 
   return radio_menu_item;
 }
 
 /**
- * gtk_radio_menu_item_new_from_widget:
- * @group: An existing #GtkRadioMenuItem
+ * btk_radio_menu_item_new_from_widget:
+ * @group: An existing #BtkRadioMenuItem
  *
- * Creates a new #GtkRadioMenuItem adding it to the same group as @group.
+ * Creates a new #BtkRadioMenuItem adding it to the same group as @group.
  *
- * Return value: (transfer none): The new #GtkRadioMenuItem
+ * Return value: (transfer none): The new #BtkRadioMenuItem
  *
  * Since: 2.4
  **/
-GtkWidget *
-gtk_radio_menu_item_new_from_widget (GtkRadioMenuItem *group)
+BtkWidget *
+btk_radio_menu_item_new_from_widget (BtkRadioMenuItem *group)
 {
   GSList *list = NULL;
   
-  g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (group), NULL);
+  g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (group), NULL);
 
   if (group)
-    list = gtk_radio_menu_item_get_group (group);
+    list = btk_radio_menu_item_get_group (group);
   
-  return gtk_radio_menu_item_new (list);
+  return btk_radio_menu_item_new (list);
 }
 
 /**
- * gtk_radio_menu_item_new_with_mnemonic_from_widget:
- * @group: An existing #GtkRadioMenuItem
+ * btk_radio_menu_item_new_with_mnemonic_from_widget:
+ * @group: An existing #BtkRadioMenuItem
  * @label: the text of the button, with an underscore in front of the
  *         mnemonic character
  *
- * Creates a new GtkRadioMenuItem containing a label. The label will be
- * created using gtk_label_new_with_mnemonic(), so underscores in label
+ * Creates a new BtkRadioMenuItem containing a label. The label will be
+ * created using btk_label_new_with_mnemonic(), so underscores in label
  * indicate the mnemonic for the menu item.
  *
- * The new #GtkRadioMenuItem is added to the same group as @group.
+ * The new #BtkRadioMenuItem is added to the same group as @group.
  *
- * Return value: (transfer none): The new #GtkRadioMenuItem
+ * Return value: (transfer none): The new #BtkRadioMenuItem
  *
  * Since: 2.4
  **/
-GtkWidget *
-gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
+BtkWidget *
+btk_radio_menu_item_new_with_mnemonic_from_widget (BtkRadioMenuItem *group,
 						   const gchar *label)
 {
   GSList *list = NULL;
 
-  g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (group), NULL);
+  g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (group), NULL);
 
   if (group)
-    list = gtk_radio_menu_item_get_group (group);
+    list = btk_radio_menu_item_get_group (group);
 
-  return gtk_radio_menu_item_new_with_mnemonic (list, label);
+  return btk_radio_menu_item_new_with_mnemonic (list, label);
 }
 
 /**
- * gtk_radio_menu_item_new_with_label_from_widget:
- * @group: an existing #GtkRadioMenuItem
+ * btk_radio_menu_item_new_with_label_from_widget:
+ * @group: an existing #BtkRadioMenuItem
  * @label: the text for the label
  *
- * Creates a new GtkRadioMenuItem whose child is a simple GtkLabel.
- * The new #GtkRadioMenuItem is added to the same group as @group.
+ * Creates a new BtkRadioMenuItem whose child is a simple BtkLabel.
+ * The new #BtkRadioMenuItem is added to the same group as @group.
  *
- * Return value: (transfer none): The new #GtkRadioMenuItem
+ * Return value: (transfer none): The new #BtkRadioMenuItem
  *
  * Since: 2.4
  **/
-GtkWidget *
-gtk_radio_menu_item_new_with_label_from_widget (GtkRadioMenuItem *group,
+BtkWidget *
+btk_radio_menu_item_new_with_label_from_widget (BtkRadioMenuItem *group,
 						const gchar *label)
 {
   GSList *list = NULL;
 
-  g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (group), NULL);
+  g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (group), NULL);
 
   if (group)
-    list = gtk_radio_menu_item_get_group (group);
+    list = btk_radio_menu_item_get_group (group);
 
-  return gtk_radio_menu_item_new_with_label (list, label);
+  return btk_radio_menu_item_new_with_label (list, label);
 }
 
 /**
- * gtk_radio_menu_item_get_group:
- * @radio_menu_item: a #GtkRadioMenuItem
+ * btk_radio_menu_item_get_group:
+ * @radio_menu_item: a #BtkRadioMenuItem
  *
  * Returns the group to which the radio menu item belongs, as a #GList of
- * #GtkRadioMenuItem. The list belongs to GTK+ and should not be freed.
+ * #BtkRadioMenuItem. The list belongs to BTK+ and should not be freed.
  *
  * Returns: (transfer none): the group of @radio_menu_item
  */
 GSList*
-gtk_radio_menu_item_get_group (GtkRadioMenuItem *radio_menu_item)
+btk_radio_menu_item_get_group (BtkRadioMenuItem *radio_menu_item)
 {
-  g_return_val_if_fail (GTK_IS_RADIO_MENU_ITEM (radio_menu_item), NULL);
+  g_return_val_if_fail (BTK_IS_RADIO_MENU_ITEM (radio_menu_item), NULL);
 
   return radio_menu_item->group;
 }
 
 
 static void
-gtk_radio_menu_item_class_init (GtkRadioMenuItemClass *klass)
+btk_radio_menu_item_class_init (BtkRadioMenuItemClass *klass)
 {
-  GObjectClass *gobject_class;  
-  GtkObjectClass *object_class;
-  GtkMenuItemClass *menu_item_class;
+  GObjectClass *bobject_class;  
+  BtkObjectClass *object_class;
+  BtkMenuItemClass *menu_item_class;
 
-  gobject_class = G_OBJECT_CLASS (klass);
-  object_class = GTK_OBJECT_CLASS (klass);
-  menu_item_class = GTK_MENU_ITEM_CLASS (klass);
+  bobject_class = G_OBJECT_CLASS (klass);
+  object_class = BTK_OBJECT_CLASS (klass);
+  menu_item_class = BTK_MENU_ITEM_CLASS (klass);
 
-  gobject_class->set_property = gtk_radio_menu_item_set_property;
-  gobject_class->get_property = gtk_radio_menu_item_get_property;
+  bobject_class->set_property = btk_radio_menu_item_set_property;
+  bobject_class->get_property = btk_radio_menu_item_get_property;
 
   /**
-   * GtkRadioMenuItem:group:
+   * BtkRadioMenuItem:group:
    * 
    * The radio menu item whose group this widget belongs to.
    * 
    * Since: 2.8
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_GROUP,
 				   g_param_spec_object ("group",
 							P_("Group"),
 							P_("The radio menu item whose group this widget belongs to."),
-							GTK_TYPE_RADIO_MENU_ITEM,
-							GTK_PARAM_WRITABLE));
+							BTK_TYPE_RADIO_MENU_ITEM,
+							BTK_PARAM_WRITABLE));
 
-  object_class->destroy = gtk_radio_menu_item_destroy;
+  object_class->destroy = btk_radio_menu_item_destroy;
 
-  menu_item_class->activate = gtk_radio_menu_item_activate;
+  menu_item_class->activate = btk_radio_menu_item_activate;
 
   /**
-   * GtkStyle::group-changed:
+   * BtkStyle::group-changed:
    * @style: the object which received the signal
    *
    * Emitted when the group of radio menu items that a radio menu item belongs
@@ -384,25 +384,25 @@ gtk_radio_menu_item_class_init (GtkRadioMenuItemClass *klass)
   group_changed_signal = g_signal_new (I_("group-changed"),
 				       G_OBJECT_CLASS_TYPE (object_class),
 				       G_SIGNAL_RUN_FIRST,
-				       G_STRUCT_OFFSET (GtkRadioMenuItemClass, group_changed),
+				       G_STRUCT_OFFSET (BtkRadioMenuItemClass, group_changed),
 				       NULL, NULL,
-				       _gtk_marshal_VOID__VOID,
+				       _btk_marshal_VOID__VOID,
 				       G_TYPE_NONE, 0);
 }
 
 static void
-gtk_radio_menu_item_init (GtkRadioMenuItem *radio_menu_item)
+btk_radio_menu_item_init (BtkRadioMenuItem *radio_menu_item)
 {
   radio_menu_item->group = g_slist_prepend (NULL, radio_menu_item);
-  gtk_check_menu_item_set_draw_as_radio (GTK_CHECK_MENU_ITEM (radio_menu_item), TRUE);
+  btk_check_menu_item_set_draw_as_radio (BTK_CHECK_MENU_ITEM (radio_menu_item), TRUE);
 }
 
 static void
-gtk_radio_menu_item_destroy (GtkObject *object)
+btk_radio_menu_item_destroy (BtkObject *object)
 {
-  GtkRadioMenuItem *radio_menu_item = GTK_RADIO_MENU_ITEM (object);
-  GtkWidget *old_group_singleton = NULL;
-  GtkRadioMenuItem *tmp_menu_item;
+  BtkRadioMenuItem *radio_menu_item = BTK_RADIO_MENU_ITEM (object);
+  BtkWidget *old_group_singleton = NULL;
+  BtkRadioMenuItem *tmp_menu_item;
   GSList *tmp_list;
   gboolean was_in_group;
 
@@ -431,22 +431,22 @@ gtk_radio_menu_item_destroy (GtkObject *object)
   if (was_in_group)
     g_signal_emit (radio_menu_item, group_changed_signal, 0);
 
-  GTK_OBJECT_CLASS (gtk_radio_menu_item_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_radio_menu_item_parent_class)->destroy (object);
 }
 
 static void
-gtk_radio_menu_item_activate (GtkMenuItem *menu_item)
+btk_radio_menu_item_activate (BtkMenuItem *menu_item)
 {
-  GtkRadioMenuItem *radio_menu_item = GTK_RADIO_MENU_ITEM (menu_item);
-  GtkCheckMenuItem *check_menu_item = GTK_CHECK_MENU_ITEM (menu_item);
-  GtkCheckMenuItem *tmp_menu_item;
-  GtkAction        *action;
+  BtkRadioMenuItem *radio_menu_item = BTK_RADIO_MENU_ITEM (menu_item);
+  BtkCheckMenuItem *check_menu_item = BTK_CHECK_MENU_ITEM (menu_item);
+  BtkCheckMenuItem *tmp_menu_item;
+  BtkAction        *action;
   GSList *tmp_list;
   gint toggled;
 
-  action = gtk_activatable_get_related_action (GTK_ACTIVATABLE (menu_item));
-  if (action && gtk_menu_item_get_submenu (menu_item) == NULL)
-    gtk_action_activate (action);
+  action = btk_activatable_get_related_action (BTK_ACTIVATABLE (menu_item));
+  if (action && btk_menu_item_get_submenu (menu_item) == NULL)
+    btk_action_activate (action);
 
   toggled = FALSE;
 
@@ -485,7 +485,7 @@ gtk_radio_menu_item_activate (GtkMenuItem *menu_item)
 
 	  if (tmp_menu_item->active && (tmp_menu_item != check_menu_item))
 	    {
-	      gtk_menu_item_activate (GTK_MENU_ITEM (tmp_menu_item));
+	      btk_menu_item_activate (BTK_MENU_ITEM (tmp_menu_item));
 	      break;
 	    }
 	}
@@ -493,11 +493,11 @@ gtk_radio_menu_item_activate (GtkMenuItem *menu_item)
 
   if (toggled)
     {
-      gtk_check_menu_item_toggled (check_menu_item);
+      btk_check_menu_item_toggled (check_menu_item);
     }
 
-  gtk_widget_queue_draw (GTK_WIDGET (radio_menu_item));
+  btk_widget_queue_draw (BTK_WIDGET (radio_menu_item));
 }
 
-#define __GTK_RADIO_MENU_ITEM_C__
-#include "gtkaliasdef.c"
+#define __BTK_RADIO_MENU_ITEM_C__
+#include "btkaliasdef.c"

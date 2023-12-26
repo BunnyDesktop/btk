@@ -1,4 +1,4 @@
-/* GtkPrinterOptionWidget 
+/* BtkPrinterOptionWidget 
  * Copyright (C) 2006 John (J5) Palmieri <johnp@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -16,49 +16,49 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-#ifndef __GTK_PRINTER_OPTION_WIDGET_H__
-#define __GTK_PRINTER_OPTION_WIDGET_H__
+#ifndef __BTK_PRINTER_OPTION_WIDGET_H__
+#define __BTK_PRINTER_OPTION_WIDGET_H__
 
-#include "gtkprinteroption.h"
-#include "gtkhbox.h"
+#include "btkprinteroption.h"
+#include "btkhbox.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINTER_OPTION_WIDGET                  (gtk_printer_option_widget_get_type ())
-#define GTK_PRINTER_OPTION_WIDGET(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINTER_OPTION_WIDGET, GtkPrinterOptionWidget))
-#define GTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINTER_OPTION_WIDGET, GtkPrinterOptionWidgetClass))
-#define GTK_IS_PRINTER_OPTION_WIDGET(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINTER_OPTION_WIDGET))
-#define GTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINTER_OPTION_WIDGET))
-#define GTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINTER_OPTION_WIDGET, GtkPrinterOptionWidgetClass))
+#define BTK_TYPE_PRINTER_OPTION_WIDGET                  (btk_printer_option_widget_get_type ())
+#define BTK_PRINTER_OPTION_WIDGET(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidget))
+#define BTK_PRINTER_OPTION_WIDGET_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
+#define BTK_IS_PRINTER_OPTION_WIDGET(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_IS_PRINTER_OPTION_WIDGET_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINTER_OPTION_WIDGET))
+#define BTK_PRINTER_OPTION_WIDGET_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINTER_OPTION_WIDGET, BtkPrinterOptionWidgetClass))
 
 
-typedef struct _GtkPrinterOptionWidget         GtkPrinterOptionWidget;
-typedef struct _GtkPrinterOptionWidgetClass    GtkPrinterOptionWidgetClass;
-typedef struct GtkPrinterOptionWidgetPrivate   GtkPrinterOptionWidgetPrivate;
+typedef struct _BtkPrinterOptionWidget         BtkPrinterOptionWidget;
+typedef struct _BtkPrinterOptionWidgetClass    BtkPrinterOptionWidgetClass;
+typedef struct BtkPrinterOptionWidgetPrivate   BtkPrinterOptionWidgetPrivate;
 
-struct _GtkPrinterOptionWidget
+struct _BtkPrinterOptionWidget
 {
-  GtkHBox parent_instance;
+  BtkHBox parent_instance;
 
-  GtkPrinterOptionWidgetPrivate *priv;
+  BtkPrinterOptionWidgetPrivate *priv;
 };
 
-struct _GtkPrinterOptionWidgetClass
+struct _BtkPrinterOptionWidgetClass
 {
-  GtkHBoxClass parent_class;
+  BtkHBoxClass parent_class;
 
-  void (*changed) (GtkPrinterOptionWidget *widget);
+  void (*changed) (BtkPrinterOptionWidget *widget);
 };
 
-GType	     gtk_printer_option_widget_get_type           (void) G_GNUC_CONST;
+GType	     btk_printer_option_widget_get_type           (void) G_GNUC_CONST;
 
-GtkWidget   *gtk_printer_option_widget_new                (GtkPrinterOption       *source);
-void         gtk_printer_option_widget_set_source         (GtkPrinterOptionWidget *setting,
-		 					   GtkPrinterOption       *source);
-gboolean     gtk_printer_option_widget_has_external_label (GtkPrinterOptionWidget *setting);
-GtkWidget   *gtk_printer_option_widget_get_external_label (GtkPrinterOptionWidget *setting);
-const gchar *gtk_printer_option_widget_get_value          (GtkPrinterOptionWidget *setting);
+BtkWidget   *btk_printer_option_widget_new                (BtkPrinterOption       *source);
+void         btk_printer_option_widget_set_source         (BtkPrinterOptionWidget *setting,
+		 					   BtkPrinterOption       *source);
+gboolean     btk_printer_option_widget_has_external_label (BtkPrinterOptionWidget *setting);
+BtkWidget   *btk_printer_option_widget_get_external_label (BtkPrinterOptionWidget *setting);
+const gchar *btk_printer_option_widget_get_value          (BtkPrinterOptionWidget *setting);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINTER_OPTION_WIDGET_H__ */
+#endif /* __BTK_PRINTER_OPTION_WIDGET_H__ */

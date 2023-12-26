@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1998, 1999 Red Hat, Inc.
  * All rights reserved.
  *
@@ -14,7 +14,7 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with the Gnome Library; see the file COPYING.LIB.  If not,
+ * License along with the Bunny Library; see the file COPYING.LIB.  If not,
  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
@@ -22,132 +22,132 @@
 /*
  * Author: James Henstridge <james@daa.com.au>
  *
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_UI_MANAGER_H__
-#define __GTK_UI_MANAGER_H__
+#ifndef __BTK_UI_MANAGER_H__
+#define __BTK_UI_MANAGER_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkaccelgroup.h>
-#include <gtk/gtkwidget.h>
-#include <gtk/gtkaction.h>
-#include <gtk/gtkactiongroup.h>
+#include <btk/btkaccelgroup.h>
+#include <btk/btkwidget.h>
+#include <btk/btkaction.h>
+#include <btk/btkactiongroup.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_UI_MANAGER            (gtk_ui_manager_get_type ())
-#define GTK_UI_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_UI_MANAGER, GtkUIManager))
-#define GTK_UI_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_UI_MANAGER, GtkUIManagerClass))
-#define GTK_IS_UI_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_UI_MANAGER))
-#define GTK_IS_UI_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_UI_MANAGER))
-#define GTK_UI_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GTK_TYPE_UI_MANAGER, GtkUIManagerClass))
+#define BTK_TYPE_UI_MANAGER            (btk_ui_manager_get_type ())
+#define BTK_UI_MANAGER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_UI_MANAGER, BtkUIManager))
+#define BTK_UI_MANAGER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
+#define BTK_IS_UI_MANAGER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_UI_MANAGER))
+#define BTK_IS_UI_MANAGER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_UI_MANAGER))
+#define BTK_UI_MANAGER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerClass))
 
-typedef struct _GtkUIManager      GtkUIManager;
-typedef struct _GtkUIManagerClass GtkUIManagerClass;
-typedef struct _GtkUIManagerPrivate GtkUIManagerPrivate;
+typedef struct _BtkUIManager      BtkUIManager;
+typedef struct _BtkUIManagerClass BtkUIManagerClass;
+typedef struct _BtkUIManagerPrivate BtkUIManagerPrivate;
 
 
-struct _GtkUIManager {
+struct _BtkUIManager {
   GObject parent;
 
   /*< private >*/
 
-  GtkUIManagerPrivate *GSEAL (private_data);
+  BtkUIManagerPrivate *GSEAL (private_data);
 };
 
-struct _GtkUIManagerClass {
+struct _BtkUIManagerClass {
   GObjectClass parent_class;
 
   /* Signals */
-  void (* add_widget)       (GtkUIManager *merge,
-                             GtkWidget    *widget);
-  void (* actions_changed)  (GtkUIManager *merge);
-  void (* connect_proxy)    (GtkUIManager *merge,
-			     GtkAction    *action,
-			     GtkWidget    *proxy);
-  void (* disconnect_proxy) (GtkUIManager *merge,
-			     GtkAction    *action,
-			     GtkWidget    *proxy);
-  void (* pre_activate)     (GtkUIManager *merge,
-			     GtkAction    *action);
-  void (* post_activate)    (GtkUIManager *merge,
-			     GtkAction    *action);
+  void (* add_widget)       (BtkUIManager *merge,
+                             BtkWidget    *widget);
+  void (* actions_changed)  (BtkUIManager *merge);
+  void (* connect_proxy)    (BtkUIManager *merge,
+			     BtkAction    *action,
+			     BtkWidget    *proxy);
+  void (* disconnect_proxy) (BtkUIManager *merge,
+			     BtkAction    *action,
+			     BtkWidget    *proxy);
+  void (* pre_activate)     (BtkUIManager *merge,
+			     BtkAction    *action);
+  void (* post_activate)    (BtkUIManager *merge,
+			     BtkAction    *action);
 
   /* Virtual functions */
-  GtkWidget * (* get_widget) (GtkUIManager *manager,
+  BtkWidget * (* get_widget) (BtkUIManager *manager,
                               const gchar  *path);
-  GtkAction * (* get_action) (GtkUIManager *manager,
+  BtkAction * (* get_action) (BtkUIManager *manager,
                               const gchar  *path);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
 };
 
 typedef enum {
-  GTK_UI_MANAGER_AUTO              = 0,
-  GTK_UI_MANAGER_MENUBAR           = 1 << 0,
-  GTK_UI_MANAGER_MENU              = 1 << 1,
-  GTK_UI_MANAGER_TOOLBAR           = 1 << 2,
-  GTK_UI_MANAGER_PLACEHOLDER       = 1 << 3,
-  GTK_UI_MANAGER_POPUP             = 1 << 4,
-  GTK_UI_MANAGER_MENUITEM          = 1 << 5,
-  GTK_UI_MANAGER_TOOLITEM          = 1 << 6,
-  GTK_UI_MANAGER_SEPARATOR         = 1 << 7,
-  GTK_UI_MANAGER_ACCELERATOR       = 1 << 8,
-  GTK_UI_MANAGER_POPUP_WITH_ACCELS = 1 << 9
-} GtkUIManagerItemType;
+  BTK_UI_MANAGER_AUTO              = 0,
+  BTK_UI_MANAGER_MENUBAR           = 1 << 0,
+  BTK_UI_MANAGER_MENU              = 1 << 1,
+  BTK_UI_MANAGER_TOOLBAR           = 1 << 2,
+  BTK_UI_MANAGER_PLACEHOLDER       = 1 << 3,
+  BTK_UI_MANAGER_POPUP             = 1 << 4,
+  BTK_UI_MANAGER_MENUITEM          = 1 << 5,
+  BTK_UI_MANAGER_TOOLITEM          = 1 << 6,
+  BTK_UI_MANAGER_SEPARATOR         = 1 << 7,
+  BTK_UI_MANAGER_ACCELERATOR       = 1 << 8,
+  BTK_UI_MANAGER_POPUP_WITH_ACCELS = 1 << 9
+} BtkUIManagerItemType;
 
 #ifdef G_OS_WIN32
 /* Reserve old name for DLL ABI backward compatibility */
-#define gtk_ui_manager_add_ui_from_file gtk_ui_manager_add_ui_from_file_utf8
+#define btk_ui_manager_add_ui_from_file btk_ui_manager_add_ui_from_file_utf8
 #endif
 
-GType          gtk_ui_manager_get_type            (void) G_GNUC_CONST;
-GtkUIManager  *gtk_ui_manager_new                 (void);
-void           gtk_ui_manager_set_add_tearoffs    (GtkUIManager          *self,
+GType          btk_ui_manager_get_type            (void) G_GNUC_CONST;
+BtkUIManager  *btk_ui_manager_new                 (void);
+void           btk_ui_manager_set_add_tearoffs    (BtkUIManager          *self,
 						   gboolean               add_tearoffs);
-gboolean       gtk_ui_manager_get_add_tearoffs    (GtkUIManager          *self);
-void           gtk_ui_manager_insert_action_group (GtkUIManager          *self,
-						   GtkActionGroup        *action_group,
+gboolean       btk_ui_manager_get_add_tearoffs    (BtkUIManager          *self);
+void           btk_ui_manager_insert_action_group (BtkUIManager          *self,
+						   BtkActionGroup        *action_group,
 						   gint                   pos);
-void           gtk_ui_manager_remove_action_group (GtkUIManager          *self,
-						   GtkActionGroup        *action_group);
-GList         *gtk_ui_manager_get_action_groups   (GtkUIManager          *self);
-GtkAccelGroup *gtk_ui_manager_get_accel_group     (GtkUIManager          *self);
-GtkWidget     *gtk_ui_manager_get_widget          (GtkUIManager          *self,
+void           btk_ui_manager_remove_action_group (BtkUIManager          *self,
+						   BtkActionGroup        *action_group);
+GList         *btk_ui_manager_get_action_groups   (BtkUIManager          *self);
+BtkAccelGroup *btk_ui_manager_get_accel_group     (BtkUIManager          *self);
+BtkWidget     *btk_ui_manager_get_widget          (BtkUIManager          *self,
 						   const gchar           *path);
-GSList        *gtk_ui_manager_get_toplevels       (GtkUIManager          *self,
-						   GtkUIManagerItemType   types);
-GtkAction     *gtk_ui_manager_get_action          (GtkUIManager          *self,
+GSList        *btk_ui_manager_get_toplevels       (BtkUIManager          *self,
+						   BtkUIManagerItemType   types);
+BtkAction     *btk_ui_manager_get_action          (BtkUIManager          *self,
 						   const gchar           *path);
-guint          gtk_ui_manager_add_ui_from_string  (GtkUIManager          *self,
+guint          btk_ui_manager_add_ui_from_string  (BtkUIManager          *self,
 						   const gchar           *buffer,
 						   gssize                 length,
 						   GError               **error);
-guint          gtk_ui_manager_add_ui_from_file    (GtkUIManager          *self,
+guint          btk_ui_manager_add_ui_from_file    (BtkUIManager          *self,
 						   const gchar           *filename,
 						   GError               **error);
-void           gtk_ui_manager_add_ui              (GtkUIManager          *self,
+void           btk_ui_manager_add_ui              (BtkUIManager          *self,
 						   guint                  merge_id,
 						   const gchar           *path,
 						   const gchar           *name,
 						   const gchar           *action,
-						   GtkUIManagerItemType   type,
+						   BtkUIManagerItemType   type,
 						   gboolean               top);
-void           gtk_ui_manager_remove_ui           (GtkUIManager          *self,
+void           btk_ui_manager_remove_ui           (BtkUIManager          *self,
 						   guint                  merge_id);
-gchar         *gtk_ui_manager_get_ui              (GtkUIManager          *self);
-void           gtk_ui_manager_ensure_update       (GtkUIManager          *self);
-guint          gtk_ui_manager_new_merge_id        (GtkUIManager          *self);
+gchar         *btk_ui_manager_get_ui              (BtkUIManager          *self);
+void           btk_ui_manager_ensure_update       (BtkUIManager          *self);
+guint          btk_ui_manager_new_merge_id        (BtkUIManager          *self);
 
 G_END_DECLS
 
-#endif /* __GTK_UI_MANAGER_H__ */
+#endif /* __BTK_UI_MANAGER_H__ */

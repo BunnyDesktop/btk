@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,27 +17,27 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_BUTTON_H__
-#define __GAIL_BUTTON_H__
+#ifndef __BAIL_BUTTON_H__
+#define __BAIL_BUTTON_H__
 
-#include <gail/gailcontainer.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailcontainer.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_BUTTON                     (gail_button_get_type ())
-#define GAIL_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_BUTTON, GailButton))
-#define GAIL_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_BUTTON, GailButtonClass))
-#define GAIL_IS_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_BUTTON))
-#define GAIL_IS_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_BUTTON))
-#define GAIL_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_BUTTON, GailButtonClass))
+#define BAIL_TYPE_BUTTON                     (bail_button_get_type ())
+#define BAIL_BUTTON(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_BUTTON, BailButton))
+#define BAIL_BUTTON_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_BUTTON, BailButtonClass))
+#define BAIL_IS_BUTTON(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_BUTTON))
+#define BAIL_IS_BUTTON_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_BUTTON))
+#define BAIL_BUTTON_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_BUTTON, BailButtonClass))
 
-typedef struct _GailButton                   GailButton;
-typedef struct _GailButtonClass              GailButtonClass;
+typedef struct _BailButton                   BailButton;
+typedef struct _BailButtonClass              BailButtonClass;
 
-struct _GailButton
+struct _BailButton
 {
-  GailContainer parent;
+  BailContainer parent;
 
   /*
    * Cache the widget state so we know the previous state when it changed
@@ -51,18 +51,18 @@ struct _GailButton
   guint         action_idle_handler;
   GQueue        *action_queue;
 
-  GailTextUtil	 *textutil;
+  BailTextUtil	 *textutil;
 
   gboolean     default_is_press;
 };
 
-GType gail_button_get_type (void);
+GType bail_button_get_type (void);
 
-struct _GailButtonClass
+struct _BailButtonClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_BUTTON_H__ */
+#endif /* __BAIL_BUTTON_H__ */

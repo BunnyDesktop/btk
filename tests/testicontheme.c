@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 #include <stdlib.h>
 #include <string.h>
 #include <locale.h>
@@ -40,10 +40,10 @@ usage (void)
 int
 main (int argc, char *argv[])
 {
-  GtkIconTheme *icon_theme;
-  GtkIconInfo *icon_info;
-  GdkRectangle embedded_rect;
-  GdkPoint *attach_points;
+  BtkIconTheme *icon_theme;
+  BtkIconInfo *icon_info;
+  BdkRectangle embedded_rect;
+  BdkPoint *attach_points;
   int n_attach_points;
   const gchar *display_name;
   char *context;
@@ -52,7 +52,7 @@ main (int argc, char *argv[])
   int size = 48;
   int i;
   
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   if (argc < 3)
     {
@@ -62,16 +62,16 @@ main (int argc, char *argv[])
 
   themename = argv[2];
   
-  icon_theme = gtk_icon_theme_new ();
+  icon_theme = btk_icon_theme_new ();
   
-  gtk_icon_theme_set_custom_theme (icon_theme, themename);
+  btk_icon_theme_set_custom_theme (icon_theme, themename);
 
   if (strcmp (argv[1], "display") == 0)
     {
       GError *error;
-      GdkPixbuf *pixbuf;
-      GtkWidget *window, *image;
-      GtkIconSize size;
+      BdkPixbuf *pixbuf;
+      BtkWidget *window, *image;
+      BtkIconSize size;
 
       if (argc < 4)
 	{
@@ -83,27 +83,27 @@ main (int argc, char *argv[])
       if (argc >= 5)
 	size = atoi (argv[4]);
       else 
-	size = GTK_ICON_SIZE_BUTTON;
+	size = BTK_ICON_SIZE_BUTTON;
 
       error = NULL;
-      pixbuf = gtk_icon_theme_load_icon (icon_theme, argv[3], size,
-                                         GTK_ICON_LOOKUP_USE_BUILTIN, &error);
+      pixbuf = btk_icon_theme_load_icon (icon_theme, argv[3], size,
+                                         BTK_ICON_LOOKUP_USE_BUILTIN, &error);
       if (!pixbuf)
         {
           g_print ("%s\n", error->message);
           return 1;
         }
 
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      image = gtk_image_new ();
-      gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      image = btk_image_new ();
+      btk_image_set_from_pixbuf (BTK_IMAGE (image), pixbuf);
       g_object_unref (pixbuf);
-      gtk_container_add (GTK_CONTAINER (window), image);
+      btk_container_add (BTK_CONTAINER (window), image);
       g_signal_connect (window, "delete-event",
-                        G_CALLBACK (gtk_main_quit), window);
-      gtk_widget_show_all (window);
+                        G_CALLBACK (btk_main_quit), window);
+      btk_widget_show_all (window);
       
-      gtk_main ();
+      btk_main ();
     }
   else if (strcmp (argv[1], "list") == 0)
     {
@@ -112,7 +112,7 @@ main (int argc, char *argv[])
       else
 	context = NULL;
 
-      list = gtk_icon_theme_list_icons (icon_theme,
+      list = btk_icon_theme_list_icons (icon_theme,
 					   context);
       
       while (list)
@@ -123,7 +123,7 @@ main (int argc, char *argv[])
     }
   else if (strcmp (argv[1], "contexts") == 0)
     {
-      list = gtk_icon_theme_list_contexts (icon_theme);
+      list = btk_icon_theme_list_contexts (icon_theme);
       
       while (list)
 	{
@@ -143,20 +143,20 @@ main (int argc, char *argv[])
       if (argc >= 5)
 	size = atoi (argv[4]);
       
-      icon_info = gtk_icon_theme_lookup_icon (icon_theme, argv[3], size, GTK_ICON_LOOKUP_USE_BUILTIN);
+      icon_info = btk_icon_theme_lookup_icon (icon_theme, argv[3], size, BTK_ICON_LOOKUP_USE_BUILTIN);
       g_print ("icon for %s at %dx%d is %s\n", argv[3], size, size,
-	       icon_info ? (gtk_icon_info_get_builtin_pixbuf (icon_info) ? "<builtin>" : gtk_icon_info_get_filename (icon_info)) : "<none>");
+	       icon_info ? (btk_icon_info_get_builtin_pixbuf (icon_info) ? "<builtin>" : btk_icon_info_get_filename (icon_info)) : "<none>");
 
       if (icon_info) 
 	{
-	  if (gtk_icon_info_get_embedded_rect (icon_info, &embedded_rect))
+	  if (btk_icon_info_get_embedded_rect (icon_info, &embedded_rect))
 	    {
 	      g_print ("Embedded rect: %d,%d %dx%d\n",
 		       embedded_rect.x, embedded_rect.y,
 		       embedded_rect.width, embedded_rect.height);
 	    }
 	  
-	  if (gtk_icon_info_get_attach_points (icon_info, &attach_points, &n_attach_points))
+	  if (btk_icon_info_get_attach_points (icon_info, &attach_points, &n_attach_points))
 	    {
 	      g_print ("Attach Points: ");
 	      for (i = 0; i < n_attach_points; i++)
@@ -167,12 +167,12 @@ main (int argc, char *argv[])
 	      g_print ("\n");
 	    }
 	  
-	  display_name = gtk_icon_info_get_display_name (icon_info);
+	  display_name = btk_icon_info_get_display_name (icon_info);
 	  
 	  if (display_name)
 	    g_print ("Display name: %s\n", display_name);
 	  
-	  gtk_icon_info_free (icon_info);
+	  btk_icon_info_free (icon_info);
 	}
     }
   else

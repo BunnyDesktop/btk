@@ -17,14 +17,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #ifndef __PROP_EDITOR_H__
 #define __PROP_EDITOR_H__
 
 G_BEGIN_DECLS
 
-GtkWidget *create_prop_editor (GObject   *object,
+BtkWidget *create_prop_editor (GObject   *object,
 			       GType      type);
 
 G_END_DECLS

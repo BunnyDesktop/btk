@@ -1,6 +1,6 @@
 The .po files in this directory contain only the ui and error 
-messages in the gtk20 domain. See ../po-properties for the 
-property nicks and blurbs in the gtk20-properties domain. 
+messages in the btk20 domain. See ../po-properties for the 
+property nicks and blurbs in the btk20-properties domain. 
 
 All the .po files are now in UTF-8!
 
@@ -9,7 +9,7 @@ For information on editing UTF-8 files on Unix, see
 
 If you just want to convert it back to your native encoding to
 edit and then convert again to UTF-8 to commit, please see the
-scripts in gnome-i18n/UTF-8, for example
+scripts in bunny-i18n/UTF-8, for example
 
   export ENCODING_TO=ISO-8895-15
   utftopo fi.po

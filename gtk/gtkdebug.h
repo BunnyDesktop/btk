@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,62 +18,62 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_DEBUG_H__
-#define __GTK_DEBUG_H__
+#ifndef __BTK_DEBUG_H__
+#define __BTK_DEBUG_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <glib.h>
+#include <bunnylib.h>
 
 G_BEGIN_DECLS
 
 typedef enum {
-  GTK_DEBUG_MISC        = 1 << 0,
-  GTK_DEBUG_PLUGSOCKET  = 1 << 1,
-  GTK_DEBUG_TEXT        = 1 << 2,
-  GTK_DEBUG_TREE        = 1 << 3,
-  GTK_DEBUG_UPDATES     = 1 << 4,
-  GTK_DEBUG_KEYBINDINGS = 1 << 5,
-  GTK_DEBUG_MULTIHEAD   = 1 << 6,
-  GTK_DEBUG_MODULES     = 1 << 7,
-  GTK_DEBUG_GEOMETRY    = 1 << 8,
-  GTK_DEBUG_ICONTHEME   = 1 << 9,
-  GTK_DEBUG_PRINTING	= 1 << 10,
-  GTK_DEBUG_BUILDER	= 1 << 11
-} GtkDebugFlag;
+  BTK_DEBUG_MISC        = 1 << 0,
+  BTK_DEBUG_PLUGSOCKET  = 1 << 1,
+  BTK_DEBUG_TEXT        = 1 << 2,
+  BTK_DEBUG_TREE        = 1 << 3,
+  BTK_DEBUG_UPDATES     = 1 << 4,
+  BTK_DEBUG_KEYBINDINGS = 1 << 5,
+  BTK_DEBUG_MULTIHEAD   = 1 << 6,
+  BTK_DEBUG_MODULES     = 1 << 7,
+  BTK_DEBUG_GEOMETRY    = 1 << 8,
+  BTK_DEBUG_ICONTHEME   = 1 << 9,
+  BTK_DEBUG_PRINTING	= 1 << 10,
+  BTK_DEBUG_BUILDER	= 1 << 11
+} BtkDebugFlag;
 
 #ifdef G_ENABLE_DEBUG
 
-#define GTK_NOTE(type,action)                G_STMT_START { \
-    if (gtk_debug_flags & GTK_DEBUG_##type)                 \
+#define BTK_NOTE(type,action)                G_STMT_START { \
+    if (btk_debug_flags & BTK_DEBUG_##type)                 \
        { action; };                          } G_STMT_END
 
 #else /* !G_ENABLE_DEBUG */
 
-#define GTK_NOTE(type, action)
+#define BTK_NOTE(type, action)
 
 #endif /* G_ENABLE_DEBUG */
 
 #ifdef G_OS_WIN32
-#  ifdef GTK_COMPILATION
-#    define GTKVAR extern __declspec(dllexport)
+#  ifdef BTK_COMPILATION
+#    define BTKVAR extern __declspec(dllexport)
 #  else
-#    define GTKVAR extern __declspec(dllimport)
+#    define BTKVAR extern __declspec(dllimport)
 #  endif
 #else
-#  define GTKVAR extern
+#  define BTKVAR extern
 #endif
 
-GTKVAR guint gtk_debug_flags;
+BTKVAR guint btk_debug_flags;
 
 G_END_DECLS
 
-#endif /* __GTK_DEBUG_H__ */
+#endif /* __BTK_DEBUG_H__ */

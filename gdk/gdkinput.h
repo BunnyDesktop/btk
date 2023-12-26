@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,175 +18,175 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_INPUT_H__
-#define __GDK_INPUT_H__
+#ifndef __BDK_INPUT_H__
+#define __BDK_INPUT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
-#define GDK_TYPE_DEVICE              (gdk_device_get_type ())
-#define GDK_DEVICE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DEVICE, GdkDevice))
-#define GDK_DEVICE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DEVICE, GdkDeviceClass))
-#define GDK_IS_DEVICE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DEVICE))
-#define GDK_IS_DEVICE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DEVICE))
-#define GDK_DEVICE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DEVICE, GdkDeviceClass))
+#define BDK_TYPE_DEVICE              (bdk_device_get_type ())
+#define BDK_DEVICE(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DEVICE, BdkDevice))
+#define BDK_DEVICE_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DEVICE, BdkDeviceClass))
+#define BDK_IS_DEVICE(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DEVICE))
+#define BDK_IS_DEVICE_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DEVICE))
+#define BDK_DEVICE_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DEVICE, BdkDeviceClass))
 
-typedef struct _GdkDeviceKey	    GdkDeviceKey;
-typedef struct _GdkDeviceAxis	    GdkDeviceAxis;
-typedef struct _GdkDevice	    GdkDevice;
-typedef struct _GdkDeviceClass	    GdkDeviceClass;
-typedef struct _GdkTimeCoord	    GdkTimeCoord;
-
-typedef enum
-{
-  GDK_EXTENSION_EVENTS_NONE,
-  GDK_EXTENSION_EVENTS_ALL,
-  GDK_EXTENSION_EVENTS_CURSOR
-} GdkExtensionMode;
+typedef struct _BdkDeviceKey	    BdkDeviceKey;
+typedef struct _BdkDeviceAxis	    BdkDeviceAxis;
+typedef struct _BdkDevice	    BdkDevice;
+typedef struct _BdkDeviceClass	    BdkDeviceClass;
+typedef struct _BdkTimeCoord	    BdkTimeCoord;
 
 typedef enum
 {
-  GDK_SOURCE_MOUSE,
-  GDK_SOURCE_PEN,
-  GDK_SOURCE_ERASER,
-  GDK_SOURCE_CURSOR
-} GdkInputSource;
+  BDK_EXTENSION_EVENTS_NONE,
+  BDK_EXTENSION_EVENTS_ALL,
+  BDK_EXTENSION_EVENTS_CURSOR
+} BdkExtensionMode;
 
 typedef enum
 {
-  GDK_MODE_DISABLED,
-  GDK_MODE_SCREEN,
-  GDK_MODE_WINDOW
-} GdkInputMode;
+  BDK_SOURCE_MOUSE,
+  BDK_SOURCE_PEN,
+  BDK_SOURCE_ERASER,
+  BDK_SOURCE_CURSOR
+} BdkInputSource;
 
 typedef enum
 {
-  GDK_AXIS_IGNORE,
-  GDK_AXIS_X,
-  GDK_AXIS_Y,
-  GDK_AXIS_PRESSURE,
-  GDK_AXIS_XTILT,
-  GDK_AXIS_YTILT,
-  GDK_AXIS_WHEEL,
-  GDK_AXIS_LAST
-} GdkAxisUse;
+  BDK_MODE_DISABLED,
+  BDK_MODE_SCREEN,
+  BDK_MODE_WINDOW
+} BdkInputMode;
 
-struct _GdkDeviceKey
+typedef enum
+{
+  BDK_AXIS_IGNORE,
+  BDK_AXIS_X,
+  BDK_AXIS_Y,
+  BDK_AXIS_PRESSURE,
+  BDK_AXIS_XTILT,
+  BDK_AXIS_YTILT,
+  BDK_AXIS_WHEEL,
+  BDK_AXIS_LAST
+} BdkAxisUse;
+
+struct _BdkDeviceKey
 {
   guint keyval;
-  GdkModifierType modifiers;
+  BdkModifierType modifiers;
 };
 
-struct _GdkDeviceAxis
+struct _BdkDeviceAxis
 {
-  GdkAxisUse use;
+  BdkAxisUse use;
   gdouble    min;
   gdouble    max;
 };
 
-struct _GdkDevice
+struct _BdkDevice
 {
   GObject parent_instance;
   /* All fields are read-only */
 	  
   gchar *GSEAL (name);
-  GdkInputSource GSEAL (source);
-  GdkInputMode GSEAL (mode);
+  BdkInputSource GSEAL (source);
+  BdkInputMode GSEAL (mode);
   gboolean GSEAL (has_cursor);   /* TRUE if the X pointer follows device motion */
 	  
   gint GSEAL (num_axes);
-  GdkDeviceAxis *GSEAL (axes);
+  BdkDeviceAxis *GSEAL (axes);
 	  
   gint GSEAL (num_keys);
-  GdkDeviceKey *GSEAL (keys);
+  BdkDeviceKey *GSEAL (keys);
 };
 
 /* We don't allocate each coordinate this big, but we use it to
  * be ANSI compliant and avoid accessing past the defined limits.
  */
-#define GDK_MAX_TIMECOORD_AXES 128
+#define BDK_MAX_TIMECOORD_AXES 128
 
-struct _GdkTimeCoord
+struct _BdkTimeCoord
 {
   guint32 time;
-  gdouble axes[GDK_MAX_TIMECOORD_AXES];
+  gdouble axes[BDK_MAX_TIMECOORD_AXES];
 };
 
-GType          gdk_device_get_type      (void) G_GNUC_CONST;
+GType          bdk_device_get_type      (void) G_GNUC_CONST;
 
-#ifndef GDK_MULTIHEAD_SAFE
-/* Returns a list of GdkDevice * */	  
-GList *        gdk_devices_list              (void);
-#endif /* GDK_MULTIHEAD_SAFE */
+#ifndef BDK_MULTIHEAD_SAFE
+/* Returns a list of BdkDevice * */	  
+GList *        bdk_devices_list              (void);
+#endif /* BDK_MULTIHEAD_SAFE */
 
-const gchar *         gdk_device_get_name       (GdkDevice *device);
-GdkInputSource        gdk_device_get_source     (GdkDevice *device);
-GdkInputMode          gdk_device_get_mode       (GdkDevice *device);
-gboolean              gdk_device_get_has_cursor (GdkDevice *device);
+const gchar *         bdk_device_get_name       (BdkDevice *device);
+BdkInputSource        bdk_device_get_source     (BdkDevice *device);
+BdkInputMode          bdk_device_get_mode       (BdkDevice *device);
+gboolean              bdk_device_get_has_cursor (BdkDevice *device);
 
-void                  gdk_device_get_key        (GdkDevice       *device,
+void                  bdk_device_get_key        (BdkDevice       *device,
                                                  guint            index,
                                                  guint           *keyval,
-                                                 GdkModifierType *modifiers);
-GdkAxisUse            gdk_device_get_axis_use   (GdkDevice       *device,
+                                                 BdkModifierType *modifiers);
+BdkAxisUse            bdk_device_get_axis_use   (BdkDevice       *device,
                                                  guint            index);
-gint                  gdk_device_get_n_keys     (GdkDevice       *device);
-gint                  gdk_device_get_n_axes     (GdkDevice       *device);
+gint                  bdk_device_get_n_keys     (BdkDevice       *device);
+gint                  bdk_device_get_n_axes     (BdkDevice       *device);
 
 /* Functions to configure a device */
-void           gdk_device_set_source    (GdkDevice      *device,
-					 GdkInputSource  source);
+void           bdk_device_set_source    (BdkDevice      *device,
+					 BdkInputSource  source);
 	  
-gboolean       gdk_device_set_mode      (GdkDevice      *device,
-					 GdkInputMode    mode);
+gboolean       bdk_device_set_mode      (BdkDevice      *device,
+					 BdkInputMode    mode);
 
-void           gdk_device_set_key       (GdkDevice      *device,
+void           bdk_device_set_key       (BdkDevice      *device,
 					 guint           index_,
 					 guint           keyval,
-					 GdkModifierType modifiers);
+					 BdkModifierType modifiers);
 
-void     gdk_device_set_axis_use (GdkDevice         *device,
+void     bdk_device_set_axis_use (BdkDevice         *device,
 				  guint              index_,
-				  GdkAxisUse         use);
+				  BdkAxisUse         use);
 
-void     gdk_device_get_state    (GdkDevice         *device,
-				  GdkWindow         *window,
+void     bdk_device_get_state    (BdkDevice         *device,
+				  BdkWindow         *window,
 				  gdouble           *axes,
-				  GdkModifierType   *mask);
+				  BdkModifierType   *mask);
 
-gboolean gdk_device_get_history  (GdkDevice         *device,
-				  GdkWindow         *window,
+gboolean bdk_device_get_history  (BdkDevice         *device,
+				  BdkWindow         *window,
 				  guint32            start,
 				  guint32            stop,
-				  GdkTimeCoord    ***events,
+				  BdkTimeCoord    ***events,
 				  gint              *n_events);
 
-void     gdk_device_free_history (GdkTimeCoord     **events,
+void     bdk_device_free_history (BdkTimeCoord     **events,
 				  gint               n_events);
-gboolean gdk_device_get_axis     (GdkDevice         *device,
+gboolean bdk_device_get_axis     (BdkDevice         *device,
 				  gdouble           *axes,
-				  GdkAxisUse         use,
+				  BdkAxisUse         use,
 				  gdouble           *value);
 
-void gdk_input_set_extension_events (GdkWindow        *window,
+void bdk_input_set_extension_events (BdkWindow        *window,
 				     gint              mask,
-				     GdkExtensionMode  mode);
+				     BdkExtensionMode  mode);
 
-#ifndef GDK_MULTIHEAD_SAFE
-GdkDevice *gdk_device_get_core_pointer (void);
+#ifndef BDK_MULTIHEAD_SAFE
+BdkDevice *bdk_device_get_core_pointer (void);
 #endif
  
 G_END_DECLS
 
-#endif /* __GDK_INPUT_H__ */
+#endif /* __BDK_INPUT_H__ */

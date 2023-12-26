@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -31,32 +31,32 @@
  */
 
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkalias.h"
+#include "bdkalias.h"
 
 
-GdkDisplayDFB *_gdk_display = NULL;
-GdkScreen     *_gdk_screen  = NULL;
+BdkDisplayDFB *_bdk_display = NULL;
+BdkScreen     *_bdk_screen  = NULL;
 
-gboolean gdk_directfb_apply_focus_opacity = FALSE;
-gboolean gdk_directfb_enable_color_keying = FALSE;
-DFBColor gdk_directfb_bg_color            = { 0, 0, 0, 0 };
-DFBColor gdk_directfb_bg_color_key        = { 0, 0, 0, 0 };
-gboolean gdk_directfb_monochrome_fonts    = FALSE;
+gboolean bdk_directfb_apply_focus_opacity = FALSE;
+gboolean bdk_directfb_enable_color_keying = FALSE;
+DFBColor bdk_directfb_bg_color            = { 0, 0, 0, 0 };
+DFBColor bdk_directfb_bg_color_key        = { 0, 0, 0, 0 };
+gboolean bdk_directfb_monochrome_fonts    = FALSE;
 
-GdkWindow    *_gdk_directfb_pointer_grab_window        = NULL;
-GdkWindow    *_gdk_directfb_keyboard_grab_window       = NULL;
-GdkWindow    *_gdk_directfb_pointer_grab_confine       = NULL;
-gboolean      _gdk_directfb_pointer_grab_owner_events  = FALSE;
-gboolean      _gdk_directfb_keyboard_grab_owner_events = FALSE;
-GdkEventMask  _gdk_directfb_pointer_grab_events        = 0;
-GdkEventMask  _gdk_directfb_keyboard_grab_events       = 0;
-GdkCursor    *_gdk_directfb_pointer_grab_cursor        = NULL;
+BdkWindow    *_bdk_directfb_pointer_grab_window        = NULL;
+BdkWindow    *_bdk_directfb_keyboard_grab_window       = NULL;
+BdkWindow    *_bdk_directfb_pointer_grab_confine       = NULL;
+gboolean      _bdk_directfb_pointer_grab_owner_events  = FALSE;
+gboolean      _bdk_directfb_keyboard_grab_owner_events = FALSE;
+BdkEventMask  _bdk_directfb_pointer_grab_events        = 0;
+BdkEventMask  _bdk_directfb_keyboard_grab_events       = 0;
+BdkCursor    *_bdk_directfb_pointer_grab_cursor        = NULL;
 
-GdkAtom _gdk_selection_property = 0;
+BdkAtom _bdk_selection_property = 0;
 
-#include "gdkaliasdef.c"
+#include "bdkaliasdef.c"

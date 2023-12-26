@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -34,21 +34,21 @@
 
 #include <string.h>
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkproperty.h"
-#include "gdkselection.h"
-#include "gdkprivate.h"
-#include "gdkalias.h"
+#include "bdkproperty.h"
+#include "bdkselection.h"
+#include "bdkprivate.h"
+#include "bdkalias.h"
 
 
 typedef struct _OwnerInfo OwnerInfo;
 
 struct _OwnerInfo
 {
-  GdkAtom    selection;
-  GdkWindow *owner;
+  BdkAtom    selection;
+  BdkWindow *owner;
 };
 
 GSList *owner_list = NULL;
@@ -59,7 +59,7 @@ GSList *owner_list = NULL;
  * low code solution
  */
 void
-_gdk_selection_window_destroyed (GdkWindow *window)
+_bdk_selection_window_destroyed (BdkWindow *window)
 {
   GSList *tmp_list = owner_list;
 
@@ -78,9 +78,9 @@ _gdk_selection_window_destroyed (GdkWindow *window)
 }
 
 gint
-gdk_selection_owner_set_for_display (GdkDisplay *display,
-                                     GdkWindow  *owner,
-                                     GdkAtom     selection,
+bdk_selection_owner_set_for_display (BdkDisplay *display,
+                                     BdkWindow  *owner,
+                                     BdkAtom     selection,
                                      guint32     time,
                                      gint        send_event)
 {
@@ -112,9 +112,9 @@ gdk_selection_owner_set_for_display (GdkDisplay *display,
   return TRUE;
 }
 
-GdkWindow *
-gdk_selection_owner_get_for_display (GdkDisplay *display,
-                                     GdkAtom     selection)
+BdkWindow *
+bdk_selection_owner_get_for_display (BdkDisplay *display,
+                                     BdkAtom     selection)
 {
   OwnerInfo *info;
   GSList    *tmp_list;
@@ -133,29 +133,29 @@ gdk_selection_owner_get_for_display (GdkDisplay *display,
 }
 
 void
-gdk_selection_convert (GdkWindow *requestor,
-		       GdkAtom    selection,
-		       GdkAtom    target,
+bdk_selection_convert (BdkWindow *requestor,
+		       BdkAtom    selection,
+		       BdkAtom    target,
 		       guint32    time)
 {
-  GdkEvent  *event;
-  GdkWindow *owner;
-  GdkWindow *event_window;
+  BdkEvent  *event;
+  BdkWindow *owner;
+  BdkWindow *event_window;
 
-  owner = gdk_selection_owner_get (selection);
+  owner = bdk_selection_owner_get (selection);
 
   if (owner)
     {
-      event_window = gdk_directfb_other_event_window (owner,
-                                                      GDK_SELECTION_REQUEST);
+      event_window = bdk_directfb_other_event_window (owner,
+                                                      BDK_SELECTION_REQUEST);
       if (event_window)
 	{
-	  event = gdk_directfb_event_make (event_window,
-                                           GDK_SELECTION_REQUEST);
-	  event->selection.requestor = GDK_WINDOW_DFB_ID (requestor);
+	  event = bdk_directfb_event_make (event_window,
+                                           BDK_SELECTION_REQUEST);
+	  event->selection.requestor = BDK_WINDOW_DFB_ID (requestor);
 	  event->selection.selection = selection;
 	  event->selection.target    = target;
-	  event->selection.property  = _gdk_selection_property;
+	  event->selection.property  = _bdk_selection_property;
 	}
     }
   else
@@ -163,30 +163,30 @@ gdk_selection_convert (GdkWindow *requestor,
       /* If no owner for the specified selection exists, the X server
        * generates a SelectionNotify event to the requestor with property None.
        */
-      gdk_selection_send_notify (GDK_WINDOW_DFB_ID (requestor),
+      bdk_selection_send_notify (BDK_WINDOW_DFB_ID (requestor),
 				 selection,
 				 target,
-				 GDK_NONE,
+				 BDK_NONE,
 				 0);
     }
 }
 
 gint
-gdk_selection_property_get (GdkWindow  *requestor,
+bdk_selection_property_get (BdkWindow  *requestor,
 			    guchar    **data,
-			    GdkAtom    *ret_type,
+			    BdkAtom    *ret_type,
 			    gint       *ret_format)
 {
   guchar *t = NULL;
-  GdkAtom prop_type;
+  BdkAtom prop_type;
   gint prop_format;
   gint prop_len;
 
   g_return_val_if_fail (requestor != NULL, 0);
-  g_return_val_if_fail (GDK_IS_WINDOW (requestor), 0);
+  g_return_val_if_fail (BDK_IS_WINDOW (requestor), 0);
 
-  if (!gdk_property_get (requestor,
-			 _gdk_selection_property,
+  if (!bdk_property_get (requestor,
+			 _bdk_selection_property,
 			 0/*AnyPropertyType?*/,
 			 0, 0,
 			 FALSE,
@@ -202,8 +202,8 @@ gdk_selection_property_get (GdkWindow  *requestor,
   if (ret_format)
     *ret_format = prop_format;
 
-  if (!gdk_property_get (requestor,
-			 _gdk_selection_property,
+  if (!bdk_property_get (requestor,
+			 _bdk_selection_property,
 			 0/*AnyPropertyType?*/,
 			 0, prop_len + 1,
 			 FALSE,
@@ -221,73 +221,73 @@ gdk_selection_property_get (GdkWindow  *requestor,
 
 
 void
-gdk_selection_send_notify_for_display (GdkDisplay *display,
+bdk_selection_send_notify_for_display (BdkDisplay *display,
                                        guint32     requestor,
-                                       GdkAtom     selection,
-                                       GdkAtom     target,
-                                       GdkAtom     property,
+                                       BdkAtom     selection,
+                                       BdkAtom     target,
+                                       BdkAtom     property,
                                        guint32     time)
 {
-  GdkEvent  *event;
-  GdkWindow *event_window;
+  BdkEvent  *event;
+  BdkWindow *event_window;
 
-  event_window = gdk_window_lookup ((GdkNativeWindow) requestor);
+  event_window = bdk_window_lookup ((BdkNativeWindow) requestor);
 
   if (!event_window)
     return;
 
-  event_window = gdk_directfb_other_event_window (event_window,
-                                                  GDK_SELECTION_NOTIFY);
+  event_window = bdk_directfb_other_event_window (event_window,
+                                                  BDK_SELECTION_NOTIFY);
 
   if (event_window)
     {
-      event = gdk_directfb_event_make (event_window, GDK_SELECTION_NOTIFY);
+      event = bdk_directfb_event_make (event_window, BDK_SELECTION_NOTIFY);
       event->selection.selection = selection;
       event->selection.target = target;
       event->selection.property = property;
-      event->selection.requestor = (GdkNativeWindow) requestor;
+      event->selection.requestor = (BdkNativeWindow) requestor;
     }
 }
 
 gint
-gdk_text_property_to_text_list_for_display (GdkDisplay      *display,
-                                            GdkAtom          encoding,
+bdk_text_property_to_text_list_for_display (BdkDisplay      *display,
+                                            BdkAtom          encoding,
                                             gint             format,
                                             const guchar    *text,
                                             gint             length,
                                             gchar         ***list)
 {
-  g_warning ("gdk_text_property_to_text_list() not implemented\n");
+  g_warning ("bdk_text_property_to_text_list() not implemented\n");
   return 0;
 }
 
 void
-gdk_free_text_list (gchar **list)
+bdk_free_text_list (gchar **list)
 {
   g_return_if_fail (list != NULL);
-  g_warning ("gdk_free_text_list() not implemented\n");
+  g_warning ("bdk_free_text_list() not implemented\n");
 }
 
 gint
-gdk_string_to_compound_text_for_display (GdkDisplay   *display,
+bdk_string_to_compound_text_for_display (BdkDisplay   *display,
                                          const gchar  *str,
-                                         GdkAtom      *encoding,
+                                         BdkAtom      *encoding,
                                          gint         *format,
                                          guchar      **ctext,
                                          gint         *length)
 {
-  g_warning ("gdk_string_to_compound_text() not implemented\n");
+  g_warning ("bdk_string_to_compound_text() not implemented\n");
   return 0;
 }
 
 void
-gdk_free_compound_text (guchar *ctext)
+bdk_free_compound_text (guchar *ctext)
 {
-  g_warning ("gdk_free_compound_text() not implemented\n");
+  g_warning ("bdk_free_compound_text() not implemented\n");
 }
 
 /**
- * gdk_utf8_to_string_target:
+ * bdk_utf8_to_string_target:
  * @str: a UTF-8 string
  *
  * Convert an UTF-8 string into the best possible representation
@@ -300,14 +300,14 @@ gdk_free_compound_text (guchar *ctext)
  *               any properly formed UTF-8 string.)
  **/
 gchar *
-gdk_utf8_to_string_target (const gchar *str)
+bdk_utf8_to_string_target (const gchar *str)
 {
-  g_warning ("gdk_utf8_to_string_target() not implemented\n");
+  g_warning ("bdk_utf8_to_string_target() not implemented\n");
   return 0;
 }
 
 /**
- * gdk_utf8_to_compound_text:
+ * bdk_utf8_to_compound_text:
  * @str:      a UTF-8 string
  * @encoding: location to store resulting encoding
  * @format:   location to store format of the result
@@ -321,14 +321,14 @@ gdk_utf8_to_string_target (const gchar *str)
  *               false.
  **/
 gboolean
-gdk_utf8_to_compound_text_for_display (GdkDisplay   *display,
+bdk_utf8_to_compound_text_for_display (BdkDisplay   *display,
                                        const gchar  *str,
-                                       GdkAtom      *encoding,
+                                       BdkAtom      *encoding,
                                        gint         *format,
                                        guchar      **ctext,
                                        gint         *length)
 {
-  g_warning ("gdk_utf8_to_compound_text() not implemented\n");
+  g_warning ("bdk_utf8_to_compound_text() not implemented\n");
   return 0;
 }
 
@@ -403,7 +403,7 @@ make_list (const gchar  *text,
 
 
 /**
- * gdk_text_property_to_utf8_list:
+ * bdk_text_property_to_utf8_list:
  * @encoding: an atom representing the encoding of the text
  * @format:   the format of the property
  * @text:     the text to convert
@@ -418,8 +418,8 @@ make_list (const gchar  *text,
  *               list.
  **/
 gint
-gdk_text_property_to_utf8_list_for_display (GdkDisplay     *display,
-                                            GdkAtom         encoding,
+bdk_text_property_to_utf8_list_for_display (BdkDisplay     *display,
+                                            BdkAtom         encoding,
                                             gint            format,
                                             const guchar   *text,
                                             gint            length,
@@ -428,11 +428,11 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay     *display,
   g_return_val_if_fail (text != NULL, 0);
   g_return_val_if_fail (length >= 0, 0);
 
-  if (encoding == GDK_TARGET_STRING)
+  if (encoding == BDK_TARGET_STRING)
     {
       return make_list ((gchar *)text, length, TRUE, list);
     }
-  else if (encoding == gdk_atom_intern ("UTF8_STRING", FALSE))
+  else if (encoding == bdk_atom_intern ("UTF8_STRING", FALSE))
     {
       return make_list ((gchar *)text, length, FALSE, list);
     }
@@ -448,7 +448,7 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay     *display,
 
       /* Probably COMPOUND text, we fall back to Xlib routines
        */
-      local_count = gdk_text_property_to_text_list (encoding,
+      local_count = bdk_text_property_to_text_list (encoding,
 						    format,
 						    text,
 						    length,
@@ -487,12 +487,12 @@ gdk_text_property_to_utf8_list_for_display (GdkDisplay     *display,
 	    }
 	}
 
-      gdk_free_text_list (local_list);
+      bdk_free_text_list (local_list);
       (*list)[count] = NULL;
 
       return count;
     }
 }
 
-#define __GDK_SELECTION_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_SELECTION_X11_C__
+#include "bdkaliasdef.c"

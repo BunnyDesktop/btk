@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2001 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
@@ -29,41 +29,41 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "gtkhscale.h"
-#include "gtkorientable.h"
-#include "gtkalias.h"
+#include "btkhscale.h"
+#include "btkorientable.h"
+#include "btkalias.h"
 
 
-G_DEFINE_TYPE (GtkHScale, gtk_hscale, GTK_TYPE_SCALE)
+G_DEFINE_TYPE (BtkHScale, btk_hscale, BTK_TYPE_SCALE)
 
 static void
-gtk_hscale_class_init (GtkHScaleClass *class)
+btk_hscale_class_init (BtkHScaleClass *class)
 {
-  GtkRangeClass *range_class = GTK_RANGE_CLASS (class);
+  BtkRangeClass *range_class = BTK_RANGE_CLASS (class);
 
   range_class->slider_detail = "hscale";
 }
 
 static void
-gtk_hscale_init (GtkHScale *hscale)
+btk_hscale_init (BtkHScale *hscale)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hscale),
-                                  GTK_ORIENTATION_HORIZONTAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hscale),
+                                  BTK_ORIENTATION_HORIZONTAL);
 }
 
-GtkWidget *
-gtk_hscale_new (GtkAdjustment *adjustment)
+BtkWidget *
+btk_hscale_new (BtkAdjustment *adjustment)
 {
-  g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
+  g_return_val_if_fail (adjustment == NULL || BTK_IS_ADJUSTMENT (adjustment),
                         NULL);
 
-  return g_object_new (GTK_TYPE_HSCALE,
+  return g_object_new (BTK_TYPE_HSCALE,
                        "adjustment", adjustment,
                        NULL);
 }
 
 /**
- * gtk_hscale_new_with_range:
+ * btk_hscale_new_with_range:
  * @min: minimum value
  * @max: maximum value
  * @step: step increment (tick size) used with keyboard shortcuts
@@ -75,23 +75,23 @@ gtk_hscale_new (GtkAdjustment *adjustment)
  *
  * Note that the way in which the precision is derived works best if @step
  * is a power of ten. If the resulting precision is not suitable for your
- * needs, use gtk_scale_set_digits() to correct it.
+ * needs, use btk_scale_set_digits() to correct it.
  *
- * Return value: a new #GtkHScale
+ * Return value: a new #BtkHScale
  **/
-GtkWidget *
-gtk_hscale_new_with_range (gdouble min,
+BtkWidget *
+btk_hscale_new_with_range (gdouble min,
                            gdouble max,
                            gdouble step)
 {
-  GtkObject *adj;
-  GtkScale *scale;
+  BtkObject *adj;
+  BtkScale *scale;
   gint digits;
 
   g_return_val_if_fail (min < max, NULL);
   g_return_val_if_fail (step != 0.0, NULL);
 
-  adj = gtk_adjustment_new (min, min, max, step, 10 * step, 0);
+  adj = btk_adjustment_new (min, min, max, step, 10 * step, 0);
 
   if (fabs (step) >= 1.0 || step == 0.0)
     {
@@ -104,13 +104,13 @@ gtk_hscale_new_with_range (gdouble min,
         digits = 5;
     }
 
-  scale = g_object_new (GTK_TYPE_HSCALE,
+  scale = g_object_new (BTK_TYPE_HSCALE,
                         "adjustment", adj,
                         "digits", digits,
                         NULL);
 
-  return GTK_WIDGET (scale);
+  return BTK_WIDGET (scale);
 }
 
-#define __GTK_HSCALE_C__
-#include "gtkaliasdef.c"
+#define __BTK_HSCALE_C__
+#include "btkaliasdef.c"

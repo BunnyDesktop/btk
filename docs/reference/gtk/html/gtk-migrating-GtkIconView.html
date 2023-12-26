@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Migrating from GnomeIconList to GtkIconView: GTK+ 2 Reference Manual</title>
+<title>Migrating from BunnyIconList to BtkIconView: BTK+ 2 Reference Manual</title>
 <meta name="generator" content="DocBook XSL Stylesheets Vsnapshot">
-<link rel="home" href="index.html" title="GTK+ 2 Reference Manual">
-<link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of GTK+">
-<link rel="prev" href="new-features-GtkComboBox.html" title="New features">
-<link rel="next" href="gtk-migrating-GtkAboutDialog.html" title="Migrating from GnomeAbout to GtkAboutDialog">
-<meta name="generator" content="GTK-Doc V1.33.0 (XML mode)">
+<link rel="home" href="index.html" title="BTK+ 2 Reference Manual">
+<link rel="up" href="migrating.html" title="Part IV. Migrating from Previous Versions of BTK+">
+<link rel="prev" href="new-features-BtkComboBox.html" title="New features">
+<link rel="next" href="btk-migrating-BtkAboutDialog.html" title="Migrating from BunnyAbout to BtkAboutDialog">
+<meta name="generator" content="BTK-Doc V1.33.0 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,31 +16,31 @@
 <td width="100%" align="left" class="shortcuts"></td>
 <td><a accesskey="h" href="index.html"><img src="home.png" width="16" height="16" border="0" alt="Home"></a></td>
 <td><a accesskey="u" href="migrating.html"><img src="up.png" width="16" height="16" border="0" alt="Up"></a></td>
-<td><a accesskey="p" href="new-features-GtkComboBox.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
-<td><a accesskey="n" href="gtk-migrating-GtkAboutDialog.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
+<td><a accesskey="p" href="new-features-BtkComboBox.html"><img src="left.png" width="16" height="16" border="0" alt="Prev"></a></td>
+<td><a accesskey="n" href="btk-migrating-BtkAboutDialog.html"><img src="right.png" width="16" height="16" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="chapter">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="gtk-migrating-GtkIconView"></a>Migrating from GnomeIconList to GtkIconView</h2></div></div></div>
+<a name="btk-migrating-BtkIconView"></a>Migrating from BunnyIconList to BtkIconView</h2></div></div></div>
 <p>
-    Since version 2.6, GTK+ provides the <a class="link" href="GtkIconView.html" title="GtkIconView"><span class="type">GtkIconView</span></a> widget. It is similar in 
-    functionality to the <span class="structname">GnomeIconList</span> widget in the 
-    libgnomeui library, both widgets provide a way to lay out named icons in 
-    a grid. The distinctive feature of the GTK+ widget is that it follows the 
+    Since version 2.6, BTK+ provides the <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> widget. It is similar in 
+    functionality to the <span class="structname">BunnyIconList</span> widget in the 
+    libbunnyui library, both widgets provide a way to lay out named icons in 
+    a grid. The distinctive feature of the BTK+ widget is that it follows the 
     model-view pattern, allowing it to share the actual data (i.e. the names 
     and images of the icons) with other views.
   </p>
 <p>
-    <a class="link" href="GtkIconView.html" title="GtkIconView"><span class="type">GtkIconView</span></a> currently doesn't support some features found in 
-    <span class="structname">GnomeIconList</span>. Icons can not be positioned freely, 
+    <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> currently doesn't support some features found in 
+    <span class="structname">BunnyIconList</span>. Icons can not be positioned freely, 
     the spacing is not customizable, and it is not possible to edit the names of 
     icons. 
   </p>
 <p>
-    To convert an application that uses <span class="structname">GnomeIconList</span> 
-    to <a class="link" href="GtkIconView.html" title="GtkIconView"><span class="type">GtkIconView</span></a>, the first step is to organize your data in a <a class="link" href="GtkTreeModel.html" title="GtkTreeModel"><span class="type">GtkTreeModel</span></a>. 
-    <span class="structname">GnomeIconList</span> lets you directly insert data with 
-    <code class="function">gnome_icon_list_insert()</code> and <code class="function">gnome_icon_list_insert_pixbuf()</code> and their
+    To convert an application that uses <span class="structname">BunnyIconList</span> 
+    to <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a>, the first step is to organize your data in a <a class="link" href="BtkTreeModel.html" title="BtkTreeModel"><span class="type">BtkTreeModel</span></a>. 
+    <span class="structname">BunnyIconList</span> lets you directly insert data with 
+    <code class="function">bunny_icon_list_insert()</code> and <code class="function">bunny_icon_list_insert_pixbuf()</code> and their
     append variants. So, if you previously had a function to fill your icon 
     list similar to this one:
     </p>
@@ -57,10 +57,10 @@
 7
 8</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="kt">void</span> 
-<span class="nf">fill_icon_list</span> <span class="p">(</span><span class="n">GnomeIconList</span> <span class="o">*</span><span class="n">icon_list</span><span class="p">)</span>
+<span class="nf">fill_icon_list</span> <span class="p">(</span><span class="n">BunnyIconList</span> <span class="o">*</span><span class="n">icon_list</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">gnome_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">);</span>
-  <span class="n">gnome_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">);</span>
+  <span class="n">bunny_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">);</span>
+  <span class="n">bunny_icon_list_append</span> <span class="p">(</span><span class="n">icon_list</span><span class="p">,</span> <span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">);</span>
 
   <span class="cm">/* more icons ... */</span> 
 <span class="p">}</span></pre></td>
@@ -137,19 +137,19 @@
 <span class="p">};</span>
  
 <span class="kt">void</span> 
-<span class="nf">fill_model</span> <span class="p">(</span><span class="n">GtkListStore</span> <span class="o">*</span><span class="n">store</span><span class="p">)</span>
+<span class="nf">fill_model</span> <span class="p">(</span><span class="n">BtkListStore</span> <span class="o">*</span><span class="n">store</span><span class="p">)</span>
 <span class="p">{</span>
-  <span class="n">GtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
-  <span class="n">GdkPixbuf</span> <span class="o">*</span><span class="n">pixbuf</span><span class="p">;</span>
+  <span class="n">BtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
+  <span class="n">BdkPixbuf</span> <span class="o">*</span><span class="n">pixbuf</span><span class="p">;</span>
 
-  <span class="n">gtk_list_store_append</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">);</span>
-  <span class="n">pixbuf</span> <span class="o">=</span> <span class="n">gdk_pixbuf_new_from_file</span> <span class="p">(</span><span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-  <span class="n">gtk_list_store_set</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="n">PIXBUF_COLUMN</span><span class="p">,</span> <span class="n">pixbuf</span><span class="p">,</span> <span class="n">TEXT_COLUMN</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="n">btk_list_store_append</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">);</span>
+  <span class="n">pixbuf</span> <span class="o">=</span> <span class="n">bdk_pixbuf_new_from_file</span> <span class="p">(</span><span class="s">&quot;file1.png&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">btk_list_store_set</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="n">PIXBUF_COLUMN</span><span class="p">,</span> <span class="n">pixbuf</span><span class="p">,</span> <span class="n">TEXT_COLUMN</span><span class="p">,</span> <span class="s">&quot;Icon 1&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
   <span class="n">g_object_unref</span> <span class="p">(</span><span class="n">pixbuf</span><span class="p">);</span>
 
-  <span class="n">gtk_list_store_append</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">);</span>
-  <span class="n">pixbuf</span> <span class="o">=</span> <span class="n">gdk_pixbuf_new_from_file</span> <span class="p">(</span><span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-  <span class="n">gtk_list_store_set</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="n">PIXBUF_COLUMN</span><span class="p">,</span> <span class="n">pixbuf</span><span class="p">,</span> <span class="n">TEXT_COLUMN</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+  <span class="n">btk_list_store_append</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">);</span>
+  <span class="n">pixbuf</span> <span class="o">=</span> <span class="n">bdk_pixbuf_new_from_file</span> <span class="p">(</span><span class="s">&quot;file2.png&quot;</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+  <span class="n">btk_list_store_set</span> <span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="n">PIXBUF_COLUMN</span><span class="p">,</span> <span class="n">pixbuf</span><span class="p">,</span> <span class="n">TEXT_COLUMN</span><span class="p">,</span> <span class="s">&quot;Icon 2&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
   <span class="n">g_object_unref</span> <span class="p">(</span><span class="n">pixbuf</span><span class="p">);</span>
 
   <span class="cm">/* more icons ... */</span> 
@@ -158,20 +158,20 @@
 <span class="kt">int</span> 
 <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
 <span class="p">{</span>
-  <span class="n">GtkWidget</span> <span class="o">*</span><span class="n">icon_view</span><span class="p">;</span>
-  <span class="n">GtkListStore</span> <span class="o">*</span><span class="n">store</span><span class="p">;</span>
+  <span class="n">BtkWidget</span> <span class="o">*</span><span class="n">icon_view</span><span class="p">;</span>
+  <span class="n">BtkListStore</span> <span class="o">*</span><span class="n">store</span><span class="p">;</span>
 
-  <span class="n">gtk_init</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+  <span class="n">btk_init</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
 
   <span class="cm">/* do other initialization... */</span>
 
-  <span class="cm">/* construct the GtkIconView */</span>
-  <span class="n">icon_view</span> <span class="o">=</span> <span class="n">gtk_icon_view_new</span> <span class="p">();</span>
-  <span class="n">store</span> <span class="o">=</span> <span class="n">gtk_list_store_new</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">GDK_TYPE_PIXBUF</span><span class="p">,</span> <span class="n">G_TYPE_STRING</span><span class="p">,</span> <span class="n">G_TYPE_POINTER</span><span class="p">);</span>
+  <span class="cm">/* construct the BtkIconView */</span>
+  <span class="n">icon_view</span> <span class="o">=</span> <span class="n">btk_icon_view_new</span> <span class="p">();</span>
+  <span class="n">store</span> <span class="o">=</span> <span class="n">btk_list_store_new</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">BDK_TYPE_PIXBUF</span><span class="p">,</span> <span class="n">G_TYPE_STRING</span><span class="p">,</span> <span class="n">G_TYPE_POINTER</span><span class="p">);</span>
 
-  <span class="n">gtk_icon_view_set_pixbuf_column</span> <span class="p">(</span><span class="n">GTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">PIXBUF_COLUMN</span><span class="p">);</span>
-  <span class="n">gtk_icon_view_set_text_column</span> <span class="p">(</span><span class="n">GTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">TEXT_COLUMN</span><span class="p">);</span>
-  <span class="n">gtk_icon_view_set_model</span> <span class="p">(</span><span class="n">GTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">GTK_TREE_MODEL</span> <span class="p">(</span><span class="n">store</span><span class="p">));</span>
+  <span class="n">btk_icon_view_set_pixbuf_column</span> <span class="p">(</span><span class="n">BTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">PIXBUF_COLUMN</span><span class="p">);</span>
+  <span class="n">btk_icon_view_set_text_column</span> <span class="p">(</span><span class="n">BTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">TEXT_COLUMN</span><span class="p">);</span>
+  <span class="n">btk_icon_view_set_model</span> <span class="p">(</span><span class="n">BTK_ICON_VIEW</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">),</span> <span class="n">BTK_TREE_MODEL</span> <span class="p">(</span><span class="n">store</span><span class="p">));</span>
 
   <span class="n">fill_model</span> <span class="p">(</span><span class="n">store</span><span class="p">);</span>
 
@@ -183,14 +183,14 @@
 </div>
 
 <p>
-    This example uses a <a class="link" href="GtkListStore.html" title="GtkListStore"><span class="type">GtkListStore</span></a> as model, but part of the elegance of the 
+    This example uses a <a class="link" href="BtkListStore.html" title="BtkListStore"><span class="type">BtkListStore</span></a> as model, but part of the elegance of the 
     model-view pattern is that you can easily use another tree model implementation, 
     or even write your own custom tree model.
   </p>
 <p>
     Your application may make use of extra data attached to the icons in the 
-    <span class="structname">GnomeIconList</span> via <code class="function">gnome_icon_list_set_icon_data()</code> and 
-    <code class="function">gnome_icon_list_get_icon_data()</code>. With <a class="link" href="GtkIconView.html" title="GtkIconView"><span class="type">GtkIconView</span></a> such data is most 
+    <span class="structname">BunnyIconList</span> via <code class="function">bunny_icon_list_set_icon_data()</code> and 
+    <code class="function">bunny_icon_list_get_icon_data()</code>. With <a class="link" href="BtkIconView.html" title="BtkIconView"><span class="type">BtkIconView</span></a> such data is most 
     conveniently stored in an extra column in the tree model, so you would 
     call a function like
     </p>
@@ -213,17 +213,17 @@
 13
 14</pre></td>
         <td class="listing_code"><pre class="programlisting"><span class="kt">void</span> 
-<span class="nf">set_icon_data</span> <span class="p">(</span><span class="n">GtkIconView</span> <span class="o">*</span><span class="n">icon_view</span><span class="p">,</span>
+<span class="nf">set_icon_data</span> <span class="p">(</span><span class="n">BtkIconView</span> <span class="o">*</span><span class="n">icon_view</span><span class="p">,</span>
                <span class="n">gint</span>         <span class="n">idx</span><span class="p">,</span>
                <span class="n">gpointer</span>     <span class="n">data</span><span class="p">)</span>
 <span class="p">{</span>
-   <span class="n">GtkTreeModel</span> <span class="o">*</span><span class="n">model</span><span class="p">;</span>
-   <span class="n">GtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
+   <span class="n">BtkTreeModel</span> <span class="o">*</span><span class="n">model</span><span class="p">;</span>
+   <span class="n">BtkTreeIter</span> <span class="n">iter</span><span class="p">;</span>
 
-   <span class="n">model</span> <span class="o">=</span> <span class="n">gtk_icon_view_get_model</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">);</span>
+   <span class="n">model</span> <span class="o">=</span> <span class="n">btk_icon_view_get_model</span> <span class="p">(</span><span class="n">icon_view</span><span class="p">);</span>
 
-   <span class="k">if</span> <span class="p">(</span><span class="n">gtk_tree_model_iter_nth_child</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
-     <span class="n">gtk_list_store_set</span> <span class="p">(</span><span class="n">GTK_LIST_STORE</span> <span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> 
+   <span class="k">if</span> <span class="p">(</span><span class="n">btk_tree_model_iter_nth_child</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">idx</span><span class="p">))</span>
+     <span class="n">btk_list_store_set</span> <span class="p">(</span><span class="n">BTK_LIST_STORE</span> <span class="p">(</span><span class="n">model</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">iter</span><span class="p">,</span> 
                          <span class="n">DATA_COLUMN</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span></pre></td>
       </tr>
@@ -237,20 +237,20 @@
   </p>
 <p>
     There is a number of minor API differences between 
-    <span class="structname">GnomeIconList</span> and 
-    <span class="structname">GtkIconView</span>:
+    <span class="structname">BunnyIconList</span> and 
+    <span class="structname">BtkIconView</span>:
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; ">
 <li class="listitem"><p>
-       <span class="type">GnomeIconListMode</span> is replaced by the 
-       <a class="link" href="GtkIconView.html#GtkIconView--orientation" title="The “orientation” property">orientation</a> 
-       property of <span class="structname">GtkIconView</span>
+       <span class="type">BunnyIconListMode</span> is replaced by the 
+       <a class="link" href="BtkIconView.html#BtkIconView--orientation" title="The “orientation” property">orientation</a> 
+       property of <span class="structname">BtkIconView</span>
      </p></li>
 <li class="listitem"><p>
-       <span class="structname">GtkIconView</span> can not be frozen in the same 
-       way as <span class="structname">GnomeIconList</span> can with 
-       <code class="function">gnome_icon_list_freeze()</code> and <code class="function">gnome_icon_list_thaw()</code>. Instead you can 
-       replace the whole model of a <span class="structname">GtkIconView</span>, 
+       <span class="structname">BtkIconView</span> can not be frozen in the same 
+       way as <span class="structname">BunnyIconList</span> can with 
+       <code class="function">bunny_icon_list_freeze()</code> and <code class="function">bunny_icon_list_thaw()</code>. Instead you can 
+       replace the whole model of a <span class="structname">BtkIconView</span>, 
        instead of doing many small changes to the existing model.
      </p></li>
 </ul></div>
@@ -258,6 +258,6 @@
   </p>
 </div>
 <div class="footer">
-<hr>Generated by GTK-Doc V1.33.0</div>
+<hr>Generated by BTK-Doc V1.33.0</div>
 </body>
 </html>

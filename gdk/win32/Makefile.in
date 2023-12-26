@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# GTK+ - The GIMP Toolkit
+# BTK+ - The GIMP Toolkit
 
 # Author: Fan, Chun-wei
 # Common Autotools file used to generate Visual Studio 2008+
@@ -104,8 +104,8 @@ am__make_dryrun = (target_option=n; $(am__make_running_with_option))
 am__make_keepgoing = (target_option=k; $(am__make_running_with_option))
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
-pkglibdir = $(libdir)/@PACKAGE@
-pkglibexecdir = $(libexecdir)/@PACKAGE@
+pkbunnylibdir = $(libdir)/@PACKAGE@
+pkbunnylibexecdir = $(libexecdir)/@PACKAGE@
 am__cd = CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 install_sh_DATA = $(install_sh) -c -m 644
 install_sh_PROGRAM = $(install_sh) -c
@@ -120,31 +120,31 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-subdir = gdk/win32
+subdir = bdk/win32
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/introspection.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(libgdkinclude_HEADERS) \
+DIST_COMMON = $(srcdir)/Makefile.am $(libbdkinclude_HEADERS) \
 	$(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
-libgdk_win32_la_LIBADD =
-am_libgdk_win32_la_OBJECTS = gdkapplaunchcontext-win32.lo \
-	gdkcolor-win32.lo gdkcursor-win32.lo gdkdisplay-win32.lo \
-	gdkdnd-win32.lo gdkdrawable-win32.lo gdkevents-win32.lo \
-	gdkfont-win32.lo gdkgc-win32.lo gdkgeometry-win32.lo \
-	gdkglobals-win32.lo gdkim-win32.lo gdkimage-win32.lo \
-	gdkinput.lo gdkinput-win32.lo gdkkeys-win32.lo \
-	gdkmain-win32.lo gdkpixmap-win32.lo gdkproperty-win32.lo \
-	gdkscreen-win32.lo gdkselection-win32.lo gdkspawn-win32.lo \
-	gdktestutils-win32.lo gdkvisual-win32.lo gdkwin32id.lo \
-	gdkwindow-win32.lo
-libgdk_win32_la_OBJECTS = $(am_libgdk_win32_la_OBJECTS)
+libbdk_win32_la_LIBADD =
+am_libbdk_win32_la_OBJECTS = bdkapplaunchcontext-win32.lo \
+	bdkcolor-win32.lo bdkcursor-win32.lo bdkdisplay-win32.lo \
+	bdkdnd-win32.lo bdkdrawable-win32.lo bdkevents-win32.lo \
+	bdkfont-win32.lo bdkgc-win32.lo bdkgeometry-win32.lo \
+	bdkglobals-win32.lo bdkim-win32.lo bdkimage-win32.lo \
+	bdkinput.lo bdkinput-win32.lo bdkkeys-win32.lo \
+	bdkmain-win32.lo bdkpixmap-win32.lo bdkproperty-win32.lo \
+	bdkscreen-win32.lo bdkselection-win32.lo bdkspawn-win32.lo \
+	bdktestutils-win32.lo bdkvisual-win32.lo bdkwin32id.lo \
+	bdkwindow-win32.lo
+libbdk_win32_la_OBJECTS = $(am_libbdk_win32_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -164,23 +164,23 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/gdkapplaunchcontext-win32.Plo \
-	./$(DEPDIR)/gdkcolor-win32.Plo ./$(DEPDIR)/gdkcursor-win32.Plo \
-	./$(DEPDIR)/gdkdisplay-win32.Plo ./$(DEPDIR)/gdkdnd-win32.Plo \
-	./$(DEPDIR)/gdkdrawable-win32.Plo \
-	./$(DEPDIR)/gdkevents-win32.Plo ./$(DEPDIR)/gdkfont-win32.Plo \
-	./$(DEPDIR)/gdkgc-win32.Plo ./$(DEPDIR)/gdkgeometry-win32.Plo \
-	./$(DEPDIR)/gdkglobals-win32.Plo ./$(DEPDIR)/gdkim-win32.Plo \
-	./$(DEPDIR)/gdkimage-win32.Plo ./$(DEPDIR)/gdkinput-win32.Plo \
-	./$(DEPDIR)/gdkinput.Plo ./$(DEPDIR)/gdkkeys-win32.Plo \
-	./$(DEPDIR)/gdkmain-win32.Plo ./$(DEPDIR)/gdkpixmap-win32.Plo \
-	./$(DEPDIR)/gdkproperty-win32.Plo \
-	./$(DEPDIR)/gdkscreen-win32.Plo \
-	./$(DEPDIR)/gdkselection-win32.Plo \
-	./$(DEPDIR)/gdkspawn-win32.Plo \
-	./$(DEPDIR)/gdktestutils-win32.Plo \
-	./$(DEPDIR)/gdkvisual-win32.Plo ./$(DEPDIR)/gdkwin32id.Plo \
-	./$(DEPDIR)/gdkwindow-win32.Plo
+am__depfiles_remade = ./$(DEPDIR)/bdkapplaunchcontext-win32.Plo \
+	./$(DEPDIR)/bdkcolor-win32.Plo ./$(DEPDIR)/bdkcursor-win32.Plo \
+	./$(DEPDIR)/bdkdisplay-win32.Plo ./$(DEPDIR)/bdkdnd-win32.Plo \
+	./$(DEPDIR)/bdkdrawable-win32.Plo \
+	./$(DEPDIR)/bdkevents-win32.Plo ./$(DEPDIR)/bdkfont-win32.Plo \
+	./$(DEPDIR)/bdkgc-win32.Plo ./$(DEPDIR)/bdkgeometry-win32.Plo \
+	./$(DEPDIR)/bdkglobals-win32.Plo ./$(DEPDIR)/bdkim-win32.Plo \
+	./$(DEPDIR)/bdkimage-win32.Plo ./$(DEPDIR)/bdkinput-win32.Plo \
+	./$(DEPDIR)/bdkinput.Plo ./$(DEPDIR)/bdkkeys-win32.Plo \
+	./$(DEPDIR)/bdkmain-win32.Plo ./$(DEPDIR)/bdkpixmap-win32.Plo \
+	./$(DEPDIR)/bdkproperty-win32.Plo \
+	./$(DEPDIR)/bdkscreen-win32.Plo \
+	./$(DEPDIR)/bdkselection-win32.Plo \
+	./$(DEPDIR)/bdkspawn-win32.Plo \
+	./$(DEPDIR)/bdktestutils-win32.Plo \
+	./$(DEPDIR)/bdkvisual-win32.Plo ./$(DEPDIR)/bdkwin32id.Plo \
+	./$(DEPDIR)/bdkwindow-win32.Plo
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -200,8 +200,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libgdk_win32_la_SOURCES)
-DIST_SOURCES = $(libgdk_win32_la_SOURCES)
+SOURCES = $(libbdk_win32_la_SOURCES)
+DIST_SOURCES = $(libbdk_win32_la_SOURCES)
 RECURSIVE_TARGETS = all-recursive check-recursive cscopelist-recursive \
 	ctags-recursive dvi-recursive html-recursive info-recursive \
 	install-data-recursive install-dvi-recursive \
@@ -242,8 +242,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
-am__installdirs = "$(DESTDIR)$(libgdkincludedir)"
-HEADERS = $(libgdkinclude_HEADERS)
+am__installdirs = "$(DESTDIR)$(libbdkincludedir)"
+HEADERS = $(libbdkinclude_HEADERS)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 am__recursive_targets = \
@@ -305,16 +305,16 @@ AMTAR = @AMTAR@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AS = @AS@
-ATK_PREFIX = @ATK_PREFIX@
+BATK_PREFIX = @BATK_PREFIX@
 AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
 BASE_DEPENDENCIES_CFLAGS = @BASE_DEPENDENCIES_CFLAGS@
 BASE_DEPENDENCIES_LIBS = @BASE_DEPENDENCIES_LIBS@
-CAIRO_BACKEND_CFLAGS = @CAIRO_BACKEND_CFLAGS@
-CAIRO_BACKEND_LIBS = @CAIRO_BACKEND_LIBS@
-CAIRO_PREFIX = @CAIRO_PREFIX@
+BAIRO_BACKEND_CFLAGS = @BAIRO_BACKEND_CFLAGS@
+BAIRO_BACKEND_LIBS = @BAIRO_BACKEND_LIBS@
+BAIRO_PREFIX = @BAIRO_PREFIX@
 CATALOGS = @CATALOGS@
 CATOBJEXT = @CATOBJEXT@
 CC = @CC@
@@ -351,52 +351,52 @@ EGREP = @EGREP@
 EXEEXT = @EXEEXT@
 EXE_MANIFEST_ARCHITECTURE = @EXE_MANIFEST_ARCHITECTURE@
 FGREP = @FGREP@
-GAIL_INET_LIBS = @GAIL_INET_LIBS@
-GAIL_LT_CURRENT_MINUS_AGE = @GAIL_LT_CURRENT_MINUS_AGE@
-GAIL_LT_VERSION_INFO = @GAIL_LT_VERSION_INFO@
-GDK_DEP_CFLAGS = @GDK_DEP_CFLAGS@
-GDK_DEP_LIBS = @GDK_DEP_LIBS@
-GDK_EXTRA_CFLAGS = @GDK_EXTRA_CFLAGS@
-GDK_EXTRA_LIBS = @GDK_EXTRA_LIBS@
-GDK_PACKAGES = @GDK_PACKAGES@
-GDK_PIXBUF_CSOURCE = @GDK_PIXBUF_CSOURCE@
-GDK_PIXBUF_LIBS = @GDK_PIXBUF_LIBS@
-GDK_WLIBS = @GDK_WLIBS@
+BAIL_INET_LIBS = @BAIL_INET_LIBS@
+BAIL_LT_CURRENT_MINUS_AGE = @BAIL_LT_CURRENT_MINUS_AGE@
+BAIL_LT_VERSION_INFO = @BAIL_LT_VERSION_INFO@
+BDK_DEP_CFLAGS = @BDK_DEP_CFLAGS@
+BDK_DEP_LIBS = @BDK_DEP_LIBS@
+BDK_EXTRA_CFLAGS = @BDK_EXTRA_CFLAGS@
+BDK_EXTRA_LIBS = @BDK_EXTRA_LIBS@
+BDK_PACKAGES = @BDK_PACKAGES@
+BDK_PIXBUF_CSOURCE = @BDK_PIXBUF_CSOURCE@
+BDK_PIXBUF_LIBS = @BDK_PIXBUF_LIBS@
+BDK_WLIBS = @BDK_WLIBS@
 GETTEXT_PACKAGE = @GETTEXT_PACKAGE@
-GLIB_CFLAGS = @GLIB_CFLAGS@
-GLIB_COMPILE_RESOURCES = @GLIB_COMPILE_RESOURCES@
-GLIB_GENMARSHAL = @GLIB_GENMARSHAL@
-GLIB_LIBS = @GLIB_LIBS@
-GLIB_MKENUMS = @GLIB_MKENUMS@
-GLIB_PREFIX = @GLIB_PREFIX@
-GMODULE_CFLAGS = @GMODULE_CFLAGS@
-GMODULE_LIBS = @GMODULE_LIBS@
+BUNNYLIB_CFLAGS = @BUNNYLIB_CFLAGS@
+BUNNYLIB_COMPILE_RESOURCES = @BUNNYLIB_COMPILE_RESOURCES@
+BUNNYLIB_GENMARSHAL = @BUNNYLIB_GENMARSHAL@
+BUNNYLIB_LIBS = @BUNNYLIB_LIBS@
+BUNNYLIB_MKENUMS = @BUNNYLIB_MKENUMS@
+BUNNYLIB_PREFIX = @BUNNYLIB_PREFIX@
+BMODULE_CFLAGS = @BMODULE_CFLAGS@
+BMODULE_LIBS = @BMODULE_LIBS@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
-GOBJECT_QUERY = @GOBJECT_QUERY@
+BOBJECT_QUERY = @BOBJECT_QUERY@
 GREP = @GREP@
-GTKDOC_CHECK = @GTKDOC_CHECK@
-GTKDOC_CHECK_PATH = @GTKDOC_CHECK_PATH@
-GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
-GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
-GTKDOC_MKPDF = @GTKDOC_MKPDF@
-GTKDOC_REBASE = @GTKDOC_REBASE@
-GTK_API_VERSION = @GTK_API_VERSION@
-GTK_BINARY_AGE = @GTK_BINARY_AGE@
-GTK_BINARY_VERSION = @GTK_BINARY_VERSION@
-GTK_DEBUG_FLAGS = @GTK_DEBUG_FLAGS@
-GTK_DEP_CFLAGS = @GTK_DEP_CFLAGS@
-GTK_DEP_LIBS = @GTK_DEP_LIBS@
-GTK_EXTRA_CFLAGS = @GTK_EXTRA_CFLAGS@
-GTK_EXTRA_LIBS = @GTK_EXTRA_LIBS@
-GTK_INTERFACE_AGE = @GTK_INTERFACE_AGE@
-GTK_MAJOR_VERSION = @GTK_MAJOR_VERSION@
-GTK_MICRO_VERSION = @GTK_MICRO_VERSION@
-GTK_MINOR_VERSION = @GTK_MINOR_VERSION@
-GTK_PACKAGES = @GTK_PACKAGES@
-GTK_UPDATE_ICON_CACHE = @GTK_UPDATE_ICON_CACHE@
-GTK_VERSION = @GTK_VERSION@
-GTK_XIM_FLAGS = @GTK_XIM_FLAGS@
+BTKDOC_CHECK = @BTKDOC_CHECK@
+BTKDOC_CHECK_PATH = @BTKDOC_CHECK_PATH@
+BTKDOC_DEPS_CFLAGS = @BTKDOC_DEPS_CFLAGS@
+BTKDOC_DEPS_LIBS = @BTKDOC_DEPS_LIBS@
+BTKDOC_MKPDF = @BTKDOC_MKPDF@
+BTKDOC_REBASE = @BTKDOC_REBASE@
+BTK_API_VERSION = @BTK_API_VERSION@
+BTK_BINARY_AGE = @BTK_BINARY_AGE@
+BTK_BINARY_VERSION = @BTK_BINARY_VERSION@
+BTK_DEBUG_FLAGS = @BTK_DEBUG_FLAGS@
+BTK_DEP_CFLAGS = @BTK_DEP_CFLAGS@
+BTK_DEP_LIBS = @BTK_DEP_LIBS@
+BTK_EXTRA_CFLAGS = @BTK_EXTRA_CFLAGS@
+BTK_EXTRA_LIBS = @BTK_EXTRA_LIBS@
+BTK_INTERFACE_AGE = @BTK_INTERFACE_AGE@
+BTK_MAJOR_VERSION = @BTK_MAJOR_VERSION@
+BTK_MICRO_VERSION = @BTK_MICRO_VERSION@
+BTK_MINOR_VERSION = @BTK_MINOR_VERSION@
+BTK_PACKAGES = @BTK_PACKAGES@
+BTK_UPDATE_ICON_CACHE = @BTK_UPDATE_ICON_CACHE@
+BTK_VERSION = @BTK_VERSION@
+BTK_XIM_FLAGS = @BTK_XIM_FLAGS@
 HAVE_HTTP_AUTHSTRING = @HAVE_HTTP_AUTHSTRING@
 HTML_DIR = @HTML_DIR@
 INCLUDED_IMMODULE_DEFINE = @INCLUDED_IMMODULE_DEFINE@
@@ -452,7 +452,7 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
-PANGO_PREFIX = @PANGO_PREFIX@
+BANGO_PREFIX = @BANGO_PREFIX@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
@@ -505,9 +505,9 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-gdktarget = @gdktarget@
-gdktargetlib = @gdktargetlib@
-gtktargetlib = @gtktargetlib@
+bdktarget = @bdktarget@
+bdktargetlib = @bdktargetlib@
+btktargetlib = @btktargetlib@
 host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -537,8 +537,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-GTESTER = gtester		# in $PATH for non-GLIB packages
-GTESTER_REPORT = gtester-report		# in $PATH for non-GLIB packages
+BTESTER = btester		# in $PATH for non-BUNNYLIB packages
+BTESTER_REPORT = btester-report		# in $PATH for non-BUNNYLIB packages
 
 # initialize variables for unconditional += appending
 EXTRA_DIST = bdfcursor.c makefile.msc
@@ -555,82 +555,82 @@ XIDS = 101 102 103 104 105 106 107 197 199 211 223 227 293 307 308 309 310 311 \
   9980 9981 9982 9983 9984 9985 9986 9987 9988 9989 9990 9991 9992 9993 9994 \
   9995 9996 9997 9998 9999
 
-SKIP_GDKTARGET = \
-	test "$(gdktarget)" != "x11" \
-	&& echo "Gtk+Tests:INFO: Skipping GUI tests for non-X11 target."
+SKIP_BDKTARGET = \
+	test "$(bdktarget)" != "x11" \
+	&& echo "Btk+Tests:INFO: Skipping GUI tests for non-X11 target."
 
 XVFB_START = \
 	${XVFB} -help 2>/dev/null 1>&2 \
 	&& XID=`for id in $(XIDS) ; do test -e /tmp/.X$$id-lock || { echo $$id; exit 0; }; done; exit 1` \
 	&& { ${XVFB} :$$XID -screen 0 800x600x16 -nolisten tcp -auth /dev/null >/dev/null 2>&1 & \
 	       trap "kill -15 $$! " 0 HUP INT QUIT TRAP USR1 PIPE TERM ; } \
-	|| { echo "Gtk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
+	|| { echo "Btk+Tests:ERROR: Failed to start Xvfb environment for X11 target tests."; exit 1; } \
 	&& DISPLAY=:$$XID && export DISPLAY
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 INCLUDES = \
-	-DG_LOG_DOMAIN=\"Gdk\"	\
-	-DINSIDE_GDK_WIN32	\
+	-DG_LOG_DOMAIN=\"Bdk\"	\
+	-DINSIDE_BDK_WIN32	\
 	-I$(top_srcdir)		\
-	-I$(top_srcdir)/gdk	\
-	-I$(top_builddir)/gdk	\
-	$(GTK_DEBUG_FLAGS) 	\
-	$(GDK_DEP_CFLAGS)	\
-	$(GDK_WIN32_EXTRA_CFLAGS)\
-	-DGDK_COMPILATION
+	-I$(top_srcdir)/bdk	\
+	-I$(top_builddir)/bdk	\
+	$(BTK_DEBUG_FLAGS) 	\
+	$(BDK_DEP_CFLAGS)	\
+	$(BDK_WIN32_EXTRA_CFLAGS)\
+	-DBDK_COMPILATION
 
-LDADDS = $(GDK_DEP_LIBS)
-noinst_LTLIBRARIES = libgdk-win32.la
+LDADDS = $(BDK_DEP_LIBS)
+noinst_LTLIBRARIES = libbdk-win32.la
 SUBDIRS = rc
-libgdk_win32_la_SOURCES = \
+libbdk_win32_la_SOURCES = \
 	xcursors.h \
-	gdkapplaunchcontext-win32.c \
-	gdkcolor-win32.c \
-	gdkcursor-win32.c \
-	gdkdisplay-win32.c \
-	gdkdnd-win32.c \
-	gdkdrawable-win32.c \
-	gdkdrawable-win32.h \
-	gdkevents-win32.c \
-	gdkfont-win32.c \
-	gdkgc-win32.c \
-	gdkgeometry-win32.c \
-	gdkglobals-win32.c \
-	gdkim-win32.c \
-	gdkimage-win32.c \
-	gdkinput.c \
-	gdkinput-win32.c \
-	gdkinput-win32.h \
-	gdkkeys-win32.c \
-	gdkmain-win32.c \
-	gdkpixmap-win32.c \
-	gdkpixmap-win32.h \
-	gdkprivate-win32.h \
-	gdkproperty-win32.c \
-	gdkscreen-win32.c \
-	gdkselection-win32.c \
-	gdkspawn-win32.c \
-	gdktestutils-win32.c \
-	gdkvisual-win32.c \
-	gdkwin32.h \
-	gdkwin32keys.h \
-	gdkwin32id.c \
-	gdkwindow-win32.c \
-	gdkwindow-win32.h \
+	bdkapplaunchcontext-win32.c \
+	bdkcolor-win32.c \
+	bdkcursor-win32.c \
+	bdkdisplay-win32.c \
+	bdkdnd-win32.c \
+	bdkdrawable-win32.c \
+	bdkdrawable-win32.h \
+	bdkevents-win32.c \
+	bdkfont-win32.c \
+	bdkgc-win32.c \
+	bdkgeometry-win32.c \
+	bdkglobals-win32.c \
+	bdkim-win32.c \
+	bdkimage-win32.c \
+	bdkinput.c \
+	bdkinput-win32.c \
+	bdkinput-win32.h \
+	bdkkeys-win32.c \
+	bdkmain-win32.c \
+	bdkpixmap-win32.c \
+	bdkpixmap-win32.h \
+	bdkprivate-win32.h \
+	bdkproperty-win32.c \
+	bdkscreen-win32.c \
+	bdkselection-win32.c \
+	bdkspawn-win32.c \
+	bdktestutils-win32.c \
+	bdkvisual-win32.c \
+	bdkwin32.h \
+	bdkwin32keys.h \
+	bdkwin32id.c \
+	bdkwindow-win32.c \
+	bdkwindow-win32.h \
 	wintab.h \
 	pktdef.h
 
-libgdkinclude_HEADERS = \
-	gdkwin32.h
+libbdkinclude_HEADERS = \
+	bdkwin32.h
 
 
 # -------- MSVC Project Items -----
-MSVCPROJS = gdk-win32
-gdk_win32_FILES = $(libgdk_win32_la_SOURCES)
-gdk_win32_EXCLUDES = gdkwin32dummy
-gdk_win32_HEADERS_DIR = $(libgdkincludedir)
-gdk_win32_HEADERS_INST = $(libgdkinclude_HEADERS)
-gdk_win32_HEADERS_EXCLUDES = gdkwin32dummy
+MSVCPROJS = bdk-win32
+bdk_win32_FILES = $(libbdk_win32_la_SOURCES)
+bdk_win32_EXCLUDES = bdkwin32dummy
+bdk_win32_HEADERS_DIR = $(libbdkincludedir)
+bdk_win32_HEADERS_INST = $(libbdkinclude_HEADERS)
+bdk_win32_HEADERS_EXCLUDES = bdkwin32dummy
 _proj_name = $(subst /,_,$(subst -,_,$(subst .,_,$(1))))
 _proj_path_raw := $(subst $(abs_top_srcdir),,$(abs_srcdir))
 _proj_path = $(subst /,\\,$(_proj_path_raw))
@@ -657,9 +657,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu gdk/win32/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu bdk/win32/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu gdk/win32/Makefile
+	  $(AUTOMAKE) --gnu bdk/win32/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -690,8 +690,8 @@ clean-noinstLTLIBRARIES:
 	  rm -f $${locs}; \
 	}
 
-libgdk-win32.la: $(libgdk_win32_la_OBJECTS) $(libgdk_win32_la_DEPENDENCIES) $(EXTRA_libgdk_win32_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(LINK)  $(libgdk_win32_la_OBJECTS) $(libgdk_win32_la_LIBADD) $(LIBS)
+libbdk-win32.la: $(libbdk_win32_la_OBJECTS) $(libbdk_win32_la_DEPENDENCIES) $(EXTRA_libbdk_win32_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(LINK)  $(libbdk_win32_la_OBJECTS) $(libbdk_win32_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -699,32 +699,32 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkapplaunchcontext-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkcolor-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkcursor-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdisplay-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdnd-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkdrawable-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkevents-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkfont-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkgc-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkgeometry-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkglobals-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkim-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkimage-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkinput.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkkeys-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkmain-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkpixmap-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkproperty-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkscreen-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkselection-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkspawn-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdktestutils-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkvisual-win32.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkwin32id.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdkwindow-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkapplaunchcontext-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkcolor-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkcursor-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdisplay-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdnd-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkdrawable-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkevents-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkfont-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkgc-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkgeometry-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkglobals-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkim-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkimage-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkinput.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkkeys-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkmain-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkpixmap-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkproperty-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkscreen-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkselection-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkspawn-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdktestutils-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkvisual-win32.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkwin32id.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bdkwindow-win32.Plo@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -758,27 +758,27 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-libgdkincludeHEADERS: $(libgdkinclude_HEADERS)
+install-libbdkincludeHEADERS: $(libbdkinclude_HEADERS)
 	@$(NORMAL_INSTALL)
-	@list='$(libgdkinclude_HEADERS)'; test -n "$(libgdkincludedir)" || list=; \
+	@list='$(libbdkinclude_HEADERS)'; test -n "$(libbdkincludedir)" || list=; \
 	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(libgdkincludedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(libgdkincludedir)" || exit 1; \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(libbdkincludedir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(libbdkincludedir)" || exit 1; \
 	fi; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libgdkincludedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libgdkincludedir)" || exit $$?; \
+	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(libbdkincludedir)'"; \
+	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(libbdkincludedir)" || exit $$?; \
 	done
 
-uninstall-libgdkincludeHEADERS:
+uninstall-libbdkincludeHEADERS:
 	@$(NORMAL_UNINSTALL)
-	@list='$(libgdkinclude_HEADERS)'; test -n "$(libgdkincludedir)" || list=; \
+	@list='$(libbdkinclude_HEADERS)'; test -n "$(libbdkincludedir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(libgdkincludedir)'; $(am__uninstall_files_from_dir)
+	dir='$(DESTDIR)$(libbdkincludedir)'; $(am__uninstall_files_from_dir)
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run 'make' without going through this Makefile.
@@ -946,7 +946,7 @@ check: check-recursive
 all-am: Makefile $(LTLIBRARIES) $(HEADERS)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(libgdkincludedir)"; do \
+	for dir in "$(DESTDIR)$(libbdkincludedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -985,32 +985,32 @@ clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
 	mostlyclean-am
 
 distclean: distclean-recursive
-		-rm -f ./$(DEPDIR)/gdkapplaunchcontext-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkcolor-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkcursor-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdisplay-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdnd-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdrawable-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkevents-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkfont-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkgc-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkgeometry-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkglobals-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkim-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkimage-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkinput.Plo
-	-rm -f ./$(DEPDIR)/gdkkeys-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkmain-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkpixmap-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkproperty-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkscreen-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkselection-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkspawn-win32.Plo
-	-rm -f ./$(DEPDIR)/gdktestutils-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkvisual-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkwin32id.Plo
-	-rm -f ./$(DEPDIR)/gdkwindow-win32.Plo
+		-rm -f ./$(DEPDIR)/bdkapplaunchcontext-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkcolor-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkcursor-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdisplay-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdnd-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdrawable-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkevents-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkfont-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkgc-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkgeometry-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkglobals-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkim-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkimage-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkinput.Plo
+	-rm -f ./$(DEPDIR)/bdkkeys-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkmain-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkpixmap-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkproperty-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkscreen-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkselection-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkspawn-win32.Plo
+	-rm -f ./$(DEPDIR)/bdktestutils-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkvisual-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkwin32id.Plo
+	-rm -f ./$(DEPDIR)/bdkwindow-win32.Plo
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -1027,7 +1027,7 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-libgdkincludeHEADERS
+install-data-am: install-libbdkincludeHEADERS
 
 install-dvi: install-dvi-recursive
 
@@ -1056,32 +1056,32 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-recursive
-		-rm -f ./$(DEPDIR)/gdkapplaunchcontext-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkcolor-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkcursor-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdisplay-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdnd-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkdrawable-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkevents-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkfont-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkgc-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkgeometry-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkglobals-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkim-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkimage-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkinput-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkinput.Plo
-	-rm -f ./$(DEPDIR)/gdkkeys-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkmain-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkpixmap-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkproperty-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkscreen-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkselection-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkspawn-win32.Plo
-	-rm -f ./$(DEPDIR)/gdktestutils-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkvisual-win32.Plo
-	-rm -f ./$(DEPDIR)/gdkwin32id.Plo
-	-rm -f ./$(DEPDIR)/gdkwindow-win32.Plo
+		-rm -f ./$(DEPDIR)/bdkapplaunchcontext-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkcolor-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkcursor-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdisplay-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdnd-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkdrawable-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkevents-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkfont-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkgc-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkgeometry-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkglobals-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkim-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkimage-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkinput-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkinput.Plo
+	-rm -f ./$(DEPDIR)/bdkkeys-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkmain-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkpixmap-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkproperty-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkscreen-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkselection-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkspawn-win32.Plo
+	-rm -f ./$(DEPDIR)/bdktestutils-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkvisual-win32.Plo
+	-rm -f ./$(DEPDIR)/bdkwin32id.Plo
+	-rm -f ./$(DEPDIR)/bdkwindow-win32.Plo
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -1098,7 +1098,7 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-libgdkincludeHEADERS
+uninstall-am: uninstall-libbdkincludeHEADERS
 
 .MAKE: $(am__recursive_targets) check-am install-am install-strip
 
@@ -1110,14 +1110,14 @@ uninstall-am: uninstall-libgdkincludeHEADERS
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-libgdkincludeHEADERS \
+	install-info install-info-am install-libbdkincludeHEADERS \
 	install-man install-pdf install-pdf-am install-ps \
 	install-ps-am install-strip installcheck installcheck-am \
 	installdirs installdirs-am maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags tags-am uninstall uninstall-am \
-	uninstall-libgdkincludeHEADERS
+	uninstall-libbdkincludeHEADERS
 
 .PRECIOUS: Makefile
 
@@ -1127,8 +1127,8 @@ uninstall-am: uninstall-libgdkincludeHEADERS
 test: test-cwd test-recurse
 # test-cwd: run tests in cwd
 test-cwd: ${TEST_PROGS}
-	@$(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
-	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${GTESTER} --verbose ${TEST_PROGS}; }; \
+	@$(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(XVFB_START) && { set -e; $(TESTS_ENVIRONMENT) ${BTESTER} --verbose ${TEST_PROGS}; }; \
 	}
 # test-recurse: run tests in subdirs
 test-recurse:
@@ -1141,15 +1141,15 @@ test-recurse:
 # full-report: like test-report: with -m perf and -m slow
 test-report perf-report full-report:	${TEST_PROGS}
 	@ ignore_logdir=true ; \
-	  if test -z "$$GTESTER_LOGDIR" ; then \
-	    GTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export GTESTER_LOGDIR ; \
+	  if test -z "$$BTESTER_LOGDIR" ; then \
+	    BTESTER_LOGDIR=`mktemp -d "\`pwd\`/.testlogs-XXXXXX"`; export BTESTER_LOGDIR ; \
 	    ignore_logdir=false ; \
 	  fi ; \
 	  for subdir in $(SUBDIRS) ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" -o "$$subdir" = "po-properties" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done ; \
-	  $(SKIP_GDKTARGET) || test -z "${TEST_PROGS}" || { \
+	  $(SKIP_BDKTARGET) || test -z "${TEST_PROGS}" || { \
 	    case $@ in \
 	    test-report) test_options="-k";; \
 	    perf-report) test_options="-k -m=perf";; \
@@ -1157,23 +1157,23 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    esac ; \
 	    $(XVFB_START) && { \
 	      set -e; \
-	      if test -z "$$GTESTER_LOGDIR" ; then \
-	        ${GTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
+	      if test -z "$$BTESTER_LOGDIR" ; then \
+	        ${BTESTER} --verbose $$test_options -o test-report.xml ${TEST_PROGS} ; \
 	      elif test -n "${TEST_PROGS}" ; then \
-	        ${GTESTER} --verbose $$test_options -o `mktemp "$$GTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
+	        ${BTESTER} --verbose $$test_options -o `mktemp "$$BTESTER_LOGDIR/log-XXXXXX"` ${TEST_PROGS} ; \
 	      fi ; \
 	    }; \
 	  }; \
 	  $$ignore_logdir || { \
 	    echo '<?xml version="1.0"?>' > $@.xml ; \
 	    echo '<report-collection>'  >> $@.xml ; \
-	    for lf in `ls -L "$$GTESTER_LOGDIR"/.` ; do \
-	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$GTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
+	    for lf in `ls -L "$$BTESTER_LOGDIR"/.` ; do \
+	      sed '1,1s/^<?xml\b[^>?]*?>//' <"$$BTESTER_LOGDIR"/"$$lf" >> $@.xml ; \
 	    done ; \
 	    echo >> $@.xml ; \
 	    echo '</report-collection>' >> $@.xml ; \
-	    rm -rf "$$GTESTER_LOGDIR"/ ; \
-	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
+	    rm -rf "$$BTESTER_LOGDIR"/ ; \
+	    ${BTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${BTESTER_REPORT} $@.xml >$@.html ; \
 	  }
 .PHONY: test test-cwd test-recurse test-report perf-report full-report
 # run make test-cwd as part of make check
@@ -1245,7 +1245,7 @@ endef
 
 $(foreach proj,$(MSVCPROJS),$(eval $(call msvcproj-builder,$(proj))))
 
-dist-hook: $(top_builddir)/build/win32/vs9/gdk-win32.vcproj $(top_builddir)/build/win32/vs9/gdk-win32.headers
+dist-hook: $(top_builddir)/build/win32/vs9/bdk-win32.vcproj $(top_builddir)/build/win32/vs9/bdk-win32.headers
 
 -include $(top_srcdir)/git.mk
 

@@ -2,33 +2,33 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="gtk-x11" revision="17 Jan 2002">
+<refentry id="btk-x11" revision="17 Jan 2002">
 <refmeta>
-<refentrytitle>Using GTK+ on the X Window System</refentrytitle>
+<refentrytitle>Using BTK+ on the X Window System</refentrytitle>
 <manvolnum>3</manvolnum>
-<refmiscinfo>GTK Library</refmiscinfo>
+<refmiscinfo>BTK Library</refmiscinfo>
 </refmeta>
 
 <refnamediv>
-<refname>Using GTK+ on the X Window System</refname>
+<refname>Using BTK+ on the X Window System</refname>
 <refpurpose>
-X11 aspects of using GTK+
+X11 aspects of using BTK+
 </refpurpose>
 </refnamediv>
 
 <refsect1>
-<title>GTK+ for the X Window System</title>
+<title>BTK+ for the X Window System</title>
 
 <para>
-On UNIX, the X backend is the default build for GTK+. So 
+On UNIX, the X backend is the default build for BTK+. So 
 you don't need to do anything special when compiling it,
 and everything should "just work."
 </para>
 
 <para>
-To mix low-level Xlib routines into a GTK program, 
-see <link linkend="gdk-X-Window-System-Interaction">GDK X Window
-System interaction</link> in the GDK manual.
+To mix low-level Xlib routines into a BTK program, 
+see <link linkend="bdk-X-Window-System-Interaction">BDK X Window
+System interaction</link> in the BDK manual.
 </para>
 
 <refsect2 id="x11-cmdline">
@@ -56,7 +56,7 @@ in the <envar>DISPLAY</envar> environment variable.
   any screen number specified in the display name specified by
   by he <systemitem>--display</systemitem> command line option or
   the <envar>DISPLAY</envar> environment variable. If this screen
-  cannot be opened, then GTK+ will fall back to the screen
+  cannot be opened, then BTK+ will fall back to the screen
   specified in the display name. This option is not useful
   interactively; the intended purposes is that when a program
   registers its command line with a <firstterm>session
@@ -79,7 +79,7 @@ debugging, but it will slow down the performance considerably.
 
 </refsect1>
 
-<refsect1 id="gtk-X11-arch">
+<refsect1 id="btk-X11-arch">
 <title>Understanding the X11 architecture</title>
 
 <para>
@@ -98,8 +98,8 @@ url="http://www.freedesktop.org/standards/">freedesktop.org</ulink>
 has links to many relevant specifications.
 </para>
 <para>
-The GDK manual covers <link
-linkend="gdk-X-Window-System-Interaction">using Xlib in a GTK
+The BDK manual covers <link
+linkend="bdk-X-Window-System-Interaction">using Xlib in a BTK
 program</link>.
 </para>
 
@@ -134,13 +134,13 @@ url="http://www.freedesktop.org/standards/">convention</ulink>.
 </para>
 
 <para>
-GTK+ has functions for asking the window manager to do various things;
+BTK+ has functions for asking the window manager to do various things;
 see for example <link
-linkend="gtk-window-iconify">gtk_window_iconify()</link> or <link
-linkend="gtk-window-maximize">gtk_window_maximize()</link> or <link
-linkend="gtk-window-set-decorated">gtk_window_set_decorated()</link>.
+linkend="btk-window-iconify">btk_window_iconify()</link> or <link
+linkend="btk-window-maximize">btk_window_maximize()</link> or <link
+linkend="btk-window-set-decorated">btk_window_set_decorated()</link>.
 Keep in mind that <link
-linkend="gtk-window-move">gtk_window_move()</link> and window sizing
+linkend="btk-window-move">btk_window_move()</link> and window sizing
 are ultimately controlled by the window manager as well and most
 window managers <emphasis>will</emphasis> ignore certain requests from
 time to time, in the interests of good user interface.

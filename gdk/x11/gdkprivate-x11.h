@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,202 +18,202 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 /*
  * Private uninstalled header defining things local to X windowing code
  */
 
-#ifndef __GDK_PRIVATE_X11_H__
-#define __GDK_PRIVATE_X11_H__
+#ifndef __BDK_PRIVATE_X11_H__
+#define __BDK_PRIVATE_X11_H__
 
-#include <gdk/gdkcursor.h>
-#include <gdk/gdkprivate.h>
-#include <gdk/x11/gdkwindow-x11.h>
-#include <gdk/x11/gdkpixmap-x11.h>
-#include <gdk/x11/gdkdisplay-x11.h>
-#include <gdk/gdkinternals.h>
+#include <bdk/bdkcursor.h>
+#include <bdk/bdkprivate.h>
+#include <bdk/x11/bdkwindow-x11.h>
+#include <bdk/x11/bdkpixmap-x11.h>
+#include <bdk/x11/bdkdisplay-x11.h>
+#include <bdk/bdkinternals.h>
 
-#define GDK_TYPE_GC_X11              (_gdk_gc_x11_get_type ())
-#define GDK_GC_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_GC_X11, GdkGCX11))
-#define GDK_GC_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_GC_X11, GdkGCX11Class))
-#define GDK_IS_GC_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_GC_X11))
-#define GDK_IS_GC_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_GC_X11))
-#define GDK_GC_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_GC_X11, GdkGCX11Class))
+#define BDK_TYPE_GC_X11              (_bdk_gc_x11_get_type ())
+#define BDK_GC_X11(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_GC_X11, BdkGCX11))
+#define BDK_GC_X11_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_GC_X11, BdkGCX11Class))
+#define BDK_IS_GC_X11(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_GC_X11))
+#define BDK_IS_GC_X11_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_GC_X11))
+#define BDK_GC_X11_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_GC_X11, BdkGCX11Class))
 
-typedef struct _GdkCursorPrivate       GdkCursorPrivate;
-typedef struct _GdkVisualPrivate       GdkVisualPrivate;
-typedef struct _GdkGCX11      GdkGCX11;
-typedef struct _GdkGCX11Class GdkGCX11Class;
+typedef struct _BdkCursorPrivate       BdkCursorPrivate;
+typedef struct _BdkVisualPrivate       BdkVisualPrivate;
+typedef struct _BdkGCX11      BdkGCX11;
+typedef struct _BdkGCX11Class BdkGCX11Class;
 
-struct _GdkGCX11
+struct _BdkGCX11
 {
-  GdkGC parent_instance;
+  BdkGC parent_instance;
   
   GC xgc;
-  GdkScreen *screen;
+  BdkScreen *screen;
   guint16 dirty_mask;
-  guint have_clip_region : 1;
+  guint have_clip_rebunnyion : 1;
   guint have_clip_mask : 1;
   guint depth : 8;
 };
 
-struct _GdkGCX11Class
+struct _BdkGCX11Class
 {
-  GdkGCClass parent_class;
+  BdkGCClass parent_class;
 };
 
-struct _GdkCursorPrivate
+struct _BdkCursorPrivate
 {
-  GdkCursor cursor;
+  BdkCursor cursor;
   Cursor xcursor;
-  GdkDisplay *display;
+  BdkDisplay *display;
   gchar *name;
   guint serial;
 };
 
-struct _GdkVisualPrivate
+struct _BdkVisualPrivate
 {
-  GdkVisual visual;
+  BdkVisual visual;
   Visual *xvisual;
-  GdkScreen *screen;
+  BdkScreen *screen;
 };
 
 #define XID_FONT_BIT (1<<31)
 
-void _gdk_xid_table_insert (GdkDisplay *display,
+void _bdk_xid_table_insert (BdkDisplay *display,
 			    XID        *xid,
 			    gpointer    data);
-void _gdk_xid_table_remove (GdkDisplay *display,
+void _bdk_xid_table_remove (BdkDisplay *display,
 			    XID         xid);
-gint _gdk_send_xevent      (GdkDisplay *display,
+gint _bdk_send_xevent      (BdkDisplay *display,
 			    Window      window,
 			    gboolean    propagate,
 			    glong       event_mask,
 			    XEvent     *event_send);
 
-GType _gdk_gc_x11_get_type (void);
+GType _bdk_gc_x11_get_type (void);
 
-gboolean _gdk_x11_have_render           (GdkDisplay *display);
+gboolean _bdk_x11_have_render           (BdkDisplay *display);
 
-GdkGC *_gdk_x11_gc_new                  (GdkDrawable     *drawable,
-					 GdkGCValues     *values,
-					 GdkGCValuesMask  values_mask);
+BdkGC *_bdk_x11_gc_new                  (BdkDrawable     *drawable,
+					 BdkGCValues     *values,
+					 BdkGCValuesMask  values_mask);
 
-GdkImage *_gdk_x11_copy_to_image       (GdkDrawable *drawable,
-					GdkImage    *image,
+BdkImage *_bdk_x11_copy_to_image       (BdkDrawable *drawable,
+					BdkImage    *image,
 					gint         src_x,
 					gint         src_y,
 					gint         dest_x,
 					gint         dest_y,
 					gint         width,
 					gint         height);
-Pixmap   _gdk_x11_image_get_shm_pixmap (GdkImage    *image);
+Pixmap   _bdk_x11_image_get_shm_pixmap (BdkImage    *image);
 
-/* Routines from gdkgeometry-x11.c */
-void _gdk_window_move_resize_child (GdkWindow     *window,
+/* Routines from bdkgeometry-x11.c */
+void _bdk_window_move_resize_child (BdkWindow     *window,
                                     gint           x,
                                     gint           y,
                                     gint           width,
                                     gint           height);
-void _gdk_window_process_expose    (GdkWindow     *window,
+void _bdk_window_process_expose    (BdkWindow     *window,
                                     gulong         serial,
-                                    GdkRectangle  *area);
+                                    BdkRectangle  *area);
 
-gboolean _gdk_x11_window_queue_antiexpose  (GdkWindow *window,
-					    GdkRegion *area);
-void     _gdk_x11_window_queue_translation (GdkWindow *window,
-					    GdkGC     *gc,
-					    GdkRegion *area,
+gboolean _bdk_x11_window_queue_antiexpose  (BdkWindow *window,
+					    BdkRebunnyion *area);
+void     _bdk_x11_window_queue_translation (BdkWindow *window,
+					    BdkGC     *gc,
+					    BdkRebunnyion *area,
 					    gint       dx,
 					    gint       dy);
 
-void     _gdk_selection_window_destroyed   (GdkWindow            *window);
-gboolean _gdk_selection_filter_clear_event (XSelectionClearEvent *event);
+void     _bdk_selection_window_destroyed   (BdkWindow            *window);
+gboolean _bdk_selection_filter_clear_event (XSelectionClearEvent *event);
 
-GdkRegion* _xwindow_get_shape              (Display *xdisplay,
+BdkRebunnyion* _xwindow_get_shape              (Display *xdisplay,
                                             Window window,
                                             gint shape_type);
 
-void     _gdk_region_get_xrectangles       (const GdkRegion      *region,
+void     _bdk_rebunnyion_get_xrectangles       (const BdkRebunnyion      *rebunnyion,
                                             gint                  x_offset,
                                             gint                  y_offset,
                                             XRectangle          **rects,
                                             gint                 *n_rects);
 
-gboolean _gdk_moveresize_handle_event   (XEvent     *event);
-gboolean _gdk_moveresize_configure_done (GdkDisplay *display,
-					 GdkWindow  *window);
+gboolean _bdk_moveresize_handle_event   (XEvent     *event);
+gboolean _bdk_moveresize_configure_done (BdkDisplay *display,
+					 BdkWindow  *window);
 
-void _gdk_keymap_state_changed    (GdkDisplay      *display,
+void _bdk_keymap_state_changed    (BdkDisplay      *display,
 				   XEvent          *event);
-void _gdk_keymap_keys_changed     (GdkDisplay      *display);
-gint _gdk_x11_get_group_for_state (GdkDisplay      *display,
-				   GdkModifierType  state);
-void _gdk_keymap_add_virtual_modifiers_compat (GdkKeymap       *keymap,
-                                               GdkModifierType *modifiers);
-gboolean _gdk_keymap_key_is_modifier   (GdkKeymap       *keymap,
+void _bdk_keymap_keys_changed     (BdkDisplay      *display);
+gint _bdk_x11_get_group_for_state (BdkDisplay      *display,
+				   BdkModifierType  state);
+void _bdk_keymap_add_virtual_modifiers_compat (BdkKeymap       *keymap,
+                                               BdkModifierType *modifiers);
+gboolean _bdk_keymap_key_is_modifier   (BdkKeymap       *keymap,
 					guint            keycode);
 
-GC _gdk_x11_gc_flush (GdkGC *gc);
+GC _bdk_x11_gc_flush (BdkGC *gc);
 
-void _gdk_x11_initialize_locale (void);
+void _bdk_x11_initialize_locale (void);
 
-void _gdk_xgrab_check_unmap        (GdkWindow *window,
+void _bdk_xgrab_check_unmap        (BdkWindow *window,
 				    gulong     serial);
-void _gdk_xgrab_check_destroy      (GdkWindow *window);
+void _bdk_xgrab_check_destroy      (BdkWindow *window);
 
-gboolean _gdk_x11_display_is_root_window (GdkDisplay *display,
+gboolean _bdk_x11_display_is_root_window (BdkDisplay *display,
 					  Window      xroot_window);
 
-void _gdk_x11_precache_atoms (GdkDisplay          *display,
+void _bdk_x11_precache_atoms (BdkDisplay          *display,
 			      const gchar * const *atom_names,
 			      gint                 n_atoms);
 
-void _gdk_x11_events_init_screen   (GdkScreen *screen);
-void _gdk_x11_events_uninit_screen (GdkScreen *screen);
+void _bdk_x11_events_init_screen   (BdkScreen *screen);
+void _bdk_x11_events_uninit_screen (BdkScreen *screen);
 
-void _gdk_events_init           (GdkDisplay *display);
-void _gdk_events_uninit         (GdkDisplay *display);
-void _gdk_windowing_window_init (GdkScreen *screen);
-void _gdk_visual_init           (GdkScreen *screen);
-void _gdk_dnd_init		(GdkDisplay *display);
-void _gdk_windowing_image_init  (GdkDisplay *display);
-void _gdk_input_init            (GdkDisplay *display);
+void _bdk_events_init           (BdkDisplay *display);
+void _bdk_events_uninit         (BdkDisplay *display);
+void _bdk_windowing_window_init (BdkScreen *screen);
+void _bdk_visual_init           (BdkScreen *screen);
+void _bdk_dnd_init		(BdkDisplay *display);
+void _bdk_windowing_image_init  (BdkDisplay *display);
+void _bdk_input_init            (BdkDisplay *display);
 
-PangoRenderer *_gdk_x11_renderer_get (GdkDrawable *drawable,
-				      GdkGC       *gc);
+BangoRenderer *_bdk_x11_renderer_get (BdkDrawable *drawable,
+				      BdkGC       *gc);
 
-void _gdk_x11_cursor_update_theme (GdkCursor *cursor);
-void _gdk_x11_cursor_display_finalize (GdkDisplay *display);
+void _bdk_x11_cursor_update_theme (BdkCursor *cursor);
+void _bdk_x11_cursor_display_finalize (BdkDisplay *display);
 
-gboolean _gdk_x11_get_xft_setting (GdkScreen   *screen,
+gboolean _bdk_x11_get_xft_setting (BdkScreen   *screen,
 				   const gchar *name,
 				   GValue      *value);
 
-extern GdkDrawableClass  _gdk_x11_drawable_class;
-extern gboolean	         _gdk_use_xshm;
-extern const int         _gdk_nenvent_masks;
-extern const int         _gdk_event_mask_table[];
-extern GdkAtom		 _gdk_selection_property;
-extern gboolean          _gdk_synchronize;
+extern BdkDrawableClass  _bdk_x11_drawable_class;
+extern gboolean	         _bdk_use_xshm;
+extern const int         _bdk_nenvent_masks;
+extern const int         _bdk_event_mask_table[];
+extern BdkAtom		 _bdk_selection_property;
+extern gboolean          _bdk_synchronize;
 
-#define GDK_PIXMAP_SCREEN(pix)	      (GDK_DRAWABLE_IMPL_X11 (((GdkPixmapObject *)pix)->impl)->screen)
-#define GDK_PIXMAP_DISPLAY(pix)       (GDK_SCREEN_X11 (GDK_PIXMAP_SCREEN (pix))->display)
-#define GDK_PIXMAP_XROOTWIN(pix)      (GDK_SCREEN_X11 (GDK_PIXMAP_SCREEN (pix))->xroot_window)
-#define GDK_DRAWABLE_DISPLAY(win)     (GDK_IS_WINDOW (win) ? GDK_WINDOW_DISPLAY (win) : GDK_PIXMAP_DISPLAY (win))
-#define GDK_DRAWABLE_SCREEN(win)      (GDK_IS_WINDOW (win) ? GDK_WINDOW_SCREEN (win) : GDK_PIXMAP_SCREEN (win))
-#define GDK_DRAWABLE_XROOTWIN(win)    (GDK_IS_WINDOW (win) ? GDK_WINDOW_XROOTWIN (win) : GDK_PIXMAP_XROOTWIN (win))
-#define GDK_SCREEN_DISPLAY(screen)    (GDK_SCREEN_X11 (screen)->display)
-#define GDK_SCREEN_XROOTWIN(screen)   (GDK_SCREEN_X11 (screen)->xroot_window)
-#define GDK_WINDOW_SCREEN(win)	      (GDK_DRAWABLE_IMPL_X11 (((GdkWindowObject *)win)->impl)->screen)
-#define GDK_WINDOW_DISPLAY(win)       (GDK_SCREEN_X11 (GDK_WINDOW_SCREEN (win))->display)
-#define GDK_WINDOW_XROOTWIN(win)      (GDK_SCREEN_X11 (GDK_WINDOW_SCREEN (win))->xroot_window)
-#define GDK_GC_DISPLAY(gc)            (GDK_SCREEN_DISPLAY (GDK_GC_X11(gc)->screen))
-#define GDK_WINDOW_IS_X11(win)        (GDK_IS_WINDOW_IMPL_X11 (((GdkWindowObject *)win)->impl))
+#define BDK_PIXMAP_SCREEN(pix)	      (BDK_DRAWABLE_IMPL_X11 (((BdkPixmapObject *)pix)->impl)->screen)
+#define BDK_PIXMAP_DISPLAY(pix)       (BDK_SCREEN_X11 (BDK_PIXMAP_SCREEN (pix))->display)
+#define BDK_PIXMAP_XROOTWIN(pix)      (BDK_SCREEN_X11 (BDK_PIXMAP_SCREEN (pix))->xroot_window)
+#define BDK_DRAWABLE_DISPLAY(win)     (BDK_IS_WINDOW (win) ? BDK_WINDOW_DISPLAY (win) : BDK_PIXMAP_DISPLAY (win))
+#define BDK_DRAWABLE_SCREEN(win)      (BDK_IS_WINDOW (win) ? BDK_WINDOW_SCREEN (win) : BDK_PIXMAP_SCREEN (win))
+#define BDK_DRAWABLE_XROOTWIN(win)    (BDK_IS_WINDOW (win) ? BDK_WINDOW_XROOTWIN (win) : BDK_PIXMAP_XROOTWIN (win))
+#define BDK_SCREEN_DISPLAY(screen)    (BDK_SCREEN_X11 (screen)->display)
+#define BDK_SCREEN_XROOTWIN(screen)   (BDK_SCREEN_X11 (screen)->xroot_window)
+#define BDK_WINDOW_SCREEN(win)	      (BDK_DRAWABLE_IMPL_X11 (((BdkWindowObject *)win)->impl)->screen)
+#define BDK_WINDOW_DISPLAY(win)       (BDK_SCREEN_X11 (BDK_WINDOW_SCREEN (win))->display)
+#define BDK_WINDOW_XROOTWIN(win)      (BDK_SCREEN_X11 (BDK_WINDOW_SCREEN (win))->xroot_window)
+#define BDK_GC_DISPLAY(gc)            (BDK_SCREEN_DISPLAY (BDK_GC_X11(gc)->screen))
+#define BDK_WINDOW_IS_X11(win)        (BDK_IS_WINDOW_IMPL_X11 (((BdkWindowObject *)win)->impl))
 
-#endif /* __GDK_PRIVATE_X11_H__ */
+#endif /* __BDK_PRIVATE_X11_H__ */

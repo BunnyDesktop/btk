@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_LIST_H__
-#define __GAIL_LIST_H__
+#ifndef __BAIL_LIST_H__
+#define __BAIL_LIST_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_LIST                       (gail_list_get_type ())
-#define GAIL_LIST(obj)                       (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_LIST, GailList))
-#define GAIL_LIST_CLASS(klass)               (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_LIST, GailListClass))
-#define GAIL_IS_LIST(obj)                    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_LIST))
-#define GAIL_IS_LIST_CLASS(klass)            (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_LIST))
-#define GAIL_LIST_GET_CLASS(obj)             (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_LIST, GailListClass))
+#define BAIL_TYPE_LIST                       (bail_list_get_type ())
+#define BAIL_LIST(obj)                       (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_LIST, BailList))
+#define BAIL_LIST_CLASS(klass)               (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_LIST, BailListClass))
+#define BAIL_IS_LIST(obj)                    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_LIST))
+#define BAIL_IS_LIST_CLASS(klass)            (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_LIST))
+#define BAIL_LIST_GET_CLASS(obj)             (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_LIST, BailListClass))
 
-typedef struct _GailList              GailList;
-typedef struct _GailListClass         GailListClass;
+typedef struct _BailList              BailList;
+typedef struct _BailListClass         BailListClass;
 
-struct _GailList
+struct _BailList
 {
-  GailContainer parent;
+  BailContainer parent;
 };
 
-GType gail_list_get_type (void);
+GType bail_list_get_type (void);
 
-struct _GailListClass
+struct _BailListClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_LIST_H__ */
+#endif /* __BAIL_LIST_H__ */

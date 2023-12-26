@@ -23,61 +23,61 @@
 #include "config.h"
 #include <string.h>
 
-#include "gtkquery.h"
+#include "btkquery.h"
 
-struct _GtkQueryPrivate 
+struct _BtkQueryPrivate 
 {
   gchar *text;
   gchar *location_uri;
   GList *mime_types;
 };
 
-G_DEFINE_TYPE (GtkQuery, _gtk_query, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkQuery, _btk_query, G_TYPE_OBJECT);
 
 static void
 finalize (GObject *object)
 {
-  GtkQuery *query;
+  BtkQuery *query;
   
-  query = GTK_QUERY (object);
+  query = BTK_QUERY (object);
   
   g_free (query->priv->text);
 
-  G_OBJECT_CLASS (_gtk_query_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_query_parent_class)->finalize (object);
 }
 
 static void
-_gtk_query_class_init (GtkQueryClass *class)
+_btk_query_class_init (BtkQueryClass *class)
 {
-  GObjectClass *gobject_class;
+  GObjectClass *bobject_class;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  gobject_class->finalize = finalize;
+  bobject_class = G_OBJECT_CLASS (class);
+  bobject_class->finalize = finalize;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkQueryPrivate));  
+  g_type_class_add_private (bobject_class, sizeof (BtkQueryPrivate));  
 }
 
 static void
-_gtk_query_init (GtkQuery *query)
+_btk_query_init (BtkQuery *query)
 {
-  query->priv = G_TYPE_INSTANCE_GET_PRIVATE (query, GTK_TYPE_QUERY, GtkQueryPrivate);
+  query->priv = G_TYPE_INSTANCE_GET_PRIVATE (query, BTK_TYPE_QUERY, BtkQueryPrivate);
 }
 
-GtkQuery *
-_gtk_query_new (void)
+BtkQuery *
+_btk_query_new (void)
 {
-  return g_object_new (GTK_TYPE_QUERY,  NULL);
+  return g_object_new (BTK_TYPE_QUERY,  NULL);
 }
 
 
 gchar *
-_gtk_query_get_text (GtkQuery *query)
+_btk_query_get_text (BtkQuery *query)
 {
   return g_strdup (query->priv->text);
 }
 
 void 
-_gtk_query_set_text (GtkQuery    *query, 
+_btk_query_set_text (BtkQuery    *query, 
 		    const gchar *text)
 {
   g_free (query->priv->text);
@@ -85,13 +85,13 @@ _gtk_query_set_text (GtkQuery    *query,
 }
 
 gchar *
-_gtk_query_get_location (GtkQuery *query)
+_btk_query_get_location (BtkQuery *query)
 {
   return g_strdup (query->priv->location_uri);
 }
 	
 void
-_gtk_query_set_location (GtkQuery    *query, 
+_btk_query_set_location (BtkQuery    *query, 
 			const gchar *uri)
 {
   g_free (query->priv->location_uri);
@@ -99,7 +99,7 @@ _gtk_query_set_location (GtkQuery    *query,
 }
 
 GList *
-_gtk_query_get_mime_types (GtkQuery *query)
+_btk_query_get_mime_types (BtkQuery *query)
 {
   GList *list, *l;
   gchar *mime_type;
@@ -115,7 +115,7 @@ _gtk_query_get_mime_types (GtkQuery *query)
 }
 
 void
-_gtk_query_set_mime_types (GtkQuery *query, 
+_btk_query_set_mime_types (BtkQuery *query, 
 			   GList    *mime_types)
 {
   GList *l;
@@ -133,7 +133,7 @@ _gtk_query_set_mime_types (GtkQuery *query,
 }
 
 void
-_gtk_query_add_mime_type (GtkQuery    *query, 
+_btk_query_add_mime_type (BtkQuery    *query, 
 			  const gchar *mime_type)
 {
   query->priv->mime_types = g_list_prepend (query->priv->mime_types,

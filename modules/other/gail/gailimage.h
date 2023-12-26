@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_IMAGE_H__
-#define __GAIL_IMAGE_H__
+#ifndef __BAIL_IMAGE_H__
+#define __BAIL_IMAGE_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_IMAGE                      (gail_image_get_type ())
-#define GAIL_IMAGE(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_IMAGE, GailImage))
-#define GAIL_IMAGE_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_IMAGE, GailImageClass))
-#define GAIL_IS_IMAGE(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_IMAGE))
-#define GAIL_IS_IMAGE_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_IMAGE))
-#define GAIL_IMAGE_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_IMAGE, GailImageClass))
+#define BAIL_TYPE_IMAGE                      (bail_image_get_type ())
+#define BAIL_IMAGE(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_IMAGE, BailImage))
+#define BAIL_IMAGE_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_IMAGE, BailImageClass))
+#define BAIL_IS_IMAGE(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_IMAGE))
+#define BAIL_IS_IMAGE_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_IMAGE))
+#define BAIL_IMAGE_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_IMAGE, BailImageClass))
 
-typedef struct _GailImage              GailImage;
-typedef struct _GailImageClass         GailImageClass;
+typedef struct _BailImage              BailImage;
+typedef struct _BailImageClass         BailImageClass;
 
-struct _GailImage
+struct _BailImage
 {
-  GailWidget parent;
+  BailWidget parent;
 
   gchar*     image_description;
   gchar*     stock_name;
 };
 
-GType gail_image_get_type (void);
+GType bail_image_get_type (void);
 
-struct _GailImageClass
+struct _BailImageClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_IMAGE_H__ */
+#endif /* __BAIL_IMAGE_H__ */

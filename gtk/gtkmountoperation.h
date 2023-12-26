@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * Copyright (C) Christian Kellner <gicmo@gnome.org>
+/* BTK - The GIMP Toolkit
+ * Copyright (C) Christian Kellner <gicmo@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,66 +18,66 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_MOUNT_OPERATION_H__
-#define __GTK_MOUNT_OPERATION_H__
+#ifndef __BTK_MOUNT_OPERATION_H__
+#define __BTK_MOUNT_OPERATION_H__
 
-#if !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_MOUNT_OPERATION         (gtk_mount_operation_get_type ())
-#define GTK_MOUNT_OPERATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), GTK_TYPE_MOUNT_OPERATION, GtkMountOperation))
-#define GTK_MOUNT_OPERATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), GTK_TYPE_MOUNT_OPERATION, GtkMountOperationClass))
-#define GTK_IS_MOUNT_OPERATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), GTK_TYPE_MOUNT_OPERATION))
-#define GTK_IS_MOUNT_OPERATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), GTK_TYPE_MOUNT_OPERATION))
-#define GTK_MOUNT_OPERATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), GTK_TYPE_MOUNT_OPERATION, GtkMountOperationClass))
+#define BTK_TYPE_MOUNT_OPERATION         (btk_mount_operation_get_type ())
+#define BTK_MOUNT_OPERATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperation))
+#define BTK_MOUNT_OPERATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
+#define BTK_IS_MOUNT_OPERATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), BTK_TYPE_MOUNT_OPERATION))
+#define BTK_IS_MOUNT_OPERATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), BTK_TYPE_MOUNT_OPERATION))
+#define BTK_MOUNT_OPERATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), BTK_TYPE_MOUNT_OPERATION, BtkMountOperationClass))
 
-typedef struct _GtkMountOperation         GtkMountOperation;
-typedef struct _GtkMountOperationClass    GtkMountOperationClass;
-typedef struct _GtkMountOperationPrivate  GtkMountOperationPrivate;
+typedef struct _BtkMountOperation         BtkMountOperation;
+typedef struct _BtkMountOperationClass    BtkMountOperationClass;
+typedef struct _BtkMountOperationPrivate  BtkMountOperationPrivate;
 
 /**
- * GtkMountOperation:
+ * BtkMountOperation:
  *
  * This should not be accessed directly. Use the accessor functions below.
  */
-struct _GtkMountOperation
+struct _BtkMountOperation
 {
   GMountOperation parent_instance;
 
-  GtkMountOperationPrivate *priv;
+  BtkMountOperationPrivate *priv;
 };
 
-struct _GtkMountOperationClass
+struct _BtkMountOperationClass
 {
   GMountOperationClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType            gtk_mount_operation_get_type   (void);
-GMountOperation *gtk_mount_operation_new        (GtkWindow         *parent);
-gboolean         gtk_mount_operation_is_showing (GtkMountOperation *op);
-void             gtk_mount_operation_set_parent (GtkMountOperation *op,
-                                                 GtkWindow         *parent);
-GtkWindow *      gtk_mount_operation_get_parent (GtkMountOperation *op);
-void             gtk_mount_operation_set_screen (GtkMountOperation *op,
-                                                 GdkScreen         *screen);
-GdkScreen       *gtk_mount_operation_get_screen (GtkMountOperation *op);
+GType            btk_mount_operation_get_type   (void);
+GMountOperation *btk_mount_operation_new        (BtkWindow         *parent);
+gboolean         btk_mount_operation_is_showing (BtkMountOperation *op);
+void             btk_mount_operation_set_parent (BtkMountOperation *op,
+                                                 BtkWindow         *parent);
+BtkWindow *      btk_mount_operation_get_parent (BtkMountOperation *op);
+void             btk_mount_operation_set_screen (BtkMountOperation *op,
+                                                 BdkScreen         *screen);
+BdkScreen       *btk_mount_operation_get_screen (BtkMountOperation *op);
 
 G_END_DECLS
 
-#endif /* __GTK_MOUNT_OPERATION_H__ */
+#endif /* __BTK_MOUNT_OPERATION_H__ */

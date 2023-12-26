@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -35,11 +35,11 @@
 #include <string.h>
 #include <locale.h>
 
-#include "gdkdirectfb.h"
+#include "bdkdirectfb.h"
 
 /*
  *--------------------------------------------------------------
- * gdk_set_locale
+ * bdk_set_locale
  *
  * Arguments:
  *
@@ -51,7 +51,7 @@
  */
 
 gchar*
-gdk_set_locale (void)
+bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
     g_warning ("locale not supported by C library");
@@ -59,7 +59,7 @@ gdk_set_locale (void)
   return setlocale (LC_ALL, NULL);
 }
 /*
- * gdk_wcstombs
+ * bdk_wcstombs
  *
  * Returns a multi-byte string converted from the specified array
  * of wide characters. The string is newly allocated. The array of
@@ -69,17 +69,17 @@ gdk_set_locale (void)
  * On Win32, we always use UTF-8.
  */
 gchar *
-gdk_wcstombs (const GdkWChar *src)
+bdk_wcstombs (const BdkWChar *src)
 {
   gint len;
-  const GdkWChar *wcp;
+  const BdkWChar *wcp;
   guchar *mbstr, *bp;
 
   wcp = src;
   len = 0;
   while (*wcp)
     {
-      const GdkWChar c = *wcp++;
+      const BdkWChar c = *wcp++;
 
       if (c < 0x80)
         len += 1;
@@ -102,7 +102,7 @@ gdk_wcstombs (const GdkWChar *src)
   while (*wcp)
     {
       int first;
-      GdkWChar c = *wcp++;
+      BdkWChar c = *wcp++;
 
       if (c < 0x80)
         {
@@ -156,21 +156,21 @@ gdk_wcstombs (const GdkWChar *src)
 
 
 /*
- * gdk_mbstowcs
+ * bdk_mbstowcs
  *
- * Converts the specified string into GDK wide characters, and,
+ * Converts the specified string into BDK wide characters, and,
  * returns the number of wide characters written. The string 'src'
  * must be null-terminated. If the conversion is failed, it returns
  * -1.
  *
  * On Win32, the string is assumed to be in UTF-8.  Also note that
- * GdkWChar is 32 bits, while wchar_t, and the wide characters the
+ * BdkWChar is 32 bits, while wchar_t, and the wide characters the
  * Windows API uses, are 16 bits!
  */
 
 /* First a helper function for not zero-terminated strings */
 gint
-gdk_nmbstowcs (GdkWChar    *dest,
+bdk_nmbstowcs (BdkWChar    *dest,
                const gchar *src,
                gint         src_len,
                gint         dest_max)
@@ -246,18 +246,18 @@ gdk_nmbstowcs (GdkWChar    *dest,
 }
 
 gint
-gdk_mbstowcs (GdkWChar    *dest,
+bdk_mbstowcs (BdkWChar    *dest,
               const gchar *src,
               gint         dest_max)
 {
-  return gdk_nmbstowcs (dest, src, strlen (src), dest_max);
+  return bdk_nmbstowcs (dest, src, strlen (src), dest_max);
 }
 
 
 /* A version that converts to wchar_t wide chars */
 
 gint
-gdk_nmbstowchar_ts (wchar_t     *dest,
+bdk_nmbstowchar_ts (wchar_t     *dest,
                     const gchar *src,
                     gint         src_len,
                     gint         dest_max)

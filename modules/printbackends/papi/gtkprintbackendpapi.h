@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackendpapi.h: Default implementation of GtkPrintBackend 
+/* BTK - The GIMP Toolkit
+ * btkprintbackendpapi.h: Default implementation of BtkPrintBackend 
  * for printing to papi 
  * Copyright (C) 2003, Red Hat, Inc.
  * Copyright (C) 2009, Sun Microsystems, Inc.
@@ -20,25 +20,25 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_BACKEND_PAPI_H__
-#define __GTK_PRINT_BACKEND_PAPI_H__
+#ifndef __BTK_PRINT_BACKEND_PAPI_H__
+#define __BTK_PRINT_BACKEND_PAPI_H__
 
-#include <glib-object.h>
-#include "gtkprintbackend.h"
+#include <bunnylib-object.h>
+#include "btkprintbackend.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_BACKEND_PAPI            (gtk_print_backend_papi_get_type ())
-#define GTK_PRINT_BACKEND_PAPI(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_BACKEND_PAPI, GtkPrintBackendPapi))
-#define GTK_IS_PRINT_BACKEND_PAPI(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_BACKEND_PAPI))
+#define BTK_TYPE_PRINT_BACKEND_PAPI            (btk_print_backend_papi_get_type ())
+#define BTK_PRINT_BACKEND_PAPI(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_PAPI, BtkPrintBackendPapi))
+#define BTK_IS_PRINT_BACKEND_PAPI(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_PAPI))
 
-typedef struct _GtkPrintBackendPapi      GtkPrintBackendPapi;
+typedef struct _BtkPrintBackendPapi      BtkPrintBackendPapi;
 
-GtkPrintBackend *gtk_print_backend_papi_new      (void);
-GType          gtk_print_backend_papi_get_type (void) G_GNUC_CONST;
+BtkPrintBackend *btk_print_backend_papi_new      (void);
+GType          btk_print_backend_papi_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_BACKEND_PAPI_H__ */
+#endif /* __BTK_PRINT_BACKEND_PAPI_H__ */
 
 

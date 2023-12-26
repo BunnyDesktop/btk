@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,13 +21,13 @@
 
 #include <string.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#include "gailwindow.h"
-#include "gailtoplevel.h"
-#include "gail-private-macros.h"
+#include "bailwindow.h"
+#include "bailtoplevel.h"
+#include "bail-private-macros.h"
 
 enum {
   ACTIVATE,
@@ -42,69 +42,69 @@ enum {
   LAST_SIGNAL
 };
 
-static void gail_window_class_init (GailWindowClass *klass);
+static void bail_window_class_init (BailWindowClass *klass);
 
-static void                  gail_window_init            (GailWindow   *accessible);
+static void                  bail_window_init            (BailWindow   *accessible);
 
-static void                  gail_window_real_initialize (AtkObject    *obj,
+static void                  bail_window_real_initialize (BatkObject    *obj,
                                                           gpointer     data);
-static void                  gail_window_finalize        (GObject      *object);
+static void                  bail_window_finalize        (GObject      *object);
 
-static const gchar*          gail_window_get_name        (AtkObject     *accessible);
+static const gchar*          bail_window_get_name        (BatkObject     *accessible);
 
-static AtkObject*            gail_window_get_parent     (AtkObject     *accessible);
-static gint                  gail_window_get_index_in_parent (AtkObject *accessible);
-static gboolean              gail_window_real_focus_gtk (GtkWidget     *widget,
-                                                         GdkEventFocus *event);
+static BatkObject*            bail_window_get_parent     (BatkObject     *accessible);
+static gint                  bail_window_get_index_in_parent (BatkObject *accessible);
+static gboolean              bail_window_real_focus_btk (BtkWidget     *widget,
+                                                         BdkEventFocus *event);
 
-static AtkStateSet*          gail_window_ref_state_set  (AtkObject     *accessible);
-static AtkRelationSet*       gail_window_ref_relation_set  (AtkObject     *accessible);
-static void                  gail_window_real_notify_gtk (GObject      *obj,
+static BatkStateSet*          bail_window_ref_state_set  (BatkObject     *accessible);
+static BatkRelationSet*       bail_window_ref_relation_set  (BatkObject     *accessible);
+static void                  bail_window_real_notify_btk (GObject      *obj,
                                                           GParamSpec   *pspec);
-static gint                  gail_window_get_mdi_zorder (AtkComponent  *component);
+static gint                  bail_window_get_mdi_zorder (BatkComponent  *component);
 
-static gboolean              gail_window_state_event_gtk (GtkWidget           *widget,
-                                                          GdkEventWindowState *event);
+static gboolean              bail_window_state_event_btk (BtkWidget           *widget,
+                                                          BdkEventWindowState *event);
 
-/* atkcomponent.h */
-static void                  atk_component_interface_init (AtkComponentIface    *iface);
+/* batkcomponent.h */
+static void                  batk_component_interface_init (BatkComponentIface    *iface);
 
-static void                  gail_window_get_extents      (AtkComponent         *component,
+static void                  bail_window_get_extents      (BatkComponent         *component,
                                                            gint                 *x,
                                                            gint                 *y,
                                                            gint                 *width,
                                                            gint                 *height,
-                                                           AtkCoordType         coord_type);
-static void                  gail_window_get_size         (AtkComponent         *component,
+                                                           BatkCoordType         coord_type);
+static void                  bail_window_get_size         (BatkComponent         *component,
                                                            gint                 *width,
                                                            gint                 *height);
 
-static guint gail_window_signals [LAST_SIGNAL] = { 0, };
+static guint bail_window_signals [LAST_SIGNAL] = { 0, };
 
-G_DEFINE_TYPE_WITH_CODE (GailWindow, gail_window, GAIL_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT, atk_component_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailWindow, bail_window, BAIL_TYPE_CONTAINER,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_COMPONENT, batk_component_interface_init))
 
 static void
-gail_window_class_init (GailWindowClass *klass)
+bail_window_class_init (BailWindowClass *klass)
 {
-  GailWidgetClass *widget_class;
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BailWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gail_window_finalize;
+  bobject_class->finalize = bail_window_finalize;
 
-  widget_class = (GailWidgetClass*)klass;
-  widget_class->focus_gtk = gail_window_real_focus_gtk;
-  widget_class->notify_gtk = gail_window_real_notify_gtk;
+  widget_class = (BailWidgetClass*)klass;
+  widget_class->focus_btk = bail_window_real_focus_btk;
+  widget_class->notify_btk = bail_window_real_notify_btk;
 
-  class->get_name = gail_window_get_name;
-  class->get_parent = gail_window_get_parent;
-  class->get_index_in_parent = gail_window_get_index_in_parent;
-  class->ref_relation_set = gail_window_ref_relation_set;
-  class->ref_state_set = gail_window_ref_state_set;
-  class->initialize = gail_window_real_initialize;
+  class->get_name = bail_window_get_name;
+  class->get_parent = bail_window_get_parent;
+  class->get_index_in_parent = bail_window_get_index_in_parent;
+  class->ref_relation_set = bail_window_ref_relation_set;
+  class->ref_state_set = bail_window_ref_state_set;
+  class->initialize = bail_window_real_initialize;
 
-  gail_window_signals [ACTIVATE] =
+  bail_window_signals [ACTIVATE] =
     g_signal_new ("activate",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -112,7 +112,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [CREATE] =
+  bail_window_signals [CREATE] =
     g_signal_new ("create",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -120,7 +120,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [DEACTIVATE] =
+  bail_window_signals [DEACTIVATE] =
     g_signal_new ("deactivate",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -128,7 +128,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [DESTROY] =
+  bail_window_signals [DESTROY] =
     g_signal_new ("destroy",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -136,7 +136,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [MAXIMIZE] =
+  bail_window_signals [MAXIMIZE] =
     g_signal_new ("maximize",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -144,7 +144,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [MINIMIZE] =
+  bail_window_signals [MINIMIZE] =
     g_signal_new ("minimize",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -152,7 +152,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [MOVE] =
+  bail_window_signals [MOVE] =
     g_signal_new ("move",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -160,7 +160,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [RESIZE] =
+  bail_window_signals [RESIZE] =
     g_signal_new ("resize",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -168,7 +168,7 @@ gail_window_class_init (GailWindowClass *klass)
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-  gail_window_signals [RESTORE] =
+  bail_window_signals [RESTORE] =
     g_signal_new ("restore",
                   G_TYPE_FROM_CLASS (klass),
                   G_SIGNAL_RUN_LAST,
@@ -179,75 +179,75 @@ gail_window_class_init (GailWindowClass *klass)
 }
 
 static void
-gail_window_init (GailWindow   *accessible)
+bail_window_init (BailWindow   *accessible)
 {
 }
 
 static void
-gail_window_real_initialize (AtkObject *obj,
+bail_window_real_initialize (BatkObject *obj,
                              gpointer  data)
 {
-  GtkWidget *widget = GTK_WIDGET (data);
-  GailWindow *window;
+  BtkWidget *widget = BTK_WIDGET (data);
+  BailWindow *window;
 
   /*
-   * A GailWindow can be created for a GtkHandleBox or a GtkWindow
+   * A BailWindow can be created for a BtkHandleBox or a BtkWindow
    */
-  if (!GTK_IS_WINDOW (widget) &&
-      !GTK_IS_HANDLE_BOX (widget))
-    gail_return_if_fail (FALSE);
+  if (!BTK_IS_WINDOW (widget) &&
+      !BTK_IS_HANDLE_BOX (widget))
+    bail_return_if_fail (FALSE);
 
-  ATK_OBJECT_CLASS (gail_window_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_window_parent_class)->initialize (obj, data);
 
-  window = GAIL_WINDOW (obj);
+  window = BAIL_WINDOW (obj);
   window->name_change_handler = 0;
-  window->previous_name = g_strdup (gtk_window_get_title (GTK_WINDOW (data)));
+  window->previous_name = g_strdup (btk_window_get_title (BTK_WINDOW (data)));
 
   g_signal_connect (data,
                     "window_state_event",
-                    G_CALLBACK (gail_window_state_event_gtk),
+                    G_CALLBACK (bail_window_state_event_btk),
                     NULL);
-  g_object_set_data (G_OBJECT (obj), "atk-component-layer",
-                     GINT_TO_POINTER (ATK_LAYER_WINDOW));
+  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+                     GINT_TO_POINTER (BATK_LAYER_WINDOW));
 
-  if (GTK_IS_FILE_SELECTION (widget))
-    obj->role = ATK_ROLE_FILE_CHOOSER;
-  else if (GTK_IS_COLOR_SELECTION_DIALOG (widget))
-    obj->role = ATK_ROLE_COLOR_CHOOSER;
-  else if (GTK_IS_FONT_SELECTION_DIALOG (widget))
-    obj->role = ATK_ROLE_FONT_CHOOSER;
-  else if (GTK_IS_MESSAGE_DIALOG (widget))
-    obj->role = ATK_ROLE_ALERT;
-  else if (GTK_IS_DIALOG (widget))
-    obj->role = ATK_ROLE_DIALOG;
+  if (BTK_IS_FILE_SELECTION (widget))
+    obj->role = BATK_ROLE_FILE_CHOOSER;
+  else if (BTK_IS_COLOR_SELECTION_DIALOG (widget))
+    obj->role = BATK_ROLE_COLOR_CHOOSER;
+  else if (BTK_IS_FONT_SELECTION_DIALOG (widget))
+    obj->role = BATK_ROLE_FONT_CHOOSER;
+  else if (BTK_IS_MESSAGE_DIALOG (widget))
+    obj->role = BATK_ROLE_ALERT;
+  else if (BTK_IS_DIALOG (widget))
+    obj->role = BATK_ROLE_DIALOG;
   else
     {
       const gchar *name;
 
-      name = gtk_widget_get_name (widget);
-      if (name && (!strcmp (name, "gtk-tooltip") ||
-                   !strcmp (name, "gtk-tooltips")))
-        obj->role = ATK_ROLE_TOOL_TIP;
-      else if (GTK_IS_PLUG (widget))
-        obj->role = ATK_ROLE_PANEL;
-      else if (GTK_WINDOW (widget)->type == GTK_WINDOW_POPUP)
-        obj->role = ATK_ROLE_WINDOW;
+      name = btk_widget_get_name (widget);
+      if (name && (!strcmp (name, "btk-tooltip") ||
+                   !strcmp (name, "btk-tooltips")))
+        obj->role = BATK_ROLE_TOOL_TIP;
+      else if (BTK_IS_PLUG (widget))
+        obj->role = BATK_ROLE_PANEL;
+      else if (BTK_WINDOW (widget)->type == BTK_WINDOW_POPUP)
+        obj->role = BATK_ROLE_WINDOW;
       else
-        obj->role = ATK_ROLE_FRAME;
+        obj->role = BATK_ROLE_FRAME;
     }
 
   /*
    * Notify that tooltip is showing
    */
-  if (obj->role == ATK_ROLE_TOOL_TIP &&
-      gtk_widget_get_mapped (widget))
-    atk_object_notify_state_change (obj, ATK_STATE_SHOWING, 1);
+  if (obj->role == BATK_ROLE_TOOL_TIP &&
+      btk_widget_get_mapped (widget))
+    batk_object_notify_state_change (obj, BATK_STATE_SHOWING, 1);
 }
 
 static void
-gail_window_finalize (GObject *object)
+bail_window_finalize (GObject *object)
 {
-  GailWindow* window = GAIL_WINDOW (object);
+  BailWindow* window = BAIL_WINDOW (object);
 
   if (window->name_change_handler)
     {
@@ -260,21 +260,21 @@ gail_window_finalize (GObject *object)
       window->previous_name = NULL;
     }
 
-  G_OBJECT_CLASS (gail_window_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_window_parent_class)->finalize (object);
 }
 
 static const gchar*
-gail_window_get_name (AtkObject *accessible)
+bail_window_get_name (BatkObject *accessible)
 {
   const gchar* name;
 
-  name = ATK_OBJECT_CLASS (gail_window_parent_class)->get_name (accessible);
+  name = BATK_OBJECT_CLASS (bail_window_parent_class)->get_name (accessible);
   if (name == NULL)
     {
       /*
        * Get the window title if it exists
        */
-      GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget; 
+      BtkWidget* widget = BTK_ACCESSIBLE (accessible)->widget; 
 
       if (widget == NULL)
         /*
@@ -282,66 +282,66 @@ gail_window_get_name (AtkObject *accessible)
          */
         return NULL;
 
-      gail_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+      bail_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-      if (GTK_IS_WINDOW (widget))
+      if (BTK_IS_WINDOW (widget))
         {
-          GtkWindow *window = GTK_WINDOW (widget);
+          BtkWindow *window = BTK_WINDOW (widget);
  
-          name = gtk_window_get_title (window);
+          name = btk_window_get_title (window);
           if (name == NULL &&
-              accessible->role == ATK_ROLE_TOOL_TIP)
+              accessible->role == BATK_ROLE_TOOL_TIP)
             {
-              GtkWidget *child;
+              BtkWidget *child;
 
-              child = gtk_bin_get_child (GTK_BIN (window));
+              child = btk_bin_get_child (BTK_BIN (window));
               /* could be some kind of egg notification bubble thingy? */
 
-              /* Handle new GTK+ GNOME 2.20 tooltips */
-              if (GTK_IS_ALIGNMENT(child))
+              /* Handle new BTK+ BUNNY 2.20 tooltips */
+              if (BTK_IS_ALIGNMENT(child))
                 {
-                  child = gtk_bin_get_child (GTK_BIN (child));
-                  if (GTK_IS_BOX(child)) 
+                  child = btk_bin_get_child (BTK_BIN (child));
+                  if (BTK_IS_BOX(child)) 
                     {
                       GList *children;
                       guint count;
-                      children = gtk_container_get_children (GTK_CONTAINER (child));
+                      children = btk_container_get_children (BTK_CONTAINER (child));
                       count = g_list_length (children);
                       if (count == 2) 
                         {
-                          child = (GtkWidget *) g_list_nth_data (children, 1);
+                          child = (BtkWidget *) g_list_nth_data (children, 1);
                         }
                       g_list_free (children);                
                     }
                 }
 
-              if (!GTK_IS_LABEL (child)) 
+              if (!BTK_IS_LABEL (child)) 
               { 
-                  g_message ("ATK_ROLE_TOOLTIP object found, but doesn't look like a tooltip.");
+                  g_message ("BATK_ROLE_TOOLTIP object found, but doesn't look like a tooltip.");
                   return NULL;
               }
-              name = gtk_label_get_text (GTK_LABEL (child));
+              name = btk_label_get_text (BTK_LABEL (child));
             }
         }
     }
   return name;
 }
 
-static AtkObject*
-gail_window_get_parent (AtkObject *accessible)
+static BatkObject*
+bail_window_get_parent (BatkObject *accessible)
 {
-  AtkObject* parent;
+  BatkObject* parent;
 
-  parent = ATK_OBJECT_CLASS (gail_window_parent_class)->get_parent (accessible);
+  parent = BATK_OBJECT_CLASS (bail_window_parent_class)->get_parent (accessible);
 
   return parent;
 }
 
 static gint
-gail_window_get_index_in_parent (AtkObject *accessible)
+bail_window_get_index_in_parent (BatkObject *accessible)
 {
-  GtkWidget* widget = GTK_ACCESSIBLE (accessible)->widget; 
-  AtkObject* atk_obj = atk_get_root ();
+  BtkWidget* widget = BTK_ACCESSIBLE (accessible)->widget; 
+  BatkObject* batk_obj = batk_get_root ();
   gint index = -1;
 
   if (widget == NULL)
@@ -350,26 +350,26 @@ gail_window_get_index_in_parent (AtkObject *accessible)
      */
     return -1;
 
-  gail_return_val_if_fail (GTK_IS_WIDGET (widget), -1);
+  bail_return_val_if_fail (BTK_IS_WIDGET (widget), -1);
 
-  index = ATK_OBJECT_CLASS (gail_window_parent_class)->get_index_in_parent (accessible);
+  index = BATK_OBJECT_CLASS (bail_window_parent_class)->get_index_in_parent (accessible);
   if (index != -1)
     return index;
 
-  if (GTK_IS_WINDOW (widget))
+  if (BTK_IS_WINDOW (widget))
     {
-      GtkWindow *window = GTK_WINDOW (widget);
-      if (GAIL_IS_TOPLEVEL (atk_obj))
+      BtkWindow *window = BTK_WINDOW (widget);
+      if (BAIL_IS_TOPLEVEL (batk_obj))
         {
-	  GailToplevel* toplevel = GAIL_TOPLEVEL (atk_obj);
+	  BailToplevel* toplevel = BAIL_TOPLEVEL (batk_obj);
 	  index = g_list_index (toplevel->window_list, window);
 	}
       else
         {
-	  int i, sibling_count = atk_object_get_n_accessible_children (atk_obj);
+	  int i, sibling_count = batk_object_get_n_accessible_children (batk_obj);
 	  for (i = 0; i < sibling_count && index == -1; ++i)
 	    {
-	      AtkObject *child = atk_object_ref_accessible_child (atk_obj, i);
+	      BatkObject *child = batk_object_ref_accessible_child (batk_obj, i);
 	      if (accessible == child) index = i;
 	      g_object_unref (G_OBJECT (child));
 	    }
@@ -379,87 +379,87 @@ gail_window_get_index_in_parent (AtkObject *accessible)
 }
 
 static gboolean
-gail_window_real_focus_gtk (GtkWidget     *widget,
-                            GdkEventFocus *event)
+bail_window_real_focus_btk (BtkWidget     *widget,
+                            BdkEventFocus *event)
 {
-  AtkObject* obj;
+  BatkObject* obj;
 
-  obj = gtk_widget_get_accessible (widget);
-  atk_object_notify_state_change (obj, ATK_STATE_ACTIVE, event->in);
+  obj = btk_widget_get_accessible (widget);
+  batk_object_notify_state_change (obj, BATK_STATE_ACTIVE, event->in);
 
   return FALSE;
 }
 
-static AtkRelationSet*
-gail_window_ref_relation_set (AtkObject *obj)
+static BatkRelationSet*
+bail_window_ref_relation_set (BatkObject *obj)
 {
-  GtkWidget *widget;
-  AtkRelationSet *relation_set;
-  AtkObject *array[1];
-  AtkRelation* relation;
-  GtkWidget *current_widget;
+  BtkWidget *widget;
+  BatkRelationSet *relation_set;
+  BatkObject *array[1];
+  BatkRelation* relation;
+  BtkWidget *current_widget;
 
-  gail_return_val_if_fail (GAIL_IS_WIDGET (obj), NULL);
+  bail_return_val_if_fail (BAIL_IS_WIDGET (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  relation_set = ATK_OBJECT_CLASS (gail_window_parent_class)->ref_relation_set (obj);
+  relation_set = BATK_OBJECT_CLASS (bail_window_parent_class)->ref_relation_set (obj);
 
-  if (atk_object_get_role (obj) == ATK_ROLE_TOOL_TIP)
+  if (batk_object_get_role (obj) == BATK_ROLE_TOOL_TIP)
     {
-      relation = atk_relation_set_get_relation_by_type (relation_set, ATK_RELATION_POPUP_FOR);
+      relation = batk_relation_set_get_relation_by_type (relation_set, BATK_RELATION_POPUP_FOR);
 
       if (relation)
         {
-          atk_relation_set_remove (relation_set, relation);
+          batk_relation_set_remove (relation_set, relation);
         }
-      if (gtk_widget_get_visible(widget) && gtk_tooltips_get_info_from_tip_window (GTK_WINDOW (widget), NULL, &current_widget))
+      if (btk_widget_get_visible(widget) && btk_tooltips_get_info_from_tip_window (BTK_WINDOW (widget), NULL, &current_widget))
         {
-          array [0] = gtk_widget_get_accessible (current_widget);
+          array [0] = btk_widget_get_accessible (current_widget);
 
-          relation = atk_relation_new (array, 1, ATK_RELATION_POPUP_FOR);
-          atk_relation_set_add (relation_set, relation);
+          relation = batk_relation_new (array, 1, BATK_RELATION_POPUP_FOR);
+          batk_relation_set_add (relation_set, relation);
           g_object_unref (relation);
         }
     }
   return relation_set;
 }
 
-static AtkStateSet*
-gail_window_ref_state_set (AtkObject *accessible)
+static BatkStateSet*
+bail_window_ref_state_set (BatkObject *accessible)
 {
-  AtkStateSet *state_set;
-  GtkWidget *widget;
-  GtkWindow *window;
-  GdkWindowState state;
+  BatkStateSet *state_set;
+  BtkWidget *widget;
+  BtkWindow *window;
+  BdkWindowState state;
 
-  state_set = ATK_OBJECT_CLASS (gail_window_parent_class)->ref_state_set (accessible);
-  widget = GTK_ACCESSIBLE (accessible)->widget;
+  state_set = BATK_OBJECT_CLASS (bail_window_parent_class)->ref_state_set (accessible);
+  widget = BTK_ACCESSIBLE (accessible)->widget;
  
   if (widget == NULL)
     return state_set;
 
-  window = GTK_WINDOW (widget);
+  window = BTK_WINDOW (widget);
 
   if (window->has_focus)
-    atk_state_set_add_state (state_set, ATK_STATE_ACTIVE);
+    batk_state_set_add_state (state_set, BATK_STATE_ACTIVE);
 
   if (widget->window)
     {
-      state = gdk_window_get_state (widget->window);
-      if (state & GDK_WINDOW_STATE_ICONIFIED)
-        atk_state_set_add_state (state_set, ATK_STATE_ICONIFIED);
+      state = bdk_window_get_state (widget->window);
+      if (state & BDK_WINDOW_STATE_ICONIFIED)
+        batk_state_set_add_state (state_set, BATK_STATE_ICONIFIED);
     } 
-  if (gtk_window_get_modal (window))
-    atk_state_set_add_state (state_set, ATK_STATE_MODAL);
+  if (btk_window_get_modal (window))
+    batk_state_set_add_state (state_set, BATK_STATE_MODAL);
 
-  if (gtk_window_get_resizable (window))
-    atk_state_set_add_state (state_set, ATK_STATE_RESIZABLE);
+  if (btk_window_get_resizable (window))
+    batk_state_set_add_state (state_set, BATK_STATE_RESIZABLE);
  
   return state_set;
 }
@@ -467,15 +467,15 @@ gail_window_ref_state_set (AtkObject *accessible)
 static gboolean
 idle_notify_name_change (gpointer data)
 {
-  GailWindow *window;
-  AtkObject *obj;
+  BailWindow *window;
+  BatkObject *obj;
 
-  window = GAIL_WINDOW (data);
+  window = BAIL_WINDOW (data);
   window->name_change_handler = 0;
-  if (GTK_ACCESSIBLE (window)->widget == NULL)
+  if (BTK_ACCESSIBLE (window)->widget == NULL)
     return FALSE;
 
-  obj = ATK_OBJECT (window);
+  obj = BATK_OBJECT (window);
   if (obj->name == NULL)
     {
     /*
@@ -489,18 +489,18 @@ idle_notify_name_change (gpointer data)
 }
 
 static void
-gail_window_real_notify_gtk (GObject		*obj,
+bail_window_real_notify_btk (GObject		*obj,
                              GParamSpec		*pspec)
 {
-  GtkWidget *widget = GTK_WIDGET (obj);
-  AtkObject* atk_obj = gtk_widget_get_accessible (widget);
-  GailWindow *window = GAIL_WINDOW (atk_obj);
+  BtkWidget *widget = BTK_WIDGET (obj);
+  BatkObject* batk_obj = btk_widget_get_accessible (widget);
+  BailWindow *window = BAIL_WINDOW (batk_obj);
   const gchar *name;
   gboolean name_changed = FALSE;
 
   if (strcmp (pspec->name, "title") == 0)
     {
-      name = gtk_window_get_title (GTK_WINDOW (widget));
+      name = btk_window_get_title (BTK_WINDOW (widget));
       if (name)
         {
          if (window->previous_name == NULL ||
@@ -516,43 +516,43 @@ gail_window_real_notify_gtk (GObject		*obj,
           window->previous_name = g_strdup (name);
        
           if (window->name_change_handler == 0)
-            window->name_change_handler = gdk_threads_add_idle (idle_notify_name_change, atk_obj);
+            window->name_change_handler = bdk_threads_add_idle (idle_notify_name_change, batk_obj);
         }
     }
   else
-    GAIL_WIDGET_CLASS (gail_window_parent_class)->notify_gtk (obj, pspec);
+    BAIL_WIDGET_CLASS (bail_window_parent_class)->notify_btk (obj, pspec);
 }
 
 static gboolean
-gail_window_state_event_gtk (GtkWidget           *widget,
-                             GdkEventWindowState *event)
+bail_window_state_event_btk (BtkWidget           *widget,
+                             BdkEventWindowState *event)
 {
-  AtkObject* obj;
+  BatkObject* obj;
 
-  obj = gtk_widget_get_accessible (widget);
-  atk_object_notify_state_change (obj, ATK_STATE_ICONIFIED,
-                         (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) != 0);
+  obj = btk_widget_get_accessible (widget);
+  batk_object_notify_state_change (obj, BATK_STATE_ICONIFIED,
+                         (event->new_window_state & BDK_WINDOW_STATE_ICONIFIED) != 0);
   return FALSE;
 }
 
 static void
-atk_component_interface_init (AtkComponentIface *iface)
+batk_component_interface_init (BatkComponentIface *iface)
 {
-  iface->get_extents = gail_window_get_extents;
-  iface->get_size = gail_window_get_size;
-  iface->get_mdi_zorder = gail_window_get_mdi_zorder;
+  iface->get_extents = bail_window_get_extents;
+  iface->get_size = bail_window_get_size;
+  iface->get_mdi_zorder = bail_window_get_mdi_zorder;
 }
 
 static void
-gail_window_get_extents (AtkComponent  *component,
+bail_window_get_extents (BatkComponent  *component,
                          gint          *x,
                          gint          *y,
                          gint          *width,
                          gint          *height,
-                         AtkCoordType  coord_type)
+                         BatkCoordType  coord_type)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget; 
-  GdkRectangle rect;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget; 
+  BdkRectangle rect;
   gint x_toplevel, y_toplevel;
 
   if (widget == NULL)
@@ -561,22 +561,22 @@ gail_window_get_extents (AtkComponent  *component,
      */
     return;
 
-  gail_return_if_fail (GTK_IS_WINDOW (widget));
+  bail_return_if_fail (BTK_IS_WINDOW (widget));
 
-  if (!gtk_widget_is_toplevel (widget))
+  if (!btk_widget_is_toplevel (widget))
     {
-      AtkComponentIface *parent_iface;
+      BatkComponentIface *parent_iface;
 
-      parent_iface = (AtkComponentIface *) g_type_interface_peek_parent (ATK_COMPONENT_GET_IFACE (component));
+      parent_iface = (BatkComponentIface *) g_type_interface_peek_parent (BATK_COMPONENT_GET_IFACE (component));
       parent_iface->get_extents (component, x, y, width, height, coord_type);
       return;
     }
 
-  gdk_window_get_frame_extents (widget->window, &rect);
+  bdk_window_get_frame_extents (widget->window, &rect);
 
   *width = rect.width;
   *height = rect.height;
-  if (!gtk_widget_is_drawable (widget))
+  if (!btk_widget_is_drawable (widget))
     {
       *x = G_MININT;
       *y = G_MININT;
@@ -584,21 +584,21 @@ gail_window_get_extents (AtkComponent  *component,
     }
   *x = rect.x;
   *y = rect.y;
-  if (coord_type == ATK_XY_WINDOW)
+  if (coord_type == BATK_XY_WINDOW)
     {
-      gdk_window_get_origin (widget->window, &x_toplevel, &y_toplevel);
+      bdk_window_get_origin (widget->window, &x_toplevel, &y_toplevel);
       *x -= x_toplevel;
       *y -= y_toplevel;
     }
 }
 
 static void
-gail_window_get_size (AtkComponent *component,
+bail_window_get_size (BatkComponent *component,
                       gint         *width,
                       gint         *height)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget; 
-  GdkRectangle rect;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget; 
+  BdkRectangle rect;
 
   if (widget == NULL)
     /*
@@ -606,34 +606,34 @@ gail_window_get_size (AtkComponent *component,
      */
     return;
 
-  gail_return_if_fail (GTK_IS_WINDOW (widget));
+  bail_return_if_fail (BTK_IS_WINDOW (widget));
 
-  if (!gtk_widget_is_toplevel (widget))
+  if (!btk_widget_is_toplevel (widget))
     {
-      AtkComponentIface *parent_iface;
+      BatkComponentIface *parent_iface;
 
-      parent_iface = (AtkComponentIface *) g_type_interface_peek_parent (ATK_COMPONENT_GET_IFACE (component));
+      parent_iface = (BatkComponentIface *) g_type_interface_peek_parent (BATK_COMPONENT_GET_IFACE (component));
       parent_iface->get_size (component, width, height);
       return;
     }
-  gdk_window_get_frame_extents (widget->window, &rect);
+  bdk_window_get_frame_extents (widget->window, &rect);
 
   *width = rect.width;
   *height = rect.height;
 }
 
-#if defined (GDK_WINDOWING_X11)
+#if defined (BDK_WINDOWING_X11)
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
-#include <gdk/x11/gdkx.h>
+#include <bdk/x11/bdkx.h>
 
 /* _NET_CLIENT_LIST_STACKING monitoring */
 
 typedef struct {
   Window     *stacked_windows;
   int         stacked_windows_len;
-  GdkWindow  *root_window;
+  BdkWindow  *root_window;
   guint       update_handler;
   int        *desktop;
   guint       update_desktop_handler;
@@ -641,9 +641,9 @@ typedef struct {
 
   guint       screen_initialized : 1;
   guint       update_stacked_windows : 1;
-} GailScreenInfo;
+} BailScreenInfo;
 
-static GailScreenInfo *gail_screens = NULL;
+static BailScreenInfo *bail_screens = NULL;
 static int             num_screens = 0;
 static Atom            _net_client_list_stacking = None;
 static Atom            _net_wm_desktop = None;
@@ -662,15 +662,15 @@ get_window_desktop (Window window)
 
   if (_net_wm_desktop == None)
     _net_wm_desktop =
-		XInternAtom (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), "_NET_WM_DESKTOP", False);
+		XInternAtom (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), "_NET_WM_DESKTOP", False);
 
-  gdk_error_trap_push ();
-  result = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), window, _net_wm_desktop,
+  bdk_error_trap_push ();
+  result = XGetWindowProperty (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), window, _net_wm_desktop,
                                0, G_MAXLONG,
                                False, XA_CARDINAL,
                                &ret_type, &format, &nitems,
                                &bytes_after, &cardinals);
-  error = gdk_error_trap_pop();
+  error = bdk_error_trap_pop();
   /* nitems < 1 will occur if the property is not set */
   if (error != Success || result != Success || nitems < 1)
     return -1;
@@ -684,7 +684,7 @@ get_window_desktop (Window window)
 }
 
 static void
-free_screen_info (GailScreenInfo *info)
+free_screen_info (BailScreenInfo *info)
 {
   if (info->stacked_windows)
     XFree (info->stacked_windows);
@@ -700,7 +700,7 @@ free_screen_info (GailScreenInfo *info)
 }
 
 static gboolean
-get_stacked_windows (GailScreenInfo *info)
+get_stacked_windows (BailScreenInfo *info)
 {
   Atom    ret_type;
   int     format;
@@ -716,17 +716,17 @@ get_stacked_windows (GailScreenInfo *info)
 
   if (_net_client_list_stacking == None)
     _net_client_list_stacking =
-		XInternAtom (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()), "_NET_CLIENT_LIST_STACKING", False);
+		XInternAtom (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()), "_NET_CLIENT_LIST_STACKING", False);
 
-  gdk_error_trap_push ();
+  bdk_error_trap_push ();
   ret_type = None;
-  result = XGetWindowProperty (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-                               GDK_WINDOW_XWINDOW (info->root_window),
+  result = XGetWindowProperty (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()),
+                               BDK_WINDOW_XWINDOW (info->root_window),
                                _net_client_list_stacking,
                                0, G_MAXLONG,
                                False, XA_WINDOW, &ret_type, &format, &nitems,
                                &bytes_after, &data);
-  error = gdk_error_trap_pop ();
+  error = bdk_error_trap_pop ();
   /* nitems < 1 will occur if the property is not set */
   if (error != Success || result != Success || nitems < 1)
     {
@@ -777,10 +777,10 @@ update_screen_info (gpointer data)
 {
   int screen_n = GPOINTER_TO_INT (data);
 
-  gail_screens [screen_n].update_handler = 0;
-  gail_screens [screen_n].update_stacked_windows = FALSE;
+  bail_screens [screen_n].update_handler = 0;
+  bail_screens [screen_n].update_stacked_windows = FALSE;
 
-  get_stacked_windows (&gail_screens [screen_n]);
+  get_stacked_windows (&bail_screens [screen_n]);
 
   return FALSE;
 }
@@ -789,10 +789,10 @@ static gboolean
 update_desktop_info (gpointer data)
 {
   int screen_n = GPOINTER_TO_INT (data);
-  GailScreenInfo *info;
+  BailScreenInfo *info;
   int i;
 
-  info = &gail_screens [screen_n];
+  info = &bail_screens [screen_n];
   info->update_desktop_handler = 0;
 
   for (i = 0; i < info->stacked_windows_len; i++)
@@ -807,30 +807,30 @@ update_desktop_info (gpointer data)
   return FALSE;
 }
 
-static GdkFilterReturn
-filter_func (GdkXEvent *gdkxevent,
-	     GdkEvent  *event,
+static BdkFilterReturn
+filter_func (BdkXEvent *bdkxevent,
+	     BdkEvent  *event,
 	     gpointer   data)
 {
-  XEvent *xevent = gdkxevent;
+  XEvent *xevent = bdkxevent;
 
   if (xevent->type == PropertyNotify)
     {
       if (xevent->xproperty.atom == _net_client_list_stacking)
         {
           int     screen_n;
-          GdkWindow *window;
+          BdkWindow *window;
 
           window = event->any.window;
 
           if (window)
             {
-              screen_n = gdk_screen_get_number (gdk_window_get_screen (window));
+              screen_n = bdk_screen_get_number (bdk_window_get_screen (window));
 
-              gail_screens [screen_n].update_stacked_windows = TRUE;
-              if (!gail_screens [screen_n].update_handler)
+              bail_screens [screen_n].update_stacked_windows = TRUE;
+              if (!bail_screens [screen_n].update_handler)
                 {
-                  gail_screens [screen_n].update_handler = gdk_threads_add_idle (update_screen_info,
+                  bail_screens [screen_n].update_handler = bdk_threads_add_idle (update_screen_info,
 	        						                 GINT_TO_POINTER (screen_n));
                 }
             }
@@ -839,11 +839,11 @@ filter_func (GdkXEvent *gdkxevent,
         {
           int     i;
           int     j;
-          GailScreenInfo *info;
+          BailScreenInfo *info;
 
           for (i = 0; i < num_screens; i++)
             {
-              info = &gail_screens [i];
+              info = &bail_screens [i];
               for (j = 0; j < info->stacked_windows_len; j++)
                 {
                   if (xevent->xany.window == info->stacked_windows [j])
@@ -851,7 +851,7 @@ filter_func (GdkXEvent *gdkxevent,
                       info->desktop_changed [j] = TRUE;
                       if (!info->update_desktop_handler)
                         {
-                          info->update_desktop_handler = gdk_threads_add_idle (update_desktop_info,
+                          info->update_desktop_handler = bdk_threads_add_idle (update_desktop_info,
                                                                                GINT_TO_POINTER (i));
                         }
                       break;
@@ -860,113 +860,113 @@ filter_func (GdkXEvent *gdkxevent,
             }
         }
     }
-  return GDK_FILTER_CONTINUE;
+  return BDK_FILTER_CONTINUE;
 }
 
 static void
-display_closed (GdkDisplay *display,
+display_closed (BdkDisplay *display,
 		gboolean    is_error)
 {
   int i;
 
   for (i = 0; i < num_screens; i++)
     {
-      if (gail_screens [i].update_handler)
+      if (bail_screens [i].update_handler)
 	{
-	  g_source_remove (gail_screens [i].update_handler);
-	  gail_screens [i].update_handler = 0;
+	  g_source_remove (bail_screens [i].update_handler);
+	  bail_screens [i].update_handler = 0;
 	}
 
-      if (gail_screens [i].update_desktop_handler)
+      if (bail_screens [i].update_desktop_handler)
 	{
-	  g_source_remove (gail_screens [i].update_desktop_handler);
-	  gail_screens [i].update_desktop_handler = 0;
+	  g_source_remove (bail_screens [i].update_desktop_handler);
+	  bail_screens [i].update_desktop_handler = 0;
 	}
 
-      free_screen_info (&gail_screens [i]);
+      free_screen_info (&bail_screens [i]);
     }
 
-  g_free (gail_screens);
-  gail_screens = NULL;
+  g_free (bail_screens);
+  bail_screens = NULL;
   num_screens = 0;
 }
 
 static void
-init_gail_screens (void)
+init_bail_screens (void)
 {
-  GdkDisplay *display;
+  BdkDisplay *display;
 
-  display = gdk_display_get_default ();
+  display = bdk_display_get_default ();
 
-  num_screens = gdk_display_get_n_screens (display);
+  num_screens = bdk_display_get_n_screens (display);
 
-  gail_screens = g_new0 (GailScreenInfo, num_screens);
-  gdk_window_add_filter (NULL, filter_func, NULL);
+  bail_screens = g_new0 (BailScreenInfo, num_screens);
+  bdk_window_add_filter (NULL, filter_func, NULL);
 
   g_signal_connect (display, "closed", G_CALLBACK (display_closed), NULL);
 }
 
 static void
-init_gail_screen (GdkScreen *screen,
+init_bail_screen (BdkScreen *screen,
                   int        screen_n)
 {
   XWindowAttributes attrs;
 
-  gail_screens [screen_n].root_window = gdk_screen_get_root_window (screen);
+  bail_screens [screen_n].root_window = bdk_screen_get_root_window (screen);
 
-  get_stacked_windows (&gail_screens [screen_n]);
+  get_stacked_windows (&bail_screens [screen_n]);
 
-  XGetWindowAttributes (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-			GDK_WINDOW_XWINDOW (gail_screens [screen_n].root_window),
+  XGetWindowAttributes (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()),
+			BDK_WINDOW_XWINDOW (bail_screens [screen_n].root_window),
 			&attrs); 
 
-  XSelectInput (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()),
-		GDK_WINDOW_XWINDOW (gail_screens [screen_n].root_window),
+  XSelectInput (BDK_DISPLAY_XDISPLAY (bdk_display_get_default ()),
+		BDK_WINDOW_XWINDOW (bail_screens [screen_n].root_window),
 		attrs.your_event_mask | PropertyChangeMask);
            
-  gail_screens [screen_n].screen_initialized = TRUE;
+  bail_screens [screen_n].screen_initialized = TRUE;
 }
 
-static GailScreenInfo *
-get_screen_info (GdkScreen *screen)
+static BailScreenInfo *
+get_screen_info (BdkScreen *screen)
 {
   int screen_n;
 
-  gail_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  bail_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  screen_n = gdk_screen_get_number (screen);
+  screen_n = bdk_screen_get_number (screen);
 
-  if (gail_screens && gail_screens [screen_n].screen_initialized)
-    return &gail_screens [screen_n];
+  if (bail_screens && bail_screens [screen_n].screen_initialized)
+    return &bail_screens [screen_n];
 
-  if (!gail_screens)
-    init_gail_screens ();
+  if (!bail_screens)
+    init_bail_screens ();
 
-  g_assert (gail_screens != NULL);
+  g_assert (bail_screens != NULL);
 
-  init_gail_screen (screen, screen_n);
+  init_bail_screen (screen, screen_n);
 
-  g_assert (gail_screens [screen_n].screen_initialized);
+  g_assert (bail_screens [screen_n].screen_initialized);
 
-  return &gail_screens [screen_n];
+  return &bail_screens [screen_n];
 }
 
 static gint
-get_window_zorder (GdkWindow *window)
+get_window_zorder (BdkWindow *window)
 {
-  GailScreenInfo *info;
+  BailScreenInfo *info;
   Window          xid;
   int             i;
   int             zorder;
   int             w_desktop;
 
-  gail_return_val_if_fail (GDK_IS_WINDOW (window), -1);
+  bail_return_val_if_fail (BDK_IS_WINDOW (window), -1);
 
-  info = get_screen_info (gdk_window_get_screen (window));
+  info = get_screen_info (bdk_window_get_screen (window));
 
-  gail_return_val_if_fail (info->stacked_windows != NULL, -1);
+  bail_return_val_if_fail (info->stacked_windows != NULL, -1);
 
-  xid = GDK_WINDOW_XID (window);
+  xid = BDK_WINDOW_XID (window);
 
   w_desktop = -1;
   for (i = 0; i < info->stacked_windows_len; i++)
@@ -998,9 +998,9 @@ get_window_zorder (GdkWindow *window)
 }
 
 static gint
-gail_window_get_mdi_zorder (AtkComponent *component)
+bail_window_get_mdi_zorder (BatkComponent *component)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
@@ -1008,17 +1008,17 @@ gail_window_get_mdi_zorder (AtkComponent *component)
      */
     return -1;
 
-  gail_return_val_if_fail (GTK_IS_WINDOW (widget), -1);
+  bail_return_val_if_fail (BTK_IS_WINDOW (widget), -1);
 
   return get_window_zorder (widget->window);
 }
 
-#elif defined (GDK_WINDOWING_WIN32)
+#elif defined (BDK_WINDOWING_WIN32)
 
 static gint
-gail_window_get_mdi_zorder (AtkComponent *component)
+bail_window_get_mdi_zorder (BatkComponent *component)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
@@ -1026,7 +1026,7 @@ gail_window_get_mdi_zorder (AtkComponent *component)
      */
     return -1;
 
-  gail_return_val_if_fail (GTK_IS_WINDOW (widget), -1);
+  bail_return_val_if_fail (BTK_IS_WINDOW (widget), -1);
 
   return 0;			/* Punt, FIXME */
 }
@@ -1034,9 +1034,9 @@ gail_window_get_mdi_zorder (AtkComponent *component)
 #else
 
 static gint
-gail_window_get_mdi_zorder (AtkComponent *component)
+bail_window_get_mdi_zorder (BatkComponent *component)
 {
-  GtkWidget *widget = GTK_ACCESSIBLE (component)->widget;
+  BtkWidget *widget = BTK_ACCESSIBLE (component)->widget;
 
   if (widget == NULL)
     /*
@@ -1044,7 +1044,7 @@ gail_window_get_mdi_zorder (AtkComponent *component)
      */
     return -1;
 
-  gail_return_val_if_fail (GTK_IS_WINDOW (widget), -1);
+  bail_return_val_if_fail (BTK_IS_WINDOW (widget), -1);
 
   return 0;			/* Punt, FIXME */
 }

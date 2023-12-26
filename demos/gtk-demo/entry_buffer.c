@@ -1,63 +1,63 @@
 /* Entry/Entry Buffer
  *
- * GtkEntryBuffer provides the text content in a GtkEntry.
+ * BtkEntryBuffer provides the text content in a BtkEntry.
  *
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static GtkWidget *window = NULL;
+static BtkWidget *window = NULL;
 
-GtkWidget *
-do_entry_buffer (GtkWidget *do_widget)
+BtkWidget *
+do_entry_buffer (BtkWidget *do_widget)
 {
-  GtkWidget *vbox;
-  GtkWidget *label;
-  GtkWidget *entry;
-  GtkEntryBuffer *buffer;
+  BtkWidget *vbox;
+  BtkWidget *label;
+  BtkWidget *entry;
+  BtkEntryBuffer *buffer;
 
   if (!window)
   {
-    window = gtk_dialog_new_with_buttons ("GtkEntryBuffer",
-					  GTK_WINDOW (do_widget),
+    window = btk_dialog_new_with_buttons ("BtkEntryBuffer",
+					  BTK_WINDOW (do_widget),
 					  0,
-					  GTK_STOCK_CLOSE,
-					  GTK_RESPONSE_NONE,
+					  BTK_STOCK_CLOSE,
+					  BTK_RESPONSE_NONE,
 					  NULL);
-    gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+    btk_window_set_resizable (BTK_WINDOW (window), FALSE);
 
     g_signal_connect (window, "response",
-		      G_CALLBACK (gtk_widget_destroy), NULL);
+		      G_CALLBACK (btk_widget_destroy), NULL);
     g_signal_connect (window, "destroy",
-		      G_CALLBACK (gtk_widget_destroyed), &window);
+		      G_CALLBACK (btk_widget_destroyed), &window);
 
-    vbox = gtk_vbox_new (FALSE, 5);
-    gtk_box_pack_start (GTK_BOX (gtk_dialog_get_content_area (GTK_DIALOG (window))), vbox, TRUE, TRUE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (vbox), 5);
+    vbox = btk_vbox_new (FALSE, 5);
+    btk_box_pack_start (BTK_BOX (btk_dialog_get_content_area (BTK_DIALOG (window))), vbox, TRUE, TRUE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (vbox), 5);
 
-    label = gtk_label_new (NULL);
-    gtk_label_set_markup (GTK_LABEL (label), "Entries share a buffer. Typing in one is reflected in the other.");
-    gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
+    label = btk_label_new (NULL);
+    btk_label_set_markup (BTK_LABEL (label), "Entries share a buffer. Typing in one is reflected in the other.");
+    btk_box_pack_start (BTK_BOX (vbox), label, FALSE, FALSE, 0);
 
     /* Create a buffer */
-    buffer = gtk_entry_buffer_new (NULL, 0);
+    buffer = btk_entry_buffer_new (NULL, 0);
 
     /* Create our first entry */
-    entry = gtk_entry_new_with_buffer (buffer);
-    gtk_box_pack_start (GTK_BOX (vbox), entry, FALSE, FALSE, 0);
+    entry = btk_entry_new_with_buffer (buffer);
+    btk_box_pack_start (BTK_BOX (vbox), entry, FALSE, FALSE, 0);
 
     /* Create the second entry */
-    entry = gtk_entry_new_with_buffer (buffer);
-    gtk_entry_set_visibility (GTK_ENTRY (entry), FALSE);
-    gtk_box_pack_start (GTK_BOX (vbox), entry, FALSE, FALSE, 0);
+    entry = btk_entry_new_with_buffer (buffer);
+    btk_entry_set_visibility (BTK_ENTRY (entry), FALSE);
+    btk_box_pack_start (BTK_BOX (vbox), entry, FALSE, FALSE, 0);
 
     g_object_unref (buffer);
   }
 
-  if (!gtk_widget_get_visible (window))
-    gtk_widget_show_all (window);
+  if (!btk_widget_get_visible (window))
+    btk_widget_show_all (window);
   else
-    gtk_widget_destroy (window);
+    btk_widget_destroy (window);
 
   return window;
 }

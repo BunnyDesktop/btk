@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,44 +17,44 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_RENDERER_CELL_H__
-#define __GAIL_RENDERER_CELL_H__
+#ifndef __BAIL_RENDERER_CELL_H__
+#define __BAIL_RENDERER_CELL_H__
 
-#include <atk/atk.h>
-#include <gail/gailcell.h>
+#include <batk/batk.h>
+#include <bail/bailcell.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_RENDERER_CELL            (gail_renderer_cell_get_type ())
-#define GAIL_RENDERER_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_RENDERER_CELL, GailRendererCell))
-#define GAIL_RENDERER_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_RENDERER_CELL, GailRendererCellClass))
-#define GAIL_IS_RENDERER_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_RENDERER_CELL))
-#define GAIL_IS_RENDERER_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_RENDERER_CELL))
-#define GAIL_RENDERER_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_RENDERER_CELL, GailRendererCellClass))
+#define BAIL_TYPE_RENDERER_CELL            (bail_renderer_cell_get_type ())
+#define BAIL_RENDERER_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_RENDERER_CELL, BailRendererCell))
+#define BAIL_RENDERER_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_RENDERER_CELL, BailRendererCellClass))
+#define BAIL_IS_RENDERER_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_RENDERER_CELL))
+#define BAIL_IS_RENDERER_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_RENDERER_CELL))
+#define BAIL_RENDERER_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_RENDERER_CELL, BailRendererCellClass))
 
-typedef struct _GailRendererCell                  GailRendererCell;
-typedef struct _GailRendererCellClass             GailRendererCellClass;
+typedef struct _BailRendererCell                  BailRendererCell;
+typedef struct _BailRendererCellClass             BailRendererCellClass;
 
-struct _GailRendererCell
+struct _BailRendererCell
 {
-  GailCell parent;
-  GtkCellRenderer *renderer;
+  BailCell parent;
+  BtkCellRenderer *renderer;
 };
 
-GType gail_renderer_cell_get_type (void);
+GType bail_renderer_cell_get_type (void);
 
-struct _GailRendererCellClass
+struct _BailRendererCellClass
 {
-  GailCellClass parent_class;
+  BailCellClass parent_class;
   gchar **property_list;
-  gboolean (*update_cache)(GailRendererCell *cell, gboolean emit_change_signal);
+  gboolean (*update_cache)(BailRendererCell *cell, gboolean emit_change_signal);
 };
 
 gboolean
-gail_renderer_cell_update_cache (GailRendererCell *cell, gboolean emit_change_signal);
+bail_renderer_cell_update_cache (BailRendererCell *cell, gboolean emit_change_signal);
 
-AtkObject *gail_renderer_cell_new (void);
+BatkObject *bail_renderer_cell_new (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_TREE_VIEW_TEXT_CELL_H__ */
+#endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

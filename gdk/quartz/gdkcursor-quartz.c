@@ -1,4 +1,4 @@
-/* gdkcursor-quartz.c
+/* bdkcursor-quartz.c
  *
  * Copyright (C) 2005-2007 Imendio AB
  *
@@ -20,32 +20,32 @@
 
 #include "config.h"
 
-#include "gdkdisplay.h"
-#include "gdkcursor.h"
-#include "gdkprivate-quartz.h"
+#include "bdkdisplay.h"
+#include "bdkcursor.h"
+#include "bdkprivate-quartz.h"
 
 #include "xcursors.h"
 
-static GdkCursor *cached_xcursors[G_N_ELEMENTS (xcursors)];
+static BdkCursor *cached_xcursors[G_N_ELEMENTS (xcursors)];
 
-static GdkCursor *
-gdk_quartz_cursor_new_from_nscursor (NSCursor      *nscursor,
-                                     GdkCursorType  cursor_type)
+static BdkCursor *
+bdk_quartz_cursor_new_from_nscursor (NSCursor      *nscursor,
+                                     BdkCursorType  cursor_type)
 {
-  GdkCursorPrivate *private;
-  GdkCursor *cursor;
+  BdkCursorPrivate *private;
+  BdkCursor *cursor;
 
-  private = g_new (GdkCursorPrivate, 1);
+  private = g_new (BdkCursorPrivate, 1);
   private->nscursor = nscursor;
 
-  cursor = (GdkCursor *)private;
+  cursor = (BdkCursor *)private;
   cursor->type = cursor_type;
   cursor->ref_count = 1;
 
   return cursor;
 }
 
-static GdkCursor *
+static BdkCursor *
 create_blank_cursor (void)
 {
   NSCursor *nscursor;
@@ -57,7 +57,7 @@ create_blank_cursor (void)
                                hotSpot:NSMakePoint(0.0, 0.0)];
   [nsimage release];
 
-  return gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_BLANK_CURSOR);
+  return bdk_quartz_cursor_new_from_nscursor (nscursor, BDK_BLANK_CURSOR);
 }
 
 static gboolean
@@ -79,10 +79,10 @@ get_bit (const guchar *data,
   return ((src[x / 8] >> x % 8) & 1);
 }
 
-static GdkCursor *
-create_builtin_cursor (GdkCursorType cursor_type)
+static BdkCursor *
+create_builtin_cursor (BdkCursorType cursor_type)
 {
-  GdkCursor *cursor;
+  BdkCursor *cursor;
   NSBitmapImageRep *bitmap_rep;
   NSInteger mask_width, mask_height;
   gint src_width, src_height;
@@ -101,7 +101,7 @@ create_builtin_cursor (GdkCursorType cursor_type)
   if (cursor)
     return cursor;
 
-  GDK_QUARTZ_ALLOC_POOL;
+  BDK_QUARTZ_ALLOC_POOL;
 
   src_width = xcursors[cursor_type].width;
   src_height = xcursors[cursor_type].height;
@@ -165,104 +165,104 @@ create_builtin_cursor (GdkCursorType cursor_type)
   nscursor = [[NSCursor alloc] initWithImage:image hotSpot:hotspot];
   [image release];
 
-  cursor = gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  cursor = bdk_quartz_cursor_new_from_nscursor (nscursor, BDK_CURSOR_IS_PIXMAP);
 
-  cached_xcursors[cursor_type] = gdk_cursor_ref (cursor);
+  cached_xcursors[cursor_type] = bdk_cursor_ref (cursor);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  BDK_QUARTZ_RELEASE_POOL;
 
   return cursor;
 }
 
-GdkCursor*
-gdk_cursor_new_for_display (GdkDisplay    *display,
-			    GdkCursorType  cursor_type)
+BdkCursor*
+bdk_cursor_new_for_display (BdkDisplay    *display,
+			    BdkCursorType  cursor_type)
 {
   NSCursor *nscursor;
 
-  g_return_val_if_fail (display == gdk_display_get_default (), NULL);
+  g_return_val_if_fail (display == bdk_display_get_default (), NULL);
 
   switch (cursor_type) 
     {
-    case GDK_XTERM:
+    case BDK_XTERM:
       nscursor = [NSCursor IBeamCursor];
       break;
-    case GDK_SB_H_DOUBLE_ARROW:
+    case BDK_SB_H_DOUBLE_ARROW:
       nscursor = [NSCursor resizeLeftRightCursor];
       break;
-    case GDK_SB_V_DOUBLE_ARROW:
+    case BDK_SB_V_DOUBLE_ARROW:
       nscursor = [NSCursor resizeUpDownCursor];
       break;
-    case GDK_SB_UP_ARROW:
-    case GDK_BASED_ARROW_UP:
-    case GDK_BOTTOM_TEE:
-    case GDK_TOP_SIDE:
+    case BDK_SB_UP_ARROW:
+    case BDK_BASED_ARROW_UP:
+    case BDK_BOTTOM_TEE:
+    case BDK_TOP_SIDE:
       nscursor = [NSCursor resizeUpCursor];
       break;
-    case GDK_SB_DOWN_ARROW:
-    case GDK_BASED_ARROW_DOWN:
-    case GDK_TOP_TEE:
-    case GDK_BOTTOM_SIDE:
+    case BDK_SB_DOWN_ARROW:
+    case BDK_BASED_ARROW_DOWN:
+    case BDK_TOP_TEE:
+    case BDK_BOTTOM_SIDE:
       nscursor = [NSCursor resizeDownCursor];
       break;
-    case GDK_SB_LEFT_ARROW:
-    case GDK_RIGHT_TEE:
-    case GDK_LEFT_SIDE:
+    case BDK_SB_LEFT_ARROW:
+    case BDK_RIGHT_TEE:
+    case BDK_LEFT_SIDE:
       nscursor = [NSCursor resizeLeftCursor];
       break;
-    case GDK_SB_RIGHT_ARROW:
-    case GDK_LEFT_TEE:
-    case GDK_RIGHT_SIDE:
+    case BDK_SB_RIGHT_ARROW:
+    case BDK_LEFT_TEE:
+    case BDK_RIGHT_SIDE:
       nscursor = [NSCursor resizeRightCursor];
       break;
-    case GDK_TCROSS:
-    case GDK_CROSS:
-    case GDK_CROSSHAIR:
-    case GDK_DIAMOND_CROSS:
+    case BDK_TCROSS:
+    case BDK_CROSS:
+    case BDK_CROSSHAIR:
+    case BDK_DIAMOND_CROSS:
       nscursor = [NSCursor crosshairCursor];
       break;
-    case GDK_HAND1:
-    case GDK_HAND2:
+    case BDK_HAND1:
+    case BDK_HAND2:
       nscursor = [NSCursor pointingHandCursor];
       break;
-    case GDK_CURSOR_IS_PIXMAP:
+    case BDK_CURSOR_IS_PIXMAP:
       return NULL;
-    case GDK_BLANK_CURSOR:
+    case BDK_BLANK_CURSOR:
       return create_blank_cursor ();
     default:
-      return gdk_cursor_ref (create_builtin_cursor (cursor_type));
+      return bdk_cursor_ref (create_builtin_cursor (cursor_type));
     }
 
   [nscursor retain];
-  return gdk_quartz_cursor_new_from_nscursor (nscursor, cursor_type);
+  return bdk_quartz_cursor_new_from_nscursor (nscursor, cursor_type);
 }
 
-GdkCursor*
-gdk_cursor_new_from_pixmap (GdkPixmap      *source,
-			    GdkPixmap      *mask,
-			    const GdkColor *fg,
-			    const GdkColor *bg,
+BdkCursor*
+bdk_cursor_new_from_pixmap (BdkPixmap      *source,
+			    BdkPixmap      *mask,
+			    const BdkColor *fg,
+			    const BdkColor *bg,
 			    gint            x,
 			    gint            y)
 {
   NSBitmapImageRep *bitmap_rep;
   NSImage *image;
   NSCursor *nscursor;
-  GdkCursor *cursor;
+  BdkCursor *cursor;
   int width, height;
   gint tmp_x, tmp_y;
   guchar *dst_data, *mask_data, *src_data;
   guchar *mask_start, *src_start;
   int dst_stride;
 
-  g_return_val_if_fail (GDK_IS_PIXMAP (source), NULL);
-  g_return_val_if_fail (GDK_IS_PIXMAP (mask), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (source), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (mask), NULL);
   g_return_val_if_fail (fg != NULL, NULL);
   g_return_val_if_fail (bg != NULL, NULL);
 
-  GDK_QUARTZ_ALLOC_POOL;
+  BDK_QUARTZ_ALLOC_POOL;
 
-  gdk_drawable_get_size (source, &width, &height);
+  bdk_drawable_get_size (source, &width, &height);
 
   bitmap_rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
 		pixelsWide:(NSInteger)width pixelsHigh:(NSInteger)height
@@ -271,8 +271,8 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
 		bytesPerRow:0 bitsPerPixel:0];
 
   dst_stride = [bitmap_rep bytesPerRow];
-  mask_start = GDK_PIXMAP_IMPL_QUARTZ (GDK_PIXMAP_OBJECT (mask)->impl)->data;
-  src_start = GDK_PIXMAP_IMPL_QUARTZ (GDK_PIXMAP_OBJECT (source)->impl)->data;
+  mask_start = BDK_PIXMAP_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (mask)->impl)->data;
+  src_start = BDK_PIXMAP_IMPL_QUARTZ (BDK_PIXMAP_OBJECT (source)->impl)->data;
 
   for (tmp_y = 0; tmp_y < height; tmp_y++)
     {
@@ -284,7 +284,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
 	{
 	  if (*mask_data++)
 	    {
-	      const GdkColor *color;
+	      const BdkColor *color;
 
 	      if (*src_data++)
 		color = fg;
@@ -315,26 +315,26 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   nscursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(x, y)];
   [image release];
 
-  cursor = gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  cursor = bdk_quartz_cursor_new_from_nscursor (nscursor, BDK_CURSOR_IS_PIXMAP);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  BDK_QUARTZ_RELEASE_POOL;
 
   return cursor;
 }
 
 static NSImage *
-_gdk_quartz_pixbuf_to_ns_image (GdkPixbuf *pixbuf)
+_bdk_quartz_pixbuf_to_ns_image (BdkPixbuf *pixbuf)
 {
   NSBitmapImageRep  *bitmap_rep;
   NSImage           *image;
   gboolean           has_alpha;
   
-  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+  has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
   
   /* Create a bitmap image rep */
   bitmap_rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL 
-                                         pixelsWide:gdk_pixbuf_get_width (pixbuf)
-					 pixelsHigh:gdk_pixbuf_get_height (pixbuf)
+                                         pixelsWide:bdk_pixbuf_get_width (pixbuf)
+					 pixelsHigh:bdk_pixbuf_get_height (pixbuf)
 					 bitsPerSample:8 samplesPerPixel:has_alpha ? 4 : 3
 					 hasAlpha:has_alpha isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace
 					 bytesPerRow:0 bitsPerPixel:0];
@@ -345,15 +345,15 @@ _gdk_quartz_pixbuf_to_ns_image (GdkPixbuf *pixbuf)
     int src_stride, dst_stride;
     int x, y;
 		
-    src_stride = gdk_pixbuf_get_rowstride (pixbuf);
+    src_stride = bdk_pixbuf_get_rowstride (pixbuf);
     dst_stride = [bitmap_rep bytesPerRow];
 		
-    for (y = 0; y < gdk_pixbuf_get_height (pixbuf); y++) 
+    for (y = 0; y < bdk_pixbuf_get_height (pixbuf); y++) 
       {
-	src = gdk_pixbuf_get_pixels (pixbuf) + y * src_stride;
+	src = bdk_pixbuf_get_pixels (pixbuf) + y * src_stride;
 	dst = [bitmap_rep bitmapData] + y * dst_stride;
 	
-	for (x = 0; x < gdk_pixbuf_get_width (pixbuf); x++)
+	for (x = 0; x < bdk_pixbuf_get_width (pixbuf); x++)
 	  {
 	    if (has_alpha)
 	      {
@@ -387,38 +387,38 @@ _gdk_quartz_pixbuf_to_ns_image (GdkPixbuf *pixbuf)
   return image;
 }
 
-GdkCursor *
-gdk_cursor_new_from_pixbuf (GdkDisplay *display, 
-			    GdkPixbuf  *pixbuf,
+BdkCursor *
+bdk_cursor_new_from_pixbuf (BdkDisplay *display, 
+			    BdkPixbuf  *pixbuf,
 			    gint        x,
 			    gint        y)
 {
   NSImage *image;
   NSCursor *nscursor;
-  GdkCursor *cursor;
+  BdkCursor *cursor;
   gboolean has_alpha;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  g_return_val_if_fail (0 <= x && x < gdk_pixbuf_get_width (pixbuf), NULL);
-  g_return_val_if_fail (0 <= y && y < gdk_pixbuf_get_height (pixbuf), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail (0 <= x && x < bdk_pixbuf_get_width (pixbuf), NULL);
+  g_return_val_if_fail (0 <= y && y < bdk_pixbuf_get_height (pixbuf), NULL);
 
-  GDK_QUARTZ_ALLOC_POOL;
+  BDK_QUARTZ_ALLOC_POOL;
 
-  has_alpha = gdk_pixbuf_get_has_alpha (pixbuf);
+  has_alpha = bdk_pixbuf_get_has_alpha (pixbuf);
 
-  image = _gdk_quartz_pixbuf_to_ns_image (pixbuf);
+  image = _bdk_quartz_pixbuf_to_ns_image (pixbuf);
   nscursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(x, y)];
 
-  cursor = gdk_quartz_cursor_new_from_nscursor (nscursor, GDK_CURSOR_IS_PIXMAP);
+  cursor = bdk_quartz_cursor_new_from_nscursor (nscursor, BDK_CURSOR_IS_PIXMAP);
 
-  GDK_QUARTZ_RELEASE_POOL;
+  BDK_QUARTZ_RELEASE_POOL;
 
   return cursor;
 }
 
-GdkCursor*  
-gdk_cursor_new_from_name (GdkDisplay  *display,  
+BdkCursor*  
+bdk_cursor_new_from_name (BdkDisplay  *display,  
 			  const gchar *name)
 {
   /* FIXME: Implement */
@@ -426,73 +426,73 @@ gdk_cursor_new_from_name (GdkDisplay  *display,
 }
 
 void
-_gdk_cursor_destroy (GdkCursor *cursor)
+_bdk_cursor_destroy (BdkCursor *cursor)
 {
-  GdkCursorPrivate *private;
+  BdkCursorPrivate *private;
 
   g_return_if_fail (cursor != NULL);
   g_return_if_fail (cursor->ref_count == 0);
 
-  private = (GdkCursorPrivate *)cursor;
+  private = (BdkCursorPrivate *)cursor;
   [private->nscursor release];
   
   g_free (private);
 }
 
 gboolean 
-gdk_display_supports_cursor_alpha (GdkDisplay *display)
+bdk_display_supports_cursor_alpha (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   return TRUE;
 }
 
 gboolean 
-gdk_display_supports_cursor_color (GdkDisplay *display)
+bdk_display_supports_cursor_color (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   return TRUE;
 }
 
 guint     
-gdk_display_get_default_cursor_size (GdkDisplay *display)
+bdk_display_get_default_cursor_size (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
 
   /* Mac OS X doesn't have the notion of a default size */
   return 32;
 }
 
 void     
-gdk_display_get_maximal_cursor_size (GdkDisplay *display,
+bdk_display_get_maximal_cursor_size (BdkDisplay *display,
 				     guint       *width,
 				     guint       *height)
 {
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
   /* Cursor sizes in Mac OS X can be arbitrarily large */
   *width = 65536;
   *height = 65536;
 }
 
-GdkDisplay *
-gdk_cursor_get_display (GdkCursor *cursor)
+BdkDisplay *
+bdk_cursor_get_display (BdkCursor *cursor)
 {
   g_return_val_if_fail (cursor != NULL, NULL);
 
-  return gdk_display_get_default ();
+  return bdk_display_get_default ();
 }
 
-GdkPixbuf *
-gdk_cursor_get_image (GdkCursor *cursor)
+BdkPixbuf *
+bdk_cursor_get_image (BdkCursor *cursor)
 {
   /* FIXME: Implement */
   return NULL;
 }
 
 NSImage *
-gdk_quartz_pixbuf_to_ns_image_libgtk_only (GdkPixbuf *pixbuf)
+bdk_quartz_pixbuf_to_ns_image_libbtk_only (BdkPixbuf *pixbuf)
 {
-  return _gdk_quartz_pixbuf_to_ns_image (pixbuf);
+  return _bdk_quartz_pixbuf_to_ns_image (pixbuf);
 }

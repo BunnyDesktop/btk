@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,42 +17,42 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_EXPANDER_H__
-#define __GAIL_EXPANDER_H__
+#ifndef __BAIL_EXPANDER_H__
+#define __BAIL_EXPANDER_H__
 
-#include <gail/gailcontainer.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailcontainer.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_EXPANDER              (gail_expander_get_type ())
-#define GAIL_EXPANDER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_EXPANDER, GailExpander))
-#define GAIL_EXPANDER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_EXPANDER, GailExpanderClass))
-#define GAIL_IS_EXPANDER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_EXPANDER))
-#define GAIL_IS_EXPANDER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_EXPANDER))
-#define GAIL_EXPANDER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_EXPANDER, GailExpanderClass))
+#define BAIL_TYPE_EXPANDER              (bail_expander_get_type ())
+#define BAIL_EXPANDER(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_EXPANDER, BailExpander))
+#define BAIL_EXPANDER_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_EXPANDER, BailExpanderClass))
+#define BAIL_IS_EXPANDER(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_EXPANDER))
+#define BAIL_IS_EXPANDER_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_EXPANDER))
+#define BAIL_EXPANDER_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_EXPANDER, BailExpanderClass))
 
-typedef struct _GailExpander              GailExpander;
-typedef struct _GailExpanderClass         GailExpanderClass;
+typedef struct _BailExpander              BailExpander;
+typedef struct _BailExpanderClass         BailExpanderClass;
 
-struct _GailExpander
+struct _BailExpander
 {
-  GailContainer parent;
+  BailContainer parent;
 
   gchar         *activate_description;
   gchar         *activate_keybinding;
   guint         action_idle_handler;
 
-  GailTextUtil   *textutil;
+  BailTextUtil   *textutil;
 };
 
-GType gail_expander_get_type (void);
+GType bail_expander_get_type (void);
 
-struct _GailExpanderClass
+struct _BailExpanderClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_EXPANDER_H__ */
+#endif /* __BAIL_EXPANDER_H__ */

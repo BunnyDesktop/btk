@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -32,16 +32,16 @@
 
 #include "config.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
 
 static GHashTable *window_id_ht = NULL;
 
 
 void
-gdk_directfb_window_id_table_insert (DFBWindowID  dfb_id,
-                                     GdkWindow   *window)
+bdk_directfb_window_id_table_insert (DFBWindowID  dfb_id,
+                                     BdkWindow   *window)
 {
   if (!window_id_ht)
     window_id_ht = g_hash_table_new (g_direct_hash, g_direct_equal);
@@ -50,19 +50,19 @@ gdk_directfb_window_id_table_insert (DFBWindowID  dfb_id,
 }
 
 void
-gdk_directfb_window_id_table_remove (DFBWindowID dfb_id)
+bdk_directfb_window_id_table_remove (DFBWindowID dfb_id)
 {
   if (window_id_ht)
     g_hash_table_remove (window_id_ht, GUINT_TO_POINTER (dfb_id));
 }
 
-GdkWindow *
-gdk_directfb_window_id_table_lookup (DFBWindowID dfb_id)
+BdkWindow *
+bdk_directfb_window_id_table_lookup (DFBWindowID dfb_id)
 {
-  GdkWindow *window = NULL;
+  BdkWindow *window = NULL;
 
   if (window_id_ht)
-    window = (GdkWindow *) g_hash_table_lookup (window_id_ht,
+    window = (BdkWindow *) g_hash_table_lookup (window_id_ht,
                                                 GUINT_TO_POINTER (dfb_id));
 
   return window;

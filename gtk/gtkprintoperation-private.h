@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintoperation.h: Print Operation
+/* BTK - The GIMP Toolkit
+ * btkprintoperation.h: Print Operation
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,35 +18,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_OPERATION_PRIVATE_H__
-#define __GTK_PRINT_OPERATION_PRIVATE_H__
+#ifndef __BTK_PRINT_OPERATION_PRIVATE_H__
+#define __BTK_PRINT_OPERATION_PRIVATE_H__
 
-#include "gtkprintoperation.h"
+#include "btkprintoperation.h"
 
 G_BEGIN_DECLS
 
 /* Page drawing states */
 typedef enum
 {
-  GTK_PAGE_DRAWING_STATE_READY,
-  GTK_PAGE_DRAWING_STATE_DRAWING,
-  GTK_PAGE_DRAWING_STATE_DEFERRED_DRAWING
-} GtkPageDrawingState;
+  BTK_PAGE_DRAWING_STATE_READY,
+  BTK_PAGE_DRAWING_STATE_DRAWING,
+  BTK_PAGE_DRAWING_STATE_DEFERRED_DRAWING
+} BtkPageDrawingState;
 
-struct _GtkPrintOperationPrivate
+struct _BtkPrintOperationPrivate
 {
-  GtkPrintOperationAction action;
-  GtkPrintStatus status;
+  BtkPrintOperationAction action;
+  BtkPrintStatus status;
   GError *error;
   gchar *status_string;
-  GtkPageSetup *default_page_setup;
-  GtkPrintSettings *print_settings;
+  BtkPageSetup *default_page_setup;
+  BtkPrintSettings *print_settings;
   gchar *job_name;
   gint nr_of_pages;
   gint nr_of_pages_to_print;
   gint page_position;
   gint current_page;
-  GtkUnit unit;
+  BtkUnit unit;
   gchar *export_filename;
   guint use_full_page      : 1;
   guint track_print_status : 1;
@@ -58,15 +58,15 @@ struct _GtkPrintOperationPrivate
   guint has_selection      : 1;
   guint embed_page_setup   : 1;
 
-  GtkPageDrawingState      page_drawing_state;
+  BtkPageDrawingState      page_drawing_state;
 
   guint print_pages_idle_id;
   guint show_progress_timeout_id;
 
-  GtkPrintContext *print_context;
+  BtkPrintContext *print_context;
   
-  GtkPrintPages print_pages;
-  GtkPageRange *page_ranges;
+  BtkPrintPages print_pages;
+  BtkPageRange *page_ranges;
   gint num_page_ranges;
   
   gint manual_num_copies;
@@ -74,11 +74,11 @@ struct _GtkPrintOperationPrivate
   guint manual_reverse     : 1;
   guint manual_orientation : 1;
   double manual_scale;
-  GtkPageSet manual_page_set;
+  BtkPageSet manual_page_set;
   guint manual_number_up;
-  GtkNumberUpLayout manual_number_up_layout;
+  BtkNumberUpLayout manual_number_up_layout;
 
-  GtkWidget *custom_widget;
+  BtkWidget *custom_widget;
   gchar *custom_tab_label;
   
   gpointer platform_data;
@@ -86,61 +86,61 @@ struct _GtkPrintOperationPrivate
 
   GMainLoop *rloop; /* recursive mainloop */
 
-  void (*start_page) (GtkPrintOperation *operation,
-		      GtkPrintContext   *print_context,
-		      GtkPageSetup      *page_setup);
-  void (*end_page)   (GtkPrintOperation *operation,
-		      GtkPrintContext   *print_context);
-  void (*end_run)    (GtkPrintOperation *operation,
+  void (*start_page) (BtkPrintOperation *operation,
+		      BtkPrintContext   *print_context,
+		      BtkPageSetup      *page_setup);
+  void (*end_page)   (BtkPrintOperation *operation,
+		      BtkPrintContext   *print_context);
+  void (*end_run)    (BtkPrintOperation *operation,
 		      gboolean           wait,
 		      gboolean           cancelled);
 };
 
 
-typedef void (* GtkPrintOperationPrintFunc) (GtkPrintOperation      *op,
-					     GtkWindow              *parent,
+typedef void (* BtkPrintOperationPrintFunc) (BtkPrintOperation      *op,
+					     BtkWindow              *parent,
 					     gboolean                do_print,
-					     GtkPrintOperationResult result);
+					     BtkPrintOperationResult result);
 
-GtkPrintOperationResult _gtk_print_operation_platform_backend_run_dialog             (GtkPrintOperation           *operation,
+BtkPrintOperationResult _btk_print_operation_platform_backend_run_dialog             (BtkPrintOperation           *operation,
 										      gboolean                     show_dialog,
-										      GtkWindow                   *parent,
+										      BtkWindow                   *parent,
 										      gboolean                    *do_print);
-void                    _gtk_print_operation_platform_backend_run_dialog_async       (GtkPrintOperation           *op,
+void                    _btk_print_operation_platform_backend_run_dialog_async       (BtkPrintOperation           *op,
 										      gboolean                     show_dialog,
-										      GtkWindow                   *parent,
-										      GtkPrintOperationPrintFunc   print_cb);
-void                    _gtk_print_operation_platform_backend_launch_preview         (GtkPrintOperation           *op,
-										      cairo_surface_t             *surface,
-										      GtkWindow                   *parent,
+										      BtkWindow                   *parent,
+										      BtkPrintOperationPrintFunc   print_cb);
+void                    _btk_print_operation_platform_backend_launch_preview         (BtkPrintOperation           *op,
+										      bairo_surface_t             *surface,
+										      BtkWindow                   *parent,
 										      const char                  *filename);
-cairo_surface_t *       _gtk_print_operation_platform_backend_create_preview_surface (GtkPrintOperation           *op,
-										      GtkPageSetup                *page_setup,
+bairo_surface_t *       _btk_print_operation_platform_backend_create_preview_surface (BtkPrintOperation           *op,
+										      BtkPageSetup                *page_setup,
 										      gdouble                     *dpi_x,
 										      gdouble                     *dpi_y,
 										      gchar                       **target);
-void                    _gtk_print_operation_platform_backend_resize_preview_surface (GtkPrintOperation           *op,
-										      GtkPageSetup                *page_setup,
-										      cairo_surface_t             *surface);
-void                    _gtk_print_operation_platform_backend_preview_start_page     (GtkPrintOperation *op,
-										      cairo_surface_t *surface,
-										      cairo_t *cr);
-void                    _gtk_print_operation_platform_backend_preview_end_page       (GtkPrintOperation *op,
-										      cairo_surface_t *surface,
-										      cairo_t *cr);
+void                    _btk_print_operation_platform_backend_resize_preview_surface (BtkPrintOperation           *op,
+										      BtkPageSetup                *page_setup,
+										      bairo_surface_t             *surface);
+void                    _btk_print_operation_platform_backend_preview_start_page     (BtkPrintOperation *op,
+										      bairo_surface_t *surface,
+										      bairo_t *cr);
+void                    _btk_print_operation_platform_backend_preview_end_page       (BtkPrintOperation *op,
+										      bairo_surface_t *surface,
+										      bairo_t *cr);
 
-void _gtk_print_operation_set_status (GtkPrintOperation *op,
-				      GtkPrintStatus     status,
+void _btk_print_operation_set_status (BtkPrintOperation *op,
+				      BtkPrintStatus     status,
 				      const gchar       *string);
 
-/* GtkPrintContext private functions: */
+/* BtkPrintContext private functions: */
 
-GtkPrintContext *_gtk_print_context_new                             (GtkPrintOperation *op);
-void             _gtk_print_context_set_page_setup                  (GtkPrintContext   *context,
-								     GtkPageSetup      *page_setup);
-void             _gtk_print_context_translate_into_margin           (GtkPrintContext   *context);
-void             _gtk_print_context_rotate_according_to_orientation (GtkPrintContext   *context);
-void             _gtk_print_context_set_hard_margins                (GtkPrintContext   *context,
+BtkPrintContext *_btk_print_context_new                             (BtkPrintOperation *op);
+void             _btk_print_context_set_page_setup                  (BtkPrintContext   *context,
+								     BtkPageSetup      *page_setup);
+void             _btk_print_context_translate_into_margin           (BtkPrintContext   *context);
+void             _btk_print_context_rotate_according_to_orientation (BtkPrintContext   *context);
+void             _btk_print_context_set_hard_margins                (BtkPrintContext   *context,
 								     gdouble            top,
 								     gdouble            bottom,
 								     gdouble            left,
@@ -148,4 +148,4 @@ void             _gtk_print_context_set_hard_margins                (GtkPrintCon
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_OPERATION_PRIVATE_H__ */
+#endif /* __BTK_PRINT_OPERATION_PRIVATE_H__ */

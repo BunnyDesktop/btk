@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,37 +17,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_ARROW_H__
-#define __GAIL_ARROW_H__
+#ifndef __BAIL_ARROW_H__
+#define __BAIL_ARROW_H__
 
-#include <gail/gailwidget.h>
+#include <bail/bailwidget.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_ARROW                      (gail_arrow_get_type ())
-#define GAIL_ARROW(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_ARROW, GailArrow))
-#define GAIL_ARROW_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_ARROW, GailArrowClass))
-#define GAIL_IS_ARROW(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_ARROW))
-#define GAIL_IS_ARROW_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_ARROW))
-#define GAIL_ARROW_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_ARROW, GailArrowClass))
+#define BAIL_TYPE_ARROW                      (bail_arrow_get_type ())
+#define BAIL_ARROW(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ARROW, BailArrow))
+#define BAIL_ARROW_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ARROW, BailArrowClass))
+#define BAIL_IS_ARROW(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ARROW))
+#define BAIL_IS_ARROW_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ARROW))
+#define BAIL_ARROW_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ARROW, BailArrowClass))
 
-typedef struct _GailArrow              GailArrow;
-typedef struct _GailArrowClass         GailArrowClass;
+typedef struct _BailArrow              BailArrow;
+typedef struct _BailArrowClass         BailArrowClass;
 
-struct _GailArrow
+struct _BailArrow
 {
-  GailWidget parent;
+  BailWidget parent;
 
   gchar*     image_description;
 };
 
-GType gail_arrow_get_type (void);
+GType bail_arrow_get_type (void);
 
-struct _GailArrowClass
+struct _BailArrowClass
 {
-  GailWidgetClass parent_class;
+  BailWidgetClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_ARROW_H__ */
+#endif /* __BAIL_ARROW_H__ */

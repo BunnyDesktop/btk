@@ -1,5 +1,5 @@
-/* gtkcelllayout.h
- * Copyright (C) 2003  Kristian Rietveld  <kris@gtk.org>
+/* btkcelllayout.h
+ * Copyright (C) 2003  Kristian Rietveld  <kris@btk.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,106 +17,106 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_CELL_LAYOUT_H__
-#define __GTK_CELL_LAYOUT_H__
+#ifndef __BTK_CELL_LAYOUT_H__
+#define __BTK_CELL_LAYOUT_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcellrenderer.h>
-#include <gtk/gtktreeviewcolumn.h>
-#include <gtk/gtkbuildable.h>
-#include <gtk/gtkbuilder.h>
+#include <btk/btkcellrenderer.h>
+#include <btk/btktreeviewcolumn.h>
+#include <btk/btkbuildable.h>
+#include <btk/btkbuilder.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CELL_LAYOUT            (gtk_cell_layout_get_type ())
-#define GTK_CELL_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CELL_LAYOUT, GtkCellLayout))
-#define GTK_IS_CELL_LAYOUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CELL_LAYOUT))
-#define GTK_CELL_LAYOUT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GTK_TYPE_CELL_LAYOUT, GtkCellLayoutIface))
+#define BTK_TYPE_CELL_LAYOUT            (btk_cell_layout_get_type ())
+#define BTK_CELL_LAYOUT(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayout))
+#define BTK_IS_CELL_LAYOUT(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CELL_LAYOUT))
+#define BTK_CELL_LAYOUT_GET_IFACE(obj)  (G_TYPE_INSTANCE_GET_INTERFACE ((obj), BTK_TYPE_CELL_LAYOUT, BtkCellLayoutIface))
 
-typedef struct _GtkCellLayout           GtkCellLayout; /* dummy typedef */
-typedef struct _GtkCellLayoutIface      GtkCellLayoutIface;
+typedef struct _BtkCellLayout           BtkCellLayout; /* dummy typedef */
+typedef struct _BtkCellLayoutIface      BtkCellLayoutIface;
 
-/* keep in sync with GtkTreeCellDataFunc */
-typedef void (* GtkCellLayoutDataFunc) (GtkCellLayout   *cell_layout,
-                                        GtkCellRenderer *cell,
-                                        GtkTreeModel    *tree_model,
-                                        GtkTreeIter     *iter,
+/* keep in sync with BtkTreeCellDataFunc */
+typedef void (* BtkCellLayoutDataFunc) (BtkCellLayout   *cell_layout,
+                                        BtkCellRenderer *cell,
+                                        BtkTreeModel    *tree_model,
+                                        BtkTreeIter     *iter,
                                         gpointer         data);
 
-struct _GtkCellLayoutIface
+struct _BtkCellLayoutIface
 {
   GTypeInterface g_iface;
 
   /* Virtual Table */
-  void (* pack_start)         (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell,
+  void (* pack_start)         (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell,
                                gboolean               expand);
-  void (* pack_end)           (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell,
+  void (* pack_end)           (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell,
                                gboolean               expand);
-  void (* clear)              (GtkCellLayout         *cell_layout);
-  void (* add_attribute)      (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell,
+  void (* clear)              (BtkCellLayout         *cell_layout);
+  void (* add_attribute)      (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell,
                                const gchar           *attribute,
                                gint                   column);
-  void (* set_cell_data_func) (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell,
-                               GtkCellLayoutDataFunc  func,
+  void (* set_cell_data_func) (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell,
+                               BtkCellLayoutDataFunc  func,
                                gpointer               func_data,
                                GDestroyNotify         destroy);
-  void (* clear_attributes)   (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell);
-  void (* reorder)            (GtkCellLayout         *cell_layout,
-                               GtkCellRenderer       *cell,
+  void (* clear_attributes)   (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell);
+  void (* reorder)            (BtkCellLayout         *cell_layout,
+                               BtkCellRenderer       *cell,
                                gint                   position);
-  GList* (* get_cells)        (GtkCellLayout         *cell_layout);
+  GList* (* get_cells)        (BtkCellLayout         *cell_layout);
 };
 
-GType gtk_cell_layout_get_type           (void) G_GNUC_CONST;
-void  gtk_cell_layout_pack_start         (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
+GType btk_cell_layout_get_type           (void) G_GNUC_CONST;
+void  btk_cell_layout_pack_start         (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
                                           gboolean               expand);
-void  gtk_cell_layout_pack_end           (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
+void  btk_cell_layout_pack_end           (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
                                           gboolean               expand);
-GList *gtk_cell_layout_get_cells         (GtkCellLayout         *cell_layout);
-void  gtk_cell_layout_clear              (GtkCellLayout         *cell_layout);
-void  gtk_cell_layout_set_attributes     (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
+GList *btk_cell_layout_get_cells         (BtkCellLayout         *cell_layout);
+void  btk_cell_layout_clear              (BtkCellLayout         *cell_layout);
+void  btk_cell_layout_set_attributes     (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
                                           ...) G_GNUC_NULL_TERMINATED;
-void  gtk_cell_layout_add_attribute      (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
+void  btk_cell_layout_add_attribute      (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
                                           const gchar           *attribute,
                                           gint                   column);
-void  gtk_cell_layout_set_cell_data_func (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
-                                          GtkCellLayoutDataFunc  func,
+void  btk_cell_layout_set_cell_data_func (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
+                                          BtkCellLayoutDataFunc  func,
                                           gpointer               func_data,
                                           GDestroyNotify         destroy);
-void  gtk_cell_layout_clear_attributes   (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell);
-void  gtk_cell_layout_reorder            (GtkCellLayout         *cell_layout,
-                                          GtkCellRenderer       *cell,
+void  btk_cell_layout_clear_attributes   (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell);
+void  btk_cell_layout_reorder            (BtkCellLayout         *cell_layout,
+                                          BtkCellRenderer       *cell,
                                           gint                   position);
-gboolean _gtk_cell_layout_buildable_custom_tag_start (GtkBuildable  *buildable,
-						      GtkBuilder    *builder,
+gboolean _btk_cell_layout_buildable_custom_tag_start (BtkBuildable  *buildable,
+						      BtkBuilder    *builder,
 						      GObject       *child,
 						      const gchar   *tagname,
 						      GMarkupParser *parser,
 						      gpointer      *data);
-void _gtk_cell_layout_buildable_custom_tag_end       (GtkBuildable  *buildable,
-						      GtkBuilder    *builder,
+void _btk_cell_layout_buildable_custom_tag_end       (BtkBuildable  *buildable,
+						      BtkBuilder    *builder,
 						      GObject       *child,
 						      const gchar   *tagname,
 						      gpointer      *data);
-void _gtk_cell_layout_buildable_add_child            (GtkBuildable  *buildable,
-						      GtkBuilder    *builder,
+void _btk_cell_layout_buildable_add_child            (BtkBuildable  *buildable,
+						      BtkBuilder    *builder,
 						      GObject       *child,
 						      const gchar   *type);
 
 G_END_DECLS
 
-#endif /* __GTK_CELL_LAYOUT_H__ */
+#endif /* __BTK_CELL_LAYOUT_H__ */

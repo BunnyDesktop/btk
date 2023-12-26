@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2002, Owen Taylor
  *
  * This library is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  */
 
 #include "config.h"
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#include <glib/gprintf.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
+#include <bunnylib/gprintf.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -44,21 +44,21 @@ output_byte (guchar byte,
 }
 
 static void
-do_part (GdkPixbuf  *pixbuf,
+do_part (BdkPixbuf  *pixbuf,
 	 gint        part1_index,
 	 gint        part2_index,
 	 gint        part3_index,
 	 const char *base_name,
 	 const char *part_name)
 {
-  const guchar *pixels = gdk_pixbuf_get_pixels (pixbuf);
+  const guchar *pixels = bdk_pixbuf_get_pixels (pixbuf);
   const guchar *color1;
   const guchar *color2;
   const guchar *color3;
-  gint rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-  gint n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-  gint width = gdk_pixbuf_get_width (pixbuf);
-  gint height = gdk_pixbuf_get_height (pixbuf);
+  gint rowstride = bdk_pixbuf_get_rowstride (pixbuf);
+  gint n_channels = bdk_pixbuf_get_n_channels (pixbuf);
+  gint width = bdk_pixbuf_get_width (pixbuf);
+  gint height = bdk_pixbuf_get_height (pixbuf);
   gint online = 0;
 
   color1 = pixels + part1_index * n_channels;
@@ -128,7 +128,7 @@ static const char *part_names[PART_LAST] = {
 int main (int argc, char **argv)
 {
   gchar *progname = g_path_get_basename (argv[0]);
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   GError *error = NULL;
   gint i;
 
@@ -140,27 +140,27 @@ int main (int argc, char **argv)
 
   g_type_init ();
   
-  pixbuf = gdk_pixbuf_new_from_file (argv[1], &error);
+  pixbuf = bdk_pixbuf_new_from_file (argv[1], &error);
   if (!pixbuf)
     {
       g_fprintf (stderr, "%s: cannot open file '%s': %s\n", progname, argv[1], error->message);
       exit (1);
     }
   
-  if (gdk_pixbuf_get_width (pixbuf) < PART_LAST)
+  if (bdk_pixbuf_get_width (pixbuf) < PART_LAST)
     {
       g_fprintf (stderr, "%s: source image must be at least %d pixels wide\n", progname, PART_LAST);
       exit (1);
     }
 
-  if (gdk_pixbuf_get_height (pixbuf) < 1)
+  if (bdk_pixbuf_get_height (pixbuf) < 1)
     {
       g_fprintf (stderr, "%s: source image must be at least 1 pixel height\n", progname);
       exit (1);
     }
 
   g_printf ("/*\n * Extracted from %s, width=%d, height=%d\n */\n", argv[1],
-	  gdk_pixbuf_get_width (pixbuf), gdk_pixbuf_get_height (pixbuf) - 1);
+	  bdk_pixbuf_get_width (pixbuf), bdk_pixbuf_get_height (pixbuf) - 1);
 
   for (i = 0; i < PART_LAST; i++)
     {

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,21 +18,21 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdkx.h"
-#include "gdkprivate-x11.h"
-#include "gdkdisplay-x11.h"
-#include "gdkalias.h"
+#include "bdkx.h"
+#include "bdkprivate-x11.h"
+#include "bdkdisplay-x11.h"
+#include "bdkalias.h"
 #include <stdio.h>
 
-static guint     gdk_xid_hash  (XID *xid);
-static gboolean  gdk_xid_equal (XID *a,
+static guint     bdk_xid_hash  (XID *xid);
+static gboolean  bdk_xid_equal (XID *a,
 				XID *b);
 
 
@@ -42,20 +42,20 @@ static gboolean  gdk_xid_equal (XID *a,
 #define XID_FONT_BIT (1<<31)
 
 void
-_gdk_xid_table_insert (GdkDisplay *display,
+_bdk_xid_table_insert (BdkDisplay *display,
 		       XID	  *xid,
 		       gpointer    data)
 {
-  GdkDisplayX11 *display_x11;
+  BdkDisplayX11 *display_x11;
 
   g_return_if_fail (xid != NULL);
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
-  display_x11 = GDK_DISPLAY_X11 (display);
+  display_x11 = BDK_DISPLAY_X11 (display);
 
   if (!display_x11->xid_ht)
-    display_x11->xid_ht = g_hash_table_new ((GHashFunc) gdk_xid_hash,
-					    (GEqualFunc) gdk_xid_equal);
+    display_x11->xid_ht = g_hash_table_new ((GHashFunc) bdk_xid_hash,
+					    (GEqualFunc) bdk_xid_equal);
 
   if (g_hash_table_lookup (display_x11->xid_ht, xid))
     g_warning ("XID collision, trouble ahead");
@@ -64,46 +64,46 @@ _gdk_xid_table_insert (GdkDisplay *display,
 }
 
 void
-_gdk_xid_table_remove (GdkDisplay *display,
+_bdk_xid_table_remove (BdkDisplay *display,
 		       XID	   xid)
 {
-  GdkDisplayX11 *display_x11;
+  BdkDisplayX11 *display_x11;
 
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
-  display_x11 = GDK_DISPLAY_X11 (display);
+  display_x11 = BDK_DISPLAY_X11 (display);
 
   if (display_x11->xid_ht)
     g_hash_table_remove (display_x11->xid_ht, &xid);
 }
 
 /**
- * gdk_xid_table_lookup_for_display:
- * @display: the #GdkDisplay.
+ * bdk_xid_table_lookup_for_display:
+ * @display: the #BdkDisplay.
  * @xid: an X id.
  *
- * Returns the GDK object associated with the given X id.
+ * Returns the BDK object associated with the given X id.
  *
- * Return value: the associated Gdk object, which may be a #GdkPixmap,
- *     a #GdkWindow or a #GdkFont or %NULL if no object is associated
+ * Return value: the associated Bdk object, which may be a #BdkPixmap,
+ *     a #BdkWindow or a #BdkFont or %NULL if no object is associated
  *     with the X id.
  *
  * Since: 2.2
  *
- * Deprecated:2.24: This function will be removed in GTK+ 3.0. GTK+
+ * Deprecated:2.24: This function will be removed in BTK+ 3.0. BTK+
  *     only stores windows in its X id table nowadays, so use
- *     gdk_x11_window_lookup_for_display() instead.
+ *     bdk_x11_window_lookup_for_display() instead.
  */
 gpointer
-gdk_xid_table_lookup_for_display (GdkDisplay  *display,
+bdk_xid_table_lookup_for_display (BdkDisplay  *display,
 				  XID	       xid)
 {
-  GdkDisplayX11 *display_x11;
+  BdkDisplayX11 *display_x11;
   gpointer data = NULL;
   
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   
-  display_x11 = GDK_DISPLAY_X11 (display);
+  display_x11 = BDK_DISPLAY_X11 (display);
 
   if (display_x11->xid_ht)
     data = g_hash_table_lookup (display_x11->xid_ht, &xid);
@@ -113,38 +113,38 @@ gdk_xid_table_lookup_for_display (GdkDisplay  *display,
 
 
 /**
- * gdk_xid_table_lookup:
+ * bdk_xid_table_lookup:
  * @xid: an X id.
  *
- * Returns the Gdk object associated with the given X id for the default
+ * Returns the Bdk object associated with the given X id for the default
  * display.
  *
- * Return value: the associated Gdk object, which may be a #GdkPixmap,
- *     a #GdkWindow or a #GdkFont or %NULL if no object is associated
+ * Return value: the associated Bdk object, which may be a #BdkPixmap,
+ *     a #BdkWindow or a #BdkFont or %NULL if no object is associated
  *     with the X id.
  *
- * Deprecated:2.24: This function will be removed in GTK+ 3.0. GTK+
+ * Deprecated:2.24: This function will be removed in BTK+ 3.0. BTK+
  *     only stores windows in its X id table nowadays, so use
- *     gdk_x11_window_lookup_for_display() instead.
+ *     bdk_x11_window_lookup_for_display() instead.
  */
 gpointer
-gdk_xid_table_lookup (XID xid)
+bdk_xid_table_lookup (XID xid)
 {
-  return gdk_xid_table_lookup_for_display (gdk_display_get_default (), xid);
+  return bdk_xid_table_lookup_for_display (bdk_display_get_default (), xid);
 }
 
 static guint
-gdk_xid_hash (XID *xid)
+bdk_xid_hash (XID *xid)
 {
   return *xid;
 }
 
 static gboolean
-gdk_xid_equal (XID *a,
+bdk_xid_equal (XID *a,
 	       XID *b)
 {
   return ((*a & ~XID_FONT_BIT) == (*b & ~XID_FONT_BIT));
 }
 
-#define __GDK_XID_C__
-#include "gdkaliasdef.c"
+#define __BDK_XID_C__
+#include "bdkaliasdef.c"

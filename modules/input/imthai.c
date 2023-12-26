@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,52 +22,52 @@
 #include "config.h"
 #include <string.h>
 
-#include <gdk/gdkkeysyms.h>
+#include <bdk/bdkkeysyms.h>
 
-#include "gtk/gtkintl.h"
-#include "gtk/gtkimmodule.h"
-#include "gtkimcontextthai.h"
+#include "btk/btkintl.h"
+#include "btk/btkimmodule.h"
+#include "btkimcontextthai.h"
 
 GType type_thai = 0;
 
-static const GtkIMContextInfo thai_info = { 
+static const BtkIMContextInfo thai_info = { 
   "thai",	   /* ID */
   N_("Thai-Lao"),  /* Human readable name */
   GETTEXT_PACKAGE, /* Translation domain */
-  GTK_LOCALEDIR,   /* Dir for bindtextdomain (not strictly needed for "gtk+") */
+  BTK_LOCALEDIR,   /* Dir for bindtextdomain (not strictly needed for "btk+") */
   "lo:th"	   /* Languages for which this module is the default */
 };
 
-static const GtkIMContextInfo *info_list[] = {
+static const BtkIMContextInfo *info_list[] = {
   &thai_info
 };
 
 #ifndef INCLUDE_IM_thai
 #define MODULE_ENTRY(type, function) G_MODULE_EXPORT type im_module_ ## function
 #else
-#define MODULE_ENTRY(type, function) type _gtk_immodule_thai_ ## function
+#define MODULE_ENTRY(type, function) type _btk_immodule_thai_ ## function
 #endif
 
 MODULE_ENTRY (void, init) (GTypeModule *module)
 {
-  gtk_im_context_thai_register_type (module);
+  btk_im_context_thai_register_type (module);
 }
 
 MODULE_ENTRY (void, exit) (void)
 {
 }
 
-MODULE_ENTRY (void, list) (const GtkIMContextInfo ***contexts,
+MODULE_ENTRY (void, list) (const BtkIMContextInfo ***contexts,
 			   int                      *n_contexts)
 {
   *contexts = info_list;
   *n_contexts = G_N_ELEMENTS (info_list);
 }
 
-MODULE_ENTRY (GtkIMContext *, create) (const gchar *context_id)
+MODULE_ENTRY (BtkIMContext *, create) (const gchar *context_id)
 {
   if (strcmp (context_id, "thai") == 0)
-    return gtk_im_context_thai_new ();
+    return btk_im_context_thai_new ();
   else
     return NULL;
 }

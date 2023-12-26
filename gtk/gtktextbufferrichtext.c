@@ -1,4 +1,4 @@
-/* gtkrichtext.c
+/* btkrichtext.c
  *
  * Copyright (C) 2006 Imendio AB
  * Contact: Michael Natterer <mitch@imendio.com>
@@ -23,21 +23,21 @@
 
 #include <string.h>
 
-#include "gtktextbufferrichtext.h"
-#include "gtktextbufferserialize.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktextbufferrichtext.h"
+#include "btktextbufferserialize.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 typedef struct
 {
   gchar          *mime_type;
   gboolean        can_create_tags;
-  GdkAtom         atom;
+  BdkAtom         atom;
   gpointer        function;
   gpointer        user_data;
   GDestroyNotify  user_data_destroy;
-} GtkRichTextFormat;
+} BtkRichTextFormat;
 
 
 static GList   * register_format   (GList             *formats,
@@ -45,20 +45,20 @@ static GList   * register_format   (GList             *formats,
                                     gpointer           function,
                                     gpointer           user_data,
                                     GDestroyNotify     user_data_destroy,
-                                    GdkAtom           *atom);
+                                    BdkAtom           *atom);
 static GList   * unregister_format (GList             *formats,
-                                    GdkAtom            atom);
-static GdkAtom * get_formats       (GList             *formats,
+                                    BdkAtom            atom);
+static BdkAtom * get_formats       (GList             *formats,
                                     gint              *n_formats);
-static void      free_format       (GtkRichTextFormat *format);
+static void      free_format       (BtkRichTextFormat *format);
 static void      free_format_list  (GList             *formats);
 static GQuark    serialize_quark   (void);
 static GQuark    deserialize_quark (void);
 
 
 /**
- * gtk_text_buffer_register_serialize_format:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_register_serialize_format:
+ * @buffer: a #BtkTextBuffer
  * @mime_type: the format's mime-type
  * @function: the serialize function to register
  * @user_data: %function's user_data
@@ -67,24 +67,24 @@ static GQuark    deserialize_quark (void);
  * This function registers a rich text serialization @function along with
  * its @mime_type with the passed @buffer.
  *
- * Return value: (transfer none): the #GdkAtom that corresponds to the
+ * Return value: (transfer none): the #BdkAtom that corresponds to the
  *               newly registered format's mime-type.
  *
  * Since: 2.10
  **/
-GdkAtom
-gtk_text_buffer_register_serialize_format (GtkTextBuffer              *buffer,
+BdkAtom
+btk_text_buffer_register_serialize_format (BtkTextBuffer              *buffer,
                                            const gchar                *mime_type,
-                                           GtkTextBufferSerializeFunc  function,
+                                           BtkTextBufferSerializeFunc  function,
                                            gpointer                    user_data,
                                            GDestroyNotify              user_data_destroy)
 {
   GList   *formats;
-  GdkAtom  atom;
+  BdkAtom  atom;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), GDK_NONE);
-  g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', GDK_NONE);
-  g_return_val_if_fail (function != NULL, GDK_NONE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
+  g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', BDK_NONE);
+  g_return_val_if_fail (function != NULL, BDK_NONE);
 
   formats = g_object_steal_qdata (G_OBJECT (buffer), serialize_quark ());
 
@@ -102,20 +102,20 @@ gtk_text_buffer_register_serialize_format (GtkTextBuffer              *buffer,
 }
 
 /**
- * gtk_text_buffer_register_serialize_tagset:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_register_serialize_tagset:
+ * @buffer: a #BtkTextBuffer
  * @tagset_name: (allow-none): an optional tagset name, on %NULL
  *
- * This function registers GTK+'s internal rich text serialization
+ * This function registers BTK+'s internal rich text serialization
  * format with the passed @buffer. The internal format does not comply
- * to any standard rich text format and only works between #GtkTextBuffer
+ * to any standard rich text format and only works between #BtkTextBuffer
  * instances. It is capable of serializing all of a text buffer's tags
  * and embedded pixbufs.
  *
  * This function is just a wrapper around
- * gtk_text_buffer_register_serialize_format(). The mime type used
- * for registering is "application/x-gtk-text-buffer-rich-text", or
- * "application/x-gtk-text-buffer-rich-text;format=@tagset_name" if a
+ * btk_text_buffer_register_serialize_format(). The mime type used
+ * for registering is "application/x-btk-text-buffer-rich-text", or
+ * "application/x-btk-text-buffer-rich-text;format=@tagset_name" if a
  * @tagset_name was passed.
  *
  * The @tagset_name can be used to restrict the transfer of rich text
@@ -124,28 +124,28 @@ gtk_text_buffer_register_serialize_format (GtkTextBuffer              *buffer,
  * identifier != %NULL here, since the %NULL tagset requires the
  * receiving buffer to deal with with pasting of arbitrary tags.
  *
- * Return value: (transfer none): the #GdkAtom that corresponds to the
+ * Return value: (transfer none): the #BdkAtom that corresponds to the
  *               newly registered format's mime-type.
  *
  * Since: 2.10
  **/
-GdkAtom
-gtk_text_buffer_register_serialize_tagset (GtkTextBuffer *buffer,
+BdkAtom
+btk_text_buffer_register_serialize_tagset (BtkTextBuffer *buffer,
                                            const gchar   *tagset_name)
 {
-  gchar   *mime_type = "application/x-gtk-text-buffer-rich-text";
-  GdkAtom  format;
+  gchar   *mime_type = "application/x-btk-text-buffer-rich-text";
+  BdkAtom  format;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), GDK_NONE);
-  g_return_val_if_fail (tagset_name == NULL || *tagset_name != '\0', GDK_NONE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
+  g_return_val_if_fail (tagset_name == NULL || *tagset_name != '\0', BDK_NONE);
 
   if (tagset_name)
     mime_type =
-      g_strdup_printf ("application/x-gtk-text-buffer-rich-text;format=%s",
+      g_strdup_printf ("application/x-btk-text-buffer-rich-text;format=%s",
                        tagset_name);
 
-  format = gtk_text_buffer_register_serialize_format (buffer, mime_type,
-                                                      _gtk_text_buffer_serialize_rich_text,
+  format = btk_text_buffer_register_serialize_format (buffer, mime_type,
+                                                      _btk_text_buffer_serialize_rich_text,
                                                       NULL, NULL);
 
   if (tagset_name)
@@ -155,8 +155,8 @@ gtk_text_buffer_register_serialize_tagset (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_register_deserialize_format:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_register_deserialize_format:
+ * @buffer: a #BtkTextBuffer
  * @mime_type: the format's mime-type
  * @function: the deserialize function to register
  * @user_data: @function's user_data
@@ -165,24 +165,24 @@ gtk_text_buffer_register_serialize_tagset (GtkTextBuffer *buffer,
  * This function registers a rich text deserialization @function along with
  * its @mime_type with the passed @buffer.
  *
- * Return value: (transfer none): the #GdkAtom that corresponds to the
+ * Return value: (transfer none): the #BdkAtom that corresponds to the
  *               newly registered format's mime-type.
  *
  * Since: 2.10
  **/
-GdkAtom
-gtk_text_buffer_register_deserialize_format (GtkTextBuffer                *buffer,
+BdkAtom
+btk_text_buffer_register_deserialize_format (BtkTextBuffer                *buffer,
                                              const gchar                  *mime_type,
-                                             GtkTextBufferDeserializeFunc  function,
+                                             BtkTextBufferDeserializeFunc  function,
                                              gpointer                      user_data,
                                              GDestroyNotify                user_data_destroy)
 {
   GList   *formats;
-  GdkAtom  atom;
+  BdkAtom  atom;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), GDK_NONE);
-  g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', GDK_NONE);
-  g_return_val_if_fail (function != NULL, GDK_NONE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
+  g_return_val_if_fail (mime_type != NULL && *mime_type != '\0', BDK_NONE);
+  g_return_val_if_fail (function != NULL, BDK_NONE);
 
   formats = g_object_steal_qdata (G_OBJECT (buffer), deserialize_quark ());
 
@@ -200,36 +200,36 @@ gtk_text_buffer_register_deserialize_format (GtkTextBuffer                *buffe
 }
 
 /**
- * gtk_text_buffer_register_deserialize_tagset:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_register_deserialize_tagset:
+ * @buffer: a #BtkTextBuffer
  * @tagset_name: (allow-none): an optional tagset name, on %NULL
  *
- * This function registers GTK+'s internal rich text serialization
+ * This function registers BTK+'s internal rich text serialization
  * format with the passed @buffer. See
- * gtk_text_buffer_register_serialize_tagset() for details.
+ * btk_text_buffer_register_serialize_tagset() for details.
  *
- * Return value: (transfer none): the #GdkAtom that corresponds to the
+ * Return value: (transfer none): the #BdkAtom that corresponds to the
  *               newly registered format's mime-type.
  *
  * Since: 2.10
  **/
-GdkAtom
-gtk_text_buffer_register_deserialize_tagset (GtkTextBuffer *buffer,
+BdkAtom
+btk_text_buffer_register_deserialize_tagset (BtkTextBuffer *buffer,
                                              const gchar   *tagset_name)
 {
-  gchar   *mime_type = "application/x-gtk-text-buffer-rich-text";
-  GdkAtom  format;
+  gchar   *mime_type = "application/x-btk-text-buffer-rich-text";
+  BdkAtom  format;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), GDK_NONE);
-  g_return_val_if_fail (tagset_name == NULL || *tagset_name != '\0', GDK_NONE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), BDK_NONE);
+  g_return_val_if_fail (tagset_name == NULL || *tagset_name != '\0', BDK_NONE);
 
   if (tagset_name)
     mime_type =
-      g_strdup_printf ("application/x-gtk-text-buffer-rich-text;format=%s",
+      g_strdup_printf ("application/x-btk-text-buffer-rich-text;format=%s",
                        tagset_name);
 
-  format = gtk_text_buffer_register_deserialize_format (buffer, mime_type,
-                                                        _gtk_text_buffer_deserialize_rich_text,
+  format = btk_text_buffer_register_deserialize_format (buffer, mime_type,
+                                                        _btk_text_buffer_deserialize_rich_text,
                                                         NULL, NULL);
 
   if (tagset_name)
@@ -239,24 +239,24 @@ gtk_text_buffer_register_deserialize_tagset (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_unregister_serialize_format:
- * @buffer: a #GtkTextBuffer
- * @format: a #GdkAtom representing a registered rich text format.
+ * btk_text_buffer_unregister_serialize_format:
+ * @buffer: a #BtkTextBuffer
+ * @format: a #BdkAtom representing a registered rich text format.
  *
  * This function unregisters a rich text format that was previously
- * registered using gtk_text_buffer_register_serialize_format() or
- * gtk_text_buffer_register_serialize_tagset()
+ * registered using btk_text_buffer_register_serialize_format() or
+ * btk_text_buffer_register_serialize_tagset()
  *
  * Since: 2.10
  **/
 void
-gtk_text_buffer_unregister_serialize_format (GtkTextBuffer *buffer,
-                                             GdkAtom        format)
+btk_text_buffer_unregister_serialize_format (BtkTextBuffer *buffer,
+                                             BdkAtom        format)
 {
   GList *formats;
 
-  g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
-  g_return_if_fail (format != GDK_NONE);
+  g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
+  g_return_if_fail (format != BDK_NONE);
 
   formats = g_object_steal_qdata (G_OBJECT (buffer), serialize_quark ());
 
@@ -269,24 +269,24 @@ gtk_text_buffer_unregister_serialize_format (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_unregister_deserialize_format:
- * @buffer: a #GtkTextBuffer
- * @format: a #GdkAtom representing a registered rich text format.
+ * btk_text_buffer_unregister_deserialize_format:
+ * @buffer: a #BtkTextBuffer
+ * @format: a #BdkAtom representing a registered rich text format.
  *
  * This function unregisters a rich text format that was previously
- * registered using gtk_text_buffer_register_deserialize_format() or
- * gtk_text_buffer_register_deserialize_tagset().
+ * registered using btk_text_buffer_register_deserialize_format() or
+ * btk_text_buffer_register_deserialize_tagset().
  *
  * Since: 2.10
  **/
 void
-gtk_text_buffer_unregister_deserialize_format (GtkTextBuffer *buffer,
-                                               GdkAtom        format)
+btk_text_buffer_unregister_deserialize_format (BtkTextBuffer *buffer,
+                                               BdkAtom        format)
 {
   GList *formats;
 
-  g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
-  g_return_if_fail (format != GDK_NONE);
+  g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
+  g_return_if_fail (format != BDK_NONE);
 
   formats = g_object_steal_qdata (G_OBJECT (buffer), deserialize_quark ());
 
@@ -299,9 +299,9 @@ gtk_text_buffer_unregister_deserialize_format (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_deserialize_set_can_create_tags:
- * @buffer: a #GtkTextBuffer
- * @format: a #GdkAtom representing a registered rich text format
+ * btk_text_buffer_deserialize_set_can_create_tags:
+ * @buffer: a #BtkTextBuffer
+ * @format: a #BdkAtom representing a registered rich text format
  * @can_create_tags: whether deserializing this format may create tags
  *
  * Use this function to allow a rich text deserialization function to
@@ -312,7 +312,7 @@ gtk_text_buffer_unregister_deserialize_format (GtkTextBuffer *buffer,
  *
  * The ability of creating new (arbitrary!) tags in the receiving buffer
  * is meant for special rich text formats like the internal one that
- * is registered using gtk_text_buffer_register_deserialize_tagset(),
+ * is registered using btk_text_buffer_register_deserialize_tagset(),
  * because that format is essentially a dump of the internal structure
  * of the source buffer, including its tag names.
  *
@@ -325,22 +325,22 @@ gtk_text_buffer_unregister_deserialize_format (GtkTextBuffer *buffer,
  * Since: 2.10
  **/
 void
-gtk_text_buffer_deserialize_set_can_create_tags (GtkTextBuffer *buffer,
-                                                 GdkAtom        format,
+btk_text_buffer_deserialize_set_can_create_tags (BtkTextBuffer *buffer,
+                                                 BdkAtom        format,
                                                  gboolean       can_create_tags)
 {
   GList *formats;
   GList *list;
   gchar *format_name;
 
-  g_return_if_fail (GTK_IS_TEXT_BUFFER (buffer));
-  g_return_if_fail (format != GDK_NONE);
+  g_return_if_fail (BTK_IS_TEXT_BUFFER (buffer));
+  g_return_if_fail (format != BDK_NONE);
 
   formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
     {
-      GtkRichTextFormat *fmt = list->data;
+      BtkRichTextFormat *fmt = list->data;
 
       if (fmt->atom == format)
         {
@@ -349,41 +349,41 @@ gtk_text_buffer_deserialize_set_can_create_tags (GtkTextBuffer *buffer,
         }
     }
 
-  format_name = gdk_atom_name (format);
+  format_name = bdk_atom_name (format);
   g_warning ("%s: \"%s\" is not registered as deserializable format "
              "with text buffer %p",
-             G_STRFUNC, format_name ? format_name : "not a GdkAtom", buffer);
+             G_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
   g_free (format_name);
 }
 
 /**
- * gtk_text_buffer_deserialize_get_can_create_tags:
- * @buffer: a #GtkTextBuffer
- * @format: a #GdkAtom representing a registered rich text format
+ * btk_text_buffer_deserialize_get_can_create_tags:
+ * @buffer: a #BtkTextBuffer
+ * @format: a #BdkAtom representing a registered rich text format
  *
  * This functions returns the value set with
- * gtk_text_buffer_deserialize_set_can_create_tags()
+ * btk_text_buffer_deserialize_set_can_create_tags()
  *
  * Return value: whether deserializing this format may create tags
  *
  * Since: 2.10
  **/
 gboolean
-gtk_text_buffer_deserialize_get_can_create_tags (GtkTextBuffer *buffer,
-                                                 GdkAtom        format)
+btk_text_buffer_deserialize_get_can_create_tags (BtkTextBuffer *buffer,
+                                                 BdkAtom        format)
 {
   GList *formats;
   GList *list;
   gchar *format_name;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), FALSE);
-  g_return_val_if_fail (format != GDK_NONE, FALSE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), FALSE);
+  g_return_val_if_fail (format != BDK_NONE, FALSE);
 
   formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
 
   for (list = formats; list; list = g_list_next (list))
     {
-      GtkRichTextFormat *fmt = list->data;
+      BtkRichTextFormat *fmt = list->data;
 
       if (fmt->atom == format)
         {
@@ -391,36 +391,36 @@ gtk_text_buffer_deserialize_get_can_create_tags (GtkTextBuffer *buffer,
         }
     }
 
-  format_name = gdk_atom_name (format);
+  format_name = bdk_atom_name (format);
   g_warning ("%s: \"%s\" is not registered as deserializable format "
              "with text buffer %p",
-             G_STRFUNC, format_name ? format_name : "not a GdkAtom", buffer);
+             G_STRFUNC, format_name ? format_name : "not a BdkAtom", buffer);
   g_free (format_name);
 
   return FALSE;
 }
 
 /**
- * gtk_text_buffer_get_serialize_formats:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_get_serialize_formats:
+ * @buffer: a #BtkTextBuffer
  * @n_formats: return location for the number of formats
  *
  * This function returns the rich text serialize formats registered
- * with @buffer using gtk_text_buffer_register_serialize_format() or
- * gtk_text_buffer_register_serialize_tagset()
+ * with @buffer using btk_text_buffer_register_serialize_format() or
+ * btk_text_buffer_register_serialize_tagset()
  *
  * Return value: (array length=n_formats) (transfer container): an array of
- *               #GdkAtom<!-- -->s representing the registered formats.
+ *               #BdkAtom<!-- -->s representing the registered formats.
  *
  * Since: 2.10
  **/
-GdkAtom *
-gtk_text_buffer_get_serialize_formats (GtkTextBuffer *buffer,
+BdkAtom *
+btk_text_buffer_get_serialize_formats (BtkTextBuffer *buffer,
                                        gint          *n_formats)
 {
   GList *formats;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), NULL);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), NULL);
   g_return_val_if_fail (n_formats != NULL, NULL);
 
   formats = g_object_get_qdata (G_OBJECT (buffer), serialize_quark ());
@@ -429,26 +429,26 @@ gtk_text_buffer_get_serialize_formats (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_get_deserialize_formats:
- * @buffer: a #GtkTextBuffer
+ * btk_text_buffer_get_deserialize_formats:
+ * @buffer: a #BtkTextBuffer
  * @n_formats: return location for the number of formats
  *
  * This function returns the rich text deserialize formats registered
- * with @buffer using gtk_text_buffer_register_deserialize_format() or
- * gtk_text_buffer_register_deserialize_tagset()
+ * with @buffer using btk_text_buffer_register_deserialize_format() or
+ * btk_text_buffer_register_deserialize_tagset()
  *
  * Return value: (array length=n_formats) (transfer container): an array of
- *               #GdkAtom<!-- -->s representing the registered formats.
+ *               #BdkAtom<!-- -->s representing the registered formats.
  *
  * Since: 2.10
  **/
-GdkAtom *
-gtk_text_buffer_get_deserialize_formats (GtkTextBuffer *buffer,
+BdkAtom *
+btk_text_buffer_get_deserialize_formats (BtkTextBuffer *buffer,
                                          gint          *n_formats)
 {
   GList *formats;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (buffer), NULL);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (buffer), NULL);
   g_return_val_if_fail (n_formats != NULL, NULL);
 
   formats = g_object_get_qdata (G_OBJECT (buffer), deserialize_quark ());
@@ -457,9 +457,9 @@ gtk_text_buffer_get_deserialize_formats (GtkTextBuffer *buffer,
 }
 
 /**
- * gtk_text_buffer_serialize:
- * @register_buffer: the #GtkTextBuffer @format is registered with
- * @content_buffer: the #GtkTextBuffer to serialize
+ * btk_text_buffer_serialize:
+ * @register_buffer: the #BtkTextBuffer @format is registered with
+ * @content_buffer: the #BtkTextBuffer to serialize
  * @format: the rich text format to use for serializing
  * @start: start of block of text to serialize
  * @end: end of block of test to serialize
@@ -469,8 +469,8 @@ gtk_text_buffer_get_deserialize_formats (GtkTextBuffer *buffer,
  * and @end in the rich text format represented by @format.
  *
  * @format<!-- -->s to be used must be registered using
- * gtk_text_buffer_register_serialize_format() or
- * gtk_text_buffer_register_serialize_tagset() beforehand.
+ * btk_text_buffer_register_serialize_format() or
+ * btk_text_buffer_register_serialize_tagset() beforehand.
  *
  * Return value: (array length=length) (transfer full): the serialized
  *               data, encoded as @format
@@ -478,19 +478,19 @@ gtk_text_buffer_get_deserialize_formats (GtkTextBuffer *buffer,
  * Since: 2.10
  **/
 guint8 *
-gtk_text_buffer_serialize (GtkTextBuffer     *register_buffer,
-                           GtkTextBuffer     *content_buffer,
-                           GdkAtom            format,
-                           const GtkTextIter *start,
-                           const GtkTextIter *end,
+btk_text_buffer_serialize (BtkTextBuffer     *register_buffer,
+                           BtkTextBuffer     *content_buffer,
+                           BdkAtom            format,
+                           const BtkTextIter *start,
+                           const BtkTextIter *end,
                            gsize             *length)
 {
   GList *formats;
   GList *list;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (register_buffer), NULL);
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (content_buffer), NULL);
-  g_return_val_if_fail (format != GDK_NONE, NULL);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (register_buffer), NULL);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (content_buffer), NULL);
+  g_return_val_if_fail (format != BDK_NONE, NULL);
   g_return_val_if_fail (start != NULL, NULL);
   g_return_val_if_fail (end != NULL, NULL);
   g_return_val_if_fail (length != NULL, NULL);
@@ -502,11 +502,11 @@ gtk_text_buffer_serialize (GtkTextBuffer     *register_buffer,
 
   for (list = formats; list; list = g_list_next (list))
     {
-      GtkRichTextFormat *fmt = list->data;
+      BtkRichTextFormat *fmt = list->data;
 
       if (fmt->atom == format)
         {
-          GtkTextBufferSerializeFunc function = fmt->function;
+          BtkTextBufferSerializeFunc function = fmt->function;
 
           return function (register_buffer, content_buffer,
                            start, end, length, fmt->user_data);
@@ -517,9 +517,9 @@ gtk_text_buffer_serialize (GtkTextBuffer     *register_buffer,
 }
 
 /**
- * gtk_text_buffer_deserialize:
- * @register_buffer: the #GtkTextBuffer @format is registered with
- * @content_buffer: the #GtkTextBuffer to deserialize into
+ * btk_text_buffer_deserialize:
+ * @register_buffer: the #BtkTextBuffer @format is registered with
+ * @content_buffer: the #BtkTextBuffer to deserialize into
  * @format: the rich text format to use for deserializing
  * @iter: insertion point for the deserialized text
  * @data: (array length=length): data to deserialize
@@ -530,18 +530,18 @@ gtk_text_buffer_serialize (GtkTextBuffer     *register_buffer,
  * it at @iter.
  *
  * @format<!-- -->s to be used must be registered using
- * gtk_text_buffer_register_deserialize_format() or
- * gtk_text_buffer_register_deserialize_tagset() beforehand.
+ * btk_text_buffer_register_deserialize_format() or
+ * btk_text_buffer_register_deserialize_tagset() beforehand.
  *
  * Return value: %TRUE on success, %FALSE otherwise.
  *
  * Since: 2.10
  **/
 gboolean
-gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
-                             GtkTextBuffer  *content_buffer,
-                             GdkAtom         format,
-                             GtkTextIter    *iter,
+btk_text_buffer_deserialize (BtkTextBuffer  *register_buffer,
+                             BtkTextBuffer  *content_buffer,
+                             BdkAtom         format,
+                             BtkTextIter    *iter,
                              const guint8   *data,
                              gsize           length,
                              GError        **error)
@@ -549,9 +549,9 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
   GList    *formats;
   GList    *list;
 
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (register_buffer), FALSE);
-  g_return_val_if_fail (GTK_IS_TEXT_BUFFER (content_buffer), FALSE);
-  g_return_val_if_fail (format != GDK_NONE, FALSE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (register_buffer), FALSE);
+  g_return_val_if_fail (BTK_IS_TEXT_BUFFER (content_buffer), FALSE);
+  g_return_val_if_fail (format != BDK_NONE, FALSE);
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
   g_return_val_if_fail (length > 0, FALSE);
@@ -562,16 +562,16 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
 
   for (list = formats; list; list = g_list_next (list))
     {
-      GtkRichTextFormat *fmt = list->data;
+      BtkRichTextFormat *fmt = list->data;
 
       if (fmt->atom == format)
         {
-          GtkTextBufferDeserializeFunc function = fmt->function;
+          BtkTextBufferDeserializeFunc function = fmt->function;
           gboolean                     success;
           GSList                      *split_tags;
           GSList                      *list;
-          GtkTextMark                 *left_end        = NULL;
-          GtkTextMark                 *right_start     = NULL;
+          BtkTextMark                 *left_end        = NULL;
+          BtkTextMark                 *right_start     = NULL;
           GSList                      *left_start_list = NULL;
           GSList                      *right_end_list  = NULL;
 
@@ -580,19 +580,19 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
            *  remember them, so they can be re-applied left and right of
            *  the inserted text after pasting
            */
-          split_tags = gtk_text_iter_get_tags (iter);
+          split_tags = btk_text_iter_get_tags (iter);
 
           list = split_tags;
           while (list)
             {
-              GtkTextTag *tag = list->data;
+              BtkTextTag *tag = list->data;
 
               list = g_slist_next (list);
 
               /*  If a tag begins at the insertion point, ignore it
                *  because it doesn't affect the pasted text
                */
-              if (gtk_text_iter_begins_tag (iter, tag))
+              if (btk_text_iter_begins_tag (iter, tag))
                 split_tags = g_slist_remove (split_tags, tag);
             }
 
@@ -601,27 +601,27 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
               /*  Need to remember text marks, because text iters
                *  don't survive pasting
                */
-              left_end = gtk_text_buffer_create_mark (content_buffer,
+              left_end = btk_text_buffer_create_mark (content_buffer,
                                                       NULL, iter, TRUE);
-              right_start = gtk_text_buffer_create_mark (content_buffer,
+              right_start = btk_text_buffer_create_mark (content_buffer,
                                                          NULL, iter, FALSE);
 
               for (list = split_tags; list; list = g_slist_next (list))
                 {
-                  GtkTextTag  *tag             = list->data;
-                  GtkTextIter *backward_toggle = gtk_text_iter_copy (iter);
-                  GtkTextIter *forward_toggle  = gtk_text_iter_copy (iter);
-                  GtkTextMark *left_start      = NULL;
-                  GtkTextMark *right_end       = NULL;
+                  BtkTextTag  *tag             = list->data;
+                  BtkTextIter *backward_toggle = btk_text_iter_copy (iter);
+                  BtkTextIter *forward_toggle  = btk_text_iter_copy (iter);
+                  BtkTextMark *left_start      = NULL;
+                  BtkTextMark *right_end       = NULL;
 
-                  gtk_text_iter_backward_to_tag_toggle (backward_toggle, tag);
-                  left_start = gtk_text_buffer_create_mark (content_buffer,
+                  btk_text_iter_backward_to_tag_toggle (backward_toggle, tag);
+                  left_start = btk_text_buffer_create_mark (content_buffer,
                                                             NULL,
                                                             backward_toggle,
                                                             FALSE);
 
-                  gtk_text_iter_forward_to_tag_toggle (forward_toggle, tag);
-                  right_end = gtk_text_buffer_create_mark (content_buffer,
+                  btk_text_iter_forward_to_tag_toggle (forward_toggle, tag);
+                  right_end = btk_text_buffer_create_mark (content_buffer,
                                                            NULL,
                                                            forward_toggle,
                                                            TRUE);
@@ -629,12 +629,12 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
                   left_start_list = g_slist_prepend (left_start_list, left_start);
                   right_end_list = g_slist_prepend (right_end_list, right_end);
 
-                  gtk_text_buffer_remove_tag (content_buffer, tag,
+                  btk_text_buffer_remove_tag (content_buffer, tag,
                                               backward_toggle,
                                               forward_toggle);
 
-                  gtk_text_iter_free (forward_toggle);
-                  gtk_text_iter_free (backward_toggle);
+                  btk_text_iter_free (forward_toggle);
+                  btk_text_iter_free (backward_toggle);
                 }
 
               left_start_list = g_slist_reverse (left_start_list);
@@ -650,21 +650,21 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
           if (!success && error != NULL && *error == NULL)
             g_set_error (error, 0, 0,
                          _("Unknown error when trying to deserialize %s"),
-                         gdk_atom_name (format));
+                         bdk_atom_name (format));
 
           if (split_tags)
             {
               GSList      *left_list;
               GSList      *right_list;
-              GtkTextIter  left_e;
-              GtkTextIter  right_s;
+              BtkTextIter  left_e;
+              BtkTextIter  right_s;
 
               /*  Turn the remembered marks back into iters so they
                *  can by used to re-apply the remembered tags
                */
-              gtk_text_buffer_get_iter_at_mark (content_buffer,
+              btk_text_buffer_get_iter_at_mark (content_buffer,
                                                 &left_e, left_end);
-              gtk_text_buffer_get_iter_at_mark (content_buffer,
+              btk_text_buffer_get_iter_at_mark (content_buffer,
                                                 &right_s, right_start);
 
               for (list = split_tags,
@@ -675,28 +675,28 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
                      left_list = g_slist_next (left_list),
                      right_list = g_slist_next (right_list))
                 {
-                  GtkTextTag  *tag        = list->data;
-                  GtkTextMark *left_start = left_list->data;
-                  GtkTextMark *right_end  = right_list->data;
-                  GtkTextIter  left_s;
-                  GtkTextIter  right_e;
+                  BtkTextTag  *tag        = list->data;
+                  BtkTextMark *left_start = left_list->data;
+                  BtkTextMark *right_end  = right_list->data;
+                  BtkTextIter  left_s;
+                  BtkTextIter  right_e;
 
-                  gtk_text_buffer_get_iter_at_mark (content_buffer,
+                  btk_text_buffer_get_iter_at_mark (content_buffer,
                                                     &left_s, left_start);
-                  gtk_text_buffer_get_iter_at_mark (content_buffer,
+                  btk_text_buffer_get_iter_at_mark (content_buffer,
                                                     &right_e, right_end);
 
-                  gtk_text_buffer_apply_tag (content_buffer, tag,
+                  btk_text_buffer_apply_tag (content_buffer, tag,
                                              &left_s, &left_e);
-                  gtk_text_buffer_apply_tag (content_buffer, tag,
+                  btk_text_buffer_apply_tag (content_buffer, tag,
                                              &right_s, &right_e);
 
-                  gtk_text_buffer_delete_mark (content_buffer, left_start);
-                  gtk_text_buffer_delete_mark (content_buffer, right_end);
+                  btk_text_buffer_delete_mark (content_buffer, left_start);
+                  btk_text_buffer_delete_mark (content_buffer, right_end);
                 }
 
-              gtk_text_buffer_delete_mark (content_buffer, left_end);
-              gtk_text_buffer_delete_mark (content_buffer, right_start);
+              btk_text_buffer_delete_mark (content_buffer, left_end);
+              btk_text_buffer_delete_mark (content_buffer, right_start);
 
               g_slist_free (split_tags);
               g_slist_free (left_start_list);
@@ -709,7 +709,7 @@ gtk_text_buffer_deserialize (GtkTextBuffer  *register_buffer,
 
   g_set_error (error, 0, 0,
                _("No deserialize function found for format %s"),
-               gdk_atom_name (format));
+               bdk_atom_name (format));
 
   return FALSE;
 }
@@ -723,15 +723,15 @@ register_format (GList          *formats,
                  gpointer        function,
                  gpointer        user_data,
                  GDestroyNotify  user_data_destroy,
-                 GdkAtom        *atom)
+                 BdkAtom        *atom)
 {
-  GtkRichTextFormat *format;
+  BtkRichTextFormat *format;
 
-  *atom = gdk_atom_intern (mime_type, FALSE);
+  *atom = bdk_atom_intern (mime_type, FALSE);
 
   formats = unregister_format (formats, *atom);
 
-  format = g_new0 (GtkRichTextFormat, 1);
+  format = g_new0 (BtkRichTextFormat, 1);
 
   format->mime_type         = g_strdup (mime_type);
   format->can_create_tags   = FALSE;
@@ -745,13 +745,13 @@ register_format (GList          *formats,
 
 static GList *
 unregister_format (GList   *formats,
-                   GdkAtom  atom)
+                   BdkAtom  atom)
 {
   GList *list;
 
   for (list = formats; list; list = g_list_next (list))
     {
-      GtkRichTextFormat *format = list->data;
+      BtkRichTextFormat *format = list->data;
 
       if (format->atom == atom)
         {
@@ -764,20 +764,20 @@ unregister_format (GList   *formats,
   return formats;
 }
 
-static GdkAtom *
+static BdkAtom *
 get_formats (GList *formats,
              gint  *n_formats)
 {
-  GdkAtom *array;
+  BdkAtom *array;
   GList   *list;
   gint     i;
 
   *n_formats = g_list_length (formats);
-  array = g_new0 (GdkAtom, *n_formats);
+  array = g_new0 (BdkAtom, *n_formats);
 
   for (list = formats, i = 0; list; list = g_list_next (list), i++)
     {
-      GtkRichTextFormat *format = list->data;
+      BtkRichTextFormat *format = list->data;
 
       array[i] = format->atom;
     }
@@ -786,7 +786,7 @@ get_formats (GList *formats,
 }
 
 static void
-free_format (GtkRichTextFormat *format)
+free_format (BtkRichTextFormat *format)
 {
   if (format->user_data_destroy)
     format->user_data_destroy (format->user_data);
@@ -808,7 +808,7 @@ serialize_quark (void)
   static GQuark quark = 0;
 
   if (! quark)
-    quark = g_quark_from_static_string ("gtk-text-buffer-serialize-formats");
+    quark = g_quark_from_static_string ("btk-text-buffer-serialize-formats");
 
   return quark;
 }
@@ -819,10 +819,10 @@ deserialize_quark (void)
   static GQuark quark = 0;
 
   if (! quark)
-    quark = g_quark_from_static_string ("gtk-text-buffer-deserialize-formats");
+    quark = g_quark_from_static_string ("btk-text-buffer-deserialize-formats");
 
   return quark;
 }
 
-#define __GTK_TEXT_BUFFER_RICH_TEXT_C__
-#include "gtkaliasdef.c"
+#define __BTK_TEXT_BUFFER_RICH_TEXT_C__
+#include "btkaliasdef.c"

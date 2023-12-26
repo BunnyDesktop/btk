@@ -1,9 +1,9 @@
-/* gtktextdisplay.c - display layed-out text
+/* btktextdisplay.c - display layed-out text
  *
  * Copyright (c) 1992-1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000 Red Hat, Inc.
- * Tk->Gtk port by Havoc Pennington
+ * Tk->Btk port by Havoc Pennington
  *
  * This file can be used under your choice of two licenses, the LGPL
  * and the original Tk license.
@@ -68,32 +68,32 @@
  *
  */
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#define GTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
-#undef GDK_DISABLE_DEPRECATED
+#define BTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
+#undef BDK_DISABLE_DEPRECATED
 
 #include "config.h"
-#include "gtktextdisplay.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktextdisplay.h"
+#include "btkintl.h"
+#include "btkalias.h"
 /* DO NOT go putting private headers in here. This file should only
- * use the semi-public headers, as with gtktextview.c.
+ * use the semi-public headers, as with btktextview.c.
  */
 
-#define GTK_TYPE_TEXT_RENDERER            (_gtk_text_renderer_get_type())
-#define GTK_TEXT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_TEXT_RENDERER, GtkTextRenderer))
-#define GTK_IS_TEXT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GTK_TYPE_TEXT_RENDERER))
-#define GTK_TEXT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TEXT_RENDERER, GtkTextRendererClass))
-#define GTK_IS_TEXT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TEXT_RENDERER))
-#define GTK_TEXT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TEXT_RENDERER, GtkTextRendererClass))
+#define BTK_TYPE_TEXT_RENDERER            (_btk_text_renderer_get_type())
+#define BTK_TEXT_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_RENDERER, BtkTextRenderer))
+#define BTK_IS_TEXT_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_RENDERER))
+#define BTK_TEXT_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
+#define BTK_IS_TEXT_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_RENDERER))
+#define BTK_TEXT_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_RENDERER, BtkTextRendererClass))
 
-typedef struct _GtkTextRenderer      GtkTextRenderer;
-typedef struct _GtkTextRendererClass GtkTextRendererClass;
+typedef struct _BtkTextRenderer      BtkTextRenderer;
+typedef struct _BtkTextRendererClass BtkTextRendererClass;
 
 enum {
   NORMAL,
@@ -101,78 +101,78 @@ enum {
   CURSOR
 };
 
-struct _GtkTextRenderer
+struct _BtkTextRenderer
 {
-  GdkPangoRenderer parent_instance;
+  BdkBangoRenderer parent_instance;
 
-  GdkScreen *screen;
+  BdkScreen *screen;
 
-  GtkWidget *widget;
-  GdkDrawable *drawable;
-  GdkRectangle clip_rect;
+  BtkWidget *widget;
+  BdkDrawable *drawable;
+  BdkRectangle clip_rect;
   
-  GdkColor *error_color;	/* Error underline color for this widget */
+  BdkColor *error_color;	/* Error underline color for this widget */
   GList *widgets;		/* widgets encountered when drawing */
   
   int state;
 };
 
-struct _GtkTextRendererClass
+struct _BtkTextRendererClass
 {
-  GdkPangoRendererClass parent_class;
+  BdkBangoRendererClass parent_class;
 };
 
-G_DEFINE_TYPE (GtkTextRenderer, _gtk_text_renderer, GDK_TYPE_PANGO_RENDERER)
+G_DEFINE_TYPE (BtkTextRenderer, _btk_text_renderer, BDK_TYPE_BANGO_RENDERER)
 
-static GdkColor *
-text_renderer_get_error_color (GtkTextRenderer *text_renderer)
+static BdkColor *
+text_renderer_get_error_color (BtkTextRenderer *text_renderer)
 {
-  static const GdkColor red = { 0, 0xffff, 0, 0 };
+  static const BdkColor red = { 0, 0xffff, 0, 0 };
 
   if (!text_renderer->error_color)
-    gtk_widget_style_get (text_renderer->widget,
+    btk_widget_style_get (text_renderer->widget,
 			  "error-underline-color", &text_renderer->error_color,
 			  NULL);
   
   if (!text_renderer->error_color)
-    text_renderer->error_color = gdk_color_copy (&red);
+    text_renderer->error_color = bdk_color_copy (&red);
 
   return text_renderer->error_color;
 }
 
 static void
-text_renderer_set_gdk_color (GtkTextRenderer *text_renderer,
-			     PangoRenderPart  part,
-			     GdkColor        *gdk_color)
+text_renderer_set_bdk_color (BtkTextRenderer *text_renderer,
+			     BangoRenderPart  part,
+			     BdkColor        *bdk_color)
 {
-  PangoRenderer *renderer = PANGO_RENDERER (text_renderer);
+  BangoRenderer *renderer = BANGO_RENDERER (text_renderer);
 
-  if (gdk_color)
+  if (bdk_color)
     {
-      PangoColor color;
+      BangoColor color;
 
-      color.red = gdk_color->red;
-      color.green = gdk_color->green;
-      color.blue = gdk_color->blue;
+      color.red = bdk_color->red;
+      color.green = bdk_color->green;
+      color.blue = bdk_color->blue;
       
-      pango_renderer_set_color (renderer, part, &color);
+      bango_renderer_set_color (renderer, part, &color);
     }
   else
-    pango_renderer_set_color (renderer, part, NULL);
+    bango_renderer_set_color (renderer, part, NULL);
 	   
 }
 
-static GtkTextAppearance *
-get_item_appearance (PangoItem *item)
+static BtkTextAppearance *
+get_item_appearance (BangoItem *item)
 {
   GSList *tmp_list = item->analysis.extra_attrs;
 
   while (tmp_list)
     {
-      PangoAttribute *attr = tmp_list->data;
+      BangoAttribute *attr = tmp_list->data;
 
-      if (attr->klass->type == gtk_text_attr_appearance_type)
-	return &((GtkTextAttrAppearance *)attr)->appearance;
+      if (attr->klass->type == btk_text_attr_appearance_type)
+	return &((BtkTextAttrAppearance *)attr)->appearance;
 
       tmp_list = tmp_list->next;
     }
@@ -181,16 +181,16 @@ get_item_appearance (PangoItem *item)
 }
 
 static void
-gtk_text_renderer_prepare_run (PangoRenderer  *renderer,
-			       PangoLayoutRun *run)
+btk_text_renderer_prepare_run (BangoRenderer  *renderer,
+			       BangoLayoutRun *run)
 {
-  GtkTextRenderer *text_renderer = GTK_TEXT_RENDERER (renderer);
-  GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
-  GdkColor *bg_color, *fg_color, *underline_color;
-  GdkPixmap *fg_stipple, *bg_stipple;
-  GtkTextAppearance *appearance;
+  BtkTextRenderer *text_renderer = BTK_TEXT_RENDERER (renderer);
+  BdkBangoRenderer *bdk_renderer = BDK_BANGO_RENDERER (renderer);
+  BdkColor *bg_color, *fg_color, *underline_color;
+  BdkPixmap *fg_stipple, *bg_stipple;
+  BtkTextAppearance *appearance;
 
-  PANGO_RENDERER_CLASS (_gtk_text_renderer_parent_class)->prepare_run (renderer, run);
+  BANGO_RENDERER_CLASS (_btk_text_renderer_parent_class)->prepare_run (renderer, run);
 
   appearance = get_item_appearance (run->item);
   g_assert (appearance != NULL);
@@ -200,127 +200,127 @@ gtk_text_renderer_prepare_run (PangoRenderer  *renderer,
   else
     bg_color = NULL;
   
-  text_renderer_set_gdk_color (text_renderer, PANGO_RENDER_PART_BACKGROUND, bg_color);
+  text_renderer_set_bdk_color (text_renderer, BANGO_RENDER_PART_BACKGROUND, bg_color);
 
   if (text_renderer->state == SELECTED)
     {
-      if (gtk_widget_has_focus (text_renderer->widget))
-	fg_color = &text_renderer->widget->style->text[GTK_STATE_SELECTED];
+      if (btk_widget_has_focus (text_renderer->widget))
+	fg_color = &text_renderer->widget->style->text[BTK_STATE_SELECTED];
       else
-	fg_color = &text_renderer->widget->style->text[GTK_STATE_ACTIVE];
+	fg_color = &text_renderer->widget->style->text[BTK_STATE_ACTIVE];
     }
-  else if (text_renderer->state == CURSOR && gtk_widget_has_focus (text_renderer->widget))
-    fg_color = &text_renderer->widget->style->base[GTK_STATE_NORMAL];
+  else if (text_renderer->state == CURSOR && btk_widget_has_focus (text_renderer->widget))
+    fg_color = &text_renderer->widget->style->base[BTK_STATE_NORMAL];
   else
     fg_color = &appearance->fg_color;
 
-  text_renderer_set_gdk_color (text_renderer, PANGO_RENDER_PART_FOREGROUND, fg_color);
-  text_renderer_set_gdk_color (text_renderer, PANGO_RENDER_PART_STRIKETHROUGH, fg_color);
+  text_renderer_set_bdk_color (text_renderer, BANGO_RENDER_PART_FOREGROUND, fg_color);
+  text_renderer_set_bdk_color (text_renderer, BANGO_RENDER_PART_STRIKETHROUGH, fg_color);
 
-  if (appearance->underline == PANGO_UNDERLINE_ERROR)
+  if (appearance->underline == BANGO_UNDERLINE_ERROR)
     underline_color = text_renderer_get_error_color (text_renderer);
   else
     underline_color = fg_color;
 
-  text_renderer_set_gdk_color (text_renderer, PANGO_RENDER_PART_UNDERLINE, underline_color);
+  text_renderer_set_bdk_color (text_renderer, BANGO_RENDER_PART_UNDERLINE, underline_color);
 
   fg_stipple = appearance->fg_stipple;
-  if (fg_stipple && text_renderer->screen != gdk_drawable_get_screen (fg_stipple))
+  if (fg_stipple && text_renderer->screen != bdk_drawable_get_screen (fg_stipple))
     {
-      g_warning ("gtk_text_renderer_prepare_run:\n"
+      g_warning ("btk_text_renderer_prepare_run:\n"
 		 "The foreground stipple bitmap has been created on the wrong screen.\n"
 		 "Ignoring the stipple bitmap information.");
       fg_stipple = NULL;
     }
       
-  gdk_pango_renderer_set_stipple (gdk_renderer, PANGO_RENDER_PART_FOREGROUND, fg_stipple);
-  gdk_pango_renderer_set_stipple (gdk_renderer, PANGO_RENDER_PART_STRIKETHROUGH, fg_stipple);
-  gdk_pango_renderer_set_stipple (gdk_renderer, PANGO_RENDER_PART_UNDERLINE, fg_stipple);
+  bdk_bango_renderer_set_stipple (bdk_renderer, BANGO_RENDER_PART_FOREGROUND, fg_stipple);
+  bdk_bango_renderer_set_stipple (bdk_renderer, BANGO_RENDER_PART_STRIKETHROUGH, fg_stipple);
+  bdk_bango_renderer_set_stipple (bdk_renderer, BANGO_RENDER_PART_UNDERLINE, fg_stipple);
 
   bg_stipple = appearance->draw_bg ? appearance->bg_stipple : NULL;
   
-  if (bg_stipple && text_renderer->screen != gdk_drawable_get_screen (bg_stipple))
+  if (bg_stipple && text_renderer->screen != bdk_drawable_get_screen (bg_stipple))
     {
-      g_warning ("gtk_text_renderer_prepare_run:\n"
+      g_warning ("btk_text_renderer_prepare_run:\n"
 		 "The background stipple bitmap has been created on the wrong screen.\n"
 		 "Ignoring the stipple bitmap information.");
       bg_stipple = NULL;
     }
   
-  gdk_pango_renderer_set_stipple (gdk_renderer, PANGO_RENDER_PART_BACKGROUND, bg_stipple);
+  bdk_bango_renderer_set_stipple (bdk_renderer, BANGO_RENDER_PART_BACKGROUND, bg_stipple);
 }
 
 static void
-gtk_text_renderer_draw_shape (PangoRenderer   *renderer,
-			      PangoAttrShape  *attr,
+btk_text_renderer_draw_shape (BangoRenderer   *renderer,
+			      BangoAttrShape  *attr,
 			      int              x,
 			      int              y)
 {
-  GtkTextRenderer *text_renderer = GTK_TEXT_RENDERER (renderer);
-  GdkGC *fg_gc;
+  BtkTextRenderer *text_renderer = BTK_TEXT_RENDERER (renderer);
+  BdkGC *fg_gc;
 
   if (text_renderer->state == SELECTED)
     {
-      if (gtk_widget_has_focus (text_renderer->widget))
-	fg_gc = text_renderer->widget->style->text_gc[GTK_STATE_SELECTED];
+      if (btk_widget_has_focus (text_renderer->widget))
+	fg_gc = text_renderer->widget->style->text_gc[BTK_STATE_SELECTED];
       else
-	fg_gc = text_renderer->widget->style->text_gc[GTK_STATE_SELECTED];
+	fg_gc = text_renderer->widget->style->text_gc[BTK_STATE_SELECTED];
     }
-  else if (text_renderer->state == CURSOR && gtk_widget_has_focus (text_renderer->widget))
-    fg_gc = text_renderer->widget->style->base_gc[GTK_STATE_NORMAL];
+  else if (text_renderer->state == CURSOR && btk_widget_has_focus (text_renderer->widget))
+    fg_gc = text_renderer->widget->style->base_gc[BTK_STATE_NORMAL];
   else
-    fg_gc = text_renderer->widget->style->text_gc[GTK_STATE_NORMAL];
+    fg_gc = text_renderer->widget->style->text_gc[BTK_STATE_NORMAL];
   
   if (attr->data == NULL)
     {
       /* This happens if we have an empty widget anchor. Draw
        * something empty-looking.
        */
-      GdkRectangle shape_rect, draw_rect;
+      BdkRectangle shape_rect, draw_rect;
       
-      shape_rect.x = PANGO_PIXELS (x);
-      shape_rect.y = PANGO_PIXELS (y + attr->logical_rect.y);
-      shape_rect.width = PANGO_PIXELS (x + attr->logical_rect.width) - shape_rect.x;
-      shape_rect.height = PANGO_PIXELS (y + attr->logical_rect.y + attr->logical_rect.height) - shape_rect.y;
+      shape_rect.x = BANGO_PIXELS (x);
+      shape_rect.y = BANGO_PIXELS (y + attr->logical_rect.y);
+      shape_rect.width = BANGO_PIXELS (x + attr->logical_rect.width) - shape_rect.x;
+      shape_rect.height = BANGO_PIXELS (y + attr->logical_rect.y + attr->logical_rect.height) - shape_rect.y;
       
-      if (gdk_rectangle_intersect (&shape_rect, &text_renderer->clip_rect,
+      if (bdk_rectangle_intersect (&shape_rect, &text_renderer->clip_rect,
 				   &draw_rect))
 	{
-	  gdk_draw_rectangle (text_renderer->drawable, fg_gc,
+	  bdk_draw_rectangle (text_renderer->drawable, fg_gc,
 			      FALSE, shape_rect.x, shape_rect.y,
 			      shape_rect.width, shape_rect.height);
 	  
-	  gdk_draw_line (text_renderer->drawable, fg_gc,
+	  bdk_draw_line (text_renderer->drawable, fg_gc,
 			 shape_rect.x, shape_rect.y,
 			 shape_rect.x + shape_rect.width,
 			 shape_rect.y + shape_rect.height);
 	  
-	  gdk_draw_line (text_renderer->drawable, fg_gc,
+	  bdk_draw_line (text_renderer->drawable, fg_gc,
 			 shape_rect.x + shape_rect.width, shape_rect.y,
 			 shape_rect.x,
 			 shape_rect.y + shape_rect.height);
 	}
     }
-  else if (GDK_IS_PIXBUF (attr->data))
+  else if (BDK_IS_PIXBUF (attr->data))
     {
       gint width, height;
-      GdkRectangle pixbuf_rect, draw_rect;
-      GdkPixbuf *pixbuf;
+      BdkRectangle pixbuf_rect, draw_rect;
+      BdkPixbuf *pixbuf;
       
-      pixbuf = GDK_PIXBUF (attr->data);
+      pixbuf = BDK_PIXBUF (attr->data);
       
-      width = gdk_pixbuf_get_width (pixbuf);
-      height = gdk_pixbuf_get_height (pixbuf);
+      width = bdk_pixbuf_get_width (pixbuf);
+      height = bdk_pixbuf_get_height (pixbuf);
       
-      pixbuf_rect.x = PANGO_PIXELS (x);
-      pixbuf_rect.y = PANGO_PIXELS (y) - height;
+      pixbuf_rect.x = BANGO_PIXELS (x);
+      pixbuf_rect.y = BANGO_PIXELS (y) - height;
       pixbuf_rect.width = width;
       pixbuf_rect.height = height;
       
-      if (gdk_rectangle_intersect (&pixbuf_rect, &text_renderer->clip_rect,
+      if (bdk_rectangle_intersect (&pixbuf_rect, &text_renderer->clip_rect,
 				   &draw_rect))
 	{
-	  gdk_draw_pixbuf (text_renderer->drawable,
+	  bdk_draw_pixbuf (text_renderer->drawable,
 			   fg_gc,
 			   pixbuf,
 			   draw_rect.x - pixbuf_rect.x,
@@ -328,15 +328,15 @@ gtk_text_renderer_draw_shape (PangoRenderer   *renderer,
 			   draw_rect.x, draw_rect.y,
 			   draw_rect.width,
 			   draw_rect.height,
-			   GDK_RGB_DITHER_NORMAL,
+			   BDK_RGB_DITHER_NORMAL,
 			   0, 0);
 	}
     }
-  else if (GTK_IS_WIDGET (attr->data))
+  else if (BTK_IS_WIDGET (attr->data))
     {
-      GtkWidget *widget;
+      BtkWidget *widget;
       
-      widget = GTK_WIDGET (attr->data);
+      widget = BTK_WIDGET (attr->data);
 
       text_renderer->widgets = g_list_prepend (text_renderer->widgets,
 					       g_object_ref (widget));
@@ -346,55 +346,55 @@ gtk_text_renderer_draw_shape (PangoRenderer   *renderer,
 }
 
 static void
-gtk_text_renderer_finalize (GObject *object)
+btk_text_renderer_finalize (GObject *object)
 {
-  G_OBJECT_CLASS (_gtk_text_renderer_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_btk_text_renderer_parent_class)->finalize (object);
 }
 
 static void
-_gtk_text_renderer_init (GtkTextRenderer *renderer)
+_btk_text_renderer_init (BtkTextRenderer *renderer)
 {
 }
 
 static void
-_gtk_text_renderer_class_init (GtkTextRendererClass *klass)
+_btk_text_renderer_class_init (BtkTextRendererClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   
-  PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
+  BangoRendererClass *renderer_class = BANGO_RENDERER_CLASS (klass);
   
-  renderer_class->prepare_run = gtk_text_renderer_prepare_run;
-  renderer_class->draw_shape = gtk_text_renderer_draw_shape;
+  renderer_class->prepare_run = btk_text_renderer_prepare_run;
+  renderer_class->draw_shape = btk_text_renderer_draw_shape;
 
-  object_class->finalize = gtk_text_renderer_finalize;
+  object_class->finalize = btk_text_renderer_finalize;
 }
 
 static void
-text_renderer_set_state (GtkTextRenderer *text_renderer,
+text_renderer_set_state (BtkTextRenderer *text_renderer,
 			 int              state)
 {
   text_renderer->state = state;
 }
 
 static void
-text_renderer_begin (GtkTextRenderer *text_renderer,
-		     GtkWidget       *widget,
-		     GdkDrawable     *drawable,
-		     GdkRectangle    *clip_rect)
+text_renderer_begin (BtkTextRenderer *text_renderer,
+		     BtkWidget       *widget,
+		     BdkDrawable     *drawable,
+		     BdkRectangle    *clip_rect)
 {
   text_renderer->widget = widget;
   text_renderer->drawable = drawable;
   text_renderer->clip_rect = *clip_rect;
 
-  gdk_pango_renderer_set_drawable (GDK_PANGO_RENDERER (text_renderer), drawable);
-  gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer),
+  bdk_bango_renderer_set_drawable (BDK_BANGO_RENDERER (text_renderer), drawable);
+  bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer),
 			     widget->style->text_gc[widget->state]);
 }
 
 /* Returns a GSList of (referenced) widgets encountered while drawing.
  */
 static GList *
-text_renderer_end (GtkTextRenderer *text_renderer)
+text_renderer_end (BtkTextRenderer *text_renderer)
 {
   GList *widgets = text_renderer->widgets;
 
@@ -405,21 +405,21 @@ text_renderer_end (GtkTextRenderer *text_renderer)
 
   if (text_renderer->error_color)
     {
-      gdk_color_free (text_renderer->error_color);
+      bdk_color_free (text_renderer->error_color);
       text_renderer->error_color = NULL;
     }
 
-  gdk_pango_renderer_set_drawable (GDK_PANGO_RENDERER (text_renderer), NULL);
-  gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), NULL);
+  bdk_bango_renderer_set_drawable (BDK_BANGO_RENDERER (text_renderer), NULL);
+  bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), NULL);
 
   return widgets;
 }
 
 
-static GdkRegion *
-get_selected_clip (GtkTextRenderer    *text_renderer,
-                   PangoLayout        *layout,
-                   PangoLayoutLine    *line,
+static BdkRebunnyion *
+get_selected_clip (BtkTextRenderer    *text_renderer,
+                   BangoLayout        *layout,
+                   BangoLayoutLine    *line,
                    int                 x,
                    int                 y,
                    int                 height,
@@ -428,93 +428,93 @@ get_selected_clip (GtkTextRenderer    *text_renderer,
 {
   gint *ranges;
   gint n_ranges, i;
-  GdkRegion *clip_region = gdk_region_new ();
-  GdkRegion *tmp_region;
+  BdkRebunnyion *clip_rebunnyion = bdk_rebunnyion_new ();
+  BdkRebunnyion *tmp_rebunnyion;
 
-  pango_layout_line_get_x_ranges (line, start_index, end_index, &ranges, &n_ranges);
+  bango_layout_line_get_x_ranges (line, start_index, end_index, &ranges, &n_ranges);
 
   for (i=0; i < n_ranges; i++)
     {
-      GdkRectangle rect;
+      BdkRectangle rect;
 
-      rect.x = x + PANGO_PIXELS (ranges[2*i]);
+      rect.x = x + BANGO_PIXELS (ranges[2*i]);
       rect.y = y;
-      rect.width = PANGO_PIXELS (ranges[2*i + 1]) - PANGO_PIXELS (ranges[2*i]);
+      rect.width = BANGO_PIXELS (ranges[2*i + 1]) - BANGO_PIXELS (ranges[2*i]);
       rect.height = height;
       
-      gdk_region_union_with_rect (clip_region, &rect);
+      bdk_rebunnyion_union_with_rect (clip_rebunnyion, &rect);
     }
 
-  tmp_region = gdk_region_rectangle (&text_renderer->clip_rect);
-  gdk_region_intersect (clip_region, tmp_region);
-  gdk_region_destroy (tmp_region);
+  tmp_rebunnyion = bdk_rebunnyion_rectangle (&text_renderer->clip_rect);
+  bdk_rebunnyion_intersect (clip_rebunnyion, tmp_rebunnyion);
+  bdk_rebunnyion_destroy (tmp_rebunnyion);
 
   g_free (ranges);
-  return clip_region;
+  return clip_rebunnyion;
 }
 
 static void
-render_para (GtkTextRenderer    *text_renderer,
-             GtkTextLineDisplay *line_display,
+render_para (BtkTextRenderer    *text_renderer,
+             BtkTextLineDisplay *line_display,
              /* Top-left corner of paragraph including all margins */
              int                 x,
              int                 y,
              int                 selection_start_index,
              int                 selection_end_index)
 {
-  PangoLayout *layout = line_display->layout;
+  BangoLayout *layout = line_display->layout;
   int byte_offset = 0;
-  PangoLayoutIter *iter;
-  PangoRectangle layout_logical;
+  BangoLayoutIter *iter;
+  BangoRectangle layout_logical;
   int screen_width;
-  GdkGC *selection_gc, *fg_gc;
+  BdkGC *selection_gc, *fg_gc;
   gint state;
   
   gboolean first = TRUE;
 
-  iter = pango_layout_get_iter (layout);
+  iter = bango_layout_get_iter (layout);
 
-  pango_layout_iter_get_layout_extents (iter, NULL, &layout_logical);
+  bango_layout_iter_get_layout_extents (iter, NULL, &layout_logical);
 
   /* Adjust for margins */
   
-  layout_logical.x += line_display->x_offset * PANGO_SCALE;
-  layout_logical.y += line_display->top_margin * PANGO_SCALE;
+  layout_logical.x += line_display->x_offset * BANGO_SCALE;
+  layout_logical.y += line_display->top_margin * BANGO_SCALE;
 
   screen_width = line_display->total_width;
   
-  if (gtk_widget_has_focus (text_renderer->widget))
-    state = GTK_STATE_SELECTED;
+  if (btk_widget_has_focus (text_renderer->widget))
+    state = BTK_STATE_SELECTED;
   else
-    state = GTK_STATE_ACTIVE;
+    state = BTK_STATE_ACTIVE;
 
   selection_gc = text_renderer->widget->style->base_gc [state];
   fg_gc = text_renderer->widget->style->text_gc[text_renderer->widget->state];
 
   do
     {
-      PangoLayoutLine *line = pango_layout_iter_get_line_readonly (iter);
+      BangoLayoutLine *line = bango_layout_iter_get_line_readonly (iter);
       int selection_y, selection_height;
       int first_y, last_y;
-      PangoRectangle line_rect;
+      BangoRectangle line_rect;
       int baseline;
       gboolean at_last_line;
       
-      pango_layout_iter_get_line_extents (iter, NULL, &line_rect);
-      baseline = pango_layout_iter_get_baseline (iter);
-      pango_layout_iter_get_line_yrange (iter, &first_y, &last_y);
+      bango_layout_iter_get_line_extents (iter, NULL, &line_rect);
+      baseline = bango_layout_iter_get_baseline (iter);
+      bango_layout_iter_get_line_yrange (iter, &first_y, &last_y);
       
       /* Adjust for margins */
 
-      line_rect.x += line_display->x_offset * PANGO_SCALE;
-      line_rect.y += line_display->top_margin * PANGO_SCALE;
-      baseline += line_display->top_margin * PANGO_SCALE;
+      line_rect.x += line_display->x_offset * BANGO_SCALE;
+      line_rect.y += line_display->top_margin * BANGO_SCALE;
+      baseline += line_display->top_margin * BANGO_SCALE;
 
       /* Selection is the height of the line, plus top/bottom
        * margin if we're the first/last line
        */
-      selection_y = y + PANGO_PIXELS (first_y) + line_display->top_margin;
-      selection_height = PANGO_PIXELS (last_y) - PANGO_PIXELS (first_y);
+      selection_y = y + BANGO_PIXELS (first_y) + line_display->top_margin;
+      selection_height = BANGO_PIXELS (last_y) - BANGO_PIXELS (first_y);
 
       if (first)
         {
@@ -522,7 +522,7 @@ render_para (GtkTextRenderer    *text_renderer,
           selection_height += line_display->top_margin;
         }
 
-      at_last_line = pango_layout_iter_at_last_line (iter);
+      at_last_line = bango_layout_iter_at_last_line (iter);
       if (at_last_line)
         selection_height += line_display->bottom_margin;
       
@@ -531,7 +531,7 @@ render_para (GtkTextRenderer    *text_renderer,
       if (selection_start_index < byte_offset &&
           selection_end_index > line->length + byte_offset) /* All selected */
         {
-          gdk_draw_rectangle (text_renderer->drawable,
+          bdk_draw_rectangle (text_renderer->drawable,
                               selection_gc,
                               TRUE,
                               x + line_display->left_margin,
@@ -540,22 +540,22 @@ render_para (GtkTextRenderer    *text_renderer,
                               selection_height);
 
 	  text_renderer_set_state (text_renderer, SELECTED);
-	  pango_renderer_draw_layout_line (PANGO_RENDERER (text_renderer),
+	  bango_renderer_draw_layout_line (BANGO_RENDERER (text_renderer),
 					   line, 
-					   PANGO_SCALE * x + line_rect.x,
-					   PANGO_SCALE * y + baseline);
+					   BANGO_SCALE * x + line_rect.x,
+					   BANGO_SCALE * y + baseline);
         }
       else
         {
           if (line_display->pg_bg_color)
             {
-              GdkGC *bg_gc;
+              BdkGC *bg_gc;
               
-              bg_gc = gdk_gc_new (text_renderer->drawable);
-              gdk_gc_set_fill (bg_gc, GDK_SOLID);
-              gdk_gc_set_rgb_fg_color (bg_gc, line_display->pg_bg_color);
+              bg_gc = bdk_gc_new (text_renderer->drawable);
+              bdk_gc_set_fill (bg_gc, BDK_SOLID);
+              bdk_gc_set_rgb_fg_color (bg_gc, line_display->pg_bg_color);
             
-              gdk_draw_rectangle (text_renderer->drawable,
+              bdk_draw_rectangle (text_renderer->drawable,
                                   bg_gc,
                                   TRUE,
                                   x + line_display->left_margin,
@@ -567,20 +567,20 @@ render_para (GtkTextRenderer    *text_renderer,
             }
         
 	  text_renderer_set_state (text_renderer, NORMAL);
-	  pango_renderer_draw_layout_line (PANGO_RENDERER (text_renderer),
+	  bango_renderer_draw_layout_line (BANGO_RENDERER (text_renderer),
 					   line, 
-					   PANGO_SCALE * x + line_rect.x,
-					   PANGO_SCALE * y + baseline);
+					   BANGO_SCALE * x + line_rect.x,
+					   BANGO_SCALE * y + baseline);
 
 	  /* Check if some part of the line is selected; the newline
 	   * that is after line->length for the last line of the
 	   * paragraph counts as part of the line for this
 	   */
           if ((selection_start_index < byte_offset + line->length ||
-	       (selection_start_index == byte_offset + line->length && pango_layout_iter_at_last_line (iter))) &&
+	       (selection_start_index == byte_offset + line->length && bango_layout_iter_at_last_line (iter))) &&
 	      selection_end_index > byte_offset)
             {
-              GdkRegion *clip_region = get_selected_clip (text_renderer, layout, line,
+              BdkRebunnyion *clip_rebunnyion = get_selected_clip (text_renderer, layout, line,
                                                           x + line_display->x_offset,
                                                           selection_y,
                                                           selection_height,
@@ -590,87 +590,87 @@ render_para (GtkTextRenderer    *text_renderer,
 	       * it on the rendererer again, since the rendererer might have
 	       * copied the GC to change attributes.
 	       */
-	      gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), NULL);
-              gdk_gc_set_clip_region (selection_gc, clip_region);
-              gdk_gc_set_clip_region (fg_gc, clip_region);
-	      gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), fg_gc);
+	      bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), NULL);
+              bdk_gc_set_clip_rebunnyion (selection_gc, clip_rebunnyion);
+              bdk_gc_set_clip_rebunnyion (fg_gc, clip_rebunnyion);
+	      bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), fg_gc);
 
-              gdk_draw_rectangle (text_renderer->drawable,
+              bdk_draw_rectangle (text_renderer->drawable,
                                   selection_gc,
                                   TRUE,
-                                  x + PANGO_PIXELS (line_rect.x),
+                                  x + BANGO_PIXELS (line_rect.x),
                                   selection_y,
-                                  PANGO_PIXELS (line_rect.width),
+                                  BANGO_PIXELS (line_rect.width),
                                   selection_height);
 
 	      text_renderer_set_state (text_renderer, SELECTED);
-	      pango_renderer_draw_layout_line (PANGO_RENDERER (text_renderer),
+	      bango_renderer_draw_layout_line (BANGO_RENDERER (text_renderer),
 					       line, 
-					       PANGO_SCALE * x + line_rect.x,
-					       PANGO_SCALE * y + baseline);
+					       BANGO_SCALE * x + line_rect.x,
+					       BANGO_SCALE * y + baseline);
 
-	      gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), NULL);
-              gdk_gc_set_clip_region (selection_gc, NULL);
-              gdk_gc_set_clip_region (fg_gc, NULL);
-	      gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), fg_gc);
+	      bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), NULL);
+              bdk_gc_set_clip_rebunnyion (selection_gc, NULL);
+              bdk_gc_set_clip_rebunnyion (fg_gc, NULL);
+	      bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), fg_gc);
 	      
-              gdk_region_destroy (clip_region);
+              bdk_rebunnyion_destroy (clip_rebunnyion);
 
               /* Paint in the ends of the line */
-              if (line_rect.x > line_display->left_margin * PANGO_SCALE &&
-                  ((line_display->direction == GTK_TEXT_DIR_LTR && selection_start_index < byte_offset) ||
-                   (line_display->direction == GTK_TEXT_DIR_RTL && selection_end_index > byte_offset + line->length)))
+              if (line_rect.x > line_display->left_margin * BANGO_SCALE &&
+                  ((line_display->direction == BTK_TEXT_DIR_LTR && selection_start_index < byte_offset) ||
+                   (line_display->direction == BTK_TEXT_DIR_RTL && selection_end_index > byte_offset + line->length)))
                 {
-                  gdk_draw_rectangle (text_renderer->drawable,
+                  bdk_draw_rectangle (text_renderer->drawable,
                                       selection_gc,
                                       TRUE,
                                       x + line_display->left_margin,
                                       selection_y,
-                                      PANGO_PIXELS (line_rect.x) - line_display->left_margin,
+                                      BANGO_PIXELS (line_rect.x) - line_display->left_margin,
                                       selection_height);
                 }
 
               if (line_rect.x + line_rect.width <
-                  (screen_width + line_display->left_margin) * PANGO_SCALE &&
-                  ((line_display->direction == GTK_TEXT_DIR_LTR && selection_end_index > byte_offset + line->length) ||
-                   (line_display->direction == GTK_TEXT_DIR_RTL && selection_start_index < byte_offset)))
+                  (screen_width + line_display->left_margin) * BANGO_SCALE &&
+                  ((line_display->direction == BTK_TEXT_DIR_LTR && selection_end_index > byte_offset + line->length) ||
+                   (line_display->direction == BTK_TEXT_DIR_RTL && selection_start_index < byte_offset)))
                 {
                   int nonlayout_width;
 
                   nonlayout_width =
                     line_display->left_margin + screen_width -
-                    PANGO_PIXELS (line_rect.x) - PANGO_PIXELS (line_rect.width);
+                    BANGO_PIXELS (line_rect.x) - BANGO_PIXELS (line_rect.width);
 
-                  gdk_draw_rectangle (text_renderer->drawable,
+                  bdk_draw_rectangle (text_renderer->drawable,
                                       selection_gc,
                                       TRUE,
-                                      x + PANGO_PIXELS (line_rect.x) + PANGO_PIXELS (line_rect.width),
+                                      x + BANGO_PIXELS (line_rect.x) + BANGO_PIXELS (line_rect.width),
                                       selection_y,
                                       nonlayout_width,
                                       selection_height);
                 }
             }
 	  else if (line_display->has_block_cursor &&
-		   gtk_widget_has_focus (text_renderer->widget) &&
+		   btk_widget_has_focus (text_renderer->widget) &&
 		   byte_offset <= line_display->insert_index &&
 		   (line_display->insert_index < byte_offset + line->length ||
 		    (at_last_line && line_display->insert_index == byte_offset + line->length)))
 	    {
-	      GdkRectangle cursor_rect;
-	      GdkGC *cursor_gc;
+	      BdkRectangle cursor_rect;
+	      BdkGC *cursor_gc;
 
 	      /* we draw text using base color on filled cursor rectangle of cursor color
 	       * (normally white on black) */
-	      cursor_gc = _gtk_widget_get_cursor_gc (text_renderer->widget);
+	      cursor_gc = _btk_widget_get_cursor_gc (text_renderer->widget);
 
 	      cursor_rect.x = x + line_display->x_offset + line_display->block_cursor.x;
 	      cursor_rect.y = y + line_display->block_cursor.y + line_display->top_margin;
 	      cursor_rect.width = line_display->block_cursor.width;
 	      cursor_rect.height = line_display->block_cursor.height;
 
-	      gdk_gc_set_clip_rectangle (cursor_gc, &cursor_rect);
+	      bdk_gc_set_clip_rectangle (cursor_gc, &cursor_rect);
 
-              gdk_draw_rectangle (text_renderer->drawable,
+              bdk_draw_rectangle (text_renderer->drawable,
                                   cursor_gc,
                                   TRUE,
                                   cursor_rect.x,
@@ -678,65 +678,65 @@ render_para (GtkTextRenderer    *text_renderer,
                                   cursor_rect.width,
                                   cursor_rect.height);
 
-              gdk_gc_set_clip_region (cursor_gc, NULL);
+              bdk_gc_set_clip_rebunnyion (cursor_gc, NULL);
 
 	      /* draw text under the cursor if any */
 	      if (!line_display->cursor_at_line_end)
 		{
-		  GdkGC *cursor_text_gc;
+		  BdkGC *cursor_text_gc;
 
 		  cursor_text_gc = text_renderer->widget->style->base_gc[text_renderer->widget->state];
-		  gdk_gc_set_clip_rectangle (cursor_text_gc, &cursor_rect);
+		  bdk_gc_set_clip_rectangle (cursor_text_gc, &cursor_rect);
 
-		  gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), cursor_text_gc);
+		  bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), cursor_text_gc);
 		  text_renderer_set_state (text_renderer, CURSOR);
 
-		  pango_renderer_draw_layout_line (PANGO_RENDERER (text_renderer),
+		  bango_renderer_draw_layout_line (BANGO_RENDERER (text_renderer),
 						   line,
-						   PANGO_SCALE * x + line_rect.x,
-						   PANGO_SCALE * y + baseline);
+						   BANGO_SCALE * x + line_rect.x,
+						   BANGO_SCALE * y + baseline);
 
-		  gdk_pango_renderer_set_gc (GDK_PANGO_RENDERER (text_renderer), fg_gc);
-		  gdk_gc_set_clip_region (cursor_text_gc, NULL);
+		  bdk_bango_renderer_set_gc (BDK_BANGO_RENDERER (text_renderer), fg_gc);
+		  bdk_gc_set_clip_rebunnyion (cursor_text_gc, NULL);
 		}
 	    }
         }
 
       byte_offset += line->length;
     }
-  while (pango_layout_iter_next_line (iter));
+  while (bango_layout_iter_next_line (iter));
 
-  pango_layout_iter_free (iter);
+  bango_layout_iter_free (iter);
 }
 
 static void
-on_renderer_display_closed (GdkDisplay       *display,
+on_renderer_display_closed (BdkDisplay       *display,
                             gboolean          is_error,
-			    GtkTextRenderer  *text_renderer)
+			    BtkTextRenderer  *text_renderer)
 {
   g_signal_handlers_disconnect_by_func (text_renderer->screen,
 					(gpointer)on_renderer_display_closed,
 					text_renderer);
-  g_object_set_data (G_OBJECT (text_renderer->screen), I_("gtk-text-renderer"), NULL);
+  g_object_set_data (G_OBJECT (text_renderer->screen), I_("btk-text-renderer"), NULL);
 }
 
-static GtkTextRenderer *
-get_text_renderer (GdkScreen *screen)
+static BtkTextRenderer *
+get_text_renderer (BdkScreen *screen)
 {
-  GtkTextRenderer *text_renderer;
+  BtkTextRenderer *text_renderer;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   
-  text_renderer = g_object_get_data (G_OBJECT (screen), "gtk-text-renderer");
+  text_renderer = g_object_get_data (G_OBJECT (screen), "btk-text-renderer");
   if (!text_renderer)
     {
-      text_renderer = g_object_new (GTK_TYPE_TEXT_RENDERER, "screen", screen, NULL);
+      text_renderer = g_object_new (BTK_TYPE_TEXT_RENDERER, "screen", screen, NULL);
       text_renderer->screen = screen;
       
-      g_object_set_data_full (G_OBJECT (screen), I_("gtk-text-renderer"), text_renderer,
+      g_object_set_data_full (G_OBJECT (screen), I_("btk-text-renderer"), text_renderer,
 			      (GDestroyNotify)g_object_unref);
 
-      g_signal_connect_object (gdk_screen_get_display (screen), "closed",
+      g_signal_connect_object (bdk_screen_get_display (screen), "closed",
                                G_CALLBACK (on_renderer_display_closed),
                                text_renderer, 0);
     }
@@ -745,15 +745,15 @@ get_text_renderer (GdkScreen *screen)
 }
 
 void
-gtk_text_layout_draw (GtkTextLayout *layout,
-                      GtkWidget *widget,
-                      GdkDrawable *drawable,
-		      GdkGC       *cursor_gc,
+btk_text_layout_draw (BtkTextLayout *layout,
+                      BtkWidget *widget,
+                      BdkDrawable *drawable,
+		      BdkGC       *cursor_gc,
                       /* Location of the drawable
                          in layout coordinates */
                       gint x_offset,
                       gint y_offset,
-                      /* Region of the layout to
+                      /* Rebunnyion of the layout to
                          render */
                       gint x,
                       gint y,
@@ -762,17 +762,17 @@ gtk_text_layout_draw (GtkTextLayout *layout,
                       /* widgets to expose */
                       GList **widgets)
 {
-  GdkRectangle clip;
+  BdkRectangle clip;
   gint current_y;
   GSList *cursor_list;
-  GtkTextRenderer *text_renderer;
-  GtkTextIter selection_start, selection_end;
+  BtkTextRenderer *text_renderer;
+  BtkTextIter selection_start, selection_end;
   gboolean have_selection = FALSE;
   GSList *line_list;
   GSList *tmp_list;
   GList *tmp_widgets;
   
-  g_return_if_fail (GTK_IS_TEXT_LAYOUT (layout));
+  g_return_if_fail (BTK_IS_TEXT_LAYOUT (layout));
   g_return_if_fail (layout->default_style != NULL);
   g_return_if_fail (layout->buffer != NULL);
   g_return_if_fail (drawable != NULL);
@@ -782,7 +782,7 @@ gtk_text_layout_draw (GtkTextLayout *layout,
   if (width == 0 || height == 0)
     return;
 
-  line_list =  gtk_text_layout_get_lines (layout, y + y_offset, y + y_offset + height, &current_y);
+  line_list =  btk_text_layout_get_lines (layout, y + y_offset, y + y_offset + height, &current_y);
   current_y -= y_offset;
 
   if (line_list == NULL)
@@ -793,13 +793,13 @@ gtk_text_layout_draw (GtkTextLayout *layout,
   clip.width = width;
   clip.height = height;
 
-  text_renderer = get_text_renderer (gdk_drawable_get_screen (drawable));
+  text_renderer = get_text_renderer (bdk_drawable_get_screen (drawable));
 
   text_renderer_begin (text_renderer, widget, drawable, &clip);
 
-  gtk_text_layout_wrap_loop_start (layout);
+  btk_text_layout_wrap_loop_start (layout);
 
-  if (gtk_text_buffer_get_selection_bounds (layout->buffer,
+  if (btk_text_buffer_get_selection_bounds (layout->buffer,
                                             &selection_start,
                                             &selection_end))
     have_selection = TRUE;
@@ -807,15 +807,15 @@ gtk_text_layout_draw (GtkTextLayout *layout,
   tmp_list = line_list;
   while (tmp_list != NULL)
     {
-      GtkTextLineDisplay *line_display;
+      BtkTextLineDisplay *line_display;
       gint selection_start_index = -1;
       gint selection_end_index = -1;
       gboolean have_strong;
       gboolean have_weak;
 
-      GtkTextLine *line = tmp_list->data;
+      BtkTextLine *line = tmp_list->data;
 
-      line_display = gtk_text_layout_get_line_display (layout, line, FALSE);
+      line_display = btk_text_layout_get_line_display (layout, line, FALSE);
 
       if (line_display->height > 0)
         {
@@ -823,27 +823,27 @@ gtk_text_layout_draw (GtkTextLayout *layout,
           
           if (have_selection)
             {
-              GtkTextIter line_start, line_end;
+              BtkTextIter line_start, line_end;
               gint byte_count;
               
-              gtk_text_layout_get_iter_at_line (layout,
+              btk_text_layout_get_iter_at_line (layout,
                                                 &line_start,
                                                 line, 0);
               line_end = line_start;
-	      if (!gtk_text_iter_ends_line (&line_end))
-		gtk_text_iter_forward_to_line_end (&line_end);
-              byte_count = gtk_text_iter_get_visible_line_index (&line_end);     
+	      if (!btk_text_iter_ends_line (&line_end))
+		btk_text_iter_forward_to_line_end (&line_end);
+              byte_count = btk_text_iter_get_visible_line_index (&line_end);     
 
-              if (gtk_text_iter_compare (&selection_start, &line_end) <= 0 &&
-                  gtk_text_iter_compare (&selection_end, &line_start) >= 0)
+              if (btk_text_iter_compare (&selection_start, &line_end) <= 0 &&
+                  btk_text_iter_compare (&selection_end, &line_start) >= 0)
                 {
-                  if (gtk_text_iter_compare (&selection_start, &line_start) >= 0)
-                    selection_start_index = gtk_text_iter_get_visible_line_index (&selection_start);
+                  if (btk_text_iter_compare (&selection_start, &line_start) >= 0)
+                    selection_start_index = btk_text_iter_get_visible_line_index (&selection_start);
                   else
                     selection_start_index = -1;
 
-                  if (gtk_text_iter_compare (&selection_end, &line_end) <= 0)
-                    selection_end_index = gtk_text_iter_get_visible_line_index (&selection_end);
+                  if (btk_text_iter_compare (&selection_end, &line_end) <= 0)
+                    selection_end_index = btk_text_iter_get_visible_line_index (&selection_end);
                   else
                     selection_end_index = byte_count + 1; /* + 1 to flag past-the-end */
                 }
@@ -863,7 +863,7 @@ gtk_text_layout_draw (GtkTextLayout *layout,
 	  cursor_list = line_display->cursors;
 	  while (cursor_list)
 	    {
-	      GtkTextCursorDisplay *cursor = cursor_list->data;
+	      BtkTextCursorDisplay *cursor = cursor_list->data;
  	      if (cursor->is_strong)
  		have_strong = TRUE;
  	      else
@@ -875,15 +875,15 @@ gtk_text_layout_draw (GtkTextLayout *layout,
           cursor_list = line_display->cursors;
           while (cursor_list)
             {
-              GtkTextCursorDisplay *cursor = cursor_list->data;
-	      GtkTextDirection dir;
- 	      GdkRectangle cursor_location;
+              BtkTextCursorDisplay *cursor = cursor_list->data;
+	      BtkTextDirection dir;
+ 	      BdkRectangle cursor_location;
 
               dir = line_display->direction;
  	      if (have_strong && have_weak)
  		{
  		  if (!cursor->is_strong)
- 		    dir = (dir == GTK_TEXT_DIR_RTL) ? GTK_TEXT_DIR_LTR : GTK_TEXT_DIR_RTL;
+ 		    dir = (dir == BTK_TEXT_DIR_RTL) ? BTK_TEXT_DIR_LTR : BTK_TEXT_DIR_RTL;
  		}
  
  	      cursor_location.x = line_display->x_offset + cursor->x - x_offset;
@@ -891,7 +891,7 @@ gtk_text_layout_draw (GtkTextLayout *layout,
  	      cursor_location.width = 0;
  	      cursor_location.height = cursor->height;
 
-	      gtk_draw_insertion_cursor (widget, drawable, &clip, &cursor_location,
+	      btk_draw_insertion_cursor (widget, drawable, &clip, &cursor_location,
 					 cursor->is_strong,
 					 dir, have_strong && have_weak);
 
@@ -900,12 +900,12 @@ gtk_text_layout_draw (GtkTextLayout *layout,
         } /* line_display->height > 0 */
           
       current_y += line_display->height;
-      gtk_text_layout_free_line_display (layout, line_display);
+      btk_text_layout_free_line_display (layout, line_display);
       
       tmp_list = g_slist_next (tmp_list);
     }
 
-  gtk_text_layout_wrap_loop_end (layout);
+  btk_text_layout_wrap_loop_end (layout);
 
   tmp_widgets = text_renderer_end (text_renderer);
   if (widgets)
@@ -919,5 +919,5 @@ gtk_text_layout_draw (GtkTextLayout *layout,
   g_slist_free (line_list);
 }
 
-#define __GTK_TEXT_DISPLAY_C__
-#include "gtkaliasdef.c"
+#define __BTK_TEXT_DISPLAY_C__
+#include "btkaliasdef.c"

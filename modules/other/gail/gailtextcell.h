@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,43 +17,43 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_TEXT_CELL_H__
-#define __GAIL_TEXT_CELL_H__
+#ifndef __BAIL_TEXT_CELL_H__
+#define __BAIL_TEXT_CELL_H__
 
-#include <atk/atk.h>
-#include <gail/gailrenderercell.h>
-#include <libgail-util/gailtextutil.h>
+#include <batk/batk.h>
+#include <bail/bailrenderercell.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_TEXT_CELL            (gail_text_cell_get_type ())
-#define GAIL_TEXT_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_TEXT_CELL, GailTextCell))
-#define GAIL_TEXT_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TEXT_CELL, GailTextCellClass))
-#define GAIL_IS_TEXT_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_TEXT_CELL))
-#define GAIL_IS_TEXT_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_TEXT_CELL))
-#define GAIL_TEXT_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_TEXT_CELL, GailTextCellClass))
+#define BAIL_TYPE_TEXT_CELL            (bail_text_cell_get_type ())
+#define BAIL_TEXT_CELL(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_CELL, BailTextCell))
+#define BAIL_TEXT_CELL_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TEXT_CELL, BailTextCellClass))
+#define BAIL_IS_TEXT_CELL(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_CELL))
+#define BAIL_IS_TEXT_CELL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_CELL))
+#define BAIL_TEXT_CELL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_CELL, BailTextCellClass))
 
-typedef struct _GailTextCell                  GailTextCell;
-typedef struct _GailTextCellClass             GailTextCellClass;
+typedef struct _BailTextCell                  BailTextCell;
+typedef struct _BailTextCellClass             BailTextCellClass;
 
-struct _GailTextCell
+struct _BailTextCell
 {
-  GailRendererCell parent;
-  GailTextUtil *textutil;
+  BailRendererCell parent;
+  BailTextUtil *textutil;
   gchar *cell_text;
   gint caret_pos;
   gint cell_length;
 };
 
-GType gail_text_cell_get_type (void);
+GType bail_text_cell_get_type (void);
 
-struct _GailTextCellClass
+struct _BailTextCellClass
 {
-  GailRendererCellClass parent_class;
+  BailRendererCellClass parent_class;
 };
 
-AtkObject *gail_text_cell_new (void);
+BatkObject *bail_text_cell_new (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_TREE_VIEW_TEXT_CELL_H__ */
+#endif /* __BAIL_TREE_VIEW_TEXT_CELL_H__ */

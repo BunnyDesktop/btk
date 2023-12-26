@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,29 +17,29 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_TEXT_VIEW_H__
-#define __GAIL_TEXT_VIEW_H__
+#ifndef __BAIL_TEXT_VIEW_H__
+#define __BAIL_TEXT_VIEW_H__
 
-#include <gail/gailcontainer.h>
-#include <libgail-util/gailtextutil.h>
+#include <bail/bailcontainer.h>
+#include <libbail-util/bailtextutil.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_TEXT_VIEW                  (gail_text_view_get_type ())
-#define GAIL_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_TEXT_VIEW, GailTextView))
-#define GAIL_TEXT_VIEW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_TEXT_VIEW, GailTextViewClass))
-#define GAIL_IS_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_TEXT_VIEW))
-#define GAIL_IS_TEXT_VIEW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_TEXT_VIEW))
-#define GAIL_TEXT_VIEW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_TEXT_VIEW, GailTextViewClass))
+#define BAIL_TYPE_TEXT_VIEW                  (bail_text_view_get_type ())
+#define BAIL_TEXT_VIEW(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_TEXT_VIEW, BailTextView))
+#define BAIL_TEXT_VIEW_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
+#define BAIL_IS_TEXT_VIEW(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_TEXT_VIEW))
+#define BAIL_IS_TEXT_VIEW_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_TEXT_VIEW))
+#define BAIL_TEXT_VIEW_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_TEXT_VIEW, BailTextViewClass))
 
-typedef struct _GailTextView              GailTextView;
-typedef struct _GailTextViewClass         GailTextViewClass;
+typedef struct _BailTextView              BailTextView;
+typedef struct _BailTextViewClass         BailTextViewClass;
 
-struct _GailTextView
+struct _BailTextView
 {
-  GailContainer  parent;
+  BailContainer  parent;
 
-  GailTextUtil   *textutil;
+  BailTextUtil   *textutil;
   gint           previous_insert_offset;
   gint           previous_selection_bound;
   /*
@@ -52,13 +52,13 @@ struct _GailTextView
   guint          insert_notify_handler;
 };
 
-GType gail_text_view_get_type (void);
+GType bail_text_view_get_type (void);
 
-struct _GailTextViewClass
+struct _BailTextViewClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_TEXT_VIEW_H__ */
+#endif /* __BAIL_TEXT_VIEW_H__ */

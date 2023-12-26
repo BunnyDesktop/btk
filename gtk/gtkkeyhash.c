@@ -1,6 +1,6 @@
-/* gtkkeyhash.c: Keymap aware matching of key bindings
+/* btkkeyhash.c: Keymap aware matching of key bindings
  *
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 2002, Red Hat Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,28 +21,28 @@
 
 #include "config.h"
 
-#include "gtkdebug.h"
-#include "gtkkeyhash.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkdebug.h"
+#include "btkkeyhash.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
-typedef struct _GtkKeyHashEntry GtkKeyHashEntry;
+typedef struct _BtkKeyHashEntry BtkKeyHashEntry;
 
-struct _GtkKeyHashEntry
+struct _BtkKeyHashEntry
 {
   guint keyval;
-  GdkModifierType modifiers;
+  BdkModifierType modifiers;
   gpointer value;
 
   /* Set as a side effect of generating key_hash->keycode_hash
    */
-  GdkKeymapKey *keys;		
+  BdkKeymapKey *keys;		
   gint n_keys;
 };
 
-struct _GtkKeyHash
+struct _BtkKeyHash
 {
-  GdkKeymap *keymap;
+  BdkKeymap *keymap;
   GHashTable *keycode_hash;
   GHashTable *reverse_hash;
   GList *entries_list;
@@ -59,13 +59,13 @@ key_hash_clear_keycode (gpointer key,
 }
 
 static void
-key_hash_insert_entry (GtkKeyHash      *key_hash,
-		       GtkKeyHashEntry *entry)
+key_hash_insert_entry (BtkKeyHash      *key_hash,
+		       BtkKeyHashEntry *entry)
 {
   gint i;
 
   g_free (entry->keys);
-  gdk_keymap_get_entries_for_keyval (key_hash->keymap,
+  bdk_keymap_get_entries_for_keyval (key_hash->keymap,
 				     entry->keyval,
 				     &entry->keys, &entry->n_keys);
   
@@ -81,7 +81,7 @@ key_hash_insert_entry (GtkKeyHash      *key_hash,
 }
 
 static GHashTable *
-key_hash_get_keycode_hash (GtkKeyHash *key_hash)
+key_hash_get_keycode_hash (BtkKeyHash *key_hash)
 {
   if (!key_hash->keycode_hash)
     {
@@ -101,8 +101,8 @@ key_hash_get_keycode_hash (GtkKeyHash *key_hash)
 }
 
 static void
-key_hash_keys_changed (GdkKeymap  *keymap,
-		       GtkKeyHash *key_hash)
+key_hash_keys_changed (BdkKeymap  *keymap,
+		       BtkKeyHash *key_hash)
 {
   /* The keymap changed, so we have to regenerate the keycode hash
    */
@@ -115,20 +115,20 @@ key_hash_keys_changed (GdkKeymap  *keymap,
 }
 
 /**
- * _gtk_key_hash_new:
- * @keymap: a #GdkKeymap
+ * _btk_key_hash_new:
+ * @keymap: a #BdkKeymap
  * @item_destroy_notify: function to be called when items are removed
  *   from the hash or %NULL.
  * 
  * Create a new key hash object for doing binding resolution. 
  * 
- * Return value: the newly created object. Free with _gtk_key_hash_free().
+ * Return value: the newly created object. Free with _btk_key_hash_free().
  **/
-GtkKeyHash *
-_gtk_key_hash_new (GdkKeymap      *keymap,
+BtkKeyHash *
+_btk_key_hash_new (BdkKeymap      *keymap,
 		   GDestroyNotify  item_destroy_notify)
 {
-  GtkKeyHash *key_hash = g_new (GtkKeyHash, 1);
+  BtkKeyHash *key_hash = g_new (BtkKeyHash, 1);
 
   key_hash->keymap = keymap;
   g_signal_connect (keymap, "keys-changed",
@@ -143,34 +143,34 @@ _gtk_key_hash_new (GdkKeymap      *keymap,
 }
 
 static void
-key_hash_free_entry (GtkKeyHash      *key_hash,
-		     GtkKeyHashEntry *entry)
+key_hash_free_entry (BtkKeyHash      *key_hash,
+		     BtkKeyHashEntry *entry)
 {
   if (key_hash->destroy_notify)
     (*key_hash->destroy_notify) (entry->value);
   
   g_free (entry->keys);
-  g_slice_free (GtkKeyHashEntry, entry);
+  g_slice_free (BtkKeyHashEntry, entry);
 }
 
 static void
 key_hash_free_entry_foreach (gpointer value,
 			     gpointer data)
 {
-  GtkKeyHashEntry *entry = value;
-  GtkKeyHash *key_hash = data;
+  BtkKeyHashEntry *entry = value;
+  BtkKeyHash *key_hash = data;
 
   key_hash_free_entry (key_hash, entry);
 }
 
 /**
- * gtk_key_hash_free:
- * @key_hash: a #GtkKeyHash
+ * btk_key_hash_free:
+ * @key_hash: a #BtkKeyHash
  * 
- * Destroys a key hash created with gtk_key_hash_new()
+ * Destroys a key hash created with btk_key_hash_new()
  **/
 void
-_gtk_key_hash_free (GtkKeyHash *key_hash)
+_btk_key_hash_free (BtkKeyHash *key_hash)
 {
   g_signal_handlers_disconnect_by_func (key_hash->keymap,
 					key_hash_keys_changed,
@@ -191,8 +191,8 @@ _gtk_key_hash_free (GtkKeyHash *key_hash)
 }
 
 /**
- * _gtk_key_hash_add_entry:
- * @key_hash: a #GtkKeyHash
+ * _btk_key_hash_add_entry:
+ * @key_hash: a #BtkKeyHash
  * @keyval: key symbol for this binding
  * @modifiers: modifiers for this binding
  * @value: value to insert in the key hash
@@ -200,12 +200,12 @@ _gtk_key_hash_free (GtkKeyHash *key_hash)
  * Inserts a pair of key symbol and modifier mask into the key hash. 
  **/
 void
-_gtk_key_hash_add_entry (GtkKeyHash      *key_hash,
+_btk_key_hash_add_entry (BtkKeyHash      *key_hash,
 			 guint            keyval,
-			 GdkModifierType  modifiers,
+			 BdkModifierType  modifiers,
 			 gpointer         value)
 {
-  GtkKeyHashEntry *entry = g_slice_new (GtkKeyHashEntry);
+  BtkKeyHashEntry *entry = g_slice_new (BtkKeyHashEntry);
 
   entry->value = value;
   entry->keyval = keyval;
@@ -220,22 +220,22 @@ _gtk_key_hash_add_entry (GtkKeyHash      *key_hash,
 }
 
 /**
- * _gtk_key_hash_remove_entry:
- * @key_hash: a #GtkKeyHash
- * @value: value previously added with _gtk_key_hash_add_entry()
+ * _btk_key_hash_remove_entry:
+ * @key_hash: a #BtkKeyHash
+ * @value: value previously added with _btk_key_hash_add_entry()
  * 
  * Removes a value previously added to the key hash with
- * _gtk_key_hash_add_entry().
+ * _btk_key_hash_add_entry().
  **/
 void
-_gtk_key_hash_remove_entry (GtkKeyHash *key_hash,
+_btk_key_hash_remove_entry (BtkKeyHash *key_hash,
 			    gpointer    value)
 {
   GList *entry_node = g_hash_table_lookup (key_hash->reverse_hash, value);
   
   if (entry_node)
     {
-      GtkKeyHashEntry *entry = entry_node->data;
+      BtkKeyHashEntry *entry = entry_node->data;
 
       if (key_hash->keycode_hash)
 	{
@@ -271,8 +271,8 @@ static gint
 lookup_result_compare (gconstpointer a,
 		       gconstpointer b)
 {
-  const GtkKeyHashEntry *entry_a = a;
-  const GtkKeyHashEntry *entry_b = b;
+  const BtkKeyHashEntry *entry_a = a;
+  const BtkKeyHashEntry *entry_b = b;
   guint modifiers;
 
   gint n_bits_a = 0;
@@ -311,8 +311,8 @@ static gint
 lookup_result_compare_by_keyval (gconstpointer a,
 		                 gconstpointer b)
 {
-  const GtkKeyHashEntry *entry_a = a;
-  const GtkKeyHashEntry *entry_b = b;
+  const BtkKeyHashEntry *entry_a = a;
+  const BtkKeyHashEntry *entry_b = b;
 
   if (entry_a->keyval < entry_b->keyval)
 	return -1;
@@ -331,14 +331,14 @@ sort_lookup_results_by_keyval (GSList *slist)
 /* Return true if keyval is defined in keyboard group
  */
 static gboolean 
-keyval_in_group (GdkKeymap  *keymap,
+keyval_in_group (BdkKeymap  *keymap,
                  guint      keyval,
                  gint       group)
 {                 
-  GtkKeyHashEntry entry;
+  BtkKeyHashEntry entry;
   gint i;
 
-  gdk_keymap_get_entries_for_keyval (keymap,
+  bdk_keymap_get_entries_for_keyval (keymap,
 				     keyval,
 				     &entry.keys, &entry.n_keys);
 
@@ -356,13 +356,13 @@ keyval_in_group (GdkKeymap  *keymap,
 }
 
 /**
- * _gtk_key_hash_lookup:
- * @key_hash: a #GtkKeyHash
- * @hardware_keycode: hardware keycode field from a #GdkEventKey
- * @state: state field from a #GdkEventKey
+ * _btk_key_hash_lookup:
+ * @key_hash: a #BtkKeyHash
+ * @hardware_keycode: hardware keycode field from a #BdkEventKey
+ * @state: state field from a #BdkEventKey
  * @mask: mask of modifiers to consider when matching against the
  *        modifiers in entries.
- * @group: group field from a #GdkEventKey
+ * @group: group field from a #BdkEventKey
  * 
  * Looks up the best matching entry or entries in the hash table for
  * a given event. The results are sorted so that entries with less
@@ -379,10 +379,10 @@ keyval_in_group (GdkKeymap  *keymap,
  * Return value: A #GSList of matching entries.
  **/
 GSList *
-_gtk_key_hash_lookup (GtkKeyHash      *key_hash,
+_btk_key_hash_lookup (BtkKeyHash      *key_hash,
 		      guint16          hardware_keycode,
-		      GdkModifierType  state,
-		      GdkModifierType  mask,
+		      BdkModifierType  state,
+		      BdkModifierType  mask,
 		      gint             group)
 {
   GHashTable *keycode_hash = key_hash_get_keycode_hash (key_hash);
@@ -393,17 +393,17 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
   guint keyval;
   gint effective_group;
   gint level;
-  GdkModifierType modifiers;
-  GdkModifierType consumed_modifiers;
+  BdkModifierType modifiers;
+  BdkModifierType consumed_modifiers;
   gboolean group_mod_is_accel_mod = FALSE;
-  const GdkModifierType xmods = GDK_MOD2_MASK|GDK_MOD3_MASK|GDK_MOD4_MASK|GDK_MOD5_MASK;
-  const GdkModifierType vmods = GDK_SUPER_MASK|GDK_HYPER_MASK|GDK_META_MASK;
+  const BdkModifierType xmods = BDK_MOD2_MASK|BDK_MOD3_MASK|BDK_MOD4_MASK|BDK_MOD5_MASK;
+  const BdkModifierType vmods = BDK_SUPER_MASK|BDK_HYPER_MASK|BDK_META_MASK;
 
   /* We don't want Caps_Lock to affect keybinding lookups.
    */
-  state &= ~GDK_LOCK_MASK;
+  state &= ~BDK_LOCK_MASK;
 
-  _gtk_translate_keyboard_accel_state (key_hash->keymap,
+  _btk_translate_keyboard_accel_state (key_hash->keymap,
                                        hardware_keycode, state, mask, group,
                                        &keyval,
                                        &effective_group, &level, &consumed_modifiers);
@@ -411,13 +411,13 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
   /* if the group-toggling modifier is part of the default accel mod
    * mask, and it is active, disable it for matching
    */
-  if (mask & GTK_TOGGLE_GROUP_MOD_MASK)
+  if (mask & BTK_TOGGLE_GROUP_MOD_MASK)
     group_mod_is_accel_mod = TRUE;
 
-  gdk_keymap_map_virtual_modifiers (key_hash->keymap, &mask);
-  gdk_keymap_add_virtual_modifiers (key_hash->keymap, &state);
+  bdk_keymap_map_virtual_modifiers (key_hash->keymap, &mask);
+  bdk_keymap_add_virtual_modifiers (key_hash->keymap, &state);
 
-  GTK_NOTE (KEYBINDINGS,
+  BTK_NOTE (KEYBINDINGS,
 	    g_message ("Looking up keycode = %u, modifiers = 0x%04x,\n"
 		       "    keyval = %u, group = %d, level = %d, consumed_modifiers = 0x%04x",
 		       hardware_keycode, state, keyval, effective_group, level, consumed_modifiers));
@@ -427,7 +427,7 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
       GSList *tmp_list = keys;
       while (tmp_list)
 	{
-	  GtkKeyHashEntry *entry = tmp_list->data;
+	  BtkKeyHashEntry *entry = tmp_list->data;
 
 	  /* If the virtual Super, Hyper or Meta modifiers are present,
 	   * they will also be mapped to some of the Mod2 - Mod5 modifiers,
@@ -438,7 +438,7 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
 	   * will not match a Super+Hyper entry.
 	   */
           modifiers = entry->modifiers;
-          if (gdk_keymap_map_virtual_modifiers (key_hash->keymap, &modifiers) &&
+          if (bdk_keymap_map_virtual_modifiers (key_hash->keymap, &modifiers) &&
 	      ((modifiers & ~consumed_modifiers & mask & ~vmods) == (state & ~consumed_modifiers & mask & ~vmods) ||
 	       (modifiers & ~consumed_modifiers & mask & ~xmods) == (state & ~consumed_modifiers & mask & ~xmods)))
 	    {
@@ -449,11 +449,11 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
                    * otherwise we can get multiple exact matches, some being
                    * bogus */
                   (!group_mod_is_accel_mod ||
-                   (state & GTK_TOGGLE_GROUP_MOD_MASK) ==
-                   (entry->modifiers & GTK_TOGGLE_GROUP_MOD_MASK)))
+                   (state & BTK_TOGGLE_GROUP_MOD_MASK) ==
+                   (entry->modifiers & BTK_TOGGLE_GROUP_MOD_MASK)))
 
 		{
-		  GTK_NOTE (KEYBINDINGS,
+		  BTK_NOTE (KEYBINDINGS,
 			    g_message ("  found exact match, keyval = %u, modifiers = 0x%04x",
 				       entry->keyval, entry->modifiers));
 
@@ -477,7 +477,7 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
                           (!group_mod_is_accel_mod ||
                            entry->keys[i].group == effective_group))
 			{
-			  GTK_NOTE (KEYBINDINGS,
+			  BTK_NOTE (KEYBINDINGS,
 				    g_message ("  found group = %d, level = %d",
 					       entry->keys[i].group, entry->keys[i].level));
 			  results = g_slist_prepend (results, entry);
@@ -498,7 +498,7 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
        * the stack may have an exact match and we don't want to 'steal' it.
        */
       guint oldkeyval = 0;
-      GtkKeyHashEntry *keyhashentry;
+      BtkKeyHashEntry *keyhashentry;
 
       results = sort_lookup_results_by_keyval (results);
       for (l = results; l; l = l->next)
@@ -518,30 +518,30 @@ _gtk_key_hash_lookup (GtkKeyHash      *key_hash,
     
   results = sort_lookup_results (results);
   for (l = results; l; l = l->next)
-    l->data = ((GtkKeyHashEntry *)l->data)->value;
+    l->data = ((BtkKeyHashEntry *)l->data)->value;
 
   return results;
 }
 
 /**
- * _gtk_key_hash_lookup_keyval:
- * @key_hash: a #GtkKeyHash
- * @event: a #GtkEvent
+ * _btk_key_hash_lookup_keyval:
+ * @key_hash: a #BtkKeyHash
+ * @event: a #BtkEvent
  * 
  * Looks up the best matching entry or entries in the hash table for a
  * given keyval/modifiers pair. It's better to use
- * _gtk_key_hash_lookup() if you have the original #GdkEventKey
+ * _btk_key_hash_lookup() if you have the original #BdkEventKey
  * available.  The results are sorted so that entries with less
  * modifiers come before entries with more modifiers.
  * 
  * Return value: A #GSList of all matching entries.
  **/
 GSList *
-_gtk_key_hash_lookup_keyval (GtkKeyHash     *key_hash,
+_btk_key_hash_lookup_keyval (BtkKeyHash     *key_hash,
 			     guint           keyval,
-			     GdkModifierType modifiers)
+			     BdkModifierType modifiers)
 {
-  GdkKeymapKey *keys;
+  BdkKeymapKey *keys;
   gint n_keys;
   GSList *results = NULL;
   GSList *l;
@@ -551,7 +551,7 @@ _gtk_key_hash_lookup_keyval (GtkKeyHash     *key_hash,
 
   /* Find some random keycode for this keyval
    */
-  gdk_keymap_get_entries_for_keyval (key_hash->keymap, keyval,
+  bdk_keymap_get_entries_for_keyval (key_hash->keymap, keyval,
 				     &keys, &n_keys);
 
   if (n_keys)
@@ -561,7 +561,7 @@ _gtk_key_hash_lookup_keyval (GtkKeyHash     *key_hash,
 
       while (entries)
 	{
-	  GtkKeyHashEntry *entry = entries->data;
+	  BtkKeyHashEntry *entry = entries->data;
 
 	  if (entry->keyval == keyval && entry->modifiers == modifiers)
 	    results = g_slist_prepend (results, entry);
@@ -574,7 +574,7 @@ _gtk_key_hash_lookup_keyval (GtkKeyHash     *key_hash,
 	  
   results = sort_lookup_results (results);
   for (l = results; l; l = l->next)
-    l->data = ((GtkKeyHashEntry *)l->data)->value;
+    l->data = ((BtkKeyHashEntry *)l->data)->value;
 
   return results;
 }

@@ -1,21 +1,21 @@
-#include <atk/atk.h>
+#include <batk/batk.h>
 #include "testtextlib.h"
 
 #define NUM_VALID_ROLES 6  
 
 static void _create_event_watcher (void);
-static void _check_text (AtkObject *obj);
-void runtest(AtkObject *, gint);
+static void _check_text (BatkObject *obj);
+void runtest(BatkObject *, gint);
 
 static guint id1 = 0;
 static guint win_count = 0;
 
-static void _check_text (AtkObject *in_obj)
+static void _check_text (BatkObject *in_obj)
 {
-  AtkObject *obj = NULL;
-  AtkRole role;
+  BatkObject *obj = NULL;
+  BatkRole role;
   gchar* title;
-  AtkRole valid_roles[NUM_VALID_ROLES];
+  BatkRole valid_roles[NUM_VALID_ROLES];
 
   if (g_getenv("TEST_ACCESSIBLE_DELAY") != NULL)
   {
@@ -27,12 +27,12 @@ static void _check_text (AtkObject *in_obj)
 
   /* Set Up */
 
-  valid_roles[0] = ATK_ROLE_TEXT;
-  valid_roles[1] = ATK_ROLE_LABEL;
-  valid_roles[2] = ATK_ROLE_ACCEL_LABEL;
-  valid_roles[3] = ATK_ROLE_PASSWORD_TEXT;
-  valid_roles[4] = ATK_ROLE_TABLE_CELL;
-  valid_roles[5] = ATK_ROLE_PANEL;
+  valid_roles[0] = BATK_ROLE_TEXT;
+  valid_roles[1] = BATK_ROLE_LABEL;
+  valid_roles[2] = BATK_ROLE_ACCEL_LABEL;
+  valid_roles[3] = BATK_ROLE_PASSWORD_TEXT;
+  valid_roles[4] = BATK_ROLE_TABLE_CELL;
+  valid_roles[5] = BATK_ROLE_PANEL;
   
   /* The following if/else grabs the windows name, or sets title to NULL if none. */
   if (in_obj->name)
@@ -41,18 +41,18 @@ static void _check_text (AtkObject *in_obj)
   }
   else
   {
-    GtkWidget *toplevel;
-    GtkWidget* widget = GTK_ACCESSIBLE (in_obj)->widget;
+    BtkWidget *toplevel;
+    BtkWidget* widget = BTK_ACCESSIBLE (in_obj)->widget;
 
     if (widget == NULL)
     {
       title = NULL;
     }
 
-    toplevel = gtk_widget_get_toplevel (widget);
-    if (GTK_IS_WINDOW (toplevel) && GTK_WINDOW (toplevel)->title)
+    toplevel = btk_widget_get_toplevel (widget);
+    if (BTK_IS_WINDOW (toplevel) && BTK_WINDOW (toplevel)->title)
     {
-      title = GTK_WINDOW (toplevel)->title;
+      title = BTK_WINDOW (toplevel)->title;
     }
     else
       title = NULL;
@@ -83,12 +83,12 @@ static void _check_text (AtkObject *in_obj)
     }
     if (obj != NULL)
     {
-      if (atk_object_get_role (obj) == ATK_ROLE_PANEL)
+      if (batk_object_get_role (obj) == BATK_ROLE_PANEL)
       {
         /* Get the child and check whether it is a label */
 
-        obj = atk_object_ref_accessible_child (obj, 0);
-        g_assert (atk_object_get_role (obj) == ATK_ROLE_LABEL);
+        obj = batk_object_ref_accessible_child (obj, 0);
+        g_assert (batk_object_get_role (obj) == BATK_ROLE_LABEL);
         g_object_unref (obj);
       }
        g_print("Found valid name and role in child!\n");
@@ -105,25 +105,25 @@ static void _check_text (AtkObject *in_obj)
      g_print("Object not found\n");
      return;
   }
-  role = atk_object_get_role(obj);
+  role = batk_object_get_role(obj);
 
-  g_print("_check_text - Found role type %s!\n\n", atk_role_get_name (role));
+  g_print("_check_text - Found role type %s!\n\n", batk_role_get_name (role));
 
   add_handlers(obj);
 
   if (!(isVisibleDialog()))
     setup_gui(obj, runtest);
-  atk_remove_focus_tracker (id1);
+  batk_remove_focus_tracker (id1);
 }
 
 static void
 _create_event_watcher (void)
 {
-  id1 = atk_add_focus_tracker (_check_text);
+  id1 = batk_add_focus_tracker (_check_text);
 }
 
 int
-gtk_module_init(gint argc, char* argv[])
+btk_module_init(gint argc, char* argv[])
 {
   g_print("testtext Module loaded.\n");
   _create_event_watcher();

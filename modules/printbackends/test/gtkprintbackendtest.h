@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackendtest.h: Test implementation of GtkPrintBackend 
+/* BTK - The GIMP Toolkit
+ * btkprintbackendtest.h: Test implementation of BtkPrintBackend 
  * for testing the dialog
  * Copyright (C) 2007, Red Hat, Inc.
  *
@@ -19,23 +19,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_BACKEND_TEST_H__
-#define __GTK_PRINT_BACKEND_TEST_H__
+#ifndef __BTK_PRINT_BACKEND_TEST_H__
+#define __BTK_PRINT_BACKEND_TEST_H__
 
-#include <glib-object.h>
-#include "gtkprintbackend.h"
+#include <bunnylib-object.h>
+#include "btkprintbackend.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINT_BACKEND_TEST    (gtk_print_backend_test_get_type ())
-#define GTK_PRINT_BACKEND_TEST(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINT_BACKEND_TEST, GtkPrintBackendTest))
-#define GTK_IS_PRINT_BACKEND_TEST(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINT_BACKEND_TEST))
+#define BTK_TYPE_PRINT_BACKEND_TEST    (btk_print_backend_test_get_type ())
+#define BTK_PRINT_BACKEND_TEST(obj)    (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINT_BACKEND_TEST, BtkPrintBackendTest))
+#define BTK_IS_PRINT_BACKEND_TEST(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINT_BACKEND_TEST))
 
-typedef struct _GtkPrintBackendTest    GtkPrintBackendTest;
+typedef struct _BtkPrintBackendTest    BtkPrintBackendTest;
 
-GtkPrintBackend *gtk_print_backend_test_new      (void);
-GType            gtk_print_backend_test_get_type (void) G_GNUC_CONST;
+BtkPrintBackend *btk_print_backend_test_new      (void);
+GType            btk_print_backend_test_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_BACKEND_TEST_H__ */
+#endif /* __BTK_PRINT_BACKEND_TEST_H__ */

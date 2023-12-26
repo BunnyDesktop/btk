@@ -21,13 +21,13 @@
 
 #include "config.h"
 
-#include "gdkspawn.h"
+#include "bdkspawn.h"
 
-#include <glib.h>
-#include <gdk/gdk.h>
+#include <bunnylib.h>
+#include <bdk/bdk.h>
 
 gboolean
-gdk_spawn_on_screen (GdkScreen             *screen,
+bdk_spawn_on_screen (BdkScreen             *screen,
 		     const gchar           *working_directory,
 		     gchar                **argv,
 		     gchar                **envp,
@@ -37,7 +37,7 @@ gdk_spawn_on_screen (GdkScreen             *screen,
 		     gint                  *child_pid,
 		     GError               **error)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
   g_assert (sizeof(GPid) == sizeof(int));
 
   return g_spawn_async (working_directory,
@@ -51,7 +51,7 @@ gdk_spawn_on_screen (GdkScreen             *screen,
 }
 
 gboolean
-gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
+bdk_spawn_on_screen_with_pipes (BdkScreen            *screen,
 				const gchar          *working_directory,
 				gchar               **argv,
 				gchar               **envp,
@@ -64,7 +64,7 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
 				gint                 *standard_error,
 				GError              **error)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
   g_assert (sizeof(GPid) == sizeof(int));
 
   return g_spawn_async_with_pipes (working_directory,
@@ -81,7 +81,7 @@ gdk_spawn_on_screen_with_pipes (GdkScreen            *screen,
 }
 
 gboolean
-gdk_spawn_command_line_on_screen (GdkScreen    *screen,
+bdk_spawn_command_line_on_screen (BdkScreen    *screen,
 				  const gchar  *command_line,
 				  GError      **error)
 {
@@ -95,7 +95,7 @@ gdk_spawn_command_line_on_screen (GdkScreen    *screen,
 			   error))
     return FALSE;
 
-  retval = gdk_spawn_on_screen (screen,
+  retval = bdk_spawn_on_screen (screen,
 				NULL, argv, NULL,
 				G_SPAWN_SEARCH_PATH,
 				NULL, NULL, NULL,

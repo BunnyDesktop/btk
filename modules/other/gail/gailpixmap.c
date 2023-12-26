@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,128 +19,128 @@
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-#include "gailpixmap.h"
+#include "bailpixmap.h"
 
-static void	 gail_pixmap_class_init		(GailPixmapClass *klass);
-static void      gail_pixmap_init               (GailPixmap      *pixmap);
-static void      gail_pixmap_initialize         (AtkObject       *accessible,
+static void	 bail_pixmap_class_init		(BailPixmapClass *klass);
+static void      bail_pixmap_init               (BailPixmap      *pixmap);
+static void      bail_pixmap_initialize         (BatkObject       *accessible,
                                                  gpointer         data);
 
-/* AtkImage */
-static void  atk_image_interface_init   (AtkImageIface  *iface);
-static const gchar* gail_pixmap_get_image_description
-                                        (AtkImage       *obj);
-static void  gail_pixmap_get_image_position    
-                                        (AtkImage       *obj,
+/* BatkImage */
+static void  batk_image_interface_init   (BatkImageIface  *iface);
+static const gchar* bail_pixmap_get_image_description
+                                        (BatkImage       *obj);
+static void  bail_pixmap_get_image_position    
+                                        (BatkImage       *obj,
                                          gint           *x,
                                          gint           *y,
-                                         AtkCoordType   coord_type);
-static void  gail_pixmap_get_image_size (AtkImage       *obj,
+                                         BatkCoordType   coord_type);
+static void  bail_pixmap_get_image_size (BatkImage       *obj,
                                          gint           *width,
                                          gint           *height);
-static gboolean gail_pixmap_set_image_description 
-                                        (AtkImage       *obj,
+static gboolean bail_pixmap_set_image_description 
+                                        (BatkImage       *obj,
                                         const gchar    *description);
-static void  gail_pixmap_finalize       (GObject         *object);
+static void  bail_pixmap_finalize       (GObject         *object);
 
-G_DEFINE_TYPE_WITH_CODE (GailPixmap, gail_pixmap, GAIL_TYPE_WIDGET,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_IMAGE, atk_image_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailPixmap, bail_pixmap, BAIL_TYPE_WIDGET,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_IMAGE, batk_image_interface_init))
 
 static void	 
-gail_pixmap_class_init (GailPixmapClass *klass)
+bail_pixmap_class_init (BailPixmapClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *atk_object_class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *batk_object_class = BATK_OBJECT_CLASS (klass);
  
-  atk_object_class->initialize = gail_pixmap_initialize;
+  batk_object_class->initialize = bail_pixmap_initialize;
 
-  gobject_class->finalize = gail_pixmap_finalize;
+  bobject_class->finalize = bail_pixmap_finalize;
 }
 
 static void
-gail_pixmap_init (GailPixmap *pixmap)
+bail_pixmap_init (BailPixmap *pixmap)
 {
   pixmap->image_description = NULL;
 }
 
 static void
-gail_pixmap_initialize (AtkObject *accessible,
+bail_pixmap_initialize (BatkObject *accessible,
                         gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_pixmap_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_pixmap_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_ICON;
+  accessible->role = BATK_ROLE_ICON;
 }
 
 static void
-atk_image_interface_init (AtkImageIface *iface)
+batk_image_interface_init (BatkImageIface *iface)
 {
-  iface->get_image_description = gail_pixmap_get_image_description;
-  iface->get_image_position = gail_pixmap_get_image_position;
-  iface->get_image_size = gail_pixmap_get_image_size;
-  iface->set_image_description = gail_pixmap_set_image_description;
+  iface->get_image_description = bail_pixmap_get_image_description;
+  iface->get_image_position = bail_pixmap_get_image_position;
+  iface->get_image_size = bail_pixmap_get_image_size;
+  iface->set_image_description = bail_pixmap_set_image_description;
 }
 
 static const gchar*
-gail_pixmap_get_image_description (AtkImage       *obj)
+bail_pixmap_get_image_description (BatkImage       *obj)
 {
-  GailPixmap* pixmap;
+  BailPixmap* pixmap;
 
-  g_return_val_if_fail (GAIL_IS_PIXMAP (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_PIXMAP (obj), NULL);
 
-  pixmap = GAIL_PIXMAP (obj);
+  pixmap = BAIL_PIXMAP (obj);
 
   return pixmap->image_description;
 }
 
 static void
-gail_pixmap_get_image_position (AtkImage       *obj,
+bail_pixmap_get_image_position (BatkImage       *obj,
                                 gint           *x,
                                 gint           *y,
-                                AtkCoordType   coord_type)
+                                BatkCoordType   coord_type)
 {
-  atk_component_get_position (ATK_COMPONENT (obj), x, y, coord_type);
+  batk_component_get_position (BATK_COMPONENT (obj), x, y, coord_type);
 }
 
 static void  
-gail_pixmap_get_image_size (AtkImage       *obj,
+bail_pixmap_get_image_size (BatkImage       *obj,
                             gint           *width,
                             gint           *height)
 {
-  GtkWidget *widget;
-  GtkPixmap *pixmap;
+  BtkWidget *widget;
+  BtkPixmap *pixmap;
  
   *width = -1;
   *height = -1;
 
-  g_return_if_fail (GAIL_IS_PIXMAP (obj));
+  g_return_if_fail (BAIL_IS_PIXMAP (obj));
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == 0)
     /* State is defunct */
     return;
 
-  g_return_if_fail (GTK_IS_PIXMAP (widget));
+  g_return_if_fail (BTK_IS_PIXMAP (widget));
 
-  pixmap = GTK_PIXMAP (widget);
+  pixmap = BTK_PIXMAP (widget);
 
   if (pixmap->pixmap)
-    gdk_pixmap_get_size (pixmap->pixmap, width, height);
+    bdk_pixmap_get_size (pixmap->pixmap, width, height);
 }
 
 static gboolean 
-gail_pixmap_set_image_description (AtkImage       *obj,
+bail_pixmap_set_image_description (BatkImage       *obj,
                                    const gchar    *description)
 { 
-  GailPixmap* pixmap;
+  BailPixmap* pixmap;
 
-  g_return_val_if_fail (GAIL_IS_PIXMAP (obj), FALSE);
+  g_return_val_if_fail (BAIL_IS_PIXMAP (obj), FALSE);
 
-  pixmap = GAIL_PIXMAP (obj);
+  pixmap = BAIL_PIXMAP (obj);
   g_free (pixmap->image_description);
 
   pixmap->image_description = g_strdup (description);
@@ -149,10 +149,10 @@ gail_pixmap_set_image_description (AtkImage       *obj,
 }
 
 static void
-gail_pixmap_finalize (GObject      *object)
+bail_pixmap_finalize (GObject      *object)
 {
-  GailPixmap *pixmap = GAIL_PIXMAP (object);
+  BailPixmap *pixmap = BAIL_PIXMAP (object);
 
   g_free (pixmap->image_description);
-  G_OBJECT_CLASS (gail_pixmap_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_pixmap_parent_class)->finalize (object);
 }

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2001 Red Hat, Inc.
  *
@@ -19,66 +19,66 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkvscrollbar.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkvscrollbar.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkvscrollbar
+ * SECTION:btkvscrollbar
  * @Short_description: A vertical scrollbar
- * @Title: GtkVScrollbar
- * @See_also:#GtkScrollbar, #GtkScrolledWindow
+ * @Title: BtkVScrollbar
+ * @See_also:#BtkScrollbar, #BtkScrolledWindow
  *
- * The #GtkVScrollbar widget is a widget arranged vertically creating a
- * scrollbar. See #GtkScrollbar for details on
- * scrollbars. #GtkAdjustment pointers may be added to handle the
+ * The #BtkVScrollbar widget is a widget arranged vertically creating a
+ * scrollbar. See #BtkScrollbar for details on
+ * scrollbars. #BtkAdjustment pointers may be added to handle the
  * adjustment of the scrollbar or it may be left %NULL in which case one
- * will be created for you. See #GtkScrollbar for a description of what the
+ * will be created for you. See #BtkScrollbar for a description of what the
  * fields in an adjustment represent for a scrollbar.
  */
 
-G_DEFINE_TYPE (GtkVScrollbar, gtk_vscrollbar, GTK_TYPE_SCROLLBAR)
+G_DEFINE_TYPE (BtkVScrollbar, btk_vscrollbar, BTK_TYPE_SCROLLBAR)
 
 static void
-gtk_vscrollbar_class_init (GtkVScrollbarClass *class)
+btk_vscrollbar_class_init (BtkVScrollbarClass *class)
 {
-  GTK_RANGE_CLASS (class)->stepper_detail = "vscrollbar";
+  BTK_RANGE_CLASS (class)->stepper_detail = "vscrollbar";
 }
 
 static void
-gtk_vscrollbar_init (GtkVScrollbar *vscrollbar)
+btk_vscrollbar_init (BtkVScrollbar *vscrollbar)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (vscrollbar),
-                                  GTK_ORIENTATION_VERTICAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (vscrollbar),
+                                  BTK_ORIENTATION_VERTICAL);
 }
 
 /**
- * gtk_vscrollbar_new:
- * @adjustment: (allow-none): the #GtkAdjustment to use, or %NULL to create a new adjustment
+ * btk_vscrollbar_new:
+ * @adjustment: (allow-none): the #BtkAdjustment to use, or %NULL to create a new adjustment
  *
  * Creates a new vertical scrollbar.
  *
- * Returns: the new #GtkVScrollbar
+ * Returns: the new #BtkVScrollbar
  */
-GtkWidget *
-gtk_vscrollbar_new (GtkAdjustment *adjustment)
+BtkWidget *
+btk_vscrollbar_new (BtkAdjustment *adjustment)
 {
-  g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
+  g_return_val_if_fail (adjustment == NULL || BTK_IS_ADJUSTMENT (adjustment),
                         NULL);
 
-  return g_object_new (GTK_TYPE_VSCROLLBAR,
+  return g_object_new (BTK_TYPE_VSCROLLBAR,
                        "adjustment", adjustment,
                        NULL);
 }
 
-#define __GTK_VSCROLLBAR_C__
-#include "gtkaliasdef.c"
+#define __BTK_VSCROLLBAR_C__
+#include "btkaliasdef.c"

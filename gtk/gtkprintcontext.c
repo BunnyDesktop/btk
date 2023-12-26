@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintcontext.c: Print Context
+/* BTK - The GIMP Toolkit
+ * btkprintcontext.c: Print Context
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,25 +19,25 @@
  */
 
 #include "config.h"
-#include "gtkprintoperation-private.h"
-#include "gtkalias.h"
+#include "btkprintoperation-private.h"
+#include "btkalias.h"
 
-typedef struct _GtkPrintContextClass GtkPrintContextClass;
+typedef struct _BtkPrintContextClass BtkPrintContextClass;
 
-#define GTK_IS_PRINT_CONTEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PRINT_CONTEXT))
-#define GTK_PRINT_CONTEXT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PRINT_CONTEXT, GtkPrintContextClass))
-#define GTK_PRINT_CONTEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PRINT_CONTEXT, GtkPrintContextClass))
+#define BTK_IS_PRINT_CONTEXT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PRINT_CONTEXT))
+#define BTK_PRINT_CONTEXT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PRINT_CONTEXT, BtkPrintContextClass))
+#define BTK_PRINT_CONTEXT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PRINT_CONTEXT, BtkPrintContextClass))
 
 #define MM_PER_INCH 25.4
 #define POINTS_PER_INCH 72
 
-struct _GtkPrintContext
+struct _BtkPrintContext
 {
   GObject parent_instance;
 
-  GtkPrintOperation *op;
-  cairo_t *cr;
-  GtkPageSetup *page_setup;
+  BtkPrintOperation *op;
+  bairo_t *cr;
+  BtkPageSetup *page_setup;
 
   gdouble surface_dpi_x;
   gdouble surface_dpi_y;
@@ -53,47 +53,47 @@ struct _GtkPrintContext
 
 };
 
-struct _GtkPrintContextClass
+struct _BtkPrintContextClass
 {
   GObjectClass parent_class;
 };
 
-G_DEFINE_TYPE (GtkPrintContext, gtk_print_context, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrintContext, btk_print_context, G_TYPE_OBJECT)
 
 static void
-gtk_print_context_finalize (GObject *object)
+btk_print_context_finalize (GObject *object)
 {
-  GtkPrintContext *context = GTK_PRINT_CONTEXT (object);
+  BtkPrintContext *context = BTK_PRINT_CONTEXT (object);
 
   if (context->page_setup)
     g_object_unref (context->page_setup);
 
   if (context->cr)
-    cairo_destroy (context->cr);
+    bairo_destroy (context->cr);
   
-  G_OBJECT_CLASS (gtk_print_context_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_print_context_parent_class)->finalize (object);
 }
 
 static void
-gtk_print_context_init (GtkPrintContext *context)
+btk_print_context_init (BtkPrintContext *context)
 {
 }
 
 static void
-gtk_print_context_class_init (GtkPrintContextClass *class)
+btk_print_context_class_init (BtkPrintContextClass *class)
 {
-  GObjectClass *gobject_class = (GObjectClass *)class;
+  GObjectClass *bobject_class = (GObjectClass *)class;
 
-  gobject_class->finalize = gtk_print_context_finalize;
+  bobject_class->finalize = btk_print_context_finalize;
 }
 
 
-GtkPrintContext *
-_gtk_print_context_new (GtkPrintOperation *op)
+BtkPrintContext *
+_btk_print_context_new (BtkPrintOperation *op)
 {
-  GtkPrintContext *context;
+  BtkPrintContext *context;
 
-  context = g_object_new (GTK_TYPE_PRINT_CONTEXT, NULL);
+  context = g_object_new (BTK_TYPE_PRINT_CONTEXT, NULL);
 
   context->op = op;
   context->cr = NULL;
@@ -102,142 +102,142 @@ _gtk_print_context_new (GtkPrintOperation *op)
   return context;
 }
 
-static PangoFontMap *
-_gtk_print_context_get_fontmap (GtkPrintContext *context)
+static BangoFontMap *
+_btk_print_context_get_fontmap (BtkPrintContext *context)
 {
-  return pango_cairo_font_map_get_default ();
+  return bango_bairo_font_map_get_default ();
 }
 
 /**
- * gtk_print_context_set_cairo_context:
- * @context: a #GtkPrintContext
- * @cr: the cairo context
+ * btk_print_context_set_bairo_context:
+ * @context: a #BtkPrintContext
+ * @cr: the bairo context
  * @dpi_x: the horizontal resolution to use with @cr
  * @dpi_y: the vertical resolution to use with @cr
  *
- * Sets a new cairo context on a print context. 
+ * Sets a new bairo context on a print context. 
  * 
  * This function is intended to be used when implementing
  * an internal print preview, it is not needed for printing,
- * since GTK+ itself creates a suitable cairo context in that
+ * since BTK+ itself creates a suitable bairo context in that
  * case.
  *
  * Since: 2.10 
  */
 void
-gtk_print_context_set_cairo_context (GtkPrintContext *context,
-				     cairo_t         *cr,
+btk_print_context_set_bairo_context (BtkPrintContext *context,
+				     bairo_t         *cr,
 				     double           dpi_x,
 				     double           dpi_y)
 {
   if (context->cr)
-    cairo_destroy (context->cr);
+    bairo_destroy (context->cr);
 
-  context->cr = cairo_reference (cr);
+  context->cr = bairo_reference (cr);
   context->surface_dpi_x = dpi_x;
   context->surface_dpi_y = dpi_y;
 
   switch (context->op->priv->unit)
     {
     default:
-    case GTK_UNIT_PIXEL:
-      /* Do nothing, this is the cairo default unit */
+    case BTK_UNIT_PIXEL:
+      /* Do nothing, this is the bairo default unit */
       context->pixels_per_unit_x = 1.0;
       context->pixels_per_unit_y = 1.0;
       break;
-    case GTK_UNIT_POINTS:
+    case BTK_UNIT_POINTS:
       context->pixels_per_unit_x = dpi_x / POINTS_PER_INCH;
       context->pixels_per_unit_y = dpi_y / POINTS_PER_INCH;
       break;
-    case GTK_UNIT_INCH:
+    case BTK_UNIT_INCH:
       context->pixels_per_unit_x = dpi_x;
       context->pixels_per_unit_y = dpi_y;
       break;
-    case GTK_UNIT_MM:
+    case BTK_UNIT_MM:
       context->pixels_per_unit_x = dpi_x / MM_PER_INCH;
       context->pixels_per_unit_y = dpi_y / MM_PER_INCH;
       break;
     }
-  cairo_scale (context->cr,
+  bairo_scale (context->cr,
 	       context->pixels_per_unit_x,
 	       context->pixels_per_unit_y);
 }
 
 
 void
-_gtk_print_context_rotate_according_to_orientation (GtkPrintContext *context)
+_btk_print_context_rotate_according_to_orientation (BtkPrintContext *context)
 {
-  cairo_t *cr = context->cr;
-  cairo_matrix_t matrix;
-  GtkPaperSize *paper_size;
+  bairo_t *cr = context->cr;
+  bairo_matrix_t matrix;
+  BtkPaperSize *paper_size;
   gdouble width, height;
 
-  paper_size = gtk_page_setup_get_paper_size (context->page_setup);
+  paper_size = btk_page_setup_get_paper_size (context->page_setup);
 
-  width = gtk_paper_size_get_width (paper_size, GTK_UNIT_INCH);
+  width = btk_paper_size_get_width (paper_size, BTK_UNIT_INCH);
   width = width * context->surface_dpi_x / context->pixels_per_unit_x;
-  height = gtk_paper_size_get_height (paper_size, GTK_UNIT_INCH);
+  height = btk_paper_size_get_height (paper_size, BTK_UNIT_INCH);
   height = height * context->surface_dpi_y / context->pixels_per_unit_y;
   
-  switch (gtk_page_setup_get_orientation (context->page_setup))
+  switch (btk_page_setup_get_orientation (context->page_setup))
     {
     default:
-    case GTK_PAGE_ORIENTATION_PORTRAIT:
+    case BTK_PAGE_ORIENTATION_PORTRAIT:
       break;
-    case GTK_PAGE_ORIENTATION_LANDSCAPE:
-      cairo_translate (cr, 0, height);
-      cairo_matrix_init (&matrix,
+    case BTK_PAGE_ORIENTATION_LANDSCAPE:
+      bairo_translate (cr, 0, height);
+      bairo_matrix_init (&matrix,
 			 0, -1,
 			 1,  0,
 			 0,  0);
-      cairo_transform (cr, &matrix);
+      bairo_transform (cr, &matrix);
       break;
-    case GTK_PAGE_ORIENTATION_REVERSE_PORTRAIT:
-      cairo_translate (cr, width, height);
-      cairo_matrix_init (&matrix,
+    case BTK_PAGE_ORIENTATION_REVERSE_PORTRAIT:
+      bairo_translate (cr, width, height);
+      bairo_matrix_init (&matrix,
 			 -1,  0,
 			  0, -1,
 			  0,  0);
-      cairo_transform (cr, &matrix);
+      bairo_transform (cr, &matrix);
       break;
-    case GTK_PAGE_ORIENTATION_REVERSE_LANDSCAPE:
-      cairo_translate (cr, width, 0);
-      cairo_matrix_init (&matrix,
+    case BTK_PAGE_ORIENTATION_REVERSE_LANDSCAPE:
+      bairo_translate (cr, width, 0);
+      bairo_matrix_init (&matrix,
 			  0,  1,
 			 -1,  0,
 			  0,  0);
-      cairo_transform (cr, &matrix);
+      bairo_transform (cr, &matrix);
       break;
     }
 }
 
 void
-_gtk_print_context_translate_into_margin (GtkPrintContext *context)
+_btk_print_context_translate_into_margin (BtkPrintContext *context)
 {
-  GtkPrintOperationPrivate *priv;
+  BtkPrintOperationPrivate *priv;
   gdouble left, top;
 
-  g_return_if_fail (GTK_IS_PRINT_CONTEXT (context));
+  g_return_if_fail (BTK_IS_PRINT_CONTEXT (context));
 
   priv = context->op->priv;
 
-  /* We do it this way to also handle GTK_UNIT_PIXELS */
+  /* We do it this way to also handle BTK_UNIT_PIXELS */
   
-  left = gtk_page_setup_get_left_margin (context->page_setup, GTK_UNIT_INCH);
-  top = gtk_page_setup_get_top_margin (context->page_setup, GTK_UNIT_INCH);
+  left = btk_page_setup_get_left_margin (context->page_setup, BTK_UNIT_INCH);
+  top = btk_page_setup_get_top_margin (context->page_setup, BTK_UNIT_INCH);
 
-  cairo_translate (context->cr,
+  bairo_translate (context->cr,
 		   left * context->surface_dpi_x / context->pixels_per_unit_x,
 		   top * context->surface_dpi_y / context->pixels_per_unit_y);
 }
 
 void
-_gtk_print_context_set_page_setup (GtkPrintContext *context,
-				   GtkPageSetup    *page_setup)
+_btk_print_context_set_page_setup (BtkPrintContext *context,
+				   BtkPageSetup    *page_setup)
 {
-  g_return_if_fail (GTK_IS_PRINT_CONTEXT (context));
+  g_return_if_fail (BTK_IS_PRINT_CONTEXT (context));
   g_return_if_fail (page_setup == NULL ||
-		    GTK_IS_PAGE_SETUP (page_setup));
+		    BTK_IS_PAGE_SETUP (page_setup));
   
   g_object_ref (page_setup);
 
@@ -248,106 +248,106 @@ _gtk_print_context_set_page_setup (GtkPrintContext *context,
 }
 
 /**
- * gtk_print_context_get_cairo_context:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_bairo_context:
+ * @context: a #BtkPrintContext
  *
- * Obtains the cairo context that is associated with the
- * #GtkPrintContext.
+ * Obtains the bairo context that is associated with the
+ * #BtkPrintContext.
  *
- * Return value: (transfer none): the cairo context of @context
+ * Return value: (transfer none): the bairo context of @context
  *
  * Since: 2.10
  */
-cairo_t *
-gtk_print_context_get_cairo_context (GtkPrintContext *context)
+bairo_t *
+btk_print_context_get_bairo_context (BtkPrintContext *context)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), NULL);
 
   return context->cr;
 }
 
 /**
- * gtk_print_context_get_page_setup:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_page_setup:
+ * @context: a #BtkPrintContext
  *
- * Obtains the #GtkPageSetup that determines the page
- * dimensions of the #GtkPrintContext.
+ * Obtains the #BtkPageSetup that determines the page
+ * dimensions of the #BtkPrintContext.
  *
  * Return value: (transfer none): the page setup of @context
  *
  * Since: 2.10
  */
-GtkPageSetup *
-gtk_print_context_get_page_setup (GtkPrintContext *context)
+BtkPageSetup *
+btk_print_context_get_page_setup (BtkPrintContext *context)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), NULL);
 
   return context->page_setup;
 }
 
 /**
- * gtk_print_context_get_width:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_width:
+ * @context: a #BtkPrintContext
  *
- * Obtains the width of the #GtkPrintContext, in pixels.
+ * Obtains the width of the #BtkPrintContext, in pixels.
  *
  * Return value: the width of @context
  *
  * Since: 2.10 
  */
 gdouble
-gtk_print_context_get_width (GtkPrintContext *context)
+btk_print_context_get_width (BtkPrintContext *context)
 {
-  GtkPrintOperationPrivate *priv;
+  BtkPrintOperationPrivate *priv;
   gdouble width;
 
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), 0);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
   priv = context->op->priv;
 
   if (priv->use_full_page)
-    width = gtk_page_setup_get_paper_width (context->page_setup, GTK_UNIT_INCH);
+    width = btk_page_setup_get_paper_width (context->page_setup, BTK_UNIT_INCH);
   else
-    width = gtk_page_setup_get_page_width (context->page_setup, GTK_UNIT_INCH);
+    width = btk_page_setup_get_page_width (context->page_setup, BTK_UNIT_INCH);
 
   /* Really dpi_x? What about landscape? what does dpi_x mean in that case? */
   return width * context->surface_dpi_x / context->pixels_per_unit_x;
 }
 
 /**
- * gtk_print_context_get_height:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_height:
+ * @context: a #BtkPrintContext
  * 
- * Obtains the height of the #GtkPrintContext, in pixels.
+ * Obtains the height of the #BtkPrintContext, in pixels.
  *
  * Return value: the height of @context
  *
  * Since: 2.10
  */
 gdouble
-gtk_print_context_get_height (GtkPrintContext *context)
+btk_print_context_get_height (BtkPrintContext *context)
 {
-  GtkPrintOperationPrivate *priv;
+  BtkPrintOperationPrivate *priv;
   gdouble height;
 
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), 0);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
   priv = context->op->priv;
 
   if (priv->use_full_page)
-    height = gtk_page_setup_get_paper_height (context->page_setup, GTK_UNIT_INCH);
+    height = btk_page_setup_get_paper_height (context->page_setup, BTK_UNIT_INCH);
   else
-    height = gtk_page_setup_get_page_height (context->page_setup, GTK_UNIT_INCH);
+    height = btk_page_setup_get_page_height (context->page_setup, BTK_UNIT_INCH);
 
   /* Really dpi_y? What about landscape? what does dpi_y mean in that case? */
   return height * context->surface_dpi_y / context->pixels_per_unit_y;
 }
 
 /**
- * gtk_print_context_get_dpi_x:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_dpi_x:
+ * @context: a #BtkPrintContext
  * 
- * Obtains the horizontal resolution of the #GtkPrintContext,
+ * Obtains the horizontal resolution of the #BtkPrintContext,
  * in dots per inch.
  *
  * Return value: the horizontal resolution of @context
@@ -355,18 +355,18 @@ gtk_print_context_get_height (GtkPrintContext *context)
  * Since: 2.10
  */
 gdouble
-gtk_print_context_get_dpi_x (GtkPrintContext *context)
+btk_print_context_get_dpi_x (BtkPrintContext *context)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), 0);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
   return context->surface_dpi_x;
 }
 
 /**
- * gtk_print_context_get_dpi_y:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_dpi_y:
+ * @context: a #BtkPrintContext
  * 
- * Obtains the vertical resolution of the #GtkPrintContext,
+ * Obtains the vertical resolution of the #BtkPrintContext,
  * in dots per inch.
  *
  * Return value: the vertical resolution of @context
@@ -374,29 +374,29 @@ gtk_print_context_get_dpi_x (GtkPrintContext *context)
  * Since: 2.10
  */
 gdouble
-gtk_print_context_get_dpi_y (GtkPrintContext *context)
+btk_print_context_get_dpi_y (BtkPrintContext *context)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), 0);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), 0);
 
   return context->surface_dpi_y;
 }
 
 /**
- * gtk_print_context_get_hard_margins:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_hard_margins:
+ * @context: a #BtkPrintContext
  * @top: (out): top hardware printer margin
  * @bottom: (out): bottom hardware printer margin
  * @left: (out): left hardware printer margin
  * @right: (out): right hardware printer margin
  *
- * Obtains the hardware printer margins of the #GtkPrintContext, in units.
+ * Obtains the hardware printer margins of the #BtkPrintContext, in units.
  *
  * Return value: %TRUE if the hard margins were retrieved
  *
  * Since: 2.20
  */
 gboolean
-gtk_print_context_get_hard_margins (GtkPrintContext *context,
+btk_print_context_get_hard_margins (BtkPrintContext *context,
 				    gdouble         *top,
 				    gdouble         *bottom,
 				    gdouble         *left,
@@ -414,8 +414,8 @@ gtk_print_context_get_hard_margins (GtkPrintContext *context,
 }
 
 /**
- * gtk_print_context_set_hard_margins:
- * @context: a #GtkPrintContext
+ * btk_print_context_set_hard_margins:
+ * @context: a #BtkPrintContext
  * @top: top hardware printer margin
  * @bottom: bottom hardware printer margin
  * @left: left hardware printer margin
@@ -424,7 +424,7 @@ gtk_print_context_get_hard_margins (GtkPrintContext *context,
  * set the hard margins in pixel coordinates
  */
 void
-_gtk_print_context_set_hard_margins (GtkPrintContext *context,
+_btk_print_context_set_hard_margins (BtkPrintContext *context,
 				     gdouble          top,
 				     gdouble          bottom,
 				     gdouble          left,
@@ -438,86 +438,86 @@ _gtk_print_context_set_hard_margins (GtkPrintContext *context,
 }
 
 /**
- * gtk_print_context_get_pango_fontmap:
- * @context: a #GtkPrintContext
+ * btk_print_context_get_bango_fontmap:
+ * @context: a #BtkPrintContext
  *
- * Returns a #PangoFontMap that is suitable for use
- * with the #GtkPrintContext.
+ * Returns a #BangoFontMap that is suitable for use
+ * with the #BtkPrintContext.
  *
  * Return value: (transfer none): the font map of @context
  *
  * Since: 2.10
  */
-PangoFontMap *
-gtk_print_context_get_pango_fontmap (GtkPrintContext *context)
+BangoFontMap *
+btk_print_context_get_bango_fontmap (BtkPrintContext *context)
 {
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), NULL);
 
-  return _gtk_print_context_get_fontmap (context);
+  return _btk_print_context_get_fontmap (context);
 }
 
 /**
- * gtk_print_context_create_pango_context:
- * @context: a #GtkPrintContext
+ * btk_print_context_create_bango_context:
+ * @context: a #BtkPrintContext
  *
- * Creates a new #PangoContext that can be used with the
- * #GtkPrintContext.
+ * Creates a new #BangoContext that can be used with the
+ * #BtkPrintContext.
  *
- * Return value: (transfer full): a new Pango context for @context
+ * Return value: (transfer full): a new Bango context for @context
  * 
  * Since: 2.10
  */
-PangoContext *
-gtk_print_context_create_pango_context (GtkPrintContext *context)
+BangoContext *
+btk_print_context_create_bango_context (BtkPrintContext *context)
 {
-  PangoContext *pango_context;
-  cairo_font_options_t *options;
+  BangoContext *bango_context;
+  bairo_font_options_t *options;
 
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), NULL);
   
-  pango_context = pango_font_map_create_context (_gtk_print_context_get_fontmap (context));
+  bango_context = bango_font_map_create_context (_btk_print_context_get_fontmap (context));
 
-  options = cairo_font_options_create ();
-  cairo_font_options_set_hint_metrics (options, CAIRO_HINT_METRICS_OFF);
-  pango_cairo_context_set_font_options (pango_context, options);
-  cairo_font_options_destroy (options);
+  options = bairo_font_options_create ();
+  bairo_font_options_set_hint_metrics (options, BAIRO_HINT_METRICS_OFF);
+  bango_bairo_context_set_font_options (bango_context, options);
+  bairo_font_options_destroy (options);
   
   /* We use the unit-scaled resolution, as we still want 
    * fonts given in points to work 
    */
-  pango_cairo_context_set_resolution (pango_context,
+  bango_bairo_context_set_resolution (bango_context,
 				      context->surface_dpi_y / context->pixels_per_unit_y);
-  return pango_context;
+  return bango_context;
 }
 
 /**
- * gtk_print_context_create_pango_layout:
- * @context: a #GtkPrintContext
+ * btk_print_context_create_bango_layout:
+ * @context: a #BtkPrintContext
  *
- * Creates a new #PangoLayout that is suitable for use
- * with the #GtkPrintContext.
+ * Creates a new #BangoLayout that is suitable for use
+ * with the #BtkPrintContext.
  * 
- * Return value: (transfer full): a new Pango layout for @context
+ * Return value: (transfer full): a new Bango layout for @context
  *
  * Since: 2.10
  */
-PangoLayout *
-gtk_print_context_create_pango_layout (GtkPrintContext *context)
+BangoLayout *
+btk_print_context_create_bango_layout (BtkPrintContext *context)
 {
-  PangoContext *pango_context;
-  PangoLayout *layout;
+  BangoContext *bango_context;
+  BangoLayout *layout;
 
-  g_return_val_if_fail (GTK_IS_PRINT_CONTEXT (context), NULL);
+  g_return_val_if_fail (BTK_IS_PRINT_CONTEXT (context), NULL);
 
-  pango_context = gtk_print_context_create_pango_context (context);
-  layout = pango_layout_new (pango_context);
+  bango_context = btk_print_context_create_bango_context (context);
+  layout = bango_layout_new (bango_context);
 
-  pango_cairo_update_context (context->cr, pango_context);
-  g_object_unref (pango_context);
+  bango_bairo_update_context (context->cr, bango_context);
+  g_object_unref (bango_context);
 
   return layout;
 }
 
 
-#define __GTK_PRINT_CONTEXT_C__
-#include "gtkaliasdef.c"
+#define __BTK_PRINT_CONTEXT_C__
+#include "btkaliasdef.c"

@@ -6,8 +6,8 @@
  * shows.
  */
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
 
 /* Inserts a piece of text into the buffer, giving it the usual
  * appearance of a hyperlink in a web browser: blue and underlined.
@@ -15,43 +15,43 @@
  * as a link. 
  */
 static void 
-insert_link (GtkTextBuffer *buffer, 
-             GtkTextIter   *iter, 
+insert_link (BtkTextBuffer *buffer, 
+             BtkTextIter   *iter, 
              gchar         *text, 
              gint           page)
 {
-  GtkTextTag *tag;
+  BtkTextTag *tag;
   
-  tag = gtk_text_buffer_create_tag (buffer, NULL, 
+  tag = btk_text_buffer_create_tag (buffer, NULL, 
                                     "foreground", "blue", 
-                                    "underline", PANGO_UNDERLINE_SINGLE, 
+                                    "underline", BANGO_UNDERLINE_SINGLE, 
                                     NULL);
   g_object_set_data (G_OBJECT (tag), "page", GINT_TO_POINTER (page));
-  gtk_text_buffer_insert_with_tags (buffer, iter, text, -1, tag, NULL);
+  btk_text_buffer_insert_with_tags (buffer, iter, text, -1, tag, NULL);
 }
 
 /* Fills the buffer with text and interspersed links. In any real
  * hypertext app, this method would parse a file to identify the links.
  */
 static void
-show_page (GtkTextBuffer *buffer, 
+show_page (BtkTextBuffer *buffer, 
            gint           page)
 {
-  GtkTextIter iter;
+  BtkTextIter iter;
 
-  gtk_text_buffer_set_text (buffer, "", 0);
-  gtk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
+  btk_text_buffer_set_text (buffer, "", 0);
+  btk_text_buffer_get_iter_at_offset (buffer, &iter, 0);
   if (page == 1)
     {
-      gtk_text_buffer_insert (buffer, &iter, "Some text to show that simple ", -1);
+      btk_text_buffer_insert (buffer, &iter, "Some text to show that simple ", -1);
       insert_link (buffer, &iter, "hypertext", 3);
-      gtk_text_buffer_insert (buffer, &iter, " can easily be realized with ", -1);
+      btk_text_buffer_insert (buffer, &iter, " can easily be realized with ", -1);
       insert_link (buffer, &iter, "tags", 2);
-      gtk_text_buffer_insert (buffer, &iter, ".", -1);
+      btk_text_buffer_insert (buffer, &iter, ".", -1);
     }
   else if (page == 2)
     {
-      gtk_text_buffer_insert (buffer, &iter, 
+      btk_text_buffer_insert (buffer, &iter, 
                               "A tag is an attribute that can be applied to some range of text. "
                               "For example, a tag might be called \"bold\" and make the text inside "
                               "the tag bold. However, the tag concept is more general than that; "
@@ -62,13 +62,13 @@ show_page (GtkTextBuffer *buffer,
     }
   else if (page == 3) 
     {
-      GtkTextTag *tag;
+      BtkTextTag *tag;
   
-      tag = gtk_text_buffer_create_tag (buffer, NULL, 
-                                        "weight", PANGO_WEIGHT_BOLD, 
+      tag = btk_text_buffer_create_tag (buffer, NULL, 
+                                        "weight", BANGO_WEIGHT_BOLD, 
                                         NULL);
-      gtk_text_buffer_insert_with_tags (buffer, &iter, "hypertext:\n", -1, tag, NULL);
-      gtk_text_buffer_insert (buffer, &iter, 
+      btk_text_buffer_insert_with_tags (buffer, &iter, "hypertext:\n", -1, tag, NULL);
+      btk_text_buffer_insert (buffer, &iter, 
                               "machine-readable text that is not sequential but is organized "
                               "so that related items of information are connected.\n", -1);
       insert_link (buffer, &iter, "Go back", 1);
@@ -80,20 +80,20 @@ show_page (GtkTextBuffer *buffer,
  * by the data attached to it.
  */
 static void
-follow_if_link (GtkWidget   *text_view, 
-                GtkTextIter *iter)
+follow_if_link (BtkWidget   *text_view, 
+                BtkTextIter *iter)
 {
   GSList *tags = NULL, *tagp = NULL;
 
-  tags = gtk_text_iter_get_tags (iter);
+  tags = btk_text_iter_get_tags (iter);
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
-      GtkTextTag *tag = tagp->data;
+      BtkTextTag *tag = tagp->data;
       gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
 
       if (page != 0)
         {
-          show_page (gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view)), page);
+          show_page (btk_text_view_get_buffer (BTK_TEXT_VIEW (text_view)), page);
           break;
         }
     }
@@ -105,19 +105,19 @@ follow_if_link (GtkWidget   *text_view,
 /* Links can be activated by pressing Enter.
  */
 static gboolean
-key_press_event (GtkWidget *text_view,
-                 GdkEventKey *event)
+key_press_event (BtkWidget *text_view,
+                 BdkEventKey *event)
 {
-  GtkTextIter iter;
-  GtkTextBuffer *buffer;
+  BtkTextIter iter;
+  BtkTextBuffer *buffer;
 
   switch (event->keyval)
     {
-      case GDK_Return: 
-      case GDK_KP_Enter:
-        buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
-        gtk_text_buffer_get_iter_at_mark (buffer, &iter, 
-                                          gtk_text_buffer_get_insert (buffer));
+      case BDK_Return: 
+      case BDK_KP_Enter:
+        buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (text_view));
+        btk_text_buffer_get_iter_at_mark (buffer, &iter, 
+                                          btk_text_buffer_get_insert (buffer));
         follow_if_link (text_view, &iter);
         break;
 
@@ -131,34 +131,34 @@ key_press_event (GtkWidget *text_view,
 /* Links can also be activated by clicking.
  */
 static gboolean
-event_after (GtkWidget *text_view,
-             GdkEvent  *ev)
+event_after (BtkWidget *text_view,
+             BdkEvent  *ev)
 {
-  GtkTextIter start, end, iter;
-  GtkTextBuffer *buffer;
-  GdkEventButton *event;
+  BtkTextIter start, end, iter;
+  BtkTextBuffer *buffer;
+  BdkEventButton *event;
   gint x, y;
 
-  if (ev->type != GDK_BUTTON_RELEASE)
+  if (ev->type != BDK_BUTTON_RELEASE)
     return FALSE;
 
-  event = (GdkEventButton *)ev;
+  event = (BdkEventButton *)ev;
 
   if (event->button != 1)
     return FALSE;
 
-  buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_view));
+  buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (text_view));
 
   /* we shouldn't follow a link if the user has selected something */
-  gtk_text_buffer_get_selection_bounds (buffer, &start, &end);
-  if (gtk_text_iter_get_offset (&start) != gtk_text_iter_get_offset (&end))
+  btk_text_buffer_get_selection_bounds (buffer, &start, &end);
+  if (btk_text_iter_get_offset (&start) != btk_text_iter_get_offset (&end))
     return FALSE;
 
-  gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (text_view), 
-                                         GTK_TEXT_WINDOW_WIDGET,
+  btk_text_view_window_to_buffer_coords (BTK_TEXT_VIEW (text_view), 
+                                         BTK_TEXT_WINDOW_WIDGET,
                                          event->x, event->y, &x, &y);
 
-  gtk_text_view_get_iter_at_location (GTK_TEXT_VIEW (text_view), &iter, x, y);
+  btk_text_view_get_iter_at_location (BTK_TEXT_VIEW (text_view), &iter, x, y);
 
   follow_if_link (text_view, &iter);
 
@@ -166,28 +166,28 @@ event_after (GtkWidget *text_view,
 }
 
 static gboolean hovering_over_link = FALSE;
-static GdkCursor *hand_cursor = NULL;
-static GdkCursor *regular_cursor = NULL;
+static BdkCursor *hand_cursor = NULL;
+static BdkCursor *regular_cursor = NULL;
 
 /* Looks at all tags covering the position (x, y) in the text view, 
  * and if one of them is a link, change the cursor to the "hands" cursor
  * typically used by web browsers.
  */
 static void
-set_cursor_if_appropriate (GtkTextView    *text_view,
+set_cursor_if_appropriate (BtkTextView    *text_view,
                            gint            x,
                            gint            y)
 {
   GSList *tags = NULL, *tagp = NULL;
-  GtkTextIter iter;
+  BtkTextIter iter;
   gboolean hovering = FALSE;
 
-  gtk_text_view_get_iter_at_location (text_view, &iter, x, y);
+  btk_text_view_get_iter_at_location (text_view, &iter, x, y);
   
-  tags = gtk_text_iter_get_tags (&iter);
+  tags = btk_text_iter_get_tags (&iter);
   for (tagp = tags;  tagp != NULL;  tagp = tagp->next)
     {
-      GtkTextTag *tag = tagp->data;
+      BtkTextTag *tag = tagp->data;
       gint page = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (tag), "page"));
 
       if (page != 0) 
@@ -202,9 +202,9 @@ set_cursor_if_appropriate (GtkTextView    *text_view,
       hovering_over_link = hovering;
 
       if (hovering_over_link)
-        gdk_window_set_cursor (gtk_text_view_get_window (text_view, GTK_TEXT_WINDOW_TEXT), hand_cursor);
+        bdk_window_set_cursor (btk_text_view_get_window (text_view, BTK_TEXT_WINDOW_TEXT), hand_cursor);
       else
-        gdk_window_set_cursor (gtk_text_view_get_window (text_view, GTK_TEXT_WINDOW_TEXT), regular_cursor);
+        bdk_window_set_cursor (btk_text_view_get_window (text_view, BTK_TEXT_WINDOW_TEXT), regular_cursor);
     }
 
   if (tags) 
@@ -214,18 +214,18 @@ set_cursor_if_appropriate (GtkTextView    *text_view,
 /* Update the cursor image if the pointer moved. 
  */
 static gboolean
-motion_notify_event (GtkWidget      *text_view,
-                     GdkEventMotion *event)
+motion_notify_event (BtkWidget      *text_view,
+                     BdkEventMotion *event)
 {
   gint x, y;
 
-  gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (text_view), 
-                                         GTK_TEXT_WINDOW_WIDGET,
+  btk_text_view_window_to_buffer_coords (BTK_TEXT_VIEW (text_view), 
+                                         BTK_TEXT_WINDOW_WIDGET,
                                          event->x, event->y, &x, &y);
 
-  set_cursor_if_appropriate (GTK_TEXT_VIEW (text_view), x, y);
+  set_cursor_if_appropriate (BTK_TEXT_VIEW (text_view), x, y);
 
-  gdk_window_get_pointer (gtk_widget_get_window (text_view), NULL, NULL, NULL);
+  bdk_window_get_pointer (btk_widget_get_window (text_view), NULL, NULL, NULL);
   return FALSE;
 }
 
@@ -233,50 +233,50 @@ motion_notify_event (GtkWidget      *text_view,
  * (e.g. when a window covering it got iconified).
  */
 static gboolean
-visibility_notify_event (GtkWidget          *text_view,
-                         GdkEventVisibility *event)
+visibility_notify_event (BtkWidget          *text_view,
+                         BdkEventVisibility *event)
 {
   gint wx, wy, bx, by;
   
-  gdk_window_get_pointer (gtk_widget_get_window (text_view), &wx, &wy, NULL);
+  bdk_window_get_pointer (btk_widget_get_window (text_view), &wx, &wy, NULL);
   
-  gtk_text_view_window_to_buffer_coords (GTK_TEXT_VIEW (text_view), 
-                                         GTK_TEXT_WINDOW_WIDGET,
+  btk_text_view_window_to_buffer_coords (BTK_TEXT_VIEW (text_view), 
+                                         BTK_TEXT_WINDOW_WIDGET,
                                          wx, wy, &bx, &by);
 
-  set_cursor_if_appropriate (GTK_TEXT_VIEW (text_view), bx, by);
+  set_cursor_if_appropriate (BTK_TEXT_VIEW (text_view), bx, by);
 
   return FALSE;
 }
 
-GtkWidget *
-do_hypertext (GtkWidget *do_widget)
+BtkWidget *
+do_hypertext (BtkWidget *do_widget)
 {
-  static GtkWidget *window = NULL;
+  static BtkWidget *window = NULL;
 
   if (!window)
     {
-      GtkWidget *view;
-      GtkWidget *sw;
-      GtkTextBuffer *buffer;
+      BtkWidget *view;
+      BtkWidget *sw;
+      BtkTextBuffer *buffer;
 
-      hand_cursor = gdk_cursor_new (GDK_HAND2);
-      regular_cursor = gdk_cursor_new (GDK_XTERM);
+      hand_cursor = bdk_cursor_new (BDK_HAND2);
+      regular_cursor = bdk_cursor_new (BDK_XTERM);
       
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      gtk_window_set_screen (GTK_WINDOW (window),
-                             gtk_widget_get_screen (do_widget));
-      gtk_window_set_default_size (GTK_WINDOW (window),
+      window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+      btk_window_set_screen (BTK_WINDOW (window),
+                             btk_widget_get_screen (do_widget));
+      btk_window_set_default_size (BTK_WINDOW (window),
                                    450, 450);
       
       g_signal_connect (window, "destroy",
-                        G_CALLBACK (gtk_widget_destroyed), &window);
+                        G_CALLBACK (btk_widget_destroyed), &window);
 
-      gtk_window_set_title (GTK_WINDOW (window), "Hypertext");
-      gtk_container_set_border_width (GTK_CONTAINER (window), 0);
+      btk_window_set_title (BTK_WINDOW (window), "Hypertext");
+      btk_container_set_border_width (BTK_CONTAINER (window), 0);
 
-      view = gtk_text_view_new ();
-      gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (view), GTK_WRAP_WORD);
+      view = btk_text_view_new ();
+      btk_text_view_set_wrap_mode (BTK_TEXT_VIEW (view), BTK_WRAP_WORD);
       g_signal_connect (view, "key-press-event", 
                         G_CALLBACK (key_press_event), NULL);
       g_signal_connect (view, "event-after", 
@@ -286,27 +286,27 @@ do_hypertext (GtkWidget *do_widget)
       g_signal_connect (view, "visibility-notify-event", 
                         G_CALLBACK (visibility_notify_event), NULL);
 
-      buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (view));
+      buffer = btk_text_view_get_buffer (BTK_TEXT_VIEW (view));
       
-      sw = gtk_scrolled_window_new (NULL, NULL);
-      gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-                                      GTK_POLICY_AUTOMATIC,
-                                      GTK_POLICY_AUTOMATIC);
-      gtk_container_add (GTK_CONTAINER (window), sw);
-      gtk_container_add (GTK_CONTAINER (sw), view);
+      sw = btk_scrolled_window_new (NULL, NULL);
+      btk_scrolled_window_set_policy (BTK_SCROLLED_WINDOW (sw),
+                                      BTK_POLICY_AUTOMATIC,
+                                      BTK_POLICY_AUTOMATIC);
+      btk_container_add (BTK_CONTAINER (window), sw);
+      btk_container_add (BTK_CONTAINER (sw), view);
 
       show_page (buffer, 1);
 
-      gtk_widget_show_all (sw);
+      btk_widget_show_all (sw);
     }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show (window);
+      btk_widget_show (window);
     }
   else
     {
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

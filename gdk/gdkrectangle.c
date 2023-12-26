@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,20 +18,20 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include <gdk/gdk.h>
-#include "gdkalias.h"
+#include <bdk/bdk.h>
+#include "bdkalias.h"
 
 /**
- * gdk_rectangle_union:
- * @src1: a #GdkRectangle
- * @src2: a #GdkRectangle
+ * bdk_rectangle_union:
+ * @src1: a #BdkRectangle
+ * @src2: a #BdkRectangle
  * @dest: (out): return location for the union of @src1 and @src2
  *
  * Calculates the union of two rectangles.
@@ -40,9 +40,9 @@
  * It is allowed for @dest to be the same as either @src1 or @src2.
  */
 void
-gdk_rectangle_union (const GdkRectangle *src1,
-		     const GdkRectangle *src2,
-		     GdkRectangle       *dest)
+bdk_rectangle_union (const BdkRectangle *src1,
+		     const BdkRectangle *src2,
+		     BdkRectangle       *dest)
 {
   gint dest_x, dest_y;
   
@@ -59,9 +59,9 @@ gdk_rectangle_union (const GdkRectangle *src1,
 }
 
 /**
- * gdk_rectangle_intersect:
- * @src1: a #GdkRectangle
- * @src2: a #GdkRectangle
+ * bdk_rectangle_intersect:
+ * @src1: a #BdkRectangle
+ * @src2: a #BdkRectangle
  * @dest: (out caller-allocates) (allow-none): return location for the
  * intersection of @src1 and @src2, or %NULL
  *
@@ -75,9 +75,9 @@ gdk_rectangle_union (const GdkRectangle *src1,
  * Returns: %TRUE if the rectangles intersect.
  */
 gboolean
-gdk_rectangle_intersect (const GdkRectangle *src1,
-			 const GdkRectangle *src2,
-			 GdkRectangle       *dest)
+bdk_rectangle_intersect (const BdkRectangle *src1,
+			 const BdkRectangle *src2,
+			 BdkRectangle       *dest)
 {
   gint dest_x, dest_y;
   gint dest_x2, dest_y2;
@@ -113,27 +113,27 @@ gdk_rectangle_intersect (const GdkRectangle *src1,
   return return_val;
 }
 
-static GdkRectangle *
-gdk_rectangle_copy (const GdkRectangle *rectangle)
+static BdkRectangle *
+bdk_rectangle_copy (const BdkRectangle *rectangle)
 {
-  GdkRectangle *result = g_new (GdkRectangle, 1);
+  BdkRectangle *result = g_new (BdkRectangle, 1);
   *result = *rectangle;
 
   return result;
 }
 
 GType
-gdk_rectangle_get_type (void)
+bdk_rectangle_get_type (void)
 {
   static GType our_type = 0;
   
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkRectangle"),
-					     (GBoxedCopyFunc)gdk_rectangle_copy,
+    our_type = g_boxed_type_register_static (g_intern_static_string ("BdkRectangle"),
+					     (GBoxedCopyFunc)bdk_rectangle_copy,
 					     (GBoxedFreeFunc)g_free);
   return our_type;
 }
 
 
-#define __GDK_RECTANGLE_C__
-#include "gdkaliasdef.c"
+#define __BDK_RECTANGLE_C__
+#include "bdkaliasdef.c"

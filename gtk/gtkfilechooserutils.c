@@ -1,6 +1,6 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechooserutils.c: Private utility functions useful for
- *                        implementing a GtkFileChooser interface
+/* BTK - The GIMP Toolkit
+ * btkfilechooserutils.c: Private utility functions useful for
+ *                        implementing a BtkFileChooser interface
  * Copyright (C) 2003, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,121 +20,121 @@
  */
 
 #include "config.h"
-#include "gtkfilechooserutils.h"
-#include "gtkfilechooser.h"
-#include "gtkfilesystem.h"
-#include "gtktypebuiltins.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkfilechooserutils.h"
+#include "btkfilechooser.h"
+#include "btkfilesystem.h"
+#include "btktypebuiltins.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-static gboolean       delegate_set_current_folder     (GtkFileChooser    *chooser,
+static gboolean       delegate_set_current_folder     (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
-static GFile *        delegate_get_current_folder     (GtkFileChooser    *chooser);
-static void           delegate_set_current_name       (GtkFileChooser    *chooser,
+static GFile *        delegate_get_current_folder     (BtkFileChooser    *chooser);
+static void           delegate_set_current_name       (BtkFileChooser    *chooser,
 						       const gchar       *name);
-static gboolean       delegate_select_file            (GtkFileChooser    *chooser,
+static gboolean       delegate_select_file            (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
-static void           delegate_unselect_file          (GtkFileChooser    *chooser,
+static void           delegate_unselect_file          (BtkFileChooser    *chooser,
 						       GFile             *file);
-static void           delegate_select_all             (GtkFileChooser    *chooser);
-static void           delegate_unselect_all           (GtkFileChooser    *chooser);
-static GSList *       delegate_get_files              (GtkFileChooser    *chooser);
-static GFile *        delegate_get_preview_file       (GtkFileChooser    *chooser);
-static GtkFileSystem *delegate_get_file_system        (GtkFileChooser    *chooser);
-static void           delegate_add_filter             (GtkFileChooser    *chooser,
-						       GtkFileFilter     *filter);
-static void           delegate_remove_filter          (GtkFileChooser    *chooser,
-						       GtkFileFilter     *filter);
-static GSList *       delegate_list_filters           (GtkFileChooser    *chooser);
-static gboolean       delegate_add_shortcut_folder    (GtkFileChooser    *chooser,
+static void           delegate_select_all             (BtkFileChooser    *chooser);
+static void           delegate_unselect_all           (BtkFileChooser    *chooser);
+static GSList *       delegate_get_files              (BtkFileChooser    *chooser);
+static GFile *        delegate_get_preview_file       (BtkFileChooser    *chooser);
+static BtkFileSystem *delegate_get_file_system        (BtkFileChooser    *chooser);
+static void           delegate_add_filter             (BtkFileChooser    *chooser,
+						       BtkFileFilter     *filter);
+static void           delegate_remove_filter          (BtkFileChooser    *chooser,
+						       BtkFileFilter     *filter);
+static GSList *       delegate_list_filters           (BtkFileChooser    *chooser);
+static gboolean       delegate_add_shortcut_folder    (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
-static gboolean       delegate_remove_shortcut_folder (GtkFileChooser    *chooser,
+static gboolean       delegate_remove_shortcut_folder (BtkFileChooser    *chooser,
 						       GFile             *file,
 						       GError           **error);
-static GSList *       delegate_list_shortcut_folders  (GtkFileChooser    *chooser);
+static GSList *       delegate_list_shortcut_folders  (BtkFileChooser    *chooser);
 static void           delegate_notify                 (GObject           *object,
 						       GParamSpec        *pspec,
 						       gpointer           data);
-static void           delegate_current_folder_changed (GtkFileChooser    *chooser,
+static void           delegate_current_folder_changed (BtkFileChooser    *chooser,
 						       gpointer           data);
-static void           delegate_selection_changed      (GtkFileChooser    *chooser,
+static void           delegate_selection_changed      (BtkFileChooser    *chooser,
 						       gpointer           data);
-static void           delegate_update_preview         (GtkFileChooser    *chooser,
+static void           delegate_update_preview         (BtkFileChooser    *chooser,
 						       gpointer           data);
-static void           delegate_file_activated         (GtkFileChooser    *chooser,
+static void           delegate_file_activated         (BtkFileChooser    *chooser,
 						       gpointer           data);
 
-static GtkFileChooserConfirmation delegate_confirm_overwrite (GtkFileChooser    *chooser,
+static BtkFileChooserConfirmation delegate_confirm_overwrite (BtkFileChooser    *chooser,
 							      gpointer           data);
 
 /**
- * _gtk_file_chooser_install_properties:
+ * _btk_file_chooser_install_properties:
  * @klass: the class structure for a type deriving from #GObject
  *
  * Installs the necessary properties for a class implementing
- * #GtkFileChooser. A #GtkParamSpecOverride property is installed
- * for each property, using the values from the #GtkFileChooserProp
+ * #BtkFileChooser. A #BtkParamSpecOverride property is installed
+ * for each property, using the values from the #BtkFileChooserProp
  * enumeration. The caller must make sure itself that the enumeration
  * values don't collide with some other property values they
  * are using.
  **/
 void
-_gtk_file_chooser_install_properties (GObjectClass *klass)
+_btk_file_chooser_install_properties (GObjectClass *klass)
 {
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_ACTION,
+				    BTK_FILE_CHOOSER_PROP_ACTION,
 				    "action");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_EXTRA_WIDGET,
+				    BTK_FILE_CHOOSER_PROP_EXTRA_WIDGET,
 				    "extra-widget");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND,
+				    BTK_FILE_CHOOSER_PROP_FILE_SYSTEM_BACKEND,
 				    "file-system-backend");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_FILTER,
+				    BTK_FILE_CHOOSER_PROP_FILTER,
 				    "filter");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_LOCAL_ONLY,
+				    BTK_FILE_CHOOSER_PROP_LOCAL_ONLY,
 				    "local-only");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET,
+				    BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET,
 				    "preview-widget");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE,
+				    BTK_FILE_CHOOSER_PROP_PREVIEW_WIDGET_ACTIVE,
 				    "preview-widget-active");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL,
+				    BTK_FILE_CHOOSER_PROP_USE_PREVIEW_LABEL,
 				    "use-preview-label");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE,
+				    BTK_FILE_CHOOSER_PROP_SELECT_MULTIPLE,
 				    "select-multiple");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_SHOW_HIDDEN,
+				    BTK_FILE_CHOOSER_PROP_SHOW_HIDDEN,
 				    "show-hidden");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION,
+				    BTK_FILE_CHOOSER_PROP_DO_OVERWRITE_CONFIRMATION,
 				    "do-overwrite-confirmation");
   g_object_class_override_property (klass,
-				    GTK_FILE_CHOOSER_PROP_CREATE_FOLDERS,
+				    BTK_FILE_CHOOSER_PROP_CREATE_FOLDERS,
 				    "create-folders");
 }
 
 /**
- * _gtk_file_chooser_delegate_iface_init:
- * @iface: a #GtkFileChoserIface structure
+ * _btk_file_chooser_delegate_iface_init:
+ * @iface: a #BtkFileChoserIface structure
  *
  * An interface-initialization function for use in cases where
  * an object is simply delegating the methods, signals of
- * the #GtkFileChooser interface to another object.
- * _gtk_file_chooser_set_delegate() must be called on each
+ * the #BtkFileChooser interface to another object.
+ * _btk_file_chooser_set_delegate() must be called on each
  * instance of the object so that the delegate object can
  * be found.
  **/
 void
-_gtk_file_chooser_delegate_iface_init (GtkFileChooserIface *iface)
+_btk_file_chooser_delegate_iface_init (BtkFileChooserIface *iface)
 {
   iface->set_current_folder = delegate_set_current_folder;
   iface->get_current_folder = delegate_get_current_folder;
@@ -155,24 +155,24 @@ _gtk_file_chooser_delegate_iface_init (GtkFileChooserIface *iface)
 }
 
 /**
- * _gtk_file_chooser_set_delegate:
- * @receiver: a #GObject implementing #GtkFileChooser
- * @delegate: another #GObject implementing #GtkFileChooser
+ * _btk_file_chooser_set_delegate:
+ * @receiver: a #GObject implementing #BtkFileChooser
+ * @delegate: another #GObject implementing #BtkFileChooser
  *
- * Establishes that calls on @receiver for #GtkFileChooser
+ * Establishes that calls on @receiver for #BtkFileChooser
  * methods should be delegated to @delegate, and that
- * #GtkFileChooser signals emitted on @delegate should be
+ * #BtkFileChooser signals emitted on @delegate should be
  * forwarded to @receiver. Must be used in conjunction with
- * _gtk_file_chooser_delegate_iface_init().
+ * _btk_file_chooser_delegate_iface_init().
  **/
 void
-_gtk_file_chooser_set_delegate (GtkFileChooser *receiver,
-				GtkFileChooser *delegate)
+_btk_file_chooser_set_delegate (BtkFileChooser *receiver,
+				BtkFileChooser *delegate)
 {
-  g_return_if_fail (GTK_IS_FILE_CHOOSER (receiver));
-  g_return_if_fail (GTK_IS_FILE_CHOOSER (delegate));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER (receiver));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER (delegate));
 
-  g_object_set_data (G_OBJECT (receiver), I_("gtk-file-chooser-delegate"), delegate);
+  g_object_set_data (G_OBJECT (receiver), I_("btk-file-chooser-delegate"), delegate);
   g_signal_connect (delegate, "notify",
 		    G_CALLBACK (delegate_notify), receiver);
   g_signal_connect (delegate, "current-folder-changed",
@@ -188,129 +188,129 @@ _gtk_file_chooser_set_delegate (GtkFileChooser *receiver,
 }
 
 GQuark
-_gtk_file_chooser_delegate_get_quark (void)
+_btk_file_chooser_delegate_get_quark (void)
 {
   static GQuark quark = 0;
 
   if (G_UNLIKELY (quark == 0))
-    quark = g_quark_from_static_string ("gtk-file-chooser-delegate");
+    quark = g_quark_from_static_string ("btk-file-chooser-delegate");
   
   return quark;
 }
 
-static GtkFileChooser *
-get_delegate (GtkFileChooser *receiver)
+static BtkFileChooser *
+get_delegate (BtkFileChooser *receiver)
 {
   return g_object_get_qdata (G_OBJECT (receiver),
-			     GTK_FILE_CHOOSER_DELEGATE_QUARK);
+			     BTK_FILE_CHOOSER_DELEGATE_QUARK);
 }
 
 static gboolean
-delegate_select_file (GtkFileChooser    *chooser,
+delegate_select_file (BtkFileChooser    *chooser,
 		      GFile             *file,
 		      GError           **error)
 {
-  return gtk_file_chooser_select_file (get_delegate (chooser), file, error);
+  return btk_file_chooser_select_file (get_delegate (chooser), file, error);
 }
 
 static void
-delegate_unselect_file (GtkFileChooser *chooser,
+delegate_unselect_file (BtkFileChooser *chooser,
 			GFile          *file)
 {
-  gtk_file_chooser_unselect_file (get_delegate (chooser), file);
+  btk_file_chooser_unselect_file (get_delegate (chooser), file);
 }
 
 static void
-delegate_select_all (GtkFileChooser *chooser)
+delegate_select_all (BtkFileChooser *chooser)
 {
-  gtk_file_chooser_select_all (get_delegate (chooser));
+  btk_file_chooser_select_all (get_delegate (chooser));
 }
 
 static void
-delegate_unselect_all (GtkFileChooser *chooser)
+delegate_unselect_all (BtkFileChooser *chooser)
 {
-  gtk_file_chooser_unselect_all (get_delegate (chooser));
+  btk_file_chooser_unselect_all (get_delegate (chooser));
 }
 
 static GSList *
-delegate_get_files (GtkFileChooser *chooser)
+delegate_get_files (BtkFileChooser *chooser)
 {
-  return gtk_file_chooser_get_files (get_delegate (chooser));
+  return btk_file_chooser_get_files (get_delegate (chooser));
 }
 
 static GFile *
-delegate_get_preview_file (GtkFileChooser *chooser)
+delegate_get_preview_file (BtkFileChooser *chooser)
 {
-  return gtk_file_chooser_get_preview_file (get_delegate (chooser));
+  return btk_file_chooser_get_preview_file (get_delegate (chooser));
 }
 
-static GtkFileSystem *
-delegate_get_file_system (GtkFileChooser *chooser)
+static BtkFileSystem *
+delegate_get_file_system (BtkFileChooser *chooser)
 {
-  return _gtk_file_chooser_get_file_system (get_delegate (chooser));
-}
-
-static void
-delegate_add_filter (GtkFileChooser *chooser,
-		     GtkFileFilter  *filter)
-{
-  gtk_file_chooser_add_filter (get_delegate (chooser), filter);
+  return _btk_file_chooser_get_file_system (get_delegate (chooser));
 }
 
 static void
-delegate_remove_filter (GtkFileChooser *chooser,
-			GtkFileFilter  *filter)
+delegate_add_filter (BtkFileChooser *chooser,
+		     BtkFileFilter  *filter)
 {
-  gtk_file_chooser_remove_filter (get_delegate (chooser), filter);
+  btk_file_chooser_add_filter (get_delegate (chooser), filter);
+}
+
+static void
+delegate_remove_filter (BtkFileChooser *chooser,
+			BtkFileFilter  *filter)
+{
+  btk_file_chooser_remove_filter (get_delegate (chooser), filter);
 }
 
 static GSList *
-delegate_list_filters (GtkFileChooser *chooser)
+delegate_list_filters (BtkFileChooser *chooser)
 {
-  return gtk_file_chooser_list_filters (get_delegate (chooser));
+  return btk_file_chooser_list_filters (get_delegate (chooser));
 }
 
 static gboolean
-delegate_add_shortcut_folder (GtkFileChooser  *chooser,
+delegate_add_shortcut_folder (BtkFileChooser  *chooser,
 			      GFile           *file,
 			      GError         **error)
 {
-  return _gtk_file_chooser_add_shortcut_folder (get_delegate (chooser), file, error);
+  return _btk_file_chooser_add_shortcut_folder (get_delegate (chooser), file, error);
 }
 
 static gboolean
-delegate_remove_shortcut_folder (GtkFileChooser  *chooser,
+delegate_remove_shortcut_folder (BtkFileChooser  *chooser,
 				 GFile           *file,
 				 GError         **error)
 {
-  return _gtk_file_chooser_remove_shortcut_folder (get_delegate (chooser), file, error);
+  return _btk_file_chooser_remove_shortcut_folder (get_delegate (chooser), file, error);
 }
 
 static GSList *
-delegate_list_shortcut_folders (GtkFileChooser *chooser)
+delegate_list_shortcut_folders (BtkFileChooser *chooser)
 {
-  return _gtk_file_chooser_list_shortcut_folder_files (get_delegate (chooser));
+  return _btk_file_chooser_list_shortcut_folder_files (get_delegate (chooser));
 }
 
 static gboolean
-delegate_set_current_folder (GtkFileChooser  *chooser,
+delegate_set_current_folder (BtkFileChooser  *chooser,
 			     GFile           *file,
 			     GError         **error)
 {
-  return gtk_file_chooser_set_current_folder_file (get_delegate (chooser), file, error);
+  return btk_file_chooser_set_current_folder_file (get_delegate (chooser), file, error);
 }
 
 static GFile *
-delegate_get_current_folder (GtkFileChooser *chooser)
+delegate_get_current_folder (BtkFileChooser *chooser)
 {
-  return gtk_file_chooser_get_current_folder_file (get_delegate (chooser));
+  return btk_file_chooser_get_current_folder_file (get_delegate (chooser));
 }
 
 static void
-delegate_set_current_name (GtkFileChooser *chooser,
+delegate_set_current_name (BtkFileChooser *chooser,
 			   const gchar    *name)
 {
-  gtk_file_chooser_set_current_name (get_delegate (chooser), name);
+  btk_file_chooser_set_current_name (get_delegate (chooser), name);
 }
 
 static void
@@ -321,44 +321,44 @@ delegate_notify (GObject    *object,
   gpointer iface;
 
   iface = g_type_interface_peek (g_type_class_peek (G_OBJECT_TYPE (object)),
-				 gtk_file_chooser_get_type ());
+				 btk_file_chooser_get_type ());
   if (g_object_interface_find_property (iface, pspec->name))
     g_object_notify (data, pspec->name);
 }
 
 static void
-delegate_selection_changed (GtkFileChooser *chooser,
+delegate_selection_changed (BtkFileChooser *chooser,
 			    gpointer        data)
 {
   g_signal_emit_by_name (data, "selection-changed");
 }
 
 static void
-delegate_current_folder_changed (GtkFileChooser *chooser,
+delegate_current_folder_changed (BtkFileChooser *chooser,
 				 gpointer        data)
 {
   g_signal_emit_by_name (data, "current-folder-changed");
 }
 
 static void
-delegate_update_preview (GtkFileChooser    *chooser,
+delegate_update_preview (BtkFileChooser    *chooser,
 			 gpointer           data)
 {
   g_signal_emit_by_name (data, "update-preview");
 }
 
 static void
-delegate_file_activated (GtkFileChooser    *chooser,
+delegate_file_activated (BtkFileChooser    *chooser,
 			 gpointer           data)
 {
   g_signal_emit_by_name (data, "file-activated");
 }
 
-static GtkFileChooserConfirmation
-delegate_confirm_overwrite (GtkFileChooser    *chooser,
+static BtkFileChooserConfirmation
+delegate_confirm_overwrite (BtkFileChooser    *chooser,
 			    gpointer           data)
 {
-  GtkFileChooserConfirmation conf;
+  BtkFileChooserConfirmation conf;
 
   g_signal_emit_by_name (data, "confirm-overwrite", &conf);
   return conf;
@@ -378,11 +378,11 @@ get_parent_for_uri (const char *uri)
 	
 }
 
-/* Extracts the parent folders out of the supplied list of GtkRecentInfo* items, and returns
+/* Extracts the parent folders out of the supplied list of BtkRecentInfo* items, and returns
  * a list of GFile* for those unique parents.
  */
 GList *
-_gtk_file_chooser_extract_recent_folders (GList *infos)
+_btk_file_chooser_extract_recent_folders (GList *infos)
 {
   GList *l;
   GList *result;
@@ -394,11 +394,11 @@ _gtk_file_chooser_extract_recent_folders (GList *infos)
 
   for (l = infos; l; l = l->next)
     {
-      GtkRecentInfo *info = l->data;
+      BtkRecentInfo *info = l->data;
       const char *uri;
       GFile *parent;
 
-      uri = gtk_recent_info_get_uri (info);
+      uri = btk_recent_info_get_uri (info);
       parent = get_parent_for_uri (uri);
 
       if (parent)

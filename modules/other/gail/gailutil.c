@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,32 +21,32 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailutil.h"
-#include "gailtoplevel.h"
-#include "gailwindow.h"
-#include "gail-private-macros.h"
+#include <btk/btk.h>
+#include "bailutil.h"
+#include "bailtoplevel.h"
+#include "bailwindow.h"
+#include "bail-private-macros.h"
 
-static void		gail_util_class_init			(GailUtilClass		*klass);
-static void             gail_util_init                          (GailUtil               *utils);
-/* atkutil.h */
+static void		bail_util_class_init			(BailUtilClass		*klass);
+static void             bail_util_init                          (BailUtil               *utils);
+/* batkutil.h */
 
-static guint		gail_util_add_global_event_listener	(GSignalEmissionHook	listener,
+static guint		bail_util_add_global_event_listener	(GSignalEmissionHook	listener,
 							         const gchar*           event_type);
-static void 		gail_util_remove_global_event_listener	(guint			remove_listener);
-static guint		gail_util_add_key_event_listener	(AtkKeySnoopFunc	listener,
+static void 		bail_util_remove_global_event_listener	(guint			remove_listener);
+static guint		bail_util_add_key_event_listener	(BatkKeySnoopFunc	listener,
 								 gpointer               data);
-static void 		gail_util_remove_key_event_listener	(guint			remove_listener);
-static AtkObject*	gail_util_get_root			(void);
-static const gchar *    gail_util_get_toolkit_name		(void);
-static const gchar *    gail_util_get_toolkit_version      (void);
+static void 		bail_util_remove_key_event_listener	(guint			remove_listener);
+static BatkObject*	bail_util_get_root			(void);
+static const gchar *    bail_util_get_toolkit_name		(void);
+static const gchar *    bail_util_get_toolkit_version      (void);
 
-/* gailmisc/AtkMisc */
-static void		gail_misc_class_init			(GailMiscClass		*klass);
-static void             gail_misc_init                          (GailMisc               *misc);
+/* bailmisc/BatkMisc */
+static void		bail_misc_class_init			(BailMiscClass		*klass);
+static void             bail_misc_init                          (BailMisc               *misc);
 
-static void gail_misc_threads_enter (AtkMisc *misc);
-static void gail_misc_threads_leave (AtkMisc *misc);
+static void bail_misc_threads_enter (BatkMisc *misc);
+static void bail_misc_threads_leave (BatkMisc *misc);
 
 /* Misc */
 
@@ -60,76 +60,76 @@ static gboolean         state_event_watcher                     (GSignalInvocati
                                                                  guint                  n_param_values,
                                                                  const GValue           *param_values,
                                                                  gpointer               data);
-static void             window_added                             (AtkObject             *atk_obj,
+static void             window_added                             (BatkObject             *batk_obj,
                                                                   guint                 index,
-                                                                  AtkObject             *child);
-static void             window_removed                           (AtkObject             *atk_obj,
+                                                                  BatkObject             *child);
+static void             window_removed                           (BatkObject             *batk_obj,
                                                                   guint                 index,
-                                                                  AtkObject             *child);
-static gboolean        window_focus                              (GtkWidget             *widget,
-                                                                  GdkEventFocus         *event);
+                                                                  BatkObject             *child);
+static gboolean        window_focus                              (BtkWidget             *widget,
+                                                                  BdkEventFocus         *event);
 static gboolean         configure_event_watcher                 (GSignalInvocationHint  *hint,
                                                                  guint                  n_param_values,
                                                                  const GValue           *param_values,
                                                                  gpointer               data);
                                                                   
 
-static AtkObject* root = NULL;
+static BatkObject* root = NULL;
 static GHashTable *listener_list = NULL;
 static gint listener_idx = 1;
 static GSList *key_listener_list = NULL;
 static guint key_snooper_id = 0;
 
-typedef struct _GailUtilListenerInfo GailUtilListenerInfo;
-typedef struct _GailKeyEventInfo GailKeyEventInfo;
+typedef struct _BailUtilListenerInfo BailUtilListenerInfo;
+typedef struct _BailKeyEventInfo BailKeyEventInfo;
 
-struct _GailUtilListenerInfo
+struct _BailUtilListenerInfo
 {
    gint key;
    guint signal_id;
    gulong hook_id;
 };
 
-struct _GailKeyEventInfo
+struct _BailKeyEventInfo
 {
-  AtkKeyEventStruct *key_event;
+  BatkKeyEventStruct *key_event;
   gpointer func_data;
 };
 
-G_DEFINE_TYPE (GailUtil, gail_util, ATK_TYPE_UTIL)
+G_DEFINE_TYPE (BailUtil, bail_util, BATK_TYPE_UTIL)
 
 static void	 
-gail_util_class_init (GailUtilClass *klass)
+bail_util_class_init (BailUtilClass *klass)
 {
-  AtkUtilClass *atk_class;
+  BatkUtilClass *batk_class;
   gpointer data;
 
-  data = g_type_class_peek (ATK_TYPE_UTIL);
-  atk_class = ATK_UTIL_CLASS (data);
+  data = g_type_class_peek (BATK_TYPE_UTIL);
+  batk_class = BATK_UTIL_CLASS (data);
 
-  atk_class->add_global_event_listener =
-    gail_util_add_global_event_listener;
-  atk_class->remove_global_event_listener =
-    gail_util_remove_global_event_listener;
-  atk_class->add_key_event_listener =
-    gail_util_add_key_event_listener;
-  atk_class->remove_key_event_listener =
-    gail_util_remove_key_event_listener;
-  atk_class->get_root = gail_util_get_root;
-  atk_class->get_toolkit_name = gail_util_get_toolkit_name;
-  atk_class->get_toolkit_version = gail_util_get_toolkit_version;
+  batk_class->add_global_event_listener =
+    bail_util_add_global_event_listener;
+  batk_class->remove_global_event_listener =
+    bail_util_remove_global_event_listener;
+  batk_class->add_key_event_listener =
+    bail_util_add_key_event_listener;
+  batk_class->remove_key_event_listener =
+    bail_util_remove_key_event_listener;
+  batk_class->get_root = bail_util_get_root;
+  batk_class->get_toolkit_name = bail_util_get_toolkit_name;
+  batk_class->get_toolkit_version = bail_util_get_toolkit_version;
 
   listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, 
      _listener_info_destroy);
 }
 
 static void
-gail_util_init (GailUtil *utils)
+bail_util_init (BailUtil *utils)
 {
 }
 
 static guint
-gail_util_add_global_event_listener (GSignalEmissionHook listener,
+bail_util_add_global_event_listener (GSignalEmissionHook listener,
 				     const gchar *event_type)
 {
   guint rc = 0;
@@ -148,7 +148,7 @@ gail_util_add_global_event_listener (GSignalEmissionHook listener,
               do_window_event_initialization ();
               initialized = TRUE;
             }
-          rc = add_listener (listener, "GailWindow", split_string[1], event_type);
+          rc = add_listener (listener, "BailWindow", split_string[1], event_type);
         }
       else
         {
@@ -162,14 +162,14 @@ gail_util_add_global_event_listener (GSignalEmissionHook listener,
 }
 
 static void
-gail_util_remove_global_event_listener (guint remove_listener)
+bail_util_remove_global_event_listener (guint remove_listener)
 {
   if (remove_listener > 0)
   {
-    GailUtilListenerInfo *listener_info;
+    BailUtilListenerInfo *listener_info;
     gint tmp_idx = remove_listener;
 
-    listener_info = (GailUtilListenerInfo *)
+    listener_info = (BailUtilListenerInfo *)
       g_hash_table_lookup(listener_list, &tmp_idx);
 
     if (listener_info != NULL)
@@ -204,17 +204,17 @@ gail_util_remove_global_event_listener (guint remove_listener)
 
 
 static
-AtkKeyEventStruct *
-atk_key_event_from_gdk_event_key (GdkEventKey *key)
+BatkKeyEventStruct *
+batk_key_event_from_bdk_event_key (BdkEventKey *key)
 {
-  AtkKeyEventStruct *event = g_new0 (AtkKeyEventStruct, 1);
+  BatkKeyEventStruct *event = g_new0 (BatkKeyEventStruct, 1);
   switch (key->type)
     {
-    case GDK_KEY_PRESS:
-	    event->type = ATK_KEY_EVENT_PRESS;
+    case BDK_KEY_PRESS:
+	    event->type = BATK_KEY_EVENT_PRESS;
 	    break;
-    case GDK_KEY_RELEASE:
-	    event->type = ATK_KEY_EVENT_RELEASE;
+    case BDK_KEY_RELEASE:
+	    event->type = BATK_KEY_EVENT_RELEASE;
 	    break;
     default:
 	    g_assert_not_reached ();
@@ -228,15 +228,15 @@ atk_key_event_from_gdk_event_key (GdkEventKey *key)
     {
       event->string = key->string;
     }
-  else if (key->type == GDK_KEY_PRESS ||
-           key->type == GDK_KEY_RELEASE)
+  else if (key->type == BDK_KEY_PRESS ||
+           key->type == BDK_KEY_RELEASE)
     {
-      event->string = gdk_keyval_name (key->keyval);	    
+      event->string = bdk_keyval_name (key->keyval);	    
     }
   event->keycode = key->hardware_keycode;
   event->timestamp = key->time;
-#ifdef GAIL_DEBUG  
-  g_print ("GailKey:\tsym %u\n\tmods %x\n\tcode %u\n\ttime %lx\n",
+#ifdef BAIL_DEBUG  
+  g_print ("BailKey:\tsym %u\n\tmods %x\n\tcode %u\n\ttime %lx\n",
 	   (unsigned int) event->keyval,
 	   (unsigned int) event->state,
 	   (unsigned int) event->keycode,
@@ -246,19 +246,19 @@ atk_key_event_from_gdk_event_key (GdkEventKey *key)
 }
 
 typedef struct {
-  AtkKeySnoopFunc func;
+  BatkKeySnoopFunc func;
   gpointer        data;
   guint           key;
 } KeyEventListener;
 
 static gint
-gail_key_snooper (GtkWidget *the_widget, GdkEventKey *event, gpointer data)
+bail_key_snooper (BtkWidget *the_widget, BdkEventKey *event, gpointer data)
 {
   GSList *l;
-  AtkKeyEventStruct *atk_event;
+  BatkKeyEventStruct *batk_event;
   gboolean result;
 
-  atk_event = atk_key_event_from_gdk_event_key (event);
+  batk_event = batk_key_event_from_bdk_event_key (event);
 
   result = FALSE;
 
@@ -266,22 +266,22 @@ gail_key_snooper (GtkWidget *the_widget, GdkEventKey *event, gpointer data)
     {
       KeyEventListener *listener = l->data;
 
-      result |= listener->func (atk_event, listener->data);
+      result |= listener->func (batk_event, listener->data);
     }
-  g_free (atk_event);
+  g_free (batk_event);
 
   return result;
 }
 
 static guint
-gail_util_add_key_event_listener (AtkKeySnoopFunc  listener_func,
+bail_util_add_key_event_listener (BatkKeySnoopFunc  listener_func,
                                   gpointer         listener_data)
 {
   static guint key = 0;
   KeyEventListener *listener;
 
   if (key_snooper_id == 0)
-    key_snooper_id = gtk_key_snooper_install (gail_key_snooper, NULL);
+    key_snooper_id = btk_key_snooper_install (bail_key_snooper, NULL);
 
   key++;
 
@@ -296,7 +296,7 @@ gail_util_add_key_event_listener (AtkKeySnoopFunc  listener_func,
 }
 
 static void
-gail_util_remove_key_event_listener (guint listener_key)
+bail_util_remove_key_event_listener (guint listener_key)
 {
   GSList *l;
 
@@ -315,37 +315,37 @@ gail_util_remove_key_event_listener (guint listener_key)
 
   if (key_listener_list == NULL)
     {
-      gtk_key_snooper_remove (key_snooper_id);
+      btk_key_snooper_remove (key_snooper_id);
       key_snooper_id = 0;
     }
 }
 
-static AtkObject*
-gail_util_get_root (void)
+static BatkObject*
+bail_util_get_root (void)
 {
   if (!root)
     {
-      root = g_object_new (GAIL_TYPE_TOPLEVEL, NULL);
-      atk_object_initialize (root, NULL);
+      root = g_object_new (BAIL_TYPE_TOPLEVEL, NULL);
+      batk_object_initialize (root, NULL);
     }
 
   return root;
 }
 
 static const gchar *
-gail_util_get_toolkit_name (void)
+bail_util_get_toolkit_name (void)
 {
-  return "GAIL";
+  return "BAIL";
 }
 
 static const gchar *
-gail_util_get_toolkit_version (void)
+bail_util_get_toolkit_version (void)
 {
  /*
   * Version is passed in as a -D flag when this file is
   * compiled.
   */
-  return GTK_VERSION;
+  return BTK_VERSION;
 }
 
 static void
@@ -370,11 +370,11 @@ add_listener (GSignalEmissionHook listener,
       signal_id  = g_signal_lookup (signal, type);
       if (signal_id > 0)
         {
-          GailUtilListenerInfo *listener_info;
+          BailUtilListenerInfo *listener_info;
 
           rc = listener_idx;
 
-          listener_info = g_malloc(sizeof(GailUtilListenerInfo));
+          listener_info = g_malloc(sizeof(BailUtilListenerInfo));
           listener_info->key = listener_idx;
           listener_info->hook_id =
                           g_signal_add_emission_hook (signal_id, 0, listener,
@@ -400,18 +400,18 @@ add_listener (GSignalEmissionHook listener,
 static void
 do_window_event_initialization (void)
 {
-  AtkObject *root;
+  BatkObject *root;
 
   /*
-   * Ensure that GailWindowClass exists.
+   * Ensure that BailWindowClass exists.
    */
-  g_type_class_ref (GAIL_TYPE_WINDOW);
-  g_signal_add_emission_hook (g_signal_lookup ("window-state-event", GTK_TYPE_WIDGET),
+  g_type_class_ref (BAIL_TYPE_WINDOW);
+  g_signal_add_emission_hook (g_signal_lookup ("window-state-event", BTK_TYPE_WIDGET),
                               0, state_event_watcher, NULL, (GDestroyNotify) NULL);
-  g_signal_add_emission_hook (g_signal_lookup ("configure-event", GTK_TYPE_WIDGET),
+  g_signal_add_emission_hook (g_signal_lookup ("configure-event", BTK_TYPE_WIDGET),
                               0, configure_event_watcher, NULL, (GDestroyNotify) NULL);
 
-  root = atk_get_root ();
+  root = batk_get_root ();
   g_signal_connect (root, "children-changed::add",
                     (GCallback) window_added, NULL);
   g_signal_connect (root, "children-changed::remove",
@@ -425,29 +425,29 @@ state_event_watcher (GSignalInvocationHint  *hint,
                      gpointer               data)
 {
   GObject *object;
-  GtkWidget *widget;
-  AtkObject *atk_obj;
-  AtkObject *parent;
-  GdkEventWindowState *event;
+  BtkWidget *widget;
+  BatkObject *batk_obj;
+  BatkObject *parent;
+  BdkEventWindowState *event;
   gchar *signal_name;
   guint signal_id;
 
   object = g_value_get_object (param_values + 0);
   /*
-   * The object can be a GtkMenu when it is popped up; we ignore this
+   * The object can be a BtkMenu when it is popped up; we ignore this
    */
-  if (!GTK_IS_WINDOW (object))
+  if (!BTK_IS_WINDOW (object))
     return FALSE;
 
   event = g_value_get_boxed (param_values + 1);
-  gail_return_val_if_fail (event->type == GDK_WINDOW_STATE, FALSE);
-  widget = GTK_WIDGET (object);
+  bail_return_val_if_fail (event->type == BDK_WINDOW_STATE, FALSE);
+  widget = BTK_WIDGET (object);
 
-  if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED)
+  if (event->new_window_state & BDK_WINDOW_STATE_MAXIMIZED)
     {
       signal_name = "maximize";
     }
-  else if (event->new_window_state & GDK_WINDOW_STATE_ICONIFIED)
+  else if (event->new_window_state & BDK_WINDOW_STATE_ICONIFIED)
     {
       signal_name = "minimize";
     }
@@ -458,15 +458,15 @@ state_event_watcher (GSignalInvocationHint  *hint,
   else
     return TRUE;
   
-  atk_obj = gtk_widget_get_accessible (widget);
+  batk_obj = btk_widget_get_accessible (widget);
 
-  if (GAIL_IS_WINDOW (atk_obj))
+  if (BAIL_IS_WINDOW (batk_obj))
     {
-      parent = atk_object_get_parent (atk_obj);
-      if (parent == atk_get_root ())
+      parent = batk_object_get_parent (batk_obj);
+      if (parent == batk_get_root ())
 	{
-	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW); 
-	  g_signal_emit (atk_obj, signal_id, 0);
+	  signal_id = g_signal_lookup (signal_name, BAIL_TYPE_WINDOW); 
+	  g_signal_emit (batk_obj, signal_id, 0);
 	}
       
       return TRUE;
@@ -478,39 +478,39 @@ state_event_watcher (GSignalInvocationHint  *hint,
 }
 
 static void
-window_added (AtkObject *atk_obj,
+window_added (BatkObject *batk_obj,
               guint     index,
-              AtkObject *child)
+              BatkObject *child)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  if (!GAIL_IS_WINDOW (child)) return;
+  if (!BAIL_IS_WINDOW (child)) return;
 
-  widget = GTK_ACCESSIBLE (child)->widget;
-  gail_return_if_fail (widget);
+  widget = BTK_ACCESSIBLE (child)->widget;
+  bail_return_if_fail (widget);
 
   g_signal_connect (widget, "focus-in-event",  
                     (GCallback) window_focus, NULL);
   g_signal_connect (widget, "focus-out-event",  
                     (GCallback) window_focus, NULL);
-  g_signal_emit (child, g_signal_lookup ("create", GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (child, g_signal_lookup ("create", BAIL_TYPE_WINDOW), 0); 
 }
 
 
 static void
-window_removed (AtkObject *atk_obj,
+window_removed (BatkObject *batk_obj,
                  guint     index,
-                 AtkObject *child)
+                 BatkObject *child)
 {
-  GtkWidget *widget;
-  GtkWindow *window;
+  BtkWidget *widget;
+  BtkWindow *window;
 
-  if (!GAIL_IS_WINDOW (child)) return;
+  if (!BAIL_IS_WINDOW (child)) return;
 
-  widget = GTK_ACCESSIBLE (child)->widget;
-  gail_return_if_fail (widget);
+  widget = BTK_ACCESSIBLE (child)->widget;
+  bail_return_if_fail (widget);
 
-  window = GTK_WINDOW (widget);
+  window = BTK_WINDOW (widget);
   /*
    * Deactivate window if it is still focused and we are removing it. This
    * can happen when a dialog displayed by gok is removed.
@@ -519,29 +519,29 @@ window_removed (AtkObject *atk_obj,
       window->has_toplevel_focus)
     {
       gchar *signal_name;
-      AtkObject *atk_obj;
+      BatkObject *batk_obj;
 
-      atk_obj = gtk_widget_get_accessible (widget);
+      batk_obj = btk_widget_get_accessible (widget);
       signal_name =  "deactivate";
-      g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0); 
+      g_signal_emit (batk_obj, g_signal_lookup (signal_name, BAIL_TYPE_WINDOW), 0); 
     }
 
   g_signal_handlers_disconnect_by_func (widget, (gpointer) window_focus, NULL);
-  g_signal_emit (child, g_signal_lookup ("destroy", GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (child, g_signal_lookup ("destroy", BAIL_TYPE_WINDOW), 0); 
 }
 
 static gboolean
-window_focus (GtkWidget     *widget,
-              GdkEventFocus *event)
+window_focus (BtkWidget     *widget,
+              BdkEventFocus *event)
 {
   gchar *signal_name;
-  AtkObject *atk_obj;
+  BatkObject *batk_obj;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  atk_obj = gtk_widget_get_accessible (widget);
+  batk_obj = btk_widget_get_accessible (widget);
   signal_name =  (event->in) ? "activate" : "deactivate";
-  g_signal_emit (atk_obj, g_signal_lookup (signal_name, GAIL_TYPE_WINDOW), 0); 
+  g_signal_emit (batk_obj, g_signal_lookup (signal_name, BAIL_TYPE_WINDOW), 0); 
 
   return FALSE;
 }
@@ -553,37 +553,37 @@ configure_event_watcher (GSignalInvocationHint  *hint,
                          gpointer               data)
 {
   GObject *object;
-  GtkWidget *widget;
-  AtkObject *atk_obj;
-  AtkObject *parent;
-  GdkEvent *event;
+  BtkWidget *widget;
+  BatkObject *batk_obj;
+  BatkObject *parent;
+  BdkEvent *event;
   gchar *signal_name;
   guint signal_id;
 
   object = g_value_get_object (param_values + 0);
-  if (!GTK_IS_WINDOW (object))
+  if (!BTK_IS_WINDOW (object))
     /*
-     * GtkDrawingArea can send a GDK_CONFIGURE event but we ignore here
+     * BtkDrawingArea can send a BDK_CONFIGURE event but we ignore here
      */
     return FALSE;
 
   event = g_value_get_boxed (param_values + 1);
-  if (event->type != GDK_CONFIGURE)
+  if (event->type != BDK_CONFIGURE)
     return FALSE;
-  if (GTK_WINDOW (object)->configure_request_count)
+  if (BTK_WINDOW (object)->configure_request_count)
     /*
      * There is another ConfigureRequest pending so we ignore this one.
      */
     return TRUE;
-  widget = GTK_WIDGET (object);
-  if (widget->allocation.x == ((GdkEventConfigure *)event)->x &&
-      widget->allocation.y == ((GdkEventConfigure *)event)->y &&
-      widget->allocation.width == ((GdkEventConfigure *)event)->width &&
-      widget->allocation.height == ((GdkEventConfigure *)event)->height)
+  widget = BTK_WIDGET (object);
+  if (widget->allocation.x == ((BdkEventConfigure *)event)->x &&
+      widget->allocation.y == ((BdkEventConfigure *)event)->y &&
+      widget->allocation.width == ((BdkEventConfigure *)event)->width &&
+      widget->allocation.height == ((BdkEventConfigure *)event)->height)
     return TRUE;
 
-  if (widget->allocation.width != ((GdkEventConfigure *)event)->width ||
-      widget->allocation.height != ((GdkEventConfigure *)event)->height)
+  if (widget->allocation.width != ((BdkEventConfigure *)event)->width ||
+      widget->allocation.height != ((BdkEventConfigure *)event)->height)
     {
       signal_name = "resize";
     }
@@ -592,14 +592,14 @@ configure_event_watcher (GSignalInvocationHint  *hint,
       signal_name = "move";
     }
 
-  atk_obj = gtk_widget_get_accessible (widget);
-  if (GAIL_IS_WINDOW (atk_obj))
+  batk_obj = btk_widget_get_accessible (widget);
+  if (BAIL_IS_WINDOW (batk_obj))
     {
-      parent = atk_object_get_parent (atk_obj);
-      if (parent == atk_get_root ())
+      parent = batk_object_get_parent (batk_obj);
+      if (parent == batk_get_root ())
 	{
-	  signal_id = g_signal_lookup (signal_name, GAIL_TYPE_WINDOW); 
-	  g_signal_emit (atk_obj, signal_id, 0);
+	  signal_id = g_signal_lookup (signal_name, BAIL_TYPE_WINDOW); 
+	  g_signal_emit (batk_obj, signal_id, 0);
 	}
       
       return TRUE;
@@ -610,30 +610,30 @@ configure_event_watcher (GSignalInvocationHint  *hint,
     }
 }
 
-G_DEFINE_TYPE (GailMisc, gail_misc, ATK_TYPE_MISC)
+G_DEFINE_TYPE (BailMisc, bail_misc, BATK_TYPE_MISC)
 
 static void	 
-gail_misc_class_init (GailMiscClass *klass)
+bail_misc_class_init (BailMiscClass *klass)
 {
-  AtkMiscClass *miscclass = ATK_MISC_CLASS (klass);
+  BatkMiscClass *miscclass = BATK_MISC_CLASS (klass);
   miscclass->threads_enter =
-    gail_misc_threads_enter;
+    bail_misc_threads_enter;
   miscclass->threads_leave =
-    gail_misc_threads_leave;
-  atk_misc_instance = g_object_new (GAIL_TYPE_MISC, NULL);
+    bail_misc_threads_leave;
+  batk_misc_instance = g_object_new (BAIL_TYPE_MISC, NULL);
 }
 
 static void
-gail_misc_init (GailMisc *misc)
+bail_misc_init (BailMisc *misc)
 {
 }
 
-static void gail_misc_threads_enter (AtkMisc *misc)
+static void bail_misc_threads_enter (BatkMisc *misc)
 {
-  GDK_THREADS_ENTER ();
+  BDK_THREADS_ENTER ();
 }
 
-static void gail_misc_threads_leave (AtkMisc *misc)
+static void bail_misc_threads_leave (BatkMisc *misc)
 {
-  GDK_THREADS_LEAVE ();
+  BDK_THREADS_LEAVE ();
 }

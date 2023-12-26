@@ -3,7 +3,7 @@ include $(top_srcdir)/Makefile.decl
 .PHONY: html pdf
 
 EXTRA_DIST += \
-	gtk-tut.sgml			\
+	btk-tut.sgml			\
 	images/arrow.png		\
 	images/aspectframe.png		\
 	images/base.png			\
@@ -16,7 +16,7 @@ EXTRA_DIST += \
 	images/filesel.png		\
 	images/fixed.png		\
 	images/frame.png		\
-	images/gtkdial.png		\
+	images/btkdial.png		\
 	images/helloworld.png		\
 	images/helloworld2.png		\
 	images/label.png		\
@@ -37,19 +37,19 @@ EXTRA_DIST += \
 	images/tictactoe.png
 
 if HAVE_DOCBOOK
-html: gtk-tut.sgml
+html: btk-tut.sgml
 	if test -w $(srcdir); then \
 	  (cd $(srcdir); \
-	   db2html gtk-tut.sgml; \
+	   db2html btk-tut.sgml; \
 	   test -d html && rm -r html; \
-	   mv gtk-tut html; \
+	   mv btk-tut html; \
 	   mkdir html/images; \
 	   cp images/*.png html/images); \
 	fi
 
-pdf: gtk-tut.sgml
+pdf: btk-tut.sgml
 	if test -w $(srcdir); then \
-	  (cd $(srcdir); db2pdf gtk-tut.sgml); \
+	  (cd $(srcdir); db2pdf btk-tut.sgml); \
 	fi
 
 all-local: html

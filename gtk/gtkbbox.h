@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,88 +18,88 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_BUTTON_BOX_H__
-#define __GTK_BUTTON_BOX_H__
+#ifndef __BTK_BUTTON_BOX_H__
+#define __BTK_BUTTON_BOX_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbox.h>
+#include <btk/btkbox.h>
 
 
 G_BEGIN_DECLS  
 
-#define GTK_TYPE_BUTTON_BOX             (gtk_button_box_get_type ())
-#define GTK_BUTTON_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_BUTTON_BOX, GtkButtonBox))
-#define GTK_BUTTON_BOX_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_BUTTON_BOX, GtkButtonBoxClass))
-#define GTK_IS_BUTTON_BOX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_BUTTON_BOX))
-#define GTK_IS_BUTTON_BOX_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_BUTTON_BOX))
-#define GTK_BUTTON_BOX_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_BUTTON_BOX, GtkButtonBoxClass))
+#define BTK_TYPE_BUTTON_BOX             (btk_button_box_get_type ())
+#define BTK_BUTTON_BOX(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BUTTON_BOX, BtkButtonBox))
+#define BTK_BUTTON_BOX_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BUTTON_BOX, BtkButtonBoxClass))
+#define BTK_IS_BUTTON_BOX(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BUTTON_BOX))
+#define BTK_IS_BUTTON_BOX_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BUTTON_BOX))
+#define BTK_BUTTON_BOX_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BUTTON_BOX, BtkButtonBoxClass))
   
 
-#define GTK_BUTTONBOX_DEFAULT -1
+#define BTK_BUTTONBOX_DEFAULT -1
  
-typedef struct _GtkButtonBox       GtkButtonBox;
-typedef struct _GtkButtonBoxClass  GtkButtonBoxClass;
+typedef struct _BtkButtonBox       BtkButtonBox;
+typedef struct _BtkButtonBoxClass  BtkButtonBoxClass;
 
-struct _GtkButtonBox
+struct _BtkButtonBox
 {
-  GtkBox box;
+  BtkBox box;
   gint GSEAL (child_min_width);
   gint GSEAL (child_min_height);
   gint GSEAL (child_ipad_x);
   gint GSEAL (child_ipad_y);
-  GtkButtonBoxStyle GSEAL (layout_style);
+  BtkButtonBoxStyle GSEAL (layout_style);
 };
 
-struct _GtkButtonBoxClass
+struct _BtkButtonBoxClass
 {
-  GtkBoxClass parent_class;
+  BtkBoxClass parent_class;
 };
 
 
-GType gtk_button_box_get_type (void) G_GNUC_CONST;
+GType btk_button_box_get_type (void) G_GNUC_CONST;
 
-GtkButtonBoxStyle gtk_button_box_get_layout          (GtkButtonBox      *widget);
-void              gtk_button_box_set_layout          (GtkButtonBox      *widget,
-						      GtkButtonBoxStyle  layout_style);
-gboolean          gtk_button_box_get_child_secondary (GtkButtonBox      *widget,
-						      GtkWidget         *child);
-void              gtk_button_box_set_child_secondary (GtkButtonBox      *widget,
-						      GtkWidget         *child,
+BtkButtonBoxStyle btk_button_box_get_layout          (BtkButtonBox      *widget);
+void              btk_button_box_set_layout          (BtkButtonBox      *widget,
+						      BtkButtonBoxStyle  layout_style);
+gboolean          btk_button_box_get_child_secondary (BtkButtonBox      *widget,
+						      BtkWidget         *child);
+void              btk_button_box_set_child_secondary (BtkButtonBox      *widget,
+						      BtkWidget         *child,
 						      gboolean           is_secondary);
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define gtk_button_box_set_spacing(b,s) gtk_box_set_spacing (GTK_BOX (b), s)
-#define gtk_button_box_get_spacing(b)   gtk_box_get_spacing (GTK_BOX (b))
+#ifndef BTK_DISABLE_DEPRECATED
+#define btk_button_box_set_spacing(b,s) btk_box_set_spacing (BTK_BOX (b), s)
+#define btk_button_box_get_spacing(b)   btk_box_get_spacing (BTK_BOX (b))
 
-void gtk_button_box_set_child_size     (GtkButtonBox *widget,
+void btk_button_box_set_child_size     (BtkButtonBox *widget,
 					gint          min_width,
 					gint          min_height);
-void gtk_button_box_set_child_ipadding (GtkButtonBox *widget,
+void btk_button_box_set_child_ipadding (BtkButtonBox *widget,
 					gint          ipad_x,
 					gint          ipad_y);
-void gtk_button_box_get_child_size     (GtkButtonBox *widget,
+void btk_button_box_get_child_size     (BtkButtonBox *widget,
 					gint         *min_width,
 					gint         *min_height);
-void gtk_button_box_get_child_ipadding (GtkButtonBox *widget,
+void btk_button_box_get_child_ipadding (BtkButtonBox *widget,
 					gint         *ipad_x,
 					gint         *ipad_y);
 #endif
 
 /* Internal method - do not use. */
-void _gtk_button_box_child_requisition (GtkWidget *widget,
+void _btk_button_box_child_requisition (BtkWidget *widget,
 					int       *nvis_children,
 					int       *nvis_secondaries,
 					int       *width,
 					int       *height);
 G_END_DECLS
 
-#endif /* __GTK_BUTTON_BOX_H__ */
+#endif /* __BTK_BUTTON_BOX_H__ */

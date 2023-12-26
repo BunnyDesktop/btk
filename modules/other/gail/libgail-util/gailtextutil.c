@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,42 +20,42 @@
 #include "config.h"
 
 #include <stdlib.h>
-#include "gailtextutil.h"
+#include "bailtextutil.h"
 
 /**
- * SECTION:gailtextutil
- * @Short_description: GailTextUtil is a utility class which can be used to
- *   implement some of the #AtkText functions for accessible objects
- *   which implement #AtkText.
- * @Title: GailTextUtil
+ * SECTION:bailtextutil
+ * @Short_description: BailTextUtil is a utility class which can be used to
+ *   implement some of the #BatkText functions for accessible objects
+ *   which implement #BatkText.
+ * @Title: BailTextUtil
  *
- * GailTextUtil is a utility class which can be used to implement the
- * #AtkText functions which get text for accessible objects which implement
- * #AtkText.
+ * BailTextUtil is a utility class which can be used to implement the
+ * #BatkText functions which get text for accessible objects which implement
+ * #BatkText.
  *
- * In GAIL it is used by the accsesible objects for #GnomeCanvasText, #GtkEntry,
- * #GtkLabel, #GtkCellRendererText and #GtkTextView.
+ * In BAIL it is used by the accsesible objects for #BunnyCanvasText, #BtkEntry,
+ * #BtkLabel, #BtkCellRendererText and #BtkTextView.
  */
 
-static void gail_text_util_class_init      (GailTextUtilClass *klass);
+static void bail_text_util_class_init      (BailTextUtilClass *klass);
 
-static void gail_text_util_init            (GailTextUtil      *textutil);
-static void gail_text_util_finalize        (GObject           *object);
+static void bail_text_util_init            (BailTextUtil      *textutil);
+static void bail_text_util_finalize        (GObject           *object);
 
 
-static void get_pango_text_offsets         (PangoLayout         *layout,
-                                            GtkTextBuffer       *buffer,
-                                            GailOffsetType      function,
-                                            AtkTextBoundary     boundary_type,
+static void get_bango_text_offsets         (BangoLayout         *layout,
+                                            BtkTextBuffer       *buffer,
+                                            BailOffsetType      function,
+                                            BatkTextBoundary     boundary_type,
                                             gint                offset,
                                             gint                *start_offset,
                                             gint                *end_offset,
-                                            GtkTextIter         *start_iter,
-                                            GtkTextIter         *end_iter);
+                                            BtkTextIter         *start_iter,
+                                            BtkTextIter         *end_iter);
 static GObjectClass *parent_class = NULL;
 
 GType
-gail_text_util_get_type(void)
+bail_text_util_get_type(void)
 {
   static GType type = 0;
 
@@ -63,56 +63,56 @@ gail_text_util_get_type(void)
     {
       const GTypeInfo tinfo =
       {
-        sizeof (GailTextUtilClass),
+        sizeof (BailTextUtilClass),
         (GBaseInitFunc) NULL, /* base init */
         (GBaseFinalizeFunc) NULL, /* base finalize */
-        (GClassInitFunc) gail_text_util_class_init,
+        (GClassInitFunc) bail_text_util_class_init,
         (GClassFinalizeFunc) NULL, /* class finalize */
         NULL, /* class data */
-        sizeof(GailTextUtil),
+        sizeof(BailTextUtil),
         0, /* nb preallocs */
-        (GInstanceInitFunc) gail_text_util_init,
+        (GInstanceInitFunc) bail_text_util_init,
         NULL, /* value table */
       };
 
-      type = g_type_register_static (G_TYPE_OBJECT, "GailTextUtil", &tinfo, 0);
+      type = g_type_register_static (G_TYPE_OBJECT, "BailTextUtil", &tinfo, 0);
     }
   return type;
 }
 
 /**
- * gail_text_util_new:
+ * bail_text_util_new:
  *
- * This function creates a new GailTextUtil object.
+ * This function creates a new BailTextUtil object.
  *
- * Returns: the GailTextUtil object
+ * Returns: the BailTextUtil object
  **/
-GailTextUtil*
-gail_text_util_new (void)
+BailTextUtil*
+bail_text_util_new (void)
 {
-  return GAIL_TEXT_UTIL (g_object_new (GAIL_TYPE_TEXT_UTIL, NULL));
+  return BAIL_TEXT_UTIL (g_object_new (BAIL_TYPE_TEXT_UTIL, NULL));
 }
 
 static void
-gail_text_util_init (GailTextUtil *textutil)
+bail_text_util_init (BailTextUtil *textutil)
 {
   textutil->buffer = NULL;
 }
 
 static void
-gail_text_util_class_init (GailTextUtilClass *klass)
+bail_text_util_class_init (BailTextUtilClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  gobject_class->finalize = gail_text_util_finalize;
+  bobject_class->finalize = bail_text_util_finalize;
 }
 
 static void
-gail_text_util_finalize (GObject *object)
+bail_text_util_finalize (GObject *object)
 {
-  GailTextUtil *textutil = GAIL_TEXT_UTIL (object);
+  BailTextUtil *textutil = BAIL_TEXT_UTIL (object);
 
   if (textutil->buffer)
     g_object_unref (textutil->buffer);
@@ -121,17 +121,17 @@ gail_text_util_finalize (GObject *object)
 }
 
 /**
- * gail_text_util_text_setup:
- * @textutil: The #GailTextUtil to be initialized.
- * @text: A gchar* which points to the text to be stored in the GailTextUtil
+ * bail_text_util_text_setup:
+ * @textutil: The #BailTextUtil to be initialized.
+ * @text: A gchar* which points to the text to be stored in the BailTextUtil
  *
- * This function initializes the GailTextUtil with the specified character string,
+ * This function initializes the BailTextUtil with the specified character string,
  **/
 void
-gail_text_util_text_setup (GailTextUtil *textutil,
+bail_text_util_text_setup (BailTextUtil *textutil,
                            const gchar  *text)
 {
-  g_return_if_fail (GAIL_IS_TEXT_UTIL (textutil));
+  g_return_if_fail (BAIL_IS_TEXT_UTIL (textutil));
 
   if (textutil->buffer)
     {
@@ -144,60 +144,60 @@ gail_text_util_text_setup (GailTextUtil *textutil,
     }
   else
     {
-      textutil->buffer = gtk_text_buffer_new (NULL);
+      textutil->buffer = btk_text_buffer_new (NULL);
     }
 
-  gtk_text_buffer_set_text (textutil->buffer, text, -1);
+  btk_text_buffer_set_text (textutil->buffer, text, -1);
 }
 
 /**
- * gail_text_util_buffer_setup:
- * @textutil: A #GailTextUtil to be initialized
- * @buffer: The #GtkTextBuffer which identifies the text to be stored in the GailUtil.
+ * bail_text_util_buffer_setup:
+ * @textutil: A #BailTextUtil to be initialized
+ * @buffer: The #BtkTextBuffer which identifies the text to be stored in the BailUtil.
  *
- * This function initializes the GailTextUtil with the specified GtkTextBuffer
+ * This function initializes the BailTextUtil with the specified BtkTextBuffer
  **/
 void
-gail_text_util_buffer_setup  (GailTextUtil  *textutil,
-                              GtkTextBuffer   *buffer)
+bail_text_util_buffer_setup  (BailTextUtil  *textutil,
+                              BtkTextBuffer   *buffer)
 {
-  g_return_if_fail (GAIL_IS_TEXT_UTIL (textutil));
+  g_return_if_fail (BAIL_IS_TEXT_UTIL (textutil));
 
   textutil->buffer = g_object_ref (buffer);
 }
 
 /**
- * gail_text_util_get_text:
- * @textutil: A #GailTextUtil
- * @layout: A gpointer which is a PangoLayout, a GtkTreeView of NULL
+ * bail_text_util_get_text:
+ * @textutil: A #BailTextUtil
+ * @layout: A gpointer which is a BangoLayout, a BtkTreeView of NULL
  * @function: An enumeration specifying whether to return the text before, at, or
  *   after the offset.
  * @boundary_type: The boundary type.
- * @offset: The offset of the text in the GailTextUtil 
+ * @offset: The offset of the text in the BailTextUtil 
  * @start_offset: Address of location in which the start offset is returned
  * @end_offset: Address of location in which the end offset is returned
  *
- * This function gets the requested substring from the text in the GtkTextUtil.
+ * This function gets the requested substring from the text in the BtkTextUtil.
  * The layout is used only for getting the text on a line. The value is NULL 
- * for a GtkTextView which is not wrapped, is a GtkTextView for a GtkTextView 
- * which is wrapped and is a PangoLayout otherwise.
+ * for a BtkTextView which is not wrapped, is a BtkTextView for a BtkTextView 
+ * which is wrapped and is a BangoLayout otherwise.
  *
  * Returns: the substring requested
  **/
 gchar*
-gail_text_util_get_text (GailTextUtil    *textutil,
+bail_text_util_get_text (BailTextUtil    *textutil,
                          gpointer        layout,
-                         GailOffsetType  function,
-                         AtkTextBoundary boundary_type,
+                         BailOffsetType  function,
+                         BatkTextBoundary boundary_type,
                          gint            offset,
                          gint            *start_offset,
                          gint            *end_offset)
 {
-  GtkTextIter start, end;
+  BtkTextIter start, end;
   gint line_number;
-  GtkTextBuffer *buffer;
+  BtkTextBuffer *buffer;
 
-  g_return_val_if_fail (GAIL_IS_TEXT_UTIL (textutil), NULL);
+  g_return_val_if_fail (BAIL_IS_TEXT_UTIL (textutil), NULL);
 
   buffer = textutil->buffer;
   if (buffer == NULL)
@@ -207,98 +207,98 @@ gail_text_util_get_text (GailTextUtil    *textutil,
       return NULL;
     }
 
-  if (!gtk_text_buffer_get_char_count (buffer))
+  if (!btk_text_buffer_get_char_count (buffer))
     {
       *start_offset = 0;
       *end_offset = 0;
       return g_strdup ("");
     }
-  gtk_text_buffer_get_iter_at_offset (buffer, &start, offset);
+  btk_text_buffer_get_iter_at_offset (buffer, &start, offset);
 
     
   end = start;
 
   switch (function)
     {
-    case GAIL_BEFORE_OFFSET:
+    case BAIL_BEFORE_OFFSET:
       switch (boundary_type)
         {
-        case ATK_TEXT_BOUNDARY_CHAR:
-          gtk_text_iter_backward_char(&start);
+        case BATK_TEXT_BOUNDARY_CHAR:
+          btk_text_iter_backward_char(&start);
           break;
-        case ATK_TEXT_BOUNDARY_WORD_START:
-          if (!gtk_text_iter_starts_word (&start))
-            gtk_text_iter_backward_word_start (&start);
+        case BATK_TEXT_BOUNDARY_WORD_START:
+          if (!btk_text_iter_starts_word (&start))
+            btk_text_iter_backward_word_start (&start);
           end = start;
-          gtk_text_iter_backward_word_start(&start);
+          btk_text_iter_backward_word_start(&start);
           break;
-        case ATK_TEXT_BOUNDARY_WORD_END:
-          if (gtk_text_iter_inside_word (&start) &&
-              !gtk_text_iter_starts_word (&start))
-            gtk_text_iter_backward_word_start (&start);
-          while (!gtk_text_iter_ends_word (&start))
+        case BATK_TEXT_BOUNDARY_WORD_END:
+          if (btk_text_iter_inside_word (&start) &&
+              !btk_text_iter_starts_word (&start))
+            btk_text_iter_backward_word_start (&start);
+          while (!btk_text_iter_ends_word (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
           end = start;
-          gtk_text_iter_backward_word_start(&start);
-          while (!gtk_text_iter_ends_word (&start))
+          btk_text_iter_backward_word_start(&start);
+          while (!btk_text_iter_ends_word (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_START:
-          if (!gtk_text_iter_starts_sentence (&start))
-            gtk_text_iter_backward_sentence_start (&start);
+        case BATK_TEXT_BOUNDARY_SENTENCE_START:
+          if (!btk_text_iter_starts_sentence (&start))
+            btk_text_iter_backward_sentence_start (&start);
           end = start;
-          gtk_text_iter_backward_sentence_start (&start);
+          btk_text_iter_backward_sentence_start (&start);
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_END:
-          if (gtk_text_iter_inside_sentence (&start) &&
-              !gtk_text_iter_starts_sentence (&start))
-            gtk_text_iter_backward_sentence_start (&start);
-          while (!gtk_text_iter_ends_sentence (&start))
+        case BATK_TEXT_BOUNDARY_SENTENCE_END:
+          if (btk_text_iter_inside_sentence (&start) &&
+              !btk_text_iter_starts_sentence (&start))
+            btk_text_iter_backward_sentence_start (&start);
+          while (!btk_text_iter_ends_sentence (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
           end = start;
-          gtk_text_iter_backward_sentence_start (&start);
-          while (!gtk_text_iter_ends_sentence (&start))
+          btk_text_iter_backward_sentence_start (&start);
+          while (!btk_text_iter_ends_sentence (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
           break;
-        case ATK_TEXT_BOUNDARY_LINE_START:
+        case BATK_TEXT_BOUNDARY_LINE_START:
           if (layout == NULL)
             {
-              line_number = gtk_text_iter_get_line (&start);
+              line_number = btk_text_iter_get_line (&start);
               if (line_number == 0)
                 {
-                  gtk_text_buffer_get_iter_at_offset (buffer,
+                  btk_text_buffer_get_iter_at_offset (buffer,
                     &start, 0);
                 }
               else
                 {
-                  gtk_text_iter_backward_line (&start);
-                  gtk_text_iter_forward_line (&start);
+                  btk_text_iter_backward_line (&start);
+                  btk_text_iter_forward_line (&start);
                 }
               end = start;
-              gtk_text_iter_backward_line (&start);
+              btk_text_iter_backward_line (&start);
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_backward_display_line_start (view, &start);
+              btk_text_view_backward_display_line_start (view, &start);
               end = start;
-              gtk_text_view_backward_display_line (view, &start);
+              btk_text_view_backward_display_line (view, &start);
             }
-          else if (PANGO_IS_LAYOUT (layout))
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if (BANGO_IS_LAYOUT (layout))
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -308,51 +308,51 @@ gail_text_util_get_text (GailTextUtil    *textutil,
                                     &start,
                                     &end);
           break;
-        case ATK_TEXT_BOUNDARY_LINE_END:
+        case BATK_TEXT_BOUNDARY_LINE_END:
           if (layout == NULL)
             {
-              line_number = gtk_text_iter_get_line (&start);
+              line_number = btk_text_iter_get_line (&start);
               if (line_number == 0)
                 {
-                  gtk_text_buffer_get_iter_at_offset (buffer,
+                  btk_text_buffer_get_iter_at_offset (buffer,
                     &start, 0);
                   end = start;
                 }
               else
                 {
-                  gtk_text_iter_backward_line (&start);
+                  btk_text_iter_backward_line (&start);
                   end = start;
-                  while (!gtk_text_iter_ends_line (&start))
+                  while (!btk_text_iter_ends_line (&start))
                     {
-                      if (!gtk_text_iter_backward_char (&start))
+                      if (!btk_text_iter_backward_char (&start))
                         break;
                     }
-                  gtk_text_iter_forward_to_line_end (&end);
+                  btk_text_iter_forward_to_line_end (&end);
                 }
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_backward_display_line_start (view, &start);
-              if (!gtk_text_iter_is_start (&start))
+              btk_text_view_backward_display_line_start (view, &start);
+              if (!btk_text_iter_is_start (&start))
                 {
-                  gtk_text_view_backward_display_line (view, &start);
+                  btk_text_view_backward_display_line (view, &start);
                   end = start;
-                  if (!gtk_text_iter_is_start (&start))
+                  if (!btk_text_iter_is_start (&start))
                     {
-                      gtk_text_view_backward_display_line (view, &start);
-                      gtk_text_view_forward_display_line_end (view, &start);
+                      btk_text_view_backward_display_line (view, &start);
+                      btk_text_view_forward_display_line_end (view, &start);
                     }
-                  gtk_text_view_forward_display_line_end (view, &end);
+                  btk_text_view_forward_display_line_end (view, &end);
                 } 
               else
                 {
                   end = start;
                 }
             }
-          else if (PANGO_IS_LAYOUT (layout))
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if (BANGO_IS_LAYOUT (layout))
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -365,86 +365,86 @@ gail_text_util_get_text (GailTextUtil    *textutil,
         }
       break;
  
-    case GAIL_AT_OFFSET:
+    case BAIL_AT_OFFSET:
       switch (boundary_type)
         {
-        case ATK_TEXT_BOUNDARY_CHAR:
-          gtk_text_iter_forward_char (&end);
+        case BATK_TEXT_BOUNDARY_CHAR:
+          btk_text_iter_forward_char (&end);
           break;
-        case ATK_TEXT_BOUNDARY_WORD_START:
-          if (!gtk_text_iter_starts_word (&start))
-            gtk_text_iter_backward_word_start (&start);
-          if (gtk_text_iter_inside_word (&end))
-            gtk_text_iter_forward_word_end (&end);
-          while (!gtk_text_iter_starts_word (&end))
+        case BATK_TEXT_BOUNDARY_WORD_START:
+          if (!btk_text_iter_starts_word (&start))
+            btk_text_iter_backward_word_start (&start);
+          if (btk_text_iter_inside_word (&end))
+            btk_text_iter_forward_word_end (&end);
+          while (!btk_text_iter_starts_word (&end))
             {
-              if (!gtk_text_iter_forward_char (&end))
+              if (!btk_text_iter_forward_char (&end))
                 break;
             }
           break;
-        case ATK_TEXT_BOUNDARY_WORD_END:
-          if (gtk_text_iter_inside_word (&start) &&
-              !gtk_text_iter_starts_word (&start))
-            gtk_text_iter_backward_word_start (&start);
-          while (!gtk_text_iter_ends_word (&start))
+        case BATK_TEXT_BOUNDARY_WORD_END:
+          if (btk_text_iter_inside_word (&start) &&
+              !btk_text_iter_starts_word (&start))
+            btk_text_iter_backward_word_start (&start);
+          while (!btk_text_iter_ends_word (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
-          gtk_text_iter_forward_word_end (&end);
+          btk_text_iter_forward_word_end (&end);
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_START:
-          if (!gtk_text_iter_starts_sentence (&start))
-            gtk_text_iter_backward_sentence_start (&start);
-          if (gtk_text_iter_inside_sentence (&end))
-            gtk_text_iter_forward_sentence_end (&end);
-          while (!gtk_text_iter_starts_sentence (&end))
+        case BATK_TEXT_BOUNDARY_SENTENCE_START:
+          if (!btk_text_iter_starts_sentence (&start))
+            btk_text_iter_backward_sentence_start (&start);
+          if (btk_text_iter_inside_sentence (&end))
+            btk_text_iter_forward_sentence_end (&end);
+          while (!btk_text_iter_starts_sentence (&end))
             {
-              if (!gtk_text_iter_forward_char (&end))
+              if (!btk_text_iter_forward_char (&end))
                 break;
             }
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_END:
-          if (gtk_text_iter_inside_sentence (&start) &&
-              !gtk_text_iter_starts_sentence (&start))
-            gtk_text_iter_backward_sentence_start (&start);
-          while (!gtk_text_iter_ends_sentence (&start))
+        case BATK_TEXT_BOUNDARY_SENTENCE_END:
+          if (btk_text_iter_inside_sentence (&start) &&
+              !btk_text_iter_starts_sentence (&start))
+            btk_text_iter_backward_sentence_start (&start);
+          while (!btk_text_iter_ends_sentence (&start))
             {
-              if (!gtk_text_iter_backward_char (&start))
+              if (!btk_text_iter_backward_char (&start))
                 break;
             }
-          gtk_text_iter_forward_sentence_end (&end);
+          btk_text_iter_forward_sentence_end (&end);
           break;
-        case ATK_TEXT_BOUNDARY_LINE_START:
+        case BATK_TEXT_BOUNDARY_LINE_START:
           if (layout == NULL)
             {
-              line_number = gtk_text_iter_get_line (&start);
+              line_number = btk_text_iter_get_line (&start);
               if (line_number == 0)
                 {
-                  gtk_text_buffer_get_iter_at_offset (buffer,
+                  btk_text_buffer_get_iter_at_offset (buffer,
                     &start, 0);
                 }
               else
                 {
-                  gtk_text_iter_backward_line (&start);
-                  gtk_text_iter_forward_line (&start);
+                  btk_text_iter_backward_line (&start);
+                  btk_text_iter_forward_line (&start);
                 }
-              gtk_text_iter_forward_line (&end);
+              btk_text_iter_forward_line (&end);
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_backward_display_line_start (view, &start);
+              btk_text_view_backward_display_line_start (view, &start);
               /*
-               * The call to gtk_text_iter_forward_to_end() is needed
+               * The call to btk_text_iter_forward_to_end() is needed
                * because of bug 81960
                */
-              if (!gtk_text_view_forward_display_line (view, &end))
-                gtk_text_iter_forward_to_end (&end);
+              if (!btk_text_view_forward_display_line (view, &end))
+                btk_text_iter_forward_to_end (&end);
             }
-          else if PANGO_IS_LAYOUT (layout)
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if BANGO_IS_LAYOUT (layout)
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -455,41 +455,41 @@ gail_text_util_get_text (GailTextUtil    *textutil,
                                     &end);
 
           break;
-        case ATK_TEXT_BOUNDARY_LINE_END:
+        case BATK_TEXT_BOUNDARY_LINE_END:
           if (layout == NULL)
             {
-              line_number = gtk_text_iter_get_line (&start);
+              line_number = btk_text_iter_get_line (&start);
               if (line_number == 0)
                 {
-                  gtk_text_buffer_get_iter_at_offset (buffer,
+                  btk_text_buffer_get_iter_at_offset (buffer,
                     &start, 0);
                 }
               else
                 {
-                  gtk_text_iter_backward_line (&start);
-                  gtk_text_iter_forward_line (&start);
+                  btk_text_iter_backward_line (&start);
+                  btk_text_iter_forward_line (&start);
                 }
-              while (!gtk_text_iter_ends_line (&start))
+              while (!btk_text_iter_ends_line (&start))
                 {
-                  if (!gtk_text_iter_backward_char (&start))
+                  if (!btk_text_iter_backward_char (&start))
                     break;
                 }
-              gtk_text_iter_forward_to_line_end (&end);
+              btk_text_iter_forward_to_line_end (&end);
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_backward_display_line_start (view, &start);
-              if (!gtk_text_iter_is_start (&start))
+              btk_text_view_backward_display_line_start (view, &start);
+              if (!btk_text_iter_is_start (&start))
                 {
-                  gtk_text_view_backward_display_line (view, &start);
-                  gtk_text_view_forward_display_line_end (view, &start);
+                  btk_text_view_backward_display_line (view, &start);
+                  btk_text_view_forward_display_line_end (view, &start);
                 } 
-              gtk_text_view_forward_display_line_end (view, &end);
+              btk_text_view_forward_display_line_end (view, &end);
             }
-          else if PANGO_IS_LAYOUT (layout)
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if BANGO_IS_LAYOUT (layout)
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -502,80 +502,80 @@ gail_text_util_get_text (GailTextUtil    *textutil,
         }
       break;
   
-    case GAIL_AFTER_OFFSET:
+    case BAIL_AFTER_OFFSET:
       switch (boundary_type)
         {
-        case ATK_TEXT_BOUNDARY_CHAR:
-          gtk_text_iter_forward_char(&start);
-          gtk_text_iter_forward_chars(&end, 2);
+        case BATK_TEXT_BOUNDARY_CHAR:
+          btk_text_iter_forward_char(&start);
+          btk_text_iter_forward_chars(&end, 2);
           break;
-        case ATK_TEXT_BOUNDARY_WORD_START:
-          if (gtk_text_iter_inside_word (&end))
-            gtk_text_iter_forward_word_end (&end);
-          while (!gtk_text_iter_starts_word (&end))
+        case BATK_TEXT_BOUNDARY_WORD_START:
+          if (btk_text_iter_inside_word (&end))
+            btk_text_iter_forward_word_end (&end);
+          while (!btk_text_iter_starts_word (&end))
             {
-              if (!gtk_text_iter_forward_char (&end))
+              if (!btk_text_iter_forward_char (&end))
                 break;
             }
           start = end;
-          if (!gtk_text_iter_is_end (&end))
+          if (!btk_text_iter_is_end (&end))
             {
-              gtk_text_iter_forward_word_end (&end);
-              while (!gtk_text_iter_starts_word (&end))
+              btk_text_iter_forward_word_end (&end);
+              while (!btk_text_iter_starts_word (&end))
                 {
-                  if (!gtk_text_iter_forward_char (&end))
+                  if (!btk_text_iter_forward_char (&end))
                     break;
                 }
             }
           break;
-        case ATK_TEXT_BOUNDARY_WORD_END:
-          gtk_text_iter_forward_word_end (&end);
+        case BATK_TEXT_BOUNDARY_WORD_END:
+          btk_text_iter_forward_word_end (&end);
           start = end;
-          if (!gtk_text_iter_is_end (&end))
-            gtk_text_iter_forward_word_end (&end);
+          if (!btk_text_iter_is_end (&end))
+            btk_text_iter_forward_word_end (&end);
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_START:
-          if (gtk_text_iter_inside_sentence (&end))
-            gtk_text_iter_forward_sentence_end (&end);
-          while (!gtk_text_iter_starts_sentence (&end))
+        case BATK_TEXT_BOUNDARY_SENTENCE_START:
+          if (btk_text_iter_inside_sentence (&end))
+            btk_text_iter_forward_sentence_end (&end);
+          while (!btk_text_iter_starts_sentence (&end))
             {
-              if (!gtk_text_iter_forward_char (&end))
+              if (!btk_text_iter_forward_char (&end))
                 break;
             }
           start = end;
-          if (!gtk_text_iter_is_end (&end))
+          if (!btk_text_iter_is_end (&end))
             {
-              gtk_text_iter_forward_sentence_end (&end);
-              while (!gtk_text_iter_starts_sentence (&end))
+              btk_text_iter_forward_sentence_end (&end);
+              while (!btk_text_iter_starts_sentence (&end))
                 {
-                  if (!gtk_text_iter_forward_char (&end))
+                  if (!btk_text_iter_forward_char (&end))
                     break;
                 }
             }
           break;
-        case ATK_TEXT_BOUNDARY_SENTENCE_END:
-          gtk_text_iter_forward_sentence_end (&end);
+        case BATK_TEXT_BOUNDARY_SENTENCE_END:
+          btk_text_iter_forward_sentence_end (&end);
           start = end;
-          if (!gtk_text_iter_is_end (&end))
-            gtk_text_iter_forward_sentence_end (&end);
+          if (!btk_text_iter_is_end (&end))
+            btk_text_iter_forward_sentence_end (&end);
           break;
-        case ATK_TEXT_BOUNDARY_LINE_START:
+        case BATK_TEXT_BOUNDARY_LINE_START:
           if (layout == NULL)
             {
-              gtk_text_iter_forward_line (&end);
+              btk_text_iter_forward_line (&end);
               start = end;
-              gtk_text_iter_forward_line (&end);
+              btk_text_iter_forward_line (&end);
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_forward_display_line (view, &end);
+              btk_text_view_forward_display_line (view, &end);
               start = end; 
-              gtk_text_view_forward_display_line (view, &end);
+              btk_text_view_forward_display_line (view, &end);
             }
-          else if (PANGO_IS_LAYOUT (layout))
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if (BANGO_IS_LAYOUT (layout))
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -585,32 +585,32 @@ gail_text_util_get_text (GailTextUtil    *textutil,
                                     &start,
                                     &end);
           break;
-        case ATK_TEXT_BOUNDARY_LINE_END:
+        case BATK_TEXT_BOUNDARY_LINE_END:
           if (layout == NULL)
             {
-              gtk_text_iter_forward_line (&start);
+              btk_text_iter_forward_line (&start);
               end = start;
-              if (!gtk_text_iter_is_end (&start))
+              if (!btk_text_iter_is_end (&start))
                 { 
-                  while (!gtk_text_iter_ends_line (&start))
+                  while (!btk_text_iter_ends_line (&start))
                   {
-                    if (!gtk_text_iter_backward_char (&start))
+                    if (!btk_text_iter_backward_char (&start))
                       break;
                   }
-                  gtk_text_iter_forward_to_line_end (&end);
+                  btk_text_iter_forward_to_line_end (&end);
                 }
             }
-          else if GTK_IS_TEXT_VIEW (layout)
+          else if BTK_IS_TEXT_VIEW (layout)
             {
-              GtkTextView *view = GTK_TEXT_VIEW (layout);
+              BtkTextView *view = BTK_TEXT_VIEW (layout);
 
-              gtk_text_view_forward_display_line_end (view, &end);
+              btk_text_view_forward_display_line_end (view, &end);
               start = end; 
-              gtk_text_view_forward_display_line (view, &end);
-              gtk_text_view_forward_display_line_end (view, &end);
+              btk_text_view_forward_display_line (view, &end);
+              btk_text_view_forward_display_line_end (view, &end);
             }
-          else if (PANGO_IS_LAYOUT (layout))
-            get_pango_text_offsets (PANGO_LAYOUT (layout),
+          else if (BANGO_IS_LAYOUT (layout))
+            get_bango_text_offsets (BANGO_LAYOUT (layout),
                                     buffer,
                                     function,
                                     boundary_type,
@@ -623,15 +623,15 @@ gail_text_util_get_text (GailTextUtil    *textutil,
         }
       break;
     }
-  *start_offset = gtk_text_iter_get_offset (&start);
-  *end_offset = gtk_text_iter_get_offset (&end);
+  *start_offset = btk_text_iter_get_offset (&start);
+  *end_offset = btk_text_iter_get_offset (&end);
 
-  return gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
 /**
- * gail_text_util_get_substring:
- * @textutil: A #GailTextUtil
+ * bail_text_util_get_substring:
+ * @textutil: A #BailTextUtil
  * @start_pos: The start position of the substring
  * @end_pos: The end position of the substring.
  *
@@ -640,51 +640,51 @@ gail_text_util_get_text (GailTextUtil    *textutil,
  * Returns: the substring indicated by @start_pos and @end_pos
  **/
 gchar*
-gail_text_util_get_substring (GailTextUtil *textutil,
+bail_text_util_get_substring (BailTextUtil *textutil,
                               gint         start_pos, 
                               gint         end_pos)
 {
-  GtkTextIter start, end;
-  GtkTextBuffer *buffer;
+  BtkTextIter start, end;
+  BtkTextBuffer *buffer;
 
-  g_return_val_if_fail(GAIL_IS_TEXT_UTIL (textutil), NULL);
+  g_return_val_if_fail(BAIL_IS_TEXT_UTIL (textutil), NULL);
 
   buffer = textutil->buffer;
   if (buffer == NULL)
      return NULL;
 
-  gtk_text_buffer_get_iter_at_offset (buffer, &start, start_pos);
+  btk_text_buffer_get_iter_at_offset (buffer, &start, start_pos);
   if (end_pos < 0)
-    gtk_text_buffer_get_end_iter (buffer, &end);
+    btk_text_buffer_get_end_iter (buffer, &end);
   else
-    gtk_text_buffer_get_iter_at_offset (buffer, &end, end_pos);
+    btk_text_buffer_get_iter_at_offset (buffer, &end, end_pos);
 
-  return gtk_text_buffer_get_text (buffer, &start, &end, FALSE);
+  return btk_text_buffer_get_text (buffer, &start, &end, FALSE);
 }
 
 static void
-get_pango_text_offsets (PangoLayout         *layout,
-                        GtkTextBuffer       *buffer,
-                        GailOffsetType      function,
-                        AtkTextBoundary     boundary_type,
+get_bango_text_offsets (BangoLayout         *layout,
+                        BtkTextBuffer       *buffer,
+                        BailOffsetType      function,
+                        BatkTextBoundary     boundary_type,
                         gint                offset,
                         gint                *start_offset,
                         gint                *end_offset,
-                        GtkTextIter         *start_iter,
-                        GtkTextIter         *end_iter)
+                        BtkTextIter         *start_iter,
+                        BtkTextIter         *end_iter)
 {
-  PangoLayoutIter *iter;
-  PangoLayoutLine *line, *prev_line = NULL, *prev_prev_line = NULL;
+  BangoLayoutIter *iter;
+  BangoLayoutLine *line, *prev_line = NULL, *prev_prev_line = NULL;
   gint index, start_index, end_index;
   const gchar *text;
   gboolean found = FALSE;
 
-  text = pango_layout_get_text (layout);
+  text = bango_layout_get_text (layout);
   index = g_utf8_offset_to_pointer (text, offset) - text;
-  iter = pango_layout_get_iter (layout);
+  iter = bango_layout_get_iter (layout);
   do
     {
-      line = pango_layout_iter_get_line (iter);
+      line = bango_layout_iter_get_line (iter);
       start_index = line->start_index;
       end_index = start_index + line->length;
 
@@ -695,7 +695,7 @@ get_pango_text_offsets (PangoLayout         *layout,
            */
           switch (function)
             {
-            case GAIL_BEFORE_OFFSET:
+            case BAIL_BEFORE_OFFSET:
                   /*
                    * We want the previous line
                    */
@@ -703,11 +703,11 @@ get_pango_text_offsets (PangoLayout         *layout,
                 {
                   switch (boundary_type)
                     {
-                    case ATK_TEXT_BOUNDARY_LINE_START:
+                    case BATK_TEXT_BOUNDARY_LINE_START:
                       end_index = start_index;
                       start_index = prev_line->start_index;
                       break;
-                    case ATK_TEXT_BOUNDARY_LINE_END:
+                    case BATK_TEXT_BOUNDARY_LINE_END:
                       if (prev_prev_line)
                         start_index = prev_prev_line->start_index + 
                                   prev_prev_line->length;
@@ -720,14 +720,14 @@ get_pango_text_offsets (PangoLayout         *layout,
               else
                 start_index = end_index = 0;
               break;
-            case GAIL_AT_OFFSET:
+            case BAIL_AT_OFFSET:
               switch (boundary_type)
                 {
-                case ATK_TEXT_BOUNDARY_LINE_START:
-                  if (pango_layout_iter_next_line (iter))
-                    end_index = pango_layout_iter_get_line (iter)->start_index;
+                case BATK_TEXT_BOUNDARY_LINE_START:
+                  if (bango_layout_iter_next_line (iter))
+                    end_index = bango_layout_iter_get_line (iter)->start_index;
                   break;
-                case ATK_TEXT_BOUNDARY_LINE_END:
+                case BATK_TEXT_BOUNDARY_LINE_END:
                   if (prev_line)
                     start_index = prev_line->start_index + 
                                   prev_line->length;
@@ -736,23 +736,23 @@ get_pango_text_offsets (PangoLayout         *layout,
                   g_assert_not_reached();
                 }
               break;
-            case GAIL_AFTER_OFFSET:
+            case BAIL_AFTER_OFFSET:
                /*
                 * We want the next line
                 */
-              if (pango_layout_iter_next_line (iter))
+              if (bango_layout_iter_next_line (iter))
                 {
-                  line = pango_layout_iter_get_line (iter);
+                  line = bango_layout_iter_get_line (iter);
                   switch (boundary_type)
                     {
-                    case ATK_TEXT_BOUNDARY_LINE_START:
+                    case BATK_TEXT_BOUNDARY_LINE_START:
                       start_index = line->start_index;
-                      if (pango_layout_iter_next_line (iter))
-                        end_index = pango_layout_iter_get_line (iter)->start_index;
+                      if (bango_layout_iter_next_line (iter))
+                        end_index = bango_layout_iter_get_line (iter)->start_index;
                       else
                         end_index = start_index + line->length;
                       break;
-                    case ATK_TEXT_BOUNDARY_LINE_END:
+                    case BATK_TEXT_BOUNDARY_LINE_END:
                       start_index = end_index;
                       end_index = line->start_index + line->length;
                       break;
@@ -770,17 +770,17 @@ get_pango_text_offsets (PangoLayout         *layout,
       prev_prev_line = prev_line; 
       prev_line = line; 
     }
-  while (pango_layout_iter_next_line (iter));
+  while (bango_layout_iter_next_line (iter));
 
   if (!found)
     {
       start_index = prev_line->start_index + prev_line->length;
       end_index = start_index;
     }
-  pango_layout_iter_free (iter);
+  bango_layout_iter_free (iter);
   *start_offset = g_utf8_pointer_to_offset (text, text + start_index);
   *end_offset = g_utf8_pointer_to_offset (text, text + end_index);
  
-  gtk_text_buffer_get_iter_at_offset (buffer, start_iter, *start_offset);
-  gtk_text_buffer_get_iter_at_offset (buffer, end_iter, *end_offset);
+  btk_text_buffer_get_iter_at_offset (buffer, start_iter, *start_offset);
+  btk_text_buffer_get_iter_at_offset (buffer, end_iter, *end_offset);
 }

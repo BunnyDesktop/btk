@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * Themes added by The Rasterman <raster@redhat.com>
@@ -19,25 +19,25 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <gmodule.h>
-#include "gtkthemes.h"
-#include "gtkrc.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bmodule.h>
+#include "btkthemes.h"
+#include "btkrc.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-typedef struct _GtkThemeEngineClass GtkThemeEngineClass;
+typedef struct _BtkThemeEngineClass BtkThemeEngineClass;
 
-struct _GtkThemeEngine
+struct _BtkThemeEngine
 {
   GTypeModule parent_instance;
   
@@ -45,12 +45,12 @@ struct _GtkThemeEngine
 
   void (*init) (GTypeModule *);
   void (*exit) (void);
-  GtkRcStyle *(*create_rc_style) ();
+  BtkRcStyle *(*create_rc_style) ();
 
   gchar *name;
 };
 
-struct _GtkThemeEngineClass
+struct _BtkThemeEngineClass
 {
   GTypeModuleClass parent_class;
 };
@@ -58,13 +58,13 @@ struct _GtkThemeEngineClass
 static GHashTable *engine_hash = NULL;
 
 static gboolean
-gtk_theme_engine_load (GTypeModule *module)
+btk_theme_engine_load (GTypeModule *module)
 {
-  GtkThemeEngine *engine = GTK_THEME_ENGINE (module);
+  BtkThemeEngine *engine = BTK_THEME_ENGINE (module);
   
   gchar *engine_path;
       
-  engine_path = gtk_rc_find_module_in_path (engine->name);
+  engine_path = btk_rc_find_module_in_path (engine->name);
   
   if (!engine_path)
     {
@@ -75,7 +75,7 @@ gtk_theme_engine_load (GTypeModule *module)
     
   /* load the lib */
   
-  GTK_NOTE (MISC, g_message ("Loading Theme %s\n", engine_path));
+  BTK_NOTE (MISC, g_message ("Loading Theme %s\n", engine_path));
        
   engine->library = g_module_open (engine_path, G_MODULE_BIND_LAZY | G_MODULE_BIND_LOCAL);
   g_free(engine_path);
@@ -107,9 +107,9 @@ gtk_theme_engine_load (GTypeModule *module)
 }
 
 static void
-gtk_theme_engine_unload (GTypeModule *module)
+btk_theme_engine_unload (GTypeModule *module)
 {
-  GtkThemeEngine *engine = GTK_THEME_ENGINE (module);
+  BtkThemeEngine *engine = BTK_THEME_ENGINE (module);
 
   engine->exit();
 
@@ -122,45 +122,45 @@ gtk_theme_engine_unload (GTypeModule *module)
 }
 
 static void
-gtk_theme_engine_class_init (GtkThemeEngineClass *class)
+btk_theme_engine_class_init (BtkThemeEngineClass *class)
 {
   GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
 
-  module_class->load = gtk_theme_engine_load;
-  module_class->unload = gtk_theme_engine_unload;
+  module_class->load = btk_theme_engine_load;
+  module_class->unload = btk_theme_engine_unload;
 }
 
 GType
-gtk_theme_engine_get_type (void)
+btk_theme_engine_get_type (void)
 {
   static GType theme_engine_type = 0;
 
   if (!theme_engine_type)
     {
       const GTypeInfo theme_engine_info = {
-        sizeof (GtkThemeEngineClass),
+        sizeof (BtkThemeEngineClass),
         NULL,           /* base_init */
         NULL,           /* base_finalize */
-        (GClassInitFunc) gtk_theme_engine_class_init,
+        (GClassInitFunc) btk_theme_engine_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GtkThemeEngine),
+        sizeof (BtkThemeEngine),
         0,              /* n_preallocs */
         NULL,           /* instance_init */
       };
 
       theme_engine_type =
-	g_type_register_static (G_TYPE_TYPE_MODULE, I_("GtkThemeEngine"),
+	g_type_register_static (G_TYPE_TYPE_MODULE, I_("BtkThemeEngine"),
 				&theme_engine_info, 0);
     }
   
   return theme_engine_type;
 }
 
-GtkThemeEngine*
-gtk_theme_engine_get (const gchar *name)
+BtkThemeEngine*
+btk_theme_engine_get (const gchar *name)
 {
-  GtkThemeEngine *result;
+  BtkThemeEngine *result;
   
   if (!engine_hash)
     engine_hash = g_hash_table_new (g_str_hash, g_str_equal);
@@ -171,7 +171,7 @@ gtk_theme_engine_get (const gchar *name)
 
   if (!result)
     {
-      result = g_object_new (GTK_TYPE_THEME_ENGINE, NULL);
+      result = g_object_new (BTK_TYPE_THEME_ENGINE, NULL);
       g_type_module_set_name (G_TYPE_MODULE (result), name);
       result->name = g_strdup (name);
 
@@ -184,13 +184,13 @@ gtk_theme_engine_get (const gchar *name)
   return result;
 }
 
-GtkRcStyle *
-gtk_theme_engine_create_rc_style (GtkThemeEngine *engine)
+BtkRcStyle *
+btk_theme_engine_create_rc_style (BtkThemeEngine *engine)
 {
   g_return_val_if_fail (engine != NULL, NULL);
 
   return engine->create_rc_style ();
 }
 
-#define __GTK_THEMES_C__
-#include "gtkaliasdef.c"
+#define __BTK_THEMES_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2002 Tor Lillqvist
  *
@@ -19,46 +19,46 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
-#include <glib/gprintf.h>
+#include <bunnylib/gprintf.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
 #include <io.h>
 
-#include "gdk.h"
-#include "gdkregion-generic.h"
-#include "gdkkeysyms.h"
-#include "gdkinternals.h"
-#include "gdkintl.h"
-#include "gdkprivate-win32.h"
-#include "gdkinput-win32.h"
+#include "bdk.h"
+#include "bdkrebunnyion-generic.h"
+#include "bdkkeysyms.h"
+#include "bdkinternals.h"
+#include "bdkintl.h"
+#include "bdkprivate-win32.h"
+#include "bdkinput-win32.h"
 
 #include <objbase.h>
 
 #include <imm.h>
 
-static gboolean gdk_synchronize = FALSE;
+static gboolean bdk_synchronize = FALSE;
 
 static gboolean dummy;
 
-const GOptionEntry _gdk_windowing_args[] = {
-  { "sync", 0, 0, G_OPTION_ARG_NONE, &gdk_synchronize, 
+const GOptionEntry _bdk_windowing_args[] = {
+  { "sync", 0, 0, G_OPTION_ARG_NONE, &bdk_synchronize, 
     /* Description of --sync in --help output */              N_("Don't batch GDI requests"), NULL },
-  { "no-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab, 
+  { "no-wintab", 0, 0, G_OPTION_ARG_NONE, &_bdk_input_ignore_wintab, 
     /* Description of --no-wintab in --help output */         N_("Don't use the Wintab API for tablet support"), NULL },
-  { "ignore-wintab", 0, 0, G_OPTION_ARG_NONE, &_gdk_input_ignore_wintab, 
+  { "ignore-wintab", 0, 0, G_OPTION_ARG_NONE, &_bdk_input_ignore_wintab, 
     /* Description of --ignore-wintab in --help output */     N_("Same as --no-wintab"), NULL },
   { "use-wintab", 0, 0, G_OPTION_ARG_NONE, &dummy,
     /* Description of --use-wintab in --help output */     N_("Do use the Wintab API [default]"), NULL },
-  { "max-colors", 0, 0, G_OPTION_ARG_INT, &_gdk_max_colors, 
+  { "max-colors", 0, 0, G_OPTION_ARG_INT, &_bdk_max_colors, 
     /* Description of --max-colors=COLORS in --help output */ N_("Size of the palette in 8 bit mode"), 
     /* Placeholder in --max-colors=COLORS in --help output */ N_("COLORS") },
   { NULL }
@@ -69,60 +69,60 @@ DllMain (HINSTANCE hinstDLL,
 	 DWORD     dwReason,
 	 LPVOID    reserved)
 {
-  _gdk_dll_hinstance = hinstDLL;
+  _bdk_dll_hinstance = hinstDLL;
 
   return TRUE;
 }
 
 void
-_gdk_windowing_init (void)
+_bdk_windowing_init (void)
 {
   gchar buf[10];
 
-  if (getenv ("GDK_IGNORE_WINTAB") != NULL)
-    _gdk_input_ignore_wintab = TRUE;
-  else if (getenv ("GDK_USE_WINTAB") != NULL)
-    _gdk_input_ignore_wintab = FALSE;
+  if (getenv ("BDK_IGNORE_WINTAB") != NULL)
+    _bdk_input_ignore_wintab = TRUE;
+  else if (getenv ("BDK_USE_WINTAB") != NULL)
+    _bdk_input_ignore_wintab = FALSE;
 
-  if (gdk_synchronize)
+  if (bdk_synchronize)
     GdiSetBatchLimit (1);
 
-  _gdk_app_hmodule = GetModuleHandle (NULL);
-  _gdk_display_hdc = CreateDC ("DISPLAY", NULL, NULL, NULL);
-  _gdk_input_locale = GetKeyboardLayout (0);
-  _gdk_win32_keymap_set_active_layout (GDK_WIN32_KEYMAP (gdk_keymap_get_default ()), _gdk_input_locale);
-  _gdk_input_locale_is_ime = ImmIsIME (_gdk_input_locale);
-  GetLocaleInfo (MAKELCID (LOWORD (_gdk_input_locale), SORT_DEFAULT),
+  _bdk_app_hmodule = GetModuleHandle (NULL);
+  _bdk_display_hdc = CreateDC ("DISPLAY", NULL, NULL, NULL);
+  _bdk_input_locale = GetKeyboardLayout (0);
+  _bdk_win32_keymap_set_active_layout (BDK_WIN32_KEYMAP (bdk_keymap_get_default ()), _bdk_input_locale);
+  _bdk_input_locale_is_ime = ImmIsIME (_bdk_input_locale);
+  GetLocaleInfo (MAKELCID (LOWORD (_bdk_input_locale), SORT_DEFAULT),
 		 LOCALE_IDEFAULTANSICODEPAGE,
 		 buf, sizeof (buf));
-  _gdk_input_codepage = atoi (buf);
-  GDK_NOTE (EVENTS, g_print ("input_locale:%p, codepage:%d\n",
-			     _gdk_input_locale, _gdk_input_codepage));
+  _bdk_input_codepage = atoi (buf);
+  BDK_NOTE (EVENTS, g_print ("input_locale:%p, codepage:%d\n",
+			     _bdk_input_locale, _bdk_input_codepage));
 
   CoInitialize (NULL);
 
-  _gdk_selection = gdk_atom_intern_static_string ("GDK_SELECTION");
-  _wm_transient_for = gdk_atom_intern_static_string ("WM_TRANSIENT_FOR");
-  _targets = gdk_atom_intern_static_string ("TARGETS");
-  _delete = gdk_atom_intern_static_string ("DELETE");
-  _save_targets = gdk_atom_intern_static_string ("SAVE_TARGETS");
-  _utf8_string = gdk_atom_intern_static_string ("UTF8_STRING");
-  _text = gdk_atom_intern_static_string ("TEXT");
-  _compound_text = gdk_atom_intern_static_string ("COMPOUND_TEXT");
-  _text_uri_list = gdk_atom_intern_static_string ("text/uri-list");
-  _text_html = gdk_atom_intern_static_string ("text/html");
-  _image_png = gdk_atom_intern_static_string ("image/png");
-  _image_jpeg = gdk_atom_intern_static_string ("image/jpeg");
-  _image_bmp = gdk_atom_intern_static_string ("image/bmp");
-  _image_gif = gdk_atom_intern_static_string ("image/gif");
+  _bdk_selection = bdk_atom_intern_static_string ("BDK_SELECTION");
+  _wm_transient_for = bdk_atom_intern_static_string ("WM_TRANSIENT_FOR");
+  _targets = bdk_atom_intern_static_string ("TARGETS");
+  _delete = bdk_atom_intern_static_string ("DELETE");
+  _save_targets = bdk_atom_intern_static_string ("SAVE_TARGETS");
+  _utf8_string = bdk_atom_intern_static_string ("UTF8_STRING");
+  _text = bdk_atom_intern_static_string ("TEXT");
+  _compound_text = bdk_atom_intern_static_string ("COMPOUND_TEXT");
+  _text_uri_list = bdk_atom_intern_static_string ("text/uri-list");
+  _text_html = bdk_atom_intern_static_string ("text/html");
+  _image_png = bdk_atom_intern_static_string ("image/png");
+  _image_jpeg = bdk_atom_intern_static_string ("image/jpeg");
+  _image_bmp = bdk_atom_intern_static_string ("image/bmp");
+  _image_gif = bdk_atom_intern_static_string ("image/gif");
 
-  _local_dnd = gdk_atom_intern_static_string ("LocalDndSelection");
-  _gdk_win32_dropfiles = gdk_atom_intern_static_string ("DROPFILES_DND");
-  _gdk_ole2_dnd = gdk_atom_intern_static_string ("OLE2_DND");
+  _local_dnd = bdk_atom_intern_static_string ("LocalDndSelection");
+  _bdk_win32_dropfiles = bdk_atom_intern_static_string ("DROPFILES_DND");
+  _bdk_ole2_dnd = bdk_atom_intern_static_string ("OLE2_DND");
 
   /* MS Office 2007, at least, offers images in common file formats
    * using clipboard format names like "PNG" and "JFIF". So we follow
-   * the lead and map the GDK target name "image/png" to the clipboard
+   * the lead and map the BDK target name "image/png" to the clipboard
    * format name "PNG" etc.
    */
   _cf_png = RegisterClipboardFormat ("PNG");
@@ -133,11 +133,11 @@ _gdk_windowing_init (void)
   _cf_html_format = RegisterClipboardFormat ("HTML Format");
   _cf_text_html = RegisterClipboardFormat ("text/html");
 
-  _gdk_win32_selection_init ();
+  _bdk_win32_selection_init ();
 }
 
 void
-_gdk_win32_api_failed (const gchar *where,
+_bdk_win32_api_failed (const gchar *where,
 		      const gchar *api)
 {
   gchar *msg = g_win32_error_message (GetLastError ());
@@ -146,100 +146,100 @@ _gdk_win32_api_failed (const gchar *where,
 }
 
 void
-_gdk_other_api_failed (const gchar *where,
+_bdk_other_api_failed (const gchar *where,
 		      const gchar *api)
 {
   g_warning ("%s: %s failed", where, api);
 }
 
 void
-gdk_set_use_xshm (gboolean use_xshm)
+bdk_set_use_xshm (gboolean use_xshm)
 {
   /* Always on */
 }
 
 gboolean
-gdk_get_use_xshm (void)
+bdk_get_use_xshm (void)
 {
   return TRUE;
 }
 
 gint
-gdk_screen_get_width (GdkScreen *screen)
+bdk_screen_get_width (BdkScreen *screen)
 {
-  return GDK_WINDOW_OBJECT (_gdk_root)->width;
+  return BDK_WINDOW_OBJECT (_bdk_root)->width;
 }
 
 gint
-gdk_screen_get_height (GdkScreen *screen)
+bdk_screen_get_height (BdkScreen *screen)
 {
-  return GDK_WINDOW_OBJECT (_gdk_root)->height;
+  return BDK_WINDOW_OBJECT (_bdk_root)->height;
 }
 gint
-gdk_screen_get_width_mm (GdkScreen *screen)
+bdk_screen_get_width_mm (BdkScreen *screen)
 {
-  return (double) gdk_screen_get_width (screen) / GetDeviceCaps (_gdk_display_hdc, LOGPIXELSX) * 25.4;
+  return (double) bdk_screen_get_width (screen) / GetDeviceCaps (_bdk_display_hdc, LOGPIXELSX) * 25.4;
 }
 
 gint
-gdk_screen_get_height_mm (GdkScreen *screen)
+bdk_screen_get_height_mm (BdkScreen *screen)
 {
-  return (double) gdk_screen_get_height (screen) / GetDeviceCaps (_gdk_display_hdc, LOGPIXELSY) * 25.4;
+  return (double) bdk_screen_get_height (screen) / GetDeviceCaps (_bdk_display_hdc, LOGPIXELSY) * 25.4;
 }
 
 void
-_gdk_windowing_display_set_sm_client_id (GdkDisplay  *display,
+_bdk_windowing_display_set_sm_client_id (BdkDisplay  *display,
 					 const gchar *sm_client_id)
 {
-  g_warning("gdk_set_sm_client_id %s", sm_client_id ? sm_client_id : "NULL");
+  g_warning("bdk_set_sm_client_id %s", sm_client_id ? sm_client_id : "NULL");
 }
 
 void
-gdk_display_beep (GdkDisplay *display)
+bdk_display_beep (BdkDisplay *display)
 {
-  g_return_if_fail (display == gdk_display_get_default());
+  g_return_if_fail (display == bdk_display_get_default());
   if (!MessageBeep (-1))
     Beep (1000, 50);
 }
 
 void
-_gdk_windowing_exit (void)
+_bdk_windowing_exit (void)
 {
-  _gdk_win32_dnd_exit ();
+  _bdk_win32_dnd_exit ();
   CoUninitialize ();
-  DeleteDC (_gdk_display_hdc);
-  _gdk_display_hdc = NULL;
+  DeleteDC (_bdk_display_hdc);
+  _bdk_display_hdc = NULL;
 }
 
 gchar *
-gdk_get_display (void)
+bdk_get_display (void)
 {
-  return g_strdup (gdk_display_get_name (gdk_display_get_default ()));
+  return g_strdup (bdk_display_get_name (bdk_display_get_default ()));
 }
 
 void
-gdk_error_trap_push (void)
+bdk_error_trap_push (void)
 {
 }
 
 gint
-gdk_error_trap_pop (void)
+bdk_error_trap_pop (void)
 {
   return 0;
 }
 
 void
-gdk_notify_startup_complete (void)
+bdk_notify_startup_complete (void)
 {
 }
 
 void
-gdk_notify_startup_complete_with_id (const gchar* startup_id)
+bdk_notify_startup_complete_with_id (const gchar* startup_id)
 {
 }
 
 void          
-gdk_window_set_startup_id (GdkWindow   *window,
+bdk_window_set_startup_id (BdkWindow   *window,
 			   const gchar *startup_id)
 {
 }
@@ -282,7 +282,7 @@ static_printf (const gchar *format,
 }
 
 gchar *
-_gdk_win32_color_to_string (const GdkColor *color)
+_bdk_win32_color_to_string (const BdkColor *color)
 {
   return static_printf ("(%.04x,%.04x,%.04x):%.06x",
 			color->red, color->green,
@@ -290,7 +290,7 @@ _gdk_win32_color_to_string (const GdkColor *color)
 }
 
 void
-_gdk_win32_print_paletteentries (const PALETTEENTRY *pep,
+_bdk_win32_print_paletteentries (const PALETTEENTRY *pep,
 				const int           nentries)
 {
   char buf[20];
@@ -308,14 +308,14 @@ _gdk_win32_print_paletteentries (const PALETTEENTRY *pep,
 }
 
 void
-_gdk_win32_print_system_palette (void)
+_bdk_win32_print_system_palette (void)
 {
   PALETTEENTRY *pe;
   int k;
 
-  k = GetSystemPaletteEntries (_gdk_display_hdc, 0, 0, NULL);
+  k = GetSystemPaletteEntries (_bdk_display_hdc, 0, 0, NULL);
   pe = g_new (PALETTEENTRY, k);
-  k = GetSystemPaletteEntries (_gdk_display_hdc, 0, k, pe);
+  k = GetSystemPaletteEntries (_bdk_display_hdc, 0, k, pe);
 
   if (!k)
     g_print ("GetSystemPaletteEntries failed: %s\n",
@@ -323,7 +323,7 @@ _gdk_win32_print_system_palette (void)
   else
     {
       g_print ("System palette: %d entries\n", k);
-      _gdk_win32_print_paletteentries (pe, k);
+      _bdk_win32_print_paletteentries (pe, k);
     }
   g_free (pe);
 }
@@ -340,7 +340,7 @@ palette_size (HPALETTE hpal)
 }
 
 void
-_gdk_win32_print_hpalette (HPALETTE hpal)
+_bdk_win32_print_hpalette (HPALETTE hpal)
 {
   PALETTEENTRY *pe;
   gint n, npal;
@@ -355,13 +355,13 @@ _gdk_win32_print_hpalette (HPALETTE hpal)
   else
     {
       g_print ("HPALETTE %p: %d (%d) entries\n", hpal, n, npal);
-      _gdk_win32_print_paletteentries (pe, n);
+      _bdk_win32_print_paletteentries (pe, n);
     }
   g_free (pe);
 }
 
 void
-_gdk_win32_print_dc (HDC hdc)
+_bdk_win32_print_dc (HDC hdc)
 {
   HGDIOBJ obj;
   LOGBRUSH logbrush;
@@ -374,40 +374,40 @@ _gdk_win32_print_dc (HDC hdc)
   obj = GetCurrentObject (hdc, OBJ_BRUSH);
   GetObject (obj, sizeof (LOGBRUSH), &logbrush);
   g_print ("brush: %s color=%06lx hatch=%p\n",
-	   _gdk_win32_lbstyle_to_string (logbrush.lbStyle),
+	   _bdk_win32_lbstyle_to_string (logbrush.lbStyle),
 	   logbrush.lbColor, (gpointer) logbrush.lbHatch);
   obj = GetCurrentObject (hdc, OBJ_PEN);
   GetObject (obj, sizeof (EXTLOGPEN), &extlogpen);
   g_print ("pen: %s %s %s %s w=%d %s\n",
-	   _gdk_win32_pstype_to_string (extlogpen.elpPenStyle),
-	   _gdk_win32_psstyle_to_string (extlogpen.elpPenStyle),
-	   _gdk_win32_psendcap_to_string (extlogpen.elpPenStyle),
-	   _gdk_win32_psjoin_to_string (extlogpen.elpPenStyle),
+	   _bdk_win32_pstype_to_string (extlogpen.elpPenStyle),
+	   _bdk_win32_psstyle_to_string (extlogpen.elpPenStyle),
+	   _bdk_win32_psendcap_to_string (extlogpen.elpPenStyle),
+	   _bdk_win32_psjoin_to_string (extlogpen.elpPenStyle),
 	   (int) extlogpen.elpWidth,
-	   _gdk_win32_lbstyle_to_string (extlogpen.elpBrushStyle));
+	   _bdk_win32_lbstyle_to_string (extlogpen.elpBrushStyle));
   g_print ("rop2: %s textcolor=%06lx\n",
-	   _gdk_win32_rop2_to_string (GetROP2 (hdc)),
+	   _bdk_win32_rop2_to_string (GetROP2 (hdc)),
 	   GetTextColor (hdc));
   hrgn = CreateRectRgn (0, 0, 0, 0);
   if ((flag = GetClipRgn (hdc, hrgn)) == -1)
     WIN32_API_FAILED ("GetClipRgn");
   else if (flag == 0)
-    g_print ("no clip region\n");
+    g_print ("no clip rebunnyion\n");
   else if (flag == 1)
     {
       GetRgnBox (hrgn, &rect);
-      g_print ("clip region: %p bbox: %s\n",
-	       hrgn, _gdk_win32_rect_to_string (&rect));
+      g_print ("clip rebunnyion: %p bbox: %s\n",
+	       hrgn, _bdk_win32_rect_to_string (&rect));
     }
   DeleteObject (hrgn);
 }
 
 gchar *
-_gdk_win32_cap_style_to_string (GdkCapStyle cap_style)
+_bdk_win32_cap_style_to_string (BdkCapStyle cap_style)
 {
   switch (cap_style)
     {
-#define CASE(x) case GDK_CAP_##x: return #x
+#define CASE(x) case BDK_CAP_##x: return #x
     CASE (NOT_LAST);
     CASE (BUTT);
     CASE (ROUND);
@@ -420,11 +420,11 @@ _gdk_win32_cap_style_to_string (GdkCapStyle cap_style)
 }
 
 gchar *
-_gdk_win32_fill_style_to_string (GdkFill fill)
+_bdk_win32_fill_style_to_string (BdkFill fill)
 {
   switch (fill)
     {
-#define CASE(x) case GDK_##x: return #x
+#define CASE(x) case BDK_##x: return #x
     CASE (SOLID);
     CASE (TILED);
     CASE (STIPPLED);
@@ -437,11 +437,11 @@ _gdk_win32_fill_style_to_string (GdkFill fill)
 }
 
 gchar *
-_gdk_win32_function_to_string (GdkFunction function)
+_bdk_win32_function_to_string (BdkFunction function)
 {
   switch (function)
     {
-#define CASE(x) case GDK_##x: return #x
+#define CASE(x) case BDK_##x: return #x
     CASE (COPY);
     CASE (INVERT);
     CASE (XOR);
@@ -465,11 +465,11 @@ _gdk_win32_function_to_string (GdkFunction function)
 }
 
 gchar *
-_gdk_win32_join_style_to_string (GdkJoinStyle join_style)
+_bdk_win32_join_style_to_string (BdkJoinStyle join_style)
 {
   switch (join_style)
     {
-#define CASE(x) case GDK_JOIN_##x: return #x
+#define CASE(x) case BDK_JOIN_##x: return #x
     CASE (MITER);
     CASE (ROUND);
     CASE (BEVEL);
@@ -481,11 +481,11 @@ _gdk_win32_join_style_to_string (GdkJoinStyle join_style)
 }
 
 gchar *
-_gdk_win32_line_style_to_string (GdkLineStyle line_style)
+_bdk_win32_line_style_to_string (BdkLineStyle line_style)
 {
   switch (line_style)
     {
-#define CASE(x) case GDK_LINE_##x: return #x
+#define CASE(x) case BDK_LINE_##x: return #x
     CASE(SOLID);
     CASE(ON_OFF_DASH);  
     CASE(DOUBLE_DASH);  
@@ -497,11 +497,11 @@ _gdk_win32_line_style_to_string (GdkLineStyle line_style)
 }
 
 gchar *
-_gdk_win32_drag_protocol_to_string (GdkDragProtocol protocol)
+_bdk_win32_drag_protocol_to_string (BdkDragProtocol protocol)
 {
   switch (protocol)
     {
-#define CASE(x) case GDK_DRAG_PROTO_##x: return #x
+#define CASE(x) case BDK_DRAG_PROTO_##x: return #x
       CASE (MOTIF);
       CASE (XDND);
       CASE (ROOTWIN);
@@ -517,7 +517,7 @@ _gdk_win32_drag_protocol_to_string (GdkDragProtocol protocol)
 }
 
 gchar *
-_gdk_win32_gcvalues_mask_to_string (GdkGCValuesMask mask)
+_bdk_win32_gcvalues_mask_to_string (BdkGCValuesMask mask)
 {
   gchar buf[400];
   gchar *bufp = buf;
@@ -526,7 +526,7 @@ _gdk_win32_gcvalues_mask_to_string (GdkGCValuesMask mask)
   buf[0] = '\0';
 
 #define BIT(x) 						\
-  if (mask & GDK_GC_##x) 				\
+  if (mask & BDK_GC_##x) 				\
     (bufp += g_sprintf (bufp, "%s" #x, s), s = "|")
 
   BIT (FOREGROUND);
@@ -553,7 +553,7 @@ _gdk_win32_gcvalues_mask_to_string (GdkGCValuesMask mask)
 }
 
 gchar *
-_gdk_win32_window_state_to_string (GdkWindowState state)
+_bdk_win32_window_state_to_string (BdkWindowState state)
 {
   gchar buf[100];
   gchar *bufp = buf;
@@ -562,11 +562,11 @@ _gdk_win32_window_state_to_string (GdkWindowState state)
   buf[0] = '\0';
 
 #define BIT(x)						\
-  if (state & GDK_WINDOW_STATE_ ## x)			\
+  if (state & BDK_WINDOW_STATE_ ## x)			\
     (bufp += sprintf (bufp, "%s" #x, s), s = "|")
 
   /* For clarity, also show the complement of WITHDRAWN, i.e. "MAPPED" */
-  if (!(state & GDK_WINDOW_STATE_WITHDRAWN))
+  if (!(state & BDK_WINDOW_STATE_WITHDRAWN))
     (bufp += sprintf (bufp, "MAPPED"), s = "|");
 
   BIT (WITHDRAWN);
@@ -579,7 +579,7 @@ _gdk_win32_window_state_to_string (GdkWindowState state)
 }
 
 gchar *
-_gdk_win32_window_style_to_string (LONG style)
+_bdk_win32_window_style_to_string (LONG style)
 {
   gchar buf[1000];
   gchar *bufp = buf;
@@ -621,7 +621,7 @@ _gdk_win32_window_style_to_string (LONG style)
 }
 
 gchar *
-_gdk_win32_window_exstyle_to_string (LONG style)
+_bdk_win32_window_exstyle_to_string (LONG style)
 {
   gchar buf[1000];
   gchar *bufp = buf;
@@ -667,7 +667,7 @@ _gdk_win32_window_exstyle_to_string (LONG style)
 }
 
 gchar *
-_gdk_win32_window_pos_bits_to_string (UINT flags)
+_bdk_win32_window_pos_bits_to_string (UINT flags)
 {
   gchar buf[1000];
   gchar *bufp = buf;
@@ -699,7 +699,7 @@ _gdk_win32_window_pos_bits_to_string (UINT flags)
 }
 
 gchar *
-_gdk_win32_drag_action_to_string (GdkDragAction actions)
+_bdk_win32_drag_action_to_string (BdkDragAction actions)
 {
   gchar buf[100];
   gchar *bufp = buf;
@@ -708,7 +708,7 @@ _gdk_win32_drag_action_to_string (GdkDragAction actions)
   buf[0] = '\0';
 
 #define BIT(x)						\
-  if (actions & GDK_ACTION_ ## x)				\
+  if (actions & BDK_ACTION_ ## x)				\
     (bufp += sprintf (bufp, "%s" #x, s), s = "|")
 
   BIT (DEFAULT);
@@ -723,7 +723,7 @@ _gdk_win32_drag_action_to_string (GdkDragAction actions)
 }
 
 gchar *
-_gdk_win32_rop2_to_string (int rop2)
+_bdk_win32_rop2_to_string (int rop2)
 {
   switch (rop2)
     {
@@ -752,7 +752,7 @@ _gdk_win32_rop2_to_string (int rop2)
 }
 
 gchar *
-_gdk_win32_lbstyle_to_string (UINT brush_style)
+_bdk_win32_lbstyle_to_string (UINT brush_style)
 {
   switch (brush_style)
     {
@@ -771,7 +771,7 @@ _gdk_win32_lbstyle_to_string (UINT brush_style)
 }
 
 gchar *
-_gdk_win32_pstype_to_string (DWORD pen_style)
+_bdk_win32_pstype_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_TYPE_MASK)
     {
@@ -784,7 +784,7 @@ _gdk_win32_pstype_to_string (DWORD pen_style)
 }
 
 gchar *
-_gdk_win32_psstyle_to_string (DWORD pen_style)
+_bdk_win32_psstyle_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_STYLE_MASK)
     {
@@ -806,7 +806,7 @@ _gdk_win32_psstyle_to_string (DWORD pen_style)
 }
 
 gchar *
-_gdk_win32_psendcap_to_string (DWORD pen_style)
+_bdk_win32_psendcap_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_ENDCAP_MASK)
     {
@@ -822,7 +822,7 @@ _gdk_win32_psendcap_to_string (DWORD pen_style)
 }
 
 gchar *
-_gdk_win32_psjoin_to_string (DWORD pen_style)
+_bdk_win32_psjoin_to_string (DWORD pen_style)
 {
   switch (pen_style & PS_JOIN_MASK)
     {
@@ -838,7 +838,7 @@ _gdk_win32_psjoin_to_string (DWORD pen_style)
 }
 
 gchar *
-_gdk_win32_message_to_string (UINT msg)
+_bdk_win32_message_to_string (UINT msg)
 {
   switch (msg)
     {
@@ -1074,7 +1074,7 @@ _gdk_win32_message_to_string (UINT msg)
 }
 
 gchar *
-_gdk_win32_key_to_string (LONG lParam)
+_bdk_win32_key_to_string (LONG lParam)
 {
   char buf[100];
   gchar *keyname_utf8;
@@ -1093,7 +1093,7 @@ _gdk_win32_key_to_string (LONG lParam)
 }
       
 gchar *
-_gdk_win32_cf_to_string (UINT format)
+_bdk_win32_cf_to_string (UINT format)
 {
   char buf[100];
 
@@ -1137,7 +1137,7 @@ _gdk_win32_cf_to_string (UINT format)
 }
       
 gchar *
-_gdk_win32_data_to_string (const guchar *data,
+_bdk_win32_data_to_string (const guchar *data,
 			   int           nbytes)
 {
   GString *s = g_string_new ("");
@@ -1157,7 +1157,7 @@ _gdk_win32_data_to_string (const guchar *data,
 }
 
 gchar *
-_gdk_win32_rect_to_string (const RECT *rect)
+_bdk_win32_rect_to_string (const RECT *rect)
 {
   return static_printf ("%ldx%ld@%+ld%+ld",
 			(rect->right - rect->left), (rect->bottom - rect->top),
@@ -1165,7 +1165,7 @@ _gdk_win32_rect_to_string (const RECT *rect)
 }
 
 gchar *
-_gdk_win32_gdkrectangle_to_string (const GdkRectangle *rect)
+_bdk_win32_bdkrectangle_to_string (const BdkRectangle *rect)
 {
   return static_printf ("%dx%d@%+d%+d",
 			rect->width, rect->height,
@@ -1173,7 +1173,7 @@ _gdk_win32_gdkrectangle_to_string (const GdkRectangle *rect)
 }
 
 gchar *
-_gdk_win32_gdkregion_to_string (const GdkRegion *rgn)
+_bdk_win32_bdkrebunnyion_to_string (const BdkRebunnyion *rgn)
 {
   return static_printf ("%dx%d@%+d%+d",
 			(rgn->extents.x2 - rgn->extents.x1),
@@ -1182,18 +1182,18 @@ _gdk_win32_gdkregion_to_string (const GdkRegion *rgn)
 }
 
 gchar *
-_gdk_win32_drawable_description (GdkDrawable *d)
+_bdk_win32_drawable_description (BdkDrawable *d)
 {
   gint width, height, depth;
 
-  g_return_val_if_fail (GDK_IS_DRAWABLE (d), NULL);
+  g_return_val_if_fail (BDK_IS_DRAWABLE (d), NULL);
 
-  gdk_drawable_get_size (d, &width, &height);
-  depth = gdk_drawable_get_depth (d);
+  bdk_drawable_get_size (d, &width, &height);
+  depth = bdk_drawable_get_depth (d);
 
   return static_printf ("%s:%p:%dx%dx%d",
 			G_OBJECT_TYPE_NAME (d),
-			GDK_DRAWABLE_HANDLE (d),
+			BDK_DRAWABLE_HANDLE (d),
 			width, height, depth);
 }
 

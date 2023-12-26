@@ -1,4 +1,4 @@
-/* Gtk+ default value tests
+/* Btk+ default value tests
  * Copyright (C) 2007 Christian Persch
  *               2007 Johan Dahlin
  *
@@ -18,11 +18,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#undef GTK_DISABLE_DEPRECATED
-#define GTK_ENABLE_BROKEN
+#undef BTK_DISABLE_DEPRECATED
+#define BTK_ENABLE_BROKEN
 #include <string.h>
-#include <gtk/gtk.h>
-#include <gtk/gtkunixprint.h>
+#include <btk/btk.h>
+#include <btk/btkunixprint.h>
 
 static void
 check_property (const char *output,
@@ -76,36 +76,36 @@ test_type (gconstpointer data)
     return;
 
   /* These can't be freely constructed/destroyed */
-  if (g_type_is_a (type, GTK_TYPE_PRINT_JOB) ||
-      g_type_is_a (type, GDK_TYPE_PIXBUF_LOADER) ||
-      g_type_is_a (type, gdk_pixbuf_simple_anim_iter_get_type ()))
+  if (g_type_is_a (type, BTK_TYPE_PRINT_JOB) ||
+      g_type_is_a (type, BDK_TYPE_PIXBUF_LOADER) ||
+      g_type_is_a (type, bdk_pixbuf_simple_anim_iter_get_type ()))
     return;
 
-  /* The gtk_arg compat wrappers can't set up default values */
-  if (g_type_is_a (type, GTK_TYPE_CLIST) ||
-      g_type_is_a (type, GTK_TYPE_CTREE) ||
-      g_type_is_a (type, GTK_TYPE_LIST) ||
-      g_type_is_a (type, GTK_TYPE_TIPS_QUERY)) 
+  /* The btk_arg compat wrappers can't set up default values */
+  if (g_type_is_a (type, BTK_TYPE_CLIST) ||
+      g_type_is_a (type, BTK_TYPE_CTREE) ||
+      g_type_is_a (type, BTK_TYPE_LIST) ||
+      g_type_is_a (type, BTK_TYPE_TIPS_QUERY)) 
     return;
 
   klass = g_type_class_ref (type);
   
-  if (g_type_is_a (type, GTK_TYPE_SETTINGS))
-    instance = g_object_ref (gtk_settings_get_default ());
-  else if (g_type_is_a (type, GDK_TYPE_PANGO_RENDERER))
-    instance = g_object_ref (gdk_pango_renderer_get_default (gdk_screen_get_default ()));
-  else if (g_type_is_a (type, GDK_TYPE_PIXMAP))
-    instance = g_object_ref (gdk_pixmap_new (NULL, 1, 1, 1));
-  else if (g_type_is_a (type, GDK_TYPE_COLORMAP))
-    instance = g_object_ref (gdk_colormap_new (gdk_visual_get_best (), TRUE));
-  else if (g_type_is_a (type, GDK_TYPE_WINDOW))
+  if (g_type_is_a (type, BTK_TYPE_SETTINGS))
+    instance = g_object_ref (btk_settings_get_default ());
+  else if (g_type_is_a (type, BDK_TYPE_BANGO_RENDERER))
+    instance = g_object_ref (bdk_bango_renderer_get_default (bdk_screen_get_default ()));
+  else if (g_type_is_a (type, BDK_TYPE_PIXMAP))
+    instance = g_object_ref (bdk_pixmap_new (NULL, 1, 1, 1));
+  else if (g_type_is_a (type, BDK_TYPE_COLORMAP))
+    instance = g_object_ref (bdk_colormap_new (bdk_visual_get_best (), TRUE));
+  else if (g_type_is_a (type, BDK_TYPE_WINDOW))
     {
-      GdkWindowAttr attributes;
-      attributes.window_type = GDK_WINDOW_TEMP;
+      BdkWindowAttr attributes;
+      attributes.window_type = BDK_WINDOW_TEMP;
       attributes.event_mask = 0;
       attributes.width = 100;
       attributes.height = 100;
-      instance = g_object_ref (gdk_window_new (NULL, &attributes, 0));
+      instance = g_object_ref (bdk_window_new (NULL, &attributes, 0));
     }
   else
     instance = g_object_new (type, NULL);
@@ -125,46 +125,46 @@ test_type (gconstpointer data)
       if ((pspec->flags & G_PARAM_READABLE) == 0)
 	continue;
 
-      if (g_type_is_a (type, GDK_TYPE_DISPLAY_MANAGER) &&
+      if (g_type_is_a (type, BDK_TYPE_DISPLAY_MANAGER) &&
 	  (strcmp (pspec->name, "default-display") == 0))
 	continue;
 
-      if (g_type_is_a (type, GDK_TYPE_PANGO_RENDERER) &&
+      if (g_type_is_a (type, BDK_TYPE_BANGO_RENDERER) &&
 	  (strcmp (pspec->name, "screen") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_ABOUT_DIALOG) &&
+      if (g_type_is_a (type, BTK_TYPE_ABOUT_DIALOG) &&
 	  (strcmp (pspec->name, "program-name") == 0))
 	continue;
       
       /* These are set to the current date */
-      if (g_type_is_a (type, GTK_TYPE_CALENDAR) &&
+      if (g_type_is_a (type, BTK_TYPE_CALENDAR) &&
 	  (strcmp (pspec->name, "year") == 0 ||
 	   strcmp (pspec->name, "month") == 0 ||
 	   strcmp (pspec->name, "day") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_CELL_RENDERER_TEXT) &&
-	  (strcmp (pspec->name, "background-gdk") == 0 ||
-	   strcmp (pspec->name, "foreground-gdk") == 0 ||
+      if (g_type_is_a (type, BTK_TYPE_CELL_RENDERER_TEXT) &&
+	  (strcmp (pspec->name, "background-bdk") == 0 ||
+	   strcmp (pspec->name, "foreground-bdk") == 0 ||
 	   strcmp (pspec->name, "font") == 0 ||
 	   strcmp (pspec->name, "font-desc") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_CELL_VIEW) &&
-	  (strcmp (pspec->name, "background-gdk") == 0 ||
-	   strcmp (pspec->name, "foreground-gdk") == 0))
+      if (g_type_is_a (type, BTK_TYPE_CELL_VIEW) &&
+	  (strcmp (pspec->name, "background-bdk") == 0 ||
+	   strcmp (pspec->name, "foreground-bdk") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_COLOR_BUTTON) &&
+      if (g_type_is_a (type, BTK_TYPE_COLOR_BUTTON) &&
 	  strcmp (pspec->name, "color") == 0)
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_COLOR_SELECTION) &&
+      if (g_type_is_a (type, BTK_TYPE_COLOR_SELECTION) &&
 	  strcmp (pspec->name, "current-color") == 0)
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_COLOR_SELECTION_DIALOG) &&
+      if (g_type_is_a (type, BTK_TYPE_COLOR_SELECTION_DIALOG) &&
 	  (strcmp (pspec->name, "color-selection") == 0 ||
 	   strcmp (pspec->name, "ok-button") == 0 ||
 	   strcmp (pspec->name, "help-button") == 0 ||
@@ -172,129 +172,129 @@ test_type (gconstpointer data)
 	continue;
 
       /* Default invisible char is determined at runtime */
-      if (g_type_is_a (type, GTK_TYPE_ENTRY) &&
+      if (g_type_is_a (type, BTK_TYPE_ENTRY) &&
 	  (strcmp (pspec->name, "invisible-char") == 0 ||
            strcmp (pspec->name, "buffer") == 0))
 	continue;
 
       /* Gets set to the cwd */
-      if (g_type_is_a (type, GTK_TYPE_FILE_SELECTION) &&
+      if (g_type_is_a (type, BTK_TYPE_FILE_SELECTION) &&
 	  strcmp (pspec->name, "filename") == 0)
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_FONT_SELECTION) &&
+      if (g_type_is_a (type, BTK_TYPE_FONT_SELECTION) &&
 	  strcmp (pspec->name, "font") == 0)
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_LAYOUT) &&
+      if (g_type_is_a (type, BTK_TYPE_LAYOUT) &&
 	  (strcmp (pspec->name, "hadjustment") == 0 ||
            strcmp (pspec->name, "vadjustment") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_MESSAGE_DIALOG) &&
+      if (g_type_is_a (type, BTK_TYPE_MESSAGE_DIALOG) &&
           (strcmp (pspec->name, "image") == 0 ||
            strcmp (pspec->name, "message-area") == 0))
 
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_PRINT_OPERATION) &&
+      if (g_type_is_a (type, BTK_TYPE_PRINT_OPERATION) &&
 	  strcmp (pspec->name, "job-name") == 0)
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_PRINT_UNIX_DIALOG) &&
+      if (g_type_is_a (type, BTK_TYPE_PRINT_UNIX_DIALOG) &&
 	  (strcmp (pspec->name, "page-setup") == 0 ||
 	   strcmp (pspec->name, "print-settings") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_PROGRESS_BAR) &&
+      if (g_type_is_a (type, BTK_TYPE_PROGRESS_BAR) &&
           strcmp (pspec->name, "adjustment") == 0)
         continue;
 
       /* filename value depends on $HOME */
-      if (g_type_is_a (type, GTK_TYPE_RECENT_MANAGER) &&
+      if (g_type_is_a (type, BTK_TYPE_RECENT_MANAGER) &&
           (strcmp (pspec->name, "filename") == 0 ||
 	   strcmp (pspec->name, "size") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_SCALE_BUTTON) &&
+      if (g_type_is_a (type, BTK_TYPE_SCALE_BUTTON) &&
           strcmp (pspec->name, "adjustment") == 0)
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_SCROLLED_WINDOW) &&
+      if (g_type_is_a (type, BTK_TYPE_SCROLLED_WINDOW) &&
 	  (strcmp (pspec->name, "hadjustment") == 0 ||
            strcmp (pspec->name, "vadjustment") == 0))
 	continue;
 
       /* these defaults come from XResources */
-      if (g_type_is_a (type, GTK_TYPE_SETTINGS) &&
-          strncmp (pspec->name, "gtk-xft-", 8) == 0)
+      if (g_type_is_a (type, BTK_TYPE_SETTINGS) &&
+          strncmp (pspec->name, "btk-xft-", 8) == 0)
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_SETTINGS) &&
+      if (g_type_is_a (type, BTK_TYPE_SETTINGS) &&
           (strcmp (pspec->name, "color-hash") == 0 ||
-	   strcmp (pspec->name, "gtk-cursor-theme-name") == 0 ||
-	   strcmp (pspec->name, "gtk-cursor-theme-size") == 0 ||
-	   strcmp (pspec->name, "gtk-dnd-drag-threshold") == 0 ||
-	   strcmp (pspec->name, "gtk-double-click-time") == 0 ||
-	   strcmp (pspec->name, "gtk-fallback-icon-theme") == 0 ||
-	   strcmp (pspec->name, "gtk-file-chooser-backend") == 0 ||
-	   strcmp (pspec->name, "gtk-icon-theme-name") == 0 ||
-	   strcmp (pspec->name, "gtk-im-module") == 0 ||
-	   strcmp (pspec->name, "gtk-key-theme-name") == 0 ||
-	   strcmp (pspec->name, "gtk-theme-name") == 0 ||
-           strcmp (pspec->name, "gtk-sound-theme-name") == 0 ||
-           strcmp (pspec->name, "gtk-enable-input-feedback-sounds") == 0 ||
-           strcmp (pspec->name, "gtk-enable-event-sounds") == 0))
+	   strcmp (pspec->name, "btk-cursor-theme-name") == 0 ||
+	   strcmp (pspec->name, "btk-cursor-theme-size") == 0 ||
+	   strcmp (pspec->name, "btk-dnd-drag-threshold") == 0 ||
+	   strcmp (pspec->name, "btk-double-click-time") == 0 ||
+	   strcmp (pspec->name, "btk-fallback-icon-theme") == 0 ||
+	   strcmp (pspec->name, "btk-file-chooser-backend") == 0 ||
+	   strcmp (pspec->name, "btk-icon-theme-name") == 0 ||
+	   strcmp (pspec->name, "btk-im-module") == 0 ||
+	   strcmp (pspec->name, "btk-key-theme-name") == 0 ||
+	   strcmp (pspec->name, "btk-theme-name") == 0 ||
+           strcmp (pspec->name, "btk-sound-theme-name") == 0 ||
+           strcmp (pspec->name, "btk-enable-input-feedback-sounds") == 0 ||
+           strcmp (pspec->name, "btk-enable-event-sounds") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_SPIN_BUTTON) &&
+      if (g_type_is_a (type, BTK_TYPE_SPIN_BUTTON) &&
           (strcmp (pspec->name, "adjustment") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_STATUS_ICON) &&
+      if (g_type_is_a (type, BTK_TYPE_STATUS_ICON) &&
           (strcmp (pspec->name, "size") == 0 ||
            strcmp (pspec->name, "screen") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_TEXT_BUFFER) &&
+      if (g_type_is_a (type, BTK_TYPE_TEXT_BUFFER) &&
           (strcmp (pspec->name, "tag-table") == 0 ||
            strcmp (pspec->name, "copy-target-list") == 0 ||
            strcmp (pspec->name, "paste-target-list") == 0))
         continue;
 
       /* language depends on the current locale */
-      if (g_type_is_a (type, GTK_TYPE_TEXT_TAG) &&
-          (strcmp (pspec->name, "background-gdk") == 0 ||
-           strcmp (pspec->name, "foreground-gdk") == 0 ||
+      if (g_type_is_a (type, BTK_TYPE_TEXT_TAG) &&
+          (strcmp (pspec->name, "background-bdk") == 0 ||
+           strcmp (pspec->name, "foreground-bdk") == 0 ||
 	   strcmp (pspec->name, "language") == 0 ||
 	   strcmp (pspec->name, "font") == 0 ||
 	   strcmp (pspec->name, "font-desc") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_TEXT) &&
+      if (g_type_is_a (type, BTK_TYPE_TEXT) &&
 	  (strcmp (pspec->name, "hadjustment") == 0 ||
            strcmp (pspec->name, "vadjustment") == 0))
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_TEXT_VIEW) &&
+      if (g_type_is_a (type, BTK_TYPE_TEXT_VIEW) &&
           strcmp (pspec->name, "buffer") == 0)
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_TOOL_ITEM_GROUP) &&
+      if (g_type_is_a (type, BTK_TYPE_TOOL_ITEM_GROUP) &&
           strcmp (pspec->name, "label-widget") == 0)
         continue;
 
-      if (g_type_is_a (type, GTK_TYPE_TREE_VIEW) &&
+      if (g_type_is_a (type, BTK_TYPE_TREE_VIEW) &&
 	  (strcmp (pspec->name, "hadjustment") == 0 ||
            strcmp (pspec->name, "vadjustment") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_VIEWPORT) &&
+      if (g_type_is_a (type, BTK_TYPE_VIEWPORT) &&
 	  (strcmp (pspec->name, "hadjustment") == 0 ||
            strcmp (pspec->name, "vadjustment") == 0))
 	continue;
 
-      if (g_type_is_a (type, GTK_TYPE_WIDGET) &&
+      if (g_type_is_a (type, BTK_TYPE_WIDGET) &&
 	  (strcmp (pspec->name, "name") == 0 ||
 	   strcmp (pspec->name, "screen") == 0 ||
 	   strcmp (pspec->name, "style") == 0))
@@ -311,9 +311,9 @@ test_type (gconstpointer data)
     }
   g_free (pspecs);
 
-  if (g_type_is_a (type, GTK_TYPE_WIDGET))
+  if (g_type_is_a (type, BTK_TYPE_WIDGET))
     {
-      pspecs = gtk_widget_class_list_style_properties (GTK_WIDGET_CLASS (klass), &n_pspecs);
+      pspecs = btk_widget_class_list_style_properties (BTK_WIDGET_CLASS (klass), &n_pspecs);
       
       for (i = 0; i < n_pspecs; ++i)
 	{
@@ -327,7 +327,7 @@ test_type (gconstpointer data)
 	    continue;
 	  
 	  g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
-	  gtk_widget_style_get_property (GTK_WIDGET (instance), pspec->name, &value);
+	  btk_widget_style_get_property (BTK_WIDGET (instance), pspec->name, &value);
 	  check_property ("Style property", pspec, &value);
 	  g_value_unset (&value);
 	}
@@ -335,8 +335,8 @@ test_type (gconstpointer data)
       g_free (pspecs);
     }
   
-  if (g_type_is_a (type, GDK_TYPE_WINDOW))
-    gdk_window_destroy (GDK_WINDOW (instance));
+  if (g_type_is_a (type, BDK_TYPE_WINDOW))
+    bdk_window_destroy (BDK_WINDOW (instance));
   else
     g_object_unref (instance);
   
@@ -351,11 +351,11 @@ main (int argc, char **argv)
   const GType *otypes;
   guint i;
 
-  gtk_test_init (&argc, &argv);
+  btk_test_init (&argc, &argv);
   pixbuf_init ();
-  gtk_test_register_all_types();
+  btk_test_register_all_types();
   
-  otypes = gtk_test_list_all_types (NULL);
+  otypes = btk_test_list_all_types (NULL);
   for (i = 0; otypes[i]; i++)
     {
       gchar *testname;

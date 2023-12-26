@@ -10,32 +10,32 @@
 # widget <widget_set> style <style_name>
 # widget_class <widget_class_set> style <style_name>
 
-# testgtkrc2 sets all the buttons in the main window to blue by default
-include "testgtkrc2"
+# testbtkrc2 sets all the buttons in the main window to blue by default
+include "testbtkrc2"
 
 double-click_timeout = 42
 bell-duration = 39
 bell_duration = 40
 
-# gtk-cursor-blink-time = 200
-# gtk-menu-bar-accel = F10
+# btk-cursor-blink-time = 200
+# btk-menu-bar-accel = F10
 
 style "global-style-properties"
 {
 #  xthickness = 20
-  GtkButton::child_displacement_x = 1
-  GtkButton::child_displacement_y = 1
-#  GtkWidget::cursor_color = "#ff0000"
-  GtkToolbar::space_size = 10
-  GtkToolbar::space_style = line
-  GtkToolbar::button_relief = none
-  GtkButtonBox::child_min_width = 0
-  GtkButtonBox::child_min_height = 0
-  GtkArrow::arrow-scaling = 1.0
-  GtkEntry::invisible-char = 10046
+  BtkButton::child_displacement_x = 1
+  BtkButton::child_displacement_y = 1
+#  BtkWidget::cursor_color = "#ff0000"
+  BtkToolbar::space_size = 10
+  BtkToolbar::space_style = line
+  BtkToolbar::button_relief = none
+  BtkButtonBox::child_min_width = 0
+  BtkButtonBox::child_min_height = 0
+  BtkArrow::arrow-scaling = 1.0
+  BtkEntry::invisible-char = 10046
 }
 
-class "GtkWidget" style "global-style-properties"
+class "BtkWidget" style "global-style-properties"
 
 style "defaultfont"
 {
@@ -43,22 +43,22 @@ style "defaultfont"
 
   Gtest::foo = 47
   Gtest::bar = 47
-#  GtkScrollbar::spacing = 33
-#  GtkButton::color = { 3, 2,45, 6, 6, 4, 23 }
+#  BtkScrollbar::spacing = 33
+#  BtkButton::color = { 3, 2,45, 6, 6, 4, 23 }
 }
 
 style "myicons"
 {
-  stock["gtk-dialog-warning"] = 
+  stock["btk-dialog-warning"] = 
     { 
       { "3DRings.xpm", *, *, *} 
     }
 }
 
-class "GtkImage" style "myicons"
+class "BtkImage" style "myicons"
 
 # common default
-class "GtkWidget" style "defaultfont"
+class "BtkWidget" style "defaultfont"
 
 style "window"
 {
@@ -84,7 +84,7 @@ style "label" = "default"
  base[ACTIVE] = mix (0.9, "gray", "purple")
 }
 
-class "GtkLabel" style "label"
+class "BtkLabel" style "label"
 
 style "toggle_button" = "button"
 {
@@ -133,33 +133,33 @@ style "red-bar" = "red-bar-parent"
   bg[PRELIGHT] = @my-light-red
 }
 
-# override testgtk2, introduce the green color in the button list
+# override testbtk2, introduce the green color in the button list
 style 'button_list' = 'button'
 {
   font_name = "Monospace 10"
   bg[PRELIGHT] = { 0, 0.75, 0x00 }
 }
-widget "main window.*GtkScrolledWindow.*GtkButton*" style "button_list"
+widget "main window.*BtkScrolledWindow.*BtkButton*" style "button_list"
 
 style "checkbutton" {
-#  GtkCheckButton::indicator-size = 27
+#  BtkCheckButton::indicator-size = 27
 }
 
-class "GtkCheckButton" style "checkbutton"
+class "BtkCheckButton" style "checkbutton"
 
 
-class "GtkScrollbar" style "red-bar"
+class "BtkScrollbar" style "red-bar"
 
-widget_class "GtkWindow" style "window"
-widget_class "GtkDialog" style "window"
-widget_class "GtkFileSelection" style "window"
-widget_class "*Gtk*Scale" style "scale"
-widget_class "*GtkCheckButton*" style "toggle_button"
-widget_class "*GtkRadioButton*" style "toggle_button"
-widget_class "*GtkButton*" style "button"
+widget_class "BtkWindow" style "window"
+widget_class "BtkDialog" style "window"
+widget_class "BtkFileSelection" style "window"
+widget_class "*Btk*Scale" style "scale"
+widget_class "*BtkCheckButton*" style "toggle_button"
+widget_class "*BtkRadioButton*" style "toggle_button"
+widget_class "*BtkButton*" style "button"
 widget_class "*Ruler" style "ruler"
-widget_class "*GtkText" style "text"
-widget "*GtkCurve" style "curve"
+widget_class "*BtkText" style "text"
+widget "*BtkCurve" style "curve"
 
 binding "test1"
 {
@@ -178,12 +178,12 @@ binding "test2"
 
 # possible priorities are (in ascending order):
 # lowest
-# gtk         (used by gtk for internal class bindings)
+# btk         (used by btk for internal class bindings)
 # application (for hard coded bindings on application basis)
 # rc          (used implicitel by rc files)
 # highest
-class "GtkCList" binding  "test1"           # implicit : rc
-#class "GtkWindow" binding : highest "test2" # override "rc" priority
+class "BtkCList" binding  "test1"           # implicit : rc
+#class "BtkWindow" binding : highest "test2" # override "rc" priority
 
 binding "clist-test"
 {
@@ -195,35 +195,35 @@ binding "clist-test"
   }
 }
 
-class "GtkCList" binding "clist-test"
+class "BtkCList" binding "clist-test"
 
 style "testthickness" {
   xthickness = 15
   ythickness = 15
 }
 
-#class "GtkFrame" style "testthickness"
+#class "BtkFrame" style "testthickness"
 
 # Test ordering of RC file priorities
 
-style "testgtk-red-style" {
+style "testbtk-red-style" {
   fg[NORMAL] = "red"
 }
 
-style "testgtk-green-style" {
+style "testbtk-green-style" {
   fg[NORMAL] = "green"
 }
 
-style "testgtk-blue-style" {
+style "testbtk-blue-style" {
  fg[NORMAL] = "blue"
 }
 
 
-widget_class "*.GtkAspectFrame.*.GtkLabel" style "testgtk-green-style"
-widget_class "*.GtkAspectFrame.*.GtkLabel" style "testgtk-blue-style"  # override because it's later
+widget_class "*.BtkAspectFrame.*.BtkLabel" style "testbtk-green-style"
+widget_class "*.BtkAspectFrame.*.BtkLabel" style "testbtk-blue-style"  # override because it's later
 
-widget "*.testgtk-red-label" style "testgtk-red-style"  # override because it's widget, not widget_class
+widget "*.testbtk-red-label" style "testbtk-red-style"  # override because it's widget, not widget_class
 
-widget "*.testgtk-green-label" style : highest "testgtk-green-style"
+widget "*.testbtk-green-label" style : highest "testbtk-green-style"
 # overrides the following, because it is higher priority
-widget "*.testgtk-green-label" style "testgtk-red-style"
+widget "*.testbtk-green-label" style "testbtk-red-style"

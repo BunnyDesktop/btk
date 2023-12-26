@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,59 +18,59 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VSEPARATOR_H__
-#define __GTK_VSEPARATOR_H__
+#ifndef __BTK_VSEPARATOR_H__
+#define __BTK_VSEPARATOR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkseparator.h>
+#include <btk/btkseparator.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_VSEPARATOR                  (gtk_vseparator_get_type ())
-#define GTK_VSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VSEPARATOR, GtkVSeparator))
-#define GTK_VSEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VSEPARATOR, GtkVSeparatorClass))
-#define GTK_IS_VSEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VSEPARATOR))
-#define GTK_IS_VSEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VSEPARATOR))
-#define GTK_VSEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VSEPARATOR, GtkVSeparatorClass))
+#define BTK_TYPE_VSEPARATOR                  (btk_vseparator_get_type ())
+#define BTK_VSEPARATOR(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VSEPARATOR, BtkVSeparator))
+#define BTK_VSEPARATOR_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VSEPARATOR, BtkVSeparatorClass))
+#define BTK_IS_VSEPARATOR(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VSEPARATOR))
+#define BTK_IS_VSEPARATOR_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VSEPARATOR))
+#define BTK_VSEPARATOR_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VSEPARATOR, BtkVSeparatorClass))
 
 
-typedef struct _GtkVSeparator       GtkVSeparator;
-typedef struct _GtkVSeparatorClass  GtkVSeparatorClass;
+typedef struct _BtkVSeparator       BtkVSeparator;
+typedef struct _BtkVSeparatorClass  BtkVSeparatorClass;
 
 /**
- * GtkVSeparator:
+ * BtkVSeparator:
  *
- * The #GtkVSeparator struct contains private data only, and
+ * The #BtkVSeparator struct contains private data only, and
  * should be accessed using the functions below.
  */
-struct _GtkVSeparator
+struct _BtkVSeparator
 {
-  GtkSeparator separator;
+  BtkSeparator separator;
 };
 
-struct _GtkVSeparatorClass
+struct _BtkVSeparatorClass
 {
-  GtkSeparatorClass parent_class;
+  BtkSeparatorClass parent_class;
 };
 
 
-GType      gtk_vseparator_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_vseparator_new      (void);
+GType      btk_vseparator_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_vseparator_new      (void);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_SEPARATOR_H__ */
+#endif /* __BTK_SEPARATOR_H__ */

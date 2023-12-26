@@ -10,7 +10,7 @@
 # widget <widget_set> style <style_name>
 # widget_class <widget_class_set> style <style_name>
 
-# this file gets included from testgtkrc
+# this file gets included from testbtkrc
 
 style 'main_buttons' = 'button'
 {
@@ -18,4 +18,4 @@ style 'main_buttons' = 'button'
   bg[PRELIGHT] = { 0, 0, 0.75 }
 }
 
-widget "main window.*GtkButton*" style "main_buttons"
+widget "main window.*BtkButton*" style "main_buttons"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,18 +18,18 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gtkcontainer.h"
-#include "gtkmisc.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkcontainer.h"
+#include "btkmisc.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 
 enum {
@@ -40,34 +40,34 @@ enum {
   PROP_YPAD
 };
 
-static void gtk_misc_realize      (GtkWidget    *widget);
-static void gtk_misc_set_property (GObject         *object,
+static void btk_misc_realize      (BtkWidget    *widget);
+static void btk_misc_set_property (GObject         *object,
 				   guint            prop_id,
 				   const GValue    *value,
 				   GParamSpec      *pspec);
-static void gtk_misc_get_property (GObject         *object,
+static void btk_misc_get_property (GObject         *object,
 				   guint            prop_id,
 				   GValue          *value,
 				   GParamSpec      *pspec);
 
 
-G_DEFINE_ABSTRACT_TYPE (GtkMisc, gtk_misc, GTK_TYPE_WIDGET)
+G_DEFINE_ABSTRACT_TYPE (BtkMisc, btk_misc, BTK_TYPE_WIDGET)
 
 static void
-gtk_misc_class_init (GtkMiscClass *class)
+btk_misc_class_init (BtkMiscClass *class)
 {
-  GObjectClass   *gobject_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass   *bobject_class;
+  BtkWidgetClass *widget_class;
 
-  gobject_class = G_OBJECT_CLASS (class);
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = G_OBJECT_CLASS (class);
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->set_property = gtk_misc_set_property;
-  gobject_class->get_property = gtk_misc_get_property;
+  bobject_class->set_property = btk_misc_set_property;
+  bobject_class->get_property = btk_misc_get_property;
   
-  widget_class->realize = gtk_misc_realize;
+  widget_class->realize = btk_misc_realize;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_XALIGN,
                                    g_param_spec_float ("xalign",
 						       P_("X align"),
@@ -75,9 +75,9 @@ gtk_misc_class_init (GtkMiscClass *class)
 						       0.0,
 						       1.0,
 						       0.5,
-						       GTK_PARAM_READWRITE));
+						       BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_YALIGN,
                                    g_param_spec_float ("yalign",
 						       P_("Y align"),
@@ -85,9 +85,9 @@ gtk_misc_class_init (GtkMiscClass *class)
 						       0.0,
 						       1.0,
 						       0.5,
-						       GTK_PARAM_READWRITE));
+						       BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_XPAD,
                                    g_param_spec_int ("xpad",
 						     P_("X pad"),
@@ -95,9 +95,9 @@ gtk_misc_class_init (GtkMiscClass *class)
 						     0,
 						     G_MAXINT,
 						     0,
-						     GTK_PARAM_READWRITE));
+						     BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_YPAD,
                                    g_param_spec_int ("ypad",
 						     P_("Y pad"),
@@ -105,11 +105,11 @@ gtk_misc_class_init (GtkMiscClass *class)
 						     0,
 						     G_MAXINT,
 						     0,
-						     GTK_PARAM_READWRITE));
+						     BTK_PARAM_READWRITE));
 }
 
 static void
-gtk_misc_init (GtkMisc *misc)
+btk_misc_init (BtkMisc *misc)
 {
   misc->xalign = 0.5;
   misc->yalign = 0.5;
@@ -118,28 +118,28 @@ gtk_misc_init (GtkMisc *misc)
 }
 
 static void
-gtk_misc_set_property (GObject      *object,
+btk_misc_set_property (GObject      *object,
 		       guint         prop_id,
 		       const GValue *value,
 		       GParamSpec   *pspec)
 {
-  GtkMisc *misc;
+  BtkMisc *misc;
 
-  misc = GTK_MISC (object);
+  misc = BTK_MISC (object);
 
   switch (prop_id)
     {
     case PROP_XALIGN:
-      gtk_misc_set_alignment (misc, g_value_get_float (value), misc->yalign);
+      btk_misc_set_alignment (misc, g_value_get_float (value), misc->yalign);
       break;
     case PROP_YALIGN:
-      gtk_misc_set_alignment (misc, misc->xalign, g_value_get_float (value));
+      btk_misc_set_alignment (misc, misc->xalign, g_value_get_float (value));
       break;
     case PROP_XPAD:
-      gtk_misc_set_padding (misc, g_value_get_int (value), misc->ypad);
+      btk_misc_set_padding (misc, g_value_get_int (value), misc->ypad);
       break;
     case PROP_YPAD:
-      gtk_misc_set_padding (misc, misc->xpad, g_value_get_int (value));
+      btk_misc_set_padding (misc, misc->xpad, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -148,14 +148,14 @@ gtk_misc_set_property (GObject      *object,
 }
 
 static void
-gtk_misc_get_property (GObject      *object,
+btk_misc_get_property (GObject      *object,
 		       guint         prop_id,
 		       GValue       *value,
 		       GParamSpec   *pspec)
 {
-  GtkMisc *misc;
+  BtkMisc *misc;
 
-  misc = GTK_MISC (object);
+  misc = BTK_MISC (object);
 
   switch (prop_id)
     {
@@ -178,13 +178,13 @@ gtk_misc_get_property (GObject      *object,
 }
 
 void
-gtk_misc_set_alignment (GtkMisc *misc,
+btk_misc_set_alignment (BtkMisc *misc,
 			gfloat   xalign,
 			gfloat   yalign)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_MISC (misc));
+  g_return_if_fail (BTK_IS_MISC (misc));
 
   if (xalign < 0.0)
     xalign = 0.0;
@@ -210,29 +210,29 @@ gtk_misc_set_alignment (GtkMisc *misc,
       
       /* clear the area that was allocated before the change
        */
-      widget = GTK_WIDGET (misc);
-      if (gtk_widget_is_drawable (widget))
-        gtk_widget_queue_draw (widget);
+      widget = BTK_WIDGET (misc);
+      if (btk_widget_is_drawable (widget))
+        btk_widget_queue_draw (widget);
 
       g_object_thaw_notify (G_OBJECT (misc));
     }
 }
 
 /**
- * gtk_misc_get_alignment:
- * @misc: a #GtkMisc
+ * btk_misc_get_alignment:
+ * @misc: a #BtkMisc
  * @xalign: (out) (allow-none): location to store X alignment of @misc, or %NULL
  * @yalign: (out) (allow-none): location to store Y alignment of @misc, or %NULL
  *
  * Gets the X and Y alignment of the widget within its allocation. 
- * See gtk_misc_set_alignment().
+ * See btk_misc_set_alignment().
  **/
 void
-gtk_misc_get_alignment (GtkMisc *misc,
+btk_misc_get_alignment (BtkMisc *misc,
 		        gfloat  *xalign,
 			gfloat  *yalign)
 {
-  g_return_if_fail (GTK_IS_MISC (misc));
+  g_return_if_fail (BTK_IS_MISC (misc));
 
   if (xalign)
     *xalign = misc->xalign;
@@ -241,13 +241,13 @@ gtk_misc_get_alignment (GtkMisc *misc,
 }
 
 void
-gtk_misc_set_padding (GtkMisc *misc,
+btk_misc_set_padding (BtkMisc *misc,
 		      gint     xpad,
 		      gint     ypad)
 {
-  GtkRequisition *requisition;
+  BtkRequisition *requisition;
   
-  g_return_if_fail (GTK_IS_MISC (misc));
+  g_return_if_fail (BTK_IS_MISC (misc));
   
   if (xpad < 0)
     xpad = 0;
@@ -263,7 +263,7 @@ gtk_misc_set_padding (GtkMisc *misc,
       if (ypad != misc->ypad)
 	g_object_notify (G_OBJECT (misc), "ypad");
 
-      requisition = &(GTK_WIDGET (misc)->requisition);
+      requisition = &(BTK_WIDGET (misc)->requisition);
       requisition->width -= misc->xpad * 2;
       requisition->height -= misc->ypad * 2;
       
@@ -273,30 +273,30 @@ gtk_misc_set_padding (GtkMisc *misc,
       requisition->width += misc->xpad * 2;
       requisition->height += misc->ypad * 2;
       
-      if (gtk_widget_is_drawable (GTK_WIDGET (misc)))
-	gtk_widget_queue_resize (GTK_WIDGET (misc));
+      if (btk_widget_is_drawable (BTK_WIDGET (misc)))
+	btk_widget_queue_resize (BTK_WIDGET (misc));
 
       g_object_thaw_notify (G_OBJECT (misc));
     }
 }
 
 /**
- * gtk_misc_get_padding:
- * @misc: a #GtkMisc
+ * btk_misc_get_padding:
+ * @misc: a #BtkMisc
  * @xpad: (out) (allow-none): location to store padding in the X
  *        direction, or %NULL
  * @ypad: (out) (allow-none): location to store padding in the Y
  *        direction, or %NULL
  *
  * Gets the padding in the X and Y directions of the widget. 
- * See gtk_misc_set_padding().
+ * See btk_misc_set_padding().
  **/
 void
-gtk_misc_get_padding (GtkMisc *misc,
+btk_misc_get_padding (BtkMisc *misc,
 		      gint    *xpad,
 		      gint    *ypad)
 {
-  g_return_if_fail (GTK_IS_MISC (misc));
+  g_return_if_fail (BTK_IS_MISC (misc));
 
   if (xpad)
     *xpad = misc->xpad;
@@ -305,39 +305,39 @@ gtk_misc_get_padding (GtkMisc *misc,
 }
 
 static void
-gtk_misc_realize (GtkWidget *widget)
+btk_misc_realize (BtkWidget *widget)
 {
-  GdkWindowAttr attributes;
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
-  if (!gtk_widget_get_has_window (widget))
+  if (!btk_widget_get_has_window (widget))
     {
-      widget->window = gtk_widget_get_parent_window (widget);
+      widget->window = btk_widget_get_parent_window (widget);
       g_object_ref (widget->window);
-      widget->style = gtk_style_attach (widget->style, widget->window);
+      widget->style = btk_style_attach (widget->style, widget->window);
     }
   else
     {
-      attributes.window_type = GDK_WINDOW_CHILD;
+      attributes.window_type = BDK_WINDOW_CHILD;
       attributes.x = widget->allocation.x;
       attributes.y = widget->allocation.y;
       attributes.width = widget->allocation.width;
       attributes.height = widget->allocation.height;
-      attributes.wclass = GDK_INPUT_OUTPUT;
-      attributes.visual = gtk_widget_get_visual (widget);
-      attributes.colormap = gtk_widget_get_colormap (widget);
-      attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK;
-      attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+      attributes.wclass = BDK_INPUT_OUTPUT;
+      attributes.visual = btk_widget_get_visual (widget);
+      attributes.colormap = btk_widget_get_colormap (widget);
+      attributes.event_mask = btk_widget_get_events (widget) | BDK_EXPOSURE_MASK;
+      attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
 
-      widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-      gdk_window_set_user_data (widget->window, widget);
+      widget->window = bdk_window_new (btk_widget_get_parent_window (widget), &attributes, attributes_mask);
+      bdk_window_set_user_data (widget->window, widget);
 
-      widget->style = gtk_style_attach (widget->style, widget->window);
-      gdk_window_set_back_pixmap (widget->window, NULL, TRUE);
+      widget->style = btk_style_attach (widget->style, widget->window);
+      bdk_window_set_back_pixmap (widget->window, NULL, TRUE);
     }
 }
 
-#define __GTK_MISC_C__
-#include "gtkaliasdef.c"
+#define __BTK_MISC_C__
+#include "btkaliasdef.c"

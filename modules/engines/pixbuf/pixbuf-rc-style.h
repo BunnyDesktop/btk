@@ -1,4 +1,4 @@
-/* GTK+ Pixbuf Engine
+/* BTK+ Pixbuf Engine
  * Copyright (C) 1998-2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
  * Carsten Haitzler <raster@rasterman.com>
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 typedef struct _PixbufRcStyle PixbufRcStyle;
 typedef struct _PixbufRcStyleClass PixbufRcStyleClass;
@@ -36,14 +36,14 @@ extern G_GNUC_INTERNAL GType pixbuf_type_rc_style;
 
 struct _PixbufRcStyle
 {
-  GtkRcStyle parent_instance;
+  BtkRcStyle parent_instance;
   
   GList *img_list;
 };
 
 struct _PixbufRcStyleClass
 {
-  GtkRcStyleClass parent_class;
+  BtkRcStyleClass parent_class;
 };
 
 G_GNUC_INTERNAL  void pixbuf_rc_style_register_type (GTypeModule *module);

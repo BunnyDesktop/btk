@@ -1,58 +1,58 @@
-## Makefile.am for gtk+/gdk/gdk-directfb
+## Makefile.am for btk+/bdk/bdk-directfb
 include $(top_srcdir)/Makefile.decl
 
-libgdkincludedir = $(includedir)/gtk-2.0/gdk
+libbdkincludedir = $(includedir)/btk-2.0/bdk
 
 INCLUDES = 		\
-	-DG_LOG_DOMAIN=\"Gdk-DirectFB\"	\
-	-DGDK_COMPILATION \
+	-DG_LOG_DOMAIN=\"Bdk-DirectFB\"	\
+	-DBDK_COMPILATION \
 	-I$(top_srcdir)			\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
 	-DG_DISABLE_DEPRECATED		\
-	@GTK_DEBUG_FLAGS@		\
-	@GDK_DEP_CFLAGS@		
+	@BTK_DEBUG_FLAGS@		\
+	@BDK_DEP_CFLAGS@		
 
 LDADDS = 		\
-	@GDK_DEP_LIBS@		
+	@BDK_DEP_LIBS@		
 
-noinst_LTLIBRARIES = libgdk-directfb.la
+noinst_LTLIBRARIES = libbdk-directfb.la
 
-libgdk_directfb_la_SOURCES =	\
-	gdkapplaunchcontext-directfb.c \
-	gdkcolor-directfb.c	\
-	gdkcursor-directfb.c	\
-	gdkdnd-directfb.c	\
-	gdkdisplay-directfb.c   \
-	gdkdisplay-directfb.h   \
-	gdkdrawable-directfb.c	\
-	gdkevents-directfb.c	\
-	gdkfont-directfb.c	\
-	gdkgc-directfb.c	\
-	gdkgeometry-directfb.c	\
-	gdkglobals-directfb.c	\
-	gdkim-directfb.c	\
-	gdkimage-directfb.c	\
-	gdkinput-directfb.c	\
-	gdkinput-directfb.h	\
-	gdkkeys-directfb.c	\
-	gdkmain-directfb.c	\
-	gdkpixmap-directfb.c	\
-	gdkprivate-directfb.h	\
-	gdkproperty-directfb.c	\
-	gdkscreen-directfb.c	\
-	gdkselection-directfb.c	\
-	gdkspawn-directfb.c 	\
-	gdktestutils-directfb.c	\
-	gdkvisual-directfb.c	\
-	gdkdirectfb.h		\
-	gdkwindow-directfb.c	\
-	gdkwindowid.c		\
+libbdk_directfb_la_SOURCES =	\
+	bdkapplaunchcontext-directfb.c \
+	bdkcolor-directfb.c	\
+	bdkcursor-directfb.c	\
+	bdkdnd-directfb.c	\
+	bdkdisplay-directfb.c   \
+	bdkdisplay-directfb.h   \
+	bdkdrawable-directfb.c	\
+	bdkevents-directfb.c	\
+	bdkfont-directfb.c	\
+	bdkgc-directfb.c	\
+	bdkgeometry-directfb.c	\
+	bdkglobals-directfb.c	\
+	bdkim-directfb.c	\
+	bdkimage-directfb.c	\
+	bdkinput-directfb.c	\
+	bdkinput-directfb.h	\
+	bdkkeys-directfb.c	\
+	bdkmain-directfb.c	\
+	bdkpixmap-directfb.c	\
+	bdkprivate-directfb.h	\
+	bdkproperty-directfb.c	\
+	bdkscreen-directfb.c	\
+	bdkselection-directfb.c	\
+	bdkspawn-directfb.c 	\
+	bdktestutils-directfb.c	\
+	bdkvisual-directfb.c	\
+	bdkdirectfb.h		\
+	bdkwindow-directfb.c	\
+	bdkwindowid.c		\
 	x-cursors.xbm
 
-libgdkinclude_HEADERS =		\
-	gdkdirectfb.h 		\
-	gdkprivate-directfb.h
+libbdkinclude_HEADERS =		\
+	bdkdirectfb.h 		\
+	bdkprivate-directfb.h
 
 
 EXTRA_DIST += AUTHORS README TODO 

@@ -1,6 +1,6 @@
 #include "config.h"
 #include <string.h>
-#include "gtkwidgetprofiler.h"
+#include "btkwidgetprofiler.h"
 #include "marshalers.h"
 #include "typebuiltins.h"
 
@@ -10,11 +10,11 @@ typedef enum {
   STATE_INSTRUMENTED_MAPPED
 } State;
 
-struct _GtkWidgetProfilerPrivate {
+struct _BtkWidgetProfilerPrivate {
   State state;
 
-  GtkWidget *profiled_widget;
-  GtkWidget *toplevel;
+  BtkWidget *profiled_widget;
+  BtkWidget *toplevel;
 
   int n_iterations;
 
@@ -23,14 +23,14 @@ struct _GtkWidgetProfilerPrivate {
   gulong toplevel_expose_event_id;
   gulong toplevel_property_notify_event_id;
 
-  GdkAtom profiler_atom;
+  BdkAtom profiler_atom;
 
   guint profiling : 1;
 };
 
-G_DEFINE_TYPE (GtkWidgetProfiler, gtk_widget_profiler, G_TYPE_OBJECT);
+G_DEFINE_TYPE (BtkWidgetProfiler, btk_widget_profiler, G_TYPE_OBJECT);
 
-static void gtk_widget_profiler_finalize (GObject *object);
+static void btk_widget_profiler_finalize (GObject *object);
 
 enum {
   CREATE_WIDGET,
@@ -41,7 +41,7 @@ enum {
 static guint signals[LAST_SIGNAL];
 
 static void
-gtk_widget_profiler_class_init (GtkWidgetProfilerClass *class)
+btk_widget_profiler_class_init (BtkWidgetProfilerClass *class)
 {
   GObjectClass *object_class;
 
@@ -51,32 +51,32 @@ gtk_widget_profiler_class_init (GtkWidgetProfilerClass *class)
     g_signal_new ("create-widget",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkWidgetProfilerClass, create_widget),
+		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, create_widget),
 		  NULL, NULL,
-		  _gtk_marshal_OBJECT__VOID,
+		  _btk_marshal_OBJECT__VOID,
 		  G_TYPE_OBJECT, 0);
 
   signals[REPORT] =
     g_signal_new ("report",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkWidgetProfilerClass, report),
+		  G_STRUCT_OFFSET (BtkWidgetProfilerClass, report),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__ENUM_OBJECT_DOUBLE,
+		  _btk_marshal_VOID__ENUM_OBJECT_DOUBLE,
 		  G_TYPE_NONE, 3,
-		  GTK_TYPE_WIDGET_PROFILER_REPORT,
+		  BTK_TYPE_WIDGET_PROFILER_REPORT,
 		  G_TYPE_OBJECT,
 		  G_TYPE_DOUBLE);
 
-  object_class->finalize = gtk_widget_profiler_finalize;
+  object_class->finalize = btk_widget_profiler_finalize;
 }
 
 static void
-gtk_widget_profiler_init (GtkWidgetProfiler *profiler)
+btk_widget_profiler_init (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
-  priv = g_new0 (GtkWidgetProfilerPrivate, 1);
+  priv = g_new0 (BtkWidgetProfilerPrivate, 1);
   profiler->priv = priv;
 
   priv->state = STATE_NOT_CREATED;
@@ -84,13 +84,13 @@ gtk_widget_profiler_init (GtkWidgetProfiler *profiler)
 
   priv->timer = g_timer_new ();
 
-  priv->profiler_atom = gdk_atom_intern ("GtkWidgetProfiler", FALSE);
+  priv->profiler_atom = bdk_atom_intern ("BtkWidgetProfiler", FALSE);
 }
 
 static void
-reset_state (GtkWidgetProfiler *profiler)
+reset_state (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
   priv = profiler->priv;
 
@@ -102,7 +102,7 @@ reset_state (GtkWidgetProfiler *profiler)
       g_signal_handler_disconnect (priv->toplevel, priv->toplevel_property_notify_event_id);
       priv->toplevel_property_notify_event_id = 0;
 
-      gtk_widget_destroy (priv->toplevel);
+      btk_widget_destroy (priv->toplevel);
       priv->toplevel = NULL;
       priv->profiled_widget = NULL;
     }
@@ -111,12 +111,12 @@ reset_state (GtkWidgetProfiler *profiler)
 }
 
 static void
-gtk_widget_profiler_finalize (GObject *object)
+btk_widget_profiler_finalize (GObject *object)
 {
-  GtkWidgetProfiler *profiler;
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfiler *profiler;
+  BtkWidgetProfilerPrivate *priv;
 
-  profiler = GTK_WIDGET_PROFILER (object);
+  profiler = BTK_WIDGET_PROFILER (object);
   priv = profiler->priv;
 
   reset_state (profiler);
@@ -124,22 +124,22 @@ gtk_widget_profiler_finalize (GObject *object)
 
   g_free (priv);
 
-  G_OBJECT_CLASS (gtk_widget_profiler_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_widget_profiler_parent_class)->finalize (object);
 }
 
-GtkWidgetProfiler *
-gtk_widget_profiler_new (void)
+BtkWidgetProfiler *
+btk_widget_profiler_new (void)
 {
-  return g_object_new (GTK_TYPE_WIDGET_PROFILER, NULL);
+  return g_object_new (BTK_TYPE_WIDGET_PROFILER, NULL);
 }
 
 void
-gtk_widget_profiler_set_num_iterations (GtkWidgetProfiler *profiler,
+btk_widget_profiler_set_num_iterations (BtkWidgetProfiler *profiler,
 					gint               n_iterations)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
-  g_return_if_fail (GTK_IS_WIDGET_PROFILER (profiler));
+  g_return_if_fail (BTK_IS_WIDGET_PROFILER (profiler));
   g_return_if_fail (n_iterations > 0);
 
   priv = profiler->priv;
@@ -147,41 +147,41 @@ gtk_widget_profiler_set_num_iterations (GtkWidgetProfiler *profiler,
 }
 
 static void
-report (GtkWidgetProfiler      *profiler,
-	GtkWidgetProfilerReport report,
+report (BtkWidgetProfiler      *profiler,
+	BtkWidgetProfilerReport report,
 	gdouble                 elapsed)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
   priv = profiler->priv;
 
   g_signal_emit (profiler, signals[REPORT], 0, report, priv->profiled_widget, elapsed);
 }
 
-static GtkWidget *
-create_widget_via_emission (GtkWidgetProfiler *profiler)
+static BtkWidget *
+create_widget_via_emission (BtkWidgetProfiler *profiler)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
   widget = NULL;
   g_signal_emit (profiler, signals[CREATE_WIDGET], 0, &widget);
   if (!widget)
     g_error ("The profiler emitted the \"create-widget\" signal but the signal handler returned no widget!");
 
-  if (gtk_widget_get_visible (widget) || gtk_widget_get_mapped (widget))
+  if (btk_widget_get_visible (widget) || btk_widget_get_mapped (widget))
     g_error ("The handler for \"create-widget\" must return an unmapped and unshown widget");
 
   return widget;
 }
 
 static gboolean
-toplevel_property_notify_event_cb (GtkWidget *widget, GdkEventProperty *event, gpointer data)
+toplevel_property_notify_event_cb (BtkWidget *widget, BdkEventProperty *event, gpointer data)
 {
-  GtkWidgetProfiler *profiler;
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfiler *profiler;
+  BtkWidgetProfilerPrivate *priv;
   gdouble elapsed;
 
-  profiler = GTK_WIDGET_PROFILER (data);
+  profiler = BTK_WIDGET_PROFILER (data);
   priv = profiler->priv;
 
   if (event->atom != priv->profiler_atom)
@@ -190,26 +190,26 @@ toplevel_property_notify_event_cb (GtkWidget *widget, GdkEventProperty *event, g
   /* Finish timing map/expose */
 
   elapsed = g_timer_elapsed (priv->timer, NULL);
-  report (profiler, GTK_WIDGET_PROFILER_REPORT_EXPOSE, elapsed);
+  report (profiler, BTK_WIDGET_PROFILER_REPORT_EXPOSE, elapsed);
 
-  gtk_main_quit (); /* This will get us back to the end of profile_map_expose() */
+  btk_main_quit (); /* This will get us back to the end of profile_map_expose() */
   return TRUE;
 }
 
 static gboolean
 toplevel_idle_after_expose_cb (gpointer data)
 {
-  GtkWidgetProfiler *profiler;
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfiler *profiler;
+  BtkWidgetProfilerPrivate *priv;
 
-  profiler = GTK_WIDGET_PROFILER (data);
+  profiler = BTK_WIDGET_PROFILER (data);
   priv = profiler->priv;
 
-  gdk_property_change (priv->toplevel->window,
+  bdk_property_change (priv->toplevel->window,
 		       priv->profiler_atom,
-		       gdk_atom_intern ("STRING", FALSE),
+		       bdk_atom_intern ("STRING", FALSE),
 		       8,
-		       GDK_PROP_MODE_REPLACE,
+		       BDK_PROP_MODE_REPLACE,
 		       (guchar *) "hello",
 		       strlen ("hello"));
 
@@ -217,55 +217,55 @@ toplevel_idle_after_expose_cb (gpointer data)
 }
 
 static gboolean
-toplevel_expose_event_cb (GtkWidget *widget, GdkEventExpose *event, gpointer data)
+toplevel_expose_event_cb (BtkWidget *widget, BdkEventExpose *event, gpointer data)
 {
-  GtkWidgetProfiler *profiler;
+  BtkWidgetProfiler *profiler;
 
-  profiler = GTK_WIDGET_PROFILER (data);
+  profiler = BTK_WIDGET_PROFILER (data);
 
-  gdk_threads_add_idle_full (G_PRIORITY_HIGH, toplevel_idle_after_expose_cb, profiler, NULL);
+  bdk_threads_add_idle_full (G_PRIORITY_HIGH, toplevel_idle_after_expose_cb, profiler, NULL);
   return FALSE;
 }
 
 static void
-instrument_toplevel (GtkWidgetProfiler *profiler,
-		     GtkWidget         *toplevel)
+instrument_toplevel (BtkWidgetProfiler *profiler,
+		     BtkWidget         *toplevel)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
   priv = profiler->priv;
 
   priv->toplevel_expose_event_id = g_signal_connect (toplevel, "expose-event",
 						     G_CALLBACK (toplevel_expose_event_cb), profiler);
 
-  gtk_widget_add_events (toplevel, GDK_PROPERTY_CHANGE_MASK);
+  btk_widget_add_events (toplevel, BDK_PROPERTY_CHANGE_MASK);
   priv->toplevel_property_notify_event_id = g_signal_connect (toplevel, "property-notify-event",
 							      G_CALLBACK (toplevel_property_notify_event_cb), profiler);
 }
 
-static GtkWidget *
-ensure_and_get_toplevel (GtkWidget *widget)
+static BtkWidget *
+ensure_and_get_toplevel (BtkWidget *widget)
 {
-	GtkWidget *toplevel;
-	GtkWidget *window;
+	BtkWidget *toplevel;
+	BtkWidget *window;
 
-	toplevel = gtk_widget_get_toplevel (widget);
-	if (gtk_widget_is_toplevel (toplevel))
+	toplevel = btk_widget_get_toplevel (widget);
+	if (btk_widget_is_toplevel (toplevel))
 		return toplevel;
 
 	g_assert (toplevel == widget); /* we don't want extraneous ancestors */
 
-	window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_container_add (GTK_CONTAINER (window), widget);
+	window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+	btk_container_add (BTK_CONTAINER (window), widget);
 
 	return window;
 }
 
-static GtkWidget *
-get_instrumented_toplevel (GtkWidgetProfiler *profiler,
-			   GtkWidget         *widget)
+static BtkWidget *
+get_instrumented_toplevel (BtkWidgetProfiler *profiler,
+			   BtkWidget         *widget)
 {
-  GtkWidget *window;
+  BtkWidget *window;
 
   window = ensure_and_get_toplevel (widget);
   instrument_toplevel (profiler, window);
@@ -274,9 +274,9 @@ get_instrumented_toplevel (GtkWidgetProfiler *profiler,
 }
 
 static void
-map_widget (GtkWidgetProfiler *profiler)
+map_widget (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
   priv = profiler->priv;
   g_assert (priv->state == STATE_INSTRUMENTED_NOT_MAPPED);
@@ -284,17 +284,17 @@ map_widget (GtkWidgetProfiler *profiler)
   /* Time map.
    *
    * FIXME: we are really timing a show_all(); we don't really wait for all the "map_event" signals
-   * to happen.  Should we rename GTK_WIDGET_PROFILER_REPORT_MAP report to something else?
+   * to happen.  Should we rename BTK_WIDGET_PROFILER_REPORT_MAP report to something else?
    */
 
-  gtk_widget_show_all (priv->toplevel);
+  btk_widget_show_all (priv->toplevel);
   priv->state = STATE_INSTRUMENTED_MAPPED;
 }
 
 static void
-profile_map_expose (GtkWidgetProfiler *profiler)
+profile_map_expose (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
   gdouble elapsed;
 
   priv = profiler->priv;
@@ -305,18 +305,18 @@ profile_map_expose (GtkWidgetProfiler *profiler)
   map_widget (profiler);
   elapsed = g_timer_elapsed (priv->timer, NULL);
 
-  report (profiler, GTK_WIDGET_PROFILER_REPORT_MAP, elapsed);
+  report (profiler, BTK_WIDGET_PROFILER_REPORT_MAP, elapsed);
 
   /* Time expose; this gets recorded in toplevel_property_notify_event_cb() */
 
   g_timer_reset (priv->timer);
-  gtk_main ();
+  btk_main ();
 }
 
 static void
-profile_destroy (GtkWidgetProfiler *profiler)
+profile_destroy (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
   gdouble elapsed;
 
   priv = profiler->priv;
@@ -327,13 +327,13 @@ profile_destroy (GtkWidgetProfiler *profiler)
   reset_state (profiler);
   elapsed = g_timer_elapsed (priv->timer, NULL);
 
-  report (profiler, GTK_WIDGET_PROFILER_REPORT_DESTROY, elapsed);
+  report (profiler, BTK_WIDGET_PROFILER_REPORT_DESTROY, elapsed);
 }
 
 static void
-create_widget (GtkWidgetProfiler *profiler)
+create_widget (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
 
   priv = profiler->priv;
 
@@ -356,9 +356,9 @@ create_widget (GtkWidgetProfiler *profiler)
  * allocation, realization, mapping, exposing, destruction.
  */
 static void
-profile_boot (GtkWidgetProfiler *profiler)
+profile_boot (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
   gdouble elapsed;
 
   priv = profiler->priv;
@@ -371,7 +371,7 @@ profile_boot (GtkWidgetProfiler *profiler)
   create_widget (profiler);
   elapsed = g_timer_elapsed (priv->timer, NULL);
 
-  report (profiler, GTK_WIDGET_PROFILER_REPORT_CREATE, elapsed);
+  report (profiler, BTK_WIDGET_PROFILER_REPORT_CREATE, elapsed);
 
   /* Start timing map/expose */
 
@@ -387,11 +387,11 @@ profile_boot (GtkWidgetProfiler *profiler)
  * one expose.
  */
 static void
-profile_expose (GtkWidgetProfiler *profiler)
+profile_expose (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
-  GdkWindow *window;
-  GdkWindowAttr attr;
+  BtkWidgetProfilerPrivate *priv;
+  BdkWindow *window;
+  BdkWindowAttr attr;
   int attr_mask;
 
   priv = profiler->priv;
@@ -404,31 +404,31 @@ profile_expose (GtkWidgetProfiler *profiler)
   attr.y = 0;
   attr.width = priv->toplevel->allocation.width;
   attr.height = priv->toplevel->allocation.width;
-  attr.wclass = GDK_INPUT_OUTPUT;
-  attr.window_type = GDK_WINDOW_CHILD;
+  attr.wclass = BDK_INPUT_OUTPUT;
+  attr.window_type = BDK_WINDOW_CHILD;
 
-  attr_mask = GDK_WA_X | GDK_WA_Y;
+  attr_mask = BDK_WA_X | BDK_WA_Y;
 
-  window = gdk_window_new (priv->toplevel->window, &attr, attr_mask);
-  gdk_window_set_back_pixmap (window, NULL, TRUE); /* avoid flicker */
+  window = bdk_window_new (priv->toplevel->window, &attr, attr_mask);
+  bdk_window_set_back_pixmap (window, NULL, TRUE); /* avoid flicker */
 
-  gdk_window_show (window);
-  gdk_window_hide (window);
-  gdk_window_destroy (window);
+  bdk_window_show (window);
+  bdk_window_hide (window);
+  bdk_window_destroy (window);
 
   /* Time expose; this gets recorded in toplevel_property_notify_event_cb() */
 
   g_timer_reset (priv->timer);
-  gtk_main ();
+  btk_main ();
 }
 
 void
-gtk_widget_profiler_profile_boot (GtkWidgetProfiler *profiler)
+btk_widget_profiler_profile_boot (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
   int i, n;
 
-  g_return_if_fail (GTK_IS_WIDGET_PROFILER (profiler));
+  g_return_if_fail (BTK_IS_WIDGET_PROFILER (profiler));
 
   priv = profiler->priv;
   g_return_if_fail (!priv->profiling);
@@ -444,12 +444,12 @@ gtk_widget_profiler_profile_boot (GtkWidgetProfiler *profiler)
 }
 
 void
-gtk_widget_profiler_profile_expose (GtkWidgetProfiler *profiler)
+btk_widget_profiler_profile_expose (BtkWidgetProfiler *profiler)
 {
-  GtkWidgetProfilerPrivate *priv;
+  BtkWidgetProfilerPrivate *priv;
   int i, n;
 
-  g_return_if_fail (GTK_IS_WIDGET_PROFILER (profiler));
+  g_return_if_fail (BTK_IS_WIDGET_PROFILER (profiler));
 
   priv = profiler->priv;
   g_return_if_fail (!priv->profiling);

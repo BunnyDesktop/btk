@@ -1,4 +1,4 @@
-/* gtktreestore.h
+/* btktreestore.h
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,33 +17,33 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TREE_STORE_H__
-#define __GTK_TREE_STORE_H__
+#ifndef __BTK_TREE_STORE_H__
+#define __BTK_TREE_STORE_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gdkconfig.h>
-#include <gtk/gtktreemodel.h>
-#include <gtk/gtktreesortable.h>
+#include <bdkconfig.h>
+#include <btk/btktreemodel.h>
+#include <btk/btktreesortable.h>
 #include <stdarg.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_TREE_STORE			(gtk_tree_store_get_type ())
-#define GTK_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TREE_STORE, GtkTreeStore))
-#define GTK_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TREE_STORE, GtkTreeStoreClass))
-#define GTK_IS_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TREE_STORE))
-#define GTK_IS_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TREE_STORE))
-#define GTK_TREE_STORE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TREE_STORE, GtkTreeStoreClass))
+#define BTK_TYPE_TREE_STORE			(btk_tree_store_get_type ())
+#define BTK_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TREE_STORE, BtkTreeStore))
+#define BTK_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
+#define BTK_IS_TREE_STORE(obj)			(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TREE_STORE))
+#define BTK_IS_TREE_STORE_CLASS(klass)		(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TREE_STORE))
+#define BTK_TREE_STORE_GET_CLASS(obj)		(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TREE_STORE, BtkTreeStoreClass))
 
-typedef struct _GtkTreeStore       GtkTreeStore;
-typedef struct _GtkTreeStoreClass  GtkTreeStoreClass;
+typedef struct _BtkTreeStore       BtkTreeStore;
+typedef struct _BtkTreeStoreClass  BtkTreeStoreClass;
 
-struct _GtkTreeStore
+struct _BtkTreeStore
 {
   GObject parent;
 
@@ -53,107 +53,107 @@ struct _GtkTreeStore
   gint GSEAL (n_columns);
   gint GSEAL (sort_column_id);
   GList *GSEAL (sort_list);
-  GtkSortType GSEAL (order);
+  BtkSortType GSEAL (order);
   GType *GSEAL (column_headers);
-  GtkTreeIterCompareFunc GSEAL (default_sort_func);
+  BtkTreeIterCompareFunc GSEAL (default_sort_func);
   gpointer GSEAL (default_sort_data);
   GDestroyNotify GSEAL (default_sort_destroy);
   guint GSEAL (columns_dirty) : 1;
 };
 
-struct _GtkTreeStoreClass
+struct _BtkTreeStoreClass
 {
   GObjectClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType         gtk_tree_store_get_type         (void) G_GNUC_CONST;
-GtkTreeStore *gtk_tree_store_new              (gint          n_columns,
+GType         btk_tree_store_get_type         (void) G_GNUC_CONST;
+BtkTreeStore *btk_tree_store_new              (gint          n_columns,
 					       ...);
-GtkTreeStore *gtk_tree_store_newv             (gint          n_columns,
+BtkTreeStore *btk_tree_store_newv             (gint          n_columns,
 					       GType        *types);
-void          gtk_tree_store_set_column_types (GtkTreeStore *tree_store,
+void          btk_tree_store_set_column_types (BtkTreeStore *tree_store,
 					       gint          n_columns,
 					       GType        *types);
 
-/* NOTE: use gtk_tree_model_get to get values from a GtkTreeStore */
+/* NOTE: use btk_tree_model_get to get values from a BtkTreeStore */
 
-void          gtk_tree_store_set_value        (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
+void          btk_tree_store_set_value        (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
 					       gint          column,
 					       GValue       *value);
-void          gtk_tree_store_set              (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
+void          btk_tree_store_set              (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
 					       ...);
-void          gtk_tree_store_set_valuesv      (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
+void          btk_tree_store_set_valuesv      (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
 					       gint         *columns,
 					       GValue       *values,
 					       gint          n_values);
-void          gtk_tree_store_set_valist       (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
+void          btk_tree_store_set_valist       (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
 					       va_list       var_args);
-gboolean      gtk_tree_store_remove           (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter);
-void          gtk_tree_store_insert           (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *parent,
+gboolean      btk_tree_store_remove           (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter);
+void          btk_tree_store_insert           (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *parent,
 					       gint          position);
-void          gtk_tree_store_insert_before    (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *parent,
-					       GtkTreeIter  *sibling);
-void          gtk_tree_store_insert_after     (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *parent,
-					       GtkTreeIter  *sibling);
-void          gtk_tree_store_insert_with_values (GtkTreeStore *tree_store,
-						 GtkTreeIter  *iter,
-						 GtkTreeIter  *parent,
+void          btk_tree_store_insert_before    (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *parent,
+					       BtkTreeIter  *sibling);
+void          btk_tree_store_insert_after     (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *parent,
+					       BtkTreeIter  *sibling);
+void          btk_tree_store_insert_with_values (BtkTreeStore *tree_store,
+						 BtkTreeIter  *iter,
+						 BtkTreeIter  *parent,
 						 gint          position,
 						 ...);
-void          gtk_tree_store_insert_with_valuesv (GtkTreeStore *tree_store,
-						  GtkTreeIter  *iter,
-						  GtkTreeIter  *parent,
+void          btk_tree_store_insert_with_valuesv (BtkTreeStore *tree_store,
+						  BtkTreeIter  *iter,
+						  BtkTreeIter  *parent,
 						  gint          position,
 						  gint         *columns,
 						  GValue       *values,
 						  gint          n_values);
-void          gtk_tree_store_prepend          (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *parent);
-void          gtk_tree_store_append           (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *parent);
-gboolean      gtk_tree_store_is_ancestor      (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter,
-					       GtkTreeIter  *descendant);
-gint          gtk_tree_store_iter_depth       (GtkTreeStore *tree_store,
-					       GtkTreeIter  *iter);
-void          gtk_tree_store_clear            (GtkTreeStore *tree_store);
-gboolean      gtk_tree_store_iter_is_valid    (GtkTreeStore *tree_store,
-                                               GtkTreeIter  *iter);
-void          gtk_tree_store_reorder          (GtkTreeStore *tree_store,
-                                               GtkTreeIter  *parent,
+void          btk_tree_store_prepend          (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *parent);
+void          btk_tree_store_append           (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *parent);
+gboolean      btk_tree_store_is_ancestor      (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter,
+					       BtkTreeIter  *descendant);
+gint          btk_tree_store_iter_depth       (BtkTreeStore *tree_store,
+					       BtkTreeIter  *iter);
+void          btk_tree_store_clear            (BtkTreeStore *tree_store);
+gboolean      btk_tree_store_iter_is_valid    (BtkTreeStore *tree_store,
+                                               BtkTreeIter  *iter);
+void          btk_tree_store_reorder          (BtkTreeStore *tree_store,
+                                               BtkTreeIter  *parent,
                                                gint         *new_order);
-void          gtk_tree_store_swap             (GtkTreeStore *tree_store,
-                                               GtkTreeIter  *a,
-                                               GtkTreeIter  *b);
-void          gtk_tree_store_move_before      (GtkTreeStore *tree_store,
-                                               GtkTreeIter  *iter,
-                                               GtkTreeIter  *position);
-void          gtk_tree_store_move_after       (GtkTreeStore *tree_store,
-                                               GtkTreeIter  *iter,
-                                               GtkTreeIter  *position);
+void          btk_tree_store_swap             (BtkTreeStore *tree_store,
+                                               BtkTreeIter  *a,
+                                               BtkTreeIter  *b);
+void          btk_tree_store_move_before      (BtkTreeStore *tree_store,
+                                               BtkTreeIter  *iter,
+                                               BtkTreeIter  *position);
+void          btk_tree_store_move_after       (BtkTreeStore *tree_store,
+                                               BtkTreeIter  *iter,
+                                               BtkTreeIter  *position);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_TREE_STORE_H__ */
+#endif /* __BTK_TREE_STORE_H__ */

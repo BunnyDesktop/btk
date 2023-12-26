@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="gtk-demo"
+	Name="btk-demo"
 	ProjectGUID="{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FC}"
-	RootNamespace="gtkdemo"
+	RootNamespace="btkdemo"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -22,7 +22,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\gtk-build-defines.vsprops"
+			InheritedPropertySheets=".\btk-build-defines.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -31,7 +31,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk"
+				AdditionalIncludeDirectories="..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk"
 				PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -43,7 +43,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cairo.lib pango-1.0.lib pangocairo-1.0.lib"
+				AdditionalDependencies="bairo.lib bango-1.0.lib bangobairo-1.0.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -54,7 +54,7 @@
 		<Configuration
 			Name="Debug|x64"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\gtk-build-defines.vsprops"
+			InheritedPropertySheets=".\btk-build-defines.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk"
+				AdditionalIncludeDirectories="..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk"
 				PreprocessorDefinitions="_DEBUG;G_ENABLE_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -75,7 +75,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cairo.lib pango-1.0.lib pangocairo-1.0.lib"
+				AdditionalDependencies="bairo.lib bango-1.0.lib bangobairo-1.0.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -86,7 +86,7 @@
 		<Configuration
 			Name="Release|Win32"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\gtk-build-defines.vsprops"
+			InheritedPropertySheets=".\btk-build-defines.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -95,7 +95,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk"
+				AdditionalIncludeDirectories="..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk"
 				PreprocessorDefinitions=""
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -105,7 +105,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cairo.lib pango-1.0.lib pangocairo-1.0.lib"
+				AdditionalDependencies="bairo.lib bango-1.0.lib bangobairo-1.0.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -118,7 +118,7 @@
 		<Configuration
 			Name="Release|x64"
 			ConfigurationType="1"
-			InheritedPropertySheets=".\gtk-build-defines.vsprops"
+			InheritedPropertySheets=".\btk-build-defines.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -127,7 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk"
+				AdditionalIncludeDirectories="..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk"
 				PreprocessorDefinitions=""
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="cairo.lib pango-1.0.lib pangocairo-1.0.lib"
+				AdditionalDependencies="bairo.lib bango-1.0.lib bangobairo-1.0.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -156,7 +156,7 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-#include "gtk-demo.sourcefiles"
+#include "btk-demo.sourcefiles"
 		</Filter>
 		<Filter
 			Name="Header Files"

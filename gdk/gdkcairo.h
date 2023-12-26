@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2005 Red Hat, Inc. 
  *
  * This library is free software; you can redistribute it and/or
@@ -17,43 +17,43 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_CAIRO_H__
-#define __GDK_CAIRO_H__
+#ifndef __BDK_BAIRO_H__
+#define __BDK_BAIRO_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdkcolor.h>
-#include <gdk/gdkpixbuf.h>
-#include <pango/pangocairo.h>
+#include <bdk/bdkcolor.h>
+#include <bdk/bdkpixbuf.h>
+#include <bango/bangobairo.h>
 
 G_BEGIN_DECLS
 
-cairo_t *gdk_cairo_create            (GdkDrawable        *drawable);
-void     gdk_cairo_reset_clip        (cairo_t            *cr,
-				      GdkDrawable        *drawable);
+bairo_t *bdk_bairo_create            (BdkDrawable        *drawable);
+void     bdk_bairo_reset_clip        (bairo_t            *cr,
+				      BdkDrawable        *drawable);
 
-void     gdk_cairo_set_source_color  (cairo_t            *cr,
-                                      const GdkColor     *color);
-void     gdk_cairo_set_source_pixbuf (cairo_t            *cr,
-                                      const GdkPixbuf    *pixbuf,
+void     bdk_bairo_set_source_color  (bairo_t            *cr,
+                                      const BdkColor     *color);
+void     bdk_bairo_set_source_pixbuf (bairo_t            *cr,
+                                      const BdkPixbuf    *pixbuf,
                                       double              pixbuf_x,
                                       double              pixbuf_y);
-void     gdk_cairo_set_source_pixmap (cairo_t            *cr,
-                                      GdkPixmap          *pixmap,
+void     bdk_bairo_set_source_pixmap (bairo_t            *cr,
+                                      BdkPixmap          *pixmap,
                                       double              pixmap_x,
                                       double              pixmap_y);
-void     gdk_cairo_set_source_window (cairo_t            *cr,
-                                      GdkWindow          *window,
+void     bdk_bairo_set_source_window (bairo_t            *cr,
+                                      BdkWindow          *window,
                                       double              x,
                                       double              y);
 
-void     gdk_cairo_rectangle         (cairo_t            *cr,
-                                      const GdkRectangle *rectangle);
-void     gdk_cairo_region            (cairo_t            *cr,
-                                      const GdkRegion    *region);
+void     bdk_bairo_rectangle         (bairo_t            *cr,
+                                      const BdkRectangle *rectangle);
+void     bdk_bairo_rebunnyion            (bairo_t            *cr,
+                                      const BdkRebunnyion    *rebunnyion);
 
 G_END_DECLS
 
-#endif /* __GDK_CAIRO_H__ */
+#endif /* __BDK_BAIRO_H__ */

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,89 +18,89 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_CURVE_H__
-#define __GTK_CURVE_H__
+#ifndef __BTK_CURVE_H__
+#define __BTK_CURVE_H__
 
 
-#include <gtk/gtkdrawingarea.h>
+#include <btk/btkdrawingarea.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CURVE                  (gtk_curve_get_type ())
-#define GTK_CURVE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CURVE, GtkCurve))
-#define GTK_CURVE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CURVE, GtkCurveClass))
-#define GTK_IS_CURVE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CURVE))
-#define GTK_IS_CURVE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CURVE))
-#define GTK_CURVE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CURVE, GtkCurveClass))
+#define BTK_TYPE_CURVE                  (btk_curve_get_type ())
+#define BTK_CURVE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CURVE, BtkCurve))
+#define BTK_CURVE_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CURVE, BtkCurveClass))
+#define BTK_IS_CURVE(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CURVE))
+#define BTK_IS_CURVE_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CURVE))
+#define BTK_CURVE_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CURVE, BtkCurveClass))
 
 
-typedef struct _GtkCurve	GtkCurve;
-typedef struct _GtkCurveClass	GtkCurveClass;
+typedef struct _BtkCurve	BtkCurve;
+typedef struct _BtkCurveClass	BtkCurveClass;
 
 
-struct _GtkCurve
+struct _BtkCurve
 {
-  GtkDrawingArea graph;
+  BtkDrawingArea graph;
 
   gint cursor_type;
   gfloat min_x;
   gfloat max_x;
   gfloat min_y;
   gfloat max_y;
-  GdkPixmap *pixmap;
-  GtkCurveType curve_type;
+  BdkPixmap *pixmap;
+  BtkCurveType curve_type;
   gint height;                  /* (cached) graph height in pixels */
   gint grab_point;              /* point currently grabbed */
   gint last;
 
   /* (cached) curve points: */
   gint num_points;
-  GdkPoint *point;
+  BdkPoint *point;
 
   /* control points: */
   gint num_ctlpoints;           /* number of control points */
   gfloat (*ctlpoint)[2];        /* array of control points */
 };
 
-struct _GtkCurveClass
+struct _BtkCurveClass
 {
-  GtkDrawingAreaClass parent_class;
+  BtkDrawingAreaClass parent_class;
 
-  void (* curve_type_changed) (GtkCurve *curve);
+  void (* curve_type_changed) (BtkCurve *curve);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType		gtk_curve_get_type	(void) G_GNUC_CONST;
-GtkWidget*	gtk_curve_new		(void);
-void		gtk_curve_reset		(GtkCurve *curve);
-void		gtk_curve_set_gamma	(GtkCurve *curve, gfloat gamma_);
-void		gtk_curve_set_range	(GtkCurve *curve,
+GType		btk_curve_get_type	(void) G_GNUC_CONST;
+BtkWidget*	btk_curve_new		(void);
+void		btk_curve_reset		(BtkCurve *curve);
+void		btk_curve_set_gamma	(BtkCurve *curve, gfloat gamma_);
+void		btk_curve_set_range	(BtkCurve *curve,
 					 gfloat min_x, gfloat max_x,
 					 gfloat min_y, gfloat max_y);
-void		gtk_curve_get_vector	(GtkCurve *curve,
+void		btk_curve_get_vector	(BtkCurve *curve,
 					 int veclen, gfloat vector[]);
-void		gtk_curve_set_vector	(GtkCurve *curve,
+void		btk_curve_set_vector	(BtkCurve *curve,
 					 int veclen, gfloat vector[]);
-void		gtk_curve_set_curve_type (GtkCurve *curve, GtkCurveType type);
+void		btk_curve_set_curve_type (BtkCurve *curve, BtkCurveType type);
 
 
 G_END_DECLS
 
-#endif /* __GTK_CURVE_H__ */
+#endif /* __BTK_CURVE_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -21,126 +21,126 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include <gtk/gtk.h>
-#include "gailcontainercell.h"
-#include "gailcell.h"
-#include "gailcellparent.h"
+#include <btk/btk.h>
+#include "bailcontainercell.h"
+#include "bailcell.h"
+#include "bailcellparent.h"
 
-static void	    gail_cell_class_init          (GailCellClass       *klass);
-static void         gail_cell_destroyed           (GtkWidget           *widget,
-                                                   GailCell            *cell);
+static void	    bail_cell_class_init          (BailCellClass       *klass);
+static void         bail_cell_destroyed           (BtkWidget           *widget,
+                                                   BailCell            *cell);
 
-static void         gail_cell_init                (GailCell            *cell);
-static void         gail_cell_object_finalize     (GObject             *cell);
-static AtkStateSet* gail_cell_ref_state_set       (AtkObject           *obj);
-static gint         gail_cell_get_index_in_parent (AtkObject           *obj);
+static void         bail_cell_init                (BailCell            *cell);
+static void         bail_cell_object_finalize     (GObject             *cell);
+static BatkStateSet* bail_cell_ref_state_set       (BatkObject           *obj);
+static gint         bail_cell_get_index_in_parent (BatkObject           *obj);
 
-/* AtkAction */
+/* BatkAction */
 
-static void         atk_action_interface_init 
-                                                  (AtkActionIface      *iface);
-static ActionInfo * _gail_cell_get_action_info    (GailCell            *cell,
+static void         batk_action_interface_init 
+                                                  (BatkActionIface      *iface);
+static ActionInfo * _bail_cell_get_action_info    (BailCell            *cell,
 			                           gint                index);
-static void         _gail_cell_destroy_action_info 
+static void         _bail_cell_destroy_action_info 
                                                   (gpointer            data,
 				                   gpointer            user_data);
 
-static gint         gail_cell_action_get_n_actions 
-                                                  (AtkAction           *action);
+static gint         bail_cell_action_get_n_actions 
+                                                  (BatkAction           *action);
 static const gchar *
-                    gail_cell_action_get_name     (AtkAction           *action,
+                    bail_cell_action_get_name     (BatkAction           *action,
 			                           gint                index);
 static const gchar *
-                    gail_cell_action_get_description 
-                                                  (AtkAction           *action,
+                    bail_cell_action_get_description 
+                                                  (BatkAction           *action,
 				                   gint                index);
-static gboolean     gail_cell_action_set_description 
-                                                  (AtkAction           *action,
+static gboolean     bail_cell_action_set_description 
+                                                  (BatkAction           *action,
 				                   gint                index,
 				                   const gchar         *desc);
 static const gchar *
-                    gail_cell_action_get_keybinding 
-                                                  (AtkAction           *action,
+                    bail_cell_action_get_keybinding 
+                                                  (BatkAction           *action,
 				                   gint                index);
-static gboolean     gail_cell_action_do_action    (AtkAction           *action,
+static gboolean     bail_cell_action_do_action    (BatkAction           *action,
 			                           gint                index);
 static gboolean     idle_do_action                (gpointer            data);
 
-static void         atk_component_interface_init  (AtkComponentIface   *iface);
-static void         gail_cell_get_extents         (AtkComponent        *component,
+static void         batk_component_interface_init  (BatkComponentIface   *iface);
+static void         bail_cell_get_extents         (BatkComponent        *component,
                                                    gint                *x,
                                                    gint                *y,
                                                    gint                *width,
                                                    gint                *height,
-                                                   AtkCoordType        coord_type);
-static gboolean     gail_cell_grab_focus         (AtkComponent        *component);
+                                                   BatkCoordType        coord_type);
+static gboolean     bail_cell_grab_focus         (BatkComponent        *component);
 
-G_DEFINE_TYPE_WITH_CODE (GailCell, gail_cell, ATK_TYPE_OBJECT,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_COMPONENT, atk_component_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailCell, bail_cell, BATK_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_COMPONENT, batk_component_interface_init))
 
 static void	 
-gail_cell_class_init (GailCellClass *klass)
+bail_cell_class_init (BailCellClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
   GObjectClass *g_object_class = G_OBJECT_CLASS (klass);
 
-  g_object_class->finalize = gail_cell_object_finalize;
+  g_object_class->finalize = bail_cell_object_finalize;
 
-  class->get_index_in_parent = gail_cell_get_index_in_parent;
-  class->ref_state_set = gail_cell_ref_state_set;
+  class->get_index_in_parent = bail_cell_get_index_in_parent;
+  class->ref_state_set = bail_cell_ref_state_set;
 }
 
 void 
-gail_cell_initialise (GailCell  *cell,
-                      GtkWidget *widget,
-                      AtkObject *parent,
+bail_cell_initialise (BailCell  *cell,
+                      BtkWidget *widget,
+                      BatkObject *parent,
                       gint      index)
 {
-  g_return_if_fail (GAIL_IS_CELL (cell));
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BAIL_IS_CELL (cell));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
   cell->widget = widget;
-  atk_object_set_parent (ATK_OBJECT (cell), parent);
+  batk_object_set_parent (BATK_OBJECT (cell), parent);
   cell->index = index;
 
   g_signal_connect_object (G_OBJECT (widget),
                            "destroy",
-                           G_CALLBACK (gail_cell_destroyed ),
+                           G_CALLBACK (bail_cell_destroyed ),
                            cell, 0);
 }
 
 static void
-gail_cell_destroyed (GtkWidget       *widget,
-                     GailCell        *cell)
+bail_cell_destroyed (BtkWidget       *widget,
+                     BailCell        *cell)
 {
   /*
    * This is the signal handler for the "destroy" signal for the 
-   * GtkWidget. We set the  pointer location to NULL;
+   * BtkWidget. We set the  pointer location to NULL;
    */
   cell->widget = NULL;
 }
 
 static void
-gail_cell_init (GailCell *cell)
+bail_cell_init (BailCell *cell)
 {
-  cell->state_set = atk_state_set_new ();
+  cell->state_set = batk_state_set_new ();
   cell->widget = NULL;
   cell->action_list = NULL;
   cell->index = 0;
-  atk_state_set_add_state (cell->state_set, ATK_STATE_TRANSIENT);
-  atk_state_set_add_state (cell->state_set, ATK_STATE_ENABLED);
-  atk_state_set_add_state (cell->state_set, ATK_STATE_SENSITIVE);
-  atk_state_set_add_state (cell->state_set, ATK_STATE_SELECTABLE);
+  batk_state_set_add_state (cell->state_set, BATK_STATE_TRANSIENT);
+  batk_state_set_add_state (cell->state_set, BATK_STATE_ENABLED);
+  batk_state_set_add_state (cell->state_set, BATK_STATE_SENSITIVE);
+  batk_state_set_add_state (cell->state_set, BATK_STATE_SELECTABLE);
   cell->refresh_index = NULL;
 }
 
 static void
-gail_cell_object_finalize (GObject *obj)
+bail_cell_object_finalize (GObject *obj)
 {
-  GailCell *cell = GAIL_CELL (obj);
-  AtkRelationSet *relation_set;
-  AtkRelation *relation;
+  BailCell *cell = BAIL_CELL (obj);
+  BatkRelationSet *relation_set;
+  BatkRelation *relation;
   GPtrArray *target;
   gpointer target_object;
   gint i;
@@ -149,7 +149,7 @@ gail_cell_object_finalize (GObject *obj)
     g_object_unref (cell->state_set);
   if (cell->action_list)
     {
-      g_list_foreach (cell->action_list, _gail_cell_destroy_action_info, NULL);
+      g_list_foreach (cell->action_list, _bail_cell_destroy_action_info, NULL);
       g_list_free (cell->action_list);
     }
   if (cell->action_idle_handler)
@@ -157,18 +157,18 @@ gail_cell_object_finalize (GObject *obj)
       g_source_remove (cell->action_idle_handler);
       cell->action_idle_handler = 0;
     }
-  relation_set = atk_object_ref_relation_set (ATK_OBJECT (obj));
-  if (ATK_IS_RELATION_SET (relation_set))
+  relation_set = batk_object_ref_relation_set (BATK_OBJECT (obj));
+  if (BATK_IS_RELATION_SET (relation_set))
     {
-      relation = atk_relation_set_get_relation_by_type (relation_set, 
-                                                        ATK_RELATION_NODE_CHILD_OF);
+      relation = batk_relation_set_get_relation_by_type (relation_set, 
+                                                        BATK_RELATION_NODE_CHILD_OF);
       if (relation)
         {
-          target = atk_relation_get_target (relation);
+          target = batk_relation_get_target (relation);
           for (i = 0; i < target->len; i++)
             {
               target_object = g_ptr_array_index (target, i);
-              if (GAIL_IS_CELL (target_object))
+              if (BAIL_IS_CELL (target_object))
                 {
                   g_object_unref (target_object);
                 }
@@ -176,13 +176,13 @@ gail_cell_object_finalize (GObject *obj)
         }
       g_object_unref (relation_set);
     }
-  G_OBJECT_CLASS (gail_cell_parent_class)->finalize (obj);
+  G_OBJECT_CLASS (bail_cell_parent_class)->finalize (obj);
 }
 
-static AtkStateSet *
-gail_cell_ref_state_set (AtkObject *obj)
+static BatkStateSet *
+bail_cell_ref_state_set (BatkObject *obj)
 {
-  GailCell *cell = GAIL_CELL (obj);
+  BailCell *cell = BAIL_CELL (obj);
   g_assert (cell->state_set);
 
   g_object_ref(cell->state_set);
@@ -190,16 +190,16 @@ gail_cell_ref_state_set (AtkObject *obj)
 }
 
 gboolean
-gail_cell_add_state (GailCell     *cell, 
-                     AtkStateType state_type,
+bail_cell_add_state (BailCell     *cell, 
+                     BatkStateType state_type,
                      gboolean     emit_signal)
 {
-  if (!atk_state_set_contains_state (cell->state_set, state_type))
+  if (!batk_state_set_contains_state (cell->state_set, state_type))
     {
       gboolean rc;
-      AtkObject *parent;
+      BatkObject *parent;
     
-      rc = atk_state_set_add_state (cell->state_set, state_type);
+      rc = batk_state_set_add_state (cell->state_set, state_type);
       /*
        * The signal should only be generated if the value changed,
        * not when the cell is set up.  So states that are set
@@ -208,9 +208,9 @@ gail_cell_add_state (GailCell     *cell,
 
       if (emit_signal)
         {
-          atk_object_notify_state_change (ATK_OBJECT (cell), state_type, TRUE);
-          /* If state_type is ATK_STATE_VISIBLE, additional notification */
-          if (state_type == ATK_STATE_VISIBLE)
+          batk_object_notify_state_change (BATK_OBJECT (cell), state_type, TRUE);
+          /* If state_type is BATK_STATE_VISIBLE, additional notification */
+          if (state_type == BATK_STATE_VISIBLE)
             g_signal_emit_by_name (cell, "visible_data_changed");
         }
 
@@ -219,9 +219,9 @@ gail_cell_add_state (GailCell     *cell,
        * change to it also 
        */
 
-      parent = atk_object_get_parent (ATK_OBJECT (cell));
-      if (GAIL_IS_CONTAINER_CELL (parent))
-        gail_cell_add_state (GAIL_CELL (parent), state_type, emit_signal);
+      parent = batk_object_get_parent (BATK_OBJECT (cell));
+      if (BAIL_IS_CONTAINER_CELL (parent))
+        bail_cell_add_state (BAIL_CELL (parent), state_type, emit_signal);
       return rc;
     }
   else
@@ -229,18 +229,18 @@ gail_cell_add_state (GailCell     *cell,
 }
 
 gboolean
-gail_cell_remove_state (GailCell     *cell, 
-                        AtkStateType state_type,
+bail_cell_remove_state (BailCell     *cell, 
+                        BatkStateType state_type,
                         gboolean     emit_signal)
 {
-  if (atk_state_set_contains_state (cell->state_set, state_type))
+  if (batk_state_set_contains_state (cell->state_set, state_type))
     {
       gboolean rc;
-      AtkObject *parent;
+      BatkObject *parent;
 
-      parent = atk_object_get_parent (ATK_OBJECT (cell));
+      parent = batk_object_get_parent (BATK_OBJECT (cell));
 
-      rc = atk_state_set_remove_state (cell->state_set, state_type);
+      rc = batk_state_set_remove_state (cell->state_set, state_type);
       /*
        * The signal should only be generated if the value changed,
        * not when the cell is set up.  So states that are set
@@ -249,9 +249,9 @@ gail_cell_remove_state (GailCell     *cell,
 
       if (emit_signal)
         {
-          atk_object_notify_state_change (ATK_OBJECT (cell), state_type, FALSE);
-          /* If state_type is ATK_STATE_VISIBLE, additional notification */
-          if (state_type == ATK_STATE_VISIBLE)
+          batk_object_notify_state_change (BATK_OBJECT (cell), state_type, FALSE);
+          /* If state_type is BATK_STATE_VISIBLE, additional notification */
+          if (state_type == BATK_STATE_VISIBLE)
             g_signal_emit_by_name (cell, "visible_data_changed");
         }
 
@@ -260,8 +260,8 @@ gail_cell_remove_state (GailCell     *cell,
        * change to it also 
        */
 
-      if (GAIL_IS_CONTAINER_CELL (parent))
-        gail_cell_remove_state (GAIL_CELL (parent), state_type, emit_signal);
+      if (BAIL_IS_CONTAINER_CELL (parent))
+        bail_cell_remove_state (BAIL_CELL (parent), state_type, emit_signal);
       return rc;
     }
   else
@@ -269,50 +269,50 @@ gail_cell_remove_state (GailCell     *cell,
 }
 
 static gint
-gail_cell_get_index_in_parent (AtkObject *obj)
+bail_cell_get_index_in_parent (BatkObject *obj)
 {
-  GailCell *cell;
+  BailCell *cell;
 
-  g_assert (GAIL_IS_CELL (obj));
+  g_assert (BAIL_IS_CELL (obj));
 
-  cell = GAIL_CELL (obj);
-  if (atk_state_set_contains_state (cell->state_set, ATK_STATE_STALE))
+  cell = BAIL_CELL (obj);
+  if (batk_state_set_contains_state (cell->state_set, BATK_STATE_STALE))
     if (cell->refresh_index)
       {
         cell->refresh_index (cell);
-        atk_state_set_remove_state (cell->state_set, ATK_STATE_STALE);
+        batk_state_set_remove_state (cell->state_set, BATK_STATE_STALE);
       }
   return cell->index;
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->get_n_actions = gail_cell_action_get_n_actions;
-  iface->do_action = gail_cell_action_do_action;
-  iface->get_name = gail_cell_action_get_name;
-  iface->get_description = gail_cell_action_get_description;
-  iface->set_description = gail_cell_action_set_description;
-  iface->get_keybinding = gail_cell_action_get_keybinding;
+  iface->get_n_actions = bail_cell_action_get_n_actions;
+  iface->do_action = bail_cell_action_do_action;
+  iface->get_name = bail_cell_action_get_name;
+  iface->get_description = bail_cell_action_get_description;
+  iface->set_description = bail_cell_action_set_description;
+  iface->get_keybinding = bail_cell_action_get_keybinding;
 }
 
 /*
  * Deprecated: 2.22: The action interface is added for all cells now.
  */
 void
-gail_cell_type_add_action_interface (GType type)
+bail_cell_type_add_action_interface (GType type)
 {
 }
 
 gboolean
-gail_cell_add_action (GailCell    *cell,
+bail_cell_add_action (BailCell    *cell,
 		      const gchar *action_name,
 		      const gchar *action_description,
 		      const gchar *action_keybinding,
 		      ACTION_FUNC action_func)
 {
   ActionInfo *info;
-  g_return_val_if_fail (GAIL_IS_CELL (cell), FALSE);
+  g_return_val_if_fail (BAIL_IS_CELL (cell), FALSE);
   info = g_new (ActionInfo, 1);
 
   if (action_name != NULL)
@@ -334,29 +334,29 @@ gail_cell_add_action (GailCell    *cell,
 }
 
 gboolean
-gail_cell_remove_action (GailCell *cell,
+bail_cell_remove_action (BailCell *cell,
 			 gint     action_index)
 {
   GList *list_node;
 
-  g_return_val_if_fail (GAIL_IS_CELL (cell), FALSE);
+  g_return_val_if_fail (BAIL_IS_CELL (cell), FALSE);
   list_node = g_list_nth (cell->action_list, action_index);
   if (!list_node)
     return FALSE;
-  _gail_cell_destroy_action_info (list_node->data, NULL);
+  _bail_cell_destroy_action_info (list_node->data, NULL);
   cell->action_list = g_list_remove_link (cell->action_list, list_node);
   return TRUE;
 }
 
 
 gboolean
-gail_cell_remove_action_by_name (GailCell    *cell,
+bail_cell_remove_action_by_name (BailCell    *cell,
 				 const gchar *action_name)
 {
   GList *list_node;
   gboolean action_found= FALSE;
   
-  g_return_val_if_fail (GAIL_IS_CELL (cell), FALSE);
+  g_return_val_if_fail (BAIL_IS_CELL (cell), FALSE);
   for (list_node = cell->action_list; list_node && !action_found; 
                     list_node = list_node->next)
     {
@@ -368,18 +368,18 @@ gail_cell_remove_action_by_name (GailCell    *cell,
     }
   if (!action_found)
     return FALSE;
-  _gail_cell_destroy_action_info (list_node->data, NULL);
+  _bail_cell_destroy_action_info (list_node->data, NULL);
   cell->action_list = g_list_remove_link (cell->action_list, list_node);
   return TRUE;
 }
 
 static ActionInfo *
-_gail_cell_get_action_info (GailCell *cell,
+_bail_cell_get_action_info (BailCell *cell,
 			    gint     index)
 {
   GList *list_node;
 
-  g_return_val_if_fail (GAIL_IS_CELL (cell), NULL);
+  g_return_val_if_fail (BAIL_IS_CELL (cell), NULL);
   if (cell->action_list == NULL)
     return NULL;
   list_node = g_list_nth (cell->action_list, index);
@@ -390,7 +390,7 @@ _gail_cell_get_action_info (GailCell *cell,
 
 
 static void
-_gail_cell_destroy_action_info (gpointer action_info, 
+_bail_cell_destroy_action_info (gpointer action_info, 
                                 gpointer user_data)
 {
   ActionInfo *info = (ActionInfo *)action_info;
@@ -401,9 +401,9 @@ _gail_cell_destroy_action_info (gpointer action_info,
   g_free (info);
 }
 static gint
-gail_cell_action_get_n_actions (AtkAction *action)
+bail_cell_action_get_n_actions (BatkAction *action)
 {
-  GailCell *cell = GAIL_CELL(action);
+  BailCell *cell = BAIL_CELL(action);
   if (cell->action_list != NULL)
     return g_list_length (cell->action_list);
   else
@@ -411,11 +411,11 @@ gail_cell_action_get_n_actions (AtkAction *action)
 }
 
 static const gchar *
-gail_cell_action_get_name (AtkAction *action,
+bail_cell_action_get_name (BatkAction *action,
 			   gint      index)
 {
-  GailCell *cell = GAIL_CELL(action);
-  ActionInfo *info = _gail_cell_get_action_info (cell, index);
+  BailCell *cell = BAIL_CELL(action);
+  ActionInfo *info = _bail_cell_get_action_info (cell, index);
 
   if (info == NULL)
     return NULL;
@@ -423,11 +423,11 @@ gail_cell_action_get_name (AtkAction *action,
 }
 
 static const gchar *
-gail_cell_action_get_description (AtkAction *action,
+bail_cell_action_get_description (BatkAction *action,
 				  gint      index)
 {
-  GailCell *cell = GAIL_CELL(action);
-  ActionInfo *info = _gail_cell_get_action_info (cell, index);
+  BailCell *cell = BAIL_CELL(action);
+  ActionInfo *info = _bail_cell_get_action_info (cell, index);
 
   if (info == NULL)
     return NULL;
@@ -435,12 +435,12 @@ gail_cell_action_get_description (AtkAction *action,
 }
 
 static gboolean
-gail_cell_action_set_description (AtkAction   *action,
+bail_cell_action_set_description (BatkAction   *action,
 				  gint        index,
 				  const gchar *desc)
 {
-  GailCell *cell = GAIL_CELL(action);
-  ActionInfo *info = _gail_cell_get_action_info (cell, index);
+  BailCell *cell = BAIL_CELL(action);
+  ActionInfo *info = _bail_cell_get_action_info (cell, index);
 
   if (info == NULL)
     return FALSE;
@@ -450,22 +450,22 @@ gail_cell_action_set_description (AtkAction   *action,
 }
 
 static const gchar *
-gail_cell_action_get_keybinding (AtkAction *action,
+bail_cell_action_get_keybinding (BatkAction *action,
 				 gint      index)
 {
-  GailCell *cell = GAIL_CELL(action);
-  ActionInfo *info = _gail_cell_get_action_info (cell, index);
+  BailCell *cell = BAIL_CELL(action);
+  ActionInfo *info = _bail_cell_get_action_info (cell, index);
   if (info == NULL)
     return NULL;
   return info->keybinding;
 }
 
 static gboolean
-gail_cell_action_do_action (AtkAction *action,
+bail_cell_action_do_action (BatkAction *action,
 			    gint      index)
 {
-  GailCell *cell = GAIL_CELL(action);
-  ActionInfo *info = _gail_cell_get_action_info (cell, index);
+  BailCell *cell = BAIL_CELL(action);
+  ActionInfo *info = _bail_cell_get_action_info (cell, index);
   if (info == NULL)
     return FALSE;
   if (info->do_action_func == NULL)
@@ -473,16 +473,16 @@ gail_cell_action_do_action (AtkAction *action,
   if (cell->action_idle_handler)
     return FALSE;
   cell->action_func = info->do_action_func;
-  cell->action_idle_handler = gdk_threads_add_idle (idle_do_action, cell);
+  cell->action_idle_handler = bdk_threads_add_idle (idle_do_action, cell);
   return TRUE;
 }
 
 static gboolean
 idle_do_action (gpointer data)
 {
-  GailCell *cell;
+  BailCell *cell;
 
-  cell = GAIL_CELL (data);
+  cell = BAIL_CELL (data);
   cell->action_idle_handler = 0;
   cell->action_func (cell);
 
@@ -490,45 +490,45 @@ idle_do_action (gpointer data)
 }
 
 static void
-atk_component_interface_init (AtkComponentIface *iface)
+batk_component_interface_init (BatkComponentIface *iface)
 {
-  iface->get_extents = gail_cell_get_extents;
-  iface->grab_focus = gail_cell_grab_focus;
+  iface->get_extents = bail_cell_get_extents;
+  iface->grab_focus = bail_cell_grab_focus;
 }
 
 static void 
-gail_cell_get_extents (AtkComponent *component,
+bail_cell_get_extents (BatkComponent *component,
                        gint         *x,
                        gint         *y,
                        gint         *width,
                        gint         *height,
-                       AtkCoordType coord_type)
+                       BatkCoordType coord_type)
 {
-  GailCell *gailcell;
-  AtkObject *cell_parent;
+  BailCell *bailcell;
+  BatkObject *cell_parent;
 
-  g_assert (GAIL_IS_CELL (component));
+  g_assert (BAIL_IS_CELL (component));
 
-  gailcell = GAIL_CELL (component);
+  bailcell = BAIL_CELL (component);
 
-  cell_parent = gtk_widget_get_accessible (gailcell->widget);
+  cell_parent = btk_widget_get_accessible (bailcell->widget);
 
-  gail_cell_parent_get_cell_extents (GAIL_CELL_PARENT (cell_parent), 
-                                   gailcell, x, y, width, height, coord_type);
+  bail_cell_parent_get_cell_extents (BAIL_CELL_PARENT (cell_parent), 
+                                   bailcell, x, y, width, height, coord_type);
 }
 
 static gboolean 
-gail_cell_grab_focus (AtkComponent *component)
+bail_cell_grab_focus (BatkComponent *component)
 {
-  GailCell *gailcell;
-  AtkObject *cell_parent;
+  BailCell *bailcell;
+  BatkObject *cell_parent;
 
-  g_assert (GAIL_IS_CELL (component));
+  g_assert (BAIL_IS_CELL (component));
 
-  gailcell = GAIL_CELL (component);
+  bailcell = BAIL_CELL (component);
 
-  cell_parent = gtk_widget_get_accessible (gailcell->widget);
+  cell_parent = btk_widget_get_accessible (bailcell->widget);
 
-  return gail_cell_parent_grab_focus (GAIL_CELL_PARENT (cell_parent), 
-                                      gailcell);
+  return bail_cell_parent_grab_focus (BAIL_CELL_PARENT (cell_parent), 
+                                      bailcell);
 }

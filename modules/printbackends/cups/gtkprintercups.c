@@ -1,4 +1,4 @@
-/* GtkPrinterCupsCups
+/* BtkPrinterCupsCups
  * Copyright (C) 2006 John (J5) Palmieri  <johnp@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -18,55 +18,55 @@
  */
 
 #include "config.h"
-#include "gtkprintercups.h"
+#include "btkprintercups.h"
 
-static void gtk_printer_cups_init       (GtkPrinterCups      *printer);
-static void gtk_printer_cups_class_init (GtkPrinterCupsClass *class);
-static void gtk_printer_cups_finalize   (GObject             *object);
+static void btk_printer_cups_init       (BtkPrinterCups      *printer);
+static void btk_printer_cups_class_init (BtkPrinterCupsClass *class);
+static void btk_printer_cups_finalize   (GObject             *object);
 
-static GtkPrinterClass *gtk_printer_cups_parent_class;
-static GType gtk_printer_cups_type = 0;
+static BtkPrinterClass *btk_printer_cups_parent_class;
+static GType btk_printer_cups_type = 0;
 
 void 
-gtk_printer_cups_register_type (GTypeModule *module)
+btk_printer_cups_register_type (GTypeModule *module)
 {
   const GTypeInfo object_info =
   {
-    sizeof (GtkPrinterCupsClass),
+    sizeof (BtkPrinterCupsClass),
     (GBaseInitFunc) NULL,
     (GBaseFinalizeFunc) NULL,
-    (GClassInitFunc) gtk_printer_cups_class_init,
+    (GClassInitFunc) btk_printer_cups_class_init,
     NULL,           /* class_finalize */
     NULL,           /* class_data */
-    sizeof (GtkPrinterCups),
+    sizeof (BtkPrinterCups),
     0,              /* n_preallocs */
-    (GInstanceInitFunc) gtk_printer_cups_init,
+    (GInstanceInitFunc) btk_printer_cups_init,
   };
 
- gtk_printer_cups_type = g_type_module_register_type (module,
-                                                      GTK_TYPE_PRINTER,
-                                                      "GtkPrinterCups",
+ btk_printer_cups_type = g_type_module_register_type (module,
+                                                      BTK_TYPE_PRINTER,
+                                                      "BtkPrinterCups",
                                                       &object_info, 0);
 }
 
 GType
-gtk_printer_cups_get_type (void)
+btk_printer_cups_get_type (void)
 {
-  return gtk_printer_cups_type;
+  return btk_printer_cups_type;
 }
 
 static void
-gtk_printer_cups_class_init (GtkPrinterCupsClass *class)
+btk_printer_cups_class_init (BtkPrinterCupsClass *class)
 {
   GObjectClass *object_class = (GObjectClass *) class;
 	
-  gtk_printer_cups_parent_class = g_type_class_peek_parent (class);
+  btk_printer_cups_parent_class = g_type_class_peek_parent (class);
 
-  object_class->finalize = gtk_printer_cups_finalize;
+  object_class->finalize = btk_printer_cups_finalize;
 }
 
 static void
-gtk_printer_cups_init (GtkPrinterCups *printer)
+btk_printer_cups_init (BtkPrinterCups *printer)
 {
   printer->device_uri = NULL;
   printer->printer_uri = NULL;
@@ -96,13 +96,13 @@ gtk_printer_cups_init (GtkPrinterCups *printer)
 }
 
 static void
-gtk_printer_cups_finalize (GObject *object)
+btk_printer_cups_finalize (GObject *object)
 {
-  GtkPrinterCups *printer;
+  BtkPrinterCups *printer;
 
   g_return_if_fail (object != NULL);
 
-  printer = GTK_PRINTER_CUPS (object);
+  printer = BTK_PRINTER_CUPS (object);
 
   g_free (printer->device_uri);
   g_free (printer->printer_uri);
@@ -125,27 +125,27 @@ gtk_printer_cups_finalize (GObject *object)
     g_source_remove (printer->get_remote_ppd_poll);
   printer->get_remote_ppd_attempts = 0;
 
-  gtk_cups_connection_test_free (printer->remote_cups_connection_test);
+  btk_cups_connection_test_free (printer->remote_cups_connection_test);
 
-  G_OBJECT_CLASS (gtk_printer_cups_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_printer_cups_parent_class)->finalize (object);
 }
 
 /**
- * gtk_printer_cups_new:
+ * btk_printer_cups_new:
  *
- * Creates a new #GtkPrinterCups.
+ * Creates a new #BtkPrinterCups.
  *
- * Return value: a new #GtkPrinterCups
+ * Return value: a new #BtkPrinterCups
  *
  * Since: 2.10
  **/
-GtkPrinterCups *
-gtk_printer_cups_new (const char      *name,
-		      GtkPrintBackend *backend)
+BtkPrinterCups *
+btk_printer_cups_new (const char      *name,
+		      BtkPrintBackend *backend)
 {
   GObject *result;
   gboolean accepts_pdf;
-  GtkPrinterCups *printer;
+  BtkPrinterCups *printer;
 
 #if (CUPS_VERSION_MAJOR == 1 && CUPS_VERSION_MINOR >= 2) || CUPS_VERSION_MAJOR > 1
   accepts_pdf = TRUE;
@@ -153,14 +153,14 @@ gtk_printer_cups_new (const char      *name,
   accepts_pdf = FALSE;
 #endif
 
-  result = g_object_new (GTK_TYPE_PRINTER_CUPS,
+  result = g_object_new (BTK_TYPE_PRINTER_CUPS,
 			 "name", name,
 			 "backend", backend,
 			 "is-virtual", FALSE,
 			 "accepts-pdf", accepts_pdf,
                          NULL);
 
-  printer = GTK_PRINTER_CUPS (result);
+  printer = BTK_PRINTER_CUPS (result);
 
   /*
    * IPP version 1.1 has to be supported
@@ -173,20 +173,20 @@ gtk_printer_cups_new (const char      *name,
 }
 
 ppd_file_t *
-gtk_printer_cups_get_ppd (GtkPrinterCups *printer)
+btk_printer_cups_get_ppd (BtkPrinterCups *printer)
 {
   return printer->ppd_file;
 }
 
 const gchar *
-gtk_printer_cups_get_ppd_name (GtkPrinterCups  *printer)
+btk_printer_cups_get_ppd_name (BtkPrinterCups  *printer)
 {
   const gchar *result;
 
   result = printer->ppd_name;
 
   if (result == NULL)
-    result = gtk_printer_get_name (GTK_PRINTER (printer));
+    result = btk_printer_get_name (BTK_PRINTER (printer));
 
   return result;
 }

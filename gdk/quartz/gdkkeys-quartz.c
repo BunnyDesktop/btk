@@ -1,4 +1,4 @@
-/* gdkkeys-quartz.c
+/* bdkkeys-quartz.c
  *
  * Copyright (C) 2000 Red Hat, Inc.
  * Copyright (C) 2005 Imendio AB
@@ -53,13 +53,13 @@
 
 #include <Carbon/Carbon.h>
 #include <AppKit/NSEvent.h>
-#include "gdk.h"
-#include "gdkkeysyms.h"
+#include "bdk.h"
+#include "bdkkeysyms.h"
 
 #define NUM_KEYCODES 128
 #define KEYVALS_PER_KEYCODE 4
 
-static GdkKeymap *default_keymap = NULL;
+static BdkKeymap *default_keymap = NULL;
 
 /* This is a table of all keyvals. Each keycode gets KEYVALS_PER_KEYCODE entries.
  * TThere is 1 keyval per modifier (Nothing, Shift, Alt, Shift+Alt);
@@ -103,135 +103,135 @@ const static struct {
   guint keyval;
   unsigned int modmask; /* So we can tell when a mod key is pressed/released */
 } modifier_keys[] = {
-  {  54, GDK_Meta_R,    NSCommandKeyMask },
-  {  55, GDK_Meta_L,    NSCommandKeyMask },
-  {  56, GDK_Shift_L,   NSShiftKeyMask },
-  {  57, GDK_Caps_Lock, NSAlphaShiftKeyMask },
-  {  58, GDK_Alt_L,     NSAlternateKeyMask },
-  {  59, GDK_Control_L, NSControlKeyMask },
-  {  60, GDK_Shift_R,   NSShiftKeyMask },
-  {  61, GDK_Alt_R,     NSAlternateKeyMask },
-  {  62, GDK_Control_R, NSControlKeyMask }
+  {  54, BDK_Meta_R,    NSCommandKeyMask },
+  {  55, BDK_Meta_L,    NSCommandKeyMask },
+  {  56, BDK_Shift_L,   NSShiftKeyMask },
+  {  57, BDK_Caps_Lock, NSAlphaShiftKeyMask },
+  {  58, BDK_Alt_L,     NSAlternateKeyMask },
+  {  59, BDK_Control_L, NSControlKeyMask },
+  {  60, BDK_Shift_R,   NSShiftKeyMask },
+  {  61, BDK_Alt_R,     NSAlternateKeyMask },
+  {  62, BDK_Control_R, NSControlKeyMask }
 };
 
 const static struct {
   guint keycode;
   guint keyval;
 } function_keys[] = {
-  { 122, GDK_F1 },
-  { 120, GDK_F2 },
-  {  99, GDK_F3 },
-  { 118, GDK_F4 },
-  {  96, GDK_F5 },
-  {  97, GDK_F6 },
-  {  98, GDK_F7 },
-  { 100, GDK_F8 },
-  { 101, GDK_F9 },
-  { 109, GDK_F10 },
-  { 103, GDK_F11 },
-  { 111, GDK_F12 },
-  { 105, GDK_F13 },
-  { 107, GDK_F14 },
-  { 113, GDK_F15 },
-  { 106, GDK_F16 }
+  { 122, BDK_F1 },
+  { 120, BDK_F2 },
+  {  99, BDK_F3 },
+  { 118, BDK_F4 },
+  {  96, BDK_F5 },
+  {  97, BDK_F6 },
+  {  98, BDK_F7 },
+  { 100, BDK_F8 },
+  { 101, BDK_F9 },
+  { 109, BDK_F10 },
+  { 103, BDK_F11 },
+  { 111, BDK_F12 },
+  { 105, BDK_F13 },
+  { 107, BDK_F14 },
+  { 113, BDK_F15 },
+  { 106, BDK_F16 }
 };
 
 const static struct {
   guint keycode;
   guint normal_keyval, keypad_keyval;
 } known_numeric_keys[] = {
-  { 65, GDK_period, GDK_KP_Decimal },
-  { 67, GDK_asterisk, GDK_KP_Multiply },
-  { 69, GDK_plus, GDK_KP_Add },
-  { 75, GDK_slash, GDK_KP_Divide },
-  { 76, GDK_Return, GDK_KP_Enter },
-  { 78, GDK_minus, GDK_KP_Subtract },
-  { 81, GDK_equal, GDK_KP_Equal },
-  { 82, GDK_0, GDK_KP_0 },
-  { 83, GDK_1, GDK_KP_1 },
-  { 84, GDK_2, GDK_KP_2 },
-  { 85, GDK_3, GDK_KP_3 },
-  { 86, GDK_4, GDK_KP_4 },
-  { 87, GDK_5, GDK_KP_5 },
-  { 88, GDK_6, GDK_KP_6 },
-  { 89, GDK_7, GDK_KP_7 },
-  { 91, GDK_8, GDK_KP_8 },
-  { 92, GDK_9, GDK_KP_9 }
+  { 65, BDK_period, BDK_KP_Decimal },
+  { 67, BDK_asterisk, BDK_KP_Multiply },
+  { 69, BDK_plus, BDK_KP_Add },
+  { 75, BDK_slash, BDK_KP_Divide },
+  { 76, BDK_Return, BDK_KP_Enter },
+  { 78, BDK_minus, BDK_KP_Subtract },
+  { 81, BDK_equal, BDK_KP_Equal },
+  { 82, BDK_0, BDK_KP_0 },
+  { 83, BDK_1, BDK_KP_1 },
+  { 84, BDK_2, BDK_KP_2 },
+  { 85, BDK_3, BDK_KP_3 },
+  { 86, BDK_4, BDK_KP_4 },
+  { 87, BDK_5, BDK_KP_5 },
+  { 88, BDK_6, BDK_KP_6 },
+  { 89, BDK_7, BDK_KP_7 },
+  { 91, BDK_8, BDK_KP_8 },
+  { 92, BDK_9, BDK_KP_9 }
 };
 
-/* These values aren't covered by gdk_unicode_to_keyval */
+/* These values aren't covered by bdk_unicode_to_keyval */
 const static struct {
   gunichar ucs_value;
   guint keyval;
 } special_ucs_table [] = {
-  { 0x0001, GDK_Home },
-  { 0x0003, GDK_Return },
-  { 0x0004, GDK_End },
-  { 0x0008, GDK_BackSpace },
-  { 0x0009, GDK_Tab },
-  { 0x000b, GDK_Page_Up },
-  { 0x000c, GDK_Page_Down },
-  { 0x000d, GDK_Return },
-  { 0x001b, GDK_Escape },
-  { 0x001c, GDK_Left },
-  { 0x001d, GDK_Right },
-  { 0x001e, GDK_Up },
-  { 0x001f, GDK_Down },
-  { 0x007f, GDK_Delete },
-  { 0xf027, GDK_dead_acute },
-  { 0xf060, GDK_dead_grave },
-  { 0xf300, GDK_dead_grave },
-  { 0xf0b4, GDK_dead_acute },
-  { 0xf301, GDK_dead_acute },
-  { 0xf385, GDK_dead_acute },
-  { 0xf05e, GDK_dead_circumflex },
-  { 0xf2c6, GDK_dead_circumflex },
-  { 0xf302, GDK_dead_circumflex },
-  { 0xf07e, GDK_dead_tilde },
-  { 0xf2dc, GDK_dead_tilde },
-  { 0xf303, GDK_dead_tilde },
-  { 0xf342, GDK_dead_perispomeni },
-  { 0xf0af, GDK_dead_macron },
-  { 0xf304, GDK_dead_macron },
-  { 0xf2d8, GDK_dead_breve },
-  { 0xf306, GDK_dead_breve },
-  { 0xf2d9, GDK_dead_abovedot },
-  { 0xf307, GDK_dead_abovedot },
-  { 0xf0a8, GDK_dead_diaeresis },
-  { 0xf308, GDK_dead_diaeresis },
-  { 0xf2da, GDK_dead_abovering },
-  { 0xf30A, GDK_dead_abovering },
-  { 0xf022, GDK_dead_doubleacute },
-  { 0xf2dd, GDK_dead_doubleacute },
-  { 0xf30B, GDK_dead_doubleacute },
-  { 0xf2c7, GDK_dead_caron },
-  { 0xf30C, GDK_dead_caron },
-  { 0xf0be, GDK_dead_cedilla },
-  { 0xf327, GDK_dead_cedilla },
-  { 0xf2db, GDK_dead_ogonek },
-  { 0xf328, GDK_dead_ogonek },
-  { 0xfe5d, GDK_dead_iota },
-  { 0xf323, GDK_dead_belowdot },
-  { 0xf309, GDK_dead_hook },
-  { 0xf31B, GDK_dead_horn },
-  { 0xf02d, GDK_dead_stroke },
-  { 0xf335, GDK_dead_stroke },
-  { 0xf336, GDK_dead_stroke },
-  { 0xf313, GDK_dead_abovecomma },
-  /*  { 0xf313, GDK_dead_psili }, */
-  { 0xf314, GDK_dead_abovereversedcomma },
-  /*  { 0xf314, GDK_dead_dasia }, */
-  { 0xf30F, GDK_dead_doublegrave },
-  { 0xf325, GDK_dead_belowring },
-  { 0xf2cd, GDK_dead_belowmacron },
-  { 0xf331, GDK_dead_belowmacron },
-  { 0xf32D, GDK_dead_belowcircumflex },
-  { 0xf330, GDK_dead_belowtilde },
-  { 0xf32E, GDK_dead_belowbreve },
-  { 0xf324, GDK_dead_belowdiaeresis },
-  { 0xf311, GDK_dead_invertedbreve },
-  { 0xf02c, GDK_dead_belowcomma },
-  { 0xf326, GDK_dead_belowcomma }
+  { 0x0001, BDK_Home },
+  { 0x0003, BDK_Return },
+  { 0x0004, BDK_End },
+  { 0x0008, BDK_BackSpace },
+  { 0x0009, BDK_Tab },
+  { 0x000b, BDK_Page_Up },
+  { 0x000c, BDK_Page_Down },
+  { 0x000d, BDK_Return },
+  { 0x001b, BDK_Escape },
+  { 0x001c, BDK_Left },
+  { 0x001d, BDK_Right },
+  { 0x001e, BDK_Up },
+  { 0x001f, BDK_Down },
+  { 0x007f, BDK_Delete },
+  { 0xf027, BDK_dead_acute },
+  { 0xf060, BDK_dead_grave },
+  { 0xf300, BDK_dead_grave },
+  { 0xf0b4, BDK_dead_acute },
+  { 0xf301, BDK_dead_acute },
+  { 0xf385, BDK_dead_acute },
+  { 0xf05e, BDK_dead_circumflex },
+  { 0xf2c6, BDK_dead_circumflex },
+  { 0xf302, BDK_dead_circumflex },
+  { 0xf07e, BDK_dead_tilde },
+  { 0xf2dc, BDK_dead_tilde },
+  { 0xf303, BDK_dead_tilde },
+  { 0xf342, BDK_dead_perispomeni },
+  { 0xf0af, BDK_dead_macron },
+  { 0xf304, BDK_dead_macron },
+  { 0xf2d8, BDK_dead_breve },
+  { 0xf306, BDK_dead_breve },
+  { 0xf2d9, BDK_dead_abovedot },
+  { 0xf307, BDK_dead_abovedot },
+  { 0xf0a8, BDK_dead_diaeresis },
+  { 0xf308, BDK_dead_diaeresis },
+  { 0xf2da, BDK_dead_abovering },
+  { 0xf30A, BDK_dead_abovering },
+  { 0xf022, BDK_dead_doubleacute },
+  { 0xf2dd, BDK_dead_doubleacute },
+  { 0xf30B, BDK_dead_doubleacute },
+  { 0xf2c7, BDK_dead_caron },
+  { 0xf30C, BDK_dead_caron },
+  { 0xf0be, BDK_dead_cedilla },
+  { 0xf327, BDK_dead_cedilla },
+  { 0xf2db, BDK_dead_ogonek },
+  { 0xf328, BDK_dead_ogonek },
+  { 0xfe5d, BDK_dead_iota },
+  { 0xf323, BDK_dead_belowdot },
+  { 0xf309, BDK_dead_hook },
+  { 0xf31B, BDK_dead_horn },
+  { 0xf02d, BDK_dead_stroke },
+  { 0xf335, BDK_dead_stroke },
+  { 0xf336, BDK_dead_stroke },
+  { 0xf313, BDK_dead_abovecomma },
+  /*  { 0xf313, BDK_dead_psili }, */
+  { 0xf314, BDK_dead_abovereversedcomma },
+  /*  { 0xf314, BDK_dead_dasia }, */
+  { 0xf30F, BDK_dead_doublegrave },
+  { 0xf325, BDK_dead_belowring },
+  { 0xf2cd, BDK_dead_belowmacron },
+  { 0xf331, BDK_dead_belowmacron },
+  { 0xf32D, BDK_dead_belowcircumflex },
+  { 0xf330, BDK_dead_belowtilde },
+  { 0xf32E, BDK_dead_belowbreve },
+  { 0xf324, BDK_dead_belowdiaeresis },
+  { 0xf311, BDK_dead_invertedbreve },
+  { 0xf02c, BDK_dead_belowcomma },
+  { 0xf326, BDK_dead_belowcomma }
 };
 
 static void
@@ -326,14 +326,14 @@ update_keymap (void)
                         }
                     }
 
-                  /* Special-case shift-tab since GTK+ expects
-                   * GDK_ISO_Left_Tab for that.
+                  /* Special-case shift-tab since BTK+ expects
+                   * BDK_ISO_Left_Tab for that.
                    */
-                  if (found && p[j] == GDK_Tab && modifiers[j] == shiftKey)
-                    p[j] = GDK_ISO_Left_Tab;
+                  if (found && p[j] == BDK_Tab && modifiers[j] == shiftKey)
+                    p[j] = BDK_ISO_Left_Tab;
 
                   if (!found)
-                    p[j] = gdk_unicode_to_keyval (uc);
+                    p[j] = bdk_unicode_to_keyval (uc);
                 }
             }
 
@@ -393,7 +393,7 @@ update_keymap (void)
                    * the first of which is U+00a0, which isn't
                    * interesting; so we return the second. More
                    * sophisticated handling is the job of a
-                   * GtkIMContext.
+                   * BtkIMContext.
                    *
                    * If state isn't zero, it means that it's a dead
                    * key of some sort. Some of those are enumerated in
@@ -415,14 +415,14 @@ update_keymap (void)
                         }
                     }
 
-                  /* Special-case shift-tab since GTK+ expects
-                   * GDK_ISO_Left_Tab for that.
+                  /* Special-case shift-tab since BTK+ expects
+                   * BDK_ISO_Left_Tab for that.
                    */
-                  if (found && p[j] == GDK_Tab && modifiers[j] == shiftKey)
-                    p[j] = GDK_ISO_Left_Tab;
+                  if (found && p[j] == BDK_Tab && modifiers[j] == shiftKey)
+                    p[j] = BDK_ISO_Left_Tab;
 
                   if (!found)
-                    p[j] = gdk_unicode_to_keyval (uc);
+                    p[j] = bdk_unicode_to_keyval (uc);
                 }
             }
 
@@ -483,14 +483,14 @@ input_sources_changed_notification (CFNotificationCenterRef  center,
   update_keymap ();
 }
 
-GdkKeymap *
-gdk_keymap_get_for_display (GdkDisplay *display)
+BdkKeymap *
+bdk_keymap_get_for_display (BdkDisplay *display)
 {
-  g_return_val_if_fail (display == gdk_display_get_default (), NULL);
+  g_return_val_if_fail (display == bdk_display_get_default (), NULL);
 
   if (default_keymap == NULL)
     {
-      default_keymap = g_object_new (gdk_keymap_get_type (), NULL);
+      default_keymap = g_object_new (bdk_keymap_get_type (), NULL);
       update_keymap ();
       CFNotificationCenterAddObserver (CFNotificationCenterGetDistributedCenter (),
                                        NULL,
@@ -503,49 +503,49 @@ gdk_keymap_get_for_display (GdkDisplay *display)
   return default_keymap;
 }
 
-PangoDirection
-gdk_keymap_get_direction (GdkKeymap *keymap)
+BangoDirection
+bdk_keymap_get_direction (BdkKeymap *keymap)
 {
-  return PANGO_DIRECTION_NEUTRAL;
+  return BANGO_DIRECTION_NEUTRAL;
 }
 
 gboolean
-gdk_keymap_have_bidi_layouts (GdkKeymap *keymap)
+bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
 {
   /* FIXME: Can we implement this? */
   return FALSE;
 }
 
 gboolean
-gdk_keymap_get_caps_lock_state (GdkKeymap *keymap)
+bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
   /* FIXME: Implement this. */
   return FALSE;
 }
 
 gboolean
-gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
+bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
                                    guint          keyval,
-                                   GdkKeymapKey **keys,
+                                   BdkKeymapKey **keys,
                                    gint          *n_keys)
 {
   GArray *keys_array;
   int i;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (keys != NULL, FALSE);
   g_return_val_if_fail (n_keys != NULL, FALSE);
   g_return_val_if_fail (keyval != 0, FALSE);
 
   if (!keymap)
-    keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+    keymap = bdk_keymap_get_for_display (bdk_display_get_default ());
 
   *n_keys = 0;
-  keys_array = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
+  keys_array = g_array_new (FALSE, FALSE, sizeof (BdkKeymapKey));
 
   for (i = 0; i < NUM_KEYCODES * KEYVALS_PER_KEYCODE; i++)
     {
-      GdkKeymapKey key;
+      BdkKeymapKey key;
 
       if (keyval_array[i] != keyval)
 	continue;
@@ -559,15 +559,15 @@ gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
       g_array_append_val (keys_array, key);
     }
 
-  *keys = (GdkKeymapKey *)g_array_free (keys_array, FALSE);
+  *keys = (BdkKeymapKey *)g_array_free (keys_array, FALSE);
   
   return *n_keys > 0;;
 }
 
 gboolean
-gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
+bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
                                     guint          hardware_keycode,
-                                    GdkKeymapKey **keys,
+                                    BdkKeymapKey **keys,
                                     guint        **keyvals,
                                     gint          *n_entries)
 {
@@ -575,11 +575,11 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
   int i;
   guint *p;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (n_entries != NULL, FALSE);
 
   if (!keymap)
-    keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+    keymap = bdk_keymap_get_for_display (bdk_display_get_default ());
 
   *n_entries = 0;
 
@@ -587,7 +587,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
     return FALSE;
 
   if (keys)
-    keys_array = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
+    keys_array = g_array_new (FALSE, FALSE, sizeof (BdkKeymapKey));
   else
     keys_array = NULL;
 
@@ -610,7 +610,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
 
       if (keys_array)
 	{
-	  GdkKeymapKey key;
+	  BdkKeymapKey key;
 
 	  key.keycode = hardware_keycode;
 	  key.group = i >= 2;
@@ -621,7 +621,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
     }
   
   if (keys)
-    *keys = (GdkKeymapKey *)g_array_free (keys_array, FALSE);
+    *keys = (BdkKeymapKey *)g_array_free (keys_array, FALSE);
 
   if (keyvals)
     *keyvals = (guint *)g_array_free (keyvals_array, FALSE);
@@ -630,15 +630,15 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
 }
 
 guint
-gdk_keymap_lookup_key (GdkKeymap          *keymap,
-                       const GdkKeymapKey *key)
+bdk_keymap_lookup_key (BdkKeymap          *keymap,
+                       const BdkKeymapKey *key)
 {
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), 0);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), 0);
   g_return_val_if_fail (key != NULL, 0);
   g_return_val_if_fail (key->group < 4, 0);
 
   if (!keymap)
-    keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+    keymap = bdk_keymap_get_for_display (bdk_display_get_default ());
 
   /* FIXME: Implement */
 
@@ -650,14 +650,14 @@ gdk_keymap_lookup_key (GdkKeymap          *keymap,
 static guint
 translate_keysym (guint           hardware_keycode,
 		  gint            group,
-		  GdkModifierType state,
+		  BdkModifierType state,
 		  gint           *effective_group,
 		  gint           *effective_level)
 {
   gint level;
   guint tmp_keyval;
 
-  level = (state & GDK_SHIFT_MASK) ? 1 : 0;
+  level = (state & BDK_SHIFT_MASK) ? 1 : 0;
 
   if (!(GET_KEYVAL (hardware_keycode, group, 0) || GET_KEYVAL (hardware_keycode, group, 1)) &&
       (GET_KEYVAL (hardware_keycode, 0, 0) || GET_KEYVAL (hardware_keycode, 0, 1)))
@@ -669,9 +669,9 @@ translate_keysym (guint           hardware_keycode,
 
   tmp_keyval = GET_KEYVAL (hardware_keycode, group, level);
 
-  if (state & GDK_LOCK_MASK)
+  if (state & BDK_LOCK_MASK)
     {
-      guint upper = gdk_keyval_to_upper (tmp_keyval);
+      guint upper = bdk_keyval_to_upper (tmp_keyval);
       if (upper != tmp_keyval)
         tmp_keyval = upper;
     }
@@ -685,24 +685,24 @@ translate_keysym (guint           hardware_keycode,
 }
 
 gboolean
-gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
+bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
                                      guint            hardware_keycode,
-                                     GdkModifierType  state,
+                                     BdkModifierType  state,
                                      gint             group,
                                      guint           *keyval,
                                      gint            *effective_group,
                                      gint            *level,
-                                     GdkModifierType *consumed_modifiers)
+                                     BdkModifierType *consumed_modifiers)
 {
   guint tmp_keyval;
-  GdkModifierType bit;
+  BdkModifierType bit;
   guint tmp_modifiers = 0;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (group >= 0 && group <= 1, FALSE);
 
   if (!keymap)
-    keymap = gdk_keymap_get_for_display (gdk_display_get_default ());
+    keymap = bdk_keymap_get_for_display (bdk_display_get_default ());
 
   if (keyval)
     *keyval = 0;
@@ -717,14 +717,14 @@ gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
     return FALSE;
 
   /* Check if modifiers modify the keyval */
-  for (bit = GDK_SHIFT_MASK; bit < GDK_BUTTON1_MASK; bit <<= 1)
+  for (bit = BDK_SHIFT_MASK; bit < BDK_BUTTON1_MASK; bit <<= 1)
     {
       if (translate_keysym (hardware_keycode,
-                            (bit == GDK_MOD1_MASK) ? 0 : group,
+                            (bit == BDK_MOD1_MASK) ? 0 : group,
                             state & ~bit,
                             NULL, NULL) !=
 	  translate_keysym (hardware_keycode,
-                            (bit == GDK_MOD1_MASK) ? 1 : group,
+                            (bit == BDK_MOD1_MASK) ? 1 : group,
                             state | bit,
                             NULL, NULL))
 	tmp_modifiers |= bit;
@@ -742,28 +742,28 @@ gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
 }
 
 void
-gdk_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
-                                  GdkModifierType *state)
+bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
+                                  BdkModifierType *state)
 {
-  if (*state & GDK_MOD2_MASK)
-    *state |= GDK_META_MASK;
+  if (*state & BDK_MOD2_MASK)
+    *state |= BDK_META_MASK;
 }
 
 gboolean
-gdk_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
-                                  GdkModifierType *state)
+bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
+                                  BdkModifierType *state)
 {
-  if (*state & GDK_META_MASK)
-    *state |= GDK_MOD2_MASK;
+  if (*state & BDK_META_MASK)
+    *state |= BDK_MOD2_MASK;
 
   return TRUE;
 }
 
 /* What sort of key event is this? Returns one of
- * GDK_KEY_PRESS, GDK_KEY_RELEASE, GDK_NOTHING (should be ignored)
+ * BDK_KEY_PRESS, BDK_KEY_RELEASE, BDK_NOTHING (should be ignored)
  */
-GdkEventType
-_gdk_quartz_keys_event_type (NSEvent *event)
+BdkEventType
+_bdk_quartz_keys_event_type (NSEvent *event)
 {
   unsigned short keycode;
   unsigned int flags;
@@ -772,9 +772,9 @@ _gdk_quartz_keys_event_type (NSEvent *event)
   switch ([event type])
     {
     case NSKeyDown:
-      return GDK_KEY_PRESS;
+      return BDK_KEY_PRESS;
     case NSKeyUp:
-      return GDK_KEY_RELEASE;
+      return BDK_KEY_RELEASE;
     case NSFlagsChanged:
       break;
     default:
@@ -791,19 +791,19 @@ _gdk_quartz_keys_event_type (NSEvent *event)
       if (modifier_keys[i].keycode == keycode)
 	{
 	  if (flags & modifier_keys[i].modmask)
-	    return GDK_KEY_PRESS;
+	    return BDK_KEY_PRESS;
 	  else
-	    return GDK_KEY_RELEASE;
+	    return BDK_KEY_RELEASE;
 	}
     }
   
   /* Some keypresses (eg: Expose' activations) seem to trigger flags-changed
    * events for no good reason. Ignore them! */
-  return GDK_NOTHING;
+  return BDK_NOTHING;
 }
 
 gboolean
-_gdk_quartz_keys_is_modifier (guint keycode)
+_bdk_quartz_keys_is_modifier (guint keycode)
 {
   gint i;
   

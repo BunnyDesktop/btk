@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,61 +18,61 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdkproperty.h"
-#include "gdkdisplay.h"
-#include "gdkselection.h"
-#include "gdkalias.h"
+#include "bdkproperty.h"
+#include "bdkdisplay.h"
+#include "bdkselection.h"
+#include "bdkalias.h"
 
 gboolean
-gdk_selection_owner_set (GdkWindow *owner,
-			 GdkAtom    selection,
+bdk_selection_owner_set (BdkWindow *owner,
+			 BdkAtom    selection,
 			 guint32    time,
 			 gboolean   send_event)
 {
-  return gdk_selection_owner_set_for_display (gdk_display_get_default (),
+  return bdk_selection_owner_set_for_display (bdk_display_get_default (),
 					      owner, selection, 
 					      time, send_event);
 }
 
-GdkWindow*
-gdk_selection_owner_get (GdkAtom selection)
+BdkWindow*
+bdk_selection_owner_get (BdkAtom selection)
 {
-  return gdk_selection_owner_get_for_display (gdk_display_get_default (), 
+  return bdk_selection_owner_get_for_display (bdk_display_get_default (), 
 					      selection);
 }
 
 void
-gdk_selection_send_notify (GdkNativeWindow requestor,
-			   GdkAtom         selection,
-			   GdkAtom         target,
-			   GdkAtom         property,
+bdk_selection_send_notify (BdkNativeWindow requestor,
+			   BdkAtom         selection,
+			   BdkAtom         target,
+			   BdkAtom         property,
 			   guint32         time)
 {
-  gdk_selection_send_notify_for_display (gdk_display_get_default (), 
+  bdk_selection_send_notify_for_display (bdk_display_get_default (), 
 					 requestor, selection, 
 					 target, property, time);
 }
 
 gint
-gdk_text_property_to_text_list (GdkAtom       encoding,
+bdk_text_property_to_text_list (BdkAtom       encoding,
 				gint          format, 
 				const guchar *text,
 				gint          length,
 				gchar      ***list)
 {
-  return gdk_text_property_to_text_list_for_display (gdk_display_get_default (),
+  return bdk_text_property_to_text_list_for_display (bdk_display_get_default (),
 						     encoding, format, text, length, list);
 }
 
 /**
- * gdk_text_property_to_utf8_list:
+ * bdk_text_property_to_utf8_list:
  * @encoding: an atom representing the encoding of the text
  * @format:   the format of the property
  * @text:     the text to convert
@@ -87,30 +87,30 @@ gdk_text_property_to_text_list (GdkAtom       encoding,
  *               list.
  **/
 gint 
-gdk_text_property_to_utf8_list (GdkAtom        encoding,
+bdk_text_property_to_utf8_list (BdkAtom        encoding,
 				gint           format,
 				const guchar  *text,
 				gint           length,
 				gchar       ***list)
 {
-  return gdk_text_property_to_utf8_list_for_display (gdk_display_get_default (),
+  return bdk_text_property_to_utf8_list_for_display (bdk_display_get_default (),
 						     encoding, format, text, length, list);
 }
 
 gint
-gdk_string_to_compound_text (const gchar *str,
-			     GdkAtom     *encoding,
+bdk_string_to_compound_text (const gchar *str,
+			     BdkAtom     *encoding,
 			     gint        *format,
 			     guchar     **ctext,
 			     gint        *length)
 {
-  return gdk_string_to_compound_text_for_display (gdk_display_get_default (),
+  return bdk_string_to_compound_text_for_display (bdk_display_get_default (),
 						  str, encoding, format, 
 						  ctext, length);
 }
 
 /**
- * gdk_utf8_to_compound_text:
+ * bdk_utf8_to_compound_text:
  * @str:      a UTF-8 string
  * @encoding: location to store resulting encoding
  * @format:   location to store format of the result
@@ -124,16 +124,16 @@ gdk_string_to_compound_text (const gchar *str,
  *               false.
  **/
 gboolean
-gdk_utf8_to_compound_text (const gchar *str,
-			   GdkAtom     *encoding,
+bdk_utf8_to_compound_text (const gchar *str,
+			   BdkAtom     *encoding,
 			   gint        *format,
 			   guchar     **ctext,
 			   gint        *length)
 {
-  return gdk_utf8_to_compound_text_for_display (gdk_display_get_default (),
+  return bdk_utf8_to_compound_text_for_display (bdk_display_get_default (),
 						str, encoding, format, 
 						ctext, length);
 }
 
-#define __GDK_SELECTION_C__
-#include "gdkaliasdef.c"
+#define __BDK_SELECTION_C__
+#include "bdkaliasdef.c"

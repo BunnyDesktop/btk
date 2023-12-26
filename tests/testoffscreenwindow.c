@@ -1,62 +1,62 @@
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 static gboolean
-da_expose (GtkWidget *widget,
-           GdkEventExpose *event,
+da_expose (BtkWidget *widget,
+           BdkEventExpose *event,
            gpointer user_data)
 {
-  GtkOffscreenWindow *offscreen = (GtkOffscreenWindow *)user_data;
-  GdkPixmap *pixmap;
-  cairo_t *cr;
+  BtkOffscreenWindow *offscreen = (BtkOffscreenWindow *)user_data;
+  BdkPixmap *pixmap;
+  bairo_t *cr;
 
-  if (gtk_widget_is_drawable (widget))
+  if (btk_widget_is_drawable (widget))
     {
-      pixmap = gtk_offscreen_window_get_pixmap (offscreen);
+      pixmap = btk_offscreen_window_get_pixmap (offscreen);
 
-      cr = gdk_cairo_create (widget->window);
-      gdk_cairo_set_source_pixmap (cr, pixmap, 50, 50);
-      cairo_paint (cr);
-      cairo_destroy (cr);
+      cr = bdk_bairo_create (widget->window);
+      bdk_bairo_set_source_pixmap (cr, pixmap, 50, 50);
+      bairo_paint (cr);
+      bairo_destroy (cr);
     }
 
   return FALSE;
 }
 
 static gboolean
-offscreen_damage (GtkWidget      *widget,
-                  GdkEventExpose *event,
-                  GtkWidget      *da)
+offscreen_damage (BtkWidget      *widget,
+                  BdkEventExpose *event,
+                  BtkWidget      *da)
 {
-  gtk_widget_queue_draw (da);
+  btk_widget_queue_draw (da);
 
   return TRUE;
 }
 
 static gboolean
-da_button_press (GtkWidget *area, GdkEventButton *event, GtkWidget *button)
+da_button_press (BtkWidget *area, BdkEventButton *event, BtkWidget *button)
 {
-  gtk_widget_set_size_request (button, 150, 60);
+  btk_widget_set_size_request (button, 150, 60);
   return TRUE;
 }
 
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window;
-  GtkWidget *button;
-  GtkWidget *offscreen;
-  GtkWidget *da;
+  BtkWidget *window;
+  BtkWidget *button;
+  BtkWidget *offscreen;
+  BtkWidget *da;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  offscreen = gtk_offscreen_window_new ();
+  offscreen = btk_offscreen_window_new ();
 
-  button = gtk_button_new_with_label ("Test");
-  gtk_widget_set_size_request (button, 50, 50);
-  gtk_container_add (GTK_CONTAINER (offscreen), button);
-  gtk_widget_show (button);
+  button = btk_button_new_with_label ("Test");
+  btk_widget_set_size_request (button, 50, 50);
+  btk_container_add (BTK_CONTAINER (offscreen), button);
+  btk_widget_show (button);
 
-  gtk_widget_show (offscreen);
+  btk_widget_show (offscreen);
 
   /* Queue exposures and ensure they are handled so
    * that the result is uptodate for the first
@@ -64,13 +64,13 @@ main (int argc, char **argv)
    * changes, also track damage on the offscreen
    * as done above.
    */
-  gtk_widget_queue_draw (offscreen);
+  btk_widget_queue_draw (offscreen);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
   g_signal_connect (window, "delete-event",
-                    G_CALLBACK (gtk_main_quit), window);
-  da = gtk_drawing_area_new ();
-  gtk_container_add (GTK_CONTAINER (window), da);
+                    G_CALLBACK (btk_main_quit), window);
+  da = btk_drawing_area_new ();
+  btk_container_add (BTK_CONTAINER (window), da);
 
   g_signal_connect (da,
                     "expose-event",
@@ -82,13 +82,13 @@ main (int argc, char **argv)
                     G_CALLBACK (offscreen_damage),
                     da);
 
-  gtk_widget_add_events (da, GDK_BUTTON_PRESS_MASK);
+  btk_widget_add_events (da, BDK_BUTTON_PRESS_MASK);
   g_signal_connect (da, "button_press_event", G_CALLBACK (da_button_press),
                     button);
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main();
+  btk_main();
 
   return 0;
 }

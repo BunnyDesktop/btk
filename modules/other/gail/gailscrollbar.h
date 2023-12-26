@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SCROLLBAR_H__
-#define __GAIL_SCROLLBAR_H__
+#ifndef __BAIL_SCROLLBAR_H__
+#define __BAIL_SCROLLBAR_H__
 
-#include <gail/gailrange.h>
+#include <bail/bailrange.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SCROLLBAR                     (gail_scrollbar_get_type ())
-#define GAIL_SCROLLBAR(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SCROLLBAR, GailScrollbar))
-#define GAIL_SCROLLBAR_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SCROLLBAR, GailScrollbarClass))
-#define GAIL_IS_SCROLLBAR(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SCROLLBAR))
-#define GAIL_IS_SCROLLBAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SCROLLBAR))
-#define GAIL_SCROLLBAR_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SCROLLBAR, GailScrollbarClass))
+#define BAIL_TYPE_SCROLLBAR                     (bail_scrollbar_get_type ())
+#define BAIL_SCROLLBAR(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCROLLBAR, BailScrollbar))
+#define BAIL_SCROLLBAR_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCROLLBAR, BailScrollbarClass))
+#define BAIL_IS_SCROLLBAR(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCROLLBAR))
+#define BAIL_IS_SCROLLBAR_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCROLLBAR))
+#define BAIL_SCROLLBAR_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCROLLBAR, BailScrollbarClass))
 
-typedef struct _GailScrollbar		GailScrollbar;
-typedef struct _GailScrollbarClass	GailScrollbarClass;
+typedef struct _BailScrollbar		BailScrollbar;
+typedef struct _BailScrollbarClass	BailScrollbarClass;
 
-struct _GailScrollbar
+struct _BailScrollbar
 {
-  GailRange parent;
+  BailRange parent;
 };
 
-GType gail_scrollbar_get_type (void);
+GType bail_scrollbar_get_type (void);
 
-struct _GailScrollbarClass
+struct _BailScrollbarClass
 {
-  GailRangeClass parent_class;
+  BailRangeClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_SCROLLBAR_H__ */
+#endif /* __BAIL_SCROLLBAR_H__ */

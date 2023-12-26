@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1998, 1999 Red Hat, Inc.
  * All rights reserved.
  *
@@ -14,7 +14,7 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with the Gnome Library; see the file COPYING.LIB.  If not,
+ * License along with the Bunny Library; see the file COPYING.LIB.  If not,
  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
@@ -22,32 +22,32 @@
 /*
  * Author: James Henstridge <james@daa.com.au>
  *
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
 #include <string.h>
-#include "gtkaccellabel.h"
-#include "gtkactivatable.h"
-#include "gtkbuildable.h"
-#include "gtkimagemenuitem.h"
-#include "gtkintl.h"
-#include "gtkmarshalers.h"
-#include "gtkmenu.h"
-#include "gtkmenubar.h"
-#include "gtkmenutoolbutton.h"
-#include "gtkseparatormenuitem.h"
-#include "gtkseparatortoolitem.h"
-#include "gtktearoffmenuitem.h"
-#include "gtktoolbar.h"
-#include "gtkuimanager.h"
-#include "gtkwindow.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkaccellabel.h"
+#include "btkactivatable.h"
+#include "btkbuildable.h"
+#include "btkimagemenuitem.h"
+#include "btkintl.h"
+#include "btkmarshalers.h"
+#include "btkmenu.h"
+#include "btkmenubar.h"
+#include "btkmenutoolbutton.h"
+#include "btkseparatormenuitem.h"
+#include "btkseparatortoolitem.h"
+#include "btktearoffmenuitem.h"
+#include "btktoolbar.h"
+#include "btkuimanager.h"
+#include "btkwindow.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 #undef DEBUG_UI_MANAGER
 
@@ -75,9 +75,9 @@ struct _Node {
   gchar *name;
 
   GQuark action_name;
-  GtkAction *action;
-  GtkWidget *proxy;
-  GtkWidget *extra; /* second separator for placeholders */
+  BtkAction *action;
+  BtkWidget *proxy;
+  BtkWidget *extra; /* second separator for placeholders */
 
   GList *uifiles;
 
@@ -88,11 +88,11 @@ struct _Node {
   guint always_show_image     : 1; /* used for menu items */
 };
 
-#define GTK_UI_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_UI_MANAGER, GtkUIManagerPrivate))
+#define BTK_UI_MANAGER_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_UI_MANAGER, BtkUIManagerPrivate))
 
-struct _GtkUIManagerPrivate 
+struct _BtkUIManagerPrivate 
 {
-  GtkAccelGroup *accel_group;
+  BtkAccelGroup *accel_group;
 
   GNode *root_node;
   GList *action_groups;
@@ -114,23 +114,23 @@ struct _NodeUIReference
   GQuark action_quark;
 };
 
-static void        gtk_ui_manager_finalize        (GObject           *object);
-static void        gtk_ui_manager_set_property    (GObject           *object,
+static void        btk_ui_manager_finalize        (GObject           *object);
+static void        btk_ui_manager_set_property    (GObject           *object,
                                                    guint              prop_id,
                                                    const GValue      *value,
                                                    GParamSpec        *pspec);
-static void        gtk_ui_manager_get_property    (GObject           *object,
+static void        btk_ui_manager_get_property    (GObject           *object,
                                                    guint              prop_id,
                                                    GValue            *value,
                                                    GParamSpec        *pspec);
-static GtkWidget * gtk_ui_manager_real_get_widget (GtkUIManager      *manager,
+static BtkWidget * btk_ui_manager_real_get_widget (BtkUIManager      *manager,
                                                    const gchar       *path);
-static GtkAction * gtk_ui_manager_real_get_action (GtkUIManager      *manager,
+static BtkAction * btk_ui_manager_real_get_action (BtkUIManager      *manager,
                                                    const gchar       *path);
-static void        queue_update                   (GtkUIManager      *self);
-static void        dirty_all_nodes                (GtkUIManager      *self);
+static void        queue_update                   (BtkUIManager      *self);
+static void        dirty_all_nodes                (BtkUIManager      *self);
 static void        mark_node_dirty                (GNode             *node);
-static GNode     * get_child_node                 (GtkUIManager      *self,
+static GNode     * get_child_node                 (BtkUIManager      *self,
                                                    GNode             *parent,
 						   GNode             *sibling,
                                                    const gchar       *childname,
@@ -138,7 +138,7 @@ static GNode     * get_child_node                 (GtkUIManager      *self,
                                                    NodeType           node_type,
                                                    gboolean           create,
                                                    gboolean           top);
-static GNode     * get_node                       (GtkUIManager      *self,
+static GNode     * get_node                       (BtkUIManager      *self,
                                                    const gchar       *path,
                                                    NodeType           node_type,
                                                    gboolean           create);
@@ -149,23 +149,23 @@ static void        node_prepend_ui_reference      (GNode             *node,
 static void        node_remove_ui_reference       (GNode             *node,
                                                    guint              merge_id);
 
-/* GtkBuildable */
-static void gtk_ui_manager_buildable_init      (GtkBuildableIface *iface);
-static void gtk_ui_manager_buildable_add_child (GtkBuildable  *buildable,
-						GtkBuilder    *builder,
+/* BtkBuildable */
+static void btk_ui_manager_buildable_init      (BtkBuildableIface *iface);
+static void btk_ui_manager_buildable_add_child (BtkBuildable  *buildable,
+						BtkBuilder    *builder,
 						GObject       *child,
 						const gchar   *type);
-static GObject* gtk_ui_manager_buildable_construct_child (GtkBuildable *buildable,
-							  GtkBuilder   *builder,
+static GObject* btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
+							  BtkBuilder   *builder,
 							  const gchar  *name);
-static gboolean gtk_ui_manager_buildable_custom_tag_start (GtkBuildable  *buildable,
-							   GtkBuilder    *builder,
+static gboolean btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
+							   BtkBuilder    *builder,
 							   GObject       *child,
 							   const gchar   *tagname,
 							   GMarkupParser *parser,
 							   gpointer      *data);
-static void     gtk_ui_manager_buildable_custom_tag_end (GtkBuildable 	 *buildable,
-							 GtkBuilder   	 *builder,
+static void     btk_ui_manager_buildable_custom_tag_end (BtkBuildable 	 *buildable,
+							 BtkBuilder   	 *builder,
 							 GObject      	 *child,
 							 const gchar  	 *tagname,
 							 gpointer     	 *data);
@@ -192,25 +192,25 @@ enum
 
 static guint ui_manager_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE_WITH_CODE (GtkUIManager, gtk_ui_manager, G_TYPE_OBJECT,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						gtk_ui_manager_buildable_init))
+G_DEFINE_TYPE_WITH_CODE (BtkUIManager, btk_ui_manager, G_TYPE_OBJECT,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+						btk_ui_manager_buildable_init))
 
 static void
-gtk_ui_manager_class_init (GtkUIManagerClass *klass)
+btk_ui_manager_class_init (BtkUIManagerClass *klass)
 {
-  GObjectClass *gobject_class;
+  GObjectClass *bobject_class;
 
-  gobject_class = G_OBJECT_CLASS (klass);
+  bobject_class = G_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gtk_ui_manager_finalize;
-  gobject_class->set_property = gtk_ui_manager_set_property;
-  gobject_class->get_property = gtk_ui_manager_get_property;
-  klass->get_widget = gtk_ui_manager_real_get_widget;
-  klass->get_action = gtk_ui_manager_real_get_action;
+  bobject_class->finalize = btk_ui_manager_finalize;
+  bobject_class->set_property = btk_ui_manager_set_property;
+  bobject_class->get_property = btk_ui_manager_get_property;
+  klass->get_widget = btk_ui_manager_real_get_widget;
+  klass->get_action = btk_ui_manager_real_get_action;
 
   /**
-   * GtkUIManager:add-tearoffs:
+   * BtkUIManager:add-tearoffs:
    *
    * The "add-tearoffs" property controls whether generated menus 
    * have tearoff menu items. 
@@ -220,31 +220,31 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
    *
    * Since: 2.4
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ADD_TEAROFFS,
                                    g_param_spec_boolean ("add-tearoffs",
 							 P_("Add tearoffs to menus"),
 							 P_("Whether tearoff menu items should be added to menus"),
                                                          FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_UI,
 				   g_param_spec_string ("ui",
  							P_("Merged UI definition"),
 							P_("An XML string describing the merged UI"),
 							"<ui>\n</ui>\n",
-							GTK_PARAM_READABLE));
+							BTK_PARAM_READABLE));
 
 
   /**
-   * GtkUIManager::add-widget:
-   * @merge: a #GtkUIManager
+   * BtkUIManager::add-widget:
+   * @merge: a #BtkUIManager
    * @widget: the added widget
    *
    * The add_widget signal is emitted for each generated menubar and toolbar.
    * It is not emitted for generated popup menus, which can be obtained by 
-   * gtk_ui_manager_get_widget().
+   * btk_ui_manager_get_widget().
    *
    * Since: 2.4
    */
@@ -252,15 +252,15 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("add-widget"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, add_widget),
+		  G_STRUCT_OFFSET (BtkUIManagerClass, add_widget),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1, 
-		  GTK_TYPE_WIDGET);
+		  BTK_TYPE_WIDGET);
 
   /**
-   * GtkUIManager::actions-changed:
-   * @merge: a #GtkUIManager
+   * BtkUIManager::actions-changed:
+   * @merge: a #BtkUIManager
    *
    * The "actions-changed" signal is emitted whenever the set of actions
    * changes.
@@ -271,13 +271,13 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("actions-changed"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, actions_changed),  
+		  G_STRUCT_OFFSET (BtkUIManagerClass, actions_changed),  
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   
   /**
-   * GtkUIManager::connect-proxy:
+   * BtkUIManager::connect-proxy:
    * @uimanager: the ui manager
    * @action: the action
    * @proxy: the proxy
@@ -295,15 +295,15 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("connect-proxy"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, connect_proxy),
+		  G_STRUCT_OFFSET (BtkUIManagerClass, connect_proxy),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT_OBJECT,
+		  _btk_marshal_VOID__OBJECT_OBJECT,
 		  G_TYPE_NONE, 2, 
-		  GTK_TYPE_ACTION,
-		  GTK_TYPE_WIDGET);
+		  BTK_TYPE_ACTION,
+		  BTK_TYPE_WIDGET);
 
   /**
-   * GtkUIManager::disconnect-proxy:
+   * BtkUIManager::disconnect-proxy:
    * @uimanager: the ui manager
    * @action: the action
    * @proxy: the proxy
@@ -317,15 +317,15 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("disconnect-proxy"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, disconnect_proxy),
+		  G_STRUCT_OFFSET (BtkUIManagerClass, disconnect_proxy),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT_OBJECT,
+		  _btk_marshal_VOID__OBJECT_OBJECT,
 		  G_TYPE_NONE, 2,
-		  GTK_TYPE_ACTION,
-		  GTK_TYPE_WIDGET);
+		  BTK_TYPE_ACTION,
+		  BTK_TYPE_WIDGET);
 
   /**
-   * GtkUIManager::pre-activate:
+   * BtkUIManager::pre-activate:
    * @uimanager: the ui manager
    * @action: the action
    *
@@ -341,14 +341,14 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("pre-activate"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, pre_activate),
+		  G_STRUCT_OFFSET (BtkUIManagerClass, pre_activate),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT,
+		  _btk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  GTK_TYPE_ACTION);
+		  BTK_TYPE_ACTION);
 
   /**
-   * GtkUIManager::post-activate:
+   * BtkUIManager::post-activate:
    * @uimanager: the ui manager
    * @action: the action
    *
@@ -364,11 +364,11 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
     g_signal_new (I_("post-activate"),
 		  G_OBJECT_CLASS_TYPE (klass),
 		  G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE,
-		  G_STRUCT_OFFSET (GtkUIManagerClass, post_activate),
+		  G_STRUCT_OFFSET (BtkUIManagerClass, post_activate),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT,
+		  _btk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE, 1,
-		  GTK_TYPE_ACTION);
+		  BTK_TYPE_ACTION);
 
   klass->add_widget = NULL;
   klass->actions_changed = NULL;
@@ -377,19 +377,19 @@ gtk_ui_manager_class_init (GtkUIManagerClass *klass)
   klass->pre_activate = NULL;
   klass->post_activate = NULL;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkUIManagerPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkUIManagerPrivate));
 }
 
 
 static void
-gtk_ui_manager_init (GtkUIManager *self)
+btk_ui_manager_init (BtkUIManager *self)
 {
   guint merge_id;
   GNode *node;
 
-  self->private_data = GTK_UI_MANAGER_GET_PRIVATE (self);
+  self->private_data = BTK_UI_MANAGER_GET_PRIVATE (self);
 
-  self->private_data->accel_group = gtk_accel_group_new ();
+  self->private_data->accel_group = btk_accel_group_new ();
 
   self->private_data->root_node = NULL;
   self->private_data->action_groups = NULL;
@@ -397,16 +397,16 @@ gtk_ui_manager_init (GtkUIManager *self)
   self->private_data->last_merge_id = 0;
   self->private_data->add_tearoffs = FALSE;
 
-  merge_id = gtk_ui_manager_new_merge_id (self);
+  merge_id = btk_ui_manager_new_merge_id (self);
   node = get_child_node (self, NULL, NULL, "ui", 2,
 			 NODE_TYPE_ROOT, TRUE, FALSE);
   node_prepend_ui_reference (node, merge_id, 0);
 }
 
 static void
-gtk_ui_manager_finalize (GObject *object)
+btk_ui_manager_finalize (GObject *object)
 {
-  GtkUIManager *self = GTK_UI_MANAGER (object);
+  BtkUIManager *self = BTK_UI_MANAGER (object);
   
   if (self->private_data->update_tag != 0)
     {
@@ -428,54 +428,54 @@ gtk_ui_manager_finalize (GObject *object)
   g_object_unref (self->private_data->accel_group);
   self->private_data->accel_group = NULL;
 
-  G_OBJECT_CLASS (gtk_ui_manager_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_ui_manager_parent_class)->finalize (object);
 }
 
 static void
-gtk_ui_manager_buildable_init (GtkBuildableIface *iface)
+btk_ui_manager_buildable_init (BtkBuildableIface *iface)
 {
-  iface->add_child = gtk_ui_manager_buildable_add_child;
-  iface->construct_child = gtk_ui_manager_buildable_construct_child;
-  iface->custom_tag_start = gtk_ui_manager_buildable_custom_tag_start;
-  iface->custom_tag_end = gtk_ui_manager_buildable_custom_tag_end;
+  iface->add_child = btk_ui_manager_buildable_add_child;
+  iface->construct_child = btk_ui_manager_buildable_construct_child;
+  iface->custom_tag_start = btk_ui_manager_buildable_custom_tag_start;
+  iface->custom_tag_end = btk_ui_manager_buildable_custom_tag_end;
 }
 
 static void
-gtk_ui_manager_buildable_add_child (GtkBuildable  *buildable,
-				    GtkBuilder    *builder,
+btk_ui_manager_buildable_add_child (BtkBuildable  *buildable,
+				    BtkBuilder    *builder,
 				    GObject       *child,
 				    const gchar   *type)
 {
-  GtkUIManager *self = GTK_UI_MANAGER (buildable);
+  BtkUIManager *self = BTK_UI_MANAGER (buildable);
   guint pos;
 
-  g_return_if_fail (GTK_IS_ACTION_GROUP (child));
+  g_return_if_fail (BTK_IS_ACTION_GROUP (child));
 
   pos = g_list_length (self->private_data->action_groups);
 
   g_object_ref (child);
-  gtk_ui_manager_insert_action_group (self,
-				      GTK_ACTION_GROUP (child),
+  btk_ui_manager_insert_action_group (self,
+				      BTK_ACTION_GROUP (child),
 				      pos);
 }
 
 static void
-child_hierarchy_changed_cb (GtkWidget *widget,
-			    GtkWidget *unused,
-			    GtkUIManager *uimgr)
+child_hierarchy_changed_cb (BtkWidget *widget,
+			    BtkWidget *unused,
+			    BtkUIManager *uimgr)
 {
-  GtkWidget *toplevel;
-  GtkAccelGroup *group;
+  BtkWidget *toplevel;
+  BtkAccelGroup *group;
   GSList *groups;
 
-  toplevel = gtk_widget_get_toplevel (widget);
-  if (!toplevel || !GTK_IS_WINDOW (toplevel))
+  toplevel = btk_widget_get_toplevel (widget);
+  if (!toplevel || !BTK_IS_WINDOW (toplevel))
     return;
   
-  group = gtk_ui_manager_get_accel_group (uimgr);
-  groups = gtk_accel_groups_from_object (G_OBJECT (toplevel));
+  group = btk_ui_manager_get_accel_group (uimgr);
+  groups = btk_accel_groups_from_object (G_OBJECT (toplevel));
   if (g_slist_find (groups, group) == NULL)
-    gtk_window_add_accel_group (GTK_WINDOW (toplevel), group);
+    btk_window_add_accel_group (BTK_WINDOW (toplevel), group);
 
   g_signal_handlers_disconnect_by_func (widget,
 					child_hierarchy_changed_cb,
@@ -483,15 +483,15 @@ child_hierarchy_changed_cb (GtkWidget *widget,
 }
 
 static GObject *
-gtk_ui_manager_buildable_construct_child (GtkBuildable *buildable,
-					  GtkBuilder   *builder,
+btk_ui_manager_buildable_construct_child (BtkBuildable *buildable,
+					  BtkBuilder   *builder,
 					  const gchar  *id)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   char *name;
 
   name = g_strdup_printf ("ui/%s", id);
-  widget = gtk_ui_manager_get_widget (GTK_UI_MANAGER (buildable), name);
+  widget = btk_ui_manager_get_widget (BTK_UI_MANAGER (buildable), name);
   if (!widget)
     {
       g_error ("Unknown ui manager child: %s\n", name);
@@ -502,22 +502,22 @@ gtk_ui_manager_buildable_construct_child (GtkBuildable *buildable,
 
   g_signal_connect (widget, "hierarchy-changed",
 		    G_CALLBACK (child_hierarchy_changed_cb),
-		    GTK_UI_MANAGER (buildable));
+		    BTK_UI_MANAGER (buildable));
   return g_object_ref (widget);
 }
 
 static void
-gtk_ui_manager_set_property (GObject         *object,
+btk_ui_manager_set_property (GObject         *object,
 			     guint            prop_id,
 			     const GValue    *value,
 			     GParamSpec      *pspec)
 {
-  GtkUIManager *self = GTK_UI_MANAGER (object);
+  BtkUIManager *self = BTK_UI_MANAGER (object);
  
   switch (prop_id)
     {
     case PROP_ADD_TEAROFFS:
-      gtk_ui_manager_set_add_tearoffs (self, g_value_get_boolean (value));
+      btk_ui_manager_set_add_tearoffs (self, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -526,12 +526,12 @@ gtk_ui_manager_set_property (GObject         *object,
 }
 
 static void
-gtk_ui_manager_get_property (GObject         *object,
+btk_ui_manager_get_property (GObject         *object,
 			     guint            prop_id,
 			     GValue          *value,
 			     GParamSpec      *pspec)
 {
-  GtkUIManager *self = GTK_UI_MANAGER (object);
+  BtkUIManager *self = BTK_UI_MANAGER (object);
 
   switch (prop_id)
     {
@@ -539,7 +539,7 @@ gtk_ui_manager_get_property (GObject         *object,
       g_value_set_boolean (value, self->private_data->add_tearoffs);
       break;
     case PROP_UI:
-      g_value_take_string (value, gtk_ui_manager_get_ui (self));
+      g_value_take_string (value, btk_ui_manager_get_ui (self));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -547,15 +547,15 @@ gtk_ui_manager_get_property (GObject         *object,
     }
 }
 
-static GtkWidget *
-gtk_ui_manager_real_get_widget (GtkUIManager *self,
+static BtkWidget *
+btk_ui_manager_real_get_widget (BtkUIManager *self,
                                 const gchar  *path)
 {
   GNode *node;
 
   /* ensure that there are no pending updates before we get the
    * widget */
-  gtk_ui_manager_ensure_update (self);
+  btk_ui_manager_ensure_update (self);
 
   node = get_node (self, path, NODE_TYPE_UNDECIDED, FALSE);
 
@@ -565,15 +565,15 @@ gtk_ui_manager_real_get_widget (GtkUIManager *self,
   return NODE_INFO (node)->proxy;
 }
 
-static GtkAction *
-gtk_ui_manager_real_get_action (GtkUIManager *self,
+static BtkAction *
+btk_ui_manager_real_get_action (BtkUIManager *self,
                                 const gchar  *path)
 {
   GNode *node;
 
   /* ensure that there are no pending updates before we get
    * the action */
-  gtk_ui_manager_ensure_update (self);
+  btk_ui_manager_ensure_update (self);
 
   node = get_node (self, path, NODE_TYPE_UNDECIDED, FALSE);
 
@@ -585,7 +585,7 @@ gtk_ui_manager_real_get_action (GtkUIManager *self,
 
 
 /**
- * gtk_ui_manager_new:
+ * btk_ui_manager_new:
  * 
  * Creates a new ui manager object.
  * 
@@ -593,18 +593,18 @@ gtk_ui_manager_real_get_action (GtkUIManager *self,
  *
  * Since: 2.4
  **/
-GtkUIManager*
-gtk_ui_manager_new (void)
+BtkUIManager*
+btk_ui_manager_new (void)
 {
-  return g_object_new (GTK_TYPE_UI_MANAGER, NULL);
+  return g_object_new (BTK_TYPE_UI_MANAGER, NULL);
 }
 
 
 /**
- * gtk_ui_manager_get_add_tearoffs:
- * @self: a #GtkUIManager
+ * btk_ui_manager_get_add_tearoffs:
+ * @self: a #BtkUIManager
  * 
- * Returns whether menus generated by this #GtkUIManager
+ * Returns whether menus generated by this #BtkUIManager
  * will have tearoff menu items. 
  * 
  * Return value: whether tearoff menu items are added
@@ -612,21 +612,21 @@ gtk_ui_manager_new (void)
  * Since: 2.4
  **/
 gboolean 
-gtk_ui_manager_get_add_tearoffs (GtkUIManager *self)
+btk_ui_manager_get_add_tearoffs (BtkUIManager *self)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), FALSE);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), FALSE);
   
   return self->private_data->add_tearoffs;
 }
 
 
 /**
- * gtk_ui_manager_set_add_tearoffs:
- * @self: a #GtkUIManager
+ * btk_ui_manager_set_add_tearoffs:
+ * @self: a #BtkUIManager
  * @add_tearoffs: whether tearoff menu items are added
  * 
  * Sets the "add_tearoffs" property, which controls whether menus 
- * generated by this #GtkUIManager will have tearoff menu items. 
+ * generated by this #BtkUIManager will have tearoff menu items. 
  *
  * Note that this only affects regular menus. Generated popup 
  * menus never have tearoff menu items.
@@ -634,10 +634,10 @@ gtk_ui_manager_get_add_tearoffs (GtkUIManager *self)
  * Since: 2.4
  **/
 void 
-gtk_ui_manager_set_add_tearoffs (GtkUIManager *self,
+btk_ui_manager_set_add_tearoffs (BtkUIManager *self,
 				 gboolean      add_tearoffs)
 {
-  g_return_if_fail (GTK_IS_UI_MANAGER (self));
+  g_return_if_fail (BTK_IS_UI_MANAGER (self));
 
   add_tearoffs = add_tearoffs != FALSE;
 
@@ -652,42 +652,42 @@ gtk_ui_manager_set_add_tearoffs (GtkUIManager *self,
 }
 
 static void
-cb_proxy_connect_proxy (GtkActionGroup *group, 
-                        GtkAction      *action,
-                        GtkWidget      *proxy, 
-                        GtkUIManager *self)
+cb_proxy_connect_proxy (BtkActionGroup *group, 
+                        BtkAction      *action,
+                        BtkWidget      *proxy, 
+                        BtkUIManager *self)
 {
   g_signal_emit (self, ui_manager_signals[CONNECT_PROXY], 0, action, proxy);
 }
 
 static void
-cb_proxy_disconnect_proxy (GtkActionGroup *group, 
-                           GtkAction      *action,
-                           GtkWidget      *proxy, 
-                           GtkUIManager *self)
+cb_proxy_disconnect_proxy (BtkActionGroup *group, 
+                           BtkAction      *action,
+                           BtkWidget      *proxy, 
+                           BtkUIManager *self)
 {
   g_signal_emit (self, ui_manager_signals[DISCONNECT_PROXY], 0, action, proxy);
 }
 
 static void
-cb_proxy_pre_activate (GtkActionGroup *group, 
-                       GtkAction      *action,
-                       GtkUIManager   *self)
+cb_proxy_pre_activate (BtkActionGroup *group, 
+                       BtkAction      *action,
+                       BtkUIManager   *self)
 {
   g_signal_emit (self, ui_manager_signals[PRE_ACTIVATE], 0, action);
 }
 
 static void
-cb_proxy_post_activate (GtkActionGroup *group, 
-                        GtkAction      *action,
-                        GtkUIManager   *self)
+cb_proxy_post_activate (BtkActionGroup *group, 
+                        BtkAction      *action,
+                        BtkUIManager   *self)
 {
   g_signal_emit (self, ui_manager_signals[POST_ACTIVATE], 0, action);
 }
 
 /**
- * gtk_ui_manager_insert_action_group:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_insert_action_group:
+ * @self: a #BtkUIManager object
  * @action_group: the action group to be inserted
  * @pos: the position at which the group will be inserted.
  * 
@@ -698,8 +698,8 @@ cb_proxy_post_activate (GtkActionGroup *group,
  * Since: 2.4
  **/
 void
-gtk_ui_manager_insert_action_group (GtkUIManager   *self,
-				    GtkActionGroup *action_group, 
+btk_ui_manager_insert_action_group (BtkUIManager   *self,
+				    BtkActionGroup *action_group, 
 				    gint            pos)
 {
 #ifdef G_ENABLE_DEBUG
@@ -707,19 +707,19 @@ gtk_ui_manager_insert_action_group (GtkUIManager   *self,
   const char *group_name;
 #endif 
 
-  g_return_if_fail (GTK_IS_UI_MANAGER (self));
-  g_return_if_fail (GTK_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (BTK_IS_UI_MANAGER (self));
+  g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
   g_return_if_fail (g_list_find (self->private_data->action_groups, 
 				 action_group) == NULL);
 
 #ifdef G_ENABLE_DEBUG
-  group_name  = gtk_action_group_get_name (action_group);
+  group_name  = btk_action_group_get_name (action_group);
 
   for (l = self->private_data->action_groups; l; l = l->next) 
     {
-      GtkActionGroup *group = l->data;
+      BtkActionGroup *group = l->data;
 
-      if (strcmp (gtk_action_group_get_name (group), group_name) == 0)
+      if (strcmp (btk_action_group_get_name (group), group_name) == 0)
         {
           g_warning ("Inserting action group '%s' into UI manager which "
 		     "already has a group with this name\n", group_name);
@@ -745,8 +745,8 @@ gtk_ui_manager_insert_action_group (GtkUIManager   *self,
 }
 
 /**
- * gtk_ui_manager_remove_action_group:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_remove_action_group:
+ * @self: a #BtkUIManager object
  * @action_group: the action group to be removed
  * 
  * Removes an action group from the list of action groups associated 
@@ -755,11 +755,11 @@ gtk_ui_manager_insert_action_group (GtkUIManager   *self,
  * Since: 2.4
  **/
 void
-gtk_ui_manager_remove_action_group (GtkUIManager   *self,
-				    GtkActionGroup *action_group)
+btk_ui_manager_remove_action_group (BtkUIManager   *self,
+				    BtkActionGroup *action_group)
 {
-  g_return_if_fail (GTK_IS_UI_MANAGER (self));
-  g_return_if_fail (GTK_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (BTK_IS_UI_MANAGER (self));
+  g_return_if_fail (BTK_IS_ACTION_GROUP (action_group));
   g_return_if_fail (g_list_find (self->private_data->action_groups, 
 				 action_group) != NULL);
 
@@ -781,46 +781,46 @@ gtk_ui_manager_remove_action_group (GtkUIManager   *self,
 }
 
 /**
- * gtk_ui_manager_get_action_groups:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_get_action_groups:
+ * @self: a #BtkUIManager object
  * 
  * Returns the list of action groups associated with @self.
  *
- * Return value:  (element-type GtkActionGroup) (transfer none): a #GList of
- *   action groups. The list is owned by GTK+
+ * Return value:  (element-type BtkActionGroup) (transfer none): a #GList of
+ *   action groups. The list is owned by BTK+
  *   and should not be modified.
  *
  * Since: 2.4
  **/
 GList *
-gtk_ui_manager_get_action_groups (GtkUIManager *self)
+btk_ui_manager_get_action_groups (BtkUIManager *self)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
 
   return self->private_data->action_groups;
 }
 
 /**
- * gtk_ui_manager_get_accel_group:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_get_accel_group:
+ * @self: a #BtkUIManager object
  * 
- * Returns the #GtkAccelGroup associated with @self.
+ * Returns the #BtkAccelGroup associated with @self.
  *
- * Return value: (transfer none): the #GtkAccelGroup.
+ * Return value: (transfer none): the #BtkAccelGroup.
  *
  * Since: 2.4
  **/
-GtkAccelGroup *
-gtk_ui_manager_get_accel_group (GtkUIManager *self)
+BtkAccelGroup *
+btk_ui_manager_get_accel_group (BtkUIManager *self)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
 
   return self->private_data->accel_group;
 }
 
 /**
- * gtk_ui_manager_get_widget:
- * @self: a #GtkUIManager
+ * btk_ui_manager_get_widget:
+ * @self: a #BtkUIManager
  * @path: a path
  * 
  * Looks up a widget by following a path. 
@@ -842,18 +842,18 @@ gtk_ui_manager_get_accel_group (GtkUIManager *self)
  *
  * Since: 2.4
  **/
-GtkWidget *
-gtk_ui_manager_get_widget (GtkUIManager *self,
+BtkWidget *
+btk_ui_manager_get_widget (BtkUIManager *self,
 			   const gchar  *path)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  return GTK_UI_MANAGER_GET_CLASS (self)->get_widget (self, path);
+  return BTK_UI_MANAGER_GET_CLASS (self)->get_widget (self, path);
 }
 
 typedef struct {
-  GtkUIManagerItemType types;
+  BtkUIManagerItemType types;
   GSList *list;
 } ToplevelData;
 
@@ -868,15 +868,15 @@ collect_toplevels (GNode   *node,
       switch (NODE_INFO (node)->type) 
 	{
 	case NODE_TYPE_MENUBAR:
-	  if (data->types & GTK_UI_MANAGER_MENUBAR)
+	  if (data->types & BTK_UI_MANAGER_MENUBAR)
 	data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
 	  break;
 	case NODE_TYPE_TOOLBAR:
-      if (data->types & GTK_UI_MANAGER_TOOLBAR)
+      if (data->types & BTK_UI_MANAGER_TOOLBAR)
 	data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
       break;
 	case NODE_TYPE_POPUP:
-	  if (data->types & GTK_UI_MANAGER_POPUP)
+	  if (data->types & BTK_UI_MANAGER_POPUP)
 	    data->list = g_slist_prepend (data->list, NODE_INFO (node)->proxy);
 	  break;
 	default: ;
@@ -885,29 +885,29 @@ collect_toplevels (GNode   *node,
 }
 
 /**
- * gtk_ui_manager_get_toplevels:
- * @self: a #GtkUIManager
+ * btk_ui_manager_get_toplevels:
+ * @self: a #BtkUIManager
  * @types: specifies the types of toplevel widgets to include. Allowed
- *   types are #GTK_UI_MANAGER_MENUBAR, #GTK_UI_MANAGER_TOOLBAR and
- *   #GTK_UI_MANAGER_POPUP.
+ *   types are #BTK_UI_MANAGER_MENUBAR, #BTK_UI_MANAGER_TOOLBAR and
+ *   #BTK_UI_MANAGER_POPUP.
  * 
  * Obtains a list of all toplevel widgets of the requested types.
  *
- * Return value: (element-type GtkWidget) (transfer container): a newly-allocated #GSList of
+ * Return value: (element-type BtkWidget) (transfer container): a newly-allocated #GSList of
  * all toplevel widgets of the requested types.  Free the returned list with g_slist_free().
  *
  * Since: 2.4
  **/
 GSList *
-gtk_ui_manager_get_toplevels (GtkUIManager         *self,
-			      GtkUIManagerItemType  types)
+btk_ui_manager_get_toplevels (BtkUIManager         *self,
+			      BtkUIManagerItemType  types)
 {
   ToplevelData data;
 
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
-  g_return_val_if_fail ((~(GTK_UI_MANAGER_MENUBAR | 
-			   GTK_UI_MANAGER_TOOLBAR |
-			   GTK_UI_MANAGER_POPUP) & types) == 0, NULL);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail ((~(BTK_UI_MANAGER_MENUBAR | 
+			   BTK_UI_MANAGER_TOOLBAR |
+			   BTK_UI_MANAGER_POPUP) & types) == 0, NULL);
   
       
   data.types = types;
@@ -922,11 +922,11 @@ gtk_ui_manager_get_toplevels (GtkUIManager         *self,
 
 
 /**
- * gtk_ui_manager_get_action:
- * @self: a #GtkUIManager
+ * btk_ui_manager_get_action:
+ * @self: a #BtkUIManager
  * @path: a path
  * 
- * Looks up an action by following a path. See gtk_ui_manager_get_widget()
+ * Looks up an action by following a path. See btk_ui_manager_get_widget()
  * for more information about paths.
  * 
  * Return value: (transfer none): the action whose proxy widget is found by following the path, 
@@ -934,14 +934,14 @@ gtk_ui_manager_get_toplevels (GtkUIManager         *self,
  *
  * Since: 2.4
  **/
-GtkAction *
-gtk_ui_manager_get_action (GtkUIManager *self,
+BtkAction *
+btk_ui_manager_get_action (BtkUIManager *self,
 			   const gchar  *path)
 {
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), NULL);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
-  return GTK_UI_MANAGER_GET_CLASS (self)->get_action (self, path);
+  return BTK_UI_MANAGER_GET_CLASS (self)->get_action (self, path);
 }
 
 static gboolean
@@ -962,7 +962,7 @@ node_is_dead (GNode *node)
 }
 
 static GNode *
-get_child_node (GtkUIManager *self, 
+get_child_node (BtkUIManager *self, 
 		GNode        *parent,
 		GNode        *sibling,
 		const gchar  *childname, 
@@ -1068,7 +1068,7 @@ get_child_node (GtkUIManager *self,
 }
 
 static GNode *
-get_node (GtkUIManager *self, 
+get_node (BtkUIManager *self, 
 	  const gchar  *path,
 	  NodeType      node_type, 
 	  gboolean      create)
@@ -1135,18 +1135,18 @@ free_node (GNode *node)
 }
 
 /**
- * gtk_ui_manager_new_merge_id:
- * @self: a #GtkUIManager
+ * btk_ui_manager_new_merge_id:
+ * @self: a #BtkUIManager
  * 
  * Returns an unused merge id, suitable for use with 
- * gtk_ui_manager_add_ui().
+ * btk_ui_manager_add_ui().
  * 
  * Return value: an unused merge id.
  *
  * Since: 2.4
  **/
 guint
-gtk_ui_manager_new_merge_id (GtkUIManager *self)
+btk_ui_manager_new_merge_id (BtkUIManager *self)
 {
   self->private_data->last_merge_id++;
 
@@ -1219,7 +1219,7 @@ struct _ParseContext
   ParseState state;
   ParseState prev_state;
 
-  GtkUIManager *self;
+  BtkUIManager *self;
 
   GNode *current;
 
@@ -1235,7 +1235,7 @@ start_element_handler (GMarkupParseContext *context,
 		       GError             **error)
 {
   ParseContext *ctx = user_data;
-  GtkUIManager *self = ctx->self;
+  BtkUIManager *self = ctx->self;
 
   gint i;
   const gchar *node_name;
@@ -1559,7 +1559,7 @@ cleanup (GMarkupParseContext *context,
   /* should also walk through the tree and get rid of nodes related to
    * this UI file's tag */
 
-  gtk_ui_manager_remove_ui (ctx->self, ctx->merge_id);
+  btk_ui_manager_remove_ui (ctx->self, ctx->merge_id);
 }
 
 static gboolean
@@ -1607,7 +1607,7 @@ static const GMarkupParser ui_parser = {
 };
 
 static guint
-add_ui_from_string (GtkUIManager *self,
+add_ui_from_string (BtkUIManager *self,
 		    const gchar  *buffer, 
 		    gssize        length,
 		    gboolean      needs_root,
@@ -1619,7 +1619,7 @@ add_ui_from_string (GtkUIManager *self,
   ctx.state = STATE_START;
   ctx.self = self;
   ctx.current = NULL;
-  ctx.merge_id = gtk_ui_manager_new_merge_id (self);
+  ctx.merge_id = btk_ui_manager_new_merge_id (self);
 
   context = g_markup_parse_context_new (&ui_parser, 0, &ctx, NULL);
 
@@ -1653,8 +1653,8 @@ add_ui_from_string (GtkUIManager *self,
 }
 
 /**
- * gtk_ui_manager_add_ui_from_string:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_add_ui_from_string:
+ * @self: a #BtkUIManager object
  * @buffer: the string to parse
  * @length: the length of @buffer (may be -1 if @buffer is nul-terminated)
  * @error: return location for an error
@@ -1664,13 +1664,13 @@ add_ui_from_string (GtkUIManager *self,
  * element is added if it is missing.
  * 
  * Return value: The merge id for the merged UI. The merge id can be used
- *   to unmerge the UI with gtk_ui_manager_remove_ui(). If an error occurred,
+ *   to unmerge the UI with btk_ui_manager_remove_ui(). If an error occurred,
  *   the return value is 0.
  *
  * Since: 2.4
  **/
 guint
-gtk_ui_manager_add_ui_from_string (GtkUIManager *self,
+btk_ui_manager_add_ui_from_string (BtkUIManager *self,
 				   const gchar  *buffer, 
 				   gssize        length,
 				   GError      **error)
@@ -1679,7 +1679,7 @@ gtk_ui_manager_add_ui_from_string (GtkUIManager *self,
   const gchar *p;
   const gchar *end;
 
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), 0);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), 0);
   g_return_val_if_fail (buffer != NULL, 0);
 
   if (length < 0)
@@ -1697,8 +1697,8 @@ gtk_ui_manager_add_ui_from_string (GtkUIManager *self,
 }
 
 /**
- * gtk_ui_manager_add_ui_from_file:
- * @self: a #GtkUIManager object
+ * btk_ui_manager_add_ui_from_file:
+ * @self: a #BtkUIManager object
  * @filename: the name of the file to parse 
  * @error: return location for an error
  * 
@@ -1706,13 +1706,13 @@ gtk_ui_manager_add_ui_from_string (GtkUIManager *self,
  * merges it with the current contents of @self. 
  * 
  * Return value: The merge id for the merged UI. The merge id can be used
- *   to unmerge the UI with gtk_ui_manager_remove_ui(). If an error occurred,
+ *   to unmerge the UI with btk_ui_manager_remove_ui(). If an error occurred,
  *   the return value is 0.
  *
  * Since: 2.4
  **/
 guint
-gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
+btk_ui_manager_add_ui_from_file (BtkUIManager *self,
 				 const gchar  *filename,
 				 GError      **error)
 {
@@ -1720,7 +1720,7 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
   gsize length;
   guint res;
 
-  g_return_val_if_fail (GTK_IS_UI_MANAGER (self), 0);
+  g_return_val_if_fail (BTK_IS_UI_MANAGER (self), 0);
 
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return 0;
@@ -1732,9 +1732,9 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
 }
 
 /**
- * gtk_ui_manager_add_ui:
- * @self: a #GtkUIManager
- * @merge_id: the merge id for the merged UI, see gtk_ui_manager_new_merge_id()
+ * btk_ui_manager_add_ui:
+ * @self: a #BtkUIManager
+ * @merge_id: the merge id for the merged UI, see btk_ui_manager_new_merge_id()
  * @path: a path
  * @name: the name for the added UI element
  * @action: (allow-none): the name of the action to be proxied, or %NULL to add a separator
@@ -1744,7 +1744,7 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
  *
  * Adds a UI element to the current contents of @self. 
  *
- * If @type is %GTK_UI_MANAGER_AUTO, GTK+ inserts a menuitem, toolitem or 
+ * If @type is %BTK_UI_MANAGER_AUTO, BTK+ inserts a menuitem, toolitem or 
  * separator if such an element can be inserted at the place determined by 
  * @path. Otherwise @type must indicate an element that can be inserted at 
  * the place determined by @path.
@@ -1755,12 +1755,12 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
  * Since: 2.4
  **/
 void
-gtk_ui_manager_add_ui (GtkUIManager        *self,
+btk_ui_manager_add_ui (BtkUIManager        *self,
 		       guint                merge_id,
 		       const gchar         *path,
 		       const gchar         *name,
 		       const gchar         *action,
-		       GtkUIManagerItemType type,
+		       BtkUIManagerItemType type,
 		       gboolean             top)
 {
   GNode *node;
@@ -1769,9 +1769,9 @@ gtk_ui_manager_add_ui (GtkUIManager        *self,
   NodeType node_type;
   GQuark action_quark = 0;
 
-  g_return_if_fail (GTK_IS_UI_MANAGER (self));  
+  g_return_if_fail (BTK_IS_UI_MANAGER (self));  
   g_return_if_fail (merge_id > 0);
-  g_return_if_fail (name != NULL || type == GTK_UI_MANAGER_SEPARATOR);
+  g_return_if_fail (name != NULL || type == BTK_UI_MANAGER_SEPARATOR);
 
   node = get_node (self, path, NODE_TYPE_UNDECIDED, FALSE);
   sibling = NULL;
@@ -1796,22 +1796,22 @@ gtk_ui_manager_add_ui (GtkUIManager        *self,
     case NODE_TYPE_MENU_PLACEHOLDER:
       switch (type) 
 	{
-	case GTK_UI_MANAGER_AUTO:
+	case BTK_UI_MANAGER_AUTO:
 	  if (action != NULL)
 	      node_type = NODE_TYPE_MENUITEM;
 	  else
 	      node_type = NODE_TYPE_SEPARATOR;
 	  break;
-	case GTK_UI_MANAGER_MENU:
+	case BTK_UI_MANAGER_MENU:
 	  node_type = NODE_TYPE_MENU;
 	  break;
-	case GTK_UI_MANAGER_MENUITEM:
+	case BTK_UI_MANAGER_MENUITEM:
 	  node_type = NODE_TYPE_MENUITEM;
 	  break;
-	case GTK_UI_MANAGER_SEPARATOR:
+	case BTK_UI_MANAGER_SEPARATOR:
 	  node_type = NODE_TYPE_SEPARATOR;
 	  break;
-	case GTK_UI_MANAGER_PLACEHOLDER:
+	case BTK_UI_MANAGER_PLACEHOLDER:
 	  node_type = NODE_TYPE_MENU_PLACEHOLDER;
 	  break;
 	default: ;
@@ -1822,19 +1822,19 @@ gtk_ui_manager_add_ui (GtkUIManager        *self,
     case NODE_TYPE_TOOLBAR_PLACEHOLDER:
       switch (type) 
 	{
-	case GTK_UI_MANAGER_AUTO:
+	case BTK_UI_MANAGER_AUTO:
 	  if (action != NULL)
 	      node_type = NODE_TYPE_TOOLITEM;
 	  else
 	      node_type = NODE_TYPE_SEPARATOR;
 	  break;
-	case GTK_UI_MANAGER_TOOLITEM:
+	case BTK_UI_MANAGER_TOOLITEM:
 	  node_type = NODE_TYPE_TOOLITEM;
 	  break;
-	case GTK_UI_MANAGER_SEPARATOR:
+	case BTK_UI_MANAGER_SEPARATOR:
 	  node_type = NODE_TYPE_SEPARATOR;
 	  break;
-	case GTK_UI_MANAGER_PLACEHOLDER:
+	case BTK_UI_MANAGER_PLACEHOLDER:
 	  node_type = NODE_TYPE_TOOLBAR_PLACEHOLDER;
 	  break;
 	default: ;
@@ -1844,17 +1844,17 @@ gtk_ui_manager_add_ui (GtkUIManager        *self,
     case NODE_TYPE_ROOT:
       switch (type) 
 	{
-	case GTK_UI_MANAGER_MENUBAR:
+	case BTK_UI_MANAGER_MENUBAR:
 	  node_type = NODE_TYPE_MENUBAR;
 	  break;
-	case GTK_UI_MANAGER_TOOLBAR:
+	case BTK_UI_MANAGER_TOOLBAR:
 	  node_type = NODE_TYPE_TOOLBAR;
 	  break;
-	case GTK_UI_MANAGER_POPUP:
-	case GTK_UI_MANAGER_POPUP_WITH_ACCELS:
+	case BTK_UI_MANAGER_POPUP:
+	case BTK_UI_MANAGER_POPUP_WITH_ACCELS:
 	  node_type = NODE_TYPE_POPUP;
 	  break;
-	case GTK_UI_MANAGER_ACCELERATOR:
+	case BTK_UI_MANAGER_ACCELERATOR:
 	  node_type = NODE_TYPE_ACCELERATOR;
 	  break;
 	default: ;
@@ -1876,7 +1876,7 @@ gtk_ui_manager_add_ui (GtkUIManager        *self,
 			  name, name ? strlen (name) : 0,
 			  node_type, TRUE, top);
 
-  if (type == GTK_UI_MANAGER_POPUP_WITH_ACCELS)
+  if (type == BTK_UI_MANAGER_POPUP_WITH_ACCELS)
     NODE_INFO (child)->popup_accels = TRUE;
 
   if (action != NULL)
@@ -1904,19 +1904,19 @@ remove_ui (GNode   *node,
 }
 
 /**
- * gtk_ui_manager_remove_ui:
- * @self: a #GtkUIManager object
- * @merge_id: a merge id as returned by gtk_ui_manager_add_ui_from_string()
+ * btk_ui_manager_remove_ui:
+ * @self: a #BtkUIManager object
+ * @merge_id: a merge id as returned by btk_ui_manager_add_ui_from_string()
  * 
  * Unmerges the part of @self<!-- -->s content identified by @merge_id.
  *
  * Since: 2.4
  **/
 void
-gtk_ui_manager_remove_ui (GtkUIManager *self, 
+btk_ui_manager_remove_ui (BtkUIManager *self, 
 			  guint         merge_id)
 {
-  g_return_if_fail (GTK_IS_UI_MANAGER (self));
+  g_return_if_fail (BTK_IS_UI_MANAGER (self));
 
   g_node_traverse (self->private_data->root_node, 
 		   G_POST_ORDER, G_TRAVERSE_ALL, -1,
@@ -1930,8 +1930,8 @@ gtk_ui_manager_remove_ui (GtkUIManager *self,
 /* -------------------- Updates -------------------- */
 
 
-static GtkAction *
-get_action_by_name (GtkUIManager *merge, 
+static BtkAction *
+get_action_by_name (BtkUIManager *merge, 
 		    const gchar  *action_name)
 {
   GList *tmp;
@@ -1942,10 +1942,10 @@ get_action_by_name (GtkUIManager *merge,
   /* lookup name */
   for (tmp = merge->private_data->action_groups; tmp != NULL; tmp = tmp->next)
     {
-      GtkActionGroup *action_group = tmp->data;
-      GtkAction *action;
+      BtkActionGroup *action_group = tmp->data;
+      BtkAction *action;
       
-      action = gtk_action_group_get_action (action_group, action_name);
+      action = btk_action_group_get_action (action_group, action_name);
 
       if (action)
 	return action;
@@ -1956,10 +1956,10 @@ get_action_by_name (GtkUIManager *merge,
 
 static gboolean
 find_menu_position (GNode      *node, 
-		    GtkWidget **menushell_p, 
+		    BtkWidget **menushell_p, 
 		    gint       *pos_p)
 {
-  GtkWidget *menushell;
+  BtkWidget *menushell;
   gint pos = 0;
 
   g_return_val_if_fail (node != NULL, FALSE);
@@ -1986,19 +1986,19 @@ find_menu_position (GNode      *node,
 	  break;
 	case NODE_TYPE_MENU:
 	  menushell = NODE_INFO (parent)->proxy;
-	  if (GTK_IS_MENU_ITEM (menushell))
-	    menushell = gtk_menu_item_get_submenu (GTK_MENU_ITEM (menushell));
-	  siblings = gtk_container_get_children (GTK_CONTAINER (menushell));
-	  if (siblings != NULL && GTK_IS_TEAROFF_MENU_ITEM (siblings->data))
+	  if (BTK_IS_MENU_ITEM (menushell))
+	    menushell = btk_menu_item_get_submenu (BTK_MENU_ITEM (menushell));
+	  siblings = btk_container_get_children (BTK_CONTAINER (menushell));
+	  if (siblings != NULL && BTK_IS_TEAROFF_MENU_ITEM (siblings->data))
 	    pos = 1;
 	  else
 	    pos = 0;
 	  g_list_free (siblings);
 	  break;
 	case NODE_TYPE_MENU_PLACEHOLDER:
-	  menushell = gtk_widget_get_parent (NODE_INFO (parent)->proxy);
-	  g_return_val_if_fail (GTK_IS_MENU_SHELL (menushell), FALSE);
-	  pos = g_list_index (GTK_MENU_SHELL (menushell)->children,
+	  menushell = btk_widget_get_parent (NODE_INFO (parent)->proxy);
+	  g_return_val_if_fail (BTK_IS_MENU_SHELL (menushell), FALSE);
+	  pos = g_list_index (BTK_MENU_SHELL (menushell)->children,
 			      NODE_INFO (parent)->proxy) + 1;
 	  break;
 	default:
@@ -2009,7 +2009,7 @@ find_menu_position (GNode      *node,
     }
   else
     {
-      GtkWidget *prev_child;
+      BtkWidget *prev_child;
       GNode *sibling;
 
       sibling = node->prev;
@@ -2018,14 +2018,14 @@ find_menu_position (GNode      *node,
       else
 	prev_child = NODE_INFO (sibling)->proxy;
 
-      if (!GTK_IS_WIDGET (prev_child))
+      if (!BTK_IS_WIDGET (prev_child))
         return FALSE;
 
-      menushell = gtk_widget_get_parent (prev_child);
-      if (!GTK_IS_MENU_SHELL (menushell))
+      menushell = btk_widget_get_parent (prev_child);
+      if (!BTK_IS_MENU_SHELL (menushell))
         return FALSE;
 
-      pos = g_list_index (GTK_MENU_SHELL (menushell)->children, prev_child) + 1;
+      pos = g_list_index (BTK_MENU_SHELL (menushell)->children, prev_child) + 1;
     }
 
   if (menushell_p)
@@ -2038,10 +2038,10 @@ find_menu_position (GNode      *node,
 
 static gboolean
 find_toolbar_position (GNode      *node, 
-		       GtkWidget **toolbar_p, 
+		       BtkWidget **toolbar_p, 
 		       gint       *pos_p)
 {
-  GtkWidget *toolbar;
+  BtkWidget *toolbar;
   gint pos;
 
   g_return_val_if_fail (node != NULL, FALSE);
@@ -2064,10 +2064,10 @@ find_toolbar_position (GNode      *node,
 	  pos = 0;
 	  break;
 	case NODE_TYPE_TOOLBAR_PLACEHOLDER:
-	  toolbar = gtk_widget_get_parent (NODE_INFO (parent)->proxy);
-	  g_return_val_if_fail (GTK_IS_TOOLBAR (toolbar), FALSE);
-	  pos = gtk_toolbar_get_item_index (GTK_TOOLBAR (toolbar),
-					    GTK_TOOL_ITEM (NODE_INFO (parent)->proxy)) + 1;
+	  toolbar = btk_widget_get_parent (NODE_INFO (parent)->proxy);
+	  g_return_val_if_fail (BTK_IS_TOOLBAR (toolbar), FALSE);
+	  pos = btk_toolbar_get_item_index (BTK_TOOLBAR (toolbar),
+					    BTK_TOOL_ITEM (NODE_INFO (parent)->proxy)) + 1;
 	  break;
 	default:
 	  g_warning ("%s: bad parent node type %d", G_STRLOC,
@@ -2077,7 +2077,7 @@ find_toolbar_position (GNode      *node,
     }
   else
     {
-      GtkWidget *prev_child;
+      BtkWidget *prev_child;
       GNode *sibling;
 
       sibling = node->prev;
@@ -2086,15 +2086,15 @@ find_toolbar_position (GNode      *node,
       else
 	prev_child = NODE_INFO (sibling)->proxy;
 
-      if (!GTK_IS_WIDGET (prev_child))
+      if (!BTK_IS_WIDGET (prev_child))
         return FALSE;
 
-      toolbar = gtk_widget_get_parent (prev_child);
-      if (!GTK_IS_TOOLBAR (toolbar))
+      toolbar = btk_widget_get_parent (prev_child);
+      if (!BTK_IS_TOOLBAR (toolbar))
         return FALSE;
 
-      pos = gtk_toolbar_get_item_index (GTK_TOOLBAR (toolbar),
-					GTK_TOOL_ITEM (prev_child)) + 1;
+      pos = btk_toolbar_get_item_index (BTK_TOOLBAR (toolbar),
+					BTK_TOOL_ITEM (prev_child)) + 1;
     }
   
   if (toolbar_p)
@@ -2106,37 +2106,37 @@ find_toolbar_position (GNode      *node,
 }
 
 /**
- * _gtk_menu_is_empty:
- * @menu: (allow-none): a #GtkMenu or %NULL
+ * _btk_menu_is_empty:
+ * @menu: (allow-none): a #BtkMenu or %NULL
  * 
  * Determines whether @menu is empty. A menu is considered empty if it
  * the only visible children are tearoff menu items or "filler" menu 
  * items which were inserted to mark the menu as empty.
  * 
- * This function is used by #GtkAction.
+ * This function is used by #BtkAction.
  *
  * Return value: whether @menu is empty.
  **/
 gboolean
-_gtk_menu_is_empty (GtkWidget *menu)
+_btk_menu_is_empty (BtkWidget *menu)
 {
   GList *children, *cur;
   gboolean result = TRUE;
 
-  g_return_val_if_fail (menu == NULL || GTK_IS_MENU (menu), TRUE);
+  g_return_val_if_fail (menu == NULL || BTK_IS_MENU (menu), TRUE);
 
   if (!menu)
     return FALSE;
 
-  children = gtk_container_get_children (GTK_CONTAINER (menu));
+  children = btk_container_get_children (BTK_CONTAINER (menu));
 
   cur = children;
   while (cur) 
     {
-      if (gtk_widget_get_visible (cur->data))
+      if (btk_widget_get_visible (cur->data))
 	{
-	  if (!GTK_IS_TEAROFF_MENU_ITEM (cur->data) &&
-	      !g_object_get_data (cur->data, "gtk-empty-menu-item"))
+	  if (!BTK_IS_TEAROFF_MENU_ITEM (cur->data) &&
+	      !g_object_get_data (cur->data, "btk-empty-menu-item"))
             {
 	      result = FALSE;
               break;
@@ -2156,23 +2156,23 @@ enum {
 };
 
 static void
-update_smart_separators (GtkWidget *proxy)
+update_smart_separators (BtkWidget *proxy)
 {
-  GtkWidget *parent = NULL;
+  BtkWidget *parent = NULL;
   
-  if (GTK_IS_MENU (proxy) || GTK_IS_TOOLBAR (proxy))
+  if (BTK_IS_MENU (proxy) || BTK_IS_TOOLBAR (proxy))
     parent = proxy;
-  else if (GTK_IS_MENU_ITEM (proxy) || GTK_IS_TOOL_ITEM (proxy))
-    parent = gtk_widget_get_parent (proxy);
+  else if (BTK_IS_MENU_ITEM (proxy) || BTK_IS_TOOL_ITEM (proxy))
+    parent = btk_widget_get_parent (proxy);
 
   if (parent) 
     {
       gboolean visible;
       gboolean empty;
       GList *children, *cur, *last;
-      GtkWidget *filler;
+      BtkWidget *filler;
 
-      children = gtk_container_get_children (GTK_CONTAINER (parent));
+      children = btk_container_get_children (BTK_CONTAINER (parent));
       
       visible = FALSE;
       last = NULL;
@@ -2182,42 +2182,42 @@ update_smart_separators (GtkWidget *proxy)
       cur = children;
       while (cur) 
 	{
-	  if (g_object_get_data (cur->data, "gtk-empty-menu-item"))
+	  if (g_object_get_data (cur->data, "btk-empty-menu-item"))
 	    {
 	      filler = cur->data;
 	    }
-	  else if (GTK_IS_SEPARATOR_MENU_ITEM (cur->data) ||
-		   GTK_IS_SEPARATOR_TOOL_ITEM (cur->data))
+	  else if (BTK_IS_SEPARATOR_MENU_ITEM (cur->data) ||
+		   BTK_IS_SEPARATOR_TOOL_ITEM (cur->data))
 	    {
 	      gint mode = 
 		GPOINTER_TO_INT (g_object_get_data (G_OBJECT (cur->data), 
-						    "gtk-separator-mode"));
+						    "btk-separator-mode"));
 	      switch (mode) 
 		{
 		case SEPARATOR_MODE_VISIBLE:
-		  gtk_widget_show (GTK_WIDGET (cur->data));
+		  btk_widget_show (BTK_WIDGET (cur->data));
 		  last = NULL;
 		  visible = FALSE;
 		  break;
 		case SEPARATOR_MODE_HIDDEN:
-		  gtk_widget_hide (GTK_WIDGET (cur->data));
+		  btk_widget_hide (BTK_WIDGET (cur->data));
 		  break;
 		case SEPARATOR_MODE_SMART:
 		  if (visible)
 		    {
-		      gtk_widget_show (GTK_WIDGET (cur->data));
+		      btk_widget_show (BTK_WIDGET (cur->data));
 		      last = cur;
 		      visible = FALSE;
 		    }
 		  else 
-		    gtk_widget_hide (GTK_WIDGET (cur->data));
+		    btk_widget_hide (BTK_WIDGET (cur->data));
 		  break;
 		}
 	    }
-	  else if (gtk_widget_get_visible (cur->data))
+	  else if (btk_widget_get_visible (cur->data))
 	    {
 	      last = NULL;
-	      if (GTK_IS_TEAROFF_MENU_ITEM (cur->data) || cur->data == filler)
+	      if (BTK_IS_TEAROFF_MENU_ITEM (cur->data) || cur->data == filler)
 		visible = FALSE;
 	      else 
 		{
@@ -2230,21 +2230,21 @@ update_smart_separators (GtkWidget *proxy)
 	}
 
       if (last)
-	gtk_widget_hide (GTK_WIDGET (last->data));
+	btk_widget_hide (BTK_WIDGET (last->data));
 
-      if (GTK_IS_MENU (parent)) 
+      if (BTK_IS_MENU (parent)) 
 	{
-	  GtkWidget *item;
+	  BtkWidget *item;
 
-	  item = gtk_menu_get_attach_widget (GTK_MENU (parent));
-	  if (GTK_IS_MENU_ITEM (item))
-	    _gtk_action_sync_menu_visible (NULL, item, empty);
-	  if (GTK_IS_WIDGET (filler))
+	  item = btk_menu_get_attach_widget (BTK_MENU (parent));
+	  if (BTK_IS_MENU_ITEM (item))
+	    _btk_action_sync_menu_visible (NULL, item, empty);
+	  if (BTK_IS_WIDGET (filler))
 	    {
 	      if (empty)
-		gtk_widget_show (filler);
+		btk_widget_show (filler);
 	      else
-		gtk_widget_hide (filler);
+		btk_widget_hide (filler);
 	    }
 	}
 
@@ -2253,14 +2253,14 @@ update_smart_separators (GtkWidget *proxy)
 }
 
 static void
-update_node (GtkUIManager *self, 
+update_node (BtkUIManager *self, 
 	     GNode        *node,
 	     gboolean      in_popup,
              gboolean      popup_accels)
 {
   Node *info;
   GNode *child;
-  GtkAction *action;
+  BtkAction *action;
   const gchar *action_name;
   NodeUIReference *ref;
   
@@ -2324,7 +2324,7 @@ update_node (GtkUIManager *self,
     }
   
   if (action)
-    gtk_action_set_accel_group (action, self->private_data->accel_group);
+    btk_action_set_accel_group (action, self->private_data->accel_group);
   
   /* If the widget already has a proxy and the action hasn't changed, then
    * we only have to update the tearoff menu items.
@@ -2333,20 +2333,20 @@ update_node (GtkUIManager *self,
     {
       if (info->type == NODE_TYPE_MENU) 
 	{
-	  GtkWidget *menu;
+	  BtkWidget *menu;
 	  GList *siblings;
 	  
-	  if (GTK_IS_MENU (info->proxy))
+	  if (BTK_IS_MENU (info->proxy))
 	    menu = info->proxy;
 	  else
-	    menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (info->proxy));
-	  siblings = gtk_container_get_children (GTK_CONTAINER (menu));
-	  if (siblings != NULL && GTK_IS_TEAROFF_MENU_ITEM (siblings->data))
+	    menu = btk_menu_item_get_submenu (BTK_MENU_ITEM (info->proxy));
+	  siblings = btk_container_get_children (BTK_CONTAINER (menu));
+	  if (siblings != NULL && BTK_IS_TEAROFF_MENU_ITEM (siblings->data))
 	    {
 	      if (self->private_data->add_tearoffs && !in_popup)
-		gtk_widget_show (GTK_WIDGET (siblings->data));
+		btk_widget_show (BTK_WIDGET (siblings->data));
 	      else
-		gtk_widget_hide (GTK_WIDGET (siblings->data));
+		btk_widget_hide (BTK_WIDGET (siblings->data));
 	    }
 	  g_list_free (siblings);
 	}
@@ -2359,43 +2359,43 @@ update_node (GtkUIManager *self,
     case NODE_TYPE_MENUBAR:
       if (info->proxy == NULL)
 	{
-	  info->proxy = gtk_menu_bar_new ();
+	  info->proxy = btk_menu_bar_new ();
 	  g_object_ref_sink (info->proxy);
-	  gtk_widget_set_name (info->proxy, info->name);
-	  gtk_widget_show (info->proxy);
+	  btk_widget_set_name (info->proxy, info->name);
+	  btk_widget_show (info->proxy);
 	  g_signal_emit (self, ui_manager_signals[ADD_WIDGET], 0, info->proxy);
 	}
       break;
     case NODE_TYPE_POPUP:
       if (info->proxy == NULL) 
 	{
-	  info->proxy = gtk_menu_new ();
+	  info->proxy = btk_menu_new ();
 	  g_object_ref_sink (info->proxy);
 	}
-      gtk_widget_set_name (info->proxy, info->name);
+      btk_widget_set_name (info->proxy, info->name);
       break;
     case NODE_TYPE_MENU:
       {
-	GtkWidget *prev_submenu = NULL;
-	GtkWidget *menu = NULL;
+	BtkWidget *prev_submenu = NULL;
+	BtkWidget *menu = NULL;
 	GList *siblings;
 
 	/* remove the proxy if it is of the wrong type ... */
 	if (info->proxy &&  
-	    G_OBJECT_TYPE (info->proxy) != GTK_ACTION_GET_CLASS (action)->menu_item_type)
+	    G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
 	  {
-	    if (GTK_IS_MENU_ITEM (info->proxy))
+	    if (BTK_IS_MENU_ITEM (info->proxy))
 	      {
-		prev_submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (info->proxy));
+		prev_submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (info->proxy));
 		if (prev_submenu)
 		  {
 		    g_object_ref (prev_submenu);
-		    gtk_menu_item_set_submenu (GTK_MENU_ITEM (info->proxy), NULL);
+		    btk_menu_item_set_submenu (BTK_MENU_ITEM (info->proxy), NULL);
 		}
 	      }
 
-            gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), NULL);
-	    gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+            btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), NULL);
+	    btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				  info->proxy);
 	    g_object_unref (info->proxy);
 	    info->proxy = NULL;
@@ -2409,77 +2409,77 @@ update_node (GtkUIManager *self,
              */
             if ((NODE_INFO (node->parent)->type == NODE_TYPE_TOOLITEM ||
                  NODE_INFO (node->parent)->type == NODE_TYPE_MENUITEM) &&
-                GTK_ACTION_GET_CLASS (action)->create_menu)
+                BTK_ACTION_GET_CLASS (action)->create_menu)
               {
-                menu = gtk_action_create_menu (action);
+                menu = btk_action_create_menu (action);
               }
 
             if (!menu)
               {
-                GtkWidget *tearoff;
-                GtkWidget *filler;
+                BtkWidget *tearoff;
+                BtkWidget *filler;
 	    
-                menu = gtk_menu_new ();
-                gtk_widget_set_name (menu, info->name);
-                tearoff = gtk_tearoff_menu_item_new ();
-                gtk_widget_set_no_show_all (tearoff, TRUE);
-                gtk_menu_shell_append (GTK_MENU_SHELL (menu), tearoff);
-                filler = gtk_menu_item_new_with_label (_("Empty"));
+                menu = btk_menu_new ();
+                btk_widget_set_name (menu, info->name);
+                tearoff = btk_tearoff_menu_item_new ();
+                btk_widget_set_no_show_all (tearoff, TRUE);
+                btk_menu_shell_append (BTK_MENU_SHELL (menu), tearoff);
+                filler = btk_menu_item_new_with_label (_("Empty"));
                 g_object_set_data (G_OBJECT (filler),
-                                   I_("gtk-empty-menu-item"),
+                                   I_("btk-empty-menu-item"),
                                    GINT_TO_POINTER (TRUE));
-                gtk_widget_set_sensitive (filler, FALSE);
-                gtk_widget_set_no_show_all (filler, TRUE);
-                gtk_menu_shell_append (GTK_MENU_SHELL (menu), filler);
+                btk_widget_set_sensitive (filler, FALSE);
+                btk_widget_set_no_show_all (filler, TRUE);
+                btk_menu_shell_append (BTK_MENU_SHELL (menu), filler);
               }
 	    
             if (NODE_INFO (node->parent)->type == NODE_TYPE_TOOLITEM)
 	      {
 		info->proxy = menu;
 		g_object_ref_sink (info->proxy);
-		gtk_menu_tool_button_set_menu (GTK_MENU_TOOL_BUTTON (NODE_INFO (node->parent)->proxy),
+		btk_menu_tool_button_set_menu (BTK_MENU_TOOL_BUTTON (NODE_INFO (node->parent)->proxy),
 					       menu);
 	      }
 	    else
 	      {
-		GtkWidget *menushell;
+		BtkWidget *menushell;
 		gint pos;
 		
 		if (find_menu_position (node, &menushell, &pos))
                   {
-		     info->proxy = gtk_action_create_menu_item (action);
+		     info->proxy = btk_action_create_menu_item (action);
 		     g_object_ref_sink (info->proxy);
 		     g_signal_connect (info->proxy, "notify::visible",
 		   		       G_CALLBACK (update_smart_separators), NULL);
-		     gtk_widget_set_name (info->proxy, info->name);
+		     btk_widget_set_name (info->proxy, info->name);
 		
-		     gtk_menu_item_set_submenu (GTK_MENU_ITEM (info->proxy), menu);
-		     gtk_menu_shell_insert (GTK_MENU_SHELL (menushell), info->proxy, pos);
+		     btk_menu_item_set_submenu (BTK_MENU_ITEM (info->proxy), menu);
+		     btk_menu_shell_insert (BTK_MENU_SHELL (menushell), info->proxy, pos);
                  }
 	      }
 	  }
 	else
-          gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), action);
+          btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), action);
 	
 	if (prev_submenu)
 	  {
-	    gtk_menu_item_set_submenu (GTK_MENU_ITEM (info->proxy),
+	    btk_menu_item_set_submenu (BTK_MENU_ITEM (info->proxy),
 				       prev_submenu);
 	    g_object_unref (prev_submenu);
 	  }
 	
-	if (GTK_IS_MENU (info->proxy))
+	if (BTK_IS_MENU (info->proxy))
 	  menu = info->proxy;
 	else
-	  menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (info->proxy));
+	  menu = btk_menu_item_get_submenu (BTK_MENU_ITEM (info->proxy));
 
-	siblings = gtk_container_get_children (GTK_CONTAINER (menu));
-	if (siblings != NULL && GTK_IS_TEAROFF_MENU_ITEM (siblings->data))
+	siblings = btk_container_get_children (BTK_CONTAINER (menu));
+	if (siblings != NULL && BTK_IS_TEAROFF_MENU_ITEM (siblings->data))
 	  {
 	    if (self->private_data->add_tearoffs && !in_popup)
-	      gtk_widget_show (GTK_WIDGET (siblings->data));
+	      btk_widget_show (BTK_WIDGET (siblings->data));
 	    else
-	      gtk_widget_hide (GTK_WIDGET (siblings->data));
+	      btk_widget_hide (BTK_WIDGET (siblings->data));
 	  }
 	g_list_free (siblings);
       }
@@ -2492,28 +2492,28 @@ update_node (GtkUIManager *self,
     case NODE_TYPE_TOOLBAR:
       if (info->proxy == NULL)
 	{
-	  info->proxy = gtk_toolbar_new ();
+	  info->proxy = btk_toolbar_new ();
 	  g_object_ref_sink (info->proxy);
-	  gtk_widget_set_name (info->proxy, info->name);
-	  gtk_widget_show (info->proxy);
+	  btk_widget_set_name (info->proxy, info->name);
+	  btk_widget_show (info->proxy);
 	  g_signal_emit (self, ui_manager_signals[ADD_WIDGET], 0, info->proxy);
 	}
       break;
     case NODE_TYPE_MENU_PLACEHOLDER:
       /* create menu items for placeholders if necessary ... */
-      if (!GTK_IS_SEPARATOR_MENU_ITEM (info->proxy) ||
-	  !GTK_IS_SEPARATOR_MENU_ITEM (info->extra))
+      if (!BTK_IS_SEPARATOR_MENU_ITEM (info->proxy) ||
+	  !BTK_IS_SEPARATOR_MENU_ITEM (info->extra))
 	{
 	  if (info->proxy)
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+	      btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				    info->proxy);
 	      g_object_unref (info->proxy);
 	      info->proxy = NULL;
 	    }
 	  if (info->extra)
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->extra->parent),
+	      btk_container_remove (BTK_CONTAINER (info->extra->parent),
 				    info->extra);
 	      g_object_unref (info->extra);
 	      info->extra = NULL;
@@ -2521,46 +2521,46 @@ update_node (GtkUIManager *self,
 	}
       if (info->proxy == NULL)
 	{
-	  GtkWidget *menushell;
+	  BtkWidget *menushell;
 	  gint pos;
 	  
 	  if (find_menu_position (node, &menushell, &pos))
             {
-	      info->proxy = gtk_separator_menu_item_new ();
+	      info->proxy = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->proxy);
 	      g_object_set_data (G_OBJECT (info->proxy),
-	  		         I_("gtk-separator-mode"),
+	  		         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
-	      gtk_widget_set_no_show_all (info->proxy, TRUE);
-	      gtk_menu_shell_insert (GTK_MENU_SHELL (menushell),
+	      btk_widget_set_no_show_all (info->proxy, TRUE);
+	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 	 			     NODE_INFO (node)->proxy, pos);
 	  
-	      info->extra = gtk_separator_menu_item_new ();
+	      info->extra = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->extra);
 	      g_object_set_data (G_OBJECT (info->extra),
-			         I_("gtk-separator-mode"),
+			         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
-	      gtk_widget_set_no_show_all (info->extra, TRUE);
-	      gtk_menu_shell_insert (GTK_MENU_SHELL (menushell),
+	      btk_widget_set_no_show_all (info->extra, TRUE);
+	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 				     NODE_INFO (node)->extra, pos + 1);
             }
 	}
       break;
     case NODE_TYPE_TOOLBAR_PLACEHOLDER:
       /* create toolbar items for placeholders if necessary ... */
-      if (!GTK_IS_SEPARATOR_TOOL_ITEM (info->proxy) ||
-	  !GTK_IS_SEPARATOR_TOOL_ITEM (info->extra))
+      if (!BTK_IS_SEPARATOR_TOOL_ITEM (info->proxy) ||
+	  !BTK_IS_SEPARATOR_TOOL_ITEM (info->extra))
 	{
 	  if (info->proxy)
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+	      btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				    info->proxy);
 	      g_object_unref (info->proxy);
 	      info->proxy = NULL;
 	    }
 	  if (info->extra)
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->extra->parent),
+	      btk_container_remove (BTK_CONTAINER (info->extra->parent),
 				    info->extra);
 	      g_object_unref (info->extra);
 	      info->extra = NULL;
@@ -2568,42 +2568,42 @@ update_node (GtkUIManager *self,
 	}
       if (info->proxy == NULL)
 	{
-	  GtkWidget *toolbar;
+	  BtkWidget *toolbar;
 	  gint pos;
-	  GtkToolItem *item;    
+	  BtkToolItem *item;    
 	  
 	  if (find_toolbar_position (node, &toolbar, &pos))
             {
-	      item = gtk_separator_tool_item_new ();
-	      gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, pos);
-	      info->proxy = GTK_WIDGET (item);
+	      item = btk_separator_tool_item_new ();
+	      btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, pos);
+	      info->proxy = BTK_WIDGET (item);
 	      g_object_ref_sink (info->proxy);
 	      g_object_set_data (G_OBJECT (info->proxy),
-			         I_("gtk-separator-mode"),
+			         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
-	      gtk_widget_set_no_show_all (info->proxy, TRUE);
+	      btk_widget_set_no_show_all (info->proxy, TRUE);
 	  
-	      item = gtk_separator_tool_item_new ();
-	      gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, pos+1);
-	      info->extra = GTK_WIDGET (item);
+	      item = btk_separator_tool_item_new ();
+	      btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, pos+1);
+	      info->extra = BTK_WIDGET (item);
 	      g_object_ref_sink (info->extra);
 	      g_object_set_data (G_OBJECT (info->extra),
-			         I_("gtk-separator-mode"),
+			         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (SEPARATOR_MODE_HIDDEN));
-	      gtk_widget_set_no_show_all (info->extra, TRUE);
+	      btk_widget_set_no_show_all (info->extra, TRUE);
             }
 	}
       break;
     case NODE_TYPE_MENUITEM:
       /* remove the proxy if it is of the wrong type ... */
       if (info->proxy &&  
-	  G_OBJECT_TYPE (info->proxy) != GTK_ACTION_GET_CLASS (action)->menu_item_type)
+	  G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->menu_item_type)
 	{
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
 						NULL);  
-          gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), NULL);
-	  gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+          btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), NULL);
+	  btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				info->proxy);
 	  g_object_unref (info->proxy);
 	  info->proxy = NULL;
@@ -2611,21 +2611,21 @@ update_node (GtkUIManager *self,
       /* create proxy if needed ... */
       if (info->proxy == NULL)
 	{
-	  GtkWidget *menushell;
+	  BtkWidget *menushell;
 	  gint pos;
 	  
 	  if (find_menu_position (node, &menushell, &pos))
             {
-	      info->proxy = gtk_action_create_menu_item (action);
+	      info->proxy = btk_action_create_menu_item (action);
 	      g_object_ref_sink (info->proxy);
-	      gtk_widget_set_name (info->proxy, info->name);
+	      btk_widget_set_name (info->proxy, info->name);
 
               if (info->always_show_image_set &&
-                  GTK_IS_IMAGE_MENU_ITEM (info->proxy))
-                gtk_image_menu_item_set_always_show_image (GTK_IMAGE_MENU_ITEM (info->proxy),
+                  BTK_IS_IMAGE_MENU_ITEM (info->proxy))
+                btk_image_menu_item_set_always_show_image (BTK_IMAGE_MENU_ITEM (info->proxy),
                                                            info->always_show_image);
 
-	      gtk_menu_shell_insert (GTK_MENU_SHELL (menushell),
+	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 				     info->proxy, pos);
            }
 	}
@@ -2634,8 +2634,8 @@ update_node (GtkUIManager *self,
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
 						NULL);
-	  gtk_menu_item_set_submenu (GTK_MENU_ITEM (info->proxy), NULL);
-          gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), action);
+	  btk_menu_item_set_submenu (BTK_MENU_ITEM (info->proxy), NULL);
+          btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), action);
 	}
 
       if (info->proxy)
@@ -2645,8 +2645,8 @@ update_node (GtkUIManager *self,
           if (in_popup && !popup_accels)
 	    {
 	      /* don't show accels in popups */
-	      GtkWidget *child = gtk_bin_get_child (GTK_BIN (info->proxy));
-	      if (GTK_IS_ACCEL_LABEL (child))
+	      BtkWidget *child = btk_bin_get_child (BTK_BIN (info->proxy));
+	      if (BTK_IS_ACCEL_LABEL (child))
 	        g_object_set (child, "accel-closure", NULL, NULL);
 	    }
         }
@@ -2655,13 +2655,13 @@ update_node (GtkUIManager *self,
     case NODE_TYPE_TOOLITEM:
       /* remove the proxy if it is of the wrong type ... */
       if (info->proxy && 
-	  G_OBJECT_TYPE (info->proxy) != GTK_ACTION_GET_CLASS (action)->toolbar_item_type)
+	  G_OBJECT_TYPE (info->proxy) != BTK_ACTION_GET_CLASS (action)->toolbar_item_type)
 	{
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
 						NULL);
-          gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), NULL);
-	  gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+          btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), NULL);
+	  btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				info->proxy);
 	  g_object_unref (info->proxy);
 	  info->proxy = NULL;
@@ -2669,17 +2669,17 @@ update_node (GtkUIManager *self,
       /* create proxy if needed ... */
       if (info->proxy == NULL)
 	{
-	  GtkWidget *toolbar;
+	  BtkWidget *toolbar;
 	  gint pos;
 	  
 	  if (find_toolbar_position (node, &toolbar, &pos))
             {
-	      info->proxy = gtk_action_create_tool_item (action);
+	      info->proxy = btk_action_create_tool_item (action);
 	      g_object_ref_sink (info->proxy);
-	      gtk_widget_set_name (info->proxy, info->name);
+	      btk_widget_set_name (info->proxy, info->name);
 	      
-	      gtk_toolbar_insert (GTK_TOOLBAR (toolbar),
-	  		          GTK_TOOL_ITEM (info->proxy), pos);
+	      btk_toolbar_insert (BTK_TOOLBAR (toolbar),
+	  		          BTK_TOOL_ITEM (info->proxy), pos);
             }
 	}
       else
@@ -2687,7 +2687,7 @@ update_node (GtkUIManager *self,
 	  g_signal_handlers_disconnect_by_func (info->proxy,
 						G_CALLBACK (update_smart_separators),
 						NULL);
-	  gtk_activatable_set_related_action (GTK_ACTIVATABLE (info->proxy), action);
+	  btk_activatable_set_related_action (BTK_ACTIVATABLE (info->proxy), action);
 	}
 
       if (info->proxy)
@@ -2700,14 +2700,14 @@ update_node (GtkUIManager *self,
       if (NODE_INFO (node->parent)->type == NODE_TYPE_TOOLBAR ||
 	  NODE_INFO (node->parent)->type == NODE_TYPE_TOOLBAR_PLACEHOLDER)
 	{
-	  GtkWidget *toolbar;
+	  BtkWidget *toolbar;
 	  gint pos;
 	  gint separator_mode;
-	  GtkToolItem *item;
+	  BtkToolItem *item;
 
-	  if (GTK_IS_SEPARATOR_TOOL_ITEM (info->proxy))
+	  if (BTK_IS_SEPARATOR_TOOL_ITEM (info->proxy))
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+	      btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				    info->proxy);
 	      g_object_unref (info->proxy);
 	      info->proxy = NULL;
@@ -2715,34 +2715,34 @@ update_node (GtkUIManager *self,
 	  
 	  if (find_toolbar_position (node, &toolbar, &pos))
             {
-	      item  = gtk_separator_tool_item_new ();
-	      gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, pos);
-	      info->proxy = GTK_WIDGET (item);
+	      item  = btk_separator_tool_item_new ();
+	      btk_toolbar_insert (BTK_TOOLBAR (toolbar), item, pos);
+	      info->proxy = BTK_WIDGET (item);
 	      g_object_ref_sink (info->proxy);
-	      gtk_widget_set_no_show_all (info->proxy, TRUE);
+	      btk_widget_set_no_show_all (info->proxy, TRUE);
 	      if (info->expand)
 	        {
-	          gtk_tool_item_set_expand (GTK_TOOL_ITEM (item), TRUE);
-	          gtk_separator_tool_item_set_draw (GTK_SEPARATOR_TOOL_ITEM (item), FALSE);
+	          btk_tool_item_set_expand (BTK_TOOL_ITEM (item), TRUE);
+	          btk_separator_tool_item_set_draw (BTK_SEPARATOR_TOOL_ITEM (item), FALSE);
 	          separator_mode = SEPARATOR_MODE_VISIBLE;
 	        }
 	      else
 	        separator_mode = SEPARATOR_MODE_SMART;
 	  
 	      g_object_set_data (G_OBJECT (info->proxy),
-			         I_("gtk-separator-mode"),
+			         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (separator_mode));
-	      gtk_widget_show (info->proxy);
+	      btk_widget_show (info->proxy);
             }
 	}
       else
 	{
-	  GtkWidget *menushell;
+	  BtkWidget *menushell;
 	  gint pos;
 	  
-	  if (GTK_IS_SEPARATOR_MENU_ITEM (info->proxy))
+	  if (BTK_IS_SEPARATOR_MENU_ITEM (info->proxy))
 	    {
-	      gtk_container_remove (GTK_CONTAINER (info->proxy->parent),
+	      btk_container_remove (BTK_CONTAINER (info->proxy->parent),
 				    info->proxy);
 	      g_object_unref (info->proxy);
 	      info->proxy = NULL;
@@ -2750,20 +2750,20 @@ update_node (GtkUIManager *self,
 	  
 	  if (find_menu_position (node, &menushell, &pos))
 	    {
-              info->proxy = gtk_separator_menu_item_new ();
+              info->proxy = btk_separator_menu_item_new ();
 	      g_object_ref_sink (info->proxy);
-	      gtk_widget_set_no_show_all (info->proxy, TRUE);
+	      btk_widget_set_no_show_all (info->proxy, TRUE);
 	      g_object_set_data (G_OBJECT (info->proxy),
-			         I_("gtk-separator-mode"),
+			         I_("btk-separator-mode"),
 			         GINT_TO_POINTER (SEPARATOR_MODE_SMART));
-	      gtk_menu_shell_insert (GTK_MENU_SHELL (menushell),
+	      btk_menu_shell_insert (BTK_MENU_SHELL (menushell),
 				     info->proxy, pos);
-	      gtk_widget_show (info->proxy);
+	      btk_widget_show (info->proxy);
             }
 	}
       break;
     case NODE_TYPE_ACCELERATOR:
-      gtk_action_connect_accelerator (action);
+      btk_action_connect_accelerator (action);
       break;
     }
   
@@ -2787,8 +2787,8 @@ update_node (GtkUIManager *self,
   
   if (info->proxy) 
     {
-      if (info->type == NODE_TYPE_MENU && GTK_IS_MENU_ITEM (info->proxy)) 
-	update_smart_separators (gtk_menu_item_get_submenu (GTK_MENU_ITEM (info->proxy)));
+      if (info->type == NODE_TYPE_MENU && BTK_IS_MENU_ITEM (info->proxy)) 
+	update_smart_separators (btk_menu_item_get_submenu (BTK_MENU_ITEM (info->proxy)));
       else if (info->type == NODE_TYPE_MENU || 
 	       info->type == NODE_TYPE_TOOLBAR || 
 	       info->type == NODE_TYPE_POPUP) 
@@ -2799,18 +2799,18 @@ update_node (GtkUIManager *self,
   if (node->children == NULL && info->uifiles == NULL)
     {
       if (info->proxy)
-	gtk_widget_destroy (info->proxy);
+	btk_widget_destroy (info->proxy);
       if (info->extra)
-	gtk_widget_destroy (info->extra);
+	btk_widget_destroy (info->extra);
       if (info->type == NODE_TYPE_ACCELERATOR && info->action != NULL)
-	gtk_action_disconnect_accelerator (info->action);
+	btk_action_disconnect_accelerator (info->action);
       free_node (node);
       g_node_destroy (node);
     }
 }
 
 static gboolean
-do_updates (GtkUIManager *self)
+do_updates (BtkUIManager *self)
 {
   /* this function needs to check through the tree for dirty nodes.
    * For such nodes, it needs to do the following:
@@ -2832,7 +2832,7 @@ do_updates (GtkUIManager *self)
 }
 
 static gboolean
-do_updates_idle (GtkUIManager *self)
+do_updates_idle (BtkUIManager *self)
 {
   do_updates (self);
 
@@ -2840,41 +2840,41 @@ do_updates_idle (GtkUIManager *self)
 }
 
 static void
-queue_update (GtkUIManager *self)
+queue_update (BtkUIManager *self)
 {
   if (self->private_data->update_tag != 0)
     return;
 
-  self->private_data->update_tag = gdk_threads_add_idle (
+  self->private_data->update_tag = bdk_threads_add_idle (
 					       (GSourceFunc)do_updates_idle, 
 					       self);
 }
 
 
 /**
- * gtk_ui_manager_ensure_update:
- * @self: a #GtkUIManager
+ * btk_ui_manager_ensure_update:
+ * @self: a #BtkUIManager
  * 
  * Makes sure that all pending updates to the UI have been completed.
  *
- * This may occasionally be necessary, since #GtkUIManager updates the 
+ * This may occasionally be necessary, since #BtkUIManager updates the 
  * UI in an idle function. A typical example where this function is
  * useful is to enforce that the menubar and toolbar have been added to 
  * the main window before showing it:
  * |[
- * gtk_container_add (GTK_CONTAINER (window), vbox); 
+ * btk_container_add (BTK_CONTAINER (window), vbox); 
  * g_signal_connect (merge, "add-widget", 
  *                   G_CALLBACK (add_widget), vbox);
- * gtk_ui_manager_add_ui_from_file (merge, "my-menus");
- * gtk_ui_manager_add_ui_from_file (merge, "my-toolbars");
- * gtk_ui_manager_ensure_update (merge);  
- * gtk_widget_show (window);
+ * btk_ui_manager_add_ui_from_file (merge, "my-menus");
+ * btk_ui_manager_add_ui_from_file (merge, "my-toolbars");
+ * btk_ui_manager_ensure_update (merge);  
+ * btk_widget_show (window);
  * ]|
  *
  * Since: 2.4
  **/
 void
-gtk_ui_manager_ensure_update (GtkUIManager *self)
+btk_ui_manager_ensure_update (BtkUIManager *self)
 {
   if (self->private_data->update_tag != 0)
     {
@@ -2892,7 +2892,7 @@ dirty_traverse_func (GNode   *node,
 }
 
 static void
-dirty_all_nodes (GtkUIManager *self)
+dirty_all_nodes (BtkUIManager *self)
 {
   g_node_traverse (self->private_data->root_node,
 		   G_PRE_ORDER, G_TRAVERSE_ALL, -1,
@@ -2949,7 +2949,7 @@ close_tag_format (NodeType type)
 }
 
 static void
-print_node (GtkUIManager *self,
+print_node (BtkUIManager *self,
 	    GNode        *node,
 	    gint          indent_level,
 	    GString      *buffer)
@@ -2986,8 +2986,8 @@ print_node (GtkUIManager *self,
 }
 
 static gboolean
-gtk_ui_manager_buildable_custom_tag_start (GtkBuildable  *buildable,
-					   GtkBuilder    *builder,
+btk_ui_manager_buildable_custom_tag_start (BtkBuildable  *buildable,
+					   BtkBuilder    *builder,
 					   GObject       *child,
 					   const gchar   *tagname,
 					   GMarkupParser *parser,
@@ -3002,9 +3002,9 @@ gtk_ui_manager_buildable_custom_tag_start (GtkBuildable  *buildable,
 
       ctx = g_new0 (ParseContext, 1);
       ctx->state = STATE_START;
-      ctx->self = GTK_UI_MANAGER (buildable);
+      ctx->self = BTK_UI_MANAGER (buildable);
       ctx->current = NULL;
-      ctx->merge_id = gtk_ui_manager_new_merge_id (GTK_UI_MANAGER (buildable));
+      ctx->merge_id = btk_ui_manager_new_merge_id (BTK_UI_MANAGER (buildable));
 
       *data = ctx;
       *parser = ui_parser;
@@ -3017,20 +3017,20 @@ gtk_ui_manager_buildable_custom_tag_start (GtkBuildable  *buildable,
 }
 
 static void
-gtk_ui_manager_buildable_custom_tag_end (GtkBuildable *buildable,
-					 GtkBuilder   *builder,
+btk_ui_manager_buildable_custom_tag_end (BtkBuildable *buildable,
+					 BtkBuilder   *builder,
 					 GObject      *child,
 					 const gchar  *tagname,
 					 gpointer     *data)
 {
-  queue_update (GTK_UI_MANAGER (buildable));
+  queue_update (BTK_UI_MANAGER (buildable));
   g_object_notify (G_OBJECT (buildable), "ui");
   g_free (data);
 }
 
 /**
- * gtk_ui_manager_get_ui:
- * @self: a #GtkUIManager
+ * btk_ui_manager_get_ui:
+ * @self: a #BtkUIManager
  * 
  * Creates a <link linkend="XML-UI">UI definition</link> of the merged UI.
  * 
@@ -3040,13 +3040,13 @@ gtk_ui_manager_buildable_custom_tag_end (GtkBuildable *buildable,
  * Since: 2.4
  **/
 gchar *
-gtk_ui_manager_get_ui (GtkUIManager *self)
+btk_ui_manager_get_ui (BtkUIManager *self)
 {
   GString *buffer;
 
   buffer = g_string_new (NULL);
 
-  gtk_ui_manager_ensure_update (self); 
+  btk_ui_manager_ensure_update (self); 
  
   print_node (self, self->private_data->root_node, 0, buffer);  
 
@@ -3055,10 +3055,10 @@ gtk_ui_manager_get_ui (GtkUIManager *self)
 
 #if defined (G_OS_WIN32) && !defined (_WIN64)
 
-#undef gtk_ui_manager_add_ui_from_file
+#undef btk_ui_manager_add_ui_from_file
 
 guint
-gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
+btk_ui_manager_add_ui_from_file (BtkUIManager *self,
 				 const gchar  *filename,
 				 GError      **error)
 {
@@ -3068,7 +3068,7 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
   if (utf8_filename == NULL)
     return 0;
   
-  retval = gtk_ui_manager_add_ui_from_file_utf8 (self, utf8_filename, error);
+  retval = btk_ui_manager_add_ui_from_file_utf8 (self, utf8_filename, error);
 
   g_free (utf8_filename);
 
@@ -3077,5 +3077,5 @@ gtk_ui_manager_add_ui_from_file (GtkUIManager *self,
 
 #endif
 
-#define __GTK_UI_MANAGER_C__
-#include "gtkaliasdef.c"
+#define __BTK_UI_MANAGER_C__
+#include "btkaliasdef.c"

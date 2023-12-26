@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,51 +19,51 @@
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#include "gailclistcell.h"
+#include <btk/btk.h>
+#include "bailclistcell.h"
 
-static void	 gail_clist_cell_class_init        (GailCListCellClass *klass);
-static void	 gail_clist_cell_init              (GailCListCell      *cell);
+static void	 bail_clist_cell_class_init        (BailCListCellClass *klass);
+static void	 bail_clist_cell_init              (BailCListCell      *cell);
 
-static const gchar* gail_clist_cell_get_name (AtkObject *accessible);
+static const gchar* bail_clist_cell_get_name (BatkObject *accessible);
 
-G_DEFINE_TYPE (GailCListCell, gail_clist_cell, GAIL_TYPE_CELL)
+G_DEFINE_TYPE (BailCListCell, bail_clist_cell, BAIL_TYPE_CELL)
 
 static void	 
-gail_clist_cell_class_init (GailCListCellClass *klass)
+bail_clist_cell_class_init (BailCListCellClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->get_name = gail_clist_cell_get_name;
+  class->get_name = bail_clist_cell_get_name;
 }
 
 static void
-gail_clist_cell_init (GailCListCell *cell)
+bail_clist_cell_init (BailCListCell *cell)
 {
 }
 
-AtkObject* 
-gail_clist_cell_new (void)
+BatkObject* 
+bail_clist_cell_new (void)
 {
   GObject *object;
-  AtkObject *atk_object;
+  BatkObject *batk_object;
 
-  object = g_object_new (GAIL_TYPE_CLIST_CELL, NULL);
+  object = g_object_new (BAIL_TYPE_CLIST_CELL, NULL);
 
   g_return_val_if_fail (object != NULL, NULL);
 
-  atk_object = ATK_OBJECT (object);
-  atk_object->role = ATK_ROLE_TABLE_CELL;
+  batk_object = BATK_OBJECT (object);
+  batk_object->role = BATK_ROLE_TABLE_CELL;
 
-  g_return_val_if_fail (!ATK_IS_TEXT (atk_object), NULL);
+  g_return_val_if_fail (!BATK_IS_TEXT (batk_object), NULL);
   
-  return atk_object;
+  return batk_object;
 }
 
 static const gchar*
-gail_clist_cell_get_name (AtkObject *accessible)
+bail_clist_cell_get_name (BatkObject *accessible)
 {
   if (accessible->name)
     return accessible->name;
@@ -72,10 +72,10 @@ gail_clist_cell_get_name (AtkObject *accessible)
       /*
        * Get the cell's text if it exists
        */
-      GailCell *cell = GAIL_CELL (accessible);
-      GtkWidget* widget = cell->widget;
-      GtkCellType cell_type;
-      GtkCList *clist;
+      BailCell *cell = BAIL_CELL (accessible);
+      BtkWidget* widget = cell->widget;
+      BtkCellType cell_type;
+      BtkCList *clist;
       gchar *text = NULL;
       gint row, column;
 
@@ -85,18 +85,18 @@ gail_clist_cell_get_name (AtkObject *accessible)
          */
         return NULL;
  
-      clist = GTK_CLIST (widget);
+      clist = BTK_CLIST (widget);
       g_return_val_if_fail (clist->columns, NULL);
       row = cell->index / clist->columns;
       column = cell->index % clist->columns;
-      cell_type = gtk_clist_get_cell_type (clist, row, column);
+      cell_type = btk_clist_get_cell_type (clist, row, column);
       switch (cell_type)
         {
-        case GTK_CELL_TEXT:
-          gtk_clist_get_text (clist, row, column, &text);
+        case BTK_CELL_TEXT:
+          btk_clist_get_text (clist, row, column, &text);
           break;
-        case GTK_CELL_PIXTEXT:
-          gtk_clist_get_pixtext (clist, row, column, &text, NULL, NULL, NULL);
+        case BTK_CELL_PIXTEXT:
+          btk_clist_get_pixtext (clist, row, column, &text, NULL, NULL, NULL);
           break;
         default:
           break;

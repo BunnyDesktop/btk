@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,12 +18,12 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002       convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
@@ -31,41 +31,41 @@
  */
 
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "gdkcolor.h"
-#include "gdkinternals.h"
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
-#include "gdkalias.h"
+#include "bdkcolor.h"
+#include "bdkinternals.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
+#include "bdkalias.h"
 
 
 typedef struct {
-  GdkColorInfo     *info;
+  BdkColorInfo     *info;
   IDirectFBPalette *palette;
-} GdkColormapPrivateDirectFB;
+} BdkColormapPrivateDirectFB;
 
 
-static void  gdk_colormap_finalize (GObject *object);
+static void  bdk_colormap_finalize (GObject *object);
 
-static gint  gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
-                                              GdkColor    *colors,
+static gint  bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
+                                              BdkColor    *colors,
                                               gint         ncolors,
                                               gboolean     writeable,
                                               gboolean     best_match,
                                               gboolean    *success);
-static void  gdk_directfb_allocate_color_key (GdkColormap *colormap);
+static void  bdk_directfb_allocate_color_key (BdkColormap *colormap);
 
 
-G_DEFINE_TYPE (GdkColormap, gdk_colormap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkColormap, bdk_colormap, G_TYPE_OBJECT)
 
 static void
-gdk_colormap_init (GdkColormap *colormap)
+bdk_colormap_init (BdkColormap *colormap)
 {
   colormap->size           = 0;
   colormap->colors         = NULL;
@@ -73,18 +73,18 @@ gdk_colormap_init (GdkColormap *colormap)
 }
 
 static void
-gdk_colormap_class_init (GdkColormapClass *klass)
+bdk_colormap_class_init (BdkColormapClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->finalize = gdk_colormap_finalize;
+  object_class->finalize = bdk_colormap_finalize;
 }
 
 static void
-gdk_colormap_finalize (GObject *object)
+bdk_colormap_finalize (GObject *object)
 {
-  GdkColormap                *colormap = GDK_COLORMAP (object);
-  GdkColormapPrivateDirectFB *private  = colormap->windowing_data;
+  BdkColormap                *colormap = BDK_COLORMAP (object);
+  BdkColormapPrivateDirectFB *private  = colormap->windowing_data;
 
   g_free (colormap->colors);
 
@@ -99,29 +99,29 @@ gdk_colormap_finalize (GObject *object)
       colormap->windowing_data = NULL;
     }
 
-  G_OBJECT_CLASS (gdk_colormap_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bdk_colormap_parent_class)->finalize (object);
 }
 
-GdkColormap*
-gdk_colormap_new (GdkVisual *visual,
+BdkColormap*
+bdk_colormap_new (BdkVisual *visual,
                   gboolean   private_cmap)
 {
-  GdkColormap *colormap;
+  BdkColormap *colormap;
   gint         i;
 
   g_return_val_if_fail (visual != NULL, NULL);
 
-  colormap = g_object_new (gdk_colormap_get_type (), NULL);
+  colormap = g_object_new (bdk_colormap_get_type (), NULL);
   colormap->visual = visual;
   colormap->size   = visual->colormap_size;
 
   switch (visual->type)
     {
-    case GDK_VISUAL_PSEUDO_COLOR:
+    case BDK_VISUAL_PSEUDO_COLOR:
       {
-        IDirectFB                  *dfb = _gdk_display->directfb;
+        IDirectFB                  *dfb = _bdk_display->directfb;
         IDirectFBPalette           *palette;
-        GdkColormapPrivateDirectFB *private;
+        BdkColormapPrivateDirectFB *private;
         DFBPaletteDescription       dsc;
 
         dsc.flags = DPDESC_SIZE;
@@ -129,12 +129,12 @@ gdk_colormap_new (GdkVisual *visual,
         if (!dfb->CreatePalette (dfb, &dsc, &palette))
           return NULL;
 
-        colormap->colors = g_new0 (GdkColor, colormap->size);
+        colormap->colors = g_new0 (BdkColor, colormap->size);
 
-        private = g_new0 (GdkColormapPrivateDirectFB, 1);
-        private->info = g_new0 (GdkColorInfo, colormap->size);
+        private = g_new0 (BdkColormapPrivateDirectFB, 1);
+        private->info = g_new0 (BdkColorInfo, colormap->size);
 
-	if (visual == gdk_visual_get_system ())
+	if (visual == bdk_visual_get_system ())
 	  {
             /* save the first (transparent) palette entry */
             private->info[0].ref_count++;
@@ -144,15 +144,15 @@ gdk_colormap_new (GdkVisual *visual,
 
         colormap->windowing_data = private;
 
-        gdk_directfb_allocate_color_key (colormap);
+        bdk_directfb_allocate_color_key (colormap);
       }
       break;
 
-    case GDK_VISUAL_STATIC_COLOR:
-      colormap->colors = g_new0 (GdkColor, colormap->size);
+    case BDK_VISUAL_STATIC_COLOR:
+      colormap->colors = g_new0 (BdkColor, colormap->size);
       for (i = 0; i < colormap->size; i++)
         {
-          GdkColor *color = colormap->colors + i;
+          BdkColor *color = colormap->colors + i;
 
           color->pixel = i;
           color->red   = (i & 0xE0) <<  8 | (i & 0xE0);
@@ -168,38 +168,38 @@ gdk_colormap_new (GdkVisual *visual,
   return colormap;
 }
 
-GdkScreen*
-gdk_colormap_get_screen (GdkColormap *cmap)
+BdkScreen*
+bdk_colormap_get_screen (BdkColormap *cmap)
 {
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-GdkColormap*
-gdk_screen_get_system_colormap (GdkScreen *screen)
+BdkColormap*
+bdk_screen_get_system_colormap (BdkScreen *screen)
 {
-  static GdkColormap *colormap = NULL;
+  static BdkColormap *colormap = NULL;
 
   if (!colormap)
     {
-      GdkVisual *visual = gdk_visual_get_system ();
+      BdkVisual *visual = bdk_visual_get_system ();
 
       /* special case PSEUDO_COLOR to use the system palette */
-      if (visual->type == GDK_VISUAL_PSEUDO_COLOR)
+      if (visual->type == BDK_VISUAL_PSEUDO_COLOR)
         {
-          GdkColormapPrivateDirectFB *private;
+          BdkColormapPrivateDirectFB *private;
           IDirectFBSurface           *surface;
 
-          colormap = g_object_new (gdk_colormap_get_type (), NULL);
+          colormap = g_object_new (bdk_colormap_get_type (), NULL);
 
           colormap->visual = visual;
           colormap->size   = visual->colormap_size;
-          colormap->colors = g_new0 (GdkColor, colormap->size);
+          colormap->colors = g_new0 (BdkColor, colormap->size);
 
-          private = g_new0 (GdkColormapPrivateDirectFB, 1);
-          private->info = g_new0 (GdkColorInfo, colormap->size);
+          private = g_new0 (BdkColormapPrivateDirectFB, 1);
+          private->info = g_new0 (BdkColorInfo, colormap->size);
 
-          surface = GDK_WINDOW_IMPL_DIRECTFB (
-                        GDK_WINDOW_OBJECT (_gdk_parent_root)->impl)->drawable.surface;
+          surface = BDK_WINDOW_IMPL_DIRECTFB (
+                        BDK_WINDOW_OBJECT (_bdk_parent_root)->impl)->drawable.surface;
           surface->GetPalette (surface, &private->palette);
 
           colormap->windowing_data = private;
@@ -207,11 +207,11 @@ gdk_screen_get_system_colormap (GdkScreen *screen)
           /* save the first (transparent) palette entry */
           private->info[0].ref_count++;
 
-          gdk_directfb_allocate_color_key (colormap);
+          bdk_directfb_allocate_color_key (colormap);
         }
       else
         {
-          colormap = gdk_colormap_new (visual, FALSE);
+          colormap = bdk_colormap_new (visual, FALSE);
         }
     }
 
@@ -219,53 +219,53 @@ gdk_screen_get_system_colormap (GdkScreen *screen)
 }
 
 gint
-gdk_colormap_get_system_size (void)
+bdk_colormap_get_system_size (void)
 {
-  GdkVisual *visual;
+  BdkVisual *visual;
 
-  visual = gdk_visual_get_system ();
+  visual = bdk_visual_get_system ();
 
   return visual->colormap_size;
 }
 
 void
-gdk_colormap_change (GdkColormap *colormap,
+bdk_colormap_change (BdkColormap *colormap,
                      gint         ncolors)
 {
-  g_message ("gdk_colormap_change() is deprecated and unimplemented");
+  g_message ("bdk_colormap_change() is deprecated and unimplemented");
 }
 
 gboolean
-gdk_colors_alloc (GdkColormap   *colormap,
+bdk_colors_alloc (BdkColormap   *colormap,
                   gboolean       contiguous,
                   gulong        *planes,
                   gint           nplanes,
                   gulong        *pixels,
                   gint           npixels)
 {
-  /* g_message ("gdk_colors_alloc() is deprecated and unimplemented"); */
+  /* g_message ("bdk_colors_alloc() is deprecated and unimplemented"); */
 
-  return TRUE;  /* return TRUE here to make GdkRGB happy */
+  return TRUE;  /* return TRUE here to make BdkRGB happy */
 }
 
 void
-gdk_colors_free (GdkColormap *colormap,
+bdk_colors_free (BdkColormap *colormap,
                  gulong      *in_pixels,
                  gint         in_npixels,
                  gulong       planes)
 {
-  /* g_message ("gdk_colors_free() is deprecated and unimplemented"); */
+  /* g_message ("bdk_colors_free() is deprecated and unimplemented"); */
 }
 
 void
-gdk_colormap_free_colors (GdkColormap    *colormap,
-                          const GdkColor *colors,
+bdk_colormap_free_colors (BdkColormap    *colormap,
+                          const BdkColor *colors,
                           gint            ncolors)
 {
-  GdkColormapPrivateDirectFB *private;
+  BdkColormapPrivateDirectFB *private;
   gint                        i;
 
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
   g_return_if_fail (colors != NULL);
 
   private = colormap->windowing_data;
@@ -285,23 +285,23 @@ gdk_colormap_free_colors (GdkColormap    *colormap,
 }
 
 gint
-gdk_colormap_alloc_colors (GdkColormap *colormap,
-                           GdkColor    *colors,
+bdk_colormap_alloc_colors (BdkColormap *colormap,
+                           BdkColor    *colors,
                            gint         ncolors,
                            gboolean     writeable,
                            gboolean     best_match,
                            gboolean    *success)
 {
-  GdkVisual *visual;
+  BdkVisual *visual;
   gint       i;
 
-  g_return_val_if_fail (GDK_IS_COLORMAP (colormap), 0);
+  g_return_val_if_fail (BDK_IS_COLORMAP (colormap), 0);
   g_return_val_if_fail (colors != NULL, 0);
   g_return_val_if_fail (success != NULL, 0);
 
   switch (colormap->visual->type)
     {
-    case GDK_VISUAL_TRUE_COLOR:
+    case BDK_VISUAL_TRUE_COLOR:
       visual = colormap->visual;
 
       for (i = 0; i < ncolors; i++)
@@ -318,14 +318,14 @@ gdk_colormap_alloc_colors (GdkColormap *colormap,
         }
       break;
 
-    case GDK_VISUAL_PSEUDO_COLOR:
-      return gdk_colormap_alloc_pseudocolors (colormap,
+    case BDK_VISUAL_PSEUDO_COLOR:
+      return bdk_colormap_alloc_pseudocolors (colormap,
                                               colors, ncolors,
                                               writeable, best_match,
                                               success);
       break;
 
-    case GDK_VISUAL_STATIC_COLOR:
+    case BDK_VISUAL_STATIC_COLOR:
       for (i = 0; i < ncolors; i++)
         {
           colors[i].pixel = (((colors[i].red   & 0xE000) >> 8)  |
@@ -345,13 +345,13 @@ gdk_colormap_alloc_colors (GdkColormap *colormap,
 }
 
 gboolean
-gdk_color_change (GdkColormap *colormap,
-                  GdkColor    *color)
+bdk_color_change (BdkColormap *colormap,
+                  BdkColor    *color)
 {
-  GdkColormapPrivateDirectFB *private;
+  BdkColormapPrivateDirectFB *private;
   IDirectFBPalette           *palette;
 
-  g_return_val_if_fail (GDK_IS_COLORMAP (colormap), FALSE);
+  g_return_val_if_fail (BDK_IS_COLORMAP (colormap), FALSE);
   g_return_val_if_fail (color != NULL, FALSE);
 
   private = colormap->windowing_data;
@@ -365,7 +365,7 @@ gdk_color_change (GdkColormap *colormap,
   if (color->pixel < 0 || color->pixel >= colormap->size)
     return FALSE;
 
-  if (private->info[color->pixel].flags & GDK_COLOR_WRITEABLE)
+  if (private->info[color->pixel].flags & BDK_COLOR_WRITEABLE)
     {
       DFBColor  entry = { 0xFF,
                           color->red   >> 8,
@@ -383,19 +383,19 @@ gdk_color_change (GdkColormap *colormap,
 }
 
 void
-gdk_colormap_query_color (GdkColormap *colormap,
+bdk_colormap_query_color (BdkColormap *colormap,
                           gulong       pixel,
-                          GdkColor    *result)
+                          BdkColor    *result)
 {
-  GdkVisual *visual;
+  BdkVisual *visual;
 
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
 
-  visual = gdk_colormap_get_visual (colormap);
+  visual = bdk_colormap_get_visual (colormap);
 
   switch (visual->type)
     {
-    case GDK_VISUAL_TRUE_COLOR:
+    case BDK_VISUAL_TRUE_COLOR:
       result->red = 65535. *
         (gdouble)((pixel & visual->red_mask) >> visual->red_shift) /
         ((1 << visual->red_prec) - 1);
@@ -409,8 +409,8 @@ gdk_colormap_query_color (GdkColormap *colormap,
         ((1 << visual->blue_prec) - 1);
       break;
 
-    case GDK_VISUAL_STATIC_COLOR:
-    case GDK_VISUAL_PSEUDO_COLOR:
+    case BDK_VISUAL_STATIC_COLOR:
+    case BDK_VISUAL_PSEUDO_COLOR:
       if (pixel >= 0 && pixel < colormap->size)
         {
           result->red   = colormap->colors[pixel].red;
@@ -418,12 +418,12 @@ gdk_colormap_query_color (GdkColormap *colormap,
           result->blue  = colormap->colors[pixel].blue;
         }
       else
-        g_warning ("gdk_colormap_query_color: pixel outside colormap");
+        g_warning ("bdk_colormap_query_color: pixel outside colormap");
       break;
 
-    case GDK_VISUAL_DIRECT_COLOR:
-    case GDK_VISUAL_GRAYSCALE:
-    case GDK_VISUAL_STATIC_GRAY:
+    case BDK_VISUAL_DIRECT_COLOR:
+    case BDK_VISUAL_GRAYSCALE:
+    case BDK_VISUAL_STATIC_GRAY:
       /* unsupported */
       g_assert_not_reached ();
       break;
@@ -431,11 +431,11 @@ gdk_colormap_query_color (GdkColormap *colormap,
 }
 
 IDirectFBPalette *
-gdk_directfb_colormap_get_palette (GdkColormap *colormap)
+bdk_directfb_colormap_get_palette (BdkColormap *colormap)
 {
-  GdkColormapPrivateDirectFB *private;
+  BdkColormapPrivateDirectFB *private;
 
-  g_return_val_if_fail (GDK_IS_COLORMAP (colormap), NULL);
+  g_return_val_if_fail (BDK_IS_COLORMAP (colormap), NULL);
 
   private = colormap->windowing_data;
 
@@ -446,14 +446,14 @@ gdk_directfb_colormap_get_palette (GdkColormap *colormap)
 }
 
 static gint
-gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
-                                 GdkColor    *colors,
+bdk_colormap_alloc_pseudocolors (BdkColormap *colormap,
+                                 BdkColor    *colors,
                                  gint         ncolors,
                                  gboolean     writeable,
                                  gboolean     best_match,
                                  gboolean    *success)
 {
-  GdkColormapPrivateDirectFB *private = colormap->windowing_data;
+  BdkColormapPrivateDirectFB *private = colormap->windowing_data;
   IDirectFBPalette           *palette;
   gint                        i, j;
   gint                        remaining = ncolors;
@@ -480,7 +480,7 @@ gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
 
                 palette->SetEntries (palette, &lookup, 1, index);
 
-                private->info[index].flags = GDK_COLOR_WRITEABLE;
+                private->info[index].flags = BDK_COLOR_WRITEABLE;
 
                 colors[i].pixel = index;
                 colormap->colors[index] = colors[i];
@@ -499,7 +499,7 @@ gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
 
           /* check if we have an exact (non-writeable) match */
           if (private->info[index].ref_count &&
-              !(private->info[index].flags & GDK_COLOR_WRITEABLE))
+              !(private->info[index].flags & BDK_COLOR_WRITEABLE))
             {
               DFBColor  entry;
 
@@ -531,7 +531,7 @@ gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
 
           /* if that failed, use the best match */
           if (best_match &&
-              !(private->info[index].flags & GDK_COLOR_WRITEABLE))
+              !(private->info[index].flags & BDK_COLOR_WRITEABLE))
             {
 #if 0
                g_print ("best match for (%d %d %d)  ",
@@ -567,25 +567,25 @@ gdk_colormap_alloc_pseudocolors (GdkColormap *colormap,
 
 /* dirty hack for color_keying */
 static void
-gdk_directfb_allocate_color_key (GdkColormap *colormap)
+bdk_directfb_allocate_color_key (BdkColormap *colormap)
 {
-  GdkColormapPrivateDirectFB *private = colormap->windowing_data;
+  BdkColormapPrivateDirectFB *private = colormap->windowing_data;
   IDirectFBPalette           *palette = private->palette;
 
-  if (!gdk_directfb_enable_color_keying)
+  if (!bdk_directfb_enable_color_keying)
     return;
 
-  palette->SetEntries (palette, &gdk_directfb_bg_color, 1, 255);
+  palette->SetEntries (palette, &bdk_directfb_bg_color, 1, 255);
 
   colormap->colors[255].pixel = 255;
-  colormap->colors[255].red   = ((gdk_directfb_bg_color_key.r << 8)
-                                 | gdk_directfb_bg_color_key.r);
-  colormap->colors[255].green = ((gdk_directfb_bg_color_key.g << 8)
-                                 | gdk_directfb_bg_color_key.g);
-  colormap->colors[255].blue  = ((gdk_directfb_bg_color_key.b << 8)
-                                 | gdk_directfb_bg_color_key.b);
+  colormap->colors[255].red   = ((bdk_directfb_bg_color_key.r << 8)
+                                 | bdk_directfb_bg_color_key.r);
+  colormap->colors[255].green = ((bdk_directfb_bg_color_key.g << 8)
+                                 | bdk_directfb_bg_color_key.g);
+  colormap->colors[255].blue  = ((bdk_directfb_bg_color_key.b << 8)
+                                 | bdk_directfb_bg_color_key.b);
 
   private->info[255].ref_count++;
 }
-#define __GDK_COLOR_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_COLOR_X11_C__
+#include "bdkaliasdef.c"

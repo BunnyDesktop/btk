@@ -1,24 +1,24 @@
 #include <string.h>
-#include <atk/atk.h>
-#include <gtk/gtk.h>
+#include <batk/batk.h>
+#include <btk/btk.h>
 
-static void _traverse_children (AtkObject *obj);
-static void _add_handler (AtkObject *obj);
-static void _check_values (AtkObject *obj);
-static void _value_change_handler (AtkObject   *obj,
-                                      AtkPropertyValues *values);
+static void _traverse_children (BatkObject *obj);
+static void _add_handler (BatkObject *obj);
+static void _check_values (BatkObject *obj);
+static void _value_change_handler (BatkObject   *obj,
+                                      BatkPropertyValues *values);
 
 static guint id;
 
-static void _value_change_handler (AtkObject   *obj,
-                                   AtkPropertyValues   *values)
+static void _value_change_handler (BatkObject   *obj,
+                                   BatkPropertyValues   *values)
 {
   const gchar *type_name = g_type_name (G_TYPE_FROM_INSTANCE (obj));
    GValue *value_back, val;
 
   value_back = &val;
     
-  if (!ATK_IS_VALUE (obj)) { 
+  if (!BATK_IS_VALUE (obj)) { 
    	return;
   }
 
@@ -31,21 +31,21 @@ static void _value_change_handler (AtkObject   *obj,
 		g_value_get_double (&values->new_value));
  	}
 
-	g_print("Now calling the AtkValue interface functions\n");
+	g_print("Now calling the BatkValue interface functions\n");
 
-  	atk_value_get_current_value (ATK_VALUE(obj), value_back);
+  	batk_value_get_current_value (BATK_VALUE(obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_current_value returns %f\n",
+  	g_print ("batk_value_get_current_value returns %f\n",
 			g_value_get_double (value_back)	);
 
-  	atk_value_get_maximum_value (ATK_VALUE (obj), value_back);
+  	batk_value_get_maximum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_maximum returns %f\n",
+  	g_print ("batk_value_get_maximum returns %f\n",
 			g_value_get_double (value_back));
 
-  	atk_value_get_minimum_value (ATK_VALUE (obj), value_back);
+  	batk_value_get_minimum_value (BATK_VALUE (obj), value_back);
   	g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-  	g_print ("atk_value_get_minimum returns %f\n", 
+  	g_print ("batk_value_get_minimum returns %f\n", 
 			g_value_get_double (value_back));
 	
  
@@ -53,23 +53,23 @@ static void _value_change_handler (AtkObject   *obj,
   
 }
 
-static void _traverse_children (AtkObject *obj)
+static void _traverse_children (BatkObject *obj)
 {
   gint n_children, i;
 
-  n_children = atk_object_get_n_accessible_children (obj);
+  n_children = batk_object_get_n_accessible_children (obj);
   for (i = 0; i < n_children; i++)
   {
-    AtkObject *child;
+    BatkObject *child;
 
-    child = atk_object_ref_accessible_child (obj, i);
+    child = batk_object_ref_accessible_child (obj, i);
     _add_handler (child);
     _traverse_children (child);
     g_object_unref (G_OBJECT (child));
   }
 }
 
-static void _add_handler (AtkObject *obj)
+static void _add_handler (BatkObject *obj)
 {
   static GPtrArray *obj_array = NULL;
   gboolean found = FALSE;
@@ -95,13 +95,13 @@ static void _add_handler (AtkObject *obj)
   }
   if (!found)
   {
-    atk_object_connect_property_change_handler (obj,
-                   (AtkPropertyChangeHandler*) _value_change_handler);
+    batk_object_connect_property_change_handler (obj,
+                   (BatkPropertyChangeHandler*) _value_change_handler);
     g_ptr_array_add (obj_array, obj);
   }
 }
 
-static void _set_values (AtkObject *obj) {
+static void _set_values (BatkObject *obj) {
 
   GValue *value_back, val;
   static gint count = 0;
@@ -109,45 +109,45 @@ static void _set_values (AtkObject *obj) {
 
   value_back = &val;
 
-  if(ATK_IS_VALUE(obj)) {
-	/* Spin button also inherits the text interfaces from GailEntry. 
+  if(BATK_IS_VALUE(obj)) {
+	/* Spin button also inherits the text interfaces from BailEntry. 
 	 * Check when spin button recieves focus.
      */
 
-	if(ATK_IS_TEXT(obj) && ATK_IS_EDITABLE_TEXT(obj)) {
+	if(BATK_IS_TEXT(obj) && BATK_IS_EDITABLE_TEXT(obj)) {
 		if(count == 0) {	
 			gint x;
 			gchar* text;
 			count++;
-			x = atk_text_get_character_count (ATK_TEXT (obj));
-  			text = atk_text_get_text (ATK_TEXT (obj), 0, x);
+			x = batk_text_get_character_count (BATK_TEXT (obj));
+  			text = batk_text_get_text (BATK_TEXT (obj), 0, x);
 			g_print("Text : %s\n", text);
 			text = "5.7";
-			atk_editable_text_set_text_contents(ATK_EDITABLE_TEXT(obj),text);
+			batk_editable_text_set_text_contents(BATK_EDITABLE_TEXT(obj),text);
 			g_print("Set text to %s\n",text);
-			atk_value_get_current_value(ATK_VALUE(obj), value_back);
+			batk_value_get_current_value(BATK_VALUE(obj), value_back);
 			g_return_if_fail (G_VALUE_HOLDS_DOUBLE (value_back));
-			g_print("atk_value_get_current_value returns %f\n", 
+			g_print("batk_value_get_current_value returns %f\n", 
 				g_value_get_double( value_back));
 			} 
 	} else {
 		memset (value_back, 0, sizeof (GValue));
 		g_value_init (value_back, G_TYPE_DOUBLE);
 		g_value_set_double (value_back, 10.0);	
-		if (atk_value_set_current_value (ATK_VALUE (obj), value_back))
+		if (batk_value_set_current_value (BATK_VALUE (obj), value_back))
 		{
  			double_value = g_value_get_double (value_back);
-  			g_print("atk_value_set_current_value returns %f\n", 
+  			g_print("batk_value_set_current_value returns %f\n", 
 			double_value);
 		}
 	}
   }
 }
 
-static void _check_values (AtkObject *obj)
+static void _check_values (BatkObject *obj)
 {
   static gint calls = 0;
-  AtkRole role;
+  BatkRole role;
 
   g_print ("Start of _check_values\n");
 
@@ -160,13 +160,13 @@ static void _check_values (AtkObject *obj)
     /*
      * Just do this on this on the first 2 objects visited
      */
-    atk_object_set_name (obj, "test123");
-    atk_object_set_description (obj, "test123");
+    batk_object_set_name (obj, "test123");
+    batk_object_set_description (obj, "test123");
   }
 
-  role = atk_object_get_role (obj);
+  role = batk_object_get_role (obj);
 
-  if (role == ATK_ROLE_FRAME || role == ATK_ROLE_DIALOG)
+  if (role == BATK_ROLE_FRAME || role == BATK_ROLE_DIALOG)
   {
     /*
      * Add handlers to all children.
@@ -179,11 +179,11 @@ static void _check_values (AtkObject *obj)
 static void
 _create_event_watcher (void)
 {
-  id = atk_add_focus_tracker (_check_values);
+  id = batk_add_focus_tracker (_check_values);
 }
 
 int
-gtk_module_init(gint argc, char* argv[])
+btk_module_init(gint argc, char* argv[])
 {
   g_print("testvalues Module loaded\n");
 

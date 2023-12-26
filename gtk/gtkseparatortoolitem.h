@@ -1,6 +1,6 @@
-/* gtktoggletoolbutton.h
+/* btktoggletoolbutton.h
  *
- * Copyright (C) 2002 Anders Carlsson <andersca@gnome.org>
+ * Copyright (C) 2002 Anders Carlsson <andersca@bunny.org>
  * Copyright (C) 2002 James Henstridge <james@daa.com.au>
  *
  * This library is free software; you can redistribute it and/or
@@ -19,54 +19,54 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_SEPARATOR_TOOL_ITEM_H__
-#define __GTK_SEPARATOR_TOOL_ITEM_H__
+#ifndef __BTK_SEPARATOR_TOOL_ITEM_H__
+#define __BTK_SEPARATOR_TOOL_ITEM_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtktoolitem.h>
+#include <btk/btktoolitem.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_SEPARATOR_TOOL_ITEM            (gtk_separator_tool_item_get_type ())
-#define GTK_SEPARATOR_TOOL_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_SEPARATOR_TOOL_ITEM, GtkSeparatorToolItem))
-#define GTK_SEPARATOR_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_SEPARATOR_TOOL_ITEM, GtkSeparatorToolItemClass))
-#define GTK_IS_SEPARATOR_TOOL_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_SEPARATOR_TOOL_ITEM))
-#define GTK_IS_SEPARATOR_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_SEPARATOR_TOOL_ITEM))
-#define GTK_SEPARATOR_TOOL_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), GTK_TYPE_SEPARATOR_TOOL_ITEM, GtkSeparatorToolItemClass))
+#define BTK_TYPE_SEPARATOR_TOOL_ITEM            (btk_separator_tool_item_get_type ())
+#define BTK_SEPARATOR_TOOL_ITEM(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItem))
+#define BTK_SEPARATOR_TOOL_ITEM_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
+#define BTK_IS_SEPARATOR_TOOL_ITEM(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM))
+#define BTK_IS_SEPARATOR_TOOL_ITEM_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_SEPARATOR_TOOL_ITEM))
+#define BTK_SEPARATOR_TOOL_ITEM_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS((obj), BTK_TYPE_SEPARATOR_TOOL_ITEM, BtkSeparatorToolItemClass))
 
-typedef struct _GtkSeparatorToolItem        GtkSeparatorToolItem;
-typedef struct _GtkSeparatorToolItemClass   GtkSeparatorToolItemClass;
-typedef struct _GtkSeparatorToolItemPrivate GtkSeparatorToolItemPrivate;
+typedef struct _BtkSeparatorToolItem        BtkSeparatorToolItem;
+typedef struct _BtkSeparatorToolItemClass   BtkSeparatorToolItemClass;
+typedef struct _BtkSeparatorToolItemPrivate BtkSeparatorToolItemPrivate;
 
-struct _GtkSeparatorToolItem
+struct _BtkSeparatorToolItem
 {
-  GtkToolItem parent;
+  BtkToolItem parent;
 
   /*< private >*/
-  GtkSeparatorToolItemPrivate *GSEAL (priv);
+  BtkSeparatorToolItemPrivate *GSEAL (priv);
 };
 
-struct _GtkSeparatorToolItemClass
+struct _BtkSeparatorToolItemClass
 {
-  GtkToolItemClass parent_class;
+  BtkToolItemClass parent_class;
 
   /* Padding for future expansion */
-  void (* _gtk_reserved1) (void);
-  void (* _gtk_reserved2) (void);
-  void (* _gtk_reserved3) (void);
-  void (* _gtk_reserved4) (void);
+  void (* _btk_reserved1) (void);
+  void (* _btk_reserved2) (void);
+  void (* _btk_reserved3) (void);
+  void (* _btk_reserved4) (void);
 };
 
-GType        gtk_separator_tool_item_get_type (void) G_GNUC_CONST;
-GtkToolItem *gtk_separator_tool_item_new      (void);
+GType        btk_separator_tool_item_get_type (void) G_GNUC_CONST;
+BtkToolItem *btk_separator_tool_item_new      (void);
 
-gboolean     gtk_separator_tool_item_get_draw (GtkSeparatorToolItem *item);
-void         gtk_separator_tool_item_set_draw (GtkSeparatorToolItem *item,
+gboolean     btk_separator_tool_item_get_draw (BtkSeparatorToolItem *item);
+void         btk_separator_tool_item_set_draw (BtkSeparatorToolItem *item,
 					       gboolean              draw);
 
 G_END_DECLS
 
-#endif /* __GTK_SEPARATOR_TOOL_ITEM_H__ */
+#endif /* __BTK_SEPARATOR_TOOL_ITEM_H__ */

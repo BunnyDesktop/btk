@@ -1,4 +1,4 @@
-/* gtkcombo - combo widget for gtk+
+/* btkcombo - combo widget for btk+
  * Copyright 1997 Paolo Molaro
  *
  * This library is free software; you can redistribute it and/or
@@ -18,47 +18,47 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_SMART_COMBO_H__
-#define __GTK_SMART_COMBO_H__
+#ifndef __BTK_SMART_COMBO_H__
+#define __BTK_SMART_COMBO_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_COMBO              (gtk_combo_get_type ())
-#define GTK_COMBO(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_COMBO, GtkCombo))
-#define GTK_COMBO_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_COMBO, GtkComboClass))
-#define GTK_IS_COMBO(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_COMBO))
-#define GTK_IS_COMBO_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_COMBO))
-#define GTK_COMBO_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_COMBO, GtkComboClass))
+#define BTK_TYPE_COMBO              (btk_combo_get_type ())
+#define BTK_COMBO(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_COMBO, BtkCombo))
+#define BTK_COMBO_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_COMBO, BtkComboClass))
+#define BTK_IS_COMBO(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_COMBO))
+#define BTK_IS_COMBO_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_COMBO))
+#define BTK_COMBO_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_COMBO, BtkComboClass))
 
 
-typedef struct _GtkCombo	GtkCombo;
-typedef struct _GtkComboClass	GtkComboClass;
+typedef struct _BtkCombo	BtkCombo;
+typedef struct _BtkComboClass	BtkComboClass;
 
 /* you should access only the entry and list fields directly */
-struct _GtkCombo {
-	GtkHBox hbox;
+struct _BtkCombo {
+	BtkHBox hbox;
   
         /*< public >*/
-	GtkWidget *entry;
+	BtkWidget *entry;
 	
         /*< private >*/
-	GtkWidget *button;
-	GtkWidget *popup;
-	GtkWidget *popwin;
+	BtkWidget *button;
+	BtkWidget *popup;
+	BtkWidget *popwin;
 	
         /*< public >*/
-	GtkWidget *list;
+	BtkWidget *list;
 
         /*< private >*/
 	guint entry_change_id;
@@ -74,45 +74,45 @@ struct _GtkCombo {
 	guint activate_id;
 };
 
-struct _GtkComboClass {
-	GtkHBoxClass parent_class;
+struct _BtkComboClass {
+	BtkHBoxClass parent_class;
 
         /* Padding for future expansion */
-        void (*_gtk_reserved1) (void);
-        void (*_gtk_reserved2) (void);
-        void (*_gtk_reserved3) (void);
-        void (*_gtk_reserved4) (void);
+        void (*_btk_reserved1) (void);
+        void (*_btk_reserved2) (void);
+        void (*_btk_reserved3) (void);
+        void (*_btk_reserved4) (void);
 };
 
-GType      gtk_combo_get_type              (void) G_GNUC_CONST;
+GType      btk_combo_get_type              (void) G_GNUC_CONST;
 
-GtkWidget* gtk_combo_new                   (void);
+BtkWidget* btk_combo_new                   (void);
 /* the text in the entry must be or not be in the list */
-void       gtk_combo_set_value_in_list     (GtkCombo*    combo, 
+void       btk_combo_set_value_in_list     (BtkCombo*    combo, 
                                             gboolean     val,
                                             gboolean     ok_if_empty);
 /* set/unset arrows working for changing the value (can be annoying) */
-void       gtk_combo_set_use_arrows        (GtkCombo*    combo, 
+void       btk_combo_set_use_arrows        (BtkCombo*    combo, 
                                             gboolean     val);
 /* up/down arrows change value if current value not in list */
-void       gtk_combo_set_use_arrows_always (GtkCombo*    combo, 
+void       btk_combo_set_use_arrows_always (BtkCombo*    combo, 
                                             gboolean     val);
 /* perform case-sensitive compares */
-void       gtk_combo_set_case_sensitive    (GtkCombo*    combo, 
+void       btk_combo_set_case_sensitive    (BtkCombo*    combo, 
                                             gboolean     val);
 /* call this function on an item if it isn't a label or you
    want it to have a different value to be displayed in the entry */
-void       gtk_combo_set_item_string       (GtkCombo*    combo,
-                                            GtkItem*     item,
+void       btk_combo_set_item_string       (BtkCombo*    combo,
+                                            BtkItem*     item,
                                             const gchar* item_value);
 /* simple interface */
-void       gtk_combo_set_popdown_strings   (GtkCombo*    combo, 
+void       btk_combo_set_popdown_strings   (BtkCombo*    combo, 
                                             GList        *strings);
 
-void       gtk_combo_disable_activate      (GtkCombo*    combo);
+void       btk_combo_disable_activate      (BtkCombo*    combo);
 
 G_END_DECLS
 
-#endif /* __GTK_SMART_COMBO_H__ */
+#endif /* __BTK_SMART_COMBO_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

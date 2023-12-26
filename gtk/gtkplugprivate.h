@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,125 +17,125 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GTK_PLUG_PRIVATE_H__
-#define __GTK_PLUG_PRIVATE_H__
+#ifndef __BTK_PLUG_PRIVATE_H__
+#define __BTK_PLUG_PRIVATE_H__
 
-/* In gtkplug.c: */
-void _gtk_plug_send_delete_event      (GtkWidget        *widget);
-void _gtk_plug_add_all_grabbed_keys   (GtkPlug          *plug);
-void _gtk_plug_focus_first_last       (GtkPlug          *plug,
-				       GtkDirectionType  direction);
-void _gtk_plug_handle_modality_on     (GtkPlug          *plug);
-void _gtk_plug_handle_modality_off    (GtkPlug          *plug);
+/* In btkplug.c: */
+void _btk_plug_send_delete_event      (BtkWidget        *widget);
+void _btk_plug_add_all_grabbed_keys   (BtkPlug          *plug);
+void _btk_plug_focus_first_last       (BtkPlug          *plug,
+				       BtkDirectionType  direction);
+void _btk_plug_handle_modality_on     (BtkPlug          *plug);
+void _btk_plug_handle_modality_off    (BtkPlug          *plug);
 
 /* In backend-specific file: */
 
 /*
- * _gtk_plug_windowing_get_id:
+ * _btk_plug_windowing_get_id:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  *
  * Returns the native window system identifier for the plug's window.
  */
-GdkNativeWindow _gtk_plug_windowing_get_id (GtkPlug *plug);
+BdkNativeWindow _btk_plug_windowing_get_id (BtkPlug *plug);
 
 /*
- * _gtk_plug_windowing_realize_toplevel:
+ * _btk_plug_windowing_realize_toplevel:
  *
- * @plug_window: a #GtkPlug's #GdkWindow
+ * @plug_window: a #BtkPlug's #BdkWindow
  *
- * Called from GtkPlug's realize method. Should tell the corresponding
+ * Called from BtkPlug's realize method. Should tell the corresponding
  * socket that the plug has been realized.
  */
-void _gtk_plug_windowing_realize_toplevel (GtkPlug *plug);
+void _btk_plug_windowing_realize_toplevel (BtkPlug *plug);
 
 /*
- * _gtk_plug_windowing_map_toplevel:
+ * _btk_plug_windowing_map_toplevel:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  *
- * Called from GtkPlug's map method. Should tell the corresponding
- * #GtkSocket that the plug has been mapped.
+ * Called from BtkPlug's map method. Should tell the corresponding
+ * #BtkSocket that the plug has been mapped.
  */
-void _gtk_plug_windowing_map_toplevel (GtkPlug *plug);
+void _btk_plug_windowing_map_toplevel (BtkPlug *plug);
 
 /*
- * _gtk_plug_windowing_map_toplevel:
+ * _btk_plug_windowing_map_toplevel:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  *
- * Called from GtkPlug's unmap method. Should tell the corresponding
- * #GtkSocket that the plug has been unmapped.
+ * Called from BtkPlug's unmap method. Should tell the corresponding
+ * #BtkSocket that the plug has been unmapped.
  */
-void _gtk_plug_windowing_unmap_toplevel (GtkPlug *plug);
+void _btk_plug_windowing_unmap_toplevel (BtkPlug *plug);
 
 /*
- * _gtk_plug_windowing_set_focus:
+ * _btk_plug_windowing_set_focus:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  *
- * Called from GtkPlug's set_focus method. Should tell the corresponding
- * #GtkSocket to request focus.
+ * Called from BtkPlug's set_focus method. Should tell the corresponding
+ * #BtkSocket to request focus.
  */
-void _gtk_plug_windowing_set_focus (GtkPlug *plug);
+void _btk_plug_windowing_set_focus (BtkPlug *plug);
 
 /*
- * _gtk_plug_windowing_add_grabbed_key:
+ * _btk_plug_windowing_add_grabbed_key:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  * @accelerator_key: a key
  * @accelerator_mods: modifiers for it
  *
- * Called from GtkPlug's keys_changed method. Should tell the
- * corresponding #GtkSocket to grab the key.
+ * Called from BtkPlug's keys_changed method. Should tell the
+ * corresponding #BtkSocket to grab the key.
  */
-void _gtk_plug_windowing_add_grabbed_key (GtkPlug         *plug,
+void _btk_plug_windowing_add_grabbed_key (BtkPlug         *plug,
 					  guint            accelerator_key,
-					  GdkModifierType  accelerator_mods);
+					  BdkModifierType  accelerator_mods);
 
 /*
- * _gtk_plug_windowing_remove_grabbed_key:
+ * _btk_plug_windowing_remove_grabbed_key:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  * @accelerator_key: a key
  * @accelerator_mods: modifiers for it
  *
- * Called from GtkPlug's keys_changed method. Should tell the
- * corresponding #GtkSocket to remove the key grab.
+ * Called from BtkPlug's keys_changed method. Should tell the
+ * corresponding #BtkSocket to remove the key grab.
  */
-void _gtk_plug_windowing_remove_grabbed_key (GtkPlug         *plug,
+void _btk_plug_windowing_remove_grabbed_key (BtkPlug         *plug,
 					     guint            accelerator_key,
-					     GdkModifierType  accelerator_mods);
+					     BdkModifierType  accelerator_mods);
 
 /*
- * _gtk_plug_windowing_focus_to_parent:
+ * _btk_plug_windowing_focus_to_parent:
  *
- * @plug: a #GtkPlug
+ * @plug: a #BtkPlug
  * @direction: a direction
  *
- * Called from GtkPlug's focus method. Should tell the corresponding
- * #GtkSocket to move the focus.
+ * Called from BtkPlug's focus method. Should tell the corresponding
+ * #BtkSocket to move the focus.
  */
-void _gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
-					  GtkDirectionType direction);
+void _btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
+					  BtkDirectionType direction);
 
 /*
- * _gtk_plug_windowing_filter_func:
+ * _btk_plug_windowing_filter_func:
  *
- * @gdk_xevent: a windowing system native event
- * @event: a pre-allocated empty GdkEvent
- * @data: the #GtkPlug
+ * @bdk_xevent: a windowing system native event
+ * @event: a pre-allocated empty BdkEvent
+ * @data: the #BtkPlug
  *
  * Event filter function installed on plug windows.
  */
-GdkFilterReturn _gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
-						 GdkEvent  *event,
+BdkFilterReturn _btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
+						 BdkEvent  *event,
 						 gpointer   data);
 
-#endif /* __GTK_PLUG_PRIVATE_H__ */
+#endif /* __BTK_PLUG_PRIVATE_H__ */

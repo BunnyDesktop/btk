@@ -1,4 +1,4 @@
-/* gdkdisplay-quartz.c
+/* bdkdisplay-quartz.c
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -20,14 +20,14 @@
 
 #include "config.h"
 
-#include "gdk.h"
-#include "gdkprivate-quartz.h"
-#include "gdkscreen-quartz.h"
+#include "bdk.h"
+#include "bdkprivate-quartz.h"
+#include "bdkscreen-quartz.h"
 
-GdkWindow *
-gdk_display_get_default_group (GdkDisplay *display)
+BdkWindow *
+bdk_display_get_default_group (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
   /* FIXME: Implement */
 
@@ -35,101 +35,101 @@ gdk_display_get_default_group (GdkDisplay *display)
 }
 
 void
-_gdk_windowing_set_default_display (GdkDisplay *display)
+_bdk_windowing_set_default_display (BdkDisplay *display)
 {
-  g_assert (display == NULL || _gdk_display == display);
+  g_assert (display == NULL || _bdk_display == display);
 }
 
-GdkDisplay *
-gdk_display_open (const gchar *display_name)
+BdkDisplay *
+bdk_display_open (const gchar *display_name)
 {
-  if (_gdk_display != NULL)
+  if (_bdk_display != NULL)
     return NULL;
 
   /* Initialize application */
   [NSApplication sharedApplication];
 
-  _gdk_display = g_object_new (GDK_TYPE_DISPLAY, NULL);
+  _bdk_display = g_object_new (BDK_TYPE_DISPLAY, NULL);
 
-  _gdk_visual_init ();
+  _bdk_visual_init ();
 
-  _gdk_screen = _gdk_screen_quartz_new ();
+  _bdk_screen = _bdk_screen_quartz_new ();
 
-  _gdk_windowing_window_init ();
+  _bdk_windowing_window_init ();
 
-  _gdk_events_init ();
-  _gdk_input_init ();
+  _bdk_events_init ();
+  _bdk_input_init ();
 
 #if 0
   /* FIXME: Remove the #if 0 when we have these functions */
-  _gdk_dnd_init ();
+  _bdk_dnd_init ();
 #endif
 
-  g_signal_emit_by_name (gdk_display_manager_get (),
-			 "display_opened", _gdk_display);
+  g_signal_emit_by_name (bdk_display_manager_get (),
+			 "display_opened", _bdk_display);
 
-  return _gdk_display;
+  return _bdk_display;
 }
 
 const gchar *
-gdk_display_get_name (GdkDisplay *display)
+bdk_display_get_name (BdkDisplay *display)
 {
   static gchar *display_name = NULL;
 
   if (!display_name)
     {
-      GDK_QUARTZ_ALLOC_POOL;
+      BDK_QUARTZ_ALLOC_POOL;
       display_name = g_strdup ([[[NSHost currentHost] name] UTF8String]);
-      GDK_QUARTZ_RELEASE_POOL;
+      BDK_QUARTZ_RELEASE_POOL;
     }
 
   return display_name;
 }
 
 int
-gdk_display_get_n_screens (GdkDisplay *display)
+bdk_display_get_n_screens (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
 
   return 1;
 }
 
-GdkScreen *
-gdk_display_get_screen (GdkDisplay *display,
+BdkScreen *
+bdk_display_get_screen (BdkDisplay *display,
 			gint        screen_num)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
   g_return_val_if_fail (screen_num == 0, NULL);
 
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
-GdkScreen *
-gdk_display_get_default_screen (GdkDisplay *display)
+BdkScreen *
+bdk_display_get_default_screen (BdkDisplay *display)
 {
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
 void
-gdk_display_beep (GdkDisplay *display)
+bdk_display_beep (BdkDisplay *display)
 {
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
   NSBeep();
 }
 
 gboolean 
-gdk_display_supports_selection_notification (GdkDisplay *display)
+bdk_display_supports_selection_notification (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
 
   /* FIXME: Implement */
   return FALSE;
 }
 
 gboolean 
-gdk_display_request_selection_notification (GdkDisplay *display,
-                                            GdkAtom     selection)
+bdk_display_request_selection_notification (BdkDisplay *display,
+                                            BdkAtom     selection)
 
 {
   /* FIXME: Implement */
@@ -137,31 +137,31 @@ gdk_display_request_selection_notification (GdkDisplay *display,
 }
 
 gboolean
-gdk_display_supports_clipboard_persistence (GdkDisplay *display)
+bdk_display_supports_clipboard_persistence (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 gboolean 
-gdk_display_supports_shapes (GdkDisplay *display)
+bdk_display_supports_shapes (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 gboolean 
-gdk_display_supports_input_shapes (GdkDisplay *display)
+bdk_display_supports_input_shapes (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 void
-gdk_display_store_clipboard (GdkDisplay    *display,
-			     GdkWindow     *clipboard_window,
+bdk_display_store_clipboard (BdkDisplay    *display,
+			     BdkWindow     *clipboard_window,
 			     guint32        time_,
-			     const GdkAtom *targets,
+			     const BdkAtom *targets,
 			     gint           n_targets)
 {
   /* FIXME: Implement */
@@ -169,14 +169,14 @@ gdk_display_store_clipboard (GdkDisplay    *display,
 
 
 gboolean
-gdk_display_supports_composite (GdkDisplay *display)
+bdk_display_supports_composite (BdkDisplay *display)
 {
   /* FIXME: Implement */
   return FALSE;
 }
 
 gulong
-_gdk_windowing_window_get_next_serial (GdkDisplay *display)
+_bdk_windowing_window_get_next_serial (BdkDisplay *display)
 {
   return 0;
 }

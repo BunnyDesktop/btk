@@ -1,4 +1,4 @@
-/* gtktextbufferserialize.c
+/* btktextbufferserialize.c
  *
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2004 Nokia Corporation
@@ -29,11 +29,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-#undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include "gdk-pixbuf/gdk-pixdata.h"
-#include "gtktextbufferserialize.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#undef BDK_PIXBUF_DISABLE_DEPRECATED
+#include "bdk-pixbuf/bdk-pixdata.h"
+#include "btktextbufferserialize.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 typedef struct
@@ -41,7 +41,7 @@ typedef struct
   GString *tag_table_str;
   GString *text_str;
   GHashTable *tags;
-  GtkTextIter start, end;
+  BtkTextIter start, end;
 
   gint n_pixbufs;
   GList *pixbufs;
@@ -65,13 +65,13 @@ serialize_value (GValue *value)
 
       return tmp;
     }
-  else if (value->g_type == GDK_TYPE_COLOR)
+  else if (value->g_type == BDK_TYPE_COLOR)
     {
-      GdkColor *color = g_value_get_boxed (value);
+      BdkColor *color = g_value_get_boxed (value);
 
       return g_strdup_printf ("%x:%x:%x", color->red, color->green, color->blue);
     }
-  else if (g_type_is_a (value->g_type, GDK_TYPE_DRAWABLE))
+  else if (g_type_is_a (value->g_type, BDK_TYPE_DRAWABLE))
     {
       /* Don't do anything */
     }
@@ -138,9 +138,9 @@ deserialize_value (const gchar *str,
 
       return TRUE;
     }
-  else if (value->g_type == GDK_TYPE_COLOR)
+  else if (value->g_type == BDK_TYPE_COLOR)
     {
-      GdkColor color;
+      BdkColor color;
       const gchar *old;
       gchar *tmp;
 
@@ -201,7 +201,7 @@ is_param_set (GObject    *object,
               GValue     *value)
 {
   /* We need to special case some attributes here */
-  if (strcmp (pspec->name, "background-gdk") == 0)
+  if (strcmp (pspec->name, "background-bdk") == 0)
     {
       gboolean is_set;
 
@@ -218,7 +218,7 @@ is_param_set (GObject    *object,
 
       return FALSE;
     }
-  else if (strcmp (pspec->name, "foreground-gdk") == 0)
+  else if (strcmp (pspec->name, "foreground-bdk") == 0)
     {
       gboolean is_set;
 
@@ -280,7 +280,7 @@ serialize_tag (gpointer key,
                gpointer user_data)
 {
   SerializationContext *context = user_data;
-  GtkTextTag *tag = data;
+  BtkTextTag *tag = data;
   gchar *tag_name;
   gint tag_id;
   GParamSpec **pspecs;
@@ -366,7 +366,7 @@ dump_tag_list (const gchar *str,
     {
       while (list)
 	{
-	  g_print ("%s ", ((GtkTextTag *)list->data)->name);
+	  g_print ("%s ", ((BtkTextTag *)list->data)->name);
 	  list = list->next;
 	}
     }
@@ -430,10 +430,10 @@ serialize_section_header (GString     *str,
 }
 
 static void
-serialize_text (GtkTextBuffer        *buffer,
+serialize_text (BtkTextBuffer        *buffer,
                 SerializationContext *context)
 {
-  GtkTextIter iter, old_iter;
+  BtkTextIter iter, old_iter;
   GSList *tag_list, *new_tag_list;
   GSList *active_tags;
 
@@ -449,13 +449,13 @@ serialize_text (GtkTextBuffer        *buffer,
       GList *tmp;
       gchar *tmp_text, *escaped_text;
 
-      new_tag_list = gtk_text_iter_get_tags (&iter);
+      new_tag_list = btk_text_iter_get_tags (&iter);
       find_list_delta (tag_list, new_tag_list, &added, &removed);
 
       /* Handle removed tags */
       for (tmp = removed; tmp; tmp = tmp->next)
 	{
-	  GtkTextTag *tag = tmp->data;
+	  BtkTextTag *tag = tmp->data;
 
           /* Only close the tag if we didn't close it before (by using
            * the stack logic in the while() loop below)
@@ -481,7 +481,7 @@ serialize_text (GtkTextBuffer        *buffer,
       /* Handle added tags */
       for (tmp = added; tmp; tmp = tmp->next)
 	{
-	  GtkTextTag *tag = tmp->data;
+	  BtkTextTag *tag = tmp->data;
 	  gchar *tag_name;
 
 	  /* Add it to the tag hash table */
@@ -524,21 +524,21 @@ serialize_text (GtkTextBuffer        *buffer,
       /* Now try to go to either the next tag toggle, or if a pixbuf appears */
       while (TRUE)
 	{
-	  gunichar ch = gtk_text_iter_get_char (&iter);
+	  gunichar ch = btk_text_iter_get_char (&iter);
 
 	  if (ch == 0xFFFC)
 	    {
-	      GdkPixbuf *pixbuf = gtk_text_iter_get_pixbuf (&iter);
+	      BdkPixbuf *pixbuf = btk_text_iter_get_pixbuf (&iter);
 
 	      if (pixbuf)
 		{
 		  /* Append the text before the pixbuf */
-		  tmp_text = gtk_text_iter_get_slice (&old_iter, &iter);
+		  tmp_text = btk_text_iter_get_slice (&old_iter, &iter);
 		  escaped_text = g_markup_escape_text (tmp_text, -1);
 		  g_free (tmp_text);
 
 		  /* Forward so we don't get the 0xfffc char */
-		  gtk_text_iter_forward_char (&iter);
+		  btk_text_iter_forward_char (&iter);
 		  old_iter = iter;
 
 		  g_string_append (context->text_str, escaped_text);
@@ -555,25 +555,25 @@ serialize_text (GtkTextBuffer        *buffer,
                 break;
             }
 	  else
-	    gtk_text_iter_forward_char (&iter);
+	    btk_text_iter_forward_char (&iter);
 
-	  if (gtk_text_iter_toggles_tag (&iter, NULL))
+	  if (btk_text_iter_toggles_tag (&iter, NULL))
 	    break;
 	}
 
       /* We might have moved too far */
-      if (gtk_text_iter_compare (&iter, &context->end) > 0)
+      if (btk_text_iter_compare (&iter, &context->end) > 0)
 	iter = context->end;
 
       /* Append the text */
-      tmp_text = gtk_text_iter_get_slice (&old_iter, &iter);
+      tmp_text = btk_text_iter_get_slice (&old_iter, &iter);
       escaped_text = g_markup_escape_text (tmp_text, -1);
       g_free (tmp_text);
 
       g_string_append (context->text_str, escaped_text);
       g_free (escaped_text);
     }
-  while (!gtk_text_iter_equal (&iter, &context->end));
+  while (!btk_text_iter_equal (&iter, &context->end));
 
   /* Close any open tags */
   for (tag_list = active_tags; tag_list; tag_list = tag_list->next)
@@ -591,25 +591,25 @@ serialize_pixbufs (SerializationContext *context,
 
   for (list = context->pixbufs; list != NULL; list = list->next)
     {
-      GdkPixbuf *pixbuf = list->data;
-      GdkPixdata pixdata;
+      BdkPixbuf *pixbuf = list->data;
+      BdkPixdata pixdata;
       guint8 *tmp;
       guint len;
 
-      gdk_pixdata_from_pixbuf (&pixdata, pixbuf, FALSE);
-      tmp = gdk_pixdata_serialize (&pixdata, &len);
+      bdk_pixdata_from_pixbuf (&pixdata, pixbuf, FALSE);
+      tmp = bdk_pixdata_serialize (&pixdata, &len);
 
-      serialize_section_header (text, "GTKTEXTBUFFERPIXBDATA-0001", len);
+      serialize_section_header (text, "BTKTEXTBUFFERPIXBDATA-0001", len);
       g_string_append_len (text, (gchar *) tmp, len);
       g_free (tmp);
     }
 }
 
 guint8 *
-_gtk_text_buffer_serialize_rich_text (GtkTextBuffer     *register_buffer,
-                                      GtkTextBuffer     *content_buffer,
-                                      const GtkTextIter *start,
-                                      const GtkTextIter *end,
+_btk_text_buffer_serialize_rich_text (BtkTextBuffer     *register_buffer,
+                                      BtkTextBuffer     *content_buffer,
+                                      const BtkTextIter *start,
+                                      const BtkTextIter *end,
                                       gsize             *length,
                                       gpointer           user_data)
 {
@@ -632,7 +632,7 @@ _gtk_text_buffer_serialize_rich_text (GtkTextBuffer     *register_buffer,
   serialize_tags (&context);
 
   text = g_string_new (NULL);
-  serialize_section_header (text, "GTKTEXTBUFFERCONTENTS-0001",
+  serialize_section_header (text, "BTKTEXTBUFFERCONTENTS-0001",
                             context.tag_table_str->len + context.text_str->len);
 
   g_string_append_len (text, context.tag_table_str->str, context.tag_table_str->len);
@@ -667,13 +667,13 @@ typedef enum
 typedef struct
 {
   gchar *text;
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
   GSList *tags;
 } TextSpan;
 
 typedef struct
 {
-  GtkTextTag *tag;
+  BtkTextTag *tag;
   gint prio;
 } TextTagPrio;
 
@@ -683,7 +683,7 @@ typedef struct
 
   GList *headers;
 
-  GtkTextBuffer *buffer;
+  BtkTextBuffer *buffer;
 
   /* Tags that are defined in <tag> elements */
   GHashTable *defined_tags;
@@ -695,7 +695,7 @@ typedef struct
   GHashTable *substitutions;
 
   /* Current tag */
-  GtkTextTag *current_tag;
+  BtkTextTag *current_tag;
 
   /* Priority of current tag */
   gint current_tag_prio;
@@ -992,7 +992,7 @@ check_no_attributes (GMarkupParseContext  *context,
   return TRUE;
 }
 
-static GtkTextTag *
+static BtkTextTag *
 tag_exists (GMarkupParseContext *context,
 	    const gchar         *name,
 	    gint                 id,
@@ -1012,11 +1012,11 @@ tag_exists (GMarkupParseContext *context,
       real_name = g_hash_table_lookup (info->substitutions, name);
 
       if (real_name)
-	return gtk_text_tag_table_lookup (info->buffer->tag_table, real_name);
+	return btk_text_tag_table_lookup (info->buffer->tag_table, real_name);
 
       /* Next, try the list of defined tags */
       if (g_hash_table_lookup (info->defined_tags, name) != NULL)
-	return gtk_text_tag_table_lookup (info->buffer->tag_table, name);
+	return btk_text_tag_table_lookup (info->buffer->tag_table, name);
 
       set_error (error, context,
 		 G_MARKUP_ERROR, G_MARKUP_ERROR_PARSE,
@@ -1026,7 +1026,7 @@ tag_exists (GMarkupParseContext *context,
     }
   else
     {
-      GtkTextTag *tag;
+      BtkTextTag *tag;
 
       if (!name)
 	{
@@ -1036,7 +1036,7 @@ tag_exists (GMarkupParseContext *context,
 	  return NULL;
 	}
 
-      tag = gtk_text_tag_table_lookup (info->buffer->tag_table, name);
+      tag = btk_text_tag_table_lookup (info->buffer->tag_table, name);
 
       if (tag)
 	return tag;
@@ -1056,25 +1056,25 @@ typedef struct
   const gchar *start;
 } Header;
 
-static GdkPixbuf *
+static BdkPixbuf *
 get_pixbuf_from_headers (GList   *headers,
                          int      id,
                          GError **error)
 {
   Header *header;
-  GdkPixdata pixdata;
-  GdkPixbuf *pixbuf;
+  BdkPixdata pixdata;
+  BdkPixbuf *pixbuf;
 
   header = g_list_nth_data (headers, id);
 
   if (!header)
     return NULL;
 
-  if (!gdk_pixdata_deserialize (&pixdata, header->length,
+  if (!bdk_pixdata_deserialize (&pixdata, header->length,
                                 (const guint8 *) header->start, error))
     return NULL;
 
-  pixbuf = gdk_pixbuf_from_pixdata (&pixdata, TRUE, error);
+  pixbuf = bdk_pixbuf_from_pixdata (&pixdata, TRUE, error);
 
   return pixbuf;
 }
@@ -1089,7 +1089,7 @@ parse_apply_tag_element (GMarkupParseContext  *context,
 {
   const gchar *name, *priority;
   gint id;
-  GtkTextTag *tag;
+  BtkTextTag *tag;
 
   g_assert (peek_state (info) == STATE_TEXT ||
 	    peek_state (info) == STATE_APPLY_TAG);
@@ -1117,7 +1117,7 @@ parse_apply_tag_element (GMarkupParseContext  *context,
   else if (ELEMENT_IS ("pixbuf"))
     {
       int int_id;
-      GdkPixbuf *pixbuf;
+      BdkPixbuf *pixbuf;
       TextSpan *span;
       const gchar *pixbuf_id;
 
@@ -1237,7 +1237,7 @@ get_tag_name (ParseInfo   *info,
 
   i = 0;
 
-  while (gtk_text_tag_table_lookup (info->buffer->tag_table, name) != NULL)
+  while (btk_text_tag_table_lookup (info->buffer->tag_table, name) != NULL)
     {
       g_free (name);
       name = g_strdup_printf ("%s-%d", tag_name, ++i);
@@ -1301,12 +1301,12 @@ parse_tag_element (GMarkupParseContext  *context,
       if (name)
 	{
 	  tag_name = get_tag_name (info, name);
-	  info->current_tag = gtk_text_tag_new (tag_name);
+	  info->current_tag = btk_text_tag_new (tag_name);
 	  g_free (tag_name);
 	}
       else
 	{
-	  info->current_tag = gtk_text_tag_new (NULL);
+	  info->current_tag = btk_text_tag_new (NULL);
 	  info->current_tag_id = id;
 	}
 
@@ -1456,7 +1456,7 @@ end_element_handler (GMarkupParseContext  *context,
 	  TextTagPrio *prio = list->data;
 
 	  if (info->create_tags)
-	    gtk_text_tag_table_add (info->buffer->tag_table, prio->tag);
+	    btk_text_tag_table_add (info->buffer->tag_table, prio->tag);
 
 	  g_object_unref (prio->tag);
 	  prio->tag = NULL;
@@ -1593,7 +1593,7 @@ text_handler (GMarkupParseContext  *context,
 
 static void
 parse_info_init (ParseInfo     *info,
-		 GtkTextBuffer *buffer,
+		 BtkTextBuffer *buffer,
 		 gboolean       create_tags,
 		 GList         *headers)
 {
@@ -1663,16 +1663,16 @@ parse_info_free (ParseInfo *info)
 
 static void
 insert_text (ParseInfo   *info,
-	     GtkTextIter *iter)
+	     BtkTextIter *iter)
 {
-  GtkTextIter start_iter;
-  GtkTextMark *mark;
+  BtkTextIter start_iter;
+  BtkTextMark *mark;
   GList *tmp;
   GSList *tags;
 
   start_iter = *iter;
 
-  mark = gtk_text_buffer_create_mark (info->buffer, "deserialize_insert_point",
+  mark = btk_text_buffer_create_mark (info->buffer, "deserialize_insert_point",
   				      &start_iter, TRUE);
 
   tmp = info->spans;
@@ -1681,32 +1681,32 @@ insert_text (ParseInfo   *info,
       TextSpan *span = tmp->data;
 
       if (span->text)
-	gtk_text_buffer_insert (info->buffer, iter, span->text, -1);
+	btk_text_buffer_insert (info->buffer, iter, span->text, -1);
       else
 	{
-	  gtk_text_buffer_insert_pixbuf (info->buffer, iter, span->pixbuf);
+	  btk_text_buffer_insert_pixbuf (info->buffer, iter, span->pixbuf);
 	  g_object_unref (span->pixbuf);
 	}
-      gtk_text_buffer_get_iter_at_mark (info->buffer, &start_iter, mark);
+      btk_text_buffer_get_iter_at_mark (info->buffer, &start_iter, mark);
 
       /* Apply tags */
       tags = span->tags;
       while (tags)
 	{
-	  GtkTextTag *tag = tags->data;
+	  BtkTextTag *tag = tags->data;
 
-	  gtk_text_buffer_apply_tag (info->buffer, tag,
+	  btk_text_buffer_apply_tag (info->buffer, tag,
 				     &start_iter, iter);
 
 	  tags = tags->next;
 	}
 
-      gtk_text_buffer_move_mark (info->buffer, mark, iter);
+      btk_text_buffer_move_mark (info->buffer, mark, iter);
 
       tmp = tmp->next;
     }
 
-  gtk_text_buffer_delete_mark (info->buffer, mark);
+  btk_text_buffer_delete_mark (info->buffer, mark);
 }
 
 
@@ -1747,8 +1747,8 @@ read_headers (const gchar *start,
       if (i + 30 >= len)
 	goto error;
 
-      if (strncmp (start + i, "GTKTEXTBUFFERCONTENTS-0001", 26) == 0 ||
-	  strncmp (start + i, "GTKTEXTBUFFERPIXBDATA-0001", 26) == 0)
+      if (strncmp (start + i, "BTKTEXTBUFFERCONTENTS-0001", 26) == 0 ||
+	  strncmp (start + i, "BTKTEXTBUFFERPIXBDATA-0001", 26) == 0)
 	{
 	  section_len = read_int ((const guchar *) start + i + 26);
 
@@ -1783,8 +1783,8 @@ read_headers (const gchar *start,
 }
 
 static gboolean
-deserialize_text (GtkTextBuffer *buffer,
-		  GtkTextIter   *iter,
+deserialize_text (BtkTextBuffer *buffer,
+		  BtkTextIter   *iter,
 		  const gchar   *text,
 		  gint           len,
 		  gboolean       create_tags,
@@ -1831,9 +1831,9 @@ deserialize_text (GtkTextBuffer *buffer,
 }
 
 gboolean
-_gtk_text_buffer_deserialize_rich_text (GtkTextBuffer *register_buffer,
-                                        GtkTextBuffer *content_buffer,
-                                        GtkTextIter   *iter,
+_btk_text_buffer_deserialize_rich_text (BtkTextBuffer *register_buffer,
+                                        BtkTextBuffer *content_buffer,
+                                        BtkTextIter   *iter,
                                         const guint8  *text,
                                         gsize          length,
                                         gboolean       create_tags,
@@ -1850,12 +1850,12 @@ _gtk_text_buffer_deserialize_rich_text (GtkTextBuffer *register_buffer,
     return FALSE;
 
   header = headers->data;
-  if (!header_is (header, "GTKTEXTBUFFERCONTENTS-0001"))
+  if (!header_is (header, "BTKTEXTBUFFERCONTENTS-0001"))
     {
       g_set_error_literal (error,
                            G_MARKUP_ERROR,
                            G_MARKUP_ERROR_PARSE,
-                           _("Serialized data is malformed. First section isn't GTKTEXTBUFFERCONTENTS-0001"));
+                           _("Serialized data is malformed. First section isn't BTKTEXTBUFFERCONTENTS-0001"));
 
       retval = FALSE;
       goto out;

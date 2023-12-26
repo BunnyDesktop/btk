@@ -1,4 +1,4 @@
-/* testpixbuf -- test program for gdk-pixbuf code
+/* testpixbuf -- test program for bdk-pixbuf code
  * Copyright (C) 1999 Mark Crichton, Larry Ewing
  *
  * This library is free software; you can redistribute it and/or
@@ -23,17 +23,17 @@
 #include <unistd.h>
 #include <string.h>
 
-#undef GDK_DISABLE_DEPRECATED
+#undef BDK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <btk/btk.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
 #include "test-inline-pixbufs.h"
 
 typedef struct {
 	FILE             *imagefile;
-	GdkPixbufLoader  *loader;
-	GtkWidget        **rgbwin;
+	BdkPixbufLoader  *loader;
+	BtkWidget        **rgbwin;
 	guchar           *buf;
 	guint            timeout;
 	guint            readlen;
@@ -262,7 +262,7 @@ static const char * mini_page_xpm[] = {
 "    oooooooooo  ",
 "                "};
 
-static const char * gtk_mini_xpm[] = {
+static const char * btk_mini_xpm[] = {
 "15 20 17 1",
 "       c None",
 ".      c #14121F",
@@ -306,110 +306,110 @@ const gchar ** xpms[] = {
   book_open_xpm,
   book_closed_xpm,
   mini_page_xpm,
-  gtk_mini_xpm,
+  btk_mini_xpm,
   NULL
 };
 
 static void
-quit_func (GtkWidget *widget, gpointer dummy)
+quit_func (BtkWidget *widget, gpointer dummy)
 {
-	gtk_main_quit ();
+	btk_main_quit ();
 }
 
 static void
-expose_func (GtkWidget *drawing_area, GdkEventExpose *event, gpointer data)
+expose_func (BtkWidget *drawing_area, BdkEventExpose *event, gpointer data)
 {
-	GdkPixbuf *pixbuf;
+	BdkPixbuf *pixbuf;
 
-	pixbuf = (GdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
 
-	if (gdk_pixbuf_get_has_alpha (pixbuf)) {
-		GdkPixbuf *dest;
-                cairo_t *cr;
+	if (bdk_pixbuf_get_has_alpha (pixbuf)) {
+		BdkPixbuf *dest;
+                bairo_t *cr;
 	  
-		gdk_window_set_back_pixmap (drawing_area->window, NULL, FALSE);
+		bdk_window_set_back_pixmap (drawing_area->window, NULL, FALSE);
 	  
-		dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
+		dest = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, event->area.width, event->area.height);
 		
-		gdk_pixbuf_composite_color (pixbuf, dest,
+		bdk_pixbuf_composite_color (pixbuf, dest,
 					    0, 0, event->area.width, event->area.height,
 					    -event->area.x, -event->area.y,
-					    (double) drawing_area->allocation.width / gdk_pixbuf_get_width (pixbuf),
-					    (double) drawing_area->allocation.height / gdk_pixbuf_get_height (pixbuf),
-					    GDK_INTERP_BILINEAR, 255,
+					    (double) drawing_area->allocation.width / bdk_pixbuf_get_width (pixbuf),
+					    (double) drawing_area->allocation.height / bdk_pixbuf_get_height (pixbuf),
+					    BDK_INTERP_BILINEAR, 255,
 					    event->area.x, event->area.y, 16, 0xaaaaaa, 0x555555);
 		
-                cr = gdk_cairo_create (drawing_area->window);
+                cr = bdk_bairo_create (drawing_area->window);
 
-                gdk_cairo_set_source_pixbuf (cr, dest, 0, 0);
-                gdk_cairo_rectangle (cr, &event->area);
-                cairo_fill (cr);
+                bdk_bairo_set_source_pixbuf (cr, dest, 0, 0);
+                bdk_bairo_rectangle (cr, &event->area);
+                bairo_fill (cr);
 
-                cairo_destroy (cr);
+                bairo_destroy (cr);
 		g_object_unref (dest);
 	} else {
-		gdk_draw_rgb_image (drawing_area->window,
+		bdk_draw_rgb_image (drawing_area->window,
 				    drawing_area->style->white_gc,
 				    event->area.x, event->area.y, 
 				    event->area.width, 
 				    event->area.height,
-				    GDK_RGB_DITHER_NORMAL,
-				    gdk_pixbuf_get_pixels (pixbuf)
-				    + (event->area.y * gdk_pixbuf_get_rowstride (pixbuf))
-				    + (event->area.x * gdk_pixbuf_get_n_channels (pixbuf)),
-				    gdk_pixbuf_get_rowstride (pixbuf));
+				    BDK_RGB_DITHER_NORMAL,
+				    bdk_pixbuf_get_pixels (pixbuf)
+				    + (event->area.y * bdk_pixbuf_get_rowstride (pixbuf))
+				    + (event->area.x * bdk_pixbuf_get_n_channels (pixbuf)),
+				    bdk_pixbuf_get_rowstride (pixbuf));
 	}
 }
 
 static void
-config_func (GtkWidget *drawing_area, GdkEventConfigure *event, gpointer data)
+config_func (BtkWidget *drawing_area, BdkEventConfigure *event, gpointer data)
 {
 #if 0
-	GdkPixbuf *pixbuf;
+	BdkPixbuf *pixbuf;
     
-	pixbuf = (GdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
+	pixbuf = (BdkPixbuf *)g_object_get_data (G_OBJECT (drawing_area), "pixbuf");
 
-	if (((event->width) != gdk_pixbuf_get_width (pixbuf)) ||
-	    ((event->height) != gdk_pixbuf_get_height (pixbuf)))
-		gdk_pixbuf_scale (pixbuf, event->width, event->height);
+	if (((event->width) != bdk_pixbuf_get_width (pixbuf)) ||
+	    ((event->height) != bdk_pixbuf_get_height (pixbuf)))
+		bdk_pixbuf_scale (pixbuf, event->width, event->height);
 #endif
 }
 
-static GtkWidget*
-new_testrgb_window (GdkPixbuf *pixbuf, gchar *title)
+static BtkWidget*
+new_testrgb_window (BdkPixbuf *pixbuf, gchar *title)
 {
-	GtkWidget *window;
-	GtkWidget *vbox;
-	GtkWidget *temp_box;
-	GtkWidget *button;
-	GtkWidget *drawing_area;
+	BtkWidget *window;
+	BtkWidget *vbox;
+	BtkWidget *temp_box;
+	BtkWidget *button;
+	BtkWidget *drawing_area;
 	gint w, h;
 
         g_return_val_if_fail (pixbuf != NULL, NULL);
-	w = gdk_pixbuf_get_width (pixbuf);
-	h = gdk_pixbuf_get_height (pixbuf);
+	w = bdk_pixbuf_get_width (pixbuf);
+	h = bdk_pixbuf_get_height (pixbuf);
 
-	window = g_object_new (gtk_window_get_type (),
-				 "GtkObject::user_data", NULL,
-				 "GtkWindow::type", GTK_WINDOW_TOPLEVEL,
-				 "GtkWindow::title", title ? title : "testrgb",
-				 "GtkWindow::allow_shrink", TRUE,
+	window = g_object_new (btk_window_get_type (),
+				 "BtkObject::user_data", NULL,
+				 "BtkWindow::type", BTK_WINDOW_TOPLEVEL,
+				 "BtkWindow::title", title ? title : "testrgb",
+				 "BtkWindow::allow_shrink", TRUE,
 				 NULL);
 	g_signal_connect (window, "destroy",
 			  G_CALLBACK (quit_func), NULL);
 
-	vbox = gtk_vbox_new (FALSE, 0);
+	vbox = btk_vbox_new (FALSE, 0);
 
 	if (title)
-		gtk_box_pack_start (GTK_BOX (vbox), gtk_label_new (title),
+		btk_box_pack_start (BTK_BOX (vbox), btk_label_new (title),
 				    TRUE, TRUE, 0);
 
-	drawing_area = gtk_drawing_area_new ();
+	drawing_area = btk_drawing_area_new ();
 
-	temp_box = gtk_hbox_new (FALSE, 0);
-	gtk_widget_set_size_request (GTK_WIDGET (drawing_area), w, h);
-	gtk_box_pack_start (GTK_BOX (temp_box), drawing_area, FALSE, FALSE, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), temp_box, FALSE, FALSE, 0);
+	temp_box = btk_hbox_new (FALSE, 0);
+	btk_widget_set_size_request (BTK_WIDGET (drawing_area), w, h);
+	btk_box_pack_start (BTK_BOX (temp_box), drawing_area, FALSE, FALSE, 0);
+	btk_box_pack_start (BTK_BOX (vbox), temp_box, FALSE, FALSE, 0);
 	
 
 	g_signal_connect (drawing_area, "expose_event",
@@ -419,19 +419,19 @@ new_testrgb_window (GdkPixbuf *pixbuf, gchar *title)
 
 	g_object_set_data (G_OBJECT (drawing_area), "pixbuf", pixbuf);
 
-	gtk_widget_show (drawing_area);
+	btk_widget_show (drawing_area);
 
-	button = gtk_button_new_with_label ("Quit");
-	gtk_box_pack_start (GTK_BOX (vbox), button, FALSE, FALSE, 0);
+	button = btk_button_new_with_label ("Quit");
+	btk_box_pack_start (BTK_BOX (vbox), button, FALSE, FALSE, 0);
 	g_signal_connect_swapped (button, "clicked",
-				  G_CALLBACK (gtk_widget_destroy), window);
+				  G_CALLBACK (btk_widget_destroy), window);
 
-	gtk_widget_show (button);
+	btk_widget_show (button);
 
-	gtk_container_add (GTK_CONTAINER (window), vbox);
-	gtk_widget_show_all (vbox);
+	btk_container_add (BTK_CONTAINER (window), vbox);
+	btk_widget_show_all (vbox);
 
-	gtk_widget_show (window);
+	btk_widget_show (window);
 
         return drawing_area;
 }
@@ -454,7 +454,7 @@ update_timeout (gpointer data)
 			       status->imagefile);
 
 
-                if (!gdk_pixbuf_loader_write (GDK_PIXBUF_LOADER (status->loader), status->buf, nbytes, &error)) {
+                if (!bdk_pixbuf_loader_write (BDK_PIXBUF_LOADER (status->loader), status->buf, nbytes, &error)) {
                         g_warning ("Error writing to loader: %s",
                                    error->message);
                         g_error_free (error);
@@ -468,8 +468,8 @@ update_timeout (gpointer data)
 	  
 	if (done) {
                 /* ignoring errors, we should not do that. */
-		gdk_pixbuf_loader_close (GDK_PIXBUF_LOADER (status->loader), NULL);
-		gtk_widget_queue_draw (*status->rgbwin);
+		bdk_pixbuf_loader_close (BDK_PIXBUF_LOADER (status->loader), NULL);
+		btk_widget_queue_draw (*status->rgbwin);
 		g_object_unref (status->loader);
 		fclose (status->imagefile);
 		g_free (status->buf);
@@ -480,12 +480,12 @@ update_timeout (gpointer data)
 
 
 static void
-progressive_prepared_callback (GdkPixbufLoader* loader, gpointer data)
+progressive_prepared_callback (BdkPixbufLoader* loader, gpointer data)
 {
-        GtkWidget** retloc = data;
-        GdkPixbuf* pixbuf;
+        BtkWidget** retloc = data;
+        BdkPixbuf* pixbuf;
 
-        pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+        pixbuf = bdk_pixbuf_loader_get_pixbuf (loader);
 
         g_assert (pixbuf != NULL);
 
@@ -498,12 +498,12 @@ progressive_prepared_callback (GdkPixbufLoader* loader, gpointer data)
 
 
 static void
-progressive_updated_callback (GdkPixbufLoader* loader, guint x, guint y, guint width, guint height, gpointer data)
+progressive_updated_callback (BdkPixbufLoader* loader, guint x, guint y, guint width, guint height, gpointer data)
 {
-        GtkWidget** window_loc = data;
+        BtkWidget** window_loc = data;
 
         if (*window_loc != NULL)
-                gtk_widget_queue_draw_area (*window_loc,
+                btk_widget_queue_draw_area (*window_loc,
 					   x, y, width, height);
         return;
 }
@@ -512,9 +512,9 @@ static int readlen = 4096;
 
 extern void pixbuf_init (void);
 
-void size_func (GdkPixbufLoader *loader, gint width, gint height, gpointer data)
+void size_func (BdkPixbufLoader *loader, gint width, gint height, gpointer data)
 {
-        gdk_pixbuf_loader_set_size (loader, width*2, height*2);
+        bdk_pixbuf_loader_set_size (loader, width*2, height*2);
 }
 
 
@@ -524,16 +524,16 @@ main (int argc, char **argv)
 	int i;
 	int found_valid = FALSE;
 
-	GdkPixbuf *pixbuf;
-	GdkPixbufLoader *pixbuf_loader;
+	BdkPixbuf *pixbuf;
+	BdkPixbufLoader *pixbuf_loader;
 
 	pixbuf_init ();
 
-	gtk_init (&argc, &argv);
+	btk_init (&argc, &argv);
 
-	/*	gdk_rgb_set_verbose (TRUE);*/
+	/*	bdk_rgb_set_verbose (TRUE);*/
 
-	gtk_widget_set_default_colormap (gdk_rgb_get_colormap ());
+	btk_widget_set_default_colormap (bdk_rgb_get_colormap ());
 
 	{
 		char *tbf_readlen = getenv ("TBF_READLEN");
@@ -556,20 +556,20 @@ main (int argc, char **argv)
                 const gchar*** xpmp;
                 GError *error = NULL;
 		
-		pixbuf = gdk_pixbuf_new_from_data (default_image, GDK_COLORSPACE_RGB, FALSE, 8,
+		pixbuf = bdk_pixbuf_new_from_data (default_image, BDK_COLORSPACE_RGB, FALSE, 8,
 						   DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_WIDTH * 3,
 						   NULL, NULL);
 		new_testrgb_window (pixbuf, NULL);
 
                 xpmp = xpms;
                 while (*xpmp) {
-                        pixbuf = gdk_pixbuf_new_from_xpm_data (*xpmp);
+                        pixbuf = bdk_pixbuf_new_from_xpm_data (*xpmp);
                         new_testrgb_window (pixbuf, NULL);
                         ++xpmp;
                 }
 
                 /* Test loading from inline data. */
-                pixbuf = gdk_pixbuf_new_from_inline (-1, apple_red, FALSE, &error);
+                pixbuf = bdk_pixbuf_new_from_inline (-1, apple_red, FALSE, &error);
 		if (!pixbuf)
 		  {
 		    fprintf (stderr, "failed to construct \"red apple\" pixbuf: %s\n",
@@ -579,8 +579,8 @@ main (int argc, char **argv)
 		else
 		  new_testrgb_window (pixbuf, "Red apple from inlined RLE data");
 
-                pixbuf = gdk_pixbuf_new_from_inline (sizeof (gnome_foot), gnome_foot, TRUE, NULL);
-                new_testrgb_window (pixbuf, "GNOME Foot from inlined RLE data");
+                pixbuf = bdk_pixbuf_new_from_inline (sizeof (bunny_foot), bunny_foot, TRUE, NULL);
+                new_testrgb_window (pixbuf, "BUNNY Foot from inlined RLE data");
                 
 		found_valid = TRUE;
 	} else {
@@ -588,7 +588,7 @@ main (int argc, char **argv)
                         GError *error;
 
                         error = NULL;
-			pixbuf = gdk_pixbuf_new_from_file (argv[i], &error);
+			pixbuf = bdk_pixbuf_new_from_file (argv[i], &error);
 
                         if (pixbuf == NULL) {
                                 g_warning ("Error loading image: %s",
@@ -597,7 +597,7 @@ main (int argc, char **argv)
                         }
                         
 #if 0
-			pixbuf = gdk_pixbuf_rotate (pixbuf, 10.0);
+			pixbuf = bdk_pixbuf_rotate (pixbuf, 10.0);
 #endif
 
 			if (pixbuf) {
@@ -607,10 +607,10 @@ main (int argc, char **argv)
 		}
 #if 1	
                 {
-                        GtkWidget* rgb_window = NULL;
+                        BtkWidget* rgb_window = NULL;
 			ProgressFileStatus   status;
 
-                        pixbuf_loader = gdk_pixbuf_loader_new ();
+                        pixbuf_loader = bdk_pixbuf_loader_new ();
 			status.loader = pixbuf_loader;
 
 			status.rgbwin = &rgb_window;
@@ -634,13 +634,13 @@ main (int argc, char **argv)
 
 			status.readlen = readlen;
 
-                        status.timeout = gdk_threads_add_timeout (100, update_timeout, &status);
+                        status.timeout = bdk_threads_add_timeout (100, update_timeout, &status);
                 }
 #endif
 	}
 
 	if (found_valid)
-		gtk_main ();
+		btk_main ();
 
 	return 0;
 }

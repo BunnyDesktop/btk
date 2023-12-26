@@ -1,7 +1,7 @@
 #!@PERL@ -w
 
 print <<EOT;
-typedef	GtkWidget *(*GDoDemoFunc) (GtkWidget *do_widget);
+typedef	BtkWidget *(*GDoDemoFunc) (BtkWidget *do_widget);
 
 typedef struct _Demo Demo;
 
@@ -27,7 +27,7 @@ for $file (@ARGV) {
 
     close INFO_FILE;
 
-    print "GtkWidget *do_$basename (GtkWidget *do_widget);\n";
+    print "BtkWidget *do_$basename (BtkWidget *do_widget);\n";
 
     push @demos, {"title" => $title, "file" => $file,
 		  "func"  => "do_$basename"};
@@ -116,7 +116,7 @@ if (@child_arrays) {
 }
 
 # toplevel
-print "\nDemo testgtk_demos[] = {\n";
+print "\nDemo testbtk_demos[] = {\n";
 
 $first = 1;
 foreach $href (@demos) {

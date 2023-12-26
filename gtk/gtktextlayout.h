@@ -1,11 +1,11 @@
-/* GTK - The GIMP Toolkit
- * gtktextlayout.h
+/* BTK - The GIMP Toolkit
+ * btktextlayout.h
  *
  * Copyright (c) 1992-1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000 Red Hat, Inc.
- * Tk->Gtk port by Havoc Pennington
- * Pango support by Owen Taylor
+ * Tk->Btk port by Havoc Pennington
+ * Bango support by Owen Taylor
  *
  * This file can be used under your choice of two licenses, the LGPL
  * and the original Tk license.
@@ -70,14 +70,14 @@
  *
  */
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_TEXT_LAYOUT_H__
-#define __GTK_TEXT_LAYOUT_H__
+#ifndef __BTK_TEXT_LAYOUT_H__
+#define __BTK_TEXT_LAYOUT_H__
 
 /* This is a "semi-private" header; it is intended for
  * use by the text widget, and the text canvas item,
@@ -85,34 +85,34 @@
  * canvas item can use it, but users are not supposed
  * to use it.
  */
-#ifndef GTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
-#error "You are not supposed to be including this file; the equivalent public API is in gtktextview.h"
+#ifndef BTK_TEXT_USE_INTERNAL_UNSUPPORTED_API
+#error "You are not supposed to be including this file; the equivalent public API is in btktextview.h"
 #endif
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
 /* forward declarations that have to be here to avoid including
- * gtktextbtree.h
+ * btktextbtree.h
  */
-typedef struct _GtkTextLine     GtkTextLine;
-typedef struct _GtkTextLineData GtkTextLineData;
+typedef struct _BtkTextLine     BtkTextLine;
+typedef struct _BtkTextLineData BtkTextLineData;
 
-#define GTK_TYPE_TEXT_LAYOUT             (gtk_text_layout_get_type ())
-#define GTK_TEXT_LAYOUT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TEXT_LAYOUT, GtkTextLayout))
-#define GTK_TEXT_LAYOUT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TEXT_LAYOUT, GtkTextLayoutClass))
-#define GTK_IS_TEXT_LAYOUT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TEXT_LAYOUT))
-#define GTK_IS_TEXT_LAYOUT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TEXT_LAYOUT))
-#define GTK_TEXT_LAYOUT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TEXT_LAYOUT, GtkTextLayoutClass))
+#define BTK_TYPE_TEXT_LAYOUT             (btk_text_layout_get_type ())
+#define BTK_TEXT_LAYOUT(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayout))
+#define BTK_TEXT_LAYOUT_CLASS(klass)     (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
+#define BTK_IS_TEXT_LAYOUT(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TEXT_LAYOUT))
+#define BTK_IS_TEXT_LAYOUT_CLASS(klass)  (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_LAYOUT))
+#define BTK_TEXT_LAYOUT_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_LAYOUT, BtkTextLayoutClass))
 
-typedef struct _GtkTextLayout         GtkTextLayout;
-typedef struct _GtkTextLayoutClass    GtkTextLayoutClass;
-typedef struct _GtkTextLineDisplay    GtkTextLineDisplay;
-typedef struct _GtkTextCursorDisplay  GtkTextCursorDisplay;
-typedef struct _GtkTextAttrAppearance GtkTextAttrAppearance;
+typedef struct _BtkTextLayout         BtkTextLayout;
+typedef struct _BtkTextLayoutClass    BtkTextLayoutClass;
+typedef struct _BtkTextLineDisplay    BtkTextLineDisplay;
+typedef struct _BtkTextCursorDisplay  BtkTextCursorDisplay;
+typedef struct _BtkTextAttrAppearance BtkTextAttrAppearance;
 
-struct _GtkTextLayout
+struct _BtkTextLayout
 {
   GObject parent_instance;
 
@@ -132,24 +132,24 @@ struct _GtkTextLayout
   /* gint left_edge; */
   /* gint top_edge; */
 
-  GtkTextBuffer *buffer;
+  BtkTextBuffer *buffer;
 
   /* Default style used if no tags override it */
-  GtkTextAttributes *default_style;
+  BtkTextAttributes *default_style;
 
-  /* Pango contexts used for creating layouts */
-  PangoContext *ltr_context;
-  PangoContext *rtl_context;
+  /* Bango contexts used for creating layouts */
+  BangoContext *ltr_context;
+  BangoContext *rtl_context;
 
   /* A cache of one style; this is used to ensure
    * we don't constantly regenerate the style
    * over long runs with the same style. */
-  GtkTextAttributes *one_style_cache;
+  BtkTextAttributes *one_style_cache;
 
   /* A cache of one line display. Getting the same line
    * many times in a row is the most common case.
    */
-  GtkTextLineDisplay *one_display_cache;
+  BtkTextLineDisplay *one_display_cache;
 
   /* Whether we are allowed to wrap right now */
   gint wrap_loop_count;
@@ -157,7 +157,7 @@ struct _GtkTextLayout
   /* Whether to show the insertion cursor */
   guint cursor_visible : 1;
 
-  /* For what GtkTextDirection to draw cursor GTK_TEXT_DIR_NONE -
+  /* For what BtkTextDirection to draw cursor BTK_TEXT_DIR_NONE -
    * means draw both cursors.
    */
   guint cursor_direction : 2;
@@ -170,62 +170,62 @@ struct _GtkTextLayout
   /* The preedit string and attributes, if any */
 
   gchar *preedit_string;
-  PangoAttrList *preedit_attrs;
+  BangoAttrList *preedit_attrs;
   gint preedit_len;
   gint preedit_cursor;
 
   guint overwrite_mode : 1;
 };
 
-struct _GtkTextLayoutClass
+struct _BtkTextLayoutClass
 {
   GObjectClass parent_class;
 
   /* Some portion of the layout was invalidated
    */
-  void  (*invalidated)  (GtkTextLayout *layout);
+  void  (*invalidated)  (BtkTextLayout *layout);
 
   /* A range of the layout changed appearance and possibly height
    */
-  void  (*changed)              (GtkTextLayout     *layout,
+  void  (*changed)              (BtkTextLayout     *layout,
                                  gint               y,
                                  gint               old_height,
                                  gint               new_height);
-  GtkTextLineData* (*wrap)      (GtkTextLayout     *layout,
-                                 GtkTextLine       *line,
-                                 GtkTextLineData   *line_data); /* may be NULL */
-  void  (*get_log_attrs)        (GtkTextLayout     *layout,
-                                 GtkTextLine       *line,
-                                 PangoLogAttr     **attrs,
+  BtkTextLineData* (*wrap)      (BtkTextLayout     *layout,
+                                 BtkTextLine       *line,
+                                 BtkTextLineData   *line_data); /* may be NULL */
+  void  (*get_log_attrs)        (BtkTextLayout     *layout,
+                                 BtkTextLine       *line,
+                                 BangoLogAttr     **attrs,
                                  gint              *n_attrs);
-  void  (*invalidate)           (GtkTextLayout     *layout,
-                                 const GtkTextIter *start,
-                                 const GtkTextIter *end);
-  void  (*free_line_data)       (GtkTextLayout     *layout,
-                                 GtkTextLine       *line,
-                                 GtkTextLineData   *line_data);
+  void  (*invalidate)           (BtkTextLayout     *layout,
+                                 const BtkTextIter *start,
+                                 const BtkTextIter *end);
+  void  (*free_line_data)       (BtkTextLayout     *layout,
+                                 BtkTextLine       *line,
+                                 BtkTextLineData   *line_data);
 
-  void (*allocate_child)        (GtkTextLayout     *layout,
-                                 GtkWidget         *child,
+  void (*allocate_child)        (BtkTextLayout     *layout,
+                                 BtkWidget         *child,
                                  gint               x,
                                  gint               y);
 
-  void (*invalidate_cursors)    (GtkTextLayout     *layout,
-                                 const GtkTextIter *start,
-                                 const GtkTextIter *end);
+  void (*invalidate_cursors)    (BtkTextLayout     *layout,
+                                 const BtkTextIter *start,
+                                 const BtkTextIter *end);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
 };
 
-struct _GtkTextAttrAppearance
+struct _BtkTextAttrAppearance
 {
-  PangoAttribute attr;
-  GtkTextAppearance appearance;
+  BangoAttribute attr;
+  BtkTextAppearance appearance;
 };
-struct _GtkTextCursorDisplay
+struct _BtkTextCursorDisplay
 {
   gint x;
   gint y;
@@ -233,13 +233,13 @@ struct _GtkTextCursorDisplay
   guint is_strong : 1;
   guint is_weak : 1;
 };
-struct _GtkTextLineDisplay
+struct _BtkTextLineDisplay
 {
-  PangoLayout *layout;
+  BangoLayout *layout;
   GSList *cursors;
   GSList *shaped_objects;	/* Only for backwards compatibility */
   
-  GtkTextDirection direction;
+  BtkTextDirection direction;
 
   gint width;                   /* Width of layout */
   gint total_width;             /* width - margins, if no width set on layout, if width set on layout, -1 */
@@ -255,47 +255,47 @@ struct _GtkTextLineDisplay
   gint insert_index;		/* Byte index of insert cursor within para or -1 */
 
   gboolean size_only;
-  GtkTextLine *line;
+  BtkTextLine *line;
   
-  GdkColor *pg_bg_color;
+  BdkColor *pg_bg_color;
 
-  GdkRectangle block_cursor;
+  BdkRectangle block_cursor;
   guint cursors_invalid : 1;
   guint has_block_cursor : 1;
   guint cursor_at_line_end : 1;
 };
 
-extern PangoAttrType gtk_text_attr_appearance_type;
+extern BangoAttrType btk_text_attr_appearance_type;
 
-GType         gtk_text_layout_get_type    (void) G_GNUC_CONST;
+GType         btk_text_layout_get_type    (void) G_GNUC_CONST;
 
-GtkTextLayout*     gtk_text_layout_new                   (void);
-void               gtk_text_layout_set_buffer            (GtkTextLayout     *layout,
-							  GtkTextBuffer     *buffer);
-GtkTextBuffer     *gtk_text_layout_get_buffer            (GtkTextLayout     *layout);
-void               gtk_text_layout_set_default_style     (GtkTextLayout     *layout,
-							  GtkTextAttributes *values);
-void               gtk_text_layout_set_contexts          (GtkTextLayout     *layout,
-							  PangoContext      *ltr_context,
-							  PangoContext      *rtl_context);
-void               gtk_text_layout_set_cursor_direction  (GtkTextLayout     *layout,
-                                                          GtkTextDirection   direction);
-void		   gtk_text_layout_set_overwrite_mode	 (GtkTextLayout     *layout,
+BtkTextLayout*     btk_text_layout_new                   (void);
+void               btk_text_layout_set_buffer            (BtkTextLayout     *layout,
+							  BtkTextBuffer     *buffer);
+BtkTextBuffer     *btk_text_layout_get_buffer            (BtkTextLayout     *layout);
+void               btk_text_layout_set_default_style     (BtkTextLayout     *layout,
+							  BtkTextAttributes *values);
+void               btk_text_layout_set_contexts          (BtkTextLayout     *layout,
+							  BangoContext      *ltr_context,
+							  BangoContext      *rtl_context);
+void               btk_text_layout_set_cursor_direction  (BtkTextLayout     *layout,
+                                                          BtkTextDirection   direction);
+void		   btk_text_layout_set_overwrite_mode	 (BtkTextLayout     *layout,
 							  gboolean           overwrite);
-void               gtk_text_layout_set_keyboard_direction (GtkTextLayout     *layout,
-							   GtkTextDirection keyboard_dir);
-void               gtk_text_layout_default_style_changed (GtkTextLayout     *layout);
+void               btk_text_layout_set_keyboard_direction (BtkTextLayout     *layout,
+							   BtkTextDirection keyboard_dir);
+void               btk_text_layout_default_style_changed (BtkTextLayout     *layout);
 
-void gtk_text_layout_set_screen_width       (GtkTextLayout     *layout,
+void btk_text_layout_set_screen_width       (BtkTextLayout     *layout,
                                              gint               width);
-void gtk_text_layout_set_preedit_string     (GtkTextLayout     *layout,
+void btk_text_layout_set_preedit_string     (BtkTextLayout     *layout,
  					     const gchar       *preedit_string,
- 					     PangoAttrList     *preedit_attrs,
+ 					     BangoAttrList     *preedit_attrs,
  					     gint               cursor_pos);
 
-void     gtk_text_layout_set_cursor_visible (GtkTextLayout     *layout,
+void     btk_text_layout_set_cursor_visible (BtkTextLayout     *layout,
                                              gboolean           cursor_visible);
-gboolean gtk_text_layout_get_cursor_visible (GtkTextLayout     *layout);
+gboolean btk_text_layout_get_cursor_visible (BtkTextLayout     *layout);
 
 /* Getting the size or the lines potentially results in a call to
  * recompute, which is pretty massively expensive. Thus it should
@@ -304,53 +304,53 @@ gboolean gtk_text_layout_get_cursor_visible (GtkTextLayout     *layout);
  * Long-term, we would really like to be able to do these without
  * a full recompute so they may get cheaper over time.
  */
-void    gtk_text_layout_get_size  (GtkTextLayout  *layout,
+void    btk_text_layout_get_size  (BtkTextLayout  *layout,
                                    gint           *width,
                                    gint           *height);
-GSList* gtk_text_layout_get_lines (GtkTextLayout  *layout,
+GSList* btk_text_layout_get_lines (BtkTextLayout  *layout,
                                    /* [top_y, bottom_y) */
                                    gint            top_y,
                                    gint            bottom_y,
                                    gint           *first_line_y);
 
-void gtk_text_layout_wrap_loop_start (GtkTextLayout *layout);
-void gtk_text_layout_wrap_loop_end   (GtkTextLayout *layout);
+void btk_text_layout_wrap_loop_start (BtkTextLayout *layout);
+void btk_text_layout_wrap_loop_end   (BtkTextLayout *layout);
 
-GtkTextLineDisplay* gtk_text_layout_get_line_display  (GtkTextLayout      *layout,
-                                                       GtkTextLine        *line,
+BtkTextLineDisplay* btk_text_layout_get_line_display  (BtkTextLayout      *layout,
+                                                       BtkTextLine        *line,
                                                        gboolean            size_only);
-void                gtk_text_layout_free_line_display (GtkTextLayout      *layout,
-                                                       GtkTextLineDisplay *display);
+void                btk_text_layout_free_line_display (BtkTextLayout      *layout,
+                                                       BtkTextLineDisplay *display);
 
-void gtk_text_layout_get_line_at_y     (GtkTextLayout     *layout,
-                                        GtkTextIter       *target_iter,
+void btk_text_layout_get_line_at_y     (BtkTextLayout     *layout,
+                                        BtkTextIter       *target_iter,
                                         gint               y,
                                         gint              *line_top);
-void gtk_text_layout_get_iter_at_pixel (GtkTextLayout     *layout,
-                                        GtkTextIter       *iter,
+void btk_text_layout_get_iter_at_pixel (BtkTextLayout     *layout,
+                                        BtkTextIter       *iter,
                                         gint               x,
                                         gint               y);
-void gtk_text_layout_get_iter_at_position (GtkTextLayout     *layout,
-					   GtkTextIter       *iter,
+void btk_text_layout_get_iter_at_position (BtkTextLayout     *layout,
+					   BtkTextIter       *iter,
 					   gint              *trailing,
 					   gint               x,
 					   gint               y);
-void gtk_text_layout_invalidate        (GtkTextLayout     *layout,
-                                        const GtkTextIter *start,
-                                        const GtkTextIter *end);
-void gtk_text_layout_invalidate_cursors(GtkTextLayout     *layout,
-                                        const GtkTextIter *start,
-                                        const GtkTextIter *end);
-void gtk_text_layout_free_line_data    (GtkTextLayout     *layout,
-                                        GtkTextLine       *line,
-                                        GtkTextLineData   *line_data);
+void btk_text_layout_invalidate        (BtkTextLayout     *layout,
+                                        const BtkTextIter *start,
+                                        const BtkTextIter *end);
+void btk_text_layout_invalidate_cursors(BtkTextLayout     *layout,
+                                        const BtkTextIter *start,
+                                        const BtkTextIter *end);
+void btk_text_layout_free_line_data    (BtkTextLayout     *layout,
+                                        BtkTextLine       *line,
+                                        BtkTextLineData   *line_data);
 
-gboolean gtk_text_layout_is_valid        (GtkTextLayout *layout);
-void     gtk_text_layout_validate_yrange (GtkTextLayout *layout,
-                                          GtkTextIter   *anchor_line,
+gboolean btk_text_layout_is_valid        (BtkTextLayout *layout);
+void     btk_text_layout_validate_yrange (BtkTextLayout *layout,
+                                          BtkTextIter   *anchor_line,
                                           gint           y0_,
                                           gint           y1_);
-void     gtk_text_layout_validate        (GtkTextLayout *layout,
+void     btk_text_layout_validate        (BtkTextLayout *layout,
                                           gint           max_pixels);
 
 /* This function should return the passed-in line data,
@@ -360,80 +360,80 @@ void     gtk_text_layout_validate        (GtkTextLayout *layout,
  * there should be exactly one line data for this view
  * stored on the btree line.
  */
-GtkTextLineData* gtk_text_layout_wrap  (GtkTextLayout   *layout,
-                                        GtkTextLine     *line,
-                                        GtkTextLineData *line_data); /* may be NULL */
-void     gtk_text_layout_changed              (GtkTextLayout     *layout,
+BtkTextLineData* btk_text_layout_wrap  (BtkTextLayout   *layout,
+                                        BtkTextLine     *line,
+                                        BtkTextLineData *line_data); /* may be NULL */
+void     btk_text_layout_changed              (BtkTextLayout     *layout,
                                                gint               y,
                                                gint               old_height,
                                                gint               new_height);
-void     gtk_text_layout_cursors_changed      (GtkTextLayout     *layout,
+void     btk_text_layout_cursors_changed      (BtkTextLayout     *layout,
                                                gint               y,
                                                gint               old_height,
                                                gint               new_height);
-void     gtk_text_layout_get_iter_location    (GtkTextLayout     *layout,
-                                               const GtkTextIter *iter,
-                                               GdkRectangle      *rect);
-void     gtk_text_layout_get_line_yrange      (GtkTextLayout     *layout,
-                                               const GtkTextIter *iter,
+void     btk_text_layout_get_iter_location    (BtkTextLayout     *layout,
+                                               const BtkTextIter *iter,
+                                               BdkRectangle      *rect);
+void     btk_text_layout_get_line_yrange      (BtkTextLayout     *layout,
+                                               const BtkTextIter *iter,
                                                gint              *y,
                                                gint              *height);
-void     _gtk_text_layout_get_line_xrange     (GtkTextLayout     *layout,
-                                               const GtkTextIter *iter,
+void     _btk_text_layout_get_line_xrange     (BtkTextLayout     *layout,
+                                               const BtkTextIter *iter,
                                                gint              *x,
                                                gint              *width);
-void     gtk_text_layout_get_cursor_locations (GtkTextLayout     *layout,
-                                               GtkTextIter       *iter,
-                                               GdkRectangle      *strong_pos,
-                                               GdkRectangle      *weak_pos);
-gboolean _gtk_text_layout_get_block_cursor    (GtkTextLayout     *layout,
-					       GdkRectangle      *pos);
-gboolean gtk_text_layout_clamp_iter_to_vrange (GtkTextLayout     *layout,
-                                               GtkTextIter       *iter,
+void     btk_text_layout_get_cursor_locations (BtkTextLayout     *layout,
+                                               BtkTextIter       *iter,
+                                               BdkRectangle      *strong_pos,
+                                               BdkRectangle      *weak_pos);
+gboolean _btk_text_layout_get_block_cursor    (BtkTextLayout     *layout,
+					       BdkRectangle      *pos);
+gboolean btk_text_layout_clamp_iter_to_vrange (BtkTextLayout     *layout,
+                                               BtkTextIter       *iter,
                                                gint               top,
                                                gint               bottom);
 
-gboolean gtk_text_layout_move_iter_to_line_end      (GtkTextLayout *layout,
-                                                     GtkTextIter   *iter,
+gboolean btk_text_layout_move_iter_to_line_end      (BtkTextLayout *layout,
+                                                     BtkTextIter   *iter,
                                                      gint           direction);
-gboolean gtk_text_layout_move_iter_to_previous_line (GtkTextLayout *layout,
-                                                     GtkTextIter   *iter);
-gboolean gtk_text_layout_move_iter_to_next_line     (GtkTextLayout *layout,
-                                                     GtkTextIter   *iter);
-void     gtk_text_layout_move_iter_to_x             (GtkTextLayout *layout,
-                                                     GtkTextIter   *iter,
+gboolean btk_text_layout_move_iter_to_previous_line (BtkTextLayout *layout,
+                                                     BtkTextIter   *iter);
+gboolean btk_text_layout_move_iter_to_next_line     (BtkTextLayout *layout,
+                                                     BtkTextIter   *iter);
+void     btk_text_layout_move_iter_to_x             (BtkTextLayout *layout,
+                                                     BtkTextIter   *iter,
                                                      gint           x);
-gboolean gtk_text_layout_move_iter_visually         (GtkTextLayout *layout,
-                                                     GtkTextIter   *iter,
+gboolean btk_text_layout_move_iter_visually         (BtkTextLayout *layout,
+                                                     BtkTextIter   *iter,
                                                      gint           count);
 
-gboolean gtk_text_layout_iter_starts_line           (GtkTextLayout       *layout,
-                                                     const GtkTextIter   *iter);
+gboolean btk_text_layout_iter_starts_line           (BtkTextLayout       *layout,
+                                                     const BtkTextIter   *iter);
 
-void     gtk_text_layout_get_iter_at_line           (GtkTextLayout *layout,
-                                                     GtkTextIter    *iter,
-                                                     GtkTextLine    *line,
+void     btk_text_layout_get_iter_at_line           (BtkTextLayout *layout,
+                                                     BtkTextIter    *iter,
+                                                     BtkTextLine    *line,
                                                      gint            byte_offset);
 
-/* Don't use these. Use gtk_text_view_add_child_at_anchor().
- * These functions are defined in gtktextchild.c, but here
- * since they are semi-public and require GtkTextLayout to
+/* Don't use these. Use btk_text_view_add_child_at_anchor().
+ * These functions are defined in btktextchild.c, but here
+ * since they are semi-public and require BtkTextLayout to
  * be declared.
  */
-void gtk_text_child_anchor_register_child   (GtkTextChildAnchor *anchor,
-                                             GtkWidget          *child,
-                                             GtkTextLayout      *layout);
-void gtk_text_child_anchor_unregister_child (GtkTextChildAnchor *anchor,
-                                             GtkWidget          *child);
+void btk_text_child_anchor_register_child   (BtkTextChildAnchor *anchor,
+                                             BtkWidget          *child,
+                                             BtkTextLayout      *layout);
+void btk_text_child_anchor_unregister_child (BtkTextChildAnchor *anchor,
+                                             BtkWidget          *child);
 
-void gtk_text_child_anchor_queue_resize     (GtkTextChildAnchor *anchor,
-                                             GtkTextLayout      *layout);
+void btk_text_child_anchor_queue_resize     (BtkTextChildAnchor *anchor,
+                                             BtkTextLayout      *layout);
 
-void gtk_text_anchored_child_set_layout     (GtkWidget          *child,
-                                             GtkTextLayout      *layout);
+void btk_text_anchored_child_set_layout     (BtkWidget          *child,
+                                             BtkTextLayout      *layout);
 
-void gtk_text_layout_spew (GtkTextLayout *layout);
+void btk_text_layout_spew (BtkTextLayout *layout);
 
 G_END_DECLS
 
-#endif  /* __GTK_TEXT_LAYOUT_H__ */
+#endif  /* __BTK_TEXT_LAYOUT_H__ */

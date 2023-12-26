@@ -1,4 +1,4 @@
-/* GtkCustomPaperUnixDialog
+/* BtkCustomPaperUnixDialog
  * Copyright (C) 2006 Alexander Larsson <alexl@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,54 +17,54 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_CUSTOM_PAPER_UNIX_DIALOG_H__
-#define __GTK_CUSTOM_PAPER_UNIX_DIALOG_H__
+#ifndef __BTK_CUSTOM_PAPER_UNIX_DIALOG_H__
+#define __BTK_CUSTOM_PAPER_UNIX_DIALOG_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG                  (gtk_custom_paper_unix_dialog_get_type ())
-#define GTK_CUSTOM_PAPER_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, GtkCustomPaperUnixDialog))
-#define GTK_CUSTOM_PAPER_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, GtkCustomPaperUnixDialogClass))
-#define GTK_IS_CUSTOM_PAPER_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG))
-#define GTK_IS_CUSTOM_PAPER_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG))
-#define GTK_CUSTOM_PAPER_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, GtkCustomPaperUnixDialogClass))
+#define BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG                  (btk_custom_paper_unix_dialog_get_type ())
+#define BTK_CUSTOM_PAPER_UNIX_DIALOG(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, BtkCustomPaperUnixDialog))
+#define BTK_CUSTOM_PAPER_UNIX_DIALOG_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, BtkCustomPaperUnixDialogClass))
+#define BTK_IS_CUSTOM_PAPER_UNIX_DIALOG(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG))
+#define BTK_IS_CUSTOM_PAPER_UNIX_DIALOG_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG))
+#define BTK_CUSTOM_PAPER_UNIX_DIALOG_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_CUSTOM_PAPER_UNIX_DIALOG, BtkCustomPaperUnixDialogClass))
 
 
-typedef struct _GtkCustomPaperUnixDialog         GtkCustomPaperUnixDialog;
-typedef struct _GtkCustomPaperUnixDialogClass    GtkCustomPaperUnixDialogClass;
-typedef struct GtkCustomPaperUnixDialogPrivate   GtkCustomPaperUnixDialogPrivate;
+typedef struct _BtkCustomPaperUnixDialog         BtkCustomPaperUnixDialog;
+typedef struct _BtkCustomPaperUnixDialogClass    BtkCustomPaperUnixDialogClass;
+typedef struct BtkCustomPaperUnixDialogPrivate   BtkCustomPaperUnixDialogPrivate;
 
-struct _GtkCustomPaperUnixDialog
+struct _BtkCustomPaperUnixDialog
 {
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
-  GtkCustomPaperUnixDialogPrivate *GSEAL (priv);
+  BtkCustomPaperUnixDialogPrivate *GSEAL (priv);
 };
 
-struct _GtkCustomPaperUnixDialogClass
+struct _BtkCustomPaperUnixDialogClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType             gtk_custom_paper_unix_dialog_get_type           (void) G_GNUC_CONST;
-GtkWidget *       _gtk_custom_paper_unix_dialog_new                (GtkWindow   *parent,
+GType             btk_custom_paper_unix_dialog_get_type           (void) G_GNUC_CONST;
+BtkWidget *       _btk_custom_paper_unix_dialog_new                (BtkWindow   *parent,
 								   const gchar *title);
-GtkUnit           _gtk_print_get_default_user_units                (void);
-void              _gtk_print_load_custom_papers                    (GtkListStore *store);
-void              _gtk_print_save_custom_papers                    (GtkListStore *store);
+BtkUnit           _btk_print_get_default_user_units                (void);
+void              _btk_print_load_custom_papers                    (BtkListStore *store);
+void              _btk_print_save_custom_papers                    (BtkListStore *store);
 
 
 G_END_DECLS
 
-#endif /* __GTK_CUSTOM_PAPER_UNIX_DIALOG_H__ */
+#endif /* __BTK_CUSTOM_PAPER_UNIX_DIALOG_H__ */

@@ -1,8 +1,8 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  * Includes code adapted from redmond95 by Owen Taylor, and
- * gtk-nativewin by Evan Martin
+ * btk-nativewin by Evan Martin
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -23,7 +23,7 @@
 #ifndef MSW_STYLE_H
 #define MSW_STYLE_H
 
-#include "gtk/gtk.h"
+#include "btk/btk.h"
 
 typedef struct _MswStyle MswStyle;
 typedef struct _MswStyleClass MswStyleClass;
@@ -39,12 +39,12 @@ extern GType msw_type_style;
 
 struct _MswStyle
 {
-  GtkStyle parent_instance;
+  BtkStyle parent_instance;
 };
 
 struct _MswStyleClass
 {
-  GtkStyleClass parent_class;
+  BtkStyleClass parent_class;
 };
 
 void msw_style_register_type (GTypeModule *module);

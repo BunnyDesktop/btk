@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,63 +18,63 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_HBUTTON_BOX_H__
-#define __GTK_HBUTTON_BOX_H__
+#ifndef __BTK_HBUTTON_BOX_H__
+#define __BTK_HBUTTON_BOX_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbbox.h>
+#include <btk/btkbbox.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HBUTTON_BOX                  (gtk_hbutton_box_get_type ())
-#define GTK_HBUTTON_BOX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HBUTTON_BOX, GtkHButtonBox))
-#define GTK_HBUTTON_BOX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HBUTTON_BOX, GtkHButtonBoxClass))
-#define GTK_IS_HBUTTON_BOX(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HBUTTON_BOX))
-#define GTK_IS_HBUTTON_BOX_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HBUTTON_BOX))
-#define GTK_HBUTTON_BOX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HBUTTON_BOX, GtkHButtonBoxClass))
+#define BTK_TYPE_HBUTTON_BOX                  (btk_hbutton_box_get_type ())
+#define BTK_HBUTTON_BOX(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HBUTTON_BOX, BtkHButtonBox))
+#define BTK_HBUTTON_BOX_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HBUTTON_BOX, BtkHButtonBoxClass))
+#define BTK_IS_HBUTTON_BOX(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HBUTTON_BOX))
+#define BTK_IS_HBUTTON_BOX_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HBUTTON_BOX))
+#define BTK_HBUTTON_BOX_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HBUTTON_BOX, BtkHButtonBoxClass))
 
 
-typedef struct _GtkHButtonBox       GtkHButtonBox;
-typedef struct _GtkHButtonBoxClass  GtkHButtonBoxClass;
+typedef struct _BtkHButtonBox       BtkHButtonBox;
+typedef struct _BtkHButtonBoxClass  BtkHButtonBoxClass;
 
-struct _GtkHButtonBox
+struct _BtkHButtonBox
 {
-  GtkButtonBox button_box;
+  BtkButtonBox button_box;
 };
 
-struct _GtkHButtonBoxClass
+struct _BtkHButtonBoxClass
 {
-  GtkButtonBoxClass parent_class;
+  BtkButtonBoxClass parent_class;
 };
 
 
-GType      gtk_hbutton_box_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_hbutton_box_new      (void);
+GType      btk_hbutton_box_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_hbutton_box_new      (void);
 
-/* buttons can be added by gtk_container_add() */
+/* buttons can be added by btk_container_add() */
 
-#ifndef GTK_DISABLE_DEPRECATED
-gint gtk_hbutton_box_get_spacing_default (void);
-GtkButtonBoxStyle gtk_hbutton_box_get_layout_default (void);
+#ifndef BTK_DISABLE_DEPRECATED
+gint btk_hbutton_box_get_spacing_default (void);
+BtkButtonBoxStyle btk_hbutton_box_get_layout_default (void);
 
-void gtk_hbutton_box_set_spacing_default (gint spacing);
-void gtk_hbutton_box_set_layout_default (GtkButtonBoxStyle layout);
+void btk_hbutton_box_set_spacing_default (gint spacing);
+void btk_hbutton_box_set_layout_default (BtkButtonBoxStyle layout);
 #endif
 
 /* private API */
-GtkButtonBoxStyle _gtk_hbutton_box_get_layout_default (void);
+BtkButtonBoxStyle _btk_hbutton_box_get_layout_default (void);
 
 G_END_DECLS
 
-#endif /* __GTK_HBUTTON_BOX_H__ */
+#endif /* __BTK_HBUTTON_BOX_H__ */

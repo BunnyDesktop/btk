@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,34 +18,34 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_KEYS_H__
-#define __GDK_KEYS_H__
+#ifndef __BDK_KEYS_H__
+#define __BDK_KEYS_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
+#include <bdk/bdktypes.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkKeymapKey GdkKeymapKey;
+typedef struct _BdkKeymapKey BdkKeymapKey;
 
-/* GdkKeymapKey is a hardware key that can be mapped to a keyval */
-struct _GdkKeymapKey
+/* BdkKeymapKey is a hardware key that can be mapped to a keyval */
+struct _BdkKeymapKey
 {
   guint keycode;
   gint  group;
   gint  level;
 };
 
-/* A GdkKeymap defines the translation from keyboard state
+/* A BdkKeymap defines the translation from keyboard state
  * (including a hardware key, a modifier mask, and active keyboard group)
  * to a keyval. This translation has two phases. The first phase is
  * to determine the effective keyboard group and level for the keyboard
@@ -53,82 +53,82 @@ struct _GdkKeymapKey
  * in the keymap and see what keyval it corresponds to.
  */
 
-typedef struct _GdkKeymap      GdkKeymap;
-typedef struct _GdkKeymapClass GdkKeymapClass;
+typedef struct _BdkKeymap      BdkKeymap;
+typedef struct _BdkKeymapClass BdkKeymapClass;
 
-#define GDK_TYPE_KEYMAP              (gdk_keymap_get_type ())
-#define GDK_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_KEYMAP, GdkKeymap))
-#define GDK_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_KEYMAP, GdkKeymapClass))
-#define GDK_IS_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_KEYMAP))
-#define GDK_IS_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_KEYMAP))
-#define GDK_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_KEYMAP, GdkKeymapClass))
+#define BDK_TYPE_KEYMAP              (bdk_keymap_get_type ())
+#define BDK_KEYMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP, BdkKeymap))
+#define BDK_KEYMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_KEYMAP, BdkKeymapClass))
+#define BDK_IS_KEYMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP))
+#define BDK_IS_KEYMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_KEYMAP))
+#define BDK_KEYMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_KEYMAP, BdkKeymapClass))
 
-struct _GdkKeymap
+struct _BdkKeymap
 {
   GObject     parent_instance;
-  GdkDisplay *GSEAL (display);
+  BdkDisplay *GSEAL (display);
 };
 
-struct _GdkKeymapClass
+struct _BdkKeymapClass
 {
   GObjectClass parent_class;
 
-  void (*direction_changed) (GdkKeymap *keymap);
-  void (*keys_changed)      (GdkKeymap *keymap);
-  void (*state_changed)     (GdkKeymap *keymap);
+  void (*direction_changed) (BdkKeymap *keymap);
+  void (*keys_changed)      (BdkKeymap *keymap);
+  void (*state_changed)     (BdkKeymap *keymap);
 };
 
-GType gdk_keymap_get_type (void) G_GNUC_CONST;
+GType bdk_keymap_get_type (void) G_GNUC_CONST;
 
-#ifndef GDK_MULTIHEAD_SAFE
-GdkKeymap* gdk_keymap_get_default     (void);
+#ifndef BDK_MULTIHEAD_SAFE
+BdkKeymap* bdk_keymap_get_default     (void);
 #endif
-GdkKeymap* gdk_keymap_get_for_display (GdkDisplay *display);
+BdkKeymap* bdk_keymap_get_for_display (BdkDisplay *display);
 
 
-guint          gdk_keymap_lookup_key               (GdkKeymap           *keymap,
-						    const GdkKeymapKey  *key);
-gboolean       gdk_keymap_translate_keyboard_state (GdkKeymap           *keymap,
+guint          bdk_keymap_lookup_key               (BdkKeymap           *keymap,
+						    const BdkKeymapKey  *key);
+gboolean       bdk_keymap_translate_keyboard_state (BdkKeymap           *keymap,
 						    guint                hardware_keycode,
-						    GdkModifierType      state,
+						    BdkModifierType      state,
 						    gint                 group,
 						    guint               *keyval,
 						    gint                *effective_group,
 						    gint                *level,
-						    GdkModifierType     *consumed_modifiers);
-gboolean       gdk_keymap_get_entries_for_keyval   (GdkKeymap           *keymap,
+						    BdkModifierType     *consumed_modifiers);
+gboolean       bdk_keymap_get_entries_for_keyval   (BdkKeymap           *keymap,
 						    guint                keyval,
-						    GdkKeymapKey       **keys,
+						    BdkKeymapKey       **keys,
 						    gint                *n_keys);
-gboolean       gdk_keymap_get_entries_for_keycode  (GdkKeymap           *keymap,
+gboolean       bdk_keymap_get_entries_for_keycode  (BdkKeymap           *keymap,
 						    guint                hardware_keycode,
-						    GdkKeymapKey       **keys,
+						    BdkKeymapKey       **keys,
 						    guint              **keyvals,
 						    gint                *n_entries);
-PangoDirection gdk_keymap_get_direction            (GdkKeymap           *keymap);
-gboolean       gdk_keymap_have_bidi_layouts        (GdkKeymap           *keymap);
-gboolean       gdk_keymap_get_caps_lock_state      (GdkKeymap           *keymap);
-void           gdk_keymap_add_virtual_modifiers    (GdkKeymap           *keymap,
-                                                    GdkModifierType     *state);
-gboolean       gdk_keymap_map_virtual_modifiers    (GdkKeymap           *keymap,
-                                                    GdkModifierType     *state);
+BangoDirection bdk_keymap_get_direction            (BdkKeymap           *keymap);
+gboolean       bdk_keymap_have_bidi_layouts        (BdkKeymap           *keymap);
+gboolean       bdk_keymap_get_caps_lock_state      (BdkKeymap           *keymap);
+void           bdk_keymap_add_virtual_modifiers    (BdkKeymap           *keymap,
+                                                    BdkModifierType     *state);
+gboolean       bdk_keymap_map_virtual_modifiers    (BdkKeymap           *keymap,
+                                                    BdkModifierType     *state);
 
 /* Key values
  */
-gchar*   gdk_keyval_name         (guint        keyval) G_GNUC_CONST;
-guint    gdk_keyval_from_name    (const gchar *keyval_name);
-void     gdk_keyval_convert_case (guint        symbol,
+gchar*   bdk_keyval_name         (guint        keyval) G_GNUC_CONST;
+guint    bdk_keyval_from_name    (const gchar *keyval_name);
+void     bdk_keyval_convert_case (guint        symbol,
 				  guint       *lower,
 				  guint       *upper);
-guint    gdk_keyval_to_upper     (guint        keyval) G_GNUC_CONST;
-guint    gdk_keyval_to_lower     (guint        keyval) G_GNUC_CONST;
-gboolean gdk_keyval_is_upper     (guint        keyval) G_GNUC_CONST;
-gboolean gdk_keyval_is_lower     (guint        keyval) G_GNUC_CONST;
+guint    bdk_keyval_to_upper     (guint        keyval) G_GNUC_CONST;
+guint    bdk_keyval_to_lower     (guint        keyval) G_GNUC_CONST;
+gboolean bdk_keyval_is_upper     (guint        keyval) G_GNUC_CONST;
+gboolean bdk_keyval_is_lower     (guint        keyval) G_GNUC_CONST;
 
-guint32  gdk_keyval_to_unicode   (guint        keyval) G_GNUC_CONST;
-guint    gdk_unicode_to_keyval   (guint32      wc) G_GNUC_CONST;
+guint32  bdk_keyval_to_unicode   (guint        keyval) G_GNUC_CONST;
+guint    bdk_unicode_to_keyval   (guint32      wc) G_GNUC_CONST;
 
 
 G_END_DECLS
 
-#endif /* __GDK_KEYS_H__ */
+#endif /* __BDK_KEYS_H__ */

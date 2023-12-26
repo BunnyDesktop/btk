@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -30,18 +30,18 @@
 #include <string.h>
 #include <stdio.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include "gtklabel.h"
-#include "gtkmain.h"
-#include "gtkmenuitem.h"
-#include "gtkprivate.h"
-#include "gtkwidget.h"
-#include "gtkwindow.h"
-#include "gtkstyle.h"
-#include "gtktooltips.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btklabel.h"
+#include "btkmain.h"
+#include "btkmenuitem.h"
+#include "btkprivate.h"
+#include "btkwidget.h"
+#include "btkwindow.h"
+#include "btkstyle.h"
+#include "btktooltips.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 #define DEFAULT_DELAY 500           /* Default delay in ms */
@@ -51,46 +51,46 @@
 #define STICKY_REVERT_DELAY 1000    /* Delay before sticky tooltips revert
 				     * to normal
                                      */
-#define GTK_TOOLTIPS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_TOOLTIPS, GtkTooltipsPrivate))
+#define BTK_TOOLTIPS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOOLTIPS, BtkTooltipsPrivate))
 
-typedef struct _GtkTooltipsPrivate GtkTooltipsPrivate;
+typedef struct _BtkTooltipsPrivate BtkTooltipsPrivate;
 
-struct _GtkTooltipsPrivate
+struct _BtkTooltipsPrivate
 {
   GHashTable *tips_data_table;
 };
 
 
-static void gtk_tooltips_finalize          (GObject         *object);
-static void gtk_tooltips_destroy           (GtkObject       *object);
+static void btk_tooltips_finalize          (GObject         *object);
+static void btk_tooltips_destroy           (BtkObject       *object);
 
-static void gtk_tooltips_destroy_data      (GtkTooltipsData *tooltipsdata);
+static void btk_tooltips_destroy_data      (BtkTooltipsData *tooltipsdata);
 
-static void gtk_tooltips_widget_remove     (GtkWidget       *widget,
+static void btk_tooltips_widget_remove     (BtkWidget       *widget,
                                             gpointer         data);
 
-static const gchar  tooltips_data_key[] = "_GtkTooltipsData";
-static const gchar  tooltips_info_key[] = "_GtkTooltipsInfo";
+static const gchar  tooltips_data_key[] = "_BtkTooltipsData";
+static const gchar  tooltips_info_key[] = "_BtkTooltipsInfo";
 
-G_DEFINE_TYPE (GtkTooltips, gtk_tooltips, GTK_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkTooltips, btk_tooltips, BTK_TYPE_OBJECT)
 
 static void
-gtk_tooltips_class_init (GtkTooltipsClass *class)
+btk_tooltips_class_init (BtkTooltipsClass *class)
 {
-  GtkObjectClass *object_class = (GtkObjectClass *) class;
-  GObjectClass *gobject_class = (GObjectClass *) class;
+  BtkObjectClass *object_class = (BtkObjectClass *) class;
+  GObjectClass *bobject_class = (GObjectClass *) class;
 
-  gobject_class->finalize = gtk_tooltips_finalize;
+  bobject_class->finalize = btk_tooltips_finalize;
 
-  object_class->destroy = gtk_tooltips_destroy;
+  object_class->destroy = btk_tooltips_destroy;
 
-  g_type_class_add_private (gobject_class, sizeof (GtkTooltipsPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkTooltipsPrivate));
 }
 
 static void
-gtk_tooltips_init (GtkTooltips *tooltips)
+btk_tooltips_init (BtkTooltips *tooltips)
 {
-  GtkTooltipsPrivate *private = GTK_TOOLTIPS_GET_PRIVATE (tooltips);
+  BtkTooltipsPrivate *private = BTK_TOOLTIPS_GET_PRIVATE (tooltips);
 
   tooltips->tip_window = NULL;
   tooltips->active_tips_data = NULL;
@@ -105,35 +105,35 @@ gtk_tooltips_init (GtkTooltips *tooltips)
 
   private->tips_data_table =
     g_hash_table_new_full (NULL, NULL, NULL,
-                           (GDestroyNotify) gtk_tooltips_destroy_data);
+                           (GDestroyNotify) btk_tooltips_destroy_data);
 
-  gtk_tooltips_force_window (tooltips);
+  btk_tooltips_force_window (tooltips);
 }
 
 static void
-gtk_tooltips_finalize (GObject *object)
+btk_tooltips_finalize (GObject *object)
 {
-  GtkTooltipsPrivate *private = GTK_TOOLTIPS_GET_PRIVATE (object);
+  BtkTooltipsPrivate *private = BTK_TOOLTIPS_GET_PRIVATE (object);
 
   g_hash_table_destroy (private->tips_data_table);
 
-  G_OBJECT_CLASS (gtk_tooltips_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_tooltips_parent_class)->finalize (object);
 }
 
-GtkTooltips *
-gtk_tooltips_new (void)
+BtkTooltips *
+btk_tooltips_new (void)
 {
-  return g_object_new (GTK_TYPE_TOOLTIPS, NULL);
+  return g_object_new (BTK_TYPE_TOOLTIPS, NULL);
 }
 
 static void
-gtk_tooltips_destroy_data (GtkTooltipsData *tooltipsdata)
+btk_tooltips_destroy_data (BtkTooltipsData *tooltipsdata)
 {
   g_free (tooltipsdata->tip_text);
   g_free (tooltipsdata->tip_private);
 
   g_signal_handlers_disconnect_by_func (tooltipsdata->widget,
-					gtk_tooltips_widget_remove,
+					btk_tooltips_widget_remove,
 					tooltipsdata);
 
   g_object_set_data (G_OBJECT (tooltipsdata->widget), I_(tooltips_data_key), NULL);
@@ -142,43 +142,43 @@ gtk_tooltips_destroy_data (GtkTooltipsData *tooltipsdata)
 }
 
 static void
-gtk_tooltips_destroy (GtkObject *object)
+btk_tooltips_destroy (BtkObject *object)
 {
-  GtkTooltips *tooltips = GTK_TOOLTIPS (object);
-  GtkTooltipsPrivate *private = GTK_TOOLTIPS_GET_PRIVATE (tooltips);
+  BtkTooltips *tooltips = BTK_TOOLTIPS (object);
+  BtkTooltipsPrivate *private = BTK_TOOLTIPS_GET_PRIVATE (tooltips);
 
   if (tooltips->tip_window)
     {
-      gtk_widget_destroy (tooltips->tip_window);
+      btk_widget_destroy (tooltips->tip_window);
       tooltips->tip_window = NULL;
     }
 
   g_hash_table_remove_all (private->tips_data_table);
 
-  GTK_OBJECT_CLASS (gtk_tooltips_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_tooltips_parent_class)->destroy (object);
 }
 
 void
-gtk_tooltips_force_window (GtkTooltips *tooltips)
+btk_tooltips_force_window (BtkTooltips *tooltips)
 {
-  g_return_if_fail (GTK_IS_TOOLTIPS (tooltips));
+  g_return_if_fail (BTK_IS_TOOLTIPS (tooltips));
 
   if (!tooltips->tip_window)
     {
-      tooltips->tip_window = gtk_window_new (GTK_WINDOW_POPUP);
+      tooltips->tip_window = btk_window_new (BTK_WINDOW_POPUP);
       g_signal_connect (tooltips->tip_window,
 			"destroy",
-			G_CALLBACK (gtk_widget_destroyed),
+			G_CALLBACK (btk_widget_destroyed),
 			&tooltips->tip_window);
 
-      tooltips->tip_label = gtk_label_new (NULL);
-      gtk_container_add (GTK_CONTAINER (tooltips->tip_window),
+      tooltips->tip_label = btk_label_new (NULL);
+      btk_container_add (BTK_CONTAINER (tooltips->tip_window),
 			 tooltips->tip_label);
     }
 }
 
 void
-gtk_tooltips_enable (GtkTooltips *tooltips)
+btk_tooltips_enable (BtkTooltips *tooltips)
 {
   g_return_if_fail (tooltips != NULL);
 
@@ -186,7 +186,7 @@ gtk_tooltips_enable (GtkTooltips *tooltips)
 }
 
 void
-gtk_tooltips_disable (GtkTooltips *tooltips)
+btk_tooltips_disable (BtkTooltips *tooltips)
 {
   g_return_if_fail (tooltips != NULL);
 
@@ -194,7 +194,7 @@ gtk_tooltips_disable (GtkTooltips *tooltips)
 }
 
 void
-gtk_tooltips_set_delay (GtkTooltips *tooltips,
+btk_tooltips_set_delay (BtkTooltips *tooltips,
                         guint         delay)
 {
   g_return_if_fail (tooltips != NULL);
@@ -202,8 +202,8 @@ gtk_tooltips_set_delay (GtkTooltips *tooltips,
   tooltips->delay = delay;
 }
 
-GtkTooltipsData*
-gtk_tooltips_data_get (GtkWidget       *widget)
+BtkTooltipsData*
+btk_tooltips_data_get (BtkWidget       *widget)
 {
   g_return_val_if_fail (widget != NULL, NULL);
 
@@ -212,39 +212,39 @@ gtk_tooltips_data_get (GtkWidget       *widget)
 
 
 /**
- * gtk_tooltips_set_tip:
- * @tooltips: a #GtkTooltips.
- * @widget: the #GtkWidget you wish to associate the tip with.
+ * btk_tooltips_set_tip:
+ * @tooltips: a #BtkTooltips.
+ * @widget: the #BtkWidget you wish to associate the tip with.
  * @tip_text: (allow-none): a string containing the tip itself.
  * @tip_private: (allow-none): a string of any further information that may be useful if the user gets stuck.
  *
- * Adds a tooltip containing the message @tip_text to the specified #GtkWidget.
+ * Adds a tooltip containing the message @tip_text to the specified #BtkWidget.
  * Deprecated: 2.12:
  */
 void
-gtk_tooltips_set_tip (GtkTooltips *tooltips,
-		      GtkWidget   *widget,
+btk_tooltips_set_tip (BtkTooltips *tooltips,
+		      BtkWidget   *widget,
 		      const gchar *tip_text,
 		      const gchar *tip_private)
 {
-  GtkTooltipsData *tooltipsdata;
+  BtkTooltipsData *tooltipsdata;
 
-  g_return_if_fail (GTK_IS_TOOLTIPS (tooltips));
+  g_return_if_fail (BTK_IS_TOOLTIPS (tooltips));
   g_return_if_fail (widget != NULL);
 
-  tooltipsdata = gtk_tooltips_data_get (widget);
+  tooltipsdata = btk_tooltips_data_get (widget);
 
   if (!tip_text)
     {
       if (tooltipsdata)
-	gtk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
+	btk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
       return;
     }
   
   if (tooltips->active_tips_data 
       && tooltipsdata
       && tooltips->active_tips_data->widget == widget
-      && GTK_WIDGET_DRAWABLE (tooltips->active_tips_data->widget))
+      && BTK_WIDGET_DRAWABLE (tooltips->active_tips_data->widget))
     {
       g_free (tooltipsdata->tip_text);
       g_free (tooltipsdata->tip_private);
@@ -257,9 +257,9 @@ gtk_tooltips_set_tip (GtkTooltips *tooltips,
       g_object_ref (widget);
       
       if (tooltipsdata)
-        gtk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
+        btk_tooltips_widget_remove (tooltipsdata->widget, tooltipsdata);
       
-      tooltipsdata = g_new0 (GtkTooltipsData, 1);
+      tooltipsdata = g_new0 (BtkTooltipsData, 1);
       
       tooltipsdata->tooltips = tooltips;
       tooltipsdata->widget = widget;
@@ -267,34 +267,34 @@ gtk_tooltips_set_tip (GtkTooltips *tooltips,
       tooltipsdata->tip_text = g_strdup (tip_text);
       tooltipsdata->tip_private = g_strdup (tip_private);
 
-      g_hash_table_insert (GTK_TOOLTIPS_GET_PRIVATE (tooltips)->tips_data_table,
+      g_hash_table_insert (BTK_TOOLTIPS_GET_PRIVATE (tooltips)->tips_data_table,
                            widget, tooltipsdata);
 
       g_object_set_data (G_OBJECT (widget), I_(tooltips_data_key),
                          tooltipsdata);
 
       g_signal_connect (widget, "destroy",
-                        G_CALLBACK (gtk_tooltips_widget_remove),
+                        G_CALLBACK (btk_tooltips_widget_remove),
 			tooltipsdata);
     }
 
-  gtk_widget_set_tooltip_text (widget, tip_text);
+  btk_widget_set_tooltip_text (widget, tip_text);
 }
 
 static void
-gtk_tooltips_widget_remove (GtkWidget *widget,
+btk_tooltips_widget_remove (BtkWidget *widget,
 			    gpointer   data)
 {
-  GtkTooltipsData *tooltipsdata = (GtkTooltipsData*) data;
-  GtkTooltips *tooltips = tooltipsdata->tooltips;
-  GtkTooltipsPrivate *private = GTK_TOOLTIPS_GET_PRIVATE (tooltips);
+  BtkTooltipsData *tooltipsdata = (BtkTooltipsData*) data;
+  BtkTooltips *tooltips = tooltipsdata->tooltips;
+  BtkTooltipsPrivate *private = BTK_TOOLTIPS_GET_PRIVATE (tooltips);
 
   g_hash_table_remove (private->tips_data_table, tooltipsdata->widget);
 }
 
 /**
- * gtk_tooltips_get_info_from_tip_window:
- * @tip_window: a #GtkWindow 
+ * btk_tooltips_get_info_from_tip_window:
+ * @tip_window: a #BtkWindow 
  * @tooltips: the return location for the tooltips which are displayed 
  *    in @tip_window, or %NULL
  * @current_widget: the return location for the widget whose tooltips 
@@ -313,14 +313,14 @@ gtk_tooltips_widget_remove (GtkWidget *widget,
  * Deprecated: 2.12:
  **/
 gboolean
-gtk_tooltips_get_info_from_tip_window (GtkWindow    *tip_window,
-                                       GtkTooltips **tooltips,
-                                       GtkWidget   **current_widget)
+btk_tooltips_get_info_from_tip_window (BtkWindow    *tip_window,
+                                       BtkTooltips **tooltips,
+                                       BtkWidget   **current_widget)
 {
-  GtkTooltips  *current_tooltips;  
+  BtkTooltips  *current_tooltips;  
   gboolean has_tips;
 
-  g_return_val_if_fail (GTK_IS_WINDOW (tip_window), FALSE);
+  g_return_val_if_fail (BTK_IS_WINDOW (tip_window), FALSE);
 
   current_tooltips = g_object_get_data (G_OBJECT (tip_window), tooltips_info_key);
 
@@ -334,5 +334,5 @@ gtk_tooltips_get_info_from_tip_window (GtkWindow    *tip_window,
   return has_tips;
 }
 
-#define __GTK_TOOLTIPS_C__
-#include "gtkaliasdef.c"
+#define __BTK_TOOLTIPS_C__
+#include "btkaliasdef.c"

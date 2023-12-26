@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,53 +18,53 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_BIN_H__
-#define __GTK_BIN_H__
+#ifndef __BTK_BIN_H__
+#define __BTK_BIN_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
+#include <btk/btkcontainer.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_BIN                  (gtk_bin_get_type ())
-#define GTK_BIN(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_BIN, GtkBin))
-#define GTK_BIN_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_BIN, GtkBinClass))
-#define GTK_IS_BIN(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_BIN))
-#define GTK_IS_BIN_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_BIN))
-#define GTK_BIN_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_BIN, GtkBinClass))
+#define BTK_TYPE_BIN                  (btk_bin_get_type ())
+#define BTK_BIN(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_BIN, BtkBin))
+#define BTK_BIN_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_BIN, BtkBinClass))
+#define BTK_IS_BIN(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_BIN))
+#define BTK_IS_BIN_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_BIN))
+#define BTK_BIN_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_BIN, BtkBinClass))
 
 
-typedef struct _GtkBin       GtkBin;
-typedef struct _GtkBinClass  GtkBinClass;
+typedef struct _BtkBin       BtkBin;
+typedef struct _BtkBinClass  BtkBinClass;
 
-struct _GtkBin
+struct _BtkBin
 {
-  GtkContainer container;
+  BtkContainer container;
 
-  GtkWidget *GSEAL (child);
+  BtkWidget *GSEAL (child);
 };
 
-struct _GtkBinClass
+struct _BtkBinClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 };
 
 
-GType      gtk_bin_get_type  (void) G_GNUC_CONST;
+GType      btk_bin_get_type  (void) G_GNUC_CONST;
 
-GtkWidget *gtk_bin_get_child (GtkBin *bin);
+BtkWidget *btk_bin_get_child (BtkBin *bin);
 
 G_END_DECLS
 
-#endif /* __GTK_BIN_H__ */
+#endif /* __BTK_BIN_H__ */

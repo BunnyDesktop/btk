@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,17 +18,17 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
-#include "gdkdisplay.h"
-#include "gdkkeys.h"
-#include "gdkalias.h"
+#include "bdkdisplay.h"
+#include "bdkkeys.h"
+#include "bdkalias.h"
 
 enum {
   DIRECTION_CHANGED,
@@ -39,15 +39,15 @@ enum {
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GdkKeymap, gdk_keymap, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkKeymap, bdk_keymap, G_TYPE_OBJECT)
 
 static void
-gdk_keymap_class_init (GdkKeymapClass *klass)
+bdk_keymap_class_init (BdkKeymapClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   /**
-   * GdkKeymap::direction-changed:
+   * BdkKeymap::direction-changed:
    * @keymap: the object on which the signal is emitted
    * 
    * The ::direction-changed signal gets emitted when the direction of
@@ -59,13 +59,13 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
     g_signal_new ("direction-changed",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkKeymapClass, direction_changed),
+		  G_STRUCT_OFFSET (BdkKeymapClass, direction_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
   /**
-   * GdkKeymap::keys-changed:
+   * BdkKeymap::keys-changed:
    * @keymap: the object on which the signal is emitted
    *
    * The ::keys-changed signal is emitted when the mapping represented by
@@ -77,19 +77,19 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
     g_signal_new ("keys-changed",
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkKeymapClass, keys_changed),
+		  G_STRUCT_OFFSET (BdkKeymapClass, keys_changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE,
 		  0);
 
   /**
-   * GdkKeymap::state-changed:
+   * BdkKeymap::state-changed:
    * @keymap: the object on which the signal is emitted
    *
    * The ::state-changed signal is emitted when the state of the
    * keyboard changes, e.g when Caps Lock is turned on or off.
-   * See gdk_keymap_get_caps_lock_state().
+   * See bdk_keymap_get_caps_lock_state().
    *
    * Since: 2.16
    */
@@ -97,7 +97,7 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
     g_signal_new ("state_changed",
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GdkKeymapClass, state_changed),
+                  G_STRUCT_OFFSET (BdkKeymapClass, state_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE, 
@@ -105,7 +105,7 @@ gdk_keymap_class_init (GdkKeymapClass *klass)
 }
 
 static void
-gdk_keymap_init (GdkKeymap *keymap)
+bdk_keymap_init (BdkKeymap *keymap)
 {
 }
 
@@ -113,23 +113,23 @@ gdk_keymap_init (GdkKeymap *keymap)
  */
 
 #ifndef HAVE_XCONVERTCASE
-#include "gdkkeysyms.h"
+#include "bdkkeysyms.h"
 
 /* compatibility function from X11R6.3, since XConvertCase is not
  * supplied by X11R5.
  */
 /**
- * gdk_keyval_convert_case:
+ * bdk_keyval_convert_case:
  * @symbol: a keyval
  * @lower: (out): return location for lowercase version of @symbol
  * @upper: (out): return location for uppercase version of @symbol
  *
  * Obtains the upper- and lower-case versions of the keyval @symbol.
- * Examples of keyvals are #GDK_a, #GDK_Enter, #GDK_F1, etc.
+ * Examples of keyvals are #BDK_a, #BDK_Enter, #BDK_F1, etc.
  *
  **/
 void
-gdk_keyval_convert_case (guint symbol,
+bdk_keyval_convert_case (guint symbol,
 			 guint *lower,
 			 guint *upper)
 {
@@ -140,110 +140,110 @@ gdk_keyval_convert_case (guint symbol,
   if ((symbol & 0xff000000) == 0x01000000)
     {
       if (lower)
-	*lower = gdk_unicode_to_keyval (g_unichar_tolower (symbol & 0x00ffffff));
+	*lower = bdk_unicode_to_keyval (g_unichar_tolower (symbol & 0x00ffffff));
       if (upper)
-	*upper = gdk_unicode_to_keyval (g_unichar_toupper (symbol & 0x00ffffff));
+	*upper = bdk_unicode_to_keyval (g_unichar_toupper (symbol & 0x00ffffff));
       return;
     }
 
   switch (symbol >> 8)
     {
     case 0: /* Latin 1 */
-      if ((symbol >= GDK_A) && (symbol <= GDK_Z))
-	xlower += (GDK_a - GDK_A);
-      else if ((symbol >= GDK_a) && (symbol <= GDK_z))
-	xupper -= (GDK_a - GDK_A);
-      else if ((symbol >= GDK_Agrave) && (symbol <= GDK_Odiaeresis))
-	xlower += (GDK_agrave - GDK_Agrave);
-      else if ((symbol >= GDK_agrave) && (symbol <= GDK_odiaeresis))
-	xupper -= (GDK_agrave - GDK_Agrave);
-      else if ((symbol >= GDK_Ooblique) && (symbol <= GDK_Thorn))
-	xlower += (GDK_oslash - GDK_Ooblique);
-      else if ((symbol >= GDK_oslash) && (symbol <= GDK_thorn))
-	xupper -= (GDK_oslash - GDK_Ooblique);
+      if ((symbol >= BDK_A) && (symbol <= BDK_Z))
+	xlower += (BDK_a - BDK_A);
+      else if ((symbol >= BDK_a) && (symbol <= BDK_z))
+	xupper -= (BDK_a - BDK_A);
+      else if ((symbol >= BDK_Agrave) && (symbol <= BDK_Odiaeresis))
+	xlower += (BDK_agrave - BDK_Agrave);
+      else if ((symbol >= BDK_agrave) && (symbol <= BDK_odiaeresis))
+	xupper -= (BDK_agrave - BDK_Agrave);
+      else if ((symbol >= BDK_Ooblique) && (symbol <= BDK_Thorn))
+	xlower += (BDK_oslash - BDK_Ooblique);
+      else if ((symbol >= BDK_oslash) && (symbol <= BDK_thorn))
+	xupper -= (BDK_oslash - BDK_Ooblique);
       break;
       
     case 1: /* Latin 2 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
-      if (symbol == GDK_Aogonek)
-	xlower = GDK_aogonek;
-      else if (symbol >= GDK_Lstroke && symbol <= GDK_Sacute)
-	xlower += (GDK_lstroke - GDK_Lstroke);
-      else if (symbol >= GDK_Scaron && symbol <= GDK_Zacute)
-	xlower += (GDK_scaron - GDK_Scaron);
-      else if (symbol >= GDK_Zcaron && symbol <= GDK_Zabovedot)
-	xlower += (GDK_zcaron - GDK_Zcaron);
-      else if (symbol == GDK_aogonek)
-	xupper = GDK_Aogonek;
-      else if (symbol >= GDK_lstroke && symbol <= GDK_sacute)
-	xupper -= (GDK_lstroke - GDK_Lstroke);
-      else if (symbol >= GDK_scaron && symbol <= GDK_zacute)
-	xupper -= (GDK_scaron - GDK_Scaron);
-      else if (symbol >= GDK_zcaron && symbol <= GDK_zabovedot)
-	xupper -= (GDK_zcaron - GDK_Zcaron);
-      else if (symbol >= GDK_Racute && symbol <= GDK_Tcedilla)
-	xlower += (GDK_racute - GDK_Racute);
-      else if (symbol >= GDK_racute && symbol <= GDK_tcedilla)
-	xupper -= (GDK_racute - GDK_Racute);
+      if (symbol == BDK_Aogonek)
+	xlower = BDK_aogonek;
+      else if (symbol >= BDK_Lstroke && symbol <= BDK_Sacute)
+	xlower += (BDK_lstroke - BDK_Lstroke);
+      else if (symbol >= BDK_Scaron && symbol <= BDK_Zacute)
+	xlower += (BDK_scaron - BDK_Scaron);
+      else if (symbol >= BDK_Zcaron && symbol <= BDK_Zabovedot)
+	xlower += (BDK_zcaron - BDK_Zcaron);
+      else if (symbol == BDK_aogonek)
+	xupper = BDK_Aogonek;
+      else if (symbol >= BDK_lstroke && symbol <= BDK_sacute)
+	xupper -= (BDK_lstroke - BDK_Lstroke);
+      else if (symbol >= BDK_scaron && symbol <= BDK_zacute)
+	xupper -= (BDK_scaron - BDK_Scaron);
+      else if (symbol >= BDK_zcaron && symbol <= BDK_zabovedot)
+	xupper -= (BDK_zcaron - BDK_Zcaron);
+      else if (symbol >= BDK_Racute && symbol <= BDK_Tcedilla)
+	xlower += (BDK_racute - BDK_Racute);
+      else if (symbol >= BDK_racute && symbol <= BDK_tcedilla)
+	xupper -= (BDK_racute - BDK_Racute);
       break;
       
     case 2: /* Latin 3 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
-      if (symbol >= GDK_Hstroke && symbol <= GDK_Hcircumflex)
-	xlower += (GDK_hstroke - GDK_Hstroke);
-      else if (symbol >= GDK_Gbreve && symbol <= GDK_Jcircumflex)
-	xlower += (GDK_gbreve - GDK_Gbreve);
-      else if (symbol >= GDK_hstroke && symbol <= GDK_hcircumflex)
-	xupper -= (GDK_hstroke - GDK_Hstroke);
-      else if (symbol >= GDK_gbreve && symbol <= GDK_jcircumflex)
-	xupper -= (GDK_gbreve - GDK_Gbreve);
-      else if (symbol >= GDK_Cabovedot && symbol <= GDK_Scircumflex)
-	xlower += (GDK_cabovedot - GDK_Cabovedot);
-      else if (symbol >= GDK_cabovedot && symbol <= GDK_scircumflex)
-	xupper -= (GDK_cabovedot - GDK_Cabovedot);
+      if (symbol >= BDK_Hstroke && symbol <= BDK_Hcircumflex)
+	xlower += (BDK_hstroke - BDK_Hstroke);
+      else if (symbol >= BDK_Gbreve && symbol <= BDK_Jcircumflex)
+	xlower += (BDK_gbreve - BDK_Gbreve);
+      else if (symbol >= BDK_hstroke && symbol <= BDK_hcircumflex)
+	xupper -= (BDK_hstroke - BDK_Hstroke);
+      else if (symbol >= BDK_gbreve && symbol <= BDK_jcircumflex)
+	xupper -= (BDK_gbreve - BDK_Gbreve);
+      else if (symbol >= BDK_Cabovedot && symbol <= BDK_Scircumflex)
+	xlower += (BDK_cabovedot - BDK_Cabovedot);
+      else if (symbol >= BDK_cabovedot && symbol <= BDK_scircumflex)
+	xupper -= (BDK_cabovedot - BDK_Cabovedot);
       break;
       
     case 3: /* Latin 4 */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
-      if (symbol >= GDK_Rcedilla && symbol <= GDK_Tslash)
-	xlower += (GDK_rcedilla - GDK_Rcedilla);
-      else if (symbol >= GDK_rcedilla && symbol <= GDK_tslash)
-	xupper -= (GDK_rcedilla - GDK_Rcedilla);
-      else if (symbol == GDK_ENG)
-	xlower = GDK_eng;
-      else if (symbol == GDK_eng)
-	xupper = GDK_ENG;
-      else if (symbol >= GDK_Amacron && symbol <= GDK_Umacron)
-	xlower += (GDK_amacron - GDK_Amacron);
-      else if (symbol >= GDK_amacron && symbol <= GDK_umacron)
-	xupper -= (GDK_amacron - GDK_Amacron);
+      if (symbol >= BDK_Rcedilla && symbol <= BDK_Tslash)
+	xlower += (BDK_rcedilla - BDK_Rcedilla);
+      else if (symbol >= BDK_rcedilla && symbol <= BDK_tslash)
+	xupper -= (BDK_rcedilla - BDK_Rcedilla);
+      else if (symbol == BDK_ENG)
+	xlower = BDK_eng;
+      else if (symbol == BDK_eng)
+	xupper = BDK_ENG;
+      else if (symbol >= BDK_Amacron && symbol <= BDK_Umacron)
+	xlower += (BDK_amacron - BDK_Amacron);
+      else if (symbol >= BDK_amacron && symbol <= BDK_umacron)
+	xupper -= (BDK_amacron - BDK_Amacron);
       break;
       
     case 6: /* Cyrillic */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
-      if (symbol >= GDK_Serbian_DJE && symbol <= GDK_Serbian_DZE)
-	xlower -= (GDK_Serbian_DJE - GDK_Serbian_dje);
-      else if (symbol >= GDK_Serbian_dje && symbol <= GDK_Serbian_dze)
-	xupper += (GDK_Serbian_DJE - GDK_Serbian_dje);
-      else if (symbol >= GDK_Cyrillic_YU && symbol <= GDK_Cyrillic_HARDSIGN)
-	xlower -= (GDK_Cyrillic_YU - GDK_Cyrillic_yu);
-      else if (symbol >= GDK_Cyrillic_yu && symbol <= GDK_Cyrillic_hardsign)
-	xupper += (GDK_Cyrillic_YU - GDK_Cyrillic_yu);
+      if (symbol >= BDK_Serbian_DJE && symbol <= BDK_Serbian_DZE)
+	xlower -= (BDK_Serbian_DJE - BDK_Serbian_dje);
+      else if (symbol >= BDK_Serbian_dje && symbol <= BDK_Serbian_dze)
+	xupper += (BDK_Serbian_DJE - BDK_Serbian_dje);
+      else if (symbol >= BDK_Cyrillic_YU && symbol <= BDK_Cyrillic_HARDSIGN)
+	xlower -= (BDK_Cyrillic_YU - BDK_Cyrillic_yu);
+      else if (symbol >= BDK_Cyrillic_yu && symbol <= BDK_Cyrillic_hardsign)
+	xupper += (BDK_Cyrillic_YU - BDK_Cyrillic_yu);
       break;
       
     case 7: /* Greek */
       /* Assume the KeySym is a legal value (ignore discontinuities) */
-      if (symbol >= GDK_Greek_ALPHAaccent && symbol <= GDK_Greek_OMEGAaccent)
-	xlower += (GDK_Greek_alphaaccent - GDK_Greek_ALPHAaccent);
-      else if (symbol >= GDK_Greek_alphaaccent && symbol <= GDK_Greek_omegaaccent &&
-	       symbol != GDK_Greek_iotaaccentdieresis &&
-	       symbol != GDK_Greek_upsilonaccentdieresis)
-	xupper -= (GDK_Greek_alphaaccent - GDK_Greek_ALPHAaccent);
-      else if (symbol >= GDK_Greek_ALPHA && symbol <= GDK_Greek_OMEGA)
-	xlower += (GDK_Greek_alpha - GDK_Greek_ALPHA);
-      else if (symbol >= GDK_Greek_alpha && symbol <= GDK_Greek_omega &&
-	       symbol != GDK_Greek_finalsmallsigma)
-	xupper -= (GDK_Greek_alpha - GDK_Greek_ALPHA);
+      if (symbol >= BDK_Greek_ALPHAaccent && symbol <= BDK_Greek_OMEGAaccent)
+	xlower += (BDK_Greek_alphaaccent - BDK_Greek_ALPHAaccent);
+      else if (symbol >= BDK_Greek_alphaaccent && symbol <= BDK_Greek_omegaaccent &&
+	       symbol != BDK_Greek_iotaaccentdieresis &&
+	       symbol != BDK_Greek_upsilonaccentdieresis)
+	xupper -= (BDK_Greek_alphaaccent - BDK_Greek_ALPHAaccent);
+      else if (symbol >= BDK_Greek_ALPHA && symbol <= BDK_Greek_OMEGA)
+	xlower += (BDK_Greek_alpha - BDK_Greek_ALPHA);
+      else if (symbol >= BDK_Greek_alpha && symbol <= BDK_Greek_omega &&
+	       symbol != BDK_Greek_finalsmallsigma)
+	xupper -= (BDK_Greek_alpha - BDK_Greek_ALPHA);
       break;
     }
 
@@ -255,62 +255,62 @@ gdk_keyval_convert_case (guint symbol,
 #endif
 
 guint
-gdk_keyval_to_upper (guint keyval)
+bdk_keyval_to_upper (guint keyval)
 {
   guint result;
   
-  gdk_keyval_convert_case (keyval, NULL, &result);
+  bdk_keyval_convert_case (keyval, NULL, &result);
 
   return result;
 }
 
 guint
-gdk_keyval_to_lower (guint keyval)
+bdk_keyval_to_lower (guint keyval)
 {
   guint result;
   
-  gdk_keyval_convert_case (keyval, &result, NULL);
+  bdk_keyval_convert_case (keyval, &result, NULL);
 
   return result;
 }
 
 gboolean
-gdk_keyval_is_upper (guint keyval)
+bdk_keyval_is_upper (guint keyval)
 {
   if (keyval)
     {
       guint upper_val = 0;
       
-      gdk_keyval_convert_case (keyval, NULL, &upper_val);
+      bdk_keyval_convert_case (keyval, NULL, &upper_val);
       return upper_val == keyval;
     }
   return FALSE;
 }
 
 gboolean
-gdk_keyval_is_lower (guint keyval)
+bdk_keyval_is_lower (guint keyval)
 {
   if (keyval)
     {
       guint lower_val = 0;
       
-      gdk_keyval_convert_case (keyval, &lower_val, NULL);
+      bdk_keyval_convert_case (keyval, &lower_val, NULL);
       return lower_val == keyval;
     }
   return FALSE;
 }
 
 /** 
- * gdk_keymap_get_default:
- * @returns: the #GdkKeymap attached to the default display.
+ * bdk_keymap_get_default:
+ * @returns: the #BdkKeymap attached to the default display.
  *
- * Returns the #GdkKeymap attached to the default display.
+ * Returns the #BdkKeymap attached to the default display.
  **/
-GdkKeymap*
-gdk_keymap_get_default (void)
+BdkKeymap*
+bdk_keymap_get_default (void)
 {
-  return gdk_keymap_get_for_display (gdk_display_get_default ());
+  return bdk_keymap_get_for_display (bdk_display_get_default ());
 }
 
-#define __GDK_KEYS_C__
-#include "gdkaliasdef.c"
+#define __BDK_KEYS_C__
+#include "bdkaliasdef.c"

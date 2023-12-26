@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,24 +18,24 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002       convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
  *            Sven Neumann <sven@convergence.de>
  */
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
-#include "gdkcursor.h"
-#include "gdkalias.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
+#include "bdkcursor.h"
+#include "bdkalias.h"
 
 #include "x-cursors.xbm"
 
@@ -45,7 +45,7 @@
 static struct {
   const guchar *bits;
   int width, height, hotx, hoty;
-  GdkCursor *cursor;
+  BdkCursor *cursor;
 } stock_cursors[] = {
   {X_cursor_bits, X_cursor_width, X_cursor_height, X_cursor_x_hot, X_cursor_y_hot},
   {X_cursor_mask_bits, X_cursor_mask_width, X_cursor_mask_height, X_cursor_mask_x_hot, X_cursor_mask_y_hot},
@@ -203,11 +203,11 @@ static struct {
   {xterm_mask_bits, xterm_mask_width, xterm_mask_height, xterm_mask_x_hot, xterm_mask_y_hot}
 };
 
-GdkCursor *
-gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
+BdkCursor *
+bdk_cursor_new_for_display (BdkDisplay *display, BdkCursorType cursor_type)
 {
-  GdkCursor *cursor;
-  GdkDisplayDFB *dfb_display = GDK_DISPLAY_DFB (display);
+  BdkCursor *cursor;
+  BdkDisplayDFB *dfb_display = BDK_DISPLAY_DFB (display);
 
   if (cursor_type >= sizeof (stock_cursors) / sizeof (stock_cursors[0]))
     return NULL;
@@ -215,7 +215,7 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
   cursor = stock_cursors[cursor_type].cursor;
   if (!cursor)
     {
-      GdkCursorDirectFB *private;
+      BdkCursorDirectFB *private;
       DFBResult          ret;
       IDirectFBSurface  *temp;
       IDirectFBSurface  *shape;
@@ -223,7 +223,7 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
       int width  = stock_cursors[cursor_type+1].width;
       int height = stock_cursors[cursor_type+1].height;
 
-      temp = gdk_display_dfb_create_surface (dfb_display,
+      temp = bdk_display_dfb_create_surface (dfb_display,
                                              DSPF_ARGB,
                                              width, height);
 
@@ -239,7 +239,7 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
           ret = temp->Lock (temp, DSLF_WRITE, (void**)&dst, &pitch);
           if (ret)
             {
-              DirectFBError ("gdkcursor-directfb.c (gdk_cursor_new): "
+              DirectFBError ("bdkcursor-directfb.c (bdk_cursor_new): "
                              "temp->Lock", ret);
 
               temp->Release (temp);
@@ -291,7 +291,7 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
       width  += 2;
       height += 2;
 
-      shape = gdk_display_dfb_create_surface (dfb_display,
+      shape = bdk_display_dfb_create_surface (dfb_display,
                                               DSPF_ARGB,
                                               width, height);
 
@@ -322,9 +322,9 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
 
       temp->Release (temp);
 
-      private = g_new0 (GdkCursorDirectFB, 1);
-      cursor = (GdkCursor *) private;
-      cursor->type = GDK_CURSOR_IS_PIXMAP;
+      private = g_new0 (BdkCursorDirectFB, 1);
+      cursor = (BdkCursor *) private;
+      cursor->type = BDK_CURSOR_IS_PIXMAP;
       cursor->ref_count = 1;
 
       private->shape = shape;
@@ -334,33 +334,33 @@ gdk_cursor_new_for_display (GdkDisplay *display, GdkCursorType cursor_type)
       stock_cursors[cursor_type].cursor = cursor;
     }
 
-  return gdk_cursor_ref (cursor);
+  return bdk_cursor_ref (cursor);
 }
 
-GdkCursor *
-gdk_cursor_new_from_pixmap (GdkPixmap      *source,
-                            GdkPixmap      *mask,
-                            const GdkColor *fg,
-                            const GdkColor *bg,
+BdkCursor *
+bdk_cursor_new_from_pixmap (BdkPixmap      *source,
+                            BdkPixmap      *mask,
+                            const BdkColor *fg,
+                            const BdkColor *bg,
                             gint            x,
                             gint            y)
 {
-  GdkCursor               *cursor;
-  GdkCursorDirectFB       *private;
-  GdkDrawableImplDirectFB *impl;
-  GdkDrawableImplDirectFB *mask_impl;
+  BdkCursor               *cursor;
+  BdkCursorDirectFB       *private;
+  BdkDrawableImplDirectFB *impl;
+  BdkDrawableImplDirectFB *mask_impl;
   IDirectFBSurface        *shape;
 
-  g_return_val_if_fail (GDK_IS_PIXMAP (source), NULL);
-  g_return_val_if_fail (GDK_IS_PIXMAP (mask), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (source), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (mask), NULL);
 
-  impl = GDK_DRAWABLE_IMPL_DIRECTFB (GDK_PIXMAP_OBJECT (source)->impl);
-  mask_impl = GDK_DRAWABLE_IMPL_DIRECTFB (GDK_PIXMAP_OBJECT (mask)->impl);
+  impl = BDK_DRAWABLE_IMPL_DIRECTFB (BDK_PIXMAP_OBJECT (source)->impl);
+  mask_impl = BDK_DRAWABLE_IMPL_DIRECTFB (BDK_PIXMAP_OBJECT (mask)->impl);
 
   int width  = impl->width;
   int height = impl->height;
 
-  shape = gdk_display_dfb_create_surface (_gdk_display,
+  shape = bdk_display_dfb_create_surface (_bdk_display,
                                           DSPF_ARGB,
                                           width, height);
 
@@ -372,7 +372,7 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   /*
    *  The following code assumes that pixmap and mask are A8 surfaces
    *  that correspond to X11 bitmaps. This is the traditional usage of
-   *  gdk_cursor_new_from_pixmap(). For GTK+-DirectFB it might make
+   *  bdk_cursor_new_from_pixmap(). For BTK+-DirectFB it might make
    *  sense to allow arbitrary ARGB cursors.
    */
 
@@ -389,9 +389,9 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   shape->SetBlittingFlags (shape, DSBLIT_NOFX);
   shape->SetPorterDuff (shape, DSPD_NONE);
 
-  private = g_new (GdkCursorDirectFB, 1);
-  cursor = (GdkCursor *) private;
-  cursor->type = GDK_CURSOR_IS_PIXMAP;
+  private = g_new (BdkCursorDirectFB, 1);
+  cursor = (BdkCursor *) private;
+  cursor->type = BDK_CURSOR_IS_PIXMAP;
   cursor->ref_count = 1;
 
   private->shape = shape;
@@ -401,72 +401,72 @@ gdk_cursor_new_from_pixmap (GdkPixmap      *source,
   return cursor;
 }
 
-GdkCursor *
-gdk_cursor_new_from_pixbuf (GdkDisplay *display,
-                            GdkPixbuf  *pixbuf,
+BdkCursor *
+bdk_cursor_new_from_pixbuf (BdkDisplay *display,
+                            BdkPixbuf  *pixbuf,
                             gint        x,
                             gint        y)
 {
-  GdkPixmap  *pixmap, *mask;
-  GdkCursor  *cursor;
+  BdkPixmap  *pixmap, *mask;
+  BdkCursor  *cursor;
   gint        width, height, depth = 8;
-  GdkVisual*  visual;
+  BdkVisual*  visual;
 
   /* FIXME: this is not the right way to set colours */
-  GdkColor fg = { 0, 65535, 65535, 65535 };
-  GdkColor bg = { 0, 65535, 65535, 65535 };
+  BdkColor fg = { 0, 65535, 65535, 65535 };
+  BdkColor bg = { 0, 65535, 65535, 65535 };
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  g_return_val_if_fail (0 <= x && x < gdk_pixbuf_get_width (pixbuf), NULL);
-  g_return_val_if_fail (0 <= y && y < gdk_pixbuf_get_height (pixbuf), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
+  g_return_val_if_fail (0 <= x && x < bdk_pixbuf_get_width (pixbuf), NULL);
+  g_return_val_if_fail (0 <= y && y < bdk_pixbuf_get_height (pixbuf), NULL);
 
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
+  width = bdk_pixbuf_get_width (pixbuf);
+  height = bdk_pixbuf_get_height (pixbuf);
 
-  pixmap = gdk_pixmap_new (NULL, width, height, depth);
-  mask = gdk_pixmap_new (NULL, width, height, 1);
-  visual = gdk_rgb_get_visual ();
+  pixmap = bdk_pixmap_new (NULL, width, height, depth);
+  mask = bdk_pixmap_new (NULL, width, height, 1);
+  visual = bdk_rgb_get_visual ();
   depth = visual->depth;
 
-  gdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &mask, 0);
+  bdk_pixbuf_render_pixmap_and_mask (pixbuf, &pixmap, &mask, 0);
 
-  g_return_val_if_fail (GDK_IS_PIXMAP (pixmap), NULL);
-  g_return_val_if_fail (GDK_IS_PIXMAP (mask), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (pixmap), NULL);
+  g_return_val_if_fail (BDK_IS_PIXMAP (mask), NULL);
 
-  cursor = gdk_cursor_new_from_pixmap (pixmap, mask, &fg, &bg, x, y) ;
+  cursor = bdk_cursor_new_from_pixmap (pixmap, mask, &fg, &bg, x, y) ;
 
   g_object_unref (pixmap);
   g_object_unref (mask);
 
-  /* a cursor of type GDK_CURSOR_IS_PIXMAP is returned */
+  /* a cursor of type BDK_CURSOR_IS_PIXMAP is returned */
   return cursor;
 
 }
 
-GdkCursor*
-gdk_cursor_new_from_name (GdkDisplay  *display,
+BdkCursor*
+bdk_cursor_new_from_name (BdkDisplay  *display,
                           const gchar *name)
 {
-  GdkCursor *cursor;
-  GdkPixbuf *pixbuf;
+  BdkCursor *cursor;
+  BdkPixbuf *pixbuf;
 
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
-  pixbuf = gdk_pixbuf_new_from_file (name, NULL);
+  pixbuf = bdk_pixbuf_new_from_file (name, NULL);
   /* Prevents attempts to load stock X cursors from generating error messages */
   if (pixbuf == NULL)
     return NULL;
-  g_return_val_if_fail (GDK_IS_PIXBUF (pixbuf), NULL);
-  cursor = gdk_cursor_new_from_pixbuf (display, pixbuf, 1, 1);
+  g_return_val_if_fail (BDK_IS_PIXBUF (pixbuf), NULL);
+  cursor = bdk_cursor_new_from_pixbuf (display, pixbuf, 1, 1);
   g_object_unref (pixbuf);
 
   return cursor;
 }
 
 
-GdkPixbuf*
-gdk_cursor_get_image (GdkCursor *cursor)
+BdkPixbuf*
+bdk_cursor_get_image (BdkCursor *cursor)
 {
   g_return_val_if_fail (cursor != NULL, NULL);
 
@@ -476,37 +476,37 @@ gdk_cursor_get_image (GdkCursor *cursor)
 
 
 void
-_gdk_cursor_destroy (GdkCursor *cursor)
+_bdk_cursor_destroy (BdkCursor *cursor)
 {
-  GdkCursorDirectFB *private;
+  BdkCursorDirectFB *private;
 
   g_return_if_fail (cursor != NULL);
   g_return_if_fail (cursor->ref_count == 0);
 
-  private = (GdkCursorDirectFB *) cursor;
+  private = (BdkCursorDirectFB *) cursor;
 
   private->shape->Release (private->shape);
 
   g_free (private);
 }
 
-GdkDisplay *
-gdk_cursor_get_display (GdkCursor *cursor)
+BdkDisplay *
+bdk_cursor_get_display (BdkCursor *cursor)
 {
-  return gdk_display_get_default ();
+  return bdk_display_get_default ();
 }
 
 guint
-gdk_display_get_default_cursor_size (GdkDisplay *display)
+bdk_display_get_default_cursor_size (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), 0);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), 0);
 
   return 16;
 }
 
 /**
- * gdk_display_get_maximal_cursor_size:
- * @display: a #GdkDisplay
+ * bdk_display_get_maximal_cursor_size:
+ * @display: a #BdkDisplay
  * @width: the return location for the maximal cursor width
  * @height: the return location for the maximal cursor height
  *
@@ -515,11 +515,11 @@ gdk_display_get_default_cursor_size (GdkDisplay *display)
  * Since: 2.4
  */
 void
-gdk_display_get_maximal_cursor_size (GdkDisplay *display,
+bdk_display_get_maximal_cursor_size (BdkDisplay *display,
                                      guint       *width,
                                      guint       *height)
 {
-  g_return_if_fail (GDK_IS_DISPLAY (display));
+  g_return_if_fail (BDK_IS_DISPLAY (display));
 
   /* Cursor sizes in DirectFB can be large (4095x4095), but we limit this to
      128x128 for max compatibility with the x11 backend. */
@@ -528,8 +528,8 @@ gdk_display_get_maximal_cursor_size (GdkDisplay *display,
 }
 
 /**
- * gdk_display_supports_cursor_alpha:
- * @display: a #GdkDisplay
+ * bdk_display_supports_cursor_alpha:
+ * @display: a #BdkDisplay
  *
  * Returns %TRUE if cursors can use an 8bit alpha channel
  * on @display. Otherwise, cursors are restricted to bilevel
@@ -540,19 +540,19 @@ gdk_display_get_maximal_cursor_size (GdkDisplay *display,
  * Since: 2.4
  */
 gboolean
-gdk_display_supports_cursor_alpha (GdkDisplay *display)
+bdk_display_supports_cursor_alpha (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
   return TRUE;
 }
 
 gboolean
-gdk_display_supports_cursor_color (GdkDisplay *display)
+bdk_display_supports_cursor_color (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), FALSE);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), FALSE);
   return TRUE;
 }
 
-#define __GDK_CURSOR_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_CURSOR_X11_C__
+#include "bdkaliasdef.c"
 

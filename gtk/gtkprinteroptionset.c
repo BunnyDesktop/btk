@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintbackend.h: Abstract printer backend interfaces
+/* BTK - The GIMP Toolkit
+ * btkprintbackend.h: Abstract printer backend interfaces
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,14 +20,14 @@
 
 #include "config.h"
 #include <string.h>
-#include <glib.h>
-#include <gmodule.h>
+#include <bunnylib.h>
+#include <bmodule.h>
 
-#include "gtkprinteroptionset.h"
-#include "gtkalias.h"
+#include "btkprinteroptionset.h"
+#include "btkalias.h"
 
 /*****************************************
- *         GtkPrinterOptionSet    *
+ *         BtkPrinterOptionSet    *
  *****************************************/
 
 enum {
@@ -38,41 +38,41 @@ enum {
 static guint signals[LAST_SIGNAL] = { 0 };
 
 /* ugly side-effect of aliasing */
-#undef gtk_printer_option_set
+#undef btk_printer_option_set
 
-G_DEFINE_TYPE (GtkPrinterOptionSet, gtk_printer_option_set, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BtkPrinterOptionSet, btk_printer_option_set, G_TYPE_OBJECT)
 
 static void
-gtk_printer_option_set_finalize (GObject *object)
+btk_printer_option_set_finalize (GObject *object)
 {
-  GtkPrinterOptionSet *set = GTK_PRINTER_OPTION_SET (object);
+  BtkPrinterOptionSet *set = BTK_PRINTER_OPTION_SET (object);
 
   g_hash_table_destroy (set->hash);
   g_ptr_array_foreach (set->array, (GFunc)g_object_unref, NULL);
   g_ptr_array_free (set->array, TRUE);
   
-  G_OBJECT_CLASS (gtk_printer_option_set_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_printer_option_set_parent_class)->finalize (object);
 }
 
 static void
-gtk_printer_option_set_init (GtkPrinterOptionSet *set)
+btk_printer_option_set_init (BtkPrinterOptionSet *set)
 {
   set->array = g_ptr_array_new ();
   set->hash = g_hash_table_new (g_str_hash, g_str_equal);
 }
 
 static void
-gtk_printer_option_set_class_init (GtkPrinterOptionSetClass *class)
+btk_printer_option_set_class_init (BtkPrinterOptionSetClass *class)
 {
-  GObjectClass *gobject_class = (GObjectClass *)class;
+  GObjectClass *bobject_class = (GObjectClass *)class;
 
-  gobject_class->finalize = gtk_printer_option_set_finalize;
+  bobject_class->finalize = btk_printer_option_set_finalize;
 
   signals[CHANGED] =
     g_signal_new ("changed",
-		  G_TYPE_FROM_CLASS (gobject_class),
+		  G_TYPE_FROM_CLASS (bobject_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkPrinterOptionSetClass, changed),
+		  G_STRUCT_OFFSET (BtkPrinterOptionSetClass, changed),
 		  NULL, NULL,
 		  g_cclosure_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
@@ -80,20 +80,20 @@ gtk_printer_option_set_class_init (GtkPrinterOptionSetClass *class)
 
 
 static void
-emit_changed (GtkPrinterOptionSet *set)
+emit_changed (BtkPrinterOptionSet *set)
 {
   g_signal_emit (set, signals[CHANGED], 0);
 }
 
-GtkPrinterOptionSet *
-gtk_printer_option_set_new (void)
+BtkPrinterOptionSet *
+btk_printer_option_set_new (void)
 {
-  return g_object_new (GTK_TYPE_PRINTER_OPTION_SET, NULL);
+  return g_object_new (BTK_TYPE_PRINTER_OPTION_SET, NULL);
 }
 
 void
-gtk_printer_option_set_remove (GtkPrinterOptionSet *set,
-			       GtkPrinterOption    *option)
+btk_printer_option_set_remove (BtkPrinterOptionSet *set,
+			       BtkPrinterOption    *option)
 {
   int i;
   
@@ -112,47 +112,47 @@ gtk_printer_option_set_remove (GtkPrinterOptionSet *set,
 }
 
 void
-gtk_printer_option_set_add (GtkPrinterOptionSet *set,
-			    GtkPrinterOption    *option)
+btk_printer_option_set_add (BtkPrinterOptionSet *set,
+			    BtkPrinterOption    *option)
 {
   g_object_ref (option);
   
-  if (gtk_printer_option_set_lookup (set, option->name))
-    gtk_printer_option_set_remove (set, option);
+  if (btk_printer_option_set_lookup (set, option->name))
+    btk_printer_option_set_remove (set, option);
     
   g_ptr_array_add (set->array, option);
   g_hash_table_insert (set->hash, option->name, option);
   g_signal_connect_object (option, "changed", G_CALLBACK (emit_changed), set, G_CONNECT_SWAPPED);
 }
 
-GtkPrinterOption *
-gtk_printer_option_set_lookup (GtkPrinterOptionSet *set,
+BtkPrinterOption *
+btk_printer_option_set_lookup (BtkPrinterOptionSet *set,
 			       const char          *name)
 {
   gpointer ptr;
 
   ptr = g_hash_table_lookup (set->hash, name);
 
-  return GTK_PRINTER_OPTION (ptr);
+  return BTK_PRINTER_OPTION (ptr);
 }
 
 void
-gtk_printer_option_set_clear_conflicts (GtkPrinterOptionSet *set)
+btk_printer_option_set_clear_conflicts (BtkPrinterOptionSet *set)
 {
-  gtk_printer_option_set_foreach (set,
-				  (GtkPrinterOptionSetFunc)gtk_printer_option_clear_has_conflict,
+  btk_printer_option_set_foreach (set,
+				  (BtkPrinterOptionSetFunc)btk_printer_option_clear_has_conflict,
 				  NULL);
 }
 
 /**
- * gtk_printer_option_set_get_groups:
+ * btk_printer_option_set_get_groups:
  *
  * Return value: (element-type utf8) (transfer full):
  */
 GList *
-gtk_printer_option_set_get_groups (GtkPrinterOptionSet *set)
+btk_printer_option_set_get_groups (BtkPrinterOptionSet *set)
 {
-  GtkPrinterOption *option;
+  BtkPrinterOption *option;
   GList *list = NULL;
   int i;
 
@@ -168,12 +168,12 @@ gtk_printer_option_set_get_groups (GtkPrinterOptionSet *set)
 }
 
 void
-gtk_printer_option_set_foreach_in_group (GtkPrinterOptionSet     *set,
+btk_printer_option_set_foreach_in_group (BtkPrinterOptionSet     *set,
 					 const char              *group,
-					 GtkPrinterOptionSetFunc  func,
+					 BtkPrinterOptionSetFunc  func,
 					 gpointer                 user_data)
 {
-  GtkPrinterOption *option;
+  BtkPrinterOption *option;
   int i;
 
   for (i = 0; i < set->array->len; i++)
@@ -186,13 +186,13 @@ gtk_printer_option_set_foreach_in_group (GtkPrinterOptionSet     *set,
 }
 
 void
-gtk_printer_option_set_foreach (GtkPrinterOptionSet *set,
-				GtkPrinterOptionSetFunc func,
+btk_printer_option_set_foreach (BtkPrinterOptionSet *set,
+				BtkPrinterOptionSetFunc func,
 				gpointer user_data)
 {
-  gtk_printer_option_set_foreach_in_group (set, NULL, func, user_data);
+  btk_printer_option_set_foreach_in_group (set, NULL, func, user_data);
 }
 
 
-#define __GTK_PRINTER_OPTION_SET_C__
-#include "gtkaliasdef.c"
+#define __BTK_PRINTER_OPTION_SET_C__
+#include "btkaliasdef.c"

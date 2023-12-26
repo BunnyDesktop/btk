@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073F5}</ProjectGuid>
-    <RootNamespace>gtk</RootNamespace>
+    <RootNamespace>btk</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -49,19 +49,19 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-gen-srcs.props" />
+    <Import Project="btk-gen-srcs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -70,8 +70,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk;..\..\..\gtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(GtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -81,11 +81,11 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>atk-1.0.lib;pangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)gtk.def</ModuleDefinitionFile>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -93,8 +93,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(GtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -102,11 +102,11 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>atk-1.0.lib;pangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)gtk.def</ModuleDefinitionFile>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -117,8 +117,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(GtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -128,11 +128,11 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>atk-1.0.lib;pangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)gtk.def</ModuleDefinitionFile>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <ImportLibrary>$(TargetDir)$(ProjectName)-win32-$(ApiVersion).lib</ImportLibrary>
       <TargetMachine>MachineX64</TargetMachine>
@@ -140,8 +140,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk;..\..\..\gdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>$(GtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\bdk;..\..\..\bdk\win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>$(BtkDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
@@ -149,11 +149,11 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>atk-1.0.lib;pangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).dll</OutputFile>
-      <ModuleDefinitionFile>$(IntDir)gtk.def</ModuleDefinitionFile>
+      <AdditionalDependencies>batk-1.0.lib;bangowin32-1.0.lib;imm32.lib;winspool.lib;comctl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).dll</OutputFile>
+      <ModuleDefinitionFile>$(IntDir)btk.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(GtkDllPrefix)$(ProjectName)-win32$(GtkDllSuffix).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>$(OutDir)$(BtkDllPrefix)$(ProjectName)-win32$(BtkDllSuffix).pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -162,20 +162,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\..\gdk\gtk.symbols">
-      <Message>Generating gtk.def</Message>
-      <Command>$(GtkGenerateGtkDef)</Command>
-      <Outputs>$(IntDir)gtk.def;%(Outputs)</Outputs>
+    <CustomBuild Include="..\..\..\bdk\btk.symbols">
+      <Message>Generating btk.def</Message>
+      <Command>$(BtkGenerateBtkDef)</Command>
+      <Outputs>$(IntDir)btk.def;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\..\gtk\gtk-win32.rc" />
+    <ResourceCompile Include="..\..\..\btk\btk-win32.rc" />
   </ItemGroup>
   <ItemGroup>
-#include "gtk.vs10.sourcefiles"
-    <ClCompile Include="..\..\..\modules\input\gtkimcontextime.c" />
-    <ClCompile Include="..\..\..\modules\input\gtkimcontextmultipress.c" />
-    <ClCompile Include="..\..\..\modules\input\gtkimcontextthai.c" />
+#include "btk.vs10.sourcefiles"
+    <ClCompile Include="..\..\..\modules\input\btkimcontextime.c" />
+    <ClCompile Include="..\..\..\modules\input\btkimcontextmultipress.c" />
+    <ClCompile Include="..\..\..\modules\input\btkimcontextthai.c" />
     <ClCompile Include="..\..\..\modules\input\imam-et.c" />
     <ClCompile Include="..\..\..\modules\input\imcedilla.c" />
     <ClCompile Include="..\..\..\modules\input\imcyrillic-translit.c" />
@@ -190,7 +190,7 @@
     <ClCompile Include="..\..\..\modules\input\thai-charprop.c" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="gdk.vcxproj">
+    <ProjectReference Include="bdk.vcxproj">
       <Project>{fc5aadb5-95cd-4bf0-ba8b-0c16fe7073f7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

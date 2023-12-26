@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,54 +18,54 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.
  */
 
 /*
- * GTK+ DirectFB backend
+ * BTK+ DirectFB backend
  * Copyright (C) 2001-2002  convergence integrated media GmbH
  * Copyright (C) 2002-2004  convergence GmbH
  * Written by Denis Oliver Kropp <dok@convergence.de> and
  *            Sven Neumann <sven@convergence.de>
  */
 
-#undef GDK_DISABLE_DEPRECATED
+#undef BDK_DISABLE_DEPRECATED
 
 #include "config.h"
-#include "gdk.h"
+#include "bdk.h"
 
 #include <string.h>
 
-#include "gdkdirectfb.h"
-#include "gdkprivate-directfb.h"
+#include "bdkdirectfb.h"
+#include "bdkprivate-directfb.h"
 
-#include "gdkinternals.h"
+#include "bdkinternals.h"
 
-#include "gdkfont.h"
-#include "gdkalias.h"
+#include "bdkfont.h"
+#include "bdkalias.h"
 
 
-typedef struct _GdkFontDirectFB  GdkFontDirectFB;
+typedef struct _BdkFontDirectFB  BdkFontDirectFB;
 
-struct _GdkFontDirectFB
+struct _BdkFontDirectFB
 {
-  GdkFontPrivate    base;
+  BdkFontPrivate    base;
   gint              size;
   IDirectFBFont    *dfbfont;
 };
 
 
-static GdkFont *
-gdk_directfb_bogus_font (gint height)
+static BdkFont *
+bdk_directfb_bogus_font (gint height)
 {
-  GdkFont         *font;
-  GdkFontDirectFB *private;
+  BdkFont         *font;
+  BdkFontDirectFB *private;
 
-  private = g_new0 (GdkFontDirectFB, 1);
-  font = (GdkFont *) private;
+  private = g_new0 (BdkFontDirectFB, 1);
+  font = (BdkFont *) private;
 
-  font->type              = GDK_FONT_FONT;
+  font->type              = BDK_FONT_FONT;
   font->ascent            = height * 3 / 4;
   font->descent           = height / 4;
   private->size           = height;
@@ -73,47 +73,47 @@ gdk_directfb_bogus_font (gint height)
   return font;
 }
 
-GdkFont *
-gdk_font_from_description_for_display (GdkDisplay *display,
-                                       PangoFontDescription *font_desc)
+BdkFont *
+bdk_font_from_description_for_display (BdkDisplay *display,
+                                       BangoFontDescription *font_desc)
 {
   gint size;
 
   g_return_val_if_fail (font_desc, NULL);
 
-  size = pango_font_description_get_size (font_desc);
+  size = bango_font_description_get_size (font_desc);
 
-  return gdk_directfb_bogus_font (PANGO_PIXELS (size));
+  return bdk_directfb_bogus_font (BANGO_PIXELS (size));
 }
 
 /* ********************* */
 
-GdkFont *
-gdk_fontset_load (const gchar *fontset_name)
+BdkFont *
+bdk_fontset_load (const gchar *fontset_name)
 {
-  return gdk_directfb_bogus_font (10);
+  return bdk_directfb_bogus_font (10);
 }
 
-GdkFont *
-gdk_fontset_load_for_display (GdkDisplay *display,const gchar *font_name)
+BdkFont *
+bdk_fontset_load_for_display (BdkDisplay *display,const gchar *font_name)
 {
-  return gdk_directfb_bogus_font (10);
+  return bdk_directfb_bogus_font (10);
 }
 
-GdkFont *
-gdk_font_load_for_display (GdkDisplay *display, const gchar *font_name)
+BdkFont *
+bdk_font_load_for_display (BdkDisplay *display, const gchar *font_name)
 {
-  return gdk_directfb_bogus_font (10);
+  return bdk_directfb_bogus_font (10);
 }
 
 void
-_gdk_font_destroy (GdkFont *font)
+_bdk_font_destroy (BdkFont *font)
 {
   switch (font->type)
     {
-    case GDK_FONT_FONT:
+    case BDK_FONT_FONT:
       break;
-    case GDK_FONT_FONTSET:
+    case BDK_FONT_FONTSET:
       break;
     default:
       g_error ("unknown font type.");
@@ -124,25 +124,25 @@ _gdk_font_destroy (GdkFont *font)
 }
 
 gint
-_gdk_font_strlen (GdkFont     *font,
+_bdk_font_strlen (BdkFont     *font,
                   const gchar *str)
 {
-  GdkFontDirectFB *font_private;
+  BdkFontDirectFB *font_private;
   gint             length = 0;
 
   g_return_val_if_fail (font != NULL, -1);
   g_return_val_if_fail (str != NULL, -1);
 
-  font_private = (GdkFontDirectFB*) font;
+  font_private = (BdkFontDirectFB*) font;
 
-  if (font->type == GDK_FONT_FONT)
+  if (font->type == BDK_FONT_FONT)
     {
       guint16 *string_2b = (guint16 *)str;
 
       while (*(string_2b++))
         length++;
     }
-  else if (font->type == GDK_FONT_FONTSET)
+  else if (font->type == BDK_FONT_FONTSET)
     {
       length = strlen (str);
     }
@@ -153,15 +153,15 @@ _gdk_font_strlen (GdkFont     *font,
 }
 
 gint
-gdk_font_id (const GdkFont *font)
+bdk_font_id (const BdkFont *font)
 {
-  const GdkFontDirectFB *font_private;
+  const BdkFontDirectFB *font_private;
 
   g_return_val_if_fail (font != NULL, 0);
 
-  font_private = (const GdkFontDirectFB*) font;
+  font_private = (const BdkFontDirectFB*) font;
 
-  if (font->type == GDK_FONT_FONT)
+  if (font->type == BDK_FONT_FONT)
     {
       return -1;
     }
@@ -172,17 +172,17 @@ gdk_font_id (const GdkFont *font)
 }
 
 gint
-gdk_font_equal (const GdkFont *fonta,
-                const GdkFont *fontb)
+bdk_font_equal (const BdkFont *fonta,
+                const BdkFont *fontb)
 {
-  const GdkFontDirectFB *privatea;
-  const GdkFontDirectFB *privateb;
+  const BdkFontDirectFB *privatea;
+  const BdkFontDirectFB *privateb;
 
   g_return_val_if_fail (fonta != NULL, FALSE);
   g_return_val_if_fail (fontb != NULL, FALSE);
 
-  privatea = (const GdkFontDirectFB*) fonta;
-  privateb = (const GdkFontDirectFB*) fontb;
+  privatea = (const BdkFontDirectFB*) fonta;
+  privateb = (const BdkFontDirectFB*) fontb;
 
   if (fonta == fontb)
     return TRUE;
@@ -191,27 +191,27 @@ gdk_font_equal (const GdkFont *fonta,
 }
 
 gint
-gdk_text_width (GdkFont      *font,
+bdk_text_width (BdkFont      *font,
                 const gchar  *text,
                 gint          text_length)
 {
-  GdkFontDirectFB *private;
+  BdkFontDirectFB *private;
 
-  private = (GdkFontDirectFB*) font;
+  private = (BdkFontDirectFB*) font;
 
   return (text_length * private->size) / 2;
 }
 
 gint
-gdk_text_width_wc (GdkFont        *font,
-                   const GdkWChar *text,
+bdk_text_width_wc (BdkFont        *font,
+                   const BdkWChar *text,
                    gint            text_length)
 {
   return 0;
 }
 
 void
-gdk_text_extents (GdkFont     *font,
+bdk_text_extents (BdkFont     *font,
                   const gchar *text,
                   gint         text_length,
                   gint        *lbearing,
@@ -225,7 +225,7 @@ gdk_text_extents (GdkFont     *font,
   if (descent)
     *descent = font->descent;
   if (width)
-    *width = gdk_text_width (font, text, text_length);
+    *width = bdk_text_width (font, text, text_length);
   if (lbearing)
     *lbearing = 0;
   if (rbearing)
@@ -233,8 +233,8 @@ gdk_text_extents (GdkFont     *font,
 }
 
 void
-gdk_text_extents_wc (GdkFont        *font,
-                     const GdkWChar *text,
+bdk_text_extents_wc (BdkFont        *font,
+                     const BdkWChar *text,
                      gint            text_length,
                      gint           *lbearing,
                      gint           *rbearing,
@@ -252,7 +252,7 @@ gdk_text_extents_wc (GdkFont        *font,
 
   realstr[i] = '\0';
 
-  return gdk_text_extents (font,
+  return bdk_text_extents (font,
                            realstr,
                            text_length,
                            lbearing,
@@ -262,19 +262,19 @@ gdk_text_extents_wc (GdkFont        *font,
                            descent);
 }
 
-GdkFont *
-gdk_font_lookup (GdkNativeWindow xid)
+BdkFont *
+bdk_font_lookup (BdkNativeWindow xid)
 {
-  g_warning(" gdk_font_lookup unimplemented \n");
+  g_warning(" bdk_font_lookup unimplemented \n");
   return NULL;
 }
 
-GdkDisplay *
-gdk_font_get_display (GdkFont* font)
+BdkDisplay *
+bdk_font_get_display (BdkFont* font)
 {
-  g_warning(" gdk_font_get_display unimplemented \n");
+  g_warning(" bdk_font_get_display unimplemented \n");
   return NULL;
 }
 
-#define __GDK_FONT_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_FONT_X11_C__
+#include "bdkaliasdef.c"

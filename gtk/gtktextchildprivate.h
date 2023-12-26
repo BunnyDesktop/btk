@@ -1,9 +1,9 @@
-/* gtktextchildprivate.h - child pixmaps and widgets
+/* btktextchildprivate.h - child pixmaps and widgets
  *
  * Copyright (c) 1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000      Red Hat, Inc.
- * Tk -> Gtk port by Havoc Pennington <hp@redhat.com>
+ * Tk -> Btk port by Havoc Pennington <hp@redhat.com>
  *
  * This software is copyrighted by the Regents of the University of
  * California, Sun Microsystems, Inc., and other parties.  The
@@ -47,41 +47,41 @@
  *
  */
 
-#ifndef __GTK_TEXT_CHILD_PRIVATE_H__
-#define __GTK_TEXT_CHILD_PRIVATE_H__
+#ifndef __BTK_TEXT_CHILD_PRIVATE_H__
+#define __BTK_TEXT_CHILD_PRIVATE_H__
 
-#include <gtk/gtktexttypes.h>
+#include <btk/btktexttypes.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GtkTextPixbuf GtkTextPixbuf;
+typedef struct _BtkTextPixbuf BtkTextPixbuf;
 
-struct _GtkTextPixbuf
+struct _BtkTextPixbuf
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 };
 
-GtkTextLineSegment *_gtk_pixbuf_segment_new (GdkPixbuf *pixbuf);
+BtkTextLineSegment *_btk_pixbuf_segment_new (BdkPixbuf *pixbuf);
 
-typedef struct _GtkTextChildBody GtkTextChildBody;
+typedef struct _BtkTextChildBody BtkTextChildBody;
 
-struct _GtkTextChildBody
+struct _BtkTextChildBody
 {
-  GtkTextChildAnchor *obj;
+  BtkTextChildAnchor *obj;
   GSList *widgets;
-  GtkTextBTree *tree;
-  GtkTextLine *line;
+  BtkTextBTree *tree;
+  BtkTextLine *line;
 };
 
-GtkTextLineSegment *_gtk_widget_segment_new      (GtkTextChildAnchor *anchor);
-void                _gtk_widget_segment_add      (GtkTextLineSegment *widget_segment,
-                                                  GtkWidget          *child);
-void                _gtk_widget_segment_remove   (GtkTextLineSegment *widget_segment,
-                                                  GtkWidget          *child);
-void                _gtk_widget_segment_ref      (GtkTextLineSegment *widget_segment);
-void                _gtk_widget_segment_unref    (GtkTextLineSegment *widget_segment);
+BtkTextLineSegment *_btk_widget_segment_new      (BtkTextChildAnchor *anchor);
+void                _btk_widget_segment_add      (BtkTextLineSegment *widget_segment,
+                                                  BtkWidget          *child);
+void                _btk_widget_segment_remove   (BtkTextLineSegment *widget_segment,
+                                                  BtkWidget          *child);
+void                _btk_widget_segment_ref      (BtkTextLineSegment *widget_segment);
+void                _btk_widget_segment_unref    (BtkTextLineSegment *widget_segment);
 
-GtkTextLayout*      _gtk_anchored_child_get_layout (GtkWidget *child);
+BtkTextLayout*      _btk_anchored_child_get_layout (BtkWidget *child);
 
 G_END_DECLS
 

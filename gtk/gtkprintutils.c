@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkpapersize.c: Paper Size
+/* BTK - The GIMP Toolkit
+ * btkpapersize.c: Paper Size
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,44 +19,44 @@
  */
 
 #include "config.h"
-#include "gtkprintutils.h"
-#include "gtkalias.h"
+#include "btkprintutils.h"
+#include "btkalias.h"
 
 gdouble
-_gtk_print_convert_to_mm (gdouble len, 
-			  GtkUnit unit)
+_btk_print_convert_to_mm (gdouble len, 
+			  BtkUnit unit)
 {
   switch (unit)
     {
-    case GTK_UNIT_MM:
+    case BTK_UNIT_MM:
       return len;
-    case GTK_UNIT_INCH:
+    case BTK_UNIT_INCH:
       return len * MM_PER_INCH;
     default:
-    case GTK_UNIT_PIXEL:
+    case BTK_UNIT_PIXEL:
       g_warning ("Unsupported unit");
       /* Fall through */
-    case GTK_UNIT_POINTS:
+    case BTK_UNIT_POINTS:
       return len * (MM_PER_INCH / POINTS_PER_INCH);
       break;
     }
 }
 
 gdouble
-_gtk_print_convert_from_mm (gdouble len, 
-			    GtkUnit unit)
+_btk_print_convert_from_mm (gdouble len, 
+			    BtkUnit unit)
 {
   switch (unit)
     {
-    case GTK_UNIT_MM:
+    case BTK_UNIT_MM:
       return len;
-    case GTK_UNIT_INCH:
+    case BTK_UNIT_INCH:
       return len / MM_PER_INCH;
     default:
-    case GTK_UNIT_PIXEL:
+    case BTK_UNIT_PIXEL:
       g_warning ("Unsupported unit");
       /* Fall through */
-    case GTK_UNIT_POINTS:
+    case BTK_UNIT_POINTS:
       return len / (MM_PER_INCH / POINTS_PER_INCH);
       break;
     }

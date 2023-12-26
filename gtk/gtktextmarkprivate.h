@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,39 +18,39 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GTK_TEXT_MARK_PRIVATE_H__
-#define __GTK_TEXT_MARK_PRIVATE_H__
+#ifndef __BTK_TEXT_MARK_PRIVATE_H__
+#define __BTK_TEXT_MARK_PRIVATE_H__
 
-#include <gtk/gtktexttypes.h>
-#include <gtk/gtktextlayout.h>
+#include <btk/btktexttypes.h>
+#include <btk/btktextlayout.h>
 
 G_BEGIN_DECLS
 
-#define GTK_IS_TEXT_MARK_SEGMENT(mark) (((GtkTextLineSegment*)mark)->type == &gtk_text_left_mark_type || \
-                                ((GtkTextLineSegment*)mark)->type == &gtk_text_right_mark_type)
+#define BTK_IS_TEXT_MARK_SEGMENT(mark) (((BtkTextLineSegment*)mark)->type == &btk_text_left_mark_type || \
+                                ((BtkTextLineSegment*)mark)->type == &btk_text_right_mark_type)
 
 /*
  * The data structure below defines line segments that represent
  * marks.  There is one of these for each mark in the text.
  */
 
-struct _GtkTextMarkBody {
-  GtkTextMark *obj;
+struct _BtkTextMarkBody {
+  BtkTextMark *obj;
   gchar *name;
-  GtkTextBTree *tree;
-  GtkTextLine *line;
+  BtkTextBTree *tree;
+  BtkTextLine *line;
   guint visible : 1;
   guint not_deleteable : 1;
 };
 
-void _gtk_mark_segment_set_tree (GtkTextLineSegment *mark,
-				 GtkTextBTree       *tree);
+void _btk_mark_segment_set_tree (BtkTextLineSegment *mark,
+				 BtkTextBTree       *tree);
 
 G_END_DECLS
 

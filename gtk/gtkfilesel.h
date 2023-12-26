@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,108 +18,108 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_FILESEL_H__
-#define __GTK_FILESEL_H__
+#ifndef __BTK_FILESEL_H__
+#define __BTK_FILESEL_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_FILE_SELECTION            (gtk_file_selection_get_type ())
-#define GTK_FILE_SELECTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_FILE_SELECTION, GtkFileSelection))
-#define GTK_FILE_SELECTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_FILE_SELECTION, GtkFileSelectionClass))
-#define GTK_IS_FILE_SELECTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_FILE_SELECTION))
-#define GTK_IS_FILE_SELECTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_FILE_SELECTION))
-#define GTK_FILE_SELECTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_FILE_SELECTION, GtkFileSelectionClass))
+#define BTK_TYPE_FILE_SELECTION            (btk_file_selection_get_type ())
+#define BTK_FILE_SELECTION(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelection))
+#define BTK_FILE_SELECTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
+#define BTK_IS_FILE_SELECTION(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_FILE_SELECTION))
+#define BTK_IS_FILE_SELECTION_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_FILE_SELECTION))
+#define BTK_FILE_SELECTION_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_FILE_SELECTION, BtkFileSelectionClass))
 
 
-typedef struct _GtkFileSelection       GtkFileSelection;
-typedef struct _GtkFileSelectionClass  GtkFileSelectionClass;
+typedef struct _BtkFileSelection       BtkFileSelection;
+typedef struct _BtkFileSelectionClass  BtkFileSelectionClass;
 
-struct _GtkFileSelection
+struct _BtkFileSelection
 {
   /*< private >*/
-  GtkDialog parent_instance;
+  BtkDialog parent_instance;
 
   /*< public >*/
-  GtkWidget *dir_list;
-  GtkWidget *file_list;
-  GtkWidget *selection_entry;
-  GtkWidget *selection_text;
-  GtkWidget *main_vbox;
-  GtkWidget *ok_button;
-  GtkWidget *cancel_button;
-  GtkWidget *help_button;
-  GtkWidget *history_pulldown;
-  GtkWidget *history_menu;
+  BtkWidget *dir_list;
+  BtkWidget *file_list;
+  BtkWidget *selection_entry;
+  BtkWidget *selection_text;
+  BtkWidget *main_vbox;
+  BtkWidget *ok_button;
+  BtkWidget *cancel_button;
+  BtkWidget *help_button;
+  BtkWidget *history_pulldown;
+  BtkWidget *history_menu;
   GList     *history_list;
-  GtkWidget *fileop_dialog;
-  GtkWidget *fileop_entry;
+  BtkWidget *fileop_dialog;
+  BtkWidget *fileop_entry;
   gchar     *fileop_file;
   gpointer   cmpl_state;
   
-  GtkWidget *fileop_c_dir;
-  GtkWidget *fileop_del_file;
-  GtkWidget *fileop_ren_file;
+  BtkWidget *fileop_c_dir;
+  BtkWidget *fileop_del_file;
+  BtkWidget *fileop_ren_file;
   
-  GtkWidget *button_area;
-  GtkWidget *action_area;
+  BtkWidget *button_area;
+  BtkWidget *action_area;
 
   /*< private >*/
   GPtrArray *selected_names;
   gchar     *last_selected;
 };
 
-struct _GtkFileSelectionClass
+struct _BtkFileSelectionClass
 {
-  GtkDialogClass parent_class;
+  BtkDialogClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
 #ifdef G_OS_WIN32
 /* Reserve old names for DLL ABI backward compatibility */
-#define gtk_file_selection_get_filename gtk_file_selection_get_filename_utf8
-#define gtk_file_selection_set_filename gtk_file_selection_set_filename_utf8
-#define gtk_file_selection_get_selections gtk_file_selection_get_selections_utf8
+#define btk_file_selection_get_filename btk_file_selection_get_filename_utf8
+#define btk_file_selection_set_filename btk_file_selection_set_filename_utf8
+#define btk_file_selection_get_selections btk_file_selection_get_selections_utf8
 #endif
 
-GType      gtk_file_selection_get_type            (void) G_GNUC_CONST;
-GtkWidget* gtk_file_selection_new                 (const gchar      *title);
-void       gtk_file_selection_set_filename        (GtkFileSelection *filesel,
+GType      btk_file_selection_get_type            (void) G_GNUC_CONST;
+BtkWidget* btk_file_selection_new                 (const gchar      *title);
+void       btk_file_selection_set_filename        (BtkFileSelection *filesel,
 						   const gchar      *filename);
-const gchar* gtk_file_selection_get_filename      (GtkFileSelection *filesel);
+const gchar* btk_file_selection_get_filename      (BtkFileSelection *filesel);
 
-void	   gtk_file_selection_complete		  (GtkFileSelection *filesel,
+void	   btk_file_selection_complete		  (BtkFileSelection *filesel,
 						   const gchar	    *pattern);
-void       gtk_file_selection_show_fileop_buttons (GtkFileSelection *filesel);
-void       gtk_file_selection_hide_fileop_buttons (GtkFileSelection *filesel);
+void       btk_file_selection_show_fileop_buttons (BtkFileSelection *filesel);
+void       btk_file_selection_hide_fileop_buttons (BtkFileSelection *filesel);
 
-gchar**    gtk_file_selection_get_selections      (GtkFileSelection *filesel);
+gchar**    btk_file_selection_get_selections      (BtkFileSelection *filesel);
 
-void       gtk_file_selection_set_select_multiple (GtkFileSelection *filesel,
+void       btk_file_selection_set_select_multiple (BtkFileSelection *filesel,
 						   gboolean          select_multiple);
-gboolean   gtk_file_selection_get_select_multiple (GtkFileSelection *filesel);
+gboolean   btk_file_selection_get_select_multiple (BtkFileSelection *filesel);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_FILESEL_H__ */
+#endif /* __BTK_FILESEL_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

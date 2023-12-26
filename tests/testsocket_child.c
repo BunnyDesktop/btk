@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 extern guint32 create_child_plug (guint32  xid,
 				  gboolean local);
@@ -33,7 +33,7 @@ main (int argc, char *argv[])
   guint32 xid;
   guint32 plug_xid;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   if (argc != 1 && argc != 2)
     {
@@ -59,7 +59,7 @@ main (int argc, char *argv[])
       fflush (stdout);
     }
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

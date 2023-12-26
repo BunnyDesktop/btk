@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkAccelLabel: GtkLabel with accelerator monitoring facilities.
+ * BtkAccelLabel: BtkLabel with accelerator monitoring facilities.
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -21,58 +21,58 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2001.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2001.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ACCEL_LABEL_H__
-#define __GTK_ACCEL_LABEL_H__
+#ifndef __BTK_ACCEL_LABEL_H__
+#define __BTK_ACCEL_LABEL_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtklabel.h>
+#include <btk/btklabel.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ACCEL_LABEL		(gtk_accel_label_get_type ())
-#define GTK_ACCEL_LABEL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ACCEL_LABEL, GtkAccelLabel))
-#define GTK_ACCEL_LABEL_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ACCEL_LABEL, GtkAccelLabelClass))
-#define GTK_IS_ACCEL_LABEL(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ACCEL_LABEL))
-#define GTK_IS_ACCEL_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ACCEL_LABEL))
-#define GTK_ACCEL_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ACCEL_LABEL, GtkAccelLabelClass))
+#define BTK_TYPE_ACCEL_LABEL		(btk_accel_label_get_type ())
+#define BTK_ACCEL_LABEL(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ACCEL_LABEL, BtkAccelLabel))
+#define BTK_ACCEL_LABEL_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ACCEL_LABEL, BtkAccelLabelClass))
+#define BTK_IS_ACCEL_LABEL(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ACCEL_LABEL))
+#define BTK_IS_ACCEL_LABEL_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ACCEL_LABEL))
+#define BTK_ACCEL_LABEL_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ACCEL_LABEL, BtkAccelLabelClass))
 
 
-typedef struct _GtkAccelLabel	    GtkAccelLabel;
-typedef struct _GtkAccelLabelClass  GtkAccelLabelClass;
+typedef struct _BtkAccelLabel	    BtkAccelLabel;
+typedef struct _BtkAccelLabelClass  BtkAccelLabelClass;
 
 /**
- * GtkAccelLabel:
+ * BtkAccelLabel:
  *
- * The #GtkAccelLabel-struct struct contains private data only, and
+ * The #BtkAccelLabel-struct struct contains private data only, and
  * should be accessed using the functions below.
  */
-struct _GtkAccelLabel
+struct _BtkAccelLabel
 {
-  GtkLabel label;
+  BtkLabel label;
 
-  guint          GSEAL (gtk_reserved);
+  guint          GSEAL (btk_reserved);
   guint          GSEAL (accel_padding);      /* should be style property? */
-  GtkWidget     *GSEAL (accel_widget);       /* done*/
+  BtkWidget     *GSEAL (accel_widget);       /* done*/
   GClosure      *GSEAL (accel_closure);      /* has set function */
-  GtkAccelGroup *GSEAL (accel_group);        /* set by set_accel_closure() */
+  BtkAccelGroup *GSEAL (accel_group);        /* set by set_accel_closure() */
   gchar         *GSEAL (accel_string);       /* has set function */
   guint16        GSEAL (accel_string_width); /* seems to be private */
 };
 
-struct _GtkAccelLabelClass
+struct _BtkAccelLabelClass
 {
-  GtkLabelClass	 parent_class;
+  BtkLabelClass	 parent_class;
 
   gchar		*signal_quote1;
   gchar		*signal_quote2;
@@ -84,31 +84,31 @@ struct _GtkAccelLabelClass
   guint		 latin1_to_char : 1;
   
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define	gtk_accel_label_accelerator_width	gtk_accel_label_get_accel_width
-#endif /* GTK_DISABLE_DEPRECATED */
+#ifndef BTK_DISABLE_DEPRECATED
+#define	btk_accel_label_accelerator_width	btk_accel_label_get_accel_width
+#endif /* BTK_DISABLE_DEPRECATED */
 
-GType	   gtk_accel_label_get_type	     (void) G_GNUC_CONST;
-GtkWidget* gtk_accel_label_new		     (const gchar   *string);
-GtkWidget* gtk_accel_label_get_accel_widget  (GtkAccelLabel *accel_label);
-guint	   gtk_accel_label_get_accel_width   (GtkAccelLabel *accel_label);
-void	   gtk_accel_label_set_accel_widget  (GtkAccelLabel *accel_label,
-					      GtkWidget	    *accel_widget);
-void	   gtk_accel_label_set_accel_closure (GtkAccelLabel *accel_label,
+GType	   btk_accel_label_get_type	     (void) G_GNUC_CONST;
+BtkWidget* btk_accel_label_new		     (const gchar   *string);
+BtkWidget* btk_accel_label_get_accel_widget  (BtkAccelLabel *accel_label);
+guint	   btk_accel_label_get_accel_width   (BtkAccelLabel *accel_label);
+void	   btk_accel_label_set_accel_widget  (BtkAccelLabel *accel_label,
+					      BtkWidget	    *accel_widget);
+void	   btk_accel_label_set_accel_closure (BtkAccelLabel *accel_label,
 					      GClosure	    *accel_closure);
-gboolean   gtk_accel_label_refetch           (GtkAccelLabel *accel_label);
+gboolean   btk_accel_label_refetch           (BtkAccelLabel *accel_label);
 
 /* private */
-gchar *    _gtk_accel_label_class_get_accelerator_label (GtkAccelLabelClass *klass,
+gchar *    _btk_accel_label_class_get_accelerator_label (BtkAccelLabelClass *klass,
 							 guint               accelerator_key,
-							 GdkModifierType     accelerator_mods);
+							 BdkModifierType     accelerator_mods);
 
 G_END_DECLS
 
-#endif /* __GTK_ACCEL_LABEL_H__ */
+#endif /* __BTK_ACCEL_LABEL_H__ */

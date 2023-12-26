@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2002 Hans Breuer
  *
  * This library is free software; you can redistribute it and/or
@@ -18,37 +18,37 @@
  */
 
 #include "config.h"
-#include "gdk.h"
-#include "gdkprivate-win32.h"
+#include "bdk.h"
+#include "bdkprivate-win32.h"
 
-static GdkColormap *default_colormap = NULL;
+static BdkColormap *default_colormap = NULL;
 
-GdkDisplay *
-gdk_screen_get_display (GdkScreen *screen)
+BdkDisplay *
+bdk_screen_get_display (BdkScreen *screen)
 {
-  return _gdk_display;
+  return _bdk_display;
 }
 
-GdkWindow *
-gdk_screen_get_root_window (GdkScreen *screen)
+BdkWindow *
+bdk_screen_get_root_window (BdkScreen *screen)
 {
-  return _gdk_root;
+  return _bdk_root;
 }
 
-GdkColormap *
-gdk_screen_get_default_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_default_colormap (BdkScreen *screen)
 {
   return default_colormap;
 }
 
 void
-gdk_screen_set_default_colormap (GdkScreen   *screen,
-				 GdkColormap *colormap)
+bdk_screen_set_default_colormap (BdkScreen   *screen,
+				 BdkColormap *colormap)
 {
-  GdkColormap *old_colormap;
+  BdkColormap *old_colormap;
   
-  g_return_if_fail (screen == _gdk_screen);
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
+  g_return_if_fail (screen == _bdk_screen);
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
 
   old_colormap = default_colormap;
 
@@ -59,92 +59,92 @@ gdk_screen_set_default_colormap (GdkScreen   *screen,
 }
 
 gint
-gdk_screen_get_n_monitors (GdkScreen *screen)
+bdk_screen_get_n_monitors (BdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);
+  g_return_val_if_fail (screen == _bdk_screen, 0);
 
-  return _gdk_num_monitors;
+  return _bdk_num_monitors;
 }
 
 gint
-gdk_screen_get_primary_monitor (GdkScreen *screen)
+bdk_screen_get_primary_monitor (BdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);
+  g_return_val_if_fail (screen == _bdk_screen, 0);
 
   return 0;
 }
 
 gint
-gdk_screen_get_monitor_width_mm (GdkScreen *screen,
+bdk_screen_get_monitor_width_mm (BdkScreen *screen,
                                  gint       num_monitor)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);
-  g_return_val_if_fail (num_monitor < _gdk_num_monitors, 0);
+  g_return_val_if_fail (screen == _bdk_screen, 0);
+  g_return_val_if_fail (num_monitor < _bdk_num_monitors, 0);
   g_return_val_if_fail (num_monitor >= 0, 0);
 
-  return _gdk_monitors[num_monitor].width_mm;
+  return _bdk_monitors[num_monitor].width_mm;
 }
 
 gint
-gdk_screen_get_monitor_height_mm (GdkScreen *screen,
+bdk_screen_get_monitor_height_mm (BdkScreen *screen,
                                   gint       num_monitor)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);
-  g_return_val_if_fail (num_monitor < _gdk_num_monitors, 0);
+  g_return_val_if_fail (screen == _bdk_screen, 0);
+  g_return_val_if_fail (num_monitor < _bdk_num_monitors, 0);
   g_return_val_if_fail (num_monitor >= 0, 0);
 
-  return _gdk_monitors[num_monitor].height_mm;
+  return _bdk_monitors[num_monitor].height_mm;
 }
 
 gchar *
-gdk_screen_get_monitor_plug_name (GdkScreen *screen,
+bdk_screen_get_monitor_plug_name (BdkScreen *screen,
                                   gint       num_monitor)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);
-  g_return_val_if_fail (num_monitor < _gdk_num_monitors, 0);
+  g_return_val_if_fail (screen == _bdk_screen, 0);
+  g_return_val_if_fail (num_monitor < _bdk_num_monitors, 0);
   g_return_val_if_fail (num_monitor >= 0, 0);
 
-  return g_strdup (_gdk_monitors[num_monitor].name);
+  return g_strdup (_bdk_monitors[num_monitor].name);
 }
 
 void
-gdk_screen_get_monitor_geometry (GdkScreen    *screen, 
+bdk_screen_get_monitor_geometry (BdkScreen    *screen, 
 				 gint          num_monitor,
-				 GdkRectangle *dest)
+				 BdkRectangle *dest)
 {
-  g_return_if_fail (screen == _gdk_screen);
-  g_return_if_fail (num_monitor < _gdk_num_monitors);
+  g_return_if_fail (screen == _bdk_screen);
+  g_return_if_fail (num_monitor < _bdk_num_monitors);
   g_return_if_fail (num_monitor >= 0);
 
-  *dest = _gdk_monitors[num_monitor].rect;
+  *dest = _bdk_monitors[num_monitor].rect;
 }
 
-GdkColormap *
-gdk_screen_get_rgba_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_rgba_colormap (BdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, NULL);
+  g_return_val_if_fail (screen == _bdk_screen, NULL);
 
   return NULL;
 }
   
-GdkVisual *
-gdk_screen_get_rgba_visual (GdkScreen *screen)
+BdkVisual *
+bdk_screen_get_rgba_visual (BdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, NULL);
+  g_return_val_if_fail (screen == _bdk_screen, NULL);
 
   return NULL;
 }
   
 gint
-gdk_screen_get_number (GdkScreen *screen)
+bdk_screen_get_number (BdkScreen *screen)
 {
-  g_return_val_if_fail (screen == _gdk_screen, 0);  
+  g_return_val_if_fail (screen == _bdk_screen, 0);  
   
   return 0;
 }
 
 gchar * 
-_gdk_windowing_substitute_screen_number (const gchar *display_name,
+_bdk_windowing_substitute_screen_number (const gchar *display_name,
 					 int          screen_number)
 {
   if (screen_number != 0)
@@ -154,31 +154,31 @@ _gdk_windowing_substitute_screen_number (const gchar *display_name,
 }
 
 gchar *
-gdk_screen_make_display_name (GdkScreen *screen)
+bdk_screen_make_display_name (BdkScreen *screen)
 {
-  return g_strdup (gdk_display_get_name (_gdk_display));
+  return g_strdup (bdk_display_get_name (_bdk_display));
 }
 
-GdkWindow *
-gdk_screen_get_active_window (GdkScreen *screen)
+BdkWindow *
+bdk_screen_get_active_window (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   return NULL;
 }
 
 GList *
-gdk_screen_get_window_stack (GdkScreen *screen)
+bdk_screen_get_window_stack (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
   return NULL;
 }
 
 gboolean
-gdk_screen_is_composited (GdkScreen *screen)
+bdk_screen_is_composited (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
   return FALSE;
 }

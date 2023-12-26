@@ -1,5 +1,5 @@
 # Common NMake Makefile module for checking the build environment
-# This can be copied from $(glib_srcroot)\build\win32 for GNOME items
+# This can be copied from $(bunnylib_srcroot)\build\win32 for BUNNY items
 # that support MSVC builds and introspection under MSVC, and can be used
 # for building test programs as well.
 

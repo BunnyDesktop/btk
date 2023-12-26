@@ -19,19 +19,19 @@
  * Authors: Mark McLoughlin <mark@skynet.ie>
  */
 
-#ifndef __GDK_SPAWN_H__
-#define __GDK_SPAWN_H__
+#ifndef __BDK_SPAWN_H__
+#define __BDK_SPAWN_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdkscreen.h>
+#include <bdk/bdkscreen.h>
 
 G_BEGIN_DECLS
 
-#ifndef GDK_DISABLE_DEPRECATED
-gboolean gdk_spawn_on_screen              (GdkScreen             *screen,
+#ifndef BDK_DISABLE_DEPRECATED
+gboolean bdk_spawn_on_screen              (BdkScreen             *screen,
 					   const gchar           *working_directory,
 					   gchar                **argv,
 					   gchar                **envp,
@@ -41,7 +41,7 @@ gboolean gdk_spawn_on_screen              (GdkScreen             *screen,
 					   gint                  *child_pid,
 					   GError               **error);
 
-gboolean gdk_spawn_on_screen_with_pipes   (GdkScreen             *screen,
+gboolean bdk_spawn_on_screen_with_pipes   (BdkScreen             *screen,
 					   const gchar           *working_directory,
 					   gchar                **argv,
 					   gchar                **envp,
@@ -54,11 +54,11 @@ gboolean gdk_spawn_on_screen_with_pipes   (GdkScreen             *screen,
 					   gint                  *standard_error,
 					   GError               **error);
 
-gboolean gdk_spawn_command_line_on_screen (GdkScreen             *screen,
+gboolean bdk_spawn_command_line_on_screen (BdkScreen             *screen,
 					   const gchar           *command_line,
 					   GError               **error);
 #endif
 
 G_END_DECLS
 
-#endif /* __GDK_SPAWN_H__ */
+#endif /* __BDK_SPAWN_H__ */

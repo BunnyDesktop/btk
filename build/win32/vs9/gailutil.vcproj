@@ -2,9 +2,9 @@
 <VisualStudioProject
  ProjectType="Visual C++"
  Version="9.00"
- Name="gailutil"
+ Name="bailutil"
  ProjectGUID="{B3B6558A-01C8-4C72-9BDE-84ABB1AE67DF}"
- RootNamespace="gailutil"
+ RootNamespace="bailutil"
  Keyword="Win32Proj"
  TargetFrameworkVersion="196613"
  >
@@ -22,7 +22,7 @@
   <Configuration
    Name="Debug|Win32"
    ConfigurationType="2"
-   InheritedPropertySheets=".\gtk-build-defines.vsprops"
+   InheritedPropertySheets=".\btk-build-defines.vsprops"
    CharacterSet="2"
    >
    <Tool
@@ -31,7 +31,7 @@
    <Tool
     Name="VCCLCompilerTool"
     Optimization="0"
-    AdditionalIncludeDirectories="..\..\..\gdk"
+    AdditionalIncludeDirectories="..\..\..\bdk"
     PreprocessorDefinitions="_DEBUG"
     MinimalRebuild="true"
     BasicRuntimeChecks="3"
@@ -42,10 +42,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="pango-1.0.lib atk-1.0.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)$(GtkDllSuffix).dll"
+    AdditionalDependencies="bango-1.0.lib batk-1.0.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="..\..\..\modules\other\gail\libgail-util\gailutil.def"
+    ModuleDefinitionFile="..\..\..\modules\other\bail\libbail-util\bailutil.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
@@ -55,7 +55,7 @@
   <Configuration
    Name="Release|Win32"
    ConfigurationType="2"
-   InheritedPropertySheets=".\gtk-build-defines.vsprops"
+   InheritedPropertySheets=".\btk-build-defines.vsprops"
    CharacterSet="2"
    WholeProgramOptimization="1"
    >
@@ -65,7 +65,7 @@
    <Tool
     Name="VCCLCompilerTool"
     Optimization="2"
-    AdditionalIncludeDirectories="..\..\..\gdk"
+    AdditionalIncludeDirectories="..\..\..\bdk"
     EnableIntrinsicFunctions="true"
     PreprocessorDefinitions=""
     RuntimeLibrary="2"
@@ -76,10 +76,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="pango-1.0.lib atk-1.0.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)$(GtkDllSuffix).dll"
+    AdditionalDependencies="bango-1.0.lib batk-1.0.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)$(BtkDllSuffix).dll"
     LinkIncremental="1"
-    ModuleDefinitionFile="..\..\..\modules\other\gail\libgail-util\gailutil.def"
+    ModuleDefinitionFile="..\..\..\modules\other\bail\libbail-util\bailutil.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     OptimizeReferences="2"
@@ -90,7 +90,7 @@
   </Configuration>
   <Configuration
    Name="Debug|x64"
-   InheritedPropertySheets=".\gtk-build-defines.vsprops"
+   InheritedPropertySheets=".\btk-build-defines.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -100,7 +100,7 @@
    <Tool
     Name="VCCLCompilerTool"
     Optimization="0"
-    AdditionalIncludeDirectories="..\..\..\gdk"
+    AdditionalIncludeDirectories="..\..\..\bdk"
     PreprocessorDefinitions="_DEBUG"
     MinimalRebuild="true"
     BasicRuntimeChecks="3"
@@ -111,10 +111,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="pango-1.0.lib atk-1.0.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)$(GtkDllSuffix).dll"
+    AdditionalDependencies="bango-1.0.lib batk-1.0.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="..\..\..\modules\other\gail\libgail-util\gailutil.def"
+    ModuleDefinitionFile="..\..\..\modules\other\bail\libbail-util\bailutil.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     ImportLibrary="$(TargetDir)$(ProjectName)-$(ApiVersion).lib"
@@ -123,7 +123,7 @@
   </Configuration>
   <Configuration
    Name="Release|x64"
-   InheritedPropertySheets=".\gtk-build-defines.vsprops"
+   InheritedPropertySheets=".\btk-build-defines.vsprops"
    ConfigurationType="2"
    CharacterSet="2"
    >
@@ -132,7 +132,7 @@
    />
    <Tool
     Name="VCCLCompilerTool"
-    AdditionalIncludeDirectories="..\..\..\gdk"
+    AdditionalIncludeDirectories="..\..\..\bdk"
     PreprocessorDefinitions=""
     RuntimeLibrary="2"
     UsePrecompiledHeader="0"
@@ -141,10 +141,10 @@
    />
    <Tool
     Name="VCLinkerTool"
-    AdditionalDependencies="pango-1.0.lib atk-1.0.lib"
-    OutputFile="$(OutDir)\$(GtkDllPrefix)$(ProjectName)$(GtkDllSuffix).dll"
+    AdditionalDependencies="bango-1.0.lib batk-1.0.lib"
+    OutputFile="$(OutDir)\$(BtkDllPrefix)$(ProjectName)$(BtkDllSuffix).dll"
     LinkIncremental="2"
-    ModuleDefinitionFile="..\..\..\modules\other\gail\libgail-util\gailutil.def"
+    ModuleDefinitionFile="..\..\..\modules\other\bail\libbail-util\bailutil.def"
     GenerateDebugInformation="true"
     SubSystem="2"
     OptimizeReferences="2"
@@ -162,8 +162,8 @@
    Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
    UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
    >
-   <File RelativePath="..\..\..\modules\other\gail\libgail-util\gailmisc.c" />
-   <File RelativePath="..\..\..\modules\other\gail\libgail-util\gailtextutil.c" />
+   <File RelativePath="..\..\..\modules\other\bail\libbail-util\bailmisc.c" />
+   <File RelativePath="..\..\..\modules\other\bail\libbail-util\bailtextutil.c" />
   </Filter>
   <Filter
    Name="Headers"

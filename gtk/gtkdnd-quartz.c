@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1999 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -29,133 +29,133 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gdkconfig.h"
+#include "bdkconfig.h"
 
-#include "gdk/gdkkeysyms.h"
+#include "bdk/bdkkeysyms.h"
 
-#include "gtkdnd.h"
-#include "gtkiconfactory.h"
-#include "gtkicontheme.h"
-#include "gtkimage.h"
-#include "gtkinvisible.h"
-#include "gtkmain.h"
-#include "gtkplug.h"
-#include "gtkstock.h"
-#include "gtkwindow.h"
-#include "gtkintl.h"
-#include "gtkquartz.h"
-#include "gtkalias.h"
-#include "gdk/quartz/gdkquartz.h"
+#include "btkdnd.h"
+#include "btkiconfactory.h"
+#include "btkicontheme.h"
+#include "btkimage.h"
+#include "btkinvisible.h"
+#include "btkmain.h"
+#include "btkplug.h"
+#include "btkstock.h"
+#include "btkwindow.h"
+#include "btkintl.h"
+#include "btkquartz.h"
+#include "btkalias.h"
+#include "bdk/quartz/bdkquartz.h"
 
-typedef struct _GtkDragSourceSite GtkDragSourceSite;
-typedef struct _GtkDragSourceInfo GtkDragSourceInfo;
-typedef struct _GtkDragDestSite GtkDragDestSite;
-typedef struct _GtkDragDestInfo GtkDragDestInfo;
-typedef struct _GtkDragFindData GtkDragFindData;
+typedef struct _BtkDragSourceSite BtkDragSourceSite;
+typedef struct _BtkDragSourceInfo BtkDragSourceInfo;
+typedef struct _BtkDragDestSite BtkDragDestSite;
+typedef struct _BtkDragDestInfo BtkDragDestInfo;
+typedef struct _BtkDragFindData BtkDragFindData;
 
-static void     gtk_drag_find_widget            (GtkWidget        *widget,
-						 GtkDragFindData  *data);
-static void     gtk_drag_dest_site_destroy      (gpointer          data);
-static void     gtk_drag_dest_leave             (GtkWidget        *widget,
-						 GdkDragContext   *context,
+static void     btk_drag_find_widget            (BtkWidget        *widget,
+						 BtkDragFindData  *data);
+static void     btk_drag_dest_site_destroy      (gpointer          data);
+static void     btk_drag_dest_leave             (BtkWidget        *widget,
+						 BdkDragContext   *context,
 						 guint             time);
-static GtkDragDestInfo *gtk_drag_get_dest_info  (GdkDragContext   *context,
+static BtkDragDestInfo *btk_drag_get_dest_info  (BdkDragContext   *context,
 						 gboolean          create);
-static void gtk_drag_source_site_destroy        (gpointer           data);
+static void btk_drag_source_site_destroy        (gpointer           data);
 
-static GtkDragSourceInfo *gtk_drag_get_source_info (GdkDragContext *context,
+static BtkDragSourceInfo *btk_drag_get_source_info (BdkDragContext *context,
 						    gboolean        create);
 
-extern GdkDragContext *gdk_quartz_drag_source_context (); /* gdk/quartz/gdkdnd-quartz.c */
+extern BdkDragContext *bdk_quartz_drag_source_context (); /* bdk/quartz/bdkdnd-quartz.c */
 
-struct _GtkDragSourceSite 
+struct _BtkDragSourceSite 
 {
-  GdkModifierType    start_button_mask;
-  GtkTargetList     *target_list;        /* Targets for drag data */
-  GdkDragAction      actions;            /* Possible actions */
+  BdkModifierType    start_button_mask;
+  BtkTargetList     *target_list;        /* Targets for drag data */
+  BdkDragAction      actions;            /* Possible actions */
 
   /* Drag icon */
-  GtkImageType icon_type;
+  BtkImageType icon_type;
   union
   {
-    GtkImagePixmapData pixmap;
-    GtkImagePixbufData pixbuf;
-    GtkImageStockData stock;
-    GtkImageIconNameData name;
+    BtkImagePixmapData pixmap;
+    BtkImagePixbufData pixbuf;
+    BtkImageStockData stock;
+    BtkImageIconNameData name;
   } icon_data;
-  GdkBitmap *icon_mask;
+  BdkBitmap *icon_mask;
 
-  GdkColormap       *colormap;	         /* Colormap for drag icon */
+  BdkColormap       *colormap;	         /* Colormap for drag icon */
 
   /* Stored button press information to detect drag beginning */
   gint               state;
   gint               x, y;
 };
 
-struct _GtkDragSourceInfo 
+struct _BtkDragSourceInfo 
 {
-  GtkWidget         *source_widget;
-  GtkWidget         *widget;
-  GtkTargetList     *target_list; /* Targets for drag data */
-  GdkDragAction      possible_actions; /* Actions allowed by source */
-  GdkDragContext    *context;	  /* drag context */
+  BtkWidget         *source_widget;
+  BtkWidget         *widget;
+  BtkTargetList     *target_list; /* Targets for drag data */
+  BdkDragAction      possible_actions; /* Actions allowed by source */
+  BdkDragContext    *context;	  /* drag context */
   NSEvent           *nsevent;     /* what started it */
   gint hot_x, hot_y;		  /* Hot spot for drag */
-  GdkPixbuf         *icon_pixbuf;
+  BdkPixbuf         *icon_pixbuf;
   gboolean           success;
   gboolean           delete;
 };
 
-struct _GtkDragDestSite 
+struct _BtkDragDestSite 
 {
-  GtkDestDefaults    flags;
-  GtkTargetList     *target_list;
-  GdkDragAction      actions;
+  BtkDestDefaults    flags;
+  BtkTargetList     *target_list;
+  BdkDragAction      actions;
   guint              have_drag : 1;
   guint              track_motion : 1;
 };
 
-struct _GtkDragDestInfo 
+struct _BtkDragDestInfo 
 {
-  GtkWidget         *widget;	   /* Widget in which drag is in */
-  GdkDragContext    *context;	   /* Drag context */
+  BtkWidget         *widget;	   /* Widget in which drag is in */
+  BdkDragContext    *context;	   /* Drag context */
   guint              dropped : 1;     /* Set after we receive a drop */
   gint               drop_x, drop_y; /* Position of drop */
 };
 
-struct _GtkDragFindData 
+struct _BtkDragFindData 
 {
   gint x;
   gint y;
-  GdkDragContext *context;
-  GtkDragDestInfo *info;
+  BdkDragContext *context;
+  BtkDragDestInfo *info;
   gboolean found;
   gboolean toplevel;
-  gboolean (*callback) (GtkWidget *widget, GdkDragContext *context,
+  gboolean (*callback) (BtkWidget *widget, BdkDragContext *context,
 			gint x, gint y, guint32 time);
   guint32 time;
 };
 
 
-@interface GtkDragSourceOwner : NSObject {
-  GtkDragSourceInfo *info;
+@interface BtkDragSourceOwner : NSObject {
+  BtkDragSourceInfo *info;
 }
 
 @end
 
-@implementation GtkDragSourceOwner
+@implementation BtkDragSourceOwner
 -(void)pasteboard:(NSPasteboard *)sender provideDataForType:(NSString *)type
 {
   guint target_info;
-  GtkSelectionData selection_data;
+  BtkSelectionData selection_data;
 
-  selection_data.selection = GDK_NONE;
+  selection_data.selection = BDK_NONE;
   selection_data.data = NULL;
   selection_data.length = -1;
-  selection_data.target = gdk_quartz_pasteboard_type_to_atom_libgtk_only (type);
-  selection_data.display = gdk_display_get_default ();
+  selection_data.target = bdk_quartz_pasteboard_type_to_atom_libbtk_only (type);
+  selection_data.display = bdk_display_get_default ();
 
-  if (gtk_target_list_find (info->target_list, 
+  if (btk_target_list_find (info->target_list, 
 			    selection_data.target, 
 			    &target_info)) 
     {
@@ -166,13 +166,13 @@ struct _GtkDragFindData
 			     time);
 
       if (selection_data.length >= 0)
-        _gtk_quartz_set_selection_data_for_pasteboard (sender, &selection_data);
+        _btk_quartz_set_selection_data_for_pasteboard (sender, &selection_data);
       
       g_free (selection_data.data);
     }
 }
 
-- (id)initWithInfo:(GtkDragSourceInfo *)anInfo
+- (id)initWithInfo:(BtkDragSourceInfo *)anInfo
 {
   self = [super init];
 
@@ -187,35 +187,35 @@ struct _GtkDragFindData
 @end
 
 void 
-gtk_drag_get_data (GtkWidget      *widget,
-		   GdkDragContext *context,
-		   GdkAtom         target,
+btk_drag_get_data (BtkWidget      *widget,
+		   BdkDragContext *context,
+		   BdkAtom         target,
 		   guint32         time)
 {
   id <NSDraggingInfo> dragging_info;
   NSPasteboard *pasteboard;
-  GtkSelectionData *selection_data;
-  GtkDragDestInfo *info;
-  GtkDragDestSite *site;
+  BtkSelectionData *selection_data;
+  BtkDragDestInfo *info;
+  BtkDragDestSite *site;
 
-  dragging_info = gdk_quartz_drag_context_get_dragging_info_libgtk_only (context);
+  dragging_info = bdk_quartz_drag_context_get_dragging_info_libbtk_only (context);
   pasteboard = [dragging_info draggingPasteboard];
 
-  info = gtk_drag_get_dest_info (context, FALSE);
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  info = btk_drag_get_dest_info (context, FALSE);
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
 
-  selection_data = _gtk_quartz_get_selection_data_from_pasteboard (pasteboard,
+  selection_data = _btk_quartz_get_selection_data_from_pasteboard (pasteboard,
 								   target, 0);
 
   if (site && site->target_list)
     {
       guint target_info;
       
-      if (gtk_target_list_find (site->target_list, 
+      if (btk_target_list_find (site->target_list, 
 				selection_data->target,
 				&target_info))
 	{
-	  if (!(site->flags & GTK_DEST_DEFAULT_DROP) ||
+	  if (!(site->flags & BTK_DEST_DEFAULT_DROP) ||
 	      selection_data->length >= 0)
 	    g_signal_emit_by_name (widget,
 				   "drag-data-received",
@@ -233,27 +233,27 @@ gtk_drag_get_data (GtkWidget      *widget,
 			     0, time);
     }
   
-  if (site && site->flags & GTK_DEST_DEFAULT_DROP)
+  if (site && site->flags & BTK_DEST_DEFAULT_DROP)
     {
-      gtk_drag_finish (context, 
+      btk_drag_finish (context, 
 		       (selection_data->length >= 0),
-		       (context->action == GDK_ACTION_MOVE),
+		       (context->action == BDK_ACTION_MOVE),
 		       time);
     }      
 }
 
 void 
-gtk_drag_finish (GdkDragContext *context,
+btk_drag_finish (BdkDragContext *context,
 		 gboolean        success,
 		 gboolean        del,
 		 guint32         time)
 {
-  GtkDragSourceInfo *info;
-  GdkDragContext* source_context = gdk_quartz_drag_source_context ();
+  BtkDragSourceInfo *info;
+  BdkDragContext* source_context = bdk_quartz_drag_source_context ();
 
   if (source_context)
     {
-      info = gtk_drag_get_source_info (source_context, FALSE);
+      info = btk_drag_get_source_info (source_context, FALSE);
       if (info)
         {
           info->success = success;
@@ -263,31 +263,31 @@ gtk_drag_finish (GdkDragContext *context,
 }
 
 static void
-gtk_drag_dest_info_destroy (gpointer data)
+btk_drag_dest_info_destroy (gpointer data)
 {
-  GtkDragDestInfo *info = data;
+  BtkDragDestInfo *info = data;
 
   g_free (info);
 }
 
-static GtkDragDestInfo *
-gtk_drag_get_dest_info (GdkDragContext *context,
+static BtkDragDestInfo *
+btk_drag_get_dest_info (BdkDragContext *context,
 			gboolean        create)
 {
-  GtkDragDestInfo *info;
+  BtkDragDestInfo *info;
   static GQuark info_quark = 0;
   if (!info_quark)
-    info_quark = g_quark_from_static_string ("gtk-dest-info");
+    info_quark = g_quark_from_static_string ("btk-dest-info");
   
   info = g_object_get_qdata (G_OBJECT (context), info_quark);
   if (!info && create)
     {
-      info = g_new (GtkDragDestInfo, 1);
+      info = g_new (BtkDragDestInfo, 1);
       info->widget = NULL;
       info->context = context;
       info->dropped = FALSE;
       g_object_set_qdata_full (G_OBJECT (context), info_quark,
-			       info, gtk_drag_dest_info_destroy);
+			       info, btk_drag_dest_info_destroy);
     }
 
   return info;
@@ -295,19 +295,19 @@ gtk_drag_get_dest_info (GdkDragContext *context,
 
 static GQuark dest_info_quark = 0;
 
-static GtkDragSourceInfo *
-gtk_drag_get_source_info (GdkDragContext *context,
+static BtkDragSourceInfo *
+btk_drag_get_source_info (BdkDragContext *context,
 			  gboolean        create)
 {
-  GtkDragSourceInfo *info;
+  BtkDragSourceInfo *info;
 
   if (!dest_info_quark)
-    dest_info_quark = g_quark_from_static_string ("gtk-source-info");
+    dest_info_quark = g_quark_from_static_string ("btk-source-info");
   
   info = g_object_get_qdata (G_OBJECT (context), dest_info_quark);
   if (!info && create)
     {
-      info = g_new0 (GtkDragSourceInfo, 1);
+      info = g_new0 (BtkDragSourceInfo, 1);
       info->context = context;
       g_object_set_qdata (G_OBJECT (context), dest_info_quark, info);
     }
@@ -316,21 +316,21 @@ gtk_drag_get_source_info (GdkDragContext *context,
 }
 
 static void
-gtk_drag_clear_source_info (GdkDragContext *context)
+btk_drag_clear_source_info (BdkDragContext *context)
 {
   g_object_set_qdata (G_OBJECT (context), dest_info_quark, NULL);
 }
 
-GtkWidget *
-gtk_drag_get_source_widget (GdkDragContext *context)
+BtkWidget *
+btk_drag_get_source_widget (BdkDragContext *context)
 {
-  GtkDragSourceInfo *info;
-  GdkDragContext* real_source_context = gdk_quartz_drag_source_context();
+  BtkDragSourceInfo *info;
+  BdkDragContext* real_source_context = bdk_quartz_drag_source_context();
 
   if (!real_source_context)
     return NULL;
 
-  info = gtk_drag_get_source_info (real_source_context, FALSE);
+  info = btk_drag_get_source_info (real_source_context, FALSE);
   if (!info)
      return NULL;
 
@@ -338,7 +338,7 @@ gtk_drag_get_source_widget (GdkDragContext *context)
 }
 
 /*************************************************************
- * gtk_drag_highlight_expose:
+ * btk_drag_highlight_expose:
  *     Callback for expose_event for highlighted widgets.
  *   arguments:
  *     widget:
@@ -348,17 +348,17 @@ gtk_drag_get_source_widget (GdkDragContext *context)
  *************************************************************/
 
 static gboolean
-gtk_drag_highlight_expose (GtkWidget      *widget,
-			   GdkEventExpose *event,
+btk_drag_highlight_expose (BtkWidget      *widget,
+			   BdkEventExpose *event,
 			   gpointer        data)
 {
   gint x, y, width, height;
   
-  if (gtk_widget_is_drawable (widget))
+  if (btk_widget_is_drawable (widget))
     {
-      cairo_t *cr;
+      bairo_t *cr;
       
-      if (!gtk_widget_get_has_window (widget))
+      if (!btk_widget_get_has_window (widget))
 	{
 	  x = widget->allocation.x;
 	  y = widget->allocation.y;
@@ -369,30 +369,30 @@ gtk_drag_highlight_expose (GtkWidget      *widget,
 	{
 	  x = 0;
 	  y = 0;
-	  width = gdk_window_get_width (widget->window);
-	  height = gdk_window_get_height (widget->window);
+	  width = bdk_window_get_width (widget->window);
+	  height = bdk_window_get_height (widget->window);
 	}
       
-      gtk_paint_shadow (widget->style, widget->window,
-		        GTK_STATE_NORMAL, GTK_SHADOW_OUT,
+      btk_paint_shadow (widget->style, widget->window,
+		        BTK_STATE_NORMAL, BTK_SHADOW_OUT,
 		        NULL, widget, "dnd",
 			x, y, width, height);
 
-      cr = gdk_cairo_create (widget->window);
-      cairo_set_source_rgb (cr, 0.0, 0.0, 0.0); /* black */
-      cairo_set_line_width (cr, 1.0);
-      cairo_rectangle (cr,
+      cr = bdk_bairo_create (widget->window);
+      bairo_set_source_rgb (cr, 0.0, 0.0, 0.0); /* black */
+      bairo_set_line_width (cr, 1.0);
+      bairo_rectangle (cr,
 		       x + 0.5, y + 0.5,
 		       width - 1, height - 1);
-      cairo_stroke (cr);
-      cairo_destroy (cr);
+      bairo_stroke (cr);
+      bairo_destroy (cr);
     }
 
   return FALSE;
 }
 
 /*************************************************************
- * gtk_drag_highlight:
+ * btk_drag_highlight:
  *     Highlight the given widget in the default manner.
  *   arguments:
  *     widget:
@@ -400,19 +400,19 @@ gtk_drag_highlight_expose (GtkWidget      *widget,
  *************************************************************/
 
 void 
-gtk_drag_highlight (GtkWidget  *widget)
+btk_drag_highlight (BtkWidget  *widget)
 {
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
   g_signal_connect_after (widget, "expose-event",
-			  G_CALLBACK (gtk_drag_highlight_expose),
+			  G_CALLBACK (btk_drag_highlight_expose),
 			  NULL);
 
-  gtk_widget_queue_draw (widget);
+  btk_widget_queue_draw (widget);
 }
 
 /*************************************************************
- * gtk_drag_unhighlight:
+ * btk_drag_unhighlight:
  *     Refresh the given widget to remove the highlight.
  *   arguments:
  *     widget:
@@ -420,30 +420,30 @@ gtk_drag_highlight (GtkWidget  *widget)
  *************************************************************/
 
 void 
-gtk_drag_unhighlight (GtkWidget *widget)
+btk_drag_unhighlight (BtkWidget *widget)
 {
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
   g_signal_handlers_disconnect_by_func (widget,
-					gtk_drag_highlight_expose,
+					btk_drag_highlight_expose,
 					NULL);
   
-  gtk_widget_queue_draw (widget);
+  btk_widget_queue_draw (widget);
 }
 
 static NSWindow *
-get_toplevel_nswindow (GtkWidget *widget)
+get_toplevel_nswindow (BtkWidget *widget)
 {
-  GtkWidget *toplevel = gtk_widget_get_toplevel (widget);
+  BtkWidget *toplevel = btk_widget_get_toplevel (widget);
   
-  if (gtk_widget_is_toplevel (toplevel) && toplevel->window)
-    return [gdk_quartz_window_get_nsview (toplevel->window) window];
+  if (btk_widget_is_toplevel (toplevel) && toplevel->window)
+    return [bdk_quartz_window_get_nsview (toplevel->window) window];
   else
     return NULL;
 }
 
 static void
-register_types (GtkWidget *widget, GtkDragDestSite *site)
+register_types (BtkWidget *widget, BtkDragDestSite *site)
 {
   if (site->target_list)
     {
@@ -455,7 +455,7 @@ register_types (GtkWidget *widget, GtkDragDestSite *site)
 	return;
 
       pool = [[NSAutoreleasePool alloc] init];
-      types = _gtk_quartz_target_list_to_pasteboard_types (site->target_list);
+      types = _btk_quartz_target_list_to_pasteboard_types (site->target_list);
 
       [nswindow registerForDraggedTypes:[types allObjects]];
 
@@ -465,53 +465,53 @@ register_types (GtkWidget *widget, GtkDragDestSite *site)
 }
 
 static void
-gtk_drag_dest_realized (GtkWidget *widget, 
+btk_drag_dest_realized (BtkWidget *widget, 
 			gpointer   user_data)
 {
-  GtkDragDestSite *site = user_data;
+  BtkDragDestSite *site = user_data;
 
   register_types (widget, site);
 }
 
 static void
-gtk_drag_dest_hierarchy_changed (GtkWidget *widget,
-				 GtkWidget *previous_toplevel,
+btk_drag_dest_hierarchy_changed (BtkWidget *widget,
+				 BtkWidget *previous_toplevel,
 				 gpointer   user_data)
 {
-  GtkDragDestSite *site = user_data;
+  BtkDragDestSite *site = user_data;
 
   register_types (widget, site);
 }
 
 static void
-gtk_drag_dest_site_destroy (gpointer data)
+btk_drag_dest_site_destroy (gpointer data)
 {
-  GtkDragDestSite *site = data;
+  BtkDragDestSite *site = data;
     
   if (site->target_list)
-    gtk_target_list_unref (site->target_list);
+    btk_target_list_unref (site->target_list);
 
   g_free (site);
 }
 
 void 
-gtk_drag_dest_set (GtkWidget            *widget,
-		   GtkDestDefaults       flags,
-		   const GtkTargetEntry *targets,
+btk_drag_dest_set (BtkWidget            *widget,
+		   BtkDestDefaults       flags,
+		   const BtkTargetEntry *targets,
 		   gint                  n_targets,
-		   GdkDragAction         actions)
+		   BdkDragAction         actions)
 {
-  GtkDragDestSite *old_site, *site;
+  BtkDragDestSite *old_site, *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  old_site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  old_site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
 
-  site = g_new (GtkDragDestSite, 1);
+  site = g_new (BtkDragDestSite, 1);
   site->flags = flags;
   site->have_drag = FALSE;
   if (targets)
-    site->target_list = gtk_target_list_new (targets, n_targets);
+    site->target_list = btk_target_list_new (targets, n_targets);
   else
     site->target_list = NULL;
   site->actions = actions;
@@ -521,84 +521,84 @@ gtk_drag_dest_set (GtkWidget            *widget,
   else
     site->track_motion = FALSE;
 
-  gtk_drag_dest_unset (widget);
+  btk_drag_dest_unset (widget);
 
-  if (gtk_widget_get_realized (widget))
-    gtk_drag_dest_realized (widget, site);
+  if (btk_widget_get_realized (widget))
+    btk_drag_dest_realized (widget, site);
 
   g_signal_connect (widget, "realize",
-		    G_CALLBACK (gtk_drag_dest_realized), site);
+		    G_CALLBACK (btk_drag_dest_realized), site);
   g_signal_connect (widget, "hierarchy-changed",
-		    G_CALLBACK (gtk_drag_dest_hierarchy_changed), site);
+		    G_CALLBACK (btk_drag_dest_hierarchy_changed), site);
 
-  g_object_set_data_full (G_OBJECT (widget), I_("gtk-drag-dest"),
-			  site, gtk_drag_dest_site_destroy);
+  g_object_set_data_full (G_OBJECT (widget), I_("btk-drag-dest"),
+			  site, btk_drag_dest_site_destroy);
 }
 
 void 
-gtk_drag_dest_set_proxy (GtkWidget      *widget,
-			 GdkWindow      *proxy_window,
-			 GdkDragProtocol protocol,
+btk_drag_dest_set_proxy (BtkWidget      *widget,
+			 BdkWindow      *proxy_window,
+			 BdkDragProtocol protocol,
 			 gboolean        use_coordinates)
 {
-  g_warning ("gtk_drag_dest_set_proxy is not supported on Mac OS X.");
+  g_warning ("btk_drag_dest_set_proxy is not supported on Mac OS X.");
 }
 
 void 
-gtk_drag_dest_unset (GtkWidget *widget)
+btk_drag_dest_unset (BtkWidget *widget)
 {
-  GtkDragDestSite *old_site;
+  BtkDragDestSite *old_site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  old_site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  old_site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   if (old_site)
     {
       g_signal_handlers_disconnect_by_func (widget,
-                                            gtk_drag_dest_realized,
+                                            btk_drag_dest_realized,
                                             old_site);
       g_signal_handlers_disconnect_by_func (widget,
-                                            gtk_drag_dest_hierarchy_changed,
+                                            btk_drag_dest_hierarchy_changed,
                                             old_site);
     }
 
-  g_object_set_data (G_OBJECT (widget), I_("gtk-drag-dest"), NULL);
+  g_object_set_data (G_OBJECT (widget), I_("btk-drag-dest"), NULL);
 }
 
-GtkTargetList*
-gtk_drag_dest_get_target_list (GtkWidget *widget)
+BtkTargetList*
+btk_drag_dest_get_target_list (BtkWidget *widget)
 {
-  GtkDragDestSite *site;
+  BtkDragDestSite *site;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
   
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
 
   return site ? site->target_list : NULL;  
 }
 
 void
-gtk_drag_dest_set_target_list (GtkWidget      *widget,
-                               GtkTargetList  *target_list)
+btk_drag_dest_set_target_list (BtkWidget      *widget,
+                               BtkTargetList  *target_list)
 {
-  GtkDragDestSite *site;
+  BtkDragDestSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
   
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   
   if (!site)
     {
-      g_warning ("Can't set a target list on a widget until you've called gtk_drag_dest_set() "
+      g_warning ("Can't set a target list on a widget until you've called btk_drag_dest_set() "
                  "to make the widget into a drag destination");
       return;
     }
 
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   
   if (site->target_list)
-    gtk_target_list_unref (site->target_list);
+    btk_target_list_unref (site->target_list);
 
   site->target_list = target_list;
 
@@ -606,52 +606,52 @@ gtk_drag_dest_set_target_list (GtkWidget      *widget,
 }
 
 void
-gtk_drag_dest_add_text_targets (GtkWidget *widget)
+btk_drag_dest_add_text_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_dest_get_target_list (widget);
+  target_list = btk_drag_dest_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_text_targets (target_list, 0);
-  gtk_drag_dest_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_text_targets (target_list, 0);
+  btk_drag_dest_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 void
-gtk_drag_dest_add_image_targets (GtkWidget *widget)
+btk_drag_dest_add_image_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_dest_get_target_list (widget);
+  target_list = btk_drag_dest_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_image_targets (target_list, 0, FALSE);
-  gtk_drag_dest_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_image_targets (target_list, 0, FALSE);
+  btk_drag_dest_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 void
-gtk_drag_dest_add_uri_targets (GtkWidget *widget)
+btk_drag_dest_add_uri_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_dest_get_target_list (widget);
+  target_list = btk_drag_dest_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_uri_targets (target_list, 0);
-  gtk_drag_dest_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_uri_targets (target_list, 0);
+  btk_drag_dest_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 static void
-prepend_and_ref_widget (GtkWidget *widget,
+prepend_and_ref_widget (BtkWidget *widget,
 			gpointer   data)
 {
   GSList **slist_p = data;
@@ -660,16 +660,16 @@ prepend_and_ref_widget (GtkWidget *widget,
 }
 
 static void
-gtk_drag_find_widget (GtkWidget       *widget,
-		      GtkDragFindData *data)
+btk_drag_find_widget (BtkWidget       *widget,
+		      BtkDragFindData *data)
 {
-  GtkAllocation new_allocation;
+  BtkAllocation new_allocation;
   gint allocation_to_window_x = 0;
   gint allocation_to_window_y = 0;
   gint x_offset = 0;
   gint y_offset = 0;
 
-  if (data->found || !gtk_widget_get_mapped (widget) || !gtk_widget_get_sensitive (widget))
+  if (data->found || !btk_widget_get_mapped (widget) || !btk_widget_get_sensitive (widget))
     return;
 
   /* Note that in the following code, we only count the
@@ -691,7 +691,7 @@ gtk_drag_find_widget (GtkWidget       *widget,
   if (widget->parent)
     {
       gint tx, ty;
-      GdkWindow *window = widget->window;
+      BdkWindow *window = widget->window;
 
       /* Compute the offset from allocation-relative to
        * window-relative coordinates.
@@ -699,12 +699,12 @@ gtk_drag_find_widget (GtkWidget       *widget,
       allocation_to_window_x = widget->allocation.x;
       allocation_to_window_y = widget->allocation.y;
 
-      if (gtk_widget_get_has_window (widget))
+      if (btk_widget_get_has_window (widget))
 	{
 	  /* The allocation is relative to the parent window for
 	   * window widgets, not to widget->window.
 	   */
-          gdk_window_get_position (window, &tx, &ty);
+          bdk_window_get_position (window, &tx, &ty);
 	  
           allocation_to_window_x -= tx;
           allocation_to_window_y -= ty;
@@ -715,20 +715,20 @@ gtk_drag_find_widget (GtkWidget       *widget,
       
       while (window && window != widget->parent->window)
 	{
-	  GdkRectangle window_rect = { 0, 0, 0, 0 };
+	  BdkRectangle window_rect = { 0, 0, 0, 0 };
 	  
-	  window_rect.width = gdk_window_get_width (window);
-	  window_rect.height = gdk_window_get_height (window);
+	  window_rect.width = bdk_window_get_width (window);
+	  window_rect.height = bdk_window_get_height (window);
 
-	  gdk_rectangle_intersect (&new_allocation, &window_rect, &new_allocation);
+	  bdk_rectangle_intersect (&new_allocation, &window_rect, &new_allocation);
 
-	  gdk_window_get_position (window, &tx, &ty);
+	  bdk_window_get_position (window, &tx, &ty);
 	  new_allocation.x += tx;
 	  x_offset += tx;
 	  new_allocation.y += ty;
 	  y_offset += ty;
 	  
-	  window = gdk_window_get_parent (window);
+	  window = bdk_window_get_parent (window);
 	}
 
       if (!window)		/* Window and widget heirarchies didn't match. */
@@ -743,9 +743,9 @@ gtk_drag_find_widget (GtkWidget       *widget,
       /* First, check if the drag is in a valid drop site in
        * one of our children 
        */
-      if (GTK_IS_CONTAINER (widget))
+      if (BTK_IS_CONTAINER (widget))
 	{
-	  GtkDragFindData new_data = *data;
+	  BtkDragFindData new_data = *data;
 	  GSList *children = NULL;
 	  GSList *tmp_list;
 	  
@@ -757,11 +757,11 @@ gtk_drag_find_widget (GtkWidget       *widget,
 	  /* need to reference children temporarily in case the
 	   * ::drag-motion/::drag-drop callbacks change the widget hierarchy.
 	   */
-	  gtk_container_forall (GTK_CONTAINER (widget), prepend_and_ref_widget, &children);
+	  btk_container_forall (BTK_CONTAINER (widget), prepend_and_ref_widget, &children);
 	  for (tmp_list = children; tmp_list; tmp_list = tmp_list->next)
 	    {
-	      if (!new_data.found && gtk_widget_is_drawable (tmp_list->data))
-		gtk_drag_find_widget (tmp_list->data, &new_data);
+	      if (!new_data.found && btk_widget_is_drawable (tmp_list->data))
+		btk_drag_find_widget (tmp_list->data, &new_data);
 	      g_object_unref (tmp_list->data);
 	    }
 	  g_slist_free (children);
@@ -774,7 +774,7 @@ gtk_drag_find_widget (GtkWidget       *widget,
        * a drop site.
        */
       if (!data->found &&
-	  g_object_get_data (G_OBJECT (widget), "gtk-drag-dest"))
+	  g_object_get_data (G_OBJECT (widget), "btk-drag-dest"))
 	{
 	  data->found = data->callback (widget,
 					data->context,
@@ -786,7 +786,7 @@ gtk_drag_find_widget (GtkWidget       *widget,
 	    {
 	      if (data->info->widget && data->info->widget != widget)
 		{
-		  gtk_drag_dest_leave (data->info->widget, data->context, data->time);
+		  btk_drag_dest_leave (data->info->widget, data->context, data->time);
 		}
 	      data->info->widget = widget;
 	    }
@@ -795,19 +795,19 @@ gtk_drag_find_widget (GtkWidget       *widget,
 }
 
 static void  
-gtk_drag_dest_leave (GtkWidget      *widget,
-		     GdkDragContext *context,
+btk_drag_dest_leave (BtkWidget      *widget,
+		     BdkDragContext *context,
 		     guint           time)
 {
-  GtkDragDestSite *site;
+  BtkDragDestSite *site;
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   g_return_if_fail (site != NULL);
 
-  if ((site->flags & GTK_DEST_DEFAULT_HIGHLIGHT) && site->have_drag)
-    gtk_drag_unhighlight (widget);
+  if ((site->flags & BTK_DEST_DEFAULT_HIGHLIGHT) && site->have_drag)
+    btk_drag_unhighlight (widget);
   
-  if (!(site->flags & GTK_DEST_DEFAULT_MOTION) || site->have_drag ||
+  if (!(site->flags & BTK_DEST_DEFAULT_MOTION) || site->have_drag ||
       site->track_motion)
     g_signal_emit_by_name (widget, "drag-leave", context, time);
   
@@ -815,38 +815,38 @@ gtk_drag_dest_leave (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_drag_dest_motion (GtkWidget	     *widget,
-		      GdkDragContext *context,
+btk_drag_dest_motion (BtkWidget	     *widget,
+		      BdkDragContext *context,
 		      gint            x,
 		      gint            y,
 		      guint           time)
 {
-  GtkDragDestSite *site;
-  GdkDragAction action = 0;
+  BtkDragDestSite *site;
+  BdkDragAction action = 0;
   gboolean retval;
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   g_return_val_if_fail (site != NULL, FALSE);
 
-  if (site->track_motion || site->flags & GTK_DEST_DEFAULT_MOTION)
+  if (site->track_motion || site->flags & BTK_DEST_DEFAULT_MOTION)
     {
       if (context->suggested_action & site->actions)
 	action = context->suggested_action;
       
-      if (action && gtk_drag_dest_find_target (widget, context, NULL))
+      if (action && btk_drag_dest_find_target (widget, context, NULL))
 	{
 	  if (!site->have_drag)
 	    {
 	      site->have_drag = TRUE;
-	      if (site->flags & GTK_DEST_DEFAULT_HIGHLIGHT)
-		gtk_drag_highlight (widget);
+	      if (site->flags & BTK_DEST_DEFAULT_HIGHLIGHT)
+		btk_drag_highlight (widget);
 	    }
 	  
-	  gdk_drag_status (context, action, time);
+	  bdk_drag_status (context, action, time);
 	}
       else
 	{
-	  gdk_drag_status (context, 0, time);
+	  bdk_drag_status (context, 0, time);
 	  if (!site->track_motion)
 	    return TRUE;
 	}
@@ -855,57 +855,57 @@ gtk_drag_dest_motion (GtkWidget	     *widget,
   g_signal_emit_by_name (widget, "drag-motion",
 			 context, x, y, time, &retval);
 
-  return (site->flags & GTK_DEST_DEFAULT_MOTION) ? TRUE : retval;
+  return (site->flags & BTK_DEST_DEFAULT_MOTION) ? TRUE : retval;
 }
 
 static gboolean
-gtk_drag_dest_drop (GtkWidget	     *widget,
-		    GdkDragContext   *context,
+btk_drag_dest_drop (BtkWidget	     *widget,
+		    BdkDragContext   *context,
 		    gint              x,
 		    gint              y,
 		    guint             time)
 {
-  GtkDragDestSite *site;
-  GtkDragDestInfo *info;
+  BtkDragDestSite *site;
+  BtkDragDestInfo *info;
   gboolean retval;
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   g_return_val_if_fail (site != NULL, FALSE);
 
-  info = gtk_drag_get_dest_info (context, FALSE);
+  info = btk_drag_get_dest_info (context, FALSE);
   g_return_val_if_fail (info != NULL, FALSE);
 
   info->drop_x = x;
   info->drop_y = y;
 
-  if (site->flags & GTK_DEST_DEFAULT_DROP)
+  if (site->flags & BTK_DEST_DEFAULT_DROP)
     {
-      GdkAtom target = gtk_drag_dest_find_target (widget, context, NULL);
+      BdkAtom target = btk_drag_dest_find_target (widget, context, NULL);
 
-      if (target == GDK_NONE)
+      if (target == BDK_NONE)
 	{
-	  gtk_drag_finish (context, FALSE, FALSE, time);
+	  btk_drag_finish (context, FALSE, FALSE, time);
 	  return TRUE;
 	}
       else
-	gtk_drag_get_data (widget, context, target, time);
+	btk_drag_get_data (widget, context, target, time);
     }
   
   g_signal_emit_by_name (widget, "drag-drop",
 			 context, x, y, time, &retval);
 
-  return (site->flags & GTK_DEST_DEFAULT_DROP) ? TRUE : retval;
+  return (site->flags & BTK_DEST_DEFAULT_DROP) ? TRUE : retval;
 }
 
 void
-gtk_drag_dest_set_track_motion (GtkWidget *widget,
+btk_drag_dest_set_track_motion (BtkWidget *widget,
 				gboolean   track_motion)
 {
-  GtkDragDestSite *site;
+  BtkDragDestSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
   
   g_return_if_fail (site != NULL);
 
@@ -913,13 +913,13 @@ gtk_drag_dest_set_track_motion (GtkWidget *widget,
 }
 
 gboolean
-gtk_drag_dest_get_track_motion (GtkWidget *widget)
+btk_drag_dest_get_track_motion (BtkWidget *widget)
 {
-  GtkDragDestSite *site;
+  BtkDragDestSite *site;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-drag-dest");
+  site = g_object_get_data (G_OBJECT (widget), "btk-drag-dest");
 
   if (site)
     return site->track_motion;
@@ -928,40 +928,40 @@ gtk_drag_dest_get_track_motion (GtkWidget *widget)
 }
 
 void
-_gtk_drag_dest_handle_event (GtkWidget *toplevel,
-			     GdkEvent  *event)
+_btk_drag_dest_handle_event (BtkWidget *toplevel,
+			     BdkEvent  *event)
 {
-  GtkDragDestInfo *info;
-  GdkDragContext *context;
+  BtkDragDestInfo *info;
+  BdkDragContext *context;
 
   g_return_if_fail (toplevel != NULL);
   g_return_if_fail (event != NULL);
 
   context = event->dnd.context;
 
-  info = gtk_drag_get_dest_info (context, TRUE);
+  info = btk_drag_get_dest_info (context, TRUE);
 
   /* Find the widget for the event */
   switch (event->type)
     {
-    case GDK_DRAG_ENTER:
+    case BDK_DRAG_ENTER:
       break;
 
-    case GDK_DRAG_LEAVE:
+    case BDK_DRAG_LEAVE:
       if (info->widget)
 	{
-	  gtk_drag_dest_leave (info->widget, context, event->dnd.time);
+	  btk_drag_dest_leave (info->widget, context, event->dnd.time);
 	  info->widget = NULL;
 	}
       break;
 
-    case GDK_DRAG_MOTION:
-    case GDK_DROP_START:
+    case BDK_DRAG_MOTION:
+    case BDK_DROP_START:
       {
-	GtkDragFindData data;
+	BtkDragFindData data;
 	gint tx, ty;
 
-	if (event->type == GDK_DROP_START)
+	if (event->type == BDK_DROP_START)
 	  {
 	    info->dropped = TRUE;
 	    /* We send a leave here so that the widget unhighlights
@@ -969,12 +969,12 @@ _gtk_drag_dest_handle_event (GtkWidget *toplevel,
 	     */
 	    if (info->widget)
 	      {
-		gtk_drag_dest_leave (info->widget, context, event->dnd.time);
+		btk_drag_dest_leave (info->widget, context, event->dnd.time);
 		info->widget = NULL;
 	      }
 	  }
 
-	gdk_window_get_position (toplevel->window, &tx, &ty);
+	bdk_window_get_position (toplevel->window, &tx, &ty);
 	
 	data.x = event->dnd.x_root - tx;
 	data.y = event->dnd.y_root - ty;
@@ -982,24 +982,24 @@ _gtk_drag_dest_handle_event (GtkWidget *toplevel,
 	data.info = info;
 	data.found = FALSE;
 	data.toplevel = TRUE;
-	data.callback = (event->type == GDK_DRAG_MOTION) ?
-	  gtk_drag_dest_motion : gtk_drag_dest_drop;
+	data.callback = (event->type == BDK_DRAG_MOTION) ?
+	  btk_drag_dest_motion : btk_drag_dest_drop;
 	data.time = event->dnd.time;
 	
-	gtk_drag_find_widget (toplevel, &data);
+	btk_drag_find_widget (toplevel, &data);
 
 	if (info->widget && !data.found)
 	  {
-	    gtk_drag_dest_leave (info->widget, context, event->dnd.time);
+	    btk_drag_dest_leave (info->widget, context, event->dnd.time);
 	    info->widget = NULL;
 	  }
 
 	/* Send a reply.
 	 */
-	if (event->type == GDK_DRAG_MOTION)
+	if (event->type == BDK_DRAG_MOTION)
 	  {
 	    if (!data.found)
-	      gdk_drag_status (context, 0, event->dnd.time);
+	      bdk_drag_status (context, 0, event->dnd.time);
 	  }
 
 	break;
@@ -1010,45 +1010,45 @@ _gtk_drag_dest_handle_event (GtkWidget *toplevel,
 }
 
 
-GdkAtom
-gtk_drag_dest_find_target (GtkWidget      *widget,
-                           GdkDragContext *context,
-                           GtkTargetList  *target_list)
+BdkAtom
+btk_drag_dest_find_target (BtkWidget      *widget,
+                           BdkDragContext *context,
+                           BtkTargetList  *target_list)
 {
   id <NSDraggingInfo> dragging_info;
   NSPasteboard *pasteboard;
-  GtkWidget *source_widget;
+  BtkWidget *source_widget;
   GList *tmp_target;
   GList *tmp_source = NULL;
   GList *source_targets;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), GDK_NONE);
-  g_return_val_if_fail (GDK_IS_DRAG_CONTEXT (context), GDK_NONE);
-  g_return_val_if_fail (!context->is_source, GDK_NONE);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), BDK_NONE);
+  g_return_val_if_fail (BDK_IS_DRAG_CONTEXT (context), BDK_NONE);
+  g_return_val_if_fail (!context->is_source, BDK_NONE);
 
-  dragging_info = gdk_quartz_drag_context_get_dragging_info_libgtk_only (context);
+  dragging_info = bdk_quartz_drag_context_get_dragging_info_libbtk_only (context);
   pasteboard = [dragging_info draggingPasteboard];
 
-  source_widget = gtk_drag_get_source_widget (context);
+  source_widget = btk_drag_get_source_widget (context);
 
   if (target_list == NULL)
-    target_list = gtk_drag_dest_get_target_list (widget);
+    target_list = btk_drag_dest_get_target_list (widget);
   
   if (target_list == NULL)
-    return GDK_NONE;
+    return BDK_NONE;
 
-  source_targets = _gtk_quartz_pasteboard_types_to_atom_list ([pasteboard types]);
+  source_targets = _btk_quartz_pasteboard_types_to_atom_list ([pasteboard types]);
   tmp_target = target_list->list;
   while (tmp_target)
     {
-      GtkTargetPair *pair = tmp_target->data;
+      BtkTargetPair *pair = tmp_target->data;
       tmp_source = source_targets;
       while (tmp_source)
 	{
 	  if (tmp_source->data == GUINT_TO_POINTER (pair->target))
 	    {
-	      if ((!(pair->flags & GTK_TARGET_SAME_APP) || source_widget) &&
-		  (!(pair->flags & GTK_TARGET_SAME_WIDGET) || (source_widget == widget)))
+	      if ((!(pair->flags & BTK_TARGET_SAME_APP) || source_widget) &&
+		  (!(pair->flags & BTK_TARGET_SAME_WIDGET) || (source_widget == widget)))
 		{
 		  g_list_free (source_targets);
 		  return pair->target;
@@ -1062,18 +1062,18 @@ gtk_drag_dest_find_target (GtkWidget      *widget,
     }
 
   g_list_free (source_targets);
-  return GDK_NONE;
+  return BDK_NONE;
 }
 
 static gboolean
-gtk_drag_begin_idle (gpointer arg)
+btk_drag_begin_idle (gpointer arg)
 {
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  GdkDragContext* context = (GdkDragContext*) arg;
-  GtkDragSourceInfo* info = gtk_drag_get_source_info (context, FALSE);
+  BdkDragContext* context = (BdkDragContext*) arg;
+  BtkDragSourceInfo* info = btk_drag_get_source_info (context, FALSE);
   NSWindow *nswindow;
   NSPasteboard *pasteboard;
-  GtkDragSourceOwner *owner;
+  BtkDragSourceOwner *owner;
   NSPoint point;
   NSSet *types;
   NSImage *drag_image;
@@ -1081,9 +1081,9 @@ gtk_drag_begin_idle (gpointer arg)
   g_assert (info != NULL);
 
   pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard];
-  owner = [[GtkDragSourceOwner alloc] initWithInfo:info];
+  owner = [[BtkDragSourceOwner alloc] initWithInfo:info];
 
-  types = _gtk_quartz_target_list_to_pasteboard_types (info->target_list);
+  types = _btk_quartz_target_list_to_pasteboard_types (info->target_list);
 
   [pasteboard declareTypes:[types allObjects] owner:owner];
 
@@ -1103,9 +1103,9 @@ gtk_drag_begin_idle (gpointer arg)
    * corrected to the NSWindow coordinate system.
    */
   point.x -= info->hot_x;
-  point.y += -(gdk_pixbuf_get_height (info->icon_pixbuf) - info->hot_y);
+  point.y += -(bdk_pixbuf_get_height (info->icon_pixbuf) - info->hot_y);
 
-  drag_image = _gtk_quartz_create_image_from_pixbuf (info->icon_pixbuf);
+  drag_image = _btk_quartz_create_image_from_pixbuf (info->icon_pixbuf);
   if (drag_image == NULL)
     {
       g_object_unref (info->context);
@@ -1128,16 +1128,16 @@ gtk_drag_begin_idle (gpointer arg)
   return FALSE;
 }
 
-static GdkDragContext *
-gtk_drag_begin_internal (GtkWidget         *widget,
-			 GtkDragSourceSite *site,
-			 GtkTargetList     *target_list,
-			 GdkDragAction      actions,
+static BdkDragContext *
+btk_drag_begin_internal (BtkWidget         *widget,
+			 BtkDragSourceSite *site,
+			 BtkTargetList     *target_list,
+			 BdkDragAction      actions,
 			 gint               button,
-			 GdkEvent          *event)
+			 BdkEvent          *event)
 {
-  GtkDragSourceInfo *info;
-  GdkDragContext *context;
+  BtkDragSourceInfo *info;
+  BdkDragContext *context;
   NSWindow *nswindow = get_toplevel_nswindow (widget);
   NSPoint point = {0, 0};
   gdouble x, y;
@@ -1147,29 +1147,29 @@ gtk_drag_begin_internal (GtkWidget         *widget,
 
   if (event)
     {
-      if (gdk_event_get_coords (event, &x, &y))
+      if (bdk_event_get_coords (event, &x, &y))
         {
           /* We need to translate (x, y) to coordinates relative to the
-           * toplevel GdkWindow, which should be the GdkWindow backing
+           * toplevel BdkWindow, which should be the BdkWindow backing
            * nswindow. Then, we convert to the NSWindow coordinate system.
            */
-          GdkWindow *window = event->any.window;
-          GdkWindow *toplevel = gdk_window_get_effective_toplevel (window);
+          BdkWindow *window = event->any.window;
+          BdkWindow *toplevel = bdk_window_get_effective_toplevel (window);
 
           while (window != toplevel)
             {
               double old_x = x;
               double old_y = y;
 
-              gdk_window_coords_to_parent (window, old_x, old_y,
+              bdk_window_coords_to_parent (window, old_x, old_y,
                                            &x, &y);
-              window = gdk_window_get_effective_parent (window);
+              window = bdk_window_get_effective_parent (window);
             }
 
           point.x = x;
-          point.y = gdk_window_get_height (window) - y;
+          point.y = bdk_window_get_height (window) - y;
         }
-      time = (double)gdk_event_get_time (event);
+      time = (double)bdk_event_get_time (event);
     }
   nstime = [[NSDate dateWithTimeIntervalSince1970: time / 1000] timeIntervalSinceReferenceDate];
   nsevent = [NSEvent mouseEventWithType: NSLeftMouseDown
@@ -1182,21 +1182,21 @@ gtk_drag_begin_internal (GtkWidget         *widget,
 		      clickCount: 1
 	              pressure: 0.0 ];
 
-  GdkWindow *window = [[nswindow contentView] gdkWindow];
+  BdkWindow *window = [[nswindow contentView] bdkWindow];
   g_return_val_if_fail(nsevent != NULL, NULL);
 
-  context = gdk_drag_begin (window, NULL);
+  context = bdk_drag_begin (window, NULL);
   g_return_val_if_fail( context != NULL, NULL);
   context->is_source = TRUE;
 
-  info = gtk_drag_get_source_info (context, TRUE);
+  info = btk_drag_get_source_info (context, TRUE);
   info->nsevent = nsevent;
   [info->nsevent retain];
 
   info->source_widget = g_object_ref (widget);
   info->widget = g_object_ref (widget);
   info->target_list = target_list;
-  gtk_target_list_ref (target_list);
+  btk_target_list_ref (target_list);
 
   info->possible_actions = actions;
   
@@ -1208,51 +1208,51 @@ gtk_drag_begin_internal (GtkWidget         *widget,
    */
   if (!info->icon_pixbuf)
     {
-      if (!site || site->icon_type == GTK_IMAGE_EMPTY)
-	gtk_drag_set_icon_default (context);
+      if (!site || site->icon_type == BTK_IMAGE_EMPTY)
+	btk_drag_set_icon_default (context);
       else
 	switch (site->icon_type)
 	  {
-	  case GTK_IMAGE_PIXMAP:
+	  case BTK_IMAGE_PIXMAP:
 	    /* This is not supported, so just set a small transparent pixbuf
 	     * since we need to have something.
 	     */
 	    if (0)
-	      gtk_drag_set_icon_pixmap (context,
+	      btk_drag_set_icon_pixmap (context,
 					site->colormap,
 					site->icon_data.pixmap.pixmap,
 					site->icon_mask,
 					-2, -2);
 	    else
 	      {
-		GdkPixbuf *pixbuf;
+		BdkPixbuf *pixbuf;
 
-		pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, 1, 1);
- 		gdk_pixbuf_fill (pixbuf, 0xffffff);
+		pixbuf = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, 1, 1);
+ 		bdk_pixbuf_fill (pixbuf, 0xffffff);
 
- 		gtk_drag_set_icon_pixbuf (context,
+ 		btk_drag_set_icon_pixbuf (context,
  					  pixbuf,
 					  0, 0);
 
  		g_object_unref (pixbuf);
 	      }
 	    break;
-	  case GTK_IMAGE_PIXBUF:
-	    gtk_drag_set_icon_pixbuf (context,
+	  case BTK_IMAGE_PIXBUF:
+	    btk_drag_set_icon_pixbuf (context,
 				      site->icon_data.pixbuf.pixbuf,
 				      -2, -2);
 	    break;
-	  case GTK_IMAGE_STOCK:
-	    gtk_drag_set_icon_stock (context,
+	  case BTK_IMAGE_STOCK:
+	    btk_drag_set_icon_stock (context,
 				     site->icon_data.stock.stock_id,
 				     -2, -2);
 	    break;
-	  case GTK_IMAGE_ICON_NAME:
-	    gtk_drag_set_icon_name (context,
+	  case BTK_IMAGE_ICON_NAME:
+	    btk_drag_set_icon_name (context,
 			    	    site->icon_data.name.icon_name,
 				    -2, -2);
 	    break;
-	  case GTK_IMAGE_EMPTY:
+	  case BTK_IMAGE_EMPTY:
 	  default:
 	    g_assert_not_reached();
 	    break;
@@ -1261,55 +1261,55 @@ gtk_drag_begin_internal (GtkWidget         *widget,
 
   /* drag will begin in an idle handler to avoid nested run loops */
 
-  g_idle_add_full (G_PRIORITY_HIGH_IDLE, gtk_drag_begin_idle, context, NULL);
+  g_idle_add_full (G_PRIORITY_HIGH_IDLE, btk_drag_begin_idle, context, NULL);
 
-  gdk_pointer_ungrab (0);
+  bdk_pointer_ungrab (0);
 
   return context;
 }
 
-GdkDragContext *
-gtk_drag_begin (GtkWidget         *widget,
-		GtkTargetList     *targets,
-		GdkDragAction      actions,
+BdkDragContext *
+btk_drag_begin (BtkWidget         *widget,
+		BtkTargetList     *targets,
+		BdkDragAction      actions,
 		gint               button,
-		GdkEvent          *event)
+		BdkEvent          *event)
 {
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
-  g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (btk_widget_get_realized (widget), NULL);
   g_return_val_if_fail (targets != NULL, NULL);
 
-  return gtk_drag_begin_internal (widget, NULL, targets,
+  return btk_drag_begin_internal (widget, NULL, targets,
 				  actions, button, event);
 }
 
 
 static gboolean
-gtk_drag_source_event_cb (GtkWidget      *widget,
-			  GdkEvent       *event,
+btk_drag_source_event_cb (BtkWidget      *widget,
+			  BdkEvent       *event,
 			  gpointer        data)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
   gboolean retval = FALSE;
-  site = (GtkDragSourceSite *)data;
+  site = (BtkDragSourceSite *)data;
 
   switch (event->type)
     {
-    case GDK_BUTTON_PRESS:
-      if ((GDK_BUTTON1_MASK << (event->button.button - 1)) & site->start_button_mask)
+    case BDK_BUTTON_PRESS:
+      if ((BDK_BUTTON1_MASK << (event->button.button - 1)) & site->start_button_mask)
 	{
-	  site->state |= (GDK_BUTTON1_MASK << (event->button.button - 1));
+	  site->state |= (BDK_BUTTON1_MASK << (event->button.button - 1));
 	  site->x = event->button.x;
 	  site->y = event->button.y;
 	}
       break;
       
-    case GDK_BUTTON_RELEASE:
-      if ((GDK_BUTTON1_MASK << (event->button.button - 1)) & site->start_button_mask)
-	site->state &= ~(GDK_BUTTON1_MASK << (event->button.button - 1));
+    case BDK_BUTTON_RELEASE:
+      if ((BDK_BUTTON1_MASK << (event->button.button - 1)) & site->start_button_mask)
+	site->state &= ~(BDK_BUTTON1_MASK << (event->button.button - 1));
       break;
       
-    case GDK_MOTION_NOTIFY:
+    case BDK_MOTION_NOTIFY:
       if (site->state & event->motion.state & site->start_button_mask)
 	{
 	  /* FIXME: This is really broken and can leave us
@@ -1319,15 +1319,15 @@ gtk_drag_source_event_cb (GtkWidget      *widget,
 	  for (i=1; i<6; i++)
 	    {
 	      if (site->state & event->motion.state & 
-		  GDK_BUTTON1_MASK << (i - 1))
+		  BDK_BUTTON1_MASK << (i - 1))
 		break;
 	    }
 
-	  if (gtk_drag_check_threshold (widget, site->x, site->y,
+	  if (btk_drag_check_threshold (widget, site->x, site->y,
 					event->motion.x, event->motion.y))
 	    {
 	      site->state = 0;
-	      gtk_drag_begin_internal (widget, site, site->target_list,
+	      btk_drag_begin_internal (widget, site, site->target_list,
 				       site->actions, 
 				       i, event);
 
@@ -1344,58 +1344,58 @@ gtk_drag_source_event_cb (GtkWidget      *widget,
 }
 
 void 
-gtk_drag_source_set (GtkWidget            *widget,
-		     GdkModifierType       start_button_mask,
-		     const GtkTargetEntry *targets,
+btk_drag_source_set (BtkWidget            *widget,
+		     BdkModifierType       start_button_mask,
+		     const BtkTargetEntry *targets,
 		     gint                  n_targets,
-		     GdkDragAction         actions)
+		     BdkDragAction         actions)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
 
-  gtk_widget_add_events (widget,
-			 gtk_widget_get_events (widget) |
-			 GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK |
-			 GDK_BUTTON_MOTION_MASK);
+  btk_widget_add_events (widget,
+			 btk_widget_get_events (widget) |
+			 BDK_BUTTON_PRESS_MASK | BDK_BUTTON_RELEASE_MASK |
+			 BDK_BUTTON_MOTION_MASK);
 
   if (site)
     {
       if (site->target_list)
-	gtk_target_list_unref (site->target_list);
+	btk_target_list_unref (site->target_list);
     }
   else
     {
-      site = g_new0 (GtkDragSourceSite, 1);
+      site = g_new0 (BtkDragSourceSite, 1);
 
-      site->icon_type = GTK_IMAGE_EMPTY;
+      site->icon_type = BTK_IMAGE_EMPTY;
       
       g_signal_connect (widget, "button-press-event",
-			G_CALLBACK (gtk_drag_source_event_cb),
+			G_CALLBACK (btk_drag_source_event_cb),
 			site);
       g_signal_connect (widget, "button-release-event",
-			G_CALLBACK (gtk_drag_source_event_cb),
+			G_CALLBACK (btk_drag_source_event_cb),
 			site);
       g_signal_connect (widget, "motion-notify-event",
-			G_CALLBACK (gtk_drag_source_event_cb),
+			G_CALLBACK (btk_drag_source_event_cb),
 			site);
       
       g_object_set_data_full (G_OBJECT (widget),
-			      I_("gtk-site-data"), 
-			      site, gtk_drag_source_site_destroy);
+			      I_("btk-site-data"), 
+			      site, btk_drag_source_site_destroy);
     }
 
   site->start_button_mask = start_button_mask;
 
-  site->target_list = gtk_target_list_new (targets, n_targets);
+  site->target_list = btk_target_list_new (targets, n_targets);
 
   site->actions = actions;
 }
 
 /*************************************************************
- * gtk_drag_source_unset
+ * btk_drag_source_unset
  *     Unregister this widget as a drag source.
  *   arguments:
  *     widget:
@@ -1403,145 +1403,145 @@ gtk_drag_source_set (GtkWidget            *widget,
  *************************************************************/
 
 void 
-gtk_drag_source_unset (GtkWidget *widget)
+btk_drag_source_unset (BtkWidget *widget)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
 
   if (site)
     {
       g_signal_handlers_disconnect_by_func (widget,
-					    gtk_drag_source_event_cb,
+					    btk_drag_source_event_cb,
 					    site);
-      g_object_set_data (G_OBJECT (widget), I_("gtk-site-data"), NULL);
+      g_object_set_data (G_OBJECT (widget), I_("btk-site-data"), NULL);
     }
 }
 
-GtkTargetList *
-gtk_drag_source_get_target_list (GtkWidget *widget)
+BtkTargetList *
+btk_drag_source_get_target_list (BtkWidget *widget)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), NULL);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
 
   return site ? site->target_list : NULL;
 
 }
 
 void
-gtk_drag_source_set_target_list (GtkWidget     *widget,
-                                 GtkTargetList *target_list)
+btk_drag_source_set_target_list (BtkWidget     *widget,
+                                 BtkTargetList *target_list)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
   if (site == NULL)
     {
-      g_warning ("gtk_drag_source_set_target_list() requires the widget "
+      g_warning ("btk_drag_source_set_target_list() requires the widget "
 		 "to already be a drag source.");
       return;
     }
 
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
 
   if (site->target_list)
-    gtk_target_list_unref (site->target_list);
+    btk_target_list_unref (site->target_list);
 
   site->target_list = target_list;
 }
 
 /**
- * gtk_drag_source_add_text_targets:
- * @widget: a #GtkWidget that's is a drag source
+ * btk_drag_source_add_text_targets:
+ * @widget: a #BtkWidget that's is a drag source
  *
- * Add the text targets supported by #GtkSelection to
+ * Add the text targets supported by #BtkSelection to
  * the target list of the drag source.  The targets
  * are added with @info = 0. If you need another value, 
- * use gtk_target_list_add_text_targets() and
- * gtk_drag_source_set_target_list().
+ * use btk_target_list_add_text_targets() and
+ * btk_drag_source_set_target_list().
  * 
  * Since: 2.6
  **/
 void
-gtk_drag_source_add_text_targets (GtkWidget *widget)
+btk_drag_source_add_text_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_source_get_target_list (widget);
+  target_list = btk_drag_source_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_text_targets (target_list, 0);
-  gtk_drag_source_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_text_targets (target_list, 0);
+  btk_drag_source_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 void
-gtk_drag_source_add_image_targets (GtkWidget *widget)
+btk_drag_source_add_image_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_source_get_target_list (widget);
+  target_list = btk_drag_source_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_image_targets (target_list, 0, TRUE);
-  gtk_drag_source_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_image_targets (target_list, 0, TRUE);
+  btk_drag_source_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 void
-gtk_drag_source_add_uri_targets (GtkWidget *widget)
+btk_drag_source_add_uri_targets (BtkWidget *widget)
 {
-  GtkTargetList *target_list;
+  BtkTargetList *target_list;
 
-  target_list = gtk_drag_source_get_target_list (widget);
+  target_list = btk_drag_source_get_target_list (widget);
   if (target_list)
-    gtk_target_list_ref (target_list);
+    btk_target_list_ref (target_list);
   else
-    target_list = gtk_target_list_new (NULL, 0);
-  gtk_target_list_add_uri_targets (target_list, 0);
-  gtk_drag_source_set_target_list (widget, target_list);
-  gtk_target_list_unref (target_list);
+    target_list = btk_target_list_new (NULL, 0);
+  btk_target_list_add_uri_targets (target_list, 0);
+  btk_drag_source_set_target_list (widget, target_list);
+  btk_target_list_unref (target_list);
 }
 
 static void
-gtk_drag_source_unset_icon (GtkDragSourceSite *site)
+btk_drag_source_unset_icon (BtkDragSourceSite *site)
 {
   switch (site->icon_type)
     {
-    case GTK_IMAGE_EMPTY:
+    case BTK_IMAGE_EMPTY:
       break;
-    case GTK_IMAGE_PIXMAP:
+    case BTK_IMAGE_PIXMAP:
       if (site->icon_data.pixmap.pixmap)
 	g_object_unref (site->icon_data.pixmap.pixmap);
       if (site->icon_mask)
 	g_object_unref (site->icon_mask);
       break;
-    case GTK_IMAGE_PIXBUF:
+    case BTK_IMAGE_PIXBUF:
       g_object_unref (site->icon_data.pixbuf.pixbuf);
       break;
-    case GTK_IMAGE_STOCK:
+    case BTK_IMAGE_STOCK:
       g_free (site->icon_data.stock.stock_id);
       break;
-    case GTK_IMAGE_ICON_NAME:
+    case BTK_IMAGE_ICON_NAME:
       g_free (site->icon_data.name.icon_name);
       break;
     default:
       g_assert_not_reached();
       break;
     }
-  site->icon_type = GTK_IMAGE_EMPTY;
+  site->icon_type = BTK_IMAGE_EMPTY;
   
   if (site->colormap)
     g_object_unref (site->colormap);
@@ -1549,31 +1549,31 @@ gtk_drag_source_unset_icon (GtkDragSourceSite *site)
 }
 
 static void 
-gtk_drag_source_site_destroy (gpointer data)
+btk_drag_source_site_destroy (gpointer data)
 {
-  GtkDragSourceSite *site = data;
+  BtkDragSourceSite *site = data;
 
   if (site->target_list)
-    gtk_target_list_unref (site->target_list);
+    btk_target_list_unref (site->target_list);
 
-  gtk_drag_source_unset_icon (site);
+  btk_drag_source_unset_icon (site);
   g_free (site);
 }
 
 void 
-gtk_drag_source_set_icon (GtkWidget     *widget,
-			  GdkColormap   *colormap,
-			  GdkPixmap     *pixmap,
-			  GdkBitmap     *mask)
+btk_drag_source_set_icon (BtkWidget     *widget,
+			  BdkColormap   *colormap,
+			  BdkPixmap     *pixmap,
+			  BdkBitmap     *mask)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
-  g_return_if_fail (GDK_IS_PIXMAP (pixmap));
-  g_return_if_fail (!mask || GDK_IS_PIXMAP (mask));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
+  g_return_if_fail (BDK_IS_PIXMAP (pixmap));
+  g_return_if_fail (!mask || BDK_IS_PIXMAP (mask));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
   
   g_object_ref (colormap);
@@ -1581,9 +1581,9 @@ gtk_drag_source_set_icon (GtkWidget     *widget,
   if (mask)
     g_object_ref (mask);
 
-  gtk_drag_source_unset_icon (site);
+  btk_drag_source_unset_icon (site);
 
-  site->icon_type = GTK_IMAGE_PIXMAP;
+  site->icon_type = BTK_IMAGE_PIXMAP;
   
   site->icon_data.pixmap.pixmap = pixmap;
   site->icon_mask = mask;
@@ -1591,120 +1591,120 @@ gtk_drag_source_set_icon (GtkWidget     *widget,
 }
 
 void 
-gtk_drag_source_set_icon_pixbuf (GtkWidget   *widget,
-				 GdkPixbuf   *pixbuf)
+btk_drag_source_set_icon_pixbuf (BtkWidget   *widget,
+				 BdkPixbuf   *pixbuf)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
+  g_return_if_fail (BDK_IS_PIXBUF (pixbuf));
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL); 
   g_object_ref (pixbuf);
 
-  gtk_drag_source_unset_icon (site);
+  btk_drag_source_unset_icon (site);
 
-  site->icon_type = GTK_IMAGE_PIXBUF;
+  site->icon_type = BTK_IMAGE_PIXBUF;
   site->icon_data.pixbuf.pixbuf = pixbuf;
 }
 
 /**
- * gtk_drag_source_set_icon_stock:
- * @widget: a #GtkWidget
+ * btk_drag_source_set_icon_stock:
+ * @widget: a #BtkWidget
  * @stock_id: the ID of the stock icon to use
  *
  * Sets the icon that will be used for drags from a particular source
  * to a stock icon. 
  **/
 void 
-gtk_drag_source_set_icon_stock (GtkWidget   *widget,
+btk_drag_source_set_icon_stock (BtkWidget   *widget,
 				const gchar *stock_id)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (stock_id != NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
   
-  gtk_drag_source_unset_icon (site);
+  btk_drag_source_unset_icon (site);
 
-  site->icon_type = GTK_IMAGE_STOCK;
+  site->icon_type = BTK_IMAGE_STOCK;
   site->icon_data.stock.stock_id = g_strdup (stock_id);
 }
 
 /**
- * gtk_drag_source_set_icon_name:
- * @widget: a #GtkWidget
+ * btk_drag_source_set_icon_name:
+ * @widget: a #BtkWidget
  * @icon_name: name of icon to use
  * 
  * Sets the icon that will be used for drags from a particular source
- * to a themed icon. See the docs for #GtkIconTheme for more details.
+ * to a themed icon. See the docs for #BtkIconTheme for more details.
  *
  * Since: 2.8
  **/
 void 
-gtk_drag_source_set_icon_name (GtkWidget   *widget,
+btk_drag_source_set_icon_name (BtkWidget   *widget,
 			       const gchar *icon_name)
 {
-  GtkDragSourceSite *site;
+  BtkDragSourceSite *site;
 
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
   g_return_if_fail (icon_name != NULL);
 
-  site = g_object_get_data (G_OBJECT (widget), "gtk-site-data");
+  site = g_object_get_data (G_OBJECT (widget), "btk-site-data");
   g_return_if_fail (site != NULL);
 
-  gtk_drag_source_unset_icon (site);
+  btk_drag_source_unset_icon (site);
 
-  site->icon_type = GTK_IMAGE_ICON_NAME;
+  site->icon_type = BTK_IMAGE_ICON_NAME;
   site->icon_data.name.icon_name = g_strdup (icon_name);
 }
 
 
 /**
- * gtk_drag_set_icon_widget:
+ * btk_drag_set_icon_widget:
  * @context: the context for a drag. (This must be called 
           with a  context for the source side of a drag)
  * @widget: a toplevel window to use as an icon.
  * @hot_x: the X offset within @widget of the hotspot.
  * @hot_y: the Y offset within @widget of the hotspot.
  * 
- * Changes the icon for a widget to a given widget. GTK+
+ * Changes the icon for a widget to a given widget. BTK+
  * will not destroy the icon, so if you don't want
  * it to persist, you should connect to the "drag-end" 
  * signal and destroy it yourself.
  **/
 void 
-gtk_drag_set_icon_widget (GdkDragContext    *context,
-			  GtkWidget         *widget,
+btk_drag_set_icon_widget (BdkDragContext    *context,
+			  BtkWidget         *widget,
 			  gint               hot_x,
 			  gint               hot_y)
 {
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
-  g_return_if_fail (GTK_IS_WIDGET (widget));
+  g_return_if_fail (BTK_IS_WIDGET (widget));
 
-  g_warning ("gtk_drag_set_icon_widget is not supported on Mac OS X");
+  g_warning ("btk_drag_set_icon_widget is not supported on Mac OS X");
 }
 
 static void
-set_icon_stock_pixbuf (GdkDragContext    *context,
+set_icon_stock_pixbuf (BdkDragContext    *context,
 		       const gchar       *stock_id,
-		       GdkPixbuf         *pixbuf,
+		       BdkPixbuf         *pixbuf,
 		       gint               hot_x,
 		       gint               hot_y)
 {
-  GtkDragSourceInfo *info;
+  BtkDragSourceInfo *info;
 
-  info = gtk_drag_get_source_info (context, FALSE);
+  info = btk_drag_get_source_info (context, FALSE);
 
   if (stock_id)
     {
-      pixbuf = gtk_widget_render_icon (info->widget, stock_id,
-				       GTK_ICON_SIZE_DND, NULL);
+      pixbuf = btk_widget_render_icon (info->widget, stock_id,
+				       BTK_ICON_SIZE_DND, NULL);
 
       if (!pixbuf)
 	{
@@ -1723,30 +1723,30 @@ set_icon_stock_pixbuf (GdkDragContext    *context,
 }
 
 /**
- * gtk_drag_set_icon_pixbuf:
+ * btk_drag_set_icon_pixbuf:
  * @context: the context for a drag. (This must be called 
  *            with a  context for the source side of a drag)
- * @pixbuf: the #GdkPixbuf to use as the drag icon.
+ * @pixbuf: the #BdkPixbuf to use as the drag icon.
  * @hot_x: the X offset within @widget of the hotspot.
  * @hot_y: the Y offset within @widget of the hotspot.
  * 
  * Sets @pixbuf as the icon for a given drag.
  **/
 void 
-gtk_drag_set_icon_pixbuf  (GdkDragContext *context,
-			   GdkPixbuf      *pixbuf,
+btk_drag_set_icon_pixbuf  (BdkDragContext *context,
+			   BdkPixbuf      *pixbuf,
 			   gint            hot_x,
 			   gint            hot_y)
 {
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
-  g_return_if_fail (GDK_IS_PIXBUF (pixbuf));
+  g_return_if_fail (BDK_IS_PIXBUF (pixbuf));
 
   set_icon_stock_pixbuf (context, NULL, pixbuf, hot_x, hot_y);
 }
 
 /**
- * gtk_drag_set_icon_stock:
+ * btk_drag_set_icon_stock:
  * @context: the context for a drag. (This must be called 
  *            with a  context for the source side of a drag)
  * @stock_id: the ID of the stock icon to use for the drag.
@@ -1756,13 +1756,13 @@ gtk_drag_set_icon_pixbuf  (GdkDragContext *context,
  * Sets the icon for a given drag from a stock ID.
  **/
 void 
-gtk_drag_set_icon_stock  (GdkDragContext *context,
+btk_drag_set_icon_stock  (BdkDragContext *context,
 			  const gchar    *stock_id,
 			  gint            hot_x,
 			  gint            hot_y)
 {
 
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
   g_return_if_fail (stock_id != NULL);
 
@@ -1770,7 +1770,7 @@ gtk_drag_set_icon_stock  (GdkDragContext *context,
 }
 
 /**
- * gtk_drag_set_icon_pixmap:
+ * btk_drag_set_icon_pixmap:
  * @context: the context for a drag. (This must be called 
  *            with a  context for the source side of a drag)
  * @colormap: the colormap of the icon 
@@ -1779,37 +1779,37 @@ gtk_drag_set_icon_stock  (GdkDragContext *context,
  * @hot_x: the X offset within @pixmap of the hotspot.
  * @hot_y: the Y offset within @pixmap of the hotspot.
  * 
- * Sets @pixmap as the icon for a given drag. GTK+ retains
+ * Sets @pixmap as the icon for a given drag. BTK+ retains
  * references for the arguments, and will release them when
- * they are no longer needed. In general, gtk_drag_set_icon_pixbuf()
+ * they are no longer needed. In general, btk_drag_set_icon_pixbuf()
  * will be more convenient to use.
  **/
 void 
-gtk_drag_set_icon_pixmap (GdkDragContext    *context,
-			  GdkColormap       *colormap,
-			  GdkPixmap         *pixmap,
-			  GdkBitmap         *mask,
+btk_drag_set_icon_pixmap (BdkDragContext    *context,
+			  BdkColormap       *colormap,
+			  BdkPixmap         *pixmap,
+			  BdkBitmap         *mask,
 			  gint               hot_x,
 			  gint               hot_y)
 {
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
-  g_return_if_fail (GDK_IS_PIXMAP (pixmap));
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
+  g_return_if_fail (BDK_IS_PIXMAP (pixmap));
 
-  pixbuf = gdk_pixbuf_get_from_drawable (NULL, pixmap, colormap,
+  pixbuf = bdk_pixbuf_get_from_drawable (NULL, pixmap, colormap,
                                          0, 0, /* src */
                                          0, 0, /* dst */
                                          -1, -1);
 
-  gtk_drag_set_icon_pixbuf (context, pixbuf, hot_x, hot_y);
+  btk_drag_set_icon_pixbuf (context, pixbuf, hot_x, hot_y);
   g_object_unref (pixbuf);
 }
 
 /**
- * gtk_drag_set_icon_name:
+ * btk_drag_set_icon_name:
  * @context: the context for a drag. (This must be called 
  *            with a context for the source side of a drag)
  * @icon_name: name of icon to use
@@ -1817,43 +1817,43 @@ gtk_drag_set_icon_pixmap (GdkDragContext    *context,
  * @hot_y: the Y offset of the hotspot within the icon
  * 
  * Sets the icon for a given drag from a named themed icon. See
- * the docs for #GtkIconTheme for more details. Note that the
+ * the docs for #BtkIconTheme for more details. Note that the
  * size of the icon depends on the icon theme (the icon is
- * loaded at the symbolic size #GTK_ICON_SIZE_DND), thus 
+ * loaded at the symbolic size #BTK_ICON_SIZE_DND), thus 
  * @hot_x and @hot_y have to be used with care.
  *
  * Since: 2.8
  **/
 void 
-gtk_drag_set_icon_name (GdkDragContext *context,
+btk_drag_set_icon_name (BdkDragContext *context,
 			const gchar    *icon_name,
 			gint            hot_x,
 			gint            hot_y)
 {
-  GdkScreen *screen;
-  GtkSettings *settings;
-  GtkIconTheme *icon_theme;
-  GdkPixbuf *pixbuf;
+  BdkScreen *screen;
+  BtkSettings *settings;
+  BtkIconTheme *icon_theme;
+  BdkPixbuf *pixbuf;
   gint width, height, icon_size;
 
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
   g_return_if_fail (icon_name != NULL);
 
-  screen = gdk_window_get_screen (context->source_window);
+  screen = bdk_window_get_screen (context->source_window);
   g_return_if_fail (screen != NULL);
 
-  settings = gtk_settings_get_for_screen (screen);
-  if (gtk_icon_size_lookup_for_settings (settings,
-					 GTK_ICON_SIZE_DND,
+  settings = btk_settings_get_for_screen (screen);
+  if (btk_icon_size_lookup_for_settings (settings,
+					 BTK_ICON_SIZE_DND,
 					 &width, &height))
     icon_size = MAX (width, height);
   else 
-    icon_size = 32; /* default value for GTK_ICON_SIZE_DND */ 
+    icon_size = 32; /* default value for BTK_ICON_SIZE_DND */ 
 
-  icon_theme = gtk_icon_theme_get_for_screen (screen);
+  icon_theme = btk_icon_theme_get_for_screen (screen);
 
-  pixbuf = gtk_icon_theme_load_icon (icon_theme, icon_name,
+  pixbuf = btk_icon_theme_load_icon (icon_theme, icon_name,
 		  		     icon_size, 0, NULL);
   if (pixbuf)
     set_icon_stock_pixbuf (context, NULL, pixbuf, hot_x, hot_y);
@@ -1862,7 +1862,7 @@ gtk_drag_set_icon_name (GdkDragContext *context,
 }
 
 /**
- * gtk_drag_set_icon_default:
+ * btk_drag_set_icon_default:
  * @context: the context for a drag. (This must be called 
              with a  context for the source side of a drag)
  * 
@@ -1870,26 +1870,26 @@ gtk_drag_set_icon_name (GdkDragContext *context,
  * icon.
  **/
 void 
-gtk_drag_set_icon_default (GdkDragContext    *context)
+btk_drag_set_icon_default (BdkDragContext    *context)
 {
-  g_return_if_fail (GDK_IS_DRAG_CONTEXT (context));
+  g_return_if_fail (BDK_IS_DRAG_CONTEXT (context));
   g_return_if_fail (context->is_source);
 
-  gtk_drag_set_icon_stock (context, GTK_STOCK_DND, -2, -2);
+  btk_drag_set_icon_stock (context, BTK_STOCK_DND, -2, -2);
 }
 
 void 
-gtk_drag_set_default_icon (GdkColormap   *colormap,
-			   GdkPixmap     *pixmap,
-			   GdkBitmap     *mask,
+btk_drag_set_default_icon (BdkColormap   *colormap,
+			   BdkPixmap     *pixmap,
+			   BdkBitmap     *mask,
 			   gint           hot_x,
 			   gint           hot_y)
 {
-  g_warning ("gtk_drag_set_default_icon is not supported on Mac OS X.");
+  g_warning ("btk_drag_set_default_icon is not supported on Mac OS X.");
 }
 
 static void
-gtk_drag_source_info_destroy (GtkDragSourceInfo *info)
+btk_drag_source_info_destroy (BtkDragSourceInfo *info)
 {
   NSPasteboard *pasteboard;
   NSAutoreleasePool *pool;
@@ -1906,7 +1906,7 @@ gtk_drag_source_info_destroy (GtkDragSourceInfo *info)
   if (info->widget)
     g_object_unref (info->widget);
 
-  gtk_target_list_unref (info->target_list);
+  btk_target_list_unref (info->target_list);
 
   pool = [[NSAutoreleasePool alloc] init];
 
@@ -1918,7 +1918,7 @@ gtk_drag_source_info_destroy (GtkDragSourceInfo *info)
 
   [pool release];
 
-  gtk_drag_clear_source_info (info->context);
+  btk_drag_clear_source_info (info->context);
   g_object_unref (info->context);
 
   g_free (info);
@@ -1928,23 +1928,23 @@ gtk_drag_source_info_destroy (GtkDragSourceInfo *info)
 static gboolean
 drag_drop_finished_idle_cb (gpointer data)
 {
-  GtkDragSourceInfo* info = (GtkDragSourceInfo*) data;
+  BtkDragSourceInfo* info = (BtkDragSourceInfo*) data;
 
   if (info->success)
-    gtk_drag_source_info_destroy (data);
+    btk_drag_source_info_destroy (data);
 
   return FALSE;
 }
 
 static void
-gtk_drag_drop_finished (GtkDragSourceInfo *info,
-                        GtkDragResult      result)
+btk_drag_drop_finished (BtkDragSourceInfo *info,
+                        BtkDragResult      result)
 {
-  gboolean success = (result == GTK_DRAG_RESULT_SUCCESS);
+  gboolean success = (result == BTK_DRAG_RESULT_SUCCESS);
 
   if (!success)
     g_signal_emit_by_name (info->source_widget, "drag-failed",
-                           info->context, GTK_DRAG_RESULT_NO_TARGET, &success);
+                           info->context, BTK_DRAG_RESULT_NO_TARGET, &success);
 
   if (success && info->delete)
     g_signal_emit_by_name (info->source_widget, "drag-data-delete",
@@ -1958,7 +1958,7 @@ gtk_drag_drop_finished (GtkDragSourceInfo *info,
 }
 
 /*************************************************************
- * _gtk_drag_source_handle_event:
+ * _btk_drag_source_handle_event:
  *     Called from widget event handling code on Drag events
  *     for drag sources.
  *
@@ -1969,26 +1969,26 @@ gtk_drag_drop_finished (GtkDragSourceInfo *info,
  *************************************************************/
 
 void
-_gtk_drag_source_handle_event (GtkWidget *widget,
-			       GdkEvent  *event)
+_btk_drag_source_handle_event (BtkWidget *widget,
+			       BdkEvent  *event)
 {
-  GtkDragSourceInfo *info;
-  GdkDragContext *context;
-  GtkDragResult result;
+  BtkDragSourceInfo *info;
+  BdkDragContext *context;
+  BtkDragResult result;
 
   g_return_if_fail (widget != NULL);
   g_return_if_fail (event != NULL);
 
   context = event->dnd.context;
-  info = gtk_drag_get_source_info (context, FALSE);
+  info = btk_drag_get_source_info (context, FALSE);
   if (!info)
     return;
 
   switch (event->type)
     {
-    case GDK_DROP_FINISHED:
-      result = (gdk_drag_context_get_dest_window (context) != NULL) ? GTK_DRAG_RESULT_SUCCESS : GTK_DRAG_RESULT_NO_TARGET;
-      gtk_drag_drop_finished (info, result);
+    case BDK_DROP_FINISHED:
+      result = (bdk_drag_context_get_dest_window (context) != NULL) ? BTK_DRAG_RESULT_SUCCESS : BTK_DRAG_RESULT_NO_TARGET;
+      btk_drag_drop_finished (info, result);
       break;
     default:
       g_assert_not_reached ();
@@ -1997,7 +1997,7 @@ _gtk_drag_source_handle_event (GtkWidget *widget,
 
 
 gboolean
-gtk_drag_check_threshold (GtkWidget *widget,
+btk_drag_check_threshold (BtkWidget *widget,
 			  gint       start_x,
 			  gint       start_y,
 			  gint       current_x,
@@ -2005,15 +2005,15 @@ gtk_drag_check_threshold (GtkWidget *widget,
 {
   gint drag_threshold;
 
-  g_return_val_if_fail (GTK_IS_WIDGET (widget), FALSE);
+  g_return_val_if_fail (BTK_IS_WIDGET (widget), FALSE);
 
-  g_object_get (gtk_widget_get_settings (widget),
-		"gtk-dnd-drag-threshold", &drag_threshold,
+  g_object_get (btk_widget_get_settings (widget),
+		"btk-dnd-drag-threshold", &drag_threshold,
 		NULL);
   
   return (ABS (current_x - start_x) > drag_threshold ||
 	  ABS (current_y - start_y) > drag_threshold);
 }
 
-#define __GTK_DND_C__
-#include "gtkaliasdef.c"
+#define __BTK_DND_C__
+#include "btkaliasdef.c"

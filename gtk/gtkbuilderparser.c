@@ -1,4 +1,4 @@
-/* gtkbuilderparser.c
+/* btkbuilderparser.c
  * Copyright (C) 2006-2007 Async Open Source,
  *                         Johan Dahlin <jdahlin@async.com.br>
  *
@@ -21,17 +21,17 @@
 #include "config.h"
 
 #include <string.h>
-#include <gmodule.h>
+#include <bmodule.h>
 
-#include "gtktypeutils.h"
-#include "gtkbuilderprivate.h"
-#include "gtkbuilder.h"
-#include "gtkbuildable.h"
-#include "gtkdebug.h"
-#include "gtkversion.h"
-#include "gtktypeutils.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktypeutils.h"
+#include "btkbuilderprivate.h"
+#include "btkbuilder.h"
+#include "btkbuildable.h"
+#include "btkdebug.h"
+#include "btkversion.h"
+#include "btktypeutils.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 static void free_property_info (PropertyInfo *info);
 static void free_object_info (ObjectInfo *info);
@@ -79,8 +79,8 @@ error_missing_attribute (ParserData *data,
                                        &char_number);
 
   g_set_error (error,
-               GTK_BUILDER_ERROR,
-               GTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
+               BTK_BUILDER_ERROR,
+               BTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
                "%s:%d:%d <%s> requires attribute \"%s\"",
                data->filename,
                line_number, char_number, tag, attribute);
@@ -99,8 +99,8 @@ error_invalid_attribute (ParserData *data,
                                        &char_number);
 
   g_set_error (error,
-               GTK_BUILDER_ERROR,
-               GTK_BUILDER_ERROR_INVALID_ATTRIBUTE,
+               BTK_BUILDER_ERROR,
+               BTK_BUILDER_ERROR_INVALID_ATTRIBUTE,
                "%s:%d:%d '%s' is not a valid attribute of <%s>",
                data->filename,
                line_number, char_number, attribute, tag);
@@ -120,22 +120,22 @@ error_invalid_tag (ParserData *data,
 
   if (expected)
     g_set_error (error,
-		 GTK_BUILDER_ERROR,
-		 GTK_BUILDER_ERROR_INVALID_TAG,
+		 BTK_BUILDER_ERROR,
+		 BTK_BUILDER_ERROR_INVALID_TAG,
 		 "%s:%d:%d '%s' is not a valid tag here, expected a '%s' tag",
 		 data->filename,
 		 line_number, char_number, tag, expected);
   else
     g_set_error (error,
-		 GTK_BUILDER_ERROR,
-		 GTK_BUILDER_ERROR_INVALID_TAG,
+		 BTK_BUILDER_ERROR,
+		 BTK_BUILDER_ERROR_INVALID_TAG,
 		 "%s:%d:%d '%s' is not a valid tag here",
 		 data->filename,
 		 line_number, char_number, tag);
 }
 
 gboolean
-_gtk_builder_boolean_from_string (const gchar  *string,
+_btk_builder_boolean_from_string (const gchar  *string,
 				  gboolean     *value,
 				  GError      **error)
 {
@@ -172,8 +172,8 @@ _gtk_builder_boolean_from_string (const gchar  *string,
   
   if (!retval)
     g_set_error (error,
-		 GTK_BUILDER_ERROR,
-		 GTK_BUILDER_ERROR_INVALID_VALUE,
+		 BTK_BUILDER_ERROR,
+		 BTK_BUILDER_ERROR_INVALID_VALUE,
 		 "could not parse boolean `%s'",
 		 string);
 
@@ -194,7 +194,7 @@ builder_construct (ParserData  *data,
 
   object_info->properties = g_slist_reverse (object_info->properties);
 
-  object = _gtk_builder_construct (data->builder, object_info, error);
+  object = _btk_builder_construct (data->builder, object_info, error);
   if (!object)
     return NULL;
 
@@ -263,8 +263,8 @@ parse_requires (ParserData   *data,
   if (!(split = g_strsplit (version, ".", 2)) || !split[0] || !split[1])
     {
       g_set_error (error,
-		   GTK_BUILDER_ERROR,
-		   GTK_BUILDER_ERROR_INVALID_VALUE,
+		   BTK_BUILDER_ERROR,
+		   BTK_BUILDER_ERROR_INVALID_VALUE,
 		   "%s:%d:%d <%s> attribute has malformed value \"%s\"",
 		   data->filename,
 		   line_number, char_number, "version", version);
@@ -338,8 +338,8 @@ parse_object (GMarkupParseContext  *context,
           if (!object_class)
             {
               g_markup_parse_context_get_position (context, &line, NULL);
-              g_set_error (error, GTK_BUILDER_ERROR,
-                           GTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION,
+              g_set_error (error, BTK_BUILDER_ERROR,
+                           BTK_BUILDER_ERROR_INVALID_TYPE_FUNCTION,
                            _("Invalid type function on line %d: '%s'"),
                            line, values[i]);
               return;
@@ -373,7 +373,7 @@ parse_object (GMarkupParseContext  *context,
         {
           data->requested_object_level = data->cur_object_level;
 
-          GTK_NOTE (BUILDER, g_print ("requested object \"%s\" found at level %d\n",
+          BTK_NOTE (BUILDER, g_print ("requested object \"%s\" found at level %d\n",
                                       object_id,
                                       data->requested_object_level));
 
@@ -402,8 +402,8 @@ parse_object (GMarkupParseContext  *context,
   line2 = GPOINTER_TO_INT (g_hash_table_lookup (data->object_ids, object_id));
   if (line2 != 0)
     {
-      g_set_error (error, GTK_BUILDER_ERROR,
-                   GTK_BUILDER_ERROR_DUPLICATE_ID,
+      g_set_error (error, BTK_BUILDER_ERROR,
+                   BTK_BUILDER_ERROR_DUPLICATE_ID,
                    _("Duplicate object ID '%s' on line %d (previously on line %d)"),
                    object_id, line, line2);
       return;
@@ -416,7 +416,7 @@ parse_object (GMarkupParseContext  *context,
 static void
 free_object_info (ObjectInfo *info)
 {
-  /* Do not free the signal items, which GtkBuilder takes ownership of */
+  /* Do not free the signal items, which BtkBuilder takes ownership of */
   g_slist_free (info->signals);
   g_slist_foreach (info->properties,
                    (GFunc)free_property_info, NULL);
@@ -499,7 +499,7 @@ parse_property (ParserData   *data,
         name = g_strdelimit (g_strdup (values[i]), "_", '-');
       else if (strcmp (names[i], "translatable") == 0)
 	{
-	  if (!_gtk_builder_boolean_from_string (values[i], &translatable,
+	  if (!_btk_builder_boolean_from_string (values[i], &translatable,
 						 error))
 	    return;
 	}
@@ -574,12 +574,12 @@ parse_signal (ParserData   *data,
         handler = g_strdup (values[i]);
       else if (strcmp (names[i], "after") == 0)
 	{
-	  if (!_gtk_builder_boolean_from_string (values[i], &after, error))
+	  if (!_btk_builder_boolean_from_string (values[i], &after, error))
 	    return;
 	}
       else if (strcmp (names[i], "swapped") == 0)
 	{
-	  if (!_gtk_builder_boolean_from_string (values[i], &swapped, error))
+	  if (!_btk_builder_boolean_from_string (values[i], &swapped, error))
 	    return;
 	  swapped_set = TRUE;
 	}
@@ -623,7 +623,7 @@ parse_signal (ParserData   *data,
   info->tag.name = element_name;
 }
 
-/* Called by GtkBuilder */
+/* Called by BtkBuilder */
 void
 _free_signal_info (SignalInfo *info,
                    gpointer user_data)
@@ -672,7 +672,7 @@ parse_interface (ParserData   *data,
 	    }
 	  
  	  data->domain = g_strdup (values[i]);
-	  gtk_builder_set_translation_domain (data->builder, data->domain);
+	  btk_builder_set_translation_domain (data->builder, data->domain);
 	}
       else
 	error_invalid_attribute (data, "interface", names[i], error);
@@ -744,14 +744,14 @@ subparser_end (GMarkupParseContext *context,
   if (!strcmp (data->subparser->start, element_name) == 0)
     return;
     
-  gtk_buildable_custom_tag_end (GTK_BUILDABLE (data->subparser->object),
+  btk_buildable_custom_tag_end (BTK_BUILDABLE (data->subparser->object),
 				data->builder,
 				data->subparser->child,
 				element_name,
 				data->subparser->data);
   g_free (data->subparser->parser);
       
-  if (GTK_BUILDABLE_GET_IFACE (data->subparser->object)->custom_finished)
+  if (BTK_BUILDABLE_GET_IFACE (data->subparser->object)->custom_finished)
     data->custom_finalizers = g_slist_prepend (data->custom_finalizers,
 					       data->subparser);
   else
@@ -784,7 +784,7 @@ parse_custom (GMarkupParseContext *context,
       if (!object_info->object)
 	{
 	  object_info->properties = g_slist_reverse (object_info->properties);
-	  object_info->object = _gtk_builder_construct (data->builder,
+	  object_info->object = _btk_builder_construct (data->builder,
 							object_info,
 							error);
 	  if (!object_info->object)
@@ -798,7 +798,7 @@ parse_custom (GMarkupParseContext *context,
     {
       ChildInfo* child_info = (ChildInfo*)parent_info;
       
-      _gtk_builder_add (data->builder, child_info);
+      _btk_builder_add (data->builder, child_info);
       
       object = ((ObjectInfo*)child_info->parent)->object;
       child  = child_info->object;
@@ -806,7 +806,7 @@ parse_custom (GMarkupParseContext *context,
   else
     return FALSE;
 
-  if (!gtk_buildable_custom_tag_start (GTK_BUILDABLE (object),
+  if (!btk_buildable_custom_tag_start (BTK_BUILDABLE (object),
 				       data->builder,
 				       child,
 				       element_name,
@@ -834,8 +834,8 @@ start_element (GMarkupParseContext *context,
 {
   ParserData *data = (ParserData*)user_data;
 
-#ifdef GTK_ENABLE_DEBUG
-  if (gtk_debug_flags & GTK_DEBUG_BUILDER)
+#ifdef BTK_ENABLE_DEBUG
+  if (btk_debug_flags & BTK_DEBUG_BUILDER)
     {
       GString *tags = g_string_new ("");
       int i;
@@ -854,8 +854,8 @@ start_element (GMarkupParseContext *context,
 
   if (!data->last_element && strcmp (element_name, "interface") != 0)
     {
-      g_set_error (error, GTK_BUILDER_ERROR, 
-		   GTK_BUILDER_ERROR_UNHANDLED_TAG,
+      g_set_error (error, BTK_BUILDER_ERROR, 
+		   BTK_BUILDER_ERROR_UNHANDLED_TAG,
 		   _("Invalid root element: '%s'"),
 		   element_name);
       return;
@@ -893,14 +893,14 @@ start_element (GMarkupParseContext *context,
   else
     if (!parse_custom (context, element_name, names, values,
 		       data, error))
-      g_set_error (error, GTK_BUILDER_ERROR, 
-		   GTK_BUILDER_ERROR_UNHANDLED_TAG,
+      g_set_error (error, BTK_BUILDER_ERROR, 
+		   BTK_BUILDER_ERROR_UNHANDLED_TAG,
 		   _("Unhandled tag: '%s'"),
 		   element_name);
 }
 
 gchar *
-_gtk_builder_parser_translate (const gchar *domain,
+_btk_builder_parser_translate (const gchar *domain,
 			       const gchar *context,
 			       const gchar *text)
 {
@@ -923,7 +923,7 @@ end_element (GMarkupParseContext *context,
 {
   ParserData *data = (ParserData*)user_data;
 
-  GTK_NOTE (BUILDER, g_print ("</%s>\n", element_name));
+  BTK_NOTE (BUILDER, g_print ("</%s>\n", element_name));
 
   if (data->subparser && data->subparser->start)
     {
@@ -939,16 +939,16 @@ end_element (GMarkupParseContext *context,
        * required versions, possibly throw a signal allowing them
        * to check thier library versions here.
        */
-      if (!strcmp (req_info->library, "gtk+"))
+      if (!strcmp (req_info->library, "btk+"))
 	{
-	  if (!GTK_CHECK_VERSION (req_info->major, req_info->minor, 0))
+	  if (!BTK_CHECK_VERSION (req_info->major, req_info->minor, 0))
 	    g_set_error (error,
-			 GTK_BUILDER_ERROR,
-			 GTK_BUILDER_ERROR_VERSION_MISMATCH,
+			 BTK_BUILDER_ERROR,
+			 BTK_BUILDER_ERROR_VERSION_MISMATCH,
 			 "%s: required %s version %d.%d, current version is %d.%d",
 			 data->filename, req_info->library,
 			 req_info->major, req_info->minor,
-			 GTK_MAJOR_VERSION, GTK_MINOR_VERSION);
+			 BTK_MAJOR_VERSION, BTK_MINOR_VERSION);
 	}
       _free_requires_info (req_info, NULL);
     }
@@ -968,7 +968,7 @@ end_element (GMarkupParseContext *context,
       if (data->requested_objects && data->inside_requested_object &&
           (data->cur_object_level == data->requested_object_level))
         {
-          GTK_NOTE (BUILDER, g_print ("requested object end found at level %d\n",
+          BTK_NOTE (BUILDER, g_print ("requested object end found at level %d\n",
                                       data->requested_object_level));
 
           data->inside_requested_object = FALSE;
@@ -987,10 +987,10 @@ end_element (GMarkupParseContext *context,
       if (child_info)
         child_info->object = object_info->object;
 
-      if (GTK_IS_BUILDABLE (object_info->object) &&
-          GTK_BUILDABLE_GET_IFACE (object_info->object)->parser_finished)
+      if (BTK_IS_BUILDABLE (object_info->object) &&
+          BTK_BUILDABLE_GET_IFACE (object_info->object)->parser_finished)
         data->finalizers = g_slist_prepend (data->finalizers, object_info->object);
-      _gtk_builder_add_signals (data->builder, object_info->signals);
+      _btk_builder_add_signals (data->builder, object_info->signals);
 
       free_object_info (object_info);
     }
@@ -1006,7 +1006,7 @@ end_element (GMarkupParseContext *context,
 
           if (prop_info->translatable && prop_info->text->len)
             {
-	      prop_info->data = _gtk_builder_parser_translate (data->domain,
+	      prop_info->data = _btk_builder_parser_translate (data->domain,
 							       prop_info->context,
 							       prop_info->text->str);
               g_string_free (prop_info->text, TRUE);
@@ -1027,7 +1027,7 @@ end_element (GMarkupParseContext *context,
     {
       ChildInfo *child_info = state_pop_info (data, ChildInfo);
 
-      _gtk_builder_add (data->builder, child_info);
+      _btk_builder_add (data->builder, child_info);
 
       free_child_info (child_info);
     }
@@ -1112,7 +1112,7 @@ static const GMarkupParser parser = {
 };
 
 void
-_gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
+_btk_builder_parser_parse_buffer (BtkBuilder   *builder,
                                   const gchar  *filename,
                                   const gchar  *buffer,
                                   gsize         length,
@@ -1126,9 +1126,9 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   /* Store the original domain so that interface domain attribute can be
    * applied for the builder and the original domain can be restored after
    * parsing has finished. This allows subparsers to translate elements with
-   * gtk_builder_get_translation_domain() without breaking the ABI or API
+   * btk_builder_get_translation_domain() without breaking the ABI or API
    */
-  domain = gtk_builder_get_translation_domain (builder);
+  domain = btk_builder_get_translation_domain (builder);
 
   data = g_new0 (ParserData, 1);
   data->builder = builder;
@@ -1162,7 +1162,7 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   if (!g_markup_parse_context_parse (data->ctx, buffer, length, error))
     goto out;
 
-  _gtk_builder_finish (builder);
+  _btk_builder_finish (builder);
 
   /* Custom parser_finished */
   data->custom_finalizers = g_slist_reverse (data->custom_finalizers);
@@ -1170,7 +1170,7 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
     {
       SubParser *sub = (SubParser*)l->data;
       
-      gtk_buildable_custom_finished (GTK_BUILDABLE (sub->object),
+      btk_buildable_custom_finished (BTK_BUILDABLE (sub->object),
                                      builder,
                                      sub->child,
                                      sub->tagname,
@@ -1181,8 +1181,8 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   data->finalizers = g_slist_reverse (data->finalizers);
   for (l = data->finalizers; l; l = l->next)
     {
-      GtkBuildable *buildable = (GtkBuildable*)l->data;
-      gtk_buildable_parser_finished (GTK_BUILDABLE (buildable), builder);
+      BtkBuildable *buildable = (BtkBuildable*)l->data;
+      btk_buildable_parser_finished (BTK_BUILDABLE (buildable), builder);
     }
 
  out:
@@ -1200,5 +1200,5 @@ _gtk_builder_parser_parse_buffer (GtkBuilder   *builder,
   g_free (data);
 
   /* restore the original domain */
-  gtk_builder_set_translation_domain (builder, domain);
+  btk_builder_set_translation_domain (builder, domain);
 }

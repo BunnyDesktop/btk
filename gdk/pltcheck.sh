@@ -11,7 +11,7 @@ fi
 
 for so in .libs/lib*.so; do
 	echo Checking $so for local PLT entries
-	readelf -r $so | grep 'JU\?MP_SLOT' | grep -v 'gdk_pixbuf' | grep gdk && status=1
+	readelf -r $so | grep 'JU\?MP_SLOT' | grep -v 'bdk_pixbuf' | grep bdk && status=1
 done
 
 exit $status

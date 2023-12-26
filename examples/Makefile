@@ -11,7 +11,7 @@ SUBDIRS = 	arrow \
 		filesel \
 		fixed \
 		frame \
-		gtkdial \
+		btkdial \
 		helloworld \
 		helloworld2 \
 		label \

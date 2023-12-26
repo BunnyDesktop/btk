@@ -1,7 +1,7 @@
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-GtkWidget *appwindow_new (void);
+BtkWidget *appwindow_new (void);
 
-GtkWidget *text_view_new (void);
+BtkWidget *text_view_new (void);
 
-GtkWidget *tree_view_new (void);
+BtkWidget *tree_view_new (void);

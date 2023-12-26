@@ -1,7 +1,7 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
- * GtkQueryTips: Query onscreen widgets for their tooltips
+ * BtkQueryTips: Query onscreen widgets for their tooltips
  * Copyright (C) 1998 Tim Janik
  *
  * This library is free software; you can redistribute it and/or
@@ -21,90 +21,90 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 
-#ifndef __GTK_TIPS_QUERY_H__
-#define __GTK_TIPS_QUERY_H__
+#ifndef __BTK_TIPS_QUERY_H__
+#define __BTK_TIPS_QUERY_H__
 
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
 /* --- type macros --- */
-#define	GTK_TYPE_TIPS_QUERY		(gtk_tips_query_get_type ())
-#define GTK_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TIPS_QUERY, GtkTipsQuery))
-#define GTK_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TIPS_QUERY, GtkTipsQueryClass))
-#define GTK_IS_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TIPS_QUERY))
-#define GTK_IS_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TIPS_QUERY))
-#define GTK_TIPS_QUERY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TIPS_QUERY, GtkTipsQueryClass))
+#define	BTK_TYPE_TIPS_QUERY		(btk_tips_query_get_type ())
+#define BTK_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQuery))
+#define BTK_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
+#define BTK_IS_TIPS_QUERY(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TIPS_QUERY))
+#define BTK_IS_TIPS_QUERY_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TIPS_QUERY))
+#define BTK_TIPS_QUERY_GET_CLASS(obj)   (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TIPS_QUERY, BtkTipsQueryClass))
 
 
 /* --- typedefs --- */
-typedef	struct	_GtkTipsQuery		GtkTipsQuery;
-typedef	struct	_GtkTipsQueryClass	GtkTipsQueryClass;
+typedef	struct	_BtkTipsQuery		BtkTipsQuery;
+typedef	struct	_BtkTipsQueryClass	BtkTipsQueryClass;
 
 
 /* --- structures --- */
-struct	_GtkTipsQuery
+struct	_BtkTipsQuery
 {
-  GtkLabel	label;
+  BtkLabel	label;
 
   guint		emit_always : 1;
   guint		in_query : 1;
   gchar		*label_inactive;
   gchar		*label_no_tip;
 
-  GtkWidget	*caller;
-  GtkWidget	*last_crossed;
+  BtkWidget	*caller;
+  BtkWidget	*last_crossed;
 
-  GdkCursor	*query_cursor;
+  BdkCursor	*query_cursor;
 };
 
-struct	_GtkTipsQueryClass
+struct	_BtkTipsQueryClass
 {
-  GtkLabelClass			parent_class;
+  BtkLabelClass			parent_class;
 
-  void	(*start_query)		(GtkTipsQuery	*tips_query);
-  void	(*stop_query)		(GtkTipsQuery	*tips_query);
-  void	(*widget_entered)	(GtkTipsQuery	*tips_query,
-				 GtkWidget	*widget,
+  void	(*start_query)		(BtkTipsQuery	*tips_query);
+  void	(*stop_query)		(BtkTipsQuery	*tips_query);
+  void	(*widget_entered)	(BtkTipsQuery	*tips_query,
+				 BtkWidget	*widget,
 				 const gchar	*tip_text,
 				 const gchar	*tip_private);
-  gint	(*widget_selected)	(GtkTipsQuery	*tips_query,
-				 GtkWidget	*widget,
+  gint	(*widget_selected)	(BtkTipsQuery	*tips_query,
+				 BtkWidget	*widget,
 				 const gchar	*tip_text,
 				 const gchar	*tip_private,
-				 GdkEventButton	*event);
+				 BdkEventButton	*event);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
 /* --- prototypes --- */
-GType		gtk_tips_query_get_type		(void) G_GNUC_CONST;
-GtkWidget*	gtk_tips_query_new		(void);
-void		gtk_tips_query_start_query	(GtkTipsQuery	*tips_query);
-void		gtk_tips_query_stop_query	(GtkTipsQuery	*tips_query);
-void		gtk_tips_query_set_caller	(GtkTipsQuery	*tips_query,
-						 GtkWidget	*caller);
-void		gtk_tips_query_set_labels 	(GtkTipsQuery   *tips_query,
+GType		btk_tips_query_get_type		(void) G_GNUC_CONST;
+BtkWidget*	btk_tips_query_new		(void);
+void		btk_tips_query_start_query	(BtkTipsQuery	*tips_query);
+void		btk_tips_query_stop_query	(BtkTipsQuery	*tips_query);
+void		btk_tips_query_set_caller	(BtkTipsQuery	*tips_query,
+						 BtkWidget	*caller);
+void		btk_tips_query_set_labels 	(BtkTipsQuery   *tips_query,
 						 const gchar    *label_inactive,
 						 const gchar    *label_no_tip);
 
 G_END_DECLS
 
-#endif	/* __GTK_TIPS_QUERY_H__ */
+#endif	/* __BTK_TIPS_QUERY_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2004 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,73 +17,73 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
-#include "gailcombobox.h"
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
+#include "bailcombobox.h"
 
-static void         gail_combo_box_class_init              (GailComboBoxClass *klass);
-static void         gail_combo_box_init                    (GailComboBox      *combo_box);
-static void         gail_combo_box_real_initialize         (AtkObject      *obj,
+static void         bail_combo_box_class_init              (BailComboBoxClass *klass);
+static void         bail_combo_box_init                    (BailComboBox      *combo_box);
+static void         bail_combo_box_real_initialize         (BatkObject      *obj,
                                                             gpointer       data);
 
-static void         gail_combo_box_changed_gtk             (GtkWidget      *widget);
+static void         bail_combo_box_changed_btk             (BtkWidget      *widget);
 
-static const gchar* gail_combo_box_get_name                (AtkObject      *obj);
-static gint         gail_combo_box_get_n_children          (AtkObject      *obj);
-static AtkObject*   gail_combo_box_ref_child               (AtkObject      *obj,
+static const gchar* bail_combo_box_get_name                (BatkObject      *obj);
+static gint         bail_combo_box_get_n_children          (BatkObject      *obj);
+static BatkObject*   bail_combo_box_ref_child               (BatkObject      *obj,
                                                             gint           i);
-static void         gail_combo_box_finalize                (GObject        *object);
-static void         atk_action_interface_init              (AtkActionIface *iface);
+static void         bail_combo_box_finalize                (GObject        *object);
+static void         batk_action_interface_init              (BatkActionIface *iface);
 
-static gboolean     gail_combo_box_do_action               (AtkAction      *action,
+static gboolean     bail_combo_box_do_action               (BatkAction      *action,
                                                             gint           i);
 static gboolean     idle_do_action                         (gpointer       data);
-static gint         gail_combo_box_get_n_actions           (AtkAction      *action);
-static const gchar* gail_combo_box_get_description         (AtkAction      *action,
+static gint         bail_combo_box_get_n_actions           (BatkAction      *action);
+static const gchar* bail_combo_box_get_description         (BatkAction      *action,
                                                             gint           i);
-static const gchar* gail_combo_box_get_keybinding          (AtkAction       *action,
+static const gchar* bail_combo_box_get_keybinding          (BatkAction       *action,
 		                                             gint            i);
-static const gchar* gail_combo_box_action_get_name         (AtkAction      *action,
+static const gchar* bail_combo_box_action_get_name         (BatkAction      *action,
                                                             gint           i);
-static gboolean              gail_combo_box_set_description(AtkAction      *action,
+static gboolean              bail_combo_box_set_description(BatkAction      *action,
                                                             gint           i,
                                                             const gchar    *desc);
-static void         atk_selection_interface_init           (AtkSelectionIface *iface);
-static gboolean     gail_combo_box_add_selection           (AtkSelection   *selection,
+static void         batk_selection_interface_init           (BatkSelectionIface *iface);
+static gboolean     bail_combo_box_add_selection           (BatkSelection   *selection,
                                                             gint           i);
-static gboolean     gail_combo_box_clear_selection         (AtkSelection   *selection);
-static AtkObject*   gail_combo_box_ref_selection           (AtkSelection   *selection,
+static gboolean     bail_combo_box_clear_selection         (BatkSelection   *selection);
+static BatkObject*   bail_combo_box_ref_selection           (BatkSelection   *selection,
                                                             gint           i);
-static gint         gail_combo_box_get_selection_count     (AtkSelection   *selection);
-static gboolean     gail_combo_box_is_child_selected       (AtkSelection   *selection,
+static gint         bail_combo_box_get_selection_count     (BatkSelection   *selection);
+static gboolean     bail_combo_box_is_child_selected       (BatkSelection   *selection,
                                                             gint           i);
-static gboolean     gail_combo_box_remove_selection        (AtkSelection   *selection,
+static gboolean     bail_combo_box_remove_selection        (BatkSelection   *selection,
                                                             gint           i);
 
-G_DEFINE_TYPE_WITH_CODE (GailComboBox, gail_combo_box, GAIL_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init)
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_SELECTION, atk_selection_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailComboBox, bail_combo_box, BAIL_TYPE_CONTAINER,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init)
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_SELECTION, batk_selection_interface_init))
 
 static void
-gail_combo_box_class_init (GailComboBoxClass *klass)
+bail_combo_box_class_init (BailComboBoxClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gail_combo_box_finalize;
+  bobject_class->finalize = bail_combo_box_finalize;
 
-  class->get_name = gail_combo_box_get_name;
-  class->get_n_children = gail_combo_box_get_n_children;
-  class->ref_child = gail_combo_box_ref_child;
-  class->initialize = gail_combo_box_real_initialize;
+  class->get_name = bail_combo_box_get_name;
+  class->get_n_children = bail_combo_box_get_n_children;
+  class->ref_child = bail_combo_box_ref_child;
+  class->initialize = bail_combo_box_real_initialize;
 }
 
 static void
-gail_combo_box_init (GailComboBox      *combo_box)
+bail_combo_box_init (BailComboBox      *combo_box)
 {
   combo_box->press_description = NULL;
   combo_box->press_keybinding = NULL;
@@ -93,98 +93,98 @@ gail_combo_box_init (GailComboBox      *combo_box)
 }
 
 static void
-gail_combo_box_real_initialize (AtkObject *obj,
+bail_combo_box_real_initialize (BatkObject *obj,
                                 gpointer  data)
 {
-  GtkComboBox *combo_box;
-  GailComboBox *gail_combo_box;
-  AtkObject *popup;
+  BtkComboBox *combo_box;
+  BailComboBox *bail_combo_box;
+  BatkObject *popup;
 
-  ATK_OBJECT_CLASS (gail_combo_box_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_combo_box_parent_class)->initialize (obj, data);
 
-  combo_box = GTK_COMBO_BOX (data);
+  combo_box = BTK_COMBO_BOX (data);
 
-  gail_combo_box = GAIL_COMBO_BOX (obj);
+  bail_combo_box = BAIL_COMBO_BOX (obj);
 
   g_signal_connect (combo_box,
                     "changed",
-                    G_CALLBACK (gail_combo_box_changed_gtk),
+                    G_CALLBACK (bail_combo_box_changed_btk),
                     NULL);
-  gail_combo_box->old_selection = gtk_combo_box_get_active (combo_box);
+  bail_combo_box->old_selection = btk_combo_box_get_active (combo_box);
 
-  popup = gtk_combo_box_get_popup_accessible (combo_box);
+  popup = btk_combo_box_get_popup_accessible (combo_box);
   if (popup)
     {
-      atk_object_set_parent (popup, obj);
-      gail_combo_box->popup_set = TRUE;
+      batk_object_set_parent (popup, obj);
+      bail_combo_box->popup_set = TRUE;
     }
-  if (gtk_combo_box_get_has_entry (combo_box))
-    atk_object_set_parent (gtk_widget_get_accessible (gtk_bin_get_child (GTK_BIN (combo_box))), obj);
+  if (btk_combo_box_get_has_entry (combo_box))
+    batk_object_set_parent (btk_widget_get_accessible (btk_bin_get_child (BTK_BIN (combo_box))), obj);
 
-  obj->role = ATK_ROLE_COMBO_BOX;
+  obj->role = BATK_ROLE_COMBO_BOX;
 }
 
 static void
-gail_combo_box_changed_gtk (GtkWidget *widget)
+bail_combo_box_changed_btk (BtkWidget *widget)
 {
-  GtkComboBox *combo_box;
-  AtkObject *obj;
-  GailComboBox *gail_combo_box;
+  BtkComboBox *combo_box;
+  BatkObject *obj;
+  BailComboBox *bail_combo_box;
   gint index;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  index = gtk_combo_box_get_active (combo_box);
-  obj = gtk_widget_get_accessible (widget);
-  gail_combo_box = GAIL_COMBO_BOX (obj);
-  if (gail_combo_box->old_selection != index)
+  index = btk_combo_box_get_active (combo_box);
+  obj = btk_widget_get_accessible (widget);
+  bail_combo_box = BAIL_COMBO_BOX (obj);
+  if (bail_combo_box->old_selection != index)
     {
-      gail_combo_box->old_selection = index;
+      bail_combo_box->old_selection = index;
       g_object_notify (G_OBJECT (obj), "accessible-name");
       g_signal_emit_by_name (obj, "selection_changed");
     }
 }
 
 static const gchar*
-gail_combo_box_get_name (AtkObject *obj)
+bail_combo_box_get_name (BatkObject *obj)
 {
-  GtkWidget *widget;
-  GtkComboBox *combo_box;
-  GailComboBox *gail_combo_box;
-  GtkTreeIter iter;
+  BtkWidget *widget;
+  BtkComboBox *combo_box;
+  BailComboBox *bail_combo_box;
+  BtkTreeIter iter;
   const gchar *name;
-  GtkTreeModel *model;
+  BtkTreeModel *model;
   gint n_columns;
   gint i;
 
-  g_return_val_if_fail (GAIL_IS_COMBO_BOX (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_COMBO_BOX (obj), NULL);
 
-  name = ATK_OBJECT_CLASS (gail_combo_box_parent_class)->get_name (obj);
+  name = BATK_OBJECT_CLASS (bail_combo_box_parent_class)->get_name (obj);
   if (name)
     return name;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  combo_box = GTK_COMBO_BOX (widget);
-  gail_combo_box = GAIL_COMBO_BOX (obj);
-  if (gtk_combo_box_get_active_iter (combo_box, &iter))
+  combo_box = BTK_COMBO_BOX (widget);
+  bail_combo_box = BAIL_COMBO_BOX (obj);
+  if (btk_combo_box_get_active_iter (combo_box, &iter))
     {
-      model = gtk_combo_box_get_model (combo_box);
-      n_columns = gtk_tree_model_get_n_columns (model);
+      model = btk_combo_box_get_model (combo_box);
+      n_columns = btk_tree_model_get_n_columns (model);
       for (i = 0; i < n_columns; i++)
         {
           GValue value = { 0, };
 
-          gtk_tree_model_get_value (model, &iter, i, &value);
+          btk_tree_model_get_value (model, &iter, i, &value);
           if (G_VALUE_HOLDS_STRING (&value))
             {
-	      if (gail_combo_box->name) g_free (gail_combo_box->name);
-              gail_combo_box->name =  g_strdup ((gchar *) 
+	      if (bail_combo_box->name) g_free (bail_combo_box->name);
+              bail_combo_box->name =  g_strdup ((gchar *) 
 						g_value_get_string (&value));
 	      g_value_unset (&value);
               break;
@@ -193,22 +193,22 @@ gail_combo_box_get_name (AtkObject *obj)
 	    g_value_unset (&value);
         }
     }
-  return gail_combo_box->name;
+  return bail_combo_box->name;
 }
 
 /*
- * The children of a GailComboBox are the list of items and the entry field
+ * The children of a BailComboBox are the list of items and the entry field
  * if it is editable.
  */
 static gint
-gail_combo_box_get_n_children (AtkObject* obj)
+bail_combo_box_get_n_children (BatkObject* obj)
 {
   gint n_children = 0;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_val_if_fail (GAIL_IS_COMBO_BOX (obj), 0);
+  g_return_val_if_fail (BAIL_IS_COMBO_BOX (obj), 0);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     /*
      * State is defunct
@@ -216,24 +216,24 @@ gail_combo_box_get_n_children (AtkObject* obj)
     return 0;
 
   n_children++;
-  if (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (widget)) ||
-      GTK_IS_COMBO_BOX_ENTRY (widget))
+  if (btk_combo_box_get_has_entry (BTK_COMBO_BOX (widget)) ||
+      BTK_IS_COMBO_BOX_ENTRY (widget))
     n_children ++;
 
   return n_children;
 }
 
-static AtkObject*
-gail_combo_box_ref_child (AtkObject *obj,
+static BatkObject*
+bail_combo_box_ref_child (BatkObject *obj,
                           gint      i)
 {
-  GtkWidget *widget;
-  AtkObject *child;
-  GailComboBox *box;
+  BtkWidget *widget;
+  BatkObject *child;
+  BailComboBox *box;
 
-  g_return_val_if_fail (GAIL_IS_COMBO_BOX (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_COMBO_BOX (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
 
   if (widget == NULL)
     /*
@@ -243,18 +243,18 @@ gail_combo_box_ref_child (AtkObject *obj,
 
   if (i == 0)
     {
-      child = gtk_combo_box_get_popup_accessible (GTK_COMBO_BOX (widget));
-      box = GAIL_COMBO_BOX (obj);
+      child = btk_combo_box_get_popup_accessible (BTK_COMBO_BOX (widget));
+      box = BAIL_COMBO_BOX (obj);
       if (box->popup_set == FALSE)
         {
-          atk_object_set_parent (child, obj);
+          batk_object_set_parent (child, obj);
           box->popup_set = TRUE;
         }
     }
-  else if (i == 1 && (gtk_combo_box_get_has_entry (GTK_COMBO_BOX (widget)) ||
-                      GTK_IS_COMBO_BOX_ENTRY (widget)))
+  else if (i == 1 && (btk_combo_box_get_has_entry (BTK_COMBO_BOX (widget)) ||
+                      BTK_IS_COMBO_BOX_ENTRY (widget)))
     {
-      child = gtk_widget_get_accessible (gtk_bin_get_child (GTK_BIN (widget)));
+      child = btk_widget_get_accessible (btk_bin_get_child (BTK_BIN (widget)));
     }
   else
     {
@@ -264,40 +264,40 @@ gail_combo_box_ref_child (AtkObject *obj,
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->do_action = gail_combo_box_do_action;
-  iface->get_n_actions = gail_combo_box_get_n_actions;
-  iface->get_description = gail_combo_box_get_description;
-  iface->get_keybinding = gail_combo_box_get_keybinding;
-  iface->get_name = gail_combo_box_action_get_name;
-  iface->set_description = gail_combo_box_set_description;
+  iface->do_action = bail_combo_box_do_action;
+  iface->get_n_actions = bail_combo_box_get_n_actions;
+  iface->get_description = bail_combo_box_get_description;
+  iface->get_keybinding = bail_combo_box_get_keybinding;
+  iface->get_name = bail_combo_box_action_get_name;
+  iface->set_description = bail_combo_box_set_description;
 }
 
 static gboolean
-gail_combo_box_do_action (AtkAction *action,
+bail_combo_box_do_action (BatkAction *action,
                           gint      i)
 {
-  GailComboBox *combo_box;
-  GtkWidget *widget;
+  BailComboBox *combo_box;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (action)->widget;
+  widget = BTK_ACCESSIBLE (action)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  if (!gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+  if (!btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
-  combo_box = GAIL_COMBO_BOX (action);
+  combo_box = BAIL_COMBO_BOX (action);
   if (i == 0)
     {
       if (combo_box->action_idle_handler)
         return FALSE;
 
-      combo_box->action_idle_handler = gdk_threads_add_idle (idle_do_action, combo_box);
+      combo_box->action_idle_handler = bdk_threads_add_idle (idle_do_action, combo_box);
       return TRUE;
     }
   else
@@ -307,33 +307,33 @@ gail_combo_box_do_action (AtkAction *action,
 static gboolean
 idle_do_action (gpointer data)
 {
-  GtkComboBox *combo_box;
-  GtkWidget *widget;
-  GailComboBox *gail_combo_box;
-  AtkObject *popup;
+  BtkComboBox *combo_box;
+  BtkWidget *widget;
+  BailComboBox *bail_combo_box;
+  BatkObject *popup;
   gboolean do_popup;
 
-  gail_combo_box = GAIL_COMBO_BOX (data);
-  gail_combo_box->action_idle_handler = 0;
-  widget = GTK_ACCESSIBLE (gail_combo_box)->widget;
+  bail_combo_box = BAIL_COMBO_BOX (data);
+  bail_combo_box->action_idle_handler = 0;
+  widget = BTK_ACCESSIBLE (bail_combo_box)->widget;
   if (widget == NULL || /* State is defunct */
-      !gtk_widget_get_sensitive (widget) || !gtk_widget_get_visible (widget))
+      !btk_widget_get_sensitive (widget) || !btk_widget_get_visible (widget))
     return FALSE;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  popup = gtk_combo_box_get_popup_accessible (combo_box);
-  do_popup = !gtk_widget_get_mapped (GTK_ACCESSIBLE (popup)->widget);
+  popup = btk_combo_box_get_popup_accessible (combo_box);
+  do_popup = !btk_widget_get_mapped (BTK_ACCESSIBLE (popup)->widget);
   if (do_popup)
-      gtk_combo_box_popup (combo_box);
+      btk_combo_box_popup (combo_box);
   else
-      gtk_combo_box_popdown (combo_box);
+      btk_combo_box_popdown (combo_box);
 
   return FALSE;
 }
 
 static gint
-gail_combo_box_get_n_actions (AtkAction *action)
+bail_combo_box_get_n_actions (BatkAction *action)
 {
   /*
    * The default behavior of a combo_box box is to have one action -
@@ -342,14 +342,14 @@ gail_combo_box_get_n_actions (AtkAction *action)
 }
 
 static const gchar*
-gail_combo_box_get_description (AtkAction *action,
+bail_combo_box_get_description (BatkAction *action,
                            gint      i)
 {
   if (i == 0)
     {
-      GailComboBox *combo_box;
+      BailComboBox *combo_box;
 
-      combo_box = GAIL_COMBO_BOX (action);
+      combo_box = BAIL_COMBO_BOX (action);
       return combo_box->press_description;
     }
   else
@@ -357,47 +357,47 @@ gail_combo_box_get_description (AtkAction *action,
 }
 
 static const gchar*
-gail_combo_box_get_keybinding (AtkAction *action,
+bail_combo_box_get_keybinding (BatkAction *action,
 		                    gint      i)
 {
-  GailComboBox *combo_box;
+  BailComboBox *combo_box;
   gchar *return_value = NULL;
   switch (i)
   {
      case 0:
       {
-	  GtkWidget *widget;
-	  GtkWidget *label;
-	  AtkRelationSet *set;
-	  AtkRelation *relation;
+	  BtkWidget *widget;
+	  BtkWidget *label;
+	  BatkRelationSet *set;
+	  BatkRelation *relation;
 	  GPtrArray *target;
 	  gpointer target_object;
 	  guint key_val;
 
-	  combo_box = GAIL_COMBO_BOX (action);
-	  widget = GTK_ACCESSIBLE (combo_box)->widget;
+	  combo_box = BAIL_COMBO_BOX (action);
+	  widget = BTK_ACCESSIBLE (combo_box)->widget;
 	  if (widget == NULL)
              return NULL;
-	  set = atk_object_ref_relation_set (ATK_OBJECT (action));
+	  set = batk_object_ref_relation_set (BATK_OBJECT (action));
 	  if (!set)
              return NULL;
 	  label = NULL;
-	  relation = atk_relation_set_get_relation_by_type (set, ATK_RELATION_LABELLED_BY);
+	  relation = batk_relation_set_get_relation_by_type (set, BATK_RELATION_LABELLED_BY);
 	  if (relation)
 	  {
-	     target = atk_relation_get_target (relation);
+	     target = batk_relation_get_target (relation);
 	     target_object = g_ptr_array_index (target, 0);
-	     if (GTK_IS_ACCESSIBLE (target_object))
+	     if (BTK_IS_ACCESSIBLE (target_object))
 	     {
-	        label = GTK_ACCESSIBLE (target_object)->widget;
+	        label = BTK_ACCESSIBLE (target_object)->widget;
 	     }
 	  }
 	  g_object_unref (set);
-	  if (GTK_IS_LABEL (label))
+	  if (BTK_IS_LABEL (label))
 	  {
-             key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (label));
-	     if (key_val != GDK_VoidSymbol)
-             return_value = gtk_accelerator_name (key_val, GDK_MOD1_MASK);
+             key_val = btk_label_get_mnemonic_keyval (BTK_LABEL (label));
+	     if (key_val != BDK_VoidSymbol)
+             return_value = btk_accelerator_name (key_val, BDK_MOD1_MASK);
 	  }
 	   g_free (combo_box->press_keybinding);
 	   combo_box->press_keybinding = return_value;
@@ -411,7 +411,7 @@ gail_combo_box_get_keybinding (AtkAction *action,
 
 
 static const gchar*
-gail_combo_box_action_get_name (AtkAction *action,
+bail_combo_box_action_get_name (BatkAction *action,
                                 gint      i)
 {
   if (i == 0)
@@ -421,15 +421,15 @@ gail_combo_box_action_get_name (AtkAction *action,
 }
 
 static gboolean
-gail_combo_box_set_description (AtkAction   *action,
+bail_combo_box_set_description (BatkAction   *action,
                                 gint        i,
                                 const gchar *desc)
 {
   if (i == 0)
     {
-      GailComboBox *combo_box;
+      BailComboBox *combo_box;
 
-      combo_box = GAIL_COMBO_BOX (action);
+      combo_box = BAIL_COMBO_BOX (action);
       g_free (combo_box->press_description);
       combo_box->press_description = g_strdup (desc);
       return TRUE;
@@ -439,14 +439,14 @@ gail_combo_box_set_description (AtkAction   *action,
 }
 
 static void
-atk_selection_interface_init (AtkSelectionIface *iface)
+batk_selection_interface_init (BatkSelectionIface *iface)
 {
-  iface->add_selection = gail_combo_box_add_selection;
-  iface->clear_selection = gail_combo_box_clear_selection;
-  iface->ref_selection = gail_combo_box_ref_selection;
-  iface->get_selection_count = gail_combo_box_get_selection_count;
-  iface->is_child_selected = gail_combo_box_is_child_selected;
-  iface->remove_selection = gail_combo_box_remove_selection;
+  iface->add_selection = bail_combo_box_add_selection;
+  iface->clear_selection = bail_combo_box_clear_selection;
+  iface->ref_selection = bail_combo_box_ref_selection;
+  iface->get_selection_count = bail_combo_box_get_selection_count;
+  iface->is_child_selected = bail_combo_box_is_child_selected;
+  iface->remove_selection = bail_combo_box_remove_selection;
   /*
    * select_all_selection does not make sense for a combo_box
    * so no implementation is provided.
@@ -454,61 +454,61 @@ atk_selection_interface_init (AtkSelectionIface *iface)
 }
 
 static gboolean
-gail_combo_box_add_selection (AtkSelection *selection,
+bail_combo_box_add_selection (BatkSelection *selection,
                               gint         i)
 {
-  GtkComboBox *combo_box;
-  GtkWidget *widget;
+  BtkComboBox *combo_box;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  gtk_combo_box_set_active (combo_box, i);
+  btk_combo_box_set_active (combo_box, i);
   return TRUE;
 }
 
 static gboolean 
-gail_combo_box_clear_selection (AtkSelection *selection)
+bail_combo_box_clear_selection (BatkSelection *selection)
 {
-  GtkComboBox *combo_box;
-  GtkWidget *widget;
+  BtkComboBox *combo_box;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  gtk_combo_box_set_active (combo_box, -1);
+  btk_combo_box_set_active (combo_box, -1);
   return TRUE;
 }
 
-static AtkObject*
-gail_combo_box_ref_selection (AtkSelection *selection,
+static BatkObject*
+bail_combo_box_ref_selection (BatkSelection *selection,
                               gint         i)
 {
-  GtkComboBox *combo_box;
-  GtkWidget *widget;
-  AtkObject *obj;
+  BtkComboBox *combo_box;
+  BtkWidget *widget;
+  BatkObject *obj;
   gint index;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
   /*
    * A combo_box box can have only one selection.
@@ -516,65 +516,65 @@ gail_combo_box_ref_selection (AtkSelection *selection,
   if (i != 0)
     return NULL;
 
-  obj = gtk_combo_box_get_popup_accessible (combo_box);
-  index = gtk_combo_box_get_active (combo_box);
-  return atk_object_ref_accessible_child (obj, index);
+  obj = btk_combo_box_get_popup_accessible (combo_box);
+  index = btk_combo_box_get_active (combo_box);
+  return batk_object_ref_accessible_child (obj, index);
 }
 
 static gint
-gail_combo_box_get_selection_count (AtkSelection *selection)
+bail_combo_box_get_selection_count (BatkSelection *selection)
 {
-  GtkComboBox *combo_box;
-  GtkWidget *widget;
+  BtkComboBox *combo_box;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return 0;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  return (gtk_combo_box_get_active (combo_box) == -1) ? 0 : 1;
+  return (btk_combo_box_get_active (combo_box) == -1) ? 0 : 1;
 }
 
 static gboolean
-gail_combo_box_is_child_selected (AtkSelection *selection,
+bail_combo_box_is_child_selected (BatkSelection *selection,
                                   gint         i)
 {
-  GtkComboBox *combo_box;
+  BtkComboBox *combo_box;
   gint j;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  combo_box = GTK_COMBO_BOX (widget);
+  combo_box = BTK_COMBO_BOX (widget);
 
-  j = gtk_combo_box_get_active (combo_box);
+  j = btk_combo_box_get_active (combo_box);
 
   return (j == i);
 }
 
 static gboolean
-gail_combo_box_remove_selection (AtkSelection *selection,
+bail_combo_box_remove_selection (BatkSelection *selection,
                                  gint         i)
 {
-  if (atk_selection_is_child_selected (selection, i))
-    atk_selection_clear_selection (selection);
+  if (batk_selection_is_child_selected (selection, i))
+    batk_selection_clear_selection (selection);
 
   return TRUE;
 }
 
 static void
-gail_combo_box_finalize (GObject *object)
+bail_combo_box_finalize (GObject *object)
 {
-  GailComboBox *combo_box = GAIL_COMBO_BOX (object);
+  BailComboBox *combo_box = BAIL_COMBO_BOX (object);
 
   g_free (combo_box->press_description);
   g_free (combo_box->press_keybinding);
@@ -584,5 +584,5 @@ gail_combo_box_finalize (GObject *object)
       g_source_remove (combo_box->action_idle_handler);
       combo_box->action_idle_handler = 0;
     }
-  G_OBJECT_CLASS (gail_combo_box_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_combo_box_parent_class)->finalize (object);
 }

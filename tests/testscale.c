@@ -18,15 +18,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 int main (int argc, char *argv[])
 {
-  GtkWidget *window;
-  GtkWidget *box;
-  GtkWidget *box2;
-  GtkWidget *frame;
-  GtkWidget *scale;
+  BtkWidget *window;
+  BtkWidget *box;
+  BtkWidget *box2;
+  BtkWidget *frame;
+  BtkWidget *scale;
   gdouble marks[3] = { 0.0, 50.0, 100.0 };
   const gchar *labels[3] = { 
     "<small>Left</small>", 
@@ -42,105 +42,105 @@ int main (int argc, char *argv[])
     "<span color='Red' size='small'>Hot</span>" 
   };
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "Ranges with marks");
-  box = gtk_vbox_new (FALSE, 5);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_title (BTK_WINDOW (window), "Ranges with marks");
+  box = btk_vbox_new (FALSE, 5);
 
-  frame = gtk_frame_new ("No marks");
-  scale = gtk_hscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("No marks");
+  scale = btk_hscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box), frame, FALSE, FALSE, 0);
 
-  frame = gtk_frame_new ("Simple marks");
-  scale = gtk_hscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_BOTTOM, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_BOTTOM, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_BOTTOM, NULL);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Simple marks");
+  scale = btk_hscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_BOTTOM, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_BOTTOM, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_BOTTOM, NULL);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box), frame, FALSE, FALSE, 0);
  
-  frame = gtk_frame_new ("Labeled marks");
-  scale = gtk_hscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_BOTTOM, labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_BOTTOM, labels[1]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_BOTTOM, labels[2]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Labeled marks");
+  scale = btk_hscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_BOTTOM, labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_BOTTOM, labels[1]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_BOTTOM, labels[2]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Some labels");
-  scale = gtk_hscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_BOTTOM, labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_BOTTOM, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_BOTTOM, labels[2]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Some labels");
+  scale = btk_hscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_BOTTOM, labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_BOTTOM, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_BOTTOM, labels[2]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Above and below");
-  scale = gtk_hscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[0], GTK_POS_TOP, bath_labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[1], GTK_POS_BOTTOM, bath_labels[1]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[2], GTK_POS_BOTTOM, bath_labels[2]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[3], GTK_POS_TOP, bath_labels[3]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Above and below");
+  scale = btk_hscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[0], BTK_POS_TOP, bath_labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[1], BTK_POS_BOTTOM, bath_labels[1]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[2], BTK_POS_BOTTOM, bath_labels[2]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[3], BTK_POS_TOP, bath_labels[3]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box), frame, FALSE, FALSE, 0);
 
-  box2 = gtk_hbox_new (FALSE, 5);
-  gtk_box_pack_start (GTK_BOX (box), box2, TRUE, TRUE, 0);
+  box2 = btk_hbox_new (FALSE, 5);
+  btk_box_pack_start (BTK_BOX (box), box2, TRUE, TRUE, 0);
 
-  frame = gtk_frame_new ("No marks");
-  scale = gtk_vscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box2), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("No marks");
+  scale = btk_vscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box2), frame, FALSE, FALSE, 0);
 
-  frame = gtk_frame_new ("Simple marks");
-  scale = gtk_vscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_LEFT, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_LEFT, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_LEFT, NULL);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box2), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Simple marks");
+  scale = btk_vscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_LEFT, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_LEFT, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_LEFT, NULL);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box2), frame, FALSE, FALSE, 0);
  
-  frame = gtk_frame_new ("Labeled marks");
-  scale = gtk_vscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_LEFT, labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_LEFT, labels[1]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_LEFT, labels[2]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box2), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Labeled marks");
+  scale = btk_vscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_LEFT, labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_LEFT, labels[1]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_LEFT, labels[2]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box2), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Some labels");
-  scale = gtk_vscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[0], GTK_POS_LEFT, labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[1], GTK_POS_LEFT, NULL);
-  gtk_scale_add_mark (GTK_SCALE (scale), marks[2], GTK_POS_LEFT, labels[2]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box2), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Some labels");
+  scale = btk_vscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[0], BTK_POS_LEFT, labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[1], BTK_POS_LEFT, NULL);
+  btk_scale_add_mark (BTK_SCALE (scale), marks[2], BTK_POS_LEFT, labels[2]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box2), frame, FALSE, FALSE, 0);
   
-  frame = gtk_frame_new ("Right and left");
-  scale = gtk_vscale_new_with_range (0, 100, 1);
-  gtk_scale_set_draw_value (GTK_SCALE (scale), FALSE);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[0], GTK_POS_RIGHT, bath_labels[0]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[1], GTK_POS_LEFT, bath_labels[1]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[2], GTK_POS_LEFT, bath_labels[2]);
-  gtk_scale_add_mark (GTK_SCALE (scale), bath_marks[3], GTK_POS_RIGHT, bath_labels[3]);
-  gtk_container_add (GTK_CONTAINER (frame), scale);
-  gtk_box_pack_start (GTK_BOX (box2), frame, FALSE, FALSE, 0);
+  frame = btk_frame_new ("Right and left");
+  scale = btk_vscale_new_with_range (0, 100, 1);
+  btk_scale_set_draw_value (BTK_SCALE (scale), FALSE);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[0], BTK_POS_RIGHT, bath_labels[0]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[1], BTK_POS_LEFT, bath_labels[1]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[2], BTK_POS_LEFT, bath_labels[2]);
+  btk_scale_add_mark (BTK_SCALE (scale), bath_marks[3], BTK_POS_RIGHT, bath_labels[3]);
+  btk_container_add (BTK_CONTAINER (frame), scale);
+  btk_box_pack_start (BTK_BOX (box2), frame, FALSE, FALSE, 0);
 
-  gtk_container_add (GTK_CONTAINER (window), box);
-  gtk_widget_show_all (window);
+  btk_container_add (BTK_CONTAINER (window), box);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

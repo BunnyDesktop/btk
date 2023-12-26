@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,37 +18,37 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include <stdlib.h>
 #include <string.h>
 #include "config.h"
-#include "gtkbutton.h"
-#include "gtkdialog.h"
-#include "gtkhbbox.h"
-#include "gtklabel.h"
-#include "gtkhseparator.h"
-#include "gtkmarshalers.h"
-#include "gtkvbox.h"
-#include "gdkkeysyms.h"
-#include "gtkmain.h"
-#include "gtkintl.h"
-#include "gtkbindings.h"
-#include "gtkprivate.h"
-#include "gtkbuildable.h"
-#include "gtkalias.h"
+#include "btkbutton.h"
+#include "btkdialog.h"
+#include "btkhbbox.h"
+#include "btklabel.h"
+#include "btkhseparator.h"
+#include "btkmarshalers.h"
+#include "btkvbox.h"
+#include "bdkkeysyms.h"
+#include "btkmain.h"
+#include "btkintl.h"
+#include "btkbindings.h"
+#include "btkprivate.h"
+#include "btkbuildable.h"
+#include "btkalias.h"
 
-#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_DIALOG, GtkDialogPrivate))
+#define GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_DIALOG, BtkDialogPrivate))
 
 typedef struct {
   guint ignore_separator : 1;
-} GtkDialogPrivate;
+} BtkDialogPrivate;
 
 typedef struct _ResponseData ResponseData;
 
@@ -57,43 +57,43 @@ struct _ResponseData
   gint response_id;
 };
 
-static void      gtk_dialog_add_buttons_valist   (GtkDialog    *dialog,
+static void      btk_dialog_add_buttons_valist   (BtkDialog    *dialog,
                                                   const gchar  *first_button_text,
                                                   va_list       args);
 
-static gboolean  gtk_dialog_delete_event_handler (GtkWidget    *widget,
-                                                  GdkEventAny  *event,
+static gboolean  btk_dialog_delete_event_handler (BtkWidget    *widget,
+                                                  BdkEventAny  *event,
                                                   gpointer      user_data);
 
-static void      gtk_dialog_set_property         (GObject      *object,
+static void      btk_dialog_set_property         (GObject      *object,
                                                   guint         prop_id,
                                                   const GValue *value,
                                                   GParamSpec   *pspec);
-static void      gtk_dialog_get_property         (GObject      *object,
+static void      btk_dialog_get_property         (GObject      *object,
                                                   guint         prop_id,
                                                   GValue       *value,
                                                   GParamSpec   *pspec);
-static void      gtk_dialog_style_set            (GtkWidget    *widget,
-                                                  GtkStyle     *prev_style);
-static void      gtk_dialog_map                  (GtkWidget    *widget);
+static void      btk_dialog_style_set            (BtkWidget    *widget,
+                                                  BtkStyle     *prev_style);
+static void      btk_dialog_map                  (BtkWidget    *widget);
 
-static void      gtk_dialog_close                (GtkDialog    *dialog);
+static void      btk_dialog_close                (BtkDialog    *dialog);
 
-static ResponseData * get_response_data          (GtkWidget    *widget,
+static ResponseData * get_response_data          (BtkWidget    *widget,
                                                   gboolean      create);
 
-static void      gtk_dialog_buildable_interface_init     (GtkBuildableIface *iface);
-static GObject * gtk_dialog_buildable_get_internal_child (GtkBuildable  *buildable,
-                                                          GtkBuilder    *builder,
+static void      btk_dialog_buildable_interface_init     (BtkBuildableIface *iface);
+static GObject * btk_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
+                                                          BtkBuilder    *builder,
                                                           const gchar   *childname);
-static gboolean  gtk_dialog_buildable_custom_tag_start   (GtkBuildable  *buildable,
-                                                          GtkBuilder    *builder,
+static gboolean  btk_dialog_buildable_custom_tag_start   (BtkBuildable  *buildable,
+                                                          BtkBuilder    *builder,
                                                           GObject       *child,
                                                           const gchar   *tagname,
                                                           GMarkupParser *parser,
                                                           gpointer      *data);
-static void      gtk_dialog_buildable_custom_finished    (GtkBuildable  *buildable,
-                                                          GtkBuilder    *builder,
+static void      btk_dialog_buildable_custom_finished    (BtkBuildable  *buildable,
+                                                          BtkBuilder    *builder,
                                                           GObject       *child,
                                                           const gchar   *tagname,
                                                           gpointer       user_data);
@@ -112,67 +112,67 @@ enum {
 
 static guint dialog_signals[LAST_SIGNAL];
 
-G_DEFINE_TYPE_WITH_CODE (GtkDialog, gtk_dialog, GTK_TYPE_WINDOW,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-						gtk_dialog_buildable_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkDialog, btk_dialog, BTK_TYPE_WINDOW,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+						btk_dialog_buildable_interface_init))
 
 static void
-gtk_dialog_class_init (GtkDialogClass *class)
+btk_dialog_class_init (BtkDialogClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkWidgetClass *widget_class;
-  GtkBindingSet *binding_set;
+  GObjectClass *bobject_class;
+  BtkWidgetClass *widget_class;
+  BtkBindingSet *binding_set;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  widget_class = GTK_WIDGET_CLASS (class);
+  bobject_class = G_OBJECT_CLASS (class);
+  widget_class = BTK_WIDGET_CLASS (class);
   
-  gobject_class->set_property = gtk_dialog_set_property;
-  gobject_class->get_property = gtk_dialog_get_property;
+  bobject_class->set_property = btk_dialog_set_property;
+  bobject_class->get_property = btk_dialog_get_property;
   
-  widget_class->map = gtk_dialog_map;
-  widget_class->style_set = gtk_dialog_style_set;
+  widget_class->map = btk_dialog_map;
+  widget_class->style_set = btk_dialog_style_set;
 
-  class->close = gtk_dialog_close;
+  class->close = btk_dialog_close;
   
-  g_type_class_add_private (gobject_class, sizeof (GtkDialogPrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkDialogPrivate));
 
   /**
-   * GtkDialog:has-separator:
+   * BtkDialog:has-separator:
    *
    * When %TRUE, the dialog has a separator bar above its buttons.
    *
-   * Deprecated: 2.22: This property will be removed in GTK+ 3.
+   * Deprecated: 2.22: This property will be removed in BTK+ 3.
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_HAS_SEPARATOR,
                                    g_param_spec_boolean ("has-separator",
 							 P_("Has separator"),
 							 P_("The dialog has a separator bar above its buttons"),
                                                          FALSE,
-                                                         GTK_PARAM_READWRITE | G_PARAM_DEPRECATED));
+                                                         BTK_PARAM_READWRITE | G_PARAM_DEPRECATED));
 
   /**
-   * GtkDialog::response:
+   * BtkDialog::response:
    * @dialog: the object on which the signal is emitted
    * @response_id: the response ID
    * 
    * Emitted when an action widget is clicked, the dialog receives a 
-   * delete event, or the application programmer calls gtk_dialog_response(). 
-   * On a delete event, the response ID is #GTK_RESPONSE_DELETE_EVENT. 
+   * delete event, or the application programmer calls btk_dialog_response(). 
+   * On a delete event, the response ID is #BTK_RESPONSE_DELETE_EVENT. 
    * Otherwise, it depends on which action widget was clicked.
    */
   dialog_signals[RESPONSE] =
     g_signal_new (I_("response"),
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GtkDialogClass, response),
+		  G_STRUCT_OFFSET (BtkDialogClass, response),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__INT,
+		  _btk_marshal_VOID__INT,
 		  G_TYPE_NONE, 1,
 		  G_TYPE_INT);
 
   /**
-   * GtkDialog::close:
+   * BtkDialog::close:
    *
    * The ::close signal is a 
    * <link linkend="keybinding-signals">keybinding signal</link>
@@ -185,92 +185,92 @@ gtk_dialog_class_init (GtkDialogClass *class)
     g_signal_new (I_("close"),
 		  G_OBJECT_CLASS_TYPE (class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-		  G_STRUCT_OFFSET (GtkDialogClass, close),
+		  G_STRUCT_OFFSET (BtkDialogClass, close),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
   
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("content-area-border",
                                                              P_("Content area border"),
                                                              P_("Width of border around the main dialog area"),
                                                              0,
                                                              G_MAXINT,
                                                              2,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
   /**
-   * GtkDialog:content-area-spacing:
+   * BtkDialog:content-area-spacing:
    *
    * The default spacing used between elements of the
    * content area of the dialog, as returned by
-   * gtk_dialog_get_content_area(), unless gtk_box_set_spacing()
+   * btk_dialog_get_content_area(), unless btk_box_set_spacing()
    * was called on that widget directly.
    *
    * Since: 2.16
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("content-area-spacing",
                                                              P_("Content area spacing"),
                                                              P_("Spacing between elements of the main dialog area"),
                                                              0,
                                                              G_MAXINT,
                                                              0,
-                                                             GTK_PARAM_READABLE));
-  gtk_widget_class_install_style_property (widget_class,
+                                                             BTK_PARAM_READABLE));
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("button-spacing",
                                                              P_("Button spacing"),
                                                              P_("Spacing between buttons"),
                                                              0,
                                                              G_MAXINT,
                                                              6,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
   
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_int ("action-area-border",
                                                              P_("Action area border"),
                                                              P_("Width of border around the button area at the bottom of the dialog"),
                                                              0,
                                                              G_MAXINT,
                                                              5,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
 
-  binding_set = gtk_binding_set_by_class (class);
+  binding_set = btk_binding_set_by_class (class);
   
-  gtk_binding_entry_add_signal (binding_set, GDK_Escape, 0, "close", 0);
+  btk_binding_entry_add_signal (binding_set, BDK_Escape, 0, "close", 0);
 }
 
 static void
-update_spacings (GtkDialog *dialog)
+update_spacings (BtkDialog *dialog)
 {
   gint content_area_border;
   gint content_area_spacing;
   gint button_spacing;
   gint action_area_border;
 
-  gtk_widget_style_get (GTK_WIDGET (dialog),
+  btk_widget_style_get (BTK_WIDGET (dialog),
                         "content-area-border", &content_area_border,
                         "content-area-spacing", &content_area_spacing,
                         "button-spacing", &button_spacing,
                         "action-area-border", &action_area_border,
                         NULL);
 
-  gtk_container_set_border_width (GTK_CONTAINER (dialog->vbox),
+  btk_container_set_border_width (BTK_CONTAINER (dialog->vbox),
                                   content_area_border);
-  if (!_gtk_box_get_spacing_set (GTK_BOX (dialog->vbox)))
+  if (!_btk_box_get_spacing_set (BTK_BOX (dialog->vbox)))
     {
-      gtk_box_set_spacing (GTK_BOX (dialog->vbox), content_area_spacing);
-      _gtk_box_set_spacing_set (GTK_BOX (dialog->vbox), FALSE);
+      btk_box_set_spacing (BTK_BOX (dialog->vbox), content_area_spacing);
+      _btk_box_set_spacing_set (BTK_BOX (dialog->vbox), FALSE);
     }
-  gtk_box_set_spacing (GTK_BOX (dialog->action_area),
+  btk_box_set_spacing (BTK_BOX (dialog->action_area),
                        button_spacing);
-  gtk_container_set_border_width (GTK_CONTAINER (dialog->action_area),
+  btk_container_set_border_width (BTK_CONTAINER (dialog->action_area),
                                   action_area_border);
 }
 
 static void
-gtk_dialog_init (GtkDialog *dialog)
+btk_dialog_init (BtkDialog *dialog)
 {
-  GtkDialogPrivate *priv;
+  BtkDialogPrivate *priv;
 
   priv = GET_PRIVATE (dialog);
   priv->ignore_separator = FALSE;
@@ -281,50 +281,50 @@ gtk_dialog_init (GtkDialog *dialog)
    */
   g_signal_connect (dialog,
                     "delete-event",
-                    G_CALLBACK (gtk_dialog_delete_event_handler),
+                    G_CALLBACK (btk_dialog_delete_event_handler),
                     NULL);
 
-  dialog->vbox = gtk_vbox_new (FALSE, 0);
+  dialog->vbox = btk_vbox_new (FALSE, 0);
 
-  gtk_container_add (GTK_CONTAINER (dialog), dialog->vbox);
-  gtk_widget_show (dialog->vbox);
+  btk_container_add (BTK_CONTAINER (dialog), dialog->vbox);
+  btk_widget_show (dialog->vbox);
 
-  dialog->action_area = gtk_hbutton_box_new ();
+  dialog->action_area = btk_hbutton_box_new ();
 
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog->action_area),
-                             GTK_BUTTONBOX_END);
+  btk_button_box_set_layout (BTK_BUTTON_BOX (dialog->action_area),
+                             BTK_BUTTONBOX_END);
 
-  gtk_box_pack_end (GTK_BOX (dialog->vbox), dialog->action_area,
+  btk_box_pack_end (BTK_BOX (dialog->vbox), dialog->action_area,
                     FALSE, TRUE, 0);
-  gtk_widget_show (dialog->action_area);
+  btk_widget_show (dialog->action_area);
 
   dialog->separator = NULL;
 
-  gtk_window_set_type_hint (GTK_WINDOW (dialog),
-                            GDK_WINDOW_TYPE_HINT_DIALOG);
-  gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);
+  btk_window_set_type_hint (BTK_WINDOW (dialog),
+                            BDK_WINDOW_TYPE_HINT_DIALOG);
+  btk_window_set_position (BTK_WINDOW (dialog), BTK_WIN_POS_CENTER_ON_PARENT);
 }
 
-static GtkBuildableIface *parent_buildable_iface;
+static BtkBuildableIface *parent_buildable_iface;
 
 static void
-gtk_dialog_buildable_interface_init (GtkBuildableIface *iface)
+btk_dialog_buildable_interface_init (BtkBuildableIface *iface)
 {
   parent_buildable_iface = g_type_interface_peek_parent (iface);
-  iface->get_internal_child = gtk_dialog_buildable_get_internal_child;
-  iface->custom_tag_start = gtk_dialog_buildable_custom_tag_start;
-  iface->custom_finished = gtk_dialog_buildable_custom_finished;
+  iface->get_internal_child = btk_dialog_buildable_get_internal_child;
+  iface->custom_tag_start = btk_dialog_buildable_custom_tag_start;
+  iface->custom_finished = btk_dialog_buildable_custom_finished;
 }
 
 static GObject *
-gtk_dialog_buildable_get_internal_child (GtkBuildable *buildable,
-					 GtkBuilder   *builder,
+btk_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+					 BtkBuilder   *builder,
 					 const gchar  *childname)
 {
     if (strcmp (childname, "vbox") == 0)
-      return G_OBJECT (GTK_DIALOG (buildable)->vbox);
+      return G_OBJECT (BTK_DIALOG (buildable)->vbox);
     else if (strcmp (childname, "action_area") == 0)
-      return G_OBJECT (GTK_DIALOG (buildable)->action_area);
+      return G_OBJECT (BTK_DIALOG (buildable)->action_area);
 
     return parent_buildable_iface->get_internal_child (buildable,
 						       builder,
@@ -332,19 +332,19 @@ gtk_dialog_buildable_get_internal_child (GtkBuildable *buildable,
 }
 
 static void 
-gtk_dialog_set_property (GObject      *object,
+btk_dialog_set_property (GObject      *object,
                          guint         prop_id,
                          const GValue *value,
                          GParamSpec   *pspec)
 {
-  GtkDialog *dialog;
+  BtkDialog *dialog;
   
-  dialog = GTK_DIALOG (object);
+  dialog = BTK_DIALOG (object);
   
   switch (prop_id)
     {
     case PROP_HAS_SEPARATOR:
-      gtk_dialog_set_has_separator (dialog, g_value_get_boolean (value));
+      btk_dialog_set_has_separator (dialog, g_value_get_boolean (value));
       break;
 
     default:
@@ -354,14 +354,14 @@ gtk_dialog_set_property (GObject      *object,
 }
 
 static void 
-gtk_dialog_get_property (GObject     *object,
+btk_dialog_get_property (GObject     *object,
                          guint        prop_id,
                          GValue      *value,
                          GParamSpec  *pspec)
 {
-  GtkDialog *dialog;
+  BtkDialog *dialog;
   
-  dialog = GTK_DIALOG (object);
+  dialog = BTK_DIALOG (object);
   
   switch (prop_id)
     {
@@ -376,12 +376,12 @@ gtk_dialog_get_property (GObject     *object,
 }
 
 static gboolean
-gtk_dialog_delete_event_handler (GtkWidget   *widget,
-                                 GdkEventAny *event,
+btk_dialog_delete_event_handler (BtkWidget   *widget,
+                                 BdkEventAny *event,
                                  gpointer     user_data)
 {
   /* emit response signal */
-  gtk_dialog_response (GTK_DIALOG (widget), GTK_RESPONSE_DELETE_EVENT);
+  btk_dialog_response (BTK_DIALOG (widget), BTK_RESPONSE_DELETE_EVENT);
 
   /* Do the destroy by default */
   return FALSE;
@@ -397,45 +397,45 @@ gtk_dialog_delete_event_handler (GtkWidget   *widget,
  * right initial focus widget.
  */
 static void
-gtk_dialog_map (GtkWidget *widget)
+btk_dialog_map (BtkWidget *widget)
 {
-  GtkWindow *window = GTK_WINDOW (widget);
-  GtkDialog *dialog = GTK_DIALOG (widget);
+  BtkWindow *window = BTK_WINDOW (widget);
+  BtkDialog *dialog = BTK_DIALOG (widget);
   
-  GTK_WIDGET_CLASS (gtk_dialog_parent_class)->map (widget);
+  BTK_WIDGET_CLASS (btk_dialog_parent_class)->map (widget);
 
   if (!window->focus_widget)
     {
       GList *children, *tmp_list;
-      GtkWidget *first_focus = NULL;
+      BtkWidget *first_focus = NULL;
       
       do 
 	{
-	  g_signal_emit_by_name (window, "move_focus", GTK_DIR_TAB_FORWARD);
+	  g_signal_emit_by_name (window, "move_focus", BTK_DIR_TAB_FORWARD);
 
 	  if (first_focus == NULL)
 	    first_focus = window->focus_widget;
 	  else if (first_focus == window->focus_widget)
             break;
-	  if (!GTK_IS_LABEL (window->focus_widget))
+	  if (!BTK_IS_LABEL (window->focus_widget))
 	    break;
-          if (!gtk_label_get_current_uri (GTK_LABEL (window->focus_widget)))
-            gtk_label_select_region (GTK_LABEL (window->focus_widget), 0, 0);
+          if (!btk_label_get_current_uri (BTK_LABEL (window->focus_widget)))
+            btk_label_select_rebunnyion (BTK_LABEL (window->focus_widget), 0, 0);
 	}
       while (TRUE);
 
-      tmp_list = children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+      tmp_list = children = btk_container_get_children (BTK_CONTAINER (dialog->action_area));
       
       while (tmp_list)
 	{
-	  GtkWidget *child = tmp_list->data;
+	  BtkWidget *child = tmp_list->data;
 	  
 	  if ((window->focus_widget == NULL || 
 	       child == window->focus_widget) && 
 	      child != window->default_widget &&
 	      window->default_widget)
 	    {
-	      gtk_widget_grab_focus (window->default_widget);
+	      btk_widget_grab_focus (window->default_widget);
 	      break;
 	    }
 	  
@@ -447,20 +447,20 @@ gtk_dialog_map (GtkWidget *widget)
 }
 
 static void
-gtk_dialog_style_set (GtkWidget *widget,
-                      GtkStyle  *prev_style)
+btk_dialog_style_set (BtkWidget *widget,
+                      BtkStyle  *prev_style)
 {
-  update_spacings (GTK_DIALOG (widget));
+  update_spacings (BTK_DIALOG (widget));
 }
 
-static GtkWidget *
-dialog_find_button (GtkDialog *dialog,
+static BtkWidget *
+dialog_find_button (BtkDialog *dialog,
 		    gint       response_id)
 {
   GList *children, *tmp_list;
-  GtkWidget *child = NULL;
+  BtkWidget *child = NULL;
       
-  children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (dialog->action_area));
 
   for (tmp_list = children; tmp_list; tmp_list = tmp_list->next)
     {
@@ -479,117 +479,117 @@ dialog_find_button (GtkDialog *dialog,
 }
 
 static void
-gtk_dialog_close (GtkDialog *dialog)
+btk_dialog_close (BtkDialog *dialog)
 {
   /* Synthesize delete_event to close dialog. */
   
-  GtkWidget *widget = GTK_WIDGET (dialog);
-  GdkEvent *event;
+  BtkWidget *widget = BTK_WIDGET (dialog);
+  BdkEvent *event;
 
-  event = gdk_event_new (GDK_DELETE);
+  event = bdk_event_new (BDK_DELETE);
   
   event->any.window = g_object_ref (widget->window);
   event->any.send_event = TRUE;
   
-  gtk_main_do_event (event);
-  gdk_event_free (event);
+  btk_main_do_event (event);
+  bdk_event_free (event);
 }
 
-GtkWidget*
-gtk_dialog_new (void)
+BtkWidget*
+btk_dialog_new (void)
 {
-  return g_object_new (GTK_TYPE_DIALOG, NULL);
+  return g_object_new (BTK_TYPE_DIALOG, NULL);
 }
 
-static GtkWidget*
-gtk_dialog_new_empty (const gchar     *title,
-                      GtkWindow       *parent,
-                      GtkDialogFlags   flags)
+static BtkWidget*
+btk_dialog_new_empty (const gchar     *title,
+                      BtkWindow       *parent,
+                      BtkDialogFlags   flags)
 {
-  GtkDialog *dialog;
+  BtkDialog *dialog;
 
-  dialog = g_object_new (GTK_TYPE_DIALOG, NULL);
+  dialog = g_object_new (BTK_TYPE_DIALOG, NULL);
 
   if (title)
-    gtk_window_set_title (GTK_WINDOW (dialog), title);
+    btk_window_set_title (BTK_WINDOW (dialog), title);
 
   if (parent)
-    gtk_window_set_transient_for (GTK_WINDOW (dialog), parent);
+    btk_window_set_transient_for (BTK_WINDOW (dialog), parent);
 
-  if (flags & GTK_DIALOG_MODAL)
-    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+  if (flags & BTK_DIALOG_MODAL)
+    btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
   
-  if (flags & GTK_DIALOG_DESTROY_WITH_PARENT)
-    gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
+  if (flags & BTK_DIALOG_DESTROY_WITH_PARENT)
+    btk_window_set_destroy_with_parent (BTK_WINDOW (dialog), TRUE);
 
-  if (flags & GTK_DIALOG_NO_SEPARATOR)
-    gtk_dialog_set_has_separator (dialog, FALSE);
+  if (flags & BTK_DIALOG_NO_SEPARATOR)
+    btk_dialog_set_has_separator (dialog, FALSE);
   
-  return GTK_WIDGET (dialog);
+  return BTK_WIDGET (dialog);
 }
 
 /**
- * gtk_dialog_new_with_buttons:
+ * btk_dialog_new_with_buttons:
  * @title: (allow-none): Title of the dialog, or %NULL
  * @parent: (allow-none): Transient parent of the dialog, or %NULL
- * @flags: from #GtkDialogFlags
+ * @flags: from #BtkDialogFlags
  * @first_button_text: (allow-none): stock ID or text to go in first button, or %NULL
  * @Varargs: response ID for first button, then additional buttons, ending with %NULL
  *
- * Creates a new #GtkDialog with title @title (or %NULL for the default
- * title; see gtk_window_set_title()) and transient parent @parent (or
- * %NULL for none; see gtk_window_set_transient_for()). The @flags
- * argument can be used to make the dialog modal (#GTK_DIALOG_MODAL)
+ * Creates a new #BtkDialog with title @title (or %NULL for the default
+ * title; see btk_window_set_title()) and transient parent @parent (or
+ * %NULL for none; see btk_window_set_transient_for()). The @flags
+ * argument can be used to make the dialog modal (#BTK_DIALOG_MODAL)
  * and/or to have it destroyed along with its transient parent
- * (#GTK_DIALOG_DESTROY_WITH_PARENT). After @flags, button
+ * (#BTK_DIALOG_DESTROY_WITH_PARENT). After @flags, button
  * text/response ID pairs should be listed, with a %NULL pointer ending
  * the list. Button text can be either a stock ID such as
- * #GTK_STOCK_OK, or some arbitrary text. A response ID can be
- * any positive number, or one of the values in the #GtkResponseType
+ * #BTK_STOCK_OK, or some arbitrary text. A response ID can be
+ * any positive number, or one of the values in the #BtkResponseType
  * enumeration. If the user clicks one of these dialog buttons,
- * #GtkDialog will emit the #GtkDialog::response signal with the corresponding
- * response ID. If a #GtkDialog receives the #GtkWidget::delete-event signal, 
- * it will emit ::response with a response ID of #GTK_RESPONSE_DELETE_EVENT.
+ * #BtkDialog will emit the #BtkDialog::response signal with the corresponding
+ * response ID. If a #BtkDialog receives the #BtkWidget::delete-event signal, 
+ * it will emit ::response with a response ID of #BTK_RESPONSE_DELETE_EVENT.
  * However, destroying a dialog does not emit the ::response signal;
  * so be careful relying on ::response when using the 
- * #GTK_DIALOG_DESTROY_WITH_PARENT flag. Buttons are from left to right,
+ * #BTK_DIALOG_DESTROY_WITH_PARENT flag. Buttons are from left to right,
  * so the first button in the list will be the leftmost button in the dialog.
  *
  * Here's a simple example:
  * |[
- *  GtkWidget *dialog = gtk_dialog_new_with_buttons ("My dialog",
+ *  BtkWidget *dialog = btk_dialog_new_with_buttons ("My dialog",
  *                                                   main_app_window,
- *                                                   GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
- *                                                   GTK_STOCK_OK,
- *                                                   GTK_RESPONSE_ACCEPT,
- *                                                   GTK_STOCK_CANCEL,
- *                                                   GTK_RESPONSE_REJECT,
+ *                                                   BTK_DIALOG_MODAL | BTK_DIALOG_DESTROY_WITH_PARENT,
+ *                                                   BTK_STOCK_OK,
+ *                                                   BTK_RESPONSE_ACCEPT,
+ *                                                   BTK_STOCK_CANCEL,
+ *                                                   BTK_RESPONSE_REJECT,
  *                                                   NULL);
  * ]|
  * 
- * Return value: a new #GtkDialog
+ * Return value: a new #BtkDialog
  **/
-GtkWidget*
-gtk_dialog_new_with_buttons (const gchar    *title,
-                             GtkWindow      *parent,
-                             GtkDialogFlags  flags,
+BtkWidget*
+btk_dialog_new_with_buttons (const gchar    *title,
+                             BtkWindow      *parent,
+                             BtkDialogFlags  flags,
                              const gchar    *first_button_text,
                              ...)
 {
-  GtkDialog *dialog;
+  BtkDialog *dialog;
   va_list args;
   
-  dialog = GTK_DIALOG (gtk_dialog_new_empty (title, parent, flags));
+  dialog = BTK_DIALOG (btk_dialog_new_empty (title, parent, flags));
 
   va_start (args, first_button_text);
 
-  gtk_dialog_add_buttons_valist (dialog,
+  btk_dialog_add_buttons_valist (dialog,
                                  first_button_text,
                                  args);
   
   va_end (args);
 
-  return GTK_WIDGET (dialog);
+  return BTK_WIDGET (dialog);
 }
 
 static void 
@@ -599,18 +599,18 @@ response_data_free (gpointer data)
 }
 
 static ResponseData*
-get_response_data (GtkWidget *widget,
+get_response_data (BtkWidget *widget,
 		   gboolean   create)
 {
   ResponseData *ad = g_object_get_data (G_OBJECT (widget),
-                                        "gtk-dialog-response-data");
+                                        "btk-dialog-response-data");
 
   if (ad == NULL && create)
     {
       ad = g_slice_new (ResponseData);
       
       g_object_set_data_full (G_OBJECT (widget),
-                              I_("gtk-dialog-response-data"),
+                              I_("btk-dialog-response-data"),
                               ad,
 			      response_data_free);
     }
@@ -619,47 +619,47 @@ get_response_data (GtkWidget *widget,
 }
 
 static void
-action_widget_activated (GtkWidget *widget, GtkDialog *dialog)
+action_widget_activated (BtkWidget *widget, BtkDialog *dialog)
 {
   gint response_id;
   
-  response_id = gtk_dialog_get_response_for_widget (dialog, widget);
+  response_id = btk_dialog_get_response_for_widget (dialog, widget);
 
-  gtk_dialog_response (dialog, response_id);
+  btk_dialog_response (dialog, response_id);
 }
 
 /**
- * gtk_dialog_add_action_widget:
- * @dialog: a #GtkDialog
+ * btk_dialog_add_action_widget:
+ * @dialog: a #BtkDialog
  * @child: an activatable widget
  * @response_id: response ID for @child
  * 
- * Adds an activatable widget to the action area of a #GtkDialog,
- * connecting a signal handler that will emit the #GtkDialog::response 
+ * Adds an activatable widget to the action area of a #BtkDialog,
+ * connecting a signal handler that will emit the #BtkDialog::response 
  * signal on the dialog when the widget is activated. The widget is 
  * appended to the end of the dialog's action area. If you want to add a
  * non-activatable widget, simply pack it into the @action_area field 
- * of the #GtkDialog struct.
+ * of the #BtkDialog struct.
  **/
 void
-gtk_dialog_add_action_widget (GtkDialog *dialog,
-                              GtkWidget *child,
+btk_dialog_add_action_widget (BtkDialog *dialog,
+                              BtkWidget *child,
                               gint       response_id)
 {
   ResponseData *ad;
   guint signal_id;
   
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
-  g_return_if_fail (GTK_IS_WIDGET (child));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_WIDGET (child));
 
   ad = get_response_data (child, TRUE);
 
   ad->response_id = response_id;
 
-  if (GTK_IS_BUTTON (child))
-    signal_id = g_signal_lookup ("clicked", GTK_TYPE_BUTTON);
+  if (BTK_IS_BUTTON (child))
+    signal_id = g_signal_lookup ("clicked", BTK_TYPE_BUTTON);
   else
-    signal_id = GTK_WIDGET_GET_CLASS (child)->activate_signal;
+    signal_id = BTK_WIDGET_GET_CLASS (child)->activate_signal;
 
   if (signal_id)
     {
@@ -674,47 +674,47 @@ gtk_dialog_add_action_widget (GtkDialog *dialog,
 				      FALSE);
     }
   else
-    g_warning ("Only 'activatable' widgets can be packed into the action area of a GtkDialog");
+    g_warning ("Only 'activatable' widgets can be packed into the action area of a BtkDialog");
 
-  gtk_box_pack_end (GTK_BOX (dialog->action_area),
+  btk_box_pack_end (BTK_BOX (dialog->action_area),
                     child,
                     FALSE, TRUE, 0);
   
-  if (response_id == GTK_RESPONSE_HELP)
-    gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (dialog->action_area), child, TRUE);
+  if (response_id == BTK_RESPONSE_HELP)
+    btk_button_box_set_child_secondary (BTK_BUTTON_BOX (dialog->action_area), child, TRUE);
 }
 
 /**
- * gtk_dialog_add_button:
- * @dialog: a #GtkDialog
+ * btk_dialog_add_button:
+ * @dialog: a #BtkDialog
  * @button_text: text of button, or stock ID
  * @response_id: response ID for the button
  * 
  * Adds a button with the given text (or a stock button, if @button_text is a
  * stock ID) and sets things up so that clicking the button will emit the
- * #GtkDialog::response signal with the given @response_id. The button is 
+ * #BtkDialog::response signal with the given @response_id. The button is 
  * appended to the end of the dialog's action area. The button widget is 
  * returned, but usually you don't need it.
  *
  * Return value: (transfer none): the button widget that was added
  **/
-GtkWidget*
-gtk_dialog_add_button (GtkDialog   *dialog,
+BtkWidget*
+btk_dialog_add_button (BtkDialog   *dialog,
                        const gchar *button_text,
                        gint         response_id)
 {
-  GtkWidget *button;
+  BtkWidget *button;
   
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), NULL);
   g_return_val_if_fail (button_text != NULL, NULL);
 
-  button = gtk_button_new_from_stock (button_text);
+  button = btk_button_new_from_stock (button_text);
 
-  gtk_widget_set_can_default (button, TRUE);
+  btk_widget_set_can_default (button, TRUE);
   
-  gtk_widget_show (button);
+  btk_widget_show (button);
   
-  gtk_dialog_add_action_widget (dialog,
+  btk_dialog_add_action_widget (dialog,
                                 button,
                                 response_id);
 
@@ -722,14 +722,14 @@ gtk_dialog_add_button (GtkDialog   *dialog,
 }
 
 static void
-gtk_dialog_add_buttons_valist (GtkDialog      *dialog,
+btk_dialog_add_buttons_valist (BtkDialog      *dialog,
                                const gchar    *first_button_text,
                                va_list         args)
 {
   const gchar* text;
   gint response_id;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
   
   if (first_button_text == NULL)
     return;
@@ -739,7 +739,7 @@ gtk_dialog_add_buttons_valist (GtkDialog      *dialog,
 
   while (text != NULL)
     {
-      gtk_dialog_add_button (dialog, text, response_id);
+      btk_dialog_add_button (dialog, text, response_id);
 
       text = va_arg (args, gchar*);
       if (text == NULL)
@@ -749,18 +749,18 @@ gtk_dialog_add_buttons_valist (GtkDialog      *dialog,
 }
 
 /**
- * gtk_dialog_add_buttons:
- * @dialog: a #GtkDialog
+ * btk_dialog_add_buttons:
+ * @dialog: a #BtkDialog
  * @first_button_text: button text or stock ID
  * @Varargs: response ID for first button, then more text-response_id pairs
  * 
- * Adds more buttons, same as calling gtk_dialog_add_button()
+ * Adds more buttons, same as calling btk_dialog_add_button()
  * repeatedly.  The variable argument list should be %NULL-terminated
- * as with gtk_dialog_new_with_buttons(). Each button must have both
+ * as with btk_dialog_new_with_buttons(). Each button must have both
  * text and response ID.
  **/
 void
-gtk_dialog_add_buttons (GtkDialog   *dialog,
+btk_dialog_add_buttons (BtkDialog   *dialog,
                         const gchar *first_button_text,
                         ...)
 {  
@@ -768,7 +768,7 @@ gtk_dialog_add_buttons (GtkDialog   *dialog,
 
   va_start (args, first_button_text);
 
-  gtk_dialog_add_buttons_valist (dialog,
+  btk_dialog_add_buttons_valist (dialog,
                                  first_button_text,
                                  args);
   
@@ -776,35 +776,35 @@ gtk_dialog_add_buttons (GtkDialog   *dialog,
 }
 
 /**
- * gtk_dialog_set_response_sensitive:
- * @dialog: a #GtkDialog
+ * btk_dialog_set_response_sensitive:
+ * @dialog: a #BtkDialog
  * @response_id: a response ID
  * @setting: %TRUE for sensitive
  *
- * Calls <literal>gtk_widget_set_sensitive (widget, @setting)</literal> 
+ * Calls <literal>btk_widget_set_sensitive (widget, @setting)</literal> 
  * for each widget in the dialog's action area with the given @response_id.
  * A convenient way to sensitize/desensitize dialog buttons.
  **/
 void
-gtk_dialog_set_response_sensitive (GtkDialog *dialog,
+btk_dialog_set_response_sensitive (BtkDialog *dialog,
                                    gint       response_id,
                                    gboolean   setting)
 {
   GList *children;
   GList *tmp_list;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
 
-  children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (dialog->action_area));
 
   tmp_list = children;
   while (tmp_list != NULL)
     {
-      GtkWidget *widget = tmp_list->data;
+      BtkWidget *widget = tmp_list->data;
       ResponseData *rd = get_response_data (widget, FALSE);
 
       if (rd && rd->response_id == response_id)
-        gtk_widget_set_sensitive (widget, setting);
+        btk_widget_set_sensitive (widget, setting);
 
       tmp_list = g_list_next (tmp_list);
     }
@@ -813,8 +813,8 @@ gtk_dialog_set_response_sensitive (GtkDialog *dialog,
 }
 
 /**
- * gtk_dialog_set_default_response:
- * @dialog: a #GtkDialog
+ * btk_dialog_set_default_response:
+ * @dialog: a #BtkDialog
  * @response_id: a response ID
  * 
  * Sets the last widget in the dialog's action area with the given @response_id
@@ -822,24 +822,24 @@ gtk_dialog_set_response_sensitive (GtkDialog *dialog,
  * the default widget.
  **/
 void
-gtk_dialog_set_default_response (GtkDialog *dialog,
+btk_dialog_set_default_response (BtkDialog *dialog,
                                  gint       response_id)
 {
   GList *children;
   GList *tmp_list;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
 
-  children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (dialog->action_area));
 
   tmp_list = children;
   while (tmp_list != NULL)
     {
-      GtkWidget *widget = tmp_list->data;
+      BtkWidget *widget = tmp_list->data;
       ResponseData *rd = get_response_data (widget, FALSE);
 
       if (rd && rd->response_id == response_id)
-	gtk_widget_grab_default (widget);
+	btk_widget_grab_default (widget);
 	    
       tmp_list = g_list_next (tmp_list);
     }
@@ -848,21 +848,21 @@ gtk_dialog_set_default_response (GtkDialog *dialog,
 }
 
 /**
- * gtk_dialog_set_has_separator:
- * @dialog: a #GtkDialog
+ * btk_dialog_set_has_separator:
+ * @dialog: a #BtkDialog
  * @setting: %TRUE to have a separator
  *
  * Sets whether the dialog has a separator above the buttons.
  *
- * Deprecated: 2.22: This function will be removed in GTK+ 3
+ * Deprecated: 2.22: This function will be removed in BTK+ 3
  **/
 void
-gtk_dialog_set_has_separator (GtkDialog *dialog,
+btk_dialog_set_has_separator (BtkDialog *dialog,
                               gboolean   setting)
 {
-  GtkDialogPrivate *priv;
+  BtkDialogPrivate *priv;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
 
   priv = GET_PRIVATE (dialog);
 
@@ -877,18 +877,18 @@ gtk_dialog_set_has_separator (GtkDialog *dialog,
   
   if (setting && dialog->separator == NULL)
     {
-      dialog->separator = gtk_hseparator_new ();
-      gtk_box_pack_end (GTK_BOX (dialog->vbox), dialog->separator, FALSE, TRUE, 0);
+      dialog->separator = btk_hseparator_new ();
+      btk_box_pack_end (BTK_BOX (dialog->vbox), dialog->separator, FALSE, TRUE, 0);
 
       /* The app programmer could screw this up, but, their own fault.
        * Moves the separator just above the action area.
        */
-      gtk_box_reorder_child (GTK_BOX (dialog->vbox), dialog->separator, 1);
-      gtk_widget_show (dialog->separator);
+      btk_box_reorder_child (BTK_BOX (dialog->vbox), dialog->separator, 1);
+      btk_widget_show (dialog->separator);
     }
   else if (!setting && dialog->separator != NULL)
     {
-      gtk_widget_destroy (dialog->separator);
+      btk_widget_destroy (dialog->separator);
       dialog->separator = NULL;
     }
 
@@ -896,38 +896,38 @@ gtk_dialog_set_has_separator (GtkDialog *dialog,
 }
 
 /**
- * gtk_dialog_get_has_separator:
- * @dialog: a #GtkDialog
+ * btk_dialog_get_has_separator:
+ * @dialog: a #BtkDialog
  * 
  * Accessor for whether the dialog has a separator.
  * 
  * Return value: %TRUE if the dialog has a separator
  *
- * Deprecated: 2.22: This function will be removed in GTK+ 3
+ * Deprecated: 2.22: This function will be removed in BTK+ 3
  **/
 gboolean
-gtk_dialog_get_has_separator (GtkDialog *dialog)
+btk_dialog_get_has_separator (BtkDialog *dialog)
 {
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), FALSE);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), FALSE);
 
   return dialog->separator != NULL;
 }
 
 /**
- * gtk_dialog_response:
- * @dialog: a #GtkDialog
+ * btk_dialog_response:
+ * @dialog: a #BtkDialog
  * @response_id: response ID 
  * 
- * Emits the #GtkDialog::response signal with the given response ID. 
+ * Emits the #BtkDialog::response signal with the given response ID. 
  * Used to indicate that the user has responded to the dialog in some way;
- * typically either you or gtk_dialog_run() will be monitoring the
+ * typically either you or btk_dialog_run() will be monitoring the
  * ::response signal and take appropriate action.
  **/
 void
-gtk_dialog_response (GtkDialog *dialog,
+btk_dialog_response (BtkDialog *dialog,
                      gint       response_id)
 {
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
 
   g_signal_emit (dialog,
 		 dialog_signals[RESPONSE],
@@ -937,7 +937,7 @@ gtk_dialog_response (GtkDialog *dialog,
 
 typedef struct
 {
-  GtkDialog *dialog;
+  BtkDialog *dialog;
   gint response_id;
   GMainLoop *loop;
   gboolean destroyed;
@@ -951,7 +951,7 @@ shutdown_loop (RunInfo *ri)
 }
 
 static void
-run_unmap_handler (GtkDialog *dialog, gpointer data)
+run_unmap_handler (BtkDialog *dialog, gpointer data)
 {
   RunInfo *ri = data;
 
@@ -959,7 +959,7 @@ run_unmap_handler (GtkDialog *dialog, gpointer data)
 }
 
 static void
-run_response_handler (GtkDialog *dialog,
+run_response_handler (BtkDialog *dialog,
                       gint response_id,
                       gpointer data)
 {
@@ -973,8 +973,8 @@ run_response_handler (GtkDialog *dialog,
 }
 
 static gint
-run_delete_handler (GtkDialog *dialog,
-                    GdkEventAny *event,
+run_delete_handler (BtkDialog *dialog,
+                    BdkEventAny *event,
                     gpointer data)
 {
   RunInfo *ri = data;
@@ -985,7 +985,7 @@ run_delete_handler (GtkDialog *dialog,
 }
 
 static void
-run_destroy_handler (GtkDialog *dialog, gpointer data)
+run_destroy_handler (BtkDialog *dialog, gpointer data)
 {
   RunInfo *ri = data;
 
@@ -995,74 +995,74 @@ run_destroy_handler (GtkDialog *dialog, gpointer data)
 }
 
 /**
- * gtk_dialog_run:
- * @dialog: a #GtkDialog
+ * btk_dialog_run:
+ * @dialog: a #BtkDialog
  * 
  * Blocks in a recursive main loop until the @dialog either emits the
- * #GtkDialog::response signal, or is destroyed. If the dialog is 
- * destroyed during the call to gtk_dialog_run(), gtk_dialog_run() returns 
- * #GTK_RESPONSE_NONE. Otherwise, it returns the response ID from the 
+ * #BtkDialog::response signal, or is destroyed. If the dialog is 
+ * destroyed during the call to btk_dialog_run(), btk_dialog_run() returns 
+ * #BTK_RESPONSE_NONE. Otherwise, it returns the response ID from the 
  * ::response signal emission.
  *
- * Before entering the recursive main loop, gtk_dialog_run() calls
- * gtk_widget_show() on the dialog for you. Note that you still
+ * Before entering the recursive main loop, btk_dialog_run() calls
+ * btk_widget_show() on the dialog for you. Note that you still
  * need to show any children of the dialog yourself.
  *
- * During gtk_dialog_run(), the default behavior of #GtkWidget::delete-event 
+ * During btk_dialog_run(), the default behavior of #BtkWidget::delete-event 
  * is disabled; if the dialog receives ::delete_event, it will not be
- * destroyed as windows usually are, and gtk_dialog_run() will return
- * #GTK_RESPONSE_DELETE_EVENT. Also, during gtk_dialog_run() the dialog 
- * will be modal. You can force gtk_dialog_run() to return at any time by
- * calling gtk_dialog_response() to emit the ::response signal. Destroying 
- * the dialog during gtk_dialog_run() is a very bad idea, because your 
+ * destroyed as windows usually are, and btk_dialog_run() will return
+ * #BTK_RESPONSE_DELETE_EVENT. Also, during btk_dialog_run() the dialog 
+ * will be modal. You can force btk_dialog_run() to return at any time by
+ * calling btk_dialog_response() to emit the ::response signal. Destroying 
+ * the dialog during btk_dialog_run() is a very bad idea, because your 
  * post-run code won't know whether the dialog was destroyed or not.
  *
- * After gtk_dialog_run() returns, you are responsible for hiding or
+ * After btk_dialog_run() returns, you are responsible for hiding or
  * destroying the dialog if you wish to do so.
  *
  * Typical usage of this function might be:
  * |[
- *   gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+ *   gint result = btk_dialog_run (BTK_DIALOG (dialog));
  *   switch (result)
  *     {
- *       case GTK_RESPONSE_ACCEPT:
+ *       case BTK_RESPONSE_ACCEPT:
  *          do_application_specific_something ();
  *          break;
  *       default:
  *          do_nothing_since_dialog_was_cancelled ();
  *          break;
  *     }
- *   gtk_widget_destroy (dialog);
+ *   btk_widget_destroy (dialog);
  * ]|
  * 
  * Note that even though the recursive main loop gives the effect of a
  * modal dialog (it prevents the user from interacting with other 
  * windows in the same window group while the dialog is run), callbacks 
  * such as timeouts, IO channel watches, DND drops, etc, <emphasis>will</emphasis> 
- * be triggered during a gtk_dialog_run() call.
+ * be triggered during a btk_dialog_run() call.
  * 
  * Return value: response ID
  **/
 gint
-gtk_dialog_run (GtkDialog *dialog)
+btk_dialog_run (BtkDialog *dialog)
 {
-  RunInfo ri = { NULL, GTK_RESPONSE_NONE, NULL, FALSE };
+  RunInfo ri = { NULL, BTK_RESPONSE_NONE, NULL, FALSE };
   gboolean was_modal;
   gulong response_handler;
   gulong unmap_handler;
   gulong destroy_handler;
   gulong delete_handler;
   
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), -1);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), -1);
 
   g_object_ref (dialog);
 
-  was_modal = GTK_WINDOW (dialog)->modal;
+  was_modal = BTK_WINDOW (dialog)->modal;
   if (!was_modal)
-    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+    btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
 
-  if (!gtk_widget_get_visible (GTK_WIDGET (dialog)))
-    gtk_widget_show (GTK_WIDGET (dialog));
+  if (!btk_widget_get_visible (BTK_WIDGET (dialog)))
+    btk_widget_show (BTK_WIDGET (dialog));
   
   response_handler =
     g_signal_connect (dialog,
@@ -1090,9 +1090,9 @@ gtk_dialog_run (GtkDialog *dialog)
   
   ri.loop = g_main_loop_new (NULL, FALSE);
 
-  GDK_THREADS_LEAVE ();  
+  BDK_THREADS_LEAVE ();  
   g_main_loop_run (ri.loop);
-  GDK_THREADS_ENTER ();  
+  BDK_THREADS_ENTER ();  
 
   g_main_loop_unref (ri.loop);
 
@@ -1101,7 +1101,7 @@ gtk_dialog_run (GtkDialog *dialog)
   if (!ri.destroyed)
     {
       if (!was_modal)
-        gtk_window_set_modal (GTK_WINDOW(dialog), FALSE);
+        btk_window_set_modal (BTK_WINDOW(dialog), FALSE);
       
       g_signal_handler_disconnect (dialog, response_handler);
       g_signal_handler_disconnect (dialog, unmap_handler);
@@ -1115,18 +1115,18 @@ gtk_dialog_run (GtkDialog *dialog)
 }
 
 void
-_gtk_dialog_set_ignore_separator (GtkDialog *dialog,
+_btk_dialog_set_ignore_separator (BtkDialog *dialog,
 				  gboolean   ignore_separator)
 {
-  GtkDialogPrivate *priv;
+  BtkDialogPrivate *priv;
 
   priv = GET_PRIVATE (dialog);
   priv->ignore_separator = ignore_separator;
 }
 
 /**
- * gtk_dialog_get_widget_for_response:
- * @dialog: a #GtkDialog
+ * btk_dialog_get_widget_for_response:
+ * @dialog: a #BtkDialog
  * @response_id: the response ID used by the @dialog widget
  *
  * Gets the widget button that uses the given response ID in the action area
@@ -1136,21 +1136,21 @@ _gtk_dialog_set_ignore_separator (GtkDialog *dialog,
  *
  * Since: 2.20
  */
-GtkWidget*
-gtk_dialog_get_widget_for_response (GtkDialog *dialog,
+BtkWidget*
+btk_dialog_get_widget_for_response (BtkDialog *dialog,
 				    gint       response_id)
 {
   GList *children;
   GList *tmp_list;
 
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), NULL);
 
-  children = gtk_container_get_children (GTK_CONTAINER (dialog->action_area));
+  children = btk_container_get_children (BTK_CONTAINER (dialog->action_area));
 
   tmp_list = children;
   while (tmp_list != NULL)
     {
-      GtkWidget *widget = tmp_list->data;
+      BtkWidget *widget = tmp_list->data;
       ResponseData *rd = get_response_data (widget, FALSE);
 
       if (rd && rd->response_id == response_id)
@@ -1168,43 +1168,43 @@ gtk_dialog_get_widget_for_response (GtkDialog *dialog,
 }
 
 /**
- * gtk_dialog_get_response_for_widget:
- * @dialog: a #GtkDialog
+ * btk_dialog_get_response_for_widget:
+ * @dialog: a #BtkDialog
  * @widget: a widget in the action area of @dialog
  *
  * Gets the response id of a widget in the action area
  * of a dialog.
  *
- * Returns: the response id of @widget, or %GTK_RESPONSE_NONE
+ * Returns: the response id of @widget, or %BTK_RESPONSE_NONE
  *  if @widget doesn't have a response id set.
  *
  * Since: 2.8
  */
 gint
-gtk_dialog_get_response_for_widget (GtkDialog *dialog,
-				    GtkWidget *widget)
+btk_dialog_get_response_for_widget (BtkDialog *dialog,
+				    BtkWidget *widget)
 {
   ResponseData *rd;
 
   rd = get_response_data (widget, FALSE);
   if (!rd)
-    return GTK_RESPONSE_NONE;
+    return BTK_RESPONSE_NONE;
   else
     return rd->response_id;
 }
 
 /**
- * gtk_alternative_dialog_button_order:
- * @screen: (allow-none): a #GdkScreen, or %NULL to use the default screen
+ * btk_alternative_dialog_button_order:
+ * @screen: (allow-none): a #BdkScreen, or %NULL to use the default screen
  *
  * Returns %TRUE if dialogs are expected to use an alternative
  * button order on the screen @screen. See
- * gtk_dialog_set_alternative_button_order() for more details
+ * btk_dialog_set_alternative_button_order() for more details
  * about alternative button order. 
  *
  * If you need to use this function, you should probably connect
- * to the ::notify:gtk-alternative-button-order signal on the
- * #GtkSettings object associated to @screen, in order to be 
+ * to the ::notify:btk-alternative-button-order signal on the
+ * #BtkSettings object associated to @screen, in order to be 
  * notified if the button order setting changes.
  *
  * Returns: Whether the alternative button order should be used
@@ -1212,28 +1212,28 @@ gtk_dialog_get_response_for_widget (GtkDialog *dialog,
  * Since: 2.6
  */
 gboolean 
-gtk_alternative_dialog_button_order (GdkScreen *screen)
+btk_alternative_dialog_button_order (BdkScreen *screen)
 {
-  GtkSettings *settings;
+  BtkSettings *settings;
   gboolean result;
 
   if (screen)
-    settings = gtk_settings_get_for_screen (screen);
+    settings = btk_settings_get_for_screen (screen);
   else
-    settings = gtk_settings_get_default ();
+    settings = btk_settings_get_default ();
   
   g_object_get (settings,
-		"gtk-alternative-button-order", &result, NULL);
+		"btk-alternative-button-order", &result, NULL);
 
   return result;
 }
 
 static void
-gtk_dialog_set_alternative_button_order_valist (GtkDialog *dialog,
+btk_dialog_set_alternative_button_order_valist (BtkDialog *dialog,
 						gint       first_response_id,
 						va_list    args)
 {
-  GtkWidget *child;
+  BtkWidget *child;
   gint response_id;
   gint position;
 
@@ -1244,7 +1244,7 @@ gtk_dialog_set_alternative_button_order_valist (GtkDialog *dialog,
       /* reorder child with response_id to position */
       child = dialog_find_button (dialog, response_id);
       if (child != NULL)
-        gtk_box_reorder_child (GTK_BOX (dialog->action_area), child, position);
+        btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
         g_warning ("%s : no child button with response id %d.", G_STRFUNC,
                    response_id);
@@ -1255,102 +1255,102 @@ gtk_dialog_set_alternative_button_order_valist (GtkDialog *dialog,
 }
 
 /**
- * gtk_dialog_set_alternative_button_order:
- * @dialog: a #GtkDialog
+ * btk_dialog_set_alternative_button_order:
+ * @dialog: a #BtkDialog
  * @first_response_id: a response id used by one @dialog's buttons
  * @Varargs: a list of more response ids of @dialog's buttons, terminated by -1
  *
  * Sets an alternative button order. If the 
- * #GtkSettings:gtk-alternative-button-order setting is set to %TRUE, 
+ * #BtkSettings:btk-alternative-button-order setting is set to %TRUE, 
  * the dialog buttons are reordered according to the order of the 
  * response ids passed to this function.
  *
- * By default, GTK+ dialogs use the button order advocated by the Gnome 
- * <ulink url="http://developer.gnome.org/projects/gup/hig/2.0/">Human 
+ * By default, BTK+ dialogs use the button order advocated by the Bunny 
+ * <ulink url="http://developer.bunny.org/projects/gup/hig/2.0/">Human 
  * Interface Guidelines</ulink> with the affirmative button at the far 
- * right, and the cancel button left of it. But the builtin GTK+ dialogs
- * and #GtkMessageDialog<!-- -->s do provide an alternative button order,
+ * right, and the cancel button left of it. But the builtin BTK+ dialogs
+ * and #BtkMessageDialog<!-- -->s do provide an alternative button order,
  * which is more suitable on some platforms, e.g. Windows.
  *
  * Use this function after adding all the buttons to your dialog, as the 
  * following example shows:
  * |[
- * cancel_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
- *                                        GTK_STOCK_CANCEL,
- *                                        GTK_RESPONSE_CANCEL);
+ * cancel_button = btk_dialog_add_button (BTK_DIALOG (dialog),
+ *                                        BTK_STOCK_CANCEL,
+ *                                        BTK_RESPONSE_CANCEL);
  *  
- * ok_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
- *                                    GTK_STOCK_OK,
- *                                    GTK_RESPONSE_OK);
+ * ok_button = btk_dialog_add_button (BTK_DIALOG (dialog),
+ *                                    BTK_STOCK_OK,
+ *                                    BTK_RESPONSE_OK);
  *   
- * gtk_widget_grab_default (ok_button);
+ * btk_widget_grab_default (ok_button);
  *   
- * help_button = gtk_dialog_add_button (GTK_DIALOG (dialog),
- *                                      GTK_STOCK_HELP,
- *                                      GTK_RESPONSE_HELP);
+ * help_button = btk_dialog_add_button (BTK_DIALOG (dialog),
+ *                                      BTK_STOCK_HELP,
+ *                                      BTK_RESPONSE_HELP);
  *  
- * gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
- *                                          GTK_RESPONSE_OK,
- *                                          GTK_RESPONSE_CANCEL,
- *                                          GTK_RESPONSE_HELP,
+ * btk_dialog_set_alternative_button_order (BTK_DIALOG (dialog),
+ *                                          BTK_RESPONSE_OK,
+ *                                          BTK_RESPONSE_CANCEL,
+ *                                          BTK_RESPONSE_HELP,
  *                                          -1);
  * ]|
  * 
  * Since: 2.6
  */
 void 
-gtk_dialog_set_alternative_button_order (GtkDialog *dialog,
+btk_dialog_set_alternative_button_order (BtkDialog *dialog,
 					 gint       first_response_id,
 					 ...)
 {
-  GdkScreen *screen;
+  BdkScreen *screen;
   va_list args;
   
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (dialog));
-  if (!gtk_alternative_dialog_button_order (screen))
+  screen = btk_widget_get_screen (BTK_WIDGET (dialog));
+  if (!btk_alternative_dialog_button_order (screen))
       return;
 
   va_start (args, first_response_id);
 
-  gtk_dialog_set_alternative_button_order_valist (dialog,
+  btk_dialog_set_alternative_button_order_valist (dialog,
 						  first_response_id,
 						  args);
   va_end (args);
 }
 /**
- * gtk_dialog_set_alternative_button_order_from_array:
- * @dialog: a #GtkDialog
+ * btk_dialog_set_alternative_button_order_from_array:
+ * @dialog: a #BtkDialog
  * @n_params: the number of response ids in @new_order
  * @new_order: (array length=n_params): an array of response ids of
  *     @dialog's buttons
  *
  * Sets an alternative button order. If the 
- * #GtkSettings:gtk-alternative-button-order setting is set to %TRUE, 
+ * #BtkSettings:btk-alternative-button-order setting is set to %TRUE, 
  * the dialog buttons are reordered according to the order of the 
  * response ids in @new_order.
  *
- * See gtk_dialog_set_alternative_button_order() for more information.
+ * See btk_dialog_set_alternative_button_order() for more information.
  *
  * This function is for use by language bindings.
  * 
  * Since: 2.6
  */
 void 
-gtk_dialog_set_alternative_button_order_from_array (GtkDialog *dialog,
+btk_dialog_set_alternative_button_order_from_array (BtkDialog *dialog,
                                                     gint       n_params,
                                                     gint      *new_order)
 {
-  GdkScreen *screen;
-  GtkWidget *child;
+  BdkScreen *screen;
+  BtkWidget *child;
   gint position;
 
-  g_return_if_fail (GTK_IS_DIALOG (dialog));
+  g_return_if_fail (BTK_IS_DIALOG (dialog));
   g_return_if_fail (new_order != NULL);
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (dialog));
-  if (!gtk_alternative_dialog_button_order (screen))
+  screen = btk_widget_get_screen (BTK_WIDGET (dialog));
+  if (!btk_alternative_dialog_button_order (screen))
       return;
 
   for (position = 0; position < n_params; position++)
@@ -1358,7 +1358,7 @@ gtk_dialog_set_alternative_button_order_from_array (GtkDialog *dialog,
       /* reorder child with response_id to position */
       child = dialog_find_button (dialog, new_order[position]);
       if (child != NULL)
-        gtk_box_reorder_child (GTK_BOX (dialog->action_area), child, position);
+        btk_box_reorder_child (BTK_BOX (dialog->action_area), child, position);
       else
         g_warning ("%s : no child button with response id %d.", G_STRFUNC,
                    new_order[position]);
@@ -1371,8 +1371,8 @@ typedef struct {
 } ActionWidgetInfo;
 
 typedef struct {
-  GtkDialog *dialog;
-  GtkBuilder *builder;
+  BtkDialog *dialog;
+  BtkBuilder *builder;
   GSList *items;
   gchar *response;
 } ActionWidgetsSubParserData;
@@ -1397,7 +1397,7 @@ attributes_start_element (GMarkupParseContext *context,
   else if (strcmp (element_name, "action-widgets") == 0)
     return;
   else
-    g_warning ("Unsupported tag for GtkDialog: %s\n", element_name);
+    g_warning ("Unsupported tag for BtkDialog: %s\n", element_name);
 }
 
 static void
@@ -1428,8 +1428,8 @@ static const GMarkupParser attributes_parser =
   };
 
 static gboolean
-gtk_dialog_buildable_custom_tag_start (GtkBuildable  *buildable,
-				       GtkBuilder    *builder,
+btk_dialog_buildable_custom_tag_start (BtkBuildable  *buildable,
+				       BtkBuilder    *builder,
 				       GObject       *child,
 				       const gchar   *tagname,
 				       GMarkupParser *parser,
@@ -1443,7 +1443,7 @@ gtk_dialog_buildable_custom_tag_start (GtkBuildable  *buildable,
   if (strcmp (tagname, "action-widgets") == 0)
     {
       parser_data = g_slice_new0 (ActionWidgetsSubParserData);
-      parser_data->dialog = GTK_DIALOG (buildable);
+      parser_data->dialog = BTK_DIALOG (buildable);
       parser_data->items = NULL;
 
       *parser = attributes_parser;
@@ -1456,8 +1456,8 @@ gtk_dialog_buildable_custom_tag_start (GtkBuildable  *buildable,
 }
 
 static void
-gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
-				      GtkBuilder   *builder,
+btk_dialog_buildable_custom_finished (BtkBuildable *buildable,
+				      BtkBuilder   *builder,
 				      GObject      *child,
 				      const gchar  *tagname,
 				      gpointer      user_data)
@@ -1465,7 +1465,7 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
   GSList *l;
   ActionWidgetsSubParserData *parser_data;
   GObject *object;
-  GtkDialog *dialog;
+  BtkDialog *dialog;
   ResponseData *ad;
   guint signal_id;
   
@@ -1476,7 +1476,7 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
     return;
     }
 
-  dialog = GTK_DIALOG (buildable);
+  dialog = BTK_DIALOG (buildable);
   parser_data = (ActionWidgetsSubParserData*)user_data;
   parser_data->items = g_slist_reverse (parser_data->items);
 
@@ -1484,22 +1484,22 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
     {
       ActionWidgetInfo *item = l->data;
 
-      object = gtk_builder_get_object (builder, item->widget_name);
+      object = btk_builder_get_object (builder, item->widget_name);
       if (!object)
 	{
 	  g_warning ("Unknown object %s specified in action-widgets of %s",
 		     item->widget_name,
-		     gtk_buildable_get_name (GTK_BUILDABLE (buildable)));
+		     btk_buildable_get_name (BTK_BUILDABLE (buildable)));
 	  continue;
 	}
 
-      ad = get_response_data (GTK_WIDGET (object), TRUE);
+      ad = get_response_data (BTK_WIDGET (object), TRUE);
       ad->response_id = atoi (item->response_id);
 
-      if (GTK_IS_BUTTON (object))
-	signal_id = g_signal_lookup ("clicked", GTK_TYPE_BUTTON);
+      if (BTK_IS_BUTTON (object))
+	signal_id = g_signal_lookup ("clicked", BTK_TYPE_BUTTON);
       else
-	signal_id = GTK_WIDGET_GET_CLASS (object)->activate_signal;
+	signal_id = BTK_WIDGET_GET_CLASS (object)->activate_signal;
       
       if (signal_id)
 	{
@@ -1514,9 +1514,9 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
 					  FALSE);
 	}
 
-      if (ad->response_id == GTK_RESPONSE_HELP)
-	gtk_button_box_set_child_secondary (GTK_BUTTON_BOX (dialog->action_area),
-					    GTK_WIDGET (object), TRUE);
+      if (ad->response_id == BTK_RESPONSE_HELP)
+	btk_button_box_set_child_secondary (BTK_BUTTON_BOX (dialog->action_area),
+					    BTK_WIDGET (object), TRUE);
 
       g_free (item->widget_name);
       g_free (item->response_id);
@@ -1527,8 +1527,8 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
 }
 
 /**
- * gtk_dialog_get_action_area:
- * @dialog: a #GtkDialog
+ * btk_dialog_get_action_area:
+ * @dialog: a #BtkDialog
  *
  * Returns the action area of @dialog.
  *
@@ -1536,31 +1536,31 @@ gtk_dialog_buildable_custom_finished (GtkBuildable *buildable,
  *
  * Since: 2.14
  **/
-GtkWidget *
-gtk_dialog_get_action_area (GtkDialog *dialog)
+BtkWidget *
+btk_dialog_get_action_area (BtkDialog *dialog)
 {
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), NULL);
 
   return dialog->action_area;
 }
 
 /**
- * gtk_dialog_get_content_area:
- * @dialog: a #GtkDialog
+ * btk_dialog_get_content_area:
+ * @dialog: a #BtkDialog
  *
  * Returns the content area of @dialog.
  *
- * Returns: (transfer none): the content area #GtkVBox.
+ * Returns: (transfer none): the content area #BtkVBox.
  *
  * Since: 2.14
  **/
-GtkWidget *
-gtk_dialog_get_content_area (GtkDialog *dialog)
+BtkWidget *
+btk_dialog_get_content_area (BtkDialog *dialog)
 {
-  g_return_val_if_fail (GTK_IS_DIALOG (dialog), NULL);
+  g_return_val_if_fail (BTK_IS_DIALOG (dialog), NULL);
 
   return dialog->vbox;
 }
 
-#define __GTK_DIALOG_C__
-#include "gtkaliasdef.c"
+#define __BTK_DIALOG_C__
+#include "btkaliasdef.c"

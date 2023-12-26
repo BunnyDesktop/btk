@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,68 +18,68 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkhbox.h"
-#include "gtkorientable.h"
-#include "gtkalias.h"
+#include "btkhbox.h"
+#include "btkorientable.h"
+#include "btkalias.h"
 
 
 /**
- * SECTION:gtkhbox
+ * SECTION:btkhbox
  * @Short_description: A horizontal container box
- * @Title: GtkHBox
- * @See_also: #GtkVBox
+ * @Title: BtkHBox
+ * @See_also: #BtkVBox
  *
- * #GtkHBox is a container that organizes child widgets into a single row.
+ * #BtkHBox is a container that organizes child widgets into a single row.
  *
- * Use the #GtkBox packing interface to determine the arrangement,
- * spacing, width, and alignment of #GtkHBox children.
+ * Use the #BtkBox packing interface to determine the arrangement,
+ * spacing, width, and alignment of #BtkHBox children.
  *
  * All children are allocated the same height.
  */
 
 
-G_DEFINE_TYPE (GtkHBox, gtk_hbox, GTK_TYPE_BOX)
+G_DEFINE_TYPE (BtkHBox, btk_hbox, BTK_TYPE_BOX)
 
 static void
-gtk_hbox_class_init (GtkHBoxClass *class)
+btk_hbox_class_init (BtkHBoxClass *class)
 {
 }
 
 static void
-gtk_hbox_init (GtkHBox *hbox)
+btk_hbox_init (BtkHBox *hbox)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hbox),
-                                  GTK_ORIENTATION_HORIZONTAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hbox),
+                                  BTK_ORIENTATION_HORIZONTAL);
 
-  _gtk_box_set_old_defaults (GTK_BOX (hbox));
+  _btk_box_set_old_defaults (BTK_BOX (hbox));
 }
 
 /**
- * gtk_hbox_new:
+ * btk_hbox_new:
  * @homogeneous: %TRUE if all children are to be given equal space allotments.
  * @spacing: the number of pixels to place by default between children.
  *
- * Creates a new #GtkHBox.
+ * Creates a new #BtkHBox.
  *
- * Returns: a new #GtkHBox.
+ * Returns: a new #BtkHBox.
  */
-GtkWidget *
-gtk_hbox_new (gboolean homogeneous,
+BtkWidget *
+btk_hbox_new (gboolean homogeneous,
 	      gint     spacing)
 {
-  return g_object_new (GTK_TYPE_HBOX,
+  return g_object_new (BTK_TYPE_HBOX,
                        "spacing",     spacing,
                        "homogeneous", homogeneous ? TRUE : FALSE,
                        NULL);
 }
 
-#define __GTK_HBOX_C__
-#include "gtkaliasdef.c"
+#define __BTK_HBOX_C__
+#include "btkaliasdef.c"

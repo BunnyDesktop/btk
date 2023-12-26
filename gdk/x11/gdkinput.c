@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
@@ -30,46 +30,46 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#include "gdkx.h"
-#include "gdkinput.h"
-#include "gdkprivate.h"
-#include "gdkinputprivate.h"
-#include "gdkscreen-x11.h"
-#include "gdkdisplay-x11.h"
-#include "gdkalias.h"
+#include "bdkx.h"
+#include "bdkinput.h"
+#include "bdkprivate.h"
+#include "bdkinputprivate.h"
+#include "bdkscreen-x11.h"
+#include "bdkdisplay-x11.h"
+#include "bdkalias.h"
 
-static GdkDeviceAxis gdk_input_core_axes[] = {
-  { GDK_AXIS_X, 0, 0 },
-  { GDK_AXIS_Y, 0, 0 }
+static BdkDeviceAxis bdk_input_core_axes[] = {
+  { BDK_AXIS_X, 0, 0 },
+  { BDK_AXIS_Y, 0, 0 }
 };
 
 void
-_gdk_init_input_core (GdkDisplay *display)
+_bdk_init_input_core (BdkDisplay *display)
 {
-  GdkDevicePrivate *private;
+  BdkDevicePrivate *private;
 
-  display->core_pointer = g_object_new (GDK_TYPE_DEVICE, NULL);
-  private = (GdkDevicePrivate *)display->core_pointer;
+  display->core_pointer = g_object_new (BDK_TYPE_DEVICE, NULL);
+  private = (BdkDevicePrivate *)display->core_pointer;
 
   display->core_pointer->name = "Core Pointer";
-  display->core_pointer->source = GDK_SOURCE_MOUSE;
-  display->core_pointer->mode = GDK_MODE_SCREEN;
+  display->core_pointer->source = BDK_SOURCE_MOUSE;
+  display->core_pointer->mode = BDK_MODE_SCREEN;
   display->core_pointer->has_cursor = TRUE;
   display->core_pointer->num_axes = 2;
-  display->core_pointer->axes = gdk_input_core_axes;
+  display->core_pointer->axes = bdk_input_core_axes;
   display->core_pointer->num_keys = 0;
   display->core_pointer->keys = NULL;
 
   private->display = display;
 }
 
-static void gdk_device_class_init (GdkDeviceClass *klass);
-static void gdk_device_dispose    (GObject        *object);
+static void bdk_device_class_init (BdkDeviceClass *klass);
+static void bdk_device_dispose    (GObject        *object);
 
-static gpointer gdk_device_parent_class = NULL;
+static gpointer bdk_device_parent_class = NULL;
 
 GType
-gdk_device_get_type (void)
+bdk_device_get_type (void)
 {
   static GType object_type = 0;
 
@@ -77,19 +77,19 @@ gdk_device_get_type (void)
     {
       const GTypeInfo object_info =
 	{
-	  sizeof (GdkDeviceClass),
+	  sizeof (BdkDeviceClass),
 	  (GBaseInitFunc) NULL,
 	  (GBaseFinalizeFunc) NULL,
-	  (GClassInitFunc) gdk_device_class_init,
+	  (GClassInitFunc) bdk_device_class_init,
 	  NULL,           /* class_finalize */
 	  NULL,           /* class_data */
-	  sizeof (GdkDevicePrivate),
+	  sizeof (BdkDevicePrivate),
 	  0,              /* n_preallocs */
 	  (GInstanceInitFunc) NULL,
 	};
 
       object_type = g_type_register_static (G_TYPE_OBJECT,
-					    g_intern_static_string ("GdkDevice"),
+					    g_intern_static_string ("BdkDevice"),
 					    &object_info, 0);
     }
 
@@ -97,82 +97,82 @@ gdk_device_get_type (void)
 }
 
 static void
-gdk_device_class_init (GdkDeviceClass *klass)
+bdk_device_class_init (BdkDeviceClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  gdk_device_parent_class = g_type_class_peek_parent (klass);
+  bdk_device_parent_class = g_type_class_peek_parent (klass);
 
-  object_class->dispose  = gdk_device_dispose;
+  object_class->dispose  = bdk_device_dispose;
 }
 
 static void
-gdk_device_dispose (GObject *object)
+bdk_device_dispose (GObject *object)
 {
-  GdkDevicePrivate *gdkdev = (GdkDevicePrivate *) object;
+  BdkDevicePrivate *bdkdev = (BdkDevicePrivate *) object;
 
-  if (gdkdev->display && !GDK_IS_CORE (gdkdev))
+  if (bdkdev->display && !BDK_IS_CORE (bdkdev))
     {
 #ifndef XINPUT_NONE
-      if (gdkdev->xdevice)
+      if (bdkdev->xdevice)
 	{
-	  XCloseDevice (GDK_DISPLAY_XDISPLAY (gdkdev->display), gdkdev->xdevice);
-	  gdkdev->xdevice = NULL;
+	  XCloseDevice (BDK_DISPLAY_XDISPLAY (bdkdev->display), bdkdev->xdevice);
+	  bdkdev->xdevice = NULL;
 	}
-      g_free (gdkdev->axes);
-      g_free (gdkdev->axis_data);
-      gdkdev->axes = NULL;
-      gdkdev->axis_data = NULL;
+      g_free (bdkdev->axes);
+      g_free (bdkdev->axis_data);
+      bdkdev->axes = NULL;
+      bdkdev->axis_data = NULL;
 #endif /* !XINPUT_NONE */
 
-      g_free (gdkdev->info.name);
-      g_free (gdkdev->info.keys);
-      g_free (gdkdev->info.axes);
+      g_free (bdkdev->info.name);
+      g_free (bdkdev->info.keys);
+      g_free (bdkdev->info.axes);
 
-      gdkdev->info.name = NULL;
-      gdkdev->info.keys = NULL;
-      gdkdev->info.axes = NULL;
+      bdkdev->info.name = NULL;
+      bdkdev->info.keys = NULL;
+      bdkdev->info.axes = NULL;
     }
 
-  G_OBJECT_CLASS (gdk_device_parent_class)->dispose (object);
+  G_OBJECT_CLASS (bdk_device_parent_class)->dispose (object);
 }
 
 /**
- * gdk_devices_list:
+ * bdk_devices_list:
  *
  * Returns the list of available input devices for the default display.
  * The list is statically allocated and should not be freed.
  *
- * Return value: (transfer none) (element-type GdkDevice): a list of #GdkDevice
+ * Return value: (transfer none) (element-type BdkDevice): a list of #BdkDevice
  **/
 GList *
-gdk_devices_list (void)
+bdk_devices_list (void)
 {
-  return gdk_display_list_devices (gdk_display_get_default ());
+  return bdk_display_list_devices (bdk_display_get_default ());
 }
 
 /**
- * gdk_display_list_devices:
- * @display: a #GdkDisplay
+ * bdk_display_list_devices:
+ * @display: a #BdkDisplay
  *
  * Returns the list of available input devices attached to @display.
  * The list is statically allocated and should not be freed.
  *
- * Return value: a list of #GdkDevice
+ * Return value: a list of #BdkDevice
  *
  * Since: 2.2
  **/
 GList *
-gdk_display_list_devices (GdkDisplay *display)
+bdk_display_list_devices (BdkDisplay *display)
 {
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
 
-  return GDK_DISPLAY_X11 (display)->input_devices;
+  return BDK_DISPLAY_X11 (display)->input_devices;
 }
 
 /**
- * gdk_device_get_name:
- * @device: a #GdkDevice
+ * bdk_device_get_name:
+ * @device: a #BdkDevice
  *
  * Determines the name of the device.
  *
@@ -181,52 +181,52 @@ gdk_display_list_devices (GdkDisplay *display)
  * Since: 2.22
  **/
 const gchar *
-gdk_device_get_name (GdkDevice *device)
+bdk_device_get_name (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), NULL);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), NULL);
 
   return device->name;
 }
 
 /**
- * gdk_device_get_source:
- * @device: a #GdkDevice
+ * bdk_device_get_source:
+ * @device: a #BdkDevice
  *
  * Determines the type of the device.
  *
- * Return value: a #GdkInputSource
+ * Return value: a #BdkInputSource
  *
  * Since: 2.22
  **/
-GdkInputSource
-gdk_device_get_source (GdkDevice *device)
+BdkInputSource
+bdk_device_get_source (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), 0);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
 
   return device->source;
 }
 
 /**
- * gdk_device_get_mode:
- * @device: a #GdkDevice
+ * bdk_device_get_mode:
+ * @device: a #BdkDevice
  *
  * Determines the mode of the device.
  *
- * Return value: a #GdkInputSource
+ * Return value: a #BdkInputSource
  *
  * Since: 2.22
  **/
-GdkInputMode
-gdk_device_get_mode (GdkDevice *device)
+BdkInputMode
+bdk_device_get_mode (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), 0);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
 
   return device->mode;
 }
 
 /**
- * gdk_device_get_has_cursor:
- * @device: a #GdkDevice
+ * bdk_device_get_has_cursor:
+ * @device: a #BdkDevice
  *
  * Determines whether the pointer follows device motion.
  *
@@ -235,16 +235,16 @@ gdk_device_get_mode (GdkDevice *device)
  * Since: 2.22
  **/
 gboolean
-gdk_device_get_has_cursor (GdkDevice *device)
+bdk_device_get_has_cursor (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), FALSE);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), FALSE);
 
   return device->has_cursor;
 }
 
 void
-gdk_device_set_source (GdkDevice      *device,
-		       GdkInputSource  source)
+bdk_device_set_source (BdkDevice      *device,
+		       BdkInputSource  source)
 {
   g_return_if_fail (device != NULL);
 
@@ -252,8 +252,8 @@ gdk_device_set_source (GdkDevice      *device,
 }
 
 /**
- * gdk_device_get_key:
- * @device: a #GdkDevice.
+ * bdk_device_get_key:
+ * @device: a #BdkDevice.
  * @index: the index of the macro button to get.
  * @keyval: return value for the keyval.
  * @modifiers: return value for modifiers.
@@ -264,12 +264,12 @@ gdk_device_set_source (GdkDevice      *device,
  * Since: 2.22
  **/
 void
-gdk_device_get_key (GdkDevice       *device,
+bdk_device_get_key (BdkDevice       *device,
                     guint            index,
                     guint           *keyval,
-                    GdkModifierType *modifiers)
+                    BdkModifierType *modifiers)
 {
-  g_return_if_fail (GDK_IS_DEVICE (device));
+  g_return_if_fail (BDK_IS_DEVICE (device));
   g_return_if_fail (index < device->num_keys);
 
   if (!device->keys[index].keyval &&
@@ -284,10 +284,10 @@ gdk_device_get_key (GdkDevice       *device,
 }
 
 void
-gdk_device_set_key (GdkDevice      *device,
+bdk_device_set_key (BdkDevice      *device,
 		    guint           index,
 		    guint           keyval,
-		    GdkModifierType modifiers)
+		    BdkModifierType modifiers)
 {
   g_return_if_fail (device != NULL);
   g_return_if_fail (index < device->num_keys);
@@ -297,29 +297,29 @@ gdk_device_set_key (GdkDevice      *device,
 }
 
 /**
- * gdk_device_get_axis_use:
- * @device: a #GdkDevice.
+ * bdk_device_get_axis_use:
+ * @device: a #BdkDevice.
  * @index: the index of the axis.
  *
  * Returns the axis use for @index.
  *
- * Returns: a #GdkAxisUse specifying how the axis is used.
+ * Returns: a #BdkAxisUse specifying how the axis is used.
  *
  * Since: 2.22
  **/
-GdkAxisUse
-gdk_device_get_axis_use (GdkDevice *device,
+BdkAxisUse
+bdk_device_get_axis_use (BdkDevice *device,
                          guint      index)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), GDK_AXIS_IGNORE);
-  g_return_val_if_fail (index < device->num_axes, GDK_AXIS_IGNORE);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), BDK_AXIS_IGNORE);
+  g_return_val_if_fail (index < device->num_axes, BDK_AXIS_IGNORE);
 
   return device->axes[index].use;
 }
 
 /**
- * gdk_device_get_n_keys:
- * @device: a #GdkDevice.
+ * bdk_device_get_n_keys:
+ * @device: a #BdkDevice.
  *
  * Gets the number of keys of a device.
  *
@@ -328,16 +328,16 @@ gdk_device_get_axis_use (GdkDevice *device,
  * Since: 2.24
  **/
 gint
-gdk_device_get_n_keys (GdkDevice *device)
+bdk_device_get_n_keys (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), 0);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
 
   return device->num_keys;
 }
 
 /**
- * gdk_device_get_n_axes:
- * @device: a #GdkDevice.
+ * bdk_device_get_n_axes:
+ * @device: a #BdkDevice.
  *
  * Gets the number of axes of a device.
  *
@@ -346,17 +346,17 @@ gdk_device_get_n_keys (GdkDevice *device)
  * Since: 2.22
  **/
 gint
-gdk_device_get_n_axes (GdkDevice *device)
+bdk_device_get_n_axes (BdkDevice *device)
 {
-  g_return_val_if_fail (GDK_IS_DEVICE (device), 0);
+  g_return_val_if_fail (BDK_IS_DEVICE (device), 0);
 
   return device->num_axes;
 }
 
 void
-gdk_device_set_axis_use (GdkDevice   *device,
+bdk_device_set_axis_use (BdkDevice   *device,
 			 guint        index,
-			 GdkAxisUse   use)
+			 BdkAxisUse   use)
 {
   g_return_if_fail (device != NULL);
   g_return_if_fail (index < device->num_axes);
@@ -365,13 +365,13 @@ gdk_device_set_axis_use (GdkDevice   *device,
 
   switch (use)
     {
-    case GDK_AXIS_X:
-    case GDK_AXIS_Y:
+    case BDK_AXIS_X:
+    case BDK_AXIS_Y:
       device->axes[index].min = 0.;
       device->axes[index].max = 0.;
       break;
-    case GDK_AXIS_XTILT:
-    case GDK_AXIS_YTILT:
+    case BDK_AXIS_XTILT:
+    case BDK_AXIS_YTILT:
       device->axes[index].min = -1.;
       device->axes[index].max = 1;
       break;
@@ -383,11 +383,11 @@ gdk_device_set_axis_use (GdkDevice   *device,
 }
 
 static gboolean
-impl_coord_in_window (GdkWindow *window,
+impl_coord_in_window (BdkWindow *window,
 		      int impl_x,
 		      int impl_y)
 {
-  GdkWindowObject *priv = (GdkWindowObject *)window;
+  BdkWindowObject *priv = (BdkWindowObject *)window;
 
   if (impl_x < priv->abs_x ||
       impl_x > priv->abs_x + priv->width)
@@ -399,12 +399,12 @@ impl_coord_in_window (GdkWindow *window,
 }
 
 /**
- * gdk_device_get_history:
- * @device: a #GdkDevice
+ * bdk_device_get_history:
+ * @device: a #BdkDevice
  * @window: the window with respect to which which the event coordinates will be reported
  * @start: starting timestamp for range of events to return
  * @stop: ending timestamp for the range of events to return
- * @events: (array length=n_events) (out) (transfer none): location to store a newly-allocated array of #GdkTimeCoord, or %NULL
+ * @events: (array length=n_events) (out) (transfer none): location to store a newly-allocated array of #BdkTimeCoord, or %NULL
  * @n_events: location to store the length of @events, or %NULL
  *
  * Obtains the motion history for a device; given a starting and
@@ -418,37 +418,37 @@ impl_coord_in_window (GdkWindow *window,
  *  at least one event was found.
  **/
 gboolean
-gdk_device_get_history  (GdkDevice         *device,
-			 GdkWindow         *window,
+bdk_device_get_history  (BdkDevice         *device,
+			 BdkWindow         *window,
 			 guint32            start,
 			 guint32            stop,
-			 GdkTimeCoord    ***events,
+			 BdkTimeCoord    ***events,
 			 gint              *n_events)
 {
-  GdkTimeCoord **coords = NULL;
-  GdkWindow *impl_window;
+  BdkTimeCoord **coords = NULL;
+  BdkWindow *impl_window;
   gboolean result = FALSE;
   int tmp_n_events = 0;
 
-  g_return_val_if_fail (GDK_WINDOW_IS_X11 (window), FALSE);
+  g_return_val_if_fail (BDK_WINDOW_IS_X11 (window), FALSE);
 
-  impl_window = _gdk_window_get_impl_window (window);
+  impl_window = _bdk_window_get_impl_window (window);
 
-  if (GDK_WINDOW_DESTROYED (window))
+  if (BDK_WINDOW_DESTROYED (window))
     /* Nothing */ ;
-  else if (GDK_IS_CORE (device))
+  else if (BDK_IS_CORE (device))
     {
       XTimeCoord *xcoords;
 
-      xcoords = XGetMotionEvents (GDK_DRAWABLE_XDISPLAY (window),
-				  GDK_DRAWABLE_XID (impl_window),
+      xcoords = XGetMotionEvents (BDK_DRAWABLE_XDISPLAY (window),
+				  BDK_DRAWABLE_XID (impl_window),
 				  start, stop, &tmp_n_events);
       if (xcoords)
 	{
-	  GdkWindowObject *priv = (GdkWindowObject *)window;
+	  BdkWindowObject *priv = (BdkWindowObject *)window;
           int i, j;
 
-	  coords = _gdk_device_allocate_history (device, tmp_n_events);
+	  coords = _bdk_device_allocate_history (device, tmp_n_events);
 	  j = 0;
 
 	  for (i = 0; i < tmp_n_events; i++)
@@ -479,13 +479,13 @@ gdk_device_get_history  (GdkDevice         *device,
             }
           else
             {
-              gdk_device_free_history (coords, tmp_n_events);
+              bdk_device_free_history (coords, tmp_n_events);
               coords = NULL;
             }
 	}
     }
   else
-    result = _gdk_device_get_history (device, window, start, stop, &coords, &tmp_n_events);
+    result = _bdk_device_get_history (device, window, start, stop, &coords, &tmp_n_events);
 
   if (n_events)
     *n_events = tmp_n_events;
@@ -493,34 +493,34 @@ gdk_device_get_history  (GdkDevice         *device,
   if (events)
     *events = coords;
   else if (coords)
-    gdk_device_free_history (coords, tmp_n_events);
+    bdk_device_free_history (coords, tmp_n_events);
 
   return result;
 }
 
-GdkTimeCoord **
-_gdk_device_allocate_history (GdkDevice *device,
+BdkTimeCoord **
+_bdk_device_allocate_history (BdkDevice *device,
 			      gint       n_events)
 {
-  GdkTimeCoord **result = g_new (GdkTimeCoord *, n_events);
+  BdkTimeCoord **result = g_new (BdkTimeCoord *, n_events);
   gint i;
 
   for (i=0; i<n_events; i++)
-    result[i] = g_malloc (sizeof (GdkTimeCoord) -
-			  sizeof (double) * (GDK_MAX_TIMECOORD_AXES - device->num_axes));
+    result[i] = g_malloc (sizeof (BdkTimeCoord) -
+			  sizeof (double) * (BDK_MAX_TIMECOORD_AXES - device->num_axes));
 
   return result;
 }
 
 /**
- * gdk_device_free_history:
- * @events: (inout) (transfer none): an array of #GdkTimeCoord.
+ * bdk_device_free_history:
+ * @events: (inout) (transfer none): an array of #BdkTimeCoord.
  * @n_events: the length of the array.
  *
- * Frees an array of #GdkTimeCoord that was returned by gdk_device_get_history().
+ * Frees an array of #BdkTimeCoord that was returned by bdk_device_get_history().
  */
 void
-gdk_device_free_history (GdkTimeCoord **events,
+bdk_device_free_history (BdkTimeCoord **events,
 			 gint           n_events)
 {
   gint i;
@@ -532,18 +532,18 @@ gdk_device_free_history (GdkTimeCoord **events,
 }
 
 static void
-unset_extension_events (GdkWindow *window)
+unset_extension_events (BdkWindow *window)
 {
-  GdkWindowObject *window_private;
-  GdkWindowObject *impl_window;
-  GdkDisplayX11 *display_x11;
-  GdkInputWindow *iw;
+  BdkWindowObject *window_private;
+  BdkWindowObject *impl_window;
+  BdkDisplayX11 *display_x11;
+  BdkInputWindow *iw;
 
-  window_private = (GdkWindowObject*) window;
-  impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+  window_private = (BdkWindowObject*) window;
+  impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
   iw = impl_window->input_window;
 
-  display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
+  display_x11 = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
 
   if (window_private->extension_events != 0)
     {
@@ -563,31 +563,31 @@ unset_extension_events (GdkWindow *window)
 }
 
 void
-gdk_input_set_extension_events (GdkWindow *window, gint mask,
-				GdkExtensionMode mode)
+bdk_input_set_extension_events (BdkWindow *window, gint mask,
+				BdkExtensionMode mode)
 {
-  GdkWindowObject *window_private;
-  GdkWindowObject *impl_window;
-  GdkInputWindow *iw;
-  GdkDisplayX11 *display_x11;
+  BdkWindowObject *window_private;
+  BdkWindowObject *impl_window;
+  BdkInputWindow *iw;
+  BdkDisplayX11 *display_x11;
 #ifndef XINPUT_NONE
   GList *tmp_list;
 #endif
 
   g_return_if_fail (window != NULL);
-  g_return_if_fail (GDK_WINDOW_IS_X11 (window));
+  g_return_if_fail (BDK_WINDOW_IS_X11 (window));
 
-  window_private = (GdkWindowObject*) window;
-  display_x11 = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
-  if (GDK_WINDOW_DESTROYED (window))
+  window_private = (BdkWindowObject*) window;
+  display_x11 = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
+  if (BDK_WINDOW_DESTROYED (window))
     return;
 
-  impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+  impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
 
-  if (mode == GDK_EXTENSION_EVENTS_ALL && mask != 0)
-    mask |= GDK_ALL_DEVICES_MASK;
+  if (mode == BDK_EXTENSION_EVENTS_ALL && mask != 0)
+    mask |= BDK_ALL_DEVICES_MASK;
 
-  if (mode == GDK_EXTENSION_EVENTS_NONE)
+  if (mode == BDK_EXTENSION_EVENTS_NONE)
     mask = 0;
 
   iw = impl_window->input_window;
@@ -596,9 +596,9 @@ gdk_input_set_extension_events (GdkWindow *window, gint mask,
     {
       if (!iw)
 	{
-	  iw = g_new0 (GdkInputWindow,1);
+	  iw = g_new0 (BdkInputWindow,1);
 
-	  iw->impl_window = (GdkWindow *)impl_window;
+	  iw->impl_window = (BdkWindow *)impl_window;
 
 	  iw->windows = NULL;
 	  iw->grabbed = FALSE;
@@ -608,7 +608,7 @@ gdk_input_set_extension_events (GdkWindow *window, gint mask,
 #ifndef XINPUT_NONE
 	  /* we might not receive ConfigureNotify so get the root_relative_geometry
 	   * now, just in case */
-	  _gdk_input_get_root_relative_geometry (window, &iw->root_x, &iw->root_y);
+	  _bdk_input_get_root_relative_geometry (window, &iw->root_x, &iw->root_y);
 #endif /* !XINPUT_NONE */
 	  impl_window->input_window = iw;
 	}
@@ -625,23 +625,23 @@ gdk_input_set_extension_events (GdkWindow *window, gint mask,
 #ifndef XINPUT_NONE
   for (tmp_list = display_x11->input_devices; tmp_list; tmp_list = tmp_list->next)
     {
-      GdkDevicePrivate *gdkdev = tmp_list->data;
+      BdkDevicePrivate *bdkdev = tmp_list->data;
 
-      if (!GDK_IS_CORE (gdkdev))
-	_gdk_input_select_events ((GdkWindow *)impl_window, gdkdev);
+      if (!BDK_IS_CORE (bdkdev))
+	_bdk_input_select_events ((BdkWindow *)impl_window, bdkdev);
     }
 #endif /* !XINPUT_NONE */
 }
 
 void
-_gdk_input_window_destroy (GdkWindow *window)
+_bdk_input_window_destroy (BdkWindow *window)
 {
   unset_extension_events (window);
 }
 
 /**
- * gdk_device_get_axis:
- * @device: a #GdkDevice
+ * bdk_device_get_axis:
+ * @device: a #BdkDevice
  * @axes: pointer to an array of axes
  * @use: the use to look for
  * @value: location to store the found value.
@@ -652,9 +652,9 @@ _gdk_input_window_destroy (GdkWindow *window)
  * Return value: %TRUE if the given axis use was found, otherwise %FALSE
  **/
 gboolean
-gdk_device_get_axis (GdkDevice  *device,
+bdk_device_get_axis (BdkDevice  *device,
 		     gdouble    *axes,
-		     GdkAxisUse  use,
+		     BdkAxisUse  use,
 		     gdouble    *value)
 {
   gint i;
@@ -675,5 +675,5 @@ gdk_device_get_axis (GdkDevice  *device,
   return FALSE;
 }
 
-#define __GDK_INPUT_C__
-#include "gdkaliasdef.c"
+#define __BDK_INPUT_C__
+#include "bdkaliasdef.c"

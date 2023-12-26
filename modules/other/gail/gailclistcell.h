@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,38 +17,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_CLIST_CELL_H__
-#define __GAIL_CLIST_CELL_H__
+#ifndef __BAIL_CLIST_CELL_H__
+#define __BAIL_CLIST_CELL_H__
 
-#include <atk/atk.h>
-#include <gail/gailcell.h>
+#include <batk/batk.h>
+#include <bail/bailcell.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_CLIST_CELL                     (gail_clist_cell_get_type ())
-#define GAIL_CLIST_CELL(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_CLIST_CELL, GailCListCell))
-#define GAIL_CLIST_CELL_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_CLIST_CELL, GailCListCellClass))
-#define GAIL_IS_CLIST_CELL(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_CLIST_CELL))
-#define GAIL_IS_CLIST_CELL_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_CLIST_CELL))
-#define GAIL_CLIST_CELL_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_CLIST_CELL, GailCListCellClass))
+#define BAIL_TYPE_CLIST_CELL                     (bail_clist_cell_get_type ())
+#define BAIL_CLIST_CELL(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST_CELL, BailCListCell))
+#define BAIL_CLIST_CELL_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
+#define BAIL_IS_CLIST_CELL(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST_CELL))
+#define BAIL_IS_CLIST_CELL_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST_CELL))
+#define BAIL_CLIST_CELL_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST_CELL, BailCListCellClass))
 
-typedef struct _GailCListCell                  GailCListCell;
-typedef struct _GailCListCellClass             GailCListCellClass;
+typedef struct _BailCListCell                  BailCListCell;
+typedef struct _BailCListCellClass             BailCListCellClass;
 
-struct _GailCListCell
+struct _BailCListCell
 {
-  GailCell parent;
+  BailCell parent;
 };
 
-GType gail_clist_cell_get_type (void);
+GType bail_clist_cell_get_type (void);
 
-struct _GailCListCellClass
+struct _BailCListCellClass
 {
-  GailCellClass parent_class;
+  BailCellClass parent_class;
 };
 
-AtkObject *gail_clist_cell_new (void);
+BatkObject *bail_clist_cell_new (void);
 
 G_END_DECLS
 
-#endif /* __GAIL_CLIST_CELL_H__ */
+#endif /* __BAIL_CLIST_CELL_H__ */

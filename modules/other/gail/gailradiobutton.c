@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,53 +19,53 @@
 
 #include "config.h"
 
-#include <gtk/gtk.h>
-#include "gailradiobutton.h"
+#include <btk/btk.h>
+#include "bailradiobutton.h"
 
-static void      gail_radio_button_class_init        (GailRadioButtonClass *klass);
-static void      gail_radio_button_init              (GailRadioButton      *radio_button);
-static void      gail_radio_button_initialize        (AtkObject            *accessible,
+static void      bail_radio_button_class_init        (BailRadioButtonClass *klass);
+static void      bail_radio_button_init              (BailRadioButton      *radio_button);
+static void      bail_radio_button_initialize        (BatkObject            *accessible,
                                                       gpointer              data);
 
-static AtkRelationSet* gail_radio_button_ref_relation_set (AtkObject       *obj);
+static BatkRelationSet* bail_radio_button_ref_relation_set (BatkObject       *obj);
 
-G_DEFINE_TYPE (GailRadioButton, gail_radio_button, GAIL_TYPE_TOGGLE_BUTTON)
+G_DEFINE_TYPE (BailRadioButton, bail_radio_button, BAIL_TYPE_TOGGLE_BUTTON)
 
 static void
-gail_radio_button_class_init (GailRadioButtonClass *klass)
+bail_radio_button_class_init (BailRadioButtonClass *klass)
 {
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_radio_button_initialize;
-  class->ref_relation_set = gail_radio_button_ref_relation_set;
+  class->initialize = bail_radio_button_initialize;
+  class->ref_relation_set = bail_radio_button_ref_relation_set;
 }
 
 static void
-gail_radio_button_init (GailRadioButton *radio_button)
+bail_radio_button_init (BailRadioButton *radio_button)
 {
   radio_button->old_group = NULL;
 }
 
 static void
-gail_radio_button_initialize (AtkObject *accessible,
+bail_radio_button_initialize (BatkObject *accessible,
                               gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_radio_button_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_radio_button_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_RADIO_BUTTON;
+  accessible->role = BATK_ROLE_RADIO_BUTTON;
 }
 
-AtkRelationSet*
-gail_radio_button_ref_relation_set (AtkObject *obj)
+BatkRelationSet*
+bail_radio_button_ref_relation_set (BatkObject *obj)
 {
-  GtkWidget *widget;
-  AtkRelationSet *relation_set;
+  BtkWidget *widget;
+  BatkRelationSet *relation_set;
   GSList *list;
-  GailRadioButton *radio_button;
+  BailRadioButton *radio_button;
 
-  g_return_val_if_fail (GAIL_IS_RADIO_BUTTON (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_RADIO_BUTTON (obj), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
   {
     /*
@@ -73,24 +73,24 @@ gail_radio_button_ref_relation_set (AtkObject *obj)
      */
     return NULL;
   }
-  radio_button = GAIL_RADIO_BUTTON (obj);
+  radio_button = BAIL_RADIO_BUTTON (obj);
 
-  relation_set = ATK_OBJECT_CLASS (gail_radio_button_parent_class)->ref_relation_set (obj);
+  relation_set = BATK_OBJECT_CLASS (bail_radio_button_parent_class)->ref_relation_set (obj);
 
   /*
    * If the radio button'group has changed remove the relation
    */
-  list = gtk_radio_button_get_group (GTK_RADIO_BUTTON (widget));
+  list = btk_radio_button_get_group (BTK_RADIO_BUTTON (widget));
   
   if (radio_button->old_group != list)
     {
-      AtkRelation *relation;
+      BatkRelation *relation;
 
-      relation = atk_relation_set_get_relation_by_type (relation_set, ATK_RELATION_MEMBER_OF);
-      atk_relation_set_remove (relation_set, relation);
+      relation = batk_relation_set_get_relation_by_type (relation_set, BATK_RELATION_MEMBER_OF);
+      batk_relation_set_remove (relation_set, relation);
     }
 
-  if (!atk_relation_set_contains (relation_set, ATK_RELATION_MEMBER_OF))
+  if (!batk_relation_set_contains (relation_set, BATK_RELATION_MEMBER_OF))
   {
     /*
      * Get the members of the button group
@@ -99,27 +99,27 @@ gail_radio_button_ref_relation_set (AtkObject *obj)
     radio_button->old_group = list;
     if (list)
     {
-      AtkObject **accessible_array;
+      BatkObject **accessible_array;
       guint list_length;
-      AtkRelation* relation;
+      BatkRelation* relation;
       gint i = 0;
 
       list_length = g_slist_length (list);
-      accessible_array = (AtkObject**) g_malloc (sizeof (AtkObject *) * 
+      accessible_array = (BatkObject**) g_malloc (sizeof (BatkObject *) * 
                           list_length);
       while (list != NULL)
       {
-        GtkWidget* list_item = list->data;
+        BtkWidget* list_item = list->data;
 
-        accessible_array[i++] = gtk_widget_get_accessible (list_item);
+        accessible_array[i++] = btk_widget_get_accessible (list_item);
 
         list = list->next;
       }
-      relation = atk_relation_new (accessible_array, list_length,
-                                   ATK_RELATION_MEMBER_OF);
+      relation = batk_relation_new (accessible_array, list_length,
+                                   BATK_RELATION_MEMBER_OF);
       g_free (accessible_array);
 
-      atk_relation_set_add (relation_set, relation);
+      batk_relation_set_add (relation_set, relation);
       /*
        * Unref the relation so that it is not leaked.
        */

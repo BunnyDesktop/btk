@@ -1,4 +1,4 @@
-/* gtktreedatalist.c
+/* btktreedatalist.c
  * Copyright (C) 2000  Red Hat, Inc.,  Jonathan Blandford <jrb@redhat.com>
  *
  * This library is free software; you can redistribute it and/or
@@ -16,32 +16,32 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  * 
- * This file contains code shared between GtkTreeStore and GtkListStore.  Please
+ * This file contains code shared between BtkTreeStore and BtkListStore.  Please
  * do not use it.
  */
 
 #include "config.h"
-#include "gtktreedatalist.h"
-#include "gtkalias.h"
+#include "btktreedatalist.h"
+#include "btkalias.h"
 #include <string.h>
 
 /* node allocation
  */
-GtkTreeDataList *
-_gtk_tree_data_list_alloc (void)
+BtkTreeDataList *
+_btk_tree_data_list_alloc (void)
 {
-  GtkTreeDataList *list;
+  BtkTreeDataList *list;
 
-  list = g_slice_new0 (GtkTreeDataList);
+  list = g_slice_new0 (BtkTreeDataList);
 
   return list;
 }
 
 void
-_gtk_tree_data_list_free (GtkTreeDataList *list,
+_btk_tree_data_list_free (BtkTreeDataList *list,
 			  GType           *column_headers)
 {
-  GtkTreeDataList *tmp, *next;
+  BtkTreeDataList *tmp, *next;
   gint i = 0;
 
   tmp = list;
@@ -56,14 +56,14 @@ _gtk_tree_data_list_free (GtkTreeDataList *list,
       else if (g_type_is_a (column_headers [i], G_TYPE_BOXED) && tmp->data.v_pointer != NULL)
 	g_boxed_free (column_headers [i], (gpointer) tmp->data.v_pointer);
 
-      g_slice_free (GtkTreeDataList, tmp);
+      g_slice_free (BtkTreeDataList, tmp);
       i++;
       tmp = next;
     }
 }
 
 gboolean
-_gtk_tree_data_list_check_type (GType type)
+_btk_tree_data_list_check_type (GType type)
 {
   gint i = 0;
   static const GType type_list[] =
@@ -117,7 +117,7 @@ get_fundamental_type (GType type)
   return result;
 }
 void
-_gtk_tree_data_list_node_to_value (GtkTreeDataList *list,
+_btk_tree_data_list_node_to_value (BtkTreeDataList *list,
 				   GType            type,
 				   GValue          *value)
 {
@@ -183,7 +183,7 @@ _gtk_tree_data_list_node_to_value (GtkTreeDataList *list,
 }
 
 void
-_gtk_tree_data_list_value_to_node (GtkTreeDataList *list,
+_btk_tree_data_list_value_to_node (BtkTreeDataList *list,
 				   GValue          *value)
 {
   switch (get_fundamental_type (G_VALUE_TYPE (value)))
@@ -250,15 +250,15 @@ _gtk_tree_data_list_value_to_node (GtkTreeDataList *list,
     }
 }
 
-GtkTreeDataList *
-_gtk_tree_data_list_node_copy (GtkTreeDataList *list,
+BtkTreeDataList *
+_btk_tree_data_list_node_copy (BtkTreeDataList *list,
                                GType            type)
 {
-  GtkTreeDataList *new_list;
+  BtkTreeDataList *new_list;
 
   g_return_val_if_fail (list != NULL, NULL);
   
-  new_list = _gtk_tree_data_list_alloc ();
+  new_list = _btk_tree_data_list_alloc ();
   new_list->next = NULL;
 
   switch (get_fundamental_type (type))
@@ -303,20 +303,20 @@ _gtk_tree_data_list_node_copy (GtkTreeDataList *list,
 }
 
 gint
-_gtk_tree_data_list_compare_func (GtkTreeModel *model,
-				  GtkTreeIter  *a,
-				  GtkTreeIter  *b,
+_btk_tree_data_list_compare_func (BtkTreeModel *model,
+				  BtkTreeIter  *a,
+				  BtkTreeIter  *b,
 				  gpointer      user_data)
 {
   gint column = GPOINTER_TO_INT (user_data);
-  GType type = gtk_tree_model_get_column_type (model, column);
+  GType type = btk_tree_model_get_column_type (model, column);
   GValue a_value = {0, };
   GValue b_value = {0, };
   gint retval;
   const gchar *stra, *strb;
 
-  gtk_tree_model_get_value (model, a, column, &a_value);
-  gtk_tree_model_get_value (model, b, column, &b_value);
+  btk_tree_model_get_value (model, a, column, &a_value);
+  btk_tree_model_get_value (model, b, column, &b_value);
 
   switch (get_fundamental_type (type))
     {
@@ -450,7 +450,7 @@ _gtk_tree_data_list_compare_func (GtkTreeModel *model,
 
 
 GList *
-_gtk_tree_data_list_header_new (gint   n_columns,
+_btk_tree_data_list_header_new (gint   n_columns,
 				GType *types)
 {
   GList *retval = NULL;
@@ -459,13 +459,13 @@ _gtk_tree_data_list_header_new (gint   n_columns,
 
   for (i = 0; i < n_columns; i ++)
     {
-      GtkTreeDataSortHeader *header;
+      BtkTreeDataSortHeader *header;
 
-      header = g_slice_new (GtkTreeDataSortHeader);
+      header = g_slice_new (BtkTreeDataSortHeader);
 
       retval = g_list_prepend (retval, header);
       header->sort_column_id = i;
-      header->func = _gtk_tree_data_list_compare_func;
+      header->func = _btk_tree_data_list_compare_func;
       header->destroy = NULL;
       header->data = GINT_TO_POINTER (i);
     }
@@ -473,13 +473,13 @@ _gtk_tree_data_list_header_new (gint   n_columns,
 }
 
 void
-_gtk_tree_data_list_header_free (GList *list)
+_btk_tree_data_list_header_free (GList *list)
 {
   GList *tmp;
 
   for (tmp = list; tmp; tmp = tmp->next)
     {
-      GtkTreeDataSortHeader *header = (GtkTreeDataSortHeader *) tmp->data;
+      BtkTreeDataSortHeader *header = (BtkTreeDataSortHeader *) tmp->data;
 
       if (header->destroy)
 	{
@@ -489,20 +489,20 @@ _gtk_tree_data_list_header_free (GList *list)
 	  d (header->data);
 	}
 
-      g_slice_free (GtkTreeDataSortHeader, header);
+      g_slice_free (BtkTreeDataSortHeader, header);
     }
   g_list_free (list);
 }
 
-GtkTreeDataSortHeader *
-_gtk_tree_data_list_get_header (GList   *header_list,
+BtkTreeDataSortHeader *
+_btk_tree_data_list_get_header (GList   *header_list,
 				gint     sort_column_id)
 {
-  GtkTreeDataSortHeader *header = NULL;
+  BtkTreeDataSortHeader *header = NULL;
 
   for (; header_list; header_list = header_list->next)
     {
-      header = (GtkTreeDataSortHeader*) header_list->data;
+      header = (BtkTreeDataSortHeader*) header_list->data;
       if (header->sort_column_id == sort_column_id)
 	return header;
     }
@@ -511,18 +511,18 @@ _gtk_tree_data_list_get_header (GList   *header_list,
 
 
 GList *
-_gtk_tree_data_list_set_header (GList                  *header_list,
+_btk_tree_data_list_set_header (GList                  *header_list,
 				gint                    sort_column_id,
-				GtkTreeIterCompareFunc  func,
+				BtkTreeIterCompareFunc  func,
 				gpointer                data,
 				GDestroyNotify          destroy)
 {
   GList *list = header_list;
-  GtkTreeDataSortHeader *header = NULL;
+  BtkTreeDataSortHeader *header = NULL;
 
   for (; list; list = list->next)
     {
-      header = (GtkTreeDataSortHeader*) list->data;
+      header = (BtkTreeDataSortHeader*) list->data;
       if (header->sort_column_id == sort_column_id)
 	break;
       header = NULL;
@@ -533,7 +533,7 @@ _gtk_tree_data_list_set_header (GList                  *header_list,
   
   if (header == NULL)
     {
-      header = g_slice_new0 (GtkTreeDataSortHeader);
+      header = g_slice_new0 (BtkTreeDataSortHeader);
       header->sort_column_id = sort_column_id;
       if (list)
 	list = g_list_append (list, header);

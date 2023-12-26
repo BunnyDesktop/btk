@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,76 +18,76 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 
-#define GDK_SETTINGS_N_ELEMENTS()       G_N_ELEMENTS (gdk_settings_map)
-#define GDK_SETTINGS_X_NAME(nth)        (gdk_settings_names + gdk_settings_map[nth].xsettings_offset)
-#define GDK_SETTINGS_GDK_NAME(nth)      (gdk_settings_names + gdk_settings_map[nth].gdk_offset)
+#define BDK_SETTINGS_N_ELEMENTS()       G_N_ELEMENTS (bdk_settings_map)
+#define BDK_SETTINGS_X_NAME(nth)        (bdk_settings_names + bdk_settings_map[nth].xsettings_offset)
+#define BDK_SETTINGS_BDK_NAME(nth)      (bdk_settings_names + bdk_settings_map[nth].bdk_offset)
 
 /* WARNING:
- * You will need to update gdk_settings_map when adding a
+ * You will need to update bdk_settings_map when adding a
  * new setting, and make sure that checksettings does not
  * fail before committing
  */
-static const char gdk_settings_names[] =
-  "Net/DoubleClickTime\0"     "gtk-double-click-time\0"
-  "Net/DoubleClickDistance\0" "gtk-double-click-distance\0"
-  "Net/DndDragThreshold\0"    "gtk-dnd-drag-threshold\0"
-  "Net/CursorBlink\0"         "gtk-cursor-blink\0"
-  "Net/CursorBlinkTime\0"     "gtk-cursor-blink-time\0"
-  "Net/ThemeName\0"           "gtk-theme-name\0"
-  "Net/IconThemeName\0"       "gtk-icon-theme-name\0"
-  "Gtk/CanChangeAccels\0"     "gtk-can-change-accels\0"
-  "Gtk/ColorPalette\0"        "gtk-color-palette\0"
-  "Gtk/FontName\0"            "gtk-font-name\0"
-  "Gtk/IconSizes\0"           "gtk-icon-sizes\0"
-  "Gtk/KeyThemeName\0"        "gtk-key-theme-name\0"
-  "Gtk/ToolbarStyle\0"        "gtk-toolbar-style\0"
-  "Gtk/ToolbarIconSize\0"     "gtk-toolbar-icon-size\0"
-  "Gtk/IMPreeditStyle\0"      "gtk-im-preedit-style\0"
-  "Gtk/IMStatusStyle\0"       "gtk-im-status-style\0"
-  "Gtk/Modules\0"             "gtk-modules\0"
-  "Gtk/FileChooserBackend\0"  "gtk-file-chooser-backend\0"
-  "Gtk/ButtonImages\0"        "gtk-button-images\0"
-  "Gtk/MenuImages\0"          "gtk-menu-images\0"
-  "Gtk/MenuBarAccel\0"        "gtk-menu-bar-accel\0"
-  "Gtk/CursorThemeName\0"     "gtk-cursor-theme-name\0"
-  "Gtk/CursorThemeSize\0"     "gtk-cursor-theme-size\0"
-  "Gtk/ShowInputMethodMenu\0" "gtk-show-input-method-menu\0"
-  "Gtk/ShowUnicodeMenu\0"     "gtk-show-unicode-menu\0"
-  "Gtk/TimeoutInitial\0"      "gtk-timeout-initial\0"
-  "Gtk/TimeoutRepeat\0"       "gtk-timeout-repeat\0"
-  "Gtk/ColorScheme\0"         "gtk-color-scheme\0"
-  "Gtk/EnableAnimations\0"    "gtk-enable-animations\0"
-  "Xft/Antialias\0"           "gtk-xft-antialias\0"
-  "Xft/Hinting\0"             "gtk-xft-hinting\0"
-  "Xft/HintStyle\0"           "gtk-xft-hintstyle\0"
-  "Xft/RGBA\0"                "gtk-xft-rgba\0"
-  "Xft/DPI\0"                 "gtk-xft-dpi\0"
-  "Net/FallbackIconTheme\0"   "gtk-fallback-icon-theme\0"
-  "Gtk/TouchscreenMode\0"     "gtk-touchscreen-mode\0"
-  "Gtk/EnableAccels\0"        "gtk-enable-accels\0"
-  "Gtk/EnableMnemonics\0"     "gtk-enable-mnemonics\0"
-  "Gtk/ScrolledWindowPlacement\0" "gtk-scrolled-window-placement\0"
-  "Gtk/IMModule\0"            "gtk-im-module\0"
-  "Fontconfig/Timestamp\0"    "gtk-fontconfig-timestamp\0"
-  "Net/SoundThemeName\0"      "gtk-sound-theme-name\0"
-  "Net/EnableInputFeedbackSounds\0" "gtk-enable-input-feedback-sounds\0"
-  "Net/EnableEventSounds\0"   "gtk-enable-event-sounds\0"
-  "Gtk/CursorBlinkTimeout\0"  "gtk-cursor-blink-timeout\0"
-  "Gtk/AutoMnemonics\0"       "gtk-auto-mnemonics\0";
+static const char bdk_settings_names[] =
+  "Net/DoubleClickTime\0"     "btk-double-click-time\0"
+  "Net/DoubleClickDistance\0" "btk-double-click-distance\0"
+  "Net/DndDragThreshold\0"    "btk-dnd-drag-threshold\0"
+  "Net/CursorBlink\0"         "btk-cursor-blink\0"
+  "Net/CursorBlinkTime\0"     "btk-cursor-blink-time\0"
+  "Net/ThemeName\0"           "btk-theme-name\0"
+  "Net/IconThemeName\0"       "btk-icon-theme-name\0"
+  "Btk/CanChangeAccels\0"     "btk-can-change-accels\0"
+  "Btk/ColorPalette\0"        "btk-color-palette\0"
+  "Btk/FontName\0"            "btk-font-name\0"
+  "Btk/IconSizes\0"           "btk-icon-sizes\0"
+  "Btk/KeyThemeName\0"        "btk-key-theme-name\0"
+  "Btk/ToolbarStyle\0"        "btk-toolbar-style\0"
+  "Btk/ToolbarIconSize\0"     "btk-toolbar-icon-size\0"
+  "Btk/IMPreeditStyle\0"      "btk-im-preedit-style\0"
+  "Btk/IMStatusStyle\0"       "btk-im-status-style\0"
+  "Btk/Modules\0"             "btk-modules\0"
+  "Btk/FileChooserBackend\0"  "btk-file-chooser-backend\0"
+  "Btk/ButtonImages\0"        "btk-button-images\0"
+  "Btk/MenuImages\0"          "btk-menu-images\0"
+  "Btk/MenuBarAccel\0"        "btk-menu-bar-accel\0"
+  "Btk/CursorThemeName\0"     "btk-cursor-theme-name\0"
+  "Btk/CursorThemeSize\0"     "btk-cursor-theme-size\0"
+  "Btk/ShowInputMethodMenu\0" "btk-show-input-method-menu\0"
+  "Btk/ShowUnicodeMenu\0"     "btk-show-unicode-menu\0"
+  "Btk/TimeoutInitial\0"      "btk-timeout-initial\0"
+  "Btk/TimeoutRepeat\0"       "btk-timeout-repeat\0"
+  "Btk/ColorScheme\0"         "btk-color-scheme\0"
+  "Btk/EnableAnimations\0"    "btk-enable-animations\0"
+  "Xft/Antialias\0"           "btk-xft-antialias\0"
+  "Xft/Hinting\0"             "btk-xft-hinting\0"
+  "Xft/HintStyle\0"           "btk-xft-hintstyle\0"
+  "Xft/RGBA\0"                "btk-xft-rgba\0"
+  "Xft/DPI\0"                 "btk-xft-dpi\0"
+  "Net/FallbackIconTheme\0"   "btk-fallback-icon-theme\0"
+  "Btk/TouchscreenMode\0"     "btk-touchscreen-mode\0"
+  "Btk/EnableAccels\0"        "btk-enable-accels\0"
+  "Btk/EnableMnemonics\0"     "btk-enable-mnemonics\0"
+  "Btk/ScrolledWindowPlacement\0" "btk-scrolled-window-placement\0"
+  "Btk/IMModule\0"            "btk-im-module\0"
+  "Fontconfig/Timestamp\0"    "btk-fontconfig-timestamp\0"
+  "Net/SoundThemeName\0"      "btk-sound-theme-name\0"
+  "Net/EnableInputFeedbackSounds\0" "btk-enable-input-feedback-sounds\0"
+  "Net/EnableEventSounds\0"   "btk-enable-event-sounds\0"
+  "Btk/CursorBlinkTimeout\0"  "btk-cursor-blink-timeout\0"
+  "Btk/AutoMnemonics\0"       "btk-auto-mnemonics\0";
 
 
 static const struct
 {
   gint xsettings_offset;
-  gint gdk_offset;
-} gdk_settings_map[] = {
+  gint bdk_offset;
+} bdk_settings_map[] = {
   {    0,   20 },
   {   42,   66 },
   {   92,  113 },

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2002 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,37 +17,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_CHECK_SUB_MENU_ITEM_H__
-#define __GAIL_CHECK_SUB_MENU_ITEM_H__
+#ifndef __BAIL_CHECK_SUB_MENU_ITEM_H__
+#define __BAIL_CHECK_SUB_MENU_ITEM_H__
 
-#include <gail/gailsubmenuitem.h>
+#include <bail/bailsubmenuitem.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_CHECK_SUB_MENU_ITEM              (gail_check_sub_menu_item_get_type ())
-#define GAIL_CHECK_SUB_MENU_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_CHECK_SUB_MENU_ITEM, GailCheckSubMenuItem))
-#define GAIL_CHECK_SUB_MENU_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_CHECK_SUB_MENU_ITEM, GailCheckSubMenuItemClass))
-#define GAIL_IS_CHECK_SUB_MENU_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_CHECK_SUB_MENU_ITEM))
-#define GAIL_IS_CHECK_SUB_MENU_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_CHECK_SUB_MENU_ITEM))
-#define GAIL_CHECK_SUB_MENU_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_CHECK_SUB_MENU_ITEM, GailCheckSubMenuItemClass))
+#define BAIL_TYPE_CHECK_SUB_MENU_ITEM              (bail_check_sub_menu_item_get_type ())
+#define BAIL_CHECK_SUB_MENU_ITEM(obj)              (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CHECK_SUB_MENU_ITEM, BailCheckSubMenuItem))
+#define BAIL_CHECK_SUB_MENU_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CHECK_SUB_MENU_ITEM, BailCheckSubMenuItemClass))
+#define BAIL_IS_CHECK_SUB_MENU_ITEM(obj)           (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CHECK_SUB_MENU_ITEM))
+#define BAIL_IS_CHECK_SUB_MENU_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CHECK_SUB_MENU_ITEM))
+#define BAIL_CHECK_SUB_MENU_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CHECK_SUB_MENU_ITEM, BailCheckSubMenuItemClass))
 
-typedef struct _GailCheckSubMenuItem              GailCheckSubMenuItem;
-typedef struct _GailCheckSubMenuItemClass         GailCheckSubMenuItemClass;
+typedef struct _BailCheckSubMenuItem              BailCheckSubMenuItem;
+typedef struct _BailCheckSubMenuItemClass         BailCheckSubMenuItemClass;
 
-struct _GailCheckSubMenuItem
+struct _BailCheckSubMenuItem
 {
-  GailSubMenuItem parent;
+  BailSubMenuItem parent;
 };
 
-GType gail_check_sub_menu_item_get_type (void);
+GType bail_check_sub_menu_item_get_type (void);
 
-struct _GailCheckSubMenuItemClass
+struct _BailCheckSubMenuItemClass
 {
-  GailSubMenuItemClass parent_class;
+  BailSubMenuItemClass parent_class;
 };
 
-AtkObject* gail_check_sub_menu_item_new (GtkWidget *widget);
+BatkObject* bail_check_sub_menu_item_new (BtkWidget *widget);
 
 G_END_DECLS
 
-#endif /* __GAIL_CHECK_SUB_MENU_ITEM_H__ */
+#endif /* __BAIL_CHECK_SUB_MENU_ITEM_H__ */

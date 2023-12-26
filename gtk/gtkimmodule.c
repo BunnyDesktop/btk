@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -17,10 +17,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -30,29 +30,29 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib/gstdio.h>
-#include <gmodule.h>
-#include "gtkimmodule.h"
-#include "gtkimcontextsimple.h"
-#include "gtksettings.h"
-#include "gtkmain.h"
-#include "gtkrc.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bunnylib/gstdio.h>
+#include <bmodule.h>
+#include "btkimmodule.h"
+#include "btkimcontextsimple.h"
+#include "btksettings.h"
+#include "btkmain.h"
+#include "btkrc.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-/* Do *not* include "gtkprivate.h" in this file. If you do, the
+/* Do *not* include "btkprivate.h" in this file. If you do, the
  * correct_libdir_prefix() and correct_localedir_prefix() functions
  * below will have to move somewhere else.
  */
 
-#ifdef __GTK_PRIVATE_H__
-#error gtkprivate.h should not be included in this file
+#ifdef __BTK_PRIVATE_H__
+#error btkprivate.h should not be included in this file
 #endif
 
-#define SIMPLE_ID "gtk-im-context-simple"
+#define SIMPLE_ID "btk-im-context-simple"
 
 /**
- * GtkIMContextInfo:
+ * BtkIMContextInfo:
  * @context_id: The unique identification string of the input method.
  * @context_name: The human-readable name of the input method.
  * @domain: Translation domain to be used with dgettext()
@@ -63,14 +63,14 @@
  * Bookkeeping information about a loadable input method.
  */
 
-typedef struct _GtkIMModule      GtkIMModule;
-typedef struct _GtkIMModuleClass GtkIMModuleClass;
+typedef struct _BtkIMModule      BtkIMModule;
+typedef struct _BtkIMModuleClass BtkIMModuleClass;
 
-#define GTK_TYPE_IM_MODULE          (gtk_im_module_get_type ())
-#define GTK_IM_MODULE(im_module)    (G_TYPE_CHECK_INSTANCE_CAST ((im_module), GTK_TYPE_IM_MODULE, GtkIMModule))
-#define GTK_IS_IM_MODULE(im_module) (G_TYPE_CHECK_INSTANCE_TYPE ((im_module), GTK_TYPE_IM_MODULE))
+#define BTK_TYPE_IM_MODULE          (btk_im_module_get_type ())
+#define BTK_IM_MODULE(im_module)    (G_TYPE_CHECK_INSTANCE_CAST ((im_module), BTK_TYPE_IM_MODULE, BtkIMModule))
+#define BTK_IS_IM_MODULE(im_module) (G_TYPE_CHECK_INSTANCE_TYPE ((im_module), BTK_TYPE_IM_MODULE))
 
-struct _GtkIMModule
+struct _BtkIMModule
 {
   GTypeModule parent_instance;
   
@@ -78,24 +78,24 @@ struct _GtkIMModule
 
   GModule *library;
 
-  void          (*list)   (const GtkIMContextInfo ***contexts,
+  void          (*list)   (const BtkIMContextInfo ***contexts,
  		           guint                    *n_contexts);
   void          (*init)   (GTypeModule              *module);
   void          (*exit)   (void);
-  GtkIMContext *(*create) (const gchar              *context_id);
+  BtkIMContext *(*create) (const gchar              *context_id);
 
-  GtkIMContextInfo **contexts;
+  BtkIMContextInfo **contexts;
   guint n_contexts;
 
   gchar *path;
 };
 
-struct _GtkIMModuleClass 
+struct _BtkIMModuleClass 
 {
   GTypeModuleClass parent_class;
 };
 
-static GType gtk_im_module_get_type (void);
+static GType btk_im_module_get_type (void);
 
 static gint n_loaded_contexts = 0;
 static GHashTable *contexts_hash = NULL;
@@ -104,9 +104,9 @@ static GSList *modules_list = NULL;
 static GObjectClass *parent_class = NULL;
 
 static gboolean
-gtk_im_module_load (GTypeModule *module)
+btk_im_module_load (GTypeModule *module)
 {
-  GtkIMModule *im_module = GTK_IM_MODULE (module);
+  BtkIMModule *im_module = BTK_IM_MODULE (module);
   
   if (!im_module->builtin)
     {
@@ -142,9 +142,9 @@ gtk_im_module_load (GTypeModule *module)
 }
 
 static void
-gtk_im_module_unload (GTypeModule *module)
+btk_im_module_unload (GTypeModule *module)
 {
-  GtkIMModule *im_module = GTK_IM_MODULE (module);
+  BtkIMModule *im_module = BTK_IM_MODULE (module);
   
   im_module->exit();
 
@@ -164,38 +164,38 @@ gtk_im_module_unload (GTypeModule *module)
  * initialization
  */
 static void
-gtk_im_module_finalize (GObject *object)
+btk_im_module_finalize (GObject *object)
 {
-  GtkIMModule *module = GTK_IM_MODULE (object);
+  BtkIMModule *module = BTK_IM_MODULE (object);
 
   g_free (module->path);
 
   parent_class->finalize (object);
 }
 
-G_DEFINE_TYPE (GtkIMModule, gtk_im_module, G_TYPE_TYPE_MODULE)
+G_DEFINE_TYPE (BtkIMModule, btk_im_module, G_TYPE_TYPE_MODULE)
 
 static void
-gtk_im_module_class_init (GtkIMModuleClass *class)
+btk_im_module_class_init (BtkIMModuleClass *class)
 {
   GTypeModuleClass *module_class = G_TYPE_MODULE_CLASS (class);
-  GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (class);
 
   parent_class = G_OBJECT_CLASS (g_type_class_peek_parent (class));
   
-  module_class->load = gtk_im_module_load;
-  module_class->unload = gtk_im_module_unload;
+  module_class->load = btk_im_module_load;
+  module_class->unload = btk_im_module_unload;
 
-  gobject_class->finalize = gtk_im_module_finalize;
+  bobject_class->finalize = btk_im_module_finalize;
 }
 
 static void 
-gtk_im_module_init (GtkIMModule* object)
+btk_im_module_init (BtkIMModule* object)
 {
 }
 
 static void
-free_info (GtkIMContextInfo *info)
+free_info (BtkIMContextInfo *info)
 {
   g_free ((char *)info->context_id);
   g_free ((char *)info->context_name);
@@ -206,16 +206,16 @@ free_info (GtkIMContextInfo *info)
 }
 
 static void
-add_module (GtkIMModule *module, GSList *infos)
+add_module (BtkIMModule *module, GSList *infos)
 {
   GSList *tmp_list = infos;
   gint i = 0;
   gint n = g_slist_length (infos);
-  module->contexts = g_new (GtkIMContextInfo *, n);
+  module->contexts = g_new (BtkIMContextInfo *, n);
 
   while (tmp_list)
     {
-      GtkIMContextInfo *info = tmp_list->data;
+      BtkIMContextInfo *info = tmp_list->data;
   
       if (g_hash_table_lookup (contexts_hash, info->context_id))
 	{
@@ -241,23 +241,23 @@ add_module (GtkIMModule *module, GSList *infos)
 static void
 correct_libdir_prefix (gchar **path)
 {
-  /* GTK_LIBDIR here is supposed to still have the definition from
-   * Makefile.am, i.e. the build-time value. Do *not* include gtkprivate.h
+  /* BTK_LIBDIR here is supposed to still have the definition from
+   * Makefile.am, i.e. the build-time value. Do *not* include btkprivate.h
    * in this file.
    */
-  if (strncmp (*path, GTK_LIBDIR, strlen (GTK_LIBDIR)) == 0)
+  if (strncmp (*path, BTK_LIBDIR, strlen (BTK_LIBDIR)) == 0)
     {
       /* This is an entry put there by make install on the
-       * packager's system. On Windows a prebuilt GTK+
+       * packager's system. On Windows a prebuilt BTK+
        * package can be installed in a random
        * location. The immodules.cache file distributed in
        * such a package contains paths from the package
        * builder's machine. Replace the path with the real
        * one on this machine.
        */
-      extern const gchar *_gtk_get_libdir ();
+      extern const gchar *_btk_get_libdir ();
       gchar *tem = *path;
-      *path = g_strconcat (_gtk_get_libdir (), tem + strlen (GTK_LIBDIR), NULL);
+      *path = g_strconcat (_btk_get_libdir (), tem + strlen (BTK_LIBDIR), NULL);
       g_free (tem);
     }
 }
@@ -265,32 +265,32 @@ correct_libdir_prefix (gchar **path)
 static void
 correct_localedir_prefix (gchar **path)
 {
-  /* As above, but for GTK_LOCALEDIR. Use separate function in case
-   * GTK_LOCALEDIR isn't a subfolder of GTK_LIBDIR.
+  /* As above, but for BTK_LOCALEDIR. Use separate function in case
+   * BTK_LOCALEDIR isn't a subfolder of BTK_LIBDIR.
    */
-  if (strncmp (*path, GTK_LOCALEDIR, strlen (GTK_LOCALEDIR)) == 0)
+  if (strncmp (*path, BTK_LOCALEDIR, strlen (BTK_LOCALEDIR)) == 0)
     {
-      extern const gchar *_gtk_get_localedir ();
+      extern const gchar *_btk_get_localedir ();
       gchar *tem = *path;
-      *path = g_strconcat (_gtk_get_localedir (), tem + strlen (GTK_LOCALEDIR), NULL);
+      *path = g_strconcat (_btk_get_localedir (), tem + strlen (BTK_LOCALEDIR), NULL);
       g_free (tem);
     }
 }
 #endif
 
 
-G_GNUC_UNUSED static GtkIMModule *
+G_GNUC_UNUSED static BtkIMModule *
 add_builtin_module (const gchar             *module_name,
-		    const GtkIMContextInfo **contexts,
+		    const BtkIMContextInfo **contexts,
 		    int                      n_contexts)
 {
-  GtkIMModule *module = g_object_new (GTK_TYPE_IM_MODULE, NULL);
+  BtkIMModule *module = g_object_new (BTK_TYPE_IM_MODULE, NULL);
   GSList *infos = NULL;
   int i;
 
   for (i = 0; i < n_contexts; i++)
     {
-      GtkIMContextInfo *info = g_new (GtkIMContextInfo, 1);
+      BtkIMContextInfo *info = g_new (BtkIMContextInfo, 1);
       info->context_id = g_strdup (contexts[i]->context_id);
       info->context_name = g_strdup (contexts[i]->context_name);
       info->domain = g_strdup (contexts[i]->domain);
@@ -310,34 +310,34 @@ add_builtin_module (const gchar             *module_name,
 }
 
 static void
-gtk_im_module_initialize (void)
+btk_im_module_initialize (void)
 {
   GString *line_buf = g_string_new (NULL);
   GString *tmp_buf = g_string_new (NULL);
-  gchar *filename = gtk_rc_get_im_module_file();
+  gchar *filename = btk_rc_get_im_module_file();
   FILE *file;
   gboolean have_error = FALSE;
 
-  GtkIMModule *module = NULL;
+  BtkIMModule *module = NULL;
   GSList *infos = NULL;
 
   contexts_hash = g_hash_table_new (g_str_hash, g_str_equal);
 
 #define do_builtin(m)							\
   {									\
-    const GtkIMContextInfo **contexts;					\
+    const BtkIMContextInfo **contexts;					\
     int n_contexts;							\
-    extern void _gtk_immodule_ ## m ## _list (const GtkIMContextInfo ***contexts, \
+    extern void _btk_immodule_ ## m ## _list (const BtkIMContextInfo ***contexts, \
 					      guint                    *n_contexts); \
-    extern void _gtk_immodule_ ## m ## _init (GTypeModule *module);	\
-    extern void _gtk_immodule_ ## m ## _exit (void);			\
-    extern GtkIMContext *_gtk_immodule_ ## m ## _create (const gchar *context_id); \
+    extern void _btk_immodule_ ## m ## _init (GTypeModule *module);	\
+    extern void _btk_immodule_ ## m ## _exit (void);			\
+    extern BtkIMContext *_btk_immodule_ ## m ## _create (const gchar *context_id); \
 									\
-    _gtk_immodule_ ## m ## _list (&contexts, &n_contexts);		\
+    _btk_immodule_ ## m ## _list (&contexts, &n_contexts);		\
     module = add_builtin_module (#m, contexts, n_contexts);		\
-    module->init = _gtk_immodule_ ## m ## _init;			\
-    module->exit = _gtk_immodule_ ## m ## _exit;			\
-    module->create = _gtk_immodule_ ## m ## _create;			\
+    module->init = _btk_immodule_ ## m ## _init;			\
+    module->exit = _btk_immodule_ ## m ## _exit;			\
+    module->create = _btk_immodule_ ## m ## _create;			\
     module = NULL;							\
   }
 
@@ -392,13 +392,13 @@ gtk_im_module_initialize (void)
       return;
     }
 
-  while (!have_error && pango_read_line (file, line_buf))
+  while (!have_error && bango_read_line (file, line_buf))
     {
       const char *p;
       
       p = line_buf->str;
 
-      if (!pango_skip_space (&p))
+      if (!bango_skip_space (&p))
 	{
 	  /* Blank line marking the end of a module
 	   */
@@ -416,10 +416,10 @@ gtk_im_module_initialize (void)
 	{
 	  /* Read a module location
 	   */
-	  module = g_object_new (GTK_TYPE_IM_MODULE, NULL);
+	  module = g_object_new (BTK_TYPE_IM_MODULE, NULL);
 
-	  if (!pango_scan_string (&p, tmp_buf) ||
-	      pango_skip_space (&p))
+	  if (!bango_scan_string (&p, tmp_buf) ||
+	      bango_skip_space (&p))
 	    {
 	      g_warning ("Error parsing context info in '%s'\n  %s", 
 			 filename, line_buf->str);
@@ -434,34 +434,34 @@ gtk_im_module_initialize (void)
 	}
       else
 	{
-	  GtkIMContextInfo *info = g_new0 (GtkIMContextInfo, 1);
+	  BtkIMContextInfo *info = g_new0 (BtkIMContextInfo, 1);
 	  
 	  /* Read information about a context type
 	   */
-	  if (!pango_scan_string (&p, tmp_buf))
+	  if (!bango_scan_string (&p, tmp_buf))
 	    goto context_error;
 	  info->context_id = g_strdup (tmp_buf->str);
 
-	  if (!pango_scan_string (&p, tmp_buf))
+	  if (!bango_scan_string (&p, tmp_buf))
 	    goto context_error;
 	  info->context_name = g_strdup (tmp_buf->str);
 
-	  if (!pango_scan_string (&p, tmp_buf))
+	  if (!bango_scan_string (&p, tmp_buf))
 	    goto context_error;
 	  info->domain = g_strdup (tmp_buf->str);
 
-	  if (!pango_scan_string (&p, tmp_buf))
+	  if (!bango_scan_string (&p, tmp_buf))
 	    goto context_error;
 	  info->domain_dirname = g_strdup (tmp_buf->str);
 #ifdef G_OS_WIN32
 	  correct_localedir_prefix ((char **) &info->domain_dirname);
 #endif
 
-	  if (!pango_scan_string (&p, tmp_buf))
+	  if (!bango_scan_string (&p, tmp_buf))
 	    goto context_error;
 	  info->default_locales = g_strdup (tmp_buf->str);
 
-	  if (pango_skip_space (&p))
+	  if (bango_skip_space (&p))
 	    goto context_error;
 
 	  infos = g_slist_prepend (infos, info);
@@ -496,15 +496,15 @@ gtk_im_module_initialize (void)
 }
 
 static gint
-compare_gtkimcontextinfo_name(const GtkIMContextInfo **a,
-			      const GtkIMContextInfo **b)
+compare_btkimcontextinfo_name(const BtkIMContextInfo **a,
+			      const BtkIMContextInfo **b)
 {
   return g_utf8_collate ((*a)->context_name, (*b)->context_name);
 }
 
 /**
- * _gtk_im_module_list:
- * @contexts: location to store an array of pointers to #GtkIMContextInfo
+ * _btk_im_module_list:
+ * @contexts: location to store an array of pointers to #BtkIMContextInfo
  *            this array should be freed with g_free() when you are finished.
  *            The structures it points are statically allocated and should
  *            not be modified or freed.
@@ -513,7 +513,7 @@ compare_gtkimcontextinfo_name(const GtkIMContextInfo **a,
  * List all available types of input method context
  */
 void
-_gtk_im_module_list (const GtkIMContextInfo ***contexts,
+_btk_im_module_list (const BtkIMContextInfo ***contexts,
 		     guint                    *n_contexts)
 {
   int n = 0;
@@ -522,12 +522,12 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
 #ifndef G_OS_WIN32
 	  const
 #endif
-		GtkIMContextInfo simple_context_info = {
+		BtkIMContextInfo simple_context_info = {
     SIMPLE_ID,
     N_("Simple"),
     GETTEXT_PACKAGE,
-#ifdef GTK_LOCALEDIR
-    GTK_LOCALEDIR,
+#ifdef BTK_LOCALEDIR
+    BTK_LOCALEDIR,
 #else
     "",
 #endif
@@ -539,7 +539,7 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
 #endif
 
   if (!contexts_hash)
-    gtk_im_module_initialize ();
+    btk_im_module_initialize ();
 
 #ifdef G_OS_WIN32
   if (!beenhere)
@@ -561,14 +561,14 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
       GSList *tmp_list;
       int i;
       
-      *contexts = g_new (const GtkIMContextInfo *, n_loaded_contexts + 1);
+      *contexts = g_new (const BtkIMContextInfo *, n_loaded_contexts + 1);
 
       (*contexts)[n++] = &simple_context_info;
 
       tmp_list = modules_list;
       while (tmp_list)
 	{
-	  GtkIMModule *module = tmp_list->data;
+	  BtkIMModule *module = tmp_list->data;
 
 	  for (i=0; i<module->n_contexts; i++)
 	    (*contexts)[n++] = module->contexts[i];
@@ -577,28 +577,28 @@ _gtk_im_module_list (const GtkIMContextInfo ***contexts,
 	}
 
       /* fisrt element (Default) should always be at top */
-      qsort ((*contexts)+1, n-1, sizeof (GtkIMContextInfo *), (GCompareFunc)compare_gtkimcontextinfo_name);
+      qsort ((*contexts)+1, n-1, sizeof (BtkIMContextInfo *), (GCompareFunc)compare_btkimcontextinfo_name);
     }
 }
 
 /**
- * _gtk_im_module_create:
+ * _btk_im_module_create:
  * @context_id: the context ID for the context type to create
  * 
  * Create an IM context of a type specified by the string
  * ID @context_id.
  * 
  * Return value: a newly created input context of or @context_id, or
- *     if that could not be created, a newly created GtkIMContextSimple.
+ *     if that could not be created, a newly created BtkIMContextSimple.
  */
-GtkIMContext *
-_gtk_im_module_create (const gchar *context_id)
+BtkIMContext *
+_btk_im_module_create (const gchar *context_id)
 {
-  GtkIMModule *im_module;
-  GtkIMContext *context = NULL;
+  BtkIMModule *im_module;
+  BtkIMContext *context = NULL;
   
   if (!contexts_hash)
-    gtk_im_module_initialize ();
+    btk_im_module_initialize ();
 
   if (strcmp (context_id, SIMPLE_ID) != 0)
     {
@@ -621,7 +621,7 @@ _gtk_im_module_create (const gchar *context_id)
     }
   
   if (!context)
-     return gtk_im_context_simple_new ();
+     return btk_im_context_simple_new ();
   else
     return context;
 }
@@ -673,7 +673,7 @@ lookup_immodule (gchar **immodules_list)
 }
 
 /**
- * _gtk_im_module_get_default_context_id:
+ * _btk_im_module_get_default_context_id:
  * @client_window: a window
  * 
  * Return the context_id of the best IM context type 
@@ -682,7 +682,7 @@ lookup_immodule (gchar **immodules_list)
  * Return value: the context ID (will never be %NULL)
  */
 const gchar *
-_gtk_im_module_get_default_context_id (GdkWindow *client_window)
+_btk_im_module_get_default_context_id (BdkWindow *client_window)
 {
   GSList *tmp_list;
   const gchar *context_id = NULL;
@@ -690,13 +690,13 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
   gint i;
   gchar *tmp_locale, *tmp, **immodules;
   const gchar *envvar;
-  GdkScreen *screen;
-  GtkSettings *settings;
+  BdkScreen *screen;
+  BtkSettings *settings;
       
   if (!contexts_hash)
-    gtk_im_module_initialize ();
+    btk_im_module_initialize ();
 
-  envvar = g_getenv("GTK_IM_MODULE");
+  envvar = g_getenv("BTK_IM_MODULE");
   if (envvar)
     {
         immodules = g_strsplit(envvar, ":", 0);
@@ -709,11 +709,11 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
 
   /* Check if the certain immodule is set in XSETTINGS.
    */
-  if (GDK_IS_DRAWABLE (client_window))
+  if (BDK_IS_DRAWABLE (client_window))
     {
-      screen = gdk_window_get_screen (client_window);
-      settings = gtk_settings_get_for_screen (screen);
-      g_object_get (G_OBJECT (settings), "gtk-im-module", &tmp, NULL);
+      screen = bdk_window_get_screen (client_window);
+      settings = btk_settings_get_for_screen (screen);
+      g_object_get (G_OBJECT (settings), "btk-im-module", &tmp, NULL);
       if (tmp)
         {
           immodules = g_strsplit(tmp, ":", 0);
@@ -728,7 +728,7 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
 
   /* Strip the locale code down to the essentials
    */
-  tmp_locale = _gtk_get_lc_ctype ();
+  tmp_locale = _btk_get_lc_ctype ();
   tmp = strchr (tmp_locale, '.');
   if (tmp)
     *tmp = '\0';
@@ -739,7 +739,7 @@ _gtk_im_module_get_default_context_id (GdkWindow *client_window)
   tmp_list = modules_list;
   while (tmp_list)
     {
-      GtkIMModule *module = tmp_list->data;
+      BtkIMModule *module = tmp_list->data;
      
       for (i = 0; i < module->n_contexts; i++)
 	{

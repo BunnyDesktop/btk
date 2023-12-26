@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkrecentfilter.h - Filter object for recently used resources
+/* BTK - The GIMP Toolkit
+ * btkrecentfilter.h - Filter object for recently used resources
  * Copyright (C) 2006, Emmanuele Bassi
  *
  * This library is free software; you can redistribute it and/or
@@ -18,39 +18,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RECENT_FILTER_H__
-#define __GTK_RECENT_FILTER_H__
+#ifndef __BTK_RECENT_FILTER_H__
+#define __BTK_RECENT_FILTER_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_RECENT_FILTER		(gtk_recent_filter_get_type ())
-#define GTK_RECENT_FILTER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RECENT_FILTER, GtkRecentFilter))
-#define GTK_IS_RECENT_FILTER(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RECENT_FILTER))
+#define BTK_TYPE_RECENT_FILTER		(btk_recent_filter_get_type ())
+#define BTK_RECENT_FILTER(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_FILTER, BtkRecentFilter))
+#define BTK_IS_RECENT_FILTER(obj)	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_FILTER))
 
-typedef struct _GtkRecentFilter		GtkRecentFilter;
-typedef struct _GtkRecentFilterInfo	GtkRecentFilterInfo;
+typedef struct _BtkRecentFilter		BtkRecentFilter;
+typedef struct _BtkRecentFilterInfo	BtkRecentFilterInfo;
 
 typedef enum {
-  GTK_RECENT_FILTER_URI          = 1 << 0,
-  GTK_RECENT_FILTER_DISPLAY_NAME = 1 << 1,
-  GTK_RECENT_FILTER_MIME_TYPE    = 1 << 2,
-  GTK_RECENT_FILTER_APPLICATION  = 1 << 3,
-  GTK_RECENT_FILTER_GROUP        = 1 << 4,
-  GTK_RECENT_FILTER_AGE          = 1 << 5
-} GtkRecentFilterFlags;
+  BTK_RECENT_FILTER_URI          = 1 << 0,
+  BTK_RECENT_FILTER_DISPLAY_NAME = 1 << 1,
+  BTK_RECENT_FILTER_MIME_TYPE    = 1 << 2,
+  BTK_RECENT_FILTER_APPLICATION  = 1 << 3,
+  BTK_RECENT_FILTER_GROUP        = 1 << 4,
+  BTK_RECENT_FILTER_AGE          = 1 << 5
+} BtkRecentFilterFlags;
 
-typedef gboolean (*GtkRecentFilterFunc) (const GtkRecentFilterInfo *filter_info,
+typedef gboolean (*BtkRecentFilterFunc) (const BtkRecentFilterInfo *filter_info,
 					 gpointer                   user_data);
 
-struct _GtkRecentFilterInfo
+struct _BtkRecentFilterInfo
 {
-  GtkRecentFilterFlags contains;
+  BtkRecentFilterFlags contains;
 
   const gchar *uri;
   const gchar *display_name;
@@ -61,34 +61,34 @@ struct _GtkRecentFilterInfo
   gint age;
 };
 
-GType                 gtk_recent_filter_get_type (void) G_GNUC_CONST;
+GType                 btk_recent_filter_get_type (void) G_GNUC_CONST;
 
-GtkRecentFilter *     gtk_recent_filter_new      (void);
-void                  gtk_recent_filter_set_name (GtkRecentFilter *filter,
+BtkRecentFilter *     btk_recent_filter_new      (void);
+void                  btk_recent_filter_set_name (BtkRecentFilter *filter,
 						  const gchar     *name);
-const gchar *         gtk_recent_filter_get_name (GtkRecentFilter *filter);
+const gchar *         btk_recent_filter_get_name (BtkRecentFilter *filter);
 
-void gtk_recent_filter_add_mime_type      (GtkRecentFilter      *filter,
+void btk_recent_filter_add_mime_type      (BtkRecentFilter      *filter,
 					   const gchar          *mime_type);
-void gtk_recent_filter_add_pattern        (GtkRecentFilter      *filter,
+void btk_recent_filter_add_pattern        (BtkRecentFilter      *filter,
 					   const gchar          *pattern);
-void gtk_recent_filter_add_pixbuf_formats (GtkRecentFilter      *filter);
-void gtk_recent_filter_add_application    (GtkRecentFilter      *filter,
+void btk_recent_filter_add_pixbuf_formats (BtkRecentFilter      *filter);
+void btk_recent_filter_add_application    (BtkRecentFilter      *filter,
 					   const gchar          *application);
-void gtk_recent_filter_add_group          (GtkRecentFilter      *filter,
+void btk_recent_filter_add_group          (BtkRecentFilter      *filter,
 					   const gchar          *group);
-void gtk_recent_filter_add_age            (GtkRecentFilter      *filter,
+void btk_recent_filter_add_age            (BtkRecentFilter      *filter,
 					   gint                  days);
-void gtk_recent_filter_add_custom         (GtkRecentFilter      *filter,
-					   GtkRecentFilterFlags  needed,
-					   GtkRecentFilterFunc   func,
+void btk_recent_filter_add_custom         (BtkRecentFilter      *filter,
+					   BtkRecentFilterFlags  needed,
+					   BtkRecentFilterFunc   func,
 					   gpointer              data,
 					   GDestroyNotify        data_destroy);
 
-GtkRecentFilterFlags gtk_recent_filter_get_needed (GtkRecentFilter           *filter);
-gboolean             gtk_recent_filter_filter     (GtkRecentFilter           *filter,
-						   const GtkRecentFilterInfo *filter_info);
+BtkRecentFilterFlags btk_recent_filter_get_needed (BtkRecentFilter           *filter);
+gboolean             btk_recent_filter_filter     (BtkRecentFilter           *filter,
+						   const BtkRecentFilterInfo *filter_info);
 
 G_END_DECLS
 
-#endif /* ! __GTK_RECENT_FILTER_H__ */
+#endif /* ! __BTK_RECENT_FILTER_H__ */

@@ -1,9 +1,9 @@
-/* gtktextmark.h - mark segments
+/* btktextmark.h - mark segments
  *
  * Copyright (c) 1994 The Regents of the University of California.
  * Copyright (c) 1994-1997 Sun Microsystems, Inc.
  * Copyright (c) 2000      Red Hat, Inc.
- * Tk -> Gtk port by Havoc Pennington <hp@redhat.com>
+ * Tk -> Btk port by Havoc Pennington <hp@redhat.com>
  *
  * This software is copyrighted by the Regents of the University of
  * California, Sun Microsystems, Inc., and other parties.  The
@@ -47,57 +47,57 @@
  *
  */
 
-#ifndef __GTK_TEXT_MARK_H__
-#define __GTK_TEXT_MARK_H__
+#ifndef __BTK_TEXT_MARK_H__
+#define __BTK_TEXT_MARK_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
 G_BEGIN_DECLS
 
-/* The GtkTextMark data type */
+/* The BtkTextMark data type */
 
-typedef struct _GtkTextMark      GtkTextMark;
-typedef struct _GtkTextMarkClass GtkTextMarkClass;
+typedef struct _BtkTextMark      BtkTextMark;
+typedef struct _BtkTextMarkClass BtkTextMarkClass;
 
-#define GTK_TYPE_TEXT_MARK              (gtk_text_mark_get_type ())
-#define GTK_TEXT_MARK(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_TEXT_MARK, GtkTextMark))
-#define GTK_TEXT_MARK_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TEXT_MARK, GtkTextMarkClass))
-#define GTK_IS_TEXT_MARK(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GTK_TYPE_TEXT_MARK))
-#define GTK_IS_TEXT_MARK_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TEXT_MARK))
-#define GTK_TEXT_MARK_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TEXT_MARK, GtkTextMarkClass))
+#define BTK_TYPE_TEXT_MARK              (btk_text_mark_get_type ())
+#define BTK_TEXT_MARK(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BTK_TYPE_TEXT_MARK, BtkTextMark))
+#define BTK_TEXT_MARK_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
+#define BTK_IS_TEXT_MARK(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BTK_TYPE_TEXT_MARK))
+#define BTK_IS_TEXT_MARK_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TEXT_MARK))
+#define BTK_TEXT_MARK_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TEXT_MARK, BtkTextMarkClass))
 
-struct _GtkTextMark
+struct _BtkTextMark
 {
   GObject parent_instance;
 
   gpointer GSEAL (segment);
 };
 
-struct _GtkTextMarkClass
+struct _BtkTextMarkClass
 {
   GObjectClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
-GType        gtk_text_mark_get_type   (void) G_GNUC_CONST;
+GType        btk_text_mark_get_type   (void) G_GNUC_CONST;
 
-void           gtk_text_mark_set_visible (GtkTextMark *mark,
+void           btk_text_mark_set_visible (BtkTextMark *mark,
                                           gboolean     setting);
-gboolean       gtk_text_mark_get_visible (GtkTextMark *mark);
+gboolean       btk_text_mark_get_visible (BtkTextMark *mark);
 
-GtkTextMark          *gtk_text_mark_new              (const gchar *name,
+BtkTextMark          *btk_text_mark_new              (const gchar *name,
 						      gboolean     left_gravity);
-const gchar *         gtk_text_mark_get_name         (GtkTextMark *mark);
-gboolean              gtk_text_mark_get_deleted      (GtkTextMark *mark);
-GtkTextBuffer*        gtk_text_mark_get_buffer       (GtkTextMark *mark);
-gboolean              gtk_text_mark_get_left_gravity (GtkTextMark *mark);
+const gchar *         btk_text_mark_get_name         (BtkTextMark *mark);
+gboolean              btk_text_mark_get_deleted      (BtkTextMark *mark);
+BtkTextBuffer*        btk_text_mark_get_buffer       (BtkTextMark *mark);
+gboolean              btk_text_mark_get_left_gravity (BtkTextMark *mark);
 
 G_END_DECLS
 

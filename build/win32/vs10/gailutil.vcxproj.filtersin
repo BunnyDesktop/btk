@@ -15,6 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-#include "gailutil.vs10.sourcefiles.filters"
+#include "bailutil.vs10.sourcefiles.filters"
   </ItemGroup>
 </Project>

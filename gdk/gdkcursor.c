@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,40 +18,40 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gdkcursor.h"
-#include "gdkdisplay.h"
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkcursor.h"
+#include "bdkdisplay.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
 GType
-gdk_cursor_get_type (void)
+bdk_cursor_get_type (void)
 {
   static GType our_type = 0;
   
   if (our_type == 0)
-    our_type = g_boxed_type_register_static (g_intern_static_string ("GdkCursor"),
-					     (GBoxedCopyFunc)gdk_cursor_ref,
-					     (GBoxedFreeFunc)gdk_cursor_unref);
+    our_type = g_boxed_type_register_static (g_intern_static_string ("BdkCursor"),
+					     (GBoxedCopyFunc)bdk_cursor_ref,
+					     (GBoxedFreeFunc)bdk_cursor_unref);
   return our_type;
 }
 
 /**
- * gdk_cursor_ref:
- * @cursor: a #GdkCursor
+ * bdk_cursor_ref:
+ * @cursor: a #BdkCursor
  * 
  * Adds a reference to @cursor.
  * 
  * Return value: (transfer full): Same @cursor that was passed in
  **/
-GdkCursor*
-gdk_cursor_ref (GdkCursor *cursor)
+BdkCursor*
+bdk_cursor_ref (BdkCursor *cursor)
 {
   g_return_val_if_fail (cursor != NULL, NULL);
   g_return_val_if_fail (cursor->ref_count > 0, NULL);
@@ -62,15 +62,15 @@ gdk_cursor_ref (GdkCursor *cursor)
 }
 
 /**
- * gdk_cursor_unref:
- * @cursor: a #GdkCursor
+ * bdk_cursor_unref:
+ * @cursor: a #BdkCursor
  *
  * Removes a reference from @cursor, deallocating the cursor
  * if no references remain.
  * 
  **/
 void
-gdk_cursor_unref (GdkCursor *cursor)
+bdk_cursor_unref (BdkCursor *cursor)
 {
   g_return_if_fail (cursor != NULL);
   g_return_if_fail (cursor->ref_count > 0);
@@ -78,42 +78,42 @@ gdk_cursor_unref (GdkCursor *cursor)
   cursor->ref_count -= 1;
 
   if (cursor->ref_count == 0)
-    _gdk_cursor_destroy (cursor);
+    _bdk_cursor_destroy (cursor);
 }
 
 /**
- * gdk_cursor_new:
+ * bdk_cursor_new:
  * @cursor_type: cursor to create
  * 
  * Creates a new cursor from the set of builtin cursors for the default display.
- * See gdk_cursor_new_for_display().
+ * See bdk_cursor_new_for_display().
  *
- * To make the cursor invisible, use %GDK_BLANK_CURSOR.
+ * To make the cursor invisible, use %BDK_BLANK_CURSOR.
  * 
- * Return value: a new #GdkCursor
+ * Return value: a new #BdkCursor
  **/
-GdkCursor*
-gdk_cursor_new (GdkCursorType cursor_type)
+BdkCursor*
+bdk_cursor_new (BdkCursorType cursor_type)
 {
-  return gdk_cursor_new_for_display (gdk_display_get_default(), cursor_type);
+  return bdk_cursor_new_for_display (bdk_display_get_default(), cursor_type);
 }
 
 /**
- * gdk_cursor_get_cursor_type:
- * @cursor:  a #GdkCursor
+ * bdk_cursor_get_cursor_type:
+ * @cursor:  a #BdkCursor
  *
  * Returns the cursor type for this cursor.
  *
- * Return value: a #GdkCursorType
+ * Return value: a #BdkCursorType
  *
  * Since: 2.22
  **/
-GdkCursorType
-gdk_cursor_get_cursor_type (GdkCursor *cursor)
+BdkCursorType
+bdk_cursor_get_cursor_type (BdkCursor *cursor)
 {
-  g_return_val_if_fail (cursor != NULL, GDK_BLANK_CURSOR);
+  g_return_val_if_fail (cursor != NULL, BDK_BLANK_CURSOR);
   return cursor->type;
 }
 
-#define __GDK_CURSOR_C__
-#include "gdkaliasdef.c"
+#define __BDK_CURSOR_C__
+#include "bdkaliasdef.c"

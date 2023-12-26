@@ -1,4 +1,4 @@
-typedef	GtkWidget *(*GDoDemoFunc) (GtkWidget *do_widget);
+typedef	BtkWidget *(*GDoDemoFunc) (BtkWidget *do_widget);
 
 typedef struct _Demo Demo;
 
@@ -10,44 +10,44 @@ struct _Demo
   Demo *children;
 };
 
-GtkWidget *do_appwindow (GtkWidget *do_widget);
-GtkWidget *do_assistant (GtkWidget *do_widget);
-GtkWidget *do_builder (GtkWidget *do_widget);
-GtkWidget *do_button_box (GtkWidget *do_widget);
-GtkWidget *do_changedisplay (GtkWidget *do_widget);
-GtkWidget *do_clipboard (GtkWidget *do_widget);
-GtkWidget *do_colorsel (GtkWidget *do_widget);
-GtkWidget *do_combobox (GtkWidget *do_widget);
-GtkWidget *do_dialog (GtkWidget *do_widget);
-GtkWidget *do_drawingarea (GtkWidget *do_widget);
-GtkWidget *do_editable_cells (GtkWidget *do_widget);
-GtkWidget *do_entry_buffer (GtkWidget *do_widget);
-GtkWidget *do_entry_completion (GtkWidget *do_widget);
-GtkWidget *do_expander (GtkWidget *do_widget);
-GtkWidget *do_hypertext (GtkWidget *do_widget);
-GtkWidget *do_iconview (GtkWidget *do_widget);
-GtkWidget *do_iconview_edit (GtkWidget *do_widget);
-GtkWidget *do_images (GtkWidget *do_widget);
-GtkWidget *do_infobar (GtkWidget *do_widget);
-GtkWidget *do_links (GtkWidget *do_widget);
-GtkWidget *do_list_store (GtkWidget *do_widget);
-GtkWidget *do_menus (GtkWidget *do_widget);
-GtkWidget *do_offscreen_window (GtkWidget *do_widget);
-GtkWidget *do_offscreen_window2 (GtkWidget *do_widget);
-GtkWidget *do_panes (GtkWidget *do_widget);
-GtkWidget *do_pickers (GtkWidget *do_widget);
-GtkWidget *do_pixbufs (GtkWidget *do_widget);
-GtkWidget *do_printing (GtkWidget *do_widget);
-GtkWidget *do_rotated_text (GtkWidget *do_widget);
-GtkWidget *do_search_entry (GtkWidget *do_widget);
-GtkWidget *do_sizegroup (GtkWidget *do_widget);
-GtkWidget *do_spinner (GtkWidget *do_widget);
-GtkWidget *do_stock_browser (GtkWidget *do_widget);
-GtkWidget *do_textview (GtkWidget *do_widget);
-GtkWidget *do_textscroll (GtkWidget *do_widget);
-GtkWidget *do_toolpalette (GtkWidget *do_widget);
-GtkWidget *do_tree_store (GtkWidget *do_widget);
-GtkWidget *do_ui_manager (GtkWidget *do_widget);
+BtkWidget *do_appwindow (BtkWidget *do_widget);
+BtkWidget *do_assistant (BtkWidget *do_widget);
+BtkWidget *do_builder (BtkWidget *do_widget);
+BtkWidget *do_button_box (BtkWidget *do_widget);
+BtkWidget *do_changedisplay (BtkWidget *do_widget);
+BtkWidget *do_clipboard (BtkWidget *do_widget);
+BtkWidget *do_colorsel (BtkWidget *do_widget);
+BtkWidget *do_combobox (BtkWidget *do_widget);
+BtkWidget *do_dialog (BtkWidget *do_widget);
+BtkWidget *do_drawingarea (BtkWidget *do_widget);
+BtkWidget *do_editable_cells (BtkWidget *do_widget);
+BtkWidget *do_entry_buffer (BtkWidget *do_widget);
+BtkWidget *do_entry_completion (BtkWidget *do_widget);
+BtkWidget *do_expander (BtkWidget *do_widget);
+BtkWidget *do_hypertext (BtkWidget *do_widget);
+BtkWidget *do_iconview (BtkWidget *do_widget);
+BtkWidget *do_iconview_edit (BtkWidget *do_widget);
+BtkWidget *do_images (BtkWidget *do_widget);
+BtkWidget *do_infobar (BtkWidget *do_widget);
+BtkWidget *do_links (BtkWidget *do_widget);
+BtkWidget *do_list_store (BtkWidget *do_widget);
+BtkWidget *do_menus (BtkWidget *do_widget);
+BtkWidget *do_offscreen_window (BtkWidget *do_widget);
+BtkWidget *do_offscreen_window2 (BtkWidget *do_widget);
+BtkWidget *do_panes (BtkWidget *do_widget);
+BtkWidget *do_pickers (BtkWidget *do_widget);
+BtkWidget *do_pixbufs (BtkWidget *do_widget);
+BtkWidget *do_printing (BtkWidget *do_widget);
+BtkWidget *do_rotated_text (BtkWidget *do_widget);
+BtkWidget *do_search_entry (BtkWidget *do_widget);
+BtkWidget *do_sizegroup (BtkWidget *do_widget);
+BtkWidget *do_spinner (BtkWidget *do_widget);
+BtkWidget *do_stock_browser (BtkWidget *do_widget);
+BtkWidget *do_textview (BtkWidget *do_widget);
+BtkWidget *do_textscroll (BtkWidget *do_widget);
+BtkWidget *do_toolpalette (BtkWidget *do_widget);
+BtkWidget *do_tree_store (BtkWidget *do_widget);
+BtkWidget *do_ui_manager (BtkWidget *do_widget);
 
 Demo child0[] = {
   { "Editable Cells", "editable_cells.c", do_editable_cells, NULL },
@@ -82,7 +82,7 @@ Demo child4[] = {
   { NULL } 
 };
 
-Demo testgtk_demos[] = {
+Demo testbtk_demos[] = {
   { "Application main window", "appwindow.c", do_appwindow, NULL }, 
   { "Assistant", "assistant.c", do_assistant, NULL }, 
   { "Builder", "builder.c", do_builder, NULL }, 

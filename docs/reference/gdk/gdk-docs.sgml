@@ -6,14 +6,14 @@
 ]>
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>GDK 2 Reference Manual</title>
+    <title>BDK 2 Reference Manual</title>
     <releaseinfo>
-      This document is for GDK 2 library; the latest versions can be found online at
+      This document is for BDK 2 library; the latest versions can be found online at
       <ulink role="online-location"
-      url="http://library.gnome.org/devel/gdk2/">http://library.gnome.org/devel/gdk2/</ulink>.
-      If you're looking for the newer GDK 3 series of libraries,
+      url="http://library.bunny.org/devel/bdk2/">http://library.bunny.org/devel/bdk2/</ulink>.
+      If you're looking for the newer BDK 3 series of libraries,
       see <ulink role="online-location"
-      url="http://library.gnome.org/devel/gdk3/">http://library.gnome.org/devel/gdk3/</ulink>.
+      url="http://library.bunny.org/devel/bdk3/">http://library.bunny.org/devel/bdk3/</ulink>.
     </releaseinfo>
   </bookinfo>
 
@@ -22,11 +22,11 @@
     <xi:include href="xml/general.xml" />
 
     <xi:include href="multihead.sgml" />
-    <xi:include href="xml/gdkdisplay.xml" />
-    <xi:include href="xml/gdkdisplaymanager.xml" />
-    <xi:include href="xml/gdkscreen.xml" />
+    <xi:include href="xml/bdkdisplay.xml" />
+    <xi:include href="xml/bdkdisplaymanager.xml" />
+    <xi:include href="xml/bdkscreen.xml" />
 
-    <xi:include href="xml/regions.xml" />
+    <xi:include href="xml/rebunnyions.xml" />
     <xi:include href="xml/gcs.xml" />
     <xi:include href="xml/drawing.xml" />
 
@@ -58,13 +58,13 @@
     <xi:include href="xml/input.xml" />
     <xi:include href="xml/input_devices.xml" />
 
-    <xi:include href="xml/pango_interaction.xml" />
-    <xi:include href="xml/cairo_interaction.xml" />
+    <xi:include href="xml/bango_interaction.xml" />
+    <xi:include href="xml/bairo_interaction.xml" />
     <xi:include href="xml/x_interaction.xml" />
 
-    <xi:include href="xml/gdkapplaunchcontext.xml" />
+    <xi:include href="xml/bdkapplaunchcontext.xml" />
 
-    <xi:include href="xml/gdktesting.xml" />
+    <xi:include href="xml/bdktesting.xml" />
   </reference>
 
   <index id="api-index-full">

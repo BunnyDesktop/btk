@@ -1,8 +1,8 @@
-target=@gdktarget@
+target=@bdktarget@
 
-Name: GDK Uninstalled
-Description: GTK+ Drawing Kit (${target} target), Not Installed
+Name: BDK Uninstalled
+Description: BTK+ Drawing Kit (${target} target), Not Installed
 Version: @VERSION@
-Requires: gdk-pixbuf-2.0-uninstalled @GDK_PACKAGES@
-Libs: ${pc_top_builddir}/${pcfiledir}/gdk/libgdk-${target}-@GTK_API_VERSION@.la @GDK_EXTRA_LIBS@
-Cflags: -I${pc_top_builddir}/${pcfiledir}/@srcdir@/gdk -I${pc_top_builddir}/${pcfiledir}/@srcdir@ -I${pc_top_builddir}/${pcfiledir} @GDK_EXTRA_CFLAGS@
+Requires: bdk-pixbuf-2.0-uninstalled @BDK_PACKAGES@
+Libs: ${pc_top_builddir}/${pcfiledir}/bdk/libbdk-${target}-@BTK_API_VERSION@.la @BDK_EXTRA_LIBS@
+Cflags: -I${pc_top_builddir}/${pcfiledir}/@srcdir@/bdk -I${pc_top_builddir}/${pcfiledir}/@srcdir@ -I${pc_top_builddir}/${pcfiledir} @BDK_EXTRA_CFLAGS@

@@ -2,7 +2,7 @@
 <!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
 ]>
-<refentry id="gtk-changes-2-0" revision="1 Jan 2002">
+<refentry id="btk-changes-2-0" revision="1 Jan 2002">
 <refmeta>
 <refentrytitle>Changes from 1.2 to 2.0</refentrytitle>
 <manvolnum>3</manvolnum>
@@ -21,15 +21,15 @@ Incompatible changes made between version 1.2 and version 2.0
 <title>Incompatible changes from 1.2 to 2.0</title>
 
 <para>
-The <ulink url="http://developer.gnome.org/dotplan/porting/">GNOME 2.0
+The <ulink url="http://developer.bunny.org/dotplan/porting/">BUNNY 2.0
 porting guide</ulink> on <ulink
-url="http://developer.gnome.org">http://developer.gnome.org</ulink>
+url="http://developer.bunny.org">http://developer.bunny.org</ulink>
 has some more detailed discussion of porting from 1.2 to 2.0.
-See the sections on GLib and GTK+.
+See the sections on GLib and BTK+.
 </para>
 
 <para>
-GTK+ changed fairly substantially from version 1.2 to 2.0, much more
+BTK+ changed fairly substantially from version 1.2 to 2.0, much more
 so than from 1.0 to 1.2. Subsequent updates (possibilities are 2.0 to
 2.2, 2.2 to 2.4, then to 3.0) will almost certainly be much, much
 smaller. Nonetheless, most programs written for 1.2 compile against
@@ -42,10 +42,10 @@ exist whenever possible.
 
 <listitem>
 <para>
-<function>gtk_container_get_toplevels()</function> was removed and replaced 
-  with <function>gtk_window_list_toplevels()</function>, which has different 
+<function>btk_container_get_toplevels()</function> was removed and replaced 
+  with <function>btk_window_list_toplevels()</function>, which has different 
   memory management on the return value 
-  (<function>gtk_window_list_toplevels()</function> copies the 
+  (<function>btk_window_list_toplevels()</function> copies the 
   <structname>GList</structname> and also references each widget in the list, 
   so you have to <function>g_list_free()</function> the list after first 
   unref'ing each list member).
@@ -54,7 +54,7 @@ exist whenever possible.
 
 <listitem>
 <para>
-The <function>gdk_time*</function> functions have been removed. This 
+The <function>bdk_time*</function> functions have been removed. This 
   functionality has been unused since the main loop was moved into GLib
   prior to 1.2. 
 </para>
@@ -62,8 +62,8 @@ The <function>gdk_time*</function> functions have been removed. This
 
 <listitem>
 <para>
-The signature for <function>GtkPrintFunc</function> (used for 
-  <function>gtk_item_factory_dump_items()</function>)
+The signature for <function>BtkPrintFunc</function> (used for 
+  <function>btk_item_factory_dump_items()</function>)
   has been changed to take a <type>const gchar *</type> instead of 
   <type>gchar *</type>, to match what we do for GLib, and other similar cases.
 </para>
@@ -71,14 +71,14 @@ The signature for <function>GtkPrintFunc</function> (used for
 
 <listitem>
 <para>
-The detail arguments in the <structname>GtkStyleClass</structname> structure 
+The detail arguments in the <structname>BtkStyleClass</structname> structure 
 are now <type>const gchar *</type>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gtk_paned_set_gutter_size()</function> has been removed, since the 
+<function>btk_paned_set_gutter_size()</function> has been removed, since the 
   small handle tab has been changed to include the entire area previously 
   occupied by the gutter.
 </para>
@@ -86,7 +86,7 @@ are now <type>const gchar *</type>.
 
 <listitem>
 <para>
-<function>gtk_paned_set_handle_size()</function> has been removed, in favor of 
+<function>btk_paned_set_handle_size()</function> has been removed, in favor of 
   a style property, since this is an option that only makes sense for themes 
   to adjust.
 </para>
@@ -94,7 +94,7 @@ are now <type>const gchar *</type>.
 
 <listitem>
 <para>
-GDK no longer selects OwnerGrabButtonMask for button presses. This means  
+BDK no longer selects OwnerGrabButtonMask for button presses. This means  
   that the automatic grab that occurs when the user presses a button
   will have <literal>owner_events = FALSE</literal>, so all events are 
   redirected to the grab window, even events that would normally go to
@@ -104,27 +104,27 @@ GDK no longer selects OwnerGrabButtonMask for button presses. This means
 
 <listitem>
 <para>
-<structname>GtkColorSelectionDialog</structname> has now been moved into it's 
-  own set of files, <filename>gtkcolorseldialog.c</filename> and 
-  <filename>gtkcolorseldialog.h</filename>.
+<structname>BtkColorSelectionDialog</structname> has now been moved into it's 
+  own set of files, <filename>btkcolorseldialog.c</filename> and 
+  <filename>btkcolorseldialog.h</filename>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gtk_widget_shape_combine_mask()</function> now keeps a reference 
+<function>btk_widget_shape_combine_mask()</function> now keeps a reference 
   count on the mask pixmap that is passed in.
 </para>
 </listitem>
 
 <listitem>
 <para>
-The <structname>GtkPatternSpec</structname> has been moved to GLib as 
+The <structname>BtkPatternSpec</structname> has been moved to GLib as 
   <structname>GPatternSpec</structname>, the pattern
-  arguments to <function>gtk_item_factory_dump_items()</function> and 
-  <function>gtk_item_factory_dump_rc()</function>
+  arguments to <function>btk_item_factory_dump_items()</function> and 
+  <function>btk_item_factory_dump_rc()</function>
   have thusly been changed to take a <structname>GPatternSpec</structname> 
-  instead of a <structname>GtkPatternSpec</structname>.
+  instead of a <structname>BtkPatternSpec</structname>.
 </para>
 </listitem> 
 
@@ -134,30 +134,30 @@ Type system changes:
 <itemizedlist>
 <listitem>
 <para>
-   <literal>GTK_TYPE_OBJECT</literal> is not a fundamental type anymore. Type checks of the
-    style <literal>(GTK_FUNDAMENTAL_TYPE (some_type) == GTK_TYPE_OBJECT)</literal>
-    will not work anymore. As a replacement, <literal>(GTK_TYPE_IS_OBJECT (some_type))</literal>
+   <literal>BTK_TYPE_OBJECT</literal> is not a fundamental type anymore. Type checks of the
+    style <literal>(BTK_FUNDAMENTAL_TYPE (some_type) == BTK_TYPE_OBJECT)</literal>
+    will not work anymore. As a replacement, <literal>(BTK_TYPE_IS_OBJECT (some_type))</literal>
     can be used now.
 </para>
 </listitem>
 <listitem>
 <para>
-The following types vanished: <literal>GTK_TYPE_ARGS</literal>, <literal>GTK_TYPE_CALLBACK</literal>,
-    <literal>GTK_TYPE_C_CALLBACK</literal>, <literal>GTK_TYPE_FOREIGN</literal>. The corresponding <structname>GtkArg</structname>
+The following types vanished: <literal>BTK_TYPE_ARGS</literal>, <literal>BTK_TYPE_CALLBACK</literal>,
+    <literal>BTK_TYPE_C_CALLBACK</literal>, <literal>BTK_TYPE_FOREIGN</literal>. The corresponding <structname>BtkArg</structname>
     fields and field access macros are also gone.
 </para>
 </listitem>
 <listitem>
 <para>
-The following type aliases vanished: <literal>GTK_TYPE_FLAT_FIRST</literal>,
-    <literal>GTK_TYPE_FLAT_LAST</literal>, <literal>GTK_TYPE_STRUCTURED_FIRST</literal>,
-    <literal>GTK_TYPE_STRUCTURED_LAST</literal>.
+The following type aliases vanished: <literal>BTK_TYPE_FLAT_FIRST</literal>,
+    <literal>BTK_TYPE_FLAT_LAST</literal>, <literal>BTK_TYPE_STRUCTURED_FIRST</literal>,
+    <literal>BTK_TYPE_STRUCTURED_LAST</literal>.
 </para>
 </listitem>
 <listitem>
 <para>
-The type macros <function>GTK_TYPE_MAKE()</function> and <function>GTK_TYPE_SEQNO()</function> vanished, use of
-    <function>GTK_FUNDAMENTAL_TYPE()</function> is discouraged. Instead, the corresponding <structname>GType</structname>
+The type macros <function>BTK_TYPE_MAKE()</function> and <function>BTK_TYPE_SEQNO()</function> vanished, use of
+    <function>BTK_FUNDAMENTAL_TYPE()</function> is discouraged. Instead, the corresponding <structname>GType</structname>
     API should be used: <function>G_TYPE_FUNDAMENTAL()</function>, <function>G_TYPE_DERIVE_ID()</function>,
     <function>G_TYPE_BRANCH_SEQNO()</function>. Note that the GLib type system doesn't build new
     type ids based on a global incremental sequential number anymore, but
@@ -173,26 +173,26 @@ The following type functions vanished/were replaced:
 <row><entry>Old Function</entry><entry>Replacement</entry></row>
 </thead>
 <tbody>
-<row><entry><function>gtk_type_query()</function></entry><entry>being investigated</entry></row>
-<row><entry><function>gtk_type_set_varargs_type()</function></entry><entry>-</entry></row>
-<row><entry><function>gtk_type_get_varargs_type()</function></entry><entry>-</entry></row>
-<row><entry><function>gtk_type_check_object_cast()</function></entry><entry><function>g_type_check_instance_cast()</function></entry></row>
-<row><entry><function>gtk_type_check_class_cast()</function></entry><entry><function>g_type_check_class_cast()</function></entry></row>
-<row><entry><function>gtk_type_describe_tree()</function></entry><entry>-</entry></row>
-<row><entry><function>gtk_type_describe_heritage()</function></entry><entry>-</entry></row>
-<row><entry><function>gtk_type_free()</function></entry><entry>-</entry></row>
-<row><entry><function>gtk_type_children_types()</function></entry><entry><function>g_type_children()</function></entry></row>
-<row><entry><function>gtk_type_set_chunk_alloc()</function></entry><entry><structfield>GTypeInfo.n_preallocs</structfield></entry></row>
-<row><entry><function>gtk_type_register_enum()</function></entry><entry><function>g_enum_register_static()</function></entry></row>
-<row><entry><function>gtk_type_register_flags()</function></entry><entry><function>g_flags_register_static()</function></entry></row>
-<row><entry><function>gtk_type_parent_class()</function></entry><entry><function>g_type_parent()</function>/<function>g_type_class_peek_parent()</function></entry></row>
+<row><entry><function>btk_type_query()</function></entry><entry>being investigated</entry></row>
+<row><entry><function>btk_type_set_varargs_type()</function></entry><entry>-</entry></row>
+<row><entry><function>btk_type_get_varargs_type()</function></entry><entry>-</entry></row>
+<row><entry><function>btk_type_check_object_cast()</function></entry><entry><function>g_type_check_instance_cast()</function></entry></row>
+<row><entry><function>btk_type_check_class_cast()</function></entry><entry><function>g_type_check_class_cast()</function></entry></row>
+<row><entry><function>btk_type_describe_tree()</function></entry><entry>-</entry></row>
+<row><entry><function>btk_type_describe_heritage()</function></entry><entry>-</entry></row>
+<row><entry><function>btk_type_free()</function></entry><entry>-</entry></row>
+<row><entry><function>btk_type_children_types()</function></entry><entry><function>g_type_children()</function></entry></row>
+<row><entry><function>btk_type_set_chunk_alloc()</function></entry><entry><structfield>GTypeInfo.n_preallocs</structfield></entry></row>
+<row><entry><function>btk_type_register_enum()</function></entry><entry><function>g_enum_register_static()</function></entry></row>
+<row><entry><function>btk_type_register_flags()</function></entry><entry><function>g_flags_register_static()</function></entry></row>
+<row><entry><function>btk_type_parent_class()</function></entry><entry><function>g_type_parent()</function>/<function>g_type_class_peek_parent()</function></entry></row>
 </tbody>
 </tgroup>
 </informaltable>
     Use of <function>g_type_class_ref()</function>/<function>g_type_class_unref()</function> and <function>g_type_class_peek()</function>
-    is recommended over usage of <function>gtk_type_class()</function>.
+    is recommended over usage of <function>btk_type_class()</function>.
     Use of <function>g_type_register_static()</function>/<function>g_type_register_dynamic()</function> is recommended
-    over usage of <function>gtk_type_unique()</function>.
+    over usage of <function>btk_type_unique()</function>.
 </para>
 </listitem>
 </itemizedlist>
@@ -202,41 +202,41 @@ The following type functions vanished/were replaced:
 <listitem>
 <para>
 Object system changes:
-  <structname>GtkObject</structname> derives from <structname>GObject</structname>, so is not the basic object type anymore.
+  <structname>BtkObject</structname> derives from <structname>GObject</structname>, so is not the basic object type anymore.
   This imposes the following source incompatible changes:
 <itemizedlist>
 
 <listitem>
 <para>
-<structname>GtkObject</structname> has no <structfield>klass</structfield> field anymore, an object's class can be retrieved
-    with the object's coresponding <literal>GTK_&lt;OBJECT&gt;_GET_CLASS (object)</literal>
+<structname>BtkObject</structname> has no <structfield>klass</structfield> field anymore, an object's class can be retrieved
+    with the object's coresponding <literal>BTK_&lt;OBJECT&gt;_GET_CLASS (object)</literal>
     macro.
 </para>
 </listitem>
 <listitem>
 <para>
-<structname>GtkObjectClass</structname> has no <structfield>type</structfield> field anymore, a class's type can be retrived
-    with the <literal>GTK_CLASS_TYPE (class)</literal> macro.
+<structname>BtkObjectClass</structname> has no <structfield>type</structfield> field anymore, a class's type can be retrived
+    with the <literal>BTK_CLASS_TYPE (class)</literal> macro.
 </para>
 </listitem>
 <listitem>
 <para>
-<structname>GtkObjectClass</structname> does not introduce the <function>finalize()</function> and <function>shutdown()</function> methods
-    anymore. While <function>shutdown()</function> is intended for GTK+ internal use only, <function>finalize()</function>
+<structname>BtkObjectClass</structname> does not introduce the <function>finalize()</function> and <function>shutdown()</function> methods
+    anymore. While <function>shutdown()</function> is intended for BTK+ internal use only, <function>finalize()</function>
     is required by a variety of object implementations. <function>GObjectClass.finalize</function>
     should be overriden here, e.g.:
 <informalexample><programlisting>
-    static void gtk_label_finalize (GObject *gobject)
+    static void btk_label_finalize (GObject *bobject)
     {
-      GtkLabel *label = GTK_LABEL (gobject);
+      BtkLabel *label = BTK_LABEL (bobject);
       
       G_OBJECT_CLASS (parent_class)-&gt;finalize (object);
     }
-    static void gtk_label_class_init (GtkLabelClass *class)
+    static void btk_label_class_init (BtkLabelClass *class)
     {
-      GObjectClass *gobject_class = G_OBJECT_CLASS (class);
+      GObjectClass *bobject_class = G_OBJECT_CLASS (class);
       
-      gobject_class-&gt;finalize = gtk_label_finalize;
+      bobject_class-&gt;finalize = btk_label_finalize;
     }
 </programlisting></informalexample>
 </para>
@@ -248,7 +248,7 @@ Object system changes:
 
 <listitem>
 <para>
-The GtkObject::destroy signal can now be emitted multiple times on an object.
+The BtkObject::destroy signal can now be emitted multiple times on an object.
     ::destroy implementations should check that make sure that they take this
     into account, by checking to make sure that resources are there before
     freeing them. For example:
@@ -265,7 +265,7 @@ The GtkObject::destroy signal can now be emitted multiple times on an object.
 <informalexample><programlisting>
     if (object-&gt;adjustment)
       {
-        gtk_object_unref (object-&gt;adjustment);
+        btk_object_unref (object-&gt;adjustment);
         object-&gt;adjustment = NULL;
       }
 </programlisting></informalexample>
@@ -275,7 +275,7 @@ The GtkObject::destroy signal can now be emitted multiple times on an object.
 
     Because the ::destroy signal can be emitted multiple times, it no longer
     makes sense to check if a widget has been destroyed using the 
-    <function>GTK_OBJECT_DESTROYED()</function> macro, and this macro has been 
+    <function>BTK_OBJECT_DESTROYED()</function> macro, and this macro has been 
     removed. If catching destruction is still needed, it can be done with a 
     signal connection to ::destroy.
 </para>
@@ -284,34 +284,34 @@ The GtkObject::destroy signal can now be emitted multiple times on an object.
 <listitem>
 <para>
 Signal system changes:
-  The GTK+ 2.0 signal system merely proxies the <structname>GSignal</structname> 
+  The BTK+ 2.0 signal system merely proxies the <structname>GSignal</structname> 
   system now. For future usage, direct use of the 
   <structname>GSignal</structname> API is recommended,
-  this avoids significant performance hits where <structname>GtkArg</structname>
+  this avoids significant performance hits where <structname>BtkArg</structname>
   structures have to be converted into <structname>GValue</structname>s. For 
   language bindings, <structname>GSignal</structname>+<structname>GClosure</structname>
   provide a much more flexible and convenient mechanism to hook into signal 
   emissions or install class default handlers, so the old 
-  <structname>GtkSignal</structname> API for language bindings is not
+  <structname>BtkSignal</structname> API for language bindings is not
   supported anymore.
 </para>
 <para>
-  Functions that got removed in the GTK+ signal API:
-  <function>gtk_signal_n_emissions()</function>, 
-  <function>gtk_signal_n_emissions_by_name()</function>,
-  <function>gtk_signal_set_funcs()</function>, 
-  <function>gtk_signal_handler_pending_by_id()</function>,
-  <function>gtk_signal_add_emission_hook()</function>, 
-  <function>gtk_signal_add_emission_hook_full()</function>,
-  <function>gtk_signal_remove_emission_hook()</function>, 
-  <function>gtk_signal_query()</function>.
-  Also, the <structname>GtkCallbackMarshal</structname> argument to 
-  <function>gtk_signal_connect_full()</function> is
+  Functions that got removed in the BTK+ signal API:
+  <function>btk_signal_n_emissions()</function>, 
+  <function>btk_signal_n_emissions_by_name()</function>,
+  <function>btk_signal_set_funcs()</function>, 
+  <function>btk_signal_handler_pending_by_id()</function>,
+  <function>btk_signal_add_emission_hook()</function>, 
+  <function>btk_signal_add_emission_hook_full()</function>,
+  <function>btk_signal_remove_emission_hook()</function>, 
+  <function>btk_signal_query()</function>.
+  Also, the <structname>BtkCallbackMarshal</structname> argument to 
+  <function>btk_signal_connect_full()</function> is
   not supported anymore.
   For many of the removed functions, similar variants are available
   in the <function>g_signal_*</function> namespace.
   The <structname>GSignal</structname> system performs emissions in a 
-  slightly different manner than the old <structname>GtkSignal</structname> 
+  slightly different manner than the old <structname>BtkSignal</structname> 
   code. Signal handlers that are connected to signal "foo"
   on object "bar" while "foo" is being emitted, will not be called anymore
   during the emission they were connected within.
@@ -320,8 +320,8 @@ Signal system changes:
 
 <listitem>
 <para>
-Inserting and deleting text in <structname>GtkEntry</structname> though 
-  functions such as <function>gtk_entry_insert_text()</function> now leave 
+Inserting and deleting text in <structname>BtkEntry</structname> though 
+  functions such as <function>btk_entry_insert_text()</function> now leave 
   the cursor at its original position in the text instead of moving it to 
   the location of the insertion/deletion.
 </para>
@@ -329,51 +329,51 @@ Inserting and deleting text in <structname>GtkEntry</structname> though
 
 <listitem>
 <para>
-The <structfield>label</structfield> field of <structname>GtkFrame</structname> 
+The <structfield>label</structfield> field of <structname>BtkFrame</structname> 
   widgets has been removed (as part of a change to allow arbitrary widgets 
   in the title position). The text can now be retrieved with the new function 
-  <function>gtk_frame_get_text()</function>.
+  <function>btk_frame_get_text()</function>.
 </para>
 </listitem>
 
 <listitem>
 <para>
 The 'font' and 'font_set' declarations in RC files are now ignored. There
-  is a new 'font_name' field that holds the string form of a Pango font.
+  is a new 'font_name' field that holds the string form of a Bango font.
 </para>
 </listitem>
 
 <listitem>
 <para>
-A number of types in GDK have become subclasses of 
+A number of types in BDK have become subclasses of 
   <structname>GObject</structname>. For the most part, this should not break 
   anyone's code. However, it's now possible/encouraged to use 
   <function>g_object_ref()</function>/<function>g_object_unref()</function> and
-  other <structname>GObject</structname> features with these GDK types. The 
+  other <structname>GObject</structname> features with these BDK types. The 
   converted types are:
-  <structname>GdkWindow</structname>, <structname>GdkDrawable</structname>, 
-  <structname>GdkPixmap</structname>, <structname>GdkImage</structname>, 
-  <structname>GdkGC</structname>, <structname>GdkDragContext</structname>,
-  <structname>GdkColormap</structname>.
+  <structname>BdkWindow</structname>, <structname>BdkDrawable</structname>, 
+  <structname>BdkPixmap</structname>, <structname>BdkImage</structname>, 
+  <structname>BdkGC</structname>, <structname>BdkDragContext</structname>,
+  <structname>BdkColormap</structname>.
 </para>
 </listitem>
 
 <listitem>
 <para>
 All drawables including pixmaps used to have a type tag, the
-  <structname>GdkWindowType</structname> enumeration, which included 
-  <literal>GDK_WINDOW_PIXMAP</literal>.
-  <structname>GdkWindowType</structname> is now a property of 
-  <structname>GdkWindow</structname> <emphasis>only</emphasis>, and there is 
-  no <literal>GDK_WINDOW_PIXMAP</literal>. You can use the 
-  <function>GDK_IS_PIXMAP()</function> macro to see if you have a pixmap, if
+  <structname>BdkWindowType</structname> enumeration, which included 
+  <literal>BDK_WINDOW_PIXMAP</literal>.
+  <structname>BdkWindowType</structname> is now a property of 
+  <structname>BdkWindow</structname> <emphasis>only</emphasis>, and there is 
+  no <literal>BDK_WINDOW_PIXMAP</literal>. You can use the 
+  <function>BDK_IS_PIXMAP()</function> macro to see if you have a pixmap, if
   you need to know that.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<structname>GtkStyle</structname> and <structname>GtkRcStyle</structname> are 
+<structname>BtkStyle</structname> and <structname>BtkRcStyle</structname> are 
   now subclasses of <structname>GObject</structname> as well.  This
   requires fairly extensive changes to theme engines, but
   shouldn't affect most other code.
@@ -383,7 +383,7 @@ All drawables including pixmaps used to have a type tag, the
 <listitem>
 <para>
 <structfield>xthickness</structfield> and <structfield>ythickness</structfield> have moved from 
-  <structname>GtkStyleClass</structname> to <structname>GtkStyle</structname>
+  <structname>BtkStyleClass</structname> to <structname>BtkStyle</structname>
   (from class to instance). This gives themes a bit more flexibility
   and is generally more of the Right Thing. You can trivially fix
   your code with <literal>s/style-&gt;klass-&gt;xthickness/style-&gt;xthickness/g</literal> and 
@@ -393,7 +393,7 @@ All drawables including pixmaps used to have a type tag, the
 
 <listitem>
 <para>
-Some <structname>GtkStyle</structname> <function>draw_*</function> methods 
+Some <structname>BtkStyle</structname> <function>draw_*</function> methods 
   have been removed (cross, oval, ramp) 
   and others have been added (expander, layout). This will require
   changes to theme engines.
@@ -402,7 +402,7 @@ Some <structname>GtkStyle</structname> <function>draw_*</function> methods
 
 <listitem>
 <para>
-If you were using private GDK types, they have been rearranged
+If you were using private BDK types, they have been rearranged
   significantly. You shouldn't use private types. ;-) 
 </para>
 </listitem>
@@ -411,10 +411,10 @@ If you were using private GDK types, they have been rearranged
 <para>
 The visual for a widget, and also the default visual is now derived
   from the colormap for the widget and the default colormap.
-  <function>gtk_widget_set_visual()</function>, 
-  <function>gtk_widget_set_default_visual()</function>,
-  <function>gtk_widget_push_visual()</function> and 
-  <function>gtk_widget_pop_visual()</function> now do
+  <function>btk_widget_set_visual()</function>, 
+  <function>btk_widget_set_default_visual()</function>,
+  <function>btk_widget_push_visual()</function> and 
+  <function>btk_widget_pop_visual()</function> now do
   nothing. Since the visual always had to match that of the colormap,
   it is safe to simply delete all references to these functions.
 </para>
@@ -423,9 +423,9 @@ The visual for a widget, and also the default visual is now derived
 
 <listitem>
 <para>
-A number of functions in GDK have been renamed for consistency and
+A number of functions in BDK have been renamed for consistency and
   clarity. #defines to provide backwards compatibility have been
-  included, but can be disabled by defining <literal>GDK_DISABLE_DEPRECATED</literal>.
+  included, but can be disabled by defining <literal>BDK_DISABLE_DEPRECATED</literal>.
 
 <informaltable>
 <tgroup cols="2">
@@ -433,24 +433,24 @@ A number of functions in GDK have been renamed for consistency and
 <row><entry>Old function</entry><entry>Defined As</entry></row>
 </thead>
 <tbody>
-<row><entry><function>gdk_draw_pixmap</function></entry><entry><function>gdk_draw_drawable</function></entry></row>
- <row><entry><function>gdk_draw_bitmap</function></entry><entry><function>gdk_draw_drawable</function></entry></row>               
-<row><entry><function>gdk_window_get_size</function></entry><entry><function>gdk_drawable_get_size</function></entry></row>               
-<row><entry><function>gdk_window_get_type</function></entry><entry><function>gdk_window_get_window_type</function></entry></row>               
-<row><entry><function>gdk_window_get_colormap</function></entry><entry><function>gdk_drawable_get_colormap</function></entry></row>
-<row><entry><function>gdk_window_set_colormap</function></entry><entry><function>gdk_drawable_set_colormap</function></entry></row>
-<row><entry><function>gdk_window_get_visual</function></entry><entry><function>gdk_drawable_get_visual</function></entry></row>
-<row><entry><function>gdk_window_ref</function></entry><entry><function>gdk_drawable_ref</function></entry></row>
-<row><entry><function>gdk_window_unref</function></entry><entry><function>gdk_drawable_unref</function></entry></row>
-<row><entry><function>gdk_bitmap_ref</function></entry><entry><function>gdk_drawable_ref</function></entry></row>
-<row><entry><function>gdk_bitmap_unref</function></entry><entry><function>gdk_drawable_unref</function></entry></row>
-<row><entry><function>gdk_pixmap_ref</function></entry><entry><function>gdk_drawable_ref</function></entry></row>
-<row><entry><function>gdk_pixmap_unref</function></entry><entry><function>gdk_drawable_unref</function></entry></row>
-<row><entry><function>gdk_gc_destroy</function></entry><entry><function>gdk_gc_unref</function></entry></row>
-<row><entry><function>gdk_image_destroy</function></entry><entry><function>gdk_image_unref</function></entry></row>
-<row><entry><function>gdk_cursor_destroy</function></entry><entry><function>gdk_cursor_unref</function></entry></row>
-<row><entry><function>gdk_window_copy_area(drawable,gc,x,y,source_drawable,source_x,source_y,width,height)</function></entry><entry><function>gdk_draw_pixmap(drawable,gc,source_drawable,source_x,source_y,x,y,width,height)</function></entry></row>
-<row><entry><function>gdk_rgb_get_cmap</function></entry><entry><function>gdk_rgb_get_colormap</function></entry></row>
+<row><entry><function>bdk_draw_pixmap</function></entry><entry><function>bdk_draw_drawable</function></entry></row>
+ <row><entry><function>bdk_draw_bitmap</function></entry><entry><function>bdk_draw_drawable</function></entry></row>               
+<row><entry><function>bdk_window_get_size</function></entry><entry><function>bdk_drawable_get_size</function></entry></row>               
+<row><entry><function>bdk_window_get_type</function></entry><entry><function>bdk_window_get_window_type</function></entry></row>               
+<row><entry><function>bdk_window_get_colormap</function></entry><entry><function>bdk_drawable_get_colormap</function></entry></row>
+<row><entry><function>bdk_window_set_colormap</function></entry><entry><function>bdk_drawable_set_colormap</function></entry></row>
+<row><entry><function>bdk_window_get_visual</function></entry><entry><function>bdk_drawable_get_visual</function></entry></row>
+<row><entry><function>bdk_window_ref</function></entry><entry><function>bdk_drawable_ref</function></entry></row>
+<row><entry><function>bdk_window_unref</function></entry><entry><function>bdk_drawable_unref</function></entry></row>
+<row><entry><function>bdk_bitmap_ref</function></entry><entry><function>bdk_drawable_ref</function></entry></row>
+<row><entry><function>bdk_bitmap_unref</function></entry><entry><function>bdk_drawable_unref</function></entry></row>
+<row><entry><function>bdk_pixmap_ref</function></entry><entry><function>bdk_drawable_ref</function></entry></row>
+<row><entry><function>bdk_pixmap_unref</function></entry><entry><function>bdk_drawable_unref</function></entry></row>
+<row><entry><function>bdk_gc_destroy</function></entry><entry><function>bdk_gc_unref</function></entry></row>
+<row><entry><function>bdk_image_destroy</function></entry><entry><function>bdk_image_unref</function></entry></row>
+<row><entry><function>bdk_cursor_destroy</function></entry><entry><function>bdk_cursor_unref</function></entry></row>
+<row><entry><function>bdk_window_copy_area(drawable,gc,x,y,source_drawable,source_x,source_y,width,height)</function></entry><entry><function>bdk_draw_pixmap(drawable,gc,source_drawable,source_x,source_y,x,y,width,height)</function></entry></row>
+<row><entry><function>bdk_rgb_get_cmap</function></entry><entry><function>bdk_rgb_get_colormap</function></entry></row>
 </tbody>
 </tgroup>
 </informaltable>
@@ -458,19 +458,19 @@ A number of functions in GDK have been renamed for consistency and
   <function>g_object_unref()</function> may be used for all of the above ref 
   and unref functions.)
 
-  <function>gtk_widget_popup()</function> was removed, it was only usable 
-  for <structname>GtkWindow</structname>s, and there the same effect can be 
-  achieved by <function>gtk_window_move()</function> and
-  <function>gtk_widget_show()</function>.
+  <function>btk_widget_popup()</function> was removed, it was only usable 
+  for <structname>BtkWindow</structname>s, and there the same effect can be 
+  achieved by <function>btk_window_move()</function> and
+  <function>btk_widget_show()</function>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gdk_pixmap_foreign_new()</function> no longer calls 
+<function>bdk_pixmap_foreign_new()</function> no longer calls 
   <function>XFreePixmap()</function> on the pixmap when the 
-  <structname>GdkPixmap</structname> is finalized. This change corresponds
-  to the behavior of <function>gdk_window_foreign_new()</function>, and fixes 
+  <structname>BdkPixmap</structname> is finalized. This change corresponds
+  to the behavior of <function>bdk_window_foreign_new()</function>, and fixes 
   a lot of problems with code where the pixmap wasn't supposed to be freed. 
   If <function>XFreePixmap()</function> is needed, it can be done using the
   destroy-notification facilities of <function>g_object_set_data()</function>.
@@ -479,13 +479,13 @@ A number of functions in GDK have been renamed for consistency and
 
 <listitem>
 <para>
-<structname>GtkProgress</structname>/<structname>GtkProgressBar</structname> 
-  had serious problems in GTK+ 1.2.
+<structname>BtkProgress</structname>/<structname>BtkProgressBar</structname> 
+  had serious problems in BTK+ 1.2.
 <itemizedlist>
 <listitem>
 <para>
 Only 3 or 4 functions are really needed for 95% of progress interfaces; 
-  <structname>GtkProgress</structname>/<structname>GtkProgressBar</structname> 
+  <structname>BtkProgress</structname>/<structname>BtkProgressBar</structname> 
   had about 25 functions, and didn't even include these 3 or 4.
 </para>
 </listitem>
@@ -516,14 +516,14 @@ There are <function>ctree_set_expander_style()</function>-functions, to
 
 <listitem>
 <para>
-The split between <structname>GtkProgress</structname> and 
-<structname>GtkProgressBar</structname> makes no sense to me whatsoever.
+The split between <structname>BtkProgress</structname> and 
+<structname>BtkProgressBar</structname> makes no sense to me whatsoever.
 </para>
 </listitem>
 
 </itemizedlist>
 
-  This was a big wart on GTK+ and made people waste lots of time,
+  This was a big wart on BTK+ and made people waste lots of time,
   both learning and using the interface.
   So, we have added what we feel is the correct API, and marked all the
   rest deprecated. However, the changes are 100% backward-compatible and
@@ -531,23 +531,23 @@ The split between <structname>GtkProgress</structname> and
   The following 5 functions are the new programming interface and you 
   should consider changing your code to use them:
 <programlisting>
-  void       gtk_progress_bar_pulse                (GtkProgressBar *pbar);
-  void       gtk_progress_bar_set_text             (GtkProgressBar *pbar,
+  void       btk_progress_bar_pulse                (BtkProgressBar *pbar);
+  void       btk_progress_bar_set_text             (BtkProgressBar *pbar,
                                                     const gchar    *text);
-  void       gtk_progress_bar_set_fraction         (GtkProgressBar *pbar,
+  void       btk_progress_bar_set_fraction         (BtkProgressBar *pbar,
                                                     gfloat          fraction);
 
-  void       gtk_progress_bar_set_pulse_step       (GtkProgressBar *pbar,
+  void       btk_progress_bar_set_pulse_step       (BtkProgressBar *pbar,
                                                     gfloat          fraction);
-  void       gtk_progress_bar_set_orientation      (GtkProgressBar *pbar,
-						    GtkProgressBarOrientation orientation);
+  void       btk_progress_bar_set_orientation      (BtkProgressBar *pbar,
+						    BtkProgressBarOrientation orientation);
 </programlisting>
 </para>
 </listitem>
 
 <listitem>
 <para>
-The <structname>GtkNotebookPage</structname> structure has been removed from 
+The <structname>BtkNotebookPage</structname> structure has been removed from 
   the public header files;
   this was never meant to be a public structure, and all functionality that
   could be done by accessing the struct fields of this structure should be 
@@ -558,18 +558,18 @@ The <structname>GtkNotebookPage</structname> structure has been removed from
 <listitem>
 <para>
 Negative values of the <parameter>position</parameter> parameter to
-  <function>gtk_notebook_reorder_child()</function> now cause the page to be appended, not
+  <function>btk_notebook_reorder_child()</function> now cause the page to be appended, not
   inserted at the beginning. (This gives consistency with
-  <function>gtk_box_reorder_child()</function>, <function>gtk_menu_reorder_child()</function>.)
+  <function>btk_box_reorder_child()</function>, <function>btk_menu_reorder_child()</function>.)
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>GtkMenuPositionFunc</function> has a new parameter 
+<function>BtkMenuPositionFunc</function> has a new parameter 
   <literal>push_in</literal> which controls how menus placed outside the 
   screen is handled. If this is set to <literal>TRUE</literal> and
-  part of the menu is outside the screen then GTK+ pushes it into the visible
+  part of the menu is outside the screen then BTK+ pushes it into the visible
   area. Otherwise the menu is cut of at the end of the visible screen area.
 </para>
 <para>
@@ -581,16 +581,16 @@ Negative values of the <parameter>position</parameter> parameter to
   
 <listitem>
 <para>
-The "draw" signal and virtual method on <structname>GtkWidget</structname> 
+The "draw" signal and virtual method on <structname>BtkWidget</structname> 
   has been removed.
-  All drawing should now occur by invalidating a region of the widget
-  (call <function>gdk_window_invalidate_rect()</function> or 
-  <function>gtk_widget_queue_draw()</function> for example to invalidate 
-  a region). GTK+ merges all invalid regions, and sends expose events to 
-  the widget in an idle handler for the invalid regions. 
-  <function>gtk_widget_draw()</function> is deprecated but still works; it
-  adds the passed-in area to the invalid region and immediately sends
-  expose events for the current invalid region. 
+  All drawing should now occur by invalidating a rebunnyion of the widget
+  (call <function>bdk_window_invalidate_rect()</function> or 
+  <function>btk_widget_queue_draw()</function> for example to invalidate 
+  a rebunnyion). BTK+ merges all invalid rebunnyions, and sends expose events to 
+  the widget in an idle handler for the invalid rebunnyions. 
+  <function>btk_widget_draw()</function> is deprecated but still works; it
+  adds the passed-in area to the invalid rebunnyion and immediately sends
+  expose events for the current invalid rebunnyion. 
   Most widgets will work fine if you just delete their "draw"
   implementation, since they will already have working expose_event
   implementations. The draw method was rarely called in practice
@@ -600,7 +600,7 @@ The "draw" signal and virtual method on <structname>GtkWidget</structname>
 
 <listitem>
 <para>
-The <structname>GdkExposeEvent</structname> has a new <structfield>region</structfield>
+The <structname>BdkExposeEvent</structname> has a new <structfield>rebunnyion</structfield>
   field. This can be used instead of the <structfield>area</structfield> field if you 
   want a more exact representation of the area to update.
 </para>
@@ -608,13 +608,13 @@ The <structname>GdkExposeEvent</structname> has a new <structfield>region</struc
 
 <listitem>
 <para>
-Sending synthetic exposes using <function>gtk_widget_event()</function> is no 
+Sending synthetic exposes using <function>btk_widget_event()</function> is no 
   longer allowed. If you just need an expose call you should use 
-  <function>gdk_window_invalidate_rect()</function> or 
-  <function>gdk_window_invalidate_region()</function> instead. For the case 
+  <function>bdk_window_invalidate_rect()</function> or 
+  <function>bdk_window_invalidate_rebunnyion()</function> instead. For the case 
   of container widgets that need to propagate expose events to 
   <literal>NO_WINDOW</literal> children you can either use 
-  <function>gtk_container_propagate_expose()</function>, or chain to the
+  <function>btk_container_propagate_expose()</function>, or chain to the
   default container expose handler.
 </para>
 </listitem> 
@@ -622,41 +622,41 @@ Sending synthetic exposes using <function>gtk_widget_event()</function> is no
 <listitem>
 <para>
 The draw_default and draw_focus methods/signals on 
-  <structname>GtkWidget</structname> are gone; simply draw things in your 
-  expose handler. <function>gtk_widget_draw_focus()</function> and 
-  <function>gtk_widget_draw_default()</function> wrapper
+  <structname>BtkWidget</structname> are gone; simply draw things in your 
+  expose handler. <function>btk_widget_draw_focus()</function> and 
+  <function>btk_widget_draw_default()</function> wrapper
   functions are also gone; just queue a draw on the widget,  
   or the part affected by the focus/default anyway.
-  Also, <structname>GtkWidget</structname> now has default implementations for 
+  Also, <structname>BtkWidget</structname> now has default implementations for 
   focus_in_event and focus_out_event. These set/unset 
-  <literal>GTK_HAS_FOCUS</literal>, and queue a draw. So if your focus in/out 
+  <literal>BTK_HAS_FOCUS</literal>, and queue a draw. So if your focus in/out 
   handler just does that, you can delete it.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<structname>GtkText</structname> and <structname>GtkTree</structname> are 
+<structname>BtkText</structname> and <structname>BtkTree</structname> are 
   buggy and broken. We don't recommend using them, and changing old code to 
   avoid them is a good idea. The recommended alternatives are 
-  <structname>GtkTextView</structname> and <structname>GtkTreeView</structname>.
+  <structname>BtkTextView</structname> and <structname>BtkTreeView</structname>.
   The broken widgets are not declared in the headers by default; to use
-  them, define the symbol <literal>GTK_ENABLE_BROKEN</literal> during 
-  compilation. In some future release, these widgets will be removed from GTK+.
+  them, define the symbol <literal>BTK_ENABLE_BROKEN</literal> during 
+  compilation. In some future release, these widgets will be removed from BTK+.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<structname>GdkColorContext</structname> is gone; you probably weren't using 
-  it anyway.  Use <structname>GdkColormap</structname> and the 
-  <function>gdk_rgb_*</function> functions instead.
+<structname>BdkColorContext</structname> is gone; you probably weren't using 
+  it anyway.  Use <structname>BdkColormap</structname> and the 
+  <function>bdk_rgb_*</function> functions instead.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<structname>GtkMenuBar</structname> now draws the <structfield>GtkContainer::border_width</structfield> 
+<structname>BtkMenuBar</structname> now draws the <structfield>BtkContainer::border_width</structfield> 
   space outside the frame, not inside the frame.
 </para>
 </listitem>
@@ -664,10 +664,10 @@ The draw_default and draw_focus methods/signals on
 
 <listitem>
 <para>
-In GTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
+In BTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
   propagation of that event to parent widgets. That is, the 
   event signal would not be emitted on parent widgets. In 
-  GTK+ 2.0, if an event handler returns <literal>TRUE</literal>, the current 
+  BTK+ 2.0, if an event handler returns <literal>TRUE</literal>, the current 
   signal emission on the current widget is immediately stopped. That is,
   other callbacks connected to the signal will not be invoked.
 </para>
@@ -675,32 +675,32 @@ In GTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
 
 <listitem>
 <para>
-<function>gtk_toolbar_new()</function> no longer has arguments. This function 
-  was broken because the default <literal>GtkToolbarStyle</literal> (icons, 
+<function>btk_toolbar_new()</function> no longer has arguments. This function 
+  was broken because the default <literal>BtkToolbarStyle</literal> (icons, 
   text, both) is now a user preference, which is overridden when you call
-  <function>gtk_toolbar_set_style()</function>. The constructor forced everyone
+  <function>btk_toolbar_set_style()</function>. The constructor forced everyone
   to override the preference, which was undesirable. So to port
   your app, decide if you want to force the toolbar style 
   or conform to the user's global defaults; if you want to force
-  it, call <function>gtk_toolbar_set_style()</function>.
+  it, call <function>btk_toolbar_set_style()</function>.
 </para>
 
 <para>
-  The orientation arg was removed from <function>gtk_toolbar_new()</function> 
+  The orientation arg was removed from <function>btk_toolbar_new()</function> 
   as well, just because it wasn't very useful and we were breaking the function
   anyway so had an opportunity to lose it. Call
-  <function>gtk_toolbar_set_orientation()</function> to set toolbar orientation.
+  <function>btk_toolbar_set_orientation()</function> to set toolbar orientation.
 </para>
 </listitem>
 
 
 <listitem>
 <para>
-<structname>GtkRange</structname>/<structname>GtkScrollbar</structname>/<structname>GtkScale</structname> were rewritten; this means that most
+<structname>BtkRange</structname>/<structname>BtkScrollbar</structname>/<structname>BtkScale</structname> were rewritten; this means that most
   theme engines won't draw them properly, and any custom subclasses of
   these widgets will need a rewrite (though if you could figure out
-  how to subclass the old version of <structname>GtkRange</structname>, you 
-  have our respect). Also, <literal>GtkTroughType</literal> is gone.
+  how to subclass the old version of <structname>BtkRange</structname>, you 
+  have our respect). Also, <literal>BtkTroughType</literal> is gone.
 </para>
 <para>
  Here are some notable changes:
@@ -722,27 +722,27 @@ In GTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
      <para>
        Added <literal>min_slider_length</literal>, 
        <literal>fixed_slider_length</literal> properties to
-       <structname>GtkScrollbar</structname>.
+       <structname>BtkScrollbar</structname>.
      </para>
    </listitem>
    <listitem>
      <para>
        Cleaned some private (or at least useless) functions out of
-       <filename>gtkscale.h</filename>, e.g. 
-       <function>gtk_scale_value_width</function>.
+       <filename>btkscale.h</filename>, e.g. 
+       <function>btk_scale_value_width</function>.
      </para>
    </listitem>
    <listitem>
      <para>
-       Moved bindings from subclasses to <structname>GtkScale</structname>, 
+       Moved bindings from subclasses to <structname>BtkScale</structname>, 
        even arrow keys, since blind users don't know scale orientation.
      </para>
    </listitem>
    <listitem>
      <para>
        Changed <literal>move_slider</literal> action signal to use new 
-       <structname>GtkScrollType</structname>, remove  
-       <structname>GtkTroughType</structname> argument.
+       <structname>BtkScrollType</structname>, remove  
+       <structname>BtkTroughType</structname> argument.
      </para>
    </listitem>
    <listitem>
@@ -756,7 +756,7 @@ In GTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
    </listitem>
    <listitem>
      <para>
-       Added getters for <structname>GtkScale</structname> setters.
+       Added getters for <structname>BtkScale</structname> setters.
      </para>
    </listitem>
    <listitem>
@@ -770,14 +770,14 @@ In GTK+ 1.2, if an event handler returned <literal>TRUE</literal> it prevented
 
 <listitem>
 <para>
-The GtkContainer::focus signal/virtual function and
-  <function>gtk_container_focus()</function> call were replaced by 
-  GtkWidget::focus and <function>gtk_widget_child_focus()</function>. 
+The BtkContainer::focus signal/virtual function and
+  <function>btk_container_focus()</function> call were replaced by 
+  BtkWidget::focus and <function>btk_widget_child_focus()</function>. 
   The semantics are the same, so you should be able to just 
   replace <literal>container_class-&gt;focus = mywidget_focus</literal> with 
   <literal>widget_class-&gt;focus = mywidget_focus</literal> and replace 
-  <function>gtk_container_focus()</function> calls with 
-  <function>gtk_widget_child_focus()</function> calls.
+  <function>btk_container_focus()</function> calls with 
+  <function>btk_widget_child_focus()</function> calls.
 </para>
 <para>
   The purpose of this change was to allow non-containers to have 
@@ -787,24 +787,24 @@ The GtkContainer::focus signal/virtual function and
  
 <listitem>
 <para>
-<function>gtk_rc_set_image_loader()</function> and 
-<function>gtk_rc_load_image()</function> have been removed, now 
-  that GTK+ includes decent image loading capabilities itself.
+<function>btk_rc_set_image_loader()</function> and 
+<function>btk_rc_load_image()</function> have been removed, now 
+  that BTK+ includes decent image loading capabilities itself.
 </para>
 </listitem>
 
 <listitem>
 <para>
-An extra <structname>GtkSettings</structname> argument has been added to
-  <function>gtk_rc_find_pixmap_in_path()</function>. This function is only 
+An extra <structname>BtkSettings</structname> argument has been added to
+  <function>btk_rc_find_pixmap_in_path()</function>. This function is only 
   actually useful from a theme engine during parsing, at which point the 
-  <structname>GtkSettings</structname> is provided.
+  <structname>BtkSettings</structname> is provided.
 </para>
 </listitem>
 
 <listitem>
 <para>
-The child argument facility in <filename>gtkcontainer.c</filename> has been 
+The child argument facility in <filename>btkcontainer.c</filename> has been 
   converted to a child property facility using 
   <structname>GParamSpec</structname> and other facilities
   for <structname>GObject</structname>.   
@@ -822,7 +822,7 @@ The <function>set_child_arg()</function> and <function>get_child_arg()</function
 
  <listitem>
 <para>
-Other removed <structname>GtkContainer</structname> functions with the replacements:
+Other removed <structname>BtkContainer</structname> functions with the replacements:
 
 <informaltable>
 <tgroup cols="2">
@@ -830,12 +830,12 @@ Other removed <structname>GtkContainer</structname> functions with the replaceme
 <row><entry>Old function</entry><entry>Replacement</entry></row>
 </thead>
 <tbody>
-<row><entry><function>gtk_container_add_child_arg_type</function></entry><entry><function>gtk_container_class_install_child_property</function></entry></row>
-<row><entry><function>gtk_container_query_child_args</function></entry><entry><function>gtk_container_class_list_child_properties</function></entry></row>
-<row><entry><function>gtk_container_child_getv</function></entry><entry><function>gtk_container_child_set_property</function></entry></row>
-<row><entry><function>gtk_container_child_setv</function></entry><entry><function>gtk_container_child_get_property</function></entry></row>
-<row><entry><function>gtk_container_add_with_args</function></entry><entry><function>gtk_container_add_with_properties</function></entry></row>
-<row><entry><function>gtk_container_addv</function></entry><entry><function>gtk_container_add</function>/<function>gtk_container_child_set_property</function></entry></row>
+<row><entry><function>btk_container_add_child_arg_type</function></entry><entry><function>btk_container_class_install_child_property</function></entry></row>
+<row><entry><function>btk_container_query_child_args</function></entry><entry><function>btk_container_class_list_child_properties</function></entry></row>
+<row><entry><function>btk_container_child_getv</function></entry><entry><function>btk_container_child_set_property</function></entry></row>
+<row><entry><function>btk_container_child_setv</function></entry><entry><function>btk_container_child_get_property</function></entry></row>
+<row><entry><function>btk_container_add_with_args</function></entry><entry><function>btk_container_add_with_properties</function></entry></row>
+<row><entry><function>btk_container_addv</function></entry><entry><function>btk_container_add</function>/<function>btk_container_child_set_property</function></entry></row>
 </tbody>
 </tgroup>
 </informaltable>
@@ -845,42 +845,42 @@ Other removed <structname>GtkContainer</structname> functions with the replaceme
 
 <listitem>
 <para>
-<function>gdk_image_get()</function> (or rather its replacement,
-  <function>gdk_drawable_get_image()</function>) now handles errors properly 
+<function>bdk_image_get()</function> (or rather its replacement,
+  <function>bdk_drawable_get_image()</function>) now handles errors properly 
   by returning <literal>NULL</literal>, previously it would crash. Also, a 
   window being offscreen is no longer considered an error; instead, the area 
   contains undefined contents for the offscreen areas. In most cases, code
-  using <function>gdk_image_get()</function> should really be ported to
-  <function>gdk_pixbuf_get_from_drawable()</function>.
+  using <function>bdk_image_get()</function> should really be ported to
+  <function>bdk_pixbuf_get_from_drawable()</function>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gtk_widget_set_usize()</function> has been renamed to
-  <function>gtk_widget_set_size_request()</function>, however the old name 
-  still exists unless you define <literal>GTK_DISABLE_DEPRECATED</literal>.
+<function>btk_widget_set_usize()</function> has been renamed to
+  <function>btk_widget_set_size_request()</function>, however the old name 
+  still exists unless you define <literal>BTK_DISABLE_DEPRECATED</literal>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gtk_widget_set_uposition()</function> is deprecated; use
-  <function>gtk_window_move()</function>, 
-  <function>gtk_fixed_put()</function>, or <function>gtk_layout_put()</function>
+<function>btk_widget_set_uposition()</function> is deprecated; use
+  <function>btk_window_move()</function>, 
+  <function>btk_fixed_put()</function>, or <function>btk_layout_put()</function>
   instead.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<function>gtk_window_set_policy()</function> is deprecated. To get the effect of
+<function>btk_window_set_policy()</function> is deprecated. To get the effect of
   "allow_shrink", call 
-  <literal>gtk_widget_set_size_request (window, 0, 0)</literal>. To get the 
+  <literal>btk_widget_set_size_request (window, 0, 0)</literal>. To get the 
   effect of "allow_grow", call 
-  <literal>gtk_window_set_resizable (window, TRUE)</literal>. You didn't want 
+  <literal>btk_window_set_resizable (window, TRUE)</literal>. You didn't want 
   the effect of "auto_shrink", it made no sense. But maybe if you were using 
-  it you want to use <literal>gtk_window_resize (window, 1, 1)</literal> to 
+  it you want to use <literal>btk_window_resize (window, 1, 1)</literal> to 
   snap a window back to its minimum size (the 1, 1 will be rounded up to the 
   minimum window size).
 </para>
@@ -888,9 +888,9 @@ Other removed <structname>GtkContainer</structname> functions with the replaceme
 
 <listitem>
 <para>
-The core GTK+ now takes care of handling mapping, unmapping and
+The core BTK+ now takes care of handling mapping, unmapping and
   realizing the child widgets of containers in
-  <function>gtk_widget_set_parent()</function>. In most cases, this allows 
+  <function>btk_widget_set_parent()</function>. In most cases, this allows 
   container implementations to be simplified by removing the code in 
   <function>add()</function> methods to map and realize children. However, 
   there are a couple of things to watch out for here:
@@ -901,18 +901,18 @@ The core GTK+ now takes care of handling mapping, unmapping and
  <listitem>
 <para>
 If the parent is realized before the <function>add()</function> happens, 
-     <function>gtk_widget_set_parent_window()</function> must be called before
-     <function>gtk_widget_set_parent()</function>, since 
-     <function>gtk_widget_set_parent()</function> will realize the child.
+     <function>btk_widget_set_parent_window()</function> must be called before
+     <function>btk_widget_set_parent()</function>, since 
+     <function>btk_widget_set_parent()</function> will realize the child.
 </para>
 </listitem>
 
  <listitem>
 <para>
 If a container depended on its children not being mapped
-     unless it did so itself (for example, <structname>GtkNotebook</structname>
+     unless it did so itself (for example, <structname>BtkNotebook</structname>
      only mapped the current page), then the new function
-     <function>gtk_widget_set_child_visible()</function> must be called to keep
+     <function>btk_widget_set_child_visible()</function> must be called to keep
      widgets that should not be mapped not mapped.
 </para>
 
@@ -946,13 +946,13 @@ For <literal>NO_WINDOW</literal> widgets, if you create windows in your
 
 <listitem>
 <para>
-<function>gtk_widget_set_default_style()</function>, 
-   <function>gtk_widget_push_style()</function>,
-  and <function>gtk_widget_pop_style()</function> have been removed, since they
+<function>btk_widget_set_default_style()</function>, 
+   <function>btk_widget_push_style()</function>,
+  and <function>btk_widget_pop_style()</function> have been removed, since they
   did not work properly with themes and there were better
   alternatives for modifying the appearance of widgets.
 
-  You should generally use <function>gtk_widget_modify_*()</function>
+  You should generally use <function>btk_widget_modify_*()</function>
   instead.
 </para>
 </listitem>
@@ -960,30 +960,30 @@ For <literal>NO_WINDOW</literal> widgets, if you create windows in your
   
 <listitem>
 <para>
-<function>gtk_image_new()</function> now takes no arguments and creates an 
-  empty <structname>GtkImage</structname> widget. To create a 
-  <structname>GtkImage</structname> widget from a 
-  <structname>GdkImage</structname> (the least
-  common usage of <structname>GdkImage</structname>), use 
-  <function>gtk_image_new_from_image()</function>.
+<function>btk_image_new()</function> now takes no arguments and creates an 
+  empty <structname>BtkImage</structname> widget. To create a 
+  <structname>BtkImage</structname> widget from a 
+  <structname>BdkImage</structname> (the least
+  common usage of <structname>BdkImage</structname>), use 
+  <function>btk_image_new_from_image()</function>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-<literal>GTK_SELECTION_EXTENDED</literal> is now deprecated, and neither the
-  <structname>GtkList</structname>/<structname>GtkTree</structname> nor the 
-  <structname>GtkCList</structname>/<structname>GtkCTree</structname> support
-  <literal>GTK_SELECTION_EXTENDED</literal> anymore.  However, the old extended
+<literal>BTK_SELECTION_EXTENDED</literal> is now deprecated, and neither the
+  <structname>BtkList</structname>/<structname>BtkTree</structname> nor the 
+  <structname>BtkCList</structname>/<structname>BtkCTree</structname> support
+  <literal>BTK_SELECTION_EXTENDED</literal> anymore.  However, the old extended
   behavior replaces <literal>MULTIPLE</literal> behavior.
 </para>
 </listitem>
 
 <listitem>
 <para>
-The following variables are no longer exported from GDK. (Other variables
+The following variables are no longer exported from BDK. (Other variables
   are also no longer exported; the following are the ones found used
-  externally in a large sample of GTK+ code.)
+  externally in a large sample of BTK+ code.)
 
 <informaltable>
 <tgroup cols="2">
@@ -991,17 +991,17 @@ The following variables are no longer exported from GDK. (Other variables
 <row><entry>Variable</entry><entry>Replacement</entry></row>
 </thead>
 <tbody>
-<row><entry><literal>gdk_null_window_warnings</literal></entry><entry>None - did nothing in GTK+ 1.2</entry></row>
-<row><entry><literal>gdk_leader_window</literal></entry><entry>None - private variable</entry></row>
-<row><entry><literal>gdk_screen</literal></entry><entry><function>gdk_x11_get_default_screen ()</function></entry></row>
-<row><entry><literal>gdk_root_window</literal></entry><entry><function>gdk_x11_get_default_root_xwindow ()</function></entry></row>
-<row><entry><literal>gdk_root_parent</literal></entry><entry><function>gdk_get_default_root_window ()</function></entry></row>
-<row><entry><literal>gdk_error_code</literal></entry><entry><function>gdk_error_trap_push ()/pop ()</function></entry></row>
-<row><entry><literal>gdk_error_warnings</literal></entry><entry><function>gdk_error_trap_push ()/pop ()</function></entry></row>
-<row><entry><literal>gdk_display_name</literal></entry><entry><function>gdk_get_display ()</function></entry></row>
-<row><entry><literal>gdk_wm_delete_window</literal></entry><entry><literal>gdk_atom_intern ("WM_DELETE_WINDOW", FALSE)</literal></entry></row>
-<row><entry><literal>gdk_wm_take_focus</literal></entry><entry><literal>gdk_atom_intern ("WM_TAKE_FOCUS", FALSE)</literal></entry></row>
-<row><entry><literal>gdk_wm_protocols</literal></entry><entry><literal>gdk_atom_intern ("WM_PROTOCOLS", FALSE)</literal></entry></row>
+<row><entry><literal>bdk_null_window_warnings</literal></entry><entry>None - did nothing in BTK+ 1.2</entry></row>
+<row><entry><literal>bdk_leader_window</literal></entry><entry>None - private variable</entry></row>
+<row><entry><literal>bdk_screen</literal></entry><entry><function>bdk_x11_get_default_screen ()</function></entry></row>
+<row><entry><literal>bdk_root_window</literal></entry><entry><function>bdk_x11_get_default_root_xwindow ()</function></entry></row>
+<row><entry><literal>bdk_root_parent</literal></entry><entry><function>bdk_get_default_root_window ()</function></entry></row>
+<row><entry><literal>bdk_error_code</literal></entry><entry><function>bdk_error_trap_push ()/pop ()</function></entry></row>
+<row><entry><literal>bdk_error_warnings</literal></entry><entry><function>bdk_error_trap_push ()/pop ()</function></entry></row>
+<row><entry><literal>bdk_display_name</literal></entry><entry><function>bdk_get_display ()</function></entry></row>
+<row><entry><literal>bdk_wm_delete_window</literal></entry><entry><literal>bdk_atom_intern ("WM_DELETE_WINDOW", FALSE)</literal></entry></row>
+<row><entry><literal>bdk_wm_take_focus</literal></entry><entry><literal>bdk_atom_intern ("WM_TAKE_FOCUS", FALSE)</literal></entry></row>
+<row><entry><literal>bdk_wm_protocols</literal></entry><entry><literal>bdk_atom_intern ("WM_PROTOCOLS", FALSE)</literal></entry></row>
 </tbody>
 </tgroup>
 </informaltable>
@@ -1016,7 +1016,7 @@ The handling of colormaps and widgets has been changed:
 <itemizedlist>
   <listitem>
 <para>
-The default colormap for widgets is now the <structname>GdkRGB</structname> 
+The default colormap for widgets is now the <structname>BdkRGB</structname> 
       colormap, not the system default colormap. If you try to use resources 
       created for  a widget (e.g., <literal>widget-&gt;style</literal>) with 
       a window using the system colormap, errors will result on some machines.
@@ -1026,10 +1026,10 @@ The default colormap for widgets is now the <structname>GdkRGB</structname>
 
   <listitem>
 <para>
-<function>gtk_widget_push()</function>/<function>gtk_widget_pop_colormap()</function> 
+<function>btk_widget_push()</function>/<function>btk_widget_pop_colormap()</function> 
       only cause the colormap to be explicitly set on toplevel widgets, not on 
       all widgets. The colormap for other widgets (when not set using 
-      <function>gtk_widget_set_colormap()</function>), is determined by finding
+      <function>btk_widget_set_colormap()</function>), is determined by finding
       the nearest ancestor with a colormap set on it explicitly, or if that
       fails, the default colormap.
 </para>
@@ -1043,7 +1043,7 @@ The default colormap for widgets is now the <structname>GdkRGB</structname>
 
 <listitem>
 <para>
-The default selected day for <structname>GtkCalendar</structname> is now the 
+The default selected day for <structname>BtkCalendar</structname> is now the 
   current day in the month, not the first day in the month. The current month 
   and year were already used.
 </para>
@@ -1052,25 +1052,25 @@ The default selected day for <structname>GtkCalendar</structname> is now the
 
 <listitem>
 <para>
-GDK is no longer put into threaded mode automatically when 
+BDK is no longer put into threaded mode automatically when 
   <function>g_thread_init()</function> has been called. In order to use the 
-  global GDK thread mutex with <function>gdk_threads_enter()</function> and 
-  <function>gdk_threads_leave()</function>, you must call 
-  <function>gdk_threads_init()</function> explicitly.
+  global BDK thread mutex with <function>bdk_threads_enter()</function> and 
+  <function>bdk_threads_leave()</function>, you must call 
+  <function>bdk_threads_init()</function> explicitly.
 
-  If you aren't using GDK and GTK+ functions from multiple threads,
-  there is no reason to call <function>gdk_threads_init()</function>.
+  If you aren't using BDK and BTK+ functions from multiple threads,
+  there is no reason to call <function>bdk_threads_init()</function>.
 </para>
 </listitem>
 
 <listitem>
 <para>
-The <structname>GtkPreviewInfo</structname> struct has had its visual and 
-  colormap fields removed.  Also, <function>gtk_preview_get_cmap()</function> 
-  and <function>gtk_preview_get_visual()</function> are deprecated, as 
-  <structname>GdkRGB</structname> works on any colormap and visual.  You no
+The <structname>BtkPreviewInfo</structname> struct has had its visual and 
+  colormap fields removed.  Also, <function>btk_preview_get_cmap()</function> 
+  and <function>btk_preview_get_visual()</function> are deprecated, as 
+  <structname>BdkRGB</structname> works on any colormap and visual.  You no
   longer need to 
-  <literal>gtk_widget_push_cmap (gtk_preview_get_cmap ())</literal> in
+  <literal>btk_widget_push_cmap (btk_preview_get_cmap ())</literal> in
   your code.
 </para>
 </listitem>
@@ -1078,9 +1078,9 @@ The <structname>GtkPreviewInfo</structname> struct has had its visual and
 
 <listitem>
 <para>
-The <structname>GtkBox</structname>, <structname>GtkTable</structname>, and 
-  <structname>GtkAlignment</structname> widgets now call
-  <literal>gtk_widget_set_redraw_on_allocate (widget, FALSE);</literal> on 
+The <structname>BtkBox</structname>, <structname>BtkTable</structname>, and 
+  <structname>BtkAlignment</structname> widgets now call
+  <literal>btk_widget_set_redraw_on_allocate (widget, FALSE);</literal> on 
   themselves. If you want to actually draw contents in a widget derived from
   one of these widgets, you'll probably want to change this
   in your <function>init()</function> function.
@@ -1091,8 +1091,8 @@ The <structname>GtkBox</structname>, <structname>GtkTable</structname>, and
 <listitem>
 <para>
 A number of widgets are now <literal>NO_WINDOW</literal> widgets (most 
-  importantly <structname>GtkButton</structname>, but also 
-  <structname>GtkRange</structname> and <structname>GtkNotebook</structname>)
+  importantly <structname>BtkButton</structname>, but also 
+  <structname>BtkRange</structname> and <structname>BtkNotebook</structname>)
 
   This has a couple of effects:
 
@@ -1109,7 +1109,7 @@ If you are deriving from one of these widgets, you need to
  <listitem>
 <para>
 If you are embedding one of these widgets in a custom widget,
-     you must make sure you call <function>gtk_container_propagate_expose()</function>
+     you must make sure you call <function>btk_container_propagate_expose()</function>
      correctly, as you must for any <literal>NO_WINDOW</literal> widgets.
 </para>
 </listitem>
@@ -1117,11 +1117,11 @@ If you are embedding one of these widgets in a custom widget,
 </para>
 
 <para>
-  <structname>GtkFixed</structname> is a little special; it is now created by 
+  <structname>BtkFixed</structname> is a little special; it is now created by 
   default as a <literal>NO_WINDOW</literal> widget, but if you do 
 
 <programlisting>
-    gtk_fixed_set_has_window (fixed, TRUE);
+    btk_fixed_set_has_window (fixed, TRUE);
 </programlisting>
 
   after creating a fixed widget, it will create a window and
@@ -1131,7 +1131,7 @@ If you are embedding one of these widgets in a custom widget,
 
 <listitem>
 <para>
-<structname>GtkLayout</structname> no longer has the <structfield>xoffset</structfield>,
+<structname>BtkLayout</structname> no longer has the <structfield>xoffset</structfield>,
   <structfield>yoffset</structfield> fields, which used to store the difference between
   world and window coordinates for <literal>layout-&gt;bin_window</literal>. 
   These coordinate systems are now always the same.
@@ -1140,29 +1140,29 @@ If you are embedding one of these widgets in a custom widget,
 
 <listitem>
 <para>
-<function>gtk_paint_focus()</function>, <function>gtk_draw_focus()</function> 
-  and <function>GtkStyle::draw_focus()</function>
+<function>btk_paint_focus()</function>, <function>btk_draw_focus()</function> 
+  and <function>BtkStyle::draw_focus()</function>
   have been changed a bit:
 
 <itemizedlist>
  <listitem>
 <para>
-A <literal>GtkStateType</literal> argument has been added to <function>gtk_paint_focus()</function>.
+A <literal>BtkStateType</literal> argument has been added to <function>btk_paint_focus()</function>.
 </para>
 </listitem>
 
  <listitem>
 <para>
-The default implementation of the <function>GtkStyle::draw_focus()</function> 
+The default implementation of the <function>BtkStyle::draw_focus()</function> 
      virtual function now draws a focus rectangle whose width is 
-     determined by the GtkWidget::focus-width style property.
+     determined by the BtkWidget::focus-width style property.
 </para>
 </listitem>
 
  <listitem>
 <para>
 The rectangle passed in is the bounding box, instead of
-     the rectangle used in the <function>gdk_draw_rectangle()</function> call, 
+     the rectangle used in the <function>bdk_draw_rectangle()</function> call, 
      so it is no longer necessary to subtract 1 from the width and height.
 </para>
 </listitem>

@@ -1,4 +1,4 @@
-/* gdkdrawable-quartz.h
+/* bdkdrawable-quartz.h
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -18,57 +18,57 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_WINDOW_QUARTZ_H__
-#define __GDK_WINDOW_QUARTZ_H__
+#ifndef __BDK_WINDOW_QUARTZ_H__
+#define __BDK_WINDOW_QUARTZ_H__
 
-#include <gdk/quartz/gdkdrawable-quartz.h>
-#import <gdk/quartz/GdkQuartzView.h>
-#import <gdk/quartz/GdkQuartzWindow.h>
+#include <bdk/quartz/bdkdrawable-quartz.h>
+#import <bdk/quartz/BdkQuartzView.h>
+#import <bdk/quartz/BdkQuartzWindow.h>
 
 G_BEGIN_DECLS
 
 /* Window implementation for Quartz
  */
 
-typedef struct _GdkWindowImplQuartz GdkWindowImplQuartz;
-typedef struct _GdkWindowImplQuartzClass GdkWindowImplQuartzClass;
+typedef struct _BdkWindowImplQuartz BdkWindowImplQuartz;
+typedef struct _BdkWindowImplQuartzClass BdkWindowImplQuartzClass;
 
-#define GDK_TYPE_WINDOW_IMPL_QUARTZ              (_gdk_window_impl_quartz_get_type ())
-#define GDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartz))
-#define GDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartzClass))
-#define GDK_IS_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW_IMPL_QUARTZ))
-#define GDK_IS_WINDOW_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_WINDOW_IMPL_QUARTZ))
-#define GDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW_IMPL_QUARTZ, GdkWindowImplQuartzClass))
+#define BDK_TYPE_WINDOW_IMPL_QUARTZ              (_bdk_window_impl_quartz_get_type ())
+#define BDK_WINDOW_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartz))
+#define BDK_WINDOW_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
+#define BDK_IS_WINDOW_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW_IMPL_QUARTZ))
+#define BDK_IS_WINDOW_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW_IMPL_QUARTZ))
+#define BDK_WINDOW_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW_IMPL_QUARTZ, BdkWindowImplQuartzClass))
 
-struct _GdkWindowImplQuartz
+struct _BdkWindowImplQuartz
 {
-  GdkDrawableImplQuartz parent_instance;
+  BdkDrawableImplQuartz parent_instance;
 
   NSWindow *toplevel;
   NSTrackingRectTag tracking_rect;
-  GdkQuartzView *view;
+  BdkQuartzView *view;
 
-  GdkWindowTypeHint type_hint;
+  BdkWindowTypeHint type_hint;
 
-  GdkRegion *paint_clip_region;
+  BdkRebunnyion *paint_clip_rebunnyion;
   gint begin_paint_count;
   gint in_paint_rect_count;
 
-  GdkWindow *transient_for;
+  BdkWindow *transient_for;
 
   /* Sorted by z-order */
   GList *sorted_children;
 
-  GdkRegion *needs_display_region;
+  BdkRebunnyion *needs_display_rebunnyion;
 };
  
-struct _GdkWindowImplQuartzClass 
+struct _BdkWindowImplQuartzClass 
 {
-  GdkDrawableImplQuartzClass parent_class;
+  BdkDrawableImplQuartzClass parent_class;
 };
 
-GType _gdk_window_impl_quartz_get_type (void);
+GType _bdk_window_impl_quartz_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GDK_WINDOW_QUARTZ_H__ */
+#endif /* __BDK_WINDOW_QUARTZ_H__ */

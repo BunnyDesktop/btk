@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -20,113 +20,113 @@
 #include "config.h"
 
 #include <string.h>
-#include <gtk/gtk.h>
-#include "gailstatusbar.h"
-#include <libgail-util/gailmisc.h>
+#include <btk/btk.h>
+#include "bailstatusbar.h"
+#include <libbail-util/bailmisc.h>
 
-static void         gail_statusbar_class_init          (GailStatusbarClass *klass);
-static void         gail_statusbar_init                (GailStatusbar      *bar);
-static const gchar* gail_statusbar_get_name            (AtkObject          *obj);
-static gint         gail_statusbar_get_n_children      (AtkObject          *obj);
-static AtkObject*   gail_statusbar_ref_child           (AtkObject          *obj,
+static void         bail_statusbar_class_init          (BailStatusbarClass *klass);
+static void         bail_statusbar_init                (BailStatusbar      *bar);
+static const gchar* bail_statusbar_get_name            (BatkObject          *obj);
+static gint         bail_statusbar_get_n_children      (BatkObject          *obj);
+static BatkObject*   bail_statusbar_ref_child           (BatkObject          *obj,
                                                         gint               i);
-static void         gail_statusbar_real_initialize     (AtkObject          *obj,
+static void         bail_statusbar_real_initialize     (BatkObject          *obj,
                                                         gpointer           data);
 
-static gint         gail_statusbar_notify              (GObject            *obj,
+static gint         bail_statusbar_notify              (GObject            *obj,
                                                         GParamSpec         *pspec,
                                                         gpointer           user_data);
-static void         gail_statusbar_finalize            (GObject            *object);
-static void         gail_statusbar_init_textutil       (GailStatusbar      *statusbar,
-                                                        GtkWidget          *label);
+static void         bail_statusbar_finalize            (GObject            *object);
+static void         bail_statusbar_init_textutil       (BailStatusbar      *statusbar,
+                                                        BtkWidget          *label);
 
-/* atktext.h */ 
-static void	  atk_text_interface_init	   (AtkTextIface	*iface);
+/* batktext.h */ 
+static void	  batk_text_interface_init	   (BatkTextIface	*iface);
 
-static gchar*	  gail_statusbar_get_text	   (AtkText	      *text,
+static gchar*	  bail_statusbar_get_text	   (BatkText	      *text,
                                                     gint	      start_pos,
 						    gint	      end_pos);
-static gunichar	  gail_statusbar_get_character_at_offset
-                                                   (AtkText	      *text,
+static gunichar	  bail_statusbar_get_character_at_offset
+                                                   (BatkText	      *text,
 						    gint	      offset);
-static gchar*     gail_statusbar_get_text_before_offset
-                                                   (AtkText	      *text,
+static gchar*     bail_statusbar_get_text_before_offset
+                                                   (BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gchar*     gail_statusbar_get_text_at_offset(AtkText	      *text,
+static gchar*     bail_statusbar_get_text_at_offset(BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gchar*     gail_statusbar_get_text_after_offset
-                                                   (AtkText	      *text,
+static gchar*     bail_statusbar_get_text_after_offset
+                                                   (BatkText	      *text,
  						    gint	      offset,
-						    AtkTextBoundary   boundary_type,
+						    BatkTextBoundary   boundary_type,
 						    gint	      *start_offset,
 						    gint	      *end_offset);
-static gint	  gail_statusbar_get_character_count (AtkText	      *text);
-static void       gail_statusbar_get_character_extents
-                                                   (AtkText	      *text,
+static gint	  bail_statusbar_get_character_count (BatkText	      *text);
+static void       bail_statusbar_get_character_extents
+                                                   (BatkText	      *text,
 						    gint 	      offset,
 		                                    gint 	      *x,
                     		   	            gint 	      *y,
                                 		    gint 	      *width,
                                      		    gint 	      *height,
-			        		    AtkCoordType      coords);
-static gint      gail_statusbar_get_offset_at_point(AtkText           *text,
+			        		    BatkCoordType      coords);
+static gint      bail_statusbar_get_offset_at_point(BatkText           *text,
                                                     gint              x,
                                                     gint              y,
-			                            AtkCoordType      coords);
-static AtkAttributeSet* gail_statusbar_get_run_attributes 
-                                                   (AtkText           *text,
+			                            BatkCoordType      coords);
+static BatkAttributeSet* bail_statusbar_get_run_attributes 
+                                                   (BatkText           *text,
               					    gint 	      offset,
                                                     gint 	      *start_offset,
 					            gint	      *end_offset);
-static AtkAttributeSet* gail_statusbar_get_default_attributes
-                                                   (AtkText           *text);
-static GtkWidget* get_label_from_statusbar         (GtkWidget         *statusbar);
+static BatkAttributeSet* bail_statusbar_get_default_attributes
+                                                   (BatkText           *text);
+static BtkWidget* get_label_from_statusbar         (BtkWidget         *statusbar);
 
-G_DEFINE_TYPE_WITH_CODE (GailStatusbar, gail_statusbar, GAIL_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_TEXT, atk_text_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailStatusbar, bail_statusbar, BAIL_TYPE_CONTAINER,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_TEXT, batk_text_interface_init))
 
 static void
-gail_statusbar_class_init (GailStatusbarClass *klass)
+bail_statusbar_class_init (BailStatusbarClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
-  GailContainerClass *container_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
+  BailContainerClass *container_class;
 
-  container_class = (GailContainerClass*)klass;
+  container_class = (BailContainerClass*)klass;
 
-  gobject_class->finalize = gail_statusbar_finalize;
+  bobject_class->finalize = bail_statusbar_finalize;
 
-  class->get_name = gail_statusbar_get_name;
-  class->get_n_children = gail_statusbar_get_n_children;
-  class->ref_child = gail_statusbar_ref_child;
-  class->initialize = gail_statusbar_real_initialize;
+  class->get_name = bail_statusbar_get_name;
+  class->get_n_children = bail_statusbar_get_n_children;
+  class->ref_child = bail_statusbar_ref_child;
+  class->initialize = bail_statusbar_real_initialize;
   /*
    * As we report the statusbar as having no children we are not interested
    * in add and remove signals
    */
-  container_class->add_gtk = NULL;
-  container_class->remove_gtk = NULL;
+  container_class->add_btk = NULL;
+  container_class->remove_btk = NULL;
 }
 
 static void
-gail_statusbar_init (GailStatusbar *bar)
+bail_statusbar_init (BailStatusbar *bar)
 {
 }
 
 static const gchar*
-gail_statusbar_get_name (AtkObject *obj)
+bail_statusbar_get_name (BatkObject *obj)
 {
   const gchar* name;
 
-  g_return_val_if_fail (GAIL_IS_STATUSBAR (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_STATUSBAR (obj), NULL);
 
-  name = ATK_OBJECT_CLASS (gail_statusbar_parent_class)->get_name (obj);
+  name = BATK_OBJECT_CLASS (bail_statusbar_parent_class)->get_name (obj);
   if (name != NULL)
     return name;
   else
@@ -134,37 +134,37 @@ gail_statusbar_get_name (AtkObject *obj)
       /*
        * Get the text on the label
        */
-      GtkWidget *widget;
-      GtkWidget *label;
+      BtkWidget *widget;
+      BtkWidget *label;
 
-      widget = GTK_ACCESSIBLE (obj)->widget;
+      widget = BTK_ACCESSIBLE (obj)->widget;
       if (widget == NULL)
         /*
          * State is defunct
          */
         return NULL;
 
-     g_return_val_if_fail (GTK_IS_STATUSBAR (widget), NULL);
+     g_return_val_if_fail (BTK_IS_STATUSBAR (widget), NULL);
      label = get_label_from_statusbar (widget);
-     if (GTK_IS_LABEL (label))
-       return gtk_label_get_label (GTK_LABEL (label));
+     if (BTK_IS_LABEL (label))
+       return btk_label_get_label (BTK_LABEL (label));
      else 
        return NULL;
    }
 }
 
 static gint
-gail_statusbar_get_n_children (AtkObject *obj)
+bail_statusbar_get_n_children (BatkObject *obj)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   GList *children;
   gint count = 0;
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return 0;
 
-  children = gtk_container_get_children (GTK_CONTAINER (widget));
+  children = btk_container_get_children (BTK_CONTAINER (widget));
   if (children != NULL)
     {
       count = g_list_length (children);
@@ -174,20 +174,20 @@ gail_statusbar_get_n_children (AtkObject *obj)
   return count;
 }
 
-static AtkObject*
-gail_statusbar_ref_child (AtkObject *obj,
+static BatkObject*
+bail_statusbar_ref_child (BatkObject *obj,
                           gint      i)
 {
   GList *children, *tmp_list;
-  AtkObject  *accessible;
-  GtkWidget *widget;
+  BatkObject  *accessible;
+  BtkWidget *widget;
 
   g_return_val_if_fail ((i >= 0), NULL);
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return NULL;
 
-  children = gtk_container_get_children (GTK_CONTAINER (widget));
+  children = btk_container_get_children (BTK_CONTAINER (widget));
   if (children == NULL)
     return NULL;
 
@@ -197,7 +197,7 @@ gail_statusbar_ref_child (AtkObject *obj,
       g_list_free (children);
       return NULL;
     }
-  accessible = gtk_widget_get_accessible (GTK_WIDGET (tmp_list->data));
+  accessible = btk_widget_get_accessible (BTK_WIDGET (tmp_list->data));
 
   g_list_free (children);
   g_object_ref (accessible);
@@ -205,153 +205,153 @@ gail_statusbar_ref_child (AtkObject *obj,
 }
 
 static void
-gail_statusbar_real_initialize (AtkObject *obj,
+bail_statusbar_real_initialize (BatkObject *obj,
                                 gpointer  data)
 {
-  GailStatusbar *statusbar = GAIL_STATUSBAR (obj);
-  GtkWidget *label;
+  BailStatusbar *statusbar = BAIL_STATUSBAR (obj);
+  BtkWidget *label;
 
-  ATK_OBJECT_CLASS (gail_statusbar_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_statusbar_parent_class)->initialize (obj, data);
 
   /*
    * We get notified of changes to the label
    */
-  label = get_label_from_statusbar (GTK_WIDGET (data));
-  if (GTK_IS_LABEL (label))
+  label = get_label_from_statusbar (BTK_WIDGET (data));
+  if (BTK_IS_LABEL (label))
     {
-      gail_statusbar_init_textutil (statusbar, label);
+      bail_statusbar_init_textutil (statusbar, label);
     }
 
-  obj->role = ATK_ROLE_STATUSBAR;
+  obj->role = BATK_ROLE_STATUSBAR;
 
 }
 
 static gint
-gail_statusbar_notify (GObject    *obj, 
+bail_statusbar_notify (GObject    *obj, 
                        GParamSpec *pspec,
                        gpointer   user_data)
 {
-  AtkObject *atk_obj = ATK_OBJECT (user_data);
-  GtkLabel *label;
-  GailStatusbar *statusbar;
+  BatkObject *batk_obj = BATK_OBJECT (user_data);
+  BtkLabel *label;
+  BailStatusbar *statusbar;
 
   if (strcmp (pspec->name, "label") == 0)
     {
       const gchar* label_text;
 
-      label = GTK_LABEL (obj);
+      label = BTK_LABEL (obj);
 
-      label_text = gtk_label_get_text (label);
+      label_text = btk_label_get_text (label);
 
-      statusbar = GAIL_STATUSBAR (atk_obj);
-      gail_text_util_text_setup (statusbar->textutil, label_text);
+      statusbar = BAIL_STATUSBAR (batk_obj);
+      bail_text_util_text_setup (statusbar->textutil, label_text);
 
-      if (atk_obj->name == NULL)
+      if (batk_obj->name == NULL)
       {
         /*
          * The label has changed so notify a change in accessible-name
          */
-        g_object_notify (G_OBJECT (atk_obj), "accessible-name");
+        g_object_notify (G_OBJECT (batk_obj), "accessible-name");
       }
       /*
        * The label is the only property which can be changed
        */
-      g_signal_emit_by_name (atk_obj, "visible_data_changed");
+      g_signal_emit_by_name (batk_obj, "visible_data_changed");
     }
   return 1;
 }
 
 static void
-gail_statusbar_init_textutil (GailStatusbar *statusbar,
-                              GtkWidget     *label)
+bail_statusbar_init_textutil (BailStatusbar *statusbar,
+                              BtkWidget     *label)
 {
   const gchar *label_text;
 
-  statusbar->textutil = gail_text_util_new ();
-  label_text = gtk_label_get_text (GTK_LABEL (label));
-  gail_text_util_text_setup (statusbar->textutil, label_text);
+  statusbar->textutil = bail_text_util_new ();
+  label_text = btk_label_get_text (BTK_LABEL (label));
+  bail_text_util_text_setup (statusbar->textutil, label_text);
   g_signal_connect (label,
                     "notify",
-                    (GCallback) gail_statusbar_notify,
+                    (GCallback) bail_statusbar_notify,
                     statusbar);     
 }
 
 static void
-gail_statusbar_finalize (GObject *object)
+bail_statusbar_finalize (GObject *object)
 {
-  GailStatusbar *statusbar = GAIL_STATUSBAR (object);
+  BailStatusbar *statusbar = BAIL_STATUSBAR (object);
 
   if (statusbar->textutil)
     {
       g_object_unref (statusbar->textutil);
     }
-  G_OBJECT_CLASS (gail_statusbar_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_statusbar_parent_class)->finalize (object);
 }
 
-/* atktext.h */
+/* batktext.h */
 
 static void
-atk_text_interface_init (AtkTextIface *iface)
+batk_text_interface_init (BatkTextIface *iface)
 {
-  iface->get_text = gail_statusbar_get_text;
-  iface->get_character_at_offset = gail_statusbar_get_character_at_offset;
-  iface->get_text_before_offset = gail_statusbar_get_text_before_offset;
-  iface->get_text_at_offset = gail_statusbar_get_text_at_offset;
-  iface->get_text_after_offset = gail_statusbar_get_text_after_offset;
-  iface->get_character_count = gail_statusbar_get_character_count;
-  iface->get_character_extents = gail_statusbar_get_character_extents;
-  iface->get_offset_at_point = gail_statusbar_get_offset_at_point;
-  iface->get_run_attributes = gail_statusbar_get_run_attributes;
-  iface->get_default_attributes = gail_statusbar_get_default_attributes;
+  iface->get_text = bail_statusbar_get_text;
+  iface->get_character_at_offset = bail_statusbar_get_character_at_offset;
+  iface->get_text_before_offset = bail_statusbar_get_text_before_offset;
+  iface->get_text_at_offset = bail_statusbar_get_text_at_offset;
+  iface->get_text_after_offset = bail_statusbar_get_text_after_offset;
+  iface->get_character_count = bail_statusbar_get_character_count;
+  iface->get_character_extents = bail_statusbar_get_character_extents;
+  iface->get_offset_at_point = bail_statusbar_get_offset_at_point;
+  iface->get_run_attributes = bail_statusbar_get_run_attributes;
+  iface->get_default_attributes = bail_statusbar_get_default_attributes;
 }
 
 static gchar*
-gail_statusbar_get_text (AtkText *text,
+bail_statusbar_get_text (BatkText *text,
                          gint    start_pos,
                          gint    end_pos)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  GailStatusbar *statusbar;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BailStatusbar *statusbar;
   const gchar *label_text;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL (label))
+  if (!BTK_IS_LABEL (label))
     return NULL;
 
-  statusbar = GAIL_STATUSBAR (text);
+  statusbar = BAIL_STATUSBAR (text);
   if (!statusbar->textutil) 
-    gail_statusbar_init_textutil (statusbar, label);
+    bail_statusbar_init_textutil (statusbar, label);
 
-  label_text = gtk_label_get_text (GTK_LABEL (label));
+  label_text = btk_label_get_text (BTK_LABEL (label));
 
   if (label_text == NULL)
     return NULL;
   else
   {
-    return gail_text_util_get_substring (statusbar->textutil, 
+    return bail_text_util_get_substring (statusbar->textutil, 
                                          start_pos, end_pos);
   }
 }
 
 static gchar*
-gail_statusbar_get_text_before_offset (AtkText         *text,
+bail_statusbar_get_text_before_offset (BatkText         *text,
      				       gint            offset,
-				       AtkTextBoundary boundary_type,
+				       BatkTextBoundary boundary_type,
 				       gint            *start_offset,
 				       gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  GailStatusbar *statusbar;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BailStatusbar *statusbar;
   
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
     /* State is defunct */
@@ -360,30 +360,30 @@ gail_statusbar_get_text_before_offset (AtkText         *text,
   /* Get label */
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return NULL;
 
-  statusbar = GAIL_STATUSBAR (text);
+  statusbar = BAIL_STATUSBAR (text);
   if (!statusbar->textutil)
-    gail_statusbar_init_textutil (statusbar, label);
+    bail_statusbar_init_textutil (statusbar, label);
 
-  return gail_text_util_get_text (statusbar->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_BEFORE_OFFSET, 
+  return bail_text_util_get_text (statusbar->textutil,
+                           btk_label_get_layout (BTK_LABEL (label)), BAIL_BEFORE_OFFSET, 
                            boundary_type, offset, start_offset, end_offset); 
 }
 
 static gchar*
-gail_statusbar_get_text_at_offset (AtkText         *text,
+bail_statusbar_get_text_at_offset (BatkText         *text,
 			           gint            offset,
-			           AtkTextBoundary boundary_type,
+			           BatkTextBoundary boundary_type,
  			           gint            *start_offset,
 			           gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  GailStatusbar *statusbar;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BailStatusbar *statusbar;
  
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
     /* State is defunct */
@@ -392,30 +392,30 @@ gail_statusbar_get_text_at_offset (AtkText         *text,
   /* Get label */
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return NULL;
 
-  statusbar = GAIL_STATUSBAR (text);
+  statusbar = BAIL_STATUSBAR (text);
   if (!statusbar->textutil)
-    gail_statusbar_init_textutil (statusbar, label);
+    bail_statusbar_init_textutil (statusbar, label);
 
-  return gail_text_util_get_text (statusbar->textutil,
-                              gtk_label_get_layout (GTK_LABEL (label)), GAIL_AT_OFFSET, 
+  return bail_text_util_get_text (statusbar->textutil,
+                              btk_label_get_layout (BTK_LABEL (label)), BAIL_AT_OFFSET, 
                               boundary_type, offset, start_offset, end_offset);
 }
 
 static gchar*
-gail_statusbar_get_text_after_offset (AtkText         *text,
+bail_statusbar_get_text_after_offset (BatkText         *text,
 				      gint            offset,
-				      AtkTextBoundary boundary_type,
+				      BatkTextBoundary boundary_type,
 				      gint            *start_offset,
 				      gint            *end_offset)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  GailStatusbar *statusbar;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BailStatusbar *statusbar;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   
   if (widget == NULL)
   {
@@ -426,53 +426,53 @@ gail_statusbar_get_text_after_offset (AtkText         *text,
   /* Get label */
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return NULL;
 
-  statusbar = GAIL_STATUSBAR (text);
+  statusbar = BAIL_STATUSBAR (text);
   if (!statusbar->textutil)
-    gail_statusbar_init_textutil (statusbar, label);
+    bail_statusbar_init_textutil (statusbar, label);
 
-  return gail_text_util_get_text (statusbar->textutil,
-                           gtk_label_get_layout (GTK_LABEL (label)), GAIL_AFTER_OFFSET, 
+  return bail_text_util_get_text (statusbar->textutil,
+                           btk_label_get_layout (BTK_LABEL (label)), BAIL_AFTER_OFFSET, 
                            boundary_type, offset, start_offset, end_offset);
 }
 
 static gint
-gail_statusbar_get_character_count (AtkText *text)
+bail_statusbar_get_character_count (BatkText *text)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
+  BtkWidget *widget;
+  BtkWidget *label;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return 0;
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return 0;
 
-  return g_utf8_strlen (gtk_label_get_text (GTK_LABEL (label)), -1);
+  return g_utf8_strlen (btk_label_get_text (BTK_LABEL (label)), -1);
 }
 
 static void
-gail_statusbar_get_character_extents (AtkText      *text,
+bail_statusbar_get_character_extents (BatkText      *text,
 				      gint         offset,
 		                      gint         *x,
                     		      gint 	   *y,
                                       gint 	   *width,
                                       gint 	   *height,
-			              AtkCoordType coords)
+			              BatkCoordType coords)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  PangoRectangle char_rect;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BangoRectangle char_rect;
   gint index, x_layout, y_layout;
   const gchar *label_text;
  
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
 
   if (widget == NULL)
     /* State is defunct */
@@ -480,48 +480,48 @@ gail_statusbar_get_character_extents (AtkText      *text,
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return;
   
-  gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
-  label_text = gtk_label_get_text (GTK_LABEL (label));
+  btk_label_get_layout_offsets (BTK_LABEL (label), &x_layout, &y_layout);
+  label_text = btk_label_get_text (BTK_LABEL (label));
   index = g_utf8_offset_to_pointer (label_text, offset) - label_text;
-  pango_layout_index_to_pos (gtk_label_get_layout (GTK_LABEL (label)), index, &char_rect);
+  bango_layout_index_to_pos (btk_label_get_layout (BTK_LABEL (label)), index, &char_rect);
   
-  gail_misc_get_extents_from_pango_rectangle (label, &char_rect, 
+  bail_misc_get_extents_from_bango_rectangle (label, &char_rect, 
                     x_layout, y_layout, x, y, width, height, coords);
 } 
 
 static gint 
-gail_statusbar_get_offset_at_point (AtkText      *text,
+bail_statusbar_get_offset_at_point (BatkText      *text,
                                     gint         x,
                                     gint         y,
-	          		    AtkCoordType coords)
+	          		    BatkCoordType coords)
 { 
-  GtkWidget *widget;
-  GtkWidget *label;
+  BtkWidget *widget;
+  BtkWidget *label;
   gint index, x_layout, y_layout;
   const gchar *label_text;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return -1;
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return -1;
   
-  gtk_label_get_layout_offsets (GTK_LABEL (label), &x_layout, &y_layout);
+  btk_label_get_layout_offsets (BTK_LABEL (label), &x_layout, &y_layout);
   
-  index = gail_misc_get_index_at_point_in_layout (label, 
-                                              gtk_label_get_layout (GTK_LABEL (label)), 
+  index = bail_misc_get_index_at_point_in_layout (label, 
+                                              btk_label_get_layout (BTK_LABEL (label)), 
                                               x_layout, y_layout, x, y, coords);
-  label_text = gtk_label_get_text (GTK_LABEL (label));
+  label_text = btk_label_get_text (BTK_LABEL (label));
   if (index == -1)
     {
-      if (coords == ATK_XY_WINDOW || coords == ATK_XY_SCREEN)
+      if (coords == BATK_XY_WINDOW || coords == BATK_XY_SCREEN)
         return g_utf8_strlen (label_text, -1);
 
       return index;  
@@ -530,95 +530,95 @@ gail_statusbar_get_offset_at_point (AtkText      *text,
     return g_utf8_pointer_to_offset (label_text, label_text + index);  
 }
 
-static AtkAttributeSet*
-gail_statusbar_get_run_attributes (AtkText *text,
+static BatkAttributeSet*
+bail_statusbar_get_run_attributes (BatkText *text,
                                    gint    offset,
                                    gint    *start_offset,
 	                           gint    *end_offset)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  AtkAttributeSet *at_set = NULL;
-  GtkJustification justify;
-  GtkTextDirection dir;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BatkAttributeSet *at_set = NULL;
+  BtkJustification justify;
+  BtkTextDirection dir;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return NULL;
   
   /* Get values set for entire label, if any */
-  justify = gtk_label_get_justify (GTK_LABEL (label));
-  if (justify != GTK_JUSTIFY_CENTER)
+  justify = btk_label_get_justify (BTK_LABEL (label));
+  if (justify != BTK_JUSTIFY_CENTER)
     {
-      at_set = gail_misc_add_attribute (at_set, 
-                                        ATK_TEXT_ATTR_JUSTIFICATION,
-     g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_JUSTIFICATION, justify)));
+      at_set = bail_misc_add_attribute (at_set, 
+                                        BATK_TEXT_ATTR_JUSTIFICATION,
+     g_strdup (batk_text_attribute_get_value (BATK_TEXT_ATTR_JUSTIFICATION, justify)));
     }
-  dir = gtk_widget_get_direction (label);
-  if (dir == GTK_TEXT_DIR_RTL)
+  dir = btk_widget_get_direction (label);
+  if (dir == BTK_TEXT_DIR_RTL)
     {
-      at_set = gail_misc_add_attribute (at_set, 
-                                        ATK_TEXT_ATTR_DIRECTION,
-     g_strdup (atk_text_attribute_get_value (ATK_TEXT_ATTR_DIRECTION, dir)));
+      at_set = bail_misc_add_attribute (at_set, 
+                                        BATK_TEXT_ATTR_DIRECTION,
+     g_strdup (batk_text_attribute_get_value (BATK_TEXT_ATTR_DIRECTION, dir)));
     }
 
-  at_set = gail_misc_layout_get_run_attributes (at_set,
-                                                gtk_label_get_layout (GTK_LABEL (label)),
-                                                (gchar *) gtk_label_get_text (GTK_LABEL (label)),
+  at_set = bail_misc_layout_get_run_attributes (at_set,
+                                                btk_label_get_layout (BTK_LABEL (label)),
+                                                (gchar *) btk_label_get_text (BTK_LABEL (label)),
                                                 offset,
                                                 start_offset,
                                                 end_offset);
   return at_set;
 }
 
-static AtkAttributeSet*
-gail_statusbar_get_default_attributes (AtkText *text)
+static BatkAttributeSet*
+bail_statusbar_get_default_attributes (BatkText *text)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
-  AtkAttributeSet *at_set = NULL;
+  BtkWidget *widget;
+  BtkWidget *label;
+  BatkAttributeSet *at_set = NULL;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return NULL;
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return NULL;
 
-  at_set = gail_misc_get_default_attributes (at_set,
-                                             gtk_label_get_layout (GTK_LABEL (label)),
+  at_set = bail_misc_get_default_attributes (at_set,
+                                             btk_label_get_layout (BTK_LABEL (label)),
                                              widget);
   return at_set;
 }
 
 static gunichar 
-gail_statusbar_get_character_at_offset (AtkText *text,
+bail_statusbar_get_character_at_offset (BatkText *text,
                                         gint	offset)
 {
-  GtkWidget *widget;
-  GtkWidget *label;
+  BtkWidget *widget;
+  BtkWidget *label;
   const gchar *string;
   gchar *index;
 
-  widget = GTK_ACCESSIBLE (text)->widget;
+  widget = BTK_ACCESSIBLE (text)->widget;
   if (widget == NULL)
     /* State is defunct */
     return '\0';
 
   label = get_label_from_statusbar (widget);
 
-  if (!GTK_IS_LABEL(label))
+  if (!BTK_IS_LABEL(label))
     return '\0';
-  string = gtk_label_get_text (GTK_LABEL (label));
+  string = btk_label_get_text (BTK_LABEL (label));
   if (offset >= g_utf8_strlen (string, -1))
     return '\0';
   index = g_utf8_offset_to_pointer (string, offset);
@@ -626,8 +626,8 @@ gail_statusbar_get_character_at_offset (AtkText *text,
   return g_utf8_get_char (index);
 }
 
-static GtkWidget*
-get_label_from_statusbar (GtkWidget *statusbar)
+static BtkWidget*
+get_label_from_statusbar (BtkWidget *statusbar)
 {
-  return GTK_STATUSBAR (statusbar)->label;
+  return BTK_STATUSBAR (statusbar)->label;
 }

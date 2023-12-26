@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FC5AADB5-95CD-4BF0-BA8B-0C16FE7073FC}</ProjectGuid>
-    <RootNamespace>gtkdemo</RootNamespace>
+    <RootNamespace>btkdemo</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -51,19 +51,19 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-build-defines.props" />
+    <Import Project="btk-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-build-defines.props" />
+    <Import Project="btk-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-build-defines.props" />
+    <Import Project="btk-build-defines.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="gtk-build-defines.props" />
+    <Import Project="btk-build-defines.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -75,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -87,7 +87,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cairo.lib;pango-1.0.lib;pangocairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bairo.lib;bango-1.0.lib;bangobairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <DataExecutionPrevention>
@@ -98,7 +98,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;G_ENABLE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -110,7 +110,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cairo.lib;pango-1.0.lib;pangocairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bairo.lib;bango-1.0.lib;bangobairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <DataExecutionPrevention>
@@ -120,7 +120,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -130,7 +130,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cairo.lib;pango-1.0.lib;pangocairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bairo.lib;bango-1.0.lib;bangobairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\gdk-pixbuf;..\..\..\gdk;..\..\..\gtk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\bdk-pixbuf;..\..\..\bdk;..\..\..\btk;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
@@ -152,7 +152,7 @@
       <CompileAs>CompileAsC</CompileAs>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>cairo.lib;pango-1.0.lib;pangocairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bairo.lib;bango-1.0.lib;bangobairo-1.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -163,52 +163,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-   <ClCompile Include="..\..\..\demos\gtk-demo\appwindow.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\assistant.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\builder.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\button_box.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\changedisplay.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\clipboard.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\colorsel.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\combobox.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\dialog.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\drawingarea.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\editable_cells.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\entry_buffer.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\entry_completion.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\expander.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\hypertext.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\iconview.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\iconview_edit.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\images.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\infobar.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\links.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\list_store.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\menus.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\offscreen_window.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\offscreen_window2.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\panes.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\pickers.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\pixbufs.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\printing.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\rotated_text.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\search_entry.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\sizegroup.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\spinner.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\stock_browser.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\textview.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\textscroll.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\toolpalette.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\tree_store.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\ui_manager.c" />
-   <ClCompile Include="..\..\..\demos\gtk-demo\main.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\appwindow.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\assistant.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\builder.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\button_box.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\changedisplay.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\clipboard.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\colorsel.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\combobox.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\dialog.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\drawingarea.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\editable_cells.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\entry_buffer.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\entry_completion.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\expander.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\hypertext.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\iconview.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\iconview_edit.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\images.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\infobar.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\links.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\list_store.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\menus.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\offscreen_window.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\offscreen_window2.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\panes.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\pickers.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\pixbufs.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\printing.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\rotated_text.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\search_entry.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\sizegroup.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\spinner.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\stock_browser.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\textview.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\textscroll.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\toolpalette.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\tree_store.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\ui_manager.c" />
+   <ClCompile Include="..\..\..\demos\btk-demo\main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="gdk.vcxproj">
+    <ProjectReference Include="bdk.vcxproj">
       <Project>{fc5aadb5-95cd-4bf0-ba8b-0c16fe7073f7}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="gtk.vcxproj">
+    <ProjectReference Include="btk.vcxproj">
       <Project>{fc5aadb5-95cd-4bf0-ba8b-0c16fe7073f5}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

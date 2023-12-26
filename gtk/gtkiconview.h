@@ -1,5 +1,5 @@
-/* gtkiconview.h
- * Copyright (C) 2002, 2004  Anders Carlsson <andersca@gnome.org>
+/* btkiconview.h
+ * Copyright (C) 2002, 2004  Anders Carlsson <andersca@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -17,226 +17,226 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_ICON_VIEW_H__
-#define __GTK_ICON_VIEW_H__
+#ifndef __BTK_ICON_VIEW_H__
+#define __BTK_ICON_VIEW_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcontainer.h>
-#include <gtk/gtktreemodel.h>
-#include <gtk/gtkcellrenderer.h>
-#include <gtk/gtkselection.h>
-#include <gtk/gtktooltip.h>
+#include <btk/btkcontainer.h>
+#include <btk/btktreemodel.h>
+#include <btk/btkcellrenderer.h>
+#include <btk/btkselection.h>
+#include <btk/btktooltip.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ICON_VIEW            (gtk_icon_view_get_type ())
-#define GTK_ICON_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ICON_VIEW, GtkIconView))
-#define GTK_ICON_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ICON_VIEW, GtkIconViewClass))
-#define GTK_IS_ICON_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ICON_VIEW))
-#define GTK_IS_ICON_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ICON_VIEW))
-#define GTK_ICON_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ICON_VIEW, GtkIconViewClass))
+#define BTK_TYPE_ICON_VIEW            (btk_icon_view_get_type ())
+#define BTK_ICON_VIEW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ICON_VIEW, BtkIconView))
+#define BTK_ICON_VIEW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
+#define BTK_IS_ICON_VIEW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ICON_VIEW))
+#define BTK_IS_ICON_VIEW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ICON_VIEW))
+#define BTK_ICON_VIEW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ICON_VIEW, BtkIconViewClass))
 
-typedef struct _GtkIconView           GtkIconView;
-typedef struct _GtkIconViewClass      GtkIconViewClass;
-typedef struct _GtkIconViewPrivate    GtkIconViewPrivate;
+typedef struct _BtkIconView           BtkIconView;
+typedef struct _BtkIconViewClass      BtkIconViewClass;
+typedef struct _BtkIconViewPrivate    BtkIconViewPrivate;
 
-typedef void (* GtkIconViewForeachFunc)     (GtkIconView      *icon_view,
-					     GtkTreePath      *path,
+typedef void (* BtkIconViewForeachFunc)     (BtkIconView      *icon_view,
+					     BtkTreePath      *path,
 					     gpointer          data);
 
 typedef enum
 {
-  GTK_ICON_VIEW_NO_DROP,
-  GTK_ICON_VIEW_DROP_INTO,
-  GTK_ICON_VIEW_DROP_LEFT,
-  GTK_ICON_VIEW_DROP_RIGHT,
-  GTK_ICON_VIEW_DROP_ABOVE,
-  GTK_ICON_VIEW_DROP_BELOW
-} GtkIconViewDropPosition;
+  BTK_ICON_VIEW_NO_DROP,
+  BTK_ICON_VIEW_DROP_INTO,
+  BTK_ICON_VIEW_DROP_LEFT,
+  BTK_ICON_VIEW_DROP_RIGHT,
+  BTK_ICON_VIEW_DROP_ABOVE,
+  BTK_ICON_VIEW_DROP_BELOW
+} BtkIconViewDropPosition;
 
-struct _GtkIconView
+struct _BtkIconView
 {
-  GtkContainer parent;
+  BtkContainer parent;
 
-  GtkIconViewPrivate *GSEAL (priv);
+  BtkIconViewPrivate *GSEAL (priv);
 };
 
-struct _GtkIconViewClass
+struct _BtkIconViewClass
 {
-  GtkContainerClass parent_class;
+  BtkContainerClass parent_class;
 
-  void    (* set_scroll_adjustments) (GtkIconView      *icon_view,
-				      GtkAdjustment    *hadjustment,
-				      GtkAdjustment    *vadjustment);
+  void    (* set_scroll_adjustments) (BtkIconView      *icon_view,
+				      BtkAdjustment    *hadjustment,
+				      BtkAdjustment    *vadjustment);
   
-  void    (* item_activated)         (GtkIconView      *icon_view,
-				      GtkTreePath      *path);
-  void    (* selection_changed)      (GtkIconView      *icon_view);
+  void    (* item_activated)         (BtkIconView      *icon_view,
+				      BtkTreePath      *path);
+  void    (* selection_changed)      (BtkIconView      *icon_view);
 
   /* Key binding signals */
-  void    (* select_all)             (GtkIconView      *icon_view);
-  void    (* unselect_all)           (GtkIconView      *icon_view);
-  void    (* select_cursor_item)     (GtkIconView      *icon_view);
-  void    (* toggle_cursor_item)     (GtkIconView      *icon_view);
-  gboolean (* move_cursor)           (GtkIconView      *icon_view,
-				      GtkMovementStep   step,
+  void    (* select_all)             (BtkIconView      *icon_view);
+  void    (* unselect_all)           (BtkIconView      *icon_view);
+  void    (* select_cursor_item)     (BtkIconView      *icon_view);
+  void    (* toggle_cursor_item)     (BtkIconView      *icon_view);
+  gboolean (* move_cursor)           (BtkIconView      *icon_view,
+				      BtkMovementStep   step,
 				      gint              count);
-  gboolean (* activate_cursor_item)  (GtkIconView      *icon_view);
+  gboolean (* activate_cursor_item)  (BtkIconView      *icon_view);
 };
 
-GType          gtk_icon_view_get_type          (void) G_GNUC_CONST;
-GtkWidget *    gtk_icon_view_new               (void);
-GtkWidget *    gtk_icon_view_new_with_model    (GtkTreeModel   *model);
+GType          btk_icon_view_get_type          (void) G_GNUC_CONST;
+BtkWidget *    btk_icon_view_new               (void);
+BtkWidget *    btk_icon_view_new_with_model    (BtkTreeModel   *model);
 
-void           gtk_icon_view_set_model         (GtkIconView    *icon_view,
- 					        GtkTreeModel   *model);
-GtkTreeModel * gtk_icon_view_get_model         (GtkIconView    *icon_view);
-void           gtk_icon_view_set_text_column   (GtkIconView    *icon_view,
+void           btk_icon_view_set_model         (BtkIconView    *icon_view,
+ 					        BtkTreeModel   *model);
+BtkTreeModel * btk_icon_view_get_model         (BtkIconView    *icon_view);
+void           btk_icon_view_set_text_column   (BtkIconView    *icon_view,
 	 	 			        gint            column);
-gint           gtk_icon_view_get_text_column   (GtkIconView    *icon_view);
-void           gtk_icon_view_set_markup_column (GtkIconView    *icon_view,
+gint           btk_icon_view_get_text_column   (BtkIconView    *icon_view);
+void           btk_icon_view_set_markup_column (BtkIconView    *icon_view,
 					        gint            column);
-gint           gtk_icon_view_get_markup_column (GtkIconView    *icon_view);
-void           gtk_icon_view_set_pixbuf_column (GtkIconView    *icon_view,
+gint           btk_icon_view_get_markup_column (BtkIconView    *icon_view);
+void           btk_icon_view_set_pixbuf_column (BtkIconView    *icon_view,
 					        gint            column);
-gint           gtk_icon_view_get_pixbuf_column (GtkIconView    *icon_view);
+gint           btk_icon_view_get_pixbuf_column (BtkIconView    *icon_view);
 
-void           gtk_icon_view_set_orientation   (GtkIconView    *icon_view,
-	   			                GtkOrientation  orientation);
-GtkOrientation gtk_icon_view_get_orientation   (GtkIconView    *icon_view);
-void           gtk_icon_view_set_item_orientation (GtkIconView    *icon_view,
-	   			                   GtkOrientation  orientation);
-GtkOrientation gtk_icon_view_get_item_orientation (GtkIconView    *icon_view);
-void           gtk_icon_view_set_columns       (GtkIconView    *icon_view,
+void           btk_icon_view_set_orientation   (BtkIconView    *icon_view,
+	   			                BtkOrientation  orientation);
+BtkOrientation btk_icon_view_get_orientation   (BtkIconView    *icon_view);
+void           btk_icon_view_set_item_orientation (BtkIconView    *icon_view,
+	   			                   BtkOrientation  orientation);
+BtkOrientation btk_icon_view_get_item_orientation (BtkIconView    *icon_view);
+void           btk_icon_view_set_columns       (BtkIconView    *icon_view,
 		 			        gint            columns);
-gint           gtk_icon_view_get_columns       (GtkIconView    *icon_view);
-void           gtk_icon_view_set_item_width    (GtkIconView    *icon_view,
+gint           btk_icon_view_get_columns       (BtkIconView    *icon_view);
+void           btk_icon_view_set_item_width    (BtkIconView    *icon_view,
 					        gint            item_width);
-gint           gtk_icon_view_get_item_width    (GtkIconView    *icon_view);
-void           gtk_icon_view_set_spacing       (GtkIconView    *icon_view, 
+gint           btk_icon_view_get_item_width    (BtkIconView    *icon_view);
+void           btk_icon_view_set_spacing       (BtkIconView    *icon_view, 
 		 			        gint            spacing);
-gint           gtk_icon_view_get_spacing       (GtkIconView    *icon_view);
-void           gtk_icon_view_set_row_spacing   (GtkIconView    *icon_view, 
+gint           btk_icon_view_get_spacing       (BtkIconView    *icon_view);
+void           btk_icon_view_set_row_spacing   (BtkIconView    *icon_view, 
 					        gint            row_spacing);
-gint           gtk_icon_view_get_row_spacing   (GtkIconView    *icon_view);
-void           gtk_icon_view_set_column_spacing (GtkIconView    *icon_view, 
+gint           btk_icon_view_get_row_spacing   (BtkIconView    *icon_view);
+void           btk_icon_view_set_column_spacing (BtkIconView    *icon_view, 
 					        gint            column_spacing);
-gint           gtk_icon_view_get_column_spacing (GtkIconView    *icon_view);
-void           gtk_icon_view_set_margin        (GtkIconView    *icon_view, 
+gint           btk_icon_view_get_column_spacing (BtkIconView    *icon_view);
+void           btk_icon_view_set_margin        (BtkIconView    *icon_view, 
 					        gint            margin);
-gint           gtk_icon_view_get_margin        (GtkIconView    *icon_view);
-void           gtk_icon_view_set_item_padding  (GtkIconView    *icon_view, 
+gint           btk_icon_view_get_margin        (BtkIconView    *icon_view);
+void           btk_icon_view_set_item_padding  (BtkIconView    *icon_view, 
 					        gint            item_padding);
-gint           gtk_icon_view_get_item_padding  (GtkIconView    *icon_view);
+gint           btk_icon_view_get_item_padding  (BtkIconView    *icon_view);
 
 
-GtkTreePath *  gtk_icon_view_get_path_at_pos   (GtkIconView     *icon_view,
+BtkTreePath *  btk_icon_view_get_path_at_pos   (BtkIconView     *icon_view,
 						gint             x,
 						gint             y);
-gboolean       gtk_icon_view_get_item_at_pos   (GtkIconView     *icon_view,
+gboolean       btk_icon_view_get_item_at_pos   (BtkIconView     *icon_view,
 						gint              x,
 						gint              y,
-						GtkTreePath     **path,
-						GtkCellRenderer **cell);
-gboolean       gtk_icon_view_get_visible_range (GtkIconView      *icon_view,
-						GtkTreePath     **start_path,
-						GtkTreePath     **end_path);
+						BtkTreePath     **path,
+						BtkCellRenderer **cell);
+gboolean       btk_icon_view_get_visible_range (BtkIconView      *icon_view,
+						BtkTreePath     **start_path,
+						BtkTreePath     **end_path);
 
-void           gtk_icon_view_selected_foreach   (GtkIconView            *icon_view,
-						 GtkIconViewForeachFunc  func,
+void           btk_icon_view_selected_foreach   (BtkIconView            *icon_view,
+						 BtkIconViewForeachFunc  func,
 						 gpointer                data);
-void           gtk_icon_view_set_selection_mode (GtkIconView            *icon_view,
-						 GtkSelectionMode        mode);
-GtkSelectionMode gtk_icon_view_get_selection_mode (GtkIconView            *icon_view);
-void             gtk_icon_view_select_path        (GtkIconView            *icon_view,
-						   GtkTreePath            *path);
-void             gtk_icon_view_unselect_path      (GtkIconView            *icon_view,
-						   GtkTreePath            *path);
-gboolean         gtk_icon_view_path_is_selected   (GtkIconView            *icon_view,
-						   GtkTreePath            *path);
-gint             gtk_icon_view_get_item_row       (GtkIconView            *icon_view,
-                                                   GtkTreePath            *path);
-gint             gtk_icon_view_get_item_column    (GtkIconView            *icon_view,
-                                                   GtkTreePath            *path);
-GList           *gtk_icon_view_get_selected_items (GtkIconView            *icon_view);
-void             gtk_icon_view_select_all         (GtkIconView            *icon_view);
-void             gtk_icon_view_unselect_all       (GtkIconView            *icon_view);
-void             gtk_icon_view_item_activated     (GtkIconView            *icon_view,
-						   GtkTreePath            *path);
-void             gtk_icon_view_set_cursor         (GtkIconView            *icon_view,
-						   GtkTreePath            *path,
-						   GtkCellRenderer        *cell,
+void           btk_icon_view_set_selection_mode (BtkIconView            *icon_view,
+						 BtkSelectionMode        mode);
+BtkSelectionMode btk_icon_view_get_selection_mode (BtkIconView            *icon_view);
+void             btk_icon_view_select_path        (BtkIconView            *icon_view,
+						   BtkTreePath            *path);
+void             btk_icon_view_unselect_path      (BtkIconView            *icon_view,
+						   BtkTreePath            *path);
+gboolean         btk_icon_view_path_is_selected   (BtkIconView            *icon_view,
+						   BtkTreePath            *path);
+gint             btk_icon_view_get_item_row       (BtkIconView            *icon_view,
+                                                   BtkTreePath            *path);
+gint             btk_icon_view_get_item_column    (BtkIconView            *icon_view,
+                                                   BtkTreePath            *path);
+GList           *btk_icon_view_get_selected_items (BtkIconView            *icon_view);
+void             btk_icon_view_select_all         (BtkIconView            *icon_view);
+void             btk_icon_view_unselect_all       (BtkIconView            *icon_view);
+void             btk_icon_view_item_activated     (BtkIconView            *icon_view,
+						   BtkTreePath            *path);
+void             btk_icon_view_set_cursor         (BtkIconView            *icon_view,
+						   BtkTreePath            *path,
+						   BtkCellRenderer        *cell,
 						   gboolean                start_editing);
-gboolean         gtk_icon_view_get_cursor         (GtkIconView            *icon_view,
-						   GtkTreePath           **path,
-						   GtkCellRenderer       **cell);
-void             gtk_icon_view_scroll_to_path     (GtkIconView            *icon_view,
-                                                   GtkTreePath            *path,
+gboolean         btk_icon_view_get_cursor         (BtkIconView            *icon_view,
+						   BtkTreePath           **path,
+						   BtkCellRenderer       **cell);
+void             btk_icon_view_scroll_to_path     (BtkIconView            *icon_view,
+                                                   BtkTreePath            *path,
 						   gboolean                use_align,
 						   gfloat                  row_align,
                                                    gfloat                  col_align);
 
 /* Drag-and-Drop support */
-void                   gtk_icon_view_enable_model_drag_source (GtkIconView              *icon_view,
-							       GdkModifierType           start_button_mask,
-							       const GtkTargetEntry     *targets,
+void                   btk_icon_view_enable_model_drag_source (BtkIconView              *icon_view,
+							       BdkModifierType           start_button_mask,
+							       const BtkTargetEntry     *targets,
 							       gint                      n_targets,
-							       GdkDragAction             actions);
-void                   gtk_icon_view_enable_model_drag_dest   (GtkIconView              *icon_view,
-							       const GtkTargetEntry     *targets,
+							       BdkDragAction             actions);
+void                   btk_icon_view_enable_model_drag_dest   (BtkIconView              *icon_view,
+							       const BtkTargetEntry     *targets,
 							       gint                      n_targets,
-							       GdkDragAction             actions);
-void                   gtk_icon_view_unset_model_drag_source  (GtkIconView              *icon_view);
-void                   gtk_icon_view_unset_model_drag_dest    (GtkIconView              *icon_view);
-void                   gtk_icon_view_set_reorderable          (GtkIconView              *icon_view,
+							       BdkDragAction             actions);
+void                   btk_icon_view_unset_model_drag_source  (BtkIconView              *icon_view);
+void                   btk_icon_view_unset_model_drag_dest    (BtkIconView              *icon_view);
+void                   btk_icon_view_set_reorderable          (BtkIconView              *icon_view,
 							       gboolean                  reorderable);
-gboolean               gtk_icon_view_get_reorderable          (GtkIconView              *icon_view);
+gboolean               btk_icon_view_get_reorderable          (BtkIconView              *icon_view);
 
 
 /* These are useful to implement your own custom stuff. */
-void                   gtk_icon_view_set_drag_dest_item       (GtkIconView              *icon_view,
-							       GtkTreePath              *path,
-							       GtkIconViewDropPosition   pos);
-void                   gtk_icon_view_get_drag_dest_item       (GtkIconView              *icon_view,
-							       GtkTreePath             **path,
-							       GtkIconViewDropPosition  *pos);
-gboolean               gtk_icon_view_get_dest_item_at_pos     (GtkIconView              *icon_view,
+void                   btk_icon_view_set_drag_dest_item       (BtkIconView              *icon_view,
+							       BtkTreePath              *path,
+							       BtkIconViewDropPosition   pos);
+void                   btk_icon_view_get_drag_dest_item       (BtkIconView              *icon_view,
+							       BtkTreePath             **path,
+							       BtkIconViewDropPosition  *pos);
+gboolean               btk_icon_view_get_dest_item_at_pos     (BtkIconView              *icon_view,
 							       gint                      drag_x,
 							       gint                      drag_y,
-							       GtkTreePath             **path,
-							       GtkIconViewDropPosition  *pos);
-GdkPixmap             *gtk_icon_view_create_drag_icon         (GtkIconView              *icon_view,
-							       GtkTreePath              *path);
+							       BtkTreePath             **path,
+							       BtkIconViewDropPosition  *pos);
+BdkPixmap             *btk_icon_view_create_drag_icon         (BtkIconView              *icon_view,
+							       BtkTreePath              *path);
 
-void    gtk_icon_view_convert_widget_to_bin_window_coords     (GtkIconView *icon_view,
+void    btk_icon_view_convert_widget_to_bin_window_coords     (BtkIconView *icon_view,
                                                                gint         wx,
                                                                gint         wy,
                                                                gint        *bx,
                                                                gint        *by);
 
 
-void    gtk_icon_view_set_tooltip_item                        (GtkIconView     *icon_view,
-                                                               GtkTooltip      *tooltip,
-                                                               GtkTreePath     *path);
-void    gtk_icon_view_set_tooltip_cell                        (GtkIconView     *icon_view,
-                                                               GtkTooltip      *tooltip,
-                                                               GtkTreePath     *path,
-                                                               GtkCellRenderer *cell);
-gboolean gtk_icon_view_get_tooltip_context                    (GtkIconView       *icon_view,
+void    btk_icon_view_set_tooltip_item                        (BtkIconView     *icon_view,
+                                                               BtkTooltip      *tooltip,
+                                                               BtkTreePath     *path);
+void    btk_icon_view_set_tooltip_cell                        (BtkIconView     *icon_view,
+                                                               BtkTooltip      *tooltip,
+                                                               BtkTreePath     *path,
+                                                               BtkCellRenderer *cell);
+gboolean btk_icon_view_get_tooltip_context                    (BtkIconView       *icon_view,
                                                                gint              *x,
                                                                gint              *y,
                                                                gboolean           keyboard_tip,
-                                                               GtkTreeModel     **model,
-                                                               GtkTreePath      **path,
-                                                               GtkTreeIter       *iter);
-void     gtk_icon_view_set_tooltip_column                     (GtkIconView       *icon_view,
+                                                               BtkTreeModel     **model,
+                                                               BtkTreePath      **path,
+                                                               BtkTreeIter       *iter);
+void     btk_icon_view_set_tooltip_column                     (BtkIconView       *icon_view,
                                                                gint               column);
-gint     gtk_icon_view_get_tooltip_column                     (GtkIconView       *icon_view);
+gint     btk_icon_view_get_tooltip_column                     (BtkIconView       *icon_view);
 
 
 G_END_DECLS
 
-#endif /* __GTK_ICON_VIEW_H__ */
+#endif /* __BTK_ICON_VIEW_H__ */

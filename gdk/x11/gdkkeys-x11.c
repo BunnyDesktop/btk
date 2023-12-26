@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
@@ -33,14 +33,14 @@
 #include <limits.h>
 #include <errno.h>
 
-#include "gdk.h"
-#include "gdkx.h"
+#include "bdk.h"
+#include "bdkx.h"
 
-#include "gdkprivate-x11.h"
-#include "gdkinternals.h"
-#include "gdkdisplay-x11.h"
-#include "gdkkeysyms.h"
-#include "gdkalias.h"
+#include "bdkprivate-x11.h"
+#include "bdkinternals.h"
+#include "bdkdisplay-x11.h"
+#include "bdkkeysyms.h"
+#include "bdkalias.h"
 
 #ifdef HAVE_XKB
 #include <X11/XKBlib.h>
@@ -53,12 +53,12 @@
 #  endif
 #endif /* HAVE_XKB */
 
-typedef struct _GdkKeymapX11   GdkKeymapX11;
-typedef struct _GdkKeymapClass GdkKeymapX11Class;
+typedef struct _BdkKeymapX11   BdkKeymapX11;
+typedef struct _BdkKeymapClass BdkKeymapX11Class;
 
-#define GDK_TYPE_KEYMAP_X11          (gdk_keymap_x11_get_type ())
-#define GDK_KEYMAP_X11(object)       (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_KEYMAP_X11, GdkKeymapX11))
-#define GDK_IS_KEYMAP_X11(object)    (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_KEYMAP_X11))
+#define BDK_TYPE_KEYMAP_X11          (bdk_keymap_x11_get_type ())
+#define BDK_KEYMAP_X11(object)       (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_KEYMAP_X11, BdkKeymapX11))
+#define BDK_IS_KEYMAP_X11(object)    (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_KEYMAP_X11))
 
 typedef struct _DirectionCacheEntry DirectionCacheEntry;
 
@@ -66,12 +66,12 @@ struct _DirectionCacheEntry
 {
   guint serial;
   Atom group_atom;
-  PangoDirection direction;
+  BangoDirection direction;
 };
 
-struct _GdkKeymapX11
+struct _BdkKeymapX11
 {
-  GdkKeymap     parent_instance;
+  BdkKeymap     parent_instance;
 
   gint min_keycode;
   gint max_keycode;
@@ -79,10 +79,10 @@ struct _GdkKeymapX11
   gint keysyms_per_keycode;
   XModifierKeymap* mod_keymap;
   guint lock_keysym;
-  GdkModifierType group_switch_mask;
-  GdkModifierType num_lock_mask;
-  GdkModifierType modmap[8];
-  PangoDirection current_direction;
+  BdkModifierType group_switch_mask;
+  BdkModifierType num_lock_mask;
+  BdkModifierType modmap[8];
+  BangoDirection current_direction;
   guint sun_keypad      : 1;
   guint have_direction  : 1;
   guint caps_lock_state : 1;
@@ -102,18 +102,18 @@ struct _GdkKeymapX11
 #endif
 };
 
-#define KEYMAP_USE_XKB(keymap) GDK_DISPLAY_X11 ((keymap)->display)->use_xkb
-#define KEYMAP_XDISPLAY(keymap) GDK_DISPLAY_XDISPLAY ((keymap)->display)
+#define KEYMAP_USE_XKB(keymap) BDK_DISPLAY_X11 ((keymap)->display)->use_xkb
+#define KEYMAP_XDISPLAY(keymap) BDK_DISPLAY_XDISPLAY ((keymap)->display)
 
-static GType gdk_keymap_x11_get_type   (void);
-static void  gdk_keymap_x11_class_init (GdkKeymapX11Class *klass);
-static void  gdk_keymap_x11_init       (GdkKeymapX11      *keymap);
-static void  gdk_keymap_x11_finalize   (GObject           *object);
+static GType bdk_keymap_x11_get_type   (void);
+static void  bdk_keymap_x11_class_init (BdkKeymapX11Class *klass);
+static void  bdk_keymap_x11_init       (BdkKeymapX11      *keymap);
+static void  bdk_keymap_x11_finalize   (GObject           *object);
 
-static GdkKeymapClass *parent_class = NULL;
+static BdkKeymapClass *parent_class = NULL;
 
 static GType
-gdk_keymap_x11_get_type (void)
+bdk_keymap_x11_get_type (void)
 {
   static GType object_type = 0;
 
@@ -121,19 +121,19 @@ gdk_keymap_x11_get_type (void)
     {
       const GTypeInfo object_info =
 	{
-	  sizeof (GdkKeymapClass),
+	  sizeof (BdkKeymapClass),
 	  (GBaseInitFunc) NULL,
 	  (GBaseFinalizeFunc) NULL,
-	  (GClassInitFunc) gdk_keymap_x11_class_init,
+	  (GClassInitFunc) bdk_keymap_x11_class_init,
 	  NULL,           /* class_finalize */
 	  NULL,           /* class_data */
-	  sizeof (GdkKeymapX11),
+	  sizeof (BdkKeymapX11),
 	  0,              /* n_preallocs */
-	  (GInstanceInitFunc) gdk_keymap_x11_init,
+	  (GInstanceInitFunc) bdk_keymap_x11_init,
 	};
       
-      object_type = g_type_register_static (GDK_TYPE_KEYMAP,
-                                            g_intern_static_string ("GdkKeymapX11"),
+      object_type = g_type_register_static (BDK_TYPE_KEYMAP,
+                                            g_intern_static_string ("BdkKeymapX11"),
                                             &object_info, 0);
     }
   
@@ -141,17 +141,17 @@ gdk_keymap_x11_get_type (void)
 }
 
 static void
-gdk_keymap_x11_class_init (GdkKeymapX11Class *klass)
+bdk_keymap_x11_class_init (BdkKeymapX11Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_keymap_x11_finalize;
+  object_class->finalize = bdk_keymap_x11_finalize;
 }
 
 static void
-gdk_keymap_x11_init (GdkKeymapX11 *keymap)
+bdk_keymap_x11_init (BdkKeymapX11 *keymap)
 {
   keymap->min_keycode = 0;
   keymap->max_keycode = 0;
@@ -163,7 +163,7 @@ gdk_keymap_x11_init (GdkKeymapX11 *keymap)
   keymap->num_lock_mask = 0;
   keymap->sun_keypad = FALSE;
   keymap->group_switch_mask = 0;
-  keymap->lock_keysym = GDK_Caps_Lock;
+  keymap->lock_keysym = BDK_Caps_Lock;
   keymap->have_direction = FALSE;
   keymap->current_serial = 0;
 
@@ -176,9 +176,9 @@ gdk_keymap_x11_init (GdkKeymapX11 *keymap)
 }
 
 static void
-gdk_keymap_x11_finalize (GObject *object)
+bdk_keymap_x11_finalize (GObject *object)
 {
-  GdkKeymapX11 *keymap_x11 = GDK_KEYMAP_X11 (object);
+  BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (object);
 
   if (keymap_x11->keymap)
     XFree (keymap_x11->keymap);
@@ -195,10 +195,10 @@ gdk_keymap_x11_finalize (GObject *object)
 }
 
 static inline void
-update_keyrange (GdkKeymapX11 *keymap_x11)
+update_keyrange (BdkKeymapX11 *keymap_x11)
 {
   if (keymap_x11->max_keycode == 0)
-    XDisplayKeycodes (KEYMAP_XDISPLAY (GDK_KEYMAP (keymap_x11)),
+    XDisplayKeycodes (KEYMAP_XDISPLAY (BDK_KEYMAP (keymap_x11)),
 		      &keymap_x11->min_keycode, &keymap_x11->max_keycode);
 }
 
@@ -206,16 +206,16 @@ update_keyrange (GdkKeymapX11 *keymap_x11)
 
 static void
 update_modmap (Display      *display,
-	       GdkKeymapX11 *keymap_x11)
+	       BdkKeymapX11 *keymap_x11)
 {
   static struct {
     const gchar *name;
     Atom atom;
-    GdkModifierType mask;
+    BdkModifierType mask;
   } vmods[] = {
-    { "Meta", 0, GDK_META_MASK },
-    { "Super", 0, GDK_SUPER_MASK },
-    { "Hyper", 0, GDK_HYPER_MASK },
+    { "Meta", 0, BDK_META_MASK },
+    { "Super", 0, BDK_SUPER_MASK },
+    { "Hyper", 0, BDK_HYPER_MASK },
     { NULL, 0, 0 }
   };
 
@@ -245,9 +245,9 @@ update_modmap (Display      *display,
 }
 
 static XkbDescPtr
-get_xkb (GdkKeymapX11 *keymap_x11)
+get_xkb (BdkKeymapX11 *keymap_x11)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (GDK_KEYMAP (keymap_x11)->display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_KEYMAP (keymap_x11)->display);
   Display *xdisplay = display_x11->xdisplay;
   
   update_keyrange (keymap_x11);
@@ -286,23 +286,23 @@ get_xkb (GdkKeymapX11 *keymap_x11)
  */
 
 /** 
- * gdk_keymap_get_for_display:
- * @display: the #GdkDisplay.
- * @returns: the #GdkKeymap attached to @display.
+ * bdk_keymap_get_for_display:
+ * @display: the #BdkDisplay.
+ * @returns: the #BdkKeymap attached to @display.
  *
- * Returns the #GdkKeymap attached to @display.
+ * Returns the #BdkKeymap attached to @display.
  *
  * Since: 2.2
  **/
-GdkKeymap*
-gdk_keymap_get_for_display (GdkDisplay *display)
+BdkKeymap*
+bdk_keymap_get_for_display (BdkDisplay *display)
 {
-  GdkDisplayX11 *display_x11;
-  g_return_val_if_fail (GDK_IS_DISPLAY (display), NULL);
-  display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11;
+  g_return_val_if_fail (BDK_IS_DISPLAY (display), NULL);
+  display_x11 = BDK_DISPLAY_X11 (display);
   
   if (!display_x11->keymap)
-    display_x11->keymap = g_object_new (gdk_keymap_x11_get_type (), NULL);
+    display_x11->keymap = g_object_new (bdk_keymap_x11_get_type (), NULL);
 
   display_x11->keymap->display = display;
 
@@ -320,7 +320,7 @@ gdk_keymap_get_for_display (GdkDisplay *display)
 
 static gint
 get_symbol (const KeySym *syms,
-	    GdkKeymapX11 *keymap_x11,
+	    BdkKeymapX11 *keymap_x11,
 	    gint group,
 	    gint level)
 {
@@ -335,7 +335,7 @@ get_symbol (const KeySym *syms,
 
 static void
 set_symbol (KeySym       *syms, 
-	    GdkKeymapX11 *keymap_x11, 
+	    BdkKeymapX11 *keymap_x11, 
 	    gint          group, 
 	    gint          level, 
 	    KeySym        sym)
@@ -350,13 +350,13 @@ set_symbol (KeySym       *syms,
 }
 
 static void
-update_keymaps (GdkKeymapX11 *keymap_x11)
+update_keymaps (BdkKeymapX11 *keymap_x11)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (GDK_KEYMAP (keymap_x11)->display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (BDK_KEYMAP (keymap_x11)->display);
   Display *xdisplay = display_x11->xdisplay;
   
 #ifdef HAVE_XKB
-  g_assert (!KEYMAP_USE_XKB (GDK_KEYMAP (keymap_x11)));
+  g_assert (!KEYMAP_USE_XKB (BDK_KEYMAP (keymap_x11)));
 #endif
   
   if (keymap_x11->keymap == NULL ||
@@ -381,9 +381,9 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
 						&keymap_x11->keysyms_per_keycode);
 
 
-      /* GDK_ISO_Left_Tab, as usually configured through XKB, really messes
+      /* BDK_ISO_Left_Tab, as usually configured through XKB, really messes
        * up the whole idea of "consumed modifiers" because shift is consumed.
-       * However, <shift>Tab is not usually GDK_ISO_Left_Tab without XKB,
+       * However, <shift>Tab is not usually BDK_ISO_Left_Tab without XKB,
        * we we fudge the map here.
        */
       keycode = keymap_x11->min_keycode;
@@ -393,8 +393,8 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
 	  /* Check both groups */
 	  for (i = 0 ; i < 2 ; i++)
 	    {
-	      if (get_symbol (syms, keymap_x11, i, 0) == GDK_Tab)
-		set_symbol (syms, keymap_x11, i, 1, GDK_ISO_Left_Tab);
+	      if (get_symbol (syms, keymap_x11, i, 0) == BDK_Tab)
+		set_symbol (syms, keymap_x11, i, 1, BDK_ISO_Left_Tab);
 	    }
 
           /*
@@ -406,7 +406,7 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
               guint lower;
               guint upper;
 
-              gdk_keyval_convert_case (get_symbol (syms, keymap_x11, 0, 0), &lower, &upper);
+              bdk_keyval_convert_case (get_symbol (syms, keymap_x11, 0, 0), &lower, &upper);
               if (lower != upper)
                 {
 		  set_symbol (syms, keymap_x11, 0, 0, lower);
@@ -420,7 +420,7 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
 
       keymap_x11->mod_keymap = XGetModifierMapping (xdisplay);
 
-      keymap_x11->lock_keysym = GDK_VoidSymbol;
+      keymap_x11->lock_keysym = BDK_VoidSymbol;
       keymap_x11->group_switch_mask = 0;
       keymap_x11->num_lock_mask = 0;
 
@@ -449,27 +449,27 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
 	  mask = 0;
 	  for (j = 0; j < keymap_x11->keysyms_per_keycode; j++)
 	    {
-	      if (syms[j] == GDK_Meta_L ||
-		  syms[j] == GDK_Meta_R)
-		mask |= GDK_META_MASK;
-	      else if (syms[j] == GDK_Hyper_L ||
-		       syms[j] == GDK_Hyper_R)
-		mask |= GDK_HYPER_MASK;
-	      else if (syms[j] == GDK_Super_L ||
-		       syms[j] == GDK_Super_R)
-		mask |= GDK_SUPER_MASK;
+	      if (syms[j] == BDK_Meta_L ||
+		  syms[j] == BDK_Meta_R)
+		mask |= BDK_META_MASK;
+	      else if (syms[j] == BDK_Hyper_L ||
+		       syms[j] == BDK_Hyper_R)
+		mask |= BDK_HYPER_MASK;
+	      else if (syms[j] == BDK_Super_L ||
+		       syms[j] == BDK_Super_R)
+		mask |= BDK_SUPER_MASK;
 	    }
 
 	  keymap_x11->modmap[i/keymap_x11->mod_keymap->max_keypermod] |= mask;
 
-          /* The fourth modifier, GDK_MOD1_MASK is 1 << 3.
+          /* The fourth modifier, BDK_MOD1_MASK is 1 << 3.
 	   * Each group of max_keypermod entries refers to the same modifier.
            */
           mask = 1 << (i / keymap_x11->mod_keymap->max_keypermod);
 
           switch (mask)
             {
-            case GDK_LOCK_MASK:
+            case BDK_LOCK_MASK:
               /* Get the Lock keysym.  If any keysym bound to the Lock modifier
                * is Caps_Lock, we will interpret the modifier as Caps_Lock;
                * otherwise, if any is bound to Shift_Lock, we will interpret
@@ -478,17 +478,17 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
                */
 	      for (j = 0; j < keymap_x11->keysyms_per_keycode; j++)
 		{
-		  if (syms[j] == GDK_Caps_Lock)
-		    keymap_x11->lock_keysym = GDK_Caps_Lock;
-		  else if (syms[j] == GDK_Shift_Lock &&
-			   keymap_x11->lock_keysym == GDK_VoidSymbol)
-		    keymap_x11->lock_keysym = GDK_Shift_Lock;
+		  if (syms[j] == BDK_Caps_Lock)
+		    keymap_x11->lock_keysym = BDK_Caps_Lock;
+		  else if (syms[j] == BDK_Shift_Lock &&
+			   keymap_x11->lock_keysym == BDK_VoidSymbol)
+		    keymap_x11->lock_keysym = BDK_Shift_Lock;
 		}
               break;
 
-            case GDK_CONTROL_MASK:
-            case GDK_SHIFT_MASK:
-            case GDK_MOD1_MASK:
+            case BDK_CONTROL_MASK:
+            case BDK_SHIFT_MASK:
+            case BDK_MOD1_MASK:
               /* Some keyboard maps are known to map Mode_Switch as an
                * extra Mod1 key. In circumstances like that, it won't be
                * used to switch groups.
@@ -499,12 +499,12 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
               /* Find the Mode_Switch and Num_Lock modifiers. */
               for (j = 0; j < keymap_x11->keysyms_per_keycode; j++)
                 {
-                  if (syms[j] == GDK_Mode_switch)
+                  if (syms[j] == BDK_Mode_switch)
                     {
                       /* This modifier swaps groups */
                       keymap_x11->group_switch_mask |= mask;
                     }
-                  else if (syms[j] == GDK_Num_Lock)
+                  else if (syms[j] == BDK_Num_Lock)
                     {
                       /* This modifier is used for Num_Lock */
                       keymap_x11->num_lock_mask |= mask;
@@ -527,7 +527,7 @@ update_keymaps (GdkKeymapX11 *keymap_x11)
 }
 
 static const KeySym*
-get_keymap (GdkKeymapX11 *keymap_x11)
+get_keymap (BdkKeymapX11 *keymap_x11)
 {
   update_keymaps (keymap_x11);
   
@@ -536,23 +536,23 @@ get_keymap (GdkKeymapX11 *keymap_x11)
 
 #define GET_EFFECTIVE_KEYMAP(keymap) get_effective_keymap ((keymap), G_STRFUNC)
 
-static GdkKeymap *
-get_effective_keymap (GdkKeymap  *keymap,
+static BdkKeymap *
+get_effective_keymap (BdkKeymap  *keymap,
 		      const char *function)
 {
   if (!keymap)
     {
-      GDK_NOTE (MULTIHEAD,
+      BDK_NOTE (MULTIHEAD,
 		g_message ("reverting to default display keymap in %s",
 			   function));
-      return gdk_keymap_get_default ();
+      return bdk_keymap_get_default ();
     }
 
   return keymap;
 }
 
 #if HAVE_XKB
-static PangoDirection
+static BangoDirection
 get_direction (XkbDescRec *xkb, 
 	       gint group)
 {
@@ -564,14 +564,14 @@ get_direction (XkbDescRec *xkb,
     {
       gint level = 0;
       KeySym sym = XkbKeySymEntry (xkb, code, level, group);
-      PangoDirection dir = pango_unichar_direction (gdk_keyval_to_unicode (sym));
+      BangoDirection dir = bango_unichar_direction (bdk_keyval_to_unicode (sym));
 
       switch (dir)
 	{
-	case PANGO_DIRECTION_RTL:
+	case BANGO_DIRECTION_RTL:
 	  rtl_minus_ltr++;
 	  break;
-	case PANGO_DIRECTION_LTR:
+	case BANGO_DIRECTION_LTR:
 	  rtl_minus_ltr--;
 	  break;
 	default:
@@ -580,13 +580,13 @@ get_direction (XkbDescRec *xkb,
     }
 
   if (rtl_minus_ltr > 0)
-    return PANGO_DIRECTION_RTL;
+    return BANGO_DIRECTION_RTL;
   else
-    return PANGO_DIRECTION_LTR;
+    return BANGO_DIRECTION_LTR;
 }
 
-static PangoDirection
-get_direction_from_cache (GdkKeymapX11 *keymap_x11,
+static BangoDirection
+get_direction_from_cache (BdkKeymapX11 *keymap_x11,
 			  XkbDescPtr xkb,
 			  gint group)
 {
@@ -595,7 +595,7 @@ get_direction_from_cache (GdkKeymapX11 *keymap_x11,
   gboolean cache_hit = FALSE;
   DirectionCacheEntry *cache = keymap_x11->group_direction_cache;
 
-  PangoDirection direction = PANGO_DIRECTION_NEUTRAL;
+  BangoDirection direction = BANGO_DIRECTION_NEUTRAL;
   gint i;
 
   if (keymap_x11->have_direction)
@@ -647,7 +647,7 @@ get_direction_from_cache (GdkKeymapX11 *keymap_x11,
 }
 
 static int
-get_num_groups (GdkKeymap *keymap,
+get_num_groups (BdkKeymap *keymap,
 		XkbDescPtr xkb)
 {
       Display *display = KEYMAP_XDISPLAY (keymap);
@@ -658,13 +658,13 @@ get_num_groups (GdkKeymap *keymap,
 }
 
 static gboolean
-update_direction (GdkKeymapX11 *keymap_x11,
+update_direction (BdkKeymapX11 *keymap_x11,
 		  gint          group)
 {
   XkbDescPtr xkb = get_xkb (keymap_x11);
   Atom group_atom;
   gboolean had_direction;
-  PangoDirection old_direction;
+  BangoDirection old_direction;
       
   had_direction = keymap_x11->have_direction;
   old_direction = keymap_x11->current_direction;
@@ -683,31 +683,31 @@ update_direction (GdkKeymapX11 *keymap_x11,
 }
 
 static gboolean
-update_lock_state (GdkKeymapX11 *keymap_x11,
+update_lock_state (BdkKeymapX11 *keymap_x11,
                    gint          locked_mods)
 {
   gboolean caps_lock_state;
   
   caps_lock_state = keymap_x11->caps_lock_state;
 
-  keymap_x11->caps_lock_state = (locked_mods & GDK_LOCK_MASK) != 0;
+  keymap_x11->caps_lock_state = (locked_mods & BDK_LOCK_MASK) != 0;
   
   return caps_lock_state != keymap_x11->caps_lock_state;
 }
 
 /* keep this in sync with the XkbSelectEventDetails() call 
- * in gdk_display_open()
+ * in bdk_display_open()
  */
 void
-_gdk_keymap_state_changed (GdkDisplay *display,
+_bdk_keymap_state_changed (BdkDisplay *display,
 			   XEvent     *xevent)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   XkbEvent *xkb_event = (XkbEvent *)xevent;
   
   if (display_x11->keymap)
     {
-      GdkKeymapX11 *keymap_x11 = GDK_KEYMAP_X11 (display_x11->keymap);
+      BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (display_x11->keymap);
       
       if (update_direction (keymap_x11, XkbStateGroup (&xkb_event->state)))
 	g_signal_emit_by_name (keymap_x11, "direction-changed");      
@@ -720,9 +720,9 @@ _gdk_keymap_state_changed (GdkDisplay *display,
 #endif /* HAVE_XKB */
 
 void
-_gdk_keymap_keys_changed (GdkDisplay *display)
+_bdk_keymap_keys_changed (BdkDisplay *display)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   
   ++display_x11->keymap_serial;
   
@@ -731,34 +731,34 @@ _gdk_keymap_keys_changed (GdkDisplay *display)
 }
 
 /** 
- * gdk_keymap_get_direction:
- * @keymap: a #GdkKeymap or %NULL to use the default keymap
+ * bdk_keymap_get_direction:
+ * @keymap: a #BdkKeymap or %NULL to use the default keymap
  *
  * Returns the direction of effective layout of the keymap.
  *
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
- * Returns: %PANGO_DIRECTION_LTR or %PANGO_DIRECTION_RTL
- *   if it can determine the direction. %PANGO_DIRECTION_NEUTRAL
+ * Returns: %BANGO_DIRECTION_LTR or %BANGO_DIRECTION_RTL
+ *   if it can determine the direction. %BANGO_DIRECTION_NEUTRAL
  *   otherwise.
  **/
-PangoDirection
-gdk_keymap_get_direction (GdkKeymap *keymap)
+BangoDirection
+bdk_keymap_get_direction (BdkKeymap *keymap)
 {
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
   
 #if HAVE_XKB
   if (KEYMAP_USE_XKB (keymap))
     {
-      GdkKeymapX11 *keymap_x11 = GDK_KEYMAP_X11 (keymap);
+      BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
       if (!keymap_x11->have_direction)
 	{
-	  GdkDisplay *display = GDK_KEYMAP (keymap_x11)->display;
+	  BdkDisplay *display = BDK_KEYMAP (keymap_x11)->display;
 	  XkbStateRec state_rec;
 
-	  XkbGetState (GDK_DISPLAY_XDISPLAY (display), XkbUseCoreKbd, 
+	  XkbGetState (BDK_DISPLAY_XDISPLAY (display), XkbUseCoreKbd, 
 		       &state_rec);
 	  update_direction (keymap_x11, XkbStateGroup (&state_rec));
 	}
@@ -767,32 +767,32 @@ gdk_keymap_get_direction (GdkKeymap *keymap)
     }
   else
 #endif /* HAVE_XKB */
-    return PANGO_DIRECTION_NEUTRAL;
+    return BANGO_DIRECTION_NEUTRAL;
 }
 
 /** 
- * gdk_keymap_have_bidi_layouts:
- * @keymap: a #GdkKeymap or %NULL to use the default keymap
+ * bdk_keymap_have_bidi_layouts:
+ * @keymap: a #BdkKeymap or %NULL to use the default keymap
  *
  * Determines if keyboard layouts for both right-to-left and left-to-right
  * languages are in use.
  *
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
  * Returns: %TRUE if there are layouts in both directions, %FALSE otherwise
  *
  * Since: 2.12
  **/
 gboolean
-gdk_keymap_have_bidi_layouts (GdkKeymap *keymap)
+bdk_keymap_have_bidi_layouts (BdkKeymap *keymap)
 {
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
 
 #if HAVE_XKB
   if (KEYMAP_USE_XKB (keymap))
     {
-      GdkKeymapX11 *keymap_x11 = GDK_KEYMAP_X11 (keymap);
+      BdkKeymapX11 *keymap_x11 = BDK_KEYMAP_X11 (keymap);
       XkbDescPtr xkb = get_xkb (keymap_x11);
       int num_groups = get_num_groups (keymap, xkb);
 
@@ -802,7 +802,7 @@ gdk_keymap_have_bidi_layouts (GdkKeymap *keymap)
 
       for (i = 0; i < num_groups; i++)
       {
-	if (get_direction_from_cache (keymap_x11, xkb, i) == PANGO_DIRECTION_RTL)
+	if (get_direction_from_cache (keymap_x11, xkb, i) == BANGO_DIRECTION_RTL)
 	  have_rtl_keyboard = TRUE;
 	else
 	  have_ltr_keyboard = TRUE;
@@ -816,8 +816,8 @@ gdk_keymap_have_bidi_layouts (GdkKeymap *keymap)
 }
 
 /**
- * gdk_keymap_get_caps_lock_state:
- * @keymap: a #GdkKeymap
+ * bdk_keymap_get_caps_lock_state:
+ * @keymap: a #BdkKeymap
  *
  * Returns whether the Caps Lock modifer is locked. 
  *
@@ -826,23 +826,23 @@ gdk_keymap_have_bidi_layouts (GdkKeymap *keymap)
  * Since: 2.16
  */
 gboolean
-gdk_keymap_get_caps_lock_state (GdkKeymap *keymap)
+bdk_keymap_get_caps_lock_state (BdkKeymap *keymap)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
   
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
   
   return keymap_x11->caps_lock_state;
 }
 
 
 /**
- * gdk_keymap_get_entries_for_keyval:
- * @keymap: (allow-none): a #GdkKeymap, or %NULL to use the default keymap
- * @keyval: a keyval, such as %GDK_a, %GDK_Up, %GDK_Return, etc.
- * @keys: (out): return location for an array of #GdkKeymapKey
+ * bdk_keymap_get_entries_for_keyval:
+ * @keymap: (allow-none): a #BdkKeymap, or %NULL to use the default keymap
+ * @keyval: a keyval, such as %BDK_a, %BDK_Up, %BDK_Return, etc.
+ * @keys: (out): return location for an array of #BdkKeymapKey
  * @n_keys: (out): return location for number of elements in returned array
  *
  * Obtains a list of keycode/group/level combinations that will
@@ -852,34 +852,34 @@ gdk_keymap_get_caps_lock_state (GdkKeymap *keymap)
  * right symbol is used. On US keyboards, the shift key changes the
  * keyboard level, and there are no groups. A group switch key might
  * convert a keyboard between Hebrew to English modes, for example.
- * #GdkEventKey contains a %group field that indicates the active
+ * #BdkEventKey contains a %group field that indicates the active
  * keyboard group. The level is computed from the modifier mask.
  * The returned array should be freed
  * with g_free().
  *
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
  * Return value: %TRUE if keys were found and returned
  **/
 gboolean
-gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
+bdk_keymap_get_entries_for_keyval (BdkKeymap     *keymap,
                                    guint          keyval,
-                                   GdkKeymapKey **keys,
+                                   BdkKeymapKey **keys,
                                    gint          *n_keys)
 {
   GArray *retval;
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (keys != NULL, FALSE);
   g_return_val_if_fail (n_keys != NULL, FALSE);
   g_return_val_if_fail (keyval != 0, FALSE);
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
   
-  retval = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
+  retval = g_array_new (FALSE, FALSE, sizeof (BdkKeymapKey));
 
 #ifdef HAVE_XKB
   if (KEYMAP_USE_XKB (keymap))
@@ -914,7 +914,7 @@ gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
               if (entry[i] == keyval)
                 {
                   /* Found a match */
-                  GdkKeymapKey key;
+                  BdkKeymapKey key;
 
                   key.keycode = keycode;
                   key.group = group;
@@ -957,7 +957,7 @@ gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
               if (syms[i] == keyval)
                 {
                   /* found a match */
-                  GdkKeymapKey key;
+                  BdkKeymapKey key;
 
                   key.keycode = keycode;
 
@@ -977,7 +977,7 @@ gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
 
   if (retval->len > 0)
     {
-      *keys = (GdkKeymapKey*) retval->data;
+      *keys = (BdkKeymapKey*) retval->data;
       *n_keys = retval->len;
     }
   else
@@ -992,42 +992,42 @@ gdk_keymap_get_entries_for_keyval (GdkKeymap     *keymap,
 }
 
 /**
- * gdk_keymap_get_entries_for_keycode:
- * @keymap: (allow-none): a #GdkKeymap or %NULL to use the default keymap
+ * bdk_keymap_get_entries_for_keycode:
+ * @keymap: (allow-none): a #BdkKeymap or %NULL to use the default keymap
  * @hardware_keycode: a keycode
- * @keys: (out): return location for array of #GdkKeymapKey, or %NULL
+ * @keys: (out): return location for array of #BdkKeymapKey, or %NULL
  * @keyvals: (out): return location for array of keyvals, or %NULL
  * @n_entries: length of @keys and @keyvals
  *
  * Returns the keyvals bound to @hardware_keycode.
- * The Nth #GdkKeymapKey in @keys is bound to the Nth
+ * The Nth #BdkKeymapKey in @keys is bound to the Nth
  * keyval in @keyvals. Free the returned arrays with g_free().
  * When a keycode is pressed by the user, the keyval from
  * this list of entries is selected by considering the effective
- * keyboard group and level. See gdk_keymap_translate_keyboard_state().
+ * keyboard group and level. See bdk_keymap_translate_keyboard_state().
  *
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
  * Returns: %TRUE if there were any entries
  **/
 gboolean
-gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
+bdk_keymap_get_entries_for_keycode (BdkKeymap     *keymap,
                                     guint          hardware_keycode,
-                                    GdkKeymapKey **keys,
+                                    BdkKeymapKey **keys,
                                     guint        **keyvals,
                                     gint          *n_entries)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   
   GArray *key_array;
   GArray *keyval_array;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (n_entries != NULL, FALSE);
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   update_keyrange (keymap_x11);
 
@@ -1044,7 +1044,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
     }
   
   if (keys)
-    key_array = g_array_new (FALSE, FALSE, sizeof (GdkKeymapKey));
+    key_array = g_array_new (FALSE, FALSE, sizeof (BdkKeymapKey));
   else
     key_array = NULL;
   
@@ -1082,7 +1082,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
 
           if (key_array)
             {
-              GdkKeymapKey key;
+              BdkKeymapKey key;
               
               key.keycode = hardware_keycode;
               key.group = group;
@@ -1118,7 +1118,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
         {
           if (key_array)
             {
-              GdkKeymapKey key;
+              BdkKeymapKey key;
           
               key.keycode = hardware_keycode;
               
@@ -1141,7 +1141,7 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
   if (keys)
     {
       *n_entries = key_array->len;
-      *keys = (GdkKeymapKey*) g_array_free (key_array, FALSE);
+      *keys = (BdkKeymapKey*) g_array_free (key_array, FALSE);
     }
   
   if (keyvals)
@@ -1155,33 +1155,33 @@ gdk_keymap_get_entries_for_keycode (GdkKeymap     *keymap,
 
 
 /**
- * gdk_keymap_lookup_key:
- * @keymap: a #GdkKeymap or %NULL to use the default keymap
- * @key: a #GdkKeymapKey with keycode, group, and level initialized
+ * bdk_keymap_lookup_key:
+ * @keymap: a #BdkKeymap or %NULL to use the default keymap
+ * @key: a #BdkKeymapKey with keycode, group, and level initialized
  * 
  * Looks up the keyval mapped to a keycode/group/level triplet.
  * If no keyval is bound to @key, returns 0. For normal user input,
- * you want to use gdk_keymap_translate_keyboard_state() instead of
+ * you want to use bdk_keymap_translate_keyboard_state() instead of
  * this function, since the effective group/level may not be
  * the same as the current keyboard state.
  * 
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
  * Return value: a keyval, or 0 if none was mapped to the given @key
  **/
 guint
-gdk_keymap_lookup_key (GdkKeymap          *keymap,
-                       const GdkKeymapKey *key)
+bdk_keymap_lookup_key (BdkKeymap          *keymap,
+                       const BdkKeymapKey *key)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), 0);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), 0);
   g_return_val_if_fail (key != NULL, 0);
   g_return_val_if_fail (key->group < 4, 0);
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
   
 #ifdef HAVE_XKB
   if (KEYMAP_USE_XKB (keymap))
@@ -1203,7 +1203,7 @@ gdk_keymap_lookup_key (GdkKeymap          *keymap,
 /* This is copied straight from XFree86 Xlib, to:
  *  - add the group and level return.
  *  - change the interpretation of mods_rtrn as described
- *    in the docs for gdk_keymap_translate_keyboard_state()
+ *    in the docs for bdk_keymap_translate_keyboard_state()
  * It's unchanged for ease of diff against the Xlib sources; don't
  * reformat it.
  */
@@ -1259,7 +1259,7 @@ MyEnhancedXkbTranslateKeyCode(register XkbDescPtr     xkb,
     if (type->map) { /* find the column (shift level) within the group */
         register int i;
         register XkbKTMapEntryPtr entry;
-	/* ---- Begin section modified for GDK  ---- */
+	/* ---- Begin section modified for BDK  ---- */
 	int found = 0;
 	
         for (i=0,entry=type->map;i<type->map_count;i++,entry++) {
@@ -1300,17 +1300,17 @@ MyEnhancedXkbTranslateKeyCode(register XkbDescPtr     xkb,
                 found = 1;
             }
         }
-	/* ---- End section modified for GDK ---- */
+	/* ---- End section modified for BDK ---- */
     }
 
     if (keysym_rtrn!=NULL)
         *keysym_rtrn= syms[col];
     if (mods_rtrn) {
-	/* ---- Begin section modified for GDK  ---- */
+	/* ---- Begin section modified for BDK  ---- */
         *mods_rtrn &= ~preserve;
-	/* ---- End section modified for GDK ---- */
+	/* ---- End section modified for BDK ---- */
 	
-        /* ---- Begin stuff GDK comments out of the original Xlib version ---- */
+        /* ---- Begin stuff BDK comments out of the original Xlib version ---- */
         /* This is commented out because xkb_info is a private struct */
 
 #if 0
@@ -1326,15 +1326,15 @@ MyEnhancedXkbTranslateKeyCode(register XkbDescPtr     xkb,
         }
 #endif
         
-        /* ---- End stuff GDK comments out of the original Xlib version ---- */
+        /* ---- End stuff BDK comments out of the original Xlib version ---- */
     }
 
-    /* ---- Begin stuff GDK adds to the original Xlib version ---- */
+    /* ---- Begin stuff BDK adds to the original Xlib version ---- */
 
     if (group_rtrn)
       *group_rtrn = effectiveGroup;
     
-    /* ---- End stuff GDK adds to the original Xlib version ---- */
+    /* ---- End stuff BDK adds to the original Xlib version ---- */
     
     return (syms[col] != NoSymbol);
 }
@@ -1344,10 +1344,10 @@ MyEnhancedXkbTranslateKeyCode(register XkbDescPtr     xkb,
  * of the keyboard map. See section 12.7 of the Xlib reference manual
  */
 static guint
-translate_keysym (GdkKeymapX11   *keymap_x11,
+translate_keysym (BdkKeymapX11   *keymap_x11,
 		  guint           hardware_keycode,
 		  gint            group,
-		  GdkModifierType state,
+		  BdkModifierType state,
 		  gint           *effective_group,
 		  gint           *effective_level)
 {
@@ -1356,14 +1356,14 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
 
 #define SYM(k,g,l) get_symbol (syms, k,g,l)
 
-  GdkModifierType shift_modifiers;
+  BdkModifierType shift_modifiers;
   gint shift_level;
   guint tmp_keyval;
   gint num_lock_index;
 
-  shift_modifiers = GDK_SHIFT_MASK;
-  if (keymap_x11->lock_keysym == GDK_Shift_Lock)
-    shift_modifiers |= GDK_LOCK_MASK;
+  shift_modifiers = BDK_SHIFT_MASK;
+  if (keymap_x11->lock_keysym == BDK_Shift_Lock)
+    shift_modifiers |= BDK_LOCK_MASK;
 
   /* Fall back to the first group if the passed in group is empty
    */
@@ -1412,9 +1412,9 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
   
       tmp_keyval = SYM (keymap_x11, group, shift_level);
       
-      if (keymap_x11->lock_keysym == GDK_Caps_Lock && (state & GDK_LOCK_MASK) != 0)
+      if (keymap_x11->lock_keysym == BDK_Caps_Lock && (state & BDK_LOCK_MASK) != 0)
 	{
-	  guint upper = gdk_keyval_to_upper (tmp_keyval);
+	  guint upper = bdk_keyval_to_upper (tmp_keyval);
 	  if (upper != tmp_keyval)
 	    tmp_keyval = upper;
 	}
@@ -1432,8 +1432,8 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
 }
 
 /**
- * gdk_keymap_translate_keyboard_state:
- * @keymap: (allow-none): a #GdkKeymap, or %NULL to use the default
+ * bdk_keymap_translate_keyboard_state:
+ * @keymap: (allow-none): a #BdkKeymap, or %NULL to use the default
  * @hardware_keycode: a keycode
  * @state: a modifier state
  * @group: active keyboard group
@@ -1443,14 +1443,14 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
  * @consumed_modifiers: (out) (allow-none):  return location for modifiers that were used to
  *     determine the group or level, or %NULL
  *
- * Translates the contents of a #GdkEventKey into a keyval, effective
+ * Translates the contents of a #BdkEventKey into a keyval, effective
  * group, and level. Modifiers that affected the translation and
  * are thus unavailable for application use are returned in
  * @consumed_modifiers.  See <xref linkend="key-group-explanation"/> for an explanation of
  * groups and levels.  The @effective_group is the group that was
  * actually used for the translation; some keys such as Enter are not
  * affected by the active keyboard group. The @level is derived from
- * @state. For convenience, #GdkEventKey already contains the translated
+ * @state. For convenience, #BdkEventKey already contains the translated
  * keyval, so this function isn't as useful as you might think.
  *
  * <note><para>
@@ -1463,12 +1463,12 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
  * </para>
  * <informalexample><programlisting>
  * &sol;* We want to ignore irrelevant modifiers like ScrollLock *&sol;
- * &num;define ALL_ACCELS_MASK (GDK_CONTROL_MASK | GDK_SHIFT_MASK | GDK_MOD1_MASK)
- * gdk_keymap_translate_keyboard_state (keymap, event->hardware_keycode,
+ * &num;define ALL_ACCELS_MASK (BDK_CONTROL_MASK | BDK_SHIFT_MASK | BDK_MOD1_MASK)
+ * bdk_keymap_translate_keyboard_state (keymap, event->hardware_keycode,
  *                                      event->state, event->group,
  *                                      &amp;keyval, NULL, NULL, &amp;consumed);
- * if (keyval == GDK_PLUS &&
- *     (event->state &amp; ~consumed &amp; ALL_ACCELS_MASK) == GDK_CONTROL_MASK)
+ * if (keyval == BDK_PLUS &&
+ *     (event->state &amp; ~consumed &amp; ALL_ACCELS_MASK) == BDK_CONTROL_MASK)
  *   &sol;* Control was pressed *&sol;
  * </programlisting></informalexample>
  * <para>
@@ -1497,29 +1497,29 @@ translate_keysym (GdkKeymapX11   *keymap_x11,
  * </para></note>
  * 
  * Note that passing %NULL for @keymap is deprecated and will stop
- * to work in GTK+ 3.0. Use gdk_keymap_get_for_display() instead.
+ * to work in BTK+ 3.0. Use bdk_keymap_get_for_display() instead.
  *
  * Return value: %TRUE if there was a keyval bound to the keycode/state/group
  **/
 gboolean
-gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
+bdk_keymap_translate_keyboard_state (BdkKeymap       *keymap,
                                      guint            hardware_keycode,
-                                     GdkModifierType  state,
+                                     BdkModifierType  state,
                                      gint             group,
                                      guint           *keyval,
                                      gint            *effective_group,
                                      gint            *level,
-                                     GdkModifierType *consumed_modifiers)
+                                     BdkModifierType *consumed_modifiers)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   KeySym tmp_keyval = NoSymbol;
   guint tmp_modifiers;
 
-  g_return_val_if_fail (keymap == NULL || GDK_IS_KEYMAP (keymap), FALSE);
+  g_return_val_if_fail (keymap == NULL || BDK_IS_KEYMAP (keymap), FALSE);
   g_return_val_if_fail (group < 4, FALSE);
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);  
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   if (keyval)
     *keyval = NoSymbol;
@@ -1554,7 +1554,7 @@ gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
                                      level);
 
       if (state & ~tmp_modifiers & LockMask)
-	tmp_keyval = gdk_keyval_to_upper (tmp_keyval);
+	tmp_keyval = bdk_keyval_to_upper (tmp_keyval);
 
       /* We need to augment the consumed modifiers with LockMask, since
        * we handle that ourselves, and also with the group bits
@@ -1564,14 +1564,14 @@ gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
   else
 #endif
     {
-      GdkModifierType bit;
+      BdkModifierType bit;
       
       tmp_modifiers = 0;
 
       /* We see what modifiers matter by trying the translation with
        * and without each possible modifier
        */
-      for (bit = GDK_SHIFT_MASK; bit < GDK_BUTTON1_MASK; bit <<= 1)
+      for (bit = BDK_SHIFT_MASK; bit < BDK_BUTTON1_MASK; bit <<= 1)
 	{
 	  /* Handling of the group here is a bit funky; a traditional
 	   * X keyboard map can have more than two groups, but no way
@@ -1609,17 +1609,17 @@ gdk_keymap_translate_keyboard_state (GdkKeymap       *keymap,
 /* Key handling not part of the keymap */
 
 gchar*
-gdk_keyval_name (guint	      keyval)
+bdk_keyval_name (guint	      keyval)
 {
   switch (keyval)
     {
-    case GDK_Page_Up:
+    case BDK_Page_Up:
       return "Page_Up";
-    case GDK_Page_Down:
+    case BDK_Page_Down:
       return "Page_Down";
-    case GDK_KP_Page_Up:
+    case BDK_KP_Page_Up:
       return "KP_Page_Up";
-    case GDK_KP_Page_Down:
+    case BDK_KP_Page_Down:
       return "KP_Page_Down";
     }
   
@@ -1627,7 +1627,7 @@ gdk_keyval_name (guint	      keyval)
 }
 
 guint
-gdk_keyval_from_name (const gchar *keyval_name)
+bdk_keyval_from_name (const gchar *keyval_name)
 {
   g_return_val_if_fail (keyval_name != NULL, 0);
   
@@ -1636,7 +1636,7 @@ gdk_keyval_from_name (const gchar *keyval_name)
 
 #ifdef HAVE_XCONVERTCASE
 void
-gdk_keyval_convert_case (guint symbol,
+bdk_keyval_convert_case (guint symbol,
 			 guint *lower,
 			 guint *upper)
 {
@@ -1647,9 +1647,9 @@ gdk_keyval_convert_case (guint symbol,
   if ((symbol & 0xff000000) == 0x01000000)
     {
       if (lower)
-	*lower = gdk_unicode_to_keyval (g_unichar_tolower (symbol & 0x00ffffff));
+	*lower = bdk_unicode_to_keyval (g_unichar_tolower (symbol & 0x00ffffff));
       if (upper)
-	*upper = gdk_unicode_to_keyval (g_unichar_toupper (symbol & 0x00ffffff));
+	*upper = bdk_unicode_to_keyval (g_unichar_toupper (symbol & 0x00ffffff));
       return;
     }
   
@@ -1664,10 +1664,10 @@ gdk_keyval_convert_case (guint symbol,
 #endif /* HAVE_XCONVERTCASE */
 
 gint
-_gdk_x11_get_group_for_state (GdkDisplay      *display,
-			      GdkModifierType  state)
+_bdk_x11_get_group_for_state (BdkDisplay      *display,
+			      BdkModifierType  state)
 {
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
   
 #ifdef HAVE_XKB
   if (display_x11->use_xkb)
@@ -1677,40 +1677,40 @@ _gdk_x11_get_group_for_state (GdkDisplay      *display,
   else
 #endif
     {
-      GdkKeymapX11 *keymap_impl = GDK_KEYMAP_X11 (gdk_keymap_get_for_display (display));
+      BdkKeymapX11 *keymap_impl = BDK_KEYMAP_X11 (bdk_keymap_get_for_display (display));
       update_keymaps (keymap_impl);
       return (state & keymap_impl->group_switch_mask) ? 1 : 0;
     }
 }
 
 void
-_gdk_keymap_add_virtual_modifiers_compat (GdkKeymap       *keymap,
-				          GdkModifierType *modifiers)
+_bdk_keymap_add_virtual_modifiers_compat (BdkKeymap       *keymap,
+				          BdkModifierType *modifiers)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   int i;
   
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   /* See comment in add_virtual_modifiers() */
   for (i = 4; i < 8; i++)
     {
       if ((1 << i) & *modifiers)
         {
-	  if (keymap_x11->modmap[i] & GDK_SUPER_MASK)
-	    *modifiers |= GDK_SUPER_MASK;
-	  else if (keymap_x11->modmap[i] & GDK_HYPER_MASK)
-	    *modifiers |= GDK_HYPER_MASK;
-	  else if (keymap_x11->modmap[i] & GDK_META_MASK)
-	    *modifiers |= GDK_META_MASK;
+	  if (keymap_x11->modmap[i] & BDK_SUPER_MASK)
+	    *modifiers |= BDK_SUPER_MASK;
+	  else if (keymap_x11->modmap[i] & BDK_HYPER_MASK)
+	    *modifiers |= BDK_HYPER_MASK;
+	  else if (keymap_x11->modmap[i] & BDK_META_MASK)
+	    *modifiers |= BDK_META_MASK;
         }
     }
 }
 
 /**
- * gdk_keymap_add_virtual_modifiers:
- * @keymap: a #GdkKeymap
+ * bdk_keymap_add_virtual_modifiers:
+ * @keymap: a #BdkKeymap
  * @state: pointer to the modifier mask to change
  *
  * Adds virtual modifiers (i.e. Super, Hyper and Meta) which correspond
@@ -1718,7 +1718,7 @@ _gdk_keymap_add_virtual_modifiers_compat (GdkKeymap       *keymap,
  * are set in @state to their non-virtual counterparts (i.e. Mod2,
  * Mod3,...) and set the corresponding bits in @state.
  *
- * GDK already does this before delivering key events, but for
+ * BDK already does this before delivering key events, but for
  * compatibility reasons, it only sets the first virtual modifier
  * it finds, whereas this function sets all matching virtual modifiers.
  *
@@ -1728,17 +1728,17 @@ _gdk_keymap_add_virtual_modifiers_compat (GdkKeymap       *keymap,
  * Since: 2.20
  */
 void
-gdk_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
-			          GdkModifierType *state)
+bdk_keymap_add_virtual_modifiers (BdkKeymap       *keymap,
+			          BdkModifierType *state)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   int i;
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   /*  This loop used to start at 3, which included MOD1 in the
-   *  virtual mapping. However, all of GTK+ treats MOD1 as a
+   *  virtual mapping. However, all of BTK+ treats MOD1 as a
    *  synonym for Alt, and does not expect it to be mapped around,
    *  therefore it's more sane to simply treat MOD1 like SHIFT and
    *  CONTROL, which are not mappable either.
@@ -1747,25 +1747,25 @@ gdk_keymap_add_virtual_modifiers (GdkKeymap       *keymap,
     {
       if ((1 << i) & *state)
         {
-	  if (keymap_x11->modmap[i] & GDK_SUPER_MASK)
-	    *state |= GDK_SUPER_MASK;
-	  if (keymap_x11->modmap[i] & GDK_HYPER_MASK)
-	    *state |= GDK_HYPER_MASK;
-	  if (keymap_x11->modmap[i] & GDK_META_MASK)
-	    *state |= GDK_META_MASK;
+	  if (keymap_x11->modmap[i] & BDK_SUPER_MASK)
+	    *state |= BDK_SUPER_MASK;
+	  if (keymap_x11->modmap[i] & BDK_HYPER_MASK)
+	    *state |= BDK_HYPER_MASK;
+	  if (keymap_x11->modmap[i] & BDK_META_MASK)
+	    *state |= BDK_META_MASK;
         }
     }
 }
 
 gboolean
-_gdk_keymap_key_is_modifier (GdkKeymap *keymap,
+_bdk_keymap_key_is_modifier (BdkKeymap *keymap,
 			     guint      keycode)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   gint i;
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);  
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   update_keyrange (keymap_x11);
   if (keycode < keymap_x11->min_keycode ||
@@ -1794,8 +1794,8 @@ _gdk_keymap_key_is_modifier (GdkKeymap *keymap,
 }
 
 /**
- * gdk_keymap_map_virtual_modifiers:
- * @keymap: a #GdkKeymap
+ * bdk_keymap_map_virtual_modifiers:
+ * @keymap: a #BdkKeymap
  * @state: pointer to the modifier state to map
  *
  * Maps the virtual modifiers (i.e. Super, Hyper and Meta) which
@@ -1813,18 +1813,18 @@ _gdk_keymap_key_is_modifier (GdkKeymap *keymap,
  * Since: 2.20
  */
 gboolean
-gdk_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
-                                  GdkModifierType *state)
+bdk_keymap_map_virtual_modifiers (BdkKeymap       *keymap,
+                                  BdkModifierType *state)
 {
-  GdkKeymapX11 *keymap_x11;
+  BdkKeymapX11 *keymap_x11;
   const guint vmods[] = {
-    GDK_SUPER_MASK, GDK_HYPER_MASK, GDK_META_MASK
+    BDK_SUPER_MASK, BDK_HYPER_MASK, BDK_META_MASK
   };
   int i, j;
   gboolean retval;
 
   keymap = GET_EFFECTIVE_KEYMAP (keymap);
-  keymap_x11 = GDK_KEYMAP_X11 (keymap);
+  keymap_x11 = BDK_KEYMAP_X11 (keymap);
 
   if (KEYMAP_USE_XKB (keymap))
     get_xkb (keymap_x11);
@@ -1853,5 +1853,5 @@ gdk_keymap_map_virtual_modifiers (GdkKeymap       *keymap,
 }
 
 
-#define __GDK_KEYS_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_KEYS_X11_C__
+#include "bdkaliasdef.c"

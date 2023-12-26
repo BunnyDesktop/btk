@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,119 +18,119 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_PIXMAP_H__
-#define __GDK_PIXMAP_H__
+#ifndef __BDK_PIXMAP_H__
+#define __BDK_PIXMAP_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdktypes.h>
-#include <gdk/gdkdrawable.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkdrawable.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkPixmapObject GdkPixmapObject;
-typedef struct _GdkPixmapObjectClass GdkPixmapObjectClass;
+typedef struct _BdkPixmapObject BdkPixmapObject;
+typedef struct _BdkPixmapObjectClass BdkPixmapObjectClass;
 
-#define GDK_TYPE_PIXMAP              (gdk_pixmap_get_type ())
-#define GDK_PIXMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_PIXMAP, GdkPixmap))
-#define GDK_PIXMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_PIXMAP, GdkPixmapObjectClass))
-#define GDK_IS_PIXMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_PIXMAP))
-#define GDK_IS_PIXMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_PIXMAP))
-#define GDK_PIXMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_PIXMAP, GdkPixmapObjectClass))
-#define GDK_PIXMAP_OBJECT(object)    ((GdkPixmapObject *) GDK_PIXMAP (object))
+#define BDK_TYPE_PIXMAP              (bdk_pixmap_get_type ())
+#define BDK_PIXMAP(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP, BdkPixmap))
+#define BDK_PIXMAP_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_IS_PIXMAP(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP))
+#define BDK_IS_PIXMAP_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP))
+#define BDK_PIXMAP_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP, BdkPixmapObjectClass))
+#define BDK_PIXMAP_OBJECT(object)    ((BdkPixmapObject *) BDK_PIXMAP (object))
 
-struct _GdkPixmapObject
+struct _BdkPixmapObject
 {
-  GdkDrawable parent_instance;
+  BdkDrawable parent_instance;
   
-  GdkDrawable *GSEAL (impl);  /* window-system-specific delegate object */
+  BdkDrawable *GSEAL (impl);  /* window-system-specific delegate object */
 
   gint GSEAL (depth);
 };
 
-struct _GdkPixmapObjectClass
+struct _BdkPixmapObjectClass
 {
-  GdkDrawableClass parent_class;
+  BdkDrawableClass parent_class;
 
 };
 
-GType      gdk_pixmap_get_type          (void) G_GNUC_CONST;
+GType      bdk_pixmap_get_type          (void) G_GNUC_CONST;
 
 /* Pixmaps
  */
-GdkPixmap* gdk_pixmap_new		(GdkDrawable *drawable,
+BdkPixmap* bdk_pixmap_new		(BdkDrawable *drawable,
 					 gint	      width,
 					 gint	      height,
 					 gint	      depth);
-#ifndef GDK_DISABLE_DEPRECATED
-GdkBitmap* gdk_bitmap_create_from_data	(GdkDrawable *drawable,
+#ifndef BDK_DISABLE_DEPRECATED
+BdkBitmap* bdk_bitmap_create_from_data	(BdkDrawable *drawable,
 					 const gchar *data,
 					 gint	      width,
 					 gint	      height);
-GdkPixmap* gdk_pixmap_create_from_data	(GdkDrawable    *drawable,
+BdkPixmap* bdk_pixmap_create_from_data	(BdkDrawable    *drawable,
 					 const gchar 	*data,
 					 gint	     	 width,
 					 gint	     	 height,
 					 gint	         depth,
-					 const GdkColor *fg,
-					 const GdkColor *bg);
+					 const BdkColor *fg,
+					 const BdkColor *bg);
 
-GdkPixmap* gdk_pixmap_create_from_xpm            (GdkDrawable    *drawable,
-						  GdkBitmap     **mask,
-						  const GdkColor *transparent_color,
+BdkPixmap* bdk_pixmap_create_from_xpm            (BdkDrawable    *drawable,
+						  BdkBitmap     **mask,
+						  const BdkColor *transparent_color,
 						  const gchar    *filename);
-GdkPixmap* gdk_pixmap_colormap_create_from_xpm   (GdkDrawable    *drawable,
-						  GdkColormap    *colormap,
-						  GdkBitmap     **mask,
-						  const GdkColor *transparent_color,
+BdkPixmap* bdk_pixmap_colormap_create_from_xpm   (BdkDrawable    *drawable,
+						  BdkColormap    *colormap,
+						  BdkBitmap     **mask,
+						  const BdkColor *transparent_color,
 						  const gchar    *filename);
-GdkPixmap* gdk_pixmap_create_from_xpm_d          (GdkDrawable    *drawable,
-						  GdkBitmap     **mask,
-						  const GdkColor *transparent_color,
+BdkPixmap* bdk_pixmap_create_from_xpm_d          (BdkDrawable    *drawable,
+						  BdkBitmap     **mask,
+						  const BdkColor *transparent_color,
 						  gchar         **data);
-GdkPixmap* gdk_pixmap_colormap_create_from_xpm_d (GdkDrawable    *drawable,
-						  GdkColormap    *colormap,
-						  GdkBitmap     **mask,
-						  const GdkColor *transparent_color,
+BdkPixmap* bdk_pixmap_colormap_create_from_xpm_d (BdkDrawable    *drawable,
+						  BdkColormap    *colormap,
+						  BdkBitmap     **mask,
+						  const BdkColor *transparent_color,
 						  gchar         **data);
 #endif
 
-void          gdk_pixmap_get_size                (GdkPixmap      *pixmap,
+void          bdk_pixmap_get_size                (BdkPixmap      *pixmap,
                                                   gint	         *width,
                                                   gint  	 *height);
 
 /* Functions to create/lookup pixmaps from their native equivalents
  */
-#ifndef GDK_MULTIHEAD_SAFE
-GdkPixmap*    gdk_pixmap_foreign_new (GdkNativeWindow anid);
-GdkPixmap*    gdk_pixmap_lookup      (GdkNativeWindow anid);
-#endif /* GDK_MULTIHEAD_SAFE */
+#ifndef BDK_MULTIHEAD_SAFE
+BdkPixmap*    bdk_pixmap_foreign_new (BdkNativeWindow anid);
+BdkPixmap*    bdk_pixmap_lookup      (BdkNativeWindow anid);
+#endif /* BDK_MULTIHEAD_SAFE */
 
-GdkPixmap*    gdk_pixmap_foreign_new_for_display (GdkDisplay      *display,
-						  GdkNativeWindow  anid);
-GdkPixmap*    gdk_pixmap_lookup_for_display      (GdkDisplay      *display,
-						  GdkNativeWindow  anid);
-GdkPixmap*    gdk_pixmap_foreign_new_for_screen  (GdkScreen       *screen,
-						  GdkNativeWindow  anid,
+BdkPixmap*    bdk_pixmap_foreign_new_for_display (BdkDisplay      *display,
+						  BdkNativeWindow  anid);
+BdkPixmap*    bdk_pixmap_lookup_for_display      (BdkDisplay      *display,
+						  BdkNativeWindow  anid);
+BdkPixmap*    bdk_pixmap_foreign_new_for_screen  (BdkScreen       *screen,
+						  BdkNativeWindow  anid,
 						  gint             width,
                                                   gint             height,
                                                   gint             depth);
 
-#ifndef GDK_DISABLE_DEPRECATED
-#define gdk_bitmap_ref                 g_object_ref
-#define gdk_bitmap_unref               g_object_unref
-#define gdk_pixmap_ref                 g_object_ref
-#define gdk_pixmap_unref               g_object_unref
-#endif /* GDK_DISABLE_DEPRECATED */
+#ifndef BDK_DISABLE_DEPRECATED
+#define bdk_bitmap_ref                 g_object_ref
+#define bdk_bitmap_unref               g_object_unref
+#define bdk_pixmap_ref                 g_object_ref
+#define bdk_pixmap_unref               g_object_unref
+#endif /* BDK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GDK_PIXMAP_H__ */
+#endif /* __BDK_PIXMAP_H__ */

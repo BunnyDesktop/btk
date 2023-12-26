@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,66 +18,66 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#if !defined (GTK_DISABLE_DEPRECATED) || defined (__GTK_PIXMAP_C__)
+#if !defined (BTK_DISABLE_DEPRECATED) || defined (__BTK_PIXMAP_C__)
 
-#ifndef __GTK_PIXMAP_H__
-#define __GTK_PIXMAP_H__
+#ifndef __BTK_PIXMAP_H__
+#define __BTK_PIXMAP_H__
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PIXMAP			 (gtk_pixmap_get_type ())
-#define GTK_PIXMAP(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PIXMAP, GtkPixmap))
-#define GTK_PIXMAP_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_PIXMAP, GtkPixmapClass))
-#define GTK_IS_PIXMAP(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PIXMAP))
-#define GTK_IS_PIXMAP_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_PIXMAP))
-#define GTK_PIXMAP_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_PIXMAP, GtkPixmapClass))
+#define BTK_TYPE_PIXMAP			 (btk_pixmap_get_type ())
+#define BTK_PIXMAP(obj)			 (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PIXMAP, BtkPixmap))
+#define BTK_PIXMAP_CLASS(klass)		 (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_PIXMAP, BtkPixmapClass))
+#define BTK_IS_PIXMAP(obj)		 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PIXMAP))
+#define BTK_IS_PIXMAP_CLASS(klass)	 (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_PIXMAP))
+#define BTK_PIXMAP_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_PIXMAP, BtkPixmapClass))
 
 
-typedef struct _GtkPixmap	GtkPixmap;
-typedef struct _GtkPixmapClass	GtkPixmapClass;
+typedef struct _BtkPixmap	BtkPixmap;
+typedef struct _BtkPixmapClass	BtkPixmapClass;
 
-struct _GtkPixmap
+struct _BtkPixmap
 {
-  GtkMisc misc;
+  BtkMisc misc;
 
-  GdkPixmap *pixmap;
-  GdkBitmap *mask;
+  BdkPixmap *pixmap;
+  BdkBitmap *mask;
 
-  GdkPixmap *pixmap_insensitive;
+  BdkPixmap *pixmap_insensitive;
   guint build_insensitive : 1;
 };
 
-struct _GtkPixmapClass
+struct _BtkPixmapClass
 {
-  GtkMiscClass parent_class;
+  BtkMiscClass parent_class;
 };
 
 
-GType	   gtk_pixmap_get_type	 (void) G_GNUC_CONST;
-GtkWidget* gtk_pixmap_new	 (GdkPixmap  *pixmap,
-				  GdkBitmap  *mask);
-void	   gtk_pixmap_set	 (GtkPixmap  *pixmap,
-				  GdkPixmap  *val,
-				  GdkBitmap  *mask);
-void	   gtk_pixmap_get	 (GtkPixmap  *pixmap,
-				  GdkPixmap **val,
-				  GdkBitmap **mask);
+GType	   btk_pixmap_get_type	 (void) G_GNUC_CONST;
+BtkWidget* btk_pixmap_new	 (BdkPixmap  *pixmap,
+				  BdkBitmap  *mask);
+void	   btk_pixmap_set	 (BtkPixmap  *pixmap,
+				  BdkPixmap  *val,
+				  BdkBitmap  *mask);
+void	   btk_pixmap_get	 (BtkPixmap  *pixmap,
+				  BdkPixmap **val,
+				  BdkBitmap **mask);
 
-void       gtk_pixmap_set_build_insensitive (GtkPixmap *pixmap,
+void       btk_pixmap_set_build_insensitive (BtkPixmap *pixmap,
 		                             gboolean   build);
 
 
 G_END_DECLS
 
-#endif /* __GTK_PIXMAP_H__ */
+#endif /* __BTK_PIXMAP_H__ */
 
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */

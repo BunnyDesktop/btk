@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,39 +17,39 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_ADJUSTMENT_H__
-#define __GAIL_ADJUSTMENT_H__
+#ifndef __BAIL_ADJUSTMENT_H__
+#define __BAIL_ADJUSTMENT_H__
 
-#include <atk/atk.h>
+#include <batk/batk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_ADJUSTMENT                     (gail_adjustment_get_type ())
-#define GAIL_ADJUSTMENT(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_ADJUSTMENT, GailAdjustment))
-#define GAIL_ADJUSTMENT_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_ADJUSTMENT, GailAdjustmentClass))
-#define GAIL_IS_ADJUSTMENT(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_ADJUSTMENT))
-#define GAIL_IS_ADJUSTMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_ADJUSTMENT))
-#define GAIL_ADJUSTMENT_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_ADJUSTMENT, GailAdjustmentClass))
+#define BAIL_TYPE_ADJUSTMENT                     (bail_adjustment_get_type ())
+#define BAIL_ADJUSTMENT(obj)                     (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustment))
+#define BAIL_ADJUSTMENT_CLASS(klass)             (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
+#define BAIL_IS_ADJUSTMENT(obj)                  (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_ADJUSTMENT))
+#define BAIL_IS_ADJUSTMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_ADJUSTMENT))
+#define BAIL_ADJUSTMENT_GET_CLASS(obj)           (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_ADJUSTMENT, BailAdjustmentClass))
 
-typedef struct _GailAdjustment                  GailAdjustment;
-typedef struct _GailAdjustmentClass		GailAdjustmentClass;
+typedef struct _BailAdjustment                  BailAdjustment;
+typedef struct _BailAdjustmentClass		BailAdjustmentClass;
 
-struct _GailAdjustment
+struct _BailAdjustment
 {
-  AtkObject parent;
+  BatkObject parent;
 
-  GtkAdjustment *adjustment;
+  BtkAdjustment *adjustment;
 };
 
-GType gail_adjustment_get_type (void);
+GType bail_adjustment_get_type (void);
 
-struct _GailAdjustmentClass
+struct _BailAdjustmentClass
 {
-  AtkObjectClass parent_class;
+  BatkObjectClass parent_class;
 };
 
-AtkObject *gail_adjustment_new (GtkAdjustment *adjustment);
+BatkObject *bail_adjustment_new (BtkAdjustment *adjustment);
 
 G_END_DECLS
 
-#endif /* __GAIL_ADJUSTMENT_H__ */
+#endif /* __BAIL_ADJUSTMENT_H__ */

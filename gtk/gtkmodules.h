@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright 1998-2002 Tim Janik, Red Hat, Inc., and others.
  * Copyright (C) 2003 Alex Graveley
  *
@@ -18,37 +18,37 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_MODULES_H__
-#define __GTK_MODULES_H__
+#ifndef __BTK_MODULES_H__
+#define __BTK_MODULES_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtksettings.h>
+#include <btk/btksettings.h>
 
 
 G_BEGIN_DECLS
 
 
-/* Functions for use within GTK+
+/* Functions for use within BTK+
  */
-gchar * _gtk_find_module        (const gchar *name,
+gchar * _btk_find_module        (const gchar *name,
 			         const gchar *type);
-gchar **_gtk_get_module_path    (const gchar *type);
+gchar **_btk_get_module_path    (const gchar *type);
 
-void    _gtk_modules_init             (gint         *argc,
+void    _btk_modules_init             (gint         *argc,
 				       gchar      ***argv,
-				       const gchar  *gtk_modules_args);
-void    _gtk_modules_settings_changed (GtkSettings  *settings,
+				       const gchar  *btk_modules_args);
+void    _btk_modules_settings_changed (BtkSettings  *settings,
 				       const gchar  *modules);
 
-typedef void	 (*GtkModuleInitFunc)        (gint	  *argc,
+typedef void	 (*BtkModuleInitFunc)        (gint	  *argc,
 					      gchar      ***argv);
-typedef void	 (*GtkModuleDisplayInitFunc) (GdkDisplay   *display);
+typedef void	 (*BtkModuleDisplayInitFunc) (BdkDisplay   *display);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_MODULES_H__ */
+#endif /* __BTK_MODULES_H__ */

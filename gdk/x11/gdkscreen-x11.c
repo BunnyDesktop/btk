@@ -1,5 +1,5 @@
  /*
- * gdkscreen-x11.c
+ * bdkscreen-x11.c
  * 
  * Copyright 2001 Sun Microsystems Inc. 
  *
@@ -26,13 +26,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <glib.h>
-#include "gdkscreen.h"
-#include "gdkscreen-x11.h"
-#include "gdkdisplay.h"
-#include "gdkdisplay-x11.h"
-#include "gdkx.h"
-#include "gdkalias.h"
+#include <bunnylib.h>
+#include "bdkscreen.h"
+#include "bdkscreen-x11.h"
+#include "bdkdisplay.h"
+#include "bdkdisplay-x11.h"
+#include "bdkx.h"
+#include "bdkalias.h"
 
 #include <X11/Xatom.h>
 
@@ -51,10 +51,10 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
-static void         gdk_screen_x11_dispose     (GObject		  *object);
-static void         gdk_screen_x11_finalize    (GObject		  *object);
-static void	    init_randr_support	       (GdkScreen	  *screen);
-static void	    deinit_multihead           (GdkScreen         *screen);
+static void         bdk_screen_x11_dispose     (GObject		  *object);
+static void         bdk_screen_x11_finalize    (GObject		  *object);
+static void	    init_randr_support	       (BdkScreen	  *screen);
+static void	    deinit_multihead           (BdkScreen         *screen);
 
 enum
 {
@@ -64,11 +64,11 @@ enum
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_TYPE (GdkScreenX11, _gdk_screen_x11, GDK_TYPE_SCREEN)
+G_DEFINE_TYPE (BdkScreenX11, _bdk_screen_x11, BDK_TYPE_SCREEN)
 
-struct _GdkX11Monitor
+struct _BdkX11Monitor
 {
-  GdkRectangle  geometry;
+  BdkRectangle  geometry;
   XID		output;
   int		width_mm;
   int		height_mm;
@@ -77,18 +77,18 @@ struct _GdkX11Monitor
 };
 
 static void
-_gdk_screen_x11_class_init (GdkScreenX11Class *klass)
+_bdk_screen_x11_class_init (BdkScreenX11Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   
-  object_class->dispose = gdk_screen_x11_dispose;
-  object_class->finalize = gdk_screen_x11_finalize;
+  object_class->dispose = bdk_screen_x11_dispose;
+  object_class->finalize = bdk_screen_x11_finalize;
 
   signals[WINDOW_MANAGER_CHANGED] =
     g_signal_new (g_intern_static_string ("window_manager_changed"),
                   G_OBJECT_CLASS_TYPE (object_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GdkScreenX11Class, window_manager_changed),
+                  G_STRUCT_OFFSET (BdkScreenX11Class, window_manager_changed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VOID,
                   G_TYPE_NONE,
@@ -96,13 +96,13 @@ _gdk_screen_x11_class_init (GdkScreenX11Class *klass)
 }
 
 static void
-_gdk_screen_x11_init (GdkScreenX11 *screen)
+_bdk_screen_x11_init (BdkScreenX11 *screen)
 {
 }
 
 /**
- * gdk_screen_get_display:
- * @screen: a #GdkScreen
+ * bdk_screen_get_display:
+ * @screen: a #BdkScreen
  *
  * Gets the display to which the @screen belongs.
  * 
@@ -110,16 +110,16 @@ _gdk_screen_x11_init (GdkScreenX11 *screen)
  *
  * Since: 2.2
  **/
-GdkDisplay *
-gdk_screen_get_display (GdkScreen *screen)
+BdkDisplay *
+bdk_screen_get_display (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return GDK_SCREEN_X11 (screen)->display;
+  return BDK_SCREEN_X11 (screen)->display;
 }
 /**
- * gdk_screen_get_width:
- * @screen: a #GdkScreen
+ * bdk_screen_get_width:
+ * @screen: a #BdkScreen
  *
  * Gets the width of @screen in pixels
  * 
@@ -128,16 +128,16 @@ gdk_screen_get_display (GdkScreen *screen)
  * Since: 2.2
  **/
 gint
-gdk_screen_get_width (GdkScreen *screen)
+bdk_screen_get_width (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
 
-  return WidthOfScreen (GDK_SCREEN_X11 (screen)->xscreen);
+  return WidthOfScreen (BDK_SCREEN_X11 (screen)->xscreen);
 }
 
 /**
- * gdk_screen_get_height:
- * @screen: a #GdkScreen
+ * bdk_screen_get_height:
+ * @screen: a #BdkScreen
  *
  * Gets the height of @screen in pixels
  * 
@@ -146,16 +146,16 @@ gdk_screen_get_width (GdkScreen *screen)
  * Since: 2.2
  **/
 gint
-gdk_screen_get_height (GdkScreen *screen)
+bdk_screen_get_height (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
 
-  return HeightOfScreen (GDK_SCREEN_X11 (screen)->xscreen);
+  return HeightOfScreen (BDK_SCREEN_X11 (screen)->xscreen);
 }
 
 /**
- * gdk_screen_get_width_mm:
- * @screen: a #GdkScreen
+ * bdk_screen_get_width_mm:
+ * @screen: a #BdkScreen
  *
  * Gets the width of @screen in millimeters. 
  * Note that on some X servers this value will not be correct.
@@ -165,16 +165,16 @@ gdk_screen_get_height (GdkScreen *screen)
  * Since: 2.2
  **/
 gint
-gdk_screen_get_width_mm (GdkScreen *screen)
+bdk_screen_get_width_mm (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);  
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);  
 
-  return WidthMMOfScreen (GDK_SCREEN_X11 (screen)->xscreen);
+  return WidthMMOfScreen (BDK_SCREEN_X11 (screen)->xscreen);
 }
 
 /**
- * gdk_screen_get_height_mm:
- * @screen: a #GdkScreen
+ * bdk_screen_get_height_mm:
+ * @screen: a #BdkScreen
  *
  * Returns the height of @screen in millimeters. 
  * Note that on some X servers this value will not be correct.
@@ -184,35 +184,35 @@ gdk_screen_get_width_mm (GdkScreen *screen)
  * Since: 2.2
  **/
 gint
-gdk_screen_get_height_mm (GdkScreen *screen)
+bdk_screen_get_height_mm (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
 
-  return HeightMMOfScreen (GDK_SCREEN_X11 (screen)->xscreen);
+  return HeightMMOfScreen (BDK_SCREEN_X11 (screen)->xscreen);
 }
 
 /**
- * gdk_screen_get_number:
- * @screen: a #GdkScreen
+ * bdk_screen_get_number:
+ * @screen: a #BdkScreen
  *
  * Gets the index of @screen among the screens in the display
- * to which it belongs. (See gdk_screen_get_display())
+ * to which it belongs. (See bdk_screen_get_display())
  * 
  * Returns: the index
  *
  * Since: 2.2
  **/
 gint
-gdk_screen_get_number (GdkScreen *screen)
+bdk_screen_get_number (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
   
-  return GDK_SCREEN_X11 (screen)->screen_num;
+  return BDK_SCREEN_X11 (screen)->screen_num;
 }
 
 /**
- * gdk_screen_get_root_window:
- * @screen: a #GdkScreen
+ * bdk_screen_get_root_window:
+ * @screen: a #BdkScreen
  *
  * Gets the root window of @screen.
  *
@@ -220,64 +220,64 @@ gdk_screen_get_number (GdkScreen *screen)
  *
  * Since: 2.2
  **/
-GdkWindow *
-gdk_screen_get_root_window (GdkScreen *screen)
+BdkWindow *
+bdk_screen_get_root_window (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return GDK_SCREEN_X11 (screen)->root_window;
+  return BDK_SCREEN_X11 (screen)->root_window;
 }
 
 /**
- * gdk_screen_get_default_colormap:
- * @screen: a #GdkScreen
+ * bdk_screen_get_default_colormap:
+ * @screen: a #BdkScreen
  *
  * Gets the default colormap for @screen.
  * 
- * Returns: (transfer none): the default #GdkColormap.
+ * Returns: (transfer none): the default #BdkColormap.
  *
  * Since: 2.2
  **/
-GdkColormap *
-gdk_screen_get_default_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_default_colormap (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  return GDK_SCREEN_X11 (screen)->default_colormap;
+  return BDK_SCREEN_X11 (screen)->default_colormap;
 }
 
 /**
- * gdk_screen_set_default_colormap:
- * @screen: a #GdkScreen
- * @colormap: a #GdkColormap
+ * bdk_screen_set_default_colormap:
+ * @screen: a #BdkScreen
+ * @colormap: a #BdkColormap
  *
  * Sets the default @colormap for @screen.
  *
  * Since: 2.2
  **/
 void
-gdk_screen_set_default_colormap (GdkScreen   *screen,
-				 GdkColormap *colormap)
+bdk_screen_set_default_colormap (BdkScreen   *screen,
+				 BdkColormap *colormap)
 {
-  GdkColormap *old_colormap;
+  BdkColormap *old_colormap;
   
-  g_return_if_fail (GDK_IS_SCREEN (screen));
-  g_return_if_fail (GDK_IS_COLORMAP (colormap));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
+  g_return_if_fail (BDK_IS_COLORMAP (colormap));
 
-  old_colormap = GDK_SCREEN_X11 (screen)->default_colormap;
+  old_colormap = BDK_SCREEN_X11 (screen)->default_colormap;
 
-  GDK_SCREEN_X11 (screen)->default_colormap = g_object_ref (colormap);
+  BDK_SCREEN_X11 (screen)->default_colormap = g_object_ref (colormap);
   
   if (old_colormap)
     g_object_unref (old_colormap);
 }
 
 static void
-gdk_screen_x11_dispose (GObject *object)
+bdk_screen_x11_dispose (GObject *object)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (object);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
 
-  _gdk_x11_events_uninit_screen (GDK_SCREEN (object));
+  _bdk_x11_events_uninit_screen (BDK_SCREEN (object));
 
   if (screen_x11->default_colormap)
     {
@@ -298,9 +298,9 @@ gdk_screen_x11_dispose (GObject *object)
     }
 
   if (screen_x11->root_window)
-    _gdk_window_destroy (screen_x11->root_window, TRUE);
+    _bdk_window_destroy (screen_x11->root_window, TRUE);
 
-  G_OBJECT_CLASS (_gdk_screen_x11_parent_class)->dispose (object);
+  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->dispose (object);
 
   screen_x11->xdisplay = NULL;
   screen_x11->xscreen = NULL;
@@ -310,9 +310,9 @@ gdk_screen_x11_dispose (GObject *object)
 }
 
 static void
-gdk_screen_x11_finalize (GObject *object)
+bdk_screen_x11_finalize (GObject *object)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (object);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (object);
   gint          i;
 
   if (screen_x11->root_window)
@@ -331,14 +331,14 @@ gdk_screen_x11_finalize (GObject *object)
 
   g_hash_table_destroy (screen_x11->colormap_hash);
 
-  deinit_multihead (GDK_SCREEN (object));
+  deinit_multihead (BDK_SCREEN (object));
   
-  G_OBJECT_CLASS (_gdk_screen_x11_parent_class)->finalize (object);
+  G_OBJECT_CLASS (_bdk_screen_x11_parent_class)->finalize (object);
 }
 
 /**
- * gdk_screen_get_n_monitors:
- * @screen: a #GdkScreen
+ * bdk_screen_get_n_monitors:
+ * @screen: a #BdkScreen
  *
  * Returns the number of monitors which @screen consists of.
  *
@@ -347,16 +347,16 @@ gdk_screen_x11_finalize (GObject *object)
  * Since: 2.2
  */
 gint
-gdk_screen_get_n_monitors (GdkScreen *screen)
+bdk_screen_get_n_monitors (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
 
-  return GDK_SCREEN_X11 (screen)->n_monitors;
+  return BDK_SCREEN_X11 (screen)->n_monitors;
 }
 
 /**
- * gdk_screen_get_primary_monitor:
- * @screen: a #GdkScreen.
+ * bdk_screen_get_primary_monitor:
+ * @screen: a #BdkScreen.
  *
  * Gets the primary monitor for @screen.  The primary monitor
  * is considered the monitor where the 'main desktop' lives.
@@ -372,17 +372,17 @@ gdk_screen_get_n_monitors (GdkScreen *screen)
  * Since: 2.20
  */
 gint
-gdk_screen_get_primary_monitor (GdkScreen *screen)
+bdk_screen_get_primary_monitor (BdkScreen *screen)
 {
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), 0);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), 0);
 
-  return GDK_SCREEN_X11 (screen)->primary_monitor;
+  return BDK_SCREEN_X11 (screen)->primary_monitor;
 }
 
 /**
- * gdk_screen_get_monitor_width_mm:
- * @screen: a #GdkScreen
- * @monitor_num: number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
+ * bdk_screen_get_monitor_width_mm:
+ * @screen: a #BdkScreen
+ * @monitor_num: number of the monitor, between 0 and bdk_screen_get_n_monitors (screen)
  *
  * Gets the width in millimeters of the specified monitor, if available.
  *
@@ -391,12 +391,12 @@ gdk_screen_get_primary_monitor (GdkScreen *screen)
  * Since: 2.14
  */
 gint
-gdk_screen_get_monitor_width_mm	(GdkScreen *screen,
+bdk_screen_get_monitor_width_mm	(BdkScreen *screen,
 				 gint       monitor_num)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
   g_return_val_if_fail (monitor_num >= 0, -1);
   g_return_val_if_fail (monitor_num < screen_x11->n_monitors, -1);
 
@@ -404,9 +404,9 @@ gdk_screen_get_monitor_width_mm	(GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_monitor_height_mm:
- * @screen: a #GdkScreen
- * @monitor_num: number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
+ * bdk_screen_get_monitor_height_mm:
+ * @screen: a #BdkScreen
+ * @monitor_num: number of the monitor, between 0 and bdk_screen_get_n_monitors (screen)
  *
  * Gets the height in millimeters of the specified monitor.
  *
@@ -415,12 +415,12 @@ gdk_screen_get_monitor_width_mm	(GdkScreen *screen,
  * Since: 2.14
  */
 gint
-gdk_screen_get_monitor_height_mm (GdkScreen *screen,
+bdk_screen_get_monitor_height_mm (BdkScreen *screen,
                                   gint       monitor_num)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), -1);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), -1);
   g_return_val_if_fail (monitor_num >= 0, -1);
   g_return_val_if_fail (monitor_num < screen_x11->n_monitors, -1);
 
@@ -428,9 +428,9 @@ gdk_screen_get_monitor_height_mm (GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_monitor_plug_name:
- * @screen: a #GdkScreen
- * @monitor_num: number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
+ * bdk_screen_get_monitor_plug_name:
+ * @screen: a #BdkScreen
+ * @monitor_num: number of the monitor, between 0 and bdk_screen_get_n_monitors (screen)
  *
  * Returns the output name of the specified monitor.
  * Usually something like VGA, DVI, or TV, not the actual
@@ -442,12 +442,12 @@ gdk_screen_get_monitor_height_mm (GdkScreen *screen,
  * Since: 2.14
  */
 gchar *
-gdk_screen_get_monitor_plug_name (GdkScreen *screen,
+bdk_screen_get_monitor_plug_name (BdkScreen *screen,
 				  gint       monitor_num)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
   g_return_val_if_fail (monitor_num >= 0, NULL);
   g_return_val_if_fail (monitor_num < screen_x11->n_monitors, NULL);
 
@@ -455,9 +455,9 @@ gdk_screen_get_monitor_plug_name (GdkScreen *screen,
 }
 
 /**
- * gdk_x11_screen_get_monitor_output:
- * @screen: a #GdkScreen
- * @monitor_num: number of the monitor, between 0 and gdk_screen_get_n_monitors (screen)
+ * bdk_x11_screen_get_monitor_output:
+ * @screen: a #BdkScreen
+ * @monitor_num: number of the monitor, between 0 and bdk_screen_get_n_monitors (screen)
  *
  * Gets the XID of the specified output/monitor.
  * If the X server does not support version 1.2 of the RANDR
@@ -468,12 +468,12 @@ gdk_screen_get_monitor_plug_name (GdkScreen *screen,
  * Since: 2.14
  */
 XID
-gdk_x11_screen_get_monitor_output (GdkScreen *screen,
+bdk_x11_screen_get_monitor_output (BdkScreen *screen,
                                    gint       monitor_num)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), None);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), None);
   g_return_val_if_fail (monitor_num >= 0, None);
   g_return_val_if_fail (monitor_num < screen_x11->n_monitors, None);
 
@@ -481,27 +481,27 @@ gdk_x11_screen_get_monitor_output (GdkScreen *screen,
 }
 
 /**
- * gdk_screen_get_monitor_geometry:
- * @screen: a #GdkScreen
- * @monitor_num: the monitor number, between 0 and gdk_screen_get_n_monitors (screen)
- * @dest: a #GdkRectangle to be filled with the monitor geometry
+ * bdk_screen_get_monitor_geometry:
+ * @screen: a #BdkScreen
+ * @monitor_num: the monitor number, between 0 and bdk_screen_get_n_monitors (screen)
+ * @dest: a #BdkRectangle to be filled with the monitor geometry
  *
- * Retrieves the #GdkRectangle representing the size and position of
+ * Retrieves the #BdkRectangle representing the size and position of
  * the individual monitor within the entire screen area.
  *
  * Note that the size of the entire screen area can be retrieved via
- * gdk_screen_get_width() and gdk_screen_get_height().
+ * bdk_screen_get_width() and bdk_screen_get_height().
  *
  * Since: 2.2
  */
 void
-gdk_screen_get_monitor_geometry (GdkScreen    *screen,
+bdk_screen_get_monitor_geometry (BdkScreen    *screen,
 				 gint          monitor_num,
-				 GdkRectangle *dest)
+				 BdkRectangle *dest)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
-  g_return_if_fail (GDK_IS_SCREEN (screen));
+  g_return_if_fail (BDK_IS_SCREEN (screen));
   g_return_if_fail (monitor_num >= 0);
   g_return_if_fail (monitor_num < screen_x11->n_monitors);
 
@@ -510,11 +510,11 @@ gdk_screen_get_monitor_geometry (GdkScreen    *screen,
 }
 
 /**
- * gdk_screen_get_rgba_colormap:
- * @screen: a #GdkScreen.
+ * bdk_screen_get_rgba_colormap:
+ * @screen: a #BdkScreen.
  * 
  * Gets a colormap to use for creating windows or pixmaps with an
- * alpha channel. The windowing system on which GTK+ is running
+ * alpha channel. The windowing system on which BTK+ is running
  * may not support this capability, in which case %NULL will
  * be returned. Even if a non-%NULL value is returned, its
  * possible that the window's alpha channel won't be honored
@@ -525,38 +525,38 @@ gdk_screen_get_monitor_geometry (GdkScreen    *screen,
  * This functionality is not implemented in the Windows backend.
  *
  * For setting an overall opacity for a top-level window, see
- * gdk_window_set_opacity().
+ * bdk_window_set_opacity().
 
  * Return value: (transfer none): a colormap to use for windows with
  *     an alpha channel or %NULL if the capability is not available.
  *
  * Since: 2.8
  **/
-GdkColormap *
-gdk_screen_get_rgba_colormap (GdkScreen *screen)
+BdkColormap *
+bdk_screen_get_rgba_colormap (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   if (!screen_x11->rgba_visual)
     return NULL;
 
   if (!screen_x11->rgba_colormap)
-    screen_x11->rgba_colormap = gdk_colormap_new (screen_x11->rgba_visual,
+    screen_x11->rgba_colormap = bdk_colormap_new (screen_x11->rgba_visual,
 						  FALSE);
   
   return screen_x11->rgba_colormap;
 }
 
 /**
- * gdk_screen_get_rgba_visual:
- * @screen: a #GdkScreen
+ * bdk_screen_get_rgba_visual:
+ * @screen: a #BdkScreen
  * 
  * Gets a visual to use for creating windows or pixmaps with an
- * alpha channel. See the docs for gdk_screen_get_rgba_colormap()
+ * alpha channel. See the docs for bdk_screen_get_rgba_colormap()
  * for caveats.
  * 
  * Return value: (transfer none): a visual to use for windows with an
@@ -564,72 +564,72 @@ gdk_screen_get_rgba_colormap (GdkScreen *screen)
  *
  * Since: 2.8
  **/
-GdkVisual *
-gdk_screen_get_rgba_visual (GdkScreen *screen)
+BdkVisual *
+bdk_screen_get_rgba_visual (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   return screen_x11->rgba_visual;
 }
 
 /**
- * gdk_x11_screen_get_xscreen:
- * @screen: a #GdkScreen.
+ * bdk_x11_screen_get_xscreen:
+ * @screen: a #BdkScreen.
  * @returns: (transfer none): an Xlib <type>Screen*</type>
  *
- * Returns the screen of a #GdkScreen.
+ * Returns the screen of a #BdkScreen.
  *
  * Since: 2.2
  */
 Screen *
-gdk_x11_screen_get_xscreen (GdkScreen *screen)
+bdk_x11_screen_get_xscreen (BdkScreen *screen)
 {
-  return GDK_SCREEN_X11 (screen)->xscreen;
+  return BDK_SCREEN_X11 (screen)->xscreen;
 }
 
 /**
- * gdk_x11_screen_get_screen_number:
- * @screen: a #GdkScreen.
+ * bdk_x11_screen_get_screen_number:
+ * @screen: a #BdkScreen.
  * @returns: the position of @screen among the screens of
  *   its display.
  *
- * Returns the index of a #GdkScreen.
+ * Returns the index of a #BdkScreen.
  *
  * Since: 2.2
  */
 int
-gdk_x11_screen_get_screen_number (GdkScreen *screen)
+bdk_x11_screen_get_screen_number (BdkScreen *screen)
 {
-  return GDK_SCREEN_X11 (screen)->screen_num;
+  return BDK_SCREEN_X11 (screen)->screen_num;
 }
 
 static gboolean
-check_is_composited (GdkDisplay *display,
-		     GdkScreenX11 *screen_x11)
+check_is_composited (BdkDisplay *display,
+		     BdkScreenX11 *screen_x11)
 {
-  Atom xselection = gdk_x11_atom_to_xatom_for_display (display, screen_x11->cm_selection_atom);
+  Atom xselection = bdk_x11_atom_to_xatom_for_display (display, screen_x11->cm_selection_atom);
   Window xwindow;
   
-  xwindow = XGetSelectionOwner (GDK_DISPLAY_XDISPLAY (display), xselection);
+  xwindow = XGetSelectionOwner (BDK_DISPLAY_XDISPLAY (display), xselection);
 
   return xwindow != None;
 }
 
-static GdkAtom
+static BdkAtom
 make_cm_atom (int screen_number)
 {
   gchar *name = g_strdup_printf ("_NET_WM_CM_S%d", screen_number);
-  GdkAtom atom = gdk_atom_intern (name, FALSE);
+  BdkAtom atom = bdk_atom_intern (name, FALSE);
   g_free (name);
   return atom;
 }
 
 static void
-init_monitor_geometry (GdkX11Monitor *monitor,
+init_monitor_geometry (BdkX11Monitor *monitor,
 		       int x, int y, int width, int height)
 {
   monitor->geometry.x = x;
@@ -645,15 +645,15 @@ init_monitor_geometry (GdkX11Monitor *monitor,
 }
 
 static gboolean
-init_fake_xinerama (GdkScreen *screen)
+init_fake_xinerama (BdkScreen *screen)
 {
 #ifdef G_ENABLE_DEBUG
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   XSetWindowAttributes atts;
   Window win;
   gint w, h;
 
-  if (!(_gdk_debug_flags & GDK_DEBUG_XINERAMA))
+  if (!(_bdk_debug_flags & BDK_DEBUG_XINERAMA))
     return FALSE;
   
   /* Fake Xinerama mode by splitting the screen into 4 monitors.
@@ -663,35 +663,35 @@ init_fake_xinerama (GdkScreen *screen)
   h = HeightOfScreen (screen_x11->xscreen);
 
   screen_x11->n_monitors = 4;
-  screen_x11->monitors = g_new0 (GdkX11Monitor, 4);
+  screen_x11->monitors = g_new0 (BdkX11Monitor, 4);
   init_monitor_geometry (&screen_x11->monitors[0], 0, 0, w / 2, h / 2);
   init_monitor_geometry (&screen_x11->monitors[1], w / 2, 0, w / 2, h / 2);
   init_monitor_geometry (&screen_x11->monitors[2], 0, h / 2, w / 2, h / 2);
   init_monitor_geometry (&screen_x11->monitors[3], w / 2, h / 2, w / 2, h / 2);
   
   atts.override_redirect = 1;
-  atts.background_pixel = WhitePixel(GDK_SCREEN_XDISPLAY (screen), 
+  atts.background_pixel = WhitePixel(BDK_SCREEN_XDISPLAY (screen), 
 				     screen_x11->screen_num);
-  win = XCreateWindow(GDK_SCREEN_XDISPLAY (screen), 
+  win = XCreateWindow(BDK_SCREEN_XDISPLAY (screen), 
 		      screen_x11->xroot_window, 0, h / 2, w, 1, 0, 
-		      DefaultDepth(GDK_SCREEN_XDISPLAY (screen), 
+		      DefaultDepth(BDK_SCREEN_XDISPLAY (screen), 
 				   screen_x11->screen_num),
 		      InputOutput, 
-		      DefaultVisual(GDK_SCREEN_XDISPLAY (screen), 
+		      DefaultVisual(BDK_SCREEN_XDISPLAY (screen), 
 				    screen_x11->screen_num),
 		      CWOverrideRedirect|CWBackPixel, 
 		      &atts);
-  XMapRaised(GDK_SCREEN_XDISPLAY (screen), win); 
-  win = XCreateWindow(GDK_SCREEN_XDISPLAY (screen), 
+  XMapRaised(BDK_SCREEN_XDISPLAY (screen), win); 
+  win = XCreateWindow(BDK_SCREEN_XDISPLAY (screen), 
 		      screen_x11->xroot_window, w/2 , 0, 1, h, 0, 
-		      DefaultDepth(GDK_SCREEN_XDISPLAY (screen), 
+		      DefaultDepth(BDK_SCREEN_XDISPLAY (screen), 
 				   screen_x11->screen_num),
 		      InputOutput, 
-		      DefaultVisual(GDK_SCREEN_XDISPLAY (screen), 
+		      DefaultVisual(BDK_SCREEN_XDISPLAY (screen), 
 				    screen_x11->screen_num),
 		      CWOverrideRedirect|CWBackPixel, 
 		      &atts);
-  XMapRaised(GDK_SCREEN_XDISPLAY (screen), win);
+  XMapRaised(BDK_SCREEN_XDISPLAY (screen), win);
   return TRUE;
 #endif
   
@@ -699,7 +699,7 @@ init_fake_xinerama (GdkScreen *screen)
 }
 
 static void
-free_monitors (GdkX11Monitor *monitors,
+free_monitors (BdkX11Monitor *monitors,
                gint           n_monitors)
 {
   int i;
@@ -715,8 +715,8 @@ free_monitors (GdkX11Monitor *monitors,
 
 #ifdef HAVE_RANDR
 static int
-monitor_compare_function (GdkX11Monitor *monitor1,
-                          GdkX11Monitor *monitor2)
+monitor_compare_function (BdkX11Monitor *monitor1,
+                          BdkX11Monitor *monitor2)
 {
   /* Sort the leftmost/topmost monitors first.
    * For "cloned" monitors, sort the bigger ones first
@@ -742,11 +742,11 @@ monitor_compare_function (GdkX11Monitor *monitor1,
 
 #ifdef HAVE_RANDR15
 static gboolean
-init_randr15 (GdkScreen *screen)
+init_randr15 (BdkScreen *screen)
 {
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
-  GdkScreenX11 *x11_screen = GDK_SCREEN_X11 (screen);
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
+  BdkScreenX11 *x11_screen = BDK_SCREEN_X11 (screen);
   XRRMonitorInfo *rr_monitors;
   int num_rr_monitors;
   int i;
@@ -763,11 +763,11 @@ init_randr15 (GdkScreen *screen)
   if (!rr_monitors)
     return FALSE;
 
-  monitors = g_array_sized_new (FALSE, TRUE, sizeof (GdkX11Monitor),
+  monitors = g_array_sized_new (FALSE, TRUE, sizeof (BdkX11Monitor),
                                 num_rr_monitors);
   for (i = 0; i < num_rr_monitors; i++)
     {
-      GdkX11Monitor monitor;
+      BdkX11Monitor monitor;
       init_monitor_geometry (&monitor,
                              rr_monitors[i].x,
                              rr_monitors[i].y,
@@ -787,7 +787,7 @@ init_randr15 (GdkScreen *screen)
   g_array_sort (monitors,
                 (GCompareFunc) monitor_compare_function);
   x11_screen->n_monitors = monitors->len;
-  x11_screen->monitors = (GdkX11Monitor *) g_array_free (monitors, FALSE);
+  x11_screen->monitors = (BdkX11Monitor *) g_array_free (monitors, FALSE);
 
   x11_screen->primary_monitor = 0;
 
@@ -805,13 +805,13 @@ init_randr15 (GdkScreen *screen)
 #endif
 
 static gboolean
-init_randr13 (GdkScreen *screen)
+init_randr13 (BdkScreen *screen)
 {
 #ifdef HAVE_RANDR
-  GdkDisplay *display = gdk_screen_get_display (screen);
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
-  Display *dpy = GDK_SCREEN_XDISPLAY (screen);
+  BdkDisplay *display = bdk_screen_get_display (screen);
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
+  Display *dpy = BDK_SCREEN_XDISPLAY (screen);
   XRRScreenResources *resources;
   RROutput primary_output;
   RROutput first_output = None;
@@ -827,7 +827,7 @@ init_randr13 (GdkScreen *screen)
   if (!resources)
     return FALSE;
 
-  monitors = g_array_sized_new (FALSE, TRUE, sizeof (GdkX11Monitor),
+  monitors = g_array_sized_new (FALSE, TRUE, sizeof (BdkX11Monitor),
                                 resources->noutput);
 
   for (i = 0; i < resources->noutput; ++i)
@@ -846,7 +846,7 @@ init_randr13 (GdkScreen *screen)
 
       if (output->crtc)
 	{
-	  GdkX11Monitor monitor;
+	  BdkX11Monitor monitor;
 	  XRRCrtcInfo *crtc = XRRGetCrtcInfo (dpy, resources, output->crtc);
 
 	  monitor.geometry.x = crtc->x;
@@ -879,7 +879,7 @@ init_randr13 (GdkScreen *screen)
     {
       guint n_monitors = monitors->len;
 
-      free_monitors ((GdkX11Monitor *)g_array_free (monitors, FALSE),
+      free_monitors ((BdkX11Monitor *)g_array_free (monitors, FALSE),
 		     n_monitors);
 
       return FALSE;
@@ -888,7 +888,7 @@ init_randr13 (GdkScreen *screen)
   g_array_sort (monitors,
                 (GCompareFunc) monitor_compare_function);
   screen_x11->n_monitors = monitors->len;
-  screen_x11->monitors = (GdkX11Monitor *)g_array_free (monitors, FALSE);
+  screen_x11->monitors = (BdkX11Monitor *)g_array_free (monitors, FALSE);
 
   screen_x11->primary_monitor = 0;
 
@@ -923,12 +923,12 @@ init_randr13 (GdkScreen *screen)
 }
 
 static gboolean
-init_solaris_xinerama (GdkScreen *screen)
+init_solaris_xinerama (BdkScreen *screen)
 {
 #ifdef HAVE_SOLARIS_XINERAMA
-  Display *dpy = GDK_SCREEN_XDISPLAY (screen);
-  int screen_no = gdk_screen_get_number (screen);
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  Display *dpy = BDK_SCREEN_XDISPLAY (screen);
+  int screen_no = bdk_screen_get_number (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   XRectangle monitors[MAXFRAMEBUFFERS];
   unsigned char hints[16];
   gint result;
@@ -948,7 +948,7 @@ init_solaris_xinerama (GdkScreen *screen)
       return FALSE;
     }
 
-  screen_x11->monitors = g_new0 (GdkX11Monitor, n_monitors);
+  screen_x11->monitors = g_new0 (BdkX11Monitor, n_monitors);
   screen_x11->n_monitors = n_monitors;
 
   for (i = 0; i < n_monitors; i++)
@@ -967,11 +967,11 @@ init_solaris_xinerama (GdkScreen *screen)
 }
 
 static gboolean
-init_xfree_xinerama (GdkScreen *screen)
+init_xfree_xinerama (BdkScreen *screen)
 {
 #ifdef HAVE_XFREE_XINERAMA
-  Display *dpy = GDK_SCREEN_XDISPLAY (screen);
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  Display *dpy = BDK_SCREEN_XDISPLAY (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   XineramaScreenInfo *monitors;
   int i, n_monitors;
   
@@ -995,7 +995,7 @@ init_xfree_xinerama (GdkScreen *screen)
     }
 
   screen_x11->n_monitors = n_monitors;
-  screen_x11->monitors = g_new0 (GdkX11Monitor, n_monitors);
+  screen_x11->monitors = g_new0 (BdkX11Monitor, n_monitors);
   
   for (i = 0; i < n_monitors; ++i)
     {
@@ -1015,9 +1015,9 @@ init_xfree_xinerama (GdkScreen *screen)
 }
 
 static void
-deinit_multihead (GdkScreen *screen)
+deinit_multihead (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
   free_monitors (screen_x11->monitors, screen_x11->n_monitors);
 
@@ -1026,8 +1026,8 @@ deinit_multihead (GdkScreen *screen)
 }
 
 static gboolean
-compare_monitor (GdkX11Monitor *m1,
-                 GdkX11Monitor *m2)
+compare_monitor (BdkX11Monitor *m1,
+                 BdkX11Monitor *m2)
 {
   if (m1->geometry.x != m2->geometry.x ||
       m1->geometry.y != m2->geometry.y ||
@@ -1049,8 +1049,8 @@ compare_monitor (GdkX11Monitor *m1,
 }
 
 static gboolean
-compare_monitors (GdkX11Monitor *monitors1, gint n_monitors1,
-                  GdkX11Monitor *monitors2, gint n_monitors2)
+compare_monitors (BdkX11Monitor *monitors1, gint n_monitors1,
+                  BdkX11Monitor *monitors2, gint n_monitors2)
 {
   gint i;
 
@@ -1067,9 +1067,9 @@ compare_monitors (GdkX11Monitor *monitors1, gint n_monitors1,
 }
 
 static void
-init_multihead (GdkScreen *screen)
+init_multihead (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   int opcode, firstevent, firsterror;
 
   /* There are four different implementations of multihead support: 
@@ -1092,7 +1092,7 @@ init_multihead (GdkScreen *screen)
   if (init_randr13 (screen))
     return;
 
-  if (XQueryExtension (GDK_SCREEN_XDISPLAY (screen), "XINERAMA",
+  if (XQueryExtension (BDK_SCREEN_XDISPLAY (screen), "XINERAMA",
 		       &opcode, &firstevent, &firsterror))
     {
       if (init_solaris_xinerama (screen))
@@ -1104,7 +1104,7 @@ init_multihead (GdkScreen *screen)
 
   /* No multihead support of any kind for this screen */
   screen_x11->n_monitors = 1;
-  screen_x11->monitors = g_new0 (GdkX11Monitor, 1);
+  screen_x11->monitors = g_new0 (BdkX11Monitor, 1);
   screen_x11->primary_monitor = 0;
 
   init_monitor_geometry (screen_x11->monitors, 0, 0,
@@ -1112,17 +1112,17 @@ init_multihead (GdkScreen *screen)
 			 HeightOfScreen (screen_x11->xscreen));
 }
 
-GdkScreen *
-_gdk_x11_screen_new (GdkDisplay *display,
+BdkScreen *
+_bdk_x11_screen_new (BdkDisplay *display,
 		     gint	 screen_number) 
 {
-  GdkScreen *screen;
-  GdkScreenX11 *screen_x11;
-  GdkDisplayX11 *display_x11 = GDK_DISPLAY_X11 (display);
+  BdkScreen *screen;
+  BdkScreenX11 *screen_x11;
+  BdkDisplayX11 *display_x11 = BDK_DISPLAY_X11 (display);
 
-  screen = g_object_new (GDK_TYPE_SCREEN_X11, NULL);
+  screen = g_object_new (BDK_TYPE_SCREEN_X11, NULL);
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
   screen_x11->display = display;
   screen_x11->xdisplay = display_x11->xdisplay;
   screen_x11->xscreen = ScreenOfDisplay (display_x11->xdisplay, screen_number);
@@ -1135,8 +1135,8 @@ _gdk_x11_screen_new (GdkDisplay *display,
   init_multihead (screen);
   init_randr_support (screen);
   
-  _gdk_visual_init (screen);
-  _gdk_windowing_window_init (screen);
+  _bdk_visual_init (screen);
+  _bdk_windowing_window_init (screen);
   
   return screen;
 }
@@ -1147,19 +1147,19 @@ _gdk_x11_screen_new (GdkDisplay *display,
  * is_composited to avoid a race condition here.
  */
 void
-_gdk_x11_screen_setup (GdkScreen *screen)
+_bdk_x11_screen_setup (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
 
   screen_x11->cm_selection_atom = make_cm_atom (screen_x11->screen_num);
-  gdk_display_request_selection_notification (screen_x11->display,
+  bdk_display_request_selection_notification (screen_x11->display,
 					      screen_x11->cm_selection_atom);
   screen_x11->is_composited = check_is_composited (screen_x11->display, screen_x11);
 }
 
 /**
- * gdk_screen_is_composited:
- * @screen: a #GdkScreen
+ * bdk_screen_is_composited:
+ * @screen: a #BdkScreen
  * 
  * Returns whether windows with an RGBA visual can reasonably
  * be expected to have their alpha channel drawn correctly on
@@ -1174,28 +1174,28 @@ _gdk_x11_screen_setup (GdkScreen *screen)
  * Since: 2.10
  **/
 gboolean
-gdk_screen_is_composited (GdkScreen *screen)
+bdk_screen_is_composited (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), FALSE);
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   return screen_x11->is_composited;
 }
 
 static void
-init_randr_support (GdkScreen * screen)
+init_randr_support (BdkScreen * screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   
-  XSelectInput (GDK_SCREEN_XDISPLAY (screen),
+  XSelectInput (BDK_SCREEN_XDISPLAY (screen),
 		screen_x11->xroot_window,
 		StructureNotifyMask);
 
 #ifdef HAVE_RANDR
-  XRRSelectInput (GDK_SCREEN_XDISPLAY (screen),
+  XRRSelectInput (BDK_SCREEN_XDISPLAY (screen),
 		  screen_x11->xroot_window,
 		  RRScreenChangeNotifyMask	|
 		  RRCrtcChangeNotifyMask	|
@@ -1204,12 +1204,12 @@ init_randr_support (GdkScreen * screen)
 }
 
 static void
-process_monitors_change (GdkScreen *screen)
+process_monitors_change (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
   gint		 n_monitors;
   gint		 primary_monitor;
-  GdkX11Monitor	*monitors;
+  BdkX11Monitor	*monitors;
   gboolean changed;
 
   primary_monitor = screen_x11->primary_monitor;
@@ -1233,19 +1233,19 @@ process_monitors_change (GdkScreen *screen)
 }
 
 void
-_gdk_x11_screen_size_changed (GdkScreen *screen,
+_bdk_x11_screen_size_changed (BdkScreen *screen,
 			      XEvent    *event)
 {
   gint width, height;
 #ifdef HAVE_RANDR
-  GdkDisplayX11 *display_x11;
+  BdkDisplayX11 *display_x11;
 #endif
 
-  width = gdk_screen_get_width (screen);
-  height = gdk_screen_get_height (screen);
+  width = bdk_screen_get_width (screen);
+  height = bdk_screen_get_height (screen);
 
 #ifdef HAVE_RANDR
-  display_x11 = GDK_DISPLAY_X11 (gdk_screen_get_display (screen));
+  display_x11 = BDK_DISPLAY_X11 (bdk_screen_get_display (screen));
 
   if (display_x11->have_randr13 && event->type == ConfigureNotify)
     return;
@@ -1255,7 +1255,7 @@ _gdk_x11_screen_size_changed (GdkScreen *screen,
   if (event->type == ConfigureNotify)
     {
       XConfigureEvent *rcevent = (XConfigureEvent *) event;
-      Screen	    *xscreen = gdk_x11_screen_get_xscreen (screen);
+      Screen	    *xscreen = bdk_x11_screen_get_xscreen (screen);
 
       xscreen->width   = rcevent->width;
       xscreen->height  = rcevent->height;
@@ -1266,25 +1266,25 @@ _gdk_x11_screen_size_changed (GdkScreen *screen,
 
   process_monitors_change (screen);
 
-  if (width != gdk_screen_get_width (screen) ||
-      height != gdk_screen_get_height (screen))
+  if (width != bdk_screen_get_width (screen) ||
+      height != bdk_screen_get_height (screen))
     g_signal_emit_by_name (screen, "size-changed");
 }
 
 void
-_gdk_x11_screen_window_manager_changed (GdkScreen *screen)
+_bdk_x11_screen_window_manager_changed (BdkScreen *screen)
 {
   g_signal_emit (screen, signals[WINDOW_MANAGER_CHANGED], 0);
 }
 
 void
-_gdk_x11_screen_process_owner_change (GdkScreen *screen,
+_bdk_x11_screen_process_owner_change (BdkScreen *screen,
 				      XEvent *event)
 {
 #ifdef HAVE_XFIXES
   XFixesSelectionNotifyEvent *selection_event = (XFixesSelectionNotifyEvent *)event;
-  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
-  Atom xcm_selection_atom = gdk_x11_atom_to_xatom_for_display (screen_x11->display,
+  BdkScreenX11 *screen_x11 = BDK_SCREEN_X11 (screen);
+  Atom xcm_selection_atom = bdk_x11_atom_to_xatom_for_display (screen_x11->display,
 							       screen_x11->cm_selection_atom);
 
   if (selection_event->selection == xcm_selection_atom)
@@ -1302,9 +1302,9 @@ _gdk_x11_screen_process_owner_change (GdkScreen *screen,
 }
 
 /**
- * _gdk_windowing_substitute_screen_number:
+ * _bdk_windowing_substitute_screen_number:
  * @display_name : The name of a display, in the form used by 
- *                 gdk_display_open (). If %NULL a default value
+ *                 bdk_display_open (). If %NULL a default value
  *                 will be used. On X11, this is derived from the DISPLAY
  *                 environment variable.
  * @screen_number : The number of a screen within the display
@@ -1317,7 +1317,7 @@ _gdk_x11_screen_process_owner_change (GdkScreen *screen,
  *   display name. Free with g_free().
  */
 gchar * 
-_gdk_windowing_substitute_screen_number (const gchar *display_name,
+_bdk_windowing_substitute_screen_number (const gchar *display_name,
 					 gint         screen_number)
 {
   GString *str;
@@ -1341,32 +1341,32 @@ _gdk_windowing_substitute_screen_number (const gchar *display_name,
 }
 
 /**
- * gdk_screen_make_display_name:
- * @screen: a #GdkScreen
+ * bdk_screen_make_display_name:
+ * @screen: a #BdkScreen
  * 
- * Determines the name to pass to gdk_display_open() to get
- * a #GdkDisplay with this screen as the default screen.
+ * Determines the name to pass to bdk_display_open() to get
+ * a #BdkDisplay with this screen as the default screen.
  * 
  * Return value: a newly allocated string, free with g_free()
  *
  * Since: 2.2
  **/
 gchar *
-gdk_screen_make_display_name (GdkScreen *screen)
+bdk_screen_make_display_name (BdkScreen *screen)
 {
   const gchar *old_display;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  old_display = gdk_display_get_name (gdk_screen_get_display (screen));
+  old_display = bdk_display_get_name (bdk_screen_get_display (screen));
 
-  return _gdk_windowing_substitute_screen_number (old_display, 
-						  gdk_screen_get_number (screen));
+  return _bdk_windowing_substitute_screen_number (old_display, 
+						  bdk_screen_get_number (screen));
 }
 
 /**
- * gdk_screen_get_active_window
- * @screen: a #GdkScreen
+ * bdk_screen_get_active_window
+ * @screen: a #BdkScreen
  *
  * Returns the screen's currently active window.
  *
@@ -1387,27 +1387,27 @@ gdk_screen_make_display_name (GdkScreen *screen)
  *
  * Since: 2.10
  **/
-GdkWindow *
-gdk_screen_get_active_window (GdkScreen *screen)
+BdkWindow *
+bdk_screen_get_active_window (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11;
-  GdkWindow *ret = NULL;
+  BdkScreenX11 *screen_x11;
+  BdkWindow *ret = NULL;
   Atom type_return;
   gint format_return;
   gulong nitems_return;
   gulong bytes_after_return;
   guchar *data = NULL;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  if (!gdk_x11_screen_supports_net_wm_hint (screen,
-                                            gdk_atom_intern_static_string ("_NET_ACTIVE_WINDOW")))
+  if (!bdk_x11_screen_supports_net_wm_hint (screen,
+                                            bdk_atom_intern_static_string ("_NET_ACTIVE_WINDOW")))
     return NULL;
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   if (XGetWindowProperty (screen_x11->xdisplay, screen_x11->xroot_window,
-	                  gdk_x11_get_xatom_by_name_for_display (screen_x11->display,
+	                  bdk_x11_get_xatom_by_name_for_display (screen_x11->display,
 			                                         "_NET_ACTIVE_WINDOW"),
 		          0, 1, False, XA_WINDOW, &type_return,
 		          &format_return, &nitems_return,
@@ -1416,12 +1416,12 @@ gdk_screen_get_active_window (GdkScreen *screen)
     {
       if ((type_return == XA_WINDOW) && (format_return == 32) && (data))
         {
-          GdkNativeWindow window = *(GdkNativeWindow *) data;
+          BdkNativeWindow window = *(BdkNativeWindow *) data;
 
           if (window != None)
             {
-              ret = gdk_window_foreign_new_for_display (screen_x11->display,
-                                                        *(GdkNativeWindow *) data);
+              ret = bdk_window_foreign_new_for_display (screen_x11->display,
+                                                        *(BdkNativeWindow *) data);
             }
         }
     }
@@ -1433,10 +1433,10 @@ gdk_screen_get_active_window (GdkScreen *screen)
 }
 
 /**
- * gdk_screen_get_window_stack:
- * @screen: a #GdkScreen
+ * bdk_screen_get_window_stack:
+ * @screen: a #BdkScreen
  *
- * Returns a #GList of #GdkWindow<!-- -->s representing the current
+ * Returns a #GList of #BdkWindow<!-- -->s representing the current
  * window stack.
  *
  * On X11, this is done by inspecting the _NET_CLIENT_LIST_STACKING
@@ -1452,16 +1452,16 @@ gdk_screen_get_active_window (GdkScreen *screen)
  * windows it contains, so it should be freed using g_list_free() and
  * its windows unrefed using g_object_unref() when no longer needed.
  *
- * Return value: (transfer full) (element-type GdkWindow):
- *     a list of #GdkWindow<!-- -->s for the current window stack,
+ * Return value: (transfer full) (element-type BdkWindow):
+ *     a list of #BdkWindow<!-- -->s for the current window stack,
  *               or %NULL.
  *
  * Since: 2.10
  **/
 GList *
-gdk_screen_get_window_stack (GdkScreen *screen)
+bdk_screen_get_window_stack (BdkScreen *screen)
 {
-  GdkScreenX11 *screen_x11;
+  BdkScreenX11 *screen_x11;
   GList *ret = NULL;
   Atom type_return;
   gint format_return;
@@ -1469,16 +1469,16 @@ gdk_screen_get_window_stack (GdkScreen *screen)
   gulong bytes_after_return;
   guchar *data = NULL;
 
-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+  g_return_val_if_fail (BDK_IS_SCREEN (screen), NULL);
 
-  if (!gdk_x11_screen_supports_net_wm_hint (screen,
-                                            gdk_atom_intern_static_string ("_NET_CLIENT_LIST_STACKING")))
+  if (!bdk_x11_screen_supports_net_wm_hint (screen,
+                                            bdk_atom_intern_static_string ("_NET_CLIENT_LIST_STACKING")))
     return NULL;
 
-  screen_x11 = GDK_SCREEN_X11 (screen);
+  screen_x11 = BDK_SCREEN_X11 (screen);
 
   if (XGetWindowProperty (screen_x11->xdisplay, screen_x11->xroot_window,
-	                  gdk_x11_get_xatom_by_name_for_display (screen_x11->display,
+	                  bdk_x11_get_xatom_by_name_for_display (screen_x11->display,
 			                                         "_NET_CLIENT_LIST_STACKING"),
 		          0, G_MAXLONG, False, XA_WINDOW, &type_return,
 		          &format_return, &nitems_return,
@@ -1489,13 +1489,13 @@ gdk_screen_get_window_stack (GdkScreen *screen)
           (data) && (nitems_return > 0))
         {
           gulong *stack = (gulong *) data;
-          GdkWindow *win;
+          BdkWindow *win;
           int i;
 
           for (i = 0; i < nitems_return; i++)
             {
-              win = gdk_window_foreign_new_for_display (screen_x11->display,
-                                                        (GdkNativeWindow)stack[i]);
+              win = bdk_window_foreign_new_for_display (screen_x11->display,
+                                                        (BdkNativeWindow)stack[i]);
 
               if (win != NULL)
                 ret = g_list_append (ret, win);
@@ -1509,5 +1509,5 @@ gdk_screen_get_window_stack (GdkScreen *screen)
   return ret;
 }
 
-#define __GDK_SCREEN_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_SCREEN_X11_C__
+#include "bdkaliasdef.c"

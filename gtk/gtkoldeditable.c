@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,27 +18,27 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
 #include "config.h"
 #include <string.h>
-#include "gdk/gdkkeysyms.h"
-#include "gdk/gdki18n.h"
-#include "gtkclipboard.h"
-#include "gtkoldeditable.h"
-#include "gtkmain.h"
-#include "gtkmarshalers.h"
-#include "gtkselection.h"
-#include "gtksignal.h"
-#include "gtkintl.h"
+#include "bdk/bdkkeysyms.h"
+#include "bdk/bdki18n.h"
+#include "btkclipboard.h"
+#include "btkoldeditable.h"
+#include "btkmain.h"
+#include "btkmarshalers.h"
+#include "btkselection.h"
+#include "btksignal.h"
+#include "btkintl.h"
 
-#include "gtkalias.h"
+#include "btkalias.h"
 
 #define MIN_EDITABLE_WIDTH  150
 #define DRAW_TIMEOUT     20
@@ -76,86 +76,86 @@ enum {
   TARGET_COMPOUND_TEXT
 };
 
-static void  gtk_old_editable_editable_init        (GtkEditableClass    *iface);
-static void  gtk_old_editable_set_arg              (GtkObject           *object,
-						    GtkArg              *arg,
+static void  btk_old_editable_editable_init        (BtkEditableClass    *iface);
+static void  btk_old_editable_set_arg              (BtkObject           *object,
+						    BtkArg              *arg,
 						    guint                arg_id);
-static void  gtk_old_editable_get_arg              (GtkObject           *object,
-						    GtkArg              *arg,
+static void  btk_old_editable_get_arg              (BtkObject           *object,
+						    BtkArg              *arg,
 						    guint                arg_id);
-static void *gtk_old_editable_get_public_chars     (GtkOldEditable      *old_editable,
+static void *btk_old_editable_get_public_chars     (BtkOldEditable      *old_editable,
 						    gint                 start,
 						    gint                 end);
 
-static gint gtk_old_editable_selection_clear    (GtkWidget         *widget,
-						 GdkEventSelection *event);
-static void gtk_old_editable_selection_get      (GtkWidget         *widget,
-						 GtkSelectionData  *selection_data,
+static gint btk_old_editable_selection_clear    (BtkWidget         *widget,
+						 BdkEventSelection *event);
+static void btk_old_editable_selection_get      (BtkWidget         *widget,
+						 BtkSelectionData  *selection_data,
 						 guint              info,
 						 guint              time);
-static void gtk_old_editable_selection_received (GtkWidget         *widget,
-						 GtkSelectionData  *selection_data,
+static void btk_old_editable_selection_received (BtkWidget         *widget,
+						 BtkSelectionData  *selection_data,
 						 guint              time);
 
-static void  gtk_old_editable_set_selection        (GtkOldEditable      *old_editable,
+static void  btk_old_editable_set_selection        (BtkOldEditable      *old_editable,
 						    gint                 start,
 						    gint                 end);
 
-static void gtk_old_editable_real_set_editable    (GtkOldEditable *old_editable,
+static void btk_old_editable_real_set_editable    (BtkOldEditable *old_editable,
 						   gboolean        is_editable);
-static void gtk_old_editable_real_cut_clipboard   (GtkOldEditable *old_editable);
-static void gtk_old_editable_real_copy_clipboard  (GtkOldEditable *old_editable);
-static void gtk_old_editable_real_paste_clipboard (GtkOldEditable *old_editable);
+static void btk_old_editable_real_cut_clipboard   (BtkOldEditable *old_editable);
+static void btk_old_editable_real_copy_clipboard  (BtkOldEditable *old_editable);
+static void btk_old_editable_real_paste_clipboard (BtkOldEditable *old_editable);
 
-static void     gtk_old_editable_insert_text         (GtkEditable *editable,
+static void     btk_old_editable_insert_text         (BtkEditable *editable,
 						      const gchar *new_text,
 						      gint         new_text_length,
 						      gint        *position);
-static void     gtk_old_editable_delete_text         (GtkEditable *editable,
+static void     btk_old_editable_delete_text         (BtkEditable *editable,
 						      gint         start_pos,
 						      gint         end_pos);
-static gchar *  gtk_old_editable_get_chars           (GtkEditable *editable,
+static gchar *  btk_old_editable_get_chars           (BtkEditable *editable,
 						      gint         start,
 						      gint         end);
-static void     gtk_old_editable_set_selection_bounds (GtkEditable *editable,
+static void     btk_old_editable_set_selection_bounds (BtkEditable *editable,
 						       gint         start,
 						       gint         end);
-static gboolean gtk_old_editable_get_selection_bounds (GtkEditable *editable,
+static gboolean btk_old_editable_get_selection_bounds (BtkEditable *editable,
 						       gint        *start,
 						       gint        *end);
-static void     gtk_old_editable_set_position        (GtkEditable *editable,
+static void     btk_old_editable_set_position        (BtkEditable *editable,
 						      gint         position);
-static gint     gtk_old_editable_get_position        (GtkEditable *editable);
-static void     gtk_old_editable_finalize            (GObject     *object);
+static gint     btk_old_editable_get_position        (BtkEditable *editable);
+static void     btk_old_editable_finalize            (GObject     *object);
 
 static guint editable_signals[LAST_SIGNAL] = { 0 };
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkOldEditable, gtk_old_editable, GTK_TYPE_WIDGET,
-				  G_IMPLEMENT_INTERFACE (GTK_TYPE_EDITABLE,
-							 gtk_old_editable_editable_init))
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkOldEditable, btk_old_editable, BTK_TYPE_WIDGET,
+				  G_IMPLEMENT_INTERFACE (BTK_TYPE_EDITABLE,
+							 btk_old_editable_editable_init))
 
 static void
-gtk_old_editable_class_init (GtkOldEditableClass *class)
+btk_old_editable_class_init (BtkOldEditableClass *class)
 {
-  GObjectClass *gobject_class;
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass *bobject_class;
+  BtkObjectClass *object_class;
+  BtkWidgetClass *widget_class;
 
-  gobject_class = (GObjectClass*) class;
-  object_class = (GtkObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = (GObjectClass*) class;
+  object_class = (BtkObjectClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->finalize = gtk_old_editable_finalize;
+  bobject_class->finalize = btk_old_editable_finalize;
 
-  object_class->set_arg = gtk_old_editable_set_arg;
-  object_class->get_arg = gtk_old_editable_get_arg;
+  object_class->set_arg = btk_old_editable_set_arg;
+  object_class->get_arg = btk_old_editable_get_arg;
 
-  widget_class->selection_clear_event = gtk_old_editable_selection_clear;
-  widget_class->selection_received = gtk_old_editable_selection_received;
-  widget_class->selection_get = gtk_old_editable_selection_get;
+  widget_class->selection_clear_event = btk_old_editable_selection_clear;
+  widget_class->selection_received = btk_old_editable_selection_received;
+  widget_class->selection_get = btk_old_editable_selection_get;
 
   class->activate = NULL;
-  class->set_editable = gtk_old_editable_real_set_editable;
+  class->set_editable = btk_old_editable_real_set_editable;
 
   class->move_cursor = NULL;
   class->move_word = NULL;
@@ -167,9 +167,9 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
   class->kill_word = NULL;
   class->kill_line = NULL;
 
-  class->cut_clipboard = gtk_old_editable_real_cut_clipboard;
-  class->copy_clipboard = gtk_old_editable_real_copy_clipboard;
-  class->paste_clipboard = gtk_old_editable_real_paste_clipboard;
+  class->cut_clipboard = btk_old_editable_real_cut_clipboard;
+  class->copy_clipboard = btk_old_editable_real_copy_clipboard;
+  class->paste_clipboard = btk_old_editable_real_paste_clipboard;
 
   class->update_text = NULL;
   class->get_chars = NULL;
@@ -177,152 +177,152 @@ gtk_old_editable_class_init (GtkOldEditableClass *class)
   class->set_position = NULL;
 
   editable_signals[ACTIVATE] =
-    gtk_signal_new (I_("activate"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, activate),
-		    _gtk_marshal_VOID__VOID,
-		    GTK_TYPE_NONE, 0);
+    btk_signal_new (I_("activate"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, activate),
+		    _btk_marshal_VOID__VOID,
+		    BTK_TYPE_NONE, 0);
   widget_class->activate_signal = editable_signals[ACTIVATE];
 
   editable_signals[SET_EDITABLE] =
-    gtk_signal_new (I_("set-editable"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, set_editable),
-		    _gtk_marshal_VOID__BOOLEAN,
-		    GTK_TYPE_NONE, 1,
-		    GTK_TYPE_BOOL);
+    btk_signal_new (I_("set-editable"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, set_editable),
+		    _btk_marshal_VOID__BOOLEAN,
+		    BTK_TYPE_NONE, 1,
+		    BTK_TYPE_BOOL);
 
   editable_signals[MOVE_CURSOR] =
-    gtk_signal_new (I_("move-cursor"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_cursor),
-		    _gtk_marshal_VOID__INT_INT,
-		    GTK_TYPE_NONE, 2, 
-		    GTK_TYPE_INT, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("move-cursor"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, move_cursor),
+		    _btk_marshal_VOID__INT_INT,
+		    BTK_TYPE_NONE, 2, 
+		    BTK_TYPE_INT, 
+		    BTK_TYPE_INT);
 
   editable_signals[MOVE_WORD] =
-    gtk_signal_new (I_("move-word"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_word),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("move-word"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, move_word),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[MOVE_PAGE] =
-    gtk_signal_new (I_("move-page"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_page),
-		    _gtk_marshal_VOID__INT_INT,
-		    GTK_TYPE_NONE, 2, 
-		    GTK_TYPE_INT, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("move-page"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, move_page),
+		    _btk_marshal_VOID__INT_INT,
+		    BTK_TYPE_NONE, 2, 
+		    BTK_TYPE_INT, 
+		    BTK_TYPE_INT);
 
   editable_signals[MOVE_TO_ROW] =
-    gtk_signal_new (I_("move-to-row"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_to_row),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("move-to-row"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, move_to_row),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[MOVE_TO_COLUMN] =
-    gtk_signal_new (I_("move-to-column"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, move_to_column),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("move-to-column"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, move_to_column),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[KILL_CHAR] =
-    gtk_signal_new (I_("kill-char"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_char),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("kill-char"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, kill_char),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[KILL_WORD] =
-    gtk_signal_new (I_("kill-word"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_word),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("kill-word"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, kill_word),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[KILL_LINE] =
-    gtk_signal_new (I_("kill-line"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, kill_line),
-		    _gtk_marshal_VOID__INT,
-		    GTK_TYPE_NONE, 1, 
-		    GTK_TYPE_INT);
+    btk_signal_new (I_("kill-line"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, kill_line),
+		    _btk_marshal_VOID__INT,
+		    BTK_TYPE_NONE, 1, 
+		    BTK_TYPE_INT);
 
   editable_signals[CUT_CLIPBOARD] =
-    gtk_signal_new (I_("cut-clipboard"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, cut_clipboard),
-		    _gtk_marshal_VOID__VOID,
-		    GTK_TYPE_NONE, 0);
+    btk_signal_new (I_("cut-clipboard"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, cut_clipboard),
+		    _btk_marshal_VOID__VOID,
+		    BTK_TYPE_NONE, 0);
 
   editable_signals[COPY_CLIPBOARD] =
-    gtk_signal_new (I_("copy-clipboard"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, copy_clipboard),
-		    _gtk_marshal_VOID__VOID,
-		    GTK_TYPE_NONE, 0);
+    btk_signal_new (I_("copy-clipboard"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, copy_clipboard),
+		    _btk_marshal_VOID__VOID,
+		    BTK_TYPE_NONE, 0);
 
   editable_signals[PASTE_CLIPBOARD] =
-    gtk_signal_new (I_("paste-clipboard"),
-		    GTK_RUN_LAST | GTK_RUN_ACTION,
-		    GTK_CLASS_TYPE (object_class),
-		    GTK_SIGNAL_OFFSET (GtkOldEditableClass, paste_clipboard),
-		    _gtk_marshal_VOID__VOID,
-		    GTK_TYPE_NONE, 0);
+    btk_signal_new (I_("paste-clipboard"),
+		    BTK_RUN_LAST | BTK_RUN_ACTION,
+		    BTK_CLASS_TYPE (object_class),
+		    BTK_SIGNAL_OFFSET (BtkOldEditableClass, paste_clipboard),
+		    _btk_marshal_VOID__VOID,
+		    BTK_TYPE_NONE, 0);
 
-  gtk_object_add_arg_type ("GtkOldEditable::text-position", GTK_TYPE_INT, GTK_ARG_READWRITE | G_PARAM_STATIC_NAME, ARG_TEXT_POSITION);
-  gtk_object_add_arg_type ("GtkOldEditable::editable", GTK_TYPE_BOOL, GTK_ARG_READWRITE | G_PARAM_STATIC_NAME, ARG_EDITABLE);
+  btk_object_add_arg_type ("BtkOldEditable::text-position", BTK_TYPE_INT, BTK_ARG_READWRITE | G_PARAM_STATIC_NAME, ARG_TEXT_POSITION);
+  btk_object_add_arg_type ("BtkOldEditable::editable", BTK_TYPE_BOOL, BTK_ARG_READWRITE | G_PARAM_STATIC_NAME, ARG_EDITABLE);
 }
 
 static void
-gtk_old_editable_editable_init (GtkEditableClass *iface)
+btk_old_editable_editable_init (BtkEditableClass *iface)
 {
-  iface->do_insert_text = gtk_old_editable_insert_text;
-  iface->do_delete_text = gtk_old_editable_delete_text;
-  iface->get_chars = gtk_old_editable_get_chars;
-  iface->set_selection_bounds = gtk_old_editable_set_selection_bounds;
-  iface->get_selection_bounds = gtk_old_editable_get_selection_bounds;
-  iface->set_position = gtk_old_editable_set_position;
-  iface->get_position = gtk_old_editable_get_position;
+  iface->do_insert_text = btk_old_editable_insert_text;
+  iface->do_delete_text = btk_old_editable_delete_text;
+  iface->get_chars = btk_old_editable_get_chars;
+  iface->set_selection_bounds = btk_old_editable_set_selection_bounds;
+  iface->get_selection_bounds = btk_old_editable_get_selection_bounds;
+  iface->set_position = btk_old_editable_set_position;
+  iface->get_position = btk_old_editable_get_position;
 }
 
 static void
-gtk_old_editable_set_arg (GtkObject *object,
-			  GtkArg    *arg,
+btk_old_editable_set_arg (BtkObject *object,
+			  BtkArg    *arg,
 			  guint      arg_id)
 {
-  GtkEditable *editable = GTK_EDITABLE (object);
+  BtkEditable *editable = BTK_EDITABLE (object);
 
   switch (arg_id)
     {
     case ARG_TEXT_POSITION:
-      gtk_editable_set_position (editable, GTK_VALUE_INT (*arg));
+      btk_editable_set_position (editable, BTK_VALUE_INT (*arg));
       break;
     case ARG_EDITABLE:
-      gtk_signal_emit (object, editable_signals[SET_EDITABLE],
-		       GTK_VALUE_BOOL (*arg) != FALSE);
+      btk_signal_emit (object, editable_signals[SET_EDITABLE],
+		       BTK_VALUE_BOOL (*arg) != FALSE);
       break;
     default:
       break;
@@ -330,39 +330,39 @@ gtk_old_editable_set_arg (GtkObject *object,
 }
 
 static void
-gtk_old_editable_get_arg (GtkObject *object,
-			  GtkArg    *arg,
+btk_old_editable_get_arg (BtkObject *object,
+			  BtkArg    *arg,
 			  guint      arg_id)
 {
-  GtkOldEditable *old_editable;
+  BtkOldEditable *old_editable;
 
-  old_editable = GTK_OLD_EDITABLE (object);
+  old_editable = BTK_OLD_EDITABLE (object);
 
   switch (arg_id)
     {
     case ARG_TEXT_POSITION:
-      GTK_VALUE_INT (*arg) = old_editable->current_pos;
+      BTK_VALUE_INT (*arg) = old_editable->current_pos;
       break;
     case ARG_EDITABLE:
-      GTK_VALUE_BOOL (*arg) = old_editable->editable;
+      BTK_VALUE_BOOL (*arg) = old_editable->editable;
       break;
     default:
-      arg->type = GTK_TYPE_INVALID;
+      arg->type = BTK_TYPE_INVALID;
       break;
     }
 }
 
 static void
-gtk_old_editable_init (GtkOldEditable *old_editable)
+btk_old_editable_init (BtkOldEditable *old_editable)
 {
-  static const GtkTargetEntry targets[] = {
+  static const BtkTargetEntry targets[] = {
     { "UTF8_STRING", 0, 0 },
     { "STRING", 0, 0 },
     { "TEXT",   0, 0 }, 
     { "COMPOUND_TEXT", 0, 0 }
   };
 
-  gtk_widget_set_can_focus (GTK_WIDGET (old_editable), TRUE);
+  btk_widget_set_can_focus (BTK_WIDGET (old_editable), TRUE);
 
   old_editable->selection_start_pos = 0;
   old_editable->selection_end_pos = 0;
@@ -371,20 +371,20 @@ gtk_old_editable_init (GtkOldEditable *old_editable)
   old_editable->visible = 1;
   old_editable->clipboard_text = NULL;
 
-  gtk_selection_add_targets (GTK_WIDGET (old_editable), GDK_SELECTION_PRIMARY,
+  btk_selection_add_targets (BTK_WIDGET (old_editable), BDK_SELECTION_PRIMARY,
 			     targets, G_N_ELEMENTS (targets));
 }
 
 static void
-gtk_old_editable_finalize (GObject *object)
+btk_old_editable_finalize (GObject *object)
 {
-  gtk_selection_clear_targets (GTK_WIDGET (object), GDK_SELECTION_PRIMARY);
+  btk_selection_clear_targets (BTK_WIDGET (object), BDK_SELECTION_PRIMARY);
 
-  G_OBJECT_CLASS (gtk_old_editable_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_old_editable_parent_class)->finalize (object);
 }
 
 static void
-gtk_old_editable_insert_text (GtkEditable *editable,
+btk_old_editable_insert_text (BtkEditable *editable,
 			      const gchar *new_text,
 			      gint         new_text_length,
 			      gint        *position)
@@ -413,11 +413,11 @@ gtk_old_editable_insert_text (GtkEditable *editable,
 }
 
 static void
-gtk_old_editable_delete_text (GtkEditable *editable,
+btk_old_editable_delete_text (BtkEditable *editable,
 			      gint         start_pos,
 			      gint         end_pos)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (editable);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (editable);
 
   g_object_ref (old_editable);
 
@@ -426,35 +426,35 @@ gtk_old_editable_delete_text (GtkEditable *editable,
 
   if (old_editable->selection_start_pos == old_editable->selection_end_pos &&
       old_editable->has_selection)
-    gtk_old_editable_claim_selection (old_editable, FALSE, GDK_CURRENT_TIME);
+    btk_old_editable_claim_selection (old_editable, FALSE, BDK_CURRENT_TIME);
   
   g_object_unref (old_editable);
 }
 
 static void
-gtk_old_editable_update_text (GtkOldEditable *old_editable,
+btk_old_editable_update_text (BtkOldEditable *old_editable,
 			      gint            start_pos,
 			      gint            end_pos)
 {
-  GtkOldEditableClass *klass = GTK_OLD_EDITABLE_GET_CLASS (old_editable);
-  klass->update_text (GTK_OLD_EDITABLE (old_editable), start_pos, end_pos);
+  BtkOldEditableClass *klass = BTK_OLD_EDITABLE_GET_CLASS (old_editable);
+  klass->update_text (BTK_OLD_EDITABLE (old_editable), start_pos, end_pos);
 }
 
 static gchar *    
-gtk_old_editable_get_chars  (GtkEditable      *editable,
+btk_old_editable_get_chars  (BtkEditable      *editable,
 			     gint              start,
 			     gint              end)
 {
-  GtkOldEditableClass *klass = GTK_OLD_EDITABLE_GET_CLASS (editable);
-  return klass->get_chars (GTK_OLD_EDITABLE (editable), start, end);
+  BtkOldEditableClass *klass = BTK_OLD_EDITABLE_GET_CLASS (editable);
+  return klass->get_chars (BTK_OLD_EDITABLE (editable), start, end);
 }
 
 /*
- * Like gtk_editable_get_chars, but if the editable is not
+ * Like btk_editable_get_chars, but if the editable is not
  * visible, return asterisks; also convert result to UTF-8.
  */
 static void *    
-gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
+btk_old_editable_get_public_chars (BtkOldEditable   *old_editable,
 				   gint              start,
 				   gint              end)
 {
@@ -465,7 +465,7 @@ gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
   if (old_editable->visible)
     {
       GError *error = NULL;
-      gchar *tmp = gtk_editable_get_chars (GTK_EDITABLE (old_editable), start, end);
+      gchar *tmp = btk_editable_get_chars (BTK_EDITABLE (old_editable), start, end);
 
       if (need_conversion)
 	{
@@ -502,44 +502,44 @@ gtk_old_editable_get_public_chars (GtkOldEditable   *old_editable,
 }
 
 static void
-gtk_old_editable_set_selection (GtkOldEditable *old_editable,
+btk_old_editable_set_selection (BtkOldEditable *old_editable,
 				gint            start_pos,
 				gint            end_pos)
 {
-  GtkOldEditableClass *klass = GTK_OLD_EDITABLE_GET_CLASS (old_editable);
+  BtkOldEditableClass *klass = BTK_OLD_EDITABLE_GET_CLASS (old_editable);
   klass->set_selection (old_editable, start_pos, end_pos);
 }
 
 static void
-gtk_old_editable_set_position (GtkEditable *editable,
+btk_old_editable_set_position (BtkEditable *editable,
 			       gint            position)
 {
-  GtkOldEditableClass *klass = GTK_OLD_EDITABLE_GET_CLASS (editable);
+  BtkOldEditableClass *klass = BTK_OLD_EDITABLE_GET_CLASS (editable);
 
-  klass->set_position (GTK_OLD_EDITABLE (editable), position);
+  klass->set_position (BTK_OLD_EDITABLE (editable), position);
 }
 
 static gint
-gtk_old_editable_get_position (GtkEditable *editable)
+btk_old_editable_get_position (BtkEditable *editable)
 {
-  return GTK_OLD_EDITABLE (editable)->current_pos;
+  return BTK_OLD_EDITABLE (editable)->current_pos;
 }
 
 static gint
-gtk_old_editable_selection_clear (GtkWidget         *widget,
-				  GdkEventSelection *event)
+btk_old_editable_selection_clear (BtkWidget         *widget,
+				  BdkEventSelection *event)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (widget);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (widget);
   
   /* Let the selection handling code know that the selection
    * has been changed, since we've overriden the default handler */
-  if (!GTK_WIDGET_CLASS (gtk_old_editable_parent_class)->selection_clear_event (widget, event))
+  if (!BTK_WIDGET_CLASS (btk_old_editable_parent_class)->selection_clear_event (widget, event))
     return FALSE;
   
   if (old_editable->has_selection)
     {
       old_editable->has_selection = FALSE;
-      gtk_old_editable_update_text (old_editable, old_editable->selection_start_pos,
+      btk_old_editable_update_text (old_editable, old_editable->selection_start_pos,
 				    old_editable->selection_end_pos);
     }
   
@@ -547,12 +547,12 @@ gtk_old_editable_selection_clear (GtkWidget         *widget,
 }
 
 static void
-gtk_old_editable_selection_get (GtkWidget        *widget,
-				GtkSelectionData *selection_data,
+btk_old_editable_selection_get (BtkWidget        *widget,
+				BtkSelectionData *selection_data,
 				guint             info,
 				guint             time)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (widget);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (widget);
   gint selection_start_pos;
   gint selection_end_pos;
 
@@ -561,19 +561,19 @@ gtk_old_editable_selection_get (GtkWidget        *widget,
   selection_start_pos = MIN (old_editable->selection_start_pos, old_editable->selection_end_pos);
   selection_end_pos = MAX (old_editable->selection_start_pos, old_editable->selection_end_pos);
 
-  str = gtk_old_editable_get_public_chars (old_editable, 
+  str = btk_old_editable_get_public_chars (old_editable, 
 					   selection_start_pos, 
 					   selection_end_pos);
 
   if (str)
     {
-      gtk_selection_data_set_text (selection_data, str, -1);
+      btk_selection_data_set_text (selection_data, str, -1);
       g_free (str);
     }
 }
 
 static void
-gtk_old_editable_paste_received (GtkOldEditable *old_editable,
+btk_old_editable_paste_received (BtkOldEditable *old_editable,
 				 const gchar    *text,
 				 gboolean        is_clipboard)
 {
@@ -617,24 +617,24 @@ gtk_old_editable_paste_received (GtkOldEditable *old_editable,
 	{
 	  reselect = TRUE;
 	  
-	  /* Don't want to call gtk_editable_delete_selection here if we are going
+	  /* Don't want to call btk_editable_delete_selection here if we are going
 	   * to reclaim the selection to avoid extra server traffic */
 	  if (old_editable->has_selection)
 	    {
-	      gtk_editable_delete_text (GTK_EDITABLE (old_editable),
+	      btk_editable_delete_text (BTK_EDITABLE (old_editable),
 					MIN (old_editable->selection_start_pos, old_editable->selection_end_pos),
 					MAX (old_editable->selection_start_pos, old_editable->selection_end_pos));
 	    }
 	  else
-	    gtk_editable_delete_selection (GTK_EDITABLE (old_editable));
+	    btk_editable_delete_selection (BTK_EDITABLE (old_editable));
 	}
       
       tmp_pos = old_pos = old_editable->current_pos;
       
-      gtk_editable_insert_text (GTK_EDITABLE (old_editable), str, -1, &tmp_pos);
+      btk_editable_insert_text (BTK_EDITABLE (old_editable), str, -1, &tmp_pos);
 
       if (reselect)
-	gtk_old_editable_set_selection (old_editable, old_pos, old_editable->current_pos);
+	btk_old_editable_set_selection (old_editable, old_pos, old_editable->current_pos);
 
       if (str && str != text)
 	g_free ((gchar *) str);
@@ -642,13 +642,13 @@ gtk_old_editable_paste_received (GtkOldEditable *old_editable,
 }
 
 static void
-gtk_old_editable_selection_received  (GtkWidget         *widget,
-				      GtkSelectionData  *selection_data,
+btk_old_editable_selection_received  (BtkWidget         *widget,
+				      BtkSelectionData  *selection_data,
 				      guint              time)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (widget);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (widget);
 
-  guchar *text = gtk_selection_data_get_text (selection_data);
+  guchar *text = btk_selection_data_get_text (selection_data);
 
   if (!text)
     {
@@ -656,17 +656,17 @@ gtk_old_editable_selection_received  (GtkWidget         *widget,
        * for text and didn't get it, try string.  If we asked for
        * anything else and didn't get it, give up.
        */
-      if (selection_data->target == gdk_atom_intern_static_string ("UTF8_STRING"))
+      if (selection_data->target == bdk_atom_intern_static_string ("UTF8_STRING"))
 	{
-	  gtk_selection_convert (widget, GDK_SELECTION_PRIMARY,
-				 gdk_atom_intern_static_string ("TEXT"),
+	  btk_selection_convert (widget, BDK_SELECTION_PRIMARY,
+				 bdk_atom_intern_static_string ("TEXT"),
 				 time);
 	  return;
 	}
-      else if (selection_data->target == gdk_atom_intern_static_string ("TEXT"))
+      else if (selection_data->target == bdk_atom_intern_static_string ("TEXT"))
 	{
-	  gtk_selection_convert (widget, GDK_SELECTION_PRIMARY,
-				 GDK_TARGET_STRING,
+	  btk_selection_convert (widget, BDK_SELECTION_PRIMARY,
+				 BDK_TARGET_STRING,
 				 time);
 	  return;
 	}
@@ -674,25 +674,25 @@ gtk_old_editable_selection_received  (GtkWidget         *widget,
 
   if (text)
     {
-      gtk_old_editable_paste_received (old_editable, (gchar *) text, FALSE);
+      btk_old_editable_paste_received (old_editable, (gchar *) text, FALSE);
       g_free (text);
     }
 }
 
 static void
-old_editable_text_received_cb (GtkClipboard *clipboard,
+old_editable_text_received_cb (BtkClipboard *clipboard,
 			       const gchar  *text,
 			       gpointer      data)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (data);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (data);
 
-  gtk_old_editable_paste_received (old_editable, text, TRUE);
+  btk_old_editable_paste_received (old_editable, text, TRUE);
   g_object_unref (G_OBJECT (old_editable));
 }
 
 /**
- * gtk_old_editable_claim_selection:
- * @old_editable: a #GtkOldEditable
+ * btk_old_editable_claim_selection:
+ * @old_editable: a #BtkOldEditable
  * @claim: if %TRUE, claim ownership of the selection, if %FALSE, give
  *   up ownership
  * @time_: timestamp for this operation
@@ -700,54 +700,54 @@ old_editable_text_received_cb (GtkClipboard *clipboard,
  * Claims or gives up ownership of the selection.
  */
 void
-gtk_old_editable_claim_selection (GtkOldEditable *old_editable, 
+btk_old_editable_claim_selection (BtkOldEditable *old_editable, 
 				  gboolean        claim, 
 				  guint32         time)
 {
-  GtkWidget  *widget;
-  GdkDisplay *display;
+  BtkWidget  *widget;
+  BdkDisplay *display;
   
-  g_return_if_fail (GTK_IS_OLD_EDITABLE (old_editable));
-  widget = GTK_WIDGET (old_editable);
-  g_return_if_fail (gtk_widget_get_realized (widget));
+  g_return_if_fail (BTK_IS_OLD_EDITABLE (old_editable));
+  widget = BTK_WIDGET (old_editable);
+  g_return_if_fail (btk_widget_get_realized (widget));
 
-  display = gtk_widget_get_display (widget);
+  display = btk_widget_get_display (widget);
   old_editable->has_selection = FALSE;
   
   if (claim)
     {
-      if (gtk_selection_owner_set_for_display (display, widget,
-					       GDK_SELECTION_PRIMARY, time))
+      if (btk_selection_owner_set_for_display (display, widget,
+					       BDK_SELECTION_PRIMARY, time))
 	old_editable->has_selection = TRUE;
     }
   else
     {
-      if (gdk_selection_owner_get_for_display (display, GDK_SELECTION_PRIMARY) == widget->window)
-	gtk_selection_owner_set_for_display (display,
+      if (bdk_selection_owner_get_for_display (display, BDK_SELECTION_PRIMARY) == widget->window)
+	btk_selection_owner_set_for_display (display,
 					     NULL,
-					     GDK_SELECTION_PRIMARY, time);
+					     BDK_SELECTION_PRIMARY, time);
     }
 }
 
 static void
-gtk_old_editable_set_selection_bounds (GtkEditable *editable,
+btk_old_editable_set_selection_bounds (BtkEditable *editable,
 				       gint         start,
 				       gint         end)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (editable);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (editable);
   
-  if (gtk_widget_get_realized (GTK_WIDGET (editable)))
-    gtk_old_editable_claim_selection (old_editable, start != end, GDK_CURRENT_TIME);
+  if (btk_widget_get_realized (BTK_WIDGET (editable)))
+    btk_old_editable_claim_selection (old_editable, start != end, BDK_CURRENT_TIME);
   
-  gtk_old_editable_set_selection (old_editable, start, end);
+  btk_old_editable_set_selection (old_editable, start, end);
 }
 
 static gboolean
-gtk_old_editable_get_selection_bounds (GtkEditable *editable,
+btk_old_editable_get_selection_bounds (BtkEditable *editable,
 				       gint        *start,
 				       gint        *end)
 {
-  GtkOldEditable *old_editable = GTK_OLD_EDITABLE (editable);
+  BtkOldEditable *old_editable = BTK_OLD_EDITABLE (editable);
 
   *start = old_editable->selection_start_pos;
   *end = old_editable->selection_end_pos;
@@ -756,7 +756,7 @@ gtk_old_editable_get_selection_bounds (GtkEditable *editable,
 }
 
 static void
-gtk_old_editable_real_set_editable (GtkOldEditable *old_editable,
+btk_old_editable_real_set_editable (BtkOldEditable *old_editable,
 				    gboolean        is_editable)
 {
   is_editable = is_editable != FALSE;
@@ -764,19 +764,19 @@ gtk_old_editable_real_set_editable (GtkOldEditable *old_editable,
   if (old_editable->editable != is_editable)
     {
       old_editable->editable = is_editable;
-      gtk_widget_queue_draw (GTK_WIDGET (old_editable));
+      btk_widget_queue_draw (BTK_WIDGET (old_editable));
     }
 }
 
 static void
-gtk_old_editable_real_cut_clipboard (GtkOldEditable *old_editable)
+btk_old_editable_real_cut_clipboard (BtkOldEditable *old_editable)
 {
-  gtk_old_editable_real_copy_clipboard (old_editable);
-  gtk_editable_delete_selection (GTK_EDITABLE (old_editable));
+  btk_old_editable_real_copy_clipboard (old_editable);
+  btk_editable_delete_selection (BTK_EDITABLE (old_editable));
 }
 
 static void
-gtk_old_editable_real_copy_clipboard (GtkOldEditable *old_editable)
+btk_old_editable_real_copy_clipboard (BtkOldEditable *old_editable)
 {
   gint selection_start_pos; 
   gint selection_end_pos;
@@ -786,44 +786,44 @@ gtk_old_editable_real_copy_clipboard (GtkOldEditable *old_editable)
 
   if (selection_start_pos != selection_end_pos)
     {
-      gchar *text = gtk_old_editable_get_public_chars (old_editable,
+      gchar *text = btk_old_editable_get_public_chars (old_editable,
 						       selection_start_pos,
 						       selection_end_pos);
 
       if (text)
 	{
-	  GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (old_editable),
-							      GDK_SELECTION_CLIPBOARD);
+	  BtkClipboard *clipboard = btk_widget_get_clipboard (BTK_WIDGET (old_editable),
+							      BDK_SELECTION_CLIPBOARD);
 	  
-	  gtk_clipboard_set_text (clipboard, text, -1);
+	  btk_clipboard_set_text (clipboard, text, -1);
 	  g_free (text);
 	}
     }
 }
 
 static void
-gtk_old_editable_real_paste_clipboard (GtkOldEditable *old_editable)
+btk_old_editable_real_paste_clipboard (BtkOldEditable *old_editable)
 {
-  GtkClipboard *clipboard = gtk_widget_get_clipboard (GTK_WIDGET (old_editable), 
-						      GDK_SELECTION_CLIPBOARD);
+  BtkClipboard *clipboard = btk_widget_get_clipboard (BTK_WIDGET (old_editable), 
+						      BDK_SELECTION_CLIPBOARD);
 
   g_object_ref (G_OBJECT (old_editable));
-  gtk_clipboard_request_text (clipboard, old_editable_text_received_cb, old_editable);
+  btk_clipboard_request_text (clipboard, old_editable_text_received_cb, old_editable);
 }
 
 /**
- * gtk_old_editable_changed:
- * @old_editable: a #GtkOldEditable
+ * btk_old_editable_changed:
+ * @old_editable: a #BtkOldEditable
  *
  * Emits the ::changed signal on @old_editable.
  */
 void
-gtk_old_editable_changed (GtkOldEditable *old_editable)
+btk_old_editable_changed (BtkOldEditable *old_editable)
 {
-  g_return_if_fail (GTK_IS_OLD_EDITABLE (old_editable));
+  g_return_if_fail (BTK_IS_OLD_EDITABLE (old_editable));
   
   g_signal_emit_by_name (old_editable, "changed");
 }
 
-#define __GTK_OLD_EDITABLE_C__
-#include "gtkaliasdef.c"
+#define __BTK_OLD_EDITABLE_C__
+#include "btkaliasdef.c"

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,40 +18,40 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ALIGNMENT_H__
-#define __GTK_ALIGNMENT_H__
+#ifndef __BTK_ALIGNMENT_H__
+#define __BTK_ALIGNMENT_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkbin.h>
+#include <btk/btkbin.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_ALIGNMENT                  (gtk_alignment_get_type ())
-#define GTK_ALIGNMENT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_ALIGNMENT, GtkAlignment))
-#define GTK_ALIGNMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_ALIGNMENT, GtkAlignmentClass))
-#define GTK_IS_ALIGNMENT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_ALIGNMENT))
-#define GTK_IS_ALIGNMENT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_ALIGNMENT))
-#define GTK_ALIGNMENT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_ALIGNMENT, GtkAlignmentClass))
+#define BTK_TYPE_ALIGNMENT                  (btk_alignment_get_type ())
+#define BTK_ALIGNMENT(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_ALIGNMENT, BtkAlignment))
+#define BTK_ALIGNMENT_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_ALIGNMENT, BtkAlignmentClass))
+#define BTK_IS_ALIGNMENT(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_ALIGNMENT))
+#define BTK_IS_ALIGNMENT_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_ALIGNMENT))
+#define BTK_ALIGNMENT_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_ALIGNMENT, BtkAlignmentClass))
 
 
-typedef struct _GtkAlignment       GtkAlignment;
-typedef struct _GtkAlignmentClass  GtkAlignmentClass;
-typedef struct _GtkAlignmentPrivate GtkAlignmentPrivate;
+typedef struct _BtkAlignment       BtkAlignment;
+typedef struct _BtkAlignmentClass  BtkAlignmentClass;
+typedef struct _BtkAlignmentPrivate BtkAlignmentPrivate;
 
-struct _GtkAlignment
+struct _BtkAlignment
 {
-  GtkBin bin;
+  BtkBin bin;
 
   gfloat GSEAL (xalign);
   gfloat GSEAL (yalign);
@@ -59,30 +59,30 @@ struct _GtkAlignment
   gfloat GSEAL (yscale);
 };
 
-struct _GtkAlignmentClass
+struct _BtkAlignmentClass
 {
-  GtkBinClass parent_class;
+  BtkBinClass parent_class;
 };
 
 
-GType      gtk_alignment_get_type   (void) G_GNUC_CONST;
-GtkWidget* gtk_alignment_new        (gfloat             xalign,
+GType      btk_alignment_get_type   (void) G_GNUC_CONST;
+BtkWidget* btk_alignment_new        (gfloat             xalign,
 				     gfloat             yalign,
 				     gfloat             xscale,
 				     gfloat             yscale);
-void       gtk_alignment_set        (GtkAlignment      *alignment,
+void       btk_alignment_set        (BtkAlignment      *alignment,
 				     gfloat             xalign,
 				     gfloat             yalign,
 				     gfloat             xscale,
 				     gfloat             yscale);
 
-void       gtk_alignment_set_padding (GtkAlignment      *alignment,
+void       btk_alignment_set_padding (BtkAlignment      *alignment,
 				      guint              padding_top,
 				      guint              padding_bottom,
 				      guint              padding_left,
 				      guint              padding_right);
 
-void       gtk_alignment_get_padding (GtkAlignment      *alignment,
+void       btk_alignment_get_padding (BtkAlignment      *alignment,
 				      guint             *padding_top,
 				      guint             *padding_bottom,
 				      guint             *padding_left,
@@ -91,4 +91,4 @@ void       gtk_alignment_get_padding (GtkAlignment      *alignment,
 G_END_DECLS
 
 
-#endif /* __GTK_ALIGNMENT_H__ */
+#endif /* __BTK_ALIGNMENT_H__ */

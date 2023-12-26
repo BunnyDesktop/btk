@@ -1,5 +1,5 @@
-/* gtkrecentchooserutils.h - Private utility functions for implementing a
- *                           GtkRecentChooser interface
+/* btkrecentchooserutils.h - Private utility functions for implementing a
+ *                           BtkRecentChooser interface
  *
  * Copyright (C) 2006 Emmanuele Bassi
  *
@@ -20,107 +20,107 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Based on gtkfilechooserutils.c:
+ * Based on btkfilechooserutils.c:
  *	Copyright (C) 2003 Red Hat, Inc.
  */
 
 #include "config.h"
 
-#include "gtkrecentchooserutils.h"
-#include "gtkalias.h"
+#include "btkrecentchooserutils.h"
+#include "btkalias.h"
 
 /* Methods */
-static void      delegate_set_sort_func              (GtkRecentChooser  *chooser,
-						      GtkRecentSortFunc  sort_func,
+static void      delegate_set_sort_func              (BtkRecentChooser  *chooser,
+						      BtkRecentSortFunc  sort_func,
 						      gpointer           sort_data,
 						      GDestroyNotify     data_destroy);
-static void      delegate_add_filter                 (GtkRecentChooser  *chooser,
-						      GtkRecentFilter   *filter);
-static void      delegate_remove_filter              (GtkRecentChooser  *chooser,
-						      GtkRecentFilter   *filter);
-static GSList   *delegate_list_filters               (GtkRecentChooser  *chooser);
-static gboolean  delegate_select_uri                 (GtkRecentChooser  *chooser,
+static void      delegate_add_filter                 (BtkRecentChooser  *chooser,
+						      BtkRecentFilter   *filter);
+static void      delegate_remove_filter              (BtkRecentChooser  *chooser,
+						      BtkRecentFilter   *filter);
+static GSList   *delegate_list_filters               (BtkRecentChooser  *chooser);
+static gboolean  delegate_select_uri                 (BtkRecentChooser  *chooser,
 						      const gchar       *uri,
 						      GError           **error);
-static void      delegate_unselect_uri               (GtkRecentChooser  *chooser,
+static void      delegate_unselect_uri               (BtkRecentChooser  *chooser,
 						      const gchar       *uri);
-static GList    *delegate_get_items                  (GtkRecentChooser  *chooser);
-static GtkRecentManager *delegate_get_recent_manager (GtkRecentChooser  *chooser);
-static void      delegate_select_all                 (GtkRecentChooser  *chooser);
-static void      delegate_unselect_all               (GtkRecentChooser  *chooser);
-static gboolean  delegate_set_current_uri            (GtkRecentChooser  *chooser,
+static GList    *delegate_get_items                  (BtkRecentChooser  *chooser);
+static BtkRecentManager *delegate_get_recent_manager (BtkRecentChooser  *chooser);
+static void      delegate_select_all                 (BtkRecentChooser  *chooser);
+static void      delegate_unselect_all               (BtkRecentChooser  *chooser);
+static gboolean  delegate_set_current_uri            (BtkRecentChooser  *chooser,
 						      const gchar       *uri,
 						      GError           **error);
-static gchar *   delegate_get_current_uri            (GtkRecentChooser  *chooser);
+static gchar *   delegate_get_current_uri            (BtkRecentChooser  *chooser);
 
 /* Signals */
 static void      delegate_notify            (GObject          *object,
 					     GParamSpec       *pspec,
 					     gpointer          user_data);
-static void      delegate_selection_changed (GtkRecentChooser *receiver,
+static void      delegate_selection_changed (BtkRecentChooser *receiver,
 					     gpointer          user_data);
-static void      delegate_item_activated    (GtkRecentChooser *receiver,
+static void      delegate_item_activated    (BtkRecentChooser *receiver,
 					     gpointer          user_data);
 
 /**
- * _gtk_recent_chooser_install_properties:
+ * _btk_recent_chooser_install_properties:
  * @klass: the class structure for a type deriving from #GObject
  *
  * Installs the necessary properties for a class implementing
- * #GtkRecentChooser. A #GtkParamSpecOverride property is installed
- * for each property, using the values from the #GtkRecentChooserProp
+ * #BtkRecentChooser. A #BtkParamSpecOverride property is installed
+ * for each property, using the values from the #BtkRecentChooserProp
  * enumeration. The caller must make sure itself that the enumeration
  * values don't collide with some other property values they
  * are using.
  */
 void
-_gtk_recent_chooser_install_properties (GObjectClass *klass)
+_btk_recent_chooser_install_properties (GObjectClass *klass)
 {
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_RECENT_MANAGER,
+  				    BTK_RECENT_CHOOSER_PROP_RECENT_MANAGER,
   				    "recent-manager");  				    
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE,
+  				    BTK_RECENT_CHOOSER_PROP_SHOW_PRIVATE,
   				    "show-private");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_TIPS,
+  				    BTK_RECENT_CHOOSER_PROP_SHOW_TIPS,
   				    "show-tips");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_ICONS,
+  				    BTK_RECENT_CHOOSER_PROP_SHOW_ICONS,
   				    "show-icons");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND,
+  				    BTK_RECENT_CHOOSER_PROP_SHOW_NOT_FOUND,
   				    "show-not-found");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE,
+  				    BTK_RECENT_CHOOSER_PROP_SELECT_MULTIPLE,
   				    "select-multiple");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_LIMIT,
+  				    BTK_RECENT_CHOOSER_PROP_LIMIT,
   				    "limit");
   g_object_class_override_property (klass,
-		  		    GTK_RECENT_CHOOSER_PROP_LOCAL_ONLY,
+		  		    BTK_RECENT_CHOOSER_PROP_LOCAL_ONLY,
 				    "local-only");
   g_object_class_override_property (klass,
-		  		    GTK_RECENT_CHOOSER_PROP_SORT_TYPE,
+		  		    BTK_RECENT_CHOOSER_PROP_SORT_TYPE,
 				    "sort-type");
   g_object_class_override_property (klass,
-  				    GTK_RECENT_CHOOSER_PROP_FILTER,
+  				    BTK_RECENT_CHOOSER_PROP_FILTER,
   				    "filter");
 }
 
 /**
- * _gtk_recent_chooser_delegate_iface_init:
- * @iface: a #GtkRecentChooserIface
+ * _btk_recent_chooser_delegate_iface_init:
+ * @iface: a #BtkRecentChooserIface
  *
  * An interface-initialization function for use in cases where
  * an object is simply delegating the methods, signals of
- * the #GtkRecentChooser interface to another object.
- * _gtk_recent_chooser_set_delegate() must be called on each
+ * the #BtkRecentChooser interface to another object.
+ * _btk_recent_chooser_set_delegate() must be called on each
  * instance of the object so that the delegate object can
  * be found.
  */
 void
-_gtk_recent_chooser_delegate_iface_init (GtkRecentChooserIface *iface)
+_btk_recent_chooser_delegate_iface_init (BtkRecentChooserIface *iface)
 {
   iface->set_current_uri = delegate_set_current_uri;
   iface->get_current_uri = delegate_get_current_uri;
@@ -137,25 +137,25 @@ _gtk_recent_chooser_delegate_iface_init (GtkRecentChooserIface *iface)
 }
 
 /**
- * _gtk_recent_chooser_set_delegate:
- * @receiver: a #GObject implementing #GtkRecentChooser
- * @delegate: another #GObject implementing #GtkRecentChooser
+ * _btk_recent_chooser_set_delegate:
+ * @receiver: a #GObject implementing #BtkRecentChooser
+ * @delegate: another #GObject implementing #BtkRecentChooser
  *
- * Establishes that calls on @receiver for #GtkRecentChooser
+ * Establishes that calls on @receiver for #BtkRecentChooser
  * methods should be delegated to @delegate, and that
- * #GtkRecentChooser signals emitted on @delegate should be
+ * #BtkRecentChooser signals emitted on @delegate should be
  * forwarded to @receiver. Must be used in conjunction with
- * _gtk_recent_chooser_delegate_iface_init().
+ * _btk_recent_chooser_delegate_iface_init().
  */
 void
-_gtk_recent_chooser_set_delegate (GtkRecentChooser *receiver,
-				  GtkRecentChooser *delegate)
+_btk_recent_chooser_set_delegate (BtkRecentChooser *receiver,
+				  BtkRecentChooser *delegate)
 {
-  g_return_if_fail (GTK_IS_RECENT_CHOOSER (receiver));
-  g_return_if_fail (GTK_IS_RECENT_CHOOSER (delegate));
+  g_return_if_fail (BTK_IS_RECENT_CHOOSER (receiver));
+  g_return_if_fail (BTK_IS_RECENT_CHOOSER (delegate));
   
   g_object_set_data (G_OBJECT (receiver),
-  		    "gtk-recent-chooser-delegate", delegate);
+  		    "btk-recent-chooser-delegate", delegate);
   
   g_signal_connect (delegate, "notify",
   		    G_CALLBACK (delegate_notify), receiver);
@@ -166,106 +166,106 @@ _gtk_recent_chooser_set_delegate (GtkRecentChooser *receiver,
 }
 
 GQuark
-_gtk_recent_chooser_delegate_get_quark (void)
+_btk_recent_chooser_delegate_get_quark (void)
 {
   static GQuark quark = 0;
   
   if (G_UNLIKELY (quark == 0))
-    quark = g_quark_from_static_string ("gtk-recent-chooser-delegate");
+    quark = g_quark_from_static_string ("btk-recent-chooser-delegate");
   
   return quark;
 }
 
-static GtkRecentChooser *
-get_delegate (GtkRecentChooser *receiver)
+static BtkRecentChooser *
+get_delegate (BtkRecentChooser *receiver)
 {
   return g_object_get_qdata (G_OBJECT (receiver),
-  			     GTK_RECENT_CHOOSER_DELEGATE_QUARK);
+  			     BTK_RECENT_CHOOSER_DELEGATE_QUARK);
 }
 
 static void
-delegate_set_sort_func (GtkRecentChooser  *chooser,
-			GtkRecentSortFunc  sort_func,
+delegate_set_sort_func (BtkRecentChooser  *chooser,
+			BtkRecentSortFunc  sort_func,
 			gpointer           sort_data,
 			GDestroyNotify     data_destroy)
 {
-  gtk_recent_chooser_set_sort_func (get_delegate (chooser),
+  btk_recent_chooser_set_sort_func (get_delegate (chooser),
 		  		    sort_func,
 				    sort_data,
 				    data_destroy);
 }
 
 static void
-delegate_add_filter (GtkRecentChooser *chooser,
-		     GtkRecentFilter  *filter)
+delegate_add_filter (BtkRecentChooser *chooser,
+		     BtkRecentFilter  *filter)
 {
-  gtk_recent_chooser_add_filter (get_delegate (chooser), filter);
+  btk_recent_chooser_add_filter (get_delegate (chooser), filter);
 }
 
 static void
-delegate_remove_filter (GtkRecentChooser *chooser,
-			GtkRecentFilter  *filter)
+delegate_remove_filter (BtkRecentChooser *chooser,
+			BtkRecentFilter  *filter)
 {
-  gtk_recent_chooser_remove_filter (get_delegate (chooser), filter);
+  btk_recent_chooser_remove_filter (get_delegate (chooser), filter);
 }
 
 static GSList *
-delegate_list_filters (GtkRecentChooser *chooser)
+delegate_list_filters (BtkRecentChooser *chooser)
 {
-  return gtk_recent_chooser_list_filters (get_delegate (chooser));
+  return btk_recent_chooser_list_filters (get_delegate (chooser));
 }
 
 static gboolean
-delegate_select_uri (GtkRecentChooser  *chooser,
+delegate_select_uri (BtkRecentChooser  *chooser,
 		     const gchar       *uri,
 		     GError           **error)
 {
-  return gtk_recent_chooser_select_uri (get_delegate (chooser), uri, error);
+  return btk_recent_chooser_select_uri (get_delegate (chooser), uri, error);
 }
 
 static void
-delegate_unselect_uri (GtkRecentChooser *chooser,
+delegate_unselect_uri (BtkRecentChooser *chooser,
 		       const gchar      *uri)
 {
- gtk_recent_chooser_unselect_uri (get_delegate (chooser), uri);
+ btk_recent_chooser_unselect_uri (get_delegate (chooser), uri);
 }
 
 static GList *
-delegate_get_items (GtkRecentChooser *chooser)
+delegate_get_items (BtkRecentChooser *chooser)
 {
-  return gtk_recent_chooser_get_items (get_delegate (chooser));
+  return btk_recent_chooser_get_items (get_delegate (chooser));
 }
 
-static GtkRecentManager *
-delegate_get_recent_manager (GtkRecentChooser *chooser)
+static BtkRecentManager *
+delegate_get_recent_manager (BtkRecentChooser *chooser)
 {
-  return _gtk_recent_chooser_get_recent_manager (get_delegate (chooser));
-}
-
-static void
-delegate_select_all (GtkRecentChooser *chooser)
-{
-  gtk_recent_chooser_select_all (get_delegate (chooser));
+  return _btk_recent_chooser_get_recent_manager (get_delegate (chooser));
 }
 
 static void
-delegate_unselect_all (GtkRecentChooser *chooser)
+delegate_select_all (BtkRecentChooser *chooser)
 {
-  gtk_recent_chooser_unselect_all (get_delegate (chooser));
+  btk_recent_chooser_select_all (get_delegate (chooser));
+}
+
+static void
+delegate_unselect_all (BtkRecentChooser *chooser)
+{
+  btk_recent_chooser_unselect_all (get_delegate (chooser));
 }
 
 static gboolean
-delegate_set_current_uri (GtkRecentChooser  *chooser,
+delegate_set_current_uri (BtkRecentChooser  *chooser,
 			  const gchar       *uri,
 			  GError           **error)
 {
-  return gtk_recent_chooser_set_current_uri (get_delegate (chooser), uri, error);
+  return btk_recent_chooser_set_current_uri (get_delegate (chooser), uri, error);
 }
 
 static gchar *
-delegate_get_current_uri (GtkRecentChooser *chooser)
+delegate_get_current_uri (BtkRecentChooser *chooser)
 {
-  return gtk_recent_chooser_get_current_uri (get_delegate (chooser));
+  return btk_recent_chooser_get_current_uri (get_delegate (chooser));
 }
 
 static void
@@ -276,48 +276,48 @@ delegate_notify (GObject    *object,
   gpointer iface;
 
   iface = g_type_interface_peek (g_type_class_peek (G_OBJECT_TYPE (object)),
-				 gtk_recent_chooser_get_type ());
+				 btk_recent_chooser_get_type ());
   if (g_object_interface_find_property (iface, pspec->name))
     g_object_notify (user_data, pspec->name);
 }
 
 static void
-delegate_selection_changed (GtkRecentChooser *receiver,
+delegate_selection_changed (BtkRecentChooser *receiver,
 			    gpointer          user_data)
 {
-  _gtk_recent_chooser_selection_changed (GTK_RECENT_CHOOSER (user_data));
+  _btk_recent_chooser_selection_changed (BTK_RECENT_CHOOSER (user_data));
 }
 
 static void
-delegate_item_activated (GtkRecentChooser *receiver,
+delegate_item_activated (BtkRecentChooser *receiver,
 			 gpointer          user_data)
 {
-  _gtk_recent_chooser_item_activated (GTK_RECENT_CHOOSER (user_data));
+  _btk_recent_chooser_item_activated (BTK_RECENT_CHOOSER (user_data));
 }
 
 static gint
-sort_recent_items_mru (GtkRecentInfo *a,
-		       GtkRecentInfo *b,
+sort_recent_items_mru (BtkRecentInfo *a,
+		       BtkRecentInfo *b,
 		       gpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
   
-  return gtk_recent_info_get_modified (b) - gtk_recent_info_get_modified (a);
+  return btk_recent_info_get_modified (b) - btk_recent_info_get_modified (a);
 }
 
 static gint
-sort_recent_items_lru (GtkRecentInfo *a,
-		       GtkRecentInfo *b,
+sort_recent_items_lru (BtkRecentInfo *a,
+		       BtkRecentInfo *b,
 		       gpointer       unused)
 {
   g_assert (a != NULL && b != NULL);
   
-  return -1 * (gtk_recent_info_get_modified (b) - gtk_recent_info_get_modified (a));
+  return -1 * (btk_recent_info_get_modified (b) - btk_recent_info_get_modified (a));
 }
 
 typedef struct
 {
-  GtkRecentSortFunc func;
+  BtkRecentSortFunc func;
   gpointer data;
 } SortRecentData;
 
@@ -327,8 +327,8 @@ sort_recent_items_proxy (gpointer *a,
                          gpointer *b,
                          gpointer  user_data)
 {
-  GtkRecentInfo *info_a = (GtkRecentInfo *) a;
-  GtkRecentInfo *info_b = (GtkRecentInfo *) b;
+  BtkRecentInfo *info_a = (BtkRecentInfo *) a;
+  BtkRecentInfo *info_b = (BtkRecentInfo *) b;
   SortRecentData *sort_recent = user_data;
 
   if (sort_recent->func)
@@ -339,55 +339,55 @@ sort_recent_items_proxy (gpointer *a,
 }
 
 static gboolean
-get_is_recent_filtered (GtkRecentFilter *filter,
-			GtkRecentInfo   *info)
+get_is_recent_filtered (BtkRecentFilter *filter,
+			BtkRecentInfo   *info)
 {
-  GtkRecentFilterInfo filter_info;
-  GtkRecentFilterFlags needed;
+  BtkRecentFilterInfo filter_info;
+  BtkRecentFilterFlags needed;
   gboolean retval;
 
   g_assert (info != NULL);
   
-  needed = gtk_recent_filter_get_needed (filter);
+  needed = btk_recent_filter_get_needed (filter);
   
-  filter_info.contains = GTK_RECENT_FILTER_URI | GTK_RECENT_FILTER_MIME_TYPE;
+  filter_info.contains = BTK_RECENT_FILTER_URI | BTK_RECENT_FILTER_MIME_TYPE;
   
-  filter_info.uri = gtk_recent_info_get_uri (info);
-  filter_info.mime_type = gtk_recent_info_get_mime_type (info);
+  filter_info.uri = btk_recent_info_get_uri (info);
+  filter_info.mime_type = btk_recent_info_get_mime_type (info);
   
-  if (needed & GTK_RECENT_FILTER_DISPLAY_NAME)
+  if (needed & BTK_RECENT_FILTER_DISPLAY_NAME)
     {
-      filter_info.display_name = gtk_recent_info_get_display_name (info);
-      filter_info.contains |= GTK_RECENT_FILTER_DISPLAY_NAME;
+      filter_info.display_name = btk_recent_info_get_display_name (info);
+      filter_info.contains |= BTK_RECENT_FILTER_DISPLAY_NAME;
     }
   else
     filter_info.uri = NULL;
   
-  if (needed & GTK_RECENT_FILTER_APPLICATION)
+  if (needed & BTK_RECENT_FILTER_APPLICATION)
     {
-      filter_info.applications = (const gchar **) gtk_recent_info_get_applications (info, NULL);
-      filter_info.contains |= GTK_RECENT_FILTER_APPLICATION;
+      filter_info.applications = (const gchar **) btk_recent_info_get_applications (info, NULL);
+      filter_info.contains |= BTK_RECENT_FILTER_APPLICATION;
     }
   else
     filter_info.applications = NULL;
 
-  if (needed & GTK_RECENT_FILTER_GROUP)
+  if (needed & BTK_RECENT_FILTER_GROUP)
     {
-      filter_info.groups = (const gchar **) gtk_recent_info_get_groups (info, NULL);
-      filter_info.contains |= GTK_RECENT_FILTER_GROUP;
+      filter_info.groups = (const gchar **) btk_recent_info_get_groups (info, NULL);
+      filter_info.contains |= BTK_RECENT_FILTER_GROUP;
     }
   else
     filter_info.groups = NULL;
 
-  if (needed & GTK_RECENT_FILTER_AGE)
+  if (needed & BTK_RECENT_FILTER_AGE)
     {
-      filter_info.age = gtk_recent_info_get_age (info);
-      filter_info.contains |= GTK_RECENT_FILTER_AGE;
+      filter_info.age = btk_recent_info_get_age (info);
+      filter_info.contains |= BTK_RECENT_FILTER_AGE;
     }
   else
     filter_info.age = -1;
   
-  retval = gtk_recent_filter_filter (filter, &filter_info);
+  retval = btk_recent_filter_filter (filter, &filter_info);
   
   /* these we own */
   if (filter_info.applications)
@@ -399,44 +399,44 @@ get_is_recent_filtered (GtkRecentFilter *filter,
 }
 
 /*
- * _gtk_recent_chooser_get_items:
- * @chooser: a #GtkRecentChooser
- * @filter: a #GtkRecentFilter
+ * _btk_recent_chooser_get_items:
+ * @chooser: a #BtkRecentChooser
+ * @filter: a #BtkRecentFilter
  * @sort_func: (allow-none): sorting function, or %NULL
  * @sort_data: (allow-none): sorting function data, or %NULL
  *
  * Default implementation for getting the filtered, sorted and
- * clamped list of recently used resources from a #GtkRecentChooser.
+ * clamped list of recently used resources from a #BtkRecentChooser.
  * This function should be used by implementations of the
- * #GtkRecentChooser interface inside the GtkRecentChooser::get_items
+ * #BtkRecentChooser interface inside the BtkRecentChooser::get_items
  * vfunc.
  *
- * Return value: a list of #GtkRecentInfo objects
+ * Return value: a list of #BtkRecentInfo objects
  */
 GList *
-_gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
-                               GtkRecentFilter   *filter,
-                               GtkRecentSortFunc  sort_func,
+_btk_recent_chooser_get_items (BtkRecentChooser  *chooser,
+                               BtkRecentFilter   *filter,
+                               BtkRecentSortFunc  sort_func,
                                gpointer           sort_data)
 {
-  GtkRecentManager *manager;
+  BtkRecentManager *manager;
   gint limit;
-  GtkRecentSortType sort_type;
+  BtkRecentSortType sort_type;
   GList *items;
   GCompareDataFunc compare_func;
   gint length;
 
-  g_return_val_if_fail (GTK_IS_RECENT_CHOOSER (chooser), NULL);
+  g_return_val_if_fail (BTK_IS_RECENT_CHOOSER (chooser), NULL);
 
-  manager = _gtk_recent_chooser_get_recent_manager (chooser);
+  manager = _btk_recent_chooser_get_recent_manager (chooser);
   if (!manager)
     return NULL;
 
-  items = gtk_recent_manager_get_items (manager);
+  items = btk_recent_manager_get_items (manager);
   if (!items)
     return NULL;
 
-  limit = gtk_recent_chooser_get_limit (chooser);
+  limit = btk_recent_chooser_get_limit (chooser);
   if (limit == 0)
     return NULL;
 
@@ -456,25 +456,25 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
       filter_items = NULL;
       for (l = items; l != NULL; l = l->next)
         {
-          GtkRecentInfo *info = l->data;
+          BtkRecentInfo *info = l->data;
           gboolean remove_item = FALSE;
 
           if (get_is_recent_filtered (filter, info))
             remove_item = TRUE;
           
-          if (local_only && !gtk_recent_info_is_local (info))
+          if (local_only && !btk_recent_info_is_local (info))
             remove_item = TRUE;
 
-          if (!show_private && gtk_recent_info_get_private_hint (info))
+          if (!show_private && btk_recent_info_get_private_hint (info))
             remove_item = TRUE;
 
-          if (!show_not_found && !gtk_recent_info_exists (info))
+          if (!show_not_found && !btk_recent_info_exists (info))
             remove_item = TRUE;
           
           if (!remove_item)
             filter_items = g_list_prepend (filter_items, info);
           else
-            gtk_recent_info_unref (info);
+            btk_recent_info_unref (info);
         }
       
       g_list_free (items);
@@ -484,19 +484,19 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
   if (!items)
     return NULL;
 
-  sort_type = gtk_recent_chooser_get_sort_type (chooser);
+  sort_type = btk_recent_chooser_get_sort_type (chooser);
   switch (sort_type)
     {
-    case GTK_RECENT_SORT_NONE:
+    case BTK_RECENT_SORT_NONE:
       compare_func = NULL;
       break;
-    case GTK_RECENT_SORT_MRU:
+    case BTK_RECENT_SORT_MRU:
       compare_func = (GCompareDataFunc) sort_recent_items_mru;
       break;
-    case GTK_RECENT_SORT_LRU:
+    case BTK_RECENT_SORT_LRU:
       compare_func = (GCompareDataFunc) sort_recent_items_lru;
       break;
-    case GTK_RECENT_SORT_CUSTOM:
+    case BTK_RECENT_SORT_CUSTOM:
       compare_func = (GCompareDataFunc) sort_recent_items_proxy;
       break;
     default:
@@ -526,7 +526,7 @@ _gtk_recent_chooser_get_items (GtkRecentChooser  *chooser,
       l = clamp->next;
       clamp->next = NULL;
     
-      g_list_foreach (l, (GFunc) gtk_recent_info_unref, NULL);
+      g_list_foreach (l, (GFunc) btk_recent_info_unref, NULL);
       g_list_free (l);
     }
 

@@ -1,10 +1,10 @@
-/* HSV color selector for GTK+
+/* HSV color selector for BTK+
  *
  * Copyright (C) 1999 The Free Software Foundation
  *
  * Authors: Simon Budig <Simon.Budig@unix-ag.org> (original code)
- *          Federico Mena-Quintero <federico@gimp.org> (cleanup for GTK+)
- *          Jonathan Blandford <jrb@redhat.com> (cleanup for GTK+)
+ *          Federico Mena-Quintero <federico@gimp.org> (cleanup for BTK+)
+ *          Jonathan Blandford <jrb@redhat.com> (cleanup for BTK+)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,10 +23,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
@@ -34,13 +34,13 @@
 #include <math.h>
 #include <string.h>
 
-#include "gdk/gdkkeysyms.h"
+#include "bdk/bdkkeysyms.h"
 
-#include "gtkhsv.h"
-#include "gtkbindings.h"
-#include "gtkmarshalers.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkhsv.h"
+#include "btkbindings.h"
+#include "btkmarshalers.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 /* Default width/height */
 #define DEFAULT_SIZE 100
@@ -56,7 +56,7 @@ typedef enum {
   DRAG_SV
 } DragMode;
 
-/* Private part of the GtkHSV structure */
+/* Private part of the BtkHSV structure */
 typedef struct {
   /* Color value */
   double h;
@@ -68,7 +68,7 @@ typedef struct {
   int ring_width;
   
   /* Window for capturing events */
-  GdkWindow *window;
+  BdkWindow *window;
   
   /* Dragging mode */
   DragMode mode;
@@ -87,131 +87,131 @@ enum {
   LAST_SIGNAL
 };
 
-static void     gtk_hsv_destroy        (GtkObject        *object);
-static void     gtk_hsv_map            (GtkWidget        *widget);
-static void     gtk_hsv_unmap          (GtkWidget        *widget);
-static void     gtk_hsv_realize        (GtkWidget        *widget);
-static void     gtk_hsv_unrealize      (GtkWidget        *widget);
-static void     gtk_hsv_size_request   (GtkWidget        *widget,
-					GtkRequisition   *requisition);
-static void     gtk_hsv_size_allocate  (GtkWidget        *widget,
-					GtkAllocation    *allocation);
-static gint     gtk_hsv_button_press   (GtkWidget        *widget,
-					GdkEventButton   *event);
-static gint     gtk_hsv_button_release (GtkWidget        *widget,
-					GdkEventButton   *event);
-static gint     gtk_hsv_motion         (GtkWidget        *widget,
-					GdkEventMotion   *event);
-static gint     gtk_hsv_expose         (GtkWidget        *widget,
-					GdkEventExpose   *event);
-static gboolean gtk_hsv_grab_broken    (GtkWidget          *widget,
-					GdkEventGrabBroken *event);
-static gboolean gtk_hsv_focus          (GtkWidget        *widget,
-					GtkDirectionType  direction);
-static void     gtk_hsv_move           (GtkHSV           *hsv,
-					GtkDirectionType  dir);
+static void     btk_hsv_destroy        (BtkObject        *object);
+static void     btk_hsv_map            (BtkWidget        *widget);
+static void     btk_hsv_unmap          (BtkWidget        *widget);
+static void     btk_hsv_realize        (BtkWidget        *widget);
+static void     btk_hsv_unrealize      (BtkWidget        *widget);
+static void     btk_hsv_size_request   (BtkWidget        *widget,
+					BtkRequisition   *requisition);
+static void     btk_hsv_size_allocate  (BtkWidget        *widget,
+					BtkAllocation    *allocation);
+static gint     btk_hsv_button_press   (BtkWidget        *widget,
+					BdkEventButton   *event);
+static gint     btk_hsv_button_release (BtkWidget        *widget,
+					BdkEventButton   *event);
+static gint     btk_hsv_motion         (BtkWidget        *widget,
+					BdkEventMotion   *event);
+static gint     btk_hsv_expose         (BtkWidget        *widget,
+					BdkEventExpose   *event);
+static gboolean btk_hsv_grab_broken    (BtkWidget          *widget,
+					BdkEventGrabBroken *event);
+static gboolean btk_hsv_focus          (BtkWidget        *widget,
+					BtkDirectionType  direction);
+static void     btk_hsv_move           (BtkHSV           *hsv,
+					BtkDirectionType  dir);
 
 static guint hsv_signals[LAST_SIGNAL];
 
-G_DEFINE_TYPE (GtkHSV, gtk_hsv, GTK_TYPE_WIDGET)
+G_DEFINE_TYPE (BtkHSV, btk_hsv, BTK_TYPE_WIDGET)
 
 /* Class initialization function for the HSV color selector */
 static void
-gtk_hsv_class_init (GtkHSVClass *class)
+btk_hsv_class_init (BtkHSVClass *class)
 {
-  GObjectClass   *gobject_class;
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
-  GtkHSVClass    *hsv_class;
-  GtkBindingSet  *binding_set;
+  GObjectClass   *bobject_class;
+  BtkObjectClass *object_class;
+  BtkWidgetClass *widget_class;
+  BtkHSVClass    *hsv_class;
+  BtkBindingSet  *binding_set;
   
-  gobject_class = (GObjectClass *) class;
-  object_class = (GtkObjectClass *) class;
-  widget_class = (GtkWidgetClass *) class;
-  hsv_class = GTK_HSV_CLASS (class);
+  bobject_class = (GObjectClass *) class;
+  object_class = (BtkObjectClass *) class;
+  widget_class = (BtkWidgetClass *) class;
+  hsv_class = BTK_HSV_CLASS (class);
   
-  object_class->destroy = gtk_hsv_destroy;
+  object_class->destroy = btk_hsv_destroy;
   
-  widget_class->map = gtk_hsv_map;
-  widget_class->unmap = gtk_hsv_unmap;                                      
-  widget_class->realize = gtk_hsv_realize;
-  widget_class->unrealize = gtk_hsv_unrealize;
-  widget_class->size_request = gtk_hsv_size_request;
-  widget_class->size_allocate = gtk_hsv_size_allocate;
-  widget_class->button_press_event = gtk_hsv_button_press;
-  widget_class->button_release_event = gtk_hsv_button_release;
-  widget_class->motion_notify_event = gtk_hsv_motion;
-  widget_class->expose_event = gtk_hsv_expose;
-  widget_class->focus = gtk_hsv_focus;
-  widget_class->grab_broken_event = gtk_hsv_grab_broken;
+  widget_class->map = btk_hsv_map;
+  widget_class->unmap = btk_hsv_unmap;                                      
+  widget_class->realize = btk_hsv_realize;
+  widget_class->unrealize = btk_hsv_unrealize;
+  widget_class->size_request = btk_hsv_size_request;
+  widget_class->size_allocate = btk_hsv_size_allocate;
+  widget_class->button_press_event = btk_hsv_button_press;
+  widget_class->button_release_event = btk_hsv_button_release;
+  widget_class->motion_notify_event = btk_hsv_motion;
+  widget_class->expose_event = btk_hsv_expose;
+  widget_class->focus = btk_hsv_focus;
+  widget_class->grab_broken_event = btk_hsv_grab_broken;
   
-  hsv_class->move = gtk_hsv_move;
+  hsv_class->move = btk_hsv_move;
   
   hsv_signals[CHANGED] =
     g_signal_new (I_("changed"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_FIRST,
-		  G_STRUCT_OFFSET (GtkHSVClass, changed),
+		  G_STRUCT_OFFSET (BtkHSVClass, changed),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__VOID,
+		  _btk_marshal_VOID__VOID,
 		  G_TYPE_NONE, 0);
 
   hsv_signals[MOVE] =
     g_signal_new (I_("move"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-		  G_STRUCT_OFFSET (GtkHSVClass, move),
+		  G_STRUCT_OFFSET (BtkHSVClass, move),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__ENUM,
+		  _btk_marshal_VOID__ENUM,
 		  G_TYPE_NONE, 1,
-		  GTK_TYPE_DIRECTION_TYPE);
+		  BTK_TYPE_DIRECTION_TYPE);
 
-  binding_set = gtk_binding_set_by_class (class);
+  binding_set = btk_binding_set_by_class (class);
 
-  gtk_binding_entry_add_signal (binding_set, GDK_Up, 0,
+  btk_binding_entry_add_signal (binding_set, BDK_Up, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_UP);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Up, 0,
+                                G_TYPE_ENUM, BTK_DIR_UP);
+  btk_binding_entry_add_signal (binding_set, BDK_KP_Up, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_UP);
+                                G_TYPE_ENUM, BTK_DIR_UP);
   
-  gtk_binding_entry_add_signal (binding_set, GDK_Down, 0,
+  btk_binding_entry_add_signal (binding_set, BDK_Down, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_DOWN);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Down, 0,
+                                G_TYPE_ENUM, BTK_DIR_DOWN);
+  btk_binding_entry_add_signal (binding_set, BDK_KP_Down, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_DOWN);
+                                G_TYPE_ENUM, BTK_DIR_DOWN);
 
   
-  gtk_binding_entry_add_signal (binding_set, GDK_Right, 0,
+  btk_binding_entry_add_signal (binding_set, BDK_Right, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_RIGHT);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Right, 0,
+                                G_TYPE_ENUM, BTK_DIR_RIGHT);
+  btk_binding_entry_add_signal (binding_set, BDK_KP_Right, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_RIGHT);
+                                G_TYPE_ENUM, BTK_DIR_RIGHT);
   
-  gtk_binding_entry_add_signal (binding_set, GDK_Left, 0,
+  btk_binding_entry_add_signal (binding_set, BDK_Left, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_LEFT);
-  gtk_binding_entry_add_signal (binding_set, GDK_KP_Left, 0,
+                                G_TYPE_ENUM, BTK_DIR_LEFT);
+  btk_binding_entry_add_signal (binding_set, BDK_KP_Left, 0,
                                 "move", 1,
-                                G_TYPE_ENUM, GTK_DIR_LEFT);
+                                G_TYPE_ENUM, BTK_DIR_LEFT);
 
-  g_type_class_add_private (gobject_class, sizeof (HSVPrivate));   
+  g_type_class_add_private (bobject_class, sizeof (HSVPrivate));   
 }
 
 /* Object initialization function for the HSV color selector */
 static void
-gtk_hsv_init (GtkHSV *hsv)
+btk_hsv_init (BtkHSV *hsv)
 {
   HSVPrivate *priv;
 
-  priv = G_TYPE_INSTANCE_GET_PRIVATE (hsv, GTK_TYPE_HSV, HSVPrivate);
+  priv = G_TYPE_INSTANCE_GET_PRIVATE (hsv, BTK_TYPE_HSV, HSVPrivate);
   
   hsv->priv = priv;
 
-  gtk_widget_set_has_window (GTK_WIDGET (hsv), FALSE);
-  gtk_widget_set_can_focus (GTK_WIDGET (hsv), TRUE);
+  btk_widget_set_has_window (BTK_WIDGET (hsv), FALSE);
+  btk_widget_set_can_focus (BTK_WIDGET (hsv), TRUE);
   
   priv->h = 0.0;
   priv->s = 0.0;
@@ -223,9 +223,9 @@ gtk_hsv_init (GtkHSV *hsv)
 
 /* Destroy handler for the HSV color selector */
 static void
-gtk_hsv_destroy (GtkObject *object)
+btk_hsv_destroy (BtkObject *object)
 {
-  GTK_OBJECT_CLASS (gtk_hsv_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_hsv_parent_class)->destroy (object);
 }
 
 /* Default signal handlers */
@@ -234,107 +234,107 @@ gtk_hsv_destroy (GtkObject *object)
 /* Map handler for the HSV color selector */
 
 static void
-gtk_hsv_map (GtkWidget *widget)
+btk_hsv_map (BtkWidget *widget)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
 
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
 
-  GTK_WIDGET_CLASS (gtk_hsv_parent_class)->map (widget);
+  BTK_WIDGET_CLASS (btk_hsv_parent_class)->map (widget);
 
-  gdk_window_show (priv->window);
+  bdk_window_show (priv->window);
 }
 
 /* Unmap handler for the HSV color selector */
 
 static void
-gtk_hsv_unmap (GtkWidget *widget)
+btk_hsv_unmap (BtkWidget *widget)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
 
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
 
-  gdk_window_hide (priv->window);
+  bdk_window_hide (priv->window);
 
-  GTK_WIDGET_CLASS (gtk_hsv_parent_class)->unmap (widget);
+  BTK_WIDGET_CLASS (btk_hsv_parent_class)->unmap (widget);
 }                                                                           
                                       
 /* Realize handler for the HSV color selector */
 static void
-gtk_hsv_realize (GtkWidget *widget)
+btk_hsv_realize (BtkWidget *widget)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
-  GdkWindowAttr attr;
+  BdkWindowAttr attr;
   int attr_mask;
-  GdkWindow *parent_window;
+  BdkWindow *parent_window;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
   
   /* Create window */
   
-  attr.window_type = GDK_WINDOW_CHILD;
+  attr.window_type = BDK_WINDOW_CHILD;
   attr.x = widget->allocation.x;
   attr.y = widget->allocation.y;
   attr.width = widget->allocation.width;
   attr.height = widget->allocation.height;
-  attr.wclass = GDK_INPUT_ONLY;
-  attr.event_mask = gtk_widget_get_events (widget);
-  attr.event_mask |= (GDK_KEY_PRESS_MASK
-                      | GDK_BUTTON_PRESS_MASK
-		      | GDK_BUTTON_RELEASE_MASK
-		      | GDK_POINTER_MOTION_MASK
-                      | GDK_ENTER_NOTIFY_MASK
-                      | GDK_LEAVE_NOTIFY_MASK);
+  attr.wclass = BDK_INPUT_ONLY;
+  attr.event_mask = btk_widget_get_events (widget);
+  attr.event_mask |= (BDK_KEY_PRESS_MASK
+                      | BDK_BUTTON_PRESS_MASK
+		      | BDK_BUTTON_RELEASE_MASK
+		      | BDK_POINTER_MOTION_MASK
+                      | BDK_ENTER_NOTIFY_MASK
+                      | BDK_LEAVE_NOTIFY_MASK);
   
-  attr_mask = GDK_WA_X | GDK_WA_Y;
+  attr_mask = BDK_WA_X | BDK_WA_Y;
   
-  parent_window = gtk_widget_get_parent_window (widget);
+  parent_window = btk_widget_get_parent_window (widget);
   
   widget->window = parent_window;
   g_object_ref (widget->window);
   
-  priv->window = gdk_window_new (parent_window, &attr, attr_mask);
-  gdk_window_set_user_data (priv->window, hsv);
+  priv->window = bdk_window_new (parent_window, &attr, attr_mask);
+  bdk_window_set_user_data (priv->window, hsv);
   
-  widget->style = gtk_style_attach (widget->style, widget->window);
+  widget->style = btk_style_attach (widget->style, widget->window);
 }
 
 /* Unrealize handler for the HSV color selector */
 static void
-gtk_hsv_unrealize (GtkWidget *widget)
+btk_hsv_unrealize (BtkWidget *widget)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
-  gdk_window_set_user_data (priv->window, NULL);
-  gdk_window_destroy (priv->window);
+  bdk_window_set_user_data (priv->window, NULL);
+  bdk_window_destroy (priv->window);
   priv->window = NULL;
   
-  GTK_WIDGET_CLASS (gtk_hsv_parent_class)->unrealize (widget);
+  BTK_WIDGET_CLASS (btk_hsv_parent_class)->unrealize (widget);
 }
 
 /* Size_request handler for the HSV color selector */
 static void
-gtk_hsv_size_request (GtkWidget      *widget,
-		      GtkRequisition *requisition)
+btk_hsv_size_request (BtkWidget      *widget,
+		      BtkRequisition *requisition)
 {
-  GtkHSV *hsv = GTK_HSV (widget);
+  BtkHSV *hsv = BTK_HSV (widget);
   HSVPrivate *priv = hsv->priv;
   gint focus_width;
   gint focus_pad;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
 			"focus-line-width", &focus_width,
 			"focus-padding", &focus_pad,
 			NULL);
@@ -345,19 +345,19 @@ gtk_hsv_size_request (GtkWidget      *widget,
 
 /* Size_allocate handler for the HSV color selector */
 static void
-gtk_hsv_size_allocate (GtkWidget     *widget,
-		       GtkAllocation *allocation)
+btk_hsv_size_allocate (BtkWidget     *widget,
+		       BtkAllocation *allocation)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
   widget->allocation = *allocation;
   
-  if (gtk_widget_get_realized (widget))
-    gdk_window_move_resize (priv->window,
+  if (btk_widget_get_realized (widget))
+    bdk_window_move_resize (priv->window,
 			    allocation->x,
 			    allocation->y,
 			    allocation->width,
@@ -519,7 +519,7 @@ rgb_to_hsv (gdouble *r,
 
 /* Computes the vertices of the saturation/value triangle */
 static void
-compute_triangle (GtkHSV *hsv,
+compute_triangle (BtkHSV *hsv,
 		  gint   *hx,
 		  gint   *hy,
 		  gint   *sx,
@@ -535,8 +535,8 @@ compute_triangle (GtkHSV *hsv,
 
   priv = hsv->priv;
 
-  center_x = GTK_WIDGET (hsv)->allocation.width / 2.0;
-  center_y = GTK_WIDGET (hsv)->allocation.height / 2.0;
+  center_x = BTK_WIDGET (hsv)->allocation.width / 2.0;
+  center_y = BTK_WIDGET (hsv)->allocation.height / 2.0;
   outer = priv->size / 2.0;
   inner = outer - priv->ring_width;
   angle = priv->h * 2.0 * G_PI;
@@ -551,7 +551,7 @@ compute_triangle (GtkHSV *hsv,
 
 /* Computes whether a point is inside the hue ring */
 static gboolean
-is_in_ring (GtkHSV *hsv,
+is_in_ring (BtkHSV *hsv,
 	    gdouble x,
 	    gdouble y)
 {
@@ -563,8 +563,8 @@ is_in_ring (GtkHSV *hsv,
 
   priv = hsv->priv;
 
-  center_x = GTK_WIDGET (hsv)->allocation.width / 2.0;
-  center_y = GTK_WIDGET (hsv)->allocation.height / 2.0;
+  center_x = BTK_WIDGET (hsv)->allocation.width / 2.0;
+  center_y = BTK_WIDGET (hsv)->allocation.height / 2.0;
   outer = priv->size / 2.0;
   inner = outer - priv->ring_width;
 
@@ -577,7 +577,7 @@ is_in_ring (GtkHSV *hsv,
 
 /* Computes a saturation/value pair based on the mouse coordinates */
 static void
-compute_sv (GtkHSV  *hsv,
+compute_sv (BtkHSV  *hsv,
 	    gdouble  x,
 	    gdouble  y,
 	    gdouble *s,
@@ -589,8 +589,8 @@ compute_sv (GtkHSV  *hsv,
   double center_y;
 
   compute_triangle (hsv, &ihx, &ihy, &isx, &isy, &ivx, &ivy);
-  center_x = GTK_WIDGET (hsv)->allocation.width / 2.0;
-  center_y = GTK_WIDGET (hsv)->allocation.height / 2.0;
+  center_x = BTK_WIDGET (hsv)->allocation.width / 2.0;
+  center_y = BTK_WIDGET (hsv)->allocation.height / 2.0;
   hx = ihx - center_x;
   hy = center_y - ihy;
   sx = isx - center_x;
@@ -663,7 +663,7 @@ compute_sv (GtkHSV  *hsv,
 
 /* Computes whether a point is inside the saturation/value triangle */
 static gboolean
-is_in_triangle (GtkHSV *hsv,
+is_in_triangle (BtkHSV *hsv,
 		gdouble x,
 		gdouble y)
 {
@@ -682,7 +682,7 @@ is_in_triangle (GtkHSV *hsv,
 
 /* Computes a value based on the mouse coordinates */
 static double
-compute_v (GtkHSV *hsv,
+compute_v (BtkHSV *hsv,
 	   gdouble x,
 	   gdouble y)
 {
@@ -691,8 +691,8 @@ compute_v (GtkHSV *hsv,
   double dx, dy;
   double angle;
 
-  center_x = GTK_WIDGET (hsv)->allocation.width / 2.0;
-  center_y = GTK_WIDGET (hsv)->allocation.height / 2.0;
+  center_x = BTK_WIDGET (hsv)->allocation.width / 2.0;
+  center_y = BTK_WIDGET (hsv)->allocation.height / 2.0;
   dx = x - center_x;
   dy = center_y - y;
 
@@ -706,31 +706,31 @@ compute_v (GtkHSV *hsv,
 /* Event handlers */
 
 static void
-set_cross_grab (GtkHSV *hsv,
+set_cross_grab (BtkHSV *hsv,
 		guint32 time)
 {
   HSVPrivate *priv;
-  GdkCursor *cursor;
+  BdkCursor *cursor;
   
   priv = hsv->priv;
   
-  cursor = gdk_cursor_new_for_display (gtk_widget_get_display (GTK_WIDGET (hsv)),
-				       GDK_CROSSHAIR);
-  gdk_pointer_grab (priv->window, FALSE,
-		    (GDK_POINTER_MOTION_MASK
-		     | GDK_POINTER_MOTION_HINT_MASK
-		     | GDK_BUTTON_RELEASE_MASK),
+  cursor = bdk_cursor_new_for_display (btk_widget_get_display (BTK_WIDGET (hsv)),
+				       BDK_CROSSHAIR);
+  bdk_pointer_grab (priv->window, FALSE,
+		    (BDK_POINTER_MOTION_MASK
+		     | BDK_POINTER_MOTION_HINT_MASK
+		     | BDK_BUTTON_RELEASE_MASK),
 		    NULL,
 		    cursor,
 		    time);
-  gdk_cursor_unref (cursor);
+  bdk_cursor_unref (cursor);
 }
 
 static gboolean 
-gtk_hsv_grab_broken (GtkWidget          *widget,
-		     GdkEventGrabBroken *event)
+btk_hsv_grab_broken (BtkWidget          *widget,
+		     BdkEventGrabBroken *event)
 {
-  GtkHSV *hsv = GTK_HSV (widget);
+  BtkHSV *hsv = BTK_HSV (widget);
   HSVPrivate *priv;
   
   priv = hsv->priv;
@@ -742,14 +742,14 @@ gtk_hsv_grab_broken (GtkWidget          *widget,
 
 /* Button_press_event handler for the HSV color selector */
 static gint
-gtk_hsv_button_press (GtkWidget      *widget,
-		      GdkEventButton *event)
+btk_hsv_button_press (BtkWidget      *widget,
+		      BdkEventButton *event)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
   double x, y;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
   if (priv->mode != DRAG_NONE || event->button != 1)
@@ -763,12 +763,12 @@ gtk_hsv_button_press (GtkWidget      *widget,
       priv->mode = DRAG_H;
       set_cross_grab (hsv, event->time);
       
-      gtk_hsv_set_color (hsv,
+      btk_hsv_set_color (hsv,
 			 compute_v (hsv, x, y),
 			 priv->s,
 			 priv->v);
 
-      gtk_widget_grab_focus (widget);
+      btk_widget_grab_focus (widget);
       priv->focus_on_ring = TRUE;
       
       return TRUE;
@@ -782,9 +782,9 @@ gtk_hsv_button_press (GtkWidget      *widget,
       set_cross_grab (hsv, event->time);
       
       compute_sv (hsv, x, y, &s, &v);
-      gtk_hsv_set_color (hsv, priv->h, s, v);
+      btk_hsv_set_color (hsv, priv->h, s, v);
 
-      gtk_widget_grab_focus (widget);
+      btk_widget_grab_focus (widget);
       priv->focus_on_ring = FALSE;
       
       return TRUE;
@@ -795,15 +795,15 @@ gtk_hsv_button_press (GtkWidget      *widget,
 
 /* Button_release_event handler for the HSV color selector */
 static gint
-gtk_hsv_button_release (GtkWidget      *widget,
-			GdkEventButton *event)
+btk_hsv_button_release (BtkWidget      *widget,
+			BdkEventButton *event)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
   DragMode mode;
   gdouble x, y;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
   if (priv->mode == DRAG_NONE || event->button != 1)
@@ -820,44 +820,44 @@ gtk_hsv_button_release (GtkWidget      *widget,
   y = event->y;
   
   if (mode == DRAG_H)
-    gtk_hsv_set_color (hsv, compute_v (hsv, x, y), priv->s, priv->v);
+    btk_hsv_set_color (hsv, compute_v (hsv, x, y), priv->s, priv->v);
   else if (mode == DRAG_SV) {
     double s, v;
     
     compute_sv (hsv, x, y, &s, &v);
-    gtk_hsv_set_color (hsv, priv->h, s, v);
+    btk_hsv_set_color (hsv, priv->h, s, v);
   } else
     g_assert_not_reached ();
   
-  gdk_display_pointer_ungrab (gdk_window_get_display (event->window),
+  bdk_display_pointer_ungrab (bdk_window_get_display (event->window),
 			      event->time);
   return TRUE;
 }
 
 /* Motion_notify_event handler for the HSV color selector */
 static gint
-gtk_hsv_motion (GtkWidget      *widget,
-		GdkEventMotion *event)
+btk_hsv_motion (BtkWidget      *widget,
+		BdkEventMotion *event)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
   double x, y;
-  GdkModifierType mods;
+  BdkModifierType mods;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
   if (priv->mode == DRAG_NONE)
     return FALSE;
   
-  gdk_event_request_motions (event);
+  bdk_event_request_motions (event);
   x = event->x;
   y = event->y;
   mods = event->state;
 
   if (priv->mode == DRAG_H)
     {
-      gtk_hsv_set_color (hsv, compute_v (hsv, x, y), priv->s, priv->v);
+      btk_hsv_set_color (hsv, compute_v (hsv, x, y), priv->s, priv->v);
       return TRUE;
     }
   else if (priv->mode == DRAG_SV)
@@ -865,7 +865,7 @@ gtk_hsv_motion (GtkWidget      *widget,
       double s, v;
       
       compute_sv (hsv, x, y, &s, &v);
-      gtk_hsv_set_color (hsv, priv->h, s, v);
+      btk_hsv_set_color (hsv, priv->h, s, v);
       return TRUE;
     }
   
@@ -878,14 +878,14 @@ gtk_hsv_motion (GtkWidget      *widget,
 
 /* Paints the hue ring */
 static void
-paint_ring (GtkHSV      *hsv,
-	    cairo_t     *cr,
+paint_ring (BtkHSV      *hsv,
+	    bairo_t     *cr,
 	    gint         x,
 	    gint         y,
 	    gint         width,
 	    gint         height)
 {
-  GtkWidget *widget = GTK_WIDGET (hsv);
+  BtkWidget *widget = BTK_WIDGET (hsv);
   HSVPrivate *priv;
   int xx, yy;
   gdouble dx, dy, dist;
@@ -896,13 +896,13 @@ paint_ring (GtkHSV      *hsv,
   gdouble angle;
   gdouble hue;
   gdouble r, g, b;
-  cairo_surface_t *source;
-  cairo_t *source_cr;
+  bairo_surface_t *source;
+  bairo_t *source_cr;
   gint stride;
   gint focus_width;
   gint focus_pad;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
 			"focus-line-width", &focus_width,
 			"focus-padding", &focus_pad,
 			NULL);
@@ -917,7 +917,7 @@ paint_ring (GtkHSV      *hsv,
   
   /* Create an image initialized with the ring colors */
   
-  stride = cairo_format_stride_for_width (CAIRO_FORMAT_RGB24, width);
+  stride = bairo_format_stride_for_width (BAIRO_FORMAT_RGB24, width);
   buf = g_new (guint32, height * stride / 4);
   
   for (yy = 0; yy < height; yy++)
@@ -954,14 +954,14 @@ paint_ring (GtkHSV      *hsv,
 	}
     }
 
-  source = cairo_image_surface_create_for_data ((unsigned char *)buf,
-						CAIRO_FORMAT_RGB24,
+  source = bairo_image_surface_create_for_data ((unsigned char *)buf,
+						BAIRO_FORMAT_RGB24,
 						width, height, stride);
 
   /* Now draw the value marker onto the source image, so that it
    * will get properly clipped at the edges of the ring
    */
-  source_cr = cairo_create (source);
+  source_cr = bairo_create (source);
   
   r = priv->h;
   g = 1.0;
@@ -969,33 +969,33 @@ paint_ring (GtkHSV      *hsv,
   hsv_to_rgb (&r, &g, &b);
   
   if (INTENSITY (r, g, b) > 0.5)
-    cairo_set_source_rgb (source_cr, 0., 0., 0.);
+    bairo_set_source_rgb (source_cr, 0., 0., 0.);
   else
-    cairo_set_source_rgb (source_cr, 1., 1., 1.);
+    bairo_set_source_rgb (source_cr, 1., 1., 1.);
 
-  cairo_move_to (source_cr, -x + center_x, - y + center_y);
-  cairo_line_to (source_cr,
+  bairo_move_to (source_cr, -x + center_x, - y + center_y);
+  bairo_line_to (source_cr,
 		 -x + center_x + cos (priv->h * 2.0 * G_PI) * priv->size / 2,
 		 -y + center_y - sin (priv->h * 2.0 * G_PI) * priv->size / 2);
-  cairo_stroke (source_cr);
-  cairo_destroy (source_cr);
+  bairo_stroke (source_cr);
+  bairo_destroy (source_cr);
 
   /* Draw the ring using the source image */
 
-  cairo_save (cr);
+  bairo_save (cr);
     
-  cairo_set_source_surface (cr, source, x, y);
-  cairo_surface_destroy (source);
+  bairo_set_source_surface (cr, source, x, y);
+  bairo_surface_destroy (source);
 
-  cairo_set_line_width (cr, priv->ring_width);
-  cairo_new_path (cr);
-  cairo_arc (cr,
+  bairo_set_line_width (cr, priv->ring_width);
+  bairo_new_path (cr);
+  bairo_arc (cr,
 	     center_x, center_y,
 	     priv->size / 2. - priv->ring_width / 2.,
 	     0, 2 * G_PI);
-  cairo_stroke (cr);
+  bairo_stroke (cr);
   
-  cairo_restore (cr);
+  bairo_restore (cr);
   
   g_free (buf);
 }
@@ -1029,14 +1029,14 @@ get_color (gdouble h,
 
 /* Paints the HSV triangle */
 static void
-paint_triangle (GtkHSV      *hsv,
-		cairo_t     *cr,
+paint_triangle (BtkHSV      *hsv,
+		bairo_t     *cr,
 		gint         x,
 		gint         y,
 		gint         width,
 		gint         height)
 {
-  GtkWidget *widget = GTK_WIDGET (hsv);
+  BtkWidget *widget = BTK_WIDGET (hsv);
   HSVPrivate *priv;
   gint hx, hy, sx, sy, vx, vy; /* HSV vertices */
   gint x1, y1, r1, g1, b1; /* First vertex in scanline order */
@@ -1048,7 +1048,7 @@ paint_triangle (GtkHSV      *hsv,
   gint xx, yy;
   gint x_interp, y_interp;
   gint x_start, x_end;
-  cairo_surface_t *source;
+  bairo_surface_t *source;
   gdouble r, g, b;
   gchar *detail;
   gint stride;
@@ -1100,7 +1100,7 @@ paint_triangle (GtkHSV      *hsv,
   
   /* Shade the triangle */
 
-  stride = cairo_format_stride_for_width (CAIRO_FORMAT_RGB24, width);
+  stride = bairo_format_stride_for_width (BAIRO_FORMAT_RGB24, width);
   buf = g_new (guint32, height * stride / 4);
   
   for (yy = 0; yy < height; yy++)
@@ -1166,20 +1166,20 @@ paint_triangle (GtkHSV      *hsv,
       }
     }
 
-  source = cairo_image_surface_create_for_data ((unsigned char *)buf,
-						CAIRO_FORMAT_RGB24,
+  source = bairo_image_surface_create_for_data ((unsigned char *)buf,
+						BAIRO_FORMAT_RGB24,
 						width, height, stride);
   
   /* Draw a triangle with the image as a source */
 
-  cairo_set_source_surface (cr, source, x, y);
-  cairo_surface_destroy (source);
+  bairo_set_source_surface (cr, source, x, y);
+  bairo_surface_destroy (source);
   
-  cairo_move_to (cr, x1, y1);
-  cairo_line_to (cr, x2, y2);
-  cairo_line_to (cr, x3, y3);
-  cairo_close_path (cr);
-  cairo_fill (cr);
+  bairo_move_to (cr, x1, y1);
+  bairo_line_to (cr, x2, y2);
+  bairo_line_to (cr, x3, y3);
+  bairo_close_path (cr);
+  bairo_fill (cr);
   
   g_free (buf);
   
@@ -1196,36 +1196,36 @@ paint_triangle (GtkHSV      *hsv,
   if (INTENSITY (r, g, b) > 0.5)
     {
       detail = "colorwheel_light";
-      cairo_set_source_rgb (cr, 0., 0., 0.);
+      bairo_set_source_rgb (cr, 0., 0., 0.);
     }
   else
     {
       detail = "colorwheel_dark";
-      cairo_set_source_rgb (cr, 1., 1., 1.);
+      bairo_set_source_rgb (cr, 1., 1., 1.);
     }
 
 #define RADIUS 4
 #define FOCUS_RADIUS 6
 
-  cairo_new_path (cr);
-  cairo_arc (cr, xx, yy, RADIUS, 0, 2 * G_PI);
-  cairo_stroke (cr);
+  bairo_new_path (cr);
+  bairo_arc (cr, xx, yy, RADIUS, 0, 2 * G_PI);
+  bairo_stroke (cr);
   
   /* Draw focus outline */
 
-  if (gtk_widget_has_focus (widget) &&
+  if (btk_widget_has_focus (widget) &&
       !priv->focus_on_ring)
     {
       gint focus_width;
       gint focus_pad;
 
-      gtk_widget_style_get (widget,
+      btk_widget_style_get (widget,
 			    "focus-line-width", &focus_width,
 			    "focus-padding", &focus_pad,
 			    NULL);
   
-      gtk_paint_focus (widget->style, widget->window,
-		       gtk_widget_get_state (widget),
+      btk_paint_focus (widget->style, widget->window,
+		       btk_widget_get_state (widget),
 		       NULL, widget, detail,
 		       widget->allocation.x + xx - FOCUS_RADIUS - focus_width - focus_pad, 
 		       widget->allocation.y + yy - FOCUS_RADIUS - focus_width - focus_pad, 
@@ -1237,8 +1237,8 @@ paint_triangle (GtkHSV      *hsv,
 
 /* Paints the contents of the HSV color selector */
 static void
-paint (GtkHSV      *hsv,
-       cairo_t     *cr,
+paint (BtkHSV      *hsv,
+       bairo_t     *cr,
        gint         x,
        gint         y,
        gint         width,
@@ -1250,18 +1250,18 @@ paint (GtkHSV      *hsv,
 
 /* Expose_event handler for the HSV color selector */
 static gint
-gtk_hsv_expose (GtkWidget      *widget,
-		GdkEventExpose *event)
+btk_hsv_expose (BtkWidget      *widget,
+		BdkEventExpose *event)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
-  GdkRectangle rect, dest;
-  cairo_t *cr;
+  BdkRectangle rect, dest;
+  bairo_t *cr;
   
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
   
-  if (!(event->window == widget->window && gtk_widget_is_drawable (widget)))
+  if (!(event->window == widget->window && btk_widget_is_drawable (widget)))
     return FALSE;
 
   rect.x = widget->allocation.x;
@@ -1269,21 +1269,21 @@ gtk_hsv_expose (GtkWidget      *widget,
   rect.width = widget->allocation.width;
   rect.height = widget->allocation.height;
   
-  if (!gdk_rectangle_intersect (&event->area, &rect, &dest))
+  if (!bdk_rectangle_intersect (&event->area, &rect, &dest))
     return FALSE;
   
-  cr = gdk_cairo_create (widget->window);
+  cr = bdk_bairo_create (widget->window);
 
-  cairo_translate (cr, widget->allocation.x, widget->allocation.y);
+  bairo_translate (cr, widget->allocation.x, widget->allocation.y);
   paint (hsv, cr,
 	 dest.x - widget->allocation.x,
 	 dest.y - widget->allocation.y,
 	 dest.width, dest.height);
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 
-  if (gtk_widget_has_focus (widget) && priv->focus_on_ring)
-    gtk_paint_focus (widget->style, widget->window,
-		     gtk_widget_get_state (widget),
+  if (btk_widget_has_focus (widget) && priv->focus_on_ring)
+    btk_paint_focus (widget->style, widget->window,
+		     btk_widget_get_state (widget),
 		     &event->area, widget, NULL,
 		     widget->allocation.x,
 		     widget->allocation.y, 
@@ -1294,52 +1294,52 @@ gtk_hsv_expose (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_hsv_focus (GtkWidget       *widget,
-               GtkDirectionType dir)
+btk_hsv_focus (BtkWidget       *widget,
+               BtkDirectionType dir)
 {
-  GtkHSV *hsv;
+  BtkHSV *hsv;
   HSVPrivate *priv;
 
-  hsv = GTK_HSV (widget);
+  hsv = BTK_HSV (widget);
   priv = hsv->priv;
 
-  if (!gtk_widget_has_focus (widget))
+  if (!btk_widget_has_focus (widget))
     {
-      if (dir == GTK_DIR_TAB_BACKWARD)
+      if (dir == BTK_DIR_TAB_BACKWARD)
         priv->focus_on_ring = FALSE;
       else
         priv->focus_on_ring = TRUE;
 
-      gtk_widget_grab_focus (GTK_WIDGET (hsv));
+      btk_widget_grab_focus (BTK_WIDGET (hsv));
       return TRUE;
     }
   
   switch (dir)
     {
-    case GTK_DIR_UP:
+    case BTK_DIR_UP:
       if (priv->focus_on_ring)
         return FALSE;
       else
         priv->focus_on_ring = TRUE;
       break;
 
-    case GTK_DIR_DOWN:
+    case BTK_DIR_DOWN:
       if (priv->focus_on_ring)
         priv->focus_on_ring = FALSE;
       else
         return FALSE;
       break;
 
-    case GTK_DIR_LEFT:
-    case GTK_DIR_TAB_BACKWARD:
+    case BTK_DIR_LEFT:
+    case BTK_DIR_TAB_BACKWARD:
       if (priv->focus_on_ring)
         return FALSE;
       else
         priv->focus_on_ring = TRUE;
       break;
 
-    case GTK_DIR_RIGHT:
-    case GTK_DIR_TAB_FORWARD:
+    case BTK_DIR_RIGHT:
+    case BTK_DIR_TAB_FORWARD:
       if (priv->focus_on_ring)
         priv->focus_on_ring = FALSE;
       else
@@ -1347,13 +1347,13 @@ gtk_hsv_focus (GtkWidget       *widget,
       break;
     }
 
-  gtk_widget_queue_draw (GTK_WIDGET (hsv));
+  btk_widget_queue_draw (BTK_WIDGET (hsv));
 
   return TRUE;
 }
 
 /**
- * gtk_hsv_new:
+ * btk_hsv_new:
  *
  * Creates a new HSV color selector.
  *
@@ -1361,14 +1361,14 @@ gtk_hsv_focus (GtkWidget       *widget,
  *
  * Since: 2.14
  */
-GtkWidget*
-gtk_hsv_new (void)
+BtkWidget*
+btk_hsv_new (void)
 {
-  return g_object_new (GTK_TYPE_HSV, NULL);
+  return g_object_new (BTK_TYPE_HSV, NULL);
 }
 
 /**
- * gtk_hsv_set_color:
+ * btk_hsv_set_color:
  * @hsv: An HSV color selector
  * @h: Hue
  * @s: Saturation
@@ -1380,14 +1380,14 @@ gtk_hsv_new (void)
  * Since: 2.14
  */
 void
-gtk_hsv_set_color (GtkHSV *hsv,
+btk_hsv_set_color (BtkHSV *hsv,
 		   gdouble h,
 		   gdouble s,
 		   gdouble v)
 {
   HSVPrivate *priv;
   
-  g_return_if_fail (GTK_IS_HSV (hsv));
+  g_return_if_fail (BTK_IS_HSV (hsv));
   g_return_if_fail (h >= 0.0 && h <= 1.0);
   g_return_if_fail (s >= 0.0 && s <= 1.0);
   g_return_if_fail (v >= 0.0 && v <= 1.0);
@@ -1400,11 +1400,11 @@ gtk_hsv_set_color (GtkHSV *hsv,
   
   g_signal_emit (hsv, hsv_signals[CHANGED], 0);
   
-  gtk_widget_queue_draw (GTK_WIDGET (hsv));
+  btk_widget_queue_draw (BTK_WIDGET (hsv));
 }
 
 /**
- * gtk_hsv_get_color:
+ * btk_hsv_get_color:
  * @hsv: An HSV color selector
  * @h: (out): Return value for the hue
  * @s: (out): Return value for the saturation
@@ -1416,14 +1416,14 @@ gtk_hsv_set_color (GtkHSV *hsv,
  * Since: 2.14
  */
 void
-gtk_hsv_get_color (GtkHSV *hsv,
+btk_hsv_get_color (BtkHSV *hsv,
                    double *h,
                    double *s,
                    double *v)
 {
   HSVPrivate *priv;
   
-  g_return_if_fail (GTK_IS_HSV (hsv));
+  g_return_if_fail (BTK_IS_HSV (hsv));
   
   priv = hsv->priv;
   
@@ -1438,7 +1438,7 @@ gtk_hsv_get_color (GtkHSV *hsv,
 }
 
 /**
- * gtk_hsv_set_metrics:
+ * btk_hsv_set_metrics:
  * @hsv: An HSV color selector
  * @size: Diameter for the hue ring
  * @ring_width: Width of the hue ring
@@ -1448,14 +1448,14 @@ gtk_hsv_get_color (GtkHSV *hsv,
  * Since: 2.14
  */
 void
-gtk_hsv_set_metrics (GtkHSV *hsv,
+btk_hsv_set_metrics (BtkHSV *hsv,
 		     gint    size,
 		     gint    ring_width)
 {
   HSVPrivate *priv;
   int same_size;
   
-  g_return_if_fail (GTK_IS_HSV (hsv));
+  g_return_if_fail (BTK_IS_HSV (hsv));
   g_return_if_fail (size > 0);
   g_return_if_fail (ring_width > 0);
   g_return_if_fail (2 * ring_width + 1 <= size);
@@ -1468,13 +1468,13 @@ gtk_hsv_set_metrics (GtkHSV *hsv,
   priv->ring_width = ring_width;
   
   if (same_size)
-    gtk_widget_queue_draw (GTK_WIDGET (hsv));
+    btk_widget_queue_draw (BTK_WIDGET (hsv));
   else
-    gtk_widget_queue_resize (GTK_WIDGET (hsv));
+    btk_widget_queue_resize (BTK_WIDGET (hsv));
 }
 
 /**
- * gtk_hsv_get_metrics:
+ * btk_hsv_get_metrics:
  * @hsv: An HSV color selector
  * @size: (out): Return value for the diameter of the hue ring
  * @ring_width: (out): Return value for the width of the hue ring
@@ -1484,13 +1484,13 @@ gtk_hsv_set_metrics (GtkHSV *hsv,
  * Since: 2.14
  */
 void
-gtk_hsv_get_metrics (GtkHSV *hsv,
+btk_hsv_get_metrics (BtkHSV *hsv,
 		     gint   *size,
 		     gint   *ring_width)
 {
   HSVPrivate *priv;
   
-  g_return_if_fail (GTK_IS_HSV (hsv));
+  g_return_if_fail (BTK_IS_HSV (hsv));
   
   priv = hsv->priv;
   
@@ -1502,8 +1502,8 @@ gtk_hsv_get_metrics (GtkHSV *hsv,
 }
 
 /**
- * gtk_hsv_is_adjusting:
- * @hsv: A #GtkHSV 
+ * btk_hsv_is_adjusting:
+ * @hsv: A #BtkHSV 
  *
  * An HSV color selector can be said to be adjusting if multiple rapid
  * changes are being made to its value, for example, when the user is 
@@ -1517,11 +1517,11 @@ gtk_hsv_get_metrics (GtkHSV *hsv,
  * Since: 2.14
  */
 gboolean
-gtk_hsv_is_adjusting (GtkHSV *hsv)
+btk_hsv_is_adjusting (BtkHSV *hsv)
 {
   HSVPrivate *priv;
   
-  g_return_val_if_fail (GTK_IS_HSV (hsv), FALSE);
+  g_return_val_if_fail (BTK_IS_HSV (hsv), FALSE);
   
   priv = hsv->priv;
 
@@ -1529,7 +1529,7 @@ gtk_hsv_is_adjusting (GtkHSV *hsv)
 }
 
 /**
- * gtk_hsv_to_rgb:
+ * btk_hsv_to_rgb:
  * @h: Hue
  * @s: Saturation
  * @v: Value
@@ -1544,7 +1544,7 @@ gtk_hsv_is_adjusting (GtkHSV *hsv)
  * Since: 2.14
  */
 void
-gtk_hsv_to_rgb (gdouble  h,
+btk_hsv_to_rgb (gdouble  h,
 		gdouble  s,
 		gdouble  v,
 		gdouble *r,
@@ -1568,7 +1568,7 @@ gtk_hsv_to_rgb (gdouble  h,
 }
 
 /**
- * gtk_rgb_to_hsv:
+ * btk_rgb_to_hsv:
  * @r: Red
  * @g: Green
  * @b: Blue
@@ -1583,7 +1583,7 @@ gtk_hsv_to_rgb (gdouble  h,
  * Since: 2.14
  */
 void
-gtk_rgb_to_hsv (gdouble  r,
+btk_rgb_to_hsv (gdouble  r,
 		gdouble  g,
 		gdouble  b,
 		gdouble *h,
@@ -1607,8 +1607,8 @@ gtk_rgb_to_hsv (gdouble  r,
 }
 
 static void
-gtk_hsv_move (GtkHSV          *hsv,
-              GtkDirectionType dir)
+btk_hsv_move (BtkHSV          *hsv,
+              BtkDirectionType dir)
 {
   HSVPrivate *priv;
   gdouble hue, sat, val;
@@ -1629,7 +1629,7 @@ gtk_hsv_move (GtkHSV          *hsv,
 #define HUE_DELTA 0.002
   switch (dir)
     {
-    case GTK_DIR_UP:
+    case BTK_DIR_UP:
       if (priv->focus_on_ring)
         hue += HUE_DELTA;
       else
@@ -1639,7 +1639,7 @@ gtk_hsv_move (GtkHSV          *hsv,
         }
       break;
 
-    case GTK_DIR_DOWN:
+    case BTK_DIR_DOWN:
       if (priv->focus_on_ring)
         hue -= HUE_DELTA;
       else
@@ -1649,7 +1649,7 @@ gtk_hsv_move (GtkHSV          *hsv,
         }
       break;
 
-    case GTK_DIR_LEFT:
+    case BTK_DIR_LEFT:
       if (priv->focus_on_ring)
         hue += HUE_DELTA;
       else
@@ -1659,7 +1659,7 @@ gtk_hsv_move (GtkHSV          *hsv,
         }
       break;
 
-    case GTK_DIR_RIGHT:
+    case BTK_DIR_RIGHT:
       if (priv->focus_on_ring)
         hue -= HUE_DELTA
           ;
@@ -1681,8 +1681,8 @@ gtk_hsv_move (GtkHSV          *hsv,
   else if (hue > 1.0)
     hue = 0.0;
   
-  gtk_hsv_set_color (hsv, hue, sat, val);
+  btk_hsv_set_color (hsv, hue, sat, val);
 }
 
-#define __GTK_HSV_C__
-#include "gtkaliasdef.c"
+#define __BTK_HSV_C__
+#include "btkaliasdef.c"

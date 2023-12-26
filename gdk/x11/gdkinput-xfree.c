@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -19,58 +19,58 @@
 
 #include "config.h"
 #include <string.h>
-#include "gdkinputprivate.h"
-#include "gdkdisplay-x11.h"
-#include "gdkalias.h"
+#include "bdkinputprivate.h"
+#include "bdkdisplay-x11.h"
+#include "bdkalias.h"
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 /* forward declarations */
 
-static void gdk_input_check_proximity (GdkDisplay *display);
+static void bdk_input_check_proximity (BdkDisplay *display);
 
 void
-_gdk_input_init(GdkDisplay *display)
+_bdk_input_init(BdkDisplay *display)
 {
-  _gdk_init_input_core (display);
+  _bdk_init_input_core (display);
   display->ignore_core_events = FALSE;
-  _gdk_input_common_init (display, FALSE);
+  _bdk_input_common_init (display, FALSE);
 }
 
 gboolean
-gdk_device_set_mode (GdkDevice      *device,
-		     GdkInputMode    mode)
+bdk_device_set_mode (BdkDevice      *device,
+		     BdkInputMode    mode)
 {
   GList *tmp_list;
-  GdkDevicePrivate *gdkdev;
-  GdkInputWindow *input_window;
-  GdkDisplayX11 *display_impl;
+  BdkDevicePrivate *bdkdev;
+  BdkInputWindow *input_window;
+  BdkDisplayX11 *display_impl;
 
-  if (GDK_IS_CORE (device))
+  if (BDK_IS_CORE (device))
     return FALSE;
 
-  gdkdev = (GdkDevicePrivate *)device;
+  bdkdev = (BdkDevicePrivate *)device;
 
   if (device->mode == mode)
     return TRUE;
 
   device->mode = mode;
 
-  if (mode == GDK_MODE_WINDOW)
+  if (mode == BDK_MODE_WINDOW)
     device->has_cursor = FALSE;
-  else if (mode == GDK_MODE_SCREEN)
+  else if (mode == BDK_MODE_SCREEN)
     device->has_cursor = TRUE;
 
-  display_impl = GDK_DISPLAY_X11 (gdkdev->display);
+  display_impl = BDK_DISPLAY_X11 (bdkdev->display);
   for (tmp_list = display_impl->input_windows; tmp_list; tmp_list = tmp_list->next)
     {
-      input_window = (GdkInputWindow *)tmp_list->data;
-      _gdk_input_select_events (input_window->impl_window, gdkdev);
+      input_window = (BdkInputWindow *)tmp_list->data;
+      _bdk_input_select_events (input_window->impl_window, bdkdev);
     }
 
   return TRUE;
@@ -83,19 +83,19 @@ ignore_errors (Display *display, XErrorEvent *event)
 }
 
 static void
-gdk_input_check_proximity (GdkDisplay *display)
+bdk_input_check_proximity (BdkDisplay *display)
 {
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
   GList *tmp_list = display_impl->input_devices;
   gint new_proximity = 0;
 
   while (tmp_list && !new_proximity)
     {
-      GdkDevicePrivate *gdkdev = (GdkDevicePrivate *)(tmp_list->data);
+      BdkDevicePrivate *bdkdev = (BdkDevicePrivate *)(tmp_list->data);
 
-      if (gdkdev->info.mode != GDK_MODE_DISABLED
-	  && !GDK_IS_CORE (gdkdev)
-	  && gdkdev->xdevice)
+      if (bdkdev->info.mode != BDK_MODE_DISABLED
+	  && !BDK_IS_CORE (bdkdev)
+	  && bdkdev->xdevice)
 	{
       int (*old_handler) (Display *, XErrorEvent *);
       XDeviceState *state = NULL;
@@ -107,11 +107,11 @@ gdk_input_check_proximity (GdkDisplay *display)
        * which would cause the program to crash (see bug 575767).
        *
        * To handle this case gracefully, we simply ignore the device.
-       * GTK+ 3 handles this better with XInput 2's hotplugging support;
-       * but this is better than a crash in GTK+ 2.
+       * BTK+ 3 handles this better with XInput 2's hotplugging support;
+       * but this is better than a crash in BTK+ 2.
        */
       old_handler = XSetErrorHandler (ignore_errors);
-      state = XQueryDeviceState(display_impl->xdisplay, gdkdev->xdevice);
+      state = XQueryDeviceState(display_impl->xdisplay, bdkdev->xdevice);
       XSetErrorHandler (old_handler);
 
       if (! state)
@@ -147,40 +147,40 @@ gdk_input_check_proximity (GdkDisplay *display)
 }
 
 void
-_gdk_input_configure_event (XConfigureEvent *xevent,
-			    GdkWindow       *window)
+_bdk_input_configure_event (XConfigureEvent *xevent,
+			    BdkWindow       *window)
 {
-  GdkWindowObject *priv = (GdkWindowObject *)window;
-  GdkInputWindow *input_window;
+  BdkWindowObject *priv = (BdkWindowObject *)window;
+  BdkInputWindow *input_window;
   gint root_x, root_y;
 
   input_window = priv->input_window;
   if (input_window != NULL)
     {
-      _gdk_input_get_root_relative_geometry (window, &root_x, &root_y);
+      _bdk_input_get_root_relative_geometry (window, &root_x, &root_y);
       input_window->root_x = root_x;
       input_window->root_y = root_y;
     }
 }
 
 void
-_gdk_input_crossing_event (GdkWindow *window,
+_bdk_input_crossing_event (BdkWindow *window,
 			   gboolean enter)
 {
-  GdkDisplay *display = GDK_WINDOW_DISPLAY (window);
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
-  GdkWindowObject *priv = (GdkWindowObject *)window;
-  GdkInputWindow *input_window;
+  BdkDisplay *display = BDK_WINDOW_DISPLAY (window);
+  BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
+  BdkWindowObject *priv = (BdkWindowObject *)window;
+  BdkInputWindow *input_window;
   gint root_x, root_y;
 
   if (enter)
     {
-      gdk_input_check_proximity(display);
+      bdk_input_check_proximity(display);
 
       input_window = priv->input_window;
       if (input_window != NULL)
 	{
-	  _gdk_input_get_root_relative_geometry (window, &root_x, &root_y);
+	  _bdk_input_get_root_relative_geometry (window, &root_x, &root_y);
 	  input_window->root_x = root_x;
 	  input_window->root_y = root_y;
 	}
@@ -189,165 +189,165 @@ _gdk_input_crossing_event (GdkWindow *window,
     display->ignore_core_events = FALSE;
 }
 
-static GdkEventType
-get_input_event_type (GdkDevicePrivate *gdkdev,
+static BdkEventType
+get_input_event_type (BdkDevicePrivate *bdkdev,
 		      XEvent *xevent,
 		      int *core_x, int *core_y)
 {
-  if (xevent->type == gdkdev->buttonpress_type)
+  if (xevent->type == bdkdev->buttonpress_type)
     {
       XDeviceButtonEvent *xie = (XDeviceButtonEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_BUTTON_PRESS;
+      return BDK_BUTTON_PRESS;
     }
 
-  if (xevent->type == gdkdev->buttonrelease_type)
+  if (xevent->type == bdkdev->buttonrelease_type)
     {
       XDeviceButtonEvent *xie = (XDeviceButtonEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_BUTTON_RELEASE;
+      return BDK_BUTTON_RELEASE;
     }
 
-  if (xevent->type == gdkdev->keypress_type)
+  if (xevent->type == bdkdev->keypress_type)
     {
       XDeviceKeyEvent *xie = (XDeviceKeyEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_KEY_PRESS;
+      return BDK_KEY_PRESS;
     }
 
-  if (xevent->type == gdkdev->keyrelease_type)
+  if (xevent->type == bdkdev->keyrelease_type)
     {
       XDeviceKeyEvent *xie = (XDeviceKeyEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_KEY_RELEASE;
+      return BDK_KEY_RELEASE;
     }
 
-  if (xevent->type == gdkdev->motionnotify_type)
+  if (xevent->type == bdkdev->motionnotify_type)
     {
       XDeviceMotionEvent *xie = (XDeviceMotionEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_MOTION_NOTIFY;
+      return BDK_MOTION_NOTIFY;
     }
 
-  if (xevent->type == gdkdev->proximityin_type)
+  if (xevent->type == bdkdev->proximityin_type)
     {
       XProximityNotifyEvent *xie = (XProximityNotifyEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_PROXIMITY_IN;
+      return BDK_PROXIMITY_IN;
     }
 
-  if (xevent->type == gdkdev->proximityout_type)
+  if (xevent->type == bdkdev->proximityout_type)
     {
       XProximityNotifyEvent *xie = (XProximityNotifyEvent *)(xevent);
       *core_x = xie->x;
       *core_y = xie->y;
-      return GDK_PROXIMITY_OUT;
+      return BDK_PROXIMITY_OUT;
     }
 
   *core_x = 0;
   *core_y = 0;
-  return GDK_NOTHING;
+  return BDK_NOTHING;
 }
 
 
 gboolean
-_gdk_input_other_event (GdkEvent *event,
+_bdk_input_other_event (BdkEvent *event,
 			XEvent *xevent,
-			GdkWindow *event_window)
+			BdkWindow *event_window)
 {
-  GdkWindow *window;
-  GdkWindowObject *priv;
-  GdkInputWindow *iw;
-  GdkDevicePrivate *gdkdev;
-  GdkEventType event_type;
+  BdkWindow *window;
+  BdkWindowObject *priv;
+  BdkInputWindow *iw;
+  BdkDevicePrivate *bdkdev;
+  BdkEventType event_type;
   int x, y;
-  GdkDisplay *display = GDK_WINDOW_DISPLAY (event_window);
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
+  BdkDisplay *display = BDK_WINDOW_DISPLAY (event_window);
+  BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
 
   /* This is a sort of a hack, as there isn't any XDeviceAnyEvent -
      but it's potentially faster than scanning through the types of
      every device. If we were deceived, then it won't match any of
      the types for the device anyways */
-  gdkdev = _gdk_input_find_device (display,
+  bdkdev = _bdk_input_find_device (display,
 				   ((XDeviceButtonEvent *)xevent)->deviceid);
-  if (!gdkdev)
+  if (!bdkdev)
     return FALSE;			/* we don't handle it - not an XInput event */
 
-  event_type = get_input_event_type (gdkdev, xevent, &x, &y);
-  if (event_type == GDK_NOTHING)
+  event_type = get_input_event_type (bdkdev, xevent, &x, &y);
+  if (event_type == BDK_NOTHING)
     return FALSE;
 
   /* If we're not getting any event window its likely because we're outside the
      window and there is no grab. We should still report according to the
      implicit grab though. */
-  iw = ((GdkWindowObject *)event_window)->input_window;
+  iw = ((BdkWindowObject *)event_window)->input_window;
 
   if (iw->button_down_window)
     window = iw->button_down_window;
   else
-    window = _gdk_window_get_input_window_for_event (event_window,
+    window = _bdk_window_get_input_window_for_event (event_window,
                                                      event_type,
 						     /* TODO: Seems wrong, but the code used to ignore button motion handling here... */
 						     0, 
                                                      x, y,
                                                      xevent->xany.serial);
-  priv = (GdkWindowObject *)window;
+  priv = (BdkWindowObject *)window;
   if (window == NULL)
     return FALSE;
 
-  if (gdkdev->info.mode == GDK_MODE_DISABLED ||
+  if (bdkdev->info.mode == BDK_MODE_DISABLED ||
       priv->extension_events == 0 ||
-      !(gdkdev->info.has_cursor || (priv->extension_events & GDK_ALL_DEVICES_MASK)))
+      !(bdkdev->info.has_cursor || (priv->extension_events & BDK_ALL_DEVICES_MASK)))
     return FALSE;
 
   if (!display->ignore_core_events && priv->extension_events != 0)
-    gdk_input_check_proximity (GDK_WINDOW_DISPLAY (window));
+    bdk_input_check_proximity (BDK_WINDOW_DISPLAY (window));
 
-  if (!_gdk_input_common_other_event (event, xevent, window, gdkdev))
+  if (!_bdk_input_common_other_event (event, xevent, window, bdkdev))
     return FALSE;
 
-  if (event->type == GDK_BUTTON_PRESS)
+  if (event->type == BDK_BUTTON_PRESS)
     iw->button_down_window = window;
-  if (event->type == GDK_BUTTON_RELEASE && !gdkdev->button_count)
+  if (event->type == BDK_BUTTON_RELEASE && !bdkdev->button_count)
     iw->button_down_window = NULL;
 
-  if (event->type == GDK_PROXIMITY_OUT &&
+  if (event->type == BDK_PROXIMITY_OUT &&
       display->ignore_core_events)
-    gdk_input_check_proximity (GDK_WINDOW_DISPLAY (window));
+    bdk_input_check_proximity (BDK_WINDOW_DISPLAY (window));
 
-  return _gdk_input_common_event_selected(event, window, gdkdev);
+  return _bdk_input_common_event_selected(event, window, bdkdev);
 }
 
 gint
-_gdk_input_grab_pointer (GdkWindow      *window,
-			 GdkWindow      *native_window, /* This is the toplevel */
+_bdk_input_grab_pointer (BdkWindow      *window,
+			 BdkWindow      *native_window, /* This is the toplevel */
 			 gint            owner_events,
-			 GdkEventMask    event_mask,
-			 GdkWindow *     confine_to,
+			 BdkEventMask    event_mask,
+			 BdkWindow *     confine_to,
 			 guint32         time)
 {
-  GdkInputWindow *input_window;
-  GdkWindowObject *priv, *impl_window;
+  BdkInputWindow *input_window;
+  BdkWindowObject *priv, *impl_window;
   gboolean need_ungrab;
-  GdkDevicePrivate *gdkdev;
+  BdkDevicePrivate *bdkdev;
   GList *tmp_list;
-  XEventClass event_classes[GDK_MAX_DEVICE_CLASSES];
+  XEventClass event_classes[BDK_MAX_DEVICE_CLASSES];
   gint num_classes;
   gint result;
-  GdkDisplayX11 *display_impl  = GDK_DISPLAY_X11 (GDK_WINDOW_DISPLAY (window));
+  BdkDisplayX11 *display_impl  = BDK_DISPLAY_X11 (BDK_WINDOW_DISPLAY (window));
 
   tmp_list = display_impl->input_windows;
   need_ungrab = FALSE;
 
   while (tmp_list)
     {
-      input_window = (GdkInputWindow *)tmp_list->data;
+      input_window = (BdkInputWindow *)tmp_list->data;
 
       if (input_window->grabbed)
 	{
@@ -358,8 +358,8 @@ _gdk_input_grab_pointer (GdkWindow      *window,
       tmp_list = tmp_list->next;
     }
 
-  priv = (GdkWindowObject *)window;
-  impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+  priv = (BdkWindowObject *)window;
+  impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
   input_window = impl_window->input_window;
   if (priv->extension_events)
     {
@@ -369,18 +369,18 @@ _gdk_input_grab_pointer (GdkWindow      *window,
       tmp_list = display_impl->input_devices;
       while (tmp_list)
 	{
-	  gdkdev = (GdkDevicePrivate *)tmp_list->data;
-	  if (!GDK_IS_CORE (gdkdev) && gdkdev->xdevice)
+	  bdkdev = (BdkDevicePrivate *)tmp_list->data;
+	  if (!BDK_IS_CORE (bdkdev) && bdkdev->xdevice)
 	    {
-	      _gdk_input_common_find_events (gdkdev, event_mask,
+	      _bdk_input_common_find_events (bdkdev, event_mask,
 					     event_classes, &num_classes);
 #ifdef G_ENABLE_DEBUG
-	      if (_gdk_debug_flags & GDK_DEBUG_NOGRABS)
+	      if (_bdk_debug_flags & BDK_DEBUG_NOGRABS)
 		result = GrabSuccess;
 	      else
 #endif
-		result = XGrabDevice (display_impl->xdisplay, gdkdev->xdevice,
-				      GDK_WINDOW_XWINDOW (native_window),
+		result = XGrabDevice (display_impl->xdisplay, bdkdev->xdevice,
+				      BDK_WINDOW_XWINDOW (native_window),
 				      owner_events, num_classes, event_classes,
 				      GrabModeAsync, GrabModeAsync, time);
 
@@ -397,13 +397,13 @@ _gdk_input_grab_pointer (GdkWindow      *window,
       tmp_list = display_impl->input_devices;
       while (tmp_list)
 	{
-	  gdkdev = (GdkDevicePrivate *)tmp_list->data;
-	  if (!GDK_IS_CORE (gdkdev) && gdkdev->xdevice &&
-	      ((gdkdev->button_count != 0) || need_ungrab))
+	  bdkdev = (BdkDevicePrivate *)tmp_list->data;
+	  if (!BDK_IS_CORE (bdkdev) && bdkdev->xdevice &&
+	      ((bdkdev->button_count != 0) || need_ungrab))
 	    {
-	      XUngrabDevice (display_impl->xdisplay, gdkdev->xdevice, time);
-	      memset (gdkdev->button_state, 0, sizeof (gdkdev->button_state));
-	      gdkdev->button_count = 0;
+	      XUngrabDevice (display_impl->xdisplay, bdkdev->xdevice, time);
+	      memset (bdkdev->button_state, 0, sizeof (bdkdev->button_state));
+	      bdkdev->button_count = 0;
 	    }
 
 	  tmp_list = tmp_list->next;
@@ -414,18 +414,18 @@ _gdk_input_grab_pointer (GdkWindow      *window,
 }
 
 void
-_gdk_input_ungrab_pointer (GdkDisplay *display,
+_bdk_input_ungrab_pointer (BdkDisplay *display,
 			   guint32 time)
 {
-  GdkInputWindow *input_window = NULL; /* Quiet GCC */
-  GdkDevicePrivate *gdkdev;
+  BdkInputWindow *input_window = NULL; /* Quiet GCC */
+  BdkDevicePrivate *bdkdev;
   GList *tmp_list;
-  GdkDisplayX11 *display_impl = GDK_DISPLAY_X11 (display);
+  BdkDisplayX11 *display_impl = BDK_DISPLAY_X11 (display);
 
   tmp_list = display_impl->input_windows;
   while (tmp_list)
     {
-      input_window = (GdkInputWindow *)tmp_list->data;
+      input_window = (BdkInputWindow *)tmp_list->data;
       if (input_window->grabbed)
 	break;
       tmp_list = tmp_list->next;
@@ -438,14 +438,14 @@ _gdk_input_ungrab_pointer (GdkDisplay *display,
       tmp_list = display_impl->input_devices;
       while (tmp_list)
 	{
-	  gdkdev = (GdkDevicePrivate *)tmp_list->data;
-	  if (!GDK_IS_CORE (gdkdev) && gdkdev->xdevice)
-	    XUngrabDevice( display_impl->xdisplay, gdkdev->xdevice, time);
+	  bdkdev = (BdkDevicePrivate *)tmp_list->data;
+	  if (!BDK_IS_CORE (bdkdev) && bdkdev->xdevice)
+	    XUngrabDevice( display_impl->xdisplay, bdkdev->xdevice, time);
 
 	  tmp_list = tmp_list->next;
 	}
     }
 }
 
-#define __GDK_INPUT_XFREE_C__
-#include "gdkaliasdef.c"
+#define __BDK_INPUT_XFREE_C__
+#include "bdkaliasdef.c"

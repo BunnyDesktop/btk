@@ -1,4 +1,4 @@
-/* gtkrecentprivatechooser.h - Interface definitions for recent selectors UI
+/* btkrecentprivatechooser.h - Interface definitions for recent selectors UI
  *
  * Copyright (C) 2006 Emmanuele Bassi
  *
@@ -20,36 +20,36 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RECENT_CHOOSER_PRIVATE_H__
-#define __GTK_RECENT_CHOOSER_PRIVATE_H__
+#ifndef __BTK_RECENT_CHOOSER_PRIVATE_H__
+#define __BTK_RECENT_CHOOSER_PRIVATE_H__
 
-#include "gtkrecentmanager.h"
-#include "gtkrecentchooser.h"
-#include "gtkactivatable.h"
+#include "btkrecentmanager.h"
+#include "btkrecentchooser.h"
+#include "btkactivatable.h"
 
 G_BEGIN_DECLS
 
-GtkRecentManager *_gtk_recent_chooser_get_recent_manager     (GtkRecentChooser  *chooser);
-GList *           _gtk_recent_chooser_get_items              (GtkRecentChooser  *chooser,
-							      GtkRecentFilter   *filter,
-							      GtkRecentSortFunc  func,
+BtkRecentManager *_btk_recent_chooser_get_recent_manager     (BtkRecentChooser  *chooser);
+GList *           _btk_recent_chooser_get_items              (BtkRecentChooser  *chooser,
+							      BtkRecentFilter   *filter,
+							      BtkRecentSortFunc  func,
 							      gpointer           data);
 
-void              _gtk_recent_chooser_item_activated         (GtkRecentChooser  *chooser);
-void              _gtk_recent_chooser_selection_changed      (GtkRecentChooser  *chooser);
+void              _btk_recent_chooser_item_activated         (BtkRecentChooser  *chooser);
+void              _btk_recent_chooser_selection_changed      (BtkRecentChooser  *chooser);
 
-void              _gtk_recent_chooser_update                 (GtkActivatable       *activatable,
-							      GtkAction            *action,
+void              _btk_recent_chooser_update                 (BtkActivatable       *activatable,
+							      BtkAction            *action,
 							      const gchar          *property_name);
-void              _gtk_recent_chooser_sync_action_properties (GtkActivatable       *activatable,
-							      GtkAction            *action);
-void              _gtk_recent_chooser_set_related_action     (GtkRecentChooser     *recent_chooser, 
-							      GtkAction            *action);
-GtkAction        *_gtk_recent_chooser_get_related_action     (GtkRecentChooser     *recent_chooser);
-void              _gtk_recent_chooser_set_use_action_appearance (GtkRecentChooser  *recent_chooser, 
+void              _btk_recent_chooser_sync_action_properties (BtkActivatable       *activatable,
+							      BtkAction            *action);
+void              _btk_recent_chooser_set_related_action     (BtkRecentChooser     *recent_chooser, 
+							      BtkAction            *action);
+BtkAction        *_btk_recent_chooser_get_related_action     (BtkRecentChooser     *recent_chooser);
+void              _btk_recent_chooser_set_use_action_appearance (BtkRecentChooser  *recent_chooser, 
 								 gboolean           use_appearance);
-gboolean          _gtk_recent_chooser_get_use_action_appearance (GtkRecentChooser  *recent_chooser);
+gboolean          _btk_recent_chooser_get_use_action_appearance (BtkRecentChooser  *recent_chooser);
 
 G_END_DECLS
 
-#endif /* ! __GTK_RECENT_CHOOSER_PRIVATE_H__ */
+#endif /* ! __BTK_RECENT_CHOOSER_PRIVATE_H__ */

@@ -1,4 +1,4 @@
-/* GdkPixbuf library - convert X drawable information to RGB
+/* BdkPixbuf library - convert X drawable information to RGB
  *
  * Copyright (C) 1999 Michael Zucchi
  *
@@ -25,16 +25,16 @@
 #include "config.h"
 #include <stdio.h>
 #include <string.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
+#include <bdk-pixbuf/bdk-pixbuf.h>
 
-#include "gdkcolor.h"
-#include "gdkimage.h"
-#include "gdkvisual.h"
-#include "gdkwindow.h"
-#include "gdkpixbuf.h"
-#include "gdkpixmap.h"
-#include "gdkinternals.h"
-#include "gdkalias.h"
+#include "bdkcolor.h"
+#include "bdkimage.h"
+#include "bdkvisual.h"
+#include "bdkwindow.h"
+#include "bdkpixbuf.h"
+#include "bdkpixmap.h"
+#include "bdkinternals.h"
+#include "bdkalias.h"
 
 /* Some convenient names
  */
@@ -70,7 +70,7 @@ static const guint32 mask_table[] = {
  * without using a colormap 
  */
 static void
-bitmap1 (GdkImage    *image,
+bitmap1 (BdkImage    *image,
          guchar      *pixels,
          int          rowstride,
          int          x1,
@@ -99,7 +99,7 @@ bitmap1 (GdkImage    *image,
            * we don't bother to canonicalize data to 1 or 0, just
            * leave the relevant bit in-place.
            */
-          data = srow[xx >> 3] & (image->byte_order == GDK_MSB_FIRST ?
+          data = srow[xx >> 3] & (image->byte_order == BDK_MSB_FIRST ?
                                   (0x80 >> (xx & 7)) :
                                   (1 << (xx & 7)));
 
@@ -126,7 +126,7 @@ bitmap1 (GdkImage    *image,
  * without using a colormap 
  */
 static void
-bitmap1a (GdkImage    *image,
+bitmap1a (BdkImage    *image,
           guchar      *pixels,
           int          rowstride,
           int          x1,
@@ -151,7 +151,7 @@ bitmap1a (GdkImage    *image,
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
-          data = srow[xx >> 3] & (image->byte_order == GDK_MSB_FIRST ?
+          data = srow[xx >> 3] & (image->byte_order == BDK_MSB_FIRST ?
                                   (0x80 >> (xx & 7)) :
                                   (1 << (xx & 7)));
 
@@ -180,14 +180,14 @@ bitmap1a (GdkImage    *image,
  * no alpha
  */
 static void
-rgb1 (GdkImage    *image,
+rgb1 (BdkImage    *image,
       guchar      *pixels,
       int          rowstride,
       int          x1,
       int          y1,
       int          x2,
       int          y2,
-      GdkColormap *colormap)
+      BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -210,7 +210,7 @@ rgb1 (GdkImage    *image,
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
-          data = srow[xx >> 3] & (image->byte_order == GDK_MSB_FIRST ?
+          data = srow[xx >> 3] & (image->byte_order == BDK_MSB_FIRST ?
                                   (0x80 >> (xx & 7)) :
                                   (1 << (xx & 7)));
 
@@ -228,14 +228,14 @@ rgb1 (GdkImage    *image,
  * with alpha
  */
 static void
-rgb1a (GdkImage    *image,
+rgb1a (BdkImage    *image,
        guchar      *pixels,
        int          rowstride,
        int          x1,
        int          y1,
        int          x2,
        int          y2,
-       GdkColormap *colormap)
+       BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -257,7 +257,7 @@ rgb1a (GdkImage    *image,
       for (xx = x1; xx < x2; xx ++)
 	{
           /* see comment in bitmap1() */
-          data = srow[xx >> 3] & (image->byte_order == GDK_MSB_FIRST ?
+          data = srow[xx >> 3] & (image->byte_order == BDK_MSB_FIRST ?
                                   (0x80 >> (xx & 7)) :
                                   (1 << (xx & 7)));
 
@@ -276,14 +276,14 @@ rgb1a (GdkImage    *image,
  * no alpha
  */
 static void
-rgb8 (GdkImage    *image,
+rgb8 (BdkImage    *image,
       guchar      *pixels,
       int          rowstride,
       int          x1,
       int          y1,
       int          x2,
       int          y2,
-      GdkColormap *colormap)
+      BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -320,14 +320,14 @@ rgb8 (GdkImage    *image,
  * with alpha
  */
 static void
-rgb8a (GdkImage    *image,
+rgb8a (BdkImage    *image,
        guchar      *pixels,
        int          rowstride,
        int          x1,
        int          y1,
        int          x2,
        int          y2,
-       GdkColormap *colormap)
+       BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -412,14 +412,14 @@ rgb8a (GdkImage    *image,
  * data in lsb format
  */
 static void
-rgb565lsb (GdkImage    *image,
+rgb565lsb (BdkImage    *image,
 	   guchar      *pixels,
 	   int          rowstride,
 	   int          x1,
 	   int          y1,
 	   int          x2,
 	   int          y2,
-	   GdkColormap *colormap)
+	   BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -456,14 +456,14 @@ rgb565lsb (GdkImage    *image,
  * data in msb format
  */
 static void
-rgb565msb (GdkImage    *image,
+rgb565msb (BdkImage    *image,
 	   guchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
            int          x2,
            int          y2,
-	   GdkColormap *colormap)
+	   BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -500,14 +500,14 @@ rgb565msb (GdkImage    *image,
  * data in lsb format
  */
 static void
-rgb565alsb (GdkImage    *image,
+rgb565alsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -544,14 +544,14 @@ rgb565alsb (GdkImage    *image,
  * data in msb format
  */
 static void
-rgb565amsb (GdkImage    *image,
+rgb565amsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -588,14 +588,14 @@ rgb565amsb (GdkImage    *image,
  * data in lsb format
  */
 static void
-rgb555lsb (GdkImage     *image,
+rgb555lsb (BdkImage     *image,
 	   guchar       *pixels,
 	   int           rowstride,
            int          x1,
            int          y1,
            int          x2,
            int          y2,
-	   GdkColormap  *colormap)
+	   BdkColormap  *colormap)
 {
   int xx, yy;
   int bpl;
@@ -632,14 +632,14 @@ rgb555lsb (GdkImage     *image,
  * data in msb format
  */
 static void
-rgb555msb (GdkImage    *image,
+rgb555msb (BdkImage    *image,
 	   guchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
            int          x2,
            int          y2,
-	   GdkColormap *colormap)
+	   BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -676,14 +676,14 @@ rgb555msb (GdkImage    *image,
  * data in lsb format
  */
 static void
-rgb555alsb (GdkImage    *image,
+rgb555alsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -720,14 +720,14 @@ rgb555alsb (GdkImage    *image,
  * data in msb format
  */
 static void
-rgb555amsb (GdkImage    *image,
+rgb555amsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -760,14 +760,14 @@ rgb555amsb (GdkImage    *image,
 
 
 static void
-rgb888alsb (GdkImage    *image,
+rgb888alsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -799,14 +799,14 @@ rgb888alsb (GdkImage    *image,
 }
 
 static void
-rgb888lsb (GdkImage    *image,
+rgb888lsb (BdkImage    *image,
 	   guchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
            int          x2,
            int          y2,
-	   GdkColormap *colormap)
+	   BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -835,14 +835,14 @@ rgb888lsb (GdkImage    *image,
 }
 
 static void
-rgb888amsb (GdkImage    *image,
+rgb888amsb (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
             int          x1,
             int          y1,
             int          x2,
             int          y2,
-	    GdkColormap *colormap)
+	    BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -874,14 +874,14 @@ rgb888amsb (GdkImage    *image,
 }
 
 static void
-rgb888msb (GdkImage    *image,
+rgb888msb (BdkImage    *image,
 	   guchar      *pixels,
 	   int          rowstride,
            int          x1,
            int          y1,
            int          x2,
            int          y2,
-	   GdkColormap *colormap)
+	   BdkColormap *colormap)
 {
   int xx, yy;
   int bpl;
@@ -915,25 +915,25 @@ rgb888msb (GdkImage    *image,
  * run quite slow
  */
 static void
-convert_real_slow (GdkImage    *image,
+convert_real_slow (BdkImage    *image,
 		   guchar      *pixels,
 		   int          rowstride,
                    int          x1,
                    int          y1,
                    int          x2,
                    int          y2,
-		   GdkColormap *cmap,
+		   BdkColormap *cmap,
 		   gboolean     alpha)
 {
   int xx, yy;
   guint8 *orow = pixels;
   guint8 *o;
   guint32 pixel;
-  GdkVisual *v;
+  BdkVisual *v;
   guint8 component;
   int i;
 
-  v = gdk_colormap_get_visual (cmap);
+  v = bdk_colormap_get_visual (cmap);
 
   if (image->depth != v->depth)
     {
@@ -953,19 +953,19 @@ convert_real_slow (GdkImage    *image,
       o = orow;
       for (xx = x1; xx < x2; xx++)
 	{
-	  pixel = gdk_image_get_pixel (image, xx, yy);
+	  pixel = bdk_image_get_pixel (image, xx, yy);
 	  switch (v->type)
 	    {
 				/* I assume this is right for static & greyscale's too? */
-	    case GDK_VISUAL_STATIC_GRAY:
-	    case GDK_VISUAL_GRAYSCALE:
-	    case GDK_VISUAL_STATIC_COLOR:
-	    case GDK_VISUAL_PSEUDO_COLOR:
+	    case BDK_VISUAL_STATIC_GRAY:
+	    case BDK_VISUAL_GRAYSCALE:
+	    case BDK_VISUAL_STATIC_COLOR:
+	    case BDK_VISUAL_PSEUDO_COLOR:
 	      *o++ = cmap->colors[pixel].red   >> 8; 
 	      *o++ = cmap->colors[pixel].green >> 8;
 	      *o++ = cmap->colors[pixel].blue  >> 8;
 	      break;
-	    case GDK_VISUAL_TRUE_COLOR:
+	    case BDK_VISUAL_TRUE_COLOR:
 				/* This is odd because it must sometimes shift left (otherwise
 				 * I'd just shift >> (*_shift - 8 + *_prec + <0-7>). This logic
 				 * should work for all bit sizes/shifts/etc.
@@ -983,7 +983,7 @@ convert_real_slow (GdkImage    *image,
 		component |= ((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> i;
 	      *o++ = component;
 	      break;
-	    case GDK_VISUAL_DIRECT_COLOR:
+	    case BDK_VISUAL_DIRECT_COLOR:
 	      *o++ = cmap->colors[((pixel & v->red_mask) << (32 - v->red_shift - v->red_prec)) >> 24].red >> 8;
 	      *o++ = cmap->colors[((pixel & v->green_mask) << (32 - v->green_shift - v->green_prec)) >> 24].green >> 8;
 	      *o++ = cmap->colors[((pixel & v->blue_mask) << (32 - v->blue_shift - v->blue_prec)) >> 24].blue >> 8;
@@ -996,14 +996,14 @@ convert_real_slow (GdkImage    *image,
     }
 }
 
-typedef void (* cfunc) (GdkImage    *image,
+typedef void (* cfunc) (BdkImage    *image,
                         guchar      *pixels,
                         int          rowstride,
                         int          x1,
                         int          y1,
                         int          x2,
                         int          y2,
-                        GdkColormap *cmap);
+                        BdkColormap *cmap);
 
 static const cfunc convert_map[] = {
   rgb1,rgb1,rgb1a,rgb1a,
@@ -1021,7 +1021,7 @@ static const cfunc convert_map[] = {
  * conversion function.
  */
 static void
-rgbconvert (GdkImage    *image,
+rgbconvert (BdkImage    *image,
 	    guchar      *pixels,
 	    int          rowstride,
 	    gboolean     alpha,
@@ -1029,11 +1029,11 @@ rgbconvert (GdkImage    *image,
             int          y,
             int          width,
             int          height,
-	    GdkColormap *cmap)
+	    BdkColormap *cmap)
 {
   int index;
   int bank;
-  GdkVisual *v;
+  BdkVisual *v;
 
   g_assert ((x + width) <= image->width);
   g_assert ((y + height) <= image->height);
@@ -1053,7 +1053,7 @@ rgbconvert (GdkImage    *image,
       return;
     }
   
-  v = gdk_colormap_get_visual (cmap);
+  v = bdk_colormap_get_visual (cmap);
 
   if (image->depth != v->depth)
     {
@@ -1064,7 +1064,7 @@ rgbconvert (GdkImage    *image,
     } 
  
   bank = 5; /* default fallback converter */
-  index = (image->byte_order == GDK_MSB_FIRST) | (alpha != 0) << 1;
+  index = (image->byte_order == BDK_MSB_FIRST) | (alpha != 0) << 1;
   
   d(printf("masks = %x:%x:%x\n", v->red_mask, v->green_mask, v->blue_mask));
   d(printf("image depth = %d, bits per pixel = %d\n", image->depth, image->bits_per_pixel));
@@ -1072,10 +1072,10 @@ rgbconvert (GdkImage    *image,
   switch (v->type)
     {
 				/* I assume this is right for static & greyscale's too? */
-    case GDK_VISUAL_STATIC_GRAY:
-    case GDK_VISUAL_GRAYSCALE:
-    case GDK_VISUAL_STATIC_COLOR:
-    case GDK_VISUAL_PSEUDO_COLOR:
+    case BDK_VISUAL_STATIC_GRAY:
+    case BDK_VISUAL_GRAYSCALE:
+    case BDK_VISUAL_STATIC_COLOR:
+    case BDK_VISUAL_PSEUDO_COLOR:
       switch (image->bits_per_pixel)
 	{
 	case 1:
@@ -1087,7 +1087,7 @@ rgbconvert (GdkImage    *image,
 	  break;
 	}
       break;
-    case GDK_VISUAL_TRUE_COLOR:
+    case BDK_VISUAL_TRUE_COLOR:
       switch (image->depth)
 	{
 	case 15:
@@ -1108,7 +1108,7 @@ rgbconvert (GdkImage    *image,
 	  break;
 	}
       break;
-    case GDK_VISUAL_DIRECT_COLOR:
+    case BDK_VISUAL_DIRECT_COLOR:
       /* always use the slow version */
       break;
     }
@@ -1135,7 +1135,7 @@ rgbconvert (GdkImage    *image,
 /* Exported functions */
 
 /**
- * gdk_pixbuf_get_from_drawable:
+ * bdk_pixbuf_get_from_drawable:
  * @dest: (allow-none): Destination pixbuf, or %NULL if a new pixbuf should be created.
  * @src: Source drawable.
  * @cmap: A colormap if @src doesn't have one set.
@@ -1143,23 +1143,23 @@ rgbconvert (GdkImage    *image,
  * @src_y: Source Y coordinate within drawable.
  * @dest_x: Destination X coordinate in pixbuf, or 0 if @dest is NULL.
  * @dest_y: Destination Y coordinate in pixbuf, or 0 if @dest is NULL.
- * @width: Width in pixels of region to get.
- * @height: Height in pixels of region to get.
+ * @width: Width in pixels of rebunnyion to get.
+ * @height: Height in pixels of rebunnyion to get.
  *
- * Transfers image data from a #GdkDrawable and converts it to an RGB(A)
- * representation inside a #GdkPixbuf. In other words, copies
+ * Transfers image data from a #BdkDrawable and converts it to an RGB(A)
+ * representation inside a #BdkPixbuf. In other words, copies
  * image data from a server-side drawable to a client-side RGB(A) buffer.
  * This allows you to efficiently read individual pixels on the client side.
  * 
- * If the drawable @src has no colormap (gdk_drawable_get_colormap()
+ * If the drawable @src has no colormap (bdk_drawable_get_colormap()
  * returns %NULL), then a suitable colormap must be specified.
- * Typically a #GdkWindow or a pixmap created by passing a #GdkWindow
- * to gdk_pixmap_new() will already have a colormap associated with
+ * Typically a #BdkWindow or a pixmap created by passing a #BdkWindow
+ * to bdk_pixmap_new() will already have a colormap associated with
  * it.  If the drawable has a colormap, the @cmap argument will be
  * ignored.  If the drawable is a bitmap (1 bit per pixel pixmap),
  * then a colormap is not required; pixels with a value of 1 are
  * assumed to be white, and pixels with a value of 0 are assumed to be
- * black. For taking screenshots, gdk_colormap_get_system() returns
+ * black. For taking screenshots, bdk_colormap_get_system() returns
  * the correct colormap to use.
  *
  * If the specified destination pixbuf @dest is %NULL, then this
@@ -1178,12 +1178,12 @@ rgbconvert (GdkImage    *image,
  *
  * If the specified drawable is a window, and the window is off the
  * screen, then there is no image data in the obscured/offscreen
- * regions to be placed in the pixbuf. The contents of portions of the
- * pixbuf corresponding to the offscreen region are undefined.
+ * rebunnyions to be placed in the pixbuf. The contents of portions of the
+ * pixbuf corresponding to the offscreen rebunnyion are undefined.
  *
  * If the window you're obtaining data from is partially obscured by
  * other windows, then the contents of the pixbuf areas corresponding
- * to the obscured regions are undefined.
+ * to the obscured rebunnyions are undefined.
  * 
  * If the target drawable is not mapped (typically because it's
  * iconified/minimized or not on the current workspace), then %NULL
@@ -1195,23 +1195,23 @@ rgbconvert (GdkImage    *image,
  * (In short, there are several ways this function can fail, and if it fails
  *  it returns %NULL; so check the return value.)
  *
- * This function calls gdk_drawable_get_image() internally and
- * converts the resulting image to a #GdkPixbuf, so the
- * documentation for gdk_drawable_get_image() may also be relevant.
+ * This function calls bdk_drawable_get_image() internally and
+ * converts the resulting image to a #BdkPixbuf, so the
+ * documentation for bdk_drawable_get_image() may also be relevant.
  * 
  * Return value: The same pixbuf as @dest if it was non-%NULL, or a newly-created
  * pixbuf with a reference count of 1 if no destination pixbuf was specified, or %NULL on error
  **/
-GdkPixbuf *
-gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
-			      GdkDrawable *src,
-			      GdkColormap *cmap,
+BdkPixbuf *
+bdk_pixbuf_get_from_drawable (BdkPixbuf   *dest,
+			      BdkDrawable *src,
+			      BdkColormap *cmap,
 			      int src_x,  int src_y,
 			      int dest_x, int dest_y,
 			      int width,  int height)
 {
   int src_width, src_height;
-  GdkImage *image;
+  BdkImage *image;
   int depth;
   int x0, y0;
   
@@ -1219,34 +1219,34 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
 
   g_return_val_if_fail (src != NULL, NULL);
 
-  if (GDK_IS_WINDOW (src))
+  if (BDK_IS_WINDOW (src))
     /* FIXME: this is not perfect, since is_viewable() only tests
-     * recursively up the Gdk parent window tree, but stops at
-     * foreign windows or Gdk toplevels.  I.e. if a window manager
+     * recursively up the Bdk parent window tree, but stops at
+     * foreign windows or Bdk toplevels.  I.e. if a window manager
      * unmapped one of its own windows, this won't work.
      */
-    g_return_val_if_fail (gdk_window_is_viewable (src), NULL);
+    g_return_val_if_fail (bdk_window_is_viewable (src), NULL);
 
   if (!dest)
     g_return_val_if_fail (dest_x == 0 && dest_y == 0, NULL);
   else
     {
-      g_return_val_if_fail (gdk_pixbuf_get_colorspace (dest) == GDK_COLORSPACE_RGB, NULL);
-      g_return_val_if_fail (gdk_pixbuf_get_n_channels (dest) == 3 ||
-                            gdk_pixbuf_get_n_channels (dest) == 4, NULL);
-      g_return_val_if_fail (gdk_pixbuf_get_bits_per_sample (dest) == 8, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_colorspace (dest) == BDK_COLORSPACE_RGB, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_n_channels (dest) == 3 ||
+                            bdk_pixbuf_get_n_channels (dest) == 4, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_bits_per_sample (dest) == 8, NULL);
     }
 
   if (cmap == NULL)
-    cmap = gdk_drawable_get_colormap (src);
+    cmap = bdk_drawable_get_colormap (src);
 
-  depth = gdk_drawable_get_depth (src);
+  depth = bdk_drawable_get_depth (src);
   
   if (depth != 1 && cmap == NULL)
     {
       g_warning ("%s: Source drawable has no colormap; either pass "
                  "in a colormap, or set the colormap on the drawable "
-                 "with gdk_drawable_set_colormap()", G_STRLOC);
+                 "with bdk_drawable_set_colormap()", G_STRLOC);
       return NULL;
     }
   
@@ -1260,9 +1260,9 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
  
   /* Coordinate sanity checks */
   
-  if (GDK_IS_PIXMAP (src))
+  if (BDK_IS_PIXMAP (src))
     {
-      gdk_drawable_get_size (src, &src_width, &src_height);
+      bdk_drawable_get_size (src, &src_width, &src_height);
       if (width < 0)
         width = src_width;
       if (height < 0)
@@ -1275,7 +1275,7 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
   /* Create the pixbuf if needed */
   if (!dest)
     {
-      dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, width, height);
+      dest = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, width, height);
       if (dest == NULL)
         return NULL;
     }
@@ -1283,27 +1283,27 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
   if (dest)
     {
       g_return_val_if_fail (dest_x >= 0 && dest_y >= 0, NULL);
-      g_return_val_if_fail (dest_x + width <= gdk_pixbuf_get_width (dest), NULL);
-      g_return_val_if_fail (dest_y + height <= gdk_pixbuf_get_height (dest), NULL);
+      g_return_val_if_fail (dest_x + width <= bdk_pixbuf_get_width (dest), NULL);
+      g_return_val_if_fail (dest_y + height <= bdk_pixbuf_get_height (dest), NULL);
     }
 
-  for (y0 = 0; y0 < height; y0 += GDK_SCRATCH_IMAGE_HEIGHT)
+  for (y0 = 0; y0 < height; y0 += BDK_SCRATCH_IMAGE_HEIGHT)
     {
-      gint height1 = MIN (height - y0, GDK_SCRATCH_IMAGE_HEIGHT);
-      for (x0 = 0; x0 < width; x0 += GDK_SCRATCH_IMAGE_WIDTH)
+      gint height1 = MIN (height - y0, BDK_SCRATCH_IMAGE_HEIGHT);
+      for (x0 = 0; x0 < width; x0 += BDK_SCRATCH_IMAGE_WIDTH)
 	{
 	  gint xs0, ys0;
 	  
-	  gint width1 = MIN (width - x0, GDK_SCRATCH_IMAGE_WIDTH);
+	  gint width1 = MIN (width - x0, BDK_SCRATCH_IMAGE_WIDTH);
 	  
-	  image = _gdk_image_get_scratch (gdk_drawable_get_screen (src), 
+	  image = _bdk_image_get_scratch (bdk_drawable_get_screen (src), 
 					  width1, height1, depth, &xs0, &ys0);
 
-	  gdk_drawable_copy_to_image (src, image,
+	  bdk_drawable_copy_to_image (src, image,
 				      src_x + x0, src_y + y0,
 				       xs0, ys0, width1, height1);
 
-	  gdk_pixbuf_get_from_image (dest, image, cmap,
+	  bdk_pixbuf_get_from_image (dest, image, cmap,
 				     xs0, ys0, dest_x + x0, dest_y + y0,
 				     width1, height1);
 	}
@@ -1313,26 +1313,26 @@ gdk_pixbuf_get_from_drawable (GdkPixbuf   *dest,
 }
         
 /**
- * gdk_pixbuf_get_from_image:
+ * bdk_pixbuf_get_from_image:
  * @dest: (allow-none): Destination pixbuf, or %NULL if a new pixbuf should be created.
- * @src: Source #GdkImage.
+ * @src: Source #BdkImage.
  * @cmap: (allow-none): A colormap, or %NULL to use the one for @src
  * @src_x: Source X coordinate within drawable.
  * @src_y: Source Y coordinate within drawable.
  * @dest_x: Destination X coordinate in pixbuf, or 0 if @dest is NULL.
  * @dest_y: Destination Y coordinate in pixbuf, or 0 if @dest is NULL.
- * @width: Width in pixels of region to get.
- * @height: Height in pixels of region to get.
+ * @width: Width in pixels of rebunnyion to get.
+ * @height: Height in pixels of rebunnyion to get.
  * 
- * Same as gdk_pixbuf_get_from_drawable() but gets the pixbuf from
+ * Same as bdk_pixbuf_get_from_drawable() but gets the pixbuf from
  * an image.
  * 
  * Return value: @dest, newly-created pixbuf if @dest was %NULL, %NULL on error
  **/
-GdkPixbuf*
-gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
-                           GdkImage    *src,
-                           GdkColormap *cmap,
+BdkPixbuf*
+bdk_pixbuf_get_from_image (BdkPixbuf   *dest,
+                           BdkImage    *src,
+                           BdkColormap *cmap,
                            int          src_x,
                            int          src_y,
                            int          dest_x,
@@ -1344,26 +1344,26 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
   
   /* General sanity checks */
 
-  g_return_val_if_fail (GDK_IS_IMAGE (src), NULL);
+  g_return_val_if_fail (BDK_IS_IMAGE (src), NULL);
 
   if (!dest)
     g_return_val_if_fail (dest_x == 0 && dest_y == 0, NULL);
   else
     {
-      g_return_val_if_fail (gdk_pixbuf_get_colorspace (dest) == GDK_COLORSPACE_RGB, NULL);
-      g_return_val_if_fail (gdk_pixbuf_get_n_channels (dest) == 3 ||
-                            gdk_pixbuf_get_n_channels (dest) == 4, NULL);
-      g_return_val_if_fail (gdk_pixbuf_get_bits_per_sample (dest) == 8, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_colorspace (dest) == BDK_COLORSPACE_RGB, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_n_channels (dest) == 3 ||
+                            bdk_pixbuf_get_n_channels (dest) == 4, NULL);
+      g_return_val_if_fail (bdk_pixbuf_get_bits_per_sample (dest) == 8, NULL);
     }
 
   if (cmap == NULL)
-    cmap = gdk_image_get_colormap (src);
+    cmap = bdk_image_get_colormap (src);
   
   if (src->depth != 1 && cmap == NULL)
     {
       g_warning ("%s: Source image has no colormap; either pass "
                  "in a colormap, or set the colormap on the image "
-                 "with gdk_image_set_colormap()", G_STRLOC);
+                 "with bdk_image_set_colormap()", G_STRLOC);
       return NULL;
     }
   
@@ -1383,26 +1383,26 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
   if (dest)
     {
       g_return_val_if_fail (dest_x >= 0 && dest_y >= 0, NULL);
-      g_return_val_if_fail (dest_x + width <= gdk_pixbuf_get_width (dest), NULL);
-      g_return_val_if_fail (dest_y + height <= gdk_pixbuf_get_height (dest), NULL);
+      g_return_val_if_fail (dest_x + width <= bdk_pixbuf_get_width (dest), NULL);
+      g_return_val_if_fail (dest_y + height <= bdk_pixbuf_get_height (dest), NULL);
     }
 
   /* Create the pixbuf if needed */
   if (!dest)
     {
-      dest = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, width, height);
+      dest = bdk_pixbuf_new (BDK_COLORSPACE_RGB, FALSE, 8, width, height);
       if (dest == NULL)
         return NULL;
     }
 
-  alpha = gdk_pixbuf_get_has_alpha (dest);
-  rowstride = gdk_pixbuf_get_rowstride (dest);
+  alpha = bdk_pixbuf_get_has_alpha (dest);
+  rowstride = bdk_pixbuf_get_rowstride (dest);
   bpp = alpha ? 4 : 3;
 
   /* we offset into the image data based on the position we are
    * retrieving from
    */
-  rgbconvert (src, gdk_pixbuf_get_pixels (dest) +
+  rgbconvert (src, bdk_pixbuf_get_pixels (dest) +
 	      (dest_y * rowstride) + (dest_x * bpp),
 	      rowstride,
 	      alpha,
@@ -1414,5 +1414,5 @@ gdk_pixbuf_get_from_image (GdkPixbuf   *dest,
   return dest;
 }
 
-#define __GDK_PIXBUF_DRAWABLE_C__
-#include "gdkaliasdef.c"
+#define __BDK_PIXBUF_DRAWABLE_C__
+#include "bdkaliasdef.c"

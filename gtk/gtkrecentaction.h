@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * Recent chooser action for GtkUIManager
+/* BTK - The GIMP Toolkit
+ * Recent chooser action for BtkUIManager
  *
  * Copyright (C) 2007, Emmanuele Bassi
  *
@@ -19,56 +19,56 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_RECENT_ACTION_H__
-#define __GTK_RECENT_ACTION_H__
+#ifndef __BTK_RECENT_ACTION_H__
+#define __BTK_RECENT_ACTION_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkaction.h>
-#include <gtk/gtkrecentmanager.h>
+#include <btk/btkaction.h>
+#include <btk/btkrecentmanager.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_RECENT_ACTION                  (gtk_recent_action_get_type ())
-#define GTK_RECENT_ACTION(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RECENT_ACTION, GtkRecentAction))
-#define GTK_IS_RECENT_ACTION(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RECENT_ACTION))
-#define GTK_RECENT_ACTION_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_RECENT_ACTION, GtkRecentActionClass))
-#define GTK_IS_RECENT_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_RECENT_ACTION))
-#define GTK_RECENT_ACTION_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_RECENT_ACTION, GtkRecentActionClass))
+#define BTK_TYPE_RECENT_ACTION                  (btk_recent_action_get_type ())
+#define BTK_RECENT_ACTION(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RECENT_ACTION, BtkRecentAction))
+#define BTK_IS_RECENT_ACTION(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RECENT_ACTION))
+#define BTK_RECENT_ACTION_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RECENT_ACTION, BtkRecentActionClass))
+#define BTK_IS_RECENT_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RECENT_ACTION))
+#define BTK_RECENT_ACTION_GET_CLASS(obj)        (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RECENT_ACTION, BtkRecentActionClass))
 
-typedef struct _GtkRecentAction         GtkRecentAction;
-typedef struct _GtkRecentActionPrivate  GtkRecentActionPrivate;
-typedef struct _GtkRecentActionClass    GtkRecentActionClass;
+typedef struct _BtkRecentAction         BtkRecentAction;
+typedef struct _BtkRecentActionPrivate  BtkRecentActionPrivate;
+typedef struct _BtkRecentActionClass    BtkRecentActionClass;
 
-struct _GtkRecentAction
+struct _BtkRecentAction
 {
-  GtkAction parent_instance;
+  BtkAction parent_instance;
 
   /*< private >*/
-  GtkRecentActionPrivate *GSEAL (priv);
+  BtkRecentActionPrivate *GSEAL (priv);
 };
 
-struct _GtkRecentActionClass
+struct _BtkRecentActionClass
 {
-  GtkActionClass parent_class;
+  BtkActionClass parent_class;
 };
 
-GType      gtk_recent_action_get_type         (void) G_GNUC_CONST;
-GtkAction *gtk_recent_action_new              (const gchar      *name,
+GType      btk_recent_action_get_type         (void) G_GNUC_CONST;
+BtkAction *btk_recent_action_new              (const gchar      *name,
                                                const gchar      *label,
                                                const gchar      *tooltip,
                                                const gchar      *stock_id);
-GtkAction *gtk_recent_action_new_for_manager  (const gchar      *name,
+BtkAction *btk_recent_action_new_for_manager  (const gchar      *name,
                                                const gchar      *label,
                                                const gchar      *tooltip,
                                                const gchar      *stock_id,
-                                               GtkRecentManager *manager);
-gboolean   gtk_recent_action_get_show_numbers (GtkRecentAction  *action);
-void       gtk_recent_action_set_show_numbers (GtkRecentAction  *action,
+                                               BtkRecentManager *manager);
+gboolean   btk_recent_action_get_show_numbers (BtkRecentAction  *action);
+void       btk_recent_action_set_show_numbers (BtkRecentAction  *action,
                                                gboolean          show_numbers);
 
 G_END_DECLS
 
-#endif /* __GTK_RECENT_ACTION_H__ */
+#endif /* __BTK_RECENT_ACTION_H__ */

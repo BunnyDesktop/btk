@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,20 +18,20 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <stdio.h>
 
-#include "gdktypes.h"
-#include "gdkprivate-x11.h"
-#include "gdkalias.h"
+#include "bdktypes.h"
+#include "bdkprivate-x11.h"
+#include "bdkalias.h"
 
-gboolean          _gdk_use_xshm = TRUE;  /* used as a cmd line arg */
-Display          *gdk_display = NULL;
-GdkAtom           _gdk_selection_property;
-gboolean          _gdk_synchronize = FALSE;
+gboolean          _bdk_use_xshm = TRUE;  /* used as a cmd line arg */
+Display          *bdk_display = NULL;
+BdkAtom           _bdk_selection_property;
+gboolean          _bdk_synchronize = FALSE;

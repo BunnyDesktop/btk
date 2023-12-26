@@ -1,12 +1,12 @@
 /*** BEGIN file-header ***/
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#ifndef __GDK_ENUM_TYPES_H__
-#define __GDK_ENUM_TYPES_H__
+#ifndef __BDK_ENUM_TYPES_H__
+#define __BDK_ENUM_TYPES_H__
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 /*** END file-header ***/
@@ -24,5 +24,5 @@ GType @enum_name@_get_type (void) G_GNUC_CONST;
 /*** BEGIN file-tail ***/
 G_END_DECLS
 
-#endif /* __GDK_ENUM_TYPES_H__ */
+#endif /* __BDK_ENUM_TYPES_H__ */
 /*** END file-tail ***/

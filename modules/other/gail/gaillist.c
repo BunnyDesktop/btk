@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Enabling Library
+/* BAIL - The BUNNY Accessibility Enabling Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,62 +19,62 @@
 
 #include "config.h"
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gtk/gtk.h>
-#include "gaillist.h"
-#include "gailcombo.h"
+#include <btk/btk.h>
+#include "baillist.h"
+#include "bailcombo.h"
 
-static void         gail_list_class_init            (GailListClass  *klass); 
+static void         bail_list_class_init            (BailListClass  *klass); 
 
-static void         gail_list_init                  (GailList       *list);
+static void         bail_list_init                  (BailList       *list);
 
-static void         gail_list_initialize            (AtkObject      *accessible,
+static void         bail_list_initialize            (BatkObject      *accessible,
                                                      gpointer        data);
 
-static gint         gail_list_get_index_in_parent   (AtkObject      *accessible);
+static gint         bail_list_get_index_in_parent   (BatkObject      *accessible);
 
-static void         atk_selection_interface_init    (AtkSelectionIface *iface);
-static gboolean     gail_list_add_selection         (AtkSelection   *selection,
+static void         batk_selection_interface_init    (BatkSelectionIface *iface);
+static gboolean     bail_list_add_selection         (BatkSelection   *selection,
                                                      gint           i);
-static gboolean     gail_list_clear_selection       (AtkSelection   *selection);
-static AtkObject*   gail_list_ref_selection         (AtkSelection   *selection,
+static gboolean     bail_list_clear_selection       (BatkSelection   *selection);
+static BatkObject*   bail_list_ref_selection         (BatkSelection   *selection,
                                                      gint           i);
-static gint         gail_list_get_selection_count   (AtkSelection   *selection);
-static gboolean     gail_list_is_child_selected     (AtkSelection   *selection,
+static gint         bail_list_get_selection_count   (BatkSelection   *selection);
+static gboolean     bail_list_is_child_selected     (BatkSelection   *selection,
                                                      gint           i);
-static gboolean     gail_list_remove_selection      (AtkSelection   *selection,
+static gboolean     bail_list_remove_selection      (BatkSelection   *selection,
                                                      gint           i);
 
 
-G_DEFINE_TYPE_WITH_CODE (GailList, gail_list, GAIL_TYPE_CONTAINER,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_SELECTION, atk_selection_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailList, bail_list, BAIL_TYPE_CONTAINER,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_SELECTION, batk_selection_interface_init))
 
 static void
-gail_list_class_init (GailListClass *klass)
+bail_list_class_init (BailListClass *klass)
 {
-  AtkObjectClass  *class = ATK_OBJECT_CLASS (klass);
+  BatkObjectClass  *class = BATK_OBJECT_CLASS (klass);
 
-  class->initialize = gail_list_initialize;
-  class->get_index_in_parent = gail_list_get_index_in_parent;
+  class->initialize = bail_list_initialize;
+  class->get_index_in_parent = bail_list_get_index_in_parent;
 }
 
 static void
-gail_list_init (GailList *list)
+bail_list_init (BailList *list)
 {
 }
 
 static void
-gail_list_initialize (AtkObject *accessible,
+bail_list_initialize (BatkObject *accessible,
                       gpointer  data)
 {
-  ATK_OBJECT_CLASS (gail_list_parent_class)->initialize (accessible, data);
+  BATK_OBJECT_CLASS (bail_list_parent_class)->initialize (accessible, data);
 
-  accessible->role = ATK_ROLE_LIST;
+  accessible->role = BATK_ROLE_LIST;
 }
 
 static gint
-gail_list_get_index_in_parent (AtkObject *accessible)
+bail_list_get_index_in_parent (BatkObject *accessible)
 {
   /*
    * If the parent widget is a combo box then the index is 0
@@ -82,21 +82,21 @@ gail_list_get_index_in_parent (AtkObject *accessible)
    */
   if (accessible->accessible_parent)
   {
-    if (GAIL_IS_COMBO (accessible->accessible_parent))
+    if (BAIL_IS_COMBO (accessible->accessible_parent))
       return 0;
   }
-  return ATK_OBJECT_CLASS (gail_list_parent_class)->get_index_in_parent (accessible);
+  return BATK_OBJECT_CLASS (bail_list_parent_class)->get_index_in_parent (accessible);
 }
 
 static void
-atk_selection_interface_init (AtkSelectionIface *iface)
+batk_selection_interface_init (BatkSelectionIface *iface)
 {
-  iface->add_selection = gail_list_add_selection;
-  iface->clear_selection = gail_list_clear_selection;
-  iface->ref_selection = gail_list_ref_selection;
-  iface->get_selection_count = gail_list_get_selection_count;
-  iface->is_child_selected = gail_list_is_child_selected;
-  iface->remove_selection = gail_list_remove_selection;
+  iface->add_selection = bail_list_add_selection;
+  iface->clear_selection = bail_list_clear_selection;
+  iface->ref_selection = bail_list_ref_selection;
+  iface->get_selection_count = bail_list_get_selection_count;
+  iface->is_child_selected = bail_list_is_child_selected;
+  iface->remove_selection = bail_list_remove_selection;
   /*
    * select_all_selection does not make sense for a combo box
    * so no implementation is provided.
@@ -104,62 +104,62 @@ atk_selection_interface_init (AtkSelectionIface *iface)
 }
 
 static gboolean
-gail_list_add_selection (AtkSelection   *selection,
+bail_list_add_selection (BatkSelection   *selection,
                          gint           i)
 {
-  GtkList *list;
-  GtkWidget *widget;
+  BtkList *list;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  list = GTK_LIST (widget);
+  list = BTK_LIST (widget);
 
-  gtk_list_select_item (list, i);
+  btk_list_select_item (list, i);
   return TRUE;
 }
 
 static gboolean 
-gail_list_clear_selection (AtkSelection *selection)
+bail_list_clear_selection (BatkSelection *selection)
 {
-  GtkList *list;
-  GtkWidget *widget;
+  BtkList *list;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  list = GTK_LIST (widget);
+  list = BTK_LIST (widget);
 
-  gtk_list_unselect_all (list);
+  btk_list_unselect_all (list);
   return TRUE;
 }
 
-static AtkObject*
-gail_list_ref_selection (AtkSelection *selection,
+static BatkObject*
+bail_list_ref_selection (BatkSelection *selection,
                          gint         i)
 {
-  GtkList *list;
+  BtkList *list;
   GList *g_list;
-  GtkWidget *item;
-  AtkObject *obj;
-  GtkWidget *widget;
+  BtkWidget *item;
+  BatkObject *obj;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return NULL;
 
-  list = GTK_LIST (widget);
+  list = BTK_LIST (widget);
 
   /*
    * A combo box can have only one selection.
@@ -172,28 +172,28 @@ gail_list_ref_selection (AtkSelection *selection,
   if (g_list == NULL)
     return NULL;
 
-  item = GTK_WIDGET (g_list->data);
+  item = BTK_WIDGET (g_list->data);
 
-  obj = gtk_widget_get_accessible (item);
+  obj = btk_widget_get_accessible (item);
   g_object_ref (obj);
   return obj;
 }
 
 static gint
-gail_list_get_selection_count (AtkSelection *selection)
+bail_list_get_selection_count (BatkSelection *selection)
 {
-  GtkList *list;
+  BtkList *list;
   GList *g_list;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return 0;
 
-  list = GTK_LIST (widget);
+  list = BTK_LIST (widget);
 
   g_list = list->selection;
 
@@ -201,30 +201,30 @@ gail_list_get_selection_count (AtkSelection *selection)
 }
 
 static gboolean
-gail_list_is_child_selected (AtkSelection *selection,
+bail_list_is_child_selected (BatkSelection *selection,
                              gint         i)
 {
-  GtkList *list;
+  BtkList *list;
   GList *g_list;
-  GtkWidget *item;
+  BtkWidget *item;
   gint j;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_ACCESSIBLE (selection)->widget;
+  widget = BTK_ACCESSIBLE (selection)->widget;
   if (widget == NULL)
     /*
      * State is defunct
      */
     return FALSE;
 
-  list = GTK_LIST (widget);
+  list = BTK_LIST (widget);
 
   g_list = list->selection;
 
   if (g_list == NULL)
     return FALSE;
 
-  item = GTK_WIDGET (g_list->data);
+  item = BTK_WIDGET (g_list->data);
 
   j = g_list_index (list->children, item);
 
@@ -232,11 +232,11 @@ gail_list_is_child_selected (AtkSelection *selection,
 }
 
 static gboolean
-gail_list_remove_selection (AtkSelection   *selection,
+bail_list_remove_selection (BatkSelection   *selection,
                              gint           i)
 {
-  if (atk_selection_is_child_selected (selection, i))
-    atk_selection_clear_selection (selection);
+  if (batk_selection_is_child_selected (selection, i))
+    batk_selection_clear_selection (selection);
 
   return TRUE;
 }

@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,58 +17,58 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_UTIL_H__
-#define __GAIL_UTIL_H__
+#ifndef __BAIL_UTIL_H__
+#define __BAIL_UTIL_H__
 
-#include <atk/atk.h>
+#include <batk/batk.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_UTIL                           (gail_util_get_type ())
-#define GAIL_UTIL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_UTIL, GailUtil))
-#define GAIL_UTIL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_UTIL, GailUtilClass))
-#define GAIL_IS_UTIL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_UTIL))
-#define GAIL_IS_UTIL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_UTIL))
-#define GAIL_UTIL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_UTIL, GailUtilClass))
+#define BAIL_TYPE_UTIL                           (bail_util_get_type ())
+#define BAIL_UTIL(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_UTIL, BailUtil))
+#define BAIL_UTIL_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_UTIL, BailUtilClass))
+#define BAIL_IS_UTIL(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_UTIL))
+#define BAIL_IS_UTIL_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_UTIL))
+#define BAIL_UTIL_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_UTIL, BailUtilClass))
 
-typedef struct _GailUtil                  GailUtil;
-typedef struct _GailUtilClass             GailUtilClass;
+typedef struct _BailUtil                  BailUtil;
+typedef struct _BailUtilClass             BailUtilClass;
   
-struct _GailUtil
+struct _BailUtil
 {
-  AtkUtil parent;
+  BatkUtil parent;
   GList *listener_list;
 };
 
-GType gail_util_get_type (void);
+GType bail_util_get_type (void);
 
-struct _GailUtilClass
+struct _BailUtilClass
 {
-  AtkUtilClass parent_class;
+  BatkUtilClass parent_class;
 };
 
-#define GAIL_TYPE_MISC                           (gail_misc_get_type ())
-#define GAIL_MISC(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_MISC, GailMisc))
-#define GAIL_MISC_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_MISC, GailMiscClass))
-#define GAIL_IS_MISC(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_MISC))
-#define GAIL_IS_MISC_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_MISC))
-#define GAIL_MISC_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_MISC, GailMiscClass))
+#define BAIL_TYPE_MISC                           (bail_misc_get_type ())
+#define BAIL_MISC(obj)                           (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_MISC, BailMisc))
+#define BAIL_MISC_CLASS(klass)                   (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_MISC, BailMiscClass))
+#define BAIL_IS_MISC(obj)                        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_MISC))
+#define BAIL_IS_MISC_CLASS(klass)                (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_MISC))
+#define BAIL_MISC_GET_CLASS(obj)                 (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_MISC, BailMiscClass))
 
-typedef struct _GailMisc                  GailMisc;
-typedef struct _GailMiscClass             GailMiscClass;
+typedef struct _BailMisc                  BailMisc;
+typedef struct _BailMiscClass             BailMiscClass;
   
-struct _GailMisc
+struct _BailMisc
 {
-  AtkMisc parent;
+  BatkMisc parent;
 };
 
-GType gail_misc_get_type (void);
+GType bail_misc_get_type (void);
 
-struct _GailMiscClass
+struct _BailMiscClass
 {
-  AtkMiscClass parent_class;
+  BatkMiscClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_UTIL_H__ */
+#endif /* __BAIL_UTIL_H__ */

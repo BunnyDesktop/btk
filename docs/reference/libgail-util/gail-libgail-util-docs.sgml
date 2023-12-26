@@ -6,16 +6,16 @@
 ]>
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
-    <title>GAIL Reference Manual</title>
+    <title>BAIL Reference Manual</title>
     <releaseinfo>
       Version &version;
       The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://library.gnome.org/devel/gail-libgail-util/unstable/">http://library.gnome.org/devel/gail-libgail-util/unstable/</ulink>.
+      <ulink role="online-location" url="http://library.bunny.org/devel/bail-libbail-util/unstable/">http://library.bunny.org/devel/bail-libbail-util/unstable/</ulink>.
     </releaseinfo>
   </bookinfo>
-  <chapter id="libgail-util-main">
-    <title>GAIL libgail-util Library</title>
-    <xi:include href="xml/gailtextutil.xml" />
-    <xi:include href="xml/gailmisc.xml" />
+  <chapter id="libbail-util-main">
+    <title>BAIL libbail-util Library</title>
+    <xi:include href="xml/bailtextutil.xml" />
+    <xi:include href="xml/bailmisc.xml" />
   </chapter>
 </book>

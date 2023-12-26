@@ -1,5 +1,5 @@
 /* updateiconcache.c
- * Copyright (C) 2004  Anders Carlsson <andersca@gnome.org>
+ * Copyright (C) 2004  Anders Carlsson <andersca@bunny.org>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -37,12 +37,12 @@
 #include <utime.h>
 #endif
 
-#include <glib.h>
-#include <glib/gstdio.h>
-#undef GDK_PIXBUF_DISABLE_DEPRECATED
-#include <gdk-pixbuf/gdk-pixdata.h>
-#include <glib/gi18n.h>
-#include "gtkiconcachevalidator.h"
+#include <bunnylib.h>
+#include <bunnylib/gstdio.h>
+#undef BDK_PIXBUF_DISABLE_DEPRECATED
+#include <bdk-pixbuf/bdk-pixdata.h>
+#include <bunnylib/gi18n.h>
+#include "btkiconcachevalidator.h"
 
 static gboolean force_update = FALSE;
 static gboolean ignore_theme_index = FALSE;
@@ -54,7 +54,7 @@ static gchar *var_name = "-";
 /* Quite ugly - if we just add the c file to the
  * list of sources in Makefile.am, libtool complains.
  */
-#include "gtkiconcachevalidator.c"
+#include "btkiconcachevalidator.c"
 
 #define CACHE_NAME "icon-theme.cache"
 
@@ -166,7 +166,7 @@ has_theme_index (const gchar *path)
 
 typedef struct 
 {
-  GdkPixdata pixdata;
+  BdkPixdata pixdata;
   gboolean has_pixdata;
   guint32 offset;
   guint size;
@@ -356,7 +356,7 @@ load_icon_data (const char *path)
 }
 
 /*
- * This function was copied from gtkfilesystemunix.c, it should
+ * This function was copied from btkfilesystemunix.c, it should
  * probably go to GLib
  */
 static void
@@ -474,7 +474,7 @@ maybe_cache_image_data (Image       *image,
   if (!index_only && !image->image_data && 
       (g_str_has_suffix (path, ".png") || g_str_has_suffix (path, ".xpm")))
     {
-      GdkPixbuf *pixbuf;
+      BdkPixbuf *pixbuf;
       ImageData *idata;
       gchar *path2;
 
@@ -513,11 +513,11 @@ maybe_cache_image_data (Image       *image,
 
       if (!idata->has_pixdata)
 	{
-	  pixbuf = gdk_pixbuf_new_from_file (path, NULL);
+	  pixbuf = bdk_pixbuf_new_from_file (path, NULL);
 	  
 	  if (pixbuf) 
 	    {
-	      gdk_pixdata_from_pixbuf (&idata->pixdata, pixbuf, FALSE);
+	      bdk_pixdata_from_pixbuf (&idata->pixdata, pixbuf, FALSE);
 	      idata->size = idata->pixdata.length + 8;
 	      idata->has_pixdata = TRUE;
 	    }
@@ -822,13 +822,13 @@ write_image_data (FILE *cache, ImageData *image_data, int offset)
   guint8 *s;
   guint len;
   gint i;
-  GdkPixdata *pixdata = &image_data->pixdata;
+  BdkPixdata *pixdata = &image_data->pixdata;
 
-  /* Type 0 is GdkPixdata */
+  /* Type 0 is BdkPixdata */
   if (!write_card32 (cache, 0))
     return FALSE;
 
-  s = gdk_pixdata_serialize (pixdata, &len);
+  s = bdk_pixdata_serialize (pixdata, &len);
 
   if (!write_card32 (cache, len))
     {
@@ -1432,7 +1432,7 @@ validate_file (const gchar *file)
   info.n_directories = 0;
   info.flags = CHECK_OFFSETS|CHECK_STRINGS|CHECK_PIXBUFS;
 
-  if (!_gtk_icon_cache_validate (&info)) 
+  if (!_btk_icon_cache_validate (&info)) 
     {
       g_mapped_file_unref (map);
       return FALSE;
@@ -1611,7 +1611,7 @@ opentmp:
 
   utime_buf.actime = path_stat.st_atime;
   utime_buf.modtime = cache_stat.st_mtime;
-#if GLIB_CHECK_VERSION (2, 17, 1)
+#if BUNNYLIB_CHECK_VERSION (2, 17, 1)
   g_utime (path, &utime_buf);
 #else
   utime (path, &utime_buf);
@@ -1707,7 +1707,7 @@ main (int argc, char **argv)
   setlocale (LC_ALL, "");
 
 #ifdef ENABLE_NLS
-  bindtextdomain (GETTEXT_PACKAGE, GTK_LOCALEDIR);
+  bindtextdomain (GETTEXT_PACKAGE, BTK_LOCALEDIR);
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif

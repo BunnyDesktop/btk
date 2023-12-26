@@ -1,9 +1,9 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  * Copyright (C) 2006 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
  * Includes code adapted from redmond95 by Owen Taylor, and
- * gtk-nativewin by Evan Martin
+ * btk-nativewin by Evan Martin
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -31,7 +31,7 @@
  */
 
 /* Include first, else we get redefinition warnings about STRICT */
-#include "pango/pangowin32.h"
+#include "bango/bangowin32.h"
 
 #include "msw_style.h"
 #include "xp_theme.h"
@@ -41,13 +41,13 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "gdk/gdk.h"
-#include "gtk/gtk.h"
+#include "bdk/bdk.h"
+#include "btk/btk.h"
 
 #ifdef BUILDING_STANDALONE
-#include "gdk/gdkwin32.h"
+#include "bdk/bdkwin32.h"
 #else
-#include "gdk/win32/gdkwin32.h"
+#include "bdk/win32/bdkwin32.h"
 #endif
 
 
@@ -56,10 +56,10 @@
 
 /* Default values, not normally used
  */
-static const GtkRequisition default_option_indicator_size = { 9, 8 };
-static const GtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 };
+static const BtkRequisition default_option_indicator_size = { 9, 8 };
+static const BtkBorder default_option_indicator_spacing = { 7, 5, 2, 2 };
 
-static GtkStyleClass *parent_class;
+static BtkStyleClass *parent_class;
 static HBRUSH g_dither_brush = NULL;
 
 static HPEN g_light_pen = NULL;
@@ -215,7 +215,7 @@ static const unsigned char radio_text_bits[] = {
 static struct
 {
   const unsigned char *bits;
-  cairo_surface_t *bmap;
+  bairo_surface_t *bmap;
 } parts[] = {
   { check_aa_bits, NULL           },
   { check_base_bits, NULL         },
@@ -234,46 +234,46 @@ static struct
 };
 
 static void
-_cairo_draw_line (cairo_t  *cr,
-                  GdkColor *color,
+_bairo_draw_line (bairo_t  *cr,
+                  BdkColor *color,
                   gint      x1,
                   gint      y1,
                   gint      x2,
                   gint      y2)
 {
-  cairo_save (cr);
+  bairo_save (cr);
 
-  gdk_cairo_set_source_color (cr, color);
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-  cairo_set_line_width (cr, 1.0);
+  bdk_bairo_set_source_color (cr, color);
+  bairo_set_line_cap (cr, BAIRO_LINE_CAP_SQUARE);
+  bairo_set_line_width (cr, 1.0);
 
-  cairo_move_to (cr, x1 + 0.5, y1 + 0.5);
-  cairo_line_to (cr, x2 + 0.5, y2 + 0.5);
-  cairo_stroke (cr);
+  bairo_move_to (cr, x1 + 0.5, y1 + 0.5);
+  bairo_line_to (cr, x2 + 0.5, y2 + 0.5);
+  bairo_stroke (cr);
 
-  cairo_restore (cr);
+  bairo_restore (cr);
 }
 
 static void
-_cairo_draw_rectangle (cairo_t *cr,
-                       GdkColor *color,
+_bairo_draw_rectangle (bairo_t *cr,
+                       BdkColor *color,
                        gboolean filled,
                        gint x,
                        gint y,
                        gint width,
                        gint height)
 {
-  gdk_cairo_set_source_color (cr, color);
+  bdk_bairo_set_source_color (cr, color);
 
   if (filled)
     {
-      cairo_rectangle (cr, x, y, width, height);
-      cairo_fill (cr);
+      bairo_rectangle (cr, x, y, width, height);
+      bairo_fill (cr);
     }
   else
     {
-      cairo_rectangle (cr, x + 0.5, y + 0.5, width, height);
-      cairo_stroke (cr);
+      bairo_rectangle (cr, x + 0.5, y + 0.5, width, height);
+      bairo_stroke (cr);
     }
 }
 
@@ -312,27 +312,27 @@ get_system_font (XpThemeClass klazz, XpThemeFont type, LOGFONTW *out_lf)
 }
 
 static char *
-sys_font_to_pango_font (XpThemeClass klazz, XpThemeFont type, char *buf,
+sys_font_to_bango_font (XpThemeClass klazz, XpThemeFont type, char *buf,
 			size_t bufsiz)
 {
   LOGFONTW lf;
 
   if (get_system_font (klazz, type, &lf))
     {
-      PangoFontDescription *desc = NULL;
+      BangoFontDescription *desc = NULL;
       int pt_size;
       const char *font;
 
-      desc = pango_win32_font_description_from_logfontw (&lf);
+      desc = bango_win32_font_description_from_logfontw (&lf);
       if (!desc)
 	return NULL;
 
-      font = pango_font_description_to_string (desc);
-      pt_size = pango_font_description_get_size (desc);
+      font = bango_font_description_to_string (desc);
+      pt_size = bango_font_description_get_size (desc);
 
       if (!(font && *font))
 	{
-	  pango_font_description_free (desc);
+	  bango_font_description_free (desc);
 	  return NULL;
 	}
 
@@ -360,7 +360,7 @@ sys_font_to_pango_font (XpThemeClass klazz, XpThemeFont type, char *buf,
 	}
 
       if (desc)
-	pango_font_description_free (desc);
+	bango_font_description_free (desc);
 
       return buf;
     }
@@ -407,7 +407,7 @@ get_windows_version ()
 }
 
 static void
-setup_menu_settings (GtkSettings *settings)
+setup_menu_settings (BtkSettings *settings)
 {
   int menu_delay;
   GObjectClass *klazz = G_OBJECT_GET_CLASS (G_OBJECT (settings));
@@ -419,22 +419,22 @@ setup_menu_settings (GtkSettings *settings)
 	  if (klazz)
 	    {
 	      if (g_object_class_find_property
-		  (klazz, "gtk-menu-bar-popup-delay"))
+		  (klazz, "btk-menu-bar-popup-delay"))
 		{
 		  g_object_set (settings,
-				"gtk-menu-bar-popup-delay", 0, NULL);
+				"btk-menu-bar-popup-delay", 0, NULL);
 		}
 	      if (g_object_class_find_property
-		  (klazz, "gtk-menu-popup-delay"))
+		  (klazz, "btk-menu-popup-delay"))
 		{
 		  g_object_set (settings,
-				"gtk-menu-popup-delay", menu_delay, NULL);
+				"btk-menu-popup-delay", menu_delay, NULL);
 		}
 	      if (g_object_class_find_property
-		  (klazz, "gtk-menu-popdown-delay"))
+		  (klazz, "btk-menu-popdown-delay"))
 		{
 		  g_object_set (settings,
-				"gtk-menu-popdown-delay", menu_delay, NULL);
+				"btk-menu-popdown-delay", menu_delay, NULL);
 		}
 	    }
 	}
@@ -444,58 +444,58 @@ setup_menu_settings (GtkSettings *settings)
 void
 msw_style_setup_system_settings (void)
 {
-  GtkSettings *settings;
+  BtkSettings *settings;
   int cursor_blink_time;
 
-  settings = gtk_settings_get_default ();
+  settings = btk_settings_get_default ();
   if (!settings)
     return;
 
   cursor_blink_time = GetCaretBlinkTime ();
-  g_object_set (settings, "gtk-cursor-blink", cursor_blink_time > 0, NULL);
+  g_object_set (settings, "btk-cursor-blink", cursor_blink_time > 0, NULL);
 
   if (cursor_blink_time > 0)
     {
-      g_object_set (settings, "gtk-cursor-blink-time",
+      g_object_set (settings, "btk-cursor-blink-time",
 		    2 * cursor_blink_time, NULL);
     }
 
-  g_object_set (settings, "gtk-double-click-distance",
+  g_object_set (settings, "btk-double-click-distance",
 		GetSystemMetrics (SM_CXDOUBLECLK), NULL);
-  g_object_set (settings, "gtk-double-click-time", GetDoubleClickTime (),
+  g_object_set (settings, "btk-double-click-time", GetDoubleClickTime (),
 		NULL);
-  g_object_set (settings, "gtk-dnd-drag-threshold",
+  g_object_set (settings, "btk-dnd-drag-threshold",
 		GetSystemMetrics (SM_CXDRAG), NULL);
 
   setup_menu_settings (settings);
 
   /*
-     http://developer.gnome.org/doc/API/2.0/gtk/GtkSettings.html
+     http://developer.bunny.org/doc/API/2.0/btk/BtkSettings.html
      http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/systemparametersinfo.asp
      http://msdn.microsoft.com/library/default.asp?url=/library/en-us/sysinfo/base/getsystemmetrics.asp */
 }
 
 static void
-setup_system_font (GtkStyle *style)
+setup_system_font (BtkStyle *style)
 {
   char buf[256], *font;		/* It's okay, lfFaceName is smaller than 32
 				   chars */
 
-  if ((font = sys_font_to_pango_font (XP_THEME_CLASS_TEXT,
+  if ((font = sys_font_to_bango_font (XP_THEME_CLASS_TEXT,
 				      XP_THEME_FONT_MESSAGE,
 				      buf, sizeof (buf))) != NULL)
     {
       if (style->font_desc)
 	{
-	  pango_font_description_free (style->font_desc);
+	  bango_font_description_free (style->font_desc);
 	}
 
-      style->font_desc = pango_font_description_from_string (font);
+      style->font_desc = bango_font_description_from_string (font);
     }
 }
 
 static void
-sys_color_to_gtk_color (XpThemeClass klazz, int id, GdkColor * pcolor)
+sys_color_to_btk_color (XpThemeClass klazz, int id, BdkColor * pcolor)
 {
   DWORD color;
 
@@ -525,55 +525,55 @@ setup_msw_rc_style (void)
   char buf[1024], font_buf[256], *font_ptr;
   char menu_bar_prelight_str[128];
 
-  GdkColor menu_color;
-  GdkColor menu_text_color;
-  GdkColor tooltip_back;
-  GdkColor tooltip_fore;
-  GdkColor btn_fore;
-  GdkColor btn_face;
-  GdkColor progress_back;
+  BdkColor menu_color;
+  BdkColor menu_text_color;
+  BdkColor tooltip_back;
+  BdkColor tooltip_fore;
+  BdkColor btn_fore;
+  BdkColor btn_face;
+  BdkColor progress_back;
 
-  GdkColor fg_prelight;
-  GdkColor bg_prelight;
-  GdkColor base_prelight;
-  GdkColor text_prelight;
+  BdkColor fg_prelight;
+  BdkColor bg_prelight;
+  BdkColor base_prelight;
+  BdkColor text_prelight;
 
   /* Prelight */
-  sys_color_to_gtk_color (get_windows_version () >= VISTA_VERSION ? XP_THEME_CLASS_MENU : XP_THEME_CLASS_TEXT,
+  sys_color_to_btk_color (get_windows_version () >= VISTA_VERSION ? XP_THEME_CLASS_MENU : XP_THEME_CLASS_TEXT,
 			  get_windows_version () >= VISTA_VERSION ? COLOR_MENUTEXT : COLOR_HIGHLIGHTTEXT,
 			  &fg_prelight);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT, &bg_prelight);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT, &bg_prelight);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
 			  &base_prelight);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
 			  &text_prelight);
 
-  sys_color_to_gtk_color (XP_THEME_CLASS_MENU, COLOR_MENUTEXT,
+  sys_color_to_btk_color (XP_THEME_CLASS_MENU, COLOR_MENUTEXT,
 			  &menu_text_color);
-  sys_color_to_gtk_color (XP_THEME_CLASS_MENU, COLOR_MENU, &menu_color);
+  sys_color_to_btk_color (XP_THEME_CLASS_MENU, COLOR_MENU, &menu_color);
 
   /* tooltips */
-  sys_color_to_gtk_color (XP_THEME_CLASS_TOOLTIP, COLOR_INFOTEXT,
+  sys_color_to_btk_color (XP_THEME_CLASS_TOOLTIP, COLOR_INFOTEXT,
 			  &tooltip_fore);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TOOLTIP, COLOR_INFOBK,
+  sys_color_to_btk_color (XP_THEME_CLASS_TOOLTIP, COLOR_INFOBK,
 			  &tooltip_back);
 
   /* text on push buttons. TODO: button shadows, backgrounds, and
      highlights */
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT, &btn_fore);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE, &btn_face);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT, &btn_fore);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE, &btn_face);
 
   /* progress bar background color */
-  sys_color_to_gtk_color (XP_THEME_CLASS_PROGRESS, COLOR_HIGHLIGHT,
+  sys_color_to_btk_color (XP_THEME_CLASS_PROGRESS, COLOR_HIGHLIGHT,
 			  &progress_back);
 
   /* Enable coloring for menus. */
   font_ptr =
-    sys_font_to_pango_font (XP_THEME_CLASS_MENU, XP_THEME_FONT_MENU,
+    sys_font_to_bango_font (XP_THEME_CLASS_MENU, XP_THEME_FONT_MENU,
 			    font_buf, sizeof (font_buf));
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-menu\" = \"msw-default\"\n" "{\n"
-	      "GtkMenuItem::toggle-spacing = 8\n"
+	      "BtkMenuItem::toggle-spacing = 8\n"
 	      "fg[PRELIGHT] = { %d, %d, %d }\n"
 	      "bg[PRELIGHT] = { %d, %d, %d }\n"
 	      "text[PRELIGHT] = { %d, %d, %d }\n"
@@ -581,8 +581,8 @@ setup_msw_rc_style (void)
 	      "fg[NORMAL] = { %d, %d, %d }\n"
 	      "bg[NORMAL] = { %d, %d, %d }\n" "%s = \"%s\"\n"
 	      "}widget_class \"*MenuItem*\" style \"msw-menu\"\n"
-	      "widget_class \"*GtkMenu\" style \"msw-menu\"\n"
-	      "widget_class \"*GtkMenuShell*\" style \"msw-menu\"\n",
+	      "widget_class \"*BtkMenu\" style \"msw-menu\"\n"
+	      "widget_class \"*BtkMenuShell*\" style \"msw-menu\"\n",
 	      fg_prelight.red, fg_prelight.green, fg_prelight.blue,
 	      bg_prelight.red, bg_prelight.green, bg_prelight.blue,
 	      text_prelight.red, text_prelight.green, text_prelight.blue,
@@ -591,7 +591,7 @@ setup_msw_rc_style (void)
 	      menu_text_color.blue, menu_color.red, menu_color.green,
 	      menu_color.blue, (font_ptr ? "font_name" : "#"),
 	      (font_ptr ? font_ptr : " font name should go here"));
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   if (xp_theme_is_active ())
     {
@@ -610,49 +610,49 @@ setup_msw_rc_style (void)
 	      "style \"msw-menu-bar\" = \"msw-menu\"\n"
 	      "{\n"
 	      "bg[NORMAL] = { %d, %d, %d }\n"
-	      "%s" "GtkMenuBar::shadow-type = %d\n"
+	      "%s" "BtkMenuBar::shadow-type = %d\n"
 	      /*
-	         FIXME: This should be enabled once gtk+ support
-	         GtkMenuBar::prelight-item style property.
+	         FIXME: This should be enabled once btk+ support
+	         BtkMenuBar::prelight-item style property.
 	       */
-	      /* "GtkMenuBar::prelight-item = 1\n" */
+	      /* "BtkMenuBar::prelight-item = 1\n" */
 	      "}widget_class \"*MenuBar*\" style \"msw-menu-bar\"\n",
 	      btn_face.red, btn_face.green, btn_face.blue,
 	      menu_bar_prelight_str, xp_theme_is_active ()? 0 : 2);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-toolbar\" = \"msw-default\"\n"
 	      "{\n"
-	      "GtkHandleBox::shadow-type = %s\n"
-	      "GtkToolbar::shadow-type = %s\n"
+	      "BtkHandleBox::shadow-type = %s\n"
+	      "BtkToolbar::shadow-type = %s\n"
 	      "}widget_class \"*HandleBox*\" style \"msw-toolbar\"\n",
 	      "etched-in", "etched-in");
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* enable tooltip fonts */
-  font_ptr = sys_font_to_pango_font (XP_THEME_CLASS_STATUS, XP_THEME_FONT_STATUS,
+  font_ptr = sys_font_to_bango_font (XP_THEME_CLASS_STATUS, XP_THEME_FONT_STATUS,
 				     font_buf, sizeof (font_buf));
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-tooltips-caption\" = \"msw-default\"\n"
 	      "{fg[NORMAL] = { %d, %d, %d }\n" "%s = \"%s\"\n"
-	      "}widget \"gtk-tooltips.GtkLabel\" style \"msw-tooltips-caption\"\n"
-	      "widget \"gtk-tooltip.GtkLabel\" style \"msw-tooltips-caption\"\n",
+	      "}widget \"btk-tooltips.BtkLabel\" style \"msw-tooltips-caption\"\n"
+	      "widget \"btk-tooltip.BtkLabel\" style \"msw-tooltips-caption\"\n",
 	      tooltip_fore.red, tooltip_fore.green, tooltip_fore.blue,
 	      (font_ptr ? "font_name" : "#"),
 	      (font_ptr ? font_ptr : " font name should go here"));
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-tooltips\" = \"msw-default\"\n"
 	      "{bg[NORMAL] = { %d, %d, %d }\n"
-	      "}widget \"gtk-tooltips*\" style \"msw-tooltips\"\n"
-	      "widget \"gtk-tooltip*\" style \"msw-tooltips\"\n",
+	      "}widget \"btk-tooltips*\" style \"msw-tooltips\"\n"
+	      "widget \"btk-tooltip*\" style \"msw-tooltips\"\n",
 	      tooltip_back.red, tooltip_back.green, tooltip_back.blue);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* enable font theming for status bars */
-  font_ptr = sys_font_to_pango_font (XP_THEME_CLASS_STATUS, XP_THEME_FONT_STATUS,
+  font_ptr = sys_font_to_bango_font (XP_THEME_CLASS_STATUS, XP_THEME_FONT_STATUS,
 				     font_buf, sizeof (font_buf));
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-status\" = \"msw-default\"\n" "{%s = \"%s\"\n"
@@ -661,7 +661,7 @@ setup_msw_rc_style (void)
 	      (font_ptr ? "font_name" : "#"),
 	      (font_ptr ? font_ptr : " font name should go here"),
 	      btn_face.red, btn_face.green, btn_face.blue);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* enable coloring for text on buttons
    * TODO: use GetThemeMetric for the border and outside border */
@@ -672,11 +672,11 @@ setup_msw_rc_style (void)
               "bg[PRELIGHT] = { %d, %d, %d }\n"
               "bg[INSENSITIVE] = { %d, %d, %d }\n"
               "fg[PRELIGHT] = { %d, %d, %d }\n"
-              "GtkButton::default-border = { 0, 0, 0, 0 }\n"
-              "GtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
-              "GtkButton::child-displacement-x = %d\n"
-              "GtkButton::child-displacement-y = %d\n"
-              "GtkWidget::focus-padding = %d\n"
+              "BtkButton::default-border = { 0, 0, 0, 0 }\n"
+              "BtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
+              "BtkButton::child-displacement-x = %d\n"
+              "BtkButton::child-displacement-y = %d\n"
+              "BtkWidget::focus-padding = %d\n"
               "}widget_class \"*Button*\" style \"msw-button\"\n",
               btn_face.red, btn_face.green, btn_face.blue,
               btn_face.red, btn_face.green, btn_face.blue,
@@ -685,7 +685,7 @@ setup_msw_rc_style (void)
               xp_theme_is_active ()? 0 : 1,
               xp_theme_is_active ()? 0 : 1,
               xp_theme_is_active ()? 1 : 2);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* enable coloring for progress bars */
   g_snprintf (buf, sizeof (buf),
@@ -697,48 +697,48 @@ setup_msw_rc_style (void)
 	      progress_back.green,
 	      progress_back.blue,
 	      btn_face.red, btn_face.green, btn_face.blue);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* scrollbar thumb width and height */
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-vscrollbar\" = \"msw-default\"\n"
-	      "{GtkRange::slider-width = %d\n"
-	      "GtkRange::stepper-size = %d\n"
-	      "GtkRange::stepper-spacing = 0\n"
-	      "GtkRange::trough_border = 0\n"
-	      "GtkScale::slider-length = %d\n"
-	      "GtkScrollbar::min-slider-length = 8\n"
+	      "{BtkRange::slider-width = %d\n"
+	      "BtkRange::stepper-size = %d\n"
+	      "BtkRange::stepper-spacing = 0\n"
+	      "BtkRange::trough_border = 0\n"
+	      "BtkScale::slider-length = %d\n"
+	      "BtkScrollbar::min-slider-length = 8\n"
 	      "}widget_class \"*VScrollbar*\" style \"msw-vscrollbar\"\n"
 	      "widget_class \"*VScale*\" style \"msw-vscrollbar\"\n",
 	      GetSystemMetrics (SM_CYVTHUMB),
 	      get_system_metric (XP_THEME_CLASS_SCROLLBAR, SM_CXVSCROLL), 11);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-hscrollbar\" = \"msw-default\"\n"
-	      "{GtkRange::slider-width = %d\n"
-	      "GtkRange::stepper-size = %d\n"
-	      "GtkRange::stepper-spacing = 0\n"
-	      "GtkRange::trough_border = 0\n"
-	      "GtkScale::slider-length = %d\n"
-	      "GtkScrollbar::min-slider-length = 8\n"
+	      "{BtkRange::slider-width = %d\n"
+	      "BtkRange::stepper-size = %d\n"
+	      "BtkRange::stepper-spacing = 0\n"
+	      "BtkRange::trough_border = 0\n"
+	      "BtkScale::slider-length = %d\n"
+	      "BtkScrollbar::min-slider-length = 8\n"
 	      "}widget_class \"*HScrollbar*\" style \"msw-hscrollbar\"\n"
 	      "widget_class \"*HScale*\" style \"msw-hscrollbar\"\n",
 	      GetSystemMetrics (SM_CXHTHUMB),
 	      get_system_metric (XP_THEME_CLASS_SCROLLBAR, SM_CYHSCROLL), 11);
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
-  gtk_rc_parse_string ("style \"msw-scrolled-window\" = \"msw-default\"\n"
-		       "{GtkScrolledWindow::scrollbars-within-bevel = 1}\n"
-		       "class \"GtkScrolledWindow\" style \"msw-scrolled-window\"\n");
+  btk_rc_parse_string ("style \"msw-scrolled-window\" = \"msw-default\"\n"
+		       "{BtkScrolledWindow::scrollbars-within-bevel = 1}\n"
+		       "class \"BtkScrolledWindow\" style \"msw-scrolled-window\"\n");
 
   /* radio/check button sizes */
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-checkbutton\" = \"msw-button\"\n"
-	      "{GtkCheckButton::indicator-size = 13\n"
+	      "{BtkCheckButton::indicator-size = 13\n"
 	      "}widget_class \"*CheckButton*\" style \"msw-checkbutton\"\n"
 	      "widget_class \"*RadioButton*\" style \"msw-checkbutton\"\n");
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* size of combo box toggle button */
   g_snprintf (buf, sizeof (buf),
@@ -746,27 +746,27 @@ setup_msw_rc_style (void)
 	      "{\n"
 	      "xthickness = 0\n"
 	      "ythickness = 0\n"
-	      "GtkButton::default-border = { 0, 0, 0, 0 }\n"
-	      "GtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
-	      "GtkButton::child-displacement-x = 0\n"
-	      "GtkButton::child-displacement-y = 0\n"
-	      "GtkWidget::focus-padding = 0\n"
-	      "GtkWidget::focus-line-width = 0\n"
+	      "BtkButton::default-border = { 0, 0, 0, 0 }\n"
+	      "BtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
+	      "BtkButton::child-displacement-x = 0\n"
+	      "BtkButton::child-displacement-y = 0\n"
+	      "BtkWidget::focus-padding = 0\n"
+	      "BtkWidget::focus-line-width = 0\n"
 	      "}\n"
 	      "widget_class \"*ComboBox*ToggleButton*\" style \"msw-combobox-button\"\n");
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   g_snprintf (buf, sizeof (buf),
 	      "style \"msw-combobox\" = \"msw-default\"\n"
 	      "{\n"
-	      "GtkComboBox::shadow-type = in\n"
+	      "BtkComboBox::shadow-type = in\n"
 	      "xthickness = %d\n"
 	      "ythickness = %d\n"
 	      "}\n"
-	      "class \"GtkComboBox\" style \"msw-combobox\"\n",
+	      "class \"BtkComboBox\" style \"msw-combobox\"\n",
         xp_theme_is_active()? 1 : GetSystemMetrics (SM_CXEDGE),
         xp_theme_is_active()? 1 : GetSystemMetrics (SM_CYEDGE));
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
   /* size of tree view header */
   g_snprintf (buf, sizeof (buf),
@@ -774,95 +774,95 @@ setup_msw_rc_style (void)
 	      "{\n"
 	      "xthickness = 0\n"
 	      "ythickness = 0\n"
-	      "GtkWidget::draw-border = {0, 0, 0, 0}\n"
-        "GtkButton::default-border = { 0, 0, 0, 0 }\n"
-	      "GtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
-	      "GtkButton::child-displacement-x = 0\n"
-	      "GtkButton::child-displacement-y = 0\n"
-	      "GtkWidget::focus-padding = 0\n"
-	      "GtkWidget::focus-line-width = 0\n"
+	      "BtkWidget::draw-border = {0, 0, 0, 0}\n"
+        "BtkButton::default-border = { 0, 0, 0, 0 }\n"
+	      "BtkButton::default-outside-border = { 0, 0, 0, 0 }\n"
+	      "BtkButton::child-displacement-x = 0\n"
+	      "BtkButton::child-displacement-y = 0\n"
+	      "BtkWidget::focus-padding = 0\n"
+	      "BtkWidget::focus-line-width = 0\n"
 	      "}\n"
 	      "widget_class \"*TreeView*Button*\" style \"msw-header-button\"\n");
-  gtk_rc_parse_string (buf);
+  btk_rc_parse_string (buf);
 
-  /* FIXME: This should be enabled once gtk+ support GtkNotebok::prelight-tab */
-  /* enable prelight tab of GtkNotebook */
+  /* FIXME: This should be enabled once btk+ support BtkNotebok::prelight-tab */
+  /* enable prelight tab of BtkNotebook */
   /*
      g_snprintf (buf, sizeof (buf),
      "style \"msw-notebook\" = \"msw-default\"\n"
-     "{GtkNotebook::prelight-tab=1\n"
+     "{BtkNotebook::prelight-tab=1\n"
      "}widget_class \"*Notebook*\" style \"msw-notebook\"\n");
-     gtk_rc_parse_string (buf);
+     btk_rc_parse_string (buf);
    */
 
-  /* FIXME: This should be enabled once gtk+ support GtkTreeView::full-row-focus */
+  /* FIXME: This should be enabled once btk+ support BtkTreeView::full-row-focus */
   /*
      g_snprintf (buf, sizeof (buf),
      "style \"msw-treeview\" = \"msw-default\"\n"
-     "{GtkTreeView::full-row-focus=0\n"
+     "{BtkTreeView::full-row-focus=0\n"
      "}widget_class \"*TreeView*\" style \"msw-treeview\"\n");
-     gtk_rc_parse_string (buf);
+     btk_rc_parse_string (buf);
    */
 }
 
 static void
-setup_system_styles (GtkStyle *style)
+setup_system_styles (BtkStyle *style)
 {
   int i;
 
   /* Default background */
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->bg[GTK_STATE_NORMAL]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
-			  &style->bg[GTK_STATE_SELECTED]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->bg[GTK_STATE_INSENSITIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->bg[GTK_STATE_ACTIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->bg[GTK_STATE_PRELIGHT]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->bg[BTK_STATE_NORMAL]);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
+			  &style->bg[BTK_STATE_SELECTED]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->bg[BTK_STATE_INSENSITIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->bg[BTK_STATE_ACTIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->bg[BTK_STATE_PRELIGHT]);
 
   /* Default base */
-  sys_color_to_gtk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOW,
-			  &style->base[GTK_STATE_NORMAL]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
-			  &style->base[GTK_STATE_SELECTED]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->base[GTK_STATE_INSENSITIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
-			  &style->base[GTK_STATE_ACTIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOW,
-			  &style->base[GTK_STATE_PRELIGHT]);
+  sys_color_to_btk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOW,
+			  &style->base[BTK_STATE_NORMAL]);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHT,
+			  &style->base[BTK_STATE_SELECTED]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->base[BTK_STATE_INSENSITIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNFACE,
+			  &style->base[BTK_STATE_ACTIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOW,
+			  &style->base[BTK_STATE_PRELIGHT]);
 
   /* Default text */
-  sys_color_to_gtk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
-			  &style->text[GTK_STATE_NORMAL]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
-			  &style->text[GTK_STATE_SELECTED]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_GRAYTEXT,
-			  &style->text[GTK_STATE_INSENSITIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
-			  &style->text[GTK_STATE_ACTIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
-			  &style->text[GTK_STATE_PRELIGHT]);
+  sys_color_to_btk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
+			  &style->text[BTK_STATE_NORMAL]);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
+			  &style->text[BTK_STATE_SELECTED]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_GRAYTEXT,
+			  &style->text[BTK_STATE_INSENSITIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
+			  &style->text[BTK_STATE_ACTIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
+			  &style->text[BTK_STATE_PRELIGHT]);
 
   /* Default foreground */
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
-			  &style->fg[GTK_STATE_NORMAL]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
-			  &style->fg[GTK_STATE_SELECTED]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_TEXT, COLOR_GRAYTEXT,
-			  &style->fg[GTK_STATE_INSENSITIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
-                          &style->fg[GTK_STATE_ACTIVE]);
-  sys_color_to_gtk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
-			  &style->fg[GTK_STATE_PRELIGHT]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
+			  &style->fg[BTK_STATE_NORMAL]);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_HIGHLIGHTTEXT,
+			  &style->fg[BTK_STATE_SELECTED]);
+  sys_color_to_btk_color (XP_THEME_CLASS_TEXT, COLOR_GRAYTEXT,
+			  &style->fg[BTK_STATE_INSENSITIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_BTNTEXT,
+                          &style->fg[BTK_STATE_ACTIVE]);
+  sys_color_to_btk_color (XP_THEME_CLASS_WINDOW, COLOR_WINDOWTEXT,
+			  &style->fg[BTK_STATE_PRELIGHT]);
 
   for (i = 0; i < 5; i++)
     {
-      sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_3DSHADOW,
+      sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_3DSHADOW,
 			      &style->dark[i]);
-      sys_color_to_gtk_color (XP_THEME_CLASS_BUTTON, COLOR_3DHILIGHT,
+      sys_color_to_btk_color (XP_THEME_CLASS_BUTTON, COLOR_3DHILIGHT,
 			      &style->light[i]);
 
       style->mid[i].red = (style->light[i].red + style->dark[i].red) / 2;
@@ -879,36 +879,36 @@ setup_system_styles (GtkStyle *style)
 }
 
 static gboolean
-sanitize_size (GdkWindow *window, gint *width, gint *height)
+sanitize_size (BdkWindow *window, gint *width, gint *height)
 {
   gboolean set_bg = FALSE;
 
   if ((*width == -1) && (*height == -1))
     {
-      set_bg = GDK_IS_WINDOW (window);
-      gdk_drawable_get_size (window, width, height);
+      set_bg = BDK_IS_WINDOW (window);
+      bdk_drawable_get_size (window, width, height);
     }
   else if (*width == -1)
     {
-      gdk_drawable_get_size (window, width, NULL);
+      bdk_drawable_get_size (window, width, NULL);
     }
   else if (*height == -1)
     {
-      gdk_drawable_get_size (window, NULL, height);
+      bdk_drawable_get_size (window, NULL, height);
     }
 
   return set_bg;
 }
 
 static XpThemeElement
-map_gtk_progress_bar_to_xp (GtkProgressBar *progress_bar, gboolean trough)
+map_btk_progress_bar_to_xp (BtkProgressBar *progress_bar, gboolean trough)
 {
   XpThemeElement ret;
 
-  switch (gtk_progress_bar_get_orientation (progress_bar))
+  switch (btk_progress_bar_get_orientation (progress_bar))
     {
-    case GTK_PROGRESS_LEFT_TO_RIGHT:
-    case GTK_PROGRESS_RIGHT_TO_LEFT:
+    case BTK_PROGRESS_LEFT_TO_RIGHT:
+    case BTK_PROGRESS_RIGHT_TO_LEFT:
       ret = trough
 	? XP_THEME_ELEMENT_PROGRESS_TROUGH_H
 	: XP_THEME_ELEMENT_PROGRESS_BAR_H;
@@ -925,16 +925,16 @@ map_gtk_progress_bar_to_xp (GtkProgressBar *progress_bar, gboolean trough)
 }
 
 static gboolean
-is_combo_box_child (GtkWidget *w)
+is_combo_box_child (BtkWidget *w)
 {
-  GtkWidget *tmp;
+  BtkWidget *tmp;
 
   if (w == NULL)
     return FALSE;
 
   for (tmp = w->parent; tmp; tmp = tmp->parent)
     {
-      if (GTK_IS_COMBO_BOX (tmp))
+      if (BTK_IS_COMBO_BOX (tmp))
 	return TRUE;
     }
 
@@ -942,37 +942,37 @@ is_combo_box_child (GtkWidget *w)
 }
 
 static void
-draw_part (GdkDrawable *drawable,
-           GdkColor *gc, GdkRectangle *area, gint x, gint y, Part part)
+draw_part (BdkDrawable *drawable,
+           BdkColor *gc, BdkRectangle *area, gint x, gint y, Part part)
 {
-  cairo_t *cr = gdk_cairo_create (drawable);
+  bairo_t *cr = bdk_bairo_create (drawable);
 
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
     }
 
   if (!parts[part].bmap)
     {
-      parts[part].bmap = cairo_image_surface_create_for_data ((unsigned char *)parts[part].bits,
-        					              CAIRO_FORMAT_A1,
+      parts[part].bmap = bairo_image_surface_create_for_data ((unsigned char *)parts[part].bits,
+        					              BAIRO_FORMAT_A1,
         					              PART_SIZE, PART_SIZE, 4);
     }
 
-  gdk_cairo_set_source_color (cr, gc);
-  cairo_mask_surface (cr, parts[part].bmap, x, y);
+  bdk_bairo_set_source_color (cr, gc);
+  bairo_mask_surface (cr, parts[part].bmap, x, y);
 
-  cairo_destroy(cr);
+  bairo_destroy(cr);
 }
 
 static void
-draw_check (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state,
-	    GtkShadowType shadow,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
+draw_check (BtkStyle *style,
+	    BdkWindow *window,
+	    BtkStateType state,
+	    BtkShadowType shadow,
+	    BdkRectangle *area,
+	    BtkWidget *widget,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
   x -= (1 + PART_SIZE - width) / 2;
@@ -980,7 +980,7 @@ draw_check (GtkStyle *style,
 
   if (DETAIL("check"))	/* Menu item */
     {
-      if (shadow == GTK_SHADOW_IN)
+      if (shadow == BTK_SHADOW_IN)
 	{
           draw_part (window, &style->black, area, x, y, CHECK_TEXT);
           draw_part (window, &style->dark[state], area, x, y, CHECK_AA);
@@ -991,11 +991,11 @@ draw_check (GtkStyle *style,
       XpThemeElement theme_elt = XP_THEME_ELEMENT_CHECKBOX;
       switch (shadow)
 	{
-	case GTK_SHADOW_ETCHED_IN:
+	case BTK_SHADOW_ETCHED_IN:
 	  theme_elt = XP_THEME_ELEMENT_INCONSISTENT_CHECKBOX;
 	  break;
 
-	case GTK_SHADOW_IN:
+	case BTK_SHADOW_IN:
 	  theme_elt = XP_THEME_ELEMENT_PRESSED_CHECKBOX;
 	  break;
 
@@ -1007,7 +1007,7 @@ draw_check (GtkStyle *style,
 			  style, x, y, width, height, state, area))
 	{
 	  if (DETAIL("cellcheck"))
-	    state = GTK_STATE_NORMAL;
+	    state = BTK_STATE_NORMAL;
 
           draw_part (window, &style->black, area, x, y, CHECK_BLACK);
           draw_part (window, &style->dark[state], area, x, y, CHECK_DARK);
@@ -1015,14 +1015,14 @@ draw_check (GtkStyle *style,
           draw_part (window, &style->light[state], area, x, y, CHECK_LIGHT);
           draw_part (window, &style->base[state], area, x, y, CHECK_BASE);
 
-	  if (shadow == GTK_SHADOW_IN)
+	  if (shadow == BTK_SHADOW_IN)
 	    {
               draw_part (window, &style->text[state], area, x,
 			 y, CHECK_TEXT);
               draw_part (window, &style->text_aa[state], area,
 			 x, y, CHECK_AA);
 	    }
-	  else if (shadow == GTK_SHADOW_ETCHED_IN)
+	  else if (shadow == BTK_SHADOW_ETCHED_IN)
 	    {
               draw_part (window, &style->text[state], area, x, y,
 			 CHECK_INCONSISTENT);
@@ -1034,51 +1034,51 @@ draw_check (GtkStyle *style,
 }
 
 static void
-draw_expander (GtkStyle        *style,
-               GdkWindow       *window,
-               GtkStateType     state,
-               GdkRectangle    *area,
-               GtkWidget       *widget,
+draw_expander (BtkStyle        *style,
+               BdkWindow       *window,
+               BtkStateType     state,
+               BdkRectangle    *area,
+               BtkWidget       *widget,
                const gchar     *detail,
                gint             x,
                gint             y,
-               GtkExpanderStyle expander_style)
+               BtkExpanderStyle expander_style)
 {
-  cairo_t *cr = gdk_cairo_create (window);
+  bairo_t *cr = bdk_bairo_create (window);
 
   gint expander_size;
   gint expander_semi_size;
   XpThemeElement xp_expander;
-  GtkOrientation orientation;
+  BtkOrientation orientation;
 
-  gtk_widget_style_get (widget, "expander_size", &expander_size, NULL);
+  btk_widget_style_get (widget, "expander_size", &expander_size, NULL);
 
   if (DETAIL("tool-palette-header"))
     {
       /* Expanders are usually drawn as little triangles and unfortunately
        * do not support rotated drawing modes. So a hack is applied (see
-       * gtk_tool_item_group_header_expose_event_cb for details) when
-       * drawing a GtkToolItemGroup's header for horizontal GtkToolShells,
+       * btk_tool_item_group_header_expose_event_cb for details) when
+       * drawing a BtkToolItemGroup's header for horizontal BtkToolShells,
        * forcing the triangle to point in the right direction. Except we
        * don't draw expanders as triangles on Windows. Usually, expanders
        * are represented as "+" and "-". It sucks for "+" to become "-" and
        * the inverse when we don't want to, so reverse the hack here. */
 
-      orientation = gtk_tool_shell_get_orientation (GTK_TOOL_SHELL (widget));
+      orientation = btk_tool_shell_get_orientation (BTK_TOOL_SHELL (widget));
 
-      if (orientation == GTK_ORIENTATION_HORIZONTAL)
-          expander_style = GTK_EXPANDER_EXPANDED - expander_style;
+      if (orientation == BTK_ORIENTATION_HORIZONTAL)
+          expander_style = BTK_EXPANDER_EXPANDED - expander_style;
     }
 
   switch (expander_style)
     {
-    case GTK_EXPANDER_COLLAPSED:
-    case GTK_EXPANDER_SEMI_COLLAPSED:
+    case BTK_EXPANDER_COLLAPSED:
+    case BTK_EXPANDER_SEMI_COLLAPSED:
       xp_expander = XP_THEME_ELEMENT_TREEVIEW_EXPANDER_CLOSED;
       break;
 
-    case GTK_EXPANDER_EXPANDED:
-    case GTK_EXPANDER_SEMI_EXPANDED:
+    case BTK_EXPANDER_EXPANDED:
+    case BTK_EXPANDER_SEMI_EXPANDED:
       xp_expander = XP_THEME_ELEMENT_TREEVIEW_EXPANDER_OPENED;
       break;
 
@@ -1094,9 +1094,9 @@ draw_expander (GtkStyle        *style,
 
   if (area)
     {
-      gdk_cairo_rectangle (cr, area);
-      cairo_clip (cr);
-      gdk_cairo_set_source_color (cr, &style->fg[state]);
+      bdk_bairo_rectangle (cr, area);
+      bairo_clip (cr);
+      bdk_bairo_set_source_color (cr, &style->fg[state]);
     }
 
   expander_semi_size = expander_size / 2;
@@ -1118,7 +1118,7 @@ draw_expander (GtkStyle        *style,
       InflateRect (&rect, -1, -1);
       FillRect (dc, &rect,
 		GetSysColorBrush (state ==
-				  GTK_STATE_INSENSITIVE ? COLOR_BTNFACE :
+				  BTK_STATE_INSENSITIVE ? COLOR_BTNFACE :
 				  COLOR_WINDOW));
 
       InflateRect (&rect, -1, -1);
@@ -1129,8 +1129,8 @@ draw_expander (GtkStyle        *style,
       MoveToEx (dc, rect.left, rect.top - 2 + expander_semi_size, NULL);
       LineTo (dc, rect.right, rect.top - 2 + expander_semi_size);
 
-      if (expander_style == GTK_EXPANDER_COLLAPSED ||
-	  expander_style == GTK_EXPANDER_SEMI_COLLAPSED)
+      if (expander_style == BTK_EXPANDER_COLLAPSED ||
+	  expander_style == BTK_EXPANDER_SEMI_COLLAPSED)
 	{
 	  MoveToEx (dc, rect.left - 2 + expander_semi_size, rect.top, NULL);
 	  LineTo (dc, rect.left - 2 + expander_semi_size, rect.bottom);
@@ -1141,16 +1141,16 @@ draw_expander (GtkStyle        *style,
       release_window_dc (&dc_info);
     }
 
-  cairo_destroy(cr);
+  bairo_destroy(cr);
 }
 
 static void
-draw_option (GtkStyle *style,
-	     GdkWindow *window,
-	     GtkStateType state,
-	     GtkShadowType shadow,
-	     GdkRectangle *area,
-	     GtkWidget *widget,
+draw_option (BtkStyle *style,
+	     BdkWindow *window,
+	     BtkStateType state,
+	     BtkShadowType shadow,
+	     BdkRectangle *area,
+	     BtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
   x -= (1 + PART_SIZE - width) / 2;
@@ -1158,14 +1158,14 @@ draw_option (GtkStyle *style,
 
   if (DETAIL("option"))	/* Menu item */
     {
-      if (shadow == GTK_SHADOW_IN)
+      if (shadow == BTK_SHADOW_IN)
 	{
           draw_part (window, &style->fg[state], area, x, y, RADIO_TEXT);
 	}
     }
   else
     {
-      if (xp_theme_draw (window, shadow == GTK_SHADOW_IN
+      if (xp_theme_draw (window, shadow == BTK_SHADOW_IN
 			 ? XP_THEME_ELEMENT_PRESSED_RADIO_BUTTON
 			 : XP_THEME_ELEMENT_RADIO_BUTTON,
 			 style, x, y, width, height, state, area))
@@ -1174,7 +1174,7 @@ draw_option (GtkStyle *style,
       else
 	{
 	  if (DETAIL("cellradio"))
-	    state = GTK_STATE_NORMAL;
+	    state = BTK_STATE_NORMAL;
 
           draw_part (window, &style->black, area, x, y, RADIO_BLACK);
           draw_part (window, &style->dark[state], area, x, y, RADIO_DARK);
@@ -1182,37 +1182,37 @@ draw_option (GtkStyle *style,
           draw_part (window, &style->light[state], area, x, y, RADIO_LIGHT);
           draw_part (window, &style->base[state], area, x, y, RADIO_BASE);
 
-	  if (shadow == GTK_SHADOW_IN)
+	  if (shadow == BTK_SHADOW_IN)
             draw_part (window, &style->text[state], area, x, y, RADIO_TEXT);
 	}
     }
 }
 
 static void
-draw_varrow (GdkWindow *window,
-             GdkColor *gc,
-	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
-	     GtkArrowType arrow_type, gint x, gint y, gint width, gint height)
+draw_varrow (BdkWindow *window,
+             BdkColor *gc,
+	     BtkShadowType shadow_type,
+	     BdkRectangle *area,
+	     BtkArrowType arrow_type, gint x, gint y, gint width, gint height)
 {
   gint steps, extra;
   gint y_start, y_increment;
   gint i;
-  cairo_t *cr;
+  bairo_t *cr;
   
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
 
   if (area)
     {
-       gdk_cairo_rectangle (cr, area);
-       cairo_clip (cr);
+       bdk_bairo_rectangle (cr, area);
+       bairo_clip (cr);
     }
 
   width = width + width % 2 - 1;	/* Force odd */
   steps = 1 + width / 2;
   extra = height - steps;
 
-  if (arrow_type == GTK_ARROW_DOWN)
+  if (arrow_type == BTK_ARROW_DOWN)
     {
       y_start = y;
       y_increment = 1;
@@ -1223,46 +1223,46 @@ draw_varrow (GdkWindow *window,
       y_increment = -1;
     }
 
-  gdk_cairo_set_source_color (cr, gc);
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-  cairo_set_line_width (cr, 1.0);
-  cairo_set_antialias (cr, CAIRO_ANTIALIAS_NONE);
+  bdk_bairo_set_source_color (cr, gc);
+  bairo_set_line_cap (cr, BAIRO_LINE_CAP_SQUARE);
+  bairo_set_line_width (cr, 1.0);
+  bairo_set_antialias (cr, BAIRO_ANTIALIAS_NONE);
 
-  cairo_move_to (cr, x + 0.5, y_start + extra * y_increment + 0.5);
-  cairo_line_to (cr, x + width - 1 + 0.5, y_start + extra * y_increment + 0.5);
-  cairo_line_to (cr, x + (height - 1 - extra) + 0.5, y_start + (height - 1) * y_increment + 0.5);
-  cairo_close_path (cr);
-  cairo_stroke_preserve (cr);
-  cairo_fill (cr);
+  bairo_move_to (cr, x + 0.5, y_start + extra * y_increment + 0.5);
+  bairo_line_to (cr, x + width - 1 + 0.5, y_start + extra * y_increment + 0.5);
+  bairo_line_to (cr, x + (height - 1 - extra) + 0.5, y_start + (height - 1) * y_increment + 0.5);
+  bairo_close_path (cr);
+  bairo_stroke_preserve (cr);
+  bairo_fill (cr);
 
-  cairo_destroy(cr);
+  bairo_destroy(cr);
 }
 
 static void
-draw_harrow (GdkWindow *window,
-             GdkColor *gc,
-	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
-	     GtkArrowType arrow_type, gint x, gint y, gint width, gint height)
+draw_harrow (BdkWindow *window,
+             BdkColor *gc,
+	     BtkShadowType shadow_type,
+	     BdkRectangle *area,
+	     BtkArrowType arrow_type, gint x, gint y, gint width, gint height)
 {
   gint steps, extra;
   gint x_start, x_increment;
   gint i;
-  cairo_t *cr;
+  bairo_t *cr;
   
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
 
   if (area)
     {
-       gdk_cairo_rectangle (cr, area);
-       cairo_clip (cr);
+       bdk_bairo_rectangle (cr, area);
+       bairo_clip (cr);
     }
 
   height = height + height % 2 - 1;	/* Force odd */
   steps = 1 + height / 2;
   extra = width - steps;
 
-  if (arrow_type == GTK_ARROW_RIGHT)
+  if (arrow_type == BTK_ARROW_RIGHT)
     {
       x_start = x;
       x_increment = 1;
@@ -1273,22 +1273,22 @@ draw_harrow (GdkWindow *window,
       x_increment = -1;
     }
 
-  gdk_cairo_set_source_color (cr, gc);
-  cairo_set_line_cap (cr, CAIRO_LINE_CAP_SQUARE);
-  cairo_set_line_width (cr, 1.0);
-  cairo_set_antialias (cr, CAIRO_ANTIALIAS_NONE);
+  bdk_bairo_set_source_color (cr, gc);
+  bairo_set_line_cap (cr, BAIRO_LINE_CAP_SQUARE);
+  bairo_set_line_width (cr, 1.0);
+  bairo_set_antialias (cr, BAIRO_ANTIALIAS_NONE);
 
-  cairo_move_to (cr, x_start + extra * x_increment + 0.5, y + 0.5);
-  cairo_line_to (cr, x_start + extra * x_increment + 0.5, y + height - 1 + 0.5);
-  cairo_line_to (cr, x_start + (width - 1) * x_increment + 0.5, y + height - (width - 1 - extra) - 1 + 0.5);
-  cairo_close_path (cr);
-  cairo_stroke_preserve (cr);
-  cairo_fill (cr);
+  bairo_move_to (cr, x_start + extra * x_increment + 0.5, y + 0.5);
+  bairo_line_to (cr, x_start + extra * x_increment + 0.5, y + height - 1 + 0.5);
+  bairo_line_to (cr, x_start + (width - 1) * x_increment + 0.5, y + height - (width - 1 - extra) - 1 + 0.5);
+  bairo_close_path (cr);
+  bairo_stroke_preserve (cr);
+  bairo_fill (cr);
 
-  cairo_destroy(cr);
+  bairo_destroy(cr);
 }
 
-/* This function makes up for some brokeness in gtkrange.c
+/* This function makes up for some brokeness in btkrange.c
  * where we never get the full arrow of the stepper button
  * and the type of button in a single drawing function.
  *
@@ -1296,8 +1296,8 @@ draw_harrow (GdkWindow *window,
  * to the point we don't have room for full-sized steppers.
  */
 static void
-reverse_engineer_stepper_box (GtkWidget *range,
-			      GtkArrowType arrow_type,
+reverse_engineer_stepper_box (BtkWidget *range,
+			      BtkArrowType arrow_type,
 			      gint *x, gint *y, gint *width, gint *height)
 {
   gint slider_width = 14, stepper_size = 14;
@@ -1306,12 +1306,12 @@ reverse_engineer_stepper_box (GtkWidget *range,
 
   if (range)
     {
-      gtk_widget_style_get (range,
+      btk_widget_style_get (range,
 			    "slider_width", &slider_width,
 			    "stepper_size", &stepper_size, NULL);
     }
 
-  if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
+  if (arrow_type == BTK_ARROW_UP || arrow_type == BTK_ARROW_DOWN)
     {
       box_width = slider_width;
       box_height = stepper_size;
@@ -1329,21 +1329,21 @@ reverse_engineer_stepper_box (GtkWidget *range,
 }
 
 static XpThemeElement
-to_xp_arrow (GtkArrowType arrow_type)
+to_xp_arrow (BtkArrowType arrow_type)
 {
   XpThemeElement xp_arrow;
 
   switch (arrow_type)
     {
-    case GTK_ARROW_UP:
+    case BTK_ARROW_UP:
       xp_arrow = XP_THEME_ELEMENT_ARROW_UP;
       break;
 
-    case GTK_ARROW_DOWN:
+    case BTK_ARROW_DOWN:
       xp_arrow = XP_THEME_ELEMENT_ARROW_DOWN;
       break;
 
-    case GTK_ARROW_LEFT:
+    case BTK_ARROW_LEFT:
       xp_arrow = XP_THEME_ELEMENT_ARROW_LEFT;
       break;
 
@@ -1356,14 +1356,14 @@ to_xp_arrow (GtkArrowType arrow_type)
 }
 
 static void
-draw_arrow (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state,
-	    GtkShadowType shadow,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
+draw_arrow (BtkStyle *style,
+	    BdkWindow *window,
+	    BtkStateType state,
+	    BtkShadowType shadow,
+	    BdkRectangle *area,
+	    BtkWidget *widget,
 	    const gchar *detail,
-	    GtkArrowType arrow_type,
+	    BtkArrowType arrow_type,
 	    gboolean fill, gint x, gint y, gint width, gint height)
 {
   const gchar *name;
@@ -1371,11 +1371,11 @@ draw_arrow (GtkStyle *style,
   RECT rect;
   XpDCInfo dc_info;
 
-  name = gtk_widget_get_name (widget);
+  name = btk_widget_get_name (widget);
 
   sanitize_size (window, &width, &height);
 
-  if (GTK_IS_ARROW (widget) && is_combo_box_child (widget) && xp_theme_is_active ())
+  if (BTK_IS_ARROW (widget) && is_combo_box_child (widget) && xp_theme_is_active ())
     return;
 
   if (DETAIL("spinbutton"))
@@ -1387,11 +1387,11 @@ draw_arrow (GtkStyle *style,
 
       width -= 2;
       --height;
-      if (arrow_type == GTK_ARROW_DOWN)
+      if (arrow_type == BTK_ARROW_DOWN)
 	++y;
       ++x;
 
-      if (state == GTK_STATE_ACTIVE)
+      if (state == BTK_STATE_ACTIVE)
 	{
 	  ++x;
 	  ++y;
@@ -1406,7 +1406,7 @@ draw_arrow (GtkStyle *style,
     {
       gboolean is_disabled = FALSE;
       UINT btn_type = 0;
-      GtkScrollbar *scrollbar = GTK_SCROLLBAR (widget);
+      BtkScrollbar *scrollbar = BTK_SCROLLBAR (widget);
 
       gint box_x = x;
       gint box_y = y;
@@ -1416,9 +1416,9 @@ draw_arrow (GtkStyle *style,
       reverse_engineer_stepper_box (widget, arrow_type,
 				    &box_x, &box_y, &box_width, &box_height);
 
-      if (gtk_range_get_adjustment(&scrollbar->range)->page_size >=
-          (gtk_range_get_adjustment(&scrollbar->range)->upper -
-           gtk_range_get_adjustment(&scrollbar->range)->lower))
+      if (btk_range_get_adjustment(&scrollbar->range)->page_size >=
+          (btk_range_get_adjustment(&scrollbar->range)->upper -
+           btk_range_get_adjustment(&scrollbar->range)->lower))
 	{
 	  is_disabled = TRUE;
 	}
@@ -1431,27 +1431,27 @@ draw_arrow (GtkStyle *style,
 	{
 	  switch (arrow_type)
 	    {
-	    case GTK_ARROW_UP:
+	    case BTK_ARROW_UP:
 	      btn_type = DFCS_SCROLLUP;
 	      break;
 
-	    case GTK_ARROW_DOWN:
+	    case BTK_ARROW_DOWN:
 	      btn_type = DFCS_SCROLLDOWN;
 	      break;
 
-	    case GTK_ARROW_LEFT:
+	    case BTK_ARROW_LEFT:
 	      btn_type = DFCS_SCROLLLEFT;
 	      break;
 
-	    case GTK_ARROW_RIGHT:
+	    case BTK_ARROW_RIGHT:
 	      btn_type = DFCS_SCROLLRIGHT;
 	      break;
 
-	    case GTK_ARROW_NONE:
+	    case BTK_ARROW_NONE:
 	      break;
 	    }
 
-	  if (state == GTK_STATE_INSENSITIVE)
+	  if (state == BTK_STATE_INSENSITIVE)
 	    {
 	      btn_type |= DFCS_INACTIVE;
 	    }
@@ -1464,7 +1464,7 @@ draw_arrow (GtkStyle *style,
 				  box_x, box_y, box_width, box_height, &rect);
 	      DrawFrameControl (dc, &rect, DFC_SCROLL,
 				btn_type | (shadow ==
-					    GTK_SHADOW_IN ? (DFCS_PUSHED |
+					    BTK_SHADOW_IN ? (DFCS_PUSHED |
 							     DFCS_FLAT) : 0));
 	      release_window_dc (&dc_info);
 	    }
@@ -1472,8 +1472,8 @@ draw_arrow (GtkStyle *style,
     }
   else
     {
-      /* draw the toolbar chevrons - waiting for GTK 2.4 */
-      if (name && !strcmp (name, "gtk-toolbar-arrow"))
+      /* draw the toolbar chevrons - waiting for BTK 2.4 */
+      if (name && !strcmp (name, "btk-toolbar-arrow"))
 	{
 	  if (xp_theme_draw
 	      (window, XP_THEME_ELEMENT_REBAR_CHEVRON, style, x, y,
@@ -1482,8 +1482,8 @@ draw_arrow (GtkStyle *style,
 	      return;
 	    }
 	}
-      /* probably a gtk combo box on a toolbar */
-      else if (0		/* widget->parent && GTK_IS_BUTTON
+      /* probably a btk combo box on a toolbar */
+      else if (0		/* widget->parent && BTK_IS_BUTTON
 				   (widget->parent) */ )
 	{
 	  if (xp_theme_draw
@@ -1495,7 +1495,7 @@ draw_arrow (GtkStyle *style,
 	    }
 	}
 
-      if (arrow_type == GTK_ARROW_UP || arrow_type == GTK_ARROW_DOWN)
+      if (arrow_type == BTK_ARROW_UP || arrow_type == BTK_ARROW_DOWN)
 	{
 	  x += (width - 7) / 2;
 	  y += (height - 5) / 2;
@@ -1515,22 +1515,22 @@ draw_arrow (GtkStyle *style,
 }
 
 static void
-option_menu_get_props (GtkWidget *widget,
-		       GtkRequisition *indicator_size,
-		       GtkBorder *indicator_spacing)
+option_menu_get_props (BtkWidget *widget,
+		       BtkRequisition *indicator_size,
+		       BtkBorder *indicator_spacing)
 {
-  GtkRequisition *tmp_size = NULL;
-  GtkBorder *tmp_spacing = NULL;
+  BtkRequisition *tmp_size = NULL;
+  BtkBorder *tmp_spacing = NULL;
 
   if (widget)
-    gtk_widget_style_get (widget,
+    btk_widget_style_get (widget,
 			  "indicator_size", &tmp_size,
 			  "indicator_spacing", &tmp_spacing, NULL);
 
   if (tmp_size)
     {
       *indicator_size = *tmp_size;
-      gtk_requisition_free (tmp_size);
+      btk_requisition_free (tmp_size);
     }
   else
     {
@@ -1540,7 +1540,7 @@ option_menu_get_props (GtkWidget *widget,
   if (tmp_spacing)
     {
       *indicator_spacing = *tmp_spacing;
-      gtk_border_free (tmp_spacing);
+      btk_border_free (tmp_spacing);
     }
   else
     {
@@ -1549,11 +1549,11 @@ option_menu_get_props (GtkWidget *widget,
 }
 
 static gboolean
-is_toolbar_child (GtkWidget *wid)
+is_toolbar_child (BtkWidget *wid)
 {
   while (wid)
     {
-      if (GTK_IS_TOOLBAR (wid) || GTK_IS_HANDLE_BOX (wid))
+      if (BTK_IS_TOOLBAR (wid) || BTK_IS_HANDLE_BOX (wid))
 	return TRUE;
       else
 	wid = wid->parent;
@@ -1563,11 +1563,11 @@ is_toolbar_child (GtkWidget *wid)
 }
 
 static gboolean
-is_menu_tool_button_child (GtkWidget *wid)
+is_menu_tool_button_child (BtkWidget *wid)
 {
   while (wid)
     {
-      if (GTK_IS_MENU_TOOL_BUTTON (wid))
+      if (BTK_IS_MENU_TOOL_BUTTON (wid))
 	return TRUE;
       else
 	wid = wid->parent;
@@ -1630,12 +1630,12 @@ draw_3d_border (HDC hdc, RECT *rc, gboolean sunken)
 }
 
 static gboolean
-draw_menu_item (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
+draw_menu_item (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
 		gint x, gint y, gint width, gint height,
-		GtkStateType state_type, GdkRectangle *area)
+		BtkStateType state_type, BdkRectangle *area)
 {
-  GtkWidget *parent;
-  GtkMenuShell *bar;
+  BtkWidget *parent;
+  BtkMenuShell *bar;
   HDC dc;
   RECT rect;
   XpDCInfo dc_info;
@@ -1646,14 +1646,14 @@ draw_menu_item (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
                              x, y, width, height, state_type, area));
     }
 
-  if ((parent = gtk_widget_get_parent (widget))
-      && GTK_IS_MENU_BAR (parent) && !xp_theme_is_active ())
+  if ((parent = btk_widget_get_parent (widget))
+      && BTK_IS_MENU_BAR (parent) && !xp_theme_is_active ())
     {
-      bar = GTK_MENU_SHELL (parent);
+      bar = BTK_MENU_SHELL (parent);
 
       dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
 
-      if (state_type == GTK_STATE_PRELIGHT)
+      if (state_type == BTK_STATE_PRELIGHT)
 	{
 	  draw_3d_border (dc, &rect, bar->active);
 	}
@@ -1693,9 +1693,9 @@ get_dither_brush (void)
 }
 
 static gboolean
-draw_tool_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
+draw_tool_button (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
 		  gint x, gint y, gint width, gint height,
-		  GtkStateType state_type, GdkRectangle *area)
+		  BtkStateType state_type, BdkRectangle *area)
 {
   HDC dc;
   RECT rect;
@@ -1708,22 +1708,22 @@ draw_tool_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 			     x, y, width, height, state_type, area));
     }
 
-  if (GTK_IS_TOGGLE_BUTTON (widget))
+  if (BTK_IS_TOGGLE_BUTTON (widget))
     {
-      if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+      if (btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget)))
 	{
 	  is_toggled = TRUE;
 	}
     }
 
-  if (state_type != GTK_STATE_PRELIGHT
-      && state_type != GTK_STATE_ACTIVE && !is_toggled)
+  if (state_type != BTK_STATE_PRELIGHT
+      && state_type != BTK_STATE_ACTIVE && !is_toggled)
     {
       return FALSE;
     }
 
   dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
-  if (state_type == GTK_STATE_PRELIGHT)
+  if (state_type == BTK_STATE_PRELIGHT)
     {
       if (is_toggled)
 	{
@@ -1732,7 +1732,7 @@ draw_tool_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 
       draw_3d_border (dc, &rect, is_toggled);
     }
-  else if (state_type == GTK_STATE_ACTIVE)
+  else if (state_type == BTK_STATE_ACTIVE)
     {
       if (is_toggled && !is_menu_tool_button_child (widget->parent))
 	{
@@ -1750,9 +1750,9 @@ draw_tool_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 }
 
 static void
-draw_push_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
+draw_push_button (BdkWindow *window, BtkWidget *widget, BtkStyle *style,
 		  gint x, gint y, gint width, gint height,
-		  GtkStateType state_type, gboolean is_default)
+		  BtkStateType state_type, gboolean is_default)
 {
   HDC dc;
   RECT rect;
@@ -1760,18 +1760,18 @@ draw_push_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 
   dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
 
-  if (GTK_IS_TOGGLE_BUTTON (widget))
+  if (BTK_IS_TOGGLE_BUTTON (widget))
     {
-      if (state_type == GTK_STATE_PRELIGHT &&
-	  gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (widget)))
+      if (state_type == BTK_STATE_PRELIGHT &&
+	  btk_toggle_button_get_active (BTK_TOGGLE_BUTTON (widget)))
 	{
-	  state_type = GTK_STATE_ACTIVE;
+	  state_type = BTK_STATE_ACTIVE;
 	}
     }
 
-  if (state_type == GTK_STATE_ACTIVE)
+  if (state_type == BTK_STATE_ACTIVE)
     {
-      if (GTK_IS_TOGGLE_BUTTON (widget))
+      if (BTK_IS_TOGGLE_BUTTON (widget))
 	{
 	  DrawEdge (dc, &rect, EDGE_SUNKEN, BF_RECT | BF_ADJUST);
 	  SetTextColor (dc, GetSysColor (COLOR_3DHILIGHT));
@@ -1789,7 +1789,7 @@ draw_push_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
     }
   else
     {
-      if (is_default || gtk_widget_has_focus (widget))
+      if (is_default || btk_widget_has_focus (widget))
 	{
 	  FrameRect (dc, &rect, GetSysColorBrush (COLOR_WINDOWFRAME));
 	  InflateRect (&rect, -1, -1);
@@ -1802,12 +1802,12 @@ draw_push_button (GdkWindow *window, GtkWidget *widget, GtkStyle *style,
 }
 
 static void
-draw_box (GtkStyle *style,
-	  GdkWindow *window,
-	  GtkStateType state_type,
-	  GtkShadowType shadow_type,
-	  GdkRectangle *area,
-	  GtkWidget *widget,
+draw_box (BtkStyle *style,
+	  BdkWindow *window,
+	  BtkStateType state_type,
+	  BtkShadowType shadow_type,
+	  BdkRectangle *area,
+	  BtkWidget *widget,
 	  const gchar *detail, gint x, gint y, gint width, gint height)
 {
   if (is_combo_box_child (widget) && DETAIL("button"))
@@ -1818,7 +1818,7 @@ draw_box (GtkStyle *style,
       HDC dc;
       int cx;
 
-      border = (GTK_TOGGLE_BUTTON (widget)->active ? DFCS_PUSHED | DFCS_FLAT : 0);
+      border = (BTK_TOGGLE_BUTTON (widget)->active ? DFCS_PUSHED | DFCS_FLAT : 0);
 
       dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
       DrawFrameControl (dc, &rect, DFC_SCROLL, DFCS_SCROLLDOWN | border);
@@ -1842,7 +1842,7 @@ draw_box (GtkStyle *style,
 
   if (DETAIL("button") || DETAIL("buttondefault"))
     {
-      if (GTK_IS_TREE_VIEW (widget->parent) || GTK_IS_CLIST (widget->parent))
+      if (BTK_IS_TREE_VIEW (widget->parent) || BTK_IS_CLIST (widget->parent))
       {
         if (xp_theme_draw
 	      (window, XP_THEME_ELEMENT_LIST_HEADER, style, x, y,
@@ -1859,14 +1859,14 @@ draw_box (GtkStyle *style,
 
 	      DrawFrameControl (dc, &rect, DFC_BUTTON, DFCS_BUTTONPUSH |
 				(state_type ==
-				 GTK_STATE_ACTIVE ? (DFCS_PUSHED | DFCS_FLAT)
+				 BTK_STATE_ACTIVE ? (DFCS_PUSHED | DFCS_FLAT)
 				 : 0));
 	      release_window_dc (&dc_info);
 	    }
 	}
       else if (is_toolbar_child (widget->parent)
-	       || (!GTK_IS_BUTTON (widget) ||
-		   (GTK_RELIEF_NONE == gtk_button_get_relief (GTK_BUTTON (widget)))))
+	       || (!BTK_IS_BUTTON (widget) ||
+		   (BTK_RELIEF_NONE == btk_button_get_relief (BTK_BUTTON (widget)))))
 	{
 	  if (draw_tool_button (window, widget, style, x, y,
 				width, height, state_type, area))
@@ -1876,7 +1876,7 @@ draw_box (GtkStyle *style,
 	}
       else
 	{
-	  gboolean is_default = gtk_widget_has_default (widget);
+	  gboolean is_default = btk_widget_has_default (widget);
 	  if (xp_theme_draw
 	      (window,
 	       is_default ? XP_THEME_ELEMENT_DEFAULT_BUTTON :
@@ -1917,22 +1917,22 @@ draw_box (GtkStyle *style,
 			      x, y, width, height, &rect);
 	  DrawEdge (dc, &rect,
 		    state_type ==
-		    GTK_STATE_ACTIVE ? EDGE_SUNKEN : EDGE_RAISED, BF_RECT);
+		    BTK_STATE_ACTIVE ? EDGE_SUNKEN : EDGE_RAISED, BF_RECT);
 	  release_window_dc (&dc_info);
 	}
       return;
     }
   else if (DETAIL("slider"))
     {
-      if (GTK_IS_SCROLLBAR (widget))
+      if (BTK_IS_SCROLLBAR (widget))
 	{
-	  GtkScrollbar *scrollbar = GTK_SCROLLBAR (widget);
-	  GtkOrientation orientation;
+	  BtkScrollbar *scrollbar = BTK_SCROLLBAR (widget);
+	  BtkOrientation orientation;
 	  gboolean is_vertical;
 
-          orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
+          orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));
 
-          if (orientation == GTK_ORIENTATION_VERTICAL)
+          if (orientation == BTK_ORIENTATION_VERTICAL)
             is_vertical = TRUE;
           else
             is_vertical = FALSE;
@@ -1966,9 +1966,9 @@ draw_box (GtkStyle *style,
 	    }
 	  else
 	    {
-              if (gtk_range_get_adjustment(&scrollbar->range)->page_size >=
-        	  (gtk_range_get_adjustment(&scrollbar->range)->upper -
-        	   gtk_range_get_adjustment(&scrollbar->range)->lower))
+              if (btk_range_get_adjustment(&scrollbar->range)->page_size >=
+        	  (btk_range_get_adjustment(&scrollbar->range)->upper -
+        	   btk_range_get_adjustment(&scrollbar->range)->lower))
 		{
 		  return;
 		}
@@ -1977,11 +1977,11 @@ draw_box (GtkStyle *style,
     }
   else if (DETAIL("bar"))
     {
-      if (widget && GTK_IS_PROGRESS_BAR (widget))
+      if (widget && BTK_IS_PROGRESS_BAR (widget))
 	{
-	  GtkProgressBar *progress_bar = GTK_PROGRESS_BAR (widget);
+	  BtkProgressBar *progress_bar = BTK_PROGRESS_BAR (widget);
 	  XpThemeElement xp_progress_bar =
-	    map_gtk_progress_bar_to_xp (progress_bar, FALSE);
+	    map_btk_progress_bar_to_xp (progress_bar, FALSE);
 
 	  if (xp_theme_draw (window, xp_progress_bar, style, x, y,
 			     width, height, state_type, area))
@@ -1989,12 +1989,12 @@ draw_box (GtkStyle *style,
 	      return;
 	    }
 
-	  shadow_type = GTK_SHADOW_NONE;
+	  shadow_type = BTK_SHADOW_NONE;
 	}
     }
   else if (DETAIL("menuitem"))
     {
-      shadow_type = GTK_SHADOW_NONE;
+      shadow_type = BTK_SHADOW_NONE;
       if (draw_menu_item (window, widget, style,
 			  x, y, width, height, state_type, area))
 	{
@@ -2003,11 +2003,11 @@ draw_box (GtkStyle *style,
     }
   else if (DETAIL("trough"))
     {
-      if (widget && GTK_IS_PROGRESS_BAR (widget))
+      if (widget && BTK_IS_PROGRESS_BAR (widget))
 	{
-	  GtkProgressBar *progress_bar = GTK_PROGRESS_BAR (widget);
+	  BtkProgressBar *progress_bar = BTK_PROGRESS_BAR (widget);
 	  XpThemeElement xp_progress_bar =
-	    map_gtk_progress_bar_to_xp (progress_bar, TRUE);
+	    map_btk_progress_bar_to_xp (progress_bar, TRUE);
 	  if (xp_theme_draw
 	      (window, xp_progress_bar, style, x, y, width, height,
 	       state_type, area))
@@ -2019,14 +2019,14 @@ draw_box (GtkStyle *style,
 	      /* Blank in classic Windows */
 	    }
 	}
-      else if (widget && GTK_IS_SCROLLBAR (widget))
+      else if (widget && BTK_IS_SCROLLBAR (widget))
 	{
-          GtkOrientation orientation;
+          BtkOrientation orientation;
 	  gboolean is_vertical;
 
-          orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
+          orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));
 
-          if (orientation == GTK_ORIENTATION_VERTICAL)
+          if (orientation == BTK_ORIENTATION_VERTICAL)
             is_vertical = TRUE;
           else
             is_vertical = FALSE;
@@ -2057,20 +2057,20 @@ draw_box (GtkStyle *style,
 	      return;
 	    }
 	}
-      else if (widget && GTK_IS_SCALE (widget))
+      else if (widget && BTK_IS_SCALE (widget))
 	{
-          GtkOrientation orientation;
+          BtkOrientation orientation;
 
-          orientation = gtk_orientable_get_orientation (GTK_ORIENTABLE (widget));
+          orientation = btk_orientable_get_orientation (BTK_ORIENTABLE (widget));
 
 	  if (!xp_theme_is_active ())
 	    {
 	      parent_class->draw_box (style, window, state_type,
-				      GTK_SHADOW_NONE, area,
+				      BTK_SHADOW_NONE, area,
 				      widget, detail, x, y, width, height);
 	    }
 
-	  if (orientation == GTK_ORIENTATION_VERTICAL)
+	  if (orientation == BTK_ORIENTATION_VERTICAL)
 	    {
 	      if (xp_theme_draw
 		  (window, XP_THEME_ELEMENT_SCALE_TROUGH_V,
@@ -2081,7 +2081,7 @@ draw_box (GtkStyle *style,
 		}
 
 	      parent_class->draw_box (style, window, state_type,
-				      GTK_SHADOW_ETCHED_IN,
+				      BTK_SHADOW_ETCHED_IN,
 				      area, NULL, NULL,
 				      (2 * x + width) / 2, y, 1, height);
 	    }
@@ -2096,7 +2096,7 @@ draw_box (GtkStyle *style,
 		}
 
 	      parent_class->draw_box (style, window, state_type,
-				      GTK_SHADOW_ETCHED_IN,
+				      BTK_SHADOW_ETCHED_IN,
 				      area, NULL, NULL, x,
 				      (2 * y + height) / 2, width, 1);
 	    }
@@ -2132,7 +2132,7 @@ draw_box (GtkStyle *style,
 	  return;
 	}
     }
-  else if (DETAIL("notebook") && GTK_IS_NOTEBOOK (widget))
+  else if (DETAIL("notebook") && BTK_IS_NOTEBOOK (widget))
     {
       if (xp_theme_draw (window, XP_THEME_ELEMENT_TAB_PANE, style,
 			 x, y, width, height, state_type, area))
@@ -2143,9 +2143,9 @@ draw_box (GtkStyle *style,
 
   else
     {
-      const gchar *name = gtk_widget_get_name (widget);
+      const gchar *name = btk_widget_get_name (widget);
 
-      if (name && !strcmp (name, "gtk-tooltips"))
+      if (name && !strcmp (name, "btk-tooltips"))
 	{
 	  if (xp_theme_draw
 	      (window, XP_THEME_ELEMENT_TOOLTIP, style, x, y, width,
@@ -2184,15 +2184,15 @@ draw_box (GtkStyle *style,
 
   if (DETAIL("optionmenu"))
     {
-      GtkRequisition indicator_size;
-      GtkBorder indicator_spacing;
+      BtkRequisition indicator_size;
+      BtkBorder indicator_spacing;
       gint vline_x;
 
       option_menu_get_props (widget, &indicator_size, &indicator_spacing);
 
       sanitize_size (window, &width, &height);
 
-      if (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+      if (btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL)
 	{
 	  vline_x =
 	    x + indicator_size.width + indicator_spacing.left +
@@ -2213,16 +2213,16 @@ draw_box (GtkStyle *style,
 }
 
 static void
-draw_tab (GtkStyle *style,
-	  GdkWindow *window,
-	  GtkStateType state,
-	  GtkShadowType shadow,
-	  GdkRectangle *area,
-	  GtkWidget *widget,
+draw_tab (BtkStyle *style,
+	  BdkWindow *window,
+	  BtkStateType state,
+	  BtkShadowType shadow,
+	  BdkRectangle *area,
+	  BtkWidget *widget,
 	  const gchar *detail, gint x, gint y, gint width, gint height)
 {
-  GtkRequisition indicator_size;
-  GtkBorder indicator_spacing;
+  BtkRequisition indicator_size;
+  BtkBorder indicator_spacing;
 
   gint arrow_height;
 
@@ -2247,7 +2247,7 @@ draw_tab (GtkStyle *style,
 
   y += (height - arrow_height) / 2;
 
-  draw_varrow (window, &style->black, shadow, area, GTK_ARROW_DOWN,
+  draw_varrow (window, &style->black, shadow, area, BTK_ARROW_DOWN,
 	       x, y, indicator_size.width, arrow_height);
 }
 
@@ -2364,7 +2364,7 @@ DrawTab (HDC hdc, const RECT R, gint32 aPosition, gboolean aSelected,
 }
 
 static void
-get_notebook_tab_position (GtkNotebook *notebook,
+get_notebook_tab_position (BtkNotebook *notebook,
                            gboolean *start,
                            gboolean *end)
 {
@@ -2375,25 +2375,25 @@ get_notebook_tab_position (GtkNotebook *notebook,
   *start = TRUE;
   *end = FALSE;
 
-  n_pages = gtk_notebook_get_n_pages (notebook);
+  n_pages = btk_notebook_get_n_pages (notebook);
   for (i = 0; i < n_pages; i++)
     {
-      GtkWidget *tab_child;
-      GtkWidget *tab_label;
+      BtkWidget *tab_child;
+      BtkWidget *tab_label;
       gboolean expand;
-      GtkPackType pack_type;
+      BtkPackType pack_type;
       gboolean is_selected;
 
-      tab_child = gtk_notebook_get_nth_page (notebook, i);
-      is_selected = gtk_notebook_get_current_page (notebook) == i;
+      tab_child = btk_notebook_get_nth_page (notebook, i);
+      is_selected = btk_notebook_get_current_page (notebook) == i;
 
       /* Skip invisible tabs */
-      tab_label = gtk_notebook_get_tab_label (notebook, tab_child);
-      if (!tab_label || !GTK_WIDGET_VISIBLE (tab_label))
+      tab_label = btk_notebook_get_tab_label (notebook, tab_child);
+      if (!tab_label || !BTK_WIDGET_VISIBLE (tab_label))
         continue;
 
       /* Mimics what the notebook does internally. */
-      if (tab_label && !gtk_widget_get_child_visible (tab_label))
+      if (tab_label && !btk_widget_get_child_visible (tab_label))
         {
           /* One child is hidden because scroll arrows are present.
            * So both corners are rounded. */
@@ -2402,11 +2402,11 @@ get_notebook_tab_position (GtkNotebook *notebook,
           return;
         }
 
-      gtk_notebook_query_tab_label_packing (notebook, tab_child, &expand,
+      btk_notebook_query_tab_label_packing (notebook, tab_child, &expand,
                                             NULL, /* don't need fill */
                                             &pack_type);
 
-      if (pack_type == GTK_PACK_START)
+      if (pack_type == BTK_PACK_START)
         {
           if (!found_start)
             {
@@ -2437,7 +2437,7 @@ get_notebook_tab_position (GtkNotebook *notebook,
             }
         }
 
-      if (pack_type == GTK_PACK_END)
+      if (pack_type == BTK_PACK_END)
         {
           if (!found_end)
             {
@@ -2470,26 +2470,26 @@ get_notebook_tab_position (GtkNotebook *notebook,
 }
 
 static gboolean
-draw_themed_tab_button (GtkStyle *style,
-			GdkWindow *window,
-			GtkStateType state_type,
-			GtkNotebook *notebook,
+draw_themed_tab_button (BtkStyle *style,
+			BdkWindow *window,
+			BtkStateType state_type,
+			BtkNotebook *notebook,
 			gint x,
 			gint y,
 			gint width,
 			gint height,
 			gint gap_side)
 {
-  GdkPixmap *pixmap = NULL;
-  GdkRectangle draw_rect, clip_rect;
-  cairo_t *cr;
+  BdkPixmap *pixmap = NULL;
+  BdkRectangle draw_rect, clip_rect;
+  bairo_t *cr;
   gboolean start, stop;
   XpThemeElement element;
   gint d_w, d_h;
 
   get_notebook_tab_position (notebook, &start, &stop);
 
-  if (state_type == GTK_STATE_NORMAL)
+  if (state_type == BTK_STATE_NORMAL)
     {
       if (start && stop)
         {
@@ -2526,27 +2526,27 @@ draw_themed_tab_button (GtkStyle *style,
   draw_rect.height = height;
 
   /* Perform adjustments required to have the theme perfectly aligned */
-  if (state_type == GTK_STATE_ACTIVE)
+  if (state_type == BTK_STATE_ACTIVE)
     {
       switch (gap_side)
         {
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           draw_rect.x += 2;
           draw_rect.width -= 2;
           draw_rect.height -= 1;
           break;
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           draw_rect.x += 2;
           draw_rect.width -= 2;
           draw_rect.y += 1;
           draw_rect.height -= 1;
           break;
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           draw_rect.y += 2;
           draw_rect.height -= 2;
           draw_rect.width -= 1;
           break;
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           draw_rect.y += 2;
           draw_rect.height -= 2;
           draw_rect.x += 1;
@@ -2558,20 +2558,20 @@ draw_themed_tab_button (GtkStyle *style,
     {
       switch (gap_side)
         {
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           draw_rect.height += 1;
           draw_rect.width += 2;
           break;
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           draw_rect.y -= 1;
           draw_rect.height += 1;
           draw_rect.width += 2;
           break;
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           draw_rect.width += 1;
           draw_rect.height += 2;
           break;
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           draw_rect.x -= 1;
           draw_rect.width += 1;
           draw_rect.height += 2;
@@ -2581,12 +2581,12 @@ draw_themed_tab_button (GtkStyle *style,
 
   clip_rect = draw_rect;
 
-  /* Take care of obvious case where the clipping is an empty region */
+  /* Take care of obvious case where the clipping is an empty rebunnyion */
   if (clip_rect.width <= 0 || clip_rect.height <= 0)
     return TRUE;
 
   /* Simple case: tabs on top are just drawn as is */
-  if (gap_side == GTK_POS_TOP)
+  if (gap_side == BTK_POS_TOP)
     {
        return xp_theme_draw (window, element, style,
 	                     draw_rect.x, draw_rect.y,
@@ -2596,7 +2596,7 @@ draw_themed_tab_button (GtkStyle *style,
 
   /* For other cases, we need to print the tab on a pixmap, and then rotate
    * it according to the gap side */
-  if (gap_side == GTK_POS_LEFT || gap_side == GTK_POS_RIGHT)
+  if (gap_side == BTK_POS_LEFT || gap_side == BTK_POS_RIGHT)
     {
       /* pixmap will have width/height inverted as we'll rotate +- PI / 2 */
       d_w = draw_rect.height;
@@ -2608,16 +2608,16 @@ draw_themed_tab_button (GtkStyle *style,
       d_h = draw_rect.height;
     }
 
-  pixmap = gdk_pixmap_new (window, d_w, d_h, -1);
+  pixmap = bdk_pixmap_new (window, d_w, d_h, -1);
 
   /* First copy the previously saved window background */
-  cr = gdk_cairo_create (pixmap);
+  cr = bdk_bairo_create (pixmap);
 
   /* pixmaps unfortunately don't handle the alpha channel. We then
    * paint it first in white, hoping the actual background is clear */
-  cairo_set_source_rgb (cr, 1, 1, 1);
-  cairo_paint (cr);
-  cairo_destroy (cr);
+  bairo_set_source_rgb (cr, 1, 1, 1);
+  bairo_paint (cr);
+  bairo_destroy (cr);
 
   if (!xp_theme_draw (pixmap, element, style, 0, 0, d_w, d_h, state_type, 0))
     {
@@ -2626,26 +2626,26 @@ draw_themed_tab_button (GtkStyle *style,
     }
 
   /* Now we have the pixmap, we need to flip/rotate it according to its
-   * final position. We'll do it using cairo on the dest window */
-  cr = gdk_cairo_create (window);
-  cairo_rectangle (cr, clip_rect.x, clip_rect.y,
+   * final position. We'll do it using bairo on the dest window */
+  cr = bdk_bairo_create (window);
+  bairo_rectangle (cr, clip_rect.x, clip_rect.y,
                    clip_rect.width, clip_rect.height);
-  cairo_clip (cr);
-  cairo_translate(cr, draw_rect.x + draw_rect.width * 0.5,
+  bairo_clip (cr);
+  bairo_translate(cr, draw_rect.x + draw_rect.width * 0.5,
                   draw_rect.y + draw_rect.height * 0.5);
 
-  if (gap_side == GTK_POS_LEFT || gap_side == GTK_POS_RIGHT) {
-    cairo_rotate (cr, G_PI/2.0);
+  if (gap_side == BTK_POS_LEFT || gap_side == BTK_POS_RIGHT) {
+    bairo_rotate (cr, G_PI/2.0);
   }
 
-  if (gap_side == GTK_POS_LEFT || gap_side == GTK_POS_BOTTOM) {
-    cairo_scale (cr, 1, -1);
+  if (gap_side == BTK_POS_LEFT || gap_side == BTK_POS_BOTTOM) {
+    bairo_scale (cr, 1, -1);
   }
 
-  cairo_translate(cr, -d_w * 0.5, -d_h * 0.5);
-  gdk_cairo_set_source_pixmap (cr, pixmap, 0, 0);
-  cairo_paint (cr);
-  cairo_destroy (cr);
+  bairo_translate(cr, -d_w * 0.5, -d_h * 0.5);
+  bdk_bairo_set_source_pixmap (cr, pixmap, 0, 0);
+  bairo_paint (cr);
+  bairo_destroy (cr);
 
   g_object_unref (pixmap);
 
@@ -2653,50 +2653,50 @@ draw_themed_tab_button (GtkStyle *style,
 }
 
 static gboolean
-draw_tab_button (GtkStyle *style,
-		 GdkWindow *window,
-		 GtkStateType state_type,
-		 GtkShadowType shadow_type,
-		 GdkRectangle *area,
-		 GtkWidget *widget,
+draw_tab_button (BtkStyle *style,
+		 BdkWindow *window,
+		 BtkStateType state_type,
+		 BtkShadowType shadow_type,
+		 BdkRectangle *area,
+		 BtkWidget *widget,
 		 const gchar *detail,
 		 gint x, gint y, gint width, gint height, gint gap_side)
 {
-  if (gap_side == GTK_POS_TOP || gap_side == GTK_POS_BOTTOM)
+  if (gap_side == BTK_POS_TOP || gap_side == BTK_POS_BOTTOM)
     {
       /* experimental tab-drawing code from mozilla */
       RECT rect;
       XpDCInfo dc_info;
       HDC dc;
       gint32 aPosition;
-	  cairo_t *cr;
+	  bairo_t *cr;
 
       dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
-	  cr = gdk_cairo_create (window);
+	  cr = bdk_bairo_create (window);
 
-      if (gap_side == GTK_POS_TOP)
+      if (gap_side == BTK_POS_TOP)
 	aPosition = BF_TOP;
-      else if (gap_side == GTK_POS_BOTTOM)
+      else if (gap_side == BTK_POS_BOTTOM)
 	aPosition = BF_BOTTOM;
-      else if (gap_side == GTK_POS_LEFT)
+      else if (gap_side == BTK_POS_LEFT)
 	aPosition = BF_LEFT;
       else
 	aPosition = BF_RIGHT;
 
-      if (state_type == GTK_STATE_PRELIGHT)
-	state_type = GTK_STATE_NORMAL;
+      if (state_type == BTK_STATE_PRELIGHT)
+	state_type = BTK_STATE_NORMAL;
       if (area)
         {
-           gdk_cairo_rectangle (cr, area);
-           cairo_clip (cr);
-           gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+           bdk_bairo_rectangle (cr, area);
+           bairo_clip (cr);
+           bdk_bairo_set_source_color (cr, &style->dark[state_type]);
         }
 
       DrawTab (dc, rect, aPosition,
-	       state_type != GTK_STATE_PRELIGHT,
-	       (gap_side != GTK_POS_LEFT), (gap_side != GTK_POS_RIGHT));
+	       state_type != BTK_STATE_PRELIGHT,
+	       (gap_side != BTK_POS_LEFT), (gap_side != BTK_POS_RIGHT));
 
-      cairo_destroy (cr);
+      bairo_destroy (cr);
 
       release_window_dc (&dc_info);
       return TRUE;
@@ -2706,25 +2706,25 @@ draw_tab_button (GtkStyle *style,
 }
 
 static void
-draw_extension (GtkStyle *style,
-		GdkWindow *window,
-		GtkStateType state_type,
-		GtkShadowType shadow_type,
-		GdkRectangle *area,
-		GtkWidget *widget,
+draw_extension (BtkStyle *style,
+		BdkWindow *window,
+		BtkStateType state_type,
+		BtkShadowType shadow_type,
+		BdkRectangle *area,
+		BtkWidget *widget,
 		const gchar *detail,
 		gint x, gint y,
-		gint width, gint height, GtkPositionType gap_side)
+		gint width, gint height, BtkPositionType gap_side)
 {
-  if (widget && GTK_IS_NOTEBOOK (widget) && DETAIL("tab"))
+  if (widget && BTK_IS_NOTEBOOK (widget) && DETAIL("tab"))
     {
-      GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+      BtkNotebook *notebook = BTK_NOTEBOOK (widget);
 
       /* draw_themed_tab_button and draw_tab_button expect to work with tab
        * position, instead of simply taking the "side of the gap" (gap_side).
        * The gap side, simply said, is the side of the tab that touches the notebook
        * frame and is always the exact opposite of the tab position... */
-      int tab_pos = gtk_notebook_get_tab_pos (notebook);
+      int tab_pos = btk_notebook_get_tab_pos (notebook);
 
       if (!draw_themed_tab_button (style, window, state_type,
 				   notebook, x, y,
@@ -2734,7 +2734,7 @@ draw_extension (GtkStyle *style,
 				shadow_type, area, widget,
 				detail, x, y, width, height, tab_pos))
 	    {
-	      /* GtkStyle expects the usual gap_side */
+	      /* BtkStyle expects the usual gap_side */
 	      parent_class->draw_extension (style, window, state_type,
 					    shadow_type, area, widget, detail,
 					    x, y, width, height,
@@ -2745,40 +2745,40 @@ draw_extension (GtkStyle *style,
 }
 
 static void
-draw_box_gap (GtkStyle *style,
-              GdkWindow *window,
-              GtkStateType state_type,
-	      GtkShadowType shadow_type,
-	      GdkRectangle *area,
-	      GtkWidget *widget,
+draw_box_gap (BtkStyle *style,
+              BdkWindow *window,
+              BtkStateType state_type,
+	      BtkShadowType shadow_type,
+	      BdkRectangle *area,
+	      BtkWidget *widget,
 	      const gchar *detail,
 	      gint x,
 	      gint y,
 	      gint width,
 	      gint height,
-	      GtkPositionType gap_side,
+	      BtkPositionType gap_side,
 	      gint gap_x,
 	      gint gap_width)
 {
-  if (GTK_IS_NOTEBOOK (widget) && DETAIL("notebook"))
+  if (BTK_IS_NOTEBOOK (widget) && DETAIL("notebook"))
     {
-      GtkNotebook *notebook = GTK_NOTEBOOK (widget);
+      BtkNotebook *notebook = BTK_NOTEBOOK (widget);
 
-      int side = gtk_notebook_get_tab_pos (notebook);
+      int side = btk_notebook_get_tab_pos (notebook);
       int x2 = x, y2 = y;
       int w2 = width + style->xthickness, h2 = height + style->ythickness;
 
       switch (side)
         {
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           y2 -= 1;
           break;
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           break;
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           x2 -= 1;
           break;
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           w2 += 1;
           break;
         }
@@ -2796,18 +2796,18 @@ draw_box_gap (GtkStyle *style,
 }
 
 static gboolean
-is_popup_window_child (GtkWidget *widget)
+is_popup_window_child (BtkWidget *widget)
 {
-  GtkWidget *top;
-  GtkWindowType type = -1;
+  BtkWidget *top;
+  BtkWindowType type = -1;
 
-  top = gtk_widget_get_toplevel (widget);
+  top = btk_widget_get_toplevel (widget);
 
-  if (top && GTK_IS_WINDOW (top))
+  if (top && BTK_IS_WINDOW (top))
     {
       g_object_get (top, "type", &type, NULL);
 
-      if (type == GTK_WINDOW_POPUP)
+      if (type == BTK_WINDOW_POPUP)
 	{			/* Hack for combo boxes */
 	  return TRUE;
 	}
@@ -2817,28 +2817,28 @@ is_popup_window_child (GtkWidget *widget)
 }
 
 static void
-draw_flat_box (GtkStyle *style, GdkWindow *window,
-	       GtkStateType state_type, GtkShadowType shadow_type,
-	       GdkRectangle *area, GtkWidget *widget,
+draw_flat_box (BtkStyle *style, BdkWindow *window,
+	       BtkStateType state_type, BtkShadowType shadow_type,
+	       BdkRectangle *area, BtkWidget *widget,
 	       const gchar *detail, gint x, gint y, gint width, gint height)
 {
   if (detail)
     {
-      if (state_type == GTK_STATE_SELECTED &&
+      if (state_type == BTK_STATE_SELECTED &&
 	  (!strncmp ("cell_even", detail, 9) || !strncmp ("cell_odd", detail, 8)))
 	{
-          GdkColor *gc = gtk_widget_has_focus (widget) ? &style->base[state_type] : &style->base[GTK_STATE_ACTIVE];
-          cairo_t *cr = gdk_cairo_create (window);
+          BdkColor *gc = btk_widget_has_focus (widget) ? &style->base[state_type] : &style->base[BTK_STATE_ACTIVE];
+          bairo_t *cr = bdk_bairo_create (window);
 
-          _cairo_draw_rectangle (cr, gc, TRUE, x, y, width, height);
+          _bairo_draw_rectangle (cr, gc, TRUE, x, y, width, height);
 
-		  cairo_destroy (cr);
+		  bairo_destroy (cr);
 
 	  return;
 	}
       else if (DETAIL("checkbutton"))
 	{
-	  if (state_type == GTK_STATE_PRELIGHT)
+	  if (state_type == BTK_STATE_PRELIGHT)
 	    {
 	      return;
 	    }
@@ -2850,14 +2850,14 @@ draw_flat_box (GtkStyle *style, GdkWindow *window,
 }
 
 static gboolean
-draw_menu_border (GdkWindow *win, GtkStyle *style,
+draw_menu_border (BdkWindow *win, BtkStyle *style,
 		  gint x, gint y, gint width, gint height)
 {
   RECT rect;
   XpDCInfo dc_info;
   HDC dc;
 
-  dc = get_window_dc (style, win, GTK_STATE_NORMAL, &dc_info, x, y, width, height, &rect);
+  dc = get_window_dc (style, win, BTK_STATE_NORMAL, &dc_info, x, y, width, height, &rect);
 
   if (!dc)
     return FALSE;
@@ -2877,12 +2877,12 @@ draw_menu_border (GdkWindow *win, GtkStyle *style,
 }
 
 static void
-draw_shadow (GtkStyle *style,
-	     GdkWindow *window,
-	     GtkStateType state_type,
-	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
-	     GtkWidget *widget,
+draw_shadow (BtkStyle *style,
+	     BdkWindow *window,
+	     BtkStateType state_type,
+	     BtkShadowType shadow_type,
+	     BdkRectangle *area,
+	     BtkWidget *widget,
 	     const gchar *detail, gint x, gint y, gint width, gint height)
 {
   gboolean is_handlebox;
@@ -2910,27 +2910,27 @@ draw_shadow (GtkStyle *style,
 	{
 	  switch (shadow_type)
 	    {
-	    case GTK_SHADOW_IN:
+	    case BTK_SHADOW_IN:
 	      draw_3d_border (dc, &rect, TRUE);
 	      break;
 
-	    case GTK_SHADOW_OUT:
+	    case BTK_SHADOW_OUT:
 	      draw_3d_border (dc, &rect, FALSE);
 	      break;
 
-	    case GTK_SHADOW_ETCHED_IN:
+	    case BTK_SHADOW_ETCHED_IN:
 	      draw_3d_border (dc, &rect, TRUE);
 	      InflateRect (&rect, -1, -1);
 	      draw_3d_border (dc, &rect, FALSE);
 	      break;
 
-	    case GTK_SHADOW_ETCHED_OUT:
+	    case BTK_SHADOW_ETCHED_OUT:
 	      draw_3d_border (dc, &rect, FALSE);
 	      InflateRect (&rect, -1, -1);
 	      draw_3d_border (dc, &rect, TRUE);
 	      break;
 
-	    case GTK_SHADOW_NONE:
+	    case BTK_SHADOW_NONE:
 	      break;
 	    }
 	}
@@ -2941,7 +2941,7 @@ draw_shadow (GtkStyle *style,
     }
   if (DETAIL("entry") || DETAIL("combobox"))
     {
-      if (shadow_type != GTK_SHADOW_IN)
+      if (shadow_type != BTK_SHADOW_IN)
 	return;
 
       if (!xp_theme_draw (window, XP_THEME_ELEMENT_EDIT_TEXT, style,
@@ -2987,7 +2987,7 @@ draw_shadow (GtkStyle *style,
 
   if (is_toolbar || is_handlebox)
     {
-      if (shadow_type == GTK_SHADOW_NONE)
+      if (shadow_type == BTK_SHADOW_NONE)
 	{
 	  return;
 	}
@@ -2998,13 +2998,13 @@ draw_shadow (GtkStyle *style,
 	  RECT rect;
 	  XpDCInfo dc_info;
 	  HGDIOBJ old_pen = NULL;
-	  GtkPositionType pos;
+	  BtkPositionType pos;
 
 	  sanitize_size (window, &width, &height);
 
 	  if (is_handlebox)
 	    {
-	      pos = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (widget));
+	      pos = btk_handle_box_get_handle_position (BTK_HANDLE_BOX (widget));
 	      /*
 	         If the handle box is at left side,
 	         we shouldn't draw its right border.
@@ -3012,64 +3012,64 @@ draw_shadow (GtkStyle *style,
 	       */
 	      switch (pos)
 		{
-		case GTK_POS_LEFT:
-		  pos = GTK_POS_RIGHT;
+		case BTK_POS_LEFT:
+		  pos = BTK_POS_RIGHT;
 		  break;
 
-		case GTK_POS_RIGHT:
-		  pos = GTK_POS_LEFT;
+		case BTK_POS_RIGHT:
+		  pos = BTK_POS_LEFT;
 		  break;
 
-		case GTK_POS_TOP:
-		  pos = GTK_POS_BOTTOM;
+		case BTK_POS_TOP:
+		  pos = BTK_POS_BOTTOM;
 		  break;
 
-		case GTK_POS_BOTTOM:
-		  pos = GTK_POS_TOP;
+		case BTK_POS_BOTTOM:
+		  pos = BTK_POS_TOP;
 		  break;
 		}
 	    }
 	  else
 	    {
-	      GtkWidget *parent = gtk_widget_get_parent (widget);
+	      BtkWidget *parent = btk_widget_get_parent (widget);
 
 	      /* Dirty hack for toolbars contained in handle boxes */
-	      if (GTK_IS_HANDLE_BOX (parent))
+	      if (BTK_IS_HANDLE_BOX (parent))
 		{
-		  pos = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (parent));
+		  pos = btk_handle_box_get_handle_position (BTK_HANDLE_BOX (parent));
 		}
 	      else
 		{
 		  /*
 		     Dirty hack:
-		     Make pos != all legal enum vaules of GtkPositionType.
+		     Make pos != all legal enum vaules of BtkPositionType.
 		     So every border will be draw.
 		   */
-		  pos = (GtkPositionType) - 1;
+		  pos = (BtkPositionType) - 1;
 		}
 	    }
 
 	  dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
 
-	  if (pos != GTK_POS_LEFT)
+	  if (pos != BTK_POS_LEFT)
 	    {
 	      old_pen = SelectObject (dc, get_light_pen ());
 	      MoveToEx (dc, rect.left, rect.top, NULL);
 	      LineTo (dc, rect.left, rect.bottom);
 	    }
-	  if (pos != GTK_POS_TOP)
+	  if (pos != BTK_POS_TOP)
 	    {
 	      old_pen = SelectObject (dc, get_light_pen ());
 	      MoveToEx (dc, rect.left, rect.top, NULL);
 	      LineTo (dc, rect.right, rect.top);
 	    }
-	  if (pos != GTK_POS_RIGHT)
+	  if (pos != BTK_POS_RIGHT)
 	    {
 	      old_pen = SelectObject (dc, get_dark_pen ());
 	      MoveToEx (dc, rect.right - 1, rect.top, NULL);
 	      LineTo (dc, rect.right - 1, rect.bottom);
 	    }
-	  if (pos != GTK_POS_BOTTOM)
+	  if (pos != BTK_POS_BOTTOM)
 	    {
 	      old_pen = SelectObject (dc, get_dark_pen ());
 	      MoveToEx (dc, rect.left, rect.bottom - 1, NULL);
@@ -3093,16 +3093,16 @@ draw_shadow (GtkStyle *style,
 }
 
 static void
-draw_hline (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state_type,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
+draw_hline (BtkStyle *style,
+	    BdkWindow *window,
+	    BtkStateType state_type,
+	    BdkRectangle *area,
+	    BtkWidget *widget,
 	    const gchar *detail, gint x1, gint x2, gint y)
 {
-  cairo_t *cr;
+  bairo_t *cr;
   
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
 
   if (xp_theme_is_active () && DETAIL("menuitem"))
     {
@@ -3129,11 +3129,11 @@ draw_hline (GtkStyle *style,
 	{
 	  if (area)
 	    {
-              gdk_cairo_rectangle (cr, area);
-              cairo_clip (cr);
+              bdk_bairo_rectangle (cr, area);
+              bairo_clip (cr);
 	    }
 
-          _cairo_draw_line (cr, &style->dark[state_type], x1, y, x2, y);
+          _bairo_draw_line (cr, &style->dark[state_type], x1, y, x2, y);
 
 	}
     }
@@ -3143,13 +3143,13 @@ draw_hline (GtkStyle *style,
 	{
 	  if (area)
 	    {
-              gdk_cairo_rectangle (cr, area);
-              cairo_clip (cr);
+              bdk_bairo_rectangle (cr, area);
+              bairo_clip (cr);
 	    }
 
-          _cairo_draw_line (cr, &style->dark[state_type], x1, y, x2, y);
+          _bairo_draw_line (cr, &style->dark[state_type], x1, y, x2, y);
 	  ++y;
-          _cairo_draw_line (cr, &style->light[state_type], x1, y, x2, y);
+          _bairo_draw_line (cr, &style->light[state_type], x1, y, x2, y);
 
 	}
       else
@@ -3158,32 +3158,32 @@ draw_hline (GtkStyle *style,
 				    detail, x1, x2, y);
 	}
     }
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 static void
-draw_vline (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state_type,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
+draw_vline (BtkStyle *style,
+	    BdkWindow *window,
+	    BtkStateType state_type,
+	    BdkRectangle *area,
+	    BtkWidget *widget,
 	    const gchar *detail, gint y1, gint y2, gint x)
 {
-  cairo_t *cr;
+  bairo_t *cr;
   
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
 
   if (style->xthickness == 2)
     {
       if (area)
 	{
-              gdk_cairo_rectangle (cr, area);
-              cairo_clip (cr);
+              bdk_bairo_rectangle (cr, area);
+              bairo_clip (cr);
 	}
 
-      _cairo_draw_line (cr, &style->dark[state_type], x, y1, x, y2);
+      _bairo_draw_line (cr, &style->dark[state_type], x, y1, x, y2);
       ++x;
-      _cairo_draw_line (cr, &style->light[state_type], x, y1, x, y2);
+      _bairo_draw_line (cr, &style->light[state_type], x, y1, x, y2);
 
     }
   else
@@ -3192,22 +3192,22 @@ draw_vline (GtkStyle *style,
 				detail, y1, y2, x);
     }
 
-  cairo_destroy (cr);
+  bairo_destroy (cr);
 }
 
 static void
-draw_slider (GtkStyle *style,
-	     GdkWindow *window,
-	     GtkStateType state_type,
-	     GtkShadowType shadow_type,
-	     GdkRectangle *area,
-	     GtkWidget *widget,
+draw_slider (BtkStyle *style,
+	     BdkWindow *window,
+	     BtkStateType state_type,
+	     BtkShadowType shadow_type,
+	     BdkRectangle *area,
+	     BtkWidget *widget,
 	     const gchar *detail,
 	     gint x,
-	     gint y, gint width, gint height, GtkOrientation orientation)
+	     gint y, gint width, gint height, BtkOrientation orientation)
 {
-  if (GTK_IS_SCALE (widget) &&
-      xp_theme_draw (window, ((orientation == GTK_ORIENTATION_VERTICAL) ?
+  if (BTK_IS_SCALE (widget) &&
+      xp_theme_draw (window, ((orientation == BTK_ORIENTATION_VERTICAL) ?
 			      XP_THEME_ELEMENT_SCALE_SLIDER_V :
 			      XP_THEME_ELEMENT_SCALE_SLIDER_H), style, x, y, width,
 		     height, state_type, area))
@@ -3221,17 +3221,17 @@ draw_slider (GtkStyle *style,
 }
 
 static void
-draw_resize_grip (GtkStyle *style,
-		  GdkWindow *window,
-		  GtkStateType state_type,
-		  GdkRectangle *area,
-		  GtkWidget *widget,
+draw_resize_grip (BtkStyle *style,
+		  BdkWindow *window,
+		  BtkStateType state_type,
+		  BdkRectangle *area,
+		  BtkWidget *widget,
 		  const gchar *detail,
-		  GdkWindowEdge edge, gint x, gint y, gint width, gint height)
+		  BdkWindowEdge edge, gint x, gint y, gint width, gint height)
 {
-  cairo_t *cr;
+  bairo_t *cr;
   
-  cr = gdk_cairo_create (window);
+  cr = bdk_bairo_create (window);
   
   if (DETAIL("statusbar"))
     {
@@ -3239,7 +3239,7 @@ draw_resize_grip (GtkStyle *style,
 	  (window, XP_THEME_ELEMENT_STATUS_GRIPPER, style, x, y, width,
 	   height, state_type, area))
 	{
-          cairo_destroy (cr);
+          bairo_destroy (cr);
 	  return;
 	}
       else
@@ -3250,15 +3250,15 @@ draw_resize_grip (GtkStyle *style,
 
 	  if (area)
             {
-              gdk_cairo_rectangle (cr, area);
-              cairo_clip (cr);
-              gdk_cairo_set_source_color (cr, &style->dark[state_type]);
+              bdk_bairo_rectangle (cr, area);
+              bairo_clip (cr);
+              bdk_bairo_set_source_color (cr, &style->dark[state_type]);
             }
 
 	  DrawFrameControl (dc, &rect, DFC_SCROLL, DFCS_SCROLLSIZEGRIP);
 	  release_window_dc (&dc_info);
 
-          cairo_destroy (cr);
+          bairo_destroy (cr);
 	  return;
 	}
     }
@@ -3268,18 +3268,18 @@ draw_resize_grip (GtkStyle *style,
 }
 
 static void
-draw_handle (GtkStyle      *style,
-             GdkWindow     *window,
-             GtkStateType   state_type,
-             GtkShadowType  shadow_type,
-             GdkRectangle  *area,
-             GtkWidget     *widget,
+draw_handle (BtkStyle      *style,
+             BdkWindow     *window,
+             BtkStateType   state_type,
+             BtkShadowType  shadow_type,
+             BdkRectangle  *area,
+             BtkWidget     *widget,
              const gchar   *detail,
              gint           x,
              gint           y,
              gint           width,
              gint           height,
-             GtkOrientation orientation)
+             BtkOrientation orientation)
 {
   if (is_toolbar_child (widget))
     {
@@ -3290,18 +3290,18 @@ draw_handle (GtkStyle      *style,
 
       sanitize_size (window, &width, &height);
 
-      if (GTK_IS_HANDLE_BOX (widget))
+      if (BTK_IS_HANDLE_BOX (widget))
 	{
-	  GtkPositionType pos;
-	  pos = gtk_handle_box_get_handle_position (GTK_HANDLE_BOX (widget));
+	  BtkPositionType pos;
+	  pos = btk_handle_box_get_handle_position (BTK_HANDLE_BOX (widget));
 
-	  if (pos == GTK_POS_TOP || pos == GTK_POS_BOTTOM)
-	      orientation = GTK_ORIENTATION_HORIZONTAL;
+	  if (pos == BTK_POS_TOP || pos == BTK_POS_BOTTOM)
+	      orientation = BTK_ORIENTATION_HORIZONTAL;
 	  else
-	      orientation = GTK_ORIENTATION_VERTICAL;
+	      orientation = BTK_ORIENTATION_VERTICAL;
 	}
 
-      if (orientation == GTK_ORIENTATION_VERTICAL)
+      if (orientation == BTK_ORIENTATION_VERTICAL)
 	hndl = XP_THEME_ELEMENT_REBAR_GRIPPER_V;
       else
 	hndl = XP_THEME_ELEMENT_REBAR_GRIPPER_H;
@@ -3311,7 +3311,7 @@ draw_handle (GtkStyle      *style,
 
       dc = get_window_dc (style, window, state_type, &dc_info, x, y, width, height, &rect);
 
-      if (orientation == GTK_ORIENTATION_VERTICAL)
+      if (orientation == BTK_ORIENTATION_VERTICAL)
 	{
 	  rect.left += 3;
 	  rect.right = rect.left + 3;
@@ -3333,29 +3333,29 @@ draw_handle (GtkStyle      *style,
 }
 
 static void
-draw_focus (GtkStyle *style,
-	    GdkWindow *window,
-	    GtkStateType state_type,
-	    GdkRectangle *area,
-	    GtkWidget *widget,
+draw_focus (BtkStyle *style,
+	    BdkWindow *window,
+	    BtkStateType state_type,
+	    BdkRectangle *area,
+	    BtkWidget *widget,
 	    const gchar *detail, gint x, gint y, gint width, gint height)
 {
   HDC dc;
   RECT rect;
   XpDCInfo dc_info;
 
-  if (!gtk_widget_get_can_focus (widget))
+  if (!btk_widget_get_can_focus (widget))
     {
       return;
     }
 
   if (is_combo_box_child (widget)
-      && (GTK_IS_ARROW (widget) || GTK_IS_BUTTON (widget)))
+      && (BTK_IS_ARROW (widget) || BTK_IS_BUTTON (widget)))
     {
       return;
     }
-  if (GTK_IS_TREE_VIEW (widget->parent)	/* list view bheader */
-      || GTK_IS_CLIST (widget->parent))
+  if (BTK_IS_TREE_VIEW (widget->parent)	/* list view bheader */
+      || BTK_IS_CLIST (widget->parent))
     {
       return;
     }
@@ -3370,16 +3370,16 @@ draw_focus (GtkStyle *style,
 }
 
 static void
-draw_layout (GtkStyle *style,
-	     GdkWindow *window,
-	     GtkStateType state_type,
+draw_layout (BtkStyle *style,
+	     BdkWindow *window,
+	     BtkStateType state_type,
 	     gboolean use_text,
-	     GdkRectangle *area,
-	     GtkWidget *widget,
+	     BdkRectangle *area,
+	     BtkWidget *widget,
 	     const gchar *detail,
-	     gint old_x, gint old_y, PangoLayout *layout)
+	     gint old_x, gint old_y, BangoLayout *layout)
 {
-  GtkNotebook *notebook = NULL;
+  BtkNotebook *notebook = NULL;
   gint x = old_x;
   gint y = old_y;
 
@@ -3391,13 +3391,13 @@ draw_layout (GtkStyle *style,
     {
       if (widget->parent != NULL)
 	{
-	  if (GTK_IS_NOTEBOOK (widget->parent))
+	  if (BTK_IS_NOTEBOOK (widget->parent))
 	    {
 	      int side;
-	      notebook = GTK_NOTEBOOK (widget->parent);
-	      side = gtk_notebook_get_tab_pos (notebook);
+	      notebook = BTK_NOTEBOOK (widget->parent);
+	      side = btk_notebook_get_tab_pos (notebook);
 
-	      if (side == GTK_POS_TOP || side == GTK_POS_BOTTOM)
+	      if (side == BTK_POS_TOP || side == BTK_POS_BOTTOM)
 		{
 		  x += 2;
 		}
@@ -3410,10 +3410,10 @@ draw_layout (GtkStyle *style,
 }
 
 static void
-msw_style_init_from_rc (GtkStyle *style, GtkRcStyle *rc_style)
+msw_style_init_from_rc (BtkStyle *style, BtkRcStyle *rc_style)
 {
   setup_system_font (style);
-  setup_menu_settings (gtk_settings_get_default ());
+  setup_menu_settings (btk_settings_get_default ());
   setup_system_styles (style);
   parent_class->init_from_rc (style, rc_style);
 }
@@ -3421,7 +3421,7 @@ msw_style_init_from_rc (GtkStyle *style, GtkRcStyle *rc_style)
 static void
 msw_style_class_init (MswStyleClass *klass)
 {
-  GtkStyleClass *style_class = GTK_STYLE_CLASS (klass);
+  BtkStyleClass *style_class = BTK_STYLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -3463,7 +3463,7 @@ msw_style_register_type (GTypeModule *module)
   };
 
   msw_type_style = g_type_module_register_type (module,
-						GTK_TYPE_STYLE,
+						BTK_TYPE_STYLE,
 						"MswStyle", &object_info, 0);
 }
 

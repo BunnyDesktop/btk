@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprint-win32.h: Win32 Print utils
+/* BTK - The GIMP Toolkit
+ * btkprint-win32.h: Win32 Print utils
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINT_WIN32_H__
-#define __GTK_PRINT_WIN32_H__
+#ifndef __BTK_PRINT_WIN32_H__
+#define __BTK_PRINT_WIN32_H__
 
-#include "win32/gdkwin32.h"
+#include "win32/bdkwin32.h"
 
 G_BEGIN_DECLS
 
@@ -48,14 +48,14 @@ typedef struct {
   char *device;
   char *output;
   int flags;
-} GtkPrintWin32Devnames;
+} BtkPrintWin32Devnames;
 
-void gtk_print_win32_devnames_free (GtkPrintWin32Devnames *devnames);
-GtkPrintWin32Devnames *gtk_print_win32_devnames_from_win32 (HGLOBAL global);
-GtkPrintWin32Devnames *gtk_print_win32_devnames_from_printer_name (const char *printer);
-HGLOBAL gtk_print_win32_devnames_to_win32 (const GtkPrintWin32Devnames *devnames);
-HGLOBAL gtk_print_win32_devnames_to_win32_from_printer_name (const char *printer);
+void btk_print_win32_devnames_free (BtkPrintWin32Devnames *devnames);
+BtkPrintWin32Devnames *btk_print_win32_devnames_from_win32 (HGLOBAL global);
+BtkPrintWin32Devnames *btk_print_win32_devnames_from_printer_name (const char *printer);
+HGLOBAL btk_print_win32_devnames_to_win32 (const BtkPrintWin32Devnames *devnames);
+HGLOBAL btk_print_win32_devnames_to_win32_from_printer_name (const char *printer);
 
 G_END_DECLS
 
-#endif /* __GTK_PRINT_WIN32_H__ */
+#endif /* __BTK_PRINT_WIN32_H__ */

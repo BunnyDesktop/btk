@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,37 +18,37 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkhpaned.h"
-#include "gtkorientable.h"
-#include "gtkalias.h"
+#include "btkhpaned.h"
+#include "btkorientable.h"
+#include "btkalias.h"
 
-G_DEFINE_TYPE (GtkHPaned, gtk_hpaned, GTK_TYPE_PANED)
-
-static void
-gtk_hpaned_class_init (GtkHPanedClass *class)
-{
-}
+G_DEFINE_TYPE (BtkHPaned, btk_hpaned, BTK_TYPE_PANED)
 
 static void
-gtk_hpaned_init (GtkHPaned *hpaned)
+btk_hpaned_class_init (BtkHPanedClass *class)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (hpaned),
-                                  GTK_ORIENTATION_HORIZONTAL);
 }
 
-GtkWidget *
-gtk_hpaned_new (void)
+static void
+btk_hpaned_init (BtkHPaned *hpaned)
 {
-  return g_object_new (GTK_TYPE_HPANED, NULL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (hpaned),
+                                  BTK_ORIENTATION_HORIZONTAL);
 }
 
-#define __GTK_HPANED_C__
-#include "gtkaliasdef.c"
+BtkWidget *
+btk_hpaned_new (void)
+{
+  return g_object_new (BTK_TYPE_HPANED, NULL);
+}
+
+#define __BTK_HPANED_C__
+#include "btkaliasdef.c"

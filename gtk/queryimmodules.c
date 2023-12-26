@@ -1,4 +1,4 @@
-/* GTK+
+/* BTK+
  * querymodules.c:
  *
  * Copyright (C) 2000-2013 Red Hat Software
@@ -21,9 +21,9 @@
 
 #include "config.h"
 
-#include <glib.h>
-#include <glib/gprintf.h>
-#include <gmodule.h>
+#include <bunnylib.h>
+#include <bunnylib/gprintf.h>
+#include <bmodule.h>
 
 #include <errno.h>
 #include <string.h>
@@ -37,9 +37,9 @@
 #define SOEXT ("." G_MODULE_SUFFIX)
 #endif
 
-#include "gtk/gtkrc.h"
-#include "gtk/gtkimmodule.h"
-#include "gtk/gtkversion.h"
+#include "btk/btkrc.h"
+#include "btk/btkimmodule.h"
+#include "btk/btkversion.h"
 
 static void
 escape_string (GString *contents, const char *str)
@@ -86,11 +86,11 @@ print_escaped (GString *contents, const char *str)
 static gboolean
 query_module (const char *dir, const char *name, GString *contents)
 {
-  void          (*list)   (const GtkIMContextInfo ***contexts,
+  void          (*list)   (const BtkIMContextInfo ***contexts,
                            guint                    *n_contexts);
   void          (*init)   (GTypeModule              *type_module);
   void          (*exit)   (void);
-  GtkIMContext *(*create) (const gchar             *context_id);
+  BtkIMContext *(*create) (const gchar             *context_id);
 
   gpointer list_ptr;
   gpointer init_ptr;
@@ -120,7 +120,7 @@ query_module (const char *dir, const char *name, GString *contents)
       g_module_symbol (module, "im_module_exit", &exit_ptr) &&
       g_module_symbol (module, "im_module_create", &create_ptr))
     {
-      const GtkIMContextInfo **contexts;
+      const BtkIMContextInfo **contexts;
       guint n_contexts;
       int i;
 
@@ -147,7 +147,7 @@ query_module (const char *dir, const char *name, GString *contents)
     }
   else
     {
-      g_fprintf (stderr, "%s does not export GTK+ IM module API: %s\n", path,
+      g_fprintf (stderr, "%s does not export BTK+ IM module API: %s\n", path,
                  g_module_error ());
       error = TRUE;
     }
@@ -171,18 +171,18 @@ int main (int argc, char **argv)
 
   if (argc > 1 && strcmp (argv[1], "--update-cache") == 0)
     {
-      cache_file = gtk_rc_get_im_module_file ();
+      cache_file = btk_rc_get_im_module_file ();
       first_file = 2;
     }
 
   contents = g_string_new ("");
   g_string_append_printf (contents,
-                          "# GTK+ Input Method Modules file\n"
+                          "# BTK+ Input Method Modules file\n"
                           "# Automatically generated file, do not edit\n"
-                          "# Created by %s from gtk+-%d.%d.%d\n"
+                          "# Created by %s from btk+-%d.%d.%d\n"
                           "#\n",
                           argv[0],
-                          GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
+                          BTK_MAJOR_VERSION, BTK_MINOR_VERSION, BTK_MICRO_VERSION);
 
   if (argc == first_file)  /* No file arguments given */
     {
@@ -190,11 +190,11 @@ int main (int argc, char **argv)
       int i;
       GHashTable *dirs_done;
 
-      path = gtk_rc_get_im_module_path ();
+      path = btk_rc_get_im_module_path ();
 
       g_string_append_printf (contents, "# ModulesPath = %s\n#\n", path);
 
-      dirs = pango_split_file_list (path);
+      dirs = bango_split_file_list (path);
       dirs_done = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, NULL);
 
       for (i = 0; dirs[i]; i++)

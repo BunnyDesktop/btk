@@ -20,17 +20,17 @@ You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
-# Configure paths for GLIB
+# Configure paths for BUNNYLIB
 # Owen Taylor     1997-2001
 
 # Increment this whenever this file is changed.
 #serial 3
 
-dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
-dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
-dnl gthread, or gio is specified in MODULES, pass to pkg-config
+dnl AM_PATH_BUNNYLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
+dnl Test for BUNNYLIB, and define BUNNYLIB_CFLAGS and BUNNYLIB_LIBS, if bmodule, bobject,
+dnl bthread, or bunnyio is specified in MODULES, pass to pkg-config
 dnl
-AC_DEFUN([AM_PATH_GLIB_2_0],
+AC_DEFUN([AM_PATH_BUNNYLIB_2_0],
 [dnl 
 dnl Get the cflags and libraries from pkg-config
 dnl
@@ -39,27 +39,27 @@ dnl We can't use PKG_PREREQ because that needs 0.29.
 m4_ifndef([PKG_PROG_PKG_CONFIG],
           [pkg.m4 version 0.28 or later is required])
 
-AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run a test GLIB program],
-		    , enable_glibtest=yes)
+AC_ARG_ENABLE(bunnylibtest, [  --disable-bunnylibtest      do not try to compile and run a test BUNNYLIB program],
+		    , enable_bunnylibtest=yes)
 
-  min_glib_version=ifelse([$1], [], [2.0.0], [$1])
-  pkg_config_args="glib-2.0 >= $min_glib_version"
+  min_bunnylib_version=ifelse([$1], [], [2.0.0], [$1])
+  pkg_config_args="bunnylib-2.0 >= $min_bunnylib_version"
   for module in . $4
   do
       case "$module" in
-         gmodule) 
-             pkg_config_args="$pkg_config_args gmodule-2.0"
+         bmodule) 
+             pkg_config_args="$pkg_config_args bmodule-2.0"
          ;;
-         gmodule-no-export) 
-             pkg_config_args="$pkg_config_args gmodule-no-export-2.0"
+         bmodule-no-export) 
+             pkg_config_args="$pkg_config_args bmodule-no-export-2.0"
          ;;
-         gobject) 
-             pkg_config_args="$pkg_config_args gobject-2.0"
+         bobject) 
+             pkg_config_args="$pkg_config_args bobject-2.0"
          ;;
-         gthread) 
-             pkg_config_args="$pkg_config_args gthread-2.0"
+         bthread) 
+             pkg_config_args="$pkg_config_args bthread-2.0"
          ;;
-         gio*) 
+         bunnyio*) 
              pkg_config_args="$pkg_config_args $module-2.0"
          ;;
       esac
@@ -67,57 +67,57 @@ AC_ARG_ENABLE(glibtest, [  --disable-glibtest      do not try to compile and run
 
   PKG_PROG_PKG_CONFIG([0.16])
 
-  no_glib=""
+  no_bunnylib=""
 
   if test "x$PKG_CONFIG" = x ; then
-    no_glib=yes
+    no_bunnylib=yes
     PKG_CONFIG=no
   fi
 
-  dnl For GLIB_CFLAGS and GLIB_LIBS
-  PKG_CHECK_MODULES([GLIB], [$pkg_config_args], [:], [:])
+  dnl For BUNNYLIB_CFLAGS and BUNNYLIB_LIBS
+  PKG_CHECK_MODULES([BUNNYLIB], [$pkg_config_args], [:], [:])
 
   dnl For the tools
-  PKG_CHECK_VAR([GLIB_GENMARSHAL], [glib-2.0], [glib_genmarshal])
-  PKG_CHECK_VAR([GOBJECT_QUERY], [glib-2.0], [gobject_query])
-  PKG_CHECK_VAR([GLIB_MKENUMS], [glib-2.0], [glib_mkenums])
-  PKG_CHECK_VAR([GLIB_COMPILE_RESOURCES], [gio-2.0], [glib_compile_resources])
+  PKG_CHECK_VAR([BUNNYLIB_GENMARSHAL], [bunnylib-2.0], [bunnylib_genmarshal])
+  PKG_CHECK_VAR([BOBJECT_QUERY], [bunnylib-2.0], [bobject_query])
+  PKG_CHECK_VAR([BUNNYLIB_MKENUMS], [bunnylib-2.0], [bunnylib_mkenums])
+  PKG_CHECK_VAR([BUNNYLIB_COMPILE_RESOURCES], [bunnyio-2.0], [bunnylib_compile_resources])
 
-  AC_MSG_CHECKING(for GLIB - version >= $min_glib_version)
+  AC_MSG_CHECKING(for BUNNYLIB - version >= $min_bunnylib_version)
 
   if test x$PKG_CONFIG != xno ; then
     ## don't try to run the test against uninstalled libtool libs
     if $PKG_CONFIG --uninstalled $pkg_config_args; then
 	  echo "Will use uninstalled version of GLib found in PKG_CONFIG_PATH"
-	  enable_glibtest=no
+	  enable_bunnylibtest=no
     fi
 
-    if $PKG_CONFIG --atleast-version $min_glib_version $pkg_config_args; then
+    if $PKG_CONFIG --atleast-version $min_bunnylib_version $pkg_config_args; then
 	  :
     else
-	  no_glib=yes
+	  no_bunnylib=yes
     fi
   fi
 
-  if test x"$no_glib" = x ; then
-    glib_config_major_version=`$PKG_CONFIG --modversion glib-2.0 | \
+  if test x"$no_bunnylib" = x ; then
+    bunnylib_config_major_version=`$PKG_CONFIG --modversion bunnylib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\1/'`
-    glib_config_minor_version=`$PKG_CONFIG --modversion glib-2.0 | \
+    bunnylib_config_minor_version=`$PKG_CONFIG --modversion bunnylib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\2/'`
-    glib_config_micro_version=`$PKG_CONFIG --modversion glib-2.0 | \
+    bunnylib_config_micro_version=`$PKG_CONFIG --modversion bunnylib-2.0 | \
            sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
-    if test "x$enable_glibtest" = "xyes" ; then
+    if test "x$enable_bunnylibtest" = "xyes" ; then
       ac_save_CFLAGS="$CFLAGS"
       ac_save_LIBS="$LIBS"
-      CFLAGS="$CFLAGS $GLIB_CFLAGS"
-      LIBS="$GLIB_LIBS $LIBS"
+      CFLAGS="$CFLAGS $BUNNYLIB_CFLAGS"
+      LIBS="$BUNNYLIB_LIBS $LIBS"
 dnl
 dnl Now check if the installed GLib is sufficiently new. (Also sanity
 dnl checks the results of pkg-config to some extent)
 dnl
-      rm -f conf.glibtest
+      rm -f conf.bunnylibtest
       AC_TRY_RUN([
-#include <glib.h>
+#include <bunnylib.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -126,20 +126,20 @@ main (void)
 {
   unsigned int major, minor, micro;
 
-  fclose (fopen ("conf.glibtest", "w"));
+  fclose (fopen ("conf.bunnylibtest", "w"));
 
-  if (sscanf("$min_glib_version", "%u.%u.%u", &major, &minor, &micro) != 3) {
-     printf("%s, bad version string\n", "$min_glib_version");
+  if (sscanf("$min_bunnylib_version", "%u.%u.%u", &major, &minor, &micro) != 3) {
+     printf("%s, bad version string\n", "$min_bunnylib_version");
      exit(1);
    }
 
-  if ((glib_major_version != $glib_config_major_version) ||
-      (glib_minor_version != $glib_config_minor_version) ||
-      (glib_micro_version != $glib_config_micro_version))
+  if ((bunnylib_major_version != $bunnylib_config_major_version) ||
+      (bunnylib_minor_version != $bunnylib_config_minor_version) ||
+      (bunnylib_micro_version != $bunnylib_config_micro_version))
     {
-      printf("\n*** 'pkg-config --modversion glib-2.0' returned %d.%d.%d, but GLIB (%d.%d.%d)\n", 
-             $glib_config_major_version, $glib_config_minor_version, $glib_config_micro_version,
-             glib_major_version, glib_minor_version, glib_micro_version);
+      printf("\n*** 'pkg-config --modversion bunnylib-2.0' returned %d.%d.%d, but BUNNYLIB (%d.%d.%d)\n", 
+             $bunnylib_config_major_version, $bunnylib_config_minor_version, $bunnylib_config_micro_version,
+             bunnylib_major_version, bunnylib_minor_version, bunnylib_micro_version);
       printf ("*** was found! If pkg-config was correct, then it is best\n");
       printf ("*** to remove the old version of GLib. You may also be able to fix the error\n");
       printf("*** by modifying your LD_LIBRARY_PATH environment variable, or by editing\n");
@@ -148,30 +148,30 @@ main (void)
       printf("*** If pkg-config was wrong, set the environment variable PKG_CONFIG_PATH\n");
       printf("*** to point to the correct configuration files\n");
     } 
-  else if ((glib_major_version != GLIB_MAJOR_VERSION) ||
-	   (glib_minor_version != GLIB_MINOR_VERSION) ||
-           (glib_micro_version != GLIB_MICRO_VERSION))
+  else if ((bunnylib_major_version != BUNNYLIB_MAJOR_VERSION) ||
+	   (bunnylib_minor_version != BUNNYLIB_MINOR_VERSION) ||
+           (bunnylib_micro_version != BUNNYLIB_MICRO_VERSION))
     {
       printf("*** GLib header files (version %d.%d.%d) do not match\n",
-	     GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
+	     BUNNYLIB_MAJOR_VERSION, BUNNYLIB_MINOR_VERSION, BUNNYLIB_MICRO_VERSION);
       printf("*** library (version %d.%d.%d)\n",
-	     glib_major_version, glib_minor_version, glib_micro_version);
+	     bunnylib_major_version, bunnylib_minor_version, bunnylib_micro_version);
     }
   else
     {
-      if ((glib_major_version > major) ||
-        ((glib_major_version == major) && (glib_minor_version > minor)) ||
-        ((glib_major_version == major) && (glib_minor_version == minor) && (glib_micro_version >= micro)))
+      if ((bunnylib_major_version > major) ||
+        ((bunnylib_major_version == major) && (bunnylib_minor_version > minor)) ||
+        ((bunnylib_major_version == major) && (bunnylib_minor_version == minor) && (bunnylib_micro_version >= micro)))
       {
         return 0;
        }
      else
       {
         printf("\n*** An old version of GLib (%u.%u.%u) was found.\n",
-               glib_major_version, glib_minor_version, glib_micro_version);
+               bunnylib_major_version, bunnylib_minor_version, bunnylib_micro_version);
         printf("*** You need a version of GLib newer than %u.%u.%u. The latest version of\n",
 	       major, minor, micro);
-        printf("*** GLib is always available from ftp://ftp.gtk.org.\n");
+        printf("*** GLib is always available from ftp://ftp.btk.org.\n");
         printf("***\n");
         printf("*** If you have already installed a sufficiently new version, this error\n");
         printf("*** probably means that the wrong copy of the pkg-config shell script is\n");
@@ -184,13 +184,13 @@ main (void)
     }
   return 1;
 }
-],, no_glib=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
+],, no_bunnylib=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
        CFLAGS="$ac_save_CFLAGS"
        LIBS="$ac_save_LIBS"
      fi
   fi
-  if test "x$no_glib" = x ; then
-     AC_MSG_RESULT(yes (version $glib_config_major_version.$glib_config_minor_version.$glib_config_micro_version))
+  if test "x$no_bunnylib" = x ; then
+     AC_MSG_RESULT(yes (version $bunnylib_config_major_version.$bunnylib_config_minor_version.$bunnylib_config_micro_version))
      ifelse([$2], , :, [$2])     
   else
      AC_MSG_RESULT(no)
@@ -198,18 +198,18 @@ main (void)
        echo "*** A new enough version of pkg-config was not found."
        echo "*** See http://www.freedesktop.org/software/pkgconfig/"
      else
-       if test -f conf.glibtest ; then
+       if test -f conf.bunnylibtest ; then
         :
        else
           echo "*** Could not run GLib test program, checking why..."
           ac_save_CFLAGS="$CFLAGS"
           ac_save_LIBS="$LIBS"
-          CFLAGS="$CFLAGS $GLIB_CFLAGS"
-          LIBS="$LIBS $GLIB_LIBS"
+          CFLAGS="$CFLAGS $BUNNYLIB_CFLAGS"
+          LIBS="$LIBS $BUNNYLIB_LIBS"
           AC_TRY_LINK([
-#include <glib.h>
+#include <bunnylib.h>
 #include <stdio.h>
-],      [ return ((glib_major_version) || (glib_minor_version) || (glib_micro_version)); ],
+],      [ return ((bunnylib_major_version) || (bunnylib_minor_version) || (bunnylib_micro_version)); ],
         [ echo "*** The test program compiled, but did not run. This usually means"
           echo "*** that the run-time linker is not finding GLib or finding the wrong"
           echo "*** version of GLib. If it is not finding GLib, you'll need to set your"
@@ -225,15 +225,15 @@ main (void)
           LIBS="$ac_save_LIBS"
        fi
      fi
-     GLIB_CFLAGS=""
-     GLIB_LIBS=""
-     GLIB_GENMARSHAL=""
-     GOBJECT_QUERY=""
-     GLIB_MKENUMS=""
-     GLIB_COMPILE_RESOURCES=""
+     BUNNYLIB_CFLAGS=""
+     BUNNYLIB_LIBS=""
+     BUNNYLIB_GENMARSHAL=""
+     BOBJECT_QUERY=""
+     BUNNYLIB_MKENUMS=""
+     BUNNYLIB_COMPILE_RESOURCES=""
      ifelse([$3], , :, [$3])
   fi
-  rm -f conf.glibtest
+  rm -f conf.bunnylibtest
 ])
 
 # Copyright (C) 1995-2002 Free Software Foundation, Inc.
@@ -269,24 +269,24 @@ main (void)
 
 # We need this here as well, since someone might use autoconf-2.5x
 # to configure GLib then an older version to configure a package
-# using AM_GLIB_GNU_GETTEXT
+# using AM_BUNNYLIB_GNU_GETTEXT
 AC_PREREQ(2.53)
 
 dnl
 dnl We go to great lengths to make sure that aclocal won't 
 dnl try to pull in the installed version of these macros
-dnl when running aclocal in the glib directory.
+dnl when running aclocal in the bunnylib directory.
 dnl
-m4_copy([AC_DEFUN],[glib_DEFUN])
-m4_copy([AC_REQUIRE],[glib_REQUIRE])
+m4_copy([AC_DEFUN],[bunnylib_DEFUN])
+m4_copy([AC_REQUIRE],[bunnylib_REQUIRE])
 dnl
-dnl At the end, if we're not within glib, we'll define the public
+dnl At the end, if we're not within bunnylib, we'll define the public
 dnl definitions in terms of our private definitions.
 dnl
 
-# GLIB_LC_MESSAGES
+# BUNNYLIB_LC_MESSAGES
 #--------------------
-glib_DEFUN([GLIB_LC_MESSAGES],
+bunnylib_DEFUN([BUNNYLIB_LC_MESSAGES],
   [AC_CHECK_HEADERS([locale.h])
     if test $ac_cv_header_locale_h = yes; then
     AC_CACHE_CHECK([for LC_MESSAGES], am_cv_val_LC_MESSAGES,
@@ -298,11 +298,11 @@ glib_DEFUN([GLIB_LC_MESSAGES],
     fi
   fi])
 
-# GLIB_PATH_PROG_WITH_TEST
+# BUNNYLIB_PATH_PROG_WITH_TEST
 #----------------------------
-dnl GLIB_PATH_PROG_WITH_TEST(VARIABLE, PROG-TO-CHECK-FOR,
+dnl BUNNYLIB_PATH_PROG_WITH_TEST(VARIABLE, PROG-TO-CHECK-FOR,
 dnl   TEST-PERFORMED-ON-FOUND_PROGRAM [, VALUE-IF-NOT-FOUND [, PATH]])
-glib_DEFUN([GLIB_PATH_PROG_WITH_TEST],
+bunnylib_DEFUN([BUNNYLIB_PATH_PROG_WITH_TEST],
 [# Extract the first word of "$2", so it can be a program name with args.
 set dummy $2; ac_word=[$]2
 AC_MSG_CHECKING([for $ac_word])
@@ -343,7 +343,7 @@ dnl Defines INTL_MACOSX_LIBS.
 dnl
 dnl Copied from intlmacosx.m4 in gettext, GPL.
 dnl Copyright (C) 2004-2013 Free Software Foundation, Inc.
-glib_DEFUN([glib_gt_INTL_MACOSX],
+bunnylib_DEFUN([bunnylib_gt_INTL_MACOSX],
 [
   dnl Check for API introduced in Mac OS X 10.2.
   AC_CACHE_CHECK([for CFPreferencesCopyAppValue],
@@ -383,9 +383,9 @@ glib_DEFUN([glib_gt_INTL_MACOSX],
   AC_SUBST([INTL_MACOSX_LIBS])
 ])
 
-# GLIB_WITH_NLS
+# BUNNYLIB_WITH_NLS
 #-----------------
-glib_DEFUN([GLIB_WITH_NLS],
+bunnylib_DEFUN([BUNNYLIB_WITH_NLS],
   dnl NLS is obligatory
   [USE_NLS=yes
     AC_SUBST(USE_NLS)
@@ -396,7 +396,7 @@ glib_DEFUN([GLIB_WITH_NLS],
     XGETTEXT=:
     INTLLIBS=
 
-    glib_gt_INTL_MACOSX
+    bunnylib_gt_INTL_MACOSX
 
     AC_CHECK_HEADER(libintl.h,
      [gt_cv_func_dgettext_libintl="no"
@@ -458,11 +458,11 @@ glib_DEFUN([GLIB_WITH_NLS],
         # and both have dgettext and ngettext
         #
         if test "$gt_cv_func_dgettext_libintl" = "yes" ; then
-          glib_save_LIBS="$LIBS"
+          bunnylib_save_LIBS="$LIBS"
           LIBS="$LIBS -lintl $libintl_extra_libs"
           unset ac_cv_func_bind_textdomain_codeset
           AC_CHECK_FUNCS(bind_textdomain_codeset)
-          LIBS="$glib_save_LIBS"
+          LIBS="$bunnylib_save_LIBS"
 
           if test "$ac_cv_func_bind_textdomain_codeset" = "yes" ; then
             gt_cv_func_dgettext_libc=no
@@ -487,15 +487,15 @@ glib_DEFUN([GLIB_WITH_NLS],
       if test "$gt_cv_have_gettext" = "yes"; then
 	AC_DEFINE(HAVE_GETTEXT,1,
 	  [Define if the GNU gettext() function is already present or preinstalled.])
-	GLIB_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
+	BUNNYLIB_PATH_PROG_WITH_TEST(MSGFMT, msgfmt,
 	  [test -z "`$ac_dir/$ac_word -h 2>&1 | grep 'dv '`"], no)dnl
 	if test "$MSGFMT" != "no"; then
-          glib_save_LIBS="$LIBS"
+          bunnylib_save_LIBS="$LIBS"
           LIBS="$LIBS $INTLLIBS"
 	  AC_CHECK_FUNCS(dcgettext)
 	  MSGFMT_OPTS=
 	  AC_MSG_CHECKING([if msgfmt accepts -c])
-	  GLIB_RUN_PROG([$MSGFMT -c -o /dev/null],[
+	  BUNNYLIB_RUN_PROG([$MSGFMT -c -o /dev/null],[
 msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -508,7 +508,7 @@ msgstr ""
 ], [MSGFMT_OPTS=-c; AC_MSG_RESULT([yes])], [AC_MSG_RESULT([no])])
 	  AC_SUBST(MSGFMT_OPTS)
 	  AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
-	  GLIB_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
+	  BUNNYLIB_PATH_PROG_WITH_TEST(XGETTEXT, xgettext,
 	    [test -z "`$ac_dir/$ac_word -h 2>&1 | grep '(HELP)'`"], :)
 	  AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
 			 return _nl_msg_cat_cntr],
@@ -536,7 +536,7 @@ msgstr ""
             DATADIRNAME=lib
 	    ;;
 	    esac])
-          LIBS="$glib_save_LIBS"
+          LIBS="$bunnylib_save_LIBS"
 	  INSTOBJEXT=.mo
 	else
 	  gt_cv_have_gettext=no
@@ -591,7 +591,7 @@ msgstr ""
     AC_SUBST(POSUB)
   ])
 
-# AM_GLIB_GNU_GETTEXT
+# AM_BUNNYLIB_GNU_GETTEXT
 # -------------------
 # Do checks necessary for use of gettext. If a suitable implementation 
 # of gettext is found in either in libintl or in the C library,
@@ -599,13 +599,13 @@ msgstr ""
 # and AC_DEFINE() HAVE_GETTEXT and ENABLE_NLS. (The shell variable
 # gt_cv_have_gettext will be set to "yes".) It will also call AC_SUBST()
 # on various variables needed by the Makefile.in.in installed by 
-# glib-gettextize.
+# bunnylib-gettextize.
 dnl
-AU_DEFUN([GLIB_GNU_GETTEXT],
+AU_DEFUN([BUNNYLIB_GNU_GETTEXT],
   [AC_REQUIRE([AC_PROG_CC])dnl
    
-   GLIB_LC_MESSAGES
-   GLIB_WITH_NLS
+   BUNNYLIB_LC_MESSAGES
+   BUNNYLIB_WITH_NLS
 
    if test "$gt_cv_have_gettext" = "yes"; then
      if test "x$ALL_LINGUAS" = "x"; then
@@ -674,15 +674,15 @@ AU_DEFUN([GLIB_GNU_GETTEXT],
   ],
   [[$0: This macro is deprecated. You should use upstream gettext instead.]])
 
-# AM_GLIB_DEFINE_LOCALEDIR(VARIABLE)
+# AM_BUNNYLIB_DEFINE_LOCALEDIR(VARIABLE)
 # -------------------------------
 # Define VARIABLE to the location where catalog files will
 # be installed by po/Makefile.
-glib_DEFUN([GLIB_DEFINE_LOCALEDIR],
-[glib_REQUIRE([GLIB_GNU_GETTEXT])dnl
-glib_save_prefix="$prefix"
-glib_save_exec_prefix="$exec_prefix"
-glib_save_datarootdir="$datarootdir"
+bunnylib_DEFUN([BUNNYLIB_DEFINE_LOCALEDIR],
+[bunnylib_REQUIRE([BUNNYLIB_GNU_GETTEXT])dnl
+bunnylib_save_prefix="$prefix"
+bunnylib_save_exec_prefix="$exec_prefix"
+bunnylib_save_datarootdir="$datarootdir"
 test "x$prefix" = xNONE && prefix=$ac_default_prefix
 test "x$exec_prefix" = xNONE && exec_prefix=$prefix
 datarootdir=`eval echo "${datarootdir}"`
@@ -691,9 +691,9 @@ if test "x$CATOBJEXT" = "x.mo" ; then
 else
   localedir=`eval echo "${datadir}/locale"`
 fi
-prefix="$glib_save_prefix"
-exec_prefix="$glib_save_exec_prefix"
-datarootdir="$glib_save_datarootdir"
+prefix="$bunnylib_save_prefix"
+exec_prefix="$bunnylib_save_exec_prefix"
+datarootdir="$bunnylib_save_datarootdir"
 AC_DEFINE_UNQUOTED($1, "$localedir",
   [Define the location where the catalogs will be installed])
 ])
@@ -701,17 +701,17 @@ AC_DEFINE_UNQUOTED($1, "$localedir",
 dnl
 dnl Now the definitions that aclocal will find
 dnl
-ifdef(glib_configure_ac,[],[
-AC_DEFUN([AM_GLIB_GNU_GETTEXT],[GLIB_GNU_GETTEXT($@)])
-AC_DEFUN([AM_GLIB_DEFINE_LOCALEDIR],[GLIB_DEFINE_LOCALEDIR($@)])
+ifdef(bunnylib_configure_ac,[],[
+AC_DEFUN([AM_BUNNYLIB_GNU_GETTEXT],[BUNNYLIB_GNU_GETTEXT($@)])
+AC_DEFUN([AM_BUNNYLIB_DEFINE_LOCALEDIR],[BUNNYLIB_DEFINE_LOCALEDIR($@)])
 ])dnl
 
-# GLIB_RUN_PROG(PROGRAM, TEST-FILE, [ACTION-IF-PASS], [ACTION-IF-FAIL])
+# BUNNYLIB_RUN_PROG(PROGRAM, TEST-FILE, [ACTION-IF-PASS], [ACTION-IF-FAIL])
 # 
 # Create a temporary file with TEST-FILE as its contents and pass the
 # file name to PROGRAM.  Perform ACTION-IF-PASS if PROGRAM exits with
 # 0 and perform ACTION-IF-FAIL for any other exit status.
-AC_DEFUN([GLIB_RUN_PROG],
+AC_DEFUN([BUNNYLIB_RUN_PROG],
 [cat >conftest.foo <<_ACEOF
 $2
 _ACEOF
@@ -725,7 +725,7 @@ fi])
 
 # -*- mode: autoconf -*-
 #
-# gtk-doc.m4 - configure macro to check for gtk-doc
+# btk-doc.m4 - configure macro to check for btk-doc
 # Copyright (C) 2003 James Henstridge
 #               2007-2017  Stefan Sauer
 #
@@ -753,75 +753,75 @@ fi])
 # serial 2
 
 dnl Usage:
-dnl   GTK_DOC_CHECK([minimum-gtk-doc-version])
-AC_DEFUN([GTK_DOC_CHECK],
+dnl   BTK_DOC_CHECK([minimum-btk-doc-version])
+AC_DEFUN([BTK_DOC_CHECK],
 [
   AC_REQUIRE([PKG_PROG_PKG_CONFIG])
   AC_BEFORE([AC_PROG_LIBTOOL],[$0])dnl setup libtool first
   AC_BEFORE([AM_PROG_LIBTOOL],[$0])dnl setup libtool first
 
-  ifelse([$1],[],[gtk_doc_requires="gtk-doc"],[gtk_doc_requires="gtk-doc >= $1"])
-  AC_MSG_CHECKING([for gtk-doc])
-  PKG_CHECK_EXISTS([$gtk_doc_requires],[have_gtk_doc=yes],[have_gtk_doc=no])
-  AC_MSG_RESULT($have_gtk_doc)
+  ifelse([$1],[],[btk_doc_requires="btk-doc"],[btk_doc_requires="btk-doc >= $1"])
+  AC_MSG_CHECKING([for btk-doc])
+  PKG_CHECK_EXISTS([$btk_doc_requires],[have_btk_doc=yes],[have_btk_doc=no])
+  AC_MSG_RESULT($have_btk_doc)
 
-  if test "$have_gtk_doc" = "no"; then
+  if test "$have_btk_doc" = "no"; then
       AC_MSG_WARN([
   You will not be able to create source packages with 'make dist'
-  because $gtk_doc_requires is not found.])
+  because $btk_doc_requires is not found.])
   fi
 
   dnl check for tools we added during development
   dnl Use AC_CHECK_PROG to avoid the check target using an absolute path that
   dnl may not be writable by the user. Currently, automake requires that the
   dnl test name must end in '.test'.
-  dnl https://bugzilla.gnome.org/show_bug.cgi?id=701638
-  AC_CHECK_PROG([GTKDOC_CHECK],[gtkdoc-check],[gtkdoc-check.test])
-  AC_PATH_PROG([GTKDOC_CHECK_PATH],[gtkdoc-check])
-  AC_PATH_PROGS([GTKDOC_REBASE],[gtkdoc-rebase],[true])
-  AC_PATH_PROG([GTKDOC_MKPDF],[gtkdoc-mkpdf])
+  dnl https://bugzilla.bunny.org/show_bug.cgi?id=701638
+  AC_CHECK_PROG([BTKDOC_CHECK],[btkdoc-check],[btkdoc-check.test])
+  AC_PATH_PROG([BTKDOC_CHECK_PATH],[btkdoc-check])
+  AC_PATH_PROGS([BTKDOC_REBASE],[btkdoc-rebase],[true])
+  AC_PATH_PROG([BTKDOC_MKPDF],[btkdoc-mkpdf])
 
   dnl for overriding the documentation installation directory
   AC_ARG_WITH([html-dir],
     AS_HELP_STRING([--with-html-dir=PATH], [path to installed docs]),,
-    [with_html_dir='${datadir}/gtk-doc/html'])
+    [with_html_dir='${datadir}/btk-doc/html'])
   HTML_DIR="$with_html_dir"
   AC_SUBST([HTML_DIR])
 
   dnl enable/disable documentation building
-  AC_ARG_ENABLE([gtk-doc],
-    AS_HELP_STRING([--enable-gtk-doc],
-                   [use gtk-doc to build documentation [[default=no]]]),,
-    [enable_gtk_doc=no])
+  AC_ARG_ENABLE([btk-doc],
+    AS_HELP_STRING([--enable-btk-doc],
+                   [use btk-doc to build documentation [[default=no]]]),,
+    [enable_btk_doc=no])
 
-  AC_MSG_CHECKING([whether to build gtk-doc documentation])
-  AC_MSG_RESULT($enable_gtk_doc)
+  AC_MSG_CHECKING([whether to build btk-doc documentation])
+  AC_MSG_RESULT($enable_btk_doc)
 
-  if test "x$enable_gtk_doc" = "xyes" && test "$have_gtk_doc" = "no"; then
+  if test "x$enable_btk_doc" = "xyes" && test "$have_btk_doc" = "no"; then
     AC_MSG_ERROR([
-  You must have $gtk_doc_requires installed to build documentation for
-  $PACKAGE_NAME. Please install gtk-doc or disable building the
-  documentation by adding '--disable-gtk-doc' to '[$]0'.])
+  You must have $btk_doc_requires installed to build documentation for
+  $PACKAGE_NAME. Please install btk-doc or disable building the
+  documentation by adding '--disable-btk-doc' to '[$]0'.])
   fi
 
-  dnl don't check for glib if we build glib
-  if test "x$PACKAGE_NAME" != "xglib"; then
-    dnl don't fail if someone does not have glib
-    PKG_CHECK_MODULES(GTKDOC_DEPS, glib-2.0 >= 2.10.0 gobject-2.0  >= 2.10.0,,[:])
+  dnl don't check for bunnylib if we build bunnylib
+  if test "x$PACKAGE_NAME" != "xbunnylib"; then
+    dnl don't fail if someone does not have bunnylib
+    PKG_CHECK_MODULES(BTKDOC_DEPS, bunnylib-2.0 >= 2.10.0 bobject-2.0  >= 2.10.0,,[:])
   fi
 
   dnl enable/disable output formats
-  AC_ARG_ENABLE([gtk-doc-html],
-    AS_HELP_STRING([--enable-gtk-doc-html],
+  AC_ARG_ENABLE([btk-doc-html],
+    AS_HELP_STRING([--enable-btk-doc-html],
                    [build documentation in html format [[default=yes]]]),,
-    [enable_gtk_doc_html=yes])
-    AC_ARG_ENABLE([gtk-doc-pdf],
-      AS_HELP_STRING([--enable-gtk-doc-pdf],
+    [enable_btk_doc_html=yes])
+    AC_ARG_ENABLE([btk-doc-pdf],
+      AS_HELP_STRING([--enable-btk-doc-pdf],
                      [build documentation in pdf format [[default=no]]]),,
-      [enable_gtk_doc_pdf=no])
+      [enable_btk_doc_pdf=no])
 
-  if test -z "$GTKDOC_MKPDF"; then
-    enable_gtk_doc_pdf=no
+  if test -z "$BTKDOC_MKPDF"; then
+    enable_btk_doc_pdf=no
   fi
 
   if test -z "$AM_DEFAULT_VERBOSITY"; then
@@ -829,12 +829,12 @@ AC_DEFUN([GTK_DOC_CHECK],
   fi
   AC_SUBST([AM_DEFAULT_VERBOSITY])
 
-  AM_CONDITIONAL([HAVE_GTK_DOC], [test x$have_gtk_doc = xyes])
-  AM_CONDITIONAL([ENABLE_GTK_DOC], [test x$enable_gtk_doc = xyes])
-  AM_CONDITIONAL([GTK_DOC_BUILD_HTML], [test x$enable_gtk_doc_html = xyes])
-  AM_CONDITIONAL([GTK_DOC_BUILD_PDF], [test x$enable_gtk_doc_pdf = xyes])
-  AM_CONDITIONAL([GTK_DOC_USE_LIBTOOL], [test -n "$LIBTOOL"])
-  AM_CONDITIONAL([GTK_DOC_USE_REBASE], [test -n "$GTKDOC_REBASE"])
+  AM_CONDITIONAL([HAVE_BTK_DOC], [test x$have_btk_doc = xyes])
+  AM_CONDITIONAL([ENABLE_BTK_DOC], [test x$enable_btk_doc = xyes])
+  AM_CONDITIONAL([BTK_DOC_BUILD_HTML], [test x$enable_btk_doc_html = xyes])
+  AM_CONDITIONAL([BTK_DOC_BUILD_PDF], [test x$enable_btk_doc_pdf = xyes])
+  AM_CONDITIONAL([BTK_DOC_USE_LIBTOOL], [test -n "$LIBTOOL"])
+  AM_CONDITIONAL([BTK_DOC_USE_REBASE], [test -n "$BTKDOC_REBASE"])
 ])
 
 # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
@@ -3667,7 +3667,7 @@ linux*android*)
   _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
   ;;
 
-# This must be glibc/ELF.
+# This must be bunnylibc/ELF.
 linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   version_type=linux # correct to gnu/linux during the next big refactor
   need_lib_prefix=no
@@ -4375,7 +4375,7 @@ irix5* | irix6* | nonstopux*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-# This must be glibc/ELF.
+# This must be bunnylibc/ELF.
 linux* | k*bsd*-gnu | kopensolaris*-gnu | gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;

@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkfilechooserembed.h: Abstract sizing interface for file selector implementations
+/* BTK - The GIMP Toolkit
+ * btkfilechooserembed.h: Abstract sizing interface for file selector implementations
  * Copyright (C) 2004, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,39 +19,39 @@
  */
 
 #include "config.h"
-#include "gtkfilechooserembed.h"
-#include "gtkmarshalers.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkfilechooserembed.h"
+#include "btkmarshalers.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
-static void gtk_file_chooser_embed_class_init (gpointer g_iface);
-static void delegate_get_default_size         (GtkFileChooserEmbed *chooser_embed,
+static void btk_file_chooser_embed_class_init (gpointer g_iface);
+static void delegate_get_default_size         (BtkFileChooserEmbed *chooser_embed,
 					       gint                *default_width,
 					       gint                *default_height);
-static gboolean delegate_should_respond       (GtkFileChooserEmbed *chooser_embed);
-static void delegate_initial_focus            (GtkFileChooserEmbed *chooser_embed);
-static void delegate_default_size_changed     (GtkFileChooserEmbed *chooser_embed,
+static gboolean delegate_should_respond       (BtkFileChooserEmbed *chooser_embed);
+static void delegate_initial_focus            (BtkFileChooserEmbed *chooser_embed);
+static void delegate_default_size_changed     (BtkFileChooserEmbed *chooser_embed,
 					       gpointer             data);
-static void delegate_response_requested       (GtkFileChooserEmbed *chooser_embed,
+static void delegate_response_requested       (BtkFileChooserEmbed *chooser_embed,
 					       gpointer             data);
 
-static GtkFileChooserEmbed *
-get_delegate (GtkFileChooserEmbed *receiver)
+static BtkFileChooserEmbed *
+get_delegate (BtkFileChooserEmbed *receiver)
 {
-  return g_object_get_data (G_OBJECT (receiver), "gtk-file-chooser-embed-delegate");
+  return g_object_get_data (G_OBJECT (receiver), "btk-file-chooser-embed-delegate");
 }
 
 /**
- * _gtk_file_chooser_embed_delegate_iface_init:
- * @iface: a #GtkFileChoserEmbedIface structure
+ * _btk_file_chooser_embed_delegate_iface_init:
+ * @iface: a #BtkFileChoserEmbedIface structure
  * 
  * An interface-initialization function for use in cases where an object is
- * simply delegating the methods, signals of the #GtkFileChooserEmbed interface
- * to another object.  _gtk_file_chooser_embed_set_delegate() must be called on
+ * simply delegating the methods, signals of the #BtkFileChooserEmbed interface
+ * to another object.  _btk_file_chooser_embed_set_delegate() must be called on
  * each instance of the object so that the delegate object can be found.
  **/
 void
-_gtk_file_chooser_embed_delegate_iface_init (GtkFileChooserEmbedIface *iface)
+_btk_file_chooser_embed_delegate_iface_init (BtkFileChooserEmbedIface *iface)
 {
   iface->get_default_size = delegate_get_default_size;
   iface->should_respond = delegate_should_respond;
@@ -59,23 +59,23 @@ _gtk_file_chooser_embed_delegate_iface_init (GtkFileChooserEmbedIface *iface)
 }
 
 /**
- * _gtk_file_chooser_embed_set_delegate:
- * @receiver: a GOobject implementing #GtkFileChooserEmbed
- * @delegate: another GObject implementing #GtkFileChooserEmbed
+ * _btk_file_chooser_embed_set_delegate:
+ * @receiver: a GOobject implementing #BtkFileChooserEmbed
+ * @delegate: another GObject implementing #BtkFileChooserEmbed
  *
- * Establishes that calls on @receiver for #GtkFileChooser methods should be
- * delegated to @delegate, and that #GtkFileChooser signals emitted on @delegate
+ * Establishes that calls on @receiver for #BtkFileChooser methods should be
+ * delegated to @delegate, and that #BtkFileChooser signals emitted on @delegate
  * should be forwarded to @receiver. Must be used in conjunction with
- * _gtk_file_chooser_embed_delegate_iface_init().
+ * _btk_file_chooser_embed_delegate_iface_init().
  **/
 void
-_gtk_file_chooser_embed_set_delegate (GtkFileChooserEmbed *receiver,
-				      GtkFileChooserEmbed *delegate)
+_btk_file_chooser_embed_set_delegate (BtkFileChooserEmbed *receiver,
+				      BtkFileChooserEmbed *delegate)
 {
-  g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (receiver));
-  g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (delegate));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (receiver));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (delegate));
   
-  g_object_set_data (G_OBJECT (receiver), I_("gtk-file-chooser-embed-delegate"), delegate);
+  g_object_set_data (G_OBJECT (receiver), I_("btk-file-chooser-embed-delegate"), delegate);
 
   g_signal_connect (delegate, "default-size-changed",
 		    G_CALLBACK (delegate_default_size_changed), receiver);
@@ -86,34 +86,34 @@ _gtk_file_chooser_embed_set_delegate (GtkFileChooserEmbed *receiver,
 
 
 static void
-delegate_get_default_size (GtkFileChooserEmbed *chooser_embed,
+delegate_get_default_size (BtkFileChooserEmbed *chooser_embed,
 			   gint                *default_width,
 			   gint                *default_height)
 {
-  _gtk_file_chooser_embed_get_default_size (get_delegate (chooser_embed), default_width, default_height);
+  _btk_file_chooser_embed_get_default_size (get_delegate (chooser_embed), default_width, default_height);
 }
 
 static gboolean
-delegate_should_respond (GtkFileChooserEmbed *chooser_embed)
+delegate_should_respond (BtkFileChooserEmbed *chooser_embed)
 {
-  return _gtk_file_chooser_embed_should_respond (get_delegate (chooser_embed));
+  return _btk_file_chooser_embed_should_respond (get_delegate (chooser_embed));
 }
 
 static void
-delegate_initial_focus (GtkFileChooserEmbed *chooser_embed)
+delegate_initial_focus (BtkFileChooserEmbed *chooser_embed)
 {
-  _gtk_file_chooser_embed_initial_focus (get_delegate (chooser_embed));
+  _btk_file_chooser_embed_initial_focus (get_delegate (chooser_embed));
 }
 
 static void
-delegate_default_size_changed (GtkFileChooserEmbed *chooser_embed,
+delegate_default_size_changed (BtkFileChooserEmbed *chooser_embed,
 			       gpointer             data)
 {
   g_signal_emit_by_name (data, "default-size-changed");
 }
 
 static void
-delegate_response_requested (GtkFileChooserEmbed *chooser_embed,
+delegate_response_requested (BtkFileChooserEmbed *chooser_embed,
 			     gpointer             data)
 {
   g_signal_emit_by_name (data, "response-requested");
@@ -123,7 +123,7 @@ delegate_response_requested (GtkFileChooserEmbed *chooser_embed,
 /* publicly callable functions */
 
 GType
-_gtk_file_chooser_embed_get_type (void)
+_btk_file_chooser_embed_get_type (void)
 {
   static GType file_chooser_embed_type = 0;
 
@@ -131,67 +131,67 @@ _gtk_file_chooser_embed_get_type (void)
     {
       const GTypeInfo file_chooser_embed_info =
       {
-	sizeof (GtkFileChooserEmbedIface),  /* class_size */
+	sizeof (BtkFileChooserEmbedIface),  /* class_size */
 	NULL,                          /* base_init */
 	NULL,			       /* base_finalize */
-	(GClassInitFunc)gtk_file_chooser_embed_class_init, /* class_init */
+	(GClassInitFunc)btk_file_chooser_embed_class_init, /* class_init */
       };
 
       file_chooser_embed_type = g_type_register_static (G_TYPE_INTERFACE,
-							I_("GtkFileChooserEmbed"),
+							I_("BtkFileChooserEmbed"),
 							&file_chooser_embed_info, 0);
 
-      g_type_interface_add_prerequisite (file_chooser_embed_type, GTK_TYPE_WIDGET);
+      g_type_interface_add_prerequisite (file_chooser_embed_type, BTK_TYPE_WIDGET);
     }
 
   return file_chooser_embed_type;
 }
 
 static void
-gtk_file_chooser_embed_class_init (gpointer g_iface)
+btk_file_chooser_embed_class_init (gpointer g_iface)
 {
   GType iface_type = G_TYPE_FROM_INTERFACE (g_iface);
 
   g_signal_new (I_("default-size-changed"),
 		iface_type,
 		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GtkFileChooserEmbedIface, default_size_changed),
+		G_STRUCT_OFFSET (BtkFileChooserEmbedIface, default_size_changed),
 		NULL, NULL,
-		_gtk_marshal_VOID__VOID,
+		_btk_marshal_VOID__VOID,
 		G_TYPE_NONE, 0);
   g_signal_new (I_("response-requested"),
 		iface_type,
 		G_SIGNAL_RUN_LAST,
-		G_STRUCT_OFFSET (GtkFileChooserEmbedIface, response_requested),
+		G_STRUCT_OFFSET (BtkFileChooserEmbedIface, response_requested),
 		NULL, NULL,
-		_gtk_marshal_VOID__VOID,
+		_btk_marshal_VOID__VOID,
 		G_TYPE_NONE, 0);
 }
 
 void
-_gtk_file_chooser_embed_get_default_size (GtkFileChooserEmbed *chooser_embed,
+_btk_file_chooser_embed_get_default_size (BtkFileChooserEmbed *chooser_embed,
 					 gint                *default_width,
 					 gint                *default_height)
 {
-  g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (chooser_embed));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (chooser_embed));
   g_return_if_fail (default_width != NULL);
   g_return_if_fail (default_height != NULL);
 
-  GTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->get_default_size (chooser_embed, default_width, default_height);
+  BTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->get_default_size (chooser_embed, default_width, default_height);
 }
 
 gboolean
-_gtk_file_chooser_embed_should_respond (GtkFileChooserEmbed *chooser_embed)
+_btk_file_chooser_embed_should_respond (BtkFileChooserEmbed *chooser_embed)
 {
-  g_return_val_if_fail (GTK_IS_FILE_CHOOSER_EMBED (chooser_embed), FALSE);
+  g_return_val_if_fail (BTK_IS_FILE_CHOOSER_EMBED (chooser_embed), FALSE);
 
-  return GTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->should_respond (chooser_embed);
+  return BTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->should_respond (chooser_embed);
 }
 
 void
-_gtk_file_chooser_embed_initial_focus (GtkFileChooserEmbed *chooser_embed)
+_btk_file_chooser_embed_initial_focus (BtkFileChooserEmbed *chooser_embed)
 {
-  g_return_if_fail (GTK_IS_FILE_CHOOSER_EMBED (chooser_embed));
+  g_return_if_fail (BTK_IS_FILE_CHOOSER_EMBED (chooser_embed));
 
-  GTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->initial_focus (chooser_embed);
+  BTK_FILE_CHOOSER_EMBED_GET_IFACE (chooser_embed)->initial_focus (chooser_embed);
 }

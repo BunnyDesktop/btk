@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,77 +18,77 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_RADIO_MENU_ITEM_H__
-#define __GTK_RADIO_MENU_ITEM_H__
+#ifndef __BTK_RADIO_MENU_ITEM_H__
+#define __BTK_RADIO_MENU_ITEM_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkcheckmenuitem.h>
+#include <btk/btkcheckmenuitem.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_RADIO_MENU_ITEM	      (gtk_radio_menu_item_get_type ())
-#define GTK_RADIO_MENU_ITEM(obj)	      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_RADIO_MENU_ITEM, GtkRadioMenuItem))
-#define GTK_RADIO_MENU_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_RADIO_MENU_ITEM, GtkRadioMenuItemClass))
-#define GTK_IS_RADIO_MENU_ITEM(obj)	      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_RADIO_MENU_ITEM))
-#define GTK_IS_RADIO_MENU_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_RADIO_MENU_ITEM))
-#define GTK_RADIO_MENU_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_RADIO_MENU_ITEM, GtkRadioMenuItemClass))
+#define BTK_TYPE_RADIO_MENU_ITEM	      (btk_radio_menu_item_get_type ())
+#define BTK_RADIO_MENU_ITEM(obj)	      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_RADIO_MENU_ITEM, BtkRadioMenuItem))
+#define BTK_RADIO_MENU_ITEM_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_RADIO_MENU_ITEM, BtkRadioMenuItemClass))
+#define BTK_IS_RADIO_MENU_ITEM(obj)	      (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_RADIO_MENU_ITEM))
+#define BTK_IS_RADIO_MENU_ITEM_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_RADIO_MENU_ITEM))
+#define BTK_RADIO_MENU_ITEM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_RADIO_MENU_ITEM, BtkRadioMenuItemClass))
 
 
-typedef struct _GtkRadioMenuItem       GtkRadioMenuItem;
-typedef struct _GtkRadioMenuItemClass  GtkRadioMenuItemClass;
+typedef struct _BtkRadioMenuItem       BtkRadioMenuItem;
+typedef struct _BtkRadioMenuItemClass  BtkRadioMenuItemClass;
 
-struct _GtkRadioMenuItem
+struct _BtkRadioMenuItem
 {
-  GtkCheckMenuItem check_menu_item;
+  BtkCheckMenuItem check_menu_item;
 
   GSList *GSEAL (group);
 };
 
-struct _GtkRadioMenuItemClass
+struct _BtkRadioMenuItemClass
 {
-  GtkCheckMenuItemClass parent_class;
+  BtkCheckMenuItemClass parent_class;
 
   /* Signals */
-  void (*group_changed) (GtkRadioMenuItem *radio_menu_item);
+  void (*group_changed) (BtkRadioMenuItem *radio_menu_item);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_radio_menu_item_get_type	         (void) G_GNUC_CONST;
+GType      btk_radio_menu_item_get_type	         (void) G_GNUC_CONST;
 
-GtkWidget* gtk_radio_menu_item_new                           (GSList           *group);
-GtkWidget* gtk_radio_menu_item_new_with_label                (GSList           *group,
+BtkWidget* btk_radio_menu_item_new                           (GSList           *group);
+BtkWidget* btk_radio_menu_item_new_with_label                (GSList           *group,
 							      const gchar      *label);
-GtkWidget* gtk_radio_menu_item_new_with_mnemonic             (GSList           *group,
+BtkWidget* btk_radio_menu_item_new_with_mnemonic             (GSList           *group,
 							      const gchar      *label);
-GtkWidget* gtk_radio_menu_item_new_from_widget               (GtkRadioMenuItem *group);
-GtkWidget *gtk_radio_menu_item_new_with_mnemonic_from_widget (GtkRadioMenuItem *group,
+BtkWidget* btk_radio_menu_item_new_from_widget               (BtkRadioMenuItem *group);
+BtkWidget *btk_radio_menu_item_new_with_mnemonic_from_widget (BtkRadioMenuItem *group,
 							      const gchar      *label);
-GtkWidget *gtk_radio_menu_item_new_with_label_from_widget    (GtkRadioMenuItem *group,
+BtkWidget *btk_radio_menu_item_new_with_label_from_widget    (BtkRadioMenuItem *group,
 							      const gchar      *label);
-GSList*    gtk_radio_menu_item_get_group                     (GtkRadioMenuItem *radio_menu_item);
-void       gtk_radio_menu_item_set_group                     (GtkRadioMenuItem *radio_menu_item,
+GSList*    btk_radio_menu_item_get_group                     (BtkRadioMenuItem *radio_menu_item);
+void       btk_radio_menu_item_set_group                     (BtkRadioMenuItem *radio_menu_item,
 							      GSList           *group);
 
-#ifndef GTK_DISABLE_DEPRECATED
-#define gtk_radio_menu_item_group gtk_radio_menu_item_get_group
+#ifndef BTK_DISABLE_DEPRECATED
+#define btk_radio_menu_item_group btk_radio_menu_item_get_group
 #endif
 
 G_END_DECLS
 
-#endif /* __GTK_RADIO_MENU_ITEM_H__ */
+#endif /* __BTK_RADIO_MENU_ITEM_H__ */

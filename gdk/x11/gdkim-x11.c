@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -30,28 +30,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gdkx.h"
-#include "gdk.h"		/* For gdk_flush() */
-#include "gdkpixmap.h"
-#include "gdkinternals.h"
-#include "gdkdisplay-x11.h"
-#include "gdkalias.h"
+#include "bdkx.h"
+#include "bdk.h"		/* For bdk_flush() */
+#include "bdkpixmap.h"
+#include "bdkinternals.h"
+#include "bdkdisplay-x11.h"
+#include "bdkalias.h"
 
 
 /* If this variable is FALSE, it indicates that we should
  * avoid trying to use multibyte conversion functions and
  * assume everything is 1-byte per character
  */
-static gboolean gdk_use_mb;
+static gboolean bdk_use_mb;
 
 void
-_gdk_x11_initialize_locale (void)
+_bdk_x11_initialize_locale (void)
 {
   wchar_t result;
   gchar *current_locale;
   static char *last_locale = NULL;
 
-  gdk_use_mb = FALSE;
+  bdk_use_mb = FALSE;
 
   current_locale = setlocale (LC_ALL, NULL);
 
@@ -66,7 +66,7 @@ _gdk_x11_initialize_locale (void)
 
   if ((strcmp (current_locale, "C")) && (strcmp (current_locale, "POSIX")))
     {
-      gdk_use_mb = TRUE;
+      bdk_use_mb = TRUE;
 
 #ifndef X_LOCALE
       /* Detect ancient GNU libc, where mb == UTF8. Not useful unless it's
@@ -81,42 +81,42 @@ _gdk_x11_initialize_locale (void)
 	  if ((strlen (current_locale) < 4) ||
 	      g_ascii_strcasecmp (current_locale + strlen(current_locale) - 4,
 				  "utf8"))
-	    gdk_use_mb = FALSE;
+	    bdk_use_mb = FALSE;
 	}
 #endif /* X_LOCALE */
     }
 
-  GDK_NOTE (XIM,
+  BDK_NOTE (XIM,
 	    g_message ("%s multi-byte string functions.", 
-		       gdk_use_mb ? "Using" : "Not using"));
+		       bdk_use_mb ? "Using" : "Not using"));
   
   return;
 }
 
 gchar*
-gdk_set_locale (void)
+bdk_set_locale (void)
 {
   if (!setlocale (LC_ALL,""))
     g_warning ("locale not supported by C library");
 
-  _gdk_x11_initialize_locale ();
+  _bdk_x11_initialize_locale ();
   
   return setlocale (LC_ALL, NULL);
 }
 
-static GdkDisplay *
+static BdkDisplay *
 find_a_display (void)
 {
-  GdkDisplay *display = gdk_display_get_default ();
+  BdkDisplay *display = bdk_display_get_default ();
 
   if (!display)
-    display = _gdk_displays->data;
+    display = _bdk_displays->data;
 
   return display;
 }
 
 /**
- * gdk_wcstombs:
+ * bdk_wcstombs:
  * @src: a wide character string.
  * 
  * Converts a wide character string to a multi-byte string.
@@ -128,17 +128,17 @@ find_a_display (void)
  * longer needed.
  **/
 gchar *
-gdk_wcstombs (const GdkWChar *src)
+bdk_wcstombs (const BdkWChar *src)
 {
   gchar *mbstr;
 
-  if (gdk_use_mb)
+  if (bdk_use_mb)
     {
-      GdkDisplay *display = find_a_display ();
-      Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+      BdkDisplay *display = find_a_display ();
+      Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
       XTextProperty tpr;
 
-      if (sizeof(wchar_t) != sizeof(GdkWChar))
+      if (sizeof(wchar_t) != sizeof(BdkWChar))
 	{
 	  gint i;
 	  wchar_t *src_alt;
@@ -164,10 +164,10 @@ gdk_wcstombs (const GdkWChar *src)
 	      return NULL;
 	    }
 	  
-	  src = (GdkWChar *)tmp;
+	  src = (BdkWChar *)tmp;
 	}
       /*
-       * We must copy the string into an area allocated by glib, because
+       * We must copy the string into an area allocated by bunnylib, because
        * the string 'tpr.value' must be freed by XFree().
        */
       mbstr = g_strdup((gchar *)tpr.value);
@@ -190,7 +190,7 @@ gdk_wcstombs (const GdkWChar *src)
   return mbstr;
 }
 /**
- * gdk_mbstowcs:
+ * bdk_mbstowcs:
  * @dest: the space to place the converted wide character string into.
  * @src: the multi-byte string to convert, which must be nul-terminated.
  * @dest_max: the maximum number of wide characters to place in @dest.
@@ -204,12 +204,12 @@ gdk_wcstombs (const GdkWChar *src)
  **/
   
 gint
-gdk_mbstowcs (GdkWChar *dest, const gchar *src, gint dest_max)
+bdk_mbstowcs (BdkWChar *dest, const gchar *src, gint dest_max)
 {
-  if (gdk_use_mb)
+  if (bdk_use_mb)
     {
-      GdkDisplay *display = find_a_display ();
-      Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
+      BdkDisplay *display = find_a_display ();
+      Display *xdisplay = BDK_DISPLAY_XDISPLAY (display);
       XTextProperty tpr;
       wchar_t **wstrs, *wstr_src;
       gint num_wstrs;
@@ -248,5 +248,5 @@ gdk_mbstowcs (GdkWChar *dest, const gchar *src, gint dest_max)
     }
 }
 
-#define __GDK_IM_X11_C__
-#include "gdkaliasdef.c"
+#define __BDK_IM_X11_C__
+#include "bdkaliasdef.c"

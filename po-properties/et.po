@@ -1,9 +1,9 @@
-# GTK+ omaduste eesti keele tõlge.
-# Estonian translation of GTK+-properties.
+# BTK+ omaduste eesti keele tõlge.
+# Estonian translation of BTK+-properties.
 #
 # Copyright (C) 1999, 2002-2006 Free Software Foundation, Inc.
-# Copyright (C) 2007,2009 The GNOME Project.
-# This file is distributed under the same license as the gtk package.
+# Copyright (C) 2007,2009 The BUNNY Project.
+# This file is distributed under the same license as the btk package.
 #
 # Lauris Kaplinski <lauris@ariman.ee>, 1999.
 # Tõivo Leedjärv <toivo@linux.ee>, 2002-2004.
@@ -13,13 +13,13 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: gtk+-properties 2.22\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gtk%"
+"Project-Id-Version: btk+-properties 2.22\n"
+"Report-Msgid-Bugs-To: http://bugzilla.bunny.org/enter_bug.cgi?product=btk%"
 "2b&component=general\n"
 "POT-Creation-Date: 2010-08-29 18:04+0000\n"
 "PO-Revision-Date: 2010-02-01 09:03+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
-"Language-Team: Estonian <gnome-et@linux.ee>\n"
+"Language-Team: Estonian <bunny-et@linux.ee>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,14 +29,14 @@ msgstr ""
 msgid "Default Display"
 msgstr "Vaikimisi kuva"
 
-msgid "The default display for GDK"
-msgstr "GDK vaikimisi kuva"
+msgid "The default display for BDK"
+msgstr "BDK vaikimisi kuva"
 
 msgid "Screen"
 msgstr "Ekraan"
 
-msgid "the GdkScreen for the renderer"
-msgstr "Renderdaja GdkScreen"
+msgid "the BdkScreen for the renderer"
+msgstr "Renderdaja BdkScreen"
 
 msgid "Font options"
 msgstr "Kirjatüübi valikud"
@@ -128,10 +128,10 @@ msgstr "Logo"
 
 msgid ""
 "A logo for the about box. If this is not set, it defaults to "
-"gtk_window_get_default_icon_list()"
+"btk_window_get_default_icon_list()"
 msgstr ""
 "Programmi andmete kasti logo. Kui seda pole määratud, siis vaikimisi on "
-"selleks gtk_window_get_default_icon_list()"
+"selleks btk_window_get_default_icon_list()"
 
 msgid "Logo Icon Name"
 msgstr "Logoikooni nimi"
@@ -229,11 +229,11 @@ msgstr "On tähtis"
 
 msgid ""
 "Whether the action is considered important. When TRUE, toolitem proxies for "
-"this action show text in GTK_TOOLBAR_BOTH_HORIZ mode."
+"this action show text in BTK_TOOLBAR_BOTH_HORIZ mode."
 msgstr ""
 "Kas see toiming on hinnatud tähtsaks. Kui see valik on märgitud, siis selle "
 "toimingu puhul kuvavad tööriistakirjete proksid teksti "
-"GTK_TOOLBAR_BOTH_HORIZ režiimis."
+"BTK_TOOLBAR_BOTH_HORIZ režiimis."
 
 msgid "Hide if empty"
 msgstr "Peidetakse kui on tühi"
@@ -257,7 +257,7 @@ msgid "Action Group"
 msgstr "Tegevuste grupp"
 
 msgid ""
-"The GtkActionGroup this GtkAction is associated with, or NULL (for internal "
+"The BtkActionGroup this BtkAction is associated with, or NULL (for internal "
 "use)."
 msgstr ""
 
@@ -555,7 +555,7 @@ msgid "Pack type"
 msgstr ""
 
 msgid ""
-"A GtkPackType indicating whether the child is packed with reference to the "
+"A BtkPackType indicating whether the child is packed with reference to the "
 "start or end of the parent"
 msgstr ""
 
@@ -627,7 +627,7 @@ msgid "Default Spacing"
 msgstr ""
 
 #, fuzzy
-msgid "Extra space to add for GTK_CAN_DEFAULT buttons"
+msgid "Extra space to add for BTK_CAN_DEFAULT buttons"
 msgstr "CAN_DEFAULT nuppudele lisatav täiendav ruum"
 
 msgid "Default Outside Spacing"
@@ -635,7 +635,7 @@ msgstr ""
 
 #, fuzzy
 msgid ""
-"Extra space to add for GTK_CAN_DEFAULT buttons that is always drawn outside "
+"Extra space to add for BTK_CAN_DEFAULT buttons that is always drawn outside "
 "the border"
 msgstr "CAN_DEFAULT nuppudele lisatav täiendav ruum"
 
@@ -847,8 +847,8 @@ msgstr "Lahtri taustavärv stringina"
 msgid "Cell background color"
 msgstr "Lahtri taustavärv"
 
-msgid "Cell background color as a GdkColor"
-msgstr "Lahtri taustavärv GdkColor vormingus"
+msgid "Cell background color as a BdkColor"
+msgstr "Lahtri taustavärv BdkColor vormingus"
 
 msgid "Editing"
 msgstr ""
@@ -931,7 +931,7 @@ msgstr ""
 msgid "Size"
 msgstr "Suurus"
 
-msgid "The GtkIconSize value that specifies the size of the rendered icon"
+msgid "The BtkIconSize value that specifies the size of the rendered icon"
 msgstr ""
 
 msgid "Detail"
@@ -1017,7 +1017,7 @@ msgstr "Kas valitud kirjatüübi laadi näidatakse sildil või mitte"
 msgid "Pulse of the spinner"
 msgstr "Printeri nimi"
 
-msgid "The GtkIconSize value that specifies the size of the rendered spinner"
+msgid "The BtkIconSize value that specifies the size of the rendered spinner"
 msgstr ""
 
 msgid "Text to render"
@@ -1050,8 +1050,8 @@ msgstr "Taustavärv stringina"
 msgid "Background color"
 msgstr "Taustavärv"
 
-msgid "Background color as a GdkColor"
-msgstr "Taustavärv GdkColor väärtusena"
+msgid "Background color as a BdkColor"
+msgstr "Taustavärv BdkColor väärtusena"
 
 msgid "Foreground color name"
 msgstr "Esiplaanivärvi nimi"
@@ -1062,8 +1062,8 @@ msgstr "Esiplaanivärv stringina"
 msgid "Foreground color"
 msgstr "Esiplaanivärv"
 
-msgid "Foreground color as a GdkColor"
-msgstr "Esiplaanivärv GdkColor väärtusena"
+msgid "Foreground color as a BdkColor"
+msgstr "Esiplaanivärv BdkColor väärtusena"
 
 msgid "Editable"
 msgstr "Muudetav"
@@ -1077,8 +1077,8 @@ msgstr "Kirjatüüp"
 msgid "Font description as a string, e.g. \"Sans Italic 12\""
 msgstr ""
 
-msgid "Font description as a PangoFontDescription struct"
-msgstr "Kirjatüübi kirjeldus PangoFontDescription struktuurina"
+msgid "Font description as a BangoFontDescription struct"
+msgstr "Kirjatüübi kirjeldus BangoFontDescription struktuurina"
 
 msgid "Font family"
 msgstr "Kirjaperekond"
@@ -1136,7 +1136,7 @@ msgid "Language"
 msgstr "Keel"
 
 msgid ""
-"The language this text is in, as an ISO code. Pango can use this as a hint "
+"The language this text is in, as an ISO code. Bango can use this as a hint "
 "when rendering the text. If you don't understand this parameter, you "
 "probably don't need it"
 msgstr ""
@@ -1731,7 +1731,7 @@ msgstr ""
 
 msgid ""
 "The fraction of total entry width to move the progress bouncing block for "
-"each call to gtk_entry_progress_pulse()"
+"each call to btk_entry_progress_pulse()"
 msgstr ""
 
 msgid "Primary pixbuf"
@@ -1859,7 +1859,7 @@ msgstr "Teisene tekst"
 
 #, fuzzy
 msgid "IM module"
-msgstr "GTK moodulid"
+msgstr "BTK moodulid"
 
 #, fuzzy
 msgid "Which IM module should be used"
@@ -1985,7 +1985,7 @@ msgstr "Laiendaja sildi tekst"
 msgid "Use markup"
 msgstr ""
 
-msgid "The text of the label includes XML markup. See pango_parse_markup()"
+msgid "The text of the label includes XML markup. See bango_parse_markup()"
 msgstr ""
 
 msgid "Space to put between the label and the child"
@@ -2176,8 +2176,8 @@ msgstr "Kas valitud kirjatüübi suurust näidatakse sildil või mitte"
 msgid "The string that represents this font"
 msgstr "Seda kirjatüüpi esitav X-string"
 
-msgid "The GdkFont that is currently selected"
-msgstr "Hetkel valitud GdkFont"
+msgid "The BdkFont that is currently selected"
+msgstr "Hetkel valitud BdkFont"
 
 msgid "Preview text"
 msgstr "Näidistekst"
@@ -2263,7 +2263,7 @@ msgstr ""
 msgid "Markup column"
 msgstr ""
 
-msgid "Model column used to retrieve the text if using Pango markup"
+msgid "Model column used to retrieve the text if using Bango markup"
 msgstr ""
 
 msgid "Icon View Model"
@@ -2343,25 +2343,25 @@ msgstr "Valikukasti läbipaistmatus"
 msgid "Pixbuf"
 msgstr ""
 
-msgid "A GdkPixbuf to display"
+msgid "A BdkPixbuf to display"
 msgstr ""
 
 msgid "Pixmap"
 msgstr ""
 
-msgid "A GdkPixmap to display"
+msgid "A BdkPixmap to display"
 msgstr ""
 
 msgid "Image"
 msgstr "Pilt"
 
-msgid "A GdkImage to display"
+msgid "A BdkImage to display"
 msgstr ""
 
 msgid "Mask"
 msgstr "Mask"
 
-msgid "Mask bitmap to use with GdkImage or GdkPixmap"
+msgid "Mask bitmap to use with BdkImage or BdkPixmap"
 msgstr ""
 
 msgid "Filename to load and display"
@@ -2391,7 +2391,7 @@ msgstr "Nimekise ikooni jaoks kasutatav piksli suurus"
 msgid "Animation"
 msgstr "Animatsioon"
 
-msgid "GdkPixbufAnimation to display"
+msgid "BdkPixbufAnimation to display"
 msgstr ""
 
 msgid "Storage type"
@@ -2454,7 +2454,7 @@ msgstr "Joondus"
 msgid ""
 "The alignment of the lines in the text of the label relative to each other. "
 "This does NOT affect the alignment of the label within its allocation. See "
-"GtkMisc::xalign for that"
+"BtkMisc::xalign for that"
 msgstr ""
 
 msgid "Pattern"
@@ -2530,13 +2530,13 @@ msgstr ""
 msgid "Horizontal adjustment"
 msgstr ""
 
-msgid "The GtkAdjustment for the horizontal position"
+msgid "The BtkAdjustment for the horizontal position"
 msgstr ""
 
 msgid "Vertical adjustment"
 msgstr ""
 
-msgid "The GtkAdjustment for the vertical position"
+msgid "The BtkAdjustment for the vertical position"
 msgstr ""
 
 msgid "Width"
@@ -2796,7 +2796,7 @@ msgstr "Teatedialoogi peamine tekst"
 msgid "Use Markup"
 msgstr ""
 
-msgid "The primary text of the title includes Pango markup."
+msgid "The primary text of the title includes Bango markup."
 msgstr ""
 
 msgid "Secondary Text"
@@ -2808,7 +2808,7 @@ msgstr "Teatedialoogi teisene tekst"
 msgid "Use Markup in secondary"
 msgstr ""
 
-msgid "The secondary text includes Pango markup."
+msgid "The secondary text includes Bango markup."
 msgstr ""
 
 msgid "The image"
@@ -2819,7 +2819,7 @@ msgstr "Pilt"
 msgid "Message area"
 msgstr "Teate liik"
 
-msgid "GtkVBox that holds the dialog's primary and secondary labels"
+msgid "BtkVBox that holds the dialog's primary and secondary labels"
 msgstr ""
 
 msgid "Y align"
@@ -3190,13 +3190,13 @@ msgstr ""
 msgid "Default Page Setup"
 msgstr "Vaikimisi lehe sätted"
 
-msgid "The GtkPageSetup used by default"
+msgid "The BtkPageSetup used by default"
 msgstr ""
 
 msgid "Print Settings"
 msgstr "Printimissätted"
 
-msgid "The GtkPrintSettings used for initializing the dialog"
+msgid "The BtkPrintSettings used for initializing the dialog"
 msgstr ""
 
 msgid "Job Name"
@@ -3287,7 +3287,7 @@ msgstr ""
 msgid "Embed Page Setup"
 msgstr "Lehekülje sätted"
 
-msgid "TRUE if page setup combos are embedded in GtkPrintDialog"
+msgid "TRUE if page setup combos are embedded in BtkPrintDialog"
 msgstr ""
 
 #, fuzzy
@@ -3298,14 +3298,14 @@ msgstr "Lehekülgede arv"
 msgid "The number of pages that will be printed."
 msgstr "Dokumendis olevate lehekülgede arv."
 
-msgid "The GtkPageSetup to use"
+msgid "The BtkPageSetup to use"
 msgstr ""
 
 msgid "Selected Printer"
 msgstr "Valitud printer"
 
-msgid "The GtkPrinter which is selected"
-msgstr "Valitud GtkPrinter"
+msgid "The BtkPrinter which is selected"
+msgstr "Valitud BtkPrinter"
 
 msgid "Manual Capabilites"
 msgstr ""
@@ -3321,14 +3321,14 @@ msgstr "Kas silt joonistatakse valitud kirjatüübiga või mitte"
 msgid "Whether the application has a selection"
 msgstr "Kas tegevus on lubatud või mitte."
 
-msgid "TRUE if page setup combos are embedded in GtkPrintUnixDialog"
+msgid "TRUE if page setup combos are embedded in BtkPrintUnixDialog"
 msgstr ""
 
 msgid "Activity mode"
 msgstr ""
 
 msgid ""
-"If TRUE, the GtkProgress is in activity mode, meaning that it signals "
+"If TRUE, the BtkProgress is in activity mode, meaning that it signals "
 "something is happening, but not how much of the activity is finished. This "
 "is used when you're doing something but don't know how long it will take."
 msgstr ""
@@ -3339,7 +3339,7 @@ msgstr "Näidata tekstina"
 msgid "Whether the progress is shown as text."
 msgstr "Kas edenemisriba näidatakse tekstina."
 
-msgid "The GtkAdjustment connected to the progress bar (Deprecated)"
+msgid "The BtkAdjustment connected to the progress bar (Deprecated)"
 msgstr ""
 
 msgid "Bar style"
@@ -3430,7 +3430,7 @@ msgid "The value"
 msgstr "Väärtus"
 
 msgid ""
-"The value returned by gtk_radio_action_get_current_value() when this action "
+"The value returned by btk_radio_action_get_current_value() when this action "
 "is the current action of its group."
 msgstr ""
 
@@ -3460,7 +3460,7 @@ msgstr ""
 msgid "How the range should be updated on the screen"
 msgstr ""
 
-msgid "The GtkAdjustment that contains the current value of this range object"
+msgid "The BtkAdjustment that contains the current value of this range object"
 msgstr ""
 
 msgid "Inverted"
@@ -3595,7 +3595,7 @@ msgid "Show Private"
 msgstr "Privaatsete näitamine"
 
 msgid "Whether the private items should be displayed"
-msgstr "Kas privaatkirjeid näidatakse või mitte"
+msgstr "Kas privabatkirjeid näidatakse või mitte"
 
 msgid "Show Tooltips"
 msgstr "Vihjete näitamine"
@@ -3645,7 +3645,7 @@ msgid "The full path to the file to be used to store and read the list"
 msgstr ""
 
 msgid ""
-"The maximum number of items to be returned by gtk_recent_manager_get_items()"
+"The maximum number of items to be returned by btk_recent_manager_get_items()"
 msgstr ""
 
 msgid "The size of the recently used resources list"
@@ -3712,7 +3712,7 @@ msgid "The icon size"
 msgstr "Ikooni suurus"
 
 msgid ""
-"The GtkAdjustment that contains the current value of this scale button object"
+"The BtkAdjustment that contains the current value of this scale button object"
 msgstr ""
 
 msgid "Icons"
@@ -3894,14 +3894,14 @@ msgstr "Vaikimisi kasutatava kirjatüübi nimi"
 msgid "Icon Sizes"
 msgstr "Ikoonide suurused"
 
-msgid "List of icon sizes (gtk-menu=16,16:gtk-button=20,20..."
+msgid "List of icon sizes (btk-menu=16,16:btk-button=20,20..."
 msgstr ""
 
-msgid "GTK Modules"
-msgstr "GTK moodulid"
+msgid "BTK Modules"
+msgstr "BTK moodulid"
 
-msgid "List of currently active GTK modules"
-msgstr "Nimekiri hetkel aktiivsetest GTK moodulitest"
+msgid "List of currently active BTK modules"
+msgstr "Nimekiri hetkel aktiivsetest BTK moodulitest"
 
 msgid "Xft Antialias"
 msgstr ""
@@ -3991,7 +3991,7 @@ msgstr ""
 msgid "Expand timeout"
 msgstr ""
 
-msgid "Expand value for timeouts, when a widget is expanding a new region"
+msgid "Expand value for timeouts, when a widget is expanding a new rebunnyion"
 msgstr ""
 
 msgid "Color scheme"
@@ -4061,13 +4061,13 @@ msgstr ""
 msgid "Default file chooser backend"
 msgstr ""
 
-msgid "Name of the GtkFileChooser backend to use by default"
+msgid "Name of the BtkFileChooser backend to use by default"
 msgstr ""
 
 msgid "Default print backend"
 msgstr ""
 
-msgid "List of the GtkPrintBackend backends to use by default"
+msgid "List of the BtkPrintBackend backends to use by default"
 msgstr ""
 
 msgid "Default command to run when displaying a print preview"
@@ -4228,7 +4228,7 @@ msgstr "Lehekülgede arv"
 
 msgid ""
 "The number of steps for the spinner to complete a full loop. The animation "
-"will complete a full cycle in one second by default (see #GtkSpinner:cycle-"
+"will complete a full cycle in one second by default (see #BtkSpinner:cycle-"
 "duration)."
 msgstr ""
 
@@ -4438,7 +4438,7 @@ msgstr "Sildi nimi"
 msgid "Name used to refer to the text tag. NULL for anonymous tags"
 msgstr "Sildile viitamiseks kasutatav nimi. NULL tähendab anonüümset silti"
 
-msgid "Background color as a (possibly unallocated) GdkColor"
+msgid "Background color as a (possibly unallocated) BdkColor"
 msgstr ""
 
 msgid "Background full height"
@@ -4455,7 +4455,7 @@ msgstr ""
 msgid "Bitmap to use as a mask when drawing the text background"
 msgstr ""
 
-msgid "Foreground color as a (possibly unallocated) GdkColor"
+msgid "Foreground color as a (possibly unallocated) BdkColor"
 msgstr ""
 
 msgid "Foreground stipple mask"
@@ -4470,34 +4470,34 @@ msgstr "Teksti suund"
 msgid "Text direction, e.g. right-to-left or left-to-right"
 msgstr "Teksti suund, kas vasakult-paremale või paremalt vasakule"
 
-msgid "Font style as a PangoStyle, e.g. PANGO_STYLE_ITALIC"
+msgid "Font style as a BangoStyle, e.g. BANGO_STYLE_ITALIC"
 msgstr ""
 
-msgid "Font variant as a PangoVariant, e.g. PANGO_VARIANT_SMALL_CAPS"
+msgid "Font variant as a BangoVariant, e.g. BANGO_VARIANT_SMALL_CAPS"
 msgstr ""
 
 msgid ""
-"Font weight as an integer, see predefined values in PangoWeight; for "
-"example, PANGO_WEIGHT_BOLD"
+"Font weight as an integer, see predefined values in BangoWeight; for "
+"example, BANGO_WEIGHT_BOLD"
 msgstr ""
 
-msgid "Font stretch as a PangoStretch, e.g. PANGO_STRETCH_CONDENSED"
+msgid "Font stretch as a BangoStretch, e.g. BANGO_STRETCH_CONDENSED"
 msgstr ""
 
-msgid "Font size in Pango units"
-msgstr "Kirja suurus Pango ühikutes"
+msgid "Font size in Bango units"
+msgstr "Kirja suurus Bango ühikutes"
 
 msgid ""
 "Font size as a scale factor relative to the default font size. This properly "
-"adapts to theme changes etc. so is recommended. Pango predefines some scales "
-"such as PANGO_SCALE_X_LARGE"
+"adapts to theme changes etc. so is recommended. Bango predefines some scales "
+"such as BANGO_SCALE_X_LARGE"
 msgstr ""
 
 msgid "Left, right, or center justification"
 msgstr "Joondamine vasakule, paremale või keskele"
 
 msgid ""
-"The language this text is in, as an ISO code. Pango can use this as a hint "
+"The language this text is in, as an ISO code. Bango can use this as a hint "
 "when rendering the text. If not set, an appropriate default will be used."
 msgstr ""
 
@@ -4521,7 +4521,7 @@ msgstr "Lõigu taane pikslites"
 
 msgid ""
 "Offset of text above the baseline (below the baseline if rise is negative) "
-"in Pango units"
+"in Bango units"
 msgstr ""
 
 msgid "Pixels above lines"
@@ -4567,8 +4567,8 @@ msgstr "Lõigu taustavärvi nimi stringina"
 msgid "Paragraph background color"
 msgstr "Lõigu taustavärv"
 
-msgid "Paragraph background color as a (possibly unallocated) GdkColor"
-msgstr "Lõigu taustavärvi nimi GdkColor (võimalik, et eraldamata) väärtusena"
+msgid "Paragraph background color as a (possibly unallocated) BdkColor"
+msgstr "Lõigu taustavärvi nimi BdkColor (võimalik, et eraldamata) väärtusena"
 
 msgid "Margin Accumulates"
 msgstr ""
@@ -4825,7 +4825,7 @@ msgstr "Ikooni ja sildi vahel olev ruum pikslites"
 
 msgid ""
 "Whether the toolbar item is considered important. When TRUE, toolbar buttons "
-"show text in GTK_TOOLBAR_BOTH_HORIZ mode"
+"show text in BTK_TOOLBAR_BOTH_HORIZ mode"
 msgstr ""
 
 #, fuzzy
@@ -4961,7 +4961,7 @@ msgstr ""
 msgid "Fixed Height Mode"
 msgstr ""
 
-msgid "Speeds up GtkTreeView by assuming that all rows have the same height"
+msgid "Speeds up BtkTreeView by assuming that all rows have the same height"
 msgstr ""
 
 msgid "Hover Selection"
@@ -5168,12 +5168,12 @@ msgid "An XML string describing the merged UI"
 msgstr ""
 
 msgid ""
-"The GtkAdjustment that determines the values of the horizontal position for "
+"The BtkAdjustment that determines the values of the horizontal position for "
 "this viewport"
 msgstr ""
 
 msgid ""
-"The GtkAdjustment that determines the values of the vertical position for "
+"The BtkAdjustment that determines the values of the vertical position for "
 "this viewport"
 msgstr ""
 
@@ -5273,7 +5273,7 @@ msgstr "Vidina laad, mis sisaldab andmeid vidina välimuse kohta (värvused jms)
 msgid "Events"
 msgstr ""
 
-msgid "The event mask that decides what kind of GdkEvents this widget gets"
+msgid "The event mask that decides what kind of BdkEvents this widget gets"
 msgstr ""
 
 msgid "Extension events"
@@ -5285,7 +5285,7 @@ msgstr ""
 msgid "No show all"
 msgstr ""
 
-msgid "Whether gtk_widget_show_all() should not affect this widget"
+msgid "Whether btk_widget_show_all() should not affect this widget"
 msgstr ""
 
 msgid "Whether this widget has a tooltip"
@@ -5504,7 +5504,7 @@ msgstr ""
 msgid "Focus in Toplevel"
 msgstr ""
 
-msgid "Whether the input focus is within this GtkWindow"
+msgid "Whether the input focus is within this BtkWindow"
 msgstr ""
 
 msgid "Type hint"

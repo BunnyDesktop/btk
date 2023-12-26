@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,567 +18,567 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_ENUMS_H__
-#define __GTK_ENUMS_H__
+#ifndef __BTK_ENUMS_H__
+#define __BTK_ENUMS_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 
 /* Anchor types */
 typedef enum
 {
-  GTK_ANCHOR_CENTER,
-  GTK_ANCHOR_NORTH,
-  GTK_ANCHOR_NORTH_WEST,
-  GTK_ANCHOR_NORTH_EAST,
-  GTK_ANCHOR_SOUTH,
-  GTK_ANCHOR_SOUTH_WEST,
-  GTK_ANCHOR_SOUTH_EAST,
-  GTK_ANCHOR_WEST,
-  GTK_ANCHOR_EAST,
-  GTK_ANCHOR_N		= GTK_ANCHOR_NORTH,
-  GTK_ANCHOR_NW		= GTK_ANCHOR_NORTH_WEST,
-  GTK_ANCHOR_NE		= GTK_ANCHOR_NORTH_EAST,
-  GTK_ANCHOR_S		= GTK_ANCHOR_SOUTH,
-  GTK_ANCHOR_SW		= GTK_ANCHOR_SOUTH_WEST,
-  GTK_ANCHOR_SE		= GTK_ANCHOR_SOUTH_EAST,
-  GTK_ANCHOR_W		= GTK_ANCHOR_WEST,
-  GTK_ANCHOR_E		= GTK_ANCHOR_EAST
-} GtkAnchorType;
+  BTK_ANCHOR_CENTER,
+  BTK_ANCHOR_NORTH,
+  BTK_ANCHOR_NORTH_WEST,
+  BTK_ANCHOR_NORTH_EAST,
+  BTK_ANCHOR_SOUTH,
+  BTK_ANCHOR_SOUTH_WEST,
+  BTK_ANCHOR_SOUTH_EAST,
+  BTK_ANCHOR_WEST,
+  BTK_ANCHOR_EAST,
+  BTK_ANCHOR_N		= BTK_ANCHOR_NORTH,
+  BTK_ANCHOR_NW		= BTK_ANCHOR_NORTH_WEST,
+  BTK_ANCHOR_NE		= BTK_ANCHOR_NORTH_EAST,
+  BTK_ANCHOR_S		= BTK_ANCHOR_SOUTH,
+  BTK_ANCHOR_SW		= BTK_ANCHOR_SOUTH_WEST,
+  BTK_ANCHOR_SE		= BTK_ANCHOR_SOUTH_EAST,
+  BTK_ANCHOR_W		= BTK_ANCHOR_WEST,
+  BTK_ANCHOR_E		= BTK_ANCHOR_EAST
+} BtkAnchorType;
 
 /* Arrow placement */
 typedef enum
 {
-  GTK_ARROWS_BOTH,
-  GTK_ARROWS_START,
-  GTK_ARROWS_END
-} GtkArrowPlacement;
+  BTK_ARROWS_BOTH,
+  BTK_ARROWS_START,
+  BTK_ARROWS_END
+} BtkArrowPlacement;
 
 /* Arrow types */
 typedef enum
 {
-  GTK_ARROW_UP,
-  GTK_ARROW_DOWN,
-  GTK_ARROW_LEFT,
-  GTK_ARROW_RIGHT,
-  GTK_ARROW_NONE
-} GtkArrowType;
+  BTK_ARROW_UP,
+  BTK_ARROW_DOWN,
+  BTK_ARROW_LEFT,
+  BTK_ARROW_RIGHT,
+  BTK_ARROW_NONE
+} BtkArrowType;
 
 /* Attach options (for tables) */
 typedef enum
 {
-  GTK_EXPAND = 1 << 0,
-  GTK_SHRINK = 1 << 1,
-  GTK_FILL   = 1 << 2
-} GtkAttachOptions;
+  BTK_EXPAND = 1 << 0,
+  BTK_SHRINK = 1 << 1,
+  BTK_FILL   = 1 << 2
+} BtkAttachOptions;
 
 /* Button box styles */
 typedef enum
 {
-  GTK_BUTTONBOX_DEFAULT_STYLE,
-  GTK_BUTTONBOX_SPREAD,
-  GTK_BUTTONBOX_EDGE,
-  GTK_BUTTONBOX_START,
-  GTK_BUTTONBOX_END,
-  GTK_BUTTONBOX_CENTER
-} GtkButtonBoxStyle;
+  BTK_BUTTONBOX_DEFAULT_STYLE,
+  BTK_BUTTONBOX_SPREAD,
+  BTK_BUTTONBOX_EDGE,
+  BTK_BUTTONBOX_START,
+  BTK_BUTTONBOX_END,
+  BTK_BUTTONBOX_CENTER
+} BtkButtonBoxStyle;
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /* Curve types */
 typedef enum
 {
-  GTK_CURVE_TYPE_LINEAR,       /* linear interpolation */
-  GTK_CURVE_TYPE_SPLINE,       /* spline interpolation */
-  GTK_CURVE_TYPE_FREE          /* free form curve */
-} GtkCurveType;
+  BTK_CURVE_TYPE_LINEAR,       /* linear interpolation */
+  BTK_CURVE_TYPE_SPLINE,       /* spline interpolation */
+  BTK_CURVE_TYPE_FREE          /* free form curve */
+} BtkCurveType;
 #endif
 
 typedef enum
 {
-  GTK_DELETE_CHARS,
-  GTK_DELETE_WORD_ENDS,           /* delete only the portion of the word to the
+  BTK_DELETE_CHARS,
+  BTK_DELETE_WORD_ENDS,           /* delete only the portion of the word to the
                                    * left/right of cursor if we're in the middle
                                    * of a word */
-  GTK_DELETE_WORDS,
-  GTK_DELETE_DISPLAY_LINES,
-  GTK_DELETE_DISPLAY_LINE_ENDS,
-  GTK_DELETE_PARAGRAPH_ENDS,      /* like C-k in Emacs (or its reverse) */
-  GTK_DELETE_PARAGRAPHS,          /* C-k in pico, kill whole line */
-  GTK_DELETE_WHITESPACE           /* M-\ in Emacs */
-} GtkDeleteType;
+  BTK_DELETE_WORDS,
+  BTK_DELETE_DISPLAY_LINES,
+  BTK_DELETE_DISPLAY_LINE_ENDS,
+  BTK_DELETE_PARAGRAPH_ENDS,      /* like C-k in Emacs (or its reverse) */
+  BTK_DELETE_PARAGRAPHS,          /* C-k in pico, kill whole line */
+  BTK_DELETE_WHITESPACE           /* M-\ in Emacs */
+} BtkDeleteType;
 
 /* Focus movement types */
 typedef enum
 {
-  GTK_DIR_TAB_FORWARD,
-  GTK_DIR_TAB_BACKWARD,
-  GTK_DIR_UP,
-  GTK_DIR_DOWN,
-  GTK_DIR_LEFT,
-  GTK_DIR_RIGHT
-} GtkDirectionType;
+  BTK_DIR_TAB_FORWARD,
+  BTK_DIR_TAB_BACKWARD,
+  BTK_DIR_UP,
+  BTK_DIR_DOWN,
+  BTK_DIR_LEFT,
+  BTK_DIR_RIGHT
+} BtkDirectionType;
 
 /* Expander styles */
 typedef enum
 {
-  GTK_EXPANDER_COLLAPSED,
-  GTK_EXPANDER_SEMI_COLLAPSED,
-  GTK_EXPANDER_SEMI_EXPANDED,
-  GTK_EXPANDER_EXPANDED
-} GtkExpanderStyle;
+  BTK_EXPANDER_COLLAPSED,
+  BTK_EXPANDER_SEMI_COLLAPSED,
+  BTK_EXPANDER_SEMI_EXPANDED,
+  BTK_EXPANDER_EXPANDED
+} BtkExpanderStyle;
 
 /* Built-in stock icon sizes */
 typedef enum
 {
-  GTK_ICON_SIZE_INVALID,
-  GTK_ICON_SIZE_MENU,
-  GTK_ICON_SIZE_SMALL_TOOLBAR,
-  GTK_ICON_SIZE_LARGE_TOOLBAR,
-  GTK_ICON_SIZE_BUTTON,
-  GTK_ICON_SIZE_DND,
-  GTK_ICON_SIZE_DIALOG
-} GtkIconSize;
+  BTK_ICON_SIZE_INVALID,
+  BTK_ICON_SIZE_MENU,
+  BTK_ICON_SIZE_SMALL_TOOLBAR,
+  BTK_ICON_SIZE_LARGE_TOOLBAR,
+  BTK_ICON_SIZE_BUTTON,
+  BTK_ICON_SIZE_DND,
+  BTK_ICON_SIZE_DIALOG
+} BtkIconSize;
 
 /* automatic sensitivity */
 typedef enum
 {
-  GTK_SENSITIVITY_AUTO,
-  GTK_SENSITIVITY_ON,
-  GTK_SENSITIVITY_OFF
-} GtkSensitivityType;
+  BTK_SENSITIVITY_AUTO,
+  BTK_SENSITIVITY_ON,
+  BTK_SENSITIVITY_OFF
+} BtkSensitivityType;
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /* side types */
 typedef enum
 {
-  GTK_SIDE_TOP,
-  GTK_SIDE_BOTTOM,
-  GTK_SIDE_LEFT,
-  GTK_SIDE_RIGHT
-} GtkSideType;
-#endif /* GTK_DISABLE_DEPRECATED */
+  BTK_SIDE_TOP,
+  BTK_SIDE_BOTTOM,
+  BTK_SIDE_LEFT,
+  BTK_SIDE_RIGHT
+} BtkSideType;
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* Reading directions for text */
 typedef enum
 {
-  GTK_TEXT_DIR_NONE,
-  GTK_TEXT_DIR_LTR,
-  GTK_TEXT_DIR_RTL
-} GtkTextDirection;
+  BTK_TEXT_DIR_NONE,
+  BTK_TEXT_DIR_LTR,
+  BTK_TEXT_DIR_RTL
+} BtkTextDirection;
 
 /* justification for label and maybe other widgets (text?) */
 typedef enum
 {
-  GTK_JUSTIFY_LEFT,
-  GTK_JUSTIFY_RIGHT,
-  GTK_JUSTIFY_CENTER,
-  GTK_JUSTIFY_FILL
-} GtkJustification;
+  BTK_JUSTIFY_LEFT,
+  BTK_JUSTIFY_RIGHT,
+  BTK_JUSTIFY_CENTER,
+  BTK_JUSTIFY_FILL
+} BtkJustification;
 
-#ifndef GTK_DISABLE_DEPRECATED
-/* GtkPatternSpec match types */
+#ifndef BTK_DISABLE_DEPRECATED
+/* BtkPatternSpec match types */
 typedef enum
 {
-  GTK_MATCH_ALL,       /* "*A?A*" */
-  GTK_MATCH_ALL_TAIL,  /* "*A?AA" */
-  GTK_MATCH_HEAD,      /* "AAAA*" */
-  GTK_MATCH_TAIL,      /* "*AAAA" */
-  GTK_MATCH_EXACT,     /* "AAAAA" */
-  GTK_MATCH_LAST
-} GtkMatchType;
-#endif /* GTK_DISABLE_DEPRECATED */
+  BTK_MATCH_ALL,       /* "*A?A*" */
+  BTK_MATCH_ALL_TAIL,  /* "*A?AA" */
+  BTK_MATCH_HEAD,      /* "AAAA*" */
+  BTK_MATCH_TAIL,      /* "*AAAA" */
+  BTK_MATCH_EXACT,     /* "AAAAA" */
+  BTK_MATCH_LAST
+} BtkMatchType;
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* Menu keyboard movement types */
 typedef enum
 {
-  GTK_MENU_DIR_PARENT,
-  GTK_MENU_DIR_CHILD,
-  GTK_MENU_DIR_NEXT,
-  GTK_MENU_DIR_PREV
-} GtkMenuDirectionType;
+  BTK_MENU_DIR_PARENT,
+  BTK_MENU_DIR_CHILD,
+  BTK_MENU_DIR_NEXT,
+  BTK_MENU_DIR_PREV
+} BtkMenuDirectionType;
 
 /**
- * GtkMessageType:
- * @GTK_MESSAGE_INFO: Informational message
- * @GTK_MESSAGE_WARNING: Nonfatal warning message
- * @GTK_MESSAGE_QUESTION: Question requiring a choice
- * @GTK_MESSAGE_ERROR: Fatal error message
- * @GTK_MESSAGE_OTHER: None of the above, doesn't get an icon
+ * BtkMessageType:
+ * @BTK_MESSAGE_INFO: Informational message
+ * @BTK_MESSAGE_WARNING: Nonfatal warning message
+ * @BTK_MESSAGE_QUESTION: Question requiring a choice
+ * @BTK_MESSAGE_ERROR: Fatal error message
+ * @BTK_MESSAGE_OTHER: None of the above, doesn't get an icon
  *
  * The type of message being displayed in the dialog.
  */
 typedef enum
 {
-  GTK_MESSAGE_INFO,
-  GTK_MESSAGE_WARNING,
-  GTK_MESSAGE_QUESTION,
-  GTK_MESSAGE_ERROR,
-  GTK_MESSAGE_OTHER
-} GtkMessageType;
+  BTK_MESSAGE_INFO,
+  BTK_MESSAGE_WARNING,
+  BTK_MESSAGE_QUESTION,
+  BTK_MESSAGE_ERROR,
+  BTK_MESSAGE_OTHER
+} BtkMessageType;
 
 typedef enum
 {
-  GTK_PIXELS,
-  GTK_INCHES,
-  GTK_CENTIMETERS
-} GtkMetricType;
+  BTK_PIXELS,
+  BTK_INCHES,
+  BTK_CENTIMETERS
+} BtkMetricType;
 
 typedef enum
 {
-  GTK_MOVEMENT_LOGICAL_POSITIONS, /* move by forw/back graphemes */
-  GTK_MOVEMENT_VISUAL_POSITIONS,  /* move by left/right graphemes */
-  GTK_MOVEMENT_WORDS,             /* move by forward/back words */
-  GTK_MOVEMENT_DISPLAY_LINES,     /* move up/down lines (wrapped lines) */
-  GTK_MOVEMENT_DISPLAY_LINE_ENDS, /* move to either end of a line */
-  GTK_MOVEMENT_PARAGRAPHS,        /* move up/down paragraphs (newline-ended lines) */
-  GTK_MOVEMENT_PARAGRAPH_ENDS,    /* move to either end of a paragraph */
-  GTK_MOVEMENT_PAGES,	          /* move by pages */
-  GTK_MOVEMENT_BUFFER_ENDS,       /* move to ends of the buffer */
-  GTK_MOVEMENT_HORIZONTAL_PAGES   /* move horizontally by pages */
-} GtkMovementStep;
+  BTK_MOVEMENT_LOGICAL_POSITIONS, /* move by forw/back graphemes */
+  BTK_MOVEMENT_VISUAL_POSITIONS,  /* move by left/right graphemes */
+  BTK_MOVEMENT_WORDS,             /* move by forward/back words */
+  BTK_MOVEMENT_DISPLAY_LINES,     /* move up/down lines (wrapped lines) */
+  BTK_MOVEMENT_DISPLAY_LINE_ENDS, /* move to either end of a line */
+  BTK_MOVEMENT_PARAGRAPHS,        /* move up/down paragraphs (newline-ended lines) */
+  BTK_MOVEMENT_PARAGRAPH_ENDS,    /* move to either end of a paragraph */
+  BTK_MOVEMENT_PAGES,	          /* move by pages */
+  BTK_MOVEMENT_BUFFER_ENDS,       /* move to ends of the buffer */
+  BTK_MOVEMENT_HORIZONTAL_PAGES   /* move horizontally by pages */
+} BtkMovementStep;
 
 typedef enum
 {
-  GTK_SCROLL_STEPS,
-  GTK_SCROLL_PAGES,
-  GTK_SCROLL_ENDS,
-  GTK_SCROLL_HORIZONTAL_STEPS,
-  GTK_SCROLL_HORIZONTAL_PAGES,
-  GTK_SCROLL_HORIZONTAL_ENDS
-} GtkScrollStep;
+  BTK_SCROLL_STEPS,
+  BTK_SCROLL_PAGES,
+  BTK_SCROLL_ENDS,
+  BTK_SCROLL_HORIZONTAL_STEPS,
+  BTK_SCROLL_HORIZONTAL_PAGES,
+  BTK_SCROLL_HORIZONTAL_ENDS
+} BtkScrollStep;
 
 /* Orientation for toolbars, etc. */
 typedef enum
 {
-  GTK_ORIENTATION_HORIZONTAL,
-  GTK_ORIENTATION_VERTICAL
-} GtkOrientation;
+  BTK_ORIENTATION_HORIZONTAL,
+  BTK_ORIENTATION_VERTICAL
+} BtkOrientation;
 
 /* Placement type for scrolled window */
 typedef enum
 {
-  GTK_CORNER_TOP_LEFT,
-  GTK_CORNER_BOTTOM_LEFT,
-  GTK_CORNER_TOP_RIGHT,
-  GTK_CORNER_BOTTOM_RIGHT
-} GtkCornerType;
+  BTK_CORNER_TOP_LEFT,
+  BTK_CORNER_BOTTOM_LEFT,
+  BTK_CORNER_TOP_RIGHT,
+  BTK_CORNER_BOTTOM_RIGHT
+} BtkCornerType;
 
 /* Packing types (for boxes) */
 typedef enum
 {
-  GTK_PACK_START,
-  GTK_PACK_END
-} GtkPackType;
+  BTK_PACK_START,
+  BTK_PACK_END
+} BtkPackType;
 
 /* priorities for path lookups */
 typedef enum
 {
-  GTK_PATH_PRIO_LOWEST      = 0,
-  GTK_PATH_PRIO_GTK	    = 4,
-  GTK_PATH_PRIO_APPLICATION = 8,
-  GTK_PATH_PRIO_THEME       = 10,
-  GTK_PATH_PRIO_RC          = 12,
-  GTK_PATH_PRIO_HIGHEST     = 15
-} GtkPathPriorityType;
-#define GTK_PATH_PRIO_MASK 0x0f
+  BTK_PATH_PRIO_LOWEST      = 0,
+  BTK_PATH_PRIO_BTK	    = 4,
+  BTK_PATH_PRIO_APPLICATION = 8,
+  BTK_PATH_PRIO_THEME       = 10,
+  BTK_PATH_PRIO_RC          = 12,
+  BTK_PATH_PRIO_HIGHEST     = 15
+} BtkPathPriorityType;
+#define BTK_PATH_PRIO_MASK 0x0f
 
 /* widget path types */
 typedef enum
 {
-  GTK_PATH_WIDGET,
-  GTK_PATH_WIDGET_CLASS,
-  GTK_PATH_CLASS
-} GtkPathType;
+  BTK_PATH_WIDGET,
+  BTK_PATH_WIDGET_CLASS,
+  BTK_PATH_CLASS
+} BtkPathType;
 
 /* Scrollbar policy types (for scrolled windows) */
 typedef enum
 {
-  GTK_POLICY_ALWAYS,
-  GTK_POLICY_AUTOMATIC,
-  GTK_POLICY_NEVER
-} GtkPolicyType;
+  BTK_POLICY_ALWAYS,
+  BTK_POLICY_AUTOMATIC,
+  BTK_POLICY_NEVER
+} BtkPolicyType;
 
 typedef enum
 {
-  GTK_POS_LEFT,
-  GTK_POS_RIGHT,
-  GTK_POS_TOP,
-  GTK_POS_BOTTOM
-} GtkPositionType;
+  BTK_POS_LEFT,
+  BTK_POS_RIGHT,
+  BTK_POS_TOP,
+  BTK_POS_BOTTOM
+} BtkPositionType;
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 typedef enum
 {
-  GTK_PREVIEW_COLOR,
-  GTK_PREVIEW_GRAYSCALE
-} GtkPreviewType;
-#endif /* GTK_DISABLE_DEPRECATED */
+  BTK_PREVIEW_COLOR,
+  BTK_PREVIEW_GRAYSCALE
+} BtkPreviewType;
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* Style for buttons */
 typedef enum
 {
-  GTK_RELIEF_NORMAL,
-  GTK_RELIEF_HALF,
-  GTK_RELIEF_NONE
-} GtkReliefStyle;
+  BTK_RELIEF_NORMAL,
+  BTK_RELIEF_HALF,
+  BTK_RELIEF_NONE
+} BtkReliefStyle;
 
 /* Resize type */
 typedef enum
 {
-  GTK_RESIZE_PARENT,		/* Pass resize request to the parent */
-  GTK_RESIZE_QUEUE,		/* Queue resizes on this widget */
-  GTK_RESIZE_IMMEDIATE		/* Perform the resizes now */
-} GtkResizeMode;
+  BTK_RESIZE_PARENT,		/* Pass resize request to the parent */
+  BTK_RESIZE_QUEUE,		/* Queue resizes on this widget */
+  BTK_RESIZE_IMMEDIATE		/* Perform the resizes now */
+} BtkResizeMode;
 
-#ifndef GTK_DISABLE_DEPRECATED
+#ifndef BTK_DISABLE_DEPRECATED
 /* signal run types */
 typedef enum			/*< flags >*/
 {
-  GTK_RUN_FIRST      = G_SIGNAL_RUN_FIRST,
-  GTK_RUN_LAST       = G_SIGNAL_RUN_LAST,
-  GTK_RUN_BOTH       = (GTK_RUN_FIRST | GTK_RUN_LAST),
-  GTK_RUN_NO_RECURSE = G_SIGNAL_NO_RECURSE,
-  GTK_RUN_ACTION     = G_SIGNAL_ACTION,
-  GTK_RUN_NO_HOOKS   = G_SIGNAL_NO_HOOKS
-} GtkSignalRunType;
-#endif /* GTK_DISABLE_DEPRECATED */
+  BTK_RUN_FIRST      = G_SIGNAL_RUN_FIRST,
+  BTK_RUN_LAST       = G_SIGNAL_RUN_LAST,
+  BTK_RUN_BOTH       = (BTK_RUN_FIRST | BTK_RUN_LAST),
+  BTK_RUN_NO_RECURSE = G_SIGNAL_NO_RECURSE,
+  BTK_RUN_ACTION     = G_SIGNAL_ACTION,
+  BTK_RUN_NO_HOOKS   = G_SIGNAL_NO_HOOKS
+} BtkSignalRunType;
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* scrolling types */
 typedef enum
 {
-  GTK_SCROLL_NONE,
-  GTK_SCROLL_JUMP,
-  GTK_SCROLL_STEP_BACKWARD,
-  GTK_SCROLL_STEP_FORWARD,
-  GTK_SCROLL_PAGE_BACKWARD,
-  GTK_SCROLL_PAGE_FORWARD,
-  GTK_SCROLL_STEP_UP,
-  GTK_SCROLL_STEP_DOWN,
-  GTK_SCROLL_PAGE_UP,
-  GTK_SCROLL_PAGE_DOWN,
-  GTK_SCROLL_STEP_LEFT,
-  GTK_SCROLL_STEP_RIGHT,
-  GTK_SCROLL_PAGE_LEFT,
-  GTK_SCROLL_PAGE_RIGHT,
-  GTK_SCROLL_START,
-  GTK_SCROLL_END
-} GtkScrollType;
+  BTK_SCROLL_NONE,
+  BTK_SCROLL_JUMP,
+  BTK_SCROLL_STEP_BACKWARD,
+  BTK_SCROLL_STEP_FORWARD,
+  BTK_SCROLL_PAGE_BACKWARD,
+  BTK_SCROLL_PAGE_FORWARD,
+  BTK_SCROLL_STEP_UP,
+  BTK_SCROLL_STEP_DOWN,
+  BTK_SCROLL_PAGE_UP,
+  BTK_SCROLL_PAGE_DOWN,
+  BTK_SCROLL_STEP_LEFT,
+  BTK_SCROLL_STEP_RIGHT,
+  BTK_SCROLL_PAGE_LEFT,
+  BTK_SCROLL_PAGE_RIGHT,
+  BTK_SCROLL_START,
+  BTK_SCROLL_END
+} BtkScrollType;
 
 /* list selection modes */
 typedef enum
 {
-  GTK_SELECTION_NONE,                             /* Nothing can be selected */
-  GTK_SELECTION_SINGLE,
-  GTK_SELECTION_BROWSE,
-  GTK_SELECTION_MULTIPLE,
-  GTK_SELECTION_EXTENDED = GTK_SELECTION_MULTIPLE /* Deprecated */
-} GtkSelectionMode;
+  BTK_SELECTION_NONE,                             /* Nothing can be selected */
+  BTK_SELECTION_SINGLE,
+  BTK_SELECTION_BROWSE,
+  BTK_SELECTION_MULTIPLE,
+  BTK_SELECTION_EXTENDED = BTK_SELECTION_MULTIPLE /* Deprecated */
+} BtkSelectionMode;
 
 /* Shadow types */
 typedef enum
 {
-  GTK_SHADOW_NONE,
-  GTK_SHADOW_IN,
-  GTK_SHADOW_OUT,
-  GTK_SHADOW_ETCHED_IN,
-  GTK_SHADOW_ETCHED_OUT
-} GtkShadowType;
+  BTK_SHADOW_NONE,
+  BTK_SHADOW_IN,
+  BTK_SHADOW_OUT,
+  BTK_SHADOW_ETCHED_IN,
+  BTK_SHADOW_ETCHED_OUT
+} BtkShadowType;
 
 /* Widget states */
 typedef enum
 {
-  GTK_STATE_NORMAL,
-  GTK_STATE_ACTIVE,
-  GTK_STATE_PRELIGHT,
-  GTK_STATE_SELECTED,
-  GTK_STATE_INSENSITIVE
-} GtkStateType;
+  BTK_STATE_NORMAL,
+  BTK_STATE_ACTIVE,
+  BTK_STATE_PRELIGHT,
+  BTK_STATE_SELECTED,
+  BTK_STATE_INSENSITIVE
+} BtkStateType;
 
-#if !defined(GTK_DISABLE_DEPRECATED) || defined (GTK_MENU_INTERNALS)
+#if !defined(BTK_DISABLE_DEPRECATED) || defined (BTK_MENU_INTERNALS)
 /* Directions for submenus */
 typedef enum
 {
-  GTK_DIRECTION_LEFT,
-  GTK_DIRECTION_RIGHT
-} GtkSubmenuDirection;
+  BTK_DIRECTION_LEFT,
+  BTK_DIRECTION_RIGHT
+} BtkSubmenuDirection;
 
 /* Placement of submenus */
 typedef enum
 {
-  GTK_TOP_BOTTOM,
-  GTK_LEFT_RIGHT
-} GtkSubmenuPlacement;
-#endif /* GTK_DISABLE_DEPRECATED */
+  BTK_TOP_BOTTOM,
+  BTK_LEFT_RIGHT
+} BtkSubmenuPlacement;
+#endif /* BTK_DISABLE_DEPRECATED */
 
 /* Style for toolbars */
 typedef enum
 {
-  GTK_TOOLBAR_ICONS,
-  GTK_TOOLBAR_TEXT,
-  GTK_TOOLBAR_BOTH,
-  GTK_TOOLBAR_BOTH_HORIZ
-} GtkToolbarStyle;
+  BTK_TOOLBAR_ICONS,
+  BTK_TOOLBAR_TEXT,
+  BTK_TOOLBAR_BOTH,
+  BTK_TOOLBAR_BOTH_HORIZ
+} BtkToolbarStyle;
 
 /* Data update types (for ranges) */
 typedef enum
 {
-  GTK_UPDATE_CONTINUOUS,
-  GTK_UPDATE_DISCONTINUOUS,
-  GTK_UPDATE_DELAYED
-} GtkUpdateType;
+  BTK_UPDATE_CONTINUOUS,
+  BTK_UPDATE_DISCONTINUOUS,
+  BTK_UPDATE_DELAYED
+} BtkUpdateType;
 
 /* Generic visibility flags */
 typedef enum
 {
-  GTK_VISIBILITY_NONE,
-  GTK_VISIBILITY_PARTIAL,
-  GTK_VISIBILITY_FULL
-} GtkVisibility;
+  BTK_VISIBILITY_NONE,
+  BTK_VISIBILITY_PARTIAL,
+  BTK_VISIBILITY_FULL
+} BtkVisibility;
 
 /* Window position types */
 typedef enum
 {
-  GTK_WIN_POS_NONE,
-  GTK_WIN_POS_CENTER,
-  GTK_WIN_POS_MOUSE,
-  GTK_WIN_POS_CENTER_ALWAYS,
-  GTK_WIN_POS_CENTER_ON_PARENT
-} GtkWindowPosition;
+  BTK_WIN_POS_NONE,
+  BTK_WIN_POS_CENTER,
+  BTK_WIN_POS_MOUSE,
+  BTK_WIN_POS_CENTER_ALWAYS,
+  BTK_WIN_POS_CENTER_ON_PARENT
+} BtkWindowPosition;
 
 /* Window types */
 typedef enum
 {
-  GTK_WINDOW_TOPLEVEL,
-  GTK_WINDOW_POPUP
-} GtkWindowType;
+  BTK_WINDOW_TOPLEVEL,
+  BTK_WINDOW_POPUP
+} BtkWindowType;
 
 /* Text wrap */
 typedef enum
 {
-  GTK_WRAP_NONE,
-  GTK_WRAP_CHAR,
-  GTK_WRAP_WORD,
-  GTK_WRAP_WORD_CHAR
-} GtkWrapMode;
+  BTK_WRAP_NONE,
+  BTK_WRAP_CHAR,
+  BTK_WRAP_WORD,
+  BTK_WRAP_WORD_CHAR
+} BtkWrapMode;
 
 /* How to sort */
 typedef enum
 {
-  GTK_SORT_ASCENDING,
-  GTK_SORT_DESCENDING
-} GtkSortType;
+  BTK_SORT_ASCENDING,
+  BTK_SORT_DESCENDING
+} BtkSortType;
 
-/* Style for gtk input method preedit/status */
+/* Style for btk input method preedit/status */
 typedef enum
 {
-  GTK_IM_PREEDIT_NOTHING,
-  GTK_IM_PREEDIT_CALLBACK,
-  GTK_IM_PREEDIT_NONE
-} GtkIMPreeditStyle;
-
-typedef enum
-{
-  GTK_IM_STATUS_NOTHING,
-  GTK_IM_STATUS_CALLBACK,
-  GTK_IM_STATUS_NONE
-} GtkIMStatusStyle;
+  BTK_IM_PREEDIT_NOTHING,
+  BTK_IM_PREEDIT_CALLBACK,
+  BTK_IM_PREEDIT_NONE
+} BtkIMPreeditStyle;
 
 typedef enum
 {
-  GTK_PACK_DIRECTION_LTR,
-  GTK_PACK_DIRECTION_RTL,
-  GTK_PACK_DIRECTION_TTB,
-  GTK_PACK_DIRECTION_BTT
-} GtkPackDirection;
+  BTK_IM_STATUS_NOTHING,
+  BTK_IM_STATUS_CALLBACK,
+  BTK_IM_STATUS_NONE
+} BtkIMStatusStyle;
 
 typedef enum
 {
-  GTK_PRINT_PAGES_ALL,
-  GTK_PRINT_PAGES_CURRENT,
-  GTK_PRINT_PAGES_RANGES,
-  GTK_PRINT_PAGES_SELECTION
-} GtkPrintPages;
+  BTK_PACK_DIRECTION_LTR,
+  BTK_PACK_DIRECTION_RTL,
+  BTK_PACK_DIRECTION_TTB,
+  BTK_PACK_DIRECTION_BTT
+} BtkPackDirection;
 
 typedef enum
 {
-  GTK_PAGE_SET_ALL,
-  GTK_PAGE_SET_EVEN,
-  GTK_PAGE_SET_ODD
-} GtkPageSet;
+  BTK_PRINT_PAGES_ALL,
+  BTK_PRINT_PAGES_CURRENT,
+  BTK_PRINT_PAGES_RANGES,
+  BTK_PRINT_PAGES_SELECTION
+} BtkPrintPages;
 
 typedef enum
 {
-  GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM, /*< nick=lrtb >*/
-  GTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP, /*< nick=lrbt >*/
-  GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_TOP_TO_BOTTOM, /*< nick=rltb >*/
-  GTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_BOTTOM_TO_TOP, /*< nick=rlbt >*/
-  GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_LEFT_TO_RIGHT, /*< nick=tblr >*/
-  GTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_RIGHT_TO_LEFT, /*< nick=tbrl >*/
-  GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_LEFT_TO_RIGHT, /*< nick=btlr >*/
-  GTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_RIGHT_TO_LEFT  /*< nick=btrl >*/
-} GtkNumberUpLayout;
+  BTK_PAGE_SET_ALL,
+  BTK_PAGE_SET_EVEN,
+  BTK_PAGE_SET_ODD
+} BtkPageSet;
 
 typedef enum
 {
-  GTK_PAGE_ORIENTATION_PORTRAIT,
-  GTK_PAGE_ORIENTATION_LANDSCAPE,
-  GTK_PAGE_ORIENTATION_REVERSE_PORTRAIT,
-  GTK_PAGE_ORIENTATION_REVERSE_LANDSCAPE
-} GtkPageOrientation;
+  BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_TOP_TO_BOTTOM, /*< nick=lrtb >*/
+  BTK_NUMBER_UP_LAYOUT_LEFT_TO_RIGHT_BOTTOM_TO_TOP, /*< nick=lrbt >*/
+  BTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_TOP_TO_BOTTOM, /*< nick=rltb >*/
+  BTK_NUMBER_UP_LAYOUT_RIGHT_TO_LEFT_BOTTOM_TO_TOP, /*< nick=rlbt >*/
+  BTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_LEFT_TO_RIGHT, /*< nick=tblr >*/
+  BTK_NUMBER_UP_LAYOUT_TOP_TO_BOTTOM_RIGHT_TO_LEFT, /*< nick=tbrl >*/
+  BTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_LEFT_TO_RIGHT, /*< nick=btlr >*/
+  BTK_NUMBER_UP_LAYOUT_BOTTOM_TO_TOP_RIGHT_TO_LEFT  /*< nick=btrl >*/
+} BtkNumberUpLayout;
 
 typedef enum
 {
-  GTK_PRINT_QUALITY_LOW,
-  GTK_PRINT_QUALITY_NORMAL,
-  GTK_PRINT_QUALITY_HIGH,
-  GTK_PRINT_QUALITY_DRAFT
-} GtkPrintQuality;
+  BTK_PAGE_ORIENTATION_PORTRAIT,
+  BTK_PAGE_ORIENTATION_LANDSCAPE,
+  BTK_PAGE_ORIENTATION_REVERSE_PORTRAIT,
+  BTK_PAGE_ORIENTATION_REVERSE_LANDSCAPE
+} BtkPageOrientation;
 
 typedef enum
 {
-  GTK_PRINT_DUPLEX_SIMPLEX,
-  GTK_PRINT_DUPLEX_HORIZONTAL,
-  GTK_PRINT_DUPLEX_VERTICAL
-} GtkPrintDuplex;
+  BTK_PRINT_QUALITY_LOW,
+  BTK_PRINT_QUALITY_NORMAL,
+  BTK_PRINT_QUALITY_HIGH,
+  BTK_PRINT_QUALITY_DRAFT
+} BtkPrintQuality;
+
+typedef enum
+{
+  BTK_PRINT_DUPLEX_SIMPLEX,
+  BTK_PRINT_DUPLEX_HORIZONTAL,
+  BTK_PRINT_DUPLEX_VERTICAL
+} BtkPrintDuplex;
 
 
 typedef enum
 {
-  GTK_UNIT_PIXEL,
-  GTK_UNIT_POINTS,
-  GTK_UNIT_INCH,
-  GTK_UNIT_MM
-} GtkUnit;
+  BTK_UNIT_PIXEL,
+  BTK_UNIT_POINTS,
+  BTK_UNIT_INCH,
+  BTK_UNIT_MM
+} BtkUnit;
 
 typedef enum
 {
-  GTK_TREE_VIEW_GRID_LINES_NONE,
-  GTK_TREE_VIEW_GRID_LINES_HORIZONTAL,
-  GTK_TREE_VIEW_GRID_LINES_VERTICAL,
-  GTK_TREE_VIEW_GRID_LINES_BOTH
-} GtkTreeViewGridLines;
+  BTK_TREE_VIEW_GRID_LINES_NONE,
+  BTK_TREE_VIEW_GRID_LINES_HORIZONTAL,
+  BTK_TREE_VIEW_GRID_LINES_VERTICAL,
+  BTK_TREE_VIEW_GRID_LINES_BOTH
+} BtkTreeViewGridLines;
 
 typedef enum
 {
-  GTK_DRAG_RESULT_SUCCESS,
-  GTK_DRAG_RESULT_NO_TARGET,
-  GTK_DRAG_RESULT_USER_CANCELLED,
-  GTK_DRAG_RESULT_TIMEOUT_EXPIRED,
-  GTK_DRAG_RESULT_GRAB_BROKEN,
-  GTK_DRAG_RESULT_ERROR
-} GtkDragResult;
+  BTK_DRAG_RESULT_SUCCESS,
+  BTK_DRAG_RESULT_NO_TARGET,
+  BTK_DRAG_RESULT_USER_CANCELLED,
+  BTK_DRAG_RESULT_TIMEOUT_EXPIRED,
+  BTK_DRAG_RESULT_GRAB_BROKEN,
+  BTK_DRAG_RESULT_ERROR
+} BtkDragResult;
 
 G_END_DECLS
 
-#endif /* __GTK_ENUMS_H__ */
+#endif /* __BTK_ENUMS_H__ */

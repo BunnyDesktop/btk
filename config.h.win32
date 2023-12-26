@@ -5,17 +5,17 @@
 /* always defined to indicate that i18n is enabled */
 #define ENABLE_NLS 1
 
-/* Define if gio can sniff image data */
-/* #undef GDK_PIXBUF_USE_GIO_MIME */
+/* Define if bunnyio can sniff image data */
+/* #undef BDK_PIXBUF_USE_BUNNYIO_MIME */
 
 /* The prefix for our gettext translation domains. */
-#define GETTEXT_PACKAGE "gtk20"
+#define GETTEXT_PACKAGE "btk20"
 
 /* Define if debugging is enabled */
-#define GTK_COMPILED_WITH_DEBUGGING "yes"
+#define BTK_COMPILED_WITH_DEBUGGING "yes"
 
 /* Define the location where the catalogs will be installed */
-#define GTK_LOCALEDIR "NONE/share/locale"
+#define BTK_LOCALEDIR "NONE/share/locale"
 
 /* Define to 1 if you have the `bind_textdomain_codeset' function. */
 #define HAVE_BIND_TEXTDOMAIN_CODESET 1
@@ -254,16 +254,16 @@
 #endif
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "http://bugzilla.gnome.org/enter_bug.cgi?product=gtk%2B"
+#define PACKAGE_BUGREPORT "http://bugzilla.bunny.org/enter_bug.cgi?product=btk%2B"
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "gtk+"
+#define PACKAGE_NAME "btk+"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "gtk+ 2.24.33"
+#define PACKAGE_STRING "btk+ 2.24.33"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "gtk+"
+#define PACKAGE_TARNAME "btk+"
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "2.24.33"
@@ -274,8 +274,8 @@
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
 
-/* Define to 1 if gmodule works and should be used */
-#define USE_GMODULE 1
+/* Define to 1 if bmodule works and should be used */
+#define USE_BMODULE 1
 
 /* Whether to load modules via .la files rather than directly */
 /* #undef USE_LA_MODULES */

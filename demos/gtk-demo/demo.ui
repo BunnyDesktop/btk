@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
-<interface domain="gtk20">
-    <object class="GtkListStore" id="liststore1">
+<interface domain="btk20">
+    <object class="BtkListStore" id="liststore1">
       <columns>
         <column type="gchararray"/>
         <column type="gchararray"/>
@@ -22,89 +22,89 @@
         </row>
       </data>
     </object>
-    <object class="GtkUIManager" id="uimanager">
+    <object class="BtkUIManager" id="uimanager">
         <child>
-            <object class="GtkActionGroup" id="DefaultActions">
+            <object class="BtkActionGroup" id="DefaultActions">
                 <child>
-                    <object class="GtkAction" id="Copy">
+                    <object class="BtkAction" id="Copy">
                         <property name="name">Copy</property>
                         <property name="tooltip" translatable="yes">Copy selected object into the clipboard</property>
-                        <property name="stock_id">gtk-copy</property>
+                        <property name="stock_id">btk-copy</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="Cut">
+                    <object class="BtkAction" id="Cut">
                         <property name="name">Cut</property>
                         <property name="tooltip" translatable="yes">Cut selected object into the clipboard</property>
-                        <property name="stock_id">gtk-cut</property>
+                        <property name="stock_id">btk-cut</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="EditMenu">
+                    <object class="BtkAction" id="EditMenu">
                         <property name="name">EditMenu</property>
                         <property name="label" translatable="yes">_Edit</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="FileMenu">
+                    <object class="BtkAction" id="FileMenu">
                         <property name="name">FileMenu</property>
                         <property name="label" translatable="yes">_File</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="New">
+                    <object class="BtkAction" id="New">
                         <property name="name">New</property>
                         <property name="tooltip" translatable="yes">Create a new file</property>
-                        <property name="stock_id">gtk-new</property>
+                        <property name="stock_id">btk-new</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="Open">
+                    <object class="BtkAction" id="Open">
                         <property name="name">Open</property>
                         <property name="tooltip" translatable="yes">Open a file</property>
-                        <property name="stock_id">gtk-open</property>
+                        <property name="stock_id">btk-open</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="Paste">
+                    <object class="BtkAction" id="Paste">
                         <property name="name">Paste</property>
                         <property name="tooltip" translatable="yes">Paste object from the Clipboard</property>
-                        <property name="stock_id">gtk-paste</property>
+                        <property name="stock_id">btk-paste</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="Quit">
+                    <object class="BtkAction" id="Quit">
                         <property name="name">Quit</property>
                         <property name="tooltip" translatable="yes">Quit the program</property>
-                        <property name="stock_id">gtk-quit</property>
+                        <property name="stock_id">btk-quit</property>
                         <signal handler="quit_activate" name="activate"/>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="Save">
+                    <object class="BtkAction" id="Save">
                         <property name="name">Save</property>
                         <property name="is_important">True</property>
                         <property name="tooltip" translatable="yes">Save a file</property>
-                        <property name="stock_id">gtk-save</property>
+                        <property name="stock_id">btk-save</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="SaveAs">
+                    <object class="BtkAction" id="SaveAs">
                         <property name="name">SaveAs</property>
                         <property name="tooltip" translatable="yes">Save with a different name</property>
-                        <property name="stock_id">gtk-save-as</property>
+                        <property name="stock_id">btk-save-as</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="HelpMenu">
+                    <object class="BtkAction" id="HelpMenu">
                         <property name="name">HelpMenu</property>
                         <property name="label" translatable="yes">_Help</property>
                     </object>
                 </child>
                 <child>
-                    <object class="GtkAction" id="About">
+                    <object class="BtkAction" id="About">
                         <property name="name">About</property>
-                        <property name="stock_id">gtk-about</property>
+                        <property name="stock_id">btk-about</property>
                         <signal handler="about_activate" name="activate"/>
                     </object>
                     <accelerator key="F1"/>
@@ -141,25 +141,25 @@
           </toolbar>
         </ui>
     </object>
-    <object class="GtkAboutDialog" id="aboutdialog1">
-        <property name="program-name" translatable="yes">GtkBuilder demo</property>
+    <object class="BtkAboutDialog" id="aboutdialog1">
+        <property name="program-name" translatable="yes">BtkBuilder demo</property>
          <accessibility>
 	     <relation target="window1" type="subwindow-of"/>
 	 </accessibility>
     </object>
-    <object class="GtkWindow" id="window1">
+    <object class="BtkWindow" id="window1">
         <property name="default_height">250</property>
         <property name="default_width">440</property>
-        <property name="title">GtkBuilder demo</property>
+        <property name="title">BtkBuilder demo</property>
         <child>
-            <object class="GtkVBox" id="vbox1">
+            <object class="BtkVBox" id="vbox1">
                 <property name="visible">True</property>
                 <child>
-                    <object constructor="uimanager" class="GtkMenuBar" id="menubar1">
+                    <object constructor="uimanager" class="BtkMenuBar" id="menubar1">
                         <property name="visible">True</property>
 	            	<child internal-child="accessible">
-	            	    <object class="AtkObject" id="a11y-menubar">
-	            	        <property name="AtkObject::accessible-name">The menubar</property>
+	            	    <object class="BatkObject" id="a11y-menubar">
+	            	        <property name="BatkObject::accessible-name">The menubar</property>
 	            	    </object>
 	            	</child>
 	            </object>
@@ -168,11 +168,11 @@
                     </packing>
                 </child>
                 <child>
-                    <object constructor="uimanager" class="GtkToolbar" id="toolbar1">
+                    <object constructor="uimanager" class="BtkToolbar" id="toolbar1">
                         <property name="visible">True</property>
 	            	<child internal-child="accessible">
-	            	    <object class="AtkObject" id="a11y-toolbar">
-	            	        <property name="AtkObject::accessible-name">The toolbar</property>
+	            	    <object class="BatkObject" id="a11y-toolbar">
+	            	        <property name="BatkObject::accessible-name">The toolbar</property>
 	            	    </object>
 	            	</child>
                     </object>
@@ -182,29 +182,29 @@
                     </packing>
                 </child>
                 <child>
-                    <object class="GtkScrolledWindow" id="scrolledwindow1">
+                    <object class="BtkScrolledWindow" id="scrolledwindow1">
                       <property name="hscrollbar_policy">automatic</property>
                       <property name="shadow_type">in</property>
                       <property name="visible">True</property>
                       <property name="vscrollbar_policy">automatic</property>
                       <child>
-                        <object class="GtkTreeView" id="treeview1">
+                        <object class="BtkTreeView" id="treeview1">
                           <property name="visible">True</property>
                           <property name="model">liststore1</property>
                           <property name="tooltip-column">3</property>
 	            	  <child internal-child="accessible">
-	            	      <object class="AtkObject" id="a11y-treeview">
-	            	          <property name="AtkObject::accessible-name">Name list</property>
-                                  <property name="AtkObject::accessible-description">
+	            	      <object class="BatkObject" id="a11y-treeview">
+	            	          <property name="BatkObject::accessible-name">Name list</property>
+                                  <property name="BatkObject::accessible-description">
                                     A list of person with name, surname and age columns
                                   </property>
 	            	      </object>
 	            	  </child>
                           <child>
-                            <object class="GtkTreeViewColumn" id="column1">
+                            <object class="BtkTreeViewColumn" id="column1">
                               <property name="title">Name</property>
                               <child>
-                                <object class="GtkCellRendererText" id="renderer1"/>
+                                <object class="BtkCellRendererText" id="renderer1"/>
                                 <attributes>
                                   <attribute name="text">0</attribute>
                                 </attributes>
@@ -212,10 +212,10 @@
                             </object>
                           </child>
                           <child>
-                            <object class="GtkTreeViewColumn" id="column2">
+                            <object class="BtkTreeViewColumn" id="column2">
                               <property name="title">Surname</property>
                               <child>
-                                <object class="GtkCellRendererText" id="renderer2"/>
+                                <object class="BtkCellRendererText" id="renderer2"/>
                                 <attributes>
                                   <attribute name="text">1</attribute>
                                 </attributes>
@@ -223,10 +223,10 @@
                             </object>
                           </child>
                           <child>
-                            <object class="GtkTreeViewColumn" id="column3">
+                            <object class="BtkTreeViewColumn" id="column3">
                               <property name="title">Age</property>
                               <child>
-                                <object class="GtkCellRendererText" id="renderer3"/>
+                                <object class="BtkCellRendererText" id="renderer3"/>
                                 <attributes>
                                   <attribute name="text">2</attribute>
                                 </attributes>
@@ -244,7 +244,7 @@
                     </packing>
                 </child>
                 <child>
-                    <object class="GtkStatusbar" id="statusbar1">
+                    <object class="BtkStatusbar" id="statusbar1">
                         <property name="visible">True</property>
                     </object>
                     <packing>

@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,29 +18,29 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GDK_WINDOW_H__
-#define __GDK_WINDOW_H__
+#ifndef __BDK_WINDOW_H__
+#define __BDK_WINDOW_H__
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GDK_H_INSIDE__) && !defined (GDK_COMPILATION)
-#error "Only <gdk/gdk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BDK_H_INSIDE__) && !defined (BDK_COMPILATION)
+#error "Only <bdk/bdk.h> can be included directly."
 #endif
 
-#include <gdk/gdkdrawable.h>
-#include <gdk/gdktypes.h>
-#include <gdk/gdkevents.h>
+#include <bdk/bdkdrawable.h>
+#include <bdk/bdktypes.h>
+#include <bdk/bdkevents.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GdkGeometry          GdkGeometry;
-typedef struct _GdkWindowAttr        GdkWindowAttr;
-typedef struct _GdkPointerHooks      GdkPointerHooks;
-typedef struct _GdkWindowRedirect    GdkWindowRedirect;
+typedef struct _BdkGeometry          BdkGeometry;
+typedef struct _BdkWindowAttr        BdkWindowAttr;
+typedef struct _BdkPointerHooks      BdkPointerHooks;
+typedef struct _BdkWindowRedirect    BdkWindowRedirect;
 
 /* Classes of windows.
  *   InputOutput: Almost every window should be of this type. Such windows
@@ -53,13 +53,13 @@ typedef struct _GdkWindowRedirect    GdkWindowRedirect;
  */
 typedef enum
 {
-  GDK_INPUT_OUTPUT,
-  GDK_INPUT_ONLY
-} GdkWindowClass;
+  BDK_INPUT_OUTPUT,
+  BDK_INPUT_ONLY
+} BdkWindowClass;
 
 /* Types of windows.
  *   Root: There is only 1 root window and it is initialized
- *	   at startup. Creating a window of type GDK_WINDOW_ROOT
+ *	   at startup. Creating a window of type BDK_WINDOW_ROOT
  *	   is an error.
  *   Toplevel: Windows which interact with the window manager.
  *   Child: Windows which are children of some other type of window.
@@ -72,50 +72,50 @@ typedef enum
  */
 typedef enum
 {
-  GDK_WINDOW_ROOT,
-  GDK_WINDOW_TOPLEVEL,
-  GDK_WINDOW_CHILD,
-  GDK_WINDOW_DIALOG,
-  GDK_WINDOW_TEMP,
-  GDK_WINDOW_FOREIGN,
-  GDK_WINDOW_OFFSCREEN
-} GdkWindowType;
+  BDK_WINDOW_ROOT,
+  BDK_WINDOW_TOPLEVEL,
+  BDK_WINDOW_CHILD,
+  BDK_WINDOW_DIALOG,
+  BDK_WINDOW_TEMP,
+  BDK_WINDOW_FOREIGN,
+  BDK_WINDOW_OFFSCREEN
+} BdkWindowType;
 
 /* Window attribute mask values.
- *   GDK_WA_TITLE: The "title" field is valid.
- *   GDK_WA_X: The "x" field is valid.
- *   GDK_WA_Y: The "y" field is valid.
- *   GDK_WA_CURSOR: The "cursor" field is valid.
- *   GDK_WA_COLORMAP: The "colormap" field is valid.
- *   GDK_WA_VISUAL: The "visual" field is valid.
+ *   BDK_WA_TITLE: The "title" field is valid.
+ *   BDK_WA_X: The "x" field is valid.
+ *   BDK_WA_Y: The "y" field is valid.
+ *   BDK_WA_CURSOR: The "cursor" field is valid.
+ *   BDK_WA_COLORMAP: The "colormap" field is valid.
+ *   BDK_WA_VISUAL: The "visual" field is valid.
  */
 typedef enum
 {
-  GDK_WA_TITLE	   = 1 << 1,
-  GDK_WA_X	   = 1 << 2,
-  GDK_WA_Y	   = 1 << 3,
-  GDK_WA_CURSOR	   = 1 << 4,
-  GDK_WA_COLORMAP  = 1 << 5,
-  GDK_WA_VISUAL	   = 1 << 6,
-  GDK_WA_WMCLASS   = 1 << 7,
-  GDK_WA_NOREDIR   = 1 << 8,
-  GDK_WA_TYPE_HINT = 1 << 9
-} GdkWindowAttributesType;
+  BDK_WA_TITLE	   = 1 << 1,
+  BDK_WA_X	   = 1 << 2,
+  BDK_WA_Y	   = 1 << 3,
+  BDK_WA_CURSOR	   = 1 << 4,
+  BDK_WA_COLORMAP  = 1 << 5,
+  BDK_WA_VISUAL	   = 1 << 6,
+  BDK_WA_WMCLASS   = 1 << 7,
+  BDK_WA_NOREDIR   = 1 << 8,
+  BDK_WA_TYPE_HINT = 1 << 9
+} BdkWindowAttributesType;
 
 /* Size restriction enumeration.
  */
 typedef enum
 {
-  GDK_HINT_POS	       = 1 << 0,
-  GDK_HINT_MIN_SIZE    = 1 << 1,
-  GDK_HINT_MAX_SIZE    = 1 << 2,
-  GDK_HINT_BASE_SIZE   = 1 << 3,
-  GDK_HINT_ASPECT      = 1 << 4,
-  GDK_HINT_RESIZE_INC  = 1 << 5,
-  GDK_HINT_WIN_GRAVITY = 1 << 6,
-  GDK_HINT_USER_POS    = 1 << 7,
-  GDK_HINT_USER_SIZE   = 1 << 8
-} GdkWindowHints;
+  BDK_HINT_POS	       = 1 << 0,
+  BDK_HINT_MIN_SIZE    = 1 << 1,
+  BDK_HINT_MAX_SIZE    = 1 << 2,
+  BDK_HINT_BASE_SIZE   = 1 << 3,
+  BDK_HINT_ASPECT      = 1 << 4,
+  BDK_HINT_RESIZE_INC  = 1 << 5,
+  BDK_HINT_WIN_GRAVITY = 1 << 6,
+  BDK_HINT_USER_POS    = 1 << 7,
+  BDK_HINT_USER_SIZE   = 1 << 8
+} BdkWindowHints;
 
 
 /* Window type hints.
@@ -132,98 +132,98 @@ typedef enum
  */
 typedef enum
 {
-  GDK_WINDOW_TYPE_HINT_NORMAL,
-  GDK_WINDOW_TYPE_HINT_DIALOG,
-  GDK_WINDOW_TYPE_HINT_MENU,		/* Torn off menu */
-  GDK_WINDOW_TYPE_HINT_TOOLBAR,
-  GDK_WINDOW_TYPE_HINT_SPLASHSCREEN,
-  GDK_WINDOW_TYPE_HINT_UTILITY,
-  GDK_WINDOW_TYPE_HINT_DOCK,
-  GDK_WINDOW_TYPE_HINT_DESKTOP,
-  GDK_WINDOW_TYPE_HINT_DROPDOWN_MENU,	/* A drop down menu (from a menubar) */
-  GDK_WINDOW_TYPE_HINT_POPUP_MENU,	/* A popup menu (from right-click) */
-  GDK_WINDOW_TYPE_HINT_TOOLTIP,
-  GDK_WINDOW_TYPE_HINT_NOTIFICATION,
-  GDK_WINDOW_TYPE_HINT_COMBO,
-  GDK_WINDOW_TYPE_HINT_DND
-} GdkWindowTypeHint;
+  BDK_WINDOW_TYPE_HINT_NORMAL,
+  BDK_WINDOW_TYPE_HINT_DIALOG,
+  BDK_WINDOW_TYPE_HINT_MENU,		/* Torn off menu */
+  BDK_WINDOW_TYPE_HINT_TOOLBAR,
+  BDK_WINDOW_TYPE_HINT_SPLASHSCREEN,
+  BDK_WINDOW_TYPE_HINT_UTILITY,
+  BDK_WINDOW_TYPE_HINT_DOCK,
+  BDK_WINDOW_TYPE_HINT_DESKTOP,
+  BDK_WINDOW_TYPE_HINT_DROPDOWN_MENU,	/* A drop down menu (from a menubar) */
+  BDK_WINDOW_TYPE_HINT_POPUP_MENU,	/* A popup menu (from right-click) */
+  BDK_WINDOW_TYPE_HINT_TOOLTIP,
+  BDK_WINDOW_TYPE_HINT_NOTIFICATION,
+  BDK_WINDOW_TYPE_HINT_COMBO,
+  BDK_WINDOW_TYPE_HINT_DND
+} BdkWindowTypeHint;
 
 /* The next two enumeration values current match the
  * Motif constants. If this is changed, the implementation
- * of gdk_window_set_decorations/gdk_window_set_functions
+ * of bdk_window_set_decorations/bdk_window_set_functions
  * will need to change as well.
  */
 typedef enum
 {
-  GDK_DECOR_ALL		= 1 << 0,
-  GDK_DECOR_BORDER	= 1 << 1,
-  GDK_DECOR_RESIZEH	= 1 << 2,
-  GDK_DECOR_TITLE	= 1 << 3,
-  GDK_DECOR_MENU	= 1 << 4,
-  GDK_DECOR_MINIMIZE	= 1 << 5,
-  GDK_DECOR_MAXIMIZE	= 1 << 6
-} GdkWMDecoration;
+  BDK_DECOR_ALL		= 1 << 0,
+  BDK_DECOR_BORDER	= 1 << 1,
+  BDK_DECOR_RESIZEH	= 1 << 2,
+  BDK_DECOR_TITLE	= 1 << 3,
+  BDK_DECOR_MENU	= 1 << 4,
+  BDK_DECOR_MINIMIZE	= 1 << 5,
+  BDK_DECOR_MAXIMIZE	= 1 << 6
+} BdkWMDecoration;
 
 typedef enum
 {
-  GDK_FUNC_ALL		= 1 << 0,
-  GDK_FUNC_RESIZE	= 1 << 1,
-  GDK_FUNC_MOVE		= 1 << 2,
-  GDK_FUNC_MINIMIZE	= 1 << 3,
-  GDK_FUNC_MAXIMIZE	= 1 << 4,
-  GDK_FUNC_CLOSE	= 1 << 5
-} GdkWMFunction;
+  BDK_FUNC_ALL		= 1 << 0,
+  BDK_FUNC_RESIZE	= 1 << 1,
+  BDK_FUNC_MOVE		= 1 << 2,
+  BDK_FUNC_MINIMIZE	= 1 << 3,
+  BDK_FUNC_MAXIMIZE	= 1 << 4,
+  BDK_FUNC_CLOSE	= 1 << 5
+} BdkWMFunction;
 
 /* Currently, these are the same values numerically as in the
- * X protocol. If you change that, gdkwindow-x11.c/gdk_window_set_geometry_hints()
+ * X protocol. If you change that, bdkwindow-x11.c/bdk_window_set_geometry_hints()
  * will need fixing.
  */
 typedef enum
 {
-  GDK_GRAVITY_NORTH_WEST = 1,
-  GDK_GRAVITY_NORTH,
-  GDK_GRAVITY_NORTH_EAST,
-  GDK_GRAVITY_WEST,
-  GDK_GRAVITY_CENTER,
-  GDK_GRAVITY_EAST,
-  GDK_GRAVITY_SOUTH_WEST,
-  GDK_GRAVITY_SOUTH,
-  GDK_GRAVITY_SOUTH_EAST,
-  GDK_GRAVITY_STATIC
-} GdkGravity;
+  BDK_GRAVITY_NORTH_WEST = 1,
+  BDK_GRAVITY_NORTH,
+  BDK_GRAVITY_NORTH_EAST,
+  BDK_GRAVITY_WEST,
+  BDK_GRAVITY_CENTER,
+  BDK_GRAVITY_EAST,
+  BDK_GRAVITY_SOUTH_WEST,
+  BDK_GRAVITY_SOUTH,
+  BDK_GRAVITY_SOUTH_EAST,
+  BDK_GRAVITY_STATIC
+} BdkGravity;
 
 
 typedef enum
 {
-  GDK_WINDOW_EDGE_NORTH_WEST,
-  GDK_WINDOW_EDGE_NORTH,
-  GDK_WINDOW_EDGE_NORTH_EAST,
-  GDK_WINDOW_EDGE_WEST,
-  GDK_WINDOW_EDGE_EAST,
-  GDK_WINDOW_EDGE_SOUTH_WEST,
-  GDK_WINDOW_EDGE_SOUTH,
-  GDK_WINDOW_EDGE_SOUTH_EAST  
-} GdkWindowEdge;
+  BDK_WINDOW_EDGE_NORTH_WEST,
+  BDK_WINDOW_EDGE_NORTH,
+  BDK_WINDOW_EDGE_NORTH_EAST,
+  BDK_WINDOW_EDGE_WEST,
+  BDK_WINDOW_EDGE_EAST,
+  BDK_WINDOW_EDGE_SOUTH_WEST,
+  BDK_WINDOW_EDGE_SOUTH,
+  BDK_WINDOW_EDGE_SOUTH_EAST  
+} BdkWindowEdge;
 
-struct _GdkWindowAttr
+struct _BdkWindowAttr
 {
   gchar *title;
   gint event_mask;
   gint x, y;
   gint width;
   gint height;
-  GdkWindowClass wclass;
-  GdkVisual *visual;
-  GdkColormap *colormap;
-  GdkWindowType window_type;
-  GdkCursor *cursor;
+  BdkWindowClass wclass;
+  BdkVisual *visual;
+  BdkColormap *colormap;
+  BdkWindowType window_type;
+  BdkCursor *cursor;
   gchar *wmclass_name;
   gchar *wmclass_class;
   gboolean override_redirect;
-  GdkWindowTypeHint type_hint;
+  BdkWindowTypeHint type_hint;
 };
 
-struct _GdkGeometry
+struct _BdkGeometry
 {
   gint min_width;
   gint min_height;
@@ -235,47 +235,47 @@ struct _GdkGeometry
   gint height_inc;
   gdouble min_aspect;
   gdouble max_aspect;
-  GdkGravity win_gravity;
+  BdkGravity win_gravity;
 };
 
-struct _GdkPointerHooks 
+struct _BdkPointerHooks 
 {
-  GdkWindow* (*get_pointer)       (GdkWindow	   *window,
+  BdkWindow* (*get_pointer)       (BdkWindow	   *window,
 			           gint	           *x,
 			           gint   	   *y,
-			           GdkModifierType *mask);
-  GdkWindow* (*window_at_pointer) (GdkScreen       *screen, /* unused */
+			           BdkModifierType *mask);
+  BdkWindow* (*window_at_pointer) (BdkScreen       *screen, /* unused */
                                    gint            *win_x,
                                    gint            *win_y);
 };
 
-typedef struct _GdkWindowObject GdkWindowObject;
-typedef struct _GdkWindowObjectClass GdkWindowObjectClass;
+typedef struct _BdkWindowObject BdkWindowObject;
+typedef struct _BdkWindowObjectClass BdkWindowObjectClass;
 
-#define GDK_TYPE_WINDOW              (gdk_window_object_get_type ())
-#define GDK_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_WINDOW, GdkWindow))
-#define GDK_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_WINDOW, GdkWindowObjectClass))
-#define GDK_IS_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_WINDOW))
-#define GDK_IS_WINDOW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_WINDOW))
-#define GDK_WINDOW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_WINDOW, GdkWindowObjectClass))
+#define BDK_TYPE_WINDOW              (bdk_window_object_get_type ())
+#define BDK_WINDOW(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_WINDOW, BdkWindow))
+#define BDK_WINDOW_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_WINDOW, BdkWindowObjectClass))
+#define BDK_IS_WINDOW(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_WINDOW))
+#define BDK_IS_WINDOW_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_WINDOW))
+#define BDK_WINDOW_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_WINDOW, BdkWindowObjectClass))
 
-#ifndef GDK_DISABLE_DEPRECATED
-#define GDK_WINDOW_OBJECT(object)    ((GdkWindowObject *) GDK_WINDOW (object))
+#ifndef BDK_DISABLE_DEPRECATED
+#define BDK_WINDOW_OBJECT(object)    ((BdkWindowObject *) BDK_WINDOW (object))
 
-#ifndef GDK_COMPILATION
+#ifndef BDK_COMPILATION
 
-/* We used to export all of GdkWindowObject, but we don't want to keep doing so.
+/* We used to export all of BdkWindowObject, but we don't want to keep doing so.
    However, there are various parts of it accessed by macros and other code,
    so we keep the old exported version public, but in reality it is larger. */
 
-/**** DON'T CHANGE THIS STRUCT, the real version is in gdkinternals.h ****/
-struct _GdkWindowObject
+/**** DON'T CHANGE THIS STRUCT, the real version is in bdkinternals.h ****/
+struct _BdkWindowObject
 {
-  GdkDrawable parent_instance;
+  BdkDrawable parent_instance;
 
-  GdkDrawable *GSEAL (impl); /* window-system-specific delegate object */
+  BdkDrawable *GSEAL (impl); /* window-system-specific delegate object */
   
-  GdkWindowObject *GSEAL (parent);
+  BdkWindowObject *GSEAL (parent);
 
   gpointer GSEAL (user_data);
 
@@ -287,19 +287,19 @@ struct _GdkWindowObject
   GList *GSEAL (filters);
   GList *GSEAL (children);
 
-  GdkColor GSEAL (bg_color);
-  GdkPixmap *GSEAL (bg_pixmap);
+  BdkColor GSEAL (bg_color);
+  BdkPixmap *GSEAL (bg_pixmap);
   
   GSList *GSEAL (paint_stack);
   
-  GdkRegion *GSEAL (update_area);
+  BdkRebunnyion *GSEAL (update_area);
   guint GSEAL (update_freeze_count);
   
   guint8 GSEAL (window_type);
   guint8 GSEAL (depth);
   guint8 GSEAL (resize_count);
 
-  GdkWindowState GSEAL (state);
+  BdkWindowState GSEAL (state);
   
   guint GSEAL (guffaw_gravity) : 1;
   guint GSEAL (input_only) : 1;
@@ -312,112 +312,112 @@ struct _GdkWindowObject
   guint GSEAL (focus_on_map) : 1;
   guint GSEAL (shaped) : 1;
   
-  GdkEventMask GSEAL (event_mask);
+  BdkEventMask GSEAL (event_mask);
 
   guint GSEAL (update_and_descendants_freeze_count);
 
-  GdkWindowRedirect *GSEAL (redirect);
+  BdkWindowRedirect *GSEAL (redirect);
 };
 #endif
 #endif
 
-struct _GdkWindowObjectClass
+struct _BdkWindowObjectClass
 {
-  GdkDrawableClass parent_class;
+  BdkDrawableClass parent_class;
 };
 
 /* Windows
  */
-GType         gdk_window_object_get_type       (void) G_GNUC_CONST;
-GdkWindow*    gdk_window_new                   (GdkWindow     *parent,
-                                                GdkWindowAttr *attributes,
+GType         bdk_window_object_get_type       (void) G_GNUC_CONST;
+BdkWindow*    bdk_window_new                   (BdkWindow     *parent,
+                                                BdkWindowAttr *attributes,
                                                 gint           attributes_mask);
-void          gdk_window_destroy               (GdkWindow     *window);
-GdkWindowType gdk_window_get_window_type       (GdkWindow     *window);
-gboolean      gdk_window_is_destroyed          (GdkWindow     *window);
+void          bdk_window_destroy               (BdkWindow     *window);
+BdkWindowType bdk_window_get_window_type       (BdkWindow     *window);
+gboolean      bdk_window_is_destroyed          (BdkWindow     *window);
 
-GdkScreen*    gdk_window_get_screen            (GdkWindow     *window);
-GdkDisplay*   gdk_window_get_display           (GdkWindow     *window);
-GdkVisual*    gdk_window_get_visual            (GdkWindow     *window);
-int           gdk_window_get_width             (GdkWindow     *window);
-int           gdk_window_get_height            (GdkWindow     *window);
+BdkScreen*    bdk_window_get_screen            (BdkWindow     *window);
+BdkDisplay*   bdk_window_get_display           (BdkWindow     *window);
+BdkVisual*    bdk_window_get_visual            (BdkWindow     *window);
+int           bdk_window_get_width             (BdkWindow     *window);
+int           bdk_window_get_height            (BdkWindow     *window);
 
-GdkWindow*    gdk_window_at_pointer            (gint          *win_x,
+BdkWindow*    bdk_window_at_pointer            (gint          *win_x,
                                                 gint          *win_y);
-void          gdk_window_show                  (GdkWindow     *window);
-void          gdk_window_hide                  (GdkWindow     *window);
-void          gdk_window_withdraw              (GdkWindow     *window);
-void          gdk_window_show_unraised         (GdkWindow     *window);
-void          gdk_window_move                  (GdkWindow     *window,
+void          bdk_window_show                  (BdkWindow     *window);
+void          bdk_window_hide                  (BdkWindow     *window);
+void          bdk_window_withdraw              (BdkWindow     *window);
+void          bdk_window_show_unraised         (BdkWindow     *window);
+void          bdk_window_move                  (BdkWindow     *window,
                                                 gint           x,
                                                 gint           y);
-void          gdk_window_resize                (GdkWindow     *window,
+void          bdk_window_resize                (BdkWindow     *window,
                                                 gint           width,
                                                 gint           height);
-void          gdk_window_move_resize           (GdkWindow     *window,
+void          bdk_window_move_resize           (BdkWindow     *window,
                                                 gint           x,
                                                 gint           y,
                                                 gint           width,
                                                 gint           height);
-void          gdk_window_reparent              (GdkWindow     *window,
-                                                GdkWindow     *new_parent,
+void          bdk_window_reparent              (BdkWindow     *window,
+                                                BdkWindow     *new_parent,
                                                 gint           x,
                                                 gint           y);
-void          gdk_window_clear                 (GdkWindow     *window);
-void          gdk_window_clear_area            (GdkWindow     *window,
+void          bdk_window_clear                 (BdkWindow     *window);
+void          bdk_window_clear_area            (BdkWindow     *window,
                                                 gint           x,
                                                 gint           y,
                                                 gint           width,
                                                 gint           height);
-void          gdk_window_clear_area_e          (GdkWindow     *window,
+void          bdk_window_clear_area_e          (BdkWindow     *window,
                                                 gint           x,
                                                 gint           y,
                                                 gint           width,
                                                 gint           height);
-void          gdk_window_raise                 (GdkWindow     *window);
-void          gdk_window_lower                 (GdkWindow     *window);
-void          gdk_window_restack               (GdkWindow     *window,
-						GdkWindow     *sibling,
+void          bdk_window_raise                 (BdkWindow     *window);
+void          bdk_window_lower                 (BdkWindow     *window);
+void          bdk_window_restack               (BdkWindow     *window,
+						BdkWindow     *sibling,
 						gboolean       above);
-void          gdk_window_focus                 (GdkWindow     *window,
+void          bdk_window_focus                 (BdkWindow     *window,
                                                 guint32        timestamp);
-void          gdk_window_set_user_data         (GdkWindow     *window,
+void          bdk_window_set_user_data         (BdkWindow     *window,
                                                 gpointer       user_data);
-void          gdk_window_set_override_redirect (GdkWindow     *window,
+void          bdk_window_set_override_redirect (BdkWindow     *window,
                                                 gboolean       override_redirect);
-gboolean      gdk_window_get_accept_focus      (GdkWindow     *window);
-void          gdk_window_set_accept_focus      (GdkWindow     *window,
+gboolean      bdk_window_get_accept_focus      (BdkWindow     *window);
+void          bdk_window_set_accept_focus      (BdkWindow     *window,
 					        gboolean       accept_focus);
-gboolean      gdk_window_get_focus_on_map      (GdkWindow     *window);
-void          gdk_window_set_focus_on_map      (GdkWindow     *window,
+gboolean      bdk_window_get_focus_on_map      (BdkWindow     *window);
+void          bdk_window_set_focus_on_map      (BdkWindow     *window,
 					        gboolean       focus_on_map);
-void          gdk_window_add_filter            (GdkWindow     *window,
-                                                GdkFilterFunc  function,
+void          bdk_window_add_filter            (BdkWindow     *window,
+                                                BdkFilterFunc  function,
                                                 gpointer       data);
-void          gdk_window_remove_filter         (GdkWindow     *window,
-                                                GdkFilterFunc  function,
+void          bdk_window_remove_filter         (BdkWindow     *window,
+                                                BdkFilterFunc  function,
                                                 gpointer       data);
-void          gdk_window_scroll                (GdkWindow     *window,
+void          bdk_window_scroll                (BdkWindow     *window,
                                                 gint           dx,
                                                 gint           dy);
-void	      gdk_window_move_region           (GdkWindow       *window,
-						const GdkRegion *region,
+void	      bdk_window_move_rebunnyion           (BdkWindow       *window,
+						const BdkRebunnyion *rebunnyion,
 						gint             dx,
 						gint             dy);
-gboolean      gdk_window_ensure_native        (GdkWindow       *window);
+gboolean      bdk_window_ensure_native        (BdkWindow       *window);
 
 /* 
  * This allows for making shaped (partially transparent) windows
  * - cool feature, needed for Drag and Drag for example.
  *  The shape_mask can be the mask
- *  from gdk_pixmap_create_from_xpm.   Stefan Wille
+ *  from bdk_pixmap_create_from_xpm.   Stefan Wille
  */
-void gdk_window_shape_combine_mask  (GdkWindow	      *window,
-                                     GdkBitmap	      *mask,
+void bdk_window_shape_combine_mask  (BdkWindow	      *window,
+                                     BdkBitmap	      *mask,
                                      gint	       x,
                                      gint	       y);
-void gdk_window_shape_combine_region (GdkWindow	      *window,
-                                      const GdkRegion *shape_region,
+void bdk_window_shape_combine_rebunnyion (BdkWindow	      *window,
+                                      const BdkRebunnyion *shape_rebunnyion,
                                       gint	       offset_x,
                                       gint	       offset_y);
 
@@ -428,10 +428,10 @@ void gdk_window_shape_combine_region (GdkWindow	      *window,
  * 
  * - Raster
  */
-void gdk_window_set_child_shapes (GdkWindow *window);
+void bdk_window_set_child_shapes (BdkWindow *window);
 
-gboolean gdk_window_get_composited (GdkWindow *window);
-void gdk_window_set_composited   (GdkWindow *window,
+gboolean bdk_window_get_composited (BdkWindow *window);
+void bdk_window_set_composited   (BdkWindow *window,
                                   gboolean   composited);
 
 /*
@@ -441,18 +441,18 @@ void gdk_window_set_composited   (GdkWindow *window,
  * 
  * - Raster
  */
-void gdk_window_merge_child_shapes         (GdkWindow       *window);
+void bdk_window_merge_child_shapes         (BdkWindow       *window);
 
-void gdk_window_input_shape_combine_mask   (GdkWindow       *window,
-					    GdkBitmap       *mask,
+void bdk_window_input_shape_combine_mask   (BdkWindow       *window,
+					    BdkBitmap       *mask,
 					    gint             x,
 					    gint             y);
-void gdk_window_input_shape_combine_region (GdkWindow       *window,
-                                            const GdkRegion *shape_region,
+void bdk_window_input_shape_combine_rebunnyion (BdkWindow       *window,
+                                            const BdkRebunnyion *shape_rebunnyion,
                                             gint             offset_x,
                                             gint             offset_y);
-void gdk_window_set_child_input_shapes     (GdkWindow       *window);
-void gdk_window_merge_child_input_shapes   (GdkWindow       *window);
+void bdk_window_set_child_input_shapes     (BdkWindow       *window);
+void bdk_window_merge_child_input_shapes   (BdkWindow       *window);
 
 
 /*
@@ -461,37 +461,37 @@ void gdk_window_merge_child_input_shapes   (GdkWindow       *window);
  * Note that a window that is_viewable below is not necessarily
  * viewable in the X sense.
  */
-gboolean gdk_window_is_visible     (GdkWindow *window);
-gboolean gdk_window_is_viewable    (GdkWindow *window);
-gboolean gdk_window_is_input_only  (GdkWindow *window);
-gboolean gdk_window_is_shaped      (GdkWindow *window);
+gboolean bdk_window_is_visible     (BdkWindow *window);
+gboolean bdk_window_is_viewable    (BdkWindow *window);
+gboolean bdk_window_is_input_only  (BdkWindow *window);
+gboolean bdk_window_is_shaped      (BdkWindow *window);
 
-GdkWindowState gdk_window_get_state (GdkWindow *window);
+BdkWindowState bdk_window_get_state (BdkWindow *window);
 
 /* Set static bit gravity on the parent, and static
  * window gravity on all children.
  */
-gboolean gdk_window_set_static_gravities (GdkWindow *window,
+gboolean bdk_window_set_static_gravities (BdkWindow *window,
 					  gboolean   use_static);   
 
 /* Functions to create/lookup windows from their native equivalents */ 
-#if !defined(GDK_DISABLE_DEPRECATED) || defined(GDK_COMPILATION)
-#ifndef GDK_MULTIHEAD_SAFE
-GdkWindow*    gdk_window_foreign_new (GdkNativeWindow anid);
-GdkWindow*    gdk_window_lookup      (GdkNativeWindow anid);
+#if !defined(BDK_DISABLE_DEPRECATED) || defined(BDK_COMPILATION)
+#ifndef BDK_MULTIHEAD_SAFE
+BdkWindow*    bdk_window_foreign_new (BdkNativeWindow anid);
+BdkWindow*    bdk_window_lookup      (BdkNativeWindow anid);
 #endif
-GdkWindow    *gdk_window_foreign_new_for_display (GdkDisplay      *display,
-						  GdkNativeWindow  anid);
-GdkWindow*    gdk_window_lookup_for_display (GdkDisplay      *display,
-					     GdkNativeWindow  anid);
+BdkWindow    *bdk_window_foreign_new_for_display (BdkDisplay      *display,
+						  BdkNativeWindow  anid);
+BdkWindow*    bdk_window_lookup_for_display (BdkDisplay      *display,
+					     BdkNativeWindow  anid);
 #endif
 
 
-/* GdkWindow */
+/* BdkWindow */
 
-gboolean      gdk_window_has_native      (GdkWindow       *window);
-#ifndef GDK_DISABLE_DEPRECATED
-void	      gdk_window_set_hints	 (GdkWindow	  *window,
+gboolean      bdk_window_has_native      (BdkWindow       *window);
+#ifndef BDK_DISABLE_DEPRECATED
+void	      bdk_window_set_hints	 (BdkWindow	  *window,
 					  gint		   x,
 					  gint		   y,
 					  gint		   min_width,
@@ -500,244 +500,244 @@ void	      gdk_window_set_hints	 (GdkWindow	  *window,
 					  gint		   max_height,
 					  gint		   flags);
 #endif
-void              gdk_window_set_type_hint (GdkWindow        *window,
-                                            GdkWindowTypeHint hint);
-GdkWindowTypeHint gdk_window_get_type_hint (GdkWindow        *window);
+void              bdk_window_set_type_hint (BdkWindow        *window,
+                                            BdkWindowTypeHint hint);
+BdkWindowTypeHint bdk_window_get_type_hint (BdkWindow        *window);
 
-gboolean      gdk_window_get_modal_hint   (GdkWindow       *window);
-void          gdk_window_set_modal_hint   (GdkWindow       *window,
+gboolean      bdk_window_get_modal_hint   (BdkWindow       *window);
+void          bdk_window_set_modal_hint   (BdkWindow       *window,
                                            gboolean         modal);
 
-void gdk_window_set_skip_taskbar_hint (GdkWindow *window,
+void bdk_window_set_skip_taskbar_hint (BdkWindow *window,
                                        gboolean   skips_taskbar);
-void gdk_window_set_skip_pager_hint   (GdkWindow *window,
+void bdk_window_set_skip_pager_hint   (BdkWindow *window,
                                        gboolean   skips_pager);
-void gdk_window_set_urgency_hint      (GdkWindow *window,
+void bdk_window_set_urgency_hint      (BdkWindow *window,
 				       gboolean   urgent);
 
-void          gdk_window_set_geometry_hints (GdkWindow          *window,
-					     const GdkGeometry  *geometry,
-					     GdkWindowHints      geom_mask);
-#if !defined(GDK_DISABLE_DEPRECATED) || defined(GDK_COMPILATION)
-void          gdk_set_sm_client_id          (const gchar        *sm_client_id);
+void          bdk_window_set_geometry_hints (BdkWindow          *window,
+					     const BdkGeometry  *geometry,
+					     BdkWindowHints      geom_mask);
+#if !defined(BDK_DISABLE_DEPRECATED) || defined(BDK_COMPILATION)
+void          bdk_set_sm_client_id          (const gchar        *sm_client_id);
 #endif
 
-void	      gdk_window_begin_paint_rect   (GdkWindow          *window,
-					     const GdkRectangle *rectangle);
-void	      gdk_window_begin_paint_region (GdkWindow          *window,
-					     const GdkRegion    *region);
-void	      gdk_window_end_paint          (GdkWindow          *window);
-void	      gdk_window_flush             (GdkWindow          *window);
+void	      bdk_window_begin_paint_rect   (BdkWindow          *window,
+					     const BdkRectangle *rectangle);
+void	      bdk_window_begin_paint_rebunnyion (BdkWindow          *window,
+					     const BdkRebunnyion    *rebunnyion);
+void	      bdk_window_end_paint          (BdkWindow          *window);
+void	      bdk_window_flush             (BdkWindow          *window);
 
-void	      gdk_window_set_title	   (GdkWindow	  *window,
+void	      bdk_window_set_title	   (BdkWindow	  *window,
 					    const gchar	  *title);
-void          gdk_window_set_role          (GdkWindow     *window,
+void          bdk_window_set_role          (BdkWindow     *window,
 					    const gchar   *role);
-void          gdk_window_set_startup_id    (GdkWindow     *window,
+void          bdk_window_set_startup_id    (BdkWindow     *window,
 					    const gchar   *startup_id);
-void          gdk_window_set_transient_for (GdkWindow     *window,
-					    GdkWindow     *parent);
-void	      gdk_window_set_background	 (GdkWindow	  *window,
-					  const GdkColor  *color);
-void	      gdk_window_set_back_pixmap (GdkWindow	  *window,
-					  GdkPixmap	  *pixmap,
+void          bdk_window_set_transient_for (BdkWindow     *window,
+					    BdkWindow     *parent);
+void	      bdk_window_set_background	 (BdkWindow	  *window,
+					  const BdkColor  *color);
+void	      bdk_window_set_back_pixmap (BdkWindow	  *window,
+					  BdkPixmap	  *pixmap,
 					  gboolean	   parent_relative);
-cairo_pattern_t *gdk_window_get_background_pattern (GdkWindow     *window);
+bairo_pattern_t *bdk_window_get_background_pattern (BdkWindow     *window);
 
-void	      gdk_window_set_cursor	 (GdkWindow	  *window,
-					  GdkCursor	  *cursor);
-GdkCursor    *gdk_window_get_cursor      (GdkWindow       *window);
-void	      gdk_window_get_user_data	 (GdkWindow	  *window,
+void	      bdk_window_set_cursor	 (BdkWindow	  *window,
+					  BdkCursor	  *cursor);
+BdkCursor    *bdk_window_get_cursor      (BdkWindow       *window);
+void	      bdk_window_get_user_data	 (BdkWindow	  *window,
 					  gpointer	  *data);
-void	      gdk_window_get_geometry	 (GdkWindow	  *window,
+void	      bdk_window_get_geometry	 (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y,
 					  gint		  *width,
 					  gint		  *height,
 					  gint		  *depth);
-void	      gdk_window_get_position	 (GdkWindow	  *window,
+void	      bdk_window_get_position	 (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y);
-gint	      gdk_window_get_origin	 (GdkWindow	  *window,
+gint	      bdk_window_get_origin	 (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y);
-void	      gdk_window_get_root_coords (GdkWindow	  *window,
+void	      bdk_window_get_root_coords (BdkWindow	  *window,
 					  gint             x,
 					  gint             y,
 					  gint		  *root_x,
 					  gint		  *root_y);
-void       gdk_window_coords_to_parent   (GdkWindow       *window,
+void       bdk_window_coords_to_parent   (BdkWindow       *window,
                                           gdouble          x,
                                           gdouble          y,
                                           gdouble         *parent_x,
                                           gdouble         *parent_y);
-void       gdk_window_coords_from_parent (GdkWindow       *window,
+void       bdk_window_coords_from_parent (BdkWindow       *window,
                                           gdouble          parent_x,
                                           gdouble          parent_y,
                                           gdouble         *x,
                                           gdouble         *y);
 
-#if !defined (GDK_DISABLE_DEPRECATED) || defined (GDK_COMPILATION)
-/* Used by gtk_handle_box_button_changed () */
-gboolean      gdk_window_get_deskrelative_origin (GdkWindow	  *window,
+#if !defined (BDK_DISABLE_DEPRECATED) || defined (BDK_COMPILATION)
+/* Used by btk_handle_box_button_changed () */
+gboolean      bdk_window_get_deskrelative_origin (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y);
 #endif
 
-void	      gdk_window_get_root_origin (GdkWindow	  *window,
+void	      bdk_window_get_root_origin (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y);
-void          gdk_window_get_frame_extents (GdkWindow     *window,
-                                            GdkRectangle  *rect);
-GdkWindow*    gdk_window_get_pointer	 (GdkWindow	  *window,
+void          bdk_window_get_frame_extents (BdkWindow     *window,
+                                            BdkRectangle  *rect);
+BdkWindow*    bdk_window_get_pointer	 (BdkWindow	  *window,
 					  gint		  *x,
 					  gint		  *y,
-					  GdkModifierType *mask);
-GdkWindow *   gdk_window_get_parent      (GdkWindow       *window);
-GdkWindow *   gdk_window_get_toplevel    (GdkWindow       *window);
+					  BdkModifierType *mask);
+BdkWindow *   bdk_window_get_parent      (BdkWindow       *window);
+BdkWindow *   bdk_window_get_toplevel    (BdkWindow       *window);
 
-GdkWindow *   gdk_window_get_effective_parent   (GdkWindow *window);
-GdkWindow *   gdk_window_get_effective_toplevel (GdkWindow *window);
+BdkWindow *   bdk_window_get_effective_parent   (BdkWindow *window);
+BdkWindow *   bdk_window_get_effective_toplevel (BdkWindow *window);
 
-GList *	      gdk_window_get_children	 (GdkWindow	  *window);
-GList *       gdk_window_peek_children   (GdkWindow       *window);
-GdkEventMask  gdk_window_get_events	 (GdkWindow	  *window);
-void	      gdk_window_set_events	 (GdkWindow	  *window,
-					  GdkEventMask	   event_mask);
+GList *	      bdk_window_get_children	 (BdkWindow	  *window);
+GList *       bdk_window_peek_children   (BdkWindow       *window);
+BdkEventMask  bdk_window_get_events	 (BdkWindow	  *window);
+void	      bdk_window_set_events	 (BdkWindow	  *window,
+					  BdkEventMask	   event_mask);
 
-void          gdk_window_set_icon_list   (GdkWindow       *window,
+void          bdk_window_set_icon_list   (BdkWindow       *window,
 					  GList           *pixbufs);
-void	      gdk_window_set_icon	 (GdkWindow	  *window, 
-					  GdkWindow	  *icon_window,
-					  GdkPixmap	  *pixmap,
-					  GdkBitmap	  *mask);
-void	      gdk_window_set_icon_name	 (GdkWindow	  *window, 
+void	      bdk_window_set_icon	 (BdkWindow	  *window, 
+					  BdkWindow	  *icon_window,
+					  BdkPixmap	  *pixmap,
+					  BdkBitmap	  *mask);
+void	      bdk_window_set_icon_name	 (BdkWindow	  *window, 
 					  const gchar	  *name);
-void	      gdk_window_set_group	 (GdkWindow	  *window, 
-					  GdkWindow	  *leader);
-GdkWindow*    gdk_window_get_group	 (GdkWindow	  *window);
-void	      gdk_window_set_decorations (GdkWindow	  *window,
-					  GdkWMDecoration  decorations);
-gboolean      gdk_window_get_decorations (GdkWindow       *window,
-					  GdkWMDecoration *decorations);
-void	      gdk_window_set_functions	 (GdkWindow	  *window,
-					  GdkWMFunction	   functions);
-#if !defined(GDK_MULTIHEAD_SAFE) && !defined(GDK_DISABLE_DEPRECATED)
-GList *       gdk_window_get_toplevels   (void);
+void	      bdk_window_set_group	 (BdkWindow	  *window, 
+					  BdkWindow	  *leader);
+BdkWindow*    bdk_window_get_group	 (BdkWindow	  *window);
+void	      bdk_window_set_decorations (BdkWindow	  *window,
+					  BdkWMDecoration  decorations);
+gboolean      bdk_window_get_decorations (BdkWindow       *window,
+					  BdkWMDecoration *decorations);
+void	      bdk_window_set_functions	 (BdkWindow	  *window,
+					  BdkWMFunction	   functions);
+#if !defined(BDK_MULTIHEAD_SAFE) && !defined(BDK_DISABLE_DEPRECATED)
+GList *       bdk_window_get_toplevels   (void);
 #endif
 
-cairo_surface_t *
-              gdk_window_create_similar_surface (GdkWindow *window,
-                                          cairo_content_t  content,
+bairo_surface_t *
+              bdk_window_create_similar_surface (BdkWindow *window,
+                                          bairo_content_t  content,
                                           int              width,
                                           int              height);
 
-void          gdk_window_beep            (GdkWindow       *window);
-void          gdk_window_iconify         (GdkWindow       *window);
-void          gdk_window_deiconify       (GdkWindow       *window);
-void          gdk_window_stick           (GdkWindow       *window);
-void          gdk_window_unstick         (GdkWindow       *window);
-void          gdk_window_maximize        (GdkWindow       *window);
-void          gdk_window_unmaximize      (GdkWindow       *window);
-void          gdk_window_fullscreen      (GdkWindow       *window);
-void          gdk_window_unfullscreen    (GdkWindow       *window);
-void          gdk_window_set_keep_above  (GdkWindow       *window,
+void          bdk_window_beep            (BdkWindow       *window);
+void          bdk_window_iconify         (BdkWindow       *window);
+void          bdk_window_deiconify       (BdkWindow       *window);
+void          bdk_window_stick           (BdkWindow       *window);
+void          bdk_window_unstick         (BdkWindow       *window);
+void          bdk_window_maximize        (BdkWindow       *window);
+void          bdk_window_unmaximize      (BdkWindow       *window);
+void          bdk_window_fullscreen      (BdkWindow       *window);
+void          bdk_window_unfullscreen    (BdkWindow       *window);
+void          bdk_window_set_keep_above  (BdkWindow       *window,
                                           gboolean         setting);
-void          gdk_window_set_keep_below  (GdkWindow       *window,
+void          bdk_window_set_keep_below  (BdkWindow       *window,
                                           gboolean         setting);
-void          gdk_window_set_opacity     (GdkWindow       *window,
+void          bdk_window_set_opacity     (BdkWindow       *window,
                                           gdouble          opacity);
-void          gdk_window_register_dnd    (GdkWindow       *window);
+void          bdk_window_register_dnd    (BdkWindow       *window);
 
-void gdk_window_begin_resize_drag (GdkWindow     *window,
-                                   GdkWindowEdge  edge,
+void bdk_window_begin_resize_drag (BdkWindow     *window,
+                                   BdkWindowEdge  edge,
                                    gint           button,
                                    gint           root_x,
                                    gint           root_y,
                                    guint32        timestamp);
-void gdk_window_begin_move_drag   (GdkWindow     *window,
+void bdk_window_begin_move_drag   (BdkWindow     *window,
                                    gint           button,
                                    gint           root_x,
                                    gint           root_y,
                                    guint32        timestamp);
 
-/* Interface for dirty-region queueing */
-void       gdk_window_invalidate_rect           (GdkWindow          *window,
-					         const GdkRectangle *rect,
+/* Interface for dirty-rebunnyion queueing */
+void       bdk_window_invalidate_rect           (BdkWindow          *window,
+					         const BdkRectangle *rect,
 					         gboolean            invalidate_children);
-void       gdk_window_invalidate_region         (GdkWindow          *window,
-					         const GdkRegion    *region,
+void       bdk_window_invalidate_rebunnyion         (BdkWindow          *window,
+					         const BdkRebunnyion    *rebunnyion,
 					         gboolean            invalidate_children);
-void       gdk_window_invalidate_maybe_recurse  (GdkWindow          *window,
-						 const GdkRegion    *region,
-						 gboolean (*child_func) (GdkWindow *, gpointer),
+void       bdk_window_invalidate_maybe_recurse  (BdkWindow          *window,
+						 const BdkRebunnyion    *rebunnyion,
+						 gboolean (*child_func) (BdkWindow *, gpointer),
 						 gpointer   user_data);
-GdkRegion *gdk_window_get_update_area     (GdkWindow    *window);
+BdkRebunnyion *bdk_window_get_update_area     (BdkWindow    *window);
 
-void       gdk_window_freeze_updates      (GdkWindow    *window);
-void       gdk_window_thaw_updates        (GdkWindow    *window);
+void       bdk_window_freeze_updates      (BdkWindow    *window);
+void       bdk_window_thaw_updates        (BdkWindow    *window);
 
-void       gdk_window_freeze_toplevel_updates_libgtk_only (GdkWindow *window);
-void       gdk_window_thaw_toplevel_updates_libgtk_only   (GdkWindow *window);
+void       bdk_window_freeze_toplevel_updates_libbtk_only (BdkWindow *window);
+void       bdk_window_thaw_toplevel_updates_libbtk_only   (BdkWindow *window);
 
-void       gdk_window_process_all_updates (void);
-void       gdk_window_process_updates     (GdkWindow    *window,
+void       bdk_window_process_all_updates (void);
+void       bdk_window_process_updates     (BdkWindow    *window,
 					   gboolean      update_children);
 
 /* Enable/disable flicker, so you can tell if your code is inefficient. */
-void       gdk_window_set_debug_updates   (gboolean      setting);
+void       bdk_window_set_debug_updates   (gboolean      setting);
 
-void       gdk_window_constrain_size      (GdkGeometry  *geometry,
+void       bdk_window_constrain_size      (BdkGeometry  *geometry,
                                            guint         flags,
                                            gint          width,
                                            gint          height,
                                            gint         *new_width,
                                            gint         *new_height);
 
-void gdk_window_get_internal_paint_info (GdkWindow    *window,
-					 GdkDrawable **real_drawable,
+void bdk_window_get_internal_paint_info (BdkWindow    *window,
+					 BdkDrawable **real_drawable,
 					 gint         *x_offset,
 					 gint         *y_offset);
 
-void gdk_window_enable_synchronized_configure (GdkWindow *window);
-void gdk_window_configure_finished            (GdkWindow *window);
+void bdk_window_enable_synchronized_configure (BdkWindow *window);
+void bdk_window_configure_finished            (BdkWindow *window);
 
-GdkWindow *gdk_get_default_root_window (void);
+BdkWindow *bdk_get_default_root_window (void);
 
 /* Offscreen redirection */
-GdkPixmap *gdk_offscreen_window_get_pixmap     (GdkWindow     *window);
-void       gdk_offscreen_window_set_embedder   (GdkWindow     *window,
-						GdkWindow     *embedder);
-GdkWindow *gdk_offscreen_window_get_embedder   (GdkWindow     *window);
-void       gdk_window_geometry_changed         (GdkWindow     *window);
+BdkPixmap *bdk_offscreen_window_get_pixmap     (BdkWindow     *window);
+void       bdk_offscreen_window_set_embedder   (BdkWindow     *window,
+						BdkWindow     *embedder);
+BdkWindow *bdk_offscreen_window_get_embedder   (BdkWindow     *window);
+void       bdk_window_geometry_changed         (BdkWindow     *window);
 
-void       gdk_window_redirect_to_drawable   (GdkWindow     *window,
-                                              GdkDrawable   *drawable,
+void       bdk_window_redirect_to_drawable   (BdkWindow     *window,
+                                              BdkDrawable   *drawable,
                                               gint           src_x,
                                               gint           src_y,
                                               gint           dest_x,
                                               gint           dest_y,
                                               gint           width,
                                               gint           height);
-void       gdk_window_remove_redirection     (GdkWindow     *window);
+void       bdk_window_remove_redirection     (BdkWindow     *window);
 
-#ifndef GDK_DISABLE_DEPRECATED
-#ifndef GDK_MULTIHEAD_SAFE
-GdkPointerHooks *gdk_set_pointer_hooks (const GdkPointerHooks *new_hooks);   
-#endif /* GDK_MULTIHEAD_SAFE */
+#ifndef BDK_DISABLE_DEPRECATED
+#ifndef BDK_MULTIHEAD_SAFE
+BdkPointerHooks *bdk_set_pointer_hooks (const BdkPointerHooks *new_hooks);   
+#endif /* BDK_MULTIHEAD_SAFE */
 
-#define GDK_ROOT_PARENT()             (gdk_get_default_root_window ())
-#define gdk_window_get_size            gdk_drawable_get_size
-#define gdk_window_get_type            gdk_window_get_window_type
-#define gdk_window_get_colormap        gdk_drawable_get_colormap
-#define gdk_window_set_colormap        gdk_drawable_set_colormap
-#define gdk_window_ref                 g_object_ref
-#define gdk_window_unref               g_object_unref
+#define BDK_ROOT_PARENT()             (bdk_get_default_root_window ())
+#define bdk_window_get_size            bdk_drawable_get_size
+#define bdk_window_get_type            bdk_window_get_window_type
+#define bdk_window_get_colormap        bdk_drawable_get_colormap
+#define bdk_window_set_colormap        bdk_drawable_set_colormap
+#define bdk_window_ref                 g_object_ref
+#define bdk_window_unref               g_object_unref
 
-#define gdk_window_copy_area(drawable,gc,x,y,source_drawable,source_x,source_y,width,height) \
-   gdk_draw_pixmap(drawable,gc,source_drawable,source_x,source_y,x,y,width,height)
-#endif /* GDK_DISABLE_DEPRECATED */
+#define bdk_window_copy_area(drawable,gc,x,y,source_drawable,source_x,source_y,width,height) \
+   bdk_draw_pixmap(drawable,gc,source_drawable,source_x,source_y,x,y,width,height)
+#endif /* BDK_DISABLE_DEPRECATED */
 
 G_END_DECLS
 
-#endif /* __GDK_WINDOW_H__ */
+#endif /* __BDK_WINDOW_H__ */

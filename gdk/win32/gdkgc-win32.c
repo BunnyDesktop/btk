@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2004 Tor Lillqvist
  * Copyright (C) 2000-2004 Hans Breuer
@@ -20,41 +20,41 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#define LINE_ATTRIBUTES (GDK_GC_LINE_WIDTH|GDK_GC_LINE_STYLE| \
-			 GDK_GC_CAP_STYLE|GDK_GC_JOIN_STYLE)
+#define LINE_ATTRIBUTES (BDK_GC_LINE_WIDTH|BDK_GC_LINE_STYLE| \
+			 BDK_GC_CAP_STYLE|BDK_GC_JOIN_STYLE)
 
 #include "config.h"
 #include <string.h>
 
-#include "gdkgc.h"
-#include "gdkfont.h"
-#include "gdkpixmap.h"
-#include "gdkregion-generic.h"
-#include "gdkprivate-win32.h"
+#include "bdkgc.h"
+#include "bdkfont.h"
+#include "bdkpixmap.h"
+#include "bdkrebunnyion-generic.h"
+#include "bdkprivate-win32.h"
 
-static void gdk_win32_gc_get_values (GdkGC           *gc,
-				     GdkGCValues     *values);
-static void gdk_win32_gc_set_values (GdkGC           *gc,
-				     GdkGCValues     *values,
-				     GdkGCValuesMask  values_mask);
-static void gdk_win32_gc_set_dashes (GdkGC           *gc,
+static void bdk_win32_gc_get_values (BdkGC           *gc,
+				     BdkGCValues     *values);
+static void bdk_win32_gc_set_values (BdkGC           *gc,
+				     BdkGCValues     *values,
+				     BdkGCValuesMask  values_mask);
+static void bdk_win32_gc_set_dashes (BdkGC           *gc,
 				     gint             dash_offset,
 				     gint8            dash_list[],
 				     gint             n);
 
-static void gdk_gc_win32_class_init (GdkGCWin32Class *klass);
-static void gdk_gc_win32_finalize   (GObject         *object);
+static void bdk_gc_win32_class_init (BdkGCWin32Class *klass);
+static void bdk_gc_win32_finalize   (GObject         *object);
 
 static gpointer parent_class = NULL;
 
 GType
-_gdk_gc_win32_get_type (void)
+_bdk_gc_win32_get_type (void)
 {
   static GType object_type = 0;
 
@@ -62,19 +62,19 @@ _gdk_gc_win32_get_type (void)
     {
       const GTypeInfo object_info =
       {
-        sizeof (GdkGCWin32Class),
+        sizeof (BdkGCWin32Class),
         (GBaseInitFunc) NULL,
         (GBaseFinalizeFunc) NULL,
-        (GClassInitFunc) gdk_gc_win32_class_init,
+        (GClassInitFunc) bdk_gc_win32_class_init,
         NULL,           /* class_finalize */
         NULL,           /* class_data */
-        sizeof (GdkGCWin32),
+        sizeof (BdkGCWin32),
         0,              /* n_preallocs */
         (GInstanceInitFunc) NULL,
       };
       
-      object_type = g_type_register_static (GDK_TYPE_GC,
-                                            "GdkGCWin32",
+      object_type = g_type_register_static (BDK_TYPE_GC,
+                                            "BdkGCWin32",
                                             &object_info, 0);
     }
   
@@ -82,30 +82,30 @@ _gdk_gc_win32_get_type (void)
 }
 
 static void
-gdk_gc_win32_class_init (GdkGCWin32Class *klass)
+bdk_gc_win32_class_init (BdkGCWin32Class *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GdkGCClass *gc_class = GDK_GC_CLASS (klass);
+  BdkGCClass *gc_class = BDK_GC_CLASS (klass);
   
   parent_class = g_type_class_peek_parent (klass);
 
-  object_class->finalize = gdk_gc_win32_finalize;
+  object_class->finalize = bdk_gc_win32_finalize;
 
-  gc_class->get_values = gdk_win32_gc_get_values;
-  gc_class->set_values = gdk_win32_gc_set_values;
-  gc_class->set_dashes = gdk_win32_gc_set_dashes;
+  gc_class->get_values = bdk_win32_gc_get_values;
+  gc_class->set_values = bdk_win32_gc_set_values;
+  gc_class->set_dashes = bdk_win32_gc_set_dashes;
 }
 
 static void
-gdk_gc_win32_finalize (GObject *object)
+bdk_gc_win32_finalize (GObject *object)
 {
-  GdkGCWin32 *win32_gc = GDK_GC_WIN32 (object);
+  BdkGCWin32 *win32_gc = BDK_GC_WIN32 (object);
   
   if (win32_gc->hcliprgn != NULL)
     DeleteObject (win32_gc->hcliprgn);
   
-  if (win32_gc->values_mask & GDK_GC_FONT)
-    gdk_font_unref (win32_gc->font);
+  if (win32_gc->values_mask & BDK_GC_FONT)
+    bdk_font_unref (win32_gc->font);
   
   g_free (win32_gc->pen_dashes);
   
@@ -113,27 +113,27 @@ gdk_gc_win32_finalize (GObject *object)
 }
 
 static void
-fixup_pen (GdkGCWin32 *win32_gc)
+fixup_pen (BdkGCWin32 *win32_gc)
 {
   win32_gc->pen_style = 0;
 
-  /* First look at GDK width and end cap style, set GDI pen type and
+  /* First look at BDK width and end cap style, set GDI pen type and
    * end cap.
    */
   if (win32_gc->pen_width == 0 &&
-      win32_gc->cap_style == GDK_CAP_NOT_LAST)
+      win32_gc->cap_style == BDK_CAP_NOT_LAST)
     {
       /* Use a cosmetic pen, always width 1 */
       win32_gc->pen_style |= PS_COSMETIC;
     }
   else if (win32_gc->pen_width <= 1 &&
-	   win32_gc->cap_style == GDK_CAP_BUTT)
+	   win32_gc->cap_style == BDK_CAP_BUTT)
     {
       /* For 1 pixel wide lines PS_ENDCAP_ROUND means draw both ends,
        * even for one pixel length lines. But if we are drawing dashed
        * lines we can't use PS_ENDCAP_ROUND.
        */
-      if (win32_gc->line_style == GDK_LINE_SOLID)
+      if (win32_gc->line_style == BDK_LINE_SOLID)
 	win32_gc->pen_style |= PS_GEOMETRIC | PS_ENDCAP_ROUND;
       else
 	win32_gc->pen_style |= PS_GEOMETRIC | PS_ENDCAP_FLAT;
@@ -144,27 +144,27 @@ fixup_pen (GdkGCWin32 *win32_gc)
       switch (win32_gc->cap_style)
 	{
 	/* For non-zero-width lines X11's CapNotLast works like CapButt */
-	case GDK_CAP_NOT_LAST:
-	case GDK_CAP_BUTT:
+	case BDK_CAP_NOT_LAST:
+	case BDK_CAP_BUTT:
 	  win32_gc->pen_style |= PS_ENDCAP_FLAT;
 	  break;
-	case GDK_CAP_ROUND:
+	case BDK_CAP_ROUND:
 	  win32_gc->pen_style |= PS_ENDCAP_ROUND;
 	  break;
-	case GDK_CAP_PROJECTING:
+	case BDK_CAP_PROJECTING:
 	  win32_gc->pen_style |= PS_ENDCAP_SQUARE;
 	  break;
 	}
     }
 
-  /* Next look at GDK line style, set GDI pen style attribute */
+  /* Next look at BDK line style, set GDI pen style attribute */
   switch (win32_gc->line_style)
     {
-    case GDK_LINE_SOLID:
+    case BDK_LINE_SOLID:
       win32_gc->pen_style |= PS_SOLID;
       break;
-    case GDK_LINE_ON_OFF_DASH:
-    case GDK_LINE_DOUBLE_DASH:
+    case BDK_LINE_ON_OFF_DASH:
+    case BDK_LINE_DOUBLE_DASH:
       if (win32_gc->pen_dashes == NULL)
 	{
 	  win32_gc->pen_dashes = g_new (DWORD, 1);
@@ -187,13 +187,13 @@ fixup_pen (GdkGCWin32 *win32_gc)
     {
       switch (win32_gc->join_style)
 	{
-	case GDK_JOIN_MITER:
+	case BDK_JOIN_MITER:
 	  win32_gc->pen_style |= PS_JOIN_MITER;
 	  break;
-	case GDK_JOIN_ROUND:
+	case BDK_JOIN_ROUND:
 	  win32_gc->pen_style |= PS_JOIN_ROUND;
 	  break;
-	case GDK_JOIN_BEVEL:
+	case BDK_JOIN_BEVEL:
 	  win32_gc->pen_style |= PS_JOIN_BEVEL;
 	  break;
 	}
@@ -201,60 +201,60 @@ fixup_pen (GdkGCWin32 *win32_gc)
 }
 
 static void
-gdk_win32_gc_values_to_win32values (GdkGCValues    *values,
-				    GdkGCValuesMask mask,
-				    GdkGCWin32     *win32_gc)
+bdk_win32_gc_values_to_win32values (BdkGCValues    *values,
+				    BdkGCValuesMask mask,
+				    BdkGCWin32     *win32_gc)
 {				    
 #ifdef G_ENABLE_DEBUG
   char *s = "";
 #endif
 
-  GDK_NOTE (GC, g_print ("{"));
+  BDK_NOTE (GC, g_print ("{"));
 
-  if (mask & GDK_GC_FOREGROUND)
+  if (mask & BDK_GC_FOREGROUND)
     {
-      win32_gc->values_mask |= GDK_GC_FOREGROUND;
-      GDK_NOTE (GC, (g_print ("fg=%.06x",
-			      _gdk_gc_get_fg_pixel (&win32_gc->parent_instance)),
+      win32_gc->values_mask |= BDK_GC_FOREGROUND;
+      BDK_NOTE (GC, (g_print ("fg=%.06x",
+			      _bdk_gc_get_fg_pixel (&win32_gc->parent_instance)),
 		     s = ","));
     }
   
-  if (mask & GDK_GC_BACKGROUND)
+  if (mask & BDK_GC_BACKGROUND)
     {
-      win32_gc->values_mask |= GDK_GC_BACKGROUND;
-      GDK_NOTE (GC, (g_print ("%sbg=%.06x", s,
-			      _gdk_gc_get_bg_pixel (&win32_gc->parent_instance)),
+      win32_gc->values_mask |= BDK_GC_BACKGROUND;
+      BDK_NOTE (GC, (g_print ("%sbg=%.06x", s,
+			      _bdk_gc_get_bg_pixel (&win32_gc->parent_instance)),
 		     s = ","));
     }
 
-  if ((mask & GDK_GC_FONT) && (values->font->type == GDK_FONT_FONT
-			       || values->font->type == GDK_FONT_FONTSET))
+  if ((mask & BDK_GC_FONT) && (values->font->type == BDK_FONT_FONT
+			       || values->font->type == BDK_FONT_FONTSET))
     {
       if (win32_gc->font != NULL)
-	gdk_font_unref (win32_gc->font);
+	bdk_font_unref (win32_gc->font);
       win32_gc->font = values->font;
       if (win32_gc->font != NULL)
 	{
-	  gdk_font_ref (win32_gc->font);
-	  win32_gc->values_mask |= GDK_GC_FONT;
-	  GDK_NOTE (GC, (g_print ("%sfont=%p", s, win32_gc->font),
+	  bdk_font_ref (win32_gc->font);
+	  win32_gc->values_mask |= BDK_GC_FONT;
+	  BDK_NOTE (GC, (g_print ("%sfont=%p", s, win32_gc->font),
 			 s = ","));
 	}
       else
 	{
-	  win32_gc->values_mask &= ~GDK_GC_FONT;
-	  GDK_NOTE (GC, (g_print ("%sfont=NULL", s),
+	  win32_gc->values_mask &= ~BDK_GC_FONT;
+	  BDK_NOTE (GC, (g_print ("%sfont=NULL", s),
 			 s = ","));
 	}
     }
 
-  if (mask & GDK_GC_FUNCTION)
+  if (mask & BDK_GC_FUNCTION)
     {
-      GDK_NOTE (GC, (g_print ("%srop2=", s),
+      BDK_NOTE (GC, (g_print ("%srop2=", s),
 		     s = ","));
       switch (values->function)
 	{
-#define CASE(x,y) case GDK_##x: win32_gc->rop2 = R2_##y; GDK_NOTE (GC, g_print (#y)); break
+#define CASE(x,y) case BDK_##x: win32_gc->rop2 = R2_##y; BDK_NOTE (GC, g_print (#y)); break
 	CASE (COPY, COPYPEN);
 	CASE (INVERT, NOT);
 	CASE (XOR, XORPEN);
@@ -273,178 +273,178 @@ gdk_win32_gc_values_to_win32values (GdkGCValues    *values,
 	CASE (SET, WHITE);
 #undef CASE
 	}
-      win32_gc->values_mask |= GDK_GC_FUNCTION;
+      win32_gc->values_mask |= BDK_GC_FUNCTION;
     }
 
-  if (mask & GDK_GC_FILL)
+  if (mask & BDK_GC_FILL)
     {
-      win32_gc->values_mask |= GDK_GC_FILL;
-      GDK_NOTE (GC, (g_print ("%sfill=%s", s,
-			      _gdk_win32_fill_style_to_string (values->fill)),
+      win32_gc->values_mask |= BDK_GC_FILL;
+      BDK_NOTE (GC, (g_print ("%sfill=%s", s,
+			      _bdk_win32_fill_style_to_string (values->fill)),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_TILE)
+  if (mask & BDK_GC_TILE)
     {
       if (values->tile != NULL)
 	{
-	  win32_gc->values_mask |= GDK_GC_TILE;
-	  GDK_NOTE (GC,
+	  win32_gc->values_mask |= BDK_GC_TILE;
+	  BDK_NOTE (GC,
 		    (g_print ("%stile=%p", s,
-			      GDK_PIXMAP_HBITMAP (values->tile)),
+			      BDK_PIXMAP_HBITMAP (values->tile)),
 		     s = ","));
 	}
       else
 	{
-	  win32_gc->values_mask &= ~GDK_GC_TILE;
-	  GDK_NOTE (GC, (g_print ("%stile=NULL", s),
+	  win32_gc->values_mask &= ~BDK_GC_TILE;
+	  BDK_NOTE (GC, (g_print ("%stile=NULL", s),
 			 s = ","));
 	}
     }
 
-  if (mask & GDK_GC_STIPPLE)
+  if (mask & BDK_GC_STIPPLE)
     {
       if (values->stipple != NULL)
 	{
-	  win32_gc->values_mask |= GDK_GC_STIPPLE;
-	  GDK_NOTE (GC,
+	  win32_gc->values_mask |= BDK_GC_STIPPLE;
+	  BDK_NOTE (GC,
 		    (g_print ("%sstipple=%p", s,
-			      GDK_PIXMAP_HBITMAP (values->stipple)),
+			      BDK_PIXMAP_HBITMAP (values->stipple)),
 		     s = ","));
 	}
       else
 	{
-	  win32_gc->values_mask &= ~GDK_GC_STIPPLE;
-	  GDK_NOTE (GC, (g_print ("%sstipple=NULL", s),
+	  win32_gc->values_mask &= ~BDK_GC_STIPPLE;
+	  BDK_NOTE (GC, (g_print ("%sstipple=NULL", s),
 			 s = ","));
 	}
     }
 
-  if (mask & GDK_GC_CLIP_MASK)
+  if (mask & BDK_GC_CLIP_MASK)
     {
       if (win32_gc->hcliprgn != NULL)
 	DeleteObject (win32_gc->hcliprgn);
 
       if (values->clip_mask != NULL)
 	{
-	  win32_gc->hcliprgn = _gdk_win32_bitmap_to_hrgn (values->clip_mask);
-	  win32_gc->values_mask |= GDK_GC_CLIP_MASK;
+	  win32_gc->hcliprgn = _bdk_win32_bitmap_to_hrgn (values->clip_mask);
+	  win32_gc->values_mask |= BDK_GC_CLIP_MASK;
 	}
       else
 	{
 	  win32_gc->hcliprgn = NULL;
-	  win32_gc->values_mask &= ~GDK_GC_CLIP_MASK;
+	  win32_gc->values_mask &= ~BDK_GC_CLIP_MASK;
 	}
-      GDK_NOTE (GC, (g_print ("%sclip=%p", s, win32_gc->hcliprgn),
+      BDK_NOTE (GC, (g_print ("%sclip=%p", s, win32_gc->hcliprgn),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_SUBWINDOW)
+  if (mask & BDK_GC_SUBWINDOW)
     {
       win32_gc->subwindow_mode = values->subwindow_mode;
-      win32_gc->values_mask |= GDK_GC_SUBWINDOW;
-      GDK_NOTE (GC, (g_print ("%ssubw=%d", s, win32_gc->subwindow_mode),
+      win32_gc->values_mask |= BDK_GC_SUBWINDOW;
+      BDK_NOTE (GC, (g_print ("%ssubw=%d", s, win32_gc->subwindow_mode),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_TS_X_ORIGIN)
+  if (mask & BDK_GC_TS_X_ORIGIN)
     {
-      win32_gc->values_mask |= GDK_GC_TS_X_ORIGIN;
-      GDK_NOTE (GC, (g_print ("%sts_x=%d", s, values->ts_x_origin),
+      win32_gc->values_mask |= BDK_GC_TS_X_ORIGIN;
+      BDK_NOTE (GC, (g_print ("%sts_x=%d", s, values->ts_x_origin),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_TS_Y_ORIGIN)
+  if (mask & BDK_GC_TS_Y_ORIGIN)
     {
-      win32_gc->values_mask |= GDK_GC_TS_Y_ORIGIN;
-      GDK_NOTE (GC, (g_print ("%sts_y=%d", s, values->ts_y_origin),
+      win32_gc->values_mask |= BDK_GC_TS_Y_ORIGIN;
+      BDK_NOTE (GC, (g_print ("%sts_y=%d", s, values->ts_y_origin),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_CLIP_X_ORIGIN)
+  if (mask & BDK_GC_CLIP_X_ORIGIN)
     {
-      win32_gc->values_mask |= GDK_GC_CLIP_X_ORIGIN;
-      GDK_NOTE (GC, (g_print ("%sclip_x=%d", s, values->clip_x_origin),
+      win32_gc->values_mask |= BDK_GC_CLIP_X_ORIGIN;
+      BDK_NOTE (GC, (g_print ("%sclip_x=%d", s, values->clip_x_origin),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_CLIP_Y_ORIGIN)
+  if (mask & BDK_GC_CLIP_Y_ORIGIN)
     {
-      win32_gc->values_mask |= GDK_GC_CLIP_Y_ORIGIN;
-      GDK_NOTE (GC, (g_print ("%sclip_y=%d", s, values->clip_y_origin),
+      win32_gc->values_mask |= BDK_GC_CLIP_Y_ORIGIN;
+      BDK_NOTE (GC, (g_print ("%sclip_y=%d", s, values->clip_y_origin),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_EXPOSURES)
+  if (mask & BDK_GC_EXPOSURES)
     {
       win32_gc->graphics_exposures = values->graphics_exposures;
-      win32_gc->values_mask |= GDK_GC_EXPOSURES;
-      GDK_NOTE (GC, (g_print ("%sexp=%d", s, win32_gc->graphics_exposures),
+      win32_gc->values_mask |= BDK_GC_EXPOSURES;
+      BDK_NOTE (GC, (g_print ("%sexp=%d", s, win32_gc->graphics_exposures),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_LINE_WIDTH)
+  if (mask & BDK_GC_LINE_WIDTH)
     {
       win32_gc->pen_width = values->line_width;
-      win32_gc->values_mask |= GDK_GC_LINE_WIDTH;
-      GDK_NOTE (GC, (g_print ("%spw=%d", s, win32_gc->pen_width),
+      win32_gc->values_mask |= BDK_GC_LINE_WIDTH;
+      BDK_NOTE (GC, (g_print ("%spw=%d", s, win32_gc->pen_width),
 		     s = ","));
     }
 
-  if (mask & GDK_GC_LINE_STYLE)
+  if (mask & BDK_GC_LINE_STYLE)
     {
       win32_gc->line_style = values->line_style;
-      win32_gc->values_mask |= GDK_GC_LINE_STYLE;
+      win32_gc->values_mask |= BDK_GC_LINE_STYLE;
     }
 
-  if (mask & GDK_GC_CAP_STYLE)
+  if (mask & BDK_GC_CAP_STYLE)
     {
       win32_gc->cap_style = values->cap_style;
-      win32_gc->values_mask |= GDK_GC_CAP_STYLE;
+      win32_gc->values_mask |= BDK_GC_CAP_STYLE;
     }
 
-  if (mask & GDK_GC_JOIN_STYLE)
+  if (mask & BDK_GC_JOIN_STYLE)
     {
       win32_gc->join_style = values->join_style;
-      win32_gc->values_mask |= GDK_GC_JOIN_STYLE;
+      win32_gc->values_mask |= BDK_GC_JOIN_STYLE;
     }
 
-  if (mask & (GDK_GC_LINE_WIDTH|GDK_GC_LINE_STYLE|GDK_GC_CAP_STYLE|GDK_GC_JOIN_STYLE))
+  if (mask & (BDK_GC_LINE_WIDTH|BDK_GC_LINE_STYLE|BDK_GC_CAP_STYLE|BDK_GC_JOIN_STYLE))
     {
       fixup_pen (win32_gc);
-      GDK_NOTE (GC, (g_print ("%sps|=PS_STYLE_%s|PS_ENDCAP_%s|PS_JOIN_%s", s,
-			      _gdk_win32_psstyle_to_string (win32_gc->pen_style),
-			      _gdk_win32_psendcap_to_string (win32_gc->pen_style),
-			      _gdk_win32_psjoin_to_string (win32_gc->pen_style)),
+      BDK_NOTE (GC, (g_print ("%sps|=PS_STYLE_%s|PS_ENDCAP_%s|PS_JOIN_%s", s,
+			      _bdk_win32_psstyle_to_string (win32_gc->pen_style),
+			      _bdk_win32_psendcap_to_string (win32_gc->pen_style),
+			      _bdk_win32_psjoin_to_string (win32_gc->pen_style)),
 		     s = ","));
     }
 
-  GDK_NOTE (GC, g_print ("} mask=(%s)", _gdk_win32_gcvalues_mask_to_string (win32_gc->values_mask)));
+  BDK_NOTE (GC, g_print ("} mask=(%s)", _bdk_win32_gcvalues_mask_to_string (win32_gc->values_mask)));
 }
 
-GdkGC*
-_gdk_win32_gc_new (GdkDrawable	  *drawable,
-		   GdkGCValues	  *values,
-		   GdkGCValuesMask values_mask)
+BdkGC*
+_bdk_win32_gc_new (BdkDrawable	  *drawable,
+		   BdkGCValues	  *values,
+		   BdkGCValuesMask values_mask)
 {
-  GdkGC *gc;
-  GdkGCWin32 *win32_gc;
+  BdkGC *gc;
+  BdkGCWin32 *win32_gc;
 
   /* NOTICE that the drawable here has to be the impl drawable,
    * not the publically-visible drawables.
    */
-  g_return_val_if_fail (GDK_IS_DRAWABLE_IMPL_WIN32 (drawable), NULL);
+  g_return_val_if_fail (BDK_IS_DRAWABLE_IMPL_WIN32 (drawable), NULL);
 
-  gc = g_object_new (_gdk_gc_win32_get_type (), NULL);
-  win32_gc = GDK_GC_WIN32 (gc);
+  gc = g_object_new (_bdk_gc_win32_get_type (), NULL);
+  win32_gc = BDK_GC_WIN32 (gc);
 
-  _gdk_gc_init (gc, drawable, values, values_mask);
+  _bdk_gc_init (gc, drawable, values, values_mask);
 
   win32_gc->hcliprgn = NULL;
 
   win32_gc->font = NULL;
   win32_gc->rop2 = R2_COPYPEN;
-  win32_gc->subwindow_mode = GDK_CLIP_BY_CHILDREN;
+  win32_gc->subwindow_mode = BDK_CLIP_BY_CHILDREN;
   win32_gc->graphics_exposures = TRUE;
   win32_gc->pen_width = 0;
   /* Don't get confused by the PS_ENDCAP_ROUND. For narrow GDI pens
@@ -452,19 +452,19 @@ _gdk_win32_gc_new (GdkDrawable	  *drawable,
    * CapButt.
    */
   win32_gc->pen_style = PS_GEOMETRIC|PS_ENDCAP_ROUND|PS_JOIN_MITER;
-  win32_gc->line_style = GDK_LINE_SOLID;
-  win32_gc->cap_style = GDK_CAP_BUTT;
-  win32_gc->join_style = GDK_JOIN_MITER;
+  win32_gc->line_style = BDK_LINE_SOLID;
+  win32_gc->cap_style = BDK_CAP_BUTT;
+  win32_gc->join_style = BDK_JOIN_MITER;
   win32_gc->pen_dashes = NULL;
   win32_gc->pen_num_dashes = 0;
   win32_gc->pen_dash_offset = 0;
   win32_gc->pen_hbrbg = NULL;
 
-  win32_gc->values_mask = GDK_GC_FUNCTION | GDK_GC_FILL;
+  win32_gc->values_mask = BDK_GC_FUNCTION | BDK_GC_FILL;
 
-  GDK_NOTE (GC, g_print ("_gdk_win32_gc_new: %p: ", win32_gc));
-  gdk_win32_gc_values_to_win32values (values, values_mask, win32_gc);
-  GDK_NOTE (GC, g_print ("\n"));
+  BDK_NOTE (GC, g_print ("_bdk_win32_gc_new: %p: ", win32_gc));
+  bdk_win32_gc_values_to_win32values (values, values_mask, win32_gc);
+  BDK_NOTE (GC, g_print ("\n"));
 
   win32_gc->hdc = NULL;
 
@@ -472,54 +472,54 @@ _gdk_win32_gc_new (GdkDrawable	  *drawable,
 }
 
 static void
-gdk_win32_gc_get_values (GdkGC       *gc,
-			 GdkGCValues *values)
+bdk_win32_gc_get_values (BdkGC       *gc,
+			 BdkGCValues *values)
 {
-  GdkGCWin32 *win32_gc = GDK_GC_WIN32 (gc);
+  BdkGCWin32 *win32_gc = BDK_GC_WIN32 (gc);
 
-  values->foreground.pixel = _gdk_gc_get_fg_pixel (gc);
-  values->background.pixel = _gdk_gc_get_bg_pixel (gc);
+  values->foreground.pixel = _bdk_gc_get_fg_pixel (gc);
+  values->background.pixel = _bdk_gc_get_bg_pixel (gc);
   values->font = win32_gc->font;
 
   switch (win32_gc->rop2)
     {
     case R2_COPYPEN:
-      values->function = GDK_COPY; break;
+      values->function = BDK_COPY; break;
     case R2_NOT:
-      values->function = GDK_INVERT; break;
+      values->function = BDK_INVERT; break;
     case R2_XORPEN:
-      values->function = GDK_XOR; break;
+      values->function = BDK_XOR; break;
     case R2_BLACK:
-      values->function = GDK_CLEAR; break;
+      values->function = BDK_CLEAR; break;
     case R2_MASKPEN:
-      values->function = GDK_AND; break;
+      values->function = BDK_AND; break;
     case R2_MASKPENNOT:
-      values->function = GDK_AND_REVERSE; break;
+      values->function = BDK_AND_REVERSE; break;
     case R2_MASKNOTPEN:
-      values->function = GDK_AND_INVERT; break;
+      values->function = BDK_AND_INVERT; break;
     case R2_NOP:
-      values->function = GDK_NOOP; break;
+      values->function = BDK_NOOP; break;
     case R2_MERGEPEN:
-      values->function = GDK_OR; break;
+      values->function = BDK_OR; break;
     case R2_NOTXORPEN:
-      values->function = GDK_EQUIV; break;
+      values->function = BDK_EQUIV; break;
     case R2_MERGEPENNOT:
-      values->function = GDK_OR_REVERSE; break;
+      values->function = BDK_OR_REVERSE; break;
     case R2_NOTCOPYPEN:
-      values->function = GDK_COPY_INVERT; break;
+      values->function = BDK_COPY_INVERT; break;
     case R2_MERGENOTPEN:
-      values->function = GDK_OR_INVERT; break;
+      values->function = BDK_OR_INVERT; break;
     case R2_NOTMASKPEN:
-      values->function = GDK_NAND; break;
+      values->function = BDK_NAND; break;
     case R2_NOTMERGEPEN:
-      values->function = GDK_NOR; break;
+      values->function = BDK_NOR; break;
     case R2_WHITE:
-      values->function = GDK_SET; break;
+      values->function = BDK_SET; break;
     }
 
-  values->fill = _gdk_gc_get_fill (gc);
-  values->tile = _gdk_gc_get_tile (gc);
-  values->stipple = _gdk_gc_get_stipple (gc);
+  values->fill = _bdk_gc_get_fill (gc);
+  values->tile = _bdk_gc_get_tile (gc);
+  values->stipple = _bdk_gc_get_stipple (gc);
 
   /* Also the X11 backend always returns a NULL clip_mask */
   values->clip_mask = NULL;
@@ -538,30 +538,30 @@ gdk_win32_gc_get_values (GdkGC       *gc,
 }
 
 static void
-gdk_win32_gc_set_values (GdkGC           *gc,
-			 GdkGCValues     *values,
-			 GdkGCValuesMask  mask)
+bdk_win32_gc_set_values (BdkGC           *gc,
+			 BdkGCValues     *values,
+			 BdkGCValuesMask  mask)
 {
-  g_return_if_fail (GDK_IS_GC (gc));
+  g_return_if_fail (BDK_IS_GC (gc));
 
-  GDK_NOTE (GC, g_print ("gdk_win32_gc_set_values: %p: ", GDK_GC_WIN32 (gc)));
-  gdk_win32_gc_values_to_win32values (values, mask, GDK_GC_WIN32 (gc));
-  GDK_NOTE (GC, g_print ("\n"));
+  BDK_NOTE (GC, g_print ("bdk_win32_gc_set_values: %p: ", BDK_GC_WIN32 (gc)));
+  bdk_win32_gc_values_to_win32values (values, mask, BDK_GC_WIN32 (gc));
+  BDK_NOTE (GC, g_print ("\n"));
 }
 
 static void
-gdk_win32_gc_set_dashes (GdkGC *gc,
+bdk_win32_gc_set_dashes (BdkGC *gc,
 			 gint	dash_offset,
 			 gint8  dash_list[],
 			 gint   n)
 {
-  GdkGCWin32 *win32_gc;
+  BdkGCWin32 *win32_gc;
   int i;
 
-  g_return_if_fail (GDK_IS_GC (gc));
+  g_return_if_fail (BDK_IS_GC (gc));
   g_return_if_fail (dash_list != NULL);
 
-  win32_gc = GDK_GC_WIN32 (gc);
+  win32_gc = BDK_GC_WIN32 (gc);
 
   win32_gc->pen_num_dashes = n;
   g_free (win32_gc->pen_dashes);
@@ -573,61 +573,61 @@ gdk_win32_gc_set_dashes (GdkGC *gc,
 }
 
 void
-_gdk_windowing_gc_set_clip_region (GdkGC           *gc,
-                                   const GdkRegion *region,
+_bdk_windowing_gc_set_clip_rebunnyion (BdkGC           *gc,
+                                   const BdkRebunnyion *rebunnyion,
 				   gboolean         reset_origin)
 {
-  GdkGCWin32 *win32_gc = GDK_GC_WIN32 (gc);
+  BdkGCWin32 *win32_gc = BDK_GC_WIN32 (gc);
 
   if (win32_gc->hcliprgn)
     DeleteObject (win32_gc->hcliprgn);
 
-  if (region)
+  if (rebunnyion)
     {
-      GDK_NOTE (GC, g_print ("gdk_gc_set_clip_region: %p: %s\n",
+      BDK_NOTE (GC, g_print ("bdk_gc_set_clip_rebunnyion: %p: %s\n",
 			     win32_gc,
-			     _gdk_win32_gdkregion_to_string (region)));
+			     _bdk_win32_bdkrebunnyion_to_string (rebunnyion)));
 
-      win32_gc->hcliprgn = _gdk_win32_gdkregion_to_hrgn (region, 0, 0);
-      win32_gc->values_mask |= GDK_GC_CLIP_MASK;
+      win32_gc->hcliprgn = _bdk_win32_bdkrebunnyion_to_hrgn (rebunnyion, 0, 0);
+      win32_gc->values_mask |= BDK_GC_CLIP_MASK;
     }
   else
     {
-      GDK_NOTE (GC, g_print ("gdk_gc_set_clip_region: NULL\n"));
+      BDK_NOTE (GC, g_print ("bdk_gc_set_clip_rebunnyion: NULL\n"));
 
       win32_gc->hcliprgn = NULL;
-      win32_gc->values_mask &= ~GDK_GC_CLIP_MASK;
+      win32_gc->values_mask &= ~BDK_GC_CLIP_MASK;
     }
 
   if (reset_origin)
     {
       gc->clip_x_origin = 0;
       gc->clip_y_origin = 0;
-      win32_gc->values_mask &= ~(GDK_GC_CLIP_X_ORIGIN | GDK_GC_CLIP_Y_ORIGIN);
+      win32_gc->values_mask &= ~(BDK_GC_CLIP_X_ORIGIN | BDK_GC_CLIP_Y_ORIGIN);
     }
 }
 
 void
-_gdk_windowing_gc_copy (GdkGC *dst_gc,
-			GdkGC *src_gc)
+_bdk_windowing_gc_copy (BdkGC *dst_gc,
+			BdkGC *src_gc)
 {
-  GdkGCWin32 *dst_win32_gc = GDK_GC_WIN32 (dst_gc);
-  GdkGCWin32 *src_win32_gc = GDK_GC_WIN32 (src_gc);
+  BdkGCWin32 *dst_win32_gc = BDK_GC_WIN32 (dst_gc);
+  BdkGCWin32 *src_win32_gc = BDK_GC_WIN32 (src_gc);
 
-  GDK_NOTE (GC, g_print ("gdk_gc_copy: %p := %p\n", dst_win32_gc, src_win32_gc));
+  BDK_NOTE (GC, g_print ("bdk_gc_copy: %p := %p\n", dst_win32_gc, src_win32_gc));
 
   if (dst_win32_gc->hcliprgn != NULL)
     DeleteObject (dst_win32_gc->hcliprgn);
 
   if (dst_win32_gc->font != NULL)
-    gdk_font_unref (dst_win32_gc->font);
+    bdk_font_unref (dst_win32_gc->font);
 
   g_free (dst_win32_gc->pen_dashes);
   
   dst_win32_gc->hcliprgn = src_win32_gc->hcliprgn;
   if (dst_win32_gc->hcliprgn)
     {
-      /* create a new region, to copy to */
+      /* create a new rebunnyion, to copy to */
       dst_win32_gc->hcliprgn = CreateRectRgn (0,0,1,1);
       /* overwrite from source */
       CombineRgn (dst_win32_gc->hcliprgn, src_win32_gc->hcliprgn,
@@ -637,7 +637,7 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_win32_gc->values_mask = src_win32_gc->values_mask; 
   dst_win32_gc->font = src_win32_gc->font;
   if (dst_win32_gc->font != NULL)
-    gdk_font_ref (dst_win32_gc->font);
+    bdk_font_ref (dst_win32_gc->font);
 
   dst_win32_gc->rop2 = src_win32_gc->rop2;
 
@@ -663,40 +663,40 @@ _gdk_windowing_gc_copy (GdkGC *dst_gc,
   dst_win32_gc->pen_hbrbg = NULL;
 }
 
-GdkScreen *  
-gdk_gc_get_screen (GdkGC *gc)
+BdkScreen *  
+bdk_gc_get_screen (BdkGC *gc)
 {
-  g_return_val_if_fail (GDK_IS_GC_WIN32 (gc), NULL);
+  g_return_val_if_fail (BDK_IS_GC_WIN32 (gc), NULL);
   
-  return _gdk_screen;
+  return _bdk_screen;
 }
 
 static guint bitmask[9] = { 0, 1, 3, 7, 15, 31, 63, 127, 255 };
 
 COLORREF
-_gdk_win32_colormap_color (GdkColormap *colormap,
+_bdk_win32_colormap_color (BdkColormap *colormap,
                            gulong       pixel)
 {
-  const GdkVisual *visual;
-  GdkColormapPrivateWin32 *colormap_private;
+  const BdkVisual *visual;
+  BdkColormapPrivateWin32 *colormap_private;
   guchar r, g, b;
 
   if (colormap == NULL)
     return DIBINDEX (pixel & 1);
 
-  colormap_private = GDK_WIN32_COLORMAP_DATA (colormap);
+  colormap_private = BDK_WIN32_COLORMAP_DATA (colormap);
 
   g_assert (colormap_private != NULL);
 
   visual = colormap->visual;
   switch (visual->type)
     {
-    case GDK_VISUAL_GRAYSCALE:
-    case GDK_VISUAL_PSEUDO_COLOR:
-    case GDK_VISUAL_STATIC_COLOR:
+    case BDK_VISUAL_GRAYSCALE:
+    case BDK_VISUAL_PSEUDO_COLOR:
+    case BDK_VISUAL_STATIC_COLOR:
       return PALETTEINDEX (pixel);
 
-    case GDK_VISUAL_TRUE_COLOR:
+    case BDK_VISUAL_TRUE_COLOR:
       r = (pixel & visual->red_mask) >> visual->red_shift;
       r = (r * 255) / bitmask[visual->red_prec];
       g = (pixel & visual->green_mask) >> visual->green_shift;
@@ -712,19 +712,19 @@ _gdk_win32_colormap_color (GdkColormap *colormap,
 }
 
 gboolean
-predraw (GdkGC       *gc,
-	 GdkColormap *colormap)
+predraw (BdkGC       *gc,
+	 BdkColormap *colormap)
 {
-  GdkGCWin32 *win32_gc = (GdkGCWin32 *) gc;
-  GdkColormapPrivateWin32 *colormap_private;
+  BdkGCWin32 *win32_gc = (BdkGCWin32 *) gc;
+  BdkColormapPrivateWin32 *colormap_private;
   gint k;
   gboolean ok = TRUE;
 
   if (colormap &&
-      (colormap->visual->type == GDK_VISUAL_PSEUDO_COLOR ||
-       colormap->visual->type == GDK_VISUAL_STATIC_COLOR))
+      (colormap->visual->type == BDK_VISUAL_PSEUDO_COLOR ||
+       colormap->visual->type == BDK_VISUAL_STATIC_COLOR))
     {
-      colormap_private = GDK_WIN32_COLORMAP_DATA (colormap);
+      colormap_private = BDK_WIN32_COLORMAP_DATA (colormap);
 
       g_assert (colormap_private != NULL);
 
@@ -733,24 +733,24 @@ predraw (GdkGC       *gc,
       else if ((k = RealizePalette (win32_gc->hdc)) == GDI_ERROR)
 	WIN32_GDI_FAILED ("RealizePalette"), ok = FALSE;
       else if (k > 0)
-	GDK_NOTE (COLORMAP, g_print ("predraw: realized %p: %d colors\n",
+	BDK_NOTE (COLORMAP, g_print ("predraw: realized %p: %d colors\n",
 				     colormap_private->hpal, k));
     }
 
   return ok;
 }
 
-static GdkDrawableImplWin32 *
-get_impl_drawable (GdkDrawable *drawable)
+static BdkDrawableImplWin32 *
+get_impl_drawable (BdkDrawable *drawable)
 {
-  if (GDK_IS_OFFSCREEN_WINDOW (drawable))
-    return _gdk_offscreen_window_get_real_drawable (GDK_OFFSCREEN_WINDOW (drawable));
-  if (GDK_IS_DRAWABLE_IMPL_WIN32 (drawable))
-    return GDK_DRAWABLE_IMPL_WIN32(drawable);
-  else if (GDK_IS_WINDOW (drawable))
-    return GDK_DRAWABLE_IMPL_WIN32 ((GDK_WINDOW_OBJECT (drawable))->impl);
-  else if (GDK_IS_PIXMAP (drawable))
-    return GDK_DRAWABLE_IMPL_WIN32 ((GDK_PIXMAP_OBJECT (drawable))->impl);
+  if (BDK_IS_OFFSCREEN_WINDOW (drawable))
+    return _bdk_offscreen_window_get_real_drawable (BDK_OFFSCREEN_WINDOW (drawable));
+  if (BDK_IS_DRAWABLE_IMPL_WIN32 (drawable))
+    return BDK_DRAWABLE_IMPL_WIN32(drawable);
+  else if (BDK_IS_WINDOW (drawable))
+    return BDK_DRAWABLE_IMPL_WIN32 ((BDK_WINDOW_OBJECT (drawable))->impl);
+  else if (BDK_IS_PIXMAP (drawable))
+    return BDK_DRAWABLE_IMPL_WIN32 ((BDK_PIXMAP_OBJECT (drawable))->impl);
   else
     g_assert_not_reached ();
 
@@ -758,62 +758,62 @@ get_impl_drawable (GdkDrawable *drawable)
 }
 
 /**
- * gdk_win32_hdc_get:
- * @drawable: destination #GdkDrawable
- * @gc: #GdkGC to use for drawing on @drawable
+ * bdk_win32_hdc_get:
+ * @drawable: destination #BdkDrawable
+ * @gc: #BdkGC to use for drawing on @drawable
  * @usage: mask indicating what properties needs to be set up
  *
  * Allocates a Windows device context handle (HDC) for drawing into
  * @drawable, and sets it up appropriately according to @usage.
  *
- * Each #GdkGC can at one time have only one HDC associated with it.
+ * Each #BdkGC can at one time have only one HDC associated with it.
  *
  * The following flags in @mask are handled:
  *
- * If %GDK_GC_FOREGROUND is set in @mask, a solid brush of the
+ * If %BDK_GC_FOREGROUND is set in @mask, a solid brush of the
  * foreground color in @gc is selected into the HDC. The text color of
  * the HDC is also set. If the @drawable has a palette (256-color
  * mode), the palette is selected and realized.
  *
- * If any of the line attribute flags (%GDK_GC_LINE_WIDTH,
- * %GDK_GC_LINE_STYLE, %GDK_GC_CAP_STYLE and %GDK_GC_JOIN_STYLE) is
+ * If any of the line attribute flags (%BDK_GC_LINE_WIDTH,
+ * %BDK_GC_LINE_STYLE, %BDK_GC_CAP_STYLE and %BDK_GC_JOIN_STYLE) is
  * set in @mask, a solid pen of the foreground color and appropriate
  * width and stule is created and selected into the HDC. Note that the
  * dash properties are not completely implemented.
  *
- * If the %GDK_GC_FONT flag is set, the background mix mode is set to
+ * If the %BDK_GC_FONT flag is set, the background mix mode is set to
  * %TRANSPARENT. and the text alignment is set to
  * %TA_BASELINE|%TA_LEFT. Note that no font gets selected into the HDC
  * by this function.
  *
  * Some things are done regardless of @mask: If the function in @gc is
- * any other than %GDK_COPY, the raster operation of the HDC is
- * set. If @gc has a clip mask, the clip region of the HDC is set.
+ * any other than %BDK_COPY, the raster operation of the HDC is
+ * set. If @gc has a clip mask, the clip rebunnyion of the HDC is set.
  *
  * Note that the fill style, tile, stipple, and tile and stipple
  * origins in the @gc are ignored by this function. (In general, tiles
  * and stipples can't be implemented directly on Win32; you need to do
  * multiple pass drawing and blitting to implement tiles or
- * stipples. GDK does just that when you call the GDK drawing
+ * stipples. BDK does just that when you call the BDK drawing
  * functions with a GC that asks for tiles or stipples.)
  *
  * When the HDC is no longer used, it should be released by calling
- * <function>gdk_win32_hdc_release()</function> with the same
+ * <function>bdk_win32_hdc_release()</function> with the same
  * parameters.
  *
  * If you modify the HDC by calling <function>SelectObject</function>
  * you should undo those modifications before calling
- * <function>gdk_win32_hdc_release()</function>.
+ * <function>bdk_win32_hdc_release()</function>.
  *
  * Return value: The HDC.
  **/
 HDC
-gdk_win32_hdc_get (GdkDrawable    *drawable,
-		   GdkGC          *gc,
-		   GdkGCValuesMask usage)
+bdk_win32_hdc_get (BdkDrawable    *drawable,
+		   BdkGC          *gc,
+		   BdkGCValuesMask usage)
 {
-  GdkGCWin32 *win32_gc = (GdkGCWin32 *) gc;
-  GdkDrawableImplWin32 *impl = NULL;
+  BdkGCWin32 *win32_gc = (BdkGCWin32 *) gc;
+  BdkDrawableImplWin32 *impl = NULL;
   gboolean ok = TRUE;
   COLORREF fg = RGB (0, 0, 0), bg = RGB (255, 255, 255);
   HPEN hpen;
@@ -823,18 +823,18 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
 
   impl = get_impl_drawable (drawable);
   
-  win32_gc->hdc = _gdk_win32_drawable_acquire_dc (GDK_DRAWABLE (impl));
+  win32_gc->hdc = _bdk_win32_drawable_acquire_dc (BDK_DRAWABLE (impl));
   ok = win32_gc->hdc != NULL;
 
   if (ok && (win32_gc->saved_dc = SaveDC (win32_gc->hdc)) == 0)
     WIN32_GDI_FAILED ("SaveDC"), ok = FALSE;
       
-  if (ok && (usage & (GDK_GC_FOREGROUND | GDK_GC_BACKGROUND)))
+  if (ok && (usage & (BDK_GC_FOREGROUND | BDK_GC_BACKGROUND)))
       ok = predraw (gc, impl->colormap);
 
-  if (ok && (usage & GDK_GC_FOREGROUND))
+  if (ok && (usage & BDK_GC_FOREGROUND))
     {
-      fg = _gdk_win32_colormap_color (impl->colormap, _gdk_gc_get_fg_pixel (gc));
+      fg = _bdk_win32_colormap_color (impl->colormap, _bdk_gc_get_fg_pixel (gc));
       if ((hbr = CreateSolidBrush (fg)) == NULL)
 	WIN32_GDI_FAILED ("CreateSolidBrush"), ok = FALSE;
 
@@ -847,10 +847,10 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
 
   if (ok && (usage & LINE_ATTRIBUTES))
     {
-      /* For drawing GDK_LINE_DOUBLE_DASH */
-      if ((usage & GDK_GC_BACKGROUND) && win32_gc->line_style == GDK_LINE_DOUBLE_DASH)
+      /* For drawing BDK_LINE_DOUBLE_DASH */
+      if ((usage & BDK_GC_BACKGROUND) && win32_gc->line_style == BDK_LINE_DOUBLE_DASH)
         {
-          bg = _gdk_win32_colormap_color (impl->colormap, _gdk_gc_get_bg_pixel (gc));
+          bg = _bdk_win32_colormap_color (impl->colormap, _bdk_gc_get_bg_pixel (gc));
           if ((win32_gc->pen_hbrbg = CreateSolidBrush (bg)) == NULL)
 	    WIN32_GDI_FAILED ("CreateSolidBrush"), ok = FALSE;
         }
@@ -883,7 +883,7 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
 	}
     }
 
-  if (ok && (usage & GDK_GC_FONT))
+  if (ok && (usage & BDK_GC_FONT))
     {
       if (SetBkMode (win32_gc->hdc, TRANSPARENT) == 0)
 	WIN32_GDI_FAILED ("SetBkMode"), ok = FALSE;
@@ -897,51 +897,51 @@ gdk_win32_hdc_get (GdkDrawable    *drawable,
       WIN32_GDI_FAILED ("SetROP2"), ok = FALSE;
 
   if (ok &&
-      (win32_gc->values_mask & GDK_GC_CLIP_MASK) &&
+      (win32_gc->values_mask & BDK_GC_CLIP_MASK) &&
       win32_gc->hcliprgn != NULL)
     {
       if (SelectClipRgn (win32_gc->hdc, win32_gc->hcliprgn) == ERROR)
 	WIN32_API_FAILED ("SelectClipRgn"), ok = FALSE;
 
-      if (ok && win32_gc->values_mask & (GDK_GC_CLIP_X_ORIGIN | GDK_GC_CLIP_Y_ORIGIN) &&
+      if (ok && win32_gc->values_mask & (BDK_GC_CLIP_X_ORIGIN | BDK_GC_CLIP_Y_ORIGIN) &&
 	  OffsetClipRgn (win32_gc->hdc,
-	    win32_gc->values_mask & GDK_GC_CLIP_X_ORIGIN ? gc->clip_x_origin : 0,
-	    win32_gc->values_mask & GDK_GC_CLIP_Y_ORIGIN ? gc->clip_y_origin : 0) == ERROR)
+	    win32_gc->values_mask & BDK_GC_CLIP_X_ORIGIN ? gc->clip_x_origin : 0,
+	    win32_gc->values_mask & BDK_GC_CLIP_Y_ORIGIN ? gc->clip_y_origin : 0) == ERROR)
 	WIN32_API_FAILED ("OffsetClipRgn"), ok = FALSE;
     }
   else if (ok)
     SelectClipRgn (win32_gc->hdc, NULL);
 
-  GDK_NOTE (GC, (g_print ("gdk_win32_hdc_get: %p (%s): ",
-			  win32_gc, _gdk_win32_gcvalues_mask_to_string (usage)),
-		 _gdk_win32_print_dc (win32_gc->hdc)));
+  BDK_NOTE (GC, (g_print ("bdk_win32_hdc_get: %p (%s): ",
+			  win32_gc, _bdk_win32_gcvalues_mask_to_string (usage)),
+		 _bdk_win32_print_dc (win32_gc->hdc)));
 
   return win32_gc->hdc;
 }
 
 /**
- * gdk_win32_hdc_release:
- * @drawable: destination #GdkDrawable
- * @gc: #GdkGC to use for drawing on @drawable
+ * bdk_win32_hdc_release:
+ * @drawable: destination #BdkDrawable
+ * @gc: #BdkGC to use for drawing on @drawable
  * @usage: mask indicating what properties were set up
  *
  * This function deallocates the Windows device context allocated by
- * <funcion>gdk_win32_hdc_get()</function>. It should be called with
+ * <funcion>bdk_win32_hdc_get()</function>. It should be called with
  * the same parameters.
  **/
 void
-gdk_win32_hdc_release (GdkDrawable    *drawable,
-		       GdkGC          *gc,
-		       GdkGCValuesMask usage)
+bdk_win32_hdc_release (BdkDrawable    *drawable,
+		       BdkGC          *gc,
+		       BdkGCValuesMask usage)
 {
-  GdkGCWin32 *win32_gc = (GdkGCWin32 *) gc;
-  GdkDrawableImplWin32 *impl = NULL;
+  BdkGCWin32 *win32_gc = (BdkGCWin32 *) gc;
+  BdkDrawableImplWin32 *impl = NULL;
   HGDIOBJ hpen = NULL;
   HGDIOBJ hbr = NULL;
 
-  GDK_NOTE (GC, g_print ("gdk_win32_hdc_release: %p: %p (%s)\n",
+  BDK_NOTE (GC, g_print ("bdk_win32_hdc_release: %p: %p (%s)\n",
 			 win32_gc, win32_gc->hdc,
-			 _gdk_win32_gcvalues_mask_to_string (usage)));
+			 _bdk_win32_gcvalues_mask_to_string (usage)));
 
   impl = get_impl_drawable (drawable);
 
@@ -954,7 +954,7 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
       else if ((k = RealizePalette (win32_gc->hdc)) == GDI_ERROR)
 	WIN32_GDI_FAILED ("RealizePalette");
       else if (k > 0)
-	GDK_NOTE (COLORMAP, g_print ("gdk_win32_hdc_release: realized %p: %d colors\n",
+	BDK_NOTE (COLORMAP, g_print ("bdk_win32_hdc_release: realized %p: %d colors\n",
 				     win32_gc->holdpal, k));
       win32_gc->holdpal = NULL;
     }
@@ -963,13 +963,13 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
     if ((hpen = GetCurrentObject (win32_gc->hdc, OBJ_PEN)) == NULL)
       WIN32_GDI_FAILED ("GetCurrentObject");
   
-  if (usage & GDK_GC_FOREGROUND)
+  if (usage & BDK_GC_FOREGROUND)
     if ((hbr = GetCurrentObject (win32_gc->hdc, OBJ_BRUSH)) == NULL)
       WIN32_GDI_FAILED ("GetCurrentObject");
 
   GDI_CALL (RestoreDC, (win32_gc->hdc, win32_gc->saved_dc));
 
-  _gdk_win32_drawable_release_dc (GDK_DRAWABLE (impl));
+  _bdk_win32_drawable_release_dc (BDK_DRAWABLE (impl));
 
   if (hpen != NULL)
     GDI_CALL (DeleteObject, (hpen));
@@ -986,16 +986,16 @@ gdk_win32_hdc_release (GdkDrawable    *drawable,
 /* This function originally from Jean-Edouard Lachand-Robert, and
  * available at www.codeguru.com. Simplified for our needs, not sure
  * how much of the original code left any longer. Now handles just
- * one-bit deep bitmaps (in Window parlance, ie those that GDK calls
+ * one-bit deep bitmaps (in Window parlance, ie those that BDK calls
  * bitmaps (and not pixmaps), with zero pixels being transparent.
  */
 
-/* _gdk_win32_bitmap_to_hrgn : Create a region from the
+/* _bdk_win32_bitmap_to_hrgn : Create a rebunnyion from the
  * "non-transparent" pixels of a bitmap.
  */
 
 HRGN
-_gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
+_bdk_win32_bitmap_to_hrgn (BdkPixmap *pixmap)
 {
   HRGN hRgn = NULL;
   HRGN h;
@@ -1006,15 +1006,15 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
   guchar *p;
   gint x, y;
 
-  g_assert (GDK_PIXMAP_OBJECT(pixmap)->depth == 1);
+  g_assert (BDK_PIXMAP_OBJECT(pixmap)->depth == 1);
 
-  bits = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
-  width = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->width;
-  height = GDK_PIXMAP_IMPL_WIN32 (GDK_PIXMAP_OBJECT (pixmap)->impl)->height;
+  bits = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl)->bits;
+  width = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl)->width;
+  height = BDK_PIXMAP_IMPL_WIN32 (BDK_PIXMAP_OBJECT (pixmap)->impl)->height;
   bpl = ((width - 1)/32 + 1)*4;
 
-  /* For better performances, we will use the ExtCreateRegion()
-   * function to create the region. This function take a RGNDATA
+  /* For better performances, we will use the ExtCreateRebunnyion()
+   * function to create the rebunnyion. This function take a RGNDATA
    * structure on entry. We will add rectangles by amount of
    * ALLOC_UNIT number in this structure.
    */
@@ -1047,7 +1047,7 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 	    {
 	      RECT *pr;
 	      /* Add the pixels (x0, y) to (x, y+1) as a new rectangle
-	       * in the region
+	       * in the rebunnyion
 	       */
 	      if (pData->rdh.nCount >= maxRects)
 		{
@@ -1067,14 +1067,14 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 		pData->rdh.rcBound.bottom = y+1;
 	      pData->rdh.nCount++;
 	      
-	      /* On Windows98, ExtCreateRegion() may fail if the
+	      /* On Windows98, ExtCreateRebunnyion() may fail if the
 	       * number of rectangles is too large (ie: >
-	       * 4000). Therefore, we have to create the region by
+	       * 4000). Therefore, we have to create the rebunnyion by
 	       * multiple steps.
 	       */
 	      if (pData->rdh.nCount == 2000)
 		{
-		  HRGN h = ExtCreateRegion (NULL, sizeof(RGNDATAHEADER) + (sizeof(RECT) * maxRects), pData);
+		  HRGN h = ExtCreateRebunnyion (NULL, sizeof(RGNDATAHEADER) + (sizeof(RECT) * maxRects), pData);
 		  if (hRgn)
 		    {
 		      CombineRgn(hRgn, hRgn, h, RGN_OR);
@@ -1089,8 +1089,8 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 	}
     }
   
-  /* Create or extend the region with the remaining rectangles*/
-  h = ExtCreateRegion (NULL, sizeof (RGNDATAHEADER)
+  /* Create or extend the rebunnyion with the remaining rectangles*/
+  h = ExtCreateRebunnyion (NULL, sizeof (RGNDATAHEADER)
 		       + (sizeof (RECT) * maxRects), pData);
   if (hRgn)
     {
@@ -1107,16 +1107,16 @@ _gdk_win32_bitmap_to_hrgn (GdkPixmap *pixmap)
 }
 
 HRGN
-_gdk_win32_gdkregion_to_hrgn (const GdkRegion *region,
+_bdk_win32_bdkrebunnyion_to_hrgn (const BdkRebunnyion *rebunnyion,
 			      gint             x_origin,
 			      gint             y_origin)
 {
   HRGN hrgn;
   RGNDATA *rgndata;
   RECT *rect;
-  GdkRegionBox *boxes = region->rects;
+  BdkRebunnyionBox *boxes = rebunnyion->rects;
   guint nbytes =
-    sizeof (RGNDATAHEADER) + (sizeof (RECT) * region->numRects);
+    sizeof (RGNDATAHEADER) + (sizeof (RECT) * rebunnyion->numRects);
   int i;
 
   rgndata = g_malloc (nbytes);
@@ -1126,7 +1126,7 @@ _gdk_win32_gdkregion_to_hrgn (const GdkRegion *region,
   SetRect (&rgndata->rdh.rcBound,
 	   G_MAXLONG, G_MAXLONG, G_MINLONG, G_MINLONG);
 
-  for (i = 0; i < region->numRects; i++)
+  for (i = 0; i < rebunnyion->numRects; i++)
     {
       rect = ((RECT *) rgndata->Buffer) + rgndata->rdh.nCount++;
 
@@ -1144,8 +1144,8 @@ _gdk_win32_gdkregion_to_hrgn (const GdkRegion *region,
       if (rect->bottom > rgndata->rdh.rcBound.bottom)
 	rgndata->rdh.rcBound.bottom = rect->bottom;
     }
-  if ((hrgn = ExtCreateRegion (NULL, nbytes, rgndata)) == NULL)
-    WIN32_API_FAILED ("ExtCreateRegion");
+  if ((hrgn = ExtCreateRebunnyion (NULL, nbytes, rgndata)) == NULL)
+    WIN32_API_FAILED ("ExtCreateRebunnyion");
 
   g_free (rgndata);
 

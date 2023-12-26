@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 1998-2007 Tor Lillqvist
  *
@@ -19,10 +19,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -31,11 +31,11 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "gdk.h"
-#include "gdkinput.h"
-#include "gdkinternals.h"
-#include "gdkprivate-win32.h"
-#include "gdkinput-win32.h"
+#include "bdk.h"
+#include "bdkinput.h"
+#include "bdkinternals.h"
+#include "bdkprivate-win32.h"
+#include "bdkinput-win32.h"
 
 #define WINTAB32_DLL "Wintab32.dll"
 
@@ -52,13 +52,13 @@
 
 /* Forward declarations */
 
-static GdkDevicePrivate *gdk_input_find_dev_from_ctx (HCTX hctx,
+static BdkDevicePrivate *bdk_input_find_dev_from_ctx (HCTX hctx,
 						      UINT id);
 static GList     *wintab_contexts = NULL;
 
-static GdkWindow *wintab_window = NULL;
+static BdkWindow *wintab_window = NULL;
 
-static GdkDevicePrivate *_gdk_device_in_proximity;
+static BdkDevicePrivate *_bdk_device_in_proximity;
 
 typedef UINT (WINAPI *t_WTInfoA) (UINT a, UINT b, LPVOID c);
 typedef UINT (WINAPI *t_WTInfoW) (UINT a, UINT b, LPVOID c);
@@ -80,18 +80,18 @@ static t_WTOverlap p_WTOverlap;
 static t_WTPacket p_WTPacket;
 static t_WTQueueSizeSet p_WTQueueSizeSet;
 
-static GdkDevicePrivate *
-gdk_input_find_dev_from_ctx (HCTX hctx,
+static BdkDevicePrivate *
+bdk_input_find_dev_from_ctx (HCTX hctx,
 			     UINT cursor)
 {
-  GList *tmp_list = _gdk_input_devices;
-  GdkDevicePrivate *gdkdev;
+  GList *tmp_list = _bdk_input_devices;
+  BdkDevicePrivate *bdkdev;
 
   while (tmp_list)
     {
-      gdkdev = (GdkDevicePrivate *) (tmp_list->data);
-      if (gdkdev->hctx == hctx && gdkdev->cursor == cursor)
-	return gdkdev;
+      bdkdev = (BdkDevicePrivate *) (tmp_list->data);
+      if (bdkdev->hctx == hctx && bdkdev->cursor == cursor)
+	return bdkdev;
       tmp_list = tmp_list->next;
     }
   return NULL;
@@ -328,11 +328,11 @@ print_cursor (int index)
 #endif
 
 void
-_gdk_input_wintab_init_check (void)
+_bdk_input_wintab_init_check (void)
 {
   static gboolean wintab_initialized = FALSE;
-  GdkDevicePrivate *gdkdev;
-  GdkWindowAttr wa;
+  BdkDevicePrivate *bdkdev;
+  BdkWindowAttr wa;
   WORD specversion;
   HCTX *hctx;
   UINT ndevices, ncursors, ncsrtypes, firstcsr, hardware;
@@ -355,7 +355,7 @@ _gdk_input_wintab_init_check (void)
   
   wintab_contexts = NULL;
 
-  if (_gdk_input_ignore_wintab)
+  if (_bdk_input_ignore_wintab)
     return;
 
   n = GetSystemDirectory (&dummy, 0);
@@ -402,25 +402,25 @@ _gdk_input_wintab_init_check (void)
     return;
 
   (*p_WTInfoA) (WTI_INTERFACE, IFC_SPECVERSION, &specversion);
-  GDK_NOTE (INPUT, g_print ("Wintab interface version %d.%d\n",
+  BDK_NOTE (INPUT, g_print ("Wintab interface version %d.%d\n",
 			    HIBYTE (specversion), LOBYTE (specversion)));
   (*p_WTInfoA) (WTI_INTERFACE, IFC_NDEVICES, &ndevices);
   (*p_WTInfoA) (WTI_INTERFACE, IFC_NCURSORS, &ncursors);
 #if DEBUG_WINTAB
-  GDK_NOTE (INPUT, g_print ("NDEVICES: %d, NCURSORS: %d\n",
+  BDK_NOTE (INPUT, g_print ("NDEVICES: %d, NCURSORS: %d\n",
 			    ndevices, ncursors));
 #endif
   /* Create a dummy window to receive wintab events */
-  wa.wclass = GDK_INPUT_OUTPUT;
-  wa.event_mask = GDK_ALL_EVENTS_MASK;
+  wa.wclass = BDK_INPUT_OUTPUT;
+  wa.event_mask = BDK_ALL_EVENTS_MASK;
   wa.width = 2;
   wa.height = 2;
   wa.x = -100;
   wa.y = -100;
-  wa.window_type = GDK_WINDOW_TOPLEVEL;
-  if ((wintab_window = gdk_window_new (NULL, &wa, GDK_WA_X|GDK_WA_Y)) == NULL)
+  wa.window_type = BDK_WINDOW_TOPLEVEL;
+  if ((wintab_window = bdk_window_new (NULL, &wa, BDK_WA_X|BDK_WA_Y)) == NULL)
     {
-      g_warning ("gdk_input_wintab_init: gdk_window_new failed");
+      g_warning ("bdk_input_wintab_init: bdk_window_new failed");
       return;
     }
   g_object_ref (wintab_window);
@@ -438,7 +438,7 @@ _gdk_input_wintab_init_check (void)
       (*p_WTInfoW) (WTI_DEVICES + devix, DVC_NAME, devname);
       devname_utf8 = g_utf16_to_utf8 (devname, -1, NULL, NULL, NULL);
 #ifdef DEBUG_WINTAB
-      GDK_NOTE (INPUT, (g_print("Device %d: %s\n", devix, devname_utf8)));
+      BDK_NOTE (INPUT, (g_print("Device %d: %s\n", devix, devname_utf8)));
 #endif
       (*p_WTInfoA) (WTI_DEVICES + devix, DVC_NCSRTYPES, &ncsrtypes);
       (*p_WTInfoA) (WTI_DEVICES + devix, DVC_FIRSTCSR, &firstcsr);
@@ -457,16 +457,16 @@ _gdk_input_wintab_init_check (void)
 	    defcontext_done = TRUE;
 #if DEBUG_WINTAB
 	  if (defcontext_done)
-	    GDK_NOTE (INPUT, (g_print("Using device-specific default context\n")));
+	    BDK_NOTE (INPUT, (g_print("Using device-specific default context\n")));
 	  else
-	    GDK_NOTE (INPUT, (g_print("Note: Driver did not provide device specific default context info despite claiming to support version 1.1\n")));
+	    BDK_NOTE (INPUT, (g_print("Note: Driver did not provide device specific default context info despite claiming to support version 1.1\n")));
 #endif
 	}
 
       if (!defcontext_done)
 	(*p_WTInfoA) (WTI_DEFSYSCTX, 0, &lc);
 #if DEBUG_WINTAB
-      GDK_NOTE (INPUT, (g_print("Default context:\n"), print_lc(&lc)));
+      BDK_NOTE (INPUT, (g_print("Default context:\n"), print_lc(&lc)));
 #endif
       lc.lcOptions |= CXO_MESSAGES | CXO_CSRMESSAGES;
       lc.lcStatus = 0;
@@ -482,16 +482,16 @@ _gdk_input_wintab_init_check (void)
       lc.lcOutExtY = axis_y.axMax - axis_y.axMin + 1;
       lc.lcOutExtY = -lc.lcOutExtY; /* We want Y growing downward */
 #if DEBUG_WINTAB
-      GDK_NOTE (INPUT, (g_print("context for device %d:\n", devix),
+      BDK_NOTE (INPUT, (g_print("context for device %d:\n", devix),
 			print_lc(&lc)));
 #endif
       hctx = g_new (HCTX, 1);
-      if ((*hctx = (*p_WTOpenA) (GDK_WINDOW_HWND (wintab_window), &lc, TRUE)) == NULL)
+      if ((*hctx = (*p_WTOpenA) (BDK_WINDOW_HWND (wintab_window), &lc, TRUE)) == NULL)
 	{
-	  g_warning ("gdk_input_wintab_init: WTOpen failed");
+	  g_warning ("bdk_input_wintab_init: WTOpen failed");
 	  return;
 	}
-      GDK_NOTE (INPUT, g_print ("opened Wintab device %d %p\n",
+      BDK_NOTE (INPUT, g_print ("opened Wintab device %d %p\n",
 				devix, *hctx));
       
       wintab_contexts = g_list_append (wintab_contexts, hctx);
@@ -499,28 +499,28 @@ _gdk_input_wintab_init_check (void)
       (*p_WTOverlap) (*hctx, TRUE);
 
 #if DEBUG_WINTAB
-      GDK_NOTE (INPUT, (g_print("context for device %d after WTOpen:\n", devix),
+      BDK_NOTE (INPUT, (g_print("context for device %d after WTOpen:\n", devix),
 			print_lc(&lc)));
 #endif
       /* Increase packet queue size to reduce the risk of lost packets.
        * According to the specs, if the function fails we must try again
        * with a smaller queue size.
        */
-      GDK_NOTE (INPUT, g_print("Attempting to increase queue size\n"));
+      BDK_NOTE (INPUT, g_print("Attempting to increase queue size\n"));
       for (i = 128; i >= 1; i >>= 1)
 	{
 	  if ((*p_WTQueueSizeSet) (*hctx, i))
 	    {
-	      GDK_NOTE (INPUT, g_print("Queue size set to %d\n", i));
+	      BDK_NOTE (INPUT, g_print("Queue size set to %d\n", i));
 	      break;
 	    }
 	}
       if (!i)
-	GDK_NOTE (INPUT, g_print("Whoops, no queue size could be set\n"));
+	BDK_NOTE (INPUT, g_print("Whoops, no queue size could be set\n"));
       for (cursorix = firstcsr; cursorix < firstcsr + ncsrtypes; cursorix++)
 	{
 #ifdef DEBUG_WINTAB
-	  GDK_NOTE (INPUT, (g_print("Cursor %d:\n", cursorix), print_cursor (cursorix)));
+	  BDK_NOTE (INPUT, (g_print("Cursor %d:\n", cursorix), print_cursor (cursorix)));
 #endif
 	  active = FALSE;
 	  (*p_WTInfoA) (WTI_CURSORS + cursorix, CSR_ACTIVE, &active);
@@ -539,106 +539,106 @@ _gdk_input_wintab_init_check (void)
 	  if (wcscmp (devname, L"WACOM Tablet") == 0 && physid == 0)
 	    continue;
 
-	  gdkdev = g_object_new (GDK_TYPE_DEVICE, NULL);
+	  bdkdev = g_object_new (BDK_TYPE_DEVICE, NULL);
 	  (*p_WTInfoW) (WTI_CURSORS + cursorix, CSR_NAME, csrname);
 	  csrname_utf8 = g_utf16_to_utf8 (csrname, -1, NULL, NULL, NULL);
-	  gdkdev->info.name = g_strconcat (devname_utf8, " ", csrname_utf8, NULL);
+	  bdkdev->info.name = g_strconcat (devname_utf8, " ", csrname_utf8, NULL);
 	  g_free (csrname_utf8);
-	  gdkdev->info.source = GDK_SOURCE_PEN;
-	  gdkdev->info.mode = GDK_MODE_SCREEN;
-	  gdkdev->info.has_cursor = TRUE;
-	  gdkdev->hctx = *hctx;
-	  gdkdev->cursor = cursorix;
-	  (*p_WTInfoA) (WTI_CURSORS + cursorix, CSR_PKTDATA, &gdkdev->pktdata);
-	  gdkdev->info.num_axes = 0;
-	  if (gdkdev->pktdata & PK_X)
-	    gdkdev->info.num_axes++;
-	  if (gdkdev->pktdata & PK_Y)
-	    gdkdev->info.num_axes++;
-	  if (gdkdev->pktdata & PK_NORMAL_PRESSURE)
-	    gdkdev->info.num_axes++;
+	  bdkdev->info.source = BDK_SOURCE_PEN;
+	  bdkdev->info.mode = BDK_MODE_SCREEN;
+	  bdkdev->info.has_cursor = TRUE;
+	  bdkdev->hctx = *hctx;
+	  bdkdev->cursor = cursorix;
+	  (*p_WTInfoA) (WTI_CURSORS + cursorix, CSR_PKTDATA, &bdkdev->pktdata);
+	  bdkdev->info.num_axes = 0;
+	  if (bdkdev->pktdata & PK_X)
+	    bdkdev->info.num_axes++;
+	  if (bdkdev->pktdata & PK_Y)
+	    bdkdev->info.num_axes++;
+	  if (bdkdev->pktdata & PK_NORMAL_PRESSURE)
+	    bdkdev->info.num_axes++;
 	  /* The wintab driver for the Wacom ArtPad II reports
 	   * PK_ORIENTATION in CSR_PKTDATA, but the tablet doesn't
 	   * actually sense tilt. Catch this by noticing that the
 	   * orientation axis's azimuth resolution is zero.
 	   */
-	  if ((gdkdev->pktdata & PK_ORIENTATION)
+	  if ((bdkdev->pktdata & PK_ORIENTATION)
 	      && axis_or[0].axResolution == 0)
-	    gdkdev->pktdata &= ~PK_ORIENTATION;
+	    bdkdev->pktdata &= ~PK_ORIENTATION;
 	  
-	  if (gdkdev->pktdata & PK_ORIENTATION)
-	    gdkdev->info.num_axes += 2; /* x and y tilt */
+	  if (bdkdev->pktdata & PK_ORIENTATION)
+	    bdkdev->info.num_axes += 2; /* x and y tilt */
 
-	  gdkdev->info.axes = g_new (GdkDeviceAxis, gdkdev->info.num_axes);
-	  gdkdev->axes = g_new (GdkAxisInfo, gdkdev->info.num_axes);
-	  gdkdev->last_axis_data = g_new (gint, gdkdev->info.num_axes);
+	  bdkdev->info.axes = g_new (BdkDeviceAxis, bdkdev->info.num_axes);
+	  bdkdev->axes = g_new (BdkAxisInfo, bdkdev->info.num_axes);
+	  bdkdev->last_axis_data = g_new (gint, bdkdev->info.num_axes);
 	  
 	  k = 0;
-	  if (gdkdev->pktdata & PK_X)
+	  if (bdkdev->pktdata & PK_X)
 	    {
-	      gdkdev->axes[k].resolution = axis_x.axResolution / 65535.;
-	      gdkdev->axes[k].min_value = axis_x.axMin;
-	      gdkdev->axes[k].max_value = axis_x.axMax;
-	      gdkdev->info.axes[k].use = GDK_AXIS_X;
-	      gdkdev->info.axes[k].min = axis_x.axMin;
-	      gdkdev->info.axes[k].max = axis_x.axMax;
+	      bdkdev->axes[k].resolution = axis_x.axResolution / 65535.;
+	      bdkdev->axes[k].min_value = axis_x.axMin;
+	      bdkdev->axes[k].max_value = axis_x.axMax;
+	      bdkdev->info.axes[k].use = BDK_AXIS_X;
+	      bdkdev->info.axes[k].min = axis_x.axMin;
+	      bdkdev->info.axes[k].max = axis_x.axMax;
 	      k++;
 	    }
-	  if (gdkdev->pktdata & PK_Y)
+	  if (bdkdev->pktdata & PK_Y)
 	    {
-	      gdkdev->axes[k].resolution = axis_y.axResolution / 65535.;
-	      gdkdev->axes[k].min_value = axis_y.axMin;
-	      gdkdev->axes[k].max_value = axis_y.axMax;
-	      gdkdev->info.axes[k].use = GDK_AXIS_Y;
-	      gdkdev->info.axes[k].min = axis_y.axMin;
-	      gdkdev->info.axes[k].max = axis_y.axMax;
+	      bdkdev->axes[k].resolution = axis_y.axResolution / 65535.;
+	      bdkdev->axes[k].min_value = axis_y.axMin;
+	      bdkdev->axes[k].max_value = axis_y.axMax;
+	      bdkdev->info.axes[k].use = BDK_AXIS_Y;
+	      bdkdev->info.axes[k].min = axis_y.axMin;
+	      bdkdev->info.axes[k].max = axis_y.axMax;
 	      k++;
 	    }
-	  if (gdkdev->pktdata & PK_NORMAL_PRESSURE)
+	  if (bdkdev->pktdata & PK_NORMAL_PRESSURE)
 	    {
-	      gdkdev->axes[k].resolution = axis_npressure.axResolution / 65535.;
-	      gdkdev->axes[k].min_value = axis_npressure.axMin;
-	      gdkdev->axes[k].max_value = axis_npressure.axMax;
-	      gdkdev->info.axes[k].use = GDK_AXIS_PRESSURE;
+	      bdkdev->axes[k].resolution = axis_npressure.axResolution / 65535.;
+	      bdkdev->axes[k].min_value = axis_npressure.axMin;
+	      bdkdev->axes[k].max_value = axis_npressure.axMax;
+	      bdkdev->info.axes[k].use = BDK_AXIS_PRESSURE;
 	      /* GIMP seems to expect values in the range 0-1 */
-	      gdkdev->info.axes[k].min = 0.0; /*axis_npressure.axMin;*/
-	      gdkdev->info.axes[k].max = 1.0; /*axis_npressure.axMax;*/
+	      bdkdev->info.axes[k].min = 0.0; /*axis_npressure.axMin;*/
+	      bdkdev->info.axes[k].max = 1.0; /*axis_npressure.axMax;*/
 	      k++;
 	    }
-	  if (gdkdev->pktdata & PK_ORIENTATION)
+	  if (bdkdev->pktdata & PK_ORIENTATION)
 	    {
-	      GdkAxisUse axis;
+	      BdkAxisUse axis;
 	      
-	      gdkdev->orientation_axes[0] = axis_or[0];
-	      gdkdev->orientation_axes[1] = axis_or[1];
-	      for (axis = GDK_AXIS_XTILT; axis <= GDK_AXIS_YTILT; axis++)
+	      bdkdev->orientation_axes[0] = axis_or[0];
+	      bdkdev->orientation_axes[1] = axis_or[1];
+	      for (axis = BDK_AXIS_XTILT; axis <= BDK_AXIS_YTILT; axis++)
 		{
 		  /* Wintab gives us aximuth and altitude, which
 		   * we convert to x and y tilt in the -1000..1000 range
 		   */
-		  gdkdev->axes[k].resolution = 1000;
-		  gdkdev->axes[k].min_value = -1000;
-		  gdkdev->axes[k].max_value = 1000;
-		  gdkdev->info.axes[k].use = axis;
-		  gdkdev->info.axes[k].min = -1.0;
-		  gdkdev->info.axes[k].max = 1.0;
+		  bdkdev->axes[k].resolution = 1000;
+		  bdkdev->axes[k].min_value = -1000;
+		  bdkdev->axes[k].max_value = 1000;
+		  bdkdev->info.axes[k].use = axis;
+		  bdkdev->info.axes[k].min = -1.0;
+		  bdkdev->info.axes[k].max = 1.0;
 		  k++;
 		}
 	    }
-	  gdkdev->info.num_keys = 0;
-	  gdkdev->info.keys = NULL;
-	  GDK_NOTE (INPUT, g_print ("device: (%d) %s axes: %d\n",
+	  bdkdev->info.num_keys = 0;
+	  bdkdev->info.keys = NULL;
+	  BDK_NOTE (INPUT, g_print ("device: (%d) %s axes: %d\n",
 				    cursorix,
-				    gdkdev->info.name,
-				    gdkdev->info.num_axes));
-	  for (i = 0; i < gdkdev->info.num_axes; i++)
-	    GDK_NOTE (INPUT, g_print ("... axis %d: %d--%d@%d\n",
+				    bdkdev->info.name,
+				    bdkdev->info.num_axes));
+	  for (i = 0; i < bdkdev->info.num_axes; i++)
+	    BDK_NOTE (INPUT, g_print ("... axis %d: %d--%d@%d\n",
 				      i,
-				      gdkdev->axes[i].min_value, 
-				      gdkdev->axes[i].max_value, 
-				      gdkdev->axes[i].resolution));
-	  _gdk_input_devices = g_list_append (_gdk_input_devices,
-					      gdkdev);
+				      bdkdev->axes[i].min_value, 
+				      bdkdev->axes[i].max_value, 
+				      bdkdev->axes[i].resolution));
+	  _bdk_input_devices = g_list_append (_bdk_input_devices,
+					      bdkdev);
 	}
       g_free (devname_utf8);
     }
@@ -667,15 +667,15 @@ decode_tilt (gint   *axis_data,
 }
 
 static void
-gdk_input_translate_coordinates (GdkDevicePrivate *gdkdev,
-				 GdkWindow        *window,
+bdk_input_translate_coordinates (BdkDevicePrivate *bdkdev,
+				 BdkWindow        *window,
 				 gint             *axis_data,
 				 gdouble          *axis_out,
 				 gdouble          *x_out,
 				 gdouble          *y_out)
 {
-  GdkWindowObject *priv, *impl_window;
-  GdkWindowImplWin32 *root_impl;
+  BdkWindowObject *priv, *impl_window;
+  BdkWindowImplWin32 *root_impl;
 
   int i;
   int x_axis = 0;
@@ -684,17 +684,17 @@ gdk_input_translate_coordinates (GdkDevicePrivate *gdkdev,
   double device_width, device_height, x_min, y_min;
   double x_offset, y_offset, x_scale, y_scale;
 
-  priv = (GdkWindowObject *) window;
-  impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+  priv = (BdkWindowObject *) window;
+  impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
 
-  for (i=0; i<gdkdev->info.num_axes; i++)
+  for (i=0; i<bdkdev->info.num_axes; i++)
     {
-      switch (gdkdev->info.axes[i].use)
+      switch (bdkdev->info.axes[i].use)
 	{
-	case GDK_AXIS_X:
+	case BDK_AXIS_X:
 	  x_axis = i;
 	  break;
-	case GDK_AXIS_Y:
+	case BDK_AXIS_Y:
 	  y_axis = i;
 	  break;
 	default:
@@ -702,24 +702,24 @@ gdk_input_translate_coordinates (GdkDevicePrivate *gdkdev,
 	}
     }
   
-  device_width = gdkdev->axes[x_axis].max_value - gdkdev->axes[x_axis].min_value;
-  x_min = gdkdev->axes[x_axis].min_value;
-  device_height = gdkdev->axes[y_axis].max_value - gdkdev->axes[y_axis].min_value;
-  y_min = gdkdev->axes[y_axis].min_value;
+  device_width = bdkdev->axes[x_axis].max_value - bdkdev->axes[x_axis].min_value;
+  x_min = bdkdev->axes[x_axis].min_value;
+  device_height = bdkdev->axes[y_axis].max_value - bdkdev->axes[y_axis].min_value;
+  y_min = bdkdev->axes[y_axis].min_value;
 
-  if (gdkdev->info.mode == GDK_MODE_SCREEN) 
+  if (bdkdev->info.mode == BDK_MODE_SCREEN) 
     {
-      root_impl = GDK_WINDOW_IMPL_WIN32 (GDK_WINDOW_OBJECT (_gdk_root)->impl);
-      x_scale = GDK_WINDOW_OBJECT (_gdk_root)->width / device_width;
-      y_scale = GDK_WINDOW_OBJECT (_gdk_root)->height / device_height;
+      root_impl = BDK_WINDOW_IMPL_WIN32 (BDK_WINDOW_OBJECT (_bdk_root)->impl);
+      x_scale = BDK_WINDOW_OBJECT (_bdk_root)->width / device_width;
+      y_scale = BDK_WINDOW_OBJECT (_bdk_root)->height / device_height;
 
       x_offset = - impl_window->input_window->root_x - priv->abs_x;
       y_offset = - impl_window->input_window->root_y - priv->abs_y;
     }
-  else				/* GDK_MODE_WINDOW */
+  else				/* BDK_MODE_WINDOW */
     {
-      double x_resolution = gdkdev->axes[x_axis].resolution;
-      double y_resolution = gdkdev->axes[y_axis].resolution;
+      double x_resolution = bdkdev->axes[x_axis].resolution;
+      double y_resolution = bdkdev->axes[y_axis].resolution;
       double device_aspect = (device_height*y_resolution) / (device_width * x_resolution);
 
       if (device_aspect * priv->width >= priv->height)
@@ -742,32 +742,32 @@ gdk_input_translate_coordinates (GdkDevicePrivate *gdkdev,
 	}
     }
 
-  for (i = 0; i < gdkdev->info.num_axes; i++)
+  for (i = 0; i < bdkdev->info.num_axes; i++)
     {
-      switch (gdkdev->info.axes[i].use)
+      switch (bdkdev->info.axes[i].use)
 	{
-	case GDK_AXIS_X:
+	case BDK_AXIS_X:
 	  axis_out[i] = x_offset + x_scale * axis_data[x_axis];
 	  if (x_out)
 	    *x_out = axis_out[i];
 	  break;
-	case GDK_AXIS_Y:
+	case BDK_AXIS_Y:
 	  axis_out[i] = y_offset + y_scale * axis_data[y_axis];
 	  if (y_out)
 	    *y_out = axis_out[i];
 	  break;
 	default:
 	  axis_out[i] =
-	    (gdkdev->info.axes[i].max * (axis_data[i] - gdkdev->axes[i].min_value) +
-	     gdkdev->info.axes[i].min * (gdkdev->axes[i].max_value - axis_data[i])) /
-	    (gdkdev->axes[i].max_value - gdkdev->axes[i].min_value);
+	    (bdkdev->info.axes[i].max * (axis_data[i] - bdkdev->axes[i].min_value) +
+	     bdkdev->info.axes[i].min * (bdkdev->axes[i].max_value - axis_data[i])) /
+	    (bdkdev->axes[i].max_value - bdkdev->axes[i].min_value);
 	  break;
 	}
     }
 }
 
 static void
-gdk_input_get_root_relative_geometry (HWND w,
+bdk_input_get_root_relative_geometry (HWND w,
 				      int  *x_ret,
 				      int  *y_ret)
 {
@@ -778,24 +778,24 @@ gdk_input_get_root_relative_geometry (HWND w,
   ClientToScreen (w, &pt);
 
   if (x_ret)
-    *x_ret = pt.x + _gdk_offset_x;
+    *x_ret = pt.x + _bdk_offset_x;
   if (y_ret)
-    *y_ret = pt.y + _gdk_offset_y;
+    *y_ret = pt.y + _bdk_offset_y;
 }
 
 void
-_gdk_input_configure_event (GdkWindow         *window)
+_bdk_input_configure_event (BdkWindow         *window)
 {
-  GdkInputWindow *input_window;
-  GdkWindowObject *impl_window;
+  BdkInputWindow *input_window;
+  BdkWindowObject *impl_window;
   int root_x, root_y;
 
   g_return_if_fail (window != NULL);
 
-  impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+  impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
   input_window = impl_window->input_window;
 
-  gdk_input_get_root_relative_geometry (GDK_WINDOW_HWND (window),
+  bdk_input_get_root_relative_geometry (BDK_WINDOW_HWND (window),
 					&root_x, &root_y);
 
   input_window->root_x = root_x;
@@ -804,9 +804,9 @@ _gdk_input_configure_event (GdkWindow         *window)
 
 /*
  * Get the currently active keyboard modifiers (ignoring the mouse buttons)
- * We could use gdk_window_get_pointer but that function does a lot of other
+ * We could use bdk_window_get_pointer but that function does a lot of other
  * expensive things besides getting the modifiers. This code is somewhat based
- * on build_pointer_event_state from gdkevents-win32.c
+ * on build_pointer_event_state from bdkevents-win32.c
  */
 static guint
 get_modifier_key_state (void)
@@ -816,13 +816,13 @@ get_modifier_key_state (void)
   state = 0;
   /* High-order bit is up/down, low order bit is toggled/untoggled */
   if (GetKeyState (VK_CONTROL) < 0)
-    state |= GDK_CONTROL_MASK;
+    state |= BDK_CONTROL_MASK;
   if (GetKeyState (VK_SHIFT) < 0)
-    state |= GDK_SHIFT_MASK;
+    state |= BDK_SHIFT_MASK;
   if (GetKeyState (VK_MENU) < 0)
-    state |= GDK_MOD1_MASK;
+    state |= BDK_MOD1_MASK;
   if (GetKeyState (VK_CAPITAL) & 0x1)
-    state |= GDK_LOCK_MASK;
+    state |= BDK_LOCK_MASK;
 
   return state;
 }
@@ -834,14 +834,14 @@ static gboolean
 ignore_core_timefunc (gpointer data)
 {
   /* The delay has passed */
-  _gdk_input_ignore_core = FALSE;
+  _bdk_input_ignore_core = FALSE;
   ignore_core_timer = 0;
 
   return FALSE; /* remove timeout */
 }
 
 /*
- * Set or unset the _gdk_input_ignore_core variable that tells GDK
+ * Set or unset the _bdk_input_ignore_core variable that tells BDK
  * to ignore events for the core pointer when the tablet is in proximity
  * The unsetting is delayed slightly so that if a tablet event arrives
  * just after proximity out, it does not cause a core pointer event
@@ -852,7 +852,7 @@ set_ignore_core (gboolean ignore)
 {
   if (ignore)
     {
-      _gdk_input_ignore_core = TRUE;
+      _bdk_input_ignore_core = TRUE;
       /* Remove any pending clear */
       if (ignore_core_timer)
         {
@@ -862,42 +862,42 @@ set_ignore_core (gboolean ignore)
     }
   else
     if (!ignore_core_timer)
-      ignore_core_timer = gdk_threads_add_timeout (PROXIMITY_OUT_DELAY,
+      ignore_core_timer = bdk_threads_add_timeout (PROXIMITY_OUT_DELAY,
 					 ignore_core_timefunc, NULL);
 }
 
 #endif
 
 void
-_gdk_input_update_for_device_mode (GdkDevicePrivate *gdkdev)
+_bdk_input_update_for_device_mode (BdkDevicePrivate *bdkdev)
 {
   LOGCONTEXT lc;
 
-  if (gdkdev != _gdk_device_in_proximity)
+  if (bdkdev != _bdk_device_in_proximity)
     return;
 
-  if (p_WTGetA (gdkdev->hctx, &lc))
+  if (p_WTGetA (bdkdev->hctx, &lc))
     {
-      if (gdkdev->info.mode == GDK_MODE_SCREEN &&
+      if (bdkdev->info.mode == BDK_MODE_SCREEN &&
 	  (lc.lcOptions & CXO_SYSTEM) == 0)
 	{
 	  lc.lcOptions |= CXO_SYSTEM;
-	  p_WTSetA (gdkdev->hctx, &lc);
+	  p_WTSetA (bdkdev->hctx, &lc);
 	}
-      else if (gdkdev->info.mode == GDK_MODE_WINDOW &&
+      else if (bdkdev->info.mode == BDK_MODE_WINDOW &&
 	       (lc.lcOptions & CXO_SYSTEM) != 0)
 	{
 	  lc.lcOptions &= ~CXO_SYSTEM;
-	  p_WTSetA (gdkdev->hctx, &lc);
+	  p_WTSetA (bdkdev->hctx, &lc);
 	}
     }
 }
 
-static GdkWindow *
+static BdkWindow *
 find_window_for_input_event (MSG* msg, int *x, int *y)
 {
   POINT pt;
-  GdkWindow *window;
+  BdkWindow *window;
   HWND hwnd;
   RECT rect;
 
@@ -912,12 +912,12 @@ find_window_for_input_event (MSG* msg, int *x, int *y)
       ScreenToClient (hwnd, &client_pt);
       GetClientRect (hwnd, &rect);
       if (PtInRect (&rect, client_pt))
-	window = gdk_win32_handle_table_lookup ((GdkNativeWindow) hwnd);
+	window = bdk_win32_handle_table_lookup ((BdkNativeWindow) hwnd);
     }
 
   /* need to also adjust the coordinates to the new window */
   if (window)
-    ScreenToClient (GDK_WINDOW_HWND (window), &pt);
+    ScreenToClient (BDK_WINDOW_HWND (window), &pt);
 
   *x = pt.x;
   *y = pt.y;
@@ -925,40 +925,40 @@ find_window_for_input_event (MSG* msg, int *x, int *y)
   if (window)
     return window;
 
-  return _gdk_root;
+  return _bdk_root;
 }
 
 gboolean 
-_gdk_input_other_event (GdkEvent  *event,
+_bdk_input_other_event (BdkEvent  *event,
 			MSG       *msg,
-			GdkWindow *window)
+			BdkWindow *window)
 {
-  GdkWindowObject *obj, *impl_window;
-  GdkWindow *native_window;
-  GdkInputWindow *input_window;
-  GdkDevicePrivate *gdkdev = NULL;
+  BdkWindowObject *obj, *impl_window;
+  BdkWindow *native_window;
+  BdkInputWindow *input_window;
+  BdkDevicePrivate *bdkdev = NULL;
   guint key_state;
 
   PACKET packet;
   gint k;
   gint x, y;
   guint translated_buttons, button_diff, button_mask;
-  /* Translation from tablet button state to GDK button state for
+  /* Translation from tablet button state to BDK button state for
    * buttons 1-3 - swap button 2 and 3.
    */
   static guint button_map[8] = {0, 1, 4, 5, 2, 3, 6, 7};
 
   if (window != wintab_window)
     {
-      g_warning ("_gdk_input_other_event: not wintab_window?");
+      g_warning ("_bdk_input_other_event: not wintab_window?");
       return FALSE;
     }
 
   native_window = find_window_for_input_event (msg, &x, &y);
 
-  GDK_NOTE (EVENTS_OR_INPUT,
-	    g_print ("_gdk_input_other_event: native_window=%p %+d%+d\n",
-		     GDK_WINDOW_HWND (native_window), x, y));
+  BDK_NOTE (EVENTS_OR_INPUT,
+	    g_print ("_bdk_input_other_event: native_window=%p %+d%+d\n",
+		     BDK_WINDOW_HWND (native_window), x, y));
 
   if (msg->message == WT_PACKET || msg->message == WT_CSRCHANGE)
     {
@@ -974,45 +974,45 @@ _gdk_input_other_event (GdkEvent  *event,
        */
       if (_modal_operation_in_progress)
 	{
-	  GDK_NOTE (EVENTS_OR_INPUT, g_print ("... ignored when moving/sizing\n"));
+	  BDK_NOTE (EVENTS_OR_INPUT, g_print ("... ignored when moving/sizing\n"));
 	  return FALSE;
 	}
 
-      if ((gdkdev = gdk_input_find_dev_from_ctx ((HCTX) msg->lParam,
+      if ((bdkdev = bdk_input_find_dev_from_ctx ((HCTX) msg->lParam,
 						 packet.pkCursor)) == NULL)
 	return FALSE;
 
-      if (gdkdev->info.mode == GDK_MODE_DISABLED)
+      if (bdkdev->info.mode == BDK_MODE_DISABLED)
 	return FALSE;
       
       k = 0;
-      if (gdkdev->pktdata & PK_X)
-	gdkdev->last_axis_data[k++] = packet.pkX;
-      if (gdkdev->pktdata & PK_Y)
-	gdkdev->last_axis_data[k++] = packet.pkY;
-      if (gdkdev->pktdata & PK_NORMAL_PRESSURE)
-	gdkdev->last_axis_data[k++] = packet.pkNormalPressure;
-      if (gdkdev->pktdata & PK_ORIENTATION)
+      if (bdkdev->pktdata & PK_X)
+	bdkdev->last_axis_data[k++] = packet.pkX;
+      if (bdkdev->pktdata & PK_Y)
+	bdkdev->last_axis_data[k++] = packet.pkY;
+      if (bdkdev->pktdata & PK_NORMAL_PRESSURE)
+	bdkdev->last_axis_data[k++] = packet.pkNormalPressure;
+      if (bdkdev->pktdata & PK_ORIENTATION)
 	{
-	  decode_tilt (gdkdev->last_axis_data + k,
-		       gdkdev->orientation_axes, &packet);
+	  decode_tilt (bdkdev->last_axis_data + k,
+		       bdkdev->orientation_axes, &packet);
 	  k += 2;
 	}
 
-      g_assert (k == gdkdev->info.num_axes);
+      g_assert (k == bdkdev->info.num_axes);
 
       translated_buttons = button_map[packet.pkButtons & 0x07] | (packet.pkButtons & ~0x07);
 
-      if (translated_buttons != gdkdev->button_state)
+      if (translated_buttons != bdkdev->button_state)
 	{
 	  /* At least one button has changed state so produce a button event
 	   * If more than one button has changed state (unlikely),
 	   * just care about the first and act on the next the next time
 	   * we get a packet
 	   */
-	  button_diff = translated_buttons ^ gdkdev->button_state;
+	  button_diff = translated_buttons ^ bdkdev->button_state;
 	  
-	  /* Gdk buttons are numbered 1.. */
+	  /* Bdk buttons are numbered 1.. */
 	  event->button.button = 1;
 
 	  for (button_mask = 1; button_mask != 0x80000000;
@@ -1026,127 +1026,127 @@ _gdk_input_other_event (GdkEvent  *event,
 	    }
 
 	  if (!(translated_buttons & button_mask))
-	    event->any.type = GDK_BUTTON_RELEASE;
+	    event->any.type = BDK_BUTTON_RELEASE;
 	  else
-	    event->any.type = GDK_BUTTON_PRESS;
-	  gdkdev->button_state ^= button_mask;
+	    event->any.type = BDK_BUTTON_PRESS;
+	  bdkdev->button_state ^= button_mask;
 	}
       else
 	{
-	  event->any.type = GDK_MOTION_NOTIFY;
+	  event->any.type = BDK_MOTION_NOTIFY;
 	}
 
-      if (native_window == _gdk_root)
+      if (native_window == _bdk_root)
 	return FALSE;
 
-      window = _gdk_window_get_input_window_for_event (native_window,
+      window = _bdk_window_get_input_window_for_event (native_window,
 						       event->any.type,
-						       gdkdev->button_state << 8,
+						       bdkdev->button_state << 8,
 						       x, y, 0);
 
-      obj = GDK_WINDOW_OBJECT (window);
+      obj = BDK_WINDOW_OBJECT (window);
 
       if (window == NULL ||
 	  obj->extension_events == 0)
 	return FALSE;
       
-      impl_window = (GdkWindowObject *)_gdk_window_get_impl_window (window);
+      impl_window = (BdkWindowObject *)_bdk_window_get_impl_window (window);
       input_window = impl_window->input_window;
 
       g_assert (input_window != NULL);
 
-      if (gdkdev->info.mode == GDK_MODE_WINDOW && 
-	  (obj->extension_events & GDK_ALL_DEVICES_MASK) == 0)
+      if (bdkdev->info.mode == BDK_MODE_WINDOW && 
+	  (obj->extension_events & BDK_ALL_DEVICES_MASK) == 0)
 	return FALSE;
 
       event->any.window = window;
       key_state = get_modifier_key_state ();
-      if (event->any.type == GDK_BUTTON_PRESS || 
-	  event->any.type == GDK_BUTTON_RELEASE)
+      if (event->any.type == BDK_BUTTON_PRESS || 
+	  event->any.type == BDK_BUTTON_RELEASE)
 	{
-	  event->button.time = _gdk_win32_get_next_tick (msg->time);
-	  event->button.device = &gdkdev->info;
+	  event->button.time = _bdk_win32_get_next_tick (msg->time);
+	  event->button.device = &bdkdev->info;
 	  
-	  event->button.axes = g_new(gdouble, gdkdev->info.num_axes);
+	  event->button.axes = g_new(gdouble, bdkdev->info.num_axes);
 
-	  gdk_input_translate_coordinates (gdkdev, window,
-					   gdkdev->last_axis_data,
+	  bdk_input_translate_coordinates (bdkdev, window,
+					   bdkdev->last_axis_data,
 					   event->button.axes,
 					   &event->button.x, 
 					   &event->button.y);
 
 	  /* Also calculate root coordinates. Note that input_window->root_x
-	     is in GDK root coordinates. */
+	     is in BDK root coordinates. */
 	  event->button.x_root = event->button.x + input_window->root_x;
 	  event->button.y_root = event->button.y + input_window->root_y;
 
-	  event->button.state = ((gdkdev->button_state << 8)
-				 & (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK
-				    | GDK_BUTTON3_MASK | GDK_BUTTON4_MASK
-				    | GDK_BUTTON5_MASK))
+	  event->button.state = ((bdkdev->button_state << 8)
+				 & (BDK_BUTTON1_MASK | BDK_BUTTON2_MASK
+				    | BDK_BUTTON3_MASK | BDK_BUTTON4_MASK
+				    | BDK_BUTTON5_MASK))
 				| key_state;
-	  GDK_NOTE (EVENTS_OR_INPUT,
+	  BDK_NOTE (EVENTS_OR_INPUT,
 		    g_print ("WINTAB button %s:%d %g,%g\n",
-			     (event->button.type == GDK_BUTTON_PRESS ?
+			     (event->button.type == BDK_BUTTON_PRESS ?
 			      "press" : "release"),
 			     event->button.button,
 			     event->button.x, event->button.y));
 	}
       else
 	{
-	  event->motion.time = _gdk_win32_get_next_tick (msg->time);
+	  event->motion.time = _bdk_win32_get_next_tick (msg->time);
 	  event->motion.is_hint = FALSE;
-	  event->motion.device = &gdkdev->info;
+	  event->motion.device = &bdkdev->info;
 
-	  event->motion.axes = g_new(gdouble, gdkdev->info.num_axes);
+	  event->motion.axes = g_new(gdouble, bdkdev->info.num_axes);
 
-	  gdk_input_translate_coordinates (gdkdev, window,
-					   gdkdev->last_axis_data,
+	  bdk_input_translate_coordinates (bdkdev, window,
+					   bdkdev->last_axis_data,
 					   event->motion.axes,
 					   &event->motion.x, 
 					   &event->motion.y);
 
 	  /* Also calculate root coordinates. Note that input_window->root_x
-	     is in GDK root coordinates. */
+	     is in BDK root coordinates. */
 	  event->motion.x_root = event->motion.x + input_window->root_x;
 	  event->motion.y_root = event->motion.y + input_window->root_y;
 
-	  event->motion.state = ((gdkdev->button_state << 8)
-				 & (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK
-				    | GDK_BUTTON3_MASK | GDK_BUTTON4_MASK
-				    | GDK_BUTTON5_MASK))
+	  event->motion.state = ((bdkdev->button_state << 8)
+				 & (BDK_BUTTON1_MASK | BDK_BUTTON2_MASK
+				    | BDK_BUTTON3_MASK | BDK_BUTTON4_MASK
+				    | BDK_BUTTON5_MASK))
 				| key_state;
 
-	  GDK_NOTE (EVENTS_OR_INPUT,
+	  BDK_NOTE (EVENTS_OR_INPUT,
 		    g_print ("WINTAB motion: %g,%g\n",
 			     event->motion.x, event->motion.y));
 	}
       return TRUE;
 
     case WT_CSRCHANGE:
-      if ((gdkdev = gdk_input_find_dev_from_ctx ((HCTX) msg->lParam,
+      if ((bdkdev = bdk_input_find_dev_from_ctx ((HCTX) msg->lParam,
 						 packet.pkCursor)) == NULL)
 	return FALSE;
 
-      _gdk_device_in_proximity = gdkdev;
+      _bdk_device_in_proximity = bdkdev;
 
-      _gdk_input_update_for_device_mode (gdkdev);
+      _bdk_input_update_for_device_mode (bdkdev);
 
       window = NULL;
-      if (native_window != _gdk_root)
-	window = _gdk_window_get_input_window_for_event (native_window,
-							 GDK_PROXIMITY_IN,
+      if (native_window != _bdk_root)
+	window = _bdk_window_get_input_window_for_event (native_window,
+							 BDK_PROXIMITY_IN,
 							 0,
 							 x, y, 0);
       if (window)
 	{
-	  event->proximity.type = GDK_PROXIMITY_IN;
+	  event->proximity.type = BDK_PROXIMITY_IN;
 	  event->proximity.window = window;
-	  event->proximity.time = _gdk_win32_get_next_tick (msg->time);
-	  event->proximity.device = &_gdk_device_in_proximity->info;
+	  event->proximity.time = _bdk_win32_get_next_tick (msg->time);
+	  event->proximity.device = &_bdk_device_in_proximity->info;
 	}
 
-      GDK_NOTE (EVENTS_OR_INPUT,
+      BDK_NOTE (EVENTS_OR_INPUT,
 		g_print ("WINTAB proximity in\n"));
 
       return TRUE;
@@ -1155,31 +1155,31 @@ _gdk_input_other_event (GdkEvent  *event,
       /* TODO: Set ignore_core if in input_window */
       if (LOWORD (msg->lParam) == 0)
 	{
-	  _gdk_input_in_proximity = FALSE;
+	  _bdk_input_in_proximity = FALSE;
 
 	  window = NULL;
-	  if (native_window != _gdk_root)
-	    window = _gdk_window_get_input_window_for_event (native_window,
-							     GDK_PROXIMITY_IN,
+	  if (native_window != _bdk_root)
+	    window = _bdk_window_get_input_window_for_event (native_window,
+							     BDK_PROXIMITY_IN,
 							     0,
 							     x, y, 0);
 	  if (window)
 	    {
-	      event->proximity.type = GDK_PROXIMITY_OUT;
+	      event->proximity.type = BDK_PROXIMITY_OUT;
 	      event->proximity.window = window;
-	      event->proximity.time = _gdk_win32_get_next_tick (msg->time);
-	      event->proximity.device = &_gdk_device_in_proximity->info;
+	      event->proximity.time = _bdk_win32_get_next_tick (msg->time);
+	      event->proximity.device = &_bdk_device_in_proximity->info;
 	    }
 
-	  GDK_NOTE (EVENTS_OR_INPUT,
+	  BDK_NOTE (EVENTS_OR_INPUT,
 		    g_print ("WINTAB proximity out\n"));
 
 	  return TRUE;
 	}
       else
-	_gdk_input_in_proximity = TRUE;
+	_bdk_input_in_proximity = TRUE;
 
-      _gdk_input_check_proximity ();
+      _bdk_input_check_proximity ();
 
       break;
     }
@@ -1187,90 +1187,90 @@ _gdk_input_other_event (GdkEvent  *event,
 }
 
 void
-_gdk_input_select_events (GdkWindow *impl_window)
+_bdk_input_select_events (BdkWindow *impl_window)
 {
   guint event_mask;
-  GdkWindowObject *w;
-  GdkInputWindow *iw;
+  BdkWindowObject *w;
+  BdkInputWindow *iw;
   GList *l, *dev_list;
   
 
-  iw = ((GdkWindowObject *)impl_window)->input_window;
+  iw = ((BdkWindowObject *)impl_window)->input_window;
 
   event_mask = 0;
-  for (dev_list = _gdk_input_devices; dev_list; dev_list = dev_list->next)
+  for (dev_list = _bdk_input_devices; dev_list; dev_list = dev_list->next)
     {
-      GdkDevicePrivate *gdkdev = dev_list->data;
+      BdkDevicePrivate *bdkdev = dev_list->data;
 
-      if (!GDK_IS_CORE (gdkdev) &&
-	  gdkdev->info.mode != GDK_MODE_DISABLED &&
+      if (!BDK_IS_CORE (bdkdev) &&
+	  bdkdev->info.mode != BDK_MODE_DISABLED &&
 	  iw != NULL)
 	{
 	  for (l = iw->windows; l != NULL; l = l->next)
 	    {
 	      w = l->data;
-	      if (gdkdev->info.has_cursor || (w->extension_events & GDK_ALL_DEVICES_MASK))
+	      if (bdkdev->info.has_cursor || (w->extension_events & BDK_ALL_DEVICES_MASK))
 		event_mask |= w->extension_events;
 	    }
 	}
     }
   
-  event_mask &= ~GDK_ALL_DEVICES_MASK;
+  event_mask &= ~BDK_ALL_DEVICES_MASK;
   if (event_mask)
     event_mask |= 
-      GDK_PROXIMITY_OUT_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK;
+      BDK_PROXIMITY_OUT_MASK | BDK_BUTTON_PRESS_MASK | BDK_BUTTON_RELEASE_MASK;
 
-  GDK_WINDOW_IMPL_WIN32 (((GdkWindowObject *)impl_window)->impl)->extension_events_mask = event_mask;
+  BDK_WINDOW_IMPL_WIN32 (((BdkWindowObject *)impl_window)->impl)->extension_events_mask = event_mask;
 }
 
 gint
-_gdk_input_grab_pointer (GdkWindow    *window,
+_bdk_input_grab_pointer (BdkWindow    *window,
 			 gint          owner_events,
-			 GdkEventMask  event_mask,
-			 GdkWindow    *confine_to,
+			 BdkEventMask  event_mask,
+			 BdkWindow    *confine_to,
 			 guint32       time)
 {
-  GDK_NOTE (INPUT, g_print ("_gdk_input_grab_pointer: %p %d %p\n",
-			   GDK_WINDOW_HWND (window),
+  BDK_NOTE (INPUT, g_print ("_bdk_input_grab_pointer: %p %d %p\n",
+			   BDK_WINDOW_HWND (window),
 			   owner_events,
-			   (confine_to ? GDK_WINDOW_HWND (confine_to) : 0)));
+			   (confine_to ? BDK_WINDOW_HWND (confine_to) : 0)));
 
-  return GDK_GRAB_SUCCESS;
+  return BDK_GRAB_SUCCESS;
 }
 
 void 
-_gdk_input_ungrab_pointer (guint32 time)
+_bdk_input_ungrab_pointer (guint32 time)
 {
 
-  GDK_NOTE (INPUT, g_print ("_gdk_input_ungrab_pointer\n"));
+  BDK_NOTE (INPUT, g_print ("_bdk_input_ungrab_pointer\n"));
 
 }
 
 gboolean
-_gdk_device_get_history (GdkDevice         *device,
-			 GdkWindow         *window,
+_bdk_device_get_history (BdkDevice         *device,
+			 BdkWindow         *window,
 			 guint32            start,
 			 guint32            stop,
-			 GdkTimeCoord    ***events,
+			 BdkTimeCoord    ***events,
 			 gint              *n_events)
 {
   return FALSE;
 }
 
 void 
-gdk_device_get_state (GdkDevice       *device,
-		      GdkWindow       *window,
+bdk_device_get_state (BdkDevice       *device,
+		      BdkWindow       *window,
 		      gdouble         *axes,
-		      GdkModifierType *mask)
+		      BdkModifierType *mask)
 {
   g_return_if_fail (device != NULL);
-  g_return_if_fail (GDK_IS_WINDOW (window));
+  g_return_if_fail (BDK_IS_WINDOW (window));
 
-  if (GDK_IS_CORE (device))
+  if (BDK_IS_CORE (device))
     {
       gint x_int, y_int;
       
-      gdk_window_get_pointer (window, &x_int, &y_int, mask);
+      bdk_window_get_pointer (window, &x_int, &y_int, mask);
 
       if (axes)
 	{
@@ -1280,32 +1280,32 @@ gdk_device_get_state (GdkDevice       *device,
     }
   else
     {
-      GdkDevicePrivate *gdkdev;
+      BdkDevicePrivate *bdkdev;
       
-      gdkdev = (GdkDevicePrivate *)device;
+      bdkdev = (BdkDevicePrivate *)device;
       /* For now just use the last known button and axis state of the device.
        * Since graphical tablets send an insane amount of motion events each
        * second, the info should be fairly up to date */
       if (mask)
 	{
-	  gdk_window_get_pointer (window, NULL, NULL, mask);
+	  bdk_window_get_pointer (window, NULL, NULL, mask);
 	  *mask &= 0xFF; /* Mask away core pointer buttons */
-	  *mask |= ((gdkdev->button_state << 8)
-		    & (GDK_BUTTON1_MASK | GDK_BUTTON2_MASK
-		       | GDK_BUTTON3_MASK | GDK_BUTTON4_MASK
-		       | GDK_BUTTON5_MASK));
+	  *mask |= ((bdkdev->button_state << 8)
+		    & (BDK_BUTTON1_MASK | BDK_BUTTON2_MASK
+		       | BDK_BUTTON3_MASK | BDK_BUTTON4_MASK
+		       | BDK_BUTTON5_MASK));
 	}
       /* For some reason, input_window is sometimes NULL when I use The GIMP 2
        * (bug #141543?). Avoid crashing if debugging is disabled. */
-      if (axes && gdkdev->last_axis_data)
-	gdk_input_translate_coordinates (gdkdev, window,
-					 gdkdev->last_axis_data,
+      if (axes && bdkdev->last_axis_data)
+	bdk_input_translate_coordinates (bdkdev, window,
+					 bdkdev->last_axis_data,
 					 axes, NULL, NULL);
     }
 }
 
 void
-_gdk_input_set_tablet_active (void)
+_bdk_input_set_tablet_active (void)
 {
   GList *tmp_list;
   HCTX *hctx;
@@ -1316,7 +1316,7 @@ _gdk_input_set_tablet_active (void)
   if (!wintab_contexts)
     return; /* No tablet devices found, or Wintab not initialized yet */
   
-  GDK_NOTE (INPUT, g_print ("_gdk_input_set_tablet_active: "
+  BDK_NOTE (INPUT, g_print ("_bdk_input_set_tablet_active: "
 	"Bringing Wintab contexts to the top of the overlap order\n"));
 
   tmp_list = wintab_contexts;
@@ -1329,19 +1329,19 @@ _gdk_input_set_tablet_active (void)
 }
 
 void 
-_gdk_input_init (GdkDisplay *display)
+_bdk_input_init (BdkDisplay *display)
 {
-  _gdk_input_devices = NULL;
+  _bdk_input_devices = NULL;
 
-  _gdk_init_input_core (display);
+  _bdk_init_input_core (display);
 #ifdef WINTAB_NO_LAZY_INIT
   /* Normally, Wintab is only initialized when the application performs
    * an action that requires it, such as enabling extended input events
    * for a window or enumerating the devices.
    */
-  _gdk_input_wintab_init_check ();
+  _bdk_input_wintab_init_check ();
 #endif /* WINTAB_NO_LAZY_INIT */
 
-  _gdk_input_devices = g_list_append (_gdk_input_devices, display->core_pointer);
+  _bdk_input_devices = g_list_append (_bdk_input_devices, display->core_pointer);
 }
 

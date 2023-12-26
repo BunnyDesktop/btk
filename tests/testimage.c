@@ -17,56 +17,56 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
-#include <gio/gio.h>
+#include <btk/btk.h>
+#include <bunnyio/bunnyio.h>
 
 static void
-drag_begin (GtkWidget      *widget,
-	    GdkDragContext *context,
+drag_begin (BtkWidget      *widget,
+	    BdkDragContext *context,
 	    gpointer        data)
 {
-  GtkWidget *image = GTK_WIDGET (data);
+  BtkWidget *image = BTK_WIDGET (data);
 
-  GdkPixbuf *pixbuf = gtk_image_get_pixbuf (GTK_IMAGE (image));
+  BdkPixbuf *pixbuf = btk_image_get_pixbuf (BTK_IMAGE (image));
 
-  gtk_drag_set_icon_pixbuf (context, pixbuf, -2, -2);
+  btk_drag_set_icon_pixbuf (context, pixbuf, -2, -2);
 }
 
 void  
-drag_data_get  (GtkWidget        *widget,
-		GdkDragContext   *context,
-		GtkSelectionData *selection_data,
+drag_data_get  (BtkWidget        *widget,
+		BdkDragContext   *context,
+		BtkSelectionData *selection_data,
 		guint             info,
 		guint             time,
 		gpointer          data)
 {
-  GtkWidget *image = GTK_WIDGET (data);
+  BtkWidget *image = BTK_WIDGET (data);
 
-  GdkPixbuf *pixbuf = gtk_image_get_pixbuf (GTK_IMAGE (image));
+  BdkPixbuf *pixbuf = btk_image_get_pixbuf (BTK_IMAGE (image));
 
-  gtk_selection_data_set_pixbuf (selection_data, pixbuf);
+  btk_selection_data_set_pixbuf (selection_data, pixbuf);
 }
 
 static void
-drag_data_received (GtkWidget        *widget,
-		    GdkDragContext   *context,
+drag_data_received (BtkWidget        *widget,
+		    BdkDragContext   *context,
 		    gint              x,
 		    gint              y,
-		    GtkSelectionData *selection_data,
+		    BtkSelectionData *selection_data,
 		    guint             info,
 		    guint32           time,
 		    gpointer          data)
 {
-  GtkWidget *image = GTK_WIDGET (data);
+  BtkWidget *image = BTK_WIDGET (data);
 
-  GdkPixbuf *pixbuf;
+  BdkPixbuf *pixbuf;
 
   if (selection_data->length < 0)
     return;
 
-  pixbuf = gtk_selection_data_get_pixbuf (selection_data);
+  pixbuf = btk_selection_data_get_pixbuf (selection_data);
 
-  gtk_image_set_from_pixbuf (GTK_IMAGE (image), pixbuf);
+  btk_image_set_from_pixbuf (BTK_IMAGE (image), pixbuf);
 }
 
 static gboolean
@@ -78,8 +78,8 @@ idle_func (gpointer data)
 }
 
 static gboolean
-anim_image_expose (GtkWidget      *widget,
-                   GdkEventExpose *eevent,
+anim_image_expose (BtkWidget      *widget,
+                   BdkEventExpose *eevent,
                    gpointer        data)
 {
   g_print ("start busyness\n");
@@ -96,18 +96,18 @@ anim_image_expose (GtkWidget      *widget,
 int
 main (int argc, char **argv)
 {
-  GtkWidget *window, *table;
-  GtkWidget *label, *image, *box;
-  GtkIconTheme *theme;
-  GdkPixbuf *pixbuf;
-  GtkIconSet *iconset;
-  GtkIconSource *iconsource;
-  gchar *icon_name = "gnome-terminal";
+  BtkWidget *window, *table;
+  BtkWidget *label, *image, *box;
+  BtkIconTheme *theme;
+  BdkPixbuf *pixbuf;
+  BtkIconSet *iconset;
+  BtkIconSource *iconsource;
+  gchar *icon_name = "bunny-terminal";
   gchar *anim_filename = NULL;
   GIcon *icon;
   GFile *file;
 
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   if (argc > 1)
     icon_name = argv[1];
@@ -115,88 +115,88 @@ main (int argc, char **argv)
   if (argc > 2)
     anim_filename = argv[2];
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  table = gtk_table_new (6, 3, FALSE);
-  gtk_container_add (GTK_CONTAINER (window), table);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  table = btk_table_new (6, 3, FALSE);
+  btk_container_add (BTK_CONTAINER (window), table);
 
-  label = gtk_label_new ("symbolic size");
-  gtk_table_attach (GTK_TABLE (table), label, 1, 2, 0, 1,
+  label = btk_label_new ("symbolic size");
+  btk_table_attach (BTK_TABLE (table), label, 1, 2, 0, 1,
 		    0, 0, 5, 5);
-  label = gtk_label_new ("fixed size");
-  gtk_table_attach (GTK_TABLE (table), label, 2, 3, 0, 1,
+  label = btk_label_new ("fixed size");
+  btk_table_attach (BTK_TABLE (table), label, 2, 3, 0, 1,
 		    0, 0, 5, 5);
 
-  label = gtk_label_new ("GTK_IMAGE_PIXBUF");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 1, 2);
+  label = btk_label_new ("BTK_IMAGE_PIXBUF");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 1, 2);
 
-  theme = gtk_icon_theme_get_default ();
-  pixbuf = gtk_icon_theme_load_icon (theme, icon_name, 48, 0, NULL);
-  image = gtk_image_new_from_pixbuf (pixbuf);
-  box = gtk_event_box_new ();
-  gtk_container_add (GTK_CONTAINER (box), image);
-  gtk_table_attach_defaults (GTK_TABLE (table), box, 2, 3, 1, 2);
+  theme = btk_icon_theme_get_default ();
+  pixbuf = btk_icon_theme_load_icon (theme, icon_name, 48, 0, NULL);
+  image = btk_image_new_from_pixbuf (pixbuf);
+  box = btk_event_box_new ();
+  btk_container_add (BTK_CONTAINER (box), image);
+  btk_table_attach_defaults (BTK_TABLE (table), box, 2, 3, 1, 2);
 
-  gtk_drag_source_set (box, GDK_BUTTON1_MASK, 
+  btk_drag_source_set (box, BDK_BUTTON1_MASK, 
 		       NULL, 0,
-		       GDK_ACTION_COPY);
-  gtk_drag_source_add_image_targets (box);
+		       BDK_ACTION_COPY);
+  btk_drag_source_add_image_targets (box);
   g_signal_connect (box, "drag_begin", G_CALLBACK (drag_begin), image);
   g_signal_connect (box, "drag_data_get", G_CALLBACK (drag_data_get), image);
 
-  gtk_drag_dest_set (box,
-                     GTK_DEST_DEFAULT_MOTION |
-                     GTK_DEST_DEFAULT_HIGHLIGHT |
-                     GTK_DEST_DEFAULT_DROP,
-                     NULL, 0, GDK_ACTION_COPY);
-  gtk_drag_dest_add_image_targets (box);
+  btk_drag_dest_set (box,
+                     BTK_DEST_DEFAULT_MOTION |
+                     BTK_DEST_DEFAULT_HIGHLIGHT |
+                     BTK_DEST_DEFAULT_DROP,
+                     NULL, 0, BDK_ACTION_COPY);
+  btk_drag_dest_add_image_targets (box);
   g_signal_connect (box, "drag_data_received", 
 		    G_CALLBACK (drag_data_received), image);
 
-  label = gtk_label_new ("GTK_IMAGE_STOCK");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
+  label = btk_label_new ("BTK_IMAGE_STOCK");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 2, 3);
 
-  image = gtk_image_new_from_stock (GTK_STOCK_REDO, GTK_ICON_SIZE_DIALOG);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 1, 2, 2, 3);
+  image = btk_image_new_from_stock (BTK_STOCK_REDO, BTK_ICON_SIZE_DIALOG);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 1, 2, 2, 3);
 
-  label = gtk_label_new ("GTK_IMAGE_ICON_SET");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 3, 4);
+  label = btk_label_new ("BTK_IMAGE_ICON_SET");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 3, 4);
 
-  iconsource = gtk_icon_source_new ();
-  gtk_icon_source_set_icon_name (iconsource, icon_name);
-  iconset = gtk_icon_set_new ();
-  gtk_icon_set_add_source (iconset, iconsource);
-  image = gtk_image_new_from_icon_set (iconset, GTK_ICON_SIZE_DIALOG);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 1, 2, 3, 4);
+  iconsource = btk_icon_source_new ();
+  btk_icon_source_set_icon_name (iconsource, icon_name);
+  iconset = btk_icon_set_new ();
+  btk_icon_set_add_source (iconset, iconsource);
+  image = btk_image_new_from_icon_set (iconset, BTK_ICON_SIZE_DIALOG);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 1, 2, 3, 4);
 
-  label = gtk_label_new ("GTK_IMAGE_ICON_NAME");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 4, 5);
-  image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_DIALOG);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 1, 2, 4, 5);
-  image = gtk_image_new_from_icon_name (icon_name, GTK_ICON_SIZE_DIALOG);
-  gtk_image_set_pixel_size (GTK_IMAGE (image), 30);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 2, 3, 4, 5);
+  label = btk_label_new ("BTK_IMAGE_ICON_NAME");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 4, 5);
+  image = btk_image_new_from_icon_name (icon_name, BTK_ICON_SIZE_DIALOG);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 1, 2, 4, 5);
+  image = btk_image_new_from_icon_name (icon_name, BTK_ICON_SIZE_DIALOG);
+  btk_image_set_pixel_size (BTK_IMAGE (image), 30);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 2, 3, 4, 5);
 
-  label = gtk_label_new ("GTK_IMAGE_GICON");
-  gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6);
+  label = btk_label_new ("BTK_IMAGE_GICON");
+  btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 5, 6);
   icon = g_themed_icon_new_with_default_fallbacks ("folder-remote");
-  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_DIALOG);
+  image = btk_image_new_from_gicon (icon, BTK_ICON_SIZE_DIALOG);
   g_object_unref (icon);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 1, 2, 5, 6);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 1, 2, 5, 6);
   file = g_file_new_for_path ("apple-red.png");
   icon = g_file_icon_new (file);
-  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_DIALOG);
+  image = btk_image_new_from_gicon (icon, BTK_ICON_SIZE_DIALOG);
   g_object_unref (icon);
-  gtk_image_set_pixel_size (GTK_IMAGE (image), 30);
-  gtk_table_attach_defaults (GTK_TABLE (table), image, 2, 3, 5, 6);
+  btk_image_set_pixel_size (BTK_IMAGE (image), 30);
+  btk_table_attach_defaults (BTK_TABLE (table), image, 2, 3, 5, 6);
 
   
   if (anim_filename)
     {
-      label = gtk_label_new ("GTK_IMAGE_ANIMATION (from file)");
-      gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 5, 6);
-      image = gtk_image_new_from_file (anim_filename);
-      gtk_image_set_pixel_size (GTK_IMAGE (image), 30);
-      gtk_table_attach_defaults (GTK_TABLE (table), image, 2, 3, 5, 6);
+      label = btk_label_new ("BTK_IMAGE_ANIMATION (from file)");
+      btk_table_attach_defaults (BTK_TABLE (table), label, 0, 1, 5, 6);
+      image = btk_image_new_from_file (anim_filename);
+      btk_image_set_pixel_size (BTK_IMAGE (image), 30);
+      btk_table_attach_defaults (BTK_TABLE (table), image, 2, 3, 5, 6);
 
       /* produce high load */
       g_signal_connect_after (image, "expose-event",
@@ -204,9 +204,9 @@ main (int argc, char **argv)
                               NULL);
     }
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

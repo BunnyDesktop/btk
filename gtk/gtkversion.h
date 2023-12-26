@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,34 +18,34 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#ifndef __GTK_VERSION_H__
-#define __GTK_VERSION_H__
+#ifndef __BTK_VERSION_H__
+#define __BTK_VERSION_H__
 
 /* compile time version
  */
-#define GTK_MAJOR_VERSION				(2)
-#define GTK_MINOR_VERSION				(24)
-#define GTK_MICRO_VERSION				(33)
-#define GTK_BINARY_AGE					(2433)
-#define GTK_INTERFACE_AGE				(33)
+#define BTK_MAJOR_VERSION				(2)
+#define BTK_MINOR_VERSION				(24)
+#define BTK_MICRO_VERSION				(33)
+#define BTK_BINARY_AGE					(2433)
+#define BTK_INTERFACE_AGE				(33)
 
-/* check whether a Gtk+ version equal to or greater than
+/* check whether a Btk+ version equal to or greater than
  * major.minor.micro is present.
  */
-#define	GTK_CHECK_VERSION(major,minor,micro)	\
-    (GTK_MAJOR_VERSION > (major) || \
-     (GTK_MAJOR_VERSION == (major) && GTK_MINOR_VERSION > (minor)) || \
-     (GTK_MAJOR_VERSION == (major) && GTK_MINOR_VERSION == (minor) && \
-      GTK_MICRO_VERSION >= (micro)))
+#define	BTK_CHECK_VERSION(major,minor,micro)	\
+    (BTK_MAJOR_VERSION > (major) || \
+     (BTK_MAJOR_VERSION == (major) && BTK_MINOR_VERSION > (minor)) || \
+     (BTK_MAJOR_VERSION == (major) && BTK_MINOR_VERSION == (minor) && \
+      BTK_MICRO_VERSION >= (micro)))
 
-#endif /* __GTK_VERSION_H__ */
+#endif /* __BTK_VERSION_H__ */

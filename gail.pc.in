@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: Gail
-Description: GNOME Accessibility Implementation Library
+Name: Bail
+Description: BUNNY Accessibility Implementation Library
 Version: @VERSION@
-Requires: atk gtk+-2.0
-Libs: -L${libdir} -lgailutil
-Cflags: -I${includedir}/gail-1.0
+Requires: batk btk+-2.0
+Libs: -L${libdir} -lbailutil
+Cflags: -I${includedir}/bail-1.0

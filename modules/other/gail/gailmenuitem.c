@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001, 2002, 2003 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,75 +17,75 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
-#include <gdk/gdkkeysyms.h>
-#include "gailmenuitem.h"
-#include "gailsubmenuitem.h"
+#include <btk/btk.h>
+#include <bdk/bdkkeysyms.h>
+#include "bailmenuitem.h"
+#include "bailsubmenuitem.h"
 
 #define KEYBINDING_SEPARATOR ";"
 
-static void gail_menu_item_class_init  (GailMenuItemClass *klass);
-static void gail_menu_item_init        (GailMenuItem      *menu_item);
+static void bail_menu_item_class_init  (BailMenuItemClass *klass);
+static void bail_menu_item_init        (BailMenuItem      *menu_item);
 
-static void                  gail_menu_item_real_initialize
-                                                          (AtkObject       *obj,
+static void                  bail_menu_item_real_initialize
+                                                          (BatkObject       *obj,
                                                            gpointer        data);
-static gint                  gail_menu_item_get_n_children (AtkObject      *obj);
-static AtkObject*            gail_menu_item_ref_child      (AtkObject      *obj,
+static gint                  bail_menu_item_get_n_children (BatkObject      *obj);
+static BatkObject*            bail_menu_item_ref_child      (BatkObject      *obj,
                                                             gint           i);
-static AtkStateSet*          gail_menu_item_ref_state_set  (AtkObject      *obj);
-static void                  gail_menu_item_finalize       (GObject        *object);
+static BatkStateSet*          bail_menu_item_ref_state_set  (BatkObject      *obj);
+static void                  bail_menu_item_finalize       (GObject        *object);
 
-static void                  atk_action_interface_init     (AtkActionIface *iface);
-static gboolean              gail_menu_item_do_action      (AtkAction      *action,
+static void                  batk_action_interface_init     (BatkActionIface *iface);
+static gboolean              bail_menu_item_do_action      (BatkAction      *action,
                                                             gint           i);
 static gboolean              idle_do_action                (gpointer       data);
-static gint                  gail_menu_item_get_n_actions  (AtkAction      *action);
-static const gchar*          gail_menu_item_get_description(AtkAction      *action,
+static gint                  bail_menu_item_get_n_actions  (BatkAction      *action);
+static const gchar*          bail_menu_item_get_description(BatkAction      *action,
                                                             gint           i);
-static const gchar*          gail_menu_item_get_name       (AtkAction      *action,
+static const gchar*          bail_menu_item_get_name       (BatkAction      *action,
                                                             gint           i);
-static const gchar*          gail_menu_item_get_keybinding (AtkAction      *action,
+static const gchar*          bail_menu_item_get_keybinding (BatkAction      *action,
                                                             gint           i);
-static gboolean              gail_menu_item_set_description(AtkAction      *action,
+static gboolean              bail_menu_item_set_description(BatkAction      *action,
                                                             gint           i,
                                                             const gchar    *desc);
-static void                  menu_item_select              (GtkItem        *item);
-static void                  menu_item_deselect            (GtkItem        *item);
-static void                  menu_item_selection           (GtkItem        *item,
+static void                  menu_item_select              (BtkItem        *item);
+static void                  menu_item_deselect            (BtkItem        *item);
+static void                  menu_item_selection           (BtkItem        *item,
                                                             gboolean       selected);
-static gboolean              find_accel                    (GtkAccelKey    *key,
+static gboolean              find_accel                    (BtkAccelKey    *key,
                                                             GClosure       *closure,
                                                             gpointer       data);
-static gboolean              find_accel_new                (GtkAccelKey    *key,
+static gboolean              find_accel_new                (BtkAccelKey    *key,
                                                             GClosure       *closure,
                                                             gpointer       data);
 
-G_DEFINE_TYPE_WITH_CODE (GailMenuItem, gail_menu_item, GAIL_TYPE_ITEM,
-                         G_IMPLEMENT_INTERFACE (ATK_TYPE_ACTION, atk_action_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BailMenuItem, bail_menu_item, BAIL_TYPE_ITEM,
+                         G_IMPLEMENT_INTERFACE (BATK_TYPE_ACTION, batk_action_interface_init))
 
 static void
-gail_menu_item_class_init (GailMenuItemClass *klass)
+bail_menu_item_class_init (BailMenuItemClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  AtkObjectClass *class = ATK_OBJECT_CLASS (klass);
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BatkObjectClass *class = BATK_OBJECT_CLASS (klass);
 
-  gobject_class->finalize = gail_menu_item_finalize;
+  bobject_class->finalize = bail_menu_item_finalize;
 
-  class->get_n_children = gail_menu_item_get_n_children;
-  class->ref_child = gail_menu_item_ref_child;
-  class->ref_state_set = gail_menu_item_ref_state_set;
-  class->initialize = gail_menu_item_real_initialize;
+  class->get_n_children = bail_menu_item_get_n_children;
+  class->ref_child = bail_menu_item_ref_child;
+  class->ref_state_set = bail_menu_item_ref_state_set;
+  class->initialize = bail_menu_item_real_initialize;
 }
 
 static void
-gail_menu_item_real_initialize (AtkObject *obj,
+bail_menu_item_real_initialize (BatkObject *obj,
                                 gpointer  data)
 {
-  GtkWidget *widget;
-  GtkWidget *parent;
+  BtkWidget *widget;
+  BtkWidget *parent;
 
-  ATK_OBJECT_CLASS (gail_menu_item_parent_class)->initialize (obj, data);
+  BATK_OBJECT_CLASS (bail_menu_item_parent_class)->initialize (obj, data);
 
   g_signal_connect (data,
                     "select",
@@ -95,81 +95,81 @@ gail_menu_item_real_initialize (AtkObject *obj,
                     "deselect",
                     G_CALLBACK (menu_item_deselect),
                     NULL);
-  widget = GTK_WIDGET (data);
-  parent = gtk_widget_get_parent (widget);
-  if (GTK_IS_MENU (parent))
+  widget = BTK_WIDGET (data);
+  parent = btk_widget_get_parent (widget);
+  if (BTK_IS_MENU (parent))
     {
-      GtkWidget *parent_widget;
+      BtkWidget *parent_widget;
 
-      parent_widget =  gtk_menu_get_attach_widget (GTK_MENU (parent));
+      parent_widget =  btk_menu_get_attach_widget (BTK_MENU (parent));
 
-      if (!GTK_IS_MENU_ITEM (parent_widget))
-        parent_widget = gtk_widget_get_parent (widget);
+      if (!BTK_IS_MENU_ITEM (parent_widget))
+        parent_widget = btk_widget_get_parent (widget);
        if (parent_widget)
         {
-          atk_object_set_parent (obj, gtk_widget_get_accessible (parent_widget));
+          batk_object_set_parent (obj, btk_widget_get_accessible (parent_widget));
         }
     }
-  g_object_set_data (G_OBJECT (obj), "atk-component-layer",
-                     GINT_TO_POINTER (ATK_LAYER_POPUP));
+  g_object_set_data (G_OBJECT (obj), "batk-component-layer",
+                     GINT_TO_POINTER (BATK_LAYER_POPUP));
 
-  if (GTK_IS_TEAROFF_MENU_ITEM (data))
-    obj->role = ATK_ROLE_TEAR_OFF_MENU_ITEM;
-  else if (GTK_IS_SEPARATOR_MENU_ITEM (data))
-    obj->role = ATK_ROLE_SEPARATOR;
+  if (BTK_IS_TEAROFF_MENU_ITEM (data))
+    obj->role = BATK_ROLE_TEAR_OFF_MENU_ITEM;
+  else if (BTK_IS_SEPARATOR_MENU_ITEM (data))
+    obj->role = BATK_ROLE_SEPARATOR;
   else
-    obj->role = ATK_ROLE_MENU_ITEM;
+    obj->role = BATK_ROLE_MENU_ITEM;
 }
 
 static void
-gail_menu_item_init (GailMenuItem *menu_item)
+bail_menu_item_init (BailMenuItem *menu_item)
 {
   menu_item->click_keybinding = NULL;
   menu_item->click_description = NULL;
 }
 
-AtkObject*
-gail_menu_item_new (GtkWidget *widget)
+BatkObject*
+bail_menu_item_new (BtkWidget *widget)
 {
   GObject *object;
-  AtkObject *accessible;
+  BatkObject *accessible;
   
-  g_return_val_if_fail (GTK_IS_MENU_ITEM (widget), NULL);
+  g_return_val_if_fail (BTK_IS_MENU_ITEM (widget), NULL);
 
-  if (gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget)))
-    return gail_sub_menu_item_new (widget);
+  if (btk_menu_item_get_submenu (BTK_MENU_ITEM (widget)))
+    return bail_sub_menu_item_new (widget);
 
-  object = g_object_new (GAIL_TYPE_MENU_ITEM, NULL);
+  object = g_object_new (BAIL_TYPE_MENU_ITEM, NULL);
 
-  accessible = ATK_OBJECT (object);
-  atk_object_initialize (accessible, widget);
+  accessible = BATK_OBJECT (object);
+  batk_object_initialize (accessible, widget);
 
   return accessible;
 }
 
 GList *
-get_children (GtkWidget *submenu)
+get_children (BtkWidget *submenu)
 {
   GList *children;
 
-  children = gtk_container_get_children (GTK_CONTAINER (submenu));
+  children = btk_container_get_children (BTK_CONTAINER (submenu));
   if (g_list_length (children) == 0)
     {
       /*
        * If menu is empty it may be because the menu items are created only 
-       * on demand. For example, in gnome-panel the menu items are created
+       * on demand. For example, in bunny-panel the menu items are created
        * only when "show" signal is emitted on the menu.
        *
        * The following hack forces the menu items to be created.
        */
-      if (!gtk_widget_get_visible (submenu))
+      if (!btk_widget_get_visible (submenu))
         {
-          /* FIXME GTK_WIDGET_SET_FLAGS (submenu, GTK_VISIBLE); */
+          /* FIXME BTK_WIDGET_SET_FLAGS (submenu, BTK_VISIBLE); */
           g_signal_emit_by_name (submenu, "show");
-          /* FIXME GTK_WIDGET_UNSET_FLAGS (submenu, GTK_VISIBLE); */
+          /* FIXME BTK_WIDGET_UNSET_FLAGS (submenu, BTK_VISIBLE); */
         }
       g_list_free (children);
-      children = gtk_container_get_children (GTK_CONTAINER (submenu));
+      children = btk_container_get_children (BTK_CONTAINER (submenu));
     }
   return children;
 }
@@ -179,19 +179,19 @@ get_children (GtkWidget *submenu)
  * accessible children; otherwise expose no accessible children.
  */
 static gint
-gail_menu_item_get_n_children (AtkObject* obj)
+bail_menu_item_get_n_children (BatkObject* obj)
 {
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BtkWidget *widget;
+  BtkWidget *submenu;
   gint count = 0;
 
-  g_return_val_if_fail (GAIL_IS_MENU_ITEM (obj), count);
+  g_return_val_if_fail (BAIL_IS_MENU_ITEM (obj), count);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return count;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
   if (submenu)
     {
       GList *children;
@@ -203,22 +203,22 @@ gail_menu_item_get_n_children (AtkObject* obj)
   return count;
 }
 
-static AtkObject*
-gail_menu_item_ref_child (AtkObject *obj,
+static BatkObject*
+bail_menu_item_ref_child (BatkObject *obj,
                           gint       i)
 {
-  AtkObject  *accessible;
-  GtkWidget *widget;
-  GtkWidget *submenu;
+  BatkObject  *accessible;
+  BtkWidget *widget;
+  BtkWidget *submenu;
 
-  g_return_val_if_fail (GAIL_IS_MENU_ITEM (obj), NULL);
+  g_return_val_if_fail (BAIL_IS_MENU_ITEM (obj), NULL);
   g_return_val_if_fail ((i >= 0), NULL);
 
-  widget = GTK_ACCESSIBLE (obj)->widget;
+  widget = BTK_ACCESSIBLE (obj)->widget;
   if (widget == NULL)
     return NULL;
 
-  submenu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (widget));
+  submenu = btk_menu_item_get_submenu (BTK_MENU_ITEM (widget));
   if (submenu)
     {
       GList *children;
@@ -231,7 +231,7 @@ gail_menu_item_ref_child (AtkObject *obj,
           g_list_free (children);
           return NULL;
         }
-      accessible = gtk_widget_get_accessible (GTK_WIDGET (tmp_list->data));
+      accessible = btk_widget_get_accessible (BTK_WIDGET (tmp_list->data));
       g_list_free (children);
       g_object_ref (accessible);
     }
@@ -241,68 +241,68 @@ gail_menu_item_ref_child (AtkObject *obj,
   return accessible;
 }
 
-static AtkStateSet*
-gail_menu_item_ref_state_set (AtkObject *obj)
+static BatkStateSet*
+bail_menu_item_ref_state_set (BatkObject *obj)
 {
-  AtkObject *menu_item;
-  AtkStateSet *state_set, *parent_state_set;
+  BatkObject *menu_item;
+  BatkStateSet *state_set, *parent_state_set;
 
-  state_set = ATK_OBJECT_CLASS (gail_menu_item_parent_class)->ref_state_set (obj);
+  state_set = BATK_OBJECT_CLASS (bail_menu_item_parent_class)->ref_state_set (obj);
 
-  menu_item = atk_object_get_parent (obj);
+  menu_item = batk_object_get_parent (obj);
 
   if (menu_item)
     {
-      if (!GTK_IS_MENU_ITEM (GTK_ACCESSIBLE (menu_item)->widget))
+      if (!BTK_IS_MENU_ITEM (BTK_ACCESSIBLE (menu_item)->widget))
         return state_set;
 
-      parent_state_set = atk_object_ref_state_set (menu_item);
-      if (!atk_state_set_contains_state (parent_state_set, ATK_STATE_SELECTED))
+      parent_state_set = batk_object_ref_state_set (menu_item);
+      if (!batk_state_set_contains_state (parent_state_set, BATK_STATE_SELECTED))
         {
-          atk_state_set_remove_state (state_set, ATK_STATE_FOCUSED);
-          atk_state_set_remove_state (state_set, ATK_STATE_SHOWING);
+          batk_state_set_remove_state (state_set, BATK_STATE_FOCUSED);
+          batk_state_set_remove_state (state_set, BATK_STATE_SHOWING);
         }
     }
   return state_set;
 }
 
 static void
-atk_action_interface_init (AtkActionIface *iface)
+batk_action_interface_init (BatkActionIface *iface)
 {
-  iface->do_action = gail_menu_item_do_action;
-  iface->get_n_actions = gail_menu_item_get_n_actions;
-  iface->get_description = gail_menu_item_get_description;
-  iface->get_name = gail_menu_item_get_name;
-  iface->get_keybinding = gail_menu_item_get_keybinding;
-  iface->set_description = gail_menu_item_set_description;
+  iface->do_action = bail_menu_item_do_action;
+  iface->get_n_actions = bail_menu_item_get_n_actions;
+  iface->get_description = bail_menu_item_get_description;
+  iface->get_name = bail_menu_item_get_name;
+  iface->get_keybinding = bail_menu_item_get_keybinding;
+  iface->set_description = bail_menu_item_set_description;
 }
 
 static gboolean
-gail_menu_item_do_action (AtkAction *action,
+bail_menu_item_do_action (BatkAction *action,
                           gint      i)
 {
   if (i == 0)
     {
-      GtkWidget *item;
-      GailMenuItem *gail_menu_item;
+      BtkWidget *item;
+      BailMenuItem *bail_menu_item;
 
-      item = GTK_ACCESSIBLE (action)->widget;
+      item = BTK_ACCESSIBLE (action)->widget;
       if (item == NULL)
         /* State is defunct */
         return FALSE;
 
-      if (!gtk_widget_get_sensitive (item) || !gtk_widget_get_visible (item))
+      if (!btk_widget_get_sensitive (item) || !btk_widget_get_visible (item))
         return FALSE;
 
-      gail_menu_item = GAIL_MENU_ITEM (action);
-      if (gail_menu_item->action_idle_handler)
+      bail_menu_item = BAIL_MENU_ITEM (action);
+      if (bail_menu_item->action_idle_handler)
         return FALSE;
       else
 	{
-	  gail_menu_item->action_idle_handler =
-            gdk_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
+	  bail_menu_item->action_idle_handler =
+            bdk_threads_add_idle_full (G_PRIORITY_DEFAULT_IDLE,
                                        idle_do_action,
-                                       g_object_ref (gail_menu_item),
+                                       g_object_ref (bail_menu_item),
                                        (GDestroyNotify) g_object_unref);
 	}
       return TRUE;
@@ -312,47 +312,47 @@ gail_menu_item_do_action (AtkAction *action,
 }
 
 static void
-ensure_menus_unposted (GailMenuItem *menu_item)
+ensure_menus_unposted (BailMenuItem *menu_item)
 {
-  AtkObject *parent;
-  GtkWidget *widget;
+  BatkObject *parent;
+  BtkWidget *widget;
 
-  parent = atk_object_get_parent (ATK_OBJECT (menu_item));
+  parent = batk_object_get_parent (BATK_OBJECT (menu_item));
   while (parent)
     {
-      if (GTK_IS_ACCESSIBLE (parent))
+      if (BTK_IS_ACCESSIBLE (parent))
         {
-          widget = GTK_ACCESSIBLE (parent)->widget;
-          if (GTK_IS_MENU (widget))
+          widget = BTK_ACCESSIBLE (parent)->widget;
+          if (BTK_IS_MENU (widget))
             {
-              if (gtk_widget_get_mapped (widget))
-                gtk_menu_shell_cancel (GTK_MENU_SHELL (widget));
+              if (btk_widget_get_mapped (widget))
+                btk_menu_shell_cancel (BTK_MENU_SHELL (widget));
 
               return;
             }
         }
-      parent = atk_object_get_parent (parent);
+      parent = batk_object_get_parent (parent);
     }
 }
 
 static gboolean
 idle_do_action (gpointer data)
 {
-  GtkWidget *item;
-  GtkWidget *item_parent;
-  GailMenuItem *menu_item;
+  BtkWidget *item;
+  BtkWidget *item_parent;
+  BailMenuItem *menu_item;
   gboolean item_mapped;
 
-  menu_item = GAIL_MENU_ITEM (data);
+  menu_item = BAIL_MENU_ITEM (data);
   menu_item->action_idle_handler = 0;
-  item = GTK_ACCESSIBLE (menu_item)->widget;
+  item = BTK_ACCESSIBLE (menu_item)->widget;
   if (item == NULL /* State is defunct */ ||
-      !gtk_widget_get_sensitive (item) || !gtk_widget_get_visible (item))
+      !btk_widget_get_sensitive (item) || !btk_widget_get_visible (item))
     return FALSE;
 
-  item_parent = gtk_widget_get_parent (item);
-  gtk_menu_shell_select_item (GTK_MENU_SHELL (item_parent), item);
-  item_mapped = gtk_widget_get_mapped (item);
+  item_parent = btk_widget_get_parent (item);
+  btk_menu_shell_select_item (BTK_MENU_SHELL (item_parent), item);
+  item_mapped = btk_widget_get_mapped (item);
   /*
    * This is what is called when <Return> is pressed for a menu item
    */
@@ -365,7 +365,7 @@ idle_do_action (gpointer data)
 }
 
 static gint
-gail_menu_item_get_n_actions (AtkAction *action)
+bail_menu_item_get_n_actions (BatkAction *action)
 {
   /*
    * Menu item has 1 action
@@ -374,14 +374,14 @@ gail_menu_item_get_n_actions (AtkAction *action)
 }
 
 static const gchar*
-gail_menu_item_get_description (AtkAction *action,
+bail_menu_item_get_description (BatkAction *action,
                                 gint      i)
 {
   if (i == 0)
     {
-      GailMenuItem *item;
+      BailMenuItem *item;
 
-      item = GAIL_MENU_ITEM (action);
+      item = BAIL_MENU_ITEM (action);
       return item->click_description;
     }
   else
@@ -389,7 +389,7 @@ gail_menu_item_get_description (AtkAction *action,
 }
 
 static const gchar*
-gail_menu_item_get_name (AtkAction *action,
+bail_menu_item_get_name (BatkAction *action,
                          gint      i)
 {
   if (i == 0)
@@ -399,7 +399,7 @@ gail_menu_item_get_name (AtkAction *action,
 }
 
 static const gchar*
-gail_menu_item_get_keybinding (AtkAction *action,
+bail_menu_item_get_keybinding (BatkAction *action,
                                gint      i)
 {
   /*
@@ -409,21 +409,21 @@ gail_menu_item_get_keybinding (AtkAction *action,
    * The items in the keybinding to traverse from the menubar are separated
    * by ":".
    */
-  GailMenuItem  *gail_menu_item;
+  BailMenuItem  *bail_menu_item;
   gchar *keybinding = NULL;
   gchar *item_keybinding = NULL;
   gchar *full_keybinding = NULL;
   gchar *accelerator = NULL;
 
-  gail_menu_item = GAIL_MENU_ITEM (action);
+  bail_menu_item = BAIL_MENU_ITEM (action);
   if (i == 0)
     {
-      GtkWidget *item;
-      GtkWidget *temp_item;
-      GtkWidget *child;
-      GtkWidget *parent;
+      BtkWidget *item;
+      BtkWidget *temp_item;
+      BtkWidget *child;
+      BtkWidget *parent;
 
-      item = GTK_ACCESSIBLE (action)->widget;
+      item = BTK_ACCESSIBLE (action)->widget;
       if (item == NULL)
         /* State is defunct */
         return NULL;
@@ -431,19 +431,19 @@ gail_menu_item_get_keybinding (AtkAction *action,
       temp_item = item;
       while (TRUE)
         {
-          GdkModifierType mnemonic_modifier = 0;
+          BdkModifierType mnemonic_modifier = 0;
           guint key_val;
           gchar *key, *temp_keybinding;
 
-          child = gtk_bin_get_child (GTK_BIN (temp_item));
+          child = btk_bin_get_child (BTK_BIN (temp_item));
           if (child == NULL)
             {
               /* Possibly a tear off menu item; it could also be a menu 
-               * separator generated by gtk_item_factory_create_items()
+               * separator generated by btk_item_factory_create_items()
                */
               return NULL;
             }
-          parent = gtk_widget_get_parent (temp_item);
+          parent = btk_widget_get_parent (temp_item);
           if (!parent)
             {
               /*
@@ -451,22 +451,22 @@ gail_menu_item_get_keybinding (AtkAction *action,
                */
               return NULL;
             }
-          g_return_val_if_fail (GTK_IS_MENU_SHELL (parent), NULL);
-          if (GTK_IS_MENU_BAR (parent))
+          g_return_val_if_fail (BTK_IS_MENU_SHELL (parent), NULL);
+          if (BTK_IS_MENU_BAR (parent))
             {
-              GtkWidget *toplevel;
+              BtkWidget *toplevel;
 
-              toplevel = gtk_widget_get_toplevel (parent);
-              if (toplevel && GTK_IS_WINDOW (toplevel))
-                mnemonic_modifier = gtk_window_get_mnemonic_modifier (
-                                       GTK_WINDOW (toplevel));
+              toplevel = btk_widget_get_toplevel (parent);
+              if (toplevel && BTK_IS_WINDOW (toplevel))
+                mnemonic_modifier = btk_window_get_mnemonic_modifier (
+                                       BTK_WINDOW (toplevel));
             }
-          if (GTK_IS_LABEL (child))
+          if (BTK_IS_LABEL (child))
             {
-              key_val = gtk_label_get_mnemonic_keyval (GTK_LABEL (child));
-              if (key_val != GDK_VoidSymbol)
+              key_val = btk_label_get_mnemonic_keyval (BTK_LABEL (child));
+              if (key_val != BDK_VoidSymbol)
                 {
-                  key = gtk_accelerator_name (key_val, mnemonic_modifier);
+                  key = btk_accelerator_name (key_val, mnemonic_modifier);
                   if (full_keybinding)
                     temp_keybinding = g_strconcat (key, ":", full_keybinding, NULL);
                   else 
@@ -487,12 +487,12 @@ gail_menu_item_get_keybinding (AtkAction *action,
                   break;
                 }        
             }        
-          if (GTK_IS_MENU_BAR (parent))
+          if (BTK_IS_MENU_BAR (parent))
             /* We have reached the menu bar so we are finished */
             break;
-          g_return_val_if_fail (GTK_IS_MENU (parent), NULL);
-          temp_item = gtk_menu_get_attach_widget (GTK_MENU (parent));
-          if (!GTK_IS_MENU_ITEM (temp_item))
+          g_return_val_if_fail (BTK_IS_MENU (parent), NULL);
+          temp_item = btk_menu_get_attach_widget (BTK_MENU (parent));
+          if (!BTK_IS_MENU_ITEM (temp_item))
             {
               /* 
                * Menu is attached to something other than a menu item;
@@ -504,34 +504,34 @@ gail_menu_item_get_keybinding (AtkAction *action,
             }
         }
 
-      parent = gtk_widget_get_parent (item);
-      if (GTK_IS_MENU (parent))
+      parent = btk_widget_get_parent (item);
+      if (BTK_IS_MENU (parent))
         {
-          GtkAccelGroup *group; 
-          GtkAccelKey *key;
+          BtkAccelGroup *group; 
+          BtkAccelKey *key;
 
-          group = gtk_menu_get_accel_group (GTK_MENU (parent));
+          group = btk_menu_get_accel_group (BTK_MENU (parent));
 
           if (group)
             {
-              key = gtk_accel_group_find (group, find_accel, item);
+              key = btk_accel_group_find (group, find_accel, item);
             }
           else
             {
               /*
-               * If the menu item is created using GtkAction and GtkUIManager
+               * If the menu item is created using BtkAction and BtkUIManager
                * we get here.
                */
               key = NULL;
-              child = GTK_BIN (item)->child;
-              if (GTK_IS_ACCEL_LABEL (child))
+              child = BTK_BIN (item)->child;
+              if (BTK_IS_ACCEL_LABEL (child))
                 {
-                  GtkAccelLabel *accel_label;
+                  BtkAccelLabel *accel_label;
 
-                  accel_label = GTK_ACCEL_LABEL (child);
+                  accel_label = BTK_ACCEL_LABEL (child);
                   if (accel_label->accel_closure)
                     {
-                      key = gtk_accel_group_find (accel_label->accel_group,
+                      key = btk_accel_group_find (accel_label->accel_group,
                                                   find_accel_new,
                                                   accel_label->accel_closure);
                     }
@@ -541,7 +541,7 @@ gail_menu_item_get_keybinding (AtkAction *action,
 
           if (key)
             {           
-              accelerator = gtk_accelerator_name (key->accel_key,
+              accelerator = btk_accelerator_name (key->accel_key,
                                                   key->accel_mods);
             }
         }
@@ -579,21 +579,21 @@ gail_menu_item_get_keybinding (AtkAction *action,
           keybinding = temp;
       }
     }
-  g_free (gail_menu_item->click_keybinding);
-  gail_menu_item->click_keybinding = keybinding;
+  g_free (bail_menu_item->click_keybinding);
+  bail_menu_item->click_keybinding = keybinding;
   return keybinding;
 }
 
 static gboolean
-gail_menu_item_set_description (AtkAction      *action,
+bail_menu_item_set_description (BatkAction      *action,
                                 gint           i,
                                 const gchar    *desc)
 {
   if (i == 0)
     {
-      GailMenuItem *item;
+      BailMenuItem *item;
 
-      item = GAIL_MENU_ITEM (action);
+      item = BAIL_MENU_ITEM (action);
       g_free (item->click_description);
       item->click_description = g_strdup (desc);
       return TRUE;
@@ -603,9 +603,9 @@ gail_menu_item_set_description (AtkAction      *action,
 }
 
 static void
-gail_menu_item_finalize (GObject *object)
+bail_menu_item_finalize (GObject *object)
 {
-  GailMenuItem *menu_item = GAIL_MENU_ITEM (object);
+  BailMenuItem *menu_item = BAIL_MENU_ITEM (object);
 
   g_free (menu_item->click_keybinding);
   g_free (menu_item->click_description);
@@ -615,56 +615,56 @@ gail_menu_item_finalize (GObject *object)
       menu_item->action_idle_handler = 0;
     }
 
-  G_OBJECT_CLASS (gail_menu_item_parent_class)->finalize (object);
+  G_OBJECT_CLASS (bail_menu_item_parent_class)->finalize (object);
 }
 
 static void
-menu_item_select (GtkItem *item)
+menu_item_select (BtkItem *item)
 {
   menu_item_selection (item, TRUE);
 }
 
 static void
-menu_item_deselect (GtkItem *item)
+menu_item_deselect (BtkItem *item)
 {
   menu_item_selection (item, FALSE);
 }
 
 static void
-menu_item_selection (GtkItem  *item,
+menu_item_selection (BtkItem  *item,
                      gboolean selected)
 {
-  AtkObject *obj, *parent;
+  BatkObject *obj, *parent;
   gint i;
 
-  obj = gtk_widget_get_accessible (GTK_WIDGET (item));
-  atk_object_notify_state_change (obj, ATK_STATE_SELECTED, selected);
+  obj = btk_widget_get_accessible (BTK_WIDGET (item));
+  batk_object_notify_state_change (obj, BATK_STATE_SELECTED, selected);
 
-  for (i = 0; i < atk_object_get_n_accessible_children (obj); i++)
+  for (i = 0; i < batk_object_get_n_accessible_children (obj); i++)
     {
-      AtkObject *child;
-      child = atk_object_ref_accessible_child (obj, i);
-      atk_object_notify_state_change (child, ATK_STATE_SHOWING, selected);
+      BatkObject *child;
+      child = batk_object_ref_accessible_child (obj, i);
+      batk_object_notify_state_change (child, BATK_STATE_SHOWING, selected);
       g_object_unref (child);
     }
-  parent = atk_object_get_parent (obj);
+  parent = batk_object_get_parent (obj);
   g_signal_emit_by_name (parent, "selection_changed"); 
 }
 
 static gboolean
-find_accel (GtkAccelKey *key,
+find_accel (BtkAccelKey *key,
             GClosure    *closure,
             gpointer     data)
 {
   /*
    * We assume that closure->data points to the widget
-   * pending gtk_widget_get_accel_closures being made public
+   * pending btk_widget_get_accel_closures being made public
    */
   return data == (gpointer) closure->data;
 }
 
 static gboolean
-find_accel_new (GtkAccelKey *key,
+find_accel_new (BtkAccelKey *key,
                 GClosure    *closure,
                 gpointer     data)
 {

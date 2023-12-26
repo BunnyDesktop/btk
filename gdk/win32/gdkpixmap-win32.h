@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,36 +18,36 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_PIXMAP_WIN32_H__
-#define __GDK_PIXMAP_WIN32_H__
+#ifndef __BDK_PIXMAP_WIN32_H__
+#define __BDK_PIXMAP_WIN32_H__
 
-#include <gdk/win32/gdkdrawable-win32.h>
-#include <gdk/gdkpixmap.h>
+#include <bdk/win32/bdkdrawable-win32.h>
+#include <bdk/bdkpixmap.h>
 
 G_BEGIN_DECLS
 
 /* Pixmap implementation for Win32
  */
 
-typedef struct _GdkPixmapImplWin32 GdkPixmapImplWin32;
-typedef struct _GdkPixmapImplWin32Class GdkPixmapImplWin32Class;
+typedef struct _BdkPixmapImplWin32 BdkPixmapImplWin32;
+typedef struct _BdkPixmapImplWin32Class BdkPixmapImplWin32Class;
 
-#define GDK_TYPE_PIXMAP_IMPL_WIN32              (_gdk_pixmap_impl_win32_get_type ())
-#define GDK_PIXMAP_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_PIXMAP_IMPL_WIN32, GdkPixmapImplWin32))
-#define GDK_PIXMAP_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_PIXMAP_IMPL_WIN32, GdkPixmapImplWin32Class))
-#define GDK_IS_PIXMAP_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_PIXMAP_IMPL_WIN32))
-#define GDK_IS_PIXMAP_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_PIXMAP_IMPL_WIN32))
-#define GDK_PIXMAP_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_PIXMAP_IMPL_WIN32, GdkPixmapImplWin32Class))
+#define BDK_TYPE_PIXMAP_IMPL_WIN32              (_bdk_pixmap_impl_win32_get_type ())
+#define BDK_PIXMAP_IMPL_WIN32(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32))
+#define BDK_PIXMAP_IMPL_WIN32_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
+#define BDK_IS_PIXMAP_IMPL_WIN32(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_PIXMAP_IMPL_WIN32))
+#define BDK_IS_PIXMAP_IMPL_WIN32_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_PIXMAP_IMPL_WIN32))
+#define BDK_PIXMAP_IMPL_WIN32_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_PIXMAP_IMPL_WIN32, BdkPixmapImplWin32Class))
 
-struct _GdkPixmapImplWin32
+struct _BdkPixmapImplWin32
 {
-  GdkDrawableImplWin32 parent_instance;
+  BdkDrawableImplWin32 parent_instance;
 
   gint width;
   gint height;
@@ -56,13 +56,13 @@ struct _GdkPixmapImplWin32
   guint is_allocated : 1;
 };
  
-struct _GdkPixmapImplWin32Class 
+struct _BdkPixmapImplWin32Class 
 {
-  GdkDrawableImplWin32Class parent_class;
+  BdkDrawableImplWin32Class parent_class;
 };
 
-GType _gdk_pixmap_impl_win32_get_type (void);
+GType _bdk_pixmap_impl_win32_get_type (void);
 
 G_END_DECLS
 
-#endif /* __GDK_PIXMAP_WIN32_H__ */
+#endif /* __BDK_PIXMAP_WIN32_H__ */

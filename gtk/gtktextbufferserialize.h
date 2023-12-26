@@ -1,4 +1,4 @@
-/* gtktextbufferserialize.h
+/* btktextbufferserialize.h
  *
  * Copyright (C) 2004 Nokia Corporation.
  *
@@ -18,21 +18,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TEXT_BUFFER_SERIALIZE_H__
-#define __GTK_TEXT_BUFFER_SERIALIZE_H__
+#ifndef __BTK_TEXT_BUFFER_SERIALIZE_H__
+#define __BTK_TEXT_BUFFER_SERIALIZE_H__
 
-#include <gtk/gtktextbuffer.h>
+#include <btk/btktextbuffer.h>
 
-guint8 * _gtk_text_buffer_serialize_rich_text   (GtkTextBuffer     *register_buffer,
-                                                 GtkTextBuffer     *content_buffer,
-                                                 const GtkTextIter *start,
-                                                 const GtkTextIter *end,
+guint8 * _btk_text_buffer_serialize_rich_text   (BtkTextBuffer     *register_buffer,
+                                                 BtkTextBuffer     *content_buffer,
+                                                 const BtkTextIter *start,
+                                                 const BtkTextIter *end,
                                                  gsize             *length,
                                                  gpointer           user_data);
 
-gboolean _gtk_text_buffer_deserialize_rich_text (GtkTextBuffer     *register_buffer,
-                                                 GtkTextBuffer     *content_buffer,
-                                                 GtkTextIter       *iter,
+gboolean _btk_text_buffer_deserialize_rich_text (BtkTextBuffer     *register_buffer,
+                                                 BtkTextBuffer     *content_buffer,
+                                                 BtkTextIter       *iter,
                                                  const guint8      *data,
                                                  gsize              length,
                                                  gboolean           create_tags,
@@ -40,4 +40,4 @@ gboolean _gtk_text_buffer_deserialize_rich_text (GtkTextBuffer     *register_buf
                                                  GError           **error);
 
 
-#endif /* __GTK_TEXT_BUFFER_SERIALIZE_H__ */
+#endif /* __BTK_TEXT_BUFFER_SERIALIZE_H__ */

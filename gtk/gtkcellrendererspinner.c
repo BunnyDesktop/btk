@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  *
  * Copyright (C) 2009 Matthias Clasen <mclasen@redhat.com>
  * Copyright (C) 2008 Richard Hughes <richard@hughsie.com>
@@ -21,37 +21,37 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 2007.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2007.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkcellrendererspinner.h"
-#include "gtkiconfactory.h"
-#include "gtkicontheme.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkcellrendererspinner.h"
+#include "btkiconfactory.h"
+#include "btkicontheme.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
 /**
- * SECTION:gtkcellrendererspinner
+ * SECTION:btkcellrendererspinner
  * @Short_description: Renders a spinning animation in a cell
- * @Title: GtkCellRendererSpinner
- * @See_also: #GtkSpinner, #GtkCellRendererProgress
+ * @Title: BtkCellRendererSpinner
+ * @See_also: #BtkSpinner, #BtkCellRendererProgress
  *
- * GtkCellRendererSpinner renders a spinning animation in a cell, very
- * similar to #GtkSpinner. It can often be used as an alternative
- * to a #GtkCellRendererProgress for displaying indefinite activity,
+ * BtkCellRendererSpinner renders a spinning animation in a cell, very
+ * similar to #BtkSpinner. It can often be used as an alternative
+ * to a #BtkCellRendererProgress for displaying indefinite activity,
  * instead of actual progress.
  *
- * To start the animation in a cell, set the #GtkCellRendererSpinner:active
- * property to %TRUE and increment the #GtkCellRendererSpinner:pulse property
+ * To start the animation in a cell, set the #BtkCellRendererSpinner:active
+ * property to %TRUE and increment the #BtkCellRendererSpinner:pulse property
  * at regular intervals. The usual way to set the cell renderer properties
  * for each cell is to bind them to columns in your tree model using e.g.
- * gtk_tree_view_column_add_attribute().
+ * btk_tree_view_column_add_attribute().
  */
 
 
@@ -62,57 +62,57 @@ enum {
   PROP_SIZE
 };
 
-struct _GtkCellRendererSpinnerPrivate
+struct _BtkCellRendererSpinnerPrivate
 {
   gboolean active;
   guint pulse;
-  GtkIconSize icon_size, old_icon_size;
+  BtkIconSize icon_size, old_icon_size;
   gint size;
 };
 
-#define GTK_CELL_RENDERER_SPINNER_GET_PRIVATE(object)        \
+#define BTK_CELL_RENDERER_SPINNER_GET_PRIVATE(object)        \
                 (G_TYPE_INSTANCE_GET_PRIVATE ((object),        \
-                        GTK_TYPE_CELL_RENDERER_SPINNER, \
-                        GtkCellRendererSpinnerPrivate))
+                        BTK_TYPE_CELL_RENDERER_SPINNER, \
+                        BtkCellRendererSpinnerPrivate))
 
-static void gtk_cell_renderer_spinner_get_property (GObject         *object,
+static void btk_cell_renderer_spinner_get_property (GObject         *object,
                                                     guint            param_id,
                                                     GValue          *value,
                                                     GParamSpec      *pspec);
-static void gtk_cell_renderer_spinner_set_property (GObject         *object,
+static void btk_cell_renderer_spinner_set_property (GObject         *object,
                                                     guint            param_id,
                                                     const GValue    *value,
                                                     GParamSpec      *pspec);
-static void gtk_cell_renderer_spinner_get_size     (GtkCellRenderer *cell,
-                                                    GtkWidget       *widget,
-                                                    GdkRectangle    *cell_area,
+static void btk_cell_renderer_spinner_get_size     (BtkCellRenderer *cell,
+                                                    BtkWidget       *widget,
+                                                    BdkRectangle    *cell_area,
                                                     gint            *x_offset,
                                                     gint            *y_offset,
                                                     gint            *width,
                                                     gint            *height);
-static void gtk_cell_renderer_spinner_render       (GtkCellRenderer *cell,
-                                                    GdkWindow       *window,
-                                                    GtkWidget       *widget,
-                                                    GdkRectangle    *background_area,
-                                                    GdkRectangle    *cell_area,
-                                                    GdkRectangle    *expose_area,
+static void btk_cell_renderer_spinner_render       (BtkCellRenderer *cell,
+                                                    BdkWindow       *window,
+                                                    BtkWidget       *widget,
+                                                    BdkRectangle    *background_area,
+                                                    BdkRectangle    *cell_area,
+                                                    BdkRectangle    *expose_area,
                                                     guint            flags);
 
-G_DEFINE_TYPE (GtkCellRendererSpinner, gtk_cell_renderer_spinner, GTK_TYPE_CELL_RENDERER)
+G_DEFINE_TYPE (BtkCellRendererSpinner, btk_cell_renderer_spinner, BTK_TYPE_CELL_RENDERER)
 
 static void
-gtk_cell_renderer_spinner_class_init (GtkCellRendererSpinnerClass *klass)
+btk_cell_renderer_spinner_class_init (BtkCellRendererSpinnerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GtkCellRendererClass *cell_class = GTK_CELL_RENDERER_CLASS (klass);
+  BtkCellRendererClass *cell_class = BTK_CELL_RENDERER_CLASS (klass);
 
-  object_class->get_property = gtk_cell_renderer_spinner_get_property;
-  object_class->set_property = gtk_cell_renderer_spinner_set_property;
+  object_class->get_property = btk_cell_renderer_spinner_get_property;
+  object_class->set_property = btk_cell_renderer_spinner_set_property;
 
-  cell_class->get_size = gtk_cell_renderer_spinner_get_size;
-  cell_class->render = gtk_cell_renderer_spinner_render;
+  cell_class->get_size = btk_cell_renderer_spinner_get_size;
+  cell_class->render = btk_cell_renderer_spinner_render;
 
-  /* GtkCellRendererSpinner:active:
+  /* BtkCellRendererSpinner:active:
    *
    * Whether the spinner is active (ie. shown) in the cell
    *
@@ -126,15 +126,15 @@ gtk_cell_renderer_spinner_class_init (GtkCellRendererSpinnerClass *klass)
                                                          FALSE,
                                                          G_PARAM_READWRITE));
   /**
-   * GtkCellRendererSpinner:pulse:
+   * BtkCellRendererSpinner:pulse:
    *
    * Pulse of the spinner. Increment this value to draw the next frame of the
    * spinner animation. Usually, you would update this value in a timeout.
    *
-   * The #GtkSpinner widget draws one full cycle of the animation per second by default.
+   * The #BtkSpinner widget draws one full cycle of the animation per second by default.
    * You can learn about the number of frames used by the theme
-   * by looking at the #GtkSpinner:num-steps style property and the duration
-   * of the cycle by looking at #GtkSpinner:cycle-duration.
+   * by looking at the #BtkSpinner:num-steps style property and the duration
+   * of the cycle by looking at #BtkSpinner:cycle-duration.
    *
    * Since: 2.20
    */
@@ -146,9 +146,9 @@ gtk_cell_renderer_spinner_class_init (GtkCellRendererSpinnerClass *klass)
                                                       0, G_MAXUINT, 0,
                                                       G_PARAM_READWRITE));
   /**
-   * GtkCellRendererSpinner:size:
+   * BtkCellRendererSpinner:size:
    *
-   * The #GtkIconSize value that specifies the size of the rendered spinner.
+   * The #BtkIconSize value that specifies the size of the rendered spinner.
    *
    * Since: 2.20
    */
@@ -156,56 +156,56 @@ gtk_cell_renderer_spinner_class_init (GtkCellRendererSpinnerClass *klass)
                                    PROP_SIZE,
                                    g_param_spec_enum ("size",
                                                       P_("Size"),
-                                                      P_("The GtkIconSize value that specifies the size of the rendered spinner"),
-                                                      GTK_TYPE_ICON_SIZE, GTK_ICON_SIZE_MENU,
+                                                      P_("The BtkIconSize value that specifies the size of the rendered spinner"),
+                                                      BTK_TYPE_ICON_SIZE, BTK_ICON_SIZE_MENU,
                                                       G_PARAM_READWRITE));
 
 
-  g_type_class_add_private (object_class, sizeof (GtkCellRendererSpinnerPrivate));
+  g_type_class_add_private (object_class, sizeof (BtkCellRendererSpinnerPrivate));
 }
 
 static void
-gtk_cell_renderer_spinner_init (GtkCellRendererSpinner *cell)
+btk_cell_renderer_spinner_init (BtkCellRendererSpinner *cell)
 {
-  cell->priv = GTK_CELL_RENDERER_SPINNER_GET_PRIVATE (cell);
+  cell->priv = BTK_CELL_RENDERER_SPINNER_GET_PRIVATE (cell);
   cell->priv->pulse = 0;
-  cell->priv->old_icon_size = GTK_ICON_SIZE_INVALID;
-  cell->priv->icon_size = GTK_ICON_SIZE_MENU;
+  cell->priv->old_icon_size = BTK_ICON_SIZE_INVALID;
+  cell->priv->icon_size = BTK_ICON_SIZE_MENU;
 }
 
 /**
- * gtk_cell_renderer_spinner_new
+ * btk_cell_renderer_spinner_new
  *
  * Returns a new cell renderer which will show a spinner to indicate
  * activity.
  *
- * Return value: a new #GtkCellRenderer
+ * Return value: a new #BtkCellRenderer
  *
  * Since: 2.20
  */
-GtkCellRenderer *
-gtk_cell_renderer_spinner_new (void)
+BtkCellRenderer *
+btk_cell_renderer_spinner_new (void)
 {
-  return g_object_new (GTK_TYPE_CELL_RENDERER_SPINNER, NULL);
+  return g_object_new (BTK_TYPE_CELL_RENDERER_SPINNER, NULL);
 }
 
 static void
-gtk_cell_renderer_spinner_update_size (GtkCellRendererSpinner *cell,
-                                       GtkWidget              *widget)
+btk_cell_renderer_spinner_update_size (BtkCellRendererSpinner *cell,
+                                       BtkWidget              *widget)
 {
-  GtkCellRendererSpinnerPrivate *priv = cell->priv;
-  GdkScreen *screen;
-  GtkIconTheme *icon_theme;
-  GtkSettings *settings;
+  BtkCellRendererSpinnerPrivate *priv = cell->priv;
+  BdkScreen *screen;
+  BtkIconTheme *icon_theme;
+  BtkSettings *settings;
 
   if (cell->priv->old_icon_size == cell->priv->icon_size)
     return;
 
-  screen = gtk_widget_get_screen (GTK_WIDGET (widget));
-  icon_theme = gtk_icon_theme_get_for_screen (screen);
-  settings = gtk_settings_get_for_screen (screen);
+  screen = btk_widget_get_screen (BTK_WIDGET (widget));
+  icon_theme = btk_icon_theme_get_for_screen (screen);
+  settings = btk_settings_get_for_screen (screen);
 
-  if (!gtk_icon_size_lookup_for_settings (settings, priv->icon_size, &priv->size, NULL))
+  if (!btk_icon_size_lookup_for_settings (settings, priv->icon_size, &priv->size, NULL))
     {
       g_warning ("Invalid icon size %u\n", priv->icon_size);
       priv->size = 24;
@@ -213,13 +213,13 @@ gtk_cell_renderer_spinner_update_size (GtkCellRendererSpinner *cell,
 }
 
 static void
-gtk_cell_renderer_spinner_get_property (GObject    *object,
+btk_cell_renderer_spinner_get_property (GObject    *object,
                                         guint       param_id,
                                         GValue     *value,
                                         GParamSpec *pspec)
 {
-  GtkCellRendererSpinner *cell = GTK_CELL_RENDERER_SPINNER (object);
-  GtkCellRendererSpinnerPrivate *priv = cell->priv;
+  BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (object);
+  BtkCellRendererSpinnerPrivate *priv = cell->priv;
 
   switch (param_id)
     {
@@ -238,13 +238,13 @@ gtk_cell_renderer_spinner_get_property (GObject    *object,
 }
 
 static void
-gtk_cell_renderer_spinner_set_property (GObject      *object,
+btk_cell_renderer_spinner_set_property (GObject      *object,
                                         guint         param_id,
                                         const GValue *value,
                                         GParamSpec   *pspec)
 {
-  GtkCellRendererSpinner *cell = GTK_CELL_RENDERER_SPINNER (object);
-  GtkCellRendererSpinnerPrivate *priv = cell->priv;
+  BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (object);
+  BtkCellRendererSpinnerPrivate *priv = cell->priv;
 
   switch (param_id)
     {
@@ -264,25 +264,25 @@ gtk_cell_renderer_spinner_set_property (GObject      *object,
 }
 
 static void
-gtk_cell_renderer_spinner_get_size (GtkCellRenderer *cellr,
-                                    GtkWidget       *widget,
-                                    GdkRectangle    *cell_area,
+btk_cell_renderer_spinner_get_size (BtkCellRenderer *cellr,
+                                    BtkWidget       *widget,
+                                    BdkRectangle    *cell_area,
                                     gint            *x_offset,
                                     gint            *y_offset,
                                     gint            *width,
                                     gint            *height)
 {
-  GtkCellRendererSpinner *cell = GTK_CELL_RENDERER_SPINNER (cellr);
-  GtkCellRendererSpinnerPrivate *priv = cell->priv;
+  BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (cellr);
+  BtkCellRendererSpinnerPrivate *priv = cell->priv;
   gdouble align;
   gint w, h;
   gint xpad, ypad;
   gfloat xalign, yalign;
   gboolean rtl;
 
-  rtl = gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL;
+  rtl = btk_widget_get_direction (widget) == BTK_TEXT_DIR_RTL;
 
-  gtk_cell_renderer_spinner_update_size (cell, widget);
+  btk_cell_renderer_spinner_update_size (cell, widget);
 
   g_object_get (cellr,
                 "xpad", &xpad,
@@ -322,25 +322,25 @@ gtk_cell_renderer_spinner_get_size (GtkCellRenderer *cellr,
 }
 
 static void
-gtk_cell_renderer_spinner_render (GtkCellRenderer *cellr,
-                                  GdkWindow       *window,
-                                  GtkWidget       *widget,
-                                  GdkRectangle    *background_area,
-                                  GdkRectangle    *cell_area,
-                                  GdkRectangle    *expose_area,
+btk_cell_renderer_spinner_render (BtkCellRenderer *cellr,
+                                  BdkWindow       *window,
+                                  BtkWidget       *widget,
+                                  BdkRectangle    *background_area,
+                                  BdkRectangle    *cell_area,
+                                  BdkRectangle    *expose_area,
                                   guint            flags)
 {
-  GtkCellRendererSpinner *cell = GTK_CELL_RENDERER_SPINNER (cellr);
-  GtkCellRendererSpinnerPrivate *priv = cell->priv;
-  GtkStateType state;
-  GdkRectangle pix_rect;
-  GdkRectangle draw_rect;
+  BtkCellRendererSpinner *cell = BTK_CELL_RENDERER_SPINNER (cellr);
+  BtkCellRendererSpinnerPrivate *priv = cell->priv;
+  BtkStateType state;
+  BdkRectangle pix_rect;
+  BdkRectangle draw_rect;
   gint xpad, ypad;
 
   if (!priv->active)
     return;
 
-  gtk_cell_renderer_spinner_get_size (cellr, widget, cell_area,
+  btk_cell_renderer_spinner_get_size (cellr, widget, cell_area,
                                       &pix_rect.x, &pix_rect.y,
                                       &pix_rect.width, &pix_rect.height);
 
@@ -353,31 +353,31 @@ gtk_cell_renderer_spinner_render (GtkCellRenderer *cellr,
   pix_rect.width -= xpad * 2;
   pix_rect.height -= ypad * 2;
 
-  if (!gdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect) ||
-      !gdk_rectangle_intersect (expose_area, &pix_rect, &draw_rect))
+  if (!bdk_rectangle_intersect (cell_area, &pix_rect, &draw_rect) ||
+      !bdk_rectangle_intersect (expose_area, &pix_rect, &draw_rect))
     {
       return;
     }
 
-  state = GTK_STATE_NORMAL;
-  if (gtk_widget_get_state (widget) == GTK_STATE_INSENSITIVE || !cellr->sensitive)
+  state = BTK_STATE_NORMAL;
+  if (btk_widget_get_state (widget) == BTK_STATE_INSENSITIVE || !cellr->sensitive)
     {
-      state = GTK_STATE_INSENSITIVE;
+      state = BTK_STATE_INSENSITIVE;
     }
   else
     {
-      if ((flags & GTK_CELL_RENDERER_SELECTED) != 0)
+      if ((flags & BTK_CELL_RENDERER_SELECTED) != 0)
         {
-          if (gtk_widget_has_focus (widget))
-            state = GTK_STATE_SELECTED;
+          if (btk_widget_has_focus (widget))
+            state = BTK_STATE_SELECTED;
           else
-            state = GTK_STATE_ACTIVE;
+            state = BTK_STATE_ACTIVE;
         }
       else
-        state = GTK_STATE_PRELIGHT;
+        state = BTK_STATE_PRELIGHT;
     }
 
-  gtk_paint_spinner (widget->style,
+  btk_paint_spinner (widget->style,
                      window,
                      state,
                      expose_area,
@@ -388,5 +388,5 @@ gtk_cell_renderer_spinner_render (GtkCellRenderer *cellr,
                      draw_rect.width, draw_rect.height);
 }
 
-#define __GTK_CELL_RENDERER_SPINNER_C__
-#include "gtkaliasdef.c"
+#define __BTK_CELL_RENDERER_SPINNER_C__
+#include "btkaliasdef.c"

@@ -1,5 +1,5 @@
 /*
- * GTK - The GIMP Toolkit
+ * BTK - The GIMP Toolkit
  * Copyright (C) 1998, 1999 Red Hat, Inc.
  * All rights reserved.
  *
@@ -14,7 +14,7 @@
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
- * License along with the Gnome Library; see the file COPYING.LIB.  If not,
+ * License along with the Bunny Library; see the file COPYING.LIB.  If not,
  * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  */
@@ -22,22 +22,22 @@
 /*
  * Author: James Henstridge <james@daa.com.au>
  *
- * Modified by the GTK+ Team and others 2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GTK_TOGGLE_ACTION_PRIVATE_H__
-#define __GTK_TOGGLE_ACTION_PRIVATE_H__
+#ifndef __BTK_TOGGLE_ACTION_PRIVATE_H__
+#define __BTK_TOGGLE_ACTION_PRIVATE_H__
 
 
-#define GTK_TOGGLE_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_TOGGLE_ACTION, GtkToggleActionPrivate))
+#define BTK_TOGGLE_ACTION_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_TOGGLE_ACTION, BtkToggleActionPrivate))
 
-struct _GtkToggleActionPrivate 
+struct _BtkToggleActionPrivate 
 {
   guint active        : 1;
   guint draw_as_radio : 1;
 };
 
-#endif  /* __GTK_TOGGLE_ACTION_PRIVATE_H__ */
+#endif  /* __BTK_TOGGLE_ACTION_PRIVATE_H__ */

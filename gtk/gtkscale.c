@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2001 Red Hat, Inc.
  *
@@ -19,10 +19,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
@@ -30,17 +30,17 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "gdk/gdkkeysyms.h"
-#include "gtkscale.h"
-#include "gtkiconfactory.h"
-#include "gtkicontheme.h"
-#include "gtkmarshalers.h"
-#include "gtkbindings.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkbuildable.h"
-#include "gtkbuilderprivate.h"
-#include "gtkalias.h"
+#include "bdk/bdkkeysyms.h"
+#include "btkscale.h"
+#include "btkiconfactory.h"
+#include "btkicontheme.h"
+#include "btkmarshalers.h"
+#include "btkbindings.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkbuildable.h"
+#include "btkbuilderprivate.h"
+#include "btkalias.h"
 
 
 #define	MAX_DIGITS	(64)	/* don't change this,
@@ -49,22 +49,22 @@
 				 *    unrelated code portions otherwise
 				 */
 
-#define GTK_SCALE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_SCALE, GtkScalePrivate))
+#define BTK_SCALE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_SCALE, BtkScalePrivate))
 
-typedef struct _GtkScalePrivate GtkScalePrivate;
+typedef struct _BtkScalePrivate BtkScalePrivate;
 
-typedef struct _GtkScaleMark GtkScaleMark;
+typedef struct _BtkScaleMark BtkScaleMark;
 
-struct _GtkScaleMark
+struct _BtkScaleMark
 {
   gdouble          value;
   gchar           *markup;
-  GtkPositionType  position;
+  BtkPositionType  position;
 };
 
-struct _GtkScalePrivate
+struct _BtkScalePrivate
 {
-  PangoLayout *layout;
+  BangoLayout *layout;
   GSList      *marks;
 };
 
@@ -82,60 +82,60 @@ enum {
 
 static guint signals[LAST_SIGNAL];
 
-static void     gtk_scale_set_property            (GObject        *object,
+static void     btk_scale_set_property            (GObject        *object,
                                                    guint           prop_id,
                                                    const GValue   *value,
                                                    GParamSpec     *pspec);
-static void     gtk_scale_get_property            (GObject        *object,
+static void     btk_scale_get_property            (GObject        *object,
                                                    guint           prop_id,
                                                    GValue         *value,
                                                    GParamSpec     *pspec);
-static void     gtk_scale_size_request            (GtkWidget      *widget,
-                                                   GtkRequisition *requisition);
-static void     gtk_scale_style_set               (GtkWidget      *widget,
-                                                   GtkStyle       *previous);
-static void     gtk_scale_get_range_border        (GtkRange       *range,
-                                                   GtkBorder      *border);
-static void     gtk_scale_get_mark_label_size     (GtkScale        *scale,
-                                                   GtkPositionType  position,
+static void     btk_scale_size_request            (BtkWidget      *widget,
+                                                   BtkRequisition *requisition);
+static void     btk_scale_style_set               (BtkWidget      *widget,
+                                                   BtkStyle       *previous);
+static void     btk_scale_get_range_border        (BtkRange       *range,
+                                                   BtkBorder      *border);
+static void     btk_scale_get_mark_label_size     (BtkScale        *scale,
+                                                   BtkPositionType  position,
                                                    gint            *count1,
                                                    gint            *width1,
                                                    gint            *height1,
                                                    gint            *count2,
                                                    gint            *width2,
                                                    gint            *height2);
-static void     gtk_scale_finalize                (GObject        *object);
-static void     gtk_scale_screen_changed          (GtkWidget      *widget,
-                                                   GdkScreen      *old_screen);
-static gboolean gtk_scale_expose                  (GtkWidget      *widget,
-                                                   GdkEventExpose *event);
-static void     gtk_scale_real_get_layout_offsets (GtkScale       *scale,
+static void     btk_scale_finalize                (GObject        *object);
+static void     btk_scale_screen_changed          (BtkWidget      *widget,
+                                                   BdkScreen      *old_screen);
+static gboolean btk_scale_expose                  (BtkWidget      *widget,
+                                                   BdkEventExpose *event);
+static void     btk_scale_real_get_layout_offsets (BtkScale       *scale,
                                                    gint           *x,
                                                    gint           *y);
-static void     gtk_scale_buildable_interface_init   (GtkBuildableIface *iface);
-static gboolean gtk_scale_buildable_custom_tag_start (GtkBuildable  *buildable,
-                                                      GtkBuilder    *builder,
+static void     btk_scale_buildable_interface_init   (BtkBuildableIface *iface);
+static gboolean btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                                      BtkBuilder    *builder,
                                                       GObject       *child,
                                                       const gchar   *tagname,
                                                       GMarkupParser *parser,
                                                       gpointer      *data);
-static void     gtk_scale_buildable_custom_finished  (GtkBuildable  *buildable,
-                                                      GtkBuilder    *builder,
+static void     btk_scale_buildable_custom_finished  (BtkBuildable  *buildable,
+                                                      BtkBuilder    *builder,
                                                       GObject       *child,
                                                       const gchar   *tagname,
                                                       gpointer       user_data);
 
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkScale, gtk_scale, GTK_TYPE_RANGE,
-                                  G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                         gtk_scale_buildable_interface_init))
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkScale, btk_scale, BTK_TYPE_RANGE,
+                                  G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+                                                         btk_scale_buildable_interface_init))
 
 
 static gint
 compare_marks (gconstpointer a, gconstpointer b, gpointer data)
 {
   gboolean inverted = GPOINTER_TO_INT (data);
-  const GtkScaleMark *ma, *mb;
+  const BtkScaleMark *ma, *mb;
   gint val;
 
   val = inverted ? -1 : 1;
@@ -145,26 +145,26 @@ compare_marks (gconstpointer a, gconstpointer b, gpointer data)
 }
 
 static void
-gtk_scale_notify (GObject    *object,
+btk_scale_notify (GObject    *object,
                   GParamSpec *pspec)
 {
   if (strcmp (pspec->name, "orientation") == 0)
     {
-      GtkRange *range = GTK_RANGE (object);
+      BtkRange *range = BTK_RANGE (object);
 
-      range->flippable = (range->orientation == GTK_ORIENTATION_HORIZONTAL);
+      range->flippable = (range->orientation == BTK_ORIENTATION_HORIZONTAL);
     }
   else if (strcmp (pspec->name, "inverted") == 0)
     {
-      GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (object);
-      GtkScaleMark *mark;
+      BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (object);
+      BtkScaleMark *mark;
       GSList *m;
       gint i, n;
       gdouble *values;
 
       priv->marks = g_slist_sort_with_data (priv->marks,
                                             compare_marks,
-                                            GINT_TO_POINTER (gtk_range_get_inverted (GTK_RANGE (object))));
+                                            GINT_TO_POINTER (btk_range_get_inverted (BTK_RANGE (object))));
 
       n = g_slist_length (priv->marks);
       values = g_new (gdouble, n);
@@ -174,13 +174,13 @@ gtk_scale_notify (GObject    *object,
           values[i] = mark->value;
         }
 
-      _gtk_range_set_stop_values (GTK_RANGE (object), values, n);
+      _btk_range_set_stop_values (BTK_RANGE (object), values, n);
 
       g_free (values);
     }
 
-  if (G_OBJECT_CLASS (gtk_scale_parent_class)->notify)
-    G_OBJECT_CLASS (gtk_scale_parent_class)->notify (object, pspec);
+  if (G_OBJECT_CLASS (btk_scale_parent_class)->notify)
+    G_OBJECT_CLASS (btk_scale_parent_class)->notify (object, pspec);
 }
 
 
@@ -202,39 +202,39 @@ single_string_accumulator (GSignalInvocationHint *ihint,
 
 
 #define add_slider_binding(binding_set, keyval, mask, scroll)              \
-  gtk_binding_entry_add_signal (binding_set, keyval, mask,                 \
+  btk_binding_entry_add_signal (binding_set, keyval, mask,                 \
                                 I_("move-slider"), 1, \
-                                GTK_TYPE_SCROLL_TYPE, scroll)
+                                BTK_TYPE_SCROLL_TYPE, scroll)
 
 static void
-gtk_scale_class_init (GtkScaleClass *class)
+btk_scale_class_init (BtkScaleClass *class)
 {
-  GObjectClass   *gobject_class;
-  GtkWidgetClass *widget_class;
-  GtkRangeClass  *range_class;
-  GtkBindingSet  *binding_set;
+  GObjectClass   *bobject_class;
+  BtkWidgetClass *widget_class;
+  BtkRangeClass  *range_class;
+  BtkBindingSet  *binding_set;
   
-  gobject_class = G_OBJECT_CLASS (class);
-  range_class = (GtkRangeClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = G_OBJECT_CLASS (class);
+  range_class = (BtkRangeClass*) class;
+  widget_class = (BtkWidgetClass*) class;
   
-  gobject_class->set_property = gtk_scale_set_property;
-  gobject_class->get_property = gtk_scale_get_property;
-  gobject_class->notify = gtk_scale_notify;
-  gobject_class->finalize = gtk_scale_finalize;
+  bobject_class->set_property = btk_scale_set_property;
+  bobject_class->get_property = btk_scale_get_property;
+  bobject_class->notify = btk_scale_notify;
+  bobject_class->finalize = btk_scale_finalize;
 
-  widget_class->style_set = gtk_scale_style_set;
-  widget_class->screen_changed = gtk_scale_screen_changed;
-  widget_class->expose_event = gtk_scale_expose;
-  widget_class->size_request = gtk_scale_size_request;
+  widget_class->style_set = btk_scale_style_set;
+  widget_class->screen_changed = btk_scale_screen_changed;
+  widget_class->expose_event = btk_scale_expose;
+  widget_class->size_request = btk_scale_size_request;
 
   range_class->slider_detail = "Xscale";
-  range_class->get_range_border = gtk_scale_get_range_border;
+  range_class->get_range_border = btk_scale_get_range_border;
 
-  class->get_layout_offsets = gtk_scale_real_get_layout_offsets;
+  class->get_layout_offsets = btk_scale_real_get_layout_offsets;
 
   /**
-   * GtkScale::format-value:
+   * BtkScale::format-value:
    * @scale: the object which received the signal
    * @value: the value to format
    *
@@ -243,17 +243,17 @@ gtk_scale_class_init (GtkScaleClass *class)
    * @value. That string will then be used to display the scale's value.
    *
    * If no user-provided handlers are installed, the value will be displayed on
-   * its own, rounded according to the value of the #GtkScale:digits property.
+   * its own, rounded according to the value of the #BtkScale:digits property.
    *
    * Here's an example signal handler which displays a value 1.0 as
    * with "--&gt;1.0&lt;--".
    * |[
    * static gchar*
-   * format_value_callback (GtkScale *scale,
+   * format_value_callback (BtkScale *scale,
    *                        gdouble   value)
    * {
    *   return g_strdup_printf ("--&gt;&percnt;0.*g&lt;--",
-   *                           gtk_scale_get_digits (scale), value);
+   *                           btk_scale_get_digits (scale), value);
    *  }
    * ]|
    *
@@ -261,15 +261,15 @@ gtk_scale_class_init (GtkScaleClass *class)
    */
   signals[FORMAT_VALUE] =
     g_signal_new (I_("format-value"),
-                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkScaleClass, format_value),
+                  G_STRUCT_OFFSET (BtkScaleClass, format_value),
                   single_string_accumulator, NULL,
-                  _gtk_marshal_STRING__DOUBLE,
+                  _btk_marshal_STRING__DOUBLE,
                   G_TYPE_STRING, 1,
                   G_TYPE_DOUBLE);
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_DIGITS,
                                    g_param_spec_int ("digits",
 						     P_("Digits"),
@@ -277,170 +277,170 @@ gtk_scale_class_init (GtkScaleClass *class)
 						     -1,
 						     MAX_DIGITS,
 						     1,
-						     GTK_PARAM_READWRITE));
+						     BTK_PARAM_READWRITE));
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_DRAW_VALUE,
                                    g_param_spec_boolean ("draw-value",
 							 P_("Draw Value"),
 							 P_("Whether the current value is displayed as a string next to the slider"),
 							 TRUE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_VALUE_POS,
                                    g_param_spec_enum ("value-pos",
 						      P_("Value Position"),
 						      P_("The position in which the current value is displayed"),
-						      GTK_TYPE_POSITION_TYPE,
-						      GTK_POS_TOP,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_POSITION_TYPE,
+						      BTK_POS_TOP,
+						      BTK_PARAM_READWRITE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("slider-length",
 							     P_("Slider Length"),
 							     P_("Length of scale's slider"),
 							     0,
 							     G_MAXINT,
 							     31,
-							     GTK_PARAM_READABLE));
+							     BTK_PARAM_READABLE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("value-spacing",
 							     P_("Value spacing"),
 							     P_("Space between value text and the slider/trough area"),
 							     0,
 							     G_MAXINT,
 							     2,
-							     GTK_PARAM_READABLE));
+							     BTK_PARAM_READABLE));
   
   /* All bindings (even arrow keys) are on both h/v scale, because
    * blind users etc. don't care about scale orientation.
    */
   
-  binding_set = gtk_binding_set_by_class (class);
+  binding_set = btk_binding_set_by_class (class);
 
-  add_slider_binding (binding_set, GDK_Left, 0,
-                      GTK_SCROLL_STEP_LEFT);
+  add_slider_binding (binding_set, BDK_Left, 0,
+                      BTK_SCROLL_STEP_LEFT);
 
-  add_slider_binding (binding_set, GDK_Left, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_LEFT);
+  add_slider_binding (binding_set, BDK_Left, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_LEFT);
 
-  add_slider_binding (binding_set, GDK_KP_Left, 0,
-                      GTK_SCROLL_STEP_LEFT);
+  add_slider_binding (binding_set, BDK_KP_Left, 0,
+                      BTK_SCROLL_STEP_LEFT);
 
-  add_slider_binding (binding_set, GDK_KP_Left, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_LEFT);
+  add_slider_binding (binding_set, BDK_KP_Left, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_LEFT);
 
-  add_slider_binding (binding_set, GDK_Right, 0,
-                      GTK_SCROLL_STEP_RIGHT);
+  add_slider_binding (binding_set, BDK_Right, 0,
+                      BTK_SCROLL_STEP_RIGHT);
 
-  add_slider_binding (binding_set, GDK_Right, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_RIGHT);
+  add_slider_binding (binding_set, BDK_Right, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_RIGHT);
 
-  add_slider_binding (binding_set, GDK_KP_Right, 0,
-                      GTK_SCROLL_STEP_RIGHT);
+  add_slider_binding (binding_set, BDK_KP_Right, 0,
+                      BTK_SCROLL_STEP_RIGHT);
 
-  add_slider_binding (binding_set, GDK_KP_Right, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_RIGHT);
+  add_slider_binding (binding_set, BDK_KP_Right, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_RIGHT);
 
-  add_slider_binding (binding_set, GDK_Up, 0,
-                      GTK_SCROLL_STEP_UP);
+  add_slider_binding (binding_set, BDK_Up, 0,
+                      BTK_SCROLL_STEP_UP);
 
-  add_slider_binding (binding_set, GDK_Up, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_UP);
+  add_slider_binding (binding_set, BDK_Up, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_UP);
 
-  add_slider_binding (binding_set, GDK_KP_Up, 0,
-                      GTK_SCROLL_STEP_UP);
+  add_slider_binding (binding_set, BDK_KP_Up, 0,
+                      BTK_SCROLL_STEP_UP);
 
-  add_slider_binding (binding_set, GDK_KP_Up, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_UP);
+  add_slider_binding (binding_set, BDK_KP_Up, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_UP);
 
-  add_slider_binding (binding_set, GDK_Down, 0,
-                      GTK_SCROLL_STEP_DOWN);
+  add_slider_binding (binding_set, BDK_Down, 0,
+                      BTK_SCROLL_STEP_DOWN);
 
-  add_slider_binding (binding_set, GDK_Down, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_DOWN);
+  add_slider_binding (binding_set, BDK_Down, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_DOWN);
 
-  add_slider_binding (binding_set, GDK_KP_Down, 0,
-                      GTK_SCROLL_STEP_DOWN);
+  add_slider_binding (binding_set, BDK_KP_Down, 0,
+                      BTK_SCROLL_STEP_DOWN);
 
-  add_slider_binding (binding_set, GDK_KP_Down, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_DOWN);
+  add_slider_binding (binding_set, BDK_KP_Down, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_DOWN);
    
-  add_slider_binding (binding_set, GDK_Page_Up, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_LEFT);
+  add_slider_binding (binding_set, BDK_Page_Up, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_LEFT);
 
-  add_slider_binding (binding_set, GDK_KP_Page_Up, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_LEFT);  
+  add_slider_binding (binding_set, BDK_KP_Page_Up, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_LEFT);  
 
-  add_slider_binding (binding_set, GDK_Page_Up, 0,
-                      GTK_SCROLL_PAGE_UP);
+  add_slider_binding (binding_set, BDK_Page_Up, 0,
+                      BTK_SCROLL_PAGE_UP);
 
-  add_slider_binding (binding_set, GDK_KP_Page_Up, 0,
-                      GTK_SCROLL_PAGE_UP);
+  add_slider_binding (binding_set, BDK_KP_Page_Up, 0,
+                      BTK_SCROLL_PAGE_UP);
   
-  add_slider_binding (binding_set, GDK_Page_Down, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_RIGHT);
+  add_slider_binding (binding_set, BDK_Page_Down, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_RIGHT);
 
-  add_slider_binding (binding_set, GDK_KP_Page_Down, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_RIGHT);
+  add_slider_binding (binding_set, BDK_KP_Page_Down, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_RIGHT);
 
-  add_slider_binding (binding_set, GDK_Page_Down, 0,
-                      GTK_SCROLL_PAGE_DOWN);
+  add_slider_binding (binding_set, BDK_Page_Down, 0,
+                      BTK_SCROLL_PAGE_DOWN);
 
-  add_slider_binding (binding_set, GDK_KP_Page_Down, 0,
-                      GTK_SCROLL_PAGE_DOWN);
+  add_slider_binding (binding_set, BDK_KP_Page_Down, 0,
+                      BTK_SCROLL_PAGE_DOWN);
 
   /* Logical bindings (vs. visual bindings above) */
 
-  add_slider_binding (binding_set, GDK_plus, 0,
-                      GTK_SCROLL_STEP_FORWARD);  
+  add_slider_binding (binding_set, BDK_plus, 0,
+                      BTK_SCROLL_STEP_FORWARD);  
 
-  add_slider_binding (binding_set, GDK_minus, 0,
-                      GTK_SCROLL_STEP_BACKWARD);  
+  add_slider_binding (binding_set, BDK_minus, 0,
+                      BTK_SCROLL_STEP_BACKWARD);  
 
-  add_slider_binding (binding_set, GDK_plus, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_FORWARD);  
+  add_slider_binding (binding_set, BDK_plus, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_FORWARD);  
 
-  add_slider_binding (binding_set, GDK_minus, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_BACKWARD);
+  add_slider_binding (binding_set, BDK_minus, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_BACKWARD);
 
 
-  add_slider_binding (binding_set, GDK_KP_Add, 0,
-                      GTK_SCROLL_STEP_FORWARD);  
+  add_slider_binding (binding_set, BDK_KP_Add, 0,
+                      BTK_SCROLL_STEP_FORWARD);  
 
-  add_slider_binding (binding_set, GDK_KP_Subtract, 0,
-                      GTK_SCROLL_STEP_BACKWARD);  
+  add_slider_binding (binding_set, BDK_KP_Subtract, 0,
+                      BTK_SCROLL_STEP_BACKWARD);  
 
-  add_slider_binding (binding_set, GDK_KP_Add, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_FORWARD);  
+  add_slider_binding (binding_set, BDK_KP_Add, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_FORWARD);  
 
-  add_slider_binding (binding_set, GDK_KP_Subtract, GDK_CONTROL_MASK,
-                      GTK_SCROLL_PAGE_BACKWARD);
+  add_slider_binding (binding_set, BDK_KP_Subtract, BDK_CONTROL_MASK,
+                      BTK_SCROLL_PAGE_BACKWARD);
   
   
-  add_slider_binding (binding_set, GDK_Home, 0,
-                      GTK_SCROLL_START);
+  add_slider_binding (binding_set, BDK_Home, 0,
+                      BTK_SCROLL_START);
 
-  add_slider_binding (binding_set, GDK_KP_Home, 0,
-                      GTK_SCROLL_START);
+  add_slider_binding (binding_set, BDK_KP_Home, 0,
+                      BTK_SCROLL_START);
 
-  add_slider_binding (binding_set, GDK_End, 0,
-                      GTK_SCROLL_END);
+  add_slider_binding (binding_set, BDK_End, 0,
+                      BTK_SCROLL_END);
 
-  add_slider_binding (binding_set, GDK_KP_End, 0,
-                      GTK_SCROLL_END);
+  add_slider_binding (binding_set, BDK_KP_End, 0,
+                      BTK_SCROLL_END);
 
-  g_type_class_add_private (gobject_class, sizeof (GtkScalePrivate));
+  g_type_class_add_private (bobject_class, sizeof (BtkScalePrivate));
 }
 
 static void
-gtk_scale_init (GtkScale *scale)
+btk_scale_init (BtkScale *scale)
 {
-  GtkRange *range = GTK_RANGE (scale);
+  BtkRange *range = BTK_RANGE (scale);
 
-  gtk_widget_set_can_focus (GTK_WIDGET (scale), TRUE);
+  btk_widget_set_can_focus (BTK_WIDGET (scale), TRUE);
 
   range->slider_size_fixed = TRUE;
   range->has_stepper_a = FALSE;
@@ -449,33 +449,33 @@ gtk_scale_init (GtkScale *scale)
   range->has_stepper_d = FALSE;
 
   scale->draw_value = TRUE;
-  scale->value_pos = GTK_POS_TOP;
+  scale->value_pos = BTK_POS_TOP;
   scale->digits = 1;
   range->round_digits = scale->digits;
 
-  range->flippable = (range->orientation == GTK_ORIENTATION_HORIZONTAL);
+  range->flippable = (range->orientation == BTK_ORIENTATION_HORIZONTAL);
 }
 
 static void
-gtk_scale_set_property (GObject      *object,
+btk_scale_set_property (GObject      *object,
 			guint         prop_id,
 			const GValue *value,
 			GParamSpec   *pspec)
 {
-  GtkScale *scale;
+  BtkScale *scale;
 
-  scale = GTK_SCALE (object);
+  scale = BTK_SCALE (object);
 
   switch (prop_id)
     {
     case PROP_DIGITS:
-      gtk_scale_set_digits (scale, g_value_get_int (value));
+      btk_scale_set_digits (scale, g_value_get_int (value));
       break;
     case PROP_DRAW_VALUE:
-      gtk_scale_set_draw_value (scale, g_value_get_boolean (value));
+      btk_scale_set_draw_value (scale, g_value_get_boolean (value));
       break;
     case PROP_VALUE_POS:
-      gtk_scale_set_value_pos (scale, g_value_get_enum (value));
+      btk_scale_set_value_pos (scale, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -484,14 +484,14 @@ gtk_scale_set_property (GObject      *object,
 }
 
 static void
-gtk_scale_get_property (GObject      *object,
+btk_scale_get_property (GObject      *object,
 			guint         prop_id,
 			GValue       *value,
 			GParamSpec   *pspec)
 {
-  GtkScale *scale;
+  BtkScale *scale;
 
-  scale = GTK_SCALE (object);
+  scale = BTK_SCALE (object);
 
   switch (prop_id)
     {
@@ -512,32 +512,32 @@ gtk_scale_get_property (GObject      *object,
 
 #if 0
 /**
- * gtk_scale_new:
+ * btk_scale_new:
  * @orientation: the scale's orientation.
- * @adjustment: the #GtkAdjustment which sets the range of the scale, or
+ * @adjustment: the #BtkAdjustment which sets the range of the scale, or
  *              %NULL to create a new adjustment.
  *
- * Creates a new #GtkScale.
+ * Creates a new #BtkScale.
  *
- * Return value: a new #GtkScale
+ * Return value: a new #BtkScale
  *
  * Since: 2.16
  **/
-GtkWidget *
-gtk_scale_new (GtkOrientation  orientation,
-               GtkAdjustment  *adjustment)
+BtkWidget *
+btk_scale_new (BtkOrientation  orientation,
+               BtkAdjustment  *adjustment)
 {
-  g_return_val_if_fail (adjustment == NULL || GTK_IS_ADJUSTMENT (adjustment),
+  g_return_val_if_fail (adjustment == NULL || BTK_IS_ADJUSTMENT (adjustment),
                         NULL);
 
-  return g_object_new (GTK_TYPE_SCALE,
+  return g_object_new (BTK_TYPE_SCALE,
                        "orientation", orientation,
                        "adjustment",  adjustment,
                        NULL);
 }
 
 /**
- * gtk_scale_new_with_range:
+ * btk_scale_new_with_range:
  * @orientation: the scale's orientation.
  * @min: minimum value
  * @max: maximum value
@@ -551,25 +551,25 @@ gtk_scale_new (GtkOrientation  orientation,
  *
  * Note that the way in which the precision is derived works best if @step
  * is a power of ten. If the resulting precision is not suitable for your
- * needs, use gtk_scale_set_digits() to correct it.
+ * needs, use btk_scale_set_digits() to correct it.
  *
- * Return value: a new #GtkScale
+ * Return value: a new #BtkScale
  *
  * Since: 2.16
  **/
-GtkWidget *
-gtk_scale_new_with_range (GtkOrientation orientation,
+BtkWidget *
+btk_scale_new_with_range (BtkOrientation orientation,
                           gdouble        min,
                           gdouble        max,
                           gdouble        step)
 {
-  GtkObject *adj;
+  BtkObject *adj;
   gint digits;
 
   g_return_val_if_fail (min < max, NULL);
   g_return_val_if_fail (step != 0.0, NULL);
 
-  adj = gtk_adjustment_new (min, min, max, step, 10 * step, 0);
+  adj = btk_adjustment_new (min, min, max, step, 10 * step, 0);
 
   if (fabs (step) >= 1.0 || step == 0.0)
     {
@@ -582,7 +582,7 @@ gtk_scale_new_with_range (GtkOrientation orientation,
         digits = 5;
     }
 
-  return g_object_new (GTK_TYPE_SCALE,
+  return g_object_new (BTK_TYPE_SCALE,
                        "orientation", orientation,
                        "adjustment",  adj,
                        "digits",      digits,
@@ -591,27 +591,27 @@ gtk_scale_new_with_range (GtkOrientation orientation,
 #endif
 
 /**
- * gtk_scale_set_digits:
- * @scale: a #GtkScale
+ * btk_scale_set_digits:
+ * @scale: a #BtkScale
  * @digits: the number of decimal places to display, 
  *     e.g. use 1 to display 1.0, 2 to display 1.00, etc
  * 
  * Sets the number of decimal places that are displayed in the value. Also
  * causes the value of the adjustment to be rounded to this number of digits,
- * so the retrieved value matches the displayed one, if #GtkScale:draw-value is
+ * so the retrieved value matches the displayed one, if #BtkScale:draw-value is
  * %TRUE when the value changes. If you want to enforce rounding the value when
- * #GtkScale:draw-value is %FALSE, you can set #GtkRange:round-digits instead.
+ * #BtkScale:draw-value is %FALSE, you can set #BtkRange:round-digits instead.
  *
  */
 void
-gtk_scale_set_digits (GtkScale *scale,
+btk_scale_set_digits (BtkScale *scale,
 		      gint      digits)
 {
-  GtkRange *range;
+  BtkRange *range;
   
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
-  range = GTK_RANGE (scale);
+  range = BTK_RANGE (scale);
   
   digits = CLAMP (digits, -1, MAX_DIGITS);
 
@@ -621,42 +621,42 @@ gtk_scale_set_digits (GtkScale *scale,
       if (scale->draw_value)
 	range->round_digits = digits;
       
-      _gtk_scale_clear_layout (scale);
-      gtk_widget_queue_resize (GTK_WIDGET (scale));
+      _btk_scale_clear_layout (scale);
+      btk_widget_queue_resize (BTK_WIDGET (scale));
 
       g_object_notify (G_OBJECT (scale), "digits");
     }
 }
 
 /**
- * gtk_scale_get_digits:
- * @scale: a #GtkScale
+ * btk_scale_get_digits:
+ * @scale: a #BtkScale
  *
  * Gets the number of decimal places that are displayed in the value.
  *
  * Returns: the number of decimal places that are displayed
  */
 gint
-gtk_scale_get_digits (GtkScale *scale)
+btk_scale_get_digits (BtkScale *scale)
 {
-  g_return_val_if_fail (GTK_IS_SCALE (scale), -1);
+  g_return_val_if_fail (BTK_IS_SCALE (scale), -1);
 
   return scale->digits;
 }
 
 /**
- * gtk_scale_set_draw_value:
- * @scale: a #GtkScale
+ * btk_scale_set_draw_value:
+ * @scale: a #BtkScale
  * @draw_value: %TRUE to draw the value
  * 
  * Specifies whether the current value is displayed as a string next 
  * to the slider.
  */
 void
-gtk_scale_set_draw_value (GtkScale *scale,
+btk_scale_set_draw_value (BtkScale *scale,
 			  gboolean  draw_value)
 {
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
   draw_value = draw_value != FALSE;
 
@@ -664,21 +664,21 @@ gtk_scale_set_draw_value (GtkScale *scale,
     {
       scale->draw_value = draw_value;
       if (draw_value)
-	GTK_RANGE (scale)->round_digits = scale->digits;
+	BTK_RANGE (scale)->round_digits = scale->digits;
       else
-	GTK_RANGE (scale)->round_digits = -1;
+	BTK_RANGE (scale)->round_digits = -1;
 
-      _gtk_scale_clear_layout (scale);
+      _btk_scale_clear_layout (scale);
 
-      gtk_widget_queue_resize (GTK_WIDGET (scale));
+      btk_widget_queue_resize (BTK_WIDGET (scale));
 
       g_object_notify (G_OBJECT (scale), "draw-value");
     }
 }
 
 /**
- * gtk_scale_get_draw_value:
- * @scale: a #GtkScale
+ * btk_scale_get_draw_value:
+ * @scale: a #BtkScale
  *
  * Returns whether the current value is displayed as a string 
  * next to the slider.
@@ -686,71 +686,71 @@ gtk_scale_set_draw_value (GtkScale *scale,
  * Returns: whether the current value is displayed as a string
  */
 gboolean
-gtk_scale_get_draw_value (GtkScale *scale)
+btk_scale_get_draw_value (BtkScale *scale)
 {
-  g_return_val_if_fail (GTK_IS_SCALE (scale), FALSE);
+  g_return_val_if_fail (BTK_IS_SCALE (scale), FALSE);
 
   return scale->draw_value;
 }
 
 /**
- * gtk_scale_set_value_pos:
- * @scale: a #GtkScale
+ * btk_scale_set_value_pos:
+ * @scale: a #BtkScale
  * @pos: the position in which the current value is displayed
  * 
  * Sets the position in which the current value is displayed.
  */
 void
-gtk_scale_set_value_pos (GtkScale        *scale,
-			 GtkPositionType  pos)
+btk_scale_set_value_pos (BtkScale        *scale,
+			 BtkPositionType  pos)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
   if (scale->value_pos != pos)
     {
       scale->value_pos = pos;
-      widget = GTK_WIDGET (scale);
+      widget = BTK_WIDGET (scale);
 
-      _gtk_scale_clear_layout (scale);
-      if (gtk_widget_get_visible (widget) && gtk_widget_get_mapped (widget))
-	gtk_widget_queue_resize (widget);
+      _btk_scale_clear_layout (scale);
+      if (btk_widget_get_visible (widget) && btk_widget_get_mapped (widget))
+	btk_widget_queue_resize (widget);
 
       g_object_notify (G_OBJECT (scale), "value-pos");
     }
 }
 
 /**
- * gtk_scale_get_value_pos:
- * @scale: a #GtkScale
+ * btk_scale_get_value_pos:
+ * @scale: a #BtkScale
  *
  * Gets the position in which the current value is displayed.
  *
  * Returns: the position in which the current value is displayed
  */
-GtkPositionType
-gtk_scale_get_value_pos (GtkScale *scale)
+BtkPositionType
+btk_scale_get_value_pos (BtkScale *scale)
 {
-  g_return_val_if_fail (GTK_IS_SCALE (scale), 0);
+  g_return_val_if_fail (BTK_IS_SCALE (scale), 0);
 
   return scale->value_pos;
 }
 
 static void
-gtk_scale_get_range_border (GtkRange  *range,
-                            GtkBorder *border)
+btk_scale_get_range_border (BtkRange  *range,
+                            BtkBorder *border)
 {
-  GtkScalePrivate *priv;
-  GtkWidget *widget;
-  GtkScale *scale;
+  BtkScalePrivate *priv;
+  BtkWidget *widget;
+  BtkScale *scale;
   gint w, h;
   
-  widget = GTK_WIDGET (range);
-  scale = GTK_SCALE (range);
-  priv = GTK_SCALE_GET_PRIVATE (scale);
+  widget = BTK_WIDGET (range);
+  scale = BTK_SCALE (range);
+  priv = BTK_SCALE_GET_PRIVATE (scale);
 
-  _gtk_scale_get_value_size (scale, &w, &h);
+  _btk_scale_get_value_size (scale, &w, &h);
 
   border->left = 0;
   border->right = 0;
@@ -760,20 +760,20 @@ gtk_scale_get_range_border (GtkRange  *range,
   if (scale->draw_value)
     {
       gint value_spacing;
-      gtk_widget_style_get (widget, "value-spacing", &value_spacing, NULL);
+      btk_widget_style_get (widget, "value-spacing", &value_spacing, NULL);
 
       switch (scale->value_pos)
         {
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           border->left += w + value_spacing;
           break;
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           border->right += w + value_spacing;
           break;
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           border->top += h + value_spacing;
           break;
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           border->bottom += h + value_spacing;
           break;
         }
@@ -785,15 +785,15 @@ gtk_scale_get_range_border (GtkRange  *range,
       gint value_spacing;
       gint n1, w1, h1, n2, w2, h2;
   
-      gtk_widget_style_get (widget, 
+      btk_widget_style_get (widget, 
                             "slider-width", &slider_width,
                             "value-spacing", &value_spacing, 
                             NULL);
 
 
-      if (GTK_RANGE (scale)->orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (BTK_RANGE (scale)->orientation == BTK_ORIENTATION_HORIZONTAL)
         {
-          gtk_scale_get_mark_label_size (scale, GTK_POS_TOP, &n1, &w1, &h1, &n2, &w2, &h2);
+          btk_scale_get_mark_label_size (scale, BTK_POS_TOP, &n1, &w1, &h1, &n2, &w2, &h2);
           if (n1 > 0)
             border->top += h1 + value_spacing + slider_width / 2;
           if (n2 > 0)
@@ -801,7 +801,7 @@ gtk_scale_get_range_border (GtkRange  *range,
         }
       else
         {
-          gtk_scale_get_mark_label_size (scale, GTK_POS_LEFT, &n1, &w1, &h1, &n2, &w2, &h2);
+          btk_scale_get_mark_label_size (scale, BTK_POS_LEFT, &n1, &w1, &h1, &n2, &w2, &h2);
           if (n1 > 0)
             border->left += w1 + value_spacing + slider_width / 2;
           if (n2 > 0)
@@ -812,40 +812,40 @@ gtk_scale_get_range_border (GtkRange  *range,
 
 /* FIXME this could actually be static at the moment. */
 void
-_gtk_scale_get_value_size (GtkScale *scale,
+_btk_scale_get_value_size (BtkScale *scale,
                            gint     *width,
                            gint     *height)
 {
-  GtkRange *range;
+  BtkRange *range;
 
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
   if (scale->draw_value)
     {
-      PangoLayout *layout;
-      PangoRectangle logical_rect;
+      BangoLayout *layout;
+      BangoRectangle logical_rect;
       gchar *txt;
       
-      range = GTK_RANGE (scale);
+      range = BTK_RANGE (scale);
 
-      layout = gtk_widget_create_pango_layout (GTK_WIDGET (scale), NULL);
+      layout = btk_widget_create_bango_layout (BTK_WIDGET (scale), NULL);
 
-      txt = _gtk_scale_format_value (scale, range->adjustment->lower);
-      pango_layout_set_text (layout, txt, -1);
+      txt = _btk_scale_format_value (scale, range->adjustment->lower);
+      bango_layout_set_text (layout, txt, -1);
       g_free (txt);
       
-      pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+      bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       if (width)
 	*width = logical_rect.width;
       if (height)
 	*height = logical_rect.height;
 
-      txt = _gtk_scale_format_value (scale, range->adjustment->upper);
-      pango_layout_set_text (layout, txt, -1);
+      txt = _btk_scale_format_value (scale, range->adjustment->upper);
+      bango_layout_set_text (layout, txt, -1);
       g_free (txt);
       
-      pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+      bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
       if (width)
 	*width = MAX (*width, logical_rect.width);
@@ -865,8 +865,8 @@ _gtk_scale_get_value_size (GtkScale *scale,
 }
 
 static void
-gtk_scale_get_mark_label_size (GtkScale        *scale,
-                               GtkPositionType  position,
+btk_scale_get_mark_label_size (BtkScale        *scale,
+                               BtkPositionType  position,
                                gint            *count1,
                                gint            *width1,
                                gint            *height1,
@@ -874,9 +874,9 @@ gtk_scale_get_mark_label_size (GtkScale        *scale,
                                gint            *width2,
                                gint            *height2)
 {
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
-  PangoLayout *layout;
-  PangoRectangle logical_rect;
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
+  BangoLayout *layout;
+  BangoRectangle logical_rect;
   GSList *m;
   gint w, h;
 
@@ -884,16 +884,16 @@ gtk_scale_get_mark_label_size (GtkScale        *scale,
   *width1 = *width2 = 0;
   *height1 = *height2 = 0;
 
-  layout = gtk_widget_create_pango_layout (GTK_WIDGET (scale), NULL);
+  layout = btk_widget_create_bango_layout (BTK_WIDGET (scale), NULL);
 
   for (m = priv->marks; m; m = m->next)
     {
-      GtkScaleMark *mark = m->data;
+      BtkScaleMark *mark = m->data;
 
       if (mark->markup)
         {
-          pango_layout_set_markup (layout, mark->markup, -1);
-          pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+          bango_layout_set_markup (layout, mark->markup, -1);
+          bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
 	  w = logical_rect.width;
 	  h = logical_rect.height;
@@ -922,48 +922,48 @@ gtk_scale_get_mark_label_size (GtkScale        *scale,
 }
 
 static void
-gtk_scale_style_set (GtkWidget *widget,
-                     GtkStyle  *previous)
+btk_scale_style_set (BtkWidget *widget,
+                     BtkStyle  *previous)
 {
   gint slider_length;
-  GtkRange *range;
+  BtkRange *range;
 
-  range = GTK_RANGE (widget);
+  range = BTK_RANGE (widget);
   
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "slider-length", &slider_length,
                         NULL);
   
   range->min_slider_size = slider_length;
   
-  _gtk_scale_clear_layout (GTK_SCALE (widget));
+  _btk_scale_clear_layout (BTK_SCALE (widget));
 
-  GTK_WIDGET_CLASS (gtk_scale_parent_class)->style_set (widget, previous);
+  BTK_WIDGET_CLASS (btk_scale_parent_class)->style_set (widget, previous);
 }
 
 static void
-gtk_scale_screen_changed (GtkWidget *widget,
-                          GdkScreen *old_screen)
+btk_scale_screen_changed (BtkWidget *widget,
+                          BdkScreen *old_screen)
 {
-  _gtk_scale_clear_layout (GTK_SCALE (widget));
+  _btk_scale_clear_layout (BTK_SCALE (widget));
 }
 
 static void
-gtk_scale_size_request (GtkWidget      *widget,
-                        GtkRequisition *requisition)
+btk_scale_size_request (BtkWidget      *widget,
+                        BtkRequisition *requisition)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
   gint n1, w1, h1, n2, w2, h2;
   gint slider_length;
 
-  GTK_WIDGET_CLASS (gtk_scale_parent_class)->size_request (widget, requisition);
+  BTK_WIDGET_CLASS (btk_scale_parent_class)->size_request (widget, requisition);
   
-  gtk_widget_style_get (widget, "slider-length", &slider_length, NULL);
+  btk_widget_style_get (widget, "slider-length", &slider_length, NULL);
 
 
-  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
     {
-      gtk_scale_get_mark_label_size (GTK_SCALE (widget), GTK_POS_TOP, &n1, &w1, &h1, &n2, &w2, &h2);
+      btk_scale_get_mark_label_size (BTK_SCALE (widget), BTK_POS_TOP, &n1, &w1, &h1, &n2, &w2, &h2);
 
       w1 = (n1 - 1) * w1 + MAX (w1, slider_length);
       w2 = (n2 - 1) * w2 + MAX (w2, slider_length);
@@ -971,7 +971,7 @@ gtk_scale_size_request (GtkWidget      *widget,
     }
   else
     {
-      gtk_scale_get_mark_label_size (GTK_SCALE (widget), GTK_POS_LEFT, &n1, &w1, &h1, &n2, &w2, &h2);
+      btk_scale_get_mark_label_size (BTK_SCALE (widget), BTK_POS_LEFT, &n1, &w1, &h1, &n2, &w2, &h2);
       h1 = (n1 - 1) * h1 + MAX (h1, slider_length);
       h2 = (n2 - 1) * h1 + MAX (h2, slider_length);
       requisition->height = MAX (requisition->height, MAX (h1, h2));
@@ -979,104 +979,104 @@ gtk_scale_size_request (GtkWidget      *widget,
 }
 
 static gint
-find_next_pos (GtkWidget      *widget,
+find_next_pos (BtkWidget      *widget,
                GSList          *list,
                gint            *marks,
-               GtkPositionType  pos)
+               BtkPositionType  pos)
 {
   GSList *m;
   gint i;
 
   for (m = list->next, i = 1; m; m = m->next, i++)
     {
-      GtkScaleMark *mark = m->data;
+      BtkScaleMark *mark = m->data;
 
       if (mark->position == pos)
         return marks[i];
     }
     
-  if (GTK_RANGE(widget)->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (BTK_RANGE(widget)->orientation == BTK_ORIENTATION_HORIZONTAL)
     return widget->allocation.width;
   else
     return widget->allocation.height;
 }
 
 static gboolean
-gtk_scale_expose (GtkWidget      *widget,
-                  GdkEventExpose *event)
+btk_scale_expose (BtkWidget      *widget,
+                  BdkEventExpose *event)
 {
-  GtkScale *scale = GTK_SCALE (widget);
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
-  GtkRange *range = GTK_RANGE (scale);
-  GtkStateType state_type;
+  BtkScale *scale = BTK_SCALE (widget);
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
+  BtkRange *range = BTK_RANGE (scale);
+  BtkStateType state_type;
   gint *marks;
   gint focus_padding;
   gint slider_width;
   gint value_spacing;
   gint min_sep = 4;
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "focus-padding", &focus_padding,
                         "slider-width", &slider_width, 
                         "value-spacing", &value_spacing, 
                         NULL);
 
   /* We need to chain up _first_ so the various geometry members of
-   * GtkRange struct are updated.
+   * BtkRange struct are updated.
    */
-  GTK_WIDGET_CLASS (gtk_scale_parent_class)->expose_event (widget, event);
+  BTK_WIDGET_CLASS (btk_scale_parent_class)->expose_event (widget, event);
 
-  state_type = GTK_STATE_NORMAL;
-  if (!gtk_widget_is_sensitive (widget))
-    state_type = GTK_STATE_INSENSITIVE;
+  state_type = BTK_STATE_NORMAL;
+  if (!btk_widget_is_sensitive (widget))
+    state_type = BTK_STATE_INSENSITIVE;
 
   if (priv->marks)
     {
       gint i;
       gint x1, x2, x3, y1, y2, y3;
-      PangoLayout *layout;
-      PangoRectangle logical_rect;
+      BangoLayout *layout;
+      BangoRectangle logical_rect;
       GSList *m;
       gint min_pos_before, min_pos_after;
       gint min_pos, max_pos;
 
-      _gtk_range_get_stop_positions (range, &marks);
+      _btk_range_get_stop_positions (range, &marks);
 
-      layout = gtk_widget_create_pango_layout (widget, NULL);
+      layout = btk_widget_create_bango_layout (widget, NULL);
 
-      if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
         min_pos_before = min_pos_after = widget->allocation.x;
       else
         min_pos_before = min_pos_after = widget->allocation.y;
       for (m = priv->marks, i = 0; m; m = m->next, i++)
         {
-          GtkScaleMark *mark = m->data;
+          BtkScaleMark *mark = m->data;
     
-          if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
               x1 = widget->allocation.x + marks[i];
-              if (mark->position == GTK_POS_TOP)
+              if (mark->position == BTK_POS_TOP)
                 {
                   y1 = widget->allocation.y + range->range_rect.y;
                   y2 = y1 - slider_width / 2;
                   min_pos = min_pos_before;
-                  max_pos = widget->allocation.x + find_next_pos (widget, m, marks + i, GTK_POS_TOP) - min_sep;
+                  max_pos = widget->allocation.x + find_next_pos (widget, m, marks + i, BTK_POS_TOP) - min_sep;
                 }
               else
                 {
                   y1 = widget->allocation.y + range->range_rect.y + range->range_rect.height;
                   y2 = y1 + slider_width / 2;
                   min_pos = min_pos_after;
-                  max_pos = widget->allocation.x + find_next_pos (widget, m, marks + i, GTK_POS_BOTTOM) - min_sep;
+                  max_pos = widget->allocation.x + find_next_pos (widget, m, marks + i, BTK_POS_BOTTOM) - min_sep;
                 }
 
-              gtk_paint_vline (widget->style, widget->window, state_type,
+              btk_paint_vline (widget->style, widget->window, state_type,
                                NULL, widget, "scale-mark", y1, y2, x1);
 
               if (mark->markup)
                 {
-                  pango_layout_set_markup (layout, mark->markup, -1);
-                  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+                  bango_layout_set_markup (layout, mark->markup, -1);
+                  bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
                   x3 = x1 - logical_rect.width / 2;
                   if (x3 < min_pos)
@@ -1085,7 +1085,7 @@ gtk_scale_expose (GtkWidget      *widget,
                         x3 = max_pos - logical_rect.width;
                   if (x3 < widget->allocation.x)
                      x3 = widget->allocation.x;
-                  if (mark->position == GTK_POS_TOP)
+                  if (mark->position == BTK_POS_TOP)
                     {
                       y3 = y2 - value_spacing - logical_rect.height;
                       min_pos_before = x3 + logical_rect.width + min_sep;
@@ -1096,36 +1096,36 @@ gtk_scale_expose (GtkWidget      *widget,
                       min_pos_after = x3 + logical_rect.width + min_sep;
                     }
 
-                  gtk_paint_layout (widget->style, widget->window, state_type,
+                  btk_paint_layout (widget->style, widget->window, state_type,
                                     FALSE, NULL, widget, "scale-mark",
                                     x3, y3, layout);
                 }
             }
           else
             {
-              if (mark->position == GTK_POS_LEFT)
+              if (mark->position == BTK_POS_LEFT)
                 {
                   x1 = widget->allocation.x + range->range_rect.x;
                   x2 = widget->allocation.x + range->range_rect.x - slider_width / 2;
                   min_pos = min_pos_before;
-                  max_pos = widget->allocation.y + find_next_pos (widget, m, marks + i, GTK_POS_LEFT) - min_sep;
+                  max_pos = widget->allocation.y + find_next_pos (widget, m, marks + i, BTK_POS_LEFT) - min_sep;
                 }
               else
                 {
                   x1 = widget->allocation.x + range->range_rect.x + range->range_rect.width;
                   x2 = widget->allocation.x + range->range_rect.x + range->range_rect.width + slider_width / 2;
                   min_pos = min_pos_after;
-                  max_pos = widget->allocation.y + find_next_pos (widget, m, marks + i, GTK_POS_RIGHT) - min_sep;
+                  max_pos = widget->allocation.y + find_next_pos (widget, m, marks + i, BTK_POS_RIGHT) - min_sep;
                 }
               y1 = widget->allocation.y + marks[i];
 
-              gtk_paint_hline (widget->style, widget->window, state_type,
+              btk_paint_hline (widget->style, widget->window, state_type,
                                NULL, widget, "range-mark", x1, x2, y1);
 
               if (mark->markup)
                 {
-                  pango_layout_set_markup (layout, mark->markup, -1);
-                  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+                  bango_layout_set_markup (layout, mark->markup, -1);
+                  bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
               
                   y3 = y1 - logical_rect.height / 2;
                   if (y3 < min_pos)
@@ -1134,7 +1134,7 @@ gtk_scale_expose (GtkWidget      *widget,
                     y3 = max_pos - logical_rect.height;
                   if (y3 < widget->allocation.y)
                     y3 = widget->allocation.y;
-                  if (mark->position == GTK_POS_LEFT)
+                  if (mark->position == BTK_POS_LEFT)
                     {
                       x3 = x2 - value_spacing - logical_rect.width;
                       min_pos_before = y3 + logical_rect.height + min_sep;
@@ -1145,7 +1145,7 @@ gtk_scale_expose (GtkWidget      *widget,
                       min_pos_after = y3 + logical_rect.height + min_sep;
                     }
 
-                  gtk_paint_layout (widget->style, widget->window, state_type,
+                  btk_paint_layout (widget->style, widget->window, state_type,
                                     FALSE, NULL, widget, "scale-mark",
                                     x3, y3, layout);
                 }
@@ -1158,19 +1158,19 @@ gtk_scale_expose (GtkWidget      *widget,
 
   if (scale->draw_value)
     {
-      PangoLayout *layout;
+      BangoLayout *layout;
       gint x, y;
 
-      layout = gtk_scale_get_layout (scale);
-      gtk_scale_get_layout_offsets (scale, &x, &y);
+      layout = btk_scale_get_layout (scale);
+      btk_scale_get_layout_offsets (scale, &x, &y);
 
-      gtk_paint_layout (widget->style,
+      btk_paint_layout (widget->style,
                         widget->window,
                         state_type,
 			FALSE,
                         NULL,
                         widget,
-                        range->orientation == GTK_ORIENTATION_HORIZONTAL ?
+                        range->orientation == BTK_ORIENTATION_HORIZONTAL ?
                         "hscale" : "vscale",
                         x, y,
                         layout);
@@ -1181,14 +1181,14 @@ gtk_scale_expose (GtkWidget      *widget,
 }
 
 static void
-gtk_scale_real_get_layout_offsets (GtkScale *scale,
+btk_scale_real_get_layout_offsets (BtkScale *scale,
                                    gint     *x,
                                    gint     *y)
 {
-  GtkWidget *widget = GTK_WIDGET (scale);
-  GtkRange *range = GTK_RANGE (widget);
-  PangoLayout *layout = gtk_scale_get_layout (scale);
-  PangoRectangle logical_rect;
+  BtkWidget *widget = BTK_WIDGET (scale);
+  BtkRange *range = BTK_RANGE (widget);
+  BangoLayout *layout = btk_scale_get_layout (scale);
+  BangoRectangle logical_rect;
   gint value_spacing;
 
   if (!layout)
@@ -1199,32 +1199,32 @@ gtk_scale_real_get_layout_offsets (GtkScale *scale,
       return;
     }
 
-  gtk_widget_style_get (widget, "value-spacing", &value_spacing, NULL);
+  btk_widget_style_get (widget, "value-spacing", &value_spacing, NULL);
 
-  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+  bango_layout_get_pixel_extents (layout, NULL, &logical_rect);
 
-  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
     {
       switch (scale->value_pos)
         {
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           *x = range->range_rect.x - value_spacing - logical_rect.width;
           *y = range->range_rect.y + (range->range_rect.height - logical_rect.height) / 2;
           break;
 
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           *x = range->range_rect.x + range->range_rect.width + value_spacing;
           *y = range->range_rect.y + (range->range_rect.height - logical_rect.height) / 2;
           break;
 
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           *x = range->slider_start +
             (range->slider_end - range->slider_start - logical_rect.width) / 2;
           *x = CLAMP (*x, 0, widget->allocation.width - logical_rect.width);
           *y = range->range_rect.y - logical_rect.height - value_spacing;
           break;
 
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           *x = range->slider_start +
             (range->slider_end - range->slider_start - logical_rect.width) / 2;
           *x = CLAMP (*x, 0, widget->allocation.width - logical_rect.width);
@@ -1240,24 +1240,24 @@ gtk_scale_real_get_layout_offsets (GtkScale *scale,
     {
       switch (scale->value_pos)
         {
-        case GTK_POS_LEFT:
+        case BTK_POS_LEFT:
           *x = range->range_rect.x - logical_rect.width - value_spacing;
           *y = range->slider_start + (range->slider_end - range->slider_start - logical_rect.height) / 2;
           *y = CLAMP (*y, 0, widget->allocation.height - logical_rect.height);
           break;
 
-        case GTK_POS_RIGHT:
+        case BTK_POS_RIGHT:
           *x = range->range_rect.x + range->range_rect.width + value_spacing;
           *y = range->slider_start + (range->slider_end - range->slider_start - logical_rect.height) / 2;
           *y = CLAMP (*y, 0, widget->allocation.height - logical_rect.height);
           break;
 
-        case GTK_POS_TOP:
+        case BTK_POS_TOP:
           *x = range->range_rect.x + (range->range_rect.width - logical_rect.width) / 2;
           *y = range->range_rect.y - logical_rect.height - value_spacing;
           break;
 
-        case GTK_POS_BOTTOM:
+        case BTK_POS_BOTTOM:
           *x = range->range_rect.x + (range->range_rect.width - logical_rect.width) / 2;
           *y = range->range_rect.y + range->range_rect.height + value_spacing;
           break;
@@ -1272,16 +1272,16 @@ gtk_scale_real_get_layout_offsets (GtkScale *scale,
 }
 
 /**
- * _gtk_scale_format_value:
- * @scale: a #GtkScale
+ * _btk_scale_format_value:
+ * @scale: a #BtkScale
  * @value: adjustment value
  * 
- * Emits the #GtkScale::format-value signal.
+ * Emits the #BtkScale::format-value signal.
  * 
  * Return value: formatted value
  */
 gchar*
-_gtk_scale_format_value (GtkScale *scale,
+_btk_scale_format_value (BtkScale *scale,
                          gdouble   value)
 {
   gchar *fmt = NULL;
@@ -1300,48 +1300,48 @@ _gtk_scale_format_value (GtkScale *scale,
 }
 
 static void
-gtk_scale_finalize (GObject *object)
+btk_scale_finalize (GObject *object)
 {
-  GtkScale *scale = GTK_SCALE (object);
+  BtkScale *scale = BTK_SCALE (object);
 
-  _gtk_scale_clear_layout (scale);
-  gtk_scale_clear_marks (scale);
+  _btk_scale_clear_layout (scale);
+  btk_scale_clear_marks (scale);
 
-  G_OBJECT_CLASS (gtk_scale_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_scale_parent_class)->finalize (object);
 }
 
 /**
- * gtk_scale_get_layout:
- * @scale: A #GtkScale
+ * btk_scale_get_layout:
+ * @scale: A #BtkScale
  *
- * Gets the #PangoLayout used to display the scale. The returned
+ * Gets the #BangoLayout used to display the scale. The returned
  * object is owned by the scale so does not need to be freed by
  * the caller.
  *
- * Return value: (transfer none): the #PangoLayout for this scale,
- *     or %NULL if the #GtkScale:draw-value property is %FALSE.
+ * Return value: (transfer none): the #BangoLayout for this scale,
+ *     or %NULL if the #BtkScale:draw-value property is %FALSE.
  *
  * Since: 2.4
  */
-PangoLayout *
-gtk_scale_get_layout (GtkScale *scale)
+BangoLayout *
+btk_scale_get_layout (BtkScale *scale)
 {
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
   gchar *txt;
 
-  g_return_val_if_fail (GTK_IS_SCALE (scale), NULL);
+  g_return_val_if_fail (BTK_IS_SCALE (scale), NULL);
 
   if (!priv->layout)
     {
       if (scale->draw_value)
-	priv->layout = gtk_widget_create_pango_layout (GTK_WIDGET (scale), NULL);
+	priv->layout = btk_widget_create_bango_layout (BTK_WIDGET (scale), NULL);
     }
 
   if (scale->draw_value) 
     {
-      txt = _gtk_scale_format_value (scale,
-				     GTK_RANGE (scale)->adjustment->value);
-      pango_layout_set_text (priv->layout, txt, -1);
+      txt = _btk_scale_format_value (scale,
+				     BTK_RANGE (scale)->adjustment->value);
+      bango_layout_set_text (priv->layout, txt, -1);
       g_free (txt);
     }
 
@@ -1349,33 +1349,33 @@ gtk_scale_get_layout (GtkScale *scale)
 }
 
 /**
- * gtk_scale_get_layout_offsets:
- * @scale: a #GtkScale
+ * btk_scale_get_layout_offsets:
+ * @scale: a #BtkScale
  * @x: (out) (allow-none): location to store X offset of layout, or %NULL
  * @y: (out) (allow-none): location to store Y offset of layout, or %NULL
  *
  * Obtains the coordinates where the scale will draw the 
- * #PangoLayout representing the text in the scale. Remember
- * when using the #PangoLayout function you need to convert to
- * and from pixels using PANGO_PIXELS() or #PANGO_SCALE. 
+ * #BangoLayout representing the text in the scale. Remember
+ * when using the #BangoLayout function you need to convert to
+ * and from pixels using BANGO_PIXELS() or #BANGO_SCALE. 
  *
- * If the #GtkScale:draw-value property is %FALSE, the return 
+ * If the #BtkScale:draw-value property is %FALSE, the return 
  * values are undefined.
  *
  * Since: 2.4
  */
 void 
-gtk_scale_get_layout_offsets (GtkScale *scale,
+btk_scale_get_layout_offsets (BtkScale *scale,
                               gint     *x,
                               gint     *y)
 {
   gint local_x = 0; 
   gint local_y = 0;
 
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
-  if (GTK_SCALE_GET_CLASS (scale)->get_layout_offsets)
-    (GTK_SCALE_GET_CLASS (scale)->get_layout_offsets) (scale, &local_x, &local_y);
+  if (BTK_SCALE_GET_CLASS (scale)->get_layout_offsets)
+    (BTK_SCALE_GET_CLASS (scale)->get_layout_offsets) (scale, &local_x, &local_y);
 
   if (x)
     *x = local_x;
@@ -1385,11 +1385,11 @@ gtk_scale_get_layout_offsets (GtkScale *scale,
 }
 
 void
-_gtk_scale_clear_layout (GtkScale *scale)
+_btk_scale_clear_layout (BtkScale *scale)
 {
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
 
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
   if (priv->layout)
     {
@@ -1399,73 +1399,73 @@ _gtk_scale_clear_layout (GtkScale *scale)
 }
 
 static void
-gtk_scale_mark_free (GtkScaleMark *mark)
+btk_scale_mark_free (BtkScaleMark *mark)
 {
   g_free (mark->markup);
   g_free (mark);
 }
 
 /**
- * gtk_scale_clear_marks:
- * @scale: a #GtkScale
+ * btk_scale_clear_marks:
+ * @scale: a #BtkScale
  * 
- * Removes any marks that have been added with gtk_scale_add_mark().
+ * Removes any marks that have been added with btk_scale_add_mark().
  *
  * Since: 2.16
  */
 void
-gtk_scale_clear_marks (GtkScale *scale)
+btk_scale_clear_marks (BtkScale *scale)
 {
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
 
-  g_return_if_fail (GTK_IS_SCALE (scale));
+  g_return_if_fail (BTK_IS_SCALE (scale));
 
-  g_slist_foreach (priv->marks, (GFunc)gtk_scale_mark_free, NULL);
+  g_slist_foreach (priv->marks, (GFunc)btk_scale_mark_free, NULL);
   g_slist_free (priv->marks);
   priv->marks = NULL;
 
-  _gtk_range_set_stop_values (GTK_RANGE (scale), NULL, 0);
+  _btk_range_set_stop_values (BTK_RANGE (scale), NULL, 0);
 
-  gtk_widget_queue_resize (GTK_WIDGET (scale));
+  btk_widget_queue_resize (BTK_WIDGET (scale));
 }
 
 /**
- * gtk_scale_add_mark:
- * @scale: a #GtkScale
+ * btk_scale_add_mark:
+ * @scale: a #BtkScale
  * @value: the value at which the mark is placed, must be between 
  *   the lower and upper limits of the scales' adjustment
- * @position: where to draw the mark. For a horizontal scale, #GTK_POS_TOP
+ * @position: where to draw the mark. For a horizontal scale, #BTK_POS_TOP
  *   is drawn above the scale, anything else below. For a vertical scale,
- *   #GTK_POS_LEFT is drawn to the left of the scale, anything else to the
+ *   #BTK_POS_LEFT is drawn to the left of the scale, anything else to the
  *   right.
- * @markup: (allow-none): Text to be shown at the mark, using <link linkend="PangoMarkupFormat">Pango markup</link>, or %NULL
+ * @markup: (allow-none): Text to be shown at the mark, using <link linkend="BangoMarkupFormat">Bango markup</link>, or %NULL
  *
  *
  * Adds a mark at @value. 
  *
  * A mark is indicated visually by drawing a tick mark next to the scale, 
- * and GTK+ makes it easy for the user to position the scale exactly at the 
+ * and BTK+ makes it easy for the user to position the scale exactly at the 
  * marks value.
  *
  * If @markup is not %NULL, text is shown next to the tick mark. 
  *
- * To remove marks from a scale, use gtk_scale_clear_marks().
+ * To remove marks from a scale, use btk_scale_clear_marks().
  *
  * Since: 2.16
  */
 void
-gtk_scale_add_mark (GtkScale        *scale,
+btk_scale_add_mark (BtkScale        *scale,
                     gdouble          value,
-                    GtkPositionType  position,
+                    BtkPositionType  position,
                     const gchar     *markup)
 {
-  GtkScalePrivate *priv = GTK_SCALE_GET_PRIVATE (scale);
-  GtkScaleMark *mark;
+  BtkScalePrivate *priv = BTK_SCALE_GET_PRIVATE (scale);
+  BtkScaleMark *mark;
   GSList *m;
   gdouble *values;
   gint n, i;
 
-  mark = g_new (GtkScaleMark, 1);
+  mark = g_new (BtkScaleMark, 1);
   mark->value = value;
   mark->markup = g_strdup (markup);
   mark->position = position;
@@ -1473,7 +1473,7 @@ gtk_scale_add_mark (GtkScale        *scale,
   priv->marks = g_slist_insert_sorted_with_data (priv->marks, mark,
                                                  (GCompareFunc) compare_marks,
                                                  GINT_TO_POINTER (
-                                                   gtk_range_get_inverted (GTK_RANGE (scale)) 
+                                                   btk_range_get_inverted (BTK_RANGE (scale)) 
                                                    ));
 
   n = g_slist_length (priv->marks);
@@ -1484,34 +1484,34 @@ gtk_scale_add_mark (GtkScale        *scale,
       values[i] = mark->value;
     }
   
-  _gtk_range_set_stop_values (GTK_RANGE (scale), values, n);
+  _btk_range_set_stop_values (BTK_RANGE (scale), values, n);
 
   g_free (values);
 
-  gtk_widget_queue_resize (GTK_WIDGET (scale));
+  btk_widget_queue_resize (BTK_WIDGET (scale));
 }
 
-static GtkBuildableIface *parent_buildable_iface;
+static BtkBuildableIface *parent_buildable_iface;
 
 static void
-gtk_scale_buildable_interface_init (GtkBuildableIface *iface)
+btk_scale_buildable_interface_init (BtkBuildableIface *iface)
 {
   parent_buildable_iface = g_type_interface_peek_parent (iface);
-  iface->custom_tag_start = gtk_scale_buildable_custom_tag_start;
-  iface->custom_finished = gtk_scale_buildable_custom_finished;
+  iface->custom_tag_start = btk_scale_buildable_custom_tag_start;
+  iface->custom_finished = btk_scale_buildable_custom_finished;
 }
 
 typedef struct
 {
-  GtkScale *scale;
-  GtkBuilder *builder;
+  BtkScale *scale;
+  BtkBuilder *builder;
   GSList *marks;
 } MarksSubparserData;
 
 typedef struct
 {
   gdouble value;
-  GtkPositionType position;
+  BtkPositionType position;
   GString *markup;
   gchar *context;
   gboolean translatable;
@@ -1543,7 +1543,7 @@ marks_start_element (GMarkupParseContext *context,
     {
       gdouble value = 0;
       gboolean has_value = FALSE;
-      GtkPositionType position = GTK_POS_BOTTOM;
+      BtkPositionType position = BTK_POS_BOTTOM;
       const gchar *msg_context = NULL;
       gboolean translatable = FALSE;
       MarkData *mark;
@@ -1552,7 +1552,7 @@ marks_start_element (GMarkupParseContext *context,
         {
           if (strcmp (names[i], "translatable") == 0)
             {
-              if (!_gtk_builder_boolean_from_string (values[i], &translatable, error))
+              if (!_btk_builder_boolean_from_string (values[i], &translatable, error))
                 return;
             }
           else if (strcmp (names[i], "comments") == 0)
@@ -1565,7 +1565,7 @@ marks_start_element (GMarkupParseContext *context,
             {
               GValue gvalue = { 0, };
 
-              if (!gtk_builder_value_from_string_type (parser_data->builder, G_TYPE_DOUBLE, values[i], &gvalue, error))
+              if (!btk_builder_value_from_string_type (parser_data->builder, G_TYPE_DOUBLE, values[i], &gvalue, error))
                 return;
 
               value = g_value_get_double (&gvalue);
@@ -1575,7 +1575,7 @@ marks_start_element (GMarkupParseContext *context,
             {
               GValue gvalue = { 0, };
 
-              if (!gtk_builder_value_from_string_type (parser_data->builder, GTK_TYPE_POSITION_TYPE, values[i], &gvalue, error))
+              if (!btk_builder_value_from_string_type (parser_data->builder, BTK_TYPE_POSITION_TYPE, values[i], &gvalue, error))
                 return;
 
               position = g_value_get_enum (&gvalue);
@@ -1586,8 +1586,8 @@ marks_start_element (GMarkupParseContext *context,
                                                    &line_number,
                                                    &char_number);
               g_set_error (error,
-                           GTK_BUILDER_ERROR,
-                           GTK_BUILDER_ERROR_INVALID_ATTRIBUTE,
+                           BTK_BUILDER_ERROR,
+                           BTK_BUILDER_ERROR_INVALID_ATTRIBUTE,
                            "%s:%d:%d '%s' is not a valid attribute of <%s>",
                            "<input>",
                            line_number, char_number, names[i], "mark");
@@ -1601,8 +1601,8 @@ marks_start_element (GMarkupParseContext *context,
                                                &line_number,
                                                &char_number);
           g_set_error (error,
-                       GTK_BUILDER_ERROR,
-                       GTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
+                       BTK_BUILDER_ERROR,
+                       BTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
                        "%s:%d:%d <%s> requires attribute \"%s\"",
                        "<input>",
                        line_number, char_number, "mark",
@@ -1625,9 +1625,9 @@ marks_start_element (GMarkupParseContext *context,
                                            &line_number,
                                            &char_number);
       g_set_error (error,
-                   GTK_BUILDER_ERROR,
-                   GTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
-                   "%s:%d:%d unsupported tag for GtkScale: \"%s\"",
+                   BTK_BUILDER_ERROR,
+                   BTK_BUILDER_ERROR_MISSING_ATTRIBUTE,
+                   "%s:%d:%d unsupported tag for BtkScale: \"%s\"",
                    "<input>",
                    line_number, char_number, element_name);
       return;
@@ -1660,8 +1660,8 @@ static const GMarkupParser marks_parser =
 
 
 static gboolean
-gtk_scale_buildable_custom_tag_start (GtkBuildable  *buildable,
-                                      GtkBuilder    *builder,
+btk_scale_buildable_custom_tag_start (BtkBuildable  *buildable,
+                                      BtkBuilder    *builder,
                                       GObject       *child,
                                       const gchar   *tagname,
                                       GMarkupParser *parser,
@@ -1675,7 +1675,7 @@ gtk_scale_buildable_custom_tag_start (GtkBuildable  *buildable,
   if (strcmp (tagname, "marks") == 0)
     {
       parser_data = g_slice_new0 (MarksSubparserData);
-      parser_data->scale = GTK_SCALE (buildable);
+      parser_data->scale = BTK_SCALE (buildable);
       parser_data->marks = NULL;
 
       *parser = marks_parser;
@@ -1688,13 +1688,13 @@ gtk_scale_buildable_custom_tag_start (GtkBuildable  *buildable,
 }
 
 static void
-gtk_scale_buildable_custom_finished (GtkBuildable *buildable,
-                                     GtkBuilder   *builder,
+btk_scale_buildable_custom_finished (BtkBuildable *buildable,
+                                     BtkBuilder   *builder,
                                      GObject      *child,
                                      const gchar  *tagname,
                                      gpointer      user_data)
 {
-  GtkScale *scale = GTK_SCALE (buildable);
+  BtkScale *scale = BTK_SCALE (buildable);
   MarksSubparserData *marks_data;
 
   if (strcmp (tagname, "marks") == 0)
@@ -1709,13 +1709,13 @@ gtk_scale_buildable_custom_finished (GtkBuildable *buildable,
           MarkData *mdata = m->data;
 
           if (mdata->translatable && mdata->markup->len)
-            markup = _gtk_builder_parser_translate (gtk_builder_get_translation_domain (builder),
+            markup = _btk_builder_parser_translate (btk_builder_get_translation_domain (builder),
                                                     mdata->context,
                                                     mdata->markup->str);
           else
             markup = mdata->markup->str;
 
-          gtk_scale_add_mark (scale, mdata->value, mdata->position, markup);
+          btk_scale_add_mark (scale, mdata->value, mdata->position, markup);
 
           mark_data_free (mdata);
         }
@@ -1725,5 +1725,5 @@ gtk_scale_buildable_custom_finished (GtkBuildable *buildable,
     }
 }
 
-#define __GTK_SCALE_C__
-#include "gtkaliasdef.c"
+#define __BTK_SCALE_C__
+#include "btkaliasdef.c"

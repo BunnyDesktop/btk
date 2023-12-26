@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,48 +17,48 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_CLIST_H__
-#define __GAIL_CLIST_H__
+#ifndef __BAIL_CLIST_H__
+#define __BAIL_CLIST_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_CLIST                      (gail_clist_get_type ())
-#define GAIL_CLIST(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_CLIST, GailCList))
-#define GAIL_CLIST_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_CLIST, GailCListClass))
-#define GAIL_IS_CLIST(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_CLIST))
-#define GAIL_IS_CLIST_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_CLIST))
-#define GAIL_CLIST_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_CLIST, GailCListClass))
+#define BAIL_TYPE_CLIST                      (bail_clist_get_type ())
+#define BAIL_CLIST(obj)                      (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_CLIST, BailCList))
+#define BAIL_CLIST_CLASS(klass)              (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_CLIST, BailCListClass))
+#define BAIL_IS_CLIST(obj)                   (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_CLIST))
+#define BAIL_IS_CLIST_CLASS(klass)           (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_CLIST))
+#define BAIL_CLIST_GET_CLASS(obj)            (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_CLIST, BailCListClass))
 
-typedef struct _GailCList              GailCList;
-typedef struct _GailCListClass         GailCListClass;
+typedef struct _BailCList              BailCList;
+typedef struct _BailCListClass         BailCListClass;
 
-typedef struct _GailCListColumn        GailCListColumn;
+typedef struct _BailCListColumn        BailCListColumn;
 
-struct _GailCList
+struct _BailCList
 {
-  GailContainer parent;
+  BailContainer parent;
 
-  AtkObject*    caption;
-  AtkObject*    summary;
+  BatkObject*    caption;
+  BatkObject*    summary;
 
   /* dynamically allocated array of column structures */
-  GailCListColumn *columns;
+  BailCListColumn *columns;
   /* private */
   gint n_cols;
   GArray *row_data;
   GList *cell_data;
-  AtkObject *previous_selected_cell;
+  BatkObject *previous_selected_cell;
 };
 
-GType gail_clist_get_type (void);
+GType bail_clist_get_type (void);
 
-struct _GailCListClass
+struct _BailCListClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_CLIST_H__ */
+#endif /* __BAIL_CLIST_H__ */

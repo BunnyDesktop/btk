@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,23 +18,23 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-1999.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-1999.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#ifndef __GDK_INPUT_WIN32_H__
-#define __GDK_INPUT_WIN32_H__
+#ifndef __BDK_INPUT_WIN32_H__
+#define __BDK_INPUT_WIN32_H__
 
 #include <windows.h>
 #include <wintab.h>
 
-typedef struct _GdkAxisInfo    GdkAxisInfo;
-typedef struct _GdkDevicePrivate GdkDevicePrivate;
+typedef struct _BdkAxisInfo    BdkAxisInfo;
+typedef struct _BdkDevicePrivate BdkDevicePrivate;
 
 /* information about a device axis */
-struct _GdkAxisInfo
+struct _BdkAxisInfo
 {
   /* calibrated resolution (for aspect ratio) - only relative values
      between axes used */
@@ -44,17 +44,17 @@ struct _GdkAxisInfo
   gint min_value, max_value;
 };
 
-struct _GdkDeviceClass
+struct _BdkDeviceClass
 {
   GObjectClass parent_class;
 };
 
-struct _GdkDevicePrivate
+struct _BdkDevicePrivate
 {
-  GdkDevice info;
+  BdkDevice info;
 
   /* information about the axes */
-  GdkAxisInfo *axes;
+  BdkAxisInfo *axes;
 
   gint button_state;
 
@@ -71,14 +71,14 @@ struct _GdkDevicePrivate
 };
 
 /* Addition used for extension_events mask */
-#define GDK_ALL_DEVICES_MASK (1<<30)
+#define BDK_ALL_DEVICES_MASK (1<<30)
 
-struct _GdkInputWindow
+struct _BdkInputWindow
 {
-  /* gdk window */
-  GList *windows; /* GdkWindow:s with extension_events set */
+  /* bdk window */
+  GList *windows; /* BdkWindow:s with extension_events set */
 
-  GdkWindow *impl_window; /* an impl window */
+  BdkWindow *impl_window; /* an impl window */
 
   /* position relative to root window */
   gint root_x;
@@ -87,54 +87,54 @@ struct _GdkInputWindow
 
 /* Global data */
 
-#define GDK_IS_CORE(d) (((GdkDevice *)(d)) == gdk_display_get_default ()->core_pointer)
+#define BDK_IS_CORE(d) (((BdkDevice *)(d)) == bdk_display_get_default ()->core_pointer)
 
-extern GList *_gdk_input_devices;
-extern GList *_gdk_input_windows;
+extern GList *_bdk_input_devices;
+extern GList *_bdk_input_windows;
 
-extern gboolean _gdk_input_in_proximity;
+extern gboolean _bdk_input_in_proximity;
 
 /* Function declarations */
-void             _gdk_init_input_core (GdkDisplay *display);
+void             _bdk_init_input_core (BdkDisplay *display);
 
-GdkTimeCoord ** _gdk_device_allocate_history (GdkDevice *device,
+BdkTimeCoord ** _bdk_device_allocate_history (BdkDevice *device,
 					      gint       n_events);
 
 /* The following functions are provided by each implementation
  * (just wintab for now)
  */
-void             _gdk_input_configure_event  (GdkWindow        *window);
-gboolean         _gdk_input_other_event      (GdkEvent         *event,
+void             _bdk_input_configure_event  (BdkWindow        *window);
+gboolean         _bdk_input_other_event      (BdkEvent         *event,
 					      MSG              *msg,
-					      GdkWindow        *window);
+					      BdkWindow        *window);
 
-void             _gdk_input_crossing_event   (GdkWindow        *window,
+void             _bdk_input_crossing_event   (BdkWindow        *window,
 					      gboolean          enter);
 
 
-/* These should be in gdkinternals.h */
+/* These should be in bdkinternals.h */
 
-GdkInputWindow  *_gdk_input_window_find      (GdkWindow        *window);
+BdkInputWindow  *_bdk_input_window_find      (BdkWindow        *window);
 
-void             _gdk_input_window_destroy   (GdkWindow *window);
+void             _bdk_input_window_destroy   (BdkWindow *window);
 
-void             _gdk_input_select_events    (GdkWindow        *impl_window);
-gint             _gdk_input_grab_pointer     (GdkWindow        *window,
+void             _bdk_input_select_events    (BdkWindow        *impl_window);
+gint             _bdk_input_grab_pointer     (BdkWindow        *window,
 					      gint              owner_events,
-					      GdkEventMask      event_mask,
-					      GdkWindow        *confine_to,
+					      BdkEventMask      event_mask,
+					      BdkWindow        *confine_to,
 					      guint32           time);
-void             _gdk_input_ungrab_pointer   (guint32           time);
-gboolean         _gdk_device_get_history     (GdkDevice         *device,
-					      GdkWindow         *window,
+void             _bdk_input_ungrab_pointer   (guint32           time);
+gboolean         _bdk_device_get_history     (BdkDevice         *device,
+					      BdkWindow         *window,
 					      guint32            start,
 					      guint32            stop,
-					      GdkTimeCoord    ***events,
+					      BdkTimeCoord    ***events,
 					      gint              *n_events);
 
-void		_gdk_input_wintab_init_check (void);
-void		_gdk_input_set_tablet_active (void);
-void            _gdk_input_update_for_device_mode (GdkDevicePrivate *gdkdev);
-void            _gdk_input_check_proximity (void);
+void		_bdk_input_wintab_init_check (void);
+void		_bdk_input_set_tablet_active (void);
+void            _bdk_input_update_for_device_mode (BdkDevicePrivate *bdkdev);
+void            _bdk_input_check_proximity (void);
 
-#endif /* __GDK_INPUT_WIN32_H__ */
+#endif /* __BDK_INPUT_WIN32_H__ */

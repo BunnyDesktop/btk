@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -16,69 +16,69 @@
  * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
-/* Stub implementation of backend-specific GtkPlug functions. */
+/* Stub implementation of backend-specific BtkPlug functions. */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
-#include "gtkplug.h"
-#include "gtkplugprivate.h"
-#include "gtkalias.h"
+#include "btkplug.h"
+#include "btkplugprivate.h"
+#include "btkalias.h"
 
-GdkNativeWindow
-_gtk_plug_windowing_get_id (GtkPlug *plug)
+BdkNativeWindow
+_btk_plug_windowing_get_id (BtkPlug *plug)
 {
   return 0;
 }
 
 void
-_gtk_plug_windowing_realize_toplevel (GtkPlug *plug)
+_btk_plug_windowing_realize_toplevel (BtkPlug *plug)
 {
 }
 
 void
-_gtk_plug_windowing_map_toplevel (GtkPlug *plug)
+_btk_plug_windowing_map_toplevel (BtkPlug *plug)
 {
 }
 
 void
-_gtk_plug_windowing_unmap_toplevel (GtkPlug *plug)
+_btk_plug_windowing_unmap_toplevel (BtkPlug *plug)
 {
 }
 
 void
-_gtk_plug_windowing_set_focus (GtkPlug *plug)
+_btk_plug_windowing_set_focus (BtkPlug *plug)
 {
 }
 
 void
-_gtk_plug_windowing_add_grabbed_key (GtkPlug        *plug,
+_btk_plug_windowing_add_grabbed_key (BtkPlug        *plug,
 				     guint           accelerator_key,
-				     GdkModifierType accelerator_mods)
+				     BdkModifierType accelerator_mods)
 {
 }
 
 void
-_gtk_plug_windowing_remove_grabbed_key (GtkPlug        *plug,
+_btk_plug_windowing_remove_grabbed_key (BtkPlug        *plug,
 					guint           accelerator_key,
-					GdkModifierType accelerator_mods)
+					BdkModifierType accelerator_mods)
 {
 }
 
 void
-_gtk_plug_windowing_focus_to_parent (GtkPlug         *plug,
-				     GtkDirectionType direction)
+_btk_plug_windowing_focus_to_parent (BtkPlug         *plug,
+				     BtkDirectionType direction)
 {
 }
 
-GdkFilterReturn
-_gtk_plug_windowing_filter_func (GdkXEvent *gdk_xevent,
-				 GdkEvent  *event,
+BdkFilterReturn
+_btk_plug_windowing_filter_func (BdkXEvent *bdk_xevent,
+				 BdkEvent  *event,
 				 gpointer   data)
 {
-  return GDK_FILTER_CONTINUE;
+  return BDK_FILTER_CONTINUE;
 }

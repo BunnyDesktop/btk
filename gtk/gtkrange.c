@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  * Copyright (C) 2001 Red Hat, Inc.
  *
@@ -19,10 +19,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2004.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2004.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -30,18 +30,18 @@
 #include <stdio.h>
 #include <math.h>
 
-#undef GTK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include <gdk/gdkkeysyms.h>
-#include "gtkmain.h"
-#include "gtkmarshalers.h"
-#include "gtkorientable.h"
-#include "gtkrange.h"
-#include "gtkscale.h"
-#include "gtkscrollbar.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include <bdk/bdkkeysyms.h>
+#include "btkmain.h"
+#include "btkmarshalers.h"
+#include "btkorientable.h"
+#include "btkrange.h"
+#include "btkscale.h"
+#include "btkscrollbar.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 #define SCROLL_DELAY_FACTOR 5    /* Scroll repeat multiplier */
 #define UPDATE_DELAY        300  /* Delay for queued update */
@@ -86,20 +86,20 @@ typedef enum {
   STEPPER_D
 } Stepper;
 
-#define GTK_RANGE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_RANGE, GtkRangeLayout))
+#define BTK_RANGE_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_RANGE, BtkRangeLayout))
 
-struct _GtkRangeLayout
+struct _BtkRangeLayout
 {
   /* These are in widget->window coordinates */
-  GdkRectangle stepper_a;
-  GdkRectangle stepper_b;
-  GdkRectangle stepper_c;
-  GdkRectangle stepper_d;
+  BdkRectangle stepper_a;
+  BdkRectangle stepper_b;
+  BdkRectangle stepper_c;
+  BdkRectangle stepper_d;
   /* The trough rectangle is the area the thumb can slide in, not the
    * entire range_rect
    */
-  GdkRectangle trough;
-  GdkRectangle slider;
+  BdkRectangle trough;
+  BdkRectangle slider;
 
   /* Layout-related state */
 
@@ -120,8 +120,8 @@ struct _GtkRangeLayout
   guint show_fill_level : 1;
   guint restrict_to_fill_level : 1;
 
-  GtkSensitivityType lower_sensitivity;
-  GtkSensitivityType upper_sensitivity;
+  BtkSensitivityType lower_sensitivity;
+  BtkSensitivityType upper_sensitivity;
   guint repaint_id;
 
   gdouble fill_level;
@@ -136,63 +136,63 @@ struct _GtkRangeLayout
 };
 
 
-static void gtk_range_set_property   (GObject          *object,
+static void btk_range_set_property   (GObject          *object,
                                       guint             prop_id,
                                       const GValue     *value,
                                       GParamSpec       *pspec);
-static void gtk_range_get_property   (GObject          *object,
+static void btk_range_get_property   (GObject          *object,
                                       guint             prop_id,
                                       GValue           *value,
                                       GParamSpec       *pspec);
-static void gtk_range_destroy        (GtkObject        *object);
-static void gtk_range_size_request   (GtkWidget        *widget,
-                                      GtkRequisition   *requisition);
-static void gtk_range_size_allocate  (GtkWidget        *widget,
-                                      GtkAllocation    *allocation);
-static void gtk_range_realize        (GtkWidget        *widget);
-static void gtk_range_unrealize      (GtkWidget        *widget);
-static void gtk_range_map            (GtkWidget        *widget);
-static void gtk_range_unmap          (GtkWidget        *widget);
-static gboolean gtk_range_expose         (GtkWidget        *widget,
-                                      GdkEventExpose   *event);
-static gboolean gtk_range_button_press   (GtkWidget        *widget,
-                                      GdkEventButton   *event);
-static gboolean gtk_range_button_release (GtkWidget        *widget,
-                                      GdkEventButton   *event);
-static gboolean gtk_range_motion_notify  (GtkWidget        *widget,
-                                      GdkEventMotion   *event);
-static gboolean gtk_range_enter_notify   (GtkWidget        *widget,
-                                      GdkEventCrossing *event);
-static gboolean gtk_range_leave_notify   (GtkWidget        *widget,
-                                      GdkEventCrossing *event);
-static gboolean gtk_range_grab_broken (GtkWidget          *widget,
-				       GdkEventGrabBroken *event);
-static void gtk_range_grab_notify    (GtkWidget          *widget,
+static void btk_range_destroy        (BtkObject        *object);
+static void btk_range_size_request   (BtkWidget        *widget,
+                                      BtkRequisition   *requisition);
+static void btk_range_size_allocate  (BtkWidget        *widget,
+                                      BtkAllocation    *allocation);
+static void btk_range_realize        (BtkWidget        *widget);
+static void btk_range_unrealize      (BtkWidget        *widget);
+static void btk_range_map            (BtkWidget        *widget);
+static void btk_range_unmap          (BtkWidget        *widget);
+static gboolean btk_range_expose         (BtkWidget        *widget,
+                                      BdkEventExpose   *event);
+static gboolean btk_range_button_press   (BtkWidget        *widget,
+                                      BdkEventButton   *event);
+static gboolean btk_range_button_release (BtkWidget        *widget,
+                                      BdkEventButton   *event);
+static gboolean btk_range_motion_notify  (BtkWidget        *widget,
+                                      BdkEventMotion   *event);
+static gboolean btk_range_enter_notify   (BtkWidget        *widget,
+                                      BdkEventCrossing *event);
+static gboolean btk_range_leave_notify   (BtkWidget        *widget,
+                                      BdkEventCrossing *event);
+static gboolean btk_range_grab_broken (BtkWidget          *widget,
+				       BdkEventGrabBroken *event);
+static void btk_range_grab_notify    (BtkWidget          *widget,
 				      gboolean            was_grabbed);
-static void gtk_range_state_changed  (GtkWidget          *widget,
-				      GtkStateType        previous_state);
-static gboolean gtk_range_scroll_event   (GtkWidget        *widget,
-                                      GdkEventScroll   *event);
-static void gtk_range_style_set      (GtkWidget        *widget,
-                                      GtkStyle         *previous_style);
-static void update_slider_position   (GtkRange	       *range,
+static void btk_range_state_changed  (BtkWidget          *widget,
+				      BtkStateType        previous_state);
+static gboolean btk_range_scroll_event   (BtkWidget        *widget,
+                                      BdkEventScroll   *event);
+static void btk_range_style_set      (BtkWidget        *widget,
+                                      BtkStyle         *previous_style);
+static void update_slider_position   (BtkRange	       *range,
 				      gint              mouse_x,
 				      gint              mouse_y);
-static void stop_scrolling           (GtkRange         *range);
+static void stop_scrolling           (BtkRange         *range);
 
 /* Range methods */
 
-static void gtk_range_move_slider              (GtkRange         *range,
-                                                GtkScrollType     scroll);
+static void btk_range_move_slider              (BtkRange         *range,
+                                                BtkScrollType     scroll);
 
 /* Internals */
-static gboolean      gtk_range_scroll                   (GtkRange      *range,
-                                                         GtkScrollType  scroll);
-static gboolean      gtk_range_update_mouse_location    (GtkRange      *range);
-static void          gtk_range_calc_layout              (GtkRange      *range,
+static gboolean      btk_range_scroll                   (BtkRange      *range,
+                                                         BtkScrollType  scroll);
+static gboolean      btk_range_update_mouse_location    (BtkRange      *range);
+static void          btk_range_calc_layout              (BtkRange      *range,
 							 gdouble	adjustment_value);
-static void          gtk_range_calc_marks               (GtkRange      *range);
-static void          gtk_range_get_props                (GtkRange      *range,
+static void          btk_range_calc_marks               (BtkRange      *range);
+static void          btk_range_get_props                (BtkRange      *range,
                                                          gint          *slider_width,
                                                          gint          *stepper_size,
                                                          gint          *focus_width,
@@ -201,129 +201,129 @@ static void          gtk_range_get_props                (GtkRange      *range,
                                                          gboolean      *trough_under_steppers,
 							 gint          *arrow_displacement_x,
 							 gint	       *arrow_displacement_y);
-static void          gtk_range_calc_request             (GtkRange      *range,
+static void          btk_range_calc_request             (BtkRange      *range,
                                                          gint           slider_width,
                                                          gint           stepper_size,
                                                          gint           focus_width,
                                                          gint           trough_border,
                                                          gint           stepper_spacing,
-                                                         GdkRectangle  *range_rect,
-                                                         GtkBorder     *border,
+                                                         BdkRectangle  *range_rect,
+                                                         BtkBorder     *border,
                                                          gint          *n_steppers_p,
                                                          gboolean      *has_steppers_ab,
                                                          gboolean      *has_steppers_cd,
                                                          gint          *slider_length_p);
-static void          gtk_range_adjustment_value_changed (GtkAdjustment *adjustment,
+static void          btk_range_adjustment_value_changed (BtkAdjustment *adjustment,
                                                          gpointer       data);
-static void          gtk_range_adjustment_changed       (GtkAdjustment *adjustment,
+static void          btk_range_adjustment_changed       (BtkAdjustment *adjustment,
                                                          gpointer       data);
-static void          gtk_range_add_step_timer           (GtkRange      *range,
-                                                         GtkScrollType  step);
-static void          gtk_range_remove_step_timer        (GtkRange      *range);
-static void          gtk_range_reset_update_timer       (GtkRange      *range);
-static void          gtk_range_remove_update_timer      (GtkRange      *range);
-static GdkRectangle* get_area                           (GtkRange      *range,
+static void          btk_range_add_step_timer           (BtkRange      *range,
+                                                         BtkScrollType  step);
+static void          btk_range_remove_step_timer        (BtkRange      *range);
+static void          btk_range_reset_update_timer       (BtkRange      *range);
+static void          btk_range_remove_update_timer      (BtkRange      *range);
+static BdkRectangle* get_area                           (BtkRange      *range,
                                                          MouseLocation  location);
-static gboolean      gtk_range_real_change_value        (GtkRange      *range,
-                                                         GtkScrollType  scroll,
+static gboolean      btk_range_real_change_value        (BtkRange      *range,
+                                                         BtkScrollType  scroll,
                                                          gdouble        value);
-static void          gtk_range_update_value             (GtkRange      *range);
-static gboolean      gtk_range_key_press                (GtkWidget     *range,
-							 GdkEventKey   *event);
+static void          btk_range_update_value             (BtkRange      *range);
+static gboolean      btk_range_key_press                (BtkWidget     *range,
+							 BdkEventKey   *event);
 
 
-G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GtkRange, gtk_range, GTK_TYPE_WIDGET,
-                                  G_IMPLEMENT_INTERFACE (GTK_TYPE_ORIENTABLE,
+G_DEFINE_ABSTRACT_TYPE_WITH_CODE (BtkRange, btk_range, BTK_TYPE_WIDGET,
+                                  G_IMPLEMENT_INTERFACE (BTK_TYPE_ORIENTABLE,
                                                          NULL))
 
 static guint signals[LAST_SIGNAL];
 
 
 static void
-gtk_range_class_init (GtkRangeClass *class)
+btk_range_class_init (BtkRangeClass *class)
 {
-  GObjectClass   *gobject_class;
-  GtkObjectClass *object_class;
-  GtkWidgetClass *widget_class;
+  GObjectClass   *bobject_class;
+  BtkObjectClass *object_class;
+  BtkWidgetClass *widget_class;
 
-  gobject_class = G_OBJECT_CLASS (class);
-  object_class = (GtkObjectClass*) class;
-  widget_class = (GtkWidgetClass*) class;
+  bobject_class = G_OBJECT_CLASS (class);
+  object_class = (BtkObjectClass*) class;
+  widget_class = (BtkWidgetClass*) class;
 
-  gobject_class->set_property = gtk_range_set_property;
-  gobject_class->get_property = gtk_range_get_property;
+  bobject_class->set_property = btk_range_set_property;
+  bobject_class->get_property = btk_range_get_property;
 
-  object_class->destroy = gtk_range_destroy;
+  object_class->destroy = btk_range_destroy;
 
-  widget_class->size_request = gtk_range_size_request;
-  widget_class->size_allocate = gtk_range_size_allocate;
-  widget_class->realize = gtk_range_realize;
-  widget_class->unrealize = gtk_range_unrealize;  
-  widget_class->map = gtk_range_map;
-  widget_class->unmap = gtk_range_unmap;
-  widget_class->expose_event = gtk_range_expose;
-  widget_class->button_press_event = gtk_range_button_press;
-  widget_class->button_release_event = gtk_range_button_release;
-  widget_class->motion_notify_event = gtk_range_motion_notify;
-  widget_class->scroll_event = gtk_range_scroll_event;
-  widget_class->enter_notify_event = gtk_range_enter_notify;
-  widget_class->leave_notify_event = gtk_range_leave_notify;
-  widget_class->grab_broken_event = gtk_range_grab_broken;
-  widget_class->grab_notify = gtk_range_grab_notify;
-  widget_class->state_changed = gtk_range_state_changed;
-  widget_class->style_set = gtk_range_style_set;
-  widget_class->key_press_event = gtk_range_key_press;
+  widget_class->size_request = btk_range_size_request;
+  widget_class->size_allocate = btk_range_size_allocate;
+  widget_class->realize = btk_range_realize;
+  widget_class->unrealize = btk_range_unrealize;  
+  widget_class->map = btk_range_map;
+  widget_class->unmap = btk_range_unmap;
+  widget_class->expose_event = btk_range_expose;
+  widget_class->button_press_event = btk_range_button_press;
+  widget_class->button_release_event = btk_range_button_release;
+  widget_class->motion_notify_event = btk_range_motion_notify;
+  widget_class->scroll_event = btk_range_scroll_event;
+  widget_class->enter_notify_event = btk_range_enter_notify;
+  widget_class->leave_notify_event = btk_range_leave_notify;
+  widget_class->grab_broken_event = btk_range_grab_broken;
+  widget_class->grab_notify = btk_range_grab_notify;
+  widget_class->state_changed = btk_range_state_changed;
+  widget_class->style_set = btk_range_style_set;
+  widget_class->key_press_event = btk_range_key_press;
 
-  class->move_slider = gtk_range_move_slider;
-  class->change_value = gtk_range_real_change_value;
+  class->move_slider = btk_range_move_slider;
+  class->change_value = btk_range_real_change_value;
 
   class->slider_detail = "slider";
   class->stepper_detail = "stepper";
 
   /**
-   * GtkRange::value-changed:
-   * @range: the #GtkRange
+   * BtkRange::value-changed:
+   * @range: the #BtkRange
    *
    * Emitted when the range value changes.
    */
   signals[VALUE_CHANGED] =
     g_signal_new (I_("value-changed"),
-                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkRangeClass, value_changed),
+                  G_STRUCT_OFFSET (BtkRangeClass, value_changed),
                   NULL, NULL,
-                  _gtk_marshal_VOID__VOID,
+                  _btk_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
   
   signals[ADJUST_BOUNDS] =
     g_signal_new (I_("adjust-bounds"),
-                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkRangeClass, adjust_bounds),
+                  G_STRUCT_OFFSET (BtkRangeClass, adjust_bounds),
                   NULL, NULL,
-                  _gtk_marshal_VOID__DOUBLE,
+                  _btk_marshal_VOID__DOUBLE,
                   G_TYPE_NONE, 1,
                   G_TYPE_DOUBLE);
   
   /**
-   * GtkRange::move-slider:
-   * @range: the #GtkRange
+   * BtkRange::move-slider:
+   * @range: the #BtkRange
    * @step: how to move the slider
    *
    * Virtual function that moves the slider. Used for keybindings.
    */
   signals[MOVE_SLIDER] =
     g_signal_new (I_("move-slider"),
-                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-                  G_STRUCT_OFFSET (GtkRangeClass, move_slider),
+                  G_STRUCT_OFFSET (BtkRangeClass, move_slider),
                   NULL, NULL,
-                  _gtk_marshal_VOID__ENUM,
+                  _btk_marshal_VOID__ENUM,
                   G_TYPE_NONE, 1,
-                  GTK_TYPE_SCROLL_TYPE);
+                  BTK_TYPE_SCROLL_TYPE);
 
   /**
-   * GtkRange::change-value:
+   * BtkRange::change-value:
    * @range: the range that received the signal
    * @scroll: the type of scroll action that was performed
    * @value: the new value resulting from the scroll action
@@ -335,13 +335,13 @@ gtk_range_class_init (GtkRangeClass *class)
    * type of scroll event that occurred and the resultant new value.
    * The application can handle the event itself and return %TRUE to
    * prevent further processing.  Or, by returning %FALSE, it can pass
-   * the event to other handlers until the default GTK+ handler is
+   * the event to other handlers until the default BTK+ handler is
    * reached.
    *
    * The value parameter is unrounded.  An application that overrides
    * the ::change-value signal is responsible for clamping the value to
-   * the desired number of decimal digits; the default GTK+ handler
-   * clamps the value based on #GtkRange:round_digits.
+   * the desired number of decimal digits; the default BTK+ handler
+   * clamps the value based on #BtkRange:round_digits.
    *
    * It is not possible to use delayed update policies in an overridden
    * ::change-value handler.
@@ -350,105 +350,105 @@ gtk_range_class_init (GtkRangeClass *class)
    */
   signals[CHANGE_VALUE] =
     g_signal_new (I_("change-value"),
-                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_TYPE_FROM_CLASS (bobject_class),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GtkRangeClass, change_value),
-                  _gtk_boolean_handled_accumulator, NULL,
-                  _gtk_marshal_BOOLEAN__ENUM_DOUBLE,
+                  G_STRUCT_OFFSET (BtkRangeClass, change_value),
+                  _btk_boolean_handled_accumulator, NULL,
+                  _btk_marshal_BOOLEAN__ENUM_DOUBLE,
                   G_TYPE_BOOLEAN, 2,
-                  GTK_TYPE_SCROLL_TYPE,
+                  BTK_TYPE_SCROLL_TYPE,
                   G_TYPE_DOUBLE);
 
-  g_object_class_override_property (gobject_class,
+  g_object_class_override_property (bobject_class,
                                     PROP_ORIENTATION,
                                     "orientation");
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_UPDATE_POLICY,
                                    g_param_spec_enum ("update-policy",
 						      P_("Update policy"),
 						      P_("How the range should be updated on the screen"),
-						      GTK_TYPE_UPDATE_TYPE,
-						      GTK_UPDATE_CONTINUOUS,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_UPDATE_TYPE,
+						      BTK_UPDATE_CONTINUOUS,
+						      BTK_PARAM_READWRITE));
   
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ADJUSTMENT,
                                    g_param_spec_object ("adjustment",
 							P_("Adjustment"),
-							P_("The GtkAdjustment that contains the current value of this range object"),
-                                                        GTK_TYPE_ADJUSTMENT,
-                                                        GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+							P_("The BtkAdjustment that contains the current value of this range object"),
+                                                        BTK_TYPE_ADJUSTMENT,
+                                                        BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_INVERTED,
                                    g_param_spec_boolean ("inverted",
 							P_("Inverted"),
 							P_("Invert direction slider moves to increase range value"),
                                                          FALSE,
-                                                         GTK_PARAM_READWRITE));
+                                                         BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_LOWER_STEPPER_SENSITIVITY,
                                    g_param_spec_enum ("lower-stepper-sensitivity",
 						      P_("Lower stepper sensitivity"),
 						      P_("The sensitivity policy for the stepper that points to the adjustment's lower side"),
-						      GTK_TYPE_SENSITIVITY_TYPE,
-						      GTK_SENSITIVITY_AUTO,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_SENSITIVITY_TYPE,
+						      BTK_SENSITIVITY_AUTO,
+						      BTK_PARAM_READWRITE));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_UPPER_STEPPER_SENSITIVITY,
                                    g_param_spec_enum ("upper-stepper-sensitivity",
 						      P_("Upper stepper sensitivity"),
 						      P_("The sensitivity policy for the stepper that points to the adjustment's upper side"),
-						      GTK_TYPE_SENSITIVITY_TYPE,
-						      GTK_SENSITIVITY_AUTO,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_SENSITIVITY_TYPE,
+						      BTK_SENSITIVITY_AUTO,
+						      BTK_PARAM_READWRITE));
 
   /**
-   * GtkRange:show-fill-level:
+   * BtkRange:show-fill-level:
    *
    * The show-fill-level property controls whether fill level indicator
    * graphics are displayed on the trough. See
-   * gtk_range_set_show_fill_level().
+   * btk_range_set_show_fill_level().
    *
    * Since: 2.12
    **/
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_SHOW_FILL_LEVEL,
                                    g_param_spec_boolean ("show-fill-level",
                                                          P_("Show Fill Level"),
                                                          P_("Whether to display a fill level indicator graphics on trough."),
                                                          FALSE,
-                                                         GTK_PARAM_READWRITE));
+                                                         BTK_PARAM_READWRITE));
 
   /**
-   * GtkRange:restrict-to-fill-level:
+   * BtkRange:restrict-to-fill-level:
    *
    * The restrict-to-fill-level property controls whether slider
    * movement is restricted to an upper boundary set by the
-   * fill level. See gtk_range_set_restrict_to_fill_level().
+   * fill level. See btk_range_set_restrict_to_fill_level().
    *
    * Since: 2.12
    **/
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_RESTRICT_TO_FILL_LEVEL,
                                    g_param_spec_boolean ("restrict-to-fill-level",
                                                          P_("Restrict to Fill Level"),
                                                          P_("Whether to restrict the upper boundary to the fill level."),
                                                          TRUE,
-                                                         GTK_PARAM_READWRITE));
+                                                         BTK_PARAM_READWRITE));
 
   /**
-   * GtkRange:fill-level:
+   * BtkRange:fill-level:
    *
    * The fill level (e.g. prebuffering of a network stream).
-   * See gtk_range_set_fill_level().
+   * See btk_range_set_fill_level().
    *
    * Since: 2.12
    **/
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_FILL_LEVEL,
                                    g_param_spec_double ("fill-level",
 							P_("Fill Level"),
@@ -456,17 +456,17 @@ gtk_range_class_init (GtkRangeClass *class)
 							-G_MAXDOUBLE,
 							G_MAXDOUBLE,
                                                         G_MAXDOUBLE,
-                                                        GTK_PARAM_READWRITE));
+                                                        BTK_PARAM_READWRITE));
 
   /**
-   * GtkRange:round-digits:
+   * BtkRange:round-digits:
    *
    * The number of digits to round the value to when
-   * it changes, or -1. See #GtkRange::change-value.
+   * it changes, or -1. See #BtkRange::change-value.
    *
    * Since: 2.24
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_ROUND_DIGITS,
                                    g_param_spec_int ("round-digits",
                                                      P_("Round Digits"),
@@ -474,155 +474,155 @@ gtk_range_class_init (GtkRangeClass *class)
                                                      -1,
                                                      G_MAXINT,
                                                      -1,
-                                                     GTK_PARAM_READWRITE));
+                                                     BTK_PARAM_READWRITE));
 
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("slider-width",
 							     P_("Slider Width"),
 							     P_("Width of scrollbar or scale thumb"),
 							     0,
 							     G_MAXINT,
 							     14,
-							     GTK_PARAM_READABLE));
-  gtk_widget_class_install_style_property (widget_class,
+							     BTK_PARAM_READABLE));
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("trough-border",
                                                              P_("Trough Border"),
                                                              P_("Spacing between thumb/steppers and outer trough bevel"),
                                                              0,
                                                              G_MAXINT,
                                                              1,
-                                                             GTK_PARAM_READABLE));
-  gtk_widget_class_install_style_property (widget_class,
+                                                             BTK_PARAM_READABLE));
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("stepper-size",
 							     P_("Stepper Size"),
 							     P_("Length of step buttons at ends"),
 							     0,
 							     G_MAXINT,
 							     14,
-							     GTK_PARAM_READABLE));
+							     BTK_PARAM_READABLE));
   /**
-   * GtkRange:stepper-spacing:
+   * BtkRange:stepper-spacing:
    *
    * The spacing between the stepper buttons and thumb. Note that
    * setting this value to anything > 0 will automatically set the
    * trough-under-steppers style property to %TRUE as well. Also,
    * stepper-spacing won't have any effect if there are no steppers.
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("stepper-spacing",
 							     P_("Stepper Spacing"),
 							     P_("Spacing between step buttons and thumb"),
                                                              0,
 							     G_MAXINT,
 							     0,
-							     GTK_PARAM_READABLE));
-  gtk_widget_class_install_style_property (widget_class,
+							     BTK_PARAM_READABLE));
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("arrow-displacement-x",
 							     P_("Arrow X Displacement"),
 							     P_("How far in the x direction to move the arrow when the button is depressed"),
 							     G_MININT,
 							     G_MAXINT,
 							     0,
-							     GTK_PARAM_READABLE));
-  gtk_widget_class_install_style_property (widget_class,
+							     BTK_PARAM_READABLE));
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("arrow-displacement-y",
 							     P_("Arrow Y Displacement"),
 							     P_("How far in the y direction to move the arrow when the button is depressed"),
 							     G_MININT,
 							     G_MAXINT,
 							     0,
-							     GTK_PARAM_READABLE));
+							     BTK_PARAM_READABLE));
 
   /**
-   * GtkRange:activate-slider:
+   * BtkRange:activate-slider:
    *
    * When %TRUE, sliders will be drawn active and with shadow in
    * while they are dragged.
    *
-   * Deprecated: 2.22: This style property will be removed in GTK+ 3
+   * Deprecated: 2.22: This style property will be removed in BTK+ 3
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boolean ("activate-slider",
                                                                  P_("Draw slider ACTIVE during drag"),
 							         P_("With this option set to TRUE, sliders will be drawn ACTIVE and with shadow IN while they are dragged"),
 							         FALSE,
-							         GTK_PARAM_READABLE));
+							         BTK_PARAM_READABLE));
 
   /**
-   * GtkRange:trough-side-details:
+   * BtkRange:trough-side-details:
    *
    * When %TRUE, the parts of the trough on the two sides of the 
    * slider are drawn with different details.
    *
    * Since: 2.10
    *
-   * Deprecated: 2.22: This style property will be removed in GTK+ 3
+   * Deprecated: 2.22: This style property will be removed in BTK+ 3
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("trough-side-details",
                                                                  P_("Trough Side Details"),
                                                                  P_("When TRUE, the parts of the trough on the two sides of the slider are drawn with different details"),
                                                                  FALSE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
   /**
-   * GtkRange:trough-under-steppers:
+   * BtkRange:trough-under-steppers:
    *
    * Whether to draw the trough across the full length of the range or
    * to exclude the steppers and their spacing. Note that setting the
-   * #GtkRange:stepper-spacing style property to any value > 0 will
+   * #BtkRange:stepper-spacing style property to any value > 0 will
    * automatically enable trough-under-steppers too.
    *
    * Since: 2.10
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("trough-under-steppers",
                                                                  P_("Trough Under Steppers"),
                                                                  P_("Whether to draw trough for full length of range or exclude the steppers and spacing"),
                                                                  TRUE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
   /**
-   * GtkRange:arrow-scaling:
+   * BtkRange:arrow-scaling:
    *
    * The arrow size proportion relative to the scroll button size.
    *
    * Since: 2.14
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_float ("arrow-scaling",
 							       P_("Arrow scaling"),
 							       P_("Arrow scaling with regard to scroll button size"),
 							       0.0, 1.0, 0.5,
-							       GTK_PARAM_READABLE));
+							       BTK_PARAM_READABLE));
 
   /**
-   * GtkRange:stepper-position-details:
+   * BtkRange:stepper-position-details:
    *
    * When %TRUE, the detail string for rendering the steppers will be
    * suffixed with information about the stepper position.
    *
    * Since: 2.22
    *
-   * Deprecated: 2.22: This style property will be removed in GTK+ 3
+   * Deprecated: 2.22: This style property will be removed in BTK+ 3
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
                                            g_param_spec_boolean ("stepper-position-details",
                                                                  P_("Stepper Position Details"),
                                                                  P_("When TRUE, the detail string for rendering the steppers is suffixed with position information"),
                                                                  FALSE,
-                                                                 GTK_PARAM_READABLE));
+                                                                 BTK_PARAM_READABLE));
 
-  g_type_class_add_private (class, sizeof (GtkRangeLayout));
+  g_type_class_add_private (class, sizeof (BtkRangeLayout));
 }
 
 static void
-gtk_range_set_property (GObject      *object,
+btk_range_set_property (GObject      *object,
 			guint         prop_id,
 			const GValue *value,
 			GParamSpec   *pspec)
 {
-  GtkRange *range = GTK_RANGE (object);
+  BtkRange *range = BTK_RANGE (object);
 
   switch (prop_id)
     {
@@ -635,34 +635,34 @@ gtk_range_set_property (GObject      *object,
       range->layout->stepper_detail_quark[2] = 0;
       range->layout->stepper_detail_quark[3] = 0;
 
-      gtk_widget_queue_resize (GTK_WIDGET (range));
+      btk_widget_queue_resize (BTK_WIDGET (range));
       break;
     case PROP_UPDATE_POLICY:
-      gtk_range_set_update_policy (range, g_value_get_enum (value));
+      btk_range_set_update_policy (range, g_value_get_enum (value));
       break;
     case PROP_ADJUSTMENT:
-      gtk_range_set_adjustment (range, g_value_get_object (value));
+      btk_range_set_adjustment (range, g_value_get_object (value));
       break;
     case PROP_INVERTED:
-      gtk_range_set_inverted (range, g_value_get_boolean (value));
+      btk_range_set_inverted (range, g_value_get_boolean (value));
       break;
     case PROP_LOWER_STEPPER_SENSITIVITY:
-      gtk_range_set_lower_stepper_sensitivity (range, g_value_get_enum (value));
+      btk_range_set_lower_stepper_sensitivity (range, g_value_get_enum (value));
       break;
     case PROP_UPPER_STEPPER_SENSITIVITY:
-      gtk_range_set_upper_stepper_sensitivity (range, g_value_get_enum (value));
+      btk_range_set_upper_stepper_sensitivity (range, g_value_get_enum (value));
       break;
     case PROP_SHOW_FILL_LEVEL:
-      gtk_range_set_show_fill_level (range, g_value_get_boolean (value));
+      btk_range_set_show_fill_level (range, g_value_get_boolean (value));
       break;
     case PROP_RESTRICT_TO_FILL_LEVEL:
-      gtk_range_set_restrict_to_fill_level (range, g_value_get_boolean (value));
+      btk_range_set_restrict_to_fill_level (range, g_value_get_boolean (value));
       break;
     case PROP_FILL_LEVEL:
-      gtk_range_set_fill_level (range, g_value_get_double (value));
+      btk_range_set_fill_level (range, g_value_get_double (value));
       break;
     case PROP_ROUND_DIGITS:
-      gtk_range_set_round_digits (range, g_value_get_int (value));
+      btk_range_set_round_digits (range, g_value_get_int (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -671,12 +671,12 @@ gtk_range_set_property (GObject      *object,
 }
 
 static void
-gtk_range_get_property (GObject      *object,
+btk_range_get_property (GObject      *object,
 			guint         prop_id,
 			GValue       *value,
 			GParamSpec   *pspec)
 {
-  GtkRange *range = GTK_RANGE (object);
+  BtkRange *range = BTK_RANGE (object);
 
   switch (prop_id)
     {
@@ -693,22 +693,22 @@ gtk_range_get_property (GObject      *object,
       g_value_set_boolean (value, range->inverted);
       break;
     case PROP_LOWER_STEPPER_SENSITIVITY:
-      g_value_set_enum (value, gtk_range_get_lower_stepper_sensitivity (range));
+      g_value_set_enum (value, btk_range_get_lower_stepper_sensitivity (range));
       break;
     case PROP_UPPER_STEPPER_SENSITIVITY:
-      g_value_set_enum (value, gtk_range_get_upper_stepper_sensitivity (range));
+      g_value_set_enum (value, btk_range_get_upper_stepper_sensitivity (range));
       break;
     case PROP_SHOW_FILL_LEVEL:
-      g_value_set_boolean (value, gtk_range_get_show_fill_level (range));
+      g_value_set_boolean (value, btk_range_get_show_fill_level (range));
       break;
     case PROP_RESTRICT_TO_FILL_LEVEL:
-      g_value_set_boolean (value, gtk_range_get_restrict_to_fill_level (range));
+      g_value_set_boolean (value, btk_range_get_restrict_to_fill_level (range));
       break;
     case PROP_FILL_LEVEL:
-      g_value_set_double (value, gtk_range_get_fill_level (range));
+      g_value_set_double (value, btk_range_get_fill_level (range));
       break;
     case PROP_ROUND_DIGITS:
-      g_value_set_int (value, gtk_range_get_round_digits (range));
+      g_value_set_int (value, btk_range_get_round_digits (range));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -717,13 +717,13 @@ gtk_range_get_property (GObject      *object,
 }
 
 static void
-gtk_range_init (GtkRange *range)
+btk_range_init (BtkRange *range)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (range), FALSE);
+  btk_widget_set_has_window (BTK_WIDGET (range), FALSE);
 
-  range->orientation = GTK_ORIENTATION_HORIZONTAL;
+  range->orientation = BTK_ORIENTATION_HORIZONTAL;
   range->adjustment = NULL;
-  range->update_policy = GTK_UPDATE_CONTINUOUS;
+  range->update_policy = BTK_UPDATE_CONTINUOUS;
   range->inverted = FALSE;
   range->flippable = FALSE;
   range->min_slider_size = 1;
@@ -733,14 +733,14 @@ gtk_range_init (GtkRange *range)
   range->has_stepper_d = FALSE;
   range->need_recalc = TRUE;
   range->round_digits = -1;
-  range->layout = GTK_RANGE_GET_PRIVATE (range);
+  range->layout = BTK_RANGE_GET_PRIVATE (range);
   range->layout->mouse_location = MOUSE_OUTSIDE;
   range->layout->mouse_x = -1;
   range->layout->mouse_y = -1;
   range->layout->grab_location = MOUSE_OUTSIDE;
   range->layout->grab_button = 0;
-  range->layout->lower_sensitivity = GTK_SENSITIVITY_AUTO;
-  range->layout->upper_sensitivity = GTK_SENSITIVITY_AUTO;
+  range->layout->lower_sensitivity = BTK_SENSITIVITY_AUTO;
+  range->layout->upper_sensitivity = BTK_SENSITIVITY_AUTO;
   range->layout->lower_sensitive = TRUE;
   range->layout->upper_sensitive = TRUE;
   range->layout->show_fill_level = FALSE;
@@ -750,38 +750,38 @@ gtk_range_init (GtkRange *range)
 }
 
 /**
- * gtk_range_get_adjustment:
- * @range: a #GtkRange
+ * btk_range_get_adjustment:
+ * @range: a #BtkRange
  * 
- * Get the #GtkAdjustment which is the "model" object for #GtkRange.
- * See gtk_range_set_adjustment() for details.
+ * Get the #BtkAdjustment which is the "model" object for #BtkRange.
+ * See btk_range_set_adjustment() for details.
  * The return value does not have a reference added, so should not
  * be unreferenced.
  * 
- * Return value: (transfer none): a #GtkAdjustment
+ * Return value: (transfer none): a #BtkAdjustment
  **/
-GtkAdjustment*
-gtk_range_get_adjustment (GtkRange *range)
+BtkAdjustment*
+btk_range_get_adjustment (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), NULL);
+  g_return_val_if_fail (BTK_IS_RANGE (range), NULL);
 
   if (!range->adjustment)
-    gtk_range_set_adjustment (range, NULL);
+    btk_range_set_adjustment (range, NULL);
 
   return range->adjustment;
 }
 
 /**
- * gtk_range_set_update_policy:
- * @range: a #GtkRange
+ * btk_range_set_update_policy:
+ * @range: a #BtkRange
  * @policy: update policy
  *
- * Sets the update policy for the range. #GTK_UPDATE_CONTINUOUS means that
+ * Sets the update policy for the range. #BTK_UPDATE_CONTINUOUS means that
  * anytime the range slider is moved, the range value will change and the
- * value_changed signal will be emitted. #GTK_UPDATE_DELAYED means that
+ * value_changed signal will be emitted. #BTK_UPDATE_DELAYED means that
  * the value will be updated after a brief timeout where no slider motion
  * occurs, so updates are spaced by a short time rather than
- * continuous. #GTK_UPDATE_DISCONTINUOUS means that the value will only
+ * continuous. #BTK_UPDATE_DISCONTINUOUS means that the value will only
  * be updated when the user releases the button and ends the slider
  * drag operation.
  *
@@ -789,10 +789,10 @@ gtk_range_get_adjustment (GtkRange *range)
  *   updates, you need to code it yourself.
  **/
 void
-gtk_range_set_update_policy (GtkRange      *range,
-			     GtkUpdateType  policy)
+btk_range_set_update_policy (BtkRange      *range,
+			     BtkUpdateType  policy)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (range->update_policy != policy)
     {
@@ -802,57 +802,57 @@ gtk_range_set_update_policy (GtkRange      *range,
 }
 
 /**
- * gtk_range_get_update_policy:
- * @range: a #GtkRange
+ * btk_range_get_update_policy:
+ * @range: a #BtkRange
  *
- * Gets the update policy of @range. See gtk_range_set_update_policy().
+ * Gets the update policy of @range. See btk_range_set_update_policy().
  *
  * Return value: the current update policy
  *
  * Deprecated: 2.24: There is no replacement. If you require delayed
  *   updates, you need to code it yourself.
  **/
-GtkUpdateType
-gtk_range_get_update_policy (GtkRange *range)
+BtkUpdateType
+btk_range_get_update_policy (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), GTK_UPDATE_CONTINUOUS);
+  g_return_val_if_fail (BTK_IS_RANGE (range), BTK_UPDATE_CONTINUOUS);
 
   return range->update_policy;
 }
 
 /**
- * gtk_range_set_adjustment:
- * @range: a #GtkRange
- * @adjustment: a #GtkAdjustment
+ * btk_range_set_adjustment:
+ * @range: a #BtkRange
+ * @adjustment: a #BtkAdjustment
  *
  * Sets the adjustment to be used as the "model" object for this range
  * widget. The adjustment indicates the current range value, the
  * minimum and maximum range values, the step/page increments used
  * for keybindings and scrolling, and the page size. The page size
- * is normally 0 for #GtkScale and nonzero for #GtkScrollbar, and
+ * is normally 0 for #BtkScale and nonzero for #BtkScrollbar, and
  * indicates the size of the visible area of the widget being scrolled.
  * The page size affects the size of the scrollbar slider.
  **/
 void
-gtk_range_set_adjustment (GtkRange      *range,
-			  GtkAdjustment *adjustment)
+btk_range_set_adjustment (BtkRange      *range,
+			  BtkAdjustment *adjustment)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   
   if (!adjustment)
-    adjustment = (GtkAdjustment*) gtk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    adjustment = (BtkAdjustment*) btk_adjustment_new (0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
   else
-    g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment));
+    g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
   if (range->adjustment != adjustment)
     {
       if (range->adjustment)
 	{
 	  g_signal_handlers_disconnect_by_func (range->adjustment,
-						gtk_range_adjustment_changed,
+						btk_range_adjustment_changed,
 						range);
 	  g_signal_handlers_disconnect_by_func (range->adjustment,
-						gtk_range_adjustment_value_changed,
+						btk_range_adjustment_value_changed,
 						range);
 	  g_object_unref (range->adjustment);
 	}
@@ -861,20 +861,20 @@ gtk_range_set_adjustment (GtkRange      *range,
       g_object_ref_sink (adjustment);
       
       g_signal_connect (adjustment, "changed",
-			G_CALLBACK (gtk_range_adjustment_changed),
+			G_CALLBACK (btk_range_adjustment_changed),
 			range);
       g_signal_connect (adjustment, "value-changed",
-			G_CALLBACK (gtk_range_adjustment_value_changed),
+			G_CALLBACK (btk_range_adjustment_value_changed),
 			range);
       
-      gtk_range_adjustment_changed (adjustment, range);
+      btk_range_adjustment_changed (adjustment, range);
       g_object_notify (G_OBJECT (range), "adjustment");
     }
 }
 
 /**
- * gtk_range_set_inverted:
- * @range: a #GtkRange
+ * btk_range_set_inverted:
+ * @range: a #BtkRange
  * @setting: %TRUE to invert the range
  *
  * Ranges normally move from lower to higher values as the
@@ -883,10 +883,10 @@ gtk_range_set_adjustment (GtkRange      *range,
  * on the bottom or left.
  **/
 void
-gtk_range_set_inverted (GtkRange *range,
+btk_range_set_inverted (BtkRange *range,
                         gboolean  setting)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   
   setting = setting != FALSE;
 
@@ -894,43 +894,43 @@ gtk_range_set_inverted (GtkRange *range,
     {
       range->inverted = setting;
       g_object_notify (G_OBJECT (range), "inverted");
-      gtk_widget_queue_resize (GTK_WIDGET (range));
+      btk_widget_queue_resize (BTK_WIDGET (range));
     }
 }
 
 /**
- * gtk_range_get_inverted:
- * @range: a #GtkRange
+ * btk_range_get_inverted:
+ * @range: a #BtkRange
  * 
- * Gets the value set by gtk_range_set_inverted().
+ * Gets the value set by btk_range_set_inverted().
  * 
  * Return value: %TRUE if the range is inverted
  **/
 gboolean
-gtk_range_get_inverted (GtkRange *range)
+btk_range_get_inverted (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->inverted;
 }
 
 /**
- * gtk_range_set_flippable:
- * @range: a #GtkRange
+ * btk_range_set_flippable:
+ * @range: a #BtkRange
  * @flippable: %TRUE to make the range flippable
  *
  * If a range is flippable, it will switch its direction if it is
- * horizontal and its direction is %GTK_TEXT_DIR_RTL.
+ * horizontal and its direction is %BTK_TEXT_DIR_RTL.
  *
- * See gtk_widget_get_direction().
+ * See btk_widget_get_direction().
  *
  * Since: 2.18
  **/
 void
-gtk_range_set_flippable (GtkRange *range,
+btk_range_set_flippable (BtkRange *range,
                          gboolean  flippable)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   flippable = flippable ? TRUE : FALSE;
 
@@ -938,92 +938,92 @@ gtk_range_set_flippable (GtkRange *range,
     {
       range->flippable = flippable;
 
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_widget_queue_draw (BTK_WIDGET (range));
     }
 }
 
 /**
- * gtk_range_get_flippable:
- * @range: a #GtkRange
+ * btk_range_get_flippable:
+ * @range: a #BtkRange
  *
- * Gets the value set by gtk_range_set_flippable().
+ * Gets the value set by btk_range_set_flippable().
  *
  * Return value: %TRUE if the range is flippable
  *
  * Since: 2.18
  **/
 gboolean
-gtk_range_get_flippable (GtkRange *range)
+btk_range_get_flippable (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->flippable;
 }
 
 /**
- * gtk_range_set_slider_size_fixed:
- * @range: a #GtkRange
+ * btk_range_set_slider_size_fixed:
+ * @range: a #BtkRange
  * @size_fixed: %TRUE to make the slider size constant
  *
  * Sets whether the range's slider has a fixed size, or a size that
  * depends on it's adjustment's page size.
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
  * Since: 2.20
  **/
 void
-gtk_range_set_slider_size_fixed (GtkRange *range,
+btk_range_set_slider_size_fixed (BtkRange *range,
                                  gboolean  size_fixed)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (size_fixed != range->slider_size_fixed)
     {
       range->slider_size_fixed = size_fixed ? TRUE : FALSE;
 
       range->need_recalc = TRUE;
-      gtk_range_calc_layout (range, range->adjustment->value);
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_range_calc_layout (range, range->adjustment->value);
+      btk_widget_queue_draw (BTK_WIDGET (range));
     }
 }
 
 /**
- * gtk_range_get_slider_size_fixed:
- * @range: a #GtkRange
+ * btk_range_get_slider_size_fixed:
+ * @range: a #BtkRange
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
- * See gtk_range_set_slider_size_fixed().
+ * See btk_range_set_slider_size_fixed().
  *
  * Return value: whether the range's slider has a fixed size.
  *
  * Since: 2.20
  **/
 gboolean
-gtk_range_get_slider_size_fixed (GtkRange *range)
+btk_range_get_slider_size_fixed (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->slider_size_fixed;
 }
 
 /**
- * gtk_range_set_min_slider_size:
- * @range: a #GtkRange
+ * btk_range_set_min_slider_size:
+ * @range: a #BtkRange
  * @min_size: The slider's minimum size
  *
  * Sets the minimum size of the range's slider.
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
  * Since: 2.20
  **/
 void
-gtk_range_set_min_slider_size (GtkRange *range,
+btk_range_set_min_slider_size (BtkRange *range,
                                gboolean  min_size)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (min_size > 0);
 
   if (min_size != range->min_slider_size)
@@ -1031,58 +1031,58 @@ gtk_range_set_min_slider_size (GtkRange *range,
       range->min_slider_size = min_size;
 
       range->need_recalc = TRUE;
-      gtk_range_calc_layout (range, range->adjustment->value);
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_range_calc_layout (range, range->adjustment->value);
+      btk_widget_queue_draw (BTK_WIDGET (range));
     }
 }
 
 /**
- * gtk_range_get_min_slider_size:
- * @range: a #GtkRange
+ * btk_range_get_min_slider_size:
+ * @range: a #BtkRange
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
- * See gtk_range_set_min_slider_size().
+ * See btk_range_set_min_slider_size().
  *
  * Return value: The minimum size of the range's slider.
  *
  * Since: 2.20
  **/
 gint
-gtk_range_get_min_slider_size (GtkRange *range)
+btk_range_get_min_slider_size (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->min_slider_size;
 }
 
 /**
- * gtk_range_get_range_rect:
- * @range: a #GtkRange
+ * btk_range_get_range_rect:
+ * @range: a #BtkRange
  * @range_rect: (out): return location for the range rectangle
  *
  * This function returns the area that contains the range's trough
  * and its steppers, in widget->window coordinates.
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
  * Since: 2.20
  **/
 void
-gtk_range_get_range_rect (GtkRange     *range,
-                          GdkRectangle *range_rect)
+btk_range_get_range_rect (BtkRange     *range,
+                          BdkRectangle *range_rect)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (range_rect != NULL);
 
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
 
   *range_rect = range->range_rect;
 }
 
 /**
- * gtk_range_get_slider_range:
- * @range: a #GtkRange
+ * btk_range_get_slider_range:
+ * @range: a #BtkRange
  * @slider_start: (out) (allow-none): return location for the slider's
  *     start, or %NULL
  * @slider_end: (out) (allow-none): return location for the slider's
@@ -1091,18 +1091,18 @@ gtk_range_get_range_rect (GtkRange     *range,
  * This function returns sliders range along the long dimension,
  * in widget->window coordinates.
  *
- * This function is useful mainly for #GtkRange subclasses.
+ * This function is useful mainly for #BtkRange subclasses.
  *
  * Since: 2.20
  **/
 void
-gtk_range_get_slider_range (GtkRange *range,
+btk_range_get_slider_range (BtkRange *range,
                             gint     *slider_start,
                             gint     *slider_end)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
 
   if (slider_start)
     *slider_start = range->slider_start;
@@ -1112,141 +1112,141 @@ gtk_range_get_slider_range (GtkRange *range,
 }
 
 /**
- * gtk_range_set_lower_stepper_sensitivity:
- * @range:       a #GtkRange
+ * btk_range_set_lower_stepper_sensitivity:
+ * @range:       a #BtkRange
  * @sensitivity: the lower stepper's sensitivity policy.
  *
  * Sets the sensitivity policy for the stepper that points to the
- * 'lower' end of the GtkRange's adjustment.
+ * 'lower' end of the BtkRange's adjustment.
  *
  * Since: 2.10
  **/
 void
-gtk_range_set_lower_stepper_sensitivity (GtkRange           *range,
-                                         GtkSensitivityType  sensitivity)
+btk_range_set_lower_stepper_sensitivity (BtkRange           *range,
+                                         BtkSensitivityType  sensitivity)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (range->layout->lower_sensitivity != sensitivity)
     {
       range->layout->lower_sensitivity = sensitivity;
 
       range->need_recalc = TRUE;
-      gtk_range_calc_layout (range, range->adjustment->value);
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_range_calc_layout (range, range->adjustment->value);
+      btk_widget_queue_draw (BTK_WIDGET (range));
 
       g_object_notify (G_OBJECT (range), "lower-stepper-sensitivity");
     }
 }
 
 /**
- * gtk_range_get_lower_stepper_sensitivity:
- * @range: a #GtkRange
+ * btk_range_get_lower_stepper_sensitivity:
+ * @range: a #BtkRange
  *
  * Gets the sensitivity policy for the stepper that points to the
- * 'lower' end of the GtkRange's adjustment.
+ * 'lower' end of the BtkRange's adjustment.
  *
  * Return value: The lower stepper's sensitivity policy.
  *
  * Since: 2.10
  **/
-GtkSensitivityType
-gtk_range_get_lower_stepper_sensitivity (GtkRange *range)
+BtkSensitivityType
+btk_range_get_lower_stepper_sensitivity (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), GTK_SENSITIVITY_AUTO);
+  g_return_val_if_fail (BTK_IS_RANGE (range), BTK_SENSITIVITY_AUTO);
 
   return range->layout->lower_sensitivity;
 }
 
 /**
- * gtk_range_set_upper_stepper_sensitivity:
- * @range:       a #GtkRange
+ * btk_range_set_upper_stepper_sensitivity:
+ * @range:       a #BtkRange
  * @sensitivity: the upper stepper's sensitivity policy.
  *
  * Sets the sensitivity policy for the stepper that points to the
- * 'upper' end of the GtkRange's adjustment.
+ * 'upper' end of the BtkRange's adjustment.
  *
  * Since: 2.10
  **/
 void
-gtk_range_set_upper_stepper_sensitivity (GtkRange           *range,
-                                         GtkSensitivityType  sensitivity)
+btk_range_set_upper_stepper_sensitivity (BtkRange           *range,
+                                         BtkSensitivityType  sensitivity)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (range->layout->upper_sensitivity != sensitivity)
     {
       range->layout->upper_sensitivity = sensitivity;
 
       range->need_recalc = TRUE;
-      gtk_range_calc_layout (range, range->adjustment->value);
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_range_calc_layout (range, range->adjustment->value);
+      btk_widget_queue_draw (BTK_WIDGET (range));
 
       g_object_notify (G_OBJECT (range), "upper-stepper-sensitivity");
     }
 }
 
 /**
- * gtk_range_get_upper_stepper_sensitivity:
- * @range: a #GtkRange
+ * btk_range_get_upper_stepper_sensitivity:
+ * @range: a #BtkRange
  *
  * Gets the sensitivity policy for the stepper that points to the
- * 'upper' end of the GtkRange's adjustment.
+ * 'upper' end of the BtkRange's adjustment.
  *
  * Return value: The upper stepper's sensitivity policy.
  *
  * Since: 2.10
  **/
-GtkSensitivityType
-gtk_range_get_upper_stepper_sensitivity (GtkRange *range)
+BtkSensitivityType
+btk_range_get_upper_stepper_sensitivity (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), GTK_SENSITIVITY_AUTO);
+  g_return_val_if_fail (BTK_IS_RANGE (range), BTK_SENSITIVITY_AUTO);
 
   return range->layout->upper_sensitivity;
 }
 
 /**
- * gtk_range_set_increments:
- * @range: a #GtkRange
+ * btk_range_set_increments:
+ * @range: a #BtkRange
  * @step: step size
  * @page: page size
  *
  * Sets the step and page sizes for the range.
- * The step size is used when the user clicks the #GtkScrollbar
- * arrows or moves #GtkScale via arrow keys. The page size
+ * The step size is used when the user clicks the #BtkScrollbar
+ * arrows or moves #BtkScale via arrow keys. The page size
  * is used for example when moving via Page Up or Page Down keys.
  **/
 void
-gtk_range_set_increments (GtkRange *range,
+btk_range_set_increments (BtkRange *range,
                           gdouble   step,
                           gdouble   page)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   range->adjustment->step_increment = step;
   range->adjustment->page_increment = page;
 
-  gtk_adjustment_changed (range->adjustment);
+  btk_adjustment_changed (range->adjustment);
 }
 
 /**
- * gtk_range_set_range:
- * @range: a #GtkRange
+ * btk_range_set_range:
+ * @range: a #BtkRange
  * @min: minimum range value
  * @max: maximum range value
  * 
- * Sets the allowable values in the #GtkRange, and clamps the range
+ * Sets the allowable values in the #BtkRange, and clamps the range
  * value to be between @min and @max. (If the range has a non-zero
  * page size, it is clamped between @min and @max - page-size.)
  **/
 void
-gtk_range_set_range (GtkRange *range,
+btk_range_set_range (BtkRange *range,
                      gdouble   min,
                      gdouble   max)
 {
   gdouble value;
   
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (min < max);
   
   range->adjustment->lower = min;
@@ -1261,25 +1261,25 @@ gtk_range_set_range (GtkRange *range,
   value = CLAMP (value, range->adjustment->lower,
                  (range->adjustment->upper - range->adjustment->page_size));
 
-  gtk_adjustment_set_value (range->adjustment, value);
-  gtk_adjustment_changed (range->adjustment);
+  btk_adjustment_set_value (range->adjustment, value);
+  btk_adjustment_changed (range->adjustment);
 }
 
 /**
- * gtk_range_set_value:
- * @range: a #GtkRange
+ * btk_range_set_value:
+ * @range: a #BtkRange
  * @value: new value of the range
  *
  * Sets the current value of the range; if the value is outside the
  * minimum or maximum range values, it will be clamped to fit inside
- * them. The range emits the #GtkRange::value-changed signal if the 
+ * them. The range emits the #BtkRange::value-changed signal if the 
  * value changes.
  **/
 void
-gtk_range_set_value (GtkRange *range,
+btk_range_set_value (BtkRange *range,
                      gdouble   value)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (range->layout->restrict_to_fill_level)
     value = MIN (value, MAX (range->adjustment->lower,
@@ -1288,41 +1288,41 @@ gtk_range_set_value (GtkRange *range,
   value = CLAMP (value, range->adjustment->lower,
                  (range->adjustment->upper - range->adjustment->page_size));
 
-  gtk_adjustment_set_value (range->adjustment, value);
+  btk_adjustment_set_value (range->adjustment, value);
 }
 
 /**
- * gtk_range_get_value:
- * @range: a #GtkRange
+ * btk_range_get_value:
+ * @range: a #BtkRange
  * 
  * Gets the current value of the range.
  * 
  * Return value: current value of the range.
  **/
 gdouble
-gtk_range_get_value (GtkRange *range)
+btk_range_get_value (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), 0.0);
+  g_return_val_if_fail (BTK_IS_RANGE (range), 0.0);
 
   return range->adjustment->value;
 }
 
 /**
- * gtk_range_set_show_fill_level:
- * @range:           A #GtkRange
+ * btk_range_set_show_fill_level:
+ * @range:           A #BtkRange
  * @show_fill_level: Whether a fill level indicator graphics is shown.
  *
  * Sets whether a graphical fill level is show on the trough. See
- * gtk_range_set_fill_level() for a general description of the fill
+ * btk_range_set_fill_level() for a general description of the fill
  * level concept.
  *
  * Since: 2.12
  **/
 void
-gtk_range_set_show_fill_level (GtkRange *range,
+btk_range_set_show_fill_level (BtkRange *range,
                                gboolean  show_fill_level)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   show_fill_level = show_fill_level ? TRUE : FALSE;
 
@@ -1330,13 +1330,13 @@ gtk_range_set_show_fill_level (GtkRange *range,
     {
       range->layout->show_fill_level = show_fill_level;
       g_object_notify (G_OBJECT (range), "show-fill-level");
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_widget_queue_draw (BTK_WIDGET (range));
     }
 }
 
 /**
- * gtk_range_get_show_fill_level:
- * @range: A #GtkRange
+ * btk_range_get_show_fill_level:
+ * @range: A #BtkRange
  *
  * Gets whether the range displays the fill level graphically.
  *
@@ -1345,29 +1345,29 @@ gtk_range_set_show_fill_level (GtkRange *range,
  * Since: 2.12
  **/
 gboolean
-gtk_range_get_show_fill_level (GtkRange *range)
+btk_range_get_show_fill_level (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->layout->show_fill_level;
 }
 
 /**
- * gtk_range_set_restrict_to_fill_level:
- * @range:                  A #GtkRange
+ * btk_range_set_restrict_to_fill_level:
+ * @range:                  A #BtkRange
  * @restrict_to_fill_level: Whether the fill level restricts slider movement.
  *
  * Sets whether the slider is restricted to the fill level. See
- * gtk_range_set_fill_level() for a general description of the fill
+ * btk_range_set_fill_level() for a general description of the fill
  * level concept.
  *
  * Since: 2.12
  **/
 void
-gtk_range_set_restrict_to_fill_level (GtkRange *range,
+btk_range_set_restrict_to_fill_level (BtkRange *range,
                                       gboolean  restrict_to_fill_level)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   restrict_to_fill_level = restrict_to_fill_level ? TRUE : FALSE;
 
@@ -1376,13 +1376,13 @@ gtk_range_set_restrict_to_fill_level (GtkRange *range,
       range->layout->restrict_to_fill_level = restrict_to_fill_level;
       g_object_notify (G_OBJECT (range), "restrict-to-fill-level");
 
-      gtk_range_set_value (range, gtk_range_get_value (range));
+      btk_range_set_value (range, btk_range_get_value (range));
     }
 }
 
 /**
- * gtk_range_get_restrict_to_fill_level:
- * @range: A #GtkRange
+ * btk_range_get_restrict_to_fill_level:
+ * @range: A #BtkRange
  *
  * Gets whether the range is restricted to the fill level.
  *
@@ -1391,16 +1391,16 @@ gtk_range_set_restrict_to_fill_level (GtkRange *range,
  * Since: 2.12
  **/
 gboolean
-gtk_range_get_restrict_to_fill_level (GtkRange *range)
+btk_range_get_restrict_to_fill_level (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), FALSE);
+  g_return_val_if_fail (BTK_IS_RANGE (range), FALSE);
 
   return range->layout->restrict_to_fill_level;
 }
 
 /**
- * gtk_range_set_fill_level:
- * @range: a #GtkRange
+ * btk_range_set_fill_level:
+ * @range: a #BtkRange
  * @fill_level: the new position of the fill level indicator
  *
  * Set the new position of the fill level indicator.
@@ -1413,21 +1413,21 @@ gtk_range_get_restrict_to_fill_level (GtkRange *range)
  *
  * This amount of prebuffering can be displayed on the range's trough
  * and is themeable separately from the trough. To enable fill level
- * display, use gtk_range_set_show_fill_level(). The range defaults
+ * display, use btk_range_set_show_fill_level(). The range defaults
  * to not showing the fill level.
  *
  * Additionally, it's possible to restrict the range's slider position
  * to values which are smaller than the fill level. This is controller
- * by gtk_range_set_restrict_to_fill_level() and is by default
+ * by btk_range_set_restrict_to_fill_level() and is by default
  * enabled.
  *
  * Since: 2.12
  **/
 void
-gtk_range_set_fill_level (GtkRange *range,
+btk_range_set_fill_level (BtkRange *range,
                           gdouble   fill_level)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
 
   if (fill_level != range->layout->fill_level)
     {
@@ -1435,16 +1435,16 @@ gtk_range_set_fill_level (GtkRange *range,
       g_object_notify (G_OBJECT (range), "fill-level");
 
       if (range->layout->show_fill_level)
-        gtk_widget_queue_draw (GTK_WIDGET (range));
+        btk_widget_queue_draw (BTK_WIDGET (range));
 
       if (range->layout->restrict_to_fill_level)
-        gtk_range_set_value (range, gtk_range_get_value (range));
+        btk_range_set_value (range, btk_range_get_value (range));
     }
 }
 
 /**
- * gtk_range_get_fill_level:
- * @range: A #GtkRange
+ * btk_range_get_fill_level:
+ * @range: A #BtkRange
  *
  * Gets the current position of the fill level indicator.
  *
@@ -1453,32 +1453,32 @@ gtk_range_set_fill_level (GtkRange *range,
  * Since: 2.12
  **/
 gdouble
-gtk_range_get_fill_level (GtkRange *range)
+btk_range_get_fill_level (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), 0.0);
+  g_return_val_if_fail (BTK_IS_RANGE (range), 0.0);
 
   return range->layout->fill_level;
 }
 
 static gboolean
-should_invert (GtkRange *range)
+should_invert (BtkRange *range)
 {  
-  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
     return
       (range->inverted && !range->flippable) ||
-      (range->inverted && range->flippable && gtk_widget_get_direction (GTK_WIDGET (range)) == GTK_TEXT_DIR_LTR) ||
-      (!range->inverted && range->flippable && gtk_widget_get_direction (GTK_WIDGET (range)) == GTK_TEXT_DIR_RTL);
+      (range->inverted && range->flippable && btk_widget_get_direction (BTK_WIDGET (range)) == BTK_TEXT_DIR_LTR) ||
+      (!range->inverted && range->flippable && btk_widget_get_direction (BTK_WIDGET (range)) == BTK_TEXT_DIR_RTL);
   else
     return range->inverted;
 }
 
 static void
-gtk_range_destroy (GtkObject *object)
+btk_range_destroy (BtkObject *object)
 {
-  GtkRange *range = GTK_RANGE (object);
+  BtkRange *range = BTK_RANGE (object);
 
-  gtk_range_remove_step_timer (range);
-  gtk_range_remove_update_timer (range);
+  btk_range_remove_step_timer (range);
+  btk_range_remove_update_timer (range);
 
   if (range->layout->repaint_id)
     g_source_remove (range->layout->repaint_id);
@@ -1487,10 +1487,10 @@ gtk_range_destroy (GtkObject *object)
   if (range->adjustment)
     {
       g_signal_handlers_disconnect_by_func (range->adjustment,
-					    gtk_range_adjustment_changed,
+					    btk_range_adjustment_changed,
 					    range);
       g_signal_handlers_disconnect_by_func (range->adjustment,
-					    gtk_range_adjustment_value_changed,
+					    btk_range_adjustment_value_changed,
 					    range);
       g_object_unref (range->adjustment);
       range->adjustment = NULL;
@@ -1505,27 +1505,27 @@ gtk_range_destroy (GtkObject *object)
       range->layout->n_marks = 0;
     }
 
-  GTK_OBJECT_CLASS (gtk_range_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_range_parent_class)->destroy (object);
 }
 
 static void
-gtk_range_size_request (GtkWidget      *widget,
-                        GtkRequisition *requisition)
+btk_range_size_request (BtkWidget      *widget,
+                        BtkRequisition *requisition)
 {
-  GtkRange *range;
+  BtkRange *range;
   gint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
-  GdkRectangle range_rect;
-  GtkBorder border;
+  BdkRectangle range_rect;
+  BtkBorder border;
   
-  range = GTK_RANGE (widget);
+  range = BTK_RANGE (widget);
   
-  gtk_range_get_props (range,
+  btk_range_get_props (range,
                        &slider_width, &stepper_size,
                        &focus_width, &trough_border,
                        &stepper_spacing, NULL,
                        NULL, NULL);
 
-  gtk_range_calc_request (range, 
+  btk_range_calc_request (range, 
                           slider_width, stepper_size,
                           focus_width, trough_border, stepper_spacing,
                           &range_rect, &border, NULL, NULL, NULL, NULL);
@@ -1535,22 +1535,22 @@ gtk_range_size_request (GtkWidget      *widget,
 }
 
 static void
-gtk_range_size_allocate (GtkWidget     *widget,
-                         GtkAllocation *allocation)
+btk_range_size_allocate (BtkWidget     *widget,
+                         BtkAllocation *allocation)
 {
-  GtkRange *range;
+  BtkRange *range;
 
-  range = GTK_RANGE (widget);
+  range = BTK_RANGE (widget);
 
   widget->allocation = *allocation;
   
   range->layout->recalc_marks = TRUE;
 
   range->need_recalc = TRUE;
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
 
-  if (gtk_widget_get_realized (widget))
-    gdk_window_move_resize (range->event_window,
+  if (btk_widget_get_realized (widget))
+    bdk_window_move_resize (range->event_window,
 			    widget->allocation.x,
 			    widget->allocation.y,
 			    widget->allocation.width,
@@ -1558,96 +1558,96 @@ gtk_range_size_allocate (GtkWidget     *widget,
 }
 
 static void
-gtk_range_realize (GtkWidget *widget)
+btk_range_realize (BtkWidget *widget)
 {
-  GtkRange *range;
-  GdkWindowAttr attributes;
+  BtkRange *range;
+  BdkWindowAttr attributes;
   gint attributes_mask;  
 
-  range = GTK_RANGE (widget);
+  range = BTK_RANGE (widget);
 
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
   
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
-  widget->window = gtk_widget_get_parent_window (widget);
+  widget->window = btk_widget_get_parent_window (widget);
   g_object_ref (widget->window);
   
-  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.window_type = BDK_WINDOW_CHILD;
   attributes.x = widget->allocation.x;
   attributes.y = widget->allocation.y;
   attributes.width = widget->allocation.width;
   attributes.height = widget->allocation.height;
-  attributes.wclass = GDK_INPUT_ONLY;
-  attributes.event_mask = gtk_widget_get_events (widget);
-  attributes.event_mask |= (GDK_BUTTON_PRESS_MASK |
-			    GDK_BUTTON_RELEASE_MASK |
-			    GDK_ENTER_NOTIFY_MASK |
-			    GDK_LEAVE_NOTIFY_MASK |
-                            GDK_POINTER_MOTION_MASK |
-                            GDK_POINTER_MOTION_HINT_MASK);
+  attributes.wclass = BDK_INPUT_ONLY;
+  attributes.event_mask = btk_widget_get_events (widget);
+  attributes.event_mask |= (BDK_BUTTON_PRESS_MASK |
+			    BDK_BUTTON_RELEASE_MASK |
+			    BDK_ENTER_NOTIFY_MASK |
+			    BDK_LEAVE_NOTIFY_MASK |
+                            BDK_POINTER_MOTION_MASK |
+                            BDK_POINTER_MOTION_HINT_MASK);
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y;
+  attributes_mask = BDK_WA_X | BDK_WA_Y;
 
-  range->event_window = gdk_window_new (gtk_widget_get_parent_window (widget),
+  range->event_window = bdk_window_new (btk_widget_get_parent_window (widget),
 					&attributes, attributes_mask);
-  gdk_window_set_user_data (range->event_window, range);
+  bdk_window_set_user_data (range->event_window, range);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
+  widget->style = btk_style_attach (widget->style, widget->window);
 }
 
 static void
-gtk_range_unrealize (GtkWidget *widget)
+btk_range_unrealize (BtkWidget *widget)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
-  gtk_range_remove_step_timer (range);
-  gtk_range_remove_update_timer (range);
+  btk_range_remove_step_timer (range);
+  btk_range_remove_update_timer (range);
   
-  gdk_window_set_user_data (range->event_window, NULL);
-  gdk_window_destroy (range->event_window);
+  bdk_window_set_user_data (range->event_window, NULL);
+  bdk_window_destroy (range->event_window);
   range->event_window = NULL;
 
-  GTK_WIDGET_CLASS (gtk_range_parent_class)->unrealize (widget);
+  BTK_WIDGET_CLASS (btk_range_parent_class)->unrealize (widget);
 }
 
 static void
-gtk_range_map (GtkWidget *widget)
+btk_range_map (BtkWidget *widget)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
   
-  gdk_window_show (range->event_window);
+  bdk_window_show (range->event_window);
 
-  GTK_WIDGET_CLASS (gtk_range_parent_class)->map (widget);
+  BTK_WIDGET_CLASS (btk_range_parent_class)->map (widget);
 }
 
 static void
-gtk_range_unmap (GtkWidget *widget)
+btk_range_unmap (BtkWidget *widget)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
     
   stop_scrolling (range);
 
-  gdk_window_hide (range->event_window);
+  bdk_window_hide (range->event_window);
 
-  GTK_WIDGET_CLASS (gtk_range_parent_class)->unmap (widget);
+  BTK_WIDGET_CLASS (btk_range_parent_class)->unmap (widget);
 }
 
 static const gchar *
-gtk_range_get_slider_detail (GtkRange *range)
+btk_range_get_slider_detail (BtkRange *range)
 {
   const gchar *slider_detail;
 
   if (range->layout->slider_detail_quark)
     return g_quark_to_string (range->layout->slider_detail_quark);
 
-  slider_detail = GTK_RANGE_GET_CLASS (range)->slider_detail;
+  slider_detail = BTK_RANGE_GET_CLASS (range)->slider_detail;
 
   if (slider_detail && slider_detail[0] == 'X')
     {
       gchar *detail = g_strdup (slider_detail);
 
-      detail[0] = range->orientation == GTK_ORIENTATION_HORIZONTAL ? 'h' : 'v';
+      detail[0] = range->orientation == BTK_ORIENTATION_HORIZONTAL ? 'h' : 'v';
 
       range->layout->slider_detail_quark = g_quark_from_string (detail);
 
@@ -1660,7 +1660,7 @@ gtk_range_get_slider_detail (GtkRange *range)
 }
 
 static const gchar *
-gtk_range_get_stepper_detail (GtkRange *range,
+btk_range_get_stepper_detail (BtkRange *range,
                               Stepper   stepper)
 {
   const gchar *stepper_detail;
@@ -1670,11 +1670,11 @@ gtk_range_get_stepper_detail (GtkRange *range,
   if (range->layout->stepper_detail_quark[stepper])
     return g_quark_to_string (range->layout->stepper_detail_quark[stepper]);
 
-  stepper_detail = GTK_RANGE_GET_CLASS (range)->stepper_detail;
+  stepper_detail = BTK_RANGE_GET_CLASS (range)->stepper_detail;
 
   need_orientation = stepper_detail && stepper_detail[0] == 'X';
 
-  gtk_widget_style_get (GTK_WIDGET (range),
+  btk_widget_style_get (BTK_WIDGET (range),
                         "stepper-position-details", &need_position,
                         NULL);
 
@@ -1713,7 +1713,7 @@ gtk_range_get_stepper_detail (GtkRange *range,
       detail = g_strconcat (stepper_detail, position, NULL);
 
       if (need_orientation)
-        detail[0] = range->orientation == GTK_ORIENTATION_HORIZONTAL ? 'h' : 'v';
+        detail[0] = range->orientation == BTK_ORIENTATION_HORIZONTAL ? 'h' : 'v';
 
       range->layout->stepper_detail_quark[stepper] = g_quark_from_string (detail);
 
@@ -1726,19 +1726,19 @@ gtk_range_get_stepper_detail (GtkRange *range,
 }
 
 static void
-draw_stepper (GtkRange     *range,
+draw_stepper (BtkRange     *range,
               Stepper       stepper,
-              GtkArrowType  arrow_type,
+              BtkArrowType  arrow_type,
               gboolean      clicked,
               gboolean      prelighted,
-              GdkRectangle *area)
+              BdkRectangle *area)
 {
-  GtkStateType state_type;
-  GtkShadowType shadow_type;
-  GdkRectangle intersection;
-  GtkWidget *widget = GTK_WIDGET (range);
+  BtkStateType state_type;
+  BtkShadowType shadow_type;
+  BdkRectangle intersection;
+  BtkWidget *widget = BTK_WIDGET (range);
   gfloat arrow_scaling;
-  GdkRectangle *rect;
+  BdkRectangle *rect;
   gint arrow_x;
   gint arrow_y;
   gint arrow_width;
@@ -1763,17 +1763,17 @@ draw_stepper (GtkRange     *range,
       g_assert_not_reached ();
     };
 
-  /* More to get the right clip region than for efficiency */
-  if (!gdk_rectangle_intersect (area, rect, &intersection))
+  /* More to get the right clip rebunnyion than for efficiency */
+  if (!bdk_rectangle_intersect (area, rect, &intersection))
     return;
 
   intersection.x += widget->allocation.x;
   intersection.y += widget->allocation.y;
 
-  if ((!range->inverted && (arrow_type == GTK_ARROW_DOWN ||
-                            arrow_type == GTK_ARROW_RIGHT)) ||
-      (range->inverted  && (arrow_type == GTK_ARROW_UP ||
-                            arrow_type == GTK_ARROW_LEFT)))
+  if ((!range->inverted && (arrow_type == BTK_ARROW_DOWN ||
+                            arrow_type == BTK_ARROW_RIGHT)) ||
+      (range->inverted  && (arrow_type == BTK_ARROW_UP ||
+                            arrow_type == BTK_ARROW_LEFT)))
     {
       arrow_sensitive = range->layout->upper_sensitive;
     }
@@ -1782,31 +1782,31 @@ draw_stepper (GtkRange     *range,
       arrow_sensitive = range->layout->lower_sensitive;
     }
 
-  if (!gtk_widget_is_sensitive (GTK_WIDGET (range)) || !arrow_sensitive)
-    state_type = GTK_STATE_INSENSITIVE;
+  if (!btk_widget_is_sensitive (BTK_WIDGET (range)) || !arrow_sensitive)
+    state_type = BTK_STATE_INSENSITIVE;
   else if (clicked)
-    state_type = GTK_STATE_ACTIVE;
+    state_type = BTK_STATE_ACTIVE;
   else if (prelighted)
-    state_type = GTK_STATE_PRELIGHT;
+    state_type = BTK_STATE_PRELIGHT;
   else 
-    state_type = GTK_STATE_NORMAL;
+    state_type = BTK_STATE_NORMAL;
 
   if (clicked && arrow_sensitive)
-    shadow_type = GTK_SHADOW_IN;
+    shadow_type = BTK_SHADOW_IN;
   else
-    shadow_type = GTK_SHADOW_OUT;
+    shadow_type = BTK_SHADOW_OUT;
 
-  gtk_paint_box (widget->style,
+  btk_paint_box (widget->style,
 		 widget->window,
 		 state_type, shadow_type,
 		 &intersection, widget,
-		 gtk_range_get_stepper_detail (range, stepper),
+		 btk_range_get_stepper_detail (range, stepper),
 		 widget->allocation.x + rect->x,
 		 widget->allocation.y + rect->y,
 		 rect->width,
 		 rect->height);
 
-  gtk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
+  btk_widget_style_get (widget, "arrow-scaling", &arrow_scaling, NULL);
 
   arrow_width = rect->width * arrow_scaling;
   arrow_height = rect->height * arrow_scaling;
@@ -1818,7 +1818,7 @@ draw_stepper (GtkRange     *range,
       gint arrow_displacement_x;
       gint arrow_displacement_y;
 
-      gtk_range_get_props (GTK_RANGE (widget),
+      btk_range_get_props (BTK_RANGE (widget),
                            NULL, NULL, NULL, NULL, NULL, NULL,
 			   &arrow_displacement_x, &arrow_displacement_y);
       
@@ -1826,35 +1826,35 @@ draw_stepper (GtkRange     *range,
       arrow_y += arrow_displacement_y;
     }
   
-  gtk_paint_arrow (widget->style,
+  btk_paint_arrow (widget->style,
                    widget->window,
                    state_type, shadow_type,
                    &intersection, widget,
-                   gtk_range_get_stepper_detail (range, stepper),
+                   btk_range_get_stepper_detail (range, stepper),
                    arrow_type,
                    TRUE,
 		   arrow_x, arrow_y, arrow_width, arrow_height);
 }
 
 static gboolean
-gtk_range_expose (GtkWidget      *widget,
-		  GdkEventExpose *event)
+btk_range_expose (BtkWidget      *widget,
+		  BdkEventExpose *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
   gboolean sensitive;
-  GtkStateType state;
-  GtkShadowType shadow_type;
-  GdkRectangle expose_area;	/* Relative to widget->allocation */
-  GdkRectangle area;
+  BtkStateType state;
+  BtkShadowType shadow_type;
+  BdkRectangle expose_area;	/* Relative to widget->allocation */
+  BdkRectangle area;
   gint focus_line_width = 0;
   gint focus_padding = 0;
   gboolean touchscreen;
 
-  g_object_get (gtk_widget_get_settings (widget),
-                "gtk-touchscreen-mode", &touchscreen,
+  g_object_get (btk_widget_get_settings (widget),
+                "btk-touchscreen-mode", &touchscreen,
                 NULL);
-  if (gtk_widget_get_can_focus (GTK_WIDGET (range)))
-    gtk_widget_style_get (GTK_WIDGET (range),
+  if (btk_widget_get_can_focus (BTK_WIDGET (range)))
+    btk_widget_style_get (BTK_WIDGET (range),
                           "focus-line-width", &focus_line_width,
                           "focus-padding", &focus_padding,
                           NULL);
@@ -1868,19 +1868,19 @@ gtk_range_expose (GtkWidget      *widget,
   expose_area.x -= widget->allocation.x;
   expose_area.y -= widget->allocation.y;
   
-  gtk_range_calc_marks (range);
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_marks (range);
+  btk_range_calc_layout (range, range->adjustment->value);
 
-  sensitive = gtk_widget_is_sensitive (widget);
+  sensitive = btk_widget_is_sensitive (widget);
 
   /* Just to be confusing, we draw the trough for the whole
    * range rectangle, not the trough rectangle (the trough
    * rectangle is just for hit detection)
    */
-  /* The gdk_rectangle_intersect is more to get the right
-   * clip region (limited to range_rect) than for efficiency
+  /* The bdk_rectangle_intersect is more to get the right
+   * clip rebunnyion (limited to range_rect) than for efficiency
    */
-  if (gdk_rectangle_intersect (&expose_area, &range->range_rect,
+  if (bdk_rectangle_intersect (&expose_area, &range->range_rect,
                                &area))
     {
       gint     x      = (widget->allocation.x + range->range_rect.x +
@@ -1899,7 +1899,7 @@ gtk_range_expose (GtkWidget      *widget,
       area.x += widget->allocation.x;
       area.y += widget->allocation.y;
 
-      gtk_widget_style_get (GTK_WIDGET (range),
+      btk_widget_style_get (BTK_WIDGET (range),
                             "trough-side-details",   &trough_side_details,
                             "trough-under-steppers", &trough_under_steppers,
                             "stepper-size",          &stepper_size,
@@ -1939,7 +1939,7 @@ gtk_range_expose (GtkWidget      *widget,
               shorter += stepper_spacing;
             }
 
-          if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+          if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
             {
               x     += offset;
               width -= shorter;
@@ -1953,11 +1953,11 @@ gtk_range_expose (GtkWidget      *widget,
 
       if (! trough_side_details)
         {
-          gtk_paint_box (widget->style,
+          btk_paint_box (widget->style,
                          widget->window,
-                         sensitive ? GTK_STATE_ACTIVE : GTK_STATE_INSENSITIVE,
-                         GTK_SHADOW_IN,
-                         &area, GTK_WIDGET(range), "trough",
+                         sensitive ? BTK_STATE_ACTIVE : BTK_STATE_INSENSITIVE,
+                         BTK_SHADOW_IN,
+                         &area, BTK_WIDGET(range), "trough",
                          x, y,
                          width, height);
         }
@@ -1966,7 +1966,7 @@ gtk_range_expose (GtkWidget      *widget,
 	  gint trough_change_pos_x = width;
 	  gint trough_change_pos_y = height;
 
-	  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+	  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
 	    trough_change_pos_x = (range->layout->slider.x +
                                    range->layout->slider.width / 2 -
                                    (x - widget->allocation.x));
@@ -1975,25 +1975,25 @@ gtk_range_expose (GtkWidget      *widget,
                                    range->layout->slider.height / 2 -
                                    (y - widget->allocation.y));
 
-          gtk_paint_box (widget->style,
+          btk_paint_box (widget->style,
                          widget->window,
-                         sensitive ? GTK_STATE_ACTIVE : GTK_STATE_INSENSITIVE,
-                         GTK_SHADOW_IN,
-                         &area, GTK_WIDGET (range),
+                         sensitive ? BTK_STATE_ACTIVE : BTK_STATE_INSENSITIVE,
+                         BTK_SHADOW_IN,
+                         &area, BTK_WIDGET (range),
                          should_invert (range) ? "trough-upper" : "trough-lower",
                          x, y,
                          trough_change_pos_x, trough_change_pos_y);
 
-	  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+	  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
 	    trough_change_pos_y = 0;
 	  else
 	    trough_change_pos_x = 0;
 
-          gtk_paint_box (widget->style,
+          btk_paint_box (widget->style,
                          widget->window,
-                         sensitive ? GTK_STATE_ACTIVE : GTK_STATE_INSENSITIVE,
-                         GTK_SHADOW_IN,
-                         &area, GTK_WIDGET (range),
+                         sensitive ? BTK_STATE_ACTIVE : BTK_STATE_INSENSITIVE,
+                         BTK_SHADOW_IN,
+                         &area, BTK_WIDGET (range),
                          should_invert (range) ? "trough-lower" : "trough-upper",
                          x + trough_change_pos_x, y + trough_change_pos_y,
                          width - trough_change_pos_x,
@@ -2015,7 +2015,7 @@ gtk_range_expose (GtkWidget      *widget,
                               range->adjustment->upper -
                               range->adjustment->page_size);
 
-	  if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+	  if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
 	    {
 	      fill_x     = widget->allocation.x + range->layout->trough.x;
 	      fill_width = (range->layout->slider.width +
@@ -2049,17 +2049,17 @@ gtk_range_expose (GtkWidget      *widget,
 	  else
 	    fill_detail = "trough-fill-level";
 
-          gtk_paint_box (widget->style,
+          btk_paint_box (widget->style,
                          widget->window,
-                         sensitive ? GTK_STATE_ACTIVE : GTK_STATE_INSENSITIVE,
-                         GTK_SHADOW_OUT,
-                         &area, GTK_WIDGET (range), fill_detail,
+                         sensitive ? BTK_STATE_ACTIVE : BTK_STATE_INSENSITIVE,
+                         BTK_SHADOW_OUT,
+                         &area, BTK_WIDGET (range), fill_detail,
                          fill_x, fill_y,
                          fill_width, fill_height);
 	}
 
-      if (sensitive && gtk_widget_has_focus (widget))
-        gtk_paint_focus (widget->style, widget->window, gtk_widget_get_state (widget),
+      if (sensitive && btk_widget_has_focus (widget))
+        btk_paint_focus (widget->style, widget->window, btk_widget_get_state (widget),
                          &area, widget, "trough",
                          widget->allocation.x + range->range_rect.x,
                          widget->allocation.y + range->range_rect.y,
@@ -2067,42 +2067,42 @@ gtk_range_expose (GtkWidget      *widget,
                          range->range_rect.height);
     }
 
-  shadow_type = GTK_SHADOW_OUT;
+  shadow_type = BTK_SHADOW_OUT;
 
   if (!sensitive)
-    state = GTK_STATE_INSENSITIVE;
+    state = BTK_STATE_INSENSITIVE;
   else if (!touchscreen && range->layout->mouse_location == MOUSE_SLIDER)
-    state = GTK_STATE_PRELIGHT;
+    state = BTK_STATE_PRELIGHT;
   else
-    state = GTK_STATE_NORMAL;
+    state = BTK_STATE_NORMAL;
 
   if (range->layout->grab_location == MOUSE_SLIDER)
     {
       gboolean activate_slider;
 
-      gtk_widget_style_get (widget, "activate-slider", &activate_slider, NULL);
+      btk_widget_style_get (widget, "activate-slider", &activate_slider, NULL);
 
       if (activate_slider)
         {
-          state = GTK_STATE_ACTIVE;
-          shadow_type = GTK_SHADOW_IN;
+          state = BTK_STATE_ACTIVE;
+          shadow_type = BTK_SHADOW_IN;
         }
     }
 
-  if (gdk_rectangle_intersect (&expose_area,
+  if (bdk_rectangle_intersect (&expose_area,
                                &range->layout->slider,
                                &area))
     {
       area.x += widget->allocation.x;
       area.y += widget->allocation.y;
       
-      gtk_paint_slider (widget->style,
+      btk_paint_slider (widget->style,
                         widget->window,
                         state,
                         shadow_type,
                         &area,
                         widget,
-                        gtk_range_get_slider_detail (range),
+                        btk_range_get_slider_detail (range),
                         widget->allocation.x + range->layout->slider.x,
                         widget->allocation.y + range->layout->slider.y,
                         range->layout->slider.width,
@@ -2112,28 +2112,28 @@ gtk_range_expose (GtkWidget      *widget,
   
   if (range->has_stepper_a)
     draw_stepper (range, STEPPER_A,
-                  range->orientation == GTK_ORIENTATION_VERTICAL ? GTK_ARROW_UP : GTK_ARROW_LEFT,
+                  range->orientation == BTK_ORIENTATION_VERTICAL ? BTK_ARROW_UP : BTK_ARROW_LEFT,
                   range->layout->grab_location == MOUSE_STEPPER_A,
                   !touchscreen && range->layout->mouse_location == MOUSE_STEPPER_A,
                   &expose_area);
 
   if (range->has_stepper_b)
     draw_stepper (range, STEPPER_B,
-                  range->orientation == GTK_ORIENTATION_VERTICAL ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
+                  range->orientation == BTK_ORIENTATION_VERTICAL ? BTK_ARROW_DOWN : BTK_ARROW_RIGHT,
                   range->layout->grab_location == MOUSE_STEPPER_B,
                   !touchscreen && range->layout->mouse_location == MOUSE_STEPPER_B,
                   &expose_area);
 
   if (range->has_stepper_c)
     draw_stepper (range, STEPPER_C,
-                  range->orientation == GTK_ORIENTATION_VERTICAL ? GTK_ARROW_UP : GTK_ARROW_LEFT,
+                  range->orientation == BTK_ORIENTATION_VERTICAL ? BTK_ARROW_UP : BTK_ARROW_LEFT,
                   range->layout->grab_location == MOUSE_STEPPER_C,
                   !touchscreen && range->layout->mouse_location == MOUSE_STEPPER_C,
                   &expose_area);
 
   if (range->has_stepper_d)
     draw_stepper (range, STEPPER_D,
-                  range->orientation == GTK_ORIENTATION_VERTICAL ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
+                  range->orientation == BTK_ORIENTATION_VERTICAL ? BTK_ARROW_DOWN : BTK_ARROW_RIGHT,
                   range->layout->grab_location == MOUSE_STEPPER_D,
                   !touchscreen && range->layout->mouse_location == MOUSE_STEPPER_D,
                   &expose_area);
@@ -2142,39 +2142,39 @@ gtk_range_expose (GtkWidget      *widget,
 }
 
 static void
-range_grab_add (GtkRange      *range,
+range_grab_add (BtkRange      *range,
                 MouseLocation  location,
                 gint           button)
 {
-  /* we don't actually gtk_grab, since a button is down */
+  /* we don't actually btk_grab, since a button is down */
 
-  gtk_grab_add (GTK_WIDGET (range));
+  btk_grab_add (BTK_WIDGET (range));
   
   range->layout->grab_location = location;
   range->layout->grab_button = button;
   
-  if (gtk_range_update_mouse_location (range))
-    gtk_widget_queue_draw (GTK_WIDGET (range));
+  if (btk_range_update_mouse_location (range))
+    btk_widget_queue_draw (BTK_WIDGET (range));
 }
 
 static void
-range_grab_remove (GtkRange *range)
+range_grab_remove (BtkRange *range)
 {
   MouseLocation location;
 
-  gtk_grab_remove (GTK_WIDGET (range));
+  btk_grab_remove (BTK_WIDGET (range));
  
   location = range->layout->grab_location; 
   range->layout->grab_location = MOUSE_OUTSIDE;
   range->layout->grab_button = 0;
 
-  if (gtk_range_update_mouse_location (range) ||
+  if (btk_range_update_mouse_location (range) ||
       location != MOUSE_OUTSIDE)
-    gtk_widget_queue_draw (GTK_WIDGET (range));
+    btk_widget_queue_draw (BTK_WIDGET (range));
 }
 
-static GtkScrollType
-range_get_scroll_for_grab (GtkRange      *range)
+static BtkScrollType
+range_get_scroll_for_grab (BtkRange      *range)
 { 
   gboolean invert;
 
@@ -2187,13 +2187,13 @@ range_get_scroll_for_grab (GtkRange      *range)
       switch (range->layout->grab_button)
         {
         case 1:
-          return invert ? GTK_SCROLL_STEP_FORWARD : GTK_SCROLL_STEP_BACKWARD;
+          return invert ? BTK_SCROLL_STEP_FORWARD : BTK_SCROLL_STEP_BACKWARD;
           break;
         case 2:
-          return invert ? GTK_SCROLL_PAGE_FORWARD : GTK_SCROLL_PAGE_BACKWARD;
+          return invert ? BTK_SCROLL_PAGE_FORWARD : BTK_SCROLL_PAGE_BACKWARD;
           break;
         case 3:
-          return invert ? GTK_SCROLL_END : GTK_SCROLL_START;
+          return invert ? BTK_SCROLL_END : BTK_SCROLL_START;
           break;
         }
       break;
@@ -2204,13 +2204,13 @@ range_get_scroll_for_grab (GtkRange      *range)
       switch (range->layout->grab_button)
         {
         case 1:
-          return invert ? GTK_SCROLL_STEP_BACKWARD : GTK_SCROLL_STEP_FORWARD;
+          return invert ? BTK_SCROLL_STEP_BACKWARD : BTK_SCROLL_STEP_FORWARD;
           break;
         case 2:
-          return invert ? GTK_SCROLL_PAGE_BACKWARD : GTK_SCROLL_PAGE_FORWARD;
+          return invert ? BTK_SCROLL_PAGE_BACKWARD : BTK_SCROLL_PAGE_FORWARD;
           break;
         case 3:
-          return invert ? GTK_SCROLL_START : GTK_SCROLL_END;
+          return invert ? BTK_SCROLL_START : BTK_SCROLL_END;
           break;
        }
       break;
@@ -2219,9 +2219,9 @@ range_get_scroll_for_grab (GtkRange      *range)
     case MOUSE_TROUGH:
       {
         if (range->trough_click_forward)
-	  return GTK_SCROLL_PAGE_FORWARD;
+	  return BTK_SCROLL_PAGE_FORWARD;
         else
-	  return GTK_SCROLL_PAGE_BACKWARD;
+	  return BTK_SCROLL_PAGE_BACKWARD;
       }
       break;
 
@@ -2231,11 +2231,11 @@ range_get_scroll_for_grab (GtkRange      *range)
       break;
     }
 
-  return GTK_SCROLL_NONE;
+  return BTK_SCROLL_NONE;
 }
 
 static gdouble
-coord_to_value (GtkRange *range,
+coord_to_value (BtkRange *range,
                 gint      coord)
 {
   gdouble frac;
@@ -2246,7 +2246,7 @@ coord_to_value (GtkRange *range,
   gint    trough_border;
   gint    trough_under_steppers;
 
-  if (range->orientation == GTK_ORIENTATION_VERTICAL)
+  if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
       trough_length = range->layout->trough.height;
       trough_start  = range->layout->trough.y;
@@ -2259,7 +2259,7 @@ coord_to_value (GtkRange *range,
       slider_length = range->layout->slider.width;
     }
 
-  gtk_range_get_props (range, NULL, NULL, NULL, &trough_border, NULL,
+  btk_range_get_props (range, NULL, NULL, NULL, &trough_border, NULL,
                        &trough_under_steppers, NULL, NULL);
 
   if (! trough_under_steppers)
@@ -2285,12 +2285,12 @@ coord_to_value (GtkRange *range,
 }
 
 static gboolean
-gtk_range_key_press (GtkWidget   *widget,
-		     GdkEventKey *event)
+btk_range_key_press (BtkWidget   *widget,
+		     BdkEventKey *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
-  if (event->keyval == GDK_Escape &&
+  if (event->keyval == BDK_Escape &&
       range->layout->grab_location != MOUSE_OUTSIDE)
     {
       stop_scrolling (range);
@@ -2302,19 +2302,19 @@ gtk_range_key_press (GtkWidget   *widget,
       return TRUE;
     }
 
-  return GTK_WIDGET_CLASS (gtk_range_parent_class)->key_press_event (widget, event);
+  return BTK_WIDGET_CLASS (btk_range_parent_class)->key_press_event (widget, event);
 }
 
 static gint
-gtk_range_button_press (GtkWidget      *widget,
-			GdkEventButton *event)
+btk_range_button_press (BtkWidget      *widget,
+			BdkEventButton *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
   gboolean primary_warps;
   gint page_increment_button, warp_button;
   
-  if (!gtk_widget_has_focus (widget))
-    gtk_widget_grab_focus (widget);
+  if (!btk_widget_has_focus (widget))
+    btk_widget_grab_focus (widget);
 
   /* ignore presses when we're already doing something else. */
   if (range->layout->grab_location != MOUSE_OUTSIDE)
@@ -2322,11 +2322,11 @@ gtk_range_button_press (GtkWidget      *widget,
 
   range->layout->mouse_x = event->x;
   range->layout->mouse_y = event->y;
-  if (gtk_range_update_mouse_location (range))
-    gtk_widget_queue_draw (widget);
+  if (btk_range_update_mouse_location (range))
+    btk_widget_queue_draw (widget);
 
-  g_object_get (gtk_widget_get_settings (widget),
-                "gtk-primary-button-warps-slider", &primary_warps,
+  g_object_get (btk_widget_get_settings (widget),
+                "btk-primary-button-warps-slider", &primary_warps,
                 NULL);
   if (primary_warps)
     {
@@ -2344,11 +2344,11 @@ gtk_range_button_press (GtkWidget      *widget,
     {
       /* this button steps by page increment, as with button 2 on a stepper
        */
-      GtkScrollType scroll;
+      BtkScrollType scroll;
       gdouble click_value;
       
       click_value = coord_to_value (range,
-                                    range->orientation == GTK_ORIENTATION_VERTICAL ?
+                                    range->orientation == BTK_ORIENTATION_VERTICAL ?
                                     event->y : event->x);
       
       range->trough_click_forward = click_value > range->adjustment->value;
@@ -2356,7 +2356,7 @@ gtk_range_button_press (GtkWidget      *widget,
       
       scroll = range_get_scroll_for_grab (range);
       
-      gtk_range_add_step_timer (range, scroll);
+      btk_range_add_step_timer (range, scroll);
 
       return TRUE;
     }
@@ -2366,21 +2366,21 @@ gtk_range_button_press (GtkWidget      *widget,
             range->layout->mouse_location == MOUSE_STEPPER_D) &&
            (event->button == 1 || event->button == 2 || event->button == 3))
     {
-      GdkRectangle *stepper_area;
-      GtkScrollType scroll;
+      BdkRectangle *stepper_area;
+      BtkScrollType scroll;
       
       range_grab_add (range, range->layout->mouse_location, event->button);
 
       stepper_area = get_area (range, range->layout->mouse_location);
-      gtk_widget_queue_draw_area (widget,
+      btk_widget_queue_draw_area (widget,
                                   widget->allocation.x + stepper_area->x,
                                   widget->allocation.y + stepper_area->y,
                                   stepper_area->width,
                                   stepper_area->height);
 
       scroll = range_get_scroll_for_grab (range);
-      if (scroll != GTK_SCROLL_NONE)
-        gtk_range_add_step_timer (range, scroll);
+      if (scroll != BTK_SCROLL_NONE)
+        btk_range_add_step_timer (range, scroll);
       
       return TRUE;
     }
@@ -2401,11 +2401,11 @@ gtk_range_button_press (GtkWidget      *widget,
           
           slider_high_value =
             coord_to_value (range,
-                            range->orientation == GTK_ORIENTATION_VERTICAL ?
+                            range->orientation == BTK_ORIENTATION_VERTICAL ?
                             event->y : event->x);
           slider_low_value =
             coord_to_value (range,
-                            range->orientation == GTK_ORIENTATION_VERTICAL ?
+                            range->orientation == BTK_ORIENTATION_VERTICAL ?
                             event->y - range->layout->slider.height :
                             event->x - range->layout->slider.width);
           
@@ -2416,7 +2416,7 @@ gtk_range_button_press (GtkWidget      *widget,
            * properly
            */
 	  range->need_recalc = TRUE;
-          gtk_range_calc_layout (range, new_value);
+          btk_range_calc_layout (range, new_value);
 
 	  /* defer adjustment updates to update_slider_position() in order
 	   * to keep pixel quantisation
@@ -2424,7 +2424,7 @@ gtk_range_button_press (GtkWidget      *widget,
 	  need_value_update = TRUE;
         }
       
-      if (range->orientation == GTK_ORIENTATION_VERTICAL)
+      if (range->orientation == BTK_ORIENTATION_VERTICAL)
         {
           range->slide_initial_slider_position = range->layout->slider.y;
           range->slide_initial_coordinate = event->y;
@@ -2437,13 +2437,13 @@ gtk_range_button_press (GtkWidget      *widget,
 
       range_grab_add (range, MOUSE_SLIDER, event->button);
 
-      gtk_widget_style_get (widget, "activate-slider", &activate_slider, NULL);
+      btk_widget_style_get (widget, "activate-slider", &activate_slider, NULL);
 
       /* force a redraw, if the active slider is drawn differently to the
        * prelight one
        */
       if (activate_slider)
-        gtk_widget_queue_draw (widget);
+        btk_widget_queue_draw (widget);
 
       if (need_value_update)
         update_slider_position (range, event->x, event->y);
@@ -2456,7 +2456,7 @@ gtk_range_button_press (GtkWidget      *widget,
 
 /* During a slide, move the slider as required given new mouse position */
 static void
-update_slider_position (GtkRange *range,
+update_slider_position (BtkRange *range,
                         gint      mouse_x,
                         gint      mouse_y)
 {
@@ -2469,7 +2469,7 @@ update_slider_position (GtkRange *range,
   gdouble mark_delta;
   gint i;
 
-  if (range->orientation == GTK_ORIENTATION_VERTICAL)
+  if (range->orientation == BTK_ORIENTATION_VERTICAL)
     delta = mouse_y - range->slide_initial_coordinate;
   else
     delta = mouse_x - range->slide_initial_coordinate;
@@ -2494,24 +2494,24 @@ update_slider_position (GtkRange *range,
         }
     }  
 
-  g_signal_emit (range, signals[CHANGE_VALUE], 0, GTK_SCROLL_JUMP, new_value,
+  g_signal_emit (range, signals[CHANGE_VALUE], 0, BTK_SCROLL_JUMP, new_value,
                  &handled);
 }
 
 static void 
-stop_scrolling (GtkRange *range)
+stop_scrolling (BtkRange *range)
 {
   range_grab_remove (range);
-  gtk_range_remove_step_timer (range);
+  btk_range_remove_step_timer (range);
   /* Flush any pending discontinuous/delayed updates */
-  gtk_range_update_value (range);
+  btk_range_update_value (range);
 }
 
 static gboolean
-gtk_range_grab_broken (GtkWidget          *widget,
-		       GdkEventGrabBroken *event)
+btk_range_grab_broken (BtkWidget          *widget,
+		       BdkEventGrabBroken *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
   if (range->layout->grab_location != MOUSE_OUTSIDE)
     {
@@ -2527,10 +2527,10 @@ gtk_range_grab_broken (GtkWidget          *widget,
 }
 
 static gint
-gtk_range_button_release (GtkWidget      *widget,
-			  GdkEventButton *event)
+btk_range_button_release (BtkWidget      *widget,
+			  BdkEventButton *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
   if (event->window == range->event_window)
     {
@@ -2539,7 +2539,7 @@ gtk_range_button_release (GtkWidget      *widget,
     }
   else
     {
-      gdk_window_get_pointer (range->event_window,
+      bdk_window_get_pointer (range->event_window,
 			      &range->layout->mouse_x,
 			      &range->layout->mouse_y,
 			      NULL);
@@ -2559,9 +2559,9 @@ gtk_range_button_release (GtkWidget      *widget,
 }
 
 /**
- * _gtk_range_get_wheel_delta:
- * @range: a #GtkRange
- * @direction: A #GdkScrollDirection
+ * _btk_range_get_wheel_delta:
+ * @range: a #BtkRange
+ * @direction: A #BdkScrollDirection
  * 
  * Returns a good step value for the mouse wheel.
  * 
@@ -2570,19 +2570,19 @@ gtk_range_button_release (GtkWidget      *widget,
  * Since: 2.4
  **/
 gdouble
-_gtk_range_get_wheel_delta (GtkRange           *range,
-			    GdkScrollDirection  direction)
+_btk_range_get_wheel_delta (BtkRange           *range,
+			    BdkScrollDirection  direction)
 {
-  GtkAdjustment *adj = range->adjustment;
+  BtkAdjustment *adj = range->adjustment;
   gdouble delta;
 
-  if (GTK_IS_SCROLLBAR (range))
+  if (BTK_IS_SCROLLBAR (range))
     delta = pow (adj->page_size, 2.0 / 3.0);
   else
     delta = adj->step_increment * 2;
   
-  if (direction == GDK_SCROLL_UP ||
-      direction == GDK_SCROLL_LEFT)
+  if (direction == BDK_SCROLL_UP ||
+      direction == BDK_SCROLL_LEFT)
     delta = - delta;
   
   if (range->inverted)
@@ -2592,49 +2592,49 @@ _gtk_range_get_wheel_delta (GtkRange           *range,
 }
       
 static gboolean
-gtk_range_scroll_event (GtkWidget      *widget,
-			GdkEventScroll *event)
+btk_range_scroll_event (BtkWidget      *widget,
+			BdkEventScroll *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
-  if (gtk_widget_get_realized (widget))
+  if (btk_widget_get_realized (widget))
     {
-      GtkAdjustment *adj = GTK_RANGE (range)->adjustment;
+      BtkAdjustment *adj = BTK_RANGE (range)->adjustment;
       gdouble delta;
       gboolean handled;
 
-      delta = _gtk_range_get_wheel_delta (range, event->direction);
+      delta = _btk_range_get_wheel_delta (range, event->direction);
 
       g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                     GTK_SCROLL_JUMP, adj->value + delta,
+                     BTK_SCROLL_JUMP, adj->value + delta,
                      &handled);
       
       /* Policy DELAYED makes sense with scroll events,
        * but DISCONTINUOUS doesn't, so we update immediately
        * for DISCONTINUOUS
        */
-      if (range->update_policy == GTK_UPDATE_DISCONTINUOUS)
-        gtk_range_update_value (range);
+      if (range->update_policy == BTK_UPDATE_DISCONTINUOUS)
+        btk_range_update_value (range);
     }
 
   return TRUE;
 }
 
 static gboolean
-gtk_range_motion_notify (GtkWidget      *widget,
-			 GdkEventMotion *event)
+btk_range_motion_notify (BtkWidget      *widget,
+			 BdkEventMotion *event)
 {
-  GtkRange *range;
+  BtkRange *range;
 
-  range = GTK_RANGE (widget);
+  range = BTK_RANGE (widget);
 
-  gdk_event_request_motions (event);
+  bdk_event_request_motions (event);
   
   range->layout->mouse_x = event->x;
   range->layout->mouse_y = event->y;
 
-  if (gtk_range_update_mouse_location (range))
-    gtk_widget_queue_draw (widget);
+  if (btk_range_update_mouse_location (range))
+    btk_widget_queue_draw (widget);
 
   if (range->layout->grab_location == MOUSE_SLIDER)
     update_slider_position (range, event->x, event->y);
@@ -2644,49 +2644,49 @@ gtk_range_motion_notify (GtkWidget      *widget,
 }
 
 static gboolean
-gtk_range_enter_notify (GtkWidget        *widget,
-			GdkEventCrossing *event)
+btk_range_enter_notify (BtkWidget        *widget,
+			BdkEventCrossing *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
   range->layout->mouse_x = event->x;
   range->layout->mouse_y = event->y;
 
-  if (gtk_range_update_mouse_location (range))
-    gtk_widget_queue_draw (widget);
+  if (btk_range_update_mouse_location (range))
+    btk_widget_queue_draw (widget);
   
   return TRUE;
 }
 
 static gboolean
-gtk_range_leave_notify (GtkWidget        *widget,
-			GdkEventCrossing *event)
+btk_range_leave_notify (BtkWidget        *widget,
+			BdkEventCrossing *event)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
   range->layout->mouse_x = -1;
   range->layout->mouse_y = -1;
 
-  if (gtk_range_update_mouse_location (range))
-    gtk_widget_queue_draw (widget);
+  if (btk_range_update_mouse_location (range))
+    btk_widget_queue_draw (widget);
   
   return TRUE;
 }
 
 static void
-gtk_range_grab_notify (GtkWidget *widget,
+btk_range_grab_notify (BtkWidget *widget,
 		       gboolean   was_grabbed)
 {
   if (!was_grabbed)
-    stop_scrolling (GTK_RANGE (widget));
+    stop_scrolling (BTK_RANGE (widget));
 }
 
 static void
-gtk_range_state_changed (GtkWidget    *widget,
-			 GtkStateType  previous_state)
+btk_range_state_changed (BtkWidget    *widget,
+			 BtkStateType  previous_state)
 {
-  if (!gtk_widget_is_sensitive (widget))
-    stop_scrolling (GTK_RANGE (widget));
+  if (!btk_widget_is_sensitive (widget))
+    stop_scrolling (BTK_RANGE (widget));
 }
 
 #define check_rectangle(rectangle1, rectangle2)              \
@@ -2698,8 +2698,8 @@ gtk_range_state_changed (GtkWidget    *widget,
   }
 
 static gboolean
-layout_changed (GtkRangeLayout *layout1, 
-		GtkRangeLayout *layout2)
+layout_changed (BtkRangeLayout *layout1, 
+		BtkRangeLayout *layout2)
 {
   check_rectangle (layout1->slider, layout2->slider);
   check_rectangle (layout1->trough, layout2->trough);
@@ -2715,26 +2715,26 @@ layout_changed (GtkRangeLayout *layout1,
 }
 
 static void
-gtk_range_adjustment_changed (GtkAdjustment *adjustment,
+btk_range_adjustment_changed (BtkAdjustment *adjustment,
 			      gpointer       data)
 {
-  GtkRange *range = GTK_RANGE (data);
+  BtkRange *range = BTK_RANGE (data);
   /* create a copy of the layout */
-  GtkRangeLayout layout = *range->layout;
+  BtkRangeLayout layout = *range->layout;
 
   range->layout->recalc_marks = TRUE;
   range->need_recalc = TRUE;
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
   
   /* now check whether the layout changed  */
   if (layout_changed (range->layout, &layout))
-    gtk_widget_queue_draw (GTK_WIDGET (range));
+    btk_widget_queue_draw (BTK_WIDGET (range));
 
   /* Note that we don't round off to range->round_digits here.
    * that's because it's really broken to change a value
    * in response to a change signal on that value; round_digits
-   * is therefore defined to be a filter on what the GtkRange
-   * can input into the adjustment, not a filter that the GtkRange
+   * is therefore defined to be a filter on what the BtkRange
+   * can input into the adjustment, not a filter that the BtkRange
    * will enforce on the adjustment.
    */
 }
@@ -2742,41 +2742,41 @@ gtk_range_adjustment_changed (GtkAdjustment *adjustment,
 static gboolean
 force_repaint (gpointer data)
 {
-  GtkRange *range = GTK_RANGE (data);
+  BtkRange *range = BTK_RANGE (data);
 
   range->layout->repaint_id = 0;
-  if (gtk_widget_is_drawable (GTK_WIDGET (range)))
-    gdk_window_process_updates (GTK_WIDGET (range)->window, FALSE);
+  if (btk_widget_is_drawable (BTK_WIDGET (range)))
+    bdk_window_process_updates (BTK_WIDGET (range)->window, FALSE);
 
   return FALSE;
 }
 
 static void
-gtk_range_adjustment_value_changed (GtkAdjustment *adjustment,
+btk_range_adjustment_value_changed (BtkAdjustment *adjustment,
 				    gpointer       data)
 {
-  GtkRange *range = GTK_RANGE (data);
+  BtkRange *range = BTK_RANGE (data);
   /* create a copy of the layout */
-  GtkRangeLayout layout = *range->layout;
+  BtkRangeLayout layout = *range->layout;
 
   range->need_recalc = TRUE;
-  gtk_range_calc_layout (range, range->adjustment->value);
+  btk_range_calc_layout (range, range->adjustment->value);
   
   /* now check whether the layout changed  */
   if (layout_changed (range->layout, &layout) ||
-      (GTK_IS_SCALE (range) && GTK_SCALE (range)->draw_value))
+      (BTK_IS_SCALE (range) && BTK_SCALE (range)->draw_value))
     {
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_widget_queue_draw (BTK_WIDGET (range));
       /* setup a timer to ensure the range isn't lagging too much behind the scroll position */
       if (!range->layout->repaint_id)
-        range->layout->repaint_id = gdk_threads_add_timeout_full (GDK_PRIORITY_EVENTS, 181, force_repaint, range, NULL);
+        range->layout->repaint_id = bdk_threads_add_timeout_full (BDK_PRIORITY_EVENTS, 181, force_repaint, range, NULL);
     }
   
   /* Note that we don't round off to range->round_digits here.
    * that's because it's really broken to change a value
    * in response to a change signal on that value; round_digits
-   * is therefore defined to be a filter on what the GtkRange
-   * can input into the adjustment, not a filter that the GtkRange
+   * is therefore defined to be a filter on what the BtkRange
+   * can input into the adjustment, not a filter that the BtkRange
    * will enforce on the adjustment.
    */
 
@@ -2784,18 +2784,18 @@ gtk_range_adjustment_value_changed (GtkAdjustment *adjustment,
 }
 
 static void
-gtk_range_style_set (GtkWidget *widget,
-                     GtkStyle  *previous_style)
+btk_range_style_set (BtkWidget *widget,
+                     BtkStyle  *previous_style)
 {
-  GtkRange *range = GTK_RANGE (widget);
+  BtkRange *range = BTK_RANGE (widget);
 
   range->need_recalc = TRUE;
 
-  GTK_WIDGET_CLASS (gtk_range_parent_class)->style_set (widget, previous_style);
+  BTK_WIDGET_CLASS (btk_range_parent_class)->style_set (widget, previous_style);
 }
 
 static void
-apply_marks (GtkRange *range, 
+apply_marks (BtkRange *range, 
              gdouble   oldval,
              gdouble  *newval)
 {
@@ -2815,7 +2815,7 @@ apply_marks (GtkRange *range,
 }
 
 static void
-step_back (GtkRange *range)
+step_back (BtkRange *range)
 {
   gdouble newval;
   gboolean handled;
@@ -2823,11 +2823,11 @@ step_back (GtkRange *range)
   newval = range->adjustment->value - range->adjustment->step_increment;
   apply_marks (range, range->adjustment->value, &newval);
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                 GTK_SCROLL_STEP_BACKWARD, newval, &handled);
+                 BTK_SCROLL_STEP_BACKWARD, newval, &handled);
 }
 
 static void
-step_forward (GtkRange *range)
+step_forward (BtkRange *range)
 {
   gdouble newval;
   gboolean handled;
@@ -2835,12 +2835,12 @@ step_forward (GtkRange *range)
   newval = range->adjustment->value + range->adjustment->step_increment;
   apply_marks (range, range->adjustment->value, &newval);
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                 GTK_SCROLL_STEP_FORWARD, newval, &handled);
+                 BTK_SCROLL_STEP_FORWARD, newval, &handled);
 }
 
 
 static void
-page_back (GtkRange *range)
+page_back (BtkRange *range)
 {
   gdouble newval;
   gboolean handled;
@@ -2848,11 +2848,11 @@ page_back (GtkRange *range)
   newval = range->adjustment->value - range->adjustment->page_increment;
   apply_marks (range, range->adjustment->value, &newval);
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                 GTK_SCROLL_PAGE_BACKWARD, newval, &handled);
+                 BTK_SCROLL_PAGE_BACKWARD, newval, &handled);
 }
 
 static void
-page_forward (GtkRange *range)
+page_forward (BtkRange *range)
 {
   gdouble newval;
   gboolean handled;
@@ -2860,122 +2860,122 @@ page_forward (GtkRange *range)
   newval = range->adjustment->value + range->adjustment->page_increment;
   apply_marks (range, range->adjustment->value, &newval);
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                 GTK_SCROLL_PAGE_FORWARD, newval, &handled);
+                 BTK_SCROLL_PAGE_FORWARD, newval, &handled);
 }
 
 static void
-scroll_begin (GtkRange *range)
+scroll_begin (BtkRange *range)
 {
   gboolean handled;
   g_signal_emit (range, signals[CHANGE_VALUE], 0,
-                 GTK_SCROLL_START, range->adjustment->lower,
+                 BTK_SCROLL_START, range->adjustment->lower,
                  &handled);
 }
 
 static void
-scroll_end (GtkRange *range)
+scroll_end (BtkRange *range)
 {
   gdouble newval;
   gboolean handled;
 
   newval = range->adjustment->upper - range->adjustment->page_size;
-  g_signal_emit (range, signals[CHANGE_VALUE], 0, GTK_SCROLL_END, newval,
+  g_signal_emit (range, signals[CHANGE_VALUE], 0, BTK_SCROLL_END, newval,
                  &handled);
 }
 
 static gboolean
-gtk_range_scroll (GtkRange     *range,
-                  GtkScrollType scroll)
+btk_range_scroll (BtkRange     *range,
+                  BtkScrollType scroll)
 {
   gdouble old_value = range->adjustment->value;
 
   switch (scroll)
     {
-    case GTK_SCROLL_STEP_LEFT:
+    case BTK_SCROLL_STEP_LEFT:
       if (should_invert (range))
         step_forward (range);
       else
         step_back (range);
       break;
                     
-    case GTK_SCROLL_STEP_UP:
+    case BTK_SCROLL_STEP_UP:
       if (should_invert (range))
         step_forward (range);
       else
         step_back (range);
       break;
 
-    case GTK_SCROLL_STEP_RIGHT:
+    case BTK_SCROLL_STEP_RIGHT:
       if (should_invert (range))
         step_back (range);
       else
         step_forward (range);
       break;
                     
-    case GTK_SCROLL_STEP_DOWN:
+    case BTK_SCROLL_STEP_DOWN:
       if (should_invert (range))
         step_back (range);
       else
         step_forward (range);
       break;
                   
-    case GTK_SCROLL_STEP_BACKWARD:
+    case BTK_SCROLL_STEP_BACKWARD:
       step_back (range);
       break;
                   
-    case GTK_SCROLL_STEP_FORWARD:
+    case BTK_SCROLL_STEP_FORWARD:
       step_forward (range);
       break;
 
-    case GTK_SCROLL_PAGE_LEFT:
+    case BTK_SCROLL_PAGE_LEFT:
       if (should_invert (range))
         page_forward (range);
       else
         page_back (range);
       break;
                     
-    case GTK_SCROLL_PAGE_UP:
+    case BTK_SCROLL_PAGE_UP:
       if (should_invert (range))
         page_forward (range);
       else
         page_back (range);
       break;
 
-    case GTK_SCROLL_PAGE_RIGHT:
+    case BTK_SCROLL_PAGE_RIGHT:
       if (should_invert (range))
         page_back (range);
       else
         page_forward (range);
       break;
                     
-    case GTK_SCROLL_PAGE_DOWN:
+    case BTK_SCROLL_PAGE_DOWN:
       if (should_invert (range))
         page_back (range);
       else
         page_forward (range);
       break;
                   
-    case GTK_SCROLL_PAGE_BACKWARD:
+    case BTK_SCROLL_PAGE_BACKWARD:
       page_back (range);
       break;
                   
-    case GTK_SCROLL_PAGE_FORWARD:
+    case BTK_SCROLL_PAGE_FORWARD:
       page_forward (range);
       break;
 
-    case GTK_SCROLL_START:
+    case BTK_SCROLL_START:
       scroll_begin (range);
       break;
 
-    case GTK_SCROLL_END:
+    case BTK_SCROLL_END:
       scroll_end (range);
       break;
 
-    case GTK_SCROLL_JUMP:
+    case BTK_SCROLL_JUMP:
       /* Used by CList, range doesn't use it. */
       break;
 
-    case GTK_SCROLL_NONE:
+    case BTK_SCROLL_NONE:
       break;
     }
 
@@ -2983,58 +2983,58 @@ gtk_range_scroll (GtkRange     *range,
 }
 
 static void
-gtk_range_move_slider (GtkRange     *range,
-                       GtkScrollType scroll)
+btk_range_move_slider (BtkRange     *range,
+                       BtkScrollType scroll)
 {
   gboolean cursor_only;
 
-  g_object_get (gtk_widget_get_settings (GTK_WIDGET (range)),
-                "gtk-keynav-cursor-only", &cursor_only,
+  g_object_get (btk_widget_get_settings (BTK_WIDGET (range)),
+                "btk-keynav-cursor-only", &cursor_only,
                 NULL);
 
   if (cursor_only)
     {
-      GtkWidget *toplevel = gtk_widget_get_toplevel (GTK_WIDGET (range));
+      BtkWidget *toplevel = btk_widget_get_toplevel (BTK_WIDGET (range));
 
-      if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+      if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
         {
-          if (scroll == GTK_SCROLL_STEP_UP ||
-              scroll == GTK_SCROLL_STEP_DOWN)
+          if (scroll == BTK_SCROLL_STEP_UP ||
+              scroll == BTK_SCROLL_STEP_DOWN)
             {
               if (toplevel)
-                gtk_widget_child_focus (toplevel,
-                                        scroll == GTK_SCROLL_STEP_UP ?
-                                        GTK_DIR_UP : GTK_DIR_DOWN);
+                btk_widget_child_focus (toplevel,
+                                        scroll == BTK_SCROLL_STEP_UP ?
+                                        BTK_DIR_UP : BTK_DIR_DOWN);
               return;
             }
         }
       else
         {
-          if (scroll == GTK_SCROLL_STEP_LEFT ||
-              scroll == GTK_SCROLL_STEP_RIGHT)
+          if (scroll == BTK_SCROLL_STEP_LEFT ||
+              scroll == BTK_SCROLL_STEP_RIGHT)
             {
               if (toplevel)
-                gtk_widget_child_focus (toplevel,
-                                        scroll == GTK_SCROLL_STEP_LEFT ?
-                                        GTK_DIR_LEFT : GTK_DIR_RIGHT);
+                btk_widget_child_focus (toplevel,
+                                        scroll == BTK_SCROLL_STEP_LEFT ?
+                                        BTK_DIR_LEFT : BTK_DIR_RIGHT);
               return;
             }
         }
     }
 
-  if (! gtk_range_scroll (range, scroll))
-    gtk_widget_error_bell (GTK_WIDGET (range));
+  if (! btk_range_scroll (range, scroll))
+    btk_widget_error_bell (BTK_WIDGET (range));
 
   /* Policy DELAYED makes sense with key events,
    * but DISCONTINUOUS doesn't, so we update immediately
    * for DISCONTINUOUS
    */
-  if (range->update_policy == GTK_UPDATE_DISCONTINUOUS)
-    gtk_range_update_value (range);
+  if (range->update_policy == BTK_UPDATE_DISCONTINUOUS)
+    btk_range_update_value (range);
 }
 
 static void
-gtk_range_get_props (GtkRange  *range,
+btk_range_get_props (BtkRange  *range,
                      gint      *slider_width,
                      gint      *stepper_size,
                      gint      *focus_width,
@@ -3044,12 +3044,12 @@ gtk_range_get_props (GtkRange  *range,
 		     gint      *arrow_displacement_x,
 		     gint      *arrow_displacement_y)
 {
-  GtkWidget *widget =  GTK_WIDGET (range);
+  BtkWidget *widget =  BTK_WIDGET (range);
   gint tmp_slider_width, tmp_stepper_size, tmp_focus_width, tmp_trough_border;
   gint tmp_stepper_spacing, tmp_trough_under_steppers;
   gint tmp_arrow_displacement_x, tmp_arrow_displacement_y;
   
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
                         "slider-width", &tmp_slider_width,
                         "trough-border", &tmp_trough_border,
                         "stepper-size", &tmp_stepper_size,
@@ -3062,12 +3062,12 @@ gtk_range_get_props (GtkRange  *range,
   if (tmp_stepper_spacing > 0)
     tmp_trough_under_steppers = FALSE;
 
-  if (gtk_widget_get_can_focus (GTK_WIDGET (range)))
+  if (btk_widget_get_can_focus (BTK_WIDGET (range)))
     {
       gint focus_line_width;
       gint focus_padding;
       
-      gtk_widget_style_get (GTK_WIDGET (range),
+      btk_widget_style_get (BTK_WIDGET (range),
 			    "focus-line-width", &focus_line_width,
 			    "focus-padding", &focus_padding,
 			    NULL);
@@ -3112,13 +3112,13 @@ gtk_range_get_props (GtkRange  *range,
 
 /* Update mouse location, return TRUE if it changes */
 static gboolean
-gtk_range_update_mouse_location (GtkRange *range)
+btk_range_update_mouse_location (BtkRange *range)
 {
   gint x, y;
   MouseLocation old;
-  GtkWidget *widget;
+  BtkWidget *widget;
 
-  widget = GTK_WIDGET (range);
+  widget = BTK_WIDGET (range);
   
   old = range->layout->mouse_location;
   
@@ -3152,9 +3152,9 @@ gtk_range_update_mouse_location (GtkRange *range)
  * give space to border over rect in one direction.
  */
 static void
-clamp_dimensions (GtkWidget    *widget,
-                  GdkRectangle *rect,
-                  GtkBorder    *border,
+clamp_dimensions (BtkWidget    *widget,
+                  BdkRectangle *rect,
+                  BtkBorder    *border,
                   gboolean      border_expands_horizontally)
 {
   gint extra, shortage;
@@ -3243,14 +3243,14 @@ clamp_dimensions (GtkWidget    *widget,
 }
 
 static void
-gtk_range_calc_request (GtkRange      *range,
+btk_range_calc_request (BtkRange      *range,
                         gint           slider_width,
                         gint           stepper_size,
                         gint           focus_width,
                         gint           trough_border,
                         gint           stepper_spacing,
-                        GdkRectangle  *range_rect,
-                        GtkBorder     *border,
+                        BdkRectangle  *range_rect,
+                        BtkBorder     *border,
                         gint          *n_steppers_p,
                         gboolean      *has_steppers_ab,
                         gboolean      *has_steppers_cd,
@@ -3266,8 +3266,8 @@ gtk_range_calc_request (GtkRange      *range,
   border->top = 0;
   border->bottom = 0;
 
-  if (GTK_RANGE_GET_CLASS (range)->get_range_border)
-    GTK_RANGE_GET_CLASS (range)->get_range_border (range, border);
+  if (BTK_RANGE_GET_CLASS (range)->get_range_border)
+    BTK_RANGE_GET_CLASS (range)->get_range_border (range, border);
 
   n_steppers_ab = 0;
   n_steppers_cd = 0;
@@ -3291,7 +3291,7 @@ gtk_range_calc_request (GtkRange      *range,
   /* We never expand to fill available space in the small dimension
    * (i.e. vertical scrollbars are always a fixed width)
    */
-  if (range->orientation == GTK_ORIENTATION_VERTICAL)
+  if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
       range_rect->width = (focus_width + trough_border) * 2 + slider_width;
       range_rect->height = stepper_size * n_steppers + (focus_width + trough_border) * 2 + slider_length;
@@ -3328,19 +3328,19 @@ gtk_range_calc_request (GtkRange      *range,
 }
 
 static void
-gtk_range_calc_layout (GtkRange *range,
+btk_range_calc_layout (BtkRange *range,
 		       gdouble   adjustment_value)
 {
   gint slider_width, stepper_size, focus_width, trough_border, stepper_spacing;
   gint slider_length;
-  GtkBorder border;
+  BtkBorder border;
   gint n_steppers;
   gboolean has_steppers_ab;
   gboolean has_steppers_cd;
   gboolean trough_under_steppers;
-  GdkRectangle range_rect;
-  GtkRangeLayout *layout;
-  GtkWidget *widget;
+  BdkRectangle range_rect;
+  BtkRangeLayout *layout;
+  BtkWidget *widget;
   
   if (!range->need_recalc)
     return;
@@ -3355,16 +3355,16 @@ gtk_range_calc_layout (GtkRange *range,
    * not drawing on range->range_rect.
    */
 
-  widget = GTK_WIDGET (range);
+  widget = BTK_WIDGET (range);
   layout = range->layout;
   
-  gtk_range_get_props (range,
+  btk_range_get_props (range,
                        &slider_width, &stepper_size,
                        &focus_width, &trough_border,
                        &stepper_spacing, &trough_under_steppers,
 		       NULL, NULL);
 
-  gtk_range_calc_request (range, 
+  btk_range_calc_request (range, 
                           slider_width, stepper_size,
                           focus_width, trough_border, stepper_spacing,
                           &range_rect, &border, &n_steppers,
@@ -3373,7 +3373,7 @@ gtk_range_calc_layout (GtkRange *range,
   /* We never expand to fill available space in the small dimension
    * (i.e. vertical scrollbars are always a fixed width)
    */
-  if (range->orientation == GTK_ORIENTATION_VERTICAL)
+  if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
       clamp_dimensions (widget, &range_rect, &border, TRUE);
     }
@@ -3387,7 +3387,7 @@ gtk_range_calc_layout (GtkRange *range,
   
   range->range_rect = range_rect;
   
-  if (range->orientation == GTK_ORIENTATION_VERTICAL)
+  if (range->orientation == BTK_ORIENTATION_VERTICAL)
     {
       gint stepper_width, stepper_height;
 
@@ -3684,44 +3684,44 @@ gtk_range_calc_layout (GtkRange *range,
       }
     }
   
-  gtk_range_update_mouse_location (range);
+  btk_range_update_mouse_location (range);
 
   switch (range->layout->upper_sensitivity)
     {
-    case GTK_SENSITIVITY_AUTO:
+    case BTK_SENSITIVITY_AUTO:
       range->layout->upper_sensitive =
         (range->adjustment->value <
          (range->adjustment->upper - range->adjustment->page_size));
       break;
 
-    case GTK_SENSITIVITY_ON:
+    case BTK_SENSITIVITY_ON:
       range->layout->upper_sensitive = TRUE;
       break;
 
-    case GTK_SENSITIVITY_OFF:
+    case BTK_SENSITIVITY_OFF:
       range->layout->upper_sensitive = FALSE;
       break;
     }
 
   switch (range->layout->lower_sensitivity)
     {
-    case GTK_SENSITIVITY_AUTO:
+    case BTK_SENSITIVITY_AUTO:
       range->layout->lower_sensitive =
         (range->adjustment->value > range->adjustment->lower);
       break;
 
-    case GTK_SENSITIVITY_ON:
+    case BTK_SENSITIVITY_ON:
       range->layout->lower_sensitive = TRUE;
       break;
 
-    case GTK_SENSITIVITY_OFF:
+    case BTK_SENSITIVITY_OFF:
       range->layout->lower_sensitive = FALSE;
       break;
     }
 }
 
-static GdkRectangle*
-get_area (GtkRange     *range,
+static BdkRectangle*
+get_area (BtkRange     *range,
           MouseLocation location)
 {
   switch (location)
@@ -3748,7 +3748,7 @@ get_area (GtkRange     *range,
 }
 
 static void
-gtk_range_calc_marks (GtkRange *range)
+btk_range_calc_marks (BtkRange *range)
 {
   gint i;
   
@@ -3760,8 +3760,8 @@ gtk_range_calc_marks (GtkRange *range)
   for (i = 0; i < range->layout->n_marks; i++)
     {
       range->need_recalc = TRUE;
-      gtk_range_calc_layout (range, range->layout->marks[i]);
-      if (range->orientation == GTK_ORIENTATION_HORIZONTAL)
+      btk_range_calc_layout (range, range->layout->marks[i]);
+      if (range->orientation == BTK_ORIENTATION_HORIZONTAL)
         range->layout->mark_pos[i] = range->layout->slider.x + range->layout->slider.width / 2;
       else
         range->layout->mark_pos[i] = range->layout->slider.y + range->layout->slider.height / 2;
@@ -3771,8 +3771,8 @@ gtk_range_calc_marks (GtkRange *range)
 }
 
 static gboolean
-gtk_range_real_change_value (GtkRange     *range,
-                             GtkScrollType scroll,
+btk_range_real_change_value (BtkRange     *range,
+                             BtkScrollType scroll,
                              gdouble       value)
 {
   /* potentially adjust the bounds _before we clamp */
@@ -3802,21 +3802,21 @@ gtk_range_real_change_value (GtkRange     *range,
     {
       range->need_recalc = TRUE;
 
-      gtk_widget_queue_draw (GTK_WIDGET (range));
+      btk_widget_queue_draw (BTK_WIDGET (range));
       
       switch (range->update_policy)
         {
-        case GTK_UPDATE_CONTINUOUS:
-          gtk_adjustment_set_value (range->adjustment, value);
+        case BTK_UPDATE_CONTINUOUS:
+          btk_adjustment_set_value (range->adjustment, value);
           break;
 
           /* Delayed means we update after a period of inactivity */
-        case GTK_UPDATE_DELAYED:
-          gtk_range_reset_update_timer (range);
+        case BTK_UPDATE_DELAYED:
+          btk_range_reset_update_timer (range);
           /* FALL THRU */
 
           /* Discontinuous means we update on button release */
-        case GTK_UPDATE_DISCONTINUOUS:
+        case BTK_UPDATE_DISCONTINUOUS:
           /* don't emit value_changed signal */
           range->adjustment->value = value;
           range->update_pending = TRUE;
@@ -3827,31 +3827,31 @@ gtk_range_real_change_value (GtkRange     *range,
 }
 
 static void
-gtk_range_update_value (GtkRange *range)
+btk_range_update_value (BtkRange *range)
 {
-  gtk_range_remove_update_timer (range);
+  btk_range_remove_update_timer (range);
   
   if (range->update_pending)
     {
-      gtk_adjustment_value_changed (range->adjustment);
+      btk_adjustment_value_changed (range->adjustment);
 
       range->update_pending = FALSE;
     }
 }
 
-struct _GtkRangeStepTimer
+struct _BtkRangeStepTimer
 {
   guint timeout_id;
-  GtkScrollType step;
+  BtkScrollType step;
 };
 
 static gboolean
 second_timeout (gpointer data)
 {
-  GtkRange *range;
+  BtkRange *range;
 
-  range = GTK_RANGE (data);
-  gtk_range_scroll (range, range->timer->step);
+  range = BTK_RANGE (data);
+  btk_range_scroll (range, range->timer->step);
   
   return TRUE;
 }
@@ -3859,15 +3859,15 @@ second_timeout (gpointer data)
 static gboolean
 initial_timeout (gpointer data)
 {
-  GtkRange    *range;
-  GtkSettings *settings;
+  BtkRange    *range;
+  BtkSettings *settings;
   guint        timeout;
 
-  settings = gtk_widget_get_settings (GTK_WIDGET (data));
-  g_object_get (settings, "gtk-timeout-repeat", &timeout, NULL);
+  settings = btk_widget_get_settings (BTK_WIDGET (data));
+  g_object_get (settings, "btk-timeout-repeat", &timeout, NULL);
 
-  range = GTK_RANGE (data);
-  range->timer->timeout_id = gdk_threads_add_timeout (timeout * SCROLL_DELAY_FACTOR,
+  range = BTK_RANGE (data);
+  range->timer->timeout_id = bdk_threads_add_timeout (timeout * SCROLL_DELAY_FACTOR,
                                             second_timeout,
                                             range);
   /* remove self */
@@ -3875,30 +3875,30 @@ initial_timeout (gpointer data)
 }
 
 static void
-gtk_range_add_step_timer (GtkRange      *range,
-                          GtkScrollType  step)
+btk_range_add_step_timer (BtkRange      *range,
+                          BtkScrollType  step)
 {
-  GtkSettings *settings;
+  BtkSettings *settings;
   guint        timeout;
 
   g_return_if_fail (range->timer == NULL);
-  g_return_if_fail (step != GTK_SCROLL_NONE);
+  g_return_if_fail (step != BTK_SCROLL_NONE);
 
-  settings = gtk_widget_get_settings (GTK_WIDGET (range));
-  g_object_get (settings, "gtk-timeout-initial", &timeout, NULL);
+  settings = btk_widget_get_settings (BTK_WIDGET (range));
+  g_object_get (settings, "btk-timeout-initial", &timeout, NULL);
 
-  range->timer = g_new (GtkRangeStepTimer, 1);
+  range->timer = g_new (BtkRangeStepTimer, 1);
 
-  range->timer->timeout_id = gdk_threads_add_timeout (timeout,
+  range->timer->timeout_id = bdk_threads_add_timeout (timeout,
                                             initial_timeout,
                                             range);
   range->timer->step = step;
 
-  gtk_range_scroll (range, range->timer->step);
+  btk_range_scroll (range, range->timer->step);
 }
 
 static void
-gtk_range_remove_step_timer (GtkRange *range)
+btk_range_remove_step_timer (BtkRange *range)
 {
   if (range->timer)
     {
@@ -3914,10 +3914,10 @@ gtk_range_remove_step_timer (GtkRange *range)
 static gboolean
 update_timeout (gpointer data)
 {
-  GtkRange *range;
+  BtkRange *range;
 
-  range = GTK_RANGE (data);
-  gtk_range_update_value (range);
+  range = BTK_RANGE (data);
+  btk_range_update_value (range);
   range->update_timeout_id = 0;
 
   /* self-remove */
@@ -3925,17 +3925,17 @@ update_timeout (gpointer data)
 }
 
 static void
-gtk_range_reset_update_timer (GtkRange *range)
+btk_range_reset_update_timer (BtkRange *range)
 {
-  gtk_range_remove_update_timer (range);
+  btk_range_remove_update_timer (range);
 
-  range->update_timeout_id = gdk_threads_add_timeout (UPDATE_DELAY,
+  range->update_timeout_id = bdk_threads_add_timeout (UPDATE_DELAY,
                                             update_timeout,
                                             range);
 }
 
 static void
-gtk_range_remove_update_timer (GtkRange *range)
+btk_range_remove_update_timer (BtkRange *range)
 {
   if (range->update_timeout_id != 0)
     {
@@ -3945,7 +3945,7 @@ gtk_range_remove_update_timer (GtkRange *range)
 }
 
 void
-_gtk_range_set_stop_values (GtkRange *range,
+_btk_range_set_stop_values (BtkRange *range,
                             gdouble  *values,
                             gint      n_values)
 {
@@ -3966,10 +3966,10 @@ _gtk_range_set_stop_values (GtkRange *range,
 }
 
 gint
-_gtk_range_get_stop_positions (GtkRange  *range,
+_btk_range_get_stop_positions (BtkRange  *range,
                                gint     **values)
 {
-  gtk_range_calc_marks (range);
+  btk_range_calc_marks (range);
 
   if (values)
     *values = g_memdup (range->layout->mark_pos, range->layout->n_marks * sizeof (gint));
@@ -3978,20 +3978,20 @@ _gtk_range_get_stop_positions (GtkRange  *range,
 }
 
 /**
- * gtk_range_set_round_digits:
- * @range: a #GtkRange
+ * btk_range_set_round_digits:
+ * @range: a #BtkRange
  * @round_digits: the precision in digits, or -1
  *
  * Sets the number of digits to round the value to when
- * it changes. See #GtkRange::change-value.
+ * it changes. See #BtkRange::change-value.
  *
  * Since: 2.24
  */
 void
-gtk_range_set_round_digits (GtkRange *range,
+btk_range_set_round_digits (BtkRange *range,
                             gint      round_digits)
 {
-  g_return_if_fail (GTK_IS_RANGE (range));
+  g_return_if_fail (BTK_IS_RANGE (range));
   g_return_if_fail (round_digits >= -1);
 
   range->round_digits = round_digits;
@@ -4000,24 +4000,24 @@ gtk_range_set_round_digits (GtkRange *range,
 }
 
 /**
- * gtk_range_get_round_digits:
- * @range: a #GtkRange
+ * btk_range_get_round_digits:
+ * @range: a #BtkRange
  *
  * Gets the number of digits to round the value to when
- * it changes. See #GtkRange::change-value.
+ * it changes. See #BtkRange::change-value.
  *
  * Return value: the number of digits to round to
  *
  * Since: 2.24
  */
 gint
-gtk_range_get_round_digits (GtkRange *range)
+btk_range_get_round_digits (BtkRange *range)
 {
-  g_return_val_if_fail (GTK_IS_RANGE (range), -1);
+  g_return_val_if_fail (BTK_IS_RANGE (range), -1);
 
   return range->round_digits;
 }
 
 
-#define __GTK_RANGE_C__
-#include "gtkaliasdef.c"
+#define __BTK_RANGE_C__
+#include "btkaliasdef.c"

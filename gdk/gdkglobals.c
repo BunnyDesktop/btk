@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,31 +18,31 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
 #include <stdio.h>
 
-#include "gdktypes.h"
-#include "gdkprivate.h"
-#include "gdkalias.h"
+#include "bdktypes.h"
+#include "bdkprivate.h"
+#include "bdkalias.h"
 
-guint               _gdk_debug_flags = 0;
-gint                _gdk_error_code = 0;
-gint                _gdk_error_warnings = TRUE;
-GList              *_gdk_default_filters = NULL;
-gchar              *_gdk_display_name = NULL;
-gint                _gdk_screen_number = -1;
-gchar              *_gdk_display_arg_name = NULL;
-gboolean            _gdk_native_windows = FALSE;
+guint               _bdk_debug_flags = 0;
+gint                _bdk_error_code = 0;
+gint                _bdk_error_warnings = TRUE;
+GList              *_bdk_default_filters = NULL;
+gchar              *_bdk_display_name = NULL;
+gint                _bdk_screen_number = -1;
+gchar              *_bdk_display_arg_name = NULL;
+gboolean            _bdk_native_windows = FALSE;
 
-GSList             *_gdk_displays = NULL;
+GSList             *_bdk_displays = NULL;
 
-GMutex              *gdk_threads_mutex = NULL;          /* Global GDK lock */
-GCallback            gdk_threads_lock = NULL;
-GCallback            gdk_threads_unlock = NULL;
+GMutex              *bdk_threads_mutex = NULL;          /* Global BDK lock */
+GCallback            bdk_threads_lock = NULL;
+GCallback            bdk_threads_unlock = NULL;

@@ -1,9 +1,9 @@
 /*** BEGIN file-header ***/
-#undef GTK_DISABLE_DEPRECATED
-#define GTK_ENABLE_BROKEN
-#include "gtk.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#undef BTK_DISABLE_DEPRECATED
+#define BTK_ENABLE_BROKEN
+#include "btk.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 /*** END file-header ***/
 
@@ -35,6 +35,6 @@ GType
 /*** END value-tail ***/
 
 /*** BEGIN file-tail ***/
-#define __GTK_TYPE_BUILTINS_C__
-#include "gtkaliasdef.c"
+#define __BTK_TYPE_BUILTINS_C__
+#include "btkaliasdef.c"
 /*** END file-tail ***/

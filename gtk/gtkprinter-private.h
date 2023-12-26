@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprintoperation.h: Print Operation
+/* BTK - The GIMP Toolkit
+ * btkprintoperation.h: Print Operation
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,38 +18,38 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINTER_PRIVATE_H__
-#define __GTK_PRINTER_PRIVATE_H__
+#ifndef __BTK_PRINTER_PRIVATE_H__
+#define __BTK_PRINTER_PRIVATE_H__
 
-#include <gtk/gtk.h>
-#include <gtk/gtkunixprint.h>
-#include "gtkprinteroptionset.h"
+#include <btk/btk.h>
+#include <btk/btkunixprint.h>
+#include "btkprinteroptionset.h"
 
 G_BEGIN_DECLS
 
-GtkPrinterOptionSet *_gtk_printer_get_options               (GtkPrinter          *printer,
-							     GtkPrintSettings    *settings,
-							     GtkPageSetup        *page_setup,
-							     GtkPrintCapabilities capabilities);
-gboolean             _gtk_printer_mark_conflicts            (GtkPrinter          *printer,
-							     GtkPrinterOptionSet *options);
-void                 _gtk_printer_get_settings_from_options (GtkPrinter          *printer,
-							     GtkPrinterOptionSet *options,
-							     GtkPrintSettings    *settings);
-void                 _gtk_printer_prepare_for_print         (GtkPrinter          *printer,
-							     GtkPrintJob         *print_job,
-							     GtkPrintSettings    *settings,
-							     GtkPageSetup        *page_setup);
-cairo_surface_t *    _gtk_printer_create_cairo_surface      (GtkPrinter          *printer,
-							     GtkPrintSettings    *settings,
+BtkPrinterOptionSet *_btk_printer_get_options               (BtkPrinter          *printer,
+							     BtkPrintSettings    *settings,
+							     BtkPageSetup        *page_setup,
+							     BtkPrintCapabilities capabilities);
+gboolean             _btk_printer_mark_conflicts            (BtkPrinter          *printer,
+							     BtkPrinterOptionSet *options);
+void                 _btk_printer_get_settings_from_options (BtkPrinter          *printer,
+							     BtkPrinterOptionSet *options,
+							     BtkPrintSettings    *settings);
+void                 _btk_printer_prepare_for_print         (BtkPrinter          *printer,
+							     BtkPrintJob         *print_job,
+							     BtkPrintSettings    *settings,
+							     BtkPageSetup        *page_setup);
+bairo_surface_t *    _btk_printer_create_bairo_surface      (BtkPrinter          *printer,
+							     BtkPrintSettings    *settings,
 							     gdouble              width,
 							     gdouble              height,
-							     GIOChannel          *cache_io);
-GHashTable *         _gtk_printer_get_custom_widgets        (GtkPrinter          *printer);
+							     BUNNYIOChannel          *cache_io);
+GHashTable *         _btk_printer_get_custom_widgets        (BtkPrinter          *printer);
 
-/* GtkPrintJob private methods: */
-void gtk_print_job_set_status (GtkPrintJob   *job,
-			       GtkPrintStatus status);
+/* BtkPrintJob private methods: */
+void btk_print_job_set_status (BtkPrintJob   *job,
+			       BtkPrintStatus status);
 
 G_END_DECLS
-#endif /* __GTK_PRINT_OPERATION_PRIVATE_H__ */
+#endif /* __BTK_PRINT_OPERATION_PRIVATE_H__ */

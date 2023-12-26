@@ -1,4 +1,4 @@
-/* GtkAction tests.
+/* BtkAction tests.
  *
  * Authors: Jan Arne Petersen <jpetersen@openismus.com>
  *
@@ -18,20 +18,20 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 /* Fixture */
 
 typedef struct
 {
-  GtkAction *action;
+  BtkAction *action;
 } ActionTest;
 
 static void
 action_test_setup (ActionTest    *fixture,
                    gconstpointer  test_data)
 {
-  fixture->action = gtk_action_new ("name", "label", NULL, NULL);
+  fixture->action = btk_action_new ("name", "label", NULL, NULL);
 }
 
 static void
@@ -54,18 +54,18 @@ static void
 menu_item_label_notify_count (ActionTest    *fixture,
                               gconstpointer  test_data)
 {
-  GtkWidget *item = gtk_menu_item_new ();
+  BtkWidget *item = btk_menu_item_new ();
   unsigned int emmisions = 0;
 
   g_signal_connect (item, "notify::label",
 		    G_CALLBACK (notify_count_emmisions), &emmisions);
 
-  gtk_activatable_do_set_related_action (GTK_ACTIVATABLE (item),
+  btk_activatable_do_set_related_action (BTK_ACTIVATABLE (item),
 					 fixture->action);
 
   g_assert_cmpuint (emmisions, ==, 1);
 
-  gtk_action_set_label (fixture->action, "new label");
+  btk_action_set_label (fixture->action, "new label");
 
   g_assert_cmpuint (emmisions, ==, 2);
 
@@ -78,7 +78,7 @@ int
 main (int    argc,
       char **argv)
 {
-  gtk_test_init (&argc, &argv, NULL);
+  btk_test_init (&argc, &argv, NULL);
 
   g_test_add ("/Action/MenuItem/label-notify-count",
               ActionTest, NULL,

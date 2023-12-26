@@ -7,7 +7,7 @@
  * How the options are displayed is controlled by cell renderers.
  */
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 enum 
 {
@@ -37,40 +37,40 @@ strip_underscore (const gchar *text)
   return result;
 }
 
-static GtkTreeModel *
+static BtkTreeModel *
 create_stock_icon_store (void)
 {
   gchar *stock_id[6] = {
-    GTK_STOCK_DIALOG_WARNING,
-    GTK_STOCK_STOP,
-    GTK_STOCK_NEW,
-    GTK_STOCK_CLEAR,
+    BTK_STOCK_DIALOG_WARNING,
+    BTK_STOCK_STOP,
+    BTK_STOCK_NEW,
+    BTK_STOCK_CLEAR,
     NULL,
-    GTK_STOCK_OPEN    
+    BTK_STOCK_OPEN    
   };
 
-  GtkStockItem item;
-  GdkPixbuf *pixbuf;
-  GtkWidget *cellview;
-  GtkTreeIter iter;
-  GtkListStore *store;
+  BtkStockItem item;
+  BdkPixbuf *pixbuf;
+  BtkWidget *cellview;
+  BtkTreeIter iter;
+  BtkListStore *store;
   gchar *label;
   gint i;
 
-  cellview = gtk_cell_view_new ();
+  cellview = btk_cell_view_new ();
   
-  store = gtk_list_store_new (2, GDK_TYPE_PIXBUF, G_TYPE_STRING);
+  store = btk_list_store_new (2, BDK_TYPE_PIXBUF, G_TYPE_STRING);
 
   for (i = 0; i < G_N_ELEMENTS (stock_id); i++)
     {
       if (stock_id[i])
 	{
-	  pixbuf = gtk_widget_render_icon (cellview, stock_id[i],
-					   GTK_ICON_SIZE_BUTTON, NULL);
-	  gtk_stock_lookup (stock_id[i], &item);
+	  pixbuf = btk_widget_render_icon (cellview, stock_id[i],
+					   BTK_ICON_SIZE_BUTTON, NULL);
+	  btk_stock_lookup (stock_id[i], &item);
 	  label = strip_underscore (item.label);
-	  gtk_list_store_append (store, &iter);
-	  gtk_list_store_set (store, &iter,
+	  btk_list_store_append (store, &iter);
+	  btk_list_store_set (store, &iter,
 			      PIXBUF_COL, pixbuf,
 			      TEXT_COL, label,
 			      -1);
@@ -79,62 +79,62 @@ create_stock_icon_store (void)
 	}
       else
 	{
-	  gtk_list_store_append (store, &iter);
-	  gtk_list_store_set (store, &iter,
+	  btk_list_store_append (store, &iter);
+	  btk_list_store_set (store, &iter,
 			      PIXBUF_COL, NULL,
 			      TEXT_COL, "separator",
 			      -1);
 	}
     }
 
-  gtk_widget_destroy (cellview);
+  btk_widget_destroy (cellview);
   
-  return GTK_TREE_MODEL (store);
+  return BTK_TREE_MODEL (store);
 }
 
-/* A GtkCellLayoutDataFunc that demonstrates how one can control
+/* A BtkCellLayoutDataFunc that demonstrates how one can control
  * sensitivity of rows. This particular function does nothing 
  * useful and just makes the second row insensitive.
  */
 static void
-set_sensitive (GtkCellLayout   *cell_layout,
-	       GtkCellRenderer *cell,
-	       GtkTreeModel    *tree_model,
-	       GtkTreeIter     *iter,
+set_sensitive (BtkCellLayout   *cell_layout,
+	       BtkCellRenderer *cell,
+	       BtkTreeModel    *tree_model,
+	       BtkTreeIter     *iter,
 	       gpointer         data)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
   gint *indices;
   gboolean sensitive;
 
-  path = gtk_tree_model_get_path (tree_model, iter);
-  indices = gtk_tree_path_get_indices (path);
+  path = btk_tree_model_get_path (tree_model, iter);
+  indices = btk_tree_path_get_indices (path);
   sensitive = indices[0] != 1;
-  gtk_tree_path_free (path);
+  btk_tree_path_free (path);
 
   g_object_set (cell, "sensitive", sensitive, NULL);
 }
 
-/* A GtkTreeViewRowSeparatorFunc that demonstrates how rows can be
+/* A BtkTreeViewRowSeparatorFunc that demonstrates how rows can be
  * rendered as separators. This particular function does nothing 
  * useful and just turns the fourth row into a separator.
  */
 static gboolean
-is_separator (GtkTreeModel *model,
-	      GtkTreeIter  *iter,
+is_separator (BtkTreeModel *model,
+	      BtkTreeIter  *iter,
 	      gpointer      data)
 {
-  GtkTreePath *path;
+  BtkTreePath *path;
   gboolean result;
 
-  path = gtk_tree_model_get_path (model, iter);
-  result = gtk_tree_path_get_indices (path)[0] == 4;
-  gtk_tree_path_free (path);
+  path = btk_tree_model_get_path (model, iter);
+  result = btk_tree_path_get_indices (path)[0] == 4;
+  btk_tree_path_free (path);
 
   return result;
 }
 
-static GtkTreeModel *
+static BtkTreeModel *
 create_capital_store (void)
 {
   struct {
@@ -200,50 +200,50 @@ create_capital_store (void)
     { NULL, NULL }
   };
   
-  GtkTreeIter iter, iter2;
-  GtkTreeStore *store;
+  BtkTreeIter iter, iter2;
+  BtkTreeStore *store;
   gint i;
 
-  store = gtk_tree_store_new (1, G_TYPE_STRING);
+  store = btk_tree_store_new (1, G_TYPE_STRING);
   
   for (i = 0; capitals[i].group || capitals[i].capital; i++)
     {
       if (capitals[i].group)
 	{
-	  gtk_tree_store_append (store, &iter, NULL);
-	  gtk_tree_store_set (store, &iter, 0, capitals[i].group, -1);
+	  btk_tree_store_append (store, &iter, NULL);
+	  btk_tree_store_set (store, &iter, 0, capitals[i].group, -1);
 	}
       else if (capitals[i].capital)
 	{
-	  gtk_tree_store_append (store, &iter2, &iter);
-	  gtk_tree_store_set (store, &iter2, 0, capitals[i].capital, -1);
+	  btk_tree_store_append (store, &iter2, &iter);
+	  btk_tree_store_set (store, &iter2, 0, capitals[i].capital, -1);
 	}
     }
   
-  return GTK_TREE_MODEL (store);
+  return BTK_TREE_MODEL (store);
 }
 
 static void
-is_capital_sensitive (GtkCellLayout   *cell_layout,
-		      GtkCellRenderer *cell,
-		      GtkTreeModel    *tree_model,
-		      GtkTreeIter     *iter,
+is_capital_sensitive (BtkCellLayout   *cell_layout,
+		      BtkCellRenderer *cell,
+		      BtkTreeModel    *tree_model,
+		      BtkTreeIter     *iter,
 		      gpointer         data)
 {
   gboolean sensitive;
 
-  sensitive = !gtk_tree_model_iter_has_child (tree_model, iter);
+  sensitive = !btk_tree_model_iter_has_child (tree_model, iter);
 
   g_object_set (cell, "sensitive", sensitive, NULL);
 }
 
 static void
-fill_combo_entry (GtkWidget *combo)
+fill_combo_entry (BtkWidget *combo)
 {
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), "One");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), "Two");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), "2\302\275");
-  gtk_combo_box_text_append_text (GTK_COMBO_BOX_TEXT (combo), "Three");
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo), "One");
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo), "Two");
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo), "2\302\275");
+  btk_combo_box_text_append_text (BTK_COMBO_BOX_TEXT (combo), "Three");
 }
 
 
@@ -260,44 +260,44 @@ fill_combo_entry (GtkWidget *combo)
 typedef struct _MaskEntry MaskEntry;
 struct _MaskEntry
 {
-  GtkEntry entry;
+  BtkEntry entry;
   gchar *mask;
 };
 
 typedef struct _MaskEntryClass MaskEntryClass;
 struct _MaskEntryClass
 {
-  GtkEntryClass parent_class;
+  BtkEntryClass parent_class;
 };
 
 
-static void mask_entry_editable_init (GtkEditableClass *iface);
+static void mask_entry_editable_init (BtkEditableClass *iface);
 
-G_DEFINE_TYPE_WITH_CODE (MaskEntry, mask_entry, GTK_TYPE_ENTRY,
-			 G_IMPLEMENT_INTERFACE (GTK_TYPE_EDITABLE,
+G_DEFINE_TYPE_WITH_CODE (MaskEntry, mask_entry, BTK_TYPE_ENTRY,
+			 G_IMPLEMENT_INTERFACE (BTK_TYPE_EDITABLE,
 						mask_entry_editable_init));
 
 
 static void
 mask_entry_set_background (MaskEntry *entry)
 {
-  static const GdkColor error_color = { 0, 65535, 60000, 60000 };
+  static const BdkColor error_color = { 0, 65535, 60000, 60000 };
 
   if (entry->mask)
     {
-      if (!g_regex_match_simple (entry->mask, gtk_entry_get_text (GTK_ENTRY (entry)), 0, 0))
+      if (!g_regex_match_simple (entry->mask, btk_entry_get_text (BTK_ENTRY (entry)), 0, 0))
 	{
-	  gtk_widget_modify_base (GTK_WIDGET (entry), GTK_STATE_NORMAL, &error_color);
+	  btk_widget_modify_base (BTK_WIDGET (entry), BTK_STATE_NORMAL, &error_color);
 	  return;
 	}
     }
 
-  gtk_widget_modify_base (GTK_WIDGET (entry), GTK_STATE_NORMAL, NULL);
+  btk_widget_modify_base (BTK_WIDGET (entry), BTK_STATE_NORMAL, NULL);
 }
 
 
 static void
-mask_entry_changed (GtkEditable *editable)
+mask_entry_changed (BtkEditable *editable)
 {
   mask_entry_set_background (MASK_ENTRY (editable));
 }
@@ -316,137 +316,137 @@ mask_entry_class_init (MaskEntryClass *klass)
 
 
 static void
-mask_entry_editable_init (GtkEditableClass *iface)
+mask_entry_editable_init (BtkEditableClass *iface)
 {
   iface->changed = mask_entry_changed;
 }
 
 
-GtkWidget *
-do_combobox (GtkWidget *do_widget)
+BtkWidget *
+do_combobox (BtkWidget *do_widget)
 {
-  static GtkWidget *window = NULL;
-  GtkWidget *vbox, *frame, *box, *combo, *entry;
-  GtkTreeModel *model;
-  GtkCellRenderer *renderer;
-  GtkTreePath *path;
-  GtkTreeIter iter;
+  static BtkWidget *window = NULL;
+  BtkWidget *vbox, *frame, *box, *combo, *entry;
+  BtkTreeModel *model;
+  BtkCellRenderer *renderer;
+  BtkTreePath *path;
+  BtkTreeIter iter;
 
   if (!window)
   {
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_screen (GTK_WINDOW (window),
-                           gtk_widget_get_screen (do_widget));
-    gtk_window_set_title (GTK_WINDOW (window), "Combo boxes");
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_window_set_screen (BTK_WINDOW (window),
+                           btk_widget_get_screen (do_widget));
+    btk_window_set_title (BTK_WINDOW (window), "Combo boxes");
    
     g_signal_connect (window, "destroy",
-                      G_CALLBACK (gtk_widget_destroyed),
+                      G_CALLBACK (btk_widget_destroyed),
                       &window);
     
-    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
+    btk_container_set_border_width (BTK_CONTAINER (window), 10);
 
-    vbox = gtk_vbox_new (FALSE, 2);
-    gtk_container_add (GTK_CONTAINER (window), vbox);
+    vbox = btk_vbox_new (FALSE, 2);
+    btk_container_add (BTK_CONTAINER (window), vbox);
 
     /* A combobox demonstrating cell renderers, separators and
      *  insensitive rows 
      */
-    frame = gtk_frame_new ("Some stock icons");
-    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+    frame = btk_frame_new ("Some stock icons");
+    btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
     
-    box = gtk_vbox_new (FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (box), 5);
-    gtk_container_add (GTK_CONTAINER (frame), box);
+    box = btk_vbox_new (FALSE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (box), 5);
+    btk_container_add (BTK_CONTAINER (frame), box);
     
     model = create_stock_icon_store ();
-    combo = gtk_combo_box_new_with_model (model);
+    combo = btk_combo_box_new_with_model (model);
     g_object_unref (model);
-    gtk_container_add (GTK_CONTAINER (box), combo);
+    btk_container_add (BTK_CONTAINER (box), combo);
     
-    renderer = gtk_cell_renderer_pixbuf_new ();
-    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, FALSE);
-    gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
+    renderer = btk_cell_renderer_pixbuf_new ();
+    btk_cell_layout_pack_start (BTK_CELL_LAYOUT (combo), renderer, FALSE);
+    btk_cell_layout_set_attributes (BTK_CELL_LAYOUT (combo), renderer,
 				    "pixbuf", PIXBUF_COL, 
 				    NULL);
 
-    gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT (combo),
+    btk_cell_layout_set_cell_data_func (BTK_CELL_LAYOUT (combo),
 					renderer,
 					set_sensitive,
 					NULL, NULL);
     
-    renderer = gtk_cell_renderer_text_new ();
-    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, TRUE);
-    gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
+    renderer = btk_cell_renderer_text_new ();
+    btk_cell_layout_pack_start (BTK_CELL_LAYOUT (combo), renderer, TRUE);
+    btk_cell_layout_set_attributes (BTK_CELL_LAYOUT (combo), renderer,
 				    "text", TEXT_COL,
 				    NULL);
 
-    gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT (combo),
+    btk_cell_layout_set_cell_data_func (BTK_CELL_LAYOUT (combo),
 					renderer,
 					set_sensitive,
 					NULL, NULL);
 
-    gtk_combo_box_set_row_separator_func (GTK_COMBO_BOX (combo), 
+    btk_combo_box_set_row_separator_func (BTK_COMBO_BOX (combo), 
 					  is_separator, NULL, NULL);
     
-    gtk_combo_box_set_active (GTK_COMBO_BOX (combo), 0);
+    btk_combo_box_set_active (BTK_COMBO_BOX (combo), 0);
     
     /* A combobox demonstrating trees.
      */
-    frame = gtk_frame_new ("Where are we ?");
-    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+    frame = btk_frame_new ("Where are we ?");
+    btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
 
-    box = gtk_vbox_new (FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (box), 5);
-    gtk_container_add (GTK_CONTAINER (frame), box);
+    box = btk_vbox_new (FALSE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (box), 5);
+    btk_container_add (BTK_CONTAINER (frame), box);
     
     model = create_capital_store ();
-    combo = gtk_combo_box_new_with_model (model);
+    combo = btk_combo_box_new_with_model (model);
     g_object_unref (model);
-    gtk_container_add (GTK_CONTAINER (box), combo);
+    btk_container_add (BTK_CONTAINER (box), combo);
 
-    renderer = gtk_cell_renderer_text_new ();
-    gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (combo), renderer, TRUE);
-    gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (combo), renderer,
+    renderer = btk_cell_renderer_text_new ();
+    btk_cell_layout_pack_start (BTK_CELL_LAYOUT (combo), renderer, TRUE);
+    btk_cell_layout_set_attributes (BTK_CELL_LAYOUT (combo), renderer,
 				    "text", 0,
 				    NULL);
-    gtk_cell_layout_set_cell_data_func (GTK_CELL_LAYOUT (combo),
+    btk_cell_layout_set_cell_data_func (BTK_CELL_LAYOUT (combo),
 					renderer,
 					is_capital_sensitive,
 					NULL, NULL);
 
-    path = gtk_tree_path_new_from_indices (0, 8, -1);
-    gtk_tree_model_get_iter (model, &iter, path);
-    gtk_tree_path_free (path);
-    gtk_combo_box_set_active_iter (GTK_COMBO_BOX (combo), &iter);
+    path = btk_tree_path_new_from_indices (0, 8, -1);
+    btk_tree_model_get_iter (model, &iter, path);
+    btk_tree_path_free (path);
+    btk_combo_box_set_active_iter (BTK_COMBO_BOX (combo), &iter);
 
-    /* A GtkComboBoxEntry with validation.
+    /* A BtkComboBoxEntry with validation.
      */
-    frame = gtk_frame_new ("Editable");
-    gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 0);
+    frame = btk_frame_new ("Editable");
+    btk_box_pack_start (BTK_BOX (vbox), frame, FALSE, FALSE, 0);
     
-    box = gtk_vbox_new (FALSE, 0);
-    gtk_container_set_border_width (GTK_CONTAINER (box), 5);
-    gtk_container_add (GTK_CONTAINER (frame), box);
+    box = btk_vbox_new (FALSE, 0);
+    btk_container_set_border_width (BTK_CONTAINER (box), 5);
+    btk_container_add (BTK_CONTAINER (frame), box);
     
-    combo = gtk_combo_box_text_new_with_entry ();
+    combo = btk_combo_box_text_new_with_entry ();
     fill_combo_entry (combo);
-    gtk_container_add (GTK_CONTAINER (box), combo);
+    btk_container_add (BTK_CONTAINER (box), combo);
     
     entry = g_object_new (TYPE_MASK_ENTRY, NULL);
     MASK_ENTRY (entry)->mask = "^([0-9]*|One|Two|2\302\275|Three)$";
      
-    gtk_container_remove (GTK_CONTAINER (combo), gtk_bin_get_child (GTK_BIN (combo)));
-    gtk_container_add (GTK_CONTAINER (combo), entry);
+    btk_container_remove (BTK_CONTAINER (combo), btk_bin_get_child (BTK_BIN (combo)));
+    btk_container_add (BTK_CONTAINER (combo), entry);
   
   }
 
-  if (!gtk_widget_get_visible (window))
+  if (!btk_widget_get_visible (window))
     {
-      gtk_widget_show_all (window);
+      btk_widget_show_all (window);
     }
   else
     {    
-      gtk_widget_destroy (window);
+      btk_widget_destroy (window);
       window = NULL;
     }
 

@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,55 +18,55 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
 #include "config.h"
 
-#include "gtkorientable.h"
-#include "gtkvseparator.h"
-#include "gtkalias.h"
+#include "btkorientable.h"
+#include "btkvseparator.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkvseparator
+ * SECTION:btkvseparator
  * @Short_description: A vertical separator
- * @Title: GtkVSeparator
- * @See_also: #GtkHSeparator
+ * @Title: BtkVSeparator
+ * @See_also: #BtkHSeparator
  *
- * The #GtkVSeparator widget is a vertical separator, used to group the
+ * The #BtkVSeparator widget is a vertical separator, used to group the
  * widgets within a window. It displays a vertical line with a shadow to
  * make it appear sunken into the interface.
  */
 
-G_DEFINE_TYPE (GtkVSeparator, gtk_vseparator, GTK_TYPE_SEPARATOR)
+G_DEFINE_TYPE (BtkVSeparator, btk_vseparator, BTK_TYPE_SEPARATOR)
 
 static void
-gtk_vseparator_class_init (GtkVSeparatorClass *klass)
+btk_vseparator_class_init (BtkVSeparatorClass *klass)
 {
 }
 
 static void
-gtk_vseparator_init (GtkVSeparator *vseparator)
+btk_vseparator_init (BtkVSeparator *vseparator)
 {
-  gtk_orientable_set_orientation (GTK_ORIENTABLE (vseparator),
-                                  GTK_ORIENTATION_VERTICAL);
+  btk_orientable_set_orientation (BTK_ORIENTABLE (vseparator),
+                                  BTK_ORIENTATION_VERTICAL);
 }
 
 /**
- * gtk_vseparator_new:
+ * btk_vseparator_new:
  *
- * Creates a new #GtkVSeparator.
+ * Creates a new #BtkVSeparator.
  *
- * Returns: a new #GtkVSeparator.
+ * Returns: a new #BtkVSeparator.
  */
-GtkWidget *
-gtk_vseparator_new (void)
+BtkWidget *
+btk_vseparator_new (void)
 {
-  return g_object_new (GTK_TYPE_VSEPARATOR, NULL);
+  return g_object_new (BTK_TYPE_VSEPARATOR, NULL);
 }
 
-#define __GTK_VSEPARATOR_C__
-#include "gtkaliasdef.c"
+#define __BTK_VSEPARATOR_C__
+#include "btkaliasdef.c"

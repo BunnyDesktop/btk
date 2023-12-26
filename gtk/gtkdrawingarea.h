@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,65 +18,65 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_DRAWING_AREA_H__
-#define __GTK_DRAWING_AREA_H__
+#ifndef __BTK_DRAWING_AREA_H__
+#define __BTK_DRAWING_AREA_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkwidget.h>
+#include <btk/btkwidget.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_DRAWING_AREA            (gtk_drawing_area_get_type ())
-#define GTK_DRAWING_AREA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_DRAWING_AREA, GtkDrawingArea))
-#define GTK_DRAWING_AREA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_DRAWING_AREA, GtkDrawingAreaClass))
-#define GTK_IS_DRAWING_AREA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_DRAWING_AREA))
-#define GTK_IS_DRAWING_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_DRAWING_AREA))
-#define GTK_DRAWING_AREA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_DRAWING_AREA, GtkDrawingAreaClass))
+#define BTK_TYPE_DRAWING_AREA            (btk_drawing_area_get_type ())
+#define BTK_DRAWING_AREA(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingArea))
+#define BTK_DRAWING_AREA_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
+#define BTK_IS_DRAWING_AREA(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_DRAWING_AREA))
+#define BTK_IS_DRAWING_AREA_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_DRAWING_AREA))
+#define BTK_DRAWING_AREA_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_DRAWING_AREA, BtkDrawingAreaClass))
 
 
-typedef struct _GtkDrawingArea       GtkDrawingArea;
-typedef struct _GtkDrawingAreaClass  GtkDrawingAreaClass;
+typedef struct _BtkDrawingArea       BtkDrawingArea;
+typedef struct _BtkDrawingAreaClass  BtkDrawingAreaClass;
 
-struct _GtkDrawingArea
+struct _BtkDrawingArea
 {
-  GtkWidget widget;
+  BtkWidget widget;
 
   gpointer GSEAL (draw_data);
 };
 
-struct _GtkDrawingAreaClass
+struct _BtkDrawingAreaClass
 {
-  GtkWidgetClass parent_class;
+  BtkWidgetClass parent_class;
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
 };
 
 
-GType      gtk_drawing_area_get_type   (void) G_GNUC_CONST;
-GtkWidget* gtk_drawing_area_new        (void);
+GType      btk_drawing_area_get_type   (void) G_GNUC_CONST;
+BtkWidget* btk_drawing_area_new        (void);
 
-#ifndef GTK_DISABLE_DEPRECATED
-void       gtk_drawing_area_size       (GtkDrawingArea      *darea,
+#ifndef BTK_DISABLE_DEPRECATED
+void       btk_drawing_area_size       (BtkDrawingArea      *darea,
 					gint                 width,
 					gint                 height);
-#endif /* GTK_DISABLE_DEPRECATED */
+#endif /* BTK_DISABLE_DEPRECATED */
 
 
 G_END_DECLS
 
-#endif /* __GTK_DRAWING_AREA_H__ */
+#endif /* __BTK_DRAWING_AREA_H__ */

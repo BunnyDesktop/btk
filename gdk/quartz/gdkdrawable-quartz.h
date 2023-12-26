@@ -1,4 +1,4 @@
-/* gdkdrawable-quartz.h
+/* bdkdrawable-quartz.h
  *
  * Copyright (C) 2005 Imendio AB
  *
@@ -18,52 +18,52 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GDK_DRAWABLE_QUARTZ_H__
-#define __GDK_DRAWABLE_QUARTZ_H__
+#ifndef __BDK_DRAWABLE_QUARTZ_H__
+#define __BDK_DRAWABLE_QUARTZ_H__
 
-#include <gdk/gdkdrawable.h>
+#include <bdk/bdkdrawable.h>
 
 G_BEGIN_DECLS
 
 /* Drawable implementation for Quartz
  */
 
-typedef struct _GdkDrawableImplQuartz GdkDrawableImplQuartz;
-typedef struct _GdkDrawableImplQuartzClass GdkDrawableImplQuartzClass;
+typedef struct _BdkDrawableImplQuartz BdkDrawableImplQuartz;
+typedef struct _BdkDrawableImplQuartzClass BdkDrawableImplQuartzClass;
 
-#define GDK_TYPE_DRAWABLE_IMPL_QUARTZ              (gdk_drawable_impl_quartz_get_type ())
-#define GDK_DRAWABLE_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_DRAWABLE_IMPL_QUARTZ, GdkDrawableImplQuartz))
-#define GDK_DRAWABLE_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_DRAWABLE_IMPL_QUARTZ, GdkDrawableImplQuartzClass))
-#define GDK_IS_DRAWABLE_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_DRAWABLE_IMPL_QUARTZ))
-#define GDK_IS_DRAWABLE_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_DRAWABLE_IMPL_QUARTZ))
-#define GDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_DRAWABLE_IMPL_QUARTZ, GdkDrawableImplQuartzClass))
+#define BDK_TYPE_DRAWABLE_IMPL_QUARTZ              (bdk_drawable_impl_quartz_get_type ())
+#define BDK_DRAWABLE_IMPL_QUARTZ(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), BDK_TYPE_DRAWABLE_IMPL_QUARTZ, BdkDrawableImplQuartz))
+#define BDK_DRAWABLE_IMPL_QUARTZ_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), BDK_TYPE_DRAWABLE_IMPL_QUARTZ, BdkDrawableImplQuartzClass))
+#define BDK_IS_DRAWABLE_IMPL_QUARTZ(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), BDK_TYPE_DRAWABLE_IMPL_QUARTZ))
+#define BDK_IS_DRAWABLE_IMPL_QUARTZ_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), BDK_TYPE_DRAWABLE_IMPL_QUARTZ))
+#define BDK_DRAWABLE_IMPL_QUARTZ_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), BDK_TYPE_DRAWABLE_IMPL_QUARTZ, BdkDrawableImplQuartzClass))
 
-struct _GdkDrawableImplQuartz
+struct _BdkDrawableImplQuartz
 {
-  GdkDrawable      parent_instance;
+  BdkDrawable      parent_instance;
 
-  GdkDrawable     *wrapper;
+  BdkDrawable     *wrapper;
 
-  GdkColormap     *colormap;
+  BdkColormap     *colormap;
 
-  cairo_surface_t *cairo_surface;
+  bairo_surface_t *bairo_surface;
 };
  
-struct _GdkDrawableImplQuartzClass
+struct _BdkDrawableImplQuartzClass
 {
-  GdkDrawableClass parent_class;
+  BdkDrawableClass parent_class;
 
   /* vtable */
-  CGContextRef (*get_context) (GdkDrawable* drawable,
+  CGContextRef (*get_context) (BdkDrawable* drawable,
 			       gboolean     antialias);
 };
 
-GType        gdk_drawable_impl_quartz_get_type   (void);
-CGContextRef gdk_quartz_drawable_get_context     (GdkDrawable  *drawable, 
+GType        bdk_drawable_impl_quartz_get_type   (void);
+CGContextRef bdk_quartz_drawable_get_context     (BdkDrawable  *drawable, 
 						  gboolean      antialias);
-void         gdk_quartz_drawable_release_context (GdkDrawable  *drawable, 
+void         bdk_quartz_drawable_release_context (BdkDrawable  *drawable, 
 						  CGContextRef  context);
 
 G_END_DECLS
 
-#endif /* __GDK_DRAWABLE_QUARTZ_H__ */
+#endif /* __BDK_DRAWABLE_QUARTZ_H__ */

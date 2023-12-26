@@ -1,4 +1,4 @@
-/* GAIL - The GNOME Accessibility Implementation Library
+/* BAIL - The BUNNY Accessibility Implementation Library
  * Copyright 2001 Sun Microsystems Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -17,35 +17,35 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GAIL_SCROLLED_WINDOW_H__
-#define __GAIL_SCROLLED_WINDOW_H__
+#ifndef __BAIL_SCROLLED_WINDOW_H__
+#define __BAIL_SCROLLED_WINDOW_H__
 
-#include <gail/gailcontainer.h>
+#include <bail/bailcontainer.h>
 
 G_BEGIN_DECLS
 
-#define GAIL_TYPE_SCROLLED_WINDOW            (gail_scrolled_window_get_type ())
-#define GAIL_SCROLLED_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GAIL_TYPE_SCROLLED_WINDOW, GailScrolledWindow))
-#define GAIL_SCROLLED_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GAIL_TYPE_SCROLLED_WINDOW, GailScrolledWindowClass))
-#define GAIL_IS_SCROLLED_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GAIL_TYPE_SCROLLED_WINDOW))
-#define GAIL_IS_SCROLLED_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GAIL_TYPE_SCROLLED_WINDOW))
-#define GAIL_SCROLLED_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GAIL_TYPE_SCROLLED_WINDOW, GailScrolledWindowClass))
+#define BAIL_TYPE_SCROLLED_WINDOW            (bail_scrolled_window_get_type ())
+#define BAIL_SCROLLED_WINDOW(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BAIL_TYPE_SCROLLED_WINDOW, BailScrolledWindow))
+#define BAIL_SCROLLED_WINDOW_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BAIL_TYPE_SCROLLED_WINDOW, BailScrolledWindowClass))
+#define BAIL_IS_SCROLLED_WINDOW(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BAIL_TYPE_SCROLLED_WINDOW))
+#define BAIL_IS_SCROLLED_WINDOW_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BAIL_TYPE_SCROLLED_WINDOW))
+#define BAIL_SCROLLED_WINDOW_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BAIL_TYPE_SCROLLED_WINDOW, BailScrolledWindowClass))
 
-typedef struct _GailScrolledWindow              GailScrolledWindow;
-typedef struct _GailScrolledWindowClass         GailScrolledWindowClass;
+typedef struct _BailScrolledWindow              BailScrolledWindow;
+typedef struct _BailScrolledWindowClass         BailScrolledWindowClass;
 
-struct _GailScrolledWindow
+struct _BailScrolledWindow
 {
-  GailContainer parent;
+  BailContainer parent;
 };
 
-GType gail_scrolled_window_get_type (void);
+GType bail_scrolled_window_get_type (void);
 
-struct _GailScrolledWindowClass
+struct _BailScrolledWindowClass
 {
-  GailContainerClass parent_class;
+  BailContainerClass parent_class;
 };
 
 G_END_DECLS
 
-#endif /* __GAIL_SCROLLED_WINDOW_H__ */
+#endif /* __BAIL_SCROLLED_WINDOW_H__ */

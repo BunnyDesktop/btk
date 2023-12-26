@@ -1,4 +1,4 @@
-/* gtktrayicon.h
+/* btktrayicon.h
  * Copyright (C) 2002 Anders Carlsson <andersca@gnu.org>
  *
  * This library is free software; you can redistribute it and/or
@@ -17,59 +17,59 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_TRAY_ICON_H__
-#define __GTK_TRAY_ICON_H__
+#ifndef __BTK_TRAY_ICON_H__
+#define __BTK_TRAY_ICON_H__
 
-#include "gtkplug.h"
+#include "btkplug.h"
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_TRAY_ICON		(gtk_tray_icon_get_type ())
-#define GTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIcon))
-#define GTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
-#define GTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_TRAY_ICON))
-#define GTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TRAY_ICON))
-#define GTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TRAY_ICON, GtkTrayIconClass))
+#define BTK_TYPE_TRAY_ICON		(btk_tray_icon_get_type ())
+#define BTK_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIcon))
+#define BTK_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
+#define BTK_IS_TRAY_ICON(obj)		(G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_TRAY_ICON))
+#define BTK_IS_TRAY_ICON_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_TRAY_ICON))
+#define BTK_TRAY_ICON_GET_CLASS(obj)	(G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_TRAY_ICON, BtkTrayIconClass))
 	
-typedef struct _GtkTrayIcon	   GtkTrayIcon;
-typedef struct _GtkTrayIconPrivate GtkTrayIconPrivate;
-typedef struct _GtkTrayIconClass   GtkTrayIconClass;
+typedef struct _BtkTrayIcon	   BtkTrayIcon;
+typedef struct _BtkTrayIconPrivate BtkTrayIconPrivate;
+typedef struct _BtkTrayIconClass   BtkTrayIconClass;
 
-struct _GtkTrayIcon
+struct _BtkTrayIcon
 {
-  GtkPlug parent_instance;
+  BtkPlug parent_instance;
 
-  GtkTrayIconPrivate *priv;
+  BtkTrayIconPrivate *priv;
 };
 
-struct _GtkTrayIconClass
+struct _BtkTrayIconClass
 {
-  GtkPlugClass parent_class;
+  BtkPlugClass parent_class;
 
-  void (*__gtk_reserved1);
-  void (*__gtk_reserved2);
-  void (*__gtk_reserved3);
-  void (*__gtk_reserved4);
-  void (*__gtk_reserved5);
-  void (*__gtk_reserved6);
+  void (*__btk_reserved1);
+  void (*__btk_reserved2);
+  void (*__btk_reserved3);
+  void (*__btk_reserved4);
+  void (*__btk_reserved5);
+  void (*__btk_reserved6);
 };
 
-GType          gtk_tray_icon_get_type         (void) G_GNUC_CONST;
+GType          btk_tray_icon_get_type         (void) G_GNUC_CONST;
 
-GtkTrayIcon   *_gtk_tray_icon_new_for_screen  (GdkScreen   *screen,
+BtkTrayIcon   *_btk_tray_icon_new_for_screen  (BdkScreen   *screen,
 					       const gchar *name);
 
-GtkTrayIcon   *_gtk_tray_icon_new             (const gchar *name);
+BtkTrayIcon   *_btk_tray_icon_new             (const gchar *name);
 
-guint          _gtk_tray_icon_send_message    (GtkTrayIcon *icon,
+guint          _btk_tray_icon_send_message    (BtkTrayIcon *icon,
 					       gint         timeout,
 					       const gchar *message,
 					       gint         len);
-void           _gtk_tray_icon_cancel_message  (GtkTrayIcon *icon,
+void           _btk_tray_icon_cancel_message  (BtkTrayIcon *icon,
 					       guint        id);
 
-GtkOrientation _gtk_tray_icon_get_orientation (GtkTrayIcon *icon);
+BtkOrientation _btk_tray_icon_get_orientation (BtkTrayIcon *icon);
 					    
 G_END_DECLS
 
-#endif /* __GTK_TRAY_ICON_H__ */
+#endif /* __BTK_TRAY_ICON_H__ */

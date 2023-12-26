@@ -6,17 +6,17 @@ endif
 
 INCLUDES = \
 	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/gdk		\
-	-I$(top_builddir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	$(GTK_DEP_CFLAGS)
+	-I$(top_srcdir)/bdk		\
+	-I$(top_builddir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	$(BTK_DEP_CFLAGS)
 
 LDADDS = \
-	$(GTK_DEP_LIBS)					\
-	$(top_builddir)/gdk/$(gdktargetlib)		\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(BTK_DEP_LIBS)					\
+	$(top_builddir)/bdk/$(bdktargetlib)		\
+	$(top_builddir)/btk/$(btktargetlib)
 
-enginedir = $(libdir)/gtk-2.0/$(GTK_BINARY_VERSION)/engines
+enginedir = $(libdir)/btk-2.0/$(BTK_BINARY_VERSION)/engines
 
 engine_LTLIBRARIES = libpixmap.la
 

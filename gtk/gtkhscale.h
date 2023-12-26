@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,54 +18,54 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_HSCALE_H__
-#define __GTK_HSCALE_H__
+#ifndef __BTK_HSCALE_H__
+#define __BTK_HSCALE_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkscale.h>
+#include <btk/btkscale.h>
 
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_HSCALE            (gtk_hscale_get_type ())
-#define GTK_HSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_HSCALE, GtkHScale))
-#define GTK_HSCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_HSCALE, GtkHScaleClass))
-#define GTK_IS_HSCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_HSCALE))
-#define GTK_IS_HSCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_HSCALE))
-#define GTK_HSCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_HSCALE, GtkHScaleClass))
+#define BTK_TYPE_HSCALE            (btk_hscale_get_type ())
+#define BTK_HSCALE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_HSCALE, BtkHScale))
+#define BTK_HSCALE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_HSCALE, BtkHScaleClass))
+#define BTK_IS_HSCALE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_HSCALE))
+#define BTK_IS_HSCALE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_HSCALE))
+#define BTK_HSCALE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_HSCALE, BtkHScaleClass))
 
 
-typedef struct _GtkHScale       GtkHScale;
-typedef struct _GtkHScaleClass  GtkHScaleClass;
+typedef struct _BtkHScale       BtkHScale;
+typedef struct _BtkHScaleClass  BtkHScaleClass;
 
-struct _GtkHScale
+struct _BtkHScale
 {
-  GtkScale scale;
+  BtkScale scale;
 };
 
-struct _GtkHScaleClass
+struct _BtkHScaleClass
 {
-  GtkScaleClass parent_class;
+  BtkScaleClass parent_class;
 };
 
 
-GType      gtk_hscale_get_type       (void) G_GNUC_CONST;
-GtkWidget* gtk_hscale_new            (GtkAdjustment *adjustment);
-GtkWidget* gtk_hscale_new_with_range (gdouble        min,
+GType      btk_hscale_get_type       (void) G_GNUC_CONST;
+BtkWidget* btk_hscale_new            (BtkAdjustment *adjustment);
+BtkWidget* btk_hscale_new_with_range (gdouble        min,
                                       gdouble        max,
                                       gdouble        step);
 
 
 G_END_DECLS
 
-#endif /* __GTK_HSCALE_H__ */
+#endif /* __BTK_HSCALE_H__ */

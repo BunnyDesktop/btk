@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,59 +18,59 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/.
+ * BTK+ at ftp://ftp.btk.org/pub/btk/.
  */
 
-#ifndef __GTK_VSCROLLBAR_H__
-#define __GTK_VSCROLLBAR_H__
+#ifndef __BTK_VSCROLLBAR_H__
+#define __BTK_VSCROLLBAR_H__
 
 
-#if defined(GTK_DISABLE_SINGLE_INCLUDES) && !defined (__GTK_H_INSIDE__) && !defined (GTK_COMPILATION)
-#error "Only <gtk/gtk.h> can be included directly."
+#if defined(BTK_DISABLE_SINGLE_INCLUDES) && !defined (__BTK_H_INSIDE__) && !defined (BTK_COMPILATION)
+#error "Only <btk/btk.h> can be included directly."
 #endif
 
-#include <gtk/gtkscrollbar.h>
+#include <btk/btkscrollbar.h>
 
 
 G_BEGIN_DECLS
 
 
-#define GTK_TYPE_VSCROLLBAR            (gtk_vscrollbar_get_type ())
-#define GTK_VSCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_VSCROLLBAR, GtkVScrollbar))
-#define GTK_VSCROLLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_VSCROLLBAR, GtkVScrollbarClass))
-#define GTK_IS_VSCROLLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_VSCROLLBAR))
-#define GTK_IS_VSCROLLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_VSCROLLBAR))
-#define GTK_VSCROLLBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_VSCROLLBAR, GtkVScrollbarClass))
+#define BTK_TYPE_VSCROLLBAR            (btk_vscrollbar_get_type ())
+#define BTK_VSCROLLBAR(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbar))
+#define BTK_VSCROLLBAR_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
+#define BTK_IS_VSCROLLBAR(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_VSCROLLBAR))
+#define BTK_IS_VSCROLLBAR_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), BTK_TYPE_VSCROLLBAR))
+#define BTK_VSCROLLBAR_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), BTK_TYPE_VSCROLLBAR, BtkVScrollbarClass))
 
 
-typedef struct _GtkVScrollbar       GtkVScrollbar;
-typedef struct _GtkVScrollbarClass  GtkVScrollbarClass;
+typedef struct _BtkVScrollbar       BtkVScrollbar;
+typedef struct _BtkVScrollbarClass  BtkVScrollbarClass;
 
 /**
- * GtkVScrollbar:
+ * BtkVScrollbar:
  *
- * The #GtkVScrollbar struct contains private data and should be accessed
+ * The #BtkVScrollbar struct contains private data and should be accessed
  * using the functions below.
  */
-struct _GtkVScrollbar
+struct _BtkVScrollbar
 {
-  GtkScrollbar scrollbar;
+  BtkScrollbar scrollbar;
 };
 
-struct _GtkVScrollbarClass
+struct _BtkVScrollbarClass
 {
-  GtkScrollbarClass parent_class;
+  BtkScrollbarClass parent_class;
 };
 
 
-GType      gtk_vscrollbar_get_type (void) G_GNUC_CONST;
-GtkWidget* gtk_vscrollbar_new      (GtkAdjustment *adjustment);
+GType      btk_vscrollbar_get_type (void) G_GNUC_CONST;
+BtkWidget* btk_vscrollbar_new      (BtkAdjustment *adjustment);
 
 
 G_END_DECLS
 
 
-#endif /* __GTK_VSCROLLBAR_H__ */
+#endif /* __BTK_VSCROLLBAR_H__ */

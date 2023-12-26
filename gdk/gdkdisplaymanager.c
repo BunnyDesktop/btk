@@ -1,4 +1,4 @@
-/* GDK - The GIMP Drawing Kit
+/* BDK - The GIMP Drawing Kit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,26 +18,26 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 
-#include "gdkscreen.h"
-#include "gdkdisplay.h"
-#include "gdkdisplaymanager.h"
+#include "bdkscreen.h"
+#include "bdkdisplay.h"
+#include "bdkdisplaymanager.h"
 
-#include "gdkinternals.h"
-#include "gdkmarshalers.h"
+#include "bdkinternals.h"
+#include "bdkmarshalers.h"
 
-#include "gdkintl.h"
+#include "bdkintl.h"
 
-#include "gdkalias.h"
+#include "bdkalias.h"
 
-struct _GdkDisplayManager
+struct _BdkDisplayManager
 {
   GObject parent_instance;
 };
@@ -53,32 +53,32 @@ enum {
   LAST_SIGNAL
 };
 
-static void gdk_display_manager_class_init   (GdkDisplayManagerClass *klass);
-static void gdk_display_manager_set_property (GObject                *object,
+static void bdk_display_manager_class_init   (BdkDisplayManagerClass *klass);
+static void bdk_display_manager_set_property (GObject                *object,
 					      guint                   prop_id,
 					      const GValue           *value,
 					      GParamSpec             *pspec);
-static void gdk_display_manager_get_property (GObject                *object,
+static void bdk_display_manager_get_property (GObject                *object,
 					      guint                   prop_id,
 					      GValue                 *value,
 					      GParamSpec             *pspec);
 
 static guint signals[LAST_SIGNAL] = { 0 };
 
-static GdkDisplay *default_display = NULL;
+static BdkDisplay *default_display = NULL;
 
-G_DEFINE_TYPE (GdkDisplayManager, gdk_display_manager, G_TYPE_OBJECT)
+G_DEFINE_TYPE (BdkDisplayManager, bdk_display_manager, G_TYPE_OBJECT)
 
 static void
-gdk_display_manager_class_init (GdkDisplayManagerClass *klass)
+bdk_display_manager_class_init (BdkDisplayManagerClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-  object_class->set_property = gdk_display_manager_set_property;
-  object_class->get_property = gdk_display_manager_get_property;
+  object_class->set_property = bdk_display_manager_set_property;
+  object_class->get_property = bdk_display_manager_get_property;
 
   /**
-   * GdkDisplayManager::display-opened:
+   * BdkDisplayManager::display-opened:
    * @display_manager: the object on which the signal is emitted
    * @display: the opened display
    *
@@ -90,30 +90,30 @@ gdk_display_manager_class_init (GdkDisplayManagerClass *klass)
     g_signal_new (g_intern_static_string ("display-opened"),
 		  G_OBJECT_CLASS_TYPE (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GdkDisplayManagerClass, display_opened),
+		  G_STRUCT_OFFSET (BdkDisplayManagerClass, display_opened),
 		  NULL, NULL,
-		  _gdk_marshal_VOID__OBJECT,
+		  _bdk_marshal_VOID__OBJECT,
 		  G_TYPE_NONE,
 		  1,
-		  GDK_TYPE_DISPLAY);
+		  BDK_TYPE_DISPLAY);
 
   g_object_class_install_property (object_class,
 				   PROP_DEFAULT_DISPLAY,
 				   g_param_spec_object ("default-display",
  							P_("Default Display"),
- 							P_("The default display for GDK"),
-							GDK_TYPE_DISPLAY,
+ 							P_("The default display for BDK"),
+							BDK_TYPE_DISPLAY,
  							G_PARAM_READWRITE|G_PARAM_STATIC_NAME|
 							G_PARAM_STATIC_NICK|G_PARAM_STATIC_BLURB));
 }
 
 static void
-gdk_display_manager_init (GdkDisplayManager *manager)
+bdk_display_manager_init (BdkDisplayManager *manager)
 {
 }
 
 static void
-gdk_display_manager_set_property (GObject      *object,
+bdk_display_manager_set_property (GObject      *object,
 				  guint         prop_id,
 				  const GValue *value,
 				  GParamSpec   *pspec)
@@ -121,7 +121,7 @@ gdk_display_manager_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_DEFAULT_DISPLAY:
-      gdk_display_manager_set_default_display (GDK_DISPLAY_MANAGER (object),
+      bdk_display_manager_set_default_display (BDK_DISPLAY_MANAGER (object),
 					       g_value_get_object (value));
       break;
     default:
@@ -131,7 +131,7 @@ gdk_display_manager_set_property (GObject      *object,
 }
 
 static void
-gdk_display_manager_get_property (GObject      *object,
+bdk_display_manager_get_property (GObject      *object,
 				  guint         prop_id,
 				  GValue       *value,
 				  GParamSpec   *pspec)
@@ -148,117 +148,117 @@ gdk_display_manager_get_property (GObject      *object,
 }
 
 /**
- * gdk_display_manager_get:
+ * bdk_display_manager_get:
  *
- * Gets the singleton #GdkDisplayManager object.
+ * Gets the singleton #BdkDisplayManager object.
  *
- * Returns: (transfer none): The global #GdkDisplayManager singleton; gdk_parse_pargs(),
- * gdk_init(), or gdk_init_check() must have been called first.
+ * Returns: (transfer none): The global #BdkDisplayManager singleton; bdk_parse_pargs(),
+ * bdk_init(), or bdk_init_check() must have been called first.
  *
  * Since: 2.2
  **/
-GdkDisplayManager*
-gdk_display_manager_get (void)
+BdkDisplayManager*
+bdk_display_manager_get (void)
 {
-  static GdkDisplayManager *display_manager = NULL;
+  static BdkDisplayManager *display_manager = NULL;
 
   if (!display_manager)
-    display_manager = g_object_new (GDK_TYPE_DISPLAY_MANAGER, NULL);
+    display_manager = g_object_new (BDK_TYPE_DISPLAY_MANAGER, NULL);
 
   return display_manager;
 }
 
 /**
- * gdk_display_manager_get_default_display:
- * @display_manager: a #GdkDisplayManager 
+ * bdk_display_manager_get_default_display:
+ * @display_manager: a #BdkDisplayManager 
  *
- * Gets the default #GdkDisplay.
+ * Gets the default #BdkDisplay.
  *
- * Returns: (transfer none): a #GdkDisplay, or %NULL if there is no default
+ * Returns: (transfer none): a #BdkDisplay, or %NULL if there is no default
  *   display.
  *
  * Since: 2.2
  */
-GdkDisplay *
-gdk_display_manager_get_default_display (GdkDisplayManager *display_manager)
+BdkDisplay *
+bdk_display_manager_get_default_display (BdkDisplayManager *display_manager)
 {
   return default_display;
 }
 
 /**
- * gdk_display_get_default:
+ * bdk_display_get_default:
  *
- * Gets the default #GdkDisplay. This is a convenience
+ * Gets the default #BdkDisplay. This is a convenience
  * function for
- * <literal>gdk_display_manager_get_default_display (gdk_display_manager_get ())</literal>.
+ * <literal>bdk_display_manager_get_default_display (bdk_display_manager_get ())</literal>.
  *
- * Returns: (transfer none): a #GdkDisplay, or %NULL if there is no default
+ * Returns: (transfer none): a #BdkDisplay, or %NULL if there is no default
  *   display.
  *
  * Since: 2.2
  */
-GdkDisplay *
-gdk_display_get_default (void)
+BdkDisplay *
+bdk_display_get_default (void)
 {
   return default_display;
 }
 
 /**
- * gdk_screen_get_default:
+ * bdk_screen_get_default:
  *
  * Gets the default screen for the default display. (See
- * gdk_display_get_default ()).
+ * bdk_display_get_default ()).
  *
- * Returns: (transfer none): a #GdkScreen, or %NULL if there is no default display.
+ * Returns: (transfer none): a #BdkScreen, or %NULL if there is no default display.
  *
  * Since: 2.2
  */
-GdkScreen *
-gdk_screen_get_default (void)
+BdkScreen *
+bdk_screen_get_default (void)
 {
   if (default_display)
-    return gdk_display_get_default_screen (default_display);
+    return bdk_display_get_default_screen (default_display);
   else
     return NULL;
 }
 
 /**
- * gdk_display_manager_set_default_display:
- * @display_manager: a #GdkDisplayManager
- * @display: a #GdkDisplay
+ * bdk_display_manager_set_default_display:
+ * @display_manager: a #BdkDisplayManager
+ * @display: a #BdkDisplay
  * 
  * Sets @display as the default display.
  *
  * Since: 2.2
  **/
 void
-gdk_display_manager_set_default_display (GdkDisplayManager *display_manager,
-					 GdkDisplay        *display)
+bdk_display_manager_set_default_display (BdkDisplayManager *display_manager,
+					 BdkDisplay        *display)
 {
   default_display = display;
 
-  _gdk_windowing_set_default_display (display);
+  _bdk_windowing_set_default_display (display);
 
   g_object_notify (G_OBJECT (display_manager), "default-display");
 }
 
 /**
- * gdk_display_manager_list_displays:
- * @display_manager: a #GdkDisplayManager 
+ * bdk_display_manager_list_displays:
+ * @display_manager: a #BdkDisplayManager 
  *
  * List all currently open displays.
  * 
- * Return value: (transfer container) (element-type GdkDisplay): a newly allocated
- * #GSList of #GdkDisplay objects. Free this list with g_slist_free() when you
+ * Return value: (transfer container) (element-type BdkDisplay): a newly allocated
+ * #GSList of #BdkDisplay objects. Free this list with g_slist_free() when you
  * are done with it.
  *
  * Since: 2.2
  **/
 GSList *
-gdk_display_manager_list_displays (GdkDisplayManager *display_manager)
+bdk_display_manager_list_displays (BdkDisplayManager *display_manager)
 {
-  return g_slist_copy (_gdk_displays);
+  return g_slist_copy (_bdk_displays);
 }
 
-#define __GDK_DISPLAY_MANAGER_C__
-#include "gdkaliasdef.c"
+#define __BDK_DISPLAY_MANAGER_C__
+#include "bdkaliasdef.c"

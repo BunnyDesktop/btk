@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #define ICC_PROFILE             "/usr/share/color/icc/bluish.icc"
 #define ICC_PROFILE_SIZE        3966
 
 static gboolean
-save_image_png (const gchar *filename, GdkPixbuf *pixbuf, GError **error)
+save_image_png (const gchar *filename, BdkPixbuf *pixbuf, GError **error)
 {
 	gchar *contents = NULL;
 	gchar *contents_encode = NULL;
@@ -23,7 +23,7 @@ save_image_png (const gchar *filename, GdkPixbuf *pixbuf, GError **error)
 	if (!ret)
 		goto out;
 	contents_encode = g_base64_encode ((const guchar *) contents, length);
-	ret = gdk_pixbuf_save (pixbuf, filename, "png", error,
+	ret = bdk_pixbuf_save (pixbuf, filename, "png", error,
 			       "tEXt::Software", "Hello my name is dave",
 			       "icc-profile", contents_encode,
 			       NULL);
@@ -36,7 +36,7 @@ out:
 }
 
 static gboolean
-save_image_tiff (const gchar *filename, GdkPixbuf *pixbuf, GError **error)
+save_image_tiff (const gchar *filename, BdkPixbuf *pixbuf, GError **error)
 {
 	gchar *contents = NULL;
 	gchar *contents_encode = NULL;
@@ -49,7 +49,7 @@ save_image_tiff (const gchar *filename, GdkPixbuf *pixbuf, GError **error)
 	if (!ret)
 		goto out;
 	contents_encode = g_base64_encode ((const guchar *) contents, length);
-	ret = gdk_pixbuf_save (pixbuf, filename, "tiff", error,
+	ret = bdk_pixbuf_save (pixbuf, filename, "tiff", error,
 			       "icc-profile", contents_encode,
 			       NULL);
 	len = strlen (contents_encode);
@@ -64,18 +64,18 @@ static gboolean
 save_image_verify (const gchar *filename, GError **error)
 {
 	gboolean ret = FALSE;
-	GdkPixbuf *pixbuf = NULL;
+	BdkPixbuf *pixbuf = NULL;
 	const gchar *option;
 	gchar *icc_profile = NULL;
 	gsize len = 0;
 
 	/* load */
-	pixbuf = gdk_pixbuf_new_from_file (filename, error);
+	pixbuf = bdk_pixbuf_new_from_file (filename, error);
 	if (pixbuf == NULL)
 		goto out;
 
 	/* check values */
-	option = gdk_pixbuf_get_option (pixbuf, "icc-profile");
+	option = bdk_pixbuf_get_option (pixbuf, "icc-profile");
 	if (option == NULL) {
 		*error = g_error_new (1, 0, "no profile set");
 		goto out;
@@ -103,16 +103,16 @@ out:
 int
 main (int argc, char **argv)
 {
-	GdkWindow *root;
-	GdkPixbuf *pixbuf;
+	BdkWindow *root;
+	BdkPixbuf *pixbuf;
 	gboolean ret;
 	gint retval = 1;
 	GError *error = NULL;
 
-	gtk_init (&argc, &argv);
+	btk_init (&argc, &argv);
 
-	root = gdk_get_default_root_window ();
-	pixbuf = gdk_pixbuf_get_from_drawable (NULL, root, NULL,
+	root = bdk_get_default_root_window ();
+	pixbuf = bdk_pixbuf_get_from_drawable (NULL, root, NULL,
 					       0, 0, 0, 0, 150, 160);
 
 	/* PASS */

@@ -1,5 +1,5 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 2 -*- */
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 2000 Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -19,112 +19,112 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2003.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2003.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
 #include <string.h>
 
-#include "gtkmessagedialog.h"
-#include "gtkaccessible.h"
-#include "gtkbuildable.h"
-#include "gtklabel.h"
-#include "gtkhbox.h"
-#include "gtkvbox.h"
-#include "gtkimage.h"
-#include "gtkstock.h"
-#include "gtkiconfactory.h"
-#include "gtkintl.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkmessagedialog.h"
+#include "btkaccessible.h"
+#include "btkbuildable.h"
+#include "btklabel.h"
+#include "btkhbox.h"
+#include "btkvbox.h"
+#include "btkimage.h"
+#include "btkstock.h"
+#include "btkiconfactory.h"
+#include "btkintl.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkmessagedialog
+ * SECTION:btkmessagedialog
  * @Short_description: A convenient message window
- * @Title: GtkMessageDialog
- * @See_also:#GtkDialog
+ * @Title: BtkMessageDialog
+ * @See_also:#BtkDialog
  *
- * #GtkMessageDialog presents a dialog with an image representing the type of
+ * #BtkMessageDialog presents a dialog with an image representing the type of
  * message (Error, Question, etc.) alongside some message text. It's simply a
- * convenience widget; you could construct the equivalent of #GtkMessageDialog
- * from #GtkDialog without too much effort, but #GtkMessageDialog saves typing.
+ * convenience widget; you could construct the equivalent of #BtkMessageDialog
+ * from #BtkDialog without too much effort, but #BtkMessageDialog saves typing.
  *
- * The easiest way to do a modal message dialog is to use gtk_dialog_run(), though
- * you can also pass in the %GTK_DIALOG_MODAL flag, gtk_dialog_run() automatically
- * makes the dialog modal and waits for the user to respond to it. gtk_dialog_run()
+ * The easiest way to do a modal message dialog is to use btk_dialog_run(), though
+ * you can also pass in the %BTK_DIALOG_MODAL flag, btk_dialog_run() automatically
+ * makes the dialog modal and waits for the user to respond to it. btk_dialog_run()
  * returns when any dialog button is clicked.
  * <example>
  * <title>A modal dialog.</title>
  * <programlisting>
- *  dialog = gtk_message_dialog_new (main_application_window,
- *                                   GTK_DIALOG_DESTROY_WITH_PARENT,
- *                                   GTK_MESSAGE_ERROR,
- *                                   GTK_BUTTONS_CLOSE,
+ *  dialog = btk_message_dialog_new (main_application_window,
+ *                                   BTK_DIALOG_DESTROY_WITH_PARENT,
+ *                                   BTK_MESSAGE_ERROR,
+ *                                   BTK_BUTTONS_CLOSE,
  *                                   "Error loading file '&percnt;s': &percnt;s",
  *                                   filename, g_strerror (errno));
- *  gtk_dialog_run (GTK_DIALOG (dialog));
- *  gtk_widget_destroy (dialog);
+ *  btk_dialog_run (BTK_DIALOG (dialog));
+ *  btk_widget_destroy (dialog);
  * </programlisting>
  * </example>
- * You might do a non-modal #GtkMessageDialog as follows:
+ * You might do a non-modal #BtkMessageDialog as follows:
  * <example>
  * <title>A non-modal dialog.</title>
  * <programlisting>
- *  dialog = gtk_message_dialog_new (main_application_window,
- *                                   GTK_DIALOG_DESTROY_WITH_PARENT,
- *                                   GTK_MESSAGE_ERROR,
- *                                   GTK_BUTTONS_CLOSE,
+ *  dialog = btk_message_dialog_new (main_application_window,
+ *                                   BTK_DIALOG_DESTROY_WITH_PARENT,
+ *                                   BTK_MESSAGE_ERROR,
+ *                                   BTK_BUTTONS_CLOSE,
  *                                   "Error loading file '&percnt;s': &percnt;s",
  *                                   filename, g_strerror (errno));
  *
  *  /&ast; Destroy the dialog when the user responds to it (e.g. clicks a button) &ast;/
  *  g_signal_connect_swapped (dialog, "response",
- *                            G_CALLBACK (gtk_widget_destroy),
+ *                            G_CALLBACK (btk_widget_destroy),
  *                            dialog);
  * </programlisting>
  * </example>
  *
- * <refsect2 id="GtkMessageDialog-BUILDER-UI">
- * <title>GtkMessageDialog as GtkBuildable</title>
+ * <refsect2 id="BtkMessageDialog-BUILDER-UI">
+ * <title>BtkMessageDialog as BtkBuildable</title>
  * <para>
- * The GtkMessageDialog implementation of the GtkBuildable interface exposes
+ * The BtkMessageDialog implementation of the BtkBuildable interface exposes
  * the message area as an internal child with the name "message_area".
  * </para>
  * </refsect2>
  */
 
-#define GTK_MESSAGE_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), GTK_TYPE_MESSAGE_DIALOG, GtkMessageDialogPrivate))
+#define BTK_MESSAGE_DIALOG_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), BTK_TYPE_MESSAGE_DIALOG, BtkMessageDialogPrivate))
 
-typedef struct _GtkMessageDialogPrivate GtkMessageDialogPrivate;
+typedef struct _BtkMessageDialogPrivate BtkMessageDialogPrivate;
 
-struct _GtkMessageDialogPrivate
+struct _BtkMessageDialogPrivate
 {
-  GtkWidget *message_area; /* vbox for the primary and secondary labels, and any extra content from the caller */
-  GtkWidget *secondary_label;
+  BtkWidget *message_area; /* vbox for the primary and secondary labels, and any extra content from the caller */
+  BtkWidget *secondary_label;
   guint message_type : 3;
   guint has_primary_markup : 1;
   guint has_secondary_text : 1;
 };
 
-static void gtk_message_dialog_style_set  (GtkWidget             *widget,
-                                           GtkStyle              *prev_style);
+static void btk_message_dialog_style_set  (BtkWidget             *widget,
+                                           BtkStyle              *prev_style);
 
-static void gtk_message_dialog_set_property (GObject          *object,
+static void btk_message_dialog_set_property (GObject          *object,
 					     guint             prop_id,
 					     const GValue     *value,
 					     GParamSpec       *pspec);
-static void gtk_message_dialog_get_property (GObject          *object,
+static void btk_message_dialog_get_property (GObject          *object,
 					     guint             prop_id,
 					     GValue           *value,
 					     GParamSpec       *pspec);
-static void gtk_message_dialog_add_buttons  (GtkMessageDialog *message_dialog,
-					     GtkButtonsType    buttons);
-static void      gtk_message_dialog_buildable_interface_init     (GtkBuildableIface *iface);
-static GObject * gtk_message_dialog_buildable_get_internal_child (GtkBuildable  *buildable,
-                                                                  GtkBuilder    *builder,
+static void btk_message_dialog_add_buttons  (BtkMessageDialog *message_dialog,
+					     BtkButtonsType    buttons);
+static void      btk_message_dialog_buildable_interface_init     (BtkBuildableIface *iface);
+static GObject * btk_message_dialog_buildable_get_internal_child (BtkBuildable  *buildable,
+                                                                  BtkBuilder    *builder,
                                                                   const gchar   *childname);
 
 
@@ -140,341 +140,341 @@ enum {
   PROP_MESSAGE_AREA
 };
 
-G_DEFINE_TYPE_WITH_CODE (GtkMessageDialog, gtk_message_dialog, GTK_TYPE_DIALOG,
-                         G_IMPLEMENT_INTERFACE (GTK_TYPE_BUILDABLE,
-                                                gtk_message_dialog_buildable_interface_init))
+G_DEFINE_TYPE_WITH_CODE (BtkMessageDialog, btk_message_dialog, BTK_TYPE_DIALOG,
+                         G_IMPLEMENT_INTERFACE (BTK_TYPE_BUILDABLE,
+                                                btk_message_dialog_buildable_interface_init))
 
-static GtkBuildableIface *parent_buildable_iface;
+static BtkBuildableIface *parent_buildable_iface;
 
 static void
-gtk_message_dialog_buildable_interface_init (GtkBuildableIface *iface)
+btk_message_dialog_buildable_interface_init (BtkBuildableIface *iface)
 {
   parent_buildable_iface = g_type_interface_peek_parent (iface);
-  iface->get_internal_child = gtk_message_dialog_buildable_get_internal_child;
+  iface->get_internal_child = btk_message_dialog_buildable_get_internal_child;
   iface->custom_tag_start = parent_buildable_iface->custom_tag_start;
   iface->custom_finished = parent_buildable_iface->custom_finished;
 }
 
 static GObject *
-gtk_message_dialog_buildable_get_internal_child (GtkBuildable *buildable,
-                                                 GtkBuilder   *builder,
+btk_message_dialog_buildable_get_internal_child (BtkBuildable *buildable,
+                                                 BtkBuilder   *builder,
                                                  const gchar  *childname)
 {
   if (strcmp (childname, "message_area") == 0)
-    return G_OBJECT (gtk_message_dialog_get_message_area (GTK_MESSAGE_DIALOG (buildable)));
+    return G_OBJECT (btk_message_dialog_get_message_area (BTK_MESSAGE_DIALOG (buildable)));
 
   return parent_buildable_iface->get_internal_child (buildable, builder, childname);
 }
 
 
 static void
-gtk_message_dialog_class_init (GtkMessageDialogClass *class)
+btk_message_dialog_class_init (BtkMessageDialogClass *class)
 {
-  GtkWidgetClass *widget_class;
-  GObjectClass *gobject_class;
+  BtkWidgetClass *widget_class;
+  GObjectClass *bobject_class;
 
-  widget_class = GTK_WIDGET_CLASS (class);
-  gobject_class = G_OBJECT_CLASS (class);
+  widget_class = BTK_WIDGET_CLASS (class);
+  bobject_class = G_OBJECT_CLASS (class);
   
-  widget_class->style_set = gtk_message_dialog_style_set;
+  widget_class->style_set = btk_message_dialog_style_set;
 
-  gobject_class->set_property = gtk_message_dialog_set_property;
-  gobject_class->get_property = gtk_message_dialog_get_property;
+  bobject_class->set_property = btk_message_dialog_set_property;
+  bobject_class->get_property = btk_message_dialog_get_property;
   
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_int ("message-border",
                                                              P_("Image/label border"),
                                                              P_("Width of border around the label and image in the message dialog"),
                                                              0,
                                                              G_MAXINT,
                                                              12,
-                                                             GTK_PARAM_READABLE));
+                                                             BTK_PARAM_READABLE));
   /**
-   * GtkMessageDialog:use-separator:
+   * BtkMessageDialog:use-separator:
    *
    * Whether to draw a separator line between the message label and the buttons
    * in the dialog.
    *
    * Since: 2.4
    *
-   * Deprecated: 2.22: This style property will be removed in GTK+ 3
+   * Deprecated: 2.22: This style property will be removed in BTK+ 3
    */
-  gtk_widget_class_install_style_property (widget_class,
+  btk_widget_class_install_style_property (widget_class,
 					   g_param_spec_boolean ("use-separator",
 								 P_("Use separator"),
 								 P_("Whether to put a separator between the message dialog's text and the buttons"),
 								 FALSE,
-								 GTK_PARAM_READABLE));
+								 BTK_PARAM_READABLE));
   /**
-   * GtkMessageDialog:message-type:
+   * BtkMessageDialog:message-type:
    *
    * The type of the message. The type is used to determine
    * the image that is shown in the dialog, unless the image is 
    * explicitly set by the ::image property.
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_MESSAGE_TYPE,
                                    g_param_spec_enum ("message-type",
 						      P_("Message Type"),
 						      P_("The type of message"),
-						      GTK_TYPE_MESSAGE_TYPE,
-                                                      GTK_MESSAGE_INFO,
-                                                      GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
-  g_object_class_install_property (gobject_class,
+						      BTK_TYPE_MESSAGE_TYPE,
+                                                      BTK_MESSAGE_INFO,
+                                                      BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+  g_object_class_install_property (bobject_class,
                                    PROP_BUTTONS,
                                    g_param_spec_enum ("buttons",
 						      P_("Message Buttons"),
 						      P_("The buttons shown in the message dialog"),
-						      GTK_TYPE_BUTTONS_TYPE,
-                                                      GTK_BUTTONS_NONE,
-                                                      GTK_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
+						      BTK_TYPE_BUTTONS_TYPE,
+                                                      BTK_BUTTONS_NONE,
+                                                      BTK_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY));
 
   /**
-   * GtkMessageDialog:text:
+   * BtkMessageDialog:text:
    * 
    * The primary text of the message dialog. If the dialog has 
    * a secondary text, this will appear as the title.
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_TEXT,
                                    g_param_spec_string ("text",
                                                         P_("Text"),
                                                         P_("The primary text of the message dialog"),
                                                         "",
-                                                        GTK_PARAM_READWRITE));
+                                                        BTK_PARAM_READWRITE));
 
   /**
-   * GtkMessageDialog:use-markup:
+   * BtkMessageDialog:use-markup:
    * 
-   * %TRUE if the primary text of the dialog includes Pango markup. 
-   * See pango_parse_markup(). 
+   * %TRUE if the primary text of the dialog includes Bango markup. 
+   * See bango_parse_markup(). 
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_USE_MARKUP,
 				   g_param_spec_boolean ("use-markup",
 							 P_("Use Markup"),
-							 P_("The primary text of the title includes Pango markup."),
+							 P_("The primary text of the title includes Bango markup."),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
   
   /**
-   * GtkMessageDialog:secondary-text:
+   * BtkMessageDialog:secondary-text:
    * 
    * The secondary text of the message dialog. 
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_SECONDARY_TEXT,
                                    g_param_spec_string ("secondary-text",
                                                         P_("Secondary Text"),
                                                         P_("The secondary text of the message dialog"),
                                                         NULL,
-                                                        GTK_PARAM_READWRITE));
+                                                        BTK_PARAM_READWRITE));
 
   /**
-   * GtkMessageDialog:secondary-use-markup:
+   * BtkMessageDialog:secondary-use-markup:
    * 
-   * %TRUE if the secondary text of the dialog includes Pango markup. 
-   * See pango_parse_markup(). 
+   * %TRUE if the secondary text of the dialog includes Bango markup. 
+   * See bango_parse_markup(). 
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_SECONDARY_USE_MARKUP,
 				   g_param_spec_boolean ("secondary-use-markup",
 							 P_("Use Markup in secondary"),
-							 P_("The secondary text includes Pango markup."),
+							 P_("The secondary text includes Bango markup."),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 
   /**
-   * GtkMessageDialog:image:
+   * BtkMessageDialog:image:
    * 
    * The image for this dialog.
    *
    * Since: 2.10
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_IMAGE,
                                    g_param_spec_object ("image",
                                                         P_("Image"),
                                                         P_("The image"),
-                                                        GTK_TYPE_WIDGET,
-                                                        GTK_PARAM_READWRITE));
+                                                        BTK_TYPE_WIDGET,
+                                                        BTK_PARAM_READWRITE));
 
   /**
-   * GtkMessageDialog:message-area
+   * BtkMessageDialog:message-area
    *
-   * The #GtkVBox that corresponds to the message area of this dialog.  See
-   * gtk_message_dialog_get_message_area() for a detailed description of this
+   * The #BtkVBox that corresponds to the message area of this dialog.  See
+   * btk_message_dialog_get_message_area() for a detailed description of this
    * area.
    *
    * Since: 2.22
    */
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
 				   PROP_MESSAGE_AREA,
 				   g_param_spec_object ("message-area",
 							P_("Message area"),
-							P_("GtkVBox that holds the dialog's primary and secondary labels"),
-							GTK_TYPE_WIDGET,
-							GTK_PARAM_READABLE));
+							P_("BtkVBox that holds the dialog's primary and secondary labels"),
+							BTK_TYPE_WIDGET,
+							BTK_PARAM_READABLE));
 
-  g_type_class_add_private (gobject_class,
-			    sizeof (GtkMessageDialogPrivate));
+  g_type_class_add_private (bobject_class,
+			    sizeof (BtkMessageDialogPrivate));
 }
 
 static void
-gtk_message_dialog_init (GtkMessageDialog *dialog)
+btk_message_dialog_init (BtkMessageDialog *dialog)
 {
-  GtkWidget *hbox;
-  GtkMessageDialogPrivate *priv;
+  BtkWidget *hbox;
+  BtkMessageDialogPrivate *priv;
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
 
-  gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-  gtk_window_set_title (GTK_WINDOW (dialog), "");
-  gtk_window_set_skip_taskbar_hint (GTK_WINDOW (dialog), TRUE);
+  btk_window_set_resizable (BTK_WINDOW (dialog), FALSE);
+  btk_window_set_title (BTK_WINDOW (dialog), "");
+  btk_window_set_skip_taskbar_hint (BTK_WINDOW (dialog), TRUE);
 
   priv->has_primary_markup = FALSE;
   priv->has_secondary_text = FALSE;
-  priv->secondary_label = gtk_label_new (NULL);
-  gtk_widget_set_no_show_all (priv->secondary_label, TRUE);
+  priv->secondary_label = btk_label_new (NULL);
+  btk_widget_set_no_show_all (priv->secondary_label, TRUE);
   
-  dialog->label = gtk_label_new (NULL);
-  dialog->image = gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG);
-  gtk_misc_set_alignment (GTK_MISC (dialog->image), 0.5, 0.0);
+  dialog->label = btk_label_new (NULL);
+  dialog->image = btk_image_new_from_stock (NULL, BTK_ICON_SIZE_DIALOG);
+  btk_misc_set_alignment (BTK_MISC (dialog->image), 0.5, 0.0);
   
-  gtk_label_set_line_wrap  (GTK_LABEL (dialog->label), TRUE);
-  gtk_label_set_selectable (GTK_LABEL (dialog->label), TRUE);
-  gtk_misc_set_alignment   (GTK_MISC  (dialog->label), 0.0, 0.0);
+  btk_label_set_line_wrap  (BTK_LABEL (dialog->label), TRUE);
+  btk_label_set_selectable (BTK_LABEL (dialog->label), TRUE);
+  btk_misc_set_alignment   (BTK_MISC  (dialog->label), 0.0, 0.0);
   
-  gtk_label_set_line_wrap  (GTK_LABEL (priv->secondary_label), TRUE);
-  gtk_label_set_selectable (GTK_LABEL (priv->secondary_label), TRUE);
-  gtk_misc_set_alignment   (GTK_MISC  (priv->secondary_label), 0.0, 0.0);
+  btk_label_set_line_wrap  (BTK_LABEL (priv->secondary_label), TRUE);
+  btk_label_set_selectable (BTK_LABEL (priv->secondary_label), TRUE);
+  btk_misc_set_alignment   (BTK_MISC  (priv->secondary_label), 0.0, 0.0);
 
-  hbox = gtk_hbox_new (FALSE, 12);
-  priv->message_area = gtk_vbox_new (FALSE, 12);
+  hbox = btk_hbox_new (FALSE, 12);
+  priv->message_area = btk_vbox_new (FALSE, 12);
 
-  gtk_box_pack_start (GTK_BOX (priv->message_area), dialog->label,
+  btk_box_pack_start (BTK_BOX (priv->message_area), dialog->label,
                       FALSE, FALSE, 0);
 
-  gtk_box_pack_start (GTK_BOX (priv->message_area), priv->secondary_label,
+  btk_box_pack_start (BTK_BOX (priv->message_area), priv->secondary_label,
                       TRUE, TRUE, 0);
 
-  gtk_box_pack_start (GTK_BOX (hbox), dialog->image,
+  btk_box_pack_start (BTK_BOX (hbox), dialog->image,
                       FALSE, FALSE, 0);
 
-  gtk_box_pack_start (GTK_BOX (hbox), priv->message_area,
+  btk_box_pack_start (BTK_BOX (hbox), priv->message_area,
                       TRUE, TRUE, 0);
 
-  gtk_box_pack_start (GTK_BOX (GTK_DIALOG (dialog)->vbox),
+  btk_box_pack_start (BTK_BOX (BTK_DIALOG (dialog)->vbox),
                       hbox,
                       FALSE, FALSE, 0);
 
-  gtk_container_set_border_width (GTK_CONTAINER (dialog), 5);
-  gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
-  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->vbox), 14); /* 14 + 2 * 5 = 24 */
-  gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (dialog)->action_area), 5);
-  gtk_box_set_spacing (GTK_BOX (GTK_DIALOG (dialog)->action_area), 6);
+  btk_container_set_border_width (BTK_CONTAINER (dialog), 5);
+  btk_container_set_border_width (BTK_CONTAINER (hbox), 5);
+  btk_box_set_spacing (BTK_BOX (BTK_DIALOG (dialog)->vbox), 14); /* 14 + 2 * 5 = 24 */
+  btk_container_set_border_width (BTK_CONTAINER (BTK_DIALOG (dialog)->action_area), 5);
+  btk_box_set_spacing (BTK_BOX (BTK_DIALOG (dialog)->action_area), 6);
 
-  gtk_widget_show_all (hbox);
+  btk_widget_show_all (hbox);
 
-  _gtk_dialog_set_ignore_separator (GTK_DIALOG (dialog), TRUE);
+  _btk_dialog_set_ignore_separator (BTK_DIALOG (dialog), TRUE);
 }
 
 static void
-setup_primary_label_font (GtkMessageDialog *dialog)
+setup_primary_label_font (BtkMessageDialog *dialog)
 {
   gint size;
-  PangoFontDescription *font_desc;
-  GtkMessageDialogPrivate *priv;
+  BangoFontDescription *font_desc;
+  BtkMessageDialogPrivate *priv;
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
 
   /* unset the font settings */
-  gtk_widget_modify_font (dialog->label, NULL);
+  btk_widget_modify_font (dialog->label, NULL);
 
   if (priv->has_secondary_text && !priv->has_primary_markup)
     {
-      size = pango_font_description_get_size (dialog->label->style->font_desc);
-      font_desc = pango_font_description_new ();
-      pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
-      pango_font_description_set_size (font_desc, size * PANGO_SCALE_LARGE);
-      gtk_widget_modify_font (dialog->label, font_desc);
-      pango_font_description_free (font_desc);
+      size = bango_font_description_get_size (dialog->label->style->font_desc);
+      font_desc = bango_font_description_new ();
+      bango_font_description_set_weight (font_desc, BANGO_WEIGHT_BOLD);
+      bango_font_description_set_size (font_desc, size * BANGO_SCALE_LARGE);
+      btk_widget_modify_font (dialog->label, font_desc);
+      bango_font_description_free (font_desc);
     }
 }
 
 static void
-setup_type (GtkMessageDialog *dialog,
-	    GtkMessageType    type)
+setup_type (BtkMessageDialog *dialog,
+	    BtkMessageType    type)
 {
-  GtkMessageDialogPrivate *priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  BtkMessageDialogPrivate *priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
   const gchar *stock_id = NULL;
-  AtkObject *atk_obj;
+  BatkObject *batk_obj;
  
   priv->message_type = type;
 
   switch (type)
     {
-    case GTK_MESSAGE_INFO:
-      stock_id = GTK_STOCK_DIALOG_INFO;
+    case BTK_MESSAGE_INFO:
+      stock_id = BTK_STOCK_DIALOG_INFO;
       break;
 
-    case GTK_MESSAGE_QUESTION:
-      stock_id = GTK_STOCK_DIALOG_QUESTION;
+    case BTK_MESSAGE_QUESTION:
+      stock_id = BTK_STOCK_DIALOG_QUESTION;
       break;
 
-    case GTK_MESSAGE_WARNING:
-      stock_id = GTK_STOCK_DIALOG_WARNING;
+    case BTK_MESSAGE_WARNING:
+      stock_id = BTK_STOCK_DIALOG_WARNING;
       break;
       
-    case GTK_MESSAGE_ERROR:
-      stock_id = GTK_STOCK_DIALOG_ERROR;
+    case BTK_MESSAGE_ERROR:
+      stock_id = BTK_STOCK_DIALOG_ERROR;
       break;
 
-    case GTK_MESSAGE_OTHER:
+    case BTK_MESSAGE_OTHER:
       break;
 
     default:
-      g_warning ("Unknown GtkMessageType %u", type);
+      g_warning ("Unknown BtkMessageType %u", type);
       break;
     }
 
   if (stock_id)
-    gtk_image_set_from_stock (GTK_IMAGE (dialog->image), stock_id,
-                              GTK_ICON_SIZE_DIALOG);
+    btk_image_set_from_stock (BTK_IMAGE (dialog->image), stock_id,
+                              BTK_ICON_SIZE_DIALOG);
       
-  atk_obj = gtk_widget_get_accessible (GTK_WIDGET (dialog));
-  if (GTK_IS_ACCESSIBLE (atk_obj))
+  batk_obj = btk_widget_get_accessible (BTK_WIDGET (dialog));
+  if (BTK_IS_ACCESSIBLE (batk_obj))
     {
-      atk_object_set_role (atk_obj, ATK_ROLE_ALERT);
+      batk_object_set_role (batk_obj, BATK_ROLE_ALERT);
       if (stock_id)
         {
-          GtkStockItem item;
+          BtkStockItem item;
 
-          gtk_stock_lookup (stock_id, &item);
-          atk_object_set_name (atk_obj, item.label);
+          btk_stock_lookup (stock_id, &item);
+          batk_object_set_name (batk_obj, item.label);
         }
     }
 }
 
 static void 
-gtk_message_dialog_set_property (GObject      *object,
+btk_message_dialog_set_property (GObject      *object,
 				 guint         prop_id,
 				 const GValue *value,
 				 GParamSpec   *pspec)
 {
-  GtkMessageDialog *dialog;
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialog *dialog;
+  BtkMessageDialogPrivate *priv;
 
-  dialog = GTK_MESSAGE_DIALOG (object);
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  dialog = BTK_MESSAGE_DIALOG (object);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
   
   switch (prop_id)
     {
@@ -482,19 +482,19 @@ gtk_message_dialog_set_property (GObject      *object,
       setup_type (dialog, g_value_get_enum (value));
       break;
     case PROP_BUTTONS:
-      gtk_message_dialog_add_buttons (dialog, g_value_get_enum (value));
+      btk_message_dialog_add_buttons (dialog, g_value_get_enum (value));
       break;
     case PROP_TEXT:
       if (priv->has_primary_markup)
-	gtk_label_set_markup (GTK_LABEL (dialog->label), 
+	btk_label_set_markup (BTK_LABEL (dialog->label), 
 			      g_value_get_string (value));
       else
-	gtk_label_set_text (GTK_LABEL (dialog->label), 
+	btk_label_set_text (BTK_LABEL (dialog->label), 
 			    g_value_get_string (value));
       break;
     case PROP_USE_MARKUP:
       priv->has_primary_markup = g_value_get_boolean (value) != FALSE;
-      gtk_label_set_use_markup (GTK_LABEL (dialog->label), 
+      btk_label_set_use_markup (BTK_LABEL (dialog->label), 
 				priv->has_primary_markup);
       setup_primary_label_font (dialog);
       break;
@@ -502,30 +502,30 @@ gtk_message_dialog_set_property (GObject      *object,
       {
 	const gchar *txt = g_value_get_string (value);
 	
-	if (gtk_label_get_use_markup (GTK_LABEL (priv->secondary_label)))
-	  gtk_label_set_markup (GTK_LABEL (priv->secondary_label), txt);
+	if (btk_label_get_use_markup (BTK_LABEL (priv->secondary_label)))
+	  btk_label_set_markup (BTK_LABEL (priv->secondary_label), txt);
 	else
-	  gtk_label_set_text (GTK_LABEL (priv->secondary_label), txt);
+	  btk_label_set_text (BTK_LABEL (priv->secondary_label), txt);
 
 	if (txt)
 	  {
 	    priv->has_secondary_text = TRUE;
-	    gtk_widget_show (priv->secondary_label);
+	    btk_widget_show (priv->secondary_label);
 	  }
 	else
 	  {
 	    priv->has_secondary_text = FALSE;
-	    gtk_widget_hide (priv->secondary_label);
+	    btk_widget_hide (priv->secondary_label);
 	  }
 	setup_primary_label_font (dialog);
       }
       break;
     case PROP_SECONDARY_USE_MARKUP:
-      gtk_label_set_use_markup (GTK_LABEL (priv->secondary_label), 
+      btk_label_set_use_markup (BTK_LABEL (priv->secondary_label), 
 				g_value_get_boolean (value));
       break;
     case PROP_IMAGE:
-      gtk_message_dialog_set_image (dialog, g_value_get_object (value));
+      btk_message_dialog_set_image (dialog, g_value_get_object (value));
       break;
 
     default:
@@ -535,24 +535,24 @@ gtk_message_dialog_set_property (GObject      *object,
 }
 
 static void 
-gtk_message_dialog_get_property (GObject     *object,
+btk_message_dialog_get_property (GObject     *object,
 				 guint        prop_id,
 				 GValue      *value,
 				 GParamSpec  *pspec)
 {
-  GtkMessageDialog *dialog;
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialog *dialog;
+  BtkMessageDialogPrivate *priv;
 
-  dialog = GTK_MESSAGE_DIALOG (object);
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  dialog = BTK_MESSAGE_DIALOG (object);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
     
   switch (prop_id)
     {
     case PROP_MESSAGE_TYPE:
-      g_value_set_enum (value, (GtkMessageType) priv->message_type);
+      g_value_set_enum (value, (BtkMessageType) priv->message_type);
       break;
     case PROP_TEXT:
-      g_value_set_string (value, gtk_label_get_label (GTK_LABEL (dialog->label)));
+      g_value_set_string (value, btk_label_get_label (BTK_LABEL (dialog->label)));
       break;
     case PROP_USE_MARKUP:
       g_value_set_boolean (value, priv->has_primary_markup);
@@ -560,14 +560,14 @@ gtk_message_dialog_get_property (GObject     *object,
     case PROP_SECONDARY_TEXT:
       if (priv->has_secondary_text)
       g_value_set_string (value, 
-			  gtk_label_get_label (GTK_LABEL (priv->secondary_label)));
+			  btk_label_get_label (BTK_LABEL (priv->secondary_label)));
       else
 	g_value_set_string (value, NULL);
       break;
     case PROP_SECONDARY_USE_MARKUP:
       if (priv->has_secondary_text)
 	g_value_set_boolean (value, 
-			     gtk_label_get_use_markup (GTK_LABEL (priv->secondary_label)));
+			     btk_label_get_use_markup (BTK_LABEL (priv->secondary_label)));
       else
 	g_value_set_boolean (value, FALSE);
       break;
@@ -584,7 +584,7 @@ gtk_message_dialog_get_property (GObject     *object,
 }
 
 /**
- * gtk_message_dialog_new:
+ * btk_message_dialog_new:
  * @parent: (allow-none): transient parent, or %NULL for none
  * @flags: flags
  * @type: type of message
@@ -595,36 +595,36 @@ gtk_message_dialog_get_property (GObject     *object,
  * Creates a new message dialog, which is a simple dialog with an icon
  * indicating the dialog type (error, warning, etc.) and some text the
  * user may want to see. When the user clicks a button a "response"
- * signal is emitted with response IDs from #GtkResponseType. See
- * #GtkDialog for more details.
+ * signal is emitted with response IDs from #BtkResponseType. See
+ * #BtkDialog for more details.
  *
- * Return value: (transfer none): a new #GtkMessageDialog
+ * Return value: (transfer none): a new #BtkMessageDialog
  **/
-GtkWidget*
-gtk_message_dialog_new (GtkWindow     *parent,
-                        GtkDialogFlags flags,
-                        GtkMessageType type,
-                        GtkButtonsType buttons,
+BtkWidget*
+btk_message_dialog_new (BtkWindow     *parent,
+                        BtkDialogFlags flags,
+                        BtkMessageType type,
+                        BtkButtonsType buttons,
                         const gchar   *message_format,
                         ...)
 {
-  GtkWidget *widget;
-  GtkDialog *dialog;
+  BtkWidget *widget;
+  BtkDialog *dialog;
   gchar* msg = NULL;
   va_list args;
 
-  g_return_val_if_fail (parent == NULL || GTK_IS_WINDOW (parent), NULL);
+  g_return_val_if_fail (parent == NULL || BTK_IS_WINDOW (parent), NULL);
 
-  widget = g_object_new (GTK_TYPE_MESSAGE_DIALOG,
+  widget = g_object_new (BTK_TYPE_MESSAGE_DIALOG,
 			 "message-type", type,
 			 "buttons", buttons,
 			 NULL);
-  dialog = GTK_DIALOG (widget);
+  dialog = BTK_DIALOG (widget);
 
-  if (flags & GTK_DIALOG_NO_SEPARATOR)
+  if (flags & BTK_DIALOG_NO_SEPARATOR)
     {
-      g_warning ("The GTK_DIALOG_NO_SEPARATOR flag cannot be used for GtkMessageDialog");
-      flags &= ~GTK_DIALOG_NO_SEPARATOR;
+      g_warning ("The BTK_DIALOG_NO_SEPARATOR flag cannot be used for BtkMessageDialog");
+      flags &= ~BTK_DIALOG_NO_SEPARATOR;
     }
 
   if (message_format)
@@ -633,27 +633,27 @@ gtk_message_dialog_new (GtkWindow     *parent,
       msg = g_strdup_vprintf (message_format, args);
       va_end (args);
 
-      gtk_label_set_text (GTK_LABEL (GTK_MESSAGE_DIALOG (widget)->label),
+      btk_label_set_text (BTK_LABEL (BTK_MESSAGE_DIALOG (widget)->label),
                           msg);
 
       g_free (msg);
     }
 
   if (parent != NULL)
-    gtk_window_set_transient_for (GTK_WINDOW (widget),
-                                  GTK_WINDOW (parent));
+    btk_window_set_transient_for (BTK_WINDOW (widget),
+                                  BTK_WINDOW (parent));
   
-  if (flags & GTK_DIALOG_MODAL)
-    gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
+  if (flags & BTK_DIALOG_MODAL)
+    btk_window_set_modal (BTK_WINDOW (dialog), TRUE);
 
-  if (flags & GTK_DIALOG_DESTROY_WITH_PARENT)
-    gtk_window_set_destroy_with_parent (GTK_WINDOW (dialog), TRUE);
+  if (flags & BTK_DIALOG_DESTROY_WITH_PARENT)
+    btk_window_set_destroy_with_parent (BTK_WINDOW (dialog), TRUE);
 
   return widget;
 }
 
 /**
- * gtk_message_dialog_new_with_markup:
+ * btk_message_dialog_new_with_markup:
  * @parent: (allow-none): transient parent, or %NULL for none 
  * @flags: flags
  * @type: type of message
@@ -663,49 +663,49 @@ gtk_message_dialog_new (GtkWindow     *parent,
  * 
  * Creates a new message dialog, which is a simple dialog with an icon
  * indicating the dialog type (error, warning, etc.) and some text which
- * is marked up with the <link linkend="PangoMarkupFormat">Pango text markup language</link>.
+ * is marked up with the <link linkend="BangoMarkupFormat">Bango text markup language</link>.
  * When the user clicks a button a "response" signal is emitted with
- * response IDs from #GtkResponseType. See #GtkDialog for more details.
+ * response IDs from #BtkResponseType. See #BtkDialog for more details.
  *
  * Special XML characters in the printf() arguments passed to this
  * function will automatically be escaped as necessary.
  * (See g_markup_printf_escaped() for how this is implemented.)
  * Usually this is what you want, but if you have an existing
- * Pango markup string that you want to use literally as the
- * label, then you need to use gtk_message_dialog_set_markup()
+ * Bango markup string that you want to use literally as the
+ * label, then you need to use btk_message_dialog_set_markup()
  * instead, since you can't pass the markup string either
  * as the format (it might contain '%' characters) or as a string
  * argument.
  * |[
- *  GtkWidget *dialog;
- *  dialog = gtk_message_dialog_new (main_application_window,
- *                                   GTK_DIALOG_DESTROY_WITH_PARENT,
- *                                   GTK_MESSAGE_ERROR,
- *                                   GTK_BUTTONS_CLOSE,
+ *  BtkWidget *dialog;
+ *  dialog = btk_message_dialog_new (main_application_window,
+ *                                   BTK_DIALOG_DESTROY_WITH_PARENT,
+ *                                   BTK_MESSAGE_ERROR,
+ *                                   BTK_BUTTONS_CLOSE,
  *                                   NULL);
- *  gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog),
+ *  btk_message_dialog_set_markup (BTK_MESSAGE_DIALOG (dialog),
  *                                 markup);
  * ]|
  * 
- * Return value: a new #GtkMessageDialog
+ * Return value: a new #BtkMessageDialog
  *
  * Since: 2.4
  **/
-GtkWidget*
-gtk_message_dialog_new_with_markup (GtkWindow     *parent,
-                                    GtkDialogFlags flags,
-                                    GtkMessageType type,
-                                    GtkButtonsType buttons,
+BtkWidget*
+btk_message_dialog_new_with_markup (BtkWindow     *parent,
+                                    BtkDialogFlags flags,
+                                    BtkMessageType type,
+                                    BtkButtonsType buttons,
                                     const gchar   *message_format,
                                     ...)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   va_list args;
   gchar *msg = NULL;
 
-  g_return_val_if_fail (parent == NULL || GTK_IS_WINDOW (parent), NULL);
+  g_return_val_if_fail (parent == NULL || BTK_IS_WINDOW (parent), NULL);
 
-  widget = gtk_message_dialog_new (parent, flags, type, buttons, NULL);
+  widget = btk_message_dialog_new (parent, flags, type, buttons, NULL);
 
   if (message_format)
     {
@@ -713,7 +713,7 @@ gtk_message_dialog_new_with_markup (GtkWindow     *parent,
       msg = g_markup_vprintf_escaped (message_format, args);
       va_end (args);
 
-      gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (widget), msg);
+      btk_message_dialog_set_markup (BTK_MESSAGE_DIALOG (widget), msg);
 
       g_free (msg);
     }
@@ -722,8 +722,8 @@ gtk_message_dialog_new_with_markup (GtkWindow     *parent,
 }
 
 /**
- * gtk_message_dialog_set_image:
- * @dialog: a #GtkMessageDialog
+ * btk_message_dialog_set_image:
+ * @dialog: a #BtkMessageDialog
  * @image: the image
  * 
  * Sets the dialog's image to @image.
@@ -731,29 +731,29 @@ gtk_message_dialog_new_with_markup (GtkWindow     *parent,
  * Since: 2.10
  **/
 void
-gtk_message_dialog_set_image (GtkMessageDialog *dialog,
-			      GtkWidget        *image)
+btk_message_dialog_set_image (BtkMessageDialog *dialog,
+			      BtkWidget        *image)
 {
-  GtkMessageDialogPrivate *priv;
-  GtkWidget *parent;
+  BtkMessageDialogPrivate *priv;
+  BtkWidget *parent;
 
-  g_return_if_fail (GTK_IS_MESSAGE_DIALOG (dialog));
-  g_return_if_fail (image == NULL || GTK_IS_WIDGET (image));
+  g_return_if_fail (BTK_IS_MESSAGE_DIALOG (dialog));
+  g_return_if_fail (image == NULL || BTK_IS_WIDGET (image));
 
   if (image == NULL)
     {
-      image = gtk_image_new_from_stock (NULL, GTK_ICON_SIZE_DIALOG);
-      gtk_misc_set_alignment (GTK_MISC (image), 0.5, 0.0);
+      image = btk_image_new_from_stock (NULL, BTK_ICON_SIZE_DIALOG);
+      btk_misc_set_alignment (BTK_MISC (image), 0.5, 0.0);
     }
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (dialog);
 
-  priv->message_type = GTK_MESSAGE_OTHER;
+  priv->message_type = BTK_MESSAGE_OTHER;
   
   parent = dialog->image->parent;
-  gtk_container_add (GTK_CONTAINER (parent), image);
-  gtk_container_remove (GTK_CONTAINER (parent), dialog->image);
-  gtk_box_reorder_child (GTK_BOX (parent), image, 0);
+  btk_container_add (BTK_CONTAINER (parent), image);
+  btk_container_remove (BTK_CONTAINER (parent), dialog->image);
+  btk_box_reorder_child (BTK_BOX (parent), image, 0);
 
   dialog->image = image;
 
@@ -761,8 +761,8 @@ gtk_message_dialog_set_image (GtkMessageDialog *dialog,
 }
 
 /**
- * gtk_message_dialog_get_image:
- * @dialog: a #GtkMessageDialog
+ * btk_message_dialog_get_image:
+ * @dialog: a #BtkMessageDialog
  *
  * Gets the dialog's image.
  *
@@ -770,41 +770,41 @@ gtk_message_dialog_set_image (GtkMessageDialog *dialog,
  *
  * Since: 2.14
  **/
-GtkWidget *
-gtk_message_dialog_get_image (GtkMessageDialog *dialog)
+BtkWidget *
+btk_message_dialog_get_image (BtkMessageDialog *dialog)
 {
-  g_return_val_if_fail (GTK_IS_MESSAGE_DIALOG (dialog), NULL);
+  g_return_val_if_fail (BTK_IS_MESSAGE_DIALOG (dialog), NULL);
 
   return dialog->image;
 }
 
 /**
- * gtk_message_dialog_set_markup:
- * @message_dialog: a #GtkMessageDialog
- * @str: markup string (see <link linkend="PangoMarkupFormat">Pango markup format</link>)
+ * btk_message_dialog_set_markup:
+ * @message_dialog: a #BtkMessageDialog
+ * @str: markup string (see <link linkend="BangoMarkupFormat">Bango markup format</link>)
  * 
  * Sets the text of the message dialog to be @str, which is marked
- * up with the <link linkend="PangoMarkupFormat">Pango text markup
+ * up with the <link linkend="BangoMarkupFormat">Bango text markup
  * language</link>.
  *
  * Since: 2.4
  **/
 void
-gtk_message_dialog_set_markup (GtkMessageDialog *message_dialog,
+btk_message_dialog_set_markup (BtkMessageDialog *message_dialog,
                                const gchar      *str)
 {
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialogPrivate *priv;
 
-  g_return_if_fail (GTK_IS_MESSAGE_DIALOG (message_dialog));
+  g_return_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog));
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
   priv->has_primary_markup = TRUE;
-  gtk_label_set_markup (GTK_LABEL (message_dialog->label), str);
+  btk_label_set_markup (BTK_LABEL (message_dialog->label), str);
 }
 
 /**
- * gtk_message_dialog_format_secondary_text:
- * @message_dialog: a #GtkMessageDialog
+ * btk_message_dialog_format_secondary_text:
+ * @message_dialog: a #BtkMessageDialog
  * @message_format: (allow-none): printf()-style format string, or %NULL
  * @Varargs: arguments for @message_format
  * 
@@ -817,17 +817,17 @@ gtk_message_dialog_set_markup (GtkMessageDialog *message_dialog,
  * Since: 2.6
  **/
 void
-gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
+btk_message_dialog_format_secondary_text (BtkMessageDialog *message_dialog,
                                           const gchar      *message_format,
                                           ...)
 {
   va_list args;
   gchar *msg = NULL;
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialogPrivate *priv;
 
-  g_return_if_fail (GTK_IS_MESSAGE_DIALOG (message_dialog));
+  g_return_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog));
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
 
   if (message_format)
     {
@@ -837,36 +837,36 @@ gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
       msg = g_strdup_vprintf (message_format, args);
       va_end (args);
 
-      gtk_widget_show (priv->secondary_label);
-      gtk_label_set_text (GTK_LABEL (priv->secondary_label), msg);
+      btk_widget_show (priv->secondary_label);
+      btk_label_set_text (BTK_LABEL (priv->secondary_label), msg);
 
       g_free (msg);
     }
   else
     {
       priv->has_secondary_text = FALSE;
-      gtk_widget_hide (priv->secondary_label);
+      btk_widget_hide (priv->secondary_label);
     }
 
   setup_primary_label_font (message_dialog);
 }
 
 /**
- * gtk_message_dialog_format_secondary_markup:
- * @message_dialog: a #GtkMessageDialog
+ * btk_message_dialog_format_secondary_markup:
+ * @message_dialog: a #BtkMessageDialog
  * @message_format: printf()-style markup string (see 
-     <link linkend="PangoMarkupFormat">Pango markup format</link>), or %NULL
+     <link linkend="BangoMarkupFormat">Bango markup format</link>), or %NULL
  * @Varargs: arguments for @message_format
  * 
  * Sets the secondary text of the message dialog to be @message_format (with 
  * printf()-style), which is marked up with the 
- * <link linkend="PangoMarkupFormat">Pango text markup language</link>.
+ * <link linkend="BangoMarkupFormat">Bango text markup language</link>.
  *
  * Note that setting a secondary text makes the primary text become
  * bold, unless you have provided explicit markup.
  *
  * Due to an oversight, this function does not escape special XML characters
- * like gtk_message_dialog_new_with_markup() does. Thus, if the arguments 
+ * like btk_message_dialog_new_with_markup() does. Thus, if the arguments 
  * may contain special XML characters, you should use g_markup_printf_escaped()
  * to escape it.
 
@@ -874,24 +874,24 @@ gtk_message_dialog_format_secondary_text (GtkMessageDialog *message_dialog,
  * gchar *msg;
  *  
  * msg = g_markup_printf_escaped (message_format, ...);
- * gtk_message_dialog_format_secondary_markup (message_dialog, "&percnt;s", msg);
+ * btk_message_dialog_format_secondary_markup (message_dialog, "&percnt;s", msg);
  * g_free (msg);
  * </programlisting></informalexample>
  *
  * Since: 2.6
  **/
 void
-gtk_message_dialog_format_secondary_markup (GtkMessageDialog *message_dialog,
+btk_message_dialog_format_secondary_markup (BtkMessageDialog *message_dialog,
                                             const gchar      *message_format,
                                             ...)
 {
   va_list args;
   gchar *msg = NULL;
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialogPrivate *priv;
 
-  g_return_if_fail (GTK_IS_MESSAGE_DIALOG (message_dialog));
+  g_return_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog));
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
 
   if (message_format)
     {
@@ -901,106 +901,106 @@ gtk_message_dialog_format_secondary_markup (GtkMessageDialog *message_dialog,
       msg = g_strdup_vprintf (message_format, args);
       va_end (args);
 
-      gtk_widget_show (priv->secondary_label);
-      gtk_label_set_markup (GTK_LABEL (priv->secondary_label), msg);
+      btk_widget_show (priv->secondary_label);
+      btk_label_set_markup (BTK_LABEL (priv->secondary_label), msg);
 
       g_free (msg);
     }
   else
     {
       priv->has_secondary_text = FALSE;
-      gtk_widget_hide (priv->secondary_label);
+      btk_widget_hide (priv->secondary_label);
     }
 
   setup_primary_label_font (message_dialog);
 }
 
 /**
- * gtk_message_dialog_get_message_area:
- * @message_dialog: a #GtkMessageDialog
+ * btk_message_dialog_get_message_area:
+ * @message_dialog: a #BtkMessageDialog
  *
  * Returns the message area of the dialog. This is the box where the
  * dialog's primary and secondary labels are packed. You can add your
  * own extra content to that box and it will appear below those labels,
  * on the right side of the dialog's image (or on the left for right-to-left
- * languages).  See gtk_dialog_get_content_area() for the corresponding
- * function in the parent #GtkDialog.
+ * languages).  See btk_dialog_get_content_area() for the corresponding
+ * function in the parent #BtkDialog.
  *
- * Return value: (transfer none): A #GtkVBox corresponding to the
+ * Return value: (transfer none): A #BtkVBox corresponding to the
  *     "message area" in the @message_dialog.
  *
  * Since: 2.22
  **/
-GtkWidget *
-gtk_message_dialog_get_message_area (GtkMessageDialog *message_dialog)
+BtkWidget *
+btk_message_dialog_get_message_area (BtkMessageDialog *message_dialog)
 {
-  GtkMessageDialogPrivate *priv;
+  BtkMessageDialogPrivate *priv;
 
-  g_return_val_if_fail (GTK_IS_MESSAGE_DIALOG (message_dialog), NULL);
+  g_return_val_if_fail (BTK_IS_MESSAGE_DIALOG (message_dialog), NULL);
 
-  priv = GTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
+  priv = BTK_MESSAGE_DIALOG_GET_PRIVATE (message_dialog);
 
   return priv->message_area;
 }
 
 static void
-gtk_message_dialog_add_buttons (GtkMessageDialog* message_dialog,
-				GtkButtonsType buttons)
+btk_message_dialog_add_buttons (BtkMessageDialog* message_dialog,
+				BtkButtonsType buttons)
 {
-  GtkDialog* dialog = GTK_DIALOG (message_dialog);
+  BtkDialog* dialog = BTK_DIALOG (message_dialog);
 
   switch (buttons)
     {
-    case GTK_BUTTONS_NONE:
+    case BTK_BUTTONS_NONE:
       /* nothing */
       break;
 
-    case GTK_BUTTONS_OK:
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_OK,
-                             GTK_RESPONSE_OK);
+    case BTK_BUTTONS_OK:
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_OK,
+                             BTK_RESPONSE_OK);
       break;
 
-    case GTK_BUTTONS_CLOSE:
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_CLOSE,
-                             GTK_RESPONSE_CLOSE);
+    case BTK_BUTTONS_CLOSE:
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_CLOSE,
+                             BTK_RESPONSE_CLOSE);
       break;
 
-    case GTK_BUTTONS_CANCEL:
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_CANCEL,
-                             GTK_RESPONSE_CANCEL);
+    case BTK_BUTTONS_CANCEL:
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_CANCEL,
+                             BTK_RESPONSE_CANCEL);
       break;
 
-    case GTK_BUTTONS_YES_NO:
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_NO,
-                             GTK_RESPONSE_NO);
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_YES,
-                             GTK_RESPONSE_YES);
-      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-					       GTK_RESPONSE_YES,
-					       GTK_RESPONSE_NO,
+    case BTK_BUTTONS_YES_NO:
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_NO,
+                             BTK_RESPONSE_NO);
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_YES,
+                             BTK_RESPONSE_YES);
+      btk_dialog_set_alternative_button_order (BTK_DIALOG (dialog),
+					       BTK_RESPONSE_YES,
+					       BTK_RESPONSE_NO,
 					       -1);
       break;
 
-    case GTK_BUTTONS_OK_CANCEL:
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_CANCEL,
-                             GTK_RESPONSE_CANCEL);
-      gtk_dialog_add_button (dialog,
-                             GTK_STOCK_OK,
-                             GTK_RESPONSE_OK);
-      gtk_dialog_set_alternative_button_order (GTK_DIALOG (dialog),
-					       GTK_RESPONSE_OK,
-					       GTK_RESPONSE_CANCEL,
+    case BTK_BUTTONS_OK_CANCEL:
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_CANCEL,
+                             BTK_RESPONSE_CANCEL);
+      btk_dialog_add_button (dialog,
+                             BTK_STOCK_OK,
+                             BTK_RESPONSE_OK);
+      btk_dialog_set_alternative_button_order (BTK_DIALOG (dialog),
+					       BTK_RESPONSE_OK,
+					       BTK_RESPONSE_CANCEL,
 					       -1);
       break;
       
     default:
-      g_warning ("Unknown GtkButtonsType");
+      g_warning ("Unknown BtkButtonsType");
       break;
     } 
 
@@ -1008,37 +1008,37 @@ gtk_message_dialog_add_buttons (GtkMessageDialog* message_dialog,
 }
 
 static void
-gtk_message_dialog_style_set (GtkWidget *widget,
-                              GtkStyle  *prev_style)
+btk_message_dialog_style_set (BtkWidget *widget,
+                              BtkStyle  *prev_style)
 {
-  GtkMessageDialog *dialog = GTK_MESSAGE_DIALOG (widget);
+  BtkMessageDialog *dialog = BTK_MESSAGE_DIALOG (widget);
   gboolean use_separator;
-  GtkWidget *parent;
+  BtkWidget *parent;
   gint border_width;
 
-  parent = GTK_WIDGET (GTK_MESSAGE_DIALOG (widget)->image->parent);
+  parent = BTK_WIDGET (BTK_MESSAGE_DIALOG (widget)->image->parent);
 
   if (parent)
     {
-      gtk_widget_style_get (widget, "message-border",
+      btk_widget_style_get (widget, "message-border",
                             &border_width, NULL);
       
-      gtk_container_set_border_width (GTK_CONTAINER (parent),
+      btk_container_set_border_width (BTK_CONTAINER (parent),
                                       MAX (0, border_width - 7));
     }
 
-  gtk_widget_style_get (widget,
+  btk_widget_style_get (widget,
 			"use-separator", &use_separator,
 			NULL);
 
-  _gtk_dialog_set_ignore_separator (GTK_DIALOG (widget), FALSE);
-  gtk_dialog_set_has_separator (GTK_DIALOG (widget), use_separator);
-  _gtk_dialog_set_ignore_separator (GTK_DIALOG (widget), TRUE);
+  _btk_dialog_set_ignore_separator (BTK_DIALOG (widget), FALSE);
+  btk_dialog_set_has_separator (BTK_DIALOG (widget), use_separator);
+  _btk_dialog_set_ignore_separator (BTK_DIALOG (widget), TRUE);
 
   setup_primary_label_font (dialog);
 
-  GTK_WIDGET_CLASS (gtk_message_dialog_parent_class)->style_set (widget, prev_style);
+  BTK_WIDGET_CLASS (btk_message_dialog_parent_class)->style_set (widget, prev_style);
 }
 
-#define __GTK_MESSAGE_DIALOG_C__
-#include "gtkaliasdef.c"
+#define __BTK_MESSAGE_DIALOG_C__
+#include "btkaliasdef.c"

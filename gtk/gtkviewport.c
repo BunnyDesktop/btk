@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,35 +18,35 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
-#include "gtkviewport.h"
-#include "gtkintl.h"
-#include "gtkmarshalers.h"
-#include "gtkprivate.h"
-#include "gtkalias.h"
+#include "btkviewport.h"
+#include "btkintl.h"
+#include "btkmarshalers.h"
+#include "btkprivate.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtkviewport
+ * SECTION:btkviewport
  * @Short_description: An adapter which makes widgets scrollable
- * @Title: GtkViewport
- * @See_also:#GtkScrolledWindow, #GtkAdjustment
+ * @Title: BtkViewport
+ * @See_also:#BtkScrolledWindow, #BtkAdjustment
  *
- * The #GtkViewport widget acts as an adaptor class, implementing
+ * The #BtkViewport widget acts as an adaptor class, implementing
  * scrollability for child widgets that lack their own scrolling
- * capabilities. Use #GtkViewport to scroll child widgets such as
- * #GtkTable, #GtkBox, and so on.
+ * capabilities. Use #BtkViewport to scroll child widgets such as
+ * #BtkTable, #BtkBox, and so on.
  *
- * If a widget has native scrolling abilities, such as #GtkTextView,
- * #GtkTreeView or #GtkIconview, it can be added to a #GtkScrolledWindow
- * with gtk_container_add(). If a widget does not, you must first add the
- * widget to a #GtkViewport, then add the viewport to the scrolled window.
- * The convenience function gtk_scrolled_window_add_with_viewport() does
+ * If a widget has native scrolling abilities, such as #BtkTextView,
+ * #BtkTreeView or #BtkIconview, it can be added to a #BtkScrolledWindow
+ * with btk_container_add(). If a widget does not, you must first add the
+ * widget to a #BtkViewport, then add the viewport to the scrolled window.
+ * The convenience function btk_scrolled_window_add_with_viewport() does
  * exactly this, so you can ignore the presence of the viewport.
  */
 
@@ -58,133 +58,133 @@ enum {
 };
 
 
-static void gtk_viewport_finalize                 (GObject          *object);
-static void gtk_viewport_destroy                  (GtkObject        *object);
-static void gtk_viewport_set_property             (GObject         *object,
+static void btk_viewport_finalize                 (GObject          *object);
+static void btk_viewport_destroy                  (BtkObject        *object);
+static void btk_viewport_set_property             (GObject         *object,
 						   guint            prop_id,
 						   const GValue    *value,
 						   GParamSpec      *pspec);
-static void gtk_viewport_get_property             (GObject         *object,
+static void btk_viewport_get_property             (GObject         *object,
 						   guint            prop_id,
 						   GValue          *value,
 						   GParamSpec      *pspec);
-static void gtk_viewport_set_scroll_adjustments	  (GtkViewport	    *viewport,
-						   GtkAdjustment    *hadjustment,
-						   GtkAdjustment    *vadjustment);
-static void gtk_viewport_realize                  (GtkWidget        *widget);
-static void gtk_viewport_unrealize                (GtkWidget        *widget);
-static void gtk_viewport_paint                    (GtkWidget        *widget,
-						   GdkRectangle     *area);
-static gint gtk_viewport_expose                   (GtkWidget        *widget,
-						   GdkEventExpose   *event);
-static void gtk_viewport_add                      (GtkContainer     *container,
-						   GtkWidget        *widget);
-static void gtk_viewport_size_request             (GtkWidget        *widget,
-						   GtkRequisition   *requisition);
-static void gtk_viewport_size_allocate            (GtkWidget        *widget,
-						   GtkAllocation    *allocation);
-static void gtk_viewport_adjustment_value_changed (GtkAdjustment    *adjustment,
+static void btk_viewport_set_scroll_adjustments	  (BtkViewport	    *viewport,
+						   BtkAdjustment    *hadjustment,
+						   BtkAdjustment    *vadjustment);
+static void btk_viewport_realize                  (BtkWidget        *widget);
+static void btk_viewport_unrealize                (BtkWidget        *widget);
+static void btk_viewport_paint                    (BtkWidget        *widget,
+						   BdkRectangle     *area);
+static gint btk_viewport_expose                   (BtkWidget        *widget,
+						   BdkEventExpose   *event);
+static void btk_viewport_add                      (BtkContainer     *container,
+						   BtkWidget        *widget);
+static void btk_viewport_size_request             (BtkWidget        *widget,
+						   BtkRequisition   *requisition);
+static void btk_viewport_size_allocate            (BtkWidget        *widget,
+						   BtkAllocation    *allocation);
+static void btk_viewport_adjustment_value_changed (BtkAdjustment    *adjustment,
 						   gpointer          data);
-static void gtk_viewport_style_set                (GtkWidget *widget,
-			                           GtkStyle  *previous_style);
+static void btk_viewport_style_set                (BtkWidget *widget,
+			                           BtkStyle  *previous_style);
 
-G_DEFINE_TYPE (GtkViewport, gtk_viewport, GTK_TYPE_BIN)
+G_DEFINE_TYPE (BtkViewport, btk_viewport, BTK_TYPE_BIN)
 
 static void
-gtk_viewport_class_init (GtkViewportClass *class)
+btk_viewport_class_init (BtkViewportClass *class)
 {
-  GtkObjectClass *object_class;
-  GObjectClass   *gobject_class;
-  GtkWidgetClass *widget_class;
-  GtkContainerClass *container_class;
+  BtkObjectClass *object_class;
+  GObjectClass   *bobject_class;
+  BtkWidgetClass *widget_class;
+  BtkContainerClass *container_class;
 
-  object_class = (GtkObjectClass*) class;
-  gobject_class = G_OBJECT_CLASS (class);
-  widget_class = (GtkWidgetClass*) class;
-  container_class = (GtkContainerClass*) class;
+  object_class = (BtkObjectClass*) class;
+  bobject_class = G_OBJECT_CLASS (class);
+  widget_class = (BtkWidgetClass*) class;
+  container_class = (BtkContainerClass*) class;
 
-  gobject_class->finalize = gtk_viewport_finalize;
-  gobject_class->set_property = gtk_viewport_set_property;
-  gobject_class->get_property = gtk_viewport_get_property;
-  object_class->destroy = gtk_viewport_destroy;
+  bobject_class->finalize = btk_viewport_finalize;
+  bobject_class->set_property = btk_viewport_set_property;
+  bobject_class->get_property = btk_viewport_get_property;
+  object_class->destroy = btk_viewport_destroy;
   
-  widget_class->realize = gtk_viewport_realize;
-  widget_class->unrealize = gtk_viewport_unrealize;
-  widget_class->expose_event = gtk_viewport_expose;
-  widget_class->size_request = gtk_viewport_size_request;
-  widget_class->size_allocate = gtk_viewport_size_allocate;
-  widget_class->style_set = gtk_viewport_style_set;
+  widget_class->realize = btk_viewport_realize;
+  widget_class->unrealize = btk_viewport_unrealize;
+  widget_class->expose_event = btk_viewport_expose;
+  widget_class->size_request = btk_viewport_size_request;
+  widget_class->size_allocate = btk_viewport_size_allocate;
+  widget_class->style_set = btk_viewport_style_set;
   
-  container_class->add = gtk_viewport_add;
+  container_class->add = btk_viewport_add;
 
-  class->set_scroll_adjustments = gtk_viewport_set_scroll_adjustments;
+  class->set_scroll_adjustments = btk_viewport_set_scroll_adjustments;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_HADJUSTMENT,
                                    g_param_spec_object ("hadjustment",
 							P_("Horizontal adjustment"),
-							P_("The GtkAdjustment that determines the values of the horizontal position for this viewport"),
-                                                        GTK_TYPE_ADJUSTMENT,
-                                                        GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+							P_("The BtkAdjustment that determines the values of the horizontal position for this viewport"),
+                                                        BTK_TYPE_ADJUSTMENT,
+                                                        BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_VADJUSTMENT,
                                    g_param_spec_object ("vadjustment",
 							P_("Vertical adjustment"),
-							P_("The GtkAdjustment that determines the values of the vertical position for this viewport"),
-                                                        GTK_TYPE_ADJUSTMENT,
-                                                        GTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
+							P_("The BtkAdjustment that determines the values of the vertical position for this viewport"),
+                                                        BTK_TYPE_ADJUSTMENT,
+                                                        BTK_PARAM_READWRITE | G_PARAM_CONSTRUCT));
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_SHADOW_TYPE,
                                    g_param_spec_enum ("shadow-type",
 						      P_("Shadow type"),
 						      P_("Determines how the shadowed box around the viewport is drawn"),
-						      GTK_TYPE_SHADOW_TYPE,
-						      GTK_SHADOW_IN,
-						      GTK_PARAM_READWRITE));
+						      BTK_TYPE_SHADOW_TYPE,
+						      BTK_SHADOW_IN,
+						      BTK_PARAM_READWRITE));
 
   /**
-   * GtkViewport::set-scroll-adjustments
-   * @horizontal: the horizontal #GtkAdjustment
-   * @vertical: the vertical #GtkAdjustment
+   * BtkViewport::set-scroll-adjustments
+   * @horizontal: the horizontal #BtkAdjustment
+   * @vertical: the vertical #BtkAdjustment
    *
    * Set the scroll adjustments for the viewport. Usually scrolled containers
-   * like #GtkScrolledWindow will emit this signal to connect two instances
-   * of #GtkScrollbar to the scroll directions of the #GtkViewport.
+   * like #BtkScrolledWindow will emit this signal to connect two instances
+   * of #BtkScrollbar to the scroll directions of the #BtkViewport.
    */
   widget_class->set_scroll_adjustments_signal =
     g_signal_new (I_("set-scroll-adjustments"),
-		  G_OBJECT_CLASS_TYPE (gobject_class),
+		  G_OBJECT_CLASS_TYPE (bobject_class),
 		  G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
-		  G_STRUCT_OFFSET (GtkViewportClass, set_scroll_adjustments),
+		  G_STRUCT_OFFSET (BtkViewportClass, set_scroll_adjustments),
 		  NULL, NULL,
-		  _gtk_marshal_VOID__OBJECT_OBJECT,
+		  _btk_marshal_VOID__OBJECT_OBJECT,
 		  G_TYPE_NONE, 2,
-		  GTK_TYPE_ADJUSTMENT,
-		  GTK_TYPE_ADJUSTMENT);
+		  BTK_TYPE_ADJUSTMENT,
+		  BTK_TYPE_ADJUSTMENT);
 }
 
 static void
-gtk_viewport_set_property (GObject         *object,
+btk_viewport_set_property (GObject         *object,
 			   guint            prop_id,
 			   const GValue    *value,
 			   GParamSpec      *pspec)
 {
-  GtkViewport *viewport;
+  BtkViewport *viewport;
 
-  viewport = GTK_VIEWPORT (object);
+  viewport = BTK_VIEWPORT (object);
 
   switch (prop_id)
     {
     case PROP_HADJUSTMENT:
-      gtk_viewport_set_hadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_hadjustment (viewport, g_value_get_object (value));
       break;
     case PROP_VADJUSTMENT:
-      gtk_viewport_set_vadjustment (viewport, g_value_get_object (value));
+      btk_viewport_set_vadjustment (viewport, g_value_get_object (value));
       break;
     case PROP_SHADOW_TYPE:
-      gtk_viewport_set_shadow_type (viewport, g_value_get_enum (value));
+      btk_viewport_set_shadow_type (viewport, g_value_get_enum (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -193,14 +193,14 @@ gtk_viewport_set_property (GObject         *object,
 }
 
 static void
-gtk_viewport_get_property (GObject         *object,
+btk_viewport_get_property (GObject         *object,
 			   guint            prop_id,
 			   GValue          *value,
 			   GParamSpec      *pspec)
 {
-  GtkViewport *viewport;
+  BtkViewport *viewport;
 
-  viewport = GTK_VIEWPORT (object);
+  viewport = BTK_VIEWPORT (object);
 
   switch (prop_id)
     {
@@ -220,14 +220,14 @@ gtk_viewport_get_property (GObject         *object,
 }
 
 static void
-gtk_viewport_init (GtkViewport *viewport)
+btk_viewport_init (BtkViewport *viewport)
 {
-  gtk_widget_set_has_window (GTK_WIDGET (viewport), TRUE);
+  btk_widget_set_has_window (BTK_WIDGET (viewport), TRUE);
 
-  gtk_widget_set_redraw_on_allocate (GTK_WIDGET (viewport), FALSE);
-  gtk_container_set_resize_mode (GTK_CONTAINER (viewport), GTK_RESIZE_QUEUE);
+  btk_widget_set_redraw_on_allocate (BTK_WIDGET (viewport), FALSE);
+  btk_container_set_resize_mode (BTK_CONTAINER (viewport), BTK_RESIZE_QUEUE);
   
-  viewport->shadow_type = GTK_SHADOW_IN;
+  viewport->shadow_type = BTK_SHADOW_IN;
   viewport->view_window = NULL;
   viewport->bin_window = NULL;
   viewport->hadjustment = NULL;
@@ -235,21 +235,21 @@ gtk_viewport_init (GtkViewport *viewport)
 }
 
 /**
- * gtk_viewport_new:
+ * btk_viewport_new:
  * @hadjustment: horizontal adjustment.
  * @vadjustment: vertical adjustment.
- * @returns: a new #GtkViewport.
+ * @returns: a new #BtkViewport.
  *
- * Creates a new #GtkViewport with the given adjustments.
+ * Creates a new #BtkViewport with the given adjustments.
  *
  **/
-GtkWidget*
-gtk_viewport_new (GtkAdjustment *hadjustment,
-		  GtkAdjustment *vadjustment)
+BtkWidget*
+btk_viewport_new (BtkAdjustment *hadjustment,
+		  BtkAdjustment *vadjustment)
 {
-  GtkWidget *viewport;
+  BtkWidget *viewport;
 
-  viewport = g_object_new (GTK_TYPE_VIEWPORT,
+  viewport = g_object_new (BTK_TYPE_VIEWPORT,
 			     "hadjustment", hadjustment,
 			     "vadjustment", vadjustment,
 			     NULL);
@@ -258,19 +258,19 @@ gtk_viewport_new (GtkAdjustment *hadjustment,
 }
 
 #define ADJUSTMENT_POINTER(viewport, orientation)         \
-  (((orientation) == GTK_ORIENTATION_HORIZONTAL) ?        \
+  (((orientation) == BTK_ORIENTATION_HORIZONTAL) ?        \
      &(viewport)->hadjustment : &(viewport)->vadjustment)
 
 static void
-viewport_disconnect_adjustment (GtkViewport    *viewport,
-				GtkOrientation  orientation)
+viewport_disconnect_adjustment (BtkViewport    *viewport,
+				BtkOrientation  orientation)
 {
-  GtkAdjustment **adjustmentp = ADJUSTMENT_POINTER (viewport, orientation);
+  BtkAdjustment **adjustmentp = ADJUSTMENT_POINTER (viewport, orientation);
 
   if (*adjustmentp)
     {
       g_signal_handlers_disconnect_by_func (*adjustmentp,
-					    gtk_viewport_adjustment_value_changed,
+					    btk_viewport_adjustment_value_changed,
 					    viewport);
       g_object_unref (*adjustmentp);
       *adjustmentp = NULL;
@@ -278,77 +278,77 @@ viewport_disconnect_adjustment (GtkViewport    *viewport,
 }
 
 static void
-gtk_viewport_finalize (GObject *object)
+btk_viewport_finalize (GObject *object)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (object);
+  BtkViewport *viewport = BTK_VIEWPORT (object);
 
-  viewport_disconnect_adjustment (viewport, GTK_ORIENTATION_HORIZONTAL);
-  viewport_disconnect_adjustment (viewport, GTK_ORIENTATION_VERTICAL);
+  viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL);
+  viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_VERTICAL);
 
-  G_OBJECT_CLASS (gtk_viewport_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_viewport_parent_class)->finalize (object);
 }
 
 static void
-gtk_viewport_destroy (GtkObject *object)
+btk_viewport_destroy (BtkObject *object)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (object);
+  BtkViewport *viewport = BTK_VIEWPORT (object);
 
-  viewport_disconnect_adjustment (viewport, GTK_ORIENTATION_HORIZONTAL);
-  viewport_disconnect_adjustment (viewport, GTK_ORIENTATION_VERTICAL);
+  viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL);
+  viewport_disconnect_adjustment (viewport, BTK_ORIENTATION_VERTICAL);
 
-  GTK_OBJECT_CLASS (gtk_viewport_parent_class)->destroy (object);
+  BTK_OBJECT_CLASS (btk_viewport_parent_class)->destroy (object);
 }
 
 /**
- * gtk_viewport_get_hadjustment:
- * @viewport: a #GtkViewport.
+ * btk_viewport_get_hadjustment:
+ * @viewport: a #BtkViewport.
  *
  * Returns the horizontal adjustment of the viewport.
  *
  * Return value: (transfer none): the horizontal adjustment of @viewport.
  **/
-GtkAdjustment*
-gtk_viewport_get_hadjustment (GtkViewport *viewport)
+BtkAdjustment*
+btk_viewport_get_hadjustment (BtkViewport *viewport)
 {
-  g_return_val_if_fail (GTK_IS_VIEWPORT (viewport), NULL);
+  g_return_val_if_fail (BTK_IS_VIEWPORT (viewport), NULL);
 
   if (!viewport->hadjustment)
-    gtk_viewport_set_hadjustment (viewport, NULL);
+    btk_viewport_set_hadjustment (viewport, NULL);
 
   return viewport->hadjustment;
 }
 
 /**
- * gtk_viewport_get_vadjustment:
- * @viewport: a #GtkViewport.
+ * btk_viewport_get_vadjustment:
+ * @viewport: a #BtkViewport.
  * 
  * Returns the vertical adjustment of the viewport.
  *
  * Return value: (transfer none): the vertical adjustment of @viewport.
  **/
-GtkAdjustment*
-gtk_viewport_get_vadjustment (GtkViewport *viewport)
+BtkAdjustment*
+btk_viewport_get_vadjustment (BtkViewport *viewport)
 {
-  g_return_val_if_fail (GTK_IS_VIEWPORT (viewport), NULL);
+  g_return_val_if_fail (BTK_IS_VIEWPORT (viewport), NULL);
 
   if (!viewport->vadjustment)
-    gtk_viewport_set_vadjustment (viewport, NULL);
+    btk_viewport_set_vadjustment (viewport, NULL);
 
   return viewport->vadjustment;
 }
 
 static void
-viewport_get_view_allocation (GtkViewport   *viewport,
-			      GtkAllocation *view_allocation)
+viewport_get_view_allocation (BtkViewport   *viewport,
+			      BtkAllocation *view_allocation)
 {
-  GtkWidget *widget = GTK_WIDGET (viewport);
-  GtkAllocation *allocation = &widget->allocation;
-  gint border_width = GTK_CONTAINER (viewport)->border_width;
+  BtkWidget *widget = BTK_WIDGET (viewport);
+  BtkAllocation *allocation = &widget->allocation;
+  gint border_width = BTK_CONTAINER (viewport)->border_width;
   
   view_allocation->x = 0;
   view_allocation->y = 0;
 
-  if (viewport->shadow_type != GTK_SHADOW_NONE)
+  if (viewport->shadow_type != BTK_SHADOW_NONE)
     {
       view_allocation->x = widget->style->xthickness;
       view_allocation->y = widget->style->ythickness;
@@ -359,7 +359,7 @@ viewport_get_view_allocation (GtkViewport   *viewport,
 }
 
 static void
-viewport_reclamp_adjustment (GtkAdjustment *adjustment,
+viewport_reclamp_adjustment (BtkAdjustment *adjustment,
 			     gboolean      *value_changed)
 {
   gdouble value = adjustment->value;
@@ -376,12 +376,12 @@ viewport_reclamp_adjustment (GtkAdjustment *adjustment,
 }
 
 static void
-viewport_set_hadjustment_values (GtkViewport *viewport,
+viewport_set_hadjustment_values (BtkViewport *viewport,
 				 gboolean    *value_changed)
 {
-  GtkBin *bin = GTK_BIN (viewport);
-  GtkAllocation view_allocation;
-  GtkAdjustment *hadjustment = gtk_viewport_get_hadjustment (viewport);
+  BtkBin *bin = BTK_BIN (viewport);
+  BtkAllocation view_allocation;
+  BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
   gdouble old_page_size;
   gdouble old_upper;
   gdouble old_value;
@@ -397,17 +397,17 @@ viewport_set_hadjustment_values (GtkViewport *viewport,
   
   hadjustment->lower = 0;
 
-  if (bin->child && gtk_widget_get_visible (bin->child))
+  if (bin->child && btk_widget_get_visible (bin->child))
     {
-      GtkRequisition child_requisition;
+      BtkRequisition child_requisition;
       
-      gtk_widget_get_child_requisition (bin->child, &child_requisition);
+      btk_widget_get_child_requisition (bin->child, &child_requisition);
       hadjustment->upper = MAX (child_requisition.width, view_allocation.width);
     }
   else
     hadjustment->upper = view_allocation.width;
 
-  if (gtk_widget_get_direction (GTK_WIDGET (viewport)) == GTK_TEXT_DIR_RTL) 
+  if (btk_widget_get_direction (BTK_WIDGET (viewport)) == BTK_TEXT_DIR_RTL) 
     {
       gdouble dist = old_upper - (old_value + old_page_size);
       hadjustment->value = hadjustment->upper - dist - hadjustment->page_size;
@@ -419,12 +419,12 @@ viewport_set_hadjustment_values (GtkViewport *viewport,
 }
 
 static void
-viewport_set_vadjustment_values (GtkViewport *viewport,
+viewport_set_vadjustment_values (BtkViewport *viewport,
 				 gboolean    *value_changed)
 {
-  GtkBin *bin = GTK_BIN (viewport);
-  GtkAllocation view_allocation;
-  GtkAdjustment *vadjustment = gtk_viewport_get_vadjustment (viewport);
+  BtkBin *bin = BTK_BIN (viewport);
+  BtkAllocation view_allocation;
+  BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
 
   viewport_get_view_allocation (viewport, &view_allocation);  
 
@@ -434,11 +434,11 @@ viewport_set_vadjustment_values (GtkViewport *viewport,
   
   vadjustment->lower = 0;
 
-  if (bin->child && gtk_widget_get_visible (bin->child))
+  if (bin->child && btk_widget_get_visible (bin->child))
     {
-      GtkRequisition child_requisition;
+      BtkRequisition child_requisition;
       
-      gtk_widget_get_child_requisition (bin->child, &child_requisition);
+      btk_widget_get_child_requisition (bin->child, &child_requisition);
       vadjustment->upper = MAX (child_requisition.height, view_allocation.height);
     }
   else
@@ -448,110 +448,110 @@ viewport_set_vadjustment_values (GtkViewport *viewport,
 }
 
 static void
-viewport_set_adjustment (GtkViewport    *viewport,
-			 GtkOrientation  orientation,
-			 GtkAdjustment  *adjustment)
+viewport_set_adjustment (BtkViewport    *viewport,
+			 BtkOrientation  orientation,
+			 BtkAdjustment  *adjustment)
 {
-  GtkAdjustment **adjustmentp = ADJUSTMENT_POINTER (viewport, orientation);
+  BtkAdjustment **adjustmentp = ADJUSTMENT_POINTER (viewport, orientation);
   gboolean value_changed;
 
   if (adjustment && adjustment == *adjustmentp)
     return;
 
   if (!adjustment)
-    adjustment = GTK_ADJUSTMENT (gtk_adjustment_new (0.0, 0.0, 0.0,
+    adjustment = BTK_ADJUSTMENT (btk_adjustment_new (0.0, 0.0, 0.0,
 						     0.0, 0.0, 0.0));
   viewport_disconnect_adjustment (viewport, orientation);
   *adjustmentp = adjustment;
   g_object_ref_sink (adjustment);
 
-  if (orientation == GTK_ORIENTATION_HORIZONTAL)
+  if (orientation == BTK_ORIENTATION_HORIZONTAL)
     viewport_set_hadjustment_values (viewport, &value_changed);
   else
     viewport_set_vadjustment_values (viewport, &value_changed);
 
   g_signal_connect (adjustment, "value-changed",
-		    G_CALLBACK (gtk_viewport_adjustment_value_changed),
+		    G_CALLBACK (btk_viewport_adjustment_value_changed),
 		    viewport);
 
-  gtk_adjustment_changed (adjustment);
+  btk_adjustment_changed (adjustment);
   
   if (value_changed)
-    gtk_adjustment_value_changed (adjustment);
+    btk_adjustment_value_changed (adjustment);
   else
-    gtk_viewport_adjustment_value_changed (adjustment, viewport);
+    btk_viewport_adjustment_value_changed (adjustment, viewport);
 }
 
 /**
- * gtk_viewport_set_hadjustment:
- * @viewport: a #GtkViewport.
- * @adjustment: (allow-none): a #GtkAdjustment.
+ * btk_viewport_set_hadjustment:
+ * @viewport: a #BtkViewport.
+ * @adjustment: (allow-none): a #BtkAdjustment.
  *
  * Sets the horizontal adjustment of the viewport.
  **/
 void
-gtk_viewport_set_hadjustment (GtkViewport   *viewport,
-			      GtkAdjustment *adjustment)
+btk_viewport_set_hadjustment (BtkViewport   *viewport,
+			      BtkAdjustment *adjustment)
 {
-  g_return_if_fail (GTK_IS_VIEWPORT (viewport));
+  g_return_if_fail (BTK_IS_VIEWPORT (viewport));
   if (adjustment)
-    g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment));
+    g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
-  viewport_set_adjustment (viewport, GTK_ORIENTATION_HORIZONTAL, adjustment);
+  viewport_set_adjustment (viewport, BTK_ORIENTATION_HORIZONTAL, adjustment);
 
   g_object_notify (G_OBJECT (viewport), "hadjustment");
 }
 
 /**
- * gtk_viewport_set_vadjustment:
- * @viewport: a #GtkViewport.
- * @adjustment: (allow-none): a #GtkAdjustment.
+ * btk_viewport_set_vadjustment:
+ * @viewport: a #BtkViewport.
+ * @adjustment: (allow-none): a #BtkAdjustment.
  *
  * Sets the vertical adjustment of the viewport.
  **/
 void
-gtk_viewport_set_vadjustment (GtkViewport   *viewport,
-			      GtkAdjustment *adjustment)
+btk_viewport_set_vadjustment (BtkViewport   *viewport,
+			      BtkAdjustment *adjustment)
 {
-  g_return_if_fail (GTK_IS_VIEWPORT (viewport));
+  g_return_if_fail (BTK_IS_VIEWPORT (viewport));
   if (adjustment)
-    g_return_if_fail (GTK_IS_ADJUSTMENT (adjustment));
+    g_return_if_fail (BTK_IS_ADJUSTMENT (adjustment));
 
-  viewport_set_adjustment (viewport, GTK_ORIENTATION_VERTICAL, adjustment);
+  viewport_set_adjustment (viewport, BTK_ORIENTATION_VERTICAL, adjustment);
 
   g_object_notify (G_OBJECT (viewport), "vadjustment");
 }
 
 static void
-gtk_viewport_set_scroll_adjustments (GtkViewport      *viewport,
-				     GtkAdjustment    *hadjustment,
-				     GtkAdjustment    *vadjustment)
+btk_viewport_set_scroll_adjustments (BtkViewport      *viewport,
+				     BtkAdjustment    *hadjustment,
+				     BtkAdjustment    *vadjustment)
 {
-  gtk_viewport_set_hadjustment (viewport, hadjustment);
-  gtk_viewport_set_vadjustment (viewport, vadjustment);
+  btk_viewport_set_hadjustment (viewport, hadjustment);
+  btk_viewport_set_vadjustment (viewport, vadjustment);
 }
 
 /** 
- * gtk_viewport_set_shadow_type:
- * @viewport: a #GtkViewport.
+ * btk_viewport_set_shadow_type:
+ * @viewport: a #BtkViewport.
  * @type: the new shadow type.
  *
  * Sets the shadow type of the viewport.
  **/ 
 void
-gtk_viewport_set_shadow_type (GtkViewport   *viewport,
-			      GtkShadowType  type)
+btk_viewport_set_shadow_type (BtkViewport   *viewport,
+			      BtkShadowType  type)
 {
-  g_return_if_fail (GTK_IS_VIEWPORT (viewport));
+  g_return_if_fail (BTK_IS_VIEWPORT (viewport));
 
-  if ((GtkShadowType) viewport->shadow_type != type)
+  if ((BtkShadowType) viewport->shadow_type != type)
     {
       viewport->shadow_type = type;
 
-      if (gtk_widget_get_visible (GTK_WIDGET (viewport)))
+      if (btk_widget_get_visible (BTK_WIDGET (viewport)))
 	{
-	  gtk_widget_size_allocate (GTK_WIDGET (viewport), &(GTK_WIDGET (viewport)->allocation));
-	  gtk_widget_queue_draw (GTK_WIDGET (viewport));
+	  btk_widget_size_allocate (BTK_WIDGET (viewport), &(BTK_WIDGET (viewport)->allocation));
+	  btk_widget_queue_draw (BTK_WIDGET (viewport));
 	}
 
       g_object_notify (G_OBJECT (viewport), "shadow-type");
@@ -559,93 +559,93 @@ gtk_viewport_set_shadow_type (GtkViewport   *viewport,
 }
 
 /**
- * gtk_viewport_get_shadow_type:
- * @viewport: a #GtkViewport
+ * btk_viewport_get_shadow_type:
+ * @viewport: a #BtkViewport
  *
- * Gets the shadow type of the #GtkViewport. See
- * gtk_viewport_set_shadow_type().
+ * Gets the shadow type of the #BtkViewport. See
+ * btk_viewport_set_shadow_type().
  
  * Return value: the shadow type 
  **/
-GtkShadowType
-gtk_viewport_get_shadow_type (GtkViewport *viewport)
+BtkShadowType
+btk_viewport_get_shadow_type (BtkViewport *viewport)
 {
-  g_return_val_if_fail (GTK_IS_VIEWPORT (viewport), GTK_SHADOW_NONE);
+  g_return_val_if_fail (BTK_IS_VIEWPORT (viewport), BTK_SHADOW_NONE);
 
   return viewport->shadow_type;
 }
 
 /**
- * gtk_viewport_get_bin_window:
- * @viewport: a #GtkViewport
+ * btk_viewport_get_bin_window:
+ * @viewport: a #BtkViewport
  *
- * Gets the bin window of the #GtkViewport.
+ * Gets the bin window of the #BtkViewport.
  *
- * Return value: (transfer none): a #GdkWindow
+ * Return value: (transfer none): a #BdkWindow
  *
  * Since: 2.20
  **/
-GdkWindow*
-gtk_viewport_get_bin_window (GtkViewport *viewport)
+BdkWindow*
+btk_viewport_get_bin_window (BtkViewport *viewport)
 {
-  g_return_val_if_fail (GTK_IS_VIEWPORT (viewport), NULL);
+  g_return_val_if_fail (BTK_IS_VIEWPORT (viewport), NULL);
 
   return viewport->bin_window;
 }
 
 /**
- * gtk_viewport_get_view_window:
- * @viewport: a #GtkViewport
+ * btk_viewport_get_view_window:
+ * @viewport: a #BtkViewport
  *
- * Gets the view window of the #GtkViewport.
+ * Gets the view window of the #BtkViewport.
  *
- * Return value: (transfer none): a #GdkWindow
+ * Return value: (transfer none): a #BdkWindow
  *
  * Since: 2.22
  **/
-GdkWindow*
-gtk_viewport_get_view_window (GtkViewport *viewport)
+BdkWindow*
+btk_viewport_get_view_window (BtkViewport *viewport)
 {
-  g_return_val_if_fail (GTK_IS_VIEWPORT (viewport), NULL);
+  g_return_val_if_fail (BTK_IS_VIEWPORT (viewport), NULL);
 
   return viewport->view_window;
 }
 
 static void
-gtk_viewport_realize (GtkWidget *widget)
+btk_viewport_realize (BtkWidget *widget)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (widget);
-  GtkBin *bin = GTK_BIN (widget);
-  GtkAdjustment *hadjustment = gtk_viewport_get_hadjustment (viewport);
-  GtkAdjustment *vadjustment = gtk_viewport_get_vadjustment (viewport);
-  gint border_width = GTK_CONTAINER (widget)->border_width;
+  BtkViewport *viewport = BTK_VIEWPORT (widget);
+  BtkBin *bin = BTK_BIN (widget);
+  BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
+  BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
+  gint border_width = BTK_CONTAINER (widget)->border_width;
   
-  GtkAllocation view_allocation;
-  GdkWindowAttr attributes;
+  BtkAllocation view_allocation;
+  BdkWindowAttr attributes;
   gint attributes_mask;
   gint event_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
   attributes.x = widget->allocation.x + border_width;
   attributes.y = widget->allocation.y + border_width;
   attributes.width = widget->allocation.width - border_width * 2;
   attributes.height = widget->allocation.height - border_width * 2;
-  attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.visual = gtk_widget_get_visual (widget);
-  attributes.colormap = gtk_widget_get_colormap (widget);
+  attributes.window_type = BDK_WINDOW_CHILD;
+  attributes.wclass = BDK_INPUT_OUTPUT;
+  attributes.visual = btk_widget_get_visual (widget);
+  attributes.colormap = btk_widget_get_colormap (widget);
 
-  event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK;
+  event_mask = btk_widget_get_events (widget) | BDK_EXPOSURE_MASK;
   /* We select on button_press_mask so that button 4-5 scrolls are trapped.
    */
-  attributes.event_mask = event_mask | GDK_BUTTON_PRESS_MASK;
+  attributes.event_mask = event_mask | BDK_BUTTON_PRESS_MASK;
 
-  attributes_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
+  attributes_mask = BDK_WA_X | BDK_WA_Y | BDK_WA_VISUAL | BDK_WA_COLORMAP;
 
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget),
+  widget->window = bdk_window_new (btk_widget_get_parent_window (widget),
 				   &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, viewport);
+  bdk_window_set_user_data (widget->window, viewport);
 
   viewport_get_view_allocation (viewport, &view_allocation);
   
@@ -655,10 +655,10 @@ gtk_viewport_realize (GtkWidget *widget)
   attributes.height = view_allocation.height;
   attributes.event_mask = 0;
 
-  viewport->view_window = gdk_window_new (widget->window, &attributes, attributes_mask);
-  gdk_window_set_user_data (viewport->view_window, viewport);
+  viewport->view_window = bdk_window_new (widget->window, &attributes, attributes_mask);
+  bdk_window_set_user_data (viewport->view_window, viewport);
 
-  gdk_window_set_back_pixmap (viewport->view_window, NULL, FALSE);
+  bdk_window_set_back_pixmap (viewport->view_window, NULL, FALSE);
   
   attributes.x = - hadjustment->value;
   attributes.y = - vadjustment->value;
@@ -667,78 +667,78 @@ gtk_viewport_realize (GtkWidget *widget)
   
   attributes.event_mask = event_mask;
 
-  viewport->bin_window = gdk_window_new (viewport->view_window, &attributes, attributes_mask);
-  gdk_window_set_user_data (viewport->bin_window, viewport);
+  viewport->bin_window = bdk_window_new (viewport->view_window, &attributes, attributes_mask);
+  bdk_window_set_user_data (viewport->bin_window, viewport);
 
   if (bin->child)
-    gtk_widget_set_parent_window (bin->child, viewport->bin_window);
+    btk_widget_set_parent_window (bin->child, viewport->bin_window);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
-  gtk_style_set_background (widget->style, viewport->bin_window, GTK_STATE_NORMAL);
+  widget->style = btk_style_attach (widget->style, widget->window);
+  btk_style_set_background (widget->style, widget->window, BTK_STATE_NORMAL);
+  btk_style_set_background (widget->style, viewport->bin_window, BTK_STATE_NORMAL);
 
   /* Call paint here to allow a theme to set the background without flashing
    */
-  gtk_paint_flat_box(widget->style, viewport->bin_window, GTK_STATE_NORMAL,
-		     GTK_SHADOW_NONE,
+  btk_paint_flat_box(widget->style, viewport->bin_window, BTK_STATE_NORMAL,
+		     BTK_SHADOW_NONE,
 		     NULL, widget, "viewportbin",
 		     0, 0, -1, -1);
    
-  gdk_window_show (viewport->bin_window);
-  gdk_window_show (viewport->view_window);
+  bdk_window_show (viewport->bin_window);
+  bdk_window_show (viewport->view_window);
 }
 
 static void
-gtk_viewport_unrealize (GtkWidget *widget)
+btk_viewport_unrealize (BtkWidget *widget)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (widget);
+  BtkViewport *viewport = BTK_VIEWPORT (widget);
 
-  gdk_window_set_user_data (viewport->view_window, NULL);
-  gdk_window_destroy (viewport->view_window);
+  bdk_window_set_user_data (viewport->view_window, NULL);
+  bdk_window_destroy (viewport->view_window);
   viewport->view_window = NULL;
 
-  gdk_window_set_user_data (viewport->bin_window, NULL);
-  gdk_window_destroy (viewport->bin_window);
+  bdk_window_set_user_data (viewport->bin_window, NULL);
+  bdk_window_destroy (viewport->bin_window);
   viewport->bin_window = NULL;
 
-  GTK_WIDGET_CLASS (gtk_viewport_parent_class)->unrealize (widget);
+  BTK_WIDGET_CLASS (btk_viewport_parent_class)->unrealize (widget);
 }
 
 static void
-gtk_viewport_paint (GtkWidget    *widget,
-		    GdkRectangle *area)
+btk_viewport_paint (BtkWidget    *widget,
+		    BdkRectangle *area)
 {
-  if (gtk_widget_is_drawable (widget))
+  if (btk_widget_is_drawable (widget))
     {
-      GtkViewport *viewport = GTK_VIEWPORT (widget);
+      BtkViewport *viewport = BTK_VIEWPORT (widget);
 
-      gtk_paint_shadow (widget->style, widget->window,
-			GTK_STATE_NORMAL, viewport->shadow_type,
+      btk_paint_shadow (widget->style, widget->window,
+			BTK_STATE_NORMAL, viewport->shadow_type,
 			area, widget, "viewport",
 			0, 0, -1, -1);
     }
 }
 
 static gint
-gtk_viewport_expose (GtkWidget      *widget,
-		     GdkEventExpose *event)
+btk_viewport_expose (BtkWidget      *widget,
+		     BdkEventExpose *event)
 {
-  GtkViewport *viewport;
+  BtkViewport *viewport;
 
-  if (gtk_widget_is_drawable (widget))
+  if (btk_widget_is_drawable (widget))
     {
-      viewport = GTK_VIEWPORT (widget);
+      viewport = BTK_VIEWPORT (widget);
 
       if (event->window == widget->window)
-	gtk_viewport_paint (widget, &event->area);
+	btk_viewport_paint (widget, &event->area);
       else if (event->window == viewport->bin_window)
 	{
-	  gtk_paint_flat_box(widget->style, viewport->bin_window, 
-			     GTK_STATE_NORMAL, GTK_SHADOW_NONE,
+	  btk_paint_flat_box(widget->style, viewport->bin_window, 
+			     BTK_STATE_NORMAL, BTK_SHADOW_NONE,
 			     &event->area, widget, "viewportbin",
 			     0, 0, -1, -1);
 
-	  GTK_WIDGET_CLASS (gtk_viewport_parent_class)->expose_event (widget, event);
+	  BTK_WIDGET_CLASS (btk_viewport_parent_class)->expose_event (widget, event);
 	}
     }
 
@@ -746,63 +746,63 @@ gtk_viewport_expose (GtkWidget      *widget,
 }
 
 static void
-gtk_viewport_add (GtkContainer *container,
-		  GtkWidget    *child)
+btk_viewport_add (BtkContainer *container,
+		  BtkWidget    *child)
 {
-  GtkBin *bin = GTK_BIN (container);
+  BtkBin *bin = BTK_BIN (container);
 
   g_return_if_fail (bin->child == NULL);
 
-  gtk_widget_set_parent_window (child, GTK_VIEWPORT (bin)->bin_window);
+  btk_widget_set_parent_window (child, BTK_VIEWPORT (bin)->bin_window);
 
-  GTK_CONTAINER_CLASS (gtk_viewport_parent_class)->add (container, child);
+  BTK_CONTAINER_CLASS (btk_viewport_parent_class)->add (container, child);
 }
 
 static void
-gtk_viewport_size_request (GtkWidget      *widget,
-			   GtkRequisition *requisition)
+btk_viewport_size_request (BtkWidget      *widget,
+			   BtkRequisition *requisition)
 {
-  GtkBin *bin = GTK_BIN (widget);
-  GtkRequisition child_requisition;
+  BtkBin *bin = BTK_BIN (widget);
+  BtkRequisition child_requisition;
 
-  requisition->width = GTK_CONTAINER (widget)->border_width;
+  requisition->width = BTK_CONTAINER (widget)->border_width;
 
-  requisition->height = GTK_CONTAINER (widget)->border_width;
+  requisition->height = BTK_CONTAINER (widget)->border_width;
 
-  if (GTK_VIEWPORT (widget)->shadow_type != GTK_SHADOW_NONE)
+  if (BTK_VIEWPORT (widget)->shadow_type != BTK_SHADOW_NONE)
     {
       requisition->width += 2 * widget->style->xthickness;
       requisition->height += 2 * widget->style->ythickness;
     }
 
-  if (bin->child && gtk_widget_get_visible (bin->child))
+  if (bin->child && btk_widget_get_visible (bin->child))
     {
-      gtk_widget_size_request (bin->child, &child_requisition);
+      btk_widget_size_request (bin->child, &child_requisition);
       requisition->width += child_requisition.width;
       requisition->height += child_requisition.height;
     }
 }
 
 static void
-gtk_viewport_size_allocate (GtkWidget     *widget,
-			    GtkAllocation *allocation)
+btk_viewport_size_allocate (BtkWidget     *widget,
+			    BtkAllocation *allocation)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (widget);
-  GtkBin *bin = GTK_BIN (widget);
-  gint border_width = GTK_CONTAINER (widget)->border_width;
+  BtkViewport *viewport = BTK_VIEWPORT (widget);
+  BtkBin *bin = BTK_BIN (widget);
+  gint border_width = BTK_CONTAINER (widget)->border_width;
   gboolean hadjustment_value_changed, vadjustment_value_changed;
-  GtkAdjustment *hadjustment = gtk_viewport_get_hadjustment (viewport);
-  GtkAdjustment *vadjustment = gtk_viewport_get_vadjustment (viewport);
-  GtkAllocation child_allocation;
+  BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
+  BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
+  BtkAllocation child_allocation;
 
   /* If our size changed, and we have a shadow, queue a redraw on widget->window to
    * redraw the shadow correctly.
    */
-  if (gtk_widget_get_mapped (widget) &&
-      viewport->shadow_type != GTK_SHADOW_NONE &&
+  if (btk_widget_get_mapped (widget) &&
+      viewport->shadow_type != BTK_SHADOW_NONE &&
       (widget->allocation.width != allocation->width ||
        widget->allocation.height != allocation->height))
-    gdk_window_invalidate_rect (widget->window, NULL, FALSE);
+    bdk_window_invalidate_rect (widget->window, NULL, FALSE);
   
   widget->allocation = *allocation;
   
@@ -813,78 +813,78 @@ gtk_viewport_size_allocate (GtkWidget     *widget,
   child_allocation.y = 0;
   child_allocation.width = hadjustment->upper;
   child_allocation.height = vadjustment->upper;
-  if (gtk_widget_get_realized (widget))
+  if (btk_widget_get_realized (widget))
     {
-      GtkAllocation view_allocation;
-      gdk_window_move_resize (widget->window,
+      BtkAllocation view_allocation;
+      bdk_window_move_resize (widget->window,
 			      allocation->x + border_width,
 			      allocation->y + border_width,
 			      allocation->width - border_width * 2,
 			      allocation->height - border_width * 2);
       
       viewport_get_view_allocation (viewport, &view_allocation);
-      gdk_window_move_resize (viewport->view_window,
+      bdk_window_move_resize (viewport->view_window,
 			      view_allocation.x,
 			      view_allocation.y,
 			      view_allocation.width,
 			      view_allocation.height);
-      gdk_window_move_resize (viewport->bin_window,
+      bdk_window_move_resize (viewport->bin_window,
                               - hadjustment->value,
                               - vadjustment->value,
                               child_allocation.width,
                               child_allocation.height);
     }
-  if (bin->child && gtk_widget_get_visible (bin->child))
-    gtk_widget_size_allocate (bin->child, &child_allocation);
+  if (bin->child && btk_widget_get_visible (bin->child))
+    btk_widget_size_allocate (bin->child, &child_allocation);
 
-  gtk_adjustment_changed (hadjustment);
-  gtk_adjustment_changed (vadjustment);
+  btk_adjustment_changed (hadjustment);
+  btk_adjustment_changed (vadjustment);
   if (hadjustment_value_changed)
-    gtk_adjustment_value_changed (hadjustment);
+    btk_adjustment_value_changed (hadjustment);
   if (vadjustment_value_changed)
-    gtk_adjustment_value_changed (vadjustment);
+    btk_adjustment_value_changed (vadjustment);
 }
 
 static void
-gtk_viewport_adjustment_value_changed (GtkAdjustment *adjustment,
+btk_viewport_adjustment_value_changed (BtkAdjustment *adjustment,
 				       gpointer       data)
 {
-  GtkViewport *viewport = GTK_VIEWPORT (data);
-  GtkBin *bin = GTK_BIN (data);
+  BtkViewport *viewport = BTK_VIEWPORT (data);
+  BtkBin *bin = BTK_BIN (data);
 
-  if (bin->child && gtk_widget_get_visible (bin->child) &&
-      gtk_widget_get_realized (GTK_WIDGET (viewport)))
+  if (bin->child && btk_widget_get_visible (bin->child) &&
+      btk_widget_get_realized (BTK_WIDGET (viewport)))
     {
-      GtkAdjustment *hadjustment = gtk_viewport_get_hadjustment (viewport);
-      GtkAdjustment *vadjustment = gtk_viewport_get_vadjustment (viewport);
+      BtkAdjustment *hadjustment = btk_viewport_get_hadjustment (viewport);
+      BtkAdjustment *vadjustment = btk_viewport_get_vadjustment (viewport);
       gint old_x, old_y;
       gint new_x, new_y;
 
-      gdk_window_get_position (viewport->bin_window, &old_x, &old_y);
+      bdk_window_get_position (viewport->bin_window, &old_x, &old_y);
       new_x = - hadjustment->value;
       new_y = - vadjustment->value;
 
       if (new_x != old_x || new_y != old_y)
 	{
-	  gdk_window_move (viewport->bin_window, new_x, new_y);
-	  gdk_window_process_updates (viewport->bin_window, TRUE);
+	  bdk_window_move (viewport->bin_window, new_x, new_y);
+	  bdk_window_process_updates (viewport->bin_window, TRUE);
 	}
     }
 }
 
 static void
-gtk_viewport_style_set (GtkWidget *widget,
-			GtkStyle  *previous_style)
+btk_viewport_style_set (BtkWidget *widget,
+			BtkStyle  *previous_style)
 {
-   if (gtk_widget_get_realized (widget) &&
-       gtk_widget_get_has_window (widget))
+   if (btk_widget_get_realized (widget) &&
+       btk_widget_get_has_window (widget))
      {
-	GtkViewport *viewport = GTK_VIEWPORT (widget);
+	BtkViewport *viewport = BTK_VIEWPORT (widget);
 
-	gtk_style_set_background (widget->style, viewport->bin_window, GTK_STATE_NORMAL);
-	gtk_style_set_background (widget->style, widget->window, widget->state);
+	btk_style_set_background (widget->style, viewport->bin_window, BTK_STATE_NORMAL);
+	btk_style_set_background (widget->style, widget->window, widget->state);
      }
 }
 
-#define __GTK_VIEWPORT_C__
-#include "gtkaliasdef.c"
+#define __BTK_VIEWPORT_C__
+#include "btkaliasdef.c"

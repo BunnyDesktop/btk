@@ -2,21 +2,21 @@ include $(top_srcdir)/Makefile.decl
 
 INCLUDES = \
 	-I$(top_srcdir)			\
-	-I$(top_builddir)/gdk		\
-	-I$(top_srcdir)/gdk		\
-	-DGDK_DISABLE_DEPRECATED	\
-	-DGTK_DISABLE_DEPRECATED	\
-	$(GTK_DEBUG_FLAGS)		\
-	$(GTK_DEP_CFLAGS)
+	-I$(top_builddir)/bdk		\
+	-I$(top_srcdir)/bdk		\
+	-DBDK_DISABLE_DEPRECATED	\
+	-DBTK_DISABLE_DEPRECATED	\
+	$(BTK_DEBUG_FLAGS)		\
+	$(BTK_DEP_CFLAGS)
 
 DEPS = \
-	$(top_builddir)/gdk/$(gdktargetlib)				\
-	$(top_builddir)/gtk/$(gtktargetlib)
+	$(top_builddir)/bdk/$(bdktargetlib)				\
+	$(top_builddir)/btk/$(btktargetlib)
 
 progs_ldadd = \
-	$(top_builddir)/gdk/$(gdktargetlib)				\
-	$(top_builddir)/gtk/$(gtktargetlib)				\
-	$(GTK_DEP_LIBS)
+	$(top_builddir)/bdk/$(bdktargetlib)				\
+	$(top_builddir)/btk/$(btktargetlib)				\
+	$(BTK_DEP_LIBS)
 
 noinst_PROGRAMS = $(TEST_PROGS)
 

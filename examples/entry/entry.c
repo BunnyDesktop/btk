@@ -1,100 +1,100 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
-static void enter_callback( GtkWidget *widget,
-                            GtkWidget *entry )
+static void enter_callback( BtkWidget *widget,
+                            BtkWidget *entry )
 {
   const gchar *entry_text;
-  entry_text = gtk_entry_get_text (GTK_ENTRY (entry));
+  entry_text = btk_entry_get_text (BTK_ENTRY (entry));
   printf ("Entry contents: %s\n", entry_text);
 }
 
-static void entry_toggle_editable( GtkWidget *checkbutton,
-                                   GtkWidget *entry )
+static void entry_toggle_editable( BtkWidget *checkbutton,
+                                   BtkWidget *entry )
 {
-  gtk_editable_set_editable (GTK_EDITABLE (entry),
-                             GTK_TOGGLE_BUTTON (checkbutton)->active);
+  btk_editable_set_editable (BTK_EDITABLE (entry),
+                             BTK_TOGGLE_BUTTON (checkbutton)->active);
 }
 
-static void entry_toggle_visibility( GtkWidget *checkbutton,
-                                     GtkWidget *entry )
+static void entry_toggle_visibility( BtkWidget *checkbutton,
+                                     BtkWidget *entry )
 {
-  gtk_entry_set_visibility (GTK_ENTRY (entry),
-			    GTK_TOGGLE_BUTTON (checkbutton)->active);
+  btk_entry_set_visibility (BTK_ENTRY (entry),
+			    BTK_TOGGLE_BUTTON (checkbutton)->active);
 }
 
 int main( int   argc,
           char *argv[] )
 {
 
-    GtkWidget *window;
-    GtkWidget *vbox, *hbox;
-    GtkWidget *entry;
-    GtkWidget *button;
-    GtkWidget *check;
+    BtkWidget *window;
+    BtkWidget *vbox, *hbox;
+    BtkWidget *entry;
+    BtkWidget *button;
+    BtkWidget *check;
     gint tmp_pos;
 
-    gtk_init (&argc, &argv);
+    btk_init (&argc, &argv);
 
     /* create a new window */
-    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-    gtk_widget_set_size_request (GTK_WIDGET (window), 200, 100);
-    gtk_window_set_title (GTK_WINDOW (window), "GTK Entry");
+    window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+    btk_widget_set_size_request (BTK_WIDGET (window), 200, 100);
+    btk_window_set_title (BTK_WINDOW (window), "BTK Entry");
     g_signal_connect (window, "destroy",
-                      G_CALLBACK (gtk_main_quit), NULL);
+                      G_CALLBACK (btk_main_quit), NULL);
     g_signal_connect_swapped (window, "delete-event",
-                              G_CALLBACK (gtk_widget_destroy),
+                              G_CALLBACK (btk_widget_destroy),
                               window);
 
-    vbox = gtk_vbox_new (FALSE, 0);
-    gtk_container_add (GTK_CONTAINER (window), vbox);
-    gtk_widget_show (vbox);
+    vbox = btk_vbox_new (FALSE, 0);
+    btk_container_add (BTK_CONTAINER (window), vbox);
+    btk_widget_show (vbox);
 
-    entry = gtk_entry_new ();
-    gtk_entry_set_max_length (GTK_ENTRY (entry), 50);
+    entry = btk_entry_new ();
+    btk_entry_set_max_length (BTK_ENTRY (entry), 50);
     g_signal_connect (entry, "activate",
 		      G_CALLBACK (enter_callback),
 		      (gpointer) entry);
-    gtk_entry_set_text (GTK_ENTRY (entry), "hello");
-    tmp_pos = GTK_ENTRY (entry)->text_length;
-    gtk_editable_insert_text (GTK_EDITABLE (entry), " world", -1, &tmp_pos);
-    gtk_editable_select_region (GTK_EDITABLE (entry),
-			        0, GTK_ENTRY (entry)->text_length);
-    gtk_box_pack_start (GTK_BOX (vbox), entry, TRUE, TRUE, 0);
-    gtk_widget_show (entry);
+    btk_entry_set_text (BTK_ENTRY (entry), "hello");
+    tmp_pos = BTK_ENTRY (entry)->text_length;
+    btk_editable_insert_text (BTK_EDITABLE (entry), " world", -1, &tmp_pos);
+    btk_editable_select_rebunnyion (BTK_EDITABLE (entry),
+			        0, BTK_ENTRY (entry)->text_length);
+    btk_box_pack_start (BTK_BOX (vbox), entry, TRUE, TRUE, 0);
+    btk_widget_show (entry);
 
-    hbox = gtk_hbox_new (FALSE, 0);
-    gtk_container_add (GTK_CONTAINER (vbox), hbox);
-    gtk_widget_show (hbox);
+    hbox = btk_hbox_new (FALSE, 0);
+    btk_container_add (BTK_CONTAINER (vbox), hbox);
+    btk_widget_show (hbox);
 
-    check = gtk_check_button_new_with_label ("Editable");
-    gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+    check = btk_check_button_new_with_label ("Editable");
+    btk_box_pack_start (BTK_BOX (hbox), check, TRUE, TRUE, 0);
     g_signal_connect (check, "toggled",
 	              G_CALLBACK (entry_toggle_editable), (gpointer) entry);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-    gtk_widget_show (check);
+    btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), TRUE);
+    btk_widget_show (check);
 
-    check = gtk_check_button_new_with_label ("Visible");
-    gtk_box_pack_start (GTK_BOX (hbox), check, TRUE, TRUE, 0);
+    check = btk_check_button_new_with_label ("Visible");
+    btk_box_pack_start (BTK_BOX (hbox), check, TRUE, TRUE, 0);
     g_signal_connect (check, "toggled",
 	              G_CALLBACK (entry_toggle_visibility), (gpointer) entry);
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (check), TRUE);
-    gtk_widget_show (check);
+    btk_toggle_button_set_active (BTK_TOGGLE_BUTTON (check), TRUE);
+    btk_widget_show (check);
 
-    button = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
+    button = btk_button_new_from_stock (BTK_STOCK_CLOSE);
     g_signal_connect_swapped (button, "clicked",
-			      G_CALLBACK (gtk_widget_destroy),
+			      G_CALLBACK (btk_widget_destroy),
 			      window);
-    gtk_box_pack_start (GTK_BOX (vbox), button, TRUE, TRUE, 0);
-    gtk_widget_set_can_default (button, TRUE);
-    gtk_widget_grab_default (button);
-    gtk_widget_show (button);
+    btk_box_pack_start (BTK_BOX (vbox), button, TRUE, TRUE, 0);
+    btk_widget_set_can_default (button, TRUE);
+    btk_widget_grab_default (button);
+    btk_widget_show (button);
 
-    gtk_widget_show (window);
+    btk_widget_show (window);
 
-    gtk_main();
+    btk_main();
 
     return 0;
 }

@@ -1,8 +1,8 @@
-/* MS-Windows Engine (aka GTK-Wimp)
+/* MS-Windows Engine (aka BTK-Wimp)
  *
  * Copyright (C) 2003, 2004 Raymond Penners <raymond@dotsphinx.com>
  * Includes code adapted from redmond95 by Owen Taylor, and
- * gtk-nativewin by Evan Martin
+ * btk-nativewin by Evan Martin
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -25,9 +25,9 @@
 
 static void msw_rc_style_init (MswRcStyle * style);
 static void msw_rc_style_class_init (MswRcStyleClass * klass);
-static GtkStyle *msw_rc_style_create_style (GtkRcStyle * rc_style);
+static BtkStyle *msw_rc_style_create_style (BtkRcStyle * rc_style);
 
-static GtkRcStyleClass *parent_class;
+static BtkRcStyleClass *parent_class;
 
 GType msw_type_rc_style = 0;
 
@@ -47,7 +47,7 @@ msw_rc_style_register_type (GTypeModule *module)
   };
 
   msw_type_rc_style = g_type_module_register_type (module,
-						   GTK_TYPE_RC_STYLE,
+						   BTK_TYPE_RC_STYLE,
 						   "MswRcStyle",
 						   &object_info, 0);
 }
@@ -60,7 +60,7 @@ msw_rc_style_init (MswRcStyle *style)
 static void
 msw_rc_style_class_init (MswRcStyleClass *klass)
 {
-  GtkRcStyleClass *rc_style_class = GTK_RC_STYLE_CLASS (klass);
+  BtkRcStyleClass *rc_style_class = BTK_RC_STYLE_CLASS (klass);
 
   parent_class = g_type_class_peek_parent (klass);
 
@@ -69,8 +69,8 @@ msw_rc_style_class_init (MswRcStyleClass *klass)
 
 /* Create an empty style suitable to this RC style
  */
-static GtkStyle *
-msw_rc_style_create_style (GtkRcStyle *rc_style)
+static BtkStyle *
+msw_rc_style_create_style (BtkRcStyle *rc_style)
 {
   return g_object_new (MSW_TYPE_STYLE, NULL);
 }

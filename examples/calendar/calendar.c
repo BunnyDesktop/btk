@@ -19,7 +19,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <gtk/gtk.h>
+#include <btk/btk.h>
 
 #define DEF_PAD 10
 #define DEF_PAD_SMALL 5
@@ -27,14 +27,14 @@
 #define TM_YEAR_BASE 1900
 
 typedef struct _CalendarData {
-  GtkWidget *flag_checkboxes[5];
+  BtkWidget *flag_checkboxes[5];
   gboolean  settings[5];
-  GtkWidget *font_dialog;
-  GtkWidget *window;
-  GtkWidget *prev2_sig;
-  GtkWidget *prev_sig;
-  GtkWidget *last_sig;
-  GtkWidget *month;
+  BtkWidget *font_dialog;
+  BtkWidget *window;
+  BtkWidget *prev2_sig;
+  BtkWidget *prev_sig;
+  BtkWidget *last_sig;
+  BtkWidget *month;
 } CalendarData;
 
 enum {
@@ -46,7 +46,7 @@ enum {
 };
 
 /*
- * GtkCalendar
+ * BtkCalendar
  */
 
 static void calendar_date_to_string( CalendarData *data,
@@ -56,7 +56,7 @@ static void calendar_date_to_string( CalendarData *data,
   GDate date;
   guint year, month, day;
 
-  gtk_calendar_get_date (GTK_CALENDAR (data->window),
+  btk_calendar_get_date (BTK_CALENDAR (data->window),
 			 &year, &month, &day);
   g_date_set_dmy (&date, day, month + 1, year);
   g_date_strftime (buffer, buff_len - 1, "%x", &date);
@@ -68,15 +68,15 @@ static void calendar_set_signal_strings( char         *sig_str,
 {
   const gchar *prev_sig;
 
-  prev_sig = gtk_label_get_text (GTK_LABEL (data->prev_sig));
-  gtk_label_set_text (GTK_LABEL (data->prev2_sig), prev_sig);
+  prev_sig = btk_label_get_text (BTK_LABEL (data->prev_sig));
+  btk_label_set_text (BTK_LABEL (data->prev2_sig), prev_sig);
 
-  prev_sig = gtk_label_get_text (GTK_LABEL (data->last_sig));
-  gtk_label_set_text (GTK_LABEL (data->prev_sig), prev_sig);
-  gtk_label_set_text (GTK_LABEL (data->last_sig), sig_str);
+  prev_sig = btk_label_get_text (BTK_LABEL (data->last_sig));
+  btk_label_set_text (BTK_LABEL (data->prev_sig), prev_sig);
+  btk_label_set_text (BTK_LABEL (data->last_sig), sig_str);
 }
 
-static void calendar_month_changed( GtkWidget    *widget,
+static void calendar_month_changed( BtkWidget    *widget,
                                     CalendarData *data )
 {
   char buffer[256] = "month_changed: ";
@@ -85,7 +85,7 @@ static void calendar_month_changed( GtkWidget    *widget,
   calendar_set_signal_strings (buffer, data);
 }
 
-static void calendar_day_selected( GtkWidget    *widget,
+static void calendar_day_selected( BtkWidget    *widget,
                                    CalendarData *data )
 {
   char buffer[256] = "day_selected: ";
@@ -94,7 +94,7 @@ static void calendar_day_selected( GtkWidget    *widget,
   calendar_set_signal_strings (buffer, data);
 }
 
-static void calendar_day_selected_double_click ( GtkWidget    *widget,
+static void calendar_day_selected_double_click ( BtkWidget    *widget,
                                                  CalendarData *data )
 {
   char buffer[256] = "day_selected_double_click: ";
@@ -103,17 +103,17 @@ static void calendar_day_selected_double_click ( GtkWidget    *widget,
   calendar_date_to_string (data, buffer + 27, 256 - 27);
   calendar_set_signal_strings (buffer, data);
 
-  gtk_calendar_get_date (GTK_CALENDAR (data->window),
+  btk_calendar_get_date (BTK_CALENDAR (data->window),
 			 NULL, NULL, &day);
 
-  if (GTK_CALENDAR (data->window)->marked_date[day-1] == 0) {
-    gtk_calendar_mark_day (GTK_CALENDAR (data->window), day);
+  if (BTK_CALENDAR (data->window)->marked_date[day-1] == 0) {
+    btk_calendar_mark_day (BTK_CALENDAR (data->window), day);
   } else {
-    gtk_calendar_unmark_day (GTK_CALENDAR (data->window), day);
+    btk_calendar_unmark_day (BTK_CALENDAR (data->window), day);
   }
 }
 
-static void calendar_prev_month( GtkWidget    *widget,
+static void calendar_prev_month( BtkWidget    *widget,
                                  CalendarData *data )
 {
   char buffer[256] = "prev_month: ";
@@ -122,7 +122,7 @@ static void calendar_prev_month( GtkWidget    *widget,
   calendar_set_signal_strings (buffer, data);
 }
 
-static void calendar_next_month( GtkWidget    *widget,
+static void calendar_next_month( BtkWidget    *widget,
                                  CalendarData *data )
 {
   char buffer[256] = "next_month: ";
@@ -131,7 +131,7 @@ static void calendar_next_month( GtkWidget    *widget,
   calendar_set_signal_strings (buffer, data);
 }
 
-static void calendar_prev_year( GtkWidget    *widget,
+static void calendar_prev_year( BtkWidget    *widget,
                                 CalendarData *data )
 {
   char buffer[256] = "prev_year: ";
@@ -140,7 +140,7 @@ static void calendar_prev_year( GtkWidget    *widget,
   calendar_set_signal_strings (buffer, data);
 }
 
-static void calendar_next_year( GtkWidget    *widget,
+static void calendar_next_year( BtkWidget    *widget,
                                 CalendarData *data )
 {
   char buffer[256] = "next_year: ";
@@ -160,10 +160,10 @@ static void calendar_set_flags( CalendarData *calendar )
 	options = options + (1 << i);
       }
   if (calendar->window)
-    gtk_calendar_display_options (GTK_CALENDAR (calendar->window), options);
+    btk_calendar_display_options (BTK_CALENDAR (calendar->window), options);
 }
 
-static void calendar_toggle_flag( GtkWidget    *toggle,
+static void calendar_toggle_flag( BtkWidget    *toggle,
                                   CalendarData *calendar)
 {
   gint i;
@@ -178,72 +178,72 @@ static void calendar_toggle_flag( GtkWidget    *toggle,
 
 }
 
-static void calendar_font_selection_ok( GtkWidget    *button,
+static void calendar_font_selection_ok( BtkWidget    *button,
                                         CalendarData *calendar )
 {
-  GtkRcStyle *style;
+  BtkRcStyle *style;
   char *font_name;
 
   if (calendar->window)
     {
-      font_name = gtk_font_selection_dialog_get_font_name (GTK_FONT_SELECTION_DIALOG (calendar->font_dialog));
+      font_name = btk_font_selection_dialog_get_font_name (BTK_FONT_SELECTION_DIALOG (calendar->font_dialog));
       if (font_name)
 	{
-	  style = gtk_rc_style_new ();
-	  pango_font_description_free (style->font_desc);
-	  style->font_desc = pango_font_description_from_string (font_name);
-	  gtk_widget_modify_style (calendar->window, style);
+	  style = btk_rc_style_new ();
+	  bango_font_description_free (style->font_desc);
+	  style->font_desc = bango_font_description_from_string (font_name);
+	  btk_widget_modify_style (calendar->window, style);
 	  g_free (font_name);
 	}
     }
 
-  gtk_widget_destroy (calendar->font_dialog);
+  btk_widget_destroy (calendar->font_dialog);
 }
 
-static void calendar_select_font( GtkWidget    *button,
+static void calendar_select_font( BtkWidget    *button,
                                   CalendarData *calendar )
 {
-  GtkWidget *window;
+  BtkWidget *window;
 
   if (!calendar->font_dialog) {
-    window = gtk_font_selection_dialog_new ("Font Selection Dialog");
-    g_return_if_fail (GTK_IS_FONT_SELECTION_DIALOG (window));
+    window = btk_font_selection_dialog_new ("Font Selection Dialog");
+    g_return_if_fail (BTK_IS_FONT_SELECTION_DIALOG (window));
     calendar->font_dialog = window;
 
-    gtk_window_set_position (GTK_WINDOW (window), GTK_WIN_POS_MOUSE);
+    btk_window_set_position (BTK_WINDOW (window), BTK_WIN_POS_MOUSE);
 
     g_signal_connect (window, "destroy",
-		      G_CALLBACK (gtk_widget_destroyed),
+		      G_CALLBACK (btk_widget_destroyed),
 		      &calendar->font_dialog);
 
-    g_signal_connect (GTK_FONT_SELECTION_DIALOG (window)->ok_button,
+    g_signal_connect (BTK_FONT_SELECTION_DIALOG (window)->ok_button,
 		      "clicked", G_CALLBACK (calendar_font_selection_ok),
 		      calendar);
-    g_signal_connect_swapped (GTK_FONT_SELECTION_DIALOG (window)->cancel_button,
-			     "clicked", G_CALLBACK (gtk_widget_destroy),
+    g_signal_connect_swapped (BTK_FONT_SELECTION_DIALOG (window)->cancel_button,
+			     "clicked", G_CALLBACK (btk_widget_destroy),
 			     calendar->font_dialog);
   }
   window = calendar->font_dialog;
-  if (!gtk_widget_get_visible (window))
-    gtk_widget_show (window);
+  if (!btk_widget_get_visible (window))
+    btk_widget_show (window);
   else
-    gtk_widget_destroy (window);
+    btk_widget_destroy (window);
 
 }
 
 static void create_calendar( void )
 {
-  GtkWidget *window;
-  GtkWidget *vbox, *vbox2, *vbox3;
-  GtkWidget *hbox;
-  GtkWidget *hbbox;
-  GtkWidget *calendar;
-  GtkWidget *toggle;
-  GtkWidget *button;
-  GtkWidget *frame;
-  GtkWidget *separator;
-  GtkWidget *label;
-  GtkWidget *bbox;
+  BtkWidget *window;
+  BtkWidget *vbox, *vbox2, *vbox3;
+  BtkWidget *hbox;
+  BtkWidget *hbbox;
+  BtkWidget *calendar;
+  BtkWidget *toggle;
+  BtkWidget *button;
+  BtkWidget *frame;
+  BtkWidget *separator;
+  BtkWidget *label;
+  BtkWidget *bbox;
   static CalendarData calendar_data;
   gint i;
 
@@ -266,39 +266,39 @@ static void create_calendar( void )
     calendar_data.settings[i] = 0;
   }
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (window), "GtkCalendar Example");
-  gtk_container_set_border_width (GTK_CONTAINER (window), 5);
+  window = btk_window_new (BTK_WINDOW_TOPLEVEL);
+  btk_window_set_title (BTK_WINDOW (window), "BtkCalendar Example");
+  btk_container_set_border_width (BTK_CONTAINER (window), 5);
   g_signal_connect (window, "destroy",
-		    G_CALLBACK (gtk_main_quit),
+		    G_CALLBACK (btk_main_quit),
 		    NULL);
   g_signal_connect (window, "delete-event",
-		    G_CALLBACK (gtk_false),
+		    G_CALLBACK (btk_false),
 		    NULL);
-  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+  btk_window_set_resizable (BTK_WINDOW (window), FALSE);
 
-  vbox = gtk_vbox_new (FALSE, DEF_PAD);
-  gtk_container_add (GTK_CONTAINER (window), vbox);
+  vbox = btk_vbox_new (FALSE, DEF_PAD);
+  btk_container_add (BTK_CONTAINER (window), vbox);
 
   /*
    * The top part of the window, Calendar, flags and fontsel.
    */
 
-  hbox = gtk_hbox_new (FALSE, DEF_PAD);
-  gtk_box_pack_start (GTK_BOX (vbox), hbox, TRUE, TRUE, DEF_PAD);
-  hbbox = gtk_hbutton_box_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), hbbox, FALSE, FALSE, DEF_PAD);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (hbbox), GTK_BUTTONBOX_SPREAD);
-  gtk_box_set_spacing (GTK_BOX (hbbox), 5);
+  hbox = btk_hbox_new (FALSE, DEF_PAD);
+  btk_box_pack_start (BTK_BOX (vbox), hbox, TRUE, TRUE, DEF_PAD);
+  hbbox = btk_hbutton_box_new ();
+  btk_box_pack_start (BTK_BOX (hbox), hbbox, FALSE, FALSE, DEF_PAD);
+  btk_button_box_set_layout (BTK_BUTTON_BOX (hbbox), BTK_BUTTONBOX_SPREAD);
+  btk_box_set_spacing (BTK_BOX (hbbox), 5);
 
   /* Calendar widget */
-  frame = gtk_frame_new ("Calendar");
-  gtk_box_pack_start(GTK_BOX (hbbox), frame, FALSE, TRUE, DEF_PAD);
-  calendar=gtk_calendar_new ();
+  frame = btk_frame_new ("Calendar");
+  btk_box_pack_start(BTK_BOX (hbbox), frame, FALSE, TRUE, DEF_PAD);
+  calendar=btk_calendar_new ();
   calendar_data.window = calendar;
   calendar_set_flags (&calendar_data);
-  gtk_calendar_mark_day (GTK_CALENDAR (calendar), 19);
-  gtk_container_add (GTK_CONTAINER (frame), calendar);
+  btk_calendar_mark_day (BTK_CALENDAR (calendar), 19);
+  btk_container_add (BTK_CONTAINER (frame), calendar);
   g_signal_connect (calendar, "month-changed",
 		    G_CALLBACK (calendar_month_changed),
 		    &calendar_data);
@@ -322,92 +322,92 @@ static void create_calendar( void )
 		    &calendar_data);
 
 
-  separator = gtk_vseparator_new ();
-  gtk_box_pack_start (GTK_BOX (hbox), separator, FALSE, TRUE, 0);
+  separator = btk_vseparator_new ();
+  btk_box_pack_start (BTK_BOX (hbox), separator, FALSE, TRUE, 0);
 
-  vbox2 = gtk_vbox_new (FALSE, DEF_PAD);
-  gtk_box_pack_start (GTK_BOX (hbox), vbox2, FALSE, FALSE, DEF_PAD);
+  vbox2 = btk_vbox_new (FALSE, DEF_PAD);
+  btk_box_pack_start (BTK_BOX (hbox), vbox2, FALSE, FALSE, DEF_PAD);
 
   /* Build the Right frame with the flags in */
 
-  frame = gtk_frame_new ("Flags");
-  gtk_box_pack_start (GTK_BOX (vbox2), frame, TRUE, TRUE, DEF_PAD);
-  vbox3 = gtk_vbox_new (TRUE, DEF_PAD_SMALL);
-  gtk_container_add (GTK_CONTAINER (frame), vbox3);
+  frame = btk_frame_new ("Flags");
+  btk_box_pack_start (BTK_BOX (vbox2), frame, TRUE, TRUE, DEF_PAD);
+  vbox3 = btk_vbox_new (TRUE, DEF_PAD_SMALL);
+  btk_container_add (BTK_CONTAINER (frame), vbox3);
 
   for (i = 0; i < 5; i++)
     {
-      toggle = gtk_check_button_new_with_label (flags[i].label);
+      toggle = btk_check_button_new_with_label (flags[i].label);
       g_signal_connect (toggle,
 			"toggled",
 			G_CALLBACK (calendar_toggle_flag),
 			&calendar_data);
-      gtk_box_pack_start (GTK_BOX (vbox3), toggle, TRUE, TRUE, 0);
+      btk_box_pack_start (BTK_BOX (vbox3), toggle, TRUE, TRUE, 0);
       calendar_data.flag_checkboxes[i] = toggle;
     }
   /* Build the right font-button */
-  button = gtk_button_new_with_label ("Font...");
+  button = btk_button_new_with_label ("Font...");
   g_signal_connect (button,
 		    "clicked",
 		    G_CALLBACK (calendar_select_font),
 		    &calendar_data);
-  gtk_box_pack_start (GTK_BOX (vbox2), button, FALSE, FALSE, 0);
+  btk_box_pack_start (BTK_BOX (vbox2), button, FALSE, FALSE, 0);
 
   /*
    *  Build the Signal-event part.
    */
 
-  frame = gtk_frame_new ("Signal events");
-  gtk_box_pack_start (GTK_BOX (vbox), frame, TRUE, TRUE, DEF_PAD);
+  frame = btk_frame_new ("Signal events");
+  btk_box_pack_start (BTK_BOX (vbox), frame, TRUE, TRUE, DEF_PAD);
 
-  vbox2 = gtk_vbox_new (TRUE, DEF_PAD_SMALL);
-  gtk_container_add (GTK_CONTAINER (frame), vbox2);
+  vbox2 = btk_vbox_new (TRUE, DEF_PAD_SMALL);
+  btk_container_add (BTK_CONTAINER (frame), vbox2);
 
-  hbox = gtk_hbox_new (FALSE, 3);
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
-  label = gtk_label_new ("Signal:");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
-  calendar_data.last_sig = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), calendar_data.last_sig, FALSE, TRUE, 0);
+  hbox = btk_hbox_new (FALSE, 3);
+  btk_box_pack_start (BTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
+  label = btk_label_new ("Signal:");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, TRUE, 0);
+  calendar_data.last_sig = btk_label_new ("");
+  btk_box_pack_start (BTK_BOX (hbox), calendar_data.last_sig, FALSE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 3);
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
-  label = gtk_label_new ("Previous signal:");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
-  calendar_data.prev_sig = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), calendar_data.prev_sig, FALSE, TRUE, 0);
+  hbox = btk_hbox_new (FALSE, 3);
+  btk_box_pack_start (BTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
+  label = btk_label_new ("Previous signal:");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, TRUE, 0);
+  calendar_data.prev_sig = btk_label_new ("");
+  btk_box_pack_start (BTK_BOX (hbox), calendar_data.prev_sig, FALSE, TRUE, 0);
 
-  hbox = gtk_hbox_new (FALSE, 3);
-  gtk_box_pack_start (GTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
-  label = gtk_label_new ("Second previous signal:");
-  gtk_box_pack_start (GTK_BOX (hbox), label, FALSE, TRUE, 0);
-  calendar_data.prev2_sig = gtk_label_new ("");
-  gtk_box_pack_start (GTK_BOX (hbox), calendar_data.prev2_sig, FALSE, TRUE, 0);
+  hbox = btk_hbox_new (FALSE, 3);
+  btk_box_pack_start (BTK_BOX (vbox2), hbox, FALSE, TRUE, 0);
+  label = btk_label_new ("Second previous signal:");
+  btk_box_pack_start (BTK_BOX (hbox), label, FALSE, TRUE, 0);
+  calendar_data.prev2_sig = btk_label_new ("");
+  btk_box_pack_start (BTK_BOX (hbox), calendar_data.prev2_sig, FALSE, TRUE, 0);
 
-  bbox = gtk_hbutton_box_new ();
-  gtk_box_pack_start (GTK_BOX (vbox), bbox, FALSE, FALSE, 0);
-  gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_END);
+  bbox = btk_hbutton_box_new ();
+  btk_box_pack_start (BTK_BOX (vbox), bbox, FALSE, FALSE, 0);
+  btk_button_box_set_layout (BTK_BUTTON_BOX (bbox), BTK_BUTTONBOX_END);
 
-  button = gtk_button_new_with_label ("Close");
+  button = btk_button_new_with_label ("Close");
   g_signal_connect (button, "clicked",
-		    G_CALLBACK (gtk_main_quit),
+		    G_CALLBACK (btk_main_quit),
 		    NULL);
-  gtk_container_add (GTK_CONTAINER (bbox), button);
-  gtk_widget_set_can_default (button, TRUE);
-  gtk_widget_grab_default (button);
+  btk_container_add (BTK_CONTAINER (bbox), button);
+  btk_widget_set_can_default (button, TRUE);
+  btk_widget_grab_default (button);
 
-  gtk_widget_show_all (window);
+  btk_widget_show_all (window);
 }
 
 
 int main (int   argc,
           char *argv[])
 {
-  gtk_init (&argc, &argv);
+  btk_init (&argc, &argv);
 
   create_calendar ();
 
-  gtk_main ();
+  btk_main ();
 
   return 0;
 }

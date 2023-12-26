@@ -11,6 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-#include "gtk-demo.vs10.sourcefiles.filters"
+#include "btk-demo.vs10.sourcefiles.filters"
   </ItemGroup>
 </Project>

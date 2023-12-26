@@ -1,5 +1,5 @@
-/* GTK - The GIMP Toolkit
- * gtkprinteroption.h: printer option
+/* BTK - The GIMP Toolkit
+ * btkprinteroption.h: printer option
  * Copyright (C) 2006, Red Hat, Inc.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,51 +18,51 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __GTK_PRINTER_OPTION_H__
-#define __GTK_PRINTER_OPTION_H__
+#ifndef __BTK_PRINTER_OPTION_H__
+#define __BTK_PRINTER_OPTION_H__
 
 /* This is a "semi-private" header; it is meant only for
- * alternate GtkPrintDialog backend modules; no stability guarantees 
+ * alternate BtkPrintDialog backend modules; no stability guarantees 
  * are made at this point
  */
-#ifndef GTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
-#error "GtkPrintBackend is not supported API for general use"
+#ifndef BTK_PRINT_BACKEND_ENABLE_UNSUPPORTED
+#error "BtkPrintBackend is not supported API for general use"
 #endif
 
-#include <glib-object.h>
+#include <bunnylib-object.h>
 
 G_BEGIN_DECLS
 
-#define GTK_TYPE_PRINTER_OPTION             (gtk_printer_option_get_type ())
-#define GTK_PRINTER_OPTION(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_PRINTER_OPTION, GtkPrinterOption))
-#define GTK_IS_PRINTER_OPTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GTK_TYPE_PRINTER_OPTION))
+#define BTK_TYPE_PRINTER_OPTION             (btk_printer_option_get_type ())
+#define BTK_PRINTER_OPTION(obj)             (G_TYPE_CHECK_INSTANCE_CAST ((obj), BTK_TYPE_PRINTER_OPTION, BtkPrinterOption))
+#define BTK_IS_PRINTER_OPTION(obj)          (G_TYPE_CHECK_INSTANCE_TYPE ((obj), BTK_TYPE_PRINTER_OPTION))
 
-typedef struct _GtkPrinterOption       GtkPrinterOption;
-typedef struct _GtkPrinterOptionClass  GtkPrinterOptionClass;
+typedef struct _BtkPrinterOption       BtkPrinterOption;
+typedef struct _BtkPrinterOptionClass  BtkPrinterOptionClass;
 
-#define GTK_PRINTER_OPTION_GROUP_IMAGE_QUALITY "ImageQuality"
-#define GTK_PRINTER_OPTION_GROUP_FINISHING "Finishing"
+#define BTK_PRINTER_OPTION_GROUP_IMAGE_QUALITY "ImageQuality"
+#define BTK_PRINTER_OPTION_GROUP_FINISHING "Finishing"
 
 typedef enum {
-  GTK_PRINTER_OPTION_TYPE_BOOLEAN,
-  GTK_PRINTER_OPTION_TYPE_PICKONE,
-  GTK_PRINTER_OPTION_TYPE_PICKONE_PASSWORD,
-  GTK_PRINTER_OPTION_TYPE_PICKONE_PASSCODE,
-  GTK_PRINTER_OPTION_TYPE_PICKONE_REAL,
-  GTK_PRINTER_OPTION_TYPE_PICKONE_INT,
-  GTK_PRINTER_OPTION_TYPE_PICKONE_STRING,
-  GTK_PRINTER_OPTION_TYPE_ALTERNATIVE,
-  GTK_PRINTER_OPTION_TYPE_STRING,
-  GTK_PRINTER_OPTION_TYPE_FILESAVE
-} GtkPrinterOptionType;
+  BTK_PRINTER_OPTION_TYPE_BOOLEAN,
+  BTK_PRINTER_OPTION_TYPE_PICKONE,
+  BTK_PRINTER_OPTION_TYPE_PICKONE_PASSWORD,
+  BTK_PRINTER_OPTION_TYPE_PICKONE_PASSCODE,
+  BTK_PRINTER_OPTION_TYPE_PICKONE_REAL,
+  BTK_PRINTER_OPTION_TYPE_PICKONE_INT,
+  BTK_PRINTER_OPTION_TYPE_PICKONE_STRING,
+  BTK_PRINTER_OPTION_TYPE_ALTERNATIVE,
+  BTK_PRINTER_OPTION_TYPE_STRING,
+  BTK_PRINTER_OPTION_TYPE_FILESAVE
+} BtkPrinterOptionType;
 
-struct _GtkPrinterOption
+struct _BtkPrinterOption
 {
   GObject parent_instance;
 
   char *name;
   char *display_text;
-  GtkPrinterOptionType type;
+  BtkPrinterOptionType type;
 
   char *value;
   
@@ -76,49 +76,49 @@ struct _GtkPrinterOption
   char *group;
 };
 
-struct _GtkPrinterOptionClass
+struct _BtkPrinterOptionClass
 {
   GObjectClass parent_class;
 
-  void (*changed) (GtkPrinterOption *option);
+  void (*changed) (BtkPrinterOption *option);
 
   /* Padding for future expansion */
-  void (*_gtk_reserved1) (void);
-  void (*_gtk_reserved2) (void);
-  void (*_gtk_reserved3) (void);
-  void (*_gtk_reserved4) (void);
-  void (*_gtk_reserved5) (void);
-  void (*_gtk_reserved6) (void);
-  void (*_gtk_reserved7) (void);
+  void (*_btk_reserved1) (void);
+  void (*_btk_reserved2) (void);
+  void (*_btk_reserved3) (void);
+  void (*_btk_reserved4) (void);
+  void (*_btk_reserved5) (void);
+  void (*_btk_reserved6) (void);
+  void (*_btk_reserved7) (void);
 };
 
-GType   gtk_printer_option_get_type       (void) G_GNUC_CONST;
+GType   btk_printer_option_get_type       (void) G_GNUC_CONST;
 
-GtkPrinterOption *gtk_printer_option_new                    (const char           *name,
+BtkPrinterOption *btk_printer_option_new                    (const char           *name,
 							     const char           *display_text,
-							     GtkPrinterOptionType  type);
-void              gtk_printer_option_set                    (GtkPrinterOption     *option,
+							     BtkPrinterOptionType  type);
+void              btk_printer_option_set                    (BtkPrinterOption     *option,
 							     const char           *value);
-void              gtk_printer_option_set_has_conflict       (GtkPrinterOption     *option,
+void              btk_printer_option_set_has_conflict       (BtkPrinterOption     *option,
 							     gboolean              has_conflict);
-void              gtk_printer_option_clear_has_conflict     (GtkPrinterOption     *option);
-void              gtk_printer_option_set_boolean            (GtkPrinterOption     *option,
+void              btk_printer_option_clear_has_conflict     (BtkPrinterOption     *option);
+void              btk_printer_option_set_boolean            (BtkPrinterOption     *option,
 							     gboolean              value);
-void              gtk_printer_option_allocate_choices       (GtkPrinterOption     *option,
+void              btk_printer_option_allocate_choices       (BtkPrinterOption     *option,
 							     int                   num);
-void              gtk_printer_option_choices_from_array     (GtkPrinterOption     *option,
+void              btk_printer_option_choices_from_array     (BtkPrinterOption     *option,
 							     int                   num_choices,
 							     char                 *choices[],
 							     char                 *choices_display[]);
-gboolean          gtk_printer_option_has_choice             (GtkPrinterOption     *option,
+gboolean          btk_printer_option_has_choice             (BtkPrinterOption     *option,
 							    const char           *choice);
-void              gtk_printer_option_set_activates_default (GtkPrinterOption     *option,
+void              btk_printer_option_set_activates_default (BtkPrinterOption     *option,
 							    gboolean              activates);
-gboolean          gtk_printer_option_get_activates_default (GtkPrinterOption     *option);
+gboolean          btk_printer_option_get_activates_default (BtkPrinterOption     *option);
 
 
 G_END_DECLS
 
-#endif /* __GTK_PRINTER_OPTION_H__ */
+#endif /* __BTK_PRINTER_OPTION_H__ */
 
 

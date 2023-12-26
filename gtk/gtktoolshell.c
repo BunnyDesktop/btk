@@ -1,4 +1,4 @@
-/* gtktoolshell.c
+/* btktoolshell.c
  * Copyright (C) 2007  Openismus GmbH
  *
  * This library is free software; you can redistribute it and/or
@@ -21,170 +21,170 @@
  */
 
 #include "config.h"
-#include "gtktoolshell.h"
-#include "gtkwidget.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btktoolshell.h"
+#include "btkwidget.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 /**
- * SECTION:gtktoolshell
- * @Short_description: Interface for containers containing GtkToolItem widgets
- * @Title: GtkToolShell
+ * SECTION:btktoolshell
+ * @Short_description: Interface for containers containing BtkToolItem widgets
+ * @Title: BtkToolShell
  *
- * The #GtkToolShell interface allows container widgets to provide additional
- * information when embedding #GtkToolItem widgets.
+ * The #BtkToolShell interface allows container widgets to provide additional
+ * information when embedding #BtkToolItem widgets.
  *
- * @see_also: #GtkToolbar, #GtkToolItem
+ * @see_also: #BtkToolbar, #BtkToolItem
  */
 
 /**
- * GtkToolShell:
+ * BtkToolShell:
  *
- * Dummy structure for accessing instances of #GtkToolShellIface.
+ * Dummy structure for accessing instances of #BtkToolShellIface.
  */
 
 GType
-gtk_tool_shell_get_type (void)
+btk_tool_shell_get_type (void)
 {
   static GType type = 0;
 
   if (!type)
     {
-      type = g_type_register_static_simple (G_TYPE_INTERFACE, I_("GtkToolShell"),
-                                            sizeof (GtkToolShellIface),
+      type = g_type_register_static_simple (G_TYPE_INTERFACE, I_("BtkToolShell"),
+                                            sizeof (BtkToolShellIface),
                                             NULL, 0, NULL, 0);
-      g_type_interface_add_prerequisite (type, GTK_TYPE_WIDGET);
+      g_type_interface_add_prerequisite (type, BTK_TYPE_WIDGET);
     }
 
   return type;
 }
 
 /**
- * gtk_tool_shell_get_icon_size:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_icon_size:
+ * @shell: a #BtkToolShell
  *
  * Retrieves the icon size for the tool shell. Tool items must not call this
- * function directly, but rely on gtk_tool_item_get_icon_size() instead.
+ * function directly, but rely on btk_tool_item_get_icon_size() instead.
  *
  * Return value: (type int): the current size for icons of @shell
  *
  * Since: 2.14
  **/
-GtkIconSize
-gtk_tool_shell_get_icon_size (GtkToolShell *shell)
+BtkIconSize
+btk_tool_shell_get_icon_size (BtkToolShell *shell)
 {
-  return GTK_TOOL_SHELL_GET_IFACE (shell)->get_icon_size (shell);
+  return BTK_TOOL_SHELL_GET_IFACE (shell)->get_icon_size (shell);
 }
 
 /**
- * gtk_tool_shell_get_orientation:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_orientation:
+ * @shell: a #BtkToolShell
  *
  * Retrieves the current orientation for the tool shell. Tool items must not
- * call this function directly, but rely on gtk_tool_item_get_orientation()
+ * call this function directly, but rely on btk_tool_item_get_orientation()
  * instead.
  *
  * Return value: the current orientation of @shell
  *
  * Since: 2.14
  **/
-GtkOrientation
-gtk_tool_shell_get_orientation (GtkToolShell *shell)
+BtkOrientation
+btk_tool_shell_get_orientation (BtkToolShell *shell)
 {
-  return GTK_TOOL_SHELL_GET_IFACE (shell)->get_orientation (shell);
+  return BTK_TOOL_SHELL_GET_IFACE (shell)->get_orientation (shell);
 }
 
 /**
- * gtk_tool_shell_get_style:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_style:
+ * @shell: a #BtkToolShell
  *
  * Retrieves whether the tool shell has text, icons, or both. Tool items must
- * not call this function directly, but rely on gtk_tool_item_get_style()
+ * not call this function directly, but rely on btk_tool_item_get_style()
  * instead.
  *
  * Return value: the current style of @shell
  *
  * Since: 2.14
  **/
-GtkToolbarStyle
-gtk_tool_shell_get_style (GtkToolShell *shell)
+BtkToolbarStyle
+btk_tool_shell_get_style (BtkToolShell *shell)
 {
-  return GTK_TOOL_SHELL_GET_IFACE (shell)->get_style (shell);
+  return BTK_TOOL_SHELL_GET_IFACE (shell)->get_style (shell);
 }
 
 /**
- * gtk_tool_shell_get_relief_style:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_relief_style:
+ * @shell: a #BtkToolShell
  *
  * Returns the relief style of buttons on @shell. Tool items must not call this
- * function directly, but rely on gtk_tool_item_get_relief_style() instead.
+ * function directly, but rely on btk_tool_item_get_relief_style() instead.
  *
  * Return value: The relief style of buttons on @shell.
  *
  * Since: 2.14
  **/
-GtkReliefStyle
-gtk_tool_shell_get_relief_style (GtkToolShell *shell)
+BtkReliefStyle
+btk_tool_shell_get_relief_style (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->get_relief_style)
     return iface->get_relief_style (shell);
 
-  return GTK_RELIEF_NONE;
+  return BTK_RELIEF_NONE;
 }
 
 /**
- * gtk_tool_shell_rebuild_menu:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_rebuild_menu:
+ * @shell: a #BtkToolShell
  *
  * Calling this function signals the tool shell that the overflow menu item for
  * tool items have changed. If there is an overflow menu and if it is visible
  * when this function it called, the menu will be rebuilt.
  *
  * Tool items must not call this function directly, but rely on
- * gtk_tool_item_rebuild_menu() instead.
+ * btk_tool_item_rebuild_menu() instead.
  *
  * Since: 2.14
  **/
 void
-gtk_tool_shell_rebuild_menu (GtkToolShell *shell)
+btk_tool_shell_rebuild_menu (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->rebuild_menu)
     iface->rebuild_menu (shell);
 }
 
 /**
- * gtk_tool_shell_get_text_orientation:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_text_orientation:
+ * @shell: a #BtkToolShell
  *
  * Retrieves the current text orientation for the tool shell. Tool items must not
- * call this function directly, but rely on gtk_tool_item_get_text_orientation()
+ * call this function directly, but rely on btk_tool_item_get_text_orientation()
  * instead.
  *
  * Return value: the current text orientation of @shell
  *
  * Since: 2.20
  **/
-GtkOrientation
-gtk_tool_shell_get_text_orientation (GtkToolShell *shell)
+BtkOrientation
+btk_tool_shell_get_text_orientation (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->get_text_orientation)
-    return GTK_TOOL_SHELL_GET_IFACE (shell)->get_text_orientation (shell);
+    return BTK_TOOL_SHELL_GET_IFACE (shell)->get_text_orientation (shell);
 
-  return GTK_ORIENTATION_HORIZONTAL;
+  return BTK_ORIENTATION_HORIZONTAL;
 }
 
 /**
- * gtk_tool_shell_get_text_alignment:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_text_alignment:
+ * @shell: a #BtkToolShell
  *
  * Retrieves the current text alignment for the tool shell. Tool items must not
- * call this function directly, but rely on gtk_tool_item_get_text_alignment()
+ * call this function directly, but rely on btk_tool_item_get_text_alignment()
  * instead.
  *
  * Return value: the current text alignment of @shell
@@ -192,61 +192,61 @@ gtk_tool_shell_get_text_orientation (GtkToolShell *shell)
  * Since: 2.20
  **/
 gfloat
-gtk_tool_shell_get_text_alignment (GtkToolShell *shell)
+btk_tool_shell_get_text_alignment (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->get_text_alignment)
-    return GTK_TOOL_SHELL_GET_IFACE (shell)->get_text_alignment (shell);
+    return BTK_TOOL_SHELL_GET_IFACE (shell)->get_text_alignment (shell);
 
   return 0.5f;
 }
 
 /**
- * gtk_tool_shell_get_ellipsize_mode
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_ellipsize_mode
+ * @shell: a #BtkToolShell
  *
  * Retrieves the current ellipsize mode for the tool shell. Tool items must not
- * call this function directly, but rely on gtk_tool_item_get_ellipsize_mode()
+ * call this function directly, but rely on btk_tool_item_get_ellipsize_mode()
  * instead.
  *
  * Return value: the current ellipsize mode of @shell
  *
  * Since: 2.20
  **/
-PangoEllipsizeMode
-gtk_tool_shell_get_ellipsize_mode (GtkToolShell *shell)
+BangoEllipsizeMode
+btk_tool_shell_get_ellipsize_mode (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->get_ellipsize_mode)
-    return GTK_TOOL_SHELL_GET_IFACE (shell)->get_ellipsize_mode (shell);
+    return BTK_TOOL_SHELL_GET_IFACE (shell)->get_ellipsize_mode (shell);
 
-  return PANGO_ELLIPSIZE_NONE;
+  return BANGO_ELLIPSIZE_NONE;
 }
 
 /**
- * gtk_tool_shell_get_text_size_group:
- * @shell: a #GtkToolShell
+ * btk_tool_shell_get_text_size_group:
+ * @shell: a #BtkToolShell
  *
  * Retrieves the current text size group for the tool shell. Tool items must not
- * call this function directly, but rely on gtk_tool_item_get_text_size_group()
+ * call this function directly, but rely on btk_tool_item_get_text_size_group()
  * instead.
  *
  * Return value: (transfer none): the current text size group of @shell
  *
  * Since: 2.20
  **/
-GtkSizeGroup *
-gtk_tool_shell_get_text_size_group (GtkToolShell *shell)
+BtkSizeGroup *
+btk_tool_shell_get_text_size_group (BtkToolShell *shell)
 {
-  GtkToolShellIface *iface = GTK_TOOL_SHELL_GET_IFACE (shell);
+  BtkToolShellIface *iface = BTK_TOOL_SHELL_GET_IFACE (shell);
 
   if (iface->get_text_size_group)
-    return GTK_TOOL_SHELL_GET_IFACE (shell)->get_text_size_group (shell);
+    return BTK_TOOL_SHELL_GET_IFACE (shell)->get_text_size_group (shell);
 
   return NULL;
 }
 
-#define __GTK_TOOL_SHELL_C__
-#include "gtkaliasdef.c"
+#define __BTK_TOOL_SHELL_C__
+#include "btkaliasdef.c"

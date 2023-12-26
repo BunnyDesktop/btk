@@ -1,4 +1,4 @@
-/* GTK - The GIMP Toolkit
+/* BTK - The GIMP Toolkit
  * Copyright (C) 1995-1997 Peter Mattis, Spencer Kimball and Josh MacDonald
  *
  * This library is free software; you can redistribute it and/or
@@ -18,10 +18,10 @@
  */
 
 /*
- * Modified by the GTK+ Team and others 1997-2000.  See the AUTHORS
- * file for a list of people on the GTK+ Team.  See the ChangeLog
+ * Modified by the BTK+ Team and others 1997-2000.  See the AUTHORS
+ * file for a list of people on the BTK+ Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GTK+ at ftp://ftp.gtk.org/pub/gtk/. 
+ * BTK+ at ftp://ftp.btk.org/pub/btk/. 
  */
 
 #include "config.h"
@@ -33,16 +33,16 @@
 #include <sys/param.h>
 #endif
 
-#undef GDK_DISABLE_DEPRECATED
-#undef GTK_DISABLE_DEPRECATED
+#undef BDK_DISABLE_DEPRECATED
+#undef BTK_DISABLE_DEPRECATED
 
-#include "gtkpreview.h"
-#include "gtkprivate.h"
-#include "gtkintl.h"
-#include "gtkalias.h"
+#include "btkpreview.h"
+#include "btkprivate.h"
+#include "btkintl.h"
+#include "btkalias.h"
 
 
-#define PREVIEW_CLASS(w)      GTK_PREVIEW_CLASS (GTK_OBJECT (w)->klass)
+#define PREVIEW_CLASS(w)      BTK_PREVIEW_CLASS (BTK_OBJECT (w)->klass)
 
 enum {
   PROP_0,
@@ -50,73 +50,73 @@ enum {
 };
 
 
-static void   gtk_preview_set_property  (GObject          *object,
+static void   btk_preview_set_property  (GObject          *object,
 					 guint             prop_id,
 					 const GValue     *value,
 					 GParamSpec       *pspec);
-static void   gtk_preview_get_property  (GObject          *object,
+static void   btk_preview_get_property  (GObject          *object,
 					 guint             prop_id,
 					 GValue           *value,
 					 GParamSpec       *pspec);
-static void   gtk_preview_finalize      (GObject          *object);
-static void   gtk_preview_realize       (GtkWidget        *widget);
-static void   gtk_preview_size_allocate (GtkWidget        *widget,
-					 GtkAllocation    *allocation);
-static gint   gtk_preview_expose        (GtkWidget        *widget,
-				         GdkEventExpose   *event);
-static void   gtk_preview_make_buffer   (GtkPreview       *preview);
-static void   gtk_fill_lookup_array     (guchar           *array);
+static void   btk_preview_finalize      (GObject          *object);
+static void   btk_preview_realize       (BtkWidget        *widget);
+static void   btk_preview_size_allocate (BtkWidget        *widget,
+					 BtkAllocation    *allocation);
+static gint   btk_preview_expose        (BtkWidget        *widget,
+				         BdkEventExpose   *event);
+static void   btk_preview_make_buffer   (BtkPreview       *preview);
+static void   btk_fill_lookup_array     (guchar           *array);
 
-static GtkPreviewClass *preview_class = NULL;
+static BtkPreviewClass *preview_class = NULL;
 static gint install_cmap = FALSE;
 
 
-G_DEFINE_TYPE (GtkPreview, gtk_preview, GTK_TYPE_WIDGET)
+G_DEFINE_TYPE (BtkPreview, btk_preview, BTK_TYPE_WIDGET)
 
 static void
-gtk_preview_class_init (GtkPreviewClass *klass)
+btk_preview_class_init (BtkPreviewClass *klass)
 {
-  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GtkWidgetClass *widget_class;
+  GObjectClass *bobject_class = G_OBJECT_CLASS (klass);
+  BtkWidgetClass *widget_class;
 
-  widget_class = (GtkWidgetClass*) klass;
+  widget_class = (BtkWidgetClass*) klass;
 
   preview_class = klass;
 
-  gobject_class->finalize = gtk_preview_finalize;
+  bobject_class->finalize = btk_preview_finalize;
 
-  gobject_class->set_property = gtk_preview_set_property;
-  gobject_class->get_property = gtk_preview_get_property;
+  bobject_class->set_property = btk_preview_set_property;
+  bobject_class->get_property = btk_preview_get_property;
 
-  widget_class->realize = gtk_preview_realize;
-  widget_class->size_allocate = gtk_preview_size_allocate;
-  widget_class->expose_event = gtk_preview_expose;
+  widget_class->realize = btk_preview_realize;
+  widget_class->size_allocate = btk_preview_size_allocate;
+  widget_class->expose_event = btk_preview_expose;
 
   klass->info.lookup = NULL;
 
   klass->info.gamma = 1.0;
 
-  g_object_class_install_property (gobject_class,
+  g_object_class_install_property (bobject_class,
                                    PROP_EXPAND,
                                    g_param_spec_boolean ("expand",
 							 P_("Expand"),
 							 P_("Whether the preview widget should take up the entire space it is allocated"),
 							 FALSE,
-							 GTK_PARAM_READWRITE));
+							 BTK_PARAM_READWRITE));
 }
 
 static void
-gtk_preview_set_property (GObject      *object,
+btk_preview_set_property (GObject      *object,
 			  guint         prop_id,
 			  const GValue *value,
 			  GParamSpec   *pspec)
 {
-  GtkPreview *preview = GTK_PREVIEW (object);
+  BtkPreview *preview = BTK_PREVIEW (object);
   
   switch (prop_id)
     {
     case PROP_EXPAND:
-      gtk_preview_set_expand (preview, g_value_get_boolean (value));
+      btk_preview_set_expand (preview, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -125,14 +125,14 @@ gtk_preview_set_property (GObject      *object,
 }
 
 static void
-gtk_preview_get_property (GObject      *object,
+btk_preview_get_property (GObject      *object,
 			  guint         prop_id,
 			  GValue       *value,
 			  GParamSpec   *pspec)
 {
-  GtkPreview *preview;
+  BtkPreview *preview;
   
-  preview = GTK_PREVIEW (object);
+  preview = BTK_PREVIEW (object);
   
   switch (prop_id)
     {
@@ -146,13 +146,13 @@ gtk_preview_get_property (GObject      *object,
 }
 
 void
-gtk_preview_reset (void)
+btk_preview_reset (void)
 {
   /* unimplemented */
 }
 
 static void
-gtk_preview_init (GtkPreview *preview)
+btk_preview_init (BtkPreview *preview)
 {
   preview->buffer = NULL;
   preview->buffer_width = 0;
@@ -161,41 +161,41 @@ gtk_preview_init (GtkPreview *preview)
 }
 
 void
-gtk_preview_uninit (void)
+btk_preview_uninit (void)
 {
   /* unimplemented */
 }
 
-GtkWidget*
-gtk_preview_new (GtkPreviewType type)
+BtkWidget*
+btk_preview_new (BtkPreviewType type)
 {
-  GtkPreview *preview;
+  BtkPreview *preview;
 
-  preview = gtk_type_new (gtk_preview_get_type ());
+  preview = btk_type_new (btk_preview_get_type ());
   preview->type = type;
 
-  if (type == GTK_PREVIEW_COLOR)
+  if (type == BTK_PREVIEW_COLOR)
     preview->bpp = 3;
   else
     preview->bpp = 1;
 
-  preview->dither = GDK_RGB_DITHER_NORMAL;
+  preview->dither = BDK_RGB_DITHER_NORMAL;
 
-  return GTK_WIDGET (preview);
+  return BTK_WIDGET (preview);
 }
 
 void
-gtk_preview_size (GtkPreview *preview,
+btk_preview_size (BtkPreview *preview,
 		  gint        width,
 		  gint        height)
 {
-  g_return_if_fail (GTK_IS_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PREVIEW (preview));
 
-  if ((width != GTK_WIDGET (preview)->requisition.width) ||
-      (height != GTK_WIDGET (preview)->requisition.height))
+  if ((width != BTK_WIDGET (preview)->requisition.width) ||
+      (height != BTK_WIDGET (preview)->requisition.height))
     {
-      GTK_WIDGET (preview)->requisition.width = width;
-      GTK_WIDGET (preview)->requisition.height = height;
+      BTK_WIDGET (preview)->requisition.width = width;
+      BTK_WIDGET (preview)->requisition.height = height;
 
       g_free (preview->buffer);
       preview->buffer = NULL;
@@ -203,9 +203,9 @@ gtk_preview_size (GtkPreview *preview,
 }
 
 void
-gtk_preview_put (GtkPreview   *preview,
-		 GdkWindow    *window,
-		 GdkGC        *gc,
+btk_preview_put (BtkPreview   *preview,
+		 BdkWindow    *window,
+		 BdkGC        *gc,
 		 gint          srcx,
 		 gint          srcy,
 		 gint          destx,
@@ -213,12 +213,12 @@ gtk_preview_put (GtkPreview   *preview,
 		 gint          width,
 		 gint          height)
 {
-  GdkRectangle r1, r2, r3;
+  BdkRectangle r1, r2, r3;
   guchar *src;
   guint bpp;
   guint rowstride;
 
-  g_return_if_fail (GTK_IS_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PREVIEW (preview));
   g_return_if_fail (window != NULL);
 
   if (!preview->buffer)
@@ -234,7 +234,7 @@ gtk_preview_put (GtkPreview   *preview,
   r2.width = width;
   r2.height = height;
 
-  if (!gdk_rectangle_intersect (&r1, &r2, &r3))
+  if (!bdk_rectangle_intersect (&r1, &r2, &r3))
     return;
 
   bpp = preview->bpp;
@@ -242,8 +242,8 @@ gtk_preview_put (GtkPreview   *preview,
 
   src = preview->buffer + r3.y * rowstride + r3.x * bpp;
 
-  if (preview->type == GTK_PREVIEW_COLOR)
-    gdk_draw_rgb_image (window,
+  if (preview->type == BTK_PREVIEW_COLOR)
+    bdk_draw_rgb_image (window,
 			gc,
 			destx + (r3.x - srcx),
 			desty + (r3.y - srcy),
@@ -253,7 +253,7 @@ gtk_preview_put (GtkPreview   *preview,
 			src,
 			rowstride);
   else
-    gdk_draw_gray_image (window,
+    bdk_draw_gray_image (window,
 			 gc,
 			 destx + (r3.x - srcx),
 			 desty + (r3.y - srcy),
@@ -266,7 +266,7 @@ gtk_preview_put (GtkPreview   *preview,
 }
 
 void
-gtk_preview_draw_row (GtkPreview *preview,
+btk_preview_draw_row (BtkPreview *preview,
 		      guchar     *data,
 		      gint        x,
 		      gint        y,
@@ -275,10 +275,10 @@ gtk_preview_draw_row (GtkPreview *preview,
   guint bpp;
   guint rowstride;
 
-  g_return_if_fail (GTK_IS_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PREVIEW (preview));
   g_return_if_fail (data != NULL);
   
-  bpp = (preview->type == GTK_PREVIEW_COLOR ? 3 : 1);
+  bpp = (preview->type == BTK_PREVIEW_COLOR ? 3 : 1);
   rowstride = (preview->buffer_width * bpp + 3) & -4;
 
   if ((w <= 0) || (y < 0))
@@ -286,7 +286,7 @@ gtk_preview_draw_row (GtkPreview *preview,
 
   g_return_if_fail (data != NULL);
 
-  gtk_preview_make_buffer (preview);
+  btk_preview_make_buffer (preview);
 
   if (x + w > preview->buffer_width)
     return;
@@ -307,7 +307,7 @@ gtk_preview_draw_row (GtkPreview *preview,
       else
 	{
 	  preview_class->info.lookup = g_new (guchar, 256);
-	  gtk_fill_lookup_array (preview_class->info.lookup);
+	  btk_fill_lookup_array (preview_class->info.lookup);
 	  lookup = preview_class->info.lookup;
 	}
       size = w * bpp;
@@ -319,27 +319,27 @@ gtk_preview_draw_row (GtkPreview *preview,
 }
 
 void
-gtk_preview_set_expand (GtkPreview *preview,
+btk_preview_set_expand (BtkPreview *preview,
 			gboolean    expand)
 {
-  g_return_if_fail (GTK_IS_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PREVIEW (preview));
 
   expand = expand != FALSE;
 
   if (preview->expand != expand)
     {
       preview->expand = expand;
-      gtk_widget_queue_resize (GTK_WIDGET (preview));
+      btk_widget_queue_resize (BTK_WIDGET (preview));
  
       g_object_notify (G_OBJECT (preview), "expand"); 
     }
 }
 
 void
-gtk_preview_set_gamma (double _gamma)
+btk_preview_set_gamma (double _gamma)
 {
   if (!preview_class)
-    preview_class = gtk_type_class (gtk_preview_get_type ());
+    preview_class = btk_type_class (btk_preview_get_type ());
 
   if (preview_class->info.gamma != _gamma)
     {
@@ -353,7 +353,7 @@ gtk_preview_set_gamma (double _gamma)
 }
 
 void
-gtk_preview_set_color_cube (guint nred_shades,
+btk_preview_set_color_cube (guint nred_shades,
 			    guint ngreen_shades,
 			    guint nblue_shades,
 			    guint ngray_shades)
@@ -362,68 +362,68 @@ gtk_preview_set_color_cube (guint nred_shades,
 }
 
 void
-gtk_preview_set_install_cmap (gint _install_cmap)
+btk_preview_set_install_cmap (gint _install_cmap)
 {
   /* effectively unimplemented */
   install_cmap = _install_cmap;
 }
 
 void
-gtk_preview_set_reserved (gint nreserved)
+btk_preview_set_reserved (gint nreserved)
 {
 
   /* unimplemented */
 }
 
 void
-gtk_preview_set_dither (GtkPreview      *preview,
-			GdkRgbDither     dither)
+btk_preview_set_dither (BtkPreview      *preview,
+			BdkRgbDither     dither)
 {
   preview->dither = dither;
 }
 
-GdkVisual*
-gtk_preview_get_visual (void)
+BdkVisual*
+btk_preview_get_visual (void)
 {
-  return gdk_screen_get_rgb_visual (gdk_screen_get_default ());
+  return bdk_screen_get_rgb_visual (bdk_screen_get_default ());
 }
 
-GdkColormap*
-gtk_preview_get_cmap (void)
+BdkColormap*
+btk_preview_get_cmap (void)
 {
-  return gdk_screen_get_rgb_colormap (gdk_screen_get_default ());
+  return bdk_screen_get_rgb_colormap (bdk_screen_get_default ());
 }
 
-GtkPreviewInfo*
-gtk_preview_get_info (void)
+BtkPreviewInfo*
+btk_preview_get_info (void)
 {
   if (!preview_class)
-    preview_class = gtk_type_class (gtk_preview_get_type ());
+    preview_class = btk_type_class (btk_preview_get_type ());
 
   return &preview_class->info;
 }
 
 
 static void
-gtk_preview_finalize (GObject *object)
+btk_preview_finalize (GObject *object)
 {
-  GtkPreview *preview = GTK_PREVIEW (object);
+  BtkPreview *preview = BTK_PREVIEW (object);
 
   g_free (preview->buffer);
 
-  G_OBJECT_CLASS (gtk_preview_parent_class)->finalize (object);
+  G_OBJECT_CLASS (btk_preview_parent_class)->finalize (object);
 }
 
 static void
-gtk_preview_realize (GtkWidget *widget)
+btk_preview_realize (BtkWidget *widget)
 {
-  GtkPreview *preview = GTK_PREVIEW (widget);
-  GdkWindowAttr attributes;
+  BtkPreview *preview = BTK_PREVIEW (widget);
+  BdkWindowAttr attributes;
   gint attributes_mask;
 
-  gtk_widget_set_realized (widget, TRUE);
+  btk_widget_set_realized (widget, TRUE);
 
-  attributes.window_type = GDK_WINDOW_CHILD;
+  attributes.window_type = BDK_WINDOW_CHILD;
 
   if (preview->expand)
     {
@@ -439,27 +439,27 @@ gtk_preview_realize (GtkWidget *widget)
   attributes.x = widget->allocation.x + (widget->allocation.width - attributes.width) / 2;
   attributes.y = widget->allocation.y + (widget->allocation.height - attributes.height) / 2;;
 
-  attributes.wclass = GDK_INPUT_OUTPUT;
-  attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK;
-  attributes_mask = GDK_WA_X | GDK_WA_Y;
+  attributes.wclass = BDK_INPUT_OUTPUT;
+  attributes.event_mask = btk_widget_get_events (widget) | BDK_EXPOSURE_MASK;
+  attributes_mask = BDK_WA_X | BDK_WA_Y;
 
-  widget->window = gdk_window_new (gtk_widget_get_parent_window (widget), &attributes, attributes_mask);
-  gdk_window_set_user_data (widget->window, widget);
+  widget->window = bdk_window_new (btk_widget_get_parent_window (widget), &attributes, attributes_mask);
+  bdk_window_set_user_data (widget->window, widget);
 
-  widget->style = gtk_style_attach (widget->style, widget->window);
-  gtk_style_set_background (widget->style, widget->window, GTK_STATE_NORMAL);
+  widget->style = btk_style_attach (widget->style, widget->window);
+  btk_style_set_background (widget->style, widget->window, BTK_STATE_NORMAL);
 }
 
 static void   
-gtk_preview_size_allocate (GtkWidget        *widget,
-			   GtkAllocation    *allocation)
+btk_preview_size_allocate (BtkWidget        *widget,
+			   BtkAllocation    *allocation)
 {
-  GtkPreview *preview = GTK_PREVIEW (widget);
+  BtkPreview *preview = BTK_PREVIEW (widget);
   gint width, height;
 
   widget->allocation = *allocation;
 
-  if (gtk_widget_get_realized (widget))
+  if (btk_widget_get_realized (widget))
     {
       if (preview->expand)
 	{
@@ -472,7 +472,7 @@ gtk_preview_size_allocate (GtkWidget        *widget,
 	  height = MIN (widget->allocation.height, widget->requisition.height);
 	}
 
-      gdk_window_move_resize (widget->window,
+      bdk_window_move_resize (widget->window,
 			      widget->allocation.x + (widget->allocation.width - width) / 2,
 			      widget->allocation.y + (widget->allocation.height - height) / 2,
 			      width, height);
@@ -480,19 +480,19 @@ gtk_preview_size_allocate (GtkWidget        *widget,
 }
 
 static gint
-gtk_preview_expose (GtkWidget      *widget,
-		    GdkEventExpose *event)
+btk_preview_expose (BtkWidget      *widget,
+		    BdkEventExpose *event)
 {
-  GtkPreview *preview;
+  BtkPreview *preview;
   gint width, height;
 
-  if (GTK_WIDGET_DRAWABLE (widget))
+  if (BTK_WIDGET_DRAWABLE (widget))
     {
-      preview = GTK_PREVIEW (widget);
+      preview = BTK_PREVIEW (widget);
 
-      gdk_drawable_get_size (widget->window, &width, &height);
+      bdk_drawable_get_size (widget->window, &width, &height);
 
-      gtk_preview_put (GTK_PREVIEW (widget),
+      btk_preview_put (BTK_PREVIEW (widget),
 		       widget->window, widget->style->black_gc,
 		       event->area.x - (width - preview->buffer_width)/2,
 		       event->area.y - (height - preview->buffer_height)/2,
@@ -504,15 +504,15 @@ gtk_preview_expose (GtkWidget      *widget,
 }
 
 static void
-gtk_preview_make_buffer (GtkPreview *preview)
+btk_preview_make_buffer (BtkPreview *preview)
 {
-  GtkWidget *widget;
+  BtkWidget *widget;
   gint width;
   gint height;
 
-  g_return_if_fail (GTK_IS_PREVIEW (preview));
+  g_return_if_fail (BTK_IS_PREVIEW (preview));
 
-  widget = GTK_WIDGET (preview);
+  widget = BTK_WIDGET (preview);
 
   if (preview->expand &&
       (widget->allocation.width != 0) &&
@@ -545,7 +545,7 @@ gtk_preview_make_buffer (GtkPreview *preview)
 
 /* This is used for implementing gamma. */
 static void
-gtk_fill_lookup_array (guchar *array)
+btk_fill_lookup_array (guchar *array)
 {
   double one_over_gamma;
   double ind;
@@ -562,5 +562,5 @@ gtk_fill_lookup_array (guchar *array)
     }
 }
 
-#define __GTK_PREVIEW_C__
-#include "gtkaliasdef.c"
+#define __BTK_PREVIEW_C__
+#include "btkaliasdef.c"
